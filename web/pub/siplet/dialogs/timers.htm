@@ -166,7 +166,7 @@ var fixtimerspage=function(){
 		root.timerfieldchange = function() {
 			if(dd.selectedIndex<0) return;
 			if(!global)
-				window.win = window.currentSiplet;
+				window.win = window.currWin;
 			tname.style.backgroundColor = (tname.value.length==0)?RED:'white';
 			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?RED:'white';
 			taval.style.backgroundColor = ((tacto.value!='')&& (!isValidExpression(taval.value)))?RED:'white';
@@ -177,7 +177,7 @@ var fixtimerspage=function(){
 				var globalScripts = GetGlobalScripts();
 				found = FindAScript(globalScripts,key,true);
 				if(!global)
-					found = found || FindAScript(window.currentSiplet.localScripts(),key,true);
+					found = found || FindAScript(window.currWin.localScripts(),key,true);
 				if(!found)
 					taval.style.backgroundColor = RED;
 			}
@@ -241,16 +241,16 @@ var fixtimerspage=function(){
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pb) 
-				&& (window.currentSiplet.pbwhich) 
-				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				if((window.currWin.pb) 
+				&& (window.currWin.pbwhich) 
+				&& (!window.currWin.pbwhich.startsWith('g')))
 				{
-					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbindex = Number(window.currWin.pbwhich);
 					var pb = phonebook[pbindex];
 					pb.timers = JSON.parse(JSON.stringify(timers));
 					var found = FindSipletsByPB(pb);
-					if(!In(window.currentSiplet, found))
-						found.push(window.currentSiplet);
+					if(!In(window.currWin, found))
+						found.push(window.currWin);
 					for(var i=0;i < found.length;i++)
 					{
 						found[i].pb = pb;

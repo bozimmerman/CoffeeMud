@@ -331,16 +331,16 @@ ${
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pb) 
-				&& (window.currentSiplet.pbwhich) 
-				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				if((window.currWin.pb) 
+				&& (window.currWin.pbwhich) 
+				&& (!window.currWin.pbwhich.startsWith('g')))
 				{
-					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbindex = Number(window.currWin.pbwhich);
 					var pb = phonebook[pbindex];
 					pb.plugins = JSON.parse(JSON.stringify(plugins));
 					var found = FindSipletsByPB(pb);
-					if(!In(window.currentSiplet, found))
-						found.push(window.currentSiplet);
+					if(!In(window.currWin, found))
+						found.push(window.currWin);
 					for(var i=0;i < found.length;i++)
 					{
 						found[i].pb = pb;

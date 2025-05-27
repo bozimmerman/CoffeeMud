@@ -68,10 +68,10 @@ function CloseTab(img)
 			window.siplets[i].close();
 			window.siplets[i].topWindow.outerHTML = '';
 			window.siplets.splice(i,1);
-			if(window.currentSiplet == window.siplets[i])
+			if(window.currWin == window.siplets[i])
 			{
 				if(window.siplets.length == 0)
-					window.currentSiplet = null;
+					window.currWin = null;
 				else
 					SetCurrentTab(0);
 				break;

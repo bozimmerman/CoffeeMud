@@ -29,14 +29,14 @@ function inputSubmit(x)
         inputbacklog.push(x);
         inputbacklogindex=inputbacklog.length;
     }
-    if(x && window.currentSiplet != null)
+    if(x && window.currWin != null)
     {
-        x = window.currentSiplet.aliasProcess(x);
+        x = window.currWin.aliasProcess(x);
         if(!x)
             return;
     }
-    if(window.currentSiplet)
-        window.currentSiplet.submitInput(x);
+    if(window.currWin)
+        window.currWin.submitInput(x);
     else
         window.alert("You need to connect first!");
 }
@@ -56,7 +56,7 @@ function sendOneLine(txt)
 	if(txt != null)
 	{
 		txt = txt.replaceAll('\n','%0D').replaceAll('\r','');
-	    window.currentSiplet.submitInput(txt);
+	    window.currWin.submitInput(txt);
 	}
 }
 

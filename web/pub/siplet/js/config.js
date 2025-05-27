@@ -1,5 +1,5 @@
 window.configlisteners = {};
-window.config = localStorage.getItem('config1');
+window.config = localStorage.getItem('config1.1');
 if(window.config) 
 	window.config = JSON.parse(window.config);
 else
@@ -19,7 +19,7 @@ window.defEntities = {
 window.defTriggers = [
 	{
 		name: "Phonebook Account Name",
-		allowed: 'win.pb && win.pb.account',
+		allowed: 'win.pb && win.pb.accountName',
 		regex: true,
 		once: true,
 		pattern: 'Account name:(?![\\s\\S]*\\n)',
@@ -27,7 +27,7 @@ window.defTriggers = [
 	},
 	{
 		name: "Phonebook Account Character",
-		allowed: 'win.pb && win.pb.account && win.pb.user',
+		allowed: 'win.pb && win.pb.accountName && win.pb.user',
 		regex: true,
 		once: true,
 		pattern: 'Command or Name \\(\\?\\):(?!\\[\\s\\S\\]*\\n)',
@@ -35,7 +35,7 @@ window.defTriggers = [
 	},
 	{
 		name: "Phonebook Character",
-		allowed: 'win.pb && !win.pb.account && win.pb.user',
+		allowed: 'win.pb && !win.pb.accountName && win.pb.user',
 		regex: true,
 		once: true,
 		pattern: 'name:(?!\\[\\s\\S\\]*\\n)',

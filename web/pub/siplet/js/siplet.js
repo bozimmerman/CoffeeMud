@@ -1,4 +1,4 @@
-window.currentSiplet = null;
+window.currWin = null;
 window.siplets = [];
 window.windowArea = null;
 
@@ -215,7 +215,7 @@ function SipletWindow(windowName)
 			this.window.appendChild(span);
 			this.process(reprocess);
 			this.htmlBuffer='';
-			if(window.currentSiplet != me)
+			if(window.currWin != me)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
@@ -1091,7 +1091,7 @@ function AddNewSipletTabByPB(which)
 	{
 		if(port == 'default')
 			port = 23;
-		defaultUrl = pb.host;
+		defaultUrl = 'ws://' + pb.host;
 	}
 	else
 	{
@@ -1147,7 +1147,7 @@ function SetCurrentTabByTab(me)
 
 function SetCurrentTab(which)
 {
-	window.currentSiplet=window.siplets[which];
+	window.currWin=window.siplets[which];
 	for(var i=0;i<window.siplets.length;i++)
 	{
 		var s = window.siplets[i];
@@ -1171,7 +1171,7 @@ function SetCurrentTab(which)
 		}
 	}
 	boxFocus();
-	return window.currentSiplet;
+	return window.currWin;
 }
 
 function CloseAllSiplets()
@@ -1193,11 +1193,10 @@ function PBSameAs(pb1, pb2)
 {
 	if(pb1 === pb2)
 		return true;
-	if(!pb1.user || !pb2.name || !pb1.user || !pb1.name)
-		return false;
-	return (pb1.account == pb2.account)
+	return ((window.isElectron)||(pb1.account == pb2.account))
 		&&(pb1.name == pb2.name)
 		&&(pb1.port == pb2.port)
+		&&((!window.isElectron)||(pb1.host == pb2.host))
 		&&(pb1.accountName == pb2.accountName)
 		&&(pb1.user == pb2.user)
 		&&(pb1.password == pb2.password);

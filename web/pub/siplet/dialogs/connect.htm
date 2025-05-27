@@ -227,6 +227,7 @@ ${
 			else
 			if(mybpentry.user && (portValue != null))
 			{
+				mybpentry.pb = true;
 				phonebook.push(mybpentry);
 				setConfig('/phonebook/dial', phonebook);
 				var name = root.makephonebookname(mybpentry.user,portValue.name,portValue.port);

@@ -1,7 +1,7 @@
 <TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="PHONEBOOKROOT">
 <TR>
 	<TD WIDTH=20%>Quick Conn:</TD>
-	<TD>Host:<INPUT TYPE=TEXT ID="QUICKCONNECTHOST" SIZE=20>, Port: <INPUT TYPE=TEXT ID="QUICKCONNECTPORT" SIZE=5>
+	<TD>Host:<INPUT TYPE=TEXT ID="QUICKCONNECTHOST" SIZE=20> Port: <INPUT TYPE=TEXT ID="QUICKCONNECTPORT" SIZE=3>
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Windows')">
 		<a href="javascript:var el = document.getElementById('PHONEBOOTROOT');if(el)el.quickconnect();">
 			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
@@ -203,6 +203,7 @@ ${
 			mybpentry.accountName = acctField.value;
 			mybpentry.user = userField.value;
 			mybpentry.password = passField.value;
+			mybpentry.pb = true;
 			if((pbindex >= 0) && (pbindex < phonebook.length))
 			{
 				setConfig('/phonebook/dial', phonebook);

@@ -95,7 +95,7 @@ ${
 		};
 		root.entityfieldchange = function() {
 			if((mxpField.value.trim().length == 0)
-			&&(window.currentSiplet !== null))
+			&&(window.currWin !== null))
 				loadbutt.style.visibility = 'visible';
 			else
 				loadbutt.style.visibility = 'hidden';
@@ -172,15 +172,15 @@ ${
 			else
 			{
 				var phonebook = getConfig('/phonebook/dial',[]);
-				if((window.currentSiplet.pb) 
-				&& (window.currentSiplet.pbwhich) 
-				&& (!window.currentSiplet.pbwhich.startsWith('g')))
+				if((window.currWin.pb) 
+				&& (window.currWin.pbwhich) 
+				&& (!window.currWin.pbwhich.startsWith('g')))
 				{
-					var pbindex = Number(window.currentSiplet.pbwhich);
+					var pbindex = Number(window.currWin.pbwhich);
 					var pb = phonebook[pbindex];
 					var found = FindSipletsByPB(pb);
-					if(!In(window.currentSiplet, found))
-						found.push(window.currentSiplet);
+					if(!In(window.currWin, found))
+						found.push(window.currWin);
 					if(mxpField.value != ogmxp)
 					{
 						ogmxp = mxpField.value;
@@ -227,11 +227,11 @@ ${
 		
 		root.tryloadmxp = function() {
 			var newMXP = '';
-			if(window.currentSiplet !== null)
+			if(window.currWin !== null)
 			{
-				for(var key in window.currentSiplet.mxp.elements)
+				for(var key in window.currWin.mxp.elements)
 				{
-					var elem = window.currentSiplet.mxp.elements[key];
+					var elem = window.currWin.mxp.elements[key];
 					if(key in window.defElements)
 					{
 						var base = window.defElements[key];
@@ -262,7 +262,7 @@ ${
 		};
 		
 		if((mxpField.value.trim().length == 0)
-		&&(window.currentSiplet !== null))
+		&&(window.currWin !== null))
 			loadbutt.style.visibility = 'visible';
 		else
 			loadbutt.style.visibility = 'hidden';
