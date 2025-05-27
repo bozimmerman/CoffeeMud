@@ -5,7 +5,8 @@ window.windowArea = null;
 var Siplet =
 {
 	VERSION_MAJOR: 3.0,
-	VERSION_MINOR: 0
+	VERSION_MINOR: 0,
+	NAME: window.isElectron?'Sip':'Siplet'
 };
 
 function SipletWindow(windowName)
@@ -1044,16 +1045,24 @@ function SipletWindow(windowName)
 	};
 }
 
-function AddNewSipletTabByPort(port)
+function AddNewSipletTabByHostNPort(host, port)
 {
-	var protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	var defaultUrl = protocol + '//' + window.location.host + '/WebSock';
-	if(port === 'default')
-		return AddNewSipletTab(defaultUrl);
-	else
-		return AddNewSipletTab(defaultUrl+'?port='+port);
+	if(!host || !port)
+		return;
+	var protocol = 'ws:';
+	var defaultUrl = protocol + '//' + host;
+	var siplet = AddNewSipletTab(defaultUrl+'?port='+port);
+	siplet.tabTitle = host + '('+port+')';
+	siplet.pb = {
+		name: host + '('+port+')',
+		host: host,
+		port: port
+	};
+	siplet.pbwhich = '';
+	boxFocus();
+	return siplet;
 }
-	
+
 function AddNewSipletTabByPB(which)
 {
 	if(which=='')
@@ -1077,13 +1086,26 @@ function AddNewSipletTabByPB(which)
 		pb = phonebook[which];
 	}
 	var port = pb.port;
-	var protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-	var defaultUrl = protocol + '//' + window.location.host + '/WebSock';
+	var defaultUrl;
+	if(window.isElectron)
+	{
+		if(port == 'default')
+			port = 23;
+		defaultUrl = pb.host;
+	}
+	else
+	{
+		var protocol = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+		defaultUrl = protocol + '//' + window.location.host + '/WebSock';
+	}
 	var siplet;
 	if(port === 'default')
 		siplet = AddNewSipletTab(defaultUrl);
 	else
 		siplet = AddNewSipletTab(defaultUrl+'?port='+port);
+	if(window.isElectron)
+		siplet.tabTitle = pb.name;
+	else
 	if(global)
 		siplet.tabTitle = pb.name + '('+pb.port+')';
 	else

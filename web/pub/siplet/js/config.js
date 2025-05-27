@@ -125,6 +125,14 @@ function FindAScript(scripts, value, ci)
 
 function LoadGlobalPhonebook()
 {
+	if(isElectron)
+	{
+		window.phonebook.push({
+			"name": "CoffeeMUD",
+			"host": "coffeemud.net",
+			"port": "23"});
+		return;
+	}
 	window.phonebook.push({
 		"name": "Default MUD",
 		"port": "default"

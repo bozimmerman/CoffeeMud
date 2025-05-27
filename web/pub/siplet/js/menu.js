@@ -82,7 +82,7 @@ function configureMenu(obj)
 	menuArea.style.color=menuForegroundColor;
 	
 	var html = '';
-	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: 20px; table-layout: fixed; width: 100%;">';
+	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: 20px; table-layout: fixed; width: 100%;cursor: pointer;">';
 	html +='<TR style="height: 20px;" >';
 	for(var to=0;to<menuData.length;to++)
 	{
@@ -144,7 +144,7 @@ function getOptionWindow(heading, w, h)
 	{
 		menuWindow = document.createElement('div');
 		menuWindow.style.cssText = "position:absolute;top:20%;left:10%;height:60%;width:80%;z-index:99;";
-		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
+		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;cursor: pointer;";
 		menuWindow.style.backgroundColor = 'darkgray';
 		menuWindow.style.visibility = 'visible';
 		menuWindow.style.color = 'black';
@@ -212,7 +212,10 @@ function menuReconnect()
 function menuConnect()
 {
 	var content = getOptionWindow("Connect",60,40);
-	populateDivFromUrl(content, 'dialogs/connect.htm');
+	if(window.isElectron)
+		populateDivFromUrl(content, 'dialogs/connecta.htm');
+	else
+		populateDivFromUrl(content, 'dialogs/connect.htm');
 }
 
 function menuTriggers(value)

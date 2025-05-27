@@ -1,0 +1,283 @@
+<TABLE WIDTH=100% BORDER=0 style="font-size:12" ID="PHONEBOOKROOT">
+<TR>
+	<TD WIDTH=20%>Quick Conn:</TD>
+	<TD>Host:<INPUT TYPE=TEXT ID="QUICKCONNECTHOST" SIZE=20>, Port: <INPUT TYPE=TEXT ID="QUICKCONNECTPORT" SIZE=5>
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Windows')">
+		<a href="javascript:var el = document.getElementById('PHONEBOOTROOT');if(el)el.quickconnect();">
+			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+				ONCLICK="var el=document.getElementById('PHONEBOOKROOT');if(el)el.quickconnect();" 
+				TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+			<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+				<B>Connect</B></FONT>
+			</TD></TR></TABLE>
+		</a>
+</TD></TR>
+</TR><TR><TD COLSPAN=2>&nbsp;</TD>
+<TR>
+	<TD>Auto Conn:</TD>
+	<TD><SELECT ID="AUTOCONNECTDROPDOWN" ONCHANGE="setConfig('/phonebook/auto',this.value);">
+		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto','g0')!='-1')?"":"SELECTED"}>No Auto Connect
+		</SELECT>
+</TD></TR>
+</TR><TR><TD COLSPAN=2>&nbsp;</TD>
+</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
+</TR><TR>
+	<TD>Select:</TD>
+	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="document.getElementById('PHONEBOOKROOT').dropdownselected();">
+		<OPTION VALUE="-1">Add New Entry
+		</SELECT>
+		<a href="javascript:var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();">
+			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+				ONCLICK="var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();" 
+				TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+			<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+				<B>Connect</B></FONT>
+			</TD></TR></TABLE>
+		</a>
+</TD></TR>
+<TR>
+	<TD>Name:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKNAME" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" SIZE=20>
+</TD></TR>
+<TR>
+	<TD>Host:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKHOST" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" SIZE=20>
+</TD></TR>
+<TR>
+	<TD>Port:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKPORT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" SIZE=5>
+</TD></TR>
+<TR>
+	<TD>Account:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKACCT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();"
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR>
+	<TD>Character:</TD>
+	<TD><INPUT TYPE=TEXT ID="PHONEBOOKUSER" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();"
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR>
+	<TD>Password:</TD>
+	<TD><INPUT TYPE=PASSWORD ID="PHONEBOOKPASS" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" 
+		SIZE=20 VALUE=""></TD>
+</TR>
+<TR><TD COLSPAN=2>
+	<a ID="PHONEBOOKDELETE" href="javascript:document.getElementById('PHONEBOOKROOT').trydelphonebook();">
+		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
+			ONCLICK="document.getElementById('PHONEBOOKROOT').trydelphonebook();" 
+			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
+			<B>Delete</B></FONT>
+		</TD></TR></TABLE>
+	</a>
+</TD></TR>
+</TABLE>
+${
+	var fixphonebookpage=function(){
+	if(document.getElementById('PHONEBOOKDELETE'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('PHONEBOOKROOT');
+		var phbkField = document.getElementById('CONNECTPHONEBOOK');
+		var nameField = document.getElementById('PHONEBOOKNAME');
+		var hostField = document.getElementById('PHONEBOOKHOST');
+		var portField = document.getElementById('PHONEBOOKPORT');
+		var acctField = document.getElementById('PHONEBOOKACCT');
+		var userField = document.getElementById('PHONEBOOKUSER');
+		var passField = document.getElementById('PHONEBOOKPASS');
+		var delButt = document.getElementById('PHONEBOOKDELETE'); 
+		delButt.style.visibility='hidden';
+		
+		root.makephonebookname = function(user,name,port)
+		{
+			return name;
+		};
+		
+		var phonebook = getConfig('/phonebook/dial',[]);
+		for(var i=0;i < phonebook.length;i++)
+		{
+			var mybpentry = phonebook[i];
+			var name = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
+			var newOption = new Option(name,''+i);
+			phbkField.add(newOption);
+		}
+		phbkField.selectedIndex=-1;
+
+		root.dropdownselected = function()
+		{
+			if(Number(phbkField.value)<0)
+			{
+				delButt.style.visibility='hidden';
+				nameField.value='';
+				nameField.style.backgroundColor=RED;
+				hostField.value='';
+				hostField.style.backgroundColor=RED;
+				portField.value='';
+				portField.style.backgroundColor=RED;
+				acctField.value='';
+				acctField.style.backgroundColor='white';
+				userField.value='';
+				userField.style.backgroundColor='white';
+				passField.value='';
+				passField.style.backgroundColor='white';
+			}
+			else
+			if(Number(phbkField.value) < phonebook.length)
+			{
+				var pb = phonebook[Number(phbkField.value)];
+				delButt.style.visibility='visible';
+				nameField.value=pb.name;
+				nameField.style.backgroundColor='white';
+				hostField.value=pb.host;
+				hostField.style.backgroundColor='white';
+				portField.value=pb.port;
+				portField.style.backgroundColor='white';
+				acctField.value=pb.accountName;
+				userField.value=pb.user;
+				passField.value=pb.password;
+				acctField.style.backgroundColor='white';
+				userField.style.backgroundColor='white';
+				passField.style.backgroundColor='white';
+			}
+		};
+		
+		root.fixtopdropdowns = function()
+		{
+			var gphonebook = window.phonebook;
+			var auto = getConfig('/phonebook/auto','g0');
+			var acdd = document.getElementById('AUTOCONNECTDROPDOWN');
+			while(acdd.options.length > 1)
+				acdd.remove(1);
+			acdd.selectedIndex=-1;
+			for(var i=0;i < gphonebook.length;i++)
+			{
+				var pb = gphonebook[i];
+				var opt = new Option(pb.name, 'g'+i);
+				acdd.add(opt);
+				if(auto == opt.value)
+					opt.selected=true;
+			}
+			for(var i=0;i < phonebook.length;i++)
+			{
+				var pb = phonebook[i];
+				var opt = new Option(pb.name, ''+i);
+				acdd.add(opt);
+				if(auto == opt.value)
+					opt.selected=true;
+			}
+		};
+		root.fixtopdropdowns();
+		
+		root.fixphonebookfields = function()
+		{
+			if(phbkField.selectedIndex < 0)
+				return;
+			var pbindex = Number(phbkField.value);
+			var gphonebook = window.phonebook;
+			var mybpentry = {};
+			if((pbindex >= 0)&&(pbindex < phonebook.length))
+				mybpentry = phonebook[pbindex];
+			nameField.style.backgroundColor = (nameField.value.trim().length==0)?RED:'white';
+			hostField.style.backgroundColor = (hostField.value.trim().length==0)?RED:'white';
+			portField.style.backgroundColor = (portField.value.trim().length==0)?RED:'white';
+			//TODO: better validation: check port
+			// make sure name is unique from list
+			if((nameField.value.trim().length==0)
+			||(hostField.value.trim().length==0)
+			||(portField.value.trim().length==0))
+				return;
+			//mybpentry.account = portValue.accounts;
+			for(var i=0;i < phonebook.length;i++)
+				if((i != pbindex) && (phonebook[i].name == nameField.value.trim()))
+				{
+					nameField.style.backgroundColor = RED;
+					return;
+				}
+			mybpentry.name = nameField.value;
+			mybpentry.host = hostField.value;
+			mybpentry.port = portField.value;
+			
+			var pbnm = root.makephonebookname(mybpentry.user,mybpentry.host,mybpentry.port);
+			
+			mybpentry.accountName = acctField.value;
+			mybpentry.user = userField.value;
+			mybpentry.password = passField.value;
+			if((pbindex >= 0) && (pbindex < phonebook.length))
+			{
+				setConfig('/phonebook/dial', phonebook);
+				phbkField.options[phbkField.selectedIndex].text = root.makephonebookname(mybpentry.user,mybpentry.host,mybpentry.port);
+				UpdateSipetTabsByPBIndex(pbindex);
+				root.fixtopdropdowns();
+			}
+			else
+			{
+				phonebook.push(mybpentry);
+				setConfig('/phonebook/dial', phonebook);
+				var name = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
+				var newOption = new Option(name,''+(phonebook.length-1));
+				newOption.selected=true;
+				phbkField.add(newOption);
+				newOption.selected=true;
+				phbkField.selectedIndex = phonebook.length;
+				delButt.style.visibility='visible';
+			}
+		};
+		root.trydelphonebook = function()
+		{
+			if(phbkField.selectedIndex < 0)
+				return;
+			var pbindex = Number(phbkField.value);
+			if((pbindex >=0) && (pbindex < phonebook.length))
+			{
+				var pb = phonebook[pbindex];
+				var name = root.makephonebookname(pb.user,pb.name,pb.port);
+				if(window.confirm('Delete entry ' + name + '?'))
+				{
+					var opt = phbkField.options[phbkField.selectedIndex];
+					for(var i=phbkField.selectedIndex+1; i < phbkField.options.length; i++)
+					{
+						var val = Number(phbkField.options[i].value);
+						phbkField.options[i].value = (val - 1);
+					}
+					phonebook.splice(pbindex,1);
+					phbkField.remove(phbkField.selectedIndex);
+					phbkField.selectedIndex = -1;
+					nameField.value='';
+					hostField.value='';
+					portField.value='';
+					acctField.value='';
+					userField.value='';
+					passField.value='';
+					setConfig('/phonebook/dial', phonebook);
+					delButt.style.visibility='hidden';
+					for(var i=0;i < window.siplets.length;i++)
+					{
+						var siplet = window.siplets[i];
+						if((siplet.pbwhich) 
+						&& (!siplet.pbwhich.startsWith('g')))
+						{
+							if(Number(siplet.pbwhich) > pbindex)
+								siplet.pbwhich = ''+(Number(siplet.pbwhich)-1);
+							else
+							if(Number(siplet.pbwhich) == pbindex)
+								siplet.pbwhich = 'g0';
+						}
+					}
+				}
+			}
+		};
+		root.quickconnect = function()
+		{
+			var host = document.getElementById('QUICKCONNECTHOST');
+			var port = document.getElementById('QUICKCONNECTPORT');
+			if(host && port)
+			{
+				AddNewSipletTabByHostNPort(host.value, port.value);
+				hideOptionWindow();
+			}
+		};
+	} else
+		setTimeout(fixphonebookpage,10);
+};setTimeout(fixphonebookpage,10);
+'';}
