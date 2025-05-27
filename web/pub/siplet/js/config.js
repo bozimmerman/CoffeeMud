@@ -131,6 +131,7 @@ function LoadGlobalPhonebook()
 			"name": "CoffeeMUD",
 			"host": "coffeemud.net",
 			"port": "23"});
+		setTimeout(function() { AutoConnect(); },100);
 		return;
 	}
 	window.phonebook.push({
