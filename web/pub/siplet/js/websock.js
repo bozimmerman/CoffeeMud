@@ -57,6 +57,9 @@ if (isElectron)
 			if (this.socket) {
 				this.socket.end();
 				this.socket.readyState = WebSocket.CLOSED;
+				if (this.onclose) {
+					this.onclose(new Event('close'));
+				}
 			}
 		}
 	};
