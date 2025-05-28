@@ -243,13 +243,13 @@ ${
 					||((elem.bitmap && MXPBIT.COMMAND)>0))
 						newMXP +='EMPTY ';
 					else
-						newMXP += '"' + elem.definition + '" ';
+						newMXP += '\'' + elem.definition + '\' ';
 					if(elem.attributes)
-						newMXP +='ATT="'+elem.attributes+'" ';
+						newMXP +='ATT=\''+elem.attributes+'\' ';
 					if(elem.flag)
-						newMXP +='FLAG="'+elem.flag+'" ';
+						newMXP +='FLAG=\''+elem.flag+'\' ';
 					if(elem.tag)
-						newMXP +='TAG="'+elem.tag+'" ';
+						newMXP +='TAG=\''+elem.tag+'\' ';
 					if((elem.bitmap && MXPBIT.OPEN)>0)
 						newMXP += 'OPEN ';
 					newMXP = newMXP.trim() + '>\n';
