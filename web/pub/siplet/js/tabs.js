@@ -66,7 +66,8 @@ function CloseTab(img)
 		if(window.siplets[i].tab == tab)
 		{
 			window.siplets[i].close();
-			window.siplets[i].topWindow.outerHTML = '';
+			if(window.siplets[i].topWindow)
+				window.siplets[i].topWindow.outerHTML = '';
 			window.siplets.splice(i,1);
 			if(window.currWin == window.siplets[i])
 			{

@@ -107,6 +107,8 @@ public class DefaultSession implements Session
 	protected boolean		 suspendCommandLine	 = false;
 	protected boolean[] 	 serverTelnetCodes	 = new boolean[256];
 	protected boolean[]		 clientTelnetCodes	 = new boolean[256];
+	protected String		 lastTTypeR			 = "";
+	protected Long			 mttsBitmap			 = null;
 	protected String		 terminalType		 = "UNKNOWN";
 	protected int			 terminalWidth		 = -1;
 	protected int			 terminalHeight		 = -1;
@@ -1716,38 +1718,78 @@ public class DefaultSession implements Session
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got code "+((int)suboptionData[0])+": "+new String(suboptionData, 1, dataSize - 1));
 				if(suboptionData[0] == 0)
 				{
-					terminalType = new String(suboptionData, 1, dataSize - 1);
-					if(terminalType.equalsIgnoreCase("ZMUD")
-					||terminalType.equalsIgnoreCase("CMUD")
-					||terminalType.equalsIgnoreCase("XTERM"))
+					final String response = new String(suboptionData, 1, dataSize - 1);
+					if(response.equals(this.lastTTypeR))
+						return;
+					this.lastTTypeR = response;
+					if(response.toUpperCase().startsWith("MTTS "))
 					{
+						this.mttsBitmap = Long.valueOf(CMath.s_long(response.substring(5).trim()));
+						negotiateTelnetMode(rawout,TELNET_TERMTYPE);
+						return;
+					}
+					final String terminalType = response;
+					if(terminalType.equalsIgnoreCase("ZMUD")
+					||terminalType.equalsIgnoreCase("CMUD"))
+					{
+						this.terminalType = terminalType;
 						if(mightSupportTelnetMode(TELNET_ECHO))
 							telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
 						changeTelnetMode(rawout,TELNET_ECHO,false);
+						this.mttsBitmap = Long.valueOf(Session.MTTS_256COLORS|Session.MTTS_ANSI);
+					}
+					else
+					if(terminalType.startsWith("XTERM"))
+					{
+						if(this.terminalType.length()==0)
+							this.terminalType = terminalType;
+						if(mightSupportTelnetMode(TELNET_ECHO))
+							telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
+						changeTelnetMode(rawout,TELNET_ECHO,false);
+						this.mttsBitmap = Long.valueOf(Session.MTTS_256COLORS|Session.MTTS_ANSI);
 					}
 					else
 					if(terminalType.equals("ANSI"))
+					{
+						if(this.terminalType.length()==0)
+							this.terminalType = terminalType;
 						changeTelnetMode(rawout,TELNET_ECHO,true);
+						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI);
+					}
+					else
+					if(terminalType.equals("ANSI-256COLOR")
+					||terminalType.equals("ANSI-TRUECOLOR"))
+					{
+						if(this.terminalType.length()==0)
+							this.terminalType = terminalType;
+						changeTelnetMode(rawout,TELNET_ECHO,true);
+						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI|Session.MTTS_256COLORS);
+					}
 					else
 					if(terminalType.startsWith("GIVE-WINTIN.NET-A-CHANCE"))
 					{
+						this.terminalType = terminalType;
 						rawOut("\n\r\n\r**** Your MUD Client is Broken! Please use another!!****\n\r\n\r");
 						rawout.flush();
 						CMLib.s_sleep(1000);
 						rawout.close();
 					}
 					else
-					if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
+					if(terminalType.toUpperCase().startsWith("MUSHCLIENT")
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 					{
+						this.terminalType = terminalType;
 						negotiateTelnetMode(rawout,TELNET_MXP);
 						mxpSupportSet.remove("+IMAGE");
 						mxpSupportSet.remove("+IMAGE.URL");
 						mxpSupportSet.add("-IMAGE.URL");
+						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI);
 					}
 					else
-					if(terminalType.toLowerCase().equals("simplemu")
-					||(terminalType.toLowerCase().startsWith("mudlet")))
+					if(terminalType.toUpperCase().equals("SIMPLEMU")
+					||(terminalType.toUpperCase().startsWith("MUDLET")))
 					{
+						this.terminalType = terminalType;
 						if(CMParms.indexOf(this.promptSuffix, (byte)'\n')<0)
 						{
 							promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length+1);
@@ -1765,7 +1807,19 @@ public class DefaultSession implements Session
 							promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length + Session.TELNETGABYTES.length);
 							System.arraycopy(Session.TELNETGABYTES, 0, promptSuffix, pos, Session.TELNETGABYTES.length);
 						}
+						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI|Session.MTTS_256COLORS);
 					}
+					else
+					if(terminalType.equalsIgnoreCase("DUMB")
+					||terminalType.toUpperCase().startsWith("VT100"))
+					{
+						if(this.terminalType.length()==0)
+							this.terminalType = terminalType;
+
+					}
+					else
+						this.terminalType = terminalType;
+					negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 				}
 				else
 				if (suboptionData[0] == 1) // Request for data.
@@ -3468,6 +3522,25 @@ public class DefaultSession implements Session
 			preLogout(mob);
 			setStatus(SessionStatus.LOGOUT1);
 		}
+	}
+
+
+	@Override
+	public boolean isMTTS()
+	{
+		return this.mttsBitmap != null;
+	}
+
+	@Override
+	public boolean getMTTS(final int bitmap)
+	{
+		synchronized(this)
+		{
+			final Long mtts = this.mttsBitmap;
+			if(mtts != null)
+				return (mtts.longValue() & bitmap) == bitmap;
+		}
+		return false;
 	}
 
 	@Override

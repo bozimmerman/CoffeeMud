@@ -1059,6 +1059,18 @@ public class VFShell
 					{
 						return false;
 					}
+
+					@Override
+					public boolean isMTTS()
+					{
+						return false;
+					}
+
+					@Override
+					public boolean getMTTS(final int bitmap)
+					{
+						return false;
+					}
 				};
 				fakeMob.setSession(session);
 				fakeMob.setSoulMate(fakeMob);

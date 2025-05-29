@@ -3351,6 +3351,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		pkg.put("CONTACT",CMProps.getVar(CMProps.Str.ADMINEMAIL));
 		pkg.put("EMAIL",CMProps.getVar(CMProps.Str.ADMINEMAIL));
 		pkg.put("CODEBASE",("CoffeeMUD v"+CMProps.getVar(CMProps.Str.MUDVER)));
+		pkg.put("GAMEPLAY","Adventure");
 		pkg.put("AREAS",Integer.toString(CMLib.map().numAreas()));
 		pkg.put("HELPFILES",Integer.toString(CMLib.help().getHelpFile().size()));
 		pkg.put("MOBILES",Long.toString(CMClass.numPrototypes(CMClass.CMObjectType.MOB)));
@@ -3368,6 +3369,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		pkg.put("SKILLS",Long.toString(CMLib.ableMapper().numMappedAbilities()));
 		pkg.put("ANSI","1");
 		pkg.put("XTERM 256 COLORS","1");
+		pkg.put("XTERM TRUE COLORS","0");
+		pkg.put("MCP","1");
+		pkg.put("VT100","0");
 		pkg.put("MCCP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));
 		pkg.put("MSP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)?"1":"0"));
 		pkg.put("MXP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)?"1":"0"));

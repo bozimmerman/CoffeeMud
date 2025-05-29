@@ -11,6 +11,7 @@ var Siplet =
 
 function SipletWindow(windowName)
 {
+	this.decoder = new TextDecoder("utf-8");
 	this.siplet = Siplet;
 	this.width = getConfig('window/width',80);
 	this.height = getConfig('window/height',25);;
@@ -264,9 +265,15 @@ function SipletWindow(windowName)
 				}
 				else
 				{
-					//TODO: me is not going to support utf-16 well
-					for (var i=0; i < blk.data.length; i++) {
-						newText += String.fromCharCode( blk.data[i]);
+					try
+					{
+						newText += TextDecoder.decode(blk.data);
+					}
+					catch(e)
+					{
+						for (var i=0; i < blk.data.length; i++) {
+							newText += String.fromCharCode( blk.data[i]);
+						}
 					}
 				}
 				newText = me.text.process(newText);

@@ -67,6 +67,8 @@ var TELNET = function(sipwin)
 	};
 	this.reset();
 	
+	this.ttypeCount = 0;
+	
 	this.process = function(dat)
 	{
 		var response = [];
@@ -96,7 +98,23 @@ var TELNET = function(sipwin)
 			if (subOptionCode == TELOPT.TTYPE)
 			{
 				response = response.concat([TELOPT.IAC, TELOPT.SB, TELOPT.TTYPE, 0]);
-				response = response.concat(StringToAsciiArray("siplet"));
+				if(this.ttypeCount == 0)
+				{
+					if(window.isElectron)
+						response = response.concat(StringToAsciiArray("SIP"));
+					else
+						response = response.concat(StringToAsciiArray("SIPLET"));
+				}
+				else
+				if(this.ttypeCount == 1)
+					response = response.concat(StringToAsciiArray("ANSI-256COLOR"));
+				else
+				if(this.ttypeCount > 1)
+				{
+					var mtts = 1 | 4 | 8;
+					response = response.concat(StringToAsciiArray("MTTS "+mtts));
+				}
+				this.ttypeCount++;
 				response = response.concat([TELOPT.IAC, TELOPT.SE]);
 			}
 			else

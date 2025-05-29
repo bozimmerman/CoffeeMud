@@ -824,4 +824,16 @@ public class FakeSession implements Session
 	{
 		return false;
 	}
+
+	@Override
+	public boolean isMTTS()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean getMTTS(final int bitmap)
+	{
+		return false;
+	}
 }

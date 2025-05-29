@@ -1316,9 +1316,29 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return acctcreateANSIConfirm(loginObj, session);
 		}
 		else
+		if(!session.isMTTS())
 		{
 			session.promptPrint(L("\n\rDo you want ANSI colors (Y/n)?"));
 			return LoginResult.INPUT_REQUIRED;
+		}
+		else
+		if((!session.getMTTS(Session.MTTS_ANSI))
+		&&(!session.getMTTS(Session.MTTS_256COLORS)))
+		{
+			loginObj.lastInput = "N";
+			return acctcreateANSIConfirm(loginObj, session);
+		}
+		else
+		{
+			final PlayerAccount acct=loginObj.acct;
+			loginObj.lastInput = "Y";
+			if(acct != null)
+			{
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI, true);
+				if(session.getMTTS(Session.MTTS_256COLORS) && (acct != null))
+					acct.setFlag(AccountFlag.ANSI16, true);
+			}
+			return acctcreateANSIConfirm(loginObj, session);
 		}
 	}
 

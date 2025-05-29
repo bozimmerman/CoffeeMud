@@ -746,6 +746,18 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void setStatus(SessionStatus newStatus);
 
 	/**
+	 * Whether an MTTS packet was received from the client.
+	 * @return true if the client sent MTTS data
+	 */
+	public boolean isMTTS();
+
+	/**
+	 * Whether the given bit(s) in MTTS were set or cleared.
+	 * @return true if all the bits are set, false otherwise
+	 */
+	public boolean getMTTS(int bitmap);
+
+	/**
 	 * Returns whether this session is waiting for input
 	 *
 	 * @return true if it is, false otherwise
@@ -1085,6 +1097,31 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public final static byte[] TELNETBYTES_END_SB	= new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
 	/** Go ahead bytes */
 	public final static byte[] TELNETGABYTES		= {(byte)TELNET_IAC,(byte)TELNET_GA};
+
+	/** MTS Protocol constant for ANSI */
+	public final static int	MTTS_ANSI		= 1;
+	/** MTS Protocol constant for VT100 */
+	public final static int	MTTS_VT100		= 2;
+	/** MTS Protocol constant for UTF8 */
+	public final static int	MTTS_UTF8		= 4;
+	/** MTS Protocol constant for 256COLORS */
+	public final static int	MTTS_256COLORS	= 8;
+	/** MTS Protocol constant for MOUSE */
+	public final static int	MTTS_MOUSE		= 16;
+	/** MTS Protocol constant for OSCCOLOR */
+	public final static int	MTTS_OSCCOLOR	= 32;
+	/** MTS Protocol constant for SCREENREAD */
+	public final static int	MTTS_SCREENREAD	= 64;
+	/** MTS Protocol constant for PROXY */
+	public final static int	MTTS_PROXY		= 128;
+	/** MTS Protocol constant for TRUECOLOR */
+	public final static int	MTTS_TRUECOLOR	= 256;
+	/** MTS Protocol constant for MNES */
+	public final static int	MTTS_MNES		= 512;
+	/** MTS Protocol constant for MSLP */
+	public final static int	MTTS_MSLP		= 1024;
+	/** MTS Protocol constant for SSL */
+	public final static int	MTTS_SSL		= 2048;
 
 	/**
 	 * The internal class to managing asynchronous user input.
