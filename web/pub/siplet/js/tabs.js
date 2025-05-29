@@ -66,17 +66,19 @@ function CloseTab(img)
 		if(window.siplets[i].tab == tab)
 		{
 			window.siplets[i].close();
-			if(window.siplets[i].topWindow)
+			try {
 				window.siplets[i].topWindow.outerHTML = '';
+			} catch(e) { }
+			var isCurrent =(window.currWin == window.siplets[i]); 
 			window.siplets.splice(i,1);
-			if(window.currWin == window.siplets[i])
+			if(isCurrent)
 			{
 				if(window.siplets.length == 0)
 					window.currWin = null;
 				else
 					SetCurrentTab(0);
-				break;
 			}
+			break;
 		}
 	//'<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>'
 	var tabRow = tab.parentNode;

@@ -1,11 +1,12 @@
 window.currWin = null;
 window.siplets = [];
 window.windowArea = null;
+window.nextId = 0;
 
 var Siplet =
 {
 	VERSION_MAJOR: 3.0,
-	VERSION_MINOR: 0,
+	VERSION_MINOR: 1,
 	NAME: window.isElectron?'Sip':'Siplet'
 };
 
@@ -1126,7 +1127,8 @@ function AddNewSipletTabByPB(which)
 
 function AddNewSipletTab(url)
 {
-	var windowName = 'W'+window.siplets.length;
+	var windowName = 'W'+window.nextId;
+	window.nextId++;
 	var newTopElement=document.createElement('DIV');
 	var newWinContainer=document.createElement('DIV');
 	var newWindow=document.createElement('DIV');
