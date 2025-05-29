@@ -584,7 +584,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				for(final Enumeration<PlayerAccount> e = CMLib.players().accounts(null,null); e.hasMoreElements(); )
 				{
 					final PlayerAccount A=e.nextElement();
-					if(A.isSet(PlayerAccount.AccountFlag.NOEXPIRE))
+					if(A.isSet(AccountFlag.NOEXPIRE))
 						continue;
 					if(now>=A.getAccountExpiration())
 						expired.add(A.getAccountName());
@@ -612,7 +612,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 			return false;
-		if((acct!=null)&&(acct.isSet(PlayerAccount.AccountFlag.NOEXPIRE)))
+		if((acct!=null)&&(acct.isSet(AccountFlag.NOEXPIRE)))
 			return false;
 		long expiration;
 		if(mob!=null)
@@ -1334,9 +1334,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.lastInput = "Y";
 			if(acct != null)
 			{
-				acct.setFlag(PlayerAccount.AccountFlag.ANSI, true);
+				acct.setFlag(AccountFlag.ANSI, true);
+				acct.setFlag(AccountFlag.ANSI16, true);
 				if(session.getMTTS(Session.MTTS_256COLORS) && (acct != null))
-					acct.setFlag(AccountFlag.ANSI16, true);
+					acct.setFlag(AccountFlag.ANSI16, false);
 			}
 			return acctcreateANSIConfirm(loginObj, session);
 		}
@@ -1348,7 +1349,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final String input=loginObj.lastInput.toUpperCase().trim();
 		if(input.startsWith("N"))
 		{
-			acct.setFlag(PlayerAccount.AccountFlag.ANSI, false);
+			acct.setFlag(AccountFlag.ANSI, false);
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
 			session.setServerTelnetMode(Session.TELNET_ANSI16,false);
@@ -1362,7 +1363,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			acct.setFlag(PlayerAccount.AccountFlag.ANSI, true);
+			acct.setFlag(AccountFlag.ANSI, true);
 		}
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
@@ -1713,10 +1714,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctmenuStart(final LoginSessionImpl loginObj, final Session session)
 	{
 		final PlayerAccount acct=loginObj.acct;
-		session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.AccountFlag.ANSI));
-		session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.AccountFlag.ANSI));
-		session.setServerTelnetMode(Session.TELNET_ANSI16,acct.isSet(PlayerAccount.AccountFlag.ANSI16));
-		session.setClientTelnetMode(Session.TELNET_ANSI16,acct.isSet(PlayerAccount.AccountFlag.ANSI16));
+		session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+		session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+		session.setServerTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
+		session.setClientTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
 		// if its not a new account, do this?
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
@@ -1727,7 +1728,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 		}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
-		if(acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF))
+		if(acct.isSet(AccountFlag.ACCOUNTMENUSOFF))
 		{
 			loginObj.state=LoginState.ACCTMENU_SHOWCHARS;
 		}
@@ -1834,13 +1835,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final PlayerAccount acct=loginObj.acct;
 		final StringBuffer buf = new StringBuffer("");
-		if(!acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF))
+		if(!acct.isSet(AccountFlag.ACCOUNTMENUSOFF))
 		{
 			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"acctmenu.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try
 			{
 				final Map<String,String> map=new HashMap<String,String>();
-				map.put("canexport", Boolean.toString((acct.isSet(PlayerAccount.AccountFlag.CANEXPORT))));
+				map.put("canexport", Boolean.toString((acct.isSet(AccountFlag.CANEXPORT))));
 				map.put("emailok", Boolean.toString(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")));
 				accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp,map,new HashMap<String,Object>());
 			}
@@ -1933,7 +1934,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try
 			{
 				final Map<String,String> map=new HashMap<String,String>();
-				map.put("canexport", Boolean.toString((acct.isSet(PlayerAccount.AccountFlag.CANEXPORT))));
+				map.put("canexport", Boolean.toString((acct.isSet(AccountFlag.CANEXPORT))));
 				map.put("emailok", Boolean.toString(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")));
 				accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp,map,new HashMap<String,Object>());
 			}
@@ -2009,23 +2010,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if((parms.length>1)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
-				if(acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF))
+				if(acct.isSet(AccountFlag.ACCOUNTMENUSOFF))
 				{
 					session.println(L("Menus are back on."));
-					acct.setFlag(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF, false);
+					acct.setFlag(AccountFlag.ACCOUNTMENUSOFF, false);
 				}
 				else
-				if(!acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF))
+				if(!acct.isSet(AccountFlag.ACCOUNTMENUSOFF))
 				{
 					session.println(L("Menus are now off."));
-					acct.setFlag(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF, true);
+					acct.setFlag(AccountFlag.ACCOUNTMENUSOFF, true);
 				}
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 
 			}
 			else
 			{
-				final String promptStr=acct.isSet(PlayerAccount.AccountFlag.ACCOUNTMENUSOFF)?L("Turn menus back on (y/N)?"):"Turn menus off (y/N)?";
+				final String promptStr=acct.isSet(AccountFlag.ACCOUNTMENUSOFF)?L("Turn menus back on (y/N)?"):"Turn menus off (y/N)?";
 				session.promptPrint(promptStr);
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2285,7 +2286,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
 		}
-		if(("EXPORT ").startsWith(cmd)&&(acct.isSet(PlayerAccount.AccountFlag.CANEXPORT)))
+		if(("EXPORT ").startsWith(cmd)&&(acct.isSet(AccountFlag.CANEXPORT)))
 		{
 			if(parms.length<2)
 			{
@@ -2367,7 +2368,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(maxPlayersOnAccount < Integer.MAX_VALUE)
 				maxPlayersOnAccount += acct.getBonusCharsLimit();
 			if((maxPlayersOnAccount<=acct.numPlayers())
-			&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+			&&(!acct.isSet(AccountFlag.NUMCHARSOVERRIDE)))
 			{
 				session.println(L("You may only have @x1 characters.  Please delete one to create another.",""+maxPlayersOnAccount));
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -2488,7 +2489,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, session.getAddress()))
 			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, acct.getAccountName()))
 			&&(!CMProps.isOnWhiteList(CMProps.WhiteList.LOGINS, realMOB.Name()))
-			&&(!acct.isSet(PlayerAccount.AccountFlag.MAXCONNSOVERRIDE)))
+			&&(!acct.isSet(AccountFlag.MAXCONNSOVERRIDE)))
 			{
 				session.println(L("You may only have @x1 of your characters on at one time.",""+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)));
 				return null;
@@ -2680,7 +2681,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if(acct!=null)
 		{
-			if(acct.isSet(PlayerAccount.AccountFlag.ANSI))
+			if(acct.isSet(AccountFlag.ANSI))
 				mob.setAttribute(MOB.Attrib.ANSI,true);
 			else
 			{
@@ -4218,7 +4219,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(maxPlayersOnAccount < Integer.MAX_VALUE)
 					maxPlayersOnAccount += acct.getBonusCharsLimit();
 				if((maxPlayersOnAccount<=acct.numPlayers())
-				&&(!acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE)))
+				&&(!acct.isSet(AccountFlag.NUMCHARSOVERRIDE)))
 				{
 					session.println(L("You may only have @x1 characters.  Please retire one to create another.",""+maxPlayersOnAccount));
 					return false;
@@ -4233,7 +4234,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		int maxPlayersOnAccount = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM);
 		if(maxPlayersOnAccount < Integer.MAX_VALUE)
 			maxPlayersOnAccount += acct.getBonusCharsLimit();
-		if(acct.isSet(PlayerAccount.AccountFlag.NUMCHARSOVERRIDE))
+		if(acct.isSet(AccountFlag.NUMCHARSOVERRIDE))
 			return Integer.MAX_VALUE;
 		return maxPlayersOnAccount;
 	}
