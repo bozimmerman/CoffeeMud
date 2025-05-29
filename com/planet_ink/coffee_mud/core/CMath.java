@@ -230,6 +230,23 @@ public class CMath
 	}
 
 	/**
+	 * Safely parse the given hex string into hex.
+	 * @param str the hex string
+	 * @return the int value
+	 */
+	public final static int s_parseHex(final String str)
+	{
+		try
+		{
+			return Integer.parseUnsignedInt(str.toUpperCase().trim(), 16);
+		}
+		catch(final Exception e)
+		{
+			return 0;
+		}
+	}
+
+	/**
 	 * Returns which object in the object array is same as the
 	 * string, when cast to a string.
 	 * @param o array of objects

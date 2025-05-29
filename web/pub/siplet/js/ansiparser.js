@@ -292,6 +292,16 @@ var ANSISTACK = function()
 							foreground = ANSITABLES.html256[cd];
 						i=bits.length-1;
 					}
+					else
+					if((i<bits.length-4)
+					&&(Number(bits[i+1])==2))
+					{
+						var dig1 = Number(bits[i+2]).toString(16).padStart(2,'0');
+						var dig2 = Number(bits[i+3]).toString(16).padStart(2,'0');
+						var dig3 = Number(bits[i+4]).toString(16).padStart(2,'0');
+						foreground = '#'+dig1+dig2+dig3;
+						i=bits.length-1;
+					}
 					break;
 				case 48: // background ansi 256
 					if((i<bits.length-2)
@@ -302,6 +312,16 @@ var ANSISTACK = function()
 						&& (cd < ANSITABLES.html256.length)
 						&&(ANSITABLES.html256[cd].length>0))
 							background = ANSITABLES.html256[cd];
+						i=bits.length-1;
+					}
+					else
+					if((i<bits.length-4)
+					&&(Number(bits[i+1])==2))
+					{
+						var dig1 = Number(bits[i+2]).toString(16).padStart(2,'0');
+						var dig2 = Number(bits[i+3]).toString(16).padStart(2,'0');
+						var dig3 = Number(bits[i+4]).toString(16).padStart(2,'0');
+						background = '#'+dig1+dig2+dig3;
 						i=bits.length-1;
 					}
 					break;

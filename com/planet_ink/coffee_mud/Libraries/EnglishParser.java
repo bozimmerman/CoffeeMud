@@ -420,10 +420,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					switch(str.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -642,10 +648,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					switch(str.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -1604,6 +1616,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
+							if((tos < toSrchC.length-8) && (toSrchC[tos+1]==toSrchC[tos]))
+								tos+=8;
+							else
 							if(tos < toSrchC.length-4)
 								tos+=4;
 							break;
@@ -1635,6 +1650,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
+							if((x < srchC.length-8)&&(srchC[x+1]==srchC[x]))
+								x+=8;
+							else
 							if(x < srchC.length-4)
 								x+=4;
 							break;

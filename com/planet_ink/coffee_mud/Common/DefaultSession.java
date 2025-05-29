@@ -355,6 +355,8 @@ public class DefaultSession implements Session
 			setClientTelnetMode(TELNET_ANSI,true);
 			setServerTelnetMode(TELNET_ANSI16,false);
 			setClientTelnetMode(TELNET_ANSI16,false);
+			setServerTelnetMode(TELNET_ANSI256,false);
+			setClientTelnetMode(TELNET_ANSI256,false);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
 			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
@@ -798,8 +800,10 @@ public class DefaultSession implements Session
 	{
 		setServerTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
 		setClientTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
-		setServerTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16.getBitCode()));
-		setClientTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16.getBitCode()));
+		setServerTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16ONLY.getBitCode()));
+		setClientTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16ONLY.getBitCode()));
+		setServerTelnetMode(TELNET_ANSI256,CMath.bset(attributesBitmap,MOB.Attrib.ANSI256ONLY.getBitCode()));
+		setClientTelnetMode(TELNET_ANSI256,CMath.bset(attributesBitmap,MOB.Attrib.ANSI256ONLY.getBitCode()));
 		boolean changedSomething=false;
 		final boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(attributesBitmap,MOB.Attrib.MXP.getBitCode());
 		if(mxpSet!=getClientTelnetMode(TELNET_MXP))
@@ -3103,10 +3107,13 @@ public class DefaultSession implements Session
 			if((mob!=null)
 			&&(mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))
 			{
-				if((mob!=null)&&(!mob.isAttributeSet(MOB.Attrib.ANSI16)))
-					ansiStr = " ANSI";
-				else
+				if(mob.isAttributeSet(MOB.Attrib.ANSI16ONLY))
 					ansiStr = " ANSI-16";
+				else
+				if(mob.isAttributeSet(MOB.Attrib.ANSI256ONLY))
+					ansiStr = " ANSI-256";
+				else
+					ansiStr = " ANSI-True";
 			}
 			else
 				ansiStr="";

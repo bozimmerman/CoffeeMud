@@ -274,15 +274,24 @@ public class PaintingSkill extends CommonSkill implements RecipeDriven
 			&&(i<writing.length()-1)
 			&&(writing.charAt(i+1)!='?'))
 			{
-				if((writing.charAt(i+1)==ColorLibrary.COLORCODE_FANSI256)
+				final char c = writing.charAt(i+1);
+				if((c==ColorLibrary.COLORCODE_FANSI256)
+				&&(i<writing.length()-2)
+				&&(writing.charAt(i+2)==ColorLibrary.COLORCODE_FANSI256))
+				{
+					colorCode=writing.substring(i+1, i+9);
+					break;
+				}
+				else
+				if((c==ColorLibrary.COLORCODE_FANSI256)
 				&&(i<writing.length()-1))
 				{
 					colorCode=writing.substring(i+1, i+5);
 					break;
 				}
 				else
-				if((writing.charAt(i+1)!=ColorLibrary.COLORCODE_BACKGROUND)
-				&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BANSI256))
+				if((c!=ColorLibrary.COLORCODE_BACKGROUND)
+				&&(c!=ColorLibrary.COLORCODE_BANSI256))
 				{
 					colorCode=""+writing.charAt(i+1);
 					break;
@@ -300,15 +309,24 @@ public class PaintingSkill extends CommonSkill implements RecipeDriven
 			if((desc.charAt(x)=='^')
 			&&(desc.charAt(x+1)!='?'))
 			{
-				if((desc.charAt(x+1)==ColorLibrary.COLORCODE_FANSI256)
+				final char c = desc.charAt(x+1);
+				if((c==ColorLibrary.COLORCODE_FANSI256)
+				&&(x<desc.length()-8)
+				&&(desc.charAt(x+2)==c))
+				{
+					desc.delete(x+1, x+9);
+					desc.insert(x+1, colorCode);
+				}
+				else
+				if((c==ColorLibrary.COLORCODE_FANSI256)
 				&&(x<desc.length()-4))
 				{
 					desc.delete(x+1, x+5);
 					desc.insert(x+1, colorCode);
 				}
 				else
-				if((desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
-				&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
+				if((c!=ColorLibrary.COLORCODE_BACKGROUND)
+				&&(c!=ColorLibrary.COLORCODE_BANSI256))
 				{
 					desc.delete(x+1, x+2);
 					desc.insert(x+1, colorCode);

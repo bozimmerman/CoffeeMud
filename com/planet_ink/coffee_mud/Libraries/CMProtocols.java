@@ -3369,7 +3369,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		pkg.put("SKILLS",Long.toString(CMLib.ableMapper().numMappedAbilities()));
 		pkg.put("ANSI","1");
 		pkg.put("XTERM 256 COLORS","1");
-		pkg.put("XTERM TRUE COLORS","0");
+		pkg.put("XTERM TRUE COLORS","1");
 		pkg.put("MCP","1");
 		pkg.put("VT100","0");
 		pkg.put("MCCP",(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP)?"1":"0"));

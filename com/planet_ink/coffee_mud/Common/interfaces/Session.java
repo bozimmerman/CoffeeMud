@@ -1045,6 +1045,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_WONT=252;
 	/** TELNET CODE: 252 doubles as fake ansi 16 telnet code*/
 	public static final int TELNET_ANSI16=252;
+	/** TELNET CODE: 254 doubles as fake ansi 256 telnet code*/
+	public static final int TELNET_ANSI256=254;
 	/** TELNET CODE: Indicates the request that the other party perform, or confirmation that you are expecting the other party to perform, the indicated option*/
 	public static final int TELNET_DO=253;
 	/** TELNET CODE: 253 doubles as fake ansi telnet code*/

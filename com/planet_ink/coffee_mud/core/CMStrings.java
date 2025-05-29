@@ -1315,10 +1315,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -1387,10 +1393,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -1463,10 +1475,16 @@ public class CMStrings
 					switch(c.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<c.length()-1)&&(c.charAt(i+1)==c.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<c.length()-1)&&(c.charAt(i+1)==c.charAt(i)))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -1541,10 +1559,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BANSI256:
-						i += 3;
+						if((i<c.length-1)&&(c[i+1]==c[i]))
+							i += 7;
+						else
+							i += 3;
 						break;
 					case ColorLibrary.COLORCODE_BACKGROUND:
 						i++;
@@ -1965,6 +1989,9 @@ public class CMStrings
 						break;
 					case ColorLibrary.COLORCODE_FANSI256:
 					case ColorLibrary.COLORCODE_BANSI256:
+						if((i+9<=str.length())&&(str.charAt(i+2)==c))
+							i += 8;
+						else
 						if(i+5<=str.length())
 							i+=4;
 						else
@@ -2084,6 +2111,12 @@ public class CMStrings
 						break;
 					case ColorLibrary.COLORCODE_FANSI256:
 					case ColorLibrary.COLORCODE_BANSI256:
+						if((i+9<=str.length())&&(str.charAt(i+2)==c))
+						{
+							str.delete(i,i+9);
+							i--;
+						}
+						else
 						if(i+5<=str.length())
 						{
 							str.delete(i,i+5);
@@ -2287,6 +2320,18 @@ public class CMStrings
 						break;
 					case ColorLibrary.COLORCODE_FANSI256:
 					case ColorLibrary.COLORCODE_BANSI256:
+						if((i+9<str.length())&&(str.charAt(i+2)==c))
+						{
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+						}
+						else
 						if(i+5<=str.length())
 						{
 							nos[++i]=true;
@@ -2402,10 +2447,16 @@ public class CMStrings
 							i++;
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
-							i += 3;
+							if((i<thisStr.length()-1)&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
+								i += 7;
+							else
+								i += 3;
 							break;
 						case ColorLibrary.COLORCODE_BANSI256:
-							i += 3;
+							if((i<thisStr.length()-1)&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
+								i += 7;
+							else
+								i += 3;
 							break;
 						case '<':
 						{

@@ -107,11 +107,11 @@ var TELNET = function(sipwin)
 				}
 				else
 				if(this.ttypeCount == 1)
-					response = response.concat(StringToAsciiArray("ANSI-256COLOR"));
+					response = response.concat(StringToAsciiArray("ANSI-TRUECOLOR"));
 				else
 				if(this.ttypeCount > 1)
 				{
-					var mtts = 1 | 4 | 8;
+					var mtts = 1 | 4 | 8 | 256;
 					response = response.concat(StringToAsciiArray("MTTS "+mtts));
 				}
 				this.ttypeCount++;
@@ -388,7 +388,6 @@ var TELNET = function(sipwin)
 		default:
 			break;
 		}
-		//TODO:BZ:DELME
 		//var s='<' + new Date().getTime()+'<';for(var i=0;i<response.length;i++)s+=response[i]+',';console.log(s);
 		return new Uint8Array(response).buffer;
 	};
