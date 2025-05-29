@@ -167,7 +167,7 @@ public class ANSI extends StdCommand
 			if(acct != null)
 			{
 				acct.setFlag(PlayerAccount.AccountFlag.ANSI, mob.isAttributeSet(MOB.Attrib.ANSI));
-				acct.setFlag(PlayerAccount.AccountFlag.ANSI16, mob.isAttributeSet(MOB.Attrib.ANSI16));
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI16ONLY, mob.isAttributeSet(MOB.Attrib.ANSI16));
 			}
 			mob.session().setClientTelnetMode(Session.TELNET_ANSI,mob.isAttributeSet(MOB.Attrib.ANSI));
 			mob.session().setServerTelnetMode(Session.TELNET_ANSI,mob.isAttributeSet(MOB.Attrib.ANSI));

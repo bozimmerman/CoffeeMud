@@ -57,7 +57,7 @@ public class NoANSI extends StdCommand
 			if(acct != null)
 			{
 				acct.setFlag(PlayerAccount.AccountFlag.ANSI, false);
-				acct.setFlag(PlayerAccount.AccountFlag.ANSI16, false);
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI16ONLY, false);
 			}
 			if(mob.isAttributeSet(MOB.Attrib.ANSI))
 			{
