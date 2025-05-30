@@ -291,7 +291,7 @@ function SipletWindow(windowName)
 					me.textBuffer += stripHtmlTags(newText);
 					if(newText.indexOf('<BR>')>=0)
 					{
-						if(me.htmlBuffer.length > 4096)
+						if(me.htmlBuffer.length > 16384)
 							me.flushWindow();
 						me.triggerCheck();
 						while(me.textBuffer.length > 1024)
