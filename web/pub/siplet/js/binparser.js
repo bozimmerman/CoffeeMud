@@ -14,6 +14,10 @@ var BPSTATE =
 	TELNET: 4,
 	TELNET2: 5,
 	TELNETSB: 6,
+	ANSIS2: 7,
+	ANSIS3: 8,
+	ANSIB2: 9,
+	ANSIB3: 10,
 };
 
 var BPCODE =
@@ -46,6 +50,7 @@ var BPPARSE = function(lfok)
 		this.prev = 0;
 		this.nolf = !lfok;
 		this.state = BPSTATE.OUTER;
+		this.last = Date.now();
 	};
 	this.reset();
 	
@@ -58,7 +63,17 @@ var BPPARSE = function(lfok)
 		var curr = entries[entries.length-1];
 		var i=-1;
 		var c=this.prev;
-		// should this be Uint16Array, since I'm encoding unicode?
+		if(curr && this.state !== BPSTATE.OUTER)
+		{
+			if((Date.now() - this.last)>1000)
+			{
+				curr.done = true;
+				curr = new BPENTRY();
+				this.entries.push(curr);
+				this.state = BPSTATE.OUTER;
+			}
+		}
+		this.last = Date.now();
 		var data = new Uint8Array(this.data);
 		while(++i < data.length)
 		{
@@ -102,11 +117,46 @@ var BPPARSE = function(lfok)
 					this.state = BPSTATE.ANSI2;
 					curr.done = true;
 					curr = new BPENTRY();
+					curr.data.push(c);
 					this.entries.push(curr);
 					curr.type = BPTYPE.ANSI;
 				}
 				else
+				if((c==80)||(c==95)) // P, _
 				{
+					this.state = BPSTATE.ANSIS2;
+					curr.done = true;
+					curr = new BPENTRY();
+					curr.data.push(c);
+					this.entries.push(curr);
+					curr.type = BPTYPE.ANSI;
+				}
+				else
+				if(c==93) // ] OSC
+				{
+					this.state = BPSTATE.ANSIB2;
+					curr.done = true;
+					curr = new BPENTRY();
+					curr.data.push(c);
+					this.entries.push(curr);
+					curr.type = BPTYPE.ANSI;
+				}
+				else
+				if((c==55)||(c==56))
+				{
+					curr.done = true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					curr.type = BPTYPE.ANSI;
+					curr.data.push(c);
+					curr.done = true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					this.state = BPSTATE.OUTER;
+				}
+				else
+				{
+					console.log('Unknown ANSI escape code:'+c);
 					this.state = BPSTATE.OUTER;
 					curr.data.push(27);
 					curr.data.push(c);
@@ -117,7 +167,7 @@ var BPPARSE = function(lfok)
 				if(c==34) // "
 					this.state = BPSTATE.ANSI3;
 				else
-				if((c==109) || (c==122)) //m, z
+				if((c>=64) && (c<=126)) //m, z
 				{
 					this.state = BPSTATE.OUTER;
 					curr.done=true;
@@ -137,6 +187,38 @@ var BPPARSE = function(lfok)
 					curr.type=BPTYPE.TEXT;
 					curr.data=[];
 					i--;
+				}
+				break;
+			case BPSTATE.ANSIB2:
+				if(c==7) // special BEL esc
+				{
+					this.state = BPSTATE.OUTER;
+					curr.done=true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
+					break;
+				}
+				//FALL THROUGH!
+			case BPSTATE.ANSIS2:
+				if(c==27) // ESC
+					this.state = this.state + 1; // go to esc chk
+				else
+					curr.data.push(c);
+				break;
+			case BPSTATE.ANSIB3: // OSC
+			case BPSTATE.ANSIS3: // APC
+				if(c!=92) // \
+				{
+					curr.data.push(27);
+					curr.data.push(c);
+					this.state = this.state - 1; // go to esc scan
+				}
+				else
+				{
+					this.state = BPSTATE.OUTER;
+					curr.done=true;
+					curr = new BPENTRY();
+					this.entries.push(curr);
 				}
 				break;
 			case BPSTATE.TELNET:
@@ -166,9 +248,11 @@ var BPPARSE = function(lfok)
 				case BPCODE.TELNET_GA:
 				case BPCODE.TELNET_NOP:
 					// just eat it
+					console.log('Unwelcome IAC escape code:'+c);
 					this.state = BPSTATE.OUTER;
 					break;
 				default:
+					console.log('Unknown IAC escape code:'+c);
 					curr.data.push(BPCODE.IAC);
 					curr.data.push(c);
 					this.state = BPSTATE.OUTER;
@@ -204,6 +288,7 @@ var BPPARSE = function(lfok)
 		this.prev = c;
 		if((curr.type == BPTYPE.TEXT) && (curr.data.length > 0))
 			curr.done = true;
+		this.last = Date.now();
 		return this.entries;
 	};
 };

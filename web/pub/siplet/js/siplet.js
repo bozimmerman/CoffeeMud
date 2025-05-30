@@ -5,8 +5,8 @@ window.nextId = 0;
 
 var Siplet =
 {
-	VERSION_MAJOR: 3.0,
-	VERSION_MINOR: 1,
+	VERSION_MAJOR: '3.0',
+	VERSION_MINOR: '3',
 	NAME: window.isElectron?'Sip':'Siplet'
 };
 
@@ -138,8 +138,8 @@ function SipletWindow(windowName)
 		this.flushWindow = function(){};
 		this.text.resume = null;
 		s=this.text.process(s)
-		var startTime = performance.now();
-		while(this.text.resume && ((performance.now() - startTime)<500))
+		var startTime = Date.now();
+		while(this.text.resume && ((Date.now() - startTime)<500))
 			s+=this.text.process('')
 		s += this.text.flush();
 		if((!this.mxp.active())&&(this.fixVariables))
@@ -162,7 +162,8 @@ function SipletWindow(windowName)
 		this.mxp.active = oldActive;
 		this.mxp.defBitmap = 0; // normal operation
 	};
-	this.mxpFix();
+	if(this.topContainer)
+		this.mxpFix();
 
 	this.reset = function()
 	{
@@ -277,13 +278,21 @@ function SipletWindow(windowName)
 					var s = me.mxp.process(blk.data);
 					if (s != null)
 						newText += s;
+					if(!newText)
+						continue; // nothing happened
 					blk.data = newText; // convert to text-like
+					if((!me.mxp.active()) // is there even a point?
+					||((me.mxp.mode == MXPMODE.LINE_LOCKED) || (me.mxp.mode == MXPMODE.LOCK_LOCKED)))
+					{
+						me.htmlBuffer += newText;
+						continue;
+					}
 				}
 				else
 				{
 					try
 					{
-						newText += TextDecoder.decode(blk.data);
+						newText += me.decoder.decode(new Uint8Array(blk.data).buffer);
 					}
 					catch(e)
 					{

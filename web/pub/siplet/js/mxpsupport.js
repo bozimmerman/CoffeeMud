@@ -663,12 +663,15 @@ var MXP = function(sipwin)
 
 	this.processAnsiEscape = function(dat)
 	{
-		if(dat.length < 2)
+		if(dat.length < 3)
 			return '';
+		var type = dat[0];
+		if(type != 91) // only working [ right now]
+			return "";
 		if("zZ".indexOf(String.fromCharCode(dat[dat.length-1]))>=0)
 		{
 			var code=0;
-			for(var i=0;i<dat.length-1;i++)
+			for(var i=1;i<dat.length-1;i++)
 				code = (code * 10) + dat[i] - 48;
 			if (code < 0)
 				return '';
@@ -1117,7 +1120,8 @@ var MXP = function(sipwin)
 		else
 		if(this.dests.length > 1) 
 			framechoices['_previous'] = this.dests[this.dests.length-2];
-		framechoices['_top'] = sipwin.topContainer.firstChild;
+		if(sipwin.topContainer)
+			framechoices['_top'] = sipwin.topContainer.firstChild;
 		return framechoices;
 	};
 	

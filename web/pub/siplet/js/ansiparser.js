@@ -150,10 +150,13 @@ var ANSISTACK = function()
 
 	this.process = function(dat)
 	{
-		if(dat.length < 2)
+		if(dat.length < 3)
+			return "";
+		var type = dat[0];
+		if(type != 91) // only working [ right now]
 			return "";
 		var bits = [""];
-		for(var i=0;i<dat.length;i++)
+		for(var i=1;i<dat.length;i++)
 		{
 			var c = dat[i];
 			if(c == 59) // ';'
