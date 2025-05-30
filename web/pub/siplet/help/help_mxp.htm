@@ -1,0 +1,153 @@
+<DIV  ID="HELPROOT">
+<I>The full MXP definition can be found at:
+<a href="https://www.zuggsoft.com/zmud/mxp.htm">https://www.zuggsoft.com/zmud/mxp.htm</a></I>
+<P>
+<H3>Base MXP Elements:</H3>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;!ELEMENT>    &lt;!EL><BR>
+&lt;!ELEMENT element-name [definition] [ATT=attribute-list] [TAG=tag] [FLAG=flags] [OPEN] [DELETE] [EMPTY]><BR>
+</FONT></B>
+Desc: Define a new element.
+<BR>
+Ex:<I>&lt;!ELEMENT boldtext '&lt;COLOR &col;>&lt;B>' ATT='col=red'></I><BR>
+<BR>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;!ATTLIST> &lt;!AT><BR>
+&lt;!ATTLIST element-name attribute-list><BR>
+</FONT></B>
+Desc: Add attributes to an element.
+<BR>
+Ex:<I>
+&lt;!ELEMENT Sound EMPTY><BR>
+&lt;!ATTLIST Sound FName V=100 L=1 P=50 T U><BR>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;!ENTITY>     &lt;!EN><BR>
+&lt;!ENTITY Name Value [DESC=description] [PRIVATE] [PUBLISH] [DELETE] [ADD] [REMOVE]><BR>
+</FONT></B>
+Desc: Define an entity &amp;entityname;
+<BR>
+Ex:<I>
+&lt;!ENTITY Start "&lt;em&gt;"><BR>
+&lt;!ENTITY End "&lt;/em&gt;"><BR>
+&amp;Start;This text is emphasized&amp;End;<BR>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;VAR>     &lt;V><BR>
+&lt;VAR Name [DESC=description] [PRIVATE] [PUBLISH] [DELETE] [ADD] [REMOVE]>Value&lt;/VAR><BR>
+</FONT></B>
+Desc: Define an entity &amp;Name;, but the value is between the open and close tags.
+<BR>
+Ex:<I>
+&lt;VAR Hp>100&lt;/Var>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;!TAG Index(20-99) [WINDOWNAME=string] [FORE=color] [BACK=color] [GAG] [ENABLE] [DISABLE]>
+</FONT></B>
+<BR>
+Desc: Define an tag index, which is invoked with ANSI &lt;ESC> codes.
+<BR>
+Ex:<I>
+&lt;!ELEMENT Auction TAG=20>&lt;!TAG 20 Fore=red><BR>
+&lt;ESC>[20zA nice shiny sword is being auctioned.<BR>
+&lt;Auction>Also, a gold ring is being auctioned.&lt;/Auction><BR>
+&lt;!TAG 20 Fore=LIGHTBLUE>&lt;ESC>[20zA nice shiny sword is being auctioned.<BR>
+&lt;Auction>Also, a gold ring is being auctioned.&lt;/Auction><BR>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;B> &lt;BOLD> &lt;STRONG><BR>
+&lt;I> &lt;ITALIC> &lt;EM><BR>
+&lt;U> &lt;UNDERLINE><BR>
+&lt;S> &lt;STRIKEOUT><BR>
+&lt;C> &lt;COLOR FORE=foreground [BACK=background]><BR>
+&lt;H> &lt;HIGH><BR>
+&lt;NOBR><BR>
+&lt;P><BR>
+&lt;BR><BR>
+&lt;SBR><BR>
+&amp;nbsp;<BR>
+&lt;H1>, &lt;H2>, &lt;H3>, &lt;H4>, &lt;H5><BR>
+&lt;H6>, &lt;HR>, &lt;SMALL>, &lt;TT><BR>
+&lt;A href=URL [hint=text] [expire=name]>
+</FONT></B>
+<BR>
+Desc: Various common HTML tags.
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;SEND [href=command] [hint=text] [prompt] [expire=name]><BR>
+&lt;SEND> menus (see example)<BR>
+&lt;EXPIRE [Name]><BR>
+</FONT></B>
+Desc: Generate a link that sends a mud command, or creates a menu of such commands.
+<BR>
+Ex:<I>
+&lt;send href="buy bread">bread&lt;/send><BR>
+&lt;SEND "command1|command2|command3" hint="click to see menu|Item 1|Item 2|Item 2">this is a menu link&lt;/SEND><BR>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;GAUGE EntityName [Max=EntityName] [Caption=text] [Color=color]><BR>
+</FONT></B>
+Desc: Create a progress gauge bar.
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;STAT EntityName [Max=EntityName] [Caption=text]><BR>
+</FONT></B>
+Desc: Create a status entry ie Entity/MaxEntity
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;FRAME NAME ACTION=OPEN|CLOSE|REDIRECT [TITLE=title] INTERNAL|FLOATING 
+[ALIGN=LEFT|RIGHT|BOTTOM|TOP] [LEFT=N%|Npx] [TOP=N%|Npx]  [WIDTH=N%|Npx]  [HEIGHT=N%|Npx]
+[SCROLLING=yes|no|x|y]
+</FONT></B>
+<BR>
+Desc: Creates a new frame inside the current one.
+<BR>
+Ex:<I>
+&lt;FRAME MYFRAME ACTION=OPEN INTERNAL ALIGN=TOP HEIGHT=20% SCROLLING=no>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;DEST NAME=frame X=unsupported Y=unsupported>
+</FONT></B>
+<BR>
+Desc: Changes the FRAME destination of text inside the DEST tags.
+<BR>
+Ex:<I>
+&lt;DEST MYFRAME>
+</I>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;RELOCATE [URL=host] [PORT=port] [QUIET]>
+</FONT></B>
+<BR>
+Desc: Cause a new mud connection to be made.
+<BR>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;USER><BR>
+&lt;PASSWORD><BR>
+</FONT></B>
+Desc: Causes the client to send the username and password.  Use with RELOCATE.
+<BR>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;IMAGE [FNAME=NAME] [URL=url] [T=type] [H=height] [W=width] 
+ [HSPACE=h padding] [VSPACE=v padding] [ALIGN=left|right|top|middle|bottom] [ISMAP]>
+</FONT></B>
+<BR>
+Desc: Display an image
+<BR>
+<P>
+<B><FONT COLOR=LIGHTBLUE>
+&lt;SOUND [FNAME=name] [V=volume 0-100] [L=repeats] [P=priority 0-50] [U=url]>
+&lt;MUSIC [FNAME=name] [V=volume 0-100] [L=repeats] [P=priority 0-50] [U=url]>
+</FONT></B>
+<BR>
+Desc: Play a sound.
+<BR>
+<P>
