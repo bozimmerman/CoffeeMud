@@ -358,6 +358,7 @@ public class DefaultSession implements Session
 			setServerTelnetMode(TELNET_ANSI256,false);
 			setClientTelnetMode(TELNET_ANSI256,false);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
+			changeTelnetModeBackwards(rawout,TELNET_NEWENVIRON,true);
 			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
@@ -601,6 +602,7 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NEWENVIRON));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_GA));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
@@ -2187,15 +2189,21 @@ public class DefaultSession implements Session
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				Log.debugOut("Got WILL "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,true);
-			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
-				setClientTelnetMode(Session.TELNET_ECHO,false);
+			if(last==Session.TELNET_ECHO)
+			{
+				if(terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))
+					setClientTelnetMode(Session.TELNET_ECHO,false);
+			}
 			if(!mightSupportTelnetMode(last))
 				changeTelnetModeBackwards(last,false);
 			else
 			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
-			if(serverTelnetCodes[TELNET_LOGOUT])
-				setKillFlag(true);
+			if(last == TELNET_LOGOUT)
+			{
+				if(serverTelnetCodes[TELNET_LOGOUT])
+					setKillFlag(true);
+			}
 			break;
 		}
 		case TELNET_WONT:

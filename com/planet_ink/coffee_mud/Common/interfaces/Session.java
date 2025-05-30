@@ -1013,6 +1013,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_TOGGLE_FLOW_CONTROL=33;
 	/** TELNET CODE: Linemode*/
 	public static final int TELNET_LINEMODE=34;
+	/** TELNET CODE: New Environ*/
+	public static final int TELNET_NEWENVIRON=39;
 	/** TELNET CODE: MSDP protocol*/
 	public static final int TELNET_MSDP=69;
 	/** TELNET CODE: MSSP Server Status protocol*/
@@ -1065,7 +1067,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"BINARY","ECHO","2","SUPRESS GO AHEAD","4","5","6","7","8","9", //0-9
 		"10","11","12","13","14","15","16","17","LOGOUT","19", //10-19
 		"20","21","22","23","TERMTYPE","25","26","27","28","29", //20-29
-		"30","NAWS","32","FLOWCONTROL","LINEMODE","35","36","37","38","39", //30-39
+		"30","NAWS","32","FLOWCONTROL","LINEMODE","35","36","37","38","NEW-ENVIRON", //30-39
 		"40","41","42","43","44","45","46","47","48","49", //40-49
 		"50","51","52","53","54","55","56","57","58","59", //50-59
 		"60","61","62","63","64","65","66","67","68","MSDP", //60-69
@@ -1124,6 +1126,21 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public final static int	MTTS_MSLP		= 1024;
 	/** MTS Protocol constant for SSL */
 	public final static int	MTTS_SSL		= 2048;
+
+	/** NEW-ENVIRON CODE: IS*/
+	public static final int NEWENV_IS = 0;
+	/** NEW-ENVIRON CODE: SEND*/
+	public static final int NEWENV_SEND = 1;
+	/** NEW-ENVIRON CODE: INFO*/
+	public static final int NEWENV_INFO = 2;
+	/** NEW-ENVIRON CODE: VAR*/
+	public static final int NEWENV_VAR = 0;
+	/** NEW-ENVIRON CODE: VALUE*/
+	public static final int NEWENV_VALUE = 1;
+	/** NEW-ENVIRON CODE: ESC*/
+	public static final int NEWENV_ESC = 2;
+	/** NEW-ENVIRON CODE: USERVAR*/
+	public static final int NEWENV_USERVAR = 3;
 
 	/**
 	 * The internal class to managing asynchronous user input.

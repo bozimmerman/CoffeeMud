@@ -134,10 +134,17 @@ function SipletWindow(windowName)
 	{
 		if(!s) return s;
 		var oldResume = this.text.resume;
+		var oldFlush = this.flushWindow;
+		this.flushWindow = function(){};
 		this.text.resume = null;
-		s=this.text.process(s) + this.text.flush();
+		s=this.text.process(s)
+		var startTime = performance.now();
+		while(this.text.resume && ((performance.now() - startTime)<500))
+			s+=this.text.process('')
+		s += this.text.flush();
 		if((!this.mxp.active())&&(this.fixVariables))
 			s = this.fixVariables(s);
+		this.flushWindow = oldFlush;
 		this.text.resume = oldResume;
 		return s;
 	};
@@ -284,6 +291,8 @@ function SipletWindow(windowName)
 					me.textBuffer += stripHtmlTags(newText);
 					if(newText.indexOf('<BR>')>=0)
 					{
+						if(me.htmlBuffer.length > 4096)
+							me.flushWindow();
 						me.triggerCheck();
 						while(me.textBuffer.length > 1024)
 						{

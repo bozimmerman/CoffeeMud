@@ -1437,7 +1437,6 @@ var MXP = function(sipwin)
 						newParentWindow.style.cssText = siblingWindow.style.cssText;
 						var newTitleWindow = document.createElement('div'); // will replace the old parent window.
 						newTitleWindow.style.cssText = siblingWindow.style.cssText;
-						newTitleWindow.style.border = "solid white";
 						newParentWindow.appendChild(newTitleWindow);
 						mainParentWindow.appendChild(newParentWindow);
 						var newContentWindow = document.createElement('div');
@@ -1446,6 +1445,8 @@ var MXP = function(sipwin)
 						newContentWindow.style.top = '0%';
 						newContentWindow.style.width = '100%';
 						newContentWindow.style.height = '100%';
+						newContentWindow.style.border = "solid white";
+						newContentWindow.style.boxSizing = "border-box";
 						newTitleWindow.appendChild(newContentWindow);
 						switch(alignx)
 						{

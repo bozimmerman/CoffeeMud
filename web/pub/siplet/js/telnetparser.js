@@ -9,6 +9,7 @@ var TELOPT =
 	TERMTYPE: 24,
 	NAWS: 31,
 	TOGGLE_FLOW_CONTROL: 33,
+	NEWENVIRON: 39,
 	LINEMODE: 34,
 	MSDP: 69,
 	MSSP: 70,
@@ -46,7 +47,18 @@ var MSDPOP =
 	MSDP_TABLE_CLOSE: 4,
 	MSDP_ARRAY_OPEN: 5,
 	MSDP_ARRAY_CLOSE: 6
-}
+};
+
+var NEWENV =
+{
+	IS: 0,
+	SEND: 1,
+	INFO: 2,
+	VAR: 0,
+	VALUE: 1,
+	ESC: 2,
+	USERVAR: 3
+};
 
 var StringToAsciiArray = function(str) {
 	var arr = [];
@@ -139,6 +151,83 @@ var TELNET = function(sipwin)
 						subOptionData.splice(subOptionData.length-1);
 					var received = this.msdpReceive(subOptionData);
 					sipwin.dispatchEvent({type: 'msdp',data:received});
+				}
+			}
+			else
+			if (subOptionCode == TELOPT.NEWENVIRON)
+			{
+				var vartypes = [NEWENV.VAR, NEWENV.USERVAR];
+				if(subOptionData.length > 1)
+				{
+					var k = subOptionData.shift();
+					if(k == NEWENV.SEND)
+					{
+						while(subOptionData.length>=0)
+						{
+							var varName = '';
+							var c;
+							var typ;
+							if((typ=vartypes.indexOf(subOptionData.shift())) < 0)
+								break;
+							while(subOptionData.length>0)
+							{
+								if(vartypes.indexOf(subOptionData[0])>=0)
+									break;
+								c=subOptionData.shift();
+								if((c == NEWENV.ESC) && (subOptionData.length>0))
+									varName += String.fromCharCode(subOptionData.shift()).toUpperCase();
+								else
+									varName += String.fromCharCode(c).toUpperCase();
+							}
+							response = response.concat([
+								TELOPT.IAC, TELOPT.SB, TELOPT.NEWENVIRON, TELOPT.IS]);
+							if(varName == 'USER')
+							{
+								if(sipwin.pb && sipwin.pb.user)
+								{
+									response = response.concat([typ]);
+									response = response.concat(StringToAsciiArray(sipwin.pb.user));
+								}
+							}
+							else
+							if(varName == 'ACCT')
+							{
+								if(sipwin.pb && sipwin.pb.accountName)
+								{
+									response = response.concat([typ]);
+									response = response.concat(StringToAsciiArray(sipwin.pb.accountName));
+								}
+							}
+							else
+							if(varName == 'JOB')
+							{
+								if(!sipwin.jobid)
+								{
+									sipwin.jobid = '';
+									for(var i=0;i<16;i++)
+										sipwin.jobid += String.fromCharCode(Math.floor(Math.random()*94)+33);
+								}
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray(sipwin.jobid));
+							}
+							response = response.concat([TELOPT.IAC, TELOPT.SE]);
+						} // get the value
+					}
+					else
+					if((k == NEWENV.IS)||(k==NEWENV.INFO))
+					{
+						if(vartypes.indexOf(subOptionData.shift) < 0)
+							break;
+						while(subOptionData.length > 1)
+						{
+							while((subOptionData.length>0)
+							&&(subOptionData.shift != NEWENV.VALUE))
+							{}; // get the var name
+							while((subOptionData.length>0)
+							&&(vartypes.indexOf(subOptionData.shift) < 0))
+							{}; // get the value
+						}
+					}
 				}
 			}
 			else
@@ -355,6 +444,9 @@ var TELNET = function(sipwin)
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.MXP]);
 					sipwin.MXPsupport = true;
 				}
+				break;
+			case TELOPT.NEWENVIRON:
+				response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.NEWENVIRON]);
 				break;
 			default:
 				if (dat[1] != TELOPT.BINARY)
