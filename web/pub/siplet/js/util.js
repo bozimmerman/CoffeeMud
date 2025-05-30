@@ -146,6 +146,12 @@ function escapeHTML(s)
 		.replace(/'/g, '&#39;');
 }
 
+function brCount(s)
+{
+	var matches = s.match(/<br\s*\/?>/gi) || [];
+	return matches.length;
+}
+
 function extractUnclosedFontTags(span, htmlBuffer) {
 	if(!htmlBuffer)
 		return '';

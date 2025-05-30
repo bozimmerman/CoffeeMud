@@ -206,6 +206,7 @@ function SipletWindow(windowName)
 	};
 	
 	this.htmlBuffer = '';
+	this.numLines = 0;
 	this.flushWindow = function() {
 		if(this.htmlBuffer.length > 0)
 		{
@@ -221,7 +222,9 @@ function SipletWindow(windowName)
 						reprocess += elem.rawText;
 				}
 			}
-			span.innerHTML = reprocess + this.htmlBuffer;
+			this.htmlBuffer = reprocess + this.htmlBuffer;
+			this.numLines += brCount(this.htmlBuffer);
+			span.innerHTML = this.htmlBuffer;
 			this.window.appendChild(span);
 			this.process(reprocess);
 			this.htmlBuffer='';
@@ -229,6 +232,13 @@ function SipletWindow(windowName)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
+			}
+			while((this.numLines > me.maxLines)
+			&&(this.window.childElementCount > 1))
+			{
+				var child = this.window.firstChild;
+				this.numLines -= brCount(child.innerHTML);
+				this.window.removeChild(child);
 			}
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
@@ -238,8 +248,6 @@ function SipletWindow(windowName)
 	this.onReceive = function(e)
 	{
 		var entries = me.bin.parse(e.data);
-		while (me.window.childNodes.length > me.maxLines)
-			me.window.removeChild(me.window.firstChild);
 		me.htmlBuffer = '';
 		while(entries.length > 0)
 		{
