@@ -1395,6 +1395,35 @@ var MXP = function(sipwin)
 						return (Number(s.substr(0,s.length-1))*16)+'px';
 					return s;
 				};
+				var getPixels = function(s)
+				{
+					if(isNumber(s))
+						x=Number(s);
+					else
+					if(s.endsWith("px"))
+						x = Number(s.substr(0,s.length-2));
+					else
+						return null;
+				};
+				var fixISize = function(s,curr)
+				{
+					if((s==null)||(!curr))
+						return null;
+					s=s.trim();
+					if(s.endsWith('%'))
+						return s;
+					var x = getPixels(s);
+					var y = getPixels(curr);
+					if((x == null)||(y==null)) 
+						return;
+					return Math.round(Math.ceil(x / y * 100.0)) + '%';
+				};
+				var dePct = function(s)
+				{
+					if(s.endsWith('%'))
+						return Number(s.substr(0,s.length-1));
+					return getPixels(s);
+				};
 				top=fixSize(top);
 				left=fixSize(left);
 				width=fixSize(width);
@@ -1433,50 +1462,53 @@ var MXP = function(sipwin)
 							width = "50%";
 						if(height == null)
 							height = "50%";
-						var siblingWindow = sipwin.window.parentNode; // the current window container
-						if(siblingWindow == sipwin.topContainer)
-							siblingWindow = sipwin.window;
-						var mainParentWindow = siblingWindow.parentNode; // has the titlebar in it and so forth
-						var newParentWindow = document.createElement('div'); // will replace the old parent window.
-						newParentWindow.style.cssText = siblingWindow.style.cssText;
-						var newTitleWindow = document.createElement('div'); // will replace the old parent window.
-						newTitleWindow.style.cssText = siblingWindow.style.cssText;
-						newParentWindow.appendChild(newTitleWindow);
-						mainParentWindow.appendChild(newParentWindow);
+						var siblingDiv = sipwin.window;
+						var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
+						var calced = getComputedStyle(sipwin.window);
+						width=fixISize(width,calced.width); // ensure they are %
+						height=fixISize(height,calced.height);
+						var newContainerDiv = document.createElement('div'); // will replace the old parent window.
+						newContainerDiv.style.cssText = containerDiv.style.cssText;
+						containerDiv.appendChild(newContainerDiv);
 						var newContentWindow = document.createElement('div');
-						newContentWindow.style.cssText = siblingWindow.style.cssText;
+						newContentWindow.style.cssText = sipwin.window.style.cssText;
 						newContentWindow.style.left = '0%';
 						newContentWindow.style.top = '0%';
 						newContentWindow.style.width = '100%';
 						newContentWindow.style.height = '100%';
 						newContentWindow.style.border = "solid white";
 						newContentWindow.style.boxSizing = "border-box";
-						newTitleWindow.appendChild(newContentWindow);
+						newContainerDiv.appendChild(newContentWindow);
 						switch(alignx)
 						{
 						case 0: // left
-							newParentWindow.style.width = width;
-							siblingWindow.style.left = width;
-							siblingWindow.style.width  = 'calc('+siblingWindow.style.width+' - ' + newParentWindow.style.width + ')';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							siblingDiv.style.left = (dePct(siblingDiv.style.left) + dePct(width))+'%';
+							newContainerDiv.style.width = width;
+							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
 							break;
 						case 1: // right
-							newParentWindow.style.left = 'calc(' + newParentWindow.style.width + ' - '  + width + ')';
-							newParentWindow.style.width = width;
-							siblingWindow.style.width  = 'calc('+siblingWindow.style.width+' - ' + newParentWindow.style.width + ')';
+							newContainerDiv.style.left = (dePct(siblingDiv.style.left)
+														+dePct(siblingDiv.style.width)
+														-dePct(width))+'%';
+							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
+							newContainerDiv.style.width = width;
 							break;
 						case 2: // top
-							newParentWindow.style.top = "0%";
-							newParentWindow.style.height = height;
-							siblingWindow.style.top = height;
-							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							siblingDiv.style.top = (dePct(siblingDiv.style.top) + dePct(height))+'%';
+							newContainerDiv.style.height = height;
+							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
 							break;
 						case 3: // bottom
-							newParentWindow.style.top = 'calc(' + newParentWindow.style.height + ' - '  + height + ')';
-							newParentWindow.style.height = height;
-							siblingWindow.style.height  = 'calc('+siblingWindow.style.height+' - ' + newParentWindow.style.height + ')';
+							newContainerDiv.style.top = (dePct(siblingDiv.style.top)
+														+dePct(siblingDiv.style.height)
+														-dePct(height))+'%';
+							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
+							newContainerDiv.style.height = height;
 							break;
 						}
-						var ents = [newParentWindow,newTitleWindow,newContentWindow];
+						var ents = [newContainerDiv,newContentWindow];
 						for(var w =0; w<ents.length;w++)
 						{
 							var ww = ents[w];
@@ -1517,7 +1549,7 @@ var MXP = function(sipwin)
 							titleBar = document.createElement('div');
 							titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 						}
-						newTitleWindow.append(titleBar);
+						newContainerDiv.append(titleBar);
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 						{
 						    newContentWindow.style.overflowY = 'auto';
@@ -1525,7 +1557,7 @@ var MXP = function(sipwin)
 						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
-						this.frames[name] = newTitleWindow;
+						this.frames[name] = newContainerDiv;
 					}
 				}
 				else
@@ -1591,7 +1623,7 @@ var MXP = function(sipwin)
 					newTopWindow.appendChild(titleBar);
 					if(action.toUpperCase() =='REDIRECT')
 						sipwin.window = contentWindow;
-					sipwin.topContainer.appendChild(newTopWindow);
+					sipwin.topWindow.appendChild(newTopWindow);
 					this.frames[name] = newTopWindow;
 				}
 			}

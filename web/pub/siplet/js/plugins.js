@@ -16,7 +16,7 @@ var PLUGINS = function(sipwin)
 		iframe.setAttribute('id', "PLUGIN_" + pluginName.toUpperCase().replaceAll(' ','_'));
 		iframe.setAttribute("sandbox", "allow-scripts");
 		iframe.style.display = "none";
-		sipwin.topContainer.appendChild(iframe);
+		sipwin.topWindow.appendChild(iframe);
 		iframe.srcdoc = '<SCRIPT>' + this.supportPluginCode + pluginCode + '</SCRIPT>';
 		this.framesMap[pluginName] =  iframe;
 		var me = this;
