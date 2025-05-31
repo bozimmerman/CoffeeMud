@@ -246,18 +246,7 @@ var TELNET = function(sipwin)
 						var jsonStr = received.substring(x+1).trim();
 						e = {type: 'gmcp', command:cmd, data:jsonStr};
 						try { e.data = JSON.parse(jsonStr); } catch(ee) {}
-						for(var i=0;i<window.gmcpPackages.length;i++)
-						{
-							var gmcpPkg = window.gmcpPackages[i];
-							if(cmd.startsWith(gmcpPkg.name+"."))
-							{
-								var cmd = cmd.substr(gmcpPkg.name.length+1);
-								cmd = cmd.replaceAll('.','_');
-								if((cmd in gmcpPkg)
-								&&(typeof gmcpPkg[cmd] === 'function'))
-									try { gmcpPkg[cmd](sipwin, e.data); } catch(ee) {console.log(ee);}
-							}
-						}
+						InvokeGMCP(sipwin, cmd, e.data);
 					}
 					sipwin.dispatchEvent(e);
 				}
