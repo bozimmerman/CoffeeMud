@@ -347,14 +347,14 @@ window.defElements = {
 	"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-	"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
 			"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
 	"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
 	"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-	"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
-	"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.SPECIAL),
+	"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.SPECIAL),
 	"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
 			"FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
 	"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", 
@@ -401,7 +401,6 @@ var MXP = function(sipwin)
 		this.eatNextEOLN = false;
 		this.eatAllEOLN = false;
 		this.openElements = [];
-		this.gauges = [];
 		this.tags = {};
 		this.frames = {};
 		this.partial = null;
@@ -1038,25 +1037,32 @@ var MXP = function(sipwin)
 		else
 			this.entities[name] = value;
 		var gauge = null;
-		for (var g = 0; g < this.gauges.length; g++)
+		for (var g = 0; g < sipwin.gauges.length; g++)
 		{
-			gauge = this.gauges[g];
-			if ((gauge[0].toLowerCase() == name) || (gauge[1].toLowerCase() == name))
+			gauge = sipwin.gauges[g];
+			if ((gauge.lentity == name) || (name == gauge.lmaxEntity))
 			{
-				var initEntity = this.getEntityValue(gauge[0], null);
-				var initValue = 0;
-				if (isNumber(initEntity))
-					initValue = Number(initEntity);
-				var maxEntity = this.getEntityValue(gauge[1], null);
-				var maxValue = 100;
-				if (isNumber(maxEntity)>0)
-					maxValue = Number(maxEntity);
-				if (maxValue < initValue)
-					maxValue = (initValue <= 0) ? 100 : initValue;
-				if (initValue > 0)
-					initValue = Math.round(100.0 * (initValue / maxValue));
-				sipwin.modifyGauge(gauge[0],initValue,maxValue);
+				var initValue = this.getEntityValue(gauge.entity, null);
+				if (isNumber(initValue))
+					initValue = Number(initValue);
+				var maxValue = null;
+				if(gauge.maxEntity != null)
+				{
+					maxValue = this.getEntityValue(gauge.maxEntity, null);
+					if (isNumber(maxValue))
+						maxValue = Number(maxValue);
+					if(gauge.bar)
+					{
+						if (maxValue < initValue)
+							maxValue = (initValue <= 0) ? 100 : initValue;
+						if (initValue > 0)
+							initValue = Math.round(100.0 * (initValue / maxValue));
+					}
+				}
+				gauge.value = initValue;
+				gauge.max = maxValue;
 			}
+			sipwin.modifyGauges();
 		}
 	};
 	
@@ -1710,9 +1716,45 @@ var MXP = function(sipwin)
 				maxValue = (initValue <= 0) ? 100 : initValue;
 			if (initValue > 0)
 				initValue = Math.round(100.0 * (initValue / maxValue));
-			sipwin.createGauge(gaugeEntity,caption,color,initValue,maxValue);
-			var gauge = [ gaugeEntity, max ];
-			this.gauges.push(gauge);
+			sipwin.createGauge(gaugeEntity,max,true,caption,color,initValue,maxValue);
+		}
+		else
+		if (tagName =="STAT")
+		{
+			var gaugeEntity = E.getAttributeValue("ENTITY");
+			var max = E.getAttributeValue("MAX");
+			if (gaugeEntity == null)
+				return '';
+			gaugeEntity = gaugeEntity.toLowerCase();
+			if(max != null)
+				max = max.toLowerCase();
+			var caption = E.getAttributeValue("CAPTION");
+			if (caption == null)
+				caption = "";
+			var initEntity = this.getEntityValue(gaugeEntity, null);
+			var initValue = 0;
+			if (isNumber(initEntity))
+				initValue = Number(initEntity);
+			var maxEntityValue = null;
+			if(max != null)
+			{
+				maxEntityValue = this.getEntityValue(max, null);
+				if (isNumber(maxEntityValue))
+					maxEntityValue = Number(maxEntityValue);
+			}
+			sipwin.createGauge(gaugeEntity,max,false,caption,color,initValue,maxEntityValue);
+		}
+		else
+		if (tagName == "USER")
+		{
+			if(sipwin.pb && sipwin.pb.user)
+				sipwin.submitInput(sipwin.pb.user);
+		}
+		else
+		if (tagName == "PASSWORD")
+		{
+			if(sipwin.pb && sipwin.pb.password)
+				sipwin.submitInput(sipwin.pb.password);
 		}
 		else
 		if ((tagName == "DEST")

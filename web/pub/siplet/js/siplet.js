@@ -163,7 +163,7 @@ function SipletWindow(windowName)
 		this.mxp.defBitmap = 0; // normal operation
 	};
 	if(this.topContainer)
-		this.mxpFix();
+		setTimeout(function() { me.mxpFix(); },1);
 
 	this.reset = function()
 	{
@@ -691,7 +691,7 @@ function SipletWindow(windowName)
 		this.startTimers();
 	};
 	
-	this.createGauge = function(entity,caption,color,value,max)
+	this.createGauge = function(entity,maxEntity,bar,caption,color,value,max)
 	{
 		var gaugedata = {};
 		var add = true;
@@ -707,6 +707,10 @@ function SipletWindow(windowName)
 		gaugedata.color=color;
 		gaugedata.value=value;
 		gaugedata.max=max;
+		gaugedata.lentity = entity.toLowerCase();
+		gaugedata.maxEntity = maxEntity;
+		gaugedata.lmaxEntity = (maxEntity==null)?null:maxEntity.toLowerCase();
+		gaugedata.bar = bar;
 		if(add)
 			this.gauges.push(gaugedata);
 		var gaugeHeight = 20;
@@ -721,10 +725,11 @@ function SipletWindow(windowName)
 			this.gaugeWindow.style.background = 'black';
 			this.topWindow.appendChild(this.gaugeWindow);
 			var parent = this.window.parentNode;
-			parent.style.top = 'calc(' +parent.style.top + ' + '+gaugeHeight + 'px)';
-			parent.style.height = 'calc(' +parent.style.height + ' - '+gaugeHeight + 'px)';
+			parent.style.top = 'calc(' + parent.style.top + ' + ' + gaugeHeight + 'px)';
+			parent.style.height = 'calc(' + parent.style.height + ' - ' + gaugeHeight + 'px)';
 		}
-		this.modifyGauge(entity,value,max);
+		this.modifyGauges();
+		return gaugedata;
 	};
 	
 	this.removeGauge = function(entity)
@@ -733,10 +738,9 @@ function SipletWindow(windowName)
 		if(index >=0)
 		{
 			this.gauges.splice(index);
-			this.modifyGauge(entity,-1,-1);
+			this.modifyGauges();
 			if((this.gauges.length == 0) && (this.topWindow != null))
 			{
-				
 				var mainWindow = this.gaugeWindow.parentNode.firstChild;
 				mainWindow.style.top = this.gaugeWindow.top;
 				this.gaugeWindow.outerHTML = '';
@@ -745,7 +749,7 @@ function SipletWindow(windowName)
 		}
 	};
 	
-	this.modifyGauge = function(entity,value,max)
+	this.modifyGauges = function()
 	{
 		var div=this.gaugeWindow;
 		if(div == null)
@@ -760,23 +764,29 @@ function SipletWindow(windowName)
 			for(i=0;i<this.gauges.length;i++)
 			{
 				var gaugedata=this.gauges[i];
-				if(gaugedata.entity==entity)
-				{
-					gaugedata.value=value;
-					gaugedata.max=max;
-				}
-			}
-			for(i=0;i<this.gauges.length;i++)
-			{
-				var gaugedata=this.gauges[i];
 				s+='<TD WIDTH='+cellwidth+'%>';
-				s+='<FONT STYLE="color: '+gaugedata.color+'" SIZE=-2>'+gaugedata.caption+'</FONT><BR>';
-				var fullwidth=100-gaugedata.value;
-				var lesswidth=gaugedata.value;
-				s+='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=0 HEIGHT=5><TR HEIGHT=5>';
-				s+='<TD STYLE="background-color: '+gaugedata.color+'" WIDTH='+lesswidth+'%></TD>';
-				s+='<TD STYLE="background-color: black" WIDTH='+fullwidth+'%></TD>';
-				s+='</TR></TABLE>';
+				if(gaugedata.bar)
+				{
+					s+='<FONT STYLE="color: '+gaugedata.color+'" SIZE=-2>'+gaugedata.caption+'</FONT><BR>';
+					var fullwidth=100-gaugedata.value;
+					var lesswidth=gaugedata.value;
+					s+='<TABLE WIDTH=100% CELLPADDING=0 CELLSPACING=0 BORDER=0 HEIGHT=5><TR HEIGHT=5>';
+					s+='<TD STYLE="background-color: '+gaugedata.color+'" WIDTH='+lesswidth+'%></TD>';
+					s+='<TD STYLE="background-color: black" WIDTH='+fullwidth+'%></TD>';
+					s+='</TR></TABLE>';
+					s+='</TD>';
+				}
+				else
+				{
+					s+='<FONT SIZE=-2 COLOR=WHITE>';
+					if(gaugedata.caption)
+						s += gaugedata.caption+': ';
+					if(gaugedata.max != null)
+						s += gaugedata.value + '/' + gaugedata.max;
+					else
+						s += gaugedata.value;
+					s += '</FONT> ';
+				}
 				s+='</TD>';
 			}
 			s+='</TR></TABLE>'
@@ -867,7 +877,7 @@ function SipletWindow(windowName)
 			if(value == null)
 				delete this.mxp.entities[key];
 			else 
-				this.mxp.entities[key] = this.fixVariables(value);
+				this.mxp.modifyEntity(key, this.fixVariables(value));
 			
 		}
 	};
