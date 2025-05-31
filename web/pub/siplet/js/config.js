@@ -48,7 +48,7 @@ window.defTriggers = [
 		regex: true,
 		once: true,
 		pattern: 'Password:(?![\\s\\S]*\\n)',
-		action: 'win.submitInput(win.pb.password)'
+		action: 'win.submitHidden(win.pb.password)'
 	}
 ];
 

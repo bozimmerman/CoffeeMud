@@ -38,7 +38,7 @@ and false if it is a simple string.  <B>Once</B> is true if the trigger should b
 its initial match, or false to continue matching.
 <P>
 <B>Action</B> is one of: submitInput, displayText, playSound, setVariable, runScript,
-enableTrigger, disableTrigger, startTimer, clearTimer, displayAt, or sendPlugin.  These,
+enableTrigger, disableTrigger, startTimer, clearTimer, displayAt, submitHidden, or sendPlugin.  These,
 and the required <B>argument(s)</B> are summarized in the help for  
 <a href="javascript:menuHelp('Actions')">Actions</a>.  Remember that an argument string must
 be internally single quoted, unless it is not a string, but one of the permitted variable names.
@@ -135,6 +135,7 @@ secondary arguments may be required also, and are specified below.
 <TR><TD>fetchVariable</TD><TD></TD><TD>Fetch variable/entity named data (see above)</TD></TR>
 <TR><TD>sendGMCP</TD><TD>command</TD><TD>Sends gmcp command with json data</TD></TR>
 <TR><TD>sendMSDP</TD><TD></TD><TD>Sends msdp json data</TD></TR>
+<TR><TD>submitHidden</TD><TD></TD><TD>Send hidden data to mud server</TD></TR>
 </table> 
 <P>
 <h3>Notes</h3>

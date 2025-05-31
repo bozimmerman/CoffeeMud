@@ -83,6 +83,10 @@ var PLUGINS = function(sipwin)
 				if(data.data)
 					sipwin.submitInput(data.data);
 				break;
+			case 'submitHidden':
+				if(data.data)
+					sipwin.submitHidden(data.data);
+				break;
 			case 'displayText':
 				if(data.data)
 					sipwin.displayText(data.data);

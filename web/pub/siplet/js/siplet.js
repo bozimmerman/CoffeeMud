@@ -805,6 +805,14 @@ function SipletWindow(windowName)
 		this.wsocket.send(value+'\n');
 	};
 	
+	this.submitHidden = function(value)
+	{
+		if((value === undefined) || (value == null))
+			return;
+		value = this.fixVariables(value);
+		this.wsocket.send(value+'\n');
+	};
+	
 	this.isAtBottom = function(diff)
 	{
 		return this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight + diff;

@@ -1754,7 +1754,7 @@ var MXP = function(sipwin)
 		if (tagName == "PASSWORD")
 		{
 			if(sipwin.pb && sipwin.pb.password)
-				sipwin.submitInput(sipwin.pb.password);
+				sipwin.submitHidden(sipwin.pb.password);
 		}
 		else
 		if ((tagName == "DEST")
