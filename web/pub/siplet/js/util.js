@@ -34,13 +34,20 @@ function isDigit(c)
 
 function isNumber(c)
 {
-	if(c == null)
+	if((c == null)||(c === undefined))
 		return false;
 	if(typeof c === 'number')
 		return true;
 	if ((typeof c === 'string')&&(c.length>0))
 		return (!isNaN(c)) && (!isNaN(parseFloat(c)));
 	return false;
+}
+
+function isJsonObject(variable) {
+    return variable !== null 
+    	&& typeof variable === 'object' 
+    	&& !Array.isArray(variable) 
+    	&& Object.prototype.toString.call(variable) === '[object Object]';
 }
 
 function stripHtmlTags(htmlString) 

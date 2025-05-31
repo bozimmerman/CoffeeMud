@@ -245,7 +245,19 @@ var TELNET = function(sipwin)
 						var cmd = received.substring(0,x);
 						var jsonStr = received.substring(x+1).trim();
 						e = {type: 'gmcp', command:cmd, data:jsonStr};
-						try { e.data = JSON.parse(jsonStr); } catch(e) {}
+						try { e.data = JSON.parse(jsonStr); } catch(ee) {}
+						for(var i=0;i<window.gmcpPackages.length;i++)
+						{
+							var gmcpPkg = window.gmcpPackages[i];
+							if(cmd.startsWith(gmcpPkg.name+"."))
+							{
+								var cmd = cmd.substr(gmcpPkg.name.length+1);
+								cmd = cmd.replaceAll('.','_');
+								if((cmd in gmcpPkg)
+								&&(typeof gmcpPkg[cmd] === 'function'))
+									try { gmcpPkg[cmd](sipwin, e.data); } catch(ee) {console.log(ee);}
+							}
+						}
 					}
 					sipwin.dispatchEvent(e);
 				}
@@ -305,13 +317,9 @@ var TELNET = function(sipwin)
 				else
 				if (!sipwin.GMCPsupport)
 				{
-					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.GMCP]);
 					sipwin.GMCPsupport =true;
-					response = response.concat([TELOPT.IAC, TELOPT.SB,TELOPT.GMCP]);
-					var gmcpMsg = "core.hello {\"client\":\"siplet\",\"version\":" 
-								+ sipwin.siplet.VERSION_MAJOR + "}";
-					response = response.concat(StringToAsciiArray(gmcpMsg));
-					response = response.concat([TELOPT.IAC, TELOPT.SE]);
+					response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.GMCP]);
+					response = response.concat(BuildGMCPHello(sipwin));
 				}
 				break;
 			case TELOPT.MXP:
@@ -424,6 +432,7 @@ var TELNET = function(sipwin)
 				{
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.GMCP]);
 					sipwin.GMCPsupport = true;
+					response = response.concat(BuildGMCPHello(sipwin));
 				}
 				break;
 			case TELOPT.LOGOUT:

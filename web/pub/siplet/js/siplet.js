@@ -443,7 +443,9 @@ function SipletWindow(windowName)
 			{
 				for(var i=0;i<calls.length;i++)
 				{
-					calls[i](event);
+					try {
+						calls[i](event);
+					} catch(e){console.log(e);}
 					if(event.cancelBubble)
 						return;
 				}

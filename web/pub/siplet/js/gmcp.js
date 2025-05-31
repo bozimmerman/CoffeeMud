@@ -1,0 +1,145 @@
+window.gmcpPackages = [];
+
+window.gmcpPackages.push({
+	name: "Core",
+	version: "1",
+	Hello: function(sipwin, msg) { 
+		/* uh, ok */
+		if(!sipwin.gmcpSupported)
+			sipwin.gmcpSupported = {};
+	},
+	Supports_Set: function(sipwin, msg) {
+		UpdateGMCPSupports(sipwin, msg, 'set');
+	},
+	Supports_Add: function(sipwin, msg) {
+		UpdateGMCPSupports(sipwin, msg, 'add');
+	},
+	Supports_Remove: function(sipwin, msg) {
+		UpdateGMCPSupports(sipwin, msg, 'remove');
+	}
+});
+
+window.gmcpPackages.push({
+	name: "Client.Media",
+	version: "1",
+	Load: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		if((!msg.file) || (!msg.url))
+			return;
+		sipwin.msp.LoadSound(msg.file, msg.url, msg.tag, false);
+	},
+	Play: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		if((!msg.file) || (!msg.type))
+			return;
+		if (msg.type !== 'sound' && msg.type !== 'music') {
+			console.warn(`Invalid type in Client.Media.Play: ${msg.type}`);
+			return;
+		}
+		msg.volume = isNumber(msg.volume)?Number(msg.volume):50;
+		msg.url = msg.url || '';
+		msg.tag = msg.tag || '';
+		msg.loops = isNumber(msg.loops)?Number(msg.loops):1;
+		msg.loops = (msg.loops <= 0 ? (msg.loops < 0 ? -1 : 1) : msg.loops);
+		msg.priority = isNumber(msg.priority)?Number(msg.priority):50;
+		if(msg.type == 'sound')
+			sipwin.msp.PlaySound(msg.file, msg.url, msg.loops, msg.volume, msg.priority, false, msg.tag)
+		else
+		if(msg.type == 'music')
+			sipwin.msp.PlaySound(msg.file, msg.url, msg.loops, msg.volume, msg.priority, true, msg.tag)
+	},
+	Stop: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		if(msg.file || msg.type)
+			sipwin.msp.StopSound(msg.file, msg.type);
+		else
+			sipwin.msp.StopSound();
+	}
+});
+
+window.gmcpPackages.push({
+	name: "Char.Login",
+	version: "1",
+	Default: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		if("password-credentials" !== msg.type)
+			return;
+		if(sipwin.pb && sipwin.pb.user && sipwin.pb.password)
+		{
+			var loginObj = {
+				account: sipwin.pb.accountName || sipwin.pb.user,
+				password: sipwin.pb.password
+			};
+			sipwin.sendGMCP('Char.Login.Credentials', loginObj);
+		}
+		
+	},
+	Response: function(sipwin, msg) {
+		// good for us?
+	},
+	Credentials: function(sipwin, msg) {
+		// we will never get this one
+	}
+});
+
+function ParseGMCPPkg(pkg)
+{
+	if(!pkg)
+		return null;
+	var x = pkg.lastIndexOf(' ');
+	var pkgObj = {
+		name: pkg,
+		ver: 1
+	};
+	if(x>0)
+	{
+		pkgObj.name = pkg.substr(0,x);
+		pkgObj.ver = isNumber(pkg.substr(x+1)) ? Math.max(1, Number(pkg.substr(x+1))) : 1;
+	}
+	return pkg;
+}
+
+function UpdateGMCPSupports(sipwin, msg, action)
+{
+	if(!sipwin.gmcpSupported)
+		sipwin.gmcpSupported = {};
+	if(Array.isArray(msg))
+	{
+		for(var i=0;i<msg.length;i++)
+		{
+			var p = ParseGMCPPkg(msg[i]);
+			if(p)
+			{
+				if(action === 'remove')
+					delete sipwin.gmcpSupported[p.name];
+				else
+					sipwin.gmcpSupported[p.name] = p;
+			}
+		}
+	}
+}
+
+function BuildGMCPHello(sipwin)
+{
+	var response = [];
+	response = response.concat([TELOPT.IAC, TELOPT.SB,TELOPT.GMCP]);
+	var gmcpMsg = "Core.Hello {\"client\":\""+sipwin.siplet.NAME+"\",\"version\":"
+				+ sipwin.siplet.VERSION_MAJOR + "}";
+	response = response.concat(StringToAsciiArray(gmcpMsg));
+	response = response.concat([TELOPT.IAC, TELOPT.SE]);
+	response = response.concat([TELOPT.IAC, TELOPT.SB,TELOPT.GMCP]);
+	var arr = [];
+	for(var k in window.gmcpPackages)
+	{
+		var pkg = window.gmcpPackages[k];
+		arr.push(pkg.name+' '+pkg.version);
+	}
+	var suppStr = 'Core.Supports.Set ' + JSON.stringify(arr);
+	response = response.concat(StringToAsciiArray(suppStr));
+	response = response.concat([TELOPT.IAC, TELOPT.SE]);
+	return response;
+}

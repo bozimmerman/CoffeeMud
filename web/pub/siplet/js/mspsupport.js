@@ -1,12 +1,13 @@
 var MSP = function(sipwin)
 {
+	this.mimeTypes = { 'mp3': 'audio/mpeg', 'ogg': 'audio/ogg', 'wav': 'audio/wav' };
+	
 	this.reset = function()
 	{
 		this.tag = null;
 		this.data = null;
-		this.sounders=[];
-		this.soundDates=[];
-		this.soundPriorities=[];
+		this.sounds={}; // permanent cache of sound info
+		this.sounders={};
 		this.skip=0;
 	};
 	this.reset();
@@ -98,62 +99,123 @@ var MSP = function(sipwin)
 		}
 	};
 	
-	this.PlaySound = function(key,url,repeats,volume,priority)
+	this.LoadSound = function(key, url, tag, music)
+	{
+		tag = tag || '';
+		tag = tag.replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+		var fullTag = "sounder_"+tag;
+		if(!(fullTag in this.sounds))
+			this.sounds[fullTag] = {};
+		var lkey = key.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');;
+		if(!(key in this.sounds[fullTag]))
+		{
+			var sound = {
+				key: key,
+				lkey: lkey,
+				url: url,
+				tag: tag,
+				music: music,
+				fullTag: fullTag
+			};
+			this.sounds[fullTag][lkey] = sound;
+		}
+		return this.sounds[fullTag][lkey];
+	}
+	
+	this.PlaySound = function(key, url, repeats, volume, priority, music, tag)
 	{
 		var volPct = Number(getConfig('window/volume','100'));
 		if(volPct<0.01)
 			return;
-		var playerName = sipwin.windowName;
-		var theSoundPlayer = this.sounders[playerName];  
-		if(theSoundPlayer)
+		var sound = this.LoadSound(key, url, tag, music);
+		var sounderName = music ? 'music' : 'sound';
+		var sounder = this.sounders[sounderName];
+		if(sounder)
 		{
 			var now=new Date();
-			var ellapsed=Math.abs(now.getTime() - this.soundDates[playerName].getTime());
-			if((ellapsed < 1500) && (priority <= this.soundPriorities[playerName]))
+			var elapsed=Math.abs(now.getTime() - sounder.startDate.getTime());
+			if((elapsed < 1500) && (priority <= sounder.priority))
 				return;
-			if(theSoundPlayer.stop)
-				theSoundPlayer.stop();
-			sipwin.window.removeChild(theSoundPlayer);
+			this.StopSounder(sounderName, sounder);
 		}
-		theSoundPlayer=document.createElement('audio');
-		if(!theSoundPlayer || !theSoundPlayer.play) 
-			theSoundPlayer=document.createElement('embed');
-		if(!theSoundPlayer) 
+		sounder = {
+			sound: sound,
+			priority: Number(priority) || 0,
+			startDate: new Date(),
+			repeats: Number(repeats) || 0
+		};
+		sounder.player=document.createElement('audio');
+		if(!sounder.player || !sounder.player.play) 
 			return;
-		this.sounders[playerName]=theSoundPlayer;
-		this.soundDates[playerName]=new Date();
-		this.soundPriorities[playerName]=priority;
-		sipwin.window.appendChild(theSoundPlayer);
-		theSoundPlayer.setAttribute('src', url+key);
 		var x = key.lastIndexOf('.');
-		var mimeType = 'wav';
-		if(x>0)
-			mimeType = key.substr(x+1);
-		theSoundPlayer.setAttribute('type','audio/'+mimeType);
-		theSoundPlayer.setAttribute('hidden','true');
-		if(theSoundPlayer.play)
-		{
-			theSoundPlayer.volume = (Number(volume) * (volPct/100.0))/100.0;
-			theSoundPlayer.play();
-		}
+		if(x<0)
+			return;
+		var ext = key.substr(x+1).toLowerCase();
+		if(!ext in this.mimeTypes)
+			return;
+		var mimeType = this.mimeTypes[ext];
+		this.sounders[sounderName] = sounder;
+		sipwin.window.appendChild(sounder.player);
+		if((!url.endsWith('/'))&&(!key.startsWith('/')))
+			sounder.player.setAttribute('src', url+'/'+key);
 		else
-			theSoundPlayer.setAttribute('volume', (Number(volume) * (volPct/100.0)));
+			sounder.player.setAttribute('src', url+key);
+		sounder.player.setAttribute('type', mimeType);
+		sounder.player.setAttribute('hidden','true');
+		sounder.player.volume = (Number(volume) / 100.0) * (volPct/100.0);
+		sounder.player.loop = false;
+		if(sounder.player.addEventListener)
+		{
+			var me = this;
+			sounder.endedHandler = function() {
+				if((!sounderName in me.sounders)
+				||(me.sounders[sounderName] !== sounder))
+					return;
+				if(sounder.repeats > 0)
+					--sounder.repeats;
+				if(sounder.repeats == 0)
+					return me.StopSounder(sounderName, sounder);
+				// repeats < 0 are infinite until stopped externally
+				try {
+					sounder.player.play();
+				} catch(e) {
+					me.StopSounder(sounderName, sounder);
+				}
+			};
+			sounder.player.addEventListener('ended', sounder.endedHandler);
+		}
+		try {
+			sounder.player.play();
+		} catch(e) {
+			me.StopSounder(sounderName, sounder);
+		}
 	}
 
-	this.StopSound - function(key)
+	this.StopSounder = function(type, sounder)
 	{
-		var playerName = sipwin.windowName;
-		var theSoundPlayer=document.getElementById(playerName);
-		theSoundPlayer.src='';
-		theSoundPlayer.Play();
-		theSoundPlayer.innerHTML='';
+		if(sounder.player.pause)
+			sounder.player.pause();
+		if(sounder.player.removeEventListener && sounder.endedHandler)
+			sounder.player.removeEventListener('ended', sounder.endedHandler);
+		sounder.player.outerHTML = '';
+		delete this.sounders[type];
+	};
+
+	this.StopSound = function(key, type)
+	{
+		var choices = type ? [type] : ['music', 'sound'];
+		for(var i=0;i<choices.length;i++)
+		{
+			var sounder = this.sounders[choices[i]];
+			if(sounder && ((key === undefined) || sounder.sound.key == key))
+				this.StopSounder(choices[i], sounder);
+		}
 	};
 
 	this.processParms = function(tag, parms)
 	{
 		var parmLetters = "VLPCTU";
 		var parmTypes   = '####$$';
-		var last = -1;
 		var state = 2;
 		var tagLetter = 'N';
 		var value = '';
@@ -193,7 +255,7 @@ var MSP = function(sipwin)
 				{
 					// done
 					state=0;
-					parms[tagLetter] = num ? Number(value) : value;
+					parms[tagLetter] = isNumber(num) ? Number(value) : value;
 					value='';
 					tagLetter = ' ';
 				}
@@ -204,7 +266,7 @@ var MSP = function(sipwin)
 			parms[tagLetter] = num ? Number(value) : value;
 	};
 
-	this.processSoundEmbed = function(tag, x)
+	this.processSoundEmbed = function(tag)
 	{
 		//!!SOUND(&fname; V=&v; L=&l; P=&p; T=&t; U=&u;)
 		var parms = {
@@ -220,9 +282,12 @@ var MSP = function(sipwin)
 		if((parms.U.length == 0)||(parms.N.length==0))
 			return; // no internal sound files, so....
 		if(parms.N.toLowerCase() == 'off')
-			this.StopSound('');
+		{
+			if(this.sounders['sound'])
+				this.StopSound(this.sounders['sound'].key, 'sound');
+		}
 		else
-			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P);
+			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P,false,parms.T);
 	};
 
 	this.processMusicEmbed = function(tag)
@@ -241,9 +306,12 @@ var MSP = function(sipwin)
 		if((parms.U.length == 0)||(parms.N.length==0))
 			return; // no internal sound files, so....
 		if(parms.N.toLowerCase() == 'off')
-			this.StopSound('');
+		{
+			if(this.sounders['music'])
+				this.StopSound(this.sounders['music'].key, 'music');
+		}
 		else
-			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P);
+			this.PlaySound(parms.N,parms.U,parms.L,parms.V,parms.P,true,parms.T);
 	};
 }
 
