@@ -266,6 +266,7 @@ public interface ProtocolLibrary extends CMLibrary
 		char_items_contents,
 		char_skills_get,
 		char_effects_get,
+		char_login_credentials,
 		group,
 		room_info, // means they want room.wrongdir and room.enter and room.leave
 		room_items_inv,

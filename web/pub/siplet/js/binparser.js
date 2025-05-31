@@ -167,7 +167,7 @@ var BPPARSE = function(lfok)
 				if(c==34) // "
 					this.state = BPSTATE.ANSI3;
 				else
-				if((c>=64) && (c<=126)) //m, z
+				if(((c>=64) && (c<=126))||(c==33)) //m, z, !
 				{
 					this.state = BPSTATE.OUTER;
 					curr.done=true;

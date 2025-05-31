@@ -2093,6 +2093,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					break;
 				}
+				case char_login_credentials:
+				{
+					if(json!=null)
+						json=json.getCheckedJSONObject("root");
+					if(json != null)
+					{
+						final String user=json.getCheckedString("account");
+						final String pw=json.getCheckedString("password");
+						session.setStat("LOGIN_ACCOUNT", user);
+						session.setStat("LOGIN_PASSWORD", pw);
+					}
+					break;
+				}
 				case core_supports_set:
 					supportables.clear();
 					//$FALL-THROUGH$
@@ -2101,6 +2114,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					Object[] list = null;
 					if(json!=null)
 						list=json.getCheckedArray("root");
+					final StringBuilder respDoc = new StringBuilder("");
 					if(list != null)
 					{
 						for(final Object o : list)
@@ -2115,8 +2129,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								s=s.substring(0,x).trim();
 							}
 							supportables.put(s, Double.valueOf(ver));
+							if(s.equalsIgnoreCase("char.login"))
+							{
+								respDoc.append("Char.Login.Default {");
+								respDoc.append("\"type\":[\"password-credentials\"]");
+								respDoc.append("}");
+							}
 						}
 					}
+					if(respDoc.length()>0)
+						return respDoc.toString();
 					break;
 				}
 				case core_supports_remove:

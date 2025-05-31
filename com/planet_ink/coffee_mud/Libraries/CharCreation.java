@@ -1153,6 +1153,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 		}
 
+		final String cachedName =session.getStat("LOGIN_ACCOUNT");
+		if((cachedName!=null)&&(cachedName.length()>0))
+		{
+			loginObj.state=LoginState.LOGIN_NAME;
+			session.setStat("LOGIN_ACCOUNT", "");
+			loginObj.lastInput = cachedName;
+			return null;
+		}
 		if(CMProps.isUsingAccountSystem())
 			session.promptPrint(L("\n\raccount name: "));
 		else
@@ -1524,6 +1532,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			catch (final IOException e)
 			{
+			}
+			final String cachedPw =session.getStat("LOGIN_PASSWORD");
+			if((cachedPw!=null)&&(cachedPw.length()>0))
+			{
+				loginObj.state=LoginState.LOGIN_PASS_RECEIVED;
+				session.setStat("LOGIN_PASSWORD", "");
+				loginObj.lastInput = cachedPw;
+				return null;
 			}
 			session.promptPrint(L("password: "));
 			loginObj.state=LoginState.LOGIN_PASS_RECEIVED;

@@ -66,6 +66,7 @@ public class DefaultSession implements Session
 	protected final Map<String, Double> gmcpSupports	= new TreeMap<String,Double>();
 	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
 
+	protected final Map<String,String>	strCache		= new TreeMap<String,String>();
 	protected final String[]			mcpKey			= new String[1];
 	protected final Map<String,String>	mcpKeyPairs		= new TreeMap<String,String>();
 	protected final boolean		 		mcpDisabled		= CMSecurity.isDisabled(DisFlag.MCP);
@@ -3782,6 +3783,8 @@ public class DefaultSession implements Session
 		final SESS_STAT_CODES stat = getStatIndex(code);
 		if (stat == null)
 		{
+			if(strCache.containsKey(code.toUpperCase().trim()))
+				return strCache.get(code.toUpperCase().trim());
 			return "";
 		}
 		switch (stat)
@@ -3831,6 +3834,7 @@ public class DefaultSession implements Session
 		final SESS_STAT_CODES stat = getStatIndex(code);
 		if (stat == null)
 		{
+			strCache.put(code.toUpperCase().trim(),val);
 			return;
 		}
 		switch (stat)

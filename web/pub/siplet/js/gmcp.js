@@ -27,6 +27,8 @@ window.gmcpPackages.push({
 	load: function(sipwin, msg) {
 		if(!isJsonObject(msg))
 			return;
+		if((msg.name)&&(!msg.file))
+			msg.file = msg.name;
 		if((!msg.file) || (!msg.url))
 			return;
 		sipwin.msp.LoadSound(msg.file, msg.url, msg.tag, false);
@@ -34,6 +36,8 @@ window.gmcpPackages.push({
 	play: function(sipwin, msg) {
 		if(!isJsonObject(msg))
 			return;
+		if((msg.name)&&(!msg.file))
+			msg.file = msg.name;
 		if((!msg.file) || (!msg.type))
 			return;
 		if (msg.type !== 'sound' && msg.type !== 'music') {
@@ -55,6 +59,8 @@ window.gmcpPackages.push({
 	stop: function(sipwin, msg) {
 		if(!isJsonObject(msg))
 			return;
+		if((msg.name)&&(!msg.file))
+			msg.file = msg.name;
 		if(msg.file || msg.type)
 			sipwin.msp.StopSound(msg.file, msg.type);
 		else
