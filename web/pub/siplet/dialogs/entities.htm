@@ -20,25 +20,10 @@
 	>
 </TD></TR>
 <TR><TD colspan="2">
-	<a ID="ENTITIESDELETE" href="javascript:document.getElementById('ENTITIESROOT').trydelentity();">
-		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-			ONCLICK="document.getElementById('ENTITIESROOT').trydelentity();" 
-			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-			<B>Delete</B></FONT>
-		</TD></TR></TABLE>
-	</a>
+	<SPAN ID="ENTITIESDELETE">${butt('Delete',"document.getElementById('ENTITIESROOT').trydelentity();");}</SPAN>
 </TD></TR>
-<TR><TD WIDTH=20%><a href="javascript:menuHelp('Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements:
-	<a href="javascript:document.getElementById('ENTITIESROOT').tryloadmxp();">
-		<TABLE ID="ENTITIESMXPLOAD" WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  
-			style="cursor:hand;display:inline;visibility:visible;" 
-			ONCLICK="document.getElementById('ENTITIESROOT').tryloadmxp();" 
-			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-			<B>Load</B></FONT>
-		</TD></TR></TABLE>
-	</a>
+<TR><TD WIDTH=20%><a href="javascript:contextHelp(this,{},'Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements:
+	<SPAN ID="ENTITIESMXPLOAD">${butt('Load',"document.getElementById('ENTITIESROOT').tryloadmxp();");}</SPAN>
 </TD>
 <TD><TEXTAREA ID="ENTITIESMXP" style="height:110px;width:100%;"
 		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "

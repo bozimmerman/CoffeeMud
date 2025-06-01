@@ -50,14 +50,7 @@
 	><IMG SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Actions')">
 </TD></TR>
 <TR><TD colspan="2">
-	<a ID="ALIASDELETE" href="javascript:document.getElementById('ALIASSROOT').trydelalias();">
-		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-			ONCLICK="document.getElementById('ALIASSROOT').trydelalias();" 
-			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-			<B>Delete</B></FONT>
-		</TD></TR></TABLE>
-	</a>
+	<SPAN ID="ALIASDELETE">${butt('Delete',"document.getElementById('ALIASSROOT').trydelalias();");}</SPAN>
 </TD></TR>
 </TABLE>
 ${

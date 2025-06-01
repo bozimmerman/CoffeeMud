@@ -159,6 +159,13 @@ function brCount(s)
 	return matches.length;
 }
 
+function butt(t,js)
+{
+	return "<span style=\"display: inline-block; background-image: url('images/lilButt.gif'); background-position: center;"
+		+"background-repeat: no-repeat; background-size: 100% 100%; padding: 5px 10px; white-space: nowrap; cursor: pointer; line-height: 10px;\"" 
+		+"onclick=\""+js+"\"><font face=\"Arial\" color=\"purple\" size=\"-2\"><b>"+t+"</b></font></span>";
+}
+
 function extractUnclosedFontTags(span, htmlBuffer) {
 	if(!htmlBuffer)
 		return '';

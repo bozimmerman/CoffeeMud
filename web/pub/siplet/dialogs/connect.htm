@@ -4,14 +4,7 @@
 	<TD><SELECT ID="QUICKCONNECTDROPDOWN" STYLE="position:relative;">
 		</SELECT>
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Windows')">
-		<a href="javascript:var el=document.getElementById('QUICKCONNECTDROPDOWN');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();">
-			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-				ONCLICK="var el=document.getElementById('QUICKCONNECTDROPDOWN');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();" 
-				TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-			<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-				<B>Connect</B></FONT>
-			</TD></TR></TABLE>
-		</a>
+		${butt('Connect',"var el=document.getElementById('QUICKCONNECTDROPDOWN');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();");}
 </TD></TR>
 </TR><TR><TD COLSPAN=2>&nbsp;</TD>
 <TR>
@@ -27,14 +20,7 @@
 	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="document.getElementById('PHONEBOOKROOT').dropdownselected();">
 		<OPTION VALUE="-1">Add New Entry
 		</SELECT>
-		<a href="javascript:var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();">
-			<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-				ONCLICK="var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();" 
-				TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-			<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-				<B>Connect</B></FONT>
-			</TD></TR></TABLE>
-		</a>
+		${butt('Connect',"var el=document.getElementById('CONNECTPHONEBOOK');if(el)AddNewSipletTabByPB(el.value);hideOptionWindow();");}
 </TD></TR>
 <TR>
 	<TD>Port:</TD>
@@ -62,14 +48,7 @@
 		SIZE=20 VALUE=""></TD>
 </TR>
 <TR><TD COLSPAN=2>
-	<a ID="PHONEBOOKDELETE" href="javascript:document.getElementById('PHONEBOOKROOT').trydelphonebook();">
-		<TABLE WIDTH=57 HEIGHT=23 BACKGROUND="images/lilButt.gif"  style="cursor:hand;display:inline;" 
-			ONCLICK="document.getElementById('PHONEBOOKROOT').trydelphonebook();" 
-			TABINDEX=1 BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR VALIGN=CENTER><TD ALIGN=CENTER><FONT color=purple SIZE=-2>
-			<B>Delete</B></FONT>
-		</TD></TR></TABLE>
-	</a>
+	<SPAN ID="PHONEBOOKDELETE">${butt('Delete',"document.getElementById('PHONEBOOKROOT').trydelphonebook();");}</SPAN>
 </TD></TR>
 </TABLE>
 ${
