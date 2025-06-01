@@ -198,18 +198,18 @@
 			var entityindex = Number(val);
 			if(entityindex < 0)
 				return;
-			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
-				return;
-			var currIndex=dd.selectedIndex;
-			dd.selectedIndex=-1;
-			dd.remove(currIndex);
-			delete entities[val];
-			root.modifyentities();
-			sname.value='';
-			sname.style.backgroundColor = 'white';
-			stext.value='';
-			stext.style.backgroundColor = 'white';
-			delbutt.style.visibility='hidden';
+			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?', function() {
+				var currIndex=dd.selectedIndex;
+				dd.selectedIndex=-1;
+				dd.remove(currIndex);
+				delete entities[val];
+				root.modifyentities();
+				sname.value='';
+				sname.style.backgroundColor = 'white';
+				stext.value='';
+				stext.style.backgroundColor = 'white';
+				delbutt.style.visibility='hidden';
+			});
 		};
 		
 		root.tryloadmxp = function() {

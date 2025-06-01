@@ -224,28 +224,28 @@
 			var aliasindex = Number(dd.value);
 			if(aliasindex < 0)
 				return;
-			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
-				return;
-			var curr=dd.selectedIndex;
-			dd.selectedIndex=-1;
-			dd.remove(curr);
-			for(var i=0;i < dd.options.length;i++)
-				if(Number(dd.options[i].value)>aliasindex)
-					dd.options[i].value=(Number(dd.options[i].value)-1);
-			var deadt = aliases[aliasindex];
-			aliases.splice(aliasindex,1);
-			root.modifyaliases();
-			aname.value='';
-			aname.style.backgroundColor = 'white';
-			apatt.value='';
-			apatt.style.backgroundColor = 'white';
-			arege.checked=false;
-			arepl.value='';
-			aacto.selectedIndex=-1;
-			aacto.style.backgroundColor = 'white';
-			aaval.value='';
-			aaval.style.backgroundColor = 'white';
-			delbutt.style.visibility='hidden';
+			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?',function(){
+				var curr=dd.selectedIndex;
+				dd.selectedIndex=-1;
+				dd.remove(curr);
+				for(var i=0;i < dd.options.length;i++)
+					if(Number(dd.options[i].value)>aliasindex)
+						dd.options[i].value=(Number(dd.options[i].value)-1);
+				var deadt = aliases[aliasindex];
+				aliases.splice(aliasindex,1);
+				root.modifyaliases();
+				aname.value='';
+				aname.style.backgroundColor = 'white';
+				apatt.value='';
+				apatt.style.backgroundColor = 'white';
+				arege.checked=false;
+				arepl.value='';
+				aacto.selectedIndex=-1;
+				aacto.style.backgroundColor = 'white';
+				aaval.value='';
+				aaval.style.backgroundColor = 'white';
+				delbutt.style.visibility='hidden';
+			});
 		};
 	} else
 		setTimeout(fixaliasspage,10);

@@ -229,8 +229,7 @@
 			{
 				var pb = phonebook[pbindex];
 				var name = root.makephonebookname(pb.user,pb.name,pb.port);
-				if(window.confirm('Delete entry ' + name + '?'))
-				{
+				SiConfirm('Delete entry ' + name + '?',function() {
 					var opt = phbkField.options[phbkField.selectedIndex];
 					for(var i=phbkField.selectedIndex+1; i < phbkField.options.length; i++)
 					{
@@ -259,7 +258,7 @@
 								siplet.pbwhich = 'g0';
 						}
 					}
-				}
+				});
 			}
 		};
 	} else

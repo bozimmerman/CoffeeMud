@@ -220,6 +220,43 @@ function SiPrompt(text, callback) {
     setTimeout(function() { input.focus() }, 0);
 }
 
+function SiConfirm(text, callback) {
+    var overlay = document.createElement("div");
+    overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+    overlay.onkeydown = function(e) {
+        e.stopPropagation();
+        if (e.key == "Enter")
+            okButton.click();
+        else 
+        if (e.key == "Escape")
+            overlay.remove();
+    };
+    var dialog = document.createElement("div");
+    dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+    var label = document.createElement("div");
+    label.textContent = text;
+    var buttonContainer = document.createElement("div");
+    buttonContainer.style = "display: flex; justify-content: space-around; margin-top: 10px;";
+    var okButton = document.createElement("button");
+    okButton.textContent = "OK";
+    okButton.onclick = function() {
+        overlay.remove();
+        callback(true);
+    };
+    var cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel";
+    cancelButton.onclick = function() {
+        overlay.remove();
+    };
+    buttonContainer.append(okButton, cancelButton);
+    dialog.append(label, buttonContainer);
+    overlay.append(dialog);
+    document.body.append(overlay);
+
+    // Focus the OK button by default
+    setTimeout(function() { okButton.focus() }, 0);
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

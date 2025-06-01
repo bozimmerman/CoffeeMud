@@ -357,26 +357,26 @@
 			var pluginindex = Number(dd.value);
 			if(pluginindex < 0)
 				return;
-			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
-				return;
-			var curr=dd.selectedIndex;
-			dd.selectedIndex=-1;
-			dd.remove(curr);
-			for(var i=0;i < dd.options.length;i++)
-				if(Number(dd.options[i].value)>pluginindex)
-					dd.options[i].value=(Number(dd.options[i].value)-1);
-			var deadt = plugins[pluginindex];
-			plugins.splice(pluginindex,1);
-			root.modifyplugins();
-			stext.value='';
-			stext.editor.setValue('');
-			stext.style.backgroundColor = 'white';
-			scode.value='';
-			scode.editor.setValue('');
-			scode.style.backgroundColor = 'white';
-			delbutt.style.visibility='hidden';
-			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
-			scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
+			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?',function() {
+				var curr=dd.selectedIndex;
+				dd.selectedIndex=-1;
+				dd.remove(curr);
+				for(var i=0;i < dd.options.length;i++)
+					if(Number(dd.options[i].value)>pluginindex)
+						dd.options[i].value=(Number(dd.options[i].value)-1);
+				var deadt = plugins[pluginindex];
+				plugins.splice(pluginindex,1);
+				root.modifyplugins();
+				stext.value='';
+				stext.editor.setValue('');
+				stext.style.backgroundColor = 'white';
+				scode.value='';
+				scode.editor.setValue('');
+				scode.style.backgroundColor = 'white';
+				delbutt.style.visibility='hidden';
+				stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
+				scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
+			});
 		};
     	root.showstorage = function()
     	{

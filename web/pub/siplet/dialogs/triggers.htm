@@ -232,29 +232,29 @@
 			var trigindex = Number(dd.value);
 			if(trigindex < 0)
 				return;
-			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
-				return;
-			var curr=dd.selectedIndex;
-			dd.selectedIndex=-1;
-			dd.remove(curr);
-			for(var i=0;i < dd.options.length;i++)
-				if(Number(dd.options[i].value)>trigindex)
-					dd.options[i].value=(Number(dd.options[i].value)-1);
-			var deadt = triggers[trigindex];
-			triggers.splice(trigindex,1);
-			root.modifytriggers();
-			tname.value='';
-			tname.style.backgroundColor = 'white';
-			tpatt.value='';
-			tpatt.style.backgroundColor = 'white';
-			trege.checked=false;
-			truno.checked=false;
-			tacto.selectedIndex=-1;
-			tacto.style.backgroundColor = 'white';
-			taval.value='';
-			taval.style.backgroundColor = 'white';
-			tallo.value='';
-			delbutt.style.visibility='hidden';
+			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?',function(){
+				var curr=dd.selectedIndex;
+				dd.selectedIndex=-1;
+				dd.remove(curr);
+				for(var i=0;i < dd.options.length;i++)
+					if(Number(dd.options[i].value)>trigindex)
+						dd.options[i].value=(Number(dd.options[i].value)-1);
+				var deadt = triggers[trigindex];
+				triggers.splice(trigindex,1);
+				root.modifytriggers();
+				tname.value='';
+				tname.style.backgroundColor = 'white';
+				tpatt.value='';
+				tpatt.style.backgroundColor = 'white';
+				trege.checked=false;
+				truno.checked=false;
+				tacto.selectedIndex=-1;
+				tacto.style.backgroundColor = 'white';
+				taval.value='';
+				taval.style.backgroundColor = 'white';
+				tallo.value='';
+				delbutt.style.visibility='hidden';
+			});
 		};
 	} else
 		setTimeout(fixtriggerspage,10);
