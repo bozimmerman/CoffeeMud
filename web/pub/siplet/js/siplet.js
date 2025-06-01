@@ -1187,6 +1187,7 @@ function AddNewSipletTab(url)
 	var siplet = new SipletWindow(windowName); // makes a deep copy
 	siplet.tab = AddNewTab();
 	siplet.tab.innerHTML = 'Connecting to ' + url + '...';
+	siplet.tab.siplet = siplet;
 	siplet.url = url;
 	window.siplets.push(siplet);
 	siplet.connect(url);

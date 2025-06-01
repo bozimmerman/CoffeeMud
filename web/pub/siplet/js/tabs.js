@@ -62,25 +62,21 @@ function FindTabSpan()
 function CloseTab(img)
 {
 	var tab = img.parentNode;
-	for(var i=0;i<window.siplets.length;i++)
-		if(window.siplets[i].tab == tab)
-		{
-			window.siplets[i].close();
-			try {
-				window.siplets[i].topWindow.outerHTML = '';
-			} catch(e) { }
-			var isCurrent =(window.currWin == window.siplets[i]); 
-			window.siplets.splice(i,1);
-			if(isCurrent)
-			{
-				if(window.siplets.length == 0)
-					window.currWin = null;
-				else
-					SetCurrentTab(0);
-			}
-			break;
-		}
-	//'<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>'
+	var siplet = tab.siplet;
+	siplet.close();
+	try {
+		siplet.topWindow.outerHTML = '';
+	} catch(e) { }
+	var isCurrent =(window.currWin == siplet);
+	var i = window.siplets.indexOf(siplet);
+	window.siplets.splice(i,1);
+	if(isCurrent)
+	{
+		if(window.siplets.length == 0)
+			window.currWin = null;
+		else
+			SetCurrentTab(0);
+	}
 	var tabRow = tab.parentNode;
 	tabRow.removeChild(tab);
 	var x = tabTabs.indexOf(tab);
@@ -96,6 +92,15 @@ function CloseTab(img)
 		tabSpacer.innerHTML = '';
 	else
 		tabSpacer.innerHTML = '<FONT COLOR=LIGHTBLUE>&nbsp;&nbsp;<B>+</B></FONT>';
+}
+
+function ReconnectTab(img)
+{
+	var tab = img.parentNode;
+	var siplet = tab.siplet;
+	siplet.closeSocket();
+	siplet.reset();
+	siplet.connect(siplet.url);
 }
 
 function AddNewTab()
@@ -115,6 +120,13 @@ function AddNewTab()
 			var old = tab.getElementsByTagName('img');
 			if((old==null)||(old.length ==0))
 			{
+				if(tab.siplet && !tab.siplet.isConnected())
+				{
+					var reconn = '<IMG style="position:absolute;top:0;right:18px;width:16px; height:16px;" '
+					+'ONCLICK="ReconnectTab(this);" '
+					+'SRC="images/recon.gif">';
+					tab.innerHTML += reconn;
+				}
 				var close = '<IMG style="position:absolute;top:0;right:0;width:16px; height:16px;" '
 				+'ONCLICK="CloseTab(this);" '
 				+'SRC="images/close.gif">';
@@ -123,8 +135,12 @@ function AddNewTab()
 		};
 		tab.onmouseleave=function() {
 			var old = tab.getElementsByTagName('img');
-			if((old!=null)&&(old.length >0))
-				tab.removeChild(old[0]);
+			if(old)
+			{
+				old =  Array.from(old);
+				for(var i=0;i<old.length;i++)
+					tab.removeChild(old[i]);
+			}
 		}
 		tab.colSpan = tabSpan;
 		tab.style = "border: 1px solid white; padding: 0;background-color:yellow;color:black;";

@@ -27,6 +27,10 @@ var menuData = [
 		{"n":"Plugins",
 		 "e":"window.currWin!=null && window.currWin.pb && window.currWin.pb.pb",
 		 "a":"javascript:menuPlugins('local');"},
+		{"n":"Capture",
+		 "v":"window.isElectron",
+		 "e":"window.currWin && window.currWin.wsopened",
+		 "a":"javascript:menuCapture();"},
 		{"n":"Disconnect",
 		 "e":"window.currWin!=null && window.currWin.wsopened",
 		 "a":"javascript:menuDisconnect();"},
@@ -109,6 +113,8 @@ function menumenu(obj, e, to)
 	{
 		var sub=subList[h];
 		hint+=sub['n']+'|';
+		if(('v' in sub)&&(sub['v'])&&(!eval(sub['v'])))
+			continue;
 		if(('e' in sub)&&(sub['e'])&&(!eval(sub['e'])))
 			href+='|';
 		else
