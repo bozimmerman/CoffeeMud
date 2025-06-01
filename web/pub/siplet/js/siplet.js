@@ -1241,7 +1241,11 @@ function CloseAllSiplets()
 
 function AutoConnect()
 {
-	AddNewSipletTabByPB(getConfig('/phonebook/auto','g0'));
+	var auto = getConfig('/phonebook/auto','-2');
+	if(auto === '-2')
+		menuConnect();
+	else
+		AddNewSipletTabByPB();
 	boxFocus();
 }
 
