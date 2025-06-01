@@ -260,6 +260,8 @@ var fixtimerspage=function(){
 			var timerindex = Number(dd.value);
 			if(timerindex < 0)
 				return;
+			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
+				return;
 			var curr=dd.selectedIndex;
 			dd.selectedIndex=-1;
 			dd.remove(curr);

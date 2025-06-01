@@ -198,6 +198,8 @@ ${
 			var entityindex = Number(val);
 			if(entityindex < 0)
 				return;
+			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
+				return;
 			var currIndex=dd.selectedIndex;
 			dd.selectedIndex=-1;
 			dd.remove(currIndex);

@@ -192,6 +192,34 @@ function extractUnclosedFontTags(span, htmlBuffer) {
 	return w;
 }
 
+function SiPrompt(text, callback) {
+    var overlay = document.createElement("div");
+    overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+    overlay.onkeydown = function(e) { e.stopPropagation(); };
+    var dialog = document.createElement("div");
+    dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+    var label = document.createElement("div");
+    label.textContent = text;
+    var input = document.createElement("input");
+    input.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px";
+    input.maxLength = 30;
+    input.onkeydown = function(e) {
+        e.stopPropagation();
+        if (e.key == "Enter") button.click();
+        if (e.key == "Escape") overlay.remove();
+    };
+    var button = document.createElement("button");
+    button.textContent = "OK";
+    button.onclick = function() {
+        overlay.remove();
+        callback(input.value);
+    };
+    dialog.append(label, input, button);
+    overlay.append(dialog);
+    document.body.append(overlay);
+    setTimeout(function() { input.focus() }, 0);
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

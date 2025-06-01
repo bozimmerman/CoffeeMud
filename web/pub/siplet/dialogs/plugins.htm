@@ -10,11 +10,13 @@
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugins')">
 </TD></TR>
 <TD><TD COLSPAN=2>&nbsp;</TD></TR>
-<TR><TD WIDTH=20%>Browse:</TD>
+<TR><TD WIDTH=20%>Load:</TD>
 	<TD WIDTH=80%>
 		${butt('File',"document.getElementById('PLUGINSROOT').selectFile();");}
+		<SPAN ID="PLUGINSBUILD">${butt('Build',"document.getElementById('PLUGINSROOT').trybuildplugin();");}</SPAN>
 </TD></TR>
-<TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP1" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')"></TD>
+<TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP1" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')">
+</TD>
 <TD WIDTH=80%><TEXTAREA ID="PLUGINSTEXT" style="height:160px;"
 		ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginfieldchange(); "
 	></TEXTAREA>
@@ -25,7 +27,11 @@
 	></TEXTAREA>
 </TD></TR>
 <TR><TD colspan="2">
-	<SPAN ID="PLUGINSDELETE">${butt('Delete',"document.getElementById('PLUGINSROOT').trydelplugin();");}</SPAN>
+	<SPAN ID="PLUGINSDELETE">
+	${butt('Delete',"document.getElementById('PLUGINSROOT').trydelplugin();");}
+	${butt('Download',"document.getElementById('PLUGINSROOT').trysaveplugin();");}
+	</SPAN>
+	${butt('Storage',"document.getElementById('PLUGINSROOT').showstorage();");}
 </TD></TR>
 </TABLE>
 </SPAN>
@@ -45,8 +51,10 @@ ${
 		delete root.parentNode.which;
 		var dd = document.getElementById('PLUGINSDROPDOWN');
 		var delbutt = document.getElementById('PLUGINSDELETE');
+		var buildbutt = document.getElementById('PLUGINSBUILD');
 		dd.selectedIndex = -1;
 		delbutt.style.visibility='hidden';
+		buildbutt.style.visibility='hidden';
 		for(var i=0;i < plugins.length;i++)
 		{
 			var plugin = plugins[i];
@@ -64,6 +72,7 @@ ${
 				scode.editor.setValue('');
 				scode.style.backgroundColor = RED;
 				delbutt.style.visibility='hidden';
+				buildbutt.style.visibility='visible';
 			}
 			else
 			if(Number(dd.value) < plugins.length)
@@ -83,6 +92,7 @@ ${
 				scode.value=code;
 				scode.style.backgroundColor = 'white';
 				scode.editor.setValue(scode.value);
+				buildbutt.style.visibility='hidden';
 			}
 			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
 			scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
@@ -226,9 +236,14 @@ ${
 			root.lastJSError = '';
 			shelp1.setAttribute('title',root.lastJsonError);
 			shelp2.setAttribute('title',root.lastJSError);
-			if(dd.selectedIndex<0) return;
-			if(stext.value.length == 0)
+			buildbutt.style.visibility='hidden';
+			if(dd.selectedIndex<0) 
+				return;
+			buildbutt.style.visibility='hidden';
+			if(stext.value.trim().length == 0)
 			{
+				if(scode.value.trim().length == 0)
+					buildbutt.style.visibility='visible';
 				stext.style.backgroundColor = RED;
 				root.lastJsonError = 'Enter a json document';
 			}
@@ -342,6 +357,8 @@ ${
 			var pluginindex = Number(dd.value);
 			if(pluginindex < 0)
 				return;
+			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
+				return;
 			var curr=dd.selectedIndex;
 			dd.selectedIndex=-1;
 			dd.remove(curr);
@@ -361,6 +378,71 @@ ${
 			stext.editor.getWrapperElement().style.backgroundColor = stext.style.backgroundColor;
 			scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
 		};
+    	root.showstorage = function()
+    	{
+    		var tot = 0;
+    		for(var k in localStorage)
+	    		if (localStorage.hasOwnProperty(k))
+	    			tot += (k.length+localStorage[k].length)*2;
+	    	var pct = Math.floor(tot / (5 * 1024 * 1024) * 100.0) + '%';
+	    	if(pct == '0%')
+	    		window.alert("You are using "+tot+" bytes of the storage quota.");
+	    	else
+		    	window.alert("You are using "+pct+" of the storage quota.");
+    	};
+    	root.trysaveplugin = function()
+    	{
+			if((stext.style.backgroundColor == RED)
+			||(scode.style.backgroundColor == RED)
+			||(stext.value.trim().length == 0))
+			{
+				window.alert("Correct errors first.");
+				return;
+			}
+			var pluginDefinition = JSON.parse(stext.value);
+			pluginDefinition.code = scode.value;
+			var jsonString = JSON.stringify(pluginDefinition);
+			var filename = pluginDefinition.name.replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+			var blob = new Blob([jsonString], { type: "application/json" });
+			var url = URL.createObjectURL(blob);
+			var link = document.createElement("a");
+			link.href = url;
+			link.download = filename;
+			link.click();
+			URL.revokeObjectURL(url);
+    	};
+    	root.trybuildplugin = function()
+    	{
+    		SiPrompt('Enter a unique plugin name', function(name){
+	    		if(!name || (name.trim().length==0))
+	    			return;
+				var newp = {
+				  "name": name,
+				  "version": 1,
+				  "code": "",
+				  "mxp":"",
+				  "triggers": [],
+				  "aliases": [],
+				  "timers": []
+				};
+				newp.mxp = GetGlobalElements();
+				newp.triggers = JSON.parse(JSON.stringify(GetGlobalTriggers()));
+				newp.aliases = JSON.parse(JSON.stringify(GetGlobalAliases()));
+				newp.timers = JSON.parse(JSON.stringify(GetGlobalTimers()));
+				for(var i=newp.triggers.length-1; i >= 0;i--)
+				{
+					for(var ii=0; ii < window.defTriggers; ii++)
+						if(window.defTriggers[ii].name == newp.triggers[i].name)
+						{
+							newp.triggers.splice(i,1);
+							break;
+						}
+				}
+				stext.value = JSON.stringify(newp,null,2);
+				stext.editor.setValue(stext.value);
+				root.pluginfieldchange();
+   			});
+    	};
 		
 		var addParser = document.createElement('script');
 		addParser.src = 'js/codemirror.js';

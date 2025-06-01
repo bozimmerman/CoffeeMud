@@ -232,6 +232,8 @@ ${
 			var trigindex = Number(dd.value);
 			if(trigindex < 0)
 				return;
+			if(!window.confirm('Delete '+dd.options[dd.selectedIndex].text+'?'))
+				return;
 			var curr=dd.selectedIndex;
 			dd.selectedIndex=-1;
 			dd.remove(curr);
