@@ -81,7 +81,7 @@
 	<SPAN ID="TIMERDELETE">${butt('Delete',"document.getElementById('TIMERSROOT').trydeltimer();");}</SPAN>
 </TD></TR>
 </TABLE>
-${
+<SCRIPT>
 var fixtimerspage=function(){
 	if(document.getElementById('TIMERAVALUE'))
 	{
@@ -287,4 +287,4 @@ var fixtimerspage=function(){
 	} else
 		setTimeout(fixtimerspage,10);
 };setTimeout(fixtimerspage,10);
-'';}
+</SCRIPT>

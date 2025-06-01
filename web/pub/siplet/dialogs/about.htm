@@ -2,7 +2,7 @@
 	        transform:translate(-50%,-50%);text-align:center;line-height: 1.5;">
 	<div style="display:block;margin:0 auto;"><h1>${Siplet.NAME} v${Siplet.VERSION_MAJOR}${(Siplet.VERSION_MINOR!='0')?('.'+Siplet.VERSION_MINOR):''}
 	<span ID=ABOUTUPGRADE></span></h1></div>
-	${
+	<SCRIPT>
 		if(window.isElectron)
 		{
 			var xhr = new XMLHttpRequest();
@@ -28,8 +28,7 @@
 			xhr.onerror = function() { div.innerHTML = 'Failed'; };
 			xhr.send();
 		}
-	'';
-	}
+	</SCRIPT>
 	<div style="display:block;margin:0 auto;">(C)2001-2025 Bo Zimmerman</div>
 	<div style="display:block;margin:0 auto;">
 		<BR>

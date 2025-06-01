@@ -249,6 +249,10 @@ function populateDivFromUrl(div, url, callback)
 				x = txt.indexOf('${',x+1);
 			}
 			div.innerHTML = txt;
+			var scripts = div.getElementsByTagName("script");
+			for (var script of scripts)
+				if (script.textContent)
+					eval(script.textContent);
 			if(callback !== undefined && callback)
 				callback();
 		}

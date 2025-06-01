@@ -52,7 +52,7 @@
 	<SPAN ID="PHONEBOOKDELETE">${butt('Delete',"document.getElementById('PHONEBOOKROOT').trydelphonebook();");}</SPAN>
 </TD></TR>
 </TABLE>
-${
+<SCRIPT>
 	var fixphonebookpage=function(){
 	if(document.getElementById('PHONEBOOKDELETE'))
 	{
@@ -256,4 +256,4 @@ ${
 	} else
 		setTimeout(fixphonebookpage,10);
 };setTimeout(fixphonebookpage,10);
-'';}
+</SCRIPT>

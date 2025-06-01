@@ -57,7 +57,7 @@
 	<SPAN ID="TRIGGERDELETE">${butt('Delete',"document.getElementById('TRIGGERSROOT').trydeltrigger();");}</SPAN>
 </TD></TR>
 </TABLE>
-${
+<SCRIPT>
 	var fixtriggerspage=function(){
 	if(document.getElementById('TRIGGERALLOWED'))
 	{
@@ -259,4 +259,4 @@ ${
 	} else
 		setTimeout(fixtriggerspage,10);
 };setTimeout(fixtriggerspage,10);
-'';}
+</SCRIPT>

@@ -53,7 +53,7 @@
 	<SPAN ID="ALIASDELETE">${butt('Delete',"document.getElementById('ALIASSROOT').trydelalias();");}</SPAN>
 </TD></TR>
 </TABLE>
-${
+<SCRIPT>
 	var fixaliasspage=function(){
 	if(document.getElementById('ALIASAVALUE'))
 	{
@@ -250,4 +250,4 @@ ${
 	} else
 		setTimeout(fixaliasspage,10);
 };setTimeout(fixaliasspage,10);
-'';}
+</SCRIPT>
