@@ -245,7 +245,10 @@
 			if(newMXP.length==0)
 				window.alert('No non-standard tags found.');
 			else
+			{
 				mxpField.value = newMXP;
+				loadbutt.style.visibility = 'hidden';
+			}
 		};
 		
 		if((mxpField.value.trim().length == 0)
