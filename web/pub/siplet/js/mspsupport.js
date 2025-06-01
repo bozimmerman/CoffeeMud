@@ -1,6 +1,8 @@
 var MSP = function(sipwin)
 {
-	this.mimeTypes = { 'mp3': 'audio/mpeg', 'ogg': 'audio/ogg', 'wav': 'audio/wav' };
+	this.urlCtr = {};
+	this.popUrl = '';
+	this.popCtr = 0;
 	
 	this.reset = function()
 	{
@@ -119,15 +121,35 @@ var MSP = function(sipwin)
 			};
 			this.sounds[fullTag][lkey] = sound;
 		}
-		return this.sounds[fullTag][lkey];
+		var sound = this.sounds[fullTag][lkey];
+		if(url)
+		{
+			this.urlCtr = {};
+			this.popUrl = '';
+			this.popCtr = 0;
+			if(!(url in this.urlCtr))
+				this.urlCtr[url] = 0;
+			if(++this.urlCtr[url]>this.popCtr)
+			{
+				this.popCtr = this.urlCtr[url];
+				this.popUrl = url;
+			}
+		} 
+		return sound;
 	}
 	
 	this.PlaySound = function(key, url, repeats, volume, priority, music, tag)
 	{
 		var volPct = Number(getConfig('window/volume','100'));
-		if(volPct<0.01)
+		if((volPct<0.01) || (!key))
 			return;
+		if(url == null)
+			url = '';
 		var sound = this.LoadSound(key, url, tag, music);
+		if(sound && !url)
+			url = sound.url;
+		if(!url)
+			url = this.popUrl;
 		var sounderName = music ? 'music' : 'sound';
 		var sounder = this.sounders[sounderName];
 		if(sounder)
@@ -151,45 +173,63 @@ var MSP = function(sipwin)
 		if(x<0)
 			return;
 		var ext = key.substr(x+1).toLowerCase();
-		if(!ext in this.mimeTypes)
+		if(!ext in window.mimeTypes)
 			return;
-		var mimeType = this.mimeTypes[ext];
-		this.sounders[sounderName] = sounder;
-		sipwin.window.appendChild(sounder.player);
-		if((!url.endsWith('/'))&&(!key.startsWith('/')))
-			sounder.player.setAttribute('src', url+'/'+key);
+		var file;
+		if(url.endsWith('/'))
+			file  = key.startsWith('/') ? (url+key.substr(1)) : (url+key);
 		else
-			sounder.player.setAttribute('src', url+key);
-		sounder.player.setAttribute('type', mimeType);
-		sounder.player.setAttribute('hidden','true');
-		sounder.player.volume = (Number(volume) / 100.0) * (volPct/100.0);
-		sounder.player.loop = false;
-		if(sounder.player.addEventListener)
+			file = key.startsWith('/') ? (url+key) : (url+'/'+key);
+		sounder.file = file;
+		var playMSP = function(src)
 		{
-			var me = this;
-			sounder.endedHandler = function() {
-				if((!sounderName in me.sounders)
-				||(me.sounders[sounderName] !== sounder))
-					return;
-				if(sounder.repeats > 0)
-					--sounder.repeats;
-				if(sounder.repeats == 0)
-					return me.StopSounder(sounderName, sounder);
-				// repeats < 0 are infinite until stopped externally
-				try {
-					sounder.player.play();
-				} catch(e) {
-					me.StopSounder(sounderName, sounder);
-				}
-			};
-			sounder.player.addEventListener('ended', sounder.endedHandler);
+			var mimeType = window.mimeTypes[ext];
+			this.sounders[sounderName] = sounder;
+			sipwin.window.appendChild(sounder.player);
+			sounder.player.setAttribute('src', src);
+			sounder.player.setAttribute('type', mimeType);
+			sounder.player.setAttribute('hidden','true');
+			sounder.player.volume = (Number(volume) / 100.0) * (volPct/100.0);
+			sounder.player.loop = false;
+			if(sounder.player.addEventListener)
+			{
+				var me = this;
+				sounder.endedHandler = function() {
+					if((!sounderName in me.sounders)
+					||(me.sounders[sounderName] !== sounder))
+						return;
+					if(sounder.repeats > 0)
+						--sounder.repeats;
+					if(sounder.repeats == 0)
+						return me.StopSounder(sounderName, sounder);
+					// repeats < 0 are infinite until stopped externally
+					try {
+						sounder.player.play();
+					} catch(e) {
+						me.StopSounder(sounderName, sounder);
+					}
+				};
+				sounder.player.addEventListener('ended', sounder.endedHandler);
+			}
+			try {
+				sounder.player.play();
+			} catch(e) {
+				me.StopSounder(sounderName, sounder);
+			}
+		};
+		if(file.startsWith('media://'))
+		{
+			var path = file.substr(8);
+			window.fs.load(path, function(err, data){
+				if(err)
+					console.log(err);
+				else
+					playMSP(data);
+			});
 		}
-		try {
-			sounder.player.play();
-		} catch(e) {
-			me.StopSounder(sounderName, sounder);
-		}
-	}
+		else
+			playMSP(file);
+	};
 
 	this.StopSounder = function(type, sounder)
 	{
@@ -199,6 +239,8 @@ var MSP = function(sipwin)
 			sounder.player.removeEventListener('ended', sounder.endedHandler);
 		sounder.player.outerHTML = '';
 		delete this.sounders[type];
+		if(sounder.file)
+			window.fs.trimBlobCache(sounder.file);
 	};
 
 	this.StopSound = function(key, type)

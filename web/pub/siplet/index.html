@@ -1,5 +1,6 @@
 <!--
 TODO: logging .. Sip needs logging
+TODO: media library
 TODO: split-screen scroll-back
 TODO: FRAME MXP tag allows background image with opacity, perhaps IMAGE?
 TODO: mapper api
@@ -36,6 +37,7 @@ TODO: see also: https://github.com/bozimmerman/Sip/issues/1
 <SCRIPT LANGUAGE=JavaScript>
 function ConfigureSiplet()
 {
+	window.fs = SipletFileSystem('SipletFileSystem');
 	document.getElementById('loadingmsg').style.visibility='hidden';
 	document.getElementById('inputarea').style.visibility='visible';
 	configureInput(document.getElementById('inputarea'), document.getElementById('input'));
@@ -54,7 +56,7 @@ function ConfigureSiplet()
 var loadableScripts = [
 	"js/config.js", "js/input.js", "js/menu.js", "js/tabs.js", "js/websock.js",
 	"js/util.js", "js/plugins.js", "js/ctxmenu.js", "js/binparser.js",
-	"js/ansiparser.js", "js/telnetparser.js", "js/textparser.js",
+	"js/ansiparser.js", "js/telnetparser.js", "js/textparser.js", "js/filesys.js",
 	"js/mspsupport.js", "js/mxpsupport.js", "js/siplet.js", "js/gmcp.js"
 ]
 function LoadJavaScript()

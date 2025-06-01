@@ -47,6 +47,7 @@ function SipletWindow(windowName)
 	this.lastStyle = '';
 	this.listeners = {};
 	this.overflow = getConfig('window/overflow','');
+	this.fs = window.fs;
 	var me = this;
 	
 	this.fixOverflow = function()

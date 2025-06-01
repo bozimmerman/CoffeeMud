@@ -1,3 +1,16 @@
+window.mimeTypes = 
+{
+	jpg: 'image/jpeg',
+	jpeg: 'image/jpeg',
+	png: 'image/png',
+	gif: 'image/gif',
+	bmp: 'image/bmp',
+	webp: 'image/webp',
+	mp3: 'audio/mpeg', 
+	ogg: 'audio/ogg', 
+	wav: 'audio/wav'
+};
+
 function isLetter(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
@@ -44,10 +57,10 @@ function isNumber(c)
 }
 
 function isJsonObject(variable) {
-    return variable !== null 
-    	&& typeof variable === 'object' 
-    	&& !Array.isArray(variable) 
-    	&& Object.prototype.toString.call(variable) === '[object Object]';
+	return variable !== null 
+		&& typeof variable === 'object' 
+		&& !Array.isArray(variable) 
+		&& Object.prototype.toString.call(variable) === '[object Object]';
 }
 
 function stripHtmlTags(htmlString) 
@@ -193,69 +206,88 @@ function extractUnclosedFontTags(span, htmlBuffer) {
 }
 
 function SiPrompt(text, callback) {
-    var overlay = document.createElement("div");
-    overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
-    overlay.onkeydown = function(e) { e.stopPropagation(); };
-    var dialog = document.createElement("div");
-    dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
-    var label = document.createElement("div");
-    label.textContent = text;
-    var input = document.createElement("input");
-    input.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px";
-    input.maxLength = 30;
-    input.onkeydown = function(e) {
-        e.stopPropagation();
-        if (e.key == "Enter") button.click();
-        if (e.key == "Escape") overlay.remove();
-    };
-    var button = document.createElement("button");
-    button.textContent = "OK";
-    button.onclick = function() {
-        overlay.remove();
-        callback(input.value);
-    };
-    dialog.append(label, input, button);
-    overlay.append(dialog);
-    document.body.append(overlay);
-    setTimeout(function() { input.focus() }, 0);
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.textContent = text;
+	var input = document.createElement("input");
+	input.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px";
+	input.maxLength = 30;
+	input.onkeydown = function(e) {
+		e.stopPropagation();
+		if (e.key == "Enter") button.click();
+		if (e.key == "Escape") overlay.remove();
+	};
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.onclick = function() {
+		overlay.remove();
+		callback(input.value);
+	};
+	dialog.append(label, input, button);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	setTimeout(function() { input.focus() }, 0);
 }
 
 function SiConfirm(text, callback) {
-    var overlay = document.createElement("div");
-    overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
-    overlay.onkeydown = function(e) {
-        e.stopPropagation();
-        if (e.key == "Enter")
-            okButton.click();
-        else 
-        if (e.key == "Escape")
-            overlay.remove();
-    };
-    var dialog = document.createElement("div");
-    dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
-    var label = document.createElement("div");
-    label.textContent = text;
-    var buttonContainer = document.createElement("div");
-    buttonContainer.style = "display: flex; justify-content: space-around; margin-top: 10px;";
-    var okButton = document.createElement("button");
-    okButton.textContent = "OK";
-    okButton.onclick = function() {
-        overlay.remove();
-        callback(true);
-    };
-    var cancelButton = document.createElement("button");
-    cancelButton.textContent = "Cancel";
-    cancelButton.onclick = function() {
-        overlay.remove();
-    };
-    buttonContainer.append(okButton, cancelButton);
-    dialog.append(label, buttonContainer);
-    overlay.append(dialog);
-    document.body.append(overlay);
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) {
+		e.stopPropagation();
+		if (e.key == "Enter")
+			okButton.click();
+		else 
+		if (e.key == "Escape")
+			overlay.remove();
+	};
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.textContent = text;
+	var buttonContainer = document.createElement("div");
+	buttonContainer.style = "display: flex; justify-content: space-around; margin-top: 10px;";
+	var okButton = document.createElement("button");
+	okButton.textContent = "OK";
+	okButton.onclick = function() {
+		overlay.remove();
+		callback(true);
+	};
+	var cancelButton = document.createElement("button");
+	cancelButton.textContent = "Cancel";
+	cancelButton.onclick = function() {
+		overlay.remove();
+	};
+	buttonContainer.append(okButton, cancelButton);
+	dialog.append(label, buttonContainer);
+	overlay.append(dialog);
+	document.body.append(overlay);
 
-    // Focus the OK button by default
-    setTimeout(function() { okButton.focus() }, 0);
+	// Focus the OK button by default
+	setTimeout(function() { okButton.focus() }, 0);
 }
+
+function updateMediaImagesInSpan(span)
+{
+	var fs = window.fs;
+	var images = span.querySelectorAll('img[src^="media://"]');
+	images.forEach(function(img) {
+		var path = img.getAttribute('src').replace(/^media:\/\//, '/');
+		fs.load(path, function(err, dataUrl) 
+		{
+			if (err) 
+			{
+				console.error('Error loading ' + path + ':', err);
+				return;
+			}
+			if (base64)
+				img.setAttribute('src', dataUrl);
+		});
+	});
+};
 
 function populateDivFromUrl(div, url, callback) 
 {
