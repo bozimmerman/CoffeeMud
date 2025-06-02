@@ -1,0 +1,77 @@
+<TABLE WIDTH=100% BORDER=0 ID="CAPTUREROOT">
+<TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Capture Log</TD>
+</TR><TR>
+	<TD WIDTH=30%>Log Path</TD>
+	<TD><INPUT SIZE=30 ID="CAPTUREPATH" ONCHANGE="setConfig('window/lines',this.value);">
+	${butt('Select',"document.getElementById('CAPTUREROOT').selectPath();");}
+	</TD>
+</TR><TR>
+	<TD>Control <I>(Alt-O)</I></TD>
+	<TD>
+		<INPUT TYPE=RADIO NAME=CAPTUREONOFF ID=CAPTURESTART VALUE="START" ONCLICK="document.getElementById('CAPTUREROOT').CaptureStart()">
+		Start&nbsp;
+		<INPUT TYPE=RADIO NAME=CAPTUREONOFF ID=CAPTURESTOP VALUE="STOP" ONCLICK="document.getElementById('CAPTUREROOT').CaptureStop()"}>
+		Stop
+	</TD>
+</TR></TABLE>
+<SCRIPT>
+setTimeout(function(){
+	var os = require('os');
+	var osPath = require('path');
+	var root = document.getElementById('CAPTUREROOT');
+	var win = root.parentNode.currWin;
+	var path = document.getElementById('CAPTUREPATH');
+	if(win.pb && win.pb.capture)
+		path.value = win.pb.capture;
+	else
+		path.value = osPath.join(os.tmpdir(),Siplet.NAME.toLowerCase()+'.log');
+	var start = document.getElementById('CAPTURESTART');
+	var stop = document.getElementById('CAPTURESTOP');
+	if(win.logStream != null)
+		start.checked = true;
+	else
+		stop.checked = true;
+	root.CaptureStart = function() {
+		if(path.value) {
+			win.openLog(path.value);
+			if(win.logStream != null)
+				return;
+		}
+		setTimeout(function(){
+			start.checked = false;
+			stop.checked = false;
+		},1);
+	};
+	root.CaptureStop = function() {
+		win.closeLog();
+	};
+	root.selectPath = function() {
+		var dialog = require('@electron/remote').dialog;
+		dialog.showSaveDialog({
+			defaultPath: os.tmpdir(),
+			filters: [{ name: 'Log Files', extensions: ['log'] }]
+		}).then(function(result) {
+			if (!result.cancelled && result.filePath)
+			{
+				path.value = result.filePath;
+				if(win.pb)
+				{
+					win.pb.capture = result.filePath;
+					var phonebook = getConfig('/phonebook/dial',[]);
+					if((win.pbwhich) 
+					&& (!win.pbwhich.startsWith('g')))
+					{
+						var pbindex = Number(win.pbwhich);
+						if((pbindex>=0)&&(pbindex<=phonebook.length))
+						{
+							var pb = phonebook[pbindex];
+							pb.capture = result.filePath;
+							setConfig('/phonebook/dial',phonebook);
+						}
+					}
+				}
+			}
+		});
+	};
+},1);
+</SCRIPT>

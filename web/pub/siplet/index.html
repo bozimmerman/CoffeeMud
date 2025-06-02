@@ -37,7 +37,7 @@ TODO: see also: https://github.com/bozimmerman/Sip/issues/1
 <SCRIPT LANGUAGE=JavaScript>
 function ConfigureSiplet()
 {
-	window.fs = SipletFileSystem('SipletFileSystem');
+	window.sipfs = new SipletFileSystem('SipletFileSystem');
 	document.getElementById('loadingmsg').style.visibility='hidden';
 	document.getElementById('inputarea').style.visibility='visible';
 	configureInput(document.getElementById('inputarea'), document.getElementById('input'));

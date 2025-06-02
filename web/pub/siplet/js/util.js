@@ -272,11 +272,11 @@ function SiConfirm(text, callback) {
 
 function updateMediaImagesInSpan(span)
 {
-	var fs = window.fs;
+	var sipfs = window.sipfs;
 	var images = span.querySelectorAll('img[src^="media://"]');
 	images.forEach(function(img) {
 		var path = img.getAttribute('src').replace(/^media:\/\//, '/');
-		fs.load(path, function(err, dataUrl) 
+		sipfs.load(path, function(err, dataUrl) 
 		{
 			if (err) 
 			{

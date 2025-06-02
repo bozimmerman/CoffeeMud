@@ -181,10 +181,11 @@ var MSP = function(sipwin)
 		else
 			file = key.startsWith('/') ? (url+key) : (url+'/'+key);
 		sounder.file = file;
+		var self = this;
 		var playMSP = function(src)
 		{
 			var mimeType = window.mimeTypes[ext];
-			this.sounders[sounderName] = sounder;
+			self.sounders[sounderName] = sounder;
 			sipwin.window.appendChild(sounder.player);
 			sounder.player.setAttribute('src', src);
 			sounder.player.setAttribute('type', mimeType);
@@ -193,20 +194,19 @@ var MSP = function(sipwin)
 			sounder.player.loop = false;
 			if(sounder.player.addEventListener)
 			{
-				var me = this;
 				sounder.endedHandler = function() {
-					if((!sounderName in me.sounders)
-					||(me.sounders[sounderName] !== sounder))
+					if((!sounderName in self.sounders)
+					||(self.sounders[sounderName] !== sounder))
 						return;
 					if(sounder.repeats > 0)
 						--sounder.repeats;
 					if(sounder.repeats == 0)
-						return me.StopSounder(sounderName, sounder);
+						return self.StopSounder(sounderName, sounder);
 					// repeats < 0 are infinite until stopped externally
 					try {
 						sounder.player.play();
 					} catch(e) {
-						me.StopSounder(sounderName, sounder);
+						self.StopSounder(sounderName, sounder);
 					}
 				};
 				sounder.player.addEventListener('ended', sounder.endedHandler);
@@ -214,13 +214,13 @@ var MSP = function(sipwin)
 			try {
 				sounder.player.play();
 			} catch(e) {
-				me.StopSounder(sounderName, sounder);
+				self.StopSounder(sounderName, sounder);
 			}
 		};
 		if(file.startsWith('media://'))
 		{
 			var path = file.substr(8);
-			window.fs.load(path, function(err, data){
+			window.sipfs.load(path, function(err, data){
 				if(err)
 					console.log(err);
 				else
@@ -240,7 +240,7 @@ var MSP = function(sipwin)
 		sounder.player.outerHTML = '';
 		delete this.sounders[type];
 		if(sounder.file)
-			window.fs.trimBlobCache(sounder.file);
+			window.sipfs.trimBlobCache(sounder.file);
 	};
 
 	this.StopSound = function(key, type)

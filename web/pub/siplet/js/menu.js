@@ -309,6 +309,14 @@ function menuEntities(value)
 	populateDivFromUrl(content, 'dialogs/entities.htm');
 }
 
+function menuCapture()
+{
+	var content = getOptionWindow("Capture Log",60,40);
+	content.currWin = window.currWin;
+	if(content.currWin)
+		populateDivFromUrl(content, 'dialogs/capture.htm');
+}
+
 function menuHelp(f)
 {
 	var addBack = '';
@@ -367,3 +375,28 @@ function menuHelp(f)
 	});
 }
 
+document.onkeydown = function(e) {
+	if(e.altKey && (e.key == 'o'))
+	{
+		var win = window.currWin;
+		if(window.isElectron && win)
+		{
+			if(win.logStream != null)
+				win.closeLog();
+			else
+			{
+				
+				var captureFilename;
+				if(win.pb && win.pb.capture)
+					captureFilename = win.pb.capture;
+				else
+				{
+					var os = require('os');
+					var osPath = require('path');
+					captureFilename = osPath.join(os.tmpdir(),Siplet.NAME.toLowerCase()+'.log');
+				}
+				win.openLog(captureFilename);
+			}
+		}
+	}
+};
