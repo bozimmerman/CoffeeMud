@@ -69,6 +69,9 @@ var StringToAsciiArray = function(str) {
 var TELNET = function(sipwin)
 {
 	this.debug = false;
+	this.mttsBitmap = 1 | 4 | 8 | 256;
+	this.termType = "ANSI-TRUECOLOR";
+
 	this.reset = function()
 	{
 		this.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
@@ -83,7 +86,7 @@ var TELNET = function(sipwin)
 	
 	this.process = function(dat)
 	{
-		if(this.debug) logDat('teln', dat);
+		if(this.debug) logDat('teln', dat, TELOPT);
 		var response = [];
 		//var s='>' + new Date().getTime()+'>';for(var i=0;i<dat.length;i++)s+=dat[i]+',';console.log(s);
 		switch (dat[0])
@@ -214,6 +217,36 @@ var TELNET = function(sipwin)
 								}
 								response = response.concat([typ]);
 								response = response.concat(StringToAsciiArray(sipwin.jobid));
+							}
+							else
+							if(varName == "UTF-8")
+							{
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray("UTF-8"));
+							}
+							else
+							if(varName == "CLIENT_NAME")
+							{
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray(Siplet.NAME));
+							}
+							else
+							if(varName == "CLIENT_VERSION")
+							{
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray(''+Siplet.VERSION_MAJOR));
+							}
+							else
+							if(varName == "MTTS")
+							{
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray(''+this.mttsBitmap));
+							}
+							else
+							if(varName == "TERMINAL_TYPE")
+							{
+								response = response.concat([typ]);
+								response = response.concat(StringToAsciiArray(this.termType));
 							}
 							response = response.concat([TELOPT.IAC, TELOPT.SE]);
 						} // get the value
@@ -517,7 +550,7 @@ var TELNET = function(sipwin)
 		}
 		//var s='<' + new Date().getTime()+'<';for(var i=0;i<response.length;i++)s+=response[i]+',';console.log(s);
 		if(this.debug && response.length)
-			logDat('resp', response);
+			logDat('resp', response, TELOPT);
 		return new Uint8Array(response).buffer;
 	};
 	
@@ -632,20 +665,14 @@ var TELNET = function(sipwin)
 	{
 		var response = [TELOPT.IAC, TELOPT.SB, TELOPT.TTYPE, 0];
 		if(this.ttypeCount == 0)
-		{
-			if(window.isElectron)
-				response = response.concat(StringToAsciiArray("SIP"));
-			else
-				response = response.concat(StringToAsciiArray("SIPLET"));
-		}
+			response = response.concat(StringToAsciiArray(Siplet.NAME.toUpperCase()));
 		else
 		if(this.ttypeCount == 1)
-			response = response.concat(StringToAsciiArray("ANSI-TRUECOLOR"));
+			response = response.concat(StringToAsciiArray(this.termType));
 		else
 		if(this.ttypeCount > 1)
 		{
-			var mtts = 1 | 4 | 8 | 256;
-			response = response.concat(StringToAsciiArray("MTTS "+mtts));
+			response = response.concat(StringToAsciiArray("MTTS "+this.mttsBitmap));
 		}
 		this.ttypeCount++;
 		response = response.concat([TELOPT.IAC, TELOPT.SE]);
