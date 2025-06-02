@@ -92,6 +92,24 @@ function setSelectByValue(select, value)
 	}
 }
 
+function isValidAction(s)
+{
+	if(!s) 
+		return false;
+	var x = s.indexOf('(');
+	if(x<0) return false;
+	if((!s.endsWith(')'))&&(!s.endsWith(');'))) 
+		return false;
+	var cmd = s.substr(0,x);
+	var arg = s.substring(x+1, s.lastIndexOf(')'));
+	if(!cmd.startsWith('win.')) 
+		return false;
+	cmd = cmd.substr(4);
+	if(!(cmd in window.sampleSiplet))
+		return false;
+	return isValidExpression(arg);
+};
+
 function isValidExpression(exp) {
 	try 
 	{

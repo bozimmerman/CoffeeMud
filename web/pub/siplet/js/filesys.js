@@ -26,25 +26,25 @@ function SipletFileSystem(dbName)
 		};
 	};
 
-	this.load = function(path, callBack) 
+	this.load = function(path, callBack, noCache) 
 	{
 		if(!this.enabled)
 			callBack('not supported');
 		if (this.db)
-			this._load(path, callBack);
+			this._load(path, callBack, noCache);
 		else 
 		{
 			this.init(function(err) {
 				if (err) return callBack(err);
-				self._load(path, callBack);
+				self._load(path, callBack, noCache);
 			});
 		}
 	};
 
-	this._load = function(path, callBack) 
+	this._load = function(path, callBack, noCache) 
 	{
 		path = this.normalizePath(path);
-		if(path in this.blobCache)
+		if((path in this.blobCache) && (true !== noCache))
 			callBack(null, this.blobCache[path].url);
 		var tx = this.db.transaction(this.storeName, 'readonly');
 		var store = tx.objectStore(this.storeName);
@@ -52,7 +52,7 @@ function SipletFileSystem(dbName)
 		request.onsuccess = function() {
 			if(request.result && request.result.data)
 			{
-				if(request.result.data.startsWith('data:'))
+				if(request.result.data.startsWith('data:')&&(true !== noCache))
 				{
 					var dataUrl = request.result.data;
 					var mimeType = dataUrl.match(/^data:([^;]+);base64,/);
@@ -147,6 +147,35 @@ function SipletFileSystem(dbName)
 				callBack(request.error);
 			};
 		});
+	};
+
+	this.exists = function(path, callBack) {
+		if (!this.enabled) {
+			callBack('not supported');
+			return;
+		}
+		if (this.db) {
+			this._exists(path, callBack);
+		} else {
+			const self = this;
+			this.init(function(err) {
+				if (err) return callBack(err);
+				self._exists(path, callBack);
+			});
+		}
+	};
+	
+	this._exists = function(path, callBack) {
+		path = this.normalizePath(path);
+		const tx = this.db.transaction(this.storeName, 'readonly');
+		const store = tx.objectStore(this.storeName);
+		const request = store.get(path);
+		request.onsuccess = function() {
+			callBack(null, !!request.result);
+		};
+		request.onerror = function() {
+			callBack(request.error);
+		};
 	};
 
 	this.getMediaTree = function(callBack) {

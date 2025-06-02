@@ -67,7 +67,7 @@ this:
 	"name":"my timer",
 	"delay":0,
 	"option":"once"
-	"auto":true,
+	"trigger":true,
 	"action":"displayText"
 	"argument":"'hi'"
 }
@@ -76,7 +76,7 @@ The <B>name</B>, <B>action</B>, and <B>argument</B>
 of a plugin timer is the same as described above for triggers.  The <b>option</b>
 field must be one of 'once', 'multiple', or 'repeat'; see the help on 
 <a href="javascript:menuHelp('Timers')">Timers</a> for more information on Options.
-The <b>auto</b> field is true if a timer begins its delay immediately, or false if
+The <b>trigger</b> field is true if a timer begins its delay immediately, or false if
 it must be externally triggered before counting down.  <B>Delay</B> is the number
 of milliseconds (1000th of a second) that the timer delays for; for example, 5000
 would be 5 seconds, and 60000 would be a minute.

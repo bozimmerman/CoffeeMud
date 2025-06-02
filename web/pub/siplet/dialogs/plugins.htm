@@ -113,17 +113,31 @@
 				reader.onload = function(e) {
 					var text = e.target.result;
 					try {
-						var pcopy=JSON.parse(text);
+						var pcopy;
+						try {
+							pcopy=JSON.parse(text);
+						} catch(e) {
+							SiAlert('File is invalid JSON.');
+							return;
+						}
 						var code='';
 						if('code' in pcopy)
 						{
 							code = pcopy.code;
 							delete pcopy.code;
 						}
-						stext.value = JSON.stringify(pcopy);
+						var media = []
+						if('media' in pcopy)
+						{
+							media = pcopy.media;
+							delete pcopy.media;
+							root.saveMedia(media);
+						}
+						stext.value = JSON.stringify(pcopy, null, 2);
 						stext.editor.setValue(stext.value);
 						scode.value = code.replaceAll('\\n','\n');
 						scode.editor.setValue(scode.value);
+						dd.selectedIndex = 0;
 						root.pluginfieldchange();
 					}catch(e){window.alert('The file did not appear to be a json document.');}
 				};
@@ -132,6 +146,39 @@
 			input.click();
 		};
 
+		root.saveMedia = function(media)
+		{
+			if((!Array.isArray(media)) || (media.length == 0))
+				return;
+			var saveMedia;
+			saveMedia = function()
+			{
+				if(media.length == 0)
+					return;
+				var file = media.pop();
+				if(file.path && file.data)
+				{
+					window.sipfs.exists(file.path, function(e,tf) {
+						if(e || !tf)
+						{
+							window.sipfs.save(file.path, file.data, function(e){
+								saveMedia();
+							});
+						}
+						else
+						SiConfirm('Overwrite '+file.path+'?', function(r){
+							window.sipfs.save(file.path, file.data, function(e){
+								saveMedia();
+							});
+						});
+					});
+				}
+				else
+					saveMedia();
+			};
+			saveMedia();
+		};
+		
 		root.baseFields = {
 			name:' ',
 			version:0,
@@ -150,8 +197,7 @@
 					return true;
 				},
 				once:true,
-				action:function(s) { return (s in window.sampleSiplet); },
-				argument:function(s) { return isValidExpression(s);}
+				action:function(s) { return isValidAction(s); }
 			}],
 			aliases:[{
 				name:' ',
@@ -167,16 +213,16 @@
 					return true;
 				},
 				replace:function(s) { return true; },
-				action:function(s) { return (s=='')||(s in window.sampleSiplet); },
-				argument:function(s,p) { return (p['action']=='') || isValidExpression(s); }
+				action:function(s) { 
+					return (s=='')||isValidAction(s); 
+				}
 			}],
 			timers:[{
 				name:' ',
 				delay:0,
 				option:function(s) { return (['repeat','multiple','once'].indexOf(s.toLowerCase())>=0);},
-				auto:true,
-				action:function(s) { return (s in window.sampleSiplet); },
-				argument:function(s) { return isValidExpression(s);}
+				trigger:true,
+				action:function(s) { return isValidAction(s); }
 			}]
 		};
 
@@ -390,6 +436,40 @@
 	    	else
 		    	window.alert("You are using "+pct+" of the storage quota.");
     	};
+    	
+    	root.buildMediaList = function(list, node)
+    	{
+    		if(node == null)
+    			return;
+    		if(typeof node === 'string')
+   			{
+    			var mx = node.indexOf('media://');
+    			while(mx>0) {
+    				var ec = node.charAt(mx-1);
+    				var me = node.indexOf(ec,me+5);
+    				if(me>mx)
+    				{
+    					list.push(node.substring(mx+8,me))
+	    				mx = node.indexOf('media://',me);
+    				}
+    				else
+	    				mx = node.indexOf('media://',x+5);
+    			}
+   			}
+    		else
+    		if(Array.isArray(node))
+   			{
+   				for(var k=0;k<node.length;k++)
+   					root.buildMediaList(list, node[k]);
+   			}
+    		else
+    		if(isJsonObject(node))
+   			{
+   				for(k in node)
+   					root.buildMediaList(list, node[k]);
+   			}
+    	}
+    	
     	root.trysaveplugin = function()
     	{
 			if((stext.style.backgroundColor == RED)
@@ -401,15 +481,43 @@
 			}
 			var pluginDefinition = JSON.parse(stext.value);
 			pluginDefinition.code = scode.value;
-			var jsonString = JSON.stringify(pluginDefinition);
-			var filename = pluginDefinition.name.replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
-			var blob = new Blob([jsonString], { type: "application/json" });
-			var url = URL.createObjectURL(blob);
-			var link = document.createElement("a");
-			link.href = url;
-			link.download = filename;
-			link.click();
-			URL.revokeObjectURL(url);
+			var finishMediaList = function()
+			{
+				var jsonString = JSON.stringify(pluginDefinition);
+				var filename = pluginDefinition.name.replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+				var blob = new Blob([jsonString], { type: "application/json" });
+				var url = URL.createObjectURL(blob);
+				var link = document.createElement("a");
+				link.href = url;
+				link.download = filename;
+				link.click();
+				URL.revokeObjectURL(url);
+			}
+			var mediaList = []
+			root.buildMediaList(mediaList,pluginDefinition);
+			if(mediaList.length == 0)
+				finishMediaList();
+			else
+			{
+				pluginDefinition.media = [];
+				var processMediaFiles = function(fileName) {
+					window.sipfs.load(fileName,function(err, fdata) {
+						if(!err)
+						{
+							pluginDefinition.media.push({
+								path: fileName,
+								data: fdata
+							});
+						}
+						if(mediaList.length==0)
+							finishMediaList();
+						else
+							processMediaFiles(mediaList.pop());
+						
+					}, true);
+				};
+				processMediaFiles(mediaList.pop());
+			}
     	};
     	root.trybuildplugin = function()
     	{

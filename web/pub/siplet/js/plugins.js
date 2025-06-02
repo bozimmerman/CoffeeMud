@@ -165,7 +165,7 @@ var PLUGINS = function(sipwin)
 					for(var p=0;p<paliases.length;p++)
 					{
 						var palias=paliases[p];
-						var req = ['name','regex','pattern','replace','action','argument'];
+						var req = ['name','regex','pattern','replace','action'];
 						var r=0;
 						for(r=0;r<req.length;r++)
 							if(!(req[r] in palias))
@@ -175,25 +175,24 @@ var PLUGINS = function(sipwin)
 							}
 						if(r<req.length)
 							continue;
-						if((palias.action in sipwin)
-						&&(typeof sipwin[palias.action] == "function"))
+						if('action' in palias)
 						{
-							if(isValidExpression(palias.argument))
+							if(isValidAction(palias.action))
 							{
 								var newOne = {
 									name: palias.name,
 									regex: palias.regex,
 									replace: palias.replace,
 									pattern: palias.pattern,
-									action: 'win.' + palias.action + '(' + palias.argument + ')'
+									action: palias.action
 								};
 								this.aliasList.push(newOne);
 							}
 							else
-								console.log("Bad argument in plugin "+this.plugins[i].name+" alias");
+								console.log("Bad action in plugin "+this.plugins[i].name+" alias");
 						}
 						else
-							console.log("Bad action in plugin "+this.plugins[i].name+" alias");
+							console.log("Missing action in plugin "+this.plugins[i].name+" alias");
 					}
 				}
 			this.aliasList = ParseAliases(this.aliasList);
@@ -213,7 +212,7 @@ var PLUGINS = function(sipwin)
 					for(var p=0;p<ptriggers.length;p++)
 					{
 						var ptrigger=ptriggers[p];
-						var req = ['name','regex','pattern','once','action','argument'];
+						var req = ['name','regex','pattern','once','action'];
 						var r=0;
 						for(r=0;r<req.length;r++)
 							if(!(req[r] in ptrigger))
@@ -223,26 +222,25 @@ var PLUGINS = function(sipwin)
 							}
 						if(r<req.length)
 							continue;
-						if((ptrigger.action in sipwin)
-						&&(typeof sipwin[ptrigger.action] == "function"))
+						if('action' in ptrigger)
 						{
-							if(isValidExpression(ptrigger.argument))
+							if(isValidAction(ptrigger.action))
 							{
 								var newOne = {
 									name: ptrigger.name,
 									regex: ptrigger.regex,
 									once: ptrigger.replace,
 									pattern: ptrigger.pattern,
-									action: 'win.' + ptrigger.action + '(' + ptrigger.argument + ')',
+									action: ptrigger.action,
 									allowed: true
 								};
 								this.triggerList.push(newOne);
 							}
 							else
-								console.log("Bad argument in plugin "+this.plugins[i].name+" trigger");
+								console.log("Bad action in plugin "+this.plugins[i].name+" trigger");
 						}
 						else
-							console.log("Bad action in plugin "+this.plugins[i].name+" trigger");
+							console.log("Missing action in plugin "+this.plugins[i].name+" trigger");
 					}
 				}
 			this.triggerList = ParseTriggers(this.triggerList);
@@ -262,7 +260,7 @@ var PLUGINS = function(sipwin)
 					for(var p=0;p<ptimers.length;p++)
 					{
 						var ptimer=ptimers[p];
-						var req = ['name','delay','option','auto','action','argument'];
+						var req = ['name','delay','option','trigger','action'];
 						var r=0;
 						for(r=0;r<req.length;r++)
 							if(!(req[r] in ptimer))
@@ -272,13 +270,10 @@ var PLUGINS = function(sipwin)
 							}
 						if(r<req.length)
 							continue;
-						if((ptimer.action in sipwin)
-						&&(typeof sipwin[ptimer.action] == "function"))
+						if('action' in ptimer)
 						{
-							if(ptimer.option)
-								ptimer.option = ptimer.option.toLowerCase();
-							if(!isValidExpression(ptimer.argument))
-								console.log("Bad argument in plugin "+this.plugins[i].name+" timer");
+							if(!isValidAction(ptimer.action))
+								console.log("Bad action in plugin "+this.plugins[i].name+" timer");
 							else
 							if(!isNumber(ptimer.delay))
 								console.log("Bad delay in plugin "+this.plugins[i].name+" timer");
@@ -289,10 +284,9 @@ var PLUGINS = function(sipwin)
 								var newOne = {
 									name: ptimer.name,
 									delay: Number(ptimer.delay),
-									repeat: ptimer.option=='repeat',
-									multiple: ptimer.option=='multiple',
-									trigger: (''+ptimer.auto).toLowerCase()=='true',
-									action: 'win.' + ptimer.action + '(' + ptimer.argument + ')',
+									option: ptimer.option,
+									trigger: (''+ptimer.trigger).toLowerCase()=='true',
+									action: ptimer.action,
 									allowed: true
 								};
 								this.timerList.push(newOne);

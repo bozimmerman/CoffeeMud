@@ -590,7 +590,7 @@ function SipletWindow(windowName)
 			this.startTimer(this.findTimerByName(timer));
 			return;
 		}
-		if(!timer.multiple)
+		if(timer.option != 'multiple')
 		{
 			for(var i=0;i < this.activeTimers.length; i++)
 			{
@@ -610,7 +610,7 @@ function SipletWindow(windowName)
 			var action = me.fixVariables(timer.action.replaceAll('\\n','\n'));
 			var win = me;
 			try { eval(action); } catch(e) {console.log(e);};
-			if(timer.repeat)
+			if(timer.option == 'repeat')
 			{
 				timer.timerId = setTimeout(execute, timer.delay);
 				timerCopy.timerId = timer.timerId;
@@ -847,6 +847,7 @@ function SipletWindow(windowName)
 			var rescroll = this.isAtBottom(-10);
 			var span = document.createElement('span');
 			span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
+			updateMediaImagesInSpan(span);
 			this.window.appendChild(span);
 			if(rescroll)
 				this.scrollToBottom(this.window,0);

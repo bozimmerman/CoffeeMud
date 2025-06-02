@@ -116,9 +116,9 @@ function menumenu(obj, e, to)
 	for(var h=0;h<subList.length;h++)
 	{
 		var sub=subList[h];
-		hint+=sub['n']+'|';
 		if(('v' in sub)&&(sub['v'])&&(!eval(sub['v'])))
 			continue;
+		hint+=sub['n']+'|';
 		if(('e' in sub)&&(sub['e'])&&(!eval(sub['e'])))
 			href+='|';
 		else

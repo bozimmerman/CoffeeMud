@@ -52,7 +52,7 @@
 <TR><TD>Auto-Start:</TD><TD><INPUT TYPE=CHECKBOX id="TIMERTRIGGER" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "></TD></TR>
 <TR><TD>Options:</TD>
 	<TD>
-		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Once
+		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="once" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Once
 		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="multiple" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Multiple
 		<INPUT TYPE=RADIO NAME="TIMEROPTIONS" VALUE="repeat" ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); ">Repeats
 </TD></TR>
@@ -120,7 +120,7 @@ var fixtimerspage=function(){
 				tmins.selectedIndex=0;
 				tsecs.selectedIndex=0;
 				ttrig.checked = false;
-				setRadioValue(topts,'');
+				setRadioValue(topts,'once');
 				tacto.selectedIndex=-1;
 				tacto.style.backgroundColor = RED;
 				taval.value='';
@@ -143,7 +143,7 @@ var fixtimerspage=function(){
 				tmins.selectedIndex=minutes;
 				tsecs.selectedIndex=seconds;
 				ttrig.checked = timer.trigger;
-				setRadioValue(topts,timer.repeat?'repeat':(timer.multiple?'multiple':''));
+				setRadioValue(topts,timer.option);
 				tacto.style.backgroundColor = 'white';
 				if(timer.action)
 				{
@@ -194,8 +194,7 @@ var fixtimerspage=function(){
 				var newTimer = {
 					name: tname.value,
 					delay: delayms,
-					repeat: getRadioValue(topts)=='repeat',
-					multiple: getRadioValue(topts)=='multiple',
+					option: getRadioValue(topts),
 					trigger: ttrig.checked,
 					action: fact
 				};
@@ -212,8 +211,7 @@ var fixtimerspage=function(){
 					delete timer.timerId;
 				timer.name= tname.value;
 				timer.delay= delayms;
-				timer.repeat = getRadioValue(topts)=='repeat';
-				timer.multiple = getRadioValue(topts)=='multiple';
+				timer.option = getRadioValue(topts);
 				timer.trigger= ttrig.checked;
 				timer.action= fact;
 				dd.options[dd.selectedIndex].text = timer.name;
