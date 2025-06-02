@@ -79,6 +79,7 @@ var ANSITABLES = {
 	
 var ANSISTACK = function()
 {
+	this.debug = false;
 	this.reset = function()
 	{
 		this.blinkOn = false;
@@ -150,6 +151,7 @@ var ANSISTACK = function()
 
 	this.process = function(dat)
 	{
+		if(this.debug) logDat('ansi', dat);
 		if(dat.length < 3)
 			return "";
 		var type = dat[0];

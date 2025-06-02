@@ -279,6 +279,39 @@ function SiAlert(text) {
 	document.body.append(overlay);
 }
 
+function logDat(typ, dat, opts)
+{
+	var s = typ + ': ';
+	if(dat.length)
+		for(var i=0;i<dat.length;i++)
+		{
+			if(i<3 && opts)
+			{
+				var o='';
+				for(var k in opts)
+				{
+					if(opts[k] == dat[i])
+					{
+						o = k;
+						break;
+						
+					}
+				}
+				if(o)
+				{
+					s += o + ' ';
+					continue;
+					
+				}
+			}
+			var h = dat[i].toString(16).toUpperCase();
+			while(h.length < 2)
+				h = '0' + h;
+			s += h + ' ';
+		}
+	console.log(s);
+}
+
 function SiConfirm(text, callback) {
 	var overlay = document.createElement("div");
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";

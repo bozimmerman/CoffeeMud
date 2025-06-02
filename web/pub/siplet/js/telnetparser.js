@@ -1,12 +1,17 @@
 var TELOPT =
 {
-	ESC: 27,
 	IAC: 0xFF,
+	WILL: 0xFB,
+	WONT: 0xFC,
+	DO: 0xFD,
+	DONT: 0xFE,
+	ESC: 27,
 	BINARY: 0,
 	ECHO: 1,
 	LOGOUT: 18,
+	CHARSETS: 42,
 	SUPRESS_GO_AHEAD: 3,
-	TERMTYPE: 24,
+	TTYPE: 24,
 	NAWS: 31,
 	TOGGLE_FLOW_CONTROL: 33,
 	NEWENVIRON: 39,
@@ -24,19 +29,14 @@ var TELOPT =
 	ATCP: 0xC8,
 	GMCP: 0xC9,
 	SB: 0xFA,
-	WILL: 0xFB,
-	WONT: 0xFC,
 	ANSI16: 0xFC,
-	DO: 0xFD,
 	ANSI: 0xFD,
-	DONT: 0xFE,
 	GA: 0xF9,
 	NOP: 0xF1,
 	BINARY: 0,
-	EOR: 25,
 	ECHO: 1,
 	LOGOUT: 18,
-	TTYPE: 24
+	ZMP: 0x5D
 };
 
 var MSDPOP =
@@ -69,6 +69,7 @@ var StringToAsciiArray = function(str) {
 
 var TELNET = function(sipwin)
 {
+	this.debug = false;
 	this.reset = function()
 	{
 		this.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
@@ -83,6 +84,7 @@ var TELNET = function(sipwin)
 	
 	this.process = function(dat)
 	{
+		if(this.debug) logDat('teln', dat, TELOPT);
 		var response = [];
 		//var s='>' + new Date().getTime()+'>';for(var i=0;i<dat.length;i++)s+=dat[i]+',';console.log(s);
 		switch (dat[0])
@@ -109,25 +111,7 @@ var TELNET = function(sipwin)
 			}
 			if (subOptionCode == TELOPT.TTYPE)
 			{
-				response = response.concat([TELOPT.IAC, TELOPT.SB, TELOPT.TTYPE, 0]);
-				if(this.ttypeCount == 0)
-				{
-					if(window.isElectron)
-						response = response.concat(StringToAsciiArray("SIP"));
-					else
-						response = response.concat(StringToAsciiArray("SIPLET"));
-				}
-				else
-				if(this.ttypeCount == 1)
-					response = response.concat(StringToAsciiArray("ANSI-TRUECOLOR"));
-				else
-				if(this.ttypeCount > 1)
-				{
-					var mtts = 1 | 4 | 8 | 256;
-					response = response.concat(StringToAsciiArray("MTTS "+mtts));
-				}
-				this.ttypeCount++;
-				response = response.concat([TELOPT.IAC, TELOPT.SE]);
+				response = response.concat(this.buildTType());
 			}
 			else
 			if (subOptionCode == TELOPT.NAWS)
@@ -180,7 +164,7 @@ var TELNET = function(sipwin)
 									varName += String.fromCharCode(c).toUpperCase();
 							}
 							response = response.concat([
-								TELOPT.IAC, TELOPT.SB, TELOPT.NEWENVIRON, TELOPT.IS]);
+								TELOPT.IAC, TELOPT.SB, TELOPT.NEWENVIRON, NEWENV.IS]);
 							if(varName == 'USER')
 							{
 								if(sipwin.pb && sipwin.pb.user)
@@ -256,11 +240,29 @@ var TELNET = function(sipwin)
 		case TELOPT.WILL:
 			switch(dat[1])
 			{
+			case TELOPT.ZMP:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.ZMP]);
+				break;
+			case TELOPT.EOR:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.EOR]);
+				break;
+			case TELOPT.AARD:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.AARD]);
+				break;
+			case TELOPT.MSSP:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.MSSP]);
+				break;
+			case TELOPT.CHARSETS:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.CHARSETS]);
+				break;
 			case TELOPT.NAWS:
 				response = response.concat([
 					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
 						0,sipwin.width,0,sipwin.height,
 					TELOPT.IAC, TELOPT.SE]);
+				break;
+			case TELOPT.ECHO:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.ECHO]);
 				break;
 			case TELOPT.MSP:
 				if (this.neverSupportMSP)
@@ -389,7 +391,18 @@ var TELNET = function(sipwin)
 		case TELOPT.DO:
 			switch(dat[1])
 			{
-			case TELOPT.TERMTYPE:
+			case TELOPT.NAWS:
+				response = response.concat([
+					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
+						0,sipwin.width,0,sipwin.height,
+					TELOPT.IAC, TELOPT.SE]);
+				break;
+			case TELOPT.SUPRESS_GO_AHEAD:
+				response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.SUPRESS_GO_AHEAD]);
+				break;
+			case TELOPT.TTYPE:
+				response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.TTYPE]);
+				response = response.concat(this.buildTType());
 				break;
 			case TELOPT.MSP:
 				if (this.neverSupportMSP)
@@ -479,6 +492,8 @@ var TELNET = function(sipwin)
 			break;
 		}
 		//var s='<' + new Date().getTime()+'<';for(var i=0;i<response.length;i++)s+=response[i]+',';console.log(s);
+		if(this.debug && response.length)
+			logDat('resp', response, TELOPT);
 		return new Uint8Array(response).buffer;
 	};
 	
@@ -587,6 +602,30 @@ var TELNET = function(sipwin)
 			}
 		}
 		return JSON.stringify(stack[0]);
+	};
+	
+	this.buildTType = function()
+	{
+		var response = [TELOPT.IAC, TELOPT.SB, TELOPT.TTYPE, 0];
+		if(this.ttypeCount == 0)
+		{
+			if(window.isElectron)
+				response = response.concat(StringToAsciiArray("SIP"));
+			else
+				response = response.concat(StringToAsciiArray("SIPLET"));
+		}
+		else
+		if(this.ttypeCount == 1)
+			response = response.concat(StringToAsciiArray("ANSI-TRUECOLOR"));
+		else
+		if(this.ttypeCount > 1)
+		{
+			var mtts = 1 | 4 | 8 | 256;
+			response = response.concat(StringToAsciiArray("MTTS "+mtts));
+		}
+		this.ttypeCount++;
+		response = response.concat([TELOPT.IAC, TELOPT.SE]);
+		return response;
 	}
 };
 
