@@ -2200,6 +2200,8 @@ public class DefaultSession implements Session
 			else
 			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
+			if(last==TELNET_TERMTYPE)
+				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(last == TELNET_LOGOUT)
 			{
 				if(serverTelnetCodes[TELNET_LOGOUT])
