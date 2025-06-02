@@ -6,7 +6,6 @@ var TELOPT =
 	DO: 0xFD,
 	DONT: 0xFE,
 	ESC: 27,
-	BINARY: 0,
 	ECHO: 1,
 	LOGOUT: 18,
 	CHARSETS: 42,
@@ -69,7 +68,7 @@ var StringToAsciiArray = function(str) {
 
 var TELNET = function(sipwin)
 {
-	this.debug = false;
+	this.debug = true;
 	this.reset = function()
 	{
 		this.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
@@ -84,7 +83,7 @@ var TELNET = function(sipwin)
 	
 	this.process = function(dat)
 	{
-		if(this.debug) logDat('teln', dat, TELOPT);
+		if(this.debug) logDat('teln', dat);
 		var response = [];
 		//var s='>' + new Date().getTime()+'>';for(var i=0;i<dat.length;i++)s+=dat[i]+',';console.log(s);
 		switch (dat[0])
@@ -93,24 +92,29 @@ var TELNET = function(sipwin)
 		{
 			var subOptionData = [];
 			var subOptionCode = dat[1];
-			var last = 0;
+			var c = 0;
 			var i=1;
-			while ((i < (dat.length - 1)) && ((last = dat[++i]) != -1))
+			while ((i < (dat.length - 1)) && ((c = dat[++i]) != -1))
 			{
-				if ((last == TELOPT.IAC) && (i < (dat.length - 1)))
+				if ((c == TELOPT.IAC) && (i < (dat.length - 1)))
 				{
-					last = dat[++i];
-					if (last == TELOPT.IAC)
+					c = dat[++i];
+					if (c == TELOPT.IAC)
 						subOptionData.push(TELOPT.IAC);
 					else
-					if (last == TELOPT.SE)
+					if (c == TELOPT.SE)
 						break;
 				}
 				else
-					subOptionData.push(last);
+					subOptionData.push(c);
 			}
 			if (subOptionCode == TELOPT.TTYPE)
 			{
+				if(subOptionData.length > 1)
+				{
+					if(subOptionData[0] == 0) // illegal!
+						break;
+				}
 				response = response.concat(this.buildTType());
 			}
 			else
@@ -352,6 +356,9 @@ var TELNET = function(sipwin)
 			case TELOPT.BINARY:
 				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.BINARY]);
 				break;
+			default:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, dat[1]]);
+				break;
 			};
 			break;
 		case TELOPT.WONT:
@@ -493,7 +500,7 @@ var TELNET = function(sipwin)
 		}
 		//var s='<' + new Date().getTime()+'<';for(var i=0;i<response.length;i++)s+=response[i]+',';console.log(s);
 		if(this.debug && response.length)
-			logDat('resp', response, TELOPT);
+			logDat('resp', response);
 		return new Uint8Array(response).buffer;
 	};
 	
