@@ -68,7 +68,7 @@ var StringToAsciiArray = function(str) {
 
 var TELNET = function(sipwin)
 {
-	this.debug = true;
+	this.debug = false;
 	this.reset = function()
 	{
 		this.neverSupportMSP = !(getConfig("window/term/msp",'true') === 'true');
@@ -114,6 +114,23 @@ var TELNET = function(sipwin)
 				{
 					if(subOptionData[0] == 0) // illegal!
 						break;
+					if(subOptionData[0] == 1)
+					{
+						var d = subOptionData;
+						d.splice(0,1);
+						if(d.length && (d[d.length-1]==255))
+							d.splice(d.length-1,1);
+						if(d.length)
+						{
+							var decoder = new TextDecoder("utf-8");
+							var ds = '';
+							try {
+								ds=decoder.decode(d);
+							} catch(e) {
+							}
+							if(this.debug && ds) console.log('TTYPE SEND: ' + ds);
+						}
+					}
 				}
 				response = response.concat(this.buildTType());
 			}
