@@ -230,6 +230,7 @@ function SipletWindow(windowName)
 			this.htmlBuffer = reprocess + this.htmlBuffer;
 			this.numLines += brCount(this.htmlBuffer);
 			span.innerHTML = this.htmlBuffer;
+			updateMediaImagesInSpan(span);
 			this.window.appendChild(span);
 			this.process(reprocess);
 			this.htmlBuffer='';
@@ -1115,7 +1116,7 @@ function SipletWindow(windowName)
 				this.closeLog();
 			const fs = require('fs');
 			this.logStream = fs.createWriteStream(filePath, {flags: 'w'});
-			this.tab.style.border='1px solid blue';
+			this.tab.style.border='1px solid yellow';
 		} catch(e) {
 			this.tab.style.border='1px solid red';
 			console.error(e);

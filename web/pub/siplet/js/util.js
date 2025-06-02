@@ -11,6 +11,16 @@ window.mimeTypes =
 	wav: 'audio/wav'
 };
 
+window.imgMimeTypes = 
+{
+	jpg: 'image/jpeg',
+	jpeg: 'image/jpeg',
+	png: 'image/png',
+	gif: 'image/gif',
+	bmp: 'image/bmp',
+	webp: 'image/webp'
+};
+
 function isLetter(c)
 {
 	if ((typeof c === 'string')&&(c.length>0))
@@ -233,6 +243,24 @@ function SiPrompt(text, callback) {
 	setTimeout(function() { input.focus() }, 0);
 }
 
+function SiAlert(text) {
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.textContent = text;
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.onclick = function() {
+		overlay.remove();
+	};
+	dialog.append(label, button);
+	overlay.append(dialog);
+	document.body.append(overlay);
+}
+
 function SiConfirm(text, callback) {
 	var overlay = document.createElement("div");
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
@@ -275,7 +303,7 @@ function updateMediaImagesInSpan(span)
 	var sipfs = window.sipfs;
 	var images = span.querySelectorAll('img[src^="media://"]');
 	images.forEach(function(img) {
-		var path = img.getAttribute('src').replace(/^media:\/\//, '/');
+		var path = img.getAttribute('src').substr(8);
 		sipfs.load(path, function(err, dataUrl) 
 		{
 			if (err) 
@@ -283,7 +311,7 @@ function updateMediaImagesInSpan(span)
 				console.error('Error loading ' + path + ':', err);
 				return;
 			}
-			if (base64)
+			if(dataUrl)
 				img.setAttribute('src', dataUrl);
 		});
 	});

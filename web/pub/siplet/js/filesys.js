@@ -59,7 +59,7 @@ function SipletFileSystem(dbName)
 					var binary = atob(dataUrl.split(',')[1]);
 					var array = new Uint8Array(binary.length);
 					for (var i = 0; i < binary.length; i++) {
-					    array[i] = binary.charCodeAt(i);
+						array[i] = binary.charCodeAt(i);
 					}
 					var blob = new Blob([array], { type: mimeType });
 					var url = URL.createObjectURL(blob);
@@ -92,7 +92,7 @@ function SipletFileSystem(dbName)
 		if(!this.enabled)
 			callBack('not supported');
 		if (this.db)
-			this._load(path, callBack);
+			this._save(path, data, callBack);
 		else 
 		{
 			this.init(function(err) {
@@ -131,14 +131,14 @@ function SipletFileSystem(dbName)
 	{
 		path = this.normalizePath(path);
 		var parent = this.getParentPath(path);
-		var tx = this.db.transaction(this.storeName, 'readwrite');
-		var store = tx.objectStore(this.storeName);
 		this.normalizeData(path, data, function(err, finalData){
 			if(err)
 			{
 				callBack(err);
 				return;
 			}
+			var tx = self.db.transaction(self.storeName, 'readwrite');
+			var store = tx.objectStore(self.storeName);
 			var request = store.put({ path: path, data: finalData, parent: parent });
 			request.onsuccess = function() {
 				callBack(null);
@@ -149,38 +149,73 @@ function SipletFileSystem(dbName)
 		});
 	};
 
-	this.listdir = function(path, callBack) 
-	{
-		if(!this.enabled)
+	this.getMediaTree = function(callBack) {
+		if (!this.enabled) {
 			callBack('not supported');
-		if (this.db)
-			this._load(path, callBack);
-		else 
-		{
+			return;
+		}
+		if (this.db) {
+			this._getMediaTree(callBack);
+		} else {
+			const self = this;
 			this.init(function(err) {
 				if (err) return callBack(err);
-				self._listdir(path, callBack);
+				self._getMediaTree(callBack);
 			});
 		}
 	};
 
-	this._listdir = function(path, callBack) 
+	this._getMediaTree = function(callBack) 
 	{
-		path = this.normalizePath(path);
-		var tx = this.db.transaction(this.storeName, 'readonly');
-		var store = tx.objectStore(this.storeName);
-		var index = store.index('parent');
-		var request = index.getAll(path);
-		request.onsuccess = function() 
-		{
-			var names = request.result.map(function(item) {
-				return item.path.split('/').pop();
-			});
-			callBack(null, Array.from(new Set(names)));
+		const tx = this.db.transaction(this.storeName, 'readonly');
+		const store = tx.objectStore(this.storeName);
+		const request = store.getAll();
+		request.onsuccess = function() {
+			const entries = request.result;
+			const tree = buildTree(entries);
+			callBack(null, tree);
 		};
 		request.onerror = function() {
 			callBack(request.error);
 		};
+		function buildTree(entries) 
+		{
+			const root = { name: '', children: [], entries: [], isFolder: true, path: '', parent: null };
+			entries.forEach(function(entry) 
+			{
+				const parts = entry.path.split('/').filter(part => part);
+				let current = root;
+				let currentPath = '';
+				for (let i = 0; i < parts.length - 1; i++) 
+				{
+					const part = parts[i];
+					currentPath = currentPath ? `${currentPath}/${part}` : part;
+					let folder = current.children.find(node => node.name === part && node.isFolder);
+					if (!folder) 
+					{
+						folder = { name: part, path: currentPath, isFolder: true, children: [], entries: [], parent: current};
+						current.children.push(folder);
+					}
+					current = folder;
+				}
+				const fileName = parts[parts.length - 1];
+				current.entries.push({
+					name: fileName,
+					id: entry.id,
+					path: entry.path,
+					type: entry.type,
+					parent: current
+				});
+			});
+			sortNode(root);
+			return root;
+			function sortNode(node) 
+			{
+				node.children.sort((a, b) => a.name.localeCompare(b.name));
+				node.entries.sort((a, b) => a.name.localeCompare(b.name));
+				node.children.forEach(sortNode);
+			}
+		}
 	};
 
 	this.read = function(path, callBack) 
@@ -201,4 +236,34 @@ function SipletFileSystem(dbName)
 		var parts = path.split('/').filter(function(p) { return p; });
 		return parts.length > 1 ? '/' + parts.slice(0, -1).join('/') : '/';
 	};
+
+	this.delete = function(path, callBack) {
+		if (!this.enabled) {
+			callBack('not supported');
+			return;
+		}
+		if (this.db) {
+			this._delete(path, callBack);
+		} else {
+			const self = this;
+			this.init(function(err) {
+				if (err) return callBack(err);
+				self._delete(path, callBack);
+			});
+		}
+	};
+	
+	this._delete = function(path, callBack) {
+		path = this.normalizePath(path);
+		const tx = this.db.transaction(this.storeName, 'readwrite');
+		const store = tx.objectStore(this.storeName);
+		const request = store.delete(path);
+		request.onsuccess = function() {
+			callBack(null);
+		};
+		request.onerror = function() {
+			callBack(request.error);
+		};
+	};
+	
 }

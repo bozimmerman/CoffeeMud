@@ -51,6 +51,8 @@ var menuData = [
 		 "a":"javascript:menuTimers('global');"},
 		{"n":"Entities",
 		 "a":"javascript:menuEntities('global');"},
+		{"n":"Custom Media",
+		 "a":"javascript:menuMedia();"},
 		{"n":"Plugins",
 		 "a":"javascript:menuPlugins('global');"}
 	]},
@@ -70,6 +72,8 @@ var menuData = [
 		 "a":"javascript:menuHelp('Timers');"},
 		{"n":"Entities",
 		 "a":"javascript:menuHelp('Entities');"},
+		{"n":"Media",
+		 "a":"javascript:menuHelp('Media');"},
 		{"n":"Plugins",
 		 "a":"javascript:menuHelp('Plugins');"}
 	]}
@@ -195,6 +199,12 @@ function menuWindows()
 {
 	var content = getOptionWindow("Window Options",60,40);
 	populateDivFromUrl(content, 'dialogs/window.htm');
+}
+
+function menuMedia()
+{
+	var content = getOptionWindow("Custom Media",60,40);
+	populateDivFromUrl(content, 'dialogs/media.htm');
 }
 
 function menuDisconnect()

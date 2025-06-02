@@ -1,0 +1,267 @@
+<SPAN  ID="MEDIAROOT">
+<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Media')">
+<TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px;table-layout:fixed">
+<TR>
+	<TD COLSPAN=2>
+		<SPAN ID=MEDIASPAN style="visibility:hidden"><IMG ID=MEDIAPREV ALIGN=RIGHT style="max-width:100px;max-height:100px;object-fit:contain;"></SPAN>
+		<B>Media Tree</B><BR>
+		<SPAN ID="SCRIPTREE">
+		</SPAN>
+</TD></TR>
+<TR><TD COLSPAN=2><SPAN ID="SCRIPTVIEW"></SPAN></TD>
+<TR><TD colspan="2">
+	${butt('New Folder',"document.getElementById('MEDIAROOT').createNode();");}
+	${butt('Upload',"document.getElementById('MEDIAROOT').selectFile();");}
+	${butt('Delete',"document.getElementById('MEDIAROOT').trydelmedia();");}
+</TD></TR>
+</TABLE>
+</SPAN>
+<SCRIPT>
+var fixsmediapage=function(){
+	if(document.getElementById('SCRIPTREE'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('MEDIAROOT');
+		var simg = document.getElementById('MEDIASPAN');
+		var img = document.getElementById('MEDIAPREV');
+		root.rootNode = document.getElementById('SCRIPTREE');
+		root.tree = {};
+		root.selected = null;
+		root.map = {};
+		window.sipfs.getMediaTree(function(err,newtree){
+			if(err)
+			{
+				SiAlert(err);
+				return;
+			}
+			root.tree = newtree;
+			root.tree.opened = true;
+			root.tree.name = '/';
+			root.rootNode.innerHTML = '';
+			root.renderNode(root.rootNode, [root.tree]);
+		});
+		root.selectNode = function(nr)
+		{
+			simg.style.visibility='hidden';
+			if(nr != root.tree)
+				nr.opened = !nr.opened;
+			root.selected = nr;
+			root.rootNode.innerHTML = '';
+			root.renderNode(root.rootNode, [root.tree]);
+			if(!nr.isFolder)
+			{
+				var x = nr.name.lastIndexOf('.');
+				if((x>0)&&(nr.name.substr(x+1).toLowerCase() in window.imgMimeTypes))
+				{
+					simg.style.visibility='visible';
+					img.src = 'media://'+nr.path;
+					updateMediaImagesInSpan(simg);
+				}
+			}
+		};
+		root.renderNode = function(parent, nodes)
+		{
+			for(var i=0;i<nodes.length;i++)
+			{
+				var n = nodes[i];
+				var nr = document.createElement('li');
+				var tn;
+				if(n == root.selected)
+				{
+					tn = document.createElement('b');
+					tn.style.fontSize = 16;
+					if (n.isFolder)
+						tn.style.color = 'blue';
+					else
+						tn.style.color = 'green';
+					tn.appendChild(document.createTextNode(n.name));
+				}
+				else
+				{
+					tn = document.createElement('span');
+					if (n.isFolder)
+						tn.style.color = 'blue';
+					else
+						tn.style.color = 'green';
+					tn.appendChild(document.createTextNode(n.name));
+				}
+				nr.appendChild(tn);
+				nr.node = n;
+				parent.appendChild(nr);
+				nr.onclick = function(event) {
+					event.stopPropagation();
+					root.selectNode(this.node); 
+				};
+				if(n.opened && n.isFolder)
+				{
+					if((n.children && n.children.length)
+					||(n.entries && n.entries.length))
+					{
+						var nc = document.createElement('ul');
+						nr.appendChild(nc);
+						root.renderNode(nc,n.children);
+						root.renderNode(nc,n.entries);
+					}
+				}
+			}
+		};
+		
+		root.createNode = function()
+		{
+			if((!root.selected)||(!root.selected.isFolder))
+			{
+				SiAlert("You need to select a folder above, first.");
+				return;
+			}
+			SiPrompt('Enter a folder name: ',function(n){
+				if(!n)
+					return;
+				if((!root.selected)||(!root.selected.isFolder))
+					return;
+				for(var i=0;i<root.selected.children.length;i++)
+					if(root.selected.children[i].name == n)
+					{
+						SiAlert("Not unique enough.");
+						return;
+					}
+				for(var i=0;i<root.selected.entries.length;i++)
+					if(root.selected.entries[i].name == n)
+					{
+						SiAlert("Not unique enough.");
+						return;
+					}
+				var newNode = {
+					isFolder: true,
+					name: n,
+					path: root.selected.path + '/' + n,
+					children: [],
+					entries: [],
+					parent: root.selected
+				};
+				root.selected.opened=true;
+				root.selected.children.push(newNode);
+				root.rootNode.innerHTML = '';
+				root.renderNode(root.rootNode, [root.tree]);
+			});
+		}
+
+		root.trydelmedia = function()
+		{
+			if(!root.selected)
+			{
+				SiAlert("You need to select a node.");
+				return;
+			}
+			if(root.name == '/')
+			{
+				SiAlert("You can not delete root.");
+				return;
+			}
+			var nodesToDel = [];
+			var msg;
+			if(root.selected.isFolder)
+			{
+				msg = "Delete the folder '"+root.selected.path+"' and all of its children?!";
+				var stk = [];
+				stk.push(root.selected);
+				while(stk.length > 0)
+				{
+					var pn = stk.pop();
+					if(pn.children && pn.children.length > 0)
+						stk = stk.concat(pn.children);
+					if(pn.entries && pn.entries.length > 0)
+						nodesToDel = nodesToDel.concat(pn.entries);
+				}
+			}
+			else
+			{
+				msg = "Delete the file '"+root.selected.path+"'?";
+				nodesToDel.push(root.selected);
+			}
+			
+			SiConfirm(msg, function()
+			{
+console.log(nodesToDel.length);
+				for(var i=0;i<nodesToDel.length;i++)
+				{
+					window.sipfs.delete(nodesToDel[i].path,function(e){
+						if(e)
+							console.error(e);
+					});
+				}
+				var pn = root.selected.parent;
+				if(pn)
+				{
+					if(pn.children)
+					{
+						var x = pn.children.indexOf(root.selected);
+						if(x>=0)
+							pn.children.splice(x,1);
+					}
+					if(pn.entries)
+					{
+						var x = pn.entries.indexOf(root.selected);
+						if(x>=0)
+							pn.entries.splice(x,1);
+					}
+				}
+				root.selected = null;
+				root.rootNode.innerHTML = '';
+				root.renderNode(root.rootNode, [root.tree]);
+			});
+		};
+		
+		root.selectFile = function() 
+		{
+			if((!root.selected)||(!root.selected.isFolder))
+			{
+				SiAlert("You need to select a folder above.");
+				return;
+			}
+			var input = document.createElement('input');
+			input.type = 'file';
+			input.onchange = function(event) {
+				if((!root.selected)||(!root.selected.isFolder))
+					return;
+				var file = event.target.files[0];
+				if (!file) return;
+				if (file.size > (1024 * 100)) {
+					SiAlert("Files are limited to 100kb.");
+					console.error('File too large:', file.size, 'bytes');
+					return;
+				};
+				var x = file.name.lastIndexOf('.');
+				if((x<0)||(!(file.name.substr(x+1).toLowerCase() in window.mimeTypes)))
+				{
+					SiAlert("Invalid file type.");
+					return;
+				}
+				var newPath = root.selected.path + '/' + file.name;
+				window.sipfs.save(newPath, file, function(e){
+					if((!root.selected)||(!root.selected.isFolder))
+						return;
+					if(e)
+					{
+						SiAlert(e);
+						console.error(e);
+						return;
+					}
+					var newNode = {
+						name: file.name,
+						path: newPath,
+						type: file.type,
+						id: -1,
+						parent: root.selected
+					};
+					root.selected.opened=true;
+					root.selected.entries.push(newNode);
+					root.rootNode.innerHTML = '';
+					root.renderNode(root.rootNode, [root.tree]);
+				})
+			};
+			input.click();
+		};
+	} else
+		setTimeout(fixsmediapage,10);
+};setTimeout(fixsmediapage,10);
+</SCRIPT>
