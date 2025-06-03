@@ -1402,29 +1402,40 @@ var MXP = function(sipwin)
 			{
 				var fixSize = function(s)
 				{
-					if(s==null)
+					if(s==null || (s==undefined))
 						return null;
+					if(typeof s === 'number')
+						return s;
 					if((s.length>1)&&(s.endsWith("c"))&&(isDigit(s[0])))
 						return (Number(s.substr(0,s.length-1))*16)+'px';
 					return s;
 				};
 				var getPixels = function(s)
 				{
+					if(s==null || (s==undefined))
+						return null;
+					if(typeof s === 'number')
+						return s;
 					if(isNumber(s))
-						x=Number(s);
+						return Number(s);
 					else
 					if(s.endsWith("px"))
-						x = Number(s.substr(0,s.length-2));
+						return Number(s.substr(0,s.length-2));
 					else
 						return null;
 				};
 				var fixISize = function(s,curr)
 				{
-					if((s==null)||(!curr))
+					if((s==null)||(s==undefined)||(!curr))
 						return null;
-					s=s.trim();
-					if(s.endsWith('%'))
-						return s;
+					if(typeof s === 'number')
+						s = ''+s;
+					else
+					{
+						s=s.trim();
+						if(s.endsWith('%'))
+							return s;
+					}
 					var x = getPixels(s);
 					var y = getPixels(curr);
 					if((x == null)||(y==null)) 
@@ -1433,6 +1444,8 @@ var MXP = function(sipwin)
 				};
 				var dePct = function(s)
 				{
+					if(s==null || (s==undefined))
+						return null;
 					if(s.endsWith('%'))
 						return Number(s.substr(0,s.length-1));
 					return getPixels(s);
@@ -1491,11 +1504,12 @@ var MXP = function(sipwin)
 						newContentWindow.style.height = '100%';
 						newContentWindow.style.border = "solid white";
 						newContentWindow.style.boxSizing = "border-box";
-						newContainerDiv.appendChild(newContentWindow);
 						switch(alignx)
 						{
 						case 0: // left
 							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
 							siblingDiv.style.left = (dePct(siblingDiv.style.left) + dePct(width))+'%';
 							newContainerDiv.style.width = width;
 							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
@@ -1505,10 +1519,14 @@ var MXP = function(sipwin)
 														+dePct(siblingDiv.style.width)
 														-dePct(width))+'%';
 							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
 							newContainerDiv.style.width = width;
 							break;
 						case 2: // top
 							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
 							siblingDiv.style.top = (dePct(siblingDiv.style.top) + dePct(height))+'%';
 							newContainerDiv.style.height = height;
 							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
@@ -1518,9 +1536,12 @@ var MXP = function(sipwin)
 														+dePct(siblingDiv.style.height)
 														-dePct(height))+'%';
 							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
 							newContainerDiv.style.height = height;
 							break;
 						}
+						newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
 						var ents = [newContainerDiv,newContentWindow];
 						for(var w =0; w<ents.length;w++)
 						{
