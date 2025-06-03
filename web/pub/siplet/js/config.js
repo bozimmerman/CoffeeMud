@@ -44,7 +44,7 @@ window.defTriggers = [
 	},
 	{
 		name: "Phonebook Password",
-		allowed: 'win.pb',
+		allowed: 'win.pb && win.pb.user',
 		regex: true,
 		once: true,
 		pattern: 'Password:(?![\\s\\S]*\\n)',
