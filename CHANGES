@@ -19,6 +19,7 @@
  17. CoffeeMud now supports MTTS, and will skip ANSI prompts at CC if set.
  18. CoffeeMud now supports True color ansi codes, see HELP TRUECOLORS
  19. GMCP now supports more auto-logins.
+ 20. Sprinking of new CM1 commands: MUDINFO who, port, hosts, and WHOIS -name-
  
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)

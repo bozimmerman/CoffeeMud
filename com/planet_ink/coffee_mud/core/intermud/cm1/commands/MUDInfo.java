@@ -63,6 +63,9 @@ public class MUDInfo extends CM1Command
 			if(parameters.equalsIgnoreCase("PORTS"))
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.ALLMUDPORTS)+"]");
 			else
+			if(parameters.equalsIgnoreCase("PORT"))
+				req.sendMsg("[OK "+CMLib.host().getPort()+"]");
+			else
 			if(parameters.equalsIgnoreCase("VERSION"))
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDVER)+"]");
 			else
@@ -72,6 +75,12 @@ public class MUDInfo extends CM1Command
 			if(parameters.equalsIgnoreCase("NAME"))
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDNAME)+"]");
 			else
+			if(parameters.equalsIgnoreCase("WHO"))
+				req.sendMsg("[OK "+getWhos()+"]");
+			else
+			if(parameters.equalsIgnoreCase("HOSTS"))
+				req.sendMsg("[OK "+getHosts()+"]");
+			else
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 		}
 		catch(final java.io.IOException ioe)
@@ -79,6 +88,35 @@ public class MUDInfo extends CM1Command
 			Log.errOut(className,ioe);
 			req.close();
 		}
+	}
+
+	protected String getHosts()
+	{
+		final List<String> list = new ArrayList<String>();
+		for(final MudHost host : CMLib.hosts())
+		{
+			final char groupC = host.threadGroup().getName().charAt(0);
+			final String name = CMProps.instance(groupC).getStr(CMProps.Str.MUDNAME);
+			if(!list.contains(name))
+				list.add(name);
+		}
+		return CMParms.toListString(list);
+	}
+
+	protected String getWhos()
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final Session S : CMLib.sessions().localOnlineIterable())
+		{
+			MOB mob2=S.mob();
+			if((mob2!=null)&&(mob2.soulMate()!=null))
+				mob2=mob2.soulMate();
+			if((mob2!=null)
+			&&(((!CMLib.flags().isCloaked(mob2))||(CMSecurity.isAllowedAnywhere(mob2,CMSecurity.SecFlag.CLOAK))))
+			&&(mob2.basePhyStats().level()>0))
+				str.append(mob2.name()).append(" ");
+		}
+		return str.toString().trim();
 	}
 
 	@Override
@@ -90,6 +128,6 @@ public class MUDInfo extends CM1Command
 	@Override
 	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
-		return "USAGE: MUDINFO STATUS, PORTS, VERSION, DOMAIN, NAME";
+		return "USAGE: MUDINFO STATUS, PORT, PORTS, VERSION, DOMAIN, NAME, HOSTS, WHO";
 	}
 }
