@@ -31,12 +31,12 @@ var menuData = [
 		 "v":"window.isElectron",
 		 "e":"window.currWin && window.currWin.wsopened",
 		 "a":"javascript:menuCapture();"},
+		{"n":"Reconnect",
+		 "e":"window.currWin!=null && !window.currWin.wsopened",
+		 "a":"javascript:menuReconnect();"},
 		{"n":"Disconnect",
 		 "e":"window.currWin!=null && window.currWin.wsopened",
-		 "a":"javascript:menuDisconnect();"},
-		{"n":"Reconnect",
-		 "e":"window.currWin!=null",
-		 "a":"javascript:menuReconnect();"}
+		 "a":"javascript:menuDisconnect();"}
 	]},
 	{"Global Options": [
 		{"n":"Windows",

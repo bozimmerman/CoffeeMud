@@ -91,6 +91,7 @@ function SipletWindow(windowName)
 	
 	this.connect = function(url)
 	{
+		this.closeSocket();
 		this.wsocket = new WebSocket(url);
 		this.wsocket.binaryType = "arraybuffer";
 		this.wsocket.onmessage = this.onReceive;
@@ -121,9 +122,8 @@ function SipletWindow(windowName)
 
 	this.closeSocket = function()
 	{
-	    if (this.wsocket && this.wsocket.readyState === WebSocket.OPEN) {
-	    	this.wsocket.close();
-	    }
+		if (this.wsocket && this.wsocket.readyState === WebSocket.OPEN)
+			this.wsocket.close();
 	};
 	
 	this.close = function()
