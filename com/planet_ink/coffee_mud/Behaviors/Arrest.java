@@ -574,8 +574,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final Law laws=getLaws(myArea,false);
 		if(laws!=null)
 		{
-			for (final String brokenLaw : accusableLaws)
+			for (int i=0;i<accusableLaws.length;i++)
 			{
+				final String brokenLaw = accusableLaws[i].toUpperCase().trim();
 				String[] info=null;
 				if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) !=null))
 					info=laws.basicCrimes().get(brokenLaw);
@@ -585,6 +586,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 				if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) !=null))
 					info=laws.abilityCrimes().get(brokenLaw);
+				else
+				if((i==0)&&(accusableLaws.length == Law.BIT_NUMBITS))
+				{
+					i=accusableLaws.length-1;
+					info=accusableLaws;
+				}
 				if(info!=null)
 				{
 					if((info[Law.BIT_CRIMENAME]!=null)

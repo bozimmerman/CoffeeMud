@@ -92,7 +92,7 @@ public class Prop_RideZapper extends Prop_HaveZapper
 			if((!CMLib.masking().maskCheck(super.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,msgStr);
-				return false;
+				return executeEvent(msg);
 			}
 			break;
 		}

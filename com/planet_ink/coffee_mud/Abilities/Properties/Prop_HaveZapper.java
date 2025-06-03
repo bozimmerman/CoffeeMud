@@ -63,6 +63,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 	protected String	deityName	= "";
 	protected int		bonus		= 0;
 	protected String[]	bonusAmbi	= null;
+	protected String[]	event		= new String[0];
 
 	protected MaskingLibrary.CompiledZMask mask=null;
 	protected String maskStr = "";
@@ -159,6 +160,14 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 		}
 		deityName="";
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
+		event=new String[0];
+		final String eventStr=CMParms.getParmStr(text,"EVENT","");
+		if(eventStr.trim().length()>0)
+		{
+			event = CMParms.parseCommas(eventStr, true).toArray(event);
+			if(event.length>0)
+				event[0] = event[0].toUpperCase().trim();
+		}
 		mask=null;
 		bonus=0;
 		bonusAmbi=null;
@@ -253,6 +262,23 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 		}
 	}
 
+	protected boolean executeEvent(final CMMsg msg)
+	{
+		if((this.event==null)||(this.event.length==0)||("ZAP".startsWith(event[0])))
+			return false; // normal zap (cancel message)
+		if("ACCUSE".startsWith(event[0]))
+		{
+			final LegalBehavior B =CMLib.law().getLegalBehavior(msg.source().location());
+			final Area A = CMLib.law().getLegalObject(msg.source().location());
+			if((A!=null)&&(B!=null))
+			{
+				B.accuse(A, msg.source(), null, Arrays.copyOfRange(event, 1, event.length));
+				return true;
+			}
+		}
+		return false; // normal zap (cancel message)
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -281,7 +307,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 				)
 				{
 					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
-					return false;
+					return executeEvent(msg);
 				}
 				break;
 			case CMMsg.TYP_EAT:
@@ -290,7 +316,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 				&&(CMLib.dice().rollPercentage()<=percent))
 				{
 					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
-					return false;
+					return executeEvent(msg);
 				}
 				break;
 			default:

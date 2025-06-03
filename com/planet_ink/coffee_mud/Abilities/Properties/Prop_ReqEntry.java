@@ -60,6 +60,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 	private String			maskS		= "";
 	private String			message		= "";
 	private CompiledZMask	mask		= null;
+	protected String[]		event		= new String[0];
 
 	@Override
 	public long flags()
@@ -81,6 +82,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 		mask=null;
 		maskS=txt;
 		message="";
+		event=new String[0];
 		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
 		final List<String> maskV = new ArrayList<String>();
@@ -114,6 +116,19 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 				lastWasMask=false;
 			}
 			else
+			if((s.startsWith("EVENT"))
+			&&(s.substring(4).trim().startsWith("=")))
+			{
+				final Vector<String> ulparms=CMParms.parse(txt);
+				final String eventStr = ulparms.get(i).substring(4).trim().substring(1);
+				if(eventStr.trim().length()>0)
+				{
+					event = CMParms.parseCommas(eventStr, true).toArray(event);
+					if(event.length>0)
+						event[0] = event[0].toUpperCase().trim();
+				}
+			}
+			else
 			if(s.startsWith("+")||s.startsWith("-"))
 			{
 				maskV.add(s);
@@ -133,6 +148,23 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(maskS);
+	}
+
+	protected boolean executeEvent(final CMMsg msg)
+	{
+		if((this.event==null)||(this.event.length==0)||("BLOCK".startsWith(event[0])))
+			return false; // normal zap (cancel message)
+		if("ACCUSE".startsWith(event[0]))
+		{
+			final LegalBehavior B =CMLib.law().getLegalBehavior(msg.source().location());
+			final Area A = CMLib.law().getLegalObject(msg.source().location());
+			if((A!=null)&&(B!=null))
+			{
+				B.accuse(A, msg.source(), null, Arrays.copyOfRange(event, 1, event.length));
+				return true;
+			}
+		}
+		return false; // normal zap (cancel message)
 	}
 
 	@Override
@@ -226,7 +258,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 						return super.okMessage(myHost,msg);
 				}
 				msg.source().tell((message.length()==0)?L("You can not go that way."):message);
-				return false;
+				return executeEvent(msg);
 			}
 			else
 			if(((msg.target() instanceof Rideable)&&(msg.amITarget(affected))
@@ -257,7 +289,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 								return super.okMessage(myHost,msg);
 						}
 						msg.source().tell((message.length()==0)?L("You are not permitted in there."):message);
-						return false;
+						return executeEvent(msg);
 					}
 				default:
 					break;

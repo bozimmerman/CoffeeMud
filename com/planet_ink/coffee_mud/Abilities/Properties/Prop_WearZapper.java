@@ -84,21 +84,21 @@ public class Prop_WearZapper extends Prop_HaveZapper
 			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
-				return false;
+				return executeEvent(msg);
 			}
 			break;
 		case CMMsg.TYP_WEAR:
 			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
-				return false;
+				return executeEvent(msg);
 			}
 			break;
 		case CMMsg.TYP_WIELD:
 			if((!CMLib.masking().maskCheck(this.mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
 			{
 				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,msgStr);
-				return false;
+				return executeEvent(msg);
 			}
 			break;
 		case CMMsg.TYP_GET:
