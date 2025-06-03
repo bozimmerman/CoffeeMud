@@ -1,6 +1,6 @@
 var menuAreaHeight = 20;
 var menuArea = null;
-var menuBackgroundColor = "#404040";
+var menuBackgroundColor = "#106010";
 var menuForegroundColor = "Yellow";
 var menuWindow = null;
 
@@ -155,7 +155,7 @@ function getOptionWindow(heading, w, h)
 		menuWindow = document.createElement('div');
 		menuWindow.style.cssText = "position:absolute;top:20%;left:10%;height:60%;width:80%;z-index:99;";
 		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;cursor: pointer;";
-		menuWindow.style.backgroundColor = 'darkgray';
+		menuWindow.style.backgroundColor = 'darkgreen';
 		menuWindow.style.visibility = 'visible';
 		menuWindow.style.color = 'black';
 		document.body.appendChild(menuWindow);
