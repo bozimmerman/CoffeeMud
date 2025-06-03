@@ -1271,12 +1271,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected LoginResult loginAcctcharPword(final LoginSessionImpl loginObj, final Session session)
+	protected LoginResult loginAcctcharPword(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
 		if(CMLib.encoder().passwordCheck(loginObj.password, loginObj.player.password()))
 		{
-			if((loginObj.player.accountName()==null)||(loginObj.player.accountName().trim().length()==0))
+			if((loginObj.player.accountName()==null)
+			||(loginObj.player.accountName().trim().length()==0))
 			{
 				session.println(L("\n\rThis mud is now using an account system.  Please create a new account "
 								+ "and use the IMPORT command to add your character(s) to your account."));
@@ -1288,6 +1289,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				session.println(L("\n\rThis mud uses an account system.  Your account name is `^H@x1^N`.\n\r"
 								+ "Please use this account name when logging in.",loginObj.player.accountName()));
+				final LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
+				if(completeResult == LoginResult.NO_LOGIN)
+				{
+					loginObj.state=LoginState.LOGIN_START;
+					return null;
+				}
+				return LoginResult.NORMAL_LOGIN;
 			}
 		}
 		loginObj.state=LoginState.LOGIN_START;
