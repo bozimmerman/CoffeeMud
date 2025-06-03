@@ -804,6 +804,13 @@ var MXP = function(sipwin)
 			this.doSpecialProcessing(E, endTag || selfCloser);
 
 		definition = this.processAnyEntities(definition, E);
+		if(tag === 'FONT')
+		{
+			// i hate this
+			var x = definition.indexOf(';font-family: ;font-size: ;"');
+			if(x>0)
+				definition = definition.substr(0,x) + definition.substr(x+27);
+		}
 		if (endTag)
 		{
 			var endHtml = '';

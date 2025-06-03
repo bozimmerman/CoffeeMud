@@ -281,6 +281,7 @@ var BPPARSE = function(lfok)
 					}
 				}
 				else
+				if(c != BPCODE.IAC)
 					curr.data.push(c);
 				break;
 			}

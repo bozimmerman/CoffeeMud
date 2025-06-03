@@ -365,7 +365,7 @@ function SipletWindow(windowName)
 							this.setVariable('match'+i,match[i]);
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.log(e);};
+						try { eval(action); } catch(e) {console.error(e);};
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						match = trig.pattern.exec(this.textBuffer);
@@ -381,7 +381,7 @@ function SipletWindow(windowName)
 						prev += x + trig.pattern.length + 1;
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
 						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.log(e);};
+						try { eval(action); } catch(e) {console.error(e);};
 						if(trig.once)
 							trig.disabled=true;
 						x = this.textBuffer.indexOf(trig.pattern,prev);
@@ -455,7 +455,7 @@ function SipletWindow(windowName)
 				{
 					try {
 						calls[i](event);
-					} catch(e){console.log(e);}
+					} catch(e){console.error(e);}
 					if(event.cancelBubble)
 						return;
 				}
@@ -483,7 +483,7 @@ function SipletWindow(windowName)
 							this.setVariable('match'+i,match[i]);
 						txt = txt.replace(alias.pattern,this.fixVariables(alias.replace));
 						var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.log(e);};
+						try { eval(action); } catch(e) {console.error(e);};
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						return txt
@@ -493,7 +493,7 @@ function SipletWindow(windowName)
 				if(txt.startsWith(alias.pattern))
 				{
 					var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-					try { eval(action); } catch(e) {console.log(e);};
+					try { eval(action); } catch(e) {console.error(e);};
 					return alias.replace + txt.substr(alias.pattern.length);
 				}
 			}
@@ -609,7 +609,7 @@ function SipletWindow(windowName)
 		var execute = function() {
 			var action = me.fixVariables(timer.action.replaceAll('\\n','\n'));
 			var win = me;
-			try { eval(action); } catch(e) {console.log(e);};
+			try { eval(action); } catch(e) {console.error(e);};
 			if(timer.option == 'repeat')
 			{
 				timer.timerId = setTimeout(execute, timer.delay);
@@ -991,7 +991,7 @@ function SipletWindow(windowName)
 			try {
 				json = JSON.parse(json);
 			} catch(e) {
-				console.log(e);
+				console.error(e);
 				return;
 			}
 		}
@@ -1018,7 +1018,7 @@ function SipletWindow(windowName)
 			try {
 				json = JSON.parse(json);
 			} catch(e) {
-				console.log(e);
+				console.error(e);
 				return;
 			}
 		}
@@ -1350,7 +1350,7 @@ function PostEvent(event)
 		try {
 			window.siplets[k].plugins.postEvent(event);
 		} catch(e) {
-			console.log(e);
+			console.error(e);
 		}
 	}
 }

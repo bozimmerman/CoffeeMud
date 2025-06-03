@@ -19,39 +19,40 @@ if (isElectron)
 		this.host = url.substr(0,x);
 		this.port = parseInt(url.substr(x+6));
 		// Initialize TCP socket
+		var self = this;
 		this.socket = net.createConnection({ host: this.host, port: this.port }, function() 
 		{
-			this.socket.readyState = WebSocket.OPEN;
-			if (this.onopen) {
-				this.onopen(new Event('open'));
+			self.socket.readyState = WebSocket.OPEN;
+			if (self.onopen) {
+				self.onopen(new Event('open'));
 			}
 		});
 	
 		this.socket.on('data', function(data) 
 		{
-			this.socket.readyState = WebSocket.OPEN;
-			if (this.onmessage) {
+			self.socket.readyState = WebSocket.OPEN;
+			if (self.onmessage) {
 				var arrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
-				this.onmessage({ data: arrayBuffer });
+				self.onmessage({ data: arrayBuffer });
 			}
 		});
 	
 		this.socket.on('error', function(err) 
 		{
-			if (this.onerror) {
-				this.onerror(new ErrorEvent('error', { error: err }));
+			if (self.onerror) {
+				self.onerror(new ErrorEvent('error', { error: err }));
 			}
 		});
 	
 		this.socket.on('close', function() 
 		{
-			if (this.socket.readyState !== WebSocket.CLOSED) 
+			if (self.socket.readyState !== WebSocket.CLOSED) 
 			{
-				this.socket.readyState = WebSocket.CLOSED;
-				if (this.onclose) {
-					this.onclose(new Event('close'));
+				self.socket.readyState = WebSocket.CLOSED;
+				if (self.onclose) {
+					self.onclose(new Event('close'));
 				}
-				this.cleanup();
+				self.cleanup();
 			}
 		});
 	

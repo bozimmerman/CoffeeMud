@@ -170,44 +170,37 @@ var TELNET = function(sipwin)
 					var k = subOptionData.shift();
 					if(k == NEWENV.SEND)
 					{
-						while(subOptionData.length>=0)
+						var minLength = 0;
+						while(subOptionData.length>=minLength)
 						{
+							minLength = 2;
 							var varName = '';
 							var c;
 							var typ;
-							if((typ=vartypes.indexOf(subOptionData.shift())) < 0)
-								break;
-							while(subOptionData.length>0)
+							if(subOptionData.length>0)
 							{
-								if(vartypes.indexOf(subOptionData[0])>=0)
-									break;
-								c=subOptionData.shift();
-								if((c == NEWENV.ESC) && (subOptionData.length>0))
-									varName += String.fromCharCode(subOptionData.shift()).toUpperCase();
-								else
-									varName += String.fromCharCode(c).toUpperCase();
-							}
-							response = response.concat([
-								TELOPT.IAC, TELOPT.SB, TELOPT.NEWENVIRON, NEWENV.IS]);
-							if(varName == 'USER')
-							{
-								if(sipwin.pb && sipwin.pb.user)
+								if((subOptionData[0]==NEWENV.IS)&&(subOptionData.length>1))
+									subOptionData.shift();
+								if((vartypes.indexOf(typ=subOptionData.shift())) < 0)
+									break; // exit and do nothing
+								while(subOptionData.length>0)
 								{
-									response = response.concat([typ]);
-									response = response.concat(StringToAsciiArray(sipwin.pb.user));
+									if(vartypes.indexOf(subOptionData[0])>=0)
+										break; // done, so process it
+									c=subOptionData.shift();
+									if((c == NEWENV.ESC) && (subOptionData.length>0))
+										varName += String.fromCharCode(subOptionData.shift()).toUpperCase();
+									else
+									if(c>=32)
+										varName += String.fromCharCode(c).toUpperCase();
 								}
 							}
-							else
-							if(varName == 'ACCT')
-							{
-								if(sipwin.pb && sipwin.pb.accountName)
-								{
-									response = response.concat([typ]);
-									response = response.concat(StringToAsciiArray(sipwin.pb.accountName));
-								}
-							}
-							else
-							if(varName == 'JOB')
+							response = response.concat([TELOPT.IAC, TELOPT.SB, TELOPT.NEWENVIRON, NEWENV.IS]);
+							if((varName == 'USER')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"USER",(sipwin.pb && sipwin.pb.user)?sipwin.pb.user:''));
+							if((varName == 'ACCT')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"ACCT",(sipwin.pb && sipwin.pb.accountName)?sipwin.pb.accountName:''));
+							if((varName == 'JOB')||(varName.length == 0))
 							{
 								if(!sipwin.jobid)
 								{
@@ -215,39 +208,18 @@ var TELNET = function(sipwin)
 									for(var i=0;i<16;i++)
 										sipwin.jobid += String.fromCharCode(Math.floor(Math.random()*94)+33);
 								}
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray(sipwin.jobid));
+								response = response.concat(this.newEnvironVar(typ,"JOB",sipwin.jobid));
 							}
-							else
-							if(varName == "UTF-8")
-							{
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray("UTF-8"));
-							}
-							else
-							if(varName == "CLIENT_NAME")
-							{
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray(Siplet.NAME));
-							}
-							else
-							if(varName == "CLIENT_VERSION")
-							{
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray(''+Siplet.VERSION_MAJOR));
-							}
-							else
-							if(varName == "MTTS")
-							{
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray(''+this.mttsBitmap));
-							}
-							else
-							if(varName == "TERMINAL_TYPE")
-							{
-								response = response.concat([typ]);
-								response = response.concat(StringToAsciiArray(this.termType));
-							}
+							if((varName == 'CHARSET')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"CHARSET",(sipwin.pb && sipwin.pb.accountName)?sipwin.pb.accountName:''));
+							if((varName == 'CLIENT_NAME')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"CLIENT_NAME",Siplet.NAME));
+							if((varName == 'CLIENT_VERSION')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"CLIENT_VERSION",''+Siplet.VERSION_MAJOR));
+							if((varName == 'MTTS')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"MTTS",''+this.mttsBitmap));
+							if((varName == 'TERMINAL_TYPE')||(varName.length == 0))
+								response = response.concat(this.newEnvironVar(typ,"TERMINAL_TYPE",this.termType));
 							response = response.concat([TELOPT.IAC, TELOPT.SE]);
 						} // get the value
 					}
@@ -552,6 +524,19 @@ var TELNET = function(sipwin)
 		if(this.debug && response.length)
 			logDat('resp', response, TELOPT);
 		return new Uint8Array(response).buffer;
+	};
+
+	this.newEnvironVar =function(typ, key, value)
+	{
+		var response = [];
+		if(value)
+		{
+			response = response.concat([typ]);
+			response = response.concat(StringToAsciiArray(key));
+			response = response.concat([NEWENV.VALUE]);
+			response = response.concat(StringToAsciiArray(value));
+		}
+		return response;
 	};
 	
 	this.gmcpReceive = function(buffer)
