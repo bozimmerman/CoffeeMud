@@ -1,6 +1,6 @@
 var menuAreaHeight = 20;
 var menuArea = null;
-var menuBackgroundColor = "#106010";
+var menuBackgroundColor = "#105010";
 var menuForegroundColor = "Yellow";
 var menuWindow = null;
 
