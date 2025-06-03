@@ -2,13 +2,12 @@
 <IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Media')">
 <TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px;table-layout:fixed">
 <TR>
-	<TD COLSPAN=2>
+	<TD COLSPAN=2 VALIGN=TOP>
 		<SPAN ID=MEDIASPAN style="visibility:hidden"><IMG ID=MEDIAPREV ALIGN=RIGHT style="max-width:100px;max-height:100px;object-fit:contain;"></SPAN>
 		<B>Media Tree</B><BR>
 		<SPAN ID="SCRIPTREE">
 		</SPAN>
 </TD></TR>
-<TR><TD COLSPAN=2><SPAN ID="SCRIPTVIEW"></SPAN></TD>
 <TR><TD colspan="2">
 	${butt('New Folder',"document.getElementById('MEDIAROOT').createNode();");}
 	${butt('Upload',"document.getElementById('MEDIAROOT').selectFile();");}
