@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.0',
-	VERSION_MINOR: '4',
+	VERSION_MINOR: '6',
 	NAME: window.isElectron?'Sip':'Siplet'
 };
 
