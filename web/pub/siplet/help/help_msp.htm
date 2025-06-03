@@ -1,0 +1,18 @@
+<DIV  ID="HELPROOT">
+<I>The MSP protocol definition can be found at:
+<a href="https://www.zuggsoft.com/zmud/msp.htm">https://www.zuggsoft.com/zmud/msp.htm</a></I>
+<P>
+MSP are completely inline commands for instructing the client to play sound media.
+<P>
+<H3>Command Format:</H3>
+<P>
+<pre>
+!!MUSIC(filename V=volume L=repeats C=continue T=url P=priority)
+!!SOUND(filename V=volume L=repeats C=continue T=url P=priority)
+</pre>
+MSP is extremely simple.  The filename is the name of the sound file, e.g. "sound.wav",
+while volume and priority are numbers from 0-100.  Continue (not supported here) is 0
+or 1, while the url is the web location that the sound can be downloaded fromm, e.g.
+"http://coffeemud.net/sounds/". If the filename is the word "off", then it will stop playing.
+<P>
+</DIV>

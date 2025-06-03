@@ -1,0 +1,40 @@
+<DIV  ID="HELPROOT">
+<I>The GMCP protocol definition can be found at:
+<a href="https://tintin.mudhalla.net/protocols/gmcp/">https://tintin.mudhalla.net/protocols/gmcp/</a></I>
+<P>
+GMCP packets consist of a command (package) and a json document with arguments or parameters.
+The base protocol defines only the Core package, and leaves others to emergence in the community.
+<P>
+<H3>Internal GMCP Packages:</H3>
+<P>
+<B>Core</B><BR>
+<pre>
+Core.Hello
+Core.Supports.Set [string, string, ...]
+Core.Supports.Add [string, string, ...]
+Core.Supports.Remove [string, string, ...]
+</pre>
+This is the basic package that all GMCP implementors must respect.  It negotiates what packages
+are available in common between the client and server.  Each string in the arguments above
+is the name of a package followed by a space and its version number.
+<P>
+<B>Client.Media</B><BR>
+<pre>
+Client.Media.Load {name|file: ,tag: ,url: }
+Client.Media.Play {name|file: ,tag: ,type: ,url: ,volume: ,loops: ,priority: }
+Client.Media.Stop {name|file: ,tag: ,type: }
+</pre>
+This module is for caching, playing, and stopping audio or video type media.  Only
+the audio media is supported at present.
+<P>
+<B>Client.Login</B><BR>
+<pre>
+Client.Login.Default {type: "password-credentials"}
+Client.Login.Response {user: ,password: }
+Client.Login.Credentials {name|file: ,tag: ,type: }
+</pre>
+This module is logging into a server with credentials.  The type of credentials 
+is sent by the server using the Default command, and the client sends those
+credentials using Credentials, to which the server responds with Response.
+<P>
+</DIV>
