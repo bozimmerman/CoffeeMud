@@ -279,10 +279,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if((talkLocationR == null)
 			||(talkLocationR.amDestroyed()))
-			{
 				talkLocationR = CMLib.map().getRandomRoom();
-			}
-
 			if((clanList != null)
 			&&(clanList.iterator().hasNext()))
 			{
@@ -300,7 +297,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 					talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 					talker.setClan(P.first.clanID(),P.second.intValue());
-					talker.setSoulMate(mob);
 					for(;pc.hasNext();)
 					{
 						P = pc.next();
@@ -308,10 +304,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					}
 					destroyTheTalker = true;
 				}
+				talker.setSoulMate(mob);
 				talker.setLocation(talkLocationR);
 				// never destroy the clans factory mob!
 			}
-			else
+			if(talker == null)
 			{
 				talker=CMClass.getFactoryMOB(); // not factory because he lasts forever
 				talker.setName("^</B^>");
@@ -325,12 +322,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		finally
 		{
-			if (destroyTheTalker && (talker != null))
+			if(talker != null)
 			{
-				talker.basePhyStats().setDisposition(0);
-				talker.phyStats().setDisposition(0);
-				talker.setSoulMate(null);
-				talker.destroy();
+				if (destroyTheTalker)
+				{
+					talker.basePhyStats().setDisposition(0);
+					talker.phyStats().setDisposition(0);
+					talker.setSoulMate(null);
+					talker.destroy();
+				}
+				else
+					talker.setSoulMate(null);
 			}
 		}
 	}
