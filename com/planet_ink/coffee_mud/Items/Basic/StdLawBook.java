@@ -1416,12 +1416,54 @@ public class StdLawBook extends StdItem
 		{
 			mob.tell(L("1. Trespassers : @x1",CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS"))));
 			mob.tell(L("2. Law         : @x1",shortLawDesc(theLaw.basicCrimes().get("TRESPASSING"))));
+			final int highest=2;
+			/*
+			final StringBuilder str = new StringBuilder("");
+			List<String> tresspassRoomsV=theLaw.trespassRooms();
+			if(CMParms.combine(tresspassRoomsV,0).equals("@"))
+				tresspassRoomsV=new Vector<String>();
+			for(int v=0;v<tresspassRoomsV.size();v++)
+			{
+				final String s=tresspassRoomsV.get(v);
+				highest++;
+				final Room R=CMLib.map().getRoom(s);
+				if(R!=null)
+					str.append((5+v)+". TRESSPASS ROOM: "+R.displayText(mob)+"\n\r");
+				else
+					str.append((5+v)+". TRESSPASS ROOM: Rooms called '"+s+"'.\n\r");
+			}
+			if(highest == 2)
+				str.append("*. TRESSPASS ROOM: *entire area*\n\r");
+			mob.session().colorOnlyPrintln(str.toString());
+
+			*/
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				return;
-			final String prompt=mob.session().choose(L("Enter one to change or RETURN: "),"12\n","\n");
-			final int x=CMath.s_int(prompt);
-			if((x<=0)||(x>2))
-				return;
+			String msgStr;
+			//boolean changed = false;
+			//msgStr = L("\n\rEnter 'A' to add a new tresspass room, or enter a number to modify: ");
+			msgStr = L("\n\rEnter a number to modify: ");
+			final String prompt=mob.session().prompt(msgStr,"");
+			int x = -1;
+			/*
+			if(prompt.equalsIgnoreCase("A"))
+			{
+				if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
+					mob.tell(L("You can not add this room as a tresspass room, as it is not in the area."));
+				else
+				if(mob.session().confirm(L("Add this room as a new tresspass room (y/N)? "),"N"))
+				{
+					tresspassRoomsV.add(CMLib.map().getExtendedRoomID(mob.location()));
+					changed=true;
+				}
+			}
+			else
+			*/
+			{
+				x=CMath.s_int(prompt);
+				if((x<=0)||(x>highest))
+					return;
+			}
 			if(x==1)
 			{
 				String s="?";
@@ -1459,6 +1501,28 @@ public class StdLawBook extends StdItem
 					mob.tell(L("Changed."));
 				}
 			}
+			/*
+			else
+			{
+				if(mob.session().confirm(L("Remove this room as a tresspass room (y/N)? "),"N"))
+				{
+					tresspassRoomsV.remove(x-2);
+					changed=true;
+				}
+			}
+			if(changed)
+			{
+				final StringBuffer s2=new StringBuffer("");
+				for(int v=0;v<tresspassRoomsV.size();v++)
+					s2.append((tresspassRoomsV.get(v))+";");
+				if(s2.length()==0)
+					s2.append("@");
+				else
+					s2.deleteCharAt(s2.length()-1);
+				changeTheLaw(A,B,mob,theLaw,"TRESPASSROOM",s2.toString());
+				mob.tell(L("Changed."));
+			}
+			*/
 		}
 	}
 

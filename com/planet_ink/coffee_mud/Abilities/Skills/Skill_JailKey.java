@@ -112,7 +112,7 @@ public class Skill_JailKey extends StdSkill
 			&&(E2!=null))
 				rooms.add(R2);
 		}
-		return legalBehavior.isJailRoom(legalArea, rooms);
+		return legalBehavior.isAnyJailRoom(legalArea, rooms);
 	}
 
 	protected boolean isJailIshRoom(final List<Room> jails)
@@ -157,7 +157,7 @@ public class Skill_JailKey extends StdSkill
 				if(B==null)
 					unlockExit=null;
 				else
-				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location(), unlockRoom)))
+				if((!B.isAnyJailRoom(legalA,new XVector<Room>(mob.location(), unlockRoom)))
 				&&(!isRightOutsideACell(mob.location(), B, legalA))
 				&&(!isRightOutsideACell(unlockRoom, B, legalA)))
 					unlockExit=null;

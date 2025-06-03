@@ -97,6 +97,14 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
+	public void clear()
+	{
+		this.root.clear();
+		this.lastChangedTime = System.currentTimeMillis();
+	}
+
+
+	@Override
 	public void setSingleAreaFlag(final boolean tf)
 	{
 		this.singleAreaFlag = tf;

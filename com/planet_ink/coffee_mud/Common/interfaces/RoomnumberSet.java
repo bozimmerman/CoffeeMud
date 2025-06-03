@@ -143,4 +143,9 @@ public interface RoomnumberSet extends CMCommon
 	 * @return a set of numbers.
 	 */
 	public LongSet getGrouper(String areaName);
+
+	/**
+	 * Clears this set completely
+	 */
+	public void clear();
 }

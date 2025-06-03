@@ -311,7 +311,7 @@ public class Gaoler extends StdCharClass
 			&&(E2!=null))
 				rooms.add(R2);
 		}
-		return legalBehavior.isJailRoom(legalArea, rooms);
+		return legalBehavior.isAnyJailRoom(legalArea, rooms);
 	}
 
 	public boolean isRightOutsideAnOccupiedCell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
@@ -330,7 +330,7 @@ public class Gaoler extends StdCharClass
 		}
 		if(rooms.size()==0)
 			return false;
-		return legalBehavior.isJailRoom(legalArea, rooms);
+		return legalBehavior.isAnyJailRoom(legalArea, rooms);
 	}
 
 	protected boolean isAnOfficerOfTheCourt(final MOB mob, final LegalBehavior legalBehavior, final Area legalArea)
@@ -362,7 +362,7 @@ public class Gaoler extends StdCharClass
 		final Area legalArea=CMLib.law().getLegalObject(R);
 		if((legalBehavior != null)
 		&&(legalArea != null)
-		&&(legalBehavior.isJailRoom(legalArea, new XVector<Room>(R)))
+		&&(legalBehavior.isAnyJailRoom(legalArea, new XVector<Room>(R)))
 		&&(legalBehavior.hasWarrant(legalArea, M)))
 			return true;
 		return false;

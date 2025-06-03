@@ -52,12 +52,6 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	@Override
-	protected String getLawParms()
-	{
-		return "custom";
-	}
-
 	protected String			savedHoldingClan	= "";
 	protected String			prevHoldingClan		= "";
 	protected String			holdingClan			= "";
@@ -225,6 +219,7 @@ public class Conquerable extends Arrest
 	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
+		super.lawName = "custom";
 		journalName=CMParms.getParmStr(newParms,"JOURNAL","");
 		allowLaw=CMParms.getParmStr(newParms,"LAW","FALSE").toUpperCase().startsWith("T");
 		switchOwnership=CMParms.getParmStr(newParms,"OWNERSHIP","TRUE").toUpperCase().startsWith("T");

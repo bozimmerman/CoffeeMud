@@ -323,7 +323,7 @@ public interface LegalBehavior extends Behavior
 	 * @param jails a list of Room objects to inspect
 	 * @return whether any one of the room objects is, in fact, a jail
 	 */
-	public boolean isJailRoom(Area myArea, List<Room> jails);
+	public boolean isAnyJailRoom(Area myArea, List<Room> jails);
 
 	/**
 	 * Issues a LegalWarrant against the accused on behalf of the given

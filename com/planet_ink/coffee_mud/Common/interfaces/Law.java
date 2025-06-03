@@ -155,6 +155,12 @@ public interface Law extends CMCommon
 	public boolean lawIsActivated();
 
 	/**
+	 * Returns last time the law was reset, for observers to update.
+	 * @return time in milliseconds that this law object was last reset.
+	 */
+	public long lastResetTime();
+
+	/**
 	 * Returns a warrant if the given mob or player mob object
 	 * represents someone accused of killing an officer.
 	 *
@@ -343,6 +349,15 @@ public interface Law extends CMCommon
 	 * @return a list of strings denoting jail rooms
 	 */
 	public List<String> jailRooms();
+
+	/**
+	 * A list of strings denoting which rooms are considered
+	 * locations to be charged with trespassing.  An empty
+	 * list means the entire area is.
+	 *
+	 * @return a list of strings denoting trespass rooms
+	 */
+	public List<String> trespassRooms();
 
 	/**
 	 * A list of strings denoting which rooms are considered release
@@ -733,6 +748,7 @@ public interface Law extends CMCommon
 		"JUDGE=@\n"+
 		"JAIL=@\n"+
 		"RELEASEROOM=@\n"+
+		"TRESPASSROOM=@\n"+
 		"WARNINGMSG="+CMLib.lang().L("Your behavior is unacceptable.  Do not repeat this offense.  You may go.")+"\n"+
 		"THREATMSG="+CMLib.lang().L("That behavior is NOT tolerated here.  Keep your nose clean, or next time I may not be so lenient.  You may go.")+"\n"+
 		"JAIL1MSG="+CMLib.lang().L("You are hereby sentenced to minimum jail time.  Take away the prisoner!")+"\n"+
