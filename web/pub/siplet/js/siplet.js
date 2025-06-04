@@ -14,9 +14,13 @@ function SipletWindow(windowName)
 {
 	this.decoder = new TextDecoder("utf-8");
 	this.siplet = Siplet;
-	this.width = getConfig('window/width',80);
-	this.height = getConfig('window/height',25);;
-	this.maxLines = getConfig('window/lines',5000);;
+	this.width = 80;
+	this.height = 25;
+	this.charWidth = parseFloat(getConfig('window/fontsize', '16px'));
+	this.charHeight = parseFloat(getConfig('window/fontsize', '16px')) * 0.7;
+	this.pixelWidth = 800;
+	this.pixelHeight = 600;
+	this.maxLines = getConfig('window/lines',5000);
 	this.MSPsupport = false;
 	this.MSDPsupport = false;
 	this.GMCPsupport = false;
@@ -25,7 +29,7 @@ function SipletWindow(windowName)
 	this.wsopened = false;
 	this.windowName = windowName;
 	this.bin = new BPPARSE(false);
-	this.ansi = new ANSISTACK();
+	this.ansi = new ANSISTACK(this);
 	this.telnet = new TELNET(this);
 	this.msp = new MSP(this);
 	this.mxp = new MXP(this);
@@ -69,11 +73,84 @@ function SipletWindow(windowName)
 		}
 	};
 	
+	this.fixCharDimensions = function()
+	{
+		var fontFace = this.topWindow.style.fontFamily;
+		var fontSize = this.topWindow.style.fontSize;
+		fontSize = parseFloat(fontSize);
+		
+		var oldWidth = this.width;
+		var oldHeight = this.height;
+		var oldCharWidth = this.charWidth;
+		var oldCharHeight = this.charHeight;
+		var oldPixelWidth = this.pixelWidth;
+		var oldPixelHeight = this.pixelHeight;
+		
+		var computedStyle = window.getComputedStyle(this.window);
+		var pixelWidth = this.window.offsetWidth;
+		var pixelHeight = this.window.offsetHeight;
+		var paddingLeft = parseFloat(computedStyle.paddingLeft);
+		var paddingRight = parseFloat(computedStyle.paddingRight);
+		var borderLeft = parseFloat(computedStyle.borderLeftWidth);
+		var borderRight = parseFloat(computedStyle.borderRightWidth);
+		var contentWidth = pixelWidth - paddingLeft - paddingRight - borderLeft - borderRight;
+		var paddingTop = parseFloat(computedStyle.paddingTop);
+		var paddingBottom = parseFloat(computedStyle.paddingBottom);
+		var borderTop = parseFloat(computedStyle.borderTopWidth);
+		var borderBottom = parseFloat(computedStyle.borderBottomWidth);
+		var contentHeight = pixelHeight - paddingTop - paddingBottom - borderTop - borderBottom;
+		// Measure character width
+		var widthSpan = document.createElement('span');
+		widthSpan.style.fontSize = fontSize + 'px';
+		widthSpan.style.fontFamily = fontFace;
+		widthSpan.style.position = 'absolute';
+		widthSpan.style.visibility = 'hidden';
+		widthSpan.style.whiteSpace = 'pre';
+		widthSpan.textContent = 'M';
+		this.window.appendChild(widthSpan);
+		var charWidth = widthSpan.offsetWidth;
+		var charHeight = widthSpan.offsetHeight;
+		this.window.removeChild(widthSpan);
+		var lineHeight = parseFloat(computedStyle.lineHeight) || fontSize * 1.2; // Fallback: 1.2 * fontSize
+		this.width = Math.floor(contentWidth / charWidth);
+		this.height = Math.floor(contentHeight / lineHeight);
+		this.charWidth = charWidth;
+		this.charHeight = charHeight;
+		this.pixelWidth = contentWidth;
+		this.pixelHeight = contentHeight;
+		if((this.width != oldWidth)||(this.height != oldHeight))
+		{
+			this.telnet.sendNaws(true);
+			this.ansi.sendCharsDimStr(true);
+		}
+		if((this.pixelWidth != oldPixelWidth)||(this.pixelHeight != oldPixelHeight))
+			this.ansi.sendPixelsDimStr(true);
+		if((this.charWidth != oldCharWidth)||(this.charHeight != oldCharHeight))
+			this.ansi.sendCharDimStr(true);
+		this.ansi.sendTermPosStr(true);
+	};
+	
+	this.sendRaw = function(arr)
+	{
+		if (Array.isArray(arr) && (arr.length > 0) 
+		&& this.wsopened && this.wsocket)
+			this.wsocket.send(new Uint8Array(arr).buffer);
+	};
+
+	this.sendStr = function(str)
+	{
+		if ((typeof str === 'string')
+		&& str && this.wsopened && this.wsocket)
+			this.wsocket.send(str);
+	};
+
 	if(this.topWindow)
 	{
 		this.topWindow.onclick = function() { delayhidemenu(); boxFocus(); };
-	    this.topWindow.style.fontFamily = getConfig('window/fontface', 'monospace');
-	    this.topWindow.style.fontSize = getConfig('window/fontsize', '16px');
+		var fontFace = getConfig('window/fontface', 'monospace');
+		var fontSize = getConfig('window/fontsize', '16px');
+	    this.topWindow.style.fontFamily = fontFace;
+	    this.topWindow.style.fontSize = fontSize;
 		this.topWindow.style.whiteSpace = 'pre'; // Preserve spaces as-is
 	    this.topContainer = this.topWindow.firstChild;
 		this.window = this.topContainer.firstChild;
@@ -89,6 +166,7 @@ function SipletWindow(windowName)
     	this.window.style.overflowX = 'auto';
     	this.fixOverflow();
 		this.plugins.reset();
+		this.fixCharDimensions(fontFace, fontSize);
 	}
 	
 	this.connect = function(url)
@@ -254,7 +332,7 @@ function SipletWindow(windowName)
 				this.scrollToBottom(this.window,0);
 		}
 	};
-
+	
 	this.onReceive = function(e)
 	{
 		var entries = me.bin.parse(e.data);
@@ -818,7 +896,7 @@ function SipletWindow(windowName)
 			return;
 		this.displayText(value);
 		value = this.fixVariables(value);
-		this.wsocket.send(value+'\n');
+		this.sendStr(value+'\n');
 	};
 	
 	this.submitHidden = function(value)
@@ -826,7 +904,7 @@ function SipletWindow(windowName)
 		if((value === undefined) || (value == null))
 			return;
 		value = this.fixVariables(value);
-		this.wsocket.send(value+'\n');
+		this.sendStr(value+'\n');
 	};
 	
 	this.isAtBottom = function(diff)
@@ -1010,9 +1088,7 @@ function SipletWindow(windowName)
 			response.push(jsonStr.charCodeAt(i));
 		response.push(TELOPT.IAC);
 		response.push(TELOPT.SE);
-		var buffer = new Uint8Array(response).buffer;
-		if ((buffer.byteLength > 0) && (me.wsopened))
-			me.wsocket.send(buffer);
+		me.sendRaw(response);
 	};
 	
 	this.sendMSDP = function(json)
@@ -1077,9 +1153,7 @@ function SipletWindow(windowName)
 		}
 		response.push(TELOPT.IAC);
 		response.push(TELOPT.SE);
-		var buffer = new Uint8Array(response).buffer;
-		if ((buffer.byteLength > 0) && (me.wsopened))
-			me.wsocket.send(buffer);
+		me.sendRaw(response);
 	};
 	
 	this.enableTrigger = function(value)
@@ -1289,6 +1363,16 @@ function CloseAllSiplets()
 	}
 }
 
+function ResizeAllSiplets()
+{
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		if(siplet.window && siplet.topWindow)
+			siplet.fixCharDimensions();
+	}
+}
+
 function AutoConnect()
 {
 	var auto = getConfig('/phonebook/auto','-2');
@@ -1367,23 +1451,23 @@ setTimeout(function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
-			siplet.width = getConfig('window/width','80');
-			siplet.height = getConfig('window/height','25');
 			siplet.maxLines = getConfig('window/lines','5000');
 			siplet.overflow = getConfig('window/overflow','');
 			siplet.fixOverflow();
 		}
 	};
-	addConfigListener('window/width', updateSipletConfigs);
-	addConfigListener('window/height', updateSipletConfigs);
 	addConfigListener('window/lines', updateSipletConfigs);
 	addConfigListener('window/overflow', updateSipletConfigs);
+
 	var updateSipletWindows = function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
-		    siplet.topWindow.style.fontFamily = getConfig('window/fontface', siplet.topWindow.style.fontFamily);
-		    siplet.topWindow.style.fontSize = getConfig('window/fontsize', siplet.topWindow.style.fontSize);
+			var fontFace = getConfig('window/fontface', siplet.topWindow.style.fontFamily);
+			var fontSize = getConfig('window/fontsize', siplet.topWindow.style.fontSize);
+			siplet.topWindow.style.fontFamily = fontFace;
+			siplet.topWindow.style.fontSize = fontSize
+			siplet.fixCharDimensions();
 	    }
 	}
 	addConfigListener('window/fontface', updateSipletWindows);

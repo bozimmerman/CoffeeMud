@@ -84,9 +84,10 @@ var ANSITABLES = {
 	}
 };
 	
-var ANSISTACK = function()
+var ANSISTACK = function(sipwin)
 {
 	this.debug = false;
+
 	this.reset = function()
 	{
 		this.blinkOn = false;
@@ -96,6 +97,10 @@ var ANSISTACK = function()
 		this.italicsOn = false;
 		this.background = null;
 		this.foreground = null;
+		this.sentCharDims = false;
+		this.sentCharsDims = false;
+		this.sentPixelsDims = false;
+		this.sentTermPos = false;
 	};
 	this.reset();
 		
@@ -156,6 +161,59 @@ var ANSISTACK = function()
 		if(bg) this.background = bg;
 	};
 
+	this.sendCharDimStr = function(resend)
+	{
+		if(resend && !this.sentCharDims)
+			return;
+		this.sentCharDims = true;
+		sipwin.sendStr(
+				"\x1B[6;"
+				+sipwin.charHeight+";"
+				+sipwin.charWidth
+				+"t");
+	};
+	
+	this.sendTermPosStr = function(resend)
+	{
+		if(resend && !this.sentTermPos)
+			return;
+		this.sentTermPos = true;
+		var topWindow = document.getElementById(sipwin.windowName);
+		var targetRect = sipwin.window.getBoundingClientRect();
+		var parentRect = topWindow.getBoundingClientRect();
+		var x = Math.round(targetRect.left - parentRect.left);
+		var y = Math.round(targetRect.top - parentRect.top);
+		sipwin.sendStr(
+				"\x1B[3;"
+				+x+";"
+				+y
+				+"t");
+	}
+	
+	this.sendCharsDimStr = function(resend)
+	{
+		if(resend && !this.sentCharsDims)
+			return;
+		this.sentCharsDims = true;
+		sipwin.sendStr(
+				"\x1B[8;"
+				+sipwin.height+";"
+				+sipwin.width
+				+"t");
+	};
+	
+	this.sendPixelsDimStr = function(resend)
+	{
+		if(resend && !this.sentPixelsDims)
+			return;
+		this.sentPixelsDims = true;
+		sipwin.sendStr(
+				"\x1B[8;"
+				+sipwin.pixelsHeight+";"
+				+sipwin.pixelsWidth
+				+"t");
+	};
+	
 	this.process = function(dat)
 	{
 		if(this.debug) logDat('ansi', dat);
@@ -355,7 +413,41 @@ var ANSISTACK = function()
 				}
 			}
 		}
+		else
+		if(bits[bits.length-1] == 't')
+		{
+			bits.pop(); // removes the 't'
+			switch(Number(bits[0]))
+			{
+				case 16:
+					this.sendCharDimStr(false);
+					break;
+				case 14:
+					this.sendPixelsDimStr(false);
+					break;
+				case 18:
+					this.sendCharsDimStr(false);
+					break;
+				case 20:
+					sipwin.sendStr(
+							"\x1B]L;"
+							+siplet.tabTitle+";"
+							+"\x1B\\");
+					break;
+				case 21:
+					sipwin.sendStr(
+							"\x1B]l;"
+							+siplet.tabTitle+";"
+							+"\x1B\\");
+					break;
+				case 13:
+					this.sendTermPosStr(false);
+					break;
+				default:
+					break;
+			}
+		}
 		if(this.debug && html) console.log('ansi: '+html);
 		return html;
-	}
+	};
 }

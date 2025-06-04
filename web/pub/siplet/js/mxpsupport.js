@@ -1387,6 +1387,7 @@ var MXP = function(sipwin)
 								otherContentFrame = otherFrames[i];
 						}
 						delete sipwin.frames[name];
+						sipwin.fixCharDimensions();
 					}
 					else
 					{
@@ -1592,6 +1593,7 @@ var MXP = function(sipwin)
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
 						this.frames[name] = newContainerDiv;
+						sipwin.fixCharDimensions();
 					}
 				}
 				else

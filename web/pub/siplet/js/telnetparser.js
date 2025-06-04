@@ -79,6 +79,7 @@ var TELNET = function(sipwin)
 		this.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
 		this.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
 		this.neverSupportMCCP = true; //TODO: maybe add pako later?
+		this.sentNaws = false;
 	};
 	this.reset();
 	
@@ -139,12 +140,7 @@ var TELNET = function(sipwin)
 			}
 			else
 			if (subOptionCode == TELOPT.NAWS)
-			{
-				response = response.concat([
-					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
-						0,sipwin.width,0,sipwin.height,
-					TELOPT.IAC, TELOPT.SE]);
-			}
+				response = response.concat(this.getNaws());
 			else
 			if (subOptionCode == TELOPT.COMPRESS2)
 			{
@@ -282,10 +278,7 @@ var TELNET = function(sipwin)
 				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.CHARSETS]);
 				break;
 			case TELOPT.NAWS:
-				response = response.concat([
-					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
-						0,sipwin.width,0,sipwin.height,
-					TELOPT.IAC, TELOPT.SE]);
+				response = response.concat(this.getNaws());
 				break;
 			case TELOPT.ECHO:
 				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.ECHO]);
@@ -421,10 +414,7 @@ var TELNET = function(sipwin)
 			switch(dat[1])
 			{
 			case TELOPT.NAWS:
-				response = response.concat([
-					TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
-						0,sipwin.width,0,sipwin.height,
-					TELOPT.IAC, TELOPT.SE]);
+				response = response.concat(this.getNaws());
 				break;
 			case TELOPT.SUPRESS_GO_AHEAD:
 				response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.SUPRESS_GO_AHEAD]);
@@ -524,6 +514,23 @@ var TELNET = function(sipwin)
 		if(this.debug && response.length)
 			logDat('resp', response, TELOPT);
 		return new Uint8Array(response).buffer;
+	};
+
+	this.getNaws = function()
+	{
+		this.sentNaws = true;
+		return [
+			TELOPT.IAC, TELOPT.SB, TELOPT.NAWS,
+				0,sipwin.width,0,sipwin.height,
+			TELOPT.IAC, TELOPT.SE
+		];
+	};
+	
+	this.sendNaws = function(resend)
+	{
+		if(resend && !this.sentNaws)
+			return;
+		sipwin.sendRaw(this.getNaws());
 	};
 
 	this.newEnvironVar =function(typ, key, value)

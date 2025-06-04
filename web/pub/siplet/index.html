@@ -1,4 +1,5 @@
 <!--
+TODO: add char-at-a-time input mode
 TODO: FRAME MXP tag allows background image with opacity, perhaps IMAGE?
 TODO: mapper api
 TODO: split-screen scroll-back
@@ -51,6 +52,14 @@ function ConfigureSiplet()
 	LoadGlobalPhonebook();
 	document.body.style.fontFamily='Arial';
 	document.body.style.fontSize='14';
+	var resizeDebouncer = null;
+	window.addEventListener('resize', function() {
+		if(resizeDebouncer == null)
+			resizeDebouncer =setTimeout(function() {
+				ResizeAllSiplets();
+				resizeDebouncer = null;
+			}, 500);
+	});
 }
 var loadableScripts = [
 	"js/config.js", "js/input.js", "js/menu.js", "js/tabs.js", "js/websock.js",
