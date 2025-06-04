@@ -268,6 +268,7 @@ public class WebServer extends Thread
 		|| (((key.interestOps() & SelectionKey.OP_WRITE)==SelectionKey.OP_WRITE) && key.isWritable()))
 		{
 			final HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
+			handler.scheduleReading(); // dont idle out in the midding of processing, omg!
 			//config.getLogger().finer("Read/Write: "+handler.getName());
 			try
 			{
@@ -278,7 +279,6 @@ public class WebServer extends Thread
 						try
 						{
 							key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-							handler.scheduleReading();
 							executor.execute(handler);
 						}
 						catch(final CancelledKeyException x)
