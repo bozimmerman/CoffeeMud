@@ -163,7 +163,7 @@
 
             <li><a href="#script">&lt;SCRIPT&gt;</a></li>
 
-            <li><a href="#mpacctattoo">mpacctattoo</a></li><li><a href="#mpachieve">mpachieve</a></li>
+            <li><a href="#mpacctattoo">mpacctattoo</a></li><li><a href="#mpaccuse">mpaccuse</a></li><li><a href="#mpachieve">mpachieve</a></li>
 
             <li><a href="#mpaffect">mpaffect</a></li>
 
@@ -4697,9 +4697,9 @@ string, or a line delimeter, it must be escaped: \;</p>
 
       <pre>GREET_PROG 100<br />mpecho Greetings $n! This command is mpecho, a mobprog command!<br /><br />&lt;SCRIPT&gt;<br />var greetedBefore=getVar(source().Name(),"GREETEDBEFORE");<br />source().tell("However, this greeting comes from Javascript!");<br />if(greetedBefore == 'true')<br /> source().tell("We've met before\; we will meet again!!");<br />else<br /> setVar(source().Name(),"GREETEDBEFORE","true");<br />&lt;/SCRIPT&gt;<br /><br />if var($n GREETEDBEFORE == true)<br /> mpecho The variable set in Javascript can be read here in mobprog land also!<br />endif<br />~ <br /></pre><h3><a name="mpacctattoo">mpachieve</a></h3>
 
-      <p>Usage:</p>
+      <p>Usage:</p><span style="font-family: monospace;">
 
-mpachieve [player] [achievement id] [amount]<br />
+mpachieve [player] [achievement id] [amount]</span><br />
 
       <p>Adds
 or removes points from the given achievment (tattoo/achievement id) for
@@ -4708,15 +4708,15 @@ achievements.</p>
 
       
 
-      <p>EXAMPLES:</p>
+      <p>EXAMPLES:</p><span style="font-family: monospace;">
 
-mpachieveme $i ACH_MYSPECIAL 10<br />
+mpachieveme $i ACH_MYSPECIAL 10</span><br />
 
       <h3><a name="mpacctattoo">mpacctattoo</a></h3>
 
-      <p>Usage:</p>
+      <p>Usage:</p><span style="font-family: monospace;">
 
-mpacctattoo [target] (-)[tattoo name]<br />
+mpacctattoo [target] (-)[tattoo name]</span><br />
 
       <p>If your mud even uses the common account system, this
 command
@@ -4735,13 +4735,33 @@ you can prefix the name with a number
 to create a temporary tattoo that disappears in the given number of
 ticks.</p>
 
-      <p>EXAMPLES:</p>
+      <p>EXAMPLES:</p><span style="font-family: monospace;">
 
-mpacctattoo $n smurfkiller<br />
+mpacctattoo $n smurfkiller</span><br style="font-family: monospace;" /><span style="font-family: monospace;">
 
-mpacctattoo $n -smurfkiller<br />
+mpacctattoo $n -smurfkiller</span><br style="font-family: monospace;" /><span style="font-family: monospace;">
 
-mpacctattoo $n '50 smurfkiller'<br />
+mpacctattoo $n '50 smurfkiller'</span><br /><h3><a name="mpaccuse">mpaccuse</a></h3>
+
+      <p>Usage:</p><span style="font-family: monospace;">
+
+mpaccuse [target] [witness] [crime name]</span><br style="font-family: monospace;" /><span style="font-family: monospace;">mpaccuse [target] </span><span style="font-family: monospace;">[witness] </span><span style="font-family: monospace;">[loc flags] [crime flags] [crime desc] [sentence] [warn msg]</span><br />
+
+      <p>If
+the current location is in an area with a legal system, then this
+command will allow you to accuse the target of a crime, which would
+then be taken up by the areas legal system. &nbsp;For the other
+arguments, you can either specify an existing crime in the local laws
+by its key name, or you can invent your own crime as described in the
+laws.ini file. &nbsp;The witness can be blank, but keep in mind that some crimes require one.</p>
+
+      
+
+      <p>EXAMPLES:</p><span style="font-family: monospace;">
+
+mpaccuse $n&nbsp;</span><span style="font-family: monospace;">'' </span><span style="font-family: monospace;"> trespassing</span><br style="font-family: monospace;" /><span style="font-family: monospace;">
+
+mpaccuse $n $t '!home' '!recently' 'violating the </span><span style="font-family: monospace;">badness </span><span style="font-family: monospace;">law' 'jail1' 'You are bad!'</span><br style="font-family: monospace;" /><br />
 
       <h3><a name="mpaffect">mpaffect</a></h3>
 
@@ -4764,7 +4784,7 @@ effect for a certain period of time.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpaffect Invisibility $n<br />mpaffect property:Invisibility $n<br />mpaffect Prop_PracticeDummy $n KILLABLE<br />mpaffect Prop_PracticeDummy $n 5TICKS KILLABLE<br /><br /></pre>
+      <pre><span style="font-family: monospace;">mpaffect Invisibility $n</span><br style="font-family: monospace;" /><span style="font-family: monospace;">mpaffect property:Invisibility $n</span><br style="font-family: monospace;" /><span style="font-family: monospace;">mpaffect Prop_PracticeDummy $n KILLABLE</span><br style="font-family: monospace;" /><span style="font-family: monospace;">mpaffect Prop_PracticeDummy $n 5TICKS KILLABLE</span><br /><br /></pre>
 
       <h3><a name="mpalarm">mpalarm</a></h3>
 
@@ -4931,9 +4951,9 @@ affect the probability of success.</p>
 
       <h3><a name="mpcastext">mpcastext</a></h3>
 
-      <p>Usage:</p>
+      <p>Usage:</p><span style="font-family: monospace;">
 
-mpcastext [spell] [target] [arguments]<br />
+mpcastext [spell] [target] [arguments]</span><br />
 
       <p>This
 command causes the
@@ -4955,9 +4975,9 @@ the mobprog engine.</p>
 1-in-20 chance of failure of any skill, and the level of the host will
 affect the probability of success.</p>
 
-      <p>EXAMPLES:</p>
+      <p>EXAMPLES:</p><span style="font-family: monospace;">
 
-mpcast brainwash '$r' "$r" "I'm a pretty princess"<br />
+mpcast brainwash '$r' "$r" "I'm a pretty princess"</span><br />
 
       <h3><a name="mpchannel">mpchannel</a></h3>
 

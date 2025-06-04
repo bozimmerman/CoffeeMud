@@ -13541,6 +13541,63 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				CMLib.achievements().bumpAchievement((MOB)M, A, CMath.s_int(amt), new Object[0]);
 				break;
 			}
+			case 100: // MPACCUSE
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cccp");
+					if(tt==null)
+						return null;
+				}
+				final PhysicalAgent PA = getArgumentMOB(tt[1], ctx);
+				if(!(PA instanceof MOB))
+				{
+					logError(ctx.scripted,"MPACCUSE","RunTime",tt[1]+" is not found.");
+					break;
+				}
+				PhysicalAgent WA = null;
+				if(tt[2].trim().length()>0)
+				{
+					WA = getArgumentMOB(tt[2], ctx);
+					if(!(PA instanceof MOB))
+					{
+						logError(ctx.scripted,"MPACCUSE","RunTime",tt[1]+" is not found.");
+						break;
+					}
+				}
+				final MOB M = (MOB)PA;
+				final MOB WM = (WA != null)?(MOB)WA:null;
+				if(lastKnownLocation==null)
+					confirmLastKnownLocation(ctx.monster,ctx.source);
+				final Room locR = lastKnownLocation;
+				if(locR == null)
+					break;
+				final LegalBehavior B = CMLib.law().getLegalBehavior(locR);
+				if(B == null)
+				{
+					logError(ctx.scripted,"MPACCUSE","RunTime","No law at "+CMLib.map().getExtendedRoomID(locR));
+					break;
+				}
+				final Area A = CMLib.law().getLegalObject(locR);
+				String crimeID=varify(ctx,tt[3]);
+				if(CMParms.numBits(crimeID)==1)
+				{
+					crimeID = CMParms.cleanBit(crimeID);
+					B.accuse(A, M, WM, new String[] {crimeID});
+				}
+				else
+				if(CMParms.numBits(crimeID)==Law.BIT_NUMBITS)
+				{
+					final String[] newBits=CMParms.getCleanBits(crimeID);
+					B.accuse(A, M, WM, newBits);
+				}
+				else
+				{
+					logError(ctx.scripted,"MPACCUSE","RunTime","Wrong arguments.");
+					break;
+				}
+				break;
+			}
 			case 37: // mpenable
 			{
 				if(tt==null)

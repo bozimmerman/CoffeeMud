@@ -683,6 +683,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"DEFAULT", //97 JUST for catching errors...
 		"MPHIT", //98
 		"MPACHIEVE", //99
+		"MPACCUSE", //100
 	};
 
 	/**
