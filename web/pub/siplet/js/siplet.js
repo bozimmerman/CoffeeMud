@@ -49,6 +49,8 @@ function SipletWindow(windowName)
 	this.logStream = null;
 	this.overflow = getConfig('window/overflow','');
 	this.sipfs = window.sipfs;
+	this.debugFlush = false;
+	this.debugText = false;
 	var me = this;
 	
 	this.fixOverflow = function()
@@ -229,6 +231,8 @@ function SipletWindow(windowName)
 			}
 			this.htmlBuffer = reprocess + this.htmlBuffer;
 			this.numLines += brCount(this.htmlBuffer);
+			if(this.debugFlush)
+				console.log('Flush: '+this.htmlBuffer);
 			span.innerHTML = this.htmlBuffer;
 			updateMediaImagesInSpan(span);
 			this.window.appendChild(span);
@@ -313,6 +317,8 @@ function SipletWindow(windowName)
 					var plain = stripHtmlTags(newText.replace(/<br\s*\/?>/gi, '\n'));
 					if(plain)
 					{
+						if(me.debugText)
+							console.log('text: '+plain);
 						me.textBuffer += plain;
 						me.writeLog(plain);
 					}

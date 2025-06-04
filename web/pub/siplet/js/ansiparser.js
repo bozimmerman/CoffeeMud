@@ -194,15 +194,14 @@ var ANSISTACK = function()
 				switch (code)
 				{
 				case 0:
-					if (i == (bits.length - 1))
-					{
-						html += this.blinkOff();
-						html += this.underlineOff();
-						html += this.fontOff();
-						html += this.italicsOff();
-						html += "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
-					}
+					html += this.blinkOff();
+					html += this.underlineOff();
+					html += this.fontOff();
+					html += this.italicsOff();
 					this.boldOn = false;
+					var reset = "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
+					if ((i == (bits.length - 1))&&(html != reset))
+						html += reset;
 					break;
 				case 1:
 					this.boldOn = true;
@@ -250,11 +249,7 @@ var ANSISTACK = function()
 					break;
 				}
 				case 22:
-					html += this.blinkOff();
-					html += this.underlineOff();
-					html += this.fontOff();
-					html += this.italicsOff();
-					html += "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
+					this.boldOn = false;
 					break;
 				case 24:
 					html += this.underlineOff();
@@ -360,6 +355,7 @@ var ANSISTACK = function()
 				}
 			}
 		}
+		if(this.debug && html) console.log('ansi: '+html);
 		return html;
 	}
 }
