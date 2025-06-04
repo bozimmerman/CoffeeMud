@@ -30,6 +30,7 @@ var MXPMODE =
 var MXPElement = function(theName, theDefinition, theAttributes, theFlag, theBitmap, theUnsupported)
 {
 	this.name = theName;
+	this.debug = false;
 	this.definition = theDefinition;
 	this.attributes = theAttributes;
 	this.flag = theFlag;
@@ -718,6 +719,8 @@ var MXP = function(sipwin)
 		var abort = this.cancelProcessing();
 		if(this.parts.length == 0)
 			return ''; // this is an error of some sort
+		if(this.debug)
+			console.log('mxpp:' + oldString);
 		var tag = this.parts[0].toUpperCase().trim();
 		this.parts.splice(0,1); // lose the tag name
 		var endTag = tag.startsWith("/");
@@ -732,14 +735,22 @@ var MXP = function(sipwin)
 		if(tag.startsWith("!"))
 			tag = tag.substr(1).trim();
 		if ((tag.length == 0) || (!(tag in this.elements)))
+		{
+			if(this.debug)
+				console.log('mxpr:' + abort);
 			return abort;
+		}
 		var E = this.elements[tag];
 		var text = "";
 		if (endTag)
 		{
 			var foundAt = this.elementIndexOf(tag);
 			if (foundAt < 0)
+			{
+				if(this.debug)
+					console.log('mxpr:' + oldString);
 				return oldString; // closed an unopened tag!
+			}
 			else
 			{
 				E=this.openElements[foundAt];
@@ -753,6 +764,8 @@ var MXP = function(sipwin)
 			{
 				if ((E.bitmap & MXPBIT.SPECIAL)==MXPBIT.SPECIAL) 
 					this.doSpecialProcessing(E, true);
+				if(this.debug)
+					console.log('mxpr:' + oldString);
 				return oldString; // this is an end html, so why not just return it?
 			}
 			if(this.textProcessor == E)
@@ -783,6 +796,8 @@ var MXP = function(sipwin)
 				{
 					this.textProcessor = E;
 					E.text = '';
+					if(this.debug)
+						console.log('mxpr:' + text);
 					return text == null ? '' : text;
 				}
 			}
@@ -828,7 +843,11 @@ var MXP = function(sipwin)
 		if(this.textProcessor != null)
 		{
 			if(definition.length > 8192) // safety fallout
+			{
+				if(this.debug)
+					console.log('mxpr:');
 				return '';
+			}
 			this.textProcessor.text += definition;
 			return '';
 		}
@@ -837,6 +856,8 @@ var MXP = function(sipwin)
 		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
 			return definition;
 		sipwin.ansi.setColors(E.lastForeground, E.lastBackground);
+		if(this.debug)
+			console.log('mxpr:\\0' + definition);
 		return '\0'+definition;
 	};
 
