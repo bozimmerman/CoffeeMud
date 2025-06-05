@@ -123,6 +123,12 @@ function TEXT(textParsers)
 				str = str.substr(0,i)+'&gt;'+str.substr(i+1);
 				i += 2;
 				break;
+			case '\x07':
+				{
+					var audio = new Audio('images/ding.wav');
+					audio.play();
+				}
+				break;
 			case '<':
 				str = str.substr(0,i)+'&lt;'+str.substr(i+1);
 				i += 3;

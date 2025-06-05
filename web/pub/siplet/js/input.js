@@ -279,7 +279,14 @@ document.onkeydown = function(e) {
 			{
 				var ctrlCode = e.key.toLowerCase().charCodeAt(0)-96;
 				if((ctrlCode>0)&&(ctrlCode<27))
+				{
+					if(ctrlCode == 7)
+					{
+						var audio = new Audio('images/ding.wav');
+						audio.play();
+					}
 					window.currWin.sendRaw([ctrlCode]);
+				}
 			}
 			else
 			{
