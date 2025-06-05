@@ -854,7 +854,11 @@ var MXP = function(sipwin)
 		if((definition=='')
 		||(oldString.toLowerCase() == definition.toLowerCase())
 		||(E.name==this.getFirstTag(definition))) // this line added for FONT exception
+		{
+			if(this.debug)
+				console.log('mxpr:' + definition);
 			return definition;
+		}
 		sipwin.ansi.setColors(E.lastForeground, E.lastBackground);
 		if(this.debug)
 			console.log('mxpr:\\0' + definition);
