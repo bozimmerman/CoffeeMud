@@ -35,7 +35,7 @@ TODO: implement WebViews
 function ConfigureSiplet()
 {
 	window.sipfs = new SipletFileSystem('SipletFileSystem');
-	document.getElementById('loadingmsg').style.visibility='hidden';
+	document.getElementById('loadingmsg').outerHTML = '';
 	document.getElementById('inputarea').style.visibility='visible';
 	configureInput(document.getElementById('inputarea'), document.getElementById('input'));
 	configureMenu(document.getElementById('menuarea'));
