@@ -1380,6 +1380,46 @@ var MXP = function(sipwin)
 		else
 		if (tagName=="FRAME")
 		{
+			var getPixels = function(s)
+			{
+				if(s==null || (s==undefined))
+					return null;
+				if(typeof s === 'number')
+					return s;
+				if(isNumber(s))
+					return Number(s);
+				else
+				if(s.endsWith("px"))
+					return Number(s.substr(0,s.length-2));
+				else
+					return null;
+			};
+			var fixISize = function(s,curr)
+			{
+				if((s==null)||(s==undefined)||(!curr))
+					return null;
+				if(typeof s === 'number')
+					s = ''+s;
+				else
+				{
+					s=s.trim();
+					if(s.endsWith('%'))
+						return s;
+				}
+				var x = getPixels(s);
+				var y = getPixels(curr);
+				if((x == null)||(y==null)) 
+					return;
+				return Math.round(Math.ceil(x / y * 100.0)) + '%';
+			};
+			var dePct = function(s)
+			{
+				if(s==null || (s==undefined))
+					return null;
+				if(s.endsWith('%'))
+					return Number(s.substr(0,s.length-1));
+				return getPixels(s);
+			};
 			var name = E.getAttributeValue("NAME");
 			var action = E.getAttributeValue("ACTION"); // open,close,redirect
 			if(action == null)
@@ -1394,6 +1434,7 @@ var MXP = function(sipwin)
 			var scrolling = E.getAttributeValue("SCROLLING");
 			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
 			var framechoices = this.getFrameMap();
+			var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
 			if("CLOSE" == action.toUpperCase())
 			{
 				if((name != null) && (name in framechoices))
@@ -1401,17 +1442,76 @@ var MXP = function(sipwin)
 					var frame = framechoices[name];
 					//TODO: what if frame == sipwin.window?
 					var sprops = frame.sprops;
-					if(sprops.internal)
+					if(sprops.internal != null)
 					{
 						var parentFrame = frame.parentNode;
-						var otherFrames = Array.from(parentFrame.getElementsByTagName('div'));
-						var otherContentFrame = null;
-						for(var i=0;i<otherFrames.length;i++)
+						var privilegedFrame = parentFrame.childNodes[0];
+						var peerFrames = [];
+						for(var i=2;i<parentFrame.childNodes.length;i++)
 						{
-							if(otherFrames[i] != frame)
-								otherContentFrame = otherFrames[i];
+							var otherFrame = parentFrame.childNodes[i];
+							if(otherFrame.sprops)
+							{
+								if(sprops.align == otherFrame.sprops.align)
+									peerFrames.push(otherFrame);
+							}
 						}
-						delete sipwin.frames[name];
+						peerFrames.push(privilegedFrame);
+						var peerDex = peerFrames.indexOf(frame);
+						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
+						var fleft = frame.style.left;
+						var ftop = frame.style.top;
+						switch(alignx)
+						{
+						case 0: // scooch all left
+							for(var i=peerDex+1;i<peerFrames.length;i++)
+							{
+								var tmp = peerFrames[i].style.left; 
+								peerFrames[i].style.left = fleft;
+								fleft = tmp;
+							}
+							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
+														+ dePct(frame.sprops.width))+'%';
+							break;
+						case 1: //right
+							for(var i=peerDex+1;i<peerFrames.length-1;i++)
+							{
+								var tmp = peerFrames[i].style.left; 
+								peerFrames[i].style.left = fleft;
+								fleft = tmp;
+							}
+							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
+														+ dePct(frame.sprops.width))+'%';
+							break;
+						case 2: // top
+							for(var i=peerDex+1;i<peerFrames.length;i++)
+							{
+								var tmp = peerFrames[i].style.top; 
+								peerFrames[i].style.top = ftop;
+								ftop = tmp;
+							}
+							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
+														+ dePct(frame.sprops.height))+'%';
+							break;
+						case 3: //bottom
+							for(var i=peerDex+1;i<peerFrames.length-1;i++)
+							{
+								var tmp = peerFrames[i].style.top; 
+								peerFrames[i].style.top = ftop;
+								ftop = tmp;
+							}
+							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
+														+ dePct(frame.sprops.height))+'%';
+							break;
+						}
+						for(var k in this.frames)
+						{
+							if((this.frames[k] != frame)
+							&&(frame.contains(this.frames[k])))
+								delete this.frames[k];
+						}
+						parentFrame.removeChild(frame);
+						delete this.frames[name];
 						sipwin.fixCharDimensions();
 					}
 					else
@@ -1436,46 +1536,10 @@ var MXP = function(sipwin)
 						return (Number(s.substr(0,s.length-1))*16)+'px';
 					return s;
 				};
-				var getPixels = function(s)
-				{
-					if(s==null || (s==undefined))
-						return null;
-					if(typeof s === 'number')
-						return s;
-					if(isNumber(s))
-						return Number(s);
-					else
-					if(s.endsWith("px"))
-						return Number(s.substr(0,s.length-2));
-					else
-						return null;
-				};
-				var fixISize = function(s,curr)
-				{
-					if((s==null)||(s==undefined)||(!curr))
-						return null;
-					if(typeof s === 'number')
-						s = ''+s;
-					else
-					{
-						s=s.trim();
-						if(s.endsWith('%'))
-							return s;
-					}
-					var x = getPixels(s);
-					var y = getPixels(curr);
-					if((x == null)||(y==null)) 
-						return;
-					return Math.round(Math.ceil(x / y * 100.0)) + '%';
-				};
-				var dePct = function(s)
-				{
-					if(s==null || (s==undefined))
-						return null;
-					if(s.endsWith('%'))
-						return Number(s.substr(0,s.length-1));
-					return getPixels(s);
-				};
+				if(width == null)
+					width = "50%";
+				if(height == null)
+					height = "50%";
 				top=fixSize(top);
 				left=fixSize(left);
 				width=fixSize(width);
@@ -1506,20 +1570,15 @@ var MXP = function(sipwin)
 				else
 				if(internal != null)
 				{
-					var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
-					var alignx = aligns.indexOf(align.toUpperCase().trim());
+					var alignx = (!align)?-1:aligns.indexOf(align.toUpperCase().trim());
 					if(alignx >= 0)
 					{
-						if(width == null)
-							width = "50%";
-						if(height == null)
-							height = "50%";
 						var siblingDiv = sipwin.window;
 						var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
 						var calced = getComputedStyle(sipwin.window);
 						width=fixISize(width,calced.width); // ensure they are %
 						height=fixISize(height,calced.height);
-						var newContainerDiv = document.createElement('div'); // will replace the old parent window.
+						var newContainerDiv = document.createElement('div');
 						newContainerDiv.style.cssText = containerDiv.style.cssText;
 						containerDiv.appendChild(newContainerDiv);
 						var newContentWindow = document.createElement('div');
@@ -1617,6 +1676,7 @@ var MXP = function(sipwin)
 						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
+						newContainerDiv.sprops = sprops;
 						this.frames[name] = newContainerDiv;
 						sipwin.fixCharDimensions();
 					}
@@ -1659,8 +1719,8 @@ var MXP = function(sipwin)
 				    contentWindow.style.overflowX = 'hidden';
 					if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 					{
-					    contentWindow.style.overflowY = 'auto';
-					    contentWindow.style.overflowX = 'auto';
+						contentWindow.style.overflowY = 'auto';
+						contentWindow.style.overflowX = 'auto';
 					}
 					else
 					if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
