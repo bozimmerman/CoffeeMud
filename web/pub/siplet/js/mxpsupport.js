@@ -1526,6 +1526,8 @@ var MXP = function(sipwin)
 			if((("OPEN" == action.toUpperCase())||("REDIRECT" == action.toUpperCase()))
 			&&(name != null))
 			{
+				if(name in this.frames)
+					return;
 				var fixSize = function(s)
 				{
 					if(s==null || (s==undefined))
