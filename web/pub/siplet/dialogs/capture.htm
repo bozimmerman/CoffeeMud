@@ -2,7 +2,7 @@
 <TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Capture Log</TD>
 </TR><TR>
 	<TD WIDTH=30%>Log Path</TD>
-	<TD><INPUT SIZE=30 ID="CAPTUREPATH" ONCHANGE="setConfig('window/lines',this.value);">
+	<TD><INPUT SIZE=30 ID="CAPTUREPATH" ONCHANGE="if(window.currWin && window.currWin.pb)window.currWin.pb.capture=this.value;">
 	${butt('Select',"document.getElementById('CAPTUREROOT').selectPath();");}
 	</TD>
 </TR><TR>
@@ -33,6 +33,8 @@ setTimeout(function(){
 		stop.checked = true;
 	root.CaptureStart = function() {
 		if(path.value) {
+			if(win.pb)
+				win.pb.capture = path.value;
 			win.openLog(path.value);
 			if(win.logStream != null)
 				return;
