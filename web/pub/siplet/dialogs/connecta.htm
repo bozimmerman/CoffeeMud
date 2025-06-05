@@ -35,6 +35,15 @@
 	<TD><INPUT TYPE=TEXT ID="PHONEBOOKPORT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();" SIZE=5>
 </TD></TR>
 <TR>
+	<TD>Input:</TD>
+	<TD>Disable Box:<INPUT TYPE=CHECKBOX ID="PHONEBOOKDISINPUT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();">
+	    Backspace:<SELECT ID="PHONEBOOKBS" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();">
+	    <OPTION VALUE="8">BS
+	    <OPTION VALUE="127">DEL
+	    </SELECT>
+	</TD>
+</TR>
+<TR>
 	<TD>Account:</TD>
 	<TD><INPUT TYPE=TEXT ID="PHONEBOOKACCT" ONCHANGE="document.getElementById('PHONEBOOKROOT').fixphonebookfields();"
 		SIZE=20 VALUE=""></TD>
@@ -63,6 +72,8 @@
 		var nameField = document.getElementById('PHONEBOOKNAME');
 		var hostField = document.getElementById('PHONEBOOKHOST');
 		var portField = document.getElementById('PHONEBOOKPORT');
+		var disinField = document.getElementById('PHONEBOOKDISINPUT');
+		var inbsField = document.getElementById('PHONEBOOKBS');
 		var acctField = document.getElementById('PHONEBOOKACCT');
 		var userField = document.getElementById('PHONEBOOKUSER');
 		var passField = document.getElementById('PHONEBOOKPASS');
@@ -101,6 +112,8 @@
 				userField.style.backgroundColor='white';
 				passField.value='';
 				passField.style.backgroundColor='white';
+				disinField.checked=false;
+				inbsField.selectedIndex = 0;
 			}
 			else
 			if(Number(phbkField.value) < phonebook.length)
@@ -119,6 +132,14 @@
 				acctField.style.backgroundColor='white';
 				userField.style.backgroundColor='white';
 				passField.style.backgroundColor='white';
+				disinField.checked=false;
+				inbsField.selectedIndex = 0;
+				if(pb.disableInput === true)
+				{
+					disinField.checked=true;
+					inbsField.selectedIndex = 0;
+					setSelectByValue(inbsField, ''+pb.bsCode);
+				}
 			}
 		};
 		
@@ -180,6 +201,8 @@
 			mybpentry.accountName = acctField.value;
 			mybpentry.user = userField.value;
 			mybpentry.password = passField.value;
+			mybpentry.disableInput = disinField.checked;
+			mybpentry.bsCode = Number(inbsField.value);
 			mybpentry.pb = true;
 			var pbnm = root.makephonebookname(mybpentry.user,mybpentry.name,mybpentry.port);
 			if((pbindex >= 0) && (pbindex < phonebook.length))
@@ -226,6 +249,8 @@
 					acctField.value='';
 					userField.value='';
 					passField.value='';
+					disinField.checked=false;
+					inbsField.selectedIndex = 0;
 					setConfig('/phonebook/dial', phonebook);
 					delButt.style.visibility='hidden';
 					for(var i=0;i < window.siplets.length;i++)

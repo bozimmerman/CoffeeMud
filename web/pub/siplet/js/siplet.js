@@ -146,7 +146,7 @@ function SipletWindow(windowName)
 
 	if(this.topWindow)
 	{
-		this.topWindow.onclick = function() { delayhidemenu(); boxFocus(); };
+		this.topWindow.onclick = function() { delayhidemenu(); setInputBoxFocus(); };
 		var fontFace = getConfig('window/fontface', 'monospace');
 		var fontSize = getConfig('window/fontsize', '16px');
 	    this.topWindow.style.fontFamily = fontFace;
@@ -330,6 +330,7 @@ function SipletWindow(windowName)
 			}
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
+			DisplayFakeInput(null);
 		}
 	};
 	
@@ -928,14 +929,28 @@ function SipletWindow(windowName)
 		value = me.process(value);
 		if(value)
 		{
+			var span = this.displayBit(value + '<BR>');
+			updateMediaImagesInSpan(span);
+			DisplayFakeInput(null);
+			return span;
+		}
+		return null;
+	};
+
+	this.displayBit = function(value)
+	{
+		if(value)
+		{
 			var rescroll = this.isAtBottom(-10);
 			var span = document.createElement('span');
-			span.innerHTML = value.replaceAll('\n','<BR>') + '<BR>';
-			updateMediaImagesInSpan(span);
+			this.writeLogHtml(value);
+			span.innerHTML = value.replaceAll('\n','<BR>');
 			this.window.appendChild(span);
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
+			return span;
 		}
+		return null;
 	};
 
 	this.displayAt = function(value, frame)
@@ -1212,6 +1227,16 @@ function SipletWindow(windowName)
 		this.logStream = null;
 	};
 	
+	this.writeLogHtml = function(msg)
+	{
+		if(this.logStream != null)
+		{
+			var plain = stripHtmlTags(msg.replace(/<br\s*\/?>/gi, '\n'));
+			if(plain)
+				me.writeLog(plain);
+		}
+	};
+	
 	this.writeLog = function(msg) {
 		if(this.logStream != null)
 		{
@@ -1237,7 +1262,8 @@ function AddNewSipletTabByHostNPort(host, port)
 		port: port
 	};
 	siplet.pbwhich = '';
-	boxFocus();
+	setInputVisibility(true);
+	setInputBoxFocus();
 	return siplet;
 }
 
@@ -1290,7 +1316,8 @@ function AddNewSipletTabByPB(which)
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 	siplet.pb = pb;
 	siplet.pbwhich = ogwhich;
-	boxFocus();
+	setInputVisibility(!pb.disableInput);
+	setInputBoxFocus();
 	return siplet;
 }
 
@@ -1350,7 +1377,11 @@ function SetCurrentTab(which)
 			}
 		}
 	}
-	boxFocus();
+	if(window.currWin.pb && window.currWin.pb.disableInput)
+		setInputVisibility(false);
+	else
+		setInputVisibility(true);
+	setInputBoxFocus();
 	return window.currWin;
 }
 
@@ -1380,7 +1411,7 @@ function AutoConnect()
 		menuConnect();
 	else
 		AddNewSipletTabByPB(auto);
-	boxFocus();
+	setInputBoxFocus();
 }
 
 function PBSameAs(pb1, pb2)

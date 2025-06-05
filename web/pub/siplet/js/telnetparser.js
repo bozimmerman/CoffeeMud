@@ -565,10 +565,10 @@ var TELNET = function(sipwin)
 			populateDivFromUrl(content, 'dialogs/editor.htm');
 			window.SubmitSipletInputEntry = function()
 			{
-			    var textarea = content.getElementsByTagName('textarea')[0];
-			    sendOneLine(textarea.value);
-			    hideOptionWindow();
-			    setTimeout(boxFocus,500);
+				var textarea = content.getElementsByTagName('textarea')[0];
+				sendOneLine(textarea.value);
+				hideOptionWindow();
+				setTimeout(setInputBoxFocus,500);
 			};
 			var SipletInputEntryFocus = function()
 			{

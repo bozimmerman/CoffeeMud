@@ -188,6 +188,16 @@ function getOptionWindow(heading, w, h)
 	return contentWindow;
 }
 
+function isDialogOpen()
+{
+	if(menuWindow != null)
+	{
+		if(menuWindow.style.visibility == 'visible')
+			return true;
+	}
+	return false;
+}
+
 function menuAbout()
 {
 	var content = getOptionWindow("About",60,40);
@@ -384,29 +394,3 @@ function menuHelp(f)
 		}
 	});
 }
-
-document.onkeydown = function(e) {
-	if(e.altKey && (e.key == 'o'))
-	{
-		var win = window.currWin;
-		if(window.isElectron && win)
-		{
-			if(win.logStream != null)
-				win.closeLog();
-			else
-			{
-				
-				var captureFilename;
-				if(win.pb && win.pb.capture)
-					captureFilename = win.pb.capture;
-				else
-				{
-					var os = require('os');
-					var osPath = require('path');
-					captureFilename = osPath.join(os.tmpdir(),Siplet.NAME.toLowerCase()+'.log');
-				}
-				win.openLog(captureFilename);
-			}
-		}
-	}
-};

@@ -146,7 +146,6 @@ function AddNewTab()
 		tab.style = "border: 1px solid white; padding: 0;background-color:yellow;color:black;";
 		tab.style.fontSize = 10;
 		tab.style.position = 'relative';
-		var currentTab = tabTabs.length;
 		tab.onclick = function() {
 			SetCurrentTabByTab(this);
 		};

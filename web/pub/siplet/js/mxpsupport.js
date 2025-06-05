@@ -1898,6 +1898,9 @@ var MXP = function(sipwin)
 							sipwin.window = dests.pop(); // the text window
 						else
 							sipwin.window = sipwin.topWindow.firstChild.firstChild;
+						setTimeout(function(){
+							DisplayFakeInput(null);
+						},1);
 					};
 					throw error;
 				}
