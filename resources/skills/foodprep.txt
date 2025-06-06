@@ -19,7 +19,7 @@ cream	FOOD		10	milk	2
 tunafish salad	FOOD		10	tuna	1	milk	1	greens	-1	potatoes	-1						
 pasta	FOOD		11	wheat	1	water	1	eggs	1								
 tempura	FOOD		11	Flour	1	herbs	1										
-chocolate	FOOD		12	cocoa	10	milk	1										
+chocolate	FOOD		12	cocoa	1	milk	1										
 fruit juice	DRINK		13	fruit	1	water	1										
 apple juice	DRINK		14	apples	1	water	1										
 berry juice	DRINK		15	berries	1	water	1										

@@ -401,6 +401,26 @@ public class CMath
 	}
 
 	/**
+	 * Returns true if the string is a hex number
+	 * @param s the string to test
+	 * @return true if a hex number, false otherwise
+	 */
+	public final static boolean isHexNumber(final String s)
+	{
+		if(s==null)
+			return false;
+		final String ups=s.toUpperCase().trim();
+		if(ups.length()==0)
+			return false;
+		for(int i=0;i<ups.length();i++)
+		{
+			if("0123456789ABCDEF".indexOf(ups.charAt(i))<0)
+				return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Divide a by b, making sure both are cast to doubles
 	 * and that the return is precisely double.
 	 * @param a the dividend

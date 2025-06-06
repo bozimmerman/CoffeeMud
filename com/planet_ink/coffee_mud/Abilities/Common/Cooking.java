@@ -417,6 +417,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				if(I instanceof RawMaterial)
 					INT=Integer.valueOf(INT.intValue()+((RawMaterial)I).phyStats().weight());
 				else
+				if(I instanceof Food)
+					INT=Integer.valueOf(INT.intValue()+((Food)I).phyStats().weight());
+				else
 					INT=Integer.valueOf(INT.intValue()+1);
 				h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 			}
@@ -483,6 +486,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 								NotEnoughForThisRun=true;
 							if(amounts[i]==0)
 								RanOutOfSomething=true;
+							else
+								break;
 						}
 					}
 				}
