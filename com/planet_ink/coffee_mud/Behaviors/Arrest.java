@@ -69,7 +69,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected Properties 			extraParms			= new Properties();
 	protected String				extraLawParms		= "";
 	protected long					lastLawChange		= 0;
-	protected final RoomnumberSet	trespassSet			= (RoomnumberSet) CMClass.getCommon("RoomnumberSet");
+	protected final RoomnumberSet	trespassSet			= (RoomnumberSet) CMClass.getCommon("DefaultRoomnumberSet");
 
 	@Override
 	public boolean isFullyControlled()
