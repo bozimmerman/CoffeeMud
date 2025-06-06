@@ -423,10 +423,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if((i<str.length()-8)&&(str.charAt(i+1)==str.charAt(i)))
 						{
 							if(!CMath.isHexNumber(str.substring(i+2,i+8)))
-							{
-								if(CMath.isHexNumber(str.substring(i+2,i+4)))
-									i+=3;
-							}
+								i+=3;
 							else
 								i += 7;
 						}
@@ -657,7 +654,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
 						if((i<str.length()-8)&&(str.charAt(i+1)==str.charAt(i)))
-							i += 7;
+						{
+							if(!CMath.isHexNumber(str.substring(i+2,i+8)))
+								i += 3;
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -1628,7 +1630,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							{
 								tos += 2;
 								for(int i=2;i<8;i++)
-									if(CMath.isHexDigit(toSrchC[tos+i]))
+									if(CMath.isHexDigit(toSrchC[tos]))
 										tos++;
 							}
 							else
@@ -1664,7 +1666,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
 							if((x < srchC.length-8)&&(srchC[x+1]==srchC[x]))
-								x+=8;
+							{
+								x+=2;
+								for(int i=2;i<8;i++)
+									if(CMath.isHexDigit(toSrchC[x]))
+										x++;
+							}
 							else
 							if(x < srchC.length-4)
 								x+=4;

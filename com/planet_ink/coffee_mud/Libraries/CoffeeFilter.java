@@ -315,11 +315,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							{
 								if(!CMath.isHexNumber(buf.substring(loop+2,loop+8)))
 								{
-									if(CMath.isHexNumber(buf.substring(loop+2,loop+4)))
-									{
-										len+=3;
-										loop+=3;
-									}
+									len+=3;
+									loop+=3;
 								}
 								else
 								{
@@ -1092,17 +1089,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if((i<buf.length()-8)&&(buf.charAt(i+2)==buf.charAt(i+1)))
 					{
 						if(!CMath.isHexNumber(buf.substring(i+3,i+9)))
-						{
-							if(CMath.isHexNumber(buf.substring(i+3,i+5)))
-								i+=4;
-							else
-								return i+7;
-						}
+							i+=4;
 						else
-						if(i+9<=buf.length())
 							i+=8;
-						else
-							return i+3;
 					}
 					else
 					if(i+5<=buf.length())

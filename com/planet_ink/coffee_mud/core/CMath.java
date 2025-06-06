@@ -50,6 +50,7 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
+	private final static boolean[]		IS_HEX_DIGITS		= new boolean[127];
 
 	static
 	{
@@ -60,6 +61,8 @@ public class CMath
 			if(l<LONG_BITMASKS.length)
 				LONG_BITMASKS[l]=1L<<l;
 		}
+		for (int i = 0; i < 128; i++)
+			IS_HEX_DIGITS[i] = i >= '0' && (i <= '9' || (i >= 'A' && i <= 'F') || (i >= 'a' && i <= 'f'));
 	}
 
 	/**
@@ -407,16 +410,11 @@ public class CMath
 	 */
 	public final static boolean isHexNumber(final String s)
 	{
-		if(s==null)
+		if((s==null)||(s.length()==0))
 			return false;
-		final String ups=s.toUpperCase().trim();
-		if(ups.length()==0)
-			return false;
-		for(int i=0;i<ups.length();i++)
-		{
-			if("0123456789ABCDEF".indexOf(ups.charAt(i))<0)
+		for(int i=0;i<s.length();i++)
+			if(!isHexDigit(s.charAt(i)))
 				return false;
-		}
 		return true;
 	}
 
@@ -1057,7 +1055,6 @@ public class CMath
 		return -1;
 	}
 
-
 	/**
 	 * Checks if a single hex digit
 	 * @param c the hex digit, maybe
@@ -1065,18 +1062,7 @@ public class CMath
 	 */
 	public final static boolean isHexDigit(final char c)
 	{
-		if(c<'0')
-			return false;
-		if(c<'9')
-			return true;
-		if(c<'A')
-			return false;
-		if(c<'G')
-			return true;
-		if(c<'a')
-			return false;
-		if(c<'f')
-			return true;
+		if(c<128) return IS_HEX_DIGITS[c];
 		return false;
 	}
 

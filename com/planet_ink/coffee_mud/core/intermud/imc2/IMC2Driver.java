@@ -984,10 +984,7 @@ public final class IMC2Driver extends Thread
 				if((i < str.length() - 8)&&(str.charAt(i+2)==str.charAt(i+1)))
 				{
 					if(!CMath.isHexNumber(str.substring(i+3,i+9)))
-					{
-						if(CMath.isHexNumber(str.substring(i+3,i+5)))
-							str.delete(i,i+5);
-					}
+						str.delete(i,i+5);
 					else
 						str.delete(i, i + 9);
 				}

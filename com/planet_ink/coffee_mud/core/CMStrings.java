@@ -1318,10 +1318,7 @@ public class CMStrings
 						if((i<c.length-8)&&(c[i+1]==c[i]))
 						{
 							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
-							{
-								if(CMath.isHexNumber(name.substring(i+2,i+4)))
-									i += 3;
-							}
+								i += 3;
 							else
 								i += 7;
 						}
@@ -1404,10 +1401,7 @@ public class CMStrings
 						if((i<c.length-8)&&(c[i+1]==c[i]))
 						{
 							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
-							{
-								if(CMath.isHexNumber(name.substring(i+2,i+4)))
-									i += 3;
-							}
+								i += 3;
 							else
 								i += 7;
 						}
@@ -1494,10 +1488,7 @@ public class CMStrings
 						if((i<c.length()-8)&&(c.charAt(i+1)==c.charAt(i)))
 						{
 							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
-							{
-								if(CMath.isHexNumber(name.substring(i+2,i+4)))
-									i += 3;
-							}
+								i += 3;
 							else
 								i += 7;
 						}
@@ -1586,10 +1577,7 @@ public class CMStrings
 						if((i<c.length-8)&&(c[i+1]==c[i]))
 						{
 							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
-							{
-								if(CMath.isHexNumber(name.substring(i+2,i+4)))
-									i += 3;
-							}
+								i += 3;
 							else
 								i += 7;
 						}
@@ -2024,10 +2012,7 @@ public class CMStrings
 						if((i+9<=str.length())&&(str.charAt(i+2)==c))
 						{
 							if(!CMath.isHexNumber(str.substring(i+3,i+9)))
-							{
-								if(CMath.isHexNumber(str.substring(i+3,i+5)))
-									i+=4;
-							}
+								i+=4;
 							else
 								i += 8;
 						}
@@ -2154,10 +2139,7 @@ public class CMStrings
 						if((i+9<=str.length())&&(str.charAt(i+2)==c))
 						{
 							if(!CMath.isHexNumber(str.substring(i+3,i+9)))
-							{
-								if(CMath.isHexNumber(str.substring(i+3,i+5)))
-									str.delete(i,i+5);
-							}
+								str.delete(i,i+5);
 							else
 								str.delete(i,i+9);
 							i--;
@@ -2500,10 +2482,7 @@ public class CMStrings
 							&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
 							{
 								if(!CMath.isHexNumber(thisStr.substring(i+2,i+8)))
-								{
-									if(CMath.isHexNumber(thisStr.substring(i+2,i+4)))
-										i+=3;
-								}
+									i+=3;
 								else
 									i += 7;
 							}

@@ -280,10 +280,7 @@ public class PaintingSkill extends CommonSkill implements RecipeDriven
 				&&(writing.charAt(i+2)==ColorLibrary.COLORCODE_FANSI256))
 				{
 					if(!CMath.isHexNumber(writing.substring(i+3,i+9)))
-					{
-						if(CMath.isHexNumber(writing.substring(i+3,i+5)))
-							colorCode=writing.substring(i+1, i+5);
-					}
+						colorCode=writing.substring(i+1, i+5);
 					else
 						colorCode=writing.substring(i+1, i+9);
 					break;
@@ -321,10 +318,7 @@ public class PaintingSkill extends CommonSkill implements RecipeDriven
 				&&(desc.charAt(x+2)==c))
 				{
 					if(!CMath.isHexNumber(desc.substring(x+3,x+9)))
-					{
-						if(CMath.isHexNumber(writing.substring(x+3,x+5)))
-							desc.delete(x+1, x+5);
-					}
+						desc.delete(x+1, x+5);
 					else
 						desc.delete(x+1, x+9);
 					desc.insert(x+1, colorCode);
