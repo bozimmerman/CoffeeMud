@@ -1057,6 +1057,29 @@ public class CMath
 		return -1;
 	}
 
+
+	/**
+	 * Checks if a single hex digit
+	 * @param c the hex digit, maybe
+	 * @return true if hex
+	 */
+	public final static boolean isHexDigit(final char c)
+	{
+		if(c<'0')
+			return false;
+		if(c<'9')
+			return true;
+		if(c<'A')
+			return false;
+		if(c<'G')
+			return true;
+		if(c<'a')
+			return false;
+		if(c<'f')
+			return true;
+		return false;
+	}
+
 	/**
 	 * Converts the given string to a floating
 	 * point number, 1&gt;=N&gt;=0, representing

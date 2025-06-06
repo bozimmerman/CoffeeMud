@@ -313,8 +313,19 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						case ColorLibrary.COLORCODE_BANSI256:
 							if((loop+7<buf.length())&&(buf.charAt(loop+1)==c))
 							{
-								len+=7;
-								loop+=7;
+								if(!CMath.isHexNumber(buf.substring(loop+2,loop+8)))
+								{
+									if(CMath.isHexNumber(buf.substring(loop+2,loop+4)))
+									{
+										len+=3;
+										loop+=3;
+									}
+								}
+								else
+								{
+									len+=7;
+									loop+=7;
+								}
 							}
 							else
 							if(loop+3<buf.length())
@@ -475,66 +486,81 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			int final256ColorNum=-1;
 			int endOfCodeIndex = index + 5;
 			final boolean isFg=(c==ColorLibrary.COLORCODE_FANSI256);
-			if((enDex<str.length()-9)&&(str.charAt(enDex+1)==c)) // true color
+			if((enDex<str.length()-8)&&(str.charAt(enDex+1)==c)) // true color
 			{
 				endOfCodeIndex = index + 9;
-				if((enDex>str.length()-9)
-				||(!CMath.isHexNumber(str.substring(enDex+2,enDex+8))))
+				if(enDex>str.length()-9)
 				{
 					str.delete(index, index+9);
 					return index-1;
 				}
-				final int dig1 = CMath.s_parseHex(str.substring(enDex+2,enDex+4));
-				final int dig2 = CMath.s_parseHex(str.substring(enDex+4,enDex+6));
-				final int dig3 = CMath.s_parseHex(str.substring(enDex+6,enDex+8));
-				if(Math.max(dig1, Math.max(dig2,  dig3)-Math.min(dig1, Math.min(dig2, dig3)))<20)
+				if(!CMath.isHexNumber(str.substring(enDex+2,enDex+8)))
 				{
-					final int grayValue = (int)Math.round((dig1+dig2+dig3)/3.0/10.0)*10;
-					if(grayValue >=8 && grayValue <=238)
-						final256ColorNum = 232 + ((grayValue-8)/10);
-				}
-				if(final256ColorNum<0)
-				{
-					final int digr = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig1,255.0)*5.0)));
-					final int digg = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig2,255.0)*5.0)));
-					final int digb = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig3,255.0)*5.0)));
-					final256ColorNum = 16 + (36 * digr) + (6*digg) + digb;
-				}
-				boolean returnTrueColor = true;
-				if(S!=null)
-				{
-					if(!S.getClientTelnetMode(Session.TELNET_ANSI))
+					if(CMath.isHexNumber(str.substring(enDex+2,enDex+4)))
+					{
+						endOfCodeIndex = index + 5;
+						final256ColorNum = CMath.s_parseHex(str.substring(enDex+2,enDex+4));
+					}
+					else
 					{
 						str.delete(index, index+9);
 						return index-1;
 					}
-					if(S.getClientTelnetMode(Session.TELNET_ANSI16)
-					||S.getClientTelnetMode(Session.TELNET_ANSI256))
-						returnTrueColor = false;
 				}
-				if(returnTrueColor) // we are free to send 256 color telnet code
+				else
 				{
-					String escapeSequence;
-					if(isFg)
+					final int dig1 = CMath.s_parseHex(str.substring(enDex+2,enDex+4));
+					final int dig2 = CMath.s_parseHex(str.substring(enDex+4,enDex+6));
+					final int dig3 = CMath.s_parseHex(str.substring(enDex+6,enDex+8));
+					if(Math.max(dig1, Math.max(dig2,  dig3)-Math.min(dig1, Math.min(dig2, dig3)))<20)
 					{
-						escapeSequence="\033[38;2;"+dig1+";"+dig2+";"+dig3+"m";
-						if((S!=null)
-						&&(S.getCurrentColor().backgroundCode()!='.'))
-							escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
+						final int grayValue = (int)Math.round((dig1+dig2+dig3)/3.0/10.0)*10;
+						if(grayValue >=8 && grayValue <=238)
+							final256ColorNum = 232 + ((grayValue-8)/10);
 					}
-					else
-						escapeSequence="\033[48;2;"+dig1+";"+dig2+";"+dig3+"m";
+					if(final256ColorNum<0)
+					{
+						final int digr = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig1,255.0)*5.0)));
+						final int digg = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig2,255.0)*5.0)));
+						final int digb = (int)Math.max(0, Math.min(5, Math.round(CMath.div(dig3,255.0)*5.0)));
+						final256ColorNum = 16 + (36 * digr) + (6*digg) + digb;
+					}
+					boolean returnTrueColor = true;
 					if(S!=null)
 					{
-						S.setLastColor(S.getCurrentColor());
-						if(isFg)
-							S.setCurrentColor(CMLib.color().valueOf((char)(256 | final256ColorNum), '.'));
-						else
-							S.setCurrentColor(CMLib.color().valueOf(S.getCurrentColor().foregroundCode(), (char)(256 | final256ColorNum)));
+						if(!S.getClientTelnetMode(Session.TELNET_ANSI))
+						{
+							str.delete(index, index+9);
+							return index-1;
+						}
+						if(S.getClientTelnetMode(Session.TELNET_ANSI16)
+						||S.getClientTelnetMode(Session.TELNET_ANSI256))
+							returnTrueColor = false;
 					}
-					str.insert(endOfCodeIndex, escapeSequence);
-					str.delete(index, endOfCodeIndex);
-					return index+escapeSequence.length()-1;
+					if(returnTrueColor) // we are free to send 256 color telnet code
+					{
+						String escapeSequence;
+						if(isFg)
+						{
+							escapeSequence="\033[38;2;"+dig1+";"+dig2+";"+dig3+"m";
+							if((S!=null)
+							&&(S.getCurrentColor().backgroundCode()!='.'))
+								escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
+						}
+						else
+							escapeSequence="\033[48;2;"+dig1+";"+dig2+";"+dig3+"m";
+						if(S!=null)
+						{
+							S.setLastColor(S.getCurrentColor());
+							if(isFg)
+								S.setCurrentColor(CMLib.color().valueOf((char)(256 | final256ColorNum), '.'));
+							else
+								S.setCurrentColor(CMLib.color().valueOf(S.getCurrentColor().foregroundCode(), (char)(256 | final256ColorNum)));
+						}
+						str.insert(endOfCodeIndex, escapeSequence);
+						str.delete(index, endOfCodeIndex);
+						return index+escapeSequence.length()-1;
+					}
 				}
 			}
 			else // 256 color parsing
@@ -1063,12 +1089,20 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					break;
 				case ColorLibrary.COLORCODE_FANSI256:
 				case ColorLibrary.COLORCODE_BANSI256:
-					if((i<buf.length()-2)&&(buf.charAt(i+2)==buf.charAt(i+1)))
+					if((i<buf.length()-8)&&(buf.charAt(i+2)==buf.charAt(i+1)))
 					{
+						if(!CMath.isHexNumber(buf.substring(i+3,i+9)))
+						{
+							if(CMath.isHexNumber(buf.substring(i+3,i+5)))
+								i+=4;
+							else
+								return i+7;
+						}
+						else
 						if(i+9<=buf.length())
 							i+=8;
 						else
-							return i+7;
+							return i+3;
 					}
 					else
 					if(i+5<=buf.length())

@@ -1315,8 +1315,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<c.length-1)&&(c[i+1]==c[i]))
-							i += 7;
+						if((i<c.length-8)&&(c[i+1]==c[i]))
+						{
+							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
+							{
+								if(CMath.isHexNumber(name.substring(i+2,i+4)))
+									i += 3;
+							}
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -1393,8 +1401,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<c.length-1)&&(c[i+1]==c[i]))
-							i += 7;
+						if((i<c.length-8)&&(c[i+1]==c[i]))
+						{
+							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
+							{
+								if(CMath.isHexNumber(name.substring(i+2,i+4)))
+									i += 3;
+							}
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -1475,8 +1491,16 @@ public class CMStrings
 					switch(c.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<c.length()-1)&&(c.charAt(i+1)==c.charAt(i)))
-							i += 7;
+						if((i<c.length()-8)&&(c.charAt(i+1)==c.charAt(i)))
+						{
+							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
+							{
+								if(CMath.isHexNumber(name.substring(i+2,i+4)))
+									i += 3;
+							}
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -1559,8 +1583,16 @@ public class CMStrings
 					switch(c[i])
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<c.length-1)&&(c[i+1]==c[i]))
-							i += 7;
+						if((i<c.length-8)&&(c[i+1]==c[i]))
+						{
+							if(!CMath.isHexNumber(name.substring(i+2,i+8)))
+							{
+								if(CMath.isHexNumber(name.substring(i+2,i+4)))
+									i += 3;
+							}
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -1990,7 +2022,15 @@ public class CMStrings
 					case ColorLibrary.COLORCODE_FANSI256:
 					case ColorLibrary.COLORCODE_BANSI256:
 						if((i+9<=str.length())&&(str.charAt(i+2)==c))
-							i += 8;
+						{
+							if(!CMath.isHexNumber(str.substring(i+3,i+9)))
+							{
+								if(CMath.isHexNumber(str.substring(i+3,i+5)))
+									i+=4;
+							}
+							else
+								i += 8;
+						}
 						else
 						if(i+5<=str.length())
 							i+=4;
@@ -2113,7 +2153,13 @@ public class CMStrings
 					case ColorLibrary.COLORCODE_BANSI256:
 						if((i+9<=str.length())&&(str.charAt(i+2)==c))
 						{
-							str.delete(i,i+9);
+							if(!CMath.isHexNumber(str.substring(i+3,i+9)))
+							{
+								if(CMath.isHexNumber(str.substring(i+3,i+5)))
+									str.delete(i,i+5);
+							}
+							else
+								str.delete(i,i+9);
 							i--;
 						}
 						else
@@ -2326,10 +2372,13 @@ public class CMStrings
 							nos[++i]=true;
 							nos[++i]=true;
 							nos[++i]=true;
-							nos[++i]=true;
-							nos[++i]=true;
-							nos[++i]=true;
-							nos[++i]=true;
+							if(CMath.isHexNumber(str.substring(i+3,i+9)))
+							{
+								nos[++i]=true;
+								nos[++i]=true;
+								nos[++i]=true;
+								nos[++i]=true;
+							}
 						}
 						else
 						if(i+5<=str.length())
@@ -2447,14 +2496,32 @@ public class CMStrings
 							i++;
 							break;
 						case ColorLibrary.COLORCODE_FANSI256:
-							if((i<thisStr.length()-1)&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
-								i += 7;
+							if((i<thisStr.length()-8)
+							&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
+							{
+								if(!CMath.isHexNumber(thisStr.substring(i+2,i+8)))
+								{
+									if(CMath.isHexNumber(thisStr.substring(i+2,i+4)))
+										i+=3;
+								}
+								else
+									i += 7;
+							}
 							else
 								i += 3;
 							break;
 						case ColorLibrary.COLORCODE_BANSI256:
-							if((i<thisStr.length()-1)&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
-								i += 7;
+							if((i<thisStr.length()-9)
+							&&(thisStr.charAt(i+1)==thisStr.charAt(i)))
+							{
+								if(!CMath.isHexNumber(thisStr.substring(i+2,i+8)))
+								{
+									if(CMath.isHexNumber(thisStr.substring(i+2,i+4)))
+										i+=3;
+								}
+								else
+									i += 7;
+							}
 							else
 								i += 3;
 							break;

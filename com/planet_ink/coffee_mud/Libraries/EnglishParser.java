@@ -420,8 +420,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					switch(str.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
-							i += 7;
+						if((i<str.length()-8)&&(str.charAt(i+1)==str.charAt(i)))
+						{
+							if(!CMath.isHexNumber(str.substring(i+2,i+8)))
+							{
+								if(CMath.isHexNumber(str.substring(i+2,i+4)))
+									i+=3;
+							}
+							else
+								i += 7;
+						}
 						else
 							i += 3;
 						break;
@@ -648,7 +656,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					switch(str.charAt(i))
 					{
 					case ColorLibrary.COLORCODE_FANSI256:
-						if((i<str.length()-1)&&(str.charAt(i+1)==str.charAt(i)))
+						if((i<str.length()-8)&&(str.charAt(i+1)==str.charAt(i)))
 							i += 7;
 						else
 							i += 3;
@@ -1617,7 +1625,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						case ColorLibrary.COLORCODE_FANSI256:
 						case ColorLibrary.COLORCODE_BANSI256:
 							if((tos < toSrchC.length-8) && (toSrchC[tos+1]==toSrchC[tos]))
-								tos+=8;
+							{
+								tos += 2;
+								for(int i=2;i<8;i++)
+									if(CMath.isHexDigit(toSrchC[tos+i]))
+										tos++;
+							}
 							else
 							if(tos < toSrchC.length-4)
 								tos+=4;

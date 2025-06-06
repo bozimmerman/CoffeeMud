@@ -365,10 +365,15 @@ public class StdWebMacro implements WebMacro
 						}
 						else
 						if(((c==ColorLibrary.COLORCODE_FANSI256)||(c==ColorLibrary.COLORCODE_BANSI256))
-						&&(x<(s.length()-9))
+						&&(x<(s.length()-8))
 						&&(s.charAt(x+2)==c)) // true color
 						{
-							final String finalHex = s.substring(x+3,x+9);
+							String finalHex= s.substring(x+3,x+9);
+							if(!CMath.isHexNumber(finalHex))
+							{
+								if(CMath.isHexNumber(s.substring(x+3,x+5)))
+									finalHex = ColorLibrary.Color.html256[CMath.s_parseHex(s.substring(x+3,x+5))];
+							}
 							final boolean isFg = (c==ColorLibrary.COLORCODE_FANSI256);
 							if(isFg)
 								code = "<FONT COLOR=\"#" +finalHex + "\"";
