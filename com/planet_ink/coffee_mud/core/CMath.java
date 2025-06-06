@@ -50,7 +50,7 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
-	private final static boolean[]		IS_HEX_DIGITS		= new boolean[127];
+	private final static boolean[]		IS_HEX_DIGITS	= new boolean[128];
 
 	static
 	{
