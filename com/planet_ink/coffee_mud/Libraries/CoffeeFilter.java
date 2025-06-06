@@ -478,7 +478,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if((enDex<str.length()-9)&&(str.charAt(enDex+1)==c)) // true color
 			{
 				endOfCodeIndex = index + 9;
-				if(enDex>str.length()-9)
+				if((enDex>str.length()-9)
+				||(!CMath.isHexNumber(str.substring(enDex+2,enDex+8))))
 				{
 					str.delete(index, index+9);
 					return index-1;
