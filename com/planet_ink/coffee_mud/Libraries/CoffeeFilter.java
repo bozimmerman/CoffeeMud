@@ -561,14 +561,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 				}
-				if((final256ColorNum < 0) && (str.charAt(enDex)==str.charAt(enDex-1)))
-				{
-					enDex++;
-					num=CMath.hexDigit(str.charAt(enDex));
-					final int num2=CMath.hexDigit(str.charAt(enDex+1));
-					if((num>=0)&&(num2>=0))
-						final256ColorNum=(num*16)+num2;
-				}
 			}
 			if(final256ColorNum >=0)
 			{
