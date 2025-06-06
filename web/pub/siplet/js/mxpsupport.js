@@ -349,7 +349,7 @@ window.defElements = {
 	"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", 
+	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING IMAGE IMGOP", 
 			"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
 	"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
@@ -1433,6 +1433,8 @@ var MXP = function(sipwin)
 			var height = E.getAttributeValue("HEIGHT");
 			var scrolling = E.getAttributeValue("SCROLLING");
 			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
+			var image = E.getAttributeValue("IMAGE") || '';
+			var imgop = E.getAttributeValue("IMGOP") || '';
 			var framechoices = this.getFrameMap();
 			var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
 			if("CLOSE" == action.toUpperCase())
@@ -1592,6 +1594,21 @@ var MXP = function(sipwin)
 						newContentWindow.style.height = '100%';
 						newContentWindow.style.border = "solid white";
 						newContentWindow.style.boxSizing = "border-box";
+						if(image)
+						{
+							newContentWindow.style.backgroundImage = 'url("'+image+'")';
+							newContentWindow.style.backgroundSize = 'cover';
+							newContentWindow.style.backgroundPosition = 'center';
+							newContentWindow.style.backgroundRepeat = 'no-repeat';
+							if(imgop.trim())
+							{
+								imgop = imgop.trim();
+								if(!imgop.startsWith('.'))
+									imgop=parseFloat(imgop)/100.0;
+								newContentWindow.style.opacity = ''+imgop;
+							}
+							updateMediaImagesInSpan(newContentWindow);
+						}
 						switch(alignx)
 						{
 						case 0: // left

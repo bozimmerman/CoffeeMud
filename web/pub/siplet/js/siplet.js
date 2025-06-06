@@ -908,9 +908,12 @@ function SipletWindow(windowName)
 		this.sendStr(value+'\n');
 	};
 	
-	this.isAtBottom = function(diff)
+	this.isAtBottom = function()
 	{
-		return this.window.scrollTop + this.window.clientHeight >= this.window.scrollHeight + diff;
+		var div = this.window;
+		const distanceFromBottom = div.scrollHeight - div.scrollTop - div.clientHeight;
+		const halfVisibleArea = div.clientHeight * 0.7;
+		return distanceFromBottom < halfVisibleArea;
 	};
 	
 	this.scrollToBottom = function(rewin, tries)

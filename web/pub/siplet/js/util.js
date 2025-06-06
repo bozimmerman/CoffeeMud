@@ -366,6 +366,28 @@ function updateMediaImagesInSpan(span)
 				img.setAttribute('src', dataUrl);
 		});
 	});
+	
+	var bgImage = span.style.backgroundImage || '';
+	if (bgImage.includes('media://'))
+	{
+  		var regex = /(?:url\(['"]?(media:\/\/[^)'"]+)['"]?\)|(media:\/\/[^'\s)]+))/;
+  		var match = regex.exec(bgImage);
+  		if(match)
+  		{
+			var mediaUrl = match[1] || match[2];
+			mediaUrl = mediaUrl.replace(/^media:\/\//, '').trim();
+			sipfs.load(mediaUrl, function(err, dataUrl) 
+			{
+				if (err) 
+				{
+					console.error('Error loading ' + mediaUrl + ':', err);
+					return;
+				}
+				if(dataUrl)
+					span.style.backgroundImage = 'url('+dataUrl+')';
+			});
+		}
+	}
 };
 
 function populateDivFromUrl(div, url, callback) 
