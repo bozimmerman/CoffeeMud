@@ -236,7 +236,7 @@ window.MapBlock = {
 	nextRoomId: 1,
 	envs: {},
 	nextEnvId: 1,
-	charDefault: '#',
+	charDefault: ' ',
 	colorDefault: [0,0,0],
 	roomIdHash: {}
 };
@@ -244,6 +244,7 @@ window.MapBlock = {
 function Map(sipwin)
 {
 	var SpacingRatio = 0.4;
+	var self = this;
 
 	this.centerView = null;
 	this.deleteMap = function() {
@@ -554,21 +555,17 @@ function Map(sipwin)
 			console.error("Failed to get 2D rendering context");
 			return null;
 		}
-		var self = this;
 		var isPanning = false;
 		var panStartX, panStartY, panOffsetX, panOffsetY;
-		// Mousedown handler for panning
 		var mouseDownHandler = function(event) {
-			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
-				console.log("Mousedown: No layout or rooms data");
+			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
 				return;
-			}
 			var rect = canvas.getBoundingClientRect();
 			var mouseX = event.clientX - rect.left;
 			var mouseY = event.clientY - rect.top;
 			var { rooms } = self.mapWidget.layout;
 			var overNode = false;
-			for (let roomId in rooms) {
+			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = mouseX - centerX;
 				var dy = mouseY - centerY;
@@ -585,13 +582,10 @@ function Map(sipwin)
 				panOffsetX = self.mapWidget.layout.offsetX || (canvas.width / 2 - self.rooms[self.centerView].x * self.mapWidget.layout.tileSize * SpacingRatio);
 				panOffsetY = self.mapWidget.layout.offsetY || (canvas.height / 2 - self.rooms[self.centerView].y * self.mapWidget.layout.tileSize * SpacingRatio);
 				canvas.style.cursor = "grabbing";
-				console.log("Pan start: x=", mouseX, "y=", mouseY);
 			}
 		};
-		// Mousemove handler for panning and hover
 		var mouseMoveHandler = function(event) {
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
-				console.log("Hover: No layout or rooms data");
 				canvas.style.cursor = "default";
 				return;
 			}
@@ -600,7 +594,7 @@ function Map(sipwin)
 			var mouseY = event.clientY - rect.top;
 			var { rooms } = self.mapWidget.layout;
 			var overNode = false;
-			for (let roomId in rooms) {
+			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = mouseX - centerX;
 				var dy = mouseY - centerY;
@@ -618,18 +612,15 @@ function Map(sipwin)
 				self.updateMap();
 				canvas.style.cursor = "grabbing";
 			} else {
-				canvas.style.cursor = overNode ? "pointer" : "grab"; // Changed from "move"
+				canvas.style.cursor = overNode ? "pointer" : "grab";
 			}
 		};
-		// Mouseup handler to end panning
-		var mouseUpHandler = function(event) {
+		var mouseUpHandler = function(e) {
 			if (isPanning) {
 				isPanning = false;
 				canvas.style.cursor = "grab";
-				console.log("Pan end");
 			}
 		};
-		// Click handler (simplified, removed redundant logs)
 		var clickHandler = function(event) {
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
 				console.error("Click: No layout or rooms data");
@@ -641,7 +632,7 @@ function Map(sipwin)
 			var { rooms } = self.mapWidget.layout;
 			var closestRoomId = null;
 			var minDist = Infinity;
-			for (let roomId in rooms) {
+			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = clickX - centerX;
 				var dy = clickY - centerY;
@@ -653,22 +644,19 @@ function Map(sipwin)
 			}
 			if (closestRoomId) {
 				self.centerView = closestRoomId;
-				console.log("Clicked room:", closestRoomId, "centerView=", self.centerView);
-				event.stopPropagation(); // Prevent interference
+				event.stopPropagation();
 				self.updateMap();
 			}
 		};
-		// Zoom handler (simplified, removed redundant logs)
 		var zoomHandler = function(event) {
 			event.preventDefault();
 			var delta = event.deltaY < 0 ? 0.1 : -0.1;
 			self.zoom = Math.max(0.5, Math.min(2.0, (self.zoom || 1.0) + delta));
-			console.log("Zoom: newZoom=", self.zoom);
 			self.updateMap();
 		};
 		canvas.addEventListener('mousedown', mouseDownHandler);
 		canvas.addEventListener('mousemove', mouseMoveHandler);
-		document.addEventListener('mouseup', mouseUpHandler); // Global to catch mouseup outside canvas
+		document.addEventListener('mouseup', mouseUpHandler);
 		canvas.addEventListener('click', clickHandler);
 		canvas.addEventListener('wheel', zoomHandler);
 		this.mapWidget = {
@@ -1628,13 +1616,13 @@ function Map(sipwin)
 		var currentRoom = this.rooms[currentRoomId];
 		var areaId = currentRoom.areaId;
 		var zLevel = currentRoom.z;
-		var roomsToDraw = Object.keys(this.rooms).filter(id => {
-			var room = this.rooms[id];
+		var roomsToDraw = Object.keys(this.rooms).filter(function(id) {
+			var room = self.rooms[id];
 			return room.areaId === areaId && room.z === zLevel;
 		});
 		var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-		roomsToDraw.forEach(roomId => {
-			var room = this.rooms[roomId];
+		roomsToDraw.forEach(function(roomId) {
+			var room = self.rooms[roomId];
 			minX = Math.min(minX, room.x);
 			maxX = Math.max(maxX, room.x);
 			minY = Math.min(minY, room.y);
@@ -1653,13 +1641,13 @@ function Map(sipwin)
 			? this.mapWidget.layout.offsetY
 			: canvas.height / 2 - currentRoom.y * tileSize * SpacingRatio;
 		this.mapWidget.layout = { tileSize, offsetX, offsetY, mapWidth, mapHeight, rooms: {} };
-		roomsToDraw.forEach(roomId => {
-			var room = this.rooms[roomId];
-			var exits = this.getRoomExits(roomId);
-			for (let dir in exits) {
+		roomsToDraw.forEach(function(roomId) {
+			var room = self.rooms[roomId];
+			var exits = self.getRoomExits(roomId);
+			for (var dir in exits) {
 				var toRoomId = exits[dir];
-				if (toRoomId in this.rooms && this.rooms[toRoomId].z === zLevel) {
-					var toRoom = this.rooms[toRoomId];
+				if (toRoomId in self.rooms && self.rooms[toRoomId].z === zLevel) {
+					var toRoom = self.rooms[toRoomId];
 					var x1 = offsetX + room.x * tileSize * SpacingRatio;
 					var y1 = offsetY + room.y * tileSize * SpacingRatio;
 					var x2 = offsetX + toRoom.x * tileSize * SpacingRatio;
@@ -1688,29 +1676,29 @@ function Map(sipwin)
 				}
 			}
 		});
-		roomsToDraw.forEach(roomId => {
-			var room = this.rooms[roomId];
+		roomsToDraw.forEach(function(roomId) {
+			var room = self.rooms[roomId];
 			var x = offsetX + room.x * tileSize * SpacingRatio;
 			var y = offsetY + room.y * tileSize * SpacingRatio;
 			var radius = tileSize / 10;
-			this.mapWidget.layout.rooms[roomId] = {
+			self.mapWidget.layout.rooms[roomId] = {
 				centerX: x,
 				centerY: y,
 				radius: radius
 			};
-			var color = this.colorDefault;
+			var color = self.colorDefault;
 			if (room.envId in window.MapEnvs) {
 				var env = window.MapEnvs[room.envId];
 				color = `rgba(${env.r}, ${env.g}, ${env.b}, ${env.a / 255})`;
-			} else if (room.envId in this.envs) {
-				var env = this.envs[room.envId];
+			} else if (room.envId in self.envs) {
+				var env = self.envs[room.envId];
 				color = `rgba(${env.r}, ${env.g}, ${env.b}, ${env.alpha / 255})`;
 			}
 			ctx.beginPath();
 			ctx.arc(x, y, radius, 0, 2 * Math.PI);
 			ctx.fillStyle = color;
 			ctx.fill();
-			var char = this.getRoomChar(roomId);
+			var char = self.getRoomChar(roomId);
 			ctx.fillStyle = room.color ? `rgb(${room.color[0]}, ${room.color[1]}, ${room.color[2]})` : "#000";
 			var fontSize = Math.max(5, tileSize / 6);
 			ctx.font = fontSize + 'px Arial';
