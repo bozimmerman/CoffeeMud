@@ -97,7 +97,7 @@ function configureMenu(obj)
 		var topO = menuData[to];
 		var topN = Object.keys(topO)[0];
 		html += '<TD style="border: 1px solid white; padding: 0;"';
-		html += ' ONCLICK="menumenu(this,event,'+to+')" ';
+		html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+20,this.offsetWidth,16,'+to+')" ';
 		html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 		html += topN + '</FONT></TD>';
 	}
@@ -105,12 +105,18 @@ function configureMenu(obj)
 	menuArea.innerHTML = html;
 }
 
-function menumenu(obj, e, to) 
+function DropDownMenu(e, left, top, width, fontSize,to) 
 {
 	nowhidemenu();
-	var topO = menuData[to];
-	var topN = Object.keys(topO)[0];
-	var subList = topO[topN];
+	var subList;
+	if(typeof to === 'number')
+	{
+		var topO = menuData[to];
+		var topN = Object.keys(topO)[0];
+		subList = topO[topN];
+	}
+	else
+		subList = to;
 	var href='';
 	var hint='';
 	for(var h=0;h<subList.length;h++)
@@ -124,14 +130,14 @@ function menumenu(obj, e, to)
 		else
 			href+=sub['a']+'|';
 	}
-	var m = dropdownmenu(obj, e, href, hint, prompt, obj.offsetLeft, obj.offsetTop + 20, 200);
+	var m = ContextMenuOpen(null, e, href, hint, prompt, left, top, width);
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
 	var as = Array.from(m.getElementsByTagName("A"));
 	for(var a=0;a<as.length;a++)
 	{
 		as[a].style.color=menuForegroundColor;
-		as[a].style.fontSize=16;
+		as[a].style.fontSize=fontSize;
 		as[a].style.textDecoration = 'none';
 	}
 	return m;

@@ -245,6 +245,7 @@ function Map(sipwin)
 {
 	var SpacingRatio = 0.4;
 	var self = this;
+	sipwin.mapper = self;
 
 	this.centerView = null;
 	this.deleteMap = function() {
@@ -560,6 +561,8 @@ function Map(sipwin)
 		var mouseDownHandler = function(event) {
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
 				return;
+			if(self.mapWidget.tooltip)
+				self.mapWidget.tooltip.style.display = 'none';
 			var rect = canvas.getBoundingClientRect();
 			var mouseX = event.clientX - rect.left;
 			var mouseY = event.clientY - rect.top;
@@ -587,22 +590,37 @@ function Map(sipwin)
 		var mouseMoveHandler = function(event) {
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
 				canvas.style.cursor = "default";
+				if(self.mapWidget.tooptip)
+					self.mapWidget.tooltup.style.display='none';
 				return;
 			}
 			var rect = canvas.getBoundingClientRect();
 			var mouseX = event.clientX - rect.left;
 			var mouseY = event.clientY - rect.top;
 			var { rooms } = self.mapWidget.layout;
-			var overNode = false;
+			var hoverRoomId = null;
 			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = mouseX - centerX;
 				var dy = mouseY - centerY;
 				var dist = Math.sqrt(dx * dx + dy * dy);
 				if (dist < radius) {
-					overNode = true;
+					hoverRoomId = roomId;
 					break;
 				}
+			}
+			if (!self.mapWidget.tooltip) {
+				var div = document.createElement('div');
+				div.style.position = "absolute";
+				div.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+				div.style.color = "white";
+				div.style.padding = "5px";
+				div.style.borderRadius = "3px";
+				div.style.fontSize = "12px";
+				div.style.pointerEvents = "none";
+				div.style.zIndex = "1000";
+				sipwin.topWindow.appendChild(div);
+				self.mapWidget.tooltip = div;
 			}
 			if (isPanning) {
 				var dx = event.clientX - panStartX;
@@ -611,8 +629,17 @@ function Map(sipwin)
 				self.mapWidget.layout.offsetY = panOffsetY + dy;
 				self.updateMap();
 				canvas.style.cursor = "grabbing";
+			}
+			if(hoverRoomId != null) { 
+				var roomName = self.getRoomName(hoverRoomId) || "Unnamed";
+				self.mapWidget.tooltip.textContent = 'ID: '+hoverRoomId+'\nName: '+roomName;
+				self.mapWidget.tooltip.style.left = (event.clientX + 10) + 'px';
+				self.mapWidget.tooltip.style.top = (event.clientY + 10) + 'px';
+				self.mapWidget.tooltip.style.display = "block";
+				canvas.style.cursor = "pointer";
 			} else {
-				canvas.style.cursor = overNode ? "pointer" : "grab";
+				self.mapWidget.tooltip.style.display = 'none';
+				canvas.style.cursor = (hoverRoomId!=null) ? "pointer" : "grab";
 			}
 		};
 		var mouseUpHandler = function(e) {
@@ -622,10 +649,8 @@ function Map(sipwin)
 			}
 		};
 		var clickHandler = function(event) {
-			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
-				console.error("Click: No layout or rooms data");
+			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
 				return;
-			}
 			var rect = canvas.getBoundingClientRect();
 			var clickX = event.clientX - rect.left;
 			var clickY = event.clientY - rect.top;
@@ -648,6 +673,85 @@ function Map(sipwin)
 				self.updateMap();
 			}
 		};
+		var menuHandler = function(e) {
+			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
+				return;
+			var rect = canvas.getBoundingClientRect();
+			var clickX = e.clientX - rect.left;
+			var clickY = e.clientY - rect.top;
+			var { rooms } = self.mapWidget.layout;
+			var closestRoomId = null;
+			var minDist = Infinity;
+			for (var roomId in rooms) {
+				var { centerX, centerY, radius } = rooms[roomId];
+				var dx = clickX - centerX;
+				var dy = clickY - centerY;
+				var dist = Math.sqrt(dx * dx + dy * dy);
+				if (dist < radius && dist < minDist) {
+					minDist = dist;
+					closestRoomId = roomId;
+				}
+			}
+			if (closestRoomId) 
+			{
+				DropDownMenu(e, e.clientX, e.clientY, 200, 12, [
+					{"n":"Set as Current Room",
+					 "a":"javascript:var map=window.currWin.mapper;" 
+					 	+"map.centerview('"+closestRoomId+"');"
+					 	+"map.updateMap();",
+					 "e":""},
+					{"n":"Speedwalk to Room",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":"false"},
+					{"n":"Add Exit",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":""},
+					{"n":"Remove Exit",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":""},
+					{"n":"Set Room Name",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"SiPrompt('Enter room name:',function(i){" 
+					 	+"map.setRoomName('"+closestRoomId+"',i);"
+					 	+"map.updateMap();"
+					 	+"});",
+					 "e":""},
+					{"n":"Delete Room",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"SiConfirm('Delete room "+closestRoomId+"?', function(){"
+					 	+"map.deleteRoom('"+closestRoomId+"');" 
+					 	+"map.updateMap();"
+					 	+"});",
+					 "e":""}
+				]);
+			}
+			else
+			{
+				DropDownMenu(e, e.clientX, e.clientY, 200, 12, [
+					{"n":"Add Room",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":""},
+					{"n":"Center View",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":""},
+					{"n":"Add Label",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"" 
+					 	+"",
+					 "e":""},
+				]);
+			}
+		};
 		var zoomHandler = function(event) {
 			event.preventDefault();
 			var delta = event.deltaY < 0 ? 0.1 : -0.1;
@@ -657,6 +761,7 @@ function Map(sipwin)
 		canvas.addEventListener('mousedown', mouseDownHandler);
 		canvas.addEventListener('mousemove', mouseMoveHandler);
 		document.addEventListener('mouseup', mouseUpHandler);
+		canvas.addEventListener('contextmenu', menuHandler);
 		canvas.addEventListener('click', clickHandler);
 		canvas.addEventListener('wheel', zoomHandler);
 		this.mapWidget = {
