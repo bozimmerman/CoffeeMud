@@ -73,6 +73,22 @@ function isJsonObject(variable) {
 		&& Object.prototype.toString.call(variable) === '[object Object]';
 }
 
+function SortArray(arr) 
+{
+	return arr.sort(function(a, b) 
+	{
+		if (a == null && b == null) return 0;
+		if (a == null) return 1;
+		if (b == null) return -1;
+		const isANumber = typeof a === 'number' && !isNaN(a);
+		const isBNumber = typeof b === 'number' && !isNaN(b);
+		if (isANumber && !isBNumber) return -1;
+		if (!isANumber && isBNumber) return 1;
+		if (isANumber && isBNumber) return a - b;
+		return String(a).localeCompare(String(b));
+	});
+}
+
 function stripHtmlTags(htmlString) 
 {
 	var tempDiv = document.createElement('div');

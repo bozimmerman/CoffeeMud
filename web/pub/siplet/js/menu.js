@@ -154,7 +154,7 @@ function getOptionWindow(heading, w, h)
 	{
 		menuWindow = document.createElement('div');
 		menuWindow.style.cssText = "position:absolute;top:20%;left:10%;height:60%;width:80%;z-index:99;";
-		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;cursor: pointer;";
+		menuWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;cursor:default;";
 		menuWindow.style.backgroundColor = 'darkgreen';
 		menuWindow.style.visibility = 'visible';
 		menuWindow.style.color = 'black';
@@ -167,10 +167,11 @@ function getOptionWindow(heading, w, h)
 		contentWindow.style.cssText = "position:absolute;top:20px;left:0%;height:calc(100% - 20px);width:100%;";
 		contentWindow.style.backgroundColor = 'lightgray';
 		contentWindow.style.color = 'black';
-	    contentWindow.style.overflowY = 'auto';
-	    contentWindow.style.overflowX = 'hidden';
+		contentWindow.style.overflowY = 'auto';
+		contentWindow.style.overflowX = 'hidden';
 		menuWindow.appendChild(titleBar);
 		menuWindow.appendChild(contentWindow);
+		MakeDraggable(menuWindow, titleBar);
 	}
 	menuWindow.onclick = function() {};
 	var titleBar = menuWindow.getElementsByTagName('div')[0];
@@ -394,3 +395,64 @@ function menuHelp(f)
 		}
 	});
 }
+
+function MakeDraggable(div, titlebar) 
+{
+	var dragWidget = (titlebar === undefined)?div:titlebar;
+	dragWidget.style.cursor = 'move';
+
+	let isDragging = false;
+	let startX, startY, initialLeft, initialTop;
+	var moveThreshold = 5;
+	function onMouseDown(e) {
+		const isDraggable = e.target === div || 
+						(!e.target.onclick && 
+						 !e.target.onchange && 
+						 !e.target.oninput && 
+						 getComputedStyle(e.target).pointerEvents !== 'none' &&
+						 !['input', 'select', 'textarea', 'button', 'a'].includes(e.target.tagName.toLowerCase()));
+		if(!isDraggable)
+			return;
+		if (e.target === div || !e.target.onclick) {
+			if (!window.currWin || !window.currWin.topWindow) 
+				return;
+			e.preventDefault();
+			isDragging = true;
+			startX = e.clientX;
+			startY = e.clientY;
+			initialLeft = parseFloat(getComputedStyle(div).left) || 0;
+			initialTop = parseFloat(getComputedStyle(div).top) || 0;
+
+			// Attach move and up listeners
+			document.addEventListener('mousemove', onMouseMove);
+			document.addEventListener('mouseup', onMouseUp);
+		}
+	}
+
+	function onMouseMove(e) {
+		if (!window.currWin || !window.currWin.topWindow) 
+			return;
+		var dx = e.clientX - startX;
+		var dy = e.clientY - startY;
+		if (!isDragging && (Math.abs(dx) > moveThreshold || Math.abs(dy) > moveThreshold)) {
+			isDragging = true;
+		}
+		if (isDragging) {
+			var rect = window.currWin.topWindow.getBoundingClientRect();
+			var width = div.offsetWidth;
+			var height = div.offsetHeight;
+			var newX = Math.max(0, Math.min(rect.width - width, initialLeft + dx));
+			var newY = Math.max(0, Math.min(rect.height - height, initialTop + dy));
+			div.style.left = `${newX}px`;
+			div.style.top = `${newY}px`;
+		}
+	}
+
+	function onMouseUp() {
+		document.removeEventListener('mousemove', onMouseMove);
+		document.removeEventListener('mouseup', onMouseUp);
+		isDragging = false;
+	}
+	dragWidget.addEventListener('mousedown', onMouseDown);
+}
+

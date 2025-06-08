@@ -16,6 +16,19 @@ TODO: implement WebViews
     }
     a {
     	color: lightblue;
+        cursor: pointer;
+    }
+    a img {
+        cursor: pointer;
+    }
+    a img:hover {
+        cursor: pointer;
+    }
+    img[onclick] {
+        cursor: pointer;
+    }
+    img[onclick]:hover {
+        cursor: pointer;
     }
 </style>
 </HEAD>
@@ -61,7 +74,8 @@ var loadableScripts = [
 	"js/config.js", "js/input.js", "js/menu.js", "js/tabs.js", "js/websock.js",
 	"js/util.js", "js/plugins.js", "js/ctxmenu.js", "js/binparser.js",
 	"js/ansiparser.js", "js/telnetparser.js", "js/textparser.js", "js/filesys.js",
-	"js/mspsupport.js", "js/mxpsupport.js", "js/siplet.js", "js/gmcp.js"
+	"js/mspsupport.js", "js/mxpsupport.js", "js/siplet.js", "js/gmcp.js", 
+	"js/mapper.js"
 ]
 function LoadJavaScript()
 {

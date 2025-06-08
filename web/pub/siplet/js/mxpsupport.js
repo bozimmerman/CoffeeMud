@@ -1725,11 +1725,13 @@ var MXP = function(sipwin)
 						titleBar.style.color = 'black';
 						contentTop = "20px";
 						titleBar.innerHTML = '&nbsp;'+title;
+						MakeDraggable(newTopWindow,titleBar);
 					}
 					else
 					{
 						titleBar = document.createElement('div');
 						titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
+						MakeDraggable(newTopWindow);
 					}
 					var contentWindow = document.createElement('div');
 					contentWindow.style.cssText = "position:absolute;top:"+contentTop+"px;left:0%;height:calc(100% - "+contentTop+");width:100%;";
@@ -1745,7 +1747,7 @@ var MXP = function(sipwin)
 					}
 					else
 					if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
-					    contentWindow.style.overflowX = 'auto';
+						contentWindow.style.overflowX = 'auto';
 					else
 					{
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
