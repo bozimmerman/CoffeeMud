@@ -105,9 +105,10 @@ function configureMenu(obj)
 	menuArea.innerHTML = html;
 }
 
-function DropDownMenu(e, left, top, width, fontSize,to) 
+function DropDownMenu(e, left, top, width, fontSize,to, subMenu) 
 {
-	nowhidemenu();
+	if(subMenu === undefined)
+		ContextHideAll();
 	var subList;
 	if(typeof to === 'number')
 	{
@@ -130,7 +131,11 @@ function DropDownMenu(e, left, top, width, fontSize,to)
 		else
 			href+=sub['a']+'|';
 	}
-	var m = ContextMenuOpen(null, e, href, hint, prompt, left, top, width);
+	var m;
+	if(subMenu === true)
+		m = ContextSubMenuOpen(null, e, href, hint, prompt, left, top, width);
+	else
+		m = ContextMenuOpen(null, e, href, hint, prompt, left, top, width);
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
 	var as = Array.from(m.getElementsByTagName("A"));

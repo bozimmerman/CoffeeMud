@@ -7,7 +7,7 @@
 		>
 		<OPTION VALUE="-1">Add New Plugin
 		</SELECT>
-		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugins')">
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Plugins')">
 </TD></TR>
 <TD><TD COLSPAN=2>&nbsp;</TD></TR>
 <TR><TD WIDTH=20%>Load:</TD>
@@ -15,13 +15,13 @@
 		${butt('File',"document.getElementById('PLUGINSROOT').selectFile();");}
 		<SPAN ID="PLUGINSBUILD">${butt('Build',"document.getElementById('PLUGINSROOT').trybuildplugin();");}</SPAN>
 </TD></TR>
-<TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP1" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')">
+<TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP1" SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Plugin')">
 </TD>
 <TD WIDTH=80%><TEXTAREA ID="PLUGINSTEXT" style="height:160px;"
 		ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginfieldchange(); "
 	></TEXTAREA>
 </TD></TR>
-<TR><TD WIDTH=20%>JavaScript:<IMG ID="PLUGINSHELP2" SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Plugin')"></TD>
+<TR><TD WIDTH=20%>JavaScript:<IMG ID="PLUGINSHELP2" SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Plugin')"></TD>
 <TD WIDTH=80%><TEXTAREA ID="PLUGINSCODE" style="height:160px;"
 		ONCHANGE="var root = document.getElementById('PLUGINSROOT'); root.pluginfieldchange(); "
 	></TEXTAREA>

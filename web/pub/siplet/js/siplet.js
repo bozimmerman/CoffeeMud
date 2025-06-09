@@ -146,7 +146,7 @@ function SipletWindow(windowName)
 
 	if(this.topWindow)
 	{
-		this.topWindow.onclick = function() { delayhidemenu(); setInputBoxFocus(); };
+		this.topWindow.onclick = function() { ContextDelayHide(); setInputBoxFocus(); };
 		var fontFace = getConfig('window/fontface', 'monospace');
 		var fontSize = getConfig('window/fontsize', '16px');
 	    this.topWindow.style.fontFamily = fontFace;

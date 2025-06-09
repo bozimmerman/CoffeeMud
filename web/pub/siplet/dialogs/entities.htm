@@ -7,7 +7,7 @@
 		>
 		<OPTION VALUE="-1">Add New Entity
 		</SELECT>
-		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="contextHelp(this,event,'Entities')">
+		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Entities')">
 </TD></TR>
 <TR><TD WIDTH=20%>Name:</TD><TD>
 	<INPUT id="ENTITIESNAME" type="text" SIZE=10
@@ -22,7 +22,7 @@
 <TR><TD colspan="2">
 	<SPAN ID="ENTITIESDELETE">${butt('Delete',"document.getElementById('ENTITIESROOT').trydelentity();");}</SPAN>
 </TD></TR>
-<TR><TD WIDTH=20%><a href="javascript:contextHelp(this,{},'Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements:
+<TR><TD WIDTH=20%><a href="javascript:ContextHelp(this,{},'Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements:
 	<SPAN ID="ENTITIESMXPLOAD">${butt('Load',"document.getElementById('ENTITIESROOT').tryloadmxp();");}</SPAN>
 </TD>
 <TD><TEXTAREA ID="ENTITIESMXP" style="height:110px;width:100%;"
