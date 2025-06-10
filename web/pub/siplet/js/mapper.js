@@ -888,7 +888,6 @@ function Map(sipwin)
 			var clickY = event.clientY - rect.top;
 			var { rooms } = self.mapWidget.layout;
 			var closestRoomId = null;
-			var closestLabelId = null;
 			var minDist = Infinity;
 			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
