@@ -244,10 +244,12 @@ window.MapBlock = {
 	userData: undefined
 };
 
-function Map(sipwin)
+function Mapper(sipwin)
 {
 	var SpacingRatio = 0.4;
 	var self = this;
+	if(sipwin.mapper)
+		sipwin.mapper.closeMapWidget();
 	sipwin.mapper = self;
 
 	this.centerView = null;
@@ -330,6 +332,16 @@ function Map(sipwin)
 		};
 		this.updateMap();
 		return true;
+	};
+	
+	this.restricted_addMapEvent = function(uniquename, eventName, parent, displayName, arguments) {
+		if (arguments 
+		&& (!Array.isArray(arguments) 
+			|| args.some(arg => typeof arg === 'function' || arg === null))) 
+		{
+			throw new Error('Invalid arguments: must be an array of non-function, non-null values');
+		}
+		return this.addMapEvent(uniquename, eventName, parent, displayName, arguments);
 	};
 	
 	this.addMapEvent = function(uniquename, eventName, parent, displayName, arguments) {
@@ -569,8 +581,9 @@ function Map(sipwin)
 			else
 				this.mapWidget.canvas.parentNode.outerHTML = '';
 		}
-		// Clear mapWidget and related state
+		this.deleteMap();
 		this.mapWidget = null;
+		this.canvas = null;
 		this.centerView = null; // Reset view to avoid referencing closed widget
 		return true;
 	};
@@ -1460,6 +1473,32 @@ function Map(sipwin)
 			else
 			{
 				var menus =[
+					{"n":"Change Area",
+					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
+					 	+"event.stopPropagation();"
+					 	+"var select = document.createElement('select');"
+					 	+"for(var areaId in map.areas) {"
+					 	+"  var area = map.areas[areaId];"
+					 	+"  if(map.getAreaCenterRoom(areaId)!=null)"
+						+"    select.add(new Option(area.name,areaId));"
+					 	+"}"
+					 	+"var node = this.parentNode;"
+					 	+"select.style.fontFamily = this.style.fontFamily;"
+					 	+"select.style.fontSize = this.style.fontSize;"
+					 	+"select.style.maxHeight=node.parentNode.style.height;"
+					 	+"select.style.maxWidth=node.parentNode.style.width;"
+					 	+"select.style.overflowY='auto';"
+					 	+"select.onclick=function(e){e.stopPropagation();};"
+					 	+"select.onchange=function(e){"
+						+"	 map.centerview(map.getAreaCenterRoom(select.value));"
+						+"   map.updateMap();"
+						+"	 e.stopPropagation();"
+						+"};"
+					 	+"node.innerHTML='';"
+					 	+"node.appendChild(select);"
+					 	+"",
+					 "e":"true"},
 					{"n":"Add Room",
 					 "a":"javascript:var map=window.currWin.mapper;"
 					 	+"if ('"+areaId+"') {" 
@@ -1477,7 +1516,7 @@ function Map(sipwin)
 					 	+"  map.updateMap();"
 					 	+"",
 					 "e":"true"},
-					{"n":"Move To",
+					{"n":"Move Room To",
 					 "a":"javascript:var map=window.currWin.mapper;"
 					 	+"  map.setRoomCoordinates(map.centerView,"+gridX+","+gridY+","+zLevel+");"
 					 	+"  map.updateMap();"
@@ -1778,6 +1817,49 @@ function Map(sipwin)
 					rooms.push(k);
 			}
 			return SortArray(rooms);
+		}
+		return null; 
+	};
+	this.getAreaCenterRoom = function(areaId) {
+		if(areaId in this.areas) {
+			var rooms = this.getAreaRooms(areaId);
+			if(!rooms || !Object.keys(rooms).length)
+				return null;
+			var minmax = null;
+			for(var k in this.rooms)
+			{
+				var room = this.rooms[k];
+				if(this.rooms[k].areaId == areaId)
+				{
+					if(minmax == null)
+						minmax = [room.x,room.y,room.x,room.y];
+					else
+					{
+						minmax[0] = (room.x < minmax[0])?room.x:minmax[0];
+						minmax[1] = (room.y < minmax[1])?room.y:minmax[1];
+						minmax[2] = (room.x > minmax[2])?room.x:minmax[2];
+						minmax[3] = (room.y > minmax[3])?room.y:minmax[3];
+					}
+				}
+			}
+			var center = [(minmax[0]+((minmax[2]-minmax[0])/2)),
+						  (minmax[1]+((minmax[3]-minmax[1])/2))];
+			var diff = Infinity;
+			var diffRoomId = null;
+			for(var k in this.rooms)
+			{
+				var room = this.rooms[k];
+				if(this.rooms[k].areaId == areaId)
+				{
+					var rdiff = (Math.abs(room.x-center[0]) + Math.abs(room.y-center[1]));
+					if(rdiff < diff)
+					{
+						diffRoomId = k;
+						diff = rdiff;
+					}
+				}
+			}
+			return diffRoomId;
 		}
 		return null; 
 	};
@@ -2462,19 +2544,32 @@ function Map(sipwin)
 
 	this.resizeMapWidget = function(width, height) {
 		if(this.mapWidget 
-		&& this.mapWidget.canvas 
-		&& (this.mapWidget.frame == null)
-		&& isNumber(width)
-		&& isNumber(height))
+		&& this.mapWidget.canvas)
 		{
-			var div = this.mapWidget.canvas.parentNode;
-			div.style.width = width;
-			div.style.height = height;
-			this.mapWidget.width = width;
-			this.mapWidget.height = height;
-			this.mapWidget.canvas.width = width;
-			this.mapWidget.canvas.height = height;
-			this.updateMap();
+			if (this.mapWidget.frame == null)
+			{
+				if(isNumber(width)
+				&& isNumber(height))
+				{
+					var div = this.mapWidget.canvas.parentNode;
+					div.style.width = width;
+					div.style.height = height;
+					this.mapWidget.width = width;
+					this.mapWidget.height = height;
+					this.mapWidget.canvas.width = width;
+					this.mapWidget.canvas.height = height;
+					this.updateMap();
+				}
+			}
+			else
+			{
+				var div = this.mapWidget.canvas.parentNode;
+				var calced = getComputedStyle(div);
+				div.style.width = parseFloat(calced.width);
+				div.style.height = parseFloat(calced.width);
+				canvas.width = parseFloat(calced.width);
+				canvas.height = parseFloat(calced.height);
+			}
 		}
 	};
 	this.roomExists = function(roomId) {

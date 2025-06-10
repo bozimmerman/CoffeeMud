@@ -1515,7 +1515,7 @@ var MXP = function(sipwin)
 						parentFrame.removeChild(frame);
 						delete this.frames[name];
 						if(parentFrame.parentNode == sipwin.topWindow)
-							sipwin.fixCharDimensions();
+							sipwin.resizeTermWindow();
 					}
 					else
 					{
@@ -1699,7 +1699,7 @@ var MXP = function(sipwin)
 						newContainerDiv.sprops = sprops;
 						this.frames[name] = newContainerDiv;
 						if(containerDiv == sipwin.topWindow.firstChild)
-							sipwin.fixCharDimensions();
+							sipwin.resizeTermWindow();
 					}
 				}
 				else

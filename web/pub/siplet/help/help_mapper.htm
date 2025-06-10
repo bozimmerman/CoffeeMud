@@ -1,0 +1,324 @@
+<DIV  ID="HELPROOT">
+<H3>Mapper</H3>
+Available through the <a href="javascript:menuHelp('Scripts')">Scripts</a>
+interface, the mapper API allows you to build areas of rooms with their
+linking exits into a data structure, and then display those rooms in 
+a window, or on their own MXP frame.
+<P>
+The visible map can be 
+interacted with via the mouse. Left-clicking a room will change the
+current or player room; and if done while holding cntrl or shift, will
+allow multi-room selection.  Right-clicking brings up a context menu
+that will apply to either the room under the mouse, or a multi-room
+selection if applicable.  You can also drag the flowing map window
+around by its title bar, or change your map view by dragging the
+visual area around.
+<P>
+The API listed below is almost entirely copped from Mudlet, and you
+can find their docs <a href="https://wiki.mudlet.org/w/Manual:Mapper_Functions">here</a>.
+The differences between the two will be due to ignorance, or just a desire to add a bit
+more helpful.  Here's an example of creating a map in an mxp frame using a Script:
+<pre>
+win.process('&lt;FRAME NAME=MAP ACTION=OPEN INTERNAL ALIGN=RIGHT WIDTH=25%>');
+const map = win.mapper;
+var areaId = map.addAreaName("Test Area");
+var oareaId = map.addAreaName("The Other Test Area");
+const areaIds = {0:areaId,1:oareaId};
+const roomIds = {};
+
+for(k in areaIds) {
+    areaId = areaIds[k];
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            let roomName = areaId+'_'+i+'_'+j;
+            let roomId = map.addRoom(roomName, areaId);
+            roomIds[roomName] = roomId; // Store the room ID
+            map.setRoomCoordinates(roomId, i, j, 0);
+            map.setRoomChar(roomId, ".");
+            map.setRoomEnv(roomId, 1);
+        }
+    }
+    for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+            let roomName = areaId+'_'+i+'_'+j;
+            let roomId = roomIds[roomName];
+            if (i < 4) {
+                let eastRoomName = areaId+'_'+i+'_'+j;
+                let eastRoomId = roomIds[eastRoomName];
+                roomIds[eastRoomName] = eastRoomId; // Update roomIds
+                map.setExit(roomId, eastRoomId, "east");
+            }
+            if (j < 4) {
+                let southRoomName = areaId+'_'+i+'_'+j;
+                let southRoomId = roomIds[southRoomName];
+                roomIds[southRoomName] = southRoomId; // Update roomIds
+                map.setExit(roomId, southRoomId, "south");
+            }
+        }
+    }
+}
+map.centerview("1_0_0");
+map.createMapper('MAP');
+map.addMapMenu('testRoomMenu', 'room', 'Test Action');
+map.addMapEvent('testRoomMenu', 'testFunction', 'room', 'Test Action', ['testArg']);
+</pre>
+<h3>Mapper API Summary</h3>
+<pre><B>addAreaName(areaName)</B></pre>
+Adds a new area with the specified name, returning its ID.<BR><BR>
+<pre><B>addCustomLine(roomId, idOrTo, direction, style, color, arrow)</B></pre>
+Draws a custom line from a room to another room ID or [x,y,z] coordinates. idOrTo can be a room ID or coordinate array.<BR><BR>
+<pre><B>addMapEvent(uniquename, eventName, parent, displayName, arguments)</B></pre>
+Registers a custom event for a map menu item. arguments is an array of event parameters.<BR><BR>
+<pre><B>addMapMenu(uniquename, parent, displayName)</B></pre>
+Adds a custom menu item to the map's context menu. parent can be 'room', 'label', 'empty', or another menu's uniquename.<BR><BR>
+<pre><B>addRoom(roomId, areaId)</B></pre>
+Creates a new room in the specified area, returning its ID.<BR><BR>
+<pre><B>addSpecialExit(roomIdFrom, roomIdTo, moveCommand)</B></pre>
+Adds a special exit with a custom move command between rooms.<BR><BR>
+<pre><B>auditAreas()</B></pre>
+Checks areas for issues like missing names or rooms, returning a report.<BR><BR>
+<pre><B>autoLayout(areaId, startRoomId)</B></pre>
+Automatically positions rooms in an area based on exits, optionally starting from startRoomId.<BR><BR>
+<pre><B>centerview(roomId)</B></pre>
+Sets the map view to center on the specified room.<BR><BR>
+<pre><B>clearAreaUserData(areaId)</B></pre>
+Removes all user data from the specified area.<BR><BR>
+<pre><B>clearAreaUserDataItem(areaId, key)</B></pre>
+Deletes a specific user data key from the specified area.<BR><BR>
+<pre><B>clearMapSelection()</B></pre>
+Clears all selected rooms on the map.<BR><BR>
+<pre><B>clearMapUserData()</B></pre>
+Removes all user data from the map.<BR><BR>
+<pre><B>clearMapUserDataItem(key)</B></pre>
+Deletes a specific user data key from the map.<BR><BR>
+<pre><B>clearRoomUserData(roomId)</B></pre>
+Removes all user data from the specified room.<BR><BR>
+<pre><B>clearRoomUserDataItem(roomId, key)</B></pre>
+Deletes a specific user data key from the specified room.<BR><BR>
+<pre><B>clearSpecialExits(roomId)</B></pre>
+Removes all special exits from the specified room.<BR><BR>
+<pre><B>closeMapWidget()</B></pre>
+Closes and destroys the map widget, cleaning up resources.<BR><BR>
+<pre><B>connectExitStub(fromId, toId, direction)</B></pre>
+Links a room to another room or creates an exit stub. toId can be a room ID or direction if direction is undefined.<BR><BR>
+<pre><B>createMapLabel(areaId, text, posX, posY, posZ, fgRed, fgGreen, fgBlue, bgRed, bgGreen, bgBlue, zoom, fontSize, showOnTop, noScaling, fontName, foregroundTransparency, backgroundTransparency, temporary)</B></pre>
+Adds a text label to an area at specified coordinates with styling.<BR><BR>
+<pre><B>createMapImageLabel(areaId, filePath, posx, posy, posz, width, height, zoom, showOnTop, temporary)</B></pre>
+Adds an image label to an area at specified coordinates.<BR><BR>
+<pre><B>createMapper(x, y, width, height)</B></pre>
+Initializes the map widget. x can be a frame name (string) or x-coordinate (number).<BR><BR>
+<pre><B>createRoomId(minimumStartingRoomId)</B></pre>
+Generates a unique room ID, optionally starting from minimumStartingRoomId.<BR><BR>
+<pre><B>createAreaId(minimumStartingAreaId)</B></pre>
+Generates a unique area ID, optionally starting from minimumStartingAreaId.<BR><BR>
+<pre><B>deleteArea(areaId)</B></pre>
+Removes an area and its rooms from the map. areaId can be ID or name.<BR><BR>
+<pre><B>deleteMapLabel(areaId, labelId)</B></pre>
+Removes a specific label from an area.<BR><BR>
+<pre><B>deleteRoom(roomId)</B></pre>
+Deletes one or more rooms and updates related exits. roomId can be a single ID or array.<BR><BR>
+<pre><B>disableMapInfo(label)</B></pre>
+Disables map information display (not implemented).<BR><BR>
+<pre><B>enableMapInfo(label)</B></pre>
+Enables map information display (not implemented).<BR><BR>
+<pre><B>findAreaId(areaName)</B></pre>
+Locates an area by ID or name, returning its ID.<BR><BR>
+<pre><B>findRoomId(roomName)</B></pre>
+Locates a room by ID or name, returning its ID.<BR><BR>
+<pre><B>confirmRoomId(roomId)</B></pre>
+Verifies a room ID, resolving by name if needed.<BR><BR>
+<pre><B>getAllAreaUserData(areaId)</B></pre>
+Returns all user data for the specified area.<BR><BR>
+<pre><B>getAllMapUserData()</B></pre>
+Returns all user data for the map.<BR><BR>
+<pre><B>getAllRoomEntrances(roomId)</B></pre>
+Lists all rooms with exits leading to the specified room.<BR><BR>
+<pre><B>getAllRoomUserData(roomId)</B></pre>
+Returns all user data for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>getAreaExits(areaId, showExits)</B></pre>
+Lists exits from an area to other areas, optionally with details if showExits is true.<BR><BR>
+<pre><B>getAreaRooms(areaId)</B></pre>
+Returns a list of room IDs and names in the specified area.<BR><BR>
+<pre><B>getAreaRooms1(areaId)</B></pre>
+Returns a sorted list of room IDs in the specified area.<BR><BR>
+<pre><B>getAreaCenterRoom(areaId)</B></pre>
+Finds the room closest to the center of an area.<BR><BR>
+<pre><B>getAreaTable()</B></pre>
+Returns a mapping of area names to their IDs.<BR><BR>
+<pre><B>getAreaTableSwap()</B></pre>
+Returns a mapping of area IDs to their names.<BR><BR>
+<pre><B>getAreaUserData(areaId, key)</B></pre>
+Retrieves a specific user data value for an area.<BR><BR>
+<pre><B>getCustomEnvColorTable()</B></pre>
+Returns the custom environment color table.<BR><BR>
+<pre><B>getCustomLines(roomId)</B></pre>
+Maps custom lines drawn from a room with their attributes.<BR><BR>
+<pre><B>getCustomLines1(roomId)</B></pre>
+Alias for getCustomLines.<BR><BR>
+<pre><B>getDoors(roomId)</B></pre>
+Lists doors in a room's exits with their status.<BR><BR>
+<pre><B>getExitStubs(roomId)</B></pre>
+Lists direction numbers with unlinked exit stubs for a room.<BR><BR>
+<pre><B>getExitStubs1(roomId)</B></pre>
+Alias for getExitStubs.<BR><BR>
+<pre><B>getExitWeights(roomId)</B></pre>
+Returns weights for a room's exits.<BR><BR>
+<pre><B>getGridMode(areaId)</B></pre>
+Checks if grid mode is enabled for an area.<BR><BR>
+<pre><B>getMapEvents()</B></pre>
+Returns all custom map events.<BR><BR>
+<pre><B>getMapLabel(areaId, labelIdOrText)</B></pre>
+Retrieves a label by ID or text from an area. labelIdOrText can be a label ID or text string.<BR><BR>
+<pre><B>getMapLabels(areaId)</B></pre>
+Returns all labels in an area with their text or file paths.<BR><BR>
+<pre><B>getMapMenus()</B></pre>
+Returns all custom map menu items.<BR><BR>
+<pre><B>getMapSelection()</B></pre>
+Returns the list of currently selected rooms.<BR><BR>
+<pre><B>getMapUserData(key)</B></pre>
+Retrieves a specific user data value for the map.<BR><BR>
+<pre><B>getMapZoom(areaId)</B></pre>
+Returns the zoom level for the map or a specific area if areaId is provided.<BR><BR>
+<pre><B>getPath(fromId, toId)</B></pre>
+Calculates the shortest path between two rooms, returning directions.<BR><BR>
+<pre><B>getPlayerRoom()</B></pre>
+Returns the ID of the current player room (center view).<BR><BR>
+<pre><B>getRoomArea(roomId)</B></pre>
+Returns the area ID of a room.<BR><BR>
+<pre><B>getRoomAreaName(roomId)</B></pre>
+Returns the area name of a room.<BR><BR>
+<pre><B>getRoomChar(roomId)</B></pre>
+Returns the display character for a room.<BR><BR>
+<pre><B>getRoomCharColor(roomId)</B></pre>
+Returns the color of a room's display character.<BR><BR>
+<pre><B>getRoomCoordinates(roomId)</B></pre>
+Returns the x, y, z coordinates of a room.<BR><BR>
+<pre><B>getRoomEnv(roomId)</B></pre>
+Returns the environment ID of a room.<BR><BR>
+<pre><B>getRoomExits(roomId)</B></pre>
+Lists a room's standard exits with their target room IDs.<BR><BR>
+<pre><B>getRoomHashById(roomId)</B></pre>
+Returns the hash of a room by its ID.<BR><BR>
+<pre><B>getRoomIdbyHash(hash)</B></pre>
+Returns the room ID associated with a hash.<BR><BR>
+<pre><B>getRoomName(roomId)</B></pre>
+Returns the name of a room.<BR><BR>
+<pre><B>getRooms()</B></pre>
+Returns a list of all room IDs and names.<BR><BR>
+<pre><B>getRoomsByPosition(areaId, x, y, z)</B></pre>
+Lists rooms in an area at specific coordinates.<BR><BR>
+<pre><B>getRoomUserData(roomId, key)</B></pre>
+Retrieves a specific user data value for a room.<BR><BR>
+<pre><B>getRoomUserDataKeys(roomId)</B></pre>
+Returns all user data keys for a room.<BR><BR>
+<pre><B>getRoomWeight(roomId)</B></pre>
+Returns the weight of a room for pathfinding.<BR><BR>
+<pre><B>getSpecialExits(roomId, listAllExits)</B></pre>
+Lists special exits from a room with their commands, optionally including all if listAllExits is true.<BR><BR>
+<pre><B>getSpecialExitsSwap(roomId, listAllExits)</B></pre>
+Lists special exits by command with their target rooms, optionally including all if listAllExits is true.<BR><BR>
+<pre><B>gotoRoom(roomId)</B></pre>
+Navigates to a room by speedwalking along the shortest path.<BR><BR>
+<pre><B>hasExitLock(roomId, direction)</B></pre>
+Checks if a room's exit in a direction is locked.<BR><BR>
+<pre><B>hasSpecialExitLock(fromId, toId, moveCommand)</B></pre>
+Checks if a special exit between rooms is locked.<BR><BR>
+<pre><B>highlightRoom(roomId, color1Red, color1Green, color1Blue, color2Red, color2Green, color2Blue, highlightRadius, color1Alpha, color2Alpha)</B></pre>
+Highlights one or more rooms with custom colors and radius. roomId can be a single ID or array.<BR><BR>
+<pre><B>killMapInfo()</B></pre>
+Terminates map information display (not implemented).<BR><BR>
+<pre><B>loadJsonMap(pathFileName)</B></pre>
+Loads a map from a JSON file.<BR><BR>
+<pre><B>loadMap(pathFileName)</B></pre>
+Alias for loadJsonMap.<BR><BR>
+<pre><B>lockExit(roomId, direction, lockIfTrue)</B></pre>
+Locks or unlocks a room's exit in a direction.<BR><BR>
+<pre><B>lockRoom(roomId, lockIfTrue)</B></pre>
+Locks or unlocks one or more rooms for pathfinding. roomId can be a single ID or array.<BR><BR>
+<pre><B>lockSpecialExit(fromId, toId, moveCommand, lockIfTrue)</B></pre>
+Locks or unlocks a special exit between rooms.<BR><BR>
+<pre><B>moveMapWidget(Xpos, Ypos)</B></pre>
+Repositions the map widget to new coordinates.<BR><BR>
+<pre><B>openMapWidget(Xpos, Ypos, width, height)</B></pre>
+Opens the map widget with specified or saved parameters. Xpos can be a frame name or x-coordinate.<BR><BR>
+<pre><B>pauseSpeedwalk()</B></pre>
+Pauses an ongoing speedwalk sequence.<BR><BR>
+<pre><B>registerMapInfo(label, func)</B></pre>
+Registers a function for map information display (not implemented).<BR><BR>
+<pre><B>resumeSpeedwalk()</B></pre>
+Resumes a paused speedwalk sequence.<BR><BR>
+<pre><B>removeCustomLine(roomId, direction)</B></pre>
+Deletes a custom line from a room in a direction.<BR><BR>
+<pre><B>removeMapEvent(uniquename)</B></pre>
+Removes a custom map event.<BR><BR>
+<pre><B>removeMapMenu(uniquename)</B></pre>
+Removes a custom map menu item and its submenus.<BR><BR>
+<pre><B>removeSpecialExit(roomId, moveCommand)</B></pre>
+Deletes a special exit from a room by move command.<BR><BR>
+<pre><B>resetRoomArea(roomId)</B></pre>
+Clears the area ID of a room.<BR><BR>
+<pre><B>resizeMapWidget(width, height)</B></pre>
+Resizes the map widget to new dimensions.<BR><BR>
+<pre><B>roomExists(roomId)</B></pre>
+Checks if a room ID exists in the map.<BR><BR>
+<pre><B>roomLocked(roomId)</B></pre>
+Checks if a room is locked for pathfinding.<BR><BR>
+<pre><B>saveJsonMap(pathFileName)</B></pre>
+Saves the map to a JSON file.<BR><BR>
+<pre><B>saveMap(pathFileName)</B></pre>
+Alias for saveJsonMap.<BR><BR>
+<pre><B>searchAreaUserData(key, value)</B></pre>
+Searches areas for user data by key or value, returning matches.<BR><BR>
+<pre><B>searchRoom(roomId, caseSensitive, exactMatch)</B></pre>
+Searches rooms by name, supporting case-sensitive or partial matches. roomId can be an ID or name string.<BR><BR>
+<pre><B>searchRoomUserData(key, value)</B></pre>
+Searches rooms for user data by key or value, returning matches.<BR><BR>
+<pre><B>setAreaName(areaId, newName)</B></pre>
+Sets or updates the name of an area. areaId can be ID or current name.<BR><BR>
+<pre><B>setAreaUserData(areaId, key, value)</B></pre>
+Sets a user data key-value pair for an area.<BR><BR>
+<pre><B>setCustomEnvColor(environmentId, r, g, b, a)</B></pre>
+Defines a custom environment color for a given ID.<BR><BR>
+<pre><B>setDoor(roomId, exitCommand, doorStatus)</B></pre>
+Sets the door status (open, closed, locked) for a room's exit. exitCommand can be a direction or special command.<BR><BR>
+<pre><B>setExit(fromId, toId, direction)</B></pre>
+Creates or updates a standard exit between rooms. toId < 0 removes the exit.<BR><BR>
+<pre><B>setExitStub(roomId, direction, set)</B></pre>
+Adds or removes an unlinked exit stub in a direction.<BR><BR>
+<pre><B>setExitWeight(roomId, exitCommand, weight)</B></pre>
+Sets the weight for a room's exit. exitCommand can be a direction or special command.<BR><BR>
+<pre><B>setGridMode(areaId, tf)</B></pre>
+Enables or disables grid mode for an area.<BR><BR>
+<pre><B>setMapUserData(key, value)</B></pre>
+Sets a user data key-value pair for the map.<BR><BR>
+<pre><B>setMapZoom(zoom, areaId)</B></pre>
+Sets the zoom level for the map or a specific area if areaId is provided.<BR><BR>
+<pre><B>setRoomArea(roomId, areaId)</B></pre>
+Sets the area for one or more rooms. areaId can be an ID or name; roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomChar(roomId, char)</B></pre>
+Sets the display character for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomCharColor(roomId, color)</B></pre>
+Sets the color of a room's display character. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomCoordinates(roomId, x, y, z)</B></pre>
+Sets the coordinates for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomEnv(roomId, envId)</B></pre>
+Sets the environment ID for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomIdByHash(roomId, hash)</B></pre>
+Associates a hash with a room ID.<BR><BR>
+<pre><B>setRoomName(roomId, name)</B></pre>
+Sets the name for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomUserData(roomId, key, value)</B></pre>
+Sets a user data key-value pair for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>setRoomWeight(roomId, weight)</B></pre>
+Sets the weight for one or more rooms for pathfinding. roomId can be a single ID or array.<BR><BR>
+<pre><B>speedwalk(dirString, backwards, delay, show)</B></pre>
+Executes a sequence of movement commands. dirString is a comma-separated list of directions.<BR><BR>
+<pre><B>stopSpeedwalk()</B></pre>
+Stops an ongoing speedwalk sequence.<BR><BR>
+<pre><B>unHighlightRoom(roomId)</B></pre>
+Removes highlighting from one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>unsetRoomCharColor(roomId)</B></pre>
+Clears the display character color for one or more rooms. roomId can be a single ID or array.<BR><BR>
+<pre><B>updateMap()</B></pre>
+Redraws the map widget with current data.<BR><BR>
+</DIV>

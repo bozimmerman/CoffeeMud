@@ -85,10 +85,12 @@ would be 5 seconds, and 60000 would be a minute.
 Unlike normal <a href="javascript:menuHelp('Scripts')">Scripts</a>, a plugin code
 script is
 sandboxed to protect the user installing it, which means that the code will not
-have direct access to the mud client api or dom.  Instead it must receive information 
-from a <pre>window.onevent</pre> function, and send commands to the mud using 
+have direct access to the ENTIRE mud client api or dom.  Instead, it has limited
+access to the win.* and win.mapper.* methods as scripts in the Scripts help.
+For other outside events, it must receive information 
+from a <pre>window.onevent</pre> function, and can post messages to the client using 
 <pre>window.send</pre>. More detail on the types of events and the specifics
-of send commands is below, but first, here is some minimal plugin code:
+of send messages is below, but first, here is some minimal plugin code:
 <PRE style="font-size:12;">
 window.onevent=function(event)
 { 
@@ -99,6 +101,7 @@ window.onevent=function(event)
   };
   window.send(response); // send the same event back 
 };
+win.submitInput('LOOK');
 </PRE>
 The following are the events and event fields that might trigger the
 window.onevent function for a plugin.  All events have a 'type' field,
@@ -114,37 +117,4 @@ and always a 'data' field, in addition to other 'extra' fields.
 <TR><TD>variable</TD><TD>key</TD><TD>Result from fetchVariable with key,data</TD></TR>
 <TR><TD>?</TD><TD>?</TD><TD>Typed event from trigger/alias/etc</TD></TR>
 </table> 
-<P>
-The following are the commands and data + other fields that can be
-transmitted via window.send function for a plugin.  <b>window.send</b>
-requires a json document, with a field 'command' with one of the
-commands below, and almost always a 'data' field with the first
-or primary argument that the command requires.  Additional fields for
-secondary arguments may be required also, and are specified below.
-<table border=1 style="color:white;font-size:12;">
-<TR><TD>Command</TD><TD>Extra</TD><TD>Description</TD></TR>
-<TR><TD>submitInput</TD><TD></TD><TD>Send data to mud server</TD></TR>
-<TR><TD>displayText</TD><TD></TD><TD>Send data to mud window</TD></TR>
-<TR><TD>playSound</TD><TD></TD><TD>Play sound url or name</TD></TR>
-<TR><TD>setVariable</TD><TD>key</TD><TD>Sets entity/var 'key' to data value</TD></TR>
-<TR><TD>enableTrigger</TD><TD></TD><TD>Enables the trigger named by data</TD></TR>
-<TR><TD>disableTrigger</TD><TD></TD><TD>Disables the trigger named by data</TD></TR>
-<TR><TD>startTimer</TD><TD></TD><TD>Starts the timer named by data</TD></TR>
-<TR><TD>clearTimer</TD><TD></TD><TD>Stops the timer named by data</TD></TR>
-<TR><TD>displayAt</TD><TD>frame</TD><TD>Send data to mud frame named by frame</TD></TR>
-<TR><TD>fetchVariable</TD><TD></TD><TD>Fetch variable/entity named data (see above)</TD></TR>
-<TR><TD>sendGMCP</TD><TD>command</TD><TD>Sends <a href="javascript:menuHelp('Gmcp')">GMCP</a> command with json data</TD></TR>
-<TR><TD>sendMSDP</TD><TD></TD><TD>Sends msdp json data</TD></TR>
-<TR><TD>submitHidden</TD><TD></TD><TD>Send hidden data to mud server</TD></TR>
-</table> 
-<P>
-<h3>Notes</h3>
-<UL>
-<LI>The displayText and displayAt commands are your workhorses.  Remember that you can send
-<a href="javascript:menuHelp('Mxp')">MXP</a> tags and entities in the data for them, allowing you to do things like create
-frames and gauges, display pictures, etc.</LI>
-<LI><a href="javascript:menuHelp('Mxp')">MXP</a> Entities and connection 'variables' are the same things.  Setting a variable called
-'bob' to the value 'was here' would cause the entity '&bob;' to be replaced with 'was here'.
-<LI>The plugin triggers, aliases, and timers are intended to interact with each other, and 
-with your script code via the Plugin Event <a href="javascript:menuHelp('Actions')">Action</a>.
 </UL>

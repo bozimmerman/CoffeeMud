@@ -34,6 +34,7 @@ function SipletWindow(windowName)
 	this.msp = new MSP(this);
 	this.mxp = new MXP(this);
 	this.plugins = new PLUGINS(this);
+	this.mapper = new Mapper(this);
 	this.text = new TEXT([this.mxp,this.msp]);
 	this.topWindow = document.getElementById(windowName);
 	this.wsocket = null;
@@ -73,7 +74,7 @@ function SipletWindow(windowName)
 		}
 	};
 	
-	this.fixCharDimensions = function()
+	this.resizeTermWindow = function()
 	{
 		var fontFace = this.topWindow.style.fontFamily;
 		var fontSize = this.topWindow.style.fontSize;
@@ -166,7 +167,7 @@ function SipletWindow(windowName)
     	this.window.style.overflowX = 'auto';
     	this.fixOverflow();
 		this.plugins.reset();
-		this.fixCharDimensions(fontFace, fontSize);
+		this.resizeTermWindow(fontFace, fontSize);
 	}
 	
 	this.connect = function(url)
@@ -1012,14 +1013,6 @@ function SipletWindow(windowName)
 		return '';
 	};
 	
-	this.fetchVariable = function(plugin, key)
-	{
-		var value = '';
-		if(key in this.mxp.entities)
-			value = this.fixVariables(this.mxp.entities[key]);
-		this.sendPlugin(plugin, {type: 'variable', key: key, data: value});
-	};
-	
 	this.fixVariables = function(s)
 	{
 		if(!s || (s===undefined))
@@ -1047,10 +1040,15 @@ function SipletWindow(windowName)
 		if(plugin && event)
 		{
 			var json = {};
-			try {
-				json = JSON.parse(event);
-			} catch(e) {
-				json = {'type':'event', 'data': event};
+			if(typeof event === 'object')
+				json = event;
+			else
+			{
+				try {
+					json = JSON.parse(''+event);
+				} catch(e) {
+					json = {'type':'event', 'data': event};
+				}
 			}
 			if(!('type' in json))
 				json['type'] = 'event';
@@ -1403,7 +1401,7 @@ function ResizeAllSiplets()
 	{
 		var siplet = window.siplets[i];
 		if(siplet.window && siplet.topWindow)
-			siplet.fixCharDimensions();
+			siplet.resizeTermWindow();
 	}
 }
 
