@@ -2050,8 +2050,9 @@ function Map(sipwin)
 		var dirString = [];
 		var lastDir = null;
 		var count = 0;
-		path.forEach(function(dir) 
+		path.forEach(function(item) 
 		{
+			var dir = typeof item === 'string' ? item : item.moveCommand;
 			if (dir == lastDir)
 				count++;
 			else 
@@ -2918,15 +2919,15 @@ function Map(sipwin)
 		delay = (typeof delay === 'number') ? delay : 0;
 		show = show !== false;
 		var commands = [];
-		var pattern = /(\d+)?([nsewud]|ne|nw|se|sw|in|out)(?=[^nsewud]|$)/gi;
+		var pattern = /(\d+)?([^,]+)(?=[^,]|$)/gi;
 		var match;
 		while ((match = pattern.exec(dirString.toLowerCase())) !== null) 
 		{
 			var count = parseInt(match[1] || 1, 10);
-			var dir = match[2];
-			var fullDir = window.DirCodeNames[dir] || dir;
+			var cmd = match[2];
+			var fullCmd = (cmd in window.DirCodeNames) ? window.DirCodeNames[cmd] : cmd;
 			for (var i = 0; i < count; i++)
-				commands.push(fullDir);
+				commands.push(fullCmd);
 		}
 		if (commands.length === 0)
 			return false;
