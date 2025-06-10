@@ -256,7 +256,7 @@ function SiPrompt(text, callback) {
 	var dialog = document.createElement("div");
 	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
 	var label = document.createElement("div");
-	label.textContent = text;
+	label.innerHTML = text;
 	var input = document.createElement("input");
 	input.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px";
 	input.maxLength = 30;
@@ -277,6 +277,59 @@ function SiPrompt(text, callback) {
 	setTimeout(function() { input.focus() }, 0);
 }
 
+function SiFontPicker(labelText, callback) 
+{
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.innerHTML = labelText;
+	var fontSelect = document.createElement("select");
+	fontSelect.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px;margin:5px 0";
+	var fonts = ["Arial", "Helvetica", "Times New Roman", "Courier New", "Verdana", "Georgia"];
+	fonts.forEach(function(font) 
+	{
+		var option = document.createElement("option");
+		option.value = font;
+		option.textContent = font;
+		fontSelect.append(option);
+	});
+	
+	var sizeSelect = document.createElement("select");
+	sizeSelect.style = "width:200px;border:1px solid #fff;background:#fff;color:#000;font-size:16px;padding:2px;margin:5px 0";
+	var sizes = [12, 14, 16, 18, 20, 24, 28, 32];
+	sizes.forEach(function(size) 
+	{
+		var option = document.createElement("option");
+		option.value = size;
+		option.textContent = size + "px";
+		sizeSelect.append(option);
+	});
+	
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.onclick = function() 
+	{
+		overlay.remove();
+		callback(fontSelect.value, parseInt(sizeSelect.value));
+	};
+	
+	fontSelect.onkeydown = sizeSelect.onkeydown = function(e) 
+	{
+		e.stopPropagation();
+		if (e.key == "Enter") 
+			button.click();
+		if (e.key == "Escape")
+			overlay.remove();
+	};
+	dialog.append(label, fontSelect, sizeSelect, button);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	setTimeout(function() { fontSelect.focus() }, 0);
+}
+
 function SiAlert(text) {
 	var overlay = document.createElement("div");
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
@@ -293,6 +346,190 @@ function SiAlert(text) {
 	dialog.append(label, button);
 	overlay.append(dialog);
 	document.body.append(overlay);
+}
+
+function SiColorPicker(text, callback, includeAlpha = false) 
+{
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.innerHTML = text;
+	label.style = "margin-bottom:10px";
+	var canvas = document.createElement("canvas");
+	canvas.width = 200;
+	canvas.height = 150;
+	canvas.style = "border:1px solid #fff;cursor:crosshair";
+	var ctx = canvas.getContext("2d");
+	var valueLabel = document.createElement('div');
+	valueLabel.textContent = 'color level';
+	valueLabel.style = "position:absolute;color:#fff;font-size:16px;margin:0;padding:0;top:2px;left:46px;z-index:2;";
+	var valueSlider = document.createElement("input");
+	valueSlider.type = "range";
+	valueSlider.min = 0;
+	valueSlider.max = 100;
+	valueSlider.value = 100;
+	valueSlider.style = "width:200px;margin:5px 0;position:relative;z-index:1;";
+	var valueWrapper = document.createElement("div");
+	valueWrapper.style = "position:relative;";
+	valueWrapper.append(valueLabel, valueSlider);
+	var alphaSlider = includeAlpha ? document.createElement("input") : null;
+	var alphaWrapper = null;
+	if (includeAlpha) {
+		var alphaLabel = document.createElement('div');
+		alphaLabel.textContent = 'transparency';
+		alphaLabel.style = "position:absolute;color:#fff;font-size:16px;margin:0;padding:0;top:2px;left:50px;z-index:2;";
+		alphaSlider.type = "range";
+		alphaSlider.min = 0;
+		alphaSlider.max = 100;
+		alphaSlider.value = 100;
+		alphaSlider.style = "width:200px;margin:5px 0;position:relative;z-index:1;";
+		alphaWrapper = document.createElement("div");
+		alphaWrapper.style = "position:relative;";
+		alphaWrapper.append(alphaLabel, alphaSlider);
+	}
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.style = "margin-top:10px";
+	function hsvToRgb(h, s, v) 
+	{
+		var r, g, b;
+		var i = Math.floor(h * 6);
+		var f = h * 6 - i;
+		var p = v * (1 - s);
+		var q = v * (1 - f * s);
+		var t = v * (1 - (1 - f) * s);
+		switch (i % 6) 
+		{
+			case 0: r = v, g = t, b = p; break;
+			case 1: r = q, g = v, b = p; break;
+			case 2: r = p, g = v, b = t; break;
+			case 3: r = p, g = q, b = v; break;
+			case 4: r = t, g = p, b = v; break;
+			case 5: r = v, g = p, b = q; break;
+		}
+		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+	}
+	function drawPicker() 
+	{
+		var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+		gradient.addColorStop(0, "#f00");
+		gradient.addColorStop(0.166, "#ff0");
+		gradient.addColorStop(0.333, "#0f0");
+		gradient.addColorStop(0.5, "#0ff");
+		gradient.addColorStop(0.666, "#00f");
+		gradient.addColorStop(0.833, "#f0f");
+		gradient.addColorStop(1, "#f00");
+		ctx.fillStyle = gradient;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+		gradient.addColorStop(0, "rgba(255,255,255,1)");
+		gradient.addColorStop(1, "rgba(255,255,255,0)");
+		ctx.fillStyle = gradient;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+		gradient.addColorStop(0, "rgba(0,0,0,0)");
+		gradient.addColorStop(1, "rgba(0,0,0,1)");
+		ctx.fillStyle = gradient;
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+	}
+	var h = 0, s = 1, v = 1, a = 1;
+	canvas.onmousedown = function(e) 
+	{
+		var rect = canvas.getBoundingClientRect();
+		var x = e.clientX - rect.left;
+		var y = e.clientY - rect.top;
+		h = x / canvas.width;
+		s = 1 - y / canvas.height;
+		updatePreview();
+	};
+	valueSlider.oninput = function() {
+		v = valueSlider.value / 100;
+		updatePreview();
+	};
+	if (includeAlpha) {
+		alphaSlider.oninput = function() {
+			a = alphaSlider.value / 100;
+			updatePreview();
+		};
+	}
+	var preview = document.createElement("div");
+	preview.style = "width:200px;height:20px;border:1px solid #fff;margin:10px 0";
+	function updatePreview() {
+		var rgb = hsvToRgb(h, s, v);
+		var color = includeAlpha ? `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})` : `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+		preview.style.backgroundColor = color;
+	}
+	button.onclick = function() {
+		overlay.remove();
+		var rgb = hsvToRgb(h, s, v);
+		var result = includeAlpha ? [...rgb, a] : rgb;
+		callback(result);
+	};
+	overlay.onkeydown = function(e) {
+		if (e.key == "Escape") overlay.remove();
+	};
+	dialog.append(label, canvas, valueWrapper);
+	dialog.append(preview);
+	if (includeAlpha) dialog.append(alphaWrapper);
+	dialog.append(button);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	drawPicker();
+	updatePreview();
+}
+
+function SiSwatchPicker(text, colors, callback) 
+{
+	if (!Array.isArray(colors) 
+	|| colors.length === 0 
+	|| !colors.every(c => Array.isArray(c) && c.length === 3 && c.every(n => Number.isInteger(n) && n >= 0 && n <= 255))) 
+		return;
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.innerHTML = text;
+	label.style = "margin-bottom:10px";
+	var swatchContainer = document.createElement("div");
+	swatchContainer.style = "display:grid;grid-template-columns:repeat(5,40px);gap:5px;max-width:230px;";
+	var selectedColor = colors[0];
+	colors.forEach(function(color) {
+		var swatch = document.createElement("div");
+		swatch.style = `width:40px;height:40px;background-color:rgb(${color[0]},${color[1]},${color[2]});border:2px solid #fff;cursor:pointer;`;
+		swatch.onclick = function() 
+		{
+			selectedColor = color;
+			updatePreview();
+			swatchContainer.querySelectorAll("div").forEach(s => s.style.border = "2px solid #fff");
+			swatch.style.border = "2px solid #ff0";
+		};
+		swatchContainer.append(swatch);
+	});
+	var preview = document.createElement("div");
+	preview.style = "width:200px;height:20px;border:1px solid #fff;margin:10px 0";
+	function updatePreview() {
+		preview.style.backgroundColor = `rgb(${selectedColor[0]},${selectedColor[1]},${selectedColor[2]})`;
+	}
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.style = "margin-top:10px";
+	button.onclick = function() {
+		overlay.remove();
+		callback([...selectedColor]);
+	};
+	overlay.onkeydown = function(e) {
+		if (e.key === "Escape") overlay.remove();
+	};
+	dialog.append(label, swatchContainer, preview, button);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	updatePreview();
+	swatchContainer.children[0].style.border = "2px solid #ff0";
 }
 
 function logDat(typ, dat, opts)

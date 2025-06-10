@@ -94,6 +94,7 @@ function CreateContextDiv(id, x, y, width)
 					   + "border: 1px black solid";
 	if(width === 'auto')
 	{
+		delete menu.style.width;
 		menu.style.display = 'inline-block';
 		menu.style.whiteSpace = 'nowrap';
 	}
