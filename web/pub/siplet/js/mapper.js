@@ -402,8 +402,81 @@ function Map(sipwin)
 		froom.exits.push(exit);
 		return true;
 	};
-	this.auditAreas = function() {}; //TODO:
-	this.autoLayout = function(areaId, startRoomId) {} //TODO:
+	
+	this.auditAreas = function() 
+	{
+		var report = { issues: [], areas: {}, orphanRooms: [] };
+		for (var areaId in this.areas) 
+		{
+			var area = this.areas[areaId];
+			if (!area.name || area.name.trim() === "") {
+				report.issues.push("Area "+areaId+" has no name");
+			}
+			var rooms = this.getAreaRooms(areaId);
+			if (!rooms || Object.keys(rooms).length === 0) {
+				report.issues.push("Area "+areaId+" ("+area.name+") has no rooms");
+			}
+			report.areas[areaId] = { name: area.name, roomCount: Object.keys(rooms).length };
+		}
+		var nameCounts = {};
+		for (var areaId in this.areas) 
+		{
+			var name = this.areas[areaId].name;
+			nameCounts[name] = (nameCounts[name] || 0) + 1;
+			if (nameCounts[name] > 1)
+				report.issues.push("Duplicate area name "+name+" in area "+areaId);
+		}
+		for (var roomId in this.rooms) 
+		{
+			var room = this.rooms[roomId];
+			if (!room.areaId || !(room.areaId in this.areas)) 
+			{
+				report.orphanRooms.push({ roomId: roomId, areaId: room.areaId || "none" });
+				report.issues.push("Room "+roomId+" has invalid or missing areaId: "+room.areaId);
+			}
+		}
+		
+		return report;
+	};
+
+	this.autoLayout = function(areaId, startRoomId) {
+		if (!(areaId in this.areas)) 
+			return false;
+		var rooms = this.getAreaRooms1(areaId);
+		if (!rooms.length) 
+			return false;
+		var startRoom = startRoomId && rooms.includes(startRoomId) ? this.rooms[startRoomId] : this.rooms[rooms[0]];
+		startRoom.x = startRoom.x || 0;
+		startRoom.y = startRoom.y || 0;
+		startRoom.z = startRoom.z || 0;
+		var queue = [startRoomId || rooms[0]];
+		var visited = new Set();
+		visited.add(queue[0]);
+		while (queue.length) 
+		{
+			var roomId = queue.shift();
+			var room = this.rooms[roomId];
+			var exits = this.getRoomExits(roomId);
+	
+			for (var dir in exits) 
+			{
+				var toId = exits[dir];
+				if (toId in this.rooms 
+				&& !visited.has(toId) 
+				&& this.rooms[toId].areaId == areaId) 
+				{
+					var toRoom = this.rooms[toId];
+					var delta = window.DirCodeDeltas[dir];
+					toRoom.x = room.x + delta.x;
+					toRoom.y = room.y + delta.y;
+					toRoom.z = room.z + delta.z;
+					visited.add(toId);
+					queue.push(toId);
+				}
+			}
+		}
+		return true;
+	}
 	this.centerview = function(roomId) {
 		if(roomId in this.rooms)
 			this.centerView = roomId;
@@ -425,7 +498,17 @@ function Map(sipwin)
 		}
 		return false;
 	};
-	this.clearMapSelection = function() {}; //TODO
+	this.clearMapSelection = function() {
+		if (this.mapWidget) {
+			if(this.mapWidget.selectedRooms && this.mapWidget.selectedRooms.length)
+			{
+				this.mapWidget.selectedRooms = [];
+				this.updateMap();
+			}
+			return true;
+		}
+		return false;
+	};
 	this.clearMapUserData = function() {
 		if(this.userData) {
 			delete this.userData;
@@ -472,8 +555,26 @@ function Map(sipwin)
 			}
 		}
 	};
-	this.closeMapWidget = function() {}; //TODO
-	
+	this.closeMapWidget = function() {
+		if (!this.mapWidget || !this.mapWidget.canvas)
+			return false;
+		if (this.mapWidget.mouseUpHandler)
+			document.removeEventListener('mouseup', this.mapWidget.mouseUpHandler);
+		if (this.mapWidget.tooltip && this.mapWidget.tooltip.parentNode)
+			this.mapWidget.tooltip.parentNode.removeChild(this.mapWidget.tooltip);
+		if(this.mapWidget.canvas)
+		{
+			if(this.mapWidget.frame !== null)
+				this.mapWidget.canvas.outerHTML = '';
+			else
+				this.mapWidget.canvas.parentNode.outerHTML = '';
+		}
+		// Clear mapWidget and related state
+		this.mapWidget = null;
+		this.centerView = null; // Reset view to avoid referencing closed widget
+		return true;
+	};
+
 	this.connectExitStub = function(fromId, toId, direction) {
 		if (!(fromId in this.rooms) || !this.rooms[fromId].exits)
 			return false;
@@ -570,9 +671,9 @@ function Map(sipwin)
 	};
 
 	this.createMapLabel = function(areaId, text, posX, posY, posZ, fgRed, fgGreen, fgBlue, 
-								   bgRed, bgGreen, bgBlue, zoom, fontSize, showOnTop, 
-								   noScaling, fontName, foregroundTransparency, 
-								   backgroundTransparency, temporary) 
+									bgRed, bgGreen, bgBlue, zoom, fontSize, showOnTop, 
+									noScaling, fontName, foregroundTransparency, 
+									backgroundTransparency, temporary) 
 	{
 		if (!(areaId in this.areas) || !text) 
 			return false;
@@ -599,7 +700,29 @@ function Map(sipwin)
 		this.updateMap();
 		return labelId;
 	};
-	this.createMapImageLabel = function(areaId, filePath, posx, posy, posz, width, height, zoom, showOnTop, temporary) {}; //TODO
+
+	this.createMapImageLabel = function(areaId, filePath, posx, posy, posz, width, height, zoom, showOnTop, temporary) {
+		if (!(areaId in this.areas) || !filePath) 
+			return false;
+		var area = this.areas[areaId];
+		var labelId = 1;
+		while (labelId in area.labels)
+			labelId++;
+		area.labels[labelId] = {
+			type: 'image',
+			filePath: filePath,
+			x: posx || 0,
+			y: posy || 0,
+			z: posz || 0,
+			width: width || 100,
+			height: height || 100,
+			zoom: zoom || 1,
+			showOnTop: !!showOnTop,
+			temporary: !!temporary
+		};
+		return labelId;
+	};
+
 	this.createMapper = function(x, y, width, height) {
 		if(this.mapWidget)
 		{
@@ -624,8 +747,8 @@ function Map(sipwin)
 			canvas.style.position = "absolute";
 			canvas.style.left = '0px';
 			canvas.style.top = '0px';
-			canvas.width = targetWidth;
-			canvas.height = targetHeight;
+			canvas.width = width;
+			canvas.height = height;
 			frame.appendChild(canvas);
 		}
 		else
@@ -697,8 +820,8 @@ function Map(sipwin)
 		var mouseMoveHandler = function(event) {
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
 				canvas.style.cursor = "default";
-				if(self.mapWidget.tooptip)
-					self.mapWidget.tooltup.style.display='none';
+				if(self.mapWidget.tooltip)
+					self.mapWidget.tooltip.style.display='none';
 				return;
 			}
 			var rect = canvas.getBoundingClientRect();
@@ -777,10 +900,58 @@ function Map(sipwin)
 					closestRoomId = roomId;
 				}
 			}
-			if (closestRoomId) {
-				self.centerView = closestRoomId;
+			if (closestRoomId) 
+			{
+				if (event.ctrlKey) 
+				{
+					self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
+					var index = self.mapWidget.selectedRooms.indexOf(closestRoomId);
+					if (index >= 0)
+						self.mapWidget.selectedRooms.splice(index, 1);
+					else
+						self.mapWidget.selectedRooms.push(closestRoomId);
+				}
+				else if (event.shiftKey) 
+				{
+					if(self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length)
+					{
+						var lastRoom = self.rooms[self.mapWidget.selectedRooms[self.mapWidget.selectedRooms.length-1]];
+						var currRoom = self.rooms[closestRoomId];
+						var minX = Math.min(lastRoom.x, currRoom.x);
+						var maxX = Math.max(lastRoom.x, currRoom.x);
+						var minY = Math.min(lastRoom.y, currRoom.y);
+						var maxY = Math.max(lastRoom.y, currRoom.y);
+						var zLevel = currRoom.z;
+						self.mapWidget.selectedRooms = [];
+						for (var roomId in self.rooms) {
+							var room = self.rooms[roomId];
+							if (room.areaId == currRoom.areaId && room.z == zLevel &&
+								room.x >= minX && room.x <= maxX && room.y >= minY && room.y <= maxY
+								&& (self.mapWidget.selectedRooms.indexOf(roomId)<0))
+								self.mapWidget.selectedRooms.push(roomId);
+						}
+					}
+					else
+					{
+						self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
+						var index = self.mapWidget.selectedRooms.indexOf(closestRoomId);
+						if (index >= 0)
+							self.mapWidget.selectedRooms.splice(index, 1);
+						else
+							self.mapWidget.selectedRooms.push(closestRoomId);
+					}
+		        }
+				else
+				{
+					self.centerView = closestRoomId;
+					if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length > 0)
+						self.clearMapSelection();
+				}
 				event.stopPropagation();
 				self.updateMap();
+			} else {
+				if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length > 0)
+					self.clearMapSelection();
 			}
 		};
 		var menuHandler = function(e) {
@@ -797,8 +968,8 @@ function Map(sipwin)
 			var minDist = Infinity;
 			var gridX = Math.round((clickX - offsetX) / (tileSize * SpacingRatio));
 			var gridY = Math.round((clickY - offsetY) / (tileSize * SpacingRatio));
-			var zLevel = self.rooms[self.centerView]?.z || 0;
-			var areaId = self.rooms[self.centerView]?.areaId || Object.keys(self.areas)[0]
+			var zLevel = self.rooms[self.centerView]?(self.rooms[self.centerView].z || 0) : 0;
+			var areaId = self.rooms[self.centerView]?(self.rooms[self.centerView].areaId || Object.keys(self.areas)[0]) : Object.keys(self.areas)[0];
 			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = clickX - centerX;
@@ -807,6 +978,10 @@ function Map(sipwin)
 				if (dist < radius && dist < minDist) {
 					minDist = dist;
 					closestRoomId = roomId;
+					if(self.mapWidget.selectedRooms 
+					&& self.mapWidget.selectedRooms.length
+					&& (self.mapWidget.selectedRooms.indexOf(roomId)<0))
+						self.clearMapSelection();
 				}
 			}
 			if (!closestRoomId && areaId in self.areas && self.areas[areaId].labels) {
@@ -817,8 +992,15 @@ function Map(sipwin)
 						var x = offsetX + label.x * tileSize * SpacingRatio;
 						var y = offsetY + label.y * tileSize * SpacingRatio;
 						var fontSize = Math.max(5, (label.fontSize || 10) * (self.zoom || 1));
-						var width = label.text.length * fontSize / 2;
-						var height = fontSize;
+						var width,height;
+						if (label.type === 'image') {
+							width = (label.width || 100) * (label.zoom || 1) * (self.zoom || 1);
+							height = (label.height || 100) * (label.zoom || 1) * (self.zoom || 1);
+						} else {
+							var fontSize = Math.max(5, (label.fontSize || 10) * (self.zoom || 1));
+							width = (label.text ? label.text.length : 0) * fontSize / 2;
+							height = fontSize;
+						}
 						if (clickX >= x - width / 2 && clickX <= x + width / 2 &&
 							clickY >= y - height / 2 && clickY <= y + height / 2) {
 							closestLabelId = labelId;
@@ -867,17 +1049,13 @@ function Map(sipwin)
 							}).join(',');
 							if (typeof window[event.eventName] === 'function' || 
 								(sipwin[event.eventName] && typeof sipwin[event.eventName] === 'function')) {
-								item.a = `javascript:try { 
-									if (typeof ${event.eventName} === 'function') {
-										${event.eventName}(${args});
-									} else {
-										window.currWin.${event.eventName}(${args});
-									}
-								} catch(e) { console.error('Event error: ' + e); }`;
+								item.a = 'javascript:try {' 
+									+'	window.currWin.'+event.eventName+'('+args+');'
+								+'} catch(e) { console.error("Event error: " + e); };'
 							} else {
 								var cmd = event.eventName;
 								if (args) cmd += ' ' + args.replace(/'/g, '');
-								item.a = `javascript:window.currWin.submitInput('${cmd.replace(/'/g, "\\'")}');`;
+								item.a = 'javascript:window.currWin.submitInput("'+cmd.replace(/'/g, "\\'")+'");';
 							}
 						}
 						var subMenus = buildCustomMenu(context, uniquename, visited);
@@ -904,37 +1082,27 @@ function Map(sipwin)
 				var menu = [
 					{"n":"Set as Current Room",
 					 "a":"javascript:var map=window.currWin.mapper;" 
+					 	+"map.clearMapSelection();"
 					 	+"map.centerview('"+closestRoomId+"');"
 					 	+"map.updateMap();",
 					 "e":""},
-					{"n":"Room Highlight",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"var room = map.rooms['"+closestRoomId+"'];"
-					 	+"if(room.highlight) {"
-					 	+"	map.unHighlightRoom('"+closestRoomId+"');map.updateMap();"
-					 	+"} else "
-					 	+"SiColorPicker('Select first color:',function(color1) {" 
-					 	+"  SiColorPicker('Select second color:',function(color2) {" 
-					 	+"	map.highlightRoom('"+closestRoomId+"', color1[0], color1[1], color1[2], color2[0], color2[1], color2[2], null, color1[3], color2[3]);"
-					 	+"	map.updateMap();"
-					 	+"  },true);"
-					 	+"},true);",
-					 "e":""},
 					{"n":"Speedwalk to Room",
-					 "a": "javascript:var map=window.currWin.mapper;debugger;" +
-						  "var dirString = map.getPath(map.getPlayerRoom(), '" + closestRoomId + "');" +
-						  "if (dirString) map.speedwalk(dirString, false, 0, true);",
+					 "a": "javascript:var map=window.currWin.mapper;debugger;"
+						  +"map.clearMapSelection();"
+						  +"var dirString = map.getPath(map.getPlayerRoom(), '" + closestRoomId + "');"
+						  +"if (dirString) map.speedwalk(dirString, false, 0, true);",
 					 "e":""},
 					{"n":"Add Exit",
 					 "c": false,
 					 "a":"javascript:var map=window.currWin.mapper;"
 					 	+"var subMenu = [];"
+					 	+"map.clearMapSelection();"
 					 	+"for(var dir in window.DirNameNums) {"
 					 	+"  var exits = map.getRoomExits('"+closestRoomId+"');"
 					 	+"  var dirCode = window.DirNumCodes[window.DirNameNums[dir]];"
 					 	+"  if(!exits[dirCode])"
 					 	+"	subMenu.push({n:dir,e:'',a:'javascript:"
-					 	+"	   SiPrompt(\\'Enter Target Room Id\\',function(i){"
+					 	+"		SiPrompt(\\'Enter Target Room Id\\',function(i){"
 					 	+"		  if(i && window.currWin.mapper.roomExists(i)) {"
 					 	+"			 window.currWin.mapper.setExit(\\'"+closestRoomId+"\\',i,\\''+dirCode+'\\');"
 					 	+"			 window.currWin.mapper.updateMap();"
@@ -942,13 +1110,13 @@ function Map(sipwin)
 					 	+"	})'});"
 					 	+"}"
 					 	+"subMenu.push({n:'special',e:'',a:'javascript:"
-					 	+"	   SiPrompt(\\'Enter Target Room Id\\',function(id){"
+					 	+"		SiPrompt(\\'Enter Target Room Id\\',function(id){"
 					 	+"		  if(id && window.currWin.mapper.roomExists(id)) {"
 						+"			SiPrompt(\\'Enter Move Command\\',function(cmd){"
-					 	+"			   if(cmd) {"
+					 	+"				if(cmd) {"
 					 	+"				  window.currWin.mapper.addSpecialExit(\\'"+closestRoomId+"\\',id,cmd);"
 					 	+"				  window.currWin.mapper.updateMap();"
-					 	+"			   }});}});"
+					 	+"				}});}});"
 					 	+"'});"
 					 	+"var c = getComputedStyle(this.parentNode.parentNode);"
 					 	+"var cn = getComputedStyle(this.parentNode);"
@@ -959,6 +1127,7 @@ function Map(sipwin)
 					 "e":""},
 					{"n":"Remove Exit",
 					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
 					 	+"var subMenu = [];"
 					 	+"var exits = map.getRoomExits('"+closestRoomId+"');"
 					 	+"for(var k in exits) {"
@@ -976,6 +1145,7 @@ function Map(sipwin)
 					 "e":"window.currWin.mapper.rooms['"+closestRoomId+"'].exits.length"},
 					{"n":"Lock/Unlock Exit",
 					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
 					 	+"var subMenu = [];"
 					 	+"var exits = map.getRoomExits('"+closestRoomId+"');"
 					 	+"for(var k in exits) {"
@@ -994,6 +1164,7 @@ function Map(sipwin)
 					 "e":"window.currWin.mapper.rooms['"+closestRoomId+"'].exits.length"},
 					{"n":"Set Door Status",
 					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
 					 	+"var subMenu = [];"
 					 	+"var exits = map.getRoomExits('"+closestRoomId+"');"
 					 	+"var doors = map.getDoors('"+closestRoomId+"');"
@@ -1030,110 +1201,157 @@ function Map(sipwin)
 					 	+"DropDownMenu(null,x,y,'auto',12,subMenu,true);",
 					 "e":"window.currWin.mapper.rooms['"+closestRoomId+"'].exits.length"
 					},
-					{"n":"Set Room Name",
+					{"n":"Set Exit Weight",
 					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiPrompt('Enter room name:',function(i) {" 
-					 	+"  map.setRoomName('"+closestRoomId+"',i);"
-					 	+"  map.updateMap();"
-					 	+"});",
-					 "e":""},
-					{"n":"Set Room Color",
+					 	+"map.clearMapSelection();"
+					 	+"var subMenu = [];"
+					 	+"var exits = map.getRoomExits('"+closestRoomId+"');"
+					 	+"for(var k in exits) {"
+					 	+"  var dirName = window.DirCodeNames[k];"
+						+"	subMenu.push({n:dirName,"
+						+"					a:'javascript:var map=window.currWin.mapper;"
+					 	+"					SiPrompt(\\'Enter Exit Weight\\',function(i){"
+					 	+"						if(!isNumber(i)) return;"
+						+"						map.setExitWeight(\\'"+closestRoomId+"\\',\\''+k+'\\',Number(i)); "
+						+"						map.updateMap();});"
+						+"'});"
+					 	+"}"
+					 	+"var c = getComputedStyle(this.parentNode.parentNode);"
+					 	+"var cn = getComputedStyle(this.parentNode);"
+					 	+"var x = parseFloat(c.left) + parseFloat(c.width);"
+					 	+"var y = event.currentTarget.getBoundingClientRect().top + window.scrollY;"
+					 	+"DropDownMenu(null,x,y,'auto',12,subMenu,true);",
+					 "e":"window.currWin.mapper.rooms['"+closestRoomId+"'].exits.length"
+					},
+					{"n":"Set Room ...",
 					 "a":"javascript:var map=window.currWin.mapper;"
-						+" var colors = Object.values(window.MapEnvs).map(env => [env.r, env.g, env.b])"
-						+".concat(Object.values(window.MapBlock.envs).map(env => [env.r, env.g, env.b]));"
-						+"SiSwatchPicker('Select room color:',colors,function(color){"
-						+"var envId = null;"
-						+"for (var id in window.MapEnvs) {"
-						+"	var env = window.MapEnvs[id];"
-						+"	if (env.r === color[0] && env.g === color[1] && env.b === color[2]) {"
-						+"		envId = id;"
-						+"		break;"
-						+"	}"
-						+"}"
-						+"if (!envId) {"
-						+"	for (var id in window.MapBlock.envs) {"
-						+"		var env = window.MapBlock.envs[id];"
-						+"		if (env.r === color[0] && env.g === color[1] && env.b === color[2]) {"
-						+"			envId = id;"
-						+"			break;"
-						+"		}"
-						+"	}"
-						+"}"
-					 	+"if (envId) {"
-					 	+"  map.setRoomEnv('"+closestRoomId+"',envId);"
-					 	+"	map.updateMap(); };"
-					 	+"});",
-					 "e":""},
-					{"n":"Set Room Weight",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiPrompt('Enter room weight:',function(i){" 
-					 	+"  if (isNumber(i)) { "
-					 	+"	map.setRoomWeight('"+closestRoomId+"',Number(i));"
-					 	+"	map.updateMap(); }"
-					 	+"  }"
-					 	+"});",
-					 "e":""},
-					{"n":"Set Room Area",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiPrompt('Enter room area id/name:',function(i){"
-					 	+"  if (i) { "
-					 	+"	map.setRoomArea('"+closestRoomId+"',i);"
-					 	+"	map.updateMap(); }"
-					 	+"  }"
-					 	+"});",
-					 "e":""},
-					{"n":"Set Room Coordinates",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiPrompt('Enter room coordinates (x,y,z):',function(i){"
-					 	+"  var regex = /^-?\\d+,-?\\d+,-?\\d+$/;" 
-					 	+"  if (regex.test(i)) { "
-					 	+"	var xyz = i.split(',').map(Number);"
-					 	+"	map.setRoomCoordinates('"+closestRoomId+"',xyz[0],xyz[1],xyz[2]);"
-					 	+"	map.updateMap();"
-					 	+"  }"
-					 	+"});",
-					 "e":""},
-					{"n":"Room User Data",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"var all = map.getAllRoomUserData('"+closestRoomId+"');"
-					 	+"var ud = ''; for(var k in all)"
-					 	+"ud += '<font color=yellow>'+escapeHTML(k+'='+all[k])+'</font><br>';"
-					 	+"SiPrompt(ud+'<p>Enter variable to add/edit/remove like var=value:',function(i){"
-					 	+"  var x = i.indexOf('=');"
-					 	+"  if(x>=0) { var v = i.substr(0,x).trim(); var l = i.substr(x+1).trim();"
-					 	+"	if(!l) l=null;"
-					 	+"	if(v)"
-					 	+"		map.setRoomUserData('"+closestRoomId+"',v,l);"
-					 	+"  }"
-					 	+"});",
-					 "e":""},
-					{"n":"Set Room Char",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiPrompt('Enter room character:',function(i){"
-					 	+"  if(!i) return;" 
-					 	+"  SiColorPicker('Enter room char color:',function(c){" 
-					 	+"	  map.setRoomChar('"+closestRoomId+"',i.charAt(0));"
-					 	+"	  map.setRoomCharColor('"+closestRoomId+"',c);"
-					 	+"	  map.updateMap(); });"
-					 	+"});",
-					 "e":""},
-					{"n":(self.roomLocked(closestRoomId)?"Unlock Room":"Lock room"),
-					 "a":"javascript:var map=window.currWin.mapper;"
-						+"if(map.roomLocked('"+closestRoomId+"'))"
-						+"   map.lockRoom('"+closestRoomId+"',false);"
-						+"else"
-						+"   map.lockRoom('"+closestRoomId+"',true);"
+					 	+"var js='javascript:var map=window.currWin.mapper;'"
+					 	+"		+'var sel=map.getMapSelection();'"
+					 	+"		+'var rid=sel.length>0?sel:[\\'"+closestRoomId+"\\'];'"
+					 	+"		+'var msg=(rid.length>1?(rid.length+\\' rooms\\'):(\\'room \\'+rid[0]));';"
+					 	+" "
+					 	+"var subMenu = [];"
+						+"	subMenu.push({n:'Name',"
+						+"		a:js+'SiPrompt(\\'Enter name for \\'+msg+\\':\\',function(i) { "
+						+"				map.setRoomName(rid,i);"
+						+"				map.updateMap();"
+						+"		  });"
+						+"		'});"
+						+"  subMenu.push({n:'Weight',"
+					 	+"		a:js+'SiPrompt(\\'Enter weight for \\'+msg+\\':\\',function(i){"
+					 	+"			if (isNumber(i)) { "
+					 	+"				map.setRoomWeight(rid,Number(i));"
+					 	+"				map.updateMap();"
+					 	+"			}"
+					 	+"		  });"
+					 	+"		'});"
+					 	+"  subMenu.push({n:'Area',"
+					 	+"		a:js+'SiPrompt(\\'Enter area id/name for \\'+msg+\\':\\',function(i){"
+					 	+"			if (i) {"
+					 	+"				map.setRoomArea(rid,i);"
+					 	+"				map.updateMap();"
+					 	+"			}"
+					 	+"		  });"
+					 	+"		'});"
+					 	+"  subMenu.push({n:'Coordinates',"
+					 	+"		a:js+'SiPrompt(\\'Enter coordinates (x,y,z) for \\'+msg+\\':\\',function(i){"
+					 	+"			var regex = /^-?\\d+,-?\\d+,-?\\d+$/;" 
+					 	+"  		if (regex.test(i)) { "
+					 	+"				var xyz = i.split(\\',\\').map(Number);"
+					 	+"				map.setRoomCoordinates(rid,xyz[0],xyz[1],xyz[2]);"
+					 	+"				map.updateMap();"
+					 	+"  		}"
+					 	+"		 });"
+						+"		'});"
+					 	+"  subMenu.push({n:'Char',"
+					 	+"		a:js+'SiPrompt(\\'Enter character for \\'+msg+\\':\\',function(i){"
+					 	+"			if(!i) return;" 
+					 	+"			SiColorPicker(\\'Enter char color for \\'+msg+\\':\\',function(c){" 
+					 	+"				map.setRoomChar(rid,i.charAt(0));"
+					 	+"				map.setRoomCharColor(rid,c);"
+					 	+"	  			map.updateMap();"
+					 	+" 			});"
+					 	+"		 });"
+						+"		'});"
+					 	+"  subMenu.push({n:map.roomLocked('"+closestRoomId+"')?'Unlock':'Lock',"
+						+"		a:js+'if(map.roomLocked(\\'"+closestRoomId+"\\'))"
+						+"				map.lockRoom(rid,false);"
+						+"			  else"
+						+"				map.lockRoom(rid,true);"
+						+"		'});"
+					 	+"  subMenu.push({n:'Highlight',"
+					 	+"		a:js+'var room = map.rooms[\\'"+closestRoomId+"\\'];"
+					 	+"			if(room.highlight) {"
+					 	+"				map.unHighlightRoom(rid);map.updateMap();"
+					 	+"			} else "
+					 	+"				SiColorPicker(\\'Select first color:\\',function(color1) {" 
+					 	+"					SiColorPicker(\\'Select second color:\\',function(color2) {" 
+					 	+"						map.highlightRoom(rid, color1[0], color1[1], color1[2], color2[0], color2[1], color2[2], null, color1[3], color2[3]);"
+					 	+"						map.updateMap();"
+					 	+"  				},true);"
+					 	+"				},true);"
+						+"		'});"
+					 	+"  subMenu.push({n:'Color',"
+						+"		a:js+'"
+						+"			var colors = Object.values(window.MapEnvs).map(env => [env.r, env.g, env.b])"
+						+"				.concat(Object.values(window.MapBlock.envs).map(env => [env.r, env.g, env.b]));"
+						+"			SiSwatchPicker(\\'Select color of \\'+msg+\\':\\',colors,function(color){"
+						+"				var envId = null;"
+						+"				for (var id in window.MapEnvs) {"
+						+"					var env = window.MapEnvs[id];"
+						+"					if (env.r === color[0] && env.g === color[1] && env.b === color[2]) {"
+						+"						envId = id;"
+						+"						break;"
+						+"					}"
+						+"				}"
+						+"				if (!envId) {"
+						+"					for (var id in window.MapBlock.envs) {"
+						+"						var env = window.MapBlock.envs[id];"
+						+"						if (env.r === color[0] && env.g === color[1] && env.b === color[2]) {"
+						+"							envId = id;"
+						+"							break;"
+						+"						}"
+						+"					}"
+						+"				}"
+					 	+"				if (envId) {"
+					 	+"  				map.setRoomEnv(rid,envId);"
+					 	+"					map.updateMap(); };"
+					 	+"			});"
+						+"		'});"
+					 	+"  subMenu.push({n:'User Data',"
+						+"		a:js+'"
+					 	+"			var all = map.getAllRoomUserData(rid);"
+					 	+"			var ud = \\'\\'; for(var k in all)"
+					 	+"				ud += \\'<font color=yellow>\\'+escapeHTML(k+\\'=\\'+all[k])+\\'</font><br>\\';"
+					 	+"			SiPrompt(ud+\\'<p>Enter variable to add/edit/remove like var=value:\\',function(i){"
+					 	+"  			var x = i.indexOf(\\'=\\');"
+					 	+"  			if(x>=0) { "
+					 	+"					var v = i.substr(0,x).trim(); var l = i.substr(x+1).trim();"
+					 	+"					if(!l) l=null;"
+					 	+"					if(v) map.setRoomUserData(rid,v,l);"
+					 	+"  			}"
+					 	+"			});"
+						+"		'});"
+					 	+"var c = getComputedStyle(this.parentNode.parentNode);"
+					 	+"var cn = getComputedStyle(this.parentNode);"
+					 	+"var x = parseFloat(c.left) + parseFloat(c.width);"
+					 	+"var y = event.currentTarget.getBoundingClientRect().top + window.scrollY;"
+					 	+"DropDownMenu(null,x,y,'auto',12,subMenu,true);"
 					 	+"",
 					 "e":""},
 					{"n":"Delete Room",
 					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiConfirm('Delete room "+closestRoomId+"?', function(){"
-					 	+"map.deleteRoom('"+closestRoomId+"');" 
+					 	+"var sel=map.getMapSelection();"
+					 	+"var rid=sel.length>0?sel:['"+closestRoomId+"'];"
+					 	+"var msg=rid.length>1?(''+rid.length+' rooms'):('room '+rid[0]);"
+					 	+"SiConfirm('Delete '+msg+'?', function(){"
+					 	+"map.deleteRoom(rid);" 
 					 	+"map.updateMap();"
 					 	+"});",
 					 "e":""},
 					{"n":"Add Custom Line",
 					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
 					 	+"var subMenu = [];"
 					 	+"var lines = map.getCustomLines(map.getPlayerRoom());"
 					 	+"for(var dir in window.DirNameNums) {"
@@ -1141,7 +1359,7 @@ function Map(sipwin)
 					 	+"  var dirCode = window.DirNumCodes[dirNum];"
 					 	+"  if(!lines[dirCode])"
 					 	+"	subMenu.push({n:dir,e:'',a:'javascript:"
-					 	+"	   SiPrompt(\\'Enter solid, dash, dot, or dashdot:\\',function(i){"
+					 	+"		SiPrompt(\\'Enter solid, dash, dot, or dashdot:\\',function(i){"
 					 	+"		var map = window.currWin.mapper;"
 					 	+"		  if(i && (window.MapLineStyles.indexOf(i)>=0)) {"
 					 	+"			 map.addCustomLine(map.getPlayerRoom(),\\'"+closestRoomId+"\\','+dirNum+',i);"
@@ -1169,6 +1387,7 @@ function Map(sipwin)
 					 "e":""},
 					{"n":"Delete Custom Line",
 					 "a":"javascript:var map=window.currWin.mapper;"
+					 	+"map.clearMapSelection();"
 					 	+"var subMenu = [];"
 					 	+"var lines = map.getCustomLines('"+closestRoomId+"');"
 					 	+"for(var dir in lines) {"
@@ -1188,13 +1407,23 @@ function Map(sipwin)
 					 "e":"Object.keys(window.currWin.mapper.getCustomLines('"+closestRoomId+"')).length > 0"},
 				];
 				menu = menu.concat(buildCustomMenu('room'));
-        		DropDownMenu(e, e.clientX, e.clientY, 'auto', 12, menu);
+				DropDownMenu(e, e.clientX, e.clientY, 'auto', 12, menu);
 			}
 			else
 			if(closestLabelId != null)
 			{
-				var menu= [
-					{"n":"Label Color",
+				var menu= [];
+				if (self.areas[areaId].labels[closestLabelId].type !== 'image') {
+					menu.push({"n":"Edit Text",
+					 "a": "javascript:var map=window.currWin.mapper;"
+					 	+"var label = map.getMapLabel('"+areaId+"','"+closestLabelId+"');"
+					 	+"  SiPrompt('Enter new text:',function(text){"
+						+"	  label.text = text;"
+					 	+"	  map.updateMap();"
+					 	+"  });"
+						+ ""
+					});
+					menu.push({"n":"Label Color",
 					 "a": "javascript:var map=window.currWin.mapper;"
 					 	+"var label = map.getMapLabel('"+areaId+"','"+closestLabelId+"');"
 					 	+"  SiColorPicker('Pick foreground color:',function(fg){"
@@ -1207,8 +1436,8 @@ function Map(sipwin)
 					 	+"	},true);"
 					 	+"  },true);"
 						+ ""
-					},
-					{"n":"Label Font",
+					});
+					menu.push({"n":"Label Font",
 					 "a": "javascript:var map=window.currWin.mapper;"
 					 	+"var label = map.getMapLabel('"+areaId+"','"+closestLabelId+"');"
 					 	+"  SiFontPicker('Pick foreground color:',function(name,sz){"
@@ -1217,14 +1446,15 @@ function Map(sipwin)
 					 	+"	  map.updateMap();"
 					 	+"  });"
 						+ ""
-					},
-					{"n":"Delete Label",
-					 "a":"javascript:var map=window.currWin.mapper;"
-					 	+"SiConfirm('Delete label?',function(){" 
-					 	+" map.deleteMapLabel('"+areaId+"', '"+closestLabelId+"');"
-					 	+" map.updateMap();"
-					 	+" });"
-				 	}];
+					});
+				}
+				menu.push({"n":"Delete Label",
+				 "a":"javascript:var map=window.currWin.mapper;"
+				 	+"SiConfirm('Delete label?',function(){" 
+				 	+" map.deleteMapLabel('"+areaId+"', '"+closestLabelId+"');"
+				 	+" map.updateMap();"
+				 	+" });"
+				});
 				menu = menu.concat(buildCustomMenu('room'));
 				DropDownMenu(e, e.clientX, e.clientY, 200, 12, menu);
 			}
@@ -1236,8 +1466,8 @@ function Map(sipwin)
 					 	+"if ('"+areaId+"') {" 
 					 	+" var id = map.addRoom(map.createRoomId(), '"+areaId+"');"
 					 	+" if(id !== false) {"
-					 	+"   map.setRoomCoordinates(id,"+gridX+","+gridY+","+zLevel+");"
-					 	+"   map.updateMap();"
+					 	+"	map.setRoomCoordinates(id,"+gridX+","+gridY+","+zLevel+");"
+					 	+"	map.updateMap();"
 					 	+" }"
 					 	+"}",
 					 "e":"("+isValidAddRoom+") && ('"+areaId+"')"},
@@ -1257,9 +1487,24 @@ function Map(sipwin)
 					{"n":"Add Label",
 					 "a":"javascript:var map=window.currWin.mapper;"
 					 	+"SiPrompt('Enter label text:',function(i){"
-					 	+"   map.createMapLabel('"+areaId+"',i,"+gridX+","+gridY+","+zLevel+",255,255,255,0,0,0);"
-					 	+"   map.updateMap();"
+					 	+"	map.createMapLabel('"+areaId+"',i,"+gridX+","+gridY+","+zLevel+",255,255,255,0,0,0);"
+					 	+"	map.updateMap();"
 					 	+"});",
+					 "e":"('"+areaId+"')"},
+					{"n":"Add Image Label",
+					 "a":"javascript:var map=window.currWin.mapper;"
+						+"SiPrompt('Enter image file path (URL or local):',function(filePath){"
+						+"	if(filePath) {"
+						+"		SiPrompt('Enter width (pixels):',function(w){"
+						+"			w=Math.max(parseFloat(w),5);"
+						+"			SiPrompt('Enter height (pixels):',function(h){"
+						+"				h=Math.max(parseFloat(h),5);"
+						+"				map.createMapImageLabel('"+areaId+"',filePath,"+gridX+","+gridY+","+zLevel+",w,h);"
+						+"				map.updateMap();"
+						+"			});"
+						+"		});"
+						+"	}"
+						+"});",
 					 "e":"('"+areaId+"')"},
 					{"n":"Add Custom Line",
 					 "a":"javascript:var map=window.currWin.mapper;"
@@ -1272,7 +1517,7 @@ function Map(sipwin)
 					 	+"  var dirCode = window.DirNumCodes[dirNum];"
 					 	+"  if(!lines[dirCode])"
 					 	+"	subMenu.push({n:dir,e:'',a:'javascript:"
-					 	+"	   SiPrompt(\\'Enter solid, dash, dot, or dashdot:\\',function(i){"
+					 	+"		SiPrompt(\\'Enter solid, dash, dot, or dashdot:\\',function(i){"
 					 	+"		var map = window.currWin.mapper;"
 					 	+"		  if(i && (window.MapLineStyles.indexOf(i)>=0)) {"
 					 	+"			 map.addCustomLine(map.getPlayerRoom(),'+coordStr+','+dirNum+',i);"
@@ -1332,6 +1577,11 @@ function Map(sipwin)
 		this.zoom = 1.0;
 		this.centerView = this.centerView || Object.keys(this.rooms)[0] || null;
 		this.updateMap();
+		this.saveLayout = function(frameName, x, y, width, height) {
+			this.userData = this.userData || {};
+			this.userData.layout = { frameName, x, y, width, height };
+		};
+		this.saveLayout(typeof x === "string" ? x : "f", x, y, targetWidth, targetHeight);
 		return this.mapWidget;
 	};
 	
@@ -1395,27 +1645,32 @@ function Map(sipwin)
 		return false;
 	};
 	this.deleteRoom = function(roomId) {
-		if(roomId in this.rooms)
-		{
-			delete this.rooms[roomId];
-			if(roomId == this.centerView)
-				this.centerView = (Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null;
-			for(var k in this.rooms)
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
 			{
-				var room = this.rooms[k];
-				if(room.exits)
+				delete this.rooms[roomId];
+				if(roomId == this.centerView)
+					this.centerView = (Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null;
+				for(var k in this.rooms)
 				{
-					for(var d=0;d<room.exits.length;d++)
+					var room = this.rooms[k];
+					if(room.exits)
 					{
-						var exit = room.exits[d];
-						if(exit.roomId == roomId)
-							exit.roomId = '';
+						for(var d=0;d<room.exits.length;d++)
+						{
+							var exit = room.exits[d];
+							if(exit.roomId == roomId)
+								exit.roomId = '';
+						}
 					}
 				}
+				success = true;
 			}
-			return true;
 		}
-		return false;
+		return success;
 	};
 	this.disableMapInfo = function(label) {}; // TODO:
 	this.enableMapInfo = function(label) {}; // TODO:
@@ -1454,11 +1709,24 @@ function Map(sipwin)
 		return all;
 	};
 	this.getAllRoomUserData = function(roomId) {
-		if(!(roomId in this.rooms))
-			return null;
-		if(this.rooms[roomId].userData)
-			return this.rooms[roomId].userData;
-		return {};
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var all = {};
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				if(room.userData)
+				{
+					for(var k in room.userData)
+						if((k in all) && (all[k] != room.userData[k]))
+							all[k] += room.userData[k];
+						else
+							all[k] = room.userData[k];
+				}
+			}
+		}
+		return all;
 	};
 	this.getAreaExits = function(areaId, showExits) {
 		showExits = !!showExits;
@@ -1647,6 +1915,7 @@ function Map(sipwin)
 		}
 		return events;
 	};
+
 	this.getMapLabel = function(areaId, labelIdOrText) {
 		if (!(areaId in this.areas) || !labelIdOrText) 
 			return null;
@@ -1661,7 +1930,20 @@ function Map(sipwin)
 		}
 		return area.labels[labelIdOrText];
 	};
-	this.getMapLabels = function() {}; //TODO:
+
+	this.getMapLabels = function(areaId) {
+		if (!(areaId in this.areas) || !labelIdOrText) 
+			return null;
+		var area = this.areas[areaId];
+		if(!area.labels)
+			return {};
+		var all = {};
+		for(var k in area.labels) {
+			all[k] = area.labels[k].text || area.labels[k].filePath;
+		}
+		return all;
+	};
+
 	this.getMapMenus = function() {
 		var menus = {};
 		for (var uniquename in this.customMenus) {
@@ -1672,7 +1954,9 @@ function Map(sipwin)
 		}
 		return menus;
 	};
-	this.getMapSelection = function() {}; //TODO:
+	this.getMapSelection = function() {
+		return this.mapWidget && this.mapWidget.selectedRooms ? this.mapWidget.selectedRooms : [];
+	};
 	this.getMapUserData = function(key) {
 		if(!key || (!this.userData))
 			return null;
@@ -1680,7 +1964,15 @@ function Map(sipwin)
 			return this.userData[key];
 		return null;
 	};
-	this.getMapZoom = function() {};
+
+	this.getMapZoom = function(areaId) {
+		if(areaId && (areaId in this.areas))
+		{
+			var area = this.areas[areaId];
+			return area.zoom !== undefined ? area.zoom : this.zoom || 1.0;
+		}
+		return this.zoom || 1.0;
+	};
 
 	this.getPath = function(fromId, toId) {
 		if (!fromId || !toId 
@@ -1939,7 +2231,17 @@ function Map(sipwin)
 		}
 		return all;
 	};
-	this.gotoRoom = function() {}; //TODO:
+	this.gotoRoom = function(roomId) {
+		if (!(roomId in this.rooms) || !this.centerView) 
+			return false;
+		var path = this.getPath(this.centerView, roomId);
+		if (!path) 
+			return false;
+		this.speedwalk(path.join(','), false, 0, true);
+		this.centerview(roomId);
+		this.updateMap();
+		return true;
+	};
 	this.hasExitLock = function(roomId, direction) {
 		if(!(roomId in this.rooms))
 			return false;
@@ -1969,8 +2271,6 @@ function Map(sipwin)
 		return false;
 	};
 	this.highlightRoom = function(roomId, color1Red, color1Green, color1Blue, color2Red, color2Green, color2Blue, highlightRadius, color1Alpha, color2Alpha) {
-		if (!(roomId in this.rooms)) 
-			return false;
 		color1Red = Math.max(0, Math.min(255, color1Red || 255));
 		color1Green = Math.max(0, Math.min(255, color1Green || 255));
 		color1Blue = Math.max(0, Math.min(255, color1Blue || 255));
@@ -1980,13 +2280,23 @@ function Map(sipwin)
 		color1Alpha = Math.max(0, Math.min(1, color1Alpha !== undefined ? color1Alpha : 1));
 		color2Alpha = Math.max(0, Math.min(1, color2Alpha !== undefined ? color2Alpha : 0));
 		highlightRadius = highlightRadius > 0 ? highlightRadius : 1.5;
-		this.rooms[roomId].highlight = {
-			color1: { r: color1Red, g: color1Green, b: color1Blue, a: color1Alpha },
-			color2: { r: color2Red, g: color2Green, b: color2Blue, a: color2Alpha },
-			radius: highlightRadius
-		};
-		this.updateMap();
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				this.rooms[roomId].highlight = {
+					color1: { r: color1Red, g: color1Green, b: color1Blue, a: color1Alpha },
+					color2: { r: color2Red, g: color2Green, b: color2Blue, a: color2Alpha },
+					radius: highlightRadius
+				};
+				success = true;
+			}
+		}
+		if(success)
+			this.updateMap();
+		return success;
 	};
 	this.killMapInfo = function() {}; //TODO:
 	this.loadJsonMap = function(pathFileName) {
@@ -2016,10 +2326,18 @@ function Map(sipwin)
 		ex.blocked = lockIfTrue;
 	};
 	this.lockRoom = function(roomId, lockIfTrue) {
-		if(!(roomId in this.rooms))
-			return;
-		var room = this.rooms[roomId];
-		room.blocked = lockIfTrue;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				room.blocked = lockIfTrue;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.lockSpecialExit = function(fromId, toId, moveCommand, lockIfTrue) {
 		if((!(fromId in this.rooms))||(!(toId in this.rooms)))
@@ -2034,9 +2352,44 @@ function Map(sipwin)
 				ex.blocked = lockIfTrue;
 		}
 	};
-	this.moveMapWidget = function(Xpos, Ypos) {}; //TODO:
-	this.openMapWidget = function(Xpos, Ypos, width, height) {}; //TODO: XPos == dockingArea? wtf?
-
+	this.moveMapWidget = function(Xpos, Ypos) {
+		if(this.mapWidget &&  this.mapWidget.canvas && (this.mapWidget.frame == null))
+		{
+			var div = this.mapWidget.canvas.parentNode;
+			var rect = window.currWin.topWindow.getBoundingClientRect();
+			var width = div.offsetWidth;
+			var height = div.offsetHeight;
+			var newX = Math.max(0, Math.min(rect.width - width, Xpos));
+			var newY = Math.max(0, Math.min(rect.height - height, Ypos));
+			div.style.left = newX+'px';
+			div.style.top = newY+'px';
+			this.mapWidget.x = newX;
+			this.mapWidget.y = newY;
+		}
+	};
+	this.openMapWidget = function(Xpos, Ypos, width, height) {
+		var saved = (this.userData && this.userData.layout)?this.userData.layout : null;
+		if (arguments.length === 0) {
+			var frameName = (saved == null) ? null : saved.frameName;
+			if((saved != null)&&(saved.frameName))
+				return this.createMapper(frameName);
+			x = (saved == null) ? 100 : saved.x;
+			y = (saved == null) ? 100 : saved.y;
+			width = (saved == null) ? 200 : saved.width;
+			height = (saved == null) ? 150 : saved.height;
+			return this.createMapper(x,y,width,height);
+		}
+		if (arguments.length === 1 && typeof Xpos === "string") {
+			return this.createMapper(Xpos);
+		}
+		if (arguments.length === 4 && typeof Xpos === "number" && 
+			typeof Ypos === "number" && typeof width === "number" && 
+			typeof height === "number") {
+			return this.createMapper(Xpos, Ypos, width, height);
+		}
+		console.error("Invalid parameters for openMapWidget.");
+		return false;
+	};
 	this.pauseSpeedwalk = function() {
 		this.pauseSpeedwalk = true;
 	};
@@ -2099,13 +2452,31 @@ function Map(sipwin)
 		}
 		return false;
 	};
+
 	this.resetRoomArea = function(roomId) {
 		if(!(roomId in this.rooms))
 			return false;
 		var room = this.rooms[roomId];
 		room.areaId = ''; // default empty case is ''
 	};
-	this.resizeMapWidget = function() {}; //TODO
+
+	this.resizeMapWidget = function(width, height) {
+		if(this.mapWidget 
+		&& this.mapWidget.canvas 
+		&& (this.mapWidget.frame == null)
+		&& isNumber(width)
+		&& isNumber(height))
+		{
+			var div = this.mapWidget.canvas.parentNode;
+			div.style.width = width;
+			div.style.height = height;
+			this.mapWidget.width = width;
+			this.mapWidget.height = height;
+			this.mapWidget.canvas.width = width;
+			this.mapWidget.canvas.height = height;
+			this.updateMap();
+		}
+	};
 	this.roomExists = function(roomId) {
 		return (roomId in this.rooms);
 	};
@@ -2382,7 +2753,19 @@ function Map(sipwin)
 			this.userData = {};
 		this.userData[key] = value;
 	};
-	this.setMapZoom = function(zoom, areaId) {}; //TODO:
+	this.setMapZoom = function(zoom, areaId) {
+		zoom = Math.max(0.5, Math.min(2.0, zoom));
+		if(areaId && (areaId in this.areas))
+		{
+			var area = this.areas[areaId];
+			area.zoom = zoom;
+			this.updateMap();
+			return true;
+		}
+		this.zoom = zoom;
+		this.updateMap();
+		return true;
+	};
 	this.setRoomArea = function(roomId, areaId) {
 		var roomIds=Array.isArray(roomId)?roomId:[roomId];
 		for(var k=0;k<roomIds.length;k++)
@@ -2409,33 +2792,61 @@ function Map(sipwin)
 		}
 	}
 	this.setRoomChar = function(roomId, char) {
-		if(!(roomId in this.rooms))
-			return false;
-		var room = this.rooms[roomId];
-		room.char = char;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				room.char = char;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.setRoomCharColor = function(roomId, color) {
-		if(!(roomId in this.rooms))
-			return false;
-		var room = this.rooms[roomId];
-		room.color = color;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				room.color = color;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.setRoomCoordinates = function(roomId, x, y, z) {
-		if(!(roomId in this.rooms))
-			return false;
-		var room = this.rooms[roomId];
-		room.x = x;
-		room.y = y;
-		room.z = z;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				room.x = x;
+				room.y = y;
+				room.z = z;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.setRoomEnv = function(roomId, envId) {
-		if(!(roomId in this.rooms))
-			return false;
-		this.rooms[roomId].envId = envId;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				this.rooms[roomId].envId = envId;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.setRoomIdByHash = function(roomId, hash) {
 		if(!(roomId in this.rooms))
@@ -2452,29 +2863,53 @@ function Map(sipwin)
 		room.hash = hash;
 		return true;
 	};
+
 	this.setRoomName = function(roomId, name) {
-		if(!(roomId in this.rooms))
-			return false;
-		this.rooms[roomId].name = name;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms) {
+				this.rooms[roomId].name = name;
+				success = true;
+			}
+		}
+		return success;
 	};
+
 	this.setRoomUserData = function(roomId, key, value) {
-		if(!key || !(roomId in this.rooms))
+		if(!key)
 			return false;
-		var room = this.rooms[roomId];
-		if(!room.userData)
-			room.userData = {};
-		if(key in room.userData)
-			delete room.userData[key];
-		if(value != null)
-			room.userData[key] = value;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				if(!room.userData)
+					room.userData = {};
+				if(key in room.userData)
+					delete room.userData[key];
+				if(value != null)
+					room.userData[key] = value;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.setRoomWeight = function(roomId, weight) {
-		if(!(roomId in this.rooms))
-			return false;
-		this.rooms[roomId].weight = weight;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				this.rooms[roomId].weight = weight;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.speedwalk = function(dirString, backwards, delay, show) {
 		if (!dirString)
@@ -2534,20 +2969,34 @@ function Map(sipwin)
 		this.speedWalking = false;
 	};
 	this.unHighlightRoom = function(roomId) {
-		if (!(roomId in this.rooms))
-			return false;
-		if (this.rooms[roomId].highlight) {
-			delete this.rooms[roomId].highlight;
-			return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				if (this.rooms[roomId].highlight) {
+					delete this.rooms[roomId].highlight;
+					success = true;
+				}
+			}
 		}
-		return false;
+		return success;
 	};
+
 	this.unsetRoomCharColor = function(roomId) {
-		if(!(roomId in this.rooms))
-			return false;
-		var room = this.rooms[roomId];
-		room.color = null;
-		return true;
+		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
+		var success = false;
+		for (var k = 0; k < roomIds.length; k++) {
+			roomId = roomIds[k];
+			if(roomId in this.rooms)
+			{
+				var room = this.rooms[roomId];
+				room.color = null;
+				success = true;
+			}
+		}
+		return success;
 	};
 	this.updateMap = function() {
 		if (!this.mapWidget || !this.mapWidget.ctx) {
@@ -2762,6 +3211,14 @@ function Map(sipwin)
 			var fontSize = Math.max(5, tileSize / 6);
 			ctx.font = fontSize + 'px Arial';
 			ctx.fillText(char, x, y);
+			if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.includes(roomId)) 
+			{
+				ctx.beginPath();
+				ctx.arc(x, y, radius * 1.2, 0, 2 * Math.PI);
+				ctx.strokeStyle = "yellow";
+				ctx.lineWidth = tileSize / 20;
+				ctx.stroke();
+			}
 		});
 		if (areaId in this.areas && this.areas[areaId].labels) {
 			var labels = this.areas[areaId].labels;
@@ -2770,18 +3227,51 @@ function Map(sipwin)
 				if (label.z == zLevel) {
 					var x = offsetX + label.x * tileSize * SpacingRatio;
 					var y = offsetY + label.y * tileSize * SpacingRatio;
-					var baseFontSize = label.fontSize || 10;
-					var fontSize = Math.max(5, baseFontSize * scale);
-					ctx.fillStyle = label.bgColor;
-					ctx.fillRect(
-						x - label.text.length * fontSize / 4,
-						y - fontSize / 2,
-						label.text.length * fontSize / 2,
-						fontSize
-					);
-					ctx.fillStyle = label.fgColor;
-					ctx.font = `${fontSize}px ${label.fontName || 'Arial'}`;
-					ctx.fillText(label.text, x, y);
+					if (label.type === 'image') {
+						if (label.image && label.image.complete) {
+							var imgWidth = label.width * (label.zoom || 1) * scale;
+							var imgHeight = label.height * (label.zoom || 1) * scale;
+							ctx.drawImage(label.image,x - imgWidth / 2,y - imgHeight / 2,imgWidth,imgHeight);
+						} else if(!label._loading) {
+							label._loading = true;
+							window.sipfs.load(label.filePath,function(err, dataUrl) {
+								if(!err)
+								{
+									var img = new Image();
+									img.src = dataUrl;
+									img.onload = function() {
+										label.image = img;
+										label._loading = false;
+										self.updateMap();
+									}
+									img.onerror = function() {
+										label._loading = false;
+										console.warn("Failed to load image: " + filePath);
+										//TODO: delete the label? placeholder? something?
+									}
+								}
+								else
+								{
+									console.warn("Failed to load image: " + filePath+': '+err);
+									label._loading = false;
+									//TODO: delete the label? placeholder? something?
+								}
+							}, false);
+						}
+					} else {
+						var baseFontSize = label.fontSize || 10;
+						var fontSize = Math.max(5, baseFontSize * scale);
+						ctx.fillStyle = label.bgColor;
+						ctx.fillRect(
+							x - label.text.length * fontSize / 4,
+							y - fontSize / 2,
+							label.text.length * fontSize / 2,
+							fontSize
+						);
+						ctx.fillStyle = label.fgColor;
+						ctx.font = fontSize+'px '+(label.fontName || 'Arial');
+						ctx.fillText(label.text, x, y);
+					}
 				}
 			}
 		}
