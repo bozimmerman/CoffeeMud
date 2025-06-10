@@ -337,7 +337,7 @@ function Mapper(sipwin)
 	this.restricted_addMapEvent = function(uniquename, eventName, parent, displayName, arguments) {
 		if (arguments 
 		&& (!Array.isArray(arguments) 
-			|| args.some(arg => typeof arg === 'function' || arg === null))) 
+			|| arguments.some(arg => typeof arg === 'function' || arg === null))) 
 		{
 			throw new Error('Invalid arguments: must be an array of non-function, non-null values');
 		}

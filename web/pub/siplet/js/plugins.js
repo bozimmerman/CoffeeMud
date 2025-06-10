@@ -6,31 +6,52 @@ var PLUGINS = function(sipwin)
 	this.aliasList = null;
 	this.triggerList = null;
 	this.timerList = null;
-	this.supportPluginCode = 'window.onmessage=function(event){ if(window.onevent)window.onevent(event.data.payload);};'
-							+'\nwindow.send=function(event){ parent.postMessage(event,"*");};'
-							+'\n';
-	this.defaultPluginCode = 'window.onevent=function(event){ console.log("plugin");console.log(event);window.send(event);};';
 	this.addPluginFrame = function(pluginName, pluginCode)
 	{
 		var iframe = document.createElement("iframe");
 		iframe.setAttribute('id', "PLUGIN_" + pluginName.toUpperCase().replaceAll(' ','_'));
-		iframe.setAttribute("sandbox", "allow-scripts");
+		iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
 		iframe.style.display = "none";
 		sipwin.topWindow.appendChild(iframe);
-		iframe.srcdoc = '<SCRIPT>' + this.supportPluginCode + pluginCode + '</SCRIPT>';
-		this.framesMap[pluginName] =  iframe;
-		var me = this;
-		var listener = function(event) {
-			if((!(pluginName in me.framesMap))
-			||(me.framesMap[pluginName] !== iframe)
-			||(sipwin.plugins !== me)
-			||(window.siplets.indexOf(sipwin)<0))
-				window.removeEventListener('message', listener);
-			else
-			if(event.source == iframe.contentWindow)
-				me.processMessage(sipwin, pluginName, event.data);
+		//iframe.srcdoc = '<SCRIPT>' + pluginCode + '</SCRIPT>';
+		iframe.srcdoc = '<SCRIPT>window.addEventListener(\'message\', function(event) {if (event.data.type === \'execute\') {' + pluginCode + '}});</SCRIPT>';
+		iframe.onload = function() { // necessary for contentWindow to even exist
+			iframe.contentWindow.onmessage=function(event){ 
+				if(iframe.contentWindow.onevent && event.data.payload)
+					iframe.contentWindow.onevent(event.data.payload);
+			};
+			iframe.contentWindow.send=function(event){ parent.postMessage(event,"*");};
+			var mapper = Object.create(null);
+			for(var k in sipwin.mapper)
+			{
+				if ((k.indexOf('addMapEvent')<0)  && typeof sipwin.mapper[k] === 'function')
+					mapper[k] = (function(method) { return function(...args){
+						console.log(sipwin);
+						console.log(sipwin.mapper);
+						console.log(sipwin.mapper[k]);
+						return sipwin.mapper[method](...args); 
+					}})(k);
+			}
+			mapper['addMapEvent'] = function(...args){ return sipwin.mapper['restricted_addMapEvent'](...args);};
+			Object.freeze(mapper);
+			var win = Object.create(null);
+			var sipwinMethods = ['submitInput', 'submitHidden', 'displayText', 'playSound',
+			    'setVariable', 'runScript', 'enableTrigger', 'sendGMCP', 'sendMSDP', 'disableTrigger',
+			    'startTimer', 'clearTimer', 'displayAt', 'getVariable', 'process'];
+			for(var k =0;k<sipwinMethods.length;k++)
+			{
+				var method = sipwinMethods[k];
+				win[method] = (function(method) { return function(...args){ 
+					return sipwin[method](...args); 
+				}})(method);
+			}
+			win.mapper = mapper;
+			Object.freeze(win);
+			iframe.contentWindow.win = win;
+			iframe.setAttribute("sandbox", "allow-scripts");
+			iframe.contentWindow.postMessage({ type: 'execute' }, '*');
 		};
-		window.addEventListener('message', listener);
+		this.framesMap[pluginName] =  iframe;
 		this.aliasList = null;
 		this.triggerList = null;
 		this.timerList = null;
@@ -38,6 +59,8 @@ var PLUGINS = function(sipwin)
 	
 	this.reset = function()
 	{
+		for(var k in this.framesMap)
+			this.framesMap[k].remove();
 		this.plugins = [];
 		this.framesMap = {};
 		if(!sipwin.topContainer)
@@ -72,72 +95,6 @@ var PLUGINS = function(sipwin)
 			if(this.framesMap[plugin].contentWindow)
 				this.framesMap[plugin].contentWindow.postMessage({ type: 'message', payload: event}, '*');
 	}
-	
-	this.processMessage = function(sipwin, pluginName, data) {
-		// what do we let them do, exactly?
-		if(data.command)
-		{
-			switch(data.command)
-			{
-			case 'submitInput':
-				if(data.data)
-					sipwin.submitInput(data.data);
-				break;
-			case 'submitHidden':
-				if(data.data)
-					sipwin.submitHidden(data.data);
-				break;
-			case 'displayText':
-				if(data.data)
-					sipwin.displayText(data.data);
-				break;
-			case 'playSound':
-				if(data.data)
-					sipwin.playSound(data.data);
-				break;
-			case 'setVariable':
-				if(data.key && data.data)
-					sipwin.setVariable(data.key, data.data);
-				break;
-			case 'runScript':
-				if(data.data)
-					sipwin.runScript(data.data);
-				break;
-			case 'enableTrigger':
-				if(data.data)
-					sipwin.enableTrigger(data.data);
-				break;
-			case 'sendGMCP':
-				if(data.command && data.data)
-					sipwin.sendGMCP(data.command, data.data);
-				break;
-			case 'sendMSDP':
-				if(data.data)
-					sipwin.sendMSDP(data.data);
-				break;
-			case 'disableTrigger':
-				if(data.data)
-					sipwin.disableTrigger(data.data);
-				break;
-			case 'startTimer':
-				if(data.data)
-					sipwin.startTimer(data.data);
-				break;
-			case 'clearTimer':
-				if(data.data)
-					sipwin.clearTimer(data.data);
-				break;
-			case 'displayAt':
-				if(data.data && data.frame)
-					sipwin.displayAt(data.data, data.frame);
-				break;
-			case 'fetchVariable':
-				if(data.data)
-					sipwin.fetchVariable(pluginName, data.data);
-				break;
-			}
-		}
-	};
 	
 	this.mxp = function()
 	{
@@ -229,7 +186,7 @@ var PLUGINS = function(sipwin)
 								var newOne = {
 									name: ptrigger.name,
 									regex: ptrigger.regex,
-									once: ptrigger.replace,
+									once: ptrigger.once,
 									pattern: ptrigger.pattern,
 									action: ptrigger.action,
 									allowed: true
