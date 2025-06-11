@@ -5,8 +5,8 @@ window.nextId = 0;
 
 var Siplet =
 {
-	VERSION_MAJOR: '3.0',
-	VERSION_MINOR: '9',
+	VERSION_MAJOR: '3.1',
+	VERSION_MINOR: '0',
 	NAME: window.isElectron?'Sip':'Siplet'
 };
 
