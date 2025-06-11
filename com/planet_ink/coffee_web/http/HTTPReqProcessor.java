@@ -268,6 +268,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		catch(final IndexOutOfBoundsException e)
 		{
 			// just eat it.
+			config.getLogger().severe("Last Modified date of "+response.getLastModified().getTime()+" caused an arrayindex in HTTPReqProcessor #2.");
 		}
 		str.append(HTTPIOHandler.RANGE_HEADER);
 		str.append(EOLN);
