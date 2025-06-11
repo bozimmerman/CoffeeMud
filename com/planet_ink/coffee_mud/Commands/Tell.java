@@ -72,8 +72,8 @@ public class Tell extends StdCommand
 		commands.remove(0);
 
 		if(commands.get(0).equalsIgnoreCase("last")
-		   &&(CMath.isNumber(CMParms.combine(commands,1)))
-		   &&(mob.playerStats()!=null))
+		&&(CMath.isNumber(CMParms.combine(commands,1)))
+		&&(mob.playerStats()!=null))
 		{
 			final java.util.List<PlayerStats.TellMsg> V=mob.playerStats().getTellStack();
 			final long now=System.currentTimeMillis();
@@ -111,7 +111,7 @@ public class Tell extends StdCommand
 						S.snoopSuspension(-1);
 				}
 			}
-			return false;
+			return true;
 		}
 
 		MOB targetM=null;
@@ -201,7 +201,10 @@ public class Tell extends StdCommand
 			if(CMLib.flags().isCloaked(targetM))
 				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 			else
+			{
 				mob.tell(targetM.session().getAfkMessage());
+				return true;
+			}
 		}
 		return false;
 	}
@@ -216,8 +219,7 @@ public class Tell extends StdCommand
 		{
 			final String targetName=(String)args[0];
 			final String message=(String)args[1];
-			this.execute(mob, new XVector<String>(this.access[0],targetName,message), metaFlags);
-			return Boolean.TRUE;
+			return Boolean.valueOf(execute(mob, new XVector<String>(this.access[0],targetName,message), metaFlags));
 		}
 		else
 		if(index == 1)

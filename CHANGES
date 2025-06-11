@@ -21,6 +21,7 @@
  19. GMCP now supports more auto-logins.
  20. Sprinking of new CM1 commands: MUDINFO who, port, hosts, and WHOIS -name-
  21. Prop_ReqEntry and Prop_*Zapper support accusing someone of a crime.
+ 22. New WebMacros: TellMessageNext, and TellFunction
  
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
