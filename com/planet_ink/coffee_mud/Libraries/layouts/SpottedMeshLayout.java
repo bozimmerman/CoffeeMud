@@ -1,7 +1,11 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.core.Log;
@@ -37,36 +41,38 @@ public class SpottedMeshLayout extends MeshLayout
 	@Override
 	protected void finishGenerate(final List<LayoutNode> set)
 	{
+		final Set<LayoutNode> exclude = new HashSet<LayoutNode>();
+		for(final LayoutNode n : set)
+			if(n.links().size()<4)
+				exclude.add(n);
+		if(exclude.size()==set.size())
+			return;
 		int numLeafs = (int)Math.round(Math.ceil(set.size()/7.0));
 		int tries = numLeafs * 10;
 		final Random r = new Random(System.nanoTime());
+		final Map<Integer,Integer> opDirs = new HashMap<Integer,Integer>();
+		for(int d=0;d<4;d++)
+			opDirs.put(Integer.valueOf(d), Integer.valueOf(Directions.getOpDirectionCode(d)));
 		while((numLeafs > 0) && (--tries>0))
 		{
 			final int which = r.nextInt(set.size());
 			final LayoutNode n = set.get(which);
 			final int dir = r.nextInt(4);
 			if((n.type() == LayoutTypes.interior)
-			&&(n.getLink(0)!=null)
-			&&((n.getLink(0).type() == LayoutTypes.interior)
-				||(n.getLink(0).type() == LayoutTypes.surround))
-			&&(n.getLink(1)!=null)
-			&&((n.getLink(1).type() == LayoutTypes.interior)
-				||(n.getLink(1).type() == LayoutTypes.surround))
-			&&(n.getLink(2)!=null)
-			&&((n.getLink(2).type() == LayoutTypes.interior)
-				||(n.getLink(2).type() == LayoutTypes.surround))
-			&&(n.getLink(3)!=null)
-			&&((n.getLink(3).type() == LayoutTypes.interior)
-				||(n.getLink(3).type() == LayoutTypes.surround)))
+			&&(n.links().size()>3)
+			&&(!exclude.contains(n)))
 			{
-				for(int i=0;i<4;i++)
-					if(i != dir)
+				for(final Integer odir : opDirs.keySet())
+					if(odir.intValue() != dir)
 					{
-						n.links().get(Integer.valueOf(i)).delLink(n);
-						n.links().remove(Integer.valueOf(i));
+						final Integer opDir = opDirs.get(odir);
+						if(n.links().get(odir).getLink(opDir.intValue())==n)
+							n.links().get(odir).delLink(n);
+						n.links().remove(odir);
 					}
 				n.reType(LayoutTypes.leaf);
 				n.getLink(dir).flag(LayoutFlags.offleaf);
+				exclude.add(n.getLink(dir));
 				numLeafs--;
 			}
 		}
