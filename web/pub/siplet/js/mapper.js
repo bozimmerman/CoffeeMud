@@ -792,6 +792,17 @@ function Mapper(sipwin)
 			canvas.style.backgroundColor = 'black';
 			sipwin.topWindow.appendChild(container);
 			MakeDraggable(container, titleBar);
+			var resizeDebouncer = null;
+			container.addEventListener('resize', function() {
+				if(resizeDebouncer == null)
+					resizeDebouncer =setTimeout(function() {
+						var calced = getComputedStyle(container);
+						canvas.width = parseFloat(calced.width);
+						canvas.height = parseFloat(calced.height);
+						self.updateMap();
+						resizeDebouncer = null;
+					}, 500);
+			});
 		}
 		
 		var ctx = canvas.getContext('2d');

@@ -413,9 +413,11 @@ function MakeDraggable(div, titlebar)
 	dragWidget.style.cursor = 'move';
 
 	let isDragging = false;
-	let startX, startY, initialLeft, initialTop;
+	let resizeClick = false;
+	let isResizing = false;
+	let startX, startY, initialLeft, initialTop, initialWidth, initialHeight;
 	var moveThreshold = 5;
-	function onMouseDown(e) {
+	function onMouseDown(e, chkResize) {
 		const isDraggable = e.target === div || 
 						(!e.target.onclick && 
 						 !e.target.onchange && 
@@ -427,16 +429,30 @@ function MakeDraggable(div, titlebar)
 		if (e.target === div || !e.target.onclick) {
 			if (!window.currWin || !window.currWin.topWindow) 
 				return;
+			var style = getComputedStyle(div);
 			e.preventDefault();
-			isDragging = true;
 			startX = e.clientX;
 			startY = e.clientY;
-			initialLeft = parseFloat(getComputedStyle(div).left) || 0;
-			initialTop = parseFloat(getComputedStyle(div).top) || 0;
-
-			// Attach move and up listeners
-			document.addEventListener('mousemove', onMouseMove);
-			document.addEventListener('mouseup', onMouseUp);
+			initialLeft = parseFloat(style.left) || 0;
+			initialTop = parseFloat(style.top) || 0;
+			initialWidth = parseFloat(style.width) || 0;
+			initialHeight = parseFloat(style.height) || 0;
+			resizeClick = false;
+			if((startX > initialLeft + initialWidth - 20)
+			&&(startY > initialTop + initialHeight - 20))
+			{
+				resizeClick = true;
+				isResizing = true;
+				document.addEventListener('mousemove', onMouseMove);
+				document.addEventListener('mouseup', onMouseUp);
+			}
+			else
+			if(!chkResize)
+			{
+				isDragging = true;
+				document.addEventListener('mousemove', onMouseMove);
+				document.addEventListener('mouseup', onMouseUp);
+			}
 		}
 	}
 
@@ -445,8 +461,11 @@ function MakeDraggable(div, titlebar)
 			return;
 		var dx = e.clientX - startX;
 		var dy = e.clientY - startY;
-		if (!isDragging && (Math.abs(dx) > moveThreshold || Math.abs(dy) > moveThreshold)) {
-			isDragging = true;
+		if (!isDragging && !isResizing && (Math.abs(dx) > moveThreshold || Math.abs(dy) > moveThreshold)) {
+			if(resizeClick)
+				isResizing = true;
+			else
+				isDragging = true;
 		}
 		if (isDragging) {
 			var rect = window.currWin.topWindow.getBoundingClientRect();
@@ -456,6 +475,15 @@ function MakeDraggable(div, titlebar)
 			var newY = Math.max(0, Math.min(rect.height - height, initialTop + dy));
 			div.style.left = `${newX}px`;
 			div.style.top = `${newY}px`;
+		} else if (isResizing) {
+			var rect = window.currWin.topWindow.getBoundingClientRect();
+			var width = div.offsetWidth;
+			var height = div.offsetHeight;
+			var newWidth = initialWidth + dx;
+			var newHeight = initialHeight + dy;
+			div.style.width = `${newWidth}px`;
+			div.style.height = `${newHeight}px`;
+			div.dispatchEvent(new Event('resize'));
 		}
 	}
 
@@ -463,7 +491,11 @@ function MakeDraggable(div, titlebar)
 		document.removeEventListener('mousemove', onMouseMove);
 		document.removeEventListener('mouseup', onMouseUp);
 		isDragging = false;
+		resizeClick = false;
+		isResizing = false;
 	}
 	dragWidget.addEventListener('mousedown', onMouseDown);
+	if(dragWidget != div)
+		div.addEventListener('mousedown', function(e) { onMouseDown(e,true);});
 }
 
