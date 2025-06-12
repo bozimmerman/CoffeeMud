@@ -5,15 +5,6 @@
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Windows')">
 		${butt('Connect',"var el = document.getElementById('PHONEBOOKROOT');if(el)el.quickconnect();");}
 </TD></TR>
-</TR><TR><TD COLSPAN=2>&nbsp;</TD>
-<TR>
-	<TD>Auto Conn:</TD>
-	<TD><SELECT ID="AUTOCONNECTDROPDOWN" ONCHANGE="setConfig('/phonebook/auto',this.value);">
-		<OPTION VALUE="-2" ${(getConfig('/phonebook/auto','-2')!='-2')?"":"SELECTED"}>Connect Dialog
-		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto','-2')!='-1')?"":"SELECTED"}>No Auto Connect
-		</SELECT>
-</TD></TR>
-</TR><TR><TD COLSPAN=2>&nbsp;</TD>
 </TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
 </TR><TR>
 	<TD>Select:</TD>
@@ -60,6 +51,14 @@
 </TR>
 <TR><TD COLSPAN=2>
 	<SPAN ID="PHONEBOOKDELETE">${butt('Delete',"document.getElementById('PHONEBOOKROOT').trydelphonebook();");}</SPAN>
+</TD></TR>
+</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Auto Connect</TD>
+<TR>
+	<TD></TD>
+	<TD><SELECT ID="AUTOCONNECTDROPDOWN" ONCHANGE="setConfig('/phonebook/auto',this.value);">
+		<OPTION VALUE="-2" ${(getConfig('/phonebook/auto','-2')!='-2')?"":"SELECTED"}>Connect Dialog
+		<OPTION VALUE="-1" ${(getConfig('/phonebook/auto','-2')!='-1')?"":"SELECTED"}>No Auto Connect
+		</SELECT>
 </TD></TR>
 </TABLE>
 <SCRIPT>
