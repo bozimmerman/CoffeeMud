@@ -77,6 +77,36 @@ public class Spell_MageArmor extends Spell
 
 	Armor theArmor=null;
 
+	protected void applyArmor(final MOB mob)
+	{
+		if(mob == null)
+			return;
+		theArmor=CMClass.getArmor("GlowingMageArmor");
+		theArmor.basePhyStats().setArmor(theArmor.basePhyStats().armor()+super.getXLEVELLevel(mob));
+		theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
+		mob.addItem(theArmor);
+		theArmor.wearAt(Wearable.WORN_TORSO);
+		theArmor.recoverPhyStats();
+		final Room R = mob.location();
+		if(R!=null)
+			R.recoverRoomStats();
+		else
+			mob.recoverPhyStats();
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((theArmor == null) // permanencied fix
+		&&(!super.canBeUninvoked)
+		&&(affected instanceof MOB))
+			applyArmor((MOB)affected);
+		return true;
+	}
+
+
 	@Override
 	public void unInvoke()
 	{
@@ -140,14 +170,9 @@ public class Spell_MageArmor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				theArmor=CMClass.getArmor("GlowingMageArmor");
-				theArmor.basePhyStats().setArmor(theArmor.basePhyStats().armor()+super.getXLEVELLevel(mob));
-				theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
-				mob.addItem(theArmor);
-				theArmor.wearAt(Wearable.WORN_TORSO);
-				theArmor.recoverPhyStats();
 				success=beneficialAffect(mob,target,asLevel,0)!=null;
-				mob.location().recoverRoomStats();
+				if(success)
+					applyArmor(mob);
 			}
 		}
 		else
