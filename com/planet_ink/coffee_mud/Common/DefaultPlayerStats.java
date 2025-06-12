@@ -645,8 +645,11 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	{
 		if(mob==null)
 			return false;
-		if (mob.soulMate() != null)
-			mob=mob.soulMate();
+		synchronized(mob)
+		{
+			if (mob.soulMate() != null)
+				mob=mob.soulMate();
+		}
 		if((account != null) && (account.isIgnored(cat, mob)))
 			return true;
 		if(ignored.size()==0)

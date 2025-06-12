@@ -304,8 +304,11 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 	{
 		if((mob==null)||(ignored.size()==0))
 			return false;
-		if (mob.soulMate() != null)
-			mob=mob.soulMate();
+		synchronized(mob)
+		{
+			if (mob.soulMate() != null)
+				mob=mob.soulMate();
+		}
 		if(ignored.contains(mob.Name()))
 			return true;
 		final PlayerAccount acct = (mob.playerStats()!=null)?mob.playerStats().getAccount():null;
