@@ -1256,6 +1256,7 @@ var MXP = function(sipwin)
 			E.setAttributeValue("HINT", "");
 			var hrefV = href.split('|').filter(str => str.trim() != '');
 			var hintV = hint.split('|').filter(str => str.trim() != '');
+			var self = this;
 			if (hrefV.length == 1)
 			{
 				href = hrefV[0].replaceAll("'", "\\'");
@@ -1269,7 +1270,7 @@ var MXP = function(sipwin)
 			{
 				E.setAttributeValue("HINT", hintV[0]);
 				hintV.splice(0,1);
-				E.setAttributeValue("HREF", "javascript:goDefault(0);");
+				E.setAttributeValue("HREF", "#");
 				var newHint = '';
 				for (var i = 0; i < hintV.length; i++)
 				{
@@ -1279,16 +1280,16 @@ var MXP = function(sipwin)
 				}
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				var func = "ContextMenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
+				var func = "MXPContextMenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
 				E.setAttributeValue("ONCLICK", "return "+func);
 			}
 			else
 			{
 				E.setAttributeValue("HINT", "Click to open menu");
-				E.setAttributeValue("HREF", "javascript:goDefault(0);");
+				E.setAttributeValue("HREF", "#");
 				href = href.replaceAll("'", "\\'");
 				hint = newHint.replaceAll("'", "\\'");
-				var func = "ContextMenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
+				var func = "MXPContextMenu(this, event, '"+href+"','"+hint+"',"+prompt+");";
 				E.setAttributeValue("ONCLICK", "return "+func);
 			}
 		}
@@ -2174,5 +2175,4 @@ var MXP = function(sipwin)
 		}
 		return s;
 	};
-
 };

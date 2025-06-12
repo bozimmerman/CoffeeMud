@@ -120,22 +120,11 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		subList = to;
 	var href='';
 	var hint='';
-	for(var h=0;h<subList.length;h++)
-	{
-		var sub=subList[h];
-		if(('v' in sub)&&(sub['v'])&&(!eval(sub['v'])))
-			continue;
-		hint+=sub['n']+'|';
-		if(('e' in sub)&&(sub['e'])&&(!eval(sub['e'])))
-			href+='|';
-		else
-			href+=sub['a']+'|';
-	}
 	var m;
 	if(subMenu === true)
-		m = ContextSubMenuOpen(null, e, href, hint, prompt, left, top, width);
+		m = ContextSubMenuOpen(e, subList, left, top, width);
 	else
-		m = ContextMenuOpen(null, e, href, hint, prompt, left, top, width);
+		m = ContextMenuOpen(e, subList, left, top, width);
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
 	var as = Array.from(m.getElementsByTagName("A"));

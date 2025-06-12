@@ -46,15 +46,7 @@ function IsContextSubMenuHover(e)
 	return IsContextHover(e, 'ctxsubmenu');
 }
 
-function ContextMenu(obj, e, href, hint, prompt) {
-	var menu= ContextMenuOpen(obj, e, href, hint, prompt, e.pageX-40, e.pageY-10, 200);
-	menu.style.border = "1px solid";
-	menu.style.borderColor = "white";
-	menu.style.left = (parseInt(menu.style.left || "0") + 10) + "px";
-	return menu;
-}
-
-function ContextMenuOpen(obj, e, href, hint, prompt, x,y,width) {
+function ContextMenuOpen(e, menu, x,y,width) {
 	if (window.event) 
 		window.event.cancelBubble=true;
 	else
@@ -62,19 +54,24 @@ function ContextMenuOpen(obj, e, href, hint, prompt, x,y,width) {
 		e.stopPropagation();
 	if(e && e.preventDefault)
 		e.preventDefault();
-	var menucontents = ParseContextMenu(obj, href, hint, prompt);
-	var menu = CreateContextDiv('ctxmenu',x,y,width);
-	menu.onmouseleave = function(e) {
+	var menuelements = BuildContextMenuEntries(menu);
+	var menuDiv = CreateContextDiv('ctxmenu',x,y,width);
+	menuDiv.onmouseleave = function(e) {
 		if(!IsContextHover(e))
 			ContextDelayHide();
 	}
-	menu.onclick = function() {
+	menuDiv.onclick = function() {
 		ContextDelayHide();
 	};
-	var pstyle = "<p style=\"padding: 0 1rem; margin: 0;\">";
-	for(var i=0;i<menucontents.length;i++)
-		menu.innerHTML += pstyle+menucontents[i]+'</p>';
-	return menu;
+	var pstyle = document.createElement('p');
+	pstyle.style.cssText = 'padding: 0 1rem; margin: 0;';
+	menuDiv.appendChild(pstyle);
+	for(var i=0;i<menuelements.length;i++)
+	{
+		pstyle.appendChild(menuelements[i]);
+		pstyle.appendChild(document.createElement('br'));
+	}
+	return menuDiv;
 }
 
 function CreateContextDiv(id, x, y, width)
@@ -104,7 +101,7 @@ function CreateContextDiv(id, x, y, width)
 	return menu;
 }
 
-function ContextSubMenuOpen(obj, e, href, hint, prompt, x,y,width) {
+function ContextSubMenuOpen(e, menu, x,y,width) {
 	if (window.event) 
 		window.event.cancelBubble=true;
 	else
@@ -113,107 +110,87 @@ function ContextSubMenuOpen(obj, e, href, hint, prompt, x,y,width) {
 	if(e && e.preventDefault)
 		e.preventDefault();
 	ContextHideSub();
-	var menucontents = ParseContextMenu(obj, href, hint, prompt);
-	var menu = CreateContextDiv('ctxsubmenu',x,y,width);
-	menu.onmouseleave = function(e) {
+	var menuelements = BuildContextMenuEntries(menu);
+	var menuDiv = CreateContextDiv('ctxsubmenu',x,y,width);
+	menuDiv.onmouseleave = function(e) {
 		if(!IsContextHover(e))
 			ContextDelayHide();
 		else
 		if(!IsContextSubMenuHover(e))
 			ContextDelaySubHide();
 	}
-	menu.onclick = ContextDelayHide;
-	var pstyle = "<p style=\"padding: 0 1rem; margin: 0;\">";
-	for(var i=0;i<menucontents.length;i++)
-		menu.innerHTML += pstyle+menucontents[i]+'</p>';
-	return menu;
+	menuDiv.onclick = ContextDelayHide;
+	var pstyle = document.createElement('p');
+	pstyle.style.cssText = 'padding: 0 1rem; margin: 0;';
+	menuDiv.appendChild(pstyle);
+	for(var i=0;i<menuelements.length;i++)
+	{
+		pstyle.appendChild(menuelements[i]);
+		pstyle.appendChild(document.createElement('br'));
+	}
+	return menuDiv;
 }
 
-function fixCtxEnt(s)
+function BuildContextMenuEntries(menuObj)
 {
-	var x=s.indexOf('\"');
-	while(x>=0)
+	var entries = [];
+	for(var i=0;i<menuObj.length;i++)
 	{
-		s=s.substr(0,x)+'&quot;'+s.substr(x+1);
-		x=s.indexOf('\"');
-	}
-	return s;
-}
-
-function ParseContextMenu(titleSet,menu,hints,prompt)
-{
-	var mmenu=new Array();
-	if(menu.length==0) 
-		return mmenu;
-	var x=menu.indexOf("|");
-	var y=hints.indexOf("|");
-	var count=0;
-	var count2=0;
-	while(x>=0)
-	{
-		count++;
-		x=menu.indexOf("|",x+1);
-	}
-	while(y>=0)
-	{
-		count2++;
-		y=hints.indexOf("|",y+1);
-	}
-	if(count2>count)
-	{
-		y=hints.indexOf("|");
-		if(titleSet)
-			titleSet.title=hints.substr(0,y);
-		hints=hints.substr(y+1);
-	}
-	count=0;
-	x=menu.indexOf("|");
-	y=hints.indexOf("|");
-	while(x>=0)
-	{
-		var hint=menu.substr(0,x);
-		if(y>=0)
+		var obj = menuObj[i];
+		if(obj.n && obj.a)
 		{
-			hint=hints.substr(0,y);
-			hints=hints.substr(y+1);
-			y=hints.indexOf("|");
+			if(('v' in obj)&&(obj['v'])&&(!eval(obj['v'])))
+				continue;
+			var show = (obj.e === undefined) || (!obj.e) || eval(obj.e);
+			if((typeof obj.a === 'string') && (!obj.a))
+				show = false;
+			var entry;
+			if(!show)
+			{
+				entry = document.createElement('a');
+				entry.style.color='lightgray';
+				entry.onclick=null;
+				entry.style.cursor = 'default';
+				entry.href='#';
+				var fontColoring = document.createElement('font');
+				fontColoring.color = 'lightgray';
+				fontColoring.textContent = obj.n;
+				entry.appendChild(fontColoring);
+			}
+			else
+			if(typeof obj.a === 'string')
+			{
+				entry = document.createElement('a');
+				entry.href='#';
+				if(obj.a.startsWith("javascript:"))
+					entry.onclick = new Function(obj.a.substr(11));
+				else
+					entry.onclick = (function(a,f){ 
+						return function() {
+							addToPrompt (a, f);};})(obj.a,obj.sf);
+				entry.textContent = obj.n;
+			}
+			else
+			if(typeof obj.a === 'function')
+			{
+				entry = document.createElement('a');
+				entry.onclick = obj.a;
+				entry.textContent = obj.n;
+			}
+			else { // reserve for submenus maybe?
+				console.warn("Unknown menu action: "+obj.a);
+				continue;
+			}
+			entries.push(entry);
 		}
-		else
-		if(hints.length>0)
-			hint=hints;
-		var m = fixCtxEnt(menu.substr(0,x));
-		if(m.length==0)
-			mmenu[count]='<font color=lightgray>'+hint+'</font>';
-		else
-		if(m.startsWith("javascript:"))
-			mmenu[count]='<a href="#" onclick="'+m.substr(11)+'">'+hint+'</a>';
-		else
-			mmenu[count]='<a href="javascript:addToPrompt(\''+m+'\','+prompt+');">'+hint+'</a>';
-		count++;
-		menu=menu.substr(x+1);
-		x=menu.indexOf("|");
 	}
-	var hint=menu;
-	if(y>=0)
-		hint=hints.substr(0,y);
-	else
-	if(hints.length>0)
-		hint=hints;
-	var m = fixCtxEnt(menu);
-	if(m.length==0)
-		mmenu[count]='<font color=lightgray>'+hint+'</font>';
-	else
-	if(m.startsWith("javascript:"))
-		mmenu[count]='<a href="'+m+'">'+hint+'</a>';
-	else
-		mmenu[count]='<a href="javascript:addToPrompt(\''+m+'\','+prompt+');">'+hint+'</a>';
-	return mmenu;
+	return entries;
 }
 
 function ContextHelp(obj, e,title)
 {
 	ContextHideAll();
-	var content = ContextMenuOpen(obj, e, '', '', '', 0, 20, 400)
+	var content = ContextMenuOpen(e, [], 0, 20, 400)
 	var f = 'help_' + title.toLowerCase() + '.htm';
 	content.style.height = '400px';
 	populateDivFromUrl(content, 'help/'+f,function(){
@@ -227,5 +204,40 @@ function ContextHelp(obj, e,title)
 			+"overflow:auto;"
 			+"height: 400px;";
 	});
-	
+}
+
+function MXPContextMenu(obj, e, href, hint, prompt) 
+{
+	var menuObj = ParseMXPContextMenu(obj, href, hint, prompt);
+	var menuDiv= ContextMenuOpen(e, menuObj, e.pageX-40, e.pageY-10, 200);
+	menuDiv.style.border = "1px solid";
+	menuDiv.style.borderColor = "white";
+	menuDiv.style.left = (parseInt(menuDiv.style.left || "0") + 10) + "px";
+	return menuDiv;
+};
+
+function ParseMXPContextMenu(titleSet,menu,hints,submitFlag)
+{
+	var mmenu=[]
+	if(menu.length==0) 
+		return mmenu;
+	var menuBits=menu.split("|");
+	var hintBits=hints.split("|");
+	if(hintBits.length>menuBits.length)
+	{
+		if(titleSet)
+			titleSet.title=hintBits[0];
+		hintBits.unshift();
+	}
+	for(var i=0;i<menuBits.length && i<hintBits.length;i++)
+	{
+		var menuBit = menuBits[i];
+		var hintBit = hintBits[i];
+		var entry = {};
+		entry.n = hintBit;
+		entry.a = menuBit;
+		entry.sf = submitFlag;
+		mmenu.push(entry)
+	}
+	return mmenu;
 }

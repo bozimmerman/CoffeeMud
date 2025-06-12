@@ -26,9 +26,6 @@ var PLUGINS = function(sipwin)
 			{
 				if ((k.indexOf('addMapEvent')<0)  && typeof sipwin.mapper[k] === 'function')
 					mapper[k] = (function(method) { return function(...args){
-						console.log(sipwin);
-						console.log(sipwin.mapper);
-						console.log(sipwin.mapper[k]);
 						return sipwin.mapper[method](...args); 
 					}})(k);
 			}
