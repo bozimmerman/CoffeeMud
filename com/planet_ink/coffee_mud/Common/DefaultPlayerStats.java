@@ -61,7 +61,6 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 
 	protected final static int	TELL_STACK_MAX_SIZE		= 50;
 	protected final static int	GTELL_STACK_MAX_SIZE	= 50;
-	protected final static int	DEFAULT_WORDWRAP		= 78;
 
 	protected long			 hygiene		= 0;
 	protected int			 theme			= Area.THEME_FANTASY;

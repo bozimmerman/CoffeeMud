@@ -133,6 +133,7 @@
 							delete pcopy.media;
 							root.saveMedia(media);
 						}
+						dd.selectedIndex = -1;
 						stext.value = JSON.stringify(pcopy, null, 2);
 						stext.editor.setValue(stext.value);
 						scode.value = code.replaceAll('\\n','\n');

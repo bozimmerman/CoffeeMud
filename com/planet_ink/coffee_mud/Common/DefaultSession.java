@@ -960,9 +960,10 @@ public class DefaultSession implements Session
 	@Override
 	public int getWrap()
 	{
-		if(terminalWidth>5)
+		final int mobWrap = ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():PlayerStats.DEFAULT_WORDWRAP;
+		if((terminalWidth>5)&&(mobWrap == PlayerStats.DEFAULT_WORDWRAP))
 			return terminalWidth;
-		return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;
+		return mobWrap;
 	}
 
 	public int getPageBreak()

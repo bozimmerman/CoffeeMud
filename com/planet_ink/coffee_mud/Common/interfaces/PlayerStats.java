@@ -48,6 +48,11 @@ import java.util.*;
 public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Contingent
 {
 	/**
+	 * Default word wrap position.
+	 */
+	public final static int	DEFAULT_WORDWRAP		= 78;
+
+	/**
 	 * The time, in milis since 1970, that the player was last saved.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLastUpdated(long)

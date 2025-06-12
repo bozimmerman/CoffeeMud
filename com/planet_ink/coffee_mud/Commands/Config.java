@@ -276,7 +276,7 @@ public class Config extends StdCommand
 				if(name.equalsIgnoreCase("PAGEBREAK"))
 				{
 					final String newBreak=(commands.size()>2)?CMParms.combine(commands,2):"";
-					int newVal=mob.playerStats().getWrap();
+					int newVal=mob.playerStats().getPageBreak();
 					if((CMath.isInteger(newBreak))&&(CMath.s_int(newBreak)>0))
 						newVal=CMath.s_int(newBreak);
 					else
@@ -462,10 +462,22 @@ public class Config extends StdCommand
 				if((!xtrasDone.contains("LINEWRAP"))
 				&&(a.getName().compareTo("LINEWRAP")>0))
 				{
-					final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+					final int mobWrap = mob.playerStats().getWrap();
+					final int sessWrap = (mob.session()!=null)?mob.session().getWrap():mobWrap;
+					String wrap;
+					if(mobWrap == 0)
+						wrap = L("Disabled");
+					else
+					if(mobWrap == PlayerStats.DEFAULT_WORDWRAP)
+					{
+						if(mobWrap == sessWrap)
+							wrap = L("Default (@x1)",""+mobWrap);
+						else
+							wrap = L("NAWS (@x1)",""+sessWrap);
+					}
+					else
+						wrap = ""+mobWrap;
 					final StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("LINEWRAP"),maxAttribLen)+"^N: ^w"+wrap);
-					if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
-						m.append(" ("+mob.session().getWrap()+")");
 					if(++col==2)
 					{
 						msg.append(m.toString());

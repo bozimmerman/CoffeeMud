@@ -12,22 +12,19 @@
 <TR><TD WIDTH=20%>Name:</TD><TD>
 	<INPUT id="ENTITIESNAME" type="text" SIZE=10
 		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
-	>
+	><SPAN ID="ENTITIESDELETE">${butt('Delete',"document.getElementById('ENTITIESROOT').trydelentity();");}</SPAN>
 </TD></TR>
 <TR><TD WIDTH=20%>Value:</TD>
 <TD><INPUT TYPE=TEXT ID="ENTITIESTEXT"
 		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
 	>
 </TD></TR>
-<TR><TD colspan="2">
-	<SPAN ID="ENTITIESDELETE">${butt('Delete',"document.getElementById('ENTITIESROOT').trydelentity();");}</SPAN>
-</TD></TR>
-<TR><TD WIDTH=20%><a href="javascript:ContextHelp(this,{},'Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements:
-	<SPAN ID="ENTITIESMXPLOAD">${butt('Load',"document.getElementById('ENTITIESROOT').tryloadmxp();");}</SPAN>
-</TD>
-<TD><TEXTAREA ID="ENTITIESMXP" style="height:110px;width:100%;"
+</TR><TR><TD COLSPAN=2>&nbsp;</TD>
+</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><a href="javascript:ContextHelp(this,{},'Mxp')"><FONT COLOR=BLUE>MXP</FONT></a> Elements Editor</TD>
+</TR><TR><TD COLSPAN=2 WIDTH=20% VALIGN=TOP>
+	<TEXTAREA ID="ENTITIESMXP" style="height:110px;width:100%;"
 		ONCHANGE="var root = document.getElementById('ENTITIESROOT'); root.entityfieldchange(); "
-	></TEXTAREA>
+	></TEXTAREA><BR><SPAN ID="ENTITIESMXPLOAD">${butt('Load',"document.getElementById('ENTITIESROOT').tryloadmxp();");}</SPAN>
 </TD></TR>
 </TABLE>
 </SPAN>
