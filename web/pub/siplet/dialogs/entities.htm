@@ -223,8 +223,7 @@
 							continue;
 					}
 					newMXP += '<' + '!ELEMENT ' + elem.name + ' ';
-					if((elem.definition.trim()==0)
-					||((elem.bitmap && MXPBIT.COMMAND)>0))
+					if(elem.definition.trim()==0)
 						newMXP +='EMPTY ';
 					else
 						newMXP += '\'' + elem.definition + '\' ';

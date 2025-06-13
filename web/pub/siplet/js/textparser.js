@@ -4,6 +4,7 @@ function TEXT(textParsers)
 	this.reset = function()
 	{
 		this.lastParser = null;
+		this.resume = null;
 	};
 	this.reset();
 	
