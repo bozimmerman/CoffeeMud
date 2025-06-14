@@ -29,7 +29,7 @@
 </TD></TR>
 <TR><TD>Action:</TD><TD>
 	<select id="TRIGGERACTION"
-		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); root.triggeractionchange(); "
 	>
 		${
 			var options = '';
@@ -92,6 +92,7 @@
 				truno.checked=false;
 				tacto.selectedIndex=-1;
 				tacto.style.backgroundColor = RED;
+				root.triggeractionchange();
 				taval.value='';
 				taval.style.backgroundColor = RED;
 				tallo.value='win.isConnected()';
@@ -116,6 +117,7 @@
 				setSelectByValue(tacto,trig.action.substr(0,x1));
 				taval.value=trig.action.substr(x1+1,x2-x1-1);
 				taval.style.backgroundColor = 'white';
+				root.triggeractionchange();
 			}
 		};
 		root.triggerfieldchange = function() {
@@ -240,6 +242,25 @@
 				this.triggerfieldchange();
 			}
 		};
+
+		root.triggeractionchange = function(dom) {
+			taval.title = '';
+			if((tacto.selectedIndex<0)||(tacto.value==''))
+				return;
+			var action = SipletActions[tacto.value];
+			if(action)
+			{
+				var win = window.currWin;
+				if(!win) { 
+					taval.title = action.args+' argument(s)'
+					return;
+				}
+				var func = eval(tacto.value);
+				func = func.toString();
+				var match = func.match(/\(([^)]*)\)/);
+				taval.title = match ? match[1] : '';
+			}
+		};
 		
 		root.trydeltrigger = function() {
 			var trigindex = Number(dd.value);
@@ -263,6 +284,7 @@
 				truno.checked=false;
 				tacto.selectedIndex=-1;
 				tacto.style.backgroundColor = 'white';
+				root.triggeractionchange();
 				taval.value='';
 				taval.style.backgroundColor = 'white';
 				tallo.value='';

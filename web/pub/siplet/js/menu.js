@@ -3,6 +3,7 @@ var menuArea = null;
 var menuBackgroundColor = "#105010";
 var menuForegroundColor = "Yellow";
 var menuWindow = null;
+var menuTemp = null;
 
 var menuData = [
 	{"Window": [
@@ -79,19 +80,19 @@ var menuData = [
 	]}
 ];
 
-function configureMenu(obj)
+function ReConfigureTopMenu(sipwin)
 {
-	menuArea=obj;
-	menuArea.style.position='fixed';
-	menuArea.style.top=0;
-	menuArea.style.width='100%';
-	menuArea.style.height=menuAreaHeight+'px';
-	menuArea.style.background=menuBackgroundColor;
-	menuArea.style.color=menuForegroundColor;
-	
+	if(sipwin && sipwin.menus() && sipwin.menus().length)
+		menuTemp =  sipwin.menus();
+	else
+	if(menuTemp == null)
+		return; // no change
+	else
+		menuTemp = null;
 	var html = '';
 	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: 20px; table-layout: fixed; width: 100%;cursor: pointer;">';
 	html +='<TR style="height: 20px;" >';
+	var alreadyDone = {};
 	for(var to=0;to<menuData.length;to++)
 	{
 		var topO = menuData[to];
@@ -100,9 +101,36 @@ function configureMenu(obj)
 		html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+20,this.offsetWidth,16,'+to+')" ';
 		html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 		html += topN + '</FONT></TD>';
+		alreadyDone[topN] = true;
+	}
+	if(menuTemp)
+	{
+		for(var key in menuTemp)
+		{
+			if(!alreadyDone[topN])
+			{
+				html += '<TD style="border: 1px solid white; padding: 0;"';
+				html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+20,this.offsetWidth,16,"'+key+'")" ';
+				html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
+				html += key + '</FONT></TD>';
+			}
+		}
 	}
 	html += '</TR></TABLE>';
 	menuArea.innerHTML = html;
+}
+
+function ConfigureTopMenu(obj)
+{
+	menuTemp = [];
+	menuArea=obj;
+	menuArea.style.position='fixed';
+	menuArea.style.top=0;
+	menuArea.style.width='100%';
+	menuArea.style.height=menuAreaHeight+'px';
+	menuArea.style.background=menuBackgroundColor;
+	menuArea.style.color=menuForegroundColor;
+	ReConfigureTopMenu();
 }
 
 function DropDownMenu(e, left, top, width, fontSize, to, subMenu) 
@@ -115,7 +143,12 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		var topO = menuData[to];
 		var topN = Object.keys(topO)[0];
 		subList = topO[topN];
+		if(menuTemp && menuTemp[topN])
+			subList = subList.concat(menuTemp[topN]);
 	}
+	else
+	if(typeof to === 'string' && menuTemp)
+		subList = menuTemp[to];
 	else
 		subList = to;
 	var href='';

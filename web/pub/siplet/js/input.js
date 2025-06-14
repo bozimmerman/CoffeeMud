@@ -19,7 +19,7 @@ var AsciiKeyMap =
 	Insert: "\x1B[2~"
 };
 
-function configureInput(obj, ta)
+function ConfigureInput(obj, ta)
 {
 	obj.style.position='fixed';
 	obj.style.bottom=0;

@@ -29,7 +29,7 @@
 </TD></TR>
 <TR><TD>Action:</TD><TD>
 	<select id="ALIASACTION"
-		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); root.aliasactionchange();"
 	>
 		<option value="">Do Nothing Else</option>
 		${
@@ -87,6 +87,7 @@
 				arepl.value='';
 				aacto.selectedIndex=-1;
 				aacto.style.backgroundColor = RED;
+				root.aliasactionchange();
 				aaval.value='';
 				aaval.style.backgroundColor = RED;
 				delbutt.style.visibility='hidden';
@@ -112,6 +113,7 @@
 				}
 				else
 					setSelectByValue(aacto,'');
+				root.aliasactionchange();
 				aaval.style.backgroundColor = 'white';
 			}
 		};
@@ -219,6 +221,25 @@
 			}
 		};
 
+		root.aliasactionchange = function(dom) {
+			aaval.title = '';
+			if((aacto.selectedIndex<0)||(aacto.value==''))
+				return;
+			var action = SipletActions[aacto.value];
+			if(action)
+			{
+				var win = window.currWin;
+				if(!win) { 
+					aaval.title = action.args+' argument(s)'
+					return;
+				}
+				var func = eval(aacto.value);
+				func = func.toString();
+				var match = func.match(/\(([^)]*)\)/);
+				aaval.title = match ? match[1] : '';
+			}
+		};
+		
 		root.aliasactionvalueblur = function(dom){
 			if((dom !== aaval)
 			||(dom.value.trim() == ''))
@@ -255,6 +276,7 @@
 				arepl.value='';
 				aacto.selectedIndex=-1;
 				aacto.style.backgroundColor = 'white';
+				root.aliasactionchange();
 				aaval.value='';
 				aaval.style.backgroundColor = 'white';
 				delbutt.style.visibility='hidden';

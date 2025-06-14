@@ -26,10 +26,9 @@ this:
 {
 	"name":"my trigger",
 	"regex":false,
-	"pattern":"string",
+	"pattern":"mud output",
 	"once":true,
-	"action":"displayText",
-	"argument":"'hi'"
+	"action":"win.displayText('hi');"
 }
 </PRE>
 The <B>name</B> of a plugin trigger is not terribly important, but is required.  <B>Regex</B>
@@ -41,7 +40,7 @@ its initial match, or false to continue matching.
 enableTrigger, disableTrigger, startTimer, clearTimer, displayAt, submitHidden, or sendPlugin.  These,
 and the required <B>argument(s)</B> are summarized in the help for  
 <a href="javascript:menuHelp('Actions')">Actions</a>.  Remember that an argument string must
-be internally single quoted, unless it is not a string, but one of the permitted variable names.
+be internally quoted, unless it is not a string, but one of the permitted variables.
 <P>
 The top level <B>aliases</B> field is an array of alias objects, each of which looks like 
 this:
@@ -49,10 +48,9 @@ this:
 {
 	"name":"my alias",
 	"regex":false,
-	"pattern":"string",
+	"pattern":"/command",
 	"replace":"replacement string",
-	"action":"displayText",
-	"argument":"'hi'"
+	"action":"win.displayText('hi');"
 }
 </PRE>
 The <B>name</B>, <b>regex</b>, <B>pattern</B>, <B>action</B>, and <B>argument</B> 
@@ -68,8 +66,7 @@ this:
 	"delay":0,
 	"option":"once"
 	"trigger":true,
-	"action":"displayText"
-	"argument":"'hi'"
+	"action":"win.displayText('hi');"
 }
 </PRE>
 The <B>name</B>, <B>action</B>, and <B>argument</B> 

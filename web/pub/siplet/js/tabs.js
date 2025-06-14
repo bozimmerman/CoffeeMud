@@ -4,7 +4,7 @@ var tabTabs = [];
 var tabSpacer = null;
 var tabRow = null;
 
-function configureTabs(obj)
+function ConfigureMainTabs(obj)
 {
 	tabArea=obj;
 	tabArea.style.position='fixed';
