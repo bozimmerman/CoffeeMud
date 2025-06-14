@@ -118,12 +118,10 @@ function isValidAction(s)
 		return false;
 	var cmd = s.substr(0,x);
 	var arg = s.substring(x+1, s.lastIndexOf(')'));
-	if(!cmd.startsWith('win.')) 
+	var action = SipletActions[cmd];
+	if(action == null)
 		return false;
-	cmd = cmd.substr(4);
-	if(!(cmd in window.sampleSiplet))
-		return false;
-	return isValidExpression(arg);
+	return IsQuotedStringArgument(arg,action.args,Siplet.R);
 };
 
 function isValidExpression(exp) {
@@ -642,6 +640,209 @@ function updateMediaImagesInSpan(span)
 		}
 	}
 };
+
+function SplitQuotedStringArguments(str,ignoreQuotes,okRegex)
+{
+	var parts = [];
+	if(ignoreQuotes)
+		parts.remainder='';
+	var start=0;
+	for(var i=0;i<str.length;i++)
+	{
+		if(str[i]=='\\')
+			i++;
+		else
+		if(str[i]==',')
+		{
+			if((start<i)
+			&&(ignoreQuotes||IsQuotedStringArgument(str.substring(start,i),1,okRegex)))
+			{
+				parts.push(str.substring(start,i));
+				start=i+1;
+			}
+		}
+	}
+	if(start<str.length)
+	{
+		if((ignoreQuotes||IsQuotedStringArgument(str.substring(start,str.length),1,okRegex)))
+			parts.push(str.substring(start,str.length));
+		else
+			parts.remainder = str.substring(start,str.length).trim();
+	}
+	return parts;
+}
+
+function IsQuotedStringArgument(str, args, okRegex)
+{
+	if((str == null)||(str === undefined))
+		return false;
+	if((args !== undefined)&&(Number(args)>1))
+	{
+		var split = SplitQuotedStringArguments(str,false,okRegex);
+		return split.length == args;
+	}
+	str = str.trim();
+	if(str.length<2)
+		return false;
+	if(str.startsWith('`')&&str.endsWith('`'))
+	{
+		if(okRegex)
+		{
+			var variableRegex = /\${([^}]+)}/g;
+			var match;
+			while((match = variableRegex.exec(str)) !== null) {
+				var variable = match[1];
+				if(!variable.trim().match(okRegex))
+					return false;
+			}
+		}
+		return /^(?!.*(([^\\]|^)(?:\\\\)*`)).*$/.test(str.substr(1,str.length-2));
+	}
+	if(str.startsWith('"')&&str.endsWith('"'))
+		return /^(?!.*(([^\\]|^)(?:\\\\)*")).*$/.test(str.substr(1,str.length-2));
+	if(str.startsWith("'")&&str.endsWith("'"))
+		return /^(?!.*(([^\\]|^)(?:\\\\)*')).*$/.test(str.substr(1,str.length-2));
+	return (okRegex && str.match(okRegex));
+}
+
+function EnsureQuotedStringArguments(str, args, okRegex)
+{
+	var nargs = (args==undefined)?0:Number(args);
+	if((str == null)
+	||(str === undefined)
+	||(!str.trim()))
+	{
+		var s = "''";
+		for(var i=1;i<nargs;i++)
+			s += ",''";
+		return s;
+	}
+	str = str.trim();
+	if(nargs>1)
+	{
+		// qparts is guaranteed to consume entire str and return either array entries or remainder
+		var qparts = SplitQuotedStringArguments(str,false,okRegex);
+		if((qparts.length == nargs)&&(!qparts.remainder))
+			return str;
+		// drop remainder
+		if(qparts.length == nargs)
+			return qparts.join(',');
+		if(qparts.length>nargs) //more legit args than needed? why?
+			return qparts.splice(nargs).join(',');
+		var nparts = SplitQuotedStringArguments(str,true,okRegex); // parts w or w/o quotes
+		// below is a classic use case we must support, and there's never remainder
+		if(qparts.length==0)
+		{
+			while(nparts.length>nargs)
+			{
+				nparts[nparts.length-2]+=nparts[nparts.length-1];
+				nparts=nparts.splice(nparts.length-1,1);
+			}
+			for(var i=0;i<nparts.length;i++)
+				nparts[i]=EnsureQuotedStringArguments(nparts[i],1,okRegex);
+			while(nparts.length<nargs)
+				nparts.push("''");
+			return nparts.join(',');
+		}
+		// not enough qparts, but more than 0, and nargs always >1
+		var isInside = nparts.indexOf(qparts[0]);
+		if(isInside == 0)
+		{
+			nparts.splice(0,1); // eats top of qparts, re-parses rest
+			return qparts[0]+','+EnsureQuotedStringArguments(nparts.join(','),nargs-1,okRegex);
+		}
+		else // qparts not the first, but theres only two
+		if((isInside == 1)&&(nargs==2))
+			return EnsureQuotedStringArguments(nparts[0],1,okRegex)+','+qparts[0];
+		//  just eat the rest and screw qparts
+		for (var i = 0; i < nparts.length; i++)
+			nparts[i] = EnsureQuotedStringArguments(nparts[i],1,okRegex);
+		while (nparts.length < nargs)
+			nparts.push("''");
+		if (nparts.length > nargs)
+			nparts = nparts.slice(0, nargs);
+		return nparts.join(',');
+	}
+	var q;
+	if(str.startsWith('"')||str.endsWith('"'))
+		q='"';
+	else
+	if(str.startsWith("'")||str.endsWith("'"))
+		q="'";
+	else
+	if(str.startsWith("`")||str.endsWith("`"))
+		q="`";
+	else
+	if(str.indexOf("'")>=0)
+		q='"';
+	else
+	if(okRegex && (str.match(okRegex)))
+		return true;
+	else
+		q="'";
+	if(!str.startsWith(q))
+		str = q + str;
+	if(!str.endsWith(q))
+		str = str + q;
+	for(var i=1;i<str.length-1;i++)
+	{
+		if(str[i] == '\\')
+			i++;
+		else
+		if(str[i] == q)
+		{
+			str = str.substr(0,i)+'\\'+str.substr(i);
+			i++;
+		}
+	}
+	if(q == '`' && okRegex)
+	{
+		var variableRegex = /\${([^}]+)}/g;
+		str = str.replace(variableRegex, function(match, variable) {
+			var trimmedVar = variable.trim();
+			if(trimmedVar.match(okRegex))
+				return match;
+			else
+				return trimmedVar;
+		});
+	}
+	return str;
+}
+
+function SafeEval(str, context) 
+{
+	if (!str || !str.trim())
+		return true;
+	if (str.includes('isConnected()'))
+		str = str.replace(/isConnected\(\)/g, 'wsopened');
+	var tokens =  str.match(/[\w.]+/g)?.map(t => t.trim()) || [];
+	var operators = str.match(/\s*(&&|\|\|)\s*/g)?.map(op => op.trim()) || [];
+	var values = tokens.map(function(token) {
+		if (token.includes('('))
+			return false;
+		try {
+			var value = context;
+			for (var key of token.split('.')) 
+			{
+				value = value[key];
+				if (value === undefined || value === null) 
+					return false;
+			}
+			return value;
+		} catch (e) {
+			return false;
+		}
+	});
+	var result = values[0];
+	for (var i = 0; i < operators.length; i++) 
+	{
+		if (operators[i] === '&&')
+			result = result && values[i + 1];
+		else if (operators[i] === '||')
+			result = result || values[i + 1];
+	}
+	return !!result;
+}
 
 function populateDivFromUrl(div, url, callback) 
 {

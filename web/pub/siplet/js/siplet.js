@@ -7,7 +7,9 @@ var Siplet =
 {
 	VERSION_MAJOR: '3.1',
 	VERSION_MINOR: '1',
-	NAME: window.isElectron?'Sip':'Siplet'
+	NAME: window.isElectron?'Sip':'Siplet',
+	R: /^win\.[\w]+(\.[\w]+)*$/
+	//R: /^(?!.*passw)win\.[\w]+(\.[\w]+)*$/
 };
 
 function SipletWindow(windowName)
@@ -46,7 +48,7 @@ function SipletWindow(windowName)
 	this.triggers = null;
 	this.globalAliases = GetGlobalAliases();
 	this.aliases = null;
-	this.globalTimers = JSON.parse(JSON.stringify(GetGlobalTimers()));
+	this.globalTimers = GetGlobalTimers();
 	this.timers = null;
 	this.activeTimers = [];
 	this.lastStyle = '';
@@ -428,6 +430,26 @@ function SipletWindow(windowName)
 		me.flushWindow();
 		me.triggerCheck();
 	};
+	
+	this.executeAction = function(action)
+	{
+		action = this.fixVariables(action);
+		var p = action.indexOf("(");
+		try 
+		{
+			var act = SipletActions[action.substr(0,p)];
+			var z = action.lastIndexOf(')');
+			if(IsQuotedStringArgument(action.substring(p+1,z),act.args,Siplet.R))
+			{
+				var win = this;
+		 		eval(action);
+	 		}
+		}
+		catch(e)
+		{
+			 console.error(e);
+		};
+	};
 
 	this.evalTriggerGroup = function(triggers)
 	{
@@ -435,8 +457,9 @@ function SipletWindow(windowName)
 		for(var i=0;i<triggers.length;i++)
 		{
 			var trig = triggers[i];
-			if(eval(trig.allowed) && trig.pattern
-			&& (!trig.disabled))
+			if(trig.pattern
+			&& (!trig.disabled)
+			&& (SafeEval(trig.allowed,{win:this})))
 			{
 				var prev = trig.prev - this.textBufferPruneIndex;
 				if(prev < 0)
@@ -450,8 +473,7 @@ function SipletWindow(windowName)
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,match[i]);
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
-						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.error(e);};
+						this.executeAction(trig.action);
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						match = trig.pattern.exec(this.textBuffer);
@@ -466,8 +488,7 @@ function SipletWindow(windowName)
 					{
 						prev += x + trig.pattern.length + 1;
 						trig.prev = this.textBufferPruneIndex + x + trig.pattern.length + 1;
-						var action = this.fixVariables(trig.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.error(e);};
+						this.executeAction(trig.action);
 						if(trig.once)
 							trig.disabled=true;
 						x = this.textBuffer.indexOf(trig.pattern,prev);
@@ -568,8 +589,7 @@ function SipletWindow(windowName)
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,match[i]);
 						txt = txt.replace(alias.pattern,this.fixVariables(alias.replace));
-						var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-						try { eval(action); } catch(e) {console.error(e);};
+						this.executeAction(alias.action);
 						for(var i=0;i<match.length;i++)
 							this.setVariable('match'+i,null);
 						return txt
@@ -578,8 +598,7 @@ function SipletWindow(windowName)
 				else
 				if(txt.startsWith(alias.pattern))
 				{
-					var action = this.fixVariables(alias.action.replaceAll('\\n','\n'));
-					try { eval(action); } catch(e) {console.error(e);};
+					this.executeAction(alias.action);
 					return alias.replace + txt.substr(alias.pattern.length);
 				}
 			}
@@ -693,9 +712,7 @@ function SipletWindow(windowName)
 		var timerCopy = JSON.parse(JSON.stringify(timer));
 		var me = this;
 		var execute = function() {
-			var action = me.fixVariables(timer.action.replaceAll('\\n','\n'));
-			var win = me;
-			try { eval(action); } catch(e) {console.error(e);};
+			this.executeAction(timer.action);
 			if(timer.option == 'repeat')
 			{
 				timer.timerId = setTimeout(execute, timer.delay);

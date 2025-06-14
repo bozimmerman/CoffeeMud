@@ -32,21 +32,16 @@
 		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
 	>
 		<option value="">Do Nothing Else</option>
-		<option value="win.submitInput">Send Command</option>
-		<option value="win.displayText">Display Text</option>
-		<option value="win.playSound">Play Sound</option>
-		<option value="win.setVariable">Set Variable</option>
-		<option value="win.runScript">Run Script</option>
-		<option value="win.enableTrigger">Enable Trigger</option>
-		<option value="win.disableTrigger">Disable Trigger</option>
-		<option value="win.startTimer">Start Timer</option>
-		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.displayAt">Send to Frame</option>
-		<option value="win.sendPlugin">Plugin Event</option>
-		<option value="win.submitHidden">Send Hidden</option>
+		${
+			var options = '';
+			for(var act in SipletActions)
+				options += '<option value="' + act + '">'+SipletActions[act].text;
+			options;
+		}
 	</select>
 	<INPUT id="ALIASAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('ALIASSROOT'); root.aliasfieldchange(); "
+		ONBLUR="var root = document.getElementById('ALIASSROOT'); root.aliasactionvalueblur(this);"
 	><IMG SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Actions')">
 </TD></TR>
 <TR><TD colspan="2">
@@ -138,7 +133,11 @@
 				}
 			}
 			aacto.style.backgroundColor = (aacto.selectedIndex < 0)?RED:'white';
-			aaval.style.backgroundColor = ((aacto.value!='')&& (!isValidExpression(aaval.value)))?RED:'white';
+			var action = SipletActions[aacto.value];
+			if(action)
+				aaval.style.backgroundColor = !IsQuotedStringArgument(aaval.value,action.args,Siplet.R)?RED:'white';
+			else
+				aaval.style.backgroundColor = 'white';
 			if(aacto.value.indexOf('runScript')>=0)
 			{
 				var key = aaval.value.replace(/^['"]|['"]$/g, '');;
@@ -217,6 +216,20 @@
 					}
 					setConfig('/phonebook/dial',phonebook);
 				}
+			}
+		};
+
+		root.aliasactionvalueblur = function(dom){
+			if((dom !== aaval)
+			||(dom.value.trim() == ''))
+				return;
+			if((aacto.selectedIndex<0)||(aacto.value==''))
+				return;
+			var action = SipletActions[aacto.value];
+			if((action)&&(!IsQuotedStringArgument(dom.value,action.args,Siplet.R)))
+			{
+				dom.value = EnsureQuotedStringArguments(dom.value,action.args,Siplet.R);
+				this.aliasfieldchange();
 			}
 		};
 		

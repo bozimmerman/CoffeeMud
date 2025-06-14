@@ -201,13 +201,13 @@ function ParseAliases(baseAliases)
 function GetGlobalTriggers()
 {
 	var rawTriggers = getConfig('/global/triggers', window.defTriggers);
-	return ParseTriggers(rawTriggers);
+	return ParseTriggers(JSON.parse(JSON.stringify(rawTriggers)));
 }
 
 function GetGlobalAliases()
 {
 	var rawAliases = getConfig('/global/aliases', window.defAliases);
-	return ParseAliases(rawAliases);
+	return ParseAliases(JSON.parse(JSON.stringify(rawAliases)));
 }
 
 function GetGlobalScripts()
@@ -217,7 +217,7 @@ function GetGlobalScripts()
 
 function GetGlobalTimers()
 {
-	return getConfig('/global/timers', window.defTimers);
+	return JSON.parse(JSON.stringify(getConfig('/global/timers', window.defTimers)));
 }
 
 function GetGlobalEntities()

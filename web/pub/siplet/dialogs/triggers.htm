@@ -31,21 +31,16 @@
 	<select id="TRIGGERACTION"
 		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
 	>
-		<option value="win.submitInput">Send Command</option>
-		<option value="win.displayText">Display Text</option>
-		<option value="win.playSound">Play Sound</option>
-		<option value="win.setVariable">Set Variable</option>
-		<option value="win.runScript">Run Script</option>
-		<option value="win.enableTrigger">Enable Trigger</option>
-		<option value="win.disableTrigger">Disable Trigger</option>
-		<option value="win.startTimer">Start Timer</option>
-		<option value="win.clearTimer">Stop Timer</option>
-		<option value="win.displayAt">Send to Frame</option>
-		<option value="win.sendPlugin">Plugin Event</option>
-		<option value="win.submitHidden">Send Hidden</option>
+		${
+			var options = '';
+			for(var act in SipletActions)
+				options += '<option value="' + act+'">'+SipletActions[act].text;
+			options;
+		}
 	</select>
 	<INPUT id="TRIGGERAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('TRIGGERSROOT'); root.triggerfieldchange(); "
+		ONBLUR="var root = document.getElementById('TRIGGERSROOT'); root.triggeractionvalueblur(this);"
 	><IMG SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Actions')">
 </TD></TR>
 <TR><TD>Allowed:</TD><TD>
@@ -141,9 +136,13 @@
 					tpatt.style.backgroundColor = RED; 
 				}
 			}
-			taval.style.backgroundColor = !isValidExpression(taval.value)?RED:'white';
 			tallo.style.backgroundColor = !isValidExpression(tallo.value)?RED:'white';
 			tacto.style.backgroundColor = (tacto.selectedIndex < 0)?RED:'white';
+			var action = SipletActions[tacto.value];
+			if(action)
+				taval.style.backgroundColor = !IsQuotedStringArgument(taval.value,action.args,Siplet.R)?RED:'white';
+			else
+				taval.style.backgroundColor = 'white';
 			if(tacto.value.indexOf('runScript')>=0)
 			{
 				var key = taval.value.replace(/^['"]|['"]$/g, '');
@@ -225,6 +224,20 @@
 					}
 					setConfig('/phonebook/dial',phonebook);
 				}
+			}
+		};
+		
+		root.triggeractionvalueblur = function(dom){
+			if((dom !== taval)
+			||(dom.value.trim() == ''))
+				return;
+			if((tacto.selectedIndex<0)||(tacto.value==''))
+				return;
+			var action = SipletActions[tacto.value];
+			if((action)&&(!IsQuotedStringArgument(dom.value,action.args,Siplet.R)))
+			{
+				dom.value = EnsureQuotedStringArguments(dom.value,action.args,Siplet.R);
+				this.triggerfieldchange();
 			}
 		};
 		

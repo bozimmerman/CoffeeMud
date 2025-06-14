@@ -253,9 +253,9 @@
 						if (s != null)
 							return s;
 					}
-	        	}
-        	}
-        	else
+				}
+			}
+			else
 			if(Array.isArray(base))
 			{
 				if(json.length > 0)
@@ -425,54 +425,54 @@
 				scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
 			});
 		};
-    	root.showstorage = function()
-    	{
-    		var tot = 0;
-    		for(var k in localStorage)
-	    		if (localStorage.hasOwnProperty(k))
-	    			tot += (k.length+localStorage[k].length)*2;
-	    	var pct = Math.floor(tot / (5 * 1024 * 1024) * 100.0) + '%';
-	    	if(pct == '0%')
-	    		window.alert("You are using "+tot+" bytes of the storage quota.");
-	    	else
-		    	window.alert("You are using "+pct+" of the storage quota.");
-    	};
-    	
-    	root.buildMediaList = function(list, node)
-    	{
-    		if(node == null)
-    			return;
-    		if(typeof node === 'string')
+		root.showstorage = function()
+		{
+			var tot = 0;
+			for(var k in localStorage)
+				if (localStorage.hasOwnProperty(k))
+					tot += (k.length+localStorage[k].length)*2;
+			var pct = Math.floor(tot / (5 * 1024 * 1024) * 100.0) + '%';
+			if(pct == '0%')
+				window.alert("You are using "+tot+" bytes of the storage quota.");
+			else
+				window.alert("You are using "+pct+" of the storage quota.");
+		};
+		
+		root.buildMediaList = function(list, node)
+		{
+			if(node == null)
+				return;
+			if(typeof node === 'string')
    			{
-    			var mx = node.indexOf('media://');
-    			while(mx>0) {
-    				var ec = node.charAt(mx-1);
-    				var me = node.indexOf(ec,me+5);
-    				if(me>mx)
-    				{
-    					list.push(node.substring(mx+8,me))
-	    				mx = node.indexOf('media://',me);
-    				}
-    				else
-	    				mx = node.indexOf('media://',x+5);
-    			}
+				var mx = node.indexOf('media://');
+				while(mx>0) {
+					var ec = node.charAt(mx-1);
+					var me = node.indexOf(ec,me+5);
+					if(me>mx)
+					{
+						list.push(node.substring(mx+8,me))
+						mx = node.indexOf('media://',me);
+					}
+					else
+						mx = node.indexOf('media://',x+5);
+				}
    			}
-    		else
-    		if(Array.isArray(node))
+			else
+			if(Array.isArray(node))
    			{
    				for(var k=0;k<node.length;k++)
    					root.buildMediaList(list, node[k]);
    			}
-    		else
-    		if(isJsonObject(node))
+			else
+			if(isJsonObject(node))
    			{
    				for(k in node)
    					root.buildMediaList(list, node[k]);
    			}
-    	}
-    	
-    	root.trysaveplugin = function()
-    	{
+		}
+		
+		root.trysaveplugin = function()
+		{
 			if((stext.style.backgroundColor == RED)
 			||(scode.style.backgroundColor == RED)
 			||(stext.value.trim().length == 0))
@@ -519,12 +519,12 @@
 				};
 				processMediaFiles(mediaList.pop());
 			}
-    	};
-    	root.trybuildplugin = function()
-    	{
-    		SiPrompt('Enter a unique plugin name', function(name){
-	    		if(!name || (name.trim().length==0))
-	    			return;
+		};
+		root.trybuildplugin = function()
+		{
+			SiPrompt('Enter a unique plugin name', function(name){
+				if(!name || (name.trim().length==0))
+					return;
 				var newp = {
 				  "name": name,
 				  "version": 1,
@@ -535,12 +535,12 @@
 				  "timers": []
 				};
 				newp.mxp = GetGlobalElements();
-				newp.triggers = JSON.parse(JSON.stringify(GetGlobalTriggers()));
-				newp.aliases = JSON.parse(JSON.stringify(GetGlobalAliases()));
-				newp.timers = JSON.parse(JSON.stringify(GetGlobalTimers()));
+				newp.triggers = JSON.parse(JSON.stringify(getConfig('/global/triggers', window.defTriggers)));
+				newp.aliases = JSON.parse(JSON.stringify(getConfig('/global/aliases', window.defAliases)));
+				newp.timers = JSON.parse(JSON.stringify(getConfig('/global/timers', window.defTimers)));
 				for(var i=newp.triggers.length-1; i >= 0;i--)
 				{
-					for(var ii=0; ii < window.defTriggers; ii++)
+					for(var ii=0; ii < window.defTriggers.length; ii++)
 						if(window.defTriggers[ii].name == newp.triggers[i].name)
 						{
 							newp.triggers.splice(i,1);
@@ -551,7 +551,7 @@
 				stext.editor.setValue(stext.value);
 				root.pluginfieldchange();
    			});
-    	};
+		};
 		
 		var addParser = document.createElement('script');
 		addParser.src = 'js/codemirror.js';
@@ -568,25 +568,25 @@
 		root.appendChild(addCss);
 		addLang.onload = function() {
 			var editor1 = CodeMirror.fromTextArea(stext, {
-			      mode: 'javascript', 
-			      theme: 'default', 
-			      lineNumbers: false, 
-			      lineWrapping: false,
-			      tabSize: 2,
-			      indentWithTabs: false,
-			      extraKeys: {
-			        'Tab': function(cm) {
-			          cm.replaceSelection('  '); // 2 spaces for Tab
-			        }
-			      },
-			      viewportMargin: Infinity,
-			      styleActiveLine: false,
-			      matchBrackets: false,
-			      fontFamily: 'Consolas, monospace',
-			      fontSize: '14px',
-			      lineHeight: '1.5'
-			    });
-    	    editor1.getWrapperElement().style.height='160px';
+				  mode: 'javascript', 
+				  theme: 'default', 
+				  lineNumbers: false, 
+				  lineWrapping: false,
+				  tabSize: 2,
+				  indentWithTabs: false,
+				  extraKeys: {
+					'Tab': function(cm) {
+					  cm.replaceSelection('  '); // 2 spaces for Tab
+					}
+				  },
+				  viewportMargin: Infinity,
+				  styleActiveLine: false,
+				  matchBrackets: false,
+				  fontFamily: 'Consolas, monospace',
+				  fontSize: '14px',
+				  lineHeight: '1.5'
+				});
+			editor1.getWrapperElement().style.height='160px';
 			editor1.on('change', function() {
 				editor1.save();
 				stext.value = editor1.getValue();
@@ -594,32 +594,32 @@
 			});
 			stext.editor = editor1;
 			var editor2 = CodeMirror.fromTextArea(scode, {
-			      mode: 'javascript', 
-			      theme: 'default', 
-			      lineNumbers: false, 
-			      lineWrapping: false,
-			      tabSize: 2,
-			      indentWithTabs: false,
-			      extraKeys: {
-			        'Tab': function(cm) {
-			          cm.replaceSelection('  '); // 2 spaces for Tab
-			        }
-			      },
-			      viewportMargin: Infinity,
-			      styleActiveLine: false,
-			      matchBrackets: false,
-			      fontFamily: 'Consolas, monospace',
-			      fontSize: '14px',
-			      lineHeight: '1.5'
-			    });
-    	    editor2.getWrapperElement().style.height='160px';
+				  mode: 'javascript', 
+				  theme: 'default', 
+				  lineNumbers: false, 
+				  lineWrapping: false,
+				  tabSize: 2,
+				  indentWithTabs: false,
+				  extraKeys: {
+					'Tab': function(cm) {
+					  cm.replaceSelection('  '); // 2 spaces for Tab
+					}
+				  },
+				  viewportMargin: Infinity,
+				  styleActiveLine: false,
+				  matchBrackets: false,
+				  fontFamily: 'Consolas, monospace',
+				  fontSize: '14px',
+				  lineHeight: '1.5'
+				});
+			editor2.getWrapperElement().style.height='160px';
 			editor2.on('change', function() {
 				editor2.save();
 				scode.value = editor2.getValue();
 				root.pluginfieldchange();
 			});
 			scode.editor = editor2;
-    	};
+		};
 	} else
 		setTimeout(fixpluginspage,10);
 };setTimeout(fixpluginspage,10);

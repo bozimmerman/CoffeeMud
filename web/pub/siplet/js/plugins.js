@@ -1,3 +1,18 @@
+var SipletActions = {
+	"win.submitInput": { text:"Send Command", args: 1},
+	"win.displayText": { text:"Display Text", args: 1},
+	"win.playSound": { text:"Play Sound", args: 1},
+	"win.setVariable": { text:"Set Variable", args: 2},
+	"win.runScript": { text:"Run Script", args: 1},
+	"win.enableTrigger": { text:"Enable Trigger", args: 1},
+	"win.disableTrigger": { text:"Disable Trigger", args: 1},
+	"win.startTimer": { text:"Start Timer", args: 1},
+	"win.clearTimer": { text:"Stop Timer", args: 1},
+	"win.displayAt": { text:"Send to Frame", args: 2},
+	"win.sendPlugin": { text:"Plugin Event", args: 2},
+	"win.submitHidden": { text:"Send Hidden", args: 1}
+};
+
 var PLUGINS = function(sipwin)
 {
 	this.plugins = [];
