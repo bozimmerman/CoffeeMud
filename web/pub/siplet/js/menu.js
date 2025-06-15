@@ -82,7 +82,7 @@ var menuData = [
 
 function ReConfigureTopMenu(sipwin)
 {
-	if(sipwin && sipwin.menus() && sipwin.menus().length)
+	if(sipwin && Object.keys(sipwin.menus()).length > 0)
 		menuTemp =  sipwin.menus();
 	else
 	if(menuTemp == null)

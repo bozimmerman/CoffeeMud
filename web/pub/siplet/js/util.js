@@ -121,6 +121,9 @@ function isValidAction(s)
 	var action = SipletActions[cmd];
 	if(action == null)
 		return false;
+	if((action != SipletActions['win.submitInput'])
+	&&(arg.indexOf('pb.password')>=0))
+		return false;
 	return IsQuotedStringArgument(arg,action.args,Siplet.R);
 };
 

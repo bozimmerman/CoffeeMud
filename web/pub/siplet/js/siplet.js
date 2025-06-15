@@ -9,7 +9,6 @@ var Siplet =
 	VERSION_MINOR: '1',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
-	//R: /^(?!.*passw)win\.[\w]+(\.[\w]+)*$/
 };
 
 function SipletWindow(windowName)
@@ -44,6 +43,7 @@ function SipletWindow(windowName)
 	this.gaugeWindow = null;
 	this.textBuffer = '';
 	this.textBufferPruneIndex = 0;
+	this.tempMenus  = null;
 	this.globalTriggers = GetGlobalTriggers();
 	this.triggers = null;
 	this.tempTriggers  = null;
@@ -296,6 +296,7 @@ function SipletWindow(windowName)
 		this.globalTimers = GetGlobalTimers();
 		this.timers = null;
 		this.tempTimers = null;
+		this.tempMenus = null;
 		this.listeners = {};
 		this.resetTimers();
 		this.mxpFix();
@@ -460,6 +461,10 @@ function SipletWindow(windowName)
 		};
 	};
 
+	this.menus = function() {
+		return this.plugins.menus(this.tempMenus)
+	};
+	
 	this.evalTriggerGroup = function(triggers)
 	{
 		var win = this;
@@ -558,6 +563,31 @@ function SipletWindow(windowName)
 					this.tempTriggers = null;
 				return true;
 			}
+		return false;
+	}
+
+	this.addTempMenu = function(top, menu)
+	{
+		menu = this.validatedMenu('Temp '+top, menu);
+		if(menu && top)
+		{
+			if(this.tempMenus==null)
+				this.tempMenus = {};
+			this.tempMenus[top] = menu;
+			return true;
+		}
+		return false;
+	}
+
+	this.removeTempMenu = function(name)
+	{
+		if(this.tempMenus==null)
+			return false;
+		if(name in this.tempMenus)
+		{
+			delete this.tempMenus[name];
+			return true;
+		}
 		return false;
 	}
 
@@ -1370,10 +1400,6 @@ function SipletWindow(windowName)
 			} catch(e) {
 			}
 		}
-	};
-	
-	this.menus = function() {
-		return [];
 	};
 }
 

@@ -224,7 +224,11 @@
 				option:function(s) { return (['repeat','multiple','once'].indexOf(s.toLowerCase())>=0);},
 				trigger:true,
 				action:function(s) { return isValidAction(s); }
-			}]
+			}],
+			menus:{'*':[{
+				n:' ',
+				a: function(s) { return isValidAction(s); }
+			}]}
 		};
 
 		root.compareJson = function(help, base, json, jparent) 
@@ -245,6 +249,16 @@
 			&& (Object.getPrototypeOf(base) === Object.prototype))
 			{
 				for(var k in base) {
+					if(k=='*')
+					{
+						for(j in json)
+						{
+							var s = root.compareJson(help+'/'+j,base[k],json[j],json);
+							if (s != null)
+								return s;
+						}
+					}
+					else 
 					if(!(k in json))
 						return "Missing: " + k +" in "+help;
 					else
@@ -532,7 +546,8 @@
 				  "mxp":"",
 				  "triggers": [],
 				  "aliases": [],
-				  "timers": []
+				  "timers": [],
+				  "menus": {}
 				};
 				newp.mxp = GetGlobalElements();
 				newp.triggers = JSON.parse(JSON.stringify(getConfig('/global/triggers', window.defTriggers)));

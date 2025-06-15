@@ -12,6 +12,7 @@ broken down below.  A minimalist plugin document looks like this:
   "triggers": [],
   "aliases": [],
   "timers": []
+  "menus": {}
 }
 </PRE>
 The <B>name</B> may be any string, but try to keep it unique.  <B>Version</B>
@@ -77,6 +78,25 @@ The <b>trigger</b> field is true if a timer begins its delay immediately, or fal
 it must be externally triggered before counting down.  <B>Delay</B> is the number
 of milliseconds (1000th of a second) that the timer delays for; for example, 5000
 would be 5 seconds, and 60000 would be a minute.
+<P>
+<P>
+The top level <B>menus</B> field is additions to the top level menu system.  Each key
+is a top level menu (such as Windows, Global Options, or Help).  Each menus key then
+is mapped to an array of specific menu entry json object like this:
+<PRE>
+"Top Menu": [{
+	"n":"Option 1",
+	"a":"win.displayText('hi');"
+},{
+	"n":"Option 2",
+	"a":"win.displayText('ho');"
+}]
+</PRE>
+The <B>n</B> entry is simply the drop-down option name, while <B>a</B> is an 
+Action, which is the same as described above under Triggers.  Optional arguments
+include <B>v</B>, which is a truthy variable expression that describes whether
+the option is visible, and <B>e</B>, which is a truthy variable expression 
+describing whether the option may be clicked, or is grayed out.
 <P>
 <h3>Javascript Code</h3>
 Unlike normal <a href="javascript:menuHelp('Scripts')">Scripts</a>, a plugin code

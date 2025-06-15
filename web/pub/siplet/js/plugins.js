@@ -21,6 +21,8 @@ var PLUGINS = function(sipwin)
 	this.aliasList = null;
 	this.triggerList = null;
 	this.timerList = null;
+	this.menuList = null;
+
 	this.addPluginFrame = function(pluginName, pluginCode)
 	{
 		var iframe = document.createElement("iframe");
@@ -67,6 +69,7 @@ var PLUGINS = function(sipwin)
 		this.aliasList = null;
 		this.triggerList = null;
 		this.timerList = null;
+		this.menuList = null;
 	};
 	
 	this.reset = function()
@@ -94,6 +97,10 @@ var PLUGINS = function(sipwin)
 				this.plugins.push(JSON.parse(JSON.stringify(sipwin.pb.plugins[i])));
 			}
 		}
+		this.aliasList = null;
+		this.triggerList = null;
+		this.timerList = null;
+		this.menuList = null;
 	};
 	
 	this.postEvent = function(event) {
@@ -131,7 +138,7 @@ var PLUGINS = function(sipwin)
 		for(r=0;r<req.length;r++)
 			if(!(req[r] in palias))
 			{
-				console.log("Missing "+req[r]+" from plugin "+source+" alias");
+				console.warn("Missing "+req[r]+" from plugin "+source+" alias");
 				break;
 			}
 		if(r<req.length)
@@ -150,10 +157,10 @@ var PLUGINS = function(sipwin)
 				return newOne;
 			}
 			else
-				console.log("Bad action in plugin "+source+" alias");
+				console.warn("Bad action in plugin "+source+" alias");
 		}
 		else
-			console.log("Missing action in plugin "+source+" alias");
+			console.warn("Missing action in plugin "+source+" alias");
 		return false;
 	};
 	
@@ -171,7 +178,7 @@ var PLUGINS = function(sipwin)
 						var palias=paliases[p];
 						palias = this.validatedAlias(this.plugins[i].name, palias);
 						if(palias)
-							this.aliasList.push(newOne);
+							this.aliasList.push(palias);
 					}
 				}
 			this.aliasList = ParseAliases(this.aliasList);
@@ -188,7 +195,7 @@ var PLUGINS = function(sipwin)
 		for(r=0;r<req.length;r++)
 			if(!(req[r] in ptrigger))
 			{
-				console.log("Missing "+req[r]+" from plugin "+source+" trigger");
+				console.warn("Missing "+req[r]+" from plugin "+source+" trigger");
 				break;
 			}
 		if(r<req.length)
@@ -208,10 +215,10 @@ var PLUGINS = function(sipwin)
 				return newOne;
 			}
 			else
-				console.log("Bad action in plugin "+source+" trigger");
+				console.warn("Bad action in plugin "+source+" trigger");
 		}
 		else
-			console.log("Missing action in plugin "+source+" trigger");
+			console.warn("Missing action in plugin "+source+" trigger");
 		return false;
 	}
 	
@@ -246,7 +253,7 @@ var PLUGINS = function(sipwin)
 		for(r=0;r<req.length;r++)
 			if(!(req[r] in ptimer))
 			{
-				console.log("Missing "+req[r]+" from "+source+" timer");
+				console.warn("Missing "+req[r]+" from "+source+" timer");
 				break;
 			}
 		if(r<req.length)
@@ -254,13 +261,13 @@ var PLUGINS = function(sipwin)
 		if('action' in ptimer)
 		{
 			if(!isValidAction(ptimer.action))
-				console.log("Bad action in "+source+" timer");
+				console.warn("Bad action in "+source+" timer");
 			else
 			if(!isNumber(ptimer.delay))
-				console.log("Bad delay in "+source+" timer");
+				console.warn("Bad delay in "+source+" timer");
 			else
 			if(['repeat','multiple','once'].indexOf(ptimer.option)<0)
-				console.log("Bad option in "+source+" timer (repeat, multiple, once)");
+				console.warn("Bad option in "+source+" timer (repeat, multiple, once)");
 			{
 				var newOne = {
 					name: ptimer.name,
@@ -274,7 +281,7 @@ var PLUGINS = function(sipwin)
 			}
 		}
 		else
-			console.log("Bad action in "+source+" timer");
+			console.warn("Bad action in "+source+" timer");
 		return false;
 	};
 	
@@ -297,5 +304,97 @@ var PLUGINS = function(sipwin)
 				}
 		}
 		return this.timerList;
+	};
+
+	
+	this.validatedMenu = function(source, pmenu)
+	{
+		if(!pmenu)
+			return false;
+		if(!Array.isArray(pmenu) || !pmenu.length)
+		{
+			console.warn("Menu option "+source+" was not an array with entries.");
+			return false;
+		}
+		for(var i=0;i<pmenu.length;i++)
+		{
+			var opt = pmenu[i];
+			if(!opt.n || (typeof opt.n !== 'string'))
+			{
+				console.warn("Menu option "+i+'#'+source+" missing 'n' (name) entry.");
+				return false;
+			}
+			if(!opt.a || (typeof opt.a !== 'string'))
+			{
+				console.warn("Menu option "+i+'#'+source+" missing 'a' (action) string entry.");
+				return false;
+			}
+			if(opt.e)
+			{
+				if(!(''+opt.e).trim().match(Siplet.R))
+				{
+					console.warn("Menu option "+i+'#'+source+" invalid 'e' entry.");
+					return false;
+				}
+			}
+			if(opt.v)
+			{
+				if(!(''+opt.v).trim().match(Siplet.R))
+				{
+					console.warn("Menu option "+i+'#'+source+" invalid 'v' entry.");
+					return false;
+				}
+			}
+			if(!isValidAction(opt.a))
+			{
+				console.warn("Menu option "+i+'#'+source+" invalid 'a' (action).");
+				return false;
+			}
+		}
+		return JSON.parse(JSON.stringify(pmenu));
+	};
+	
+	this.menus = function(tempMenus)
+	{
+		if(this.menuList == null)
+		{
+			this.menuList = {};
+			for(var i=0;i<this.plugins.length;i++)
+				if('menus' in this.plugins[i])
+				{
+					var pmenus = this.plugins[i].menus;
+					for(var key in pmenus)
+					{
+						var pmenu=pmenus[key];
+						pmenu = this.validatedMenu(key+'@'+this.plugins[i].name, pmenu);
+						if(pmenu)
+						{
+							for(var i=0;i<pmenu.length;i++)
+								pmenu[i].a = 'javascript:var win=window.currWin;' + pmenu[i].a;
+							if(key in this.menuList)
+								this.menuList[key] = this.menuList[key].contat(pmenu);
+							else
+								this.menuList[key] = pmenu;
+						}
+					}
+				}
+		}
+		var menuList = this.menuList;
+		if((tempMenus != null)&&(Object.keys(tempMenus).length))
+		{
+			menuList = JSON.parse(JSON.stringify(menuList));
+			tempMenus = JSON.parse(JSON.stringify(tempMenus));
+			for(var key in tempMenus)
+			{
+				var tmenu=tempMenus[key]
+				for(var i=0;i<tmenu.length;i++)
+					tmenu[i].a = 'javascript:var win=window.currWin;' + tmenu[i].a;
+				if(key in menuList)
+					menuList[key] = menuList[key].contat(tmenu);
+				else
+					menuList[key] = tmenu;
+			}
+		}
+		return menuList;
 	};
 }
