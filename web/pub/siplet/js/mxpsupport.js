@@ -379,7 +379,9 @@ window.defElements = {
 	"ATTLIST": new MXPElement("ATTLIST", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
-	"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL)
+	"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
+	"INPUT": new MXPElement("INPUT", "<INPUT TYPE=&type; value=\"&value;\" onchange=\"SipWin(this).setVariable('&name;',this.value);SipWin(this).dispatchEvent('&name;');\" onclick=\"SipWin(this).dispatchEvent('&name;');\">", 
+		"NAME TYPE VALUE", "", MXPBIT.COMMAND)
 	// -------------------------------------------------------------------------
 };
 

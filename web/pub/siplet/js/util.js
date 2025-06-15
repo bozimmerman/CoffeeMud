@@ -847,6 +847,15 @@ function SafeEval(str, context)
 	return !!result;
 }
 
+function SipWin(elem)
+{
+	while(elem && !elem.sipwin && elem.parentNode)
+		elem = elem.parentNode;
+	if(elem)
+		return elem.sipwin;
+	return undefined;
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

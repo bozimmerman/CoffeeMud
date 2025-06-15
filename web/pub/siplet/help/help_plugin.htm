@@ -99,9 +99,9 @@ the option is visible, and <B>e</B>, which is a truthy variable expression
 describing whether the option may be clicked, or is grayed out.
 <P>
 <h3>Javascript Code</h3>
-Unlike normal <a href="javascript:menuHelp('Scripts')">Scripts</a>, a plugin code
-script is
-sandboxed to protect the user installing it, which means that the code will not
+Plugin code has the same <a href="javascript:menuHelp('Scripts')">Scripts</a> api
+available to it, but unlike normal scripts, plugin code is sandboxed to protect 
+the user installing it, which means that the code will not
 have direct access to the ENTIRE mud client api or dom.  Instead, it has limited
 access to the win.* and win.mapper.* methods as scripts in the Scripts help.
 For other outside events, it must receive information 
@@ -134,4 +134,10 @@ and always a 'data' field, in addition to other 'extra' fields.
 <TR><TD>variable</TD><TD>key</TD><TD>Result from fetchVariable with key,data</TD></TR>
 <TR><TD>?</TD><TD>?</TD><TD>Typed event from trigger/alias/etc</TD></TR>
 </table> 
+<P>
+If a plugin needs its own configuration, then you can take advantage of the fact
+that win.displayText(...) supports MXP tags, such as INPUT, regardless of whether
+MXP is actually turned on in the client.  If you need storage, localStorage.getItem, 
+setItem, and removeItem are also available.  
+available.  
 </UL>

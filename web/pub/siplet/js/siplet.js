@@ -22,9 +22,9 @@ function SipletWindow(windowName)
 	this.pixelWidth = 800;
 	this.pixelHeight = 600;
 	this.maxLines = getConfig('window/lines',5000);
-	this.MSPsupport = false;
 	this.MSDPsupport = false;
 	this.GMCPsupport = false;
+	this.MSPsupport = false;
 	this.MXPsupport = false;
 	this.MCCPsupport = false;
 	this.wsopened = false;
@@ -38,6 +38,7 @@ function SipletWindow(windowName)
 	this.mapper = new Mapper(this);
 	this.text = new TEXT([this.mxp,this.msp]);
 	this.topWindow = document.getElementById(windowName);
+	if(this.topWindow) this.topWindow.sipwin = this;
 	this.wsocket = null;
 	this.gauges=[];
 	this.gaugeWindow = null;
@@ -152,7 +153,12 @@ function SipletWindow(windowName)
 
 	if(this.topWindow)
 	{
-		this.topWindow.onclick = function() { ContextDelayHide(); setInputBoxFocus(); };
+		this.topWindow.onclick = function(e) {
+			ContextDelayHide(); 
+			if(e.target.tagName == 'INPUT')
+				return;
+			setInputBoxFocus(); 
+		};
 		var fontFace = getConfig('window/fontface', 'monospace');
 		var fontSize = getConfig('window/fontsize', '16px');
 	    this.topWindow.style.fontFamily = fontFace;
@@ -183,7 +189,7 @@ function SipletWindow(windowName)
 		this.wsocket.onmessage = this.onReceive;
 		this.wsocket.onopen = function(event)  
 		{
-			me.plugins.postEvent({type: 'connect',data:url});
+			me.dispatchEvent({type: 'connect',data:url});
 			me.wsopened=true; 
 			me.tab.style.backgroundColor="green";
 			me.tab.style.color="white";
@@ -198,7 +204,7 @@ function SipletWindow(windowName)
 			me.flushWindow();
 			if(me.tab && me.tab.innerHTML.startsWith("Connecting"))
 				me.tab.innerHTML = 'Failed connection to ' + url;
-			me.plugins.postEvent({type: 'closesock',data:url});
+			me.dispatchEvent({type: 'closesock',data:url});
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
 			me.tab.style.color="white";
@@ -214,7 +220,7 @@ function SipletWindow(windowName)
 	
 	this.close = function()
 	{
-		this.plugins.postEvent({type: 'close'});
+		this.dispatchEvent({type: 'close'});
 		this.closeSocket();
 		this.reset();
 	};
@@ -222,22 +228,34 @@ function SipletWindow(windowName)
 	this.process = function(s)
 	{
 		if(!s) return s;
-		var oldResume = this.text.resume;
-		var oldFlush = this.flushWindow;
-		this.flushWindow = function(){};
-		this.text.resume = null;
-		s=this.text.process(s)
-		var startTime = Date.now();
-		while(this.text.resume && ((Date.now() - startTime)<500))
-			s+=this.text.process('')
-		s += this.text.flush();
-		if((!this.mxp.active())&&(this.fixVariables))
-			s = this.fixVariables(s);
+		try
+		{
+			var oldResume = this.text.resume;
+			var oldFlush = this.flushWindow;
+			var oldMXP = this.MXPsupport;
+			var oldMSP = this.MSPsupport;
+			this.flushWindow = function(){};
+			this.text.resume = null;
+			this.MXPsupport = true;
+			this.MSPsupport = true;
+			s=this.text.process(s)
+			var startTime = Date.now();
+			while(this.text.resume && ((Date.now() - startTime)<500))
+				s+=this.text.process('')
+			s += this.text.flush();
+			if((!this.mxp.active())&&(this.fixVariables))
+				s = this.fixVariables(s);
+		}
+		catch(e) { 
+			console.warn(e);
+		}
 		this.flushWindow = oldFlush;
 		this.text.resume = oldResume;
+		this.MSPsupport = oldMSP;
+		this.MXPsupport = oldMXP;
 		return s;
 	};
-
+	
 	this.mxpFix = function()
 	{
 		this.mxp.defBitmap = 256; // no override
@@ -618,6 +636,13 @@ function SipletWindow(windowName)
 
 	this.dispatchEvent = function(event)
 	{
+		if(!event)
+			return;
+		if((typeof event === 'string')||(typeof event === 'number'))
+			event = {'type': (''+event)};
+		else
+		if(!('type' in event))
+			event.type = 'event';
 		if(event && event.type 
 		&& (event.type in this.listeners))
 		{
@@ -1626,7 +1651,7 @@ function PostGlobalEvent(event)
 	for(var k in window.siplets)
 	{
 		try {
-			window.siplets[k].plugins.postEvent(event);
+			window.siplets[k].dispatchEvent(event);
 		} catch(e) {
 			console.error(e);
 		}

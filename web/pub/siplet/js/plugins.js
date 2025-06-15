@@ -38,6 +38,14 @@ var PLUGINS = function(sipwin)
 					iframe.contentWindow.onevent(event.data.payload);
 			};
 			iframe.contentWindow.send=function(event){ parent.postMessage(event,"*");};
+			Object.defineProperty(iframe.contentWindow, 'localStorage', {
+				value: {
+					getItem: function(v) { return localStorage.getItem('plugin.'+pluginName+'.'+v);},
+					removeItem: function(v) { return localStorage.removeItem('plugin.'+pluginName+'.'+v);},
+					setItem: function(v,l) { return localStorage.setItem('plugin.'+pluginName+'.'+v,l);}
+				},
+				writeable: false
+			});
 			var mapper = Object.create(null);
 			for(var k in sipwin.mapper)
 			{
