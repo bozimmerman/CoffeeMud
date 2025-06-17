@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -84,14 +83,15 @@ public class Concierge extends StdBehavior
 
 	protected QuadVector<MOB, Room, Double, TrackingFlags>	destinations= new QuadVector<MOB, Room, Double, TrackingFlags>();
 
-	protected static final String defaultGreeting = "Need directions? Just name the place and I'll name the price! Append words like noswim, noclimb, nofly, nolocks, noprivate, and nocrawl to narrow the focus.";
+	protected static final String defaultGreeting = "Need directions? Just name the place and I'll name the price! "
+			+ "Append words like noswim, noclimb, nofly, nolocks, noprivate, and nocrawl to narrow the focus.";
 
-	protected final static TrackingLibrary.TrackingFlags defaultTrackingFlags	= CMLib.tracking().newFlags()
-																				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-																				.plus(TrackingLibrary.TrackingFlag.NOHOMES)
-																				.plus(TrackingLibrary.TrackingFlag.PASSABLE)
-																				.plus(TrackingLibrary.TrackingFlag.NOHIDDENAREAS);
-	protected final static TrackingLibrary.TrackingFlags defaultRoomRadiusFlags	= CMLib.tracking().newFlags();
+	protected final static TrackingFlags defaultTrackingFlags	= CMLib.tracking().newFlags()
+																		.plus(TrackingFlag.NOEMPTYGRIDS)
+																		.plus(TrackingFlag.NOHOMES)
+																		.plus(TrackingFlag.PASSABLE)
+																		.plus(TrackingFlag.NOHIDDENAREAS);
+	protected final static TrackingFlags defaultRoomRadiusFlags	= CMLib.tracking().newFlags();
 
 	protected double	basePrice		= 0.0;
 	protected double	perRoomPrice	= 0.0;
@@ -106,8 +106,8 @@ public class Concierge extends StdBehavior
 	protected String	clanName		= null;
 	protected boolean	goHomeFlag		= false;
 
-	protected TrackingLibrary.TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
-	protected TrackingLibrary.TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
+	protected TrackingFlags trackingFlags	= CMLib.tracking().newFlags().plus(defaultTrackingFlags);
+	protected TrackingFlags roomRadiusFlags = CMLib.tracking().newFlags().plus(defaultRoomRadiusFlags);
 
 	@Override
 	public String accountForYourself()
@@ -207,6 +207,7 @@ public class Concierge extends StdBehavior
 			basePrice=CMath.s_double(newParm);
 			return;
 		}
+		basePrice = -1;
 		final List<String> V=CMParms.parseSemicolons(newParm,true);
 		String s=null;
 		int x=0;
@@ -218,88 +219,122 @@ public class Concierge extends StdBehavior
 		{
 			s=V.get(v);
 			x=s.indexOf('=');
+			A=null;
+			R=null;
 			if(x>=0)
 			{
 				String numStr=s.substring(x+1).trim();
 				if(numStr.startsWith("\"")&&(numStr.endsWith("\"")))
 					numStr=numStr.substring(1,numStr.length()-1).trim();
+				else
+				{
+					final int xx = numStr.indexOf(' ');
+					if(xx>0)
+					{
+						final int yy = numStr.indexOf('=');
+						if((yy>xx)&&(CMath.s_valueOf(TrackWords.class, numStr.substring(xx+1,yy).trim().toUpperCase())!=null))
+						{
+							final String next = numStr.trim().substring(xx+1).trim();
+							numStr = numStr.substring(0,xx).trim();
+							V.add(v+1, next);
+						}
+					}
+				}
 				s=s.substring(0,x).trim().toUpperCase();
 				final boolean isTrue=numStr.toLowerCase().startsWith("t");
 				final TrackWords tw = (TrackWords)CMath.s_valueOf(TrackWords.class, s);
 				if(tw == null)
 				{
 					if(CMath.isNumber(numStr))
-					{
 						price=CMath.s_double(numStr);
-						continue;
+					if(s.trim().length()>0)
+					{
+						R=CMLib.map().getRoom(s);
+						if(R==null)
+							A=CMLib.map().findArea(s);
+	Log.errOut("Concierge",s+"="+((R!=null)?R.roomID():(A!=null)?A.name():"null"));
+						if((R==null)&&(A==null))
+						{
+							Log.errOut("Concierge","Unknown room/area '"+s+"' in "+getParms());
+							continue;
+						}
 					}
 				}
 				else
-				switch(tw)
 				{
-				case PORTAL:
-					portal=isTrue;
-					continue;
-				case MOBILE:
-					mobile=isTrue;
-					continue;
-				case CLAN:
-					clanName=numStr;
-					continue;
-				case MAXRANGE:
-					maxRange=CMath.s_int(numStr);
-					continue;
-				case GREETING:
-					greeting=numStr;
-					continue;
-				case ENTERMSG:
-					mountStr=numStr;
-					continue;
-				case TALKERNAME:
-					talkerName=numStr;
-					continue;
-				case PERROOM:
-					perRoomPrice=CMath.s_double(numStr);
-					continue;
-				default:
-					if(tw.tf != null)
+					switch(tw)
 					{
-						if(isTrue)
+					case PORTAL:
+						portal=isTrue;
+						continue;
+					case MOBILE:
+						mobile=isTrue;
+						continue;
+					case CLAN:
+						clanName=numStr;
+						continue;
+					case MAXRANGE:
+						maxRange=CMath.s_int(numStr);
+						continue;
+					case GREETING:
+						greeting=numStr;
+						continue;
+					case ENTERMSG:
+						mountStr=numStr;
+						continue;
+					case TALKERNAME:
+						talkerName=numStr;
+						continue;
+					case PERROOM:
+						perRoomPrice=CMath.s_double(numStr);
+						continue;
+					default:
+						if(tw.tf != null)
 						{
-							this.trackingFlags.add(tw.tf);
-							this.roomRadiusFlags.remove(tw.tf);
+							if(isTrue)
+							{
+								this.trackingFlags.add(tw.tf);
+								this.roomRadiusFlags.remove(tw.tf);
+							}
 						}
+						else
+						if(tw.rf != null)
+						{
+							if(isTrue)
+								this.roomRadiusFlags.add(tw.rf);
+						}
+						else
+							Log.errOut("Broken Concierge flag: "+tw);
+						break;
 					}
-					else
-					if(tw.rf != null)
-					{
-						if(isTrue)
-							this.roomRadiusFlags.add(tw.rf);
-					}
-					else
-						Log.errOut("Broken Concierge flag: "+tw);
-					break;
 				}
 			}
 			else
 			if(CMath.isNumber(s))
 			{
 				price=CMath.s_double(s);
+				basePrice=price;
 				continue;
 			}
-			A=null;
-			R=CMLib.map().getRoom(s);
-			if(R==null)
-				A=CMLib.map().findArea(s);
+			else
+			if((CMath.s_valueOf(TrackWords.class, s)!=null))
+				Log.errOut("Concierge","Empty flag (no = sign) '"+s+"' in "+getParms());
 			if(A!=null)
 				rates.add(A,Double.valueOf(price));
 			else
 			if((R!=null)&&(!rates.containsFirst(R)))
 				rates.add(R,Double.valueOf(price));
 			else
+			if(s.trim().length()==0)
+			{
+				if(basePrice <0)
+					basePrice=price;
+			}
+			else
 				rates.add(s,Double.valueOf(price));
 		}
-		basePrice=price;
+		if(basePrice <0)
+			basePrice=price;
 	}
 
 	protected double getPrice(final Room centerRoom, final Room  destR)
