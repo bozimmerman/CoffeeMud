@@ -252,7 +252,6 @@ public class Concierge extends StdBehavior
 						R=CMLib.map().getRoom(s);
 						if(R==null)
 							A=CMLib.map().findArea(s);
-	Log.errOut("Concierge",s+"="+((R!=null)?R.roomID():(A!=null)?A.name():"null"));
 						if((R==null)&&(A==null))
 						{
 							Log.errOut("Concierge","Unknown room/area '"+s+"' in "+getParms());
