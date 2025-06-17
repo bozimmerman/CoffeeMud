@@ -340,11 +340,11 @@ window.defElements = {
 	"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", 
 			"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
 	"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-	"A": new MXPElement("A", "<A STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-			"HREF HINT EXPIRE TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, "EXPIRE"),
-	"SEND": new MXPElement("SEND", "<A STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"ContextDelayHide();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
-			"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, "EXPIRE"), // special done
-	"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.NOTSUPPORTED),
+	"A": new MXPElement("A", "<A NAME=\"&name;\" STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
+			"HREF HINT NAME TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, ""),
+	"SEND": new MXPElement("SEND", "<A NAME=\"&expire;\" STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"ContextDelayHide();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
+			"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, ""), // special done
+	"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"VERSION": new MXPElement("VERSION", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
@@ -353,7 +353,7 @@ window.defElements = {
 			"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
 	"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
-	"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
+	"RELOCATE": new MXPElement("RELOCATE", "", "URL PORT QUIET", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"USER": new MXPElement("USER", "", "", "", MXPBIT.COMMAND | MXPBIT.SPECIAL),
 	"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.SPECIAL),
 	"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
@@ -833,7 +833,12 @@ var MXP = function(sipwin)
 			var endHtml = '';
 			var close = this.makeCloseTag(definition.trim());
 			if((E.bitmap & MXPBIT.NEEDTEXT)==MXPBIT.NEEDTEXT)
-				endHtml = definition + text + close;
+			{
+				if((E.bitmap & MXPBIT.EATTEXT)==MXPBIT.EATTEXT)
+					endHtml = '';
+				else
+					endHtml = definition + text + close;
+			}
 			else
 			if(((E.bitmap & MXPBIT.HTML)==MXPBIT.HTML)
 			||(definition.length>0))
@@ -1233,6 +1238,36 @@ var MXP = function(sipwin)
 				this.eatAllEOLN = true;
 				this.eatNextEOLN = true;
 			}
+		}
+		else
+		if (tagName == "EXPIRE")
+		{
+			var name = E.getAttributeValue("NAME");
+			if ((name == null) || (name.trim().length == 0))
+			{
+				var all = sipwin.topWindow.querySelectorAll('a');;
+				for(var i=0;i<all.length;i++)
+					all[i].outerHTML = all[i].innerHTML;
+			}
+			else
+			{
+				var all = sipwin.topWindow.querySelectorAll('a[name="'+name+'"]');
+				for(var i=0;i<all.length;i++)
+					all[i].outerHTML = all[i].innerHTML;
+			}
+		}
+		else
+		if (tagName == "RELOCATE")
+		{
+			var host = E.getAttributeValue("URL");
+			var port = E.getAttributeValue("PORT");
+			if(!host || !port)
+				return;
+			var quiet = E.getAttributeValue("QUIET");
+			if (quiet != null)
+				E.bitmap = MXPBIT.EATTEXT|MXPBIT.NEEDTEXT;
+			sipwin.closeSocket();
+			sipwin.connect('ws://'+host+':'+port);
 		}
 		else
 		if (tagName == "SEND")
