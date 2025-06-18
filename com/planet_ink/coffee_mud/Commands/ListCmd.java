@@ -1784,7 +1784,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN6=CMLib.lister().fixColWidth(18.0,viewerS);
 		final int COL_LEN7=CMLib.lister().fixColWidth(15.0,viewerS);
 		final StringBuilder head=new StringBuilder("");
-		head.append("[");
+		head.append("^N[^H");
 		head.append(CMStrings.padRight(L("Race"),COL_LEN1)+" ");
 		head.append(CMStrings.padRight(L("Class"),COL_LEN2)+" ");
 		head.append(CMStrings.padRight(L("Lvl"),COL_LEN3)+" ");
@@ -1805,7 +1805,7 @@ public class ListCmd extends StdCommand
 			break;
 		}
 
-		head.append("] Character name\n\r");
+		head.append("^N]^H Character name^N\n\r");
 		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		final PlayerSortCode showBy=sortBy;
 		final PlayerLibrary lib=CMLib.players();
@@ -1831,11 +1831,12 @@ public class ListCmd extends StdCommand
 			});
 		}
 
+		boolean toggle = false;
 		for(int u=0;u<allUsers.size();u++)
 		{
 			final PlayerLibrary.ThinPlayer U=allUsers.get(u);
-
-			head.append("[");
+			toggle = !toggle;
+			head.append("^H["+(toggle?"^w":"^W"));
 			head.append(CMStrings.padRight(U.race(),COL_LEN1)+" ");
 			head.append(CMStrings.padRight(U.charClass(),COL_LEN2)+" ");
 			head.append(CMStrings.padRight(""+U.level(),COL_LEN3)+" ");
@@ -1856,7 +1857,7 @@ public class ListCmd extends StdCommand
 				head.append(CMStrings.padRight(CMLib.time().date2String(U.last()), COL_LEN6) + " ");
 				break;
 			}
-			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name()+"^</LSTUSER^>",COL_LEN7));
+			head.append("^H] "+(toggle?"^w":"^W")+CMStrings.padRight("^<LSTUSER^>"+U.name()+"^</LSTUSER^>",COL_LEN7));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());
