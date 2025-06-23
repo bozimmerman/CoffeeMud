@@ -4537,6 +4537,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Log.debugOut("QuestScript#"+parseId+": Destroying "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
 								((Item)P).destroy();
 							}
+							else
+								PO.restoreOwner();
 						}
 						else
 						if(P instanceof MOB)
@@ -6518,6 +6520,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		public int preserveState;
 		public PhysicalAgent obj;
+		public Physical owner;
+		public Container container;
 		private static Converter<PreservedQuestObject, PhysicalAgent> converter = new Converter<PreservedQuestObject, PhysicalAgent>()
 		{
 			@Override
@@ -6527,10 +6531,49 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			}
 		};
 
+		public void restoreOwner()
+		{
+			if((owner == null) || (obj == null) || (obj.amDestroyed()))
+				return;
+			if(obj instanceof Item)
+			{
+				if(((Item)obj).owner().isContent((Item)obj))
+					((ItemPossessor)owner).moveItemTo(container);
+			}
+			else
+			if((obj instanceof MOB)
+			&&(owner instanceof Room))
+				((Room)owner).bringMobHere((MOB)obj, false);
+		}
+
 		public PreservedQuestObject(final PhysicalAgent o, final int state)
 		{
 			this.obj = o;
 			this.preserveState = state;
+			if(o instanceof Item)
+			{
+				if((((Item)o).databaseID().length()>0)
+				&&(!CMath.bset(o.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
+				{
+					owner = ((Item)o).owner();
+					container = ((Item)o).container();
+				}
+				else
+					owner = null;
+			}
+			else
+			{
+				if(o instanceof MOB)
+				{
+					if(((MOB)o).databaseID().length()>0)
+						owner = ((MOB)o).location();
+					else
+						owner = null;
+				}
+				else
+					owner = null;
+				container = null;
+			}
 		}
 
 		public static Iterator<PhysicalAgent> getPOIter(final List<PreservedQuestObject> o)
