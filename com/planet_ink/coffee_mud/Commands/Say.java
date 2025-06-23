@@ -408,7 +408,7 @@ public class Say extends StdCommand
 							opDirCode=Directions.getOpDirectionCode(dirCode);
 					}
 					final String inDirName=(dirCode<0)?"":(CMLib.directions().getInDirectionName(opDirCode, dirType));
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+"^?");
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+".^?");
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{

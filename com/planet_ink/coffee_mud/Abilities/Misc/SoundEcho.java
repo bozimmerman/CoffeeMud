@@ -94,6 +94,23 @@ public class SoundEcho extends StdAbility
 	}
 
 	public static MOB	bmob	= null;
+	protected int range=10;
+	protected int accuracy=50;
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		range=10;
+		accuracy=50;
+		if(CMath.isInteger(newMiscText))
+			range = CMath.s_int(newMiscText);
+		else
+		{
+			range = CMParms.getParmInt(newMiscText, "RANGE", 10);
+			accuracy = CMParms.getParmInt(newMiscText, "ACCURACY", 50);
+		}
+	}
 
 	public synchronized MOB blindMOB()
 	{
@@ -120,9 +137,6 @@ public class SoundEcho extends StdAbility
 		{
 			synchronized(this)
 			{
-				int range=CMath.s_int(text());
-				if(range==0)
-					range=10;
 				final Room sourceRoom=msg.source().location();
 				String str=msg.othersMessage();
 				str=CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),str,false);
@@ -149,7 +163,7 @@ public class SoundEcho extends StdAbility
 					if((room!=sourceRoom)&&(!doneRooms.contains(room)))
 					{
 						doneRooms.add(room);
-						if(CMLib.dice().rollPercentage()<50)
+						if(CMLib.dice().rollPercentage()<accuracy)
 						{
 							final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
 							echoMsg.setOthersMessage("You hear an echo coming from "+CMLib.directions().getFromCompassDirectionName(direction)+": "+str);
@@ -169,7 +183,7 @@ public class SoundEcho extends StdAbility
 						doneRooms.add(room);
 						if(room.numInhabitants()>0)
 						{
-							if(CMLib.dice().rollPercentage()<50)
+							if(CMLib.dice().rollPercentage()<accuracy)
 							{
 								final int direction=CMLib.tracking().radiatesFromDir(room,rooms);
 								echoMsg.setOthersMessage("You hear a faint echo coming from "+CMLib.directions().getFromCompassDirectionName(direction)+".");
