@@ -21,7 +21,7 @@ function SipletWindow(windowName)
 	this.charHeight = parseFloat(getConfig('window/fontsize', '16px')) * 0.7;
 	this.pixelWidth = 800;
 	this.pixelHeight = 600;
-	this.maxLines = getConfig('window/lines',5000);
+	this.maxLines = getConfig('window/lines',1000);
 	this.MSDPsupport = false;
 	this.GMCPsupport = false;
 	this.MSPsupport = false;
@@ -1663,7 +1663,7 @@ setTimeout(function() {
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
-			siplet.maxLines = getConfig('window/lines', '5000');
+			siplet.maxLines = getConfig('window/lines', '1000');
 			siplet.overflow = getConfig('window/overflow','');
 			siplet.fixOverflow();
 		}
