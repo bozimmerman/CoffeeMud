@@ -17,6 +17,15 @@ import java.math.BigDecimal;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Represents an absolute position in 3d space as a
+ * BigVector of signed longs (Long.MIN_VALUE to Long.MAX_VALUE).
+ * The first is the x coordinate, the second is y, and the last
+ * is z.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public class Coord3D extends BigVector
 {
 	public Coord3D()
@@ -33,7 +42,7 @@ public class Coord3D extends BigVector
 		b[1]=v.b[1];
 		b[2]=v.b[2];
 	}
-	
+
 	public Coord3D(final long[] v)
 	{
 		super(3);
@@ -43,7 +52,7 @@ public class Coord3D extends BigVector
 		b[1]=BigDecimal.valueOf(v[1]);
 		b[2]=BigDecimal.valueOf(v[2]);
 	}
-	
+
 	public Coord3D(final BigDecimal[] v)
 	{
 		super(3);
@@ -56,7 +65,7 @@ public class Coord3D extends BigVector
 		if(v[2] != null)
 			b[2]=v[2];
 	}
-	
+
 	public Coord3D(final BigDecimal v0, final BigDecimal v1, final BigDecimal v2)
 	{
 		super(3);
@@ -67,7 +76,7 @@ public class Coord3D extends BigVector
 		if(v2 != null)
 			b[2]=v2;
 	}
-	
+
 	public BigDecimal x()
 	{
 		if(b.length>0)
@@ -88,7 +97,7 @@ public class Coord3D extends BigVector
 			return b[2];
 		return null;
 	}
-	
+
 	public long xl()
 	{
 		if(b.length>0)
@@ -109,7 +118,7 @@ public class Coord3D extends BigVector
 			return b[2].longValue();
 		return 0;
 	}
-	
+
 	public long getl(final int x)
 	{
 		if((x>=0)&&(x<b.length))
@@ -149,7 +158,7 @@ public class Coord3D extends BigVector
 	{
 		return new Coord3D(this);
 	}
-	
+
 	public Coord3D x(final long d)
 	{
 		return x(new BigDecimal(d));
@@ -164,7 +173,7 @@ public class Coord3D extends BigVector
 	{
 		return z(new BigDecimal(d));
 	}
-	
+
 	public void set(final int index, final long d)
 	{
 		if((index>=0)&&(index<b.length))
@@ -181,12 +190,12 @@ public class Coord3D extends BigVector
 	{
 		return new Coord3D(super.add(v));
 	}
-	
+
 	public Coord3D subtract(final Coord3D v)
 	{
 		return new Coord3D(super.subtract(v));
 	}
-	
+
 	@Override
 	public boolean equals(final Object o)
 	{
