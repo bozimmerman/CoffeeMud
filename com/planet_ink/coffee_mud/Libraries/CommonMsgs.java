@@ -324,14 +324,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if(talker != null)
 			{
+				talker.setSoulMate(null);
 				if (destroyTheTalker)
 				{
 					talker.basePhyStats().setDisposition(0);
 					talker.phyStats().setDisposition(0);
 					talker.destroy();
 				}
-				else
-					talker.setSoulMate(null);
 			}
 		}
 	}

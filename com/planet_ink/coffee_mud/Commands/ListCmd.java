@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ShopPrice;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.MQLException;
@@ -177,6 +178,30 @@ public class ListCmd extends StdCommand
 					||(obj.ID().toLowerCase().indexOf(mask)>=0)
 					||(obj.name().toLowerCase().indexOf(mask)>=0);
 		}
+	}
+
+	public StringBuilder listHosts(final Session viewerS, final List<String> cmds)
+	{
+		final StringBuilder str=new StringBuilder("");
+		final int[] colWidths = new int[] {
+			CMLib.lister().fixColWidth(10.0,viewerS),
+			CMLib.lister().fixColWidth(10.0,viewerS),
+			CMLib.lister().fixColWidth(30.0,viewerS)
+		};
+		str.append("^H");
+		str.append(CMStrings.padRight(L("Host ID"), colWidths[0]));
+		str.append(CMStrings.padRight(L("Port"), colWidths[1]));
+		str.append(CMStrings.padRight(L("Name"), colWidths[1]));
+		str.append("^?\n\r^w");
+		for(final MudHost host : CMLib.hosts())
+		{
+			str.append(CMStrings.padRight(host.threadGroup().getName(), colWidths[0]));
+			str.append(CMStrings.padRight(host.getPort()+"", colWidths[1]));
+			final String name = CMProps.instance(host.threadGroup().getName().charAt(0)).getStr(Str.MUDNAME);
+			str.append(CMStrings.padRight(name, colWidths[2]));
+			str.append("^?\n\r"); // this is brilliant, at is swaps colors!
+		}
+		return str;
 	}
 
 	public StringBuilder listAllQualifies(final Session viewerS, final List<String> cmds)
@@ -4751,6 +4776,7 @@ public class ListCmd extends StdCommand
 		DEBUGFLAG("DEBUGFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
 		DEBUGFLAGS("DEBUGFLAGS",new SecFlag[]{SecFlag.LISTADMIN}),
 		DISABLEFLAG("DISABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
+		HOSTS("HOSTS",new SecFlag[]{SecFlag.LISTADMIN}),
 		DISABLEFLAGS("DISABLEFLAGS",new SecFlag[]{SecFlag.LISTADMIN}),
 		ENABLEFLAG("ENABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
 		ALLQUALIFYS("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
@@ -6440,6 +6466,9 @@ public class ListCmd extends StdCommand
 			break;
 		case ALLQUALIFYS:
 			s.wraplessPrintln(listAllQualifies(mob.session(), commands).toString());
+			break;
+		case HOSTS:
+			s.wraplessPrintln(listHosts(mob.session(), commands).toString());
 			break;
 		case NEWS:
 			listNews(mob, commands);
