@@ -1271,7 +1271,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					1000,
 					5000
 				};
-				int eatNDex=namts.length;
+				int eatNDex=namts.length-1;
 				for(int i=0;i<namts.length;i++)
 				{
 					if(namts[i]>biteSize)
@@ -1297,7 +1297,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					5,
 					10
 				};
-				int eatADex=aamts.length;
+				int eatADex=aamts.length-1;
 				for(int i=0;i<aamts.length;i++)
 				{
 					if(aamts[i]>adjSize)

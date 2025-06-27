@@ -9739,8 +9739,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				if(lastKnownLocation!=null)
-					lastKnownLocation.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[1]));
+				int msgType = CMMsg.MSG_OK_ACTION;
+				final Room R = lastKnownLocation;
+				if(R!=null)
+				{
+					String str = varify(ctx,tt[1]);
+					if(str.startsWith("NOSOUND "))
+					{
+						msgType = CMMsg.MSG_OK_VISUAL;
+						str=str.substring(8);
+					}
+					R.show(ctx.monster,null,msgType,str);
+				}
 				break;
 			}
 			case 13: // mpunaffect
@@ -11418,17 +11428,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				String parm=tt[1];
+				int msgType = CMMsg.MSG_OK_ACTION;
+				String str = varify(ctx,tt[2]);
+				if(str.startsWith("NOSOUND "))
+				{
+					msgType = CMMsg.MSG_OK_VISUAL;
+					str=str.substring(8);
+				}
 				Room lastR = lastKnownLocation;
 				if((parm.equalsIgnoreCase("world"))
 				&&(lastR!=null))
 				{
 					if(lastR.numInhabitants()==0)
-						lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						lastR.showSource(ctx.monster,null,msgType,str);
 					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
-							R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							R.showOthers(ctx.monster,null,msgType,str);
 					}
 				}
 				else
@@ -11436,12 +11453,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				&&(lastR!=null))
 				{
 					if(lastR.numInhabitants()==0)
-						lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+						lastR.showSource(ctx.monster,null,msgType,str);
 					for(final Enumeration<Room> e=lastR.getArea().getProperMap();e.hasMoreElements();)
 					{
 						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
-							R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							R.showOthers(ctx.monster,null,msgType,str);
 					}
 				}
 				else
@@ -11452,9 +11469,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(lastR!=null))
 					{
 						if(newTarget==ctx.monster)
-							lastR.showSource(ctx.monster,null,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+							lastR.showSource(ctx.monster,null,null,msgType,str);
 						else
-							lastR.show(ctx.monster,newTarget,null,CMMsg.MSG_OK_ACTION,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]),CMMsg.NO_EFFECT,null);
+							lastR.show(ctx.monster,newTarget,null,msgType,null,msgType,str,CMMsg.NO_EFFECT,null);
 					}
 					else
 					{
@@ -11463,7 +11480,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							Room R = CMLib.map().getRoom(parm);
 							if(R!=null)
-								R.show(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+								R.show(ctx.monster,null,msgType,str);
 							else
 							{
 								final Area A = CMLib.map().findArea(parm);
@@ -11471,12 +11488,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								{
 									if((lastR!=null)
 									&&((lastR.numInhabitants()==0)||(!A.inMyMetroArea(lastR.getArea()))))
-										lastR.showSource(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+										lastR.showSource(ctx.monster,null,msgType,str);
 									for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 									{
 										R=e.nextElement();
 										if(R.numInhabitants()>0)
-											R.showOthers(ctx.monster,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+											R.showOthers(ctx.monster,null,msgType,str);
 									}
 								}
 							}
@@ -11497,7 +11514,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final Room lastR=CMLib.map().roomLocation(newTarget);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastR!=null))
-					lastR.showOthers((MOB)newTarget,null,CMMsg.MSG_OK_ACTION,varify(ctx,tt[2]));
+				{
+					int msgType = CMMsg.MSG_OK_ACTION;
+					String str = varify(ctx,tt[2]);
+					if(str.startsWith("NOSOUND "))
+					{
+						msgType = CMMsg.MSG_OK_VISUAL;
+						str=str.substring(8);
+					}
+					lastR.showOthers((MOB)newTarget,null,msgType,str);
+				}
 				break;
 			}
 			case 9: // mpcast

@@ -5154,7 +5154,7 @@ the character codes the mud uses, and can also use variables set by the
 mpsetvar command. This has a wide range of uses, from setting
 background noise to a mob, to allowing the mob to express itself safely
 as if speaking. The mpecho command does not set off speech_progs,
-although it does set off act_progs.</p>
+although it does set off act_progs. &nbsp;If the message begins with NOSOUND , then it will not generate sounds. &nbsp;</p>
 
       <p>EXAMPLES:</p>
 
@@ -5180,11 +5180,11 @@ echoing to everyone in the room, can be used to echo to everyone BUT
 the targeted person. Why would you do this? If used in conjunction with
 the mpechoat command, you can create text strings which look right to
 everyone involved. The way to make mpechoaround do this is to use the
-mpat command.</p>
+mpat command. &nbsp;If the message begins with NOSOUND , then it will not generate sounds. &nbsp;</p>
 
       <p>EXAMPLES:</p>
 
-      <pre> mpechoaround $n You hear voices speaking all around you.<br /> mpechoaround $n $N cringes as a poisoned dart strikes $s chest!<br /> mpechoaround $n A pile of rocks rains down upon $n!<br /> mpechoaround $n A circle of light surrounds $n, and then $e vanishes.<br /> <br /></pre>
+      <pre> mpechoaround $n You hear voices speaking all around you.<br /> mpechoaround $n NOSOUND $N cringes as a poisoned dart strikes $s chest!<br /> mpechoaround $n A pile of rocks rains down upon $n!<br /> mpechoaround $n A circle of light surrounds $n, and then $e vanishes.<br /> <br /></pre>
 
       <h3><a name="mpechoat">mpechoat</a></h3>
 
@@ -5202,11 +5202,11 @@ allows mobs to emulate the announce command. The target may be a local
 mob name, the word "world", the word "area", a room id, or an area
 name.&nbsp;If you need to be need to find mobile
 mobs or items, you can include the mob or item name, followed by @
-followed by a room id or area name. </p>
+followed by a room id or area name. &nbsp;If the message begins with NOSOUND , then it will not generate sounds. &nbsp; </p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpechoat $n You hear voices speaking all around you.<br />mpechoat $n You cringe as a poisoned dart strikes you in the chest!<br />mpechoat $n A pile of rocks rains down upon you!<br />mpechoat $n A circle of light surrounds you, and you are transported.<br /></pre>
+      <pre>mpechoat $n You hear voices speaking all around you.<br />mpechoat $n NOSOUND You cringe as a poisoned dart strikes you in the chest!<br />mpechoat $n A pile of rocks rains down upon you!<br />mpechoat $n A circle of light surrounds you, and you are transported.<br /></pre>
 
       <h3><a name="mpenable">mpenable</a></h3>
 

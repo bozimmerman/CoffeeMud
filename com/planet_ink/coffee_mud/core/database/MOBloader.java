@@ -3238,7 +3238,7 @@ public class MOBloader
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("MOB",sqle);
+			Log.errOut("MOB",sqle.getMessage());
 		}
 		finally
 		{

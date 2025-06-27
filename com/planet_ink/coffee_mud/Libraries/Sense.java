@@ -1758,7 +1758,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return false;
 		if(isFlying(P))
 			return true;
-		if(P instanceof Rider)
+		if((P instanceof Rider)&&(P != ((Rider)P).riding()))
 			return isInFlight(((Rider)P).riding());
 		return false;
 	}
