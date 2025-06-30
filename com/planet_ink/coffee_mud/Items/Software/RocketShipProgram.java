@@ -100,6 +100,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 		||uword.equals("STOP")
 		||uword.equals("LAND")
 		||uword.equals("LAUNCH")
+		||uword.equals("ORBIT")
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
 		||uword.equals("TARGET")
@@ -571,9 +572,15 @@ public class RocketShipProgram extends ShipTacticalProgram
 					return;
 			}
 			else
-			if(uword.equalsIgnoreCase("LAUNCH") || uword.equalsIgnoreCase("ORBIT"))
+			if(uword.equalsIgnoreCase("LAUNCH"))
 			{
 				if(!launchProcedure.execute(this, uword, mob, message, parsed))
+					return;
+			}
+			else
+			if(uword.equalsIgnoreCase("ORBIT"))
+			{
+				if(!orbitProcedure.execute(this, uword, mob, message, parsed))
 					return;
 			}
 			else
