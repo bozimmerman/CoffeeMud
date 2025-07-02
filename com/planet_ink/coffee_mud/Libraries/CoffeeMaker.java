@@ -3197,25 +3197,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public boolean isAnyGenStat(final Physical P, String stat)
+	public boolean isAnyGenStat(final Modifiable M, String stat)
 	{
-		if(P.isStat(stat))
+		if(M.isStat(stat))
 			return true;
 		stat = getFinalStatName(stat);
-		if(P.basePhyStats().isStat(stat))
+		if((M instanceof Physical) && ((Physical)M).basePhyStats().isStat(stat))
 			return true;
-		if(P instanceof MOB)
+		if(M instanceof MOB)
 		{
-			if(((MOB)P).baseCharStats().isStat(stat))
+			if(((MOB)M).baseCharStats().isStat(stat))
 				return true;
-			if(((MOB)P).baseState().isStat(stat))
+			if(((MOB)M).baseState().isStat(stat))
 				return true;
-			if((((MOB)P).playerStats()!=null)
-			&&((MOB)P).playerStats().isStat(stat))
+			if((((MOB)M).playerStats()!=null)
+			&&((MOB)M).playerStats().isStat(stat))
 				return true;
-			if((((MOB)P).playerStats()!=null)
-			&&(((MOB)P).playerStats().getAccount()!=null)
-			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
+			if((((MOB)M).playerStats()!=null)
+			&&(((MOB)M).playerStats().getAccount()!=null)
+			&&(((MOB)M).playerStats().getAccount().isStat(stat)))
 				return true;
 			if(getGenMobCodeNum(stat)>=0)
 				return true;
@@ -3224,7 +3224,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return true;
 		}
 		else
-		if(P instanceof Item)
+		if(M instanceof Item)
 		{
 			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
 			if(fakeStat != null)
@@ -3233,7 +3233,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return true;
 		}
 		else
-		if(P instanceof Area)
+		if(M instanceof Area)
 		{
 			final Area.Stats areaStat=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
 			if(areaStat != null)
@@ -3252,15 +3252,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String getAnyGenStat(final Physical P, String stat)
+	public String getAnyGenStat(final Modifiable M, String stat)
 	{
-		if(P.isStat(stat))
-			return P.getStat(stat);
+		if(M.isStat(stat))
+			return M.getStat(stat);
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
 		final boolean max=stat.startsWith("MAX ")||stat.startsWith("MAX_");
 		stat = getFinalStatName(stat);
-		if(P.basePhyStats().isStat(stat))
+		if((M instanceof Physical)
+		&& (((Physical)M).basePhyStats().isStat(stat)))
+		{
+			final Physical P = (Physical)M;
 			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
+		}
 		final GenPhysBonusFakeStats fakePhyStat = (GenPhysBonusFakeStats)CMath.s_valueOf(GenPhysBonusFakeStats.class, stat);
 		if(fakePhyStat!=null)
 		{
@@ -3268,11 +3272,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			switch(fakePhyStat)
 			{
 			case CURRENCY:
-				str.append(CMLib.beanCounter().getCurrency(P));
+				str.append(CMLib.beanCounter().getCurrency(M));
 				break;
 			case CURRENCY_NAME:
 			{
-				final String currency=CMLib.beanCounter().getCurrency(P);
+				final String currency=CMLib.beanCounter().getCurrency(M);
 				if((currency==null)||(currency.length()==0))
 					str.append(L("currency"));
 				else
@@ -3282,14 +3286,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			case OWNER:
 			{
 				final PrivateProperty pA;
-				if(P instanceof Area)
-					pA=CMLib.law().getPropertyRecord((Area)P);
+				if(M instanceof Area)
+					pA=CMLib.law().getPropertyRecord((Area)M);
 				else
-				if(P instanceof Item)
-					pA=CMLib.law().getPropertyRecord((Item)P);
+				if(M instanceof Item)
+					pA=CMLib.law().getPropertyRecord((Item)M);
 				else
-				if(P instanceof Room)
-					pA=CMLib.law().getPropertyRecord((Room)P);
+				if(M instanceof Room)
+					pA=CMLib.law().getPropertyRecord((Room)M);
 				else
 					pA=null;
 				if(pA!=null)
@@ -3298,23 +3302,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			case DENOMINATION_NAME:
 			{
-				str.append(CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(P)));
+				str.append(CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(M)));
 				break;
 			}
 			case DISPOSITIONSTR:
 			{
-				final int disposition=(current)?P.phyStats().disposition():P.basePhyStats().disposition();
-				for(int i=0;i<PhyStats.IS_CODES.length;i++)
+				if(M instanceof Physical)
 				{
-					if(CMath.isSet(disposition,i))
-						str.append(PhyStats.IS_CODES[i]+" ");
+					final Physical P = (Physical)M;
+					final int disposition=(current)?P.phyStats().disposition():P.basePhyStats().disposition();
+					for(int i=0;i<PhyStats.IS_CODES.length;i++)
+					{
+						if(CMath.isSet(disposition,i))
+							str.append(PhyStats.IS_CODES[i]+" ");
+					}
 				}
 				break;
 			}
 			case SENSESSTR:
-				if(P instanceof MOB)
+				if(M instanceof MOB)
 				{
-					final int mask=(current)?P.phyStats().sensesMask():P.basePhyStats().sensesMask();
+					final MOB mobM = (MOB)M;
+					final int mask=(current)?mobM.phyStats().sensesMask():mobM.basePhyStats().sensesMask();
 					for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
 					{
 						if(CMath.isSet(mask,i))
@@ -3322,7 +3331,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 				}
 				else
+				if(M instanceof Physical)
 				{
+					final Physical P = (Physical)M;
 					final int mask=(current)?P.phyStats().sensesMask():P.basePhyStats().sensesMask();
 					for(int i=0;i<PhyStats.SENSE_CODES.length;i++)
 					{
@@ -3337,112 +3348,112 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return str.toString();
 		}
 
-		if(P instanceof MOB)
+		if(M instanceof MOB)
 		{
-			if(((MOB)P).baseCharStats().isStat(stat))
+			if(((MOB)M).baseCharStats().isStat(stat))
 			{
 				if(stat.equalsIgnoreCase("GENDER"))
-					return ""+(char)CMath.s_int(current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat));
+					return ""+(char)CMath.s_int(current?((MOB)M).charStats().getStat(stat):((MOB)M).baseCharStats().getStat(stat));
 				else
-					return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
+					return current?((MOB)M).charStats().getStat(stat):((MOB)M).baseCharStats().getStat(stat);
 			}
-			if(((MOB)P).baseState().isStat(stat))
-				return current?((MOB)P).curState().getStat(stat):max?((MOB)P).maxState().getStat(stat):((MOB)P).baseState().getStat(stat);
-			if((((MOB)P).playerStats()!=null)
-			&&(((MOB)P).playerStats().isStat(stat)))
-				return ((MOB)P).playerStats().getStat(stat);
-			if((((MOB)P).playerStats()!=null)
-			&&(((MOB)P).playerStats().getAccount() != null)
-			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
-				return ((MOB)P).playerStats().getAccount().getStat(stat);
+			if(((MOB)M).baseState().isStat(stat))
+				return current?((MOB)M).curState().getStat(stat):max?((MOB)M).maxState().getStat(stat):((MOB)M).baseState().getStat(stat);
+			if((((MOB)M).playerStats()!=null)
+			&&(((MOB)M).playerStats().isStat(stat)))
+				return ((MOB)M).playerStats().getStat(stat);
+			if((((MOB)M).playerStats()!=null)
+			&&(((MOB)M).playerStats().getAccount() != null)
+			&&(((MOB)M).playerStats().getAccount().isStat(stat)))
+				return ((MOB)M).playerStats().getAccount().getStat(stat);
 			if(getGenMobCodeNum(stat)>=0)
-				return getGenMobStat((MOB)P, stat);
+				return getGenMobStat((MOB)M, stat);
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
 			if(fakeStat != null)
 			{
 				switch(fakeStat)
 				{
 				case AGENAME:
-					return current?((MOB)P).charStats().ageName():((MOB)P).baseCharStats().ageName();
+					return current?((MOB)M).charStats().ageName():((MOB)M).baseCharStats().ageName();
 				case AGEMINS:
-					return ""+((MOB)P).getAgeMinutes();
+					return ""+((MOB)M).getAgeMinutes();
 				case QUESTPOINTS:
-					return ""+((MOB)P).getQuestPoint();
+					return ""+((MOB)M).getQuestPoint();
 				case FOLLOWERS:
-					return ""+((MOB)P).numFollowers();
+					return ""+((MOB)M).numFollowers();
 				case TRAINS:
-					return ""+((MOB)P).getTrains();
+					return ""+((MOB)M).getTrains();
 				case PRACTICES:
-					return ""+((MOB)P).getPractices();
+					return ""+((MOB)M).getPractices();
 				case STINK:
-					if(((MOB)P).playerStats()!=null)
-						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+					if(((MOB)M).playerStats()!=null)
+						return CMath.toPct(((MOB)M).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 					break;
 				case IDLETICKS:
 				{
-					final Session sess = ((MOB)P).session();
+					final Session sess = ((MOB)M).session();
 					return ""+((sess != null) ? sess.getIdleMillis()/CMProps.getTickMillis() : -1);
 				}
 				case PEACETICKS:
 				{
-					final MOB mob = (MOB)P;
+					final MOB mob = (MOB)M;
 					return ""+(mob.getPeaceTime()/CMProps.getTickMillis());
 				}
 				case OBJATTRIB:
 					{
 						final StringBuilder attrib=new StringBuilder("");
-						final MOB M=(MOB)P;
-						if(M instanceof ShopKeeper)
+						final MOB mobM=(MOB)M;
+						if(mobM instanceof ShopKeeper)
 						{
-							if(M instanceof Banker)
+							if(mobM instanceof Banker)
 								attrib.append("\"SHOP\" \"BANK\" \"BANKER\" ");
 							else
-							if(M instanceof PostOffice)
+							if(mobM instanceof PostOffice)
 								attrib.append("\"SHOP\" \"POSTOFFICE\" ");
 							else
-							if(M instanceof Librarian)
+							if(mobM instanceof Librarian)
 								attrib.append("\"SHOP\" \"LIBRARIAN\" \"LIBRARY\" ");
 							else
 								attrib.append("\"SHOP\" \"STORE\" ");
 						}
 						else
-						if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+						if(CMLib.coffeeShops().getShopKeeper(mobM)!=null)
 							attrib.append("\"SHOP\" \"STORE\" ");
-						if(CMLib.flags().isUndead(M))
+						if(CMLib.flags().isUndead(mobM))
 							attrib.append("\"UNDEAD\" ");
-						if(CMLib.flags().isAnAnimal(M))
+						if(CMLib.flags().isAnAnimal(mobM))
 							attrib.append("\"ANIMAL\" ");
 						else
-						if(CMLib.flags().isAnimalIntelligence(M))
+						if(CMLib.flags().isAnimalIntelligence(mobM))
 							attrib.append("\"CREATURE\" ");
-						if(CMLib.flags().isAPlant(M))
+						if(CMLib.flags().isAPlant(mobM))
 							attrib.append("\"PLANT\" ");
-						if(CMLib.flags().isInsect(M))
+						if(CMLib.flags().isInsect(mobM))
 							attrib.append("\"INSECT\" ");
-						if(CMLib.flags().isOutsider(M))
+						if(CMLib.flags().isOutsider(mobM))
 							attrib.append("\"OUTSIDER\" ");
-						if(CMLib.flags().isVermin(M))
+						if(CMLib.flags().isVermin(mobM))
 							attrib.append("\"VERMIN\" ");
-						if(CMLib.flags().isFish(M))
+						if(CMLib.flags().isFish(mobM))
 							attrib.append("\"FISH\" ");
-						if(CMLib.flags().isGolem(M))
+						if(CMLib.flags().isGolem(mobM))
 							attrib.append("\"GOLEM\" ");
-						if(CMLib.flags().isMarine(M))
+						if(CMLib.flags().isMarine(mobM))
 							attrib.append("\"MARINE\" ");
-						if(CMLib.flags().isPossiblyAggressive(M))
+						if(CMLib.flags().isPossiblyAggressive(mobM))
 							attrib.append("\"AGGRESSIVE\" ");
 						return attrib.toString();
 					}
 				case CHARCLASS:
 					return ""+(current?
-							((MOB)P).charStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel())
-							:((MOB)P).baseCharStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel()));
+							((MOB)M).charStats().getCurrentClass().name(((MOB)M).charStats().getCurrentClassLevel())
+							:((MOB)M).baseCharStats().getCurrentClass().name(((MOB)M).charStats().getCurrentClassLevel()));
 				case ALIGNMENT:
 				{
 					final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 					if(F!=null)
 					{
-						final int faction = ((MOB)P).fetchFaction(F.factionID());
+						final int faction = ((MOB)M).fetchFaction(F.factionID());
 						if(faction == Integer.MAX_VALUE)
 							return "";
 						return ""+faction;
@@ -3450,19 +3461,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				}
 				case BUDGETRESETDATE:
-					if(P instanceof ShopKeeper)
+					if(M instanceof ShopKeeper)
 					{
-						final ShopKeeper SK =(ShopKeeper)P;
+						final ShopKeeper SK =(ShopKeeper)M;
 						if(SK.isGeneric())
-							return P.getStat("BUDGETRESETDATE");
+							return M.getStat("BUDGETRESETDATE");
 					}
 					return "";
 				case INVENTORYRESETDATE:
-					if(P instanceof ShopKeeper)
+					if(M instanceof ShopKeeper)
 					{
-						final ShopKeeper SK =(ShopKeeper)P;
+						final ShopKeeper SK =(ShopKeeper)M;
 						if(SK.isGeneric())
-							return P.getStat("INVRESETDATE");
+							return M.getStat("INVRESETDATE");
 					}
 					return "";
 				case INCLINATION:
@@ -3470,7 +3481,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final Faction F=CMLib.factions().getFaction(CMLib.factions().getInclinationID());
 					if(F!=null)
 					{
-						final int faction = ((MOB)P).fetchFaction(F.factionID());
+						final int faction = ((MOB)M).fetchFaction(F.factionID());
 						if(faction == Integer.MAX_VALUE)
 							return "";
 						return ""+faction;
@@ -3478,32 +3489,32 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					break;
 				}
 				case DEITY:
-					return ((MOB)P).baseCharStats().getWorshipCharID();
+					return ((MOB)M).baseCharStats().getWorshipCharID();
 				case MATTRIB:
 				{
 					String val="";
 					for(final MOB.Attrib A : MOB.Attrib.values())
 					{
-						if(((MOB)P).isAttributeSet(A))
+						if(((MOB)M).isAttributeSet(A))
 							val += " "+A.name();
 					}
 					return val.trim();
 				}
 				case CLAN:
 				{
-					Clan C = CMLib.clans().findRivalrousClan(((MOB)P));
+					Clan C = CMLib.clans().findRivalrousClan(((MOB)M));
 					if (C == null)
-						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+						C = ((MOB)M).clans().iterator().hasNext() ? ((MOB)M).clans().iterator().next().first : null;
 					return (C != null) ? C.clanID() : "";
 				}
 				case CLANROLE:
 				{
-					Clan C = CMLib.clans().findRivalrousClan(((MOB)P));
+					Clan C = CMLib.clans().findRivalrousClan(((MOB)M));
 					if (C == null)
-						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+						C = ((MOB)M).clans().iterator().hasNext() ? ((MOB)M).clans().iterator().next().first : null;
 					if (C != null)
 					{
-						final Pair<Clan, Integer> p = ((MOB)P).getClanRole(C.clanID());
+						final Pair<Clan, Integer> p = ((MOB)M).getClanRole(C.clanID());
 						return (p != null) ? p.second.toString() : "";
 					}
 					return "";
@@ -3512,16 +3523,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					final String alignID=CMLib.factions().getAlignmentID();
 					final String inclinID=CMLib.factions().getInclinationID();
-					for(final Enumeration<String> f= ((MOB)P).factions();f.hasMoreElements();)
+					for(final Enumeration<String> f= ((MOB)M).factions();f.hasMoreElements();)
 					{
 						final String factionID=f.nextElement();
 						if((!(factionID.equalsIgnoreCase(alignID)))
 						&&(!(factionID.equalsIgnoreCase(inclinID))))
 							return factionID;
 					}
-					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
+					if(((MOB)M).fetchFaction(alignID)!=Integer.MAX_VALUE)
 						return alignID;
-					if(((MOB)P).fetchFaction(inclinID)!=Integer.MAX_VALUE)
+					if(((MOB)M).fetchFaction(inclinID)!=Integer.MAX_VALUE)
 						return inclinID;
 					return "";
 				}
@@ -3529,22 +3540,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					final String alignID=CMLib.factions().getAlignmentID();
 					final String inclinID=CMLib.factions().getInclinationID();
-					for(final Enumeration<String> f= ((MOB)P).factions();f.hasMoreElements();)
+					for(final Enumeration<String> f= ((MOB)M).factions();f.hasMoreElements();)
 					{
 						final String factionID=f.nextElement();
 						if((!(factionID.equalsIgnoreCase(alignID)))
 						&&(!(factionID.equalsIgnoreCase(inclinID))))
-							return ""+((MOB)P).fetchFaction(factionID);
+							return ""+((MOB)M).fetchFaction(factionID);
 					}
-					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
-						return ""+((MOB)P).fetchFaction(alignID);
-					if(((MOB)P).fetchFaction(inclinID)!=Integer.MAX_VALUE)
-						return ""+((MOB)P).fetchFaction(inclinID);
+					if(((MOB)M).fetchFaction(alignID)!=Integer.MAX_VALUE)
+						return ""+((MOB)M).fetchFaction(alignID);
+					if(((MOB)M).fetchFaction(inclinID)!=Integer.MAX_VALUE)
+						return ""+((MOB)M).fetchFaction(inclinID);
 					return "";
 				}
 				case BIRTHDATE:
 				{
-					final MOB mob=(MOB)P;
+					final MOB mob=(MOB)M;
 					if(mob.playerStats() != null)
 					{
 						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
@@ -3557,7 +3568,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 		else
-		if(P instanceof Item)
+		if(M instanceof Item)
 		{
 			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
 			if(fakeStat != null)
@@ -3565,24 +3576,24 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				switch(fakeStat)
 				{
 				case MATERIALNAME:
-					return RawMaterial.CODES.MAT_NAME(((Item)P).material());
+					return RawMaterial.CODES.MAT_NAME(((Item)M).material());
 				case RESOURCENAME:
-					return RawMaterial.CODES.NAME(((Item)P).material());
+					return RawMaterial.CODES.NAME(((Item)M).material());
 				case LIQUIDREMAINING:
-					if(P instanceof Drink)
-						return ""+((Drink)P).liquidRemaining();
+					if(M instanceof Drink)
+						return ""+((Drink)M).liquidRemaining();
 					break;
 				default:
 					break;
 				}
 			}
 			if(getGenItemCodeNum(stat)>=0)
-				return getGenItemStat((Item)P, stat);
+				return getGenItemStat((Item)M, stat);
 		}
 		else
-		if(P instanceof Area)
+		if(M instanceof Area)
 		{
-			final Area A=(Area)P;
+			final Area A=(Area)M;
 			final Area.Stats areaStat=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
 			if(areaStat != null)
 				return ""+A.getIStat(areaStat);
@@ -3614,20 +3625,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public void setAnyGenStat(final Physical P, final String stat, final String value)
+	public void setAnyGenStat(final Modifiable M, final String stat, final String value)
 	{
-		setAnyGenStat(P,stat,value,false);
+		setAnyGenStat(M,stat,value,false);
 	}
 
 	@Override
-	public void setAnyGenStat(final Physical P, String stat, String value, final boolean supportPlusMinusPrefix)
+	public void setAnyGenStat(final Modifiable M, String stat, String value, final boolean supportPlusMinusPrefix)
 	{
 		if(supportPlusMinusPrefix
 		&&(value.trim().length()>0)
 		&&("+-".indexOf(value.trim().charAt(0))>=0))
 		{
 			final char plusMinus=value.trim().charAt(0);
-			final String oldVal=getAnyGenStat(P, stat);
+			final String oldVal=getAnyGenStat(M, stat);
 			if((oldVal!=null)
 			&&(CMath.isNumber(oldVal))
 			&&(CMath.isNumber(value.trim().substring(1).trim())))
@@ -3647,21 +3658,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					value=Double.toString(CMath.s_double(oldVal) - CMath.s_double(value));
 			}
 		}
-		if(P.isStat(stat))
+		if(M.isStat(stat))
 		{
-			P.setStat(stat, value);
+			M.setStat(stat, value);
 			return;
 		}
 		final boolean current=stat.startsWith("CURRENT ")||stat.startsWith("CURRENT_");
 		final boolean max=stat.startsWith("MAX ")||stat.startsWith("MAX_");
 		stat = getFinalStatName(stat);
-		if(P.basePhyStats().isStat(stat))
+		if(M instanceof Physical)
 		{
-			if(current)
-				P.phyStats().setStat(stat, value);
-			else
-				P.basePhyStats().setStat(stat, value);
-			return;
+			final Physical P = (Physical)M;
+			if(P.basePhyStats().isStat(stat))
+			{
+				if(current)
+					P.phyStats().setStat(stat, value);
+				else
+					P.basePhyStats().setStat(stat, value);
+				return;
+			}
 		}
 		final GenPhysBonusFakeStats fakePhyStat = (GenPhysBonusFakeStats)CMath.s_valueOf(GenPhysBonusFakeStats.class, stat);
 		if(fakePhyStat != null)
@@ -3681,23 +3696,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						if(x>=0)
 							newDisposition |= (int)Math.round(Math.pow(2,x));
 					}
-					if(current)
-						P.phyStats().setDisposition(newDisposition);
-					else
-						P.basePhyStats().setDisposition(newDisposition);
+					if(M instanceof Physical)
+					{
+						if(current)
+							((Physical)M).phyStats().setDisposition(newDisposition);
+						else
+							((Physical)M).basePhyStats().setDisposition(newDisposition);
+					}
 					break;
 				}
 			case OWNER:
 			{
 				final PrivateProperty pA;
-				if(P instanceof Area)
-					pA=CMLib.law().getPropertyRecord((Area)P);
+				if(M instanceof Area)
+					pA=CMLib.law().getPropertyRecord((Area)M);
 				else
-				if(P instanceof Item)
-					pA=CMLib.law().getPropertyRecord((Item)P);
+				if(M instanceof Item)
+					pA=CMLib.law().getPropertyRecord((Item)M);
 				else
-				if(P instanceof Room)
-					pA=CMLib.law().getPropertyRecord((Room)P);
+				if(M instanceof Room)
+					pA=CMLib.law().getPropertyRecord((Room)M);
 				else
 					pA=null;
 				if(pA!=null)
@@ -3707,17 +3725,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			case SENSESSTR:
 				{
 					int newSensesMask=0;
-					final String[] set = (P instanceof MOB)?PhyStats.CAN_SEE_CODES:PhyStats.SENSE_CODES;
+					final String[] set = (M instanceof MOB)?PhyStats.CAN_SEE_CODES:PhyStats.SENSE_CODES;
 					for(final String v : value.toUpperCase().trim().split(" "))
 					{
 						final int x=CMParms.indexOf(set, v);
 						if(x>=0)
 							newSensesMask |= (int)Math.round(Math.pow(2,x));
 					}
-					if(current)
-						P.phyStats().setSensesMask(newSensesMask);
-					else
-						P.basePhyStats().setSensesMask(newSensesMask);
+					if(M instanceof Physical)
+					{
+						if(current)
+							((Physical)M).phyStats().setSensesMask(newSensesMask);
+						else
+							((Physical)M).basePhyStats().setSensesMask(newSensesMask);
+					}
 					break;
 				}
 			default:
@@ -3725,43 +3746,43 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			return;
 		}
-		if(P instanceof MOB)
+		if(M instanceof MOB)
 		{
-			if(((MOB)P).baseCharStats().isStat(stat))
+			if(((MOB)M).baseCharStats().isStat(stat))
 			{
 				if(current)
-					((MOB)P).charStats().setStat(stat, value);
+					((MOB)M).charStats().setStat(stat, value);
 				else
-					((MOB)P).baseCharStats().setStat(stat, value);
+					((MOB)M).baseCharStats().setStat(stat, value);
 				return;
 			}
-			if(((MOB)P).baseState().isStat(stat))
+			if(((MOB)M).baseState().isStat(stat))
 			{
 				if(current)
-					((MOB)P).curState().setStat(stat, value);
+					((MOB)M).curState().setStat(stat, value);
 				else
 				if(max)
-					((MOB)P).maxState().setStat(stat, value);
+					((MOB)M).maxState().setStat(stat, value);
 				else
-					((MOB)P).baseState().setStat(stat, value);
+					((MOB)M).baseState().setStat(stat, value);
 				return;
 			}
-			if((((MOB)P).playerStats()!=null)
-			&&(((MOB)P).playerStats().isStat(stat)))
+			if((((MOB)M).playerStats()!=null)
+			&&(((MOB)M).playerStats().isStat(stat)))
 			{
-				((MOB)P).playerStats().setStat(stat, value);
+				((MOB)M).playerStats().setStat(stat, value);
 				return;
 			}
-			if((((MOB)P).playerStats()!=null)
-			&&(((MOB)P).playerStats().getAccount() != null)
-			&&(((MOB)P).playerStats().getAccount().isStat(stat)))
+			if((((MOB)M).playerStats()!=null)
+			&&(((MOB)M).playerStats().getAccount() != null)
+			&&(((MOB)M).playerStats().getAccount().isStat(stat)))
 			{
-				((MOB)P).playerStats().getAccount().setStat(stat, value);
+				((MOB)M).playerStats().getAccount().setStat(stat, value);
 				return;
 			}
 			if(getGenMobCodeNum(stat)>=0)
 			{
-				setGenMobStat((MOB)P, stat, value);
+				setGenMobStat((MOB)M, stat, value);
 				return;
 			}
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
@@ -3772,21 +3793,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				case AGENAME:
 					return;
 				case AGEMINS:
-					((MOB)P).setAgeMinutes(CMath.parseLongExpression(value));
+					((MOB)M).setAgeMinutes(CMath.parseLongExpression(value));
 					return;
 				case QUESTPOINTS:
-					((MOB)P).setQuestPoint(CMath.parseIntExpression(value));
+					((MOB)M).setQuestPoint(CMath.parseIntExpression(value));
 					return;
 				case FOLLOWERS:
 					return;
 				case TRAINS:
-					((MOB)P).setTrains(CMath.parseIntExpression(value));
+					((MOB)M).setTrains(CMath.parseIntExpression(value));
 					return;
 				case PRACTICES:
-					((MOB)P).setPractices(CMath.parseIntExpression(value));
+					((MOB)M).setPractices(CMath.parseIntExpression(value));
 					return;
 				case STINK:
-					((MOB)P).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
+					((MOB)M).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
 					return;
 				case IDLETICKS:
 					return;
@@ -3796,17 +3817,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					final CharClass C=CMClass.findCharClass(value);
 					if(current)
-						((MOB)P).charStats().setCurrentClass(C);
+						((MOB)M).charStats().setCurrentClass(C);
 					else
-						((MOB)P).baseCharStats().setCurrentClass(C);
+						((MOB)M).baseCharStats().setCurrentClass(C);
 					return;
 				}
 				case ALIGNMENT:
-					((MOB)P).addFaction(CMLib.factions().getAlignmentID(), CMath.parseIntExpression(value));
+					((MOB)M).addFaction(CMLib.factions().getAlignmentID(), CMath.parseIntExpression(value));
 					break;
 				case CLAN:
 				{
-					Pair<Clan, Integer> p = ((MOB)P).getClanRole(value);
+					Pair<Clan, Integer> p = ((MOB)M).getClanRole(value);
 					if (p == null)
 					{
 						final Clan C = CMLib.clans().getClan(value);
@@ -3814,27 +3835,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
 					}
 					if (p != null)
-						((MOB)P).setClan(p.first.clanID(), p.second.intValue());
+						((MOB)M).setClan(p.first.clanID(), p.second.intValue());
 					break;
 				}
 				case CLANROLE:
 				{
-					Clan C = CMLib.clans().findRivalrousClan((MOB)P);
+					Clan C = CMLib.clans().findRivalrousClan((MOB)M);
 					if (C == null)
-						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+						C = ((MOB)M).clans().iterator().hasNext() ? ((MOB)M).clans().iterator().next().first : null;
 					if (C != null)
-						((MOB)P).setClan(C.clanID(), CMath.s_int(value));
+						((MOB)M).setClan(C.clanID(), CMath.s_int(value));
 					break;
 				}
 				case DEITY:
-					((MOB)P).baseCharStats().setWorshipCharID(value);
-					((MOB)P).recoverCharStats();
+					((MOB)M).baseCharStats().setWorshipCharID(value);
+					((MOB)M).recoverCharStats();
 					break;
 				case FACTIONAMT:
 					break;
 				case BIRTHDATE:
 				{
-					final MOB mob=(MOB)P;
+					final MOB mob=(MOB)M;
 					if(mob.playerStats()!=null)
 					{
 						final String[] pts = value.trim().split("-");
@@ -3851,13 +3872,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				case FACTIONID:
 					break;
 				case INCLINATION:
-					((MOB)P).addFaction(CMLib.factions().getInclinationID(), CMath.parseIntExpression(value));
+					((MOB)M).addFaction(CMLib.factions().getInclinationID(), CMath.parseIntExpression(value));
 					break;
 				case MATTRIB:
 				{
 					final MOB.Attrib attrib=(MOB.Attrib)CMath.s_valueOf(MOB.Attrib.class, value.toUpperCase().trim());
 					if(attrib != null)
-						((MOB)P).setAttribute(attrib, !((MOB)P).isAttributeSet(attrib));
+						((MOB)M).setAttribute(attrib, !((MOB)M).isAttributeSet(attrib));
 					break;
 				}
 				case BUDGETRESETDATE:
@@ -3871,7 +3892,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return;
 		}
 		else
-		if(P instanceof Item)
+		if(M instanceof Item)
 		{
 			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
 			if(fakeStat != null)
@@ -3882,20 +3903,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					final RawMaterial.Material matCode = RawMaterial.Material.findIgnoreCase(value);
 					if(matCode != null)
-						((Item)P).setMaterial(RawMaterial.CODES.MOST_FREQUENT(matCode.mask()));
+						((Item)M).setMaterial(RawMaterial.CODES.MOST_FREQUENT(matCode.mask()));
 					return;
 				}
 				case RESOURCENAME:
 				{
 					final int resourceCode = RawMaterial.CODES.FIND_IgnoreCase(value);
 					if(resourceCode > 0)
-						((Item)P).setMaterial(resourceCode);
+						((Item)M).setMaterial(resourceCode);
 					return;
 				}
 				case LIQUIDREMAINING:
 				{
-					if(P instanceof Drink)
-						((Drink)P).setLiquidRemaining(CMath.s_parseIntExpression(value));
+					if(M instanceof Drink)
+						((Drink)M).setLiquidRemaining(CMath.s_parseIntExpression(value));
 					return;
 				}
 				default:
@@ -3904,11 +3925,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			if(getGenItemCodeNum(stat)>=0)
 			{
-				setGenItemStat((Item)P, stat, value);
+				setGenItemStat((Item)M, stat, value);
 				return;
 			}
 		}
-		P.setStat(stat, value);
+		M.setStat(stat, value);
 	}
 
 	protected void setGenPropertiesFromXML(final Environmental E, final List<XMLTag> buf)

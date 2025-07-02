@@ -1098,7 +1098,7 @@ close_progs p door gate and a close_prog p door to the gate.</p>
 
       <p>Usage:</p>
 
-      <pre>cnclmsg_prog [message code] [commands/keyword list]<br />cnclmsg_prog [message code] p [commands/keyword list]<br />cnclmsg_prog [message code] all<br /></pre>
+      <pre>cnclmsg_prog [message code] [commands/keyword list]<br />cnclmsg_prog [message code] p [commands/keyword list]<br />cnclmsg_prog [message code] =[STO] [VAR]=[VAL]<br />cnclmsg_prog [message code] all<br /></pre>
 
       <p>This type of mobprog is
 definitely for those very familiar
@@ -1112,50 +1112,11 @@ matches those typed by the player most recently to the arrival of this
 message. Since mobs, unlike players, do not enter commands on a command
 line, you should use the ALL form liberally.</p>
 
-      <p>The body of the trigger
-executes before the given message
-occurs, and the fact that the trigger executes is no guarantee that the
-event will end up occuring at all. For instance, this trigger may
-execute when a player tries to leave the room while under the effects
-of the "Hold" spell, meaning the player will not actually be allowed to
-leave regardless of what is done in your trigger. However, this type of
-trigger is most useful as a means of testing and cancelling certain
-types of event messages; thus the name. To cause the triggered event to
-be cancelled, you need only add a RETURN CANCEL command to the body of
-this script.</p>
-
-      <p>See also <span style="font-weight: bold;">execmsg_prog</span>.
-Valid message codes include the following:</p>
-
-      <span style="font-family: monospace;">AREAAFFECT,
-PUSH,
-PULL, RECALL, OPEN, CLOSE, PUT, GET, UNLOCK, LOCK, WIELD, GIVE, BUY,
-SELL, DROP, WEAR, FILL, DELICATE_HANDS_ACT, VALUE, HOLD, NOISYMOVEMENT,
-QUIETMOVEMENT, WEAPONATTACK, LOOK, READ, NOISE, SPEAK, CAST_SPELL,
-LIST, EAT, ENTER, FOLLOW, LEAVE, SLEEP, SIT, STAND, FLEE, NOFOLLOW,
-WRITE, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID, ELECTRIC,
-POISON, UNDEAD, MOUNT, DISMOUNT, OK_ACTION, OK_VISUAL, DRINK, HANDS,
-PARALYZE, WAND_USE, SERVE, REBUKE, ADVANCE, DISEASE, DEATH, DEPOSIT,
-WITHDRAW, EMOTE, QUIT, SHUTDOWN, VIEW, RETIRE, RETREAT,PANIC, THROW,
-EXTINGUISH, TELL, SITMOVE, KNOCK, PRACTICE, TEACH, REMOVE, EXPCHANGE,
-DAMAGE, HEALING, ROOMRESET, RELOAD, SNIFF, ACTIVATE, DEACTIVATE,
-FACTIONCHANGE, LOGIN, LEVEL, EXAMINE, ORDER, EXPIRE, BORROW, HUH,
-LIFE, BID, CLANEVENT, UNLOAD, DUELCHALLENGE, LEGALWARRANT, DIG,
-PREINVOKE, POSSESS, DISPOSSESS, POWERCURRENT, CONTEMPLATE, POUR,
-LOOKEXITS, LASER, SONIC, REPAIR, ENHANCE, INSTALL, COLLISION, 
-AROMA, DUELLOSS, COMMANDFAIL, METACOMMAND, ITEMGENERATED, ATTACKMISS, 
-WEATHER,ITEMSGENERATED, WROTE, REWRITE, WASREAD, PREMOVE, THINK, 
-STARTUP, RPXPCHANGE, COMMANDREJECT,RECIPELEARNED, GRAVITY, 
-LEGALSTATE, NEWROOM,CAUSESINK, ENDQUEST,WINQUEST,HOLYEVENT
-      </span>
-      <p>And here are some general
-message code types that may also be
-used:</p>
-
-      <span style="font-family: monospace;">TOUCH, MOVE,
-EYES, MOUTH, SOUND, GENERAL, MAGIC, DELICATE, MALICIOUS, CHANNEL,
-OPTIMIZE, CNTRLMSG, INTERMSG, UNINTENTIONAL</span>
-      <p>For truly advanced users,
+      <p>The 'P' code can be prefixed to the command words to ensure an EXACT
+match. &nbsp;If, instead of command words, you wish to filter on attributes
+of the event agent (S), the event target (T), or the event tool (O),
+you can use = followed by one of those letters (STO), and then use
+VAR=VAL to check various fields of your selected object. &nbsp;You can use <span style="font-weight: bold; font-family: monospace;">LIST STATS</span> to get a list of the various values for VAR.</p><p>For truly advanced users,
 you can also prefix a message code
 with some combination of the letters S, O, and T followed by an equal
 (=) sign to narrow matches to only those messages where your given code
@@ -1168,7 +1129,18 @@ the&nbsp; S,
 O, or Ts in order to narrowly check against the Major masks or the
 Minor type codes respectively. &nbsp;See the Programmer's Guide if
 you
-don't know what that stuff means.&nbsp;</p>
+don't know what that stuff means.&nbsp;</p><p>The body of the trigger
+executes before the given message
+occurs, and the fact that the trigger executes is no guarantee that the
+event will end up occuring at all. For instance, this trigger may
+execute when a player tries to leave the room while under the effects
+of the "Hold" spell, meaning the player will not actually be allowed to
+leave regardless of what is done in your trigger. However, this type of
+trigger is most useful as a means of testing and cancelling certain
+types of event messages; thus the name. To cause the triggered event to
+be cancelled, you need only add a RETURN CANCEL command to the body of
+this script.</p><p>See also <span style="font-weight: bold;">execmsg_prog</span>.
+Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;"></span>
 
       <p>EXAMPLES:</p>
 
@@ -1439,7 +1411,7 @@ multiply triggered, in which case it will occur once, but immediately.</p>
 
       <p>Usage:</p>
 
-      <pre>execmsg_prog [message code] [commands/keyword list]<br />execmsg_prog [message code] p [commands/keyword list]<br />execmsg_prog [message code] all<br /></pre>
+      <pre>execmsg_prog [message code] [commands/keyword list]<br />execmsg_prog [message code] p [commands/keyword list]<br />execmsg_prog [message code] =[TSO] [VAR]=[VAL]<br />execmsg_prog [message code] all<br /></pre>
 
       <p>This type of mobprog is
 definitely for those very familiar
@@ -1451,38 +1423,12 @@ code". The trigger also requires either the word "all" to always
 execute whenever the desired message does, or a list of player command
 line words matching those typed by the player most recently to the
 arrival of this message. Since mobs, unlike players, do not enter
-commands on a command line, you should use the ALL form liberally.</p>
-
-      <p>See also <span style="font-weight: bold;">cnclmsg_prog</span>.
-Valid message codes include the following:</p>
-
-      <span style="font-family: monospace;">AREAAFFECT,
-PUSH,
-PULL, RECALL, OPEN, CLOSE, PUT, GET, UNLOCK, LOCK, WIELD, GIVE, BUY,
-SELL, DROP, WEAR, FILL, DELICATE_HANDS_ACT, VALUE, HOLD, NOISYMOVEMENT,
-QUIETMOVEMENT, WEAPONATTACK, LOOK, READ, NOISE, SPEAK, CAST_SPELL,
-LIST, EAT, ENTER, FOLLOW, LEAVE, SLEEP, SIT, STAND, FLEE, NOFOLLOW,
-WRITE, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID, ELECTRIC,
-POISON, UNDEAD, MOUNT, DISMOUNT, OK_ACTION, OK_VISUAL, DRINK, HANDS,
-PARALYZE, WAND_USE, SERVE, REBUKE, ADVANCE, DISEASE, DEATH, DEPOSIT,
-WITHDRAW, EMOTE, QUIT, SHUTDOWN, VIEW, RETIRE, RETREAT,PANIC, THROW,
-EXTINGUISH, TELL, SITMOVE, KNOCK, PRACTICE, TEACH, REMOVE, EXPCHANGE,
-DAMAGE, HEALING, ROOMRESET, RELOAD, SNIFF, ACTIVATE, DEACTIVATE,
-FACTIONCHANGE, LOGIN, LEVEL, EXAMINE, BORROW, HUH,
-LIFE, BID, CLANEVENT, UNLOAD, DUELCHALLENGE, LEGALWARRANT, DIG,
-PREINVOKE, POSSESS, DISPOSSESS, POWERCURRENT, CONTEMPLATE, POUR,
-LOOKEXITS, LASER, SONIC, REPAIR, ENHANCE, INSTALL, COLLISION, AROMA,
-DUELLOSS, COMMANDFAIL, METACOMMAND</span>
-      <p>And here are some general
-message code types that may also be
-used:</p>
-
-      <span style="font-family: monospace;">TOUCH, MOVE,
-EYES, MOUTH, SOUND, GENERAL, MAGIC, DELICATE, MALICIOUS, CHANNEL,
-OPTIMIZE, CNTRLMSG, INTERMSG, UNINTENTIONAL<br />
-
-      </span>
-      <p>For truly advanced users,
+commands on a command line, you should use the ALL form liberally.</p><p>The
+'P' code can be prefixed to the command words to ensure an EXACT match.
+&nbsp;If, instead of command words, you wish to filter on attributes of
+the event agent (S), the event target (T), or the event tool (O), you
+can use = followed by one of those letters (STO), and then use VAR=VAL
+to check various fields of your selected object. &nbsp;You can use <span style="font-weight: bold; font-family: monospace;">LIST STATS</span> to get a list of the various values for VAR.</p><p>For truly advanced users,
 you can also prefix a message code
 with
 some combination of the letters S, O, and T followed by an equal (=)
@@ -1500,9 +1446,12 @@ what
 that
 stuff means.</p>
 
-      <p>EXAMPLES:</p>
+      <p>See also <span style="font-weight: bold;">cnclmsg_prog</span>.
+Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;"></span><p>EXAMPLES:</p>
 
       <pre>execmsg_prog get all<br /> mpecho $n likes $p.<br />~<br /></pre>
+
+      <pre>execmsg_prog S=get =T NAME=A spoon<br /> mpecho $n likes $p.<br />~<br /></pre>
 
       <p>This will trigger if a
 player or a mob attempts to get

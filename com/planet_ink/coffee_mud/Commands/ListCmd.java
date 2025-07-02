@@ -4809,6 +4809,8 @@ public class ListCmd extends StdCommand
 		SELECT("SELECT:",new SecFlag[]{SecFlag.LISTADMIN}),
 		TRACKINGFLAGS("TRACKINGFLAGS", new SecFlag[] {SecFlag.LISTADMIN}),
 		DBCONNECTIONS("DBCONNECTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDDATABASE}),
+		MSGTYPES("MSGTYPES", new SecFlag[] {SecFlag.LISTADMIN}),
+		MSGMASKS("MSGMASKS", new SecFlag[] {SecFlag.LISTADMIN}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -6148,6 +6150,14 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,
 					new FilteredEnumeration<Weapon>(CMClass.weapons(),new NameIdFilter<Weapon>(CMParms.combine(commands,1)))
 					).toString());
+			break;
+		case MSGTYPES:
+			s.println("^HMessage Types:^N");
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,Arrays.asList(CMMsg.TYPE_DESCS)).toString());
+			break;
+		case MSGMASKS:
+			s.println("^HMessage Masks:^N");
+			s.wraplessPrintln(CMLib.lister().build3ColTable(mob,Arrays.asList(CMMsg.MASK_DESCS)).toString());
 			break;
 		case MOBS:
 			s.println("^HMOB IDs:^N");

@@ -975,17 +975,17 @@ public interface GenericBuilder extends CMLibrary
 	 * type objects are supported.  This method supports deltas to numeric
 	 * values as well, by sending a value with + or - as a prefix.
 	 *
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
-	 * @see GenericBuilder#getAnyGenStat(Physical, String)
-	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String)
+	 * @see GenericBuilder#getAnyGenStat(Modifiable, String)
+	 * @see GenericBuilder#isAnyGenStat(Modifiable, String)
 	 *
-	 * @param P the type of object to change
+	 * @param M the type of object to change
 	 * @param stat the stat code to change
 	 * @param value the new value for the stat
 	 * @param supportPlusMinusPrefix true to support += prefix
 	 *
 	 */
-	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);
+	public void setAnyGenStat(Modifiable M, String stat, String value, boolean supportPlusMinusPrefix);
 
 	/**
 	 * Sets the value of the given stat on the given object,
@@ -993,15 +993,15 @@ public interface GenericBuilder extends CMLibrary
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
 	 *
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
-	 * @see GenericBuilder#getAnyGenStat(Physical, String)
-	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String, boolean)
+	 * @see GenericBuilder#getAnyGenStat(Modifiable, String)
+	 * @see GenericBuilder#isAnyGenStat(Modifiable, String)
 	 *
-	 * @param P the type of object to change
+	 * @param M the type of object to change
 	 * @param stat the stat code to change
 	 * @param value the new value for the stat
 	 */
-	public void setAnyGenStat(Physical P, String stat, String value);
+	public void setAnyGenStat(Modifiable M, String stat, String value);
 
 	/**
 	 * Returns the value of the given stat on the given object,
@@ -1009,15 +1009,15 @@ public interface GenericBuilder extends CMLibrary
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
 	 *
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
-	 * @see GenericBuilder#isAnyGenStat(Physical, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String, boolean)
+	 * @see GenericBuilder#isAnyGenStat(Modifiable, String)
 	 *
-	 * @param P the type of object to read
+	 * @param M the type of object to read
 	 * @param stat the stat code to read
 	 * @return the value of the stat, or ""
 	 */
-	public String getAnyGenStat(Physical P, String stat);
+	public String getAnyGenStat(Modifiable M, String stat);
 
 	/**
 	 * Returns whether the given string represents any of the
@@ -1026,15 +1026,15 @@ public interface GenericBuilder extends CMLibrary
 	 * but also any fakeitem or fakemob stat codes as well.  All Physical
 	 * type objects are supported.
 	 *
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String)
-	 * @see GenericBuilder#setAnyGenStat(Physical, String, String, boolean)
-	 * @see GenericBuilder#getAnyGenStat(Physical, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String)
+	 * @see GenericBuilder#setAnyGenStat(Modifiable, String, String, boolean)
+	 * @see GenericBuilder#getAnyGenStat(Modifiable, String)
 	 *
-	 * @param P the type of object to check
+	 * @param M the type of object to check
 	 * @param stat the stat code to check
 	 * @return true if the stat code can apply, false otherwise
 	 */
-	public boolean isAnyGenStat(Physical P, String stat);
+	public boolean isAnyGenStat(Modifiable M, String stat);
 
 	/**
 	 * Returns the list of basic generic state codes applicable

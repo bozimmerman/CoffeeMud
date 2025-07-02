@@ -2539,7 +2539,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		&&(CMath.s_valueOf(GenericBuilder.GenItemBonusFakeStats.class,uarg2)!=null))
 		{
 			found=true;
-			val=CMLib.coffeeMaker().getAnyGenStat((Item)E, uarg2);
+			val=CMLib.coffeeMaker().getAnyGenStat(E, uarg2);
 		}
 
 		if((!found)
@@ -2547,7 +2547,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,uarg2)!=null))
 		{
 			found=true;
-			val=CMLib.coffeeMaker().getAnyGenStat((Physical)E, uarg2);
+			val=CMLib.coffeeMaker().getAnyGenStat(E, uarg2);
 		}
 		if(!found)
 			return null;
@@ -2675,8 +2675,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!found)
 		&&(E instanceof Physical))
 		{
-			if(CMLib.coffeeMaker().isAnyGenStat((Physical)E, arg2))
-				return CMLib.coffeeMaker().getAnyGenStat((Physical)E, arg2);
+			if(CMLib.coffeeMaker().isAnyGenStat(E, arg2))
+				return CMLib.coffeeMaker().getAnyGenStat(E, arg2);
 			if((!found)&&(arg2.startsWith("BASE")))
 			{
 				final String arg4=arg2.substring(4);
@@ -14053,6 +14053,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										tryIt=true;
 								}
 								else
+								if(t[2].startsWith("=")
+								&&(t[2].length()==2)
+								&&(t.length>3)&&(t[3].indexOf('=')>0))
+								{
+									final int q = t[3].indexOf('=');
+									String val;
+									switch(t[2].charAt(1))
+									{
+									case 's': case 'S':
+										val=((msg.source()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.source(), t[3].substring(0,q)));
+										break;
+									case 't': case 'T':
+										val=((msg.target()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.target(), t[3].substring(0,q)));
+										break;
+									case 'o': case 'O':
+										val=((msg.tool()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.tool(), t[3].substring(0,q)));
+										break;
+									default:
+										val="";
+										break;
+									}
+									if(match(val.trim(),t[3].substring(q+1)))
+										tryIt=true;
+								}
+								else
 								for(int i=2;i<t.length;i++)
 								{
 									if(str.indexOf(" "+t[i]+" ")>=0)
@@ -14669,6 +14697,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if((t[2].equals("P"))&&(t.length>3))
 								{
 									if(match(str.trim(),t[3]))
+										doIt=true;
+								}
+								else
+								if(t[2].startsWith("=")
+								&&(t[2].length()==2)
+								&&(t.length>3)&&(t[3].indexOf('=')>0))
+								{
+									final int q = t[3].indexOf('=');
+									String val;
+									switch(t[2].charAt(1))
+									{
+									case 's': case 'S':
+										val=((msg.source()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.source(), t[3].substring(0,q)));
+										break;
+									case 't': case 'T':
+										val=((msg.target()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.target(), t[3].substring(0,q)));
+										break;
+									case 'o': case 'O':
+										val=((msg.tool()==null)?"":
+											CMLib.coffeeMaker().getAnyGenStat(msg.tool(), t[3].substring(0,q)));
+										break;
+									default:
+										val="";
+										break;
+									}
+									if(match(val.trim(),t[3].substring(q+1)))
 										doIt=true;
 								}
 								else
