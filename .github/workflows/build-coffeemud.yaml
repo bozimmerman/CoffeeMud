@@ -56,9 +56,10 @@ jobs:
       - name: Create ZIP files
         run: |
           # Create CoffeeMud.zip
-          zip -r CoffeeMud.zip .
+          zip -r -q CoffeeMud.zip .
           # Create CoffeeMud_${version}.zip, excluding CoffeeMud.zip
-          zip -r "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip
+          zip -r -q "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip
+          pwd
           ls -l CoffeeMud*.zip  # Add for debug
         shell: bash
         working-directory: ${{ github.workspace }}
@@ -92,6 +93,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/CoffeeMud_${env.VERSION}.zip
-          asset_name: CoffeeMud_${env.VERSION}.zip
+          asset_path: ${{ github.workspace }}/CoffeeMud_${{ env.VERSION }}.zip
+          asset_name: CoffeeMud_${{ env.VERSION }}.zip
           asset_content_type: application/zip
