@@ -55,15 +55,18 @@ jobs:
       # Insert after "Extract version from MUD.java" and before "Create GitHub Release"
       - name: Extract release notes from CHANGES
         run: |
-          if [ ! -f CHANGES ]; then
-            echo "Error: CHANGES file not found"
-            exit 1
-          fi
-          awk '/^# Build/{p=1;print;next} p&&/^# Build/{exit} p&&NR>50{exit} p' CHANGES > release_notes.txt
-          if [ ! -s release_notes.txt ]; then
-            echo "Error: Could not extract release notes from CHANGES"
-            exit 1
-          fi
+            if [ ! -f CHANGES ]; then
+              echo "Error: CHANGES file not found"
+              exit 1
+            fi
+            # Extract first block, stop at next # Build or after 50 lines
+            awk '/^# Build/{p=1;print;next} p&&/^# Build/{exit} p&&NR>50{exit} p' CHANGES > release_notes.txt
+            if [ ! -s release_notes.txt ]; then
+              echo "Error: Could not extract release notes from CHANGES"
+              exit 1
+            fi
+            # Debug: Show extracted notes
+            echo "Extracted release notes:"
         shell: bash
         working-directory: ${{ github.workspace }}
 
