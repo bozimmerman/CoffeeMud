@@ -1,0 +1,68 @@
+name: Build CoffeeMUD Distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 5.11.0)'
+        required: true
+        default: '5.11.0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Java 8
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+
+      # Install Ant
+      - name: Install Ant
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ant
+        shell: bash
+
+      # Set up environment
+      - name: Set up environment
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_8_X64" >> $GITHUB_ENV
+          echo "CLASSPATH=.;./lib/js.jar;./lib/jzlib.jar" >> $GITHUB_ENV
+        shell: bash
+
+      # Run Ant compile task
+      - name: Run Ant compile
+        run: |
+          ant compile
+        shell: bash
+        working-directory: ${{ github.workspace }}
+
+      # Create ZIP files
+      - name: Create ZIP files
+        run: |
+          # Create CoffeeMud.zip
+          zip -r -q CoffeeMud.zip .
+          # Convert version (e.g., 5.10.0 to 5_10_0)
+          VERSION=$(echo "${{ github.event.inputs.version }}" | tr '.' '_')
+          # Create CoffeeMud_${version}.zip
+          zip -r -q "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip
+        shell: bash
+        working-directory: ${{ github.workspace }}
+
+      # Upload artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coffeemud-dist
+          path: |
+            ${{ github.workspace }}/CoffeeMud.zip
+            ${{ github.workspace }}/CoffeeMud_*.zip
+          if-no-files-found: warn
