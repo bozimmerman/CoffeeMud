@@ -92,6 +92,15 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public StringBuffer virtualPageFilter(StringBuffer data) throws HTTPRedirectException;
 
 	/**
+	 * Creates a fake HTTPRequest for interacting with webmacros.
+	 *
+	 * @param parms request parameter key values.
+	 * @param objs a set of macro-specific objects, usually empty.
+	 * @return the fake request, ready to pass around.
+	 */
+	public HTTPRequest createFakeRequest(final Map<String, String> parms, final Map<String, Object> objs);
+
+	/**
 	 * Does macro filtering on a fake web page by constructing a fake request
 	 * and calling the full page filter method.
 	 *

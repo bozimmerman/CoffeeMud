@@ -109,27 +109,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	}
 
 	@Override
-	public byte[] virtualPageFilter(final byte[] data) throws HTTPRedirectException
+	public HTTPRequest createFakeRequest(final Map<String, String> parms, final Map<String, Object> objs)
 	{
-		return virtualPageFilter(new StringBuffer(new String(data))).toString().getBytes();
-	}
-
-	@Override
-	public String virtualPageFilter(final String data) throws HTTPRedirectException
-	{
-		return virtualPageFilter(new StringBuffer(data)).toString();
-	}
-
-	@Override
-	public StringBuffer virtualPageFilter(final StringBuffer data) throws HTTPRedirectException
-	{
-		return virtualPageFilter(data,new HashMap<String,String>(),new HashMap<String,Object>());
-	}
-
-	@Override
-	public StringBuffer virtualPageFilter(final StringBuffer data, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
-	{
-		return virtualPageFilter(new HTTPRequest()
+		return new HTTPRequest()
 		{
 			public final Map<String, String>	params	= parms;
 			public final Map<String, Object>	objects	= objs;
@@ -278,7 +260,32 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			{
 				return "";
 			}
-		}, new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, data);
+		};
+	}
+
+	@Override
+	public byte[] virtualPageFilter(final byte[] data) throws HTTPRedirectException
+	{
+		return virtualPageFilter(new StringBuffer(new String(data))).toString().getBytes();
+	}
+
+	@Override
+	public String virtualPageFilter(final String data) throws HTTPRedirectException
+	{
+		return virtualPageFilter(new StringBuffer(data)).toString();
+	}
+
+	@Override
+	public StringBuffer virtualPageFilter(final StringBuffer data) throws HTTPRedirectException
+	{
+		return virtualPageFilter(data,new HashMap<String,String>(),new HashMap<String,Object>());
+	}
+
+	@Override
+	public StringBuffer virtualPageFilter(final StringBuffer data, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
+	{
+		return virtualPageFilter(createFakeRequest(parms,objs),
+			new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, data);
 	}
 
 	@Override

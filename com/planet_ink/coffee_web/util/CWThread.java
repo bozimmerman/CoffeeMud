@@ -26,6 +26,12 @@ public class CWThread extends Thread
 {
 	private final CWConfig config;
 
+	public CWThread(final ThreadGroup group, final CWConfig config, final Runnable r, final String name)
+	{
+		super(group, r, name);
+		this.config=config;
+	}
+
 	public CWThread(final CWConfig config, final Runnable r, final String name)
 	{
 		super(r, name);

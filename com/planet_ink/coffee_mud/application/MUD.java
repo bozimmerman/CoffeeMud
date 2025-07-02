@@ -86,18 +86,19 @@ public class MUD extends Thread implements MudHost
 	private final long		  startupTime= System.currentTimeMillis();
 	private final ThreadGroup threadGroup;
 
-	private static volatile int	 		grpid				= 0;
-	private static boolean				bringDown			= false;
-	private static String				execExternalCommand	= null;
-	private static I3Server				i3server			= null;
-	private static IMC2Driver			imc2server			= null;
-	private static List<WebServer>		webServers			= new Vector<WebServer>();
-	private static SMTPserver			smtpServerThread	= null;
-	private static List<DBConnector>	databases			= new Vector<DBConnector>();
-	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
-	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
-	private static AtomicBoolean 		bootSync			= new AtomicBoolean(false);
-	private static Map<String,String>	clArgs				= new Hashtable<String,String>();
+	protected static volatile int	 	 grpid				= 0;
+	protected static boolean			 bringDown			= false;
+	protected static String				 execExternalCommand	= null;
+	protected static I3Server			 i3server			= null;
+	protected static IMC2Driver			 imc2server			= null;
+	protected static List<WebServer>	 webServers			= new Vector<WebServer>();
+	protected static SMTPserver			 smtpServerThread	= null;
+	protected static List<DBConnector>	 databases			= new Vector<DBConnector>();
+	protected static List<CM1Server>	 cm1Servers			= new Vector<CM1Server>();
+	protected static final ServiceEngine serviceEngine		= new ServiceEngine();
+	protected static AtomicBoolean 		 bootSync			= new AtomicBoolean(false);
+	protected static Map<String,String>	 clArgs				= new Hashtable<String,String>();
+	protected static boolean			 skipMapLoads		= false;
 
 	private static final long 			SHUTDOWN_TIMEOUT 	= 5 * 60 * 1000;
 
@@ -105,6 +106,11 @@ public class MUD extends Thread implements MudHost
 	{
 		super(name);
 		threadGroup=Thread.currentThread().getThreadGroup();
+	}
+
+	public MUD createInstance(final String data) throws Exception
+	{
+		return getClass().getConstructor(String.class).newInstance(data);
 	}
 
 	@Override
@@ -969,6 +975,8 @@ public class MUD extends Thread implements MudHost
 
 	private static void startIntermud3(final int smtpPort)
 	{
+		if(MUD.skipMapLoads)
+			return;
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		final CMProps page=CMProps.instance();
 		try
@@ -1087,6 +1095,8 @@ public class MUD extends Thread implements MudHost
 
 	private static void startIntermud2()
 	{
+		if(MUD.skipMapLoads)
+			return;
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		final CMProps page=CMProps.instance();
 		try
@@ -1251,6 +1261,10 @@ public class MUD extends Thread implements MudHost
 		if(CMParms.contains(ports, 80))
 			return "http://" + CMProps.getVar(Str.MUDDOMAIN)+"/";
 		return "http://" + CMProps.getVar(Str.MUDDOMAIN)+":"+ports[0]+"/";
+	}
+
+	protected void postInitialization()
+	{
 	}
 
 	private static class HostGroup extends Thread
@@ -1558,39 +1572,42 @@ public class MUD extends Thread implements MudHost
 				CMLib.database().DBReadCatalogs();
 			}
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name())))
+			if(!skipMapLoads)
 			{
-				Log.sysOut(Thread.currentThread().getName(),"Loading map...");
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
-				CMLib.database().DBReadAllRooms(null);
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading space....");
-				CMLib.database().DBReadSpace();
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: preparing map....");
-				Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
-				CMLib.database().DBReadArtifacts();
-				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				if((tCode==MAIN_HOST)
+				||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name())))
 				{
-					final Area A=a.nextElement();
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: filling map ("+A.Name()+")");
-					A.fillInAreaRooms();
-				}
-				{
-					final MOB mob=CMClass.getFactoryMOB();
-					final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_STARTUP,null);
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Sending room startup.");
-					for(final Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+					Log.sysOut(Thread.currentThread().getName(),"Loading map...");
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
+					CMLib.database().DBReadAllRooms(null);
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading space....");
+					CMLib.database().DBReadSpace();
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: preparing map....");
+					Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
+					CMLib.database().DBReadArtifacts();
+					for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 					{
-						final Room R=a.nextElement();
-						if(R!=null)
-						{
-							msg.setTarget(R);
-							R.send(mob, msg);
-						}
+						final Area A=a.nextElement();
+						CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: filling map ("+A.Name()+")");
+						A.fillInAreaRooms();
 					}
-					mob.destroy();
+					{
+						final MOB mob=CMClass.getFactoryMOB();
+						final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_STARTUP,null);
+						CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Sending room startup.");
+						for(final Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+						{
+							final Room R=a.nextElement();
+							if(R!=null)
+							{
+								msg.setTarget(R);
+								R.send(mob, msg);
+							}
+						}
+						mob.destroy();
+					}
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Map Load Complete.");
 				}
-
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Map Load Complete.");
 				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
 				if(CMLib.space().numSpaceObjects()>0)
 					Log.sysOut(Thread.currentThread().getName(),"Space objects     : "+CMLib.space().numSpaceObjects());

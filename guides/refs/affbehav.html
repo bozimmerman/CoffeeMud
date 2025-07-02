@@ -1300,10 +1300,28 @@
 				<li><a href="#Spell_BaseClanEq">Spell_BaseClanEq</a>
 			&nbsp;
 			
+				<li><a href="#Spell_ClanDonate">Spell_ClanDonate</a>
+			&nbsp;
+			
+				<li><a href="#Spell_ClanExperience">Spell_ClanExperience</a>
+			&nbsp;
+			
+				<li><a href="#Spell_ClanHome">Spell_ClanHome</a>
+			&nbsp;
+			
+				<li><a href="#Spell_ClanWard">Spell_ClanWard</a>
+			&nbsp;
+			
 				<li><a href="#Spell_DarkSensitivity">Spell_DarkSensitivity</a>
 			&nbsp;
 			
 				<li><a href="#Spell_Exhaustion">Spell_Exhaustion</a>
+			&nbsp;
+			
+				<li><a href="#Spell_Flagportation">Spell_Flagportation</a>
+			&nbsp;
+			
+				<li><a href="#Spell_ImprovedClanWard">Spell_ImprovedClanWard</a>
 			&nbsp;
 			
 				<li><a href="#Spell_LesserPermanency">Spell_LesserPermanency</a>
@@ -2994,7 +3012,7 @@
 			
 			<p>
 			<a name="Prop_HaveZapper"><B>Prop_HaveZapper: Restrictions to ownership</B></a>
-			<pre>Property   : Prop_HaveZapper <BR>Targets    : Items <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;O-NAME> flies out of &lt;S-NAME>'s hands!" -class +mage <BR>Description:  <BR>Whenever this item is picked up by a mob, the item will be zapped out of the<BR>mobs hands if they meet the parameters.  An optional MESSAGE parameter can<BR>define what is seen when the zap occurs. Also optionally, the parameters can<BR>start with the word ACTUAL to change zapping behavior to look at actual values<BR>instead of perceived values (this about a class check applied to a Charlatan.).<BR> The parameters can also start with the word CONTENT to have the zapper apply<BR>equally to a container and its contents (at least until the thing with the<BR>zapper is separated from the container). If the parameters include any<BR>alignment checks, the item will end up with an appropriate ambiance as well.<BR>See AHELP ZAPPERMASK, where allowed can possess, and disallowed is zapped. </pre>
+			<pre>Property   : Prop_HaveZapper <BR>Targets    : Items <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;O-NAME> flies off &lt;S-NAME>" -class +mage <BR>Example    : -class +mage "event=accuse,trespassing" "message=</I></U></BLINK></B></FONT>" <BR>Description:  <BR>Whenever this item is picked up by a mob, the item will be zapped out of the<BR>mobs hands if they meet the parameters.  An optional MESSAGE parameter can<BR>define what is seen when the zap occurs. Also optionally, the parameters can<BR>start with the word ACTUAL to change zapping behavior to look at actual values<BR>instead of perceived values (this about a class check applied to a Charlatan.).<BR> The parameters can also start with the word CONTENT to have the zapper apply<BR>equally to a container and its contents (at least until the thing with the<BR>zapper is separated from the container). If the parameters include any<BR>alignment checks, the item will end up with an appropriate ambiance as well.<BR>The optional EVENT parameter is a comma-delimited set of strings, where the<BR>first is one of ZAP (default) or ACCUSE followed by a comma and the crime key<BR>from a laws.ini type definition. See AHELP ZAPPERMASK, where allowed can<BR>possess, and disallowed is zapped. </pre>
 			</P>
 			
 			<p>
@@ -3264,7 +3282,7 @@
 			
 			<p>
 			<a name="Prop_ReqEntry"><B>Prop_ReqEntry: All Room/Exit Limitations</B></a>
-			<pre>Property   : Prop_ReqEntry <BR>Targets    : Rooms, Areas, Exits, Portals <BR>Parameters : (nosneak) (nofollow) (actual) ("message=my message") mask <BR>Example    : -race +elf <BR>Example    : nosneak -race +elf <BR>Example    : "message=Elves Only in there!" nofollow -race +elf <BR>Description:  <BR>Creates restrictions for entering a room.  Followers will be allowed unless<BR>explicitly disallowed.  Valid parameters include:  <BR>nosneak (disallow sneaking past the requirement) <BR>nofol (disallow followers)   <BR>actual (discount disguises)   <BR>"message= ... " (override the default no-entry message.  <BR>See AHELP ZAPPERMASK, where allowed can enter, and disallowed is not. </pre>
+			<pre>Property   : Prop_ReqEntry <BR>Targets    : Rooms, Areas, Exits, Portals <BR>Parameters : (nosneak) (nofollow) (actual)  ("message=my message")  <BR>Parameters : ("event=[block/accuse],(crime)") mask <BR>Example    : -race +elf <BR>Example    : nosneak -race +elf <BR>Example    : "event=accuse,trespassing" "message=</I></U></BLINK></B></FONT>" -race +elf <BR>Example    : "message=Elves Only in there!" nofollow -race +elf <BR>Description:  <BR>Creates restrictions for entering a room.  Followers will be allowed unless<BR>explicitly disallowed.  Valid parameters include:  <BR>nosneak (disallow sneaking past the requirement) <BR>nofol (disallow followers)   <BR>actual (discount disguises)   <BR>"message= ... " (override the default no-entry message.  <BR>"event= ..." (comma-delim event: default='block', or 'accuse,[crime],..') <BR>See AHELP ZAPPERMASK, where allowed can enter, and disallowed is not. </pre>
 			</P>
 			
 			<p>
@@ -3349,7 +3367,7 @@
 			
 			<p>
 			<a name="Prop_RideZapper"><B>Prop_RideZapper: Restrictions to riding</B></a>
-			<pre>Property   : Prop_RideZapper <BR>Targets    : Items and Mobs <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;S-NAME> jump(s) off of &lt;O-NAME>!" -class +mage <BR>Description:  <BR>Whenever the rider of the item or mob with this property mounts the item, they<BR>will be zapped unless it is allowed by the listed parameters.   <BR>An optional MESSAGE parameter can define what is seen when the zap occurs. Also<BR>optionally, the parameters can start with the word ACTUAL to change zapping<BR>behavior to look at actual values instead of perceived values (this about a<BR>class check applied to a Charlatan.) If the parameters include any alignment<BR>checks, the item will end up with an appropriate ambiance as well. For valid<BR>masking parameters, see AHELP ZAPPERMASK, where allowed can ride, and<BR>disallowed is zapped. </pre>
+			<pre>Property   : Prop_RideZapper <BR>Targets    : Items and Mobs <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;S-NAME> falls off &lt;O-NAME>!" -class +mage <BR>Example    : -class +mage "event=accuse,trespassing" "message=</I></U></BLINK></B></FONT>" <BR>Description:  <BR>Whenever the rider of the item or mob with this property mounts the item, they<BR>will be zapped unless it is allowed by the listed parameters.   <BR>An optional MESSAGE parameter can define what is seen when the zap occurs. Also<BR>optionally, the parameters can start with the word ACTUAL to change zapping<BR>behavior to look at actual values instead of perceived values (this about a<BR>class check applied to a Charlatan.) The optional EVENT parameter is a<BR>comma-delimited set of strings, where the first is one of ZAP (default) or<BR>ACCUSE followed by a comma and the crime key from a laws.ini type definition.<BR>If the parameters include any alignment checks, the item will end up with an<BR>appropriate ambiance as well. For valid masking parameters, see AHELP<BR>ZAPPERMASK, where allowed can ride, and disallowed is zapped. </pre>
 			</P>
 			
 			<p>
@@ -3564,7 +3582,7 @@
 			
 			<p>
 			<a name="Prop_WearZapper"><B>Prop_WearZapper: Restrictions to wielding/wearing/holding</B></a>
-			<pre>Property   : Prop_WearZapper <BR>Targets    : Items <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;O-NAME> falls out of &lt;S-NAME>'s hands!" -class +mage <BR>Description:  <BR>Whenever the owner of the item with this property tries to wear or wield the<BR>item, they will be zapped unless it is allowed by the listed parameters.   <BR>An optional MESSAGE parameter can define what is seen when the zap occurs. Also<BR>optionally, the parameters can start with the word ACTUAL to change zapping<BR>behavior to look at actual values instead of perceived values (this about a<BR>class check applied to a Charlatan.) If the parameters include any alignment<BR>checks, the item will end up with an appropriate ambiance as well. For valid<BR>masking parameters, See AHELP ZAPPERMASK, where allowed can wear, and<BR>disallowed is zapped. </pre>
+			<pre>Property   : Prop_WearZapper <BR>Targets    : Items <BR>Parameters : masking parameters described below, optional zap message <BR>Example    : -class +mage -race +elf -evil <BR>Example    : MESSAGE="&lt;O-NAME> falls off &lt;S-NAME>!" -class +mage <BR>Example    : -class +mage "event=accuse,trespassing" "message=</I></U></BLINK></B></FONT>" <BR>Description:  <BR>Whenever the owner of the item with this property tries to wear or wield the<BR>item, they will be zapped unless it is allowed by the listed parameters.   <BR>An optional MESSAGE parameter can define what is seen when the zap occurs. Also<BR>optionally, the parameters can start with the word ACTUAL to change zapping<BR>behavior to look at actual values instead of perceived values (this about a<BR>class check applied to a Charlatan.) The optional EVENT parameter is a<BR>comma-delimited set of strings, where the first is one of ZAP (default) or<BR>ACCUSE followed by a comma and the crime key from a laws.ini type definition.<BR>If the parameters include any alignment checks, the item will end up with an<BR>appropriate ambiance as well. For valid masking parameters, See AHELP<BR>ZAPPERMASK, where allowed can wear, and disallowed is zapped. </pre>
 			</P>
 			
 			<p>
@@ -3724,7 +3742,7 @@
 			
 			<p>
 			<a name="SoundEcho"><B>SoundEcho: Sound Echo</B></a>
-			<pre>Property   : SoundEcho <BR>Targets    : Areas, Rooms <BR>Parameters : [RANGE] <BR>Example    : 4 <BR>Description:  <BR>Causes sound to echo around the area or room when it occurs.</pre>
+			<pre>Property   : SoundEcho <BR>Targets    : Areas, Rooms <BR>Parameters : [RANGE]/(RANGE=[RANGE] ACCURACY=[ACCURACY] <BR>Example    : 4 <BR>Example    : range=10 accuracy=85 <BR>Description:  <BR>Causes sound to echo around the area or room when it occurs.  In other rooms,<BR>there is a default 50% chance that the echo will seem to come from the<BR>direction it actually came from. The range can be changed by including the<BR>range argument, and the accuracy by its argument (0-100). </pre>
 			</P>
 			
 			<p>
