@@ -52,6 +52,25 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}
 
+      # Insert after "Extract version from MUD.java" and before "Create GitHub Release"
+      - name: Extract release notes from CHANGES
+        run: |
+          if [ ! -f CHANGES ]; then
+            echo "Error: CHANGES file not found"
+            exit 1
+          fi
+          # Extract block from '# Build' to before next '# Build' or end of file
+          awk '/^# Build/{p=1;print;next} p&&/^# Build/{p=0} p' CHANGES > release_notes.txt
+          if [ ! -s release_notes.txt ]; then
+            echo "Error: Could not extract release notes from CHANGES"
+            exit 1
+          fi
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          cat release_notes.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        shell: bash
+        working-directory: ${{ github.workspace }}
+
       # Create ZIP files
       - name: Create ZIP files
         run: |
@@ -83,6 +102,7 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           release_name: CoffeeMUD v${{ env.VERSION }}
+          body: ${{ env.RELEASE_NOTES }}
           draft: false
           prerelease: false
 
