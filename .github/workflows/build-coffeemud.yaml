@@ -101,7 +101,7 @@ jobs:
         with:
           tag_name: v${{ env.VERSION }}
           release_name: CoffeeMUD v${{ env.VERSION }}
-          body: ${{ env.RELEASE_NOTES }}
+          body_path: ${{ github.workspace }}/release_notes.txt
           draft: false
           prerelease: false
 
