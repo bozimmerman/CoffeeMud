@@ -60,7 +60,7 @@ jobs:
               exit 1
             fi
             # Extract first block, stop at next # Build or after 50 lines
-            awk '/^# Build/{p=1;print;next} p&&/^# Build/{exit} p&&NR>50{exit} p' CHANGES > release_notes.txt
+            awk '/^# Build/{if(p) exit; p=1} p' CHANGES > release_notes.txt
             if [ ! -s release_notes.txt ]; then
               echo "Error: Could not extract release notes from CHANGES"
               exit 1
