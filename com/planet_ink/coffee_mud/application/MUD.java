@@ -913,7 +913,7 @@ public class MUD extends Thread implements MudHost
 		shutdownStateTime.set(0);
 		CMLib.hosts().clear();
 		CMSecurity.unloadAll();
-		if(!keepItDown)
+		if(keepItDown)
 			CMProps.setAllStates(CMProps.HostState.STOPPED);
 		Log.debugOut("Final Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
@@ -2021,6 +2021,7 @@ public class MUD extends Thread implements MudHost
 
 		while(!bringDown)
 		{
+			CMProps.setAllStates(CMProps.HostState.BOOTING);
 			final PrintStream eolStream = System.out;
 			eolStream.println();
 			grpid=0;
