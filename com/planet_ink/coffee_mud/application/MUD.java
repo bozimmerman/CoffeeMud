@@ -1607,31 +1607,34 @@ public class MUD extends Thread implements MudHost
 						mob.destroy();
 					}
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Map Load Complete.");
-				}
-				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
-				if(CMLib.space().numSpaceObjects()>0)
-					Log.sysOut(Thread.currentThread().getName(),"Space objects     : "+CMLib.space().numSpaceObjects());
+					Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
+					if(CMLib.space().numSpaceObjects()>0)
+						Log.sysOut(Thread.currentThread().getName(),"Space objects     : "+CMLib.space().numSpaceObjects());
 
-				if(!CMLib.map().roomIDs().hasMoreElements())
-				{
-					Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
-					CMLib.time().globalClock().setYear(1000);
-					final String id="START";//New Area#0";
-					final Area newArea=CMClass.getAreaType("StdArea");
-					newArea.setName(CMLib.lang().L("New Area"));
-					CMLib.map().addArea(newArea);
-					CMLib.database().DBCreateArea(newArea);
-					final Room room=CMClass.getLocale("StdRoom");
-					room.setRoomID(id);
-					room.setArea(newArea);
-					room.setDisplayText(CMLib.lang().L("New Room"));
-					room.setDescription(CMLib.lang().L("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!"));
-					CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
-					CMLib.database().DBCreateRoom(room);
-					final Item I=CMClass.getMiscMagic("ManualArchon");
-					room.addItem(I);
-					CMLib.database().DBUpdateItems(room);
+					if(!CMLib.map().roomIDs().hasMoreElements())
+					{
+						Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
+						CMLib.time().globalClock().setYear(1000);
+						final String id="START";//New Area#0";
+						final Area newArea=CMClass.getAreaType("StdArea");
+						newArea.setName(CMLib.lang().L("New Area"));
+						CMLib.map().addArea(newArea);
+						CMLib.database().DBCreateArea(newArea);
+						final Room room=CMClass.getLocale("StdRoom");
+						room.setRoomID(id);
+						room.setArea(newArea);
+						room.setDisplayText(CMLib.lang().L("New Room"));
+						room.setDescription(CMLib.lang().L("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!"));
+						CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
+						CMLib.database().DBCreateRoom(room);
+						final Item I=CMClass.getMiscMagic("ManualArchon");
+						room.addItem(I);
+						CMLib.database().DBUpdateItems(room);
+					}
 				}
+				else
+				while((tCode!=MAIN_HOST)&&(CMLib.map().numRooms()==0))
+					CMLib.s_sleep(1000);
 			}
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CLANS.name())))
