@@ -66,7 +66,7 @@ public class ItemData extends StdWebMacro
 		if(itemCode==null)
 			return "@break@";
 
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final String mobNum=httpReq.getUrlParameter("MOB");

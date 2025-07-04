@@ -114,6 +114,24 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Constants for the state of the host.
+	 * These are tied to threads, unlike
+	 * MUD object.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum HostState
+	{
+		BOOTING,
+		LOADINGMAP,
+		STARTING,
+		RUNNING,
+		SHUTTINGDOWN,
+		STOPPED
+	}
+
+	/**
 	 * Enums for String entries in the coffeemud.ini file
 	 * @author Bo Zimmerman
 	 */
@@ -461,12 +479,10 @@ public class CMProps extends Properties
 		ITEMDCOMPRESS,
 		ROOMDCOMPRESS,
 		MOBDCOMPRESS,
-		MUDSTARTED,
 		POPULATIONSTARTED,
 		EMAILFORWARDING,
 		MOBNOCACHE,
 		ROOMDNOCACHE,
-		MUDSHUTTINGDOWN,
 		ACCOUNTEXPIRATION,
 		INTRODUCTIONSYSTEM,
 		FILERESOURCENOCACHE,
@@ -659,7 +675,8 @@ public class CMProps extends Properties
 	protected final Map<String,CostDef> languageCost=new HashMap<String,CostDef>();
 	protected final Map<String,String>	ableArgs	=new HashMap<String,String>();
 
-	protected double speedAdj = 1.0;
+	protected double 	speedAdj = 1.0;
+	protected HostState	hostState= HostState.BOOTING;
 
 	/**
 	 * Creates a properties object for the callers thread group using the given input stream
@@ -2482,6 +2499,55 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Checks the HostState tied to this prop through
+	 * its thread group.
+	 *
+	 * @param state the state to check for
+	 * @return whether it is in that state
+	 */
+	public final static boolean isState(final HostState state)
+	{
+		return p()._isState(state);
+	}
+
+	/**
+	 * Checks the HostState tied to this prop.
+	 *
+	 * @param state the state to check for
+	 * @return whether it is in that state
+	 */
+	public final boolean _isState(final HostState state)
+	{
+		return hostState == state;
+	}
+
+	/**
+	 * Sets the HostState tied to this prop through
+	 * its thread group.
+	 *
+	 * @param state the state to set to
+	 */
+	public final static void setState(final HostState state)
+	{
+		p().hostState = state;
+	}
+
+	/**
+	 * Sets the HostState tied to all props through
+	 * in all thread groups
+	 *
+	 * @param state the state to set to
+	 */
+	public final static void setAllStates(final HostState state)
+	{
+		for(final CMProps p : CMProps.props)
+		{
+			if(p!=null)
+				p.hostState = state;
+		}
+	}
+
+	/**
 	 * Reads this properties objects and sets ALL internal variables.  Can be re-called if
 	 * any properties are changed.
 	 */
@@ -2764,9 +2830,6 @@ public class CMProps extends Properties
 		setWhitelist(CMProps.WhiteList.IPSCONN,getStr("WHITELISTIPSCONN"));
 		setWhitelist(CMProps.WhiteList.LOGINS,getStr("WHITELISTLOGINS"));
 		setWhitelist(CMProps.WhiteList.IPSNEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
-
-		if(p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]==null)
-			p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]=Boolean.FALSE;
 
 		for(final StrList strListVar : StrList.values())
 		{

@@ -851,7 +851,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(H==null)
 		{
 			H=new Hashtable<String,List<AbilityComponent>>();
-			if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+			if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 				return H;
 			abilitiesWithCompsWithTriggers.clear();
 			compSocials.clear();

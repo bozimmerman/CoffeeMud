@@ -117,7 +117,7 @@ public class Dragon extends StdMOB implements MOBPossessor
 	{
 		// ===== set the parameter stuff		DragonAge() = ageValue;
 
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
 			return;

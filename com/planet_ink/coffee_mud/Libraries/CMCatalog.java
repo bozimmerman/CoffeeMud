@@ -878,7 +878,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				final Physical cataE=getCatalogObj(P);
 				if((cataE==null)||(data==null))
 				{
-					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+					if(!CMProps.isState(CMProps.HostState.RUNNING))
 						return null; // if catalog isn't fully loaded, this can be a false correction
 					if(data!=null)
 						data.delReference(P);

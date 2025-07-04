@@ -1737,7 +1737,7 @@ public class StdArea implements Area
 
 	protected AreaIStats getAreaIStats()
 	{
-		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.isState(CMProps.HostState.RUNNING))
 			return emptyStats;
 		AreaIStats statData = (AreaIStats) Resources.getResource("STATS_" + Name().toUpperCase());
 		if (statData != null)
@@ -1867,7 +1867,7 @@ public class StdArea implements Area
 	@Override
 	public synchronized StringBuffer getAreaStats()
 	{
-		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.isState(CMProps.HostState.RUNNING))
 			return new StringBuffer("");
 		StringBuffer s = (StringBuffer) Resources.getResource("HELP_" + Name().toUpperCase());
 		if (s != null)
@@ -2346,7 +2346,7 @@ public class StdArea implements Area
 
 	protected Map<String,int[]> getPiety()
 	{
-		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.isState(CMProps.HostState.RUNNING))
 			return emptyPiety;
 		@SuppressWarnings("unchecked")
 		Map<String,int[]> piety=(Map<String,int[]>)Resources.getResource("PIETY_"+Name().toUpperCase());

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.ConnectState;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -407,9 +408,9 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public String getStatus()
 	{
-		if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 		return state.toString();
 	}
@@ -475,8 +476,8 @@ public class MUD extends Thread implements MudHost
 
 	public static void globalShutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
-		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
-		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
+
+		CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 		bootSync.set(false);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());
 		final Thread currentShutdownThread=Thread.currentThread();
@@ -913,7 +914,7 @@ public class MUD extends Thread implements MudHost
 		CMLib.hosts().clear();
 		CMSecurity.unloadAll();
 		if(!keepItDown)
-			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
+			CMProps.setAllStates(CMProps.HostState.STOPPED);
 		Log.debugOut("Final Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
 
@@ -1329,8 +1330,7 @@ public class MUD extends Thread implements MudHost
 			Log.errOut(Thread.currentThread().getName(),errorInternal);
 			bringDown=true;
 
-			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
-			//CMLib.killThread(t,100,1);
+			CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 		}
 
 		protected boolean initHost()
@@ -1577,6 +1577,7 @@ public class MUD extends Thread implements MudHost
 				if((tCode==MAIN_HOST)
 				||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name())))
 				{
+					CMProps.setState(CMProps.HostState.LOADINGMAP);
 					Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
 					CMLib.database().DBReadAllRooms(null);
@@ -1633,10 +1634,16 @@ public class MUD extends Thread implements MudHost
 					}
 				}
 				else
-				while((tCode!=MAIN_HOST)&&(CMLib.map().numRooms()==0))
-					CMLib.s_sleep(1000);
+				while((tCode!=MAIN_HOST)
+				&&((CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.BOOTING))
+					||(CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.LOADINGMAP))))
+				{
+					if(!checkedSleep(500))
+						break;
+				}
 			}
 
+			CMProps.setState(CMProps.HostState.STARTING);
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CLANS.name())))
 			{
 				final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
@@ -1668,15 +1675,15 @@ public class MUD extends Thread implements MudHost
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Waiting for HOST0");
 				while((!MUD.bringDown)
-				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+				&&(!CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.RUNNING))
+				&&(!CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.SHUTTINGDOWN)))
 				{
 					if(!checkedSleep(500))
 						break;
 				}
 				if((MUD.bringDown)
-				||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-				||(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+				||(!CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.RUNNING))
+				||(CMProps.instance(MAIN_HOST)._isState(CMProps.HostState.SHUTTINGDOWN)))
 					return false;
 
 			}
@@ -1721,7 +1728,7 @@ public class MUD extends Thread implements MudHost
 				str.append(" "+mud.getPort());
 			}
 			CMProps.setVar(CMProps.Str.ALLMUDPORTS,str.toString());
-			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,true);
+			CMProps.setState(CMProps.HostState.RUNNING);
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Online");
 			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");
 			return true;
@@ -1756,7 +1763,7 @@ public class MUD extends Thread implements MudHost
 				return;
 			}
 			page.resetSystemVars();
-			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
+			CMProps.setState(CMProps.HostState.BOOTING);
 			serviceEngine.activate();
 
 			if(threadCode!=MAIN_HOST)
@@ -2004,7 +2011,7 @@ public class MUD extends Thread implements MudHost
 			@Override
 			public void run()
 			{
-				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				if(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 				{
 					ServiceEngine.panicDumpAllThreads();
 					MUD.globalShutdown(null,true,null);
@@ -2054,7 +2061,7 @@ public class MUD extends Thread implements MudHost
 			{
 				Log.errOut("CoffeeMud failed to start.");
 				MUD.bringDown=true;
-				CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+				CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 			}
 			else
 			{
@@ -2076,7 +2083,7 @@ public class MUD extends Thread implements MudHost
 				{
 					Log.errOut("CoffeeMud failed to start.");
 					MUD.bringDown=true;
-					CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+					CMProps.setAllStates(HostState.SHUTTINGDOWN);
 				}
 				else
 				{

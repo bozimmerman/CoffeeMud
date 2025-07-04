@@ -695,7 +695,7 @@ public class RoomData extends StdWebMacro
 		if(last.length()==0)
 			return "";
 
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");

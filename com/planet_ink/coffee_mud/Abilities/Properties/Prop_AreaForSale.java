@@ -384,7 +384,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public void updateLot(final Set<String> optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		&&(CMProps.isState(CMProps.HostState.RUNNING)))
 		{
 			// in this case, we definitely only care about rooms actually existing
 			// thin rooms can safely be skipped

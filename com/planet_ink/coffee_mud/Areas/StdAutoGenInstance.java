@@ -99,7 +99,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	@Override
 	protected AreaIStats getAreaIStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return emptyStats;
 		final Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();

@@ -1173,7 +1173,7 @@ public class StdMOB implements MOB
 		&& (location.isInhabitant(this)))
 		{
 			location().delInhabitant(this);
-			if((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+			if((session() != null) && (!CMProps.isState(CMProps.HostState.SHUTTINGDOWN)))
 			{
 				final String msg = ((pStats!=null)&&(pStats.getPoofOut().length()>0))?
 									pStats.getPoofOut():
@@ -3979,7 +3979,7 @@ public class StdMOB implements MOB
 					if((phyStats().rejuv() != PhyStats.NO_REJUV) && (basePhyStats().rejuv() > 0))
 					{
 						phyStats().setRejuv(phyStats().rejuv() - 1);
-						if((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+						if((phyStats().rejuv() < 0) || (CMProps.isState(CMProps.HostState.SHUTTINGDOWN)))
 						{
 							final Room startRoom = CMLib.map().getStartRoom(this);
 							if((startRoom == null)

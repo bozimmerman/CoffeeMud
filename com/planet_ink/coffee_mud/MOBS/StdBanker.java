@@ -569,7 +569,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return true;
 		try
 		{

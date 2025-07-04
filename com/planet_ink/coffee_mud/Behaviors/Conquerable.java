@@ -290,7 +290,7 @@ public class Conquerable extends Arrest
 	{
 		if(holdingClan.length()==0)
 			return;
-		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if((!CMProps.isState(CMProps.HostState.RUNNING))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 			return;
 		final Clan C=CMLib.clans().getClanAnyHost(holdingClan);
@@ -507,7 +507,7 @@ public class Conquerable extends Arrest
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if((!CMProps.isState(CMProps.HostState.RUNNING))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 			return true;
 
@@ -1338,7 +1338,7 @@ public class Conquerable extends Arrest
 		}
 		else
 		if((myHost instanceof Area)
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
+		&&(CMProps.isState(CMProps.HostState.RUNNING)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 		&&(totalControlPoints>=0))
 		{
@@ -1627,7 +1627,7 @@ public class Conquerable extends Arrest
 		||(holdingClan.length()==0)
 		||(!allowLaw)
 		||(totalControlPoints<0)
-		||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		||(!CMProps.isState(CMProps.HostState.RUNNING)))
 			return false;
 		final Clan C=CMLib.clans().getClanAnyHost(holdingClan);
 		if(C==null)
@@ -1649,7 +1649,7 @@ public class Conquerable extends Arrest
 		if((holdingClan.length()==0)
 		||(!allowLaw)
 		||(totalControlPoints<0)
-		||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		||(!CMProps.isState(CMProps.HostState.RUNNING))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.ARREST)))
 			return false;
 		if(flagFound(null,holdingClan))

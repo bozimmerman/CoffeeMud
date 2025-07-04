@@ -47,8 +47,6 @@ import java.util.*;
 */
 public class ShipNavProgram extends ShipSensorProgram
 {
-	private Iterator<ShipEngine> iterator;
-
 	@Override
 	public String ID()
 	{

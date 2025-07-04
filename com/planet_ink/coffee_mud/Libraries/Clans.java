@@ -1764,8 +1764,8 @@ public class Clans extends StdLibrary implements ClanManager
 		final long hoursPerYear = clock.getHoursInDay() * clock.getDaysInYear();
 		final long nextDuesPaid = lastDuesPaid + (CMProps.getMillisPerMudHour() * hoursPerYear);
 		if((System.currentTimeMillis() >  nextDuesPaid)
-		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		&&(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
+		&&(CMProps.isState(CMProps.HostState.RUNNING)))
 		{
 			Resources.setPropResource(this.name, "LAST_DUES_PAID", ""+System.currentTimeMillis());
 			for(final Enumeration<Clan> c=clans();c.hasMoreElements();)

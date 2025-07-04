@@ -239,8 +239,8 @@ public class AutoStack extends StdAbility
 				final Room R=(Room)affected;
 				if((R!=null)&&(!R.amDestroyed()))
 				{
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
-					&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
+					if(CMProps.isState(CMProps.HostState.RUNNING)
+					&&(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN)))
 					{
 						tickDown = intervalTicks;
 						nextTriggeringTime = System.currentTimeMillis() + (CMProps.getTickMillis() * tickDown);

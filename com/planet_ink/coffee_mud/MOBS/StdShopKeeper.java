@@ -245,7 +245,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return false;
 		if ((tickID == Tickable.TICKID_MOB)
 		&& (isGeneric())
-		&& (CMProps.getBoolVar(Bool.MUDSTARTED)))
+		&& (CMProps.isState(CMProps.HostState.RUNNING)))
 		{
 			if ((--invResetTickDown) <= 0)
 				doInventoryReset();

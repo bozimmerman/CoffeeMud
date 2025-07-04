@@ -247,7 +247,7 @@ public class ItemGenerator extends ActiveTicker
 			final List<Item> checkItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 			if(checkItems!=null)
 				return false;
-			if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+			if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 				return false;
 			if(skills == null)
 			{
@@ -342,7 +342,7 @@ public class ItemGenerator extends ActiveTicker
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if((!CMProps.isState(CMProps.HostState.RUNNING))
 		||(!(ticking instanceof Environmental))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;

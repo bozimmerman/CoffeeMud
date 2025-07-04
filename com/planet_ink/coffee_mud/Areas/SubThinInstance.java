@@ -89,7 +89,7 @@ public class SubThinInstance extends StdThinInstance implements SubArea
 	@Override
 	protected AreaIStats getAreaIStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return emptyStats;
 		AreaIStats statData=(AreaIStats)Resources.getResource("STATS_"+Name().toUpperCase());
 		if(statData!=null)

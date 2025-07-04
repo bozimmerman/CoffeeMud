@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1646,15 +1647,14 @@ public class ServiceEngine implements ThreadEngine
 	@Override
 	public void run()
 	{
-		while(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		while(!CMProps.isState(CMProps.HostState.RUNNING))
 			CMLib.s_sleep(1000);
 		final CMProps props = CMProps.instance();
-		final CMProps.Bool MUDSHUTTINGDOWN=CMProps.Bool.MUDSHUTTINGDOWN;
-		while(!props.getBool(MUDSHUTTINGDOWN))
+		while(!props._isState(HostState.SHUTTINGDOWN))
 		{
 			try
 			{
-				while(isAllSuspended() && (!props.getBool(MUDSHUTTINGDOWN)))
+				while(isAllSuspended() && (!props._isState(HostState.SHUTTINGDOWN)))
 				{
 					if((unsuspendedRunnables!=null)&&(unsuspendedRunnables.length>0))
 					{

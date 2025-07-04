@@ -198,7 +198,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return true;
 		//TODO: reconsider how this big this synchro block is, plz
 		synchronized(CMClass.getSync(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim())))

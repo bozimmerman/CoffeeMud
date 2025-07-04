@@ -15934,7 +15934,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public void enqueResponse(final int triggerCode, final MPContext ctx, final SubScript script, final int ticks, final String[] triggerStr)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		if(noDelay)
 			execute(ctx,script);
@@ -15958,7 +15958,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  final int ticks,
 							  final String[] triggerStr)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		final MPContext ctx = new MPContext(scripted,monster,source,target,primaryItem,secondaryItem,msg, null);
 		enqueResponse(triggerCode,ctx,script,ticks,triggerStr);
@@ -15966,7 +15966,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public void prequeResponse(final int triggerCode, final MPContext ctx, final SubScript script, final int ticks)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		final ScriptableResponse resp = new ScriptableResponse(triggerCode,ctx,script,ticks);
 		dupCheckClear(resp,null);

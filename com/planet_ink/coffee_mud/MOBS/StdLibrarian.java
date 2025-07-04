@@ -407,7 +407,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		if (!super.tick(ticking, tickID))
 			return false;
-		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.isState(CMProps.HostState.RUNNING))
 			return true;
 
 		if ((tickID == Tickable.TICKID_MOB) && (getStartRoom() != null))

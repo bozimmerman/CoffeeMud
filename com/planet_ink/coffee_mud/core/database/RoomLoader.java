@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Bool;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -718,8 +719,8 @@ public class RoomLoader
 				{
 					if((unloadedRooms!=null)&&(!unloadedRooms.contains(roomID)))
 					{
-						if((!CMProps.getBoolVar(Bool.MUDSTARTED))
-						&&(!CMProps.getBoolVar(Bool.MUDSHUTTINGDOWN)))
+						if((!CMProps.isState(HostState.RUNNING))
+						&&(!CMProps.isState(HostState.SHUTTINGDOWN)))
 							badRoomIDs.add(roomID);
 						else
 							Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");

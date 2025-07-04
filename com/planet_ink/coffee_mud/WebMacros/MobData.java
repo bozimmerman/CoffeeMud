@@ -1114,7 +1114,7 @@ public class MobData extends StdWebMacro
 		if(mobCode==null)
 			return "@break@";
 
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		Room R=(Room)httpReq.getRequestObjects().get(last);

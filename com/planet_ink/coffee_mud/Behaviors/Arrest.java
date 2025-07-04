@@ -2276,7 +2276,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected boolean theLawIsEnabled()
 	{
-		return ((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		return ((CMProps.isState(CMProps.HostState.RUNNING))
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ARREST)));
 	}
 

@@ -777,7 +777,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public MOB getLoadPlayer(final String last)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return null;
 		MOB M=getPlayer(last);
 		if(M!=null)
@@ -809,7 +809,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public String getLiegeOfUserAllHosts(String userName)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return "";
 		if((userName==null)
 		||(userName.trim().length()==0))
@@ -3255,7 +3255,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
-				if(checkDatabase() && CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				if(checkDatabase() && CMProps.isState(CMProps.HostState.RUNNING))
 				{
 					setThreadStatus(serviceClient,"not saving players");
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))

@@ -119,7 +119,7 @@ public class Prop_LimitedItems extends Property
 		meCopy.norecurse=false;
 		if((affP instanceof Item)
 		&&(((Item)affP).owner() != null)
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		&&(CMProps.isState(CMProps.HostState.RUNNING))
 		&&(!canBeUninvoked()))
 		{
 			CMLib.threads().scheduleRunnable(new Runnable(){
@@ -231,7 +231,7 @@ public class Prop_LimitedItems extends Property
 		if(((msg.targetMinor()==CMMsg.TYP_ENTER)
 			||(msg.targetMinor()==CMMsg.TYP_LOOK)
 			||(msg.targetMinor()==CMMsg.TYP_GET))
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		&&(CMProps.isState(CMProps.HostState.RUNNING))
 		&&(affected instanceof Item)
 		&&((!(((Item)affected).owner() instanceof MOB))
 		   ||((MOB)((Item)affected).owner()).playerStats()==null))
@@ -246,7 +246,7 @@ public class Prop_LimitedItems extends Property
 		if((!(E instanceof Item))||(((Item)E).owner()==null))
 			return;
 
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 
 		if(norecurse)

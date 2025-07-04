@@ -625,7 +625,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			return false;
 		if (!super.tick(ticking, tickID))
 			return false;
-		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.isState(CMProps.HostState.RUNNING))
 			return true;
 
 		if ((tickID == Tickable.TICKID_MOB) && (getStartArea() != null))

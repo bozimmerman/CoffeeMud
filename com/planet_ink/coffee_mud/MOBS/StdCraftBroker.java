@@ -329,7 +329,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return true;
 		synchronized(CMClass.getSync(("BROKER_CHAIN_"+brokerChain().toUpperCase().trim())))
 		{

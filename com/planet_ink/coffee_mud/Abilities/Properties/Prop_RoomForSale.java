@@ -652,7 +652,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	@SuppressWarnings("unchecked")
 	public static boolean doRentalProperty(final Area A, final String ID, final String owner, final int rent)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return false;
 		final int month=A.getTimeObj().getMonth();
 		final int day=A.getTimeObj().getDayOfMonth();
@@ -766,7 +766,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 				// rentals are below
 				if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
-				&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+				&&(CMProps.isState(CMProps.HostState.RUNNING)))
 				{
 					lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 					if((getOwnerName().length()>0)

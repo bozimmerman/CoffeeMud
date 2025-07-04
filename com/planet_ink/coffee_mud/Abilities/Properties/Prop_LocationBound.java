@@ -71,7 +71,7 @@ public class Prop_LocationBound extends Property
 	{
 		if(type != null)
 			return type;
-		if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(CMProps.isState(CMProps.HostState.RUNNING))
 		{
 			final String text=super.text();
 			if(text.length()>0)

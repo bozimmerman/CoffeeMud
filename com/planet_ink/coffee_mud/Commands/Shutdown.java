@@ -79,7 +79,7 @@ public class Shutdown extends StdCommand implements Tickable
 	{
 		if(mob.isMonster())
 			return false;
-		if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 		{
 			mob.tell(L("A shutdown is already in progress."));
 			return false;
@@ -283,7 +283,7 @@ public class Shutdown extends StdCommand implements Tickable
 			if(args[0] instanceof Boolean)
 			{
 				final Boolean upDn = (Boolean)args[0];
-				if(CMProps.getBoolVar(Bool.MUDSHUTTINGDOWN))
+				if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 					return Boolean.FALSE;
 				if(CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
 					CMLib.threads().deleteTick(this, Tickable.TICKID_AREA);

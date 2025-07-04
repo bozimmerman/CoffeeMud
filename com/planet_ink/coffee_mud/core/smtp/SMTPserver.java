@@ -445,7 +445,7 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
 						Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
+					if(CMProps.isState(CMProps.HostState.RUNNING)
 					&& (!CMLib.threads().isAllSuspended())
 					&& (CMSecurity.getConnectState(sock, null) == ConnectState.NORMAL))
 						threadPool.execute(new ProcessSMTPrequest(sock,this));

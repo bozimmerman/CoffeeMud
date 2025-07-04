@@ -174,7 +174,7 @@ public class RandomQuests extends ActiveTicker
 				{
 					try
 					{
-						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+						if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 							return;
 						final StringBuffer xml = Resources.getFileResource(getGeneratorXmlPath(), true);
 						if((xml==null)||(xml.length()==0))

@@ -169,8 +169,8 @@ public class CombatAbilities extends ActiveTicker
 	@Override
 	public void endBehavior(final PhysicalAgent forMe)
 	{
-		if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
-		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		if(CMProps.isState(CMProps.HostState.RUNNING)
+		&&(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 		&&(forMe != null)
 		&&(!forMe.amDestroyed()))
 		{

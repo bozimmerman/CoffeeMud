@@ -439,7 +439,7 @@ public class Prop_Artifact extends Property
 		&&(!nodb))
 		{
 			if((System.currentTimeMillis()>waitToReload)
-			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				waitToReload=0;
 				if((affected instanceof Item)

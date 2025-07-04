@@ -2792,7 +2792,7 @@ public class DefaultSession implements Session
 				if(inTheGame
 				&& (M.location()!=null)
 				&&(mob!=null)
-				&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				&&((!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 					||(CMLib.sessions().numSessions()>1)))
 				{
 					final List<Room> rooms=new ArrayList<Room>(1);
@@ -3672,8 +3672,8 @@ public class DefaultSession implements Session
 				if((M.location()!=null)&&(!skipRooms.contains(M.location())))
 					skipRooms.add(M.location());
 			}
-			if((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			if((!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
+			&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				final CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=theMOB.location();
@@ -3702,8 +3702,8 @@ public class DefaultSession implements Session
 		public void run()
 		{
 			activeMillis=System.currentTimeMillis();
-			if((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			if((!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
+			&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				final CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=null;

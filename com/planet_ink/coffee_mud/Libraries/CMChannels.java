@@ -1255,7 +1255,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				if((method.getName().equals("onMessageCreate"))
 				&&(args != null)
 				&&(args.length>0)
-				&&(CMProps.getBoolVar(Bool.MUDSTARTED)))
+				&&(CMProps.isState(CMProps.HostState.RUNNING)))
 				{
 					final Method channelM = eventClass.getMethod("getChannel");
 					final Object channelObj = channelM.invoke(args[0]);

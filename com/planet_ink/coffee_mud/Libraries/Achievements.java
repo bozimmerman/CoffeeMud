@@ -344,7 +344,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								accttattoo=CMStrings.deEscape(CMParms.getParmStr(parms, "ID", ""));
 							else
 								throw new CMException("Error: Invalid "+thing+" award for "+eventStr+":  Missing ID= argument.");
-							if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+							if(CMProps.isState(CMProps.HostState.RUNNING))
 							{
 								Physical P;
 								if(type == AwardType.ITEM)
@@ -2364,7 +2364,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Missing AREA parameter: "+areaID+" for "+tattoo+"!";
 					if((CMLib.map().getArea(areaID)==null)
 					&&(!areaID.equals("WORLD"))
-					&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+					&&(CMProps.isState(CMProps.HostState.RUNNING)))
 						return "Error: Unknown AREA: "+areaID+" for "+tattoo+"!";
 					this.areaID=areaID;
 					return "";
@@ -4181,7 +4181,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							final Room R=CMLib.map().getRoom(s);
 							if(R==null)
 							{
-								if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+								if(CMProps.isState(CMProps.HostState.RUNNING))
 									return "Error: Missing or invalid ROOMID: "+s+" for "+tattoo+"!";
 								else
 									roomIDs.add(s);
@@ -8252,7 +8252,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if((mob != null)
 		&&(E!=null)
 		&&(mob.isPlayer())
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		&&(CMProps.isState(CMProps.HostState.RUNNING)))
 		{
 			ensureAchievementsLoaded();
 			final PlayerStats pStats = mob.playerStats();
@@ -8352,7 +8352,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if((mob != null)
 		&&(E!=null)
 		&&(mob.isPlayer())
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		&&(CMProps.isState(CMProps.HostState.RUNNING)))
 		{
 			ensureAchievementsLoaded();
 			final PlayerStats pStats = mob.playerStats();
@@ -9684,7 +9684,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean evaluatePlayerAchievements(final MOB mob)
 	{
-		if((mob==null)||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		if((mob==null)||(!CMProps.isState(CMProps.HostState.RUNNING)))
 			return false;
 		final PlayerStats P=mob.playerStats();
 		if(P==null)
@@ -9702,7 +9702,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean evaluateAccountAchievements(final MOB mob)
 	{
-		if((mob==null)||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		if((mob==null)||(!CMProps.isState(CMProps.HostState.RUNNING)))
 			return false;
 		final PlayerStats P=mob.playerStats();
 		if(P==null)
@@ -9723,7 +9723,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean evaluateClanAchievements()
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return false;
 		boolean somethingDone=false;
 		for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)

@@ -58,7 +58,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	@Override
 	public void bump(final CMObject E, final int type)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
 			return;

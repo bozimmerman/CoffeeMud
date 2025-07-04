@@ -101,7 +101,7 @@ public class MOBReSave extends ActiveTicker
 		&&(tickID==Tickable.TICKID_MOB)
 		&&(!((MOB)ticking).amDead())
 		&&(!noRecurse)
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		&&(CMProps.isState(CMProps.HostState.RUNNING))
 		&&(((MOB)ticking).getStartRoom()!=null)
 		&&(((MOB)ticking).getStartRoom().roomID().length()>0)
 		&&(((MOB)ticking).databaseID().length()>0))

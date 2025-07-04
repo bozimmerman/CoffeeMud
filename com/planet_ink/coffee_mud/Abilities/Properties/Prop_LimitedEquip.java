@@ -126,7 +126,7 @@ public class Prop_LimitedEquip extends Property
 			return false;
 		if((msg.targetMinor()==CMMsg.TYP_WEAR)
 		&&(msg.target()==affected)
-		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		&&(CMProps.isState(CMProps.HostState.RUNNING))
 		&&(affected instanceof Item))
 		{
 			final Item affI=(Item)msg.target();

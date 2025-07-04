@@ -526,7 +526,7 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return "false;";
 
 		if((httpReq.getHeader("upgrade")!=null)

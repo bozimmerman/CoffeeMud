@@ -2786,7 +2786,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 
 	protected void loadCompoundingRules()
 	{
-		if(compoundingRulesLoaded || (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+		if(compoundingRulesLoaded || (!CMProps.isState(CMProps.HostState.RUNNING)))
 			return;
 		final List<String> compoundRuleStrs = CMParms.parseCommas(CMProps.getVar(Str.MANACOMPOUND_RULES), true);
 		this.compounders.clear();

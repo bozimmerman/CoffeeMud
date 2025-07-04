@@ -1132,7 +1132,7 @@ public class StdRoom implements Room
 					final ArrayList<Item> bodies=new ArrayList<Item>(1);
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMMOBS))
 					{
-						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+						if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 							CMLib.threads().rejuv(this,Tickable.TICKID_MOB);
 						eachInhabitant(new EachApplicable<MOB>()
 						{
@@ -1151,7 +1151,7 @@ public class StdRoom implements Room
 					else
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMSHOPS))
 					{
-						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+						if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 							CMLib.threads().rejuv(this,Tickable.TICKID_MOB);
 						eachInhabitant(new EachApplicable<MOB>()
 						{
@@ -1170,7 +1170,7 @@ public class StdRoom implements Room
 					// never else
 					if(CMSecurity.isSaveFlag(CMSecurity.SaveFlag.ROOMITEMS))
 					{
-						if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+						if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 							CMLib.threads().rejuv(this,Tickable.TICKID_ROOM_ITEM_REJUV);
 						eachItem(new EachApplicable<Item>()
 						{
@@ -1188,7 +1188,7 @@ public class StdRoom implements Room
 				final Area A=getArea();
 				final String roomID=roomID();
 				setGridParent(null);
-				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				if(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 				{
 					CMLib.map().emptyRoom(this,null,true);
 					destroy();

@@ -267,7 +267,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		if((software==null)
 		||(System.currentTimeMillis()>nextSoftwareCheck))
 		{
-			if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			if(CMProps.isState(CMProps.HostState.RUNNING))
 			{
 				final List<Item> list=getContents();
 				final LinkedList<Software> softwareList=new LinkedList<Software>();
@@ -691,7 +691,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 				{
-					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+					if(!CMProps.isState(CMProps.HostState.RUNNING))
 						nextPowerCycleTmr=System.currentTimeMillis()+(12*1000);
 					int amountToTake = 0;
 					if(powerRemaining()>0)

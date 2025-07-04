@@ -43,7 +43,7 @@ public class CheckAuthCode extends StdWebMacro
 
 	public Hashtable<String,String> getAuths(final HTTPRequest httpReq)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return null;
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)

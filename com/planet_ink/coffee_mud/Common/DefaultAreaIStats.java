@@ -441,7 +441,7 @@ public class DefaultAreaIStats implements AreaIStats
 				@Override
 				public void run()
 				{
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+					if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 						return;
 					if((areaA==null)||(areaA.amDestroyed()))
 						return;

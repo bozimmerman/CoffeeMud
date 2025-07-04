@@ -1374,7 +1374,7 @@ public class CMSecurity
 					return true;
 				}
 				else
-				if(CMProps.getBoolVar(Bool.MUDSTARTED))
+				if(CMProps.isState(CMProps.HostState.RUNNING))
 					return true;
 			}
 		}

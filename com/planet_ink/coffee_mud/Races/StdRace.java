@@ -725,7 +725,7 @@ public class StdRace implements Race
 						}
 					}
 					else
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+					if(CMProps.isState(CMProps.HostState.RUNNING))
 					{
 						if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 						||(!CMClass.isLanguage(mapping.abilityID())))
@@ -1097,7 +1097,7 @@ public class StdRace implements Race
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
 				else
-				if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				if(CMProps.isState(CMProps.HostState.RUNNING))
 					Log.errOut("Race "+ID()+" had NULL resource!");
 			}
 		}
@@ -1229,7 +1229,7 @@ public class StdRace implements Race
 						finalV.add(A);
 					}
 					else
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+					if(CMProps.isState(CMProps.HostState.RUNNING))
 					{
 						if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 						||(!CMClass.isLanguage(racialEffectNames()[v])))
@@ -1256,7 +1256,7 @@ public class StdRace implements Race
 					finalV.add(A1);
 				}
 			}
-			if((finalV != empty)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			if((finalV != empty)&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				((CMUniqSortSVec<Ability>)finalV).trimToSize();
 				racialEffectMap.put(level, (CMUniqSortSVec<Ability>)finalV);
@@ -1918,7 +1918,7 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return racialAbilityMap.get(level);
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return emptyIDs;
 		final List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		final CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>(V.size());
@@ -1935,7 +1935,7 @@ public class StdRace implements Race
 				finalV.add(A);
 			}
 			else
-			if((A==null)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			if((A==null)&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
 				||(!CMClass.isLanguage(able.abilityID())))

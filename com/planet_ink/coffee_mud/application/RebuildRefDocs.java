@@ -65,7 +65,7 @@ public class RebuildRefDocs
 			}
 		}).start();
 		while((CMProps.instance('0')==null)
-		||(!CMProps.instance('0').getBool(CMProps.Bool.MUDSTARTED)))
+		||(!CMProps.instance('0')._isState(CMProps.HostState.RUNNING)))
 		{
 			try
 			{

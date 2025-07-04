@@ -1768,7 +1768,7 @@ public class InstanceArea extends StdAbility
 		// if not an instance case...
 		if(this.targetAreas==null)
 		{
-			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			if(!CMProps.isState(CMProps.HostState.RUNNING))
 				return true;
 			this.targetAreas=new HashSet<Area>();
 			if(!(affected instanceof Area))

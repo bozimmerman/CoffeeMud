@@ -423,7 +423,7 @@ public class GrinderPlayers extends GrinderMobs
 
 	public static String editPlayer(final MOB whom, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final MOB M)
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		final List<Item> allitems=new ArrayList<Item>();

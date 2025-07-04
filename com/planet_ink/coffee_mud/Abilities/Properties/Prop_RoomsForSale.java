@@ -144,7 +144,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			lastItemNums=data[0];
 			daysWithNoChange=data[1];
 			if((lastDayDone!=((Room)affected).getArea().getTimeObj().getDayOfMonth())
-			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			&&(CMProps.isState(CMProps.HostState.RUNNING)))
 			{
 				final Room R=(Room)affected;
 				lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
