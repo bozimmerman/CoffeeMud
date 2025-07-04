@@ -47,6 +47,8 @@ import java.util.*;
 */
 public class ShipNavProgram extends ShipSensorProgram
 {
+	private Iterator<ShipEngine> iterator;
+
 	@Override
 	public String ID()
 	{
@@ -824,16 +826,20 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected boolean confirmNavEnginesOK(final SpaceShip ship, final Collection<ShipEngine> programEngines)
 	{
 		final Double lastInject=this.lastInject;
-		if((ship==null)||(programEngines==null))
+		if((ship==null)
+		||(programEngines==null)
+		||(programEngines.size()==0))
 		{
-			String reason =  (programEngines == null)?"no engines":"";
+			String reason =  (programEngines == null)?"no engines":(programEngines.size()==0)?"no aft engines":"";
 			reason = (ship==null)?"no ship interface":reason;
 			super.addScreenMessage(L("Last program aborted with error ("+reason+")."));
 			return false;
  		}
-		if((programEngines.size()==0)||(lastInject==null))
+		if(lastInject==null)
+			primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, programEngines.iterator().next());
+		if(lastInject==null)
 		{
-			String reason =  (programEngines.size()==0)?"no aft engines":"";
+			String reason =  "";
 			reason = (lastInject==null)?"no engine injection data":reason;
 			super.addScreenMessage(L("Program aborted with error ("+reason+")."));
 			return false;
@@ -879,10 +885,18 @@ public class ShipNavProgram extends ShipSensorProgram
 						return false;
 					}
 					else
-					if(track.state != ShipNavState.STOP)
+					if((track.state != ShipNavState.STOP)&&(track.nextTrack==null))
 					{
 						super.addScreenMessage(L("Approach completed, stop initiated."));
 						track.state = ShipNavState.STOP;
+					}
+					else
+					{
+						super.addScreenMessage(L("Approach completed."));
+						for(final ShipEngine engineE : programEngines)
+							performSimpleThrust(engineE,Double.valueOf(0.0), true);
+						this.cancelNavigation();
+						return false;
 					}
 				}
 				else
@@ -968,7 +982,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			break;
 		case STOP:
-			if(ship.speed()  <= 0.0)
+			if(ship.speed()  <= 0.01)
 			{
 				ship.setSpeed(0.0); // that's good enough, for now.
 				for(final ShipEngine engineE : programEngines)
@@ -1046,7 +1060,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		//$FALL-THROUGH$
 		case STOP:
 		{
-			if(ship.speed()  > 0.0)
+			if(ship.speed()  > 0.01)
 			{
 				final Dir3D stopFacing = CMLib.space().getOppositeDir(ship.direction());
 				final double angleDelta = CMLib.space().getAngleDelta(ship.facing(), stopFacing); // starboard is -, port is +
@@ -1067,6 +1081,11 @@ public class ShipNavProgram extends ShipSensorProgram
 							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
 					}
 				}
+			}
+			else
+			{
+				ship.setSpeed(0.0);
+				targetAcceleration = 0.0;
 			}
 			break;
 		}
@@ -1220,64 +1239,51 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Orbit program aborted: no target planet."));
 				return;
 			}
-			// Get target orbital parameters
-			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
-			if (orbitParams == null)
-			{
-				cancelNavigation();
-				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbit."));
-				return;
-			}
-			final Dir3D targetDir = orbitParams.first;
-			final double targetSpeed = orbitParams.second.doubleValue();
-
 			// Check current distance to ensure we're in the orbital range
 			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
 			final long maxDistance = Math.round(CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
 			final long minDistance = targetObject.radius() + Math.round(CMath.mul(0.75, maxDistance - targetObject.radius()));
-			if (distance < minDistance || distance > maxDistance)
+			final Dir3D dirToPlanet = CMLib.space().getDirection(ship, targetObject);
+			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
+
+			if (orbitParams == null)
 			{
-				// Need to approach the correct orbital radius
-				final Dir3D dirToPlanet = CMLib.space().getDirection(ship, targetObject);
 				final Dir3D targetFacing = (distance < minDistance) ? CMLib.space().getOppositeDir(dirToPlanet) : dirToPlanet;
 				changeFacing(ship, targetFacing);
-				targetAcceleration = findTargetAcceleration(programEngines.get(0));
+				targetAcceleration = findTargetAcceleration(programEngines.get(0)) * 0.5;
 				newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
 				for (final ShipEngine engineE : programEngines)
 					performSimpleThrust(engineE, newInject, false);
+				super.addScreenMessage(L("Adjusting position for orbital entry."));
 			}
 			else
 			{
-				// Within orbital range, check direction and speed
+				final Dir3D targetDir = orbitParams.first;
+				final double actualTargetSpeed = orbitParams.second.doubleValue();
 				final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
-				if (dirDelta > 0.1)
-				{
-					// Align direction first
+	            final double currentSpeed = ship.speed();
+	            if (dirDelta > 0.1)
 					changeFacing(ship, targetDir);
-					newInject = Double.valueOf(0.0); // No thrust while turning
+				if (Math.abs(currentSpeed - actualTargetSpeed) > 0.1)
+				{
+					final double speedDiff = Math.abs(currentSpeed - actualTargetSpeed);
+					targetAcceleration = Math.min(speedDiff * 2, findTargetAcceleration(programEngines.get(0)) * 0.1);
+					changeFacing(ship, currentSpeed > actualTargetSpeed ? CMLib.space().getOppositeDir(targetDir) : targetDir);
+					newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
 					for (final ShipEngine engineE : programEngines)
-						performSimpleThrust(engineE, newInject, true);
-					super.addScreenMessage(L("Aligning ship to orbital direction."));
+						performSimpleThrust(engineE, newInject, false);
+					super.addScreenMessage(L("Adjusting speed to match orbital velocity."));
 				}
 				else
 				{
-					// Direction is close enough, adjust speed
-					if (Math.abs(ship.speed() - targetSpeed) > 0.1)
-					{
-						targetAcceleration = findTargetAcceleration(programEngines.get(0));
-						changeFacing(ship, ship.speed() > targetSpeed ? CMLib.space().getOppositeDir(targetDir) : targetDir);
-						newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
-						for (final ShipEngine engineE : programEngines)
-							performSimpleThrust(engineE, newInject, false);
-						super.addScreenMessage(L("Adjusting speed to match orbital velocity."));
-					}
-					else
-					{
-						track.state = ShipNavState.ORBITCHECK;
-						super.addScreenMessage(L("Direction and speed aligned, fine-tuning orbit."));
-					}
+					track.state = ShipNavState.ORBITCHECK;
+					super.addScreenMessage(L("Direction and speed aligned, fine-tuning orbit."));
 				}
 			}
+		    if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+		        Log.debugOut(ship.name(), "ORBITSEARCH: distance=" + distance + ", speed=" + ship.speed() +
+		            ", targetSpeed=" + (orbitParams != null ? orbitParams.second : "N/A") +
+		            ", targetAccel=" + targetAcceleration + ", inject=" + newInject);
 			break;
 		}
 		case ORBITCHECK:
@@ -1624,7 +1630,22 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("No inertial dampeners found. Limiting acceleration to " + gs + "Gs."));
 			}
 			final List<ShipEngine> programEngines = new XVector<ShipEngine>(engineE);
-			navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
+
+			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+			for (final TechComponent sensor : getShipSensors())
+				allObjects.addAll(takeNewSensorReport(sensor));
+			//TODO: the nav logics tendency to avoid getting too close to planets may be creating unnecc waypoints
+			final List<SpaceObject> navs = calculateNavigation(ship, programPlanet, allObjects);
+			if (navs == null)
+			{
+				addScreenMessage(L("Error: Unable to navigate to orbital position."));
+				cancelNavigation();
+				return false;
+			}
+			final List<ShipEngine> approachEngines = new XVector<ShipEngine>(engineE);
+			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, programPlanet, approachEngines, new XLinkedList<SpaceObject>(navs));
+			final ShipNavTrack orbitTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
+			navTrack.setNextTrack(orbitTrack);
 			addScreenMessage(L("Orbit procedure initialized."));
 			return false;
 		}

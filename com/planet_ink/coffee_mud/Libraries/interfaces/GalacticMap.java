@@ -696,6 +696,16 @@ public interface GalacticMap extends CMLibrary
 	public double getGravityForce(SpaceObject S, SpaceObject cO);
 
 	/**
+	 * Estimates the average orbital speed required to maintain
+	 * a stable orbit around the give planet.  Returns 0 if
+	 * there is no gravity sufficient to make orbit possible.
+	 *
+	 * @param planet the planet to orbit around.
+	 * @return the velocity required of any object to orbit the planet
+	 */
+	public double estimateOrbitalSpeed(final SpaceObject planet);
+
+	/**
 	 * Given a ship war component, returns the directions in which it is
 	 * currently covering.
 	 *

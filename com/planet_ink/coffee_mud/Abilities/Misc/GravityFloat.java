@@ -211,7 +211,7 @@ public class GravityFloat extends StdAbility
 				case 3:
 				case 4:
 				case 5:
-					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around reaching for <T-NAME>, but <S-HE-SHE> float(s) away from it."));
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around reaching for <T-NAME>, but float(s) away from it."));
 					break;
 				case 6:
 				case 7:
@@ -219,7 +219,7 @@ public class GravityFloat extends StdAbility
 				case 9:
 				default:
 				case 10:
-					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying reach for <T-NAME>, but <T-HE-SHE> float(s) away."));
+					R.show(mob, P,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying reach for <T-NAME>, but float(s) away."));
 					break;
 				}
 			}

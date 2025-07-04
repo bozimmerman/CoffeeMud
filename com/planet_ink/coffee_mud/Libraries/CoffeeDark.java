@@ -1251,6 +1251,36 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		return course;
 	}
 
+	protected double calculateGravityForce(final double distance, final double graviRadiusMax)
+	{
+		return 0.5 + (0.5 * (1.0 - (distance / graviRadiusMax)));
+	}
+
+	@Override
+	public double estimateOrbitalSpeed(final SpaceObject planet)
+	{
+		if (planet == null || planet.getMass() <= 0)
+			return 0.0;
+		final long maxDistance = Math.round(CMath.mul(planet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
+		final long minDistance = planet.radius() + Math.round(CMath.mul(0.75, maxDistance - planet.radius()));
+		final long orbitalRadius = (minDistance + maxDistance) / 2;
+		if(orbitalRadius <= planet.radius())
+			return 0.0;
+		final long distance = orbitalRadius - planet.radius();
+		if(((planet instanceof Area)||(planet.getMass() >=SpaceObject.ASTEROID_MASS))
+		&& (distance > 0)
+		&& (distance <= CMath.mul(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS, planet.radius())))
+		{
+			final double graviRadiusMax = (planet.radius() * (SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS - 1.0));
+			if (distance < graviRadiusMax)
+			{
+				final double gravityInfluence = calculateGravityForce(distance, graviRadiusMax);
+				return Math.sqrt(CMath.mul(planet.getMass(), gravityInfluence) / orbitalRadius);
+			}
+		}
+		return 0.0;
+	}
+
 	@Override
 	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
 	{
@@ -1263,7 +1293,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		{
 			final double graviRadiusMax=(cO.radius()*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS-1.0));
 			if(distance<graviRadiusMax)
-				return 0.5 + (0.5 *(1.0 - (distance/graviRadiusMax)));
+				return calculateGravityForce(distance, graviRadiusMax);
 		}
 		return 0;
 	}
