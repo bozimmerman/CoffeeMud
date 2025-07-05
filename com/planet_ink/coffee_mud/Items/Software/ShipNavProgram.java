@@ -1270,7 +1270,6 @@ public class ShipNavProgram extends ShipSensorProgram
 					newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
 					for (final ShipEngine engineE : programEngines)
 						performSimpleThrust(engineE, newInject, false);
-					super.addScreenMessage(L("Adjusting speed to match orbital velocity."));
 				}
 				else
 				{
