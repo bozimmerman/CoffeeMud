@@ -75,6 +75,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected CMath.CompiledFormula					maxCarryFormula			= null;
 	protected CMath.CompiledFormula					maxItemsFormula			= null;
 	protected CMath.CompiledFormula					maxFollowersFormula		= null;
+	protected final Map<String,List<String>>		charCrScripts			= new Hashtable<String,List<String>>();
 
 	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
 
@@ -657,10 +658,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	private Map<String,List<String>> getLoginScripts()
+	private Map<String,List<String>> initCharCrScripts()
 	{
 		final Hashtable<String,List<String>> extraScripts=new Hashtable<String,List<String>>();
-		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"};
+		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER",
+											"STATS","CLASS","FACTIONS","AUTHENTICATE",
+											"CHARLOGIN", "ALLCHARLOGIN","END"};
 		final List<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CHARCREATIONSCRIPTS),true);
 		for(int e=0;e<extras.size();e++)
 		{
@@ -2646,7 +2649,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		||(acct.getPasswordStr().length()==0))
 		{
 			mob.playerStats().setPassword(password);
-			executeScript(mob,getLoginScripts().get("PASSWORD"));
+			executeScript(mob,charCrScripts.get("PASSWORD"));
 		}
 
 		if((acct!=null)
@@ -2752,7 +2755,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		mob.playerStats().setAccount(acct);
 
-		executeScript(mob,getLoginScripts().get("EMAIL"));
+		executeScript(mob,charCrScripts.get("EMAIL"));
 		if((acct==null)&&(!session.isMTTS()))
 		{
 			session.promptPrint(L("\n\rDo you want ANSI colors (Y/n)?"));
@@ -2838,7 +2841,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			mob.setAttribute(MOB.Attrib.MXP,true);
 
-		executeScript(mob,getLoginScripts().get("ANSI"));
+		executeScript(mob,charCrScripts.get("ANSI"));
 
 		final int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		switch(themeCode)
@@ -2916,7 +2919,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.sessions().moveSessionToCorrectThreadGroup(session,loginObj.theme);
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
-		executeScript(mob,getLoginScripts().get("THEME"));
+		executeScript(mob,charCrScripts.get("THEME"));
 		loginObj.state=LoginState.CHARCR_RACESTART;
 		return null;
 	}
@@ -3102,7 +3105,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
 		mob.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
 
-		executeScript(mob,getLoginScripts().get("RACE"));
+		executeScript(mob,charCrScripts.get("RACE"));
 		loginObj.state=LoginState.CHARCR_GENDERSTART;
 		return null;
 	}
@@ -3179,7 +3182,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 
-		executeScript(mob,getLoginScripts().get("GENDER"));
+		executeScript(mob,charCrScripts.get("GENDER"));
 
 		if((CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
 			mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
@@ -3553,7 +3556,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrStatDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		executeScript(mob,getLoginScripts().get("STATS"));
+		executeScript(mob,charCrScripts.get("STATS"));
 		return charcrClassInit(loginObj, session);
 	}
 
@@ -3761,7 +3764,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 
-		executeScript(mob,getLoginScripts().get("CLASS"));
+		executeScript(mob,charCrScripts.get("CLASS"));
 
 		loginObj.index=-1;
 		loginObj.state=LoginState.CHARCR_FACTIONNEXT;
@@ -3870,7 +3873,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrFactionDone(final LoginSessionImpl loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		executeScript(mob,getLoginScripts().get("FACTIONS"));
+		executeScript(mob,charCrScripts.get("FACTIONS"));
 
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 		CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
@@ -4103,7 +4106,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CMLib.database().DBCreateCharacter(mob);
 		CMLib.players().addPlayer(mob);
 
-		executeScript(mob,getLoginScripts().get("END"));
+		executeScript(mob,charCrScripts.get("END"));
 
 		setGlobalBitmaps(mob);
 		mob.playerStats().setLastIP(session.getAddress());
@@ -4395,6 +4398,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			Log.errOut("No start room for "+mob.Name());
 			return LoginResult.NO_LOGIN;
 		}
+		executeScript(mob,charCrScripts.get("ALLCHARLOGIN"));
 		mob.bringToLife(startRoom,resetStats);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 		for(final Pair<Clan,Integer> p : mob.clans())
@@ -4593,6 +4597,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					startRoom = CMLib.map().getRandomRoom();
 			}
 		}
+		executeScript(mob,charCrScripts.get("CHARLOGIN"));
 		return this.finishLogin(session, mob, startRoom, resetStats);
 	}
 
@@ -5267,6 +5272,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		maxItemsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXITEMS));
 		maxCarryFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXCARRY));
 		maxFollowersFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MAXFOLLOW));
+		this.charCrScripts.clear();
+		this.charCrScripts.putAll(initCharCrScripts());
 		return super.activate();
 	}
 

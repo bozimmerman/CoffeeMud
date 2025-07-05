@@ -23,6 +23,7 @@
  21. Prop_ReqEntry and Prop_*Zapper support accusing someone of a crime.
  22. New WebMacros: TellMessageNext, and TellFunction.
  23. Scriptable/MOBPROG: new CNCLMSG_PROG and EXECMSG_PROG filtering.
+ 24. CHARCREATIONSCRIPTS codes now includes CHARLOGIN, ALLCHARLOGIN
  
 # Build 5.10.4 Release 12/05/2024
   *  DATABASE CHANGED! (Bitmap field in CMCHAR table is now larger)
