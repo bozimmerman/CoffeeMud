@@ -62,13 +62,38 @@ public class SpottedMeshLayout extends MeshLayout
 			&&(n.links().size()>3)
 			&&(!exclude.contains(n)))
 			{
+				boolean safe = true;
 				for(final Integer odir : opDirs.keySet())
 					if(odir.intValue() != dir)
 					{
 						final Integer opDir = opDirs.get(odir);
-						if(n.links().get(odir).getLink(opDir.intValue())==n)
-							n.links().get(odir).delLink(n);
-						n.links().remove(odir);
+						if(n.links().containsKey(odir))
+						{
+							if(n.links().get(odir).getLink(opDir.intValue())==n)
+							{
+								if(n.links().get(odir).links().size()==1)
+								{
+									safe=false;
+									break;
+								}
+							}
+						}
+					}
+				if(!safe)
+				{
+					exclude.add(n);
+					continue;
+				}
+				for(final Integer odir : opDirs.keySet())
+					if(odir.intValue() != dir)
+					{
+						final Integer opDir = opDirs.get(odir);
+						if(n.links().containsKey(odir))
+						{
+							if(n.links().get(odir).getLink(opDir.intValue())==n)
+								n.links().get(odir).delLink(n);
+							n.links().remove(odir);
+						}
 					}
 				n.reType(LayoutTypes.leaf);
 				n.getLink(dir).flag(LayoutFlags.offleaf);
