@@ -645,15 +645,11 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	{
 		if(mob==null)
 			return false;
-if(alias.containsKey("DEBUG")&&(cat!=null)&&(cat.length()>0)&&(ignored.size()>0)) //TODO:BZ:DELME
-	Log.debugOut("ChK IF "+cat+"."+mob.Name()+" is ignored by "+alias.get("DEBUG"));
 		synchronized(mob)
 		{
 			if (mob.soulMate() != null)
 				mob=mob.soulMate();
 		}
-if(alias.containsKey("DEBUG")&&(cat!=null)&&(cat.length()>0)&&(ignored.size()>0)) //TODO:BZ:DELME
-	Log.debugOut("ChK IF "+cat+"."+mob.Name()+" is REALLY ignored by "+alias.get("DEBUG"));
 		if((account != null) && (account.isIgnored(cat, mob)))
 			return true;
 		if(ignored.size()==0)
@@ -669,8 +665,6 @@ if(alias.containsKey("DEBUG")&&(cat!=null)&&(cat.length()>0)&&(ignored.size()>0)
 			return true;
 		if((acct != null)&&(ignored.contains(cat+"."+acct.getAccountName()+"*")))
 			return true;
-if(alias.containsKey("DEBUG")&&(cat!=null)&&(cat.length()>0)&&(ignored.size()>0)) //TODO:BZ:DELME
-	Log.debugOut("ChK IF "+cat+"."+mob.Name()+" is NOT ignored by "+alias.get("DEBUG"));
 		return false;
 	}
 
