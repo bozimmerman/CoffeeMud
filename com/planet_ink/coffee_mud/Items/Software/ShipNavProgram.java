@@ -142,7 +142,6 @@ public class ShipNavProgram extends ShipSensorProgram
 		LANDING_APPROACH,
 		LANDING,
 		ORBITSEARCH,
-		ORBITCHECK,
 		ORBITCRUISE,
 		APPROACH,
 		DEPROACH
@@ -975,23 +974,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Orbit program aborted with error ("+reason+")."));
 				return false;
 			}
-			{
-				final long distance=CMLib.space().getDistanceFrom(ship, targetObject);
-				final long maxDistance=Math.round(CMath.mul(targetObject.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
-				final long minDistance = targetObject.radius() + Math.round(CMath.mul(.75, maxDistance-targetObject.radius()));
-				if((distance < maxDistance) && (distance > minDistance))
-				{
-					final Pair<Dir3D,Double> orb = CMLib.space().calculateOrbit(ship,targetObject);
-					if((orb != null)
-					&&(CMath.isWithin(ship.speed(), orb.second.doubleValue(), 0.05))
-					&&(CMLib.space().getAngleDelta(ship.direction(), orb.first)<0.01))
-					{
-						super.addScreenMessage(L("Orbit program completed. Neutralizing acceleration."));
-						this.cancelNavigation(true);
-						return false;
-					}
-				}
-			}
+			// orbit is forever now
 			break;
 		case STOP:
 			if(ship.speed()  <= 0.01)
@@ -1143,9 +1126,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				&& (targetAcceleration > 0.0))
 				{
 					final double ticksToStop = ship.speed() / targetAcceleration;
-Log.debugOut("TTS="+ticksToStop+"=="+ship.speed()+"/"+targetAcceleration);
 					final double stopDistance = (ship.speed()/2.0) * (ticksToStop+1);
-Log.debugOut("SD="+stopDistance+"=="+(ship.speed()/2.0)+"*"+(ticksToStop+1)+">="+distToITarget);
 					// now see if we need to adjust decelleration during deproach
 					Dir3D correctFacing;
 					//final Dir3D correctDirection = dirToITarget;
@@ -1206,7 +1187,6 @@ Log.debugOut("SD="+stopDistance+"=="+(ship.speed()/2.0)+"*"+(ticksToStop+1)+">="
 		}
 		case LAUNCHING:
 		case ORBITSEARCH:
-		case ORBITCHECK:
 		case ORBITCRUISE:
 			break;
 		}
@@ -1252,143 +1232,146 @@ Log.debugOut("SD="+stopDistance+"=="+(ship.speed()/2.0)+"*"+(ticksToStop+1)+">="
 				super.addScreenMessage(L("Orbit program aborted: no target planet."));
 				return;
 			}
-			// Check current distance to ensure we're in the orbital range
+			if (savedAcceleration == null && lastInject != null)
+			{
+				savedAcceleration = Double.valueOf(findTargetAcceleration(programEngines.get(0)) * 0.1);
+				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut(ship.name(), "ORBITSEARCH: Initialized savedAcceleration=" + savedAcceleration);
+			}
 			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
-			final long maxDistance = Math.round(CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
-			final long minDistance = targetObject.radius() + Math.round(CMath.mul(0.75, maxDistance - targetObject.radius()));
+			final double maxDistance = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
+			final double minDistance = targetObject.radius() + CMath.mul(0.75, maxDistance - targetObject.radius());
+			final long medDistance = Math.round(minDistance + ((maxDistance-minDistance)/2.0));
 			final Dir3D dirToPlanet = CMLib.space().getDirection(ship, targetObject);
 			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
-
 			if (orbitParams == null)
 			{
 				final Dir3D targetFacing = (distance < minDistance) ? CMLib.space().getOppositeDir(dirToPlanet) : dirToPlanet;
 				changeFacing(ship, targetFacing);
 				targetAcceleration = findTargetAcceleration(programEngines.get(0)) * 0.5;
-				newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
+				newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
 				for (final ShipEngine engineE : programEngines)
 					performSimpleThrust(engineE, newInject, false);
-				super.addScreenMessage(L("Adjusting position for orbital entry."));
 			}
 			else
 			{
 				final Dir3D targetDir = orbitParams.first;
 				final double targetSpeed = orbitParams.second.doubleValue();
-				final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
-				final double currentSpeed = ship.speed();
-				if (dirDelta > 0.05 || Math.abs(currentSpeed - targetSpeed) > 0.5)
+				if(((ship.speed() > (targetSpeed * 0.5))&&(ship.speed() < (targetSpeed * 2)))
+				&&((distance > minDistance) && (distance < maxDistance)))
 				{
-					// Calculate thrust direction: blend targetDir and opposite based on speed needs
-					final Dir3D thrustDir;
-					if (currentSpeed > targetSpeed)
-						thrustDir = CMLib.space().getOppositeDir(targetDir); // Decelerate
-					else
-						thrustDir = targetDir; // Accelerate or maintain
-					changeFacing(ship, thrustDir);
-
-					// Calculate target acceleration: weight direction and speed contributions
+					final Dir3D planetDir = CMLib.space().getDirection(targetObject, ship);
+					final Coord3D newCoords = CMLib.space().getLocation(targetObject.coordinates(), planetDir, medDistance);
+					ship.setCoords(newCoords);
+					ship.setFacing(targetDir.copyOf());
+					ship.setDirection(targetDir.copyOf());
+					ship.setSpeed(targetSpeed);
+				}
+				final Dir3D angleDiff = CMLib.space().getAngleDiff(ship.direction(), targetDir);
+				final double yawDelta = Math.abs(angleDiff.xyd());
+				final double pitchDelta = Math.abs(angleDiff.zd());
+				final double currentSpeed = ship.speed();
+				final double speedDelta = Math.abs(currentSpeed - targetSpeed);
+				if (yawDelta > 0.01 || pitchDelta > 0.01)
+				{
+					final Dir3D thrustDir = targetDir; // Thrust toward targetDir to align velocity
 					final double maxAccel = findTargetAcceleration(programEngines.get(0));
-					final double dirWeight = Math.min(dirDelta / (Math.PI / 4), 1.0); // Normalize contribution of direction
-					final double speedDelta = Math.abs(currentSpeed - targetSpeed);
-					final double speedWeight = Math.min(speedDelta / targetSpeed, 1.0); // Normalize contribution of speed
-					targetAcceleration = maxAccel * (0.5 * dirWeight + 0.5 * speedWeight); // Blend contributions
-					targetAcceleration = Math.min(targetAcceleration, maxAccel); // Cap at max
-					newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
+					targetAcceleration = maxAccel * Math.min((yawDelta + pitchDelta) / Math.PI, 0.5); // Limit to half max for precision
 
-					for (final ShipEngine engineE : programEngines)
-						performSimpleThrust(engineE, newInject, false);
-					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut(ship.name(), "ORBITSEARCH: Adjusting velocity, dirDelta=" + dirDelta +
-								", speedDelta=" + speedDelta + ", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
-								", accel=" + targetAcceleration + ", inject=" + newInject);
+					// Simulate thrust to ensure direction improvement
+					final Dir3D testDir = ship.direction().copyOf();
+					final Dir3D testAngleDiff = CMLib.space().getAngleDiff(testDir, targetDir);
+					final double testYawDelta = Math.abs(testAngleDiff.xyd());
+					final double testPitchDelta = Math.abs(testAngleDiff.zd());
+
+					if (testYawDelta < yawDelta || testPitchDelta < pitchDelta)
+					{
+						changeFacing(ship, thrustDir);
+						newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
+						for (final ShipEngine engineE : programEngines)
+							performSimpleThrust(engineE, newInject, false);
+						if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name(), "ORBITSEARCH: Aligning direction, yawDelta=" + yawDelta +
+									", pitchDelta=" + pitchDelta + ", speedDelta=" + speedDelta +
+									", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
+									", accel=" + targetAcceleration + ", inject=" + newInject);
+					}
+					else if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut(ship.name(), "ORBITSEARCH: Skipped direction thrust, no improvement: testYawDelta=" + testYawDelta +
+								", testPitchDelta=" + testPitchDelta);
+				}
+				else if (speedDelta > 0.5)
+				{
+					final Dir3D thrustDir = (currentSpeed > targetSpeed) ? CMLib.space().getOppositeDir(targetDir) : targetDir;
+					final double maxAccel = findTargetAcceleration(programEngines.get(0));
+					targetAcceleration = maxAccel * Math.min(speedDelta / targetSpeed, 0.5); // Limit to half max for stability
+
+					// Simulate thrust to ensure speed improvement
+					final Dir3D testDir = ship.direction().copyOf();
+					final double testSpeed = CMLib.space().accelSpaceObject(testDir, currentSpeed, thrustDir, targetAcceleration);
+					final double testSpeedDelta = Math.abs(testSpeed - targetSpeed);
+
+					if (testSpeedDelta < speedDelta)
+					{
+						changeFacing(ship, thrustDir);
+						newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
+						for (final ShipEngine engineE : programEngines)
+							performSimpleThrust(engineE, newInject, false);
+						if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name(), "ORBITSEARCH: Adjusting speed, yawDelta=" + yawDelta +
+									", pitchDelta=" + pitchDelta + ", speedDelta=" + speedDelta +
+									", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
+									", accel=" + targetAcceleration + ", inject=" + newInject);
+					}
+					else if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut(ship.name(), "ORBITSEARCH: Skipped speed thrust, no improvement: testSpeedDelta=" + testSpeedDelta);
 				}
 				else
 				{
-					track.state = ShipNavState.ORBITCHECK;
+					track.state = ShipNavState.ORBITCRUISE;
 					newInject = Double.valueOf(0.0);
 					for (final ShipEngine engineE : programEngines)
 						performSimpleThrust(engineE, newInject, true);
-					super.addScreenMessage(L("Direction and speed aligned, fine-tuning orbit."));
 				}
 			}
 			if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 				Log.debugOut(ship.name(), "ORBITSEARCH: distance=" + distance + ", speed=" + ship.speed() +
-					", targetSpeed=" + (orbitParams != null ? orbitParams.second : "N/A") +
-					", targetAccel=" + targetAcceleration + ", inject=" + newInject);
-			break;
-		}
-		case ORBITCHECK:
-		{
-			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
-			if (orbitParams == null) {
-				cancelNavigation(false);
-				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbit."));
-				return;
-			}
-			final Dir3D targetDir = orbitParams.first;
-			final double targetSpeed = orbitParams.second.doubleValue();
-			final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
-			final double speedDiff = ship.speed() - targetSpeed;
-			if (dirDelta > 0.01)
-			{
-				final Dir3D thrustDir = (dirDelta < Math.PI / 2) ? targetDir : CMLib.space().getOppositeDir(targetDir);
-				changeFacing(ship, thrustDir);
-				targetAcceleration = findTargetAcceleration(programEngines.get(0)) * 0.1;
-				newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
-				for (final ShipEngine engineE : programEngines)
-					performSimpleThrust(engineE, newInject, false);
-				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut(ship.name(), "ORBITCHECK: Fine-tuning direction, dirDelta=" + dirDelta);
-				return;
-			}
-			if (Math.abs(speedDiff) > 0.05)
-			{
-				final Dir3D thrustDir = (speedDiff > 0) ? CMLib.space().getOppositeDir(targetDir) : targetDir;
-				changeFacing(ship, thrustDir);
-				targetAcceleration = Math.min(Math.abs(speedDiff) * 0.2, findTargetAcceleration(programEngines.get(0)) * 0.5);
-				newInject = calculateMarginalTargetInjection(newInject, targetAcceleration);
-				for (final ShipEngine engineE : programEngines)
-					performSimpleThrust(engineE, newInject, false);
-				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut(ship.name(), "ORBITCHECK: Fine-tuning speed, diff=" + speedDiff + ", accel=" + targetAcceleration);
-			}
-			else
-			{
-				// Stable orbit, enter cruise
-				track.state = ShipNavState.ORBITCRUISE;
-				newInject = Double.valueOf(0.0);
-				for (final ShipEngine engineE : programEngines)
-					performSimpleThrust(engineE, newInject, true);
-				super.addScreenMessage(L("Stable orbit achieved, entering cruise mode."));
-			}
+						", targetSpeed=" + (orbitParams != null ? orbitParams.second : "N/A") +
+						", targetAccel=" + targetAcceleration + ", inject=" + newInject);
 			break;
 		}
 		case ORBITCRUISE:
 		{
+			final double maxDistance = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
+			final double minDistance = targetObject.radius() + CMath.mul(0.75, maxDistance - targetObject.radius());
+			final long medDistance = Math.round(minDistance + ((maxDistance-minDistance)/2.0));
+			final Dir3D planetDir = CMLib.space().getDirection(targetObject, ship);
+			final Coord3D oldCoords = ship.coordinates();
+			final Coord3D newCoords = CMLib.space().getLocation(targetObject.coordinates(), planetDir, medDistance);
+			ship.setCoords(newCoords);
 			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
+			ship.setCoords(oldCoords);
 			if (orbitParams == null)
 			{
 				cancelNavigation(false);
 				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbit."));
 				return;
 			}
+			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
 			final Dir3D targetDir = orbitParams.first;
 			final double targetSpeed = orbitParams.second.doubleValue();
 			final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
 			final double speedDiff = ship.speed() - targetSpeed;
-			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
-			final long maxDistance = Math.round(CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
-			final long minDistance = targetObject.radius() + Math.round(CMath.mul(0.75, maxDistance - targetObject.radius()));
-			if (dirDelta > 0.05 || Math.abs(speedDiff) > 0.5 || distance < minDistance || distance > maxDistance)
+			if (dirDelta > 0.11 || Math.abs(speedDiff) > 1 || (Math.abs(distance - medDistance) > 150))
 			{
-				track.state = ShipNavState.ORBITCHECK;
+				track.state = ShipNavState.ORBITSEARCH;
 				super.addScreenMessage(L("Orbit drift detected, re-aligning."));
 				return;
 			}
-			newInject = Double.valueOf(0.0);
-			for (final ShipEngine engineE : programEngines)
-				performSimpleThrust(engineE, newInject, true);
-			if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-				Log.debugOut(ship.name(), "ORBITCRUISE: Maintaining orbit, distance=" + distance + ", speed=" + ship.speed());
+			ship.setCoords(newCoords);
+			ship.setFacing(targetDir.copyOf());
+			ship.setDirection(targetDir.copyOf());
+			ship.setSpeed(targetSpeed);
 			break;
 		}
 		case LANDING_APPROACH:
