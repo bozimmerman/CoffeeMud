@@ -131,10 +131,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	public Dir3D[] getPerpendicularAngles(final Dir3D angle)
 	{
 		final List<Dir3D> set = new ArrayList<Dir3D>(5);
-		if(angle.z().compareTo(BigCMath.PI_BY_2)>0)
+		if(angle.z().compareTo(BigCMath.PI_BY_2)>=0)
 			set.add(new Dir3D( angle.xy(), angle.z().subtract(BigCMath.PI_BY_2)));
 		else
-		if(angle.z().compareTo(BigCMath.PI_BY_2)<0)
 			set.add(new Dir3D ( angle.xy(), angle.z().add(BigCMath.PI_BY_2) ));
 
 		final BigDecimal angle10 = angle.z().compareTo(BigCMath.PI_BY_2) > 0 ?  angle.z().subtract(BigCMath.PI_BY_2) : BigCMath.PI_BY_2.subtract(angle.z());
@@ -153,6 +152,12 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			angle02 = angle02.add(BigCMath.PI_TIMES_2);
 		set.add(new Dir3D (angle02, angle10 ));
 
+		final BigDecimal angle03 = angle.xy().add(BigCMath.PI_BY_4);
+		set.add(new Dir3D(angle03.compareTo(BigCMath.PI_TIMES_2) >= 0 ?
+				angle03.subtract(BigCMath.PI_TIMES_2) : angle03, angle10));
+		final BigDecimal angle04 = angle.xy().subtract(BigCMath.PI_BY_4);
+		set.add(new Dir3D(angle04.compareTo(BigCMath.ZERO) < 0 ?
+				angle04.add(BigCMath.PI_TIMES_2) : angle04, angle10));
 		set.add(CMLib.space().getOppositeDir(angle));
 		return set.toArray(new Dir3D[set.size()]);
 	}
@@ -841,9 +846,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O)
+	public List<LocationRoom> getLandingPoints(final SpaceObject ship, Environmental O)
 	{
 		final List<LocationRoom> rooms=new LinkedList<LocationRoom>();
+		if(O instanceof SpaceObject.SensedSpaceObject)
+			O=((SpaceObject.SensedSpaceObject)O).get();
 		final Area A;
 		if(O instanceof Area)
 			A=(Area)O;

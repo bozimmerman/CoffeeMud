@@ -43,32 +43,34 @@ public class BigCMath
 	public static final BigDecimal		ONEPOINT01		= BigDecimal.valueOf(1.01);
 	public static final BigDecimal		ALMOST_ZERO		= ZERO_ALMOST;
 	public static final BigDecimal		MIN_ONE			= BigDecimal.valueOf(-1L);
-	
+
 	public static final BigDecimal		PI;
 	public static final BigDecimal		PI_TIMES_2;
 	public static final BigDecimal		PI_BY_2;
+	public static final BigDecimal		PI_BY_4;
 	public static final BigDecimal		PIPLUS;
 	public static final BigDecimal		PIPLUS_TIMES_2;
 
 	public final static int			 SCALE	= 34;
 	public final static RoundingMode ROUND	= RoundingMode.HALF_UP;
-	
-	static 
+
+	static
 	{
 		PI = new BigDecimal("3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
 		PI.setScale(SCALE, ROUND);
 		PI_TIMES_2 = PI.multiply(TWO);
 		PI_BY_2 = PI.divide(TWO, SCALE, ROUND);
+		PI_BY_4 = PI.divide(FOUR, SCALE, ROUND);
 		PIPLUS = BigCMath.PI.add(BigDecimal.valueOf(0.000000000000001));
 		PIPLUS_TIMES_2 = PIPLUS.multiply(BigCMath.TWO);
 	}
-	
-	public static BigDecimal atan(BigDecimal invX)
+
+	public static BigDecimal atan(final BigDecimal invX)
 	{
 		return atan(invX, SCALE);
 	}
 
-	public static BigDecimal atan(BigDecimal invX, int scale)
+	public static BigDecimal atan(final BigDecimal invX, final int scale)
 	{
 		final BigDecimal invXsq = invX.multiply(invX);
 		BigDecimal num = BigDecimal.ONE.divide(invX, SCALE, ROUND);
@@ -78,19 +80,19 @@ public class BigCMath
 		do
 		{
 			num=num.divide(invXsq, SCALE, ROUND);
-			BigDecimal denom=TWO.multiply(BigDecimal.valueOf(i).add(BigDecimal.ONE));
+			final BigDecimal denom=TWO.multiply(BigDecimal.valueOf(i).add(BigDecimal.ONE));
 			term = num.divide(denom, SCALE, ROUND);
 			result = ((i % 2) == 0) ? result.add(term) : result.subtract(term);
 			i++;
 		} while(term.compareTo(BigDecimal.ZERO) != 0);
 		return result;
 	}
-	
+
 	public static BigDecimal sqrt(final BigDecimal value)
 	{
 		if(value.doubleValue()<=0)
 			return BigCMath.ZERO;
-		BigDecimal x = new BigDecimal(Math.sqrt(value.doubleValue()));
+		final BigDecimal x = new BigDecimal(Math.sqrt(value.doubleValue()));
 		return x.add(new BigDecimal(value.subtract(x.multiply(x)).doubleValue() / (x.doubleValue() * 2.0)));
 		/*
 		final int SCALE=BigCMath.SCALE*2;

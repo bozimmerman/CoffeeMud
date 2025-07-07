@@ -723,8 +723,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			&&(!sameAs(O, others)))
 			{
 				final BoundedSphere enemySphere = O.getSphere();
-				final BoundedSphere enemyBounds = new BoundedSphere(enemySphere.center(),
+				BoundedSphere enemyBounds = new BoundedSphere(enemySphere.center(),
 						Math.round(CMath.mul(enemySphere.radius, SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+				if(enemyBounds.intersects(fromObj.getSphere()))
+					enemyBounds=enemySphere;
 				if(compTube.intersects(enemyBounds))
 				{
 					final long dist = CMLib.space().getDistanceFrom(fromObj, O);
@@ -773,6 +775,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			winnerObj.destroy();
 		}
+		if (newObj == null && CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Log.debugOut("SubCourseCheck", "No valid points from " + fromObj.name() + " to " + toObj.name() + ", tested " + points.length + " points");
 		return newObj;
 	}
 
@@ -781,10 +785,9 @@ public class ShipNavProgram extends ShipSensorProgram
 														  final List<SpaceObject> sensorObjs)
 	{
 		final List<SpaceObject> navs = new ArrayList<SpaceObject>();
-
+		final SpaceObject[] others = new SpaceObject[] { ship, targetObj };
 		navs.add(targetObj);
 		int navSize = 0;
-		final SpaceObject[] others = new SpaceObject[] { ship, targetObj };
 		while(navSize != navs.size())
 		{
 			navSize = navs.size();
@@ -805,15 +808,24 @@ public class ShipNavProgram extends ShipSensorProgram
 					final Coord3D[] pointsFromOrigin = CMLib.space().getPerpendicularPoints(collO.coordinates(), angleFromCollider, distanceCollRadius);
 					final Coord3D[] pointsFromCollider = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), angleFromOrigin, distanceCollRadius);
 					Coord3D[] points = CMParms.combine(pointsFromCollider, pointsFromOrigin);
-
-					// one of these is always behind the object, so we have to check
 					SpaceObject newObj = subCourseCheck(ship,fromObj,toObj,points,others);
 					if(newObj == null)
 					{
-
 						final Dir3D revAngleFromOrigin = CMLib.space().getDirection(fromObj.coordinates(), collO.coordinates());
 						points = CMLib.space().getPerpendicularPoints(fromObj.coordinates(), revAngleFromOrigin, distanceCollRadius);
 						newObj = subCourseCheck(ship,fromObj,toObj,points,others);
+						if ((newObj == null)
+						&& (fromObj == ship)
+						&& (CMLib.space().getDistanceFrom(ship, collO) < collO.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
+						{
+							newObj = (SpaceObject) CMClass.getBasicItem("Moonlet");
+							newObj.setName("Safe Point");
+							newObj.setRadius(ship.radius());
+							newObj.setCoords(
+								CMLib.space().getLocation(ship.coordinates(), CMLib.space().getOppositeDir(angleFromCollider),
+										Math.round(collO.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)
+										+ (ship.radius()*2)));
+						}
 						if(newObj == null)
 							return null;
 					}
@@ -1039,7 +1051,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			&&(targetObject != null))
 			{
 				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),targetObject.coordinates());
-				if(distance < (ship.radius() + Math.round(targetObject.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+				if((distance < (ship.radius() + Math.round(targetObject.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+				&&(ship.speed()<SpaceObject.VELOCITY_SOUND))
 					track.state=ShipNavState.LANDING;
 			}
 			if(track.state!=ShipNavState.PRE_LANDING_STOP)
@@ -1300,7 +1313,8 @@ public class ShipNavProgram extends ShipSensorProgram
 						Log.debugOut(ship.name(), "ORBITSEARCH: Skipped direction thrust, no improvement: testYawDelta=" + testYawDelta +
 								", testPitchDelta=" + testPitchDelta);
 				}
-				else if (speedDelta > 0.5)
+				else
+				if (speedDelta > 0.5)
 				{
 					final Dir3D thrustDir = (currentSpeed > targetSpeed) ? CMLib.space().getOppositeDir(targetDir) : targetDir;
 					final double maxAccel = findTargetAcceleration(programEngines.get(0));
@@ -1323,7 +1337,8 @@ public class ShipNavProgram extends ShipSensorProgram
 									", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
 									", accel=" + targetAcceleration + ", inject=" + newInject);
 					}
-					else if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					else
+					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(ship.name(), "ORBITSEARCH: Skipped speed thrust, no improvement: testSpeedDelta=" + testSpeedDelta);
 				}
 				else
@@ -1518,6 +1533,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				performSimpleThrust(engineE,newInject, true);
 			break;
 		}
+		default:
+			break;
 		}
 	}
 
@@ -1636,7 +1653,6 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for (final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			//TODO: the nav logics tendency to avoid getting too close to planets may be creating unnecc waypoints
 			final List<SpaceObject> navs = calculateNavigation(ship, programPlanet, allObjects);
 			if (navs == null)
 			{
