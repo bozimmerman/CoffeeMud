@@ -1289,6 +1289,28 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public Pair<SpaceObject,Double> getGravityForcer(final SpaceObject S)
+	{
+		final BoundedCube baseCube=new BoundedCube(S.coordinates(), SpaceObject.Distance.StarBRadius.dm);
+		SpaceObject rO = null;
+		double rForce = 0;
+		for(final SpaceObject O : getSpaceObjectsInBound(baseCube))
+		{
+			if(O == S)
+				continue;
+			final double f = getGravityForce(S,O);
+			if(f>rForce)
+			{
+				rO = O;
+				rForce = f;
+			}
+		}
+		if(rO == null)
+			return null;
+		return new Pair<SpaceObject, Double>(rO,Double.valueOf(rForce));
+	}
+
+	@Override
 	public double getGravityForce(final SpaceObject S, final SpaceObject cO)
 	{
 		final long distance=getDistanceFrom(S.coordinates(), cO.coordinates()) - cO.radius();

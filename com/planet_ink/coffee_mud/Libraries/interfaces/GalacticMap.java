@@ -696,6 +696,15 @@ public interface GalacticMap extends CMLibrary
 	public double getGravityForce(SpaceObject S, SpaceObject cO);
 
 	/**
+	 * Returns the object exerting the most gravity force on the
+	 * other given object, or null if nothing is.
+	 *
+	 * @param S the ship
+	 * @return the planet or star gravitying the ship, and force.
+	 */
+	public Pair<SpaceObject,Double> getGravityForcer(final SpaceObject S);
+
+	/**
 	 * Estimates the average orbital speed required to maintain
 	 * a stable orbit around the give planet.  Returns 0 if
 	 * there is no gravity sufficient to make orbit possible.

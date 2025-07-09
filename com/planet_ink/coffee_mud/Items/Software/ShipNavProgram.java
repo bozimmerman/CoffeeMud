@@ -138,7 +138,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	{
 		LAUNCHING,
 		STOP,
-		PRE_LANDING_STOP,
+		PRE_STOP,
 		LANDING_APPROACH,
 		LANDING,
 		ORBITSEARCH,
@@ -152,7 +152,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	{
 		STOP(ShipNavState.STOP, List.class),
 		LAUNCH(ShipNavState.LAUNCHING, SpaceObject.class, List.class),
-		LAND(ShipNavState.PRE_LANDING_STOP, SpaceObject.class, List.class),
+		LAND(ShipNavState.PRE_STOP, SpaceObject.class, List.class),
 		ORBIT(ShipNavState.ORBITSEARCH, SpaceObject.class, List.class),
 		APPROACH(ShipNavState.APPROACH, SpaceObject.class, List.class, LinkedList.class)
 		;
@@ -1003,6 +1003,45 @@ public class ShipNavProgram extends ShipSensorProgram
 		return true;
 	}
 
+	protected Dir3D graviticCourseAdjustments(final SpaceShip ship, final Dir3D dir)
+	{
+		final Pair<SpaceObject, Double> gravitor = CMLib.space().getGravityForcer(ship);
+		if (gravitor != null)
+		{
+			final SpaceObject gravObj = gravitor.first;
+			final double gravAccel = gravitor.second.doubleValue(); // dm/s²
+			final Dir3D gravDir = CMLib.space().getDirection(ship.coordinates(), gravObj.coordinates());
+			final long distance = CMLib.space().getDistanceFrom(ship, gravObj);
+			final double gravityRadius = gravObj.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
+
+			final double[] gravAccelVector = gravDir.toArray3(gravAccel);
+			final double[] targetVector = dir.toArray3(1.0);
+			final double[] counterVector = new double[3];
+			final double weight = Math.min(gravAccel / SpaceObject.ACCELERATION_G * (gravityRadius / Math.max(distance, 1.0)), 0.8);
+
+			for (int i = 0; i < 3; i++)
+				counterVector[i] = (1.0 - weight) * targetVector[i] - weight * gravAccelVector[i];
+
+			Dir3D newDir = Dir3D.fromArray3(counterVector);
+			if (distance < gravObj.radius() * 0.3) {
+				newDir = CMLib.space().getOppositeDir(gravDir);
+				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP)) {
+					Log.debugOut("Emergency correction: Facing away from gravitor at distance=" + distance);
+				}
+			}
+
+			if (CMSecurity.isDebugging(DbgFlag.SPACESHIP)) {
+				Log.debugOut(ship.Name(), "gravAccel=" + gravAccel + ", weight=" + weight +
+					", distance=" + distance + ", gravityRadius=" + gravityRadius +
+					", gravAccelVector=[" + gravAccelVector[0] + "," + gravAccelVector[1] + "," + gravAccelVector[2] + "]" +
+					", counterVector=[" + counterVector[0] + "," + counterVector[1] + "," + counterVector[2] + "]" +
+					", newDir=" + CMLib.english().directionDescShort(newDir.toDoubles()));
+			}
+			return newDir;
+		}
+		return dir;
+	}
+
 	protected void doNavigation(final ShipNavTrack track)
 	{
 		final SpaceObject spaceObj=CMLib.space().getSpaceObject(this,true);
@@ -1022,7 +1061,13 @@ public class ShipNavProgram extends ShipSensorProgram
 		if((ship==null)||(!confirmNavEnginesOK(ship, programEngines)))
 			return;
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			Log.debugOut("Program "+track.proc.name()+" state: "+track.state.toString());
+		{
+			Log.debugOut(ship.name(),"Program "+track.proc.name()
+						+" state: "+track.state.toString()
+						+", speed: "+	CMLib.english().distanceDescShort(Math.round(ship.speed()))
+						+", dir: "+		CMLib.english().directionDescShort(ship.direction().toDoubles())
+						);
+		}
 
 		if(!this.checkNavComplete(track, ship, targetObject))
 		{
@@ -1045,35 +1090,34 @@ public class ShipNavProgram extends ShipSensorProgram
 		// are in the proper landing phase, that you are trying to stop
 		case LANDING:
 		case LANDING_APPROACH:
-		case PRE_LANDING_STOP:
+		case PRE_STOP:
 		{
-			if((track.state!=ShipNavState.LANDING)
-			&&(targetObject != null))
+			if(track.proc==ShipNavProcess.LAND)
 			{
-				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),targetObject.coordinates());
-				if((distance < (ship.radius() + Math.round(targetObject.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
-				&&(ship.speed()<SpaceObject.VELOCITY_SOUND))
-					track.state=ShipNavState.LANDING;
+				if((track.state!=ShipNavState.LANDING)
+				&&(targetObject != null))
+				{
+					final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),targetObject.coordinates());
+					if((distance < (ship.radius() + Math.round(targetObject.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+					&&(ship.speed()<SpaceObject.VELOCITY_SOUND))
+						track.state=ShipNavState.LANDING;
+				}
 			}
-			if(track.state!=ShipNavState.PRE_LANDING_STOP)
+			if(track.state!=ShipNavState.PRE_STOP)
 				break;
-			if(ship.speed()  <= 0.0)
-			{
-				track.state=ShipNavState.LANDING_APPROACH;
-				break;
-			}
 		}
 		// the stop part makes sure you are facing correctly, and might goose injection
 		//$FALL-THROUGH$
 		case STOP:
 		{
-			if(ship.speed()  > 0.01)
+			if(ship.speed()  > 0.5)
 			{
 				final Dir3D stopFacing = CMLib.space().getOppositeDir(ship.direction());
+				//stopFacing = this.graviticCourseAdjustments(ship, stopFacing);
 				final double angleDelta = CMLib.space().getAngleDelta(ship.facing(), stopFacing); // starboard is -, port is +
 				if(angleDelta>.02)
 				{
-					if(!flipForAllStop(ship))
+					if(!changeFacing(ship, stopFacing))
 					{
 						cancelNavigation(false);
 						super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
@@ -1093,6 +1137,25 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				ship.setSpeed(0.0);
 				targetAcceleration = 0.0;
+				switch(track.proc)
+				{
+				case LAND:
+					track.state=ShipNavState.LANDING_APPROACH;
+					break;
+				case APPROACH:
+					track.state=ShipNavState.APPROACH;
+					break;
+				case LAUNCH:
+					track.state=ShipNavState.LAUNCHING;
+					break;
+				case ORBIT:
+					track.state=ShipNavState.ORBITSEARCH;
+					break;
+				case STOP:
+					break;
+				default:
+					break;
+				}
 			}
 			break;
 		}
@@ -1110,6 +1173,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				long distToITarget = (CMLib.space().getDistanceFrom(ship, intTarget)-ship.radius()
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				Dir3D dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
+					Log.debugOut(ship.name(), "Target: "+	intTarget.Name() +", Dist2target: "+	CMLib.english().distanceDescShort(distToITarget));
 				double directionDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// see if we've hit a waypoint
 				{
@@ -1175,17 +1240,16 @@ public class ShipNavProgram extends ShipSensorProgram
 						//	correctFacing = CMLib.space().getOffsetAngle(correctFacing, ship.direction());
 					}
 					// correctFacing is now at the Ideal point.
-
+					correctFacing = this.graviticCourseAdjustments(ship, correctFacing);
 					// if we are presently traveling towards the target, get detailed.
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
 					{
 						final double facingDiff = CMLib.space().getAngleDelta(ship.facing(), correctFacing);
 						Log.debugOut(ship.name(),
-									"Face diff: "+	CMath.div(Math.round(facingDiff * 10000),10000.0)
-									+", Dir diff: "+CMath.div(Math.round(directionDiff * 10000),10000.0)
-									+", speed: "+	CMLib.english().distanceDescShort(Math.round(ship.speed()))
-									+", dist: "+	CMLib.english().distanceDescShort(distToITarget)
-									+", dir: "+		CMLib.english().directionDescShort(correctFacing.toDoubles()));
+									"Face diff: " + CMath.div(Math.round(facingDiff * 10000),10000.0)
+									+", Dir diff: " + CMath.div(Math.round(directionDiff * 10000),10000.0)
+									+", dist: " + CMLib.english().distanceDescShort(distToITarget)
+									+", 2dir: " + CMLib.english().directionDescShort(correctFacing.toDoubles()));
 					}
 					if(CMLib.space().getAngleDelta(ship.facing(), correctFacing)>0)
 						changeFacing(ship, correctFacing);
@@ -1219,7 +1283,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			//$FALL-THROUGH$
 		case STOP:
 		case DEPROACH:
-		case PRE_LANDING_STOP:
+		case PRE_STOP:
 		{
 			//final Double oldInject = newInject;
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
@@ -1309,7 +1373,8 @@ public class ShipNavProgram extends ShipSensorProgram
 									", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
 									", accel=" + targetAcceleration + ", inject=" + newInject);
 					}
-					else if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					else
+					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(ship.name(), "ORBITSEARCH: Skipped direction thrust, no improvement: testYawDelta=" + testYawDelta +
 								", testPitchDelta=" + testPitchDelta);
 				}
@@ -1813,11 +1878,15 @@ public class ShipNavProgram extends ShipSensorProgram
 				navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, orbitTarget, programEngines, new XLinkedList<SpaceObject>(navs));
 				final ShipNavTrack landTrack = new ShipNavTrack(ShipNavProcess.LAND, landingPlanet, programEngines);
 				navTrack.setNextTrack(landTrack);
+				if(CMLib.space().getGravityForcer(ship) != null)
+					navTrack.state = ShipNavState.PRE_STOP;
 				addScreenMessage(L("Navigating to orbital position above landing zone: @x1.", landingZone.Name()));
 			}
 			else
 			{
 				navTrack = new ShipNavTrack(ShipNavProcess.LAND, programPlanet, programEngines);
+				if(CMLib.space().getGravityForcer(ship) != null)
+					navTrack.state = ShipNavState.PRE_STOP;
 				final long distance=CMLib.space().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
 				if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 					addScreenMessage(L("Landing approach procedure initiated."));
@@ -2110,6 +2179,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, approachTarget, programEngines, navs);
+			if(CMLib.space().getGravityForcer(ship) != null)
+				navTrack.state = ShipNavState.PRE_STOP;
 			addScreenMessage(L("Approach to @x1 procedure engaged.",targetObj.name()));
 			return false;
 		}

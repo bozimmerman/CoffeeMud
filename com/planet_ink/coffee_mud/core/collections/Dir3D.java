@@ -210,6 +210,27 @@ public class Dir3D extends BigVector
 		return new Dir3D(super.subtract(v));
 	}
 
+	public double[] toArray3(final double magnitude)
+	{
+		final double[] vector = new double[3];
+		final double xyRad = xyd();
+		final double zRad = zd();
+		vector[0] = magnitude * Math.cos(zRad) * Math.cos(xyRad);
+		vector[1] = magnitude * Math.cos(zRad) * Math.sin(xyRad);
+		vector[2] = magnitude * Math.sin(zRad);
+		return vector;
+	}
+
+	public static Dir3D fromArray3(final double[] vector)
+	{
+		final double magnitude = Math.sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
+		if (magnitude == 0)
+			return new Dir3D(0.0, 0.0);
+		final double xyRad = Math.atan2(vector[1], vector[0]);
+		final double zRad = Math.asin(vector[2] / magnitude);
+		return new Dir3D(xyRad, zRad);
+	}
+
 	@Override
 	public int hashCode()
 	{
