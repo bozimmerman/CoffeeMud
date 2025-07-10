@@ -712,6 +712,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
+			final boolean todDisabled = CMSecurity.isDisabled(CMSecurity.DisFlag.TODNOTIFIES);
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=a.nextElement();
@@ -722,29 +723,33 @@ public class DefaultTimeClock implements TimeClock
 					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 					{
 						R.recoverPhyStats();
-						for(int m=0;m<R.numInhabitants();m++)
+						if(!todDisabled)
 						{
-							final MOB mob=R.fetchInhabitant(m);
-							if((mob!=null)
-							&&(!mob.isMonster()))
+							for(int m=0;m<R.numInhabitants();m++)
 							{
-								if(CMLib.map().hasASky(R)
-								&&(!CMLib.flags().isSleeping(mob))
-								&&(CMLib.flags().canSee(mob)))
+								final MOB mob=R.fetchInhabitant(m);
+								if((mob!=null)
+								&&(!mob.isMonster()))
 								{
-									final String message = CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.TOD_CHANGE_OUTSIDE, getTODCode().ordinal());
-									if(message.trim().length()>0)
-										mob.tell(message);
-								}
-								else
-								{
-									final String message = CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.TOD_CHANGE_INSIDE, getTODCode().ordinal());
-									if(message.trim().length()>0)
-										mob.tell(message);
+									if(CMLib.map().hasASky(R)
+									&&(!CMLib.flags().isSleeping(mob))
+									&&(CMLib.flags().canSee(mob)))
+									{
+										final String message = CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.TOD_CHANGE_OUTSIDE, getTODCode().ordinal());
+										if(message.trim().length()>0)
+											mob.tell(message);
+									}
+									else
+									{
+										final String message = CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.TOD_CHANGE_INSIDE, getTODCode().ordinal());
+										if(message.trim().length()>0)
+											mob.tell(message);
+									}
 								}
 							}
 						}
 					}
+					else
 					if(R!=null)
 						R.recoverRoomStats();
 				}
@@ -1261,7 +1266,7 @@ public class DefaultTimeClock implements TimeClock
 			break;
 		}
 	}
-	
+
 	@Override
 	public void setNext(final TimePeriod period, final int value)
 	{

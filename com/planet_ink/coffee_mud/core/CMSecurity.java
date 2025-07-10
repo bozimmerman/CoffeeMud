@@ -2971,6 +2971,7 @@ public class CMSecurity
 		WEATHER("area weather"),
 		WEATHERCHANGES("weather changes"),
 		WEATHERNOTIFIES("notification of weather changes"),
+		TODNOTIFIES("notification of time of day changes"),
 		QUESTS("quest system"),
 		SCRIPTABLEDELAY("script event delay"),
 		SCRIPTING("MOBPROG scripting"),
