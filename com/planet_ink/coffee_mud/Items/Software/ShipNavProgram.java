@@ -1013,7 +1013,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		if (gravitor != null)
 		{
 			final SpaceObject gravObj = gravitor.first;
-			final double gravAccel = gravitor.second.doubleValue(); // dm/s² from engine logs
+			final double gravAccel = gravitor.second.doubleValue(); // dm/s2 from engine logs
 			final Dir3D gravDir = CMLib.space().getDirection(ship.coordinates(), gravObj.coordinates());
 			final Dir3D antiGravDir = CMLib.space().getOppositeDir(gravDir);
 			final long distance = CMLib.space().getDistanceFrom(ship, gravObj);
