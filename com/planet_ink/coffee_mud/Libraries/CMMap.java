@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup.LocalType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumeratorBuilder;
@@ -1420,17 +1421,20 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			else
 			{
+				final boolean shutDown = CMProps.isState(HostState.SHUTTINGDOWN);
 				for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
 				{
-					final Room R = deadRoom.getRoomInDir(i);
+					final Room R = shutDown?deadRoom.getRawDoor(i):deadRoom.getRoomInDir(i);
 					if((R != null)
 					&&((linkInRooms == null)||(R.getArea()!=deadRoom.getArea())))
 					{
-						if(R.getRoomInDir(Directions.getOpDirectionCode(i)) == deadRoom)
+						final int opDir = Directions.getOpDirectionCode(i);
+						final Room R2 = shutDown?R.getRawDoor(opDir):R.getRoomInDir(opDir);
+						if(R2 == deadRoom)
 						{
 							if(!roomsToDo.containsKey(R))
 								roomsToDo.put(R, new TreeSet<Integer>());
-							roomsToDo.get(R).add(Integer.valueOf(Directions.getOpDirectionCode(i)));
+							roomsToDo.get(R).add(Integer.valueOf(opDir));
 						}
 					}
 				}
