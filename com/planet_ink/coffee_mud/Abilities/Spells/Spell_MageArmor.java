@@ -81,6 +81,8 @@ public class Spell_MageArmor extends Spell
 	{
 		if(mob == null)
 			return;
+		if(theArmor != null)
+			theArmor.destroy();
 		theArmor=CMClass.getArmor("GlowingMageArmor");
 		theArmor.basePhyStats().setArmor(theArmor.basePhyStats().armor()+super.getXLEVELLevel(mob));
 		theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
@@ -99,7 +101,9 @@ public class Spell_MageArmor extends Spell
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((theArmor == null) // permanencied fix
+		if(((theArmor == null)
+			||(theArmor.amDestroyed())
+			||(theArmor.owner()!=affected))
 		&&(!super.canBeUninvoked)
 		&&(affected instanceof MOB))
 			applyArmor((MOB)affected);
