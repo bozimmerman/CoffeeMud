@@ -61,9 +61,10 @@ function inputSubmit(x)
 	var max = getConfig('window/input_buffer',500);
 	while(inputbacklog.length>max)
 		inputbacklog.splice(0,1);
-	if(x.length>0)
+	if(x && x !== 'undefined')
 	{
-		inputbacklog.push(x);
+		if(inputbacklog[inputbacklog.length-1] !== x)
+			inputbacklog.push(x);
 		inputbacklogindex=inputbacklog.length;
 	}
 	if(x && window.currWin != null)

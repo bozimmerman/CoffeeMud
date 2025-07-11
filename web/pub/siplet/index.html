@@ -1,6 +1,4 @@
 <!--
-BUG: BLINK fix
-BUG: Click on existing tab clears status of other tab?
 TODO: split-screen scroll-back
 TODO: implement Xterm XTGETCAP https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
 TODO: implement MSLP
@@ -14,11 +12,13 @@ TODO: parse out triggers, alias, etc from siplet.
     body { 
         margin: 0; padding: 0;
     }
-	@keyframes blinker {
-	  50% { opacity: 0; }
+    @keyframes blinker {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
     }
     a {
-    	color: lightblue;
+        color: lightblue;
         cursor: pointer;
     }
     a img {
@@ -49,55 +49,55 @@ TODO: parse out triggers, alias, etc from siplet.
 <SCRIPT LANGUAGE=JavaScript>
 function ConfigureSiplet()
 {
-	window.sipfs = new SipletFileSystem('SipletFileSystem');
-	document.getElementById('loadingmsg').outerHTML = '';
-	document.getElementById('inputarea').style.visibility='visible';
-	ConfigureInput(document.getElementById('inputarea'), document.getElementById('input'));
-	ConfigureTopMenu(document.getElementById('menuarea'));
-	ConfigureMainTabs(document.getElementById('tabarea'));
-	var tabStyle = window.getComputedStyle(document.getElementById('tabarea'));
-	window.winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
-	window.windowArea = document.getElementById('windowarea');
-	window.winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
-	window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+window.winAreaTop+'px;height:'+winAreaHeight+';';
-	window.addEventListener("beforeunload", CloseAllSiplets);
-	LoadGlobalPhonebook();
-	document.body.style.fontFamily='Arial';
-	document.body.style.fontSize='14';
-	var resizeDebouncer = null;
-	window.addEventListener('resize', function() {
-		if(resizeDebouncer == null)
-			resizeDebouncer =setTimeout(function() {
-				ResizeAllSiplets();
-				resizeDebouncer = null;
-			}, 500);
-	});
+    window.sipfs = new SipletFileSystem('SipletFileSystem');
+    document.getElementById('loadingmsg').outerHTML = '';
+    document.getElementById('inputarea').style.visibility='visible';
+    ConfigureInput(document.getElementById('inputarea'), document.getElementById('input'));
+    ConfigureTopMenu(document.getElementById('menuarea'));
+    ConfigureMainTabs(document.getElementById('tabarea'));
+    var tabStyle = window.getComputedStyle(document.getElementById('tabarea'));
+    window.winAreaTop = parseInt(tabStyle.top) + parseInt(tabStyle.height) + 1;
+    window.windowArea = document.getElementById('windowarea');
+    window.winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
+    window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+window.winAreaTop+'px;height:'+winAreaHeight+';';
+    window.addEventListener("beforeunload", CloseAllSiplets);
+    LoadGlobalPhonebook();
+    document.body.style.fontFamily='Arial';
+    document.body.style.fontSize='14';
+    var resizeDebouncer = null;
+    window.addEventListener('resize', function() {
+        if(resizeDebouncer == null)
+            resizeDebouncer =setTimeout(function() {
+                ResizeAllSiplets();
+                resizeDebouncer = null;
+            }, 500);
+    });
 }
 var loadableScripts = [
-	"js/config.js", "js/input.js", "js/menu.js", "js/tabs.js", "js/websock.js",
-	"js/util.js", "js/plugins.js", "js/ctxmenu.js", "js/binparser.js",
-	"js/ansiparser.js", "js/telnetparser.js", "js/textparser.js", "js/filesys.js",
-	"js/mspsupport.js", "js/mxpsupport.js", "js/mapper.js", "js/gmcp.js", 
-	"js/siplet.js" 
-	
+    "js/config.js", "js/input.js", "js/menu.js", "js/tabs.js", "js/websock.js",
+    "js/util.js", "js/plugins.js", "js/ctxmenu.js", "js/binparser.js",
+    "js/ansiparser.js", "js/telnetparser.js", "js/textparser.js", "js/filesys.js",
+    "js/mspsupport.js", "js/mxpsupport.js", "js/mapper.js", "js/gmcp.js", 
+    "js/siplet.js" 
+    
 ]
 function LoadJavaScript()
 {
-	if(loadableScripts.length == 0)
-		ConfigureSiplet();
-	else
-	{
-		var url = loadableScripts[0];
-		loadableScripts.splice(0,1);
-		var scriptElement = document.createElement("script");
-		scriptElement.src = url;
-		scriptElement.onload = LoadJavaScript;
-		scriptElement.onerror=function() { 
-			window.alert('Unable to load.  Click OK to refresh.');
-			location.reload();
-		};
-		document.head.appendChild(scriptElement);
-	}
+    if(loadableScripts.length == 0)
+        ConfigureSiplet();
+    else
+    {
+        var url = loadableScripts[0];
+        loadableScripts.splice(0,1);
+        var scriptElement = document.createElement("script");
+        scriptElement.src = url;
+        scriptElement.onload = LoadJavaScript;
+        scriptElement.onerror=function() { 
+            window.alert('Unable to load.  Click OK to refresh.');
+            location.reload();
+        };
+        document.head.appendChild(scriptElement);
+    }
 }
 LoadJavaScript();
 </SCRIPT>

@@ -231,6 +231,11 @@ public class Dir3D extends BigVector
 		return new Dir3D(xyRad, zRad);
 	}
 
+	public Dir3D negate()
+	{
+		return new Dir3D(BigCMath.PI.add(xy()),BigCMath.PI.subtract(z()));
+	}
+
 	@Override
 	public int hashCode()
 	{

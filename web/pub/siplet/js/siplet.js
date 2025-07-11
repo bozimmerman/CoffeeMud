@@ -1553,7 +1553,8 @@ function SetCurrentTab(which)
 			s.topWindow.style.visibility = "hidden";
 			if(s.wsopened)
 			{
-				s.tab.style.backgroundColor = "lightgray";
+				if(s.tab.style.backgroundColor !== 'lightgreen')
+					s.tab.style.backgroundColor = "lightgray";
 				s.tab.style.color = "black";
 			}
 		}

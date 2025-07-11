@@ -329,7 +329,7 @@ window.defElements = {
 	"H6": new MXPElement("H6", "<H6>", "", "", MXPBIT.HTML),
 	"HR": new MXPElement("HR", "<HR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
 	"SMALL": new MXPElement("SMALL", "<SMALL>", "", "", MXPBIT.HTML),
-	"BLINK": new MXPElement("BLINK", "<BLINK>", "", "", MXPBIT.HTML),
+	"BLINK": new MXPElement("BLINK", "<FONT STYLE=\"animation: blinker 0.75s steps(2) infinite;\">", "", "", MXPBIT.HTML),
 	"TT": new MXPElement("TT", "<PRE>", "", "", MXPBIT.HTML),
 	"BR": new MXPElement("BR", "<BR>", "", "", MXPBIT.HTML | MXPBIT.COMMAND),
 	"SBR": new MXPElement("SBR", "&nbsp;", "", "", MXPBIT.HTML | MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
