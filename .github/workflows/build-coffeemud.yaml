@@ -73,12 +73,15 @@ jobs:
       # Create ZIP files
       - name: Create ZIP files
         run: |
-          # Create CoffeeMud.zip
-          zip -r -q CoffeeMud.zip .
-          # Create CoffeeMud_${version}.zip, excluding CoffeeMud.zip
-          zip -r -q "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip ".git/*" ".github/*"
-          pwd
-          ls -l CoffeeMud*.zip  # Add for debug
+            mkdir -p temp/CoffeeMud
+            # Copy all files (excluding unwanted ones) to temp/CoffeeMud
+            rsync -a --exclude '.git' --exclude '.github' --exclude 'CoffeeMud.zip' . temp/CoffeeMud/
+            # Create CoffeeMud.zip from the temp/CoffeeMud directory
+            cd temp && zip -r -q ../CoffeeMud.zip CoffeeMud && cd ..
+            # Create CoffeeMud_${VERSION}.zip from the temp/CoffeeMud directory, excluding CoffeeMud.zip
+            cd temp && zip -r -q ../CoffeeMud_${VERSION}.zip CoffeeMud -x CoffeeMud/CoffeeMud.zip && cd ..
+            # Clean up temporary directory
+            rm -rf temp
         shell: bash
         working-directory: ${{ github.workspace }}
 
