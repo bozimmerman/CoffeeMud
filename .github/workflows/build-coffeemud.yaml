@@ -84,7 +84,7 @@ jobs:
             echo "Size of CoffeeMud_${VERSION}.zip: $(ls -lh CoffeeMud_${VERSION}.zip | awk '{print $5}')"
             rm -rf CoffeeMud
             df -h
-    shell: bash
+        shell: bash
         working-directory: ${{ github.workspace }}
 
       # Upload artifacts
