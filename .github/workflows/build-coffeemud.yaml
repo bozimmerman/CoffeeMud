@@ -76,7 +76,7 @@ jobs:
           # Create CoffeeMud.zip
           zip -r -q CoffeeMud.zip .
           # Create CoffeeMud_${version}.zip, excluding CoffeeMud.zip
-          zip -r -q "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip ".git/*"
+          zip -r -q "CoffeeMud_${VERSION}.zip" . -x CoffeeMud.zip ".git/*" ".github/*"
           pwd
           ls -l CoffeeMud*.zip  # Add for debug
         shell: bash
