@@ -73,14 +73,11 @@ jobs:
       # Create ZIP files
       - name: Create ZIP files
         run: |
-            echo "Current directory: $(pwd)"
-            echo "Number of files: $(find . -type f | wc -l)"
             mkdir -p CoffeeMud
-            find . -type f -not -path './.git/*' -not -path './.github/*' -exec cp --parents {} CoffeeMud/ \;
-            echo "Files in CoffeeMud directory: $(find CoffeeMud -type f | wc -l)"
-            cd CoffeeMud && zip -r -q ../CoffeeMud.zip . && cd ..
+            rsync -a --exclude='CoffeeMud' * CoffeeMud/.
+            zip -r -q CoffeeMud.zip CoffeeMud
             echo "Size of CoffeeMud.zip: $(ls -lh CoffeeMud.zip | awk '{print $5}')"
-            cd CoffeeMud && zip -r -q ../CoffeeMud_${VERSION}.zip . -x CoffeeMud.zip && cd ..
+            zip -r -q CoffeeMud_${VERSION}.zip CoffeeMud -x CoffeeMud.zip
             echo "Size of CoffeeMud_${VERSION}.zip: $(ls -lh CoffeeMud_${VERSION}.zip | awk '{print $5}')"
             rm -rf CoffeeMud
             df -h
