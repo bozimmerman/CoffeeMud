@@ -73,16 +73,18 @@ jobs:
       # Create ZIP files
       - name: Create ZIP files
         run: |
-            mkdir -p temp/CoffeeMud
-            # Copy all files (excluding unwanted ones) to temp/CoffeeMud
-            rsync -a --exclude '.git' --exclude '.github' --exclude 'CoffeeMud.zip' . temp/CoffeeMud/
-            # Create CoffeeMud.zip from the temp/CoffeeMud directory
-            cd temp && zip -r -q ../CoffeeMud.zip CoffeeMud && cd ..
-            # Create CoffeeMud_${VERSION}.zip from the temp/CoffeeMud directory, excluding CoffeeMud.zip
-            cd temp && zip -r -q ../CoffeeMud_${VERSION}.zip CoffeeMud -x CoffeeMud/CoffeeMud.zip && cd ..
-            # Clean up temporary directory
-            rm -rf temp
-        shell: bash
+            echo "Current directory: $(pwd)"
+            echo "Number of files: $(find . -type f | wc -l)"
+            mkdir -p CoffeeMud
+            find . -type f -not -path './.git/*' -not -path './.github/*' -exec cp --parents {} CoffeeMud/ \;
+            echo "Files in CoffeeMud directory: $(find CoffeeMud -type f | wc -l)"
+            cd CoffeeMud && zip -r -q ../CoffeeMud.zip . && cd ..
+            echo "Size of CoffeeMud.zip: $(ls -lh CoffeeMud.zip | awk '{print $5}')"
+            cd CoffeeMud && zip -r -q ../CoffeeMud_${VERSION}.zip . -x CoffeeMud.zip && cd ..
+            echo "Size of CoffeeMud_${VERSION}.zip: $(ls -lh CoffeeMud_${VERSION}.zip | awk '{print $5}')"
+            rm -rf CoffeeMud
+            df -h
+    shell: bash
         working-directory: ${{ github.workspace }}
 
       # Upload artifacts
