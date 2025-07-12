@@ -163,7 +163,6 @@ public interface ProtocolLibrary extends CMLibrary
 	 *
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
 	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param data the command sent by the user
@@ -179,7 +178,6 @@ public interface ProtocolLibrary extends CMLibrary
 	 *
 	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
 	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
@@ -195,7 +193,6 @@ public interface ProtocolLibrary extends CMLibrary
 	 *
 	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
 	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary.GMCPCommand
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
@@ -239,57 +236,6 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @return the original buffer, or a stripped one
 	 */
 	public byte[] stripNonASCII(final byte[] buf);
-
-	/**
-	 * Enumeration of all support GMCP commands
-	 *
-	 * @author Bo Zimmerman
-	 *
-	 */
-	public enum GMCPCommand
-	{
-		core_hello,
-		core_supports_set,
-		core_supports_add,
-		core_supports_remove,
-		core_keepalive,
-		core_ping,
-		core_goodbye,
-		char_login,
-		char_vitals,
-		char_statusvars,
-		char_status,
-		char_base,
-		char_maxstats,
-		char_worth,
-		char_items_inv, // means they want updates, dude
-		char_items_contents,
-		char_skills_get,
-		char_effects_get,
-		char_login_credentials,
-		group,
-		room_info, // means they want room.wrongdir and room.enter and room.leave
-		room_items_inv,
-		room_items_contents,
-		room_mobiles,
-		room_players,
-		comm_channel,
-		comm_channel_players,
-		ire_composer_setbuffer,
-		request_room,
-		request_area,
-		request_char,
-		request_sectors,
-		request_group,
-		request_quest,
-		rawcolor,
-		request,
-		maplevel,
-		client,
-		client_version,
-		external_discord_hello,
-		msdp
-	}
 
 	/**
 	 * Interface allowing java or javascript plugins to the MCP protocol
