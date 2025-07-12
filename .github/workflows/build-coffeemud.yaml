@@ -75,6 +75,7 @@ jobs:
         run: |
             mkdir -p CoffeeMud
             rsync -a --exclude='CoffeeMud' * CoffeeMud/.
+            rm -f CoffeeMud/release_notes.txt
             zip -r -q CoffeeMud.zip CoffeeMud
             echo "Size of CoffeeMud.zip: $(ls -lh CoffeeMud.zip | awk '{print $5}')"
             zip -r -q CoffeeMud_${VERSION}.zip CoffeeMud -x CoffeeMud.zip
