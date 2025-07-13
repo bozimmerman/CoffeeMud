@@ -281,7 +281,8 @@ public class CMProps extends Properties
 		PRIDECATS,
 		FORMULA_PROFGAIN,
 		DISCORD_JAR_PATH,
-		DISCORD_BOT_KEY
+		DISCORD_BOT_KEY,
+		MPCPKEY
 	}
 
 	public final static int DEFAULT_MOB_HP_BASE = 11;
@@ -2652,6 +2653,7 @@ public class CMProps extends Properties
 				}
 			}
 		}
+		setUpLowVar(Str.MPCPKEY,getStr("MPCPKEY"));
 		setVar(Str.NEWACODES,getStr("NEWACODES"));
 		{
 			final List<String> newCods = CMParms.parseCommas(getVar(Str.NEWACODES), true);

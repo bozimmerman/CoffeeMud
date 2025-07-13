@@ -70,7 +70,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	private static final String	  HOST_VERSION	= "5.10.5";
+	public static final String	  HOST_VERSION	= "5.10.5";
 
 	private static enum MudState
 	{
@@ -226,7 +226,6 @@ public class MUD extends Thread implements MudHost
 					}
 					else
 					{
-						Log.sysOut(name(),"Connection from "+address);
 						// also the intro page
 						final CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 						String introFilename="text/intro.txt";
@@ -255,6 +254,12 @@ public class MUD extends Thread implements MudHost
 						sess[0].initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
 						CMLib.sessions().add(sess[0]);
 						sock = null;
+						try {
+							sess[0].run();
+						} catch(final Throwable t) {
+							Log.errOut(t);
+						}
+						Log.sysOut(name(),"Connection from "+sess[0].getAddress());
 					}
 				}
 				else

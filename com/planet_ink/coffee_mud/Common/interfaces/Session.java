@@ -1039,6 +1039,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_ATCP=200;
 	/** TELNET CODE: GMCP protocol*/
 	public static final int TELNET_GMCP=201;
+	/** TELNET CODE: MPCP protocol*/
+	public static final int TELNET_MPCP=202;
 	/** TELNET CODE: Indicates that what follows is subnegotiation of the indicated option*/
 	public static final int TELNET_SB=250;
 	/** TELNET CODE: Indicates the desire to begin performing, or confirmation that you are now performing, the indicated option*/
@@ -1084,7 +1086,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"","","","","","","","","","", //170-179
 		"","","","","","","","","","", //180-189
 		"","","","","","","","","","", //190-199
-		"ATCP","GMCP","","","","","","","","", //200-209
+		"ATCP","GMCP","MPCP","","","","","","","", //200-209
 		"","","","","","","","","","", //210-219
 		"","","","","","","","","","", //220-229
 		"","","","","","","","","","", //230-239
@@ -1481,17 +1483,17 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_LINEMODE_SLC_EOR=6;
 
 	/** For MSDP protocol, denotes variable start*/
-	public static final char MSDP_VAR			= 1;
+	public static final byte MSDP_VAR			= 1;
 	/** For MSDP protocol, denotes value start*/
-	public static final char MSDP_VAL			= 2;
+	public static final byte MSDP_VAL			= 2;
 	/** For MSDP protocol, denotes table open*/
-	public static final char MSDP_TABLE_OPEN	= 3;
+	public static final byte MSDP_TABLE_OPEN	= 3;
 	/** For MSDP protocol, denotes table done*/
-	public static final char MSDP_TABLE_CLOSE	= 4;
+	public static final byte MSDP_TABLE_CLOSE	= 4;
 	/** For MSDP protocol, denotes array start*/
-	public static final char MSDP_ARRAY_OPEN	= 5;
+	public static final byte MSDP_ARRAY_OPEN	= 5;
 	/** For MSDP protocol, denotes array done*/
-	public static final char MSDP_ARRAY_CLOSE	= 6;
+	public static final byte MSDP_ARRAY_CLOSE	= 6;
 
 	/**
 	 * The status of the session, from opening handshake, to final goodbyes

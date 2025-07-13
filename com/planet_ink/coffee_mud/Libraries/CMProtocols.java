@@ -1152,7 +1152,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected Map<String,Object> buildMsdpMap(final char[] data, final int dataSize)
+	protected Map<String,Object> buildMsdpMap(final byte[] data, final int dataSize)
 	{
 		final Stack<Object> stack=new Stack<Object>();
 		stack.push(new HashMap<StringBuilder,Object>());
@@ -1813,7 +1813,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
+	public byte[] processMsdp(final Session session, final byte[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
 		final Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
 		final byte[] result = processMsdpResult(session, cmds, reportables);
@@ -2040,10 +2040,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected String convertMsdpStreamToJSONString(final byte[] msdpData)
 	{
-		final char[] charResult = new char[msdpData.length];
-		for(int i=0;i<msdpData.length;i++)
-			charResult[i]=(char)(msdpData[i] & 0xff);
-		final Map<String,Object> newMap = buildMsdpMap(charResult, charResult.length);
+		final Map<String,Object> newMap = buildMsdpMap(msdpData, msdpData.length);
 		final Object jsonConversion = convertMsdpObjectToJSONObject(newMap);
 		final StringBuilder str = new StringBuilder("");
 		MiniJSON.JSONObject.appendJSONValue(str, jsonConversion);

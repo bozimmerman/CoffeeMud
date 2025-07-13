@@ -32,9 +32,15 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import java.sql.*;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -81,6 +87,7 @@ public class DefaultSession implements Session
 	protected volatile long  lastStateChangeMs	 = System.currentTimeMillis();
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket 	 	 sock				 = null;
+	protected String		 ipAddress			 = "Unknown";
 	protected SesInputStream charWriter;
 	protected int			 inMaxBytesPerChar	 = 1;
 	protected BufferedReader in;
@@ -264,6 +271,10 @@ public class DefaultSession implements Session
 	{
 		this.groupName=groupName;
 		sock=s;
+		try {
+			this.ipAddress = sock.getInetAddress().getHostAddress();
+		}
+		catch (final Exception e) { }
 		promptSuffix = CMProps.getPromptSuffix();
 		currentColor = CMLib.color().getNormalColor();
 		lastColor = CMLib.color().getNormalColor();
@@ -604,6 +615,7 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NEWENVIRON));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MPCP));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_GA));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
@@ -1714,7 +1726,7 @@ public class DefaultSession implements Session
 		return clookup;
 	}
 
-	public void handleSubOption(final int optionCode, final char[] suboptionData, final int dataSize)
+	public void handleSubOption(final int optionCode, final byte[] suboptionData, final int dataSize)
 		throws IOException
 	{
 		switch(optionCode)
@@ -1865,6 +1877,45 @@ public class DefaultSession implements Session
 				}
 				if(resp!=null)
 					rawBytesOut(rawout, resp);
+			}
+			break;
+		case TELNET_MPCP:
+			{
+				if(suboptionData.length>21)
+				{
+					final byte[] digest = new byte[20];
+					final ByteBuffer rdr = ByteBuffer.wrap(suboptionData);
+					rdr.get(digest);
+					final byte[] strBuf = new byte[rdr.remaining()];
+					rdr.get(strBuf);
+					final byte[] keyBytes = CMProps.getVar(CMProps.Str.MPCPKEY).getBytes(StandardCharsets.UTF_8);
+					final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
+					try
+					{
+						final Mac mac = Mac.getInstance("HmacSHA1");
+						mac.init(keySpec);
+						final byte[] digestCheck = mac.doFinal(strBuf);
+						if(!Arrays.equals(digest, digestCheck))
+							break;
+						final String str = new String(strBuf,"UTF-8");
+						final int x = str.indexOf(' ');
+						if(x>0)
+						{
+							final String command = str.substring(0,x).trim();
+							final String jsonStr = str.substring(x+1).trim();
+							final MiniJSON.JSONObject obj = new MiniJSON().parseObject(jsonStr);
+							final Long timestamp = obj.getCheckedLong("timestamp");
+							if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>1000)
+								break;
+							if(command.equalsIgnoreCase("clientinfo"))
+								this.ipAddress = obj.getCheckedString("client_address");
+						}
+					}
+					catch(final Exception e)
+					{
+						Log.errOut("MPCP",e);
+					}
+				}
 			}
 			break;
 		default:
@@ -2019,7 +2070,7 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_SB:
 		{
-			CharArrayWriter subOptionStream=new CharArrayWriter();
+			ByteArrayOutputStream subOptionStream=new ByteArrayOutputStream();
 			final int subOptionCode = readByte();
 			int last = 0;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
@@ -2056,7 +2107,7 @@ public class DefaultSession implements Session
 				{
 				}
 			}
-			final char[] subOptionData=subOptionStream.toCharArray();
+			final byte[] subOptionData=subOptionStream.toByteArray();
 			subOptionStream=null;
 			handleSubOption(subOptionCode, subOptionData, subOptionData.length);
 			break;
@@ -2766,14 +2817,7 @@ public class DefaultSession implements Session
 	@Override
 	public String getAddress()
 	{
-		try
-		{
-			return sock.getInetAddress().getHostAddress();
-		}
-		catch (final Exception e)
-		{
-			return "Unknown (Excpt "+e.getMessage() + ")";
-		}
+		return ipAddress;
 	}
 
 	private void preLogout(final MOB M)

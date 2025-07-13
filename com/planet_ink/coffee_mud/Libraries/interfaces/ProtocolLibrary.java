@@ -144,13 +144,13 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @param reportables the 'subscriptions' of the given session
 	 * @return null, or bytes to send to the user
 	 */
-	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables);
+	public byte[] processMsdp(final Session session, final byte[] data, final int dataSize, final Map<Object,Object> reportables);
 
 	/**
 	 * Called every second from each player session to deal with periodic MSDP
 	 * reports.
 	 *
-	 * @see ProtocolLibrary#processMsdp(Session, char[], int, Map)
+	 * @see ProtocolLibrary#processMsdp(Session, byte[], int, Map)
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reportables the 'subscriptions' of the given session
