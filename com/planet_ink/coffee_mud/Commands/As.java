@@ -81,9 +81,9 @@ public class As extends StdCommand
 			final StringBuilder options=new StringBuilder("");
 			for(final MudHost h : CMLib.hosts())
 			{
-				if(h.getPort()==asPort)
+				if(h.getPublicPort()==asPort)
 					foundH=h;
-				options.append(h.getPort()).append(", ");
+				options.append(h.getPublicPort()).append(", ");
 			}
 			if(foundH==null)
 			{

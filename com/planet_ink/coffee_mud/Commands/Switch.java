@@ -97,7 +97,7 @@ public class Switch extends StdCommand
 			for(int i=0;i<CMLib.hosts().size();i++)
 			{
 				final MudHost host = CMLib.hosts().get(i);
-				if(host.getPort()==port)
+				if(host.getPublicPort()==port)
 				{
 					switchToHost=host;
 					break;

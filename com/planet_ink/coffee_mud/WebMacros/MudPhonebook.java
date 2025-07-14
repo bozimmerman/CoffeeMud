@@ -61,7 +61,7 @@ public class MudPhonebook extends StdWebMacro
 				final String name = CMProps.instance(threadCode).getStr(CMProps.Str.MUDNAME);
 				final boolean account=CMProps.instance(threadCode).getInt(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
 				entry.put("name", name);
-				entry.put("port", Long.valueOf(host.getPort()));
+				entry.put("port", Long.valueOf(host.getPublicPort()));
 				entry.put("accounts", Boolean.valueOf(account));
 				entries.add(entry);
 			}

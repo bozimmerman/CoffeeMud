@@ -84,6 +84,7 @@ public class MUD extends Thread implements MudHost
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
 	private int				  port		 = 5555;
+	private int				  publicPort = 5555;
 	private final long		  startupTime= System.currentTimeMillis();
 	private final ThreadGroup threadGroup;
 
@@ -365,8 +366,12 @@ public class MUD extends Thread implements MudHost
 		{
 			servsock=new ServerSocket(port, q_len, bindAddr);
 
-			Log.sysOut(Thread.currentThread().getName(),
-					CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port);
+			if(port != publicPort)
+				Log.sysOut(Thread.currentThread().getName(),
+						CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port +" ("+publicPort+")");
+			else
+				Log.sysOut(Thread.currentThread().getName(),
+						CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port);
 			if (bindAddr != null)
 				Log.sysOut(Thread.currentThread().getName(),
 						CMProps.getVar(CMProps.Str.MUDNAME)+" Server bound to: "+bindAddr.toString());
@@ -374,7 +379,7 @@ public class MUD extends Thread implements MudHost
 			String oldPorts = CMProps.getVar(CMProps.Str.LOCALMUDPORTS);
 			if(oldPorts == null)
 				oldPorts = "";
-			CMProps.setVar(CMProps.Str.LOCALMUDPORTS,(oldPorts+" "+this.getPort()).trim());
+			CMProps.setVar(CMProps.Str.LOCALMUDPORTS,(oldPorts+" "+this.getPublicPort()).trim());
 			while(servsock!=null)
 			{
 				setState(MudState.WAITING);
@@ -405,7 +410,10 @@ public class MUD extends Thread implements MudHost
 		{
 		}
 
-		Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
+		if(port != publicPort)
+			Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" ("+publicPort+") stopped!");
+		else
+			Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
 		setState(MudState.STOPPED);
 		CMLib.hosts().remove(this);
 	}
@@ -1020,7 +1028,7 @@ public class MUD extends Thread implements MudHost
 				}
 				final CoffeeMudI3Bridge imud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
 														 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
-														 CMLib.mud(0).getPort(),
+														 CMLib.mud(0).getPublicPort(),
 														 playstate,
 														 CMLib.channels().getI3ChannelsList());
 				i3server=new I3Server();
@@ -1241,6 +1249,12 @@ public class MUD extends Thread implements MudHost
 
 	@Override
 	public int getPort()
+	{
+		return port;
+	}
+
+	@Override
+	public int getPublicPort()
 	{
 		return port;
 	}
@@ -1730,7 +1744,7 @@ public class MUD extends Thread implements MudHost
 			for(int m=0;m<CMLib.hosts().size();m++)
 			{
 				final MudHost mud=CMLib.hosts().get(m);
-				str.append(" "+mud.getPort());
+				str.append(" "+mud.getPublicPort());
 			}
 			CMProps.setVar(CMProps.Str.ALLMUDPORTS,str.toString());
 			CMProps.setState(CMProps.HostState.RUNNING);
@@ -1825,32 +1839,39 @@ public class MUD extends Thread implements MudHost
 				CMProps.setIntVar(CMProps.Int.MUDBACKLOG,page.getInt("BACKLOG"));
 
 				final LinkedList<MUD> hostMuds=new LinkedList<MUD>();
-				String ports=page.getProperty("PORT");
+				final String ports=page.getProperty("PORT");
 				if((ports==null)||(ports.length()==0))
 				{
 					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
 					failedStart=true;
 					return;
 				}
-				int pdex=ports.indexOf(',');
-				while(pdex>0)
+				final List<Integer> portV = new ArrayList<Integer>();
+				for(final String str : CMParms.parseCommas(ports, true))
+					if(CMath.isInteger(str.trim()))
+						portV.add(Integer.valueOf(CMath.s_int(str.trim())));
+				final String proxies=page.getProperty("PROXY");
+				final List<Integer> proxyV = new ArrayList<Integer>();
+				for(final String str : CMParms.parseCommas(proxies, true))
+					if(CMath.isInteger(str.trim())&&(CMath.s_int(str.trim())>0))
+						proxyV.add(Integer.valueOf(CMath.s_int(str.trim())));
+				for(int p=0;p<portV.size();p++)
 				{
-					final MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
+					final int port = portV.get(p).intValue();
+					final MUD mud=new MUD("MUD@"+port);
 					mud.setState(MudState.STARTING);
 					mud.acceptConns=false;
-					mud.port=CMath.s_int(ports.substring(0,pdex));
-					ports=ports.substring(pdex+1);
+					mud.port=port;
+					if(p<proxyV.size())
+						mud.publicPort=proxyV.get(p).intValue();
+					else
+					if(proxyV.size()>0)
+						mud.publicPort=proxyV.get(proxyV.size()-1).intValue();
+					else
+						mud.publicPort=port;
 					hostMuds.add(mud);
 					mud.start();
-					pdex=ports.indexOf(',');
 				}
-				final MUD mud=new MUD("MUD@"+ports);
-				mud.setState(MudState.STARTING);
-				mud.acceptConns=false;
-				mud.port=CMath.s_int(ports);
-				hostMuds.add(mud);
-				mud.start();
-
 				if(hostMuds.size()==0)
 				{
 					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");

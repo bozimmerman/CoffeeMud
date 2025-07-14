@@ -62,6 +62,13 @@ public interface MudHost
 	public int getPort();
 
 	/**
+	 * the port a given MUD server instance is listening on, unless
+	 * there is a proxy, in which case it returns that port.
+	 * @return the port that a user can connect to this host from.
+	 */
+	public int getPublicPort();
+
+	/**
 	 * The hostname, port of the most public web server for this host
 	 * Includes trailing slash
 	 * @return http://mydomain:myport/

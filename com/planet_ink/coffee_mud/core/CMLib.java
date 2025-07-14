@@ -308,7 +308,8 @@ public class CMLib
 		else
 		for(int i=0;i<mudThreads.size();i++)
 		{
-			if(mudThreads.elementAt(i).getPort()==port)
+			if((mudThreads.elementAt(i).getPort()==port)
+			||(mudThreads.elementAt(i).getPublicPort()==port))
 				return mudThreads.elementAt(i);
 		}
 		return null;

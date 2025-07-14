@@ -125,7 +125,8 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 				final int portNum = CMath.s_int(httpReq.getUrlParameter("port"));
 				for(final MudHost mudhost : CMLib.hosts())
 				{
-					if(mudhost.getPort() == portNum)
+					if((mudhost.getPort() == portNum)
+					||(mudhost.getPublicPort() == portNum))
 						foundH = mudhost;
 				}
 			}

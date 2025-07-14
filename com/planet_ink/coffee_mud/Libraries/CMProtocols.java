@@ -3380,7 +3380,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final List<String> ports = new ArrayList<String>();
 			host = CMLib.hosts().get(0);
 			for(int i=CMLib.hosts().size()-1;i>=0;i--)
-				ports.add(Integer.toString(CMLib.hosts().get(i).getPort()));
+				ports.add(Integer.toString(CMLib.hosts().get(i).getPublicPort()));
 			pkg.put("PORT",ports.toArray(new String[ports.size()]));
 		}
 		pkg.put("NAME",CMProps.getVar(CMProps.Str.MUDNAME));

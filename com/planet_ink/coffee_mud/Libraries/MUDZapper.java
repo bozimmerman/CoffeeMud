@@ -6602,7 +6602,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final MudHost host=CMLib.host();
 						for(final Object o : entry.parms())
 						{
-							if(host.getPort()==((Integer)o).intValue())
+							if((host.getPort()==((Integer)o).intValue())
+							||(host.getPublicPort()==((Integer)o).intValue()))
 								return false;
 						}
 					}
@@ -6613,7 +6614,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						for(final Object o : entry.parms())
 						{
-							if(host.getPort()==((Integer)o).intValue())
+							if((host.getPort()==((Integer)o).intValue())
+							||(host.getPublicPort()==((Integer)o).intValue()))
 							{
 								found=true;
 								break;
@@ -9200,7 +9202,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final MudHost host=CMLib.host();
 						for(final Object o : entry.parms())
 						{
-							if(host.getPort()==((Integer)o).intValue())
+							if((host.getPort()==((Integer)o).intValue())
+							||(host.getPublicPort()==((Integer)o).intValue()))
 								return false;
 						}
 					}
@@ -9211,7 +9214,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						for(final Object o : entry.parms())
 						{
-							if(host.getPort()==((Integer)o).intValue())
+							if((host.getPort()==((Integer)o).intValue())
+							||(host.getPublicPort()==((Integer)o).intValue()))
 							{
 								found=true;
 								break;

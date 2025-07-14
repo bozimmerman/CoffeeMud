@@ -433,6 +433,12 @@ public class OffLine extends Thread implements MudHost
 		return port;
 	}
 
+	@Override
+	public int getPublicPort()
+	{
+		return port;
+	}
+
 	public static void main(final String a[])
 	{
 		CMProps page=null;
@@ -506,7 +512,7 @@ public class OffLine extends Thread implements MudHost
 				for(int m=0;m<mudThreads.size();m++)
 				{
 					final MudHost mud=mudThreads.elementAt(m);
-					str.append(" "+mud.getPort());
+					str.append(" "+mud.getPublicPort());
 				}
 				ports=str.toString();
 

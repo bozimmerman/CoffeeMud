@@ -186,7 +186,7 @@ public class SipletInterface extends StdWebMacro
 				{
 					for(final MudHost h : CMLib.hosts())
 					{
-						if(h.getPort()==port)
+						if((h.getPort()==port)||(h.getPublicPort()==port))
 						{
 							try
 							{
