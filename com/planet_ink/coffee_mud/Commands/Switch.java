@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -194,10 +195,10 @@ public class Switch extends StdCommand
 				target.setSession(sess);
 				sess.setMob(target);
 				if(CMLib.login().finishLogin(sess, target, target.location(), resetStats) != CharCreationLibrary.LoginResult.NORMAL_LOGIN)
-					sess.stopSession(true, true, true);
+					sess.stopSession(true, true, true, true);
 				else
 				{
-					sess.setStat("CPING", "true");
+					sess.doPing(SessionPing.CPING);
 					CMLib.login().showTheNews(target);
 					Log.sysOut(mob.Name()+" switched login to: "+target.Name());
 				}

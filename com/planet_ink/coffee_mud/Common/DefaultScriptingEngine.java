@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -12336,7 +12337,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(((MOB)E).getStartRoom()!=null)
 									((MOB)E).getStartRoom().bringMobHere((MOB)E,false);
 								if(((MOB)E).session() != null)
-									((MOB)E).session().stopSession(false,false,false);
+									((MOB)E).session().stopSession(true,false,false, false);
 							}
 							else
 							if(((MOB)E).getStartRoom()!=null)

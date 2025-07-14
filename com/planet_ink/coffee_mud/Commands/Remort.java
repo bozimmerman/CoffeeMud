@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -91,9 +92,9 @@ public class Remort extends StdCommand
 					oldAcct.copyInto(realAcct);
 			}
 		}
-		sess.stopSession(true,true,false);
+		sess.stopSession(true,true,true, false);
 		CMLib.s_sleep(3000);
-		sess.stopSession(true,true,false);
+		sess.stopSession(true,true,true, false);
 		if((!CMLib.flags().isInTheGame(mob, false))
 		&&((mob.session()==null)||(mob.session().isStopped())))
 			CMLib.players().unloadOfflinePlayer(mob);
@@ -570,7 +571,7 @@ public class Remort extends StdCommand
 												}
 												catch(final Throwable x)
 												{
-													sess.stopSession(true, true, false);
+													sess.stopSession(true, true, true, false);
 												}
 												if(sess.isStopped())
 												{
@@ -586,7 +587,7 @@ public class Remort extends StdCommand
 												}
 												catch(final Throwable x)
 												{
-													sess.stopSession(true, true, false);
+													sess.stopSession(true, true, true, false);
 												}
 												if(sess.isStopped())
 												{
@@ -606,7 +607,7 @@ public class Remort extends StdCommand
 												}
 												catch(final Throwable x)
 												{
-													sess.stopSession(true, true, false);
+													sess.stopSession(true, true, true, false);
 												}
 												if(sess.isStopped())
 												{
@@ -634,7 +635,7 @@ public class Remort extends StdCommand
 												}
 												catch(final Throwable x)
 												{
-													sess.stopSession(true, true, false);
+													sess.stopSession(true, true, true, false);
 												}
 												if(sess.isStopped())
 												{

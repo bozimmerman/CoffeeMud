@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -731,7 +732,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS)));
 			session.println(L("Your account has been created.  You will receive an email with your password shortly."));
 			CMLib.s_sleep(2000);
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			Log.sysOut("Created account: "+acct.getAccountName());
 			session.setAccount(null);
 			loginObj.state=LoginState.LOGIN_START;
@@ -895,7 +896,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			CMLib.s_sleep(1000);
-			mob.session().stopSession(false,false,false);
+			mob.session().stopSession(true,false,false, false);
 			return true;
 		}
 		return false;
@@ -907,13 +908,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(CMSecurity.isBanned(login))
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			return LoginResult.NO_LOGIN;
 		}
 		if((email!=null)&&CMSecurity.isBanned(email))
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			return LoginResult.NO_LOGIN;
 		}
 		for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.SESSIONS);e.hasMoreElements();)
@@ -938,7 +939,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					S.setMob(null);
 					if(M!=pickedMOB)
 						M.setSession(null);
-					S.stopSession(false,false,false);
+					S.stopSession(true,false,false, false);
 					Log.sysOut("Session swap for "+pickedMOB.Name()+".");
 					reloadTerminal(pickedMOB);
 					pickedMOB.bringToLife(oldRoom,false);
@@ -1127,7 +1128,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.attempt++;
 		if(loginObj.attempt>=4)
 		{
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
@@ -1144,7 +1145,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
 				{
 					session.rawOut(getMSSPPacket());
-					session.stopSession(false,false,false);
+					session.stopSession(true,false,false, false);
 					loginObj.reset=true;
 					loginObj.state=LoginState.LOGIN_START;
 					return LoginResult.NO_LOGIN;
@@ -1207,7 +1208,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(ogLogin.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
 		{
 			session.rawOut(getMSSPPacket());
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
@@ -1531,7 +1532,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if((otherSess!=session)&&(otherSess.isPendingLogin(otherLoginName)))
 				{
 					session.println(L("A previous login is still pending.  Please be patient."));
-					session.stopSession(false, false, false);
+					session.stopSession(true, false, false, false);
 					loginObj.reset=true;
 					loginObj.state=LoginState.LOGIN_START;
 					return LoginResult.NO_LOGIN;
@@ -1730,7 +1731,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			CMLib.smtp().emailOrJournal(loginObj.player.name(), "noreply",
 				loginObj.player.name(), L("Password for @x1",loginObj.player.name()),
 				L("Your password for @x1 at @x2 is '@x3'.",loginObj.player.name(),CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
@@ -1998,7 +1999,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((parms.length>1)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 			{
 				session.println(L("Bye Bye!"));
-				session.stopSession(false,false,false);
+				session.stopSession(true,false,false, false);
 				return LoginResult.NO_LOGIN;
 			}
 			session.promptPrint(L("Quit -- are you sure (y/N)?"));
@@ -2305,9 +2306,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
 					acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.ALLMUDPORTS)));
 				session.println(L("Your account email address has been updated.  You will receive an email with your new password shortly."));
-				session.stopSession(false,false,false);
 				CMLib.s_sleep(1000);
 				CMLib.database().DBUpdateAccount(acct);
+				session.stopSession(true,false,false, false);
 				return LoginResult.NO_LOGIN;
 			}
 			CMLib.database().DBUpdateAccount(acct);
@@ -2750,7 +2751,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
 			if(mob==session.mob())
-				session.stopSession(false,false,false);
+				session.stopSession(true,false,false, false);
 			return LoginResult.NO_LOGIN;
 		}
 		mob.playerStats().setAccount(acct);
@@ -4092,7 +4093,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(L("Your character has been created.  You will receive an email with your password shortly."));
 			CMLib.s_sleep(1000);
 			if(mob==session.mob())
-				session.stopSession(false,false,false);
+				session.stopSession(true,false,false, false);
 		}
 		else
 		{
@@ -4460,7 +4461,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				if(!C.execute(mob,null,0))
 				{
-					session.stopSession(false,false,false);
+					session.stopSession(true,false,false, false);
 					return LoginResult.NO_LOGIN;
 				}
 			}
@@ -4469,7 +4470,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((pstats.getEmail()!=null)&&CMSecurity.isBanned(pstats.getEmail()))
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
-			session.stopSession(false,false,false);
+			session.stopSession(true,false,false, false);
 			return LoginResult.NO_LOGIN;
 		}
 		if(mob.playerStats()!=null)

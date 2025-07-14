@@ -314,21 +314,21 @@ public class Unload extends StdCommand
 						if(M!=mob)
 						{
 							if (M.session() != null)
-								M.session().stopSession(false, false, false);
+								M.session().stopSession(true, false, false, false);
 							int attempts=100;
 							while ((M.session() != null)&&(--attempts>0))
 							{
 								CMLib.s_sleep(100);
 							}
 							if (M.session() != null)
-								M.session().stopSession(true, true, false);
+								M.session().stopSession(true, true, true, false);
 							attempts=100;
 							while ((M.session() != null)&&(--attempts>0))
 							{
 								CMLib.s_sleep(100);
 							}
 							if (M.session() != null)
-								M.session().stopSession(true, true, true);
+								M.session().stopSession(true, true, true, true);
 							attempts=100;
 							while ((M.session() != null)&&(--attempts>0))
 							{
@@ -356,7 +356,7 @@ public class Unload extends StdCommand
 					{
 						done++;
 						if(M.session()!=null)
-							M.session().stopSession(true,true,true);
+							M.session().stopSession(true,true,true, true);
 						final PlayerStats pStats = M.playerStats();
 						if(pStats != null)
 							pStats.getExtItems().delAllItems(true);

@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -2216,7 +2217,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				case core_goodbye:
 				{
-					session.stopSession(false,false,false);
+					session.stopSession(true,false,false, false);
 					break;
 				}
 				case ire_composer_setbuffer:

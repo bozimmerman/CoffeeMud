@@ -71,6 +71,7 @@ var TELNET = function(sipwin)
 	this.debug = false;
 	this.mttsBitmap = 1 | 4 | 8 | 256;
 	this.termType = "ANSI-TRUECOLOR";
+	this.ttypeCount = 0;
 
 	this.reset = function()
 	{
@@ -80,10 +81,9 @@ var TELNET = function(sipwin)
 		this.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
 		this.neverSupportMCCP = true; //TODO: maybe add pako later?
 		this.sentNaws = false;
+		this.ttypeCount = 0;
 	};
 	this.reset();
-	
-	this.ttypeCount = 0;
 	
 	this.process = function(dat)
 	{

@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionFilter;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Libraries.Clans;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
@@ -498,6 +499,12 @@ public class VFShell
 					}
 
 					@Override
+					public void doPing(final SessionPing ping)
+					{
+
+					}
+
+					@Override
 					public void setFakeInput(final String input)
 					{
 					}
@@ -801,7 +808,7 @@ public class VFShell
 					}
 
 					@Override
-					public void stopSession(final boolean t1, final boolean t2, final boolean t3)
+					public void stopSession(boolean disconnect, final boolean t1, final boolean t2, final boolean t3)
 					{
 					}
 

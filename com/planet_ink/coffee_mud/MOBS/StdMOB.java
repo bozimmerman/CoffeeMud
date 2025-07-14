@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerCombatStat;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -1114,7 +1115,7 @@ public class StdMOB implements MOB
 			possessor.dispossess(false);
 		if(session() != null)
 		{
-			session().stopSession(false, false, false);
+			session().stopSession(true, false, false, false);
 			CMLib.s_sleep(1000);
 		}
 		if(playerStats != null)
@@ -1225,7 +1226,7 @@ public class StdMOB implements MOB
 				}
 			}
 			if(killSession && (session() != null))
-				session().stopSession(false, false, false);
+				session().stopSession(true, false, false, false);
 		}
 		setRiding(null);
 	}
@@ -3957,7 +3958,7 @@ public class StdMOB implements MOB
 				playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
 			this.peaceTime = 0;
 			if(mySession!=null)
-				mySession.setStat("PPING", "true");
+				mySession.doPing(SessionPing.PPING);
 		}
 	}
 

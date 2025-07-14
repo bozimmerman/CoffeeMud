@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -100,7 +101,7 @@ public class Logoff extends StdCommand
 								{
 									CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
 									if(CMSecurity.isDisabled(DisFlag.LOGOUTS))
-										session.stopSession(false,false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
+										session.stopSession(true,false, false, false); // this should call prelogout and later loginlogoutthread to cause msg SEND
 									else
 										session.logout(true); // this should call prelogout and later loginlogoutthread to cause msg SEND
 									CMLib.commands().monitorGlobalMessage(R, msg);

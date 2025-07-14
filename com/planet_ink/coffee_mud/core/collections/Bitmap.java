@@ -106,6 +106,20 @@ public class Bitmap
 		return str.toString();
 	}
 
+	public static Bitmap fromBoolArray(final boolean[] bits)
+	{
+		final Bitmap b = new Bitmap();
+		for(int i=0;i<bits.length;i++)
+			b.set(i, bits[i]);
+		return b;
+	}
+
+	public void toBoolArray(final boolean[] bits)
+	{
+		for(int i=0;i<bits.length;i++)
+			bits[i] = get(i);
+	}
+
 	public int onCount()
 	{
 		return onBits;

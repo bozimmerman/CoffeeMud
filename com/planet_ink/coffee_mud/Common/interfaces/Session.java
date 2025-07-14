@@ -574,12 +574,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	/**
 	 * Force the current player to logoff, end the session, and/or kill the thread.
+	 * @param disconnect TODO
 	 * @param removeMOB true to remove the mob from the game
 	 * @param dropSession true to force closed sockets, and removed session
 	 * @param killThread true to force a thread death, and false to be more lenient
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isStopped()
 	 */
-	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread);
+	public void stopSession(boolean disconnect, boolean removeMOB, boolean dropSession, boolean killThread);
 
 	/**
 	 * Returns whether this session is done, or slated to be done.
@@ -996,6 +997,27 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param input text to send.
 	 */
 	public void setFakeInput(String input);
+
+	/**
+	 * Performs some special ping operation.
+	 * @see Session.SessionPing#ROOMLOOK
+	 * @param ping the ping to send
+	 */
+	public void doPing(SessionPing ping);
+
+	/**
+	 * A type of special operation ping
+	 * for sessions.
+	 * @author Bo Zimmerman
+	 */
+	public static enum SessionPing
+	{
+		ROOMLOOK,
+		PPING,
+		CPING,
+		PLAYERSAVE,
+		DISCONNECT
+	}
 
 	/** TELNET CODE: transmit binary */
 	public static final int TELNET_BINARY=0;

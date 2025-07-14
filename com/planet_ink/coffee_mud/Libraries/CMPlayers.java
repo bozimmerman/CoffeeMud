@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Commands.Stat;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
@@ -1527,7 +1528,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			session.logout(true);
 			if(session!=null)
-				session.stopSession(false,false,false);
+				session.stopSession(true,false,false, false);
 		}
 		if(deleteAssets)
 		{
@@ -1691,6 +1692,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final PlayerStats pStats=mob.playerStats();
 			if(pStats == null)
 				return 0;
+			final Session sess = mob.session();
 			if((!mob.isMonster()) && (pStats.isSavable())) // if they are presently online, because session
 			{
 				lib._factions().updatePlayerFactions(mob,mob.location(), false);
@@ -1712,6 +1714,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					lib._database().DBUpdateAccount(account);
 					account.setLastUpdated(System.currentTimeMillis());
 				}
+				if(sess != null)
+					sess.doPing(SessionPing.PLAYERSAVE);
 			}
 			else
 			if(pStats.isSavable())

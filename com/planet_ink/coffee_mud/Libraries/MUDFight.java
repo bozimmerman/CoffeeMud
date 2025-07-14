@@ -3461,7 +3461,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							{
 								final Session session=mob.session();
 								if(session!=null)
-									session.stopSession(true, true, true);
+									session.stopSession(true, true, true, true);
 								// preserve their corpse, if it is in the game
 								final PlayerStats pStat = mob.playerStats();
 								if(pStat != null)

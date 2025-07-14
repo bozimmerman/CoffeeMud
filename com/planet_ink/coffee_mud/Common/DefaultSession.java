@@ -13,9 +13,11 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionFilter;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.Sessions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
@@ -266,15 +268,168 @@ public class DefaultSession implements Session
 		return false;
 	}
 
+	private class HandshakeCallback extends TickingCallback
+	{
+		private final String introTextStr;
+		private final long firstIACIn=lastIACIn;
+
+		public HandshakeCallback(final long tickTime, final String introText)
+		{
+			super(tickTime);
+			this.introTextStr=introText;
+		}
+		@Override
+		public boolean tick(final int counter)
+		{
+			try
+			{
+				if(out!=null)
+				{
+					out.flush();
+					rawout.flush();
+				}
+				else
+				{
+					killFlag=true;
+					return false;
+				}
+				switch(status)
+				{
+				case HANDSHAKE_OPEN:
+				{
+					if((!terminalType.equals("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
+						changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
+					//rawout.flush(); rawBytesOut already flushes
+					setStatus(SessionStatus.HANDSHAKE_MCCP);
+					break;
+				}
+				case HANDSHAKE_MCCP:
+				{
+					if(((lastIACIn>firstIACIn)&&((System.currentTimeMillis()-lastIACIn)>500))
+					||((System.currentTimeMillis()-lastIACIn)>5000)
+					||((System.currentTimeMillis()-lastStateChangeMs)>10000))
+					{
+						if(getClientTelnetMode(TELNET_COMPRESS2))
+						{
+							negotiateTelnetMode(rawout,TELNET_COMPRESS2);
+							//rawout.flush(); rawBytesOut already flushes
+							if(getClientTelnetMode(TELNET_COMPRESS2))
+								startMCCP2();
+						}
+						setStatus(SessionStatus.HANDSHAKE_MXP);
+					}
+					break;
+				}
+				case HANDSHAKE_MXP:
+				{
+					if(!getClientTelnetMode(Session.TELNET_MXP))
+						setStatus(SessionStatus.HANDSHAKE_DONE);
+					else
+					{
+						rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
+						rawout.flush();
+						rawOut("\n\033[6z\n\033[6z<SUPPORT>\n");
+						rawout.flush();
+						setStatus(SessionStatus.HANDSHAKE_MXPPAUSE);
+					}
+					break;
+				}
+				case HANDSHAKE_MXPPAUSE:
+				{
+					if(((System.currentTimeMillis()-lastStateChangeMs)>3000)
+					||(mxpSupportSet.contains("+IMAGE.URL")||mxpSupportSet.contains("+IMAGE")||mxpSupportSet.contains("-IMAGE.URL")))
+						setStatus(SessionStatus.HANDSHAKE_DONE);
+					break;
+				}
+				case HANDSHAKE_DONE:
+				{
+					if(introTextStr!=null)
+						print(introTextStr);
+					if(out!=null)
+					{
+						out.flush();
+						rawout.flush();
+						if((getClientTelnetMode(Session.TELNET_MXP))
+						&&((mxpSupportSet.contains("+IMAGE.URL"))
+							||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
+						{
+							// also the intro page
+							final String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
+							if(paths[0].length()>0)
+							{
+								final CMFile introDir=new CMFile("/web/pub/images/mxp",null,CMFile.FLAG_FORCEALLOW);
+								String introFilename=paths[1];
+								if(introDir.isDirectory())
+								{
+									final CMFile[] files=introDir.listFiles();
+									final List<String> choices=new ArrayList<String>();
+									for (final CMFile file : files)
+									{
+										if(file.getName().toLowerCase().startsWith("intro")
+										&&file.getName().toLowerCase().endsWith(".jpg"))
+											choices.add(file.getName());
+									}
+									if(choices.size()>0)
+										introFilename=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								}
+								println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
+								if(out!=null)
+								{
+									out.flush();
+									rawout.flush();
+								}
+							}
+						}
+					}
+				}
+					//$FALL-THROUGH$
+				default:
+					connectionComplete=true;
+					status=SessionStatus.LOGIN;
+					if(collectedInput.length()>0)
+						fakeInput=new StringBuffer(collectedInput.toString());
+					return false;
+				}
+				return (out!=null);
+			}
+			catch(final Exception e)
+			{
+				if(e.getMessage()==null)
+					Log.errOut(e);
+				else
+					Log.errOut(e.getMessage());
+			}
+			connectionComplete=true;
+			status=SessionStatus.LOGIN;
+			return false;
+		}
+	}
+
+	private void startMCCP2() throws IOException
+	{
+		if(getClientTelnetMode(TELNET_COMPRESS2))
+		{
+			final ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+			rawout=zOut;
+			zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+			try
+			{
+				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+			}
+			catch (final UnsupportedEncodingException e)
+			{
+				Log.errOut(e);
+			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				Log.debugOut("MCCP compression started");
+		}
+	}
+
 	@Override
 	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{
 		this.groupName=groupName;
 		sock=s;
-		try {
-			this.ipAddress = sock.getInetAddress().getHostAddress();
-		}
-		catch (final Exception e) { }
 		promptSuffix = CMProps.getPromptSuffix();
 		currentColor = CMLib.color().getNormalColor();
 		lastColor = CMLib.color().getNormalColor();
@@ -282,67 +437,7 @@ public class DefaultSession implements Session
 		try
 		{
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
-			debugStrInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.INPUT);
-			debugBinOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
-			debugStrOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.STROUT);
-			debugBinInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
-			if(debugBinInput)
-			{
-				CMLib.threads().startTickDown(new Tickable()
-				{
-					@Override
-					public String ID()
-					{
-						return "SessionTicker";
-					}
-
-					@Override
-					public CMObject newInstance()
-					{
-						return null;
-					}
-
-					@Override
-					public CMObject copyOf()
-					{
-						return null;
-					}
-
-					@Override
-					public void initializeClass()
-					{
-					}
-
-					@Override
-					public int compareTo(final CMObject o)
-					{
-						return 0;
-					}
-
-					@Override
-					public String name()
-					{
-						return ID();
-					}
-
-					@Override
-					public int getTickStatus()
-					{
-						return 0;
-					}
-
-					@Override
-					public boolean tick(final Tickable ticking, final int tickID)
-					{
-						if(debugBinInputBuf.length()>0)
-						{
-							Log.debugOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
-							debugBinInputBuf.setLength(0);
-						}
-						return !killFlag;
-					}
-				}, 0, 1, 1);
-			}
+			initializeDebugSession();
 
 			if((sock == null)||(!sock.isConnected()))
 			{
@@ -353,190 +448,52 @@ public class DefaultSession implements Session
 				return;
 			}
 
+			this.ipAddress = sock.getInetAddress().getHostAddress();
 			sock.setSoTimeout(SOTIMEOUT);
 			rawout=new BufferedOutputStream(sock.getOutputStream());
 			rawin=new BufferedInputStream(sock.getInputStream());
 			if(!mcpDisabled)
-			{
 				rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-			}
 			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
-			//rawout.flush(); rawBytesOut already flushes
-
-			setServerTelnetMode(TELNET_ANSI,true);
-			setClientTelnetMode(TELNET_ANSI,true);
-			setServerTelnetMode(TELNET_ANSI16,false);
-			setClientTelnetMode(TELNET_ANSI16,false);
-			setServerTelnetMode(TELNET_ANSI256,false);
-			setClientTelnetMode(TELNET_ANSI256,false);
-			setClientTelnetMode(TELNET_TERMTYPE,true);
-			changeTelnetModeBackwards(rawout,TELNET_NEWENVIRON,true);
-			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
-			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
-				changeTelnetMode(rawout,TELNET_COMPRESS2,true);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
-				changeTelnetMode(rawout,TELNET_MXP,true);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.GMCP))
-				changeTelnetMode(rawout,TELNET_GMCP,true);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
-				changeTelnetMode(rawout,TELNET_MSP,true);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSDP))
-				changeTelnetMode(rawout,TELNET_MSDP,true);
-			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
-			changeTelnetMode(rawout,TELNET_NAWS,true);
-			//changeTelnetMode(rawout,TELNET_BINARY,true);
-			if(mightSupportTelnetMode(TELNET_GA))
-				rawBytesOut(rawout,TELNETGABYTES);
-			//rawout.flush(); rawBytesOut already flushes
-			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
-			&&(mightSupportTelnetMode(TELNET_MSSP)))
-				changeTelnetMode(rawout,TELNET_MSSP,true);
-
+			this.readlineContinue();
+			if(status == SessionStatus.HANDSHAKE_OPEN)
+			{
+				setServerTelnetMode(TELNET_ANSI,true);
+				setClientTelnetMode(TELNET_ANSI,true);
+				setServerTelnetMode(TELNET_ANSI16,false);
+				setClientTelnetMode(TELNET_ANSI16,false);
+				setServerTelnetMode(TELNET_ANSI256,false);
+				setClientTelnetMode(TELNET_ANSI256,false);
+				setClientTelnetMode(TELNET_TERMTYPE,true);
+				changeTelnetModeBackwards(rawout,TELNET_NEWENVIRON,true);
+				changeTelnetMode(rawout,TELNET_TERMTYPE,true);
+				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
+					changeTelnetMode(rawout,TELNET_COMPRESS2,true);
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
+					changeTelnetMode(rawout,TELNET_MXP,true);
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.GMCP))
+					changeTelnetMode(rawout,TELNET_GMCP,true);
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
+					changeTelnetMode(rawout,TELNET_MSP,true);
+				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSDP))
+					changeTelnetMode(rawout,TELNET_MSDP,true);
+				//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
+				changeTelnetMode(rawout,TELNET_NAWS,true);
+				//changeTelnetMode(rawout,TELNET_BINARY,true);
+				if(mightSupportTelnetMode(TELNET_GA))
+					rawBytesOut(rawout,TELNETGABYTES);
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
+				&&(mightSupportTelnetMode(TELNET_MSSP)))
+					changeTelnetMode(rawout,TELNET_MSSP,true);
+			}
 			final Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
 			charWriter=new SesInputStream(inMaxBytesPerChar);
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-			//final DefaultSession me = this;
-			prompt(new TickingCallback(250)
-			{
-				private final long firstIACIn=lastIACIn;
-				//final DefaultSession sess = me;
-
-				@Override
-				public boolean tick(final int counter)
-				{
-					try
-					{
-						if(out!=null)
-						{
-							out.flush();
-							rawout.flush();
-						}
-						else
-						{
-							killFlag=true;
-							return false;
-						}
-						switch(status)
-						{
-						case HANDSHAKE_OPEN:
-						{
-							if((!terminalType.equals("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
-								changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
-							//rawout.flush(); rawBytesOut already flushes
-							setStatus(SessionStatus.HANDSHAKE_MCCP);
-							break;
-						}
-						case HANDSHAKE_MCCP:
-						{
-							if(((lastIACIn>firstIACIn)&&((System.currentTimeMillis()-lastIACIn)>500))
-							||((System.currentTimeMillis()-lastIACIn)>5000)
-							||((System.currentTimeMillis()-lastStateChangeMs)>10000))
-							{
-								if(getClientTelnetMode(TELNET_COMPRESS2))
-								{
-									negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-									//rawout.flush(); rawBytesOut already flushes
-									if(getClientTelnetMode(TELNET_COMPRESS2))
-									{
-										final ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-										rawout=zOut;
-										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-										if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-											Log.debugOut("MCCP compression started");
-									}
-								}
-								setStatus(SessionStatus.HANDSHAKE_MXP);
-							}
-							break;
-						}
-						case HANDSHAKE_MXP:
-						{
-							if(!getClientTelnetMode(Session.TELNET_MXP))
-								setStatus(SessionStatus.HANDSHAKE_DONE);
-							else
-							{
-								rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
-								rawout.flush();
-								rawOut("\n\033[6z\n\033[6z<SUPPORT>\n");
-								rawout.flush();
-								setStatus(SessionStatus.HANDSHAKE_MXPPAUSE);
-							}
-							break;
-						}
-						case HANDSHAKE_MXPPAUSE:
-						{
-							if(((System.currentTimeMillis()-lastStateChangeMs)>3000)
-							||(mxpSupportSet.contains("+IMAGE.URL")||mxpSupportSet.contains("+IMAGE")||mxpSupportSet.contains("-IMAGE.URL")))
-								setStatus(SessionStatus.HANDSHAKE_DONE);
-							break;
-						}
-						case HANDSHAKE_DONE:
-						{
-							if(introTextStr!=null)
-								print(introTextStr);
-							if(out!=null)
-							{
-								out.flush();
-								rawout.flush();
-								if((getClientTelnetMode(Session.TELNET_MXP))
-								&&((mxpSupportSet.contains("+IMAGE.URL"))
-									||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
-								{
-									// also the intro page
-									final String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
-									if(paths[0].length()>0)
-									{
-										final CMFile introDir=new CMFile("/web/pub/images/mxp",null,CMFile.FLAG_FORCEALLOW);
-										String introFilename=paths[1];
-										if(introDir.isDirectory())
-										{
-											final CMFile[] files=introDir.listFiles();
-											final List<String> choices=new ArrayList<String>();
-											for (final CMFile file : files)
-											{
-												if(file.getName().toLowerCase().startsWith("intro")
-												&&file.getName().toLowerCase().endsWith(".jpg"))
-													choices.add(file.getName());
-											}
-											if(choices.size()>0)
-												introFilename=choices.get(CMLib.dice().roll(1,choices.size(),-1));
-										}
-										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
-										if(out!=null)
-										{
-											out.flush();
-											rawout.flush();
-										}
-									}
-								}
-							}
-						}
-							//$FALL-THROUGH$
-						default:
-							connectionComplete=true;
-							status=SessionStatus.LOGIN;
-							if(collectedInput.length()>0)
-								fakeInput=new StringBuffer(collectedInput.toString());
-							return false;
-						}
-						return (out!=null);
-					}
-					catch(final Exception e)
-					{
-						if(e.getMessage()==null)
-							Log.errOut(e);
-						else
-							Log.errOut(e.getMessage());
-					}
-					connectionComplete=true;
-					status=SessionStatus.LOGIN;
-					return false;
-				}
-			});
+			startMCCP2();
+			prompt(new HandshakeCallback(250,introTextStr));
 		}
 		catch(final Exception e)
 		{
@@ -1212,7 +1169,7 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
-			stopSession(true,true,false);
+			stopSession(true,true,true, false);
 			setKillFlag(true);
 		}
 	}
@@ -1254,7 +1211,7 @@ public class DefaultSession implements Session
 					}
 					out.write(chars);
 					if(out.checkError() && (!killFlag))
-						stopSession(true,true,false);
+						stopSession(true,true,true, false);
 				}
 				finally
 				{
@@ -1269,7 +1226,7 @@ public class DefaultSession implements Session
 			{
 				final String name=(mob!=null)?mob.Name():getAddress();
 				Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-				stopSession(true,true,true);
+				stopSession(true,true,true, true);
 				final Thread killThisThread=writeThread;
 				if(killThisThread!=null)
 					CMLib.killThread(killThisThread,500,1);
@@ -1279,7 +1236,7 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
-			stopSession(true,true,false);
+			stopSession(true,true,true, false);
 			setKillFlag(true);
 		}
 	}
@@ -2146,12 +2103,7 @@ public class DefaultSession implements Session
 									{
 										negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 										//rawout.flush(); rawBytesOut already flushes
-										final ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-										rawout=zOut;
-										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-										if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-											Log.debugOut("MCCP compression started");
+										startMCCP2();
 									}
 									break;
 								}
@@ -2588,7 +2540,7 @@ public class DefaultSession implements Session
 				if(sock.isClosed() || (!sock.isConnected()))
 				{
 					if(mob()!=null)
-						stopSession(true,CMLib.flags().isInTheGame(mob(),true),false);
+						stopSession(true,true,CMLib.flags().isInTheGame(mob(),true), false);
 					else
 						setKillFlag(true);
 					return null;
@@ -2697,8 +2649,10 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void stopSession(final boolean removeMOB, final boolean dropSession, final boolean killThread)
+	public void stopSession(final boolean disconnect, final boolean removeMOB, final boolean dropSession, final boolean killThread)
 	{
+		if(disconnect)
+			doPing(SessionPing.DISCONNECT);
 		setKillFlag(true);
 		setStatus(SessionStatus.LOGOUT5);
 		if(dropSession)
@@ -2913,7 +2867,7 @@ public class DefaultSession implements Session
 	{
 		final MOB M = this.mob;
 		if((M==null)||(M.playerStats()==null))
-			stopSession(false,false,false);
+			stopSession(true,false,false, false);
 		else
 		{
 			preLogout(M);
@@ -3180,7 +3134,7 @@ public class DefaultSession implements Session
 				.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 				.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
 				.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
-				.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+				.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" MCCP":"")
 				.append(ansiStr)
 				.append(", character login: "+mob.Name());
 			Log.sysOut(loginMsg.toString());
@@ -3508,7 +3462,7 @@ public class DefaultSession implements Session
 					if(minsIdle>=CMath.s_int(V.firstElement()))
 					{
 						println(CMLib.lang().L("\n\r^ZYou are being logged out!^?"));
-						stopSession(true,true,false);
+						stopSession(true,true,true, false);
 					}
 					else
 					if(minsIdle>=CMath.s_int(V.lastElement()))
@@ -3613,6 +3567,72 @@ public class DefaultSession implements Session
 			return 0;
 		return System.currentTimeMillis()-activeMillis;
 	}
+
+	public void initializeDebugSession()
+	{
+		debugStrInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.INPUT);
+		debugBinOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
+		debugStrOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.STROUT);
+		debugBinInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
+		if(debugBinInput)
+		{
+			CMLib.threads().startTickDown(new Tickable()
+			{
+				@Override
+				public String ID()
+				{
+					return "SessionTicker";
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return null;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return null;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					return 0;
+				}
+
+				@Override
+				public String name()
+				{
+					return ID();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return 0;
+				}
+
+				@Override
+				public boolean tick(final Tickable ticking, final int tickID)
+				{
+					if(debugBinInputBuf.length()>0)
+					{
+						Log.debugOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
+						debugBinInputBuf.setLength(0);
+					}
+					return !killFlag;
+				}
+			}, 0, 1, 1);
+		}
+	}
+
 
 	public static class LoginLogoutThread implements CMRunnable, Tickable
 	{
@@ -3796,10 +3816,96 @@ public class DefaultSession implements Session
 		lastWriteTime=System.currentTimeMillis();
 	}
 
-	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
+	private void sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
+	{
+		try
+		{
+			doc.put("timestamp", Long.valueOf(System.currentTimeMillis()));
+			final String mpcpKey = CMProps.getVar(CMProps.Str.MPCPKEY);
+			final byte[] keyBytes = mpcpKey.getBytes(StandardCharsets.UTF_8);
+			final byte[] payloadBytes = (command+" "+doc.toString()).getBytes(StandardCharsets.UTF_8);
+			final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
+			final Mac mac = Mac.getInstance("HmacSHA1");
+			mac.init(keySpec);
+			final ByteArrayOutputStream packetOut = new ByteArrayOutputStream();
+			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SB, (byte)Session.TELNET_MPCP});
+			for(final byte b : mac.doFinal(payloadBytes))
+			{
+				if (b == (byte)0xFF)
+					packetOut.write(new byte[] {(byte)0xFF,(byte)0xFF});
+				else
+					packetOut.write(b);
+			}
+			packetOut.write(payloadBytes);
+			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SE});
+			rawBytesOut(rawout, packetOut.toByteArray());
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+		}
+	}
+
+	@Override
+	public void doPing(final SessionPing ping)
+	{
+		switch(ping)
+		{
+		case DISCONNECT:
+			if(getClientTelnetMode(TELNET_MPCP))
+				sendMPCPPacket("Disconnect", new MiniJSON.JSONObject());
+			break;
+		case CPING:
+			if(getClientTelnetMode(TELNET_GMCP))
+			{
+				this.gmcpPings.clear();
+				this.doProtocolPings();
+			}
+			break;
+		case PPING:
+			{
+				this.gmcpPings.remove("system.nextMedReport");
+				this.doProtocolPings();
+			}
+			break;
+		case ROOMLOOK:
+			if(getClientTelnetMode(TELNET_GMCP))
+			{
+				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, msdpReportables);
+				if(gmcpPingBuf!=null)
+				{
+					try
+					{
+						rawBytesOut(rawout, gmcpPingBuf);
+					}
+					catch (final IOException e)
+					{
+					}
+				}
+			}
+			break;
+		case PLAYERSAVE:
+			if(getClientTelnetMode(TELNET_MPCP))
+			{
+				final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+				for(final String stat : this.getStatCodes())
+					doc.put(stat, getStat(stat));
+				doc.remove("LASTMSG");
+				sendMPCPPacket("Session", new MiniJSON.JSONObject());
+			}
+			break;
+		}
+	}
+
+	private static enum SESS_STAT_CODES {GROUPNAME,GROUPCHAR,ACCTOUNTNAME,MOBNAME,
+										 PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME,
-										 ROOMLOOK,TWRAP,PPING,CPING}
+										 TWRAP,MXPSUPPORTS, MXPVERINFO, MSDPREPORTS,
+										 GMCPSUPPORTS, STRCACHE, MCPKEY, MCPKEYPAIRS,
+										 MCPSUPPORTS,TELNETSCODES,TELNETCCODES,
+										 MTTSBITS,TERMHEIGHT,PSUFFIX,
+										 LOGINTIME,ONLINETIME,ACTIVETIME}
 
 	@Override
 	public int getSaveStatIndex()
@@ -3862,12 +3968,83 @@ public class DefaultSession implements Session
 			return "" + getWrap();
 		case LASTLOOPTIME:
 			return CMLib.time().date2String(getInputLoopTime());
-		case ROOMLOOK:
-		case PPING:
-		case CPING:
-			break; // do nothing
 		case TWRAP:
 			return ""+this.terminalWidth;
+		case MXPSUPPORTS:
+			return CMParms.toListString(mxpSupportSet);
+		case MXPVERINFO:
+		{
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			obj.putAll(mxpVersionInfo);
+			return obj.toString();
+		}
+		case MSDPREPORTS:
+		{
+			try
+			{
+				final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+				final ObjectOutputStream oout = new ObjectOutputStream(bout);
+				oout.writeObject(msdpReportables);
+				oout.flush();
+				return Base64.getEncoder().encodeToString(bout.toByteArray());
+			}
+			catch (final IOException e)
+			{
+				Log.errOut(e);
+			}
+			break;
+		}
+		case GMCPSUPPORTS:
+		{
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			obj.putAll(gmcpSupports);
+			return obj.toString();
+		}
+		case STRCACHE:
+		{
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			obj.putAll(strCache);
+			return obj.toString();
+		}
+		case MCPKEY:
+			return mcpKey[0]==null?"":mcpKey[0];
+		case MCPKEYPAIRS:
+		{
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			obj.putAll(mcpKeyPairs);
+			return obj.toString();
+		}
+		case MCPSUPPORTS:
+		{
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			for(final String key : mcpSupported.keySet())
+				obj.put(key, Double.valueOf(mcpSupported.get(key)[0]));
+			return obj.toString();
+		}
+		case GROUPNAME:
+			return ""+this.groupName;
+		case GROUPCHAR:
+			return ""+this.threadGroupChar;
+		case MOBNAME:
+			return (mob==null)?"":mob.Name();
+		case ACCTOUNTNAME:
+			return (acct==null)?"":acct.getAccountName();
+		case TELNETSCODES:
+			return Bitmap.fromBoolArray(serverTelnetCodes).toHexString();
+		case TELNETCCODES:
+			return Bitmap.fromBoolArray(clientTelnetCodes).toHexString();
+		case MTTSBITS:
+			return (mttsBitmap==null)?"":mttsBitmap.toString();
+		case TERMHEIGHT:
+			return ""+terminalHeight;
+		case PSUFFIX:
+			return (promptSuffix.length==0)?"":Base64.getEncoder().encodeToString(promptSuffix);
+		case LOGINTIME:
+			return ""+userLoginTime;
+		case ONLINETIME:
+			return ""+onlineTime;
+		case ACTIVETIME:
+			return ""+activeMillis;
 		default:
 			Log.errOut("Session", "getStat:Unhandled:" + stat.toString());
 			break;
@@ -3928,32 +4105,251 @@ public class DefaultSession implements Session
 		case LASTLOOPTIME:
 			lastLoopTop = CMLib.time().string2Millis(val);
 			break;
-		case CPING:
-			if(getClientTelnetMode(TELNET_GMCP))
+		case MXPSUPPORTS:
+		{
+			mxpSupportSet.clear();
+			mxpSupportSet.addAll(CMParms.parseCommas(val, true));
+			break;
+		}
+		case MXPVERINFO:
+		{
+			mxpVersionInfo.clear();
+			if((val.length()>0)&&(val.trim().startsWith("{")))
 			{
-				this.gmcpPings.clear();
-				this.doProtocolPings();
+				try
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON().parseObject(val);
+					for(final String key : obj.keySet())
+					{
+						try
+						{
+							mxpVersionInfo.put(key, obj.getCheckedString(key));
+						}
+						catch(final MiniJSON.MJSONException e)
+						{}
+					}
+				}
+				catch(final MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
 			}
 			break;
-		case PPING:
-			this.gmcpPings.remove("system.nextMedReport");
-			this.doProtocolPings();
-			break;
-		case ROOMLOOK:
-			if(getClientTelnetMode(TELNET_GMCP))
+		}
+		case MSDPREPORTS:
+		{
+			msdpReportables.clear();
+			if(val.trim().length()>0)
 			{
-				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, msdpReportables);
-				if(gmcpPingBuf!=null)
+				try
 				{
-					try
+					final byte[] bs = Base64.getDecoder().decode(val);
+					final ByteArrayInputStream bout = new ByteArrayInputStream(bs);
+					final ObjectInputStream ooin = new ObjectInputStream(bout);
+					@SuppressWarnings({ "rawtypes", "unchecked" })
+					final Map<Object,Object> m = (Map)ooin.readObject();
+					ooin.close();
+					msdpReportables.putAll(m);
+				}
+				catch (final Exception e)
+				{
+					Log.errOut(e);
+				}
+			}
+			break;
+		}
+		case GMCPSUPPORTS:
+		{
+			gmcpSupports.clear();
+			if((val.length()>0)&&(val.trim().startsWith("{")))
+			{
+				try
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON().parseObject(val);
+					for(final String key : obj.keySet())
 					{
-						rawBytesOut(rawout, gmcpPingBuf);
+						try
+						{
+							gmcpSupports.put(key, obj.getCheckedDouble(key));
+						}
+						catch(final MiniJSON.MJSONException e)
+						{}
 					}
-					catch (final IOException e)
+				}
+				catch(final MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			break;
+		}
+		case STRCACHE:
+		{
+			strCache.clear();
+			if((val.length()>0)&&(val.trim().startsWith("{")))
+			{
+				try
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON().parseObject(val);
+					for(final String key : obj.keySet())
 					{
+						try
+						{
+							strCache.put(key, obj.getCheckedString(key));
+						}
+						catch(final MiniJSON.MJSONException e)
+						{}
+					}
+				}
+				catch(final MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			break;
+		}
+		case MCPKEY:
+			if(val.trim().length()==0)
+				mcpKey[0]=null;
+			else
+				mcpKey[0]=val;
+			break;
+		case MCPKEYPAIRS:
+		{
+			mcpKeyPairs.clear();
+			if((val.length()>0)&&(val.trim().startsWith("{")))
+			{
+				try
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON().parseObject(val);
+					for(final String key : obj.keySet())
+					{
+						try
+						{
+							mcpKeyPairs.put(key, obj.getCheckedString(key));
+						}
+						catch(final MiniJSON.MJSONException e)
+						{}
+					}
+				}
+				catch(final MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			break;
+		}
+		case MCPSUPPORTS:
+		{
+			mcpSupported.clear();
+			if((val.length()>0)&&(val.trim().startsWith("{")))
+			{
+				try
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON().parseObject(val);
+					for(final String key : obj.keySet())
+					{
+						try
+						{
+							mcpSupported.put(key, new float[] {(float)obj.getCheckedDouble(key).doubleValue()});
+						}
+						catch(final MiniJSON.MJSONException e)
+						{}
+					}
+				}
+				catch(final MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
+			break;
+		}
+		case GROUPNAME:
+			if((!val.equals(this.groupName))&&(val.length()>0))
+			{
+				this.groupName=val;
+			}
+			//$FALL-THROUGH$
+		case GROUPCHAR:
+			if(val.length()>0)
+			{
+				if(this.threadGroupChar != val.charAt(0))
+				{
+					((Sessions)CMLib.library(this.threadGroupChar, CMLib.Library.SESSIONS)).remove(this);
+					this.threadGroupChar = val.charAt(0);
+					((Sessions)CMLib.library(this.threadGroupChar, CMLib.Library.SESSIONS)).add(this);
+				}
+			}
+			break;
+		case MOBNAME:
+			if(val.length()>0)
+			{
+				if(mob == null)
+				{
+					mob=CMLib.players().getLoadPlayer(val);
+					if((mob!=null)&&(!CMLib.flags().isInTheGame(mob, true)))
+					{
+						connectionComplete=true;
+						status=SessionStatus.MAINLOOP;
+						if(mob.location()!=null)
+							mob.bringToLife(mob.location(), bNextByteIs255);
 					}
 				}
 			}
+			break;
+		case ACCTOUNTNAME:
+			if(val.length()>0)
+				acct=CMLib.players().getLoadAccount(val);
+			break;
+		case TELNETSCODES:
+		{
+			try
+			{
+				if(val.trim().length()>0)
+					new Bitmap(val).toBoolArray(serverTelnetCodes);
+			}
+			catch (final Exception e)
+			{
+				Log.errOut(e);
+			}
+			break;
+		}
+		case TELNETCCODES:
+		{
+			try
+			{
+				if(val.trim().length()>0)
+					new Bitmap(val).toBoolArray(clientTelnetCodes);
+			}
+			catch (final Exception e)
+			{
+				Log.errOut(e);
+			}
+			break;
+		}
+		case MTTSBITS:
+			if(val.trim().length()==0)
+				mttsBitmap = null;
+			else
+				mttsBitmap = Long.valueOf(CMath.s_long(val));
+			break;
+		case TERMHEIGHT:
+			terminalHeight = CMath.s_int(val);
+			break;
+		case PSUFFIX:
+			if(val.trim().length()==0)
+				promptSuffix=new byte[0];
+			else
+				promptSuffix=Base64.getDecoder().decode(val);
+			break;
+		case LOGINTIME:
+			userLoginTime = CMath.s_long(val);
+			break;
+		case ONLINETIME:
+			onlineTime = CMath.s_long(val);
+			break;
+		case ACTIVETIME:
+			activeMillis = CMath.s_long(val);
 			break;
 		default:
 			Log.errOut("Session", "setStat:Unhandled:" + stat.toString());

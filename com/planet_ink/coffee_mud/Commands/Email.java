@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -320,7 +321,7 @@ public class Email extends StdCommand
 			if(mob.session()!=null)
 			{
 				CMLib.s_sleep(1000);
-				mob.session().stopSession(false,false,false);
+				mob.session().stopSession(true,false,false, false);
 			}
 		}
 		return true;

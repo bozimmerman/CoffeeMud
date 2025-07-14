@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -2023,7 +2024,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
 
-		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
+		sess.doPing(SessionPing.ROOMLOOK);
 
 		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
 

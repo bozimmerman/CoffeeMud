@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -77,7 +78,7 @@ public class Boot extends StdCommand
 				}
 				else
 					mob.tell(L("You boot @x1",S.getAddress()));
-				S.stopSession(false,false,false);
+				S.stopSession(true,false,false, false);
 				CMLib.s_sleep(100);
 				if(((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0))
 				&&(S.mob()!=null)

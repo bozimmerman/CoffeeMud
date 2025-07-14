@@ -416,7 +416,7 @@ public class GModify extends StdCommand
 		}
 		catch (final Exception e)
 		{
-			sess.stopSession(false, false, false);
+			sess.stopSession(true, false, false, false);
 			return null;
 		}
 		boolean didAnything=false;

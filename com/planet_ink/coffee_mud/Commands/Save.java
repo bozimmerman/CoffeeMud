@@ -369,27 +369,21 @@ public class Save extends StdCommand
 				mob.tell(L("No user named @x1",lastCommand));
 				return false;
 			}
-			CMLib.database().DBUpdatePlayer(M);
-			if(CMLib.flags().isInTheGame(M,true))
-				CMLib.database().DBUpdateFollowers(M);
+			CMLib.players().savePlayer(M);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(firstCommand)!=null) //omg stay this t-group
 		{
 			final MOB M=CMLib.players().getPlayer(firstCommand);
-			CMLib.database().DBUpdatePlayer(M);
-			if(CMLib.flags().isInTheGame(M,true))
-				CMLib.database().DBUpdateFollowers(M);
+			CMLib.players().savePlayer(M);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
 		if(CMLib.players().getPlayer(lastCommand)!=null) //omg stay this t-group
 		{
 			final MOB M=CMLib.players().getPlayer(lastCommand);
-			CMLib.database().DBUpdatePlayer(M);
-			if(CMLib.flags().isInTheGame(M,true))
-				CMLib.database().DBUpdateFollowers(M);
+			CMLib.players().savePlayer(M);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
