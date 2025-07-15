@@ -216,6 +216,7 @@ public class MUD extends Thread implements MudHost
 							}
 							out.print(introText.toString());
 							out.flush();
+
 							checkedSleep(250);
 							out.close();
 						}
@@ -489,7 +490,6 @@ public class MUD extends Thread implements MudHost
 
 	public static void globalShutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
-
 		CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 		bootSync.set(false);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());

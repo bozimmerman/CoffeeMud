@@ -452,12 +452,18 @@ public class DefaultSession implements Session
 			sock.setSoTimeout(SOTIMEOUT);
 			rawout=new BufferedOutputStream(sock.getOutputStream());
 			rawin=new BufferedInputStream(sock.getInputStream());
-			if(!mcpDisabled)
-				rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
+			final Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
+			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
+			charWriter=new SesInputStream(inMaxBytesPerChar);
+			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
+			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+			CMLib.s_sleep(100);
 			this.readlineContinue();
 			if(status == SessionStatus.HANDSHAKE_OPEN)
 			{
+				if(!mcpDisabled)
+					rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+				rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
 				setServerTelnetMode(TELNET_ANSI,true);
 				setClientTelnetMode(TELNET_ANSI,true);
 				setServerTelnetMode(TELNET_ANSI16,false);
@@ -486,14 +492,8 @@ public class DefaultSession implements Session
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
 				&&(mightSupportTelnetMode(TELNET_MSSP)))
 					changeTelnetMode(rawout,TELNET_MSSP,true);
+				prompt(new HandshakeCallback(250,introTextStr));
 			}
-			final Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
-			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
-			charWriter=new SesInputStream(inMaxBytesPerChar);
-			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
-			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-			startMCCP2();
-			prompt(new HandshakeCallback(250,introTextStr));
 		}
 		catch(final Exception e)
 		{
@@ -1866,6 +1866,17 @@ public class DefaultSession implements Session
 								break;
 							if(command.equalsIgnoreCase("clientinfo"))
 								this.ipAddress = obj.getCheckedString("client_address");
+							if(command.equalsIgnoreCase("sessioninfo"))
+							{
+Log.sysOut("SESSIONINFO0!: "+status.name()); //TODO:BZ:DELME
+								obj.remove("timestamp");
+								for(final String key : getStatCodes())
+									if(obj.containsKey(key))
+										setStat(key,obj.get(key).toString());
+								this.inputCallback=null;
+								startMCCP2();
+Log.sysOut("SESSIONINFO1!: "+status.name()); //TODO:BZ:DELME
+							}
 						}
 					}
 					catch(final Exception e)
@@ -3891,7 +3902,7 @@ public class DefaultSession implements Session
 				for(final String stat : this.getStatCodes())
 					doc.put(stat, getStat(stat));
 				doc.remove("LASTMSG");
-				sendMPCPPacket("Session", new MiniJSON.JSONObject());
+				sendMPCPPacket("SessionInfo", doc);
 			}
 			break;
 		}
@@ -4073,6 +4084,8 @@ public class DefaultSession implements Session
 			afkMessage = val;
 			break;
 		case ADDRESS:
+			if(val.length()>0)
+				this.ipAddress=val;
 			return;
 		case IDLETIME:
 			lastKeystroke = CMLib.time().string2Millis(val);
@@ -4286,20 +4299,31 @@ public class DefaultSession implements Session
 			{
 				if(mob == null)
 				{
-					mob=CMLib.players().getLoadPlayer(val);
+					mob=((PlayerLibrary)CMLib.library(this.threadGroupChar, CMLib.Library.PLAYERS)).getLoadPlayer(val);
 					if((mob!=null)&&(!CMLib.flags().isInTheGame(mob, true)))
 					{
+						mob.setSession(this);
 						connectionComplete=true;
+						setLoggedInState(LoginResult.NORMAL_LOGIN);
 						status=SessionStatus.MAINLOOP;
 						if(mob.location()!=null)
-							mob.bringToLife(mob.location(), bNextByteIs255);
+						{
+							CMLib.threads().executeRunnable(threadGroupChar, new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									mob.bringToLife(mob.location(), false);
+								}
+							});
+						}
 					}
 				}
 			}
 			break;
 		case ACCTOUNTNAME:
 			if(val.length()>0)
-				acct=CMLib.players().getLoadAccount(val);
+				acct=((PlayerLibrary)CMLib.library(this.threadGroupChar, CMLib.Library.PLAYERS)).getLoadAccount(val);
 			break;
 		case TELNETSCODES:
 		{
