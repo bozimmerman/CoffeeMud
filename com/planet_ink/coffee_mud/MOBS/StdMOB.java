@@ -1226,7 +1226,7 @@ public class StdMOB implements MOB
 				}
 			}
 			if(killSession && (session() != null))
-				session().stopSession(true, false, false, false);
+				session().stopSession(false, false, false, false);
 		}
 		setRiding(null);
 	}

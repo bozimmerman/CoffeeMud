@@ -789,7 +789,7 @@ public class MUD extends Thread implements MudHost
 				else
 				{
 					shutdownStateTime.set(System.currentTimeMillis());
-					S2.stopSession(true,true,true, false);
+					S2.stopSession(false,true,true, false);
 				}
 				if(S!=null)
 					S.print(".");

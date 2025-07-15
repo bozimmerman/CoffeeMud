@@ -1169,7 +1169,7 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
-			stopSession(true,true,true, false);
+			stopSession(false,true,true, false);
 			setKillFlag(true);
 		}
 	}
@@ -1236,7 +1236,7 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
-			stopSession(true,true,true, false);
+			stopSession(false,true,true, false);
 			setKillFlag(true);
 		}
 	}
@@ -3462,7 +3462,7 @@ public class DefaultSession implements Session
 					if(minsIdle>=CMath.s_int(V.firstElement()))
 					{
 						println(CMLib.lang().L("\n\r^ZYou are being logged out!^?"));
-						stopSession(true,true,true, false);
+						stopSession(false,true,true, false);
 					}
 					else
 					if(minsIdle>=CMath.s_int(V.lastElement()))
