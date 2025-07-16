@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.1',
-	VERSION_MINOR: '2',
+	VERSION_MINOR: '3',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
@@ -27,9 +27,10 @@ function SipletWindow(windowName)
 	this.MSPsupport = false;
 	this.MXPsupport = false;
 	this.MCCPsupport = false;
+	this.decompressor = null;
 	this.wsopened = false;
 	this.windowName = windowName;
-	this.bin = new BPPARSE(false);
+	this.bin = new BPPARSE(this,false);
 	this.ansi = new ANSISTACK(this);
 	this.telnet = new TELNET(this);
 	this.msp = new MSP(this);
@@ -292,6 +293,7 @@ function SipletWindow(windowName)
 		this.GMCPsupport = false;
 		this.MXPsupport = false;
 		this.MCCPsupport = false;
+		this.decompressor = null;
 		this.wsopened = false;
 		this.bin.reset();
 		this.ansi.reset();

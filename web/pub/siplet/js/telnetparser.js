@@ -79,7 +79,7 @@ var TELNET = function(sipwin)
 		this.neverSupportMXP = !(getConfig("window/term/mxp",'true') === 'true');
 		this.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
 		this.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
-		this.neverSupportMCCP = true; //TODO: maybe add pako later?
+		this.neverSupportMCCP = !(getConfig("window/term/mccp",'true') === 'true');
 		this.sentNaws = false;
 		this.ttypeCount = 0;
 	};
@@ -144,7 +144,8 @@ var TELNET = function(sipwin)
 			else
 			if (subOptionCode == TELOPT.COMPRESS2)
 			{
-				// probably need to handle this earlier
+				if(sipwin.MCCPsupport)
+					sipwin.decompressor = new pako.Inflate({raw:false});
 			}
 			else
 			if (subOptionCode == TELOPT.MSDP)
@@ -332,6 +333,23 @@ var TELNET = function(sipwin)
 					response = response.concat(BuildGMCPHello(sipwin));
 				}
 				break;
+			case TELOPT.COMPRESS:
+			case TELOPT.COMPRESS2:
+				if (this.neverSupportMCCP)
+				{
+					if (sipwin.MCCPsupport)
+					{
+						response = response.concat([TELOPT.IAC, TELOPT.DONT, dat[1]]);
+						sipwin.MCCPsupport = false;
+					}
+				}
+				else
+				if (!sipwin.MCCPsupport)
+				{
+					sipwin.MCCPsupport =true;
+					response = response.concat([TELOPT.IAC, TELOPT.DO, dat[1]]);
+				}
+				break;
 			case TELOPT.MXP:
 				if (this.neverSupportMXP)
 				{
@@ -454,6 +472,23 @@ var TELNET = function(sipwin)
 					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.GMCP]);
 					sipwin.GMCPsupport = true;
 					response = response.concat(BuildGMCPHello(sipwin));
+				}
+				break;
+			case TELOPT.COMPRESS:
+			case TELOPT.COMPRESS2:
+				if (this.neverSupportMCCP)
+				{
+					if (sipwin.MCCPsupport)
+					{
+						response = response.concat([TELOPT.IAC, TELOPT.WONT, dat[1]]);
+						sipwin.MCCPsupport = false;
+					}
+				}
+				else
+				if (!sipwin.MCCPsupport)
+				{
+					response = response.concat([TELOPT.IAC, TELOPT.WILL, dat[1]]);
+					sipwin.MCCPsupport = true;
 				}
 				break;
 			case TELOPT.LOGOUT:
@@ -680,9 +715,11 @@ var updateTelnetOptions = function() {
 		siplet.telnet.neverSupportMXP = !(getConfig("window/term/mxp",'true') === 'true');
 		siplet.telnet.neverSupportMSDP= !(getConfig("window/term/msdp",'true') === 'true');
 		siplet.telnet.neverSupportGMCP = !(getConfig("window/term/gmcp",'true') === 'true');
+		siplet.telnet.neverSupportMCCP = !(getConfig("window/term/mccp",'true') === 'true');
     }
 }
 addConfigListener('window/term/msp', updateTelnetOptions);
 addConfigListener('window/term/mxp', updateTelnetOptions);
 addConfigListener('window/term/msdp', updateTelnetOptions);
 addConfigListener('window/term/gmcp', updateTelnetOptions);
+addConfigListener('window/term/mccp', updateTelnetOptions);

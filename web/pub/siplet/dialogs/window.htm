@@ -57,5 +57,9 @@
 	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/gmcp','true').toLowerCase()==='true'?'CHECKED':''}
 			ONCLICK="setConfig('window/term/gmcp',''+this.checked);">GMCP</TD>
 	<TD>(Generic Mud Communication Protocol)</TD>
+</TR><TR>
+	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/mccp','true').toLowerCase()==='true'?'CHECKED':''}
+			ONCLICK="setConfig('window/term/mccp',''+this.checked);">MCCP</TD>
+	<TD>(Mud Client Compression Protocol)</TD>
 </TR>
 </TABLE>

@@ -41,7 +41,7 @@ var BPENTRY = function()
 	this.done = false;
 };
 
-var BPPARSE = function(lfok)
+var BPPARSE = function(sipwin,lfok)
 {
 	this.reset = function()
 	{
@@ -75,6 +75,8 @@ var BPPARSE = function(lfok)
 		}
 		this.last = Date.now();
 		var data = new Uint8Array(this.data);
+		if(sipwin.decompressor)
+			data = decompressChunk(sipwin.decompressor,data);
 		while(++i < data.length)
 		{
 			var prev = c;
