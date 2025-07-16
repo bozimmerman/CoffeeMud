@@ -114,6 +114,7 @@ public class Spell_DispelMagic extends Spell
 							return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
 						if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 						&&((A.invoker()==mob)
+							||(A.invoker()==null)
 							||(A.invoker().phyStats().level()<=mob.phyStats().level()+CMProps.getIntVar(CMProps.Int.EXPRATE))))
 							return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 					}
