@@ -457,7 +457,7 @@ public class DefaultSession implements Session
 			charWriter=new SesInputStream(inMaxBytesPerChar);
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-			CMLib.s_sleep(100);
+			CMLib.s_sleep(250);
 			this.readlineContinue();
 			if(status == SessionStatus.HANDSHAKE_OPEN)
 			{
@@ -1868,14 +1868,22 @@ public class DefaultSession implements Session
 								this.ipAddress = obj.getCheckedString("client_address");
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{
-Log.sysOut("SESSIONINFO0!: "+status.name()); //TODO:BZ:DELME
 								obj.remove("timestamp");
+								final boolean wasmccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
+										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
 								for(final String key : getStatCodes())
 									if(obj.containsKey(key))
 										setStat(key,obj.get(key).toString());
 								this.inputCallback=null;
-								startMCCP2();
-Log.sysOut("SESSIONINFO1!: "+status.name()); //TODO:BZ:DELME
+								final boolean ismccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
+										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
+								if(ismccp2 && !wasmccp2)
+								{
+									this.setClientTelnetMode(Session.TELNET_COMPRESS, false);
+									this.setClientTelnetMode(Session.TELNET_COMPRESS2, false);
+									if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
+										changeTelnetMode(rawout,TELNET_COMPRESS2,true);
+								}
 							}
 						}
 					}
@@ -3908,13 +3916,14 @@ Log.sysOut("SESSIONINFO1!: "+status.name()); //TODO:BZ:DELME
 		}
 	}
 
-	private static enum SESS_STAT_CODES {GROUPNAME,GROUPCHAR,ACCTOUNTNAME,MOBNAME,
+	private static enum SESS_STAT_CODES {GROUPNAME,GROUPCHAR,TELNETSCODES,TELNETCCODES,
+										 ACCTOUNTNAME,MOBNAME,
 										 PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME,
 										 TWRAP,MXPSUPPORTS, MXPVERINFO, MSDPREPORTS,
 										 GMCPSUPPORTS, STRCACHE, MCPKEY, MCPKEYPAIRS,
-										 MCPSUPPORTS,TELNETSCODES,TELNETCCODES,
+										 MCPSUPPORTS,
 										 MTTSBITS,TERMHEIGHT,PSUFFIX,
 										 LOGINTIME,ONLINETIME,ACTIVETIME}
 
@@ -4308,12 +4317,15 @@ Log.sysOut("SESSIONINFO1!: "+status.name()); //TODO:BZ:DELME
 						status=SessionStatus.MAINLOOP;
 						if(mob.location()!=null)
 						{
+							final DefaultSession s = this;
 							CMLib.threads().executeRunnable(threadGroupChar, new Runnable()
 							{
+								final DefaultSession sess = s;
 								@Override
 								public void run()
 								{
 									mob.bringToLife(mob.location(), false);
+									sess.needPrompt=true;
 								}
 							});
 						}

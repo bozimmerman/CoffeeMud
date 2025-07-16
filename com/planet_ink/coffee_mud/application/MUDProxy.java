@@ -65,7 +65,7 @@ public class MUDProxy
 	private 	  ParseState				readState		= ParseState.NORMAL;
 	private		  byte						readCommand		= 0;
 	private final RefilByteArrayInputStream inputPipe		= new RefilByteArrayInputStream(new byte[0]);
-	private  	  InputStream				in;
+	private  	  InputStream				in				= null;
 	private final ByteArrayOutputStream 	outputPipe		= new ByteArrayOutputStream();
 	private 	  OutputStream				out				= new FilterOutputStream(outputPipe);
 	private final ByteArrayOutputStream		mpcpCommand		= new ByteArrayOutputStream();
@@ -274,36 +274,48 @@ public class MUDProxy
 							else
 							if(key.isConnectable())
 							{
-								final SocketChannel targetChannel = (SocketChannel) key.channel();
-								targetChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
+								final SocketChannel serverChannel = (SocketChannel) key.channel();
+								serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
 								try
 								{
-									if (targetChannel.finishConnect())
+									if (serverChannel.finishConnect())
 									{
-										final MUDProxy context = (MUDProxy)key.attachment();
-										targetChannel.write(ByteBuffer.wrap(new byte[] {
+										final MUDProxy serverContext = (MUDProxy)key.attachment();
+										serverChannel.write(ByteBuffer.wrap(new byte[] {
 											(byte)Session.TELNET_IAC,
 											(byte)Session.TELNET_WILL,
 											(byte)Session.TELNET_MPCP
 										}));
-										targetChannel.write(makeMPCPPacket("ClientInfo {"
-												+ "\"client_address\":\""+context.ipAddress+"\","
-												+ "\"timestamp\":"+System.currentTimeMillis()+"}"));
-										if(context.distressTime != 0)
+										if(serverContext.in instanceof ZInputStream)
+										{
+											// reset the server input MCCP
+											serverContext.inputPipe.reset();
+											serverContext.in.close();
+											serverContext.in = new PassThroughInputStream(serverContext.inputPipe);
+										}
+										serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+												+ "\"client_address\":\""+serverContext.ipAddress+"\","
+												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
+										if(serverContext.distressTime != 0)
 										{
 											final JSONObject obj = new MiniJSON.JSONObject();
-											obj.putAll(context.session);
-											obj.put("timestamp",Long.valueOf(System.currentTimeMillis()));
-											targetChannel.write(makeMPCPPacket("SessionInfo "+obj.toString()));
+											obj.putAll(serverContext.session);
+											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
+											serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
 											final SelectionKey pairedKey = channelPairs.get(key);
 											if(pairedKey!=null)
 											{
-												final SocketChannel pairedChannel = (SocketChannel) pairedKey.channel();
-												final ByteBuffer msg = ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
-														+"-- Connection restored --\n\r").getBytes());
-												pairedChannel.write(msg);
+												final SocketChannel clientChannel = (SocketChannel)pairedKey.channel();
+												final MUDProxy clientContext = (MUDProxy)pairedKey.attachment();
+												serverContext.outputPipe.reset();
+												serverContext.out.write(("\n\r\n\r\u001B[0m\u001B[37m"
+														+"-- Connection restored --\n\r").getBytes()); // in case the client is expecting compressed data
+												serverContext.out.flush();
+												clientChannel.write(ByteBuffer.wrap(serverContext.outputPipe.toByteArray()));
+												Log.sysOut(serverContext.outsidePortNum+"","Connection restored "+serverContext.ipAddress
+														+"->"+clientContext.port.first+":"+clientContext.port.second);
 											}
-											context.distressTime=0;
+											serverContext.distressTime=0;
 										}
 										key.interestOps(SelectionKey.OP_READ);
 									}
@@ -340,7 +352,7 @@ public class MUDProxy
 		}
 	}
 
-	private static ByteBuffer makeMPCPPacket(final String command)
+	private static byte[] makeMPCPPacket(final String command)
 	{
 		try
 		{
@@ -360,13 +372,13 @@ public class MUDProxy
 			}
 			packetOut.write(payloadBytes);
 			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SE});
-			return ByteBuffer.wrap(packetOut.toByteArray());
+			return packetOut.toByteArray();
 		}
 		catch(final Exception e)
 		{
 			Log.errOut(e);
 		}
-		return ByteBuffer.allocate(0);
+		return new byte[0];
 	}
 
 	private static void handleWrite(final SelectionKey key) throws IOException
@@ -451,7 +463,7 @@ public class MUDProxy
 		}
 	}
 
-	public class PassThroughInputStream extends FilterInputStream
+	public static class PassThroughInputStream extends FilterInputStream
 	{
 		public PassThroughInputStream(final InputStream in)
 		{
@@ -799,12 +811,16 @@ public class MUDProxy
 		{
 			pairedKey = channelPairs.get(key);
 		}
+		SocketChannel pairedChannel = null;
 		synchronized(channelPairs)
 		{
 			channelPairs.remove(key);
-			channelPairs.remove(pairedKey);
+			if(pairedKey != null)
+			{
+				pairedChannel = (SocketChannel) pairedKey.channel();
+				channelPairs.remove(pairedKey);
+			}
 		}
-		final SocketChannel pairedChannel = (SocketChannel) pairedKey.channel();
 		if((!context.isClient)
 		&&(pairedChannel!=null)
 		&&(context.mpcpConfirmed))
@@ -876,6 +892,7 @@ public class MUDProxy
 		@Override
 		public void run()
 		{
+			super.setName("PROXY_DISTRESS");
 			boolean lastDistress=false;
 			try
 			{

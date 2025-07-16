@@ -25,7 +25,7 @@
           </ul>
         </li>
         <li><a href="#settings">Settings</a></li>
-        <li><a href="#multihosts">Multiple Hosts</a></li>
+        <li><a href="#multihosts">Multiple Hosts</a></li><li><a href="#proxyserver">Proxy Server</a></li>
         <li><a href="#package">The CoffeeMud Package</a></li>
         <li> <a href="#database">The Database</a>
           <ul>
@@ -546,7 +546,44 @@ entry pointing to a dedicated CoffeeMud database for each host, and
 several PRIVATERESOURCES.. probably DBVFS, PLAYERS,&nbsp;MAP, STATS,
 QUEST, and CLANS. &nbsp; &nbsp;If you dont want your players to be able
 to chat with each other over channels, or see each other with the WHO
-command, you might add CHANNELS and SESSIONS to the list as well.</p>
+command, you might add CHANNELS and SESSIONS to the list as well.</p><p><img style="width: 73px; height: 73px;" src="images/bridge.jpg" alt="packages" /> </p>
+      <h2><a name="proxyserver">Proxy Server</a></h2><p>The
+CoffeeMud server will not crash on you, and you are unlikely to make
+changes that require rebooting it, but if either of those unlikely
+circumstances arise, the optional proxy server may be the answer.
+&nbsp;A proxy server accepts direct connections from your players, and
+then connects to the main&nbsp;CoffeeMud server on their behalf, acting
+as a kind of "middle-man" for player connections. &nbsp; The benefit of
+the proxy server is that, should the CoffeeMud server connection be
+lost due to either a crash or shutdown, it can notify the player that
+something has gone wrong, and then attempt to automatically reconnect
+to the main server when it becomes available again. &nbsp;It this
+narrow and unlikely benefit seems valuable to you, then read on.</p><p>Before
+you can run a proxy server, you must first specify the&nbsp;PROXY port
+in your coffeemud.ini file. &nbsp;This is the port number that players
+will connect to instead of the main server PORT. &nbsp;The proxy server
+will then use the exact same ini file(s) as the main server during
+startup. &nbsp;If you are using multiple hosts (see above), then
+additional ini files may be specified in the exact same way.</p><p>The
+next thing to modify in your coffeemud.ini file is the MPCPKEY entry.
+&nbsp;Change it to absolutely anything you want. &nbsp;This string acts
+as a 'password' between the mud server and the proxy server, ensuring
+that they can trust the information they share. &nbsp;The "MPCP" part
+of the name refers to the Mud Proxy Control Protocol, in case you want
+to google that and read more about it.</p><p>Starting the proxy server is very similar to starting the main mud server:<br /></p><p><code>java -classpath ".;.\lib\js.jar;.\lib\jzlib.jar"
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code></p>
+      <p>And for Unix, Linux, or FreeBSD users, the command differs
+only in the classpath:</p>
+      <p><code>java -classpath ".:./lib/js.jar:./lib/jzlib.jar"
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code></p><p>Once
+the proxy server starts, it will generate a proxy.log file containing a
+startup message that should confirm that you've set it up correctly.
+&nbsp;It does not matter whether you start the proxy server first, or
+the mud server first, but both must be running for everything to work
+as you want it to. &nbsp;Because they both use the same ini files, the
+CoffeeMud server will also see the PROXY and MPCPKEY entries, and will
+report the PROXY port as its publically accessible port for users,
+instead of its normal listening PORT.</p>
       <img src="images/hd.jpg" alt="packages" />
       <h2><a name="package">The CoffeeMud Package</a></h2>
       <p>Here is a summary of the directories inside the CoffeeMud
