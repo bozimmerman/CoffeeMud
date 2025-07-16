@@ -344,6 +344,11 @@ function SiAlert(text) {
 	button.onclick = function() {
 		overlay.remove();
 	};
+	overlay.onkeydown = function(e) {
+		e.stopPropagation();
+		if (e.key == "Enter") button.click();
+		if (e.key == "Escape") overlay.remove();
+	};
 	dialog.append(label, button);
 	overlay.append(dialog);
 	document.body.append(overlay);

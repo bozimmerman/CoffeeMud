@@ -86,8 +86,20 @@ function inputKeyPress(e)
 	if(e.keyCode == 13)
 	{
 		e.preventDefault();
-		inputSubmit(inputTextArea.value);
-		inputTextArea.value='';
+		if(window.currWin.wsopened)
+		{
+			inputSubmit(inputTextArea.value);
+			inputTextArea.value='';
+		}
+		else
+		SiConfirm('Reconnect?',function(tf) {
+			if(tf)
+			{
+				window.currWin.closeSocket();
+				window.currWin.reset();
+				window.currWin.connect(window.currWin.url);
+			}
+		});
 	}
 }
 

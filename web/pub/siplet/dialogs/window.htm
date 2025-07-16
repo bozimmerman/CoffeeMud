@@ -34,9 +34,9 @@
 </TR><TR>
 	<TD>Overflow</TD>
 	<TD>
-		<INPUT TYPE=RADIO NAME=OVERFLOW VALUE="" ${(getConfig('window/overflow','')=='')?'CHECKED':'';} ONCLICK="setConfig('window/overflow',this.value);">
+		<INPUT TYPE=RADIO NAME=OVERFLOW VALUE="" ${(getConfig('window/overflow','WRAP')=='')?'CHECKED':'';} ONCLICK="setConfig('window/overflow',this.value);">
 		Scroll&nbsp;
-		<INPUT TYPE=RADIO NAME=OVERFLOW VALUE="WRAP" ${(getConfig('window/overflow','')=='WRAP')?'CHECKED':'';}  ONCLICK="setConfig('window/overflow',this.value);"}>
+		<INPUT TYPE=RADIO NAME=OVERFLOW VALUE="WRAP" ${(getConfig('window/overflow','WRAP')=='WRAP')?'CHECKED':'';}  ONCLICK="setConfig('window/overflow',this.value);"}>
 		Wrap
 	</TD>
 </TR><TR><TD COLSPAN=2></TD>

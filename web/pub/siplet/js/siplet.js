@@ -58,7 +58,7 @@ function SipletWindow(windowName)
 	this.lastStyle = '';
 	this.listeners = {};
 	this.logStream = null;
-	this.overflow = getConfig('window/overflow','');
+	this.overflow = getConfig('window/overflow','WRAP');
 	this.sipfs = window.sipfs;
 	this.debugFlush = false;
 	this.debugText = false;
@@ -100,7 +100,7 @@ function SipletWindow(windowName)
 		var paddingRight = parseFloat(computedStyle.paddingRight);
 		var borderLeft = parseFloat(computedStyle.borderLeftWidth);
 		var borderRight = parseFloat(computedStyle.borderRightWidth);
-		var contentWidth = pixelWidth - paddingLeft - paddingRight - borderLeft - borderRight;
+		var contentWidth = pixelWidth - paddingLeft - paddingRight - borderLeft - borderRight -17;
 		var paddingTop = parseFloat(computedStyle.paddingTop);
 		var paddingBottom = parseFloat(computedStyle.paddingBottom);
 		var borderTop = parseFloat(computedStyle.borderTopWidth);
@@ -1665,7 +1665,7 @@ setTimeout(function() {
 		{
 			var siplet = window.siplets[i];
 			siplet.maxLines = getConfig('window/lines', '1000');
-			siplet.overflow = getConfig('window/overflow','');
+			siplet.overflow = getConfig('window/overflow','WRAP');
 			siplet.fixOverflow();
 		}
 	};
@@ -1680,7 +1680,7 @@ setTimeout(function() {
 			var fontSize = getConfig('window/fontsize', siplet.topWindow.style.fontSize);
 			siplet.topWindow.style.fontFamily = fontFace;
 			siplet.topWindow.style.fontSize = fontSize
-			siplet.fixCharDimensions();
+			siplet.resizeTermWindow();
 	    }
 	}
 	addConfigListener('window/fontface', updateSipletWindows);
