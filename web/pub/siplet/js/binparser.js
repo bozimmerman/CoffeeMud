@@ -276,7 +276,22 @@ var BPPARSE = function(sipwin,lfok)
 					else
 					if(c == BPCODE.TELNET_SE)
 					{
-						curr.done = true;
+						// MCCP switch check.  Breaks my pretty design into ugly.
+						if((curr.data.length==2)
+						&&(sipwin.MCCPsupport)
+						&&((curr.data[1]==TELOPT.COMPRESS)||(curr.data[1]==TELOPT.COMPRESS2))
+						&&(sipwin.decompressor == null)
+						&&(i+1<=data.length))
+						{
+							data=data.slice(i+1);
+							sipwin.decompressor = new pako.Inflate({raw:false});
+							this.entries.pop();
+							if(data.length>0)
+								data = decompressChunk(sipwin.decompressor,data);
+							i=-1;
+						}
+						else
+							curr.done = true;
 						curr = new BPENTRY();
 						this.entries.push(curr);
 						this.state = BPSTATE.OUTER;

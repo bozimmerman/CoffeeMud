@@ -142,7 +142,7 @@ var TELNET = function(sipwin)
 			if (subOptionCode == TELOPT.NAWS)
 				response = response.concat(this.getNaws());
 			else
-			if (subOptionCode == TELOPT.COMPRESS2)
+			if((subOptionCode == TELOPT.COMPRESS2)||(subOptionCode == TELOPT.COMPRESS))
 			{
 				if(sipwin.MCCPsupport)
 					sipwin.decompressor = new pako.Inflate({raw:false});
