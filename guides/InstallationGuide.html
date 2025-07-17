@@ -348,16 +348,16 @@ HLPMSGS set to "OWNFILE".</p>
         <li> <span class="bold">PORT</span>
           <p>This is the TCP/IP port number which the main CoffeeMud
 server will listen on. By default the setting is 5555. If you would
-like to change this number to some other port, you may do so! You may
+like to change this number to some other port, you may do so. You may
 also add other numbers, separated by commas, to listen on multiple
-ports!</p>
-        </li>
-        <li> <span class="bold">MUDSTATE</span>
-          <p>This is a short description of the state of your mud as
+ports. &nbsp;If you are using a proxy server, you may also specify the servers hostname here (see below on the Proxy Server).</p></li><li>PROXY<p>This
+is blank, unless you are using the proxy server, in which case it is
+the TCP/IP port number that players will connect to, and then forward
+their connection to the mud server at the PORT above. &nbsp;See the
+section in this guide on the Proxy Server for more information.</p></li><li><p>MUDSTATE<br /><br />This is a short description of the state of your mud as
 you want it published to the I3 or IMC2 network. A number from 0
-(meaning Development) to 3 (Live and Ready) is expected.</p>
-        </li>
-        <li> <span class="bold">START</span>
+(meaning Development) to 3 (Live and Ready) is expected.
+        </p></li><li><span class="bold">START</span>
           <p>This setting designates the Room ID of the place on your
 map where new players will start off at. It also dictates where players
 are brought to when the Recall skill is used. By default, an arbitary
@@ -564,18 +564,28 @@ in your coffeemud.ini file. &nbsp;This is the port number that players
 will connect to instead of the main server PORT. &nbsp;The proxy server
 will then use the exact same ini file(s) as the main server during
 startup. &nbsp;If you are using multiple hosts (see above), then
-additional ini files may be specified in the exact same way.</p><p>The
+additional ini files may be specified in the exact same way. &nbsp;</p><p>The
+PORT and PROXY port numbers should always be different from each other,
+unless
+the mud and proxy servers are running on different machines, in which
+case you must specify the mud servers host name in the PORT field in
+the <span style="font-family: monospace;">hostname:port</span> format.</p><p>The
 next thing to modify in your coffeemud.ini file is the MPCPKEY entry.
 &nbsp;Change it to absolutely anything you want. &nbsp;This string acts
 as a 'password' between the mud server and the proxy server, ensuring
 that they can trust the information they share. &nbsp;The "MPCP" part
 of the name refers to the Mud Proxy Control Protocol, in case you want
 to google that and read more about it.</p><p>Starting the proxy server is very similar to starting the main mud server:<br /></p><p><code>java -classpath ".;.\lib\js.jar;.\lib\jzlib.jar"
--Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code></p>
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy BOOT=coffeemud.ini STRATEGY=ROUNDROBIN</code></p>
       <p>And for Unix, Linux, or FreeBSD users, the command differs
 only in the classpath:</p>
       <p><code>java -classpath ".:./lib/js.jar:./lib/jzlib.jar"
--Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code></p><p>Once
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code><code> BOOT=coffeemud.ini STRATEGY=ROUNDROBIN</code></p><p>In
+addition to the BOOT= argument to specifying ini files, the proxy
+server can also accept a STRATEGY argument that can be set to either
+ROUNDROBIN, RANDOM, or LEASTCONN. &nbsp;The strategy is only necessary
+when you have multiple servers listening on the same PROXY port, and
+need the proxy server to choose between them when a player connects.</p><p>Once
 the proxy server starts, it will generate a proxy.log file containing a
 startup message that should confirm that you've set it up correctly.
 &nbsp;It does not matter whether you start the proxy server first, or
@@ -1372,6 +1382,7 @@ ODBC Data Source. When this is the case, the driver "<code>sun.jdbc.odbc.JdbcOdb
 may be used to access the database.</p>
       <p>Most systems, however, such as MySQL, IBM DB2, and Microsoft
 SQL Server 2000, have native JDBC Drivers which may be used instead of
+
 the general ODBC Driver. These native JDBC Drivers tend to be far
 superior to their ODBC counterparts, and are highly recommended.</p>
       <p>The care and feeding of the tables used by CoffeeMud should be

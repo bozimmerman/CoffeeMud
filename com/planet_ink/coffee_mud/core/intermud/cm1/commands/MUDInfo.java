@@ -64,7 +64,7 @@ public class MUDInfo extends CM1Command
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.ALLMUDPORTS)+"]");
 			else
 			if(parameters.equalsIgnoreCase("PORT"))
-				req.sendMsg("[OK "+CMLib.host().getPort()+"]");
+				req.sendMsg("[OK "+CMLib.host().getPublicPort()+"]");
 			else
 			if(parameters.equalsIgnoreCase("VERSION"))
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDVER)+"]");

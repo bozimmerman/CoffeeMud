@@ -1848,8 +1848,14 @@ public class MUD extends Thread implements MudHost
 				}
 				final List<Integer> portV = new ArrayList<Integer>();
 				for(final String str : CMParms.parseCommas(ports, true))
-					if(CMath.isInteger(str.trim()))
-						portV.add(Integer.valueOf(CMath.s_int(str.trim())));
+				{
+					String port = str.trim();
+					final int x = str.indexOf(':');
+					if(x>0)
+						port = str.substring(x+1).trim();
+					if(CMath.isInteger(port))
+						portV.add(Integer.valueOf(CMath.s_int(port)));
+				}
 				final String proxies=page.getProperty("PROXY");
 				final List<Integer> proxyV = new ArrayList<Integer>();
 				for(final String str : CMParms.parseCommas(proxies, true))
