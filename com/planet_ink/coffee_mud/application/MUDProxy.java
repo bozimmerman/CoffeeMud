@@ -88,7 +88,6 @@ public class MUDProxy
 	private final LinkedList<ByteBuffer>	output			= new LinkedList<ByteBuffer>();
 	private final Map<String,Object>		session			= new Hashtable<String,Object>();
 	private 	  long						distressTime	= 0;
-	private	volatile boolean				mpcpConfirmed	= false;
 
 	private MUDProxy(final boolean client, final int outsidePort, final Pair<String,Integer> port, final String remoteIP) throws IOException
 	{
@@ -381,20 +380,12 @@ public class MUDProxy
 									}
 									else
 									{
-										if(serverContext != null)
-											serverContext.mpcpConfirmed=true;
 										closeKey(key);
-										if(serverContext != null)
-											serverContext.mpcpConfirmed=false;
 									}
 								}
 								catch (final ConnectException e)
 								{
-									if(serverContext != null)
-										serverContext.mpcpConfirmed=true;
 									closeKey(key);
-									if(serverContext != null)
-										serverContext.mpcpConfirmed=false;
 								}
 								catch (final IOException e)
 								{
@@ -645,14 +636,12 @@ public class MUDProxy
 						sourceContext.mpcpCommand.reset();
 						if(sourceContext.readCommand==(byte)Session.TELNET_SB)
 						{
-							sourceContext.mpcpConfirmed = true;
 							sourceContext.readState = ParseState.SB_202;
 						}
 						else
 						{
 							if(sourceContext.readCommand == (byte)Session.TELNET_DO)
 							{
-								sourceContext.mpcpConfirmed = true;
 								if(sourceContext.outsidePortNum == -1)
 								{
 									final Pair<SelectionKey,Long> d = MUDProxy.distressPingers.get(sourceContext.port);
@@ -960,8 +949,7 @@ public class MUDProxy
 			}
 		}
 		if((!context.isClient)
-		&&(pairedChannel!=null)
-		&&(context.mpcpConfirmed))
+		&&(pairedChannel!=null))
 		{
 			if(context.distressTime == 0)
 				putKeyInDistress(key,channel,context,pairedKey,pairedChannel,pairedContext);
