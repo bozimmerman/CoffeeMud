@@ -1,5 +1,3 @@
-#WARNING this file may contain offensive material!!!
-
 "Chat Data by Chris Busch & Jeremy Vyska
 #copyright 1993 all rights reserved
 #Includes and Socials by Jeremy Vyska
@@ -75,12 +73,10 @@
 #The guaranted line length is a magic 80 characters (letters) wide. 
 #
 #Please note the system will return the first match found. So
-#please put more ambigous matches last!!
+#please put more ambiguous matches last!!
 #
-
 #I suggest adding to this database.
-
-
+#
 # $r is a variable.  It means rest of sentence after the match.
 #Variables only appear in weighted reponse clauses.
 #Weighted clauses are '9This is a clause', with 9 being the weight.
@@ -88,15 +84,12 @@
 # $t is the targets name (the person who being replied to)
 # $$ is equal to $
 
-
 #START OF DEFAULT DATABASE.  
 
 ######DONT CHANGE THE FOLLOWING
 (who wrote this program)
 9Christopher Busch '$A' '$V' (was compiled at $C)
-###Changing the above would be in voilation of C Busch's copyright.
-
-## CoffeeMud socials
+###Changing the above would be in violation of C Busch's copyright.
 
 [looks accusingly]
 9!innocent $t
@@ -482,7 +475,6 @@
 4:gives $r a passionate kiss
 1:giggles, I'm getting kind of horny. $n undresses.
 9:looks tired, I'm tired of kissing $r.
-
 
 ( please )
 9please what ?

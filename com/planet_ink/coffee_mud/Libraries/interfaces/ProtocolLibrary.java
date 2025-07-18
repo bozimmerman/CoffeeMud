@@ -248,10 +248,24 @@ public interface ProtocolLibrary extends CMLibrary
 	/**
 	 * Creates a new LLM session with a new memory
 	 * and so forth.
+	 *
+	 * @see ProtocolLibrary#isLLMInstalled()
+	 *
 	 * @param maxMsgs null, or max msgs to override the default.
 	 * @return the new LLM session.
 	 */
 	public LLMSession createLLMSession(Integer maxMsgs);
+
+	/**
+	 * Returns whether the LLM libraries were found and loaded.
+	 * If true, it means there's a good chance you can create
+	 * an LLM session, but no guarantee.
+	 *
+	 * @see ProtocolLibrary#createLLMSession(Integer)
+	 *
+	 * @return true for LLM possibility
+	 */
+	public boolean isLLMInstalled();
 
 	/**
 	 * Interface for interacting in an LLM session

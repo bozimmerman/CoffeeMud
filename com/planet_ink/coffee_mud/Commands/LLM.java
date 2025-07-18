@@ -56,18 +56,27 @@ public class LLM extends StdCommand
 	{
     	if(mob.isMonster())
     		return false;
-    	if(!sessions.containsKey(mob.Name()))
+    	final String userText = CMParms.combineQuoted(commands,1);
+    	final boolean reset = userText.equalsIgnoreCase("reset");
+    	if(!sessions.containsKey(mob.Name()) || reset)
     	{
     		final LLMSession sess = CMLib.protocol().createLLMSession(Integer.valueOf(100));
     		if(sess != null)
+    		{
     			sessions.put(mob.Name(), sess);
+    			if(reset)
+    			{
+    				mob.tell(L("Reset done."));
+    				return false;
+    			}
+    		}
     		else
     		{
-    			mob.tell("Something went very wrong.  Check the mud.log file.");
+    			mob.tell(L("Something went very wrong.  Check the mud.log file."));
     			return false;
     		}
     	}
-    	mob.tell(sessions.get(mob.Name()).chat(CMParms.combine(commands,1)));
+    	mob.tell(sessions.get(mob.Name()).chat(userText));
 		return false;
 	}
 

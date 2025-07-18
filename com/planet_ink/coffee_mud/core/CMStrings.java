@@ -4227,6 +4227,48 @@ public class CMStrings
 	}
 
 	/**
+	 * Converts various unicode look-alike or invalid characters
+	 * to something more displayable.  Also does the normal conversion
+	 * of coffeemud quotes to ` characters.
+	 * @param str the stringbuffer to convert
+	 */
+	public static void normalizeCharacters(final StringBuffer str)
+	{
+		if(str == null)
+			return;
+		final char[] chars = str.toString().toCharArray();
+		str.setLength(0);
+		for(final char c : chars)
+			switch(c)
+			{
+			case '\u2018': case '\u2019':
+			case '\'':
+				str.append('`');
+				break;
+			case '\u2212': case '\u2010':
+			case '\u2013': case '\u2014':
+			case '\u2015':
+				str.append('-');
+				break;
+			case '\u200B': case '\u200C':
+			case '\u200D': case '\uFFFD':
+				break;
+			case '\u00A0':
+				str.append(' ');
+				break;
+			case '\u2026':
+				str.append("...");
+				break;
+			case '\u201C': case '\u201D':
+				str.append('"');
+				break;
+			default:
+				str.append(c);
+				break;
+			}
+	}
+
+	/**
 	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the expression,
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception

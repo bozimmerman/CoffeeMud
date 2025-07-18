@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -73,6 +74,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	// on tick or more.
 	protected SLinkedList<ChattyResponse>	responseQue	= new SLinkedList<ChattyResponse>();
 	protected ScriptingEngine				scriptEngine= null;
+	protected volatile LLMSession			llm			= null;
 
 	protected final static int	RESPONSE_DELAY		= 2;
 	protected final static int	TALK_WAIT_DELAY		= 8;

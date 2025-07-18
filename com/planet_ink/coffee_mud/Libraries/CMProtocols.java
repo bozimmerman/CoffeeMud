@@ -93,7 +93,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		FINISH_VAL
 	}
 
-
 	/**
 	 * Enumeration of all support GMCP commands
 	 *
@@ -3715,86 +3714,114 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 	}
 
+	private Object initializeLLMSession()
+	{
+		Object llmModel = this.llmModel;
+		if(llmModel instanceof Long)
+		{
+			final Long l = (Long)llmModel;
+			if(System.currentTimeMillis() < (l.longValue()+360000))
+				return llmModel;
+		}
+		else
+		if(llmModel != null)
+			return llmModel;
+		final String jarPath = CMProps.getVar(Str.LANGCHAIN4J_JAR_PATH);
+		if(jarPath.length()==0)
+		{
+			Log.errOut("LANGCHAIN4J_JAR_PATH not set in INI file.");
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			return this.llmModel;
+		}
+		final CMFile F = new CMFile(jarPath, null);
+		if(!F.exists())
+		{
+			Log.errOut("LANGCHAIN4J jar file not found in "+jarPath);
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			return this.llmModel;
+		}
+		final URL jarUrl;
+		try
+		{
+			jarUrl = new URL("vfs:" + jarPath);
+		}
+		catch (final MalformedURLException e)
+		{
+			Log.errOut(e);
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			return this.llmModel;
+		}
+		llmClassLoader=new URLClassLoader(new URL[]{jarUrl});
+		LLM llmType = null;
+		llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
+		if(llmType == null)
+		{
+			Log.errOut("LANGCHAIN4J_LLM_TYPE not correctly set in INI file. ");
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			return this.llmModel;
+		}
+		try
+		{
+			final Double TEMPERATURE = Double.valueOf(0.8);
+			final Long TIMEOUT_SECONDS = Long.valueOf(20);
+			// Load LangChain4j classes dynamically
+			final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
+			final Class<?> ollamaChatModelClass = llmClassLoader.loadClass(llmType.modelClass);
+			final Method builderMethod = ollamaChatModelClass.getMethod("builder");
+			final Object builder = builderMethod.invoke(null);
+			try {
+				final Method temperatureMethod = ollamaChatModelBuilderClass.getMethod("temperature", Double.class);
+				temperatureMethod.invoke(builder, TEMPERATURE);
+			} catch(final Exception e){}
+			try {
+				final Duration timeout = Duration.ofSeconds(TIMEOUT_SECONDS.longValue());
+				final Method timeoutMethod = ollamaChatModelBuilderClass.getMethod("timeout", timeout.getClass());
+				timeoutMethod.invoke(builder, timeout);
+			} catch(final Exception e){}
+			for(final String method : llmType.reqs)
+			{
+				final String key = "LANGCHAIN4J_"+method.toUpperCase().trim();
+				final String value = CMProps.getProp(key);
+				if(value == null)
+				{
+					Log.errOut(key+" not correctly set in INI file. ");
+					this.llmModel = Long.valueOf(System.currentTimeMillis());
+					return this.llmModel;
+				}
+				final Method baseUrlMethod = ollamaChatModelBuilderClass.getMethod(method, String.class);
+				baseUrlMethod.invoke(builder, value);
+			}
+			final Method buildMethod = ollamaChatModelBuilderClass.getMethod("build");
+			llmModel = buildMethod.invoke(builder);
+		} catch (final ClassNotFoundException e) {
+			Log.errOut("LangChain4j classes not found: " + e.getMessage());
+			llmModel = Long.valueOf(System.currentTimeMillis());
+		} catch (final NoSuchMethodException e) {
+			Log.errOut("Method not found: " + e.getMessage());
+			llmModel = Long.valueOf(System.currentTimeMillis());
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+			llmModel = Long.valueOf(System.currentTimeMillis());
+		}
+		this.llmModel = llmModel;
+		return llmModel;
+	}
+
+	@Override
+	public boolean isLLMInstalled()
+	{
+		final Object llmModel = initializeLLMSession();
+		return !(llmModel instanceof Long);
+	}
+
 	@Override
 	public LLMSession createLLMSession(final Integer maxMsgs)
 	{
-		if(llmModel == null)
-		{
-			final String jarPath = CMProps.getVar(Str.LANGCHAIN4J_JAR_PATH);
-			if(jarPath.length()==0)
-			{
-				Log.errOut("LANGCHAIN4J_JAR_PATH not set in INI file.");
-				return null;
-			}
-			final CMFile F = new CMFile(jarPath, null);
-			if(!F.exists())
-			{
-				Log.errOut("LANGCHAIN4J jar file not found in "+jarPath);
-				return null;
-			}
-			final URL jarUrl;
-			try
-			{
-				jarUrl = new URL("vfs:" + jarPath);
-			}
-			catch (final MalformedURLException e)
-			{
-				Log.errOut(e);
-				return null;
-			}
-			llmClassLoader=new URLClassLoader(new URL[]{jarUrl});
-			LLM llmType = null;
-			llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
-			if(llmType == null)
-			{
-				Log.errOut("LANGCHAIN4J_LLM_TYPE not correctly set in INI file. ");
-				return null;
-			}
-			try
-			{
-				final Double TEMPERATURE = Double.valueOf(0.8);
-				final Long TIMEOUT_SECONDS = Long.valueOf(20);
-				// Load LangChain4j classes dynamically
-				final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
-				final Class<?> ollamaChatModelClass = llmClassLoader.loadClass(llmType.modelClass);
-				final Method builderMethod = ollamaChatModelClass.getMethod("builder");
-				final Object builder = builderMethod.invoke(null);
-				try {
-					final Method temperatureMethod = ollamaChatModelBuilderClass.getMethod("temperature", Double.class);
-					temperatureMethod.invoke(builder, TEMPERATURE);
-				} catch(final Exception e){}
-				try {
-					final Duration timeout = Duration.ofSeconds(TIMEOUT_SECONDS.longValue());
-					final Method timeoutMethod = ollamaChatModelBuilderClass.getMethod("timeout", timeout.getClass());
-					timeoutMethod.invoke(builder, timeout);
-				} catch(final Exception e){}
-				for(final String method : llmType.reqs)
-				{
-					final String key = "LANGCHAIN4J_"+method.toUpperCase().trim();
-					final String value = CMProps.getProp(key);
-					if(value == null)
-					{
-						Log.errOut(key+" not correctly set in INI file. ");
-						return null;
-					}
-					final Method baseUrlMethod = ollamaChatModelBuilderClass.getMethod(method, String.class);
-					baseUrlMethod.invoke(builder, value);
-				}
-				final Method buildMethod = ollamaChatModelBuilderClass.getMethod("build");
-				llmModel = buildMethod.invoke(builder);
-			} catch (final ClassNotFoundException e) {
-				Log.errOut("LangChain4j classes not found: " + e.getMessage());
-				return null;
-			} catch (final NoSuchMethodException e) {
-				Log.errOut("Method not found: " + e.getMessage());
-				return null;
-			}
-			catch(final Exception e)
-			{
-				Log.errOut(e);
-				return null;
-			}
-		}
+		final Object llmModel = initializeLLMSession();
+		if(llmModel instanceof Long)
+			return null;
 		try
 		{
 			final Integer MAX_MSGS = (maxMsgs!=null)?maxMsgs:Integer.valueOf(10);
@@ -3828,15 +3855,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					try
 					{
-						String resp = ai.chat(msg);
-						resp = resp.replace("\n", "\n\r");
-						resp = resp.replaceAll("[\\u2019\\?]", "`");
-						resp = resp.replaceAll("[\\uFFFD\\?]", "`");
-						return resp;
+						final StringBuffer resp = new StringBuffer(ai.chat(msg));
+						CMStrings.dikufyLineEndings(resp);
+						CMStrings.normalizeCharacters(resp);
+						return resp.toString();
 					}
 					catch(final Exception e)
 					{
-						return msg;
+						Log.errOut(e);
+						return L("Something went wrong. Ask the admins to check the log.");
 					}
 				}
 
@@ -3845,16 +3872,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		catch (final ClassNotFoundException e)
 		{
 			Log.errOut("LangChain4j classes not found: " + e.getMessage());
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
 			return null;
 		}
 		catch (final NoSuchMethodException e)
 		{
 			Log.errOut("Method not found: " + e.getMessage());
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
 			return null;
 		}
 		catch(final Exception e)
 		{
 			Log.errOut(e);
+			this.llmModel = Long.valueOf(System.currentTimeMillis());
 			return null;
 		}
 	}
