@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -4716,6 +4717,12 @@ public class CMParms
 		{
 			for(final Object y : objs)
 			{
+				if(theList[i]==null)
+				{
+					if(y==null)
+						return i;
+				}
+				else
 				if(theList[i].equals(y))
 					return i;
 			}
@@ -5284,6 +5291,79 @@ public class CMParms
 	public final static boolean endsAnyWithIgnoreCase(final String[] theList, final String str)
 	{
 		return endsWithIgnoreCase(theList,str)>=0;
+	}
+
+	/**
+	 * Casts the given string as the given class, if it can.
+	 *
+	 * @param <T> the class to cast to (C)
+	 * @param str the string to cast
+	 * @param C the class to cast to
+	 * @return the object, cast, or null
+	 */
+	public static <T> T castString(final String str, final Class<T> C)
+	{
+		if (str == null || C == null)
+			return null;
+		try
+		{
+			if(C == String.class)
+				return C.cast(str);
+			else
+			if((C == Integer.class) || (C == int.class))
+				return C.cast(Integer.valueOf(str));
+			else
+			if((C == Double.class) || (C == double.class))
+				return C.cast(Double.valueOf(str));
+			else
+			if((C == Boolean.class) || (C == boolean.class))
+			{
+				if(str.equalsIgnoreCase("true")||str.equalsIgnoreCase("false"))
+					return C.cast(Boolean.valueOf(str));
+				return null;
+			}
+			else
+			if((C == Long.class) || (C == long.class))
+				return C.cast(Long.valueOf(str));
+			else
+			if((C == Float.class) || (C == float.class))
+				return C.cast(Float.valueOf(str));
+			else
+			if((C == Short.class) || (C == short.class))
+				return C.cast(Short.valueOf(str));
+			else
+			if((C == Byte.class) || (C == byte.class))
+				return C.cast(Byte.valueOf(str));
+			else
+			if((C == Character.class) || (C == char.class))
+			{
+				if (str.length() == 0)
+					return null;
+				return C.cast(Character.valueOf(str.charAt(0)));
+			}
+			else
+			if(C == List.class) // assume list of string
+				return C.cast(CMParms.parse(str));
+			else
+			if(C == Map.class) // assume string->string
+				return C.cast(CMParms.parseEQParms(str));
+			else
+			if(C == Duration.class)
+			{
+				try
+				{
+					return C.cast(Duration.parse(str));
+				}
+				catch (final Exception e)
+				{
+					return C.cast(Duration.ofSeconds(Long.parseLong(str)));
+				}
+			}
+		}
+		catch (final Exception e)
+		{
+		}
+		return null;
 	}
 
 	/** constant value representing an undefined/unimplemented miscText/parms format.*/

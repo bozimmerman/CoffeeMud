@@ -3791,6 +3791,66 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Method baseUrlMethod = ollamaChatModelBuilderClass.getMethod(method, String.class);
 				baseUrlMethod.invoke(builder, value);
 			}
+			final Map<String,PairList<Method,Object[]>> methodsFound = new HashMap<String,PairList<Method,Object[]>>();
+			final Map<String,List<Method>> failedMethodsFound = new HashMap<String,List<Method>>();
+			for(final Method m : ollamaChatModelBuilderClass.getMethods())
+			{
+				if(CMParms.contains(llmType.reqs, m.getName()))
+					continue;
+				final String key = "LANGCHAIN4J_"+m.getName().toUpperCase().trim();
+				final String value = CMProps.getProp(key);
+				if((value != null)&&(value.length()>0))
+				{
+					if(!methodsFound.containsKey(key))
+						methodsFound.put(key, new PairArrayList<Method,Object[]>());
+					if(!failedMethodsFound.containsKey(key))
+						failedMethodsFound.put(key, new ArrayList<Method>());
+					final String[] strValues;
+					if(m.getParameterCount()>0)
+					{
+						if(CMStrings.countChars(value, ',')<(m.getParameterCount()-1))
+						{
+							failedMethodsFound.get(key).add(m);
+							continue;
+						}
+						strValues = CMParms.parseCommas(value,true).toArray(new String[0]);
+					}
+					else
+					if(m.getParameterCount()==1)
+						strValues = new String[] {value};
+					else
+						strValues = new String[0];
+
+					final Object[] values = new Object[strValues.length];
+					for(int s = 0; s<strValues.length;s++)
+						values[s] = CMParms.castString(strValues[s], m.getParameterTypes()[s]);
+					if(CMParms.contains(values, new Object[] {null}))
+						failedMethodsFound.get(key).add(m);
+					else
+						methodsFound.get(key).add(new Pair<Method,Object[]>(m,values));
+				}
+			}
+			for(final String cleanUpKey : methodsFound.keySet())
+				if(methodsFound.get(cleanUpKey).size()>0)
+					failedMethodsFound.remove(cleanUpKey);
+			if(failedMethodsFound.size()>0)
+			{
+				for(final String failedKey : failedMethodsFound.keySet())
+					Log.errOut(failedKey+" not correctly set in INI file. Check argument count and type for casting.");
+			}
+			else
+			for(final String key : methodsFound.keySet())
+			{
+				if(methodsFound.get(key).size()>0)
+				{
+					try {
+						final Pair<Method,Object[]> p = methodsFound.get(key).get(0);
+						p.first.invoke(builder, p.second);
+					} catch(final Exception e){
+						Log.errOut(key+": "+e.getMessage());
+					}
+				}
+			}
 			final Method buildMethod = ollamaChatModelBuilderClass.getMethod("build");
 			llmModel = buildMethod.invoke(builder);
 		} catch (final ClassNotFoundException e) {

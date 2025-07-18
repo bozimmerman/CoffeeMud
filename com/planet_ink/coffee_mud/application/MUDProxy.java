@@ -352,8 +352,11 @@ public class MUDProxy
 											serverContext.in.close();
 											serverContext.in = new PassThroughInputStream(serverContext.inputPipe);
 										}
+										final SelectionKey pairedKey = channelPairs.get(key);
+										final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
+																				serverContext.ipAddress;
 										serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-												+ "\"client_address\":\""+serverContext.ipAddress+"\","
+												+ "\"client_address\":\""+clientAddr+"\","
 												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 										if(serverContext.distressTime != 0)
 										{
@@ -361,7 +364,6 @@ public class MUDProxy
 											obj.putAll(serverContext.session);
 											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
 											serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
-											final SelectionKey pairedKey = channelPairs.get(key);
 											if(pairedKey!=null)
 											{
 												final SocketChannel clientChannel = (SocketChannel)pairedKey.channel();

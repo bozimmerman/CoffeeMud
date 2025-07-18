@@ -2,9 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.10</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
-</head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
 <body>
 <center>
 <table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
@@ -838,7 +836,7 @@ and download the LangChain4J jar file from the link under
 Coffeemud
 "lib" directory for reference later. &nbsp;Do not try to use any
 other version of their software for now, as the provided jar contains
-ALL of the integrations as well as the core library.<br />
+ALL of the integrations as well as the core library. &nbsp;This library <span style="font-weight: bold;">requires</span> that CoffeeMud main server be run with <span style="font-weight: bold;">Java 17</span> or higher, instead of the base requirement of Java 8.<br />
 <br />
 The third step is open up your coffeemud.ini file and make several
 changes. &nbsp;Set your javacord lib path:<br />
@@ -893,7 +891,11 @@ LangChain4J documentation.<br />
 <tr><td>XINFERENCE</td><td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td></tr>
 </tbody></table>
 <br />
-<br />
+If you know your way around the LangChain4J API, other "builder"
+methods can also be included in the INI file in a similar way as the
+above. &nbsp;For example, to call the 'timeout' method, you would put
+LANGCHAIN4J_TIMEOUT=30 in the INI file, and the mud will just figure
+out what you are trying to do.<br />
 <h3>X.COM/Twitter</h3>
 <p>CoffeeMud supports sending standard chat channel
 messages,
