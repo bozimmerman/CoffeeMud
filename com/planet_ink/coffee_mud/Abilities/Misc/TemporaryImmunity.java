@@ -94,6 +94,8 @@ public class TemporaryImmunity extends StdAbility
 	public final static long					IMMUNITY_TIME	= 36000000;
 	protected final PairVector<String, Long>	set				= new PairVector<String, Long>();
 	protected volatile int						tickUp			= 10;
+	protected volatile int						bct				= 0;
+	protected volatile int						fct				= 0;
 
 	public TemporaryImmunity()
 	{
@@ -111,23 +113,54 @@ public class TemporaryImmunity extends StdAbility
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected instanceof MOB)
-		&&(tickID==Tickable.TICKID_MOB)
-		&&((--tickUp)==0))
+		final Physical P = affected;
+		if((P instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
-			tickUp=10;
-			makeLongLasting();
-			for(int s=set.size()-1;s>=0;s--)
+			if((--tickUp)==0)
 			{
-				final Long L=set.elementAt(s).second;
-				if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
-					set.removeElementAt(s);
-			}
+				tickUp=10;
+				makeLongLasting();
+				for(int s=set.size()-1;s>=0;s--)
+				{
+					final Long L=set.elementAt(s).second;
+					if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
+						set.removeElementAt(s);
+				}
 
-			if(set.size()==0)
+				if(set.size()==0)
+				{
+					unInvoke();
+					return false;
+				}
+			}
+			if(P instanceof Behavable)
 			{
-				unInvoke();
-				return false;
+				if(bct != ((Behavable)P).numBehaviors())
+				{
+					bct = ((Behavable)P).numBehaviors();
+					for(int s=set.size()-1;s>=0;s--)
+					{
+						final String str=set.elementAt(s).first;
+						final Behavior B = ((Behavable)P).fetchBehavior(str);
+						if(B != null)
+							((MOB)P).delBehavior(B);
+					}
+				}
+			}
+			if(fct != P.numEffects())
+			{
+				fct = P.numEffects();
+				for(int s=set.size()-1;s>=0;s--)
+				{
+					final String str=set.elementAt(s).first;
+					final Ability A = P.fetchEffect(str);
+					if(A != null)
+					{
+						A.unInvoke();
+						P.delEffect(A);
+					}
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -147,9 +180,10 @@ public class TemporaryImmunity extends StdAbility
 	@Override
 	public void setMiscText(String str)
 	{
+		str = str.toUpperCase().trim();
 		if(str.startsWith("+"))
 		{
-			str=str.substring(1);
+			str=str.substring(1).trim();
 			final int x=set.indexOfFirst(str);
 			if(x>=0)
 				set.setElementAt(new Pair<String,Long>(str,Long.valueOf(System.currentTimeMillis())),x);
@@ -175,7 +209,7 @@ public class TemporaryImmunity extends StdAbility
 	{
 		if((msg.amITarget(affected))
 		&&(msg.tool() instanceof Ability)
-		&&(set.containsFirst(msg.tool().ID()))
+		&&(set.containsFirst(msg.tool().ID().toUpperCase()))
 		&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
