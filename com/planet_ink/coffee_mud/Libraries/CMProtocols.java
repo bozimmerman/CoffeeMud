@@ -25,11 +25,16 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.*;
+import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.optimizer.*;
@@ -55,6 +60,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	{
 		return "CMProtocols";
 	}
+
+	private Object llmModel = null;
+	private URLClassLoader llmClassLoader = null;
 
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
@@ -3488,5 +3496,368 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		pkg.putAll(xadded);
 		return pkg;
+	}
+
+	@Override
+	public void tweet(final String str)
+	{
+		final String consumerKey = CMProps.getVar(CMProps.Str.TWITTER_OAUTHCONSUMERKEY);
+		if((consumerKey == null)||(consumerKey.length()==0))
+		{
+			Log.errOut("Unable to tweet due to missing TWITTER_OAUTHCONSUMERKEY");
+			return;
+		}
+		final String consumerSecret = CMProps.getVar(CMProps.Str.TWITTER_OAUTHCONSUMERSECRET);
+		if((consumerSecret == null)||(consumerSecret.length()==0))
+		{
+			Log.errOut("Unable to tweet due to missing TWITTER_OAUTHCONSUMERSECRET");
+			return;
+		}
+		final String accessToken = CMProps.getVar(CMProps.Str.TWITTER_OAUTHACCESSTOKEN);
+		if((accessToken == null)||(accessToken.length()==0))
+		{
+			Log.errOut("Unable to tweet due to missing TWITTER_OAUTHACCESSTOKEN");
+			return;
+		}
+		final String accessTokenSecret = CMProps.getVar(CMProps.Str.TWITTER_OAUTHACCESSTOKENSECRET);
+		if((accessTokenSecret == null)||(accessTokenSecret.length()==0))
+		{
+			Log.errOut("Unable to tweet due to missing TWITTER_OAUTHACCESSTOKENSECRET");
+			return;
+		}
+
+		final String REQUEST_URL = "https://api.twitter.com/2/tweets";
+		final String body = "{\"text\":\"" + MiniJSON.toJSONString(str) + "\"}";
+		final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		final Map<String, String> oauthParams = new HashMap<>();
+		oauthParams.put("oauth_consumer_key", consumerKey);
+		oauthParams.put("oauth_token", accessToken);
+		oauthParams.put("oauth_signature_method", "HMAC-SHA1");
+		oauthParams.put("oauth_timestamp", String.valueOf(System.currentTimeMillis() / 1000));
+		oauthParams.put("oauth_nonce", uuid);
+		oauthParams.put("oauth_version", "1.0");
+
+		HttpURLConnection connection = null;
+		try
+		{
+			final Map<String, String> allParams = new HashMap<>(oauthParams);
+			final String[] sortedKeys = allParams.keySet().toArray(new String[0]);
+			Arrays.sort(sortedKeys);
+			final StringBuilder paramBuilder = new StringBuilder();
+			for(final String key : sortedKeys)
+			{
+				if(paramBuilder.length() > 0)
+					paramBuilder.append("&");
+				paramBuilder.append(URLEncoder.encode(key, "UTF-8")).append("=")
+					.append(URLEncoder.encode(allParams.get(key), "UTF-8"));
+			}
+			final String parameterString = paramBuilder.toString();
+			final String baseString = "POST".toUpperCase()
+					+ "&" + URLEncoder.encode(REQUEST_URL, "UTF-8")
+					+ "&" + URLEncoder.encode(parameterString, "UTF-8");
+			final String signingKey = URLEncoder.encode(consumerSecret, "UTF-8")
+					+ "&" + URLEncoder.encode(accessTokenSecret, "UTF-8");
+			final Mac mac = Mac.getInstance("HmacSHA1");
+			final SecretKeySpec secretKey = new SecretKeySpec(signingKey.getBytes("UTF-8"), "HmacSHA1");
+			mac.init(secretKey);
+			final byte[] baseStringBytes = baseString.getBytes("UTF-8");
+			final byte[] signatureBytes = mac.doFinal(baseStringBytes);
+			final String signature = Base64.getEncoder().encodeToString(signatureBytes);
+
+			final List<String> encodedParams = new ArrayList<>();
+			encodedParams.add("oauth_consumer_key=\"" + URLEncoder.encode(oauthParams.get("oauth_consumer_key"), "UTF-8") + "\"");
+			encodedParams.add("oauth_token=\"" + URLEncoder.encode(oauthParams.get("oauth_token"), "UTF-8") + "\"");
+			encodedParams.add("oauth_signature_method=\"" + URLEncoder.encode(oauthParams.get("oauth_signature_method"), "UTF-8") + "\"");
+			encodedParams.add("oauth_timestamp=\"" + URLEncoder.encode(oauthParams.get("oauth_timestamp"), "UTF-8") + "\"");
+			encodedParams.add("oauth_nonce=\"" + URLEncoder.encode(oauthParams.get("oauth_nonce"), "UTF-8") + "\"");
+			encodedParams.add("oauth_version=\"" + URLEncoder.encode(oauthParams.get("oauth_version"), "UTF-8") + "\"");
+			encodedParams.add("oauth_signature=\"" + URLEncoder.encode(signature, "UTF-8") + "\"");
+			final String oauthHeader = "OAuth " + String.join(", ", encodedParams);
+
+			final URL url = new URL(REQUEST_URL);
+			connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Authorization", oauthHeader);
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setDoOutput(true);
+
+			try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream()))
+			{
+				writer.write(body);
+				writer.flush();
+			}
+			final int responseCode = connection.getResponseCode();
+			if(responseCode > 200)
+			{
+				final StringBuilder errorResponse = new StringBuilder();
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF-8"))) {
+					String line;
+					while ((line = br.readLine()) != null) {
+						errorResponse.append(line);
+					}
+				} catch (final Exception e) {
+					Log.errOut("Failed to read error stream: " + e.getMessage());
+				}
+				Log.errOut("TWITTER HTTP " + responseCode + " Error: " + errorResponse.toString());
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+		}
+		finally
+		{
+			try
+			{
+				if(connection != null)
+					connection.disconnect();
+			}
+			catch(final Exception e)
+			{
+			}
+		}
+	}
+
+	private static enum LLM
+	{
+		OLLAMA("dev.langchain4j.model.ollama.OllamaChatModel",
+				"dev.langchain4j.model.ollama.OllamaChatModel$OllamaChatModelBuilder",
+				new String[] {"baseUrl", "modelName"}),
+		ANTHROPIC("dev.langchain4j.model.anthropic.AnthropicChatModel",
+				"dev.langchain4j.model.anthropic.AnthropicChatModel$AnthropicChatModelBuilder",
+				new String[] {"apiKey"}),
+		AZURE("dev.langchain4j.model.azure.AzureOpenAiChatModel",
+				"dev.langchain4j.model.azure.AzureOpenAiChatModel$AzureOpenAiChatModelBuilder",
+				new String[] {"endpoint","apiKey","deploymentName"}),
+		DASHSCOPE("dev.langchain4j.model.qwen.QwenChatModel",
+				"dev.langchain4j.model.qwen.QwenChatModel$QwenChatModelBuilder",
+				new String[] {"apiKey"}),
+		GITHUB("dev.langchain4j.model.github.GitHubModelsChatModel",
+				"dev.langchain4j.model.github.GitHubModelsChatModel$GitHubModelsChatModelBuilder",
+				new String[] {"gitHubToken","modelName"}),
+		GEMINI("dev.langchain4j.model.googleai.GoogleAiGeminiChatModel",
+				"dev.langchain4j.model.googleai.GoogleAiGeminiChatModel$GoogleAiGeminiChatModelBuilder",
+				new String[] {"apiKey"}),
+		VERTEXGEMINI("dev.langchain4j.model.vertexai.VertexAiGeminiChatModel",
+				"dev.langchain4j.model.vertexai.VertexAiGeminiChatModel$VertexAiGeminiChatModelBuilder",
+				new String[] {"project","location","modelName"}),
+		VERTEXPALM2("dev.langchain4j.model.vertexai.VertexAiChatModel",
+				"dev.langchain4j.model.vertexai.VertexAiChatModel$VertexAiChatModelBuilder",
+				new String[] {"endpoint","location","publisher","project","modelName"}),
+		HUGGINGFACE("dev.langchain4j.model.huggingface.HuggingFaceChatModel",
+				"dev.langchain4j.model.huggingface.HuggingFaceChatModel$HuggingFaceChatModelBuilder",
+				new String[] {"apiKey","modelId"}),
+		JLAMA("dev.langchain4j.model.jlama.JlamaChatModel",
+				"dev.langchain4j.model.jlama.JlamaChatModel$JlamaChatModelBuilder",
+				new String[] {"modelPath"}),
+		LOCALAI("dev.langchain4j.model.localai.LocalAiChatModel",
+				"dev.langchain4j.model.localai.LocalAiChatModel$LocalAiChatModelBuilder",
+				new String[] {"baseUrl","modelName"}),
+		MISTRAL("dev.langchain4j.model.mistralai.MistralAiChatModel",
+				"dev.langchain4j.model.mistralai.MistralAiChatModel$MistralAiChatModelBuilder",
+				new String[] {"apiKey"}),
+		OPENAI("dev.langchain4j.model.openai.OpenAiChatModel",
+				"dev.langchain4j.model.openai.OpenAiChatModel$OpenAiChatModelBuilder",
+				new String[] {"apiKey"}),
+		ORACLEGENAI("dev.langchain4j.model.oracle.oci.genai.OciGenAiCohereChatModel",
+				"dev.langchain4j.model.oracle.oci.genai.OciGenAiCohereChatModel$OciGenAiCohereChatModelBuilder",
+				new String[] {"compartmentId"}),
+		QIANFAN("dev.langchain4j.model.qianfan.QianfanChatModel",
+				"dev.langchain4j.model.qianfan.QianfanChatModel$QianfanChatModelBuilder",
+				new String[] {"apiKey","secretKey"}),
+		CLOUDFLARE("dev.langchain4j.model.cloudflare.WorkersAiChatModel",
+				"dev.langchain4j.model.cloudflare.WorkersAiChatModel$WorkersAiChatModelBuilder",
+				new String[] {"accountId","apiToken","modelName"}),
+		ZHIPUAI("dev.langchain4j.model.zhipuai.ZhipuAiChatModel",
+				"dev.langchain4j.model.zhipuai.ZhipuAiChatModel$ZhipuAiChatModelBuilder",
+				new String[] {"apiKey"}),
+		BEDROCK_ANTHROPIC("dev.langchain4j.model.bedrock.BedrockAnthropicClaudeChatModel",
+				"dev.langchain4j.model.bedrock.BedrockAnthropicClaudeChatModel$BedrockAnthropicClaudeChatModelBuilder",
+				new String[] {}),
+		BEDROCK_COHERE("dev.langchain4j.model.bedrock.BedrockCohereCommandChatModel",
+				"dev.langchain4j.model.bedrock.BedrockCohereCommandChatModel$BedrockCohereCommandChatModelBuilder",
+				new String[] {}),
+		BEDROCK_LLAMA("dev.langchain4j.model.bedrock.BedrockLlama2ChatModel",
+				"dev.langchain4j.model.bedrock.BedrockLlama2ChatModel$BedrockLlama2ChatModelBuilder",
+				new String[] {}),
+		COHERE("dev.langchain4j.model.cohere.CohereChatModel",
+				"dev.langchain4j.model.cohere.CohereChatModel$CohereChatModelBuilder",
+				new String[] {"apiKey"}),
+		DEEPINFRA("dev.langchain4j.model.deepinfra.DeepInfraChatModel",
+				"dev.langchain4j.model.deepinfra.DeepInfraChatModel$DeepInfraChatModelBuilder",
+				new String[] {"apiKey"}),
+		GROQ("dev.langchain4j.model.groq.GroqChatModel",
+				"dev.langchain4j.model.groq.GroqChatModel$GroqChatModelBuilder",
+				new String[] {"apiKey"}),
+		IBM("dev.langchain4j.model.ibm.IbmChatModel",
+				"dev.langchain4j.model.ibm.IbmChatModel$IbmChatModelBuilder",
+				new String[] {"apiKey","modelId","projectId"}),
+		NVIDIA("dev.langchain4j.model.nvidia.NvidiaChatModel",
+				"dev.langchain4j.model.nvidia.NvidiaChatModel$NvidiaChatModelBuilder",
+				new String[] {"apiKey"}),
+		TOGETHERAI("dev.langchain4j.model.together.TogetherAiChatModel",
+				"dev.langchain4j.model.together.TogetherAiChatModel$TogetherAiChatModelBuilder",
+				new String[] {"apiKey","modelName"}),
+		XINFERENCE("dev.langchain4j.model.xinference.XinferenceChatModel",
+				"dev.langchain4j.model.xinference.XinferenceChatModel$XinferenceChatModelBuilder",
+				new String[] {"baseUrl", "modelName"})
+		;
+
+		public String modelClass;
+		public String builderClass;
+		public String[] reqs;
+
+		private LLM(final String modelClass, final String builderClass, final String[] reqs) {
+			this.modelClass = modelClass;
+			this.builderClass = builderClass;
+			this.reqs = reqs;
+		}
+	}
+
+	@Override
+	public LLMSession createLLMSession(final Integer maxMsgs)
+	{
+		if(llmModel == null)
+		{
+			final String jarPath = CMProps.getVar(Str.LANGCHAIN4J_JAR_PATH);
+			if(jarPath.length()==0)
+			{
+				Log.errOut("LANGCHAIN4J_JAR_PATH not set in INI file.");
+				return null;
+			}
+			final CMFile F = new CMFile(jarPath, null);
+			if(!F.exists())
+			{
+				Log.errOut("LANGCHAIN4J jar file not found in "+jarPath);
+				return null;
+			}
+			final URL jarUrl;
+			try
+			{
+				URL.setURLStreamHandlerFactory(protocol -> "vfs".equals(protocol) ? new URLStreamHandler()
+				{
+					@Override
+					protected java.net.URLConnection openConnection(final URL url) throws IOException
+					{
+						return new java.net.URLConnection(url)
+						{
+							final CMFile F = new CMFile(url.getPath(),null);
+							@Override
+							public void connect() throws IOException
+							{
+								if(!F.exists())
+									throw new IOException("File not found: "+F.getAbsolutePath());
+							}
+							@Override
+							public java.io.InputStream getInputStream() throws IOException
+							{
+								if(!F.exists())
+									throw new IOException("File not found: "+F.getAbsolutePath());
+								return F.getRawStream();
+							}
+						};
+					}
+				} : null);
+				jarUrl = new URL("vfs:" + jarPath);
+			}
+			catch (final MalformedURLException e)
+			{
+				Log.errOut(e);
+				return null;
+			}
+			llmClassLoader=new URLClassLoader(new URL[]{jarUrl});
+			LLM llmType = null;
+			llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
+			if(llmType == null)
+			{
+				Log.errOut("LANGCHAIN4J_LLM_TYPE not correctly set in INI file. ");
+				return null;
+			}
+			try
+			{
+			    final Double TEMPERATURE = Double.valueOf(0.8);
+			    final Long TIMEOUT_SECONDS = Long.valueOf(20);
+	            // Load LangChain4j classes dynamically
+	            final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
+	            final Class<?> ollamaChatModelClass = llmClassLoader.loadClass(llmType.modelClass);
+	            final Method builderMethod = ollamaChatModelClass.getMethod("builder");
+	            final Object builder = builderMethod.invoke(null);
+	            try {
+		            final Method temperatureMethod = ollamaChatModelBuilderClass.getMethod("temperature", Double.class);
+		            temperatureMethod.invoke(builder, TEMPERATURE);
+	            } catch(final Exception e){}
+	            try {
+	                final Duration timeout = Duration.ofSeconds(TIMEOUT_SECONDS.longValue());
+		            final Method timeoutMethod = ollamaChatModelBuilderClass.getMethod("timeout", timeout.getClass());
+		            timeoutMethod.invoke(builder, timeout);
+	            } catch(final Exception e){}
+	            for(final String method : llmType.reqs)
+	            {
+	            	final String key = "LANGCHAIN4J_"+method.toUpperCase().trim();
+	            	final String value = CMProps.getProp(key);
+	            	if(value == null)
+	            	{
+	    				Log.errOut(key+" not correctly set in INI file. ");
+	    				return null;
+	            	}
+		            final Method baseUrlMethod = ollamaChatModelBuilderClass.getMethod(method, String.class);
+		            baseUrlMethod.invoke(builder, value);
+	            }
+	            final Method buildMethod = ollamaChatModelBuilderClass.getMethod("build");
+	            llmModel = buildMethod.invoke(builder);
+	        } catch (final ClassNotFoundException e) {
+	        	Log.errOut("LangChain4j classes not found: " + e.getMessage());
+	        	return null;
+	        } catch (final NoSuchMethodException e) {
+	        	Log.errOut("Method not found: " + e.getMessage());
+	        	return null;
+	        }
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+				return null;
+			}
+		}
+		try
+		{
+		    final Integer MAX_MSGS = (maxMsgs!=null)?maxMsgs:Integer.valueOf(10);
+	        final Class<?> messageWindowChatMemoryClass = llmClassLoader.loadClass("dev.langchain4j.memory.chat.MessageWindowChatMemory");
+	        final Method chatMemBuilderMethod = messageWindowChatMemoryClass.getMethod("builder");
+	        final Object memBuilder = chatMemBuilderMethod.invoke(null);
+	        final Method maxMessagesMethod = memBuilder.getClass().getMethod("maxMessages", Integer.class);
+	        final Method chatMemBuildMethod = memBuilder.getClass().getMethod("build");
+	        maxMessagesMethod.invoke(memBuilder, MAX_MSGS);
+	        final Object memory = chatMemBuildMethod.invoke(memBuilder);
+	        final Class<?> aiServicesClass = llmClassLoader.loadClass("dev.langchain4j.service.AiServices");
+	        final Method aiBuilderMethod = aiServicesClass.getMethod("builder", Class.class);
+	        final Object aiBuilder = aiBuilderMethod.invoke(null, LLMSession.class);
+	        final Class<?> aiBuilderClass = aiBuilder.getClass();
+	        final Class<?> chatModelClass = llmClassLoader.loadClass("dev.langchain4j.model.chat.ChatModel");
+	        final Class<?> chatMemoryClass = llmClassLoader.loadClass("dev.langchain4j.memory.ChatMemory");
+	        final Method chatModelMethod = aiBuilderClass.getMethod("chatModel", chatModelClass);
+	        chatModelMethod.setAccessible(true);
+	        final Method chatMemoryMethod = aiBuilderClass.getMethod("chatMemory", chatMemoryClass);
+	        chatMemoryMethod.setAccessible(true);
+	        final Method aiBuildMethod = aiBuilderClass.getMethod("build");
+	        aiBuildMethod.setAccessible(true);
+	        chatModelMethod.invoke(aiBuilder, llmModel);
+	        chatMemoryMethod.invoke(aiBuilder, memory);
+	        return (LLMSession)aiBuildMethod.invoke(aiBuilder);
+	    }
+		catch (final ClassNotFoundException e)
+		{
+	    	Log.errOut("LangChain4j classes not found: " + e.getMessage());
+	    	return null;
+	    }
+		catch (final NoSuchMethodException e)
+		{
+	    	Log.errOut("Method not found: " + e.getMessage());
+	    	return null;
+	    }
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+			return null;
+		}
 	}
 }

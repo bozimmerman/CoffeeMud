@@ -1872,8 +1872,8 @@ public class DefaultSession implements Session
 								final boolean wasmccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
 										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
 								for(final String key : getStatCodes())
-									if(obj.containsKey(key))
-										setStat(key,obj.get(key).toString());
+									if(obj.containsKey(key.toLowerCase()))
+										setStat(key,obj.get(key.toLowerCase()).toString());
 								this.inputCallback=null;
 								final boolean ismccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
 										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
@@ -3908,8 +3908,8 @@ public class DefaultSession implements Session
 			{
 				final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
 				for(final String stat : this.getStatCodes())
-					doc.put(stat, getStat(stat));
-				doc.remove("LASTMSG");
+					doc.put(stat.toLowerCase(), getStat(stat));
+				doc.remove("lastmsg");
 				sendMPCPPacket("SessionInfo", doc);
 			}
 			break;

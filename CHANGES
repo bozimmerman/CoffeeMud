@@ -1,5 +1,7 @@
 # Build 5.10.6 Release ??/??/2025
-  1.  CoffeeMud now has an optional Proxy server.  See installation guide.
+  1. CoffeeMud now has an optional Proxy server.  See installation guide.
+  2. CoffeeMud now integrates with LLMs via LangChain4J.
+  3. New admin command: LLM, for chatting with your LLM.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.Sense;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -236,6 +237,36 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @return the original buffer, or a stripped one
 	 */
 	public byte[] stripNonASCII(final byte[] buf);
+
+	/**
+	 * Sends a message to twitter.  See the integration guide for
+	 * information on how this works.
+	 * @param str the message to post to twitter
+	 */
+	public void tweet(final String str);
+
+	/**
+	 * Creates a new LLM session with a new memory
+	 * and so forth.
+	 * @param maxMsgs null, or max msgs to override the default.
+	 * @return the new LLM session.
+	 */
+	public LLMSession createLLMSession(Integer maxMsgs);
+
+	/**
+	 * Interface for interacting in an LLM session
+	 * @author Bo Zimmerman
+	 */
+	public interface LLMSession
+	{
+		/**
+		 * Interact with the LLM.  This is *blocking*, and
+		 * may take considerable time.
+		 * @param msg the message to send to the LLM
+		 * @return the response received from the LLM
+		 */
+		public String chat(final String msg);
+	}
 
 	/**
 	 * Interface allowing java or javascript plugins to the MCP protocol

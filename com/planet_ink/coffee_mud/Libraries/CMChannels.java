@@ -961,6 +961,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		final Room R=mob.location();
 
 		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
+		final String rawMessage = message;
 		final CMChannel chan=getChannel(channelInt);
 		final Set<ChannelFlag> flags=chan.flags();
 		channelName=chan.name();
@@ -1104,7 +1105,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
 			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.TWITTER))
-				tweet(message);
+				CMLib.protocol().tweet(rawMessage);
 			if(chan.flags().contains(ChannelsLibrary.ChannelFlag.DISCORD) && (!noloop))
 			{
 				message=CMStrings.replaceAll(message,"<S-NAME>",mob.name());
@@ -1158,49 +1159,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			CMLib.database().checkUpgradeBacklogTable(this);
 		}
 		return true;
-	}
-
-	/**
-	 * Requires including special library and special configuration.
-	 * @param msg the message to tweet
-	 */
-	private void tweet(String msg)
-	{
-		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 280);
-		try
-		{
-			final Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");
-			final Object cbObj = cbClass.getDeclaredConstructor().newInstance();
-			final Method cbM1=cbClass.getMethod("setOAuthConsumerKey", String.class);
-			cbM1.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERKEY"));
-			final Method cbM2=cbClass.getMethod("setOAuthConsumerSecret", String.class);
-			cbM2.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHCONSUMERSECRET"));
-			final Method cbM3=cbClass.getMethod("setOAuthAccessToken", String.class);
-			cbM3.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKEN"));
-			final Method cbM4=cbClass.getMethod("setOAuthAccessTokenSecret", String.class);
-			cbM4.invoke(cbObj,CMProps.getProp("TWITTER-OAUTHACCESSTOKENSECRET"));
-			final Method cbM5=cbClass.getMethod("build");
-			final Object cbBuildObj = cbM5.invoke(cbObj);
-
-			final Class<?> cfClass = Class.forName("twitter4j.conf.Configuration");
-			final Class<?> afClass = Class.forName("twitter4j.auth.AuthorizationFactory");
-			final Method adM1 = afClass.getMethod("getInstance",cfClass);
-			final Object auObj = adM1.invoke(null, cbBuildObj);
-
-			final Class<?> auClass = Class.forName("twitter4j.auth.Authorization");
-			final Class<?> tfClass = Class.forName("twitter4j.TwitterFactory");
-			final Object tfObj = tfClass.getDeclaredConstructor().newInstance();
-			final Method tfM1 = tfClass.getMethod("getInstance", auClass);
-			final Object twObj = tfM1.invoke(tfObj, auObj);
-
-			final Class<?> twClass = Class.forName("twitter4j.Twitter");
-			final Method twM1 = twClass.getMethod("updateStatus", String.class);
-			twM1.invoke(twObj, msg);
-		}
-		catch (final Exception e)
-		{
-			Log.errOut(e);
-		}
 	}
 
 	/**
