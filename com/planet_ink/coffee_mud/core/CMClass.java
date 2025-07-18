@@ -20,9 +20,11 @@ import com.planet_ink.coffee_mud.Tests.interfaces.CMTest;
 
 import java.util.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.net.URLStreamHandler;
 
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.optimizer.*;
@@ -59,6 +61,35 @@ public class CMClass extends ClassLoader
 	protected static final Map<String,Object>		syncCache		= new LimitedTreeMap<String,Object>(300000,10000,true);
 
 	private static CMClass[] clss=new CMClass[256];
+
+	// set up a vfs class loader protocol
+	static
+	{
+		URL.setURLStreamHandlerFactory(protocol -> "vfs".equals(protocol) ? new URLStreamHandler()
+		{
+			@Override
+			protected java.net.URLConnection openConnection(final URL url) throws IOException
+			{
+				return new java.net.URLConnection(url)
+				{
+					final CMFile F = new CMFile(url.getPath(),null);
+					@Override
+					public void connect() throws IOException
+					{
+						if(!F.exists())
+							throw new IOException("File not found: "+F.getAbsolutePath());
+					}
+					@Override
+					public java.io.InputStream getInputStream() throws IOException
+					{
+						if(!F.exists())
+							throw new IOException("File not found: "+F.getAbsolutePath());
+						return F.getRawStream();
+					}
+				};
+			}
+		} : null);
+	}
 	/**
 	 * Creates a new instance of the class loader, updating the thread-group ref if necessary.
 	 */

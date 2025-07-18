@@ -1359,30 +1359,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		URL jarUrl;
 		try
 		{
-			URL.setURLStreamHandlerFactory(protocol -> "vfs".equals(protocol) ? new URLStreamHandler()
-			{
-				@Override
-				protected java.net.URLConnection openConnection(final URL url) throws IOException
-				{
-					return new java.net.URLConnection(url)
-					{
-						final CMFile F = new CMFile(url.getPath(),null);
-						@Override
-						public void connect() throws IOException
-						{
-							if(!F.exists())
-								throw new IOException("File not found: "+F.getAbsolutePath());
-						}
-						@Override
-						public java.io.InputStream getInputStream() throws IOException
-						{
-							if(!F.exists())
-								throw new IOException("File not found: "+F.getAbsolutePath());
-							return F.getRawStream();
-						}
-					};
-				}
-			} : null);
 			jarUrl = new URL("vfs:" + jarPath);
 		}
 		catch (final MalformedURLException e)
