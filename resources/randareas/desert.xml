@@ -66,6 +66,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING condition="$_desert_path_roomtype=0">The desert surrounds you, $adj_sparse cacti making some directions prickly and $adj_impassable. </STRING>
 				<STRING condition="$_desert_path_roomtype=0">You feel a $noun_desert_wind blow around the $adj_sparse plants of the desert. </STRING>
 			</STRING>
+			<STRING llm=true action="APPEND">Give me only a sentence that describes ${l:room_title} in a desert, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_desert_path_roomtype=1">The $_desert_path_type continues $roomrun_desc_long.</STRING>
 				<STRING condition="$_desert_path_roomtype=1">Beneath the narrow shadows of the dunes you can see the $_desert_path_type running $roomrun_desc_long.</STRING>
@@ -105,6 +106,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>The desert surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_desert_wind blow over the $adj_phys_size_tall dunes of the $noun_desert_wind_adj desert. </STRING>
 			</STRING>
+			<STRING llm=true action="APPEND">Give me only a sentence that describes ${l:room_title} in a desert, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING>Openings in the $noun_desert_brush can be seen $roomexits_desc_long.</STRING>

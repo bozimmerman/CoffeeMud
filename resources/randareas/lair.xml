@@ -46,8 +46,8 @@ See guides/RandomAreas.html for information about documents of this type.
 <AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
 <AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
 <AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="branch_dungeon" merge=true like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
-<AREA id="spot_dungeon" merge=true like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=desert" />
+<AREA id="branch_dungeon" merge=true like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="spot_dungeon" merge=true like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
@@ -79,6 +79,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		<STRING>This $adj_any $_lair_tunnelword heads $roomexits_desc_long.</STRING>
 		<STRING>This $adj_any $_lair_tunnelword seems to head $roomexits_desc_long.</STRING>
 	</STRING>
+	<STRING llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</STRING>
 	<STRING select="any-2" insert="lair_random_blurbs" action="APPEND" />
 	<STRING select="all" action="APPEND" insert="desc_exits" />
 </STRING>
@@ -112,6 +113,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>You discover that ${nasty_picked_race}s start off smaller and meaner.</DESCRIPTION>
 					<DESCRIPTION>It is just astonishing that ${nasty_picked_race}s live past this age. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
@@ -223,6 +225,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
@@ -250,6 +253,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a good place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more dangerous spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -330,6 +334,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The ${nasty_race_name}s seem to keep their edibles stored here.</DESCRIPTION>
 					<DESCRIPTION>What the ${nasty_race_name}s call food seems to be stored here.</DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -358,6 +363,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The ${nasty_race_name}s seem to keep their $adj_nasty crap stored here.</DESCRIPTION>
 					<DESCRIPTION>What the ${nasty_race_name}s think is important seems to be stored here.</DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -396,6 +402,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a good place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more disgusting spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
@@ -482,6 +489,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a very serene place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more chaotic spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -512,6 +520,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>$nasty_picked_race eggs are scattered all over the place. </DESCRIPTION>
 					<DESCRIPTION>$nasty_picked_race eggs are everywhere you look. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel quite serene here.  So different from other $nasty_picked_race locales.</DESCRIPTION>
 					<DESCRIPTION>This place seems downright serene for a $nasty_picked_race lair. </DESCRIPTION>
@@ -545,6 +554,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>Plain and boring for the most part. </DESCRIPTION>
 					<DESCRIPTION>A bit dirty, a lot ordinary, very unroyal. </DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You don`t really feel in any awe.</DESCRIPTION>
 					<DESCRIPTION>This place seems like any other $nasty_race_name room. </DESCRIPTION>

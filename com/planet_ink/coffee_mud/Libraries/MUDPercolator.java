@@ -3311,7 +3311,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			processDefined=piece;
 			tagName=piece.tag();
 		}
-		final List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
+		final List<XMLLibrary.XMLTag> choices = getAllChoices(E, ignoreStats, defPrefix, tagName, piece, defined, true);
 		if((choices==null)||(choices.size()==0))
 			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		StringBuffer finalValue = new StringBuffer("");
@@ -3342,6 +3342,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
+			if(CMath.s_bool(valPiece.getParmValue("LLM")))
+			{
+				try
+				{
+					if(!defined.containsKey("SYSTEM_LLM_Object"))
+						defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(null));
+					if(value.trim().length()>0)
+						value = ((ProtocolLibrary.LLMSession)defined.get("SYSTEM_LLM_Object")).chat(value);
+				}
+				catch(final Exception e)
+				{
+					throw new CMException("Ended because of failed LLM access.",e);
+				}
+			}
 
 			final String action = valPiece.getParmValue("ACTION");
 			if((action==null) || (action.length()==0))
@@ -3654,6 +3668,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected boolean testCondition(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String condition, final XMLTag piece, final Map<String,Object> defined) throws PostProcessException
 	{
+		if(CMath.s_bool(piece.getParmValue("LLM"))&&(!CMLib.protocol().isLLMInstalled()))
+			return false;
 		if((condition == null)||(condition.length()==0))
 			return true;
 		final Map<String,Object> fixed=new HashMap<String,Object>();
