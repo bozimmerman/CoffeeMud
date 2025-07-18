@@ -5073,7 +5073,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				int year=Calendar.getInstance().get(Calendar.YEAR);
 				long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
 				final Calendar C=Calendar.getInstance();
-				final long today=CMLib.time().string2Millis((C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM");
+				final String todayStr = (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM";
+				final long today=CMLib.time().string2Millis(todayStr);
 				while(distance<today)
 					distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
 				waitRemaining=(int)((distance-today)/CMProps.getTickMillis());

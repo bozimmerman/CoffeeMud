@@ -216,7 +216,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	@Override
 	public Calendar string2Date(String dateTimeStr)
 	{
-		Calendar D=Calendar.getInstance();
+		final Calendar D=Calendar.getInstance();
 
 		if(dateTimeStr==null)
 			return D;
@@ -288,9 +288,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 			try
 			{
-				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT,Locale.US);
-				fmt.parse(dateTimeStr);
-				D=fmt.getCalendar();
+				final SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
+				fmt.setLenient(false);
+				final Date parsedDate = fmt.parse(dateTimeStr);
+				D.setTime(parsedDate);
 				D.set(Calendar.SECOND,0);
 				D.set(Calendar.MILLISECOND,0);
 			}
@@ -364,9 +365,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		Calendar D=null;
 		try
 		{
-			final DateFormat fmt=DateFormat.getTimeInstance(DateFormat.SHORT);
-			fmt.parse(timeStr);
-			D=fmt.getCalendar();
+			final SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
+			fmt.setLenient(false);
+			final Date parsedDate = fmt.parse(timeStr);
+			D=Calendar.getInstance();
+			D.setTime(parsedDate);
 			D.set(Calendar.SECOND,0);
 			D.set(Calendar.MILLISECOND,0);
 			D.set(Calendar.YEAR, todayD.get(Calendar.YEAR));
@@ -415,7 +418,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				dateTimeStr=dateTimeStr+" 5:00 PM";
 			try
 			{
-				final DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT,Locale.US);
+				final SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
+				fmt.setLenient(false);
 				fmt.parse(dateTimeStr);
 			}
 			catch(final ParseException e)
