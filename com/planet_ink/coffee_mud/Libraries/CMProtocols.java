@@ -29,6 +29,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
@@ -3828,8 +3829,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					try
 					{
 						String resp = ai.chat(msg);
-						resp = resp.replace("\r", "");
-						resp = resp.replace("\n", " ");
+						resp = resp.replace("\n", "\n\r");
+						resp = resp.replaceAll("[\\u2019\\?]", "`");
 						resp = resp.replaceAll("[\\uFFFD\\?]", "`");
 						return resp;
 					}
