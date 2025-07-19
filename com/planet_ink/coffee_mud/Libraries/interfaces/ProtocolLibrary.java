@@ -251,10 +251,11 @@ public interface ProtocolLibrary extends CMLibrary
 	 *
 	 * @see ProtocolLibrary#isLLMInstalled()
 	 *
+	 * @param personality null, or a personality to persist
 	 * @param maxMsgs null, or max msgs to override the default.
 	 * @return the new LLM session.
 	 */
-	public LLMSession createLLMSession(Integer maxMsgs);
+	public LLMSession createLLMSession(final String personality, Integer maxMsgs);
 
 	/**
 	 * Returns whether the LLM libraries were found and loaded.

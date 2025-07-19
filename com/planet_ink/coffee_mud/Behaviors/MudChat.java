@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
@@ -69,6 +70,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected String		lastThingSaid	= null;
 	protected int			tickDown		= 3;
 	protected volatile int	talkDown		= 0;
+	protected Boolean		llmSupported	= null;
+	protected LLMSession	llmSession		= null;
+	protected volatile long	llmLastUse		= 0;
+
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
@@ -180,8 +185,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		public int weight;
 		public boolean combatFlag;
 		public String switchDB = "";
-		public ChattyTestResponse(final String resp, final boolean combatFlag)
+		public ChattyGroup fromGroup;
+		public ChattyTestResponse(final ChattyGroup group, final String resp, final boolean combatFlag)
 		{
+			fromGroup=group;
 			weight=CMath.s_int(""+resp.charAt(0));
 			this.combatFlag=combatFlag;
 			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
@@ -197,7 +204,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 		}
 	}
-
 	/**
 	 * A chatty entry embodies a test for a particular environmental event, such as
 	 * someone speaking or acting, and all possible responses to that event.
@@ -208,10 +214,17 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		public ChatExpression		expression;
 		public ChattyTestResponse[]	responses;
 		public boolean				combatEntry	= false;
+		public boolean				llm			= false;
+		public boolean				antillm		= false;
+		public ChattyGroup			fromGroup;
 
-		public ChattyEntry(final ChatExpression expression, final boolean combat)
+		public ChattyEntry(final ChatExpression expression, final boolean combat,
+						   final boolean llm, final boolean antillm, final ChattyGroup group)
 		{
+			this.fromGroup=group;
 			combatEntry = combat;
+			this.llm = llm;
+			this.antillm=antillm;
 			this.expression = expression;
 		}
 	}
@@ -228,6 +241,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		public MaskingLibrary.CompiledZMask[]	groupMasks;
 		public ChattyEntry[]					entries	= null;
 		public ChattyEntry[]					tickies	= null;
+		public String							llmPrefix = null;
 
 		public ChattyGroup(final String[] names, final MaskingLibrary.CompiledZMask[] masks)
 		{
@@ -247,6 +261,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				return this;
 			}
 		}
+	}
+
+	private boolean isLLMSupported()
+	{
+		if(this.llmSupported == null)
+			this.llmSupported = Boolean.valueOf(CMLib.protocol().isLLMInstalled());
+		return this.llmSupported.booleanValue();
 	}
 
 	@Override
@@ -406,6 +427,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		{
 			if(str.length()>0)
 			{
+				boolean combat=false;
+				boolean llm=false;
+				boolean antillm=false;
 				final char c=str.charAt(0);
 				switch(c)
 				{
@@ -415,10 +439,18 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '#':
 					// nothing happened, move along
 					break;
-				case '*':
-					if((str.length()==1)||("([{<".indexOf(str.charAt(1))<0))
+				case '*': case 'L': case 'l':
+				{
+					while((str.length()>0) && ("*Ll".indexOf(str.charAt(0))>=0))
+					{
+						llm = llm || str.startsWith("L");
+						antillm = antillm || str.startsWith("l");
+						combat = combat || str.startsWith("*");
+						str=str.substring(1);
+					}
+					if((str.length()==0)||("([{<".indexOf(str.charAt(0))<0))
 						break;
-					str=str.substring(1);
+				}
 				//$FALL-THROUGH$
 				case '(':
 				case '[':
@@ -430,7 +462,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					try
 					{
 						final ChatExpression expression = parseExpression(str);
-						currentChatEntry=new ChattyEntry(expression,c=='*');
+						currentChatEntry=new ChattyEntry(expression,combat,llm,antillm,currentChatGroup);
 						if(expression.type==ChatMatchType.RANDOM)
 							tickyChatEntries.add(currentChatEntry);
 						else
@@ -441,6 +473,12 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						Log.debugOut("MudChat",e.getMessage());
 						currentChatEntry=null;
 					}
+					break;
+				case '\\':
+					if(currentChatGroup.llmPrefix == null)
+						currentChatGroup.llmPrefix = str.substring(1).trim();
+					else
+						currentChatGroup.llmPrefix += " " + str.substring(1).trim();
 					break;
 				case '>':
 					if(currentChatEntry!=null)
@@ -462,6 +500,13 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 							otherChatGroup=chatGroups.get(0);
 						if(otherChatGroup != currentChatGroup)
 						{
+							if(otherChatGroup.llmPrefix != null)
+							{
+								if(currentChatGroup.llmPrefix == null)
+									currentChatGroup.llmPrefix = otherChatGroup.llmPrefix;
+								else
+									currentChatGroup.llmPrefix += " " + otherChatGroup.llmPrefix;
+							}
 							for(final ChattyEntry CE : otherChatGroup.entries)
 								currentChatEntries.add(CE);
 							for(final ChattyEntry CE : otherChatGroup.tickies)
@@ -490,7 +535,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '8':
 				case '9':
 					if(currentChatEntry!=null)
-						currentChatEntryResponses.add(new ChattyTestResponse(str,currentChatEntry.combatEntry));
+					{
+						currentChatEntryResponses.add(new ChattyTestResponse(
+								currentChatEntry.fromGroup, str,currentChatEntry.combatEntry));
+					}
 					break;
 				}
 			}
@@ -607,9 +655,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 			final int x=basicParms.indexOf('=');
 			if(x<0)
-				matchedCG=matchChatGroup(forMe,getParms(),chatGroups);
+				matchedCG=matchChatGroup(forMe,basicParms,chatGroups);
 			else
-				matchedCG=matchChatGroup(forMe,getParms().substring(x+1).trim(),chatGroups);
+				matchedCG=matchChatGroup(forMe,basicParms.substring(x+1).trim(),chatGroups);
 			if(plusParms != null)
 				this.addChatEntries(plusParms);
 		}
@@ -680,7 +728,222 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return this.currChatEntries;
 	}
 
-	protected void queResponse(final List<Pair<ChattyTestResponse,String>> responses, final MOB source, final MOB target)
+	protected String mcFilter(final String finalCommand, final MOB source, final Environmental target,
+							  final String rest, final String whole)
+	{
+		final StringBuilder fc = new StringBuilder("");
+		for(int i=0;i<finalCommand.length();i++)
+		{
+			final char c = finalCommand.charAt(i);
+			if((c=='$')&&(i<finalCommand.length()-1))
+			{
+				final char c2=finalCommand.charAt(i+1);
+				switch(c2)
+				{
+				case 'r':
+					fc.append(rest);
+					i++;
+					break;
+				case 'w':
+					fc.append(whole);
+					i++;
+					break;
+				case 't':
+					fc.append(target.name());
+					i++;
+					break;
+				case 'n':
+					fc.append(source.name());
+					i++;
+					break;
+				case '$':
+					fc.append('$');
+					i++;
+					break;
+				case '<':
+				case '{':
+				{
+					final int y=finalCommand.indexOf(c2=='<'?'>':'}',i+1);
+					if(y>0)
+					{
+						final String var = finalCommand.substring(i+2,y);
+						final Modifiable M = (c2=='<')?target:source;
+						String repl;
+						if(var.equalsIgnoreCase("THEMEDESC"))
+						{
+							final Room R = CMLib.map().getStartRoom(source);
+							final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
+							final List<String> l = new ArrayList<String>();
+							if(CMath.bset(theme,Area.THEME_FANTASY))
+								l.add("medieval fantasy");
+							if(CMath.bset(theme,Area.THEME_HEROIC))
+								l.add("modern day");
+							if(CMath.bset(theme,Area.THEME_TECHNOLOGY))
+								l.add("futuristic");
+							repl = CMParms.toListString(l);
+						}
+						else
+						if(var.equalsIgnoreCase("ROOMDESC"))
+						{
+							final Room R = CMLib.map().roomLocation((Environmental)M);
+							if((R != null)&&(target instanceof MOB))
+								repl = R.displayText((MOB)target);
+							else
+								repl = R.displayText();
+						}
+						else
+						if(var.equalsIgnoreCase("ALIGNMENTDESC"))
+						{
+							String ad = " ";
+							if(M instanceof MOB)
+							{
+								final MOB mob=(MOB)M;
+								if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+								{
+									final int fact = mob.fetchFaction(CMLib.factions().getInclinationID());
+									final Faction F = CMLib.factions().getFaction(CMLib.factions().getInclinationID());
+									if (F != null)
+										ad += F.fetchRangeName(fact)+" ";
+								}
+								if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+								{
+									final int fact = mob.fetchFaction(CMLib.factions().getAlignmentID());
+									final Faction F = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+									if (F != null)
+										ad += F.fetchRangeName(fact)+" ";
+								}
+							}
+							repl = ad.trim();
+							if(repl.length()==0)
+								repl="irrelevant";
+						}
+						else
+						if(var.startsWith("PERSONALITY"))
+						{
+							int maxTraits = 2;
+							final String[] parts = var.split(":");
+							String override="";
+							for(int x=1;x<parts.length;x++)
+							{
+								if(CMath.isInteger(parts[x]))
+									maxTraits = Math.max(0,CMath.s_int(var.substring(x+1).trim()));
+								else
+									override=parts[x];
+							}
+							String ad = "";
+							if(M instanceof MOB)
+							{
+								final MOB mob=(MOB)M;
+								final String hashStr = mob.name() + CMLib.map().getExtendedRoomID(mob.getStartRoom());
+								final int hash = hashStr.hashCode();
+								final Random r = new Random(hash);
+								final int numTraits = r.nextInt(maxTraits) + 1;
+								final List<String> keys = new ArrayList<String>();
+								if(override.length()>0)
+									keys.add(override.toUpperCase().trim());
+								else
+								{
+									if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+									{
+										if(CMLib.flags().isChaotic(mob))
+											keys.add("CHAOTIC");
+										else
+										if(CMLib.flags().isLawful(mob))
+											keys.add("LAWFUL");
+										else
+											keys.add("MODERATE");
+									}
+									if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+									{
+										if(CMLib.flags().isEvil(mob))
+											keys.add("EVIL");
+										else
+										if(CMLib.flags().isGood(mob))
+											keys.add("GOOD");
+										else
+											keys.add("NEUTRAL");
+									}
+								}
+								final Object[][][] lists = CMProps.getListFileGrid(ListFile.PERSONALITY_TRAITS);
+								final List<Object[]> traits = new ArrayList<Object[]>();
+								for (final Object[][] addOnList : lists)
+								{
+									if(keys.contains(((String)addOnList[0][0]).toUpperCase().trim()))
+										traits.addAll(Arrays.asList(addOnList));
+								}
+								final List<String> chosen = new ArrayList<String>();
+								for(int x=0;x<numTraits;x++)
+								{
+									final Object[] trait = traits.get(r.nextInt(traits.size()));
+									if(!chosen.contains(trait[0]))
+										chosen.add((String)trait[0]);
+								}
+								final Ability moodA=mob.fetchEffect("Mood");
+								if(moodA!=null)
+									chosen.add(moodA.text());
+								ad = CMParms.toListString(chosen);
+							}
+							repl = ad.trim();
+							if(repl.length()==0)
+								repl="irrelevant";
+						}
+						else
+							repl=CMLib.coffeeMaker().getAnyGenStat(M, var);
+						fc.append(repl);
+						i=y;
+					}
+					else
+						fc.append(c);
+					break;
+				}
+				case '%':
+				{
+					final int y=finalCommand.indexOf('%',i+2);
+					if(y>0)
+					{
+						if(scriptEngine == null)
+						{
+							scriptEngine=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+							scriptEngine.setSavable(false);
+							scriptEngine.setVarScope("*");
+						}
+						final String var = finalCommand.substring(i,y+1);
+						final String repl = scriptEngine.varify(
+								new MPContext(source, source, source, target, null, null, "", null),var);
+						fc.append(repl);
+						i=y;
+					}
+					else
+						fc.append(c);
+					break;
+				}
+				default:
+					fc.append(c);
+					break;
+				}
+			}
+			else
+				fc.append(c);
+		}
+		return fc.toString();
+	}
+
+	protected synchronized LLMSession getLLMSession(final ChattyGroup grp, final MOB source)
+	{
+		String prefix="";
+		if((this.llmSession == null)
+		||((System.currentTimeMillis()-this.llmLastUse)>360000))
+		{
+			prefix = (grp.llmPrefix==null)?"":grp.llmPrefix;
+			prefix = mcFilter(prefix.trim(),source,null,"","");
+			this.llmSession = CMLib.protocol().createLLMSession(prefix,null);
+		}
+		this.llmLastUse=System.currentTimeMillis();
+		return this.llmSession;
+	}
+
+	protected void queResponse(final List<Pair<ChattyTestResponse,String>> responses,
+								final MOB source, final MOB target, final String wholeSay)
 	{
 		int total=0;
 		for(final Pair<ChattyTestResponse,String> c : responses)
@@ -727,8 +990,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			for(String finalCommand : selection.responses)
 			{
 				if(finalCommand.trim().length()==0)
-					return;
-				else
+					return; // why not continue?
 				if(finalCommand.startsWith(":"))
 				{
 					finalCommand = finalCommand.substring(1).trim();
@@ -746,50 +1008,61 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(finalCommand.startsWith("\""))
 					finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
 				else
+				if(finalCommand.startsWith(";"))
+				{
+					if(!this.isLLMSupported())
+						continue;
+					final String prompt = mcFilter(finalCommand.substring(1).trim(),source,target,rest,wholeSay);
+					final ChattyGroup g = selection.fromGroup;
+					final boolean flag =selection.combatFlag;
+					CMLib.threads().executeRunnable(new Runnable()
+					{
+						final String promptStr = prompt;
+						final long startTime = System.currentTimeMillis();
+						final MOB M = source;
+						final ChattyGroup grp = g;
+						final boolean combatFlag = flag;
+						final MOB T = target;
+						@Override
+						public void run()
+						{
+							String str = promptStr;
+							if(str.equalsIgnoreCase("reset")&&(CMSecurity.isAllowed(T, M.location(), CMSecurity.SecFlag.CMDMOBS)))
+							{
+								llmLastUse=0;
+								str = L("Greetings");
+							}
+							final LLMSession session = getLLMSession(grp,M);
+							if(session != null)
+							{
+								final String response = session.chat(str);
+								final long delayWas = System.currentTimeMillis() - startTime;
+								final long delayRemaining = (CMProps.getTickMillis()*RESPONSE_DELAY)-delayWas;
+								final int ticksRemain = (int)Math.floor(delayRemaining / CMProps.getTickMillis());
+								final List<String> words=new XVector<String>("say",response);
+								responseQue.add(new ChattyResponse(words,ticksRemain,combatFlag));
+							}
+						}
+					});
+					continue;
+				}
+				else
 				if(target!=null)
 					finalCommand="sayto \""+target.name()+"\" "+finalCommand.trim();
-
-				finalCommand=CMStrings.replaceAll(finalCommand,"$r",rest);
-				if(target!=null)
-					finalCommand=CMStrings.replaceAll(finalCommand,"$t",target.name());
-				if(source!=null)
-					finalCommand=CMStrings.replaceAll(finalCommand,"$n",source.name());
-				if(finalCommand.indexOf("$%")>=0)
-				{
-					if(scriptEngine == null)
-					{
-						scriptEngine=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-						scriptEngine.setSavable(false);
-						scriptEngine.setVarScope("*");
-					}
-					finalCommand = scriptEngine.varify(new MPContext(source, source, source, target, null, null, "", null), finalCommand);
-				}
-				finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
-				Vector<String> V=CMParms.parse(finalCommand);
+				finalCommand = mcFilter(finalCommand,source,target,rest,wholeSay);
+				List<String> words=CMParms.parse(finalCommand);
 				for(final ChattyResponse R : responseQue)
 				{
 					if(CMParms.combine(R.parsedCommand,1).equalsIgnoreCase(finalCommand))
 					{
-						V=null;
+						words=null;
 						break;
 					}
 				}
-				if(V!=null)
-					responseQue.add(new ChattyResponse(V,RESPONSE_DELAY,selection.combatFlag));
+				if(words!=null)
+					responseQue.add(new ChattyResponse(words,RESPONSE_DELAY,selection.combatFlag));
 			}
 		}
-	}
-
-	protected boolean isExpressionStart(final String possExpression)
-	{
-		if(possExpression==null)
-			return false;
-		String pexp=possExpression.trim();
-		if(pexp.startsWith("*"))
-			pexp=pexp.substring(1).trim();
-		if(pexp.length()==0)
-			return false;
-		return "([<{".indexOf(pexp.charAt(0))>=0;
 	}
 
 	protected static Pair<ChatMatchType, Character> getTypeAndCloser(final char openChar)
@@ -994,6 +1267,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			final int x=message.indexOf(match.str);
 			if(x<0)
 				return false;
+			if(match.str.length()==0)
+				return true;
 			if(((x==0)||(Character.isWhitespace(message.charAt(x-1))))
 			&&(((x+match.str.length())==message.length())||(Character.isWhitespace(message.charAt(x+match.str.length())))))
 			{
@@ -1155,7 +1430,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			final String rest[]=new String[1];
 			final boolean combat=((meMob.isInCombat()))||(srcMob.isInCombat());
 
-			String str;
+			String str=null;
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 			&&(!srcMob.isMonster())
 			&&(msg.amITarget(meMob)
@@ -1163,7 +1438,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				  &&(srcMob.location()==meMob.location())
 				  &&(talkDown<=0)
 				  &&(srcMob.location().numPCInhabitants()<3)))
-			&&(CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
 			&&(lastReactedToM!=msg.source())
 			&&(msg.sourceMessage()!=null)
 			&&(msg.targetMessage()!=null)
@@ -1175,7 +1449,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				{
 					final ChatExpression expression=entry.expression;
 					if((expression.type==ChatMatchType.SAY)
-					&&(entry.combatEntry==combat))
+					&&(entry.combatEntry==combat)
+					&&((!entry.llm)||(this.isLLMSupported()))
+					&&((!entry.antillm)||(!this.isLLMSupported())))
 					{
 						if(match(srcMob,expression,str,rest))
 						{
@@ -1189,15 +1465,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 			else // dont interrupt another mob
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(srcMob.isMonster())  // this is another mob (not me) talking
-			&&(CMLib.flags().canBeHeardSpeakingBy(srcMob,meMob))
-			&&(CMLib.flags().canBeSeenBy(srcMob,meMob)))
+			&&(srcMob.isMonster()))  // this is another mob (not me) talking
 			   talkDown=TALK_WAIT_DELAY;
 			else // dont parse unless we are done waiting
-			if((CMLib.flags().canBeHeardMovingBy(srcMob,meMob))
-			&&(CMLib.flags().canBeSeenBy(srcMob,meMob))
-			&&(CMLib.flags().canBeSeenBy(meMob,srcMob))
-			&&(!srcMob.isMonster())
+			if((!srcMob.isMonster())
 			&&(talkDown<=0)
 			&&(lastReactedToM!=msg.source()))
 			{
@@ -1240,7 +1511,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			{
 				lastReactedToM=msg.source();
 				lastRespondedToM=msg.source();
-				queResponse(myResponses,meMob,srcMob);
+				queResponse(myResponses,meMob,srcMob,str);
 			}
 		}
 	}
@@ -1276,6 +1547,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					for(final ChattyEntry entry : group.tickies)
 					{
 						if((entry.combatEntry==combat)
+						&&((!entry.llm)||(this.isLLMSupported()))
+						&&((!entry.antillm)||(!this.isLLMSupported()))
 						&&(this.match((MOB)ticking, entry.expression, CMLib.dice().rollPercentage())))
 						{
 							myResponses=new ArrayList<Pair<ChattyTestResponse,String>>();
@@ -1284,7 +1557,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 						}
 					}
 					if(myResponses!=null)
-						queResponse(myResponses,(MOB)ticking,(MOB)ticking);
+						queResponse(myResponses,(MOB)ticking,(MOB)ticking,null);
 				}
 			}
 			if(responseQue.size()==0)

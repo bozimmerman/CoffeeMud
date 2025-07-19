@@ -576,7 +576,7 @@ public class MUDProxy
 		}
 	}
 
-	private static void readFilter(final SelectionKey key, final MUDProxy sourceContext, final ByteBuffer buffer)
+	private static ByteBuffer readFilter(final SelectionKey key, final MUDProxy sourceContext, ByteBuffer buffer)
 	{
 		final byte[] checkBuf = new byte[buffer.remaining()];
 		buffer.get(checkBuf);
@@ -796,9 +796,12 @@ public class MUDProxy
 			Log.errOut(e);
 		}
 		final byte[] finalBuf = sourceContext.outputPipe.toByteArray();
+		if(finalBuf.length > buffer.capacity())
+			buffer = ByteBuffer.allocate(finalBuf.length);
 		buffer.put(finalBuf);
 		sourceContext.outputPipe.reset();
 		buffer.flip();
+		return buffer;
 	}
 
 	private static void handleRead(final SelectionKey key) throws IOException
@@ -844,7 +847,7 @@ public class MUDProxy
 			while((bytesRead = sourceChannel.read(buffer))>0)
 			{
 				buffer.flip();
-				readFilter(key,sourceContext, buffer);
+				buffer = readFilter(key,sourceContext, buffer);
 				if((destContext.output.size()==0)&&(destChannel.isConnected()))
 				{
 					while (buffer.hasRemaining())

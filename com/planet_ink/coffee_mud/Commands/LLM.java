@@ -60,7 +60,7 @@ public class LLM extends StdCommand
     	final boolean reset = userText.equalsIgnoreCase("reset");
     	if(!sessions.containsKey(mob.Name()) || reset)
     	{
-    		final LLMSession sess = CMLib.protocol().createLLMSession(Integer.valueOf(100));
+    		final LLMSession sess = CMLib.protocol().createLLMSession(null,Integer.valueOf(100));
     		if(sess != null)
     		{
     			sessions.put(mob.Name(), sess);

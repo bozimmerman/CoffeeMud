@@ -3347,7 +3347,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				try
 				{
 					if(!defined.containsKey("SYSTEM_LLM_Object"))
-						defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(null));
+						defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(null,null));
 					if(value.trim().length()>0)
 						value = ((ProtocolLibrary.LLMSession)defined.get("SYSTEM_LLM_Object")).chat(value);
 				}

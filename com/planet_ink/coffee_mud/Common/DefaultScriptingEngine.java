@@ -6393,12 +6393,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final Ability moodA=P.fetchEffect("Mood");
 						if(moodA!=null)
 						{
-							final String sex=moodA.text();
+							final String moodName=moodA.text();
 							if(arg2.equals("=="))
-								returnable=sex.equalsIgnoreCase(arg3);
+								returnable=moodName.equalsIgnoreCase(arg3);
 							else
 							if(arg2.equals("!="))
-								returnable=!sex.equalsIgnoreCase(arg3);
+								returnable=!moodName.equalsIgnoreCase(arg3);
 							else
 							{
 								logError(ctx.scripted,"MOOD","Syntax",CMParms.combine(tt,t));

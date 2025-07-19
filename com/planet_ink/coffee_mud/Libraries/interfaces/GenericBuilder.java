@@ -173,7 +173,8 @@ public interface GenericBuilder extends CMLibrary
 		PEACETICKS,
 		BIRTHDATE,
 		AGEMINS,
-		AGENAME
+		AGENAME,
+		GENDERNAME
 	}
 
 	/**

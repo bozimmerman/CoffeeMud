@@ -178,6 +178,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String race;
+		Race R=null;
 		if(!auto)
 		{
 			if(commands.size()==0)
@@ -189,6 +190,10 @@ public class Spell_ImprovedPolymorph extends Spell
 			commands.remove(commands.size()-1);
 		}
 		else
+		if((commands.size()>0)
+		&&((R=CMClass.findRace(CMParms.combine(commands,0)))!=null))
+			race = R.ID();
+		else
 			race="doesntexist";
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -198,7 +203,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(L("You cannot hold enough energy to cast this on yourself."));
 			return false;
 		}
-		Race R=race.equalsIgnoreCase("any")?CMClass.randomRace():CMClass.getRace(race);
+		R=race.equalsIgnoreCase("any")?CMClass.randomRace():CMClass.getRace(race);
 		if((R==null)&&(!auto))
 		{
 			if(mob.isMonster())

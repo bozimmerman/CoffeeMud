@@ -3877,7 +3877,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public LLMSession createLLMSession(final Integer maxMsgs)
+	public LLMSession createLLMSession(final String personality, final Integer maxMsgs)
 	{
 		final Object llmModel = initializeLLMSession();
 		if(llmModel instanceof Long)
@@ -3907,15 +3907,34 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			chatModelMethod.invoke(aiBuilder, llmModel);
 			chatMemoryMethod.invoke(aiBuilder, memory);
 			final LLMSession ss = (LLMSession)aiBuildMethod.invoke(aiBuilder);
+			final Class<?> chatMessageClass = llmClassLoader.loadClass("dev.langchain4j.data.message.ChatMessage");
+			final Method messagesMethod = chatMemoryClass.getMethod("messages");
+			final Method clearMethod = chatMemoryClass.getMethod("clear");
+			final Method addMethod = chatMemoryClass.getMethod("add", chatMessageClass);
 			return new LLMSession()
 			{
 				final LLMSession ai = ss;
+				private volatile String p = personality;
+				private final Object chatMemory = memory;
+				private final int maxMsgs = MAX_MSGS.intValue();
 				@Override
 				public String chat(final String msg)
 				{
 					try
 					{
-						final StringBuffer resp = new StringBuffer(ai.chat(msg));
+						final List<?> currentMessages = (List<?>)messagesMethod.invoke(chatMemory);
+						if (!currentMessages.isEmpty()
+						&&(currentMessages.size() >= maxMsgs - 1))
+						{
+							final Object systemMsg = currentMessages.get(0);
+							clearMethod.invoke(chatMemory);
+							addMethod.invoke(chatMemory, systemMsg);
+							for (int i = 3; i < currentMessages.size(); i++)
+								addMethod.invoke(chatMemory, currentMessages.get(i));
+						}
+						final String finalMsg = (p==null)?msg:(p + " " + msg);
+						p=null;
+						final StringBuffer resp = new StringBuffer(ai.chat(finalMsg));
 						CMStrings.dikufyLineEndings(resp);
 						CMStrings.normalizeCharacters(resp);
 						return resp.toString();
