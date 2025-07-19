@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- ----------------------------------------------------------------------------
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Copyright 2013-2025 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---------------------------------------------------------------------------------
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 See guides/RandomAreas.html for information about documents of this type.
 
@@ -30,21 +30,21 @@ Sky versions of these layouts, that split the allotment into multiple levels wit
 -->
 <AREADATA>
 
-<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
+<AREA id="maze_dungeon" merge="true" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" >
 	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
 	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
 </AREA>
-<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="branch_dungeon" merge=true like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
-<AREA id="spot_dungeon" merge=true like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="grid_dungeon" merge="true" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="square_dungeon" merge="true" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="box_dungeon" merge="true" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="cross_dungeon" merge="true" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="tree_dungeon" merge="true" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="branch_dungeon" merge="true" like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
+<AREA id="spot_dungeon" merge="true" like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=random" />
 
-<AREA id="random_dungeon" merge=true select="any" requires="areaname=$" 
+<AREA id="random_dungeon" merge="true" select="any" requires="areaname=$" 
 	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon,branch_dungeon,spot_dungeon" 
 	predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
@@ -72,7 +72,7 @@ Sky versions of these layouts, that split the allotment into multiple levels wit
 	<string condition="$level_range=''">1?91</string>
 </string>
 
-<string id="randomtheme" merge=true select="any-1">
+<string id="randomtheme" merge="true" select="any-1">
 	<string condition="$theme!=''">$theme</string>
 	<string condition="$theme=''">random</string>
 </string>

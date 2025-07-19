@@ -12,13 +12,13 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
---------------------------------------------------------------------------------
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 See guides/RandomAreas.html for information about documents of this type.
 
 -->
 <!--  include file full of monster lair-specific tags -->
-<string id="randomtheme" merge=true select="any-1">
+<string id="randomtheme" merge="true" select="any-1">
 	<string condition="$theme=''">kobolds</string>
 	<string condition="$theme=''">goblins</string>
 	<string condition="$theme=''">orcs</string>
@@ -35,19 +35,19 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_streetnames.xml" />
 <STRING load="/resources/randareas/inc_fantasynames.xml" />
 
-<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls">
+<AREA id="maze_dungeon" merge="true" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls">
 	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
 	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 </AREA>
-<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="branch_dungeon" merge=true like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
-<AREA id="spot_dungeon" merge=true like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="grid_dungeon" merge="true" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="square_dungeon" merge="true" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="box_dungeon" merge="true" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="cross_dungeon" merge="true" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="tree_dungeon" merge="true" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="branch_dungeon" merge="true" like="maze_dungeon" layout="BRANCH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
+<AREA id="spot_dungeon" merge="true" like="maze_dungeon" layout="SPOTTEDMESH" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=kobolds;goblins;orcs;troglodytes;gnolls;hobgoblins;trolls" />
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
@@ -79,12 +79,12 @@ See guides/RandomAreas.html for information about documents of this type.
 		<STRING>This $adj_any $_lair_tunnelword heads $roomexits_desc_long.</STRING>
 		<STRING>This $adj_any $_lair_tunnelword seems to head $roomexits_desc_long.</STRING>
 	</STRING>
-	<STRING llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</STRING>
+	<STRING llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</STRING>
 	<STRING select="any-2" insert="lair_random_blurbs" action="APPEND" />
 	<STRING select="all" action="APPEND" insert="desc_exits" />
 </STRING>
 
-<ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+<ROOM id="interior_rooms" merge="true" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<TITLE>$a_streetprefix $_lair_hallways_street_name</TITLE>
 		<DESCRIPTION>$lair_interior_desc</DESCRIPTION>
@@ -94,7 +94,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	</ROOM>
 </ROOM>
 
-<ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
+<ROOM id="leaf_rooms" merge="true" select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race nursery</TITLE>
@@ -113,7 +113,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>You discover that ${nasty_picked_race}s start off smaller and meaner.</DESCRIPTION>
 					<DESCRIPTION>It is just astonishing that ${nasty_picked_race}s live past this age. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
@@ -225,7 +225,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
@@ -253,7 +253,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a good place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more dangerous spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -334,7 +334,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The ${nasty_race_name}s seem to keep their edibles stored here.</DESCRIPTION>
 					<DESCRIPTION>What the ${nasty_race_name}s call food seems to be stored here.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -363,7 +363,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The ${nasty_race_name}s seem to keep their $adj_nasty crap stored here.</DESCRIPTION>
 					<DESCRIPTION>What the ${nasty_race_name}s think is important seems to be stored here.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_race_name lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -402,7 +402,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a good place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more disgusting spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
@@ -489,7 +489,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This can`t be a very serene place to be. </DESCRIPTION>
 					<DESCRIPTION>You can`t imagine a more chaotic spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$lair_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -520,7 +520,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>$nasty_picked_race eggs are scattered all over the place. </DESCRIPTION>
 					<DESCRIPTION>$nasty_picked_race eggs are everywhere you look. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You feel quite serene here.  So different from other $nasty_picked_race locales.</DESCRIPTION>
 					<DESCRIPTION>This place seems downright serene for a $nasty_picked_race lair. </DESCRIPTION>
@@ -554,7 +554,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>Plain and boring for the most part. </DESCRIPTION>
 					<DESCRIPTION>A bit dirty, a lot ordinary, very unroyal. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm=true >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION llm="true" >Give me only a sentence that describes ${l:room_title} in a $nasty_picked_race lair, but don't mention any specific creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You don`t really feel in any awe.</DESCRIPTION>
 					<DESCRIPTION>This place seems like any other $nasty_race_name room. </DESCRIPTION>
@@ -631,7 +631,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	</ROOM>
 </ROOM>
 
-<ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+<ROOM id="hallway_rooms" merge="true" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" pickweight="5" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='troglodytes' or $theme='gnolls' or $theme='hobgoblins' or $theme='trolls' or $theme='random'">
 		<TITLE>$a_streetprefix $_lair_hallways_street_name</TITLE>
 		<STRING id="_lair_crawlways_street_name" define="_lair_crawlways_street_name" select="any-1">

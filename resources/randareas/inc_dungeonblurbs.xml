@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND</STRING><STRING>either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
---------------------------------------------------------------------------------
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 See guides/RandomAreas.html for information about documents of this type.
 
@@ -40,7 +40,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>It looks like something might have died here.</STRING>
 	<STRING>You might have just stepped on a frog.</STRING>
 	<STRING>Something indescribable makes you feel lonesome and sad here.</STRING>
-	<STRING llm=true>Give me only a sentence that describes a room in a fantasy dungeon, but don't mention any creatures or portable items.</STRING>
+	<STRING llm="true">Give me only a sentence that describes a room in a fantasy dungeon, but don't mention any creatures or portable items.</STRING>
 	<STRING select="any-1">
 		<STRING>The $adj_any ceiling is too far above you to see clearly.</STRING>
 		<STRING>The ceiling is $adj_any.</STRING>
