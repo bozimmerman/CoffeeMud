@@ -487,6 +487,8 @@ public class DefaultSession implements Session
 				//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 				changeTelnetMode(rawout,TELNET_NAWS,true);
 				//changeTelnetMode(rawout,TELNET_BINARY,true);
+				// Initialize ECHO to disabled for normal input visibility
+				changeTelnetMode(rawout,TELNET_ECHO,false);
 				if(mightSupportTelnetMode(TELNET_GA))
 					rawBytesOut(rawout,TELNETGABYTES);
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
@@ -605,6 +607,18 @@ public class DefaultSession implements Session
 		return clientTelnetCodes[telnetCode];
 	}
 
+	private boolean isPasswordPrompt(final String message)
+	{
+		if(message == null) 
+			return false;
+		
+		final String lowerMessage = message.toLowerCase();
+		return lowerMessage.contains("password") || 
+			   lowerMessage.contains("pass:") ||
+			   lowerMessage.contains("pwd:") ||
+			   lowerMessage.contains("secret");
+	}
+
 	private void changeTelnetMode(final OutputStream out, final int telnetCode, final boolean onOff) throws IOException
 	{
 		final byte[] command;
@@ -623,6 +637,15 @@ public class DefaultSession implements Session
 		rawBytesOut(out, command);
 		//rawout.flush(); rawBytesOut already flushes
 		setServerTelnetMode(telnetCode,onOff);
+		
+		// Ensure the output is flushed immediately for ECHO changes
+		if(telnetCode == TELNET_ECHO) {
+			try {
+				out.flush();
+			} catch (IOException e) {
+				// Ignore flush errors as rawBytesOut already flushes
+			}
+		}
 	}
 
 	@Override
@@ -1636,26 +1659,50 @@ public class DefaultSession implements Session
 	public String prompt(final String Message, final long maxTime)
 			throws IOException
 	{
-		promptPrint(Message);
-		final String input=blockingIn(maxTime, true);
-		if(input==null)
-			return "";
-		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
-			return input.substring(0,input.length()-1);
-		return input;
+		return promptInternal(Message, maxTime);
 	}
+
+	private String promptInternal(final String Message, final long maxTime)
+			throws IOException
+	{
+		final boolean isPasswordPrompt = isPasswordPrompt(Message);
+		
+		try {
+			if (isPasswordPrompt) {
+				// Enable server echo (hide input) for password
+				changeTelnetMode(rawout, TELNET_ECHO, true);
+			}
+			
+			promptPrint(Message);
+			final String input=blockingIn(maxTime, true);
+			
+			if (isPasswordPrompt) {
+				// Disable server echo (show input) after password
+				changeTelnetMode(rawout, TELNET_ECHO, false);
+			}
+			
+			if(input==null)
+				return "";
+			if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
+				return input.substring(0,input.length()-1);
+			return input;
+		} catch (IOException e) {
+			if (isPasswordPrompt) {
+				try {
+					// Ensure ECHO is restored even on error
+					changeTelnetMode(rawout, TELNET_ECHO, false);
+				} catch (IOException ignored) {
+					// Ignore errors during cleanup
+				}
+			}
+			throw e;
+		}
 
 	@Override
 	public String prompt(final String Message)
 		throws IOException
 	{
-		promptPrint(Message);
-		final String input=blockingIn(-1, true);
-		if(input==null)
-			return "";
-		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
-			return input.substring(0,input.length()-1);
-		return input;
+		return promptInternal(Message, -1);
 	}
 
 	@Override
