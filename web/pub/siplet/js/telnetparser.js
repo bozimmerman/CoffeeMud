@@ -586,33 +586,6 @@ var TELNET = function(sipwin)
 		var s = '';
 		for (var i=0; i <buffer.length; i++)
 			s += String.fromCharCode( buffer[i]);
-		var x=s.indexOf(' ');
-		if(x<0)
-			return s;
-		var cmd = s.substring(0,x);
-		var jsonStr = s.substring(x+1).trim();
-		if(cmd.toLowerCase() == "siplet.input")
-		{
-			var obj=JSON.parse(jsonStr);
-			window.sipletInputTitle = obj["title"];
-			window.sipletInputText = obj["text"];
-			var content = getOptionWindow("Siplet.Input",60,40);
-			populateDivFromUrl(content, 'dialogs/editor.htm');
-			window.SubmitSipletInputEntry = function()
-			{
-				var textarea = content.getElementsByTagName('textarea')[0];
-				sendOneLine(textarea.value);
-				hideOptionWindow();
-				setTimeout(setInputBoxFocus,500);
-			};
-			var SipletInputEntryFocus = function()
-			{
-			    var textarea = content.getElementsByTagName('textarea')[0];
-			    textarea.focus();
-			};
-			setTimeout(SipletInputEntryFocus,1000);
-			return "";
-		}
 		return s;
 	};
 	

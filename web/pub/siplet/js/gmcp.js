@@ -106,6 +106,37 @@ window.gmcpPackages.push({
 	}
 });
 
+window.gmcpPackages.push({
+	name: "Siplet",
+	lname: "siplet.",
+	version: "1",
+	input: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		window.sipletInputTitle = msg["title"];
+		window.sipletInputText = msg["text"];
+		var content = getOptionWindow("Siplet.Input",60,40);
+		populateDivFromUrl(content, 'dialogs/editor.htm');
+		window.SubmitSipletInputEntry = function()
+		{
+			var textarea = content.getElementsByTagName('textarea')[0];
+			if(textarea)
+			{
+				sendOneLine(textarea.value);
+				hideOptionWindow();
+				setTimeout(setInputBoxFocus,500);
+			}
+		};
+		var SipletInputEntryFocus = function()
+		{
+			var textarea = content.getElementsByTagName('textarea')[0];
+			if(textarea)
+				textarea.focus();
+		};
+		setTimeout(SipletInputEntryFocus,1000);
+	}
+});
+
 function ParseGMCPPkg(pkg)
 {
 	if(!pkg)
