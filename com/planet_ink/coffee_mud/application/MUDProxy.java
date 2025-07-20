@@ -85,6 +85,7 @@ public class MUDProxy
 	private final ByteArrayOutputStream 	outputPipe		= new ByteArrayOutputStream();
 	private 	  OutputStream				out				= new FilterOutputStream(outputPipe);
 	private final ByteArrayOutputStream		mpcpCommand		= new ByteArrayOutputStream();
+	private final LinkedList<ByteBuffer>	input			= new LinkedList<ByteBuffer>();
 	private final LinkedList<ByteBuffer>	output			= new LinkedList<ByteBuffer>();
 	private final Map<String,Object>		session			= new Hashtable<String,Object>();
 	private 	  long						distressTime	= 0;
@@ -296,7 +297,7 @@ public class MUDProxy
 									int least = Integer.MAX_VALUE;
 									for(final Pair<String,Integer> p : targetPorts)
 									{
-										final int t=trackPort(p.second,0,Integer.MAX_VALUE);
+										final int t=trackPort(false,p.second,0,Integer.MAX_VALUE);
 										if(t<least)
 										{
 											lowest=p;
@@ -310,7 +311,7 @@ public class MUDProxy
 									targetPort = targetPorts.get(rand.nextInt(targetPorts.size()));
 									break;
 								case ROUNDROBIN:
-									targetPort = targetPorts.get(trackPort(serverPortI,1,targetPorts.size()-1));
+									targetPort = targetPorts.get(trackPort(false,serverPortI,1,targetPorts.size()-1));
 									break;
 								default:
 									targetPort = null;
@@ -339,7 +340,7 @@ public class MUDProxy
 									if (serverChannel.finishConnect())
 									{
 										serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
-										MUDProxy.trackPort(serverContext.port.second, 1,Integer.MAX_VALUE);
+										MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
 										serverChannel.write(ByteBuffer.wrap(new byte[] {
 											(byte)Session.TELNET_IAC,
 											(byte)Session.TELNET_WILL,
@@ -399,7 +400,26 @@ public class MUDProxy
 								handleRead(key);
 							else
 							if(key.isWritable())
-								handleWrite(key);
+							{
+								final SelectionKey k = key;
+								MUD.serviceEngine.executeRunnable(new Runnable()
+								{
+									final SelectionKey key = k;
+									@Override
+									public void run()
+									{
+										try
+										{
+											handleWrite(key);
+										}
+										catch(final IOException e)
+										{
+											closeKey(key);
+											Log.errOut(e);
+										}
+									}
+								});
+							}
 						}
 						catch (final IOException e)
 						{
@@ -421,10 +441,12 @@ public class MUDProxy
 		}
 	}
 
-	public static int trackPort(final Integer portNumber, final int addSub, final int max)
+	public static int trackPort(final boolean proxyPort, Integer portNumber, final int addSub, final int max)
 	{
 		synchronized(MUDProxy.strategyMap)
 		{
+			if(proxyPort)
+				portNumber = Integer.valueOf(-portNumber.intValue());
 			AtomicInteger ai = MUDProxy.strategyMap.get(portNumber);
 			if(ai == null)
 			{
@@ -943,14 +965,14 @@ public class MUDProxy
 		{
 			channelPairs.remove(key);
 			if(!context.isClient)
-				MUDProxy.trackPort(context.port.second, -1,Integer.MAX_VALUE);
+				MUDProxy.trackPort(true,context.port.second, -1,Integer.MAX_VALUE);
 			if(pairedKey != null)
 			{
 				pairedChannel = (SocketChannel) pairedKey.channel();
 				pairedContext = (MUDProxy)pairedKey.attachment();
 				channelPairs.remove(pairedKey);
 				if((pairedContext != null) && (!pairedContext.isClient))
-					MUDProxy.trackPort(pairedContext.port.second, -1,Integer.MAX_VALUE);
+					MUDProxy.trackPort(true,pairedContext.port.second, -1,Integer.MAX_VALUE);
 			}
 		}
 		if((!context.isClient)

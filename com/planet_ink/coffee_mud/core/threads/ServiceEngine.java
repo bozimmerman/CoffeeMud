@@ -138,7 +138,7 @@ public class ServiceEngine implements ThreadEngine
 		final CMThreadPoolExecutor pool = threadPools[threadGroupNum];
 		if(pool != null)
 			return pool;
-		final int minThreads = CMProps.getIntVar(CMProps.Int.MINWORKERTHREADS);
+		final int minThreads = Math.max(1,CMProps.getIntVar(CMProps.Int.MINWORKERTHREADS));
 		int maxThreads = CMProps.getIntVar(CMProps.Int.MAXWORKERTHREADS);
 		if(maxThreads<=0)
 			maxThreads=Integer.MAX_VALUE;

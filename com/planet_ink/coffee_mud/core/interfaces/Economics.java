@@ -53,8 +53,6 @@ public interface Economics extends Environmental
 	 *
 	 * @return the string describing price prejudicing
 	 */
-	//TODO: This is a rediculously complex string parsed EVERY TIME a customer interaction.  Fix it.
-	// see Prejudices below!
 	public String getFinalPrejudiceFactors();
 
 	/**

@@ -92,7 +92,7 @@ public interface CMMiscUtils extends CMLibrary
 	public List<List<String>> addExtRecipes(final MOB mob, final String ID, List<List<String>> recipes);
 
 	/**
-	 * Returns a rediculous best guess on the amount of memory used
+	 * Returns a ridiculous best guess on the amount of memory used
 	 * by the given environmental.
 	 * @param E the object to check for a footprint of
 	 * @param number the accuracy -- higher is better
