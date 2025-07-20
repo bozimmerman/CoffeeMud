@@ -3945,6 +3945,11 @@ public class ListCmd extends StdCommand
 	public ListCmdEntry getMyCmd(final MOB mob, String s)
 	{
 		s=s.toUpperCase().trim();
+		final ListCmdEntry foundCmd = (ListCmdEntry)CMath.s_valueOf(ListCmdEntry.class, s);
+		if((foundCmd!=null)
+		&&(CMSecurity.isAllowedAnywhereContainsAny(mob, foundCmd.flags))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+				return foundCmd;
 		for(final ListCmdEntry cmd : ListCmdEntry.values())
 		{
 			for(int i2=0;i2<cmd.cmd.length;i2++)
@@ -4811,6 +4816,8 @@ public class ListCmd extends StdCommand
 		DBCONNECTIONS("DBCONNECTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDDATABASE}),
 		MSGTYPES("MSGTYPES", new SecFlag[] {SecFlag.LISTADMIN}),
 		MSGMASKS("MSGMASKS", new SecFlag[] {SecFlag.LISTADMIN}),
+		HELP("HELP", new SecFlag[] {SecFlag.LISTADMIN}),
+		LIST("LIST", new SecFlag[] {SecFlag.LISTADMIN}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -6080,7 +6087,10 @@ public class ListCmd extends StdCommand
 		final String listWord=commands.get(0).toUpperCase();
 		String rest=(commands.size()>1)?rest=CMParms.combine(commands,1):"";
 		final ListCmdEntry code=getMyCmd(mob, listWord);
-		if((code==null)||(listWord.length()==0))
+		if((code==null)
+		||(code==ListCmdEntry.HELP)
+		||(code==ListCmdEntry.LIST)
+		||(listWord.length()==0))
 		{
 			final List<String> V=getMyCmdWords(mob);
 			if(V.size()==0)
@@ -6109,12 +6119,20 @@ public class ListCmd extends StdCommand
 							str.append(", ");
 					}
 				}
-				mob.tell(L("You cannot list '@x1'.  Try @x2.",listWord,str.toString()));
+				if(code == ListCmdEntry.LIST)
+					mob.tell(L("You can list: @x2.",listWord,str.toString()));
+				else
+				if(code == ListCmdEntry.HELP)
+					mob.tell(L("You cannot list '@x1', but heres a list LIST: @x2.",listWord,str.toString()));
+				else
+					mob.tell(L("You cannot list '@x1'.  Try @x2.",listWord,str.toString()));
 			}
 			return;
 		}
 		switch(code)
 		{
+		case HELP: case LIST:
+			break;
 		case COMMANDS:
 			listCommands(mob,commands);
 			break;

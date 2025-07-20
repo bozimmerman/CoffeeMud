@@ -392,7 +392,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
+				if(wrap>0)
+					len=lastSp+wrap;
 			}
+			else
 			if(wrap>0)
 				len=loop+wrap;
 		}
@@ -1112,7 +1115,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			}
 			i++;
 		}
-		return i;
+		return loop;
 	}
 
 	@Override
@@ -1143,28 +1146,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int amperStop = -1;
 		boolean doPostFilter = false;
 
-		int loopDebugCtr=0;
-		int lastLoop=-1;
-
 		while(buf.length()>loop)
 		{
-			if(loop==lastLoop)
-			{
-				//BZ: delete when this is fixed.
-				//BZ: 11/2015 - this might be fixed now!
-				if(++loopDebugCtr>5)
-				{
-					Log.debugOut("CoffeeFilter","LOOP: "+loop+"/"+wrap+"/!"+(buf.charAt(loop)=='\033')+"!/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
-					Log.debugOut("CoffeeFilter",buf.toString());
-					break;
-				}
-			}
-			else
-			{
-				lastLoop=loop;
-				loopDebugCtr=0;
-			}
-
 			int lastSp=-1;
 			while((loop<len)&&(buf.length()>loop))
 			{
@@ -1859,7 +1842,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
+				if(wrap>0)
+					len=lastSp+wrap;
 			}
+			else
 			if(wrap>0)
 				len=loop+wrap;
 		}
