@@ -188,6 +188,11 @@ function SipletWindow(windowName)
 		this.wsocket = new WebSocket(url);
 		this.wsocket.binaryType = "arraybuffer";
 		this.wsocket.onmessage = this.onReceive;
+		if(this.tab)
+		{
+			this.tab.style.backgroundColor="yellow";
+			this.tab.style.color="black";
+		}
 		this.wsocket.onopen = function(event)  
 		{
 			me.dispatchEvent({type: 'connect',data:url});

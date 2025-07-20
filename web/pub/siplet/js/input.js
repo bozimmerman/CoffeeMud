@@ -98,6 +98,7 @@ function inputKeyPress(e)
 				window.currWin.closeSocket();
 				window.currWin.reset();
 				window.currWin.connect(window.currWin.url);
+				setInputBoxFocus();
 			}
 		});
 	}
