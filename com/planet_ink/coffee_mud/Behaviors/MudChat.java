@@ -1108,7 +1108,15 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 							final LLMSession session = getLLMSession(grp,M);
 							if(session != null)
 							{
-								final String response = session.chat(str);
+								String response = session.chat(str);
+								if(response.length()>2)
+								{
+									if(response.startsWith("\"") && response.endsWith("\""))
+										response = response.substring(1,response.length()-1);
+									else
+									if(response.startsWith("'") && response.endsWith("'"))
+										response = response.substring(1,response.length()-1);
+								}
 								final long delayWas = System.currentTimeMillis() - startTime;
 								final long delayRemaining = (CMProps.getTickMillis()*RESPONSE_DELAY)-delayWas;
 								final int ticksRemain = (int)Math.floor(delayRemaining / CMProps.getTickMillis());
