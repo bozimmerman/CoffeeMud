@@ -25,7 +25,6 @@
 #        #       remark
 #        "       output to stderr
 #        '       output to stdout
-#        \       LLM/AI prompt initialization
 #        >       start of named database, there can be more than one name
 #                 to a database '> dragon red_dragon'  The _ here is treated
 #                 as a space in the name.  You may also use the / operator.
@@ -35,7 +34,11 @@
 #                 to link to the default database. Only 1 @ per database.
 #                 @ cannot do forward links!!!
 #                 @ is more memory efficient than % but less flexible.
-#                 You must avoid circularities with @. 
+#                 You must avoid circularities with @.
+#     ${VAR=VAL} define or override variable values. LLMPROMPT variable is
+#                 used to initialize LLM.  Other STATS or special variables
+#                 mentioned below under ${...}.  Value can contain other
+#                 ${variables}!  Use ${VAR+VAL} to append.
 #  response operators:
 #        1-9     weights are the numerals. First column only. Mandatory.
 #        "       Issue response as "say".   Muds and 2nd column only. Optional.
@@ -48,9 +51,11 @@
 #        $n      The character npc/chatters name
 #        $t      The targets name (the person who being replied to)
 #        $$      Equal to $
-#        ${...}  Returns a generic stat value for the speaker.  See LIST STATS.
-#        $<...>  Returns a generic stat value for the target.  See LIST STATS.
-#                 STATS also include: THEMEDESC, ROOMDESC, ALIGNMENTDESC, PERSONALITY
+#        ${...}  Returns a variable value or a generic stat value for the 
+#                 speaker.  See LIST STATS.
+#        $<...>  Returns a variable value or a generic stat value for the 
+#                 target.  See LIST STATS.
+#                 Variables include: THEMEDESC, ROOMDESC, ALIGNMENTDESC, PERSONALITY
 #        $%...%  Causes the part of the sentence to be evaluated by the MOBPROG
 #                Scriptable system as a function.
 #        ~       Separates one or more responses on a line.  May be followed by
@@ -84,11 +89,11 @@
 #
 
 #START OF DEFAULT DATABASE.
-\Pretend to be a ${GENDERNAME} ${RACE} whose name is ${NAME}, and who lives in a ${THEMEDESC} area called $%INAREA($n)%.
-\You are currently at ${ROOMDESC}%, are usually seen by others as "${DISPLAY}. ${DESCRIPTION}".
-\Your moral alignment is ${ALIGNMENTDESC}, and your personality traits are ${PERSONALITY}.
-\Please only deliver dialog responses, never emote, and keep responses under 3 sentences.
-\Begin now: 
+${LLMPROMPT=Pretend to be a ${GENDERNAME} ${RACE} whose name is ${NAME}, and who lives in a ${THEMEDESC} area called $%INAREA($n)%.}
+${LLMPROMPT+ You are currently at ${ROOMDESC}, are usually seen by others as "${DISPLAY}. ${DESCRIPTION}".}
+${LLMPROMPT+ Your moral alignment is ${ALIGNMENTDESC}, and your personality traits are ${PERSONALITY}.}
+${LLMPROMPT+ Please only deliver dialog responses, never emote, and keep responses under 3 sentences.}
+${LLMPROMPT+ Begin now: } 
  
 (who wrote this program)
 9Bo Zimmerman, based on a design by Christopher Busch.
