@@ -3729,7 +3729,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final String jarPath = CMProps.getVar(Str.LANGCHAIN4J_JAR_PATH);
 		if(jarPath.length()==0)
 		{
-			Log.errOut("LANGCHAIN4J_JAR_PATH not set in INI file.");
 			this.llmModel = Long.valueOf(System.currentTimeMillis());
 			return this.llmModel;
 		}

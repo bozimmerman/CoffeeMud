@@ -39,7 +39,7 @@
 #  response operators:
 #        1-9     weights are the numerals. First column only. Mandatory.
 #        "       Issue response as "say".   Muds and 2nd column only. Optional.
-#        ;       Response issued by LLM/AI as "say", text is prompt. Optional.  
+#        `       Response issued by LLM/AI as "say", text is prompt. Optional.  
 #        :       Issue repsonse as "emote". Muds and 2nd column only. Optional.
 #        !       Issue response as command. Muds and 2nd column only. Optional.
 #  special response variables:
@@ -508,7 +508,7 @@
 
 .( i love you )
 9: blushes furiously, I'm only a robot - I'm not good enough for you!
-9I love you too! - let's get married and have little androids!
+9I love you too! Let's get married and have little androids!
 9: hugs you, darling!
 2!giggle
 
@@ -1300,7 +1300,7 @@
 9are you compulsive?
 9tell me about your compulsions
 
-.(computer lang|l(computer & language))
+.(computer lang|(computer & language))
 9C++ is the best language.
 3Basic is the worst!
 3Cobol is BAD!
@@ -2677,7 +2677,7 @@
 1i think you are sick, leave me alone
 
 L()
-9;$w
+9`$w
 
 *L()
 9$(We are fighting each other) $w

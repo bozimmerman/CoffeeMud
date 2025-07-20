@@ -705,7 +705,7 @@ public class CMParms
 			if(a.endsWith("=")&&(a.length()>1)&&(v<(vargs.size()-1)))
 			{
 				final String parm=a.substring(0,a.length()-1).trim().toUpperCase();
-				final String value=vargs.get(v+1);
+				final String value="";
 				if(parm.length()>0)
 				{
 					String[] vals = new String[1];
@@ -714,7 +714,6 @@ public class CMParms
 					vals[vals.length-1] = value;
 					parms.put(parm, vals);
 				}
-				vargs.remove(v);
 				vargs.remove(v);
 				v--;
 				continue;
