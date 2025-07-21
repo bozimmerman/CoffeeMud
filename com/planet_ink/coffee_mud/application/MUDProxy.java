@@ -4,6 +4,7 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.io.*;
 import java.nio.*;
@@ -74,21 +75,29 @@ public class MUDProxy
 		ANSI_CSI
 	}
 
+	private static class ParseStatus
+	{
+		private ParseState					state		= ParseState.NORMAL;
+		private int							command		= 0;
+		private final ByteArrayOutputStream	mpcpCommand	= new ByteArrayOutputStream();
+	}
+
 	private final Pair<String, Integer>		port;
 	private final String					ipAddress;
 	private final boolean					isClient;
 	private final int						outsidePortNum;
-	private 	  ParseState				readState		= ParseState.NORMAL;
-	private		  byte						readCommand		= 0;
+	private final ParseStatus				readStatus		= new ParseStatus();
+	private final ParseStatus				writeStatus		= new ParseStatus();
 	private final RefilByteArrayInputStream inputPipe		= new RefilByteArrayInputStream(new byte[0]);
 	private  	  InputStream				in				= null;
 	private final ByteArrayOutputStream 	outputPipe		= new ByteArrayOutputStream();
-	private 	  OutputStream				out				= new FilterOutputStream(outputPipe);
-	private final ByteArrayOutputStream		mpcpCommand		= new ByteArrayOutputStream();
-	private final LinkedList<ByteBuffer>	input			= new LinkedList<ByteBuffer>();
-	private final LinkedList<ByteBuffer>	output			= new LinkedList<ByteBuffer>();
+	private  	  OutputStream				out				= new FilterOutputStream(outputPipe);
 	private final Map<String,Object>		session			= new Hashtable<String,Object>();
 	private 	  long						distressTime	= 0;
+
+	private final ConcurrentLinkedQueue<ByteBuffer>	input	= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
+	private final ConcurrentLinkedQueue<ByteBuffer>	inter	= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
+	private final ConcurrentLinkedQueue<ByteBuffer>	output	= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output
 
 	private MUDProxy(final boolean client, final int outsidePort, final Pair<String,Integer> port, final String remoteIP) throws IOException
 	{
@@ -339,6 +348,8 @@ public class MUDProxy
 								{
 									if (serverChannel.finishConnect())
 									{
+										final SelectionKey pairedKey = channelPairs.get(key);
+										final MUDProxy clientContext =(pairedKey!=null) ? ((MUDProxy)pairedKey.attachment()) : null;
 										serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
 										MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
 										serverChannel.write(ByteBuffer.wrap(new byte[] {
@@ -353,7 +364,6 @@ public class MUDProxy
 											serverContext.in.close();
 											serverContext.in = new PassThroughInputStream(serverContext.inputPipe);
 										}
-										final SelectionKey pairedKey = channelPairs.get(key);
 										final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
 																				serverContext.ipAddress;
 										serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
@@ -367,13 +377,9 @@ public class MUDProxy
 											serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
 											if(pairedKey!=null)
 											{
-												final SocketChannel clientChannel = (SocketChannel)pairedKey.channel();
-												final MUDProxy clientContext = (MUDProxy)pairedKey.attachment();
-												serverContext.outputPipe.reset();
-												serverContext.out.write(("\n\r\n\r\u001B[0m\u001B[37m"
-														+"-- Connection restored --\n\r").getBytes()); // in case the client is expecting compressed data
-												serverContext.out.flush();
-												clientChannel.write(ByteBuffer.wrap(serverContext.outputPipe.toByteArray()));
+												clientContext.inter.add(ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
+														+"-- Connection restored --\n\r").getBytes()));
+												pairedKey.interestOps(pairedKey.interestOps() & ~SelectionKey.OP_WRITE);
 												Log.sysOut(clientContext.outsidePortNum+"","Connection restored "+clientContext.ipAddress
 														+"->"+serverContext.port.first+":"+serverContext.port.second);
 											}
@@ -412,7 +418,7 @@ public class MUDProxy
 										{
 											handleWrite(key);
 										}
-										catch(final IOException e)
+										catch(final Exception e)
 										{
 											closeKey(key);
 											Log.errOut(e);
@@ -494,25 +500,50 @@ public class MUDProxy
 
 	private static void handleWrite(final SelectionKey key) throws IOException
 	{
-		final SocketChannel destChannel = (SocketChannel) key.channel();
-		final MUDProxy destContext = (MUDProxy)key.attachment();
-		while(destContext.output.size()>0)
+		final SocketChannel channel = (SocketChannel) key.channel();
+		final MUDProxy context = (MUDProxy)key.attachment();
+		try
 		{
-			final ByteBuffer buffer = destContext.output.getFirst();
-			while (buffer.hasRemaining())
+			synchronized(context.output)
 			{
-				final int bytesWritten = destChannel.write(buffer);
-				if (bytesWritten == 0)
+				while(context.inter.size()>0)
 				{
-					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-					return;
+					final ByteBuffer buffer = context.inter.poll();
+					if(buffer != null)
+					{
+						context.output.add(writeFilter(key, context, buffer));
+						key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+					}
+				}
+				while(context.output.size()>0)
+				{
+					key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+					final ByteBuffer buffer = context.output.peek();
+					while (buffer.hasRemaining())
+					{
+						final int bytesWritten = channel.write(buffer);
+						if (bytesWritten == 0)
+						{
+							key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+							return;
+						}
+					}
+					if(!buffer.hasRemaining())
+						context.output.poll();
 				}
 			}
-			if(!buffer.hasRemaining())
-				destContext.output.removeFirst();
-		}
-		if(destContext.output.size() == 0)
 			key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+		}
+		catch(final IOException e)
+		{
+			closeKey(key);
+			Log.errOut(e.getMessage());
+			return;
+		}
+		catch(final CancelledKeyException e)
+		{
+			return;
+		}
 	}
 
 	private static void processMPCPPacket(final SelectionKey key, final MUDProxy context, final byte[] suboptionData)
@@ -598,39 +629,56 @@ public class MUDProxy
 		}
 	}
 
-	private static ByteBuffer readFilter(final SelectionKey key, final MUDProxy sourceContext, ByteBuffer buffer)
+	private static ByteBuffer writeFilter(final SelectionKey key, final MUDProxy targetContext, final ByteBuffer buffer)
 	{
+		targetContext.outputPipe.reset();
 		final byte[] checkBuf = new byte[buffer.remaining()];
 		buffer.get(checkBuf);
 		buffer.clear();
+		final ByteArrayInputStream bin = new ByteArrayInputStream(checkBuf);
+		targetContext.outputPipe.reset();
+		final ParseStatus status;
+		synchronized(targetContext)
+		{
+			status = targetContext.writeStatus;
+		}
+		filter(key,targetContext,status,bin,targetContext.out);
+		try
+		{
+			targetContext.out.flush();
+		}
+		catch (final IOException e)
+		{
+		}
+		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
+	}
+
+	private static void filter(final SelectionKey key, final MUDProxy context, final ParseStatus status, InputStream in, OutputStream output)
+	{
 		int streamType = Session.TELNET_COMPRESS2;
 		try
 		{
-			sourceContext.inputPipe.refill(checkBuf);
-			if(sourceContext.in instanceof ZInputStream)
-				((ZInputStream)sourceContext.in).allowMoreInput();
-			sourceContext.outputPipe.reset();
 			int iByte;
-			while((iByte = sourceContext.in.read())>=0)
+			while((iByte = in.read())>=0)
 			{
 				final byte b=(byte)iByte;
-				switch(sourceContext.readState)
+				switch(status.state)
 				{
 				case NORMAL:
 					if(b == (byte)Session.TELNET_IAC)
-						sourceContext.readState = ParseState.IAC;
+						status.state = ParseState.IAC;
 					else
 					if(b == (byte)27)
-						sourceContext.readState = ParseState.ANSI_ESC;
+						status.state = ParseState.ANSI_ESC;
 					else
-						sourceContext.out.write(b);
+						output.write(b);
 					break;
 				case IAC:
 					if(b == (byte)Session.TELNET_IAC)
 					{
-						sourceContext.readState = ParseState.NORMAL;
-						sourceContext.out.write(b);
-						sourceContext.out.write(b);
+						status.state = ParseState.NORMAL;
+						output.write(b);
+						output.write(b);
 					}
 					else
 					if((b == (byte)Session.TELNET_DO)
@@ -638,138 +686,139 @@ public class MUDProxy
 					||(b == (byte)Session.TELNET_WILL)
 					||(b == (byte)Session.TELNET_WONT))
 					{
-						sourceContext.readState = ParseState.COMMAND;
-						sourceContext.readCommand = b;
+						status.state = ParseState.COMMAND;
+						status.command = b;
 					}
 					else
 					if(b == (byte)Session.TELNET_SB)
 					{
-						sourceContext.readState = ParseState.COMMAND;
-						sourceContext.readCommand = b;
+						status.state = ParseState.COMMAND;
+						status.command = b;
 					}
 					else
 					{
-						sourceContext.readState = ParseState.NORMAL;
-						sourceContext.out.write((byte)Session.TELNET_IAC);
-						sourceContext.out.write(b);
+						status.state = ParseState.NORMAL;
+						output.write((byte)Session.TELNET_IAC);
+						output.write(b);
 					}
 					break;
 				case COMMAND:
 					if(b == (byte)Session.TELNET_MPCP)
 					{
-						sourceContext.mpcpCommand.reset();
-						if(sourceContext.readCommand==(byte)Session.TELNET_SB)
+						status.mpcpCommand.reset();
+						if(status.command==(byte)Session.TELNET_SB)
 						{
-							sourceContext.readState = ParseState.SB_202;
+							status.state = ParseState.SB_202;
 						}
 						else
 						{
-							if(sourceContext.readCommand == (byte)Session.TELNET_DO)
+							if(status.command == (byte)Session.TELNET_DO)
 							{
-								if(sourceContext.outsidePortNum == -1)
+								if(context.outsidePortNum == -1)
 								{
-									final Pair<SelectionKey,Long> d = MUDProxy.distressPingers.get(sourceContext.port);
+									final Pair<SelectionKey,Long> d = MUDProxy.distressPingers.get(context.port);
 									if(d != null)
 										d.second = Long.valueOf(System.currentTimeMillis());
 								}
 							}
-							sourceContext.readState = ParseState.NORMAL;
+							status.state = ParseState.NORMAL;
 						}
 					}
 					else
 					if((b == (byte)Session.TELNET_COMPRESS))
 					{
 						streamType = Session.TELNET_COMPRESS;
-						if(sourceContext.readCommand==(byte)Session.TELNET_SB)
+						if(status.command==(byte)Session.TELNET_SB)
 						{
-							sourceContext.out.write((byte)Session.TELNET_IAC);
-							sourceContext.out.write((byte)Session.TELNET_SB);
-							sourceContext.out.write((byte)streamType);
-							sourceContext.readState = ParseState.SB_MCCP;
+							output.write((byte)Session.TELNET_IAC);
+							output.write((byte)Session.TELNET_SB);
+							output.write((byte)streamType);
+							status.state = ParseState.SB_MCCP;
 						}
 						else
 						{
-							sourceContext.out.write((byte)Session.TELNET_IAC);
-							sourceContext.out.write(sourceContext.readCommand);
-							sourceContext.out.write(b);
-							sourceContext.readState = ParseState.NORMAL;
+							output.write((byte)Session.TELNET_IAC);
+							output.write(status.command);
+							output.write(b);
+							status.state = ParseState.NORMAL;
 						}
 					}
 					else
 					if((b == (byte)Session.TELNET_COMPRESS2))
 					{
 						streamType = Session.TELNET_COMPRESS2;
-						if(sourceContext.readCommand==(byte)Session.TELNET_SB)
+						if(status.command==(byte)Session.TELNET_SB)
 						{
-							sourceContext.out.write((byte)Session.TELNET_IAC);
-							sourceContext.out.write((byte)Session.TELNET_SB);
-							sourceContext.out.write((byte)streamType);
-							sourceContext.readState = ParseState.SB_MCCP2;
+							output.write((byte)Session.TELNET_IAC);
+							output.write((byte)Session.TELNET_SB);
+							output.write((byte)streamType);
+							status.state = ParseState.SB_MCCP2;
 						}
 						else
 						{
-							sourceContext.out.write((byte)Session.TELNET_IAC);
-							sourceContext.out.write(sourceContext.readCommand);
-							sourceContext.out.write(b);
-							sourceContext.readState = ParseState.NORMAL;
+							output.write((byte)Session.TELNET_IAC);
+							output.write(status.command);
+							output.write(b);
+							status.state = ParseState.NORMAL;
 						}
 					}
 					else
 					{
-						sourceContext.out.write((byte)Session.TELNET_IAC);
-						sourceContext.out.write(sourceContext.readCommand);
-						sourceContext.out.write(b);
-						sourceContext.readState = ParseState.NORMAL;
+						output.write((byte)Session.TELNET_IAC);
+						output.write(status.command);
+						output.write(b);
+						status.state = ParseState.NORMAL;
 					}
 					break;
 				case ANSI_ESC:
-					sourceContext.out.write((byte)27);
-					sourceContext.out.write(b);
+					output.write((byte)27);
+					output.write(b);
 					if(b == (byte)91) // csi sequence
-						sourceContext.readState = ParseState.ANSI_CSI;
+						status.state = ParseState.ANSI_CSI;
 					else
-						sourceContext.readState = ParseState.NORMAL;
+						status.state = ParseState.NORMAL;
 					break;
 				case ANSI_CSI:
-					sourceContext.out.write(b);
+					output.write(b);
 					if ((b >= (byte)0x40) && (b <= (byte)0x7E))
-						sourceContext.readState = ParseState.NORMAL;
+						status.state = ParseState.NORMAL;
 					break;
 				case SB_202:
 					if(b == (byte)Session.TELNET_IAC)
 					{
-						if(sourceContext.readCommand == b)
+						if(status.command == b)
 						{
-							sourceContext.mpcpCommand.write(b);
-							sourceContext.readCommand = 0;
+							status.mpcpCommand.write(b);
+							status.command = 0;
 						}
 						else
-							sourceContext.readCommand = b;
+							status.command = b;
 					}
 					else
 					if(b == (byte)Session.TELNET_SE)
 					{
-						if(sourceContext.readCommand == (byte)Session.TELNET_IAC)
+						if(status.command == (byte)Session.TELNET_IAC)
 						{
-							sourceContext.readState = ParseState.NORMAL;
-							processMPCPPacket(key,sourceContext,sourceContext.mpcpCommand.toByteArray());
-							sourceContext.mpcpCommand.reset();
+							status.state = ParseState.NORMAL;
+							if(in == context.in) // only input counts
+								processMPCPPacket(key,context,status.mpcpCommand.toByteArray());
+							status.mpcpCommand.reset();
 						}
 						else
-							sourceContext.mpcpCommand.write(b);
-						sourceContext.readCommand = 0;
+							status.mpcpCommand.write(b);
+						status.command = 0;
 					}
 					else
-					if(sourceContext.mpcpCommand.size()>65536)
+					if(status.mpcpCommand.size()>65536)
 					{
-						sourceContext.mpcpCommand.reset();
-						sourceContext.readState = ParseState.NORMAL;
-						sourceContext.readCommand = 0;
+						status.mpcpCommand.reset();
+						status.state = ParseState.NORMAL;
+						status.command = 0;
 					}
 					else
 					{
-						sourceContext.mpcpCommand.write(b);
-						sourceContext.readCommand = 0;
+						status.mpcpCommand.write(b);
+						status.command = 0;
 					}
 					break;
 				case SB_MCCP:
@@ -778,36 +827,43 @@ public class MUDProxy
 				case SB_MCCP2:
 					if(b == (byte)Session.TELNET_IAC)
 					{
-						sourceContext.out.write((byte)Session.TELNET_IAC);
-						if(sourceContext.readCommand != (byte)Session.TELNET_SB)
-							sourceContext.readState = ParseState.NORMAL;
+						output.write((byte)Session.TELNET_IAC);
+						if(status.command != (byte)Session.TELNET_SB)
+							status.state = ParseState.NORMAL;
 						else
-							sourceContext.readCommand = b;
+							status.command = b;
 					}
 					else
 					if(b == (byte)Session.TELNET_SE)
 					{
-						sourceContext.out.write((byte)Session.TELNET_SE);
-						if(sourceContext.readCommand == (byte)Session.TELNET_IAC)
+						output.write((byte)Session.TELNET_SE);
+						if(status.command == (byte)Session.TELNET_IAC)
 						{
-							sourceContext.readState = ParseState.NORMAL;
-							@SuppressWarnings("resource")
-							final ZInputStream zIn = new ZInputStream(sourceContext.in, false);
-							zIn.setFlushMode(JZlib.Z_SYNC_FLUSH);
-							sourceContext.in = zIn;
-							sourceContext.out.flush();
-							@SuppressWarnings("resource")
-							final ZOutputStream zOut = new ZOutputStream(sourceContext.outputPipe, JZlib.Z_DEFAULT_COMPRESSION);
-							zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-							sourceContext.out = zOut;
+							status.state = ParseState.NORMAL;
+							if(in == context.in)
+							{
+								@SuppressWarnings("resource")
+								final ZInputStream zIn = new ZInputStream(context.inputPipe, false);
+								zIn.setFlushMode(JZlib.Z_SYNC_FLUSH);
+								context.in = zIn;
+								in = context.in;
+							}
+							else
+							{
+								@SuppressWarnings("resource")
+								final ZOutputStream zOut = new ZOutputStream(context.outputPipe, JZlib.Z_DEFAULT_COMPRESSION);
+								zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+								context.out = zOut;
+								output = zOut;
+							}
 						}
 						else
-							sourceContext.readState = ParseState.NORMAL;
+							status.state = ParseState.NORMAL;
 					}
 					else
 					{
-						sourceContext.out.write(b);
-						sourceContext.readState = ParseState.NORMAL;
+						output.write(b);
+						status.state = ParseState.NORMAL;
 					}
 					break;
 				}
@@ -817,39 +873,83 @@ public class MUDProxy
 		{
 			Log.errOut(e);
 		}
-		final byte[] finalBuf = sourceContext.outputPipe.toByteArray();
-		if(finalBuf.length > buffer.capacity())
-			buffer = ByteBuffer.allocate(finalBuf.length);
-		buffer.put(finalBuf);
-		sourceContext.outputPipe.reset();
-		buffer.flip();
-		return buffer;
+	}
+
+	private static ByteBuffer readFilter(final SelectionKey key, final MUDProxy sourceContext, final ByteBuffer buffer)
+	{
+		final byte[] checkBuf = new byte[buffer.remaining()];
+		buffer.get(checkBuf);
+		buffer.clear();
+		sourceContext.inputPipe.refill(checkBuf);
+		if(sourceContext.in instanceof ZInputStream)
+			((ZInputStream)sourceContext.in).allowMoreInput();
+		final ParseStatus status;
+		synchronized(sourceContext)
+		{
+			status = sourceContext.readStatus;
+		}
+		final ByteArrayOutputStream output = new ByteArrayOutputStream();
+		filter(key,sourceContext,status,sourceContext.in,output);
+		return ByteBuffer.wrap(output.toByteArray());
 	}
 
 	private static void handleRead(final SelectionKey key) throws IOException
 	{
-		final SocketChannel sourceChannel = (SocketChannel) key.channel();
-		final MUDProxy sourceContext = (MUDProxy)key.attachment();
+		final SocketChannel channel = (SocketChannel) key.channel();
+		final MUDProxy context = (MUDProxy)key.attachment();
 		int bytesRead;
-		if(sourceContext.outsidePortNum < 0)
+		try
 		{
-			// special proxy ping connection
-			final ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-			try
+			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+			while((bytesRead = channel.read(buffer))>0)
 			{
-				while((bytesRead = sourceChannel.read(buffer))>0)
-				{
-					buffer.flip();
-					readFilter(key,sourceContext, buffer);
-					buffer.clear();
-				}
+				buffer.flip();
+				context.input.add(buffer);
+				buffer = ByteBuffer.allocate(BUFFER_SIZE);
 			}
-			catch(final IOException e)
+		}
+		catch (final IOException e)
+		{
+			key.cancel();
+			closeKey(key);
+			return;
+		}
+
+		// handle the proxy server checks first
+		if(context.outsidePortNum < 0)
+		{
+			if(context.input.size()>0)
 			{
-				key.cancel();
+				final int br = bytesRead;
+				MUD.serviceEngine.executeRunnable(new Runnable()
+				{
+					final int bytesRead = br;
+					final SelectionKey k = key;
+					final MUDProxy myCtx = context;
+					@Override
+					public void run()
+					{
+						try
+						{
+							while(myCtx.input.size()>0)
+							{
+								final ByteBuffer buffer = myCtx.input.poll();
+								if(buffer != null)
+									writeFilter(k, myCtx,readFilter(k, myCtx, buffer));
+							}
+							if(bytesRead<0)
+								closeKey(k);
+						}
+						catch(final Exception e)
+						{
+							Log.errOut(e);
+						}
+					}
+				});
 			}
 			return;
 		}
+		// now handle normal server->client or client->server reads
 		final SelectionKey destKey = channelPairs.get(key);
 		if (destKey == null)
 		{
@@ -866,40 +966,57 @@ public class MUDProxy
 		try
 		{
 			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-			while((bytesRead = sourceChannel.read(buffer))>0)
+			while((bytesRead = channel.read(buffer))>0)
 			{
 				buffer.flip();
-				buffer = readFilter(key,sourceContext, buffer);
-				if((destContext.output.size()==0)&&(destChannel.isConnected()))
+				context.input.add(buffer);
+				buffer = ByteBuffer.allocate(BUFFER_SIZE);
+			}
+			if(context.input.size()>0)
+			{
+				final int br = bytesRead;
+				MUD.serviceEngine.executeRunnable(new Runnable()
 				{
-					while (buffer.hasRemaining())
+					final int bytesRead = br;
+					final MUDProxy myCtx = context;
+					final SelectionKey k = key;
+					final MUDProxy destCtx = destContext;
+					final SelectionKey destK = destKey;
+					@Override
+					public void run()
 					{
-						final int bytesWritten = destChannel.write(buffer);
-						if (bytesWritten == 0)
+						try
 						{
-							if(buffer.hasRemaining())
+							while(myCtx.input.size()>0)
 							{
-								destContext.output.add(buffer);
-								buffer = ByteBuffer.allocate(BUFFER_SIZE);
-								destKey.interestOps(destKey.interestOps() | SelectionKey.OP_WRITE);
+								final ByteBuffer buffer = myCtx.input.poll();
+								if(buffer != null)
+								{
+									final ByteBuffer b = readFilter(k, myCtx, buffer);
+									try
+									{
+										synchronized(destCtx.output)
+										{
+											destCtx.inter.add(b);
+											handleWrite(destK);
+										}
+									}
+									catch(final IOException e)
+									{
+										closeKey(destK);
+										Log.errOut(e);
+									}
+								}
 							}
-							break;
+							if(bytesRead<0)
+								closeKey(k);
+						}
+						catch(final Exception e)
+						{
+							Log.errOut(e);
 						}
 					}
-					buffer.clear();
-				}
-				else
-				if(buffer.hasRemaining())
-				{
-					destContext.output.add(buffer);
-					buffer = ByteBuffer.allocate(BUFFER_SIZE);
-					destKey.interestOps(destKey.interestOps() | SelectionKey.OP_WRITE);
-				}
-			}
-			if (bytesRead == -1)
-			{
-				closeKey(key);
-				return;
+				});
 			}
 		}
 		catch (final IOException e)
@@ -921,10 +1038,8 @@ public class MUDProxy
 				+"-- Connection to server lost.  Please stand by --\n\r").getBytes();
 		try
 		{
-			serverContext.outputPipe.reset();
-			serverContext.out.write(bmsg); // in case the client is expecting compressed data
-			serverContext.out.flush();
-			clientChannel.write(ByteBuffer.wrap(serverContext.outputPipe.toByteArray()));
+			clientContext.inter.add(ByteBuffer.wrap(bmsg));
+			clientKey.interestOps(clientKey.interestOps() | SelectionKey.OP_WRITE);
 			serverContext.distressTime=System.currentTimeMillis();
 			try
 			{

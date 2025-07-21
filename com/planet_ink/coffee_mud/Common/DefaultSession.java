@@ -1860,6 +1860,8 @@ public class DefaultSession implements Session
 						{
 							final String command = str.substring(0,x).trim();
 							final String jsonStr = str.substring(x+1).trim();
+							if(CMSecurity.isDebugging(DbgFlag.TELNET))
+								Log.debugOut("MPCP Received: "+command+" "+jsonStr);
 							final MiniJSON.JSONObject obj = new MiniJSON().parseObject(jsonStr);
 							final Long timestamp = obj.getCheckedLong("timestamp");
 							if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>1000)
@@ -3107,6 +3109,8 @@ public class DefaultSession implements Session
 			setMob(mob);
 			if(CMLib.login().completePlayerLogin(this,false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
 			{
+				if(mob.session()!=null)
+					mob.session().doPing(SessionPing.PLAYERSAVE);
 				this.nonBlockingIn(false);
 			}
 			else
