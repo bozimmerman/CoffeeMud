@@ -26,6 +26,10 @@ import javax.naming.OperationNotSupportedException;
  * A version of the CopyOnWriteArrayList class that provides to "safe" adds
  * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
+ *
+ * Actual Contract:
+ * 1. Thread safe add/remove
+ * 2. Iterator that is a snapshot of the moment it is called, and does not change afterwards.
  */
 public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
