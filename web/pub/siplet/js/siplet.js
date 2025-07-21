@@ -879,7 +879,7 @@ function SipletWindow(windowName)
 		var timerCopy = JSON.parse(JSON.stringify(timer));
 		var me = this;
 		var execute = function() {
-			this.executeAction(timer.action);
+			me.executeAction(timer.action);
 			if(timer.option == 'repeat')
 			{
 				timer.timerId = setTimeout(execute, timer.delay);
