@@ -4580,7 +4580,8 @@ public class ListCmd extends StdCommand
 				for(final String foundPath : found.keySet())
 				{
 					final String lfoundPath = foundPath.toLowerCase();
-					if(lfoundPath.endsWith(fileName) || fileName.endsWith(lfoundPath))
+					if(lfoundPath.endsWith(fileName)
+					|| lfoundPath.startsWith(fileName))
 					{
 						if(S!=null)
 							S.println(L("Found '@x1' on @x2 in room @x3.",foundPath,found.get(foundPath).iterator().next().Name(),CMLib.map().getExtendedRoomID(R)));
