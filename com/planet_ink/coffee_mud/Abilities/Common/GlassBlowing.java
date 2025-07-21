@@ -544,7 +544,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
 		else
-		if(buildingI instanceof Light)
+		if((buildingI instanceof Light)&&(!(buildingI instanceof FuelConsumer)))
 		{
 			((Light)buildingI).setDuration(capacity);
 			if((buildingI instanceof Container)
@@ -561,6 +561,8 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		if(buildingI instanceof Container)
 		{
+			if(buildingI instanceof Light)
+				((Light)buildingI).setDuration(capacity);
 			if(capacity>0)
 				((Container)buildingI).setCapacity(capacity+woodRequired);
 			if(misctype.indexOf("LID")>=0)

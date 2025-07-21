@@ -489,6 +489,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 			if(buildingI instanceof Container)
 			{
+				if(buildingI instanceof Light)
+					((Light)buildingI).setDuration(capacity);
 				final String[] allTypes=CMParms.parseAny(misctype, "|", true).toArray(new String[0]);
 				if(buildingI instanceof Drink)
 				{
@@ -527,7 +529,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				setRideBasis((Rideable)buildingI,misctype);
 			}
-			if(buildingI instanceof Light)
+			if((buildingI instanceof Light)&&(!(buildingI instanceof FuelConsumer)))
 			{
 				((Light)buildingI).setDuration(capacity);
 				if(buildingI instanceof Container)

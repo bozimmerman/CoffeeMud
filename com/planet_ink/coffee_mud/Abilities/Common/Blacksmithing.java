@@ -523,6 +523,32 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
 		else
+		if((buildingI instanceof FuelConsumer)
+		&&(buildingI instanceof Container)
+		&&(buildingI instanceof Light))
+		{
+			((Light)buildingI).setDuration(capacity);
+			((Container)buildingI).setCapacity(capacity+woodRequired);
+			if(misctype.indexOf("LOCK")>=0)
+			{
+				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
+				((Container)buildingI).setKeyName(Double.toString(Math.random()));
+				key=(DoorKey)CMClass.getItem("GenKey");
+				key.setKey(((Container)buildingI).keyName());
+				key.setName(L("a key"));
+				key.setDisplayText(L("a small key sits here"));
+				key.setDescription(L("looks like a key to @x1",buildingI.name()));
+				key.recoverPhyStats();
+				setBrand(mob, key);
+				key.text();
+			}
+			else
+			if(misctype.indexOf("LID")>=0)
+				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
+			if(!(buildingI instanceof Armor))
+				((Container)buildingI).setContainTypes(getContainerType(misctype));
+		}
+		else
 		if(buildingI instanceof Light)
 		{
 			((Light)buildingI).setDuration(capacity);

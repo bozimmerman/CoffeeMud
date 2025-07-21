@@ -57,6 +57,11 @@ public class LLM extends StdCommand
     	if(mob.isMonster())
     		return false;
     	final String userText = CMParms.combineQuoted(commands,1);
+    	if(userText.trim().length()==0)
+    	{
+    		mob.tell(L("What would you send the LLM?"));
+    		return false;
+    	}
     	final boolean reset = userText.equalsIgnoreCase("reset");
     	if(!sessions.containsKey(mob.Name()) || reset)
     	{
