@@ -9039,7 +9039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public String execute(MPContext ctx)
+	public String execute(final MPContext ctx)
 	{
 		final SubScript script = ctx.script;
 		tickStatus=Tickable.STATUS_START;
@@ -13319,9 +13319,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			if((ctx.parent!=null)&&(ctx.line==script.size()-1))
-				ctx = ctx.parent;
-
+			//if((ctx.parent!=null)&&(ctx.line==script.size()-1))
+			//	ctx = ctx.pop();
 		}
 		tickStatus=Tickable.STATUS_END;
 		return null;
