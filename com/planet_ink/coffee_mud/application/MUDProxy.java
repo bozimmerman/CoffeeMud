@@ -498,6 +498,35 @@ public class MUDProxy
 		return new byte[0];
 	}
 
+
+	private static ByteBuffer writeFilter(final SelectionKey key, final MUDProxy targetContext, final ByteBuffer buffer)
+	{
+		final byte[] checkBuf = new byte[buffer.remaining()];
+		buffer.get(checkBuf);
+		buffer.clear();
+		final ByteArrayInputStream bin = new ByteArrayInputStream(checkBuf);
+		targetContext.outputPipe.reset();
+		final ParseStatus status;
+		synchronized(targetContext)
+		{
+			status = targetContext.writeStatus;
+		}
+		final OutputStream out;
+		synchronized(targetContext.out)
+		{
+			out = targetContext.out;
+		}
+		filter(key,targetContext,status,bin,out);
+		try
+		{
+			targetContext.out.flush();
+		}
+		catch (final IOException e)
+		{
+		}
+		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
+	}
+
 	private static void handleWrite(final SelectionKey key) throws IOException
 	{
 		final SocketChannel channel = (SocketChannel) key.channel();
@@ -627,30 +656,6 @@ public class MUDProxy
 			this.pos = 0;
 			this.mark = 0;
 		}
-	}
-
-	private static ByteBuffer writeFilter(final SelectionKey key, final MUDProxy targetContext, final ByteBuffer buffer)
-	{
-		targetContext.outputPipe.reset();
-		final byte[] checkBuf = new byte[buffer.remaining()];
-		buffer.get(checkBuf);
-		buffer.clear();
-		final ByteArrayInputStream bin = new ByteArrayInputStream(checkBuf);
-		targetContext.outputPipe.reset();
-		final ParseStatus status;
-		synchronized(targetContext)
-		{
-			status = targetContext.writeStatus;
-		}
-		filter(key,targetContext,status,bin,targetContext.out);
-		try
-		{
-			targetContext.out.flush();
-		}
-		catch (final IOException e)
-		{
-		}
-		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
 	}
 
 	private static void filter(final SelectionKey key, final MUDProxy context, final ParseStatus status, InputStream in, OutputStream output)
@@ -877,19 +882,24 @@ public class MUDProxy
 
 	private static ByteBuffer readFilter(final SelectionKey key, final MUDProxy sourceContext, final ByteBuffer buffer)
 	{
-		final byte[] checkBuf = new byte[buffer.remaining()];
-		buffer.get(checkBuf);
-		buffer.clear();
-		sourceContext.inputPipe.refill(checkBuf);
-		if(sourceContext.in instanceof ZInputStream)
-			((ZInputStream)sourceContext.in).allowMoreInput();
 		final ParseStatus status;
 		synchronized(sourceContext)
 		{
 			status = sourceContext.readStatus;
 		}
+		final InputStream in;
+		synchronized(sourceContext.in)
+		{
+			in = sourceContext.in;
+		}
+		final byte[] checkBuf = new byte[buffer.remaining()];
+		buffer.get(checkBuf);
+		buffer.clear();
+		sourceContext.inputPipe.refill(checkBuf);
+		if(in instanceof ZInputStream)
+			((ZInputStream)in).allowMoreInput();
 		final ByteArrayOutputStream output = new ByteArrayOutputStream();
-		filter(key,sourceContext,status,sourceContext.in,output);
+		filter(key,sourceContext,status,in,output);
 		return ByteBuffer.wrap(output.toByteArray());
 	}
 
@@ -929,20 +939,23 @@ public class MUDProxy
 					@Override
 					public void run()
 					{
-						try
+						synchronized(myCtx.input)
 						{
-							while(myCtx.input.size()>0)
+							try
 							{
-								final ByteBuffer buffer = myCtx.input.poll();
-								if(buffer != null)
-									writeFilter(k, myCtx,readFilter(k, myCtx, buffer));
+								while(myCtx.input.size()>0)
+								{
+									final ByteBuffer buffer = myCtx.input.poll();
+									if(buffer != null)
+										writeFilter(k, myCtx,readFilter(k, myCtx, buffer));
+								}
+								if(bytesRead<0)
+									closeKey(k);
 							}
-							if(bytesRead<0)
-								closeKey(k);
-						}
-						catch(final Exception e)
-						{
-							Log.errOut(e);
+							catch(final Exception e)
+							{
+								Log.errOut(e);
+							}
 						}
 					}
 				});
@@ -966,17 +979,24 @@ public class MUDProxy
 		try
 		{
 			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+			final LinkedList<ByteBuffer> inputList = new LinkedList<ByteBuffer>();
+			synchronized(context.input)
+			{
+				inputList.addAll(context.input);
+				context.input.clear();
+			}
 			while((bytesRead = channel.read(buffer))>0)
 			{
 				buffer.flip();
-				context.input.add(buffer);
+				inputList.add(buffer);
 				buffer = ByteBuffer.allocate(BUFFER_SIZE);
 			}
-			if(context.input.size()>0)
+			if(inputList.size()>0)
 			{
 				final int br = bytesRead;
 				MUD.serviceEngine.executeRunnable(new Runnable()
 				{
+					final LinkedList<ByteBuffer> input = inputList;
 					final int bytesRead = br;
 					final MUDProxy myCtx = context;
 					final SelectionKey k = key;
@@ -987,29 +1007,32 @@ public class MUDProxy
 					{
 						try
 						{
-							while(myCtx.input.size()>0)
+							synchronized(myCtx.input)
 							{
-								final ByteBuffer buffer = myCtx.input.poll();
-								if(buffer != null)
+								while(input.size()>0)
 								{
-									final ByteBuffer b = readFilter(k, myCtx, buffer);
-									try
+									final ByteBuffer buffer = input.removeFirst();
+									if(buffer != null)
 									{
-										synchronized(destCtx.output)
+										final ByteBuffer b = readFilter(k, myCtx, buffer);
+										try
 										{
-											destCtx.inter.add(b);
-											handleWrite(destK);
+											synchronized(destCtx.output)
+											{
+												destCtx.inter.add(b);
+												handleWrite(destK);
+											}
+										}
+										catch(final IOException e)
+										{
+											closeKey(destK);
+											Log.errOut(e);
 										}
 									}
-									catch(final IOException e)
-									{
-										closeKey(destK);
-										Log.errOut(e);
-									}
 								}
+								if(bytesRead<0)
+									closeKey(k);
 							}
-							if(bytesRead<0)
-								closeKey(k);
 						}
 						catch(final Exception e)
 						{
