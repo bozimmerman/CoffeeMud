@@ -26,7 +26,7 @@ Information</a>
 Behaviors</a>
 <ul>
 <li><a href="#grinder">Methods</a></li>
-<li><a href="#mob">Parameters</a></li>
+<li><a href="#mob">Parameters</a></li><li><a href="#llm">LLM</a></li>
 </ul>
 </li>
 <li><a href="#power">Some MUDChat Power
@@ -211,7 +211,43 @@ responses, and then defines the variable "hnt" to be "Here nor There!",
 which can be used like ${hnt} in response strings.</p><p>If you want to
 keep the default chat.dat file AND the default chat group, but still
 add new stuff, you can still do that by leaving the first two fields
-blank:<br /></p><p><span style="font-family: monospace;">=+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><p></p>
+blank:<br /></p><p><span style="font-family: monospace;">=+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><h3><a name="llm">LLM</a></h3>
+<p>If you have configured CoffeeMud to use an AI/LLM system (see <a href="InstallationGuide.html">Installation Guide</a>),
+then you can use MudChat to immediately take advantage of it, by
+overriding or supplementing its default behaviors with LLM activities.</p><p>To
+get started, there are two internal MudChat variables that LLM will set
+need for best results. &nbsp; Variables are defined either in a
+chat.dat, or in the parameters, by using the ${VAR=VAL} and ${VAR+VAL}
+syntax. &nbsp;'VAR' would be the name of the variable, and VAL would be
+the value to set to it. &nbsp;VAR+VAL is the syntax for appending to a
+previously defined variable.</p><p>The variable relevant to AI/LLM is LLMPROMPT and LLMMEM. &nbsp;</p><p>LLMMEM is the number of messages that the session will remember, not
+including the first one, which is always remembered no matter what. &nbsp; Without setting this variable, the default amount of memory is about 10 messages. </p><p>LLMPROMPT
+is the message that is sent to the LLM preceding the its first input
+when the session is created. &nbsp;Without setting this variable, the
+default prompt would be empty. &nbsp;Of these, the LLMPROMPT is most
+important, as it is normally used to establish the rules for its
+personality. &nbsp;The default chat.dat file uses the following
+LLMPROMPT definition: &nbsp;"Pretend to be a ${GENDERNAME} ${RACE}
+whose name is ${NAME}, and who lives in a ${THEMEDESC} area called
+$%INAREA($n)%. You are currently at ${ROOMDESC}, are usually seen by
+others as "${DISPLAY}. ${DESCRIPTION}".&nbsp;Your moral alignment is
+${ALIGNMENTDESC}, and your personality traits are ${PERSONALITY}.
+Please only deliver dialog responses, never emote, and keep responses
+under 3 sentences. Begin now: ". &nbsp;You'll notice how many variables
+are referenced in building this string for the AI to consume, but also
+note the last sentence, that strives to keep the AI brief and well
+formatted as dialog.</p><p>When writing your matching trigger patterns, you can write them in 3 different ways to be LLM aware:</p><pre>L(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The
+first is to prefix it with a capital L, which denotes a trigger pattern
+that will ONLY be used if CoffeeMud has an LLM integrated and active.
+&nbsp;It otherwise works normally.</p><pre>.(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The second&nbsp;is to prefix it with a period, which denotes a trigger pattern
+that will ONLY be used if CoffeeMud does not have any active LLM integration, but is 'stock'.</p><pre>(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The
+last is to not put a prefix at all, but use the normal matching
+character (, [, etc. &nbsp;These trigger patterns will be evaluated
+regardless of LLM integration.</p><p>The next special LLM feature is around the LLM response, which is prefixed with a single quote character ':</p><p><span style="font-family: monospace;">(here there)<br />9"Hello. &nbsp;This is a normal response.</span><span style="font-family: monospace;"></span><br /><span style="font-family: monospace;">5'Hello LLM, please respond to the prompt '$w'.<br /></span></p><p>The
+single quote character does not work like the double quote. &nbsp;
+Instead of the message after the quote being spoken by the NPC, it is
+instead sent to the LLM, and the NPC will then say whatever the LLM
+responds with.</p>
 <h2><a name="power" id="power">Some
 MUDChat Power Tricks</a></h2><p>Suppose you have a city called Yares. In this city are various
 mobs -
