@@ -641,7 +641,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 't':
 			{
 				final String s = CMParms.getPastBit(line, i - 1);
-				String[] newNewLine = null;
+				final String[] newNewLine;
 				if (CMParms.getCleanBit(s, 0).equalsIgnoreCase("P"))
 				{
 					newNewLine = new String[newLine.length + 1];
@@ -9039,7 +9039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public String execute(final MPContext ctx)
+	public String execute(MPContext ctx)
 	{
 		final SubScript script = ctx.script;
 		tickStatus=Tickable.STATUS_START;
@@ -9323,8 +9323,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(tt==null)
 				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
 					if(script.get(ctx.line).third==null)
 						script.get(ctx.line).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 				}
@@ -9394,8 +9392,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(tt==null)
 						{
 							tt=parseBits(ctx,"Ccr");
-							if(tt==null)
-								return null;
 							if(tt[1].indexOf('$')>=0)
 							{
 								if(!skipSwitchMap.containsKey("$FIRSTVAR"))
@@ -9505,11 +9501,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 62: // for x = 1 to 100
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CcccCr");
-					if(tt==null)
-						return null;
-				}
 				if(tt[5].length()==0)
 				{
 					logError(ctx.scripted,"FOR","Syntax","5 parms required!");
@@ -9675,11 +9667,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 1: // mpasound
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cp");
-					if(tt==null)
-						return null;
-				}
 				final String echo=varify(ctx,tt[1]);
 				//lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,echo);
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -9694,11 +9682,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 4: // mpjunk
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CR");
-					if(tt==null)
-						return null;
-				}
 				if(tt[1].equals("ALL") && (ctx.monster!=null))
 				{
 					ctx.monster.delAllItems(true);
@@ -9735,11 +9719,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 2: // mpecho
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cp");
-					if(tt==null)
-						return null;
-				}
 				int msgType = CMMsg.MSG_OK_ACTION;
 				final Room R = lastKnownLocation;
 				if(R!=null)
@@ -9757,11 +9737,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 13: // mpunaffect
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				String which=tt[2];
 				if(newTarget!=null)
@@ -9794,11 +9770,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 3: // mpslay
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 					CMLib.combat().postDeath(ctx.monster,(MOB)newTarget,null);
@@ -9807,11 +9779,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 73: // mpsetinternal
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCr");
-					if(tt==null)
-						return null;
-				}
 				final String arg2=tt[1];
 				final String arg3=varify(ctx,tt[2]);
 				if(arg2.equals("SCOPE"))
@@ -9844,11 +9812,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 74: // mpprompt
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCCr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String promptStr=varify(ctx,tt[3]);
@@ -9871,11 +9835,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 75: // mpconfirm
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCCCr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String defaultVal=varify(ctx,tt[3]);
@@ -9893,65 +9853,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						return "";
 					}
-					/*
-					 * this is how to do non-blocking, which doesn't help stuff waiting
-					 * for a response from the original execute method
-					final Session session = ((MOB)newTarget).session();
-					if(session != null)
-					{
-						try
-						{
-							final int lastLineNum=ctx.line;
-							final JScriptEvent continueEvent=new JScriptEvent(this,ctx);
-							((MOB)newTarget).session().prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
-							{
-								private final JScriptEvent event=continueEvent;
-								private final int lineNum=lastLineNum;
-								private final String scope=newTarget.Name();
-								private final String varName=var;
-								private final String promptStrMsg=promptStr;
-								private final DVector lastScript=script;
-
-								@Override
-								public void showPrompt()
-								{
-									session.promptPrint(promptStrMsg);
-								}
-
-								@Override
-								public void timedOut()
-								{
-									event.executeEvent(lastScript, lineNum+1);
-								}
-
-								@Override
-								public void callBack()
-								{
-									final String value=this.input;
-									if((value.trim().length()==0)||(value.indexOf('<')>=0))
-										return;
-									setVar(scope,varName,value);
-									event.executeEvent(lastScript, lineNum+1);
-								}
-							});
-						}
-						catch(final Exception e)
-						{
-							return "";
-						}
-					}
-					 */
 				}
 				break;
 			}
 			case 76: // mpchoose
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCCCCr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String choices=varify(ctx,tt[3]);
@@ -9976,11 +9884,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 16: // mpset
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCcr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				final String arg2=tt[2].toUpperCase().trim();
 				String arg3=varify(ctx,tt[3]);
@@ -10151,11 +10055,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 63: // mpargset
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final String arg1=tt[1];
 				final String arg2=tt[2];
 				if((arg1.length()!=2)||(!arg1.startsWith("$")))
@@ -10256,11 +10156,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 35: // mpgset
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				final String arg2=tt[2].toUpperCase().trim();
 				String arg3=varify(ctx,tt[3]);
@@ -10449,11 +10345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 11: // mpexp
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				final String amtStr=varify(ctx,tt[2]).trim();
 				int t=CMath.s_int(amtStr);
@@ -10479,11 +10371,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 86: // mprpexp
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				final String amtStr=varify(ctx,tt[2]).trim();
 				int t=CMath.s_int(amtStr);
@@ -10506,11 +10394,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 77: // mpmoney
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				if(newTarget==null)
 					newTarget=getArgumentItem(tt[1],ctx);
@@ -10549,11 +10433,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 59: // mpquestpoints
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String val=varify(ctx,tt[2]).trim();
 				if(newTarget instanceof MOB)
@@ -10583,11 +10463,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 65: // MPQSET
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final String qstr=varify(ctx,tt[1]);
 				final String var=varify(ctx,tt[2]);
 				final PhysicalAgent obj=getArgumentItem(tt[3],ctx);
@@ -10629,11 +10505,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 66: // MPLOG
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CCcr");
-					if(tt==null)
-						return null;
-				}
 				final String type=tt[1];
 				final String head=varify(ctx,tt[2]);
 				final String val=varify(ctx,tt[3]);
@@ -10652,11 +10524,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 67: // MPCHANNEL
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				String channel=varify(ctx,tt[1]);
 				final boolean sysmsg=channel.startsWith("!");
 				if(sysmsg)
@@ -10671,11 +10539,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 68: // MPUNLOADSCRIPT
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cc");
-					if(tt==null)
-						return null;
-				}
 				String scriptname=varify(ctx,tt[1]);
 				if(!new CMFile(Resources.makeFileResourceName(scriptname),null,CMFile.FLAG_FORCEALLOW).exists())
 					logError(ctx.scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
@@ -10701,11 +10565,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 60: // MPTRAINS
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String val=varify(ctx,tt[2]).trim();
 				if(newTarget instanceof MOB)
@@ -10726,11 +10586,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 61: // mppracs
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String val=varify(ctx,tt[2]).trim();
 				if(newTarget instanceof MOB)
@@ -10751,11 +10607,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 5: // mpmload
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String name=varify(ctx,tt[1]);
 				final ArrayList<Environmental> Ms=new ArrayList<Environmental>();
 				MOB m=CMClass.getMOB(name);
@@ -10802,11 +10654,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(addHere!=null)
 				{
 					if(tt==null)
-					{
 						tt=parseBits(ctx,"Cr");
-						if(tt==null)
-							return null;
-					}
 					this.lastLoaded = null;
 					String name=varify(ctx,tt[1]);
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
@@ -10892,11 +10740,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final Room putRoom = lastKnownLocation;
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				String name=varify(ctx,tt[1]);
 				if(putRoom!=null)
 				{
@@ -10996,11 +10840,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(addHere!=null)
 				{
 					if(tt==null)
-					{
 						tt=parseBits(ctx,"Cr");
-						if(tt==null)
-							return null;
-					}
 					String name=varify(ctx,tt[1]);
 					if(lastKnownLocation!=null)
 					{
@@ -11056,11 +10896,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(addHere!=null)
 				{
 					if(tt==null)
-					{
 						tt=parseBits(ctx,"Cr");
-						if(tt==null)
-							return null;
-					}
 					this.lastLoaded = null;
 					String name=varify(ctx,tt[1]);
 					int price=-1;
@@ -11105,11 +10941,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 42: // mphide
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				if(newTarget!=null)
 				{
@@ -11123,11 +10955,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 58: // mpreset
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String arg=varify(ctx,tt[1]);
 				if(arg.equalsIgnoreCase("area"))
 				{
@@ -11191,8 +11019,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt=parseBits(ctx,"Ccr");
 					else
 						tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
 				}
 				final String next=varify(ctx,tt[1]);
 				String rest="";
@@ -11239,11 +11065,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 56: // mpstop
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final List<MOB> V=new ArrayList<MOB>();
 				final String who=tt[1];
 				if(who.equalsIgnoreCase("all"))
@@ -11283,11 +11105,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 43: // mpunhide
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget!=null)&&(CMath.bset(newTarget.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN)))
 				{
@@ -11301,11 +11119,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 44: // mpopen
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor()))
 				{
@@ -11327,11 +11141,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 45: // mpclose
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget instanceof Exit)
 				&&(((Exit)newTarget).hasADoor())
@@ -11357,11 +11167,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 46: // mplock
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget instanceof Exit)
 				&&(((Exit)newTarget).hasALock()))
@@ -11385,11 +11191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 47: // mpunlock
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget instanceof Exit)
 				&&(((Exit)newTarget).isLocked()))
@@ -11412,22 +11214,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 48: // return
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				tickStatus=Tickable.STATUS_END;
 				return varify(ctx,tt[1]);
 			case 87: // mea
 			case 7: // mpechoat
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccp");
-					if(tt==null)
-						return null;
-				}
 				String parm=tt[1];
 				int msgType = CMMsg.MSG_OK_ACTION;
 				String str = varify(ctx,tt[2]);
@@ -11507,11 +11301,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 8: // mpechoaround
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccp");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final Room lastR=CMLib.map().roomLocation(newTarget);
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastR!=null))
@@ -11530,11 +11320,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 9: // mpcast
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final String cast=varify(ctx,tt[1]);
 				final Physical newTarget=getArgumentItem(tt[2],ctx);
 				Ability A=null;
@@ -11556,11 +11342,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 89: // mpcastext
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final String cast=varify(ctx,tt[1]);
 				final Physical newTarget=getArgumentItem(tt[2],ctx);
 				final String args=varify(ctx,tt[3]);
@@ -11584,11 +11366,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 30: // mpaffect
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccp");
-					if(tt==null)
-						return null;
-				}
 				final String cast=varify(ctx,tt[1]);
 				final Physical newTarget=getArgumentItem(tt[2],ctx);
 				String m2=varify(ctx,tt[3]);
@@ -11671,11 +11449,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 80: // mpspeak
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final String language=varify(ctx,tt[2]);
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final Ability A=getAbility(language);
@@ -11698,11 +11472,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 81: // mpsetclan
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent newTarget=getArgumentMOB(tt[1],ctx);
 				final String clan=varify(ctx,tt[2]);
 				final String roleStr=varify(ctx,tt[3]);
@@ -11733,11 +11503,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 31: // mpbehave
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccp");
-					if(tt==null)
-						return null;
-				}
 				String cast=varify(ctx,tt[1]);
 				final PhysicalAgent newTarget=getArgumentItem(tt[2],ctx);
 				final String m2=varify(ctx,tt[3]);
@@ -11768,11 +11534,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 72: // mpscript
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccp");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent newTarget=getArgumentItem(tt[1],ctx);
 				String m2=varify(ctx,tt[2]);
 				boolean proceed=true;
@@ -11892,11 +11654,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 32: // mpunbehave
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				String cast=varify(ctx,tt[1]);
 				final PhysicalAgent newTarget=getArgumentItem(tt[2],ctx);
 				if((newTarget!=null)&&(cast!=null))
@@ -11915,11 +11673,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 33: // mptattoo
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				String tattooName=varify(ctx,tt[2]);
 				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
@@ -11944,11 +11698,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 83: // mpacctattoo
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				String tattooName=varify(ctx,tt[2]);
 				if((newTarget!=null)
@@ -11977,11 +11727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 92: // mpput
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Physical newTarget=getArgumentItem(tt[1],ctx);
 				if(newTarget!=null)
 				{
@@ -12036,11 +11782,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 55: // mpnotrigger
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final String trigger=varify(ctx,tt[1]);
 				final String time=varify(ctx,tt[2]);
 				int triggerCode=-1;
@@ -12078,11 +11820,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 54: // mpfaction
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final String faction=varify(ctx,tt[2]);
 				String range=varify(ctx,tt[3]).trim();
@@ -12146,11 +11884,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 49: // mptitle
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				String titleStr=varify(ctx, tt[2]);
 				if((newTarget!=null)&&(titleStr.length()>0)&&(newTarget instanceof MOB))
@@ -12176,11 +11910,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 10: // mpkill
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				if((newTarget!=null)
 				&&(newTarget instanceof MOB)
@@ -12191,11 +11921,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 98: // mphit
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				if((newTarget!=null)
 				&&(newTarget instanceof MOB)
@@ -12217,11 +11943,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 51: // mpsetclandata
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				String clanID=null;
 				if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -12253,11 +11975,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 52: // mpplayerclass
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
@@ -12292,8 +12010,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							tt=parseBits(ctx,"Ccr");
 						else
 							tt=parseBits(ctx,"Cr");
-						if(tt==null)
-							return null;
 					}
 					String s2=tt[1];
 					if(s2.equalsIgnoreCase("room"))
@@ -12361,11 +12077,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 14: // mpgoto
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String roomID=tt[1].trim();
 				if((roomID.length()>0)&&(lastKnownLocation!=null))
 				{
@@ -12398,11 +12110,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(lastKnownLocation!=null)
 				{
 					if(tt==null)
-					{
 						tt=parseBits(ctx,"Ccp");
-						if(tt==null)
-							return null;
-					}
 					final Room lastPlace=lastKnownLocation;
 					final String roomName=tt[1];
 					if(roomName.length()>0)
@@ -12440,11 +12148,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 17: // mptransfer
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				String mobName=tt[1];
 				String roomName=tt[2].trim();
 				Room newRoom=null;
@@ -12587,11 +12291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 25: // mpbeacon
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final String roomName=tt[1];
 				Room newRoom=null;
 				if((roomName.length()>0)&&(lastKnownLocation!=null))
@@ -12635,11 +12335,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 18: // mpforce
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccp");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent newTarget;
 				if(tt[1].equalsIgnoreCase("$GOD"))
 					newTarget=CMLib.map().deity();
@@ -12662,11 +12358,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 79: // mppossess
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent newSource=getArgumentMOB(tt[1],ctx);
 				final PhysicalAgent newTarget=getArgumentMOB(tt[2],ctx);
 				if((!(newSource instanceof MOB))||(((MOB)newSource).isMonster()))
@@ -12689,11 +12381,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 20: // mpsetvar
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				String which=tt[1];
 				final Environmental E=getArgumentItem(which,ctx);
 				final String arg2=varify(ctx,tt[2]);
@@ -12719,11 +12407,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 36: // mpsavevar
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CcR");
-					if(tt==null)
-						return null;
-				}
 				String which=tt[1];
 				String arg2=tt[2];
 				final Environmental E=getArgumentItem(which,ctx);
@@ -12762,11 +12446,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 39: // mploadvar
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"CcR");
-					if(tt==null)
-						return null;
-				}
 				String which=tt[1];
 				final String arg2=tt[2];
 				final Environmental E=getArgumentItem(which,ctx);
@@ -12802,11 +12482,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 40: // MPM2I2M
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final String arg1=tt[1];
 				final Environmental E=getArgumentItem(arg1,ctx);
 				if(E instanceof MOB)
@@ -12846,11 +12522,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 28: // mpdamage
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String arg2=varify(ctx,tt[2]);
 				final String arg3=varify(ctx,tt[3]);
@@ -12946,11 +12618,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 78: // mpheal
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String arg2=varify(ctx,tt[2]);
 				final String arg3=varify(ctx,tt[3]);
@@ -12996,11 +12664,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 90: // mplink
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final String dirWord=varify(ctx,tt[1]);
 				final int dir=CMLib.directions().getGoodDirectionCode(dirWord);
 				if(dir < 0)
@@ -13047,11 +12711,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 91: // mpunlink
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String dirWord=varify(ctx,tt[1]);
 				final int dir=CMLib.directions().getGoodDirectionCode(dirWord);
 				if(dir < 0)
@@ -13075,11 +12735,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 29: // mptrackto
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String arg1=varify(ctx,tt[1]);
 				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
@@ -13103,11 +12759,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 53: // mpwalkto
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String arg1=varify(ctx,tt[1]);
 				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
@@ -13124,11 +12776,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 21: //MPENDQUEST
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent newTarget;
 				final String q=varify(ctx,tt[1].trim());
 				final Quest Q=getQuest(q);
@@ -13184,11 +12832,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 69: // MPSTEPQUEST
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				String qName=varify(ctx,tt[1].trim());
 				final Quest Q;
 				final int x=qName.lastIndexOf(" +");
@@ -13228,11 +12872,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 23: //MPSTARTQUEST
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cr");
-					if(tt==null)
-						return null;
-				}
 				final String qName=varify(ctx,tt[1].trim());
 				final Quest Q=getQuest(qName);
 				if(Q!=null)
@@ -13244,11 +12884,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 64: //MPLOADQUESTOBJ
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccr");
-					if(tt==null)
-						return null;
-				}
 				final String questName=varify(ctx,tt[1].trim());
 				final Quest Q=getQuest(questName);
 				if(Q==null)
@@ -13324,11 +12960,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 22: //MPQUESTWIN
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				String whoName=varify(ctx,tt[1]);
 				MOB M=null;
 				if(lastKnownLocation!=null)
@@ -13359,11 +12991,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 24: // MPCALLFUNC
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				if(script.get(ctx.line).third instanceof SubScript)
 				{
 					final MPContext ctx2 = ctx.push((SubScript)script.get(ctx.line).third);
@@ -13515,11 +13143,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 26: // MPALARM
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccp");
-					if(tt==null)
-						return null;
-				}
 				final String time=varify(ctx,tt[1]);
 				final String parms=tt[2].trim();
 				if(CMath.s_int(time.trim())<=0)
@@ -13541,11 +13165,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 99: // MPACHIEVE
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccp");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent M = getArgumentMOB(tt[1], ctx);
 				if((!(M instanceof MOB))||(((MOB)M).isMonster()))
 				{
@@ -13571,11 +13191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 100: // MPACCUSE
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Cccp");
-					if(tt==null)
-						return null;
-				}
 				final PhysicalAgent PA = getArgumentMOB(tt[1], ctx);
 				if(!(PA instanceof MOB))
 				{
@@ -13628,11 +13244,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 37: // mpenable
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccccp");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final String cast=varify(ctx,tt[2]);
 				String p2=varify(ctx,tt[3]);
@@ -13678,11 +13290,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 38: // mpdisable
 			{
 				if(tt==null)
-				{
 					tt=parseBits(ctx,"Ccr");
-					if(tt==null)
-						return null;
-				}
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final String cast=varify(ctx,tt[2]);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -13711,6 +13319,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			if((ctx.parent!=null)&&(ctx.line==script.size()-1))
+				ctx = ctx.parent;
+
 		}
 		tickStatus=Tickable.STATUS_END;
 		return null;
