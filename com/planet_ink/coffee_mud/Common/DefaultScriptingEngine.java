@@ -547,11 +547,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
-	protected String[] parseBits(final SubScript script, final int row, final String instructions)
+	protected String[] parseBits(final MPContext context, final String instructions)
 	{
-		final String line=script.get(row).first;
+		final String line=context.script.get(context.line).first;
 		final String[] newLine=parseBits(line,instructions);
-		script.get(row).second=newLine;
+		context.script.get(context.line).second=newLine;
+		return newLine;
+	}
+
+	protected String[] parseBits(final SubScript script, final int i, final String instructions)
+	{
+		final String line=script.get(i).first;
+		final String[] newLine=parseBits(line,instructions);
+		script.get(i).second=newLine;
 		return newLine;
 	}
 
@@ -716,7 +724,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							||((reqCode<-1)&&(tmCode<-1)))
 							{
 								oncesDone.add(Integer.valueOf(v));
-								execute(new MPContext(hostObj,mob,mob,mob,null,null,null, null),script);
+								execute(new MPContext(hostObj,mob,mob,mob,null,null,null, null).push(script));
 								found = true;
 							}
 						}
@@ -1822,7 +1830,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final MPContext ctx2;
 		if(ctx.scripted != ctx.monster)
 		{
-			ctx2 = ctx.copyOf();
+			ctx2 = ctx.push(ctx.script);
 			ctx2.scripted=ctx2.monster;
 		}
 		else
@@ -4115,9 +4123,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(foundScript != null)
 					{
 						final String varg2=varify(ctx,arg2);
-						final MPContext ctx2 = ctx.copyOf();
+						final MPContext ctx2 = ctx.push(foundScript);
 						ctx2.msg=varg2;
-						found= execute(ctx2,foundScript);
+						found= execute(ctx2);
 						if(found==null)
 							found="";
 						final String resp=found.trim().toLowerCase();
@@ -7213,9 +7221,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(foundFunc != null)
 				{
 					final String varg2=varify(ctx,arg2);
-					final MPContext ctx2 = ctx.copyOf();
+					final MPContext ctx2 = ctx.push(foundFunc);
 					ctx2.msg = varg2;
-					String found= execute(ctx2, foundFunc);
+					String found= execute(ctx2);
 					if(found==null)
 						found="";
 					results.append(found);
@@ -9023,32 +9031,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final SubScript script2 = findFunc(ctx.scripted,named);
 		if(script2 != null)
 		{
-			ctx = ctx.copyOf();
+			ctx = ctx.push(script2);
 			ctx.msg = varify(ctx,ctx.msg);
-			return execute(ctx,script2);
+			return execute(ctx);
 		}
 		return null;
 	}
 
 	@Override
-	public String execute(final MPContext ctx, final SubScript script)
+	public String execute(final MPContext ctx)
 	{
-		return execute(ctx,script,1);
-	}
-
-	public String execute(final MPContext ctx, final SubScript script, final int startLine)
-	{
+		final SubScript script = ctx.script;
 		tickStatus=Tickable.STATUS_START;
 		String s=null;
 		String[] tt=null;
 		String cmd=null;
 		final boolean traceDebugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTTRACE);
-		if(traceDebugging && startLine == 1 && script.size()>0 && script.getTriggerLine().length()>0)
+		if(traceDebugging && ctx.line == 1 && script.size()>0 && script.getTriggerLine().length()>0)
 			Log.debugOut(CMStrings.padRight(ctx.scripted.Name(), 15)+": * EXECUTE: "+script.getTriggerLine());
-		for(int si=startLine;si<script.size();si++)
+		for(;ctx.line<script.size();ctx.line++)
 		{
-			s=script.get(si).first;
-			tt=script.get(si).second;
+			s=script.get(ctx.line).first;
+			tt=script.get(ctx.line).second;
 			if(tt!=null)
 				cmd=tt[0];
 			else
@@ -9056,7 +9060,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(cmd.length()==0)
 				continue;
 			if(traceDebugging)
-				Log.debugOut(CMStrings.padRight(ctx.scripted.Name(), 15)+": "+si+": "+s);
+				Log.debugOut(CMStrings.padRight(ctx.scripted.Name(), 15)+": "+ctx.line+": "+s);
 
 			Integer methCode=methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
@@ -9077,24 +9081,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 57: // <SCRIPT>
 			{
 				if(tt==null)
-					tt=parseBits(script,si,"C");
+					tt=parseBits(ctx,"C");
 
-				final ScriptLn ln = script.get(si);
+				final ScriptLn ln = script.get(ctx.line);
 				final StringBuffer jscript;
 				if(ln.third instanceof Object[])
 				{
 					final Object[] obj = (Object[])ln.third;
 					jscript=(StringBuffer)obj[0];
-					si += ((Integer)obj[1]).intValue();
+					ctx.line += ((Integer)obj[1]).intValue();
 				}
 				else
 				{
 					jscript=new StringBuffer("");
-					final int oldsi = si;
-					while((++si)<script.size())
+					final int oldsi = ctx.line;
+					while((++ctx.line)<script.size())
 					{
-						s=script.get(si).first;
-						tt=script.get(si).second;
+						s=script.get(ctx.line).first;
+						tt=script.get(ctx.line).second;
 						if(tt!=null)
 							cmd=tt[0];
 						else
@@ -9102,12 +9106,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(cmd.equals("</SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							break;
 						}
 						jscript.append(s+"\n");
 					}
-					ln.third = new Object[] {jscript, Integer.valueOf(si-oldsi)};
+					ln.third = new Object[] {jscript, Integer.valueOf(ctx.line-oldsi)};
 				}
 				if(this.approvedScripts || CMSecurity.isApprovedJScript(jscript))
 				{
@@ -9149,8 +9153,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt[0]="IF";
 						for(int i=0;i<ttParms.length;i++)
 							tt[i+1]=ttParms[i];
-						script.get(si).second=tt;
-						script.get(si).third=new Triad<SubScript,SubScript,Integer>(null,null,null);
+						script.get(ctx.line).second=tt;
+						script.get(ctx.line).third=new Triad<SubScript,SubScript,Integer>(null,null,null);
 					}
 					catch(final Exception e)
 					{
@@ -9165,17 +9169,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(eval[0]!=tt)
 				{
 					tt=eval[0];
-					script.get(si).second=tt;
+					script.get(ctx.line).second=tt;
 				}
 				boolean foundendif=false;
 				@SuppressWarnings({ "unchecked", "rawtypes" })
-				Triad<SubScript,SubScript,Integer> parsedBlocks = (Triad)script.get(si).third;
+				Triad<SubScript,SubScript,Integer> parsedBlocks = (Triad)script.get(ctx.line).third;
 				SubScript subScript;
 				if(parsedBlocks==null)
 				{
 					Log.errOut("Null parsed blocks in "+s);
 					parsedBlocks = new Triad<SubScript,SubScript,Integer>(null,null,null);
-					script.get(si).third=parsedBlocks;
+					script.get(ctx.line).third=parsedBlocks;
 					subScript=null;
 				}
 				else
@@ -9185,23 +9189,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						subScript=parsedBlocks.first;
 					else
 						subScript=parsedBlocks.second;
-					si=parsedBlocks.third.intValue();
-					si--; // because we want to be pointing at the ENDIF with si++ happens below.
+					ctx.line=parsedBlocks.third.intValue();
+					ctx.line--; // because we want to be pointing at the ENDIF with ctx.line++ happens below.
 					foundendif=true;
 				}
 				else
 					subScript=null;
 				int depth=0;
 				boolean ignoreUntilEndScript=false;
-				si++;
+				ctx.line++;
 				boolean positiveCondition=true;
-				while((si<script.size())
+				while((ctx.line<script.size())
 				&&(!foundendif))
 				{
-					final ScriptLn ln = script.get(si);
+					final ScriptLn ln = script.get(ctx.line);
 					if(ln==null)
 					{
-						script.remove(si);
+						script.remove(ctx.line);
 						continue;
 					}
 					s=ln.first;
@@ -9213,8 +9217,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(cmd.equals("ENDIF")&&(depth==0)&&(!ignoreUntilEndScript))
 					{
 						if(tt==null)
-							tt=parseBits(script,si,"C");
-						parsedBlocks.third=Integer.valueOf(si);
+							tt=parseBits(ctx,"C");
+						parsedBlocks.third=Integer.valueOf(ctx.line);
 						foundendif=true;
 						break;
 					}
@@ -9226,7 +9230,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							logError(ctx.scripted,"ELSE","Syntax"," Decorated ELSE is now illegal!!");
 						else
 						if(tt==null)
-							tt=parseBits(script,si,"C");
+							tt=parseBits(ctx,"C");
 					}
 					else
 					{
@@ -9238,21 +9242,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(cmd.equals("ENDIF"))
 							{
 								if(tt==null)
-									tt=parseBits(script,si,"C");
+									tt=parseBits(ctx,"C");
 								depth--;
 							}
 						}
 						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=true;
 						}
 						else
 						if(cmd.equals("</SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=false;
 						}
 						if(positiveCondition)
@@ -9264,7 +9268,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 							if(condition)
 								subScript=parsedBlocks.first;
-							parsedBlocks.first.add(script.get(si));
+							parsedBlocks.first.add(script.get(ctx.line));
 						}
 						else
 						{
@@ -9275,10 +9279,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 							if(!condition)
 								subScript=parsedBlocks.second;
-							parsedBlocks.second.add(script.get(si));
+							parsedBlocks.second.add(script.get(ctx.line));
 						}
 					}
-					si++;
+					ctx.line++;
 				}
 				if(!foundendif)
 				{
@@ -9290,46 +9294,42 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				&&(subScript.size()>1)
 				&&(subScript != script))
 				{
-					//source.tell(L("Starting @x1",conditionStr));
-					//for(int v=0;v<V.size();v++)
-					//  source.tell(L("Statement @x1",((String)V.elementAt(v))));
-					final String response=execute(ctx,subScript);
+					final String response=execute(ctx.push(subScript));
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
 						return response;
 					}
-					//source.tell(L("Stopping @x1",conditionStr));
 				}
 				break;
 			}
 			case 93: //	"ENDIF", //93 JUST for catching errors...
-				logError(ctx.scripted,"ENDIF","Syntax"," Without IF ("+si+")!");
+				logError(ctx.scripted,"ENDIF","Syntax"," Without IF ("+ctx.line+")!");
 				break;
 			case 94: //"ENDSWITCH", //94 JUST for catching errors...
-				logError(ctx.scripted,"ENDSWITCH","Syntax"," Without SWITCH ("+si+")!");
+				logError(ctx.scripted,"ENDSWITCH","Syntax"," Without SWITCH ("+ctx.line+")!");
 				break;
 			case 95: //"NEXT", //95 JUST for catching errors...
-				logError(ctx.scripted,"NEXT","Syntax"," Without FOR ("+si+")!");
+				logError(ctx.scripted,"NEXT","Syntax"," Without FOR ("+ctx.line+")!");
 				break;
 			case 96: //"CASE" //96 JUST for catching errors...
-				logError(ctx.scripted,"CASE","Syntax"," Without SWITCH ("+si+")!");
+				logError(ctx.scripted,"CASE","Syntax"," Without SWITCH ("+ctx.line+")!");
 				break;
 			case 97: //"DEFAULT" //97 JUST for catching errors...
-				logError(ctx.scripted,"DEFAULT","Syntax"," Without SWITCH ("+si+")!");
+				logError(ctx.scripted,"DEFAULT","Syntax"," Without SWITCH ("+ctx.line+")!");
 				break;
 			case 70: // switch
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
-					if(script.get(si).third==null)
-						script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
+					if(script.get(ctx.line).third==null)
+						script.get(ctx.line).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 				}
 				@SuppressWarnings("unchecked")
-				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(si).third;
+				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(ctx.line).third;
 				final String var=varify(ctx,tt[1]).trim();
 				final SubScript subScript=new SubScriptImpl();
 				subScript.add(new ScriptLn("",null,null));
@@ -9338,7 +9338,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				boolean ignoreUntilEndScript=false;
 				boolean inCase=false;
 				boolean matchedCase=false;
-				si++;
+				ctx.line++;
 				String s2=null;
 				if(skipSwitchMap.size()>0)
 				{
@@ -9346,34 +9346,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						inCase=true;
 						matchedCase=true;
-						si=skipSwitchMap.get(var.toUpperCase()).intValue();
-						si++;
+						ctx.line=skipSwitchMap.get(var.toUpperCase()).intValue();
+						ctx.line++;
 					}
 					else
 					if(skipSwitchMap.containsKey("$FIRSTVAR"))  // first variable case
 					{
-						si=skipSwitchMap.get("$FIRSTVAR").intValue();
+						ctx.line=skipSwitchMap.get("$FIRSTVAR").intValue();
 					}
 					else
 					if(skipSwitchMap.containsKey("$DEFAULT")) // the "default" case
 					{
 						inCase=true;
 						matchedCase=true;
-						si=skipSwitchMap.get("$DEFAULT").intValue();
-						si++;
+						ctx.line=skipSwitchMap.get("$DEFAULT").intValue();
+						ctx.line++;
 					}
 					else
 					if(skipSwitchMap.containsKey("$ENDSWITCH")) // the "endswitch" case
 					{
 						foundEndSwitch=true;
-						si=skipSwitchMap.get("$ENDSWITCH").intValue();
+						ctx.line=skipSwitchMap.get("$ENDSWITCH").intValue();
 					}
 				}
-				while((si<script.size())
+				while((ctx.line<script.size())
 				&&(!foundEndSwitch))
 				{
-					s=script.get(si).first;
-					tt=script.get(si).second;
+					s=script.get(ctx.line).first;
+					tt=script.get(ctx.line).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -9382,8 +9382,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(tt==null)
 						{
-							tt=parseBits(script,si,"C");
-							skipSwitchMap.put("$ENDSWITCH", Integer.valueOf(si));
+							tt=parseBits(ctx,"C");
+							skipSwitchMap.put("$ENDSWITCH", Integer.valueOf(ctx.line));
 						}
 						foundEndSwitch=true;
 						break;
@@ -9393,25 +9393,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(tt==null)
 						{
-							tt=parseBits(script,si,"Ccr");
+							tt=parseBits(ctx,"Ccr");
 							if(tt==null)
 								return null;
 							if(tt[1].indexOf('$')>=0)
 							{
 								if(!skipSwitchMap.containsKey("$FIRSTVAR"))
-									skipSwitchMap.put("$FIRSTVAR", Integer.valueOf(si));
+									skipSwitchMap.put("$FIRSTVAR", Integer.valueOf(ctx.line));
 							}
 							else
 							if(!skipSwitchMap.containsKey(tt[1].toUpperCase()))
-								skipSwitchMap.put(tt[1].toUpperCase(), Integer.valueOf(si));
+								skipSwitchMap.put(tt[1].toUpperCase(), Integer.valueOf(ctx.line));
 						}
 						if(matchedCase
 						&&inCase
 						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
 						{
 							foundEndSwitch=true;
-							si=skipSwitchMap.get("$ENDSWITCH").intValue();
-							break; // this is important, otherwise si will get increment and screw stuff up
+							ctx.line=skipSwitchMap.get("$ENDSWITCH").intValue();
+							break; // this is important, otherwise ctx.line will get increment and screw stuff up
 						}
 						else
 						{
@@ -9425,17 +9425,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(tt==null)
 						{
-							tt=parseBits(script,si,"C");
+							tt=parseBits(ctx,"C");
 							if(!skipSwitchMap.containsKey("$DEFAULT"))
-								skipSwitchMap.put("$DEFAULT", Integer.valueOf(si));
+								skipSwitchMap.put("$DEFAULT", Integer.valueOf(ctx.line));
 						}
 						if(matchedCase
 						&&inCase
 						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
 						{
 							foundEndSwitch=true;
-							si=skipSwitchMap.get("$ENDSWITCH").intValue();
-							break; // this is important, otherwise si will get increment and screw stuff up
+							ctx.line=skipSwitchMap.get("$ENDSWITCH").intValue();
+							break; // this is important, otherwise ctx.line will get increment and screw stuff up
 						}
 						else
 							inCase=!matchedCase;
@@ -9444,21 +9444,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(inCase)
 						{
-							final ScriptLn line = script.get(si);
+							final ScriptLn line = script.get(ctx.line);
 							if(line != null)
 								subScript.add(line);
 						}
 						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=true;
 						}
 						else
 						if(cmd.equals("</SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=false;
 						}
 						else
@@ -9468,9 +9468,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								if(tt==null)
 								{
-									tt=parseBits(script,si,"Cr");
-									if(script.get(si).third==null)
-										script.get(si).third=Collections.synchronizedMap(new HashMap<String,Integer>());
+									tt=parseBits(ctx,"Cr");
+									if(script.get(ctx.line).third==null)
+										script.get(ctx.line).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 								}
 								depth++;
 							}
@@ -9478,12 +9478,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(cmd.equals("ENDSWITCH"))
 							{
 								if(tt==null)
-									tt=parseBits(script,si,"C");
+									tt=parseBits(ctx,"C");
 								depth--;
 							}
 						}
 					}
-					si++;
+					ctx.line++;
 				}
 				if(!foundEndSwitch)
 				{
@@ -9493,7 +9493,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(subScript.size()>1)
 				{
-					final String response=execute(ctx,subScript);
+					final String response=execute(ctx.push(subScript));
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
@@ -9506,7 +9506,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CcccCr");
+					tt=parseBits(ctx,"CcccCr");
 					if(tt==null)
 						return null;
 				}
@@ -9565,11 +9565,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				int depth=0;
 				boolean foundnext=false;
 				boolean ignoreUntilEndScript=false;
-				si++;
-				while(si<script.size())
+				ctx.line++;
+				while(ctx.line<script.size())
 				{
-					s=script.get(si).first;
-					tt=script.get(si).second;
+					s=script.get(ctx.line).first;
+					tt=script.get(ctx.line).second;
 					if(tt!=null)
 						cmd=tt[0];
 					else
@@ -9577,7 +9577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((!ignoreUntilEndScript) && cmd.equals("NEXT")&&(depth==0))
 					{
 						if(tt==null)
-							tt=parseBits(script,si,"C");
+							tt=parseBits(ctx,"C");
 						foundnext=true;
 						break;
 					}
@@ -9586,14 +9586,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(cmd.equals("<SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=true;
 						}
 						else
 						if(cmd.equals("</SCRIPT>"))
 						{
 							if(tt==null)
-								tt=parseBits(script,si,"C");
+								tt=parseBits(ctx,"C");
 							ignoreUntilEndScript=false;
 						}
 						else
@@ -9602,22 +9602,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(cmd.equals("FOR"))
 							{
 								if(tt==null)
-									tt=parseBits(script,si,"CcccCr");
+									tt=parseBits(ctx,"CcccCr");
 								depth++;
 							}
 							else
 							if(cmd.equals("NEXT"))
 							{
 								if(tt==null)
-									tt=parseBits(script,si,"C");
+									tt=parseBits(ctx,"C");
 								depth--;
 							}
 						}
-						final ScriptLn line = script.get(si);
+						final ScriptLn line = script.get(ctx.line);
 						if(line != null)
 							subScript.add(line);
 					}
-					si++;
+					ctx.line++;
 				}
 				if(!foundnext)
 				{
@@ -9642,7 +9642,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
 						{
 							ctx.tmp[whichVar]=""+forLoop;
-							response=execute(ctx,subScript);
+							response=execute(ctx.push(subScript));
 							if(response!=null)
 								break;
 							if((System.currentTimeMillis()>tm) || (ctx.scripted.amDestroyed()))
@@ -9653,7 +9653,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						ctx.tmp[whichVar]=""+toInt;
 						if(response == null)
-							response=execute(ctx,subScript);
+							response=execute(ctx.push(subScript));
 						else
 						if(response.equalsIgnoreCase("break"))
 							response=null;
@@ -9669,14 +9669,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 50: // break;
 				if(tt==null)
-					tt=parseBits(script,si,"C");
+					tt=parseBits(ctx,"C");
 				tickStatus=Tickable.STATUS_END;
 				return "BREAK";
 			case 1: // mpasound
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cp");
+					tt=parseBits(ctx,"Cp");
 					if(tt==null)
 						return null;
 				}
@@ -9695,7 +9695,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CR");
+					tt=parseBits(ctx,"CR");
 					if(tt==null)
 						return null;
 				}
@@ -9736,7 +9736,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cp");
+					tt=parseBits(ctx,"Cp");
 					if(tt==null)
 						return null;
 				}
@@ -9758,7 +9758,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -9795,7 +9795,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -9808,7 +9808,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCr");
+					tt=parseBits(ctx,"CCr");
 					if(tt==null)
 						return null;
 				}
@@ -9845,7 +9845,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCCr");
+					tt=parseBits(ctx,"CCCr");
 					if(tt==null)
 						return null;
 				}
@@ -9872,7 +9872,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCCCr");
+					tt=parseBits(ctx,"CCCCr");
 					if(tt==null)
 						return null;
 				}
@@ -9901,7 +9901,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						try
 						{
-							final int lastLineNum=si;
+							final int lastLineNum=ctx.line;
 							final JScriptEvent continueEvent=new JScriptEvent(this,ctx);
 							((MOB)newTarget).session().prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 							{
@@ -9948,7 +9948,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCCCCr");
+					tt=parseBits(ctx,"CCCCCr");
 					if(tt==null)
 						return null;
 				}
@@ -9977,7 +9977,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCcr");
+					tt=parseBits(ctx,"CCcr");
 					if(tt==null)
 						return null;
 				}
@@ -10152,7 +10152,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10257,7 +10257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -10450,7 +10450,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10480,7 +10480,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10507,7 +10507,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10550,7 +10550,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10584,7 +10584,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -10630,7 +10630,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CCcr");
+					tt=parseBits(ctx,"CCcr");
 					if(tt==null)
 						return null;
 				}
@@ -10653,7 +10653,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10672,7 +10672,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cc");
+					tt=parseBits(ctx,"Cc");
 					if(tt==null)
 						return null;
 				}
@@ -10702,7 +10702,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10727,7 +10727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -10752,7 +10752,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -10803,7 +10803,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(tt==null)
 					{
-						tt=parseBits(script,si,"Cr");
+						tt=parseBits(ctx,"Cr");
 						if(tt==null)
 							return null;
 					}
@@ -10893,7 +10893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Room putRoom = lastKnownLocation;
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -10997,7 +10997,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(tt==null)
 					{
-						tt=parseBits(script,si,"Cr");
+						tt=parseBits(ctx,"Cr");
 						if(tt==null)
 							return null;
 					}
@@ -11057,7 +11057,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(tt==null)
 					{
-						tt=parseBits(script,si,"Cr");
+						tt=parseBits(ctx,"Cr");
 						if(tt==null)
 							return null;
 					}
@@ -11106,7 +11106,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11124,7 +11124,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11185,12 +11185,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final String rest=CMParms.getPastBitClean(s,1);
 					if(rest.equals("item")||rest.equals("items"))
-						tt=parseBits(script,si,"Ccr");
+						tt=parseBits(ctx,"Ccr");
 					else
 					if(rest.equals("mob")||rest.equals("mobs"))
-						tt=parseBits(script,si,"Ccr");
+						tt=parseBits(ctx,"Ccr");
 					else
-						tt=parseBits(script,si,"Cr");
+						tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11240,7 +11240,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11284,7 +11284,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11302,7 +11302,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11328,7 +11328,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11358,7 +11358,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11386,7 +11386,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11413,7 +11413,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 48: // return
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -11424,7 +11424,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccp");
+					tt=parseBits(ctx,"Ccp");
 					if(tt==null)
 						return null;
 				}
@@ -11508,7 +11508,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccp");
+					tt=parseBits(ctx,"Ccp");
 					if(tt==null)
 						return null;
 				}
@@ -11531,7 +11531,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -11557,7 +11557,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -11585,7 +11585,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccp");
+					tt=parseBits(ctx,"Cccp");
 					if(tt==null)
 						return null;
 				}
@@ -11672,7 +11672,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -11699,7 +11699,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -11734,7 +11734,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccp");
+					tt=parseBits(ctx,"Cccp");
 					if(tt==null)
 						return null;
 				}
@@ -11769,7 +11769,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccp");
+					tt=parseBits(ctx,"Ccp");
 					if(tt==null)
 						return null;
 				}
@@ -11893,7 +11893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -11916,7 +11916,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -11945,7 +11945,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -11978,7 +11978,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12037,7 +12037,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12079,7 +12079,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -12147,7 +12147,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12177,7 +12177,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -12192,7 +12192,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -12218,7 +12218,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -12254,7 +12254,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12286,12 +12286,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final String s2=CMParms.getCleanBit(s,1).toLowerCase();
 						if(s2.equals("room"))
-							tt=parseBits(script,si,"Ccr");
+							tt=parseBits(ctx,"Ccr");
 						else
 						if(s2.equals("my"))
-							tt=parseBits(script,si,"Ccr");
+							tt=parseBits(ctx,"Ccr");
 						else
-							tt=parseBits(script,si,"Cr");
+							tt=parseBits(ctx,"Cr");
 						if(tt==null)
 							return null;
 					}
@@ -12362,7 +12362,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -12399,7 +12399,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(tt==null)
 					{
-						tt=parseBits(script,si,"Ccp");
+						tt=parseBits(ctx,"Ccp");
 						if(tt==null)
 							return null;
 					}
@@ -12419,12 +12419,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							subScript.add(new ScriptLn("",null,null));
 							subScript.add(new ScriptLn(doWhat,null,null));
 							if(goHere == lastPlace)
-								execute(ctx,subScript);
+								execute(ctx.push(subScript));
 							else
 							{
 								goHere.bringMobHere(ctx.monster,true);
 								lastKnownLocation=goHere;
-								execute(ctx,subScript);
+								execute(ctx.push(subScript));
 								lastKnownLocation=lastPlace;
 								lastPlace.bringMobHere(ctx.monster,true);
 								if(!(ctx.scripted instanceof MOB))
@@ -12441,7 +12441,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12588,7 +12588,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -12636,7 +12636,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccp");
+					tt=parseBits(ctx,"Ccp");
 					if(tt==null)
 						return null;
 				}
@@ -12652,10 +12652,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					vscript.add(new ScriptLn("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null,null));
 					vscript.add(new ScriptLn(force,null,null));
 					// this can not be permanently parsed because it is variable
-					final MPContext ctx2 = ctx.copyOf();
+					final MPContext ctx2 = ctx.push(vscript);
 					ctx2.monster = getMakeMOB(newTarget);
 					ctx2.scripted = ctx2.monster;
-					execute(ctx2, vscript);
+					execute(ctx2);
 				}
 				break;
 			}
@@ -12663,7 +12663,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -12690,7 +12690,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -12720,7 +12720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CcR");
+					tt=parseBits(ctx,"CcR");
 					if(tt==null)
 						return null;
 				}
@@ -12763,7 +12763,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"CcR");
+					tt=parseBits(ctx,"CcR");
 					if(tt==null)
 						return null;
 				}
@@ -12803,7 +12803,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -12847,7 +12847,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccccr");
+					tt=parseBits(ctx,"Ccccr");
 					if(tt==null)
 						return null;
 				}
@@ -12947,7 +12947,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -12997,7 +12997,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -13048,7 +13048,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13076,7 +13076,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13104,7 +13104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13125,7 +13125,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13185,7 +13185,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13229,7 +13229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cr");
+					tt=parseBits(ctx,"Cr");
 					if(tt==null)
 						return null;
 				}
@@ -13245,7 +13245,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccr");
+					tt=parseBits(ctx,"Cccr");
 					if(tt==null)
 						return null;
 				}
@@ -13325,7 +13325,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -13360,15 +13360,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
-				if(script.get(si).third instanceof SubScript)
+				if(script.get(ctx.line).third instanceof SubScript)
 				{
-					final MPContext ctx2 = ctx.copyOf();
+					final MPContext ctx2 = ctx.push((SubScript)script.get(ctx.line).third);
 					ctx2.msg =varify(ctx,tt[2].trim());
-					execute(ctx2, (SubScript)script.get(si).third);
+					execute(ctx2);
 				}
 				else
 				{
@@ -13377,10 +13377,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final SubScript script2 = findFunc(ctx.scripted,named);
 					if(script2 != null)
 					{
-						script.get(si).third=script2;
-						final MPContext ctx2 = ctx.copyOf();
+						script.get(ctx.line).third=script2;
+						final MPContext ctx2 = ctx.push(script2);
 						ctx2.msg = varify(ctx,parms);
-						execute(ctx2, script2);
+						execute(ctx2);
 					}
 					else
 						logError(ctx.scripted,"MPCALLFUNC","Unknown","Function: "+named);
@@ -13428,7 +13428,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						V.add(")");
 						V.add(DO);
 						tt=CMParms.toStringArray(V);
-						script.get(si).second=tt;
+						script.get(ctx.line).second=tt;
 					}
 					catch(final Exception e)
 					{
@@ -13478,7 +13478,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				while((eval(ctx,EVALO,0))
 				&&((System.currentTimeMillis()-time)<4000)
 				&&(!ctx.scripted.amDestroyed()))
-					execute(ctx,vscript);
+					execute(ctx.push(vscript));
 				if(vscript.get(1).second!=DOT)
 				{
 					final int oldDotLen=(DOT==null)?1:DOT.length;
@@ -13490,7 +13490,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(int y=0;y<newDOT.length;y++)
 						newTT[end+y]=newDOT[y];
 					tt=newTT;
-					script.get(si).second=tt;
+					script.get(ctx.line).second=tt;
 				}
 				if(EVALO[0]!=EVAL)
 				{
@@ -13503,7 +13503,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(int i=evalEnd;i<tt.length;i++)
 						lazyV.add(tt[i]);
 					tt=CMParms.toStringArray(lazyV);
-					script.get(si).second=tt;
+					script.get(ctx.line).second=tt;
 				}
 				if((System.currentTimeMillis()-time)>=4000)
 				{
@@ -13516,7 +13516,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccp");
+					tt=parseBits(ctx,"Ccp");
 					if(tt==null)
 						return null;
 				}
@@ -13542,7 +13542,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccp");
+					tt=parseBits(ctx,"Cccp");
 					if(tt==null)
 						return null;
 				}
@@ -13572,7 +13572,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Cccp");
+					tt=parseBits(ctx,"Cccp");
 					if(tt==null)
 						return null;
 				}
@@ -13629,7 +13629,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccccp");
+					tt=parseBits(ctx,"Ccccp");
 					if(tt==null)
 						return null;
 				}
@@ -13679,7 +13679,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 				{
-					tt=parseBits(script,si,"Ccr");
+					tt=parseBits(ctx,"Ccr");
 					if(tt==null)
 						return null;
 				}
@@ -13943,12 +13943,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										Tool=defaultItem;
 									String resp=null;
 									if(msg.target() instanceof MOB)
-										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null),script);
+										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null).push(script));
 									else
 									if(msg.target() instanceof Item)
-										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str, null),script);
+										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str, null).push(script));
 									else
-										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null),script);
+										resp=execute(new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null).push(script));
 									if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
 										return false;
 								}
@@ -14114,20 +14114,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
 						ctx.tmp[0] = msg;
-						resp=execute(ctx,script);
+						resp=execute(ctx.push(script));
 					}
 					else
 					if(msg.target() instanceof Item)
 					{
 						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,(Item)msg.target(),str, null);
 						ctx.tmp[0] = msg;
-						resp=execute(ctx,script);
+						resp=execute(ctx.push(script));
 					}
 					else
 					{
 						final MPContext ctx = new MPContext(affecting,monster,msg.source(),msg.target(),Tool,defaultItem,str, null);
 						ctx.tmp[0] = msg;
-						resp=execute(ctx,script);
+						resp=execute(ctx.push(script));
 					}
 					if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
 						return false;
@@ -14838,7 +14838,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if(msg.target() instanceof Coins)
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14859,7 +14859,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if(msg.target() instanceof Coins)
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14933,7 +14933,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if((msg.target() == affecting)
 							&&(affecting instanceof Food))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14959,7 +14959,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
 							if(!multiTriggers)
@@ -14984,7 +14984,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
 							if(!multiTriggers)
@@ -15006,7 +15006,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final Item product=makeCheapItem(msg.tool());
 							if((product instanceof Coins)
 							&&(product.owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),check, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,product,product,check,script,1, t);
 							if(!multiTriggers)
@@ -15027,7 +15027,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final Item product=makeCheapItem(msg.tool());
 							if((product instanceof Coins)
 							&&(product.owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),null, null),script);
+								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),null, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,product,product,check,script,1, t);
 							if(!multiTriggers)
@@ -15111,7 +15111,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if((SB.scr==script)&&(SB.ctx.source==msg.source()))
 									{
 										if(que.remove(SB))
-											execute(SB.ctx,SB.scr);
+											execute(SB.ctx.push(SB.scr));
 										break;
 									}
 								}
@@ -15146,7 +15146,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if((SB.scr==script)&&(SB.ctx.source==msg.source()))
 									{
 										if(que.remove(SB))
-											execute(SB.ctx,SB.scr);
+											execute(SB.ctx.push(SB.scr));
 										break;
 									}
 								}
@@ -15169,7 +15169,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							src=(MOB)msg.tool();
 						if((src==null)||(src.location()!=monster.location()))
 							src=ded;
-						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null),script);
+						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null).push(script));
 						if(!multiTriggers)
 							return;
 					}
@@ -15186,7 +15186,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							src=(MOB)msg.tool();
 						if((src==null)||(src.location()!=monster.location()))
 							src=ded;
-						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null),script);
+						execute(new MPContext(affecting,ded,src,ded,defaultItem,null,null, null).push(script));
 						if(!multiTriggers)
 							return;
 					}
@@ -15200,7 +15200,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						Item I=null;
 						if(msg.tool() instanceof Item)
 							I=(Item)msg.tool();
-						execute(new MPContext(affecting,eventMob,msg.source(),msg.target(),defaultItem,I,""+msg.value(), null),script);
+						execute(new MPContext(affecting,eventMob,msg.source(),msg.target(),defaultItem,I,""+msg.value(), null).push(script));
 						if(!multiTriggers)
 							return;
 					}
@@ -15250,7 +15250,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final MPContext ctx = new MPContext(affecting,monster,msg.source(),monster,defaultItem,null,null, null);
 								for(int i=0;i<t.length && (i<ctx.tmp.length);i++)
 									ctx.tmp[i]=t;
-								execute(ctx,script);
+								execute(ctx.push(script));
 								if(!multiTriggers)
 									return;
 							}
@@ -15650,7 +15650,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final int prcnt=CMath.s_int(t[1]);
 						if(CMLib.dice().rollPercentage()<prcnt)
-							execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null),script);
+							execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 					}
 				}
 				break;
@@ -15698,7 +15698,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							delayProgCounter[0]++;
 					}
 					if(exec)
-						execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null),script);
+						execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 				}
 				break;
 			case 7: // fight_Prog
@@ -15710,7 +15710,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final int prcnt=this.getTriggerPercent(t[1], mob);
 						if(CMLib.dice().rollPercentage()<prcnt)
-							execute(new MPContext(affecting,mob,mob.getVictim(),mob,defaultItem,null,null, null),script);
+							execute(new MPContext(affecting,mob,mob.getVictim(),mob,defaultItem,null,null, null).push(script));
 					}
 				}
 				else
@@ -15728,7 +15728,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final MOB M=(MOB)((Item)ticking).owner();
 							if(!M.amDead())
-								execute(new MPContext(affecting,mob,M,mob.getVictim(),defaultItem,null,null, null),script);
+								execute(new MPContext(affecting,mob,M,mob.getVictim(),defaultItem,null,null, null).push(script));
 						}
 					}
 				}
@@ -15743,7 +15743,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final int prcnt=CMath.s_int(t[1]);
 						final int floor=(int)Math.round(CMath.mul(CMath.div(prcnt,100.0),mob.maxState().getHitPoints()));
 						if(mob.curState().getHitPoints()<=floor)
-							execute(new MPContext(affecting,mob,mob.getVictim(),mob,defaultItem,null,null, null),script);
+							execute(new MPContext(affecting,mob,mob.getVictim(),mob,defaultItem,null,null, null).push(script));
 					}
 				}
 				else
@@ -15762,7 +15762,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							final int floor=(int)Math.round(CMath.mul(CMath.div(prcnt,100.0),M.maxState().getHitPoints()));
 							if(M.curState().getHitPoints()<=floor)
-								execute(new MPContext(affecting,mob,M,mob.getVictim(),defaultItem,null,null, null),script);
+								execute(new MPContext(affecting,mob,M,mob.getVictim(),defaultItem,null,null, null).push(script));
 						}
 					}
 				}
@@ -15773,7 +15773,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null)
 						t=parseBits(script,0,"C");
 					oncesDone.add(Integer.valueOf(thisScriptIndex));
-					execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null),script);
+					execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 				}
 				break;
 			case 14: // time_prog
@@ -15795,7 +15795,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(time==CMath.s_int(t[i]))
 							{
 								done=true;
-								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,""+time, null),script);
+								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,""+time, null).push(script));
 								lastTimeProgsDone.remove(Integer.valueOf(thisScriptIndex));
 								lastTimeProgsDone.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(time));
 								break;
@@ -15824,7 +15824,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(day==CMath.s_int(t[i]))
 							{
 								done=true;
-								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null),script);
+								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 								lastDayProgsDone.remove(Integer.valueOf(thisScriptIndex));
 								lastDayProgsDone.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(day));
 								break;
@@ -15852,7 +15852,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(time>=Q.minsRemaining())
 							{
 								oncesDone.add(Integer.valueOf(thisScriptIndex));
-								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null),script);
+								execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 							}
 						}
 					}
@@ -15933,20 +15933,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	public void enqueResponse(final int triggerCode, final MPContext ctx, final SubScript script, final int ticks, final String[] triggerStr)
-	{
-		if(!CMProps.isState(CMProps.HostState.RUNNING))
-			return;
-		if(noDelay)
-			execute(ctx,script);
-		else
-		{
-			final ScriptableResponse resp = new ScriptableResponse(triggerCode,ctx,script,ticks);
-			dupCheckClear(resp,triggerStr);
-			que.add(resp);
-		}
-	}
-
 	public void enqueResponse(final int triggerCode,
 							  final PhysicalAgent scripted,
 							  final MOB monster,
@@ -15962,7 +15948,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return;
 		final MPContext ctx = new MPContext(scripted,monster,source,target,primaryItem,secondaryItem,msg, null);
-		enqueResponse(triggerCode,ctx,script,ticks,triggerStr);
+		if(!CMProps.isState(CMProps.HostState.RUNNING))
+			return;
+		if(noDelay)
+			execute(ctx.push(script));
+		else
+		{
+			final ScriptableResponse resp = new ScriptableResponse(triggerCode,ctx,script,ticks);
+			dupCheckClear(resp,triggerStr);
+			que.add(resp);
+		}
 	}
 
 	public void prequeResponse(final int triggerCode, final MPContext ctx, final SubScript script, final int ticks)
@@ -15994,7 +15989,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							for(int i=0;i<objects.length && i<SB.ctx.tmp.length;i++)
 								SB.ctx.tmp[i] = objects[i];
  						}
-						execute(SB.ctx,SB.scr);
+						SB.ctx.script = SB.scr;
+						SB.ctx.line = 1;
+						execute(SB.ctx);
 						que.remove(SB);
 					}
 				}
@@ -16130,7 +16127,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final SubScript DV=new SubScriptImpl();
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));
-							return c.execute(ctx,DV);
+							return c.execute(ctx.push(DV));
 						}
 						if(name.endsWith("$"))
 						{
@@ -16260,7 +16257,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 		public void executeEvent(final SubScript script, final int lineNum)
 		{
-			c.execute(ctx, script, lineNum);
+			final MPContext ctx = this.ctx.push(script);
+			ctx.line = lineNum;
+			c.execute(ctx);
 		}
 
 		public JScriptEvent(final DefaultScriptingEngine scrpt, final MPContext ctx)

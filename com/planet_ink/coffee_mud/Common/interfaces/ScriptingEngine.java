@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -52,13 +53,15 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * row consists of the String command, and a parsed String[]
 	 * array as dimension 2.
 	 *
+	 * The script to execute must be pushed onto the context
+	 * before calling this.
+	 *
 	 * @see ScriptingEngine.MPContext
 	 *
 	 * @param ctx the script event context scope
-	 * @param script the script to execute
 	 * @return N/A
 	 */
-	public String execute(MPContext ctx, SubScript script);
+	public String execute(final MPContext ctx);
 
 	/**
 	 * Uses this scripting engines variable parsing system to replace
@@ -703,6 +706,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		public Item secondaryItem;
 		public String msg;
 		public Object[] tmp;
+		public SubScript script = null;
+		public int line = 1;
+		public MPContext parent = null;
 
 		/**
 		 *  MPContext constructor
@@ -739,9 +745,25 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 				this.tmp = tmp;
 		}
 
-		public MPContext copyOf()
+		public MPContext push(final SubScript script)
 		{
-			try { return (MPContext)super.clone(); } catch (final CloneNotSupportedException e) {return this;}
+			if(this.script==null)
+			{
+				this.script = script;
+				return this;
+			}
+			MPContext copy = this;
+			try { copy = (MPContext)super.clone(); } catch (final CloneNotSupportedException e) {}
+			copy.script = script;
+			copy.line = 1;
+			return copy;
+		}
+
+		public MPContext pop()
+		{
+			if(parent == null)
+				return this;
+			return parent;
 		}
 	}
 

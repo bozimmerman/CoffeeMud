@@ -217,9 +217,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String execute(final MPContext ctx, final SubScript script)
+	public String execute(final MPContext ctx)
 	{
-		return engine().execute(ctx, script);
+		return engine().execute(ctx);
 	}
 
 	@Override

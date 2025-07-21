@@ -183,9 +183,9 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String execute(final MPContext ctx, final SubScript script)
+	public String execute(final MPContext ctx)
 	{
-		return (sampleB==null)?"":sampleB.execute(ctx, script);
+		return (sampleB==null)?"":sampleB.execute(ctx);
 	}
 
 	@Override

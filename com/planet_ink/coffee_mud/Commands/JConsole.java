@@ -266,7 +266,7 @@ public class JConsole extends StdCommand
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));
 							final MPContext ctx = new MPContext(mob,mob,mob,null,null,null,"", objs);
-							return c.execute(ctx,DV);
+							return c.execute(ctx.push(DV));
 						}
 						if(name.endsWith("$"))
 						{
