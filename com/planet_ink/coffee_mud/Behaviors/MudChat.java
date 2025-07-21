@@ -277,10 +277,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	 */
 	protected static class ChattyGroup implements Cloneable
 	{
+		private static ChattyEntry[]			nothing		= new ChattyEntry[0];
 		public String[]							groupNames;
 		public MaskingLibrary.CompiledZMask[]	groupMasks;
-		public ChattyEntry[]					entries	= null;
-		public ChattyEntry[]					tickies	= null;
+		public ChattyEntry[]					entries	= nothing;
+		public ChattyEntry[]					tickies	= nothing;
 		public Map<String,String>				varOverride = new Hashtable<String,String>();
 		public int								highestEntryNum = 0;
 
@@ -336,6 +337,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			if(fnDex >= 0)
 			{
 				chatDatFilename = newParms.substring(0,fnDex).trim();
+				if(chatDatFilename.trim().length()==0)
+					chatDatFilename = "chat.dat";
 				final String rest = newParms.substring(fnDex+1).trim();
 				final int plusDex = rest.indexOf('+');
 				if(plusDex >=0)
@@ -451,6 +454,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			if(rsc!=null)
 				return rsc;
 			rsc=loadChatData(filename);
+			if(rsc.length == 0)
+				Log.errOut("NO CHAT GROUPS ("+filename+")! OMG! NOT EVEN DEFAULTS!");
 			Resources.submitResource(key,rsc);
 			return rsc;
 		}
@@ -747,8 +752,15 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			baseChatGroup =  matchedCG;
 			return matchedCG;
 		}
-		baseChatGroup =  chatGroups[0];
-		return chatGroups[0];
+		if(chatGroups.length==0)
+		{
+			Log.errOut("No Chat Group identified for "+forMe.Name()+"@"+
+					CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(forMe)));
+			baseChatGroup = new ChattyGroup(new String[0], new MaskingLibrary.CompiledZMask[0]);
+		}
+		else
+			baseChatGroup =  chatGroups[0];
+		return baseChatGroup;
 	}
 
 	protected PairList<ChattyGroup, Long> getChatGroups(final MOB forMe, final ChattyGroup[] chatGroups)
@@ -1061,7 +1073,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				prompt="";
 			else
 				prompt = mcFilter(prompt.trim(),source,null,"","",grp);
-Log.sysOut(prompt);//TODO:BZ:DELME
 			this.llmSession = CMLib.protocol().createLLMSession(prompt,null);
 		}
 		this.llmLastUse=System.currentTimeMillis();
