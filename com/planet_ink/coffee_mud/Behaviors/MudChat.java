@@ -1073,7 +1073,11 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				prompt="";
 			else
 				prompt = mcFilter(prompt.trim(),source,null,"","",grp);
-			this.llmSession = CMLib.protocol().createLLMSession(prompt,null);
+			Integer mem = null;
+			final String memstr = grp.varOverride.get("LLMMEM");
+			if(CMath.isInteger(memstr))
+				mem=Integer.valueOf(CMath.s_int(memstr));
+			this.llmSession = CMLib.protocol().createLLMSession(prompt,mem);
 		}
 		this.llmLastUse=System.currentTimeMillis();
 		return this.llmSession;

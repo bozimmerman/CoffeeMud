@@ -35,8 +35,8 @@
 #                 @ cannot do forward links!!!
 #                 @ is more memory efficient than % but less flexible.
 #                 You must avoid circularities with @.
-#     ${VAR=VAL} define or override variable values. LLMPROMPT variable is
-#                 used to initialize LLM.  Other STATS or special variables
+#     ${VAR=VAL} define or override variable values. LLMPROMPT & LLMMEM vars
+#                 are for LLM init.  Other STATS or special variables
 #                 mentioned below under ${...}.  Value can contain other
 #                 ${variables}!  Use ${VAR+VAL} to append.
 #  response operators:
