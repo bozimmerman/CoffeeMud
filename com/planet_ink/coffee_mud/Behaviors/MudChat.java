@@ -802,7 +802,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		for(final String word : matchWords)
 			if(allChatEntries.mapped.containsKey(word))
 				chatEntries.addAll(Arrays.asList(allChatEntries.mapped.get(word)));
-		chatEntries.addAll(Arrays.asList(allChatEntries.mapped.get("")));
+		if(allChatEntries.mapped.containsKey(""))
+			chatEntries.addAll(Arrays.asList(allChatEntries.mapped.get("")));
 		final List<ChattyEntry> finalChatEntries = new XArrayList<ChattyEntry>(chatEntries);
 		Collections.sort(finalChatEntries,comparator);
 		return finalChatEntries;
