@@ -80,11 +80,16 @@ public class Prop_CommonTwister extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		//CMMsg.MSG_HANDS | CMMsg.MASK_SOUND : CMMsg.MSG_NOISYMOVEMENT
+
 		if((affected!=null)
-		&&(msg.sourceMinor()==CMMsg.TYP_ITEMGENERATED)
 		&&(msg.tool() instanceof Ability)
-		&&(msg.target()!=null)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+		&&(msg.target() instanceof Item)
+		&&((msg.sourceMinor()==CMMsg.TYP_ITEMGENERATED)
+			||(msg.sourceMinor()==CMMsg.MSG_NOISYMOVEMENT)
+			||(msg.sourceMinor()==(CMMsg.MSG_HANDS | CMMsg.MASK_SOUND)))
+		&&(!((Item)msg.target()).phyStats().isAmbiance("-"+ID()))
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Area)
 		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
 		   ||((affected instanceof MOB)&&(msg.source()==affected))))
@@ -179,6 +184,7 @@ public class Prop_CommonTwister extends Property
 					}
 				}
 			}
+			((Item)msg.target()).phyStats().addAmbiance("-"+ID());
 		}
 		return super.okMessage(myHost,msg);
 	}
