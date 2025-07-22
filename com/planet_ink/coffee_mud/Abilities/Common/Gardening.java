@@ -467,7 +467,7 @@ public class Gardening extends GatheringSkill
 
 		mine.destroy();
 		final int duration=getDuration(mob,1);
-		final Item oldFound=found;
+		final String oldFoundName = found.Name();
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) planting @x1.",foundShortName));
 		verb=L("planting @x1",foundShortName);
 		displayText=L("You are planting @x1",foundShortName);
@@ -476,7 +476,7 @@ public class Gardening extends GatheringSkill
 		{
 			R.send(mob,msg);
 			found=(Item)msg.target();
-			if((found != oldFound)&&(found!=null))
+			if((found!=null)&&(!found.Name().equals(oldFoundName)))
 				foundShortName=CMLib.english().removeArticleLead(found.Name());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

@@ -206,11 +206,12 @@ public class Foraging extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		final Item oldFound=found;
+		final String oldFoundName = found.Name();
 		final int duration=getDuration(mob,1);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) foraging."));
 		if(mob.location().okMessage(mob,msg))
 		{
+			found=(Item)msg.target();
 			// herb/locale customisation for jeremy
 			if((found!=null)
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
@@ -263,7 +264,7 @@ public class Foraging extends GatheringSkill
 			}
 			mob.location().send(mob,msg);
 			found=(Item)msg.target();
-			if((found != oldFound)&&(found!=null))
+			if((found!=null)&&(!found.Name().equals(oldFoundName)))
 				foundShortName=CMLib.english().removeArticleLead(found.Name());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
