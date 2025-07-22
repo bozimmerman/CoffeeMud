@@ -258,6 +258,17 @@ public interface ProtocolLibrary extends CMLibrary
 	public LLMSession createLLMSession(final String personality, Integer maxMsgs);
 
 	/**
+	 * Creates a new LLM session with a new phat memory
+	 * and so forth, just for Archons.  This one is MUCH
+	 * slower, as it includes information from the Guides.
+	 *
+	 * @see ProtocolLibrary#isLLMInstalled()
+	 *
+	 * @return a new archon LLM session
+	 */
+	public LLMSession createArchonLLMSession();
+
+	/**
 	 * Returns whether the LLM libraries were found and loaded.
 	 * If true, it means there's a good chance you can create
 	 * an LLM session, but no guarantee.

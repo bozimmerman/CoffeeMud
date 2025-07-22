@@ -56,16 +56,22 @@ public class LLM extends StdCommand
 	{
     	if(mob.isMonster())
     		return false;
-    	final String userText = CMParms.combineQuoted(commands,1);
+    	String userText = CMParms.combineQuoted(commands,1);
     	if(userText.trim().length()==0)
     	{
     		mob.tell(L("What would you send the LLM?"));
     		return false;
     	}
     	final boolean reset = userText.equalsIgnoreCase("reset");
-    	if(!sessions.containsKey(mob.Name()) || reset)
+    	final boolean archon = userText.equalsIgnoreCase("admin");
+    	if(!sessions.containsKey(mob.Name()) || reset || archon)
     	{
-    		final LLMSession sess = CMLib.protocol().createLLMSession(null,Integer.valueOf(100));
+    		final LLMSession sess;
+    		if(archon)
+    			sess = CMLib.protocol().createArchonLLMSession();
+    		else
+    			sess = CMLib.protocol().createLLMSession(null,Integer.valueOf(100));
+    		userText = "Greetings! My name is "+mob.Name()+"!";
     		if(sess != null)
     		{
     			sessions.put(mob.Name(), sess);

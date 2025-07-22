@@ -26,10 +26,12 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
@@ -3875,9 +3877,101 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return !(llmModel instanceof Long);
 	}
 
+	private Object buildCMRagRetreiver() throws Exception
+	{
+		try
+		{
+			Object retriever = Resources.getResource("LANGCHAIN4J_ARCHON_RETRIEVER");
+			if(retriever != null)
+				return retriever;
+			final String url = CMProps.getProp("LANGCHAIN4J_BASEURL");
+			if(url == null)
+			{
+				Log.warnOut("LANGCHAIN4J_BASEURL not set in INI file. LLM Archon disabled.");
+				return null;
+			}
+			final Class<?> fileSystemDocumentLoaderClass = llmClassLoader.loadClass("dev.langchain4j.data.document.loader.FileSystemDocumentLoader");
+			final Method loadDocumentsRecursivelyMethod = fileSystemDocumentLoaderClass.getMethod("loadDocumentsRecursively", Path.class);
+			final Method loadDocumentMethod = fileSystemDocumentLoaderClass.getMethod("loadDocument", Path.class);
+
+			final List<Object> allDocuments = new ArrayList<>();
+			//@SuppressWarnings("unchecked")
+			//final List<Object> documents = (List<Object>) loadDocumentsRecursivelyMethod.invoke(fileSystemDocumentLoaderClass, new File("resources"+File.separator+"help").toPath());
+			//allDocuments.addAll(documents);
+			for(final File F : new File("guides").listFiles())
+				if(F.isFile())
+					allDocuments.add(loadDocumentMethod.invoke(fileSystemDocumentLoaderClass, F.toPath()));
+
+			final Class<?> documentSplittersClass = llmClassLoader.loadClass("dev.langchain4j.data.document.splitter.DocumentSplitters");
+			final Method recursiveSplitterMethod = documentSplittersClass.getMethod("recursive", int.class, int.class);
+			final Object splitter = recursiveSplitterMethod.invoke(documentSplittersClass, Integer.valueOf(500), Integer.valueOf(100));
+
+			final Method splitAllMethod = splitter.getClass().getMethod("splitAll", List.class);
+			@SuppressWarnings("unchecked")
+			final List<Object> segments = (List<Object>) splitAllMethod.invoke(splitter, allDocuments);
+
+			final Class<?> ollamaEmbeddingModelClass = llmClassLoader.loadClass("dev.langchain4j.model.ollama.OllamaEmbeddingModel");
+			final Class<?> ollamaEmbeddingModelBuilderClass = llmClassLoader.loadClass("dev.langchain4j.model.ollama.OllamaEmbeddingModel$OllamaEmbeddingModelBuilder");
+			final Method builderMethod = ollamaEmbeddingModelClass.getMethod("builder");
+			final Object builder = builderMethod.invoke(ollamaEmbeddingModelClass);
+
+			final Method baseUrlMethod = ollamaEmbeddingModelBuilderClass.getMethod("baseUrl", String.class);
+			baseUrlMethod.invoke(builder, url);
+
+			final Method modelNameMethod = ollamaEmbeddingModelBuilderClass.getMethod("modelName", String.class);
+			modelNameMethod.invoke(builder, "nomic-embed-text:latest");
+
+			final Method buildMethod = ollamaEmbeddingModelBuilderClass.getMethod("build");
+			final Object embeddingModel = buildMethod.invoke(builder);
+
+			final Class<?> responseClass = llmClassLoader.loadClass("dev.langchain4j.model.output.Response");
+			final Method embedAllMethod = embeddingModel.getClass().getMethod("embedAll", List.class);
+			final Object embedResponse = embedAllMethod.invoke(embeddingModel, segments);
+			final Method contentMethod = responseClass.getMethod("content");
+		    @SuppressWarnings("rawtypes")
+			final List embeddings = (List)contentMethod.invoke(embedResponse);
+
+			final Class<?> inMemoryEmbeddingStoreClass = llmClassLoader.loadClass("dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore");
+			final Constructor<?> storeConstructor = inMemoryEmbeddingStoreClass.getConstructor();
+			final Object embeddingStore = storeConstructor.newInstance();
+
+			final Method addAllMethod = inMemoryEmbeddingStoreClass.getMethod("addAll", List.class, List.class);
+			addAllMethod.invoke(embeddingStore, embeddings, segments);
+
+			final Class<?> embeddingStoreRetrieverClass = llmClassLoader.loadClass("dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever");
+			final Method retrieverBuilderMethod = embeddingStoreRetrieverClass.getMethod("builder");
+			final Object retrieverBuilder = retrieverBuilderMethod.invoke(embeddingStoreRetrieverClass);
+			final Method retrieverStoreMethod = retrieverBuilder.getClass().getMethod("embeddingStore",llmClassLoader.loadClass("dev.langchain4j.store.embedding.EmbeddingStore"));
+			retrieverStoreMethod.invoke(retrieverBuilder,embeddingStore);
+			final Method retrieverModelMethod = retrieverBuilder.getClass().getMethod("embeddingModel",llmClassLoader.loadClass("dev.langchain4j.model.embedding.EmbeddingModel"));
+			retrieverModelMethod.invoke(retrieverBuilder,embeddingModel);
+			final Method retrieverBuildMethod = retrieverBuilder.getClass().getMethod("build");
+			retriever = retrieverBuildMethod.invoke(retrieverBuilder);
+			Resources.submitResource("LANGCHAIN4J_ARCHON_RETRIEVER", retriever);
+			return retriever;
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
+		}
+		return null;
+	}
+
+	@Override
+	public LLMSession createArchonLLMSession()
+	{
+		return createLLMSession("", Integer.valueOf(100), true);
+	}
+
 	@Override
 	public LLMSession createLLMSession(final String personality, final Integer maxMsgs)
 	{
+		return createLLMSession(personality, maxMsgs, false);
+	}
+
+	private LLMSession createLLMSession(final String personality, final Integer maxMsgs, final boolean archon)
+	{
+		this.llmModel=null;
 		final Object llmModel = initializeLLMSession();
 		if(llmModel instanceof Long)
 			return null;
@@ -3905,6 +3999,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			aiBuildMethod.setAccessible(true);
 			chatModelMethod.invoke(aiBuilder, llmModel);
 			chatMemoryMethod.invoke(aiBuilder, memory);
+			if(archon)
+			{
+				final Object retriever = this.buildCMRagRetreiver();
+				if(retriever != null)
+				{
+					final Class<?> retrieverClass = llmClassLoader.loadClass("dev.langchain4j.rag.content.retriever.ContentRetriever");
+					final Method retreiverMethod = aiBuilderClass.getMethod("contentRetriever", retrieverClass);
+					retreiverMethod.setAccessible(true);
+					retreiverMethod.invoke(aiBuilder, retriever);
+				}
+			}
 			final LLMSession ss = (LLMSession)aiBuildMethod.invoke(aiBuilder);
 			final Class<?> chatMessageClass = llmClassLoader.loadClass("dev.langchain4j.data.message.ChatMessage");
 			final Method messagesMethod = chatMemoryClass.getMethod("messages");

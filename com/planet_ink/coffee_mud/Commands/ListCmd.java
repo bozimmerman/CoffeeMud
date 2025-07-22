@@ -3947,8 +3947,8 @@ public class ListCmd extends StdCommand
 		s=s.toUpperCase().trim();
 		final ListCmdEntry foundCmd = (ListCmdEntry)CMath.s_valueOf(ListCmdEntry.class, s);
 		if((foundCmd!=null)
-		&&(CMSecurity.isAllowedAnywhereContainsAny(mob, foundCmd.flags))
-			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+		&&((CMSecurity.isAllowedAnywhereContainsAny(mob, foundCmd.flags))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
 				return foundCmd;
 		for(final ListCmdEntry cmd : ListCmdEntry.values())
 		{
