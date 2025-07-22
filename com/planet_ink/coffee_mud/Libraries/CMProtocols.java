@@ -4006,13 +4006,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			chatMemoryMethod.invoke(aiBuilder, memory);
 			if(archon)
 			{
-				final Object retriever = this.buildCMRagRetreiver();
-				if(retriever != null)
+				final LLM llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
+				if(llmType == LLM.OLLAMA)
 				{
-					final Class<?> retrieverClass = llmClassLoader.loadClass("dev.langchain4j.rag.content.retriever.ContentRetriever");
-					final Method retreiverMethod = aiBuilderClass.getMethod("contentRetriever", retrieverClass);
-					retreiverMethod.setAccessible(true);
-					retreiverMethod.invoke(aiBuilder, retriever);
+					final Object retriever = this.buildCMRagRetreiver();
+					if(retriever != null)
+					{
+						final Class<?> retrieverClass = llmClassLoader.loadClass("dev.langchain4j.rag.content.retriever.ContentRetriever");
+						final Method retreiverMethod = aiBuilderClass.getMethod("contentRetriever", retrieverClass);
+						retreiverMethod.setAccessible(true);
+						retreiverMethod.invoke(aiBuilder, retriever);
+					}
 				}
 			}
 			final LLMSession ss = (LLMSession)aiBuildMethod.invoke(aiBuilder);

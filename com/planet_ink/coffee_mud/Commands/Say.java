@@ -147,7 +147,7 @@ public class Say extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what?",theWord));
+			CMLib.commands().postCommandFail(mob,origCmds,L(theWord+" what?"));
 			return false;
 		}
 
@@ -351,7 +351,7 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("@x1  what?",theWord));
+			CMLib.commands().postCommandFail(mob,origCmds,L(theWord+"  what?"));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
