@@ -433,7 +433,7 @@ public class Composting extends GatheringSkill
 		verb=L("composting @x1",foundShortName);
 		displayText=L("You are composting @x1",foundShortName);
 		room=mob.location();
-		final String oldFoundName = found.Name();
+		final String oldFoundName = (found==null)?"":found.Name();
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

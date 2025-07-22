@@ -212,7 +212,7 @@ public class Trawling extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		final int duration=getDuration(mob,1);
-		final String oldFoundName = found.Name();
+		final String oldFoundName = (found==null)?"":found.Name();
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) trawling for fish."));
 		if(R.okMessage(mob,msg))
 		{

@@ -519,7 +519,7 @@ public class Farming extends GatheringSkill
 
 		mine.destroy();
 		final int duration=getDuration(mob,1);
-		final String oldFoundName = found.Name();
+		final String oldFoundName = (found==null)?"":found.Name();
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) planting @x1.",foundShortName));
 		verb=L("planting @x1",foundShortName);
 		displayText=L("You are planting @x1",foundShortName);

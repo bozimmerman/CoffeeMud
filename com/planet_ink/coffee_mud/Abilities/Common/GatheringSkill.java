@@ -66,7 +66,8 @@ public class GatheringSkill extends CommonSkill
 	protected static final Map<String, int[]>			supportedMaterials	= new Hashtable<String, int[]>();
 	protected static final Map<String, int[]>			supportedUseRscs	= new Hashtable<String, int[]>();
 
-	protected static TreeMap<Room,Quad<Room,Integer,short[],Long>> roomSpamCounter = new TreeMap<Room,Quad<Room,Integer,short[],Long>>();
+	protected static final long EXPIRE_DURATION = (30 * 60 * 1000);
+	protected static Map<Room,Quad<Room,Integer,short[],Long>> roomSpamCounter = new ExpireHashMap<Room,Quad<Room,Integer,short[],Long>>(EXPIRE_DURATION);
 
 	public GatheringSkill()
 	{
@@ -132,7 +133,7 @@ public class GatheringSkill extends CommonSkill
 			final Quad<Room,Integer,short[],Long> curRecord = roomSpamCounter.get(R);
 			if(curRecord == null)
 			{
-				final Long expirationTime = Long.valueOf(now + (30 * 60 * 1000)); // intentional
+				final Long expirationTime = Long.valueOf(now + EXPIRE_DURATION); // intentional
 				final short[] first = new short[] {1};
 				final Quad<Room,Integer,short[],Long> record = new Quad<Room,Integer,short[],Long>(R,Integer.valueOf(R.myResource()),first,expirationTime);
 				roomSpamCounter.put(R, record);

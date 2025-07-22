@@ -44,6 +44,9 @@ pork sandwich	FOOD		29	Pork	1	bread	1	greens	-1	tomatoes	-1
 chef`s salad	FOOD		30	greens	1	poultry	1	eggs	1	tomatoes	1	peppers	1	carrots	1	onions	1
 skinless grapes	FOOD		31	grapes	1	grape juice	1										
 grape skins	FOOD		33	grapes	1												
-bottom fermented yeast	FOOD		38	flour	1	sugar	1	water	1								
+bottom fermented yeast	FOOD		38	flour	1	SUGAR	2	WATER	1								
 wild yeast	FOOD		44	sugar	1	herbs	1										
 strawberry shortcake	FOOD		76	shortcake	1	strawberries	1	cream	2								
+batter	FOOD		5	Flour	1	SALT	1	WATER	1								
+simple syrup	DRINK		1	SUGAR	1	WATER	1										
+grenadine	DRINK		8	FRUIT	1	SUGAR	1	WATER	1								

@@ -207,7 +207,7 @@ public class Chopping extends GatheringSkill
 			}
 		}
 		final int duration=getDuration(mob,1);
-		final String oldFoundName = found.Name();
+		final String oldFoundName = (found==null)?"":found.Name();
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) looking for a good tree to chop."));
 		if(mob.location().okMessage(mob,msg))
 		{

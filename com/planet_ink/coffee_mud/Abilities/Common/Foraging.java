@@ -206,7 +206,7 @@ public class Foraging extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		final String oldFoundName = found.Name();
+		final String oldFoundName = (found==null)?"":found.Name();
 		final int duration=getDuration(mob,1);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) foraging."));
 		if(mob.location().okMessage(mob,msg))
