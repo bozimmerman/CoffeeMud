@@ -1804,6 +1804,12 @@ public class Stat  extends Skills
 					str.append(M.getExpNeededDelevel()).append(")");
 					found=true;
 				}
+				else
+				if(thisStat.equals("MAXHUNGER"))
+				{
+					str.append(M.maxState().maxHunger(M.baseWeight()));
+					found=true;
+				}
 				if(!found)
 				{
 					for(final String stat : M.curState().getStatCodes())
