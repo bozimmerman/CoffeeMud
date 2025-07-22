@@ -46,7 +46,7 @@ public class MUDProxy
 	private static Random		rand		= new Random(System.nanoTime());
 
 	private static final Map<SelectionKey, SelectionKey>
-		channelPairs	= new Hashtable<>();
+		channelPairs	= new Hashtable<SelectionKey, SelectionKey>();
 	private static final Map<Integer, PairList<String, Integer>>
 		portMap			= new Hashtable<Integer, PairList<String, Integer>>();
 	private static final Map<Pair<String, Integer>, Pair<SelectionKey, Long>>

@@ -100,7 +100,9 @@ public class LLM extends StdCommand
 	@Override
 	public boolean securityCheck(final MOB mob)
 	{
-		return (mob.playerStats()!=null) && (CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN));
+		return (mob.playerStats()!=null)
+				&& CMLib.protocol().isLLMInstalled()
+				&& (CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN));
 	}
 
 }

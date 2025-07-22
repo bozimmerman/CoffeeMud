@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.ListFile;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
@@ -3531,7 +3532,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final String REQUEST_URL = "https://api.twitter.com/2/tweets";
 		final String body = "{\"text\":\"" + MiniJSON.toJSONString(str) + "\"}";
 		final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		final Map<String, String> oauthParams = new HashMap<>();
+		final Map<String, String> oauthParams = new HashMap<String, String>();
 		oauthParams.put("oauth_consumer_key", consumerKey);
 		oauthParams.put("oauth_token", accessToken);
 		oauthParams.put("oauth_signature_method", "HMAC-SHA1");
@@ -3542,7 +3543,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		HttpURLConnection connection = null;
 		try
 		{
-			final Map<String, String> allParams = new HashMap<>(oauthParams);
+			final Map<String, String> allParams = new HashMap<String, String>(oauthParams);
 			final String[] sortedKeys = allParams.keySet().toArray(new String[0]);
 			Arrays.sort(sortedKeys);
 			final StringBuilder paramBuilder = new StringBuilder();
@@ -3566,7 +3567,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final byte[] signatureBytes = mac.doFinal(baseStringBytes);
 			final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-			final List<String> encodedParams = new ArrayList<>();
+			final List<String> encodedParams = new ArrayList<String>();
 			encodedParams.add("oauth_consumer_key=\"" + URLEncoder.encode(oauthParams.get("oauth_consumer_key"), "UTF-8") + "\"");
 			encodedParams.add("oauth_token=\"" + URLEncoder.encode(oauthParams.get("oauth_token"), "UTF-8") + "\"");
 			encodedParams.add("oauth_signature_method=\"" + URLEncoder.encode(oauthParams.get("oauth_signature_method"), "UTF-8") + "\"");
@@ -3890,17 +3891,22 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				Log.warnOut("LANGCHAIN4J_BASEURL not set in INI file. LLM Archon disabled.");
 				return null;
 			}
-			final Class<?> fileSystemDocumentLoaderClass = llmClassLoader.loadClass("dev.langchain4j.data.document.loader.FileSystemDocumentLoader");
-			final Method loadDocumentsRecursivelyMethod = fileSystemDocumentLoaderClass.getMethod("loadDocumentsRecursively", Path.class);
-			final Method loadDocumentMethod = fileSystemDocumentLoaderClass.getMethod("loadDocument", Path.class);
-
-			final List<Object> allDocuments = new ArrayList<>();
+			//final Class<?> fileSystemDocumentLoaderClass = llmClassLoader.loadClass("dev.langchain4j.data.document.loader.FileSystemDocumentLoader");
+			//final Method loadDocumentsRecursivelyMethod = fileSystemDocumentLoaderClass.getMethod("loadDocumentsRecursively", Path.class);
+			//final Method loadDocumentMethod = fileSystemDocumentLoaderClass.getMethod("loadDocument", Path.class);
 			//@SuppressWarnings("unchecked")
 			//final List<Object> documents = (List<Object>) loadDocumentsRecursivelyMethod.invoke(fileSystemDocumentLoaderClass, new File("resources"+File.separator+"help").toPath());
 			//allDocuments.addAll(documents);
-			for(final File F : new File("guides").listFiles())
-				if(F.isFile())
-					allDocuments.add(loadDocumentMethod.invoke(fileSystemDocumentLoaderClass, F.toPath()));
+			final Class<?> documentClass = llmClassLoader.loadClass("dev.langchain4j.data.document.Document");
+			final Method fromMethod = documentClass.getMethod("from", String.class);  // Or use the overload with Metadata if needed
+
+			final List<Object> allDocuments = new ArrayList<Object>();
+			for(final String ragF : CMProps.getListFileStringList(ListFile.LLM_ADMIN_RAGS))
+			{
+				final CMFile F = new CMFile(ragF,null);
+				if(F.exists())
+					allDocuments.add(fromMethod.invoke(documentClass, F.textUnformatted().toString()));
+			}
 
 			final Class<?> documentSplittersClass = llmClassLoader.loadClass("dev.langchain4j.data.document.splitter.DocumentSplitters");
 			final Method recursiveSplitterMethod = documentSplittersClass.getMethod("recursive", int.class, int.class);
@@ -3971,7 +3977,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	private LLMSession createLLMSession(final String personality, final Integer maxMsgs, final boolean archon)
 	{
-		this.llmModel=null;
 		final Object llmModel = initializeLLMSession();
 		if(llmModel instanceof Long)
 			return null;

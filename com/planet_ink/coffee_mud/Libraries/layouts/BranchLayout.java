@@ -98,7 +98,7 @@ public class BranchLayout extends AbstractLayout
         final int oppDir = Directions.getOpDirectionCode(dir);
         LayoutNode n = new DefaultLayoutNode(new long[]{0, 0});
         LayoutNode firstNode = n;
-        final Vector<LayoutNode> nsCorridor = new Vector<>();
+        final Vector<LayoutNode> nsCorridor = new Vector<LayoutNode>();
         for (int x = 0; x < diameter; x++)
         {
             lSet.use(n, LayoutTypes.street);
@@ -126,7 +126,7 @@ public class BranchLayout extends AbstractLayout
         n = new DefaultLayoutNode(new long[]{-(diameter / 2), -(diameter / 2)});
         if (dir == Directions.EAST)
             firstNode = n;
-        final Vector<LayoutNode> ewCorridor = new Vector<>();
+        final Vector<LayoutNode> ewCorridor = new Vector<LayoutNode>();
         for (int x = 0; x < diameter; x++)
         {
             lSet.use(n, LayoutTypes.street);
@@ -156,7 +156,7 @@ public class BranchLayout extends AbstractLayout
 
         if (branchesPerCorridor > 0)
         {
-            final List<Integer> availableNodes = new ArrayList<>();
+            final List<Integer> availableNodes = new ArrayList<Integer>();
             for (int i = 1; i < diameter - 1; i++)
                 availableNodes.add(Integer.valueOf(i));
             Collections.shuffle(availableNodes);
@@ -171,7 +171,7 @@ public class BranchLayout extends AbstractLayout
 
         if (branchesPerCorridor > 0)
         {
-            final List<Integer> availableNodes = new ArrayList<>();
+            final List<Integer> availableNodes = new ArrayList<Integer>();
             for (int i = 1; i < diameter - 1; i++)
                 availableNodes.add(Integer.valueOf(i));
             Collections.shuffle(availableNodes);
