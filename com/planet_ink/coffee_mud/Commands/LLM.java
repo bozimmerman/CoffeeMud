@@ -73,14 +73,7 @@ public class LLM extends StdCommand
     			sess = CMLib.protocol().createLLMSession(null,Integer.valueOf(100));
     		userText = "Greetings! My name is "+mob.Name()+"!";
     		if(sess != null)
-    		{
     			sessions.put(mob.Name(), sess);
-    			if(reset)
-    			{
-    				mob.tell(L("Reset done."));
-    				return false;
-    			}
-    		}
     		else
     		{
     			mob.tell(L("Something went very wrong.  Check the mud.log file."));

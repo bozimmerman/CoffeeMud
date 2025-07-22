@@ -1,6 +1,6 @@
 # Build 5.10.6 Release ??/??/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
-  2. CoffeeMud now integrates with LLMs via LangChain4J.
+  2. CoffeeMud now integrates with LLMs via LangChain4J.  See installation guide.
   3. New admin command: LLM, for chatting with your AI.
   4. Immunities and TemporaryImmunity can now include effects/behaviors.
 
