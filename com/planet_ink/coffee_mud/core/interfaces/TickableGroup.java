@@ -175,6 +175,11 @@ public interface TickableGroup extends CMRunnable
 	public long getMilliTotal();
 
 	/**
+	 * Resets the total millis counted
+	 */
+	public void resetTotals();
+
+	/**
 	 * Returns the number of times that this object has ticked in total
 	 * @return the number of times that this object has ticked in total
 	 */

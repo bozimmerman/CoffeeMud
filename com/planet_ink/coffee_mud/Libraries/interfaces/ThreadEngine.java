@@ -428,6 +428,11 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public String getSystemReport(String itemCode);
 
 	/**
+	 * Resets all the time counter totals
+	 */
+	public void resetReportTotals();
+
+	/**
 	 * A bit out of date, this returns the status of the
 	 * given ticking object as a descriptive string.
 	 *

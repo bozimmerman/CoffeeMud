@@ -1749,6 +1749,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setVar(CMProps.Str.ALLMUDPORTS,str.toString());
 			CMProps.setState(CMProps.HostState.RUNNING);
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Online");
+			CMLib.threads().resetReportTotals();
 			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");
 			return true;
 		}

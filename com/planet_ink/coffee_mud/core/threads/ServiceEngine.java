@@ -524,6 +524,16 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
+	public void resetReportTotals()
+	{
+		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+		{
+			final TickableGroup almostTock=e.next();
+			almostTock.resetTotals();
+		}
+	}
+
+	@Override
 	public String getSystemReport(final String itemCode)
 	{
 		final String cd=itemCode.toLowerCase();

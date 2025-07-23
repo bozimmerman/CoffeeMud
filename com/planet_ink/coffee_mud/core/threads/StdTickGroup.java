@@ -160,6 +160,13 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	}
 
 	@Override
+	public void resetTotals()
+	{
+		milliTotal = 1;
+		tickTotal = 1;
+	}
+
+	@Override
 	public long getTickTotal()
 	{
 		return tickTotal;

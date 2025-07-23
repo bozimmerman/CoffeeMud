@@ -665,6 +665,12 @@ public class Reset extends StdCommand
 			}
 		}
 		else
+		if(s.equalsIgnoreCase("tickcounters"))
+		{
+			CMLib.threads().resetReportTotals();
+			mob.tell(L("Done."));
+		}
+		else
 		if(s.equalsIgnoreCase("sorthelp"))
 		{
 			final List<helpSets> sets = new ArrayList<helpSets>();
