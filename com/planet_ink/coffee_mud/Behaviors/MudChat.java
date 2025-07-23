@@ -809,7 +809,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	protected List<ChattyEntry> getChatEntries(final String preMatcher, final MOB forMe, final ChattyGroup[] chatGroups)
 	{
 		final ChatEntryGroup allChatEntries = getChatEntries(forMe, chatGroups);
-		final List<String> matchWords = CMLib.english().parseWords(preMatcher.toLowerCase().trim());
+		final List<String> matchWords = CMParms.parseSpaces(CMStrings.removePunctuationStrict(preMatcher.toLowerCase().trim()),true);
 		final Set<ChattyEntry> chatEntries = new HashSet<ChattyEntry>();
 		for(final String word : matchWords)
 			if(allChatEntries.mapped.containsKey(word))
@@ -877,32 +877,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				repl = R.displayText((MOB)M);
 			else
 				repl = R.displayText();
-		}
-		else
-		if(var.equals("ALIGNMENTDESC"))
-		{
-			String ad = " ";
-			if(M instanceof MOB)
-			{
-				final MOB mob=(MOB)M;
-				if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
-				{
-					final int fact = mob.fetchFaction(CMLib.factions().getInclinationID());
-					final Faction F = CMLib.factions().getFaction(CMLib.factions().getInclinationID());
-					if (F != null)
-						ad += F.fetchRangeName(fact)+" ";
-				}
-				if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
-				{
-					final int fact = mob.fetchFaction(CMLib.factions().getAlignmentID());
-					final Faction F = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
-					if (F != null)
-						ad += F.fetchRangeName(fact)+" ";
-				}
-			}
-			repl = ad.trim();
-			if(repl.length()==0)
-				repl="irrelevant";
 		}
 		else
 		if(var.startsWith("PERSONALITY"))
@@ -1279,6 +1253,15 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			final char c=(i==expression.length())?'\0':expression.charAt(i);
 			switch(c)
 			{
+			case '\\':
+				if(i<expression.length()-1)
+				{
+					str.append(expression.charAt(i+1));
+					i++;
+				}
+				else
+					str.append("\\");
+				break;
 			case ')': case ']': case '}': case '>':
 				if(closeStack.size()==0)
 					throw new CMException("Parse error at "+i+": "+c+" not expected w/o open. ("+expression+")");
@@ -1306,8 +1289,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				final Pair<Object,ChatExpConn> pair;
 				if(state!=MatchState.POST_PAREN)
 				{
-					final String words = str.toString().toLowerCase().trim();
-					match.str = words;
+					match.str = str.toString().toLowerCase().trim();
+					final String words = CMStrings.removePunctuationStrict(match.str);
 					if(words.indexOf(' ')<0)
 						cur.ones.add(words);
 					else
@@ -1643,6 +1626,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			   talkDown=TALK_WAIT_DELAY;
 			else // dont parse unless we are done waiting
 			if((!srcMob.isMonster())
+			&&(msg.sourceMinor()!=CMMsg.TYP_SPEAK)
 			&&(talkDown<=0)
 			&&(lastReactedToM!=msg.source()))
 			{

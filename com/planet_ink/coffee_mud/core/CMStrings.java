@@ -1931,7 +1931,9 @@ public class CMStrings
 
 	/**
 	 * Strips punctuation characters, leaving only letters and
-	 * numbers and such.
+	 * numbers and such.  Removes all this:
+	 * !@#$%^&*()+&lt;>.,'\";:) {}[]|\\/?~
+	 * Including spaces, for some reason.
 	 * @param s the string to strip
 	 * @return the stripped string
 	 */
@@ -1941,6 +1943,25 @@ public class CMStrings
 		for(int i=str.length()-1;i>=0;i--)
 		{
 			if("!@#$%^&*()+<>.,'\";:) {}[]|\\/?~`".indexOf(str.charAt(i))>=0)
+				str.deleteCharAt(i);
+		}
+		return str.toString();
+	}
+
+	/**
+	 * Strips punctuation characters, leaving only letters and
+	 * numbers and such.  Removes all this:
+	 * !.,;:?
+	 * Including spaces, for some reason.
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String removePunctuationStrict(final String s)
+	{
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if("!.,;:?`".indexOf(str.charAt(i))>=0)
 				str.deleteCharAt(i);
 		}
 		return str.toString();

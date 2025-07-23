@@ -5696,6 +5696,56 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return "" + M.getMoneyVariation(); // varmoney
 		case MAXHUNGER:
 			return "" + M.maxState().maxHunger(M.baseWeight());
+		case SHOPGOODSLIST:
+		{
+			final StringBuilder str = new StringBuilder("");
+			if(M instanceof Environmental)
+			{
+				final ShopKeeper shop = CMLib.coffeeShops().getShopKeeper(M);
+				if(shop != null)
+				{
+					final ArrayList<String> names = new ArrayList<String>();
+					for(final Iterator<Environmental> e = shop.getShop().getStoreInventory();e.hasNext();)
+						names.add(e.next().name());
+					str.append(CMParms.toListString(names));
+				}
+			}
+			if(str.length()>0)
+				return str.toString();
+			else
+				return "nothing";
+		}
+		case ALIGNMENTDESC:
+		{
+			String ad = " ";
+			if(M instanceof MOB)
+			{
+				final MOB mob=M;
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+				{
+					final int fact = mob.fetchFaction(CMLib.factions().getInclinationID());
+					if(fact < Integer.MAX_VALUE)
+					{
+						final Faction F = CMLib.factions().getFaction(CMLib.factions().getInclinationID());
+						if (F != null)
+							ad += F.fetchRangeName(fact)+" ";
+					}
+				}
+				if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+				{
+					final int fact = mob.fetchFaction(CMLib.factions().getAlignmentID());
+					if(fact < Integer.MAX_VALUE)
+					{
+						final Faction F = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+						if (F != null)
+							ad += F.fetchRangeName(fact)+" ";
+					}
+				}
+			}
+			if(ad.trim().length()==0)
+				return "irrelevant";
+			return ad.trim();
+		}
 		// case 23:
 		//	return getGenScripts(M,false);
 		}
@@ -5856,6 +5906,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case VARMONEY:
 			M.setMoneyVariation(CMath.s_parseMathExpression(val));
 			break; // varmoney
+		case ALIGNMENTDESC:
+		case SHOPGOODSLIST:
 		case MAXHUNGER:
 			break;
 		/*

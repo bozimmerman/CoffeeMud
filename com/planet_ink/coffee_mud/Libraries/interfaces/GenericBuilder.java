@@ -126,7 +126,9 @@ public interface GenericBuilder extends CMLibrary
 		IMG,
 		FACTIONS,
 		VARMONEY,
-		MAXHUNGER
+		MAXHUNGER,
+		SHOPGOODSLIST,
+		ALIGNMENTDESC
 		;
 		private static String[] CODES=null;
 

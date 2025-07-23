@@ -55,7 +55,7 @@
 #                 speaker.  See LIST STATS.
 #        $<...>  Returns a variable value or a generic stat value for the 
 #                 target.  See LIST STATS.
-#                 Variables include: THEMEDESC, ROOMDESC, ALIGNMENTDESC, PERSONALITY
+#                 Variables include: THEMEDESC, ROOMDESC, and PERSONALITY
 #        $%...%  Causes the part of the sentence to be evaluated by the MOBPROG
 #                Scriptable system as a function.
 #        ~       Separates one or more responses on a line.  May be followed by
@@ -2199,6 +2199,18 @@ ${LLMPROMPT+ Begin now: }
 9are you pregnant?
 9what do pregnant women make you think of?
 
+.[<s-name> review(s) <t-youposs> inventory]
+2Quality goods, every bit -- guarenteed.
+2Take your time; look around.
+2Let me know when you've made your decision.
+2Just browsing?
+9
+9
+
+L[<S-NAME> review\(s\) <T-YOUPOSS> inventory]
+5`You seem to have '${SHOPGOODSLIST}' available for sale.  Any advice for my purchase?
+9
+
 {<S-NAME>& from &(the north|the south|the east|the west|above|below)}
 9Hi there $t!  How are you?
 9What's up $t?
@@ -2685,7 +2697,7 @@ L()
 9`$w
 
 *L()
-9$(We are fighting each other) $w
+9`(We are fighting each other) $w
 
 ############################################################
 >dog fido beastly fido_dog wolf beagle puppy

@@ -563,15 +563,18 @@ public class MUDProxy
 			}
 			key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
 		}
+		catch(final NotYetConnectedException e)
+		{
+			// do nothing, its noise.
+			closeKey(key);
+		}
 		catch(final IOException e)
 		{
 			closeKey(key);
 			Log.errOut(e.getMessage());
-			return;
 		}
 		catch(final CancelledKeyException e)
 		{
-			return;
 		}
 	}
 
