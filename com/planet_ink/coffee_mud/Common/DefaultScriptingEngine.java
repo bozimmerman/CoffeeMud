@@ -13337,6 +13337,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public String getScriptResourceKey()
 	{
+		if(scriptKey == null)
+			return ""+this;
 		return scriptKey;
 	}
 

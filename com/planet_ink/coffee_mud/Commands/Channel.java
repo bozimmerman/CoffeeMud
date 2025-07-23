@@ -118,8 +118,27 @@ public class Channel extends StdCommand
 
 		if((pstats!=null)&&(CMath.isSet(pstats.getChannelMask(),channelInt)))
 		{
+			final Command C = CMClass.getCommand("NoChannel");
+			if(C!=null)
+			{
+				for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+				{
+					final ScriptingEngine engine = e.nextElement();
+					if(engine.getScript().startsWith("#"+channelName.toUpperCase()+C))
+					{
+						mob.delScript(engine);
+						break;
+					}
+				}
+			}
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell(L("@x1 has been turned on.  Use `NO@x2` to turn it off again.",channelName,channelName.toUpperCase()));
+			return false;
+		}
+		else
+		if((commands.size()>0)&&(CMParms.combine(commands,0).equalsIgnoreCase("on")))
+		{
+			mob.tell(L("@x1 is already turned on.",channelName));
 			return false;
 		}
 
