@@ -718,21 +718,7 @@ public class CMProps extends Properties
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(props[c]==null)
 			props[c]=this;
-		try
-		{
-			final CMFile F=new CMFile(filename,null);
-			if(F.exists())
-			{
-				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
-				loaded=true;
-			}
-			else
-				loaded=false;
-		}
-		catch(final IOException e)
-		{
-			loaded=false;
-		}
+		load(filename);
 	}
 
 	/**
@@ -748,15 +734,11 @@ public class CMProps extends Properties
 		if(props[c]==null)
 			props[c]=this;
 
-		try
-		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
-			loaded=true;
-		}
-		catch(final IOException e)
-		{
-			loaded=false;
-		}
+		for(final Object key : p.keySet())
+			if(key instanceof String)
+				super.setProperty((String)key, p.getProperty((String)key));
+		load(filename);
+		loaded=true;
 	}
 
 	/**
@@ -814,6 +796,31 @@ public class CMProps extends Properties
 				return P;
 		}
 		return p();
+	}
+
+	/**
+	 * Load the given ini filepath into this CMProps instance
+	 * and mark it as loaded.
+	 *
+	 * @param iniFilename the filename to load
+	 */
+	public void load(final String iniFilename)
+	{
+		try
+		{
+			final CMFile F=new CMFile(iniFilename,null);
+			if(F.exists())
+			{
+				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
+				loaded=true;
+			}
+			else
+				loaded=false;
+		}
+		catch(final IOException e)
+		{
+			loaded=false;
+		}
 	}
 
 	/**

@@ -30,7 +30,7 @@ hot chocolate	DRINK		18	cocoa	1	milk	1
 soap	SOAP		19	ash	1	limes	1	beef	1								
 dolmas	FOOD		20	rice	1	grapes	1										
 kabobs	FOOD		21	peppers	1	meat	-1	fish	1								
-Dragon-On-A-Stick	FOOD		21	peppers	1	dragonmeat	-1	fish	-1	meat	-1					
+Dragon-On-A-Stick	FOOD		21	peppers	1	dragonmeat	-1	fish	-1	meat	-1						
 Draconian Stew	FOOD		22	dragonmeat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
 % stew	FOOD		22	meat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
 % stew	FOOD		23	beef	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
@@ -46,4 +46,11 @@ pot roast	FOOD		29	beef	1	potatoes	1	carrots	1	onions	1	herbs	1
 hot fudge brownies	FOOD		30	cocoa	10	wheat	1	eggs	1	sugar	1	hot fudge	1				
 fried potatoes	FOOD		31	potatoes	1												
 beef and noodles	FOOD		62	beef	1	pasta	1	water	1	carrots	1						
-burrito	FOOD		91	corn tortilla	1	beans	1	cheese	1								
+burrito	FOOD		91	corn tortilla	1	BEANS	1	CHEESE	1								
+malt	FOOD		1	BARLEY	1												
+medium dark roasted malt	FOOD		46	BARLEY	1	WOOD	1										
+medium light roasted malt	FOOD		24	BARLEY	2	WOOD	1										
+dark roasted malt	FOOD		63	malt	1	WOOD	1										
+black malt	FOOD		20	malt	1	COAL	1										
+top fermented yeast	FOOD		22	flour	1	SUGAR	1			WATER							
+malted wheat	FOOD		46	malt	1	WHEAT	1										

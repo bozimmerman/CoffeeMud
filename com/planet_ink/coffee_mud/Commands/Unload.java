@@ -249,11 +249,19 @@ public class Unload extends StdCommand
 			else
 			if(str.equalsIgnoreCase("ini")||str.equalsIgnoreCase("settings")||str.equalsIgnoreCase("inifile"))
 			{
-				final CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+				final CMProps ipage=CMProps.instance();
+				ipage.clear();
+				ipage.load(CMProps.getVar(CMProps.Str.INIPATH));
 				if((ipage!=null)&&(ipage.isLoaded()))
 				{
 					ipage.resetSystemVars();
 					ipage.resetSecurityVars();
+					final String normalChannels=ipage.getStr("CHANNELS");
+					final String i3Channels=ipage.getBoolean("RUNI3SERVER") ? ipage.getStr("ICHANNELS") : "";
+					final String imc2Channels=ipage.getBoolean("RUNIMC2CLIENT") ? ipage.getStr("IMC2CHANNELS") : "";
+					CMLib.channels().loadChannels(normalChannels,i3Channels,imc2Channels);
+					CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
+					CMLib.journals().loadForumJournals(ipage.getStr("FORUMJOURNALS"));
 					mob.tell(L("INI Settings unloaded and reset"));
 				}
 				else
