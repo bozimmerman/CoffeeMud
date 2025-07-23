@@ -1306,8 +1306,8 @@ ${LLMPROMPT+ Begin now: }
 9tell me about your compulsions
 
 .(computer lang|(computer & language))
-9C++ is the best language.
-3Basic is the worst!
+9Java is the best language.
+3Basic is the best!
 3Cobol is BAD!
 4Pascal is annoying.
 3C is very portable.
@@ -2212,9 +2212,12 @@ L[<S-NAME> review\(s\) <T-YOUPOSS> inventory]
 9
 
 {<S-NAME>& from &(the north|the south|the east|the west|above|below)}
-9Hi there $t!  How are you?
-9What's up $t?
-9Hello $t. How's it going?
+7Hi there $t!  How are you?
+7What's up $t?
+7Hello $t. How's it going?
+7Hey $t!
+9
+9
 
 .(price )
 9why do you think about money so much?
