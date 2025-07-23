@@ -5694,6 +5694,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return M.getFactionListing(); // factions
 		case VARMONEY:
 			return "" + M.getMoneyVariation(); // varmoney
+		case MAXHUNGER:
+			return "" + M.maxState().maxHunger(M.baseWeight());
 		// case 23:
 		//	return getGenScripts(M,false);
 		}
@@ -5854,6 +5856,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case VARMONEY:
 			M.setMoneyVariation(CMath.s_parseMathExpression(val));
 			break; // varmoney
+		case MAXHUNGER:
+			break;
 		/*
 		case 23:
 		{
