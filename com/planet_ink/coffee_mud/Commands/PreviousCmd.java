@@ -51,10 +51,64 @@ public class PreviousCmd extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			final List<String> cmds = new Vector<String>(commands.size());
-			for(final Object o : CMParms.copyFlattenList(mob.session().getPreviousCMD()))
-				cmds.add(o.toString());
-			mob.enqueCommand(cmds,metaFlags,0);
+
+			final LinkedList<List<String>> cmdHistory = mob.session().getHistory();
+			if(cmdHistory.size()>0)
+			{
+				List<String> lastCmd = new XVector<String>(cmdHistory.getLast());
+				final String parms=CMParms.combineQuoted(commands,0).substring(1).trim().toLowerCase();
+				if(parms.length()>0)
+				{
+					lastCmd = null;
+					for(final Iterator<List<String>> h=cmdHistory.descendingIterator();h.hasNext();)
+					{
+						final List<String> cmd = h.next();
+						final String combined  = CMParms.combineQuoted(cmd,0).trim().toLowerCase();
+						if(combined.startsWith(parms))
+						{
+							lastCmd = cmd;
+							break;
+						}
+					}
+					if(lastCmd == null)
+					{
+						for(final Iterator<List<String>> h=cmdHistory.descendingIterator();h.hasNext();)
+						{
+							final List<String> cmd = h.next();
+							final String combined  = CMParms.combineQuoted(cmd,0).trim().toLowerCase();
+							if(combined.endsWith(parms))
+							{
+								lastCmd = cmd;
+								break;
+							}
+						}
+					}
+					if(lastCmd == null)
+					{
+						for(final Iterator<List<String>> h=cmdHistory.descendingIterator();h.hasNext();)
+						{
+							final List<String> cmd = h.next();
+							final String combined  = CMParms.combineQuoted(cmd,0).trim().toLowerCase();
+							if(combined.indexOf(parms)>=0)
+							{
+								lastCmd = cmd;
+								break;
+							}
+						}
+					}
+					if(lastCmd == null)
+					{
+						mob.tell(L("'@x1' does not match any commands in your history.  Try the HISTORY command.",parms));
+						return false;
+					}
+				}
+				final Vector<String> cmds = new Vector<String>(lastCmd.size());
+				for(final Object o : lastCmd)
+					cmds.add(o.toString());
+				mob.enqueCommand(cmds,metaFlags,0);
+			}
+			else
+				mob.tell(L("No previous history!"));
 		}
 		return false;
 	}

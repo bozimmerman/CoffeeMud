@@ -76,10 +76,10 @@ public class Dig extends StdCommand
 		final Session sess=mob.session();
 		boolean stop = secondsElapsed == -1;
 		if((sess!=null)
-		&&(sess.getPreviousCMD()!=null)
-		&&(sess.getPreviousCMD().size()>1)
-		&&(sess.getPreviousCMD().get(0).toUpperCase().equals("DIG"))
-		&&sess.getPreviousCMD().get(1).toUpperCase().equals("STOP"))
+		&&(sess.getHistory().size()>0)
+		&&(sess.getHistory().getLast().size()>1)
+		&&(sess.getHistory().getLast().get(0).toUpperCase().equals("DIG"))
+		&&sess.getHistory().getLast().get(1).toUpperCase().equals("STOP"))
 			stop=true;
 		if(stop)
 		{

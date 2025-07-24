@@ -971,16 +971,12 @@ public class DefaultSession implements Session
 		killFlag=truefalse;
 	}
 
-	private static final List<String> empty = new ReadOnlyList<String>(new ArrayList<String>(0));
-
 	@Override
-	public List<String> getPreviousCMD()
+	public LinkedList<List<String>> getHistory()
 	{
 		synchronized(history)
 		{
-			if(history.size()==0)
-				return empty;
-			return history.getLast();
+			return history;
 		}
 	}
 
@@ -1014,35 +1010,24 @@ public class DefaultSession implements Session
 		return snoopSuspensionStack;
 	}
 
-	@Override
-	public Enumeration<List<String>> getHistory()
-	{
-		final Vector<List<String>> V;
-		synchronized(history)
-		{
-			V = new XVector<List<String>>(history.descendingIterator());
-		}
-		return V.elements();
-	}
-
 	private int metaFlags()
 	{
 		return ((snoops.size()>0)?MUDCmdProcessor.METAFLAG_SNOOPED:0)
 			   |(((mob!=null)&&(mob.soulMate()!=null))?MUDCmdProcessor.METAFLAG_POSSESSED:0);
 	}
 
-	protected void setPreviousCmd(final List<String> cmds)
+	protected void addPreviousCmd(final List<String> cmd)
 	{
-		if(cmds==null)
+		if(cmd==null)
 			return;
-		if(cmds.size()==0)
+		if(cmd.size()==0)
 			return;
-		if((cmds.size()>0)&&(cmds.get(0).trim().startsWith("!")))
+		if((cmd.size()>0)&&(cmd.get(0).trim().startsWith("!")))
 			return;
 
 		synchronized(history)
 		{
-			history.addLast(new XVector<String>(cmds));
+			history.addLast(new XVector<String>(cmd));
 			if(history.size()>100)
 				history.removeFirst();
 		}
@@ -3465,7 +3450,7 @@ public class DefaultSession implements Session
 					for(final Iterator<List<String>> i=executableCommands.iterator();i.hasNext();)
 					{
 						parsedInput=i.next();
-						setPreviousCmd(parsedInput);
+						addPreviousCmd(parsedInput);
 						milliTotal+=(lastStop-lastStart);
 
 						lastStart=System.currentTimeMillis();
@@ -3992,7 +3977,7 @@ public class DefaultSession implements Session
 		switch (stat)
 		{
 		case PREVCMD:
-			return CMParms.combineQuoted(getPreviousCMD(), 0);
+			return (getHistory().size()>0)?CMParms.combineQuoted(getHistory().getLast(), 0):"";
 		case ISAFK:
 			return "" + isAfk();
 		case AFKMESSAGE:
@@ -4113,7 +4098,7 @@ public class DefaultSession implements Session
 		switch (stat)
 		{
 		case PREVCMD:
-			setPreviousCmd(CMParms.parse(val));
+			addPreviousCmd(CMParms.parse(val));
 			break;
 		case ISAFK:
 			setAfkFlag(CMath.s_bool(val));

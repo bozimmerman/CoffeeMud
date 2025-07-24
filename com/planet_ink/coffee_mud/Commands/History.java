@@ -62,8 +62,8 @@ public class History extends StdCommand
 				amount=CMath.s_int(commands.get(1));
 			}
 			int i=0;
-			for(final Enumeration<List<String>> e=mob.session().getHistory();e.hasMoreElements() && (i<amount);i++)
-				mob.tell("^H"+CMStrings.padRight(""+(i+1), 2)+": ^N"+CMParms.combineQuoted(e.nextElement(), 0));
+			for(final Iterator<List<String>> e=mob.session().getHistory().iterator();e.hasNext() && (i<amount);i++)
+				mob.tell("^H"+CMStrings.padRight(""+(i+1), 2)+": ^N"+CMParms.combineQuoted(e.next(), 0));
 		}
 		return false;
 	}

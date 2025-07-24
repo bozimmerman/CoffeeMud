@@ -130,11 +130,15 @@ public class WandArchon extends StdWand implements ArchonOnly
 
 	public boolean safetyCheck(final MOB mob, final String message)
 	{
-		if((!mob.isMonster())
+		final Session S= mob.session();
+		if((S!=null)
 		&&(message.length()>0)
-		&&(mob.session().getPreviousCMD()!=null)
-		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message)<0)
-		&&((!mob.isPlayer())||(mob.isMonster())||(mob.playerStats().getAlias(mob.session().getPreviousCMD().get(0))==null)))
+		&&(S.getHistory().size()>0)
+		&&(S.getHistory().getLast().size()>0)
+		&&(CMParms.combine(S.getHistory().getLast(),0).toUpperCase().indexOf(message)<0)
+		&&((!mob.isPlayer())
+			||(mob.isMonster())
+			||(mob.playerStats().getAlias(S.getHistory().getLast().get(0))==null)))
 		{
 			mob.tell(L("The wand fizzles in an irritating way."));
 			return false;

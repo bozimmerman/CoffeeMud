@@ -4,6 +4,7 @@
   3. New admin command: LLM, for chatting with your AI.
   4. Immunities and TemporaryImmunity can now include effects/behaviors.
   5. NOCHANNEL can now be given an ellapsed time.
+  6. ! command can now match previous history.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

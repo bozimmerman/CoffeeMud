@@ -1225,7 +1225,8 @@ public class MUD extends Thread implements MudHost
 						final Session S=(Session)R;
 						final MOB mob=S.mob();
 						final String mobName=(mob==null)?"null":mob.Name();
-						summary=": session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineQuoted(S.getPreviousCMD(),0);
+						summary=": session "+mobName+": "+S.getStatus().toString()+": "+
+								((S.getHistory().size()==0)?"":CMParms.combineQuoted(S.getHistory().getLast(),0));
 					}
 					else
 					if(R instanceof CMRunnable)

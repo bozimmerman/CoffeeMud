@@ -767,8 +767,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				try
 				{
 					final String oldVal = editRow.get(a).second;
-					fakeSession.getPreviousCMD().clear();
-					fakeSession.getPreviousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
+					if(fakeSession.getHistory().size()>0)
+					{
+						fakeSession.getHistory().getLast().clear();
+						fakeSession.getHistory().getLast().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
+					}
 					final String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
 					editRow.get(a).second=newVal;
 				}

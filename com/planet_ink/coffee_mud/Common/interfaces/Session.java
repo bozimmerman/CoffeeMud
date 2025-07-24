@@ -652,11 +652,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	/**
 	 * Returns a pre-parsed, pre-filtered list of strings
-	 * representing the last command entered by the user
+	 * representing the last commands entered by the user
 	 * through this session.
-	 * @return a list of strings
+	 * @return a list of strings list commands
 	 */
-	public List<String> getPreviousCMD();
+	public LinkedList<List<String>> getHistory();
 
 	/**
 	 * Returns the player MOB attached to this session object.
@@ -995,12 +995,6 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * return true if MPCP was enabled, and the command was sent
 	 */
 	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc);
-
-	/**
-	 * Returns the entire command history cached by this session.
-	 * @return the entire command history cached by this session.
-	 */
-	public Enumeration<List<String>> getHistory();
 
 	/**
 	 * Send this session fake input as if the user had typed it in.

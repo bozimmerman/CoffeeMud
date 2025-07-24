@@ -793,8 +793,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				fakeS=(Session)CMClass.getCommon("FakeSession");
 				fakeS.setMob(mob);
-				fakeS.getPreviousCMD().clear();
-				fakeS.getPreviousCMD().addAll(new XVector<String>("Y"));
+				final LinkedList<List<String>> pcmds = fakeS.getHistory();
+				if(pcmds.size()>0)
+				{
+					pcmds.getLast().clear();
+					pcmds.getLast().addAll(new XVector<String>("Y"));
+				}
 			}
 			final PlayerStats pStats=mob.playerStats();
 			final List<String> commands = Resources.getFileLineVector(new StringBuffer(E.msg()));
@@ -802,8 +806,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				if(fakeS != null)
 				{
-					fakeS.getPreviousCMD().clear();
-					fakeS.getPreviousCMD().addAll(new XVector<String>("Y"));
+					final LinkedList<List<String>> pcmds = fakeS.getHistory();
+					if(pcmds.size()>0)
+					{
+						pcmds.getLast().clear();
+						pcmds.getLast().addAll(new XVector<String>("Y"));
+					}
 				}
 				final String input = commands.get(i).trim().replace('`', '\'');
 				if(input.equalsIgnoreCase("<MOBPROG>"))

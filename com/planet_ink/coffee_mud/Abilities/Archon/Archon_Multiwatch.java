@@ -192,10 +192,11 @@ public class Archon_Multiwatch extends ArchonSkill
 			if(!DATA.containsKey(mob))
 				DATA.put(mob,new int[DATA_TOTAL]);
 			final int[] data=DATA.get(mob);
-			if((mob.session()!=null)&&(mob.session().getPreviousCMD()!=null))
+			if((mob.session()!=null)
+			&&(mob.session().getHistory().size()>0))
 			{
 				if((lastCommand!=null)
-				&&(!CMParms.combine(mob.session().getPreviousCMD(),0).equals(lastCommand)))
+				&&(!CMParms.combine(mob.session().getHistory().getLast(),0).equals(lastCommand)))
 				{
 					data[DATA_TYPEDCOMMAND]++;
 					List<MOB> V=null;
@@ -212,7 +213,7 @@ public class Archon_Multiwatch extends ArchonSkill
 							continue;
 						if(!CMLib.flags().isInTheGame(M,true))
 							continue;
-						final String hisLastCmd=CMParms.combine(mob.session().getPreviousCMD(),0);
+						final String hisLastCmd=CMParms.combine(mob.session().getHistory().getLast(),0);
 						final Archon_Multiwatch A=(Archon_Multiwatch)M.fetchEffect(ID());
 						if(A!=null)
 						{
@@ -222,7 +223,7 @@ public class Archon_Multiwatch extends ArchonSkill
 						}
 					}
 				}
-				lastCommand=CMParms.combine(mob.session().getPreviousCMD(),0);
+				lastCommand=CMParms.combine(mob.session().getHistory().getLast(),0);
 			}
 		}
 		return true;

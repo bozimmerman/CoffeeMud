@@ -189,10 +189,13 @@ public class StdDice extends StdItem implements MiscMagic
 			if(msg.tool() instanceof Social)
 			{
 				final Session sess=msg.source().session();
-				if(msg.source().session()!=null)
+				if((sess!=null)
+				&&(sess.getHistory().size()>0))
 				{
-					final List<String> prev = sess.getPreviousCMD();
-					if((prev!=null)&&(prev.size()>0)&&("ROLL".startsWith(prev.get(0).toUpperCase())))
+					final List<String> prev = sess.getHistory().getLast();
+					if((prev!=null)
+					&&(prev.size()>0)
+					&&("ROLL".startsWith(prev.get(0).toUpperCase())))
 						return rollTheBones(msg, new XVector<String>(prev));
 				}
 				return rollTheBones(msg, new XVector<String>(new String[]{"ROLL","$"+Name()+"$"}));

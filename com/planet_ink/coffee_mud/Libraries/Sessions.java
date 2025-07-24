@@ -185,16 +185,18 @@ public class Sessions extends StdLibrary implements SessionsList
 			final long time=System.currentTimeMillis()-S.getInputLoopTime();
 			if(time>0)
 			{
-				if((S.mob()!=null)||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)||((S.getStatus())==Session.SessionStatus.CHARCREATE))
+				if((S.mob()!=null)
+					||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
+					||((S.getStatus())==Session.SessionStatus.CHARCREATE))
 				{
 					long check=60000;
 
-					if((S.getPreviousCMD()!=null)
-					&&(S.getPreviousCMD().size()>0)
-					&&(S.getPreviousCMD().get(0).equalsIgnoreCase("IMPORT")
-					   ||S.getPreviousCMD().get(0).equalsIgnoreCase("EXPORT")
-					   ||S.getPreviousCMD().get(0).equalsIgnoreCase("CHARGEN")
-					   ||S.getPreviousCMD().get(0).equalsIgnoreCase("MERGE")))
+					if((S.getHistory().size()>0)
+					&&(S.getHistory().getLast().size()>0)
+					&&(S.getHistory().getLast().get(0).equalsIgnoreCase("IMPORT")
+					   ||S.getHistory().getLast().get(0).equalsIgnoreCase("EXPORT")
+					   ||S.getHistory().getLast().get(0).equalsIgnoreCase("CHARGEN")
+					   ||S.getHistory().getLast().get(0).equalsIgnoreCase("MERGE")))
 						check=check*600;
 					else
 					if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),CMSecurity.SecFlag.CMDROOMS)))
@@ -206,8 +208,7 @@ public class Sessions extends StdLibrary implements SessionsList
 					if(time>(check*10))
 					{
 						final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-						if((S.getPreviousCMD()==null)
-						||(S.getPreviousCMD().size()==0)
+						if((S.getHistory().size()==0)
 						||(S.getStatus()==Session.SessionStatus.LOGIN)
 						||(S.getStatus()==Session.SessionStatus.ACCOUNT_MENU)
 						||(S.getStatus()==Session.SessionStatus.HANDSHAKE_MCCP)
@@ -219,7 +220,7 @@ public class Sessions extends StdLibrary implements SessionsList
 							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())
 									+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"
-									+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):""));
+									+((S.getHistory().size()>0)?CMParms.combineQuoted(S.getHistory().getLast(),0):""));
 							if(S instanceof Thread)
 								CMLib.threads().dumpDebugStack("Sessions",(Thread)S);
 						}
@@ -233,13 +234,15 @@ public class Sessions extends StdLibrary implements SessionsList
 						if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
 							stopSessionAtAllCosts(S);
 						else
-						if((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0))
 						{
 							final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 							final String statusMsg;
-							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
-							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-								statusMsg = "STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):"");
+							if((S.getStatus() != Session.SessionStatus.LOGIN)
+							||(S.getHistory().size()>0))
+							{
+								statusMsg = "STATUS is :"+S.getStatus()+", LASTCMD was :"
+										+((S.getHistory().size()>0)?CMParms.combineQuoted(S.getHistory().getLast(),0):"");
+							}
 							else
 								statusMsg = "STATUS  is :"+S.getStatus()+", no last command available.";
 							if((S.isLockedUpWriting())
@@ -270,8 +273,11 @@ public class Sessions extends StdLibrary implements SessionsList
 					if(S.getStatus()!=Session.SessionStatus.HANDSHAKE_MCCP)
 					{
 						if(((S.getStatus())!=Session.SessionStatus.LOGIN)
-						||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-							Log.errOut(serviceClient.getName(),"STATUS was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?CMParms.combineQuoted(S.getPreviousCMD(),0):""));
+						||(S.getHistory().size()>0))
+						{
+							Log.errOut(serviceClient.getName(),"STATUS was :"+S.getStatus()+", LASTCMD was :"
+									+((S.getHistory().size()>0)?CMParms.combineQuoted(S.getHistory().getLast(),0):""));
+						}
 					}
 					setThreadStatus(serviceClient,"killing session ");
 					stopSessionAtAllCosts(S);

@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -848,15 +849,9 @@ public class VFShell
 					}
 
 					@Override
-					public List<String> getPreviousCMD()
+					public LinkedList<List<String>> getHistory()
 					{
-						return new Vector<String>();
-					}
-
-					@Override
-					public Enumeration<List<String>> getHistory()
-					{
-						return new XVector<List<String>>(getPreviousCMD()).elements();
+						return new LinkedList<List<String>>();
 					}
 
 					@Override

@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,6 +27,7 @@ import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.MiniJSON;
+import com.planet_ink.coffee_mud.core.collections.XLinkedList;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
@@ -53,8 +55,9 @@ public class FakeSession implements Session
 	protected MOB					mob			= null;
 	protected boolean				stripSnoop	= false;
 	protected boolean				stripCRLF	= false;
-	protected Vector<String>		inputV		= new Vector<String>();
 	protected Set<Integer>			telnet		= new HashSet<Integer>();
+
+	protected LinkedList<List<String>>inputV	= new XLinkedList<List<String>>(new Vector<String>());
 
 	protected final static char[]	COLOR_CRLF	= new char[] { '\n', '\r' };
 	protected String 				stripStr	= null;
@@ -227,7 +230,7 @@ public class FakeSession implements Session
 	@Override
 	public void setFakeInput(final String input)
 	{
-		inputV.add(input);
+		inputV.getLast().add(input);
 	}
 
 	@Override
@@ -511,10 +514,10 @@ public class FakeSession implements Session
 	{
 		synchronized (inputV)
 		{
-			if (inputV.size() == 0)
+			if((inputV.size() == 0)||(inputV.getLast().size()==0))
 				return "";
-			final String input = inputV.firstElement();
-			inputV.removeElementAt(0);
+			final String input = inputV.getLast().get(0);
+			inputV.getLast().remove(0);
 			return input;
 		}
 	}
@@ -576,15 +579,9 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public List<String> getPreviousCMD()
+	public LinkedList<List<String>> getHistory()
 	{
 		return inputV;
-	}
-
-	@Override
-	public Enumeration<List<String>> getHistory()
-	{
-		return new XVector<List<String>>(inputV).elements();
 	}
 
 	@Override
