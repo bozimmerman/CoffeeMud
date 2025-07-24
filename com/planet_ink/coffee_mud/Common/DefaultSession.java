@@ -128,6 +128,7 @@ public class DefaultSession implements Session
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
 	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
+	protected boolean		 reverseEcho		 = false;
 
 	protected byte[]		 promptSuffix		 = new byte[0];
 	protected ColorState	 currentColor		 = null;
@@ -297,8 +298,6 @@ public class DefaultSession implements Session
 				{
 				case HANDSHAKE_OPEN:
 				{
-					if((!terminalType.equals("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
-						changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
 					//rawout.flush(); rawBytesOut already flushes
 					setStatus(SessionStatus.HANDSHAKE_MCCP);
 					break;
@@ -486,6 +485,7 @@ public class DefaultSession implements Session
 					changeTelnetMode(rawout,TELNET_MSDP,true);
 				//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 				changeTelnetMode(rawout,TELNET_NAWS,true);
+				changeTelnetMode(rawout,TELNET_ECHO,false);
 				//changeTelnetMode(rawout,TELNET_BINARY,true);
 				if(mightSupportTelnetMode(TELNET_GA))
 					rawBytesOut(rawout,TELNETGABYTES);
@@ -623,13 +623,22 @@ public class DefaultSession implements Session
 		{
 			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-				Log.debugOut("Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+				Log.debugOut("Sent: "+(onOff?"DO":"DONT")+" "+Session.TELNET_DESCS[telnetCode]);
 		}
 		else
 		{
+			if(reverseEcho && telnetCode == TELNET_ECHO)
+			{
+				if(!onOff)
+				{
+					setServerTelnetMode(Session.TELNET_ECHO, true);
+					setClientTelnetMode(Session.TELNET_ECHO, true);
+					return;
+				}
+			}
 			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-				Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+				Log.debugOut("Sent: "+(onOff?"WILL":"WONT")+" "+Session.TELNET_DESCS[telnetCode]);
 		}
 		rawBytesOut(out, command);
 		//rawout.flush(); rawBytesOut already flushes
@@ -701,6 +710,15 @@ public class DefaultSession implements Session
 	{
 		try
 		{
+			if(this.reverseEcho && (telnetCode == TELNET_ECHO))
+			{
+				if(!onOff)
+				{
+					setServerTelnetMode(Session.TELNET_ECHO, true);
+					setClientTelnetMode(Session.TELNET_ECHO, true);
+					return;
+				}
+			}
 			final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 			out.flush();
 			rawBytesOut(rawout, command);
@@ -710,7 +728,7 @@ public class DefaultSession implements Session
 		{
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-			Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+			Log.debugOut("Sent: "+(onOff?"WILL":"WONT")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 
@@ -722,7 +740,7 @@ public class DefaultSession implements Session
 		rawBytesOut(rawout, command);
 		//rawout.flush(); rawBytesOut already flushes
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+			Log.debugOut("Back-Sent: "+(onOff?"DO":"DONT")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 
@@ -732,7 +750,7 @@ public class DefaultSession implements Session
 		rawBytesOut(out, command);
 		//rawout.flush(); rawBytesOut already flushes
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-			Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+			Log.debugOut("Back-Sent: "+(onOff?"DO":"DONT")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 
@@ -1706,9 +1724,6 @@ public class DefaultSession implements Session
 					||terminalType.equalsIgnoreCase("CMUD"))
 					{
 						this.terminalType = terminalType;
-						if(mightSupportTelnetMode(TELNET_ECHO))
-							telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
-						changeTelnetMode(rawout,TELNET_ECHO,false);
 						this.mttsBitmap = Long.valueOf(Session.MTTS_256COLORS|Session.MTTS_ANSI);
 					}
 					else
@@ -1716,9 +1731,6 @@ public class DefaultSession implements Session
 					{
 						if(this.terminalType.length()==0)
 							this.terminalType = terminalType;
-						if(mightSupportTelnetMode(TELNET_ECHO))
-							telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
-						changeTelnetMode(rawout,TELNET_ECHO,false);
 						this.mttsBitmap = Long.valueOf(Session.MTTS_256COLORS|Session.MTTS_ANSI);
 					}
 					else
@@ -1726,8 +1738,16 @@ public class DefaultSession implements Session
 					{
 						if(this.terminalType.length()==0)
 							this.terminalType = terminalType;
-						changeTelnetMode(rawout,TELNET_ECHO,true);
 						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI);
+					}
+					else
+					if(terminalType.equals("VTNT ANSI")||terminalType.equals("VTNT"))
+					{
+						if(this.terminalType.length()==0)
+							this.terminalType = terminalType;
+						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI);
+						this.changeTelnetMode(TELNET_ECHO, true);
+						this.reverseEcho=true;
 					}
 					else
 					if(terminalType.equals("ANSI-256COLOR")
@@ -1735,7 +1755,6 @@ public class DefaultSession implements Session
 					{
 						if(this.terminalType.length()==0)
 							this.terminalType = terminalType;
-						changeTelnetMode(rawout,TELNET_ECHO,true);
 						this.mttsBitmap = Long.valueOf(Session.MTTS_ANSI|Session.MTTS_256COLORS);
 					}
 					else
@@ -2098,11 +2117,8 @@ public class DefaultSession implements Session
 		case TELNET_DO:
 		{
 			final int last=readByte();
-			setClientTelnetMode(last,true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
-			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
-				setClientTelnetMode(Session.TELNET_ECHO,false);
 			if(last==TELNET_TERMTYPE)
 				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
@@ -2159,6 +2175,9 @@ public class DefaultSession implements Session
 			{
 				if(!getServerTelnetMode(last))
 					changeTelnetMode(last,true);
+				if(this.reverseEcho || (last != TELNET_ECHO))
+					setClientTelnetMode(last,true);
+
 				if(last == TELNET_MSSP)
 				{
 					final ByteArrayOutputStream buf=new ByteArrayOutputStream();
@@ -2220,17 +2239,12 @@ public class DefaultSession implements Session
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				Log.debugOut("Got WILL "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,true);
-			if(last==Session.TELNET_ECHO)
-			{
-				if(terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))
-					setClientTelnetMode(Session.TELNET_ECHO,false);
-			}
 			if(!mightSupportTelnetMode(last))
 				changeTelnetModeBackwards(last,false);
 			else
 			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
-			if(last==TELNET_TERMTYPE)
+			if(last == TELNET_TERMTYPE)
 				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(last == TELNET_LOGOUT)
 			{

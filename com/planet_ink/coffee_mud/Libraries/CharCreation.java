@@ -1245,6 +1245,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
 				if(loginObj.player != null)
 				{
+					session.changeTelnetMode(Session.TELNET_ECHO, true);
+					session.setClientTelnetMode(Session.TELNET_ECHO, false);
 					session.promptPrint(L("password for @x1: ",loginObj.player.name()));
 					loginObj.state=LoginState.LOGIN_ACCTCHAR_PWORD;
 					return LoginResult.INPUT_REQUIRED;
@@ -1278,6 +1280,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginAcctcharPword(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
+		session.changeTelnetMode(Session.TELNET_ECHO, false);
 		if(CMLib.encoder().passwordCheck(loginObj.password, loginObj.player.password()))
 		{
 			if((loginObj.player.accountName()==null)
@@ -1553,6 +1556,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.lastInput = cachedPw;
 				return null;
 			}
+			session.changeTelnetMode(Session.TELNET_ECHO, true);
+			session.setClientTelnetMode(Session.TELNET_ECHO, false);
 			session.promptPrint(L("password: "));
 			loginObj.state=LoginState.LOGIN_PASS_RECEIVED;
 			return LoginResult.INPUT_REQUIRED;
@@ -1605,6 +1610,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginPassReceived(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
+		session.changeTelnetMode(Session.TELNET_ECHO, false);
 		if(CMLib.encoder().passwordCheck(loginObj.password, loginObj.player.password()))
 		{
 			final LoginResult prelimResults = prelimChecks(session,loginObj.mob,loginObj.login,loginObj.player.email());
@@ -1936,6 +1942,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult acctmenuAddToCommand(final LoginSessionImpl loginObj, final Session session)
 	{
+		session.changeTelnetMode(Session.TELNET_ECHO, false);
 		if(loginObj.lastInput.length()>0)
 		{
 			loginObj.lastInput=loginObj.savedInput+" "+loginObj.lastInput;
@@ -2209,6 +2216,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
+				session.changeTelnetMode(Session.TELNET_ECHO, true);
+				session.setClientTelnetMode(Session.TELNET_ECHO, false);
 				session.promptPrint(L("\n\rPlease enter your existing password: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2221,7 +2230,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(parms.length<3)
 			{
-				session.promptPrint(L("\n\rPlease a new password: "));
+				try {
+					session.blockingIn(150, false);
+				} catch(final Exception e) {}
+				session.changeTelnetMode(Session.TELNET_ECHO, true);
+				session.setClientTelnetMode(Session.TELNET_ECHO, false);
+				session.promptPrint(L("\n\rPlease enter a new password: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2233,6 +2247,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(parms.length<4)
 			{
+				try {
+					session.blockingIn(150, false);
+				} catch(final Exception e) {}
+				session.changeTelnetMode(Session.TELNET_ECHO, true);
+				session.setClientTelnetMode(Session.TELNET_ECHO, false);
 				session.promptPrint(L("\n\rEnter the password again: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2394,6 +2413,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(parms.length<3)
 			{
+				session.changeTelnetMode(Session.TELNET_ECHO, true);
+				session.setClientTelnetMode(Session.TELNET_ECHO, false);
 				session.promptPrint(L("\n\rEnter a new password for this character: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2457,6 +2478,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(name);
 			if(parms.length<3)
 			{
+				session.changeTelnetMode(Session.TELNET_ECHO, true);
+				session.setClientTelnetMode(Session.TELNET_ECHO, false);
 				session.promptPrint(L("\n\rEnter the existing password for your character '@x1': ",name));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
@@ -2609,6 +2632,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 		if((!emailPassword)&&(password.length()==0))
 		{
+			session.changeTelnetMode(Session.TELNET_ECHO, true);
+			session.setClientTelnetMode(Session.TELNET_ECHO, false);
 			session.promptPrint(L("\n\rEnter a password: "));
 			loginObj.state=LoginState.CHARCR_PASSWORDDONE;
 			return LoginResult.INPUT_REQUIRED;
@@ -2633,6 +2658,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return LoginResult.INPUT_REQUIRED;
 			}
 		}
+		session.changeTelnetMode(Session.TELNET_ECHO, false);
 		loginObj.password=password;
 		final PlayerAccount acct=loginObj.acct;
 		final MOB mob=CMClass.getMOB("StdMOB");
