@@ -26,9 +26,9 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
 <AREA id="maze_dungeon" merge="true" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town">
-	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
-	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
+	<NAME merge="false">$areaname</NAME><SIZE merge="false">$areasize</SIZE>
+	<CLASS merge="false" select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+	<ROOM merge="false" insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR condition="$theme='town'" class="Arrest" parms="laws.ini;OFFICERS=&quot;\&quot;$__officertype\&quot;&quot; JUDGE=&quot;\&quot;$__chieftype\&quot;&quot;"/>
 </AREA>
 <AREA id="grid_dungeon" merge="true" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=town" />
@@ -212,7 +212,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
-				<SHOPINVENTORY number=300 price="$item_level">
+				<SHOPINVENTORY number="300" price="$item_level">
 					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
 				</SHOPINVENTORY>
 			</MOB>
@@ -286,12 +286,12 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
 				</ITEM>
-				<SHOPINVENTORY number=300 price="$item_level">
+				<SHOPINVENTORY number="300" price="$item_level">
 					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," />
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false"  condition="$pop_items!='false'"/>
-			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false"  condition="$pop_items!='false'"/>
+			<ITEM class="GenTable" name="the bar" MOBSHELD="20" display="$ITEM_NAME is here" isgettable="false"  condition="$pop_items!='false'"/>
 		</ROOM>
 	
 		<ROOM id="town_inn" layout="APARTMENT" size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
@@ -463,16 +463,16 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ABILITY class="Prayer_CureDisease" number=1000/>
-					<ABILITY class="Prayer_Heal" number=1000/>
-					<ABILITY class="Prayer_Bless" number=1000/>
-					<ABILITY class="Prayer_RemovePoison" number=1000/>
-					<ABILITY class="Prayer_CureBlindness" number=1000/>
-					<ABILITY class="Prayer_CureDeafness" number=1000/>
-					<ABILITY class="Prayer_RestoreVoice" number=1000/>
-					<ABILITY class="Prayer_RestoreSmell" number=1000/>
-					<ABILITY class="Prayer_Restoration" number=1000/>
-					<ABILITY class="Prayer_RemoveCurse" number=1000/>
+					<ABILITY class="Prayer_CureDisease" number="1000"/>
+					<ABILITY class="Prayer_Heal" number="1000"/>
+					<ABILITY class="Prayer_Bless" number="1000"/>
+					<ABILITY class="Prayer_RemovePoison" number="1000"/>
+					<ABILITY class="Prayer_CureBlindness" number="1000"/>
+					<ABILITY class="Prayer_CureDeafness" number="1000"/>
+					<ABILITY class="Prayer_RestoreVoice" number="1000"/>
+					<ABILITY class="Prayer_RestoreSmell" number="1000"/>
+					<ABILITY class="Prayer_Restoration" number="1000"/>
+					<ABILITY class="Prayer_RemoveCurse" number="1000"/>
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false condition="$pop_items!='false'">
@@ -481,7 +481,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<MATERIAL>STONE</MATERIAL>
 				<AFFECT class="Prop_Trashcan"></AFFECT>
 			</ITEM>
-			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$pop_items!='false'">
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld="1000000" hasalid=false condition="$pop_items!='false'">
 				<NAME>a fountain</NAME>
 				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
@@ -489,11 +489,11 @@ See guides/RandomAreas.html for information about documents of this type.
 		</ROOM>
 		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=12">
 			<TITLE select="pick-1">
-				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Shop</TITLE>
-				<TITLE pickweight=1>${c:fantasy_name1}`s ${c:shoptype} Store</TITLE>
-				<TITLE pickweight=2 condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
-				<TITLE pickweight=2 condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
-				<TITLE pickweight=1 condition="$shoptype='general'">${c:fantasy_name1}`s Dry Goods</TITLE>
+				<TITLE pickweight="1">${c:fantasy_name1}`s ${c:shoptype} Shop</TITLE>
+				<TITLE pickweight="1">${c:fantasy_name1}`s ${c:shoptype} Store</TITLE>
+				<TITLE pickweight="2" condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
+				<TITLE pickweight="2" condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
+				<TITLE pickweight="1" condition="$shoptype='general'">${c:fantasy_name1}`s Dry Goods</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -589,171 +589,171 @@ See guides/RandomAreas.html for information about documents of this type.
 				</ITEM>
 				<SHOPINVENTORY select="all">
 					<ITEM select="all" condition="$shoptype='weapon'">
-						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
-						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal" number="20"/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='armor'">
-						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
-						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number="20"/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='magic' and ($NOFANTASY != 'true')">
-						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
-						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number=20 price="$item_level * 100"/>
-						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-alchemy &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
-						<ITEM class="metacraft:any-herbalism &lt; $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number="20"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number="20"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number="20" price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number="20" price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number="20" price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number="20" price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing &lt; $level_range" number="20" price="$item_level * 100"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number="20" price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism &lt; $level_range" number="20" price="$item_level * 10"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
-						<ITEM class="metacraft:all-jewelmaking<$mob_level" number=20/>
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" number="20"/>
 					</ITEM>
 					<MOB select="all" condition="$shoptype='pet'">
-						<MOB class="genmob" copyof="Monkey" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Dog" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Fox" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Duck" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Falcon" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Bee" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Tiger" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Rat" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Puppy" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Pig" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Lizard" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
-						<MOB class="genmob" copyof="Lion" number=20 level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Monkey" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Dog" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Fox" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Duck" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Falcon" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Bee" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Tiger" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Rat" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Puppy" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Pig" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Lizard" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
+						<MOB class="genmob" copyof="Lion" number="20" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display"/>
 					</MOB>
 					<ITEM select="all" condition="$shoptype='potion'">
 					    <ITEM select="repeat-40">
-							<ITEM class="metacraft:any-alchemy<$mob_level" number=200 price="$item_level * 9"/>
+							<ITEM class="metacraft:any-alchemy<$mob_level" number="200" price="$item_level * 9"/>
 						</ITEM>
 					    <ITEM select="repeat-40">
-							<ITEM class="metacraft:any-herbalism<$mob_level" number=200 price="$item_level * 9"/>
+							<ITEM class="metacraft:any-herbalism<$mob_level" number="200" price="$item_level * 9"/>
 					    </ITEM>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='general'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal" number=20/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" number=20/>
-						<ITEM class="metacraft:all-glassblowing<$mob_level" number=20/>
-						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" number=20/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number="20"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" number="20"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal" number="20"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" number="20"/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level" number="20"/>
+						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='leather'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number="20"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='wood'">
-						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood" number=20/>
-						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood" number=20/>
-						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood" number=20/>
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood" number="20"/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood" number="20"/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='tailor'">
-						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth" number=20/>
-						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth" number=20/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number=20/>
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth" number="20"/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth" number="20"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number="20"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='food'">
-						<ITEM class="metacraft:all-cooking<$mob_level" number=20 price="$item_level * 2"/>
-						<ITEM class="metacraft:all-mastercooking<$mob_level" number=20 price="$item_level * 2"/>
-						<ITEM class="metacraft:all-baking<$mob_level" number=20 price="$item_level * 2"/>
-						<ITEM class="metacraft:all-masterbaking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-cooking<$mob_level" number="20" price="$item_level * 2"/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level" number="20" price="$item_level * 2"/>
+						<ITEM class="metacraft:all-baking<$mob_level" number="20" price="$item_level * 2"/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level" number="20" price="$item_level * 2"/>
 					</ITEM>
 					<ITEM select="pick-3?6" condition="$shoptype='butcher'">
-						<ITEM pickweight="6" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# meat bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just meat.</DESCRIPTION><MATERIAL>MEAT</MATERIAL><BASEGOLD>4</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="4" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# beef bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just beef.</DESCRIPTION><MATERIAL>BEEF</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# pork bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pork.</DESCRIPTION><MATERIAL>PORK</MATERIAL><BASEGOLD>8</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="6" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# poultry bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just poultry.</DESCRIPTION><MATERIAL>POULTRY</MATERIAL><BASEGOLD>3</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# mutton bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mutton.</DESCRIPTION><MATERIAL>MUTTON</MATERIAL><BASEGOLD>4</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# fish bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fish.</DESCRIPTION><MATERIAL>FISH</MATERIAL><BASEGOLD>5</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# salmon bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just salmon.</DESCRIPTION><MATERIAL>SALMON</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# carp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just carp.</DESCRIPTION><MATERIAL>CARP</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# trout bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just trout.</DESCRIPTION><MATERIAL>TROUT</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# shrimp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just shrimp.</DESCRIPTION><MATERIAL>SHRIMP</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# tuna bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just tuna.</DESCRIPTION><MATERIAL>TUNA</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# catfish bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just catfish.</DESCRIPTION><MATERIAL>CATFISH</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="6" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# meat bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just meat.</DESCRIPTION><MATERIAL>MEAT</MATERIAL><BASEGOLD>4</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="4" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# beef bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just beef.</DESCRIPTION><MATERIAL>BEEF</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# pork bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pork.</DESCRIPTION><MATERIAL>PORK</MATERIAL><BASEGOLD>8</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="6" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# poultry bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just poultry.</DESCRIPTION><MATERIAL>POULTRY</MATERIAL><BASEGOLD>3</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# mutton bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mutton.</DESCRIPTION><MATERIAL>MUTTON</MATERIAL><BASEGOLD>4</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# fish bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fish.</DESCRIPTION><MATERIAL>FISH</MATERIAL><BASEGOLD>5</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# salmon bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just salmon.</DESCRIPTION><MATERIAL>SALMON</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# carp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just carp.</DESCRIPTION><MATERIAL>CARP</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# trout bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just trout.</DESCRIPTION><MATERIAL>TROUT</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# shrimp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just shrimp.</DESCRIPTION><MATERIAL>SHRIMP</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# tuna bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just tuna.</DESCRIPTION><MATERIAL>TUNA</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# catfish bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just catfish.</DESCRIPTION><MATERIAL>CATFISH</MATERIAL><BASEGOLD>6</BASEGOLD><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-4?9" condition="$shoptype='farmer'">
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# mushrooms bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mushrooms.</DESCRIPTION><MATERIAL>MUSHROOMS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# fruit bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fruit.</DESCRIPTION><MATERIAL>FRUIT</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# apples bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just apples.</DESCRIPTION><MATERIAL>APPLES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# cherries bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cherries.</DESCRIPTION><MATERIAL>CHERRIES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# garlic bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just garlic.</DESCRIPTION><MATERIAL>GARLIC</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# olives bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just olives.</DESCRIPTION><MATERIAL>OLIVES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# berries bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just berries.</DESCRIPTION><MATERIAL>BERRIES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# rice bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just rice.</DESCRIPTION><MATERIAL>RICE</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# greens bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just greens.</DESCRIPTION><MATERIAL>GREENS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# corn bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just corn.</DESCRIPTION><MATERIAL>CORN</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# hops bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hops.</DESCRIPTION><MATERIAL>HOPS</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# cocoa bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cocoa.</DESCRIPTION><MATERIAL>COCOA</MATERIAL><BASEVALUE>4</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# peaches bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just peaches.</DESCRIPTION><MATERIAL>PEACHES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# nuts bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just nuts.</DESCRIPTION><MATERIAL>NUTS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# pineapples bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pineapples.</DESCRIPTION><MATERIAL>PINEAPPLES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# oranges bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just oranges.</DESCRIPTION><MATERIAL>ORANGES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# barley bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just barley.</DESCRIPTION><MATERIAL>BARLEY</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# onions bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just onions.</DESCRIPTION><MATERIAL>ONIONS</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# carrots bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just carrots.</DESCRIPTION><MATERIAL>CARROTS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM class="GenFoodResource" LEVEL="1" number=20><NAME>a 10# wheat bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wheat.</DESCRIPTION><MATERIAL>WHEAT</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# mushrooms bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mushrooms.</DESCRIPTION><MATERIAL>MUSHROOMS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# fruit bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fruit.</DESCRIPTION><MATERIAL>FRUIT</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# apples bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just apples.</DESCRIPTION><MATERIAL>APPLES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# cherries bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cherries.</DESCRIPTION><MATERIAL>CHERRIES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# garlic bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just garlic.</DESCRIPTION><MATERIAL>GARLIC</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# olives bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just olives.</DESCRIPTION><MATERIAL>OLIVES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# berries bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just berries.</DESCRIPTION><MATERIAL>BERRIES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# rice bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just rice.</DESCRIPTION><MATERIAL>RICE</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# greens bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just greens.</DESCRIPTION><MATERIAL>GREENS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# corn bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just corn.</DESCRIPTION><MATERIAL>CORN</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# hops bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hops.</DESCRIPTION><MATERIAL>HOPS</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# cocoa bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cocoa.</DESCRIPTION><MATERIAL>COCOA</MATERIAL><BASEVALUE>4</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# peaches bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just peaches.</DESCRIPTION><MATERIAL>PEACHES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# nuts bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just nuts.</DESCRIPTION><MATERIAL>NUTS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# pineapples bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pineapples.</DESCRIPTION><MATERIAL>PINEAPPLES</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# oranges bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just oranges.</DESCRIPTION><MATERIAL>ORANGES</MATERIAL><BASEVALUE>2</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# barley bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just barley.</DESCRIPTION><MATERIAL>BARLEY</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# onions bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just onions.</DESCRIPTION><MATERIAL>ONIONS</MATERIAL><BASEVALUE>10</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# carrots bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just carrots.</DESCRIPTION><MATERIAL>CARROTS</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM class="GenFoodResource" LEVEL="1" number="20"><NAME>a 10# wheat bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wheat.</DESCRIPTION><MATERIAL>WHEAT</MATERIAL><BASEVALUE>1</BASEVALUE><NOURISHMENT>200</NOURISHMENT><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-2?5" condition="$shoptype='lumber'">
-						<ITEM pickweight="6" class="GenResource" LEVEL="1" number=20><NAME>a 10# wood bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wood.</DESCRIPTION><MATERIAL>WOOD</MATERIAL><BASEGOLD>2</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="4" class="GenResource" LEVEL="1" number=20><NAME>a 10# pine bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pine.</DESCRIPTION><MATERIAL>PINE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# oak bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just oak.</DESCRIPTION><MATERIAL>OAK</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# maple bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just maple.</DESCRIPTION><MATERIAL>MAPLE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# teak bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just teak.</DESCRIPTION><MATERIAL>TEAK</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# mesquite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mesquite.</DESCRIPTION><MATERIAL>MESQUITE</MATERIAL><BASEGOLD>9</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# reed bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just reed.</DESCRIPTION><MATERIAL>REED</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="6" class="GenResource" LEVEL="1" number="20"><NAME>a 10# wood bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wood.</DESCRIPTION><MATERIAL>WOOD</MATERIAL><BASEGOLD>2</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="4" class="GenResource" LEVEL="1" number="20"><NAME>a 10# pine bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pine.</DESCRIPTION><MATERIAL>PINE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# oak bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just oak.</DESCRIPTION><MATERIAL>OAK</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# maple bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just maple.</DESCRIPTION><MATERIAL>MAPLE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# teak bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just teak.</DESCRIPTION><MATERIAL>TEAK</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# mesquite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just mesquite.</DESCRIPTION><MATERIAL>MESQUITE</MATERIAL><BASEGOLD>9</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenResource" LEVEL="1" number="20"><NAME>a 10# reed bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just reed.</DESCRIPTION><MATERIAL>REED</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-2?6" condition="$shoptype='quarry'">
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# stone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just stone.</DESCRIPTION><MATERIAL>STONE</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="4" class="GenResource" LEVEL="1" number=20><NAME>a 10# limestone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just limestone.</DESCRIPTION><MATERIAL>LIMESTONE</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# flint bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just flint.</DESCRIPTION><MATERIAL>FLINT</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
-						<ITEM pickweight="8" class="GenResource" LEVEL="1" number=20><NAME>a 10# sand bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just sand.</DESCRIPTION><MATERIAL>SAND</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# shale bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just shale.</DESCRIPTION><MATERIAL>SHALE</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# pumice bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pumice.</DESCRIPTION><MATERIAL>PUMICE</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# sandstone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just sandstone.</DESCRIPTION><MATERIAL>SANDSTONE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# soapstone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just soapstone.</DESCRIPTION><MATERIAL>SOAPSTONE</MATERIAL><BASEGOLD>60</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# granite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just granite.</DESCRIPTION><MATERIAL>GRANITE</MATERIAL><BASEGOLD>2</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# stone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just stone.</DESCRIPTION><MATERIAL>STONE</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="4" class="GenResource" LEVEL="1" number="20"><NAME>a 10# limestone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just limestone.</DESCRIPTION><MATERIAL>LIMESTONE</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# flint bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just flint.</DESCRIPTION><MATERIAL>FLINT</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
+						<ITEM pickweight="8" class="GenResource" LEVEL="1" number="20"><NAME>a 10# sand bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just sand.</DESCRIPTION><MATERIAL>SAND</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# shale bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just shale.</DESCRIPTION><MATERIAL>SHALE</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# pumice bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just pumice.</DESCRIPTION><MATERIAL>PUMICE</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# sandstone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just sandstone.</DESCRIPTION><MATERIAL>SANDSTONE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# soapstone bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just soapstone.</DESCRIPTION><MATERIAL>SOAPSTONE</MATERIAL><BASEGOLD>60</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# granite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just granite.</DESCRIPTION><MATERIAL>GRANITE</MATERIAL><BASEGOLD>2</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-1?4" condition="$shoptype='foundry'">
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# lead bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just lead.</DESCRIPTION><MATERIAL>LEAD</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# chromium bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just chromium.</DESCRIPTION><MATERIAL>CHROMIUM</MATERIAL><BASEGOLD>80</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="8" class="GenResource" LEVEL="1" number=20><NAME>a 10# zinc bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just zinc.</DESCRIPTION><MATERIAL>FLINT</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
-						<ITEM pickweight="7" class="GenResource" LEVEL="1" number=20><NAME>a 10# bronze bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just bronze.</DESCRIPTION><MATERIAL>SAND</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="4" class="GenResource" LEVEL="1" number=20><NAME>a 10# copper bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just copper.</DESCRIPTION><MATERIAL>SHALE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# steel bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just steel.</DESCRIPTION><MATERIAL>STEEL</MATERIAL><BASEGOLD>75</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# atlantite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just atlantite.</DESCRIPTION><MATERIAL>ATLANTITE</MATERIAL><BASEGOLD>200</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# gold bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just gold.</DESCRIPTION><MATERIAL>GOLD</MATERIAL><BASEGOLD>150</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# silver bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just silver.</DESCRIPTION><MATERIAL>SILVER</MATERIAL><BASEGOLD>30</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# lead bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just lead.</DESCRIPTION><MATERIAL>LEAD</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# chromium bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just chromium.</DESCRIPTION><MATERIAL>CHROMIUM</MATERIAL><BASEGOLD>80</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="8" class="GenResource" LEVEL="1" number="20"><NAME>a 10# zinc bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just zinc.</DESCRIPTION><MATERIAL>FLINT</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
+						<ITEM pickweight="7" class="GenResource" LEVEL="1" number="20"><NAME>a 10# bronze bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just bronze.</DESCRIPTION><MATERIAL>SAND</MATERIAL><BASEGOLD>1</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="4" class="GenResource" LEVEL="1" number="20"><NAME>a 10# copper bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just copper.</DESCRIPTION><MATERIAL>SHALE</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenResource" LEVEL="1" number="20"><NAME>a 10# steel bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just steel.</DESCRIPTION><MATERIAL>STEEL</MATERIAL><BASEGOLD>75</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# atlantite bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just atlantite.</DESCRIPTION><MATERIAL>ATLANTITE</MATERIAL><BASEGOLD>200</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# gold bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just gold.</DESCRIPTION><MATERIAL>GOLD</MATERIAL><BASEGOLD>150</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenResource" LEVEL="1" number="20"><NAME>a 10# silver bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just silver.</DESCRIPTION><MATERIAL>SILVER</MATERIAL><BASEGOLD>30</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-2?5" condition="$shoptype='pelts'">
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# fur bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fur.</DESCRIPTION><MATERIAL>FUR</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# hide bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hide.</DESCRIPTION><MATERIAL>HIDE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# scales bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just scales.</DESCRIPTION><MATERIAL>SCALES</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
-						<ITEM pickweight="5" class="GenResource" LEVEL="1" number=20><NAME>a 10# leather bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just leather.</DESCRIPTION><MATERIAL>LEATHER</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# feathers bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just feathers.</DESCRIPTION><MATERIAL>FEATHERS</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# fur bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fur.</DESCRIPTION><MATERIAL>FUR</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenResource" LEVEL="1" number="20"><NAME>a 10# hide bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hide.</DESCRIPTION><MATERIAL>HIDE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# scales bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just scales.</DESCRIPTION><MATERIAL>SCALES</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
+						<ITEM pickweight="5" class="GenResource" LEVEL="1" number="20"><NAME>a 10# leather bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just leather.</DESCRIPTION><MATERIAL>LEATHER</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# feathers bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just feathers.</DESCRIPTION><MATERIAL>FEATHERS</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 					<ITEM select="pick-1?4" condition="$shoptype='fabric'">
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# cotton bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cotton.</DESCRIPTION><MATERIAL>COTTON</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# hemp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hemp.</DESCRIPTION><MATERIAL>HEMP</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# silk bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just silk.</DESCRIPTION><MATERIAL>SILK</MATERIAL><BASEGOLD>200</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
-						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# wool bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wool.</DESCRIPTION><MATERIAL>WOOL</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# fur bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fur.</DESCRIPTION><MATERIAL>FUR</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
-						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# hide bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hide.</DESCRIPTION><MATERIAL>HIDE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# cotton bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cotton.</DESCRIPTION><MATERIAL>COTTON</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="3" class="GenResource" LEVEL="1" number="20"><NAME>a 10# hemp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hemp.</DESCRIPTION><MATERIAL>HEMP</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="2" class="GenResource" LEVEL="1" number="20"><NAME>a 10# silk bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just silk.</DESCRIPTION><MATERIAL>SILK</MATERIAL><BASEGOLD>200</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
+						<ITEM pickweight="9" class="GenResource" LEVEL="1" number="20"><NAME>a 10# wool bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just wool.</DESCRIPTION><MATERIAL>WOOL</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# fur bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just fur.</DESCRIPTION><MATERIAL>FUR</MATERIAL><BASEGOLD>20</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
+						<ITEM pickweight="1" class="GenResource" LEVEL="1" number="20"><NAME>a 10# hide bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hide.</DESCRIPTION><MATERIAL>HIDE</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
-			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="($shoptype='food') and ($pop_items!='false')">
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld="1000000" hasalid=false condition="($shoptype='food') and ($pop_items!='false')">
 				<NAME>a drinking fountain</NAME>
 				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
@@ -945,11 +945,11 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>SLASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
-					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number=20/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number="20"/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number="20"/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number="20"/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number="20"/>
+					<MOB class="GenHorse" name="(a(n)) $adj_mammal_color horse" display="$mob_name is here" number="20"/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
@@ -1320,7 +1320,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM class="metacraft" name="a piece of paper" number=100/>
+					<ITEM class="metacraft" name="a piece of paper" number="100"/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
@@ -1431,7 +1431,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION condition="$roomtag_nodetype='leaf'">${c:STAT:ANYROOM:DISPLAY} is to the $roomexits_desc_long.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" hasalock="true" deflocked="true" level=91 keyname="$areaname prisonkey" />
+			<EXIT class="GenDoor" hasalock="true" deflocked="true" level="91" keyname="$areaname prisonkey" />
 		</ROOM>
 		<ROOM id="town_school" class="WoodRoom"  condition="$__townschool&lt;1 and $__numshoptypes_all &gt; 10" define="__townschool+=1,__townsecond+=1">
 			<TITLE select="any-1">

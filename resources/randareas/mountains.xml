@@ -27,9 +27,9 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
 <AREA id="maze_dungeon" merge="true" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=mountains" >
-	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
-	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
+	<NAME merge="false">$areaname</NAME><SIZE merge="false">$areasize</SIZE>
+	<CLASS merge="false" select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
+	<ROOM merge="false" insert="hallway_rooms,interior_rooms,leaf_rooms" />
 </AREA>
 <AREA id="grid_dungeon" merge="true" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=mountains" />
 <AREA id="square_dungeon" merge="true" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=mountains" />
@@ -335,10 +335,10 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING id="_mountain_path_name" select="any-1" define="_mountain_path_name">
-	<STRING pickweight=2 define="_mountain_path_roomtype=1">$mountain_path_prefix $_mountain_path_type</STRING>
-	<STRING pickweight=2 define="_mountain_path_roomtype=0">$mountain_path_prefix $mountain_nouns</STRING>
-	<STRING pickweight=1 define="_mountain_path_roomtype=1">$adj_creepywords $mountain_path_prefix $_mountain_path_type</STRING>
-	<STRING pickweight=1 define="_mountain_path_roomtype=0">$adj_creepywords $mountain_path_prefix $mountain_nouns</STRING>
+	<STRING pickweight="2" define="_mountain_path_roomtype=1">$mountain_path_prefix $_mountain_path_type</STRING>
+	<STRING pickweight="2" define="_mountain_path_roomtype=0">$mountain_path_prefix $mountain_nouns</STRING>
+	<STRING pickweight="1" define="_mountain_path_roomtype=1">$adj_creepywords $mountain_path_prefix $_mountain_path_type</STRING>
+	<STRING pickweight="1" define="_mountain_path_roomtype=0">$adj_creepywords $mountain_path_prefix $mountain_nouns</STRING>
 </STRING>
 
 <STRING id="mountain_path_prefix" select="any-1">
