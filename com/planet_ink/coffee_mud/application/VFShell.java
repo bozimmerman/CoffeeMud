@@ -42,6 +42,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.MiniJSON;
 import com.planet_ink.coffee_mud.core.Resources;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
@@ -499,6 +500,12 @@ public class VFShell
 					}
 
 					@Override
+					public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
+					{
+						return false;
+					}
+
+					@Override
 					public void doPing(final SessionPing ping)
 					{
 
@@ -808,7 +815,7 @@ public class VFShell
 					}
 
 					@Override
-					public void stopSession(boolean disconnect, final boolean t1, final boolean t2, final boolean t3)
+					public void stopSession(final boolean disconnect, final boolean t1, final boolean t2, final boolean t3)
 					{
 					}
 

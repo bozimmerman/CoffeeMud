@@ -44,6 +44,7 @@ public class MUDProxy
 	private static Selector		selector	= null;
 	private static LBStrategy	strategy	= LBStrategy.ROUNDROBIN;
 	private static Random		rand		= new Random(System.nanoTime());
+	private static String		ctlPassword = ""+(rand.nextInt(90000) + 10000);
 
 	private static final Map<SelectionKey, SelectionKey>
 		channelPairs	= new Hashtable<SelectionKey, SelectionKey>();
@@ -231,6 +232,7 @@ public class MUDProxy
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v"+MUD.HOST_VERSION);
 		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2025 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
+		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);
 		try(Selector selector = Selector.open())
 		{
 			MUDProxy.selector = selector;
@@ -627,6 +629,44 @@ public class MUDProxy
 						}
 						if(pairedKey != null)
 							closeKey(pairedKey);
+					}
+				}
+				else
+				if(obj.containsKey("password")
+				&&(obj.getCheckedString("password").equals(ctlPassword)))
+				{
+					if(command.equalsIgnoreCase("listsessions"))
+					{
+						final MiniJSON.JSONObject robj = new MiniJSON.JSONObject();
+						final List<MiniJSON.JSONObject> sessions = new ArrayList<MiniJSON.JSONObject>();
+						for(final SelectionKey k : channelPairs.keySet())
+						{
+							final SelectionKey pk = channelPairs.get(k);
+							if(k.attachment() instanceof MUDProxy)
+							{
+								final MUDProxy sessProxy = (MUDProxy)k.attachment();
+								if(sessProxy.isClient
+								&& (sessProxy.outsidePortNum >0)
+								&& (channelPairs.containsKey(pk))
+								&& (pk.attachment() instanceof MUDProxy)
+								&& (!((MUDProxy)pk.attachment()).isClient))
+								{
+									final MUDProxy pProxy=(MUDProxy)pk.attachment();
+									final MiniJSON.JSONObject sObj = new MiniJSON.JSONObject();
+									sObj.put("source",sessProxy.ipAddress+":"+sessProxy.outsidePortNum);
+									sObj.put("target",pProxy.port.first+":"+pProxy.port.second.toString());
+									sessions.add(sObj);
+								}
+							}
+						}
+						robj.put("sessions", sessions.toArray());
+						robj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
+						final byte[] bytes = MUDProxy.makeMPCPPacket(command+" "+robj.toString());
+						synchronized(context.output)
+						{
+							context.output.add(ByteBuffer.wrap(bytes));
+						}
+						handleWrite(key);
 					}
 				}
 			}

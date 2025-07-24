@@ -987,6 +987,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public boolean sendGMCPEvent(final String eventName, final String json);
 
 	/**
+	 * If the mud is connected to a proxy server, this will send the given
+	 * command and json doc to the proxy server.
+	 *
+	 * @param command the command
+	 * @param doc the json doc
+	 * return true if MPCP was enabled, and the command was sent
+	 */
+	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc);
+
+	/**
 	 * Returns the entire command history cached by this session.
 	 * @return the entire command history cached by this session.
 	 */

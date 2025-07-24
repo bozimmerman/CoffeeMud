@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.MiniJSON;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
@@ -213,6 +214,12 @@ public class FakeSession implements Session
 
 	@Override
 	public boolean sendGMCPEvent(final String eventName, final String json)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
 	{
 		return false;
 	}
@@ -534,7 +541,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void stopSession(boolean disconnect, final boolean t1, final boolean t2, final boolean t3)
+	public void stopSession(final boolean disconnect, final boolean t1, final boolean t2, final boolean t3)
 	{
 	}
 

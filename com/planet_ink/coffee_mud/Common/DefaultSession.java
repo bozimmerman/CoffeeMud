@@ -557,15 +557,27 @@ public class DefaultSession implements Session
 		//out.flush(); rawBytesOut already flushes
 	}
 
+	/**
+	 * Returns what the mud is will to do immediately.
+	 *
+	 * @param telnetCode the telnet code to check
+	 * @return true if the mud is willing to do it immediately.
+	 */
 	private boolean mightSupportTelnetMode(final int telnetCode)
 	{
 		if(telnetSupportSet.size()==0)
 		{
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSDP));
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
+				telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
+				telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSDP))
+				telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSDP));
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.GMCP))
+				telnetSupportSet.add(Integer.valueOf(Session.TELNET_GMCP));
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
+				telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSSP));
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_GMCP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
@@ -575,7 +587,6 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MPCP));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_GA));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
-			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_LINEMODE));
 		}
 		return telnetSupportSet.contains(Integer.valueOf(telnetCode));
@@ -1868,6 +1879,7 @@ public class DefaultSession implements Session
 								break;
 							if(command.equalsIgnoreCase("clientinfo"))
 								this.ipAddress = obj.getCheckedString("client_address");
+							else
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{
 								obj.remove("timestamp");
@@ -1886,6 +1898,14 @@ public class DefaultSession implements Session
 									if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 										changeTelnetMode(rawout,TELNET_COMPRESS2,true);
 								}
+							}
+							else
+							if((mob!=null)&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.SHUTDOWN)))
+							{
+								final Command C = CMClass.getCommand("ProxyCtl");
+								if(C!=null)
+									C.execute(mob, new XVector<String>("PROXYCTL",command,jsonStr),
+											MUDCmdProcessor.METAFLAG_ASMESSAGE);
 							}
 						}
 					}
@@ -2205,7 +2225,7 @@ public class DefaultSession implements Session
 				rawout=new BufferedOutputStream(sock.getOutputStream());
 				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
-			if((mightSupportTelnetMode(last)&&(getServerTelnetMode(last))))
+			if((mightSupportTelnetMode(last))&&(getServerTelnetMode(last)))
 				changeTelnetMode(last,false);
 			break;
 		}
@@ -3839,8 +3859,11 @@ public class DefaultSession implements Session
 		lastWriteTime=System.currentTimeMillis();
 	}
 
-	private void sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
+	@Override
+	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
 	{
+		if(!getClientTelnetMode(TELNET_MPCP))
+			return false;
 		try
 		{
 			doc.put("timestamp", Long.valueOf(System.currentTimeMillis()));
@@ -3862,11 +3885,13 @@ public class DefaultSession implements Session
 			packetOut.write(payloadBytes);
 			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SE});
 			rawBytesOut(rawout, packetOut.toByteArray());
+			return true;
 		}
 		catch(final Exception e)
 		{
 			Log.errOut(e);
 		}
+		return false;
 	}
 
 	@Override
