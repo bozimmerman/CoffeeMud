@@ -6,7 +6,7 @@ creamed corn	FOOD		3	corn	1	milk	1
 fried tomatoes	FOOD		3	tomatoes	1												
 cooked olives	FOOD		4	olives	1												
 fried rice	FOOD		4	rice	1												
-coffee	DRINK		5	coffeebeans	1	water	1										
+coffee	DRINK	*Poison_Caffeine;	5	COFFEEBEANS	1	WATER	1										
 cocoa	DRINK		5	cocoa	1	water	1										
 mashed potatoes	FOOD		6	potatoes	1	milk	1	butter	1								
 Draconian Steak	FOOD		7	dragonmeat	1												
