@@ -56,7 +56,7 @@ settable vars:
 		<QUEST_NAME>You want to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT="99" CONDITION="$deityname!=''">$deityname needs you to $reason_verb $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
@@ -105,7 +105,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gentravel</STRING>
-		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+		<STRING PICKWEIGHT="99" CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
@@ -183,13 +183,13 @@ settable vars:
 	</STRING>
 
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
-		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="50">NO</STRING>
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
 	</STRING>
 	
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-		<STRING PICKWEIGHT=2>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
+		<STRING PICKWEIGHT="2">NO</STRING>
+		<STRING PICKWEIGHT="1">YES</STRING>
 	</STRING>
 
 	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
@@ -204,7 +204,7 @@ settable vars:
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
-	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" merge="true">
 		<STRING>$target_level</STRING>
 	</STRING>
 	
@@ -243,11 +243,11 @@ settable vars:
 	</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
-		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+		<OBJECT pickweight="55555" condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel = ''">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel != ''">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and (SELECT: count\. from $mql_viable_questgivers) &gt; 1
 		</OBJECT>

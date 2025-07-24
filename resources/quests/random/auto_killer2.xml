@@ -60,7 +60,7 @@ settable vars:
 		<QUEST_NAME>You want $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT="99" CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
@@ -94,7 +94,7 @@ settable vars:
 		<STRING>$reason_genkiller</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
-		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+		<STRING PICKWEIGHT="99" CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
@@ -123,7 +123,7 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>I aint payin!</STRING>
-			<STRING>You aint getting nothin from </.</STRING>
+			<STRING>You aint getting nothin from me!</STRING>
 			<STRING>I don't you anything!</STRING>
 			<STRING>Leave me alone, I don't owe you anything!</STRING>
 		</STRING>
@@ -200,7 +200,7 @@ settable vars:
 	</STRING>
 
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
-		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="50">NO</STRING>
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
 	</STRING>
 	
@@ -210,8 +210,8 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-		<STRING PICKWEIGHT=2>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
+		<STRING PICKWEIGHT="2">NO</STRING>
+		<STRING PICKWEIGHT="1">YES</STRING>
 	</STRING>
 
 	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
@@ -226,7 +226,7 @@ settable vars:
 		<STRING>${SELECT:med_level FROM $target_area}</STRING>
 	</STRING>
 	
-	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" merge="true">
 		<STRING>$target_level</STRING>
 	</STRING>
 	
@@ -245,7 +245,7 @@ settable vars:
 	<STRING load="/resources/randareas/swamp.xml" />
 	
 	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
-		<OBJECT CONDITION="$targetname!=''" pickweight=10>
+		<OBJECT CONDITION="$targetname!=''" pickweight="10">
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$targetname</NAME>
 				<DISPLAY>$mob_name is here.</DISPLAY>
@@ -290,17 +290,17 @@ settable vars:
 				</BEHAVIOR>
 			</MOB>
 		</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="9">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="9">SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
@@ -321,11 +321,11 @@ settable vars:
 	</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
-		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+		<OBJECT pickweight="55555" condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel = ''">
 			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; 10
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel != ''">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel and VISITABLE_ROOMS &gt; 10
 		</OBJECT>
 	</OBJECT>

@@ -55,7 +55,7 @@ settable vars:
 		<QUEST_NAME>You want to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} to $target_name in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT="99" CONDITION="$deityname!=''">$deityname needs you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
@@ -103,7 +103,7 @@ settable vars:
 		<STRING>$reason_wedotogether</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
-		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+		<STRING PICKWEIGHT="99" CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
@@ -183,8 +183,8 @@ settable vars:
 	</STRING>
 
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-		<STRING PICKWEIGHT=2>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
+		<STRING PICKWEIGHT="2">NO</STRING>
+		<STRING PICKWEIGHT="1">YES</STRING>
 	</STRING>
 
 	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
@@ -199,7 +199,7 @@ settable vars:
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
-	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" merge="true">
 		<STRING>$target_level</STRING>
 	</STRING>
 	
@@ -218,17 +218,17 @@ settable vars:
 
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
-		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$targetarea_name = ''">
+		<OBJECT pickweight="55555" condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight="1" condition="$targetarea_name = ''">
 			SELECT: any\. from $target_areas_guess
 		</OBJECT>
 	</OBJECT>
 
 	<OBJECT ID="target_areas_guess" define="target_areas_guess" SELECT="Pick-1">
-		<OBJECT pickweight=1 condition="$target_min_arealevel = ''">
+		<OBJECT pickweight="1" condition="$target_min_arealevel = ''">
 			SELECT: . FROM areas WHERE (SELECT: count\. from AREA\NPROOMS WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$target_min_arealevel != ''">
+		<OBJECT pickweight="1" condition="$target_min_arealevel != ''">
 			SELECT: . FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and (SELECT: count\. from AREA\NPROOMS WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
 		</OBJECT>
@@ -239,10 +239,10 @@ settable vars:
 	</STRING>	
 	
 	<OBJECT ID="target_rooms" define="target_rooms" SELECT="Pick-1">
-		<OBJECT PICKWEIGHT=99 CONDITION="$targetroomid=''">
+		<OBJECT PICKWEIGHT="99" CONDITION="$targetroomid=''">
 			SELECT: . FROM $target_area\NPROOMS WHERE exits\count &gt; 0  AND display\count = 1
 		</OBJECT>
-		<OBJECT PICKWEIGHT=1 CONDITION="$targetroomid!=''">SELECT: . FROM $target_area\ROOMS WHERE roomid='$targetroomid'</OBJECT>
+		<OBJECT PICKWEIGHT="1" CONDITION="$targetroomid!=''">SELECT: . FROM $target_area\ROOMS WHERE roomid='$targetroomid'</OBJECT>
 	</OBJECT>
 
 	<OBJECT ID="target_room" DEFINE="target_room">SELECT: any\. FROM $target_rooms</OBJECT>

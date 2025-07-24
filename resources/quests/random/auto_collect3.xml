@@ -63,7 +63,7 @@ vars:
 		<QUEST_NAME>You want $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 		<QUEST_NAME>You must $reason_verb  $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} in ${C:target_area_name}</QUEST_NAME>
-		<QUEST_NAME PICKWEIGHT=99 CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME PICKWEIGHT="99" CONDITION="$deityname!=''">$deityname needs $num_targets ${p:target_item_name} in ${C:target_area_name} $reason_verbed</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
@@ -79,12 +79,12 @@ vars:
 		<OBJECT condition="$itemname!=''">
 			<ITEM class="GenItem" name="$itemname" display="$itemname lies here">
 				<MATERIAL SELECT="Pick-1">
-					<MATERIAL PICKWEIGHT=99 CONDITION="$item_material=''">$any_Item_material</MATERIAL>
-					<MATERIAL PICKWEIGHT=1 CONDITION="$item_material!=''">$item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT="99" CONDITION="$item_material=''">$any_Item_material</MATERIAL>
+					<MATERIAL PICKWEIGHT="1" CONDITION="$item_material!=''">$item_material</MATERIAL>
 				</MATERIAL>
 				<LEVEL SELECT="Pick-1">
-					<LEVEL PICKWEIGHT=99 CONDITION="$item_level=''">$level_range</LEVEL>
-					<LEVEL PICKWEIGHT=1 CONDITION="$item_level!=''">$item_level</LEVEL>
+					<LEVEL PICKWEIGHT="99" CONDITION="$item_level=''">$level_range</LEVEL>
+					<LEVEL PICKWEIGHT="1" CONDITION="$item_level!=''">$item_level</LEVEL>
 				</LEVEL>
 			</ITEM>
 		</OBJECT>
@@ -105,7 +105,7 @@ vars:
 		<STRING CONDITION="$target_int &gt; 2">$reason_idoforthem</STRING>
 		<STRING>$reason_idotothem</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
-		<STRING PICKWEIGHT=99 CONDITION="$deityname!=''">$reason_deitydo</STRING>
+		<STRING PICKWEIGHT="99" CONDITION="$deityname!=''">$reason_deitydo</STRING>
 	</STRING>
 	<STRING ID="reason_deitydo" SELECT="All" REQUIRES="deityname=$">
 		<STRING define="reason_verbed">$verb_stolen</STRING>
@@ -291,8 +291,8 @@ vars:
 	</STRING>
 
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-		<STRING PICKWEIGHT=2>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
+		<STRING PICKWEIGHT="2">NO</STRING>
+		<STRING PICKWEIGHT="1">YES</STRING>
 	</STRING>
 	
 	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
@@ -321,7 +321,7 @@ vars:
 	<STRING load="/resources/randareas/swamp.xml" />
 	
 	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
-		<OBJECT CONDITION="$targetname!=''" pickweight=10>
+		<OBJECT CONDITION="$targetname!=''" pickweight="10">
 			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 				<NAME>$targetname</NAME>
 				<DISPLAY>$mob_name is here.</DISPLAY>
@@ -366,17 +366,17 @@ vars:
 				</BEHAVIOR>
 			</MOB>
 		</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="9">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="9">SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT CONDITION="$targetname=''" PICKWEIGHT="1">SELECT: ANY\. FROM $lair_mobs</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
@@ -387,7 +387,7 @@ vars:
 		<STRING>${SELECT:current_intelligence from $target}</STRING>
 	</STRING>
 	
-	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" merge="true">
 		<STRING>$target_level</STRING>
 	</STRING>
 	
@@ -401,11 +401,11 @@ vars:
 	</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
-		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = ''">
+		<OBJECT pickweight="55555" condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel = ''">
 			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; $num_targets
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != ''">
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel != ''">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and VISITABLE_ROOMS &gt; $num_targets
 		</OBJECT>
@@ -420,7 +420,7 @@ vars:
 	</STRING>	
 	
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
-		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="50">NO</STRING>
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
 	</STRING>
 </QUEST>

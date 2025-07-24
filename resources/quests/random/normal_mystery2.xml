@@ -232,8 +232,8 @@ settable vars:
 	</STRING>
 
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-		<STRING PICKWEIGHT=2>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
+		<STRING PICKWEIGHT="2">NO</STRING>
+		<STRING PICKWEIGHT="1">YES</STRING>
 	</STRING>
 
 	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
@@ -245,15 +245,15 @@ settable vars:
 	</STRING>
 
 	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area">
-		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
-		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
+		<OBJECT pickweight="99999" condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
+		<OBJECT pickweight="55555" condition="$area_name != '' and '${SELECT: name FROM area}' = ''">SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
+		<OBJECT pickweight="1" condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight="1" condition="$area_name = '' and $target_min_arealevel = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0 AND (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5 
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+		<OBJECT pickweight="1" condition="$area_name = '' and $target_min_arealevel != '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and (SELECT: count\. from $mql_viable_questgivers) &gt; 0 AND (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5
 		</OBJECT>
@@ -262,9 +262,9 @@ settable vars:
 	<OBJECT ID="source_room" DEFINE="source_room">SELECT: . FROM $source\room</OBJECT>
 
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
-		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
-		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = '' and '${SELECT: name FROM mob}' = ''" insert="$mql_viable_questgiver" />
+		<OBJECT PICKWEIGHT="99999" CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
+		<OBJECT pickweight="55555" condition="$sourcename != '' and '${SELECT: name FROM mob}' = ''">SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
+		<OBJECT PICKWEIGHT="1" CONDITION="$sourcename = '' and '${SELECT: name FROM mob}' = ''" insert="$mql_viable_questgiver" />
 	</OBJECT>
 
 	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">
@@ -275,7 +275,7 @@ settable vars:
 		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
-	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" merge="true">
 		<STRING>$target_level</STRING>
 	</STRING>
 	
@@ -307,12 +307,12 @@ settable vars:
 	<STRING ID="multiarea" define="multiarea">NO</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
-		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
-		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel = '' and $multiarea = 'YES'">
+		<OBJECT pickweight="55555" condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight="100" condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5
 		</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $target_min_arealevel != '' and $multiarea = 'YES'">
+		<OBJECT pickweight="1" condition="$targetarea_name = '' and $target_min_arealevel != '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE MED_LEVEL &gt;= $target_min_arealevel and MED_LEVEL &lt;= $target_max_arealevel 
 				and (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5
 		</OBJECT>
@@ -324,7 +324,7 @@ settable vars:
 	
 	<STRING load="/resources/randareas/inc_fantasynames.xml" />
 
-	<STRING ID="num_targets"  define="num_targets" merge=overwrite>$[2?4]</STRING>
+	<STRING ID="num_targets"  define="num_targets" merge="overwrite">$[2?4]</STRING>
 	<OBJECT ID="target_mobs" SELECT="Any-$num_targets">
 		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" display="" ><AFFECT class="Prop_WizInvis" /></MOB>
 		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" display="" ><AFFECT class="Prop_WizInvis" /></MOB>
