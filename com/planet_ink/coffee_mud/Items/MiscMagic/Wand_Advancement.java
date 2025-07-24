@@ -74,15 +74,16 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
-		switch(msg.sourceMinor())
+		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
 			if((mob.isMine(this))
 			&&(amBeingWornProperly())
-			&&(msg.target() instanceof MOB)
-			&&(mob.location().isInhabitant((MOB)msg.target())))
+			&&(msg.target()==this)
+			&&(msg.tool() instanceof MOB)
+			&&(mob.location().isInhabitant((MOB)msg.tool())))
 			{
-				final MOB target=(MOB)msg.target();
+				final MOB target=(MOB)msg.tool();
 				final int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
 				final LinkedList<List<String>> hist = (mob.session()!=null)?mob.session().getHistory():null;
 				if((x>=0)
@@ -127,5 +128,6 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		default:
 			break;
 		}
+		super.executeMsg(myHost, msg);
 	}
 }
