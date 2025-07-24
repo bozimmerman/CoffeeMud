@@ -146,6 +146,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return getDuration(40,mob,level,5);
 	}
 
+	@Override
+	public Pair<String,Integer> getDecodedItemNameAndLevel(final List<String> recipe)
+	{
+		return new Pair<String,Integer>(recipe.get( RCP_FINALNAME ),
+				Integer.valueOf(CMath.s_int(recipe.get( RCP_LEVEL ))));
+	}
+
 	protected boolean isInnerCookOven(final Container cooking, final boolean mustBeBurning)
 	{
 		if(cooking.owner() instanceof Room)

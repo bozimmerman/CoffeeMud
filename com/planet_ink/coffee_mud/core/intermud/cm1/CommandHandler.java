@@ -54,53 +54,36 @@ public class CommandHandler implements Runnable
 		commandList.put(c1.getCommandWord(),c);
 	}
 
-	static
+	public Map<String,Class<? extends CM1Command>> getCommands()
 	{
-		String className=CommandHandler.class.getName();
+		if(commandList.size()>0)
+			return commandList;
+		final String className=CommandHandler.class.getName();
 		String packageName=className;
-		int x=packageName.lastIndexOf('.');
+		final int x=packageName.lastIndexOf('.');
 		if(x>0)
 			packageName=packageName.substring(0,x)+".commands.";
-		if (!className.startsWith("/"))
-			className = "/" + className;
 
-		className = className.replace('.', '/');
-		className = className + ".class";
-
-		final URL classUrl = CommandHandler.class.getClass().getResource(className);
-		if (classUrl != null)
+		final String path = packageName.replace('.', '/');
+		final CMFile fPath = new CMFile(path,null);
+		for(final File F : fPath.listFiles())
 		{
-			String temp = classUrl.getFile();
-			if (temp.startsWith("file:"))
+			if(F.getName().endsWith(".class")
+			&&(!F.getName().equals("CM1Command.class"))
+			&&(F.getName().indexOf('$')<0))
 			{
-			  temp=temp.substring(5);
-			}
-			x=temp.lastIndexOf('/');
-			if(x>0)
-			{
-				final File dir=new File(temp.substring(0,x)+"/commands");
-				if((dir.exists())&&(dir.isDirectory()))
+				final String name=packageName + F.getName().substring(0,F.getName().length()-6);
+				try
 				{
-					for(final File F : dir.listFiles())
-					{
-						if(F.getName().endsWith(".class")
-						&&(!F.getName().equals("CM1Command.class"))
-						&&(F.getName().indexOf('$')<0))
-						{
-							final String name=packageName + F.getName().substring(0,F.getName().length()-6);
-							try
-							{
-								AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
-							}
-							catch(final Exception e)
-							{
-								e.printStackTrace();
-							}
-						}
-					}
+					AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
+				}
+				catch(final Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}
+		return commandList;
 	}
 
 	public CommandHandler(final RequestHandler req, final String command)
@@ -124,6 +107,7 @@ public class CommandHandler implements Runnable
 	{
 		if(cmd.length()>0)
 		{
+			final Map<String, Class<? extends CM1Command>> commandList = getCommands();
 			try
 			{
 				if(cmd.equalsIgnoreCase("HELP"))

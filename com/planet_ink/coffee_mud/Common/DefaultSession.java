@@ -1845,7 +1845,7 @@ public class DefaultSession implements Session
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				{
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
-					Log.debugOut(new String(suboptionData));
+					Log.debugOut("suboption data: "+new String(suboptionData));
 				}
 				if(resp!=null)
 					rawBytesOut(rawout, resp);
@@ -3179,7 +3179,7 @@ public class DefaultSession implements Session
 				.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" MCCP":"")
 				.append(ansiStr)
 				.append(", character login: "+mob.Name());
-			Log.sysOut(loginMsg.toString());
+			Log.sysOut(loginMsg.toString()); // the official session announcement
 			if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 			{
 				final CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
