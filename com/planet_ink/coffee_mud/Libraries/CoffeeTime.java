@@ -365,7 +365,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		Calendar D=null;
 		try
 		{
-			final SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
+			final SimpleDateFormat fmt = new SimpleDateFormat("h:mm a", Locale.US);
 			fmt.setLenient(false);
 			final Date parsedDate = fmt.parse(timeStr);
 			D=Calendar.getInstance();
