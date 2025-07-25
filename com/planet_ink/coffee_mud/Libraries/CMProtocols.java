@@ -3926,6 +3926,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			final Class<?> documentClass = llmClassLoader.loadClass("dev.langchain4j.data.document.Document");
 			final Method fromMethod = documentClass.getMethod("from", String.class);  // Or use the overload with Metadata if needed
 
+			/**
+				LLM_ADMIN_RAGS=\
+					/guides/ArchonGuide.html,\
+					/guides/Features.html,\
+					/guides/GameBuildersGuide.html
+			 */
 			final List<Object> allDocuments = new ArrayList<Object>();
 			for(final String ragF : CMProps.getListFileStringList(ListFile.LLM_ADMIN_RAGS))
 			{

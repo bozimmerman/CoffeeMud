@@ -101,7 +101,7 @@ function SipletWindow(windowName)
 		var paddingRight = parseFloat(computedStyle.paddingRight);
 		var borderLeft = parseFloat(computedStyle.borderLeftWidth);
 		var borderRight = parseFloat(computedStyle.borderRightWidth);
-		var contentWidth = pixelWidth - paddingLeft - paddingRight - borderLeft - borderRight;
+		var contentWidth = pixelWidth - paddingLeft - paddingRight - borderLeft - borderRight - 17;
 		var paddingTop = parseFloat(computedStyle.paddingTop);
 		var paddingBottom = parseFloat(computedStyle.paddingBottom);
 		var borderTop = parseFloat(computedStyle.borderTopWidth);

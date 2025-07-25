@@ -63,7 +63,7 @@ public class LLM extends StdCommand
     		return false;
     	}
     	final boolean reset = userText.equalsIgnoreCase("reset");
-    	final boolean archon = userText.equalsIgnoreCase("admin");
+    	final boolean archon = false;//userText.equalsIgnoreCase("admin");
     	if(!sessions.containsKey(mob.Name()) || reset || archon)
     	{
     		final LLMSession sess;
