@@ -185,7 +185,7 @@ public class ExtraData extends ThinAbility
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof ThinAbility))
+		if(!(E instanceof ExtraData))
 			return false;
 		final String[] CODES=this.getStatCodes();
 		for(int i=0;i<CODES.length;i++)

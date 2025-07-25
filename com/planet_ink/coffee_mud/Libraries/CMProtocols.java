@@ -2518,6 +2518,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"").append(",");
 						doc.append("\"perlevel\":").append(mob.getExpNextLevel()).append(",");
 						doc.append("\"prevlevel\":").append(mob.getExpPrevLevel());
+						final Ability A = mob.fetchEffect("ExtraData");
+						if(A!=null)
+						{
+							final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+							for(final String key : A.getStatCodes())
+							{
+								if(!key.equals("CLASS")&&(!key.equalsIgnoreCase("TEXT")))
+									obj.put(key.toLowerCase().replace(' ','_'), A.getStat(key));
+							}
+							doc.append(",\"extradata\":").append(obj.toString());
+						}
+						else
+							doc.append(",\"extradata\":{}");
 						final String title = (mob.playerStats()!=null)?mob.playerStats().getActiveTitle():null;
 						if(title!=null)
 							doc.append(",\"pretitle\":\"").append(MiniJSON.toJSONString(title)).append("\"");
@@ -2681,8 +2694,21 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"desc\":\"").append(MiniJSON.toJSONString(room.description(mob))).append("\",")
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
 								.append("\"move\":\"").append(move).append("\",")
-								.append("\"details\":\"").append("\",")
-								.append("\"exits\":{");
+								.append("\"details\":\"").append("\",");
+							final Ability A = room.fetchEffect("ExtraData");
+							if(A!=null)
+							{
+								final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+								for(final String key : A.getStatCodes())
+								{
+									if(!key.equals("CLASS")&&(!key.equalsIgnoreCase("TEXT")))
+										obj.put(key.toLowerCase().replace(' ','_'), A.getStat(key));
+								}
+								doc.append("\"extradata\":").append(obj.toString()).append(",");
+							}
+							else
+								doc.append("\"extradata\":{},");
+							doc.append("\"exits\":{");
 							boolean comma=false;
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
