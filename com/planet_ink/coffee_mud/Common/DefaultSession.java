@@ -486,6 +486,8 @@ public class DefaultSession implements Session
 				//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 				changeTelnetMode(rawout,TELNET_NAWS,true);
 				changeTelnetMode(rawout,TELNET_ECHO,false);
+				setClientTelnetMode(TELNET_LINEMODE,true);
+				changeTelnetModeBackwards(rawout,TELNET_LINEMODE,true);
 				//changeTelnetMode(rawout,TELNET_BINARY,true);
 				if(mightSupportTelnetMode(TELNET_GA))
 					rawBytesOut(rawout,TELNETGABYTES);
@@ -2244,8 +2246,13 @@ public class DefaultSession implements Session
 			else
 			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
+
+			if(last == TELNET_LINEMODE)
+				this.setClientTelnetMode(TELNET_LINEMODE,true);
+			else
 			if(last == TELNET_TERMTYPE)
 				negotiateTelnetMode(rawout,TELNET_TERMTYPE);
+			else
 			if(last == TELNET_LOGOUT)
 			{
 				if(serverTelnetCodes[TELNET_LOGOUT])
@@ -2427,7 +2434,19 @@ public class DefaultSession implements Session
 						c = -1;
 						break;
 					}
-					default:
+					case 8:
+						if(!getClientTelnetMode(TELNET_LINEMODE))
+						{
+							if(input.length()>0)
+							{
+								if (getClientTelnetMode(TELNET_ECHO))
+									rawCharsOut((char)c);
+								input.deleteCharAt(input.length()-1);
+							}
+							c=-1;
+						}
+					//$FALL-THROUGH$
+				default:
 					{
 						if(((c>>8)&0xff)>241)
 							c=-1;

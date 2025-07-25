@@ -72,6 +72,7 @@ var TELNET = function(sipwin)
 	this.mttsBitmap = 1 | 4 | 8 | 256;
 	this.termType = "ANSI-TRUECOLOR";
 	this.ttypeCount = 0;
+	this.localEcho = true;
 
 	this.reset = function()
 	{
@@ -82,6 +83,7 @@ var TELNET = function(sipwin)
 		this.neverSupportMCCP = !(getConfig("window/term/mccp",'true') === 'true');
 		this.sentNaws = false;
 		this.ttypeCount = 0;
+		this.localEcho = true;
 	};
 	this.reset();
 	
@@ -282,7 +284,8 @@ var TELNET = function(sipwin)
 				response = response.concat(this.getNaws());
 				break;
 			case TELOPT.ECHO:
-				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.ECHO]);
+				response = response.concat([TELOPT.IAC, TELOPT.DO, TELOPT.ECHO]);
+				this.localEcho = false;
 				break;
 			case TELOPT.MSP:
 				if (this.neverSupportMSP)
@@ -426,11 +429,26 @@ var TELNET = function(sipwin)
 					//if (mxpModule != null) mxpModule.shutdownMXP();
 				}
 				break;
+			case TELOPT.ECHO:
+				response = response.concat([TELOPT.IAC, TELOPT.DONT, TELOPT.ECHO]);
+				this.localEcho = true;
+				break;
 			};
 			break;
 		case TELOPT.DO:
 			switch(dat[1])
 			{
+			case TELOPT.LINEMODE:
+			{
+				var inputVis = getConfig('window/disableInput','')==''?true:false;
+				if(sipwin.pb)
+					inputVis = !sipwin.pb.disableInput;
+				if(inputVis)
+					response = response.concat([TELOPT.IAC, TELOPT.WILL, TELOPT.LINEMODE]);
+				else
+					response = response.concat([TELOPT.IAC, TELOPT.WONT, TELOPT.LINEMODE]);
+				break;
+			}
 			case TELOPT.NAWS:
 				response = response.concat(this.getNaws());
 				break;

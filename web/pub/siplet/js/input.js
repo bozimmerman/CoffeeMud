@@ -200,12 +200,13 @@ function DisplayFakeInput(key)
 		return;
 	if(isInputVisible())
 		return;
+	var echo = window.currWin.telnet.localEcho;
 	if(inputcursor != null)
 	{
 		if(inputcursor.parentNode != null)
 			inputcursor.parentNode.removeChild(inputcursor);
 	}
-	if(key != null)
+	if((key != null) && echo)
 	{
 		if(key == 'Backspace')
 		{
@@ -279,12 +280,13 @@ document.onkeydown = function(e) {
 	else
 	if(!isInputVisible() && !isDialogOpen())
 	{
-		if((e.key === 'Backspace')
-		&&(window.currWin.pb)
-		&&(window.currWin.pb.bsCode))
+		if(e.key === 'Backspace')
 		{
+			var bs = 8;
+			if((window.currWin.pb)&&(window.currWin.pb.bsCode))
+				bs = window.currWin.pb.bsCode;
 			DisplayFakeInput(e.key);
-			window.currWin.sendRaw([window.currWin.pb.bsCode]);
+			window.currWin.sendRaw([bs]);
 		}
 		else
 		if(e.key.length == 1)

@@ -39,7 +39,16 @@
 		<INPUT TYPE=RADIO NAME=OVERFLOW VALUE="WRAP" ${(getConfig('window/overflow','WRAP')=='WRAP')?'CHECKED':'';}  ONCLICK="setConfig('window/overflow',this.value);"}>
 		Wrap
 	</TD>
-</TR><TR><TD COLSPAN=2></TD>
+</TR>
+${
+s = '<TR><TD>Disable Input</TD><TD>';
+s += '<INPUT TYPE=CHECKBOX NAME=INPUT';
+if(getConfig('window/disableInput','')!='')
+	s += ' CHECKED';
+s += ' ONCLICK="setConfig(\'window/disableInput\',this.checked?\'true\':\'\');">';
+s += '</TD>';
+}
+<TR><TD COLSPAN=2></TD>
 </TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Protocols</TD>
 </TR><TR>
 	<TD><INPUT TYPE=CHECKBOX ${getConfig('window/term/msp','true').toLowerCase()==='true'?'CHECKED':''}

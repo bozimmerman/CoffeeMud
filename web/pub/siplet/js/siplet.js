@@ -70,11 +70,11 @@ function SipletWindow(windowName)
 		if(!this.topContainer)
 			return;
 		var window = this.topContainer.firstChild; 
-	    if(this.overflow == '')
-	    	window.style.overflowX = 'auto';
-	    else
-	    {
-	    	window.style.overflowX = 'hidden';
+		if(this.overflow == '')
+			window.style.overflowX = 'auto';
+		else
+		{
+			window.style.overflowX = 'hidden';
 			window.style.overflowWrap = 'break-word';
 			window.style.wordWrap = 'break-word';
 			window.style.whiteSpace = 'pre-wrap';
@@ -162,10 +162,10 @@ function SipletWindow(windowName)
 		};
 		var fontFace = getConfig('window/fontface', 'monospace');
 		var fontSize = getConfig('window/fontsize', '16px');
-	    this.topWindow.style.fontFamily = fontFace;
-	    this.topWindow.style.fontSize = fontSize;
+		this.topWindow.style.fontFamily = fontFace;
+		this.topWindow.style.fontSize = fontSize;
 		this.topWindow.style.whiteSpace = 'pre'; // Preserve spaces as-is
-	    this.topContainer = this.topWindow.firstChild;
+		this.topContainer = this.topWindow.firstChild;
 		this.window = this.topContainer.firstChild;
 		[this.topWindow, this.topContainer, this.window].forEach(function(o)
 		{
@@ -175,9 +175,9 @@ function SipletWindow(windowName)
 			o.style.width = '100%';
 			o.style.left = '0%';
 		});
-	    this.window.style.overflowY = 'auto';
-    	this.window.style.overflowX = 'auto';
-    	this.fixOverflow();
+		this.window.style.overflowY = 'auto';
+		this.window.style.overflowX = 'auto';
+		this.fixOverflow();
 		this.plugins.reset();
 		this.resizeTermWindow(fontFace, fontSize);
 	}
@@ -1082,7 +1082,8 @@ function SipletWindow(windowName)
 	{
 		if((value === undefined) || (value == null))
 			return;
-		this.displayText(value);
+		if(this.telnet.localEcho)
+			this.displayText(value);
 		value = this.fixVariables(value);
 		this.sendStr(value+'\n');
 	};
@@ -1449,7 +1450,6 @@ function AddNewSipletTabByHostNPort(host, port)
 		port: port
 	};
 	siplet.pbwhich = '';
-	setInputVisibility(true);
 	setInputBoxFocus();
 	return siplet;
 }
@@ -1467,6 +1467,7 @@ function AddNewSipletTabByPB(which)
 		if((which<0) || (which > window.phonebook.length))
 			return;
 		pb = window.phonebook[which];
+		pb.disableInput = getConfig('window/disableInput','')==''?false:true;
 	}
 	else
 	{
@@ -1491,9 +1492,9 @@ function AddNewSipletTabByPB(which)
 	}
 	var siplet;
 	if(port === 'default')
-		siplet = AddNewSipletTab(defaultUrl);
+		siplet = AddNewSipletTab(defaultUrl,!pb.disableInput);
 	else
-		siplet = AddNewSipletTab(defaultUrl+'?port='+port);
+		siplet = AddNewSipletTab(defaultUrl+'?port='+port,!pb.disableInput);
 	if(window.isElectron)
 		siplet.tabTitle = pb.name;
 	else
@@ -1503,14 +1504,15 @@ function AddNewSipletTabByPB(which)
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 	siplet.pb = pb;
 	siplet.pbwhich = ogwhich;
-	setInputVisibility(!pb.disableInput);
 	setInputBoxFocus();
 	ReConfigureTopMenu(siplet);
 	return siplet;
 }
 
-function AddNewSipletTab(url)
+function AddNewSipletTab(url, ib)
 {
+	if((ib === undefined) || (ib == null))
+		ib = (getConfig('window/disableInput','')==''?true:false);
 	var windowName = 'W'+window.nextId;
 	window.nextId++;
 	var newTopElement=document.createElement('DIV');
@@ -1529,6 +1531,7 @@ function AddNewSipletTab(url)
 	window.siplets.push(siplet);
 	siplet.connect(url);
 	SetCurrentTab(window.siplets.length-1);
+	setInputVisibility(ib);
 	return siplet;
 }
 
@@ -1566,10 +1569,10 @@ function SetCurrentTab(which)
 			}
 		}
 	}
-	if(window.currWin.pb && window.currWin.pb.disableInput)
-		setInputVisibility(false);
+	if(window.currWin.pb)
+		setInputVisibility(!window.currWin.pb.disableInput);
 	else
-		setInputVisibility(true);
+		setInputVisibility(getConfig('window/disableInput','')==''?true:false);
 	setInputBoxFocus();
 	ReConfigureTopMenu(window.currWin);
 	return window.currWin;
@@ -1688,7 +1691,7 @@ setTimeout(function() {
 			siplet.topWindow.style.fontFamily = fontFace;
 			siplet.topWindow.style.fontSize = fontSize
 			siplet.resizeTermWindow();
-	    }
+		}
 	}
 	addConfigListener('window/fontface', updateSipletWindows);
 	addConfigListener('window/fontsize', updateSipletWindows);

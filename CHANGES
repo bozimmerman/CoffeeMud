@@ -5,6 +5,7 @@
   4. Immunities and TemporaryImmunity can now include effects/behaviors.
   5. NOCHANNEL can now be given an ellapsed time.
   6. ! command can now match previous history.
+  7. Siplet can now do, as Sip does: have a input-boxless screen.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
