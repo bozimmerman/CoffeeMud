@@ -3764,7 +3764,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		try
 		{
-			final Double TEMPERATURE = Double.valueOf(0.8);
+			final Double TEMPERATURE = Double.valueOf(0.5);
 			final Long TIMEOUT_SECONDS = Long.valueOf(20);
 			// Load LangChain4j classes dynamically
 			final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
