@@ -2524,8 +2524,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 							for(final String key : A.getStatCodes())
 							{
-								if(!key.equals("CLASS")&&(!key.equalsIgnoreCase("TEXT")))
-									obj.put(key.toLowerCase().replace(' ','_'), A.getStat(key));
+								if(key.toLowerCase().startsWith("gmcp_"))
+									obj.put(key.toLowerCase().substring(5), A.getStat(key));
 							}
 							doc.append(",\"extradata\":").append(obj.toString());
 						}
@@ -2701,8 +2701,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 								for(final String key : A.getStatCodes())
 								{
-									if(!key.equals("CLASS")&&(!key.equalsIgnoreCase("TEXT")))
-										obj.put(key.toLowerCase().replace(' ','_'), A.getStat(key));
+									if(key.toLowerCase().startsWith("gmcp_"))
+										obj.put(key.toLowerCase().substring(5), A.getStat(key));
 								}
 								doc.append("\"extradata\":").append(obj.toString()).append(",");
 							}
