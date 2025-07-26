@@ -175,24 +175,18 @@ public class ServiceEngine implements ThreadEngine
 				continue;
 			if(possR!=null)
 			{
-				synchronized(executor.active)
-				{
-					if(executor.active.get(possR)==thread)
-						return possR;
-				}
+				if(executor.active.get(possR)==thread)
+					return possR;
 			}
 			if((executor.getThreadFactory() instanceof CMThreadFactory)
 			&&(!((CMThreadFactory)executor.getThreadFactory()).getThreads().contains(thread)))
 				continue;
-			synchronized(executor.active)
+			if(!executor.active.containsValue(thread))
+				continue;
+			for(final Map.Entry<Runnable, Thread> e : executor.active.entrySet())
 			{
-				if(!executor.active.containsValue(thread))
-					continue;
-				for(final Map.Entry<Runnable, Thread> e : executor.active.entrySet())
-				{
-					if(e.getValue()==thread)
-						return e.getKey();
-				}
+				if(e.getValue()==thread)
+					return e.getKey();
 			}
 		}
 		return null;
