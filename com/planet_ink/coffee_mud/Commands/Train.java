@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -211,7 +212,18 @@ public class Train extends StdCommand
 			return false;
 		}
 		commands.remove(0);
+		boolean noprompt=false;
 		String teacherName=null;
+		if((commands.size()>1)&&("noprompt".equalsIgnoreCase(commands.get(commands.size()-1))))
+		{
+			commands.remove(commands.size()-1);
+			noprompt=true;
+		}
+		if((commands.size()>1)&&("noprompt".equalsIgnoreCase(commands.get(0))))
+		{
+			commands.remove(0);
+			noprompt=true;
+		}
 		if(commands.size()>1)
 		{
 			teacherName=commands.get(commands.size()-1);
@@ -305,7 +317,7 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		CostManager finalCost = CMLib.utensils().createCostManager(cost);
+		final CostManager finalCost = CMLib.utensils().createCostManager(cost);
 		if(!finalCost.doesMeetCostRequirements(mob))
 		{
 			final String ofWhat=finalCost.costType(mob);
@@ -455,104 +467,212 @@ public class Train extends StdCommand
 			CMLib.commands().postCommandRejection(teacher,mob, null,origCmds);
 			return false;
 		}
-		mob.location().send(mob,msg);
 		gainAmount = msg.value();
-		final String costStr = msg.tool().isStat("COST")?msg.tool().getStat("COST"):cost.value();
-		if(!costStr.equals(cost.value()))
-		{
-			cost = Cost.valueOf(costStr);
-			if(cost != null)
-				finalCost=CMLib.utensils().createCostManager(cost);
-		}
-		finalCost.doSpend(mob);
+		final Cost C = cost;
+		final CostManager CM = finalCost;
+		final MOB M = mob;
+		final Trainable T = trainType;
+		final int GA=gainAmount;
+		final int CS = curStat;
+		final CharClass CC = theClass;
+		final CMMsg SM = msg;
+		final String trainForDesc;
 		switch(trainType)
 		{
 		case MANA:
-			mob.tell(L("You feel more powerful!"));
-			mob.baseState().setMana(mob.baseState().getMana()+gainAmount);
-			mob.maxState().setMana(mob.maxState().getMana()+gainAmount);
-			mob.curState().setMana(mob.curState().getMana()+gainAmount);
+			trainForDesc = CMLib.lang().L("@x1 mana", ""+gainAmount);
 			break;
 		case MOVES:
-			mob.tell(L("You feel more rested!"));
-			mob.baseState().setMovement(mob.baseState().getMovement()+gainAmount);
-			mob.maxState().setMovement(mob.maxState().getMovement()+gainAmount);
-			mob.curState().setMovement(mob.curState().getMovement()+gainAmount);
+			trainForDesc = CMLib.lang().L("@x1 movement", ""+gainAmount);
 			break;
 		case GAIN:
-			mob.tell(L("You feel more trainable!"));
-			mob.setTrains(mob.getTrains()+gainAmount);
+			trainForDesc = CMLib.lang().L("@x1 training point(s)", ""+gainAmount);
 			break;
 		case PRACTICES:
-			mob.tell(L("You feel more educatable!"));
-			mob.setPractices(mob.getPractices()+gainAmount);
+			trainForDesc = CMLib.lang().L("@x1 practice point(s)", ""+gainAmount);
 			break;
 		case ATTRIBUTE:
 		default:
 			switch(abilityCode)
 			{
 			case CharStats.STAT_STRENGTH:
-				mob.tell(L("You feel stronger!"));
-				mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 strength", ""+gainAmount);
 				break;
 			case CharStats.STAT_INTELLIGENCE:
-				mob.tell(L("You feel smarter!"));
-				mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 intelligence", ""+gainAmount);
 				break;
 			case CharStats.STAT_DEXTERITY:
-				mob.tell(L("You feel more dextrous!"));
-				mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 dexterity", ""+gainAmount);
 				break;
 			case CharStats.STAT_CONSTITUTION:
-				mob.tell(L("You feel healthier!"));
-				mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 constitution", ""+gainAmount);
 				break;
 			case CharStats.STAT_CHARISMA:
-				mob.tell(L("You feel more charismatic!"));
-				mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 charisma", ""+gainAmount);
 				break;
 			case CharStats.STAT_WISDOM:
-				mob.tell(L("You feel wiser!"));
-				mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+gainAmount);
-				mob.recoverCharStats();
+				trainForDesc = CMLib.lang().L("@x1 wisdom", ""+gainAmount);
 				break;
 			default:
 				if(CMParms.contains(CharStats.CODES.BASECODES(), abilityCode))
-				{
-					mob.tell(L("You feel more @x1!",CharStats.CODES.NAME(abilityCode)));
-					mob.baseCharStats().setStat(abilityCode,curStat+gainAmount);
-					mob.recoverCharStats();
-				}
+					trainForDesc = CMLib.lang().L("@x1 "+CharStats.CODES.NAME(abilityCode).toLowerCase(), ""+gainAmount);
+				else
+					trainForDesc = "nothing";
 				break;
 			}
 			break;
 		case HITPOINTS:
-			mob.tell(L("You feel even healthier!"));
-			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+gainAmount);
-			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+gainAmount);
-			mob.curState().setHitPoints(mob.curState().getHitPoints()+gainAmount);
+			trainForDesc = CMLib.lang().L("@x1 hit point(s)", ""+gainAmount);
 			break;
 		case CCLASS:
 			if(theClass!=null)
-			{
-				int classLevel=mob.charStats().getClassLevel(theClass);
-				if(classLevel<0)
-					classLevel=0;
-				mob.tell(L("You have undergone @x1 training!",theClass.name(classLevel)));
-				mob.baseCharStats().getCurrentClass().endCharacter(mob);
-				mob.baseCharStats().setCurrentClass(theClass);
-				if((!mob.isMonster())&&(mob.soulMate()==null))
-					CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
-				mob.recoverCharStats();
-				mob.charStats().getCurrentClass().startCharacter(mob,false,true);
-			}
+				trainForDesc = CMLib.lang().L("@x1 training", ""+theClass.name());
+			else
+				trainForDesc = "nothing";
 			break;
 		}
+
+		final Runnable trainR = new Runnable()
+		{
+			final CMMsg msg = SM;
+			MOB mob=M;
+			Cost cost =C;
+			CostManager finalCost = CM;
+			Trainable trainType = T;
+			int gainAmount=GA;
+			int curStat = CS;
+			CharClass theClass = CC;
+			@Override
+			public void run()
+			{
+				mob.location().send(mob,msg);
+				final String costStr = msg.tool().isStat("COST")?msg.tool().getStat("COST"):cost.value();
+				if(!costStr.equals(cost.value()))
+				{
+					cost = Cost.valueOf(costStr);
+					if(cost != null)
+						finalCost=CMLib.utensils().createCostManager(cost);
+				}
+				finalCost.doSpend(mob);
+				switch(trainType)
+				{
+				case MANA:
+					mob.tell(L("You feel more powerful!"));
+					mob.baseState().setMana(mob.baseState().getMana()+gainAmount);
+					mob.maxState().setMana(mob.maxState().getMana()+gainAmount);
+					mob.curState().setMana(mob.curState().getMana()+gainAmount);
+					break;
+				case MOVES:
+					mob.tell(L("You feel more rested!"));
+					mob.baseState().setMovement(mob.baseState().getMovement()+gainAmount);
+					mob.maxState().setMovement(mob.maxState().getMovement()+gainAmount);
+					mob.curState().setMovement(mob.curState().getMovement()+gainAmount);
+					break;
+				case GAIN:
+					mob.tell(L("You feel more trainable!"));
+					mob.setTrains(mob.getTrains()+gainAmount);
+					break;
+				case PRACTICES:
+					mob.tell(L("You feel more educatable!"));
+					mob.setPractices(mob.getPractices()+gainAmount);
+					break;
+				case ATTRIBUTE:
+				default:
+					switch(abilityCode)
+					{
+					case CharStats.STAT_STRENGTH:
+						mob.tell(L("You feel stronger!"));
+						mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					case CharStats.STAT_INTELLIGENCE:
+						mob.tell(L("You feel smarter!"));
+						mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					case CharStats.STAT_DEXTERITY:
+						mob.tell(L("You feel more dextrous!"));
+						mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					case CharStats.STAT_CONSTITUTION:
+						mob.tell(L("You feel healthier!"));
+						mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					case CharStats.STAT_CHARISMA:
+						mob.tell(L("You feel more charismatic!"));
+						mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					case CharStats.STAT_WISDOM:
+						mob.tell(L("You feel wiser!"));
+						mob.baseCharStats().setStat(CharStats.STAT_WISDOM,curStat+gainAmount);
+						mob.recoverCharStats();
+						break;
+					default:
+						if(CMParms.contains(CharStats.CODES.BASECODES(), abilityCode))
+						{
+							mob.tell(L("You feel more @x1!",CharStats.CODES.NAME(abilityCode)));
+							mob.baseCharStats().setStat(abilityCode,curStat+gainAmount);
+							mob.recoverCharStats();
+						}
+						break;
+					}
+					break;
+				case HITPOINTS:
+					mob.tell(L("You feel even healthier!"));
+					mob.baseState().setHitPoints(mob.baseState().getHitPoints()+gainAmount);
+					mob.maxState().setHitPoints(mob.maxState().getHitPoints()+gainAmount);
+					mob.curState().setHitPoints(mob.curState().getHitPoints()+gainAmount);
+					break;
+				case CCLASS:
+					if(theClass!=null)
+					{
+						int classLevel=mob.charStats().getClassLevel(theClass);
+						if(classLevel<0)
+							classLevel=0;
+						mob.tell(L("You have undergone @x1 training!",theClass.name(classLevel)));
+						mob.baseCharStats().getCurrentClass().endCharacter(mob);
+						mob.baseCharStats().setCurrentClass(theClass);
+						if((!mob.isMonster())&&(mob.soulMate()==null))
+							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
+						mob.recoverCharStats();
+						mob.charStats().getCurrentClass().startCharacter(mob,false,true);
+					}
+					break;
+				}
+			}
+		};
+		final Session session = mob.session();
+		if(session==null || session.isStopped() || noprompt)
+			trainR.run();
+		else
+			session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N")
+			{
+				final Runnable run = trainR;
+				final String costStr = CMLib.beanCounter().getCostDescription(C);
+				final String trainFor = trainForDesc;
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("Spend @x1 for @x2? (y/N)?", costStr, trainFor));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
+				{
+					if(this.confirmed)
+					{
+						run.run();
+					}
+				}
+			});
 		return false;
 	}
 

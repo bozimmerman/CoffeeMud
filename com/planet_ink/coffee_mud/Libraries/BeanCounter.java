@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1563,4 +1564,23 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return getTotalAbsoluteValue(IP,null);
 	}
 
+	@Override
+	public String getCostDescription(final Cost C)
+	{
+		if(C!=null)
+		{
+			switch(C.second)
+			{
+			case GOLD:		return CMLib.beanCounter().nameCurrencyLong(C.third, C.first.doubleValue());
+			case HITPOINT:	return L("@x1 hit points",""+C.first.intValue());
+			case MANA:		return L("@x1 mana",""+C.first.intValue());
+			case MOVEMENT:	return L("@x1 movement",""+C.first.intValue());
+			case PRACTICE:	return L("@x1 practice point(s)",""+C.first.intValue());
+			case QP:		return L("@x1 quest point(s)",""+C.first.intValue());
+			case TRAIN:		return L("@x1 training point(s)",""+C.first.intValue());
+			case XP:		return L("@x1 experience",""+C.first.intValue());
+			}
+		}
+		return "";
+	}
 }

@@ -88,13 +88,16 @@ public class Learn extends StdCommand
 			mob.doCommand(CC,metaFlags);
 			final Command C=CMClass.getCommand("TRAIN");
 			if(C!=null)
-				C.execute(mob, commands,metaFlags);
+				C.execute(mob, commands, metaFlags);
 			return true;
 		}
 		if(CMClass.findAbility(what, mob)!=null)
 		{
 			final Vector<String> CC=CMParms.parse(sayTo+" "+teacherName+" I would like you to teach me "+what);
 			mob.doCommand(CC,metaFlags);
+			final Command C=CMClass.getCommand("TRAIN");
+			if(C!=null)
+				C.execute(mob, commands, metaFlags);
 			return true;
 		}
 		ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
@@ -126,6 +129,9 @@ public class Learn extends StdCommand
 		{
 			final Vector<String> CC=new XVector<String>("SAY","I would like you to teach me "+theExpertise.name());
 			mob.doCommand(CC,metaFlags);
+			final Command C=CMClass.getCommand("TRAIN");
+			if(C!=null)
+				C.execute(mob, commands, metaFlags);
 			return true;
 		}
 

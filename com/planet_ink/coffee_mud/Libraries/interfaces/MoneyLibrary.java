@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1182,6 +1183,14 @@ public interface MoneyLibrary extends CMLibrary
 	 * @return the absolute money value
 	 */
 	public double getTotalAbsoluteValueAllCurrencies(ItemCollection IP);
+
+	/**
+	 * Describes the given Cost object in friendlier terms.
+	 *
+	 * @param C the cost to describe
+	 * @return the description
+	 */
+	public String getCostDescription(final Cost C);
 
 	/**
 	 * Returns all debt records owed by the given debtor.

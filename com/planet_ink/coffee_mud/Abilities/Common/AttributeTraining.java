@@ -176,7 +176,8 @@ public class AttributeTraining extends CommonSkill
 						}
 						else
 						{
-							CMLib.commands().forceStandardCommand(follower, "Train", new XVector<String>(attribName));
+							CMLib.commands().forceStandardCommand(follower, "Train",
+									new XVector<String>("TRAIN",attribName,"NOPROMPT"));
 						}
 						follower.recoverCharStats();
 						follower.recoverPhyStats();
