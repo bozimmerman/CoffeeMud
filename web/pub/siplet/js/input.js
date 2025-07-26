@@ -4,7 +4,6 @@ var inputTextArea = null;
 var inputbacklog = [];
 var inputbacklogindex = -1;
 var inputcursor = null;
-var inputcursorinterval = null;
 
 var AsciiKeyMap = 
 {
@@ -266,7 +265,7 @@ function TurnOnBoxlessInputCursor()
 		cursor.style.color = "white";
 		cursor.style.visibility = 'visible';
 		inputcursor = cursor;
-		inputcursorinterval = setInterval(() => {
+		setInterval(() => {
 			var isCursorVisible = cursor.style.visibility == 'visible';
 			cursor.style.visibility = isCursorVisible ? "hidden" : "visible";
 		}, 500);
