@@ -840,30 +840,39 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			else
 			{
 				final int oldTitleSize = titles.size();
-				for(int i=0;i<titles.size();i++)
+				int earliestIndex = -1;
+				for(int i=titles.size()-1;i>=0;i--)
 				{
 					final Title t1 = titles.get(i);
 					final String s1 = t1.s;
 					if(s1.equalsIgnoreCase(s))
 					{
-						if(i==0)
-							return; // nothing changed!
-						this.actTitle = null;
-						titles.remove(i);
-						if(s.endsWith("*"))
-							titles.add(0, t1);
-						else
-						if(s.startsWith("*")
-						&&(s.length()>1)
-						&&(titles.get(0).s.endsWith("*"))
-						&&(titles.get(0).s.length()>1))
-							titles.add(1, t1);
-						else
-							titles.add(0, t1);
-						if(titles.size()!=oldTitleSize)
-							Log.errOut("DefaultPlayerStats", titles.size()+"!="+oldTitleSize);
-						return;
+						if(earliestIndex>0)
+							titles.remove(earliestIndex);
+						earliestIndex=i;
 					}
+				}
+				if(earliestIndex ==0)
+					return;
+				else
+				if(earliestIndex>0)
+				{
+					final Title t1 = titles.get(earliestIndex);
+					this.actTitle = null;
+					titles.remove(earliestIndex);
+					if(s.endsWith("*"))
+						titles.add(0, t1);
+					else
+					if(s.startsWith("*")
+					&&(s.length()>1)
+					&&(titles.get(0).s.endsWith("*"))
+					&&(titles.get(0).s.length()>1))
+						titles.add(1, t1);
+					else
+						titles.add(0, t1);
+					if(titles.size()!=oldTitleSize)
+						Log.errOut("DefaultPlayerStats", titles.size()+"!="+oldTitleSize);
+					return;
 				}
 				titles.add(new Title(s));
 				this.actTitle = null;
@@ -1108,11 +1117,16 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	{
 		titles.clear();
 		final XMLLibrary xmlLib = CMLib.xml();
+		final Set<String> alreadyAdded = new HashSet<String>();
 		for (final XMLTag piece : xml)
 		{
 			if(piece.tag().equals("TITLE"))
 			{
-				final Title T = new Title(xmlLib.restoreAngleBrackets(piece.value()));
+				final String titleStr = xmlLib.restoreAngleBrackets(piece.value());
+				if(alreadyAdded.contains(titleStr))
+					continue;
+				alreadyAdded.add(titleStr);
+				final Title T = new Title(titleStr);
 				if(piece.parms().containsKey("RAND"))
 					T.r=true;
 				titles.add(T);
@@ -1124,10 +1138,13 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			final XMLLibrary.XMLTag tag = xmlLib.getPieceFromPieces(xml,"TITLE"+t);
 			if(tag == null)
 				break;
-			final String title=xmlLib.restoreAngleBrackets(tag.value());
-			if(title.length()==0)
+			final String titleStr = xmlLib.restoreAngleBrackets(tag.value());
+			if(titleStr.length()==0)
 				break;
-			final Title T = new Title(title);
+			if(alreadyAdded.contains(titleStr))
+				continue;
+			alreadyAdded.add(titleStr);
+			final Title T = new Title(titleStr);
 			if(tag.parms().containsKey("RAND"))
 				T.r=true;
 			titles.add(T);
