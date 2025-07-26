@@ -61,7 +61,7 @@ public class Areas extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
-			final String s=commands.get(i);
+			String s=commands.get(i);
 			if(s.toUpperCase().startsWith("SORT=NA"))
 			{
 				append = " (sorted by name)";
@@ -148,14 +148,16 @@ public class Areas extends StdCommand
 			if(s.toUpperCase().startsWith("SORT="))
 			{
 				Area.Stats statVal=null;
+				s=s.substring(5).trim();
+				final String us = (s.startsWith("$")?s.substring(1):s).toUpperCase();
 				for(int x=0;x<Area.Stats.values().length;x++)
 				{
-					if(s.toUpperCase().endsWith("="+Area.Stats.values()[x].name()))
+					if(us.equals(Area.Stats.values()[x].name()))
 						statVal=Area.Stats.values()[x];
 				}
 				if(statVal==null)
 				{
-					mob.tell(L("There was an error in your SORT= qualifier: '@x1' is unknown.",s.substring(5)));
+					mob.tell(L("There was an error in your SORT= qualifier: '@x1' is unknown.",s));
 					return false;
 				}
 				final Area.Stats sortStat=statVal;

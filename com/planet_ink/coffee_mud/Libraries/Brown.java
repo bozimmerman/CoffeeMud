@@ -651,6 +651,7 @@ public class Brown extends StdLibrary implements ColorLibrary
 			clookup[SpecialColor.IMPORTANT2.getCodeChar()] = mixColorCodes(Color.YELLOW.getANSICode(), Color.BGBLUE.getANSICode());
 			clookup[SpecialColor.IMPORTANT3.getCodeChar()] = mixColorCodes(Color.YELLOW.getANSICode(), Color.BGRED.getANSICode());
 			clookup[SpecialColor.ROOMTITLE.getCodeChar()] = Color.LIGHTCYAN.getANSICode();
+			clookup[SpecialColor.DING.getCodeChar()] = "\u0007";
 			clookup[SpecialColor.ROOMDESC.getCodeChar()] = Color.WHITE.getANSICode();
 			clookup[SpecialColor.DIRECTION.getCodeChar()] = mixColorCodes(Color.LIGHTCYAN.getANSICode(), Color.BGBLUE.getANSICode());
 			clookup[SpecialColor.DOORDESC.getCodeChar()] = Color.LIGHTBLUE.getANSICode();

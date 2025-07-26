@@ -1372,6 +1372,12 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	}
 
 	@Override
+	public Room lastLocation()
+	{
+		return null;
+	}
+
+	@Override
 	public void setLocation(final Room newRoom)
 	{
 		location=newRoom;

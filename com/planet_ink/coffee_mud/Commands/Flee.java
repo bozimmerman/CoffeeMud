@@ -85,10 +85,26 @@ public class Flee extends Go
 			}
 		}
 
-		if((!XPloss)&&(direction.length()==0))
+		if(direction.length()==0)
 		{
-			mob.tell(L("You stop fighting."));
-			direction="NOWHERE";
+			if(XPloss)
+			{
+				final Room lR = mob.lastLocation();
+				if((lR != null) && (R != null))
+				{
+					final int dir = CMLib.map().getRoomDir(R, lR);
+					if((dir >=0)
+					&&(R.getRoomInDir(dir) == lR)
+					&&(R.getExitInDir(dir) != null)
+					&&(R.getExitInDir(dir).isOpen()))
+						direction=CMLib.directions().getDirectionName(dir);
+				}
+			}
+			else
+			{
+				mob.tell(L("You stop fighting."));
+				direction="NOWHERE";
+			}
 		}
 
 		int directionCode=-1;

@@ -226,6 +226,7 @@ public interface ColorLibrary extends CMLibrary
 		IMPORTANT1('x'),
 		IMPORTANT2('X'),
 		IMPORTANT3('Z'),
+		DING('z'),
 		ROOMTITLE('O'),
 		ROOMDESC('L'),
 		DIRECTION('D'),

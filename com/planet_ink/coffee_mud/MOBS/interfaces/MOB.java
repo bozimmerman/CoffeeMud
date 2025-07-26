@@ -753,16 +753,28 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * also refer to the room in which this mob/player WOULD be standing if they
 	 * were still in the game.
 	 * @see MOB#setLocation(Room)
+	 * @see MOB#lastLocation()
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @return the room in which this mob/player is currently standing
 	 */
 	public Room location();
 
 	/**
+	 * Returns the room in which this mob/player was previously standing.
+	 *
+	 * @see MOB#location()
+	 * @see MOB#setLocation(Room)
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
+	 * @return the room in which this mob/player is currently standing
+	 */
+	public Room lastLocation();
+
+	/**
 	 * Sets the room in which this mob/player is currently standing. It can
 	 * also refer to the room in which this mob/player WOULD be standing if they
 	 * were still in the game.
 	 * @see MOB#location()
+	 * @see MOB#lastLocation()
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @param newRoom the room in which this mob/player is currently standing
 	 */

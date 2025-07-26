@@ -492,18 +492,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				(target.playerStats()!=null)
 				&&(target.playerStats().isIgnored("TELL",mob)));
 			CMMsg msg=null;
+			final Session targetSession = target.session();
+			final String ding = (targetSession != null && targetSession.isAfk())? "\u0007" : "";
 			if(((!CMLib.flags().isSeeable(mob))||(!CMLib.flags().isSeeable(target))))
 			{
 				msg=CMClass.getMsg(mob,target,null,
 						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>You tell <T-NAME> '@x2'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),text),
-						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^><S-NAME> tell(s) you '@x2'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),text),
+						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^><S-NAME> tell(s) you '@x2'^</TELL^>^?^."+ding,CMStrings.removeColors(mob.name(target)),text),
 						CMMsg.NO_EFFECT,null);
 			}
 			else
 			{
 				msg=CMClass.getMsg(mob,target,null,
 						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>You tell @x2 '@x3'^</TELL^>^?^.",CMStrings.removeColors(target.name(mob)),target.name(mob),text),
-						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),
+						CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^."+ding,CMStrings.removeColors(mob.name(target)),mob.Name(),text),
 						CMMsg.NO_EFFECT,null);
 			}
 			if((mob.location().okMessage(mob,msg))

@@ -1746,6 +1746,12 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public Room lastLocation()
+	{
+		return lastLocation;
+	}
+
+	@Override
 	public Room location()
 	{
 		if(location == null)

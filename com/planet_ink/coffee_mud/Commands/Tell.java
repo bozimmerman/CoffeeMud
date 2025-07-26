@@ -75,25 +75,25 @@ public class Tell extends StdCommand
 		&&(CMath.isNumber(CMParms.combine(commands,1)))
 		&&(mob.playerStats()!=null))
 		{
-			final java.util.List<PlayerStats.TellMsg> V=mob.playerStats().getTellStack();
+			final java.util.List<PlayerStats.TellMsg> tellStack=mob.playerStats().getTellStack();
 			final long now=System.currentTimeMillis();
-			if((V.size()==0)
+			if((tellStack.size()==0)
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED)))
 				CMLib.commands().postCommandFail(mob,origCmds,L("No telling."));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
-				if(num>V.size())
-					num=V.size();
+				if(num>tellStack.size())
+					num=tellStack.size();
 				final Session S=mob.session();
 				try
 				{
 					if(S!=null)
 						S.snoopSuspension(1);
-					for(int i=V.size()-num;i<V.size();i++)
+					for(int i=tellStack.size()-num;i<tellStack.size();i++)
 					{
-						final TellMsg T=V.get(i);
+						final TellMsg T=tellStack.get(i);
 						long elapsedTime=now-T.time();
 						elapsedTime=Math.round(elapsedTime/1000L)*1000L;
 						if(elapsedTime<0)
@@ -182,27 +182,27 @@ public class Tell extends StdCommand
 			return false;
 		}
 
-		final Session ts=targetM.session();
+		final Session targetSession=targetM.session();
 		try
 		{
-			if(ts!=null)
-				ts.snoopSuspension(1);
+			if(targetSession!=null)
+				targetSession.snoopSuspension(1);
 			CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
 		}
 		finally
 		{
-			if(ts!=null)
-				ts.snoopSuspension(-1);
+			if(targetSession!=null)
+				targetSession.snoopSuspension(-1);
 		}
 
-		if((targetM.session()!=null)
-		&&(targetM.session().isAfk()))
+		if((targetSession!=null)
+		&&(targetSession.isAfk()))
 		{
 			if(CMLib.flags().isCloaked(targetM))
 				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 			else
 			{
-				mob.tell(targetM.session().getAfkMessage());
+				mob.tell(targetSession.getAfkMessage());
 				return true;
 			}
 		}
