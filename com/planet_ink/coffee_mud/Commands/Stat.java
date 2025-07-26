@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1421,35 +1422,52 @@ public class Stat  extends Skills
 		throws java.io.IOException
 	{
 		commands.remove(0);
+		final Set<String> allowedCharStats = new HashSet<String>();
+		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
+		&&(CMSecurity.isDisabled(DisFlag.FULLSTATS))
+		&&(CMProps.getListFileStringList(CMProps.ListFile.LMT_STATS).length>0))
+			allowedCharStats.addAll(Arrays.asList(CMProps.getListFileStringList(CMProps.ListFile.LMT_STATS)));
 		if(((commands.size()>0)&&commands.get(0).equals("?"))
 		||((commands.size()==0)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT)))))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
-			for(final String stat : mob.curState().getStatCodes())
-				msg.append(stat).append(", ");
-			for(final String stat : mob.curState().getStatCodes())
-				msg.append("MAX"+stat).append(", ");
-			for(final String stat : mob.charStats().getStatCodes())
-				msg.append(stat).append(", ");
-			for(final String stat : mob.charStats().getStatCodes())
-				msg.append("BASE"+stat).append(", ");
-			for(final String stat : mob.phyStats().getStatCodes())
-				msg.append(stat).append(", ");
-			msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
-			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+			if(allowedCharStats.size()>0)
 			{
-				final Faction F=f.nextElement();
-				if((F!=null)&&(F.showInScore()))
-					msg.append(", "+F.name().toUpperCase().replace(' ','_'));
+				for(final String stat : allowedCharStats)
+					msg.append(stat).append(", ");
 			}
-			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
+			else
 			{
-				msg.append(L(", [MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
-				for (final String[] element : ABLETYPE_DESCS)
-					msg.append(element[0]+", ");
-				msg.append(CMParms.toListString(Ability.ACODE.DESCS));
+				for(final String stat : mob.curState().getStatCodes())
+					msg.append(stat).append(", ");
+				for(final String stat : mob.curState().getStatCodes())
+					msg.append("MAX"+stat).append(", ");
+				for(final String stat : mob.charStats().getStatCodes())
+					msg.append(stat).append(", ");
+				for(final String stat : mob.charStats().getStatCodes())
+					msg.append("BASE"+stat).append(", ");
+				for(final String stat : mob.phyStats().getStatCodes())
+					msg.append(stat).append(", ");
+				msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				{
+					final Faction F=f.nextElement();
+					if((F!=null)&&(F.showInScore()))
+						msg.append(", "+F.name().toUpperCase().replace(' ','_'));
+				}
+				if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
+				{
+					msg.append(L(", [MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
+					for (final String[] element : ABLETYPE_DESCS)
+						msg.append(element[0]+", ");
+					msg.append(CMParms.toListString(Ability.ACODE.DESCS));
+				}
 			}
-			mob.tell(msg.toString());
+			final String msgStr = msg.toString().trim();
+			if(msgStr.endsWith(","))
+				mob.tell(msgStr.substring(0,msgStr.length()-1));
+			else
+				mob.tell(msgStr);
 			return false;
 		}
 		final StringBuilder str=new StringBuilder("");
@@ -1713,10 +1731,31 @@ public class Stat  extends Skills
 			}
 			for(int i=0;i<commands.size()-1;i++)
 				commands.set(i,CMStrings.replaceAll(commands.get(i).toString()," ",""));
+
 			for(int i=0;i<commands.size();i++)
 			{
 				final String thisStat=commands.get(i).toString().toUpperCase().trim();
+				if(allowedCharStats.size()>0)
+				{
+					if(!allowedCharStats.contains(thisStat))
+					{
+						str.append(" *UNKNOWN:"+thisStat+"* ");
+						continue;
+					}
+				}
 				boolean found=false;
+				if(thisStat.equals("MAXHUNGER"))
+				{
+					str.append(M.maxState().maxHunger(M.baseWeight())).append(" ");
+					found=true;
+				}
+				else
+				if(thisStat.equals("MAXTHIRST"))
+				{
+					str.append(M.maxState().maxThirst(M.baseWeight())).append(" ");
+					found=true;
+				}
+				else
 				if(thisStat.equals("XP"))
 				{
 					str.append(M.getExperience()).append(" ");

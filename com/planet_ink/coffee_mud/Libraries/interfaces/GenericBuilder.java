@@ -127,6 +127,7 @@ public interface GenericBuilder extends CMLibrary
 		FACTIONS,
 		VARMONEY,
 		MAXHUNGER,
+		MAXTHIRST,
 		SHOPGOODSLIST,
 		ALIGNMENTDESC
 		;

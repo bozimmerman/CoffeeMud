@@ -3045,10 +3045,11 @@ public class CMSecurity
 		FATIGUE("fatigue system"),
 		UNLEVELXP("unleveling from xp"),
 		UNLEVEL("unleveling at all"),
-		CHARCRSTAT("disable stat choices in char creation"),
-		CHARCRRACE("disable race picking in char creation"),
-		CHARCRCLASS("disable class picking in char creation"),
-		CHARCRGENDER("disable gender picking in char creation"),
+		CHARCRSTAT("stat choices in char creation"),
+		CHARCRRACE("race picking in char creation"),
+		CHARCRCLASS("class picking in char creation"),
+		CHARCRGENDER("gender picking in char creation"),
+		FULLSTATS("full stat selection in STAT command")
 		;
 		private final String desc;
 

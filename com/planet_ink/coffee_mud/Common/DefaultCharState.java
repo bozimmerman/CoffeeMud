@@ -215,7 +215,7 @@ public class DefaultCharState implements CharState
 	public int maxHunger(final int baseWeight)
 	{
 		long factor=baseWeight/250;
-		if(factor==0)
+		if(factor<1)
 			factor=1;
 		factor*=getHunger();
 		if(factor>Integer.MAX_VALUE)
@@ -280,7 +280,7 @@ public class DefaultCharState implements CharState
 	public int maxThirst(final int baseWeight)
 	{
 		long factor=baseWeight/250;
-		if(factor==0)
+		if(factor<1)
 			factor=1;
 		factor*=getThirst();
 		if(factor>Integer.MAX_VALUE)

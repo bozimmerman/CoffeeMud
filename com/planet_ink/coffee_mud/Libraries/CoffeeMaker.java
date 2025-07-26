@@ -5696,6 +5696,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return "" + M.getMoneyVariation(); // varmoney
 		case MAXHUNGER:
 			return "" + M.maxState().maxHunger(M.baseWeight());
+		case MAXTHIRST:
+			return "" + M.maxState().maxThirst(M.baseWeight());
 		case SHOPGOODSLIST:
 		{
 			final StringBuilder str = new StringBuilder("");
@@ -5909,6 +5911,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case ALIGNMENTDESC:
 		case SHOPGOODSLIST:
 		case MAXHUNGER:
+		case MAXTHIRST:
 			break;
 		/*
 		case 23:
