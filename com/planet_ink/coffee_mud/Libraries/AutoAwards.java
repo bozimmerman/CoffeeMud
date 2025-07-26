@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -18,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -820,5 +822,73 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public AutoProperties modifyAutoProperty(final MOB mob, AutoProperties me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return null;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		final String[] dateKeys = new String[] {
+			"-HOURS", "+HOURS", "-SEASONS", "+SEASONS", "-WEEKS", "-DAY",
+			"+DAY", "-DAYOFYEAR", "+DAYOFYEAR", "+WEEKS", "-WEEKSOFYEAR",
+			"+WEEKSOFYEAR", "-YEARS", "+YEARS", "-MONTHS", "+MONTHS"
+		};
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			final String oldMask1 = me.getPlayerMask();
+			String mask1 = CMLib.genEd().prompt(mob,oldMask1,++showNumber,showFlag,"Player Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow"));
+			if(!mask1.equals(oldMask1))
+			{
+				final String[] maskKeys1 = CMLib.masking().parseMaskKeys(mask1);
+				boolean offendingTags = false;
+				for(final String key : maskKeys1)
+					offendingTags = offendingTags || CMParms.contains(dateKeys, key);
+				if(offendingTags)
+				{
+					mob.tell(L("Player Masks may not contain date fields.\n\r"));
+					mask1 = oldMask1;
+				}
+			}
+			final String oldMask2 = me.getDateMask();
+			String mask2 = CMLib.genEd().prompt(mob,oldMask2,++showNumber,showFlag,"Date Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow"));
+			if(!mask2.equals(oldMask2))
+			{
+				final String[] maskKeys2 = CMLib.masking().parseMaskKeys(mask2);
+				boolean requiredTags = maskKeys2.length>0;
+				for(final String key : maskKeys2)
+					requiredTags = requiredTags && CMParms.contains(dateKeys, key);
+				if(!requiredTags)
+				{
+					mob.tell(L("Date Masks must only contain date fields.\n\r"));
+					mask2 = oldMask2;
+				}
+			}
+			final PairArrayList<String,String> props = new PairArrayList<String,String>();
+			props.addAll(Arrays.asList(me.getProps()));
+			CMLib.genEd().genAffectsList(mob,props,++showNumber,showFlag);
+			me = new AutoPropertiesImpl(mask1,mask2,props);
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+		return ok?me:null;
 	}
 }

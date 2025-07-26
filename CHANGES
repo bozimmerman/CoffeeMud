@@ -8,6 +8,7 @@
   7. Siplet can now do, as Sip does: have a input-boxless screen.
   8. FLEE now prefers the previous room direction.
   9. TRAINing now prompts the user to confirm.
+ 10. AWARDS/AutoProperties can now be modified from the CL.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

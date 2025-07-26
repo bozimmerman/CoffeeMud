@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 /*
    Copyright 2008-2025 Bo Zimmerman
@@ -180,6 +181,18 @@ public interface AutoAwardsLibrary extends CMLibrary
 	 * @return true if the line was found, false otherwise
 	 */
 	public boolean modifyAutoProperty(int lineNum, final String newLine);
+
+	/**
+	 * Provides a command line editor interface for altering an existing
+	 * AutoProperty.
+	 *
+	 * @param mob the mob doing the editing
+	 * @param me the autoproperty to edit
+	 * @param showFlag the users showFlag
+	 * @return the modified AutoProperty
+	 * @throws IOException any io errors that occur
+	 */
+	public AutoProperties modifyAutoProperty(final MOB mob, AutoProperties me, int showFlag) throws IOException;
 
 	/**
 	 * Class to store the definitional information

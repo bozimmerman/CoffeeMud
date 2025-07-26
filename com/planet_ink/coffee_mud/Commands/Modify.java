@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.UpdateSet;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary.HelpSection;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
@@ -313,11 +314,71 @@ public class Modify extends StdCommand
 		}
 	}
 
+	public void autoawards(final MOB mob, final List<String> commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: MODIFY AWARD [NUMBER].\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String numStr=CMParms.combine(commands,2);
+		final int numTarget=CMath.s_int(numStr);
+		if(numTarget<=0)
+		{
+			mob.tell(L("@x1 is not a number.",numStr));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		int i=1;
+		AutoProperties autoProp = null;
+		for(final Enumeration<AutoProperties> e=CMLib.awards().getAutoProperties();e.hasMoreElements();)
+		{
+			final AutoProperties a = e.nextElement();
+			if(i==numTarget)
+			{
+				autoProp = a;
+				break;
+			}
+			i++;
+		}
+		if(autoProp==null)
+		{
+			mob.tell(L("@x1 is not a value number. Try LIST AWARD.",numStr));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		try
+		{
+			autoProp = CMLib.awards().modifyAutoProperty(mob, autoProp, -1);
+			if(autoProp == null)
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+				return;
+			}
+			final StringBuilder line = new StringBuilder("");
+			line.append(autoProp.getPlayerMask()).append(" :: ");
+			line.append(autoProp.getDateMask()).append(" :: ");
+			for(final Pair<String,String> p : autoProp.getProps())
+			{
+				line.append(p.first.trim())
+				.append("(")
+				.append(CMStrings.replaceAll(p.second,")","\\)"))
+				.append(") ");
+			}
+			CMLib.awards().modifyAutoProperty(numTarget, line.toString());
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of time just went sideways!"));
+		}
+		catch(final IOException ioe)
+		{
+		}
+	}
+
 	public void expertises(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: MODIFY EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r"));
 			final String inst=CMLib.expertises().getExpertiseInstructions();
 			if(mob.session()!=null)
 				mob.session().wraplessPrintln(inst.toString());
@@ -2707,7 +2768,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AUTOAWARDS))
 				return errorOut(mob);
-			mob.tell(L("You can't modify auto-awards, you can only LIST, CREATE, and DESTROY them."));
+			autoawards(mob, commands);
 			return false;
 		}
 		else

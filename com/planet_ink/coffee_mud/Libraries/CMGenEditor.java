@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
@@ -4587,6 +4588,108 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							}
 							else
 								mob.tell(L("@x1 re-added.",chosenOne.ID()));
+						}
+						else
+						{
+							mob.tell(L("'@x1' is not recognized.  Try '?'.",behave));
+						}
+					}
+				}
+			}
+			else
+				mob.tell(L("(no change)"));
+		}
+	}
+
+	@Override
+	public void genAffectsList(final MOB mob, final PairList<String,String> ables, final int showNumber, final int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		String behave="NO";
+		final ListStringer baseStringer = CMLib.lister().getListStringer();
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
+		{
+			String affectstr="";
+			for(int b=0;b<ables.size();b++)
+			{
+				final Pair<String,String> A=ables.get(b);
+				affectstr+=A.first;
+				if(A.second.trim().length()>0)
+					affectstr+="("+A.second.trim()+"), ";
+				else
+					affectstr+=", ";
+			}
+			if(affectstr.length()>0)
+				affectstr=affectstr.substring(0,affectstr.length()-2);
+			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+			behave=mob.session().prompt(L("Enter an effect to add/remove (?)\n\r:"),"");
+			if(behave.length()>0)
+			{
+				if(behave.equalsIgnoreCase("?"))
+				{
+					final ListingLibrary.ListStringer stringer=new ListingLibrary.ListStringer()
+					{
+						@Override
+						public String stringify(final Object o)
+						{
+							String s=baseStringer.stringify(o);
+							if((s!=null)&&(s.length()>0)&&(o instanceof Ability))
+								s="^X"+s+"^N";
+							return s;
+						}
+					};
+					mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),null,stringer).toString());
+				}
+				else
+				{
+					Pair<String,String> pickedOne=null;
+					for(int a=0;a<ables.size();a++)
+					{
+						final Pair<String,String> A=ables.get(a);
+						if(A.first.equalsIgnoreCase(behave))
+							pickedOne=A;
+					}
+					if(pickedOne!=null)
+					{
+						mob.tell(L("@x1 removed.",pickedOne.first));
+						ables.remove(pickedOne);
+					}
+					else
+					{
+						Ability chosenOne=CMClass.getAbility(behave);
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(chosenOne.ID())==null))
+							chosenOne=null;
+						if(chosenOne!=null)
+						{
+							String parms="";
+							String s="?";
+							while(s.equals("?"))
+							{
+								parms=chosenOne.text();
+								s=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
+								if(s.equals("?"))
+								{
+									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
+									if(s2!=null)
+										mob.tell(s2.toString());
+									else
+										mob.tell(L("no help!"));
+								}
+								else
+								if(s.equalsIgnoreCase("null"))
+									parms="";
+								else
+								if(s.length()>0)
+									parms=s;
+							}
+							mob.tell(L("@x1 added.",chosenOne.ID()));
+							ables.add(new Pair<String,String>(chosenOne.ID(),parms.trim()));
 						}
 						else
 						{

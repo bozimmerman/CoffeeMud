@@ -432,6 +432,20 @@ public interface GenericEditor extends CMLibrary
 
 	/**
 	 * Prompts the given user using the mud's standard menu interface.
+	 * Allows changing the given objects set of affects, presented as a list
+	 * of ids and parameterss.
+	 *
+	 * @param mob the player doing the editing
+	 * @param ables the list of existing parameters
+	 * @param showNumber the item number of this menu entry, possibly ignored
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void genAffectsList(final MOB mob, final PairList<String,String> ables, final int showNumber, final int showFlag)
+			throws IOException;
+
+	/**
+	 * Prompts the given user using the mud's standard menu interface.
 	 * Allows changing the given objects set of behaviors.
 	 *
 	 * @param mob the player doing the editing
