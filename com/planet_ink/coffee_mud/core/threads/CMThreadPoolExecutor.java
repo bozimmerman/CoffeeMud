@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +44,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	protected String				poolName = "Pool";
 	protected volatile long 		lastRejectTime = 0;
 	protected volatile int  		rejectCount = 0;
+	protected Set<Runnable>			pendingTasks = ConcurrentHashMap.newKeySet();
 
 	protected static class CMArrayBlockingQueue<E> extends ArrayBlockingQueue<E>{
 		private static final long serialVersionUID = -4557809818979881831L;
@@ -97,6 +99,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		{
 			if(t instanceof CMFactoryThread)
 				((CMFactoryThread)t).setRunnable(r);
+			pendingTasks.remove(r);
 			active.put(r,t);
 		}
 	}
@@ -126,17 +129,18 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 
 	public boolean isActiveOrQueued(final Runnable r)
 	{
-		return active.containsKey(r) || getQueue().contains(r);
+		return active.containsKey(r) || pendingTasks.contains(r);
 	}
 
 	@Override
 	public void execute(final Runnable r)
 	{
+		if(r == null)
+			return;
 		try
 		{
-			if(this.getQueue().contains(r))
-				return;
-			super.execute(r);
+			if(pendingTasks.add(r))
+				super.execute(r);
 			if((rejectCount>0)&&(System.currentTimeMillis()-lastRejectTime)>5000)
 			{
 				Log.warnOut(rejectCount+" Pool_"+poolName,"Threads rejected.");
@@ -145,6 +149,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		}
 		catch(final RejectedExecutionException e)
 		{
+			pendingTasks.remove(r);
 			if(r instanceof CMRunnable)
 			{
 				final Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
