@@ -264,10 +264,10 @@ public class Factions extends StdLibrary implements FactionManager
 		if(factionID==null)
 			return null;
 		Faction F=factionMap.get(factionID.toUpperCase());
-		if((F==null)
-		&&(!factionID.toLowerCase().endsWith(".ini")))
+		if(F==null)
 		{
-			F=getFaction(factionID+".ini");
+			if(!factionID.toLowerCase().endsWith(".ini"))
+				F=getFaction(factionID+".ini");
 		}
 		if(F!=null)
 		{

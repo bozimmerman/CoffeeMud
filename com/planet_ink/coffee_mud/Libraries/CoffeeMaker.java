@@ -6240,7 +6240,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final Integer amt = Integer.valueOf(mblk.value());
 					final String ID = mblk.getParmValue("ID");
 					if(mob != null)
-						mob.addFaction(ID,amt.intValue());
+					{
+						final Faction F = CMLib.factions().getFaction(ID);
+						if(F==null)
+							mob.addFaction(ID,amt.intValue());
+						else
+							mob.addFaction(F.factionID(),amt.intValue());
+					}
 					V.add(new Pair<String,Integer>(ID,amt));
 				}
 			}
