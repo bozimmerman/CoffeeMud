@@ -111,6 +111,7 @@ function TEXT(textParsers)
 			{
 			case '\0':
 				str = str.substr(0,i) + str.substr(i+1);
+				i-=1;
 				break;
 			case '&':
 				str = str.substr(0,i+1)+'amp;'+str.substr(i+2);
@@ -126,8 +127,10 @@ function TEXT(textParsers)
 				break;
 			case '\x07':
 				{
+					str = str.substr(0,i) + str.substr(i+1);
 					var audio = new Audio('images/ding.wav');
 					audio.play();
+					i-=1;
 				}
 				break;
 			case '<':

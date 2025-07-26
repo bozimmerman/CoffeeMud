@@ -4,6 +4,7 @@ var inputTextArea = null;
 var inputbacklog = [];
 var inputbacklogindex = -1;
 var inputcursor = null;
+var inputcursorinterval = null;
 
 var AsciiKeyMap = 
 {
@@ -42,12 +43,14 @@ function setInputVisibility(yn)
 	{
 		inputSpanArea.style.visibility = 'visible';
 		window.windowArea.style.height=window.winAreaHeight;
+		TurnOffBoxlessInputCursor();
 	}
 	else
 	{
 		inputSpanArea.style.visibility = 'hidden';
 		var winAreaHeight = 'calc(100% - '+(window.winAreaTop)+'px)';
 		window.windowArea.style.height=winAreaHeight;
+		TurnOnBoxlessInputCursor();
 	}
 }
 
@@ -56,7 +59,7 @@ function isInputVisible()
 	return inputSpanArea.style.visibility == 'visible';
 }
 
-function inputSubmit(x)
+function submitBacklog(x)
 {
 	var max = getConfig('window/input_buffer',500);
 	while(inputbacklog.length>max)
@@ -67,6 +70,11 @@ function inputSubmit(x)
 			inputbacklog.push(x);
 		inputbacklogindex=inputbacklog.length;
 	}
+}
+
+function inputSubmit(x)
+{
+	submitBacklog(x);
 	if(x && window.currWin != null)
 	{
 		x = window.currWin.aliasProcess(x);
@@ -198,40 +206,55 @@ function DisplayFakeInput(key)
 {
 	if((!window.currWin) || (!window.currWin.window))
 		return;
+	TurnOffBoxlessInputCursor();
 	if(isInputVisible())
 		return;
 	var echo = window.currWin.telnet.localEcho;
+	if((key != null) && echo)
+	{
+		if(key == 'Backspace')
+		{
+			var span = document.getElementById("CURRENTINPUT"+window.currWin.windowName);
+			if((span !== null)&&(span.innerHTML.length>0))
+				span.innerHTML = span.innerHTML.substr(0, span.innerHTML.length-1);
+		}
+		else
+		{
+			var span = document.getElementById("CURRENTINPUT"+window.currWin.windowName);
+			var span2 = window.currWin.displayBit(key);
+			if(span == null)
+			{
+				span = span2;
+				span.id = 'CURRENTINPUT'+window.currWin.windowName;
+				span.style.color = "white";
+				span.style.backgroundColor = 'black';
+			}
+			else
+			{
+				if(window.currWin.lastChild !== span)
+				{
+					window.currWin.window.removeChild(span);
+					window.currWin.window.appendChild(span);
+				}
+				window.currWin.window.removeChild(span2);
+				span.innerHTML += key;
+			}
+		}
+	}
+	TurnOnBoxlessInputCursor();
+}
+
+function TurnOffBoxlessInputCursor()
+{
 	if(inputcursor != null)
 	{
 		if(inputcursor.parentNode != null)
 			inputcursor.parentNode.removeChild(inputcursor);
 	}
-	if((key != null) && echo)
-	{
-		if(key == 'Backspace')
-		{
-			var node = window.currWin.window.lastChild;
-			while(node)
-			{
-				if((node.nodeName === 'SPAN')
-				&& (node.name === 'INPUT'))
-				{
-					if(node.innerHTML.toLowerCase() != '<br>')
-						window.currWin.window.removeChild(node);
-					break; // we are done
-				}
-				node = node.previousSibling;
-			}
-		}
-		else
-		{
-			var span = window.currWin.displayBit(key);
-			span.name = 'INPUT';
-			span.style.color = "white";
-			span.style.backgroundColor = 'black';
-			span.style.visibility = 'visible';
-		}
-	}
+}
+
+function TurnOnBoxlessInputCursor()
+{
 	if(inputcursor == null)
 	{
 		const cursor = document.createElement("span");
@@ -243,20 +266,23 @@ function DisplayFakeInput(key)
 		cursor.style.color = "white";
 		cursor.style.visibility = 'visible';
 		inputcursor = cursor;
-		setInterval(() => {
+		inputcursorinterval = setInterval(() => {
 			var isCursorVisible = cursor.style.visibility == 'visible';
 			cursor.style.visibility = isCursorVisible ? "hidden" : "visible";
 		}, 500);
 	} 
-	window.currWin.window.appendChild(inputcursor);
+	if(window.currWin && window.currWin.window && (inputcursor.parentNode === null))
+		window.currWin.window.appendChild(inputcursor);
 }
 
 document.onkeydown = function(e) {
+	var win = window.currWin;
+	if(win == null)
+		return;
 	if(e.altKey)
 	{
 		if(e.key == 'o')
 		{
-			var win = window.currWin;
 			if(window.isElectron && win)
 			{
 				if(win.logStream != null)
@@ -276,6 +302,50 @@ document.onkeydown = function(e) {
 				}
 			}
 		}
+		/* wont work because !inputvisible means immediate char sends.
+		else
+		if(!isInputVisible() && !isDialogOpen())
+		{
+			var x = e.keyCode;
+			var span = document.getElementById("CURRENTINPUT"+win.windowName);
+			if(span === null)
+			{
+				span = win.displayBit(' ');
+				span.innerHTML = '';
+				span.id = 'CURRENTINPUT'+win.windowName;
+				span.style.color = "white";
+				span.style.backgroundColor = 'black';
+				span.style.visibility = 'visible';
+			}
+			if(x == 38) // up
+			{
+				if(inputbacklogindex>0)
+				{
+					if((e.shiftKey)&&(inputbacklogindex>=0)&&(inputbacklogindex<inputbacklog.length))
+						span.innerHTML=inputbacklog[inputbacklogindex];
+					inputbacklogindex--;
+					if((inputTextArea.value=='')
+					||((inputbacklogindex<inputbacklog.length-1)
+						&&span.innerHTML==inputbacklog[inputbacklogindex+1]))
+						span.innerHTML=inputbacklog[inputbacklogindex];
+				}
+			}
+			else
+			if(x == 40) // down
+			{
+				if(inputbacklogindex<inputbacklog.length-1)
+				{
+					if((e.shiftKey)&&(inputbacklogindex>=0)&&(inputbacklogindex<inputbacklog.length))
+						span.innerHTML=inputbacklog[inputbacklogindex];
+					inputbacklogindex++;
+					if((inputTextArea.value=='')
+					||((inputbacklogindex>0)
+						&&span.innerHTML==inputbacklog[inputbacklogindex-1]))
+						span.innerHTML=inputbacklog[inputbacklogindex];
+				}
+			}
+		}
+		*/
 	}
 	else
 	if(!isInputVisible() && !isDialogOpen())
@@ -283,10 +353,10 @@ document.onkeydown = function(e) {
 		if(e.key === 'Backspace')
 		{
 			var bs = 8;
-			if((window.currWin.pb)&&(window.currWin.pb.bsCode))
-				bs = window.currWin.pb.bsCode;
+			if((win.pb)&&(win.pb.bsCode))
+				bs = win.pb.bsCode;
 			DisplayFakeInput(e.key);
-			window.currWin.sendRaw([bs]);
+			win.sendRaw([bs]);
 		}
 		else
 		if(e.key.length == 1)
@@ -301,13 +371,13 @@ document.onkeydown = function(e) {
 						var audio = new Audio('images/ding.wav');
 						audio.play();
 					}
-					window.currWin.sendRaw([ctrlCode]);
+					win.sendRaw([ctrlCode]);
 				}
 			}
 			else
 			{
 				DisplayFakeInput(e.key);
-				window.currWin.sendRaw([e.key.charCodeAt(0)]);
+				win.sendRaw([e.key.charCodeAt(0)]);
 			}
 		}
 		else
@@ -316,19 +386,31 @@ document.onkeydown = function(e) {
 			var keyCode = AsciiKeyMap[e.key];
 			if(typeof keyCode === 'string')
 			{
-				window.currWin.sendStr(keyCode);
+				win.sendStr(keyCode);
 				e.preventDefault();
 			}
 			else
 			if(keyCode == 13)
 			{
-				window.currWin.sendRaw([keyCode]);
+				win.sendRaw([keyCode]);
 				DisplayFakeInput('\n');
+				win.scrollToBottom(win.window,0);
+				var span = document.getElementById("CURRENTINPUT"+win.windowName);
+				if(span != null)
+				{
+					span.id = "";
+					delete span.id; 
+					if(span.innerHTML)
+					{
+						submitBacklog(span.innerHTML);
+						win.aliasProcess(span.innerHTML);
+					}
+				}
 			}
 			else
 			if(keyCode == 9)
 			{
-				window.currWin.sendRaw([keyCode]);
+				win.sendRaw([keyCode]);
 				DisplayFakeInput('\t');
 			}
 			//TODO bell? 7?
