@@ -293,6 +293,40 @@ public class Mer extends StdCharClass
 	{
 		super.executeMsg(host,msg);
 		Druid.doAnimalFreeingCheck(this,host,msg);
+		if((msg.source()==host)
+		&&(!msg.source().isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool() instanceof Ability)
+		&&(msg.tool().ID().equals("Chant_PredictTides"))
+		&&(msg.source().charStats().getCurrentClass()==this)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+		&&(msg.source().isMine(msg.tool()))
+		&&(isQualifyingAuthority(msg.source(),(Ability)msg.tool())))
+		{
+			final Room room = msg.source().location();
+			if((msg.source().charStats().getClassLevel(this)>=5)&&(room != null))
+			{
+				final TidePhase phase = room.getArea().getTimeObj().getTidePhase(room);
+				final double factor = phase.getFactor();
+				if(factor != 0.0)
+				{
+					String adj = "";
+					if(factor > 1)
+						adj = "greatly ";
+					else
+					if(factor <1)
+						adj = "slightly ";
+					String sentence;
+					if(factor > 0)
+						sentence = adj + "improves movement, hit points, and armor, and "+adj+"decreases mana and attack.";
+					else
+						sentence = adj + "decreases movement, hit points, and armor, and "+adj+"improves mana and attack.";
+					final String msgStr = L("The tides "+sentence);
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_THINK|CMMsg.MASK_ALWAYS,
+							CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, msgStr));
+				}
+			}
+		}
 	}
 
 	private final String[] raceRequiredList=new String[]{
