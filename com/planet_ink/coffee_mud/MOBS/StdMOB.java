@@ -3514,6 +3514,10 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_RPXPCHANGE:
 					CMLib.leveler().handleRPExperienceChange(msg);
 					break;
+				case CMMsg.TYP_NEEDRELOAD:
+					if(msg.tool() instanceof AmmunitionWeapon)
+						CMLib.combat().handleWeaponNeedsReload(msg.source(),(AmmunitionWeapon)msg.tool());
+					break;
 				case CMMsg.TYP_RETREAT:
 					{
 						setRangeToTarget(rangeToTarget() + 1);

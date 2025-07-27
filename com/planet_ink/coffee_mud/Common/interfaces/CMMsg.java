@@ -1186,7 +1186,7 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_POWERCURRENT=107;
 	/** MINOR_MASK minor action code type, denoting power current flowing */
 	public static final int TYP_CONTEMPLATE=108;
-	/** MINOR_MASK minor action code type, denoting power current flowing */
+	/** MINOR_MASK minor action code type, denoting contemplation */
 	public static final int TYP_POUR=109;
 	/** MINOR_MASK minor action code type, denoting a specific glance at the exits */
 	public static final int TYP_LOOK_EXITS=110;
@@ -1264,6 +1264,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_TRAIN=146;
 	/** MINOR_MASK minor action code type, denoting a broker request action*/
 	public static final int TYP_BROKERADD=147;
+	/** MINOR_MASK minor action code type, denoting a broker request action*/
+	public static final int TYP_NEEDRELOAD=148;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1295,7 +1297,7 @@ public interface CMMsg extends CMCommon
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
 		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL",
-		"PUFF", "TRAIN", "BROKERADD"
+		"PUFF", "TRAIN", "BROKERADD", "NEEDRELOAD"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1649,6 +1651,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_TRAIN=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_NOISYMOVEMENT;
 	/** combined MAJOR and MINOR codes for useful event message type for a auction bid event */
 	public static final int MSG_BROKERADD=MASK_SOUND|MASK_MOUTH|TYP_BROKERADD;
+	/** combined MAJOR and MINOR codes for useful event message type for a need to reload event */
+	public static final int MSG_NEEDRELOAD=TYP_NEEDRELOAD;
 
 	/**
 	 * An enum to use for an external message check from inside

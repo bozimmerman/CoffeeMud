@@ -316,16 +316,15 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 						((Room)owner()).showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 is out of @x2.",name(),ammunitionType()));
 					else
 						msg.source().tell(L("@x1 is out of @x2.",name(),ammunitionType()));
+					final Room R = msg.source().location();
 					if((msg.source().isMine(this))
-					&&(msg.source().location()!=null)
+					&&(R!=null)
 					&&(CMLib.flags().isAliveAwakeMobile(msg.source(),true)))
 					{
 						lastReloadTime=msg.source().lastTickedDateTime();
-						final String name = CMStrings.replaceAll(name(), "\"", "\\\"");
-						if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
-							msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
-						else
-							msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name+"$\""), 0, 0);
+						final CMMsg msg2 = CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NEEDRELOAD, null, CMMsg.MSG_NEEDRELOAD, null, CMMsg.NO_EFFECT, null);
+						if(R.okMessage(msg.source(), msg2))
+							R.send(msg.source(),msg2);
 					}
 				}
 				return false;
@@ -334,20 +333,6 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 				setUsesRemaining(usesRemaining()-1);
 		}
 		return true;
-	}
-
-	protected boolean inventoryAmmoCheck(final MOB M)
-	{
-		if(M==null)
-			return false;
-		for(int i=0;i<M.numItems();i++)
-		{
-			final Item I=M.getItem(i);
-			if((I instanceof Ammunition)
-			&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
-				return true;
-		}
-		return false;
 	}
 
 	@Override

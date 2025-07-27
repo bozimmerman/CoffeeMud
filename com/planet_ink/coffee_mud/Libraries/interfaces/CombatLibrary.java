@@ -730,6 +730,17 @@ public interface CombatLibrary extends CMLibrary
 	public boolean handleCombatLossConsequences(MOB deadM, MOB killerM, String[] consequences, int[] lostExperience, String message);
 
 	/**
+	 * When a player is in combat and their ammunition-requiring weapon is out
+	 * of ammo, this method will force players to attempt a reload.  Non-players
+	 * will check if they have any spare ammo, and if so, attempt a reload, and
+	 * if not, just remove the weapon.
+	 *
+	 * @param mob the mob who needs to reload
+	 * @param weapon the weapon that needs reloading
+	 */
+	public void handleWeaponNeedsReload(final MOB mob, final AmmunitionWeapon weapon);
+
+	/**
 	 * This is the heart of the main combat engine.  Every tick that a mob
 	 * is in combat, and is permitted to use auto attacks, this method is called.
 	 * It figures out how many weapon attacks to dish out, and dishes them.

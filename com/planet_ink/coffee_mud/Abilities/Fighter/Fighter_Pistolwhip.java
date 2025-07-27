@@ -86,6 +86,21 @@ public class Fighter_Pistolwhip extends FighterSkill
 		return USAGE_MOVEMENT;
 	}
 
+	public static final boolean isPistolWeapon(final Environmental E)
+	{
+		if(!(E instanceof AmmunitionWeapon))
+			return false;
+		final AmmunitionWeapon W = (AmmunitionWeapon)E;
+		if((W.weaponClassification()!=Weapon.CLASS_RANGED)
+		||(!W.requiresAmmunition())
+		||(W.ammunitionCapacity()==0)
+		||((!W.ammunitionType().toLowerCase().startsWith("bullet"))
+			&&(!(W.ammunitionType().toLowerCase().startsWith("bolt")))
+			&&(!(W instanceof Technical))))
+				return false;
+		return true;
+	}
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -94,15 +109,8 @@ public class Fighter_Pistolwhip extends FighterSkill
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
 			final Item weapon = mob.fetchWieldedItem();
-			if(!(weapon instanceof AmmunitionWeapon))
+			if(!isPistolWeapon(weapon))
 				return Ability.QUALITY_INDIFFERENT;
-			final AmmunitionWeapon W = (AmmunitionWeapon)weapon;
-			if((W.weaponClassification()!=Weapon.CLASS_RANGED)
-			||(W.ammunitionCapacity()==0)
-			||((!W.ammunitionType().toLowerCase().startsWith("bullet"))
-				&&(!(W.ammunitionType().toLowerCase().startsWith("bolt")))
-				&&(!(W instanceof Technical))))
-					return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -116,21 +124,12 @@ public class Fighter_Pistolwhip extends FighterSkill
 			return false;
 		}
 		final Item weapon = mob.fetchWieldedItem();
-		if(!(weapon instanceof AmmunitionWeapon))
+		if(!isPistolWeapon(weapon))
 		{
 			mob.tell(L("Pistolwhip requires a crossbow or similar weapon."));
 			return false;
 		}
 		final AmmunitionWeapon W = (AmmunitionWeapon)weapon;
-		if((W.weaponClassification()!=Weapon.CLASS_RANGED)
-		||(W.ammunitionCapacity()==0)
-		||((!W.ammunitionType().toLowerCase().startsWith("bullet"))
-			&&(!(W.ammunitionType().toLowerCase().startsWith("bolt")))
-			&&(!(W instanceof Technical))))
-		{
-			mob.tell(L("Pistolwhip requires a crossbow or similar weapon."));
-			return false;
-		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;

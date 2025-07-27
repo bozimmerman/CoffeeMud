@@ -3592,6 +3592,34 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public void handleWeaponNeedsReload(final MOB mob, final AmmunitionWeapon weapon)
+	{
+		if(mob==null)
+			return;
+		final String name = CMStrings.replaceAll(weapon.name(), "\"", "\\\"");
+		if(!mob.isMonster())
+			mob.enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
+		else
+		{
+			boolean hasAmmo = false;
+			for(int i=0;i<mob.numItems();i++)
+			{
+				final Item I=mob.getItem(i);
+				if((I instanceof Ammunition)
+				&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(weapon.ammunitionType())))
+				{
+					hasAmmo = true;
+					break;
+				}
+			}
+			if(hasAmmo)
+				mob.enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
+			else
+				mob.enqueCommand(CMParms.parse("REMOVE \"$"+name+"$\""), 0, 0);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try

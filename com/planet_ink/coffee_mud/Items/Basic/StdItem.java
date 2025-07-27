@@ -1604,6 +1604,10 @@ public class StdItem implements Item
 			else
 				mob.tell(L("You can't write on @x1.",name()));
 			return false;
+		case CMMsg.TYP_NEEDRELOAD:
+			if(this instanceof AmmunitionWeapon)
+				return true;
+			break;
 		default:
 			break;
 		}

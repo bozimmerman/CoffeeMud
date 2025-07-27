@@ -82,6 +82,82 @@ public class MasterFoodPrep extends FoodPrep
 
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		if((!auto)
+		&& (commands.size()>1)
+		&& ("chop".startsWith(commands.get(0).toLowerCase())))
+		{
+			commands.remove(0);
+			final Item target=getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
+			if(target==null)
+			{
+				commonTelL(mob,"The syntax is @x1 CHOP [FOOD].",triggerStrings()[0]);
+				return false;
+			}
+			if((!(target instanceof Food))
+			||(target instanceof MiscMagic)
+			||(target instanceof RawMaterial)
+			||(target.numberOfItems()>1)
+			||(CMLib.flags().isABonusItems(target)))
+			{
+				commonTelL(mob,"You can't chop @x1.",target.name(mob));
+				return false;
+			}
+			Food F = (Food)target;
+			if(F.basePhyStats().weight()<=1)
+			{
+				commonTelL(mob,"You can't chop @x1, as it's already as small as you can chop it.",target.name(mob));
+				return false;
+			}
+			final CMMsg msg = CMClass.getMsg(mob, target, this,
+					CMMsg.MSG_HANDS,L("<S-NAME> chop(s) up <T-NAME>."));
+			if(mob.location().okMessage(mob, msg))
+			{
+				mob.location().send(mob, msg);
+				final Food existsF = F;
+				final String name = F.Name();
+				final List<Food> bits = new ArrayList<Food>();
+				final List<Food> nonbits = new ArrayList<Food>();
+				nonbits.add(F);
+				while(nonbits.size()>0)
+				{
+					F = nonbits.remove(0);
+					final Food F2 = (Food)F.copyOf();
+					final int halfWeight = (int)Math.round(Math.floor(CMath.div(F.basePhyStats().weight(),2)));
+					F.basePhyStats().setWeight(halfWeight);
+					F2.basePhyStats().setWeight(halfWeight);
+					if((F.phyStats().weight() % 2)==1)
+						F.basePhyStats().setWeight(halfWeight+1);
+					F.recoverPhyStats();
+					F2.recoverPhyStats();
+					final int oldNourishment = F.nourishment();
+					final int halfFood =  (int)Math.round(Math.floor(CMath.div(oldNourishment,2)));
+					F.setNourishment(halfFood);
+					F2.setNourishment(halfFood);
+					if((oldNourishment % 2)==1)
+						F.setNourishment(halfFood+1);
+					if(F.bite() > F.nourishment())
+						F.setBite(F.nourishment());
+					if(F2.bite() > F2.nourishment())
+						F2.setBite(F2.nourishment());
+					if(F.basePhyStats().weight()>1)
+						nonbits.add(F);
+					else
+						bits.add(F);
+					if(F2.basePhyStats().weight()>1)
+						nonbits.add(F2);
+					else
+						bits.add(F2);
+				}
+				for(final Food f : bits)
+				{
+					f.setName(L("a bit of ")+f.Name());
+					f.setDisplayText(CMStrings.replaceAll(f.displayText(), name, f.Name()));
+					if(F != existsF)
+						existsF.owner().addItem(f);
+				}
+			}
+			return false;
+		}
 		try
 		{
 			cookingID="";

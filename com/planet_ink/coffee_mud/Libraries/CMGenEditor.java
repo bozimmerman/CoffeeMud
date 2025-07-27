@@ -2378,9 +2378,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final String[] recipes = E.getRecipeCodeLines();
 			str=new StringBuilder("");
 			for(int i=1;i<=recipes.length;i++)
-				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n");
+				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n\r");
 			if(recipes.length<E.getTotalRecipePages())
-				str.append(L("(@x1) ADD NEW RECIPE",""+(recipes.length+1))).append("\n");
+				str.append(L("(@x1) ADD NEW RECIPE",""+(recipes.length+1))).append("\n\r");
 			if(mob.session()!=null)
 				mob.session().rawPrint(str.toString());
 			final String newName=mob.session().prompt(L("Enter a number to add/edit/remove\n\r:"),"");

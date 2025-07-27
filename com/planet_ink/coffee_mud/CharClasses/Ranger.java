@@ -220,6 +220,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_AutoPistolwhip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);

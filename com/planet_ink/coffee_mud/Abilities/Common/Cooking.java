@@ -291,9 +291,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final StringBuilder desc = new StringBuilder("");
 		for(int vr=RCP_MAININGR;vr<recipe.size();vr+=2)
 		{
+			final int amt = CMath.s_int((vr+1<recipe.size())?recipe.get(vr+1):"1");
 			final String ingredient=recipe.get(vr);
 			if(ingredient.length()>0)
-				desc.append(ingredient).append(", ");
+			{
+				if(amt<0)
+					desc.append("("+ingredient).append("), ");
+				else
+					desc.append(ingredient).append(", ");
+			}
 		}
 		if(desc.length()<3)
 			return "Nothing";

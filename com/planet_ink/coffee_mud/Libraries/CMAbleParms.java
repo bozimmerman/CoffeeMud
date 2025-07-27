@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 
@@ -768,15 +769,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final String oldVal = editRow.get(a).second;
 					if(fakeSession.getHistory().size()>0)
-					{
 						fakeSession.getHistory().getLast().clear();
-						fakeSession.getHistory().getLast().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
-					}
+					fakeSession.getHistory().getLast().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
 					final String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
 					editRow.get(a).second=newVal;
 				}
+				catch (final IOException e)
+				{
+				}
 				catch (final Exception e)
 				{
+					Log.errOut(e);
 				}
 			}
 		}

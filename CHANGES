@@ -12,8 +12,9 @@
  11. STAT command can be limited with FULSTATS disable flag and lists.ini file.
  12. Predict Tides gives a bit more information to Mer.
  13. RELOAD is now a synonym for the player LOAD command, as it should always have been.
- 14. New fighter/ranger skills: Pistolwhip
+ 14. New fighter/ranger skills: Pistolwhip, AutoPistolwhip
  15. GMCP: new room.exits command, expanded char.effects and skills: see Protocols guide.
+ 16. FoodPrep now supports slicing all foods, and MasterFoodPrep lets you chop them up.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
