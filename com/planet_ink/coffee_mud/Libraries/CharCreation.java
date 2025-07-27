@@ -4417,14 +4417,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 	@Override
-	public LoginResult finishLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException
+	public LoginResult finishLogin(final Session session, final MOB mob, Room startRoom, final boolean resetStats) throws IOException
 	{
 		if(loginsDisabled(mob)||(mob==null))
 			return LoginResult.NO_LOGIN;
 		if(startRoom == null)
 		{
-			Log.errOut("No start room for "+mob.Name());
-			return LoginResult.NO_LOGIN;
+			startRoom = this.getSpawnRoom(mob);
+			if(startRoom == null)
+			{
+				Log.errOut("No spawn room for "+mob.Name());
+				return LoginResult.NO_LOGIN;
+			}
 		}
 		executeScript(mob,charCrScripts.get("ALLCHARLOGIN"));
 		mob.bringToLife(startRoom,resetStats);
@@ -4550,7 +4554,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		final boolean resetStats;
-		Room startRoom;
 		MOB mob=CMLib.players().getPlayer(login);
 		if((mob != null)
 		&&(mob.playerStats()!=null))
@@ -4610,24 +4613,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			showTheNews(mob);
 		}
-		startRoom = CMLib.map().getRoom(mob.location());
-		if(startRoom==null)
+		final Room spawnRoom = getSpawnRoom(mob);
+		executeScript(mob,charCrScripts.get("CHARLOGIN"));
+		return this.finishLogin(session, mob, spawnRoom, resetStats);
+	}
+
+	protected Room getSpawnRoom(final MOB mob)
+	{
+		Room spawnRoom = CMLib.map().getRoom(mob.location());
+		if(spawnRoom==null)
 		{
 			Log.debugOut("CharCreation",mob.name()+" has no/lost location.. sending to start room");
-			startRoom = CMLib.map().getRoom(mob.getStartRoom());
-			if(startRoom == null)
+			spawnRoom = CMLib.map().getRoom(mob.getStartRoom());
+			if(spawnRoom == null)
 			{
-				startRoom = CMLib.map().getStartRoom(mob);
-				if(startRoom == null)
-					startRoom = getDefaultStartRoom(mob);
-				if(startRoom != null)
-					mob.setStartRoom(startRoom);
-				if(startRoom == null)
-					startRoom = CMLib.map().getRandomRoom();
+				spawnRoom = CMLib.map().getStartRoom(mob);
+				if(spawnRoom == null)
+					spawnRoom = getDefaultStartRoom(mob);
+				if(spawnRoom == null)
+					spawnRoom = CMLib.map().getRandomRoom();
+				if(spawnRoom != null)
+					mob.setStartRoom(spawnRoom);
 			}
 		}
-		executeScript(mob,charCrScripts.get("CHARLOGIN"));
-		return this.finishLogin(session, mob, startRoom, resetStats);
+		return spawnRoom;
 	}
 
 	@Override
