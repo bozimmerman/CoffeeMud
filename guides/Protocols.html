@@ -697,12 +697,15 @@ course.</td></tr><tr>
 </tr>
 <tr>
 <td width="25%">char.items.inv</td>
-<td>char.items.list {"location": "inv", "items": [{"id": 99922, "name": "item name", "attrib": "item attributes"}, ....] }</td>
+<td>char.items.list {"location": "inv", "items": [{"id": 99922, "name":
+"item name", "attrib": "item attributes"}, ....] }. &nbsp;"attrib"
+letters are: 'l' (wielded), 'w' (worn), 'W' (wearable, unworn), 'c'
+(container)</td>
 </tr>
 <tr>
 <td width="25%">char.items.contents</td>
 <td>char.items.list {"location": "container name", "items": [{"id":
-99922, "name": "item name", "attrib": "item attributes"}, ....] }</td>
+99922, "name": "item name", "attrib": "item attributes"}, ....] }&nbsp;"attrib" letters are: 'l' (wielded), 'w' (worn), 'W' (wearable,&nbsp;unworn), 'c' (container)</td>
 </tr>
 <tr>
 <td width="25%">char.skills.get</td>
@@ -712,7 +715,7 @@ char.skills.info {"group": "skilltype-domain", "skill": "skill name",
 "info": "help text"}. &nbsp;The response when "group" is sent:
 char.skills.list{"group": "skilltype-domain", "list": ["skill name",
 "skill name", ... ] }. &nbsp;With neither are sent: char.skills.groups
-["skilltype-domain", ... ]</td>
+["skilltype-domain", ... ]. &nbsp;"group" may be "all" to scan all groups.</td>
 </tr>
 <tr>
 <td width="25%">char.effects.get</td>
@@ -722,23 +725,25 @@ char.effects.info {"group": "skilltype-domain", "skill": "skill name",
 "info": "help text"}. &nbsp;The response when "group" is sent:
 char.effects.list{"group": "skilltype-domain", "list": ["skill name",
 "skill name", ... ] }. &nbsp;With neither are sent: char.effects.groups
-["skilltype-domain", ... ]</td>
+["skilltype-domain", ... ] &nbsp;"group" may be "all" to scan all groups.</td>
 </tr>
 <tr>
 <td width="25%">group</td>
 <td>group {"groupname": "gname", "leader": "playername", "status":
 "Private", "count": 1, "members": [ {"name": "playername", "info": {
 "hp": 1, "mhp": 2, "mn": 3, "mmn": 4, "mv": 5, "mmv": 6, "lvl": 7,
-"align": 8, "tnl": 9 }, ... }</td>
+"align": 8, "tnl": 9 }, ... }<br />When in combat, "group" includes "tank" as well.</td>
 </tr>
 <tr><td>room</td><td>When supported, sends room.info, room.items.inv, room.mobiles, room.players, room.enter, room.leave</td></tr><tr><td>room.items</td><td>Sends room.items.inv</td></tr><tr>
 <td width="25%">room.info</td>
 <td>room.info {"num": 932939, "id":"Area#9", "name": "name", "zone":
 "area name", "desc": "room desc", "terrain": "locale domain type",
-"move": 3, "details: "", "exits": [{'N': 929292 },...], "coord":
-{"id":0,"x":-1,"y":-1,"cont":0} }</td>
+"move": "normal", "details: "", "exits": {{'N': 929292 },...}, "idexits": {{'N': "area#123" },...}, "coord":
+{"id":0,"x":-1,"y":-1,"cont":0} }. "move" values include: "normal, crawl, swim, fly"</td>
 </tr>
-<tr><td>room.enter</td><td>room.enter "mob name"</td></tr><tr><td>room.leave</td><td>room.leave "mob name"</td></tr><tr>
+<tr><td>room.exits</td><td>room.exits {"exits":{"N":{"id":24234,
+"door":"", "move":"normal"}, ...},"idexits":{"N":{"id":"area#23",
+"door":"", "move":"normal"},...}}</td></tr><tr><td>room.enter</td><td>room.enter "mob name"</td></tr><tr><td>room.leave</td><td>room.leave "mob name"</td></tr><tr>
 <td width="25%">room.items.inv</td>
 <td>&nbsp;rooms.items.list {"location": "room", "items": [ {"id": 93939, "name": "item name", "attrib": "GMCP attributes"}, ...] } </td>
 </tr>
@@ -909,7 +914,7 @@ json-",&nbsp;"strcache":"{}", "mcpkey":"", "mcpkeypairs":"{}",
 
 
 
-<p><br><br /><br /><br /><br /><br />
+<p><br /><br /><br /><br /><br /><br />
 &nbsp;</p>
 </td>
 </tr>

@@ -125,6 +125,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		char_login_credentials,
 		group,
 		room_info, // means they want room.wrongdir and room.enter and room.leave
+		room_exits,
 		room_items_inv,
 		room_items_contents,
 		room_mobiles,
@@ -132,6 +133,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		comm_channel,
 		comm_channel_players,
 		ire_composer_setbuffer,
+		request_exits,
 		request_room,
 		request_area,
 		request_char,
@@ -2714,7 +2716,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							{
 								final Room R2=room.getRoomInDir(d);
 								final Exit E2=room.getExitInDir(d);
-								if((R2!=null)&&(E2!=null)&&(CMLib.flags().canBeSeenBy(E2, mob)))
+								if((R2!=null)
+								&&(E2!=null)
+								&&(CMLib.flags().canBeSeenBy(E2, mob)))
 								{
 									final String room2ID=CMLib.map().getExtendedRoomID(R2);
 									if(room2ID.length()>0)
@@ -2776,6 +2780,89 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 					}
 					break;
+				case request_exits:
+				case room_exits:
+					if(mob!=null)
+					{
+						final Room room=mob.location();
+						if(room != null)
+						{
+							final StringBuilder doc=new StringBuilder("room.exits {");
+							doc.append("\"exits\":{");
+							boolean comma=false;
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=room.getRoomInDir(d);
+								final Exit E2=room.getExitInDir(d);
+								if((R2!=null)
+								&&(E2!=null)
+								&&(CMLib.flags().canBeSeenBy(E2, mob)))
+								{
+									final String room2ID=CMLib.map().getExtendedRoomID(R2);
+									if(room2ID.length()>0)
+									{
+										String move="normal";
+										if(CMLib.flags().isCrawlable(R2))
+											move="crawl";
+										else
+										if(CMLib.flags().isWateryRoom(R2))
+											move="swim";
+										else
+										if(CMLib.flags().isAiryRoom(R2))
+											move="fly";
+										if(comma)
+											doc.append(",");
+										comma=true;
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\": {")
+											.append("\"id\":").append(CMath.abs(room2ID.hashCode())).append(",")
+											.append("\"door\":\"").append(E2.hasADoor()?"door":"").append("\",")
+											.append("\"move\":\"").append(move).append("\"")
+											.append("}");
+									}
+								}
+							}
+							doc.append("},\"idexits\":{");
+							comma=false;
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=room.getRoomInDir(d);
+								final Exit E2=room.getExitInDir(d);
+								if((R2!=null)
+								&&(E2!=null)
+								&&(CMLib.flags().canBeSeenBy(E2, mob)))
+								{
+									final String room2ID=CMLib.map().getExtendedRoomID(R2);
+									if(room2ID.length()>0)
+									{
+										if(comma)
+											doc.append(",");
+										comma=true;
+										String move="normal";
+										if(CMLib.flags().isCrawlable(R2))
+											move="crawl";
+										else
+										if(CMLib.flags().isWateryRoom(R2))
+											move="swim";
+										else
+										if(CMLib.flags().isAiryRoom(R2))
+											move="fly";
+										if(comma)
+											doc.append(",");
+										comma=true;
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\": {")
+											.append("\"id\":\"").append(room2ID).append("\",")
+											.append("\"door\":\"").append(E2.hasADoor()?"door":"").append("\"")
+											.append("\"move\":\"").append(move).append("\",")
+											.append("}");
+									}
+								}
+							}
+							doc.append("}");
+							doc.append("}");
+							return doc.toString();
+						}
+					}
+					break;
 				case request_quest:
 					// comm.quest responds whenever quest stuff happens..
 					// comm.quest {"action": "start", "targ": "a swamp ape", "room": "Swamp Ape Enclosure", "area": "Aardwolf Zoological Park", "timer": 52 }
@@ -2795,8 +2882,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"groupname\":\"").append(leaderM.name(mob)).append("s group").append("\",")
 							.append("\"leader\":\"").append(leaderM.name(mob)).append("\",")
 							.append("\"status\":\"").append("Private").append("\",")
-							.append("\"count\":").append(group.size()).append(",")
-							.append("\"members\":[");
+							.append("\"count\":").append(group.size()).append(",");
+						if(leaderM.isInCombat()||mob.isInCombat())
+						{
+							final MOB victim = mob.isInCombat()?mob.getVictim():leaderM.getVictim();
+							final MOB vicvic = (victim != null)?victim.getVictim():null;
+							if(vicvic != null)
+								doc.append("\"tank\":\"").append(vicvic.name(mob)).append("\",");
+						}
+						doc.append("\"members\":[");
 						boolean comma=false;
 						for(final MOB M : group)
 						{
@@ -2879,6 +2973,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if((group != null)&&(group.length()>0)
 						&&((name==null)||(name.length()==0)))
 						{
+							final boolean all = group.equalsIgnoreCase("all");
 							final Map<Integer,List<Ability>> allMyGroups;
 							final StringBuilder doc;
 							if(cmd == GMCPCommand.char_effects_get)
@@ -2894,7 +2989,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							for(final Integer grp : allMyGroups.keySet())
 							{
 								final String groupName=this.getAbilityGroupName(grp.intValue());
-								if(groupName.equals(group))
+								if(all||groupName.equals(group))
 								{
 									doc.append("\"group\":\""+MiniJSON.toJSONString(groupName)+"\",");
 									doc.append("\"list\":[");

@@ -13,6 +13,7 @@
  12. Predict Tides gives a bit more information to Mer.
  13. RELOAD is now a synonym for the player LOAD command, as it should always have been.
  14. New fighter/ranger skills: Pistolwhip
+ 15. GMCP: new room.exits command, expanded char.effects and skills: see Protocols guide.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
