@@ -40,7 +40,7 @@ public class Load extends StdCommand
 	{
 	}
 
-	private final String[]	access	= I(new String[] { "LOAD" });
+	private final String[]	access	= I(new String[] { "LOAD", "RELOAD" });
 
 	@Override
 	public String[] getAccessWords()
@@ -76,11 +76,15 @@ public class Load extends StdCommand
 	{
 		if(mob==null)
 			return true;
-		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
+		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD)
+							&&((commands.size()==0)||(!commands.get(1).toUpperCase().startsWith("RE")));
 		if(commands.size()<3)
 		{
 			if(tryArchon)
 				mob.tell(L("LOAD what? Try @x1 [CLASSNAME]",CMParms.toListString(ARCHON_LIST)));
+			else
+			if((commands.size()>0)&&(commands.get(1).toUpperCase().startsWith("RE")))
+				mob.tell(L("Reload what where?"));
 			else
 				mob.tell(L("Load what where?"));
 			return false;

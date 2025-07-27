@@ -164,6 +164,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Ranger_FierceCompanions",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Fighter_Pistolwhip",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
