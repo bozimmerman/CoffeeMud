@@ -316,14 +316,22 @@ public class Mer extends StdCharClass
 					else
 					if(factor <1)
 						adj = "slightly ";
-					String sentence;
+					final String sentence;
 					if(factor > 0)
-						sentence = adj + "improves movement, hit points, and armor, and "+adj+"decreases mana and attack.";
+						sentence = adj + "improve movement, hit points, and armor, and "+adj+"decrease mana and attack.";
 					else
-						sentence = adj + "decreases movement, hit points, and armor, and "+adj+"improves mana and attack.";
-					final String msgStr = L("The tides "+sentence);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_THINK|CMMsg.MASK_ALWAYS,
-							CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, msgStr));
+						sentence = adj + "decrease movement, hit points, and armor, and "+adj+"improve mana and attack.";
+					CMLib.threads().scheduleRunnable(new Runnable()
+					{
+						final String msgStr = L("The tides "+sentence);
+						final Room R = room;
+						@Override
+						public void run()
+						{
+							R.send(msg.source(),CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_THINK|CMMsg.MASK_ALWAYS,
+									CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, msgStr));
+						}
+					}, 50);
 				}
 			}
 		}
