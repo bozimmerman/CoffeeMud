@@ -10,6 +10,7 @@
   9. TRAINing now prompts the user to confirm.
  10. AWARDS/AutoProperties can now be modified from the CL.
  11. STAT command can be limited with FULSTATS disable flag and lists.ini file.
+ 12. Predict Tides gives a bit more information to Mer.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
