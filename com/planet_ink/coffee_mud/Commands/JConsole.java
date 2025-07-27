@@ -262,6 +262,17 @@ public class JConsole extends StdCommand
 									return CMParms.getCleanBits(getTriggerLine());
 								}
 
+								@Override
+								public void setFlag(final String flag)
+								{
+								}
+
+								@Override
+								public boolean isFlagSet(final String flag)
+								{
+									return false;
+								}
+
 							};
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));

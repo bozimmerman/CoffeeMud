@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -110,6 +111,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
 	protected volatile Object		cachedRef		 = null;
 	protected boolean				runWithoutPCs	 = true;
+	protected LLMSession			llmSession		 = null;
 
 	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(5,30*60000L,60*60000L,20);
 
@@ -211,14 +213,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		private static final long serialVersionUID = 9212002543627348955L;
 
-		public SubScriptImpl()
+		public SubScriptImpl(final SubScript parent)
 		{
 			super();
+			this.parent = parent;
 		}
 
-		private Integer triggerCode = null;
-		private String	triggerLine = null;
-		private String[]triggerBits = null;
+		private Integer				triggerCode	= null;
+		private String				triggerLine	= null;
+		private String[]			triggerBits	= null;
+		private final SubScript		parent;
+		private final Set<String>	flags		= Collections.synchronizedSet(new TreeSet<String>());
 
 		@Override
 		public boolean add(final ScriptLn line)
@@ -295,6 +300,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 
+		@Override
+		public void setFlag(final String flag)
+		{
+			if(flag == null)
+				return;
+			flags.add(flag.toUpperCase().trim());
+			if(parent != null)
+				parent.setFlag(flag);
+		}
+
+		@Override
+		public boolean isFlagSet(final String flag)
+		{
+			if(flag == null)
+				return false;
+			return flags.contains(flag.toUpperCase().trim());
+		}
 	}
 
 	@Override
@@ -1093,7 +1115,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		int state = 0; // 0=normal, 2=incomment, 3=inscript
 		int lastLine=0;
 		final List<SubScript> parsedScript=Collections.synchronizedList(new ArrayList<SubScript>(3));
-		SubScript currentScript = new SubScriptImpl();
+		SubScript currentScript = new SubScriptImpl(null);
 		parsedScript.add(currentScript);
 		for(int i=0;i<text.length();i++)
 		{
@@ -1132,7 +1154,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					addSubScriptLine(currentScript, text.substring(lastLine,i));
 					lastLine=i+1;
-					currentScript = new SubScriptImpl();
+					currentScript = new SubScriptImpl(null);
 					parsedScript.add(currentScript);
 				}
 				break;
@@ -1172,7 +1194,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			parsedScript.remove(parsedScript.size()-1);
 		if(xml.length()>0)
 		{
-			final SubScript xmlS = new SubScriptImpl();
+			final SubScript xmlS = new SubScriptImpl(null);
 			final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
 			xmlS.add(new ScriptLn(XMLLibrary.FILE_XML_BOUNDARY,null,tags));
 			parsedScript.add(xmlS);
@@ -9269,7 +9291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if(parsedBlocks.first==null)
 							{
-								parsedBlocks.first=new SubScriptImpl();
+								parsedBlocks.first=new SubScriptImpl(script);
 								parsedBlocks.first.add(new ScriptLn("",null,null));
 							}
 							if(condition)
@@ -9280,7 +9302,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if(parsedBlocks.second==null)
 							{
-								parsedBlocks.second=new SubScriptImpl();
+								parsedBlocks.second=new SubScriptImpl(script);
 								parsedBlocks.second.add(new ScriptLn("",null,null));
 							}
 							if(!condition)
@@ -9335,7 +9357,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				@SuppressWarnings("unchecked")
 				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(ctx.line).third;
 				final String var=varify(ctx,tt[1]).trim();
-				final SubScript subScript=new SubScriptImpl();
+				final SubScript subScript=new SubScriptImpl(script);
 				subScript.add(new ScriptLn("",null,null));
 				int depth=0;
 				boolean foundEndSwitch=false;
@@ -9558,7 +9580,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				final SubScript subScript=new SubScriptImpl();
+				final SubScript subScript=new SubScriptImpl(script);
 				subScript.add(new ScriptLn("",null,null));
 				int depth=0;
 				boolean foundnext=false;
@@ -9819,6 +9841,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCr");
+				script.setFlag("SPAWN");
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String promptStr=varify(ctx,tt[3]);
@@ -9842,6 +9865,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCCr");
+				script.setFlag("SPAWN");
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String defaultVal=varify(ctx,tt[3]);
@@ -9866,6 +9890,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCCCr");
+				script.setFlag("SPAWN");
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String choices=varify(ctx,tt[3]);
@@ -11627,7 +11652,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						//if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
 						//	Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
-						final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						final DefaultScriptingEngine S=(DefaultScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 						S.setSavable(savable);
 						S.setVarScope(scope);
 						if(m2.trim().equals("*"))
@@ -11650,6 +11675,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							S.tick(newTarget,Tickable.TICKID_MOB);
 							for(int i=0;i<5;i++)
 								S.dequeResponses(null);
+							for(final SubScript scr : S.getScripts(newTarget))
+								if(scr.isFlagSet("SPAWN"))
+									script.setFlag("SPAWN");
 						}
 						if(delete)
 							newTarget.delScript(S);
@@ -12129,7 +12157,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							goHere=getRoom(varify(ctx,roomName),lastKnownLocation);
 						if(goHere!=null)
 						{
-							final SubScript subScript=new SubScriptImpl();
+							final SubScript subScript=new SubScriptImpl(script);
 							subScript.add(new ScriptLn("",null,null));
 							subScript.add(new ScriptLn(doWhat,null,null));
 							if(goHere == lastPlace)
@@ -12350,7 +12378,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String force=varify(ctx,tt[2]).trim();
 				if(newTarget!=null)
 				{
-					final SubScript vscript=new SubScriptImpl();
+					final SubScript vscript=new SubScriptImpl(script);
 					vscript.add(new ScriptLn("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null,null));
 					vscript.add(new ScriptLn(force,null,null));
 					// this can not be permanently parsed because it is variable
@@ -12407,6 +12435,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
 						Log.debugOut(CMStrings.padRight(ctx.scripted.Name(), 15)+": SETVAR: "+which+"("+arg2+")="+arg3+"<");
 					setVar(which,arg2,arg3);
+				}
+				break;
+			}
+			case 101: // mpllm
+			{
+				if(tt==null)
+					tt=parseBits(ctx,"Cccr");
+				script.setFlag("SPAWN");
+				String which=tt[1];
+				final Environmental E=getArgumentItem(which,ctx);
+				final String arg2=varify(ctx,tt[2]);
+				final String arg3=varify(ctx,tt[3]);
+				if(!which.equals("*"))
+				{
+					if(E==null)
+						which=varify(ctx,which);
+					else
+					if(E instanceof Room)
+						which=CMLib.map().getExtendedRoomID((Room)E);
+					else
+						which=E.Name();
+				}
+				if((which.length()>0)&&(arg2.length()>0))
+				{
+					if(this.llmSession == null)
+						this.llmSession = CMLib.protocol().createArchonLLMSession();
+					if(this.llmSession == null)
+						logError(ctx,"MPLLM","RunTime","Could not create LLM Session.");
+					else
+						setVar(which,arg2,llmSession.chat(arg3));
 				}
 				break;
 			}
@@ -13105,7 +13163,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				final String[][] EVALO={EVAL};
-				final SubScript vscript=new SubScriptImpl();
+				final SubScript vscript=new SubScriptImpl(script);
 				vscript.add(new ScriptLn("FUNCTION_PROG MPWHILE_"+Math.random(),null,null));
 				vscript.add(new ScriptLn(DO,DOT,null));
 				final long time=System.currentTimeMillis();
@@ -13162,7 +13220,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(ctx,"MPALARM","Syntax","No command!");
 					break;
 				}
-				final SubScript vscript=new SubScriptImpl();
+				final SubScript vscript=new SubScriptImpl(script);
 				vscript.add(new ScriptLn("FUNCTION_PROG ALARM_"+time+Math.random(),null,null));
 				vscript.add(new ScriptLn(parms,null,null));
 				prequeResponse(-1,ctx,vscript,CMath.s_int(time.trim()));
@@ -15223,7 +15281,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if((lastKnownLocation !=null)
 			&&(lastKnownLocation.numPCInhabitants()==0))
 			{
-				dequeResponses(null);
+				dequeResponses(null, true);
 				return true;
 			}
 		}
@@ -15485,7 +15543,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 		}
 		tickStatus=Tickable.STATUS_SCRIPT+100;
-		dequeResponses(null);
+		dequeResponses(null, true);
 		altStatusTickable=null;
 		return true;
 	}
@@ -15594,6 +15652,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public void dequeResponses(final Object[] objects)
 	{
+		dequeResponses(objects,false);
+	}
+
+	protected void dequeResponses(final Object[] objects, final boolean spawnOk)
+	{
 		try
 		{
 			tickStatus=Tickable.STATUS_SCRIPT+100;
@@ -15613,7 +15676,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
  						}
 						SB.ctx.script = SB.scr;
 						SB.ctx.line = 1;
-						execute(SB.ctx);
+						if(spawnOk && SB.scr.isFlagSet("SPAWN"))
+						{
+							final MPContext context = SB.ctx;
+							CMLib.threads().executeRunnable(new Runnable()
+							{
+								public MPContext ctx = context;
+								@Override
+								public void run()
+								{
+									execute(ctx);
+								}
+							});
+						}
+						else
+							execute(SB.ctx);
 						que.remove(SB);
 					}
 				}
@@ -15746,7 +15823,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								else
 									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
 							}
-							final SubScript DV=new SubScriptImpl();
+							final SubScript DV=new SubScriptImpl(null);
 							DV.add(new ScriptLn("JS_PROG",null,null));
 							DV.add(new ScriptLn(strb.toString(),null,null));
 							return c.execute(ctx.push(DV));

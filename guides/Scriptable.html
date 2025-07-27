@@ -229,7 +229,7 @@
 
             <li><a href="#mpkill">mpkill</a></li>
 
-            <li><a href="#mplink">mplink</a></li>
+            <li><a href="#mplink">mplink</a></li><li><a href="#mpllm">mpllm</a></li>
 
             <li><a href="#mploadquestobj">mploadquestobj</a></li>
 
@@ -5495,8 +5495,18 @@ NOT overwrite/obliterate any existing exit in the same direction.</p>
 
       <p>EXAMPLE:</p>
 
-mplink UP 'My Area#12322' OpenNameable my name
-      <h3><a name="mploadquestobj">mploadquestobj</a></h3>
+mplink UP 'My Area#12322' OpenNameable my name<br /><h3><a name="mpllm">mpllm</a></h3><p>Usage:</p>
+
+      <pre>mpllm [mob name] [variable name] [prompt]<br /></pre><p>This
+command queries an integrated LLM service (see Installation Guide) with
+the given prompt, and then creates a
+variable for a mob or player and stores the LLMs response in it.
+&nbsp;See the MPSETVAR command for more information on the mob name and
+variable name fields, and how they work.</p><p>Be warned that this command may take a very long time to execute. &nbsp;Factor that into your considerations when using it..</p>
+
+      <p>EXAMPLES:</p>
+
+      <pre>mpllm $i bugs 'Give me only one interesting tidbit about bugs.' <br /></pre><h3><a name="mploadquestobj">mploadquestobj</a></h3>
 
       <p>Usage:</p>
 

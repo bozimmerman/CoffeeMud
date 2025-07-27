@@ -583,7 +583,6 @@ public class CMProps extends Properties
 		CORPSE_BLURBS,
 		ANIMAL_ORDER_LIST,
 		PERSONALITY_TRAITS,
-		LLM_ADMIN_RAGS,
 		LMT_STATS,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...

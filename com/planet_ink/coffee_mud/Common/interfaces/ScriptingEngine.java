@@ -391,6 +391,21 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * @return the cleaned bits of the trigger, uppercased.
 		 */
 		public abstract String[] getTriggerBits();
+
+		/**
+		 * Sets a special flags on this script, to let the
+		 * executor know how to handle it.
+		 * @param flag the flag to set
+		 */
+		public abstract void setFlag(String flag);
+
+		/**
+		 * Checks a special flags on this script, to let the
+		 * executor know how to handle it.
+		 * @param flag the flag to look for
+		 * @return true if the flag was set.
+		 */
+		public abstract boolean isFlagSet(String flag);
 	}
 
 	/** The number of local variables associated with an execution of a script */
@@ -687,6 +702,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MPHIT", //98
 		"MPACHIEVE", //99
 		"MPACCUSE", //100
+		"MPLLM" // 101
 	};
 
 	/**

@@ -1,7 +1,7 @@
 # Build 5.10.6 Release ??/??/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
   2. CoffeeMud now integrates with LLMs via LangChain4J.  See installation guide.
-  3. New admin command: LLM, for chatting with your AI.
+  3. New admin command: LLM, for chatting with your AI, and Scriptable has MPLLM
   4. Immunities and TemporaryImmunity can now include effects/behaviors.
   5. NOCHANNEL can now be given an ellapsed time.
   6. ! command can now match previous history.

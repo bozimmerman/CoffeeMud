@@ -4018,22 +4018,22 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			//@SuppressWarnings("unchecked")
 			//final List<Object> documents = (List<Object>) loadDocumentsRecursivelyMethod.invoke(fileSystemDocumentLoaderClass, new File("resources"+File.separator+"help").toPath());
 			//allDocuments.addAll(documents);
-			final Class<?> documentClass = llmClassLoader.loadClass("dev.langchain4j.data.document.Document");
-			final Method fromMethod = documentClass.getMethod("from", String.class);  // Or use the overload with Metadata if needed
+			//final Class<?> documentClass = llmClassLoader.loadClass("dev.langchain4j.data.document.Document");
+			//final Method fromMethod = documentClass.getMethod("from", String.class);  // Or use the overload with Metadata if needed
 
+			final List<Object> allDocuments = new ArrayList<Object>();
 			/**
 				LLM_ADMIN_RAGS=\
 					/guides/ArchonGuide.html,\
 					/guides/Features.html,\
 					/guides/GameBuildersGuide.html
-			 */
-			final List<Object> allDocuments = new ArrayList<Object>();
 			for(final String ragF : CMProps.getListFileStringList(ListFile.LLM_ADMIN_RAGS))
 			{
 				final CMFile F = new CMFile(ragF,null);
 				if(F.exists())
 					allDocuments.add(fromMethod.invoke(documentClass, F.textUnformatted().toString()));
 			}
+			 */
 
 			final Class<?> documentSplittersClass = llmClassLoader.loadClass("dev.langchain4j.data.document.splitter.DocumentSplitters");
 			final Method recursiveSplitterMethod = documentSplittersClass.getMethod("recursive", int.class, int.class);
