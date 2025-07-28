@@ -1006,8 +1006,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Performs some special ping operation.
 	 * @see Session.SessionPing#ROOMLOOK
 	 * @param ping the ping to send
+	 * @param obj null, or whatever the ping might use
 	 */
-	public void doPing(SessionPing ping);
+	public void doPing(SessionPing ping, Object obj);
 
 	/**
 	 * A type of special operation ping
@@ -1017,8 +1018,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static enum SessionPing
 	{
 		ROOMLOOK,
-		PPING,
-		CPING,
+		GMCP_PING_MED,
+		GMCP_PING_ALL,
+		GMCP_PING_EFFECTS,
 		PLAYERSAVE,
 		DISCONNECT
 	}

@@ -2026,7 +2026,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
 			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LookView.LOOK_BRIEFOK:LookView.LOOK_NORMAL;
 
-		sess.doPing(SessionPing.ROOMLOOK);
+		sess.doPing(SessionPing.ROOMLOOK, null);
 
 		final String finalLookStr=getFullRoomView(mob, room, lookCode, sess.getClientTelnetMode(Session.TELNET_MXP));
 

@@ -705,7 +705,9 @@ letters are: 'l' (wielded), 'w' (worn), 'W' (wearable, unworn), 'c'
 <tr>
 <td width="25%">char.items.contents</td>
 <td>char.items.list {"location": "container name", "items": [{"id":
-99922, "name": "item name", "attrib": "item attributes"}, ....] }&nbsp;"attrib" letters are: 'l' (wielded), 'w' (worn), 'W' (wearable,&nbsp;unworn), 'c' (container)</td>
+99922, "name": "item name", "attrib": "item attributes"}, ....]
+}&nbsp;"attrib" letters are: 'l' (wielded), 'w' (worn), 'W'
+(wearable,&nbsp;unworn), 'c' (container)</td>
 </tr>
 <tr>
 <td width="25%">char.skills.get</td>
@@ -727,7 +729,10 @@ char.effects.list{"group": "skilltype-domain", "list": ["skill name",
 "skill name", ... ] }. &nbsp;With neither are sent: char.effects.groups
 ["skilltype-domain", ... ] &nbsp;"group" may be "all" to scan all groups.</td>
 </tr>
-<tr>
+<tr><td>char.effects.add</td><td>Sent by the server for only the most
+common effect adding cases. &nbsp;The included document is {"name"
+:"skill name","group": "skill group"}</td></tr><tr><td>char.effects.remove</td><td>Sent by the server for only the most common effect removal cases. &nbsp;The
+included document is {"name" :"skill name","group": "skill group"}</td></tr><tr>
 <td width="25%">group</td>
 <td>group {"groupname": "gname", "leader": "playername", "status":
 "Private", "count": 1, "members": [ {"name": "playername", "info": {

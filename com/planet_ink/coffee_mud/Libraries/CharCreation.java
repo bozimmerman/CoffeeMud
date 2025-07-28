@@ -2556,7 +2556,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			session.doPing(SessionPing.PLAYERSAVE);
+			session.doPing(SessionPing.PLAYERSAVE, null);
 		}
 		return LoginResult.NORMAL_LOGIN;
 	}
@@ -4579,7 +4579,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
 					C.execute(mob,new XVector<String>("WIZINV"),0);
 			}
-			session.doPing(SessionPing.PLAYERSAVE);
+			session.doPing(SessionPing.PLAYERSAVE, null);
 			showTheNews(mob);
 			resetStats = false;
 		}
@@ -5159,7 +5159,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					session.mob().setSession(null);
 				session.setMob(prevMOB);
 				prevMOB.setSession(session);
-				session.doPing(SessionPing.PLAYERSAVE);
+				session.doPing(SessionPing.PLAYERSAVE, null);
 			}
 			session.setStatus(status);
 		}

@@ -234,7 +234,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void doPing(final SessionPing ping)
+	public void doPing(final SessionPing ping, Object obj)
 	{
 
 	}

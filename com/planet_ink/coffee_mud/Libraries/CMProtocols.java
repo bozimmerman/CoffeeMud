@@ -3235,11 +3235,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	{
 		try
 		{
-			final Long nextMedReport=reporteds.get("system.nextMedReport");
-			final Long nextGrpReport=reporteds.get("system.nextGrpReport");
-			final Long nextLongReport=reporteds.get("system.nextLongReport");
 			final Long nextTruePingReport=reporteds.get("system.nextTruePing");
-			final Long lastEffectHash=reporteds.get("system.lastEffectHash");
 			final long now=System.currentTimeMillis();
 			final boolean charSupported=supportables.containsKey("char");
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
@@ -3258,6 +3254,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					bout.write(Session.TELNETBYTES_END_SB);
 				}
 			}
+			final Long nextMedReport=reporteds.get("system.nextMedReport");
 			if((nextMedReport==null)||(now>nextMedReport.longValue()))
 			{
 				reporteds.put("system.nextMedReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
@@ -3268,6 +3265,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
+			final Long nextGrpReport=reporteds.get("system.nextGrpReport");
 			if((nextGrpReport==null)||(now>nextGrpReport.longValue()))
 			{
 				reporteds.put("system.nextGrpReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
@@ -3279,9 +3277,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(buf!=null)
 							bout.write(buf);
 					}
+				}
+			}
 
+
+			final Long nextEffReport=reporteds.get("system.nextEffReport");
+			if((nextEffReport==null)||(now>nextEffReport.longValue()))
+			{
+				reporteds.put("system.nextEffReport", Long.valueOf(now+(CMProps.getTickMillis()-1)));
+				if(mob!=null)
+				{
 					if(charSupported||supportables.containsKey("char.effects")||supportables.containsKey("char.effects.get"))
 					{
+						final Long lastEffectHash=reporteds.get("system.lastEffectHash");
 						if((lastEffectHash==null)||(lastEffectHash.intValue()!=mob.numEffects()))
 						{
 							reporteds.put("system.lastEffectHash", Long.valueOf(mob.numEffects()));
@@ -3292,12 +3300,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 				}
 			}
+
 			if(charSupported||supportables.containsKey("char.vitals"))
 			{
 				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals", reportables);
 				if(buf!=null)
 					bout.write(buf);
 			}
+			final Long nextLongReport=reporteds.get("system.nextLongReport");
 			if((nextLongReport==null)||(now>nextLongReport.longValue()))
 			{
 				reporteds.put("system.nextLongReport", Long.valueOf(now+15996));

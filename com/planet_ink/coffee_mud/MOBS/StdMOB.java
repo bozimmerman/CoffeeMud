@@ -3968,7 +3968,7 @@ public class StdMOB implements MOB
 				playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
 			this.peaceTime = 0;
 			if(mySession!=null)
-				mySession.doPing(SessionPing.PPING);
+				mySession.doPing(SessionPing.GMCP_PING_MED, null);
 		}
 	}
 

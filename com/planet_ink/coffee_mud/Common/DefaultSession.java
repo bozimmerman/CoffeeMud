@@ -2711,7 +2711,7 @@ public class DefaultSession implements Session
 	public void stopSession(final boolean disconnect, final boolean removeMOB, final boolean dropSession, final boolean killThread)
 	{
 		if(disconnect)
-			doPing(SessionPing.DISCONNECT);
+			doPing(SessionPing.DISCONNECT, null);
 		setKillFlag(true);
 		setStatus(SessionStatus.LOGOUT5);
 		if(dropSession)
@@ -3148,7 +3148,7 @@ public class DefaultSession implements Session
 			if(CMLib.login().completePlayerLogin(this,false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
 			{
 				if(mob.session()!=null)
-					mob.session().doPing(SessionPing.PLAYERSAVE);
+					mob.session().doPing(SessionPing.PLAYERSAVE, null);
 				this.nonBlockingIn(false);
 			}
 			else
@@ -3913,7 +3913,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void doPing(final SessionPing ping)
+	public void doPing(final SessionPing ping, final Object obj)
 	{
 		switch(ping)
 		{
@@ -3921,19 +3921,34 @@ public class DefaultSession implements Session
 			if(getClientTelnetMode(TELNET_MPCP))
 				sendMPCPPacket("Disconnect", new MiniJSON.JSONObject());
 			break;
-		case CPING:
+		case GMCP_PING_ALL:
 			if(getClientTelnetMode(TELNET_GMCP))
 			{
 				this.gmcpPings.clear();
 				this.doProtocolPings();
 			}
 			break;
-		case PPING:
+		case GMCP_PING_MED:
 			{
-				this.gmcpPings.remove("system.nextMedReport");
+				if(getClientTelnetMode(TELNET_GMCP))
+				{
+					this.gmcpPings.remove("system.nextMedReport");
+					this.doProtocolPings();
+				}
+				break;
+			}
+		case GMCP_PING_EFFECTS:
+		{
+			if(getClientTelnetMode(TELNET_GMCP)
+			&&(this.gmcpSupports.containsKey("char.effects")||this.gmcpSupports.containsKey("char.effects.get")))
+			{
+				this.gmcpPings.remove("system.nextEffReport");
 				this.doProtocolPings();
+				if(obj instanceof Long)
+					this.gmcpPings.put("system.lastEffectHash", (Long)obj);
 			}
 			break;
+		}
 		case ROOMLOOK:
 			if(getClientTelnetMode(TELNET_GMCP))
 			{

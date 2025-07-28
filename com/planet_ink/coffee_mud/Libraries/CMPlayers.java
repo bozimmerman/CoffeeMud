@@ -1715,7 +1715,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					account.setLastUpdated(System.currentTimeMillis());
 				}
 				if(sess != null)
-					sess.doPing(SessionPing.PLAYERSAVE);
+					sess.doPing(SessionPing.PLAYERSAVE, null);
 			}
 			else
 			if(pStats.isSavable())
