@@ -77,7 +77,7 @@ public class Load extends StdCommand
 		if(mob==null)
 			return true;
 		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD)
-							&&((commands.size()==0)||(!commands.get(1).toUpperCase().startsWith("RE")));
+							&&((commands.size()==0)||(!commands.get(0).toUpperCase().startsWith("RE")));
 		if(commands.size()<3)
 		{
 			if(tryArchon)

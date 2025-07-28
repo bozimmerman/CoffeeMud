@@ -125,11 +125,7 @@ public interface GenericBuilder extends CMLibrary
 		EXPS,
 		IMG,
 		FACTIONS,
-		VARMONEY,
-		MAXHUNGER,
-		MAXTHIRST,
-		SHOPGOODSLIST,
-		ALIGNMENTDESC
+		VARMONEY
 		;
 		private static String[] CODES=null;
 
@@ -178,7 +174,12 @@ public interface GenericBuilder extends CMLibrary
 		BIRTHDATE,
 		AGEMINS,
 		AGENAME,
-		GENDERNAME
+		GENDERNAME,
+		MAXHUNGER,
+		MAXTHIRST,
+		SHOPGOODSLIST,
+		ALIGNMENTDESC,
+		SPEED
 	}
 
 	/**

@@ -368,7 +368,7 @@ public class Score extends Affect
 		}
 		if((arg == null)||(arg == ScoreArgs.BASE)||(arg == ScoreArgs.AFFECTS)||(arg == ScoreArgs.EFFECTS))
 		{
-			msg.append(getAffects(mob.session(),mob,false,false));
+			msg.append(getAffects(mob.session(),mob,false,false,null,-1));
 		}
 		return msg;
 	}
@@ -419,13 +419,13 @@ public class Score extends Affect
 			switch(arg)
 			{
 			case AFFECTS:
-				return getAffects(mob.session(),mob,false,false);
+				return getAffects(mob.session(),mob,false,false,null,-1);
 			case BASE:
 				return this.getStats(mob, prowessCode, arg);
 			case DETAILS:
 				return getScore(mob,parm).toString();
 			case EFFECTS:
-				return getAffects(mob.session(),mob,false,false);
+				return getAffects(mob.session(),mob,false,false,null,-1);
 			case INFO:
 				return getScore(mob,parm).toString();
 			case STATS:

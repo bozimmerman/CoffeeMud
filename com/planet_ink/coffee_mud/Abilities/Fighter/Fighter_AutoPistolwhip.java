@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2025 Bo Zimmerman
+   Copyright 2025-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -86,16 +86,6 @@ public class Fighter_AutoPistolwhip extends FighterSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;
 	}
 
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if(!(affected instanceof MOB))
-			return super.tick(ticking,tickID);
-		if(!super.tick(ticking,tickID))
-			return false;
-		return true;
-	}
-
 	protected boolean inventoryAmmoCheck(final MOB M, final String ammoType)
 	{
 		if(M==null)
@@ -128,6 +118,7 @@ public class Fighter_AutoPistolwhip extends FighterSkill
 				final Ability A = msg.source().fetchAbility("Fighter_Pistolwhip");
 				if(A!=null)
 				{
+					this.helpProficiency(msg.source(), 0);
 					A.invoke(msg.source(), msg.source().getVictim(), false, 0);
 					if(CMLib.dice().rollPercentage() < super.getXLEVELLevel(msg.source()))
 						A.invoke(msg.source(), msg.source().getVictim(), false, 0);

@@ -386,7 +386,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@Override
 	public int getExpertiseLevelCached(final MOB mob, final String abilityID, final ExpertiseLibrary.XType code)
 	{
-		if((mob==null)||(code==null)||(abilityID==null)||(abilityID.length()==0))
+		if((mob==null)
+		||(code==null)
+		||(abilityID==null)
+		||(abilityID.length()==0))
 			return 0;
 		int expertiseLvl=0;
 		final int[][] usageCache=mob.getAbilityUsageCache(abilityID);

@@ -44,6 +44,14 @@ public class Affect extends StdCommand
 
 //	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Physical.class}};
 
+	private static enum SortField
+	{
+		NAME,
+		TYPE,
+		DOMAIN,
+		REMAIN
+	}
+
 	public String getMOBState(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -119,18 +127,85 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 
-	public String getAffects(final Session S, final Physical P, final boolean xtra, final boolean autosAlso)
+	public String getAffects(final Session S, final Physical P, final boolean xtra, final boolean autosAlso, final SortField field, final int mask)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int NUM_COLS=2;
 		final int COL_LEN=CMLib.lister().fixColWidth(36.0,S);
 		int colnum=NUM_COLS;
 		final MOB mob=(S!=null)?S.mob():null;
-		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+		Enumeration<Ability> a = P.effects();
+		if(field != null)
+		{
+			final XVector<Ability> effects = new XVector<Ability>(a);
+			effects.sort(new Comparator<Ability>() {
+
+				@Override
+				public int compare(final Ability o1, final Ability o2)
+				{
+					switch(field)
+					{
+					case TYPE:
+					{
+						final String domainName1=CMLib.flags().getAbilityType(o1);
+						final String domainName2=CMLib.flags().getAbilityType(o2);
+						if(domainName1.equals(domainName2))
+							return o1.displayText().compareTo(o2.displayText());
+						return domainName1.compareTo(domainName2);
+					}
+					case DOMAIN:
+					{
+						final String domainName1=CMLib.flags().getAbilityDomain(o1);
+						final String domainName2=CMLib.flags().getAbilityDomain(o2);
+						if(domainName1.equals(domainName2))
+							return o1.displayText().compareTo(o2.displayText());
+						return domainName1.compareTo(domainName2);
+					}
+					case NAME:
+						return o1.displayText().compareTo(o2.displayText());
+					case REMAIN:
+					{
+						final boolean comply1 = ((o1.canBeUninvoked())&&(!o1.isNowAnAutoEffect()));
+						final boolean comply2 = ((o2.canBeUninvoked())&&(!o2.isNowAnAutoEffect()));
+						if(!comply1 && (!comply2))
+							return o1.displayText().compareTo(o2.displayText());
+						if(!comply1)
+							return -1;
+						if(!comply2)
+							return 1;
+						long tr1=o1.expirationDate();
+						if(o1.invoker()!=null)
+							tr1=tr1-(System.currentTimeMillis()-o1.invoker().lastTickedDateTime());
+						long tr2=o2.expirationDate();
+						if(o2.invoker()!=null)
+							tr2=tr2-(System.currentTimeMillis()-o2.invoker().lastTickedDateTime());
+						return Long.valueOf(tr2).compareTo(Long.valueOf(tr1));
+					}
+					}
+					return o1.displayText().compareTo(o2.displayText());
+				}
+
+			});
+			a=effects.elements();
+		}
+		for(;a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A==null)
 				continue;
+			if(mask >= 0)
+			{
+				if(mask < Ability.ALL_ACODES)
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)!=mask)
+						continue;
+				}
+				else
+				{
+					if((A.classificationCode()&Ability.ALL_DOMAINS)!=mask)
+						continue;
+				}
+			}
 			String disp=A.displayText();
 			if(autosAlso && disp.length()==0)
 			{
@@ -187,6 +262,51 @@ public class Affect extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+
+		SortField sort = null;
+		if(commands.size()>1)
+		{
+			final String end = commands.get(commands.size()-1).toUpperCase().trim();
+			final SortField SF = (SortField)CMath.s_valueOf(SortField.class,end);
+			if(SF != null)
+			{
+				commands.remove(commands.size()-1);
+				sort = SF;
+			}
+		}
+
+		int mask = -1;
+		if(commands.size()>1)
+		{
+			final String end = commands.get(commands.size()-1).toUpperCase().trim().replace(' ','_');
+			int typ = CMLib.flags().getAbilityType_(end);
+			if(typ >= 0)
+			{
+				commands.remove(commands.size()-1);
+				mask = typ;
+			}
+			else
+			{
+				typ = CMLib.flags().getAbilityDomain(end);
+				if(typ >= 0)
+				{
+					commands.remove(commands.size()-1);
+					mask = (typ +1) << 5 ;
+				}
+			}
+		}
+
+		if((sort == null)&&(mask>=0)&&(commands.size()>1))
+		{
+			final String end = commands.get(commands.size()-1).toUpperCase().trim();
+			final SortField SF = (SortField)CMath.s_valueOf(SortField.class,end);
+			if(SF != null)
+			{
+				commands.remove(commands.size()-1);
+				sort = SF;
+			}
+		}
+
 		final Session S=mob.session();
 		if(S!=null)
 		{
@@ -209,7 +329,7 @@ public class Affect extends StdCommand
 					{
 						if(S==mob.session())
 							S.colorOnlyPrint(L(" \n\r^!@x1 is affected by: ^?",P.name()));
-						final String msg=getAffects(S,P,true,mob.isAttributeSet(MOB.Attrib.SYSOPMSGS));
+						final String msg=getAffects(S,P,true,mob.isAttributeSet(MOB.Attrib.SYSOPMSGS),sort,mask);
 						if(msg.length()<5)
 							S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 						else
@@ -223,7 +343,7 @@ public class Affect extends StdCommand
 				S.colorOnlyPrintln("\n\r"+getMOBState(mob)+"\n\r");
 			if(S==mob.session())
 				S.colorOnlyPrint(L("^!You are affected by: ^?"));
-			final String msg=getAffects(S,mob,mob.isAttributeSet(MOB.Attrib.SYSOPMSGS),mob.isAttributeSet(MOB.Attrib.SYSOPMSGS));
+			final String msg=getAffects(S,mob,mob.isAttributeSet(MOB.Attrib.SYSOPMSGS),mob.isAttributeSet(MOB.Attrib.SYSOPMSGS),sort,mask);
 			if(msg.length()<5)
 				S.colorOnlyPrintln(L("Nothing!\n\r^N"));
 			else
@@ -254,6 +374,6 @@ public class Affect extends StdCommand
 				target=(Physical)o;
 			}
 		}
-		return getAffects(S,target,false,false);
+		return getAffects(S,target,false,false,null,-1);
 	}
 }

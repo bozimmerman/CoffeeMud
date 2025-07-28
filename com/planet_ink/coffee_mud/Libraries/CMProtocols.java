@@ -3132,7 +3132,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			byte[] buf;
-			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
+			if(supportables.containsKey("room.info")
+				||supportables.containsKey("room"))
 			{
 				final Long oldRoomHash=reporteds.get("system.currentRoom");
 				if((oldRoomHash==null)
@@ -3146,7 +3147,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			if(supportables.containsKey("room.mobiles")||supportables.containsKey("room"))
+			if(supportables.containsKey("room.mobiles")
+				||supportables.containsKey("room"))
 			{
 				final Long oldRoomHash=reporteds.get("system.currentRoomMobiles");
 				int mobileHash = 0;
@@ -3167,7 +3169,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			if(supportables.containsKey("room.players")||supportables.containsKey("room"))
+			if(supportables.containsKey("room.players")
+				||supportables.containsKey("room"))
 			{
 				final Long oldRoomHash=reporteds.get("system.currentRoomPlayers");
 				int playerHash = 0;
@@ -3188,7 +3191,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
-			if(supportables.containsKey("room.items.inv")||supportables.containsKey("room.items")||supportables.containsKey("room"))
+			if(supportables.containsKey("room.items.inv")
+				||supportables.containsKey("room.items")
+				||supportables.containsKey("room"))
 			{
 				final Long oldRoomHash=reporteds.get("system.currentRoomItems");
 				int itemHash = 0;

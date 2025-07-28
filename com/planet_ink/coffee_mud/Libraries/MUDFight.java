@@ -3248,15 +3248,20 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							fighter.amFollowing().fetchFollowerOrder(fighter)+fighter.amFollowing().rangeToTarget():-1;
 		if(CMLib.flags().isAliveAwakeMobile(fighter,true))
 		{
-			if(((combatSystem!=CombatLibrary.CombatSystem.MANUAL)&&(combatSystem!=CombatLibrary.CombatSystem.TURNBASED))
+			if(((combatSystem!=CombatLibrary.CombatSystem.MANUAL)
+				&&(combatSystem!=CombatLibrary.CombatSystem.TURNBASED))
 			||(fighter.isMonster()))
 			{
 				final int saveAction=(combatSystem!=CombatLibrary.CombatSystem.DEFAULT)?0:1;
-				int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
-				if((combatSystem==CombatLibrary.CombatSystem.DEFAULT)
-				&&(numAttacks>(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9))))
-					numAttacks=(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9));
-				for(int s=0;s<numAttacks;s++)
+				double numAttacks=fighter.actions()-saveAction;
+				if(combatSystem==CombatLibrary.CombatSystem.DEFAULT)
+				{
+					final double limit = fighter.phyStats().speed()+0.9;
+					if(numAttacks > limit)
+						numAttacks = limit;
+				}
+				final int safe = (int)Math.round(Math.floor(fighter.actions() - numAttacks));
+				for(int s=safe;s<fighter.actions();s++)
 				{
 					if((!fighter.amDead())
 					&&(fighter.curState().getHitPoints()>0)

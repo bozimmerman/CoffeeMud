@@ -214,6 +214,7 @@ public class Fighter extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_SizeOpponent",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_UrbanTactics",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_RapidReload",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_Berzerk",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Fighter_ImprovedShieldDefence",true);
