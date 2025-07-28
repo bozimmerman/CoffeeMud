@@ -18,7 +18,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -597,7 +599,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	// vars created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
 	@Override
-	public Room buildRoom(final XMLTag piece, final Map<String,Object> defined, final Exit[] exits, final int direction) throws CMException
+	public Room buildRoom(final Area A, final XMLTag piece, final Map<String,Object> defined, final Exit[] exits, final int direction) throws CMException
 	{
 		addDefinition("DIRECTION",CMLib.directions().getDirectionName(direction).toLowerCase(),defined);
 
@@ -631,9 +633,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Ability> aV = findAffects(R,piece,defined,null);
 		for(int i=0;i<aV.size();i++)
 		{
-			final Ability A=aV.get(i);
-			A.setSavable(true);
-			R.addNonUninvokableEffect(A);
+			final Ability ableA=aV.get(i);
+			ableA.setSavable(true);
+			R.addNonUninvokableEffect(ableA);
 		}
 		final List<Behavior> bV = findBehaviors(R,piece,defined);
 		for(int i=0;i<bV.size();i++)
@@ -642,26 +644,54 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			B.setSavable(true);
 			R.addBehavior(B);
 		}
-		for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
+		try
 		{
-			Exit E=exits[dir];
-			if((E==null)&&(defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase())))
+			final List<XMLLibrary.XMLTag> choices = getAllChoices(R,null,null,"EXIT", piece, defined,true);
+			if((choices!=null)&&(choices.size()>0))
 			{
-				defined.put("ROOMLINK_DIR",CMLib.directions().getDirectionChar(dir).toUpperCase());
-				final Exit E2=findExit(R,piece, defined);
-				if(E2!=null)
-					E=E2;
-				defined.remove("ROOMLINK_DIR");
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
+				for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
+				{
+					Room linkR = null;
+					Exit E=exits[dir];
+					final String dirChar = CMLib.directions().getDirectionChar(dir).toUpperCase();
+					if(defined.containsKey("ROOMLINK_"+dirChar))
+					{
+						if(E==null)
+						{
+							final Pair<Exit,Room> E2=findExit(A, R, choices, defined, dir, true);
+							if(E2!=null)
+							{
+								E=E2.first;
+								linkR = E2.second;
+							}
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+								Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+dirChar+":ROOM="+R.getStat("DISPLAY"));
+						}
+						else
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+							Log.debugOut("MUDPercolator","EXIT:OLD:"+E.ID()+":DIR="+dirChar+":ROOM="+R.getStat("DISPLAY"));
+					}
+					else
+					if(E == null)
+					{
+						final Pair<Exit,Room> E2=findExit(A, R, choices, defined, dir, false);
+						if(E2!=null)
+						{
+							E=E2.first;
+							linkR = E2.second;
+						}
+					}
+					R.setRawExit(dir, E);
+					if(linkR != null)
+						R.setRawDoor(dir, linkR);
+				}
 			}
-			else
-			if((CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			&&defined.containsKey("ROOMLINK_"+CMLib.directions().getDirectionChar(dir).toUpperCase()))
-				Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+CMLib.directions().getDirectionChar(dir).toUpperCase()+":ROOM="+R.getStat("DISPLAY"));
-			R.setRawExit(dir, E);
-			R.startItemRejuv();
 		}
+		catch(final PostProcessException pe)
+		{
+			throw new CMException("Unable to post process this object type: "+pe.getMessage(),pe);
+		}
+		R.startItemRejuv();
 		return R;
 	}
 
@@ -1306,16 +1336,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 		for(final Integer linkDir : node.links().keySet())
 		{
+			final String dirChar = CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase();
 			final LayoutNode linkNode = node.links().get(linkDir);
 			if(linkNode.room() != null)
 			{
 				final int opDir=Directions.getOpDirectionCode(linkDir.intValue());
 				exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
-				groupDefined.put("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.room().displayText(null));
+				groupDefined.put("ROOMTITLE_"+dirChar,linkNode.room().displayText(null));
 			}
-			groupDefined.put("NODETYPE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.type().name());
+			groupDefined.put("NODETYPE_"+dirChar,linkNode.type().name());
 			//else groupDefined.put("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),"");
-			groupDefined.put("ROOMLINK_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
+			groupDefined.put("ROOMLINK_"+dirChar,"true");
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 		{
@@ -1340,9 +1371,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
 		for(final Integer linkDir : node.links().keySet())
 		{
-			groupDefined.remove("NODETYPE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
-			groupDefined.remove("ROOMLINK_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
-			groupDefined.remove("ROOMTITLE_"+CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase());
+			final String dirChar = CMLib.directions().getDirectionChar(linkDir.intValue()).toUpperCase();
+			groupDefined.remove("NODETYPE_"+dirChar);
+			groupDefined.remove("ROOMLINK_"+dirChar);
+			groupDefined.remove("ROOMTITLE_"+dirChar);
 		}
 		return R;
 	}
@@ -1423,7 +1455,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 				{
 					final Exit[] rExits=exits.clone();
-					R=buildRoom(valPiece,rDefined,rExits,directions);
+					R=buildRoom(A, valPiece,rDefined,rExits,directions);
 					for(int e=0;e<rExits.length;e++)
 						exits[e]=rExits[e];
 				}
@@ -1446,7 +1478,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected PairVector<Room,Exit[]> findRooms(final XMLTag piece, final Map<String,Object> defined, final Exit[] exits, final int direction) throws CMException
+	protected PairVector<Room,Exit[]> findRooms(final Area A, final XMLTag piece, final Map<String,Object> defined, final Exit[] exits, final int direction) throws CMException
 	{
 		try
 		{
@@ -1464,7 +1496,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final Exit[] theseExits=exits.clone();
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
-				final Room R=buildRoom(valPiece,defined,theseExits,direction);
+				final Room R=buildRoom(A,valPiece,defined,theseExits,direction);
 				DV.addElement(R,theseExits);
 			}
 			return DV;
@@ -1475,34 +1507,71 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected Exit findExit(final Modifiable M, final XMLTag piece, final Map<String,Object> defined) throws CMException
+	protected Pair<Exit,Room> findExit(final Area A, final Room R, final List<XMLTag> choices, final Map<String,Object> defined,
+									   final int dir, final boolean required) throws CMException
 	{
+		final String dirChar = CMLib.directions().getDirectionChar(dir);
+		defined.put("ROOMLINK_DIR",dirChar);
+		defined.put("ROOMLINK_REQUIRED",""+required);
 		try
 		{
-			final String tagName="EXIT";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(M,null,null,tagName, piece, defined,true);
-			if((choices==null)||(choices.size()==0))
-				return null;
-			final List<Exit> exitChoices = new Vector<Exit>();
+			final List<XMLTag> exitChoices = new ArrayList<XMLTag>(choices.size());
 			for(int c=0;c<choices.size();c++)
 			{
 				final XMLTag valPiece = choices.get(c);
-				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(M,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
+				if(valPiece.parms().containsKey("VALIDATE")
+				&& !testCondition(R,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
-				defineReward(M,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
-				final Exit E=buildExit(valPiece,defined);
-				if(E!=null)
-					exitChoices.add(E);
+				final String forceDir = valPiece.parms().get("DIRECTION");
+				if(forceDir != null)
+				{
+					if(!dirChar.equalsIgnoreCase(forceDir))
+						continue;
+				}
+				else
+				if(!required)
+					continue;
+				exitChoices.add(valPiece);
 			}
 			if(exitChoices.size()==0)
 				return null;
-			return exitChoices.get(CMLib.dice().roll(1,exitChoices.size(),-1));
+			final XMLTag chosenETag = exitChoices.get(CMLib.dice().roll(1,exitChoices.size(),-1));
+			defineReward(R,null,null,chosenETag.getParmValue("DEFINE"),chosenETag,null,defined,true);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+				Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(CMStrings.deleteCRLFTAB(chosenETag.value()),80)+"...");
+			final Exit E=buildExit(chosenETag,defined);
+			Room linkR = null;
+			if(!required)
+			{
+				final String roomLinkID =
+						this.findOptionalString(E, null, null, "ROOMLINK", chosenETag, defined, false);
+				if(roomLinkID != null)
+				{
+					final Room R2 = CMLib.map().getRoom(roomLinkID);
+					if(R2 == null)
+						throw new CMException("Unable to find room '"+roomLinkID+"' for exit "+dirChar+" on "+R.roomID());
+					linkR = R2;
+				}
+				else
+				{
+					final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+					final Room nR = this.findRoom(A, chosenETag, defined, exits, dir);
+					if(nR != null)
+						linkR = nR;
+					else
+						throw new CMException("Unable to link room for exit "+dirChar+" on "+R.roomID());
+				}
+			}
+			return new Pair<Exit,Room>(E,linkR);
 		}
 		catch(final PostProcessException pe)
 		{
 			throw new CMException("Unable to post process this object type: "+pe.getMessage(),pe);
+		}
+		finally
+		{
+			defined.remove("ROOMLINK_DIR");
+			defined.remove("ROOMLINK_REQUIRED");
 		}
 	}
 
@@ -3237,6 +3306,59 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return value;
 	}
 
+	protected PairList<XMLTag,String> findStrings(final boolean optional, final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		tagName=tagName.toUpperCase().trim();
+		final PairList<XMLTag, String> found = new PairVector<XMLTag, String>();
+		final List<XMLLibrary.XMLTag> choices = getAllChoices(E, ignoreStats, defPrefix, tagName, piece, defined, true);
+		if((choices==null)||(choices.size()==0))
+		{
+			if(!optional)
+				throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+			return found;
+		}
+		for(int c=0;c<choices.size();c++)
+		{
+			final XMLTag valPiece = choices.get(c);
+			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
+				continue;
+
+			String value=this.buildQuestTemplate(E, ignoreStats, defPrefix, tagName, valPiece, defined);
+			if(value == null)
+			{
+				try
+				{
+					value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+				}
+				catch(final java.lang.StackOverflowError e)
+				{
+					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
+					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
+					try {
+						value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+					} catch(final java.lang.StackOverflowError e2) {}
+					throw new CMException("Ended because of a stack overflow.  See the log.");
+				}
+			}
+			if(CMath.s_bool(valPiece.getParmValue("LLM")))
+			{
+				try
+				{
+					if(!defined.containsKey("SYSTEM_LLM_Object"))
+						defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(null,null));
+					if(value.trim().length()>0)
+						value = ((ProtocolLibrary.LLMSession)defined.get("SYSTEM_LLM_Object")).chat(value);
+				}
+				catch(final Exception e)
+				{
+					throw new CMException("Ended because of failed LLM access.",e);
+				}
+			}
+			found.add(valPiece, value);
+		}
+		return found;
+	}
+
 	protected String findString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
@@ -3311,52 +3433,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			processDefined=piece;
 			tagName=piece.tag();
 		}
-		final List<XMLLibrary.XMLTag> choices = getAllChoices(E, ignoreStats, defPrefix, tagName, piece, defined, true);
-		if((choices==null)||(choices.size()==0))
-			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		StringBuffer finalValue = new StringBuffer("");
-
-		for(int c=0;c<choices.size();c++)
+		for(final Pair<XMLTag,String> valPair :
+			this.findStrings(false, E, ignoreStats, defPrefix, tagName, piece, defined))
 		{
-			final XMLTag valPiece = choices.get(c);
-			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
-				continue;
-
-			String value=this.buildQuestTemplate(E, ignoreStats, defPrefix, tagName, valPiece, defined);
-			if(value == null)
-			{
-				try
-				{
-					value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
-				}
-				catch(final java.lang.StackOverflowError e)
-				{
-					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
-					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
-					try {
-						value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
-					} catch(final java.lang.StackOverflowError e2) {}
-					throw new CMException("Ended because of a stack overflow.  See the log.");
-				}
-			}
-
+			final XMLTag valPiece = valPair.first;
+			final String value = valPair.second;
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
-			if(CMath.s_bool(valPiece.getParmValue("LLM")))
-			{
-				try
-				{
-					if(!defined.containsKey("SYSTEM_LLM_Object"))
-						defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(null,null));
-					if(value.trim().length()>0)
-						value = ((ProtocolLibrary.LLMSession)defined.get("SYSTEM_LLM_Object")).chat(value);
-				}
-				catch(final Exception e)
-				{
-					throw new CMException("Ended because of failed LLM access.",e);
-				}
-			}
-
 			final String action = valPiece.getParmValue("ACTION");
 			if((action==null) || (action.length()==0))
 				finalValue.append(" ").append(value);
@@ -3747,7 +3831,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			finalDefined.putAll(defined);
 			finalDefined.putAll(fixed);
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) //TODO:BZ:FIX
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
 			return test;
 		}

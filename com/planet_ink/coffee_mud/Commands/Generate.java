@@ -284,7 +284,7 @@ public class Generate extends StdCommand
 				CMLib.percolator().defineReward(piece,definedIDs);
 				definedIDs.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(Directions.getOpDirectionCode(direction)));
 				definedIDs.put("ROOMTAG_GATEEXITROOM", mob.location());
-				final Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
+				final Room R=CMLib.percolator().buildRoom(mob.location().getArea(), piece, definedIDs, exits, direction);
 				if(R!=null)
 					V.add(R);
 				break;

@@ -581,7 +581,7 @@ room, which exit object should it use.</li><li>$ROOMTAG_NODEGATEEXIT&lt;dir&gt;:
         <li>$ROOMLINK_N, $ROOMLINK_S, $ROOMLINK_E, $ROOMLINK_W,
 etc:
 "true" if an exit
-exists that way.</li>
+exists that way.</li><li>$ROOMLINK_DIR, $ROOMLINK_REQUIRED: the directon of an exit being built, and whether layout requires it.</li>
         <li>$ROOMTITLE_N, $ROOMTITLE_S, $ROOMTITLE_E,
 $ROOMTITLE_W,
 etc: if already
@@ -809,11 +809,11 @@ or
 NUMBER attributes.<br />
       <br />
       <br />
-      <a name="affecttag"><span style="font-weight: bold;">AFFECT tags</span></a>:&nbsp;</p>
+      <a name="affecttag"><span style="font-weight: bold;">AFFECT tags</span></a>:&nbsp;</p><p>(see below under BEHAVIOR)</p>
       <p><a name="abilitytag"><span style="font-weight: bold;">ABILITY
-tags</span></a>:</p>
+tags</span></a>:</p><p>(see below under BEHAVIOR)</p>
       <p><a name="culturalabilitytag"><span style="font-weight: bold;">CULTURALABILITY
-tags</span></a>:&nbsp;</p>
+tags</span></a>:&nbsp;</p><p>(see below under BEHAVIOR)</p>
       <p><a name="behaviortag"><span style="font-weight: bold;">BEHAVIOR
 tags</span></a>:&nbsp;</p>
       <p>Required detail:&nbsp;</p>
@@ -845,8 +845,7 @@ Required detail:&nbsp;</p>
       <p>Optional Objects:&nbsp;</p>
       <ul>
         <li>"AFFECT"</li>
-        <li>"BEHAVIOR"</li>
-      </ul>
+        <li>"BEHAVIOR"</li></ul>
 Optional Details:
       <ul>
         <li>"NAME"</li>
@@ -865,7 +864,9 @@ Optional Details:
         <li>"KEYNAME",</li>
         <li>"CLOSEWORD",</li>
         <li>"OPENWORD",</li>
-        <li>"CLOSEDTEXT"</li>
+        <li>"CLOSEDTEXT"</li><li>"DIRECTION": limits the exit use to a particular direction. &nbsp;If the
+layout did not call for it ($ROOMLINK_REQUIRED = 'false'), then one of
+the following parmeters is required:</li><ul><li>"ROOMLINK": overrides any intended use by linking to the given Room ID, for non-layout DIRECTIONs</li><li>"ROOM" a type of tag that describes a new room to generate in this DIRECTION..</li></ul>
       </ul>
       <p><a name="raceag"><span style="font-weight: bold;">RACE tags</span></a>:</p>
       <p>Required detail:&nbsp;</p>

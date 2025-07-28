@@ -90,6 +90,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * Given a specific ROOM generation tag, this method will return the room selected
 	 * by that tag piece, with the entrace to it being in the given direction
 	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
+	 * @param A the area the room is being built for
 	 * @param piece the identified tag that can return a room
 	 * @param defined the defined id set from the entire xml document
 	 * @param exits pre-defined exits from this room, if any
@@ -97,7 +98,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @return the room generated from the tag.
 	 * @throws CMException any parsing or generation errors
 	 */
-	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
+	public Room buildRoom(final Area A, XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
 
 	/**
 	 * Builds a quest script based around the given variables using the given xml tag root.
