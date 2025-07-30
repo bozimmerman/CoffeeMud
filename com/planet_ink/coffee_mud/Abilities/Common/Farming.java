@@ -424,6 +424,7 @@ public class Farming extends GatheringSkill
 		int code=-1;
 		final String what=CMParms.combine(commands,0).toUpperCase();
 		final RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		String reqSubType = "";
 		for(final int cd : codes.all())
 		{
 			final String str=codes.name(cd).toUpperCase();
@@ -449,9 +450,24 @@ public class Farming extends GatheringSkill
 				}
 			}
 		}
+		if(code < 0)
+		{
+			final Item I = R.findItem(what);
+			if((I instanceof RawMaterial)&&(plantableResource(I.material())))
+			{
+				final RawMaterial mI = (RawMaterial)I;
+				if((mI.getSubType().length()>0)
+				&&(!mI.getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
+				{
+					code = I.material();
+					foundShortName = CMStrings.capitalizeAndLower(mI.getSubType());
+					reqSubType = mI.getSubType();
+				}
+			}
+		}
 		if(code<0)
 		{
-			commonTelL(mob,"You can't seem to grow '@x1'.",CMParms.combine(commands,0));
+			commonTelL(mob,"You can't seem to grow '@x1'  Is it on the ground?.",CMParms.combine(commands,0));
 			return false;
 		}
 
@@ -460,8 +476,10 @@ public class Farming extends GatheringSkill
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
-			if((I!=null)
-			&&(I.material()==code))
+			if((I  != null)
+			&&(I.material()==code)
+			&&((reqSubType.length()==0)
+				||((I instanceof RawMaterial)&&(reqSubType.equals(((RawMaterial)I).getSubType())))))
 			{
 				final boolean[] resp = plantable(mob,I);
 				if(resp[0])
@@ -502,7 +520,10 @@ public class Farming extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		&&(isPotentialCrop(R,code)))
 		{
-			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, "");
+			if((mine instanceof RawMaterial)&&(!((RawMaterial)mine).getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
+				found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, ((RawMaterial)mine).getSubType());
+			else
+				found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, "");
 			if((found!=null)
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine.material()==found.material()))
