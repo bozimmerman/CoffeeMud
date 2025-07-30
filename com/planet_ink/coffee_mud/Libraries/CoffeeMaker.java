@@ -3227,10 +3227,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			&&(((MOB)M).playerStats().getAccount()!=null)
 			&&(((MOB)M).playerStats().getAccount().isStat(stat)))
 				return true;
-			if(getGenMobCodeNum(stat)>=0)
-				return true;
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
 			if(fakeStat != null)
+				return true;
+			if(getGenMobCodeNum(stat)>=0)
 				return true;
 		}
 		else
@@ -3376,10 +3376,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			&&(((MOB)M).playerStats().getAccount() != null)
 			&&(((MOB)M).playerStats().getAccount().isStat(stat)))
 				return ((MOB)M).playerStats().getAccount().getStat(stat);
-			if(getGenMobCodeNum(stat)>=0)
-				return getGenMobStat((MOB)M, stat);
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
-			if(fakeStat != null)
+			if(fakeStat == null)
+			{
+				if(getGenMobCodeNum(stat)>=0)
+					return getGenMobStat((MOB)M, stat);
+			}
+			else
 			{
 				switch(fakeStat)
 				{
@@ -3849,13 +3852,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((MOB)M).playerStats().getAccount().setStat(stat, value);
 				return;
 			}
-			if(getGenMobCodeNum(stat)>=0)
-			{
-				setGenMobStat((MOB)M, stat, value);
-				return;
-			}
 			final GenMOBBonusFakeStats fakeStat = (GenMOBBonusFakeStats)CMath.s_valueOf(GenMOBBonusFakeStats.class, stat);
-			if(fakeStat != null)
+			if(fakeStat == null)
+			{
+				if(getGenMobCodeNum(stat)>=0)
+				{
+					setGenMobStat((MOB)M, stat, value);
+					return;
+				}
+			}
+			else
 			{
 				switch(fakeStat)
 				{
