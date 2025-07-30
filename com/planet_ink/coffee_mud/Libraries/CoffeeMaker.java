@@ -3310,6 +3310,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					str.append(pA.getOwnerName());
 				break;
 			}
+			case UNSAVABLE:
+			{
+				if(M instanceof Contingent)
+					str.append(!((Contingent)M).isSavable());
+				break;
+			}
 			case DENOMINATION_NAME:
 			{
 				str.append(CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(M)));
@@ -3759,6 +3765,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			case CURRENCY_NAME:
 			case DENOMINATION_NAME:
 				break;
+			case UNSAVABLE:
+			{
+				if(M instanceof Contingent)
+					((Contingent)M).setSavable(!CMath.s_bool(value));
+				break;
+			}
 			case DISPOSITIONSTR:
 				{
 					int newDisposition=0;

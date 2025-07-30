@@ -214,7 +214,8 @@ public interface GenericBuilder extends CMLibrary
 		CURRENCY,
 		CURRENCY_NAME,
 		DENOMINATION_NAME,
-		OWNER
+		OWNER,
+		UNSAVABLE
 	}
 
 	/**
