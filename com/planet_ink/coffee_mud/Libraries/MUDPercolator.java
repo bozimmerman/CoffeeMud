@@ -3321,7 +3321,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return value;
 	}
 
-	protected PairList<XMLTag,String> findStrings(final boolean optional, final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected PairList<XMLTag,String> findStrings(final boolean optional, final Modifiable E, final List<String> ignoreStats, final String defPrefix,
+												  String tagName, final XMLTag piece, final Map<String,Object> defined, final XMLTag processDefined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
 		final PairList<XMLTag, String> found = new PairVector<XMLTag, String>();
@@ -3369,12 +3370,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new CMException("Ended because of failed LLM access.",e);
 				}
 			}
+			if(processDefined!=valPiece)
+				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 			found.add(valPiece, value);
 		}
 		return found;
 	}
 
-	protected String findString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected String findString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName,
+								XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
 
@@ -3450,12 +3454,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		StringBuffer finalValue = new StringBuffer("");
 		for(final Pair<XMLTag,String> valPair :
-			this.findStrings(false, E, ignoreStats, defPrefix, tagName, piece, defined))
+			this.findStrings(false, E, ignoreStats, defPrefix, tagName, piece, defined, processDefined))
 		{
 			final XMLTag valPiece = valPair.first;
 			final String value = valPair.second;
-			if(processDefined!=valPiece)
-				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
+
 			final String action = valPiece.getParmValue("ACTION");
 			if((action==null) || (action.length()==0))
 				finalValue.append(" ").append(value);
