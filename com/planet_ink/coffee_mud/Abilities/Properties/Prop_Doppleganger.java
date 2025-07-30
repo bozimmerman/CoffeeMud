@@ -125,7 +125,11 @@ public class Prop_Doppleganger extends Property
 		{
 			lastOwner=owner;
 			lastLevel=owner.phyStats().level();
-			int level=(int)Math.round(CMath.mul(owner.phyStats().level(),levelPct))+levelAdd;
+			int level;
+			if(levelPct==0.0)
+				level=I.basePhyStats().level();
+			else
+				level=(int)Math.round(CMath.mul(owner.phyStats().level(),levelPct))+levelAdd;
 			if(level<minLevel)
 				level=minLevel;
 			if(level>maxLevel)
@@ -252,7 +256,10 @@ public class Prop_Doppleganger extends Property
 						diffPct -= CMath.div(diffPct,num+1);
 					//savePct = CMath.mul(savePct,num);
 				}
-				level=(int)Math.round(CMath.mul(level,levelPct))+levelAdd;
+				if(levelPct == 0.0)
+					level = doppleM.basePhyStats().level();
+				else
+					level=(int)Math.round(CMath.mul(level,levelPct))+levelAdd;
 				if(level<minLevel)
 					level=minLevel;
 				if(level>maxLevel)
