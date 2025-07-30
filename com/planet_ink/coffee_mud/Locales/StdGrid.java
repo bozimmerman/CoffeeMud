@@ -396,6 +396,8 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					final Room R=element[y];
 					if(R==null)
+						continue;
+					/*// this breaks autogrids, so lets not
 					{
 						roomsV.clear();
 						if(!this.amDestroyed())
@@ -414,6 +416,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						}
 						return roomsV;
 					}
+					*/
 					if(!roomsV.contains(R))
 					{
 						roomsV.addElement(R);
@@ -552,7 +555,8 @@ public class StdGrid extends StdRoom implements GridLocale
 			try
 			{
 				if((EX.out)&&(EX.dir==dir)
-				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
+				&&(EX.x>=0)&&(EX.y>=0)
+				&&(EX.x<subMap.length)&&(EX.y<subMap[EX.x].length)
 				&&(subMap[EX.x][EX.y]==room))
 				{
 					final Room R=CMLib.map().getRoom(EX.destRoomID);

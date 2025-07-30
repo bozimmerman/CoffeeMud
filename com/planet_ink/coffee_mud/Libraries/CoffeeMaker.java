@@ -254,6 +254,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				str.append(xmlLib.convertXMLtoTag("XGRID",((GridLocale)E).xGridSize()));
 				str.append(xmlLib.convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
+				if(E instanceof AutoGenArea)
+				{
+					str.append(xmlLib.convertXMLtoTag("AGXMLPATH",xmlLib.parseOutAngleBrackets(((AutoGenArea)E).getGeneratorXmlPath())));
+					str.append(xmlLib.convertXMLtoTag("AGAUTOVAR",xmlLib.parseOutAngleBrackets(CMParms.toEqListString(((AutoGenArea)E).getAutoGenVariables()))));
+				}
 			}
 			if(E instanceof LocationRoom)
 			{
@@ -2726,6 +2731,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				((GridLocale)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
 				((GridLocale)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
+				if(E instanceof AutoGenArea)
+				{
+					((AutoGenArea)E).setGeneratorXmlPath(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGXMLPATH")));
+					((AutoGenArea)E).setAutoGenVariables(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(V,"AGAUTOVAR")));
+				}
 			}
 			if(E instanceof LocationRoom)
 			{
