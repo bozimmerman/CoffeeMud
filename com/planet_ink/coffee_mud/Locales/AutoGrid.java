@@ -301,17 +301,31 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 					super.buildGrid();
 					return;
 				}
+				final Set<Room> unnodifiedRooms = new HashSet<Room>();
+				for(final Enumeration<Room> r=fakeArea.getProperMap();r.hasMoreElements();)
+					unnodifiedRooms.add(r.nextElement());
 				CMLib.percolator().postProcess(definedIDs);
 				@SuppressWarnings("unchecked")
 				final List<LayoutNode> nodes = (List<LayoutNode>)definedIDs.get("LAYOUT_NODES");
+				if((nodes==null)||(nodes.size()<1))
+				{
+					Log.errOut(L("Failed to create the new area for @x1.  Try again later.",roomID()));
+					super.buildGrid();
+					return;
+				}
 				int lowestX = 0;
 				int lowestY = 0;
 				for(final LayoutNode node : nodes)
 				{
-					if(node.coord()[0] < lowestX)
-						lowestX = (int)node.coord()[0];
-					if(node.coord()[1] < lowestY)
-						lowestY = (int)node.coord()[1];
+					if(node.coord().length>1)
+					{
+						if(node.coord()[0] < lowestX)
+							lowestX = (int)node.coord()[0];
+						if(node.coord()[1] < lowestY)
+							lowestY = (int)node.coord()[1];
+						if(node.room()!=null)
+							unnodifiedRooms.remove(node.room());
+					}
 				}
 				for(final LayoutNode node : nodes)
 				{
@@ -338,10 +352,46 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 						fakeArea.delProperRoom(node.room());
 						node.room().setRoomID("");
 						node.room().setGridParent(this);
+						node.room().setSavable(false);
 						final int rx = (int)node.coord()[0];
 						final int ry = (int)node.coord()[1];
 						subMap[rx][ry] = node.room();
 						node.room().setArea(getArea());
+					}
+				}
+				if(unnodifiedRooms.size()>0)
+				{
+					final List<int[]> freexys = new ArrayList<int[]>();
+					for(int x=0;x<subMap.length;x++)
+					{
+						for(int y=0;y<subMap[x].length;y++)
+							if(subMap[x][y]==null)
+								freexys.add(new int[] {x,y});
+					}
+					final int midx = highestX/2;
+					final int midy = highestY/2;
+					freexys.sort(new Comparator<int[]>() {
+						@Override
+						public int compare(final int[] o1, final int[] o2)
+						{
+							final int d1 = Math.abs(o1[0] - midx) + Math.abs(o1[1] - midy);
+							final int d2 = Math.abs(o2[0] - midx) + Math.abs(o2[1] - midy);
+							return Integer.valueOf(d1).compareTo(Integer.valueOf(d2));
+						}
+					});
+
+					for(final Room unR : unnodifiedRooms)
+					{
+						fakeArea.delProperRoom(unR);
+						unR.setRoomID("");
+						unR.setGridParent(this);
+						unR.setSavable(false);
+						if(freexys.size()>0)
+						{
+							final int[] mine = freexys.remove(0);
+							subMap[mine[0]][mine[1]] = unR;
+						}
+						unR.setArea(getArea());
 					}
 				}
 				buildFinalLinks(direction, nodes.get(0).room()); // links to outside rooms
