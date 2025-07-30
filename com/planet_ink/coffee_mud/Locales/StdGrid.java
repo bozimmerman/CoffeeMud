@@ -798,7 +798,9 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(EX==null)
 			return;
 		Room linkFrom=null;
-		if(subMap!=null)
+		if((subMap!=null)
+		&&(EX.x < subMap.length)
+		&&(EX.y < subMap[EX.x].length))
 			linkFrom=subMap[EX.x][EX.y];
 		if(linkFrom!=null)
 		{
@@ -817,7 +819,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	public void fillInTheExtraneousExternals(final Room[][] subMap, final Exit ox)
 	{
-		if(subMap!=null)
+		if((subMap!=null)&&(gridexits!=null))
 		{
 			for(int d=0;d<gridexits.size();d++)
 			{
@@ -1001,8 +1003,10 @@ public class StdGrid extends StdRoom implements GridLocale
 								}
 							}
 							room.clearSky();
-							room.destroy();
+							if((room instanceof GridLocale)&&(room!=this))
+								((GridLocale)room).clearGrid(backHere);
 							room.setGridParent(null);
+							room.destroy();
 						}
 					}
 				}

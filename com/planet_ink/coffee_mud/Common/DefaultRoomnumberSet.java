@@ -165,7 +165,10 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CI==null)
 				return;
 			x=theRest.indexOf("#(");
-			if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
+			if((x>=0)
+			&&(theRest.endsWith(")"))
+			&&(CMath.isInteger(theRest.substring(0,x)))
+			&&(theRest.indexOf("#(",x+2)<0))
 			{
 				final int comma=theRest.indexOf(",",x);
 				if(comma>0)
@@ -343,7 +346,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 				long roomNum=0;
 				final int x=numStr.indexOf("#(");
 				if((x>=0)
-				&&(numStr.endsWith(")")))
+				&&(numStr.endsWith(")"))
+				&&(numStr.indexOf("#(",x+2)<0))
 				{
 					final int comma=numStr.indexOf(",",x);
 					if(comma>0)
@@ -430,14 +434,17 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			theRest=areaName.substring(x+1).trim();
 			areaName=areaName.substring(0,x);
 			x=theRest.indexOf("#(");
-			if((x>=0)&&(theRest.endsWith(")"))&&(CMath.isInteger(theRest.substring(0,x))))
+			final int y=(x>=0)?theRest.indexOf(")",x+1):-1;
+			if((y>0)
+			&&(CMath.isInteger(theRest.substring(0,x)))
+			&&(!theRest.substring(y+1).startsWith("#(")))
 			{
 				final int comma=theRest.indexOf(",",x);
 				if(comma>0)
 				{
 					roomNum=(Long.parseLong(theRest.substring(0,x))<<30);
 					roomNum+=(Long.parseLong(theRest.substring(x+2,comma))<<15);
-					roomNum+=Long.parseLong(theRest.substring(comma+1,theRest.length()-1));
+					roomNum+=Long.parseLong(theRest.substring(comma+1,y));
 					if(roomNum<LongSet.INT_BITS)
 						roomNum|=LongSet.OPTION_FLAG_LONG;
 				}

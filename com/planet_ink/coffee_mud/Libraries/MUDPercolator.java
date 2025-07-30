@@ -683,15 +683,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(linkR != null)
 					{
 						R.setRawDoor(dir, linkR);
-						linkR.setRawDoor(Directions.getOpDirectionCode(dir), R);
-						linkR.setRawExit(Directions.getOpDirectionCode(dir), E);
-						linkR.setRoomID(A.getNewRoomID(null,-1));
-						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-							Log.debugOut("MUDPercolator","ROOMID: "+R.roomID()+"/"+R.displayText());
-						if(!A.isRoom(linkR))
+						if((!linkR.getArea().isRoom(linkR))
+						&&(CMLib.map().getRoom(linkR.roomID())==null))
 						{
-							linkR.setArea(A);
-							A.addProperRoom(linkR);
+							linkR.setRawDoor(Directions.getOpDirectionCode(dir), R);
+							linkR.setRawExit(Directions.getOpDirectionCode(dir), E);
+							linkR.setRoomID(A.getNewRoomID(null,-1));
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+								Log.debugOut("MUDPercolator","ROOMID: "+R.roomID()+"/"+R.displayText());
+							if(!A.isRoom(linkR))
+							{
+								linkR.setArea(A);
+								A.addProperRoom(linkR);
+							}
 						}
 					}
 				}

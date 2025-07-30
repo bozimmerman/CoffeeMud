@@ -76,7 +76,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 	protected Room[][] getBuiltGrid()
 	{
 		if(System.currentTimeMillis() > expires)
-			this.subMap = null;
+			clearGrid(null);
 		return super.getBuiltGrid();
 	}
 
@@ -341,9 +341,11 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 					if(node.coord()[1] > highestY)
 						highestY = (int)node.coord()[1];
 				}
-				//this is terrible, because it will cause the grid to grow every time you enter it.
-				//super.xsize = highestX+1;
-				//super.ysize = highestY+1;
+				while((highestX * highestY) < (nodes.size()+unnodifiedRooms.size()))
+				{
+					highestX++;
+					highestY++;
+				}
 				super.subMap = new Room[highestX+1][highestY+1];
 				for(final LayoutNode node : nodes)
 				{
@@ -357,6 +359,8 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 						final int ry = (int)node.coord()[1];
 						subMap[rx][ry] = node.room();
 						node.room().setArea(getArea());
+						if(node.room() instanceof GridLocale) // it needs one
+							node.room().setRoomID(roomID()+"#("+rx+","+ry+")");
 					}
 				}
 				if(unnodifiedRooms.size()>0)
@@ -390,6 +394,8 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 						{
 							final int[] mine = freexys.remove(0);
 							subMap[mine[0]][mine[1]] = unR;
+							if(unR instanceof GridLocale) // it needs one
+								unR.setRoomID(roomID()+"#("+mine[0]+","+mine[1]+")");
 						}
 						unR.setArea(getArea());
 					}

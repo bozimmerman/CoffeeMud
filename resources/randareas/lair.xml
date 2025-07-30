@@ -688,6 +688,9 @@ See guides/RandomAreas.html for information about documents of this type.
 		</STRING>
 		<AFFECT class="Prop_Crawlspace" parms="" />
 		<EXIT class="Open" />
+		<EXIT CLASS="Open" DIRECTION="DOWN"  condition="($__thewaydown&lt;1) and ($multi_level='true')" define="__thewaydown+=1">
+			<ROOM class="AutoGrid" TITLE="The Next Level" DESCRIPTION="Look around" XSIZE=5 YSIZE=5 OTHERVARS="AGGROCHANCE=$aggrochance THEME=$theme LEVEL_RANGE=(1+($level_range)) multi_level=true"/>
+		</EXIT>
 		<ITEM condition="(1?10=1) and ($pop_items!='false')" select="any-1" insert="lair_junk" />
 	</ROOM>
 </ROOM>
