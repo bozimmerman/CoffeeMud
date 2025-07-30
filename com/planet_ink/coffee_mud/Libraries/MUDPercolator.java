@@ -681,7 +681,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					R.setRawExit(dir, E);
 					if(linkR != null)
+					{
 						R.setRawDoor(dir, linkR);
+						linkR.setRawDoor(Directions.getOpDirectionCode(dir), R);
+						linkR.setRawExit(Directions.getOpDirectionCode(dir), E);
+						linkR.setRoomID(A.getNewRoomID(null,-1));
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+							Log.debugOut("MUDPercolator","ROOMID: "+R.roomID()+"/"+R.displayText());
+						if(!A.isRoom(linkR))
+						{
+							linkR.setArea(A);
+							A.addProperRoom(linkR);
+						}
+					}
 				}
 			}
 		}
@@ -1744,9 +1756,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final String[] statCodes = E.getStatCodes();
 		for (final String stat : statCodes)
-		{
 			fillOutStatCode(E,ignoreStats,defPrefix,stat,piece,defined, false);
-		}
 	}
 
 	protected void fillOutCopyStats(final Modifiable E, final Modifiable E2)

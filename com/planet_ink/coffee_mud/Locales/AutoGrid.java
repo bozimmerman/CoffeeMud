@@ -109,11 +109,13 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 			return false;
 		if(expires == Long.MAX_VALUE)
 			return true;
+
 		if(CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)
 		||CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_PARENT))
 		{
 			if(playerNearby())
 				return true;
+			return false;
 		}
 		return true;
 	}
@@ -200,6 +202,17 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 			definedIDs.put("AREANAME", displayText());
 			if(!definedIDs.containsKey("AREASIZE"))
 				definedIDs.put("AREASIZE", ""+this.getGridSize());
+			for(final String key : getAutoGenVariables().keySet())
+			{
+				if(!(key.equalsIgnoreCase("AREA_ID")
+					||key.equalsIgnoreCase("AREA_IDS")
+					||key.equalsIgnoreCase("AREAID")
+					||key.equalsIgnoreCase("AREAIDS")))
+				{
+					final String val = getAutoGenVariables().get(key);
+					definedIDs.put(key.toUpperCase(),val);
+				}
+			}
 			if(!definedIDs.containsKey("LEVEL_RANGE"))
 			{
 				Log.warnOut(L("LEVEL_RANGE is missing argument for @x1",roomID()));
@@ -280,7 +293,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 					}
 				}
 				// finally, fill out the new random map!
-				final Area fakeArea = CMClass.getAreaType("StdArea");
+				final Area fakeArea = CMClass.getAreaType("StdThinInstance");
 				fakeArea.setName("TempArea"+new Random(System.nanoTime()).nextDouble());
 				if(!CMLib.percolator().fillInArea(piece, definedIDs, fakeArea, magicDir))
 				{
@@ -322,6 +335,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 				{
 					if(node.room() != null)
 					{
+						fakeArea.delProperRoom(node.room());
 						node.room().setRoomID("");
 						node.room().setGridParent(this);
 						final int rx = (int)node.coord()[0];

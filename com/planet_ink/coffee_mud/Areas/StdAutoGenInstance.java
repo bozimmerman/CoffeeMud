@@ -586,7 +586,10 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				final MPContext ctx = new MPContext(msg.source(), msg.source(), msg.source(), newA, null, null, msg.sourceMessage(), null);
 				for(final String key : getAutoGenVariables().keySet())
 				{
-					if(!(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS")))
+					if(!(key.equalsIgnoreCase("AREA_ID")
+						||key.equalsIgnoreCase("AREA_IDS")
+						||key.equalsIgnoreCase("AREAID")
+						||key.equalsIgnoreCase("AREAIDS")))
 					{
 						final String rawValue = CMath.replaceVariables(getAutoGenVariables().get(key),values);
 						final String val=scrptEng.varify(ctx, rawValue);

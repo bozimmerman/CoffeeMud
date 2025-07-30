@@ -281,11 +281,13 @@ public class StdGrid extends StdRoom implements GridLocale
 					switch(opDirection)
 					{
 					case Directions.EAST:
-						if((((GridLocale)loc).yGridSize()==yGridSize()))
+						if((((GridLocale)loc).yGridSize()==yGridSize())
+						&&(xy.y<grid[grid.length-1].length))
 							return grid[grid.length-1][xy.y];
 						break;
 					case Directions.WEST:
-						if((((GridLocale)loc).yGridSize()==yGridSize()))
+						if((((GridLocale)loc).yGridSize()==yGridSize())
+						&&(xy.y<grid[grid.length-1].length))
 							return grid[0][xy.y];
 						break;
 					case Directions.NORTHWEST:
@@ -293,11 +295,13 @@ public class StdGrid extends StdRoom implements GridLocale
 					case Directions.NORTHEAST:
 						return grid[grid.length-1][0];
 					case Directions.NORTH:
-						if((((GridLocale)loc).xGridSize()==xGridSize()))
+						if((((GridLocale)loc).xGridSize()==xGridSize())
+						&&(xy.x<grid.length))
 							return grid[xy.x][0];
 						break;
 					case Directions.SOUTH:
-						if((((GridLocale)loc).xGridSize()==xGridSize()))
+						if(((((GridLocale)loc).xGridSize()==xGridSize()))
+						&&(xy.x<grid.length))
 							return grid[xy.x][grid[0].length-1];
 						break;
 					case Directions.SOUTHEAST:
