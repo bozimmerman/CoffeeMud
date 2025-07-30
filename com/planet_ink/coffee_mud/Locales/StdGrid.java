@@ -262,34 +262,10 @@ public class StdGrid extends StdRoom implements GridLocale
 			gridexits.remove(x);
 	}
 
-	public Room getAltRoomFrom(Room loc, final int direction)
+	protected Room getGridRoomFrom(Room loc, final int direction)
 	{
-		if((loc==null)||(direction<0))
-			return null;
 		final int opDirection=Directions.getOpDirectionCode(direction);
-
-		getBuiltGrid();
 		Room[][] grid=null;
-		final List<CrossExit> gridexits=this.gridexits;
-		if((gridexits!=null)&&(gridexits.size()>0))
-		{
-			grid=getBuiltGrid();
-			final String roomID=CMLib.map().getExtendedRoomID(loc);
-			if(grid!=null)
-			{
-				for(int d=0;d<gridexits.size();d++)
-				{
-					final CrossExit EX=gridexits.get(d);
-					if((!EX.out)
-					&&(EX.destRoomID.equalsIgnoreCase(roomID))
-					&&(EX.dir==direction)
-					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
-					&&(grid[EX.x][EX.y]!=null))
-						return grid[EX.x][EX.y];
-				}
-			}
-		}
-
 		final Room oldLoc=loc;
 		if(loc.getGridParent()!=null)
 			loc=loc.getGridParent();
@@ -333,6 +309,35 @@ public class StdGrid extends StdRoom implements GridLocale
 			}
 		}
 		return findCenterRoom(opDirection);
+	}
+
+	protected Room getAltRoomFrom(final Room loc, final int direction)
+	{
+		if((loc==null)||(direction<0))
+			return null;
+
+		getBuiltGrid();
+		Room[][] grid=null;
+		final List<CrossExit> gridexits=this.gridexits;
+		if((gridexits!=null)&&(gridexits.size()>0))
+		{
+			grid=getBuiltGrid();
+			final String roomID=CMLib.map().getExtendedRoomID(loc);
+			if(grid!=null)
+			{
+				for(int d=0;d<gridexits.size();d++)
+				{
+					final CrossExit EX=gridexits.get(d);
+					if((!EX.out)
+					&&(EX.destRoomID.equalsIgnoreCase(roomID))
+					&&(EX.dir==direction)
+					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
+					&&(grid[EX.x][EX.y]!=null))
+						return grid[EX.x][EX.y];
+				}
+			}
+		}
+		return this.getGridRoomFrom(loc, direction);
 	}
 
 	protected Room[][] getBuiltGrid()

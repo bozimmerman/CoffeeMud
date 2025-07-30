@@ -188,6 +188,8 @@ public class DefaultAreaIStats implements AreaIStats
 				}
 				if(mob.fetchEffect("Prop_ShortEffects")!=null)
 					statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+				if(CMLib.flags().isAggressiveTo(mob, null))
+					statData[Area.Stats.AGGRO_MOBS.ordinal()]++;
 				if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+R.racialCategory()+" ")>=0)
 					statData[Area.Stats.HUMANOIDS.ordinal()]++;
 			}

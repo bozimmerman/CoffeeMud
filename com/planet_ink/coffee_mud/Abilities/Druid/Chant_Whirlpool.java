@@ -207,7 +207,8 @@ public class Chant_Whirlpool extends Chant
 					R.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept into a massive whirlpool!",I.Name()));
 					final GridLocale grid = (GridLocale)theWhirlpool;
 					final Room targetRoom = grid.getGridChild(grid.xGridSize()-1, 0);
-					targetRoom.moveItemTo(I);
+					if(targetRoom != null)
+						targetRoom.moveItemTo(I);
 				}
 			}
 			for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
@@ -219,7 +220,8 @@ public class Chant_Whirlpool extends Chant
 						M.tell(L("^XYou're swept into a terrible whirlpool!"));
 					final GridLocale grid = (GridLocale)theWhirlpool;
 					final Room targetRoom = grid.getGridChild(grid.xGridSize()-1, 0);
-					targetRoom.bringMobHere(M, false);
+					if(targetRoom != null)
+						targetRoom.bringMobHere(M, false);
 				}
 			}
 		}
@@ -245,7 +247,8 @@ public class Chant_Whirlpool extends Chant
 						M.tell(L("^XYou've stumbled into a terrible whirlpool!"));
 					final GridLocale grid = (GridLocale)theWhirlpool;
 					final Room targetRoom = grid.getGridChild(grid.xGridSize()-1, 0);
-					msg.setTarget(targetRoom);
+					if(targetRoom != null)
+						msg.setTarget(targetRoom);
 				}
 			}
 		}

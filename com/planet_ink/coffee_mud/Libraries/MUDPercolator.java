@@ -66,7 +66,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected Map<Integer,List<Item>> farmablesCache = new Hashtable<Integer,List<Item>>();
 
-
 	protected static enum MQLSpecialFromSet
 	{
 		AREAS,
@@ -232,7 +231,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return s1.compareToIgnoreCase(s2);
 		}
 	};
-
 
 	@Override
 	public LayoutManager getLayoutManager(final String named)
@@ -871,6 +869,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<LayoutNode> roomsToLayOut = layoutManager.generate(size,direction);
 		if((roomsToLayOut==null)||(roomsToLayOut.size()==0))
 			throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
+		defined.put("LAYOUT_NODES",new XVector<LayoutNode>(roomsToLayOut));
 		final Map<Integer,LayoutNode> mostRooms = new HashMap<Integer,LayoutNode>();
 		final LayoutNode magicRoomNode = roomsToLayOut.get(0);
 		final List<Integer> useExits = new XArrayList<Integer>(
@@ -1285,6 +1284,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(layoutManager == null)
 			throw new CMException("Undefined Layout "+layoutType);
 		defined.put("AREA_LAYOUT",layoutManager.name());
+		defined.put("LAYOUT_MANAGER",layoutManager);
 		String size = findStringNow("size",piece,defined);
 		if(CMath.isMathExpression(size))
 			size=Integer.toString(CMath.parseIntExpression(size));
@@ -1361,7 +1361,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new CMException("Failure to generate room from "+piece.value());
 		R.setRoomID(A.getNewRoomID(null,-1));
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			Log.debugOut("MUDPercolator","ROOMID: "+R.roomID());
+			Log.debugOut("MUDPercolator","ROOMID: "+R.roomID()+"/"+R.displayText());
 		R.setArea(A);
 		A.addProperRoom(R);
 		node.setRoom(R);
@@ -1424,9 +1424,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final String tagName="ROOM";
 			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
-			{
 				return null;
-			}
 			while(choices.size()>0)
 			{
 				final XMLLibrary.XMLTag valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
@@ -1523,9 +1521,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				&& !testCondition(R,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
 				final String forceDir = valPiece.parms().get("DIRECTION");
-				if(forceDir != null)
+				if((forceDir != null)&&(forceDir.length()>0))
 				{
-					if(!dirChar.equalsIgnoreCase(forceDir))
+					if(!dirChar.equalsIgnoreCase(forceDir.substring(0,1)))
 						continue;
 				}
 				else
@@ -1555,7 +1553,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 				{
 					final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-					final Room nR = this.findRoom(A, chosenETag, defined, exits, dir);
+					final Map<String,Object> otherDefined = new XHashtable<String,Object>(defined);
+					for(final Iterator<String> i=otherDefined.keySet().iterator();i.hasNext();)
+					{
+						final String key = i.next();
+						if(key.toUpperCase().startsWith("ROOM_")||(key.toUpperCase().startsWith("EXIT_")))
+							i.remove();
+					}
+					final Room nR = this.findRoom(A, chosenETag, otherDefined, exits, dir);
 					if(nR != null)
 						linkR = nR;
 					else
@@ -3711,7 +3716,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(piece.tag().equalsIgnoreCase(tagName))
 		{
-			if((piece.parms().containsKey("LAYOUT")) && (piece.tag().equalsIgnoreCase("ROOM")) && (!defined.containsKey("ROOM_LAYOUT")))
+			if((piece.parms().containsKey("LAYOUT"))
+			&& (piece.tag().equalsIgnoreCase("ROOM"))
+			&& (!defined.containsKey("ROOM_LAYOUT")))
 				return new XVector<XMLTag>(processLikeParm(tagName,piece,defined));
 
 			boolean container=false;

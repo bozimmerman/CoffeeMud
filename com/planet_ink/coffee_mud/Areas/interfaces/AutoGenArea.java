@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
  * are herein exposed
  * @author Bo Zimmerman
  */
-public interface AutoGenArea extends Area
+public interface AutoGenArea
 {
 	/**
 	 * Get the path to the xml file to use to generate this areas rooms

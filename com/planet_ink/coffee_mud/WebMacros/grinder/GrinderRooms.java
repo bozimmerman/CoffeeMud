@@ -175,6 +175,18 @@ public class GrinderRooms
 				((GridLocale)R).setYGridSize(CMath.s_int(y));
 				((GridLocale)R).clearGrid(null);
 			}
+			if(R instanceof AutoGenArea)
+			{
+				String AGXMLPATH=httpReq.getUrlParameter("AGXMLPATH");
+				if(AGXMLPATH==null)
+					AGXMLPATH="";
+				((AutoGenArea) R).setGeneratorXmlPath(CMLib.coffeeFilter().safetyInFilter(AGXMLPATH));
+
+				String AGAUTOVAR=httpReq.getUrlParameter("AGAUTOVAR");
+				if(AGAUTOVAR==null)
+					AGAUTOVAR="";
+				((AutoGenArea) R).setAutoGenVariables(CMLib.coffeeFilter().safetyInFilter(AGAUTOVAR));
+			}
 
 			String error=GrinderAreas.doAffects(R,httpReq,parms);
 			if(error.length()>0)

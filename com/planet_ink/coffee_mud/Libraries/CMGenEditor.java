@@ -12012,6 +12012,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genLocationCoords(mob,(LocationRoom)R, ++showNumber, showFlag);
 			}
+			if(R instanceof AutoGenArea)
+			{
+				promptStatStr(mob,R,++showNumber,showFlag,"AutoGen Xml File Path","GENERATIONFILEPATH");
+				promptStatStr(mob,R,++showNumber,showFlag,"AutoGen Variables (VAR=VAL format)","OTHERVARS");
+			}
 			//genClimateType(mob,R,++showNumber,showFlag);
 			//R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
 			genBehaviors(mob,R,++showNumber,showFlag);

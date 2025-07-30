@@ -150,6 +150,18 @@
     Y:<INPUT TYPE=TEXT NAME=YGRID SIZE=5 MAXLENGTH=2 VALUE="@RoomData?YGRID@">
     </TD>
 </TR>
+@if?AreaData?ISAUTOGEN@
+	<TR>
+		<TD><FONT COLOR="#66FFFF"><B>AutoGen<BR>XML resources file:</B></FONT></TD>
+	    <TD COLSPAN=2><INPUT TYPE=TEXT NAME=AGXMLPATH SIZE=60 VALUE="@RoomData?AGXMLPATH@"></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR="#66FFFF"><B>AutoGen<BR>Variables &nbsp;<a href="javascript:OpenUp('ahelp.cmvp','GENERATE');"><FONT COLOR=WHITE><I>?</I></FONT></a> :<BR><BR>&nbsp;<FONT SIZE=-2><i>VAR=VAL VAR2=VAL</i></B></FONT></TD>
+	    <TD COLSPAN=2>
+        <TEXTAREA ROWS=5 COLS=55 NAME=AGAUTOVAR>@RoomData?AGAUTOVAR@</TEXTAREA>
+	    </TD>
+	</TR>
+@endif@
 @endif@
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>

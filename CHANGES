@@ -16,6 +16,7 @@
  15. GMCP: new room.exits command, expanded char.effects and skills: see Protocols guide.
  16. FoodPrep now supports slicing all foods, and MasterFoodPrep lets you chop them up.
  17. AFFECT can now both filter and sort its results for you.
+ 18. New Locale type: AutoGrid, basically an auto-generated grid locale
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

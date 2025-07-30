@@ -409,9 +409,9 @@ articles from the string immediately following it and replace it (or
 insert) either "a" or "an" depending on the first letter of the word.</li>
       </ul>
       <h2><a name="using">Using the Random Generator</a></h2>
-There are currently two ways to use the Random Generator, one is the
-Archon GENERATE command, and the other is the Area type
-"StdAutoGenInstance".<br />
+There are currently three ways to use the Random Generator to generate areas and rooms, one is the
+Archon GENERATE command, another is the Area type
+"StdAutoGenInstance", and the last is the Locale type "AutoGrid"<br />
       <br />
       <span style="font-weight: bold;">Generate Command</span>:<br />
       <br />
@@ -513,8 +513,23 @@ groups, and will persist until the group gets tired of playing it
 This area type also permits the path and name of the top-level random
 generation xml file to be specified, where the /resource directory is
 considered the default path root.<br />
-      <br />
-Lastly, any required or optional variables. Many tags will have a
+      <br /><span style="font-weight: bold;">AutoGrid Locale Type</span><br /><br />The
+autogrid type is a type of grid locale, which means it has an x and y
+size, although the only purpose of of those numbers is to determine the
+total amount of rooms by multiplying them together. &nbsp;The *actual*
+x and
+y size of the grid will be determined by the LAYOUT used when the rooms
+are generated. &nbsp;There are other aspects of the AutoGrid that break
+it's "griddiness". &nbsp;For example, the AutoGrid does not generate
+its rooms until after the area is loaded, and if an AutoGrid locale is
+embedded in another instance, it won't generate until a player gets
+nearby; either of which may cause strange reactions from spells.
+&nbsp;Also, unlike normal grid locales, AutoGrids take just as long to
+generate as any other random generated room set, so it's best to keep
+the dimensions as small as possible.<br /><br />The
+autogrid type otherwise behaves similar to the StdAutoGenInstance, in
+that it can be fed the random generation xml file, and a series of
+variables to help define the nature of the auto-generated rooms.<br /><br /><br /><br />For both StdAutoGenInstance and AutoGrid, any tags will have a
 specific set of required&nbsp;variables which must be defined in
 order for
 the content to be generated.&nbsp; Failing to specify&nbsp;one

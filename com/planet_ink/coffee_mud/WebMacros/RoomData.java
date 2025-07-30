@@ -877,6 +877,25 @@ public class RoomData extends StdWebMacro
 					size=((GridLocale)R).yGridSize()+"";
 				str.append(size);
 			}
+			if(R instanceof AutoGenArea)
+			{
+				final AutoGenArea AG=(AutoGenArea)R;
+
+				if(parms.containsKey("AGAUTOVAR"))
+				{
+					String value=httpReq.getUrlParameter("AGAUTOVAR");
+					if((value==null)||(value.length()==0))
+						value=CMParms.toEqListString(AG.getAutoGenVariables());
+					str.append(value);
+				}
+				if(parms.containsKey("AGXMLPATH"))
+				{
+					String value=httpReq.getUrlParameter("AGXMLPATH");
+					if((value==null)||(value.length()==0))
+						value=AG.getGeneratorXmlPath();
+					str.append(value);
+				}
+			}
 			if(parms.containsKey("ISGRID"))
 			{
 				if(R instanceof GridLocale)

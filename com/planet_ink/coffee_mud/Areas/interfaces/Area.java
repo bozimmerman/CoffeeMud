@@ -783,7 +783,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 		CHAOTIC_MOBS,
 		BOSS_MOBS,
 		MODE_LEVEL,
-		MODE_ALIGNMENT
+		MODE_ALIGNMENT,
+		AGGRO_MOBS
 	}
 
 	/**
