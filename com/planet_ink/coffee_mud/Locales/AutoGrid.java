@@ -359,8 +359,6 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 						final int ry = (int)node.coord()[1];
 						subMap[rx][ry] = node.room();
 						node.room().setArea(getArea());
-						if(node.room() instanceof GridLocale) // it needs one
-							node.room().setRoomID(roomID()+"#("+rx+","+ry+")");
 					}
 				}
 				if(unnodifiedRooms.size()>0)
@@ -394,8 +392,6 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 						{
 							final int[] mine = freexys.remove(0);
 							subMap[mine[0]][mine[1]] = unR;
-							if(unR instanceof GridLocale) // it needs one
-								unR.setRoomID(roomID()+"#("+mine[0]+","+mine[1]+")");
 						}
 						unR.setArea(getArea());
 					}

@@ -1892,6 +1892,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			room=getRoom(room);
 			if((rebuildGrids)&&(room instanceof GridLocale))
 				((GridLocale)room).clearGrid(null);
+			if((room.getGridParent() != null)&&(room.getGridParent().amDestroyed()))
+			{
+				room.destroy();
+				return;
+			}
 			final boolean mobile=room.getMobility();
 			try
 			{
