@@ -2003,7 +2003,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		fillOutStatCodes(M.baseState(),MOB_IGNORE_STATS,"MOB_",piece,defined);
 		M.recoverCharStats();
 		M.recoverPhyStats();
-		M.recoverMaxState();
+		M.resetToMaxState();
 
 		final List<Item> items = findItems(piece,defined);
 		for(int i=0;i<items.size();i++)
@@ -2022,6 +2022,38 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			A.setSavable(true);
 			M.addNonUninvokableEffect(A);
 		}
+		PostProcessAttempter(defined,new PostProcessAttempt()
+		{
+			final MOB M = mob;
+			@Override
+			public String attempt() throws CMException, PostProcessException
+			{
+				String power = findOptionalString(M,ignoreStats,"MOB_","MOB_POWERBONUS",piece,defined, false);
+				if((power==null)||(!CMath.isInteger(power)))
+					power = findOptionalString(M,ignoreStats,"MOB_","POWERBONUS",piece,defined, false);
+				if((power!=null)&&(CMath.isInteger(power))&&(M.fetchEffect("Prop_Adjuster")==null))
+				{
+					final MOB compM1 = CMLib.leveler().fillOutMOB(null,M.basePhyStats().level());
+					final MOB compM2 = CMLib.leveler().fillOutMOB(null,M.basePhyStats().level()+CMath.s_int(power));
+					M.basePhyStats().setSpeed(M.basePhyStats().speed()+(compM2.basePhyStats().speed()-compM1.basePhyStats().speed()));
+					M.basePhyStats().setArmor(M.basePhyStats().armor()+(compM2.basePhyStats().armor()-compM1.basePhyStats().armor()));
+					M.basePhyStats().setDamage(M.basePhyStats().damage()+(compM2.basePhyStats().damage()-compM1.basePhyStats().damage()));
+					M.basePhyStats().setAttackAdjustment(M.basePhyStats().attackAdjustment()+(compM2.basePhyStats().attackAdjustment()-compM1.basePhyStats().attackAdjustment()));
+					final Ability A = CMClass.getAbility("Prop_Adjuster");
+					final StringBuilder parms = new StringBuilder("");
+					parms.append("hp+"+ (compM2.baseState().getHitPoints()-compM1.baseState().getHitPoints())).append(" ");
+					parms.append("man+"+ (compM2.baseState().getMana()-compM1.baseState().getMana())).append(" ");
+					parms.append("mov+"+ (compM2.baseState().getMovement()-compM1.baseState().getMovement())).append(" ");
+					A.setMiscText(parms.toString());
+					M.addNonUninvokableEffect(A);
+					compM1.destroy();
+					compM2.destroy();
+					M.recoverPhyStats();
+					M.resetToMaxState();
+				}
+				return "";
+			}
+		});
 		final List<Behavior> bV= findBehaviors(M,piece,defined);
 		for(int i=0;i<bV.size();i++)
 		{
@@ -2415,7 +2447,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return false;
 	}
 
-	protected List<Item> buildItem(final XMLTag piece, final Map<String,Object> defined) throws CMException
+	protected List<Item> buildItem(final XMLTag piece, final Map<String,Object> defined) throws CMException, PostProcessException
 	{
 		final SHashtable<String,Object> preContentDefined = new SHashtable<String,Object>(defined);
 		final String classID = findStringNow("class",piece,defined);
@@ -2744,12 +2776,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Item I=contents.get(it);
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
 			I.recoverPhyStats();
-			CMLib.itemBuilder().balanceItemByLevel(I);
 			I.recoverPhyStats();
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
 			fillOutStatCodes(I.basePhyStats(),ITEM_IGNORE_STATS,"ITEM_",piece,defined);
 			I.recoverPhyStats();
-
 			if(I instanceof Container)
 			{
 				if((definedCopy == null)||(definedCopy.isDirty()))
@@ -2771,6 +2801,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					I.addNonUninvokableEffect(A);
 				}
 			}
+			PostProcessAttempter(defined,new PostProcessAttempt()
+			{
+				@Override
+				public String attempt() throws CMException, PostProcessException
+				{
+					String power = findOptionalString(I,ignoreStats,"ITEM_","ITEM_POWERBONUS",piece,defined, false);
+					if((power==null)||(!CMath.isInteger(power)))
+						power = findOptionalString(I,ignoreStats,"ITEM_","POWERBONUS",piece,defined, false);
+					if((power!=null)&&(CMath.isInteger(power))&&(I.fetchEffect("Prop_Adjuster")==null))
+					{
+						final int bonus=CMath.s_int(power);
+						I.basePhyStats().setLevel(I.basePhyStats().level()+bonus);
+						I.phyStats().setLevel(I.basePhyStats().level()+bonus);
+						CMLib.itemBuilder().balanceItemByLevel(I);
+						I.basePhyStats().setLevel(I.basePhyStats().level()-bonus);
+						I.recoverPhyStats();
+					}
+					return "";
+				}
+			});
 			final List<Behavior> V = findBehaviors(I,piece,defined);
 			for(int i=0;i<V.size();i++)
 			{

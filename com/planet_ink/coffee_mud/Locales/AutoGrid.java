@@ -64,7 +64,8 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 	{
 		if((expires < Long.MAX_VALUE)
 		&&(CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)
-			||CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_PARENT)))
+			||CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_PARENT)
+			||(roomID().length()==0)))
 		{
 			if(playerNearby())
 				expires = 0;
@@ -111,7 +112,8 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 			return true;
 
 		if(CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)
-		||CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_PARENT))
+		||CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_PARENT)
+		||(roomID().length()==0))
 		{
 			if(playerNearby())
 				return true;
