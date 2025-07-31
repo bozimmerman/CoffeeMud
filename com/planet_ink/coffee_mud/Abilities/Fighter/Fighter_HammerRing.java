@@ -249,7 +249,9 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L(auto?"<T-YOUPOSS> bell gets rung!":"^F<S-NAME> whack(s) <T-NAMESELF> on the head!^?"+CMLib.protocol().msp("bashed2.wav",30)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+					L(auto?"<T-YOUPOSS> bell gets rung!":"^F<S-NAME> whack(s) <T-NAMESELF> on the head!^?")
+					+CMLib.protocol().msp("bashed2.wav",30));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

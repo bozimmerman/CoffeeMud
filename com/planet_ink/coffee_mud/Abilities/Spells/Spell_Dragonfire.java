@@ -105,7 +105,9 @@ public class Spell_Dragonfire extends Spell
 		{
 
 			int maxDie = adjustedLevel(mob,asLevel)+(super.getX1Level(mob));
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
+					L(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")
+					+CMLib.protocol().msp("fireball.wav",40)))
 			{
 				for (final Object element : h)
 				{

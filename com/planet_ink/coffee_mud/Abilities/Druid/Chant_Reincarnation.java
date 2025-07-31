@@ -265,7 +265,9 @@ public class Chant_Reincarnation extends Chant
 			int modifier=0;
 			if((target!=mob)&&(!groupMembers.contains(target)))
 				modifier=CMMsg.MASK_MALICIOUS;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),L(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),
+					auto?L("^S<S-NAME> get(s) put under a reincarnation geas!^?"):
+						L("^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

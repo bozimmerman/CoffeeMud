@@ -141,21 +141,21 @@ public class Spacecollisions extends StdTest
 		final Coord3D lt3= new Coord3D(new long[]{0, 2, 3});
 		if(CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)<1)
 		{
-			return (L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)));
+			return (L("Error: Straight line test failed: @x1",""+CMLib.space().getMinDistanceFrom(lt1,lt2,lt3)));
 		}
 		final Coord3D ld1 = new Coord3D(new long[] {175, 193, 117});
 		final Coord3D ld2 = new Coord3D(new long[] {197, 218, 134});
 		final Coord3D ld3 = new Coord3D(new long[] {0, 0, 0});
 		if(CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)<285)
 		{
-			return (L("Error: Short line test failed: "+CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)));
+			return (L("Error: Short line test failed: @x1",""+CMLib.space().getMinDistanceFrom(ld1,ld2,ld3)));
 		}
 		final Coord3D l1= new Coord3D(new long[]{3515255, 3877051, -239069815});
 		final Coord3D l2= new Coord3D(new long[]{3953445, 4361852, -269041937});
 		final Coord3D l3= new Coord3D(new long[]{9734, -1358, 707222});
 		if(CMLib.space().getMinDistanceFrom(l1,l2,l3)<239834022)
 		{
-			return (L("Error: Straight line test failed: "+CMLib.space().getMinDistanceFrom(l1,l2,l3)));
+			return (L("Error: Straight line test failed: @x1",""+CMLib.space().getMinDistanceFrom(l1,l2,l3)));
 		}
 		for(int li=0;li<tests.length;li++)
 		{

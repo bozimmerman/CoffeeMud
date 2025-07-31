@@ -200,7 +200,8 @@ public class Spell_CombatPrecognition extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

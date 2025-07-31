@@ -167,7 +167,8 @@ public class Spell_DisguiseUndead extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) a disguise!":"^S<S-NAME> casts a spell for <T-NAMESELF>, causing <T-HIS-HER> appearance to change.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> gain(s) a disguise!":"^S<S-NAME> casts a spell for <T-NAMESELF>, causing <T-HIS-HER> appearance to change.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

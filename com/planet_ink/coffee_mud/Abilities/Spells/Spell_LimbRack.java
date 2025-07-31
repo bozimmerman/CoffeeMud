@@ -170,7 +170,8 @@ public class Spell_LimbRack extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"<T-NAME> stretches!":"^S<S-NAME> invoke(s) a stretching spell upon <T-NAMESELF>"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

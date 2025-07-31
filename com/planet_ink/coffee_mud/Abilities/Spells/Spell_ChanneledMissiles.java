@@ -195,7 +195,9 @@ public class Spell_ChanneledMissiles extends Spell
 							{
 								for(int i=0;(i<numMissiles) && (targetM.location()==R);i++)
 								{
-									final CMMsg msg=CMClass.getMsg(mob,targetM,thisSpellA,somaticCastCode(mob,targetM,auto),(i==0)?L((auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40)):null);
+									final CMMsg msg=CMClass.getMsg(mob,targetM,thisSpellA,somaticCastCode(mob,targetM,auto),(i!=0)?null:
+											(L(auto?"Magic missiles appear hurling full speed at <T-NAME>!":"^S<S-NAME> channel(s) magic missiles toward(s) <T-NAMESELF>!^?")
+													+CMLib.protocol().msp("spelldam2.wav",40)));
 									if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 									{
 										mob.location().send(mob,msg);
@@ -203,7 +205,8 @@ public class Spell_ChanneledMissiles extends Spell
 										{
 											final int damage = CMLib.dice().roll(1,11,11);
 											if(targetM.location()==mob.location())
-												CMLib.combat().postDamage(mob,targetM,thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
+												CMLib.combat().postDamage(mob,targetM,thisSpellA,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,
+														(i==0)?L("^SThe missile <DAMAGE> <T-NAME>!^?"):L("^SAnother missile <DAMAGE> <T-NAME>!^?"));
 										}
 									}
 									if((targetM==null)||(targetM.amDead())||(targetM.location()!=R))

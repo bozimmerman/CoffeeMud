@@ -47,7 +47,7 @@ public class MasterCooking extends Cooking
 	@Override
 	public String name()
 	{
-		return L("Master Cooking" + cookingID);
+		return L("Master Cooking@x1",cookingID);
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "MCOOK", "MCOOKING", "MASTERCOOK", "MASTERCOOKING" });

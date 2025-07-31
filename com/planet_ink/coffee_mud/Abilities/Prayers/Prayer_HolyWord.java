@@ -141,7 +141,9 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMLib.protocol().msp("bless.wav",10);
+		String str=(auto?L("The holy word is spoken."):
+				L("^S<S-NAME> speak(s) the holy word@x1 to <T-NAMESELF>.^?",ofDiety(mob)))
+				+CMLib.protocol().msp("bless.wav",10);
 		String missStr=L("<S-NAME> speak(s) the holy word@x1, but nothing happens.",ofDiety(mob));
 		final Room room=mob.location();
 		if(room!=null)
@@ -177,7 +179,8 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 								if(target.location().okMessage(target, msgb))
 								{
 									target.location().send(target,msgb);
-									final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,L("<S-NAME> release(s) <T-NAME>."));
+									final CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,
+											L("<S-NAME> release(s) <T-NAME>."));
 									target.location().send(target,msg2);
 									Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 									I.recoverPhyStats();

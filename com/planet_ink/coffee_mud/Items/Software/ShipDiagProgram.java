@@ -373,7 +373,7 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^X");
 		final TimeClock C = CMLib.time().localClock(this);
 		final String time = C.getShortestTimeDescription();
-		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		header.append(CMStrings.centerPreserve(L(" -- Level 1 Diagnostic Report @x1 -- ",time),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
@@ -437,7 +437,7 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^X");
 		final TimeClock C = CMLib.time().localClock(this);
 		final String time = C.getShortestTimeDescription();
-		header.append(CMStrings.centerPreserve(L(" -- Level 2 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		header.append(CMStrings.centerPreserve(L(" -- Level 2 Diagnostic Report @x1 -- ",time),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}
@@ -519,7 +519,7 @@ public class ShipDiagProgram extends GenShipProgram
 			header.append("^X");
 		final TimeClock C = CMLib.time().localClock(this);
 		final String time = C.getShortestTimeDescription();
-		header.append(CMStrings.centerPreserve(L(" -- Level 3 Diagnostic Report " + time+" -- "),60)).append("^.^N\n\r");
+		header.append(CMStrings.centerPreserve(L(" -- Level 3 Diagnostic Report @x1 -- ",time),60)).append("^.^N\n\r");
 		scr.insert(0, header.toString());
 		return scr.toString();
 	}

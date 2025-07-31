@@ -138,8 +138,9 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-					L(auto?"<T-NAME> become(s) clothed in holiness.":
-						"^S<S-NAME> @x1 to clothe <T-NAMESELF> in holiness.^?",prayForWord(mob))+CMLib.protocol().msp("bless.wav",10));
+					(auto?L("<T-NAME> become(s) clothed in holiness."):
+						L("^S<S-NAME> @x1 to clothe <T-NAMESELF> in holiness.^?",prayForWord(mob)))
+					+CMLib.protocol().msp("bless.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

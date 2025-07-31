@@ -185,7 +185,8 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> chant(s) thunderously.^?")+CMLib.protocol().msp("earthquake.wav",40)))
+			final String msgStr = auto?"":L("^S<S-NAME> chant(s) thunderously.^?");
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),msgStr+CMLib.protocol().msp("earthquake.wav",40)))
 			{
 				for (final Object element : h)
 				{

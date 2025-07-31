@@ -120,7 +120,8 @@ public class Spell_Nondetection extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

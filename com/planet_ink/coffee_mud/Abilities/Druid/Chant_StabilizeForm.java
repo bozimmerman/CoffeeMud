@@ -126,7 +126,8 @@ public class Chant_StabilizeForm extends Chant
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-					L(auto?"A stabilization field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for a stabilized form.^?"));
+					auto?L("A stabilization field envelopes <T-NAME>!"):
+						L("^S<S-NAME> chant(s) for a stabilized form.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

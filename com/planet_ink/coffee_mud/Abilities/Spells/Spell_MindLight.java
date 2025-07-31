@@ -144,7 +144,9 @@ public class Spell_MindLight extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto), L((auto?"T":"^S<S-NAME> incant(s) and gesture(s) and t")+"he mind light envelopes everyone.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),
+					(auto?L("The mind light envelopes everyone.^?"):
+						L("^S<S-NAME> incant(s) and gesture(s) and the mind light envelopes everyone.^?")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

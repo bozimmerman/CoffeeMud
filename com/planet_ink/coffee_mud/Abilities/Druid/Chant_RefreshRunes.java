@@ -117,7 +117,9 @@ public class Chant_RefreshRunes extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) refreshed!":"^S<S-NAME> chant(s), refreshing <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> appear(s) refreshed!"):
+						L("^S<S-NAME> chant(s), refreshing <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

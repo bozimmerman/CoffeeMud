@@ -133,7 +133,8 @@ public class Chant_Treemind extends Chant
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;

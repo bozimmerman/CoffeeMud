@@ -163,7 +163,9 @@ public class Chant_WaterHammer extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A compressed wave from @x1 flies at <T-NAME>!":"^S<S-NAME> chant(s), gather(s) @x1 to <S-HIM-HERSELF> and hurl(s) it towards <T-NAMESELF>!^?"),waterName));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("A compressed wave from @x1 flies at <T-NAME>!",waterName):
+					L("^S<S-NAME> chant(s), gather(s) @x1 to <S-HIM-HERSELF> and hurl(s) it towards <T-NAMESELF>!^?",waterName));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_WATER,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{

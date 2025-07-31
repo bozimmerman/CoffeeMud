@@ -139,7 +139,10 @@ public class Chant_Waterspout extends Chant
 		if(success)
 		{
 
-			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto), L((auto?"^JA":"^S<S-NAME> chant(s) to the waters and a")+" waterspout touches down!^?")+CMLib.protocol().msp("tornado.wav",40));
+			CMMsg msg = CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),
+					(auto?L("^JA waterspout touches down!^?"):
+					L("^S<S-NAME> chant(s) to the waters and a waterspout touches down!^?"))
+					+CMLib.protocol().msp("tornado.wav",40));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

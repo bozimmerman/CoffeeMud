@@ -219,7 +219,9 @@ public class Spell_MirrorImage extends Spell
 		{
 			invoker=mob;
 			numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					(auto?L("A spell forms around <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages):
+						L("^S<S-NAME> incant(s) the reflective spell of <T-NAME>, and suddenly @x1 copies appear.^?",""+numberOfImages)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

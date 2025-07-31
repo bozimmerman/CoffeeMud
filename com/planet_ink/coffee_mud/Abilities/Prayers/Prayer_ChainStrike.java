@@ -75,7 +75,7 @@ public class Prayer_ChainStrike extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, boolean auto, final int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth striking at."));
@@ -93,8 +93,9 @@ public class Prayer_ChainStrike extends Prayer
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
-					L(auto?"A thunderous crack of electricity erupts!":
-						"^S<S-NAME> @x1 to send down a thunderous crack of electricity.^?",prayForWord(mob))+CMLib.protocol().msp("lightning.wav",40)))
+					(auto?L("A thunderous crack of electricity erupts!"):
+						L("^S<S-NAME> @x1 to send down a thunderous crack of electricity.^?",prayForWord(mob)))
+						+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{

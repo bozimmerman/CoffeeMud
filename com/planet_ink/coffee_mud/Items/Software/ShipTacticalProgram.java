@@ -156,7 +156,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 				final TechComponent weapon = findWeaponByName(rest);
 				if(weapon == null)
 				{
-					addScreenMessage(L("Error: Unknown weapon name or command word '"+rest+"'.   Try HELP."));
+					addScreenMessage(L("Error: Unknown weapon name or command word '@x1'.   Try HELP.",rest));
 					return false;
 				}
 				finalWeaponToFire = weapon;
@@ -266,7 +266,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 			final TechComponent weapon = findWeaponByName(uword);
 			if(weapon == null)
 			{
-				addScreenMessage(L("Error: Unknown weapon name or command word '"+uword+"'.   Try HELP."));
+				addScreenMessage(L("Error: Unknown weapon name or command word '@x1'.   Try HELP.",uword));
 				return false;
 			}
 			if(parsed.size()==1)
@@ -349,7 +349,7 @@ public class ShipTacticalProgram extends ShipNavProgram
 				final ShipWarComponent shield = findShieldByName(uword);
 				if(shield == null)
 				{
-					addScreenMessage(L("Error: Unknown shield name or command word '"+uword+"'.   Try HELP."));
+					addScreenMessage(L("Error: Unknown shield name or command word '@x1'.   Try HELP.",uword));
 					return false;
 				}
 				if(parsed.size()==1)

@@ -1045,7 +1045,7 @@ public class Conquerable extends Arrest
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 			Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" are conquered by "+clanID+", vanquishing '"+holdingClan+"'.");
 		if(holdingClan.length()>0)
-			endClanRule(L(" due to being defeated by "+clanID));
+			endClanRule(L(" due to being defeated by @x1",clanID));
 
 		revoltDown=REVOLTFREQ;
 		holdingClan=clanID;

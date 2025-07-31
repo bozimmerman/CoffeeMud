@@ -220,8 +220,8 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					L(auto?"<T-NAME> clutch(es) <T-HIS-HER> groin area in obvious pain!":
-						"^F<S-NAME> kick(s) <T-NAMESELF> in the groin!^?"));
+					(auto?L("<T-NAME> clutch(es) <T-HIS-HER> groin area in obvious pain!"):
+						L("^F<S-NAME> kick(s) <T-NAMESELF> in the groin!^?")));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

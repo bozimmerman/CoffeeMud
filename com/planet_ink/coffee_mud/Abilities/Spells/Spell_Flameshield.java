@@ -172,7 +172,10 @@ public class Spell_Flameshield extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L((auto?"^S":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("fireball.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),
+					(auto?L("^SA field of flames erupt(s) around <T-NAME>!^?"):
+						L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  A field of flames erupt(s) around <T-NAME>!^?"))
+					+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

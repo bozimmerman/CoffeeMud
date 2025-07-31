@@ -47,7 +47,7 @@ public class MasterFoodPrep extends FoodPrep
 	@Override
 	public String name()
 	{
-		return L("Master Food Prep" + cookingID);
+		return L("Master Food Prep@x1", cookingID);
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "MFOODPREPPING", "MFPREP", "MASTERFOODPREPPING", "MASTERFPREP" });

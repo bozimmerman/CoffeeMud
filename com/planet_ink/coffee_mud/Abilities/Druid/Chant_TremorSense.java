@@ -193,7 +193,9 @@ public class Chant_TremorSense extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("@x1<T-NAME> gain(s) a sense of the earth!^?",L(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("^S<T-NAME> gain(s) a sense of the earth!^?"):
+						L("^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  <T-NAME> gain(s) a sense of the earth!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

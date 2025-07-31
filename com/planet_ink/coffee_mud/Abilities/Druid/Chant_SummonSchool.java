@@ -250,7 +250,9 @@ public class Chant_SummonSchool extends Chant
 				numberOfImages = CMLib.dice().roll(1,adjustedLevel(mob,asLevel),100);
 			else
 				numberOfImages = CMLib.dice().roll(1,(int)(Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0))),2);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> chant(s) to the waters, and ")+"suddenly @x1 @x2(s) arrive, forming up as a school around <S-NAME>.^?",""+numberOfImages,raceName.toLowerCase()));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("Suddenly @x1 @x2(s) arrive, forming up as a school around <S-NAME>.^?",""+numberOfImages,raceName.toLowerCase())
+							:L("^S<S-NAME> chant(s) to the waters, and suddenly @x1 @x2(s) arrive, forming up as a school around <S-NAME>.^?",""+numberOfImages,raceName.toLowerCase()));
 			if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 				mob.charStats().setStat(CharStats.STAT_INTELLIGENCE, 5);
 			if(mob.location().okMessage(mob,msg))

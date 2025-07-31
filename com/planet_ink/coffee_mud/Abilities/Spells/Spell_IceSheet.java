@@ -199,12 +199,22 @@ public class Spell_IceSheet extends Spell
 		if(success)
 		{
 
-			String msgStr=L("the ground becomes covered in ice!");
-			if(CMLib.flags().isWateryRoom(mob.location()))
-				msgStr=L("the water freezes over!");
+			String msgStr;
 			if(auto)
-				msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),L(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			{
+				if(CMLib.flags().isWateryRoom(mob.location()))
+					msgStr=L("The water freezes over!");
+				else
+					msgStr=L("The ground becomes covered in ice!");
+			}
+			else
+			{
+				if(CMLib.flags().isWateryRoom(mob.location()))
+					msgStr=L("^S<S-NAME> speak(s) and gesture(s) and the water freezes over!");
+				else
+					msgStr=L("^S<S-NAME> speak(s) and gesture(s) and the ground becomes covered in ice!");
+			}
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

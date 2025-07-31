@@ -98,8 +98,8 @@ public class Spell_Reinforce extends Spell
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-									(auto?"<T-NAME> begins to shimmer!"
-										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
+									(auto?L("<T-NAME> begins to shimmer!")
+										 :L("^S<S-NAME> incant(s) at <T-NAMESELF>!^?")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

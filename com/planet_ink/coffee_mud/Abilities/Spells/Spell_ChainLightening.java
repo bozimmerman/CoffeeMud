@@ -76,7 +76,7 @@ public class Spell_ChainLightening extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, boolean auto, final int asLevel)
 	{
-		Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell(L("There doesn't appear to be anyone here worth striking at."));
@@ -107,7 +107,9 @@ public class Spell_ChainLightening extends Spell
 		if(success)
 		{
 			final Room R=mob.location();
-			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
+			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),
+					L(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")
+					+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{

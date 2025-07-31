@@ -137,17 +137,17 @@ public class Dusty extends StdAbility
 				}
 				case 2:
 				{
-					affectableStats.setName(L("a dusty " + CMLib.english().removeArticleLead(affected.name())));
+					affectableStats.setName(L("a dusty @x1",CMLib.english().removeArticleLead(affected.name())));
 					break;
 				}
 				case 3:
 				{
-					affectableStats.setName(affected.name()+L(", covered in dust"));
+					affectableStats.setName(L("@x1, covered in dust",affected.name()));
 					break;
 				}
 				case 4:
 				{
-					affectableStats.setName(affected.name()+L(", covered in a thick layer of dust"));
+					affectableStats.setName(L("@x1, covered in a thick layer of dust",affected.name()));
 					break;
 				}
 				case 5:

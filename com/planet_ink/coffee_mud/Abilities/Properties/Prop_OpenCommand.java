@@ -164,7 +164,7 @@ public class Prop_OpenCommand extends Property
 							}
 							if(dirCode>=0)
 							{
-								final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> "+CMLib.english().makePlural(E.openWord())+".");
+								final String msgStr = (this.overMsg!=null) ? this.overMsg : "<T-NAME> "+CMLib.english().makePlural(E.openWord())+".";
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,msgStr);

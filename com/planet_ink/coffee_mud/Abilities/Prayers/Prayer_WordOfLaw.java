@@ -222,7 +222,9 @@ public class Prayer_WordOfLaw extends Prayer implements MendingSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		String str=(auto?"The word of law is spoken.":"^S<S-NAME> speak(s) the word of law"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMLib.protocol().msp("bless.wav",10);
+		String str=(auto?L("The word of law is spoken."):
+					L("^S<S-NAME> speak(s) the word of law@x1 to <T-NAMESELF>.^?",ofDiety(mob)))
+					+CMLib.protocol().msp("bless.wav",10);
 		String missStr=L("<S-NAME> speak(s) the word of law@x1, but nothing happens.",ofDiety(mob));
 		final Room room=mob.location();
 		if(room!=null)

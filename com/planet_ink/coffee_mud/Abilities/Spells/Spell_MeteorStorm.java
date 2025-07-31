@@ -91,7 +91,9 @@ public class Spell_MeteorStorm extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
+					L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devastating meteor shower!^?")
+					+CMLib.protocol().msp("meteor.wav",40)))
 			{
 				for (final Object element : h)
 				{

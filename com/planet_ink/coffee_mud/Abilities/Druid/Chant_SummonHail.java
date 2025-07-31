@@ -127,7 +127,10 @@ public class Chant_SummonHail extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"^JHailstones falling from the sky whack <T-NAME>.^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?")+CMLib.protocol().msp("hail.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					(auto?L("^JHailstones falling from the sky whack <T-NAME>.^?"):
+					L("^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a volley of hailstones assaults <T-HIM-HER>!^?"))
+					+CMLib.protocol().msp("hail.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_WATER,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{

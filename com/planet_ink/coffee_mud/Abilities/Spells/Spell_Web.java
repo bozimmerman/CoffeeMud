@@ -171,7 +171,9 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),L(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")+CMLib.protocol().msp("web.wav",40)))
+			if(mob.location().show(mob,null,this,somaticCastCode(mob,null,auto),
+					L(auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?")
+					+CMLib.protocol().msp("web.wav",40)))
 			{
 				for (final Object element : h)
 				{

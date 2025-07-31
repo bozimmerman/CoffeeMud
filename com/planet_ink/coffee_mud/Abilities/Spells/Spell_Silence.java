@@ -175,7 +175,9 @@ public class Spell_Silence extends Spell
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),L((auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?"));
+			final CMMsg msg = CMClass.getMsg(mob, target, this, somaticCastCode(mob,target,auto),
+					(auto?L("Silence falls like a blanket.^?"):
+						L("^S<S-NAME> whisper(s) and gesture(s) and silence falls like a blanket.^?")));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

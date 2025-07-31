@@ -515,7 +515,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 					final Electronics E=this.findSensorByName(secondWord);
 					if(E==null)
 					{
-						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified sensor system not found.  No information available."));
+						super.addScreenMessage(L("^HINFO:^N\n\r^NSpecified sensor system not found.  No information available."));
 						return;
 					}
 					final String activated = E.activated()?" (activated)":"";
@@ -538,7 +538,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 					final Electronics E=findComponentByName(others,"SYSTEM",secondWord);
 					if(E==null)
 					{
-						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
+						super.addScreenMessage(L("^HINFO:^N\n\r^NSpecified system not found.  No information available."));
 						return;
 					}
 					final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
@@ -556,7 +556,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				}
 				else
 				{
-					super.addScreenMessage(L("^HHELP:^N\n\r^N"+"No help on "+secondWord.toUpperCase()+" available."));
+					super.addScreenMessage(L("^HHELP:^N\n\r^NNo help on @x1 available.",secondWord.toUpperCase()));
 					return;
 				}
 			}
@@ -661,7 +661,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				final ShipEngine engineE=findEngineByName(uword);
 				if(engineE==null)
 				{
-					addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
+					addScreenMessage(L("Error: Unknown engine name or command word '@x1'.   Try HELP.",uword));
 					return;
 				}
 				if(!engineProcedure.execute(this, uword, mob, message, parsed))

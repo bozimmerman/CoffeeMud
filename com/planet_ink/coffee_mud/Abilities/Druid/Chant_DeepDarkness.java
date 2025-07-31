@@ -144,7 +144,9 @@ public class Chant_DeepDarkness extends Chant
 		if(success)
 		{
 
-			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), L((auto?"D":"^S<S-NAME> chant(s) deeply and d")+"arkness descends.^?"));
+			final String msgStr = auto?L("Darkness descends.^?"):
+									L("^S<S-NAME> chant(s) deeply and darkness descends.^?");
+			final CMMsg msg = CMClass.getMsg(mob, target,this,verbalCastCode(mob,target,auto), msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

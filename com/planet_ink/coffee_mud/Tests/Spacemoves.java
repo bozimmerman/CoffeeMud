@@ -102,7 +102,7 @@ public class Spacemoves extends StdTest
 				{
 					final String angles = Math.round(Math.toDegrees(dir.xyd()))+"mk"+Math.round(Math.toDegrees(dir.zd()))
 					+" vs "+Math.round(Math.toDegrees(opOpDir.xyd()))+"mk"+Math.round(Math.toDegrees(opOpDir.zd()));
-					final String s=(L("Error: Space move OpDir Fail: "+angles));
+					final String s=(L("Error: Space move OpDir Fail: @x1",angles));
 					throw new CMException(s);
 				}
 				double predictedMidDistance=0;

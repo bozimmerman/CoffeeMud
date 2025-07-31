@@ -89,7 +89,7 @@ public class Spell_Teleport extends Spell
 	public CMObject copyOf()
 	{
 		final Spell_Teleport st = (Spell_Teleport)super.copyOf();
-		st.setMiscText(text()); // will overwrite old parentGenA;
+		st.setMiscText(text()); // will overwrite old parentGenA and fix strings?;
 		return st;
 	}
 
@@ -98,13 +98,16 @@ public class Spell_Teleport extends Spell
 	private Area parentGenA = null;
 	private Room returnToRoom = null;
 	private String castMsgStr = "^S<S-NAME> invoke(s) a teleportation spell.^?";
-	private String appearMsgStr = "<S-NAME> appears in a puff of smoke.@x1";
+	private String appearMsgStr = "<S-NAME> appears in a puff of smoke.";
 	private String leaveMsgStr = "<S-NAME> disappear(s) in a puff of smoke.";
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
+		castMsgStr = L("^S<S-NAME> invoke(s) a teleportation spell.^?");
+		appearMsgStr = L("<S-NAME> appears in a puff of smoke.");
+		leaveMsgStr = L("<S-NAME> disappear(s) in a puff of smoke.");
 		if(newMiscText.length()>0)
 		{
 			castMsgStr = CMParms.getParmStr(newMiscText, "CASTMSG", castMsgStr);
@@ -334,7 +337,7 @@ public class Spell_Teleport extends Spell
 			newRoom=room;
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto), L(castMsgStr));
+		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_MOVE|verbalCastCode(mob,newRoom,auto), castMsgStr);
 		if(mob.location().okMessage(mob,msg)&&(newRoom!=null))
 		{
 			mob.location().send(mob,msg);
@@ -355,8 +358,8 @@ public class Spell_Teleport extends Spell
 			for (final MOB follower : h)
 			{
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
-						L(appearMsgStr,CMLib.protocol().msp("appear.wav",10)));
-				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC, L(leaveMsgStr));
+						appearMsgStr+CMLib.protocol().msp("appear.wav",10));
+				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC, leaveMsgStr);
 				if(thisRoom.okMessage(follower,leaveMsg)
 				&&newRoom.okMessage(follower,enterMsg))
 				{

@@ -162,8 +162,9 @@ public class Prayer_ProtectItem extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-					L(auto?"<T-NAME> appear(s) protected!":"^S<S-NAME> protect(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+			final String msgStr = auto?L("<T-NAME> appear(s) protected!")
+					: L("^S<S-NAME> protect(s) <T-NAMESELF>@x1.^?",inTheNameOf(mob));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

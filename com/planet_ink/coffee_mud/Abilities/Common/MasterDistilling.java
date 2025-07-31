@@ -47,7 +47,7 @@ public class MasterDistilling extends Distilling
 	@Override
 	public String name()
 	{
-		return L("Master Distilling" + cookingID);
+		return L("Master Distilling@x1", cookingID);
 	}
 
 	private static final String[]	triggerStrings	= I(new String[] { "MDISTILLING", "MASTERDISTILLING" });

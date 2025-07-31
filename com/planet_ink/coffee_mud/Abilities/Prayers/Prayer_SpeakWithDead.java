@@ -118,7 +118,8 @@ public class Prayer_SpeakWithDead extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> kneel(s) down and speak(s) with <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+			final String msgStr = L("^S<S-NAME> kneel(s) down and speak(s) with <T-NAMESELF>@x1.^?",inTheNameOf(mob));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

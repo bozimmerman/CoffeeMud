@@ -141,7 +141,9 @@ public class Blessing extends StdAbility
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE,L(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>.^?"));
+			final String msgStr = auto?L("<T-NAME> appear(s) blessed!")
+										:L("^S<S-NAME> bless(es) <T-NAMESELF>.^?");
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE,msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

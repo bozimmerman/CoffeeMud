@@ -133,7 +133,8 @@ public class Spell_MajorGlobe extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					L(auto?"A great anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) a great anti-magic globe of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				amountAbsorbed=0;

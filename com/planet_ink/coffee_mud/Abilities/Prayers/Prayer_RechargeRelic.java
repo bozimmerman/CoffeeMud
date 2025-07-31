@@ -116,7 +116,9 @@ public class Prayer_RechargeRelic extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) recharged!":"^S<S-NAME> re-enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+			final String msgStr = auto?L("<T-NAME> appear(s) recharged!")
+					: L("^S<S-NAME> re-enchant(s) <T-NAMESELF>@x1.^?",inTheNameOf(mob));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),msgStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

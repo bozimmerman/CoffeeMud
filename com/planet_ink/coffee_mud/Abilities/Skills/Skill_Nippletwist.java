@@ -160,8 +160,8 @@ public class Skill_Nippletwist extends StdSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					L(auto?"<T-NAME> <T-IS-ARE> in obvious pain!":
-						"^F<S-NAME> grab(s) <T-YOUPOSS> nipples and give(s) them a sharp TWIST!^?"));
+					(auto?L("<T-NAME> <T-IS-ARE> in obvious pain!"):
+						L("^F<S-NAME> grab(s) <T-YOUPOSS> nipples and give(s) them a sharp TWIST!^?")));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

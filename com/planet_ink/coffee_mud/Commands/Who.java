@@ -83,7 +83,7 @@ public class Who extends StdCommand
 		for(int i=1;i<=2;i++)
 			width+=colWidths[i]+1;
 		final StringBuilder tail=new StringBuilder("");
-		tail.append(L("^x["+CMStrings.padRight(L("Total "+word+" online"),width)+"]^.^N @x1\n\r",""+amt));
+		tail.append("^x["+CMStrings.padRight(L("Total "+word+" online"),width)+"]^.^N "+amt+"\n\r");
 		return tail.toString();
 	}
 
@@ -399,7 +399,7 @@ public class Who extends StdCommand
 					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
 					msg.append("\n\r");
 				}
-				//msg.append(L("^x["+CMStrings.padRight("Total Characters",colWidths[0])+"]^.^N @x1\n\r",""+mobs.size()));
+				//msg.append("^x["+CMStrings.padRight("Total Characters",colWidths[0])+"]^.^N "+mobs.size()+"\n\r"));
 				mob.tell(msg.toString());
 				return false;
 			}

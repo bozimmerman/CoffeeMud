@@ -258,7 +258,10 @@ public class MOTD extends StdCommand
 					final List<String> l=CMLib.login().getExpiredAcctOrCharsList();
 					if(l.size()>0)
 					{
-						buf.append(L("\n\r^XThere are currently @x1 expired "+((CMProps.isUsingAccountSystem())?"accounts":"characters"),""+l.size()));
+						if(CMProps.isUsingAccountSystem())
+							buf.append(L("\n\r^XThere are currently @x1 expired accounts",""+l.size()));
+						else
+							buf.append(L("\n\r^XThere are currently @x1 expired characters",""+l.size()));
 						buf.append(L(".  Enter LIST EXPIRED to view them.^?^.\n\r"));
 					}
 				}

@@ -166,7 +166,9 @@ public class Chant_Thorns extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("@x1Long prickly thorns erupt all over <T-NAME>!^?",L(auto?"":"^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  ")));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("Long prickly thorns erupt all over <T-NAME>!^?"):
+						L("^S<S-NAME> chant(s) to <S-HIM-HERSELF>.  Long prickly thorns erupt all over <T-NAME>!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

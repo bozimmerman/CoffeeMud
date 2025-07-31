@@ -171,7 +171,10 @@ public class Spell_Shockshield extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),L((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),
+					(auto?L("A field of sparks erupt(s) around <T-NAME>!^?"):
+						L("^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  A field of sparks erupt(s) around <T-NAME>!^?"))
+					+CMLib.protocol().msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

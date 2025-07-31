@@ -160,7 +160,7 @@ public class Prop_CloseCommand extends Property
 							}
 							if(dirCode>=0)
 							{
-								final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> "+CMLib.english().makePlural(E.closeWord())+".");
+								final String msgStr = (this.overMsg!=null) ? this.overMsg : "<T-NAME> "+CMLib.english().makePlural(E.closeWord())+".";
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_CLOSE,msgStr);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 								if(E.hasALock())

@@ -231,7 +231,9 @@ public class Fighter_Whomp extends FighterSkill implements HealthCondition
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),L(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?"+CMLib.protocol().msp("bashed2.wav",30)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+					L(auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?")
+					+CMLib.protocol().msp("bashed2.wav",30));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{

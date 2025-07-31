@@ -96,8 +96,9 @@ public class Prayer_CauseCritical extends Prayer
 		{
 			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),
-					L(auto?"A critically painful burst assaults <T-NAME>.":
-						"^S<S-NAME> @x1 for a critical burst of pain at <T-NAMESELF>!^?",prayWord(mob))+CMLib.protocol().msp("spelldam1.wav",40));
+					(auto?L("A critically painful burst assaults <T-NAME>."):
+						L("^S<S-NAME> @x1 for a critical burst of pain at <T-NAMESELF>!^?",prayWord(mob)))
+						+CMLib.protocol().msp("spelldam1.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(mob,msg))&&(R.okMessage(mob,msg2)))

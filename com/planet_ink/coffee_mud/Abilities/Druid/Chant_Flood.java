@@ -274,8 +274,10 @@ public class Chant_Flood extends Chant
 
 		if(success)
 		{
-			if(mobR.show(mob,null,this,verbalCastCode(mob,null,auto), L(auto?"A flood rushes in from @x1":
-				"^S<S-NAME> chant(s) thunderously as flood waters rush in from @x1.^?",fromDir)+CMLib.protocol().msp("earthquake.wav",40)))
+			if(mobR.show(mob,null,this,verbalCastCode(mob,null,auto),
+					(auto?L("A flood rushes in from @x1"):
+					L("^S<S-NAME> chant(s) thunderously as flood waters rush in from @x1.^?",fromDir))
+					+CMLib.protocol().msp("earthquake.wav",40)))
 			{
 				final int oldAtmo=mobR.getAtmosphereCode();
 				final Ability A=maliciousAffect(mob,mobR,asLevel,0,-1);

@@ -1666,7 +1666,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(targetAcceleration.doubleValue() < SpaceObject.ACCELERATION_DAMAGED)
 			{
 				final int gs = (int)Math.round(targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
-				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to "+gs+"Gs."));
+				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to @x1Gs.",""+gs));
 			}
 			if(cancelNavigation(false))
 				addScreenMessage(L("Warning. Previous program cancelled."));
@@ -2235,7 +2235,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final ShipEngine engineE=findEngineByName(uword);
 			if(engineE==null)
 			{
-				addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
+				addScreenMessage(L("Error: Unknown engine name or command word '@x1'.   Try HELP.",uword));
 				return false;
 			}
 			final Electronics E=engineE;

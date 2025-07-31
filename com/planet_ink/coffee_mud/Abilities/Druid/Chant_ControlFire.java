@@ -138,7 +138,9 @@ public class Chant_ControlFire extends Chant
 
 		if((success)&&(fireSource!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?")+CMLib.protocol().msp("fireball.wav",40));
+			final String msgStr = auto?L("Suddenly @x1 flares up and attacks <T-HIM-HER>!^?",fireSource.name())
+									:L("^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly @x1 flares up and attacks <T-HIM-HER>!^?",fireSource.name());
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),msgStr+CMLib.protocol().msp("fireball.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastMask(mob,target,auto)|CMMsg.TYP_FIRE,null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{

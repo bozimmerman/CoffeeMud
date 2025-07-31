@@ -322,7 +322,7 @@ public class ShipSensorProgram extends GenShipProgram
 			final TechComponent sensor = findSensorByName(uword);
 			if(sensor == null)
 			{
-				addScreenMessage(L("Error: Unknown sensor name or command word '"+uword+"'.   Try HELP."));
+				addScreenMessage(L("Error: Unknown sensor name or command word '@x1'.   Try HELP.",uword));
 				return false;
 			}
 			if(parsed.size()==1)

@@ -102,7 +102,9 @@ public class Chant_RechargeShards extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) recharged!":"^S<S-NAME> re-enchant(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+				auto?L("<T-NAME> appear(s) recharged!"):
+					L("^S<S-NAME> re-enchant(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

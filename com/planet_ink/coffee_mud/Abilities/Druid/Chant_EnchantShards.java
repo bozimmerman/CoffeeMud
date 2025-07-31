@@ -171,7 +171,9 @@ public class Chant_EnchantShards extends Chant
 		if(success)
 		{
 			setMiscText(enChantA.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> appear(s) enchanted!"):
+						L("^S<S-NAME> enchant(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

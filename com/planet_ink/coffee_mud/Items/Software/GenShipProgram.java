@@ -195,7 +195,7 @@ public class GenShipProgram extends GenSoftware
 		}
 		else
 		{
-			super.addScreenMessage(L("Error: Unknown command '"+command+"'.   Try HELP."));
+			super.addScreenMessage(L("Error: Unknown command '@x1'.   Try HELP.",command));
 		}
 		return false;
 	}
@@ -568,7 +568,7 @@ public class GenShipProgram extends GenSoftware
 				}
 				else
 				{
-					sw.addScreenMessage(L("Error: Unknown system to activate '"+rest+"'."));
+					sw.addScreenMessage(L("Error: Unknown system to activate '@x1'.",rest));
 					return false;
 				}
 			}
@@ -625,7 +625,7 @@ public class GenShipProgram extends GenSoftware
 					msg=CMClass.getMsg(mob, E, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 				else
 				{
-					addScreenMessage(L("Error: Unknown system to deactivate '"+rest+"'."));
+					addScreenMessage(L("Error: Unknown system to deactivate '@x1'.",rest));
 					return false;
 				}
 			}

@@ -121,7 +121,9 @@ public class Chant_GiveLife extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> gain(s) life experience!":"^S<S-NAME> chant(s) to <T-NAMESELF>, feeding <T-HIM-HER> <S-HIS-HER> life experience.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> gain(s) life experience!"):
+					L("^S<S-NAME> chant(s) to <T-NAMESELF>, feeding <T-HIM-HER> <S-HIS-HER> life experience.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

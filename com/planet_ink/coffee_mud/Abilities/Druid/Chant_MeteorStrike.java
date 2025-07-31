@@ -114,7 +114,10 @@ public class Chant_MeteorStrike extends Chant
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A devastating meteor shower erupts!":"^S<S-NAME> chant(s) for a devastating meteor shower!^?")+CMLib.protocol().msp("meteor.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),
+					(auto?L("A devastating meteor shower erupts!"):
+					L("^S<S-NAME> chant(s) for a devastating meteor shower!^?"))
+					+CMLib.protocol().msp("meteor.wav",40)))
 			{
 				for (final Object element : h)
 				{
