@@ -272,7 +272,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		return CMLib.utensils().addExtRecipes(mob, ID(), recipes);
 	}
 
-	protected String replacePercent(final String thisStr, final String withThis)
+	public String replacePercent(final String thisStr, final String withThis)
 	{
 		if(withThis.length()==0)
 		{
@@ -2332,6 +2332,11 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		||(this.getBrand(buildingI).length()>0))
 		{
 			commonTelL(mob,"You can't learn anything about @x1 with @x2.",buildingI.name(mob),name());
+			return false;
+		}
+		if(CMath.bset(buildingI.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMUNLEARNABLE))
+		{
+			commonTelL(mob,"@x1 is too complex to learn anything about.",buildingI.name(mob));
 			return false;
 		}
 		if(buildingI.basePhyStats().level()>mob.phyStats().level())

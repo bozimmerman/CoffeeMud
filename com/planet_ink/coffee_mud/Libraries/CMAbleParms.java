@@ -1451,6 +1451,37 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return CMStrings.replaceAll(I.displayText(), I.Name(), "@x1");
 				}
 			},
+			new AbilityParmEditorImpl("NAME_MASK","Name Mask",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "@x1 with @x2";
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					return true;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 3;
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return CMStrings.replaceAll(I.displayText(), I.Name(), "@x1");
+				}
+			},
 			new AbilityParmEditorImpl("COLOR_MASK","Color mask",ParmType.STRING)
 			{
 				@Override

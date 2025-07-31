@@ -1,0 +1,38 @@
+#DISPLAY_MASK	ITEM_LEVEL	BUILD_TIME_TICKS	NAME_MASK	MATERIALS_REQUIRED	ZAPPERMASK	CODED_SPELL_LIST
+% fastenings	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	
+% buttons down the front	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO +LEGS	
+a lace collar	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a high collar	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a deep hood	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
+a %-trimmed hood	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
+a % inner lining	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+deep pockets	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+many pockets	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+% shoulder patches	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO
+puffed sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+cropped sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+elbow-length sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+long sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+short sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+off-the-shoulder sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a full skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+a ruffled skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+a pleated skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+a high neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a low neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a lace-trimmed neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a lace-trimmed hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+a scalloped hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+a ruffled hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+decorative % stitching along the neckline and hem	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO	
+tiny % encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % seashells encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % roses embroidered around the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % feathers embroidered around the neckline	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO	
+tiny % roses embroidered along the hem	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS 	
+tiny % feathers embroidered along the hem	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
+a shiny % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
+a simple % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +WAIST	
+a polished % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
+a %-encrusted buckle	1	5	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	

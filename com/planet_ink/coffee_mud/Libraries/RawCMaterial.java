@@ -841,6 +841,25 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
+	public String makeResourceWord(final int rscCode, String subType)
+	{
+		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
+		final int iMat = rscCode&RawMaterial.MATERIAL_MASK;
+		if((subType!=null)&&(subType.length()>0))
+		{
+			subType = subType.toLowerCase();
+			if(subType.equals(name)
+			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
+			{
+
+			}
+			else
+				name=subType;
+		}
+		return name;
+	}
+
+	@Override
 	public void adjustResourceName(final Item I)
 	{
 		String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();

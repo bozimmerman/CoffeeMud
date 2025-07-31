@@ -122,6 +122,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(D.liquidType()!=comp.getLongType())
 					return false;
 			}
+			else
+				return false; // its not a qualifying item type
 			break;
 		case MATERIAL:
 			if(I instanceof RawMaterial)
@@ -138,6 +140,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(!isRightMaterial(comp.getLongType(),D.liquidType()&RawMaterial.MATERIAL_MASK,mithrilOK))
 					return false;
 			}
+			else
+				return false; // its not a qualifying item type
 			break;
 		}
 		container=I.ultimateContainer(null);

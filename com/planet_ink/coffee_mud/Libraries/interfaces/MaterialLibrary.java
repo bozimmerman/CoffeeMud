@@ -559,6 +559,15 @@ public interface MaterialLibrary extends CMLibrary
 	public void adjustResourceName(Item I);
 
 	/**
+	 * Returns the simplest name/word for the resource, considering
+	 * its subtype.
+	 *
+	 * @param rscCode the resource code
+	 * @param subType the subtype
+	 * @return the simple resource word/name.
+	 */
+	public String makeResourceWord(final int rscCode, String subType);
+	/**
 	 * Returns a simplistic name for a raw material item of the given
 	 * resource and subtype.  The name is always broad, like "iron ore".
 	 *
