@@ -2111,31 +2111,17 @@ public class StdArea implements Area
 		}
 	}
 
-	protected Room getRoomBase(String roomID)
+	protected Room getRoomBase(final String roomID)
 	{
 		final Map<String,Room> prooms;
 		synchronized (properRooms)
 		{
 			prooms = properRooms;
 		}
-		if (prooms.size() == 0)
+		if((prooms.size() == 0)
+		||(roomID.length() == 0))
 			return null;
-		if (roomID.length() == 0)
-			return null;
-		if ((!roomID.startsWith(Name()))
-		&& (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
-			roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
-		if(roomID.endsWith(")") && (!prooms.containsKey(roomID)))
-		{
-			final int grid = roomID.lastIndexOf("#(");
-			if(grid > 0)
-			{
-				final Room R = prooms.get(roomID.substring(0,grid));
-				if(R instanceof GridLocale)
-					return ((GridLocale)R).getGridChild(roomID);
-				return R;
-			}
-		}
+		// properRooms compares roomids case-insensitively, so no further checks needed.
 		return prooms.get(roomID);
 	}
 
@@ -2189,19 +2175,18 @@ public class StdArea implements Area
 	{
 		if (isProperlyEmpty())
 			return null;
-		String roomID = null;
+		final String roomID = getProperRoomnumbers().random();
+		// properRooms compares roomids case-insensitively, so no normalization necessary
+		int grid;
 		Room R = null;
-		for(int i=0;i<10 && roomID==null;i++)
+		if(roomID.endsWith(")") && ((grid = roomID.lastIndexOf("#("))>0))
 		{
-			roomID = getProperRoomnumbers().random();
-			if ((roomID != null)
-			&& (!roomID.startsWith(Name()))
-			&& (roomID.startsWith(Name().toUpperCase())))
-				roomID = Name() + roomID.substring(Name().length());
-			R = getRoom(roomID);
-			if((R==null)&&(roomID.indexOf("#(")>=0))
-				roomID = null;
+			R = getRoom(roomID.substring(0,grid));
+			if(R instanceof GridLocale)
+				R = ((GridLocale)R).getGridChild(roomID);
 		}
+		else
+			R=getRoom(roomID);
 		// looping back through CMMap is unnecc because the roomID comes
 		// directly from getProperRoomnumbers()
 		// which means it will never be a grid sub-room.
