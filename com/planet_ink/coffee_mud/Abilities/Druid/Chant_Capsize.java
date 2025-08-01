@@ -294,7 +294,7 @@ public class Chant_Capsize extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s) to <T-NAMESELF>, pummeling it with a massive wave.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF>, pummeling it with a massive wave.^?"));
 			if(R.okMessage(mob,msg))
 			{
 				final List<Item> items = this.getAllTheStuff(target);

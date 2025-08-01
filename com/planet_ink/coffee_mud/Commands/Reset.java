@@ -1149,7 +1149,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("propertygarbage"))
 		{
-			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), L("N")))
+			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				Room R=null;
@@ -1175,7 +1175,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), L("N")))
+			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
@@ -1209,7 +1209,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), L("N")))
+			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
@@ -1266,7 +1266,7 @@ public class Reset extends StdCommand
 			final List<Race> racesToDo = new ArrayList<Race>();
 			if(rest.length()==0)
 			{
-				if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
+				if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), ("N")))
 				{
 					Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 					for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
@@ -1362,7 +1362,7 @@ public class Reset extends StdCommand
 				mob.tell(L("Which bank?"));
 				return false;
 			}
-			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), L("N")))
+			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate(bank, true);
@@ -1390,7 +1390,7 @@ public class Reset extends StdCommand
 				s=commands.get(1);
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), L("N")))
+			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				mob.session().print(L("working..."));
@@ -1520,7 +1520,7 @@ public class Reset extends StdCommand
 				s=commands.get(1);
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter weapon bearing mobs damage stat to damage-weapon or 0?!"), L("N")))
+			if(mob.session().confirm(L("Alter weapon bearing mobs damage stat to damage-weapon or 0?!"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				mob.session().print(L("working..."));
@@ -1647,7 +1647,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), L("N")))
+			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -1687,7 +1687,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), L("N")))
+			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -1737,7 +1737,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), L("N")))
+			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -1798,7 +1798,7 @@ public class Reset extends StdCommand
 				return false;
 			}
 
-			if(mob.session().confirm(L("Add this behavior/property to every Area?"), L("N")))
+			if(mob.session().confirm(L("Add this behavior/property to every Area?"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -1855,7 +1855,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), L("N")))
+			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -1927,7 +1927,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Begin scanning mixed generic races for descrepencies?"), L("N")))
+			if(mob.session().confirm(L("Begin scanning mixed generic races for descrepencies?"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -2054,7 +2054,7 @@ public class Reset extends StdCommand
 
 			if(mob.session()==null)
 				return false;
-			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), L("N")))
+			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), ("N")))
 			{
 				mob.session().print(L("working..."));
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
@@ -2262,7 +2262,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
-			if(mob.session().confirm(L("Begin scanning and altering all item materials and mob races manually?"), L("N")))
+			if(mob.session().confirm(L("Begin scanning and altering all item materials and mob races manually?"), ("N")))
 			{
 				// this is just utility code and will change frequently
 				final Area A=mob.location().getArea();
@@ -2479,7 +2479,7 @@ public class Reset extends StdCommand
 		{
 			TechType[] types;
 			String[] names;
-			if(mob.session().confirm(L("Re-create all the manufacturers?"), L("N")))
+			if(mob.session().confirm(L("Re-create all the manufacturers?"), ("N")))
 			{
 				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());

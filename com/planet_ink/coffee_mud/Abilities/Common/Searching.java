@@ -137,7 +137,7 @@ public class Searching extends CommonSkill
 			mob.location().send(mob,msg);
 			searchRoom=mob.location();
 			beneficialAffect(mob,mob,asLevel,duration);
-			mob.tell(L(" "));
+			mob.tell(" ");
 			CMLib.commands().postLook(mob,true);
 		}
 		return true;

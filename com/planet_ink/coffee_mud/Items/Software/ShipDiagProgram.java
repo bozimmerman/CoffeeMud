@@ -293,8 +293,8 @@ public class ShipDiagProgram extends GenShipProgram
 			if(((Item)shipSpaceObject).subjectToWearAndTear())
 				condPct = ((Item)shipSpaceObject).usesRemaining();
 			scr.append("^H");
-			scr.append(CMStrings.padRight(L("^gA"),2));
-			scr.append("^W").append(CMStrings.padRight(L("  "),6));
+			scr.append(CMStrings.padRight(("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight("  ",6));
 			scr.append('^').append(getConditionColor(condPct));
 			scr.append(CMStrings.padRight(getConditionStr(condPct),8));
 			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),48));
@@ -308,8 +308,8 @@ public class ShipDiagProgram extends GenShipProgram
 				if(((Item)C).subjectToWearAndTear())
 					condPct = ((Item)C).usesRemaining();
 				scr.append("^H");
-				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
-				scr.append("^W").append(CMStrings.padRight(L("  "),6));
+				scr.append(CMStrings.padRight(C.activated()?("^gA"):("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight("  ",6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(getConditionStr(condPct),8));
 				scr.append("^H").append(CMStrings.padRight(C.name(),48)); // object names presumed localized
@@ -341,8 +341,8 @@ public class ShipDiagProgram extends GenShipProgram
 			if(((Item)shipSpaceObject).subjectToWearAndTear())
 				condPct = ((Item)shipSpaceObject).usesRemaining();
 			scr.append("^H");
-			scr.append(CMStrings.padRight(L("^gA"),2));
-			scr.append("^W").append(CMStrings.padRight(L("  "),6));
+			scr.append(CMStrings.padRight(("^gA"),2));
+			scr.append("^W").append(CMStrings.padRight("  ",6));
 			scr.append('^').append(getConditionColor(condPct));
 			scr.append(CMStrings.padRight(""+condPct+"%",8));
 			scr.append("^H").append(CMStrings.padRight(L("Ship Hull"),48));
@@ -357,8 +357,8 @@ public class ShipDiagProgram extends GenShipProgram
 				if(((Item)C).subjectToWearAndTear())
 					condPct = ((Item)C).usesRemaining();
 				scr.append("^H");
-				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
-				scr.append("^W").append(CMStrings.padRight(L("  "),6));
+				scr.append(CMStrings.padRight(C.activated()?("^gA"):("^rI"),2));
+				scr.append("^W").append(CMStrings.padRight("  ",6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(""+condPct+"%",8));
 				scr.append("^H").append(CMStrings.padRight(C.name(),48)); // item names presumed localized
@@ -392,7 +392,7 @@ public class ShipDiagProgram extends GenShipProgram
 			if(((Item)shipSpaceObject).subjectToWearAndTear())
 				condPct = ((Item)shipSpaceObject).usesRemaining();
 			scr.append("^H");
-			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append(CMStrings.padRight(("^gA"),2));
 			scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
 			scr.append('^').append(getConditionColor(condPct));
 			scr.append(CMStrings.padRight(""+condPct+"%",5));
@@ -412,7 +412,7 @@ public class ShipDiagProgram extends GenShipProgram
 				if(((Item)C).subjectToWearAndTear())
 					condPct = ((Item)C).usesRemaining();
 				scr.append("^H");
-				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append(CMStrings.padRight(C.activated()?("^gA"):("^rI"),2));
 				scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(""+condPct+"%",5));
@@ -456,7 +456,7 @@ public class ShipDiagProgram extends GenShipProgram
 			if(((Item)shipSpaceObject).subjectToWearAndTear())
 				condPct = ((Item)shipSpaceObject).usesRemaining();
 			scr.append("^H");
-			scr.append(CMStrings.padRight(L("^gA"),2));
+			scr.append(CMStrings.padRight(("^gA"),2));
 			scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
 			scr.append('^').append(getConditionColor(condPct));
 			scr.append(CMStrings.padRight(""+condPct+"%",5));
@@ -485,7 +485,7 @@ public class ShipDiagProgram extends GenShipProgram
 				if(((Item)C).subjectToWearAndTear())
 					condPct = ((Item)C).usesRemaining();
 				scr.append("^H");
-				scr.append(CMStrings.padRight(C.activated()?L("^gA"):L("^rI"),2));
+				scr.append(CMStrings.padRight(C.activated()?("^gA"):("^rI"),2));
 				scr.append("^W").append(CMStrings.padRight(L("Cond: "),6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(""+condPct+"%",5));

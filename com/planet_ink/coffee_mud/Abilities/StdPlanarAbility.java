@@ -1839,7 +1839,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 	protected String castingMessage(final MOB mob, final boolean auto)
 	{
-		return auto?L(""):L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
+		return auto?"":L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
 	}
 
 	protected String failMessage(final MOB mob, final boolean auto)

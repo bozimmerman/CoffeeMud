@@ -449,7 +449,7 @@ public class Chant_TidalWave extends Chant
 		if(success)
 		{
 			final Set<MOB> casterGroup=mob.getGroupMembers(new HashSet<MOB>());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s), calling in a tidal wave from @x1.^?",fromDir));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s), calling in a tidal wave from @x1.^?",fromDir));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob, msg);

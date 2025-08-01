@@ -56,7 +56,7 @@ public class ClanList extends StdCommand
 		head.append("^x[");
 		head.append(CMStrings.padRight(L("Clan Name"),30)+"| ");
 		head.append(CMStrings.padRight(L("Type"),10)+"| ");
-		head.append(CMStrings.padRight(L("#"),4)+"| ");
+		head.append(CMStrings.padRight(("#"),4)+"| ");
 		head.append(CMStrings.padRight(L("Status"),14));
 		if(trophySystemActive)
 			head.append(" | "+CMStrings.padRight(L("Trophies"),8));

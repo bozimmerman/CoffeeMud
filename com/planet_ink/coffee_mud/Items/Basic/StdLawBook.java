@@ -555,9 +555,9 @@ public class StdLawBook extends StdItem
 						lastOle=locflag[1];
 						if(mob.session().confirm(locflag[0]
 												 +" "
-												 +(there?"(Y/n)":"(y/N)")
+												 +(there?L("(Y/n)"):L("(y/N)"))
 												 +"?",
-												 there?L("Y"):L("N")))
+												 there?("Y"):("N")))
 						{
 							lastAnswer=true;
 							s2.append(" "+lastOle);
@@ -595,7 +595,7 @@ public class StdLawBook extends StdItem
 												 +" "
 												 +(there?"(Y/n)":"(y/N)")
 												 +"?",
-												 there?L("Y"):L("N")))
+												 there?("Y"):("N")))
 						{
 							lastAnswer=true;
 							s2.append(" "+lastOle);

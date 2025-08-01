@@ -658,7 +658,7 @@ public class Merge extends StdCommand
 				mob.tell(L("^H@x1. @x2\n\rValue: ^W'@x3'\n\r^HDBVal: ^N'@x4'",""+showNumber,promptStr,loVal,dbVal));
 				if((showFlag!=showNumber)&&(showFlag>-999))
 					continue;
-				final String res=mob.session().choose(L("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),L("DENQ"), L("N"));
+				final String res=mob.session().choose(L("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: "),("DENQ"), ("N"));
 				if(res.trim().equalsIgnoreCase("N"))
 					continue;
 				if(res.trim().equalsIgnoreCase("Q"))
@@ -843,7 +843,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbM)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm(L("MOB: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), L("N")))
+							if(mob.session().confirm(L("MOB: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), ("N")))
 							{
 								M=(MOB)dbM.copyOf();
 								M.bringToLife(R, true);
@@ -899,7 +899,7 @@ public class Merge extends StdCommand
 							{
 								if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 								{
-									if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),dbM.Name(),rIName), L("N")))
+									if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),dbM.Name(),rIName), ("N")))
 									{
 										I=(Item)dbI.copyOf();
 										M.addItem(I);
@@ -934,7 +934,7 @@ public class Merge extends StdCommand
 							final Item I=i.nextElement();
 							if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 							{
-								if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name(),I.Name()), L("N")))
+								if(mob.session().confirm(L("Item: @x1.@x2.@x3 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name(),I.Name()), ("N")))
 								{
 									M.delItem(I);
 									updateMobs=true;
@@ -950,7 +950,7 @@ public class Merge extends StdCommand
 					final MOB M=r.nextElement();
 					if(amMerging(doType,mask,M)&&(!doneM.contains(M))&&(M.isMonster())&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm(L("MOB: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name()), L("N")))
+						if(mob.session().confirm(L("MOB: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),M.Name()), ("N")))
 						{
 							R.delInhabitant(M);
 							updateMobs=true;
@@ -989,7 +989,7 @@ public class Merge extends StdCommand
 					{
 						if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
 						{
-							if(mob.session().confirm(L("Item: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), L("N")))
+							if(mob.session().confirm(L("Item: @x1.@x2 not in local room.\n\rWould you like to add it (y/N)?",dbR.roomID(),rName), ("N")))
 							{
 								I=(Item)dbI.copyOf();
 								R.addItem(I);
@@ -1024,7 +1024,7 @@ public class Merge extends StdCommand
 					final Item I=i.nextElement();
 					if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
 					{
-						if(mob.session().confirm(L("Item: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),I.Name()), L("N")))
+						if(mob.session().confirm(L("Item: @x1.@x2 not in database.\n\rWould you like to delete it (y/N)?",R.roomID(),I.Name()), ("N")))
 						{
 							R.delItem(I);
 							updateItems=true;

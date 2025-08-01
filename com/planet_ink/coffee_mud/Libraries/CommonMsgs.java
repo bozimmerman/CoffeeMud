@@ -1649,12 +1649,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(me.isPlayer())
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC)!=0)
-					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
+					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, "", CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
 			}
 			else
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)!=0)
-					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
+					CMLib.leveler().postRPExperience(speaker, "INTRODUCTION:", me, "", CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
 			}
 			if(me.playerStats()!=null)
 				me.playerStats().introduceTo(speaker.Name());

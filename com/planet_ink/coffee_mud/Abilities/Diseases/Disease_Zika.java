@@ -48,7 +48,7 @@ public class Disease_Zika extends Disease
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("");
+	private final static String localizedStaticDisplay = "";
 
 	@Override
 	public String displayText()

@@ -5730,7 +5730,7 @@ public class Import extends StdCommand
 						final MOB M=mobs.get(m);
 						if(CMLib.catalog().isCatalogObj(M))
 						{
-							if((!prompt)||((session!=null)&&(session.confirm(L("Replace existing catalog mob '@x1' with imported one?",M.name()), L("Y")))))
+							if((!prompt)||((session!=null)&&(session.confirm(L("Replace existing catalog mob '@x1' with imported one?",M.name()), ("Y")))))
 								CMLib.catalog().updateCatalog(M);
 							else
 								continue;
@@ -5752,7 +5752,7 @@ public class Import extends StdCommand
 						final Item I=items.get(m);
 						if(CMLib.catalog().isCatalogObj(I))
 						{
-							if((!prompt)||((session!=null)&&(session.confirm(L("Replace existing catalog item '@x1' with imported one?",I.name()), L("Y")))))
+							if((!prompt)||((session!=null)&&(session.confirm(L("Replace existing catalog item '@x1' with imported one?",I.name()), ("Y")))))
 								CMLib.catalog().updateCatalog(I);
 							else
 								continue;

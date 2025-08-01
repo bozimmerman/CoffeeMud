@@ -269,7 +269,7 @@ public class Chant_Tsunami extends Chant
 			}
 
 			final Set<MOB> casterGroup=mob.getGroupMembers(new HashSet<MOB>());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s), calling in a tsunami from @x1.^?",fromDir));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s), calling in a tsunami from @x1.^?",fromDir));
 			if(mobR.okMessage(mob,msg))
 			{
 				mobR.send(mob, msg);

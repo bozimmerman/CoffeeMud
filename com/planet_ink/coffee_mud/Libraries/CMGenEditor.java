@@ -980,8 +980,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			cataP.destroy();
 			mob.tell(L("You have modified the following fields: \n\r@x1",detailedDiff.toString()));
-			final String message = "This object is cataloged.  Enter U to update the cataloged version, or D to detach this object from the catalog, or C to Cancel (u/d/C)?";
-			final String choice = mob.session().choose(message, L("UDC"), L("C"));
+			final String message = L("This object is cataloged.  Enter U to update the cataloged version, or D to detach this object from the catalog, or C to Cancel (u/d/C)?");
+			final String choice = mob.session().choose(message, ("UDC"), ("C"));
 			if(choice.equalsIgnoreCase("C"))
 			{
 				P.setMiscText(origCataP.text());
@@ -2622,11 +2622,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			prompt=CMStrings.padRight(prompt,35);
 			if(val)
-				prompt+="(Y/n): ";
+				prompt+=L("(Y/n): ");
 			else
-				prompt+="(y/N): ";
+				prompt+=L("(y/N): ");
 
-			return mob.session().confirm(prompt,val?L("Y"):L("N"));
+			return mob.session().confirm(prompt,val?("Y"):("N"));
 		}
 		catch(final IOException e)
 		{

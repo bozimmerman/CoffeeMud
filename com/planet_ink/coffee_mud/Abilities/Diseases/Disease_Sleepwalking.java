@@ -107,7 +107,7 @@ public class Disease_Sleepwalking extends Disease
 	@Override
 	protected String DISEASE_AFFECT()
 	{
-		return L("");
+		return "";
 	}
 
 	@Override

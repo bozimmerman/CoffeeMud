@@ -912,7 +912,7 @@ public class Create extends StdCommand
 					+ "This will convert the race to a GenRace so that you can modify it.  "
 					+ "Be warned that special functionality of the race may be lost by doing this.  "
 					+ "You can undo this action by destroying the same race ID after creating it.  "
-					+ "Do you wish to continue (y/N)?",R.ID()), L("N"))))
+					+ "Do you wish to continue (y/N)?",R.ID()), ("N"))))
 				return;
 			GR=R.makeGenRace();
 			raceID=GR.ID();
@@ -1675,7 +1675,7 @@ public class Create extends StdCommand
 				+ "This will convert the class to a GenCharClass so that you can modify it.  "
 				+ "Be warned that special functionality of the class may be lost by doing this.  "
 				+ "You can undo this action by destroying the same class ID after creating it.  "
-				+ "Do you wish to continue (y/N)?",C.ID()), L("N"))))
+				+ "Do you wish to continue (y/N)?",C.ID()), ("N"))))
 			{
 				return;
 			}

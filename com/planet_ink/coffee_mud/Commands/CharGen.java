@@ -1057,7 +1057,7 @@ public class CharGen extends StdCommand
 			aborted[0]=true;
 			return;
 		}
-		mob.tell(L(""));
+		mob.tell("");
 		if(fileExp!=null)
 		{
 			final CMFile file=new CMFile(fileExp,mob);
