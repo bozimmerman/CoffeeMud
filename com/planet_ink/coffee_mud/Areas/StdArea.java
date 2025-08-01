@@ -2125,6 +2125,13 @@ public class StdArea implements Area
 		if ((!roomID.startsWith(Name()))
 		&& (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
 			roomID = Name() + roomID.substring(Name().length()); // for case sensitive situations
+		final int grid = roomID.lastIndexOf("#(");
+		if(grid > 0)
+		{
+			final Room R = prooms.get(roomID.substring(0,grid));
+			if(R instanceof GridLocale)
+				return ((GridLocale)R).getGridChild(roomID);
+		}
 		return prooms.get(roomID);
 	}
 
