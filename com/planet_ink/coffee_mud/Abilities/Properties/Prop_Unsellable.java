@@ -46,7 +46,7 @@ public class Prop_Unsellable extends Property
 
 	protected String	ambiance	= null;
 	protected boolean	dropOff		= false;
-	protected String	message		= L("You can't sell that.");
+	protected String	message		= "You can't sell that.";
 
 	@Override
 	public void setMiscText(final String newMiscText)

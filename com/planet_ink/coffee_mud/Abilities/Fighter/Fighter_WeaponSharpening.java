@@ -48,7 +48,9 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		return localizedName;
 	}
 
-	protected String displayString=CMLib.lang().L("(Sharpening)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Sharpening)");
+
+	protected String displayString=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

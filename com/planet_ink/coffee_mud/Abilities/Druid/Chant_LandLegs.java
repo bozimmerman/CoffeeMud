@@ -86,8 +86,8 @@ public class Chant_LandLegs extends Chant
 		super.affectPhyStats(affected,affectableStats);
 	}
 
-	protected String arriveStr = L("arrives");
-	protected String leaveStr = L("leaves");
+	protected static final String arriveStr = CMLib.lang().L("arrives");
+	protected static final String leaveStr = CMLib.lang().L("leaves");
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
 

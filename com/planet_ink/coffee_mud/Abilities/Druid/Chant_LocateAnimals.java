@@ -54,7 +54,9 @@ public class Chant_LocateAnimals extends Chant
 		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
-	protected String displayText=L("(Locating Animals)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Locating Animals)");
+
+	protected String displayText=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public int abstractQuality()

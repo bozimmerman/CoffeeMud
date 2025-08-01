@@ -51,7 +51,7 @@ public class Skill_UnearthDemography extends StdAbility
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Unearthing Local Demography)");
+	protected static final String	displayText	= CMLib.lang().L("(Unearthing Local Demography)");
 
 	@Override
 	public String displayText()

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -2017,6 +2018,21 @@ public class Factions extends StdLibrary implements FactionManager
 		return buf;
 	}
 
+	protected PlayerLibrary[] getOtherPlayerLibAllHosts()
+	{
+		final List<PlayerLibrary> list=new ArrayList<PlayerLibrary>();
+		final FactionManager fman=this;
+		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.PLAYERS); pl.hasMoreElements(); )
+		{
+			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
+			if((pLib2 != null)
+			&&(!list.contains(pLib2))
+			&&(fman == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.FACTIONS)))
+				list.add(pLib2);
+		}
+		return list.toArray(new PlayerLibrary[0]);
+	}
+
 	@Override
 	public String resaveFaction(final Faction F)
 	{
@@ -2036,9 +2052,27 @@ public class Factions extends StdLibrary implements FactionManager
 				if((!F.factionID().toLowerCase().endsWith(".ini"))
 				&&(factionFilename.toLowerCase().endsWith(".ini")))
 				{
+					final String oldFactionID = F.factionID();
 					CMLib.factions().removeFaction(F.factionID());
 					F.setFactionID(F.factionID()+".INI");
 					CMLib.factions().addFaction(F);
+					for(final PlayerLibrary plib : getOtherPlayerLibAllHosts())
+					{
+						for(final Enumeration<MOB> m = plib.players();m.hasMoreElements();)
+						{
+							final MOB M = m.nextElement();
+							if(M != null)
+							{
+								final Faction.FData data = M.fetchFactionData(oldFactionID);
+								if(data != null)
+								{
+									final int fact = M.fetchFaction(oldFactionID);
+									M.removeFaction(oldFactionID);
+									M.addFaction(F.factionID(), fact);
+								}
+							}
+						}
+					}
 				}
 			}
 		}

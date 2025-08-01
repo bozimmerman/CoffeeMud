@@ -44,9 +44,11 @@ public class StdRoom implements Room
 		return "StdRoom";
 	}
 
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("Standard Room");
+
 	protected String			_roomID				= "";
 	protected String			name				= "the room";
-	protected String			displayText			= L("Standard Room");
+	protected String			displayText			= DEFAULT_DISPLAY_TEXT;
 	protected String			rawImageName		= null;
 	protected String			cachedImageName		= null;
 	protected Object			description			= null;

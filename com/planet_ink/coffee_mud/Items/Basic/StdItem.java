@@ -42,8 +42,10 @@ public class StdItem implements Item
 		return "StdItem";
 	}
 
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("a nondescript item sits here doing nothing.");
+
 	protected String	_name				= "an ordinary item";
-	protected String	displayText			= L("a nondescript item sits here doing nothing.");
+	protected String	displayText			= DEFAULT_DISPLAY_TEXT;
 	protected Object	description			= null;
 	protected int		myUses				= Integer.MAX_VALUE;
 	protected long		myWornCode			= Wearable.IN_INVENTORY;

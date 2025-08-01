@@ -2237,17 +2237,17 @@ public class MUD extends Thread implements MudHost
 			{
 				final String what2=V.get(2);
 				if(cm1Servers.size()==0)
-					return "Failure";
+					return CMLib.lang().L("Failure");
 				final CM1Server svr=cm1Servers.get(0);
 				if(what2.equalsIgnoreCase("PORT"))
 					return ""+svr.getPort();
 				else
 				if(what2.equalsIgnoreCase("NAME"))
 					return ""+svr.getName();
-				return "Failure";
+				return CMLib.lang().L("Failure");
 			}
 			else
-				return "Failure";
+				return CMLib.lang().L("Failure");
 		}
 		else
 		if(word.equalsIgnoreCase("TICK")&&(V.size()>1))
@@ -2257,12 +2257,12 @@ public class MUD extends Thread implements MudHost
 			{
 				if((smtpServerThread != null)
 				&&(smtpServerThread.tick(smtpServerThread, Tickable.TICKID_EMAIL)))
-					return "Done";
+					return CMLib.lang().L("Done");
 				else
-					return "Failure";
+					return CMLib.lang().L("Failure");
 			}
 			else
-				return "Failure";
+				return CMLib.lang().L("Failure");
 		}
 		else
 		if(word.equalsIgnoreCase("START")&&(V.size()>1))
@@ -2271,13 +2271,13 @@ public class MUD extends Thread implements MudHost
 			if(what.equalsIgnoreCase("I3"))
 			{
 				startIntermud3((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
-				return "Done";
+				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("IMC2"))
 			{
 				startIntermud2();
-				return "Done";
+				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("WEB"))
@@ -2285,19 +2285,19 @@ public class MUD extends Thread implements MudHost
 				if(V.size()<3)
 					return "Need Server Name";
 				if(startWebServer(CMProps.instance(),V.get(2)))
-					return "Done";
+					return CMLib.lang().L("Done");
 				else
-					return "Failure";
+					return CMLib.lang().L("Failure");
 			}
 			else
 			if(what.equalsIgnoreCase("CM1"))
 			{
 				if(V.size()<3)
-					return "Need Server Name";
+					return CMLib.lang().L("Need Server Name");
 				if(startCM1())
-					return "Done";
+					return CMLib.lang().L("Done");
 				else
-					return "Failure";
+					return CMLib.lang().L("Failure");
 			}
 			else
 			if(what.equalsIgnoreCase("SMTP"))
@@ -2307,9 +2307,9 @@ public class MUD extends Thread implements MudHost
 					smtpServerThread = new SMTPserver(CMLib.mud(0)); // initializes variables, even if it's not used
 					smtpServerThread.start();
 					serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),smtpServerThread,Tickable.TICKID_EMAIL,CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
-					return "Done";
+					return CMLib.lang().L("Done");
 				}
-				return "Failure";
+				return CMLib.lang().L("Failure");
 			}
 		}
 		else
@@ -2319,11 +2319,11 @@ public class MUD extends Thread implements MudHost
 			if(what.equalsIgnoreCase("WEB"))
 			{
 				if(V.size()<3)
-					return "Need Server Name";
+					return CMLib.lang().L("Need Server Name");
 				if(stopWebServer(V.get(2)))
-					return "Done";
+					return CMLib.lang().L("Done");
 				else
-					return "Failure";
+					return CMLib.lang().L("Failure");
 			}
 			else
 			if(what.equalsIgnoreCase("I3"))
@@ -2331,22 +2331,22 @@ public class MUD extends Thread implements MudHost
 				if(i3server!=null)
 					I3Server.shutdown();
 				i3server=null;
-				return "Done";
+				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("IMC2"))
 			{
 				if(imc2server!=null)
 					imc2server.shutdown();
-				return "Done";
+				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("CM1"))
 			{
 				if(stopCM1())
-					return "Done";
+					return CMLib.lang().L("Done");
 				else
-					return "Failure";
+					return CMLib.lang().L("Failure");
 			}
 			else
 			if(what.equalsIgnoreCase("SMTP"))
@@ -2356,9 +2356,9 @@ public class MUD extends Thread implements MudHost
 					smtpServerThread.shutdown();
 					serviceEngine.unTickAll(smtpServerThread);
 					smtpServerThread = null;
-					return "Done";
+					return CMLib.lang().L("Done");
 				}
-				return "Failure";
+				return CMLib.lang().L("Failure");
 			}
 		}
 		else

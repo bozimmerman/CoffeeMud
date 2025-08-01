@@ -49,7 +49,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	}
 
 	protected int			chance			= 100;
-	protected String		message			= L("<S-NAME> can`t go that way.");
+	protected String		message			= "<S-NAME> can`t go that way.";
 	protected boolean		publicMsg		= false;
 	protected boolean		dismount		= false;
 	protected int[]			noDomains		= new int[0];

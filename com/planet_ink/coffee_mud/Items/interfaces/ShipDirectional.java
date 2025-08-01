@@ -75,6 +75,20 @@ public interface ShipDirectional extends Item
 			}
 			return this;
 		}
+
+		public String description()
+		{
+			switch(this)
+			{
+			case AFT: return CMLib.lang().L("Aft");
+			case PORT: return CMLib.lang().L("Port");
+			case VENTRAL: return CMLib.lang().L("Ventral");
+			case DORSEL: return CMLib.lang().L("Dorsel");
+			case STARBOARD: return CMLib.lang().L("Starboard");
+			case FORWARD: return CMLib.lang().L("Forward");
+			}
+			return "";
+		}
 	}
 
 	/**

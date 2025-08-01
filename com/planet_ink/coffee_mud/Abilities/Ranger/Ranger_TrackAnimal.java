@@ -48,8 +48,9 @@ public class Ranger_TrackAnimal extends StdAbility
 	{
 		return localizedName;
 	}
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Tracking an Animal)");
 
-	protected String displayText=L("(tracking an animal)");
+	protected String displayText=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

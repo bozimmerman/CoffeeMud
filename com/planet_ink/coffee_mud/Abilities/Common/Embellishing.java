@@ -78,7 +78,9 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 	protected static final int	RCP_CLASSTYPE	= 5;
 	protected static final int	RCP_SPELL		= 6;
 
-	protected String	embellishWord	= CMLib.lang().L("embellished");
+	protected static final String DEFAULT_EMBELLISH_WORD= CMLib.lang().L("embellished");
+
+	protected String	embellishWord	= DEFAULT_EMBELLISH_WORD;
 	protected String	embellishment	= "@x1 has @x2.";
 	protected int		lostValue		= 0;
 	protected Item		embellishI		= null;

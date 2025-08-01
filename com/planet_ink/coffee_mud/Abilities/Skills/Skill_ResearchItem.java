@@ -50,12 +50,12 @@ public class Skill_ResearchItem extends StdSkill
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Researching)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Researching)");
 
 	@Override
 	public String displayText()
 	{
-		return displayText;
+		return DEFAULT_DISPLAY_TEXT;
 	}
 
 	@Override

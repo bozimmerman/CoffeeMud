@@ -68,13 +68,15 @@ public class CommonSkill extends StdAbility
 	protected static Item						fakeFire		= null;
 	protected static final List<String>			uninvokeEmpties	= new ReadOnlyList<String>(new ArrayList<String>(0));
 
+	private static final String DEFAULT_WORKING_WORD = CMLib.lang().L("working");
+
 	protected volatile Room	activityRoom	= null;
 	protected boolean		aborted			= false;
 	protected boolean		helping			= false;
 	protected boolean		bundling		= false;
 	public Ability			helpingAbility	= null;
 	protected volatile int	tickUp			= 0;
-	protected String		verb			= L("working");
+	protected String		verb			= DEFAULT_WORKING_WORD;
 	protected String		playSound		= null;
 	protected int			bonusYield		= 0;
 	protected volatile int	lastBaseDuration= 0;
@@ -90,7 +92,10 @@ public class CommonSkill extends StdAbility
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	protected String displayText = L("(Doing something productive)");
+
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Doing something productive)");
+
+	protected String displayText = DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

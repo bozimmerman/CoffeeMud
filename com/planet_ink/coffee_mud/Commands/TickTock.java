@@ -99,7 +99,7 @@ public class TickTock extends StdCommand
 				if(s.startsWith("smtp"))
 				{
 					for(int n=0;n<numTimes;n++)
-						mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
+						mob.tell(CMLib.host().executeCommand("TICK SMTP"));
 				}
 				else
 				if(s.startsWith("set"))

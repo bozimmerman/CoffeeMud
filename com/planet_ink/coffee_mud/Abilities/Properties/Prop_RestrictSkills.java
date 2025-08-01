@@ -55,7 +55,7 @@ public class Prop_RestrictSkills extends Property
 	protected Set<Integer>	onlyRoomDomains	= new TreeSet<Integer>();
 	protected Set<Integer>	neverRoomDomains= new TreeSet<Integer>();
 	protected Set<String>	skills			= new TreeSet<String>();
-	protected String		message			= L("You can't do that here.");
+	protected String		message			= "You can't do that here.";
 	protected boolean		wearOnly		= false;
 
 	@Override
@@ -65,7 +65,7 @@ public class Prop_RestrictSkills extends Property
 		neverRoomDomains.clear();
 		skills.clear();
 		super.setMiscText(newMiscText);
-		this.message=CMParms.getParmStr(newMiscText, "MESSAGE", "You can't do that here.");
+		this.message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You can't do that here."));
 		String domains=CMParms.getParmStr(newMiscText, "ONLYROOMS", "");
 		wearOnly=CMParms.getParmBool(newMiscText, "WEARONLY", false);
 		List<String> domainList=CMParms.parseCommas(domains, true);

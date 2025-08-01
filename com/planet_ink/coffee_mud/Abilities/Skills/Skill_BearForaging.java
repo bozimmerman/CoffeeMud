@@ -49,7 +49,7 @@ public class Skill_BearForaging extends StdAbility
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Bear Foraging)");
+	protected static final String	displayText	= CMLib.lang().L("(Bear Foraging)");
 
 	@Override
 	public String displayText()

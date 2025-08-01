@@ -50,7 +50,9 @@ public class Thief_FindRunaway extends StdAbility
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Runaway Tracking)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Runaway Tracking)");
+
+	protected String	displayText	= DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

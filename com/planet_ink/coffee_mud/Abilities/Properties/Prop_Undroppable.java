@@ -49,7 +49,7 @@ public class Prop_Undroppable extends Property
 	protected Reference<MOB> owner	= null;
 	protected String	ambiance	= null;
 	protected boolean	lostOff		= false;
-	protected String	message		= L("You don't want to drop that.");
+	protected String	message		= "You don't want to drop that.";
 
 	@Override
 	public void setMiscText(final String newMiscText)

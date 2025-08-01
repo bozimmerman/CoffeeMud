@@ -56,7 +56,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	private boolean			noSneak		= false;
 	private boolean			allFlag		= false;
 	private boolean			sysopFlag	= false;
-	private String			message		= L("You are not allowed to go that way.");
+	private String			message		= "You are not allowed to go that way.";
 	private int[]			lvls		= new int[0];
 
 	@Override

@@ -41,8 +41,10 @@ public class StdThinItem implements Item
 		return "StdThinItem";
 	}
 
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("a nondescript item sits here doing nothing.");
+
 	protected String					name		= "an ordinary item";
-	protected String					displayText	= L("a nondescript item sits here doing nothing.");
+	protected String					displayText	= DEFAULT_DISPLAY_TEXT;
 	protected volatile Container		myContainer	= null;
 	protected volatile ItemPossessor	owner		= null;
 	protected Rideable					riding		= null;

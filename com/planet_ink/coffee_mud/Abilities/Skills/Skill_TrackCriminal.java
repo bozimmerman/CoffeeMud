@@ -48,8 +48,9 @@ public class Skill_TrackCriminal extends StdAbility
 	{
 		return localizedName;
 	}
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Criminal Tracking)");
 
-	protected String	displayText	= L("(Criminal Tracking)");
+	protected String displayText=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

@@ -62,12 +62,12 @@ public class Skill_Track extends StdSkill
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Tracking)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Tracking)");
 
 	@Override
 	public String displayText()
 	{
-		return displayText;
+		return DEFAULT_DISPLAY_TEXT;
 	}
 
 	@Override

@@ -50,8 +50,9 @@ public class Skill_TrackFriend extends StdAbility
 	{
 		return localizedName;
 	}
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Friend Tracking)");
 
-	protected String	displayText	= L("(Friend Tracking)");
+	protected String displayText=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

@@ -46,7 +46,10 @@ public class Prop_Familiar extends Property
 		return "Find Familiar Property";
 	}
 
-	protected String	displayText	= L("Familiarity with an animal");
+
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("Familiarity with an animal");
+
+	protected String displayText=DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()

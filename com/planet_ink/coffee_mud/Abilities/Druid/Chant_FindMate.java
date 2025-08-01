@@ -48,7 +48,7 @@ public class Chant_FindMate extends Chant
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Tracking a mate)");
+	protected static final String	displayText	= CMLib.lang().L("(Tracking a mate)");
 
 	@Override
 	public String displayText()

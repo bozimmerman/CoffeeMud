@@ -49,7 +49,9 @@ public class Thief_Assassinate extends ThiefSkill
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Tracking)");
+	private static final String DEFAULT_DISPLAY_TEXT=CMLib.lang().L("(Tracking)");
+
+	protected String	displayText	= DEFAULT_DISPLAY_TEXT;
 
 	@Override
 	public String displayText()
