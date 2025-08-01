@@ -2131,6 +2131,7 @@ public class StdArea implements Area
 			final Room R = prooms.get(roomID.substring(0,grid));
 			if(R instanceof GridLocale)
 				return ((GridLocale)R).getGridChild(roomID);
+			return R;
 		}
 		return prooms.get(roomID);
 	}
