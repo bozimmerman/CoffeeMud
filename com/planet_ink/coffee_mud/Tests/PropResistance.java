@@ -61,38 +61,38 @@ public class PropResistance extends PropTest
 		resetTest();
 		final Ability Resistance = CMClass.getAbility("Prop_Resistance");
 		Resistance.setMiscText("pierce 100% holy 100% acid 30%");
-		//mob.tell(L("Test:@x2-1: @x1", Resistance.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", Resistance.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		giveAbility(mobs[0], Resistance);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		Resistance.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
-		//mob.tell(L("Test:@x2-2: @x1", Resistance.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", Resistance.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		giveAbility(mobs[0], Resistance);
 		giveAbility(mobs[1], Resistance);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		return null;
 	}

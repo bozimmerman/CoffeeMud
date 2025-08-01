@@ -62,40 +62,40 @@ public class ZapperAnyclasslevel extends PropTest
 		final String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
 		final String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
 		final MaskingLibrary.CompiledZMask cmask1 = CMLib.masking().maskCompile(mask1);
-		//mob.tell(L("Test:@x2-1: @x1",CMLib.masking().maskDesc(mask1),what));
+		//mob.tell(("Test:@x2-1: @x1",CMLib.masking().maskDesc(mask1),what));
 		if (!CMLib.masking().maskCheck(mask1, mobs[0], true))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		if (!CMLib.masking().maskCheck(cmask1, mobs[0], true))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		if (CMLib.masking().maskCheck(mask1, mobs[1], true))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (CMLib.masking().maskCheck(cmask1, mobs[1], true))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		final MaskingLibrary.CompiledZMask cmask2 = CMLib.masking().maskCompile(mask2);
-		//mob.tell(L("Test:@x2-2: @x1", CMLib.masking().maskDesc(mask2),what));
+		//mob.tell(("Test:@x2-2: @x1", CMLib.masking().maskDesc(mask2),what));
 		if (CMLib.masking().maskCheck(mask2, mobs[0], true))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (CMLib.masking().maskCheck(cmask2, mobs[0], true))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (!CMLib.masking().maskCheck(mask2, mobs[1], true))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (!CMLib.masking().maskCheck(cmask2, mobs[1], true))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		return null;
 	}

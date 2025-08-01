@@ -66,25 +66,25 @@ public class PropReqcapacity extends PropTest
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		if (mobs[0].location() != R2)
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		CMLib.tracking().walk(mobs[1], Directions.UP, false, false);
 		if (mobs[1].location() == R2)
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		mobs[0].moveItemTo(IS[0]);
 		mobs[0].moveItemTo(IS[1]);
 		msg = CMClass.getMsg(mobs[0], IS[0], null, CMMsg.MSG_DROP, null);
 		if (!R2.okMessage(mobs[0], msg))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		R2.send(mobs[0], msg);
 		msg = CMClass.getMsg(mobs[0], IS[1], null, CMMsg.MSG_DROP, null);
 		if (R2.okMessage(mobs[0], msg))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		return null;
 	}

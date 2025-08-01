@@ -61,40 +61,40 @@ public class PropRideenabler extends PropTest
 		resetTest();
 		final Ability RideEnabler = CMClass.getAbility("Prop_RideEnabler");
 		RideEnabler.setMiscText(semiSpellList());
-		//mob.tell(L("Test:@x2-1: @x1", RideEnabler.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", RideEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideEnabler, mobs[0], null, 2);
 		if (!spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		mobs[0].setRiding(null);
 		R1.recoverRoomStats();
 		if (spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		RideEnabler.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", RideEnabler.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", RideEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideEnabler, mobs[0], mobs[1], 2);
 		if (!spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (spellCheck(spells, mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		mobs[0].setRiding(null);
 		mobs[1].setRiding(null);
 		R1.recoverRoomStats();
 		if (spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (spellCheck(spells, mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		return null;
 	}

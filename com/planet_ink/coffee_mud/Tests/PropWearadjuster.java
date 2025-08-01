@@ -61,53 +61,53 @@ public class PropWearadjuster extends PropTest
 		resetTest();
 		final Ability WearAdjuster = CMClass.getAbility("Prop_WearAdjuster");
 		WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), WearAdjuster, mobs[0], null, 1);
 		R1.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		IS[0].unWear();
 		R1.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), WearAdjuster, mobs[0], mobs[1], 1);
 		R1.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
 		R1.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		return null;
 	}

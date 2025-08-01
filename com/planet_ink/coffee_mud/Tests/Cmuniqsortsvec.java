@@ -150,7 +150,7 @@ public class Cmuniqsortsvec extends StdTest
 					}
 				if(vec.size() != found.size())
 				{
-					return (L("Error#"));
+					return (("Error#"));
 				}
 			}
 		}

@@ -61,43 +61,43 @@ public class PropHaveadjuster extends PropTest
 		resetTest();
 		final Ability HaveAdjuster = CMClass.getAbility("Prop_HaveAdjuster");
 		HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:@x2-1: @x1", HaveAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", HaveAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), HaveAdjuster, mobs[0], null, 0);
 		R1.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		IS[0].unWear();
 		R1.moveItemTo(IS[0], ItemPossessor.Expire.Never, ItemPossessor.Move.Followers);
 		R1.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", HaveAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", HaveAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), HaveAdjuster, mobs[0], mobs[1], 0);
 		R1.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
@@ -106,11 +106,11 @@ public class PropHaveadjuster extends PropTest
 		R1.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		return null;
 	}

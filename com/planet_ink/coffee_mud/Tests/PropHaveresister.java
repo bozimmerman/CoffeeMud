@@ -61,44 +61,44 @@ public class PropHaveresister extends PropTest
 		resetTest();
 		final Ability HaveResister = CMClass.getAbility("Prop_HaveResister");
 		HaveResister.setMiscText("pierce 100% holy 100% acid 30%");
-		//mob.tell(L("Test:@x2-1: @x1", HaveResister.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", HaveResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), HaveResister, mobs[0], null, 0);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		IS[0].unWear();
 		R1.moveItemTo(IS[0], ItemPossessor.Expire.Never, ItemPossessor.Move.Followers);
 		R1.recoverRoomStats();
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		resetTest();
 		HaveResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
-		//mob.tell(L("Test:@x2-2: @x1", HaveResister.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", HaveResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		IS = giveTo(CMClass.getItem("SmallSack"), HaveResister, mobs[0], mobs[1], 0);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
@@ -107,11 +107,11 @@ public class PropHaveresister extends PropTest
 		R1.recoverRoomStats();
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		return null;
 	}

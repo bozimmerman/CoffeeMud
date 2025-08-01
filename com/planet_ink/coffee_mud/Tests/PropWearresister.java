@@ -61,54 +61,54 @@ public class PropWearresister extends PropTest
 		resetTest();
 		final Ability WearResister = CMClass.getAbility("Prop_WearResister");
 		WearResister.setMiscText("pierce 100% holy 100% acid 30%");
-		//mob.tell(L("Test:@x2-1: @x1", WearResister.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS = giveTo(CMClass.getWeapon("Sword"), WearResister, mobs[0], null, 1);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		IS[0].unWear();
 		R1.recoverRoomStats();
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		resetTest();
 		WearResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
-		//mob.tell(L("Test:@x2-2: @x1", WearResister.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", WearResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		IS = giveTo(CMClass.getWeapon("Sword"), WearResister, mobs[0], mobs[1], 1);
 		R1.recoverRoomStats();
 		if (!testResistance(mobs[0]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
 		R1.recoverRoomStats();
 		if (testResistance(mobs[0]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		if (testResistance(mobs[1]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		return null;
 	}

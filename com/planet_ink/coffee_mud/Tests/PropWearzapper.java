@@ -61,7 +61,7 @@ public class PropWearzapper extends PropTest
 		resetTest();
 		final Ability WearZapper = CMClass.getAbility("Prop_WearZapper");
 		WearZapper.setMiscText("-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-1: @x1", WearZapper.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearZapper.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearZapper, mobs[0], mobs[1], 0);
 		msg = CMClass.getMsg(mobs[0], IS[0], null, CMMsg.MSG_WIELD, L("<S-NAME> wield(s) <T-NAMESELF>."));
 		if (R1.okMessage(mobs[0], msg))
@@ -71,11 +71,11 @@ public class PropWearzapper extends PropTest
 			R1.send(mobs[1], msg);
 		if (IS[0].amWearingAt(Wearable.IN_INVENTORY))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		if (!IS[1].amWearingAt(Wearable.IN_INVENTORY))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		return null;
 	}

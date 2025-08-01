@@ -61,40 +61,40 @@ public class PropWearenabler extends PropTest
 		resetTest();
 		final Ability WearEnabler = CMClass.getAbility("Prop_WearEnabler");
 		WearEnabler.setMiscText(semiSpellList());
-		//mob.tell(L("Test:@x2-1: @x1", WearEnabler.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearEnabler, mobs[0], null, 1);
 		if (!spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS[0].unWear();
 		R1.recoverRoomStats();
 		if (spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		WearEnabler.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", WearEnabler.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", WearEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearEnabler, mobs[0], mobs[1], 1);
 		if (!spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (spellCheck(spells, mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
 		R1.recoverRoomStats();
 		if (spellCheck(spells, mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (spellCheck(spells, mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		return null;
 	}

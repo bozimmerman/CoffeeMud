@@ -61,30 +61,30 @@ public class PropHereadjuster extends PropTest
 		resetTest();
 		final Ability HereAdjuster = CMClass.getAbility("Prop_HereAdjuster");
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:@x2-1: @x1", HereAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);
 		R2.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#0"));
+			return (("Error#0"));
 		}
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		R2.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		CMLib.tracking().walk(mobs[0], Directions.DOWN, false, false);
 		R2.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", HereAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);
@@ -94,26 +94,26 @@ public class PropHereadjuster extends PropTest
 		R2.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		CMLib.tracking().walk(mobs[0], Directions.DOWN, false, false);
 		CMLib.tracking().walk(mobs[1], Directions.DOWN, false, false);
 		R2.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		resetTest();
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-Human");
-		//mob.tell(L("Test:@x2-3: @x1", HereAdjuster.accountForYourself(),what));
+		//mob.tell(("Test:@x2-3: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);
@@ -123,22 +123,22 @@ public class PropHereadjuster extends PropTest
 		R2.recoverRoomStats();
 		if (!isAllAdjusted(mobs[0]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		CMLib.tracking().walk(mobs[0], Directions.DOWN, false, false);
 		CMLib.tracking().walk(mobs[1], Directions.DOWN, false, false);
 		R2.recoverRoomStats();
 		if (isAnyAdjusted(mobs[0]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		if (isAnyAdjusted(mobs[1]))
 		{
-			return (L("Error#10"));
+			return (("Error#10"));
 		}
 		return null;
 	}

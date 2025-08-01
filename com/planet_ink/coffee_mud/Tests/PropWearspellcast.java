@@ -61,63 +61,63 @@ public class PropWearspellcast extends PropTest
 		resetTest();
 		final Ability WearSpellCast = CMClass.getAbility("Prop_WearSpellCast");
 		WearSpellCast.setMiscText(semiSpellList());
-		//mob.tell(L("Test:@x2-1: @x1", WearSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], null, 1);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS[0].unWear();
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		WearSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", WearSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], mobs[1], 1);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		resetTest();
 		WearSpellCast.setMiscText(semiSpellList() + "MASK=-Human");
-		//mob.tell(L("Test:@x2-3: @x1", WearSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-3: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], mobs[1], 1);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#10"));
+			return (("Error#10"));
 		}
 		return null;
 	}

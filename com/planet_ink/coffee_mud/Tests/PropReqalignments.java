@@ -66,13 +66,13 @@ public class PropReqalignments extends PropTest
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		if (mobs[0].location() == R2)
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		CMLib.factions().setAlignment(mobs[0], Faction.Align.NEUTRAL);
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		if (mobs[0].location() != R2)
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		R1.bringMobHere(mobs[0], false);
 		reqA.setMiscText("NOFOL -ALL +EVIL");
@@ -80,13 +80,13 @@ public class PropReqalignments extends PropTest
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		if (mobs[0].location() == R2)
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		CMLib.factions().setAlignment(mobs[0], Faction.Align.EVIL);
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);
 		if (mobs[0].location() != R2)
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		return null;
 	}

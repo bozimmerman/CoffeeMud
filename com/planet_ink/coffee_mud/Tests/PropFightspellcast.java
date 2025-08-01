@@ -61,15 +61,15 @@ public class PropFightspellcast extends PropTest
 		resetTest();
 		final Ability FightSpellCast = CMClass.getAbility("Prop_FightSpellCast");
 		FightSpellCast.setMiscText(maliciousSemiSpellList());
-		//mob.tell(L("Test:@x2-1: @x1", FightSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[0], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		if (effectCheck(maliciousspells, mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		for (int i = 0; i < 100; i++)
 		{
@@ -81,20 +81,20 @@ public class PropFightspellcast extends PropTest
 		}
 		if (!effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		R1.recoverRoomStats();
 		resetTest();
 		FightSpellCast.setMiscText(maliciousSemiSpellList() + "MASK=-RACE +Human");
-		//mob.tell(L("Test:@x2-2: @x1", FightSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[1], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (effectCheck(maliciousspells, mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		for (int i = 0; i < 100; i++)
 		{
@@ -106,20 +106,20 @@ public class PropFightspellcast extends PropTest
 		}
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		R1.recoverRoomStats();
 		resetTest();
 		FightSpellCast.setMiscText(maliciousSemiSpellList() + "MASK=-RACE +Human");
-		//mob.tell(L("Test:@x2-3: @x1", FightSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-3: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[0], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (effectCheck(maliciousspells, mobs[0]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		for (int i = 0; i < 100; i++)
 		{
@@ -131,7 +131,7 @@ public class PropFightspellcast extends PropTest
 		}
 		if (!effectCheck(maliciousspells, mobs[1]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		R1.recoverRoomStats();
 		return null;

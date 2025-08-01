@@ -61,109 +61,109 @@ public class Cmparms extends StdTest
 		List<String> V = CMParms.parseAny("blah~BLAH~BLAH!", '~', true);
 		if (V.size() != 3)
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		if (!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~"))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		V = CMParms.parseAny("blah~~", '~', true);
 		if (V.size() != 1)
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (!V.get(0).equals("blah"))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		V = CMParms.parseAny("blah~~", '~', false);
 		if (V.size() != 3)
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (!CMParms.combineWithX(V, "~", 0).equals("blah~~~"))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		V = CMParms.parseAny("blah~~BLAH~~BLAH!", "~~", true);
 		if (V.size() != 3)
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~"))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		V = CMParms.parseAny("blah~~~~", "~~", true);
 		if (V.size() != 1)
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		if (!V.get(0).equals("blah"))
 		{
-			return (L("Error#10"));
+			return (("Error#10"));
 		}
 		V = CMParms.parseAny("blah~~~~", "~~", false);
 		if (V.size() != 3)
 		{
-			return (L("Error#11"));
+			return (("Error#11"));
 		}
 		if (!CMParms.combineWithX(V, "~~", 0).equals("blah~~~~~~"))
 		{
-			return (L("Error#12"));
+			return (("Error#12"));
 		}
 		V = CMParms.parseSentences("blah. blahblah. poo");
 		if (V.size() != 3)
 		{
-			return (L("Error#13"));
+			return (("Error#13"));
 		}
 		if (!V.get(0).equals("blah."))
 		{
-			return (L("Error#14:@x1", V.get(0)));
+			return (CMStrings.replaceVariables("Error#14:@x1", V.get(0)));
 		}
 		if (!V.get(1).equals("blahblah."))
 		{
-			return (L("Error#15:@x1", V.get(1)));
+			return (CMStrings.replaceVariables("Error#15:@x1", V.get(1)));
 		}
 		if (!V.get(2).equals("poo"))
 		{
-			return (L("Error#16:@x1", V.get(2)));
+			return (CMStrings.replaceVariables("Error#16:@x1", V.get(2)));
 		}
 		V = CMParms.parseAny("blah~BLAH~BLAH!~", '~', true);
 		if (V.size() != 3)
 		{
-			return (L("Error#17"));
+			return (("Error#17"));
 		}
 		if (!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~"))
 		{
-			return (L("Error#18"));
+			return (("Error#18"));
 		}
 		V = CMParms.parseAny("blah~~BLAH~~BLAH!~~", "~~", true);
 		if (V.size() != 3)
 		{
-			return (L("Error#19"));
+			return (("Error#19"));
 		}
 		if (!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~"))
 		{
-			return (L("Error#20"));
+			return (("Error#20"));
 		}
 		V = CMParms.parseAny("blah~BLAH~BLAH!~", '~', false);
 		if (V.size() != 4)
 		{
-			return (L("Error#21"));
+			return (("Error#21"));
 		}
 		if (!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~~"))
 		{
-			return (L("Error#22"));
+			return (("Error#22"));
 		}
 		V = CMParms.parseAny("blah~~BLAH~~BLAH!~~", "~~", false);
 		if (V.size() != 4)
 		{
-			return (L("Error#23"));
+			return (("Error#23"));
 		}
 		if (!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~"))
 		{
-			return (L("Error#24"));
+			return (("Error#24"));
 		}
 		return null;
 	}

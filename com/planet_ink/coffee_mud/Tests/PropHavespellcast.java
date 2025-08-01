@@ -61,30 +61,30 @@ public class PropHavespellcast extends PropTest
 		resetTest();
 		final Ability HaveSpellCast = CMClass.getAbility("Prop_HaveSpellCast");
 		HaveSpellCast.setMiscText(semiSpellList());
-		//mob.tell(L("Test:@x2-1: @x1", HaveSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-1: @x1", HaveSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveSpellCast, mobs[0], null, 0);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		IS[0].unWear();
 		R1.moveItemTo(IS[0], ItemPossessor.Expire.Never, ItemPossessor.Move.Followers);
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		resetTest();
 		HaveSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:@x2-2: @x1", HaveSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-2: @x1", HaveSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveSpellCast, mobs[0], mobs[1], 0);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
@@ -93,23 +93,23 @@ public class PropHavespellcast extends PropTest
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		resetTest();
 		HaveSpellCast.setMiscText(semiSpellList() + "MASK=-Human");
-		//mob.tell(L("Test:@x2-3: @x1", HaveSpellCast.accountForYourself(),what));
+		//mob.tell(("Test:@x2-3: @x1", HaveSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveSpellCast, mobs[0], mobs[1], 0);
 		if (!effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		IS[0].unWear();
 		IS[1].unWear();
@@ -118,11 +118,11 @@ public class PropHavespellcast extends PropTest
 		R1.recoverRoomStats();
 		if (effectCheck(spells, mobs[0]))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		if (effectCheck(spells, mobs[1]))
 		{
-			return (L("Error#10"));
+			return (("Error#10"));
 		}
 		return null;
 	}

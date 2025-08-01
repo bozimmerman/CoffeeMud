@@ -66,7 +66,7 @@ public class PropUsespellcast extends PropTest
 			final Ability UseSpellCast = CMClass.getAbility("Prop_UseSpellCast"); // put
 																					// IN
 			UseSpellCast.setMiscText(semiSpellList());
-			//mob.tell(L("Test:@x2-1: @x1", UseSpellCast.accountForYourself(),what));
+			//mob.tell(("Test:@x2-1: @x1", UseSpellCast.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("SmallSack"), UseSpellCast, mobs[0], null, 0);
 			I = CMClass.getItem("StdFood");
 			mobs[0].addItem(I);
@@ -74,12 +74,12 @@ public class PropUsespellcast extends PropTest
 			C.execute(mobs[0], new XVector<String>("Put", "Food", "Sack"), 0);
 			if (!effectCheck(spells, mobs[0]))
 			{
-				return (L("Error#1"));
+				return (("Error#1"));
 			}
 			R1.recoverRoomStats();
 			resetTest();
 			UseSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-			//mob.tell(L("Test:@x2-2: @x1", UseSpellCast.accountForYourself(),what));
+			//mob.tell(("Test:@x2-2: @x1", UseSpellCast.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("SmallSack"), UseSpellCast, mobs[0], mobs[1], 0);
 			I = CMClass.getItem("StdFood");
 			mobs[0].addItem(I);
@@ -87,7 +87,7 @@ public class PropUsespellcast extends PropTest
 			C.execute(mobs[0], new XVector<String>("Put", "Food", "Sack"), 0);
 			if (!effectCheck(spells, mobs[0]))
 			{
-				return (L("Error#2"));
+				return (("Error#2"));
 			}
 			I = CMClass.getItem("StdFood");
 			mobs[1].addItem(I);
@@ -95,7 +95,7 @@ public class PropUsespellcast extends PropTest
 			C.execute(mobs[1], new XVector<String>("Put", "Food", "Sack"), 0);
 			if (effectCheck(spells, mobs[1]))
 			{
-				return (L("Error#3"));
+				return (("Error#3"));
 			}
 			R1.recoverRoomStats();
 		}

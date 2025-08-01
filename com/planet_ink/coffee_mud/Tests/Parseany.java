@@ -65,43 +65,43 @@ public class Parseany extends StdTest
 		final String t5="boo]blah]poo";
 		if (CMParms.parseAny(t1, "]", true).size() != 0)
 		{
-			return (L("Error#0"));
+			return (("Error#0"));
 		}
 		if (CMParms.parseAny(t1, "]", false).size() != 0)
 		{
-			return (L("Error#1"));
+			return (("Error#1"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t2, "]", true).toArray(), new Object[] { "blah" }))
 		{
-			return (L("Error#2"));
+			return (("Error#2"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t2, "]", false).toArray(), new Object[] { "", "blah" }))
 		{
-			return (L("Error#3"));
+			return (("Error#3"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t3, "]", true).toArray(), new Object[] { "blah" }))
 		{
-			return (L("Error#4"));
+			return (("Error#4"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t3, "]", false).toArray(), new Object[] { "", "blah", "" }))
 		{
-			return (L("Error#5"));
+			return (("Error#5"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t4, "]", true).toArray(), new Object[] { "boo", "blah" }))
 		{
-			return (L("Error#6"));
+			return (("Error#6"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t4, "]", false).toArray(), new Object[] { "boo", "blah", "" }))
 		{
-			return (L("Error#7"));
+			return (("Error#7"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t5, "]", true).toArray(), new Object[] { "boo", "blah", "poo" }))
 		{
-			return (L("Error#8"));
+			return (("Error#8"));
 		}
 		if (!Arrays.deepEquals(CMParms.parseAny(t5, "]", false).toArray(), new Object[] { "boo", "blah", "poo" }))
 		{
-			return (L("Error#9"));
+			return (("Error#9"));
 		}
 		return null;
 	}
