@@ -2188,7 +2188,7 @@ public class StdArea implements Area
 			&& (roomID.startsWith(Name().toUpperCase())))
 				roomID = Name() + roomID.substring(Name().length());
 			R = getRoom(roomID);
-			if((R==null)&&(roomID.indexOf("#(")>0))
+			if((R==null)&&(roomID.indexOf("#(")>=0))
 				roomID = null;
 		}
 		// looping back through CMMap is unnecc because the roomID comes
