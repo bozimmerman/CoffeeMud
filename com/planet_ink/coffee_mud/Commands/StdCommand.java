@@ -72,7 +72,7 @@ public class StdCommand implements Command
 
 	public String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	public static String[] I(final String[] str)

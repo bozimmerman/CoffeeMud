@@ -737,7 +737,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 
 	protected static String staticL(final String str, final String... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(StdSiegableBoardable.class, str, xs);
 	}
 
 	@Override

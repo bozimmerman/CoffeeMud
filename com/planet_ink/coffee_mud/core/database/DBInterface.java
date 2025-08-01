@@ -166,7 +166,7 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public String L(final String str, final String... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	@Override
@@ -1544,5 +1544,11 @@ public class DBInterface implements DatabaseEngine
 				DB.DBDone(DBToUse);
 		}
 		return results;
+	}
+
+	@Override
+	public String L(final Class<?> clazz, final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(clazz, str, xs);
 	}
 }

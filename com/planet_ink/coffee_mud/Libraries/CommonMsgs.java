@@ -1377,18 +1377,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						final String wornString=codes.name(wornCode);
 						if(wornString.length()>0)
 						 {
-							response.append(CMStrings.capitalizeAndLower(wornString)+" ");
+							response.append(CMStrings.capitalizeAndLower(wornString));
 							if(item.rawLogicalAnd())
-								response.append(L("and "));
+								response.append(L(" and "));
 							else
-								response.append(L("or "));
+								response.append(L(" or "));
 						}
 					}
 				}
-				if(response.toString().endsWith(" and "))
+				if(response.toString().endsWith(L(" and ")))
 					response.delete(response.length()-5,response.length());
 				else
-				if(response.toString().endsWith(" or "))
+				if(response.toString().endsWith(L(" or ")))
 					response.delete(response.length()-4,response.length());
 				response.append(".  ");
 				if(mobLevel >= item.phyStats().level()+CMath.div(100.0, mobInt<=0?1:mobInt))

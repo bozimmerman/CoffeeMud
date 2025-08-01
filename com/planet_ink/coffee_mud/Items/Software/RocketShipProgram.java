@@ -237,7 +237,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 				if(sensor.powerCapacity()==0) // its just a window
 					continue;
 				str.append("^H").append(CMStrings.padRight(L("SENSOR@x1",""+sensorNumber),9));
-				str.append(CMStrings.padRight(sensor.activated()?L("^gA"):L("^rI"),2));
+				str.append(CMStrings.padRight(sensor.activated()?("^gA"):("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(sensor.powerRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(sensor.name(),31));
@@ -330,7 +330,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight(L("ENGINE@x1",""+engineNumber),9));
-				str.append(CMStrings.padRight(engine.activated()?L("^gA"):L("^rI"),2));
+				str.append(CMStrings.padRight(engine.activated()?("^gA"):("^rI"),2));
 				if(engine instanceof FuelConsumer)
 				{
 					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
@@ -349,7 +349,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			for(final TechComponent weapon : weapons)
 			{
 				str.append("^H").append(CMStrings.padRight(L("WEAPON@x1",""+weaponNumber),9));
-				str.append(CMStrings.padRight(weapon.activated()?L("^gA"):L("^rI"),2));
+				str.append(CMStrings.padRight(weapon.activated()?("^gA"):("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(weapon.powerRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(weapon.name(),31));
@@ -360,7 +360,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			for(final TechComponent shield : shields)
 			{
 				str.append("^H").append(CMStrings.padRight(L("SHIELD@x1",""+shieldNumber),9));
-				str.append(CMStrings.padRight(shield.activated()?L("^gA"):L("^rI"),2));
+				str.append(CMStrings.padRight(shield.activated()?("^gA"):("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				str.append("^N").append(CMStrings.padRight(Long.toString(shield.powerTarget()),11));
 				str.append("^H").append(CMStrings.padRight(shield.name(),31));
@@ -371,7 +371,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			for(final TechComponent component : getSystemMiscComponents())
 			{
 				str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
-				str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
+				str.append(CMStrings.padRight(component.activated()?("^gA"):("^rI"),2));
 				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 				if(component instanceof Computer)
 					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerTarget()),11));
@@ -475,7 +475,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 						super.addScreenMessage(
 							L("^HHELP:^N\n\r"
 							+"^H[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]\n\r"
-							+ "^N"+"The ENGINE command instructs the given " +
+							+ "^NThe ENGINE command instructs the given " +
 							"engine number or name to fire in the appropriate direction. What happens, " +
 							"and how quickly, depends largely on the capabilities of the engine. " +
 							"Giving a direction is optional, and if not given, AFT is assumed. All "+

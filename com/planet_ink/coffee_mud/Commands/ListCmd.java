@@ -3016,8 +3016,8 @@ public class ListCmd extends StdCommand
 		final int COL_LEN4=CMLib.lister().fixColWidth(longer?23.0:8.0,viewerS);
 		msg.append("^w");
 		if(!activeOnly)
-			msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
-		msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight(("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight(("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		msg.append("^N");
 		final int numGroups=CMath.s_int(CMLib.threads().getTickInfoReport("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0))
@@ -3482,14 +3482,14 @@ public class ListCmd extends StdCommand
 		||commands.get(1).toString().equals("?")
 		||commands.get(1).toString().equals(L("help")))
 		{
-			str.append(L("List what in space? Try one of the following:\n\r"));
-			str.append(L("LIST SPACE ALL - List everything in space everywhere!!\n\r"));
-			str.append(L("LIST SPACE WITHIN [DISTANCE] - List within distance of current planet.\n\r"));
-			str.append(L("LIST SPACE AROUND [X],[Y],[Z] - List all within 1 solar system of coords.\n\r"));
-			str.append(L("LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r"));
-			str.append(L("LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r"));
-			str.append(L("\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r"));
-			str.append(L("Instead of LIST SPACE you can also specify BODIES, MOONS, STARS, or SPACESHIPS.\n\r"));
+			str.append(L("List what in space? Try one of the following:\n\r"
+						+"LIST SPACE ALL - List everything in space everywhere!!\n\r"
+						+"LIST SPACE WITHIN [DISTANCE] - List within distance of current planet.\n\r"
+						+"LIST SPACE AROUND [X],[Y],[Z] - List all within 1 solar system of coords.\n\r"
+						+"LIST SPACE AROUND [NAME] - List all within 1 solar system of named object.\n\r"
+						+"LIST SPACE AROUND [NAME] WITHIN [DISTANCE] - List all within [distance] of named object.\n\r"
+						+"\n\r[DISTANCE] can be in DM (decameters), KM (kilometers), AU (astro units), or SU (solar system units.\n\r"
+						+"Instead of LIST SPACE you can also specify BODIES, MOONS, STARS, or SPACESHIPS.\n\r"));
 			return str.toString();
 		}
 		final List<SpaceObject> objs=new ArrayList<SpaceObject>();
@@ -3500,8 +3500,8 @@ public class ListCmd extends StdCommand
 				continue;
 			objs.add(obj);
 		}
-		final String[] keywords=CMLib.lang().sessionTranslation(new String[]{"ALL","WITHIN","DISTANCE"});
-		final String[] sortcols=CMLib.lang().sessionTranslation(new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
+		final String[] keywords=CMLib.lang().sessionTranslation(null, new String[]{"ALL","WITHIN","DISTANCE"});
+		final String[] sortcols=CMLib.lang().sessionTranslation(null, new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
 		BigDecimal withinDistance=null;
 		Coord3D centerPoint=null;
 		final SpaceObject SO=CMLib.space().getSpaceObject(mob, false);
@@ -3903,7 +3903,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
-			str.append(CMStrings.padRight(L("##"),COL_LEN1)+" ");
+			str.append(CMStrings.padRight(("##"),COL_LEN1)+" ");
 			str.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ");
 			str.append(L("Interval\n\r"));
 			for(int i=0;i<jobs.size();i++)

@@ -112,7 +112,7 @@ public class Cataloging extends CommonSkill
 					{
 						buf.append(L("Container: @x1\n\r",item.ultimateContainer(null).name()));
 					}
-					buf.append(L("\n\r"));
+					buf.append(("\n\r"));
 					if(item.description().length()==0)
 						buf.append(L("You don't see anything special about @x1.  ",item.name()));
 					else

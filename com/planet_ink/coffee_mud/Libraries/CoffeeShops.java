@@ -1366,7 +1366,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				prodWidth-=5;
 				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "
-						+CMStrings.padRight(L("[##]"),4)+" "
+						+CMStrings.padRight(("[##]"),4)+" "
 						+CMStrings.padRight(L("Product"),prodWidth);
 			}
 			else

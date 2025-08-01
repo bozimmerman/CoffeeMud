@@ -1388,7 +1388,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if(v1==V.size())
 					{
 						if((mob.session()!=null)&&(!mob.session().isStopped())
-						&&(mob.session().confirm(L("Add another thing to say (y/N)"),L("NO"))))
+						&&(mob.session().confirm(L("Add another thing to say (y/N)"),("NO"))))
 						{
 							V.add("9say this");
 							v1-=1;

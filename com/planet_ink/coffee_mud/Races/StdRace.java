@@ -629,7 +629,7 @@ public class StdRace implements Race
 
 	public String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	protected boolean giveMobAbility(final MOB mob, final Ability A,

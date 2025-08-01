@@ -206,6 +206,14 @@ public interface EnglishParsing extends CMLibrary
 	public String makePlural(String str);
 
 	/**
+	 * Attempts to make the given noun possessive.
+	 *
+	 * @param str the string to make possessive
+	 * @return the possessive version of the string.
+	 */
+	public String makePossessive(final String str);
+
+	/**
 	 * Attempts to de-pluralize a given word.
 	 * It's just a best guess. Must not be
 	 * colored.

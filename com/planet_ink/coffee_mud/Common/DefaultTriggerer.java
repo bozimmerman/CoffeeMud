@@ -752,7 +752,7 @@ public class DefaultTriggerer implements Triggerer
 
 	protected String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	@Override
@@ -776,7 +776,7 @@ public class DefaultTriggerer implements Triggerer
 				else
 					playerRef = L("the @x1 assister ",CMLib.english().makeNumberthWords(DT.other));
 				if(v>0)
-					buf.append(", "+((DT==triggers[v])?L("and "):L("or ")));
+					buf.append(","+((DT==triggers[v])?L( "and "):L(" or ")));
 				switch(DT.triggerCode)
 				{
 				case SAY:

@@ -351,7 +351,7 @@ public class OutFit extends StdCommand
 			for(final Item o : outfit)
 				o.destroy();
 		}
-		mob.tell(L("\n\r"));
+		mob.tell(("\n\r"));
 		final Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null)
 			C2.executeInternal(targetM, metaFlags);

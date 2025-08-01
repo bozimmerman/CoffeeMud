@@ -849,7 +849,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
-	public String sessionTranslation(final String item)
+	public String sessionTranslation(final Class<?> clazz, final String item)
 	{
 		return basicParser(item,"SESSION-TRANSLATION",false,false);
 	}
@@ -861,16 +861,16 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
-	public String fullSessionTranslation(final String str, final String ... xs)
+	public String fullSessionTranslation(final Class<?> clazz, final String str, final String ... xs)
 	{
 		if((str==null)||(str.length()==0))
 			return str;
-		final String sessionStr=sessionTranslation(str);
+		final String sessionStr=sessionTranslation(null, str);
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 
 	@Override
-	public String[] sessionTranslation(final String[] str)
+	public String[] sessionTranslation(final Class<?> clazz, final String[] str)
 	{
 		if((str==null)||(str.length==0))
 			return str;
@@ -879,7 +879,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			final String s=str[i];
 			if(s!=null)
 			{
-				final String sessionStr=sessionTranslation(s);
+				final String sessionStr=sessionTranslation(null, s);
 				if(sessionStr!=null)
 					str[i]=sessionStr;
 			}
@@ -899,7 +899,17 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		if((str==null)||(str.length()==0))
 			return str;
-		final String sessionStr=sessionTranslation(str);
+		final String sessionStr=sessionTranslation(FINDER.getCaller(), str);
+		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
+	}
+
+
+	@Override
+	public String L(final Class<?> clazz, final String str, final String ... xs)
+	{
+		if((str==null)||(str.length()==0))
+			return str;
+		final String sessionStr=sessionTranslation(clazz, str);
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 }

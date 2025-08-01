@@ -179,7 +179,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 
 	/**
 	 * Localize an internal string -- shortcut. Same as calling:
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary#fullSessionTranslation(String, String...)
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary#fullSessionTranslation(Class, String, String...)
 	 * Call with the string to translate, which may contain variables of the form @x1, @x2, etc. The array in xs
 	 * is then used to replace the variables AFTER the string is translated.
 	 * @param str the string to translate

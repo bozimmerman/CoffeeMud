@@ -245,7 +245,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	@Override
 	public String L(final String str, final String... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 }

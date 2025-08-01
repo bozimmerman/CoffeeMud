@@ -357,7 +357,7 @@ public class Achievements extends StdCommand
 		String prefix = "";
 		if(whoM != mob)
 		{
-			prefix=whoM.Name()+L("'s ");
+			prefix=CMLib.english().makePlural(whoM.Name());
 		}
 
 		final Set<String> wonList = new HashSet<String>();

@@ -613,12 +613,12 @@ public class Catalog extends StdCommand
 					if(P instanceof MOB)
 					{
 						choice=mob.session().choose(L("Auto-Spawn: N)o, R)oom,  (@x1): ",
-								""+data.getSpawn().name().charAt(0)),L("NR"), ""+data.getSpawn().name().charAt(0));
+								""+data.getSpawn().name().charAt(0)),("NR"), ""+data.getSpawn().name().charAt(0));
 					}
 					else
 					{
 						choice=mob.session().choose(L("Auto-Spawn: N)o, L)ive mobs,  D)ead mobs, R)oom,  (@x1): ",
-								""+data.getSpawn().name().charAt(0)),L("NLDR"), ""+data.getSpawn().name().charAt(0));
+								""+data.getSpawn().name().charAt(0)),("NLDR"), ""+data.getSpawn().name().charAt(0));
 					}
 					if(choice.trim().length()>0)
 					{

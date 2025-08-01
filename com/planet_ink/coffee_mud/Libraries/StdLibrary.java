@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
@@ -41,6 +42,15 @@ public class StdLibrary implements CMLibrary, Tickable
 	protected TickClient	serviceClient	= null;
 	protected boolean		isDebugging		= false;
 
+	protected static class CallerFinder extends SecurityManager
+	{
+		public Class<?> getCaller()
+		{
+			return super.getClassContext()[2];
+		}
+	}
+	protected static final CallerFinder FINDER = new CallerFinder();
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -77,7 +87,13 @@ public class StdLibrary implements CMLibrary, Tickable
 	@Override
 	public String L(final String str, final String... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(FINDER.getCaller(), str, xs);
+	}
+
+	@Override
+	public String L(final Class<?> clazz, final String str, final String ... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(clazz, str, xs);
 	}
 
 	@Override

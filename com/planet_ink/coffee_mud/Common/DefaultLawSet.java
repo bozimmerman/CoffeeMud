@@ -355,7 +355,8 @@ public class DefaultLawSet implements Law
 		return true;
 	}
 
-	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed, final String fourWord, final String subject, final String message)
+	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed,
+									final String fourWord, final String subject, final String message)
 	{
 		MOB M=CMLib.players().getPlayerAllHosts(ownerName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
@@ -511,19 +512,19 @@ public class DefaultLawSet implements Law
 										for(int i=0;i<channels.size();i++)
 										{
 											CMLib.commands().postChannel(channels.get(i),clanSet,
-												CMLib.lang().L("@x1 has lost the title to @x2 in "+A.Name()+" due to failure to pay "
-															+ "property taxes.",T.getOwnerName(),T.landPropertyID()),false,null);
+												CMLib.lang().L("@x1 has lost the title to @x2 in @x3 due to failure to pay "
+															+ "property taxes.",T.getOwnerName(),T.landPropertyID(),A.Name()),false,null);
 										}
 										if(M!=null)
 										{
-											notifyPlayer(M.Name(),clanC.name(),owed,"","@x1 lost property on @x3.",
-													"@x1 has lost the title to @x4 in "+A.Name()+" due to failure to pay property taxes.");
+											notifyPlayer(M.Name(),clanC.name(),owed,T.landPropertyID(),"@x1 lost property on @x3.",
+													"@x1 has lost the title to @x4 due to failure to pay property taxes.");
 										}
 									}
 									else
 									{
-										notifyPlayer(T.getOwnerName(),"",owed,T.landPropertyID(),"@x1 property lost on @x3.",
-												"@x1 has lost the title to @x4 in "+A.Name()+" due to failure to pay property taxes.");
+										notifyPlayer(T.getOwnerName(),A.Name(),owed,T.landPropertyID(),"@x1 property lost on @x3.",
+												"@x1 has lost the title to @x4 in @x2 due to failure to pay property taxes.");
 									}
 									if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPTAXES))
 										Log.debugOut("Confiscated property "+T.getTitleID()+" ("+T.getOwnerName()+") owed "+T.backTaxes()+" on property valued "+T.getPrice());

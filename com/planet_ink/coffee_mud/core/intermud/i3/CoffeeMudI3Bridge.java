@@ -146,7 +146,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 
 	public String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	public void setChannelsMap(final List<CMChannel> channels)

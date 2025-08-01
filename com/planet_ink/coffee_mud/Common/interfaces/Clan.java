@@ -1028,7 +1028,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	/** Vote has passed constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
 	public final static int VSTAT_PASSED=2;
 	/** Descriptors for the values of ClanVote.voteStatus member. @see ClanVote#voteStatus */
-	public final static String[] VSTAT_DESCS=CMLib.lang().sessionTranslation(new String[]{
+	public final static String[] VSTAT_DESCS=CMLib.lang().sessionTranslation(null, new String[]{
 		"In Progress",
 		"Failed",
 		"Passed"

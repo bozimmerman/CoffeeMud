@@ -319,6 +319,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public String makePossessive(final String str)
+	{
+		if((str==null)||(str.length()==0))
+			return str;
+		if(str.endsWith("'s"))
+			return str;
+		if(str.endsWith("s"))
+			return str+"'";
+		return str+"'s";
+	}
+
+	@Override
 	public String makePlural(final String str)
 	{
 		if((str==null)||(str.length()==0))

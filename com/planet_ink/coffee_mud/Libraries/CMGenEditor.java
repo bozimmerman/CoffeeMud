@@ -9090,7 +9090,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 				if(mob.session()!=null)
 				{
-					final String choice=mob.session().choose(L("Edit or Delete position @x1 (E/D/)?",editMe.getID()), L("ED"), "");
+					final String choice=mob.session().choose(L("Edit or Delete position @x1 (E/D/)?",editMe.getID()), ("ED"), "");
 					if(choice.equalsIgnoreCase("E"))
 						modifyClanPosition(mob,editMe,showFlag);
 					else

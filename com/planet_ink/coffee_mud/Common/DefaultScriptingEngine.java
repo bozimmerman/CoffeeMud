@@ -15710,7 +15710,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
 	protected static class JScriptEvent extends ScriptableObject

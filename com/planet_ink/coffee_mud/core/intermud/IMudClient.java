@@ -92,7 +92,13 @@ public class IMudClient implements I3Interface
 	@Override
 	public String L(final String str, final String ... xs)
 	{
-		return CMLib.lang().fullSessionTranslation(str, xs);
+		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
+	}
+
+	@Override
+	public String L(final Class<?> clazz, final String str, final String... xs)
+	{
+		return CMLib.lang().fullSessionTranslation(clazz, str, xs);
 	}
 
 	@Override

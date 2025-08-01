@@ -675,7 +675,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
 	};
 	/** list of long string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
-	public static final String[] ARMOR_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
+	public static final String[] ARMOR_LONGDESC=CMLib.lang().sessionTranslation(null, new String[]{
 		"May wear any armor.",
 		"Must wear cloth, vegetation, or paper based armor.",
 		"Must wear leather, cloth, or vegetation based armor.",
@@ -743,7 +743,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 			Weapon.CLASS_STAFF, Weapon.CLASS_FLAILED},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
-	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(new String[]{
+	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(null, new String[]{
 /*0*/"May use any weapons.",
 /*1*/"Must use dagger-like or natural weapons.",
 /*2*/"Must use swords, daggers, natural, or ranged weapons.",

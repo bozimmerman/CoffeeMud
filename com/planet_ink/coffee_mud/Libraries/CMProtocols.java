@@ -3871,6 +3871,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			this.llmModel = Long.valueOf(System.currentTimeMillis());
 			return this.llmModel;
 		}
+		System.setProperty("slf4j.internal.verbosity", "ERROR");
 		final CMFile F = new CMFile(jarPath, null);
 		if(!F.exists())
 		{

@@ -151,7 +151,7 @@ public class Spell_Farsight extends Spell
 							commands.remove(0);
 							thatRoom=room;
 							limit--;
-							mob.tell(L("\n\r"));
+							mob.tell(("\n\r"));
 							final CMMsg msg2=CMClass.getMsg(mob,thatRoom,CMMsg.MSG_LOOK,null);
 							thatRoom.executeMsg(mob,msg2);
 						}

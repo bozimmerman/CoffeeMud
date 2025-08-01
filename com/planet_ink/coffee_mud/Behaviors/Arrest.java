@@ -92,14 +92,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected void debugLogLostConvicts(final String lead, final LegalWarrant W, final MOB officer)
 	{
 		final StringBuilder errLogMsg=new StringBuilder("("+lastAreaName+"): ");
-		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?L("AE1 "):"");
-		errLogMsg.append(W.criminal().amDead()?L("AE2 "):"");
-		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(W.criminal(),true)?L("AE3 "):"");
-		errLogMsg.append(!CMLib.flags().isInTheGame(W.criminal(),true)?L("AE4 "):"");
-		errLogMsg.append(W.crime().equalsIgnoreCase("pardoned")?L("AE5 "):"");
-		errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?L("AE6 "):"");
-		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(officer,true)?L("AE7 "):"");
-		errLogMsg.append(!CMLib.flags().isBound(W.criminal())?L("AE8 "):"");
+		errLogMsg.append(!W.criminal().location().isInhabitant(officer)?("AE1 "):"");
+		errLogMsg.append(W.criminal().amDead()?("AE2 "):"");
+		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(W.criminal(),true)?("AE3 "):"");
+		errLogMsg.append(!CMLib.flags().isInTheGame(W.criminal(),true)?("AE4 "):"");
+		errLogMsg.append(W.crime().equalsIgnoreCase("pardoned")?("AE5 "):"");
+		errLogMsg.append(!((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))?("AE6 "):"");
+		errLogMsg.append(!CMLib.flags().isAliveAwakeMobile(officer,true)?("AE7 "):"");
+		errLogMsg.append(!CMLib.flags().isBound(W.criminal())?("AE8 "):"");
 		if(CMSecurity.isDebugging(DbgFlag.ARREST))
 			Log.debugOut("Arrest",lead+errLogMsg.toString());
 	}
