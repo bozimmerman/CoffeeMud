@@ -61,8 +61,18 @@ public class Skill_Diary extends StdSkill
 				return L("(Keeping daily diary)");
 			case SEASON:
 				return L("(Keeping seasonal diary)");
+			case ALLTIME:
+				return L("(Keeping a diary)");
+			case HOUR:
+				return L("(Keeping hourly diary)");
+			case MONTH:
+				return L("(Keeping monthly diary)");
+			case WEEK:
+				return L("(Keeping weekly diary)");
+			case YEAR:
+				return L("(Keeping yearly diary)");
 			default:
-				return L("(Keeping "+this.period.name().toLowerCase()+"ly diary)");
+				return "";
 			}
 		}
 		return "";

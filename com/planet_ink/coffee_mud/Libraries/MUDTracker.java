@@ -1660,12 +1660,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getExitPreposition().length()>0))
 			directionName=((PrepositionExit)exit).getExitPreposition();
 		else
-			directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName.toLowerCase();
+			directionName=(directionCode==Directions.GATE)&&(exit!=null)?L("through @x1",exit.name()):dirName.toLowerCase();
 		final String otherDirectionPhrase;
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getEntryPreposition().length()>0))
 			otherDirectionPhrase=((PrepositionExit)exit).getEntryPreposition();
 		else
-			otherDirectionPhrase=L("from "+((opDir==Directions.GATE)&&(exit!=null)?exit.name():fromDir));
+			otherDirectionPhrase=L("from @x1",((opDir==Directions.GATE)&&(exit!=null)?exit.name():fromDir));
 
 		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		final int leaveCode;

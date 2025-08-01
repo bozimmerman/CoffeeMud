@@ -177,7 +177,8 @@ public class Paladin_MountedCharge extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("<S-NAME> "+mount.rideString(mob)+" hard at <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,
+					L("<S-NAME> @x1 hard at <T-NAMESELF>!",mount.rideString(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -213,7 +214,7 @@ public class Paladin_MountedCharge extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF>, but miss(es)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> @x1 at <T-NAMESELF>, but miss(es).",mount.rideString(mob)));
 
 		// return whether it worked
 		return success;

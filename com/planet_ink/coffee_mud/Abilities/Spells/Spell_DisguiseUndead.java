@@ -175,64 +175,57 @@ public class Spell_DisguiseUndead extends Spell
 				final Ability A=beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
 				{
-					String genderName;
-					String genderFormal;
-					String genderInformal;
-					String genderPersonal;
-					switch(target.charStats().reproductiveCode())
-					{
-					case 'M':
-						genderName = "male";
-						genderFormal = "man";
-						genderInformal = "guy";
-						genderPersonal = "joe";
-						break;
-					case 'F':
-						genderName = "female";
-						genderFormal = "woman";
-						genderInformal = "gal";
-						genderPersonal = "jane";
-						break;
-					default:
-						genderName = "person";
-						genderFormal = "person";
-						genderInformal = "person";
-						genderPersonal = "joe";
-						break;
-					}
-					String adjective;
-					switch(CMLib.dice().roll(1, 3, -1))
-					{
-					case 0:
-						adjective = "normal";
-						break;
-					case 1:
-						adjective = "regular";
-						break;
-					default:
-						adjective = "average";
-						break;
-					}
 					String noun;
 					switch(CMLib.dice().roll(1, 5, -1))
 					{
 					case 0:
-						noun = genderName;
+						switch(target.charStats().reproductiveCode())
+						{
+						case 'M': noun = L("male"); break;
+						case 'F': noun = L("female"); break;
+						default:  noun = L("person"); break;
+						}
 						break;
 					case 1:
-						noun = genderFormal;
+						switch(target.charStats().reproductiveCode())
+						{
+						case 'M': noun = L("man"); break;
+						case 'F': noun = L("woman"); break;
+						default:  noun = L("person"); break;
+						}
 						break;
 					case 2:
-						noun = genderInformal;
+						switch(target.charStats().reproductiveCode())
+						{
+						case 'M': noun = L("guy"); break;
+						case 'F': noun = L("gal"); break;
+						default:  noun = L("joe"); break;
+						}
 						break;
 					case 3:
-						noun = genderPersonal;
+						switch(target.charStats().reproductiveCode())
+						{
+						case 'M': noun = "joe"; break;
+						case 'F': noun = "jane"; break;
+						default:  noun = "joe"; break;
+						}
 						break;
 					default:
 						noun = "person";
 						break;
 					}
-					A.setMiscText(L(CMLib.english().startWithAorAn(adjective+" "+noun).toLowerCase()));
+					switch(CMLib.dice().roll(1, 3, -1))
+					{
+					case 0:
+						A.setMiscText(L("a normal @x1",noun));
+						break;
+					case 1:
+						A.setMiscText(L("a regular @x1",noun));
+						break;
+					default:
+						A.setMiscText(L("an average @x1",noun));
+						break;
+					}
 				}
 				target.recoverPhyStats();
 			}

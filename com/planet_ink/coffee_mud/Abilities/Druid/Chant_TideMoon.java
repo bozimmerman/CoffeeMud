@@ -139,7 +139,7 @@ public class Chant_TideMoon extends Chant
 					{
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The moon begins pushing and pulling on the tides in new ways!"));
 						A.setAbilityCode(A.abilityCode()+1);
-						mob.tell(L(mobA.getTimeObj().getTidePhase(mob.location()).getDesc()));
+						mob.tell(mobA.getTimeObj().getTidePhase(mob.location()).getDesc());//nothing to localize
 					}
 				}
 			}

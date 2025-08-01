@@ -123,18 +123,19 @@ public class FoodBegging extends StdAbility
 
 		if(success)
 		{
-			final String[] emotes={
-				"<S-NAME> rub(s) up against <T-YOUPOSS> leg.",
-				"<S-NAME> make(s) cute little noises and stare(s) at <T-NAME> with wide eyes.",
-				"<S-NAME> sit(s) pretty, staring at <T-NAME>.",
-				"<S-NAME> roll(s) around on the ground, making cute little noises at <T-NAME>.",
-				"<S-NAME> look(s) up at <T-NAME> with big sad eyes.",
-				"<S-NAME> watch(es) <T-NAME> with sad hungry eyes.",
-				"<S-YOUPOSS> tummy rumble(s) as <S-HE-SHE> spot(s) <T-NAME>.",
-			};
-			final String emote = emotes[CMLib.dice().roll(1, emotes.length, -1)];
-
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?0:CMMsg.MASK_MALICIOUS)|CMMsg.MASK_HANDS|CMMsg.TYP_MIND,L(auto?"":emote));
+			String emote;
+			switch(CMLib.dice().roll(1, 7, -1))
+			{
+			case 0: emote = L("<S-NAME> rub(s) up against <T-YOUPOSS> leg."); break;
+			case 1: emote = L("<S-NAME> make(s) cute little noises and stare(s) at <T-NAME> with wide eyes."); break;
+			case 2: emote = L("<S-NAME> sit(s) pretty, staring at <T-NAME>."); break;
+			case 3: emote = L("<S-NAME> roll(s) around on the ground, making cute little noises at <T-NAME>."); break;
+			case 4: emote = L("<S-NAME> look(s) up at <T-NAME> with big sad eyes."); break;
+			case 5: emote = L("<S-NAME> watch(es) <T-NAME> with sad hungry eyes."); break;
+			case 6: emote = L("<S-YOUPOSS> tummy rumble(s) as <S-HE-SHE> spot(s) <T-NAME>."); break;
+			default: emote=""; break;
+			}
+			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?0:CMMsg.MASK_MALICIOUS)|CMMsg.MASK_HANDS|CMMsg.TYP_MIND,auto?"":emote);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

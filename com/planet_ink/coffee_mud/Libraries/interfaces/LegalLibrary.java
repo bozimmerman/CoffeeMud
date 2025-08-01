@@ -43,29 +43,6 @@ import java.util.*;
  */
 public interface LegalLibrary extends CMLibrary
 {
-	/**
-	 * The default room description for a room for sale
-	 * These get localized later.
-	 */
-	public final static String SALESTR=" This lot is for sale (look id).";
-
-	/**
-	 * The default room description for a room for rent
-	 * These get localized later.
-	 */
-	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
-
-	/**
-	 * The default room title for an indoor room
-	 * These get localized later.
-	 */
-	public final static String INDOORSTR=" An empty room";
-
-	/**
-	 * The default room title for an outdoor room
-	 * These get localized later.
-	 */
-	public final static String OUTDOORSTR=" An empty plot";
 
 	/**
 	 * If a room is in an area subject to law and order,

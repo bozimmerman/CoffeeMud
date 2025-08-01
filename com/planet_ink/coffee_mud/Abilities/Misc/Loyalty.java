@@ -51,12 +51,10 @@ public class Loyalty extends StdAbility
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= "(Loyal to @x1)";
-
 	@Override
 	public String displayText()
 	{
-		return CMLib.lang().L(localizedStaticDisplay, loyaltyName);
+		return CMLib.lang().L("(Loyal to @x1)", loyaltyName);
 	}
 
 	@Override

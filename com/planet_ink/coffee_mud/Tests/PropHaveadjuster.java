@@ -61,7 +61,7 @@ public class PropHaveadjuster extends PropTest
 		resetTest();
 		final Ability HaveAdjuster = CMClass.getAbility("Prop_HaveAdjuster");
 		HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:"+what+"-1: @x1", HaveAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HaveAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#1"));
@@ -80,7 +80,7 @@ public class PropHaveadjuster extends PropTest
 			return (L("Error#3"));
 		}
 		HaveAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", HaveAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", HaveAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#4"));

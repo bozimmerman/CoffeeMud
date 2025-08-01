@@ -57,12 +57,12 @@ public class GenSailingShip extends GenNavigableBoardable
 		super();
 		setName("a sailing ship [NEWNAME]");
 		setDisplayText("a sailing ship [NEWNAME] is here.");
-		this.verb_sail = "sail";
-		this.verb_sailing = "sailing";
-		this.noun_word = "ship";
-		this.anchor_name= "anchor";
-		this.anchor_verbed = "lowered";
-		this.head_offTheDeck = "^HOff the deck you see: ^N";
+		this.verb_sail = L("sail");
+		this.verb_sailing = L("sailing");
+		this.noun_word = L("ship");
+		this.anchor_name= L("anchor");
+		this.anchor_verbed = L("lowered");
+		this.head_offTheDeck = L("^HOff the deck you see: ^N");
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
 		this.recoverPhyStats();
@@ -243,9 +243,9 @@ public class GenSailingShip extends GenNavigableBoardable
 		&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
 		{
 			if(CMLib.flags().isWateryRoom(thisRoom))
-				announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+				announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			else
-				announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+				announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			courseDirections.clear();
 			return false;
 		}

@@ -589,7 +589,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @param times the number of periods to bump by
 	 */
 	public void bumpToNext(final TimePeriod period, final int times);
-	
+
 	/**
 	 * Returns the total hours since epoc
 	 * @see TimeClock#setFromHoursSinceEpoc(long)
@@ -829,24 +829,23 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public enum MoonPhase
 	{
-		NEW("There is a new moon in the sky.",1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
-		WAXCRESCENT("The moon is in the waxing crescent phase.",0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
-		WAXQUARTER("The moon is in its first quarter.",0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
-		WAXGIBBOUS("The moon is in the waxing gibbous phase (almost full).",-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
-		FULL("There is a full moon in the sky.",-1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
-		WANEGIBBOUS("The moon is in the waning gibbous phase (no longer full).",-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
-		WANEQUARTER("The moon is in its last quarter.",0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
-		WANECRESCENT("The moon is in the waning crescent phase.",0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
-		BLUE("There is a BLUE MOON! Oh my GOD! Run away!!!!!",2.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW);
+		NEW(1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
+		WAXCRESCENT(0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		WAXQUARTER(0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
+		WAXGIBBOUS(-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		FULL(-1.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW),
+		WANEGIBBOUS(-0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		WANEQUARTER(0.0,TidePhase.NEAP_HIGH,TidePhase.NEAP_LOW),
+		WANECRESCENT(0.5,TidePhase.NORMAL_HIGH,TidePhase.NORMAL_LOW),
+		BLUE(2.0,TidePhase.SPRING_HIGH,TidePhase.SPRING_LOW);
 
-		private final String	phaseDesc;
 		private final double	factor;
 		private final TidePhase	highTide;
 		private final TidePhase	lowTide;
+		private String tideDesc = null;
 
-		private MoonPhase(final String desc, final double factor, final TidePhase highTide, final TidePhase lowTide)
+		private MoonPhase(final double factor, final TidePhase highTide, final TidePhase lowTide)
 		{
-			phaseDesc=desc;
 			this.factor=factor;
 			this.highTide=highTide;
 			this.lowTide=lowTide;
@@ -854,7 +853,22 @@ public interface TimeClock extends Tickable, CMCommon
 
 		public String getDesc()
 		{
-			return phaseDesc;
+			if(tideDesc == null)
+			{
+				switch(this)
+				{
+				case NEW: tideDesc= CMLib.lang().L("There is a new moon in the sky."); break;
+				case WAXCRESCENT: tideDesc= CMLib.lang().L("The moon is in the waxing crescent phase."); break;
+				case WAXQUARTER: tideDesc= CMLib.lang().L("The moon is in its first quarter."); break;
+				case WAXGIBBOUS: tideDesc= CMLib.lang().L("The moon is in the waxing gibbous phase (almost full)."); break;
+				case FULL: tideDesc= CMLib.lang().L("There is a full moon in the sky."); break;
+				case WANEGIBBOUS: tideDesc= CMLib.lang().L("The moon is in the waning gibbous phase (no longer full)."); break;
+				case WANEQUARTER: tideDesc= CMLib.lang().L("The moon is in its last quarter."); break;
+				case WANECRESCENT: tideDesc= CMLib.lang().L("The moon is in the waning crescent phase."); break;
+				case BLUE: tideDesc= CMLib.lang().L("There is a BLUE MOON! Oh my GOD! Run away!!!!!"); break;
+				}
+			}
+			return tideDesc;
 		}
 
 		public double getFactor()
@@ -879,26 +893,38 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public enum TidePhase
 	{
-		SPRING_HIGH("The tide is especially high.",1.5),
-		SPRING_LOW("The tide  is especially low.",-1.5),
-		NORMAL_HIGH("The tide is high.",1.0),
-		NORMAL_LOW("The tide is low.",-1.0),
-		NEAP_HIGH("The tide is weak, but high.",0.5),
-		NEAP_LOW("The tide is weak, but low.",-0.5),
-		NO_TIDE("The tide is normal.", 0.0)
+		SPRING_HIGH(1.5),
+		SPRING_LOW(-1.5),
+		NORMAL_HIGH(1.0),
+		NORMAL_LOW(-1.0),
+		NEAP_HIGH(0.5),
+		NEAP_LOW(-0.5),
+		NO_TIDE(0.0)
 		;
-		private final String phaseDesc;
 		private final double factor;
+		private String tideDesc = null;
 
-		private TidePhase(final String desc, final double factor)
+		private TidePhase(final double factor)
 		{
-			phaseDesc=desc;
 			this.factor=factor;
 		}
 
 		public String getDesc()
 		{
-			return phaseDesc;
+			if(tideDesc == null)
+			{
+				switch(this)
+				{
+				case SPRING_HIGH: tideDesc = CMLib.lang().L("The tide is especially high."); break;
+				case SPRING_LOW: tideDesc = CMLib.lang().L("The tide  is especially low."); break;
+				case NORMAL_HIGH: tideDesc = CMLib.lang().L("The tide is high."); break;
+				case NORMAL_LOW: tideDesc = CMLib.lang().L("The tide is low."); break;
+				case NEAP_HIGH: tideDesc = CMLib.lang().L("The tide is weak, but high."); break;
+				case NEAP_LOW: tideDesc = CMLib.lang().L("The tide is weak, but low."); break;
+				case NO_TIDE: tideDesc = CMLib.lang().L("The tide is normal."); break;
+				}
+			}
+			return tideDesc;
 		}
 
 		public double getFactor()

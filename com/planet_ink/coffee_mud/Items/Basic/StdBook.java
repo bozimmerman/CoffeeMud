@@ -520,7 +520,7 @@ public class StdBook extends StdItem implements Book
 							public void showPrompt()
 							{
 								if((subject[0]!=null)&&(subject[0].length()>0))
-									mob.session().promptPrint(L("Enter the name of the chapter ("+subject[0]+"): "));
+									mob.session().promptPrint(L("Enter the name of the chapter (@x1): ",subject[0]));
 								else
 									mob.session().promptPrint(L("Enter the name of the chapter: "));
 							}

@@ -78,8 +78,11 @@ public class Decorating extends CommonSkill implements RecipeDriven
 	protected static final int	RCP_XLEVEL		= 5;
 	protected static final int	RCP_MISC		= 6;
 
-	protected String	mountWord		= "mounted";
-	protected String	mountedPhrase	= "@x1 is mounted here.";
+	protected static final String	DEFAULT_MOUNTED_WORD		= CMLib.lang().L("mounted");
+	protected static final String	DEFAULT_MOUNTED_SUBPHRASE	= CMLib.lang().L("is mounted here.");
+
+	protected String	mountWord		= DEFAULT_MOUNTED_WORD;
+	protected String	mountedPhrase	= "@x1 "+DEFAULT_MOUNTED_SUBPHRASE;
 	protected Item		mountingI		= null;
 	protected Room		mountingR		= null;
 	protected boolean	messedUp		= false;
@@ -203,7 +206,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 				{
 					final Item I=mountingI;
 					if((messedUp)||(I==null))
-						commonTelL(mob,"You've failed to "+mountWord+"!");
+						commonTelL(mob,"You've failed to @x1!",mountWord);
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
@@ -224,9 +227,9 @@ public class Decorating extends CommonSkill implements RecipeDriven
 							mount.canBeUninvoked = false;
 							I.addNonUninvokableEffect(mount);
 							if(mountedPhrase.trim().length()>0)
-								I.setDisplayText(L(mountedPhrase,I.name()));
+								I.setDisplayText(CMStrings.replaceVariables(mountedPhrase,new String[] {I.name()}));
 							room.moveItemTo(I, Expire.Never);
-							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+mountWord+" @x1.",I.name()));
+							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to @x2 @x1.",I.name(),mountWord));
 							room.recoverRoomStats();
 						}
 					}

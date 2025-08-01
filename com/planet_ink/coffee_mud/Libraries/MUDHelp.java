@@ -328,11 +328,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	protected String getLocalTimebaseDesc(final MOB mob)
 	{
 		final TimeClock C = CMLib.time().localClock(mob);
-		final StringBuilder str = new StringBuilder("");
-		str.append("The time here is divided into @x1 hours, each of which is about ");
-		str.append("@x2 real minutes long.  Hours in CoffeeMud are numbered from 0-@x3. ");
-		str.append("Dawn is at hour @x4, day begins at @x5, dusk is at hour @x6, and night begins at hour @x7.\n\r");
-		return CMLib.lang().L(str.toString(),
+		return CMLib.lang().L("The time here is divided into @x1 hours, each of which is about @x2 real minutes long.  "
+				+ "Hours in CoffeeMud are numbered from 0-@x3. Dawn is at hour @x4, day begins at @x5, dusk is at hour @x6, "
+				+ "and night begins at hour @x7.\n\r",
 				""+C.getHoursInDay(),
 				""+Math.round(CMProps.getMillisPerMudHour()/60000L),
 				""+(C.getHoursInDay()-1),
@@ -346,19 +344,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	protected String getLocalCalendarDesc(final MOB mob)
 	{
 		final TimeClock C = CMLib.time().localClock(mob);
-		final StringBuilder str = new StringBuilder("");
 		if(C.getDaysInWeek()>1)
-			str.append("There are @x2 mud days to each week, and @x1 days in each month. There are ");
+		{
+			return CMLib.lang().L("There are @x2 mud days to each week, and @x1 days in each month. There are "
+					+"@x3 mud months to each year. The years are divided into four seasons of @x4 months each.\n\r",
+					""+C.getDaysInMonth(),
+					""+C.getDaysInWeek(),
+					""+C.getMonthsInYear(),
+					""+C.getMonthsInSeason()
+					);
+		}
 		else
-			str.append("There are @x1 mud days to each month, and ");
-		str.append("@x3 mud months to each year. ");
-		str.append("The years are divided into four seasons of @x4 months each.\n\r");
-		return CMLib.lang().L(str.toString(),
-				""+C.getDaysInMonth(),
-				""+C.getDaysInWeek(),
-				""+C.getMonthsInYear(),
-				""+C.getMonthsInSeason()
-				);
+		{
+			return CMLib.lang().L("There are @x1 mud days to each month, and "
+					+"@x3 mud months to each year. The years are divided into four seasons of @x4 months each.\n\r",
+					""+C.getDaysInMonth(),
+					""+C.getDaysInWeek(),
+					""+C.getMonthsInYear(),
+					""+C.getMonthsInSeason()
+					);
+		}
 	}
 
 	protected String getActualUsage(final Ability A, final int whichUsageCode)

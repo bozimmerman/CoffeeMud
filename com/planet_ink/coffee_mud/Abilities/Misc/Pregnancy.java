@@ -478,9 +478,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.addTattoo("PARENT:" + mob.Name());
 							final String desc;
 							if(otherParentName==null)
-								desc = L("The " + sondat + " of @x1.",mob.Name());
+								desc = L("The @x1 of @x2.",sondat,mob.Name());
 							else
-								desc = L("The " + sondat + " of @x1 and @x2.",mob.Name(),otherParentName);
+								desc = L("The @x1 of @x2 and @x3.",sondat,mob.Name(),otherParentName);
 							if(otherParentM != null)
 								babe.addTattoo("PARENT:" + otherParentM.Name());
 							if((!mob.isPlayer())

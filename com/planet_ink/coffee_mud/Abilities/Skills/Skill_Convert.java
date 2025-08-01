@@ -409,23 +409,32 @@ public class Skill_Convert extends StdSkill
 					mob.tell(L("<T-HE-SHE> seems to be on the verge of a clear mind."));
 				else
 				{
-					final String word = (hours > 1) ? "hours" : "hour";
+					final String word;
+					if(hours != 1)
+						word = L("@x1 hours", ""+hours);
+					else
+						word = L("1 hour");
 					switch(CMLib.dice().roll(1, 5, 0))
 					{
 					case 1:
-						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 "+word+" more to think.",""+hours));
+						if(hours>1)
+						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 more to think.",word));
 						break;
 					case 2:
-						mob.tell(mob,target,null,L("You think <T-HE-SHE> might think for another @x1 "+word+".",""+hours));
+						if(hours>1)
+						mob.tell(mob,target,null,L("You think <T-HE-SHE> might think for another @x1.",word));
 						break;
 					case 3:
-						mob.tell(mob,target,null,L("Give <T-HIM-HER> another @x1 "+word+".",""+hours));
+						if(hours>1)
+						mob.tell(mob,target,null,L("Give <T-HIM-HER> another @x1.",word));
 						break;
 					case 4:
-						mob.tell(mob,target,null,L("A big decision like this will take <T-HIM-HER> another @x1 "+word+".",""+hours));
+						if(hours>1)
+						mob.tell(mob,target,null,L("A big decision like this will take <T-HIM-HER> another @x1.",word));
 						break;
 					case 5:
-						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 "+word+" to be convinced.",""+hours));
+						if(hours>1)
+						mob.tell(mob,target,null,L("<T-HE-SHE> seems to need @x1 to be convinced.",word));
 						break;
 					}
 				}

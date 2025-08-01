@@ -129,7 +129,7 @@ public class Chant_SenseAge extends Chant
 				if((super.getXLEVELLevel(mob)>0)
 				&&(ageYears>=0)
 				&&(M!=null))
-					info.append(L("This is "+M.charStats().hisher()+" @x1 stage.  ",M.charStats().ageName()));
+					info.append(L("This is @x2 @x1 stage.  ",M.charStats().hisher(),M.charStats().ageName()));
 
 				if((super.getXLEVELLevel(mob)>1)
 				&&(M!=null))
@@ -169,10 +169,10 @@ public class Chant_SenseAge extends Chant
 				&&(M!=null))
 				{
 					if(M.charStats().getMyRace().getAgingChart()[Race.AGE_ANCIENT] == Race.YEARS_AGE_LIVES_FOREVER)
-						info.append(L(M.charStats().HeShe()+" can expect to live forever.  "));
+						info.append(L("@x1 can expect to live forever.  ",M.charStats().HeShe()));
 					else
-						info.append(L(M.charStats().HeShe()+" can expect to live to around age @x1.  ",
-								""+M.charStats().getMyRace().getAgingChart()[Race.AGE_ANCIENT]));
+						info.append(L("@x2 can expect to live to around age @x1.  ",
+								""+M.charStats().getMyRace().getAgingChart()[Race.AGE_ANCIENT], M.charStats().HeShe()));
 				}
 
 				if((super.getXLEVELLevel(mob)>5)
@@ -180,7 +180,7 @@ public class Chant_SenseAge extends Chant
 				&&(M!=null))
 				{
 					if(M.charStats().ageCategory() == Race.AGE_ANCIENT)
-						info.append(L(M.charStats().HeShe()+" can look forward to death.  "));
+						info.append(L("@x1 can look forward to death.  ", M.charStats().HeShe()));
 					else
 					{
 						final int ageCat=M.charStats().ageCategory()+1;
@@ -188,11 +188,12 @@ public class Chant_SenseAge extends Chant
 						final String[] desc=Race.AGE_DESCS;
 						if(R.getAgingChart()[ageCat] == Race.YEARS_AGE_LIVES_FOREVER)
 						{
-							info.append(L(M.charStats().HeShe()+" will remain "+desc[ageCat-1].toLowerCase()+" forever.  "));
+							info.append(L("@x1 will remain "+desc[ageCat-1].toLowerCase()+" forever.  ",M.charStats().HeShe()));
 						}
 						else
 						{
-							info.append(L(M.charStats().HeShe()+" can look forward to "+desc[ageCat].toLowerCase()+" around age @x1.  ",
+							info.append(L("@x1 can look forward to "+desc[ageCat].toLowerCase()+" around age @x2.  ",
+									M.charStats().HeShe(),
 									""+R.getAgingChart()[ageCat]));
 						}
 					}

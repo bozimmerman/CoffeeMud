@@ -70,7 +70,7 @@ public class Fighter_FavoredMount extends StdAbility
 		if(desc == null)
 			return L("(Favor for a mount)");
 		else
-			return L("(Favoring "+desc+" mounts)");
+			return L("(Favoring @x1 mounts)",desc);
 	}
 
 	@Override

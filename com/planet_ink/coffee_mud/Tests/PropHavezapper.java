@@ -61,7 +61,7 @@ public class PropHavezapper extends PropTest
 		resetTest();
 		final Ability HaveZapper = CMClass.getAbility("Prop_HaveZapper");
 		HaveZapper.setMiscText("-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1", HaveZapper.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HaveZapper.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveZapper, mobs[0], mobs[1], 2);
 		CMLib.commands().postGet(mobs[0], null, IS[0], false);
 		CMLib.commands().postGet(mobs[1], null, IS[1], false);

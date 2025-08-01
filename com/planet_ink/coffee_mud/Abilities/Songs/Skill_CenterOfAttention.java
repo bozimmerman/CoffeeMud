@@ -51,7 +51,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Watching "+(invoker()==null?"a crazy bard":invoker().name())+")");
+		return L("(Watching @x1)",(invoker()==null?L("a crazy bard"):invoker().name()));
 	}
 
 	@Override

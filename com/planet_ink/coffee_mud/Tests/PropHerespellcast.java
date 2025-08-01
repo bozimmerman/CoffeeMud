@@ -61,7 +61,7 @@ public class PropHerespellcast extends PropTest
 		resetTest();
 		final Ability HereSpellCast = CMClass.getAbility("Prop_HereSpellCast");
 		HereSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1", HereSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HereSpellCast.accountForYourself(),what));
 		A2 = ((Ability) HereSpellCast.copyOf());
 		A2.setMiscText((HereSpellCast).text());
 		R2.addNonUninvokableEffect(A2);
@@ -78,7 +78,7 @@ public class PropHerespellcast extends PropTest
 		}
 		resetTest();
 		HereSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", HereSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", HereSpellCast.accountForYourself(),what));
 		A2 = ((Ability) HereSpellCast.copyOf());
 		A2.setMiscText((HereSpellCast).text());
 		R2.addNonUninvokableEffect(A2);
@@ -105,7 +105,7 @@ public class PropHerespellcast extends PropTest
 		}
 		resetTest();
 		HereSpellCast.setMiscText(semiSpellList() + "MASK=-Human");
-		//mob.tell(L("Test:"+what+"-3: @x1", HereSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-3: @x1", HereSpellCast.accountForYourself(),what));
 		A2 = ((Ability) HereSpellCast.copyOf());
 		A2.setMiscText((HereSpellCast).text());
 		R2.addNonUninvokableEffect(A2);

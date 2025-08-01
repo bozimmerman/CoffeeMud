@@ -48,12 +48,12 @@ public class Fighter_WeaponSharpening extends FighterSkill
 		return localizedName;
 	}
 
-	protected String displayString="Sharpening";
+	protected String displayString=CMLib.lang().L("(Sharpening)");
 
 	@Override
 	public String displayText()
 	{
-		return L("("+displayString+")");
+		return displayString;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"WEAPONSHARPENING","SHARPEN"});
@@ -276,7 +276,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			final CMMsg msg=CMClass.getMsg(mob,weapon,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{
-				displayString="Sharpening "+weapon.name();
+				displayString=L("(Sharpening @x1)",weapon.name());
 				mob.location().send(mob,msg);
 				if(auto)
 				{

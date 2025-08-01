@@ -61,7 +61,7 @@ public class PropRidezapper extends PropTest
 		resetTest();
 		final Ability RideZapper=CMClass.getAbility("Prop_RideZapper");
 		RideZapper.setMiscText("-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1",RideZapper.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1",RideZapper.accountForYourself(),what));
 		IS=giveTo(CMClass.getItem("Boat"),RideZapper,mobs[0],mobs[1],3);
 		msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_MOUNT,L("<S-NAME> mount(s) <T-NAMESELF>."));
 		if(R1.okMessage(mobs[0],msg))

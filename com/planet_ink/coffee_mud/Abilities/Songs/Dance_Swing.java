@@ -59,7 +59,7 @@ public class Dance_Swing extends Dance
 	@Override
 	protected String danceOf()
 	{
-		return name()+" Dancing";
+		return L("@x1 Dancing",name());
 	}
 
 	@Override

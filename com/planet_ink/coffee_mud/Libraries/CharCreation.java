@@ -78,8 +78,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected CMath.CompiledFormula					maxFollowersFormula		= null;
 	protected final Map<String,List<String>>		charCrScripts			= new Hashtable<String,List<String>>();
 
-	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
-
 	public final static String[] DEFAULT_BADNAMES = new String[]
 	{
 		"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT",
@@ -151,6 +149,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		CHARCR_DEITYCONFIRM,
 		CHARCR_DEITYDONE,
 		CHARCR_FINISH
+	}
+
+	protected final String getReconfirmStr()
+	{
+		return L("\n\r^WTry entering ^HY^W or ^HN^W: ");
 	}
 
 	private class LoginSessionImpl implements LoginSession
@@ -1321,7 +1324,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1388,7 +1391,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -1575,7 +1578,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1595,7 +1598,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		if(result==LoginResult.NO_LOGIN)
@@ -1745,7 +1748,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
@@ -1932,7 +1935,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -2845,7 +2848,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((input.length()>0)
 		&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -3118,7 +3121,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
@@ -3376,7 +3379,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((input.length()>0)&&(!input.startsWith("N")))
 		{
-			session.promptPrint(L(RECONFIRMSTR));
+			session.promptPrint(getReconfirmStr());
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else

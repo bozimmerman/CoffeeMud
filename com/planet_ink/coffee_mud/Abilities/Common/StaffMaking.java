@@ -146,7 +146,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
 						else
 						{
-							commonEmote(mob,L("<S-NAME> mess(es) up "+this.getActivePresentTenseVerb()+" @x1.",buildingI.name()));
+							commonEmote(mob,L("<S-NAME> mess(es) up @x2 @x1.",buildingI.name(),getActivePresentTenseVerb()));
 							dropALoser(mob,buildingI);
 						}
 					}
@@ -250,12 +250,12 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected String getActivePresentTenseVerb()
 	{
-		return "making";
+		return L("making");
 	}
 
 	protected String getActiveVerb()
 	{
-		return "make";
+		return L("make");
 	}
 
 	protected String getTriggerKeyword()
@@ -329,7 +329,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(L("Item <S-NAME> <S-IS-ARE> skilled at "+getActivePresentTenseVerb()+":\n\r"));
+			final StringBuffer buf=new StringBuffer(L("Item <S-NAME> <S-IS-ARE> skilled at @x1:\n\r",getActivePresentTenseVerb()));
 			buf.append("^H"+
 					CMStrings.padRight(L("Item"),cols[0])+" "+
 					CMStrings.padRight(L("Lvl"),cols[1])+" "+
@@ -542,10 +542,10 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=L("<S-NAME> start(s) "+getActivePresentTenseVerb()+" @x1.",buildingI.name());
-			displayText=L("You are "+getActivePresentTenseVerb()+" @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) @x2 @x1.",buildingI.name(),getActivePresentTenseVerb());
+			displayText=L("You are @x2 @x1",buildingI.name(),getActivePresentTenseVerb());
 			playSound=getSoundFile();
-			verb=L(""+getActivePresentTenseVerb()+" @x1",buildingI.name());
+			verb=getActivePresentTenseVerb()+" "+buildingI.name();
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));

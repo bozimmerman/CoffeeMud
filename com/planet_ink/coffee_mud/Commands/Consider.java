@@ -102,44 +102,46 @@ public class Consider extends StdCommand
 			final String targetName = target.name(mob);
 			final StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)
-				levelMsg.append(L(name+" is your equal", targetName));
+				levelMsg.append(L("@x1 is your equal", name));
 			else
 			if(lvlDiff<-CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg.append(L(name+" is vastly inferior to you", targetName));
+				levelMsg.append(L("@x1 is vastly inferior to you", name));
 			else
 			if(lvlDiff>CMProps.getIntVar(CMProps.Int.EXPRATE))
-				levelMsg.append(L(name+" is far superior to you", targetName));
+				levelMsg.append(L("@x1 is far superior to you", name));
 			else
 			if(CMProps.getIntVar(CMProps.Int.EXPRATE)!=0)
 			{
 				final int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
 				final double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				if((lvlDiff<0)&&(pct<0.5))
-					levelMsg.append(L(name+" is almost your equal", targetName));
+					levelMsg.append(L("@x1 is almost your equal", name));
 				else
 				if((lvlDiff<0)&&(pct<=1.0))
-					levelMsg.append(L(name+" is somewhat inferior to you", targetName));
+					levelMsg.append(L("@x1 is somewhat inferior to you", name));
 				else
 				if((lvlDiff<0))
-					levelMsg.append(L(name+" is inferior to you", targetName));
+					levelMsg.append(L("@x1 is inferior to you", name));
 				else
 				if((lvlDiff>0)&&(pct<0.5))
-					levelMsg.append(L(name+" is almost your equal", targetName));
+					levelMsg.append(L("@x1 is almost your equal", name));
 				else
 				if((lvlDiff>0)&&(pct<0.8))
-					levelMsg.append(L(name+" is somewhat superior to you", targetName));
+					levelMsg.append(L("@x1 is somewhat superior to you", name));
 				else
-					levelMsg.append(L(name+" is superior to you", targetName));
+					levelMsg.append(L("@x1 is superior to you", name));
 			}
 
 			final int levelDiff=Math.abs(realDiff);
 			if(levelDiff<theDiff)
 			{
 				if(levelMsg.length()==0)
-					levelMsg.append(targetName+" is ");
+					levelMsg.append(L("@x1 is is the perfect match!",targetName));
 				else
-					levelMsg.append(L((lvlDiff!=0)?" but ":" and "));
-				levelMsg.append(L("is the perfect match!"));
+				if(levelDiff != 0)
+					levelMsg.append(L(" but is the perfect match!"));
+				else
+					levelMsg.append(L(" and is the perfect match!"));
 			}
 			else
 			if(realDiff<0)
@@ -147,7 +149,7 @@ public class Consider extends StdCommand
 				if(levelMsg.length()==0)
 					levelMsg.append(targetName+" ");
 				else
-					levelMsg.append(L((lvlDiff<0)?" and ":" but "));
+					levelMsg.append((lvlDiff<0)?L(" and "):L(" but "));
 				if(realDiff>-(2*theDiff))
 					levelMsg.append(L("might actually give you a fight."));
 				else
@@ -164,7 +166,7 @@ public class Consider extends StdCommand
 				if(levelMsg.length()==0)
 					levelMsg.append(targetName+" ");
 				else
-					levelMsg.append(L((lvlDiff>0)?" and ":" but "));
+					levelMsg.append((lvlDiff>0)?L(" and "):(" but "));
 				if(realDiff<(2*theDiff))
 					levelMsg.append(L("looks a little tough."));
 				else

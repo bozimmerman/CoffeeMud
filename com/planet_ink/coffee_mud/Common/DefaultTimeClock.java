@@ -329,7 +329,17 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append(" day of "+getMonthNames()[getMonth()]);
 		if(getYearNames().length>0)
 			timeDesc.append(", "+CMStrings.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
-		timeDesc.append(L(".\n\rIt is "+getSeasonCode().toString().toLowerCase()+"."));
+		String seasonName=".";
+		switch(season)
+		{
+		case FALL: seasonName = L(".\n\rIt is fall."); break;
+		case SPRING: seasonName = L(".\n\rIt is spring."); break;
+		case SUMMER: seasonName = L(".\n\rIt is summer."); break;
+		case WINTER: seasonName = L(".\n\rIt is winter."); break;
+		default:
+			break;
+		}
+		timeDesc.append(seasonName);
 		if((CMLib.flags().canSee(mob))
 		&&(getTODCode()==TimeClock.TimeOfDay.NIGHT)
 		&&(CMLib.map().hasASky(room)))
@@ -353,7 +363,7 @@ public class DefaultTimeClock implements TimeClock
 				timeDesc.append(L("\n\rThe dust obscures the moon."));
 				break;
 			default:
-				timeDesc.append(L("\n\r"+getMoonPhase(room).getDesc()));
+				timeDesc.append("\n\r"+getMoonPhase(room).getDesc()); // whats to localize?
 				break;
 			}
 		}
@@ -584,24 +594,24 @@ public class DefaultTimeClock implements TimeClock
 		}
 		final StringBuffer buf=new StringBuffer("");
 		if(years>0)
-			buf.append(years+L((years==1)?" year":" years"));
+			buf.append(years+((years==1)?L(" year"):L(" years")));
 		if(months>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(months+L((months==1)?" month":" months"));
+			buf.append(months+((months==1)?L(" month"):L(" months")));
 		}
 		if(days>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(days+L((days==1)?" day":" days"));
+			buf.append(days+((days==1)?L(" day"):L(" days")));
 		}
 		if(hours>0)
 		{
 			if(buf.length()>0)
 				buf.append(", ");
-			buf.append(hours+L((hours==1)?" hour":" hours"));
+			buf.append(hours+((hours==1)?L(" hour"):L(" hours")));
 		}
 		if(buf.length()==0)
 			return L("under an hour");

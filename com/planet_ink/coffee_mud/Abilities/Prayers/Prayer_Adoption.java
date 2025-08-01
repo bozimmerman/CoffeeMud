@@ -301,16 +301,17 @@ public class Prayer_Adoption extends Prayer
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				String sondat=child.charStats().sondaughter();
-				String descAddOn = "@x1 is the adopted "+sondat+" of @x2";
+				final String sondat=child.charStats().sondaughter();
 				child.addTattoo("PARENT:"+parent.Name());
+				String descAddOn;
 				if(parent.isMarriedToLiege() && (parent.getLiegeID().length()>0))
 				{
 					child.addTattoo("PARENT:"+parent.getLiegeID());
-					descAddOn +=" and @x3";
+					descAddOn =L("@x1 is the adopted @x4 of @x2 and @x3.",child.Name(),parent.Name(),parent.getLiegeID(),sondat);
 				}
-				descAddOn += ".";
-				child.setDescription(child.description()+"  "+L(descAddOn,child.Name(),parent.Name(),parent.getLiegeID()));
+				else
+					descAddOn = L("@x1 is the adopted @x3 of @x2.",child.Name(),parent.Name(),sondat);
+				child.setDescription(child.description()+"  "+descAddOn);
 			 }
 		}
 		else

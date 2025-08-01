@@ -263,9 +263,9 @@ public class FighterGrappleSkill extends FighterSkill
 						if(msg.sourceMessage()!=null)
 						{
 							if(mob==invoker())
-								mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+								mob.tell(L("You are holding a @x1!",name().toLowerCase()));
 							else
-								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+								mob.tell(L("You are in a @x1!",name().toLowerCase()));
 						}
 						return false;
 					}
@@ -275,9 +275,9 @@ public class FighterGrappleSkill extends FighterSkill
 						if(msg.sourceMessage()!=null)
 						{
 							if(mob==invoker())
-								mob.tell(L("You are holding a "+name().toLowerCase()+"!"));
+								mob.tell(L("You are holding a @x1!",name().toLowerCase()));
 							else
-								mob.tell(L("You are in a "+name().toLowerCase()+"!"));
+								mob.tell(L("You are in a @x1!",name().toLowerCase()));
 						}
 						return false;
 					}
@@ -379,30 +379,30 @@ public class FighterGrappleSkill extends FighterSkill
 					if(broken)
 					{
 						if(R!=null)
-							R.show(P,mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+actName+"."));
+							R.show(P,mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> @x1.",actName));
 						else
-							mob.tell(L("Your "+actName+" is broken."));
+							mob.tell(L("Your @x1 is broken.",actName));
 					}
 					else
 					if(R!=null)
-						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> "+actName+"."));
+						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> @x1.",actName));
 					else
-						mob.tell(L("You release your "+actName+"."));
+						mob.tell(L("You release your @x1.",actName));
 				}
 				else
 				if(broken)
 				{
 					if(R!=null)
-						R.show(mob,P,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> "+actName+"."));
+						R.show(mob,P,CMMsg.MSG_OK_ACTION,L("<S-NAME> break(s) out of <T-YOUPOSS> @x1.",actName));
 					else
-						mob.tell(L("You break out of the "+actName+"."));
+						mob.tell(L("You break out of the @x1.",actName));
 				}
 				else
 				{
 					if(R!=null)
-						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+actName+"."));
+						R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the @x1.",actName));
 					else
-						mob.tell(L("You are released from the "+actName+"."));
+						mob.tell(L("You are released from the @x1.",actName));
 				}
 				CMLib.commands().postStand(mob,true, false);
 			}
@@ -427,7 +427,7 @@ public class FighterGrappleSkill extends FighterSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(L("You are too far away from your target to "+name().toLowerCase()+" them!"));
+			mob.tell(L("You are too far away from your target to @x1 them!",name().toLowerCase()));
 			return false;
 		}
 
@@ -435,7 +435,7 @@ public class FighterGrappleSkill extends FighterSkill
 		&&(hasWeightLimit())
 		&&(mob.baseWeight()<target.baseWeight()-(mob.baseWeight()*2)))
 		{
-			mob.tell(L("@x1 is too big to "+name().toLowerCase()+"!",target.name(mob)));
+			mob.tell(L("@x1 is too big to @x2!",target.name(mob),name().toLowerCase()));
 			return false;
 		}
 

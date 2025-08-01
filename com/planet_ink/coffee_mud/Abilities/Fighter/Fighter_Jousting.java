@@ -243,7 +243,7 @@ public class Fighter_Jousting extends FighterSkill
 		{
 			final String msgStr;
 			if(mount != null)
-				msgStr = L("^F^<FIGHT^><S-NAME> "+mount.rideString(mob)+" hard at <T-NAMESELF> in a Joust!^?^</FIGHT^>");
+				msgStr = L("^F^<FIGHT^><S-NAME> @x1 hard at <T-NAMESELF> in a Joust!^?^</FIGHT^>",mount.rideString(mob));
 			else
 				msgStr = L("^F^<FIGHT^><S-NAME> joust(s) <T-NAMESELF>!^?^</FIGHT^>");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE, msgStr);
@@ -286,7 +286,7 @@ public class Fighter_Jousting extends FighterSkill
 		}
 		else
 		if(mount != null)
-			return maliciousFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF> in a Joust, but miss(es)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> @x1 at <T-NAMESELF> in a Joust, but miss(es).",mount.rideString(mob)));
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> joust(s) at <T-NAMESELF> in a Joust, but miss(es)."));
 

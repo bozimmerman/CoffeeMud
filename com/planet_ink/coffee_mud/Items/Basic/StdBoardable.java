@@ -54,8 +54,11 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected Area 		area			= null;
 	protected String	homePortID		= "";
 
-	protected String	noun_word		= "base";
-	protected String	head_offTheDeck = "^HOutside, you see: ^N";
+	protected static String	DEFAULT_NOUN_STRING = CMLib.lang().L("base");
+	protected static String	DEFAULT_HEAD_OFFTHEDECK_STRING = CMLib.lang().L("^HOutside, you see: ^N");
+
+	protected String	noun_word		= DEFAULT_NOUN_STRING;
+	protected String	head_offTheDeck = DEFAULT_HEAD_OFFTHEDECK_STRING;
 
 	public StdBoardable()
 	{
@@ -983,7 +986,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				else
 				{
 					final CMMsg msg2=(CMMsg)msg.copyOf();
-					msg2.setOthersMessage(L(head_offTheDeck)+msg.othersMessage());
+					msg2.setOthersMessage(head_offTheDeck+msg.othersMessage());
 					cleanMsgForRepeat(msg2);
 					sendAreaMessage(msg2, true);
 				}
@@ -1044,7 +1047,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				@Override
 				public void showPrompt()
 				{
-					session.println(L("\n\rEnter a new name for your "+noun_word+": "));
+					session.println(L("\n\rEnter a new name for your @x1: ",noun_word));
 				}
 
 				@Override

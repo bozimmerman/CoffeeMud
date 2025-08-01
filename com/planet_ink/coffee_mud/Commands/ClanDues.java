@@ -220,7 +220,7 @@ public class ClanDues extends StdCommand
 					@Override
 					public void showPrompt()
 					{
-						S.promptPrint(L("Enter your @x1's new amount of dues per year ("+currentDues+")\n\r: ", C.getGovernmentName()));
+						S.promptPrint(L("Enter your @x1's new amount of dues per year (@x2)\n\r: ", C.getGovernmentName(),currentDues));
 					}
 
 					@Override

@@ -66,7 +66,7 @@ public class PropUsespellcast extends PropTest
 			final Ability UseSpellCast = CMClass.getAbility("Prop_UseSpellCast"); // put
 																					// IN
 			UseSpellCast.setMiscText(semiSpellList());
-			//mob.tell(L("Test:"+what+"-1: @x1", UseSpellCast.accountForYourself()));
+			//mob.tell(L("Test:@x2-1: @x1", UseSpellCast.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("SmallSack"), UseSpellCast, mobs[0], null, 0);
 			I = CMClass.getItem("StdFood");
 			mobs[0].addItem(I);
@@ -79,7 +79,7 @@ public class PropUsespellcast extends PropTest
 			R1.recoverRoomStats();
 			resetTest();
 			UseSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-			//mob.tell(L("Test:"+what+"-2: @x1", UseSpellCast.accountForYourself()));
+			//mob.tell(L("Test:@x2-2: @x1", UseSpellCast.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("SmallSack"), UseSpellCast, mobs[0], mobs[1], 0);
 			I = CMClass.getItem("StdFood");
 			mobs[0].addItem(I);

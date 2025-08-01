@@ -126,9 +126,9 @@ public class Spell_KnowProvince extends Spell
 							return;
 						String match=CMLib.help().getHelpText(A.Name(),msg.source(), false);
 						if(match == null)
-							match=L("^XNow entering: @x1^.^N"+match,A.Name());
+							match=L("^XNow entering: @x1^.^N@x2",A.Name(),match);
 						else
-							match=L("^XNow entering: ^.^N\n\r"+match);
+							match=L("^XNow entering: ^.^N\n\r@x1",match);
 						M.tell(match);
 					}
 				});

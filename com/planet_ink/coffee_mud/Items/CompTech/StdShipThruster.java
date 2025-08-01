@@ -268,14 +268,17 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
 		final Manufacturer manufacturer=me.getFinalManufacturer();
-		final String rumbleWord = (me instanceof FuelConsumer) ? "rumble" : "hum";
+		final String rumbleWord = (me instanceof FuelConsumer) ? lang.L("rumbles") : lang.L("hums");
 		if(!(obj instanceof SpaceShip))
-			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s and fires, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 @x2 and fires, but nothing happens.",me.name(mob),rumbleWord),
+					lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
-			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: exhaust control.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 @x2s loudly, but accomplishes nothing.",me.name(mob),rumbleWord),
+					lang.L("Failure: @x1: exhaust control.",me.name(mob)));
 		if(!CMParms.contains(me.getAvailPorts(), portDir))
-			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s a little, but accomplishes nothing.",me.name(mob)), lang.L("Failure: @x1: port control.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 @x2 a little, but accomplishes nothing.",me.name(mob),rumbleWord),
+					lang.L("Failure: @x1: port control.",me.name(mob)));
 		double thrust=me.getInstalledFactor() * amount;
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
@@ -317,18 +320,20 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		{
 			acceleration = (thrust * me.getSpecificImpulse() / ship.getMass());
 			if(acceleration < me.getMinThrust())
-				return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
+				return reportError(me, controlI, mob, lang.L("@x1 @x2 loudly, but nothing happens.",me.name(mob),rumbleWord),
+						lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
 		}
 		else // if we ever make multi-directional thrusters that don't care about facing, change this
 			acceleration = thrust;
 
 		//if((amount > 1)&&((portDir!=ShipDirComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
-		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
+		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a @x2 and hear the blast of @x1.",me.name(mob),rumbleWord));
 		if(acceleration == 0.0)
 		{
 			final String code=TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s very loudly, but nothing is happening.",me.name(mob)), lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 @x2 very loudly, but nothing is happening.",me.name(mob),rumbleWord),
+					lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
 		}
 		else
 		if(me.consumeFuel(fuelToConsume))
@@ -346,7 +351,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		{
 			final String code=TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
-			return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, then sputters down.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
+			return reportError(me, controlI, mob, lang.L("@x1 @x2 loudly, then sputters down.",me.name(mob),rumbleWord),
+					lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
 		}
 		return false;
 	}

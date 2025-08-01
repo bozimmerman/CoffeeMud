@@ -80,17 +80,23 @@ public class StdExit implements Exit
 	{
 	}
 
+	private final static String localizedName = CMLib.lang().L("a walkway");
+	private final static String localizedDName = CMLib.lang().L("door");
+	private final static String localizedCText = CMLib.lang().L("a closed door");
+	private final static String localizedCWord = CMLib.lang().L("close");
+	private final static String localizedOWord = CMLib.lang().L("open");
+
 	@Override
 	public String Name()
 	{
-		return "a walkway";
+		return localizedName;
 	}
 
 	@Override
 	public String genericName()
 	{
 		if(this.hasADoor())
-			return L(CMLib.english().startWithAorAn(doorName()));
+			return CMLib.english().startWithAorAn(doorName()); // doorname is L(, and english is L(
 		else
 			return L("an exit");
 	}
@@ -140,25 +146,25 @@ public class StdExit implements Exit
 	@Override
 	public String doorName()
 	{
-		return "door";
+		return localizedDName;
 	}
 
 	@Override
 	public String closedText()
 	{
-		return "a closed door";
+		return localizedCText;
 	}
 
 	@Override
 	public String closeWord()
 	{
-		return "close";
+		return localizedCWord;
 	}
 
 	@Override
 	public String openWord()
 	{
-		return "open";
+		return localizedOWord;
 	}
 
 	@Override

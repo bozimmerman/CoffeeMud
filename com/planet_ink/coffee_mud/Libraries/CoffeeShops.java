@@ -222,7 +222,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						str.append(L("Castle"));
 					else
 					if(E instanceof ClanItem)
-						str.append(L(((ClanItem)E).getClanItemType().getDisplayName()));
+						str.append(((ClanItem)E).getClanItemType().getDisplayName()); // already localized
 					else
 					if(E instanceof Weapon)
 						str.append(L("Weapon"));
@@ -357,8 +357,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if(I.phyStats().height()>0)
 					{
 						final Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
+						final String fitWord;
+						switch(deviation)
+						{
+						case TOO_LARGE: fitWord = L("too large"); break;
+						case TOO_SMALL: fitWord = L("too small"); break;
+						default: case FITS: fitWord = L("fits"); break;
+						}
 						if((deviation != Armor.SizeDeviation.FITS) && (lie?(((lieHash >> 28) % 2) == 0):true))
-							str.append(L("\n\rSize       : ") + I.phyStats().height() +" ("+L(deviation.toString().toLowerCase().replace('_',' ')+")"));
+							str.append(L("\n\rSize       : ") + I.phyStats().height() +" ("+fitWord+")");
 					}
 					if(((Armor)I).getClothingLayer()!= 0)
 						str.append(L("\n\rLayer      : ") + ((Armor)I).getClothingLayer());
@@ -406,13 +413,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						addOn.append("Bonus for the wearer: ");
 					else
 						addOn.append("Bonus for the owner: ");
-					final List<String> bonuses = new XVector<String>(new String[] {"Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2", "Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2"});
-					bonuses.addAll(Arrays.asList(Arrays.copyOf(PhyStats.CAN_SEE_DESCS,8)));
-					final String bonus = bonuses.get(CMath.abs(lieHash % bonuses.size()));
-					if(bonus.indexOf("@x1")>=0)
-						addOn.append(L(bonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));
+					final List<String> foundItemBonuses = new XVector<String>(new String[] {"Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2", "Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2"});
+					foundItemBonuses.addAll(Arrays.asList(Arrays.copyOf(PhyStats.CAN_SEE_DESCS,8)));
+					final String foundItemBonus = foundItemBonuses.get(CMath.abs(lieHash % foundItemBonuses.size()));
+					if(foundItemBonus.indexOf("@x1")>=0)
+						addOn.append(L(foundItemBonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));
 					else
-					if(bonus.indexOf("@x2")>=0)
+					if(foundItemBonus.indexOf("@x2")>=0)
 					{
 						Ability A=null;
 						for(int i=0;i<100 && (A==null);i++)
@@ -422,10 +429,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 								A=null;
 						}
 						if(A!=null)
-							addOn.append(L(bonus,A.name()));
+							addOn.append(L(foundItemBonus,A.name()));
 					}
 					else
-						addOn.append(L(bonus));
+						addOn.append(L(foundItemBonus));
 				}
 				str.append(L("\n\rSpecial    : @x1",addOn.toString()));
 			}

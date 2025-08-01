@@ -1626,7 +1626,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				switch(state)
 				{
 				case INPUT:
-					sess.promptPrint(L("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N "));
+					sess.promptPrint("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N "); // no L necc
 					this.noTrim=true;
 					break;
 				case MENU:
@@ -2048,7 +2048,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			sess.setAfkFlag(false);
 			if(!menuMode)
 			{
-				final String line =unsafePrompt(sess,"^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ",".");
+				final String line =unsafePrompt(sess,"^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N ","."); // no L necc
 				if(line.trim().equals("."))
 					menuMode=true;
 				else

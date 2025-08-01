@@ -61,7 +61,7 @@ public class PropHereadjuster extends PropTest
 		resetTest();
 		final Ability HereAdjuster = CMClass.getAbility("Prop_HereAdjuster");
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:"+what+"-1: @x1", HereAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);
@@ -84,7 +84,7 @@ public class PropHereadjuster extends PropTest
 		}
 		resetTest();
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", HereAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);
@@ -113,7 +113,7 @@ public class PropHereadjuster extends PropTest
 		}
 		resetTest();
 		HereAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-Human");
-		//mob.tell(L("Test:"+what+"-3: @x1", HereAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-3: @x1", HereAdjuster.accountForYourself(),what));
 		A2 = ((Ability) HereAdjuster.copyOf());
 		A2.setMiscText((HereAdjuster).text());
 		R2.addNonUninvokableEffect(A2);

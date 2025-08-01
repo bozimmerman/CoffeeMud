@@ -61,7 +61,7 @@ public class PropRideadjuster extends PropTest
 		resetTest();
 		final Ability RideAdjuster = CMClass.getAbility("Prop_RideAdjuster");
 		RideAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:"+what+"-1: @x1", RideAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", RideAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#1"));
@@ -79,7 +79,7 @@ public class PropRideadjuster extends PropTest
 			return (L("Error#3"));
 		}
 		RideAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1", RideAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", RideAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#4"));

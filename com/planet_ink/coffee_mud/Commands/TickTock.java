@@ -181,7 +181,7 @@ public class TickTock extends StdCommand
 						for(final TickClient T : tickables)
 						{
 							T.tickTicker(false);
-							mob.tell(L("Ticked "+T.getName()));
+							mob.tell(L("Ticked @x1",T.getName()));
 						}
 						return false;
 					}

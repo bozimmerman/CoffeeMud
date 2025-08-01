@@ -622,14 +622,18 @@ public class DatabaseProgram extends GenShipProgram
 		str.append(CMStrings.padRight(CMStrings.padRight(L("Coord"),maxLen)+" : "+coords,40));
 		str.append(CMStrings.padRight(CMStrings.padRight(L("Name"),maxLen)+" : "+name,38));
 		if(jo.containsKey("MASS"))
-			str.append("\n\r").append(CMStrings.padRight(L(CMStrings.padRight(L("Mass"),maxLen)+": @x1",jo.get("MASS").toString()),38));
+			str.append("\n\r").append(CMStrings.padRight(CMStrings.padRight(L("Mass"),maxLen)+": "+jo.get("MASS").toString(),38));
 		if(jo.containsKey("RADIUS"))
-			str.append("\n\r").append(CMStrings.padRight(L(CMStrings.padRight(L("Size"),maxLen)+": @x1 radius",CMLib.english().distanceDescShort(CMath.s_long(jo.get("RADIUS").toString()))),38));
+		{
+			final String prompt = CMStrings.padRight(L("Size"),maxLen);
+			str.append("\n\r").append(CMStrings.padRight(L("@x1: @x2 radius",prompt,
+										CMLib.english().distanceDescShort(CMath.s_long(jo.get("RADIUS").toString()))),38));
+		}
 		if(jo.containsKey("NOTE"))
 			str.append("\n\r").append(CMStrings.padRight(L("Note"),maxLen)+": ").append(jo.get("NOTE").toString());
 		for(final String k : jo.keySet())
 		{
-			if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, k))
+			if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, k)) // below localizing random json field names
 				str.append("\n\r").append(CMStrings.padRight(L(CMStrings.capitalizeAndLower(k)),maxLen)+": ").append(jo.get("NOTE").toString());
 		}
 		return str.toString();

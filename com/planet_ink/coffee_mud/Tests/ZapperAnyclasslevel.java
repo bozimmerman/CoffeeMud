@@ -62,7 +62,7 @@ public class ZapperAnyclasslevel extends PropTest
 		final String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
 		final String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
 		final MaskingLibrary.CompiledZMask cmask1 = CMLib.masking().maskCompile(mask1);
-		//mob.tell(L("Test:"+what+"-1: @x1",CMLib.masking().maskDesc(mask1)));
+		//mob.tell(L("Test:@x2-1: @x1",CMLib.masking().maskDesc(mask1),what));
 		if (!CMLib.masking().maskCheck(mask1, mobs[0], true))
 		{
 			return (L("Error#1"));
@@ -80,7 +80,7 @@ public class ZapperAnyclasslevel extends PropTest
 			return (L("Error#4"));
 		}
 		final MaskingLibrary.CompiledZMask cmask2 = CMLib.masking().maskCompile(mask2);
-		//mob.tell(L("Test:"+what+"-2: @x1", CMLib.masking().maskDesc(mask2)));
+		//mob.tell(L("Test:@x2-2: @x1", CMLib.masking().maskDesc(mask2),what));
 		if (CMLib.masking().maskCheck(mask2, mobs[0], true))
 		{
 			return (L("Error#5"));

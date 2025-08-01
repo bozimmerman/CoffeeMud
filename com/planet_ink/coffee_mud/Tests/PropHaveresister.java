@@ -61,7 +61,7 @@ public class PropHaveresister extends PropTest
 		resetTest();
 		final Ability HaveResister = CMClass.getAbility("Prop_HaveResister");
 		HaveResister.setMiscText("pierce 100% holy 100% acid 30%");
-		//mob.tell(L("Test:"+what+"-1: @x1", HaveResister.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HaveResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
 			return (L("Error#1"));
@@ -81,7 +81,7 @@ public class PropHaveresister extends PropTest
 		}
 		resetTest();
 		HaveResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
-		//mob.tell(L("Test:"+what+"-2: @x1", HaveResister.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", HaveResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
 			return (L("Error#4"));

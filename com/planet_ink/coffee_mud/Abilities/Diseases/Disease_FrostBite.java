@@ -53,7 +53,7 @@ public class Disease_FrostBite extends Disease
 	@Override
 	public String displayText()
 	{
-		return L("(Frost bitten "+where+")");
+		return L("(Frost bitten @x1)",where);
 	}
 
 	@Override

@@ -89,7 +89,7 @@ public class Sit extends StdCommand
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=L("<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.");
+			mountStr=L("<S-NAME> @x1 <T-NAME>.",((Rideable)E).mountString(CMMsg.TYP_SIT,mob));
 		else
 			mountStr=L("<S-NAME> sit(s) on <T-NAME>.");
 		final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SIT,mountStr);

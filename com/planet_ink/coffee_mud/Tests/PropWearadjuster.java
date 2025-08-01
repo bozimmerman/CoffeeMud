@@ -61,7 +61,7 @@ public class PropWearadjuster extends PropTest
 		resetTest();
 		final Ability WearAdjuster = CMClass.getAbility("Prop_WearAdjuster");
 		WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000");
-		//mob.tell(L("Test:"+what+"-1: @x1", WearAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#1"));
@@ -79,7 +79,7 @@ public class PropWearadjuster extends PropTest
 			return (L("Error#3"));
 		}
 		WearAdjuster.setMiscText("abi+10 gen=F class=Fighter cha+10 man+1000 MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1", WearAdjuster.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", WearAdjuster.accountForYourself(),what));
 		if (isAnyAdjusted(mobs[0]))
 		{
 			return (L("Error#4"));

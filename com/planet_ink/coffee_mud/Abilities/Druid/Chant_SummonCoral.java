@@ -79,24 +79,24 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 
 	private final String[] coralTypes = new String[]
 	{
-		"staghorn coral",
-		"coral",
-		"pillar coral",
-		"elkhorn coral",
-		"sea fan",
-		"antipathes",
-		"leptopsammia",
-		"brain coral",
-		"cup coral",
-		"soft brush coral",
-		"wire coral",
-		"bottle brush coral",
-		"lace coral",
-		"blade coral",
-		"box fire coral",
-		"fleshy coral",
-		"plate coral",
-		"sheet coral"
+		CMLib.lang().L("staghorn coral"),
+		CMLib.lang().L("coral"),
+		CMLib.lang().L("pillar coral"),
+		CMLib.lang().L("elkhorn coral"),
+		CMLib.lang().L("sea fan"),
+		CMLib.lang().L("antipathes"),
+		CMLib.lang().L("leptopsammia"),
+		CMLib.lang().L("brain coral"),
+		CMLib.lang().L("cup coral"),
+		CMLib.lang().L("soft brush coral"),
+		CMLib.lang().L("wire coral"),
+		CMLib.lang().L("bottle brush coral"),
+		CMLib.lang().L("lace coral"),
+		CMLib.lang().L("blade coral"),
+		CMLib.lang().L("box fire coral"),
+		CMLib.lang().L("fleshy coral"),
+		CMLib.lang().L("plate coral"),
+		CMLib.lang().L("sheet coral")
 	};
 
 	public Item buildCoral(final MOB mob, final Room room)
@@ -105,8 +105,8 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_SEAWEED);
 		final String name = coralTypes[CMLib.dice().roll(1, coralTypes.length, -1)];
-		newItem.setName(L(name));
-		newItem.setDisplayText(L(CMLib.english().startWithAorAn(name)+" @x1 is here.",name));
+		newItem.setName(name);
+		newItem.setDisplayText(L("(a(n)) @x1 is here.",name));
 		newItem.setDescription("");
 
 		final Chant_SummonCoral newChant=new Chant_SummonCoral();

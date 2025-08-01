@@ -172,7 +172,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 							if(invoker==null)
 								R.setDisplayText(L("The Smuggler's Hold"));
 							else
-								R.setDisplayText(L(invoker.name()+"'s Smuggler's Hold"));
+								R.setDisplayText(L("@x1's Smuggler's Hold",invoker.name()));
 							R.setDescription("");
 
 							final Exit newExit=CMClass.getExit("GenDoor");

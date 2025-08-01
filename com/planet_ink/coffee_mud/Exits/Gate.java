@@ -38,21 +38,25 @@ public class Gate extends StdClosedDoorway
 		return "Gate";
 	}
 
+	private final static String localizedName = CMLib.lang().L("a gate");
+	private final static String localizedDName = CMLib.lang().L("gate");
+	private final static String localizedCText = CMLib.lang().L("a closed gate");
+
 	@Override
 	public String Name()
 	{
-		return "a gate";
+		return localizedName;
 	}
 
 	@Override
 	public String doorName()
 	{
-		return "gate";
+		return localizedDName;
 	}
 
 	@Override
 	public String closedText()
 	{
-		return "a closed gate";
+		return localizedCText;
 	}
 }

@@ -49,8 +49,6 @@ public class Chant_PlanarLink extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = "(Planar Link @x1)";
-
 	protected PlanarAbility	boundPlane		= null;
 	protected String		localAreaName	= null;
 
@@ -58,9 +56,9 @@ public class Chant_PlanarLink extends Chant
 	public String displayText()
 	{
 		if((boundPlane != null)&&(localAreaName!=null))
-			return CMLib.lang().L(localizedStaticDisplay,boundPlane.getPlanarName()+" "+localAreaName);
+			return CMLib.lang().L("(Planar Link @x1)",boundPlane.getPlanarName()+" "+localAreaName);
 		else
-			return CMLib.lang().L(localizedStaticDisplay,"?");
+			return CMLib.lang().L("(Planar Link @x1)","?");
 	}
 
 	@Override

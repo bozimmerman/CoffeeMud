@@ -194,75 +194,87 @@ public class Thief_Runecasting extends ThiefSkill
 		};
 	}
 
-	protected static String[] runeStarts = new String[]
+	protected String getStartPhrase()
 	{
-		"The runes indicate...",
-		"Your fate has been cast...",
-		"And the runes show your future..."
-	};
-
-	protected static String[] runeFails = new String[]
-	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
-	};
-
-	protected String[] getStartPhrases()
-	{
-		return runeStarts;
+		switch(CMLib.dice().roll(1, 3, -1))
+		{
+		case 0: return L("The runes indicate...");
+		case 1: return L("Your fate has been cast...");
+		case 2: return L("And the runes show your future...");
+		}
+		return "";
 	}
 
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return runeFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("Astral clouds are blocking your aura.");
+		case 1: return L("Your future is unbound. Tread carefully.");
+		case 2: return L("Your path is clear.");
+		case 3: return L("The fates` gaze is elsewhere.");
+		}
+		return "";
 	}
-
-	protected static final String[] negativeAdjectives = new String[]
-	{
-		"dark", "vile", "bad", "evil"
-	};
-
-	protected static final String[] positiveAdjectives = new String[]
-	{
-		"light", "blessed", "good", "positive"
-	};
 
 	protected String getFTAdjective(final boolean positive)
 	{
 		if(positive)
-			return positiveAdjectives[CMLib.dice().roll(1, positiveAdjectives.length, -1)];
+		{
+			switch(CMLib.dice().roll(1, 4, -1))
+			{
+			case 0: return L("light");
+			case 1: return L("blessed");
+			case 2: return L("good");
+			case 3: return L("positive");
+			}
+		}
 		else
-			return negativeAdjectives[CMLib.dice().roll(1, negativeAdjectives.length, -1)];
+		{
+			switch(CMLib.dice().roll(1, 4, -1))
+			{
+			case 0: return L("dark");
+			case 1: return L("vile");
+			case 2: return L("bad");
+			case 3: return L("evil");
+			}
+		}
+		return "";
 	}
-
-	protected static final String[] negativeVerb = new String[]
-	{
-		"avoid","stay clear","be wary of","deny"
-	};
-
-	protected static final String[] positiveVerb = new String[]
-	{
-		"embrace","accept","welcome","endure","do not fear"
-	};
-
-	protected static final String[] neutralVerb = new String[]
-	{
-		"be mindful of","anticipate wildness of"
-	};
 
 	protected String getFTVerb(final boolean positive)
 	{
-		String str;
 		if(CMLib.dice().rollPercentage()<10)
-			str=neutralVerb[CMLib.dice().roll(1, neutralVerb.length, -1)];
+		{
+			switch(CMLib.dice().roll(1, 2, -1))
+			{
+			case 0: return L("Be mindful of");
+			case 1: return L("Anticipate wildness of");
+			}
+		}
 		else
 		if(positive)
-			str=positiveVerb[CMLib.dice().roll(1, positiveVerb.length, -1)];
+		{
+			switch(CMLib.dice().roll(1, 5, -1))
+			{
+			case 0: return L("Embrace");
+			case 1: return L("Accept");
+			case 2: return L("Welcome");
+			case 3: return L("Endure");
+			case 4: return L("Do not fear");
+			}
+		}
 		else
-			str=negativeVerb[CMLib.dice().roll(1, negativeVerb.length, -1)];
-		return CMStrings.capitalizeAndLower(str);
+		{
+			switch(CMLib.dice().roll(1, 4, -1))
+			{
+			case 0: return L("Avoid");
+			case 1: return L("Stay clear");
+			case 2: return L("Be wary of");
+			case 3: return L("Deny");
+			}
+		}
+		return "";
 	}
 
 	protected String getBestTimeDenom(final long hours, final TimeClock C)
@@ -423,14 +435,12 @@ public class Thief_Runecasting extends ThiefSkill
 				final AutoProperties[] APs = Thief_Runecasting.getApplicableAward(this, forM, getPlayerFilter(), numToReturn);
 				if((APs == null) || (APs.length==0))
 				{
-					final int x =CMLib.dice().roll(1, getFailPhrases().length, -1);
-					CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
+					CMLib.commands().postSay(iM, forM, getFailPhrase());
 					unInvoke();
 					return false;
 				}
 				else
 				{
-					final String format = "I see @x1 @x2. @x3 @x4 @x5";
 					final TimeClock nowC = CMLib.time().homeClock(forM);
 					this.reports = new XVector<String>();
 					for(final AutoProperties P : APs)
@@ -485,8 +495,8 @@ public class Thief_Runecasting extends ThiefSkill
 											codeName = L(CharStats.CODES.DESC(cd).toLowerCase())+"("+Math.abs(diff)+")";
 										else
 											codeName = L(CharStats.CODES.DESC(cd).toLowerCase());
-										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC));
+										final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC));
 										this.reports.add(report);
 									}
 								}
@@ -501,8 +511,8 @@ public class Thief_Runecasting extends ThiefSkill
 											codeName = L(CharState.STAT_DESCS[cd]).toLowerCase()+"("+Math.abs(diff)+")";
 										else
 											codeName = L(CharState.STAT_DESCS[cd]).toLowerCase();
-										final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-												L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
+										final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+												getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 										this.reports.add(report);
 									}
 								}
@@ -520,8 +530,8 @@ public class Thief_Runecasting extends ThiefSkill
 												if(CMath.isSet(pStats.getStat(cd), i))
 												{
 													final String codeName=PhyStats.IS_VERBS[i].toLowerCase();
-													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
+													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
 												}
 										}
@@ -532,8 +542,8 @@ public class Thief_Runecasting extends ThiefSkill
 												if(CMath.isSet(pStats.getStat(cd), i))
 												{
 													final String codeName=PhyStats.CAN_SEE_DESCS[i].toLowerCase();
-													final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-															L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
+													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
 												}
 										}
@@ -544,8 +554,8 @@ public class Thief_Runecasting extends ThiefSkill
 												codeName =L(PhyStats.STAT_DESCS[cd].toLowerCase())+"("+Math.abs(diff)+")";
 											else
 												codeName = L(PhyStats.STAT_DESCS[cd].toLowerCase());
-											final String report = L(format,L(getFTAdjective(positive)),L(A.name().toLowerCase()),
-													L(getFTVerb(positive)), codeName, getFTTime(C,nowC,expireC) );
+											final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+													getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 											this.reports.add(report);
 										}
 									}
@@ -565,8 +575,7 @@ public class Thief_Runecasting extends ThiefSkill
 					}
 					if(reports.size()==0)
 					{
-						final int x =CMLib.dice().roll(1, getFailPhrases().length, -1);
-						CMLib.commands().postSay(iM, forM, L(getFailPhrases()[x]));
+						CMLib.commands().postSay(iM, forM, getFailPhrase());
 						unInvoke();
 						return false;
 					}
@@ -576,8 +585,7 @@ public class Thief_Runecasting extends ThiefSkill
 						if((finalPrediction != null)&&(finalPrediction.trim().length()>0))
 							this.reports.add(finalPrediction);
 					}
-					final int x =CMLib.dice().roll(1, getStartPhrases().length, -1);
-					CMLib.commands().postSay(iM, forM, L(getStartPhrases()[x]));
+					CMLib.commands().postSay(iM, forM, getStartPhrase());
 				}
 			}
 			else

@@ -44,6 +44,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	protected String	mountString		= "";
 	protected String	dismountString	= "";
 
+	protected static String DEFAULT_ENTERSTRING = CMLib.lang().L("enter(s)");
+	protected static String DEFAULT_LEAVESTRING = CMLib.lang().L("leave(s)");
+
 	@Override
 	public String ID()
 	{
@@ -206,7 +209,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
-			return "enter(s)";
+			return DEFAULT_ENTERSTRING;
 		return mountString;
 	}
 
@@ -290,7 +293,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
-			return "enter(s)";
+			return DEFAULT_ENTERSTRING;
 		return rideString;
 	}
 
@@ -576,16 +579,19 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return closedText;
 	}
 
+	private final static String localizedCWord = CMLib.lang().L("close");
+	private final static String localizedOWord = CMLib.lang().L("open");
+
 	@Override
 	public String closeWord()
 	{
-		return "close";
+		return localizedCWord;
 	}
 
 	@Override
 	public String openWord()
 	{
-		return "open";
+		return localizedOWord;
 	}
 
 	@Override

@@ -112,7 +112,7 @@ public class Sleep extends StdCommand implements Tickable
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr="<S-NAME> "+((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob)+" <T-NAME>.";
+			mountStr=L("<S-NAME> @x1 <T-NAME>.",((Rideable)E).mountString(CMMsg.TYP_SLEEP,mob));
 		else
 			mountStr=L("<S-NAME> sleep(s) on <T-NAME>.");
 		String sourceMountStr=null;

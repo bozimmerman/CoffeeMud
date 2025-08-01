@@ -51,7 +51,7 @@ public class Skill_Upstage extends BardSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Upstaging "+(invoker()==null?"an actor":invoker().name())+")");
+		return L("(Upstaging @x1)",(invoker()==null?L("an actor"):invoker().name()));
 	}
 
 	@Override

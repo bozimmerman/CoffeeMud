@@ -53,7 +53,7 @@ public class Spell_Geas extends Spell
 	@Override
 	public String displayText()
 	{
-		return L("(Geas to "+text()+")");
+		return L("(Geas to @x1)",text());
 	}
 
 	@Override

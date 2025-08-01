@@ -56,9 +56,9 @@ public class Skill_Subdue extends StdSkill
 			return L("(Subdueing)");
 		else
 		if(affected instanceof MOB)
-			return L("(Subdueing "+whom.name((MOB)affected)+")");
+			return L("(Subdueing @x1)",whom.name((MOB)affected));
 		else
-			return L("(Subdueing "+whom.name()+")");
+			return L("(Subdueing @x1)",whom.name());
 	}
 
 	@Override

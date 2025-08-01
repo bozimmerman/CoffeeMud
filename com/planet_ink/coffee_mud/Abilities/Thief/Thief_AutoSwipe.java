@@ -169,7 +169,7 @@ public class Thief_AutoSwipe extends ThiefSkill
 			{
 				final Thief_AutoSwipe swipeA=(Thief_AutoSwipe)target.fetchEffect(ID());
 				swipeA.risk = risk;
-				target.tell(L("Your safety factor has been changed to " + risk + "%."));
+				target.tell(L("Your safety factor has been changed to @x1%.",""+risk));
 				return false;
 			}
 		}

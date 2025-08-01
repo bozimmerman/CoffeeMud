@@ -61,7 +61,7 @@ public class PropRidespellcast extends PropTest
 		resetTest();
 		final Ability RideSpellCast = CMClass.getAbility("Prop_RideSpellCast");
 		RideSpellCast.setMiscText(semiSpellList());
-		// mob.tell(L("Test:"+what+"-1: @x1",RideSpellCast.accountForYourself()));
+		// mob.tell(L("Test:@x2-1: @x1",RideSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideSpellCast, mobs[0], null, 2);
 		if (!effectCheck(spells, mobs[0]))
 		{
@@ -75,7 +75,7 @@ public class PropRidespellcast extends PropTest
 		}
 		resetTest();
 		RideSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", RideSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", RideSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideSpellCast, mobs[0], mobs[1], 2);
 		if (!effectCheck(spells, mobs[0]))
 		{
@@ -98,7 +98,7 @@ public class PropRidespellcast extends PropTest
 		}
 		resetTest();
 		RideSpellCast.setMiscText(semiSpellList() + "MASK=-Human");
-		//mob.tell(L("Test:"+what+"-3: @x1", RideSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-3: @x1", RideSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideSpellCast, mobs[0], mobs[1], 2);
 		if (!effectCheck(spells, mobs[0]))
 		{

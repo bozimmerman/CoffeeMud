@@ -114,7 +114,7 @@ public class Directions
 		INORTHEAST, INORTHWEST, ISOUTHEAST, ISOUTHWEST
 	};
 
-	private final static String	DEFAULT_DIRECTION_7_LETTERS		= "N, S, E, W, U, D, or V";
+	private final static String	DEFAULT_DIRECTION_7_LETTERS		= "N, S, E, W, U, D, or V";   // all below is localized
 	private final static String	DEFAULT_DIRECTION_11_LETTERS	= "N, S, E, W, NE, NW, SE, SW, U, D, or V";
 	private final static String	DEFAULT_DIRECTION_7_NAMES		= "North, South, East, West, Up, or Down";
 	private final static String	DEFAULT_DIRECTION_11_NAMES		= "North, South, East, West, Northeast, "

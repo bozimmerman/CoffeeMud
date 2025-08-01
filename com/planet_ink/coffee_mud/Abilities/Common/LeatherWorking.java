@@ -110,6 +110,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		public final double damagePct;
 		public final int attack;
 		public final double armorPct;
+		private String term = null;
 		private Stage(final int recipeLevel, final int multiplier, final double dmgPct, final int attackAdj, final double armorAdjPct)
 		{
 			this.recipeLevel=recipeLevel;
@@ -121,7 +122,17 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 		public final String term()
 		{
-			return CMLib.lang().L(name());
+			if(term == null)
+			{
+				switch(this)
+				{
+				case Hard: term = CMLib.lang().L("Hard"); break;
+				case Normal: term = CMLib.lang().L("Normal"); break;
+				case Studded: term = CMLib.lang().L("Studded"); break;
+				default: term = CMLib.lang().L("Normal"); break;
+				}
+			}
+			return term;
 		}
 
 		public final static Stage find(final String name)

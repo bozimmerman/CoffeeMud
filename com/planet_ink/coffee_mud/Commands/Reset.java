@@ -621,7 +621,7 @@ public class Reset extends StdCommand
 			final int levelHigh = CMath.s_int(rest.substring(x+1).trim());
 			if((levelLow < 1)||(levelHigh<levelLow))
 			{
-				mob.tell(L("Illegal range "+rest.substring(0,x).trim()+" to "+rest.substring(x+1).trim()));
+				mob.tell(L("Illegal range @x1 to @x2",rest.substring(0,x).trim(),rest.substring(x+1).trim()));
 				return false;
 			}
 			final Session sess=mob.session();
@@ -2658,10 +2658,10 @@ public class Reset extends StdCommand
 		}
 		else
 		{
-			String firstPart="'@x1' is an unknown reset.  Try ROOM, AREA,";
+			String firstPart=L("'@x1' is an unknown reset.  Try ROOM, AREA,",s);
 			if(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS))
-				firstPart+=" PASSWORD,";
-			mob.tell(L(firstPart+" MOBCOMBATSTATS ROOM, MOBCOMBATSTATS AREA *, MOBCOMBATSTATS WORLD *, MOBCOMBATSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
+				firstPart+=L(" PASSWORD,");
+			mob.tell(firstPart + L(" MOBCOMBATSTATS ROOM, MOBCOMBATSTATS AREA *, MOBCOMBATSTATS WORLD *, MOBCOMBATSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete."));
 		}
 		return false;
 	}

@@ -81,13 +81,13 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 	@Override
 	protected String getActivePresentTenseVerb()
 	{
-		return "smithing";
+		return L("smithing");
 	}
 
 	@Override
 	protected String getActiveVerb()
 	{
-		return "smith";
+		return L("smith");
 	}
 
 	@Override

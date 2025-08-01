@@ -66,33 +66,31 @@ public class Thief_Tasseography extends Thief_Runecasting
 		return triggerStrings;
 	}
 
-	protected static String[] tarotStarts = new String[]
-	{
-		"I see your future is bright...",
-		"I see your future is murky...",
-		"I see your future is muddled...",
-		"I see your future is sloppy...",
-		"I see your future is orderly..."
-	};
-
-	protected static String[] tarotFails = new String[]
-	{
-		"You drank too fast.  Try again later.",
-		"The grounds are unclear.",
-		"You need to drink more coffee.  Come back later.",
-		"I see... I see.... I don't see.  Sorry, your life might be too uneventful."
-	};
-
 	@Override
-	protected String[] getStartPhrases()
+	protected String getStartPhrase()
 	{
-		return tarotStarts;
+		switch(CMLib.dice().roll(1, 5, -1))
+		{
+		case 0: return L("I see your future is bright...");
+		case 1: return L("I see your future is murky...");
+		case 2: return L("I see your future is muddled...");
+		case 3: return L("I see your future is sloppy...");
+		case 4: return L("I see your future is orderly...");
+		}
+		return "";
 	}
 
 	@Override
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return tarotFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("You drank too fast.  Try again later.");
+		case 1: return L("The grounds are unclear.");
+		case 2: return L("You need to drink more coffee.  Come back later.");
+		case 3: return L("I see... I see.... I don't see.  Sorry, your life might be too uneventful.");
+		}
+		return "";
 	}
 
 	@Override

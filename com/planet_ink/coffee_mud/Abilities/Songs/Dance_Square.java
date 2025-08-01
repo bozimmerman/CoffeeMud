@@ -63,7 +63,7 @@ public class Dance_Square extends Dance
 	@Override
 	protected String danceOf()
 	{
-		return name()+" Dance";
+		return L("@x1 Dance",name());
 	}
 
 	@Override

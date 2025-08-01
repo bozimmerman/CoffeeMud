@@ -58,12 +58,12 @@ public class GenCaravan extends GenNavigableBoardable
 		super();
 		setName("a caravan [NEWNAME]");
 		setDisplayText("a caravan [NEWNAME] is here.");
-		this.verb_sail = "drive";
-		this.verb_sailing = "driving";
-		this.noun_word = "drive";
-		this.anchor_name= "brake";
-		this.anchor_verbed = "set";
-		this.head_offTheDeck = "^HOff the side you see: ^N";
+		this.verb_sail = L("drive");
+		this.verb_sailing = L("driving");
+		this.noun_word = L("drive");
+		this.anchor_name= L("brake");
+		this.anchor_verbed = L("set");
+		this.head_offTheDeck = L("^HOff the side you see: ^N");
 		this.setRideBasis(Basis.WAGON);
 		super.setRiderCapacity(0);
 		setMaterial(RawMaterial.RESOURCE_OAK);
@@ -256,7 +256,7 @@ public class GenCaravan extends GenNavigableBoardable
 	{
 		if(!CMLib.flags().isDrivableRoom(destRoom))
 		{
-			announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			courseDirections.clear();
 			return false;
 		}
@@ -278,13 +278,13 @@ public class GenCaravan extends GenNavigableBoardable
 		final long totalPullWeight = (rideLeader==null)?0:CMLib.utensils().getPullWeight(rideLeader);
 		if(totalPullWeight <= 0)
 		{
-			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to a lack of team to pull it, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			announceToAllAboard(L("You can't seem to @x2 @x1 due to a lack of team to pull it, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			courseDirections.clear();
 			return false;
 		}
 		if(totalPullWeight < phyStats().weight())
 		{
-			announceToAllAboard(L("You can't seem to "+verb_sail+" @x1 due to weight, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction)));
+			announceToAllAboard(L("You can't seem to @x2 @x1 due to weight, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			courseDirections.clear();
 			return false;
 		}
@@ -297,7 +297,7 @@ public class GenCaravan extends GenNavigableBoardable
 				if((leadM.location() != destRoom)
 				&&(!CMLib.tracking().walk(leadM, direction, false, false, false)))
 				{
-					announceToAllAboard(L("@x1 can't seem to "+verb_sail+" you @x2, <S-NAME> go(es) nowhere.",rideLeader.name(), CMLib.directions().getInDirectionName(direction)));
+					announceToAllAboard(L("@x1 can't seem to @x3 you @x2, <S-NAME> go(es) nowhere.",rideLeader.name(), CMLib.directions().getInDirectionName(direction),verb_sail));
 					courseDirections.clear();
 					return false;
 				}
@@ -307,7 +307,7 @@ public class GenCaravan extends GenNavigableBoardable
 					final Room R=CMLib.map().roomLocation(P);
 					if(R!=destRoom)
 					{
-						announceToAllAboard(L("@x1 can't seem to "+verb_sail+" you @x2, <S-NAME> go(es) nowhere.",P.name(), CMLib.directions().getInDirectionName(direction)));
+						announceToAllAboard(L("@x1 can't seem to @x3 you @x2, <S-NAME> go(es) nowhere.",P.name(), CMLib.directions().getInDirectionName(direction),verb_sail));
 						courseDirections.clear();
 						return false;
 					}

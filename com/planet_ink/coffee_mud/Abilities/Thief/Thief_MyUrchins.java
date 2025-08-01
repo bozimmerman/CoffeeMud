@@ -286,6 +286,20 @@ public class Thief_MyUrchins extends StdAbility
 		{
 			len=x;
 		}
+
+		public String description()
+		{
+			switch(this)
+			{
+			case Health: return CMLib.lang().L("Health");
+			case Lvl: return CMLib.lang().L("Lvl");
+			case Name: return CMLib.lang().L("Name");
+			case Room_Name: return CMLib.lang().L("Room Name");
+			case Wanted: return CMLib.lang().L("Wanted");
+			case Wealth: return CMLib.lang().L("Wealth");
+			}
+			return "";
+		}
 	}
 
 	@Override
@@ -323,7 +337,7 @@ public class Thief_MyUrchins extends StdAbility
 				for(int x=0;x<fields.size();x++)
 				{
 					final UrchiField f = fields.get(x);
-					yourUrchins.append(CMStrings.padRight(L(f.name().replace('_', ' ')), cols[x]));
+					yourUrchins.append(CMStrings.padRight(f.description(), cols[x]));
 				}
 				yourUrchins.append("^?\n\r^H");
 				for(int x=0;x<fields.size();x++)

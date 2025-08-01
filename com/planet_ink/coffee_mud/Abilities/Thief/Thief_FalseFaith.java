@@ -50,7 +50,6 @@ public class Thief_FalseFaith extends ThiefSkill
 	}
 
 	private final static String localizedStaticDisplay1 = CMLib.lang().L("(False Atheism)");
-	private final static String localizedStaticDisplay2 = "(False @x1-ism)";
 
 	@Override
 	public String displayText()
@@ -60,7 +59,7 @@ public class Thief_FalseFaith extends ThiefSkill
 			if(text().equals("NONE"))
 				return localizedStaticDisplay1;
 			else
-				return L(localizedStaticDisplay2,text());
+				return L("(False @x1-ism)",text());
 		}
 		else
 			return "";

@@ -52,7 +52,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	@Override
 	public String displayText()
 	{
-		return L("(Knocked out: " + tickDown + ")");
+		return L("(Knocked out: @x1)",""+tickDown);
 	}
 
 	@Override

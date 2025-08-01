@@ -370,7 +370,7 @@ public class ClanData extends StdWebMacro
 						for(final Trophy t : Trophy.values())
 						{
 							if(CMath.bset(C.getTrophies(),t.flagNum()))
-								str.append(t.description+", ");
+								str.append(t.description()+", ");
 						}
 					}
 				}
@@ -383,7 +383,7 @@ public class ClanData extends StdWebMacro
 						for(final Trophy t : Trophy.values())
 						{
 							if(CMath.bset(C.getTrophies(),t.flagNum()))
-								str.append(t.codeString+", ");
+								str.append(t.codeString()+", ");
 						}
 					}
 				}

@@ -590,7 +590,7 @@ public class Fighter_CallSteed extends StdAbility
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.setName(L(CMLib.english().startWithAorAn(R.name().toLowerCase())));
+		newMOB.setName(CMLib.english().startWithAorAn(R.name().toLowerCase()));
 		newMOB.setDisplayText(L("@x1 is here", CMStrings.capitalizeAndLower(newMOB.name())));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience", "0 RIDEOK"));
 		newMOB.addTattoo("SYSTEM_SUMMONED");

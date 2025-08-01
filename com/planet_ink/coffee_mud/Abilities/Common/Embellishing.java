@@ -78,7 +78,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 	protected static final int	RCP_CLASSTYPE	= 5;
 	protected static final int	RCP_SPELL		= 6;
 
-	protected String	embellishWord	= "embellished";
+	protected String	embellishWord	= CMLib.lang().L("embellished");
 	protected String	embellishment	= "@x1 has @x2.";
 	protected int		lostValue		= 0;
 	protected Item		embellishI		= null;
@@ -167,7 +167,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 				{
 					final Item I=embellishI;
 					if((messedUp)||(I==null))
-						commonTelL(mob,"You've failed to "+embellishWord+"!");
+						commonTelL(mob,"You've failed to @x1!",embellishWord);
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
@@ -176,7 +176,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 							commonTelL(mob,"You've messed up @x1!",verb);
 						else
 						{
-							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+embellishWord+" @x1.",I.name()));
+							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to @x2 @x1.",I.name(),embellishWord));
 							final String name = I.Name();
 							final String newName = embellishment;
 							Ability A=I.fetchEffect("ExtraData");
@@ -242,7 +242,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 				allFlag=true;
 				mask="";
 			}
-			final StringBuilder buf=new StringBuilder(L("^N"+_skillNaming+" tasks:\n\r"));
+			final StringBuilder buf=new StringBuilder(L("^N@x1 tasks:\n\r",_skillNaming));
 			final int[] cols={
 				CMLib.lister().fixColWidth(47,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session())
@@ -331,7 +331,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		}
 		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		lostValue=deadComps.getLostValue();
-		embellishment = "@x1 has @x2.";
+		embellishment = "@x1 has @x2."; // can't localize, because ite recipi-ized
 		embellishI = I;
 		this.verb = L("adding @x1 to @x2",realRecipeName, I.Name());
 		this.embellishWord	= L("add @x1",realRecipeName);

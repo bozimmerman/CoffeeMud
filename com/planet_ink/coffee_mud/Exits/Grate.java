@@ -38,39 +38,46 @@ public class Grate extends StdClosedDoorway
 		return "Grate";
 	}
 
+	private final static String localizedName = CMLib.lang().L("a barred grate");
+	private final static String localizedDName = CMLib.lang().L("grate");
+	private final static String localizedCText = CMLib.lang().L("a closed grate");
+	private final static String localizedDesc = CMLib.lang().L("A metal grate of thick steel bars is inset here.");
+	private final static String localizedCWord = CMLib.lang().L("close");
+	private final static String localizedOWord = CMLib.lang().L("remove");
+
 	@Override
 	public String Name()
 	{
-		return "a barred grate";
+		return localizedName;
 	}
 
 	@Override
 	public String doorName()
 	{
-		return "grate";
+		return localizedDName;
 	}
 
 	@Override
 	public String closedText()
 	{
-		return "a closed grate";
+		return localizedCText;
 	}
 
 	@Override
 	public String description()
 	{
-		return "A metal grate of thick steel bars is inset here.";
+		return localizedDesc;
 	}
 
 	@Override
 	public String closeWord()
 	{
-		return "close";
+		return localizedCWord;
 	}
 
 	@Override
 	public String openWord()
 	{
-		return "remove";
+		return localizedOWord;
 	}
 }

@@ -117,6 +117,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		public final double damagePct;
 		public final int attack;
 		public final double armorPct;
+		private String term = null;
 		private Stage(final int recipeLevel, final int multiplier, final double dmgPct, final int attackAdj, final double armorAdjPct)
 		{
 			this.recipeLevel=recipeLevel;
@@ -128,8 +129,23 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 		public final String term()
 		{
-			return CMLib.lang().L(name());
+			if(term == null)
+			{
+				switch(this)
+				{
+				case Designer: term = CMLib.lang().L("Designer"); break;
+				case Cuirboulli: term = CMLib.lang().L("Cuirboulli"); break;
+				case Thick: term = CMLib.lang().L("Thick"); break;
+				case Battlemoulded: term = CMLib.lang().L("Battlemoulded"); break;
+				case Laminar: term = CMLib.lang().L("Laminar"); break;
+				case Legendary: term = CMLib.lang().L("Legendary"); break;
+				case Masterwork: term = CMLib.lang().L("Masterwork"); break;
+				default: term = CMLib.lang().L("Normal"); break;
+				}
+			}
+			return term;
 		}
+
 
 		public final static Stage find(final String name)
 		{

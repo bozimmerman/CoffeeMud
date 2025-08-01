@@ -91,7 +91,7 @@ public class Fighter_ChokeHold extends FighterGrappleSkill
 				if(msg.sourceMajor(CMMsg.MASK_MOUTH))
 				{
 					if(msg.sourceMessage()!=null)
-						msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
+						msg.source().tell(L("You are in a(n) @x1!",name().toLowerCase()));
 					return false;
 				}
 			}
@@ -127,8 +127,8 @@ public class Fighter_ChokeHold extends FighterGrappleSkill
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) "+name().toLowerCase()+"!"):
-						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a "+name().toLowerCase()+"!^</FIGHT^>^?"));
+					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) @x1!",name().toLowerCase()):
+						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a @x1!^</FIGHT^>^?",name().toLowerCase()));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -140,7 +140,7 @@ public class Fighter_ChokeHold extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a "+name().toLowerCase()+", but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to put <T-NAME> in a @x1, but fail(s).",name().toLowerCase()));
 
 		// return whether it worked
 		return success;

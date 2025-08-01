@@ -70,9 +70,10 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	@Override
 	public boolean canGenerateAdjacentRooms(final Room R)
 	{
-		return ((R.displayText().indexOf(L(LegalLibrary.INDOORSTR).trim())<0)
-			  &&(R.displayText().indexOf(L(LegalLibrary.OUTDOORSTR).trim())<0)
-			  &&(R.description().indexOf(L(LegalLibrary.SALESTR).trim())<0)
-			  &&(R.description().indexOf(L(LegalLibrary.RENTSTR).trim())<0));
+		final String displayText = (R==null)?"":R.displayText();
+		return ((displayText.indexOf(INDOORSTR.trim())<0)
+			  &&(displayText.indexOf(OUTDOORSTR.trim())<0)
+			  &&(displayText.indexOf(SALESTR.trim())<0)
+			  &&(displayText.indexOf(RENTSTR.trim())<0));
 	}
 }

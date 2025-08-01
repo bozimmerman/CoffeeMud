@@ -772,87 +772,87 @@ public class DefaultTriggerer implements Triggerer
 					playerRef = thePlayer;
 				else
 				if(DT.other==0)
-					playerRef = "any assister";
+					playerRef = L("any assister");
 				else
-					playerRef = "the "+CMLib.english().makeNumberthWords(DT.other)+" assister ";
+					playerRef = L("the @x1 assister ",CMLib.english().makeNumberthWords(DT.other));
 				if(v>0)
 					buf.append(", "+((DT==triggers[v])?L("and "):L("or ")));
 				switch(DT.triggerCode)
 				{
 				case SAY:
-					buf.append(L(playerRef+" needs to say '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to say '@x1'",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case READING:
 					if(DT.parm1.equals("0"))
-						buf.append(L(playerRef+" needs to read something"));
+						buf.append(L("@x1 needs to read something",playerRef));
 					else
-						buf.append(L(playerRef+" needs to read '@x1'",DT.parm1.toLowerCase()));
+						buf.append(L("@x2 needs to read '@x1'",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case SOCIAL:
 				{
 					if(DT.soc == null)
-						buf.append(L(playerRef+" needs to do the impossible"));
+						buf.append(L("@x1 needs to do the impossible",playerRef));
 					else
 					if(DT.parm2.equals("*"))
-						buf.append(L(playerRef+" needs to @x1",DT.soc.baseName().toLowerCase()));
+						buf.append(L("@x2 needs to @x1",DT.soc.baseName().toLowerCase(),playerRef));
 					else
-						buf.append(L(playerRef+" needs to @x1",(DT.soc.baseName().toLowerCase()+" "+DT.soc.getTargetDesc()).trim()));
+						buf.append(L("@x2 needs to @x1",(DT.soc.baseName().toLowerCase()+" "+DT.soc.getTargetDesc()).trim(),playerRef));
 					break;
 				}
 				case TIME:
 					buf.append(L("the hour of the day is @x1",DT.parm1.toLowerCase()));
 					break;
 				case PUTTHING:
-					buf.append(L(playerRef+" needs to put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+					buf.append(L("@x3 needs to put @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase(),playerRef));
 					break;
 				case BURNTHING:
-					buf.append(L(playerRef+" needs to burn @x1",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to burn @x1",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case DRINK:
-					buf.append(L(playerRef+" needs to drink @x1",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to drink @x1",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case EAT:
-					buf.append(L(playerRef+" needs to eat @x1",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to eat @x1",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case INROOM:
 					{
 					if(DT.parm1.equalsIgnoreCase("holy")
 					||DT.parm1.equalsIgnoreCase("unholy")
 					||DT.parm1.equalsIgnoreCase("balance"))
-						buf.append(L(playerRef+" needs to be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase()));
+						buf.append(L("@x2 needs to be in the deities room of infused @x1-ness.",DT.parm1.toLowerCase(),playerRef));
 					else
 					{
 						final Room R=CMLib.map().getRoom(DT.parm1);
 						if(R==null)
-							buf.append(L(playerRef+" needs to be in some unknown place"));
+							buf.append(L("@x1 needs to be in some unknown place",playerRef));
 						else
-							buf.append(L(playerRef+" needs to be in '@x1'",R.displayText(null)));
+							buf.append(L("@x2 needs to be in '@x1'",R.displayText(null),playerRef));
 					}
 					}
 					break;
 				case RIDING:
-					buf.append(L(playerRef+" needs to be on @x1",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to be on @x1",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case CAST:
 					{
 					final Ability A=CMClass.findAbility(DT.parm1);
 					if(A==null)
-						buf.append(L(playerRef+" needs to cast '@x1'",DT.parm1));
+						buf.append(L("@x2 needs to cast '@x1'",DT.parm1,playerRef));
 					else
-						buf.append(L(playerRef+" needs to cast '@x1'",A.name()));
+						buf.append(L("@x2 needs to cast '@x1'",A.name(),playerRef));
 					}
 					break;
 				case EMOTE:
-					buf.append(L(playerRef+" needs to emote '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to emote '@x1'",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case RANDOM:
-					buf.append(DT.parm1+"% of the time");
+					buf.append(L("@x1% of the time",DT.parm1));
 					break;
 				case WAIT:
 					buf.append(L("wait @x1 seconds",""+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)));
 					break;
 				case YOUSAY:
-					buf.append(L("then "+playerRef+" will automatically say '@x1'",DT.parm1.toLowerCase()));
+					buf.append(L("then @x2 will automatically say '@x1'",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case OTHERSAY:
 					buf.append(L("then all others will automatically say '@x1'",DT.parm1.toLowerCase()));
@@ -872,7 +872,7 @@ public class DefaultTriggerer implements Triggerer
 						buf.append(L("requires at least @x1 assistants like @x2",DT.parm1,CMLib.masking().maskDesc(DT.parm2)));
 					break;
 				case PUTVALUE:
-					buf.append(L(playerRef+" should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase()));
+					buf.append(L("@x3 should put an item worth at least @x1 in @x2",DT.parm1.toLowerCase(),DT.parm2.toLowerCase(),playerRef));
 					break;
 				case PUTMATERIAL:
 					{
@@ -885,7 +885,7 @@ public class DefaultTriggerer implements Triggerer
 						else
 						if(RawMaterial.CODES.IS_VALID(t))
 							material=RawMaterial.CODES.NAME(t).toLowerCase();
-						buf.append(L(playerRef+" needs to put an item made of @x1 in @x2",material,DT.parm2.toLowerCase()));
+						buf.append(L("@x3 needs to put an item made of @x1 in @x2",material,DT.parm2.toLowerCase(),playerRef));
 					}
 					break;
 				case BURNMATERIAL:
@@ -899,20 +899,20 @@ public class DefaultTriggerer implements Triggerer
 						else
 						if(RawMaterial.CODES.IS_VALID(t))
 							material=RawMaterial.CODES.NAME(t).toLowerCase();
-						buf.append(L(playerRef+" needs to burn an item made of @x1",material));
+						buf.append(L("@x2 needs to burn an item made of @x1",material,playerRef));
 					}
 					break;
 				case BURNVALUE:
-					buf.append(L(playerRef+" needs to burn an item worth at least @x1",DT.parm1.toLowerCase()));
+					buf.append(L("@x2 needs to burn an item worth at least @x1",DT.parm1.toLowerCase(),playerRef));
 					break;
 				case SITTING:
-					buf.append(L(playerRef+" needs to sit down"));
+					buf.append(L("@x1 needs to sit down",playerRef));
 					break;
 				case STANDING:
-					buf.append(L(playerRef+" needs to stand up"));
+					buf.append(L("@x1 needs to stand up",playerRef));
 					break;
 				case SLEEPING:
-					buf.append(L(playerRef+" needs to go to sleep"));
+					buf.append(L("@x1 needs to go to sleep",playerRef));
 					break;
 				}
 				DT=DT.orConnect;

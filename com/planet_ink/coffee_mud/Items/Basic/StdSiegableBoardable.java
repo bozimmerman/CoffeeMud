@@ -821,7 +821,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					final Room thisRoom = (Room)owner();
 					if(thisRoom==null)
 					{
-						msg.source().tell(L("This "+noun_word+" is nowhere to be found!"));
+						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
 						return false;
 					}
 					final String rest = CMParms.combine(cmds,1);
@@ -858,14 +858,14 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					final Room thisRoom = (Room)owner();
 					if(thisRoom==null)
 					{
-						msg.source().tell(L("This "+noun_word+" is nowhere to be found!"));
+						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
 						return false;
 					}
 					if((!this.amInTacticalMode())
 					||(this.siegeTarget==null)
 					||(!thisRoom.isContent(this.siegeTarget)))
 					{
-						msg.source().tell(L("Your "+noun_word+" must be targeting an enemy to aim weapons."));
+						msg.source().tell(L("Your @x1 must be targeting an enemy to aim weapons.",noun_word));
 						return false;
 					}
 					if((cmds.size()<3)&&(this.siegeTarget instanceof NavigableItem))
@@ -1452,7 +1452,8 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 						final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 @x2.",hitWord,name()) : msg.targetMessage();
 						final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
 						this.sendAreaMessage(msg.source(), deckHitMsg, true);
-						final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, L("Something hits and @x1 the "+noun_word+".",hitWord));
+						final CMMsg underdeckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION,
+								L("Something hits and @x1 the @x2.",hitWord,noun_word));
 						this.sendAreaMessage(msg.source(), underdeckHitMsg, false);
 						if(pctLostAmt >= this.usesRemaining())
 						{

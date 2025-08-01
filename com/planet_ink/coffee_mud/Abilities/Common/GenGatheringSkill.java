@@ -97,9 +97,9 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		O[V_RMSK]="";
 		O[V_PMSK]="";
 		O[V_YILD]="(1?5)+3";
-		O[V_MSG1]="<S-NAME> start(s) trying to do something.";
+		O[V_MSG1]=CMLib.lang().L("<S-NAME> start(s) trying to do something.");
 		O[V_MSG2]="<S-NAME> find(s) @x1.";
-		O[V_MSG3]="You don't find anything useful to gather here.";
+		O[V_MSG3]=CMLib.lang().L("You don't find anything useful to gather here.");
 		O[V_MSG4]="<S-NAME> manage(s) to gather @x1 @x2.";
 		O[V_IXML]="";
 		O[V_COSM]=Boolean.valueOf(false);
@@ -534,7 +534,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 							final String plural = (msg.value()==1)
 									? CMLib.english().removeArticleLead(foundShortName)
 									: CMLib.english().makePlural(CMLib.english().removeArticleLead(foundShortName));
-							msg.modify(L((String)V(ID, V_MSG4),""+msg.value(),plural));
+							msg.modify(L((String)V(ID, V_MSG4),""+msg.value(),plural)); // need to keep variable support, so localize
 							mob.location().send(mob, msg);
 							if(!((Boolean) V(ID, V_COSM)).booleanValue())
 							{
@@ -769,7 +769,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		}
 		final int duration=getDuration(mob,mob.basePhyStats().level());
 		final String oldFoundName = (found==null)?"":found.Name();
-		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L((String)V(ID, V_MSG1)));
+		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),(String)V(ID, V_MSG1));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -50,6 +50,18 @@ public class StdRideable extends StdMOB implements Rideable
 	protected String		mountString		= "";
 	protected String		dismountString	= "";
 
+	protected static String DEFAULT_RIDE_STRING = CMLib.lang().L("ride(s)");
+	protected static String DEFAULT_FOLLOW_STRING = CMLib.lang().L("follow(s)");
+	protected static String DEFAULT_IS_PULLED_STRING = CMLib.lang().L("is pulled");
+	protected static String DEFAULT_PULLING_ALONG_STRING = CMLib.lang().L("pulling along");
+	protected static String DEFAULT_MOUNTED_WITH_STRING = CMLib.lang().L("mounted with");
+	protected static String DEFAULT_BEING_RIDDEN_BY_STRING = CMLib.lang().L("being ridden by");
+	protected static String DEFAULT_BEING_PULLED_BY_STRING = CMLib.lang().L("being pulled by");
+	protected static String DEFAULT_RIDING_ON_STRING = CMLib.lang().L("riding on");
+	protected static String DEFAULT_MOUNTS_STRING = CMLib.lang().L("mount(s)");
+	protected static String DEFAULT_DISMOUNTS_STRING = CMLib.lang().L("dismount(s)");
+	protected static String DEFAULT_ON_STRING = CMLib.lang().L("on");
+
 	public StdRideable()
 	{
 		super();
@@ -183,7 +195,7 @@ public class StdRideable extends StdMOB implements Rideable
 	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
-			return "on";
+			return DEFAULT_ON_STRING;
 		return putString;
 	}
 
@@ -316,11 +328,11 @@ public class StdRideable extends StdMOB implements Rideable
 		||(stateString.length()==0))
 		{
 			if(R instanceof Item)
-				return "being pulled by";
+				return DEFAULT_BEING_PULLED_BY_STRING;
 			else
 			if(R instanceof Rideable)
-				return "mounted with";
-			return "riding on";
+				return DEFAULT_MOUNTED_WITH_STRING;
+			return DEFAULT_RIDING_ON_STRING;
 		}
 		return stateString;
 	}
@@ -349,7 +361,7 @@ public class StdRideable extends StdMOB implements Rideable
 	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
-			return "mount(s)";
+			return DEFAULT_MOUNTS_STRING;
 		return mountString;
 	}
 
@@ -377,7 +389,7 @@ public class StdRideable extends StdMOB implements Rideable
 	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
-			return "dismount(s)";
+			return DEFAULT_DISMOUNTS_STRING;
 		return dismountString;
 	}
 
@@ -407,11 +419,11 @@ public class StdRideable extends StdMOB implements Rideable
 		if((R==null)||(rideString.length()==0))
 		{
 			if(R instanceof Item)
-				return "is pulled";
+				return DEFAULT_IS_PULLED_STRING;
 			else
 			if(R instanceof Rideable)
-				return "follow(s)";
-			return "ride(s)";
+				return DEFAULT_FOLLOW_STRING;
+			return DEFAULT_RIDE_STRING;
 		}
 		return rideString;
 	}
@@ -445,11 +457,11 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				final Rideable rI=(Rideable)R;
 				if(rI.rideBasis()==Rideable.Basis.WAGON)
-					return "pulling along";
+					return DEFAULT_PULLING_ALONG_STRING;
 				if(rI instanceof MOB)
-					return "mounted with";
+					return DEFAULT_MOUNTED_WITH_STRING;
 			}
-			return "being ridden by";
+			return DEFAULT_BEING_RIDDEN_BY_STRING;
 		}
 		return stateSubjectStr;
 	}

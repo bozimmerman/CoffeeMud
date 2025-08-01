@@ -46,6 +46,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return "MUDLaw";
 	}
 
+	private String	INDOORSTR	= null;
+	private String	OUTDOORSTR	= null;
+	private String	SALESTR		= null;
+	private String	RENTSTR		= null;
+
 	@Override
 	public Law getTheLaw(final Room R)
 	{
@@ -776,14 +781,28 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return isLegalOfficerHere(mob) || isLegalJudgeHere(mob);
 	}
 
+
+	@Override
+	public void initializeClass()
+	{
+		if(INDOORSTR == null)
+		{
+			final String[] markers = CMProps.getListFileStringList(CMProps.ListFile.REALESTATE_MARKERS);
+			INDOORSTR=" "+((markers.length>0)?markers[0].trim():"");
+			OUTDOORSTR=" "+((markers.length>1)?markers[1].trim():"");
+			SALESTR=" "+((markers.length>2)?markers[2].trim():"");
+			RENTSTR=" "+((markers.length>3)?markers[3].trim():"");
+		}
+	}
+
 	@Override
 	public void colorRoomForSale(Room R, final LandTitle title, final boolean reset)
 	{
 		synchronized(CMClass.getSync("SYNC"+R.roomID()))
 		{
 			R=CMLib.map().getRoom(R);
-			final String theStr=CMLib.lang().L(title.rentalProperty()?RENTSTR:SALESTR);
-			final String otherStr=CMLib.lang().L(title.rentalProperty()?SALESTR:RENTSTR);
+			final String theStr=title.rentalProperty()?RENTSTR:SALESTR;
+			final String otherStr=title.rentalProperty()?SALESTR:RENTSTR;
 			int x=R.description().indexOf(otherStr);
 			while(x>=0)
 			{
@@ -793,7 +812,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			}
 			final String oldDescription=R.description();
 			x=R.description().indexOf(theStr.trim());
-			final String displayStr =  CMLib.lang().L(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
+			final String displayStr =  CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR;
 			if((x<0)||(reset&&(!R.displayText().equals(displayStr))))
 			{
 				if(reset)

@@ -74,13 +74,13 @@ public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 	@Override
 	protected String canSpeakWithWhat()
 	{
-		return "speak with burrowing creatures";
+		return L("speak with burrowing creatures");
 	}
 
 	@Override
 	protected String canSpeakWithWhatNoun()
 	{
-		return "speech of burrowing creatures";
+		return L("speech of burrowing creatures");
 	}
 
 	@Override

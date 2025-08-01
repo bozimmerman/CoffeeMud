@@ -52,7 +52,7 @@ public class Ranger_Enemy1 extends StdAbility
 	@Override
 	public String displayText()
 	{
-		return L("(Enemy of the "+text()+")");
+		return L("(Enemy of the @x1)",text());
 	}
 
 	@Override

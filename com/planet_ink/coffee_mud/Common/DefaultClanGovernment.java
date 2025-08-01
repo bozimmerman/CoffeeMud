@@ -1075,7 +1075,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			return null;
 		if(helpStr==null)
 		{
-			final StringBuilder str=new StringBuilder(CMLib.lang().L("\n\r^HOrganization type: ^N"+getName()+"\n\r\n\r"));
+			final StringBuilder str=new StringBuilder(CMLib.lang().L("\n\r^HOrganization type: ^N@x1\n\r\n\r",getName()));
 			str.append(getLongDesc()).append("\n\r");
 			str.append(CMLib.lang().L("\n\r^HAuthority Chart:\n\r\n\r"));
 			final List<ClanPosition> showablePositions=new Vector<ClanPosition>();

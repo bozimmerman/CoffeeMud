@@ -52,7 +52,7 @@ public class Dance extends StdAbility
 	@Override
 	public String displayText()
 	{
-		return L("("+danceOf()+")");
+		return "("+danceOf()+")"; // danceOf is name, and name is localized
 	}
 
 	@Override

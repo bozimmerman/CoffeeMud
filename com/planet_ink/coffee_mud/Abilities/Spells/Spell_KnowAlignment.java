@@ -88,10 +88,10 @@ public class Spell_KnowAlignment extends Spell
 				String alignment;
 				final String goodEvilName = CMLib.flags().getAlignmentName(target).toLowerCase();
 				if(CMLib.flags().isChaotic(target))
-					alignment = L("chaotic "+goodEvilName);
+					alignment = L("chaotic @x1",goodEvilName);
 				else
 				if(CMLib.flags().isLawful(target))
-					alignment = L("lawful "+goodEvilName);
+					alignment = L("lawful @x1",goodEvilName);
 				else
 					alignment = L(goodEvilName);
 				commonTelL(mob,target,(Environmental)null,"<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",alignment);

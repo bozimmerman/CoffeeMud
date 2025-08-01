@@ -142,7 +142,7 @@ public class Cmuniqsortsvec extends StdTest
 				for(int i=0;i<vec.size();i++)
 					if(found.contains(vec.get(i).ID()))
 					{
-						return (L("Error#"+i+"("+vec.get(i).ID()+")"));
+						return ("Error#"+i+"("+vec.get(i).ID()+")");
 					}
 					else
 					{

@@ -213,6 +213,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public String makeNumberWords(final double num, int precision)
 	{
+		//localization will mean moving the static words stuff to Lists?
 		if(num < 0)
 			return "negative " + makeNumberWords(-num, precision);
 		final double point=Math.round(Math.floor(num));

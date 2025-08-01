@@ -65,7 +65,7 @@ public interface ClanItem extends Item
 		SAILORSCAP("Sailors cap")
 		;
 		private final String ID;
-		private final String displayName;
+		private String displayName = null;
 
 		public final static String[] ALL=new String[ClanItemType.values().length];
 		static
@@ -91,6 +91,28 @@ public interface ClanItem extends Item
 
 		public String getDisplayName()
 		{
+			if(displayName == null)
+			{
+				switch(this)
+				{
+				case FLAG: displayName = CMLib.lang().L("Flag"); break;
+				case BANNER: displayName = CMLib.lang().L("Banner"); break;
+				case GAVEL: displayName = CMLib.lang().L("Gavel"); break;
+				case PROPAGANDA: displayName = CMLib.lang().L("Propaganda"); break;
+				case GATHERITEM: displayName = CMLib.lang().L("Gathering tool"); break;
+				case CRAFTITEM: displayName = CMLib.lang().L("Crafting tool"); break;
+				case SPECIALSCALES: displayName = CMLib.lang().L("Justice tool"); break;
+				case SPECIALSCAVENGER: displayName = CMLib.lang().L("Scavenging tool"); break;
+				case SPECIALOTHER: displayName = CMLib.lang().L("Clan item"); break;
+				case SPECIALTAXER: displayName = CMLib.lang().L("Taxing tool"); break;
+				case DONATIONJOURNAL: displayName = CMLib.lang().L("Journal"); break;
+				case ANTI_PROPAGANDA: displayName = CMLib.lang().L("Anti-propaganda"); break;
+				case SPECIALAPRON: displayName = CMLib.lang().L("Merchant tool"); break;
+				case LEGALBADGE: displayName = CMLib.lang().L("Officer emblem"); break;
+				case TABBARD: displayName = CMLib.lang().L("Tabbard"); break;
+				case SAILORSCAP: displayName = CMLib.lang().L("Sailors cap"); break;
+				}
+			}
 			return displayName;
 		}
 

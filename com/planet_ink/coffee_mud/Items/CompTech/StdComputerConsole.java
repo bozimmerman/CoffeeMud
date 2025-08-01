@@ -344,7 +344,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 					if(hasHelp)
 						str.append("^H").append(CMStrings.padRight(L("^wHELP                   ^N: Get help."),60)).append("\n\r");
 					if(numRiders()==0)
-						str.append("^H").append(CMStrings.padRight(L("* Sit at "+name()+" to shorten commands *"),60)).append("\n\r");
+						str.append("^H").append(CMStrings.padRight(L("* Sit at @x1 to shorten commands *",name()),60)).append("\n\r");
 					if(isInternal)
 					{
 						str.append(L("\n\rEnter \"<\" to return to the previous menu."));

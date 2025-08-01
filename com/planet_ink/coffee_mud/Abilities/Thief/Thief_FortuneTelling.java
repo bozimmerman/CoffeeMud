@@ -72,33 +72,31 @@ public class Thief_FortuneTelling extends Thief_Runecasting
 		return triggerStrings;
 	}
 
-	protected static String[] astroStarts = new String[]
-	{
-		"I see your future is affected by...",
-		"You are surrounded by...",
-		"In your future there are...",
-		"Your future holds...",
-		"Be ye warned..."
-	};
-
-	protected static String[] astroFails = new String[]
-	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
-	};
-
 	@Override
-	protected String[] getStartPhrases()
+	protected String getStartPhrase()
 	{
-		return astroStarts;
+		switch(CMLib.dice().roll(1, 5, -1))
+		{
+		case 0: return L("I see your future is affected by...");
+		case 1: return L("You are surrounded by...");
+		case 2: return L("In your future there are...");
+		case 3: return L("Your future holds...");
+		case 4: return L("Be ye warned...");
+		}
+		return "";
 	}
 
 	@Override
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return astroFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("Astral clouds are blocking your aura.");
+		case 1: return L("Your future is unbound. Tread carefully.");
+		case 2: return L("Your path is clear.");
+		case 3: return L("The fates` gaze is elsewhere.");
+		}
+		return "";
 	}
 
 	@Override

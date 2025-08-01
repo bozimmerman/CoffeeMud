@@ -57,7 +57,7 @@ public class Chant_FindPlant extends Chant
 	@Override
 	public String displayText()
 	{
-		return L("(Finding "+lookingFor+")");
+		return displayText;
 	}
 
 	@Override
@@ -72,7 +72,11 @@ public class Chant_FindPlant extends Chant
 		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
 	}
 
-	protected String lookingFor="plants";
+	private static String DEFAULT_LOOKING_FOR=CMLib.lang().L("plants");
+	private static String DEFAULT_DISPLAYTEXT=CMLib.lang().L("(Looking for plants)");
+
+	protected String lookingFor=DEFAULT_LOOKING_FOR;
+	protected String displayText=DEFAULT_DISPLAYTEXT;
 	protected List<Room> theTrail=null;
 	protected int nextDirection=-2;
 	public int whatImLookingFor=-1;
@@ -189,7 +193,7 @@ public class Chant_FindPlant extends Chant
 			return "";
 		final Room room=R;
 		if(room.myResource()==whatImLookingFor)
-			return "There seems to be "+lookingFor+" around here.\n\r";
+			return L("There seems to be @x1 around here.\n\r",lookingFor);
 		return "";
 	}
 
@@ -203,6 +207,7 @@ public class Chant_FindPlant extends Chant
 			if(d.equalsIgnoreCase(s))
 			{
 				lookingFor=d.toLowerCase();
+				this.displayText = L("(Finding @x1)",lookingFor);
 				whatImLookingFor=c;
 				break;
 			}
@@ -311,7 +316,8 @@ public class Chant_FindPlant extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to @x1s!",name().toLowerCase()):L("^S<S-NAME> chant(s) for @x1.^?",lookingFor));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?L("<T-NAME> begin(s) to @x1s!",name().toLowerCase()):L("^S<S-NAME> chant(s) for @x1.^?",lookingFor));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -57,7 +57,7 @@ public class Dance_Manipuri extends Dance
 	@Override
 	protected String danceOf()
 	{
-		return name()+" Dance";
+		return L("@x1 Dance",name());
 	}
 
 	protected Room lastRoom=null;

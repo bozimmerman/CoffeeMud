@@ -186,7 +186,7 @@ public class Spacecollisions extends StdTest
 					mob.tell(li+"A) current distance="+CMLib.space().getDistanceFrom(shipCoord2, targetCoord));
 					mob.tell(li+"A) min distance during move="+swish);
 					*/
-					return (L("Error:"+expectHit+"!="+li+"A: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord))));
+					return ("Error:"+expectHit+"!="+li+"A: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord)));
 				}
 			}
 			// r->l
@@ -214,7 +214,7 @@ public class Spacecollisions extends StdTest
 					mob.tell(li+"B) speed="+speed);
 					mob.tell(li+"B) min distance during move="+swish);
 					*/
-					return (L("Error:"+expectHit+"!="+li+"B: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord))));
+					return ("Error:"+expectHit+"!="+li+"B: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord)));
 				}
 			}
 		}

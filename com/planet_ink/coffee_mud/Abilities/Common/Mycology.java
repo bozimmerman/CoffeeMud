@@ -47,7 +47,7 @@ public class Mycology extends CommonSkill implements RecipeDriven
 	public static final int	RCP_FREQ		= 1;
 	public static final int	RCP_VALUE		= 2;
 	public static final int RCP_SPELL		= 3;
-	
+
 	@Override
 	public String name()
 	{
@@ -153,14 +153,14 @@ public class Mycology extends CommonSkill implements RecipeDriven
 					{
 						map = new IntegerRangeMap<List<String>>();
 						int cur = 0;
-						for(List<String> recipe : mushroomList)
+						for(final List<String> recipe : mushroomList)
 						{
 							if((recipe.size()>RCP_FREQ)
 							&&(recipe.get(0).trim().length()>0))
 							{
-								int v = CMath.s_int(recipe.get(RCP_FREQ));
-								int min = cur;
-								int max = cur + v;
+								final int v = CMath.s_int(recipe.get(RCP_FREQ));
+								final int min = cur;
+								final int max = cur + v;
 								cur = cur + v + 1;
 								map.put(new int[] {min,max}, recipe);
 							}
@@ -176,7 +176,7 @@ public class Mycology extends CommonSkill implements RecipeDriven
 						while((mushroomList.size()>2)
 						&&((mushroomFound==null)||(mushroomFound.get(0).trim().length()==0)))
 						{
-							int rand = CMLib.dice().roll(1, map.getMax(), 0);
+							final int rand = CMLib.dice().roll(1, map.getMax(), 0);
 							mushroomFound=map.get(new int[] {rand,rand});
 						}
 						if(mushroomFound==null)
@@ -192,11 +192,20 @@ public class Mycology extends CommonSkill implements RecipeDriven
 						commonTelL(mob,"@x1 appears to be @x2.",found.name(),mushroom);
 						String name=found.Name();
 						name=name.substring(0,name.length()-10).trim(); //?!
-						String nameAddendum=mushroom.endsWith("shroom")?"":L(" mushrooms");
 						if(name.length()>0)
-							found.setName(name+" "+mushroom+nameAddendum);
+						{
+							if(mushroom.endsWith("shroom"))
+								found.setName(name+" "+mushroom+L(" mushrooms"));
+							else
+								found.setName(name+" "+mushroom);
+						}
 						else
-							found.setName(L("some @x1"+nameAddendum,mushroom));
+						{
+							if(mushroom.endsWith("shroom"))
+								found.setName(L("some @x1 mushrooms",mushroom));
+							else
+								found.setName(L("some @x1",mushroom));
+						}
 						found.setDisplayText(L("@x1 is here",found.Name()));
 						found.setBaseValue(found.baseGoldValue()*valueMultiplier);
 						found.setDescription("");

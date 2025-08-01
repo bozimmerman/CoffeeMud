@@ -51,6 +51,28 @@ public class StdRideable extends StdContainer implements Rideable
 	protected String		mountString		= "";
 	protected String		dismountString	= "";
 
+	private static String DEFAULT_RIDE_STRING = CMLib.lang().L("ride(s)");
+	private static String DEFAULT_BEING_RIDDEN_BY_STRING = CMLib.lang().L("being ridden by");
+	private static String DEFAULT_ON_STRING = CMLib.lang().L("on");
+	private static String DEFAULT_IN_STRING = CMLib.lang().L("in");
+	private static String DEFAULT_AT_STRING = CMLib.lang().L("at");
+	private static String DEFAULT_RIDING_IN_STRING = CMLib.lang().L("riding in");
+	private static String DEFAULT_CLIMBING_ON_STRING = CMLib.lang().L("climbing on");
+	private static String DEFAULT_BOARDS_STRING = CMLib.lang().L("board(s)");
+	private static String DEFAULT_SITS_ON_STRING = CMLib.lang().L("sit(s) on");
+	private static String DEFAULT_SITS_AT_STRING = CMLib.lang().L("sit(s) at");
+	private static String DEFAULT_GETS_INTO_STRING = CMLib.lang().L("get(s) into");
+	private static String DEFAULT_CLIMBS_ONTO_STRING = CMLib.lang().L("climb(s) onto");
+	private static String DEFAULT_SITS_DOWN_ON_STRING = CMLib.lang().L("sit(s) down on");
+	private static String DEFAULT_LIES_DOWN_ON_STRING = CMLib.lang().L("lie(s) down on");
+	private static String DEFAULT_DISEMBARKS_FROM_STRING = CMLib.lang().L("disembark(s) from");
+	private static String DEFAULT_GETS_UP_FROM_STRING = CMLib.lang().L("get(s) up from");
+	private static String DEFAULT_GETS_OFF_OF_STRING = CMLib.lang().L("get(s) off of");
+	private static String DEFAULT_GETS_OUT_OF_STRING = CMLib.lang().L("get(s) out of");
+	private static String DEFAULT_REMOVES_THEMSELVES_FROM_STRING = CMLib.lang().L("remove(s) themselves from");
+	private static String DEFAULT_OCCUPIED_BY_STRING = CMLib.lang().L("occupied by");
+	private static String DEFAULT_HOLDING_STRING = CMLib.lang().L("holding");
+
 	public StdRideable()
 	{
 		super();
@@ -276,20 +298,20 @@ public class StdRideable extends StdContainer implements Rideable
 			case LAND_BASED:
 			case WAGON:
 			case WATER_BASED:
-				return "riding in";
+				return DEFAULT_RIDING_IN_STRING;
 			case ENTER_IN:
-				return "in";
+				return DEFAULT_IN_STRING;
 			case FURNITURE_SIT:
-				return "on";
+				return DEFAULT_ON_STRING;
 			case FURNITURE_TABLE:
-				return "at";
+				return DEFAULT_AT_STRING;
 			case LADDER:
-				return "climbing on";
+				return DEFAULT_CLIMBING_ON_STRING;
 			case FURNITURE_SLEEP:
 			case FURNITURE_HOOK:
-				return "on";
+				return DEFAULT_ON_STRING;
 			}
-			return "riding in";
+			return DEFAULT_RIDING_IN_STRING;
 		}
 		return stateString;
 	}
@@ -327,14 +349,14 @@ public class StdRideable extends StdContainer implements Rideable
 			case WATER_BASED:
 			case FURNITURE_SLEEP:
 			case ENTER_IN:
-				return "in";
+				return DEFAULT_IN_STRING;
 			case FURNITURE_SIT:
 			case FURNITURE_TABLE:
 			case FURNITURE_HOOK:
 			case LADDER:
-				return "on";
+				return DEFAULT_ON_STRING;
 			}
-			return "in";
+			return DEFAULT_IN_STRING;
 		}
 		return putString;
 	}
@@ -363,7 +385,7 @@ public class StdRideable extends StdContainer implements Rideable
 	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
-			return "ride(s)";
+			return DEFAULT_RIDE_STRING;
 		return rideString;
 	}
 
@@ -404,22 +426,22 @@ public class StdRideable extends StdContainer implements Rideable
 			case LAND_BASED:
 			case WAGON:
 			case WATER_BASED:
-				return "board(s)";
+				return DEFAULT_BOARDS_STRING;
 			case FURNITURE_SIT:
-				return "sit(s) on";
+				return DEFAULT_SITS_ON_STRING;
 			case FURNITURE_TABLE:
-				return "sit(s) at";
+				return DEFAULT_SITS_AT_STRING;
 			case ENTER_IN:
-				return "get(s) into";
+				return DEFAULT_GETS_INTO_STRING;
 			case LADDER:
 			case FURNITURE_HOOK:
-				return "climb(s) onto";
+				return DEFAULT_CLIMBS_ONTO_STRING;
 			case FURNITURE_SLEEP:
 				if(commandType==CMMsg.TYP_SIT)
-					return "sit(s) down on";
-				return "lie(s) down on";
+					return DEFAULT_SITS_DOWN_ON_STRING;
+				return DEFAULT_LIES_DOWN_ON_STRING;
 			}
-			return "board(s)";
+			return DEFAULT_BOARDS_STRING;
 		}
 		return mountString;
 	}
@@ -448,20 +470,20 @@ public class StdRideable extends StdContainer implements Rideable
 			case AIR_FLYING:
 			case LAND_BASED:
 			case WATER_BASED:
-				return "disembark(s) from";
+				return DEFAULT_DISEMBARKS_FROM_STRING;
 			case FURNITURE_TABLE:
-				return "get(s) up from";
+				return DEFAULT_GETS_UP_FROM_STRING;
 			case FURNITURE_SIT:
 			case FURNITURE_SLEEP:
 			case WAGON:
 			case LADDER:
-				return "get(s) off of";
+				return DEFAULT_GETS_OFF_OF_STRING;
 			case ENTER_IN:
-				return "get(s) out of";
+				return DEFAULT_GETS_OUT_OF_STRING;
 			case FURNITURE_HOOK:
-				return "remove(s) themselves from";
+				return DEFAULT_REMOVES_THEMSELVES_FROM_STRING;
 			}
-			return "disembark(s) from";
+			return DEFAULT_DISEMBARKS_FROM_STRING;
 		}
 		return dismountString;
 	}
@@ -497,19 +519,19 @@ public class StdRideable extends StdContainer implements Rideable
 			case LAND_BASED:
 			case WATER_BASED:
 			case WAGON:
-				return "being ridden by";
+				return DEFAULT_BEING_RIDDEN_BY_STRING;
 			case FURNITURE_TABLE:
-				return "occupied by";
+				return DEFAULT_OCCUPIED_BY_STRING;
 			case FURNITURE_SIT:
 				return "";
 			case FURNITURE_SLEEP:
 				return "";
 			case ENTER_IN:
-				return "occupied by";
+				return DEFAULT_OCCUPIED_BY_STRING;
 			case LADDER:
-				return "occupied by";
+				return DEFAULT_OCCUPIED_BY_STRING;
 			case FURNITURE_HOOK:
-				return "holding";
+				return DEFAULT_HOLDING_STRING;
 			}
 			return "";
 		}

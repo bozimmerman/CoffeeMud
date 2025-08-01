@@ -202,13 +202,20 @@ public class Achievements extends StdCommand
 				int numAwards=0;
 				for(final Achievement A : awards)
 					numAwards+=A.getRewards().length;
-				if(numAwards==0)
+				final String agentName;
+				switch(noAgent)
 				{
-					mob.tell(whoM,null,null,L("<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" would grant <S-NAME> no new awards."));
+				case AWARDS: agentName=L("awards"); break;
+				case FUTURE: agentName=L("future"); break;
+				case REMORT: agentName=L("remort"); break;
+				case RETIRE: agentName=L("retire"); break;
+				default: agentName = ""; break;
 				}
+				if(numAwards==0)
+					mob.tell(whoM,null,null,L("<S-YOUPOSS> next @x1 would grant <S-NAME> no new awards.", agentName));
 				else
 				{
-					final StringBuilder str=new StringBuilder(L("^H<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" will get the following awards:^?"));
+					final StringBuilder str=new StringBuilder(L("^H<S-YOUPOSS> next @x1 will get the following awards:^?", agentName));
 					int i=1;
 					for(final Achievement A : awards)
 					{

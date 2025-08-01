@@ -1920,7 +1920,7 @@ public class CMStrings
 	 * @param values values to replace each variable with
 	 * @return the string with values replaced.
 	 */
-	public final static String replaceVariables(final String str, final String values[])
+	public final static String replaceVariables(final String str, final String... values)
 	{
 		if(((values==null)||(values.length==0))&&(str.indexOf('@')<0))
 			return str;

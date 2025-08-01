@@ -52,7 +52,7 @@ public class Spell_Immunity extends Spell
 	@Override
 	public String displayText()
 	{
-		return L("(Immunity to "+immunityName+")");
+		return L("(Immunity to @x1)",immunityName);
 	}
 
 	@Override

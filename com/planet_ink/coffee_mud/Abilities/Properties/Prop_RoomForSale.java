@@ -47,16 +47,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "Putting a room up for sale";
 	}
 
-	@Override
-	protected int canAffectCode()
-	{
-		return Ability.CAN_ROOMS;
-	}
+	protected static String	INDOORSTR	= null;
+	protected static String	OUTDOORSTR	= null;
+	protected static String	SALESTR		= null;
+	protected static String	RENTSTR		= null;
 
 	protected int		lastItemNums	= -1;
 	protected int		lastDayDone		= -1;
 	protected int		daysWithNoChange= 0;
 	protected boolean	scheduleReset	= false;
+
+	@Override
+	protected int canAffectCode()
+	{
+		return Ability.CAN_ROOMS;
+	}
 
 	@Override
 	public String accountForYourself()
@@ -108,6 +113,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public int getNumConnectedPropertyRooms()
 	{
 		return (getAConnectedPropertyRoom()!=null)?1:0;
+	}
+
+	@Override
+	public void initializeClass()
+	{
+		if(INDOORSTR == null)
+		{
+			final String[] markers = CMProps.getListFileStringList(CMProps.ListFile.REALESTATE_MARKERS);
+			INDOORSTR=" "+((markers.length>0)?markers[0].trim():"");
+			OUTDOORSTR=" "+((markers.length>1)?markers[1].trim():"");
+			SALESTR=" "+((markers.length>2)?markers[2].trim():"");
+			RENTSTR=" "+((markers.length>3)?markers[3].trim():"");
+		}
 	}
 
 	protected void saveData(final String owner, final int price, final boolean rental, final int backTaxes, final boolean grid, final boolean allowTheft)
@@ -558,13 +576,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 
-			int x=R.description().indexOf(LegalLibrary.SALESTR);
+			int x=R.description().indexOf(SALESTR);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));
 				CMLib.database().DBUpdateRoom(R);
 			}
-			x=R.description().indexOf(LegalLibrary.RENTSTR);
+			x=R.description().indexOf(RENTSTR);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x));

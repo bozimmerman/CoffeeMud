@@ -169,6 +169,26 @@ public class ShipNavProgram extends ShipSensorProgram
 			for(int i=0;i<argTypes.length;i++)
 				argMap.put(argTypes[i], Integer.valueOf(i));
 		}
+
+		public String description()
+		{
+			switch(this)
+			{
+			case APPROACH:
+				return CMLib.lang().L("approach");
+			case LAND:
+				return CMLib.lang().L("land");
+			case LAUNCH:
+				return CMLib.lang().L("launch");
+			case ORBIT:
+				return CMLib.lang().L("orbit");
+			case STOP:
+				return CMLib.lang().L("stop");
+			default:
+				return CMLib.lang().L("unknown");
+
+			}
+		}
 	}
 
 	@Override
@@ -849,9 +869,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		||(programEngines==null)
 		||(programEngines.size()==0))
 		{
-			String reason =  (programEngines == null)?"no engines":(programEngines.size()==0)?"no aft engines":"";
-			reason = (ship==null)?"no ship interface":reason;
-			super.addScreenMessage(L("Last program aborted with error ("+reason+")."));
+			String reason =  (programEngines == null)?L("no engines"):(programEngines.size()==0)?L("no aft engines"):"";
+			reason = (ship==null)?L("no ship interface"):reason;
+			super.addScreenMessage(L("Last program aborted with error (@x1).",reason));
 			return false;
  		}
 		if(lastInject==null)
@@ -859,8 +879,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		if(lastInject==null)
 		{
 			String reason =  "";
-			reason = (lastInject==null)?"no engine injection data":reason;
-			super.addScreenMessage(L("Program aborted with error ("+reason+")."));
+			reason = (lastInject==null)?L("no engine injection data"):reason;
+			super.addScreenMessage(L("Program aborted with error (@x1).",reason));
 			return false;
 		}
 		return true;
@@ -889,9 +909,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			if(targetObject==null)
 			{
-				final String reason = "no target information";
+				final String reason = L("no target information");
 				cancelNavigation(false);
-				super.addScreenMessage(L("Approach program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Approach program aborted with error (@x1).",reason));
 				return false;
 			}
 			final long distance = (CMLib.space().getDistanceFrom(ship, targetObject)-ship.radius()
@@ -939,9 +959,9 @@ public class ShipNavProgram extends ShipSensorProgram
 			final LinkedList<SpaceObject> navList = track.getArg(LinkedList.class);
 			if(navList.isEmpty())
 			{
-				final String reason = "no nav target information";
+				final String reason = L("no nav target information");
 				cancelNavigation(false);
-				super.addScreenMessage(L("Approach program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Approach program aborted with error (@x1).",reason));
 				return false;
 			}
 			break;
@@ -955,18 +975,18 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			if(targetObject==null)
 			{
-				final String reason = "no planetary information";
+				final String reason = L("no planetary information");
 				cancelNavigation(false);
-				super.addScreenMessage(L("Launding program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Landing program aborted with error (@x1).",reason));
 				return false;
 			}
 			break;
 		case LAUNCH:
 			if(targetObject==null)
 			{
-				final String reason = "no planetary information";
+				final String reason = L("no planetary information");
 				this.cancelNavigation(false);
-				super.addScreenMessage(L("Launch program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Launch program aborted with error (@x1).",reason));
 				return false;
 			}
 			{
@@ -984,9 +1004,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		case ORBIT:
 			if(targetObject==null)
 			{
-				final String reason = "no planetary information";
+				final String reason = L("no planetary information");
 				this.cancelNavigation(false);
-				super.addScreenMessage(L("Orbit program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Orbit program aborted with error (@x1).",reason));
 				return false;
 			}
 			// orbit is forever now
@@ -1480,9 +1500,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			if(targetObject==null)
 			{
-				final String reason = "no target planetary information";
+				final String reason = L("no target planetary information");
 				this.cancelNavigation(false);
-				super.addScreenMessage(L("Landing program aborted with error ("+reason+")."));
+				super.addScreenMessage(L("Landing program aborted with error (@x1).",reason));
 				return;
 			}
 			final Dir3D dirToPlanet = CMLib.space().getDirection(ship, targetObject);
@@ -1542,9 +1562,9 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				if(targetObject==null)
 				{
-					final String reason = "no target planetary information";
+					final String reason = L("no target planetary information");
 					this.cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error ("+reason+")."));
+					super.addScreenMessage(L("Landing program aborted with error (@x1).",reason));
 					return;
 				}
 				final long distance=CMLib.space().getDistanceFrom(ship, targetObject)
@@ -1733,7 +1753,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if (targetAcceleration.doubleValue() < SpaceObject.ACCELERATION_DAMAGED)
 			{
 				final int gs = (int) Math.round(targetAcceleration.doubleValue() / SpaceObject.ACCELERATION_G);
-				addScreenMessage(L("No inertial dampeners found. Limiting acceleration to " + gs + "Gs."));
+				addScreenMessage(L("No inertial dampeners found. Limiting acceleration to @x1 Gs.",""+gs));
 			}
 			final List<ShipEngine> programEngines = new XVector<ShipEngine>(engineE);
 
@@ -2138,8 +2158,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Error: No programs running."));
 				return false;
 			}
-			final String name = CMStrings.capitalizeAndLower(navTrack.proc.name());
-			addScreenMessage(L("Confirmed: "+name+" program stopped."));
+			final String name = CMStrings.capitalizeAndLower(navTrack.proc.description());
+			addScreenMessage(L("Confirmed: @x1 program stopped.",name));
 			cancelNavigation(false);
 			return false;
 		}

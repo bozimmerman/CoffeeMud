@@ -61,7 +61,7 @@ public class PropSpelladder extends PropTest
 		resetTest();
 		final Ability SpellAdder = CMClass.getAbility("Prop_SpellAdder");
 		SpellAdder.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-1: @x1", SpellAdder.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", SpellAdder.accountForYourself(),what));
 		R2.addNonUninvokableEffect(SpellAdder);
 		R2.recoverRoomStats();
 		CMLib.tracking().walk(mobs[0], Directions.UP, false, false);

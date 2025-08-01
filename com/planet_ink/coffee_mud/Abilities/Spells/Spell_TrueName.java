@@ -370,7 +370,7 @@ public class Spell_TrueName extends Spell
 					trueNames.remove(trueNames.keySet().iterator().next());
 				trueNames.put(target.Name(), trueName);
 			}
-			final String str=auto?"":L("^S<S-NAME> speak(s) <T-YOUPOSS> True Name: '"+trueName+"'!.^?");
+			final String str=auto?"":L("^S<S-NAME> speak(s) <T-YOUPOSS> True Name: '@x1'!.^?",trueName);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL|CMMsg.MASK_MALICIOUS,str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -388,25 +388,25 @@ public class Spell_TrueName extends Spell
 						switch(CMLib.dice().roll(1, 7, -1))
 						{
 						case 0:
-							CMLib.commands().postSay(target, mob, "Argh!  Speak no more!!!", false,false);
+							CMLib.commands().postSay(target, mob, L("Argh!  Speak no more!!!"), false,false);
 							break;
 						case 1:
-							CMLib.commands().postSay(target, mob, "How dare you!", false,false);
+							CMLib.commands().postSay(target, mob, L("How dare you!"), false,false);
 							break;
 						case 2:
-							CMLib.commands().postSay(target, mob, "Yes?", false,false);
+							CMLib.commands().postSay(target, mob, L("Yes?"), false,false);
 							break;
 						case 3:
-							CMLib.commands().postSay(target, mob, "Something to do?", false,false);
+							CMLib.commands().postSay(target, mob, L("Something to do?"), false,false);
 							break;
 						case 4:
-							CMLib.commands().postSay(target, mob, "What?!", false,false);
+							CMLib.commands().postSay(target, mob, L("What?!"), false,false);
 							break;
 						case 5:
-							CMLib.commands().postSay(target, mob, "Yes, milord?", false,false);
+							CMLib.commands().postSay(target, mob, L("Yes, milord?"), false,false);
 							break;
 						case 6:
-							CMLib.commands().postSay(target, mob, "What is it?", false,false);
+							CMLib.commands().postSay(target, mob, L("What is it?"), false,false);
 							break;
 						}
 						mob.location().show(target, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> flee(s)..."));

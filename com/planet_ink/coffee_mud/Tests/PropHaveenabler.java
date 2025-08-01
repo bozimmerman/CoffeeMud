@@ -61,7 +61,7 @@ public class PropHaveenabler extends PropTest
 		resetTest();
 		final Ability HaveEnabler = CMClass.getAbility("Prop_HaveEnabler");
 		HaveEnabler.setMiscText(semiSpellList());
-		//mob.tell(L("Test:"+what+"-1: @x1", HaveEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", HaveEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveEnabler, mobs[0], null, 0);
 		if (!spellCheck(spells, mobs[0]))
 		{
@@ -76,7 +76,7 @@ public class PropHaveenabler extends PropTest
 		}
 		resetTest();
 		HaveEnabler.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", HaveEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", HaveEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), HaveEnabler, mobs[0], mobs[1], 0);
 		if (!spellCheck(spells, mobs[0]))
 		{

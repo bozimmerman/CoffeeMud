@@ -312,7 +312,7 @@ public class ShipDiagProgram extends GenShipProgram
 				scr.append("^W").append(CMStrings.padRight(L("  "),6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(getConditionStr(condPct),8));
-				scr.append("^H").append(CMStrings.padRight(L(C.name()),48));
+				scr.append("^H").append(CMStrings.padRight(C.name(),48)); // object names presumed localized
 				scr.append("^.^N\n\r");
 			}
 		}
@@ -361,7 +361,7 @@ public class ShipDiagProgram extends GenShipProgram
 				scr.append("^W").append(CMStrings.padRight(L("  "),6));
 				scr.append('^').append(getConditionColor(condPct));
 				scr.append(CMStrings.padRight(""+condPct+"%",8));
-				scr.append("^H").append(CMStrings.padRight(L(C.name()),48));
+				scr.append("^H").append(CMStrings.padRight(C.name(),48)); // item names presumed localized
 				scr.append("^.^N\n\r");
 			}
 		}
@@ -425,7 +425,7 @@ public class ShipDiagProgram extends GenShipProgram
 				scr.append("^W").append(CMStrings.padRight(L("Pow: "),5));
 				scr.append(CMStrings.padRight(""+powerPerTick,5));
 				scr.append(" ");
-				scr.append("^H").append(CMStrings.padRight(L(C.name()),41));
+				scr.append("^H").append(CMStrings.padRight(C.name(),41)); // item names presumed localized
 				scr.append("^.^N\n\r");
 			}
 		}
@@ -507,7 +507,7 @@ public class ShipDiagProgram extends GenShipProgram
 				scr.append('^').append(getConditionColor(efficiencyPct));
 				scr.append(CMStrings.padRight(""+efficiencyPct+"%",5));
 				scr.append(" ");
-				scr.append("^H").append(CMStrings.padRight(L(C.name()),41));
+				scr.append("^H").append(CMStrings.padRight(C.name(),41)); // item names presumed localized
 				scr.append("^.^N\n\r");
 			}
 		}

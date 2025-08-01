@@ -61,7 +61,7 @@ public class PropWearresister extends PropTest
 		resetTest();
 		final Ability WearResister = CMClass.getAbility("Prop_WearResister");
 		WearResister.setMiscText("pierce 100% holy 100% acid 30%");
-		//mob.tell(L("Test:"+what+"-1: @x1", WearResister.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", WearResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
 			return (L("Error#1"));
@@ -80,7 +80,7 @@ public class PropWearresister extends PropTest
 		}
 		resetTest();
 		WearResister.setMiscText("pierce 100% holy 100% acid 30% MASK=-RACE +DWARF");
-		//mob.tell(L("Test:"+what+"-2: @x1", WearResister.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", WearResister.accountForYourself(),what));
 		if (testResistance(mobs[0]))
 		{
 			return (L("Error#4"));

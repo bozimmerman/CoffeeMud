@@ -51,7 +51,7 @@ public class Chant_Earthpocket extends Chant
 	@Override
 	public String displayText()
 	{
-		return L("(Earthpocket: " + (super.tickDown / CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)) + ")");
+		return L("(Earthpocket: @x1)","" + (super.tickDown / CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)));
 	}
 
 	@Override

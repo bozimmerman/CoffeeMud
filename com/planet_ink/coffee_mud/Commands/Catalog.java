@@ -277,7 +277,7 @@ public class Catalog extends StdCommand
 			types.add(CatalogKind.ITEM);
 		for(final CatalogKind kind : types)
 		{
-			list.append(L("\n\r^H"+CMStrings.capitalizeAndLower(kind.name()).trim()+" categories:"));
+			list.append(L("\n\r^H@x1 categories:",CMStrings.capitalizeAndLower(kind.name()).trim()));
 			list.append("\n\r"+CMStrings.repeat('-',78)+"^?\n\r");
 			List<String> cats;
 			switch(kind)

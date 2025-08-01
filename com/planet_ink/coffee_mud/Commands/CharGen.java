@@ -1238,16 +1238,16 @@ public class CharGen extends StdCommand
 	{
 		final String[] fields=new String[]{"class","type","level","hands","reach","weight","material"};
 		final String[] defaults=new String[]{"BLUNT","BASHING","1","1","0","6","IRON"};
-		final StringBuilder str=new StringBuilder("\n\rInputs:\n\r");
-		str.append("\n\r");
+		final StringBuilder listOfFieldsStr=new StringBuilder("\n\rInputs:\n\r");
+		listOfFieldsStr.append("\n\r");
 		for(int x=0;x<fields.length;x++)
-			str.append("\"").append(fields[x]).append("=").append(defaults[x]).append("\"\n\r");
-		str.append("\n\r")
+			listOfFieldsStr.append("\"").append(fields[x]).append("=").append(defaults[x]).append("\"\n\r");
+		listOfFieldsStr.append("\n\r")
 		   .append("Put numbers BEFORE field name to add more items like the base item.\n\r")
 		   .append("\n\r");
 		if(commands.size()==0)
 		{
-			mob.tell(L(str.toString()));
+			mob.tell(L(listOfFieldsStr.toString()));
 			return;
 		}
 		final List<Map<String,String>> map=new ArrayList<Map<String,String>>();

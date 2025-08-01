@@ -775,7 +775,10 @@ public class Create extends StdCommand
 		{
 			if((raceR!=null)||(classC!=null)||(level!=null))
 			{
-				newMOB = CMClass.getMOB("GenMob");
+				if((raceR!=null)&&(raceR.useRideClass()))
+					newMOB = CMClass.getMOB("GenRideable");
+				else
+					newMOB = CMClass.getMOB("GenMob");
 				if((raceR!=null)&&(classC!=null))
 					newMOB.setName(CMLib.english().startWithAorAn(raceR.name())+" "+classC.name());
 				else
@@ -1640,11 +1643,11 @@ public class Create extends StdCommand
 
 	protected String listOfThings()
 	{
-		return "EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, COMMAND, "
+		return L("EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, COMMAND, "
 			 + "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, HELP/AHELP, "
 			 + "ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
 			 + "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, TRAP, WRIGHTSKILL, COMMAND, "
-			 + "GATHERSKILL, CRON, TITLE, AWARD, or ROOM";
+			 + "GATHERSKILL, CRON, TITLE, AWARD, or ROOM");
 	}
 
 	public void classes(final MOB mob, final List<String> commands)
@@ -2478,7 +2481,7 @@ public class Create extends StdCommand
 					}
 					else
 					{
-						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try:"+listOfThings(),commandType));
+						mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try: @x2",commandType,listOfThings()));
 						return false;
 					}
 				}
@@ -2548,7 +2551,7 @@ public class Create extends StdCommand
 						commands.add(1,"ITEM");
 						return execute(mob,commands,metaFlags);
 					}
-					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try: "+listOfThings(),commandType));
+					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try: @x1",commandType,listOfThings()));
 					return false;
 				}
 			}

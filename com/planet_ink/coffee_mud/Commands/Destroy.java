@@ -66,11 +66,11 @@ public class Destroy extends StdCommand
 
 	public String listOfThings()
 	{
-		return "EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
+		return L("EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, "
 			+ "SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, ACHIEVEMENT, CLASS, ABILITY, MANUFACTURER, "
 			+ "LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, "
 			+ "WEBSERVER, POLL, DEBUGFLAG, DISABLEFLAG, ENABLEFLAG, CRAFTSKILL, GATHERSKILL, CRON, COMMAND, "
-			+ "TRAP, WRIGHTSKILL, AWARD, DELETE:, or a ROOM";
+			+ "TRAP, WRIGHTSKILL, AWARD, DELETE:, or a ROOM");
 	}
 
 	public void awards(final MOB mob, final List<String> commands)
@@ -1438,12 +1438,12 @@ public class Destroy extends StdCommand
 				commands.remove(0);
 			if(commands.size()==0)
 			{
-				for(final String a : access)
+				for(final String a : access) // access is localized, sortof
 				{
 					if(Character.toUpperCase(a.charAt(0)) == cmd)
 					{
 						final String cmdW = CMStrings.capitalizeAndLower(a);
-						mob.tell(L(cmdW+" what?"));
+						mob.tell(L("@x1 what?",cmdW));
 						return false;
 					}
 				}
@@ -2442,7 +2442,7 @@ public class Destroy extends StdCommand
 					else
 					{
 						mob.tell(
-							L("\n\rYou cannot destroy a '@x1'. However, you might try a "+listOfThings(),commandType));
+							L("\n\rYou cannot destroy a '@x1'. However, you might try a @x1",commandType,listOfThings()));
 					}
 				}
 			}

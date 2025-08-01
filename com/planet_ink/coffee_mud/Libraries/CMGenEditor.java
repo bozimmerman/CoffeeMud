@@ -1688,19 +1688,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName;
-		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.putString(CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='@x1')",E.putString(CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setPutString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.mountString(0,CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='@x1')",E.mountString(0,CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setMountString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.dismountString(CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='@x1')",E.dismountString(CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setDismountString(newName);
@@ -1722,19 +1722,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName;
-		mob.session().safeRawPrintln(L("Enter new 'state' string (ENTER='"+E.stateString(CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'state' string (ENTER='@x1')",E.stateString(CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setStateString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'state subject' string (ENTER='"+E.stateStringSubject(CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'state subject' string (ENTER='@x1')",E.stateStringSubject(CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setStateStringSubject(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'ride verb' string (ENTER='"+E.rideString(CMClass.sampleMOB())+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'ride verb' string (ENTER='@x1')",E.rideString(CMClass.sampleMOB())));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
 			E.setRideString(newName);
@@ -3433,9 +3433,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		mob.tell(L("@x1. Trains: @x2, Pracs: @x3, Quest Pts: @x4",""+showNumber,""+me.getTrains(), ""+me.getPractices(), ""+me.getQuestPoint()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		me.setTrains(CMath.s_int(mob.session().prompt(L("*. Training Sessions ("+me.getTrains()+"): ",""+me.getTrains())),me.getTrains()));
-		me.setPractices(CMath.s_int(mob.session().prompt(L("*. Practice Points ("+me.getPractices()+"): ",""+me.getPractices())),me.getPractices()));
-		me.setQuestPoint(CMath.s_int(mob.session().prompt(L("*. Quest Points ("+me.getQuestPoint()+"): ",""+me.getQuestPoint())),me.getQuestPoint()));
+		me.setTrains(CMath.s_int(mob.session().prompt(
+				L("*. Training Sessions (@x1): ",""+me.getTrains())),me.getTrains()));
+		me.setPractices(CMath.s_int(mob.session().prompt(
+				L("*. Practice Points (@x1): ",""+me.getPractices())),me.getPractices()));
+		me.setQuestPoint(CMath.s_int(mob.session().prompt(
+				L("*. Quest Points (@x1): ",""+me.getQuestPoint())),me.getQuestPoint()));
 	}
 
 	protected void genLayer(final MOB mob, final Armor E, final int showNumber, final int showFlag) throws IOException
@@ -5256,7 +5259,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
-			mob.tell(L("@x1. "+desc+": '@x2'.",""+showNumber,inventorystr));
+			mob.tell(CMStrings.replaceVariables("@x1. "+desc+": '@x2'.",""+showNumber,inventorystr));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			itemstr=mob.session().prompt(L("Enter something to add/remove (?)\n\r:"),"");

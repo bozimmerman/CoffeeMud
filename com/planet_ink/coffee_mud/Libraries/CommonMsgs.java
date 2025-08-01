@@ -624,7 +624,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		else
 		if(!isPrivate)
 		{
-			final String str=L("<S-NAME> say(s) '@x1'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),text);
+			final String str;
+			if(target == null)
+				str=L("<S-NAME> say(s) '@x1'^</SAY^>",text);
+			else
+				str=L("<S-NAME> say(s) '@x1' to <T-NAMESELF>.^</SAY^>^?",text);
 			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name(target):target.name(mob))+"\"^>"+str,"^T^<SAY \""
 					+CMStrings.removeColors(mob.name(target))+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^>"+str);
 			gmcpSaySend("say",mob, target, msg);
@@ -1186,15 +1190,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							break;
 						}
 					}
-					final String[] nstrs=new String[] {
-						"sip",
-						"swallow",
-						"quaff",
-						"swig",
-						"gulp",
-						"guzzle"
-					};
-					final String drNoun=nstrs[drNDex];
+					String drNoun = "";
+					switch(drNDex)
+					{
+					case 0: drNoun = L("sip"); break;
+					case 1: drNoun = L("swallow"); break;
+					case 2: drNoun = L("quaff"); break;
+					case 3: drNoun = L("swig"); break;
+					case 4: drNoun = L("gulp"); break;
+					case 5: drNoun = L("guzzle"); break;
+					}
 					final int adjSize=(int)Math.round(CMath.div(namts[drNDex] , sipSize));
 					final int[] aamts=new int[] {
 						2,
@@ -1212,20 +1217,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							break;
 						}
 					}
-					final String[] astrs=new String[] {
-						"tiny",
-						"small",
-						"average",
-						"large",
-						"huge",
-						"humongous"
-					};
-					final String drAdj=astrs[drADex];
+					String drAdj = "";
+					switch(drADex)
+					{
+					case 0: drAdj = L("tiny"); break;
+					case 1: drAdj = L("small"); break;
+					case 2: drAdj = L("average"); break;
+					case 3: drAdj = L("large"); break;
+					case 4: drAdj = L("huge"); break;
+					case 5: drAdj = L("humongous"); break;
+					}
 					final int numSips = remain / sipSize;
 					if(numSips <= 1)
-						response.append(L("There is about 1 "+drAdj+" "+drNoun+" remaining.  "));
+						response.append(L("There is about 1 @x1 @x2 remaining.  ",drAdj,drNoun));
 					else
-						response.append(L("There are about @x1 "+drAdj+" "+drNoun+"(s) remaining.  ",""+numSips));
+						response.append(L("There are about @x1 @x2 @x3(s) remaining.  ",""+numSips,drAdj,drNoun));
 				}
 			}
 			else
@@ -1282,15 +1288,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						break;
 					}
 				}
-				final String[] nstrs=new String[] {
-					"crumb",
-					"nibble",
-					"bite",
-					"morsel",
-					"mouthful",
-					"gorging"
-				};
-				final String eatNoun=nstrs[eatNDex];
+				String eatNoun = "";
+				switch(eatNDex)
+				{
+				case 0: eatNoun = L("crumb"); break;
+				case 1: eatNoun = L("nibble"); break;
+				case 2: eatNoun = L("bite"); break;
+				case 3: eatNoun = L("morsel"); break;
+				case 4: eatNoun = L("mouthful"); break;
+				case 5: eatNoun = L("gorging"); break;
+				}
 				final int adjSize=(int)Math.round(CMath.div(namts[eatNDex] , biteSize));
 				final int[] aamts=new int[] {
 					2,
@@ -1308,20 +1315,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						break;
 					}
 				}
-				final String[] astrs=new String[] {
-					"tiny",
-					"small",
-					"average",
-					"large",
-					"huge",
-					"humongous"
-				};
-				final String eatAdj=astrs[eatADex];
+				String eatAdj= "";
+				switch(eatADex)
+				{
+				case 0: eatAdj = L("tiny"); break;
+				case 1: eatAdj = L("small"); break;
+				case 2: eatAdj = L("average"); break;
+				case 3: eatAdj = L("large"); break;
+				case 4: eatAdj = L("huge"); break;
+				case 5: eatAdj = L("humongous"); break;
+				}
 				final int numBites = remain / biteSize;
 				if(numBites <= 1)
-					response.append(L("There is about 1 "+eatAdj+" "+eatNoun+" remaining.  "));
+					response.append(L("There is about 1 @x1 @x2 remaining.  ",eatAdj,eatNoun));
 				else
-					response.append(L("There are about @x1 "+eatAdj+" "+eatNoun+"(s) remaining.  ",""+numBites));
+					response.append(L("There are about @x1 @x2 @x3(s) remaining.  ",""+numBites,eatAdj,eatNoun));
 			}
 
 			if(item instanceof Ammunition)

@@ -145,98 +145,98 @@ public class Prayer_MorphUnholyWeapon extends Prayer
 				switch(form)
 				{
 				case axe:
-					finalName = "axe";
+					finalName = L("an unholy axe");
 					finalType = Weapon.TYPE_SLASHING;
 					finalClass = Weapon.CLASS_AXE;
 					finalHands = false;
 					break;
 				case axe2h:
-					finalName = "two-handed axe";
+					finalName = L("an unholy two-handed axe");
 					finalType = Weapon.TYPE_SLASHING;
 					finalClass = Weapon.CLASS_AXE;
 					finalHands = true;
 					break;
 				case crossbow:
-					finalName = "crossbow";
+					finalName = L("an unholy crossbow");
 					finalType = Weapon.TYPE_PIERCING;
 					finalClass = Weapon.CLASS_RANGED;
 					finalHands = true;
 					break;
 				case dagger:
-					finalName = "dagger";
+					finalName = L("an unholy dagger");
 					finalType = Weapon.TYPE_PIERCING;
 					finalClass = Weapon.CLASS_DAGGER;
 					finalHands = false;
 					break;
 				case flail:
-					finalName = "flail";
+					finalName = L("an unholy flail");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_FLAILED;
 					finalHands = false;
 					break;
 				case hammer:
-					finalName = "hammer";
+					finalName = L("an unholy hammer");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_HAMMER;
 					finalHands = false;
 					break;
 				case hammer2h:
-					finalName = "two-handed hammer";
+					finalName = L("an unholy two-handed hammer");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_HAMMER;
 					finalHands = true;
 					break;
 				case javelin:
-					finalName = "javelin";
+					finalName = L("an unholy javelin");
 					finalType = Weapon.TYPE_PIERCING;
 					finalClass = Weapon.CLASS_THROWN;
 					finalHands = false;
 					break;
 				case mace:
-					finalName = "mace";
+					finalName = L("an unholy mace");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_BLUNT;
 					finalHands = false;
 					break;
 				case mace2h:
-					finalName = "two-handed mace";
+					finalName = L("an unholy two-handed mace");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_BLUNT;
 					finalHands = true;
 					break;
 				case polearm:
-					finalName = "polearm";
+					finalName = L("an unholy polearm");
 					finalType = Weapon.TYPE_PIERCING;
 					finalClass = Weapon.CLASS_POLEARM;
 					finalHands = true;
 					break;
 				case staff:
-					finalName = "staff";
+					finalName = L("an unholy staff");
 					finalType = Weapon.TYPE_BASHING;
 					finalClass = Weapon.CLASS_STAFF;
 					finalHands = true;
 					break;
 				case sword:
-					finalName = "sword";
+					finalName = L("an unholy sword");
 					finalType = Weapon.TYPE_SLASHING;
 					finalClass = Weapon.CLASS_SWORD;
 					finalHands = false;
 					break;
 				case sword2h:
-					finalName = "two-handed sword";
+					finalName = L("an unholy two-handed sword");
 					finalType = Weapon.TYPE_SLASHING;
 					finalClass = Weapon.CLASS_SWORD;
 					finalHands = true;
 					break;
 				default:
-					finalName = "unknown";
+					finalName = L("an unholy unknown");
 					finalType = Weapon.TYPE_SLASHING;
 					finalClass = Weapon.CLASS_SWORD;
 					finalHands = false;
 					break;
 				}
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> morphs!"));
-				target.setName(L("an unholy "+finalName));
+				target.setName(finalName);
 				target.setDisplayText(L("@x1 has been left here",target.Name()));
 				((Weapon)target).setWeaponClassification(finalClass);
 				((Weapon)target).setWeaponDamageType(finalType);

@@ -51,7 +51,7 @@ public class Skill_Monologue extends BardSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Listening to "+(invoker()==null?"an actor":invoker().name())+"'s monologue)");
+		return L("(Listening to @x1's monologue)",(invoker()==null?L("an actor"):invoker().name()));
 	}
 
 	@Override

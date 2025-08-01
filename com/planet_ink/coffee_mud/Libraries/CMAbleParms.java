@@ -6512,7 +6512,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return oldVal;
 						final Item newI = mob.location().findItem(str);
 						if(newI == null)
-							mob.tell(L("No item '"+str+"' found in "+mob.location().displayText(mob)));
+							mob.tell(L("No item '@x1' found in @x2",str,mob.location().displayText(mob)));
 						else
 							return CMLib.coffeeMaker().getItemXML(newI);
 					}

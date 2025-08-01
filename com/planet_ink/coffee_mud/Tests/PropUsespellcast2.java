@@ -63,7 +63,7 @@ public class PropUsespellcast2 extends PropTest
 		{
 			final Ability UseSpellCast2 = CMClass.getAbility("Prop_UseSpellCast2"); // EAT
 			UseSpellCast2.setMiscText(semiSpellList());
-			//mob.tell(L("Test:"+what+"-1: @x1", UseSpellCast2.accountForYourself()));
+			//mob.tell(L("Test:@x2-1: @x1", UseSpellCast2.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("StdFood"), UseSpellCast2, mobs[0], null, 0);
 			C = CMClass.getCommand("Eat");
 			C.execute(mobs[0], new XVector<String>("Eat", "ALL"), 0);
@@ -74,7 +74,7 @@ public class PropUsespellcast2 extends PropTest
 			R1.recoverRoomStats();
 			resetTest();
 			UseSpellCast2.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-			//mob.tell(L("Test:"+what+"-2: @x1", UseSpellCast2.accountForYourself()));
+			//mob.tell(L("Test:@x2-2: @x1", UseSpellCast2.accountForYourself(),what));
 			IS = giveTo(CMClass.getItem("StdFood"), UseSpellCast2, mobs[0], mobs[1], 0);
 			C = CMClass.getCommand("Eat");
 			C.execute(mobs[0], new XVector<String>("Eat", "ALL"), 0);

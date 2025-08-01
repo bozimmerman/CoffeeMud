@@ -186,7 +186,8 @@ public class Surveying extends CommonSkill
 						{
 							for(final String roomType : rTypesV.keySet())
 							{
-								msgBuilder.append("^H"+L(CMStrings.padRight(roomType, 11))).append("^N: ").append(rTypesV.get(roomType)[0]).append("\n\r");
+								msgBuilder.append("^H"+CMStrings.padRight(roomType, 11))
+											.append("^N: ").append(rTypesV.get(roomType)[0]).append("\n\r");
 							}
 						}
 
@@ -219,7 +220,7 @@ public class Surveying extends CommonSkill
 								String nextRoomNumber = nextR.roomID();
 								if(nextRoomNumber.startsWith(area.Name()+"#"))
 									nextRoomNumber=nextRoomNumber.substring(area.Name().length());
-								msgBuilder.append(CMStrings.padRight(L("^HExit "+Directions.instance().getDirectionName(d)),10))
+								msgBuilder.append(CMStrings.padRight(L("^HExit @x1",Directions.instance().getDirectionName(d)),10))
 										.append(": ^N").append(nextR.displayText(null));
 								if(expertise > 0)
 									msgBuilder.append(" (").append(nextRoomNumber).append(")");

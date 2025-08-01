@@ -145,8 +145,8 @@ public class Fighter_Ridethrough extends StdAbility
 		}
 		if((success) && (mob.rangeToTarget() > oldRange))
 			return mob.location().show(mob, target, this, CMMsg.MSG_NOISYMOVEMENT,
-					L("^F^<FIGHT^><S-NAME> "+mount.rideString(mob)+" through <T-NAMESELF> to a range of @x1!^?^</FIGHT^>",""+mob.rangeToTarget()));
+					L("^F^<FIGHT^><S-NAME> @x2 through <T-NAMESELF> to a range of @x1!^?^</FIGHT^>",""+mob.rangeToTarget(),mount.rideString(mob)));
 		else
-			return beneficialVisualFizzle(mob,mob.getVictim(),L("<S-NAME> attempt(s) to "+mount.rideString(mob)+" through <T-NAMESELF>, but <S-IS-ARE> disrupted."));
+			return beneficialVisualFizzle(mob,mob.getVictim(),L("<S-NAME> attempt(s) to @x1 through <T-NAMESELF>, but <S-IS-ARE> disrupted.",mount.rideString(mob)));
 	}
 }

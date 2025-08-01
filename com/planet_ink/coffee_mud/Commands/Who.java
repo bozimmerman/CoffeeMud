@@ -83,7 +83,7 @@ public class Who extends StdCommand
 		for(int i=1;i<=2;i++)
 			width+=colWidths[i]+1;
 		final StringBuilder tail=new StringBuilder("");
-		tail.append("^x["+CMStrings.padRight(L("Total "+word+" online"),width)+"]^.^N "+amt+"\n\r");
+		tail.append("^x["+CMStrings.padRight(L("Total @x1 online",word),width)+"]^.^N "+amt+"\n\r");
 		return tail.toString();
 	}
 

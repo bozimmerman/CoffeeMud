@@ -124,9 +124,9 @@ public class Disease_Cannibalism extends Disease
 		}
 		else
 		{
-			desiredMeat = "your race's";
+			desiredMeat = L("your race's");
 		}
-		return L("^G<S-NAME> hunger(s) for " + desiredMeat + " meat.^?");
+		return L("^G<S-NAME> hunger(s) for @x1 meat.^?",desiredMeat);
 	}
 
 	@Override

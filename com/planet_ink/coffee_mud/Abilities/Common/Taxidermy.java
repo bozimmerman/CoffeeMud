@@ -67,9 +67,6 @@ public class Taxidermy extends CraftingSkill
 		return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";
 	}
 
-	protected final static String CRAFTING_RACE_STR_PREFIX="This statue was once ";
-	protected final static String CRAFTING_RACE_STR=CRAFTING_RACE_STR_PREFIX+"@x1.";
-
 	protected String foundShortName="";
 
 	public Taxidermy()
@@ -105,14 +102,20 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
+	protected static String getCraftingRaceStrPrefix()
+	{
+		return CMLib.lang().L("This statue was once ");
+	}
+
 	protected static String getStatueRace(final Item buildingI)
 	{
+		final String craftingStrRacePrefix=getCraftingRaceStrPrefix();
 		if(buildingI != null)
 		{
-			final int x=buildingI.secretIdentity().indexOf(CRAFTING_RACE_STR_PREFIX);
+			final int x=buildingI.secretIdentity().indexOf(craftingStrRacePrefix);
 			if(x>=0)
 			{
-				final int y=buildingI.secretIdentity().indexOf('.',x+CRAFTING_RACE_STR_PREFIX.length());
+				final int y=buildingI.secretIdentity().indexOf('.',x+craftingStrRacePrefix.length());
 				if(y>=0)
 				{
 					return buildingI.secretIdentity().substring(x,y);
@@ -267,7 +270,10 @@ public class Taxidermy extends CraftingSkill
 		buildingI.setDescription(desc);
 		setBrand(mob, buildingI);
 		if(C!=null)
-			buildingI.setSecretIdentity((buildingI.secretIdentity()+"  "+L(CRAFTING_RACE_STR,C.getMyRace().name())).trim());
+		{
+			final String craftingStrRacePrefix=getCraftingRaceStrPrefix(); // already L(
+			buildingI.setSecretIdentity((buildingI.secretIdentity()+"  "+craftingStrRacePrefix+C.getMyRace().name()).trim());
+		}
 		buildingI.recoverPhyStats();
 		displayText=L("You are stuffing @x1",I.name());
 		verb=L("stuffing @x1",I.name());

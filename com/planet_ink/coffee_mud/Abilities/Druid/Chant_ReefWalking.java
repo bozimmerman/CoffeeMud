@@ -75,7 +75,7 @@ public class Chant_ReefWalking extends Chant_PlantPass
 	@Override
 	protected String getPlantsWord()
 	{
-		return "growths";
+		return L("growths");
 	}
 
 	@Override

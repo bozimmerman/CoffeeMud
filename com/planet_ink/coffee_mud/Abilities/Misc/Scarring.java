@@ -309,7 +309,15 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 						scarredParts[c]--;
 						final long wearLoc = Race.BODY_WEARVECTOR[code.intValue()];
 						final Tattoo T=(Tattoo)CMClass.getCommon("Defaulttattoo");
-						T.set(Wearable.CODES.NAME(wearLoc)+": "+L("a scarred "+(left?"left ":(right?"right ":""))+getProperPartName(c).toLowerCase()));
+						String what;
+						if(left)
+							what = L("A scarred left "+getProperPartName(c).toLowerCase());
+						else
+						if(right)
+							what = L("A scarred right "+getProperPartName(c).toLowerCase());
+						else
+							what = L("A scarred "+getProperPartName(c).toLowerCase());
+						T.set(Wearable.CODES.NAME(wearLoc)+": "+what);
 						scarredLimbs.put(s, T); // preserve left/right
 					}
 				}
@@ -338,9 +346,9 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 		switch(bodyPartCode)
 		{
 		case Race.BODY_HEAD:
-			return "face";
+			return L("face");
 		case Race.BODY_EYE:
-			return "eyebrow";
+			return L("eyebrow");
 		default:
 			if((bodyPartCode<0)||( bodyPartCode>=Race.BODYPARTSTR.length))
 				return null;

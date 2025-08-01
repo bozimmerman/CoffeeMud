@@ -52,35 +52,61 @@ public class Dragonbreath extends StdAbility
 	@Override
 	public String displayText()
 	{
-		String prefix;
 		if((affected instanceof MOB)&&(!CMLib.flags().canBreathe((MOB)affected)))
-			prefix="Choking on ";
-		else
-			prefix="Bothered by ";
-		switch(getBreathColor(null))
 		{
-		case 'f': // fire
-			return L("("+prefix+"fumes)");
-		case 'l': // lightning
-			return L("("+prefix+"choking)");
-		case 'c':// cold
-			return L("("+prefix+"ice)");
-		case 'a': // acid
-			return L("("+prefix+"acid)");
-		case 'o': // ooze
-			return L("("+prefix+"ooze)");
-		case 's': // slime
-			return L("("+prefix+"slime)");
-		case 'g':// gas
-			return L("("+prefix+"gas)");
-		case 'u':// undead
-			return L("("+prefix+"evil)");
-		case 'p': // pebbles
-			return L("("+prefix+"rocks)");
-		case 'd': // dust
-			return L("("+prefix+"dust)");
-		default:
-			return L("("+prefix+"fumes)");
+			switch(getBreathColor(null))
+			{
+			case 'f': // fire
+				return L("(Choking on fumes)");
+			case 'l': // lightning
+				return L("(Choking on choking)");
+			case 'c':// cold
+				return L("(Choking on ice)");
+			case 'a': // acid
+				return L("(Choking on acid)");
+			case 'o': // ooze
+				return L("(Choking on ooze)");
+			case 's': // slime
+				return L("(Choking on slime)");
+			case 'g':// gas
+				return L("(Choking on gas)");
+			case 'u':// undead
+				return L("(Choking on evil)");
+			case 'p': // pebbles
+				return L("(Choking on rocks)");
+			case 'd': // dust
+				return L("(Choking on dust)");
+			default:
+				return L("(Choking on fumes)");
+			}
+		}
+		else
+		{
+			switch(getBreathColor(null))
+			{
+			case 'f': // fire
+				return L("(Bothered by fumes)");
+			case 'l': // lightning
+				return L("(Bothered by choking)");
+			case 'c':// cold
+				return L("(Bothered by ice)");
+			case 'a': // acid
+				return L("(Bothered by acid)");
+			case 'o': // ooze
+				return L("(Bothered by ooze)");
+			case 's': // slime
+				return L("(Bothered by slime)");
+			case 'g':// gas
+				return L("(Bothered by gas)");
+			case 'u':// undead
+				return L("(Bothered by evil)");
+			case 'p': // pebbles
+				return L("(Bothered by rocks)");
+			case 'd': // dust
+				return L("(Bothered by dust)");
+			default:
+				return L("(Bothered by fumes)");
+			}
 		}
 	}
 

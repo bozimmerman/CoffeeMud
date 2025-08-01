@@ -72,31 +72,29 @@ public class Thief_Astrology extends Thief_Runecasting
 		return triggerStrings;
 	}
 
-	protected static String[] astroStarts = new String[]
-	{
-		"I see your stars are affected by...",
-		"I see the alignments will affect...",
-		"I see the calestial motions will cause..."
-	};
-
-	protected static String[] astroFails = new String[]
-	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
-	};
-
 	@Override
-	protected String[] getStartPhrases()
+	protected String getStartPhrase()
 	{
-		return astroStarts;
+		switch(CMLib.dice().roll(1, 3, -1))
+		{
+		case 0: return L("I see your stars are affected by...");
+		case 1: return L("I see the alignments will affect...");
+		case 2: return L("I see the calestial motions will cause...");
+		}
+		return "";
 	}
 
 	@Override
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return astroFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("Astral clouds are blocking your aura.");
+		case 1: return L("Your future is unbound. Tread carefully.");
+		case 2: return L("Your path is clear.");
+		case 3: return L("The fates` gaze is elsewhere.");
+		}
+		return "";
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class FormationTest extends StdTest
 				{
 					final MOB M = CMClass.getMOB("StdMOB");
 					M.baseCharStats().setMyRace(CMClass.getRace("Human"));
-					M.setName(L("Player"+i));
+					M.setName(L("Player",""+i));
 					M.basePhyStats().setLevel(1);
 					M.recoverCharStats();
 					M.recoverPhyStats();

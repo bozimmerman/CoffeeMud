@@ -476,29 +476,30 @@ public class WeatherAffects extends PuddleMaker
 					case Climate.WEATHER_SNOW:
 						if(((R.getClimateType()&Places.CLIMASK_WINDY)!=0)
 						&&(CMLib.dice().rollPercentage()<boatSlipChance))
-							what="cold snowy winds"; // never L(
+							what=L("cold snowy winds");
 						break;
 					case Climate.WEATHER_RAIN:
 						if(((R.getClimateType()&Places.CLIMASK_WINDY)!=0)
 						&&(CMLib.dice().rollPercentage()<boatSlipChance))
-							what="strong rainy winds"; // never L(
+							what=L("strong rainy winds");
 						break;
 					case Climate.WEATHER_BLIZZARD:
 						if(CMLib.dice().rollPercentage()<(boatSlipChance * 1.5))
-							what="blizzard"; // never L(
+							what=L("blizzard");
 						break;
 					case Climate.WEATHER_THUNDERSTORM:
 						if(CMLib.dice().rollPercentage()<(boatSlipChance * 1.5))
-							what="thunderstorm"; // never L(
+							what=L("thunderstorm");
 						break;
 					case Climate.WEATHER_DUSTSTORM:
 						if(CMLib.dice().rollPercentage()<boatSlipChance)
-							what="strong winds"; // never L(
+							what=L("strong winds");
 						break;
 					}
 					if(what!=null)
 					{
-						final CMMsg wmsg=CMClass.getMsg(msg.source(),riding,CMMsg.MSG_WEATHER,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+						final CMMsg wmsg=CMClass.getMsg(msg.source(),riding,CMMsg.MSG_WEATHER,
+								L("^W<S-NAME> make(s) no progress in the @x1.^?",what));
 						if(R.okMessage(msg.source(), wmsg))
 						{
 							R.send(msg.source(), wmsg);
@@ -512,7 +513,8 @@ public class WeatherAffects extends PuddleMaker
 										final Room sR=sr.nextElement();
 										if((sR!=null)
 										&&((sR.domainType()&Room.INDOORS)==0))
-											sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
+											sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,
+													L("^W<S-NAME> make(s) no progress in the @x1.^?",what));
 									}
 								}
 
@@ -534,16 +536,16 @@ public class WeatherAffects extends PuddleMaker
 				case Climate.WEATHER_BLIZZARD:
 				case Climate.WEATHER_SNOW:
 					if(CMLib.dice().rollPercentage()<snowSlipChance)
-						what="cold wet"; // never L(
+						what=L("cold wet");
 					break;
 				case Climate.WEATHER_RAIN:
 				case Climate.WEATHER_THUNDERSTORM:
 					if(CMLib.dice().rollPercentage()<rainSlipChance)
-						what="slippery wet"; // never L(
+						what=L("slippery wet");
 					break;
 				case Climate.WEATHER_SLEET:
 					if(CMLib.dice().rollPercentage()<sleetSlipChance)
-						what="icy"; // never L(
+						what=L("icy");
 					break;
 				}
 				if((what!=null)
@@ -552,7 +554,7 @@ public class WeatherAffects extends PuddleMaker
 				&&(msg.source().riding()==null)
 				&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 				{
-					if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> slip(s) on the "+what+" ground.^?")))
+					if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> slip(s) on the @x1 ground.^?",what)))
 					{
 						final Ability A=CMClass.getAbility("Skill_Trip");
 						A.startTickDown(msg.source(), msg.source(), 3);

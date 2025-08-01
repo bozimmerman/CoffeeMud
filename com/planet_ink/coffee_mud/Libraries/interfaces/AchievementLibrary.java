@@ -70,60 +70,59 @@ public interface AchievementLibrary extends CMLibrary
 	 */
 	public enum Event
 	{
-		KILLS("Number of Kills",new String[]{"NUM","ZAPPERMASK"}),
-		STATVALUE("A Stat value",new String[]{"VALUE","ABOVEBELOW","STAT"}),
-		FACTION("A Faction level",new String[]{"VALUE","ABOVEBELOW","ID"}),
-		FACTIONS("A group of factions",new String[]{"VALUE","ABOVEBELOW","IDMASK","NUM"}),
-		EXPLORE("Exploration",new String[]{"PERCENT","AREA"}),
-		CHARITY("Charity",new String[]{"AMOUNT","ZAPPERMASK"}),
-		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),
-		CRAFTING("Crafting",new String[]{"NUM","ABILITYID","ITEMMASK"}),
-		MENDER("Mending",new String[]{"NUM","ABILITYID","ITEMMASK"}),
-		DECONSTRUCTING("Deconstructing",new String[]{"NUM","ABILITYID","ITEMMASK"}),
-		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
-		SKILLPROF("Skill proficiency",new String[]{"NUM", "PROF","ABILITYID"}),
-		EFFECTSHAD("Effects checked-off",new String[] {"NUM", "ABILITYID"}),
-		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
-		QUESTOR("Completing Quests",new String[]{"NUM","QUESTMASK"}),
-		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}),
-		LEVELSGAINED("Gaining net Levels",new String[]{"NUM"}),
-		CLASSLEVELSGAINED("Gaining net Class Levels",new String[]{"NUM","CLASS"}),
-		TIMEPLAYED("Time Played",new String[]{"SECONDS"}),
-		JUSTBE("Character State",new String[]{}),
-		DEATHS("Dieing",new String[]{"NUM","ZAPPERMASK"}),
-		REMORT("Remorting",new String[]{"NUM"}),
-		RETIRE("Retiring",new String[]{"NUM"}),
-		GOTITEM("Got an item",new String[]{"NUM","ITEMMASK"}),
-		BIRTHS("Births",new String[]{"NUM","ZAPPERMASK"}),
-		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK"}),
-		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK"}),
-		PLAYERBORN("Being a Player Born",new String[]{}),
-		CHARACTERS("Account size",new String[]{"NUM"}),
-		CLANMEMBERS("Membership size",new String[]{"NUM"}),
-		CLANKILLS("Killed a rival clan member",new String[]{"NUM","ZAPPERMASK"}),
-		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"}),
-		CLANDECLARE("Declared a new relationship",new String[]{"NUM","RELATION"}),
-		CLANPROPERTY("Purchased property",new String[]{"NUM","AREAMASK"}),
-		CONQUEREDAREAS("Conquered an area",new String[]{"NUM","AREAMASK"}),
-		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
-		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM","TIME_MINS", "ROOMMASK"}),
-		INSTANCEEXPIRE("An area instance expires",new String[]{"AREAMASK","NUM","TIME_MINS","VALUEEXP"}),
-		SHIPSSUNK("Ships sunk",new String[] {"NUM", "SHIPMASK"}),
-		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
-		GROUPKILLS("Number of Group Kills",new String[]{"NUM","SIZE","ZAPPERMASK"}),
-		ENTITLED("Number of titles",new String[]{"NUM","TITLEMASK"}),
-		SCRIPTED("Special Scripted",new String[]{"NUM"}),
-		LEVELUP("Gaining a level",new String[]{"NUM"}),
-		CLASSLEVELUP("Gaining a Class levels",new String[]{"NUM","CLASS"}),
-		LEVELDOWN("Losing a level",new String[]{"NUM"}),
-		CLASSLEVELDOWN("Losing a Class levels",new String[]{"NUM","CLASS"}),
+		KILLS("NUM","ZAPPERMASK"),
+		STATVALUE("VALUE","ABOVEBELOW","STAT"),
+		FACTION("VALUE","ABOVEBELOW","ID"),
+		FACTIONS("VALUE","ABOVEBELOW","IDMASK","NUM"),
+		EXPLORE("PERCENT","AREA"),
+		CHARITY("AMOUNT","ZAPPERMASK"),
+		ROOMENTER("ROOMID"),
+		CRAFTING("NUM","ABILITYID","ITEMMASK"),
+		MENDER("NUM","ABILITYID","ITEMMASK"),
+		DECONSTRUCTING("NUM","ABILITYID","ITEMMASK"),
+		SKILLUSE("NUM","ABILITYID"),
+		SKILLPROF("NUM", "PROF","ABILITYID"),
+		EFFECTSHAD("NUM", "ABILITYID"),
+		SOCIALUSE("NUM","SOCIALID"),
+		QUESTOR("NUM","QUESTMASK"),
+		ACHIEVER("ACHIEVEMENTLIST"),
+		LEVELSGAINED("NUM"),
+		CLASSLEVELSGAINED("NUM","CLASS"),
+		TIMEPLAYED("SECONDS"),
+		JUSTBE(),
+		DEATHS("NUM","ZAPPERMASK"),
+		REMORT("NUM"),
+		RETIRE("NUM"),
+		GOTITEM("NUM","ITEMMASK"),
+		BIRTHS("NUM","ZAPPERMASK"),
+		RACEBIRTH("NUM","ZAPPERMASK"),
+		PLAYERBORNPARENT("NUM","ZAPPERMASK"),
+		PLAYERBORN(),
+		CHARACTERS("NUM"),
+		CLANMEMBERS("NUM"),
+		CLANKILLS("NUM","ZAPPERMASK"),
+		CLANLEVELSGAINED("NUM"),
+		CLANDECLARE("NUM","RELATION"),
+		CLANPROPERTY("NUM","AREAMASK"),
+		CONQUEREDAREAS("NUM","AREAMASK"),
+		CONQUESTPOINTS("NUM","AREAMASK"),
+		AREAVISIT("AREAMASK","NUM","TIME_MINS", "ROOMMASK"),
+		INSTANCEEXPIRE("AREAMASK","NUM","TIME_MINS","VALUEEXP"),
+		SHIPSSUNK("NUM", "SHIPMASK"),
+		CMDUSE("NUM","COMMANDID"),
+		GROUPKILLS("NUM","SIZE","ZAPPERMASK"),
+		ENTITLED("NUM","TITLEMASK"),
+		SCRIPTED("NUM"),
+		LEVELUP("NUM"),
+		CLASSLEVELUP("NUM","CLASS"),
+		LEVELDOWN("NUM"),
+		CLASSLEVELDOWN("NUM","CLASS"),
 		;
 		private final String[] parameters;
-		private final String displayName;
+		private String displayName = null;
 
-		private Event(final String displayName, final String[] extraParameters)
+		private Event(final String... extraParameters)
 		{
-			this.displayName = displayName;
 			parameters = CMParms.combine(BASE_ACHIEVEMENT_PARAMETERS, extraParameters);
 		}
 
@@ -133,7 +132,60 @@ public interface AchievementLibrary extends CMLibrary
 		 */
 		public String displayName()
 		{
-			return this.displayName;
+			if(displayName == null)
+			{
+				switch(this)
+				{
+				case KILLS: displayName=CMLib.lang().L("Number of Kills"); break;
+				case STATVALUE: displayName=CMLib.lang().L("A Stat value"); break;
+				case FACTION: displayName=CMLib.lang().L("A Faction level"); break;
+				case FACTIONS: displayName=CMLib.lang().L("A group of factions"); break;
+				case EXPLORE: displayName=CMLib.lang().L("Exploration"); break;
+				case CHARITY: displayName=CMLib.lang().L("Charity"); break;
+				case ROOMENTER: displayName=CMLib.lang().L("Entering a Room"); break;
+				case CRAFTING: displayName=CMLib.lang().L("Crafting"); break;
+				case MENDER: displayName=CMLib.lang().L("Mending"); break;
+				case DECONSTRUCTING: displayName=CMLib.lang().L("Deconstructing"); break;
+				case SKILLUSE: displayName=CMLib.lang().L("Using Skills"); break;
+				case SKILLPROF: displayName=CMLib.lang().L("Skill proficiency"); break;
+				case EFFECTSHAD: displayName=CMLib.lang().L("Effects checked-off"); break;
+				case SOCIALUSE: displayName=CMLib.lang().L("Using Socials"); break;
+				case QUESTOR: displayName=CMLib.lang().L("Completing Quests"); break;
+				case ACHIEVER: displayName=CMLib.lang().L("Completing Achievements"); break;
+				case LEVELSGAINED: displayName=CMLib.lang().L("Gaining net Levels"); break;
+				case CLASSLEVELSGAINED: displayName=CMLib.lang().L("Gaining net Class Levels"); break;
+				case TIMEPLAYED: displayName=CMLib.lang().L("Time Played"); break;
+				case JUSTBE: displayName=CMLib.lang().L("Character State"); break;
+				case DEATHS: displayName=CMLib.lang().L("Dieing"); break;
+				case REMORT: displayName=CMLib.lang().L("Remorting"); break;
+				case RETIRE: displayName=CMLib.lang().L("Retiring"); break;
+				case GOTITEM: displayName=CMLib.lang().L("Got an item"); break;
+				case BIRTHS: displayName=CMLib.lang().L("Births"); break;
+				case RACEBIRTH: displayName=CMLib.lang().L("Race Creation"); break;
+				case PLAYERBORNPARENT: displayName=CMLib.lang().L("Being a Player Parent"); break;
+				case PLAYERBORN: displayName=CMLib.lang().L("Being a Player Born"); break;
+				case CHARACTERS: displayName=CMLib.lang().L("Account size"); break;
+				case CLANMEMBERS: displayName=CMLib.lang().L("Membership size"); break;
+				case CLANKILLS: displayName=CMLib.lang().L("Killed a rival clan member"); break;
+				case CLANLEVELSGAINED: displayName=CMLib.lang().L("Clan levels"); break;
+				case CLANDECLARE: displayName=CMLib.lang().L("Declared a new relationship"); break;
+				case CLANPROPERTY: displayName=CMLib.lang().L("Purchased property"); break;
+				case CONQUEREDAREAS: displayName=CMLib.lang().L("Conquered an area"); break;
+				case CONQUESTPOINTS: displayName=CMLib.lang().L("Conquest points"); break;
+				case AREAVISIT: displayName=CMLib.lang().L("Visit an Area/Plane"); break;
+				case INSTANCEEXPIRE: displayName=CMLib.lang().L("An area instance expires"); break;
+				case SHIPSSUNK: displayName=CMLib.lang().L("Ships sunk"); break;
+				case CMDUSE: displayName=CMLib.lang().L("Using Commands"); break;
+				case GROUPKILLS: displayName=CMLib.lang().L("Number of Group Kills"); break;
+				case ENTITLED: displayName=CMLib.lang().L("Number of titles"); break;
+				case SCRIPTED: displayName=CMLib.lang().L("Special Scripted"); break;
+				case LEVELUP: displayName=CMLib.lang().L("Gaining a level"); break;
+				case CLASSLEVELUP: displayName=CMLib.lang().L("Gaining a Class levels"); break;
+				case LEVELDOWN: displayName=CMLib.lang().L("Losing a level"); break;
+				case CLASSLEVELDOWN: displayName=CMLib.lang().L("Losing a Class levels"); break;
+				}
+			}
+			return displayName;
 		}
 
 		/**

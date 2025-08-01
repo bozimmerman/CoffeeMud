@@ -51,7 +51,7 @@ public class Thief_Bind extends ThiefSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Bound by "+ropeName+")");
+		return L("(Bound by @x1)",ropeName);
 	}
 
 	@Override
@@ -117,8 +117,10 @@ public class Thief_Bind extends ThiefSkill
 		return affected instanceof Room;
 	}
 
+	protected static final String DEFAULT_THE_ROPES = CMLib.lang().L("the ropes");
+
 	public int			amountRemaining	= 1000;
-	public String		ropeName		= "the ropes";
+	public String		ropeName		= DEFAULT_THE_ROPES;
 	protected boolean	sit				= false;
 	protected boolean	allowBreak		= true;
 
@@ -200,7 +202,7 @@ public class Thief_Bind extends ThiefSkill
 		super.setMiscText(newText);
 		if(newText.length()>0)
 		{
-			ropeName=CMParms.getParmStr(newText, "ROPENAME", "the ropes");
+			ropeName=CMParms.getParmStr(newText, "ROPENAME", DEFAULT_THE_ROPES);
 			amountRemaining=CMParms.getParmInt(newText, "AMOUNT", 500);
 			sit=CMParms.getParmBool(newText, "FORCESIT", false);
 			allowBreak=CMParms.getParmBool(newText, "ALLOWBREAK", true);
@@ -266,7 +268,7 @@ public class Thief_Bind extends ThiefSkill
 				}
 				return false;
 			}
-			mob.tell(L("@x1 doesn't appear to be bound with "+ropeName+".",target.name(mob)));
+			mob.tell(L("@x1 doesn't appear to be bound with @x2.",target.name(mob),ropeName));
 			return false;
 		}
 

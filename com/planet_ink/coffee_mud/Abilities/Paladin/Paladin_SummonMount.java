@@ -270,7 +270,7 @@ public class Paladin_SummonMount extends StdAbility implements PrivateProperty
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		if(!CMLib.flags().isEvil(caster))
 		{
-			newMOB.setName(L("a white "+steedR.name().toLowerCase()));
+			newMOB.setName(L("a white @x1",steedR.name().toLowerCase()));
 			newMOB.setDisplayText(L("a proud white @x1 stands here",steedR.name().toLowerCase()));
 			if(steedR.name().equalsIgnoreCase("Horse"))
 				newMOB.setDescription(L("A proud and noble steed; albino white and immaculate."));

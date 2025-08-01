@@ -55,12 +55,6 @@ public class Chant_FindOre extends Chant_FindPlant
 	}
 
 	@Override
-	public String displayText()
-	{
-		return L("(Finding "+lookingFor+")");
-	}
-
-	@Override
 	public long flags()
 	{
 		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;
@@ -87,10 +81,14 @@ public class Chant_FindOre extends Chant_FindPlant
 		return null;
 	}
 
+	private static String DEFAULT_LOOKING_FOR=CMLib.lang().L("ore");
+	private static String DEFAULT_DISPLAYTEXT=CMLib.lang().L("(Finding Ore)");
+
 	public Chant_FindOre()
 	{
 		super();
 
-		lookingFor = "ore";
+		lookingFor = DEFAULT_LOOKING_FOR;
+		displayText = DEFAULT_DISPLAYTEXT;
 	}
 }

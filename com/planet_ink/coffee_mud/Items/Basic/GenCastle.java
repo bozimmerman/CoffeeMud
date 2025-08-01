@@ -180,7 +180,7 @@ public class GenCastle extends GenSiegableBoardable
 	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
-			return "enter(s)";
+			return DEFAULT_ENTERSTRING;
 		return mountString;
 	}
 
@@ -188,7 +188,7 @@ public class GenCastle extends GenSiegableBoardable
 	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
-			return "leave(s)";
+			return DEFAULT_LEAVESTRING;
 		return dismountString;
 	}
 

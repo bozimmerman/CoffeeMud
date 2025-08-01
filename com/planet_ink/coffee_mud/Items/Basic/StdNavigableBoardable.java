@@ -57,10 +57,15 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected volatile Item			following			= null;
 	protected int					ticksPerTurn		= 1;
 
-	protected String	verb_sail		= "navigate";
-	protected String	verb_sailing	= "navigating";
-	protected String	anchor_name		= "anchor";
-	protected String	anchor_verbed	= "lowered";
+	protected static String	DEFAULT_NAVIGATE_STRING		= CMLib.lang().L("navigate");
+	protected static String	DEFAULT_NAVIGATING_STRING	= CMLib.lang().L("navigating");
+	protected static String	DEFAULT_ANCHOR_STRING		= CMLib.lang().L("anchor");
+	protected static String	DEFAULT_LOWERED_STRING		= CMLib.lang().L("lowered");
+
+	protected String	verb_sail		= DEFAULT_NAVIGATE_STRING;
+	protected String	verb_sailing	= DEFAULT_NAVIGATING_STRING;
+	protected String	anchor_name		= DEFAULT_ANCHOR_STRING;
+	protected String	anchor_verbed	= DEFAULT_LOWERED_STRING;
 
 	public StdNavigableBoardable()
 	{
@@ -69,8 +74,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		setDisplayText("a navigable transport is here.");
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
-		noun_word = "transport";
-		head_offTheDeck = "^HOff the side you see: ^N";
+		noun_word = L("transport");
+		head_offTheDeck = L("^HOff the side you see: ^N");
 		this.recoverPhyStats();
 	}
 
@@ -194,7 +199,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		if((R.domainType()&Room.INDOORS)!=0)
 		{
 			if(mob.isPlayer())
-				mob.tell(L("You must be on deck to steer your "+noun_word+"."));
+				mob.tell(L("You must be on deck to steer your @x1.",noun_word));
 			return false;
 		}
 		return true;
@@ -254,13 +259,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					if(cmds.size()==1)
 					{
-						msg.source().tell(L("You must specify another "+noun_word+" to offer aboard."));
+						msg.source().tell(L("You must specify another @x1 to offer aboard.",noun_word));
 						return false;
 					}
 					final Room thisRoom = (Room)owner();
 					if(thisRoom==null)
 					{
-						msg.source().tell(L("This "+noun_word+" is nowhere to be found!"));
+						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
 						return false;
 					}
 					if(this.siegeTarget!=null)
@@ -313,7 +318,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					else
 					{
-						msg.source().tell(L("You don't see the "+noun_word+" '@x1' here to board",rest));
+						msg.source().tell(L("You don't see the @x2 '@x1' here to board",rest,noun_word));
 						return false;
 					}
 				}
@@ -322,7 +327,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final Room thisRoom = (Room)owner();
 					if(thisRoom==null)
 					{
-						msg.source().tell(L("This "+noun_word+" is nowhere to be found!"));
+						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
 						return false;
 					}
 					final MOB mob=msg.source();
@@ -482,16 +487,17 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The "+noun_word+" has moved!"));
+						msg.source().tell(L("The @x1 has moved!",noun_word));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(!anchorDown)
-						msg.source().tell(L("The "+anchor_name+" is not "+anchor_verbed+"."));
+						msg.source().tell(L("The @x1 is not @x2.",anchor_name,anchor_verbed));
 					else
 					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> "+word.toLowerCase()+"(s) the "+anchor_name+" on <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> @x2(s) the @x1 on <T-NAME>.",anchor_name,word.toLowerCase()));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -512,16 +518,17 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					stopFollowing(msg.source());
 					if(safetyMove())
 					{
-						msg.source().tell(L("The "+noun_word+" has moved!"));
+						msg.source().tell(L("The @x1 has moved!",noun_word));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
 					if(anchorDown)
-						msg.source().tell(L("The "+anchor_name+" is already "+anchor_verbed+"."));
+						msg.source().tell(L("The @x1 is already @x2.",anchor_name,anchor_verbed));
 					else
 					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> "+word.toLowerCase()+"(s) the "+anchor_name+" on <T-NAME>."));
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
+								L("<S-NAME> @x1(s) the @x2 on <T-NAME>.",word.toLowerCase(),anchor_name));
 						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
 						{
 							R.send(msg.source(), msg2);
@@ -541,12 +548,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
+						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The "+noun_word+" has moved!"));
+						msg.source().tell(L("The @x1 has moved!",noun_word));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -559,7 +566,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
-						msg.source().tell(L("Steer the "+noun_word+" which direction?"));
+						msg.source().tell(L("Steer the @x1 which direction?",noun_word));
 						return false;
 					}
 					final Room R=CMLib.map().roomLocation(this);
@@ -591,13 +598,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						directionFacing = getDirectionFacing(dir);
 						if(dir == this.directionFacing)
 						{
-							msg.source().tell(L("Your "+noun_word+" is already "+verb_sailing+" @x1.",dirName));
+							msg.source().tell(L("Your @x2 is already @x3 @x1.",dirName,noun_word,verb_sailing));
 							return false;
 						}
 					}
 					if(anchorDown)
 					{
-						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
+						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
 						return false;
 					}
 					break;
@@ -612,12 +619,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
+						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The "+noun_word+" has moved!"));
+						msg.source().tell(L("The @x1 has moved!",noun_word));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -638,7 +645,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
 					if(dir<0)
 					{
-						msg.source().tell(L(""+CMStrings.capitalizeFirstLetter(verb_sail)+" the "+noun_word+" which direction?"));
+						msg.source().tell(L("@x1 the @x2 which direction?",CMStrings.capitalizeFirstLetter(verb_sail),noun_word));
 						return false;
 					}
 					if(!this.amInTacticalMode())
@@ -657,8 +664,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						directionFacing = getDirectionFacing(dir);
 						if(dir != this.directionFacing)
 						{
-							msg.source().tell(L("When in tactical mode, your "+noun_word+" can only "+verb_sail.toUpperCase()+
-												" @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName));
+							msg.source().tell(L("When in tactical mode, your @x2 can only @x3"+
+												" @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName,noun_word,verb_sail.toUpperCase()));
 							return false;
 						}
 					}
@@ -670,7 +677,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					if(anchorDown)
 					{
-						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
+						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
 						return false;
 					}
 					break;
@@ -686,12 +693,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					stopFollowing(msg.source());
 					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
 					{
-						msg.source().tell(L("The "+noun_word+" won't seem to move!"));
+						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
 						return false;
 					}
 					if(safetyMove())
 					{
-						msg.source().tell(L("The "+noun_word+" has moved!"));
+						msg.source().tell(L("The @x1 has moved!",noun_word));
 						return false;
 					}
 					if((courseDirection >=0)||(courseDirections.size()>0))
@@ -720,8 +727,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
 						if(dirIndex >= cmds.size())
 						{
-							msg.source().tell(L("Your "+noun_word+" is currently "+verb_sailing+" @x1. To set a course, you must specify up to @x2 directions of travel, "
-												+ "of which only the last may be something other than @x3.",dirFacingName,""+speed,dirFacingName));
+							msg.source().tell(L("Your @x4 is currently @x6 @x1. To set a course, you must specify up to @x2 directions of travel, "
+												+ "of which only the last may be something other than @x3.",
+												dirFacingName,""+speed,dirFacingName,noun_word,verb_sailing));
 							return false;
 						}
 						final List<String> dirNames = new ArrayList<String>();
@@ -745,7 +753,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 								{
 									if(getLowestTacticalDistanceFromThis() >= R.maxRange())
 									{
-										msg.source().tell(L("There doesn't look to be anywhere you can "+verb_sail+" in that direction."));
+										msg.source().tell(L("There doesn't look to be anywhere you can @x1 in that direction.",verb_sail));
 										return false;
 									}
 								}
@@ -810,7 +818,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						steer(msg.source(),R, firstDir);
 					}
 					if(anchorDown)
-						msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+", so you won`t be moving anywhere."));
+						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
 					return false;
 				}
 				}
@@ -874,7 +882,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				if(!canSteer(msg.source(), msg.source().location()))
 					return false;
 				if(anchorDown)
-					msg.source().tell(L("The "+anchor_name+" is "+anchor_verbed+"."));
+					msg.source().tell(L("The @x1 is @x2.",anchor_name,anchor_verbed));
 				else
 				if(amInTacticalMode())
 				{
@@ -926,7 +934,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					this.courseDirections.clear();
 					this.courseDirections.add(Integer.valueOf(-1));
 					this.courseDirection = dir;
-					this.announceToOuterViewers(msg.source(),L("<S-NAME> start(s) "+verb_sailing+" @x1.",CMLib.directions().getDirectionName(dir)));
+					this.announceToOuterViewers(msg.source(),L("<S-NAME> start(s) @x2 @x1.",CMLib.directions().getDirectionName(dir),verb_sailing));
 				}
 				return false;
 			}
@@ -949,7 +957,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					this.courseDirections.clear();
 					this.courseDirections.add(Integer.valueOf(-1));
 					this.courseDirection = dir;
-					this.announceToOuterViewers(msg.source(),L("<S-NAME> start(s) steering the "+noun_word+" @x1.",CMLib.directions().getDirectionName(dir)));
+					this.announceToOuterViewers(msg.source(),L("<S-NAME> start(s) steering the @x2 @x1.",CMLib.directions().getDirectionName(dir),noun_word));
 				}
 				return false;
 			}
@@ -1024,13 +1032,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						return false;
 					if(cmds.size()==1)
 					{
-						msg.source().tell(L("You must specify another "+noun_word+" to offer to board."));
+						msg.source().tell(L("You must specify another @x1 to offer to board.",noun_word));
 						return false;
 					}
 					final Room thisRoom = (Room)owner();
 					if(thisRoom==null)
 					{
-						msg.source().tell(L("This "+noun_word+" is nowhere to be found!"));
+						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
 						return false;
 					}
 					/*//TODO: maybe check to see if the lil "+noun_word+" is
@@ -1073,7 +1081,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					else
 					{
-						msg.source().tell(L("You don't see the "+noun_word+" '@x1' here to tender with",rest));
+						msg.source().tell(L("You don't see the @x2 '@x1' here to tender with",rest,noun_word));
 						return false;
 					}
 				}
@@ -1372,11 +1380,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			{
 				final StringBuilder visualCondition = new StringBuilder("");
 				if(this.anchorDown)
-					visualCondition.append(L("^HThe "+anchor_name+" on @x1 is "+anchor_verbed+", holding her in place.^.^?",name(msg.source())));
+					visualCondition.append(L("^HThe @x2 on @x1 is @x3, holding her in place.^.^?",name(msg.source()),anchor_name,anchor_verbed));
 				else
 				if((this.courseDirection >= 0)
 				&&(getTopCourse()>=0))
-					visualCondition.append(L("^H@x1 is "+verb_sailing+" @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127)));
+					visualCondition.append(L("^H@x1 is @x3 @x2^.^?",CMStrings.capitalizeFirstLetter(name(msg.source())), CMLib.directions().getDirectionName(courseDirection & 127),verb_sailing));
 				if(this.subjectToWearAndTear() && (usesRemaining() <= 100))
 				{
 					final double pct=(CMath.div(usesRemaining(),100.0));
@@ -1412,11 +1420,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				{
 					final StringBuilder visualCondition = new StringBuilder("");
 					if(this.anchorDown)
-						visualCondition.append(L("\n\r^HThe "+anchor_name+" on @x1 is "+anchor_verbed+", holding her in place.^.^?",name(msg.source())));
+						visualCondition.append(L("\n\r^HThe @x2 on @x1 is @x3, holding her in place.^.^?",name(msg.source()),anchor_name,anchor_verbed));
 					else
 					if((this.courseDirection >= 0)
 					&&(getTopCourse()>=0))
-						visualCondition.append(L("\n\r^H@x1 is "+verb_sailing+" @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127)));
+						visualCondition.append(L("\n\r^H@x1 is @x3 @x2^.^?",name(msg.source()), CMLib.directions().getDirectionName(courseDirection & 127),verb_sailing));
 					if(visualCondition.length()>0)
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(), null, null, CMMsg.MSG_OK_VISUAL, visualCondition.toString(), -1, null, -1, null));
 				}
@@ -1446,7 +1454,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				final String dir=CMLib.directions().getDirectionName(getDirectionFacing());
 				final String speed=""+getMaxSpeed();
 				final String dirFromYou = CMLib.directions().getDirectionName(Directions.getRelative11Directions(myCoords, targetCoords));
-				return L("@x1 is @x2 of you "+verb_sailing+" @x3 at a speed of @x4 and a distance of @x5.",name(),dirFromYou,dir,speed,dist);
+				return L("@x1 is @x2 of you @x6 @x3 at a speed of @x4 and a distance of @x5.",name(),dirFromYou,dir,speed,dist,verb_sailing);
 			}
 			else
 				return L("@x1 is at a distance of @x2.",name(),dist);
@@ -1643,8 +1651,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				try
 				{
 					final boolean isSneaking = CMLib.flags().isSneaking(this);
-					final String navEnterStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) in from @x1.",otherDirectionName);
-					final String navAwayStr = isSneaking ? null : L("<S-NAME> "+verb_sail+"(s) @x1.",directionName);
+					final String navEnterStr = isSneaking ? null : L("<S-NAME> @x2(s) in from @x1.",otherDirectionName,verb_sail);
+					final String navAwayStr = isSneaking ? null : L("<S-NAME> @x2(s) @x1.",directionName,verb_sail);
 					final CMMsg enterMsg=CMClass.getMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,navEnterStr);
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,navAwayStr);
 					if((exit.okMessage(mob,enterMsg))
@@ -1684,9 +1692,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			else
 			{
 				if(CMLib.flags().isWateryRoom(thisRoom))
-					announceToAllAboard(L("As there is no where to "+verb_sail+" @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
+					announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction),verb_sail));
 				else
-					announceToAllAboard(L("There is no where to "+verb_sail+" @x1.",CMLib.directions().getInDirectionName(direction)));
+					announceToAllAboard(L("There is no where to @x2 @x1.",CMLib.directions().getInDirectionName(direction),verb_sail));
 				courseDirections.clear();
 				return NavResult.CANCEL;
 			}
@@ -1719,7 +1727,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	{
 		directionFacing = dir;
 		final String outerStr;
-		final String innerStr = L("<S-NAME> "+verb_sail+"(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir));
+		final String innerStr = L("<S-NAME> @x3(s) @x1 @x2.",name(mob),CMLib.directions().getDirectionName(dir),verb_sail);
 		if(CMLib.flags().isSneaking(this))
 			outerStr=null;
 		else

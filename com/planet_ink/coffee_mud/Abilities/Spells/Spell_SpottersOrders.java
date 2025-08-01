@@ -52,7 +52,7 @@ public class Spell_SpottersOrders extends Spell
 	@Override
 	public String displayText()
 	{
-		return L("(Spotting weaknesses of "+text()+")");
+		return L("(Spotting weaknesses of @x1)",text());
 	}
 
 	@Override

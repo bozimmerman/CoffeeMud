@@ -176,7 +176,7 @@ public class Test extends StdCommand
 			}
 		}
 		if(!all.containsKey(category))
-			return L("Unknown category '"+category+"'");
+			return L("Unknown category '@x1'",category);
 		final StringBuilder str = new StringBuilder("");
 		str.append(L("^HTests in @x1: ^N",category));
 		final List<CMTest> tests = all.get(category);

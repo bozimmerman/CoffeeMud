@@ -144,7 +144,7 @@ public class Archon_InstanceDisplay extends ArchonSkill
 				if(A==null)
 					mob.tell(L("Yea, sorry, that's broken."));
 				else
-					mob.tell(L("You believe they would be sent to: "+disp));
+					mob.tell(L("You believe they would be sent to: @x1",disp));
 			}
 		}
 		else

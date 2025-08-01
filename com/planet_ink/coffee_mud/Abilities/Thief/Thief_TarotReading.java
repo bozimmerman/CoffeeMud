@@ -66,31 +66,29 @@ public class Thief_TarotReading extends Thief_Runecasting
 		return triggerStrings;
 	}
 
-	protected static String[] tarotStarts = new String[]
-	{
-		"I see your major arcana is affected by...",
-		"I see your minor arcana is affected by...",
-		"I see your future holds..."
-	};
-
-	protected static String[] tarotFails = new String[]
-	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
-	};
-
 	@Override
-	protected String[] getStartPhrases()
+	protected String getStartPhrase()
 	{
-		return tarotStarts;
+		switch(CMLib.dice().roll(1, 3, -1))
+		{
+		case 0: return L("I see your major arcana is affected by...");
+		case 1: return L("I see your minor arcana is affected by...");
+		case 2: return L("I see your future holds...");
+		}
+		return "";
 	}
 
 	@Override
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return tarotFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("Astral clouds are blocking your aura.");
+		case 1: return L("Your future is unbound. Tread carefully.");
+		case 2: return L("Your path is clear.");
+		case 3: return L("The fates` gaze is elsewhere.");
+		}
+		return "";
 	}
 
 	@Override

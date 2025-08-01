@@ -114,7 +114,8 @@ public class Whirlpool extends StdGrid
 					currents.setParms("minticks=1 maxticks=2 chance=75 "+CMLib.directions().getDirectionName(dir));
 					currents.setSavable(true);
 					fromRoom.addBehavior(currents);
-					fromRoom.setDescription(fromRoom.description() +L("%0D^HThe swirling waters are pulling you "+CMLib.directions().getDirectionName(dir)+".^?"));
+					fromRoom.setDescription(fromRoom.description() +
+							L("%0D^HThe swirling waters are pulling you @x1.^?",CMLib.directions().getDirectionName(dir)));
 				}
 				curXY[0]=testXY[0];
 				curXY[1]=testXY[1];
@@ -163,7 +164,8 @@ public class Whirlpool extends StdGrid
 					currents.setParms("minticks=1 maxticks=2 chance=75 BOATS "+CMLib.directions().getDirectionName(dir));
 					currents.setSavable(true);
 					lastRoom.addBehavior(currents);
-					lastRoom.setDescription(lastRoom.description() +L("%0D^HThe swirling waters are pulling you "+CMLib.directions().getDirectionName(dir)+".^?"));
+					lastRoom.setDescription(lastRoom.description() +
+							L("%0D^HThe swirling waters are pulling you @x1.^?",CMLib.directions().getDirectionName(dir)));
 				}
 			}
 			lastRoom=downRoom;

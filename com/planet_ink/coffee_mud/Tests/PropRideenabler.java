@@ -61,7 +61,7 @@ public class PropRideenabler extends PropTest
 		resetTest();
 		final Ability RideEnabler = CMClass.getAbility("Prop_RideEnabler");
 		RideEnabler.setMiscText(semiSpellList());
-		//mob.tell(L("Test:"+what+"-1: @x1", RideEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", RideEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideEnabler, mobs[0], null, 2);
 		if (!spellCheck(spells, mobs[0]))
 		{
@@ -75,7 +75,7 @@ public class PropRideenabler extends PropTest
 		}
 		resetTest();
 		RideEnabler.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", RideEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", RideEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getItem("Boat"), RideEnabler, mobs[0], mobs[1], 2);
 		if (!spellCheck(spells, mobs[0]))
 		{

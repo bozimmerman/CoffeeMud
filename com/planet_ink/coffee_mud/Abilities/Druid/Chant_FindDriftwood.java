@@ -91,11 +91,15 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		return null;
 	}
 
+	private static String DEFAULT_LOOKING_FOR=CMLib.lang().L("driftwood");
+	private static String DEFAULT_DISPLAYTEXT=CMLib.lang().L("(Finding Driftwood)");
+
 	public Chant_FindDriftwood()
 	{
 		super();
 
-		lookingFor = "driftwood";
+		lookingFor = DEFAULT_LOOKING_FOR;
+		displayText = DEFAULT_DISPLAYTEXT;
 	}
 
 	@Override
@@ -106,7 +110,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		if((theDriftwood != null)
 		&&(theDriftwood.owner() instanceof Room)
 		&&(CMLib.map().roomLocation(theDriftwood) == R))
-			return "There seems to be "+lookingFor+" around here.\n\r";
+			return L("There seems to be @x1 around here.\n\r",lookingFor);
 		return "";
 	}
 

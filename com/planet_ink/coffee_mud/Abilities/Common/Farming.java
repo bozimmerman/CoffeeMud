@@ -99,7 +99,7 @@ public class Farming extends GatheringSkill
 
 	protected String seedWord()
 	{
-		return "seed";
+		return L("seed");
 	}
 
 	@Override
@@ -114,19 +114,19 @@ public class Farming extends GatheringSkill
 			if(R!=null)
 			{
 				final double age = (tickDown == 0) ? 0 : CMath.div(tickDown, tickDown+tickUp);
-				String adj;
+				String msgStr;
 				if(age < .25)
-					adj="Mature @x1";
+					msgStr=L("Mature @x1 are growing here.",foundShortName);
 				else
 				if(age < .5)
-					adj="@x1";
+					msgStr=L("@x1 are growing here.",foundShortName);
 				else
 				if(age < .75)
-					adj="Young @x1";
+					msgStr=L("Young @x1 are growing here.",foundShortName);
 				else
-					adj=CMStrings.capitalizeFirstLetter(CMLib.english().makePlural(seedWord()))+" of @x1";
+					msgStr=CMStrings.capitalizeFirstLetter(CMLib.english().makePlural(seedWord()))+L(" of @x1",foundShortName);
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,
-						L(adj+" are growing here.",foundShortName)));
+						msgStr));
 			}
 		}
 	}

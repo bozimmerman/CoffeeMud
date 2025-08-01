@@ -330,7 +330,7 @@ public class ColorSet extends StdCommand
 							for(int x=0;x<theSet.size();x++)
 							{
 								final Pair<String,Integer> entry = theSet.get(x);
-								if(entry.first.equals(potChannelName) || L(entry.first).equals(potChannelName))
+								if(entry.first.equals(potChannelName))
 								{
 									newEntry = entry;
 									input = ""+(x+1);

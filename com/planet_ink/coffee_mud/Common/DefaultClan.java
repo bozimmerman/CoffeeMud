@@ -1206,7 +1206,7 @@ public class DefaultClan implements Clan
 			{
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
-					msg.append(t.codeString+" ");
+					msg.append(t.codeString()+" ");
 					if(t.name().toUpperCase().indexOf("MONTHLY")<0)
 						msg.append("(").append(this.getTrophyData(t)).append(") ");
 					else

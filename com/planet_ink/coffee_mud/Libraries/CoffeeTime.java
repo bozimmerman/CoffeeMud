@@ -903,7 +903,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		{
 			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerYear)));
 			time = time - (num *millisPerYear);
-			str.append(num+(shortest?"y":(" "+L("year"+(num!=1?"s":"")))));
+			str.append(num+(shortest?"y":(" "+((num!=1?L("years"):L("year"))))));
 		}
 		if((minUnit == TimeDelta.YEAR)||(time <= 0))
 			return str.toString().trim();
@@ -913,7 +913,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerMonth)));
 			time = time - (num *millisPerMonth);
-			str.append(num+(shortest?"M":(" "+L("month"+(num!=1?"s":"")))));
+			str.append(num+(shortest?"M":(" "+((num!=1?L("months"):L("month"))))));
 		}
 		if((minUnit == TimeDelta.MONTH)||(time <= 0))
 			return str.toString().trim();
@@ -923,7 +923,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerWeek)));
 			time = time - (num *millisPerWeek);
-			str.append(num+(shortest?"w":(" "+L("week"+(num!=1?"s":"")))));
+			str.append(num+(shortest?"w":(" "+((num!=1?L("weeks"):L("week"))))));
 		}
 		if((minUnit == TimeDelta.WEEK)||(time <= 0))
 			return str.toString().trim();
@@ -933,7 +933,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerDay)));
 			time = time - (num *millisPerDay);
-			str.append(num+(shortest?"d":(" "+L("day"+(num!=1?"s":"")))));
+			str.append(num+(shortest?"d":(" "+((num!=1?L("days"):L("day"))))));
 		}
 		if((minUnit == TimeDelta.DAY)||(time <= 0))
 			return str.toString().trim();
@@ -943,7 +943,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				str.append(shortest?" ":", ");
 			final int num=(int)Math.round(CMath.floor(CMath.div(time,millisPerHr)));
 			time = time - (num *millisPerHr);
-			return str.append(num+(shortest?"h":(" "+L("hour"+(num!=1?"s":""))))).toString().trim();
+			return str.append(num+(shortest?"h":(" "+((num!=1?L("hours"):L("hour")))))).toString().trim();
 		}
 		return L("less than an hour");
 	}

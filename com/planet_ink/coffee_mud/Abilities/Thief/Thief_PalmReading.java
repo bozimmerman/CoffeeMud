@@ -72,33 +72,31 @@ public class Thief_PalmReading extends Thief_Runecasting
 		return triggerStrings;
 	}
 
-	protected static String[] astroStarts = new String[]
-	{
-		"I see your life line is affected by...",
-		"I see your head line is affected by...",
-		"I see your sun line is affected by...",
-		"I see your fate line is affected by...",
-		"I see your heart line is affected by..."
-	};
-
-	protected static String[] astroFails = new String[]
-	{
-		"Astral clouds are blocking your aura.",
-		"Your future is unbound. Tread carefully.",
-		"Your path is clear.",
-		"The fates` gaze is elsewhere."
-	};
-
 	@Override
-	protected String[] getStartPhrases()
+	protected String getStartPhrase()
 	{
-		return astroStarts;
+		switch(CMLib.dice().roll(1, 5, -1))
+		{
+		case 0: return L("I see your life line is affected by...");
+		case 1: return L("I see your head line is affected by...");
+		case 2: return L("I see your sun line is affected by...");
+		case 3: return L("I see your fate line is affected by...");
+		case 4: return L("I see your heart line is affected by...");
+		}
+		return "";
 	}
 
 	@Override
-	protected String[] getFailPhrases()
+	protected String getFailPhrase()
 	{
-		return astroFails;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return L("Astral clouds are blocking your aura.");
+		case 1: return L("Your future is unbound. Tread carefully.");
+		case 2: return L("Your path is clear.");
+		case 3: return L("The fates` gaze is elsewhere.");
+		}
+		return "";
 	}
 
 	@Override

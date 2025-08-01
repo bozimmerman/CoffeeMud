@@ -263,11 +263,11 @@ public class Spell_ClanWard extends Spell
 		final int points=C.getRoleFromName(rank);
 		if(points < 0)
 		{
-			final StringBuilder str=new StringBuilder("'"+CMParms.combine(commands)+"' is not a proper rank in your clan.  Try one of the following: ");
+			final StringBuilder listOfRanksStr=new StringBuilder("'"+CMParms.combine(commands)+"' is not a proper rank in your clan.  Try one of the following: ");
 			for(final ClanPosition pos : C.getGovernment().getPositions())
-				str.append(pos.getName()).append(", ");
-			str.append(", or REVOKE to remove a ward.");
-			mob.tell(L(str.toString()));
+				listOfRanksStr.append(pos.getName()).append(", ");
+			listOfRanksStr.append(", or REVOKE to remove a ward.");
+			mob.tell(L(listOfRanksStr.toString()));
 			return true;
 		}
 

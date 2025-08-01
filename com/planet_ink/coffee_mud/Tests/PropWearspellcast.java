@@ -61,7 +61,7 @@ public class PropWearspellcast extends PropTest
 		resetTest();
 		final Ability WearSpellCast = CMClass.getAbility("Prop_WearSpellCast");
 		WearSpellCast.setMiscText(semiSpellList());
-		//mob.tell(L("Test:"+what+"-1: @x1", WearSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], null, 1);
 		if (!effectCheck(spells, mobs[0]))
 		{
@@ -75,7 +75,7 @@ public class PropWearspellcast extends PropTest
 		}
 		resetTest();
 		WearSpellCast.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", WearSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], mobs[1], 1);
 		if (!effectCheck(spells, mobs[0]))
 		{
@@ -98,7 +98,7 @@ public class PropWearspellcast extends PropTest
 		}
 		resetTest();
 		WearSpellCast.setMiscText(semiSpellList() + "MASK=-Human");
-		//mob.tell(L("Test:"+what+"-3: @x1", WearSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-3: @x1", WearSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearSpellCast, mobs[0], mobs[1], 1);
 		if (!effectCheck(spells, mobs[0]))
 		{

@@ -61,7 +61,7 @@ public class PropFightspellcast extends PropTest
 		resetTest();
 		final Ability FightSpellCast = CMClass.getAbility("Prop_FightSpellCast");
 		FightSpellCast.setMiscText(maliciousSemiSpellList());
-		//mob.tell(L("Test:"+what+"-1: @x1", FightSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[0], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
@@ -86,7 +86,7 @@ public class PropFightspellcast extends PropTest
 		R1.recoverRoomStats();
 		resetTest();
 		FightSpellCast.setMiscText(maliciousSemiSpellList() + "MASK=-RACE +Human");
-		//mob.tell(L("Test:"+what+"-2: @x1", FightSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[1], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{
@@ -111,7 +111,7 @@ public class PropFightspellcast extends PropTest
 		R1.recoverRoomStats();
 		resetTest();
 		FightSpellCast.setMiscText(maliciousSemiSpellList() + "MASK=-RACE +Human");
-		//mob.tell(L("Test:"+what+"-3: @x1", FightSpellCast.accountForYourself()));
+		//mob.tell(L("Test:@x2-3: @x1", FightSpellCast.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), FightSpellCast, mobs[0], null, 1);
 		if (effectCheck(maliciousspells, mobs[1]))
 		{

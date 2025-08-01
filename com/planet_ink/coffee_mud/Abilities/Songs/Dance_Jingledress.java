@@ -57,7 +57,7 @@ public class Dance_Jingledress extends Dance
 	@Override
 	protected String danceOf()
 	{
-		return name()+" Dance";
+		return L("@x1 Dance",name());
 	}
 
 	@Override

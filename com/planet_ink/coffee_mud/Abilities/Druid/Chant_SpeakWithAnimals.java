@@ -405,12 +405,12 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 	protected String canSpeakWithWhat()
 	{
-		return "speak with animals";
+		return L("speak with animals");
 	}
 
 	protected String canSpeakWithWhatNoun()
 	{
-		return "speech of animals";
+		return L("speech of animals");
 	}
 
 	@Override
@@ -422,7 +422,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-YOUPOSS> can already "+canSpeakWithWhat()+"."));
+			failureTell(mob,target,auto,L("<S-YOUPOSS> can already @x1.",canSpeakWithWhat()));
 			return false;
 		}
 
@@ -434,7 +434,9 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),auto?L("<T-NAME> attain(s) the ability to "+canSpeakWithWhat()+"!"):L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the "+canSpeakWithWhatNoun()+"!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,null,auto),
+					auto?L("<T-NAME> attain(s) the ability to @x1!",canSpeakWithWhat()):
+						L("^S<S-NAME> chant(s) to <S-NAMESELF>, becoming one with the @x1!^?",canSpeakWithWhatNoun()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

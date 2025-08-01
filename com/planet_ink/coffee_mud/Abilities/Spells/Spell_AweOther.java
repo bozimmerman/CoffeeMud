@@ -51,7 +51,7 @@ public class Spell_AweOther extends Spell
 	@Override
 	public String displayText()
 	{
-		return L("(Awe of "+text()+")");
+		return L("(Awe of @x1)",text());
 	}
 
 	@Override

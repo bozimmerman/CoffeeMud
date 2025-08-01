@@ -51,7 +51,7 @@ public class Archon_Banish extends ArchonSkill
 	@Override
 	public String displayText()
 	{
-		return L("(Banished " + timeRemaining() + ")");
+		return L("(Banished @x1)",timeRemaining());
 	}
 
 	@Override

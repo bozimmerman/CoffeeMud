@@ -259,8 +259,16 @@ public class Thief_Listen extends ThiefSkill
 			{
 				final List<String> lst=new ArrayList<String>();
 				for(final ListenFlag flag : flags)
-					lst.add(flag.name().toLowerCase());
-				mob.tell(L("You can only listen "+CMLib.english().toEnglishStringList(lst) +".")); // no further L necc
+				{
+					switch(flag)
+					{
+					case INDOORS: lst.add(L("indoors")); break;
+					case OUTDOORS: lst.add(L("outdoors")); break;
+					case UNDERWATER: lst.add(L("underwater")); break;
+					default: lst.add(L("indoors")); break;
+					}
+				}
+				mob.tell(L("You can only listen @x1.",CMLib.english().toEnglishStringList(lst)));
 				return false;
 			}
 		}

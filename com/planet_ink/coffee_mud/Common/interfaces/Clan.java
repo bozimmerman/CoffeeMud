@@ -1093,32 +1093,82 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	 */
 	public static enum Trophy
 	{
-		Points("Most control points", "Control Points", CMProps.Str.CLANTROPCP, 'C'),
-		Experience("Most clan experience", "Experience", CMProps.Str.CLANTROPEXP, 'E'),
-		Areas("Most controlled areas", "Areas Controlled", CMProps.Str.CLANTROPAREA, 'A'),
-		ClanKills("Most rival clan-kills", "Clan Kills", CMProps.Str.CLANTROPPK, 'K'),
-		Members("Most members", "Total Members", CMProps.Str.CLANTROPMB, 'M'),
-		MemberLevel("Highest median level", "Median Level", CMProps.Str.CLANTROPLVL, 'H'),
-		PlayerMinutes("Most player time", "Player Time", CMProps.Str.CLANTROPPTIME, 'T'),
-		PlayerLevelsGained("Most player Levels", "Most Level-ups", CMProps.Str.CLANTROPPLVL, 'L'),
-		MonthlyPlayerMinutes("Most player time last month", "Monthly Player Time", CMProps.Str.CLANTROPMONTHLYPTIME, 't'),
-		MonthlyPlayerXP("Most player xp last month", "Monthly Player XP", CMProps.Str.CLANTROPMONTHLYPXP, 'e'),
-		MonthlyClanXP("Most clan xp last month", "Monthly Clan XP", CMProps.Str.CLANTROPMONTHLYEXP, 'x'),
-		MonthlyConquests("Most conquests last month", "Monthly Conquests", CMProps.Str.CLANTROPMONTHLYAREA, 'a'),
-		MonthlyClanLevels("Most clan levels last month", "Monthly Clan Levels", CMProps.Str.CLANTROPMONTHLYLVLS, 'l'),
-		MonthlyControlPoints("Most control points last month", "Monthly Control Points", CMProps.Str.CLANTROPMONTHLYCP, 'c'),
-		MonthlyNewMembers("Most new members last month", "Monthly New Members",CMProps.Str.CLANTROPMONTHLYMB, 'm'),
+		Points(CMProps.Str.CLANTROPCP, 'C'),
+		Experience(CMProps.Str.CLANTROPEXP, 'E'),
+		Areas(CMProps.Str.CLANTROPAREA, 'A'),
+		ClanKills(CMProps.Str.CLANTROPPK, 'K'),
+		Members(CMProps.Str.CLANTROPMB, 'M'),
+		MemberLevel(CMProps.Str.CLANTROPLVL, 'H'),
+		PlayerMinutes(CMProps.Str.CLANTROPPTIME, 'T'),
+		PlayerLevelsGained(CMProps.Str.CLANTROPPLVL, 'L'),
+		MonthlyPlayerMinutes(CMProps.Str.CLANTROPMONTHLYPTIME, 't'),
+		MonthlyPlayerXP(CMProps.Str.CLANTROPMONTHLYPXP, 'e'),
+		MonthlyClanXP(CMProps.Str.CLANTROPMONTHLYEXP, 'x'),
+		MonthlyConquests(CMProps.Str.CLANTROPMONTHLYAREA, 'a'),
+		MonthlyClanLevels(CMProps.Str.CLANTROPMONTHLYLVLS, 'l'),
+		MonthlyControlPoints(CMProps.Str.CLANTROPMONTHLYCP, 'c'),
+		MonthlyNewMembers(CMProps.Str.CLANTROPMONTHLYMB, 'm'),
 		;
-		public final String description;
-		public final String codeString;
+		private String description = null;
+		private String codeString = null;
 		public final CMProps.Str propertyCode;
 		public final char shortChar;
-		private Trophy(final String desc, final String codeName, final CMProps.Str cd, final char shortChar)
+		private Trophy( final CMProps.Str cd, final char shortChar)
 		{
-			this.description=desc;
-			this.codeString=codeName;
 			this.propertyCode = cd;
 			this.shortChar = shortChar;
+		}
+
+		public String codeString()
+		{
+			if(codeString == null)
+			{
+				switch(this)
+				{
+				case Points: codeString = CMLib.lang().L("Control Points"); break;
+				case Experience: codeString = CMLib.lang().L("Experience"); break;
+				case Areas: codeString = CMLib.lang().L("Areas Controlled"); break;
+				case ClanKills: codeString = CMLib.lang().L("Clan Kills"); break;
+				case Members: codeString = CMLib.lang().L("Total Members"); break;
+				case MemberLevel: codeString = CMLib.lang().L("Median Level"); break;
+				case PlayerMinutes: codeString = CMLib.lang().L("Player Time"); break;
+				case PlayerLevelsGained: codeString = CMLib.lang().L("Most Level-ups"); break;
+				case MonthlyPlayerMinutes: codeString = CMLib.lang().L("Monthly Player Time"); break;
+				case MonthlyPlayerXP: codeString = CMLib.lang().L("Monthly Player XP"); break;
+				case MonthlyClanXP: codeString = CMLib.lang().L("Monthly Clan XP"); break;
+				case MonthlyConquests: codeString = CMLib.lang().L("Monthly Conquests"); break;
+				case MonthlyClanLevels: codeString = CMLib.lang().L("Monthly Clan Levels"); break;
+				case MonthlyControlPoints: codeString = CMLib.lang().L("Monthly Control Points"); break;
+				case MonthlyNewMembers: codeString = CMLib.lang().L("Monthly New Members"); break;
+				}
+			}
+			return codeString;
+		}
+
+		public String description()
+		{
+			if(description == null)
+			{
+				switch(this)
+				{
+				case Points: description = CMLib.lang().L("Most control points", "Control Points"); break;
+				case Experience: description = CMLib.lang().L("Most clan experience", "Experience"); break;
+				case Areas: description = CMLib.lang().L("Most controlled areas", "Areas Controlled"); break;
+				case ClanKills: description = CMLib.lang().L("Most rival clan-kills", "Clan Kills"); break;
+				case Members: description = CMLib.lang().L("Most members", "Total Members"); break;
+				case MemberLevel: description = CMLib.lang().L("Highest median level", "Median Level"); break;
+				case PlayerMinutes: description = CMLib.lang().L("Most player time", "Player Time"); break;
+				case PlayerLevelsGained: description = CMLib.lang().L("Most player Levels", "Most Level-ups"); break;
+				case MonthlyPlayerMinutes: description = CMLib.lang().L("Most player time last month", "Monthly Player Time"); break;
+				case MonthlyPlayerXP: description = CMLib.lang().L("Most player xp last month", "Monthly Player XP"); break;
+				case MonthlyClanXP: description = CMLib.lang().L("Most clan xp last month", "Monthly Clan XP"); break;
+				case MonthlyConquests: description = CMLib.lang().L("Most conquests last month", "Monthly Conquests"); break;
+				case MonthlyClanLevels: description = CMLib.lang().L("Most clan levels last month", "Monthly Clan Levels"); break;
+				case MonthlyControlPoints: description = CMLib.lang().L("Most control points last month", "Monthly Control Points"); break;
+				case MonthlyNewMembers: description = CMLib.lang().L("Most new members last month", "Monthly New Members"); break;
+				}
+			}
+			return description;
 		}
 
 		public boolean isEnabled()

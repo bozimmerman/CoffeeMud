@@ -778,11 +778,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		Room newRoom;
 		synchronized(CMClass.getSync("SYNC"+room.roomID()))
 		{
-			String desc = recipe[DAT_MISC];
+			String varifiableDesc = recipe[DAT_MISC];
 			final String addParms = recipe[DAT_PROPERTIES];
 			final String localeClass = recipe[DAT_CLASS];
-			if(desc.equals("0"))
-				desc="";
+			if(varifiableDesc.equals("0"))
+				varifiableDesc="";
 
 			final int opDir = Directions.getOpDirectionCode(dir);
 			room=CMLib.map().getRoom(room);
@@ -834,16 +834,16 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			{
 				newExit=CMClass.getExit("GenExit");
 				newExit.setName(L("a passageway"));
-				newExit.setDescription(L(desc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
-				newExit.setDisplayText(L(desc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				newExit.setDescription(L(varifiableDesc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
+				newExit.setDisplayText(L(varifiableDesc,CMLib.directions().getDirectionName(dir),""+newFloorNum+CMath.numAppendage(newFloorNum)));
 				addEffects(newExit, room.getRoomInDir(dir),addParms);
 				newExit.recoverPhyStats();
 				newExit.text();
 
 				returnExit=CMClass.getExit("GenExit");
 				returnExit.setName(L("a passageway"));
-				returnExit.setDescription(L(desc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
-				returnExit.setDisplayText(L(desc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				returnExit.setDescription(L(varifiableDesc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
+				returnExit.setDisplayText(L(varifiableDesc,CMLib.directions().getDirectionName(opDir),""+curFloorNum+CMath.numAppendage(curFloorNum)));
 				addEffects(returnExit, room.getRoomInDir(dir),addParms);
 				returnExit.recoverPhyStats();
 				returnExit.text();
@@ -1247,7 +1247,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				verb=L("demolishing the wall @x1",CMLib.directions().getInDirectionName(dir).toLowerCase());
 		}
 		else
-			verb = L("building the "+recipe[DAT_DESC],CMLib.directions().getInDirectionName(dir).toLowerCase());
+			verb = L("building the @x1",
+					CMStrings.replaceVariables(recipe[DAT_DESC],CMLib.directions().getInDirectionName(dir).toLowerCase()));
 		return verb;
 	}
 

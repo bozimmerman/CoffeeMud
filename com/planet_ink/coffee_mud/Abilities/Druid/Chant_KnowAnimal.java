@@ -176,7 +176,7 @@ public class Chant_KnowAnimal extends Chant
 					if(accounting.length()==0)
 						continue;
 					addSpace(rpt);
-					rpt.append(L(heShe+" is "+accounting+"."));
+					rpt.append(L("@x1 is @x2.",heShe,accounting));
 				}
 				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 				{

@@ -49,12 +49,6 @@ public class Chant_FindGem extends Chant_FindPlant
 	}
 
 	@Override
-	public String displayText()
-	{
-		return L("(Finding "+lookingFor+")");
-	}
-
-	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;
@@ -91,6 +85,7 @@ public class Chant_FindGem extends Chant_FindPlant
 	{
 		super();
 
-		lookingFor = "gem";
+		lookingFor = L("gem");
+		displayText = L("(Looking for Gems)");
 	}
 }

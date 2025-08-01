@@ -116,38 +116,41 @@ public class Say extends StdCommand
 		throws java.io.IOException
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		String theWord="Say";
+		String verb=L("Say");
+		String averb=L("say(s)");
+		String tverb=L("say(s) to");
 		boolean toFlag=false;
 		final String theCommand=commands.get(0).toUpperCase();
 		if(theCommand.equals("ASK"))
-			theWord="Ask";
-		else
-		if(theCommand.equals("YELL"))
-			theWord="Yell";
-		else
-		if(theCommand.equals("YELLTO"))
 		{
-			theWord="Yell";
-			toFlag=true;
-		}
-		else
-		if(theCommand.equals("YELLAT"))
-		{
-			theWord="Yell";
-			toFlag=true;
+			verb=L("Ask");
+			averb=L("ask(s)");
+			tverb=averb;
 		}
 		else
 		if(theCommand.equals("SAYTO")
 		||theCommand.equals("SAYT"))
-		{
-			theWord="Say";
 			toFlag=true;
+		else
+		if(theCommand.startsWith("YELL"))
+		{
+			verb=L("Yell");
+			averb=L("yell(s)");
+			tverb=L("yell(s) to");
+			if(theCommand.equals("YELLTO"))
+				toFlag=true;
+			else
+			if(theCommand.equals("YELLAT"))
+			{
+				tverb=L("yell(s) at");
+				toFlag=true;
+			}
 		}
 
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L(theWord+" what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what?",verb));
 			return false;
 		}
 
@@ -164,7 +167,7 @@ public class Say extends StdCommand
 		}
 
 		String whom="";
-		String theWordSuffix="";
+		String dirSuffix="";
 		Environmental target=null;
 		Physical langTarget=null;
 		if(commands.size()>2)
@@ -264,7 +267,7 @@ public class Say extends StdCommand
 								final Exit E2=R.getExitInDir(dir);
 								if(R2!=null)
 								{
-									theWordSuffix=" "+CMLib.directions().getDirectionName(dir);
+									dirSuffix=" "+CMLib.directions().getDirectionName(dir);
 									yellRooms.add(R2);
 									if((E2!=null)
 									&&(E2.isOpen()))
@@ -351,7 +354,7 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L(theWord+"  what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1  what?",verb));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
@@ -360,16 +363,13 @@ public class Say extends StdCommand
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
 			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		CMMsg msg=null;
-		if((!theCommand.equals("ASK"))&&(target!=null))
-			theWord=L(theWord+"(s) to");
-		else
-			theWord=L(theWord+"(s)");
+		final String finalVerb = (target!=null)?tverb:averb;
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+finalVerb+dirSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 		{
-			final String fromSelf="^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
-			final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+			final String fromSelf="^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> "+finalVerb+dirSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+			final String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+finalVerb+dirSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 		}
 

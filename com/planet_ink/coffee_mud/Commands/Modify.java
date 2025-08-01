@@ -2544,11 +2544,11 @@ public class Modify extends StdCommand
 
 	protected String listOfThings()
 	{
-		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
+		return L("ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, WRIGHTSKILL, "
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, COMMAND, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
-			+ "TIME, HOUR, UPDATE:, or ROOM";
+			+ "TIME, HOUR, UPDATE:, or ROOM");
 	}
 
 	@Override
@@ -2560,7 +2560,7 @@ public class Modify extends StdCommand
 			commandType=commands.get(1).toUpperCase();
 		if(commands.size()==1)
 		{
-			mob.tell(L("\n\rModify what? Try an "+listOfThings()+"."));
+			mob.tell(L("\n\rModify what? Try an @x1.",listOfThings()));
 		}
 		if(commandType.equals("ITEM"))
 		{
@@ -3304,7 +3304,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an "+listOfThings()+".",allWord));
+				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an @x2.",allWord,listOfThings()));
 		}
 		return false;
 	}

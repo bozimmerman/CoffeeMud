@@ -310,20 +310,30 @@ public class Mer extends StdCharClass
 				final double factor = phase.getFactor();
 				if(factor != 0.0)
 				{
-					String adj = "";
-					if(factor > 1)
-						adj = "greatly ";
-					else
-					if(factor <1)
-						adj = "slightly ";
 					final String sentence;
 					if(factor > 0)
-						sentence = adj + "improve movement, hit points, and armor, and "+adj+"decrease mana and attack.";
+					{
+						if(factor > 1)
+							sentence = L("The tides greatly improve movement, hit points, and armor, and greatly decrease mana and attack.");
+						else
+						if(factor > 0.5)
+							sentence = L("The tides improve movement, hit points, and armor, and decrease mana and attack.");
+						else
+							sentence = L("The tides slightly improve movement, hit points, and armor, and slightly decrease mana and attack.");
+					}
 					else
-						sentence = adj + "decrease movement, hit points, and armor, and "+adj+"improve mana and attack.";
+					{
+						if(factor < -1)
+							sentence = L("The tides greatly decrease movement, hit points, and armor, and greatly improve mana and attack.");
+						else
+						if(factor < -0.5)
+							sentence = L("The tides decrease movement, hit points, and armor, and improve mana and attack.");
+						else
+							sentence = L("The tides slightly decrease movement, hit points, and armor, and slightly improve mana and attack.");
+					}
 					CMLib.threads().scheduleRunnable(new Runnable()
 					{
-						final String msgStr = L("The tides "+sentence);
+						final String msgStr = sentence;
 						final Room R = room;
 						@Override
 						public void run()

@@ -67,7 +67,7 @@ public class Shrooming extends Farming
 	{
 		return 3;
 	}
-	
+
 	@Override
 	public boolean isPotentialCrop(final Room R, final int code)
 	{
@@ -94,9 +94,9 @@ public class Shrooming extends Farming
 	@Override
 	protected String seedWord()
 	{
-		return "spore";
+		return L("spore");
 	}
-	
+
 	@Override
 	protected boolean canGrowHere(final MOB mob, final Room R, final boolean quiet)
 	{

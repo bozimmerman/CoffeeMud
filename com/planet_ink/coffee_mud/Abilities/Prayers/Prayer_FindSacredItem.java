@@ -193,7 +193,7 @@ public class Prayer_FindSacredItem extends Prayer
 					int direction = CMLib.tracking().trackNextDirectionFromHere(theTrail,R,false);
 					if(direction >=0)
 					{
-						final StringBuilder str=new StringBuilder(L("First, thou shalt go "+CMLib.directions().getDirectionName(direction)));
+						final StringBuilder str=new StringBuilder(L("First, thou shalt go @x1",CMLib.directions().getDirectionName(direction)));
 						R=R.getRoomInDir(direction);
 						while((R!=null)&&(R!=theTrail.get(0)))
 						{
@@ -206,19 +206,19 @@ public class Prayer_FindSacredItem extends Prayer
 							switch(CMLib.dice().roll(1, 5, 0))
 							{
 							case 1:
-								str.append(L(", and then shalt thou goest "+CMLib.directions().getDirectionName(direction)));
+								str.append(L(", and then shalt thou goest @x1",CMLib.directions().getDirectionName(direction)));
 								break;
 							case 2:
-								str.append(L(", and then thou shalt goest "+CMLib.directions().getDirectionName(direction)));
+								str.append(L(", and then thou shalt goest @x1",CMLib.directions().getDirectionName(direction)));
 								break;
 							case 3:
-								str.append(L(", and then goest thou "+CMLib.directions().getDirectionName(direction)));
+								str.append(L(", and then goest thou @x1",CMLib.directions().getDirectionName(direction)));
 								break;
 							case 4:
-								str.append(L(", and then "+CMLib.directions().getDirectionName(direction)));
+								str.append(L(", and then @x1",CMLib.directions().getDirectionName(direction)));
 								break;
 							case 5:
-								str.append(L(", and then goest shalt thou "+CMLib.directions().getDirectionName(direction)));
+								str.append(L(", and then goest shalt thou @x1",CMLib.directions().getDirectionName(direction)));
 								break;
 							}
 							R=R.getRoomInDir(direction);

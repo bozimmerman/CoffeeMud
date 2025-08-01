@@ -85,7 +85,7 @@ public class Bomb_Shaped extends StdBomb
 		||(P.basePhyStats().weight()<minRequiredIron))
 		{
 			if(mob!=null)
-				mob.tell(L("You at least "+minRequiredIron+" pounds of iron to make this out of."));
+				mob.tell(L("You at least @x1 pounds of iron to make this out of.",""+minRequiredIron));
 			return false;
 		}
 		return true;

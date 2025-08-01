@@ -69,7 +69,7 @@ public class Fighter_RacialMount extends StdAbility
 		if(desc == null)
 			return L("(Affinity for a mount)");
 		else
-			return L("(Affinity for "+desc+" mounts)");
+			return L("(Affinity for @x1 mounts)",desc);
 	}
 
 	@Override

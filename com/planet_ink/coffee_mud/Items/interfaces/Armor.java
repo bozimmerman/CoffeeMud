@@ -130,5 +130,6 @@ public interface Armor extends Item
 		TOO_LARGE,
 		TOO_SMALL,
 		FITS
+		;
 	}
 }

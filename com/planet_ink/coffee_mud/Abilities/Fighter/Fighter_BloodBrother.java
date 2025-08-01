@@ -144,9 +144,8 @@ public class Fighter_BloodBrother extends FighterSkill
 				R.send(mob,msg);
 				mob.addTattoo("BROTHER:"+target.Name());
 				target.addTattoo("BROTHER:"+mob.Name());
-				String descAddOn = "@x1 is the blood brother of @x2.";
-				mob.setDescription(mob.description()+"  "+L(descAddOn,mob.Name(),target.Name()));
-				target.setDescription(target.description()+"  "+L(descAddOn,target.Name(),mob.Name()));
+				mob.setDescription(mob.description()+"  "+L("@x1 is the blood brother of @x2.",mob.Name(),target.Name()));
+				target.setDescription(target.description()+"  "+L("@x1 is the blood brother of @x2.",target.Name(),mob.Name()));
 			}
 		}
 		else

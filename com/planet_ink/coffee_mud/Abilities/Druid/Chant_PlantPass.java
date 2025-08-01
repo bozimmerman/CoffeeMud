@@ -80,7 +80,7 @@ public class Chant_PlantPass extends Chant
 
 	protected String getPlantsWord()
 	{
-		return "plants";
+		return L("plants");
 	}
 
 	protected boolean isAcceptableTargetRoom(final MOB mob, final Room newRoom)
@@ -93,7 +93,7 @@ public class Chant_PlantPass extends Chant
 	{
 		if(commands.size()<1)
 		{
-			mob.tell(L("You must specify the name of the location of one of your "+getPlantsWord()+".  Use your 'My Plants' skill if necessary."));
+			mob.tell(L("You must specify the name of the location of one of your @x1.  Use your 'My Plants' skill if necessary.",getPlantsWord()));
 			return false;
 		}
 		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -101,7 +101,7 @@ public class Chant_PlantPass extends Chant
 		final Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{
-			mob.tell(L("There doesn't appear to be any of your "+this.getPlantsWord()+" here to travel through."));
+			mob.tell(L("There doesn't appear to be any of your @x1 here to travel through.",getPlantsWord()));
 			return false;
 		}
 
@@ -128,7 +128,7 @@ public class Chant_PlantPass extends Chant
 		}
 		if(newRoom==null)
 		{
-			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps you have no "+this.getPlantsWord()+" there?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on a place called '@x1', perhaps you have no @x2 there?",CMParms.combine(commands,0),getPlantsWord()));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ public class Chant_PlantPass extends Chant
 		final Item otherPlant = Druid_MyPlants.myPlant(newRoom, mob, 0);
 		if(otherPlant==null)
 		{
-			mob.tell(L("You can't seem to fixate on place called '@x1', perhaps your "+this.getPlantsWord()+" there are dead?",CMParms.combine(commands,0)));
+			mob.tell(L("You can't seem to fixate on place called '@x1', perhaps your @x2 there are dead?",CMParms.combine(commands,0),getPlantsWord()));
 			return false;
 		}
 
@@ -149,7 +149,8 @@ public class Chant_PlantPass extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,myPlant,this,CMMsg.MASK_MOVE|verbalCastCode(mob,myPlant,auto),
+					auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?"));
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
@@ -160,8 +161,10 @@ public class Chant_PlantPass extends Chant
 				final Room thisRoom=mob.location();
 				for (final MOB follower : h)
 				{
-					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from the @x1.",otherPlant.name()));
-					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
+					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,
+							L("<S-NAME> emerge(s) from the @x1.",otherPlant.name()));
+					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,
+							L("<S-NAME> <S-IS-ARE> sucked into @x1.",myPlant.name()));
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 					{
 						if(follower.isInCombat())

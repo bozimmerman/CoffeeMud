@@ -61,7 +61,7 @@ public class PropWearenabler extends PropTest
 		resetTest();
 		final Ability WearEnabler = CMClass.getAbility("Prop_WearEnabler");
 		WearEnabler.setMiscText(semiSpellList());
-		//mob.tell(L("Test:"+what+"-1: @x1", WearEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-1: @x1", WearEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearEnabler, mobs[0], null, 1);
 		if (!spellCheck(spells, mobs[0]))
 		{
@@ -75,7 +75,7 @@ public class PropWearenabler extends PropTest
 		}
 		resetTest();
 		WearEnabler.setMiscText(semiSpellList() + "MASK=-RACE +Dwarf");
-		//mob.tell(L("Test:"+what+"-2: @x1", WearEnabler.accountForYourself()));
+		//mob.tell(L("Test:@x2-2: @x1", WearEnabler.accountForYourself(),what));
 		IS = giveTo(CMClass.getWeapon("Sword"), WearEnabler, mobs[0], mobs[1], 1);
 		if (!spellCheck(spells, mobs[0]))
 		{

@@ -104,7 +104,7 @@ public class Fighter_Pin extends FighterGrappleSkill
 				||(msg.sourceMajor(CMMsg.MASK_EYES)))
 				{
 					if(msg.sourceMessage()!=null)
-						msg.source().tell(L("You are in a(n) "+name().toLowerCase()+"!"));
+						msg.source().tell(L("You are in a(n) @x1!",name().toLowerCase()));
 					return false;
 				}
 			}
@@ -144,7 +144,7 @@ public class Fighter_Pin extends FighterGrappleSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to "+name().toLowerCase()+" <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to @x1 <T-NAMESELF>, but fail(s).",name().toLowerCase()));
 
 		// return whether it worked
 		return success;
