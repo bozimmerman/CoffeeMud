@@ -2178,15 +2178,22 @@ public class StdArea implements Area
 	{
 		if (isProperlyEmpty())
 			return null;
-		String roomID = getProperRoomnumbers().random();
-		if ((roomID != null)
-		&& (!roomID.startsWith(Name()))
-		&& (roomID.startsWith(Name().toUpperCase())))
-			roomID = Name() + roomID.substring(Name().length());
+		String roomID = null;
+		Room R = null;
+		for(int i=0;i<10 && roomID==null;i++)
+		{
+			roomID = getProperRoomnumbers().random();
+			if ((roomID != null)
+			&& (!roomID.startsWith(Name()))
+			&& (roomID.startsWith(Name().toUpperCase())))
+				roomID = Name() + roomID.substring(Name().length());
+			R = getRoom(roomID);
+			if((R==null)&&(roomID.indexOf("#(")>0))
+				roomID = null;
+		}
 		// looping back through CMMap is unnecc because the roomID comes
 		// directly from getProperRoomnumbers()
 		// which means it will never be a grid sub-room.
-		Room R = getRoom(roomID);
 		if (R == null)
 		{
 			R = CMLib.map().getRoom(roomID); // BUT... it's ok to hit CMLib.map() if you fail.
