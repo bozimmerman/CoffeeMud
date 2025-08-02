@@ -735,11 +735,6 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return false;
 	}
 
-	protected static String staticL(final String str, final String... xs)
-	{
-		return CMLib.lang().fullSessionTranslation(StdSiegableBoardable.class, str, xs);
-	}
-
 	@Override
 	public String healthText(final MOB viewer)
 	{
@@ -756,39 +751,39 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 	public static void appendCondition(final StringBuilder visualCondition, final double pct, final String name)
 	{
 		if(pct<=0.0)
-			visualCondition.append(staticL("\n\r^r@x1^r is nothing but wreckage!^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^r@x1^r is nothing but wreckage!^N",name));
 		else
 		if(pct<.10)
-			visualCondition.append(staticL("\n\r^r@x1^r is near destruction!^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^r@x1^r is near destruction!^N",name));
 		else
 		if(pct<.20)
-			visualCondition.append(staticL("\n\r^r@x1^r is massively splintered and damaged.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^r@x1^r is massively splintered and damaged.^N",name));
 		else
 		if(pct<.30)
-			visualCondition.append(staticL("\n\r^r@x1^r is extremely splintered and damaged.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^r@x1^r is extremely splintered and damaged.^N",name));
 		else
 		if(pct<.40)
-			visualCondition.append(staticL("\n\r^y@x1^y is very splintered and damaged.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^y@x1^y is very splintered and damaged.^N",name));
 		else
 		if(pct<.50)
-			visualCondition.append(staticL("\n\r^y@x1^y is splintered and damaged.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^y@x1^y is splintered and damaged.^N",name));
 		else
 		if(pct<.60)
-			visualCondition.append(staticL("\n\r^p@x1^p is splintered and slightly damaged.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^p@x1^p is splintered and slightly damaged.^N",name));
 		else
 		if(pct<.70)
-			visualCondition.append(staticL("\n\r^p@x1^p is showing large splinters.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^p@x1^p is showing large splinters.^N",name));
 		else
 		if(pct<.80)
-			visualCondition.append(staticL("\n\r^g@x1^g is showing some splinters.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^g@x1^g is showing some splinters.^N",name));
 		else
 		if(pct<.90)
-			visualCondition.append(staticL("\n\r^g@x1^g is showing small splinters.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^g@x1^g is showing small splinters.^N",name));
 		else
 		if(pct<.99)
-			visualCondition.append(staticL("\n\r^g@x1^g is no longer in perfect condition.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^g@x1^g is no longer in perfect condition.^N",name));
 		else
-			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
+			visualCondition.append(CMLib.lang().L("\n\r^c@x1^c is in perfect condition.^N",name));
 	}
 
 	@Override

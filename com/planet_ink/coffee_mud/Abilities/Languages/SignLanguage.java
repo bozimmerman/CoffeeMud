@@ -122,9 +122,9 @@ public class SignLanguage extends StdLanguage
 			return false;
 		}
 		final String oldStartFullMsg = startFullMsg;
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", "sign(s)");
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", "sign(s) askingly");
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", "sign(s) excitedly");
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("say(s)"), L("sign(s)"));
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("ask(s)"), L("sign(s) askingly"));
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("exclaim(s)"), L("sign(s) excitedly"));
 		if(oldStartFullMsg.equals(startFullMsg))
 		{
 			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");
@@ -189,10 +189,10 @@ public class SignLanguage extends StdLanguage
 			break;
 		}
 		final String oldStartFullMsg = startFullMsg;
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "tell(s)", verb);
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "say(s)", verb);
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "ask(s)", verb+" askingly");
-		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, "exclaim(s)", verb+" excitedly");
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("tell(s)"), verb);
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("say(s)"), verb);
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("ask(s)"), verb+L(" askingly"));
+		startFullMsg = CMStrings.replaceFirstWord(startFullMsg, L("exclaim(s)"), verb+L(" excitedly"));
 		if(oldStartFullMsg.equals(startFullMsg))
 		{
 			int x=startFullMsg.toLowerCase().lastIndexOf("(s)");

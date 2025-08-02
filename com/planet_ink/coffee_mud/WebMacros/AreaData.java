@@ -377,7 +377,7 @@ public class AreaData extends StdWebMacro
 					str.append("<OPTION VALUE=\"\"");
 					if((A.getRawCurrency()!=null)&&(A.getRawCurrency().length()==0))
 						str.append(" SELECTED");
-					str.append(L(">Default"));
+					str.append(">Default");
 					for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
 					{
 						final String s=CMLib.beanCounter().getAllCurrencies().get(i);

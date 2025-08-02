@@ -55,7 +55,7 @@ public class Auction extends Channel implements Tickable
 
 	protected final static String MESSAGE_NOAUCTION()
 	{
-		return CMLib.lang().fullSessionTranslation(Auction.class, "There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.");
+		return CMLib.lang().L(Auction.class, "There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.");
 	}
 
 	public String liveAuctionStatus()

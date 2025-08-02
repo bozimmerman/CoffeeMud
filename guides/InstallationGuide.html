@@ -39,7 +39,7 @@ w/fakedb</a></li>
 <li><a href="#derby">Derby</a></li>
 </ul>
 </li>
-<li><a href="#shutdown">Offline/ Shutdown</a></li>
+<li><a href="#localization">Localization</a></li><li><a href="#shutdown">Offline/ Shutdown</a></li>
 </ul>
 </td>
 <td style="text-align: left;" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
@@ -959,7 +959,19 @@ when configuring your server.</p>
 <p>The directories inside the <code>com</code>
 directory contain
 all the Java Class files, which are the executable portion of
-CoffeeMud. All of the Java source files are also found herein.</p>
+CoffeeMud. All of the Java source files are also found herein.</p><p><img style="width: 149px; height: 77px;" src="images/dir-app.jpg" alt="applications" /></p><p>The application directory is where you find&nbsp;the main executeable class files and tools.</p><table style="text-align: left; width: 678px; height: 192px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>AutoPlayTester</td><td>Eventually, this will kick off javascript-driven fake players. &nbsp;(not yet implemented)</td></tr><tr><td>I3Router</td><td>A router for the InterMud3 system. &nbsp;(alpha)</td></tr><tr><td>LocalizationHelper</td><td>Scrapes
+the java files and codebase for localizeable strings, which can then be
+inserted into your translation_??_??.properties file in the
+[session-translation] section. &nbsp;(See the section below on
+Localization).</td></tr><tr><td>MUD</td><td>The main CoffeeMud mud server application</td></tr><tr><td>MUDProxy</td><td>An MPCP-enabled proxy server to put in front of your mud. (see above)</td></tr><tr><td>OffLine</td><td>A
+quick application you can run that reads the port numbers from your INI
+file, and gives connecting players a message that the mud is down. <a href="#shutdown">(See section below for more info)</a></td></tr><tr><td>RebuildRefDocs</td><td>Rebuilds
+the /guides/refs reference files from your existing classes and help
+files. &nbsp;It will temporarily run the MUD in order to gain easier
+access. &nbsp;</td></tr><tr><td>Shutdown</td><td>Requires a user and password, and then sends a secure Shutdown command to a running MUD.</td></tr><tr><td>VFSShell</td><td>Gives
+you access to the full VFS (including the DBFS) from the command line,
+without needing to log into the mud and use the SHELL command.
+&nbsp;Does not require that the MUD be running.</td></tr></tbody></table><p></p>
 <img src="images/dir-guides.jpg" alt="guides" />
 <p>The <code>guides</code> directory is where
 you'll find this
@@ -1041,7 +1053,7 @@ intro234.jpg)</p>
 <p>The <code>pub.templates</code> directory is
 where the default
 error page for the pub web server is found.</p>
-<img src="images/dir-resources.jpg" alt="resources" />
+<img style="width: 108px; height: 245px;" src="images/dir-resources.jpg" alt="resources" />
 <p>The <code>resources</code> directory is
 where you'll find
 most
@@ -1151,7 +1163,7 @@ automatic
 mob reactions based on area. &nbsp;See AUTOREACTION in your
 coffeemud.ini file for more information on this system.</td>
 </tr>
-<tr>
+<tr><td>CustomProperty.js</td><td>An example Ability (acting as a Property) written in Rhino javascript.</td></tr><tr>
 <td valign="top">deities.cmare<br />
 </td>
 <td valign="top">A cmare file with some
@@ -1159,7 +1171,9 @@ example deities to
 load into your mud. Use the IMPORT command to load this set of mobs.<br />
 </td>
 </tr>
-<tr>
+<tr><td>deityreaction.ini</td><td>A template for use by the Faction system for
+automatic deity reactions. &nbsp;See AUTOREACTION in your
+coffeemud.ini file for more information on this system.</td></tr><tr>
 <td valign="top">factiontemplate.ini<br />
 </td>
 <td valign="top">A template file for use by
@@ -1176,15 +1190,7 @@ LOAD COMMAND resources/examples/FindRawMaterial.js to install it, and
 then
 enter FINDRAWMATERIAL IRON at the command line to run it.</td>
 </tr>
-<tr>
-<td valign="top">reputation.ini<br />
-</td>
-<td valign="top">Sample faction ini file,
-which you may add
-to the value of the FACTIONS tag in your coffeemud.ini file to make use
-of.<br />
-</td>
-</tr>
+<tr><td>junk.cmare</td><td>A cmare file containing example ITEMS. &nbsp;Used to show a sample CMARE file mostly.</td></tr>
 <tr>
 <td valign="top">Lemmings.js<br />
 </td>
@@ -1196,7 +1202,7 @@ resources/examples/Lemming.js to load it up, and see the Programmer's
 Guide for more information<br />
 </td>
 </tr>
-<tr>
+<tr><td>LogWrite.js</td><td>A simple JRUNnable command for writing an arbitrary string to the log.</td></tr><tr><td>manufacturers.xml</td><td>List of sample manufacturers for Tech game.</td></tr><tr><td>monsters.cmare</td><td>A cmare file containing example MOBs. &nbsp;Used to show a sample CMARE file mostly.</td></tr><tr>
 <td>namereaction.ini</td>
 <td>A template for use by the Faction system for
 automatic
@@ -1206,8 +1212,14 @@ file
 for more
 information on this system.</td>
 </tr>
-<tr>
-<td>QuickWho</td>
+<tr><td>ObjectCounter.js</td><td>Counts the number of mobs and items and rooms in your map. &nbsp;Use JRUN to execute.</td></tr><tr><td>planarreaction.ini</td><td>A template for use by the Faction system for
+automatic
+mob reactions
+based on mob home plane of existence. &nbsp;See AUTOREACTION in your coffeemud.ini
+file
+for more
+information on this system.</td></tr><tr>
+<td>QuickWho.js</td>
 <td>Another sample Command class written in
 javascript as
 an
@@ -1225,19 +1237,21 @@ file
 for more
 information on this system.</td>
 </tr>
-<tr>
+<tr><td>reputation.ini</td><td>Sample faction ini file,
+which you may add
+to the value of the FACTIONS tag in your coffeemud.ini file to make use
+of.</td></tr><tr>
 <td>rplists.ini</td>
 <td>An example Delta to the standard lists.ini with
 more role-playey values.</td>
-</tr>
+</tr><tr><td>triumphgiver.script</td><td>An example MOBPROG script to make an NPC give end-game Triumph areas to players.</td></tr>
 </tbody>
 </table>
 <p>The <code>resources/factions</code>
 directory is where you
 should put all of your&nbsp;faction definition files. &nbsp;The
 standard faction shipped with the mud, called Alignment, is found in
-there.</p>
-<p>The <code>resources/help</code> directory
+there.</p><table style="text-align: left; width: 789px; height: 95px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>alignment.ini</td><td>Definition to the main Alignment faction (Good/Evil/Neutral)</td></tr><tr><td>inclination.ini</td><td>Definition to the optional Inclination faction (Lawful/Chaotic/Moderate)</td></tr><tr><td>triumph.ini</td><td>Definition for the end-game Triumph faction</td></tr></tbody></table><p>The <code>resources/help</code> directory
 is where you'll
 find
 all of the files responsible for the numerous standard and archon HELP
@@ -1247,8 +1261,7 @@ property files, meaning that they are in ENTRY=VALUE format. The VALUE
 may span several lines, so long as it ends with a backslash \. Files
 that contain help entries for the ARCHELP (archon help) command all
 start with arc_*, while those that do not are for the HELP (player
-help) command.</p>
-<p>The <code>resources/progs</code> directory
+help) command.</p><table style="text-align: left; width: 787px; height: 172px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>acctmenu.txt</td><td>The main account menu.</td></tr><tr><td>accts.txt</td><td>The help for the account menu</td></tr><tr><td>arc_behaviors.ini</td><td>Help entries for each game Behavior, available only from AHELP.</td></tr><tr><td>arc_help.ini</td><td>Help entries for administrative Commands, available from AHELP</td></tr><tr><td>arc_help.txt</td><td>Help text shown when no AHELP argument is given.</td></tr><tr><td>arc_misc.ini</td><td>Help entries for general administrative topics, available from AHELP</td></tr><tr><td>arc_properties.ini</td><td>Help entries for each game Property, available from AHELP</td></tr><tr><td>chant_help.ini</td><td>Help entries for game Chants.</td></tr><tr><td>common_help.ini</td><td>Help entries for game Common Skills</td></tr><tr><td>diseases.ini</td><td>Help entries for game Diseases</td></tr><tr><td>help.ini</td><td>Help entries for general game commands.</td></tr><tr><td>help.txt</td><td>Help text shown when no help argument is given.</td></tr><tr><td>misc_help.ini</td><td>Help entries for general topics, or topics that don't fit elsewhere.</td></tr><tr><td>poisons.txt</td><td>Help entries for poisons.</td></tr><tr><td>prayer_help.ini</td><td>Help entries for game Prayers.</td></tr><tr><td>skill_help.ini</td><td>Help entries for game Fighter, Thief, and General Skills.</td></tr><tr><td>songs_help.ini</td><td>Help entries for Songs, Dances, and Plays</td></tr><tr><td>spell_help.ini</td><td>Help entries for Spells.</td></tr><tr><td>traps.ini</td><td>Help entries for Traps.</td></tr><tr><td>zappermasks.txt</td><td>Help template for Zappermasks.</td></tr></tbody></table><p>The <code>resources/progs</code> directory
 contains several
 sample program files:<br />
 </p>
@@ -1268,7 +1281,7 @@ Scriptable behavior which has been added to a genmob, you can make that
 mob a blackjack dealer. See help on Scriptable for more information.<br />
 </td>
 </tr>
-<tr>
+<tr><td>bugreport.script</td><td>Sample script to demand more detail from players when entering BUGs.</td></tr><tr><td>changeRoomOwner.script</td><td>Changes the owner of the current room, assuming it's real estate. &nbsp;Use JRUN to execute.</td></tr><tr>
 <td>chardesc.script</td>
 <td>A sample script to use with your coffeemud.ini
 files'
@@ -1311,7 +1324,7 @@ tests to see if any mobs are outside their home areas. To execute,
 enter JRUN resources/progs/everyoneIsHome.js<br />
 </td>
 </tr>
-<tr>
+<tr><td>everoneIsTicking.js</td><td>Scans the map to find NPCs that are not getting tick-time. &nbsp;Use JRUN.</td></tr><tr>
 <td valign="top">heresy.script<br />
 </td>
 <td valign="top">Sample MOBPROG script to make
@@ -1347,7 +1360,10 @@ various triggers. Added to mobs the same way blackjack.script is added
 above.<br />
 </td>
 </tr>
-<tr>
+<tr><td>peekautoawards.js</td><td>Reports what auto-awards a given player is currently benefitting from. &nbsp;Use JRUN.</td></tr><tr><td>playerBackups.js</td><td>This
+script, suitable for a cron job, extracts player records and generates
+player xml files in a backups directory, so long as the player has
+logged in in the last week or so.</td></tr><tr>
 <td>scriptableTest.script</td>
 <td>A MOBPROG to test various triggers in Scriptable.</td>
 </tr>
@@ -1359,7 +1375,9 @@ demonstrate
 various triggers. Added to mobs the same way blackjack.script is added
 above.<br />
 </td>
-</tr>
+</tr><tr><td>topMonthyAwards.js</td><td>This script goes through the winners of the previous months top awards and gives them an award. &nbsp;Useful as a cron-job.</td></tr><tr><td>topMonthlyRpt.js</td><td>This
+script dumps the previous months top records as xml to the
+/resources/sys_reports directory.&nbsp; &nbsp;Also useful as a cron-job.</td></tr>
 </tbody>
 </table>
 <p>The <code>resources/quests</code> directory
@@ -1367,8 +1385,16 @@ contains several
 sample quests. Each quest is in its own directory, along with any
 supporting Scriptable *.script files, and any supporting mob or item
 *.cmare files. The CREATE QUEST command is used to load each of these
-*.quest files. Quests may also be loaded via the MUDGrinder.</p>
-<p>The <code>resources/randareas</code>
+*.quest files. Quests may also be loaded via the MUDGrinder.</p><table style="text-align: left; width: 788px; height: 172px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>holidays/holidays.quest</td><td>A Quest script defining all the Holidays quests.</td></tr><tr><td>random/all.xml</td><td>Basis for sorting out random quest templates using the random generator.</td></tr><tr><td>random/auto_*.xml</td><td>Various&nbsp;quest
+templates for use with the random generator. &nbsp;Auto quests are
+quests that have no questgiver and can manage their own completion and
+awards.</td></tr><tr><td>random/normal_*.xml</td><td>Various&nbsp;quest
+templates for use with the random generator.
+&nbsp;Normal quests are quests that have a questgiver who the player
+accepts the quest from, and who gives the rewards and handles
+completion.</td></tr><tr><td>templates/auto_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates. Auto quests are quests that have no questgiver and can manage their own completion and awards.</td></tr><tr><td>templates/normal_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates.&nbsp;Normal quests are quests that have a questgiver who the player accepts
+the quest from, and who gives the rewards and handles completion.</td></tr><tr><td>templates/competitive_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates. Competitive&nbsp;quests are quests that have a questgiver who many players can accept the
+same quest from, and who gives the rewards and handles completion, but only to the first completer.&nbsp; </td></tr></tbody></table><p>The <code>resources/randareas</code>
 directory contains
 sample
 random area data templates, which all end with the *.xml extension. The
@@ -1394,7 +1420,7 @@ directory includes:<br />
 </p>
 <table style="text-align: left; margin-left: 0px; margin-right: auto;" border="1" width="100%">
 <tbody>
-<tr>
+<tr><td>age.txt</td><td>A table to assist aging mobs in race-changing/determination.</td></tr><tr>
 <td valign="top">alchemy.txt</td>
 <td valign="top">Recipes for the Alchemy skill<br />
 </td>
@@ -1403,13 +1429,13 @@ directory includes:<br />
 <td>allqualifylist.txt</td>
 <td>List of skills that span across all classes.</td>
 </tr>
-<tr>
+<tr><td>areainstancetypes.txt</td><td>Definitions for the Triumph system that can modify an area instance based on faction.</td></tr><tr>
 <td valign="top">armorsmith.txt</td>
 <td valign="top">Recipes for the Armorsmithing
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>atrapping.txt</td><td>Recipes for the AnimalTrapping skill</td></tr><tr>
 <td valign="top">bake.txt</td>
 <td valign="top">Recipes for the Baking skill<br />
 </td>
@@ -1419,22 +1445,22 @@ skill<br />
 <td valign="top">Recipes for the Baking skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>boatwright.txt</td><td>Recipes for the Boatwright skill</td></tr><tr><td>bodypierce.txt</td><td>Recipes for the BodyPiercing skill</td></tr><tr><td>bombs.txt</td><td>Recipes for the Make Bomb skill</td></tr><tr>
 <td valign="top">cagebuilding.txt</td>
 <td valign="top">Recipes for the Blacksmithing
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>caravanbuilding.cmare</td><td>CMARE file containing GenCaravan items, forming the recipes for the CaravanBuilding skill</td></tr><tr>
 <td valign="top">carpentry.txt</td>
 <td valign="top">Recipes for the Carpentry
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>clancastles.cmare</td><td>CMARE file containing GenCastle items, forming a part of the recipes for the ClanCrafting skill</td></tr><tr>
 <td valign="top">clancraft.txt</td>
 <td valign="top">Recipes for the Clan Crafting
-skill<br />
+skill, not involving castles<br />
 </td>
 </tr>
 <tr>
@@ -1442,7 +1468,7 @@ skill<br />
 <td valign="top">Recipes for the Cobbler skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>colors.txt</td><td>Color name definitions and other 256-&gt;16 color conversions</td></tr><tr>
 <td valign="top">components.txt</td>
 <td valign="top">Definitions file for
 spell/skill
@@ -1450,13 +1476,13 @@ components. Can modify this file, or use CREATE/LIST/DESRTROY
 COMPONENTS commands<br />
 </td>
 </tr>
-<tr>
+<tr><td>construction.txt</td><td>Recipes for the Construction skill</td></tr><tr>
 <td valign="top">costume.txt</td>
 <td valign="top">Recipes for the Costuming
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>decorations.txt</td><td>Recipes for the Decorating skill</td></tr><tr><td>drugs.txt</td><td>Recipes for the Drug Making skill</td></tr><tr><td>dyeing.txt</td><td>Recipes for the Dyeing skill</td></tr><tr><td>embellishing.txt</td><td>Recipes for the Embellishing skill</td></tr><tr><td>endowgemstones.txt</td><td>Recipes for the Endow Gemstones skill</td></tr><tr><td>endowiounstone.txt</td><td>Recipes for the Endow iounstones skill.</td></tr><tr><td>excavation.txt</td><td>Recipes for the excavation skill.</td></tr><tr>
 <td valign="top">expertises.txt</td>
 <td valign="top">Definitions file for
 spell/skill
@@ -1464,24 +1490,24 @@ expertises. Can modify this file, or use CREATE/LIST/DESTROY EXPERTISES
 commands<br />
 </td>
 </tr>
-<tr>
+<tr><td>fishing.txt</td><td>Recipes for the Fishing skill.</td></tr><tr>
 <td valign="top">fletching.txt</td>
 <td valign="top">Recipes for the Fletching
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>floristry.txt</td><td>Recipes for the Floristry skill.</td></tr><tr>
 <td valign="top">foodprep.txt</td>
 <td valign="top">Recipes for the FoodPrep skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>gaolfood.txt</td><td>Recipes for the GaolFood skill</td></tr><tr>
 <td valign="top">glassblowing.txt</td>
 <td valign="top">Recipes for the Glass Blowing
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>gunsmith.txt</td><td>Recipes for the Gunsmithing skill.</td></tr><tr>
 <td valign="top">herbalism.txt</td>
 <td valign="top">Recipes for the Herbalism
 skill<br />
@@ -1493,7 +1519,7 @@ skill<br />
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>hunting.txt</td><td>Recipes for the Hunting skill</td></tr><tr><td>improvedalchemy.txt</td><td>Recipes for the Improved Alchemy skill</td></tr><tr><td>improvedherbalism.txt</td><td>Recipes for the Improved Herbalism skill</td></tr><tr>
 <td valign="top">instruments.txt</td>
 <td valign="top">Recipes for the Instruments
 skill<br />
@@ -1512,25 +1538,25 @@ file for the
 Joke skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>irrigation.txt</td><td>Recipes for the Irrigation skill</td></tr><tr>
 <td valign="top">jewelmaking.txt</td>
 <td valign="top">Recipes for the Jewelmaking
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>lacquering.txt</td><td>Recipes for the Lacquering skill</td></tr><tr><td>landscaping.txt</td><td>Recipes for the Landscaping skill</td></tr><tr>
 <td valign="top">leatherworking.txt</td>
 <td valign="top">Recipes for the
 Leatherworking skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>legendaryweaponsmith.txt</td><td>Recipes for the Legendary Weaponsmithing skill</td></tr><tr>
 <td valign="top">liquors.txt</td>
 <td valign="top">Recipes for the Distilling
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>masonry.txt</td><td>Recipes for the Masonry skill</td></tr><tr>
 <td valign="top">masterarmorsmith.txt</td>
 <td valign="top">Recipes for the Master
 Armorsmithing skill<br />
@@ -1542,7 +1568,7 @@ Armorsmithing skill<br />
 Costuming skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>masterdyeing.txt</td><td>Recipes for the Master Dyeing skill</td></tr><tr>
 <td valign="top">masterleatherworking.txt</td>
 <td valign="top">Recipes for the Master
 Leatherworking skill<br />
@@ -1560,7 +1586,7 @@ Tailoring skill<br />
 Weaponsmithing skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>mtraps.txt</td><td>Recipes for the Minor Trap skill</td></tr><tr><td>mycology.txt</td><td>Recipes for the Mycology skill</td></tr><tr><td>painting.txt</td><td>Recipes for the Painting skill</td></tr><tr>
 <td valign="top">papermaking.txt</td>
 <td valign="top">Recipes for the Papermaking
 skill<br />
@@ -1581,33 +1607,33 @@ Walk</td>
 <td valign="top">Recipes for the Pottery skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>predictions.xml</td><td>Recipes for the Prophecy skill, encoded as xml scripts</td></tr><tr><td>racialmounts.txt</td><td>Guidance for the Racial Mount skill</td></tr><tr>
 <td valign="top">recipes.txt</td>
 <td valign="top">Recipes for the Cooking skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>rodsmithing.txt</td><td>Recipes for the Rodsmithing skill</td></tr><tr><td>scribing.txt</td><td>Recipes for the&nbsp;Scroll
+Scribing
+skill</td></tr><tr>
 <td valign="top">scrimshaw.txt</td>
 <td valign="top">Recipes for the Scrimshawing
 skill<br />
 </td>
 </tr>
 <tr>
-<td valign="top">scribing.txt</td>
-<td valign="top">Recipes for the Scroll
-Scribing<br />
-</td>
-</tr>
-<tr>
 <td valign="top">sculpting.txt</td>
-<td valign="top">Recipes for the Sculpting
-skill<br />
+<td valign="top">Recipes for the Sculpting skill<br />
 </td>
 </tr>
 <tr>
-<td valign="top">shipwright.txt</td>
+<td valign="top">shapeshift.txt<br /></td>
+<td valign="top">Recipes for Druid shapeshifting<br />
+</td>
+</tr>
+<tr><td>shardmaking.txt</td><td>Recipes for the Shard Making skill</td></tr><tr>
+<td valign="top">shipbuilding.cmare</td>
 <td valign="top">Recipes for the ShipWrighting
-skill<br />
+skill (CMAREA file of GenSailingShip items)<br />
 </td>
 </tr>
 <tr>
@@ -1619,7 +1645,7 @@ skill<br />
 <td valign="top">Recipes for the Smelting skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>songlyrics.txt</td><td>Lyrics for Bards to sing while spellcasting.</td></tr><tr><td>staffmaking.txt</td><td>Recipes for the StaffMaking skill</td></tr><tr>
 <td valign="top">tailor.txt</td>
 <td valign="top">Recipes for the Tailoring
 skill<br />
@@ -1632,19 +1658,19 @@ Taxidermy
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>textiling.txt</td><td>Recipes for the Textiling skill</td></tr><tr>
 <td valign="top">torturesmith.txt</td>
 <td valign="top">Recipes for the
 Torturesmithing skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>traps.txt</td><td>Recipes for the Make Traps skill</td></tr><tr><td>urchins.txt</td><td>Names of npcs for the Urchin skill</td></tr><tr>
 <td valign="top">wainwright.txt</td>
 <td valign="top">Recipes for the Wainwrighting
 skill<br />
 </td>
 </tr>
-<tr>
+<tr><td>wandmaking.txt</td><td>Recipes for the Wandmaking skill</td></tr><tr>
 <td valign="top">weaponsmith.txt</td>
 <td valign="top">Recipes for the
 Weaponsmithing skill<br />
@@ -1654,7 +1680,7 @@ Weaponsmithing skill<br />
 <td valign="top">weaving.txt</td>
 <td valign="top">Recipes for the Weaving skill<br />
 </td>
-</tr>
+</tr><tr><td>welding.txt</td><td>Recipes for the Welding skill</td></tr><tr><td>wish.txt</td><td>Rules for the Wish/Limited Wish spells</td></tr>
 </tbody>
 </table>
 <p>The <code>resources/text</code> directory
@@ -1695,17 +1721,17 @@ blocked.<br />
 command.</td>
 </tr>
 <tr>
-<td>down.txt</td>
-<td>The text file displayed to users only when the
-OffLine
-application is running.</td>
+<td>doneacct.txt</td>
+<td>A file shown after account
+creation, but
+before character creation.</td>
 </tr>
 <tr>
-<td valign="top">doneacct.txt<br />
+<td valign="top">down.txt<br />
 </td>
-<td valign="top">A file shown after account
-creation, but
-before character creation.<br />
+<td valign="top">The text file displayed to users only when the
+OffLine
+application is running.<br />
 </td>
 </tr>
 <tr>
@@ -1714,7 +1740,7 @@ before character creation.<br />
 creation
 regarding the email address prompt.</td>
 </tr>
-<tr>
+<tr><td>inclination.txt</td><td>The text shown to players before selecting an Inclination.</td></tr><tr>
 <td>intro.txt</td>
 <td>The text file displayed to users when they
 connect to
@@ -1724,7 +1750,7 @@ extension for additional ones (intro1.txt, intro234.txt)</td>
 <tr>
 <td>mxp.txt</td>
 <td>A text file containing the complete MXP
-dictionary. See <a href="http://www.zuggsoft.com/zmud/mxp.htm">http://www.zuggsoft.com/zmud/mxp.htm</a>
+dictionary. See <a href="Protocols.html">Protocols Guide</a>
 for more information on this feature.</td>
 </tr>
 <tr>
@@ -1787,11 +1813,7 @@ selection.<br />
 <td>A text file describing the basic stats to new
 players</td>
 </tr>
-<tr>
-<td>gender.txt</td>
-<td>A text file describing the gender choices to new
-players</td>
-</tr>
+
 <tr>
 <td valign="top">themes.txt<br />
 </td>
@@ -1806,11 +1828,11 @@ supported very well, however.<br />
 <td>Text file shown using the TOP command, displaying
 all time and monthly top accounts.</td>
 </tr>
-<tr>
+<tr><td>topaccounts-prev.txt</td><td>Text file shown using the TOP command, monthly top accounts for the previous month..</td></tr><tr>
 <td>topplayers.txt</td>
 <td>Text file shown using the TOP command, displaying
 all time and monthly top characters.</td>
-</tr>
+</tr><tr><td>topplayers-prev.txt</td><td>Text file shown using the TOP command, monthly top characters&nbsp; for the previous month..</td></tr>
 </tbody>
 </table>
 <br />
@@ -2250,6 +2272,62 @@ Path&gt;\doc\pdf\tuning.pdf.</p>
 </li>
 </ul>
 <br />
+<img style="width: 72px; height: 72px;" src="images/unflag.jpg" alt="offline and shutdown applications" />
+<h2><a name="localization">Localization</a></h2>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Localization
+is the process of replacing the existing english strings, names, and
+phrases that make up the base CoffeeMud package with equivalent strings
+in other human languages. &nbsp;It can also, however, be used just to
+tweek the existing english strings to have phrasing you prefer, such as
+adding an extra 'u' to all the instances of the word "Color". &nbsp;In
+any case, either of those two basic use-cases can benefit from the
+instructions here.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">CoffeeMud
+is a giant dynamic english text generating engine, so translating it to
+other human languages is an enormous task. &nbsp;Many tens of thousands
+of text strings are embedded throughout the package, and many of them
+are just text snippets meant to be combined together at runtime,
+usually when the number of phrasing variations is far too large to list
+out. &nbsp; &nbsp;And then you have pluralizing nouns, possessive
+nouns, and other linguistic rules that must be applied dynamically, as
+no builder wants to have to enter numerous name forms for the same
+item. &nbsp;It's just a very big task. &nbsp; But not an impossible one.</p><ul><li>Copy the input parser file<span>&nbsp;</span><span style="font-style: italic;">resources/parser_en_TX.properties</span><span>&nbsp;</span>into the same folder with a different language name, such as<span>&nbsp;</span><span style="font-style: italic;">resources/parser_fr_CA.properties</span><span>&nbsp;</span>for Canadian French. &nbsp;</li><li>Copy the output translation file<span>&nbsp;</span><span style="font-style: italic;">resources/translation_en_TX.properties</span><span>&nbsp;</span>and rename the copy, just like you did with the input parser file.</li><li>Open up coffeemud.ini file, find the entries for LANGUAGE= and COUNTRY= and change them accordingly.</li><li>Go into your CoffeeMud directory from a shell and enter:</li><ul style="font-family: monospace;"><li>java com.planet_ink.coffee_mud.application.LocalizationHelper I USE &gt; output.txt</li></ul><ul><li>Remember that output.txt file. &nbsp;We will use it again soon.</li></ul><li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/parser_??_??.properties</span><span>&nbsp;</span>and scroll down until you see [command-word-processor] and a line underneath it which says<span style="font-weight: bold;"><span>&nbsp;</span><span style="font-family: monospace;">#autoignore 9999</span></span>. &nbsp;</li><ul><ul><li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore 9999</span>. &nbsp;</li></ul><ul><li>Open up the <span style="font-style: italic;">output.txt</span> and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/parser_??_??.properties</span> under [command-word-processor], before the autoignore line.</li></ul><ul><li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with "new"</span>,
+translate all the <span style="font-family: monospace;">"new"</span>/with parts, leaving the <span style="font-family: monospace;">"old"</span> part unchanged.
+&nbsp;</li><li>Remove the "#" character from the front of the lines you change to activate
+it.</li></ul><ul><li>Save your changes to <span style="font-style: italic;">resources/parser_??_??.properties</span>.</li></ul><li>Go back into your CoffeeMud directory from a shell and enter:<span style="font-family: monospace;"></span></li><ul><li><span style="font-family: monospace;">java com.planet_ink.coffee_mud.application.LocalizationHelper T USE &gt; output.txt</span></li></ul><ul><li>Remember that altered output.txt file. &nbsp;We will use it again soon.</li></ul><li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/translation_??_??.properties</span><span>&nbsp;</span>and scroll down until you see [session-translation] and a line underneath it which says<span style="font-weight: bold; font-family: monospace;"><span>&nbsp;</span>#autoignore 9999</span>. &nbsp;</li><ul><li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore 9999</span>. &nbsp;</li></ul><ul><li>Open up the <span style="font-style: italic;">output.txt</span> and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/translation_??_??.properties</span> under [session-translation], before the autoignore line.</li></ul><ul><li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with "new"</span>, translate all the <span style="font-family: monospace;">"new"</span>/with parts, leaving the "old" part unchanged. &nbsp;</li><li>Remove the "#" character from the front of the lines you change to activate it.</li></ul><ul><li>Save the changed file.</li></ul></ul></ul><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Now
+log into your mud as your Archon and start entering commands.&nbsp;As
+you enter commands and do things, the parser and translation files will
+fill up with unlocalized strings that were not previous caught.
+&nbsp;When you are satisfied you've seen every string and entered every
+command you still need&nbsp; to localize, you can stop and let your
+users take care of the rest.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Last
+step (for now at least), is to re-open your parser and translation
+property files and find the two sections we modified earlier. &nbsp;If
+any unlocalized strings were encontered, you will see that those
+sections have been appended lines like this:</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">IGNOREWHOLE "You are now speaking @x1."</span><br style="font-family: monospace;" /><span style="font-family: monospace;">IGNOREWHOLE "WIMPY"</span><br /></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You want to change those lines to <span style="font-family: monospace;">REPLACEEXACT</span> commands, while being careful to maintain case sensitivity, like this:<br /><span style="font-family: monospace;"></span></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">REPLACEEXACT "You are now speaking @x1." WITH "Que vous parlez @x1."</span><br style="font-family: monospace;" /><span style="font-family: monospace;">REPLACEEXACT "WIMPY" WITH "MAUVIETTE"</span><br /></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You can keep the <span style="font-family: monospace;">AUTOIGNORE 9999</span>
+command at the bottom of the list, and it will continue to add any new
+strings it encounters which were missed the first time around.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">For
+everything that the above does not catch, CoffeeMud supports other
+languages through a translation system which utilizes regular
+expressions. &nbsp;Again, read through the files
+resources/parser_en_TX.properties and
+resources/translation_en_TX.properties. &nbsp;The former translates text
+entered by the user, the later translates text sent TO the user.
+&nbsp;Experimenting with these features will get you there, one phrase at a
+time.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">After this, it gets easy, but tedious:</p><ul><li>Localize the contents of the file&nbsp;<span style="font-style: italic;">/resources/lists.ini</span> There's a lot -- it's not called "lists" for no reason.</li><li>Localize the contents of the *.ini files in the&nbsp; /factions/ directory.</li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the contents of the *.txt and *.ini files in the /help/ directory,
+keeping in mind that many of the help commands should match the
+translated names of those commands from your work in the parser file
+above.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the contents of the *.txt files in the /skills/ directory.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the contents of the *.txt files in the /text/ directory.<br /></span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+/achievements.ini, /awards.txt, /clangovernments.xml, /chat.dat,
+/laws.ini, /lawtoc.ini, /movingrooom.xml, and /socials.txt</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+all the contents of the *.html and *.cmvp files in the /web/ directory
+(recursively). &nbsp;This should not take more than 10 years.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the text in the *.xml files in the /randareas/ directory.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the *.quest and *.xml files under the /quests/ directory (recursively)</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the /resources/examples/areareaction.ini, deityreaction.ini,
+namereaction.ini, plarreaction.ini, racereaction.ini, reputation.ini,
+and triumpgiver.script files.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">If
+you have got here without physically dieing of old age, and you tested
+your results, send them to me, and I'll include them in the
+distribution!<br /></span></li></ul><span style="font-family: &quot;Times New Roman&quot;;"></span><br />
 <br />
 <img src="images/nuked.jpg" alt="offline and shutdown applications" />
 <h2><a name="shutdown">The OffLine And

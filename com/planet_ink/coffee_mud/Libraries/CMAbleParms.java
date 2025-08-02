@@ -2169,7 +2169,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					++showNumber[0];
 					String str = oldVal;
-					while(!mob.session().isStopped())
+					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						final String help="<AMOUNT>"
 							+"\n\rSkill Component: "+CMParms.toListString(CMLib.ableComponents().getAbilityComponentMap().keySet())
@@ -5256,7 +5256,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					++showNumber[0];
 					boolean proceed = true;
 					String str = oldVal;
-					while(proceed&&(!mob.session().isStopped()))
+					while(proceed&&(mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						proceed = false;
 						str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toListString(RawMaterial.CODES.NAMES())).trim();
@@ -5354,7 +5354,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					boolean proceed = true;
 					String str = oldVal;
 					final String orig = oldVal;
-					while(proceed&&(!mob.session().isStopped()))
+					while(proceed&&(mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						proceed = false;
 						if(oldVal.trim().endsWith("$"))
@@ -6508,7 +6508,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					else
 						I=CMClass.getItem(oldVal);
-					while(!mob.session().isStopped())
+					while((mob.session()!=null)&&(!mob.session().isStopped()))
 					{
 						final String showVal = (I==null)?"None?!":(I.Name()+" ("+I.ID()+")");
 						str=CMLib.genEd().prompt(mob,showVal,showNumber[0],showFlag,prompt(),true,"").trim();
@@ -6880,7 +6880,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				++showNumber[0];
 				boolean proceed = true;
-				while(proceed&&(!mob.session().isStopped()))
+				while(proceed&&(mob.session()!=null)&&(!mob.session().isStopped()))
 				{
 					str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
 					if((!spaceOK) && (str.indexOf(' ') >= 0))

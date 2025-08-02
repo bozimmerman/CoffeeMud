@@ -501,10 +501,18 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/** Age constant for the very very old*/
 	public final static int AGE_ANCIENT=8;
 	/** Constant string list for the names of the age constants, in their order of value */
-	public final static String[] AGE_DESCS=CMLib.lang().sessionTranslation(null, new String[]
+	public final static String[] AGE_DESCS=new String[]
 	{
-			"Infant","Toddler","Child","Young adult","Adult", "Mature", "Old", "Venerable", "Ancient"
-	});
+		CMLib.lang().L("Infant"),
+		CMLib.lang().L("Toddler"),
+		CMLib.lang().L("Child"),
+		CMLib.lang().L("Young adult"),
+		CMLib.lang().L("Adult"),
+		CMLib.lang().L("Mature"),
+		CMLib.lang().L("Old"),
+		CMLib.lang().L("Venerable"),
+		CMLib.lang().L("Ancient")
+	};
 
 	/** Age in Years constant for an immortal thing */
 	public final static int YEARS_AGE_LIVES_FOREVER=Integer.MAX_VALUE;

@@ -3500,8 +3500,8 @@ public class ListCmd extends StdCommand
 				continue;
 			objs.add(obj);
 		}
-		final String[] keywords=CMLib.lang().sessionTranslation(null, new String[]{"ALL","WITHIN","DISTANCE"});
-		final String[] sortcols=CMLib.lang().sessionTranslation(null, new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"});
+		final String[] keywords=new String[]{"ALL","WITHIN","DISTANCE"};
+		final String[] sortcols=new String[]{"TYPE","RADIUS","COORDINATES","SPEED","MASS","NAME","COORDSX","COORDSY","COORDSZ"};
 		BigDecimal withinDistance=null;
 		Coord3D centerPoint=null;
 		final SpaceObject SO=CMLib.space().getSpaceObject(mob, false);

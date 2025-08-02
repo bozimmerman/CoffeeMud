@@ -85,7 +85,7 @@ public class AreaTbl extends StdWebMacro
 			else
 				msg.append(" width=\"" + percent + "%\"");
 
-			msg.append(L(" class=\"cmAreaTblEntry\">"));
+			msg.append(" class=\"cmAreaTblEntry\">");
 			msg.append(areasVec.get(i));
 			msg.append("</td>");
 			// finish the row

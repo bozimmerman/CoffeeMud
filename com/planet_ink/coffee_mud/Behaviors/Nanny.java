@@ -671,7 +671,8 @@ public class Nanny extends StdBehavior
 				if((change>0.0)&&(C!=null))
 				{
 					// this message will actually end up triggering the hand-over.
-					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
+					final CMMsg newMsg=CMClass.getMsg((MOB)host,source,C,CMMsg.MSG_SPEAK,
+							L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
 					C.setOwner((MOB)host);
 					final long num=C.getNumberOfCoins();
 					final String curr=C.getCurrency();

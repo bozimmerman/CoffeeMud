@@ -74,18 +74,6 @@ public interface LanguageLibrary extends CMLibrary
 	public String sessionTranslation(Class<?> clazz, String item);
 
 	/**
-	 * A translator for static internal string arrays, such
-	 * as those found on interfaces.  How this manages to set the
-	 * locale before a lot of those classes get loaded by
-	 * Java is probably a problem.
-	 * @param clazz optional class for sub-category rules
-	 * @param str the static string array
-	 *
-	 * @return the translated static string array
-	 */
-	public String[] sessionTranslation(Class<?> clazz, final String[] str);
-
-	/**
 	 * This is the main output and variable translator.  Most internal
 	 * system strings go through this method for localization.  This
 	 * also handles the @x1 @x2, ... variable replacements.

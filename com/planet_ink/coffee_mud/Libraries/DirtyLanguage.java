@@ -42,8 +42,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return "DirtyLanguage";
 	}
 
-	protected String language="en";
-	protected String country="TX";
+	protected String language="";
+	protected String country="";
 	protected Locale currentLocale=null;
 
 	private enum Command
@@ -66,11 +66,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		&&(lang.length()>0)
 		&&(state.length()>0))
 		{
-			country=state;
-			language=lang;
+			if((!lang.equals(language))&&(!state.equals(country)))
+			{
+				country=state;
+				language=lang;
+				currentLocale = new Locale(language, country);
+				clear();
+			}
 		}
-		currentLocale = new Locale(language, country);
-		clear();
 	}
 
 	@Override
@@ -865,12 +868,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		if((str==null)||(str.length()==0))
 			return str;
-		final String sessionStr=sessionTranslation(null, str);
+		final String sessionStr=sessionTranslation(clazz, str);
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 
-	@Override
-	public String[] sessionTranslation(final Class<?> clazz, final String[] str)
+	protected String[] sessionTranslationBlock(final Class<?> clazz, final String[] str)
 	{
 		if((str==null)||(str.length==0))
 			return str;
@@ -879,7 +881,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			final String s=str[i];
 			if(s!=null)
 			{
-				final String sessionStr=sessionTranslation(null, s);
+				final String sessionStr=sessionTranslation(clazz, s);
 				if(sessionStr!=null)
 					str[i]=sessionStr;
 			}

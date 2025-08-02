@@ -675,15 +675,15 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"
 	};
 	/** list of long string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
-	public static final String[] ARMOR_LONGDESC=CMLib.lang().sessionTranslation(null, new String[]{
-		"May wear any armor.",
-		"Must wear cloth, vegetation, or paper based armor.",
-		"Must wear leather, cloth, or vegetation based armor.",
-		"Must wear non-metal armor.",
-		"Must wear wood or vegetation based armor.",
-		"Must wear metal armor",
-		"Must wear stone, crystal, or metal armor."
-	});
+	public static final String[] ARMOR_LONGDESC=new String[]{
+		CMLib.lang().L("May wear any armor."),
+		CMLib.lang().L("Must wear cloth, vegetation, or paper based armor."),
+		CMLib.lang().L("Must wear leather, cloth, or vegetation based armor."),
+		CMLib.lang().L("Must wear non-metal armor."),
+		CMLib.lang().L("Must wear wood or vegetation based armor."),
+		CMLib.lang().L("Must wear metal armor"),
+		CMLib.lang().L("Must wear stone, crystal, or metal armor.")
+	};
 
 	/** constant returned by allowedWeaponLevel() to designate any weapons. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_ANY=0;
@@ -743,24 +743,24 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 			Weapon.CLASS_STAFF, Weapon.CLASS_FLAILED},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
-	public static final String[] WEAPONS_LONGDESC=CMLib.lang().sessionTranslation(null, new String[]{
-/*0*/"May use any weapons.",
-/*1*/"Must use dagger-like or natural weapons.",
-/*2*/"Must use swords, daggers, natural, or ranged weapons.",
-/*3*/"Must use wooden, plant-based, or leather weapons.",
-/*4*/"Must use sword, daggers, flailed, blunt, or natural weapons.",
-/*5*/"Must use stone, crystal, metal, or glass weapons.",
-/*6*/"Must use daggers, staves, or natural weapons.",
-/*7*/"Must use polearms, axes, swords, daggers, or edged weapons.",
-/*8*/"Must use hammers, staves, flailed, natural, or blunt weapons.",
-/*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
-/*10*/"Evil must use polearm, sword, axe, edged, or daggers.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
-/*11*/"Must use flailed weapons.",
-/*12*/"May use polearms of any kind or other weapons made from wood, plant-based materials, or leather.",
-/*13*/"Must use staffs or natural weapons.",
-/*14*/"Must use staves, swords, daggers, axes, or blunt weapons.",
-/*15*/"Must use edged, dagger, blunt, hamer, polearm, staff, or flailed weapons."
-	});
+	public static final String[] WEAPONS_LONGDESC=new String[]{
+/*0*/CMLib.lang().L("May use any weapons."),
+/*1*/CMLib.lang().L("Must use dagger-like or natural weapons."),
+/*2*/CMLib.lang().L("Must use swords, daggers, natural, or ranged weapons."),
+/*3*/CMLib.lang().L("Must use wooden, plant-based, or leather weapons."),
+/*4*/CMLib.lang().L("Must use sword, daggers, flailed, blunt, or natural weapons."),
+/*5*/CMLib.lang().L("Must use stone, crystal, metal, or glass weapons."),
+/*6*/CMLib.lang().L("Must use daggers, staves, or natural weapons."),
+/*7*/CMLib.lang().L("Must use polearms, axes, swords, daggers, or edged weapons."),
+/*8*/CMLib.lang().L("Must use hammers, staves, flailed, natural, or blunt weapons."),
+/*9*/CMLib.lang().L("Must use swords, staves, natural, ranged, or blunt weapons"),
+/*10*/CMLib.lang().L("Evil must use polearm, sword, axe, edged, or daggers.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer."),
+/*11*/CMLib.lang().L("Must use flailed weapons."),
+/*12*/CMLib.lang().L("May use polearms of any kind or other weapons made from wood, plant-based materials, or leather."),
+/*13*/CMLib.lang().L("Must use staffs or natural weapons."),
+/*14*/CMLib.lang().L("Must use staves, swords, daggers, axes, or blunt weapons."),
+/*15*/CMLib.lang().L("Must use edged, dagger, blunt, hamer, polearm, staff, or flailed weapons.")
+	};
 
 	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */
 	public final static int GENFLAG_NORACE=1;

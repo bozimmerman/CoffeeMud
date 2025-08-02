@@ -1581,7 +1581,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if((pStats != null)
 			&&(pStats.getAccount()!=null))
 				name+=" ("+pStats.getAccount().getAccountName()+")";
-			final String msgStr = CMLib.lang().fullSessionTranslation(getClass(),"@x1 has just been deleted.", name);
+			final String msgStr = CMLib.lang().L(getClass(),"@x1 has just been deleted.", name);
 			for(int i=0;i<channels.size();i++)
 			{
 				CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),msgStr,true,deadMOB);

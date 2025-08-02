@@ -644,7 +644,8 @@ public class Concierge extends StdBehavior
 					if((change>0.0)&&(C!=null))
 					{
 						// this message will actually end up triggering the hand-over.
-						final CMMsg newMsg=CMClass.getMsg(conciergeM,source,C,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
+						final CMMsg newMsg=CMClass.getMsg(conciergeM,source,C,CMMsg.MSG_SPEAK,
+								L("^T<S-NAME> say(s) 'Heres your change.' to <T-NAMESELF>.^?"));
 						C.setOwner(conciergeM);
 						final long num=C.getNumberOfCoins();
 						final String curr=C.getCurrency();

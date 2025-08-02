@@ -615,7 +615,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				postTell(mob, target, text);
 			else
 			{
-				final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(target.name(mob)),text),CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(mob.name(target)),text),CMMsg.NO_EFFECT,null);
+				final CMMsg msg=CMClass.getMsg(mob,target,null,
+						CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(target.name(mob)),text),
+						CMMsg.MSG_SPEAK,L("^T^<SAY \"@x1\"^><S-NAME> say(s) '@x2' to <T-NAMESELF>.^</SAY^>^?",CMStrings.removeColors(mob.name(target)),text),
+						CMMsg.NO_EFFECT,null);
 				gmcpSaySend("say",mob, target, msg);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
@@ -629,7 +632,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				str=L("<S-NAME> say(s) '@x1'^</SAY^>",text);
 			else
 				str=L("<S-NAME> say(s) '@x1' to <T-NAMESELF>.^</SAY^>^?",text);
-			final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name(target):target.name(mob))+"\"^>"+str,"^T^<SAY \""
+			final CMMsg msg=CMClass.getMsg(mob,target,null,
+					CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name(target):target.name(mob))+"\"^>"+str,"^T^<SAY \""
 					+CMStrings.removeColors(mob.name(target))+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^>"+str);
 			gmcpSaySend("say",mob, target, msg);
 			if(location.okMessage(mob,msg))

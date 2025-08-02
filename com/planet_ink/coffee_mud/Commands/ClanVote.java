@@ -107,7 +107,9 @@ public class ClanVote extends StdCommand
 						final int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
 								  +CMStrings.padRight(""+(v+1),3)
-								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?(votesCast+" votes cast"):(Clan.VSTAT_DESCS[CV.voteStatus])),15)
+								  +CMStrings.padRight(((CV.voteStatus==Clan.VSTAT_STARTED)?
+										  L("@x1 votes cast",""+votesCast):
+										  (Clan.VSTAT_DESCS[CV.voteStatus])),15)
 								  +CMStrings.padRight(CV.matter,55)+"\n\r");
 					}
 					msg.append(L("\n\rEnter CLANVOTE [#] to see details or place your vote."));
