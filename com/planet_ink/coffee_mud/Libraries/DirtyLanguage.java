@@ -153,12 +153,49 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return buf.toString();
 	}
 
-	protected Map<String,DVector> loadFileSections(final String filename)
+	protected class ParseCmd
+	{
+		Command cmd;
+		Pair<Object,Object> p;
+		public ParseCmd(final Command c, final Object o)
+		{
+			cmd = c;
+			p = new Pair<Object,Object>(o,o);
+		}
+		public ParseCmd(final Command c, final Object o1, final Object o2)
+		{
+			cmd = c;
+			p = new Pair<Object,Object>(o1,o2);
+		}
+	}
+
+	protected class ParserSection extends Vector<ParseCmd>
+	{
+		private static final long serialVersionUID = -46886478059227632L;
+		public void addElement(final Command c, final Object o)
+		{
+			super.add(new ParseCmd(c,o));
+		}
+		public void addElement(final Command c, final Object o1, final Object o2)
+		{
+			super.add(new ParseCmd(c,o1,o2));
+		}
+	}
+
+	protected class ParserSections extends Hashtable<String,ParserSection>
+	{
+		private static final long serialVersionUID = -6971508263354514900L;
+
+		public final Map<String, Integer>		sectionIndexes	= new Hashtable<String, Integer>();
+		public final PairList<String, String>	wholeFile		= new PairVector<String, String>();
+	}
+
+	protected ParserSections loadFileSections(final String filename)
 	{
 		//Bo: I know you want to get rid of these
 		// DVectors.
 		// It does not end well.
-		final Map<String,DVector> parserSections=new Hashtable<String,DVector>();
+		final ParserSections parserSections=new ParserSections();
 		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if(!F.exists())
 		{
@@ -168,38 +205,38 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final StringBuffer alldata=F.text();
 		final List<String> V=Resources.getFileLineVector(alldata);
 		String s=null;
-		DVector currentSection=null;
+		ParserSection currentSection=null;
 		final PairList<String,String> globalDefinitions=new PairArrayList<String,String>();
 		final PairList<String,String> localDefinitions=new PairArrayList<String,String>();
 		Map<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
 		final Map<String,String> currentSectionReplaceExactStrs=new Hashtable<String,String>();
 		Set<String> currentSectionIgnoreStrs=new HashSet<String>();
 		// especially these below
-		final DVector sectionIndexes=new DVector(2);
-		final DVector wholeFile=new DVector(2);
+		final Map<String, Integer> sectionIndexes=new Hashtable<String, Integer>();
+		final PairList<String, String> wholeFile=new PairVector<String, String>();
 		for(int v=0;v<V.size();v++)
 		{
-			wholeFile.addElement(filename,V.get(v));
+			wholeFile.add(filename,V.get(v));
 			s=V.get(v).trim();
 			if((s.startsWith("#"))||(s.trim().length()==0))
 				continue;
 			if(s.startsWith("["))
 			{
 				final int x=s.lastIndexOf(']');
-				if((currentSectionReplaceStrs.size()>0)
-				&&(currentSection!=null))
-					currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);
-				if((currentSectionReplaceExactStrs.size()>0)
-				&&(currentSection!=null))
-					currentSection.addElement("REPLACEEXACT",currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
-				if((currentSectionIgnoreStrs.size()>0)
-				&&(currentSection!=null))
-					currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs,currentSectionIgnoreStrs);
-				currentSection=new DVector(3);
-				currentSectionReplaceStrs=new Hashtable<String,String>();
+				if(currentSection != null)
+				{
+					if(currentSectionReplaceStrs.size()>0)
+						currentSection.addElement(Command.REPLACEWHOLE,currentSectionReplaceStrs);
+					if(currentSectionReplaceExactStrs.size()>0)
+						currentSection.addElement(Command.REPLACEEXACT,currentSectionReplaceExactStrs);
+					if(currentSectionIgnoreStrs.size()>0)
+						currentSection.addElement(Command.IGNOREWHOLE,currentSectionIgnoreStrs);
+				}
+				currentSection=new ParserSection();
+				currentSectionReplaceStrs=new HashMap<String,String>();
 				currentSectionIgnoreStrs=new HashSet<String>();
 				parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
-				sectionIndexes.addElement(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
+				sectionIndexes.put(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
 				localDefinitions.clear();
 			}
 			else
@@ -213,7 +250,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				final Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
 				if(currentSection!=null)
-					currentSection.addElement("AUTOIGNORE",I,s.substring(x+1).trim());
+					currentSection.addElement(Command.AUTOIGNORE,I,s.substring(x+1).trim());
 			}
 			else
 			if(s.toUpperCase().startsWith("DEFINE"))
@@ -333,7 +370,6 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			else
 			if(s.toUpperCase().startsWith("REPLACEALL"))
 			{
-				final String cmd="REPLACEALL";
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
@@ -371,13 +407,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				if(currentSection!=null)
-					currentSection.addElement(cmd,expression.toLowerCase(),replacement);
+					currentSection.addElement(Command.REPLACEALL,expression.toLowerCase(),replacement);
 				currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
 			}
 			else
 			if(s.toUpperCase().startsWith("REPLACE")||s.toUpperCase().startsWith("IGNORE"))
 			{
-				final String cmd=s.toUpperCase().startsWith("REPLACE")?"REPLACE":"IGNORE";
+				final Command cmd=s.toUpperCase().startsWith("REPLACE")?Command.REPLACE:Command.IGNORE;
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
@@ -396,7 +432,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				expression=replaceWithDefinitions(globalDefinitions,localDefinitions,expression);
 				s=s.substring(regend+1).trim();
 				String replacement=null;
-				if(cmd.equals("REPLACE"))
+				if(cmd == Command.REPLACE)
 				{
 					if(!s.toUpperCase().startsWith("WITH"))
 					{
@@ -436,15 +472,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		}
 		if((currentSectionReplaceStrs.size()>0)
 		&&(currentSection!=null))
-			currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);
+			currentSection.addElement(Command.REPLACEWHOLE,currentSectionReplaceStrs,currentSectionReplaceStrs);
 		if((currentSectionReplaceExactStrs.size()>0)
 		&&(currentSection!=null))
-			currentSection.addElement("REPLACEEXACT",currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
+			currentSection.addElement(Command.REPLACEEXACT,currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
 		if((currentSectionIgnoreStrs.size()>0)
 		&&(currentSection!=null))
-			currentSection.addElement("IGNOREWHOLE",currentSectionIgnoreStrs,currentSectionIgnoreStrs);
-		parserSections.put("INDEXES",sectionIndexes);
-		parserSections.put("WHOLEFILE",wholeFile);
+			currentSection.addElement(Command.IGNOREWHOLE,currentSectionIgnoreStrs,currentSectionIgnoreStrs);
+		parserSections.sectionIndexes.putAll(sectionIndexes);
+		parserSections.wholeFile.addAll(wholeFile);
 		return parserSections;
 	}
 
@@ -458,34 +494,32 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return "PARSER_"+language.toUpperCase()+"_"+country.toUpperCase();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected DVector getLanguageParser(final String parser)
+	protected ParserSections getLanguageParser()
 	{
 		final String parserKey=getLanguageParserKey();
-		Map<String,DVector> parserSections=(Map<String,DVector>)Resources.getResource(parserKey);
+		ParserSections parserSections=(ParserSections)Resources.getResource(parserKey);
 		if(parserSections==null)
 		{
 			parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
 			if(parserSections == null)
-				parserSections=new Hashtable<String,DVector>();
+				parserSections=new ParserSections();
 			Resources.submitResource(parserKey,parserSections);
 		}
-		return parserSections.get(parser);
+		return parserSections;
 	}
 
-	@SuppressWarnings("unchecked")
-	protected DVector getLanguageTranslator(final String parser)
+	protected ParserSections getLanguageTranslator()
 	{
 		final String translatorKey=getLanguageTranslatorKey();
-		Map<String,DVector> translationSections=(Map<String,DVector>)Resources.getResource(translatorKey);
+		ParserSections translationSections=(ParserSections)Resources.getResource(translatorKey);
 		if(translationSections==null)
 		{
 			translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
 			if(translationSections == null)
-				translationSections=new Hashtable<String,DVector>();
+				translationSections=new ParserSections();
 			Resources.submitResource(translatorKey,translationSections);
 		}
-		return translationSections.get(parser);
+		return translationSections;
 	}
 
 	@Override
@@ -545,7 +579,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final String combinedWithTabs=CMParms.combineWithTabs(workCmdList,0);
 		workCmdList.clear();
 		workCmdList.add(combinedWithTabs);
-		final DVector parser=getLanguageParser("COMMAND-PRE-PROCESSOR");
+		final ParserSection parser=getLanguageParser().get("COMMAND-PRE-PROCESSOR");
 		if((parser==null)||(commands==null))
 			return new XVector<List<String>>(commands);
 		Pattern pattern=null;
@@ -559,7 +593,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		Set<String> ignoreSet=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=(Command)CMath.s_valueOf(Command.class,(String)parser.elementAt(p,1));
+			final ParseCmd P = parser.get(p);
+			I=P.cmd;
 			if(I!=null)
 			switch(I)
 			{
@@ -567,7 +602,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				break;
 			case REPLACE:
 			{
-				pattern=(Pattern)parser.elementAt(p,2);
+				pattern=(Pattern)P.p.first;
 				boolean nothingDone=false;
 				while(!nothingDone)
 				{
@@ -579,7 +614,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 						matcher=pattern.matcher(str);
 						if(matcher.find())
 						{
-							str=(String)parser.elementAt(p,3);
+							str=(String)P.p.second;
 							for(int i=0;i<=matcher.groupCount();i++)
 								str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 							if(!workCmdList.get(m).equals(str))
@@ -591,7 +626,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case REPLACEWHOLE:
 			{
-				rep=((Map<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
+				rep=((Map<String,String>)P.p.first).get(combinedWithTabs.toLowerCase());
 				if(rep!=null)
 				{
 					insertExpansion(workCmdList,rep,0,combinedWithTabs.length(),true);
@@ -601,7 +636,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case REPLACEEXACT:
 			{
-				rep=((Map<String,String>)parser.elementAt(p,2)).get(combinedWithTabs);
+				rep=((Map<String,String>)P.p.first).get(combinedWithTabs);
 				if(rep!=null)
 				{
 					insertExpansion(workCmdList,rep,0,combinedWithTabs.length(),true);
@@ -611,7 +646,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case REPLACEALL:
 			{
-				rep=(String)parser.elementAt(p,2);
+				rep=(String)P.p.first;
 				if(rep.length()==0)
 					break;
 				for(int m=0;m<workCmdList.size();m++)
@@ -623,7 +658,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					{
 						while(x>=0)
 						{
-							wit=(String)parser.elementAt(p,3);
+							wit=(String)P.p.second;
 							str=str.substring(0,x)+wit+str.substring(x+rep.length());
 							x=str.toLowerCase().indexOf(rep,x+wit.length());
 						}
@@ -634,7 +669,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case IGNORE:
 			{
-				pattern=(Pattern)parser.elementAt(p,2);
+				pattern=(Pattern)P.p.first;
 				matcher=pattern.matcher(combinedWithTabs);
 				if(matcher.find())
 					return new XVector<List<String>>();
@@ -642,13 +677,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case IGNOREWHOLE:
 			{
-				ignoreSet=(Set<String>)parser.elementAt(p,2);
+				ignoreSet=(Set<String>)P.p.first;
 				if(ignoreSet.contains(combinedWithTabs.toLowerCase()))
 					return new XVector<List<String>>();
 				break;
 			}
 			case AUTOIGNORE:
-				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
+				autoIgnoreLen=((Integer)P.p.first).intValue();
 				if(autoIgnoreLen==0)
 					autoIgnoreLen=100;
 				break;
@@ -664,11 +699,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(ignoreSet==null)
 				{
 					ignoreSet=new HashSet<String>();
-					parser.addElement("IGNOREWHOLE",ignoreSet,ignoreSet);
+					parser.addElement(Command.IGNOREWHOLE,ignoreSet);
 				}
 				ignoreSet.add(combinedWithTabs.toLowerCase());
-				final DVector fileData=getLanguageParser("WHOLEFILE");
-				final DVector fileIndexes=getLanguageParser("INDEXES");
+				final PairList<String,String> fileData=getLanguageParser().wholeFile;
+				final Map<String,Integer> fileIndexes=getLanguageParser().sectionIndexes;
 				addAutoIgnoredString(combinedWithTabs,fileData,fileIndexes,"COMMAND-PRE-PROCESSOR");
 			}
 		}
@@ -683,7 +718,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		if(str==null)
 			return null;
-		final DVector parser=isParser?getLanguageParser(section):getLanguageTranslator(section);
+		final ParserSection parser=isParser?getLanguageParser().get(section):getLanguageTranslator().get(section);
 		if(parser==null)
 			return null;
 		Pattern pattern=null;
@@ -696,7 +731,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		String wit=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=(Command)CMath.s_valueOf(Command.class,(String)parser.elementAt(p,1));
+			final ParseCmd P = parser.get(p);
+			I=P.cmd;
 			if(I!=null)
 			switch(I)
 			{
@@ -704,11 +740,11 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				break;
 			case REPLACE:
 			{
-				pattern=(Pattern)parser.elementAt(p,2);
+				pattern=(Pattern)P.p.first;
 				matcher=pattern.matcher(str);
 				if(matcher.find())
 				{
-					str = (String)parser.elementAt(p,  3);
+					str = (String)P.p.second;
 					for(int i=0;i<=matcher.groupCount();i++)
 						str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 				}
@@ -716,27 +752,27 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case REPLACEWHOLE:
 			{
-				rep=((Map<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
+				rep=((Map<String,String>)P.p.first).get(str.toLowerCase());
 				if(rep!=null)
 					return rep;
 				break;
 			}
 			case REPLACEEXACT:
 			{
-				rep=((Map<String,String>)parser.elementAt(p,2)).get(str);
+				rep=((Map<String,String>)P.p.first).get(str);
 				if(rep!=null)
 					return rep;
 				break;
 			}
 			case REPLACEALL:
 			{
-				rep=(String)parser.elementAt(p,2);
+				rep=(String)P.p.first;
 				if(rep.length()==0)
 					break;
 				int x=str.toLowerCase().indexOf(rep);
 				while(x>=0)
 				{
-					wit=(String)parser.elementAt(p,3);
+					wit=(String)P.p.second;
 					str=str.substring(0,x)+wit+str.substring(x+rep.length());
 					x=str.toLowerCase().indexOf(rep,x+wit.length());
 				}
@@ -744,7 +780,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case IGNORE:
 			{
-				pattern=(Pattern)parser.elementAt(p,2);
+				pattern=(Pattern)P.p.first;
 				matcher=pattern.matcher(str);
 				if(matcher.find())
 					return null;
@@ -752,13 +788,13 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case IGNOREWHOLE:
 			{
-				ignoreSet=(Set<String>)parser.elementAt(p,2);
+				ignoreSet=(Set<String>)P.p.first;
 				if(ignoreSet.contains(str.toLowerCase()))
 					return null;
 				break;
 			}
 			case AUTOIGNORE:
-				autoIgnoreLen=((Integer)parser.elementAt(p,2)).intValue();
+				autoIgnoreLen=((Integer)P.p.first).intValue();
 				if(autoIgnoreLen==0)
 					autoIgnoreLen=100;
 				break;
@@ -771,20 +807,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(ignoreSet==null)
 				{
 					ignoreSet=new HashSet<String>();
-					parser.addElement("IGNOREWHOLE",ignoreSet,ignoreSet);
+					parser.addElement(Command.IGNOREWHOLE,ignoreSet);
 				}
 				ignoreSet.add(oldStr.toLowerCase());
-				DVector fileData=null;
-				DVector fileIndexes=null;
+				PairList<String,String> fileData=null;
+				Map<String,Integer> fileIndexes=null;
 				if(isParser)
 				{
-					fileData=getLanguageParser("WHOLEFILE");
-					fileIndexes=getLanguageParser("INDEXES");
+					fileData=getLanguageParser().wholeFile;
+					fileIndexes=getLanguageParser().sectionIndexes;
 				}
 				else
 				{
-					fileData=getLanguageTranslator("WHOLEFILE");
-					fileIndexes=getLanguageTranslator("INDEXES");
+					fileData=getLanguageTranslator().wholeFile;
+					fileIndexes=getLanguageTranslator().sectionIndexes;
 				}
 				addAutoIgnoredString(oldStr,fileData,fileIndexes,section);
 			}
@@ -796,31 +832,33 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return str.length()>=oldStr.length()?null:str;
 	}
 
-	public void addAutoIgnoredString(String str, final DVector fileData, final DVector fileIndexes, final String sectionName)
+	public void addAutoIgnoredString(String str, final PairList<String,String> fileData,
+												 final Map<String,Integer> fileIndexes, final String sectionName)
 	{
 		if((fileData==null)||(str==null)||(fileData.size()<1))
 			return;
-		final String filename=(String)fileData.elementAt(0,1);
+		final String filename=fileData.get(0).first;
 		if(fileIndexes==null)
 			return;
-		int index=fileIndexes.indexOf(sectionName.toUpperCase().trim());
-		if(index<0)
+		final String sectionNameU = sectionName.toUpperCase().trim();
+		if(!fileIndexes.containsKey(sectionNameU))
 			return;
-		index=((Integer)fileIndexes.elementAt(index,2)).intValue();
-		for(int f=0;f<fileIndexes.size();f++)
+		final int index=fileIndexes.get(sectionName).intValue();
+		for(final String key : fileIndexes.keySet())
 		{
-			if(((Integer)fileIndexes.elementAt(f,2)).intValue()>index)
-				fileIndexes.setElementAt(f,2,Integer.valueOf(((Integer)fileIndexes.elementAt(f,2)).intValue()+1));
+			final Integer I = fileIndexes.get(key);
+			if(I.intValue()>index)
+				fileIndexes.put(key,Integer.valueOf(I.intValue()+1));
 		}
 		str=filterString(str);
 		final String newStr="IGNOREWHOLE \""+str+"\"";
 		if(index==fileData.size()-1)
-			fileData.addElement(filename,newStr);
+			fileData.add(filename,newStr);
 		else
-			fileData.insertElementAt(index+1,filename,newStr);
+			fileData.add(index+1,new Pair<String,String>(filename,newStr));
 		final StringBuffer buf=new StringBuffer("");
 		for(int f=0;f<fileData.size();f++)
-			buf.append(((String)fileData.elementAt(f,2))+"\n\r");
+			buf.append(fileData.get(f).second+"\n\r");
 		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if((F.exists())&&(F.canWrite()))
 			F.saveText(buf);
