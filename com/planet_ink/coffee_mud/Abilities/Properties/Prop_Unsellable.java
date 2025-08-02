@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -54,7 +55,7 @@ public class Prop_Unsellable extends Property
 		message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You can't sell that."));
 		ambiance= CMParms.getParmStr(newMiscText, "AMBIANCE", null);
 		if((message != null)&&(affected != null))
-			message=L(message,affected.name());
+			message=CMStrings.replaceVariables(message,affected.name());
 		dropOff = CMParms.getParmBool(newMiscText, "DROPOFF", false);
 		super.setMiscText(newMiscText);
 	}

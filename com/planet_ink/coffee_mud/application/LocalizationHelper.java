@@ -118,7 +118,7 @@ public class LocalizationHelper
 				else
 				if((tline.length()>0)&&(Character.isLetter(tline.charAt(0))))
 				{
-					if((line.indexOf("class ")>0)&&(line.indexOf("\"")<0))
+					if((line.indexOf("class ")>0)&&(line.indexOf("\"")<0)&&((line.indexOf("/*")<0)||(line.indexOf("/*")>line.indexOf("class "))))
 					{
 						final int x = line.indexOf("class ");
 						if(!Character.isLetterOrDigit(line.charAt(x-1)))
@@ -161,7 +161,8 @@ public class LocalizationHelper
 					}
 				}
 				else
-				if(tline.equals("}")&&(getCol1(line)==classes.peek().second.intValue()))
+				if((tline.equals("}")||tline.equals("};"))
+				&&(getCol1(line)==classes.peek().second.intValue()))
 					classes.pop();
 				int x = line.indexOf(marker);
 				while(x>=0)
@@ -382,7 +383,7 @@ public class LocalizationHelper
 					{
 						final Set<String> set = found.get(clazz);
 						System.out.println();
-						System.out.println("("+clazz+")");
+						System.out.println("[session-translation:"+clazz+"]");
 						for(final String s : set)
 							System.out.println("# replaceexact \""+s+"\" with \""+s+"\"");
 					}

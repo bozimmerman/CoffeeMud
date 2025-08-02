@@ -236,8 +236,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				currentSection=new ParserSection();
 				currentSectionReplaceStrs=new HashMap<String,String>();
 				currentSectionIgnoreStrs=new HashSet<String>();
-				parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
-				sectionIndexes.put(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
+				String sectionName = s.substring(1,x);
+				final int subDex = sectionName.indexOf(':');
+				if(subDex > 0)
+					sectionName = sectionName.substring(0,subDex).toUpperCase()+':'+sectionName.substring(subDex+1);
+				else
+					sectionName = sectionName.toUpperCase();
+				parserSections.put(sectionName,currentSection);
+				sectionIndexes.put(sectionName,Integer.valueOf(v));
 				localDefinitions.clear();
 				continue;
 			}
@@ -638,6 +644,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				while(!nothingDone)
 				{
 					nothingDone=true;
+					matcher=pattern.matcher(combinedWithTabs);
 					for(int m=0;m<workCmdList.size();m++)
 					{
 						str=workCmdList.get(m);
@@ -937,8 +944,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
-	public String sessionTranslation(final Class<?> clazz, final String item)
+	public String sessionTranslation(Class<?> clazz, final String item)
 	{
+		while(clazz != null)
+		{
+			final String resp = basicParser(item,"SESSION-TRANSLATION:"+clazz.getCanonicalName(),false,false);
+			if(resp != null)
+				return resp;
+			clazz = clazz.getSuperclass();
+		}
 		return basicParser(item,"SESSION-TRANSLATION",false,false);
 	}
 

@@ -65,7 +65,7 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 	{
 		super();
 		_name="A card";
-		displayText=L("A card lies here.");
+		displayText=CMLib.lang().L(StdPlayingCard.class,"A card lies here.");
 		secretIdentity="";
 		basePhyStats().setWeight(0);
 		setBaseValue(0);

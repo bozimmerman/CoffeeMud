@@ -651,7 +651,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	{
 		NONE, /* cannot train away from this class, ever */
 		ANY, /* can train away from this class to any other */
-		BASEONLY, /* can train away from this class, only if the same base class */
+		BASEONLY /* can train away from this class, only if the same base class */
 	}
 
 	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
