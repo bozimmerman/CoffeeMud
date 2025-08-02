@@ -42,20 +42,21 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return "DirtyLanguage";
 	}
 
-	protected String language="";
-	protected String country="";
-	protected Locale currentLocale=null;
+	protected String	language		= "";
+	protected String	country			= "";
+	protected Locale	currentLocale	= null;
 
 	private enum Command
 	{
 		REPLACE,
+		REPLACEALL,
+		REPLACEEXACT,
 		REPLACEWHOLE,
 		IGNORE,
+		IGNOREALL,
 		IGNOREWHOLE,
 		AUTOIGNORE,
-		DEFINE,
-		REPLACEALL,
-		REPLACEEXACT
+		DEFINE
 	}
 
 	@Override
@@ -238,28 +239,38 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
 				sectionIndexes.put(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
 				localDefinitions.clear();
+				continue;
 			}
-			else
-			if(s.toUpperCase().startsWith("AUTOIGNORE"))
+			final int firstSpace = s.indexOf(' ');
+			final String supp = (firstSpace>0)?s.substring(0,firstSpace).toUpperCase():s.toUpperCase();
+			final Command C = (Command)CMath.s_valueOf(Command.class, supp);
+			if(C == null)
+			{
+				Log.errOut("Scripts","Unknown parser command "+supp+", line "+v);
+				continue;
+			}
+			switch(C)
+			{
+			case AUTOIGNORE:
 			{
 				final int x=s.indexOf(' ');
 				if(x<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
 				if(currentSection!=null)
 					currentSection.addElement(Command.AUTOIGNORE,I,s.substring(x+1).trim());
+				break;
 			}
-			else
-			if(s.toUpperCase().startsWith("DEFINE"))
+			case DEFINE:
 			{
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -267,20 +278,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String variable=s.substring(regstart+1,regend).toUpperCase();
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("AS"))
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -288,7 +299,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				String replacement=s.substring(regstart+1,regend);
 				replacement=replaceWithDefinitions(globalDefinitions,localDefinitions,replacement);
@@ -302,15 +313,15 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					globalDefinitions.removeFirst(variable);
 					globalDefinitions.add(variable,replacement);
 				}
+				break;
 			}
-			else
-			if(s.toUpperCase().startsWith("IGNOREWHOLE"))
+			case IGNOREWHOLE:
 			{
 				final int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -318,19 +329,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String expression=unFilterString(s.substring(regstart+1,regend));
 				currentSectionIgnoreStrs.add(expression.toLowerCase());
+				break;
 			}
-			else
-			if(s.toUpperCase().startsWith("REPLACEWHOLE")||s.toUpperCase().startsWith("REPLACEEXACT"))
+			case REPLACEWHOLE:
+			case REPLACEEXACT:
 			{
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -338,20 +350,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH"))
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -359,22 +371,22 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
-				if(s.toUpperCase().startsWith("REPLACEWHOLE"))
+				if(C == Command.REPLACEWHOLE)
 					currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
 				else
 					currentSectionReplaceExactStrs.put(expression,replacement);
+				break;
 			}
-			else
-			if(s.toUpperCase().startsWith("REPLACEALL"))
+			case REPLACEALL:
 			{
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -382,20 +394,20 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH"))
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -403,22 +415,22 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				final String replacement=unFilterString(s.substring(regstart+1,regend));
 				if(currentSection!=null)
 					currentSection.addElement(Command.REPLACEALL,expression.toLowerCase(),replacement);
 				currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
+				break;
 			}
-			else
-			if(s.toUpperCase().startsWith("REPLACE")||s.toUpperCase().startsWith("IGNORE"))
+			case REPLACE:
+			case IGNORE:
 			{
-				final Command cmd=s.toUpperCase().startsWith("REPLACE")?Command.REPLACE:Command.IGNORE;
 				int regstart=s.indexOf('"');
 				if(regstart<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				int regend=s.indexOf('"',regstart+1);
 				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -426,24 +438,24 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(regend<0)
 				{
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-					continue;
+					break;
 				}
 				String expression=s.substring(regstart+1,regend);
 				expression=replaceWithDefinitions(globalDefinitions,localDefinitions,expression);
 				s=s.substring(regend+1).trim();
 				String replacement=null;
-				if(cmd == Command.REPLACE)
+				if(C == Command.REPLACE)
 				{
 					if(!s.toUpperCase().startsWith("WITH"))
 					{
 						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-						continue;
+						break;
 					}
 					regstart=s.indexOf('"');
 					if(regstart<0)
 					{
 						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-						continue;
+						break;
 					}
 					regend=s.indexOf('"',regstart+1);
 					while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
@@ -451,7 +463,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					if(regend<0)
 					{
 						Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
-						continue;
+						break;
 					}
 					replacement=s.substring(regstart+1,regend);
 					replacement=replaceWithDefinitions(globalDefinitions,localDefinitions,replacement);
@@ -460,25 +472,44 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				{
 					final Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 					if(currentSection!=null)
-						currentSection.addElement(cmd,expPattern,replacement);
+						currentSection.addElement(C,expPattern,replacement);
 				}
 				catch(final Exception e)
 				{
 					Log.errOut("Scripts",e);
 				}
+				break;
 			}
-			else
-				Log.errOut("Scripts","Unknown parser command, line "+v);
+			case IGNOREALL:
+				final int regstart=s.indexOf('"');
+				if(regstart<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					break;
+				}
+				int regend=s.indexOf('"',regstart+1);
+				while((regend>regstart)&&(s.charAt(regend-1)=='\\'))
+					regend=s.indexOf('"',regend+1);
+				if(regend<0)
+				{
+					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
+					break;
+				}
+				final String expression=unFilterString(s.substring(regstart+1,regend));
+				if(currentSection!=null)
+					currentSection.addElement(C,expression,expression);
+				break;
+			}
 		}
-		if((currentSectionReplaceStrs.size()>0)
-		&&(currentSection!=null))
-			currentSection.addElement(Command.REPLACEWHOLE,currentSectionReplaceStrs,currentSectionReplaceStrs);
-		if((currentSectionReplaceExactStrs.size()>0)
-		&&(currentSection!=null))
-			currentSection.addElement(Command.REPLACEEXACT,currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
-		if((currentSectionIgnoreStrs.size()>0)
-		&&(currentSection!=null))
-			currentSection.addElement(Command.IGNOREWHOLE,currentSectionIgnoreStrs,currentSectionIgnoreStrs);
+		if(currentSection != null)
+		{
+			if(currentSectionReplaceStrs.size()>0)
+				currentSection.addElement(Command.REPLACEWHOLE,currentSectionReplaceStrs,currentSectionReplaceStrs);
+			if(currentSectionReplaceExactStrs.size()>0)
+				currentSection.addElement(Command.REPLACEEXACT,currentSectionReplaceExactStrs,currentSectionReplaceExactStrs);
+			if(currentSectionIgnoreStrs.size()>0)
+				currentSection.addElement(Command.IGNOREWHOLE,currentSectionIgnoreStrs,currentSectionIgnoreStrs);
+		}
 		parserSections.sectionIndexes.putAll(sectionIndexes);
 		parserSections.wholeFile.addAll(wholeFile);
 		return parserSections;
@@ -675,6 +706,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					return new XVector<List<String>>();
 				break;
 			}
+			case IGNOREALL:
+			{
+				if(combinedWithTabs.toLowerCase().indexOf((String)P.p.first)>=0)
+					return new XVector<List<String>>();
+				break;
+			}
 			case IGNOREWHOLE:
 			{
 				ignoreSet=(Set<String>)P.p.first;
@@ -762,6 +799,16 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				rep=((Map<String,String>)P.p.first).get(str);
 				if(rep!=null)
 					return rep;
+				break;
+			}
+			case IGNOREALL:
+			{
+				rep=(String)P.p.first;
+				if(rep.length()==0)
+					break;
+				final int x=str.toLowerCase().indexOf(rep);
+				if(x>=0)
+					return null;
 				break;
 			}
 			case REPLACEALL:
