@@ -3095,9 +3095,9 @@ public class CMProps extends Properties
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()
 		{
 			@Override
-			public String translate(final String string)
+			public String translate(final String directonWord)
 			{
-				return lang.L(string);
+				return lang.fullSessionTranslation(Directions.class,directonWord);
 			}
 		});
 

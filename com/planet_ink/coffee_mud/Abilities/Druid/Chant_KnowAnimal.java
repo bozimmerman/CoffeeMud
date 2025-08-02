@@ -273,7 +273,7 @@ public class Chant_KnowAnimal extends Chant
 					if(CMath.isSet(target.phyStats().disposition(), i))
 					{
 						addSpace(rpt);
-						rpt.append(L(heShe+" "+CMFlagLibrary.IS_DESCS[i].toLowerCase()+"."));
+						rpt.append(heShe+" "+CMFlagLibrary.IS_DESCS[i].toLowerCase()+".");
 					}
 				}
 			}

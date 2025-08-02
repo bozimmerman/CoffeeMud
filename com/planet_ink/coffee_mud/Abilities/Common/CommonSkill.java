@@ -373,35 +373,7 @@ public class CommonSkill extends StdAbility
 		if(buildingI instanceof RawMaterial)
 			buildingI.setSecretIdentity(buildingI.name());
 		else
-			buildingI.setSecretIdentity(getBrand(mob));
-	}
-
-	protected String getBrand(final Item buildingI)
-	{
-		if(buildingI != null)
-		{
-			final Ability A=buildingI.fetchEffect("Copyright");
-			if((A!=null)&&(A.text().length()>0))
-				return A.text();
-			final int x=buildingI.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
-			if(x>=0)
-			{
-				final int y=buildingI.rawSecretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
-				if(y>=0)
-				{
-					return buildingI.rawSecretIdentity().substring(x,y);
-				}
-			}
-		}
-		return "";
-	}
-
-	protected String getBrand(final MOB mob)
-	{
-		if(mob==null)
-			return L(ItemCraftor.CRAFTING_BRAND_STR_ANON);
-		else
-			return L(ItemCraftor.CRAFTING_BRAND_STR_NAME,mob.Name());
+			buildingI.setSecretIdentity(CMLib.ableParms().createCraftingBrand(mob));
 	}
 
 	protected void commonEmote(final MOB mob, final String str)

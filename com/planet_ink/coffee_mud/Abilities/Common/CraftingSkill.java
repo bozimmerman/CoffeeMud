@@ -2329,7 +2329,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 			return false;
 		}
 		if((!mayILearnToCraft( mob, buildingI ))
-		||(this.getBrand(buildingI).length()>0))
+		||(CMLib.ableParms().getCraftingBrand(buildingI).length()>0))
 		{
 			commonTelL(mob,"You can't learn anything about @x1 with @x2.",buildingI.name(mob),name());
 			return false;

@@ -444,7 +444,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 				return null;
 			}
 		}
-		return "Unable to delete title!";
+		return L("Unable to delete title!");
 	}
 
 	@Override

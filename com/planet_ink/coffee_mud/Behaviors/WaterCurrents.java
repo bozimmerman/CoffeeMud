@@ -218,7 +218,7 @@ public class WaterCurrents extends ActiveTicker
 								{
 									final Room R3=r.nextElement();
 									if((R3!=null)&&((R3.domainType()&Room.INDOORS)==0))
-										R3.showHappens(CMMsg.MSG_OK_ACTION, L(ioutMsg,CMLib.directions().getDirectionName(dir).toLowerCase(),I.name()));
+										R3.showHappens(CMMsg.MSG_OK_ACTION, CMStrings.replaceVariables(ioutMsg,CMLib.directions().getDirectionName(dir).toLowerCase(),I.name()));
 								}
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Inheret,Move.Optimize);

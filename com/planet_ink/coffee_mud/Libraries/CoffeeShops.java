@@ -251,7 +251,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(T.rentalProperty()  || (lie && (((lieHash >> 29) % 2) == 0)))
 					features.append(L(" rental"));
 				// this space intentionally left with dynamic string
-				str.append(L("\n\rFeatures   :"+features.toString()));
+				str.append(L("\n\rFeatures   :")+features.toString());
 			}
 			else
 			if(E instanceof Item)

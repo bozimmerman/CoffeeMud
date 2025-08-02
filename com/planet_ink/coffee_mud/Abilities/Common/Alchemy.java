@@ -406,7 +406,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if(commands.size()<1)
 		{
 			final String word = this.triggerStrings()[0].toLowerCase();
-			commonTelL(mob,CMStrings.capitalizeFirstLetter(word)+" what? Enter \""+word+" list\" for a list, or \""+word+" stop\" to cancel.");
+			final String cword = CMStrings.capitalizeFirstLetter(word);
+			commonTelL(mob,"@x1 what? Enter \"@x2 list\" for a list, or \"@x3 stop\" to cancel.",cword,word);
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());

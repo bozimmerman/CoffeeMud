@@ -27,6 +27,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
    Copyright 2008-2025 Bo Zimmerman
@@ -66,8 +68,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		super();
 	}
-
-
 
 	@Override
 	public String getGenericClassID(final Ability A)
@@ -180,6 +180,48 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		CR.setStat("POSTCASTABILITY", ""+A.ID());
 		CR.setStat("HELP", CMLib.help().getHelpText(A.ID(), null, false, true));
 		return CR;
+	}
+
+	@Override
+	public String getCraftingBrand(final Item buildingI)
+	{
+		if((buildingI != null) && (buildingI.rawSecretIdentity().length()>0))
+		{
+			final Ability A=buildingI.fetchEffect("Copyright");
+			if((A!=null)&&(A.text().length()>0))
+				return A.text();
+			Pattern P = (Pattern)Resources.getResource("SYSTEM_CRAFTING_BRAND_STR");
+			if(P == null)
+			{
+				final String CRAFTING_BRAND_STR=CMLib.lang().L("This is the work of @x1.");
+				String mask = CRAFTING_BRAND_STR;
+				int x = mask.indexOf("@x1");
+				if(x<0)
+					mask = mask+" @x1.";
+				x = mask.indexOf("@x1");
+				final String prefix = mask.substring(0,x);
+				final String suffix = mask.substring(x+3);
+				mask = ".*" + Pattern.quote(prefix) + "([^.]+)" + Pattern.quote(suffix) + ".*";
+				P = Pattern.compile(mask);
+				Resources.submitResource("SYSTEM_CRAFTING_BRAND_STR",P);
+			}
+			final Matcher matcher = P.matcher(buildingI.rawSecretIdentity());
+			if (matcher.find())
+				return matcher.group(1).trim();
+		}
+		return "";
+	}
+
+	@Override
+	public String createCraftingBrand(final MOB mob)
+	{
+
+		final String CRAFTING_BRAND_ANON=CMLib.lang().L("an anonymous craftsman");
+		final String CRAFTING_BRAND_STR=CMLib.lang().L("This is the work of @x1.");
+		if(mob==null)
+			return CMStrings.replaceVariables(CRAFTING_BRAND_STR,CRAFTING_BRAND_ANON);
+		else
+			return CMStrings.replaceVariables(CRAFTING_BRAND_STR,mob.Name());
 	}
 
 	protected String parseLayers(final short[] layerAtt, final short[] clothingLayers, String misctype)
@@ -3816,13 +3858,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String webField(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String oldVal, final String fieldName)
 				{
+					final String[] fieldNames = new String[]{
+						CMLib.lang().L("Noun"),
+						CMLib.lang().L("Open"),
+						CMLib.lang().L("Close"),
+						CMLib.lang().L("Closed Display"),
+						CMLib.lang().L("Open Display"),
+						CMLib.lang().L("Description")
+					};
 					final StringBuffer str = new StringBuffer("");
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
 					final String[] vals = this.fakeUserInput(oldVal);
-					final String[] keys = new String[]{"Noun","Open","Close","Closed Display","Open Display","Description"};
-					for(int i=0;i<keys.length;i++)
+					for(int i=0;i<fieldNames.length;i++)
 					{
-						str.append("<TR><TD WIDTH=30%><FONT COLOR=WHITE>"+L(keys[i])+"</FONT></TD>");
+						str.append("<TR><TD WIDTH=30%><FONT COLOR=WHITE>"+fieldNames[i]+"</FONT></TD>");
 						str.append("<TD><INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_W"+(i+1)+" VALUE=\""+vals[i]+"\">");
 						str.append("</TD></TR>");
 					}

@@ -46,6 +46,7 @@ import java.util.*;
  */
 public interface AbilityParameters extends CMLibrary
 {
+
 	/**
 	 * The column or single parameter types
 	 * @author Bo Zimmerman
@@ -379,6 +380,24 @@ public interface AbilityParameters extends CMLibrary
 	{
 		private static final long serialVersionUID = -4060619451997372217L;
 	}
+
+	/**
+	 * Looks to see if the item was original crafted by someone, and if
+	 * so, returns who it is.  Any copyrights supercede.
+	 * Returns empty string otherwise.
+	 *
+	 * @param buildingI the item to search for a brand
+	 * @return "" or a brand name
+	 */
+	public String getCraftingBrand(final Item buildingI);
+
+	/**
+	 * Creates a new crafted item brand string for the given mob.
+	 *
+	 * @param mob who crafted the item.
+	 * @return the brand string
+	 */
+	public String createCraftingBrand(final MOB mob);
 
 	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility

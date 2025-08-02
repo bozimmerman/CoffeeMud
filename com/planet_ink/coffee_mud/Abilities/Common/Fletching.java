@@ -259,7 +259,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkInfo(mob, commands))
 			return true;
 
-		final String woodName=(supportedResourceString().indexOf("METAL")>=0)?"Metal":"Wood";
+		final String woodName=(supportedResourceString().indexOf("METAL")>=0)?L("Metal"):L("Wood");
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -301,7 +301,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				CMLib.lister().fixColWidth(5,mob.session())
 			};
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L(woodName),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "
+									    +CMStrings.padRight(L("Lvl"),cols[1])+" "
+									    +CMStrings.padRight(woodName,cols[2]));
 			buf.append("^N\n\r");
 			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)

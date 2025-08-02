@@ -229,7 +229,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 
 		if(commands.size()==0)
 		{
-			commonTelL(mob,_skillName+" what, how?  Try "+_commandWord+" LIST.");
+			commonTelL(mob,"@x1 what, how?  Try @x2 LIST.",_skillName,_commandWord);
 			return false;
 		}
 		final List<List<String>> recipes = CMLib.utensils().addExtRecipes(mob,ID(),fetchRecipes());
@@ -291,12 +291,12 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		}
 		if(foundRecipe == null)
 		{
-			commonTelL(mob,_skillName+" what? '@x1' is unknown. Try "+_commandWord+" LIST.",command);
+			commonTelL(mob,"@x1 what? '@x2' is unknown. Try @x3 LIST.",_skillName,command,_commandWord);
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			commonTelL(mob,_skillName+" what, how?  Try "+_commandWord+" LIST.");
+			commonTelL(mob,"@x1 what, how?  Try @x2 LIST.",_skillName,_commandWord);
 			return false;
 		}
 		final Item I=super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
@@ -311,12 +311,12 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		final String imask = foundRecipe.get(RCP_CLASSTYPE);
 		if(!CMLib.masking().maskCheck(imask, I, true))
 		{
-			commonTelL(mob,"You can not "+_skillName+" @x1 with that recipe.",I.name(mob));
+			commonTelL(mob,"You can not @x2 @x1 with that recipe.",I.name(mob),_skillName);
 			return false;
 		}
 		if(wasEmbellished(I))
 		{
-			commonTelL(mob,"You can not "+_skillName+" @x1 any more than it is.",I.name(mob));
+			commonTelL(mob,"You can not @x2 @x1 any more than it is.",I.name(mob),_skillName);
 			return false;
 		}
 		//should they specify the extra material? nah -- other skills don't

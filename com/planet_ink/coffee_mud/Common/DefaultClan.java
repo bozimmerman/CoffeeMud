@@ -908,7 +908,7 @@ public class DefaultClan implements Clan
 					final String nicePosName = CMStrings.capitalizeAllFirstLettersAndLower(pos.getName());
 					for(final String baseTitle : govt().getTitleAwards())
 					{
-						final String badTitle = L(baseTitle,name(),nicePosName);
+						final String badTitle = CMStrings.replaceVariables(baseTitle,name(),nicePosName);
 						if(!myAllowedTitles.contains(badTitle))
 						{
 							for(final String titleCheck : pStats.getTitles())
@@ -918,13 +918,12 @@ public class DefaultClan implements Clan
 									pStats.delTitle(titleCheck);
 									break;
 								}
-
 							}
 						}
 					}
 					for(final String posTitle : pos.getTitleAwards())
 					{
-						final String badTitle = L(posTitle,name(),nicePosName);
+						final String badTitle = CMStrings.replaceVariables(posTitle,name(),nicePosName);
 						if(!myAllowedTitles.contains(badTitle))
 						{
 							for(final String titleCheck : pStats.getTitles())
@@ -1028,7 +1027,7 @@ public class DefaultClan implements Clan
 		final boolean sysmsgs=(mob!=null)&&mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
 		final CMath.CompiledFormula form = govt().getXPCalculationFormula();
 		final double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
-		msg.append("^x"+CMStrings.padRight(L(getGovernmentName()+" Profile"),COLBL_WIDTH)+":^.^N "+clanID()+"\n\r");
+		msg.append("^x"+CMStrings.padRight(L("@x1 Profile",getGovernmentName()),COLBL_WIDTH)+":^.^N "+clanID()+"\n\r");
 		msg.append("-----------------------------------------------------------------\n\r");
 		msg.append(getPremise()+"\n\r");
 		msg.append("-----------------------------------------------------------------\n\r");

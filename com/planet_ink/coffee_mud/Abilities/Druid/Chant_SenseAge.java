@@ -188,12 +188,13 @@ public class Chant_SenseAge extends Chant
 						final String[] desc=Race.AGE_DESCS;
 						if(R.getAgingChart()[ageCat] == Race.YEARS_AGE_LIVES_FOREVER)
 						{
-							info.append(L("@x1 will remain "+desc[ageCat-1].toLowerCase()+" forever.  ",M.charStats().HeShe()));
+							info.append(L("@x1 will remain @x2 forever.  ",M.charStats().HeShe(),desc[ageCat-1].toLowerCase()));
 						}
 						else
 						{
-							info.append(L("@x1 can look forward to "+desc[ageCat].toLowerCase()+" around age @x2.  ",
+							info.append(L("@x1 can look forward to @x2 around age @x3.  ",
 									M.charStats().HeShe(),
+									desc[ageCat].toLowerCase(),
 									""+R.getAgingChart()[ageCat]));
 						}
 					}

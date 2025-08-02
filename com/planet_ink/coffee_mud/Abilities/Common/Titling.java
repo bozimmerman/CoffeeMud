@@ -62,7 +62,7 @@ public class Titling extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
-	public static final String CATALOG_PREFIX = " This is a catalog of type `";
+	public static final String CATALOG_PREFIX = CMLib.lang().L(" This is a catalog of type `");
 
 	protected Item		found	= null;
 	protected String	writing	= "";
@@ -128,7 +128,7 @@ public class Titling extends CommonSkill
 
 	public String doCatalog(String old, final String newCatalog)
 	{
-		final String catalogPrefix=L(CATALOG_PREFIX);
+		final String catalogPrefix=CATALOG_PREFIX;
 		final int x=old.indexOf(catalogPrefix);
 		if(x > 0)
 		{
@@ -237,7 +237,7 @@ public class Titling extends CommonSkill
 		{
 			commonTelL(mob,"You must specify what you want to entitle, and what you want the title to be.  Use a title of `remove` to remove "
 					+ "a previous title.  You can also designate a category for the word by making the last word of the title one of "
-					+ "these: "+CMParms.toListString(CATALOGS.getNames())+".");
+					+ "these: @x1.",CMParms.toListString(CATALOGS.getNames()));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));

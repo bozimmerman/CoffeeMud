@@ -180,7 +180,7 @@ public class Create extends StdCommand
 		if(valsL.size()!=3)
 		{
 			mob.tell(L("Unknown location for space object @x1:",newItem.ID())+": '"+rest+"'. "
-					+L("The format for coordinates is 3 distances from core, comma delimited, or [DISTANCE] FROM [PLACE]\n\r"+distErrorMsg));
+					+L("The format for coordinates is 3 distances from core, comma delimited, or [DISTANCE] FROM [PLACE]\n\r@x1",distErrorMsg));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return null;
 		}

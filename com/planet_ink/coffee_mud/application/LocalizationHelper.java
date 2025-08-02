@@ -97,7 +97,7 @@ public class LocalizationHelper
 					doDir(f);
 		}
 		else
-		if(F.getName().endsWith(".java"))
+		if(F.getName().endsWith(".java") && (!F.getName().equals("LocalizationHelper.java")))
 		{
 			final BufferedReader br=new BufferedReader(new FileReader(F));
 			String s=br.readLine();
@@ -164,12 +164,25 @@ public class LocalizationHelper
 				if((tline.equals("}")||tline.equals("};"))
 				&&(getCol1(line)==classes.peek().second.intValue()))
 					classes.pop();
+				String myMarker = marker;
 				int x = line.indexOf(marker);
+				if(x>9&&marker.equals("L("))
+				{
+					if(line.substring(x-9).startsWith("commonTelL("))
+					{
+						x-=9;
+						int z = line.indexOf("\"",x);
+						if(z<0)
+							break;
+						z=line.lastIndexOf(",",z);
+						myMarker = line.substring(x,z+1);
+					}
+				}
 				while(x>=0)
 				{
 					if((x==0)||(!Character.isLetter(line.charAt(x-1))))
 					{
-						int y=x+2;
+						int y=x+myMarker.length();
 						final Stack<Character> depthStack = new Stack<Character>();
 						boolean inquote = false;
 						for(;y<line.length();y++)
@@ -234,9 +247,9 @@ public class LocalizationHelper
 								inquote=true;
 							}
 						}
-						if((y>x+2)&&(y<line.length()))
+						if((y>x+myMarker.length())&&(y<line.length()))
 						{
-							String innards = line.substring(x+2,y).trim();
+							String innards = line.substring(x+myMarker.length(),y).trim();
 							boolean cleanString=isCleanString(innards);
 							if(!cleanString && innards.startsWith("auto?\""))
 							{
@@ -301,12 +314,17 @@ public class LocalizationHelper
 							}
 							else
 							if(innards != null)
-								unfound.add(innards);
+							{
+								if((myMarker.length()>2)||(innards.length()<3))
+									unfound.add(line.trim());
+								else
+									unfound.add(innards);
+							}
 						}
 						x=line.indexOf(marker,y-1);
 					}
 					else
-						x=line.indexOf(marker,x+2);
+						x=line.indexOf(marker,x+myMarker.length());
 				}
 			}
 		}

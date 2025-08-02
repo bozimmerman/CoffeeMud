@@ -125,43 +125,43 @@ public class Poison_Anesthesia extends Poison
 		switch(CMLib.dice().roll(1, 10,0))
 		{
 		default:
-			word = "affect(s)";
+			word = L("affect(s)");
 			break;
 		case 2:
-			word = "pressure(s)";
+			word = L("pressure(s)");
 			break;
 		case 3:
-			word = "slightly move(s)";
+			word = L("slightly move(s)");
 			break;
 		case 4:
-			word = "touch(es)";
+			word = L("touch(es)");
 			break;
 		case 5:
-			word = "something(s)";
+			word = L("something(s)");
 			break;
 		case 6:
-			word = "damage(s)";
+			word = L("damage(s)");
 			break;
 		case 7:
-			word = "compromise(s)";
+			word = L("compromise(s)");
 			break;
 		case 8:
-			word = "push(es)";
+			word = L("push(es)");
 			break;
 		case 9:
-			word = "do(es)";
+			word = L("do(es)");
 			break;
 		case 10:
-			word = "affect(s)";
+			word = L("affect(s)");
 			break;
 		}
 		if(lastC=='s')
-			return L(CMStrings.deleteAllofAny(word,PARENS));
+			return CMStrings.deleteAllofAny(word,PARENS);
 		else
 		if(lastC=='-')
-			return L(CMStrings.deleteAllofAny(word,PARENS));
+			return CMStrings.deleteAllofAny(word,PARENS);
 		else
-			return L(word);
+			return word;
 	}
 
 	@Override

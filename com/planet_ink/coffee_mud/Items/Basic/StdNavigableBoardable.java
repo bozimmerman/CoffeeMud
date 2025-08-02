@@ -988,7 +988,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				&&(R.getRoomInDir(dir).getArea()==this.getArea())
 				&&(msg.othersMessage()!=null)
 				&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
-				&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.LEAVES)))>=0))
+				&&(msg.othersMessage().indexOf(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.LEAVES))>=0))
 					msg.setOthersMessage(L("<S-NAME> board(s) @x1.",Name()));
 			}
 
@@ -1001,7 +1001,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		&&(msg.tool() instanceof Exit)
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
-		&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.ARRIVES)))>=0))
+		&&(msg.othersMessage().indexOf(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.ARRIVES))>=0))
 		{
 			if(disableCmds.contains("LEAVE"))
 				return false;

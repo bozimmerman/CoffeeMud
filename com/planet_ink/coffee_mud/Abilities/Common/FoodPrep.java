@@ -119,10 +119,10 @@ public class FoodPrep extends Cooking
 
 	protected final static String[] sliceDownPrefixes = new String[]
 	{
-		"a slice of ",
-		"a small slice of ",
-		"a smaller slice of ",
-		"a tiny slice of "
+		CMLib.lang().L("a slice of "),
+		CMLib.lang().L("a small slice of "),
+		CMLib.lang().L("a smaller slice of "),
+		CMLib.lang().L("a tiny slice of ")
 	};
 
 	@Override
@@ -166,7 +166,7 @@ public class FoodPrep extends Cooking
 						if(F.Name().startsWith(L(sliceDownPrefixes[i])))
 							chosen=sliceDownPrefixes[i+1];
 					final String name = F.Name();
-					F.setName(L(chosen)+F.Name());
+					F.setName(chosen+F.Name());
 					F.setDisplayText(CMStrings.replaceAll(F.displayText(), name, F.Name()));
 				}
 				final Food F2 = (Food)F.copyOf();

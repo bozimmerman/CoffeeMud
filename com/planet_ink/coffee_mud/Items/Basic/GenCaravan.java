@@ -162,27 +162,26 @@ public class GenCaravan extends GenNavigableBoardable
 	{
 		if (riding() != null)
 		{
-			final StringBuilder sendBack = new StringBuilder(name(viewerMob));
-			sendBack.append(" ");
-			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS) + " here"));
-			if (riding() != null)
+			final String rideState = riding().stateString(this);
+			final String whoRiding;
+			if (riding() == viewerMob)
+				whoRiding = L("YOU");
+			else
+			if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 			{
-				sendBack.append(" " + riding().stateString(this) + " ");
-				if (riding() == viewerMob)
-					sendBack.append(L("YOU"));
+				if (riding() instanceof Item)
+					whoRiding = L("something");
 				else
-				if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
-				{
-					if (riding() instanceof Item)
-						sendBack.append(L("something"));
-					else
-						sendBack.append(L("someone"));
-				}
-				else
-					sendBack.append(riding().name());
-				sendBack.append(".");
-				return sendBack.toString();
+					whoRiding = L("someone");
 			}
+			else
+				whoRiding = riding().name();
+			return L("@x1 @x2 here @x3 @x4.",
+					name(viewerMob),
+					CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS),
+					rideState,
+					whoRiding
+					);
 		}
 		return super.displayText(viewerMob);
 	}

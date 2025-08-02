@@ -1001,6 +1001,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if((str==null)||(str.length()==0))
 			return str;
 		final String sessionStr=sessionTranslation(FINDER.getCaller(), str);
+		if(xs.length==0)
+			return (sessionStr==null)?str:sessionStr;
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 
@@ -1011,6 +1013,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if((str==null)||(str.length()==0))
 			return str;
 		final String sessionStr=sessionTranslation(clazz, str);
+		if(xs.length==0)
+			return (sessionStr==null)?str:sessionStr;
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 }

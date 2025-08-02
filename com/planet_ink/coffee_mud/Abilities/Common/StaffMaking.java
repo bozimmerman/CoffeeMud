@@ -216,7 +216,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTelL(mob,"That's not a "+name().toLowerCase()+" item.");
+				commonTelL(mob,"That's not a @x1 item.",name().toLowerCase());
 			return false;
 		}
 		return true;
@@ -295,8 +295,9 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		final String keyWord = getTriggerKeyword();
 		if(commands.size()==0)
 		{
-			commonTelL(mob,CMStrings.capitalizeAndLower(keyWord)+" what? Enter \""+keyWord+" list\" for a list, \""+keyWord+" info <item>\","
-							+ " \""+keyWord+" learn <item>\", \""+keyWord+" scan\", \""+keyWord+" mend <item>\", or \""+keyWord+" stop\" to cancel.");
+			final String cword = CMStrings.capitalizeFirstLetter(keyWord);
+			commonTelL(mob,"@x1 what? Enter \"@x2 list\" for a list, \"@x2 info <item>\","
+							+ " \"@x2 learn <item>\", \"@x2 scan\", \"@x2 mend <item>\", or \"@x2 stop\" to cancel.",cword,keyWord);
 			return false;
 		}
 		if((!auto)
@@ -465,7 +466,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to "+getActiveVerb()+" a '@x1'.  Try \""+keyWord+" list\" for a list.",recipeName);
+				commonTelL(mob,"You don't know how to @x1 a '@x2'.  Try \"@x3 list\" for a list.",getActiveVerb(),recipeName,keyWord);
 				return false;
 			}
 

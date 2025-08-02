@@ -61,12 +61,31 @@ public class CalendarCmd extends StdCommand
 		REMOVE("DELETE"),
 		;
 		public String[] all;
+		private String desc = null;
 		private CalCmd(final String... others)
 		{
 			final List<String> all=new ArrayList<String>();
 			all.add(name());
 			all.addAll(Arrays.asList(others));
 			this.all = all.toArray(new String[all.size()]);
+		}
+
+		public String description()
+		{
+			if(desc == null)
+			{
+				switch(this)
+				{
+				case NEXT: desc=CMLib.lang().L("next"); break;
+				case SOON: desc=CMLib.lang().L("soon"); break;
+				case PAST: desc=CMLib.lang().L("past"); break;
+				case RECENT: desc=CMLib.lang().L("recent"); break;
+				case NOW: desc=CMLib.lang().L("now"); break;
+				case ADD: desc=CMLib.lang().L("add"); break;
+				case REMOVE: desc=CMLib.lang().L("remove"); break;
+				}
+			}
+			return desc;
 		}
 	}
 
@@ -427,12 +446,12 @@ public class CalendarCmd extends StdCommand
 			if(all.size()==0)
 			{
 				if(CMLib.flags().isInTheGame(mob, true))
-					mob.tell(L("There are no Calendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.",""+num,""+perName));
+					mob.tell(L("There are no Calendar events within the @x1 @x2 @x3.",cmd.description(),""+num,""+perName));
 				return false;
 			}
 			else
 			{
-				mob.tell(L("^HCalendar events within the "+cmd.name().toLowerCase()+" @x1 @x2.^?",""+num,""+perName));
+				mob.tell(L("^HCalendar events within the @x1 @x2 @x3.^?",cmd.description(),""+num,""+perName));
 				mob.tell(getEvents(mob, all));
 			}
 			break;

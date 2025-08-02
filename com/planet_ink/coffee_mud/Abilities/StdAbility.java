@@ -777,23 +777,22 @@ public class StdAbility implements Ability
 		mob.tell(mob,target,tool,L(str,vars));
 	}
 
-	protected void commonTelL(final MOB mob, String str, final String... vars)
+	protected void commonTelL(final MOB mob, String commonTelStr, final String... vars)
 	{
 		if(mob==null)
 			return;
-
 		if(mob.isMonster())
 		{
-			str = CMStrings.replaceWord(str, "you are", "I am");
-			str = CMStrings.replaceWord(str, "you", "I");
-			str = CMStrings.replaceWord(str, "your", "my");
-			str = CMStrings.replaceWord(str, "you've", "I've");
-			str = L(str,vars);
-			CMLib.commands().postSay(mob,null,str,false,false);
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you are", "I am");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you", "I");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "your", "my");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you've", "I've");
+			commonTelStr = L(commonTelStr,vars);
+			CMLib.commands().postSay(mob,null,commonTelStr,false,false);
 			return;
 		}
 
-		mob.tell(L(str,vars));
+		mob.tell(L(commonTelStr,vars));
 	}
 
 	protected void commonTell(final MOB mob, String str)

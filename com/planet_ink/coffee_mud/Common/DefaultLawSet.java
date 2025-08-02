@@ -356,7 +356,7 @@ public class DefaultLawSet implements Law
 	}
 
 	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed,
-									final String fourWord, final String subject, final String message)
+									final String fourWord, final String fifthWord, final String subject, final String message)
 	{
 		MOB M=CMLib.players().getPlayerAllHosts(ownerName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
@@ -364,7 +364,7 @@ public class DefaultLawSet implements Law
 			final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
 			if(owerName.length()==0)
 				owerName=M.Name();
-			M.tell(CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord));
+			M.tell(CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord,fifthWord));
 		}
 		else
 		{
@@ -382,8 +382,8 @@ public class DefaultLawSet implements Law
 					if(owerName.length()==0)
 						owerName=M.Name();
 					final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
-					final String subj = CMLib.lang().L(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
-					final String msg = CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+					final String subj = CMStrings.replaceVariables(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+					final String msg = CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
 					return sendGameMail(M.Name(), subj, msg);
 				}
 			}
@@ -517,14 +517,14 @@ public class DefaultLawSet implements Law
 										}
 										if(M!=null)
 										{
-											notifyPlayer(M.Name(),clanC.name(),owed,T.landPropertyID(),"@x1 lost property on @x3.",
-													"@x1 has lost the title to @x4 due to failure to pay property taxes.");
+											notifyPlayer(M.Name(),clanC.name(),owed,T.landPropertyID(),"",CMLib.lang().L("@x1 lost property on @x3."),
+													CMLib.lang().L("@x1 has lost the title to @x4 due to failure to pay property taxes."));
 										}
 									}
 									else
 									{
-										notifyPlayer(T.getOwnerName(),A.Name(),owed,T.landPropertyID(),"@x1 property lost on @x3.",
-												"@x1 has lost the title to @x4 in @x2 due to failure to pay property taxes.");
+										notifyPlayer(T.getOwnerName(),A.Name(),owed,T.landPropertyID(),"",CMLib.lang().L("@x1 property lost on @x3."),
+												CMLib.lang().L("@x1 has lost the title to @x4 in @x2 due to failure to pay property taxes."));
 									}
 									if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPTAXES))
 										Log.debugOut("Confiscated property "+T.getTitleID()+" ("+T.getOwnerName()+") owed "+T.backTaxes()+" on property valued "+T.getPrice());
@@ -554,22 +554,22 @@ public class DefaultLawSet implements Law
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, null);
 								for(int i=0;i<channels.size();i++)
 								{
-									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes to "+A.Name()+".  "
+									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes to @x3.  "
 											+ "Sufficient funds were not found in a local bank account."
-											+ "  Failure to pay could result in loss of property. ",clanC.name(),amountOwed),false,null);
+											+ "  Failure to pay could result in loss of property. ",clanC.name(),amountOwed,A.Name()),false,null);
 								}
 								if(M!=null)
 								{
-									notifyPlayer(M.Name(),clanC.name(),owed,"",A.Name()+" Taxes Owed by @x1 on @x3.",
-											"@x1 owes @x2 in back taxes to "+A.Name()+".  Sufficient funds were not found in a local bank account.  "
-											+ "Failure to pay could result in loss of property.");
+									notifyPlayer(M.Name(),clanC.name(),owed,"",A.Name(),CMLib.lang().L("@x5 Taxes Owed by @x1 on @x3."),
+											CMLib.lang().L("@x1 owes @x2 in back taxes to @x5.  Sufficient funds were not found in a local bank account.  "
+											+ "Failure to pay could result in loss of property."));
 								}
 							}
 							else
 							{
-								notifyPlayer(owner,"",owed,"",A.Name()+" Taxes Owed by @x1 on @x3.",
-										"@x1 owes @x2 in back taxes to "+A.Name()+".  Sufficient were not found in a local bank account.  "
-												+ "Failure to pay could result in loss of property.");
+								notifyPlayer(owner,"",owed,"",A.Name(),CMLib.lang().L("@x5 Taxes Owed by @x1 on @x3."),
+										CMLib.lang().L("@x1 owes @x2 in back taxes to @x5.  Sufficient were not found in a local bank account.  "
+												+ "Failure to pay could result in loss of property."));
 							}
 							if((evasionBits!=null)
 							&&(evasionBits[Law.BIT_CRIMENAME].length()>0))

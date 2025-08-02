@@ -1695,14 +1695,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		{
 			final String arriveWord=flags.getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES);
-			final String arriveStr=L("<S-NAME> "+arriveWord+" @x1.",otherDirectionPhrase);
+			final String arriveStr=L("<S-NAME> @x1 @x2.",arriveWord,otherDirectionPhrase);
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,arriveStr);
 			if(flee)
 				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) @x1.",directionName));
 			else
 			{
 				final String leaveWord=flags.getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES);
-				final String leaveStr=L("<S-NAME> "+leaveWord+" @x1.",directionName);
+				final String leaveStr=L("<S-NAME> @x1 @x2.",leaveWord,directionName);
 				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,leaveStr);
 			}
 		}

@@ -351,7 +351,22 @@ public interface AccountStats extends CMCommon, Achievable, PrideStats
 	{
 		PLAYER,
 		ACCOUNT,
-		CLAN
+		CLAN;
+		private String desc = null;
+
+		public String description()
+		{
+			if(desc == null)
+			{
+				switch(this)
+				{
+				case PLAYER: desc = CMLib.lang().L("Player"); break;
+				case ACCOUNT: desc = CMLib.lang().L("Account"); break;
+				case CLAN: desc = CMLib.lang().L("Clan"); break;
+				}
+			}
+			return desc;
+		}
 	}
 
 }

@@ -103,7 +103,7 @@ public class Prayer_SenseAlignment extends Prayer
 				if(CMLib.flags().isChaotic(target))
 					alignment = L("lawful @x1",goodEvilName);
 				else
-					alignment = L(goodEvilName);
+					alignment = goodEvilName;
 				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",alignment.toLowerCase()));
 			}
 		}

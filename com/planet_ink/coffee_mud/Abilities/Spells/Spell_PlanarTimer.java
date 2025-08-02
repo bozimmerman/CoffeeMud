@@ -129,7 +129,7 @@ public class Spell_PlanarTimer extends Spell
 							commonTelL((MOB)affected,"You feel that this place has but 1 minute remaining.");
 						else
 						if(secsRemain > (28)&&(secsRemain <=32))
-							commonTelL((MOB)affected,"You feel that this place has but "+secsRemain+" seconds remaining.");
+							commonTelL((MOB)affected,"You feel that this place has but @x1 seconds remaining.",""+secsRemain);
 						return super.tick(ticking, tickID);
 					}
 				}

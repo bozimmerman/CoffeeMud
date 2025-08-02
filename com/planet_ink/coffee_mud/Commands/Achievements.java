@@ -561,11 +561,12 @@ public class Achievements extends StdCommand
 				String subName = "";
 				if(tracked instanceof Clan)
 					subName = " (" + ((Clan)tracked).clanID()+")";
+				final String agentName = agent.description();
 				if(achievedList.size()==0)
-					finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+": ^NNone!")+"^w\n\r\n\r");
+					finalResponse .append("^H"+prefix+L("@x1 Achievements@x2: ^NNone!",agentName,subName)+"^w\n\r\n\r");
 				else
 				{
-					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+":")+"^w\n\r");
+					finalResponse.append("^H"+prefix+L("@x1 Achievements@x2:",agentName,subName)+"^w\n\r");
 					finalResponse.append(CMLib.lister().buildNColTable(mob, achievedList, null, 1).toString()+"^w\n\r\n\r");
 				}
 			}

@@ -1236,18 +1236,27 @@ public class CharGen extends StdCommand
 
 	protected void weaponRun(final MOB mob, final List<String> commands)
 	{
-		final String[] fields=new String[]{"class","type","level","hands","reach","weight","material"};
+		final String[] fields=new String[]
+		{
+				L("class"),
+				L("type"),
+				L("level"),
+				L("hands"),
+				L("reach"),
+				L("weight"),
+				L("material")
+		};
 		final String[] defaults=new String[]{"BLUNT","BASHING","1","1","0","6","IRON"};
 		final StringBuilder listOfFieldsStr=new StringBuilder("\n\rInputs:\n\r");
 		listOfFieldsStr.append("\n\r");
 		for(int x=0;x<fields.length;x++)
 			listOfFieldsStr.append("\"").append(fields[x]).append("=").append(defaults[x]).append("\"\n\r");
 		listOfFieldsStr.append("\n\r")
-		   .append("Put numbers BEFORE field name to add more items like the base item.\n\r")
+		   .append(L("Put numbers BEFORE field name to add more items like the base item.\n\r"))
 		   .append("\n\r");
 		if(commands.size()==0)
 		{
-			mob.tell(L(listOfFieldsStr.toString()));
+			mob.tell(listOfFieldsStr.toString());
 			return;
 		}
 		final List<Map<String,String>> map=new ArrayList<Map<String,String>>();

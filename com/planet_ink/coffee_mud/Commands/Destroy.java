@@ -975,7 +975,7 @@ public class Destroy extends StdCommand
 		}
 		else
 		{
-			mob.tell(L(error));
+			mob.tell(error);
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}

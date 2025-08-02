@@ -93,7 +93,7 @@ public class Spell_KnowAlignment extends Spell
 				if(CMLib.flags().isLawful(target))
 					alignment = L("lawful @x1",goodEvilName);
 				else
-					alignment = L(goodEvilName);
+					alignment = goodEvilName;
 				commonTelL(mob,target,(Environmental)null,"<T-NAME> seem(s) like <T-HE-SHE> <T-IS-ARE> @x1.",alignment);
 			}
 			else

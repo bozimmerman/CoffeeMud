@@ -631,10 +631,12 @@ public class DatabaseProgram extends GenShipProgram
 		}
 		if(jo.containsKey("NOTE"))
 			str.append("\n\r").append(CMStrings.padRight(L("Note"),maxLen)+": ").append(jo.get("NOTE").toString());
-		for(final String k : jo.keySet())
+		for(final String randomFieldName : jo.keySet())
 		{
-			if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, k)) // below localizing random json field names
-				str.append("\n\r").append(CMStrings.padRight(L(CMStrings.capitalizeAndLower(k)),maxLen)+": ").append(jo.get("NOTE").toString());
+			if(!CMParms.contains(DatabaseProgram.BASIC_FIELDS, randomFieldName)) // below localizing random json field names
+				str.append("\n\r")
+					.append(CMStrings.padRight(L(CMStrings.capitalizeAndLower(randomFieldName)),maxLen)+": ")
+					.append(jo.get("NOTE").toString());
 		}
 		return str.toString();
 	}

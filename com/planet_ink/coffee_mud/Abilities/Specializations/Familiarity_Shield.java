@@ -85,23 +85,6 @@ public class Familiarity_Shield extends StdAbility
 		return false;
 	}
 
-	protected String getBrand(final Item buildingI)
-	{
-		if(buildingI != null)
-		{
-			final int x=buildingI.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
-			if(x>=0)
-			{
-				final int y=buildingI.rawSecretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
-				if(y>=0)
-				{
-					return buildingI.rawSecretIdentity().substring(x,y);
-				}
-			}
-		}
-		return "";
-	}
-
 	protected double bonus=-1;
 
 	@Override
@@ -120,7 +103,7 @@ public class Familiarity_Shield extends StdAbility
 			&&(I.basePhyStats().armor()>0)
 			&&(I.amBeingWornProperly())
 			&&(I.amWearingAt(Wearable.WORN_HELD))
-			&&(this.getBrand(I).equalsIgnoreCase(mob.Name())))
+			&&(CMLib.ableParms().getCraftingBrand(I).equalsIgnoreCase(mob.Name())))
 			{
 				bonus+=0.33333;
 			}

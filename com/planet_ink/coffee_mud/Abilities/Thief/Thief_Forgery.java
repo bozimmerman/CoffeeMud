@@ -80,23 +80,6 @@ public class Thief_Forgery extends ThiefSkill
 		return triggerStrings;
 	}
 
-	protected String getBrand(final Item buildingI)
-	{
-		if(buildingI != null)
-		{
-			final int x=buildingI.rawSecretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
-			if(x>=0)
-			{
-				final int y=buildingI.rawSecretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
-				if(y>=0)
-				{
-					return buildingI.rawSecretIdentity().substring(x,y);
-				}
-			}
-		}
-		return "";
-	}
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -193,7 +176,7 @@ public class Thief_Forgery extends ThiefSkill
 			final Item forgeI=mob.findItem(null, forgeWhat);
 			if((forgeI!=null)
 			&&(CMLib.flags().canBeSeenBy(target,mob))
-			&&(getBrand(forgeI).length()>0))
+			&&(CMLib.ableParms().getCraftingBrand(forgeI).length()>0))
 			{
 				final RecipeDriven RA=(RecipeDriven)CMClass.getAbility("Painting");
 				boolean found=false;

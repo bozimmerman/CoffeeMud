@@ -116,7 +116,7 @@ public class Recollecting extends CommonSkill
 			final Item I=i.nextElement();
 			if((I != null)
 			&&(I.isReadable())
-			&&(this.getBrand(I).equals(mob.Name())||isMyProperty)
+			&&(CMLib.ableParms().getCraftingBrand(I).equalsIgnoreCase(mob.Name())||isMyProperty)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)
 			&&(!(I instanceof Scroll)))
 				list.add(I);

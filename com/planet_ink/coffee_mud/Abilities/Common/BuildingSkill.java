@@ -268,7 +268,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 	protected void notifyMessUp(final MOB mob, final String[] recipe)
 	{
-		commonTelL(mob,"You've ruined the "+recipe[DAT_DESC]+"!",CMLib.directions().getDirectionName(dir));
+		final String what = CMStrings.replaceVariables(recipe[DAT_DESC], CMLib.directions().getDirectionName(dir));
+		commonTelL(mob,"You've ruined the @x1!",what);
 	}
 
 	protected void demolishRoom(final MOB mob, final Room room)
@@ -794,8 +795,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			newRoom.setRoomID(room.getArea().getNewRoomID(room,dir));
 			if(newRoom.roomID().length()==0)
 			{
-				final String verbDesc = recipe[DAT_DESC];
-				commonTelL(mob,"You've failed to build the "+verbDesc+"!",CMLib.directions().getDirectionName(dir));
+				final String what = CMStrings.replaceVariables(recipe[DAT_DESC], CMLib.directions().getDirectionName(dir));
+				commonTelL(mob,"You've failed to build the @x1!",what);
 				return null;
 			}
 			newRoom.setArea(room.getArea());

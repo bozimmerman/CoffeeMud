@@ -530,12 +530,12 @@ public class Qualify  extends Skills
 					list=new StringBuilder(list.substring(0,list.length()-2));
 				if(((domain >=0)&&(qSet.contains(Integer.valueOf(domain))))
 				||((acode >=0)&&(qSet.contains(Integer.valueOf(acode)))))
-					mob.tell(L("You don't appear to qualify for any more '@x1'. Parameters to the QUALIFY command include "+list.toString()+".",qual));
+					mob.tell(L("You don't appear to qualify for any more '@x1'. Parameters to the QUALIFY command include @x2.",qual,list.toString()));
 				else
 				if(qual.length()>0)
-					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include "+list.toString()+".",qual));
+					mob.tell(L("You don't appear to qualify for any '@x1'. Parameters to the QUALIFY command include @x2.",qual,list.toString()));
 				else
-					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include "+list.toString()+"."));
+					mob.tell(L("You don't appear to qualify for anything! Parameters to the QUALIFY command include @x1.",list.toString()));
 			}
 			else
 			if(!mob.isMonster())

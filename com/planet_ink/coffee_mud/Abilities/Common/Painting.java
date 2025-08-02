@@ -349,7 +349,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 				building=CMClass.getItem("GenWallpaper");
 				building.setName(paintingKeyWords);
 				building.setDescription(paintingDesc);
-				building.setSecretIdentity(getBrand(mob));
+				building.setSecretIdentity(CMLib.ableParms().createCraftingBrand(mob));
 			}
 			else
 			if(session != null)
@@ -480,7 +480,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 				building.setBaseValue(canvasI.baseGoldValue()+(CMLib.dice().roll(1,CMath.s_int(foundRecipe.get(RCP_VALUE))+super.getXLEVELLevel(mob),0)));
 				building.setMaterial(canvasI.material());
 				building.basePhyStats().setLevel(canvasI.basePhyStats().level());
-				building.setSecretIdentity(getBrand(mob));
+				building.setSecretIdentity(CMLib.ableParms().createCraftingBrand(mob));
 				final String spell=foundRecipe.get(RCP_SPELL);
 				new CraftingSkill().addSpellsOrBehaviors(building,spell,new ArrayList<CMObject>(),new ArrayList<CMObject>());
 				canvasI.destroy();

@@ -1877,9 +1877,8 @@ public class StdMOB implements MOB
 				sendBack = new StringBuilder(localName).append(displayText.substring(Name().length()));
 			else
 			{
-				sendBack = new StringBuilder(localName);
-				sendBack.append(" ");
-				sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS) + " here"));
+				sendBack = new StringBuilder(L("@x1 @x2 here",
+						localName,CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS)));
 			}
 			if(riding() != null)
 			{

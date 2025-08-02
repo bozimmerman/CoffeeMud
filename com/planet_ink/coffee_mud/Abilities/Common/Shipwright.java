@@ -407,7 +407,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
-				commonTelL(mob,"That's not a "+name().toLowerCase()+" item.");
+				commonTelL(mob,"That's not a @x1 item.",name().toLowerCase());
 			return false;
 		}
 		return true;

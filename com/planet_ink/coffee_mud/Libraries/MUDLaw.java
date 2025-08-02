@@ -910,7 +910,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				// now do a quick crafter check
 				if((I.expirationDate()>0)
 				&&(I.databaseID().length()==0)
-				&&(I.rawSecretIdentity().indexOf(L(ItemCraftor.CRAFTING_BRAND_STR_PREFIX) + msg.source().Name())>=0))
+				&&(CMLib.ableParms().getCraftingBrand(I).equalsIgnoreCase(msg.source().Name())))
 					return true;
 				// see if stealing is allowed because PK
 				if((!canAttackThisProperty(msg.source(), record))
