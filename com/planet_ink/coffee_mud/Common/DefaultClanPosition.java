@@ -220,7 +220,15 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	private static enum POS_STAT_CODES {
-		ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS,TITLES
+		ID,
+		RANK,
+		NAME,
+		PLURALNAME,
+		MAX,
+		INNERMASK,
+		ISPUBLIC,
+		FUNCTIONS,
+		TITLES
 	}
 
 	@Override

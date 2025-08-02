@@ -119,29 +119,21 @@ public class Disease_FilthFever extends Disease
 	@Override
 	protected String DISEASE_AFFECT()
 	{
-		final String smell;
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:
-			smell = L("^G<S-NAME> is stinky!^?");
-			break;
+			return L("^G<S-NAME> is stinky!^?");
 		case 2:
-			smell = L("^G<S-NAME> smells like poo.^?");
-			break;
+			return L("^G<S-NAME> smells like poo.^?");
 		case 3:
-			smell = L("^G<S-NAME> must have soiled <S-HIM-HERSELF>.^?");
-			break;
+			return L("^G<S-NAME> must have soiled <S-HIM-HERSELF>.^?");
 		case 4:
-			smell = L("^GWhew! <S-NAME> stinks!^?");
-			break;
+			return L("^GWhew! <S-NAME> stinks!^?");
 		case 5:
-			smell = L("^G<S-NAME> must have let one go!^?");
-			break;
+			return L("^G<S-NAME> must have let one go!^?");
 		default:
-			smell=L("^G<S-NAME> stink(s).^?");
-			break;
+			return L("^G<S-NAME> stink(s).^?");
 		}
-		return L(smell);
 	}
 
 	@Override

@@ -807,8 +807,8 @@ public class Conquerable extends Arrest
 							&&(CMLib.flags().canBeSeenBy(M2,M1)))
 							{
 								final Vector<String> V=new Vector<String>();
-								V.addElement("YELL");
-								V.addElement(L(warCrys()[CMLib.dice().roll(1,warCrys().length,-1)]));
+								V.addElement(I("YELL"));
+								V.addElement(warCrys());
 								M1.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 								CMLib.combat().postAttack(M1,M2,M1.fetchWieldedItem());
 							}
@@ -1299,18 +1299,17 @@ public class Conquerable extends Arrest
 		return true;
 	}
 
-	protected static String[] warCrys()
+	protected static String warCrys()
 	{
-		return DEFAULT_WAR_CRYS;
+		switch(CMLib.dice().roll(1, 4, -1))
+		{
+		case 0: return CMLib.lang().L("INVADERS! Attack!");
+		case 1: return CMLib.lang().L("We are under attack! To arms!");
+		case 2: return CMLib.lang().L("Destroy the enemy!");
+		case 3: return CMLib.lang().L("War!!!!!");
+		}
+		return "";
 	}
-
-	protected static final String[] DEFAULT_WAR_CRYS=
-	{
-		"INVADERS! Attack!",
-		"We are under attack! To arms!",
-		"Destroy the enemy!",
-		"War!!!!!"
-	};
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

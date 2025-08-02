@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -230,10 +231,10 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			if((val!=0)&&(y>x))
 			{
 				final StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
+				for(int num=0;num<CMFlagLibrary.IS_VERBS.length;num++)
 				{
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(PhyStats.IS_VERBS[num]+" ");
+						middle.append(CMFlagLibrary.IS_VERBS[num]+" ");
 				}
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
@@ -246,10 +247,10 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			if((val!=0)&&(y>x))
 			{
 				final StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
+				for(int num=0;num<CMFlagLibrary.CAN_SEE_VERBS.length;num++)
 				{
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
+						middle.append(CMFlagLibrary.CAN_SEE_VERBS[num]+" ");
 				}
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}

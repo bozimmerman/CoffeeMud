@@ -50,10 +50,10 @@ public class WaterCurrents extends ActiveTicker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
 	}
 
-	protected static String DEFAULT_MINCOMING_MSG = "<S-NAME> <S-IS-ARE> swept in from @x1 by the current.";
-	protected static String DEFAULT_MOUTGOING_MSG = "<S-NAME> <S-IS-ARE> swept @x1 by the current.";
-	protected static String DEFAULT_IINCOMING_MSG = "@x2 is swept in from @x1 by the current.";
-	protected static String DEFAULT_IOUTGOING_MSG = "@x2 is swept @x1 by the current.";
+	protected static String DEFAULT_MINCOMING_MSG = CMLib.lang().L("<S-NAME> <S-IS-ARE> swept in from @x1 by the current.");
+	protected static String DEFAULT_MOUTGOING_MSG = CMLib.lang().L("<S-NAME> <S-IS-ARE> swept @x1 by the current.");
+	protected static String DEFAULT_IINCOMING_MSG = CMLib.lang().L("@x2 is swept in from @x1 by the current.");
+	protected static String DEFAULT_IOUTGOING_MSG = CMLib.lang().L("@x2 is swept @x1 by the current.");
 
 	protected String	dirs	= "";
 	protected boolean	doBoats = false;
@@ -87,13 +87,13 @@ public class WaterCurrents extends ActiveTicker
 		if(this.minMsg.equals(WaterCurrents.DEFAULT_MINCOMING_MSG))
 			this.iinMsg = WaterCurrents.DEFAULT_IINCOMING_MSG;
 		else
-			this.iinMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.minMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>","is");
+			this.iinMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.minMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>",L("is"));
 		parms.remove("INMSG");
 		this.moutMsg=parms.containsKey("OUTMSG")?parms.get("OUTMSG"):WaterCurrents.DEFAULT_MOUTGOING_MSG;
 		if(this.moutMsg.equals(WaterCurrents.DEFAULT_MOUTGOING_MSG))
 			this.ioutMsg = WaterCurrents.DEFAULT_IOUTGOING_MSG;
 		else
-			this.ioutMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.moutMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>","is");
+			this.ioutMsg = CMStrings.replaceAll(CMStrings.replaceAll(this.moutMsg, "<S-NAME>", "@x2"),"<S-IS-ARE>",L("is"));
 		parms.remove("OUTMSG");
 		final String go = parms.get("GO");
 		if(go != null)
@@ -194,14 +194,14 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof MOB)
 					{
 						M=(MOB)todo.elementAt(m);
-						final CMMsg themsg=CMClass.getMsg(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_LEAVE,L(moutMsg,
-								CMLib.directions().getDirectionName(dir).toLowerCase()));
+						final CMMsg themsg=CMClass.getMsg(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_LEAVE,
+								CMStrings.replaceVariables(moutMsg,CMLib.directions().getDirectionName(dir).toLowerCase()));
 						if(R.okMessage(M,themsg))
 						{
 							R.send(M,themsg);
 							R2.bringMobHere(M,true);
-							R2.showOthers(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L(minMsg,
-									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
+							R2.showOthers(M,R,new AWaterCurrent(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,
+									CMStrings.replaceVariables(minMsg,CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -209,8 +209,8 @@ public class WaterCurrents extends ActiveTicker
 					if(todo.elementAt(m) instanceof Item)
 					{
 						I=(Item)todo.elementAt(m);
-						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L(ioutMsg,
-								CMLib.directions().getDirectionName(dir).toLowerCase(),I.name())))
+						if(R.show(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,
+								CMStrings.replaceVariables(ioutMsg,CMLib.directions().getDirectionName(dir).toLowerCase(),I.name())))
 						{
 							if(I instanceof Boardable)
 							{
@@ -222,8 +222,8 @@ public class WaterCurrents extends ActiveTicker
 								}
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Inheret,Move.Optimize);
-							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L(iinMsg,
-									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase(),I.name()));
+							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,
+									CMStrings.replaceVariables(iinMsg,CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase(),I.name()));
 						}
 					}
 				}

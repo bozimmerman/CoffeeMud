@@ -2335,9 +2335,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		final StringBuffer buf=new StringBuffer("");
 		if(useVerbs)
 		{
-			for(int i=0;i<PhyStats.IS_VERBS.length;i++)
+			for(int i=0;i<CMFlagLibrary.IS_VERBS.length;i++)
 				if(CMath.isSet(disposition,i))
-					buf.append(PhyStats.IS_VERBS[i]+", ");
+					buf.append(CMFlagLibrary.IS_VERBS[i]+", ");
 		}
 		else
 		for(int i=0;i<PhyStats.IS_CODES.length;i++)
@@ -2360,9 +2360,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		final StringBuffer buf=new StringBuffer("");
 		if(useVerbs)
 		{
-			for(int i=0;i<PhyStats.CAN_SEE_VERBS.length;i++)
+			for(int i=0;i<CAN_SEE_VERBS.length;i++)
 				if(CMath.isSet(senses,i))
-					buf.append(PhyStats.CAN_SEE_VERBS[i]+", ");
+					buf.append(CAN_SEE_VERBS[i]+", ");
 		}
 		else
 		for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
@@ -2877,41 +2877,73 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(!canHear(mob))
-			str.append("deaf, ");
+			str.append(L("deaf")).append(", ");
 		if(!canSee(mob))
-			str.append("blind, ");
+			str.append(L("blind")).append(", ");
 		if(!canMove(mob))
-			str.append("can't move, ");
+			str.append(L("can't move")).append(", ");
 		if(canSeeBonusItems(mob))
-			str.append(L("detect magic, "));
+			str.append(L("detect magic")).append(", ");
 		if(canSeeEvil(mob))
-			str.append(L("detect evil, "));
+			str.append(L("detect evil")).append(", ");
 		if(canSeeGood(mob))
-			str.append(L("detect good, "));
+			str.append(L("detect good")).append(", ");
 		if(canSeeHidden(mob))
-			str.append("see hidden, ");
+			str.append(L("see hidden")).append(", ");
 		else
 		if(canSeeHiddenItems(mob))
-			str.append("see hidden items, ");
+			str.append(L("see hidden items")).append(", ");
 		if(canSeeInDark(mob))
-			str.append(L("darkvision, "));
+			str.append(L("darkvision")).append(", ");
 		if(canSeeInfrared(mob))
-			str.append(L("infravision, "));
+			str.append(L("infravision")).append(", ");
 		if(canSeeInvisible(mob))
-			str.append(L("see invisible, "));
+			str.append(L("see invisible")).append(", ");
 		if(canSeeMetal(mob))
-			str.append(L("metalvision, "));
+			str.append(L("metalvision")).append(", ");
 		if(canSeeSneakers(mob))
-			str.append(L("see sneaking, "));
+			str.append(L("see sneaking")).append(", ");
 		if(!canSmell(mob))
-			str.append("can't smell, ");
+			str.append(L("can't smell")).append(", ");
 		if(!canSpeak(mob))
-			str.append("can't speak, ");
+			str.append(L("can't speak")).append(", ");
 		if(!canTaste(mob))
-			str.append("can't eat, ");
+			str.append(L("can't eat")).append(", ");
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();
+	}
+
+	@Override
+	public String getMaskedCanSeeList(final int senseMask)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int i=0;i<CAN_SEE_DESCS.length;i++)
+		{
+			if(CMath.isSet(senseMask, i))
+				str.append(CAN_SEE_DESCS[i].replace(' ','_')).append(", ");
+		}
+		if(str.length()==0)
+			str.append("NONE ");
+		if(str.toString().endsWith(", "))
+			return str.toString().substring(0,str.length()-2);
+		return str.toString().trim();
+	}
+
+	@Override
+	public String getMaskedDispositionIsList(final int dispositionMask)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int i=0;i<CMFlagLibrary.IS_DESCS.length;i++)
+		{
+			if(CMath.isSet(dispositionMask, i))
+				str.append(CMFlagLibrary.IS_DESCS[i].replace(' ','_')).append(", ");
+		}
+		if(str.length()==0)
+			str.append("NONE ");
+		if(str.toString().endsWith(", "))
+			return str.toString().substring(0,str.length()-2);
+		return str.toString().trim();
 	}
 
 	@Override

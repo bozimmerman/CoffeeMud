@@ -189,14 +189,15 @@ public class Quests extends StdLibrary implements QuestManager
 			if(Q==null)
 			{
 				throw new CMException(
-					"A quest named 'holidays', with the script definition '"+holidayDefinition+"' has not been created.  Enter the following to create this quest:\n\r"
-					  +"CREATE QUEST "+holidayDefinition+"\n\r"
-					  +"SAVE QUESTS");
+					L("A quest named 'holidays', with the script definition '@x1' has not been created.  Enter the following to create this quest:\n\r"
+					  +"CREATE QUEST @x1\n\r"
+					  +"SAVE QUESTS",holidayDefinition));
 			}
 		}
 		final CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		if((!F.exists())||(!F.canRead())||(!F.canWrite()))
-			throw new CMException("The file '"+Resources.makeFileResourceName(holidayFilename)+"' does not exist, and is required for this feature.");
+			throw new CMException(
+					L("The file '@x1' does not exist, and is required for this feature.",Resources.makeFileResourceName(holidayFilename)));
 		final List<String> V=Resources.getFileLineVector(F.text());
 		final List<String> steps=parseQuestSteps(V,0,true);
 		return steps;
@@ -725,7 +726,7 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		catch(final CMException e)
 		{
-			mob.tell(L(e.getMessage()));
+			mob.tell(e.getMessage());
 			return;
 		}
 		if((holidayNumber<=0)||(holidayNumber>=steps.size()))

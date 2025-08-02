@@ -123,7 +123,7 @@ public class Disease_Tourettes extends Disease
 		if((!mob.amDead())
 		&&(CMLib.flags().canSpeak(mob)))
 		{
-			String say="Penis wrinkle!";
+			String say=L("Penis wrinkle!");
 			switch(CMLib.dice().roll(1,30,0))
 			{
 			case 1:
@@ -131,90 +131,90 @@ public class Disease_Tourettes extends Disease
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "You are a very bad " + target.charStats().displayClassName() + "!";
+					say = L("You are a very bad @x1!",target.charStats().displayClassName());
 				else
-					say = "ARGH!";
+					say = L("ARGH!");
 				break;
 			case 2:
 				if((target!=null)
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "I think all " + target.charStats().raceName() + "s are stupid!";
+					say = L("I think all @x1s are stupid!",target.charStats().raceName());
 				else
-					say = "FLARK!";
+					say = L("FLARK!");
 				break;
 			case 3:
-				say = "Damn flark!";
+				say = L("Damn flark!");
 				break;
 			case 4:
-				say = "Squeegee!";
+				say = L("Squeegee!");
 				break;
 			case 5:
-				say = "Ding dong!";
+				say = L("Ding dong!");
 				break;
 			case 6:
-				say = "Goober!";
+				say = L("Goober!");
 				break;
 			case 7:
 				if((target!=null)
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "Noodle" + target.charStats().boygirl() + "!";
+					say = L("Noodle @x1!",target.charStats().boygirl());
 				else
-					say = "NOODLE!!!!!";
+					say = L("NOODLE!!!!!");
 				break;
 			case 8:
-				say = "Groin scratcher!";
+				say = L("Groin scratcher!");
 				break;
 			case 9:
-				say = "Geek!";
+				say = L("Geek!");
 				break;
 			case 10:
-				say = "Dork!";
+				say = L("Dork!");
 				break;
 			case 11:
-				say = "Orc kisser!";
+				say = L("Orc kisser!");
 				break;
 			case 12:
-				say = "Jerk!";
+				say = L("Jerk!");
 				break;
 			case 13:
-				say = "Tuddleworm!";
+				say = L("Tuddleworm!");
 				break;
 			case 14:
-				say = "Poopie diaper!";
+				say = L("Poopie diaper!");
 				break;
 			case 15:
-				say = "Panty stain!";
+				say = L("Panty stain!");
 				break;
 			case 16:
-				say = "Blah blah blah blah blah!";
+				say = L("Blah blah blah blah blah!");
 				break;
 			case 17:
-				say = "Hairpit sniffer!";
+				say = L("Hairpit sniffer!");
 				break;
 			case 18:
-				say = "Gluteus maximus cavity!";
+				say = L("Gluteus maximus cavity!");
 				break;
 			case 19:
-				say = "Uncle copulator!";
+				say = L("Uncle copulator!");
 				break;
 			case 20:
-				say = "Toe jam eater!";
+				say = L("Toe jam eater!");
 				break;
 			case 21:
-				say = "Partial excrement!";
+				say = L("Partial excrement!");
 				break;
 			case 22:
-				say = "Female dog!";
+				say = L("Female dog!");
 				break;
 			case 23:
-				say = "Illegitimate offspring!";
+				say = L("Illegitimate offspring!");
 				break;
 			case 24:
-				say = "You are overweight!";
+				say = L("You are overweight!");
 				break;
 			case 25:
 				say = "You smell funny!";
@@ -227,27 +227,27 @@ public class Disease_Tourettes extends Disease
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "You.. you.. ah nevermind.";
+					say = L("You.. you.. ah nevermind.");
 				else
-					say = "Whatever";
+					say = L("Whatever");
 				break;
 			case 28:
-				say = "Yokle!";
+				say = L("Yokle!");
 				break;
 			case 29:
-				say = "Ugly head!";
+				say = L("Ugly head!");
 				break;
 			case 30:
 				if((target!=null)
 				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
 				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
 				&&(CMLib.flags().canBeSeenBy(target,mob)))
-					say = "Goop" + target.charStats().boygirl() + "!";
+					say = L("Goop@x1!",target.charStats().boygirl());
 				else
-					say = "Goop!";
+					say = L("Goop!");
 				break;
 			}
-			return L(say);
+			return say;
 		}
 		return "";
 	}

@@ -345,23 +345,23 @@ public class ShipSensorProgram extends GenShipProgram
 					final PairList<String,String> entries = new PairArrayList<String,String>();
 					final long distance = CMLib.space().getDistanceFrom(ship.coordinates(), targetObj.coordinates()) - ship.radius() - targetObj.radius();
 					final Dir3D direction = CMLib.space().getDirection(ship, targetObj);
-					entries.add("Identifier",targetObj.name());
+					entries.add(L("Identifier"),targetObj.name());
 					if(!targetObj.coordinates().equals(emptyCoords))
-						entries.add("Direction",CMLib.english().directionDescShortest(direction.toDoubles()));
+						entries.add(L("Direction"),CMLib.english().directionDescShortest(direction.toDoubles()));
 					if(!targetObj.coordinates().equals(emptyCoords))
-						entries.add("Distance",CMLib.english().distanceDescShort(distance));
+						entries.add(L("Distance"),CMLib.english().distanceDescShort(distance));
 					if(!targetObj.direction().equals(emptyDirection))
-						entries.add("Moving",CMLib.english().directionDescShortest(targetObj.direction().toDoubles()));
+						entries.add(L("Moving"),CMLib.english().directionDescShortest(targetObj.direction().toDoubles()));
 					if(targetObj.speed()>0)
-						entries.add("Speed",CMath.abbreviateLong((long)targetObj.speed()));
+						entries.add(L("Speed"),CMath.abbreviateLong((long)targetObj.speed()));
 					if(targetObj.radius()>0)
-						entries.add("Size",CMLib.english().distanceDescShort(targetObj.radius()));
+						entries.add(L("Size"),CMLib.english().distanceDescShort(targetObj.radius()));
 					if(targetObj.getMass()>0)
-						entries.add("Mass",CMath.abbreviateLong(targetObj.getMass()));
+						entries.add(L("Mass"),CMath.abbreviateLong(targetObj.getMass()));
 
 					final StringBuilder str = new StringBuilder("");
 					for(final Pair<String,String> p : entries)
-						str.append("^H").append(CMStrings.padRight(L(p.first),12)).append(": ^N").append(p.second).append("\n\r");
+						str.append("^H").append(CMStrings.padRight(p.first,12)).append(": ^N").append(p.second).append("\n\r");
 					addScreenMessage(str.toString());
 				}
 				else

@@ -353,7 +353,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						}
 					}
 					final boolean rawLogicalAnd = I.rawLogicalAnd() && (lie?(((lieHash >> 29) % 2) == 0):true);
-					str.append(CMParms.combineWith(locs, L(rawLogicalAnd ? " and " : " or ")));
+					str.append(CMParms.combineWith(locs, rawLogicalAnd ? L(" and ") : L(" or ")));
 					if(I.phyStats().height()>0)
 					{
 						final Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
@@ -407,17 +407,27 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				if(lie)
 				{
 					if(E instanceof Weapon)
-						addOn.append("Bonus for the weilder: ");
+						addOn.append(L("Bonus for the weilder: "));
 					else
 					if(E instanceof Armor)
-						addOn.append("Bonus for the wearer: ");
+						addOn.append(L("Bonus for the wearer: "));
 					else
-						addOn.append("Bonus for the owner: ");
-					final List<String> foundItemBonuses = new XVector<String>(new String[] {"Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2", "Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2"});
-					foundItemBonuses.addAll(Arrays.asList(Arrays.copyOf(PhyStats.CAN_SEE_DESCS,8)));
+						addOn.append(L("Bonus for the owner: "));
+					final String[] BONUSES_LIST = {
+						CMLib.lang().L("Attack +@x1"),
+						CMLib.lang().L("Damage +@x1"),
+						CMLib.lang().L("Armor +@x1"),
+						CMLib.lang().L("Casts @x2"),
+						CMLib.lang().L("Attack +@x1"),
+						CMLib.lang().L("Damage +@x1"),
+						CMLib.lang().L("Armor +@x1"),
+						CMLib.lang().L("Casts @x2")
+					};
+					final List<String> foundItemBonuses = new XVector<String>(BONUSES_LIST);
+					foundItemBonuses.addAll(Arrays.asList(Arrays.copyOf(CMFlagLibrary.CAN_SEE_DESCS,8)));
 					final String foundItemBonus = foundItemBonuses.get(CMath.abs(lieHash % foundItemBonuses.size()));
 					if(foundItemBonus.indexOf("@x1")>=0)
-						addOn.append(L(foundItemBonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));
+						addOn.append(CMStrings.replaceVariables(foundItemBonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));
 					else
 					if(foundItemBonus.indexOf("@x2")>=0)
 					{
@@ -429,10 +439,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 								A=null;
 						}
 						if(A!=null)
-							addOn.append(L(foundItemBonus,A.name()));
+							addOn.append(CMStrings.replaceVariables(foundItemBonus,A.name()));
 					}
 					else
-						addOn.append(L(foundItemBonus));
+						addOn.append(CMStrings.replaceVariables(foundItemBonus));
 				}
 				str.append(L("\n\rSpecial    : @x1",addOn.toString()));
 			}

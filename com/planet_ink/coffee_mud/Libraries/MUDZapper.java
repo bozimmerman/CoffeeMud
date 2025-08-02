@@ -1849,7 +1849,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								v=v2;
 								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
 								if(code>=0)
-									buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
+									buf.append(CMFlagLibrary.CAN_SEE_DESCS[code]+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -1873,7 +1873,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								v=v2;
 								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
 								if(code>=0)
-									buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
+									buf.append(CMFlagLibrary.CAN_SEE_DESCS[code]+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -2462,7 +2462,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(code>=0)
 								{
 									v=v2;
-									buf.append(PhyStats.IS_DESCS[code]+", ");
+									buf.append(CMFlagLibrary.IS_DESCS[code]+", ");
 								}
 							}
 						}
@@ -2488,7 +2488,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(code>=0)
 								{
 									v=v2;
-									buf.append(PhyStats.IS_DESCS[code]+", ");
+									buf.append(CMFlagLibrary.IS_DESCS[code]+", ");
 								}
 							}
 						}

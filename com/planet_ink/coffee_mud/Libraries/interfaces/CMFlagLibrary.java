@@ -1537,6 +1537,24 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getSensesStateList(MOB mob);
 
 	/**
+	 * Returns a comma delimited list of can see senses-list
+	 * strings matching the given mask.
+	 *
+	 * @param final int senseMask the mask to use
+	 * @return a list string
+	 */
+	public String getMaskedCanSeeList(final int senseMask);
+
+	/**
+	 * Returns a comma delimited list of disposition-is
+	 * strings matching the given mask.
+	 *
+	 * @param dispositionMask the mask to use
+	 * @return a list string
+	 */
+	public String getMaskedDispositionIsList(final int dispositionMask);
+
+	/**
 	 * Returns a comma delimited list of the senses masks
 	 * on the given mob.  These are lowercase state phrases.
 	 * @param mob the mob to check
@@ -1573,4 +1591,117 @@ public interface CMFlagLibrary extends CMLibrary
 		LEAVES,
 		IS;
 	}
+
+	/**
+	 * Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks
+	 * See also:
+	 */
+	public static final String[] CAN_SEE_DESCS={
+		CMLib.lang().L("Is Blind"),
+		CMLib.lang().L("Can see hidden"),
+		CMLib.lang().L("Can see invisible"),
+		CMLib.lang().L("Can see evil"),
+		CMLib.lang().L("Can see good"),
+		CMLib.lang().L("Can detect sneakers"),
+		CMLib.lang().L("Can see magic"),
+		CMLib.lang().L("Can see in the dark"),
+		CMLib.lang().L("Has infravision"),
+		CMLib.lang().L("Is Deaf"),
+		CMLib.lang().L("Is Paralyzed"),
+		CMLib.lang().L("Can not smell"),
+		CMLib.lang().L("Can not eat"),
+		CMLib.lang().L("Is Mute"),
+		CMLib.lang().L("Can not breathe"),
+		CMLib.lang().L("Can detect victims"),
+		CMLib.lang().L("Can detect metal"),
+		CMLib.lang().L("Can not concentrate"),
+		CMLib.lang().L("Is off the grid"),
+		CMLib.lang().L("Is not auto-attacking"),
+		CMLib.lang().L("Can not be camped on"),
+		CMLib.lang().L("Can see hidden items")
+	};
+
+	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
+	public static final String[] CAN_SEE_VERBS={
+		CMLib.lang().L("Causes Blindness"),
+		CMLib.lang().L("Allows see hidden"),
+		CMLib.lang().L("Allows see invisible"),
+		CMLib.lang().L("Allows see evil"),
+		CMLib.lang().L("Allows see good"),
+		CMLib.lang().L("Allows detect sneakers"),
+		CMLib.lang().L("Allows see magic"),
+		CMLib.lang().L("Allows darkvision"),
+		CMLib.lang().L("Allows infravision"),
+		CMLib.lang().L("Causes Deafness"),
+		CMLib.lang().L("Causes Paralyzation"),
+		CMLib.lang().L("Deadens smell"),
+		CMLib.lang().L("Disallows eating"),
+		CMLib.lang().L("Causes Mutemess"),
+		CMLib.lang().L("Causes choking"),
+		CMLib.lang().L("Allows detect victims"),
+		CMLib.lang().L("Allows detect metal"),
+		CMLib.lang().L("Befuddles the mind"),
+		CMLib.lang().L("Makes un-trackable"),
+		CMLib.lang().L("Prevents auto attacking"),
+		CMLib.lang().L("Prevents camping"),
+		CMLib.lang().L("Allows see hidden items"),
+	};
+
+
+	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
+	public static final String[] IS_DESCS= {
+		CMLib.lang().L("Is never seen"),
+		CMLib.lang().L("Is hidden"),
+		CMLib.lang().L("Is invisible"),
+		CMLib.lang().L("Evil aura"),
+		CMLib.lang().L("Good aura"),
+		CMLib.lang().L("Is sneaking"),
+		CMLib.lang().L("Is magical"),
+		CMLib.lang().L("Is dark"),
+		CMLib.lang().L("Is golem"),
+		CMLib.lang().L("Is sleeping"),
+		CMLib.lang().L("Is sitting"),
+		CMLib.lang().L("Is flying"),
+		CMLib.lang().L("Is swimming"),
+		CMLib.lang().L("Is glowing"),
+		CMLib.lang().L("Is climbing"),
+		CMLib.lang().L("Is falling"),
+		CMLib.lang().L("Is a light source"),
+		CMLib.lang().L("Is binding"),
+		CMLib.lang().L("Is Cloaked"),
+		CMLib.lang().L("Is never saved"),
+		CMLib.lang().L("Is cataloged"),
+		CMLib.lang().L("Is unattackable"),
+		CMLib.lang().L("Is something"),
+		CMLib.lang().L("Is Unhelpful")
+	};
+
+	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
+	public static final String[] IS_VERBS= {
+		CMLib.lang().L("Causes Nondetectability"),
+		CMLib.lang().L("Causes hide"),
+		CMLib.lang().L("Causes invisibility"),
+		CMLib.lang().L("Creates Evil aura"),
+		CMLib.lang().L("Creates Good aura"),
+		CMLib.lang().L("Causes sneaking"),
+		CMLib.lang().L("Creates magical aura"),
+		CMLib.lang().L("Creates dark aura"),
+		CMLib.lang().L("Creates golem aura"),
+		CMLib.lang().L("Causes sleeping"),
+		CMLib.lang().L("Causes sitting"),
+		CMLib.lang().L("Allows flying"),
+		CMLib.lang().L("Causes swimming"),
+		CMLib.lang().L("Causes glowing aura"),
+		CMLib.lang().L("Allows climbing"),
+		CMLib.lang().L("Causes falling"),
+		CMLib.lang().L("Causes a light source"),
+		CMLib.lang().L("Causes binding"),
+		CMLib.lang().L("Causes cloaking"),
+		CMLib.lang().L("Causes disappearance"),
+		CMLib.lang().L("Causes unsavability"),
+		CMLib.lang().L("Created from a template"),
+		CMLib.lang().L("Prevents attackability"),
+		CMLib.lang().L("Causes something..."),
+		CMLib.lang().L("Prevents helpful attacks")
+	};
 }

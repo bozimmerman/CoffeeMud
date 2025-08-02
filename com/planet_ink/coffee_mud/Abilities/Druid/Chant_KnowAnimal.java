@@ -158,12 +158,12 @@ public class Chant_KnowAnimal extends Chant
 			}
 			if(expertise > 2)
 			{
-				for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
+				for(int i=0;i<CMFlagLibrary.CAN_SEE_DESCS.length;i++)
 				{
 					if(CMath.isSet(target.phyStats().sensesMask(), i))
 					{
 						addSpace(rpt);
-						rpt.append(L(heShe+" "+PhyStats.CAN_SEE_DESCS[i].toLowerCase()+"."));
+						rpt.append(heShe+" "+CMFlagLibrary.CAN_SEE_DESCS[i].toLowerCase()+".");
 					}
 				}
 			}
@@ -268,12 +268,12 @@ public class Chant_KnowAnimal extends Chant
 			}
 			if(expertise > 8)
 			{
-				for(int i=0;i<PhyStats.IS_DESCS.length;i++)
+				for(int i=0;i<CMFlagLibrary.IS_DESCS.length;i++)
 				{
 					if(CMath.isSet(target.phyStats().disposition(), i))
 					{
 						addSpace(rpt);
-						rpt.append(L(heShe+" "+PhyStats.IS_DESCS[i].toLowerCase()+"."));
+						rpt.append(L(heShe+" "+CMFlagLibrary.IS_DESCS[i].toLowerCase()+"."));
 					}
 				}
 			}

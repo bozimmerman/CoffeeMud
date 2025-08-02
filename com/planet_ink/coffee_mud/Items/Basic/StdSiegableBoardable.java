@@ -199,7 +199,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 					public void run()
 					{
 						if(CMLib.flags().canBeSeenBy(R, msg.source()) && (msg.source().session()!=null))
-							msg.source().session().print(L(me.head_offTheDeck));
+							msg.source().session().print(me.head_offTheDeck);
 						final CMMsg msg2=CMClass.getMsg(msg.source(), R, msg.tool(), msg.sourceCode(), null, msg.targetCode(), null, msg.othersCode(), null);
 						if((msg.source().isAttributeSet(MOB.Attrib.AUTOEXITS))
 						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))

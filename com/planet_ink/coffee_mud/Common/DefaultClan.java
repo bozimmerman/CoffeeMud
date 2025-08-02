@@ -889,9 +889,9 @@ public class DefaultClan implements Clan
 				final ClanPosition myPos = govt().findPositionRole(p.second);
 				final String myNicePosName = CMStrings.capitalizeAllFirstLettersAndLower(myPos.getName());
 				for(final String baseTitle : govt().getTitleAwards())
-					myAllowedTitles.add(L(baseTitle,name(),myNicePosName));
+					myAllowedTitles.add(CMStrings.replaceVariables(baseTitle,name(),myNicePosName));
 				for(final String posTitle : myPos.getTitleAwards())
-					myAllowedTitles.add(L(posTitle,name(),myNicePosName));
+					myAllowedTitles.add(CMStrings.replaceVariables(posTitle,name(),myNicePosName));
 				if(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO)
 				{
 					for(final String title : myAllowedTitles)

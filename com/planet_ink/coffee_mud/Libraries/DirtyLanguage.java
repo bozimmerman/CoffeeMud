@@ -971,21 +971,21 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return CMStrings.replaceVariables((sessionStr==null)?str:sessionStr, xs);
 	}
 
-	protected String[] sessionTranslationBlock(final Class<?> clazz, final String[] str)
+	protected String[] sessionTranslations(final Class<?> clazz, final String[] items)
 	{
-		if((str==null)||(str.length==0))
-			return str;
-		for(int i=0;i<str.length;i++)
+		if((items==null)||(items.length==0))
+			return items;
+		for(int i=0;i<items.length;i++)
 		{
-			final String s=str[i];
+			final String s=items[i];
 			if(s!=null)
 			{
 				final String sessionStr=sessionTranslation(clazz, s);
 				if(sessionStr!=null)
-					str[i]=sessionStr;
+					items[i]=sessionStr;
 			}
 		}
-		return str;
+		return items;
 	}
 
 	@Override

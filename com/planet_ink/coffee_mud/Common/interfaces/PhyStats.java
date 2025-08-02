@@ -441,7 +441,12 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging this mob as able to see hidden items */
 	public final static int CAN_SEE_HIDDEN_ITEMS=4194304;
 
-	/** STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks */
+	/**
+	 * STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks
+	 * See also:
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagsLibrary#CAN_SEE_DESCS
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagsLibrary#CAN_SEE_VERB()
+	 */
 	public static final String[] CAN_SEE_CODES={
 		"CANNOTSEE",
 		"CANSEEHIDDEN",
@@ -465,58 +470,6 @@ public interface PhyStats extends CMCommon, Modifiable
 		"CANNOTAUTOATTACK",
 		"CANNOTBECAMPED",
 		"CANSEEITEMSHIDDEN",
-	};
-
-	/** Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
-	public static final String[] CAN_SEE_DESCS={
-		"Is Blind",
-		"Can see hidden",
-		"Can see invisible",
-		"Can see evil",
-		"Can see good",
-		"Can detect sneakers",
-		"Can see magic",
-		"Can see in the dark",
-		"Has infravision",
-		"Is Deaf",
-		"Is Paralyzed",
-		"Can not smell",
-		"Can not eat",
-		"Is Mute",
-		"Can not breathe",
-		"Can detect victims",
-		"Can detect metal",
-		"Can not concentrate",
-		"Is off the grid",
-		"Is not auto-attacking",
-		"Can not be camped on",
-		"Can see hidden items"
-	};
-
-	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
-	public static final String[] CAN_SEE_VERBS={
-		"Causes Blindness",
-		"Allows see hidden",
-		"Allows see invisible",
-		"Allows see evil",
-		"Allows see good",
-		"Allows detect sneakers",
-		"Allows see magic",
-		"Allows darkvision",
-		"Allows infravision",
-		"Causes Deafness",
-		"Causes Paralyzation",
-		"Deadens smell",
-		"Disallows eating",
-		"Causes Mutemess",
-		"Causes choking",
-		"Allows detect victims",
-		"Allows detect metal",
-		"Befuddles the mind",
-		"Makes un-trackable",
-		"Prevents auto attacking",
-		"Prevents camping",
-		"Allows see hidden items",
 	};
 
 	// sensemask stuff not applicable to mobs
@@ -644,7 +597,12 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from disposition(), flagging this object as a non-helping follower, or non-useful exits */
 	public final static int IS_UNHELPFUL=8388608;
 
-	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
+	/**
+	 * STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks
+	 * See also:
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary#IS_DESCS
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary#IS_VERBS
+	 */
 	public static final String[] IS_CODES={
 		"ISUNSEEN",
 		"ISHIDDEN",
@@ -670,63 +628,6 @@ public interface PhyStats extends CMCommon, Modifiable
 		"ISUNATTACKABLE",
 		"ISCUSTOM",
 		"ISUNHELPFUL"
-	};
-
-	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
-	public static final String[] IS_DESCS= {
-		"Is never seen",
-		"Is hidden",
-		"Is invisible",
-		"Evil aura",
-		"Good aura",
-		"Is sneaking",
-		"Is magical",
-		"Is dark",
-		"Is golem",
-		"Is sleeping",
-		"Is sitting",
-		"Is flying",
-		"Is swimming",
-		"Is glowing",
-		"Is climbing",
-		"Is falling",
-		"Is a light source",
-		"Is binding",
-		"Is Cloaked",
-		"Is never saved",
-		"Is cataloged",
-		"Is unattackable",
-		"Is something",
-		"Is Unhelpful"
-	};
-
-	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
-	public static final String[] IS_VERBS= {
-		"Causes Nondetectability",
-		"Causes hide",
-		"Causes invisibility",
-		"Creates Evil aura",
-		"Creates Good aura",
-		"Causes sneaking",
-		"Creates magical aura",
-		"Creates dark aura",
-		"Creates golem aura",
-		"Causes sleeping",
-		"Causes sitting",
-		"Allows flying",
-		"Causes swimming",
-		"Causes glowing aura",
-		"Allows climbing",
-		"Causes falling",
-		"Causes a light source",
-		"Causes binding",
-		"Causes cloaking",
-		"Causes disappearance",
-		"Causes unsavability",
-		"Created from a template",
-		"Prevents attackability",
-		"Causes something...",
-		"Prevents helpful attacks",
 	};
 
 	/**

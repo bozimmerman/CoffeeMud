@@ -526,10 +526,10 @@ public class Thief_Runecasting extends ThiefSkill
 											positive = !positive;
 										if(cd == PhyStats.STAT_DISPOSITION)
 										{
-											for(int i=0;i<PhyStats.IS_DESCS.length;i++)
+											for(int i=0;i<CMFlagLibrary.IS_DESCS.length;i++)
 												if(CMath.isSet(pStats.getStat(cd), i))
 												{
-													final String codeName=PhyStats.IS_VERBS[i].toLowerCase();
+													final String codeName=CMFlagLibrary.IS_VERBS[i].toLowerCase();
 													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
 															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
@@ -538,10 +538,10 @@ public class Thief_Runecasting extends ThiefSkill
 										else
 										if(cd == PhyStats.STAT_SENSES)
 										{
-											for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
+											for(int i=0;i<CMFlagLibrary.CAN_SEE_DESCS.length;i++)
 												if(CMath.isSet(pStats.getStat(cd), i))
 												{
-													final String codeName=PhyStats.CAN_SEE_DESCS[i].toLowerCase();
+													final String codeName=CMFlagLibrary.CAN_SEE_DESCS[i].toLowerCase();
 													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
 															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);

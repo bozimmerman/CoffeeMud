@@ -2591,11 +2591,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String letters="";
 			for (final int mask : disps)
 			{
-				for(int num=0;num<PhyStats.IS_DESCS.length;num++)
+				for(int num=0;num<CMFlagLibrary.IS_DESCS.length;num++)
 				{
 					if(mask==CMath.pow(2,num))
 					{
-						mob.session().println("    "+letter+") "+CMStrings.padRight(PhyStats.IS_DESCS[num],20)+":"+((E.disposition()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(CMFlagLibrary.IS_DESCS[num],20)+":"+((E.disposition()&mask)!=0));
 						letters+=letter;
 						break;
 					}
@@ -2915,12 +2915,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String letters="";
 			for (final int mask : senses)
 			{
-				for(int num=0;num<PhyStats.CAN_SEE_DESCS.length;num++)
+				for(int num=0;num<CMFlagLibrary.CAN_SEE_DESCS.length;num++)
 				{
 					if(mask==CMath.pow(2,num))
 					{
 						letters+=letter;
-						mob.session().println("    "+letter+") "+CMStrings.padRight(PhyStats.CAN_SEE_DESCS[num],20)+":"+((E.sensesMask()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(CMFlagLibrary.CAN_SEE_DESCS[num],20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
 				}

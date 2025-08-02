@@ -103,32 +103,6 @@ public class Stat  extends Skills
 		return target;
 	}
 
-	public String doSenses(final int senseMask)
-	{
-		final StringBuilder str=new StringBuilder("");
-		for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
-		{
-			if(CMath.isSet(senseMask, i))
-				str.append(PhyStats.CAN_SEE_DESCS[i].replace(' ','_')).append(" ");
-		}
-		if(str.length()==0)
-			str.append("NONE ");
-		return str.toString().trim();
-	}
-
-	public String doDisposition(final int dispositionMask)
-	{
-		final StringBuilder str=new StringBuilder("");
-		for(int i=0;i<PhyStats.IS_DESCS.length;i++)
-		{
-			if(CMath.isSet(dispositionMask, i))
-				str.append(PhyStats.IS_DESCS[i].replace(' ','_')).append(" ");
-		}
-		if(str.length()==0)
-			str.append("NONE ");
-		return str.toString().trim();
-	}
-
 	public boolean showTableStats(final MOB mob, final int days, final int scale, String rest)
 	{
 		final Calendar ENDQ=Calendar.getInstance();
@@ -1914,10 +1888,10 @@ public class Stat  extends Skills
 						if(stat.equals(thisStat))
 						{
 							if(stat.equals("SENSES"))
-								str.append(doSenses(CMath.s_int(M.phyStats().getStat(stat))));
+								str.append(CMLib.flags().getMaskedCanSeeList(CMath.s_int(M.phyStats().getStat(stat))));
 							else
 							if(stat.equals("DISPOSITION"))
-								str.append(doDisposition(CMath.s_int(M.phyStats().getStat(stat))));
+								str.append(CMLib.flags().getMaskedDispositionIsList(CMath.s_int(M.phyStats().getStat(stat))));
 							else
 								str.append(M.phyStats().getStat(stat)).append(" ");
 							found=true;
@@ -2007,10 +1981,10 @@ public class Stat  extends Skills
 						if(stat.startsWith(thisStat))
 						{
 							if(stat.equals("SENSES"))
-								str.append(doSenses(CMath.s_int(M.phyStats().getStat(stat))));
+								str.append(CMLib.flags().getMaskedCanSeeList(CMath.s_int(M.phyStats().getStat(stat))));
 							else
 							if(stat.equals("DISPOSITION"))
-								str.append(doDisposition(CMath.s_int(M.phyStats().getStat(stat))));
+								str.append(CMLib.flags().getMaskedDispositionIsList(CMath.s_int(M.phyStats().getStat(stat))));
 							else
 								str.append(M.phyStats().getStat(stat)).append(" ");
 							found=true;
