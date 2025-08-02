@@ -403,9 +403,11 @@ public class Transfer extends At
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			targetRoom=curRoom;
 		else
-		if(cmd.toString().indexOf('@')>0)
+		if((cmd.toString().indexOf('@')>0)&&(cmd.toString().indexOf(' ')>0))
 		{
-			final String foreignThing=cmd.toString().substring(0,cmd.toString().lastIndexOf('@'));
+			cmd = new StringBuffer(CMParms.combine(commands,1).trim());
+			final int at = cmd.toString().indexOf('@');
+			final String foreignThing=cmd.toString().substring(0,at).trim();
 			String server=cmd.toString().substring(cmd.toString().lastIndexOf('@')+1);
 			int port;
 			try
@@ -442,9 +444,9 @@ public class Transfer extends At
 				final BufferedReader reader=new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				mob.tell(getComResponse(writer,reader));
 				writer.write("LOGIN "+user+" "+pass+"\n\r");
-				mob.tell(getComResponse(writer,reader));
+				mob.tell("LOGIN "+user+" ....: "+getComResponse(writer,reader));
 				writer.write("TARGET "+foreignThing+"\n\r");
-				mob.tell(getComResponse(writer,reader));
+				mob.tell("TARGET "+foreignThing+": "+getComResponse(writer,reader));
 				for(int i=0;i<xferObjV.size();i++)
 				{
 					if(xferObjV.get(i) instanceof Item)
