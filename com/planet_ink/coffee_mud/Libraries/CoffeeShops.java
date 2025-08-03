@@ -424,7 +424,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						CMLib.lang().L("Casts @x2")
 					};
 					final List<String> foundItemBonuses = new XVector<String>(BONUSES_LIST);
-					foundItemBonuses.addAll(Arrays.asList(Arrays.copyOf(CMFlagLibrary.CAN_SEE_DESCS,8)));
+					long allmask = 0;
+					for(int i=0;i<8;i++)
+						allmask |= CMath.pow(2,i);
+					final String list = CMLib.flags().getSensesDescList(allmask, ",");
+					foundItemBonuses.addAll(Arrays.asList(list.split(",")));
 					final String foundItemBonus = foundItemBonuses.get(CMath.abs(lieHash % foundItemBonuses.size()));
 					if(foundItemBonus.indexOf("@x1")>=0)
 						addOn.append(CMStrings.replaceVariables(foundItemBonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));

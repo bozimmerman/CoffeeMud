@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Disposition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Senses;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
@@ -2591,11 +2593,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String letters="";
 			for (final int mask : disps)
 			{
-				for(int num=0;num<CMFlagLibrary.IS_DESCS.length;num++)
+				for(int num=0;num<Disposition.values().length;num++)
 				{
-					if(mask==CMath.pow(2,num))
+					final Disposition d = Disposition.values()[num];
+					if(mask==d.getMask())
 					{
-						mob.session().println("    "+letter+") "+CMStrings.padRight(CMFlagLibrary.IS_DESCS[num],20)+":"+((E.disposition()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(d.getIsDesc(),20)+":"+((E.disposition()&mask)!=0));
 						letters+=letter;
 						break;
 					}
@@ -2915,12 +2918,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			String letters="";
 			for (final int mask : senses)
 			{
-				for(int num=0;num<CMFlagLibrary.CAN_SEE_DESCS.length;num++)
+				for(final Senses s : Senses.values())
 				{
-					if(mask==CMath.pow(2,num))
+					if(mask==s.getMask())
 					{
 						letters+=letter;
-						mob.session().println("    "+letter+") "+CMStrings.padRight(CMFlagLibrary.CAN_SEE_DESCS[num],20)+":"+((E.sensesMask()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(s.getDesc(),20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
 				}

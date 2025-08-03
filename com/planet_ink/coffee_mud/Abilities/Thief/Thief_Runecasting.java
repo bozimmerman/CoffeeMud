@@ -540,14 +540,13 @@ public class Thief_Runecasting extends ThiefSkill
 										else
 										if(cd == PhyStats.STAT_SENSES)
 										{
-											for(int i=0;i<CMFlagLibrary.CAN_SEE_DESCS.length;i++)
-												if(CMath.isSet(pStats.getStat(cd), i))
-												{
-													final String codeName=CMFlagLibrary.CAN_SEE_DESCS[i].toLowerCase();
-													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
-															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
-													this.reports.add(report);
-												}
+											for(final String desc : CMLib.flags().getSensesDescList(pStats.getStat(cd), ",").split(","))
+											{
+												final String codeName=desc.toLowerCase();
+												final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
+														getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
+												this.reports.add(report);
+											}
 										}
 										else
 										{

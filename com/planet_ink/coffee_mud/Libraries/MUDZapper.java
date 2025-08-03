@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Disposition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Senses;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1847,9 +1849,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(str2.startsWith("+"))
 							{
 								v=v2;
-								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
-								if(code>=0)
-									buf.append(CMFlagLibrary.CAN_SEE_DESCS[code]+", ");
+								final Senses s=CMLib.flags().getSenses(str2.substring(1));
+								if(s != null)
+									buf.append(s.getDesc()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -1871,9 +1873,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(str2.startsWith("-"))
 							{
 								v=v2;
-								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
-								if(code>=0)
-									buf.append(CMFlagLibrary.CAN_SEE_DESCS[code]+", ");
+								final Senses s=CMLib.flags().getSenses(str2.substring(1));
+								if(s != null)
+									buf.append(s.getDesc()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -2458,11 +2460,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
-								if(code>=0)
+								final Disposition d=CMLib.flags().getDisposition(str2.substring(1));
+								if(d != null)
 								{
 									v=v2;
-									buf.append(CMFlagLibrary.IS_DESCS[code]+", ");
+									buf.append(d.getIsDesc()+", ");
 								}
 							}
 						}
@@ -2484,11 +2486,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
-								if(code>=0)
+								final Disposition d=CMLib.flags().getDisposition(str2.substring(1));
+								if(d != null)
 								{
 									v=v2;
-									buf.append(CMFlagLibrary.IS_DESCS[code]+", ");
+									buf.append(d.getIsDesc()+", ");
 								}
 							}
 						}
@@ -4942,9 +4944,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.flags().getDispositionIndex(str2.substring(1));
-								if(code>=0)
-									parms.add(Integer.valueOf((int)CMath.pow(2,code)));
+								final Disposition d=CMLib.flags().getDisposition(str2.substring(1));
+								if(d != null)
+									parms.add(Integer.valueOf(d.getMask()));
 							}
 							v=V.size();
 						}
@@ -4966,9 +4968,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int code=CMLib.flags().getSensesIndex(str2.substring(1));
-								if(code>=0)
-									parms.add(Integer.valueOf((int)CMath.pow(2,code)));
+								final Senses s=CMLib.flags().getSenses(str2.substring(1));
+								if(s != null)
+									parms.add(Integer.valueOf(s.getMask()));
 							}
 							v=V.size();
 						}

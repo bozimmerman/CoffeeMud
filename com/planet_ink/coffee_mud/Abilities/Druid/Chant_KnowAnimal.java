@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Disposition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -158,13 +159,10 @@ public class Chant_KnowAnimal extends Chant
 			}
 			if(expertise > 2)
 			{
-				for(int i=0;i<CMFlagLibrary.CAN_SEE_DESCS.length;i++)
+				for(final String desc : CMLib.flags().getSensesDescList(target.phyStats().sensesMask(), ",").split(","))
 				{
-					if(CMath.isSet(target.phyStats().sensesMask(), i))
-					{
-						addSpace(rpt);
-						rpt.append(heShe+" "+CMFlagLibrary.CAN_SEE_DESCS[i].toLowerCase()+".");
-					}
+					addSpace(rpt);
+					rpt.append(heShe+" "+desc.toLowerCase()+".");
 				}
 			}
 			if(expertise > 3)
@@ -268,12 +266,12 @@ public class Chant_KnowAnimal extends Chant
 			}
 			if(expertise > 8)
 			{
-				for(int i=0;i<CMFlagLibrary.IS_DESCS.length;i++)
+				for(final Disposition d : Disposition.values())
 				{
-					if(CMath.isSet(target.phyStats().disposition(), i))
+					if(CMath.bset(target.phyStats().disposition(), d.getMask()))
 					{
 						addSpace(rpt);
-						rpt.append(heShe+" "+CMFlagLibrary.IS_DESCS[i].toLowerCase()+".");
+						rpt.append(heShe+" "+d.getIsDesc().toLowerCase()+".");
 					}
 				}
 			}

@@ -469,6 +469,7 @@ public interface PhyStats extends CMCommon, Modifiable
 		"CANNOTTRACK",
 		"CANNOTAUTOATTACK",
 		"CANNOTBECAMPED",
+		"CANGRUNTWHENSTUPID",
 		"CANSEEITEMSHIDDEN",
 	};
 

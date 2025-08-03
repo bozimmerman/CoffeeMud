@@ -1504,6 +1504,24 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getDispositionVerbList(final long disposition, final String delimiter);
 
 	/**
+	 * Returns a delimited list of Causes verb description of the senses
+	 * of the given senses bitmap.
+	 * @param senses the bitmap
+	 * @param delimiter the string between verbs
+	 * @return the delimited list of descriptive senses verbs
+	 */
+	public String getSensesVerbList(final long senses, final String delimiter);
+
+	/**
+	 * Returns a delimited list of CAN descriptions of the senses
+	 * of the given senses bitmap.
+	 * @param senses the bitmap
+	 * @param delimiter the string between descriptions
+	 * @return the delimited list of descriptive senses
+	 */
+	public String getSensesDescList(final long senses, final String delimiter);
+
+	/**
 	 * Returns a command-delimited list of dispassionate description of the disposition
 	 * of the given physical mob, item, whatever.
 	 * @param obj the disposed physical mob, item, whatever
@@ -1522,12 +1540,12 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getSensesDescList(Physical obj, boolean useVerbs);
 
 	/**
-	 * Returns the enumerated disposition index associated with the given
+	 * Returns the enumerated disposition associated with the given
 	 * disposition name, such as ISSWIMMING, etc.
 	 * @param name the disposition name
-	 * @return the index
+	 * @return the Disposition enum
 	 */
-	public int getDispositionIndex(String name);
+	public Disposition getDisposition(String name);
 
 	/**
 	 * Returns the enumerated senses index associated with the given
@@ -1535,7 +1553,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @param name the senses name
 	 * @return the index
 	 */
-	public int getSensesIndex(String name);
+	public Senses getSenses(String name);
 
 	/**
 	 * Returns a comma delimited list of the senses masks
@@ -1602,86 +1620,398 @@ public interface CMFlagLibrary extends CMLibrary
 	}
 
 	/**
-	 * Descriptions, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks
-	 * See also:
+	 * Enum representing the Disposition IS_* constants in PhyStats
+	 * The localization and string helper.
+	 *
+	 * @author Bo Zimmerman
 	 */
-	public static final String[] CAN_SEE_DESCS={
-		CMLib.lang().L("Is Blind"),
-		CMLib.lang().L("Can see hidden"),
-		CMLib.lang().L("Can see invisible"),
-		CMLib.lang().L("Can see evil"),
-		CMLib.lang().L("Can see good"),
-		CMLib.lang().L("Can detect sneakers"),
-		CMLib.lang().L("Can see magic"),
-		CMLib.lang().L("Can see in the dark"),
-		CMLib.lang().L("Has infravision"),
-		CMLib.lang().L("Is Deaf"),
-		CMLib.lang().L("Is Paralyzed"),
-		CMLib.lang().L("Can not smell"),
-		CMLib.lang().L("Can not eat"),
-		CMLib.lang().L("Is Mute"),
-		CMLib.lang().L("Can not breathe"),
-		CMLib.lang().L("Can detect victims"),
-		CMLib.lang().L("Can detect metal"),
-		CMLib.lang().L("Can not concentrate"),
-		CMLib.lang().L("Is off the grid"),
-		CMLib.lang().L("Is not auto-attacking"),
-		CMLib.lang().L("Can not be camped on"),
-		CMLib.lang().L("Can see hidden items")
-	};
+	public static enum Disposition
+	{
+		ISUNSEEN(PhyStats.IS_NOT_SEEN),
+		ISHIDDEN(PhyStats.IS_HIDDEN),
+		ISINVISIBLE(PhyStats.IS_INVISIBLE),
+		ISEVIL(PhyStats.IS_EVIL),
+		ISGOOD(PhyStats.IS_GOOD),
+		ISSNEAKING(PhyStats.IS_SNEAKING),
+		ISBONUS(PhyStats.IS_BONUS),
+		ISDARK(PhyStats.IS_DARK),
+		ISGOLEM(PhyStats.IS_GOLEM),
+		ISSLEEPING(PhyStats.IS_SLEEPING),
+		ISSITTING(PhyStats.IS_SITTING),
+		ISFLYING(PhyStats.IS_FLYING),
+		ISSWIMMING(PhyStats.IS_SWIMMING),
+		ISGLOWING(PhyStats.IS_GLOWING),
+		ISCLIMBING(PhyStats.IS_CLIMBING),
+		ISFALLING(PhyStats.IS_FALLING),
+		ISLIGHT(PhyStats.IS_LIGHTSOURCE),
+		ISBOUND(PhyStats.IS_BOUND),
+		ISCLOAKED(PhyStats.IS_CLOAKED),
+		ISUNSAVABLE(PhyStats.IS_UNSAVABLE),
+		ISCATALOGED(PhyStats.IS_CATALOGED),
+		ISUNATTACKABLE(PhyStats.IS_UNATTACKABLE),
+		ISCUSTOM(PhyStats.IS_CUSTOM),
+		ISUNHELPFUL(PhyStats.IS_UNHELPFUL)
+		;
+		private final int bitMask;
+		private String desc= null;
+		private String state = null;
+		private String verb = null;
+		private Disposition(final int mask)
+		{
+			bitMask = mask;
+		}
 
-	/** Descriptive verbs, indexed by the 2nd root of the various CAN_SEE sensesMask() bitmasks */
-	public static final String[] CAN_SEE_VERBS={
-		CMLib.lang().L("Causes Blindness"),
-		CMLib.lang().L("Allows see hidden"),
-		CMLib.lang().L("Allows see invisible"),
-		CMLib.lang().L("Allows see evil"),
-		CMLib.lang().L("Allows see good"),
-		CMLib.lang().L("Allows detect sneakers"),
-		CMLib.lang().L("Allows see magic"),
-		CMLib.lang().L("Allows darkvision"),
-		CMLib.lang().L("Allows infravision"),
-		CMLib.lang().L("Causes Deafness"),
-		CMLib.lang().L("Causes Paralyzation"),
-		CMLib.lang().L("Deadens smell"),
-		CMLib.lang().L("Disallows eating"),
-		CMLib.lang().L("Causes Mutemess"),
-		CMLib.lang().L("Causes choking"),
-		CMLib.lang().L("Allows detect victims"),
-		CMLib.lang().L("Allows detect metal"),
-		CMLib.lang().L("Befuddles the mind"),
-		CMLib.lang().L("Makes un-trackable"),
-		CMLib.lang().L("Prevents auto attacking"),
-		CMLib.lang().L("Prevents camping"),
-		CMLib.lang().L("Allows see hidden items"),
-	};
+		public int getMask()
+		{
+			return bitMask;
+		}
 
+		public String getCode()
+		{
+			return name();
+		}
 
-	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
-	public static final String[] IS_DESCS= {
-		CMLib.lang().L("Is never seen"),
-		CMLib.lang().L("Is hidden"),
-		CMLib.lang().L("Is invisible"),
-		CMLib.lang().L("Evil aura"),
-		CMLib.lang().L("Good aura"),
-		CMLib.lang().L("Is sneaking"),
-		CMLib.lang().L("Is magical"),
-		CMLib.lang().L("Is dark"),
-		CMLib.lang().L("Is golem"),
-		CMLib.lang().L("Is sleeping"),
-		CMLib.lang().L("Is sitting"),
-		CMLib.lang().L("Is flying"),
-		CMLib.lang().L("Is swimming"),
-		CMLib.lang().L("Is glowing"),
-		CMLib.lang().L("Is climbing"),
-		CMLib.lang().L("Is falling"),
-		CMLib.lang().L("Is a light source"),
-		CMLib.lang().L("Is binding"),
-		CMLib.lang().L("Is Cloaked"),
-		CMLib.lang().L("Is never saved"),
-		CMLib.lang().L("Is cataloged"),
-		CMLib.lang().L("Is unattackable"),
-		CMLib.lang().L("Is something"),
-		CMLib.lang().L("Is Unhelpful")
-	};
+		public String getIsDesc()
+		{
+			if(desc == null)
+				localize();
+			return desc;
+		}
+		public String getVerb()
+		{
+			if(verb == null)
+				localize();
+			return verb;
+		}
+		public String getState()
+		{
+			if(state == null)
+				localize();
+			return state;
+		}
+
+		private void localize()
+		{
+			//CMLib.lang().L("Causes disappearance")
+			switch(this)
+			{
+			case ISUNSEEN:
+				desc = CMLib.lang().L("Is never seen");
+				state = CMLib.lang().L("unseeable");
+				verb = CMLib.lang().L("Causes Nondetectability");
+				break;
+			case ISHIDDEN:
+				desc = CMLib.lang().L("Is hidden");
+				state = CMLib.lang().L("hidden");
+				verb = CMLib.lang().L("Causes hide");
+				break;
+			case ISINVISIBLE:
+				desc = CMLib.lang().L("Is invisible");
+				state = CMLib.lang().L("invisible");
+				verb = CMLib.lang().L("Causes invisibility");
+				break;
+			case ISEVIL:
+				desc = CMLib.lang().L("Evil aura");
+				state = CMLib.lang().L("evil");
+				verb = CMLib.lang().L("Creates Evil aura");
+				break;
+			case ISGOOD:
+				desc = CMLib.lang().L("Good aura");
+				state = CMLib.lang().L("good");
+				verb =  CMLib.lang().L("Creates Good aura");
+				break;
+			case ISSNEAKING:
+				desc = CMLib.lang().L("Is sneaking");
+				CMLib.lang().L("sneaks");
+				verb = CMLib.lang().L("Causes sneaking");
+				break;
+			case ISBONUS:
+				desc = CMLib.lang().L("Is magical");
+				state = CMLib.lang().L("sacred");
+				verb = CMLib.lang().L("Creates magical aura");
+				break;
+			case ISDARK:
+				desc = CMLib.lang().L("Is dark");
+				state = CMLib.lang().L("darkness");
+				verb = CMLib.lang().L("Creates dark aura");
+				break;
+			case ISGOLEM:
+				desc = CMLib.lang().L("Is golem");
+				state = "";
+				verb = CMLib.lang().L("Creates golem aura");
+				break;
+			case ISSLEEPING:
+				desc = CMLib.lang().L("Is sleeping");
+				state = CMLib.lang().L("sleepy");
+				verb = CMLib.lang().L("Causes sleeping");
+				break;
+			case ISSITTING:
+				desc = CMLib.lang().L("Is sitting");
+				state = CMLib.lang().L("crawls");
+				verb = CMLib.lang().L("Causes sitting");
+				break;
+			case ISFLYING:
+				desc = CMLib.lang().L("Is flying");
+				state = CMLib.lang().L("flies");
+				verb = CMLib.lang().L("Allows flying");
+				break;
+			case ISSWIMMING:
+				desc = CMLib.lang().L("Is swimming");
+				state = CMLib.lang().L("swims");
+				verb = CMLib.lang().L("Causes swimming");
+				break;
+			case ISGLOWING:
+				desc = CMLib.lang().L("Is glowing");
+				state = CMLib.lang().L("glowing");
+				verb = CMLib.lang().L("Causes glowing aura");
+				break;
+			case ISCLIMBING:
+				desc = CMLib.lang().L("Is climbing");
+				state = CMLib.lang().L("climbing");
+				verb = CMLib.lang().L("Allows climbing");
+				break;
+			case ISFALLING:
+				desc = CMLib.lang().L("Is falling");
+				state = CMLib.lang().L("falling");
+				verb = CMLib.lang().L("Causes falling");
+				break;
+			case ISLIGHT:
+				desc = CMLib.lang().L("Is a light source");
+				state = CMLib.lang().L("shining");
+				verb = CMLib.lang().L("Causes a light source");
+				break;
+			case ISBOUND:
+				desc = CMLib.lang().L("Is binding");
+				state = CMLib.lang().L("bound");
+				verb = CMLib.lang().L("Causes binding");
+				break;
+			case ISCLOAKED:
+				desc = CMLib.lang().L("Is Cloaked");
+				state = CMLib.lang().L("cloaked");
+				verb = CMLib.lang().L("Causes cloaking");
+				break;
+			case ISUNSAVABLE:
+				desc = CMLib.lang().L("Is never saved");
+				state = "";
+				verb = CMLib.lang().L("Causes unsavability");
+				break;
+			case ISCATALOGED:
+				desc = CMLib.lang().L("Is cataloged");
+				state = "";
+				verb = CMLib.lang().L("Created from a template");
+				break;
+			case ISUNATTACKABLE:
+				desc = CMLib.lang().L("Is unattackable");
+				state = "";
+				verb = CMLib.lang().L("Prevents attackability");
+				break;
+			case ISCUSTOM:
+				desc = CMLib.lang().L("Is something");
+				state = "";
+				verb = CMLib.lang().L("Causes something...");
+				break;
+			case ISUNHELPFUL:
+				desc = CMLib.lang().L("Is Unhelpful");
+				state = "";
+				verb = CMLib.lang().L("Prevents helpful attacks");
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Enum representing the Senses CAN_* constants in PhyStats
+	 * The localization and string helper.
+	 *
+	 * @author Bo Zimmerman
+	 */
+	public static enum Senses
+	{
+		CANNOTSEE(PhyStats.CAN_NOT_SEE),
+		CANSEEHIDDEN(PhyStats.CAN_SEE_HIDDEN),
+		CANSEEINVISIBLE(PhyStats.CAN_SEE_INVISIBLE),
+		CANSEEEVIL(PhyStats.CAN_SEE_EVIL),
+		CANSEEGOOD(PhyStats.CAN_SEE_GOOD),
+		CANSEESNEAKERS(PhyStats.CAN_SEE_SNEAKERS),
+		CANSEEBONUS(PhyStats.CAN_SEE_BONUS),
+		CANSEEDARK(PhyStats.CAN_SEE_DARK),
+		CANSEEINFRARED(PhyStats.CAN_SEE_INFRARED),
+		CANNOTHEAR(PhyStats.CAN_NOT_HEAR),
+		CANNOTMOVE(PhyStats.CAN_NOT_MOVE),
+		CANNOTSMELL(PhyStats.CAN_NOT_SMELL),
+		CANNOTTASTE(PhyStats.CAN_NOT_TASTE),
+		CANNOTSPEAK(PhyStats.CAN_NOT_SPEAK),
+		CANNOTBREATHE(PhyStats.CAN_NOT_BREATHE),
+		CANSEEVICTIM(PhyStats.CAN_SEE_VICTIM),
+		CANSEEMETAL(PhyStats.CAN_SEE_METAL),
+		CANNOTTHINK(PhyStats.CAN_NOT_THINK),
+		CANNOTTRACK(PhyStats.CAN_NOT_TRACK),
+		CANNOTAUTOATTACK(PhyStats.CAN_NOT_AUTO_ATTACK),
+		CANNOTBECAMPED(PhyStats.CAN_NOT_BE_CAMPED),
+		CANGRUNTWHENSTUPID(PhyStats.CAN_GRUNT_WHEN_STUPID),
+		CANSEEITEMSHIDDEN(PhyStats.CAN_SEE_HIDDEN_ITEMS)
+		;
+		int bitMask;
+		private String desc = null;
+		private String verb = null;
+		private String state = null;
+		private Senses(final int mask)
+		{
+			bitMask = mask;
+		}
+
+		public int getMask()
+		{
+			return bitMask;
+		}
+
+		public String getCode()
+		{
+			return name();
+		}
+
+		public String getDesc()
+		{
+			if(desc == null)
+				localize();
+			return desc;
+		}
+
+		public String getVerb()
+		{
+			if(verb == null)
+				localize();
+			return verb;
+		}
+
+		public String getState()
+		{
+			if(state == null)
+				localize();
+			return state;
+		}
+
+		private void localize()
+		{
+			switch(this)
+			{
+			case CANNOTAUTOATTACK:
+				desc = CMLib.lang().L("Is not auto-attacking");
+				verb = CMLib.lang().L("Prevents auto attacking");
+				state = CMLib.lang().L("can't auto attack");
+				break;
+			case CANNOTBECAMPED:
+				desc = CMLib.lang().L("Can not be camped on");
+				verb = CMLib.lang().L("Prevents camping");
+				state = CMLib.lang().L("can't be camped");
+				break;
+			case CANNOTBREATHE:
+				desc = CMLib.lang().L("Can not breathe");
+				verb = CMLib.lang().L("Causes choking");
+				state = CMLib.lang().L("can't breathe");
+				break;
+			case CANNOTHEAR:
+				desc = CMLib.lang().L("Is Deaf");
+				verb = CMLib.lang().L("Causes Deafness");
+				state = CMLib.lang().L("deaf");
+				break;
+			case CANNOTMOVE:
+				desc = CMLib.lang().L("Is Paralyzed");
+				verb = CMLib.lang().L("Causes Paralyzation");
+				state = CMLib.lang().L("can't move");
+				break;
+			case CANNOTSEE:
+				desc = CMLib.lang().L("Is Blind");
+				verb = CMLib.lang().L("Causes Blindness");
+				state = CMLib.lang().L("blind");
+				break;
+			case CANNOTSMELL:
+				desc = CMLib.lang().L("Can not smell");
+				verb = CMLib.lang().L("Deadens smell");
+				state = CMLib.lang().L("can't smell");
+				break;
+			case CANNOTSPEAK:
+				desc = CMLib.lang().L("Is Mute");
+				verb = CMLib.lang().L("Causes Muteness");
+				state = CMLib.lang().L("can't speak");
+				break;
+			case CANNOTTASTE:
+				desc = CMLib.lang().L("Can not eat");
+				verb = CMLib.lang().L("Disallows eating");
+				state = CMLib.lang().L("can't eat");
+				break;
+			case CANNOTTHINK:
+				desc = CMLib.lang().L("Can not concentrate");
+				verb = CMLib.lang().L("Befuddles the mind");
+				state = CMLib.lang().L("can't think straight");
+				break;
+			case CANNOTTRACK:
+				desc = CMLib.lang().L("Is off the grid");
+				verb = CMLib.lang().L("Makes un-trackable");
+				state = CMLib.lang().L("can't be tracked");
+				break;
+			case CANSEEBONUS:
+				desc = CMLib.lang().L("Can see magic");
+				verb = CMLib.lang().L("Allows see magic");
+				state = CMLib.lang().L("detect magic");
+				break;
+			case CANSEEDARK:
+				desc = CMLib.lang().L("Can see in the dark");
+				verb = CMLib.lang().L("Allows darkvision");
+				state = CMLib.lang().L("darkvision");
+				break;
+			case CANSEEEVIL:
+				desc = CMLib.lang().L("Can see evil");
+				verb = CMLib.lang().L("Allows see evil");
+				state = CMLib.lang().L("detect evil");
+				break;
+			case CANSEEGOOD:
+				desc = CMLib.lang().L("Can see good");
+				verb = CMLib.lang().L("Allows see good");
+				state = CMLib.lang().L("detect good");
+				break;
+			case CANSEEHIDDEN:
+				desc = CMLib.lang().L("Can see hidden");
+				verb = CMLib.lang().L("Allows see hidden");
+				state = CMLib.lang().L("see hidden");
+				break;
+			case CANSEEINFRARED:
+				desc = CMLib.lang().L("Has infravision");
+				verb = CMLib.lang().L("Allows infravision");
+				state = CMLib.lang().L("infravision");
+				break;
+			case CANSEEINVISIBLE:
+				desc = CMLib.lang().L("Can see invisible");
+				verb = CMLib.lang().L("Allows see invisible");
+				state = CMLib.lang().L("see invisible");
+				break;
+			case CANSEEITEMSHIDDEN:
+				desc = CMLib.lang().L("Can see hidden items");
+				verb = CMLib.lang().L("Allows see hidden items");
+				state = CMLib.lang().L("see hidden items");
+				break;
+			case CANSEEMETAL:
+				desc = CMLib.lang().L("Can detect metal");
+				verb = CMLib.lang().L("Allows detect metal");
+				state = CMLib.lang().L("metalvision");
+				break;
+			case CANSEESNEAKERS:
+				desc = CMLib.lang().L("Can detect sneakers");
+				verb = CMLib.lang().L("Allows detect sneakers");
+				state = CMLib.lang().L("see sneaking");
+				break;
+			case CANSEEVICTIM:
+				desc = CMLib.lang().L("Can detect victims");
+				verb = CMLib.lang().L("Allows detect victims");
+				state = CMLib.lang().L("detects victims");
+				break;
+			case CANGRUNTWHENSTUPID:
+				desc = CMLib.lang().L("Can grunt");
+				verb = CMLib.lang().L("Allows stupid grunting");
+				state = CMLib.lang().L("can grunt");
+				break;
+			}
+
+		}
+	}
 }
