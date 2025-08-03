@@ -1855,11 +1855,14 @@ public class StdMOB implements MOB
 	@Override
 	public String displayText(final MOB viewerMob)
 	{
+		final int visiblyActiveMask = basePhyStats().disposition() & PhyStats.IS_VISIBLYACTIVE;
+		final int unnormalMask = phyStats().disposition() & PhyStats.IS_UNNORMAL;
 		if((displayText.length() == 0)
 		|| (!name(viewerMob).equals(Name()))
 		|| (!titledName().equals(Name()))
-		|| (CMLib.flags().isSleeping(this))
-		|| (CMLib.flags().isSitting(this)) || (riding() != null)
+		|| ((unnormalMask-visiblyActiveMask)>0)
+		|| (CMLib.flags().isSitting(this))
+		|| (riding() != null)
 		|| ((amFollowing() != null)
 			&& (amFollowing().fetchFollowerOrder(this) > 0))
 		|| ((this instanceof Rideable)
@@ -1873,7 +1876,7 @@ public class StdMOB implements MOB
 			else
 				localName = titledName(viewerMob);
 			final StringBuilder sendBack;
-			if(displayText.startsWith(Name()))
+			if(displayText.startsWith(Name())&& ((unnormalMask-visiblyActiveMask)==0))
 				sendBack = new StringBuilder(localName).append(displayText.substring(Name().length()));
 			else
 			{

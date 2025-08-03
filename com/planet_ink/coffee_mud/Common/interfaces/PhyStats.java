@@ -596,6 +596,10 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_CUSTOM=4194304;
 	/** a bit setting, as from disposition(), flagging this object as a non-helping follower, or non-useful exits */
 	public final static int IS_UNHELPFUL=8388608;
+	/** a bit setting, as from disposition(), flagging this object as an interesting disposition*/
+	public final static int IS_UNNORMAL=IS_SITTING|IS_SLEEPING|IS_CLIMBING|IS_FALLING|IS_SWIMMING|IS_CLIMBING;
+	/** a bit setting, as from disposition(), flagging this object as an interesting disposition*/
+	public final static int IS_VISIBLYACTIVE=IS_CLIMBING|IS_FALLING|IS_SWIMMING|IS_CLIMBING;
 
 	/**
 	 * STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks
