@@ -80,13 +80,13 @@ public class Poison_Anesthesia extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The numbing feeling runs its course.";
+		return L("The numbing feeling runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) numb.^?";
+		return L("^G<S-NAME> seem(s) numb.^?");
 	}
 
 	@Override
@@ -98,13 +98,13 @@ public class Poison_Anesthesia extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> anesthetize(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> anesthetize(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to anesthetize <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to anesthetize <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

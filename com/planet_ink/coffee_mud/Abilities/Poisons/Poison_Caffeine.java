@@ -77,31 +77,31 @@ public class Poison_Caffeine extends Poison {
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The caffeine runs its course.";
+		return L("The caffeine runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) wired!^?";
+		return L("^G<S-NAME> seem(s) wired!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> twitch(es) spastically.";
+		return L("^G<S-NAME> twitch(es) spastically.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> caffeinate(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> caffeinate(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to caffinate <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to caffinate <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

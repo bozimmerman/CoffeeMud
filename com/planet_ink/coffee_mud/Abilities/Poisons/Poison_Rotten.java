@@ -87,7 +87,7 @@ public class Poison_Rotten extends Poison
 			&&(affected instanceof Item)
 			&&(((Item)affected).material()!=RawMaterial.RESOURCE_MILK)
 			&&(((Item)affected).material()!=RawMaterial.RESOURCE_BLOOD)))
-				return "^G"+affected.name()+" was rotten! Blech!^?";
+				return L("^G@x1 was rotten! Blech!^?",affected.name());
 		return "";
 	}
 
@@ -95,8 +95,8 @@ public class Poison_Rotten extends Poison
 	protected String POISON_START()
 	{
 		if((affected instanceof Food)||(affected instanceof Drink))
-			return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
-		return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
+			return L("^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?");
+		return L("^G<S-NAME> bend(s) over with horrid stomach pains!^?");
 	}
 
 	@Override
@@ -113,19 +113,19 @@ public class Poison_Rotten extends Poison
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";
+		return L("^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

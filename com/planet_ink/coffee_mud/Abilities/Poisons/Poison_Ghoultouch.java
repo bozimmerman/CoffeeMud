@@ -76,13 +76,13 @@ public class Poison_Ghoultouch extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "Your muscles relax again.";
+		return L("Your muscles relax again.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> become(s) stiff and immobile!^?";
+		return L("^G<S-NAME> become(s) stiff and immobile!^?");
 	}
 
 	@Override
@@ -94,13 +94,13 @@ public class Poison_Ghoultouch extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

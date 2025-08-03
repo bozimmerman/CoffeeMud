@@ -70,31 +70,31 @@ public class Poison_Decreptifier extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The poison runs its course.";
+		return L("The poison runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) weakened!^?";
+		return L("^G<S-NAME> seem(s) weakened!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> shiver(s) weakly.";
+		return L("^G<S-NAME> shiver(s) weakly.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

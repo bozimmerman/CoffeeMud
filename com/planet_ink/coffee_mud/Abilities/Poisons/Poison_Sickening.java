@@ -83,35 +83,35 @@ public class Poison_Sickening extends Poison
 		if((affected instanceof Food)
 		||(affected instanceof Drink)
 		||(affected instanceof MOB))
-			return "^G"+affected.name()+" was sickening!^?";
+			return L("^G@x1 was sickening!^?",affected.name());
 		return "";
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
+		return L("^G<S-NAME> bend(s) over with horrid stomach pains!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
 		if(CMLib.dice().roll(1, 2,0)==1)
-			return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";
+			return L("^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.");
 		else
-			return "^G<S-NAME> puke(s) the contents of <S-HIS-HER> stomach.";
+			return L("^G<S-NAME> puke(s) the contents of <S-HIS-HER> stomach.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> sicken(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> sicken(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to sicken <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to sicken <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

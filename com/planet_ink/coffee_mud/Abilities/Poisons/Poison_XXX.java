@@ -70,31 +70,31 @@ public class Poison_XXX extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The poison runs its course.";
+		return L("The poison runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> turn(s) green.^?";
+		return L("^G<S-NAME> turn(s) green.^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "<S-NAME> cringe(s) in horrible pain as the poison courses through <S-HIS-HER> blood.";
+		return L("<S-NAME> cringe(s) in horrible pain as the poison courses through <S-HIS-HER> blood.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> bite(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> bite(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

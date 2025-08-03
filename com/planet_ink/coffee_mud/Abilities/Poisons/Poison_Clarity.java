@@ -77,13 +77,13 @@ public class Poison_Clarity extends Poison {
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The clarity fades.";
+		return L("The clarity fades.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) clear and alert!^?";
+		return L("^G<S-NAME> seem(s) clear and alert!^?");
 	}
 
 	@Override
@@ -95,13 +95,13 @@ public class Poison_Clarity extends Poison {
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> clarif(ys) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> clarif(ys) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to clarity <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to clarity <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

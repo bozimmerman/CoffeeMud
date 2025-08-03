@@ -70,31 +70,31 @@ public class Poison_Heartstopper extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The poison runs its course.";
+		return L("The poison runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> turn(s) green!^?";
+		return L("^G<S-NAME> turn(s) green!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> gag(s) and cringe(s) in pain.";
+		return L("^G<S-NAME> gag(s) and cringe(s) in pain.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

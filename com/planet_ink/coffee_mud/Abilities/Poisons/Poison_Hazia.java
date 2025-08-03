@@ -79,31 +79,31 @@ public class Poison_Hazia extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The hazia runs its course.";
+		return L("The hazia runs its course.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> seem(s) to be in a haze!^?";
+		return L("^G<S-NAME> seem(s) to be in a haze!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-YOUPOSS> eyes glaze over.";
+		return L("^G<S-YOUPOSS> eyes glaze over.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

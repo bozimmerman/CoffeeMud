@@ -112,12 +112,12 @@ public class Poison extends StdAbility implements HealthCondition
 
 	protected String POISON_DONE()
 	{
-		return "The poison runs its course.";
+		return L("The poison runs its course.");
 	}
 
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> turn(s) green.^?";
+		return L("^G<S-NAME> turn(s) green.^?");
 	}
 
 	protected String POISON_START_TARGETONLY()
@@ -137,17 +137,17 @@ public class Poison extends StdAbility implements HealthCondition
 
 	protected String POISON_AFFECT()
 	{
-		return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";
+		return L("<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 	}
 
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	protected int POISON_DAMAGE()
@@ -178,9 +178,9 @@ public class Poison extends StdAbility implements HealthCondition
 	public String getHealthConditionDesc()
 	{
 		if(name().toUpperCase().endsWith("S"))
-			return "Suffering from "+name();
+			return L("Suffering from @x1.", name());
 		else
-			return "Suffering from "+name()+" poisoning.";
+			return L("Suffering from @x1 poisoning.", name());
 	}
 
 	protected boolean catchIt(final MOB mob, final Physical target)

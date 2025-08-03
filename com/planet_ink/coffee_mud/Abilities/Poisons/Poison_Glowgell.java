@@ -71,7 +71,7 @@ public class Poison_Glowgell extends Poison
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> start(s) glowing!^?";
+		return L("^G<S-NAME> start(s) glowing!^?");
 	}
 
 	@Override
@@ -83,13 +83,13 @@ public class Poison_Glowgell extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

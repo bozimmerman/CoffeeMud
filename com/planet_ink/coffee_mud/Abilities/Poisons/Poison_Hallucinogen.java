@@ -80,13 +80,13 @@ public class Poison_Hallucinogen extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The hallucinations subside.";
+		return L("The hallucinations subside.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> start(s) hallucinating.^?";
+		return L("^G<S-NAME> start(s) hallucinating.^?");
 	}
 
 	@Override
@@ -98,13 +98,13 @@ public class Poison_Hallucinogen extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

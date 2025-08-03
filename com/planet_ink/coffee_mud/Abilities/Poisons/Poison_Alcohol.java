@@ -55,11 +55,24 @@ public class Poison_Alcohol extends Poison
 	}
 
 	private static final String[] triggerStrings = I(new String[] { "POISONALCOHOL" });
+	private final static String localizedDisplay1 = CMLib.lang().L("(Holding your own)");
+	private final static String localizedDisplay2 = CMLib.lang().L("(Tipsy)");
+	private final static String localizedDisplay3 = CMLib.lang().L("(Drunk)");
+	private final static String localizedDisplay4 = CMLib.lang().L("(Smashed)");
 
 	@Override
 	public String displayText()
 	{
-		return (drunkness <= 0) ? "(Holding your own)" : (drunkness <= 3) ? "(Tipsy)" : ((drunkness < 10) ? "(Drunk)" : "(Smashed)");
+		if(drunkness <= 0)
+			return localizedDisplay1;
+		else
+		if(drunkness <= 3)
+			return localizedDisplay2;
+		else
+		if(drunkness < 10)
+			return localizedDisplay3;
+		else
+			return localizedDisplay4;
 	}
 
 	@Override
@@ -89,13 +102,13 @@ public class Poison_Alcohol extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "You feel sober again.";
+		return L("You feel sober again.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> burp(s)!^?";
+		return L("^G<S-NAME> burp(s)!^?");
 	}
 
 	@Override
@@ -107,13 +120,13 @@ public class Poison_Alcohol extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

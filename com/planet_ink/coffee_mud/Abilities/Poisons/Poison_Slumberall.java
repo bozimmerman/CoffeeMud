@@ -70,7 +70,7 @@ public class Poison_Slumberall extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "You don't feel so drowsy anymore.";
+		return L("You don't feel so drowsy anymore.");
 	}
 
 	@Override
@@ -88,13 +88,13 @@ public class Poison_Slumberall extends Poison
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override

@@ -780,7 +780,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		for(int i=0;i<changes.length;i+=2)
 		{
 			if(changes[i] instanceof Integer)
-				charStats.setStat(((Integer)changes[i]).intValue(),charStats.getStat(((Integer)changes[i]).intValue())+((Integer)changes[i+1]).intValue());
+			{
+				charStats.setStat(((Integer)changes[i]).intValue(),
+							charStats.getStat(((Integer)changes[i]).intValue())
+							+((Integer)changes[i+1]).intValue());
+			}
 			else
 			if(changes[i] instanceof Character)
 			{

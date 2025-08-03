@@ -102,31 +102,31 @@ public class Poison_Hives extends Poison
 	@Override
 	protected String POISON_DONE()
 	{
-		return "The hives clear up.";
+		return L("The hives clear up.");
 	}
 
 	@Override
 	protected String POISON_START()
 	{
-		return "^G<S-NAME> break(s) out in hives!^?";
+		return L("^G<S-NAME> break(s) out in hives!^?");
 	}
 
 	@Override
 	protected String POISON_AFFECT()
 	{
-		return "^G<S-NAME> scratch(es) <S-HIM-HERSELF> as more hives break out.";
+		return L("^G<S-NAME> scratch(es) <S-HIM-HERSELF> as more hives break out.");
 	}
 
 	@Override
 	protected String POISON_CAST()
 	{
-		return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";
+		return L("^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?");
 	}
 
 	@Override
 	protected String POISON_FAIL()
 	{
-		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+		return L("<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).");
 	}
 
 	@Override
