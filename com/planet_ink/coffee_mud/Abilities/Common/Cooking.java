@@ -545,89 +545,109 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return codedList;
 	}
 
-	private List<String> extraIngredientsInOldContents(final List<String> Vr, final boolean perfectOnly)
+	private boolean ingredientMatch(final String potIngr, final String recipeIng, final boolean perfectOnly)
+	{
+		final int index=potIngr.toUpperCase().indexOf(recipeIng.toUpperCase()+"/");
+		if(recipeIng.length()>0)
+		{
+			if(perfectOnly)
+			{
+				if(potIngr.equalsIgnoreCase(recipeIng))
+					return true;
+			}
+			else
+			{
+				if((index==0)
+				||((index>0)
+					&&(!Character.isLetter(potIngr.charAt(index-1)))
+					&&(recipeIng.charAt(index-1)!='-')))
+						return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean recipeHasSomeIngredientsInPot(final List<String> recipe)
+	{
+		boolean found=false;
+		final String recipeIngredient = recipe.get(RCP_MAININGR).toUpperCase();
+		for(final String potIngredient : oldPotContents.keySet())
+		{
+			found = ingredientMatch(potIngredient,recipeIngredient,false);
+			if(found)
+				break;
+		}
+		return found;
+	}
+
+	private boolean isIngredientInRecipe(final String potIngredient, final List<String> recipe, final boolean perfectOnly)
+	{
+		boolean found = false;
+		for(int vr=RCP_MAININGR;vr<recipe.size();vr+=2)
+		{
+			final String ingredient2=recipe.get(vr).toUpperCase();
+			found = ingredientMatch(potIngredient, ingredient2, perfectOnly);
+			if(found)
+				break;
+		}
+		return found;
+	}
+
+	private boolean isIngredientInPot(final String recipeIngredient, final Set<String> potContents, final boolean perfectOnly)
+	{
+		boolean found = false;
+		for(final String potIngredient : potContents)
+		{
+			found = ingredientMatch(potIngredient.toUpperCase(), recipeIngredient, perfectOnly);
+			if(found)
+				break;
+		}
+		return found;
+	}
+
+	private List<String> extraIngredientsInPot(final List<String> Vr, final boolean perfectOnly)
 	{
 		final List<String> extra=new ArrayList<String>();
-		for(final String ingredient : oldPotContents.keySet())
+		for(final String potIngredient : oldPotContents.keySet())
 		{
-			boolean found=false;
-
-			if(honorHerbs()&&ingredient.toUpperCase().startsWith("HERBS/")) // herbs exception
+			boolean found;
+			if(honorHerbs()&&potIngredient.toUpperCase().startsWith("HERBS/")) // herbs exception
 				found=true;
 			else
-			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
-			{
-				final String ingredient2=Vr.get(vr).toUpperCase();
-				final int index=ingredient.toUpperCase().indexOf(ingredient2+"/");
-				if((ingredient2.length()>0)
-				&&(((!perfectOnly)
-					&&((index==0)
-						||((index>0)
-							&&(!Character.isLetter(ingredient.charAt(index-1)))
-							&&(ingredient.charAt(index-1)!='-'))))
-				||((perfectOnly)
-					&&(ingredient.toUpperCase().equalsIgnoreCase(ingredient2)))))
-						found=true;
-			}
+				found = isIngredientInRecipe(potIngredient, Vr, perfectOnly);
 			if(!found)
 			{
-				String content=ingredient;
-				if(content.indexOf('/')>=0)
-					content=content.substring(0,content.indexOf('/'));
+				final String content;
+				if(potIngredient.indexOf('/')>=0)
+					content=potIngredient.substring(0,potIngredient.indexOf('/'));
+				else
+					content = potIngredient;
 				extra.add(content);
 			}
 		}
 		return extra;
 	}
 
-	public List<String> missingIngredientsFromOldContents(final List<String> Vr, final boolean perfectOnly)
+	public List<String> missingIngredientsFromPot(final List<String> Vr, final boolean perfectOnly)
 	{
 		final List<String> missing=new ArrayList<String>();
 
-		String possiblyMissing=null;
-		boolean foundOptional=false;
-		boolean hasOptional=false;
 		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 		{
-			final String ingredient=Vr.get(vr);
-			if(ingredient.length()>0)
+			final String recipeIngredient=Vr.get(vr);
+			if(recipeIngredient.length()>0)
 			{
 				int amount=1;
 				if(vr<Vr.size()-1)
 					amount=CMath.s_int(Vr.get(vr+1));
-				boolean found=false;
-				for(final String ingredient2 : oldPotContents.keySet())
-				{
-					final int index=ingredient2.toUpperCase().indexOf(ingredient.toUpperCase()+"/");
-					if((((index==0)
-						||((index>0)
-							&&(!Character.isLetter(ingredient2.charAt(index-1)))
-							&&(ingredient2.charAt(index-1)!='-'))))
-					||((!perfectOnly)
-						&&(ingredient2.equalsIgnoreCase(ingredient.toUpperCase()))))
-					{
-						found = true;
-						break;
-					}
-				}
+				final boolean found= isIngredientInPot(recipeIngredient, oldPotContents.keySet(), perfectOnly);
 				if(amount>=0)
 				{
 					if(!found)
-						missing.add(ingredient);
-				}
-				else
-				if(amount<0)
-				{
-					foundOptional=true;
-					if(found)
-						hasOptional=true;
-					else
-						possiblyMissing=ingredient;
+						missing.add(recipeIngredient);
 				}
 			}
 		}
-		if((foundOptional)&&(!hasOptional))
-			missing.add(possiblyMissing);
 		return missing;
 	}
 
@@ -1277,28 +1297,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final List<List<String>> closeRecipes=new ArrayList<List<String>>();
 		for(int v=0;v<allRecipes.size();v++)
 		{
-			final List<String> Vr=allRecipes.get(v);
-			boolean found=false;
-			for(final String ingredient2 : oldPotContents.keySet())
-			{
-				final int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/");
-				if((index==0)
-				||((index>0)
-					&&(!Character.isLetter(ingredient2.charAt(index-1)))
-					&&(ingredient2.charAt(index-1)!='-')))
-				{
-					found = true;
-					break;
-				}
-			}
-			if(found)
-				closeRecipes.add(Vr);
-			if((missingIngredientsFromOldContents(Vr,true).size()==0)
-			&&(extraIngredientsInOldContents(Vr,true).size()==0))
-				perfectRecipes.add(Vr);
-			if((missingIngredientsFromOldContents(Vr,false).size()==0)
-			&&(extraIngredientsInOldContents(Vr,false).size()==0))
-				closerRecipes.add(Vr);
+			final List<String> recipeV=allRecipes.get(v);
+			if(recipeHasSomeIngredientsInPot(recipeV))
+				closeRecipes.add(recipeV);
+			if((missingIngredientsFromPot(recipeV,true).size()==0)
+			&&(extraIngredientsInPot(recipeV,true).size()==0))
+				perfectRecipes.add(recipeV);
+			if((missingIngredientsFromPot(recipeV,false).size()==0)
+			&&(extraIngredientsInPot(recipeV,false).size()==0))
+				closerRecipes.add(recipeV);
 		}
 
 		if(perfectRecipes.size()==0)
@@ -1312,10 +1319,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
 			{
-				final List<String> Vr=closeRecipes.get(vr);
-				final List<String> missing=missingIngredientsFromOldContents(Vr,false);
-				final List<String> extra=extraIngredientsInOldContents(Vr,false);
-				final String recipeName=replacePercent(Vr.get(RCP_FINALFOOD),Vr.get(RCP_MAININGR).toLowerCase());
+				final List<String> recipeV=closeRecipes.get(vr);
+				final List<String> missing=missingIngredientsFromPot(recipeV,false);
+				final List<String> extra=extraIngredientsInPot(recipeV,false);
+				final String recipeName=replacePercent(recipeV.get(RCP_FINALFOOD),recipeV.get(RCP_MAININGR).toLowerCase());
 				if(extra.size()>0)
 				{
 					final StringBuffer buf=new StringBuffer(L("If you are trying to make @x1, you need to remove ",recipeName));

@@ -65,7 +65,7 @@ public class RandomQuests extends ActiveTicker
 	protected int					numQuests	= -1;
 	protected int					maxAttempts	= 3;
 	protected boolean				inline		= false;
-	protected String				expireTime	= "3 hours";
+	protected String				expireTime	= "6 hours";
 	protected String				tagId		= "all_quests";
 	protected String				filePath	= "randareas/example.xml";
 	protected Map<String, String>	varMap		= new Hashtable<String, String>(1);

@@ -2326,6 +2326,55 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return !anyTallF;
 	}
 
+	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
+	protected String[] dispositionIsVerbsList = null;
+	protected final String[] getDispositionIsVerbsList()
+	{
+		if(dispositionIsVerbsList == null)
+		{
+			dispositionIsVerbsList = new String[] {
+				CMLib.lang().L("Causes Nondetectability"),
+				CMLib.lang().L("Causes hide"),
+				CMLib.lang().L("Causes invisibility"),
+				CMLib.lang().L("Creates Evil aura"),
+				CMLib.lang().L("Creates Good aura"),
+				CMLib.lang().L("Causes sneaking"),
+				CMLib.lang().L("Creates magical aura"),
+				CMLib.lang().L("Creates dark aura"),
+				CMLib.lang().L("Creates golem aura"),
+				CMLib.lang().L("Causes sleeping"),
+				CMLib.lang().L("Causes sitting"),
+				CMLib.lang().L("Allows flying"),
+				CMLib.lang().L("Causes swimming"),
+				CMLib.lang().L("Causes glowing aura"),
+				CMLib.lang().L("Allows climbing"),
+				CMLib.lang().L("Causes falling"),
+				CMLib.lang().L("Causes a light source"),
+				CMLib.lang().L("Causes binding"),
+				CMLib.lang().L("Causes cloaking"),
+				CMLib.lang().L("Causes disappearance"),
+				CMLib.lang().L("Causes unsavability"),
+				CMLib.lang().L("Created from a template"),
+				CMLib.lang().L("Prevents attackability"),
+				CMLib.lang().L("Causes something..."),
+				CMLib.lang().L("Prevents helpful attacks")
+			};
+		}
+		return dispositionIsVerbsList;
+
+	}
+
+	@Override
+	public String getDispositionVerbList(final long disposition, final String delimiter)
+	{
+		final String[] verbs = getDispositionIsVerbsList();
+		final StringBuffer buf=new StringBuffer("");
+		for(int i=0;i<verbs.length;i++)
+			if(CMath.isSet(disposition,i))
+				buf.append(verbs[i]+delimiter);
+		return buf.toString();
+	}
+
 	@Override
 	public String getDispositionDescList(final Physical obj, final boolean useVerbs)
 	{
@@ -2334,11 +2383,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		final int disposition = obj.phyStats().disposition();
 		final StringBuffer buf=new StringBuffer("");
 		if(useVerbs)
-		{
-			for(int i=0;i<CMFlagLibrary.IS_VERBS.length;i++)
-				if(CMath.isSet(disposition,i))
-					buf.append(CMFlagLibrary.IS_VERBS[i]+", ");
-		}
+			buf.append(getDispositionVerbList(disposition, ", "));
 		else
 		for(int i=0;i<PhyStats.IS_CODES.length;i++)
 		{
@@ -2748,28 +2793,76 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	private enum PresentDispositionVerb
 	{
-		SINKS(CMLib.lang().L("sinks"),CMLib.lang().L("sinks in")),
-		FALLS(CMLib.lang().L("falls"),CMLib.lang().L("falls in")),
-		SLEEPWALKS(CMLib.lang().L("sleepwalks"),CMLib.lang().L("sleepwalks in")),
-		SLEEPS(CMLib.lang().L("sleeps"),CMLib.lang().L("sleeps in")),
-		FLOATS(CMLib.lang().L("floats"),CMLib.lang().L("floats in")),
-		SNEAKS(CMLib.lang().L("sneaks"),CMLib.lang().L("sneaks in")),
-		PROWLS(CMLib.lang().L("prowls"),CMLib.lang().L("prowls in")),
-		CRAWLS(CMLib.lang().L("crawls"),CMLib.lang().L("crawls in")),
-		SITS(CMLib.lang().L("sits"),CMLib.lang().L("sits in")),
-		FLIES(CMLib.lang().L("flies"),CMLib.lang().L("flies in")),
-		CLIMBS(CMLib.lang().L("climbs"),CMLib.lang().L("climbs in")),
-		SWIMS(CMLib.lang().L("swims"),CMLib.lang().L("swims in")),
-		ARRIVES(CMLib.lang().L("arrives"),CMLib.lang().L("arrives in")),
-		LEAVES(CMLib.lang().L("leaves"),CMLib.lang().L("leaves in")),
-		IS(CMLib.lang().L("is"),CMLib.lang().L("is in")),
+		SINKS,
+		FALLS,
+		SLEEPWALKS,
+		SLEEPS,
+		FLOATS,
+		SNEAKS,
+		PROWLS,
+		CRAWLS,
+		SITS,
+		FLIES,
+		CLIMBS,
+		SWIMS,
+		ARRIVES,
+		LEAVES,
+		IS,
 		;
-		public String arriveVerb;
-		public String verb;
-		private PresentDispositionVerb(final String verb, final String arriveVerb)
+		private String arriveVerb = null;
+		private String verb = null;
+		private PresentDispositionVerb()
 		{
-			this.verb = verb;
-			this.arriveVerb = verb;
+		}
+		public String getArriveVerb()
+		{
+			if(arriveVerb == null)
+			{
+				switch(this)
+				{
+				case SINKS: arriveVerb = CMLib.lang().L("sinks in"); break;
+				case FALLS: arriveVerb = CMLib.lang().L("falls in"); break;
+				case SLEEPWALKS: arriveVerb = CMLib.lang().L("sleepwalks in"); break;
+				case SLEEPS: arriveVerb = CMLib.lang().L("sleeps in"); break;
+				case FLOATS: arriveVerb = CMLib.lang().L("floats in"); break;
+				case SNEAKS: arriveVerb = CMLib.lang().L("sneaks in"); break;
+				case PROWLS: arriveVerb = CMLib.lang().L("prowls in"); break;
+				case CRAWLS: arriveVerb = CMLib.lang().L("crawls in"); break;
+				case SITS: arriveVerb = CMLib.lang().L("sits in"); break;
+				case FLIES: arriveVerb = CMLib.lang().L("flies in"); break;
+				case CLIMBS: arriveVerb = CMLib.lang().L("climbs in"); break;
+				case SWIMS: arriveVerb = CMLib.lang().L("swims in"); break;
+				case ARRIVES: arriveVerb = CMLib.lang().L("arrives in"); break;
+				case LEAVES: arriveVerb = CMLib.lang().L("leaves in"); break;
+				case IS: arriveVerb = CMLib.lang().L("is in"); break;
+				}
+			}
+			return arriveVerb;
+		}
+		public String getVerb()
+		{
+			if(verb == null)
+			{
+				switch(this)
+				{
+				case SINKS: verb = CMLib.lang().L("sinks"); break;
+				case FALLS: verb = CMLib.lang().L("falls"); break;
+				case SLEEPWALKS: verb = CMLib.lang().L("sleepwalks"); break;
+				case SLEEPS: verb = CMLib.lang().L("sleeps"); break;
+				case FLOATS: verb = CMLib.lang().L("floats"); break;
+				case SNEAKS: verb = CMLib.lang().L("sneaks"); break;
+				case PROWLS: verb = CMLib.lang().L("prowls"); break;
+				case CRAWLS: verb = CMLib.lang().L("crawls"); break;
+				case SITS: verb = CMLib.lang().L("sits"); break;
+				case FLIES: verb = CMLib.lang().L("flies"); break;
+				case CLIMBS: verb = CMLib.lang().L("climbs"); break;
+				case SWIMS: verb = CMLib.lang().L("swims"); break;
+				case ARRIVES: verb = CMLib.lang().L("arrives"); break;
+				case LEAVES: verb = CMLib.lang().L("leaves"); break;
+				case IS: verb = CMLib.lang().L("is"); break;
+				}
+			}
+			return verb;
 		}
 	}
 
@@ -2782,13 +2875,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if((seen instanceof Item)
 			&&(((Item)seen).owner() instanceof Room)
 			&&(isWateryRoom((Room)((Item)seen).owner())))
-				return arrive?PresentDispositionVerb.SINKS.arriveVerb:PresentDispositionVerb.SINKS.verb;
+				return arrive?PresentDispositionVerb.SINKS.getArriveVerb():PresentDispositionVerb.SINKS.getVerb();
 			else
 			if((seen instanceof MOB)
 			&&(isWateryRoom(((MOB)seen).location())))
-				return arrive?PresentDispositionVerb.SINKS.arriveVerb:PresentDispositionVerb.SINKS.verb;
+				return arrive?PresentDispositionVerb.SINKS.getArriveVerb():PresentDispositionVerb.SINKS.getVerb();
 			else
-				return arrive?PresentDispositionVerb.FALLS.arriveVerb:PresentDispositionVerb.FALLS.verb;
+				return arrive?PresentDispositionVerb.FALLS.getArriveVerb():PresentDispositionVerb.FALLS.getVerb();
 		}
 		else
 		if(isSleeping(seen))
@@ -2796,39 +2889,39 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(flag_msgType!=ComingOrGoing.IS)
 			{
 				if(seen instanceof MOB)
-					return arrive?PresentDispositionVerb.SLEEPWALKS.arriveVerb:PresentDispositionVerb.SLEEPWALKS.verb;
+					return arrive?PresentDispositionVerb.SLEEPWALKS.getArriveVerb():PresentDispositionVerb.SLEEPWALKS.getVerb();
 				else
-					return arrive?PresentDispositionVerb.FLOATS.arriveVerb:PresentDispositionVerb.FLOATS.verb;
+					return arrive?PresentDispositionVerb.FLOATS.getArriveVerb():PresentDispositionVerb.FLOATS.getVerb();
 			}
 			else
-				return PresentDispositionVerb.SLEEPS.verb;
+				return PresentDispositionVerb.SLEEPS.getVerb();
 		}
 		else
 		if(isSneaking(seen))
-			return arrive?PresentDispositionVerb.SNEAKS.arriveVerb:PresentDispositionVerb.SNEAKS.verb;
+			return arrive?PresentDispositionVerb.SNEAKS.getArriveVerb():PresentDispositionVerb.SNEAKS.getVerb();
 		else
 		if(isHidden(seen))
-			return arrive?PresentDispositionVerb.PROWLS.arriveVerb:PresentDispositionVerb.PROWLS.verb;
+			return arrive?PresentDispositionVerb.PROWLS.getArriveVerb():PresentDispositionVerb.PROWLS.getVerb();
 		else
 		if(isSitting(seen))
 		{
 			if(flag_msgType!=ComingOrGoing.IS)
-				return arrive?PresentDispositionVerb.CRAWLS.arriveVerb:PresentDispositionVerb.CRAWLS.verb;
+				return arrive?PresentDispositionVerb.CRAWLS.getArriveVerb():PresentDispositionVerb.CRAWLS.getVerb();
 			else
 			if(seen instanceof MOB)
-				return PresentDispositionVerb.SITS.verb;
+				return PresentDispositionVerb.SITS.getVerb();
 			else
-				return PresentDispositionVerb.SITS.verb;
+				return PresentDispositionVerb.SITS.getVerb();
 		}
 		else
 		if(isFlying(seen))
-			return arrive?PresentDispositionVerb.FLIES.arriveVerb:PresentDispositionVerb.FLIES.verb;
+			return arrive?PresentDispositionVerb.FLIES.getArriveVerb():PresentDispositionVerb.FLIES.getVerb();
 		else
 		if((isClimbing(seen))&&(flag_msgType!=ComingOrGoing.IS))
-			return arrive?PresentDispositionVerb.CLIMBS.arriveVerb:PresentDispositionVerb.CLIMBS.verb;
+			return arrive?PresentDispositionVerb.CLIMBS.getArriveVerb():PresentDispositionVerb.CLIMBS.getVerb();
 		else
 		if(isSwimmingInWater(seen))
-			return arrive?PresentDispositionVerb.SWIMS.arriveVerb:PresentDispositionVerb.SWIMS.verb;
+			return arrive?PresentDispositionVerb.SWIMS.getArriveVerb():PresentDispositionVerb.SWIMS.getVerb();
 		else
 		if(flag_msgType != null)
 		{
@@ -2838,14 +2931,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(seen instanceof MOB)
 					return ((MOB)seen).charStats().getArriveStr();
 				else
-					return PresentDispositionVerb.ARRIVES.verb;
+					return PresentDispositionVerb.ARRIVES.getVerb();
 			case LEAVES:
 				if(seen instanceof MOB)
 					return ((MOB)seen).charStats().getLeaveStr();
 				else
-					return PresentDispositionVerb.LEAVES.verb;
+					return PresentDispositionVerb.LEAVES.getVerb();
 			default:
-				return PresentDispositionVerb.IS.verb;
+				return PresentDispositionVerb.IS.getVerb();
 			}
 		}
 		return "";
@@ -2853,28 +2946,55 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	private enum DispositionState
 	{
-		CLIMBING(CMLib.lang().L("climbing")),
-		SACRED(CMLib.lang().L("sacred")),
-		EVIL(CMLib.lang().L("evil")),
-		FALLING(CMLib.lang().L("falling")),
-		BOUND(CMLib.lang().L("bound")),
-		FLIES(CMLib.lang().L("flies")),
-		GOOD(CMLib.lang().L("good")),
-		HIDDEN(CMLib.lang().L("hidden")),
-		DARKNESS(CMLib.lang().L("darkness")),
-		INVISIBLE(CMLib.lang().L("invisible")),
-		GLOWING(CMLib.lang().L("glowing")),
-		CLOAKED(CMLib.lang().L("cloaked")),
-		UNSEEABLE(CMLib.lang().L("unseeable")),
-		CRAWLS(CMLib.lang().L("crawls")),
-		SLEEPY(CMLib.lang().L("sleepy")),
-		SNEAKS(CMLib.lang().L("sneaks")),
-		SWIMS(CMLib.lang().L("swims"))
+		CLIMBING,
+		SACRED,
+		EVIL,
+		FALLING,
+		BOUND,
+		FLIES,
+		GOOD,
+		HIDDEN,
+		DARKNESS,
+		INVISIBLE,
+		GLOWING,
+		CLOAKED,
+		UNSEEABLE,
+		CRAWLS,
+		SLEEPY,
+		SNEAKS,
+		SWIMS
 		;
-		public String state;
-		private DispositionState(final String state)
+		private String state = null;
+		private DispositionState()
 		{
-			this.state = state;
+		}
+
+		public String getState()
+		{
+			if(state == null)
+			{
+				switch(this)
+				{
+				case CLIMBING: state = CMLib.lang().L("climbing"); break;
+				case SACRED: state = CMLib.lang().L("sacred"); break;
+				case EVIL: state = CMLib.lang().L("evil"); break;
+				case FALLING: state = CMLib.lang().L("falling"); break;
+				case BOUND: state = CMLib.lang().L("bound"); break;
+				case FLIES: state = CMLib.lang().L("flies"); break;
+				case GOOD: state = CMLib.lang().L("good"); break;
+				case HIDDEN: state = CMLib.lang().L("hidden"); break;
+				case DARKNESS: state = CMLib.lang().L("darkness"); break;
+				case INVISIBLE: state = CMLib.lang().L("invisible"); break;
+				case GLOWING: state = CMLib.lang().L("glowing"); break;
+				case CLOAKED: state = CMLib.lang().L("cloaked"); break;
+				case UNSEEABLE: state = CMLib.lang().L("unseeable"); break;
+				case CRAWLS: state = CMLib.lang().L("crawls"); break;
+				case SLEEPY: state = CMLib.lang().L("sleepy"); break;
+				case SNEAKS: state = CMLib.lang().L("sneaks"); break;
+				case SWIMS: state = CMLib.lang().L("swims"); break;
+				}
+			}
+			return state;
 		}
 	}
 
@@ -2883,45 +3003,45 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(isClimbing(mob))
-			str.append(DispositionState.CLIMBING.state).append(", ");
+			str.append(DispositionState.CLIMBING.getState()).append(", ");
 		if((mob.phyStats().disposition()&PhyStats.IS_EVIL)>0)
 		{
 			if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
-				str.append(DispositionState.SACRED.state).append(", ");
+				str.append(DispositionState.SACRED.getState()).append(", ");
 			else
-				str.append(DispositionState.EVIL.state).append(", ");
+				str.append(DispositionState.EVIL.getState()).append(", ");
 		}
 		if(isFalling(mob))
-			str.append(DispositionState.FALLING.state).append(", ");
+			str.append(DispositionState.FALLING.getState()).append(", ");
 		if(isBound(mob))
-			str.append(DispositionState.BOUND.state).append(", ");
+			str.append(DispositionState.BOUND.getState()).append(", ");
 		if(isFlying(mob))
-			str.append(DispositionState.FLIES.state).append(", ");
+			str.append(DispositionState.FLIES.getState()).append(", ");
 		if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
 		{
 			if((mob.phyStats().disposition()&PhyStats.IS_EVIL)==0)
-				str.append(DispositionState.GOOD.state).append(", ");
+				str.append(DispositionState.GOOD.getState()).append(", ");
 		}
 		if(isHidden(mob))
-			str.append(DispositionState.HIDDEN.state).append(", ");
+			str.append(DispositionState.HIDDEN.getState()).append(", ");
 		if(isInDark(mob))
-			str.append(DispositionState.DARKNESS.state).append(", ");
+			str.append(DispositionState.DARKNESS.getState()).append(", ");
 		if(isInvisible(mob))
-			str.append(DispositionState.INVISIBLE.state).append(", ");
+			str.append(DispositionState.INVISIBLE.getState()).append(", ");
 		if(isGlowing(mob))
-			str.append(DispositionState.GLOWING.state).append(", ");
+			str.append(DispositionState.GLOWING.getState()).append(", ");
 		if(isCloaked(mob))
-			str.append(DispositionState.CLOAKED.state).append(", ");
+			str.append(DispositionState.CLOAKED.getState()).append(", ");
 		if(!isSeeable(mob))
-			str.append(DispositionState.UNSEEABLE.state).append(", ");
+			str.append(DispositionState.UNSEEABLE.getState()).append(", ");
 		if(isSitting(mob))
-			str.append(DispositionState.CRAWLS.state).append(", ");
+			str.append(DispositionState.CRAWLS.getState()).append(", ");
 		if(isSleeping(mob))
-			str.append(DispositionState.SLEEPY.state).append(", ");
+			str.append(DispositionState.SLEEPY.getState()).append(", ");
 		if(isSneaking(mob))
-			str.append(DispositionState.SNEAKS.state).append(", ");
+			str.append(DispositionState.SNEAKS.getState()).append(", ");
 		if(isSwimming(mob))
-			str.append(DispositionState.SWIMS.state).append(", ");
+			str.append(DispositionState.SWIMS.getState()).append(", ");
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();
@@ -2929,27 +3049,50 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	private enum SensesState
 	{
-		DEAF(CMLib.lang().L("deaf")),
-		BLIND(CMLib.lang().L("blind")),
-		CANTMOVE(CMLib.lang().L("can't move")),
-		DETECTMAGIC(CMLib.lang().L("detect magic")),
-		DETECTEVIL(CMLib.lang().L("detect evil")),
-		DETECTGOOD(CMLib.lang().L("detect good")),
-		SEEHIDDEN(CMLib.lang().L("see hidden")),
-		SEEHIDDENITEMS(CMLib.lang().L("see hidden items")),
-		DARKVISION(CMLib.lang().L("darkvision")),
-		INFRAVISION(CMLib.lang().L("infravision")),
-		SEEINVISIBLE(CMLib.lang().L("see invisible")),
-		METALVISION(CMLib.lang().L("metalvision")),
-		SEESNEAKING(CMLib.lang().L("see sneaking")),
-		CANTSMELL(CMLib.lang().L("can't smell")),
-		CANTSPEAK(CMLib.lang().L("can't speak")),
-		CANTEAT(CMLib.lang().L("can't eat"))
+		DEAF,
+		BLIND,
+		CANTMOVE,
+		DETECTMAGIC,
+		DETECTEVIL,
+		DETECTGOOD,
+		SEEHIDDEN,
+		SEEHIDDENITEMS,
+		DARKVISION,
+		INFRAVISION,
+		SEEINVISIBLE,
+		METALVISION,
+		SEESNEAKING,
+		CANTSMELL,
+		CANTSPEAK,
+		CANTEAT
 		;
 		public String state;
-		private SensesState(final String state)
+
+		public String getState()
 		{
-			this.state = state;
+			if(state == null)
+			{
+				switch(this)
+				{
+				case DEAF: state = CMLib.lang().L("deaf"); break;
+				case BLIND: state = CMLib.lang().L("blind"); break;
+				case CANTMOVE: state = CMLib.lang().L("can't move"); break;
+				case DETECTMAGIC: state = CMLib.lang().L("detect magic"); break;
+				case DETECTEVIL: state = CMLib.lang().L("detect evil"); break;
+				case DETECTGOOD: state = CMLib.lang().L("detect good"); break;
+				case SEEHIDDEN: state = CMLib.lang().L("see hidden"); break;
+				case SEEHIDDENITEMS: state = CMLib.lang().L("see hidden items"); break;
+				case DARKVISION: state = CMLib.lang().L("darkvision"); break;
+				case INFRAVISION: state = CMLib.lang().L("infravision"); break;
+				case SEEINVISIBLE: state = CMLib.lang().L("see invisible"); break;
+				case METALVISION: state = CMLib.lang().L("metalvision"); break;
+				case SEESNEAKING: state = CMLib.lang().L("see sneaking"); break;
+				case CANTSMELL: state = CMLib.lang().L("can't smell"); break;
+				case CANTSPEAK: state = CMLib.lang().L("can't speak"); break;
+				case CANTEAT: state = CMLib.lang().L("can't eat"); break;
+				}
+			}
+			return state;
 		}
 	}
 
@@ -2958,38 +3101,38 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(!canHear(mob))
-			str.append(SensesState.DEAF.state).append(", ");
+			str.append(SensesState.DEAF.getState()).append(", ");
 		if(!canSee(mob))
-			str.append(SensesState.BLIND.state).append(", ");
+			str.append(SensesState.BLIND.getState()).append(", ");
 		if(!canMove(mob))
-			str.append(SensesState.CANTMOVE.state).append(", ");
+			str.append(SensesState.CANTMOVE.getState()).append(", ");
 		if(canSeeBonusItems(mob))
-			str.append(SensesState.DETECTMAGIC.state).append(", ");
+			str.append(SensesState.DETECTMAGIC.getState()).append(", ");
 		if(canSeeEvil(mob))
-			str.append(SensesState.DETECTEVIL.state).append(", ");
+			str.append(SensesState.DETECTEVIL.getState()).append(", ");
 		if(canSeeGood(mob))
-			str.append(SensesState.DETECTGOOD.state).append(", ");
+			str.append(SensesState.DETECTGOOD.getState()).append(", ");
 		if(canSeeHidden(mob))
-			str.append(SensesState.SEEHIDDEN.state).append(", ");
+			str.append(SensesState.SEEHIDDEN.getState()).append(", ");
 		else
 		if(canSeeHiddenItems(mob))
-			str.append(SensesState.SEEHIDDENITEMS.state).append(", ");
+			str.append(SensesState.SEEHIDDENITEMS.getState()).append(", ");
 		if(canSeeInDark(mob))
-			str.append(SensesState.DARKVISION.state).append(", ");
+			str.append(SensesState.DARKVISION.getState()).append(", ");
 		if(canSeeInfrared(mob))
-			str.append(SensesState.INFRAVISION.state).append(", ");
+			str.append(SensesState.INFRAVISION.getState()).append(", ");
 		if(canSeeInvisible(mob))
-			str.append(SensesState.SEEINVISIBLE.state).append(", ");
+			str.append(SensesState.SEEINVISIBLE.getState()).append(", ");
 		if(canSeeMetal(mob))
-			str.append(SensesState.METALVISION.state).append(", ");
+			str.append(SensesState.METALVISION.getState()).append(", ");
 		if(canSeeSneakers(mob))
-			str.append(SensesState.SEESNEAKING.state).append(", ");
+			str.append(SensesState.SEESNEAKING.getState()).append(", ");
 		if(!canSmell(mob))
-			str.append(SensesState.CANTSMELL.state).append(", ");
+			str.append(SensesState.CANTSMELL.getState()).append(", ");
 		if(!canSpeak(mob))
-			str.append(SensesState.CANTSPEAK.state).append(", ");
+			str.append(SensesState.CANTSPEAK.getState()).append(", ");
 		if(!canTaste(mob))
-			str.append(SensesState.CANTEAT.state).append(", ");
+			str.append(SensesState.CANTEAT.getState()).append(", ");
 		if(str.toString().endsWith(", "))
 			return str.toString().substring(0,str.length()-2);
 		return str.toString();

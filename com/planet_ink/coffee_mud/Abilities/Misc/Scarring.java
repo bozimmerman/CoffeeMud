@@ -311,12 +311,12 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 						final Tattoo T=(Tattoo)CMClass.getCommon("Defaulttattoo");
 						String what;
 						if(left)
-							what = L("A scarred left "+getProperPartName(c).toLowerCase());
+							what = L("A scarred left @x1",getProperPartName(c).toLowerCase());
 						else
 						if(right)
-							what = L("A scarred right "+getProperPartName(c).toLowerCase());
+							what = L("A scarred right @x1",getProperPartName(c).toLowerCase());
 						else
-							what = L("A scarred "+getProperPartName(c).toLowerCase());
+							what = L("A scarred @x1",getProperPartName(c).toLowerCase());
 						T.set(Wearable.CODES.NAME(wearLoc)+": "+what);
 						scarredLimbs.put(s, T); // preserve left/right
 					}

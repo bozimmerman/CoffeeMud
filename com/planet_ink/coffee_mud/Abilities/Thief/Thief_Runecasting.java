@@ -526,14 +526,16 @@ public class Thief_Runecasting extends ThiefSkill
 											positive = !positive;
 										if(cd == PhyStats.STAT_DISPOSITION)
 										{
-											for(int i=0;i<CMFlagLibrary.IS_DESCS.length;i++)
-												if(CMath.isSet(pStats.getStat(cd), i))
+											final String[] list = CMLib.flags().getDispositionVerbList(pStats.getStat(cd), ",").toLowerCase().split(",");
+											for(final String codeName : list)
+											{
+												if(codeName.trim().length()>0)
 												{
-													final String codeName=CMFlagLibrary.IS_VERBS[i].toLowerCase();
 													final String report = L("I see @x1 @x2. @x3 @x4 @x5",getFTAdjective(positive),A.name().toLowerCase(),
 															getFTVerb(positive), codeName, getFTTime(C,nowC,expireC) );
 													this.reports.add(report);
 												}
+											}
 										}
 										else
 										if(cd == PhyStats.STAT_SENSES)

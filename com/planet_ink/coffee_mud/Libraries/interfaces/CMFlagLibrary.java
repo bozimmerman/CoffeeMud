@@ -1495,6 +1495,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isStillAffectedBy(Physical obj, List<Ability> oneOf, boolean anyTallF);
 
 	/**
+	 * Returns a delimited list of verb description of the disposition
+	 * of the given disposition bitmap.
+	 * @param disposition the bitmap
+	 * @param delimiter the string between verbs
+	 * @return the delimited list of descriptive disposition verbs
+	 */
+	public String getDispositionVerbList(final long disposition, final String delimiter);
+
+	/**
 	 * Returns a command-delimited list of dispassionate description of the disposition
 	 * of the given physical mob, item, whatever.
 	 * @param obj the disposed physical mob, item, whatever
@@ -1674,34 +1683,5 @@ public interface CMFlagLibrary extends CMLibrary
 		CMLib.lang().L("Is unattackable"),
 		CMLib.lang().L("Is something"),
 		CMLib.lang().L("Is Unhelpful")
-	};
-
-	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
-	public static final String[] IS_VERBS= {
-		CMLib.lang().L("Causes Nondetectability"),
-		CMLib.lang().L("Causes hide"),
-		CMLib.lang().L("Causes invisibility"),
-		CMLib.lang().L("Creates Evil aura"),
-		CMLib.lang().L("Creates Good aura"),
-		CMLib.lang().L("Causes sneaking"),
-		CMLib.lang().L("Creates magical aura"),
-		CMLib.lang().L("Creates dark aura"),
-		CMLib.lang().L("Creates golem aura"),
-		CMLib.lang().L("Causes sleeping"),
-		CMLib.lang().L("Causes sitting"),
-		CMLib.lang().L("Allows flying"),
-		CMLib.lang().L("Causes swimming"),
-		CMLib.lang().L("Causes glowing aura"),
-		CMLib.lang().L("Allows climbing"),
-		CMLib.lang().L("Causes falling"),
-		CMLib.lang().L("Causes a light source"),
-		CMLib.lang().L("Causes binding"),
-		CMLib.lang().L("Causes cloaking"),
-		CMLib.lang().L("Causes disappearance"),
-		CMLib.lang().L("Causes unsavability"),
-		CMLib.lang().L("Created from a template"),
-		CMLib.lang().L("Prevents attackability"),
-		CMLib.lang().L("Causes something..."),
-		CMLib.lang().L("Prevents helpful attacks")
 	};
 }

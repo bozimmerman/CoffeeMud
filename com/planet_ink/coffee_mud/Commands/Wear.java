@@ -74,7 +74,7 @@ public class Wear extends StdCommand
 		}
 		else
 		if(locationIndex!=0)
-			str=L("<S-NAME> put(s) <T-NAME> on <S-HIS-HER> @x1.",Wearable.CODES.NAME(locationIndex).toLowerCase());
+			str=L("<S-NAME> put(s) <T-NAME> on <S-HIS-HER> @x1.",Wearable.CODES.instance().name(locationIndex));
 		final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
 		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))

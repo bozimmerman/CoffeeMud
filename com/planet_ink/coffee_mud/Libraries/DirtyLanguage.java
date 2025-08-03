@@ -570,7 +570,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	public boolean insertExpansion(final List<String> MORE_CMDS, final String str, final int m, final int strLen, boolean nothingDone)
 	{
-		final List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
+		final List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\\n",false);
 		MORE_CMDS.set(m,expansion.get(0));
 		String expStr=expansion.get(0);
 		if(expStr.length()<=strLen)
@@ -656,7 +656,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 							for(int i=0;i<=matcher.groupCount();i++)
 								str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
 							if(!workCmdList.get(m).equals(str))
+							{
 								nothingDone=insertExpansion(workCmdList,str,m,strLen,nothingDone);
+							}
 						 }
 					}
 				}

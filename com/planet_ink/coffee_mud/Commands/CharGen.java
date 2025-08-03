@@ -1226,7 +1226,7 @@ public class CharGen extends StdCommand
 		case 6:
 			if(!CMParms.contains(RawMaterial.CODES.NAMES(), val.toUpperCase().trim()))
 			{
-				mob.tell(L("Illegal material/resource type '@x1', values are: "+CMParms.toListString(RawMaterial.CODES.NAMES()),val));
+				mob.tell(L("Illegal material/resource type '@x1', values are: @x2",val,CMParms.toListString(RawMaterial.CODES.NAMES())));
 				return false;
 			}
 			break;

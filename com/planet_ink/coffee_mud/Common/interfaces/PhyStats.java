@@ -600,8 +600,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/**
 	 * STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks
 	 * See also:
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary#IS_DESCS
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary#IS_VERBS
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary
 	 */
 	public static final String[] IS_CODES={
 		"ISUNSEEN",

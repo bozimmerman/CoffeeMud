@@ -230,12 +230,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 			final int y=parameters.indexOf(""+val,x);
 			if((val!=0)&&(y>x))
 			{
-				final StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<CMFlagLibrary.IS_VERBS.length;num++)
-				{
-					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(CMFlagLibrary.IS_VERBS[num]+" ");
-				}
+				final String middle=CMLib.flags().getDispositionVerbList(val, " ");
 				parameters=parameters.substring(0,x)+middle.toString().trim()+parameters.substring(y+((""+val).length()));
 			}
 		}

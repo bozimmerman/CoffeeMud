@@ -177,7 +177,7 @@ public class GenEarring extends GenThinArmor implements BodyToken
 					&&(CMath.bset(where, code))
 					&&(!hasFreePiercing(mob, code)))
 					{
-						mob.tell(L("You need pierced "+Wearable.CODES.NAME(where).toLowerCase()+" to wear that."));
+						mob.tell(L("You need pierced @x1 to wear that.",Wearable.CODES.NAME(where).toLowerCase()));
 						return false;
 					}
 				}
