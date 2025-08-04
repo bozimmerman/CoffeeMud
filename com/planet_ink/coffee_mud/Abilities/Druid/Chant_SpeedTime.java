@@ -109,11 +109,14 @@ public class Chant_SpeedTime extends Chant
 						final MOB M=m.nextElement();
 						if(M!=null)
 						{
-							final long ageMin = M.getAgeMinutes();
-							if(ageMin >=0)
+							synchronized(M)
 							{
-								oldAges.put(M, Long.valueOf(ageMin));
-								M.setAgeMinutes(-1000);
+								final long ageMin = M.getAgeMinutes();
+								if(ageMin >=0)
+								{
+									oldAges.put(M, Long.valueOf(ageMin));
+									M.setAgeMinutes(-ageMin);
+								}
 							}
 						}
 					}
