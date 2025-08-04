@@ -130,15 +130,51 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	protected String				finalDishName		= null;
 	protected int					finalAmount			= 0;
 	protected List<String>			finalRecipe			= null;
-	protected Map<String, Integer>	oldPotContents		= null;
 	protected String				defaultFoodSound	= "sizzle.wav";
 	protected String				defaultDrinkSound	= "liquid.wav";
+
+	protected PairList<PotIngredient, Integer>	potContents		= null;
 
 	public Cooking()
 	{
 		super();
 		displayText=L("You are @x1...",cookWord());
 		verb=cookWord();
+	}
+
+	private static class PotIngredient
+	{
+		public String rscName = null;
+		public String rscCat = null;
+		public String matName = null;
+		public String subType = null;
+		public String secretIdentity = null;
+		public String itemName = null;
+
+		@Override
+		public boolean equals(final Object o)
+		{
+			if(!(o instanceof PotIngredient))
+				return false;
+			final PotIngredient oth = (PotIngredient)o;
+			return java.util.Objects.equals(rscName, oth.rscName) &&
+				java.util.Objects.equals(rscCat, oth.rscCat) &&
+				java.util.Objects.equals(matName, oth.matName) &&
+				java.util.Objects.equals(subType, oth.subType) &&
+				java.util.Objects.equals(secretIdentity, oth.secretIdentity) &&
+				java.util.Objects.equals(itemName, oth.itemName);
+		}
+	}
+
+	private static class Ingredients
+	{
+		final int amount;
+		final List<String> list;
+		public Ingredients(final int amount, final List<String> list)
+		{
+			this.amount=amount;
+			this.list=list;
+		}
 	}
 
 	protected int getDuration(final MOB mob, final int level)
@@ -247,7 +283,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			||(finalAmount<=0)
 			||(!isMineForCooking(mob,cookingPot))
 			||(!meetsLidRequirements(mob,cookingPot))
-			||(!contentsSame(potContents(),oldPotContents))
+			||(!contentsSame(getPotIngredients(),potContents))
 			||(requireFire()
 				&&(!isInnerCookOven(cookingPot,true))
 				&&(getRequiredFire(mob,0)==null)
@@ -370,174 +406,169 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected boolean contentsSame(final Map<String,Integer> h1, final Map<String,Integer> h2)
+	protected boolean contentsSame(final PairList<PotIngredient, Integer> h1, final PairList<PotIngredient, Integer> h2)
 	{
 		if(h1.size()!=h2.size())
 			return false;
-		for(final String key : h1.keySet())
+		for(final Pair<PotIngredient, Integer> p1 : h1)
 		{
-			final Integer INT1=h1.get(key);
-			final Integer INT2=h2.get(key);
-			if((INT1==null)||(INT2==null))
+			final Pair<PotIngredient, Integer> p2 = findContent(p1.first, h2);
+			if(p2 == null)
 				return false;
-			if(INT1.intValue()!=INT2.intValue())
+			if(p1.second.intValue()!=p2.second.intValue())
 				return false;
 		}
 		return true;
 	}
 
-	protected Map<String,Integer> potContents()
+	protected Pair<PotIngredient,Integer> findContent(final PotIngredient i, final PairList<PotIngredient, Integer> potContents)
 	{
-		final Map<String,Integer> h=new Hashtable<String,Integer>();
+		for(final Pair<PotIngredient,Integer> oth : potContents)
+			if(oth.first.equals(i))
+				return oth;
+		return null;
+	}
+
+	protected Pair<PotIngredient,Integer> ensureContent(final PotIngredient i, final PairList<PotIngredient ,Integer> potContents)
+	{
+		Pair<PotIngredient, Integer> p = findContent(i,potContents);
+		if(p == null)
+		{
+			p = new Pair<PotIngredient, Integer>(i,Integer.valueOf(0));
+			potContents.add(p);
+		}
+		return p;
+	}
+
+	protected PairList<PotIngredient,Integer> getPotIngredients()
+	{
+		final PairList<PotIngredient,Integer> potIngredients=new PairArrayList<PotIngredient,Integer>();
 		final Container pot = this.cookingPot;
 		if(pot != null)
 		{
 			if((pot instanceof Drink)
 			&&(((Drink)pot).liquidRemaining()>0))
 			{
+				final PotIngredient i = new PotIngredient();
+				final int amt = ((Drink)pot).liquidRemaining()/10;
+				int material;
 				if(pot instanceof RawMaterial)
-					h.put(RawMaterial.CODES.NAME(((RawMaterial)pot).material())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+				{
+					material = ((RawMaterial)pot).material();
+					i.itemName = pot.Name();
+					i.secretIdentity = pot.secretIdentity();
+				}
 				else
-					h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+				{
+					material = ((Drink)pot).liquidType();
+					i.secretIdentity = "";
+				}
+				i.rscName = RawMaterial.CODES.NAME(material);
+				i.matName = RawMaterial.CODES.MAT_NAME(material);
+				if(i.itemName == null)
+					i.itemName = i.rscName.toLowerCase();
+				final Pair<PotIngredient,Integer> p = ensureContent(i, potIngredients);
+				p.second = Integer.valueOf(amt);
 			}
 			if(pot.owner()==null)
-				return h;
+				return potIngredients;
 			final List<Item> V=getPotContents();
 			for(int v=0;v<V.size();v++)
 			{
 				final Item I=V.get(v);
-				String ing="Unknown";
+				final PotIngredient i = new PotIngredient();
 				if(I instanceof RawMaterial)
 				{
-					ing=RawMaterial.CODES.NAME(I.material());
+					i.rscName=RawMaterial.CODES.NAME(I.material()).toUpperCase();
+					i.matName=RawMaterial.CODES.MAT_NAME(I.material()).toUpperCase();
+					if(((RawMaterial)I).getSubType().trim().length()>0)
+						i.subType = ((RawMaterial)I).getSubType().trim().toUpperCase();
 					if(CMParms.indexOf( RawMaterial.CODES.FISHES(), I.material())>=0)
-						ing+="/FISH";
+						i.rscCat = "FISH";
 					else
 					if(CMParms.indexOf( RawMaterial.CODES.BERRIES(), I.material())>=0)
-						ing+="/BERRIES";
+						i.rscCat = "BERRIES";
+					i.itemName = i.rscName;
 				}
 				else
 				if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 					||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 					||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH))
 				&&(CMParms.parse(I.name()).size()>0))
-					ing=CMParms.parse(I.name()).lastElement().toUpperCase();
+					i.itemName=CMParms.parse(I.name()).lastElement();
 				else
-					ing=I.name();
-				Integer INT=h.get(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
-				if(INT==null)
-					INT=Integer.valueOf(0);
+					i.itemName=I.name();
+				final Pair<PotIngredient,Integer> use = ensureContent(i, potIngredients);
 				if(I instanceof RawMaterial)
-					INT=Integer.valueOf(INT.intValue()+((RawMaterial)I).phyStats().weight());
+					use.second = Integer.valueOf(use.second.intValue() + ((RawMaterial)I).phyStats().weight());
 				else
-					INT=Integer.valueOf(INT.intValue()+1);
-				h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
+					use.second = Integer.valueOf(use.second.intValue() + 1);
 			}
 		}
-		return h;
-	}
-
-	private static class Ingredients
-	{
-		final int amount;
-		final List<String> list;
-		public Ingredients(final int amount, final List<String> list)
-		{
-			this.amount=amount;
-			this.list=list;
-		}
+		return potIngredients;
 	}
 
 	protected Ingredients countIngredients(final List<String> Vr)
 	{
-		final String[] contents=new String[oldPotContents.size()];
-		final int[] amounts=new int[oldPotContents.size()];
-		int numIngredients=0;
-		for(final String ingr  : oldPotContents.keySet())
-		{
-			contents[numIngredients]=ingr;
-			amounts[numIngredients]=oldPotContents.get(contents[numIngredients]).intValue();
-			numIngredients++;
-		}
-
+		final PairList<PotIngredient,int[]> contents=new PairArrayList<PotIngredient,int[]>(potContents.size());
+		for(final Pair<PotIngredient, Integer> ingr  : potContents)
+			contents.add(ingr.first,new int[] { ingr.second.intValue() });
 		int amountMade=0;
-
 		final Ingredients codedList;
-		boolean RanOutOfSomething=false;
-		boolean NotEnoughForThisRun=false;
-		while((!RanOutOfSomething)&&(!NotEnoughForThisRun))
+		final List<String> ranOutOfList=new ArrayList<String>();
+		final List<String> notEnoughList=new ArrayList<String>();
+		while((ranOutOfList.size()==0)&&(notEnoughList.size()==0))
 		{
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				final String ingredient=Vr.get(vr).toUpperCase();
-				if(ingredient.length()>0)
+				final String recipeIngredient=Vr.get(vr).toUpperCase().trim();
+				if(recipeIngredient.length()>0)
 				{
-					int amount=1;
+					int recipeIngredientReqAmt=1;
 					if(vr<Vr.size()-1)
-						amount=CMath.s_int(Vr.get(vr+1));
-					if(amount==0)
-						amount=1;
-					if(amount<0)
-						amount=amount*-1;
-					if(ingredient.equalsIgnoreCase("water"))
-						amount=amount*10;
-					for(int i=0;i<contents.length;i++)
+						recipeIngredientReqAmt=CMath.s_int(Vr.get(vr+1));
+					if(recipeIngredientReqAmt==0)
+						recipeIngredientReqAmt=1;
+					if(recipeIngredientReqAmt<0)
+						recipeIngredientReqAmt=recipeIngredientReqAmt*-1;
+					if(recipeIngredient.equalsIgnoreCase("water"))
+						recipeIngredientReqAmt=recipeIngredientReqAmt*10;
+					for(final Pair<PotIngredient,int[]> i : contents)
 					{
-						final String ingredient2=contents[i].toUpperCase();
-						final int amount2=amounts[i];
-						final int index =ingredient2.indexOf(ingredient+"/");
-						if((index==0)
-						||((index>0)
-							&&(!Character.isLetter(ingredient2.charAt(index-1)))
-							&&(ingredient2.charAt(index-1)!='-')))
+						final int amount2=i.second[0];
+						final PotIngredient potIngredient=i.first;
+						if(this.ingredientMatch(potIngredient, recipeIngredient, false))
 						{
-							amounts[i]=amount2-amount;
-							if(amounts[i]<0)
-								NotEnoughForThisRun=true;
-							if(amounts[i]==0)
-								RanOutOfSomething=true;
+							i.second[0]=amount2-recipeIngredientReqAmt;
+							if(i.second[0]<0)
+								notEnoughList.add(recipeIngredient.toLowerCase());
+							if(i.second[0]==0)
+								ranOutOfList.add(recipeIngredient.toLowerCase());
 						}
 					}
 				}
 			}
-			if(!NotEnoughForThisRun)
+			if(notEnoughList.size()==0)
 				amountMade++;
 		}
-		if(NotEnoughForThisRun)
-		{
-			final List<String> list=new ArrayList<String>();
-			for(int i=0;i<contents.length;i++)
-			{
-				if(amounts[i]<0)
-				{
-					String content=contents[i];
-					if(content.indexOf('/')>=0)
-						content=content.substring(0,content.indexOf('/'));
-					list.add(content);
-				}
-			}
-			codedList=new Ingredients(-amountMade, list);
-		}
+		if(notEnoughList.size()>0)
+			codedList=new Ingredients(-amountMade, notEnoughList);
 		else
 		{
 			final List<String> list=new ArrayList<String>();
-			for(int i=0;i<contents.length;i++)
+			for(final Pair<PotIngredient,int[]> i : contents)
 			{
-				final String ingredient2=contents[i];
-				final int amount2=amounts[i];
+				final PotIngredient potIngredient=i.first;
+				final int amount2=i.second[0];
 				if((amount2>0)
-				&&((!honorHerbs())||(!ingredient2.toUpperCase().startsWith("HERBS/")))
-				&&(!ingredient2.toUpperCase().startsWith("WATER/")))
+				&&((!honorHerbs())||(potIngredient.rscName==null)||(!potIngredient.rscName.equalsIgnoreCase("HERBS")))
+				&&((potIngredient.rscName==null)||(!potIngredient.rscName.equalsIgnoreCase("WATER"))))
 				{
-					final int x=ingredient2.indexOf('/');
-					final int rsc = (x>0)?RawMaterial.CODES.FIND_IgnoreCase(ingredient2.substring(0,x))&RawMaterial.MATERIAL_MASK:-1;
-					if(rsc != RawMaterial.MATERIAL_LIQUID)
-					{
-						String content=contents[i];
-						if(content.indexOf('/')>=0)
-							content=content.substring(0,content.indexOf('/'));
-						list.add(content);
-					}
+					if(potIngredient.rscName == null)
+						list.add(potIngredient.itemName);
+					else
+					if((RawMaterial.CODES.FIND_IgnoreCase(potIngredient.rscName)&RawMaterial.MATERIAL_MASK) != RawMaterial.MATERIAL_LIQUID)
+						list.add(potIngredient.itemName);
 				}
 			}
 			codedList=new Ingredients(amountMade, list);
@@ -545,23 +576,63 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return codedList;
 	}
 
-	private boolean ingredientMatch(final String potIngr, final String recipeIng, final boolean perfectOnly)
+	private boolean ingredientMatch(final PotIngredient potIngr, String recipeIng, final boolean perfectOnly)
 	{
-		final int index=potIngr.toUpperCase().indexOf(recipeIng.toUpperCase()+"/");
+		//TODO:BZ:FINISHME
 		if(recipeIng.length()>0)
 		{
-			if(perfectOnly)
+			recipeIng = recipeIng.toUpperCase().trim();
+			if(potIngr.rscName != null)
 			{
-				if(potIngr.equalsIgnoreCase(recipeIng))
-					return true;
+				if(potIngr.subType != null)
+				{
+					if(potIngr.subType.equals(recipeIng))
+						return true;
+				}
+				if(potIngr.rscCat != null)
+				{
+					if(potIngr.rscCat.equals(recipeIng))
+						return true;
+				}
+				if((potIngr.subType == null) && (potIngr.rscCat == null))
+				{
+					final int rsc = RawMaterial.CODES.FIND_CaseSensitive(recipeIng);
+					if((rsc > 0)&&(recipeIng.equals(potIngr.rscName)))
+						return true;
+					final RawMaterial.Material mat = RawMaterial.Material.find(recipeIng);
+					if((mat != null)&&(recipeIng.equals(potIngr.rscName)))
+						return true;
+				}
+				if(perfectOnly)
+					return false;
+				if(potIngr.rscName != null)
+				{
+					if(potIngr.rscName.equals(recipeIng))
+						return true;
+				}
+				if(potIngr.matName != null)
+				{
+					if(potIngr.matName.equals(recipeIng))
+						return true;
+				}
 			}
 			else
+			if(!perfectOnly)
 			{
-				if((index==0)
-				||((index>0)
-					&&(!Character.isLetter(potIngr.charAt(index-1)))
-					&&(recipeIng.charAt(index-1)!='-')))
+				if(potIngr.itemName != null)
+				{
+					if(potIngr.itemName.toUpperCase().endsWith(recipeIng)
+					&&((potIngr.itemName.length() == recipeIng.length())
+						||(!Character.isLetterOrDigit(potIngr.itemName.charAt(potIngr.itemName.length()-recipeIng.length())))))
 						return true;
+				}
+				if(potIngr.secretIdentity != null)
+				{
+					if(potIngr.secretIdentity.toUpperCase().endsWith(recipeIng)
+					&&((potIngr.secretIdentity.length() == recipeIng.length())
+						||(!Character.isLetterOrDigit(potIngr.secretIdentity.charAt(potIngr.secretIdentity.length()-recipeIng.length())))))
+						return true;
+				}
 			}
 		}
 		return false;
@@ -571,16 +642,16 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		boolean found=false;
 		final String recipeIngredient = recipe.get(RCP_MAININGR).toUpperCase();
-		for(final String potIngredient : oldPotContents.keySet())
+		for(final Pair<PotIngredient,Integer> potIngredient : potContents)
 		{
-			found = ingredientMatch(potIngredient,recipeIngredient,false);
+			found = ingredientMatch(potIngredient.first,recipeIngredient,false);
 			if(found)
 				break;
 		}
 		return found;
 	}
 
-	private boolean isIngredientInRecipe(final String potIngredient, final List<String> recipe, final boolean perfectOnly)
+	private boolean isIngredientInRecipe(final PotIngredient potIngredient, final List<String> recipe, final boolean perfectOnly)
 	{
 		boolean found = false;
 		for(int vr=RCP_MAININGR;vr<recipe.size();vr+=2)
@@ -593,12 +664,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return found;
 	}
 
-	private boolean isIngredientInPot(final String recipeIngredient, final Set<String> potContents, final boolean perfectOnly)
+	private boolean isIngredientInPot(final String recipeIngredient, final PairList<PotIngredient, Integer> potContents, final boolean perfectOnly)
 	{
 		boolean found = false;
-		for(final String potIngredient : potContents)
+		for(final Pair<PotIngredient, Integer> potIngredient : potContents)
 		{
-			found = ingredientMatch(potIngredient.toUpperCase(), recipeIngredient, perfectOnly);
+			found = ingredientMatch(potIngredient.first, recipeIngredient, perfectOnly);
 			if(found)
 				break;
 		}
@@ -608,22 +679,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	private List<String> extraIngredientsInPot(final List<String> Vr, final boolean perfectOnly)
 	{
 		final List<String> extra=new ArrayList<String>();
-		for(final String potIngredient : oldPotContents.keySet())
+		for(final Pair<PotIngredient,Integer> potIngredient : potContents)
 		{
 			boolean found;
-			if(honorHerbs()&&potIngredient.toUpperCase().startsWith("HERBS/")) // herbs exception
+			if(honorHerbs()&&potIngredient.first.rscName.toUpperCase().equals("HERBS")) // herbs exception
 				found=true;
 			else
-				found = isIngredientInRecipe(potIngredient, Vr, perfectOnly);
+				found = isIngredientInRecipe(potIngredient.first, Vr, perfectOnly);
 			if(!found)
-			{
-				final String content;
-				if(potIngredient.indexOf('/')>=0)
-					content=potIngredient.substring(0,potIngredient.indexOf('/'));
-				else
-					content = potIngredient;
-				extra.add(content);
-			}
+				extra.add(potIngredient.first.itemName);
 		}
 		return extra;
 	}
@@ -640,7 +704,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				int amount=1;
 				if(vr<Vr.size()-1)
 					amount=CMath.s_int(Vr.get(vr+1));
-				final boolean found= isIngredientInPot(recipeIngredient, oldPotContents.keySet(), perfectOnly);
+				final boolean found= isIngredientInPot(recipeIngredient, potContents, perfectOnly);
 				if(amount>=0)
 				{
 					if(!found)
@@ -1102,7 +1166,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		buildingI=null;
 		finalDishName=null;
 		messedUp=false;
-		oldPotContents=null;
+		potContents=null;
 		activity = CraftingActivity.CRAFTING;
 		final List<List<String>> allRecipes=addRecipes(mob,loadRecipes());
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
@@ -1287,7 +1351,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=getDuration(mob, 1);
-		oldPotContents=potContents();
+		potContents=getPotIngredients();
 
 		//***********************************************
 		//* figure out recipe

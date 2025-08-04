@@ -90,7 +90,9 @@ public class Modify extends StdCommand
 				final MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					final Item I = srchRoom.findItem(null, rest);
+					Item I = srchRoom.findItem(null, rest);
+					if(I == null)
+						I=mob.fetchItem(null, Wearable.FILTER_ANY, rest);
 					if(I instanceof Container)
 						srchContainer=I;
 					else
@@ -3144,7 +3146,9 @@ public class Modify extends StdCommand
 						final MOB M=srchRoom.fetchInhabitant(rest);
 						if(M==null)
 						{
-							final Item I = srchRoom.findItem(null, rest);
+							Item I = srchRoom.findItem(null, rest);
+							if(I == null)
+								I=mob.fetchItem(null, Wearable.FILTER_ANY, rest);
 							if(I instanceof Container)
 								srchContainer=I;
 							else
