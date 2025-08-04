@@ -2762,7 +2762,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				&&(M.playerStats().getAccount()!=null))
 					return M.playerStats().getAccount().getAccountName();
 				return "";
-			case AGE:
+			case AGEMINS:
 				return Long.valueOf(M.getAgeMinutes());
 			case CHANNELMASK:
 				return Integer.valueOf((M.playerStats()!=null)?M.playerStats().getChannelMask():0);
@@ -3080,7 +3080,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			case ACCOUNT:
 				return;
-			case AGE:
+			case AGEMINS:
 				M.setAgeMinutes(CMath.s_long(""+value));
 				break;
 			case CHANNELMASK:

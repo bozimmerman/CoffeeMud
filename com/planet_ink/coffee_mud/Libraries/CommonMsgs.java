@@ -894,7 +894,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob==null)||(CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
 			return;
 		final long minutesEllapsed=(millisSinceLast / 60000);
-		mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
+		if(minutesEllapsed > 0)
+			mob.setAgeMinutes(mob.getAgeMinutes()+minutesEllapsed); // this is really minutes
 		if((minutesEllapsed>0)
 		&&((!CMLib.flags().isCloaked(mob))
 		  ||(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))))

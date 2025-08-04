@@ -874,7 +874,7 @@ public interface PlayerLibrary extends CMLibrary
 		/**
 		 * Long
 		 */
-		AGE,
+		AGEMINS,
 		/**
 		 * List&lt;Coin&gt;
 		 */

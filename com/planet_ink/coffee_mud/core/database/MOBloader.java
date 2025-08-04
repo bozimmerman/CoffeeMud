@@ -544,7 +544,7 @@ public class MOBloader
 			}
 			return "";
 		}
-		case AGE:
+		case AGEMINS:
 			return queryCMCHARLong(name, "CMAGEH");
 		case CHANNELMASK:
 			return Integer.valueOf((queryCMCHARLong(name, "CMCHAN")).intValue());
@@ -940,7 +940,7 @@ public class MOBloader
 		}
 		case ACCOUNT:
 			break; // lets not go here
-		case AGE:
+		case AGEMINS:
 			updateCMCHARLong(name, "CMAGEH", value);
 			break;
 		case CHANNELMASK:
