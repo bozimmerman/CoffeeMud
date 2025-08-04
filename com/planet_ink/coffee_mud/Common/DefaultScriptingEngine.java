@@ -5080,7 +5080,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 					final String arg1=varify(ctx,tt[t+0]);
 					final String arg2=varify(ctx,tt[t+1]);
-					Environmental which=null;
 					if(lastKnownLocation!=null)
 					{
 						final Area A=(lastKnownLocation!=null)?lastKnownLocation.getArea():null;
@@ -5088,6 +5087,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final String arg1t = arg1.trim();
 							final int whichI = CMath.isInteger(arg1t)?CMath.s_int(arg1t): -1;
+							returnable=false;
 							int num=0;
 							for(final Session S : CMLib.sessions().localOnlineIterable())
 							{
@@ -5101,19 +5101,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if((whichI == num)
 									||((whichI<0)&&(mR.fetchInhabitants(arg1t).contains(M))))
 									{
-										which = M;
+										returnable=(CMLib.english().containsString(M.name(),arg2)
+												||CMLib.english().containsString(M.Name(),arg2)
+												||CMLib.english().containsString(M.displayText(),arg2));
 										break;
 									}
 								}
 							}
 						}
 					}
-					if(which==null)
-						returnable=false;
-					else
-						returnable=(CMLib.english().containsString(which.name(),arg2)
-									||CMLib.english().containsString(which.Name(),arg2)
-									||CMLib.english().containsString(which.displayText(),arg2));
 					break;
 				}
 				case 116: // roompc
@@ -7952,7 +7948,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String clean=CMParms.cleanBit(funcParms);
 				final String arg1=varify(ctx,clean);
-				Environmental which=null;
 				final Area A=(lastKnownLocation!=null)?lastKnownLocation.getArea():null;
 				if(A!=null)
 				{
@@ -7970,13 +7965,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((whichI == num)
 							||((whichI<0)&&(mR.fetchInhabitants(arg1t).contains(M))))
 							{
-								which = M;
+								results.append(M.Name());
 								break;
 							}
 						}
 					}
-					if(which!=null)
-						results.append(which.Name());
 				}
 				break;
 			}
