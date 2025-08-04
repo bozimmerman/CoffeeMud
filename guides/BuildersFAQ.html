@@ -107,11 +107,7 @@ and you don't know how to setup a firewall with port forwarding, you
 will have a tough time (and our group isn't *really* a network support
 group, so we're not top-notch at helping folks with their network
 troubles).</p>
-      <p>Secondly, if you plan to
-do anything clever, different, or
-otherwise doing anything that isn't using what is within the system
-already, you will either need to know some basic Java coding OR be able
-to bribe a Java savvy friend with beer.</p>
+      
       <p>You should also have some
 idea about what you want to have in
 your game. Yes, I know this sounds obvious, but it gets overlooked.
@@ -135,11 +131,14 @@ Many times people will expand on suggestions or have fixes for bugs for
 you pretty quickly.</p>
       <h3><a name="q03" id="q03">Does CoffeeMud support
 Remorting?</a></h3>
-      <p>Yes, in its own way. Here
-is the HELP REMORT entry:</p>
-      <p>Remorting requires
-careful planning and, if you don't have the
-benefits of certain Druidic chants, lots of time. Remorting is done
+      <p>Yes, in several different ways. Here
+is the HELP entry for the REMORT command:</p><p>Causes
+your player to lose all or most of their levels, skills, stats, and
+other personal attributes, without ever losing your equipment, bank
+accounts,<br />properties, or clan affiliation.&nbsp; This allows you
+to try a different directionwith your character.&nbsp; See also help on
+PAST LIFE. Remorting requirements: Allows only levels greater than 60. </p>
+      <p>Remorting can also be done
 through your children. Children are created by using the MATE social
 with a member of the opposite sex while the both of you are suitably
 undressed. If pregnancy occurs in the female, birth will occur some 10
@@ -157,16 +156,6 @@ if one of them is a Human and the other is not. Racial benefits will be
 split between the mother and father, though children will have a bonus
 to their maximum stats when they become a player, making them a good
 choice for playing!</p>
-      <p>If you are looking for
-that traditional remort concept
-revolving around classes, it is not supported. But you can accomplish
-that through setting the INI CLASSYSTEM=MULTI, then do a bit of code
-changing within your class files. For example, you might have 'Super
-Wizard' or something. In that class file:</p>
-      <pre>public boolean qualifiesForThisClass(MOB mob, boolean quiet)<br />{<br /> if((mob.charStats().getClassLevel("Wizard")&lt;30)<br /> &amp;&amp;(mob.charStats().getClassLevel("Power Wizard")&lt;30))<br /> {<br /> if(!quiet)<br /> mob.tell("You aren't a master of wizardry yet.");<br /> return false;<br /> }<br /> return true;<br />}<br /></pre>
-      <p>In that case, the player
-would have to have 30 levels in both
-"Wizard" and "Power Wizard" to qualify for the "Super Wizard" CharClass.</p>
       <h3><a name="q37" id="q37">How can I localize CoffeeMud to
 translate it into other human languages?</a></h3>
       <p>You didn't read the<a href="InstallationGuide.html"> Installation Guide</a> did you? &nbsp;There's a whole section on it!</p>
@@ -174,20 +163,31 @@ translate it into other human languages?</a></h3>
 Building Port?</a></h3>
       <p>No, there is no separate
 port for world content creation. All
-building tools are on-line realtime. It is easy to export and import
+building tools are on-line, real-time. It is easy to export and import
 areas, so you can run more than one copy. This can be essential if you
 are also making coding changes, which can be activated more quickly by
 rebooting your mud than with online code reloads.</p>
       <h3><a name="q05" id="q05">Does CoffeeMud have any
 other combat
-options besides normal, queue, and manual?</a></h3>
-      <p>Yes, CoffeeMud supports a turn-based combat system, though it
-could use some feedback. &nbsp;The way it work is that every player or
+options?</a></h3>
+      <p>Yes, CoffeeMud supports a four different combat systems:</p><ul><li><span style="font-weight: bold;">DEFAULT</span>
+- All standard actions must be used for standard attacks or
+movement.&nbsp; One bonus action is granted per round during combat for
+general use (skills, etc).<span style="font-weight: bold;"></span></li><li><span style="font-weight: bold;">QUEUE</span>
+- All standard actions are dequeued from player commands entry.&nbsp;
+Any remaining unused actions are used for standard attacks or movement.
+&nbsp;This makes it similar to DEFAULT, except that its possible to use
+all your actions on skills or commands with nothing left over for
+standard attacks or movement.<span style="font-weight: bold;"></span></li><li><span style="font-weight: bold;">MANUAL</span>
+- All standard actions are dequeued from player commands
+entry.&nbsp;&nbsp;Remaining unused actions are lost. &nbsp;This means
+that what is automatic under DEFAULT and QUEUE require the player to
+enter their corresponding commands to execute.<span style="font-weight: bold;"></span></li><li><span style="font-weight: bold;">TURNBASED</span>&nbsp; Players must spend all their actions within a given amount of time.&nbsp;The way it work is that every player or
 mob that is in combat must wait their turn before they can perform
 actions. &nbsp;During their turn, any ticking effects (such as poisons
 or temporary shields) will resume ticking. &nbsp;Each player or mob can
 only perform as many actions as they have action points, which is as
-normal, though more painfully obvious when using the turn-based system.</p>
+normal, though more painfully obvious when using the turn-based system.</li></ul>
       <h3><a name="q06" id="q06">What databases can
 CoffeeMud work with?</a></h3>
       <p>Anything JDBC or ODBC
@@ -195,7 +195,7 @@ friendly. It comes with a flat file system
 called FakeDB so you don't have to setup a database if you want.
 However, products like MySQL and HSQLDB make the system run much faster.</p>
       <h3><a name="q07" id="q07">How do Clans work?</a></h3>
-      <p>First, you need to use
+      <p>For player clans,&nbsp; use
 the '<span style="font-weight: bold;">clancreate</span>' command to
 create a new
 clan, during which you can give your clan a name, and decide how the
@@ -303,7 +303,7 @@ Archons?</a></h3>
       <p>Using your existing
 Archon, issue the command "create item
 ManualArchon". Then have your other player get the manual and read it.</p>
-      <h3><a name="q14" id="q14">How do I make materials
+      <h3><a name="q14" id="q14">How do I instantly create materials
 that the
 Common Skills can use?</a></h3>
       <p>Make sure you create a
@@ -321,7 +321,7 @@ mobile/patrolling mobs
 move?</a></h3>
       <p>Mobile mobs will not move
 if an Archon, or anyone else with
-CMDROOMS or ORDER security privileges is the in the same room as them.</p>
+CMDROOMS or ORDER security privileges is the in the same room as them with SYSMSGS turned on.</p>
       <h3><a name="q17" id="q17">How do I import CoffeeMud
 areas
 (*.cmare)?</a></h3>
