@@ -622,16 +622,18 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				if(potIngr.itemName != null)
 				{
-					if(potIngr.itemName.toUpperCase().endsWith(recipeIng)
-					&&((potIngr.itemName.length() == recipeIng.length())
-						||(!Character.isLetterOrDigit(potIngr.itemName.charAt(potIngr.itemName.length()-recipeIng.length())))))
+					final String s = potIngr.itemName.toUpperCase();
+					if(s.endsWith(recipeIng)
+					&&((s.length() == recipeIng.length())
+						||(!Character.isLetterOrDigit(s.charAt(s.length()-recipeIng.length()-1)))))
 						return true;
 				}
 				if(potIngr.secretIdentity != null)
 				{
-					if(potIngr.secretIdentity.toUpperCase().endsWith(recipeIng)
-					&&((potIngr.secretIdentity.length() == recipeIng.length())
-						||(!Character.isLetterOrDigit(potIngr.secretIdentity.charAt(potIngr.secretIdentity.length()-recipeIng.length())))))
+					final String s = potIngr.secretIdentity.toUpperCase();
+					if(s.endsWith(recipeIng)
+					&&((s.length() == recipeIng.length())
+						||(!Character.isLetterOrDigit(s.charAt(s.length()-recipeIng.length()-1)))))
 						return true;
 				}
 			}
