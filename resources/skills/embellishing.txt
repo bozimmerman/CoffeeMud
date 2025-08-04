@@ -1,38 +1,38 @@
 #DISPLAY_MASK	ITEM_LEVEL	BUILD_TIME_TICKS	NAME_MASK	MATERIALS_REQUIRED	ZAPPERMASK	CODED_SPELL_LIST
-% fastenings	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	
-% buttons down the front	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO +LEGS	
 a lace collar	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a high collar	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a deep hood	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
-a %-trimmed hood	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
-a % inner lining	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-deep pockets	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
-many pockets	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
-% shoulder patches	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO
-puffed sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-cropped sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-elbow-length sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-long sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-short sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-off-the-shoulder sleeves	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a full skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
-a ruffled skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
-a pleated skirt	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
-a high neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a low neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a lace-trimmed neckline	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-a lace-trimmed hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-a scalloped hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-a ruffled hem	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-decorative % stitching along the neckline and hem	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO	
-tiny % encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
-tiny % seashells encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
-tiny % encircling the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
-tiny % roses embroidered around the neckline	1	5	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
-tiny % feathers embroidered around the neckline	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO	
-tiny % roses embroidered along the hem	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS 	
-tiny % feathers embroidered along the hem	1	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
-a shiny % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
-a simple % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +WAIST	
-a polished % buckle	1	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
-a %-encrusted buckle	1	5	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	
+puffed sleeves	1	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a high neckline	2	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+cropped sleeves	3	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a full skirt	3	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+a high collar	4	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+long sleeves	4	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a low neckline	5	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+elbow-length sleeves	6	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a ruffled skirt	6	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+a deep hood	7	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
+short sleeves	7	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a lace-trimmed neckline	8	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+a pleated skirt	9	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
+off-the-shoulder sleeves	10	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+% shoulder patches	10	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+deep pockets	11	20	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+a lace-trimmed hem	11	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+decorative % stitching along the neckline and hem	12	20	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO	
+a scalloped hem	13	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+tiny % encircling the neckline	14	20	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+many pockets	15	30	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+tiny % seashells encircling the neckline	16	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+a ruffled hem	17	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+tiny % encircling the neckline	18	35	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+a %-trimmed hood	19	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
+tiny % roses embroidered around the neckline	20	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+a simple % buckle	21	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +WAIST	
+% buttons down the front	22	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO +LEGS	
+a shiny % buckle	23	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
+tiny % feathers embroidered around the neckline	24	15	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO	
+a % inner lining	25	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+a polished % buckle	26	10	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
+a %-encrusted buckle	27	15	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	
+tiny % roses embroidered along the hem	28	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
+tiny % feathers embroidered along the hem	29	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
+% fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	
