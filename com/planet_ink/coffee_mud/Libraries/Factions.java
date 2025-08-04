@@ -260,15 +260,16 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction getFaction(final String factionID)
+	public Faction getFaction(String factionID)
 	{
 		if(factionID==null)
 			return null;
-		Faction F=factionMap.get(factionID.toUpperCase());
+		factionID = factionID.toUpperCase();
+		Faction F=factionMap.get(factionID);
 		if(F==null)
 		{
-			if(!factionID.toLowerCase().endsWith(".ini"))
-				F=getFaction(factionID+".ini");
+			if(!factionID.endsWith(".INI"))
+				F=getFaction(factionID+".INI");
 		}
 		if(F!=null)
 		{
@@ -276,8 +277,8 @@ public class Factions extends StdLibrary implements FactionManager
 				return null;
 			if(!F.amDestroyed())
 				return F;
-			factionMap.remove(F.factionID().toUpperCase());
-			Resources.removeResource(F.factionID());
+			factionMap.remove(factionID);
+			Resources.removeResource(factionID);
 			return null;
 		}
 		if(CMSecurity.isFactionDisabled(factionID))
@@ -290,7 +291,7 @@ public class Factions extends StdLibrary implements FactionManager
 		{
 			final Faction newF=buildFactionFromXML(buf, factionID);
 			if(newF != null)
-				factionMap.put(factionID.toUpperCase(), newF);
+				factionMap.put(factionID, newF);
 			return newF;
 		}
 		return null;

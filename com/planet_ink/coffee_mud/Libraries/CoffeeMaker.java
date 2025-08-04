@@ -6268,15 +6268,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final XMLTag mblk=mV.get(m);
 					final Integer amt = Integer.valueOf(mblk.value());
 					final String ID = mblk.getParmValue("ID");
-					if(mob != null)
+					if((ID != null)&&(ID.length()>0))
 					{
 						final Faction F = CMLib.factions().getFaction(ID);
 						if(F==null)
-							mob.addFaction(ID,amt.intValue());
+						{
+							if(mob != null)
+								mob.addFaction(ID,amt.intValue());
+							V.add(new Pair<String,Integer>(ID,amt));
+						}
 						else
+						{
 							mob.addFaction(F.factionID(),amt.intValue());
+							V.add(new Pair<String,Integer>(F.factionID(),amt));
+						}
 					}
-					V.add(new Pair<String,Integer>(ID,amt));
 				}
 			}
 		}
