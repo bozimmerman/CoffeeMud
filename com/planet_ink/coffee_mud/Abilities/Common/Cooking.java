@@ -498,6 +498,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					i.itemName=CMParms.parse(I.name()).lastElement();
 				else
 					i.itemName=I.name();
+				i.secretIdentity = I.secretIdentity();
 				final Pair<PotIngredient,Integer> use = ensureContent(i, potIngredients);
 				if(I instanceof RawMaterial)
 					use.second = Integer.valueOf(use.second.intValue() + ((RawMaterial)I).phyStats().weight());
