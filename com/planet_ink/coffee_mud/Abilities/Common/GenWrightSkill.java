@@ -51,7 +51,6 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	@Override
 	public String ID()
 	{
-
 		return ID;
 	}
 

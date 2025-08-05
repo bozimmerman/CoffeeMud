@@ -183,6 +183,17 @@ public class Poison extends StdAbility implements HealthCondition
 			return L("Suffering from @x1 poisoning.", name());
 	}
 
+	protected void getAddicted(final MOB mob, final MOB targetMOB)
+	{
+		Ability A=targetMOB.fetchEffect("Addictions");
+		if(A==null)
+		{
+			A=CMClass.getAbility("Addictions");
+			if(A!=null)
+				A.invoke(mob, new XVector<String>("effect:"+ID()), null, true, 0);
+		}
+	}
+
 	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		MOB poisoner=invoker;
@@ -228,15 +239,7 @@ public class Poison extends StdAbility implements HealthCondition
 						if((affected instanceof Drink)
 						||(affected instanceof Food)
 						||(affected instanceof MagicDust))
-						{
-							Ability A=targetMOB.fetchEffect("Addictions");
-							if(A==null)
-							{
-								A=CMClass.getAbility("Addictions");
-								if(A!=null)
-									A.invoke(mob, new XVector<String>("effect:"+ID()), null, true, 0);
-							}
-						}
+							getAddicted(mob, targetMOB);
 					}
 					return true;
 				}

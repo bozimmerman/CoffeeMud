@@ -577,27 +577,49 @@ public class AbilityData extends StdWebMacro
 					String old=httpReq.getUrlParameter("CLASSIFICATION_ACODE");
 					if(old==null)
 						old=""+(A.classificationCode()&Ability.ALL_ACODES);
+					if(A instanceof ItemCraftor)
+					{
+						final int i=Ability.ACODE_COMMON_SKILL;
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+					}
+					else
+					if(A instanceof ItemCollection)
+					{
+						final int i = Ability.ACODE_COMMON_SKILL;
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+					}
+					else
+					if(A instanceof Language)
+					{
+						final int i = Ability.ACODE_LANGUAGE;
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+					}
+					else
+					if(A instanceof Trap)
+					{
+						final int i = Ability.ACODE_TRAP;
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+					}
+					else
+					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+					{
+						final int i = Ability.ACODE_POISON;
+						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+					}
+					else
 					for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 					{
-						if(A instanceof ItemCraftor)
+						switch(i)
 						{
-							if(i==Ability.ACODE_COMMON_SKILL)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
-						}
-						else
-						if(A instanceof ItemCollection)
-						{
-							if(i==Ability.ACODE_COMMON_SKILL)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
-						}
-						else
-						if(A instanceof Language)
-						{
-							if(i==Ability.ACODE_LANGUAGE)
-								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
-						}
-						else
+						case Ability.ACODE_COMMON_SKILL:
+						case Ability.ACODE_LANGUAGE:
+						case Ability.ACODE_TRAP:
+						case Ability.ACODE_POISON:
+							break;
+						default:
 							str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE.DESCS.get(i)));
+							break;
+						}
 					}
 					str.append(", ");
 				}

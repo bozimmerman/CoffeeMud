@@ -1635,7 +1635,7 @@ public class Create extends StdCommand
 			CR=(Ability)CMClass.getAbility("GenPoison").copyOf();
 			CR.setStat("CLASS",classD);
 		}
-		CMLib.genEd().modifyGenGatheringSkill(mob,CR,-1);
+		CMLib.genEd().modifyGenPoison(mob,CR,-1);
 		CMLib.database().DBCreateAbility(CR.ID(),"GenPoison",CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}

@@ -1696,6 +1696,47 @@ public class Modify extends StdCommand
 		return true;
 	}
 
+	protected boolean wrongGenAbilityMessage(final MOB mob, final Ability A)
+	{
+		if(A instanceof Language)
+		{
+			mob.tell(L("'@x1' is a language.  Try MODIFY LANGUAGE.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		if(A instanceof ItemCraftor)
+		{
+			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		if(((ItemCraftor)A).getCraftorType()==ItemCraftor.CraftorType.LargeConstructions)
+		{
+			mob.tell(L("'@x1' is a building/wrighting skill.  Try MODIFY WRIGHTSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A instanceof ItemCollection)
+		{
+			mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A instanceof Trap)
+		{
+			mob.tell(L("'@x1' is a trap.  Try MODIFY TRAP.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+		{
+			mob.tell(L("'@x1' is a poison.  Try MODIFY POISON.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		return false;
+	}
+
 	public boolean abilities(final MOB mob, final List<String> commands)
 	throws IOException
 	{
@@ -1718,26 +1759,10 @@ public class Modify extends StdCommand
 		{
 			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
+			return true;
 		}
-		if(A instanceof Language)
-		{
-			mob.tell(L("'@x1' is a language.  Try MODIFY LANGUAGE.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+		if(wrongGenAbilityMessage(mob,A))
 			return false;
-		}
-		if(A instanceof Trap)
-		{
-			mob.tell(L("'@x1' is a trap.  Try MODIFY TRAP.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof ItemCraftor)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
 		CMLib.genEd().modifyGenAbility(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
@@ -1768,22 +1793,12 @@ public class Modify extends StdCommand
 		{
 			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof Language)
-		{
-			mob.tell(L("'@x1' is a language.  Try MODIFY LANGUAGE.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof ItemCraftor)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
+			return true;
 		}
 		if(!(A instanceof Trap))
 		{
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
 			mob.tell(L("'@x1' is not a trap.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
@@ -1792,6 +1807,52 @@ public class Modify extends StdCommand
 		CMLib.genEd().modifyGenTrap(mob,(Trap)A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenTrap",A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
+		return true;
+	}
+
+	public boolean poisons(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY TRAP [ABILITY ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell(L("'@x1' is an invalid ability id.",classID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+		{
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
+			mob.tell(L("'@x1' is not a poison.  Try MODIFY ABILITY.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A.ID().equals("UniPoison"))
+		{
+			mob.tell(L("'@x1' is not a type that can be edited here.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
+		CMLib.genEd().modifyGenPoison(mob,A,-1);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),"GenPoison",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
 		return true;
 	}
@@ -1818,22 +1879,12 @@ public class Modify extends StdCommand
 		{
 			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof ItemCraftor)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof ItemCollection)
-		{
-			mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
+			return true;
 		}
 		if(!(A instanceof Language))
 		{
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
 			mob.tell(L("'@x1' is not a language.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
@@ -1870,24 +1921,11 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		if(A instanceof Language)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
 		if(!(A instanceof ItemCraftor))
 		{
-			if(A instanceof ItemCollection)
-				mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
-			else
-				mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(((ItemCraftor)A).getCraftorType()==ItemCraftor.CraftorType.LargeConstructions)
-		{
-			mob.tell(L("'@x1' is a building/wrighting skill.  Try MODIFY WRIGHTSKILL.",A.ID()));
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
+			mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1923,20 +1961,10 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		if(A instanceof Language)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof ItemCraftor)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
 		if(!(A instanceof ItemCollection))
 		{
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
 			mob.tell(L("'@x1' is not a gathering skill.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
@@ -1945,50 +1973,6 @@ public class Modify extends StdCommand
 		CMLib.genEd().modifyGenGatheringSkill(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenGatheringSkill",A.getStat("ALLXML"));
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
-		return true;
-	}
-
-	public boolean genPoison(final MOB mob, final List<String> commands)
-	throws IOException
-	{
-		if(commands.size()<3)
-		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY POISON [SKILL ID]\n\r"));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-
-		final String classID=CMParms.combine(commands,2);
-		final Ability A=CMClass.getAbility(classID);
-		if(A==null)
-		{
-			mob.tell(L("'@x1' is an invalid ability id.",classID));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(!(A.isGeneric()))
-		{
-			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
-		{
-			mob.tell(L("'@x1' is a not a poison.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(!(A instanceof HealthCondition))
-		{
-			mob.tell(L("'@x1' is a not a poison.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
-		CMLib.genEd().modifyGenPoison(mob,A,-1);
-		CMLib.database().DBDeleteAbility(A.ID());
-		CMLib.database().DBCreateAbility(A.ID(),"GenPoison",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
 		return true;
 	}
@@ -2011,30 +1995,12 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		if(!(A.isGeneric()))
+		if((!(A instanceof ItemCraftor))
+		||(((ItemCraftor)A).getCraftorType()!=ItemCraftor.CraftorType.LargeConstructions))
 		{
-			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(A instanceof Language)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(!(A instanceof ItemCraftor))
-		{
-			if(A instanceof ItemCollection)
-				mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
-			else
-				mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return false;
-		}
-		if(((ItemCraftor)A).getCraftorType()!=ItemCraftor.CraftorType.LargeConstructions)
-		{
-			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
+			mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -2594,7 +2560,7 @@ public class Modify extends StdCommand
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, COMMAND, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
-			+ "TIME, HOUR, UPDATE:, or ROOM");
+			+ "TIME, HOUR, POISON, UPDATE:, or ROOM");
 	}
 
 	@Override
@@ -2703,6 +2669,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
 			traps(mob,commands);
+		}
+		else
+		if(commandType.equals("POISON"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			poisons(mob,commands);
 		}
 		else
 		if(commandType.equals("COMMAND"))

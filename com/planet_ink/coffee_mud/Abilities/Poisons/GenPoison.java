@@ -63,7 +63,7 @@ public class GenPoison extends Poison
 		return (String[]) V(ID, V_TRIG);
 	}
 
-	private static final Object V(final String ID, final int varNum)
+	protected Object V(final String ID, final int varNum)
 	{
 		if(vars.containsKey(ID))
 			return vars.get(ID)[varNum];
@@ -72,7 +72,7 @@ public class GenPoison extends Poison
 		return O[varNum];
 	}
 
-	private static final void SV(final String ID,final int varNum,final Object O)
+	protected void SV(final String ID,final int varNum,final Object O)
 	{
 		if(vars.containsKey(ID))
 			vars.get(ID)[varNum]=O;
@@ -95,7 +95,7 @@ public class GenPoison extends Poison
 		try
 		{
 			final GenPoison A=this.getClass().getDeclaredConstructor().newInstance();
-			A.ID=ID;
+			cloneFix(A);
 			return A;
 		}
 		catch(final Exception e)
@@ -108,6 +108,11 @@ public class GenPoison extends Poison
 	@Override
 	protected void cloneFix(final Ability E)
 	{
+		if(E instanceof GenPoison)
+		{
+			((GenPoison)E).ID=ID;
+			((GenPoison)E).adjusterA = (adjusterA == null) ? null : (Ability)adjusterA.copyOf();
+		}
 	}
 
 	@Override
@@ -116,27 +121,27 @@ public class GenPoison extends Poison
 		return true;
 	}
 
-	private static final Map<String,Object[]> vars=new Hashtable<String,Object[]>();
-	private static final int	V_NAME			= 0;	// S
-	private static final int	V_TRIG			= 1;	// S[]
-	private static final int	V_HELP			= 2;	// S
-	private static final int	V_TICKS			= 3;	// P<S,F>
-	private static final int	V_DELAY			= 4;	// P<S,F>
-	private static final int 	V_DONE			= 5;	// S
-	private static final int	V_START			= 6;	// S
-	private static final int	V_TTELL			= 7;	// S
-	private static final int	V_TRGB			= 8;	// B
-	private static final int	V_ACHA			= 9;	// P<S,F>
-	private static final int	V_AMSG			= 10;	// S
-	private static final int	V_CMSG			= 11;	// S
-	private static final int	V_FMSG			= 12;	// S
-	private static final int	V_ADJS			= 13;	// S
-	private static final int	V_PEAC			= 14;	// B
-	private static final int	V_DAMG			= 15;	// P<S,F>
+	protected static final Map<String,Object[]> vars=new Hashtable<String,Object[]>();
+	protected static final int	V_NAME			= 0;	// S
+	protected static final int	V_TRIG			= 1;	// S[]
+	protected static final int	V_HELP			= 2;	// S
+	protected static final int	V_TICKS			= 3;	// P<S,F>
+	protected static final int	V_DELAY			= 4;	// P<S,F>
+	protected static final int 	V_DONE			= 5;	// S
+	protected static final int	V_START			= 6;	// S
+	protected static final int	V_TTELL			= 7;	// S
+	protected static final int	V_TRGB			= 8;	// B
+	protected static final int	V_ACHA			= 9;	// P<S,F>
+	protected static final int	V_AMSG			= 10;	// S
+	protected static final int	V_CMSG			= 11;	// S
+	protected static final int	V_FMSG			= 12;	// S
+	protected static final int	V_ADJS			= 13;	// S
+	protected static final int	V_PEAC			= 14;	// B
+	protected static final int	V_DAMG			= 15;	// P<S,F>
 
-	private static final int	NUM_VS			= 16;	//
+	protected static final int	NUM_VS			= 16;	//
 
-	private static final Object[] makeEmpty()
+	protected Object[] makeEmpty()
 	{
 		final Object[] O=new Object[NUM_VS];
 		O[V_NAME]="Generic Poison";
@@ -455,8 +460,6 @@ public class GenPoison extends Poison
 			break;
 		case 2:
 			SV(ID, V_NAME, val);
-			if (ID.equalsIgnoreCase("GenPoison"))
-				break;
 			break;
 		case 3:
 			SV(ID, V_HELP, val);
@@ -504,14 +507,13 @@ public class GenPoison extends Poison
 			SV(ID, V_DAMG, GenPoison.makeFormulaPair(val));
 			break;
 		default:
-			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))
+			if(code.equalsIgnoreCase("allxml")&&ID().equalsIgnoreCase("GenPoison"))
 				parseAllXML(val);
 			else
 				super.setStat(code, val);
 			break;
 		}
 	}
-
 
 	@Override
 	public boolean sameAs(final Environmental E)

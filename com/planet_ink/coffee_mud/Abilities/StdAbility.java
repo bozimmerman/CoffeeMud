@@ -680,6 +680,18 @@ public class StdAbility implements Ability
 		}
 	}
 
+	protected void addEffect(final MOB invokerMOB, final Physical affected)
+	{
+		affected.addEffect(this);
+		if(!(affected instanceof MOB))
+			CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
+	}
+
+	protected boolean alreadyAffected(final Physical affected)
+	{
+		return affected.fetchEffect(ID())!=null;
+	}
+
 	@Override
 	public void startTickDown(final MOB invokerMOB, final Physical affected, int tickTime)
 	{
@@ -704,10 +716,10 @@ public class StdAbility implements Ability
 			final Room room=mob.location();
 			if(room==null)
 				return;
-			if(affected.fetchEffect(ID())==null)
+			if(!alreadyAffected(affected))
 			{
 				gmcpAddNotify(mob);
-				affected.addEffect(this);
+				addEffect(invokerMOB, affected);
 				final int ecap=CMProps.getIntVar(CMProps.Int.EFFECTCAP);
 				if(ecap>0)
 				{
@@ -746,14 +758,13 @@ public class StdAbility implements Ability
 		}
 		else
 		{
-			if(affected.fetchEffect(this.ID())==null)
-				affected.addEffect(this);
+			if(!alreadyAffected(affected))
+				addEffect(invokerMOB, affected);
 
 			if(affected instanceof Room)
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverPhyStats();
-			CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		}
 		tickDown=tickTime;
 	}

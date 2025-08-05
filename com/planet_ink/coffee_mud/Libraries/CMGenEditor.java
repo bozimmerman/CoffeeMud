@@ -9590,22 +9590,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Poison name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,help,++showNumber,showFlag,"Duration Formula","TICKS",false);
-			promptStatStr(mob,me,help,++showNumber,showFlag,"Delay Formula","DELAY",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","STARTMSG",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Target Tell","TARGTELLMSG",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Affect Msg","AFFECTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Poison name","NAME",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Duration Formula","TICKS",false);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Delay Formula","DELAY",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","STARTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Target Tell","TARGTELLMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Affect Msg","AFFECTMSG",true);
 			promptStatBool(mob, me, ++showNumber, showFlag, "Affect Target", "AFFECTTARG");
 			promptStatBool(mob, me, ++showNumber, showFlag, "Force Peace", "MAKEPEACE");
-			promptStatStr(mob,me,help,++showNumber,showFlag,"Damage Formula","DAMAGE",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Done Msg","DONEMSG",true);
-			promptStatStr(mob,me,help,++showNumber,showFlag,"Addiction (0-100) Formula","ADDCHANCE",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Cast Msg","CASTMSG",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Cast Fail Msg","FAILMSG",true);
-			promptStatStr(mob,me,CMLib.help().getHelpText("Prop_HaveAdjuster",mob,true),++showNumber,showFlag,"Adjustments","ADJUSTMENTS",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Damage Formula","DAMAGE",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Done Msg","DONEMSG",true);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Addiction (0-100) Formula","ADDCHANCE",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Cast Msg","CASTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Cast Fail Msg","FAILMSG",true);
+			promptRawStatStr(mob,me,CMLib.help().getHelpText("Prop_HaveAdjuster",mob,true),++showNumber,showFlag,"Adjustments","ADJUSTMENTS",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 			if (showFlag < -900)
 			{
 				ok = true;

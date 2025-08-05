@@ -140,6 +140,9 @@ public class Addictions extends StdAbility
 				{
 					final MOB mob=(MOB)ticking;
 					final String name;
+					if(addictedStr.startsWith("effect:name:"))
+						name =addictedStr.toLowerCase().substring(12);
+					else
 					if(addictedStr.startsWith("effect:"))
 					{
 						final Ability A=CMClass.getAbilityPrototype(addictedStr.substring(7));
@@ -215,6 +218,23 @@ public class Addictions extends StdAbility
 					final Environmental content=contents.get(0);
 					for(final String addictedStr : lastFix.keySet())
 					{
+						if(addictedStr.startsWith("effect:name:"))
+						{
+							if(content instanceof Physical)
+							{
+								final String name = addictedStr.substring(12);
+								for(final Enumeration<Ability> e = ((Physical)content).effects();e.hasMoreElements();)
+								{
+									final Ability A = e.nextElement();
+									if(A.Name().equals(name))
+									{
+										puffCredit.put(addictedStr, (Item)msg.target());
+										break;
+									}
+								}
+							}
+						}
+						else
 						if(addictedStr.startsWith("effect:"))
 						{
 							if(content instanceof Physical)
@@ -238,6 +258,23 @@ public class Addictions extends StdAbility
 		final String name = E.name();
 		for(final String addictedStr : lastFix.keySet())
 		{
+			if(addictedStr.startsWith("effect:name:"))
+			{
+				if(E instanceof Physical)
+				{
+					final String ename = addictedStr.substring(12);
+					for(final Enumeration<Ability> e = ((Physical)E).effects();e.hasMoreElements();)
+					{
+						final Ability A = e.nextElement();
+						if(A.Name().equals(ename))
+						{
+							lastFix.get(addictedStr)[0] = System.currentTimeMillis();
+							break;
+						}
+					}
+				}
+			}
+			else
 			if(addictedStr.startsWith("effect:"))
 			{
 				if(E instanceof Physical)
