@@ -919,7 +919,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public void genName(final MOB mob, final Environmental E, final int showNumber, final int showFlag) throws IOException
 	{
-		final String newName=prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false);
+		final String newName=prompt(mob,E.Name(),showNumber,showFlag,L("Name"),false,false);
 		if(newName.equals(E.Name()))
 			return;
 		if((mob.session()==null)
@@ -1016,8 +1016,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genImage(final MOB mob, final Environmental E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setImage(prompt(mob, E.rawImage(), showNumber, showFlag, "MXP Image filename", true, false,
-				"This is the path/filename of your MXP image file for this object."));
+		E.setImage(prompt(mob, E.rawImage(), showNumber, showFlag, L("MXP Image filename"), true, false,
+				L("This is the path/filename of your MXP image file for this object.")));
 	}
 
 	protected void genCorpseData(final MOB mob, final DeadBody I, final int showNumber, final int showFlag)
@@ -1073,7 +1073,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genAuthor(final MOB mob, final Area A, final int showNumber, final int showFlag) throws IOException
 	{
-		A.setAuthorID(prompt(mob, A.getAuthorID(), showNumber, showFlag, "Author", true, false, "Area Author's Name"));
+		A.setAuthorID(prompt(mob, A.getAuthorID(), showNumber, showFlag, L("Author"), true, false, L("Area Author's Name")));
 	}
 
 	protected void genPanelType(final MOB mob, final ElecPanel S, final int showNumber, final int showFlag)
@@ -1606,13 +1606,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public void genDescription(final MOB mob, final Environmental E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setDescription(prompt(mob, E.description(), showNumber, showFlag, "Description", true, true, null));
+		E.setDescription(prompt(mob, E.description(), showNumber, showFlag, L("Description"), true, true, null));
 	}
 
 	protected void genNotes(final MOB mob, final MOB M, final int showNumber, final int showFlag) throws IOException
 	{
 		if(M.playerStats()!=null)
-		M.playerStats().setNotes(prompt(mob,M.playerStats().getNotes(),showNumber,showFlag,"Private notes",true,false,null));
+		M.playerStats().setNotes(prompt(mob,M.playerStats().getNotes(),showNumber,showFlag,L("Private notes"),true,false,null));
 	}
 
 	protected void genPassword(final MOB mob, final MOB M, final int showNumber, final int showFlag)
@@ -1637,14 +1637,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if(A==null)
 			return;
-		A.setEmail(prompt(mob,A.getEmail(),showNumber,showFlag,"Email",true,false,null));
+		A.setEmail(prompt(mob,A.getEmail(),showNumber,showFlag,L("Email"),true,false,null));
 	}
 
 	protected void genBirthday(final MOB mob, final PlayerStats A, final int showNumber, final int showFlag) throws IOException
 	{
 		if(A==null)
 			return;
-		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,"Birthday (d,m,y)",true,false,null));
+		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,L("Birthday (d,m,y)"),true,false,null));
 	}
 
 	@Override
@@ -2125,7 +2125,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newName.equalsIgnoreCase("?"))
 			{
 				if(emptyOK)
-					mob.tell("\n\rNULL=No ability.\n\r");
+					mob.tell(L("\n\rNULL=No ability.\n\r"));
 				mob.tell(CMLib.lister().build3ColTable(mob,CMClass.abilities(),-1).toString());
 			}
 			else
@@ -3058,7 +3058,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if(P.basePhyStats().level()<0)
 			P.basePhyStats().setLevel(1);
-		P.basePhyStats().setLevel(prompt(mob,P.basePhyStats().level(),showNumber,showFlag,"Level"));
+		P.basePhyStats().setLevel(prompt(mob,P.basePhyStats().level(),showNumber,showFlag,L("Level")));
 	}
 
 	protected void genRejuv(final MOB mob, final Physical P, final int showNumber, final int showFlag)
@@ -3110,19 +3110,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genUses(final MOB mob, final Item I, final int showNumber, final int showFlag) throws IOException
 	{
 		if(I instanceof Ammunition)
-			I.setUsesRemaining(prompt(mob,((Ammunition)I).ammunitionRemaining(),showNumber,showFlag,"Ammo Remaining"));
+			I.setUsesRemaining(prompt(mob,((Ammunition)I).ammunitionRemaining(),showNumber,showFlag,L("Ammo Remaining")));
 		else
-			I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Uses Remaining"));
+			I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,L("Uses Remaining")));
 	}
 
 	protected void genMaxCharges(final MOB mob, final Wand W, final int showNumber, final int showFlag) throws IOException
 	{
-		W.setMaxCharges(prompt(mob,W.getMaxCharges(),showNumber,showFlag,"Maximum Uses"));
+		W.setMaxCharges(prompt(mob,W.getMaxCharges(),showNumber,showFlag,L("Maximum Uses")));
 	}
 
 	protected void genCondition(final MOB mob, final Item I, final int showNumber, final int showFlag) throws IOException
 	{
-		I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,"Condition"));
+		I.setUsesRemaining(prompt(mob,I.usesRemaining(),showNumber,showFlag,L("Condition")));
 	}
 
 	@Override
@@ -3207,7 +3207,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genMiscSet(mob,E,showFlag);
 		else
 		{
-			E.setMiscText(prompt(mob, E.text(), showNumber, showFlag, "Misc Text", true, false));
+			E.setMiscText(prompt(mob, E.text(), showNumber, showFlag, L("Misc Text"), true, false));
 		}
 	}
 
@@ -3337,19 +3337,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genHitPoints(final MOB mob, final MOB M, final int showNumber, final int showFlag) throws IOException
 	{
 		if(M.isMonster())
-			M.basePhyStats().setAbility(prompt(mob,M.basePhyStats().ability(),showNumber,showFlag,"Hit Points Bonus Modifier","Hit points = (level*level) + (random*level*THIS)"));
+			M.basePhyStats().setAbility(prompt(mob,M.basePhyStats().ability(),showNumber,showFlag,L("Hit Points Bonus Modifier"),L("Hit points = (level*level) + (random*level*THIS)")));
 		else
-			M.basePhyStats().setAbility(prompt(mob,M.basePhyStats().ability(),showNumber,showFlag,"Ability -- unused"));
+			M.basePhyStats().setAbility(prompt(mob,M.basePhyStats().ability(),showNumber,showFlag,L("Ability -- unused")));
 	}
 
 	protected void genValue(final MOB mob, final Item I, final int showNumber, final int showFlag) throws IOException
 	{
-		I.setBaseValue(prompt(mob,I.baseGoldValue(),showNumber,showFlag,"Base Value"));
+		I.setBaseValue(prompt(mob,I.baseGoldValue(),showNumber,showFlag,L("Base Value")));
 	}
 
 	protected void genWeight(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
-		P.basePhyStats().setWeight(prompt(mob,P.basePhyStats().weight(),showNumber,showFlag,"Weight"));
+		P.basePhyStats().setWeight(prompt(mob,P.basePhyStats().weight(),showNumber,showFlag,L("Weight")));
 	}
 
 	protected void genClanItem(final MOB mob, final ClanItem I, final int showNumber, final int showFlag)
@@ -3395,12 +3395,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genHeight(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
-		P.basePhyStats().setHeight(prompt(mob, P.basePhyStats().height(), showNumber, showFlag, "Height"));
+		P.basePhyStats().setHeight(prompt(mob, P.basePhyStats().height(), showNumber, showFlag, L("Height")));
 	}
 
 	protected void genSize(final MOB mob, final Armor A, final int showNumber, final int showFlag) throws IOException
 	{
-		A.basePhyStats().setHeight(prompt(mob, A.basePhyStats().height(), showNumber, showFlag, "Size"));
+		A.basePhyStats().setHeight(prompt(mob, A.basePhyStats().height(), showNumber, showFlag, L("Size")));
 	}
 
 	@Override
@@ -3457,37 +3457,37 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genCapacity(final MOB mob, final Container E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setCapacity(prompt(mob, E.capacity(), showNumber, showFlag, "Capacity"));
+		E.setCapacity(prompt(mob, E.capacity(), showNumber, showFlag, L("Capacity")));
 	}
 
 	protected void genAttack(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
-		P.basePhyStats().setAttackAdjustment(prompt(mob, P.basePhyStats().attackAdjustment(), showNumber, showFlag, "Attack Adjustment"));
+		P.basePhyStats().setAttackAdjustment(prompt(mob, P.basePhyStats().attackAdjustment(), showNumber, showFlag, L("Attack Adjustment")));
 	}
 
 	protected void genDamage(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
-		P.basePhyStats().setDamage(prompt(mob, P.basePhyStats().damage(), showNumber, showFlag, "Damage"));
+		P.basePhyStats().setDamage(prompt(mob, P.basePhyStats().damage(), showNumber, showFlag, L("Damage")));
 	}
 
 	protected void genBankerCoinInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
-		M.setCoinInterest(prompt(mob, M.getCoinInterest(), showNumber, showFlag, "Coin Interest [% per real day]"));
+		M.setCoinInterest(prompt(mob, M.getCoinInterest(), showNumber, showFlag, L("Coin Interest [% per real day]")));
 	}
 
 	protected void genBankerItemInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
-		M.setItemInterest(prompt(mob, M.getItemInterest(), showNumber, showFlag, "Item Interest [% per real day]"));
+		M.setItemInterest(prompt(mob, M.getItemInterest(), showNumber, showFlag, L("Item Interest [% per real day]")));
 	}
 
 	protected void genBankerChain(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
-		M.setBankChain(prompt(mob, M.bankChain(), showNumber, showFlag, "Bank Chain", false, false));
+		M.setBankChain(prompt(mob, M.bankChain(), showNumber, showFlag, L("Bank Chain"), false, false));
 	}
 
 	protected void genBankerLoanInterest(final MOB mob, final Banker M, final int showNumber, final int showFlag) throws IOException
 	{
-		M.setLoanInterest(prompt(mob, M.getLoanInterest(), showNumber, showFlag, "Loan Interest [% per mud month]"));
+		M.setLoanInterest(prompt(mob, M.getLoanInterest(), showNumber, showFlag, L("Loan Interest [% per mud month]")));
 	}
 
 	protected void genSpeed(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
@@ -3495,18 +3495,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(P instanceof SpaceObject)
 		{
 			if(P instanceof Weapon)
-				P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Max Speed (% of Light)"));
+				P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, L("Max Speed (% of Light)")));
 		}
 		else
-			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, "Actions/Attacks per tick"));
+			P.basePhyStats().setSpeed(prompt(mob, P.basePhyStats().speed(), showNumber, showFlag, L("Actions/Attacks per tick")));
 	}
 
 	protected void genArmor(final MOB mob, final Physical P, final int showNumber, final int showFlag) throws IOException
 	{
 		if(P instanceof MOB)
-			P.basePhyStats().setArmor(prompt(mob,P.basePhyStats().armor(),showNumber,showFlag,"Armor (lower-better)"));
+			P.basePhyStats().setArmor(prompt(mob,P.basePhyStats().armor(),showNumber,showFlag,L("Armor (lower-better)")));
 		else
-			P.basePhyStats().setArmor(prompt(mob,P.basePhyStats().armor(),showNumber,showFlag,"Armor (higher-better)"));
+			P.basePhyStats().setArmor(prompt(mob,P.basePhyStats().armor(),showNumber,showFlag,L("Armor (higher-better)")));
 	}
 
 	protected void genMoney(final MOB mob, final MOB M, final int showNumber, final int showFlag) throws IOException
@@ -3517,7 +3517,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			CMLib.beanCounter().subtractMoney(M,d);
 			M.setMoney((int)Math.round(d));
 		}
-		CMLib.beanCounter().setMoney(M,prompt(mob,M.getMoney(),showNumber,showFlag,"Money"));
+		CMLib.beanCounter().setMoney(M,prompt(mob,M.getMoney(),showNumber,showFlag,L("Money")));
 	}
 
 	protected void genWeaponAmmo(final MOB mob, final Weapon W, final int showNumber, final int showFlag)
@@ -4114,22 +4114,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genSecretIdentity(final MOB mob, final Item E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setSecretIdentity(prompt(mob, E.rawSecretIdentity(), showNumber, showFlag, "Secret Identity", true, false));
+		E.setSecretIdentity(prompt(mob, E.rawSecretIdentity(), showNumber, showFlag, L("Secret Identity"), true, false));
 	}
 
 	protected void genMaterialSubType(final MOB mob, final RawMaterial E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setSubType(prompt(mob, E.getSubType(), showNumber, showFlag, "Rsc Sub-Type", true, false).toUpperCase().trim());
+		E.setSubType(prompt(mob, E.getSubType(), showNumber, showFlag, L("Rsc Sub-Type"), true, false).toUpperCase().trim());
 	}
 
 	protected void genNourishment(final MOB mob, final Food E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setNourishment(prompt(mob, E.nourishment(), showNumber, showFlag, "Nourishment/Eat"));
+		E.setNourishment(prompt(mob, E.nourishment(), showNumber, showFlag, L("Nourishment/Eat")));
 	}
 
 	protected void genBiteSize(final MOB mob, final Food E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setBite(prompt(mob, E.bite(), showNumber, showFlag, "Bite/Eat (0=all)"));
+		E.setBite(prompt(mob, E.bite(), showNumber, showFlag, L("Bite/Eat (0=all)")));
 	}
 
 	protected void genRace(final MOB mob, final MOB M, final int showNumber, final int showFlag)
@@ -4850,7 +4850,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genRideableRideCapacity(final MOB mob, final Rideable E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, "Rider capacity"));
+		E.setRiderCapacity(prompt(mob, E.riderCapacity(), showNumber, showFlag, L("Rider capacity")));
 	}
 
 	protected void genShopkeeperType(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
@@ -5098,7 +5098,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genEconomicsPrejudice(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setPrejudiceFactors(prompt(mob, E.getRawPrejudiceFactors(), showNumber, showFlag, "Prejudice", true, false));
+		E.setPrejudiceFactors(prompt(mob, E.getRawPrejudiceFactors(), showNumber, showFlag, L("Prejudice"), true, false));
 	}
 
 	protected void genEconomicsPriceFactors(final MOB mob, final Economics E, final int showNumber, final int showFlag)
@@ -5225,22 +5225,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genEconomicsBudget(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setBudget(prompt(mob, E.getRawBbudget(), showNumber, showFlag, "Budget", true, false));
+		E.setBudget(prompt(mob, E.getRawBbudget(), showNumber, showFlag, L("Budget"), true, false));
 	}
 
 	protected void genEconomicsDevaluationRate(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setDevalueRate(prompt(mob, E.getRawDevalueRate(), showNumber, showFlag, "Devaluation rate(s)", true, false));
+		E.setDevalueRate(prompt(mob, E.getRawDevalueRate(), showNumber, showFlag, L("Devaluation rate(s)"), true, false));
 	}
 
 	protected void genEconomicsInventoryReset(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setInvResetRate(prompt(mob, E.getRawInvResetRate(), showNumber, showFlag, "Inventory reset rate [ticks]"));
+		E.setInvResetRate(prompt(mob, E.getRawInvResetRate(), showNumber, showFlag, L("Inventory reset rate [ticks]")));
 	}
 
 	protected void genEconomicsIgnoreMask(final MOB mob, final Economics E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setIgnoreMask(prompt(mob, E.getRawIgnoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
+		E.setIgnoreMask(prompt(mob, E.getRawIgnoreMask(), showNumber, showFlag, L("Ignore Mask"), true, false));
 	}
 
 	protected void genItemXML(final MOB mob, final ItemCollection me, final String key, final int showNumber, final int showFlag, final String desc)
@@ -5809,7 +5809,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDeityClericReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setClericRequirements(prompt(mob, E.getClericRequirements(), showNumber, showFlag, "Cleric Requirements", false, false));
+		E.setClericRequirements(prompt(mob, E.getClericRequirements(), showNumber, showFlag, L("Cleric Requirements"), false, false));
 	}
 
 	protected void genDeityClericRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
@@ -5819,7 +5819,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDeityWorshipReq(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, "Worshiper Requirements",false,false));
+		E.setWorshipRequirements(prompt(mob, E.getWorshipRequirements(), showNumber, showFlag, L("Worshiper Requirements"),false,false));
 	}
 
 	protected void genDeityWorshipRitual(final MOB mob, final Deity E, final int showNumber, final int showFlag) throws IOException
@@ -6105,24 +6105,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(buf.toString());
 			return;
 		}
-		A.setPlayerLevel(prompt(mob,A.getPlayerLevel(),showNumber,showFlag,"New Player Level"));
+		A.setPlayerLevel(prompt(mob,A.getPlayerLevel(),showNumber,showFlag,L("New Player Level")));
 	}
 
 	protected void genGridLocaleX(final MOB mob, final GridZones E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setXGridSize(prompt(mob,E.xGridSize(),showNumber,showFlag,"Size (X)"));
+		E.setXGridSize(prompt(mob,E.xGridSize(),showNumber,showFlag,L("Size (X)")));
 	}
 
 	protected void genGridLocaleY(final MOB mob, final GridZones E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setYGridSize(prompt(mob,E.yGridSize(),showNumber,showFlag,"Size (Y)"));
+		E.setYGridSize(prompt(mob,E.yGridSize(),showNumber,showFlag,L("Size (Y)")));
 	}
 
 	protected void genLocationCoords(final MOB mob, final LocationRoom E, final int showNumber, final int showFlag) throws IOException
 	{
 		final double[] newDir=new double[2];
-		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().xyd()),showNumber,showFlag,"Horiz. Dir From Core","This is a horizontal direction in degrees from 0 to 360.",0,360));
-		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().zd()),showNumber,showFlag,"Vert. Dir From Core","This is a vertical direction in degrees from 0 to 360.",0,360));
+		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().xyd()),showNumber,showFlag,L("Horiz. Dir From Core"),L("This is a horizontal direction in degrees from 0 to 360."),0,360));
+		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore().zd()),showNumber,showFlag,L("Vert. Dir From Core"),L("This is a vertical direction in degrees from 0 to 360."),0,360));
 		E.setDirectionFromCore(new Dir3D(newDir));
 	}
 
@@ -6442,12 +6442,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genThirstQuenched(final MOB mob, final Drink E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setThirstQuenched(prompt(mob, E.thirstQuenched(), showNumber, showFlag, "Quenched/Drink"));
+		E.setThirstQuenched(prompt(mob, E.thirstQuenched(), showNumber, showFlag, L("Quenched/Drink")));
 	}
 
 	protected void genDrinkHeld(final MOB mob, final LiquidHolder E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setLiquidHeld(prompt(mob,E.liquidHeld(),showNumber,showFlag,"Amount of Drink Held"));
+		E.setLiquidHeld(prompt(mob,E.liquidHeld(),showNumber,showFlag,L("Amount of Drink Held")));
 		E.setLiquidRemaining(E.liquidHeld());
 	}
 
@@ -6516,7 +6516,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genClanAccept(final MOB mob, final Clan E, final int showNumber, final int showFlag) throws IOException
 	{
-		E.setAcceptanceSettings(prompt(mob, E.getAcceptanceSettings(), showNumber, showFlag, "Clan Qualifications", false, false, CMLib.masking().maskHelp("\n", "disallow")));
+		E.setAcceptanceSettings(prompt(mob, E.getAcceptanceSettings(), showNumber, showFlag, L("Clan Qualifications"), false, false, CMLib.masking().maskHelp("\n", "disallow")));
 	}
 
 	protected void genWeaponRestr(final MOB mob, final CharClass E, final int showNumber, final int showFlag, final String fieldDisplayStr, final String FieldNum, final String field)
@@ -6835,7 +6835,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 				}
 				str=new StringBuilder(str.toString().substring(0,str.length()-2)+". ");
-				str.append("To create a new category, put the word 'new' in front of it. ");
+				str.append(L("To create a new category, put the word 'new' in front of it. "));
 				mob.tell(str.toString());
 			}
 			else
@@ -7924,7 +7924,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(delI!=null)
 			{
 				iV.remove(delI);
-				mob.tell(delI.name()+" deleted.");
+				mob.tell(L("@x1 deleted.",delI.name()));
 			}
 			else
 			{
@@ -7932,13 +7932,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(addI instanceof Weapon)
 				{
 					iV.add((Item)addI.copyOf());
-					mob.tell(addI.name()+" added.");
+					mob.tell(L("@x1 added.",addI.name()));
 				}
 				else
 				if(addI != null)
-					mob.tell("Item in inventory is not a weapon: '"+newName+"'");
+					mob.tell(L("Item in inventory is not a weapon: '@x1'",newName));
 				else
-					mob.tell("Item not found in the list, or in inventory: '"+newName+"'");
+					mob.tell(L("Item not found in the list, or in inventory: '@x1'",newName));
 			}
 			parts.setLength(0);
 			for(final Item I : iV)
@@ -8904,19 +8904,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 
-			promptStatInt(mob,me,++showNumber,showFlag,"Number of Class Names: ","NUMNAME");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Number of Class Names: "),"NUMNAME");
 			final int numNames=CMath.s_int(me.getStat("NUMNAME"));
 			if(numNames<=1)
-				promptStatStr(mob,me,++showNumber,showFlag,"Class Name","NAME0");
+				promptStatStr(mob,me,++showNumber,showFlag,L("Class Name"),"NAME0");
 			else
 			for(int i=0;i<numNames;i++)
 			{
-				promptStatStr(mob,me,++showNumber,showFlag,"Class Name #"+i+": ","NAME"+i);
+				promptStatStr(mob,me,++showNumber,showFlag,L("Class Name #@x1: ",""+i),"NAME"+i);
 				if(i>0)
 				while(!mob.session().isStopped())
 				{
 					final int oldNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
-					promptStatInt(mob,me,++showNumber,showFlag,"Class Name #"+i+" class level: ","NAMELEVEL"+i);
+					promptStatInt(mob,me,++showNumber,showFlag,L("Class Name #@x1 class level: ",""+i),"NAMELEVEL"+i);
 					final int previousNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+(i-1)));
 					final int newNameLevel=CMath.s_int(me.getStat("NAMELEVEL"+i));
 					if((oldNameLevel!=newNameLevel)&&(newNameLevel<(previousNameLevel+1)))
@@ -8929,26 +8929,26 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						break;
 				}
 			}
-			promptStatInt(mob,me,"Use -1 to disable a class Level Cap",++showNumber,showFlag,"Level Cap (?)","LEVELCAP");
-			promptStatStr(mob,me,++showNumber,showFlag,"Base Class","BASE");
+			promptStatInt(mob,me,L("Use -1 to disable a class Level Cap"),++showNumber,showFlag,L("Level Cap (?)"),"LEVELCAP");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Base Class"),"BASE");
 			genClassAvailability(mob,me,++showNumber,showFlag);
-			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"HP/Level Formula","HITPOINTSFORMULA",false);
-			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Mana/Level Formula","MANAFORMULA",false);
-			promptStatInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
-			promptStatInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,L("HP/Level Formula"),"HITPOINTSFORMULA",false);
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,L("Mana/Level Formula"),"MANAFORMULA",false);
+			promptStatInt(mob,me,++showNumber,showFlag,L("Prac/Level"),"LVLPRAC");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Attack/Level"),"LVLATT");
 			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
-			promptStatInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
-			promptStatInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
-			promptStatInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
-			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Move/Level Formula","MOVEMENTFORMULA",false);
+			promptStatInt(mob,me,++showNumber,showFlag,L("Practices/1stLvl"),"FSTPRAC");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Trains/1stLvl"),"FSTTRAN");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Levels/Dmg Pt"),"LVLDAM");
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,L("Move/Level Formula"),"MOVEMENTFORMULA",false);
 			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
 
 			final int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));
-			final boolean newSpells=prompt(mob,armorMinorCode>0,++showNumber,showFlag,"Armor restricts only spells");
+			final boolean newSpells=prompt(mob,armorMinorCode>0,++showNumber,showFlag,L("Armor restricts only spells"));
 			me.setStat("ARMORMINOR",""+(newSpells?CMMsg.TYP_CAST_SPELL:-1));
 
-			promptStatStr(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
-			promptStatStr(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Limitations"),"STRLMT");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Bonuses"),"STRBON");
 			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
 			genMinimumStatQualifications(mob, me,++showNumber,showFlag);
 			genClassRaceQuals(mob, me,++showNumber,showFlag,"Required Races", "RACQUAL");
@@ -8961,24 +8961,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genWeaponMaterials(mob,me,++showNumber,showFlag,"Weapon Materials","NUMWMAT","GETWMAT");
 			genOutfit(mob,me,++showNumber,showFlag);
-			promptStatStr(mob,me,++showNumber,showFlag,"Starting Money","MONEY");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Starting Money"),"MONEY");
 			genClassBuddy(mob,me,++showNumber,showFlag,"Stat-Modifying Class","STATCLASS");
 			genClassBuddy(mob,me,++showNumber,showFlag,"Special Events Class","EVENTCLASS");
-			promptStatChoices(mob,me,null,++showNumber,showFlag,"Sub Class Switch Rule","SUBRUL", CMParms.toStringArray(CharClass.SubClassRule.values()));
-			promptStatInt(mob,me,++showNumber,showFlag,"Max Non-Crafting Skills","MAXNCS");
-			promptStatInt(mob,me,++showNumber,showFlag,"Max Crafting Skills","MAXCRS");
-			promptStatInt(mob,me,++showNumber,showFlag,"Max All-Common Skills","MAXCMS");
-			promptStatInt(mob,me,++showNumber,showFlag,"Max Languages","MAXLGS");
+			promptStatChoices(mob,me,null,++showNumber,showFlag,L("Sub Class Switch Rule"),"SUBRUL", CMParms.toStringArray(CharClass.SubClassRule.values()));
+			promptStatInt(mob,me,++showNumber,showFlag,L("Max Non-Crafting Skills"),"MAXNCS");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Max Crafting Skills"),"MAXCRS");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Max All-Common Skills"),"MAXCMS");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Max Languages"),"MAXLGS");
 			genClassAbilities(mob,me,++showNumber,showFlag);
-			promptStatInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMSSET");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Number of Security Code Sets: "),"NUMSSET");
 			final int numGroups=CMath.s_int(me.getStat("NUMSSET"));
 			for(int i=0;i<numGroups;i++)
 			{
-				promptStatStr(mob,me,++showNumber,showFlag,"Security Codes in Set #"+i,"SSET"+i);
+				promptStatStr(mob,me,++showNumber,showFlag,L("Security Codes in Set #@x1",""+i),"SSET"+i);
 				while(!mob.session().isStopped())
 				{
 					final int oldGroupLevel=CMath.s_int(me.getStat("SSETLEVEL"+i));
-					promptStatInt(mob,me,++showNumber,showFlag,"Class Level for Security Set #"+i+": ","SSETLEVEL"+i);
+					promptStatInt(mob,me,++showNumber,showFlag,L("Class Level for Security Set #@x1: ",""+i),"SSETLEVEL"+i);
 					final int previousGroupLevel=CMath.s_int(me.getStat("SSETLEVEL"+(i-1)));
 					final int newGroupLevel=CMath.s_int(me.getStat("SSETLEVEL"+i));
 					if((oldGroupLevel!=newGroupLevel)
@@ -9023,19 +9023,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Simple ID","ID",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Name (Plural)","PLURALNAME",false);
-			promptStatInt(mob, me,++showNumber, showFlag,"Rank (low=better)", "RANK");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Simple ID"),"ID",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Name"),"NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Name (Plural)"),"PLURALNAME",false);
+			promptStatInt(mob, me,++showNumber, showFlag,L("Rank (low=better)"), "RANK");
 			if((me.getRank()<0)||(me.getRank()>99))
 				me.setRank(0);
-			promptStatDouble(mob, me,++showNumber, showFlag,"Maximum", "MAX");
+			promptStatDouble(mob, me,++showNumber, showFlag,L("Maximum"), "MAX");
 			if((me.getMax()<0)||(me.getMax()>9999))
 				me.setMax(Integer.MAX_VALUE);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);
-			promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
-			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
-			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,"Title Awards","TITLES",true);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Position Mask"),"INNERMASK",false);
+			promptStatBool(mob, me,++showNumber, showFlag,L("Is Shown"), "ISPUBLIC");
+			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,L("Powers"), "FUNCTIONS",Clan.Function.values());
+			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,L("Title Awards"),"TITLES",true);
 
 			if (showFlag < -900)
 			{
@@ -9120,47 +9120,47 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Type Name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Category","CATEGORY",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Short Desc","SHORTDESC",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Long Desc","LONGDESC",60);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Member Mask","REQUIREDMASK",true);
-			promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
-			promptStatBool(mob, me,++showNumber, showFlag,"Is Family", "ISFAMILYONLY");
-			promptStatBool(mob, me,++showNumber, showFlag,"Is Rivalrous", "ISRIVALROUS");
-			promptStatStr(mob, me,null,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Type Name"),"NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Category"),"CATEGORY",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Short Desc"),"SHORTDESC",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Long Desc"),"LONGDESC",60);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Member Mask"),"REQUIREDMASK",true);
+			promptStatBool(mob, me,++showNumber, showFlag,L("Is Public"), "ISPUBLIC");
+			promptStatBool(mob, me,++showNumber, showFlag,L("Is Family"), "ISFAMILYONLY");
+			promptStatBool(mob, me,++showNumber, showFlag,L("Is Rivalrous"), "ISRIVALROUS");
+			promptStatStr(mob, me,null,++showNumber, showFlag,L("Minimum Members"), "OVERRIDEMINMEMBERS",true);
 			if((me.getOverrideMinMembers()!=null)&&((me.getOverrideMinMembers().intValue()<0)||(me.getOverrideMinMembers().intValue()>999)))
 				me.setOverrideMinMembers(null);
 
 			++showNumber;
 			clanGovernmentPositions(mob,me,++showNumber,showFlag);
-			promptStatStr(mob,me,"Use @x1 for the clan level.\n\r"+CMLib.help().getHelpText("FORMULA", mob, true),++showNumber,showFlag,"XP Per Level Formula","XPLEVELFORMULA",true);
-			promptStatBool(mob, me,++showNumber, showFlag,"Conquest Enabled", "CONQUESTENABLED");
+			promptStatStr(mob,me,L("Use @x1 for the clan level.\n\r@x1",CMLib.help().getHelpText("FORMULA", mob, true)),++showNumber,showFlag,L("XP Per Level Formula"),"XPLEVELFORMULA",true);
+			promptStatBool(mob, me,++showNumber, showFlag,L("Conquest Enabled"), "CONQUESTENABLED");
 			if(CMath.s_bool(me.getStat("CONQUESTENABLED")))
 			{
-				promptStatBool(mob, me,++showNumber, showFlag,"Clan Item Loyalty", "CONQUESTITEMLOYALTY");
-				promptStatBool(mob, me,++showNumber, showFlag,"Conq. by Worship", "CONQUESTDEITYBASIS");
+				promptStatBool(mob, me,++showNumber, showFlag,L("Clan Item Loyalty"), "CONQUESTITEMLOYALTY");
+				promptStatBool(mob, me,++showNumber, showFlag,L("Conq. by Worship"), "CONQUESTDEITYBASIS");
 			}
-			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Vote Approved", "VOTEFUNCS",Clan.Function.values());
+			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,L("Vote Approved"), "VOTEFUNCS",Clan.Function.values());
 			if(me.getStat("VOTEFUNCS").length()>0)
 			{
-				promptStatInt(mob, me,++showNumber, showFlag,"Max Vote Days", "MAXVOTEDAYS");
+				promptStatInt(mob, me,++showNumber, showFlag,L("Max Vote Days"), "MAXVOTEDAYS");
 				if((me.getMaxVoteDays()<0)||(me.getMaxVoteDays()>999999))
 					me.setMaxVoteDays(10);
-				promptStatInt(mob, me,++showNumber, showFlag,"Vote Quorum (Pct%)", "VOTEQUORUMPCT");
+				promptStatInt(mob, me,++showNumber, showFlag,L("Vote Quorum (Pct%)"), "VOTEQUORUMPCT");
 				if((me.getVoteQuorumPct()<0)||(me.getVoteQuorumPct()>100))
 					me.setVoteQuorumPct(100);
 			}
-			promptStatChoices(mob,me,CMParms.toListString(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
-			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
-			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
-			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Entry Scriptable","ENTRYSCRIPT",true);
-			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Exit Scriptable","EXITSCRIPT",true);
-			promptStatStr(mob,me,L("Format: VAR1=\"VALUE\" VAR2=\"VALUE\""),++showNumber,showFlag,"Misc Settings","MISCVARS",true);
-			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,"Title Awards","TITLES",true);
+			promptStatChoices(mob,me,CMParms.toListString(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,L("Auto-Promotion"),"AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
+			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,L("Apply Position"),"AUTOROLE",me.getPositions());
+			promptStatChoices(mob,me,CMParms.toListString(me.getPositions()),++showNumber,showFlag,L("Accept Position"),"ACCEPTPOS",me.getPositions());
+			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,L("Entry Scriptable"),"ENTRYSCRIPT",true);
+			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,L("Exit Scriptable"),"EXITSCRIPT",true);
+			promptStatStr(mob,me,L("Format: VAR1=\"VALUE\" VAR2=\"VALUE\""),++showNumber,showFlag,L("Misc Settings"),"MISCVARS",true);
+			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,L("Title Awards"),"TITLES",true);
 
-			genDynamicAbilities(mob,me,"Clan & Char","clan",++showNumber,showFlag);
-			genDynamicEffects(mob,me,"Clan","clan",++showNumber,showFlag);
+			genDynamicAbilities(mob,me,L("Clan & Char"),L("clan"),++showNumber,showFlag);
+			genDynamicEffects(mob,me,L("Clan"),L("clan"),++showNumber,showFlag);
 
 			if (showFlag < -900)
 			{
@@ -9194,43 +9194,40 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			final String varHelp = "You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
-					+ "@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.";
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability/Skill name","NAME",false);
-			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE.DESCS)+","+CMParms.toListString(Ability.DOMAIN.DESCS),++showNumber,showFlag,"Type, Domain","CLASSIFICATION",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
-			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Ticks Between Casts","TICKSBETWEENCASTS",false);
-			promptStatStr(mob,me,varHelp,++showNumber,showFlag,"Duration Override (0=NO)","TICKSOVERRIDE",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Affect String","DISPLAY",true);
-			promptStatBool(mob,me,++showNumber,showFlag,"Is Auto-invoking","AUTOINVOKE");
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);
-			promptStatInt(mob,me,"-1,x,"+Integer.MAX_VALUE+","+Integer.MAX_VALUE+"-(1 to 100)",++showNumber,showFlag,"Override Cost","OVERRIDEMANA");
-			promptStatStr(mob,me,CMParms.toListString(Ability.USAGE_DESCS),++showNumber,showFlag,"Cost Type","USAGEMASK",false);
-			promptStatInt(mob,me,++showNumber,showFlag,"Num. Arguments","NUMARGS");
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
-			promptStatBool(mob,me,++showNumber,showFlag,"Tick/Periodic Affects","TICKAFFECTS");
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
-			promptStatStr(mob,me,CMParms.toListString(Ability.QUALITY_DESCS),++showNumber,showFlag,"Quality Code","QUALITY",true);
-			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
-					CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString() + "\n\r"+varHelp,++showNumber,showFlag,"Affect Adjustments","HERESTATS",true);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Caster Mask","CASTMASK",true);
-			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,"Scriptable Parm","SCRIPT",true);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Target Mask","TARGETMASK",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Fizzle Message","FIZZLEMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Auto-Cast Message","AUTOCASTMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Normal-Cast Message","CASTMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Post-Cast Message","POSTCASTMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Uninvoke Message","UNINVOKEMSG",true);
-			promptStatStr(mob,me,CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,"Attack-Type","ATTACKCODE",true);
-			promptStatStr(mob,me,"The ability ID of a silent effect",++showNumber,showFlag,"Quiet effect ID","MOCKABILITY",true);
-			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
-					CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Public effects","POSTCASTAFFECT",true);
-			promptStatStr(mob,me,"The parameters for this field are LIKE the parameters for this property:\n\r\n\r"+
-					CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString(),++showNumber,showFlag,"Extra castings","POSTCASTABILITY",true);
-			promptStatStr(mob,me,"Enter a damage or healing formula. Use +-*/()?. "+varHelp+" Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",++showNumber,showFlag,"Damage/Healing Formula","POSTCASTDAMAGE",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			final String varHelp = L("You can insert variables into the arguments, such as: @x1=caster level, @x2=target level, @x3=level expertise, "
+					+ "@x4-@x8=x1-x5 expertise, @x9=adjusted caster level.");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Ability/Skill name"),"NAME",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE.DESCS)+","+CMParms.toListString(Ability.DOMAIN.DESCS),++showNumber,showFlag,L("Type, Domain"),"CLASSIFICATION",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,L("Minimum Range"),"MINRANGE",false);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,L("Maximum Range"),"MAXRANGE",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Ticks Between Casts"),"TICKSBETWEENCASTS",false);
+			promptStatStr(mob,me,varHelp,++showNumber,showFlag,L("Duration Override (0=NO)"),"TICKSOVERRIDE",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Affect String"),"DISPLAY",true);
+			promptStatBool(mob,me,++showNumber,showFlag,L("Is Auto-invoking"),"AUTOINVOKE");
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,L("Skill Flags (comma sep)"),"FLAGS",true);
+			promptStatInt(mob,me,L("-1,x,@x1,@x2-(1 to 100)",""+Integer.MAX_VALUE,""+Integer.MAX_VALUE),++showNumber,showFlag,L("Override Cost"),"OVERRIDEMANA");
+			promptStatStr(mob,me,CMParms.toListString(Ability.USAGE_DESCS),++showNumber,showFlag,L("Cost Type"),"USAGEMASK",false);
+			promptStatInt(mob,me,++showNumber,showFlag,L("Num. Arguments"),"NUMARGS");
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,L("Can Affect"),"CANAFFECTMASK",true);
+			promptStatBool(mob,me,++showNumber,showFlag,L("Tick/Periodic Affects"),"TICKAFFECTS");
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,L("Can Target"),"CANTARGETMASK",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.QUALITY_DESCS),++showNumber,showFlag,L("Quality Code"),"QUALITY",true);
+			promptStatStr(mob,me,L("The parameters for this field are LIKE the parameters for this property:\n\r\n\r@x1\n\r@x2",CMLib.help().getHelpText("Prop_HereAdjuster",mob,true).toString(),varHelp),++showNumber,showFlag,L("Affect Adjustments"),"HERESTATS",true);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Caster Mask"),"CASTMASK",true);
+			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,L("Scriptable Parm"),"SCRIPT",true);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Target Mask"),"TARGETMASK",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Fizzle Message"),"FIZZLEMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Auto-Cast Message"),"AUTOCASTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Normal-Cast Message"),"CASTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Post-Cast Message"),"POSTCASTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Uninvoke Message"),"UNINVOKEMSG",true);
+			promptStatStr(mob,me,CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,L("Attack-Type"),"ATTACKCODE",true);
+			promptStatStr(mob,me,L("The ability ID of a silent effect"),++showNumber,showFlag,L("Quiet effect ID"),"MOCKABILITY",true);
+			promptStatStr(mob,me,L("The parameters for this field are LIKE the parameters for this property:\n\r\n\r@x1",CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString()),++showNumber,showFlag,L("Public effects"),"POSTCASTAFFECT",true);
+			promptStatStr(mob,me,L("The parameters for this field are LIKE the parameters for this property:\n\r\n\r@x1",CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString()),++showNumber,showFlag,L("Extra castings"),"POSTCASTABILITY",true);
+			promptStatStr(mob,me,L("Enter a damage or healing formula. Use +-*/()?. @x1 Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",varHelp),++showNumber,showFlag,L("Damage/Healing Formula"),"POSTCASTDAMAGE",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)
 			{
@@ -9264,12 +9261,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Language name","NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Language name"),"NAME",false);
 			if(me.translationLists(me.ID())!=null)
 			{
 				for(int i=0;i<=me.translationLists(me.ID()).size();i++)
 				{
-					promptStatStr(mob,me,null,++showNumber,showFlag,(i+1)+" letter words","WORDS"+(i+1),true);
+					promptStatStr(mob,me,null,++showNumber,showFlag,L("@x1 letter words",""+(i+1)),"WORDS"+(i+1),true);
 				}
 			}
 			++showNumber;
@@ -9348,10 +9345,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 
-			promptStatBool(mob, me, ++showNumber, showFlag, "Is Natural", "NATURALLANG");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Source Verb","VERB",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Translation Verb","TRANVERB",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptStatBool(mob, me, ++showNumber, showFlag, L("Is Natural"), "NATURALLANG");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Source Verb"),"VERB",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Translation Verb"),"TRANVERB",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)
 			{
@@ -9385,17 +9382,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Recipe filename","FILENAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill name"),"NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill verb"),"VERB",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Recipe filename"),"FILENAME",false);
 			genRawMaterials(mob, me, ++showNumber, showFlag);
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can mend","CANMEND");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can refit","CANREFIT");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can mend"),"CANMEND");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can refit"),"CANREFIT");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can bundle"),"CANBUNDLE");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can sit"),"CANSIT");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("MSP file"),"SOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)
 			{
@@ -9429,18 +9426,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Recipe filename","FILENAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill name"),"NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill verb"),"VERB",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Recipe filename"),"FILENAME",false);
 			genRawMaterials(mob, me, ++showNumber, showFlag);
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can mend","CANMEND");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can make doors","CANDOOR");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can re-title","CANTITLE");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can re-desc","CANDESC");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Clan only","CLANONLY");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can mend"),"CANMEND");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can make doors"),"CANDOOR");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can re-title"),"CANTITLE");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can re-desc"),"CANDESC");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Clan only"),"CLANONLY");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("MSP file"),"SOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)
 			{
@@ -9474,14 +9471,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","ACCESS",false);
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can be Ordered","ORDEROK");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"ACCESS",false);
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can be Ordered"),"ORDEROK");
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n", "disallow"),++showNumber,showFlag,
-					"Security Mask","SECMASK",true);
-			promptStatDouble(mob, me, ++showNumber, showFlag, "Action Cost", "ACTCOST");
-			promptStatDouble(mob, me, ++showNumber, showFlag, "Combat Cost", "CBTCOST");
-			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","HELP",null,"");
-			promptStatMsg(mob,me,++showNumber,showFlag,"Help Text","SCRIPT",new Filterer<String>() {
+					L("Security Mask"),"SECMASK",true);
+			promptStatDouble(mob, me, ++showNumber, showFlag, L("Action Cost"), "ACTCOST");
+			promptStatDouble(mob, me, ++showNumber, showFlag, L("Combat Cost"), "CBTCOST");
+			promptStatMsg(mob,me,++showNumber,showFlag,L("Help Text"),"HELP",null,"");
+			promptStatMsg(mob,me,++showNumber,showFlag,L("Help Text"),"SCRIPT",new Filterer<String>() {
 				@Override
 				public boolean passesFilter(final String obj)
 				{
@@ -9495,7 +9492,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					return false;
 				}
-			},"Your script must have a FUNCTION_PROG EXECUTE in it.");
+			},L("Your script must have a FUNCTION_PROG EXECUTE in it."));
 
 			if (showFlag < -900)
 			{
@@ -9531,25 +9528,25 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Trap name","NAME",false);
-			promptStatInt(mob,me,null,++showNumber,showFlag,"Level","BASELEVEL");
-			promptStatBool(mob,me,++showNumber,showFlag,"Is Bomb","ISBOMB");
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Affect","CANAFFECTMASK",true);
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,"Can Target","CANTARGETMASK",true);
-			promptStatInt(mob,me,null,++showNumber,showFlag,"Reset Ticks","PERMRESET");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Trap name"),"NAME",false);
+			promptStatInt(mob,me,null,++showNumber,showFlag,L("Level"),"BASELEVEL");
+			promptStatBool(mob,me,++showNumber,showFlag,L("Is Bomb"),"ISBOMB");
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,L("Can Affect"),"CANAFFECTMASK",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.CAN_DESCS),++showNumber,showFlag,L("Can Target"),"CANTARGETMASK",true);
+			promptStatInt(mob,me,null,++showNumber,showFlag,L("Reset Ticks"),"PERMRESET");
 			me.setStat("ACOMP",modifyComponents(mob, me.getStat("ACOMP"), ++showNumber, showFlag, "Components"));
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Avoid Msg","AVOIDMSG",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Spring Msg","TRIGMSG",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Avoid Msg"),"AVOIDMSG",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Spring Msg"),"TRIGMSG",false);
 			final String dmgHelp = "@x1=trapLevel, @x2=abilityCode, @x3=invokerLevel, @x4=targetLevel";
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Damage Msg","DAMMSG",true);
-			promptStatStr(mob,me,dmgHelp,++showNumber,showFlag,"Damage Formula","DMGF",true);
-			promptStatStr(mob,me,"0,"+CMParms.toListString(Weapon.TYPE_DESCS),++showNumber,showFlag,"Damage Type","DMGT",false);
-			promptStatStr(mob,me,"0,"+CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,"Dmg Msg Type","DMGM",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Damage Msg"),"DAMMSG",true);
+			promptStatStr(mob,me,dmgHelp,++showNumber,showFlag,L("Damage Formula"),"DMGF",true);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Weapon.TYPE_DESCS),++showNumber,showFlag,L("Damage Type"),"DMGT",false);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(CMMsg.TYPE_DESCS),++showNumber,showFlag,L("Dmg Msg Type"),"DMGM",false);
 			me.setStat("ABILITY",genAbilityID(mob, me.getStat("ABILITY"), ++showNumber, showFlag, "Ability ID", true));
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Ability Parms","ABILTXT",true);
-			promptStatInt(mob,me,null,++showNumber,showFlag,"A.Tick Override","ABILTIK");
-			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,"Scriptable Parm","SCRIPT",true);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Ability Parms"),"ABILTXT",true);
+			promptStatInt(mob,me,null,++showNumber,showFlag,L("A.Tick Override"),"ABILTIK");
+			promptStatStr(mob,me,CMLib.help().getHelpText("Scriptable",mob,true).toString(),++showNumber,showFlag,L("Scriptable Parm"),"SCRIPT",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 			if (showFlag < -900)
 			{
 				ok = true;
@@ -9590,22 +9587,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Poison name","NAME",false);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Duration Formula","TICKS",false);
-			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Delay Formula","DELAY",false);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","STARTMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Target Tell","TARGTELLMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Affect Msg","AFFECTMSG",true);
-			promptStatBool(mob, me, ++showNumber, showFlag, "Affect Target", "AFFECTTARG");
-			promptStatBool(mob, me, ++showNumber, showFlag, "Force Peace", "MAKEPEACE");
-			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Damage Formula","DAMAGE",false);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Done Msg","DONEMSG",true);
-			promptRawStatStr(mob,me,help,++showNumber,showFlag,"Addiction (0-100) Formula","ADDCHANCE",false);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Cast Msg","CASTMSG",true);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Cast Fail Msg","FAILMSG",true);
-			promptRawStatStr(mob,me,CMLib.help().getHelpText("Prop_HaveAdjuster",mob,true),++showNumber,showFlag,"Adjustments","ADJUSTMENTS",false);
-			promptRawStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Poison name"),"NAME",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",false);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Duration Formula"),"TICKS",false);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Delay Formula"),"DELAY",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Start Msg"),"STARTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Target Tell"),"TARGTELLMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Affect Msg"),"AFFECTMSG",true);
+			promptStatBool(mob, me, ++showNumber, showFlag, L("Affect Target"), "AFFECTTARG");
+			promptStatBool(mob, me, ++showNumber, showFlag, L("Force Peace"), "MAKEPEACE");
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Damage Formula"),"DAMAGE",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Done Msg"),"DONEMSG",true);
+			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Addiction (0-100) Formula"),"ADDCHANCE",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Cast Msg"),"CASTMSG",true);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Cast Fail Msg"),"FAILMSG",true);
+			promptRawStatStr(mob,me,CMLib.help().getHelpText("Prop_HaveAdjuster",mob,true),++showNumber,showFlag,L("Adjustments"),"ADJUSTMENTS",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 			if (showFlag < -900)
 			{
 				ok = true;
@@ -9638,27 +9635,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Room Mask","ROOMMASK",true);
-			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Player Mask","PLAYERMASK",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill name"),"NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Skill verb"),"VERB",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",false);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Room Mask"),"ROOMMASK",true);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,L("Player Mask"),"PLAYERMASK",true);
 			genRawMaterials(mob, me, ++showNumber, showFlag);
-			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Yield Formula","YIELDFORMULA",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","MSGSTART",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Found Msg","MSGFOUND",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Not Found Msg","MSGNOTFOUND",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Complete Msg","MSGCOMPLETE",false);
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,L("Yield Formula"),"YIELDFORMULA",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Start Msg"),"MSGSTART",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Found Msg"),"MSGFOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Not Found Msg"),"MSGNOTFOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Complete Msg"),"MSGCOMPLETE",false);
 			if(me instanceof ItemCollection)
 				genItemXML(mob,(ItemCollection)me,"ITEMXML",++showNumber,showFlag,"Droppable Items");
-			promptStatInt(mob,me,++showNumber, showFlag,"Min. Ticks", "MINDUR");
-			promptStatInt(mob,me,++showNumber, showFlag,"Base Ticks", "BASEDUR");
-			promptStatInt(mob,me,++showNumber, showFlag,"Found @ Tick", "FINDTICK");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Is Cosmetic Only","ISCOSMETIC");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
-			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
-			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
-			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			promptStatInt(mob,me,++showNumber, showFlag,L("Min. Ticks"), "MINDUR");
+			promptStatInt(mob,me,++showNumber, showFlag,L("Base Ticks"), "BASEDUR");
+			promptStatInt(mob,me,++showNumber, showFlag,L("Found @ Tick"), "FINDTICK");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Is Cosmetic Only"),"ISCOSMETIC");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can sit"),"CANSIT");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can bundle"),"CANBUNDLE");
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("MSP file"),"SOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)
 			{
@@ -10063,7 +10060,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 				case ABSORB:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_AbsorbDamage",mob,true).toString(),
-							++showNumber, showFlag, "MOB Absorptions", var.name(), true);
+							++showNumber, showFlag, L("MOB Absorptions"), var.name(), true);
 					break;
 				case ADJSIZE:
 				{
@@ -10071,18 +10068,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
 					final String oldVal = modSet.getStat(var.name());
-					mob.tell(showNumber+". MOB Adj Size(s): "+modSet.getStat(oldVal)+".");
+					mob.tell(L("@x1. MOB Adj Size(s): @x2.",""+showNumber,modSet.getStat(oldVal)));
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						break;
 					final String height = CMParms.getParmStr(oldVal,"HEIGHT","");
-					String newHeight = sess.prompt("Height ("+height+"): ");
+					String newHeight = sess.prompt(L("Height (@x1): ",height));
 					if(newHeight.length()==0)
 						newHeight=height;
 					else
 					if(!CMath.isNumber(newHeight))
 						newHeight="";
 					final String weight = CMParms.getParmStr(oldVal,"WEIGHT","");
-					String newWeight = sess.prompt("Weight ("+weight+"): ");
+					String newWeight = sess.prompt(L("Weight (@x1): ",weight));
 					if(newWeight.length()==0)
 						newWeight=weight;
 					else
@@ -10099,69 +10096,69 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				case ADJSTAT:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatAdjuster",mob,true).toString(),
-							++showNumber, showFlag, "MOB Stat Adj", var.name(), true);
+							++showNumber, showFlag, L("MOB Stat Adj"), var.name(), true);
 					break;
 				case ADJUST:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_Adjuster",mob,true).toString(),
-							++showNumber, showFlag, "MOB Adjuster", var.name(), true);
+							++showNumber, showFlag, L("MOB Adjuster"), var.name(), true);
 					break;
 				case AEFFECT:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Area Effects", "(Ability Arg)",' ',null, CMEVAL_INSTANCE, ableBehavs));
+							L("Area Effects"), L("(Ability Arg)"),' ',null, CMEVAL_INSTANCE, ableBehavs));
 					break;
 				case ALIGNMENT:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Alignment",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Alignment"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case AREABLURBS:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Area Blurbs", "=\"Value\" ",' ',null, null, null));
+							L("Area Blurbs"), L("=\"Value\" "),' ',null, null, null));
 					break;
 				case ATMOSPHERE:
-					this.promptStatChoices(mob, modSet, CMParms.toListString(rawResourceNames), ++showNumber, showFlag, "Atmosphere", var.name(), rawResourceNames);
+					this.promptStatChoices(mob, modSet, CMParms.toListString(rawResourceNames), ++showNumber, showFlag, L("Atmosphere"), var.name(), rawResourceNames);
 					break;
 				case BEHAVAFFID:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"MOB Behavior Conversion", "=NewBehaviorID",' ',null, CMEVAL_INSTANCE, lowerBehavs));
+							L("MOB Behavior Conversion"), L("=NewBehaviorID"),' ',null, CMEVAL_INSTANCE, lowerBehavs));
 					break;
 				case BEHAVE:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"MOB Behaviors", "(Behave Parms)",' ',null, CMEVAL_INSTANCE, behavs));
+							L("MOB Behaviors"), L("(Behave Parms)"),' ',null, CMEVAL_INSTANCE, behavs));
 					break;
 				case BONUSDAMAGESTAT:
-					this.promptStatChoices(mob, modSet, CMParms.toListString(bonusCharStats), ++showNumber, showFlag, "Bonus Damage Stat", var.name(), bonusCharStats);
+					this.promptStatChoices(mob, modSet, CMParms.toListString(bonusCharStats), ++showNumber, showFlag, L("Bonus Damage Stat"), var.name(), bonusCharStats);
 					break;
 				case CATEGORY:
-					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", null, null, null));
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, L("Category(s)"), null, null, null));
 					break;
 				case OPPOSED:
-					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Opposed(s)",
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, L("Opposed(s)"),
 							CMParms.toListString(planeAble.getAllPlaneKeys()), null, planeAble.getAllPlaneKeys().toArray(new String[0])));
 					break;
 				case DESCRIPTION:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Description",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Description"),var.name(),true);
 					break;
 				case ELITE:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Elite Lvl",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Elite Lvl"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case ENABLE:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"MOB Ability", "(Parms)",' ',null, CMEVAL_INSTANCE, enables));
+							L("MOB Ability"), L("(Parms)"),' ',null, CMEVAL_INSTANCE, enables));
 					break;
 				case FACTIONS:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"MOB Factions", "(Numeric Value)",' ',null, CMEVAL_INSTANCE, factions));
+							L("MOB Factions"), L("(Numeric Value)"),' ',null, CMEVAL_INSTANCE, factions));
 					break;
 				case FATIGUERATE:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Fatigue Rate",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Fatigue Rate"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case HOURS:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Hours/Day",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Hours/Day"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
@@ -10169,50 +10166,50 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					break;
 				case LEVELADJ:
 					this.promptStatStr(mob,modSet,
-							"Number, of formula with @x1 = base areas median level, @x2 = specific mob/item level, @x2 = the plane traveling players level",
-							++showNumber,showFlag,"Level Adjustments",var.name(),true);
+							L("Number, of formula with @x1 = base areas median level, @x2 = specific mob/item level, @x2 = the plane traveling players level"),
+							++showNumber,showFlag,L("Level Adjustments"),var.name(),true);
 					break;
 				case LIKE:
-					this.promptStatChoices(mob, modSet, CMParms.toListString(otherPlaneNames), ++showNumber, showFlag, "Like Plane", var.name(), otherPlaneNames);
+					this.promptStatChoices(mob, modSet, CMParms.toListString(otherPlaneNames), ++showNumber, showFlag, L("Like Plane"), var.name(), otherPlaneNames);
 					break;
 				case MIXRACE:
-					this.promptStatChoices(mob, modSet, CMParms.toListString(otherRaceNames), ++showNumber, showFlag, "Mix Race", var.name(), otherRaceNames);
+					this.promptStatChoices(mob, modSet, CMParms.toListString(otherRaceNames), ++showNumber, showFlag, L("Mix Race"), var.name(), otherRaceNames);
 					break;
 				case MOBCOPY:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"MOB copies",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("MOB copies"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case MOBRESIST:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_Resistance",mob,true).toString(),
-							++showNumber, showFlag, "MOB Resistances", var.name(), true);
+							++showNumber, showFlag, L("MOB Resistances"), var.name(), true);
 					break;
 				case PREFIX:
-					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "MOB Prefix(s)", null, null, null));
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, L("MOB Prefix(s)"), null, null, null));
 					break;
 				case PROMOTIONS:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Promotions", "(Pct Chance)",',',null, null, null));
+							L("Promotions"), L("(Pct Chance)"),',',null, null, null));
 					break;
 				case RECOVERRATE:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Recover Rate",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Recover Rate"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case REFFECT:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Room Effects", "(Ability Arg)",' ',null, CMEVAL_INSTANCE, ableBehavs));
+							L("Room Effects"), L("(Ability Arg)"),' ',null, CMEVAL_INSTANCE, ableBehavs));
 					break;
 				case REQWEAPONS:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Required Weapons", null,' ',null, CMEVAL_INSTANCE, reqWeapons));
+							L("Required Weapons"), null,' ',null, CMEVAL_INSTANCE, reqWeapons));
 					break;
 				case ROOMADJS:
 				{
 					++showNumber;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
-					mob.tell(showNumber+". Room Description Color: "+modSet.getStat(var.name())+".");
+					mob.tell(L("@x1. Room Description Color: @x2.",""+showNumber,modSet.getStat(var.name())));
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						break;
 					final String varVal=modSet.getStat(var.name());
@@ -10228,13 +10225,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						rest=rest.substring(x+1);
 					}
 					final boolean up = sess.confirm("Make uppercase ("+defUp+")? ", defUp);
-					String newChance = sess.prompt("Pct chance ("+chanceStr+")?");
+					String newChance = sess.prompt(L("Pct chance (@x1)?",chanceStr));
 					if(newChance.trim().length()==0)
 						newChance=chanceStr;
 					else
 					if(!CMath.isInteger(newChance))
 						newChance="";
-					final String adjList=promptCommaList(mob, rest, ++showNumber, showFlag, "Adjectives", null, null, null);
+					final String adjList=promptCommaList(mob, rest, ++showNumber, showFlag, L("Adjectives"), null, null, null);
 					if(adjList.trim().length()==0)
 						modSet.remove(var.name());
 					else
@@ -10252,7 +10249,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					++showNumber;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
-					mob.session().rawPrintln(showNumber+". Room Title Color: "+modSet.getStat(var.name())+".");
+					mob.session().rawPrintln(L("@x1. Room Title Color: @x2.",""+showNumber,modSet.getStat(var.name())));
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						break;
 					final String varVal=modSet.getStat(var.name());
@@ -10260,8 +10257,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					String colorCode = varVal;
 					if(defUp.equals("Y"))
 						colorCode=defUp.substring(3).trim();
-					final boolean up = sess.confirm("Make uppercase ("+defUp+")? ", defUp);
-					String roomColorChar = sess.prompt("Color Code ("+colorCode+"): ");
+					final boolean up = sess.confirm(L("Make uppercase (@x1)? ",""+defUp), defUp);
+					String roomColorChar = sess.prompt(L("Color Code (@x1): ",colorCode));
 					if(roomColorChar.trim().length()==0)
 						roomColorChar=colorCode.trim();
 					else
@@ -10275,14 +10272,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				case SETSTAT:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatTrainer",mob,true).toString(),
-							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
+							++showNumber, showFlag, L("MOB Stat Trainer"), var.name(), true);
 					break;
 				case SPECFLAGS:
-					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Spec flag(s)",
+					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, L("Spec flag(s)"),
 									CMParms.toListString(specFlags), CMEVAL_INSTANCE, specFlags),","," ").trim());
 					break;
 				case TRANSITIONAL:
-					promptStatBool(mob,modSet,++showNumber,showFlag,"Transitional",var.name());
+					promptStatBool(mob,modSet,++showNumber,showFlag,L("Transitional"),var.name());
 					if(modSet.containsKey(var.name())
 					&& CMath.s_bool(modSet.get(var.name())))
 						modSet.put(var.name(), "true");
@@ -10290,7 +10287,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						modSet.remove(var.name());
 					break;
 				case WEAPONMAXRANGE:
-					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Max Weap Range",var.name(),true);
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,L("Max Weap Range"),var.name(),true);
 					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
@@ -10343,26 +10340,26 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;
-			promptStatStr(mob,me,++showNumber,showFlag,"Name","NAME");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Name"),"NAME");
 			genCat(mob,me,++showNumber,showFlag);
-			promptStatInt(mob,me,++showNumber,showFlag,"Base Weight","BWEIGHT");
-			promptStatInt(mob,me,++showNumber,showFlag,"Weight Variance","VWEIGHT");
-			promptStatInt(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");
-			promptStatInt(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
-			promptStatInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Base Weight"),"BWEIGHT");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Weight Variance"),"VWEIGHT");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Base Male Height"),"MHEIGHT");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Base Female Height"),"FHEIGHT");
+			promptStatInt(mob,me,++showNumber,showFlag,L("Height Variance"),"VHEIGHT");
 			genRaceAvailability(mob,me,++showNumber,showFlag);
 			genDisableFlags(mob,me,++showNumber,showFlag);
 			genBreathes(mob,me,++showNumber,showFlag);
-			promptStatStr(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
-			promptStatStr(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Leaving text"),"LEAVE");
+			promptStatStr(mob,me,++showNumber,showFlag,L("Arriving text"),"ARRIVE");
 			genRaceBuddy(mob,me,++showNumber,showFlag,"Health Race","HEALTHRACE");
 			genRaceBuddy(mob,me,++showNumber,showFlag,"Event Race","EVENTRACE");
 			genBodyParts(mob,me,++showNumber,showFlag);
 			genRaceWearFlags(mob,me,++showNumber,showFlag);
 			genAgingChart(mob,me,++showNumber,showFlag);
-			promptStatBool(mob,me,++showNumber,showFlag,"Never create corpse","BODYKILL");
-			promptStatBool(mob,me,++showNumber,showFlag,"Rideable Player","CANRIDE");
-			promptStatInt(mob, me, ++showNumber, showFlag, "XP Adjustment %", "XPADJ");
+			promptStatBool(mob,me,++showNumber,showFlag,L("Never create corpse"),"BODYKILL");
+			promptStatBool(mob,me,++showNumber,showFlag,L("Rideable Player"),"CANRIDE");
+			promptStatInt(mob, me, ++showNumber, showFlag, L("XP Adjustment %"), "XPADJ");
 			genPStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
@@ -10372,9 +10369,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genOutfit(mob,me,++showNumber,showFlag);
 			genWeapon(mob,me,++showNumber,showFlag);
 			genRaceBuddy(mob,me,++showNumber,showFlag,"Weapons Race","WEAPONRACE");
-			genDynamicAbilities(mob,me,"Racial","char",++showNumber,showFlag);
+			genDynamicAbilities(mob,me,L("Racial"),L("char"),++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
-			genDynamicEffects(mob,me,"Racial","char",++showNumber,showFlag);
+			genDynamicEffects(mob,me,L("Racial"),L("char"),++showNumber,showFlag);
 			genDynamicImmunitiess(mob,me,"Racial",++showNumber,showFlag);
 
 			if (showFlag < -900)
@@ -10420,33 +10417,33 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genSecretIdentity(mob,me,++showNumber,showFlag);
 			if(me instanceof Book)
 			{
-				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, "Max Pages"));
-				((Book)me).setMaxCharsPerPage(prompt(mob, ((Book)me).getMaxCharsPerPage(), ++showNumber, showFlag, "Chars/Page"));
+				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, L("Max Pages")));
+				((Book)me).setMaxCharsPerPage(prompt(mob, ((Book)me).getMaxCharsPerPage(), ++showNumber, showFlag, L("Chars/Page")));
 			}
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			if(me instanceof Technical)
 			{
 				final Technical E=(Technical)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, L("Manufacturer")));
 			}
 			if(me instanceof Software)
 			{
 				final Software E=(Software)me;
-				E.setInternalName(prompt(mob, E.getInternalName(), ++showNumber, showFlag, "Internal Name",true));
-				E.setParentMenu(prompt(mob, E.getParentMenu(), ++showNumber, showFlag, "Parent Menu",true));
+				E.setInternalName(prompt(mob, E.getInternalName(), ++showNumber, showFlag, L("Internal Name"),true));
+				E.setParentMenu(prompt(mob, E.getParentMenu(), ++showNumber, showFlag, L("Parent Menu"),true));
 			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
-				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
-				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, L("Pow Capacity")));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, L("Pow Remaining")));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, L("Activated")));
 			}
 			if((me instanceof ElecPanel)&&(!(me instanceof Computer)))
 				genPanelType(mob,(ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof FalseLimb)
-				((FalseLimb)me).setRaceID(prompt(mob,((FalseLimb)me).getRaceID(),++showNumber,showFlag,"Race ID"));
+				((FalseLimb)me).setRaceID(prompt(mob,((FalseLimb)me).getRaceID(),++showNumber,showFlag,L("Race ID")));
 			if(me instanceof TechComponent)
 			{
 				final TechComponent E=(TechComponent)me;
@@ -10456,18 +10453,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipEngine)
 			{
 				final ShipEngine E=(ShipEngine)me;
-				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
-				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
-				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, "Reaction engine"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
-				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
+				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, L("Min thrust")));
+				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, L("Max thrust")));
+				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, L("Reaction engine")));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, L("Fuel Spec Impulse")));
+				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, L("Fuel Effic. %"))/100.0);
+				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, L("Avail. ports")).toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof ShipDirectional)
 			{
 				final ShipDirectional E=(ShipDirectional)me;
-				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, "Max Ports"));
-				E.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
+				E.setPermittedNumDirections(prompt(mob, E.getPermittedNumDirections(), ++showNumber, showFlag, L("Max Ports")));
+				E.setPermittedDirections(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getPermittedDirections()), ++showNumber, showFlag, L("Avail. ports")).toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof ShipWarComponent)
 			{
@@ -10476,11 +10473,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDamage(mob,me,++showNumber,showFlag);
 			}
 			if(me instanceof PackagedItems)
-				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
+				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,L("Number of items in the package")));
 			if(me instanceof PrivateProperty)
 			{
-				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
-				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
+				promptStatStr(mob,me,null,++showNumber,showFlag,L("Owner"),"OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,L("Price"),"PRICE");
 			}
 			genGettable(mob,me,++showNumber,showFlag);
 			genIsReadable(mob,me,++showNumber,showFlag);
@@ -10506,7 +10503,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Wand)
 			{
 				genMaxCharges(mob,(Wand)me,++showNumber,showFlag);
-				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
+				promptStatChoices(mob,me,null,++showNumber,showFlag,L("Enchant Type"),"ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 			}
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -10716,7 +10713,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
 			if(me instanceof Perfume)
-				((Perfume)me).setSmellList(prompt(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
+				((Perfume)me).setSmellList(prompt(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,L("Smells list (; delimited)")));
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
@@ -10877,21 +10874,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Technical)
 			{
 				final Technical E=(Technical)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, L("Manufacturer")));
 			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
-				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
-				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, L("Pow Capacity")));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, L("Pow Remaining")));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, L("Activated")));
 			}
 			if((me instanceof ElecPanel)&&(!(me instanceof Computer)))
 				genPanelType(mob,(ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof PowerGenerator)
 			{
 				final PowerGenerator E=(PowerGenerator)me;
-				E.setGeneratedAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
+				E.setGeneratedAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, L("Gen Amt/Tick")));
 			}
 			if(me instanceof FuelConsumer)
 			{
@@ -10901,17 +10898,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipEngine)
 			{
 				final ShipEngine E=(ShipEngine)me;
-				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, "Min thrust"));
-				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
-				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, "Reaction based"));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Fuel Spec Impulse"));
-				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
-				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, "Avail. ports").toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
+				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, L("Min thrust")));
+				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, L("Max thrust")));
+				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, L("Reaction based")));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, L("Fuel Spec Impulse")));
+				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, L("Fuel Effic. %"))/100.0);
+				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, L("Avail. ports")).toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof TechComponent)
 			{
 				final TechComponent E=(TechComponent)me;
-				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
+				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, L("Installed Factor")));
 				E.setRechargeRate((float)prompt(mob, E.getRechargeRate(), ++showNumber, showFlag, L("Pwr Recharge Rate")));
 			}
 			if(!(me instanceof Electronics))
@@ -10920,12 +10917,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(me instanceof PrivateProperty)
 			{
-				promptStatStr(mob,me,null,++showNumber,showFlag,"Owner","OWNER",true);
-				promptStatInt(mob,me,null,++showNumber,showFlag,"Price","PRICE");
+				promptStatStr(mob,me,null,++showNumber,showFlag,L("Owner"),"OWNER",true);
+				promptStatInt(mob,me,null,++showNumber,showFlag,L("Price"),"PRICE");
 			}
 			genDoorsNLocks(mob,me,L("lid"),++showNumber,showFlag);
 			if(me.hasADoor() && me.hasALock() && !CMLib.flags().isReadable(me))
-				me.setKeyName(prompt(mob,me.keyName(),++showNumber,showFlag,"Key Code"));
+				me.setKeyName(prompt(mob,me.keyName(),++showNumber,showFlag,L("Key Code")));
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
@@ -11031,7 +11028,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genReadableTextMisc(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
 				genMaxCharges(mob,(Wand)me,++showNumber,showFlag);
-				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
+				promptStatChoices(mob,me,null,++showNumber,showFlag,L("Enchant Type"),"ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 				if(me instanceof Light)
 					genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
@@ -11041,14 +11038,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Technical)
 			{
 				final Technical E=(Technical)me;
-				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, L("Manufacturer")));
 			}
 			if(me instanceof Electronics)
 			{
 				final Electronics E=(Electronics)me;
-				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
-				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
-				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, L("Pow Capacity")));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, L("Pow Remaining")));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, L("Activated")));
 			}
 			if(me instanceof SpaceObject)
 			{
@@ -11214,7 +11211,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genInstrumentType(mob,me,++showNumber,showFlag);
 			if(me instanceof Wand)
 			{
-				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
+				promptStatChoices(mob,me,null,++showNumber,showFlag,L("Enchant Type"),"ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 				this.genReadableTextMisc(mob, me, ++showNumber, showFlag);
 				this.genMaxCharges(mob, (Wand)me, ++showNumber, showFlag);
 			}
@@ -11362,7 +11359,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((oldLevel<2)&&(me.basePhyStats().level()>1))
 			{
 				CMLib.leveler().fillOutMOB(me,me.basePhyStats().level());
-				mob.tell("^ZCombat stats rescored.^.^N");
+				mob.tell(L("^ZCombat stats rescored.^.^N"));
 			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
@@ -11384,7 +11381,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
-			me.setMoneyVariation(CMath.s_double(prompt(mob,""+me.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
+			me.setMoneyVariation(CMath.s_double(prompt(mob,""+me.getMoneyVariation(),++showNumber,showFlag,L("Money Variation"))));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
@@ -11487,12 +11484,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(CMProps.isUsingAccountSystem())
 			{
 				final String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().getAccountName():"";
-				String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
+				String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,L("Account"),true,false,null));
 				while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
 				&&(mob.session()!=null)&&(!mob.session().isStopped()))
 				{
 					mob.tell(L("The account can not be used, as it does not exist."));
-					accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Account",true,false,null));
+					accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,L("Account"),true,false,null));
 				}
 				if(!oldAccountName.equals(accountName))
 				{
@@ -11565,7 +11562,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.playerStats()!=null)
 			{
 				final String oldFlags = (me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
-				promptStatStr(mob,me.playerStats(),PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+				promptStatStr(mob,me.playerStats(),PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,L("Flags (?)"),"FLAGS",true);
 				{
 					final String flags=(me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
 					if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
@@ -11843,21 +11840,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("*. Name: '@x1'.",C.name()));
 			int showNumber=0;
 			genClanGovt(mob,C,++showNumber,showFlag);
-			C.setCategory(prompt(mob,C.getCategory(),++showNumber,showFlag,"Category",true));
-			C.setPremise(prompt(mob,C.getPremise(),++showNumber,showFlag,"Clan Premise",true));
-			C.setMinClanMembers(prompt(mob,C.getMinClanMembers(),++showNumber,showFlag,"Minimum members"));
-			C.setExp(prompt(mob,C.getExp(),++showNumber,showFlag,"Clan Experience"));
-			C.setTaxes(prompt(mob,C.getTaxes(),++showNumber,showFlag,"Clan Tax Rate (X 100%)"));
-			C.setDues(prompt(mob,C.getDues(),++showNumber,showFlag,"Clan Dues/yr"));
+			C.setCategory(prompt(mob,C.getCategory(),++showNumber,showFlag,L("Category"),true));
+			C.setPremise(prompt(mob,C.getPremise(),++showNumber,showFlag,L("Clan Premise"),true));
+			C.setMinClanMembers(prompt(mob,C.getMinClanMembers(),++showNumber,showFlag,L("Minimum members")));
+			C.setExp(prompt(mob,C.getExp(),++showNumber,showFlag,L("Clan Experience")));
+			C.setTaxes(prompt(mob,C.getTaxes(),++showNumber,showFlag,L("Clan Tax Rate (X 100%)")));
+			C.setDues(prompt(mob,C.getDues(),++showNumber,showFlag,L("Clan Dues/yr")));
 			C.setMorgue(genClanRoom(mob,C,C.getMorgue(),". Morgue RoomID: '@x1'.",++showNumber,showFlag));
 			C.setRecall(genClanRoom(mob,C,C.getRecall(),". Clan Home RoomID: '@x1'.",++showNumber,showFlag));
 			C.setDonation(genClanRoom(mob,C,C.getDonation(),". Clan Donate RoomID: '@x1'.",++showNumber,showFlag));
-			promptStatStr(mob,C,Clan.ClanFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatStr(mob,C,Clan.ClanFlag.getListString(),++showNumber,showFlag,L("Flags (?)"),"FLAGS",true);
 			genClanAccept(mob,C,++showNumber,showFlag);
 			genClanClass(mob,C,++showNumber,showFlag);
 			genClanRole(mob,C,++showNumber,showFlag);
 			genClanStatus(mob,C,++showNumber,showFlag);
-			C.setRivalrous(prompt(mob,C.isRivalrous(),++showNumber,showFlag,"Rivalrous Clan"));
+			C.setRivalrous(prompt(mob,C.isRivalrous(),++showNumber,showFlag,L("Rivalrous Clan")));
 			genTattoos(mob, C, ++showNumber, showFlag);
 			genClanMembers(mob,C,++showNumber,showFlag);
 
@@ -11913,7 +11910,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((oldLevel<2)&&(M.basePhyStats().level()>1))
 			{
 				CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
-				mob.tell("^ZCombat stats rescored.^.^N");
+				mob.tell(L("^ZCombat stats rescored.^.^N"));
 			}
 			genRejuv(mob,M,++showNumber,showFlag);
 			genRace(mob,M,++showNumber,showFlag);
@@ -11938,7 +11935,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof MOB)
 				genHitPoints(mob,M,++showNumber,showFlag);
 			genMoney(mob,M,++showNumber,showFlag);
-			M.setMoneyVariation(CMath.s_double(prompt(mob,""+M.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
+			M.setMoneyVariation(CMath.s_double(prompt(mob,""+M.getMoneyVariation(),++showNumber,showFlag,L("Money Variation"))));
 			genAbilities(mob,M,++showNumber,showFlag);
 			if(me instanceof PhysicalAgent)
 				genBehaviors(mob,(PhysicalAgent)me,++showNumber,showFlag);
@@ -11946,7 +11943,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(!(me instanceof Auctioneer))
 			{
 				genShopkeeperType(mob,me,++showNumber,showFlag);
-				me.setWhatIsSoldZappermask(prompt(mob,me.getWhatIsSoldZappermask(),++showNumber,showFlag,"Item Buy Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow")));
+				me.setWhatIsSoldZappermask(prompt(mob,me.getWhatIsSoldZappermask(),++showNumber,showFlag,L("Item Buy Mask (?)"), true, CMLib.masking().maskHelp("\n\r", "disallow")));
 				genShopkeeperShopInventory(mob,me,++showNumber,showFlag);
 				genShopkeeperTypeFlags(mob,me,++showNumber,showFlag);
 				genEconomicsPrejudice(mob,me,++showNumber,showFlag);
@@ -11964,42 +11961,42 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(me instanceof PostOffice)
 			{
-				((PostOffice)me).setPostalChain(prompt(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,"Postal chain"));
-				((PostOffice)me).setFeeForNewBox(prompt(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,"Fee to open a new box"));
-				((PostOffice)me).setMinimumPostage(prompt(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,"Minimum postage cost"));
-				((PostOffice)me).setPostagePerPound(prompt(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,"Postage cost per pound after 1st pound"));
-				((PostOffice)me).setHoldFeePerPound(prompt(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,"Holding fee per pound per month"));
-				((PostOffice)me).setMaxMudMonthsHeld(prompt(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
+				((PostOffice)me).setPostalChain(prompt(mob,((PostOffice)me).postalChain(),++showNumber,showFlag,L("Postal chain")));
+				((PostOffice)me).setFeeForNewBox(prompt(mob,((PostOffice)me).feeForNewBox(),++showNumber,showFlag,L("Fee to open a new box")));
+				((PostOffice)me).setMinimumPostage(prompt(mob,((PostOffice)me).minimumPostage(),++showNumber,showFlag,L("Minimum postage cost")));
+				((PostOffice)me).setPostagePerPound(prompt(mob,((PostOffice)me).postagePerPound(),++showNumber,showFlag,L("Postage cost per pound after 1st pound")));
+				((PostOffice)me).setHoldFeePerPound(prompt(mob,((PostOffice)me).holdFeePerPound(),++showNumber,showFlag,L("Holding fee per pound per month")));
+				((PostOffice)me).setMaxMudMonthsHeld(prompt(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,L("Maximum number of months held")));
 			}
 			else
 			if(me instanceof Librarian)
 			{
-				((Librarian)me).setLibraryChain(prompt(mob,((Librarian)me).libraryChain(),++showNumber,showFlag,"Library name"));
-				((Librarian)me).setMaxBorrowed(prompt(mob,((Librarian)me).getMaxBorrowed(),++showNumber,showFlag,"Max borrowed"));
-				((Librarian)me).setMinOverdueDays(prompt(mob,((Librarian)me).getMinOverdueDays(),++showNumber,showFlag,"Overdue mud-days"));
-				((Librarian)me).setMaxOverdueDays(prompt(mob,((Librarian)me).getMaxOverdueDays(),++showNumber,showFlag,"Reclaim mud-days"));
-				((Librarian)me).setOverdueCharge(prompt(mob,((Librarian)me).getOverdueCharge(),++showNumber,showFlag,"Overdue charge"));
-				((Librarian)me).setOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getOverdueChargePct()),++showNumber,showFlag,"Overdue charge pct")));
-				((Librarian)me).setDailyOverdueCharge(prompt(mob,((Librarian)me).getDailyOverdueCharge(),++showNumber,showFlag,"Daily overdue charge"));
-				((Librarian)me).setDailyOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getDailyOverdueChargePct()),++showNumber,showFlag,"Daily overdue charge pct")));
+				((Librarian)me).setLibraryChain(prompt(mob,((Librarian)me).libraryChain(),++showNumber,showFlag,L("Library name")));
+				((Librarian)me).setMaxBorrowed(prompt(mob,((Librarian)me).getMaxBorrowed(),++showNumber,showFlag,L("Max borrowed")));
+				((Librarian)me).setMinOverdueDays(prompt(mob,((Librarian)me).getMinOverdueDays(),++showNumber,showFlag,L("Overdue mud-days")));
+				((Librarian)me).setMaxOverdueDays(prompt(mob,((Librarian)me).getMaxOverdueDays(),++showNumber,showFlag,L("Reclaim mud-days")));
+				((Librarian)me).setOverdueCharge(prompt(mob,((Librarian)me).getOverdueCharge(),++showNumber,showFlag,L("Overdue charge")));
+				((Librarian)me).setOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getOverdueChargePct()),++showNumber,showFlag,L("Overdue charge pct"))));
+				((Librarian)me).setDailyOverdueCharge(prompt(mob,((Librarian)me).getDailyOverdueCharge(),++showNumber,showFlag,L("Daily overdue charge")));
+				((Librarian)me).setDailyOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getDailyOverdueChargePct()),++showNumber,showFlag,L("Daily overdue charge pct"))));
 			}
 			else
 			if(me instanceof Auctioneer)
 			{
-				((Auctioneer)me).setAuctionHouse(prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,"Auction house"));
-				((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,"Flat fee per auction",false));
-				((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,"Listing Cut/%Pct per day",true));
-				((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,"Cut/%Pct of final price",true));
-				((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,"Maximum number of auction mud-days"));
-				((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,"Minimum number of auction mud-days"));
+				((Auctioneer)me).setAuctionHouse(prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,L("Auction house")));
+				((Auctioneer)me).setTimedListingPrice(genAuctionPrompt(mob,((Auctioneer)me).timedListingPrice(),++showNumber,showFlag,L("Flat fee per auction"),false));
+				((Auctioneer)me).setTimedListingPct(genAuctionPrompt(mob,((Auctioneer)me).timedListingPct(),++showNumber,showFlag,L("Listing Cut/%Pct per day"),true));
+				((Auctioneer)me).setTimedFinalCutPct(genAuctionPrompt(mob,((Auctioneer)me).timedFinalCutPct(),++showNumber,showFlag,L("Cut/%Pct of final price"),true));
+				((Auctioneer)me).setMaxTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).maxTimedAuctionDays(),++showNumber,showFlag,L("Maximum number of auction mud-days")));
+				((Auctioneer)me).setMinTimedAuctionDays(genAuctionPrompt(mob,((Auctioneer)me).minTimedAuctionDays(),++showNumber,showFlag,L("Minimum number of auction mud-days")));
 			}
 			else
 			if(me instanceof CraftBroker)
 			{
-				((CraftBroker)me).setBrokerChain(prompt(mob,((CraftBroker)me).brokerChain(),++showNumber,showFlag,"Broker Chain"));
-				((CraftBroker)me).setMaxTimedListingDays(genAuctionPrompt(mob,((CraftBroker)me).maxTimedListingDays(),++showNumber,showFlag,"Maximum number of listing mud-days"));
-				((CraftBroker)me).setMaxListings(genAuctionPrompt(mob,((CraftBroker)me).maxListings(),++showNumber,showFlag,"Maximum number of listings"));
-				((CraftBroker)me).setCommissionPct(genAuctionPrompt(mob,((CraftBroker)me).commissionPct(),++showNumber,showFlag,"Commission Pct%",true));
+				((CraftBroker)me).setBrokerChain(prompt(mob,((CraftBroker)me).brokerChain(),++showNumber,showFlag,L("Broker Chain")));
+				((CraftBroker)me).setMaxTimedListingDays(genAuctionPrompt(mob,((CraftBroker)me).maxTimedListingDays(),++showNumber,showFlag,L("Maximum number of listing mud-days")));
+				((CraftBroker)me).setMaxListings(genAuctionPrompt(mob,((CraftBroker)me).maxListings(),++showNumber,showFlag,L("Maximum number of listings")));
+				((CraftBroker)me).setCommissionPct(genAuctionPrompt(mob,((CraftBroker)me).commissionPct(),++showNumber,showFlag,L("Commission Pct%"),true));
 			}
 			else
 			{
@@ -12076,8 +12073,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(R instanceof AutoGenArea)
 			{
-				promptStatStr(mob,R,++showNumber,showFlag,"AutoGen Xml File Path","GENERATIONFILEPATH");
-				promptStatStr(mob,R,++showNumber,showFlag,"AutoGen Variables (VAR=VAL format)","OTHERVARS");
+				promptStatStr(mob,R,++showNumber,showFlag,L("AutoGen Xml File Path"),"GENERATIONFILEPATH");
+				promptStatStr(mob,R,++showNumber,showFlag,L("AutoGen Variables (VAR=VAL format)"),"OTHERVARS");
 			}
 			//genClimateType(mob,R,++showNumber,showFlag);
 			//R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
@@ -12129,13 +12126,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
-			String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.getAccountName(),++showNumber,showFlag,"Name",true,false,null));
+			String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.getAccountName(),++showNumber,showFlag,L("Name"),true,false,null));
 			while((!acctName.equals(A.getAccountName()))
 			&&(CMLib.players().getLoadAccount(acctName)!=null)
 			&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				mob.tell(L("The name given cannot be chosen, as it is already being used."));
-				acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showNumber,"Name",true,false,null));
+				acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showNumber,L("Name"),true,false,null));
 			}
 			A.setAccountName(acctName);
 			genEmail(mob, A, ++showNumber, showFlag);
@@ -12143,7 +12140,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genAccountExpiration(mob,A,++showNumber,showFlag);
 
 			final String oldFlags = A.getStat("FLAGS");
-			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,L("Flags (?)"),"FLAGS",true);
 			{
 				final String flags = A.getStat("FLAGS");
 				if(((oldFlags.indexOf(AccountFlag.NOTOP.name())>=0)&&(flags.indexOf(AccountFlag.NOTOP.name())<0))
@@ -12159,7 +12156,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus All-Common Skills: "),"BONUSCOMMON");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Crafting Skills: "),"BONUSCRAFT");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Non-Craft Common Skills: "),"BONUSNONCRAFT");
-			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
+			promptStatStr(mob,A,++showNumber,showFlag,L("Notes: "),"NOTES");
 			genTattoos(mob,A,++showNumber,showFlag);
 			for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
 				A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
@@ -12326,8 +12323,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(myArea instanceof AutoGenArea)
 			{
-				promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Xml File Path","GENERATIONFILEPATH");
-				promptStatStr(mob,myArea,++showNumber,showFlag,"AutoGen Variables (VAR=VAL format)","OTHERVARS");
+				promptStatStr(mob,myArea,++showNumber,showFlag,L("AutoGen Xml File Path"),"GENERATIONFILEPATH");
+				promptStatStr(mob,myArea,++showNumber,showFlag,L("AutoGen Variables (VAR=VAL format)"),"OTHERVARS");
 			}
 			if(myArea instanceof SpaceObject)
 			{
@@ -12382,15 +12379,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			mob.tell(L("* Ability Mapping for @x1",me.ID()));
-			mapped.qualLevel(prompt(mob,mapped.qualLevel(),++showNumber,showFlag,"Qualifying Level: "));
-			mapped.autoGain(prompt(mob,mapped.autoGain(),++showNumber,showFlag,"Auto-Gained: "));
-			mapped.defaultProficiency(prompt(mob,mapped.defaultProficiency(),++showNumber,showFlag,"Def. Proficiency: "));
+			mapped.qualLevel(prompt(mob,mapped.qualLevel(),++showNumber,showFlag,L("Qualifying Level: ")));
+			mapped.autoGain(prompt(mob,mapped.autoGain(),++showNumber,showFlag,L("Auto-Gained: ")));
+			mapped.defaultProficiency(prompt(mob,mapped.defaultProficiency(),++showNumber,showFlag,L("Def. Proficiency: ")));
 			mapped.secretFlag((SecretFlag)promptEnumChoice(mob, mapped.secretFlag(), SecretFlag.values(), ++showNumber, showFlag, "Visibility"));
-			mapped.extraMask(prompt(mob,mapped.extraMask(),++showNumber,showFlag,"Qualifying Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow")));
-			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,"Required Skills (?): ", true,
-					"Space delimited list of Ability IDs.  " +
-					"Put a required proficiency level in parenthesis after the Ability ID if desired.  " +
-					"For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting"));
+			mapped.extraMask(prompt(mob,mapped.extraMask(),++showNumber,showFlag,L("Qualifying Mask (?): "), true, CMLib.masking().maskHelp("\n\r", "disallow")));
+			mapped.originalSkillPreReqList(prompt(mob,mapped.originalSkillPreReqList(),++showNumber,showFlag,L("Required Skills (?): "), true,
+					L("Space delimited list of Ability IDs.  Put a required proficiency level in parenthesis after the Ability ID if desired.  For example: Skill_Write Skill_Trip Skill_Dirt(25) Hunting")));
 			if (showFlag < -900)
 			{
 				ok = true;
@@ -12422,22 +12417,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(!ok)
 		{
 			int showNumber=0;
-			final String newName=prompt(mob,me.name(),++showNumber,showFlag,"Name: ");
+			final String newName=prompt(mob,me.name(),++showNumber,showFlag,L("Name: "));
 			if(!newName.equals(me.name()))
 			{
 				CMLib.tech().delManufacturer(me);
 				me.setName(newName);
 				CMLib.tech().addManufacturer(me);
 			}
-			me.setEfficiencyPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,"Efficiency % (50-150): "),100.0));
-			me.setReliabilityPct(CMath.div(prompt(mob,Math.round(me.getReliabilityPct()*100),++showNumber,showFlag,"Reliability % (0-100): "),100.0));
-			me.setItemMask(prompt(mob,me.getItemMaskStr(),++showNumber,showFlag,"Item Mask (?): "));
-			me.setMinTechLevelDiff((byte)prompt(mob,me.getMinTechLevelDiff(),++showNumber,showFlag,"Min Tech Diff: "));
-			me.setMaxTechLevelDiff((byte)prompt(mob,me.getMaxTechLevelDiff(),++showNumber,showFlag,"Max Tech Diff: "));
+			me.setEfficiencyPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,L("Efficiency % (50-150): ")),100.0));
+			me.setReliabilityPct(CMath.div(prompt(mob,Math.round(me.getReliabilityPct()*100),++showNumber,showFlag,L("Reliability % (0-100): ")),100.0));
+			me.setItemMask(prompt(mob,me.getItemMaskStr(),++showNumber,showFlag,L("Item Mask (?): ")));
+			me.setMinTechLevelDiff((byte)prompt(mob,me.getMinTechLevelDiff(),++showNumber,showFlag,L("Min Tech Diff: ")));
+			me.setMaxTechLevelDiff((byte)prompt(mob,me.getMaxTechLevelDiff(),++showNumber,showFlag,L("Max Tech Diff: ")));
 			if(me.getMaxTechLevelDiff()<me.getMinTechLevelDiff())
 				me.setMaxTechLevelDiff(me.getMinTechLevelDiff());
-			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,"Manufact. Types: ",
-					"Choices: "+CMParms.toListString(TechType.values()),CMEVAL_INSTANCE,TechType.values()));
+			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,L("Manufact. Types: "),
+					L("Choices: @x1",CMParms.toListString(TechType.values())),CMEVAL_INSTANCE,TechType.values()));
 			if (showFlag < -900)
 			{
 				ok = true;

@@ -550,13 +550,13 @@ public class Socials extends StdLibrary implements SocialsList
 					{
 						str.append((v+1)+") "+S.getTargetDesc()+" ("+S.targetName()+")");
 						if(S.argumentName().trim().length()>0)
-							str.append(" with argument ("+S.argumentName()+")");
+							str.append(L(" with argument (@x1)",S.argumentName()));
 						str.append("\n\r");
 						continue;
 					}
 					str.append((v+1)+") "+S.getTargetDesc());
 					if(S.argumentName().trim().length()>0)
-						str.append(" with argument ("+S.argumentName()+")");
+						str.append(L(" with argument (@x1)",S.argumentName()));
 					str.append("\n\r");
 				}
 				str.append(L("@x1) Add a new target\n\r",""+(socials.size()+1)));

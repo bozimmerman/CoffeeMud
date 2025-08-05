@@ -841,7 +841,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 		{
 			int showNumber=0;
 			final String oldMask1 = me.getPlayerMask();
-			String mask1 = CMLib.genEd().prompt(mob,oldMask1,++showNumber,showFlag,"Player Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow"));
+			String mask1 = CMLib.genEd().prompt(mob,oldMask1,++showNumber,showFlag,L("Player Mask (?)"), true, CMLib.masking().maskHelp("\n\r", "disallow"));
 			if(!mask1.equals(oldMask1))
 			{
 				final String[] maskKeys1 = CMLib.masking().parseMaskKeys(mask1);
@@ -855,7 +855,7 @@ public class AutoAwards extends StdLibrary implements AutoAwardsLibrary
 				}
 			}
 			final String oldMask2 = me.getDateMask();
-			String mask2 = CMLib.genEd().prompt(mob,oldMask2,++showNumber,showFlag,"Date Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow"));
+			String mask2 = CMLib.genEd().prompt(mob,oldMask2,++showNumber,showFlag,L("Date Mask (?)"), true, CMLib.masking().maskHelp("\n\r", "disallow"));
 			if(!mask2.equals(oldMask2))
 			{
 				final String[] maskKeys2 = CMLib.masking().parseMaskKeys(mask2);

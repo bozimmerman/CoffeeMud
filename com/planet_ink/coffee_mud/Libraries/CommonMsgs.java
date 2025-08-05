@@ -1402,9 +1402,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if(layer!=0)
 					{
 						if(layer < 0)
-							response.append("It is worn "+(-layer)+" layers beneath other clothing.  ");
+							response.append(L("It is worn @x1 layers beneath other clothing.  ",""+(-layer)));
 						else
-							response.append("It is worn "+(layer)+" layers over other clothing.  ");
+							response.append(L("It is worn @x1 layers over other clothing.  ",""+(layer)));
 					}
 				}
 			}

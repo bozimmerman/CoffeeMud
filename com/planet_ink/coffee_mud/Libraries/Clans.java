@@ -1707,8 +1707,8 @@ public class Clans extends StdLibrary implements ClanManager
 						for(int i=0;i<num;i++)
 						{
 							final Pill P=(Pill)CMClass.getMiscMagic("GenSuperPill");
-							P.setName("a practice point for "+winnerC.getGovernmentName()+" "+winnerC.name());
-							P.setDisplayText(P.name()+" is just sitting here");
+							P.setName(L("a practice point for @x1 @x2",winnerC.getGovernmentName(),winnerC.name()));
+							P.setDisplayText(L("@x1 is just sitting here",P.name()));
 							P.setMiscText("PRAC+1");
 							final Ability A=CMClass.getAbility("Prop_HaveZapper");
 							A.setMiscText("-CLAN +\""+winnerC.name()+"\"");
@@ -1739,8 +1739,8 @@ public class Clans extends StdLibrary implements ClanManager
 						for(int i=0;i<num;i++)
 						{
 							final Pill P=(Pill)CMClass.getMiscMagic("GenSuperPill");
-							P.setName("a training session for "+winnerC.getGovernmentName()+" "+winnerC.name());
-							P.setDisplayText(P.name()+" is just sitting here");
+							P.setName(L("a training session for @x1 @x2",winnerC.getGovernmentName(),winnerC.name()));
+							P.setDisplayText(L("@x1 is just sitting here",P.name()));
 							P.setMiscText("TRAIN+1");
 							final Ability A=CMClass.getAbility("Prop_HaveZapper");
 							A.setMiscText("-CLAN +\""+winnerC.name()+"\"");
