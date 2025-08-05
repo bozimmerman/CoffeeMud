@@ -149,7 +149,7 @@ public class Spell_MinorImage extends Spell
 			final MOB simulacruM=(MOB)affected;
 			if(msg.amISource(simulacruM) && (!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)))
 			{
-				msg.source().tell("You can't do anything, you're just a stationary illusion!");
+				msg.source().tell(L("You can't do anything, you're just a stationary illusion!"));
 				return false;
 			}
 			else
@@ -413,7 +413,7 @@ public class Spell_MinorImage extends Spell
 				eqI.setRawLogicalAnd(e.first.rawLogicalAnd());
 				eqI.basePhyStats().setDisposition(e.first.phyStats().disposition());
 				eqI.basePhyStats().setSensesMask(e.first.phyStats().sensesMask());
-				eqI.setDescription("You can see through it!");
+				eqI.setDescription(L("You can see through it!"));
 				eqI.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				eqI.basePhyStats().setWeight(0);
 				eqI.recoverPhyStats();

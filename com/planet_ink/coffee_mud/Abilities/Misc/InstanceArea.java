@@ -2597,8 +2597,8 @@ public class InstanceArea extends StdAbility
 		if(newRoomID==null)
 			newRoomID=cloneRoomID;
 		target.setRoomID(newRoomID);
-		target.setDisplayText("Between Realities");
-		target.setDescription("You are a floating consciousness between realiities...");
+		target.setDisplayText(L("Between Realities"));
+		target.setDescription(L("You are a floating consciousness between realiities..."));
 		target.setArea(instArea);
 
 		//CMLib.map().delArea(this.instArea);

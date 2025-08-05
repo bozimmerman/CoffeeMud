@@ -166,7 +166,7 @@ public class Timsvalue extends StdTest
 					boolean modified = false;
 					if(CMLib.itemBuilder().calculateBaseValue(I)*3<oldValue)
 					{
-						mob.tell(I.name()+" is "+oldValue+" which is > 3 * "+I.baseGoldValue());
+						mob.tell(L("@x1 is @x2 which is > 3 * @x3",I.name(),""+oldValue,""+I.baseGoldValue()));
 					}
 
 					if(oldValue > I.baseGoldValue() *2)
@@ -191,9 +191,9 @@ public class Timsvalue extends StdTest
 
 						}
 						if(modified)
-							mob.tell(I.name()+" value is "+oldValue+" but fixed to "+I.baseGoldValue()+": "+cA.ID()+": "+rscName);
+							mob.tell(L("@x1 value is @x2 but fixed to @x3: @x4: @x5",I.name(),""+oldValue,""+I.baseGoldValue(),cA.ID(),rscName));
 						else
-							mob.tell(findName+" ("+x+") value is "+oldValue+" but SHOULD be "+I.baseGoldValue()+": "+cA.ID()+": "+rscName);
+							mob.tell(L("@x1 (@x2) value is @x3 but SHOULD be @x4: @x5: @x6",findName,""+x,""+oldValue,""+I.baseGoldValue(),cA.ID(),rscName));
 					}
 				}
 				if(didSomething)

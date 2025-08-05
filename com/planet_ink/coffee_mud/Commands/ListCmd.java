@@ -2749,7 +2749,7 @@ public class ListCmd extends StdCommand
 			buf.append(L("No quests loaded."));
 		else
 		{
-			buf.append("\n\r^xQuest Names Report:^.^N\n\r");
+			buf.append(L("\n\r^xQuest Names Report:^.^N\n\r"));
 			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Display Name^.^N\n\r");
@@ -2777,7 +2777,7 @@ public class ListCmd extends StdCommand
 			buf.append(L("No quests loaded."));
 		else
 		{
-			buf.append("\n\r^xQuest Winners Report:^.^N\n\r");
+			buf.append(L("\n\r^xQuest Winners Report:^.^N\n\r"));
 			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
 			final int COL_LEN3=CMLib.lister().fixColWidth(40.0,viewerS);
@@ -2851,7 +2851,7 @@ public class ListCmd extends StdCommand
 		{
 			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
 			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
-			buf.append("\n\r^xCommand Journals List:^.^N\n\r");
+			buf.append(L("\n\r^xCommand Journals List:^.^N\n\r"));
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Messages^.^N\n\r");
 			for(int i=0;i<journals.size();i++)
 			{
@@ -2982,9 +2982,9 @@ public class ListCmd extends StdCommand
 			}
 			else
 			{
-				msg.append("\n\r^HProblems by total time used:^N\n\r");
+				msg.append(L("\n\r^HProblems by total time used:^N\n\r"));
 				msg.append(listTicks(viewerS,"problems"+ (lastNum>0?(" "+lastNum):"")+" tickermillitotal"));
-				msg.append("\n\r\n\r^HProblems by average time used:^N\n\r\n\r");
+				msg.append(L("\n\r\n\r^HProblems by average time used:^N\n\r\n\r"));
 			}
 			whichTicks=new LinkedHashSet<Pair<Integer,Integer>>();
 			final String problemSets=CMLib.threads().getSystemReport(probType);
@@ -4011,7 +4011,7 @@ public class ListCmd extends StdCommand
 					buf.append(CMStrings.padRight(ID,20)+": "+s1.trim()+"\n\r");
 			}
 		}
-		buf.append("\n\r^xSpecial component socials: ^N\n\r");
+		buf.append(L("\n\r^xSpecial component socials: ^N\n\r"));
 		if(CMLib.ableComponents().getComponentSocials().size()==0)
 			buf.append("   None.\n\r");
 		else
@@ -4471,8 +4471,8 @@ public class ListCmd extends StdCommand
 		final int SCREEN_LEN2=CMLib.lister().fixColWidth(35.0,mob);
 		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
 		final int SCREEN_LIMIT=CMLib.lister().fixColWidth(22.0 - (2*3),mob);
-		buf.append("^N"+CMStrings.padRight("Class",SCREEN_LEN1)+": "+CMStrings.padRight("Display/Name",SCREEN_LEN2)+": "
-				+CMStrings.padRight("Lvl",SCREEN_LEN3)+": "
+		buf.append("^N"+CMStrings.padRight(L("Class"),SCREEN_LEN1)+": "+CMStrings.padRight(L("Display/Name"),SCREEN_LEN2)+": "
+				+CMStrings.padRight(L("Lvl"),SCREEN_LEN3)+": "
 				+CMStrings.limit("Align/Container",SCREEN_LIMIT)
 				+"^N\n\r");
 		buf.append("^N"+CMStrings.repeat('-',SCREEN_LEN1)+": "+CMStrings.repeat('-',SCREEN_LEN2)+": "
@@ -4995,7 +4995,7 @@ public class ListCmd extends StdCommand
 				whoM=CMLib.players().getLoadPlayer(rest);
 				if(whoM==null)
 				{
-					mob.tell("No '"+rest+"'");
+					mob.tell(L("No '@x1'",rest));
 					return;
 				}
 			}
@@ -5227,9 +5227,9 @@ public class ListCmd extends StdCommand
 		if(o instanceof Modifiable)
 		{
 			if(o instanceof CMObject)
-				mob.tell("Stats for '"+((CMObject)o).ID()+"': "+CMParms.toListString(((Modifiable)o).getStatCodes()));
+				mob.tell(L("Stats for '@x1': @x2",((CMObject)o).ID(),CMParms.toListString(((Modifiable)o).getStatCodes())));
 			else
-				mob.tell("Stats for '"+o.toString()+"': "+CMParms.toListString(((Modifiable)o).getStatCodes()));
+				mob.tell(L("Stats for '@x1': @x2",o.toString(),CMParms.toListString(((Modifiable)o).getStatCodes())));
 		}
 		else
 		{
@@ -5247,9 +5247,9 @@ public class ListCmd extends StdCommand
 					P=CMLib.map().getArea(wd);
 			}
 			if(P!=null)
-				mob.tell("Stats for '"+P.ID()+"': "+CMParms.toListString(P.getStatCodes()));
+				mob.tell(L("Stats for '@x1': @x2",P.ID(),CMParms.toListString(P.getStatCodes())));
 			else
-				mob.tell("Don't know about any stats for '"+wd+"'.");
+				mob.tell(L("Don't know about any stats for '@x1'.",wd));
 		}
 	}
 

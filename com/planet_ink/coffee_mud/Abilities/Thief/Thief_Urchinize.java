@@ -294,11 +294,11 @@ public class Thief_Urchinize extends ThiefSkill
 				final Behavior B = ((MOB)affected).fetchBehavior("Scavenger");
 				if(B != null)
 				{
-					CMLib.commands().postSay((MOB)affected, "Yessir");
+					CMLib.commands().postSay((MOB)affected, L("Yessir"));
 					B.setParms("TRASH=\""+CMLib.map().getExtendedRoomID(msg.source().location())+"\" ATNIGHT=TRUE");
 				}
 				else
-					CMLib.commands().postSay((MOB)affected, "You're not the boss of me!");
+					CMLib.commands().postSay((MOB)affected, L("You're not the boss of me!"));
 				return false;
 			}
 		}

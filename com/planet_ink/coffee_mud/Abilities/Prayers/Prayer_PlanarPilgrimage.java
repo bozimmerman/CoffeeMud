@@ -113,11 +113,11 @@ public class Prayer_PlanarPilgrimage extends Prayer
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed the planar pilgrimage.");
+				((MOB)affected).tell(L("You have failed the planar pilgrimage."));
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed the planar pilgrimage.");
+			((MOB)affected).tell(L("You have failed the planar pilgrimage."));
 		super.unInvoke();
 	}
 
@@ -186,7 +186,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 			quest1.stopQuest();
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
-			mob.tell("You have successfully completed the planar pilgrimage.");
+			mob.tell(L("You have successfully completed the planar pilgrimage."));
 			final MOB invokerM=invoker();
 			if(invokerM!=null)
 			{
@@ -525,7 +525,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					Q.setScript(s,true);
 					if((Q.name().trim().length()==0)||(Q.duration()<0))
 						throw new CMException("Unable to create your quest.  Please consult the log.");
-					//mob.tell("Generated quest '"+Q.name()+"'");
+					//mob.tell(L("Generated quest '@x1'",Q.name()));
 					final Quest badQ=CMLib.quests().fetchQuest(Q.name());
 					if(badQ!=null)
 						throw new CMException("Unable to create your quest.  One of that name already exists!");
@@ -749,7 +749,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 					Q.setScript(s,true);
 					if((Q.name().trim().length()==0)||(Q.duration()<0))
 						throw new CMException("Unable to create your quest.  Please consult the log.");
-					//mob.tell("Generated quest '"+Q.name()+"'");
+					//mob.tell(L("Generated quest '@x1'",Q.name()));
 					final Quest badQ=CMLib.quests().fetchQuest(Q.name());
 					if(badQ!=null)
 						throw new CMException("Unable to create your quest.  One of that name already exists!");

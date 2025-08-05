@@ -300,7 +300,7 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().length()>0))
 		{
-			CMLib.commands().postSay((MOB)affected, "You're not the boss of me!");
+			CMLib.commands().postSay((MOB)affected, L("You're not the boss of me!"));
 			return false;
 		}
 		return true;

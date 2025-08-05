@@ -107,7 +107,7 @@ public class ROMGangMember extends StdBehavior
 		/* say something, then raise hell */
 		if(messages.length>0)
 		{
-			R.show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+messages[CMLib.dice().roll(1,messages.length,-1)]+"'.^?");
+			R.show(observer,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) '@x1'.^?",messages[CMLib.dice().roll(1,messages.length,-1)]));
 		}
 		else
 		{

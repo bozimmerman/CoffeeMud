@@ -296,7 +296,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 				}
 				// finally, fill out the new random map!
 				final Area fakeArea = CMClass.getAreaType("StdThinInstance");
-				fakeArea.setName("TempArea"+new Random(System.nanoTime()).nextDouble());
+				fakeArea.setName("TEMPAREA"+new Random(System.nanoTime()).nextDouble());
 				if(!CMLib.percolator().fillInArea(piece, definedIDs, fakeArea, magicDir))
 				{
 					Log.errOut(L("Failed to enter the new area for @x1.  Try again later.",roomID()));

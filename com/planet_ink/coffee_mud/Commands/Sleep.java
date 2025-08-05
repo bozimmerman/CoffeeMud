@@ -89,7 +89,7 @@ public class Sleep extends StdCommand implements Tickable
 			}
 			mob.delAbility(mob.fetchAbility("AutoWaker"));
 			final ExtendableAbility A = (ExtendableAbility)CMClass.getAbility("ExtAbility");
-			A.setName("Auto-Waker");
+			A.setName(L("Auto-Waker"));
 			A.setDisplayText("");
 			A.setAbilityID("AutoWaker");
 			A.setTickable(this);

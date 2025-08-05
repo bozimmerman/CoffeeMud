@@ -258,7 +258,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(mob.location().show(target, null, this, CMMsg.MSG_OK_VISUAL, "<S-NAME> <S-IS-ARE> dazed!"))
+					if(mob.location().show(target, null, this, CMMsg.MSG_OK_VISUAL, L("<S-NAME> <S-IS-ARE> dazed!")))
 					{
 						success=maliciousAffect(mob,target,asLevel,2,-1)!=null;
 						if(mob.getVictim()==target)

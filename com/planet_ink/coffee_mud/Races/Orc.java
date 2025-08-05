@@ -207,9 +207,9 @@ public class Orc extends StdRace
 			s1.setDisplayText(L("a tattered tunic is wadded up here."));
 			outfitChoices.add(s1);
 			final Armor p1=CMClass.getArmor("GenPants");
-			p1.setName("a pair of tattered pants");
-			p1.setDisplayText("a pair of tattered pants lies here");
-			p1.setDescription("a well tailored pair of travelers pants, all shredded and nasty.");
+			p1.setName(L("a pair of tattered pants"));
+			p1.setDisplayText(L("a pair of tattered pants lies here"));
+			p1.setDescription(L("a well tailored pair of travelers pants, all shredded and nasty."));
 			outfitChoices.add(p1);
 			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);

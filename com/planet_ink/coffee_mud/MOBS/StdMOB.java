@@ -4211,7 +4211,7 @@ public class StdMOB implements MOB
 					{
 						if(CMLib.flags().isSleeping(this))
 							curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
-						// rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
+						// rest/sit isn`t here because fatigue is sleepiness, not exhaustion per se
 						else
 						if(!CMSecurity.isAllowed(this, R, CMSecurity.SecFlag.IMMORT))
 						{
@@ -4329,7 +4329,7 @@ public class StdMOB implements MOB
 					}
 				});
 			}
-			// if(isMonster) why wouldn't this be by players Especially?!
+			// if(isMonster) why wouldn`t this be by players Especially?!
 			{
 				for(final Enumeration<Faction.FData> t = factions.elements(); t.hasMoreElements();)
 				{

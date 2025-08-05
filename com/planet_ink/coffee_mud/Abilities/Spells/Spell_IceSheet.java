@@ -222,8 +222,8 @@ public class Spell_IceSheet extends Spell
 				if(sheet != null)
 				{
 					sheet.theSheet = CMClass.getBasicItem("StdItem");
-					sheet.theSheet.setName("an ice sheet");
-					sheet.theSheet.setDisplayText("an enormous ice sheet covers the ground here");
+					sheet.theSheet.setName(L("an ice sheet"));
+					sheet.theSheet.setDisplayText(L("an enormous ice sheet covers the ground here"));
 					CMLib.flags().setGettable(sheet.theSheet, false);
 					mob.location().addItem(sheet.theSheet);
 				}

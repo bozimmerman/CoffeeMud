@@ -272,7 +272,7 @@ public class Thief_BorrowBoon extends ThiefSkill
 		else
 		{
 			catalystI=CMClass.getBasicItem("GenItem");
-			catalystI.setName("the universe");
+			catalystI.setName(L("the universe"));
 		}
 
 		MOB target=null;

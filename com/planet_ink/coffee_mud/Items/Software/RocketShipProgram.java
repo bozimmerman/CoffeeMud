@@ -408,7 +408,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			str.append("\n\r^.^N"+systemsReportMenu);
 		str.append("\n\r^.^N");
 		if(engines.size()==0)
-			str.append("^rNo engine systems found.");
+			str.append(L("^rNo engine systems found."));
 		return trimColorsAndTrim(str.toString())+"^.^N";
 	}
 

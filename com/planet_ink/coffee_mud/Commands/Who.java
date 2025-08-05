@@ -399,7 +399,7 @@ public class Who extends StdCommand
 					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
 					msg.append("\n\r");
 				}
-				//msg.append("^x["+CMStrings.padRight("Total Characters",colWidths[0])+"]^.^N "+mobs.size()+"\n\r"));
+				//msg.append("^x["+CMStrings.padRight(L("Total Characters"),colWidths[0])+"]^.^N "+mobs.size()+"\n\r"));
 				mob.tell(msg.toString());
 				return false;
 			}

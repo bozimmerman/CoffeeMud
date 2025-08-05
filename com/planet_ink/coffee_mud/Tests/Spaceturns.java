@@ -99,7 +99,7 @@ public class Spaceturns extends StdTest
 			}
 			/*
 			else
-				mob.tell("Info: Space turn test "+t+", test result: "+i);
+				mob.tell(L("Info: Space turn test @x1, test result: @x2",t,i));
 			*/
 		}
 		return null;

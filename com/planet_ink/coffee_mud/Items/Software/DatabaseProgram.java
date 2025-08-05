@@ -455,7 +455,7 @@ public class DatabaseProgram extends GenShipProgram
 						if(jo.containsKey("NAME"))
 							so.setName(jo.get("NAME").toString());
 						else
-							so.setName("Unknown");
+							so.setName(L("Unknown"));
 						found.add(so);
 					}
 				}
@@ -508,12 +508,12 @@ public class DatabaseProgram extends GenShipProgram
 	protected String getReportOnSpaceObject(final SpaceObject obj)
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append(CMStrings.padRight("Coord: "+CMLib.english().coordDescShort(obj.coordinates().toLongs()),40));
-		str.append(CMStrings.padRight("Name : "+obj.name(),38));
+		str.append(CMStrings.padRight(L("Coord: @x1",CMLib.english().coordDescShort(obj.coordinates().toLongs())),40));
+		str.append(CMStrings.padRight(L("Name : @x1",obj.name()),38));
 		if(obj.getMass()>0)
-			str.append("\n\r").append(CMStrings.padRight(" Mass: "+obj.getMass(),38));
+			str.append("\n\r").append(CMStrings.padRight(L(" Mass: @x1",""+obj.getMass()),38));
 		if(obj.radius()>0)
-			str.append("\n\r").append(CMStrings.padRight(" Size: "+CMLib.english().distanceDescShort(obj.radius())+" radius",38));
+			str.append("\n\r").append(CMStrings.padRight(L(" Size: @x1 radius",CMLib.english().distanceDescShort(obj.radius())),38));
 		return str.toString();
 	}
 
@@ -669,8 +669,8 @@ public class DatabaseProgram extends GenShipProgram
 					// ss will never be coords, as its key was
 					// key is not coords, value is s, not space, is coords, so key must be name
 					final StringBuilder str=new StringBuilder("");
-					str.append(CMStrings.padRight("Coord: "+CMLib.english().coordDescShort(coords.toLongs()),40)
-						  +CMStrings.padRight("Entry : "+ss,38));
+					str.append(CMStrings.padRight(L("Coord: @x1",CMLib.english().coordDescShort(coords.toLongs())),40)
+						  +CMStrings.padRight(L("Entry : @x1",ss),38));
 					//str.append("\n\r").append(" Name: ").append(key); // keys might be secret
 					return str.toString();
 				}
@@ -683,8 +683,8 @@ public class DatabaseProgram extends GenShipProgram
 				else
 				{
 					final StringBuilder str=new StringBuilder("");
-					str.append(CMStrings.padRight("Coord: "+CMLib.english().coordDescShort(coords.toLongs()),40)
-						  +CMStrings.padRight("Entry : "+oo.toString(),38));
+					str.append(CMStrings.padRight(L("Coord: @x1",CMLib.english().coordDescShort(coords.toLongs())),40)
+						  +CMStrings.padRight(L("Entry : @x1",oo.toString()),38));
 					//str.append("\n\r").append(" Name: ").append(key); // keys might be secret
 					return str.toString();
 				}
@@ -694,14 +694,14 @@ public class DatabaseProgram extends GenShipProgram
 			{
 				// key is not coords, value is s, not space, is coords, so key must be name
 				// HOWEVER, those same coords not cross referenced for a note, so nothing, really
-				return CMStrings.padRight("Coord: "+CMLib.english().coordDescShort(coords.toLongs()),40)
-					  +CMStrings.padRight("Name : Unknown",38); // key should be secret
+				return CMStrings.padRight(L("Coord: @x1",CMLib.english().coordDescShort(coords.toLongs())),40)
+					  +CMStrings.padRight(L("Name : Unknown"),38); // key should be secret
 			}
 			else
 			{
 				// key is s, not space, not coords.  value is not coords, so wtf?!
 				// keep key secret
-				return CMStrings.padRight("Name : "+s,38);
+				return CMStrings.padRight(L("Name : @x1",s),38);
 			}
 		}
 		else
@@ -713,7 +713,7 @@ public class DatabaseProgram extends GenShipProgram
 		}
 		else
 		{
-			return CMStrings.padRight("Name : "+o.toString(),38); // keep key secret
+			return CMStrings.padRight(L("Name : @x1",o.toString()),38); // keep key secret
 		}
 	}
 
@@ -1196,7 +1196,7 @@ public class DatabaseProgram extends GenShipProgram
 				if(svcs.containsKey(SWServices.TARGETING))
 				{
 					str.append("^W[X]                    ^N: [TARGET], [COORDINATE], search term").append("\n\r");
-					str.append("^W[TARGET]               ^N: name, name*, HERE, sector name").append("\n\r");
+					str.append(L("^W[TARGET]               ^N: name, name*, HERE, sector name")).append("\n\r");
 				}
 				else
 					str.append("^W[X]                    ^N: [COORDINATE], or search term").append("\n\r");

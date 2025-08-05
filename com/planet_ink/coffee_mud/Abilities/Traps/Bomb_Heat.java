@@ -169,8 +169,8 @@ public class Bomb_Heat extends StdBomb
 				if(CMLib.english().startsWithAnArticle(name))
 					name=name.substring(name.indexOf(' ')+1).trim();
 				final Food F = (Food)CMClass.getBasicItem("GenFood");
-				F.setName("some cooked "+name);
-				F.setDisplayText(F.Name()+" is sitting here");
+				F.setName(L("some cooked @x1",name));
+				F.setDisplayText(L("@x1 is sitting here",F.Name()));
 				F.basePhyStats().setWeight(weight);
 				F.setNourishment(weight/5);
 				F.setBite(250>F.nourishment()?F.nourishment():250);

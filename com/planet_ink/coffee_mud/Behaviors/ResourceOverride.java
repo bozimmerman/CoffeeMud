@@ -186,7 +186,7 @@ public class ResourceOverride extends ActiveTicker
 						if(rscName != null)
 						{
 							rscPrototype.setName(rscName);
-							rscPrototype.setDisplayText(rscName+" is here");
+							rscPrototype.setDisplayText(L("@x1 is here",rscName));
 						}
 						crscs.add(rscPrototype);
 					}

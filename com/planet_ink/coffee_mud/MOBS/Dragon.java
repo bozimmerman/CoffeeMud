@@ -366,7 +366,7 @@ public class Dragon extends StdMOB implements MOBPossessor
 				if(myStomachR!=null)
 				{
 					final Area A = CMClass.getAreaType("StdArea");
-					A.setName("a stomach");
+					A.setName(L("a stomach"));
 					myStomachR.setSavable(false);
 					myStomachR.setRoomID("");
 					myStomachR.setName(L("Dragon Stomach"));

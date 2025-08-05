@@ -209,7 +209,7 @@ public class Shepherding extends CommonSkill
 		||(nR==null)
 		||(!nE.isOpen()))
 		{
-			super.commonTell(mob, "You can't shepherd them that way.");
+			super.commonTell(mob, L("You can't shepherd them that way."));
 			return false;
 		}
 

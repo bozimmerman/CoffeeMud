@@ -238,7 +238,7 @@ public class Test extends StdCommand
 				{
 					final String result = T.doTest(mob, metaFlags, what, commands);
 					if(result == null)
-						S.println("Passed");
+						S.println(L("Passed"));
 					else
 						S.println(result);
 				}

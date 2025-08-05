@@ -7522,8 +7522,8 @@ public class Import extends StdCommand
 					final Room newR = CMClass.getLocale("StoneRoom");
 					newR.setRoomID(A.getNewRoomID(newR,-1));
 					newR.addNonUninvokableEffect(CMClass.getAbility("Prop_Hidden"));
-					newR.setDisplayText("Unused Objects");
-					newR.setDescription("The objects here were defined by the .are file, but not used.");
+					newR.setDisplayText(L("Unused Objects"));
+					newR.setDescription(L("The objects here were defined by the .are file, but not used."));
 					newR.setArea(A);
 					newR.basePhyStats().setSensesMask(newR.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
 					newR.basePhyStats().setSensesMask(newR.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNMAPPABLE);

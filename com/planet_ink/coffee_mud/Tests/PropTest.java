@@ -294,12 +294,12 @@ public class PropTest extends StdTest
 	{
 		cleanupTest();
 		tempA=CMClass.getAreaType("StdArea");
-		tempA.setName("TempArea");
+		tempA.setName(L("TEMPAREA"));
 		R1=CMClass.getLocale("WoodRoom");
-		R1.setRoomID("TempArea#1");
+		R1.setRoomID("TEMPAREA#1");
 		R1.setArea(tempA);
 		R2=CMClass.getLocale("StoneRoom");
-		R2.setRoomID("TempArea#2");
+		R2.setRoomID("TEMPAREA#2");
 		R2.setArea(tempA);
 		R1.setRawExit(Directions.UP,CMClass.getExit("Open"));
 		R2.setRawExit(Directions.DOWN,CMClass.getExit("Open"));

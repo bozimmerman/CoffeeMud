@@ -95,9 +95,11 @@ public class Spaceinterception2 extends StdTest
 				obj1.setSpeed(pair.second.longValue());
 				if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 				{
-					mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
-							+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
-							+": "+obj2.speed());
+					mob.tell(L("Stupid #@x1: @x2: @x3: @x4",
+							""+tests,
+							CMLib.english().coordDescShort(obj2.coordinates().toLongs()),
+							CMLib.english().directionDescShort(obj2.direction().toDoubles()),
+							""+obj2.speed()));
 					continue;
 				}
 				int atti=0;
@@ -131,15 +133,15 @@ public class Spaceinterception2 extends StdTest
 				}
 				else
 				{
-					//mob.tell("Passed #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates())
-					//		+": "+CMLib.english().directionDescShort(obj2.direction())
-					//		+": "+obj2.speed());
+					//mob.tell(L("Passed #@x1: @x2: @x3: @x4",tests,CMLib.english().coordDescShort(obj2.coordinates())
+					//,CMLib.english().directionDescShort(obj2.direction())
+					//,obj2.speed()));
 					passed++;
 				}
 			}
 		}
 		if(passed < numTests)
-			mob.tell("Failed "+(numTests-passed));
+			mob.tell(L("Failed @x1",""+(numTests-passed)));
 		return null;
 	}
 }

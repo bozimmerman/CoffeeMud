@@ -219,8 +219,8 @@ public class Chant_MuddyGrounds extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground here turns to MUD!"));
 				final Chant_MuddyGrounds cmA;
 				final Item mudI=CMClass.getItem("GenItem");
-				mudI.setDisplayText("^YThe ground here is covered in sludgy mud.^N");
-				mudI.setName("^Ythe mud^N");
+				mudI.setDisplayText(L("^YThe ground here is covered in sludgy mud.^N"));
+				mudI.setName(L("^Ythe mud^N"));
 				final boolean saving=CMLib.law().doesOwnThisLand(mob,mob.location());
 				mudI.basePhyStats().setDisposition(mudI.basePhyStats().disposition()|
 					(saving?0:PhyStats.IS_UNSAVABLE)

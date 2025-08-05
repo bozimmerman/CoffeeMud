@@ -585,8 +585,8 @@ public class Painting extends CommonSkill implements RecipeDriven
 								@Override
 								public void showPrompt()
 								{
-									session.println("^HName       :^N " + name);
-									session.println("^HDescription:^N " + desc);
+									session.println(L("^HName       :^N @x1",name));
+									session.println(L("^HDescription:^N @x1",desc));
 									session.promptPrint(L("\n\rIs this correct (Y/n)? "));
 								}
 

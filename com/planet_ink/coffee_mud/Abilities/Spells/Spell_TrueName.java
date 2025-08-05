@@ -206,7 +206,7 @@ public class Spell_TrueName extends Spell
 											A.unInvoke();
 											monster.delEffect(A);
 											R.bringMobHere(monster, false);
-											R.show(monster, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> appears!");
+											R.show(monster, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> appears!"));
 										}
 									}
 								}
@@ -216,25 +216,25 @@ public class Spell_TrueName extends Spell
 							switch(CMLib.dice().roll(1, 7, -1))
 							{
 							case 0:
-								CMLib.commands().postSay(monster, caster, "What is thy bidding, my master.", false,false);
+								CMLib.commands().postSay(monster, caster, L("What is thy bidding, my master."), false,false);
 								break;
 							case 1:
-								CMLib.commands().postSay(monster, caster, "What? More work?", false,false);
+								CMLib.commands().postSay(monster, caster, L("What? More work?"), false,false);
 								break;
 							case 2:
-								CMLib.commands().postSay(monster, caster, "Yes?", false,false);
+								CMLib.commands().postSay(monster, caster, L("Yes?"), false,false);
 								break;
 							case 3:
-								CMLib.commands().postSay(monster, caster, "Something to do?", false,false);
+								CMLib.commands().postSay(monster, caster, L("Something to do?"), false,false);
 								break;
 							case 4:
-								CMLib.commands().postSay(monster, caster, "What?!", false,false);
+								CMLib.commands().postSay(monster, caster, L("What?!"), false,false);
 								break;
 							case 5:
-								CMLib.commands().postSay(monster, caster, "Yes, milord?", false,false);
+								CMLib.commands().postSay(monster, caster, L("Yes, milord?"), false,false);
 								break;
 							case 6:
-								CMLib.commands().postSay(monster, caster, "What is it?", false,false);
+								CMLib.commands().postSay(monster, caster, L("What is it?"), false,false);
 								break;
 							}
 						}

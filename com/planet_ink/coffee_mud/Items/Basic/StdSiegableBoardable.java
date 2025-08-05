@@ -183,7 +183,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 			area.delEffect(oldA);
 		final ExtendableAbility extAble = (ExtendableAbility)CMClass.getAbility("ExtAbility");
 		extAble.setAbilityID("SiegableListener");
-		extAble.setName("Siegable Listener");
+		extAble.setName(L("Siegable Listener"));
 		extAble.setSavable(false);
 		final StdSiegableBoardable thisMe = this;
 		extAble.setMsgListener(new MsgListener()

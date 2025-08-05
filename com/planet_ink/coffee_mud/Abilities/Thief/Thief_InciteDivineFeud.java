@@ -176,7 +176,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed to start a divine feud.");
+				((MOB)affected).tell(L("You have failed to start a divine feud."));
 		}
 		else
 		if((quest2 != null)
@@ -185,16 +185,16 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 		{
 			if((affected instanceof MOB)
 			&&(quest2.wasWinner(affected.Name())))
-				((MOB)affected).tell("You have successfully started a divine feud.");
+				((MOB)affected).tell(L("You have successfully started a divine feud."));
 			else
-				((MOB)affected).tell("You have failed to start a divine feud.");
+				((MOB)affected).tell(L("You have failed to start a divine feud."));
 			quest2.stopQuest();
 			quest2.enterDormantState();
 			CMLib.quests().delQuest(quest2);
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed to start a divine feud.");
+			((MOB)affected).tell(L("You have failed to start a divine feud."));
 		super.unInvoke();
 	}
 
@@ -412,7 +412,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 					&& (!CMath.bset(deity2M.getStartRoom().getArea().flags(), Area.FLAG_INSTANCE_CHILD)))
 						CMLib.database().DBUpdateMOB(deity2M.getStartRoom().roomID(), deity2M);
 				}
-				mob.tell("You have successfully started a divine feud.");
+				mob.tell(L("You have successfully started a divine feud."));
 				final MOB invokerM=invoker();
 				if(invokerM!=null)
 				{
@@ -507,7 +507,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 				Q.setScript(s,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					throw new CMException("Unable to create your quest.  Please consult the log.");
-				//mob.tell("Generated quest '"+Q.name()+"'");
+				//mob.tell(L("Generated quest '@x1'",Q.name()));
 				final Quest badQ=CMLib.quests().fetchQuest(Q.name());
 				if(badQ!=null)
 					throw new CMException("Unable to create your quest.  One of that name already exists!");

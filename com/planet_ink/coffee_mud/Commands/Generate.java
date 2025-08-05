@@ -335,7 +335,7 @@ public class Generate extends StdCommand
 						if((!definedIDs.containsKey("QUEST_ID"))
 						||(!(definedIDs.get("QUEST_ID") instanceof String)))
 						{
-							mob.tell("Unable to create your quest because a quest_id was not generated");
+							mob.tell(L("Unable to create your quest because a quest_id was not generated"));
 							return false;
 						}
 						final String name=(String)definedIDs.get("QUEST_ID");
@@ -343,16 +343,16 @@ public class Generate extends StdCommand
 						Q.setScript((String)V.get(0),true);
 						if((Q.name().trim().length()==0)||(Q.duration()<0))
 						{
-							mob.tell("Unable to create your quest.  Please consult the log.");
+							mob.tell(L("Unable to create your quest.  Please consult the log."));
 							return false;
 						}
 						final Quest badQ=CMLib.quests().fetchQuest(name);
 						if(badQ!=null)
 						{
-							mob.tell("Unable to create your quest.  One of that name already exists!");
+							mob.tell(L("Unable to create your quest.  One of that name already exists!"));
 							return false;
 						}
-						mob.tell("Generated quest '"+Q.name()+"'");
+						mob.tell(L("Generated quest '@x1'",Q.name()));
 						Log.sysOut("Generate",mob.Name()+" created quest '"+Q.name()+"'");
 						CMLib.quests().addQuest(Q);
 						if(!Q.running())
@@ -360,7 +360,7 @@ public class Generate extends StdCommand
 							if(!Q.startQuest())
 							{
 								CMLib.quests().delQuest(Q);
-								mob.tell("Unable to start quest '"+Q.name()+"' Perhaps the problem was logged?");
+								mob.tell(L("Unable to start quest '@x1' Perhaps the problem was logged?",Q.name()));
 								mob.tell((String)V.get(0));
 								return false;
 							}

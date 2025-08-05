@@ -228,7 +228,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		if((CMLib.map().getArea("The Itantan Sea")!=null)
 		&&(caster.charStats().getMyRace().ID().equals("Halfling")))
 		{
-			choiceStr="a hill giant";
+			choiceStr=L("a hill giant");
 			newMOB.setName(L("a hill giant"));
 			newMOB.setDisplayText(L("a hill giant is here"));
 			newMOB.setDescription(L("He doesn't like you, and has said as much."));
@@ -262,7 +262,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 			}
 			case 2:
 			{
-				choiceStr="spidermonkey";
+				choiceStr=L("spidermonkey");
 				newMOB.setName(L("a spidermonkey"));
 				newMOB.setDisplayText(L("a mischievous monkey is watching you"));
 				newMOB.setDescription(L("Don`t blink, or she may swipe your stuff."));
@@ -272,7 +272,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 			}
 			case 3:
 			{
-				choiceStr="boa constrictor";
+				choiceStr=L("boa constrictor");
 				newMOB.setName(L("a boa constrictor"));
 				newMOB.setDisplayText(L("a huge boa constrictor is slithering around"));
 				newMOB.setDescription(L("He looks cuddly, but I wouldn`t risk it."));
@@ -292,7 +292,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 			}
 			case 5:
 			{
-				choiceStr="sea turtle";
+				choiceStr=L("sea turtle");
 				newMOB.setName(L("a sea turtle"));
 				newMOB.setDisplayText(L("a sea turtle is crawling around here"));
 				newMOB.setDescription(L("Not very fast, but pretty cute."));

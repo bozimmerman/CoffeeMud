@@ -70,12 +70,12 @@ public class Spacemoves extends StdTest
 			o.setFacing(o.direction());
 			CMLib.space().moveSpaceObject(o);
 			final Coord3D midCoord = o.coordinates().copyOf();
-			//mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(startCoords, midCoord)+"");
+			//mob.tell(L("@x1, dist=@x2",CMParms.toListString(o.coordinates()),CMLib.space().getDistanceFrom(startCoords, midCoord)));
 			o.setDirection(new Dir3D(new double[] {Math.PI/8.0, Math.PI*5.0/8.0}));
 			o.setSpeed(100.0);
 			o.setFacing(o.direction());
 			CMLib.space().moveSpaceObject(o);
-			//mob.tell(CMParms.toListString(o.coordinates())+", dist="+CMLib.space().getDistanceFrom(midCoord, o.coordinates())+"");
+			//mob.tell(L("@x1, dist=@x2",CMParms.toListString(o.coordinates()),CMLib.space().getDistanceFrom(midCoord, o.coordinates())));
 			if(!o.coordinates().equals(new Coord3D(new long[]{170,70,0})))
 			{
 				return ("Error space move: TT1: "+CMParms.toListString(o.coordinates().toLongs())

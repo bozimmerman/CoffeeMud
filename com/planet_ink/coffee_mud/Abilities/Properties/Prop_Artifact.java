@@ -228,7 +228,7 @@ public class Prop_Artifact extends Property
 					&&(I.Name().equals(name)))
 					{
 						Prop_Artifact.registeredArtifacts.remove(key);
-						msg.source().tell("Removed: "+key);
+						msg.source().tell(L("Removed: @x1",key));
 					}
 				}
 			}

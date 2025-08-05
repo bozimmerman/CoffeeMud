@@ -114,14 +114,14 @@ public class GTell extends StdCommand
 					text=" "+text.trim();
 				tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>[GTELL] <S-NAME>"+text+"^</GTELL^>^?^.");
 				tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
-				rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
+				rawTextMsgStr=L("@x1 tells the group '@x2'",mob.name(),text);
 			}
 		}
 		else
 		{
 			tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
 			tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
-			rawTextMsgStr=mob.name()+" tells the group '"+text+"'";
+			rawTextMsgStr=L("@x1 tells the group '@x2'",mob.name(),text);
 		}
 
 		if((mob.session()!=null)

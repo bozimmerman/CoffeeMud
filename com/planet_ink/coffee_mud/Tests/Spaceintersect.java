@@ -82,8 +82,7 @@ public class Spaceintersect extends StdTest
 							final BoundedSphere O3Cube = new BoundedSphere(newCoord, O2radius);
 							if(!O1Cube.intersects(O3Cube))
 							{
-								mob.tell(O1.Name()+" stops intersecting "+O2.Name()+": "
-												+(CMLib.space().getDistanceFrom(O1.coordinates(),newCoord)-O1radius-O2radius) + ": "+i);
+								mob.tell(L("@x1 stops intersecting @x2: @x3: @x4",O1.Name(),O2.Name(),(CMLib.space().getDistanceFrom(O1.coordinates(),newCoord)-O1radius-O2radius),i));
 								break;
 							}
 						}

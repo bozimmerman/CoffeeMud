@@ -87,7 +87,7 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 		if(myStomachR==null)
 		{
 			final Area A = CMClass.getAreaType("StdArea");
-			A.setName("a stomach");
+			A.setName(L("a stomach"));
 			myStomachR = CMClass.getLocale("StoneRoom");
 			myStomachR.setSavable(false);
 			myStomachR.setRoomID("");

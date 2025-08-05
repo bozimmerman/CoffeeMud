@@ -328,7 +328,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 									didSomething = true;
 								}
 								else
-									mob.tell("Unknown ability: "+map.abilityID());
+									mob.tell(L("Unknown ability: @x1",map.abilityID()));
 							}
 						}
 						if(didSomething)

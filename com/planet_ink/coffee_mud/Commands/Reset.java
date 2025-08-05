@@ -676,7 +676,7 @@ public class Reset extends StdCommand
 			final List<helpSets> sets = new ArrayList<helpSets>();
 			if((rest==null)||(rest.length()==0))
 			{
-				mob.tell("Which? "+CMParms.toListString(helpSets.values())+", ALL");
+				mob.tell(L("Which? @x1, ALL",CMParms.toListString(helpSets.values())));
 				return false;
 			}
 			Boolean skipPrompt=null;
@@ -701,7 +701,7 @@ public class Reset extends StdCommand
 				final helpSets help=(helpSets)CMath.s_valueOf(helpSets.class, rest.toUpperCase().trim());
 				if(help == null)
 				{
-					mob.tell("Which? "+CMParms.toListString(helpSets.values())+", ALL");
+					mob.tell(L("Which? @x1, ALL",CMParms.toListString(helpSets.values())));
 					return false;
 				}
 				sets.add(help);
@@ -710,7 +710,7 @@ public class Reset extends StdCommand
 			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 			for(final helpSets help : sets)
 			{
-				mob.tell("Processing: "+help.file);
+				mob.tell(L("Processing: @x1",help.file));
 				final CMFile F=new CMFile(help.file,mob);
 
 				final List<String> batch=Resources.getFileLineVector(F.text());
@@ -727,7 +727,7 @@ public class Reset extends StdCommand
 							continue;
 						if(x<0)
 						{
-							mob.tell("Unstarted batch at "+s1);
+							mob.tell(L("Unstarted batch at @x1",s1));
 							return false;
 						}
 						else
@@ -777,12 +777,12 @@ public class Reset extends StdCommand
 						bup[1]=ids.get(A.ID().toUpperCase().replace(' ','_'));
 						if((bup[0]==null)&&(bup[1]==null))
 						{
-							mob.tell("Warning: Not found: "+A.ID());
+							mob.tell(L("Warning: Not found: @x1",A.ID()));
 						}
 						else
 						if((bup[0]!=null)&&(bup[1]!=null)&&(bup[0]!=bup[1]))
 						{
-							mob.tell("Warning: Mis found: "+A.ID());
+							mob.tell(L("Warning: Mis found: @x1",A.ID()));
 							mob.tell("1: "+bup[0].toString());
 							mob.tell("2: "+bup[1].toString());
 							return false;
@@ -810,8 +810,8 @@ public class Reset extends StdCommand
 							}
 							if(!batches.contains(bp))
 							{
-								mob.tell("Warning: Re found: "+A.ID());
-								mob.tell("Info   : Re found: "+bp.toString());
+								mob.tell(L("Warning: Re found: @x1",A.ID()));
+								mob.tell(L("Info   : Re found: @x1",bp.toString()));
 							}
 							else
 							{
@@ -829,12 +829,12 @@ public class Reset extends StdCommand
 					final int x=b.toString().indexOf('=');
 					if(x<0)
 					{
-						mob.tell("Error: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+						mob.tell(L("Error: Unused: @x1",CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," ")));
 						return false;
 					}
 					else
 					{
-						mob.tell("Warning: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
+						mob.tell(L("Warning: Unused: @x1",CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," ")));
 						skills.add(b.substring(0,x).toUpperCase(),b);
 					}
 				}
@@ -1315,7 +1315,7 @@ public class Reset extends StdCommand
 						{
 							final String oldID = R.ID();
 							R1.setStat("ID", R.ID());
-							mob.tell("Name Fixed: "+oldID+" into "+R1.ID());
+							mob.tell(L("Name Fixed: @x1 into @x2",oldID,R1.ID()));
 							CMLib.database().DBDeleteRace(oldID);
 							CMLib.database().DBCreateRace(R1.ID(), R1.racialParms());
 						}
@@ -1325,7 +1325,7 @@ public class Reset extends StdCommand
 							R1R.setStat("ID", R.ID());
 							if(R.ID().length()!=R1R.ID().length())
 							{
-								mob.tell("Redoing: "+R1R.ID()+" because "+R1.ID()+"!="+R.ID());
+								mob.tell(L("Redoing: @x1 because @x2!=@x3",R1R.ID(),R1.ID(),R.ID()));
 								R1=racesToBaseFrom.get(0);
 								for(int r=1;r<racesToBaseFrom.size();r++)
 								{
@@ -1335,7 +1335,7 @@ public class Reset extends StdCommand
 								}
 								if(!R1.ID().equals(R.ID()))
 								{
-									mob.tell("UGH -- Giving up on "+R.ID()+" and keeping it...");
+									mob.tell(L("UGH -- Giving up on @x1 and keeping it...",R.ID()));
 									CMLib.database().DBCreateRace(R.ID(), R.racialParms());
 									CMClass.addRace(R);
 								}
@@ -1344,12 +1344,12 @@ public class Reset extends StdCommand
 							{
 								CMLib.database().DBCreateRace(R1R.ID(), R1R.racialParms());
 								CMClass.addRace(R1R);
-								mob.tell("Duplicated: "+R1.ID()+" into "+R1R.ID());
+								mob.tell(L("Duplicated: @x1 into @x2",R1.ID(),R1R.ID()));
 							}
 						}
 					}
 					else
-						mob.tell("Recreated: "+R1.ID());
+						mob.tell(L("Recreated: @x1",R1.ID()));
 				}
 			}
 		}
@@ -1983,11 +1983,11 @@ public class Reset extends StdCommand
 							}
 							else
 							{
-								mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
+								mob.tell(L("No race: @x1 from @x2(@x3)",racePart,R.name(),R.ID()));
 							}
 						}
 						if(genericOnlyFound.size()>0)
-							mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
+							mob.tell(L("Found generic races not handled: @x1",CMParms.toListString(genericOnlyFound)));
 					}
 				}
 				for(int i=raceSets.size()-1;i>=0;i--)
@@ -2011,10 +2011,10 @@ public class Reset extends StdCommand
 									compareRaces(originalRace.ID(),originalRace,finalR,mob);
 								}
 								else
-									mob.tell("Failed single race:"+race2.ID());
+									mob.tell(L("Failed single race:@x1",race2.ID()));
 							}
 							else
-								mob.tell("Undoable single race:"+race2.ID());
+								mob.tell(L("Undoable single race:@x1",race2.ID()));
 						}
 						raceSets.remove(i);
 					}
@@ -2034,12 +2034,12 @@ public class Reset extends StdCommand
 							if(compareR==null)
 								compareR=CMClass.getRace(race2.ID()+race1.ID());
 							if(compareR==null)
-								mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
+								mob.tell(L("Can't find @x1-@x2",race1.ID(),race2.ID()));
 							else
 								compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
 						}
 						else
-							mob.tell("Failed single race:"+race2.ID());
+							mob.tell(L("Failed single race:@x1",race2.ID()));
 					}
 				}
 				//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
@@ -2243,7 +2243,7 @@ public class Reset extends StdCommand
 				}
 				if(s.length()==0)
 				{
-					mob.tell("Reset whose visitation?");
+					mob.tell(L("Reset whose visitation?"));
 					return false;
 				}
 				final MOB M=CMLib.players().getLoadPlayer(s);

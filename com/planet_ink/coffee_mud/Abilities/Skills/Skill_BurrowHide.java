@@ -176,7 +176,7 @@ public class Skill_BurrowHide extends StdSkill
 			&&(msg.sourceMajor()>0))
 			{
 				isBuried=false;
-				msg.source().tell("You climb out of the burrow.");
+				msg.source().tell(L("You climb out of the burrow."));
 				mob.recoverPhyStats();
 				mob.recoverCharStats();
 			}
@@ -190,7 +190,7 @@ public class Skill_BurrowHide extends StdSkill
 				if(msg.othersMajor(CMMsg.MASK_SOUND))
 				{
 					isBuried=false;
-					msg.source().tell("You climb out of the burrow.");
+					msg.source().tell(L("You climb out of the burrow."));
 					mob.recoverPhyStats();
 					mob.recoverCharStats();
 				}
@@ -201,7 +201,7 @@ public class Skill_BurrowHide extends StdSkill
 				case CMMsg.TYP_CAST_SPELL:
 					{
 						isBuried=false;
-						msg.source().tell("You climb out of the burrow.");
+						msg.source().tell(L("You climb out of the burrow."));
 						mob.recoverPhyStats();
 						mob.recoverCharStats();
 					}
@@ -217,7 +217,7 @@ public class Skill_BurrowHide extends StdSkill
 						   &&(!msg.source().isMine(msg.target())))))
 					{
 						isBuried=false;
-						msg.source().tell("You climb out of the burrow.");
+						msg.source().tell(L("You climb out of the burrow."));
 						mob.recoverPhyStats();
 						mob.recoverCharStats();
 					}
@@ -248,7 +248,7 @@ public class Skill_BurrowHide extends StdSkill
 		&&(msg.source().mayIFight(mob))
 		&&(super.proficiencyCheck(mob, 5*(adjustedLevel(mob,0)-msg.source().phyStats().level()), false)))
 		{
-			mob.tell("Your friends alert you to incoming danger! You quickly burrow out of sight.");
+			mob.tell(L("Your friends alert you to incoming danger! You quickly burrow out of sight."));
 			isBuried=true;
 			mob.recoverPhyStats();
 			mob.recoverCharStats();

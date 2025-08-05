@@ -409,8 +409,8 @@ public class Composting extends GatheringSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			final Item compost = CMClass.getItem("GenItem");
-			compost.setName("a pound of compost");
-			compost.setDisplayText("a pound of compost is lying here");
+			compost.setName(L("a pound of compost"));
+			compost.setDisplayText(L("a pound of compost is lying here"));
 			compost.setSecretIdentity("compost");
 			compost.addNonUninvokableEffect(CMClass.getAbility("Prop_Rotten"));
 			compost.basePhyStats().setWeight(1);
@@ -421,8 +421,8 @@ public class Composting extends GatheringSkill
 			else
 			{
 				this.compost=CMClass.getItem("GenPackagedStack");
-				compost.setName("a pound(s) of compost");
-				compost.setDisplayText("a pound(s) of compost is lying here");
+				compost.setName(L("a pound(s) of compost"));
+				compost.setDisplayText(L("a pound(s) of compost is lying here"));
 				((PackagedItems)this.compost).packageMe(compost,amount);
 			}
 		}

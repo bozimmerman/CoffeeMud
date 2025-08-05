@@ -475,7 +475,7 @@ public class Achievements extends StdCommand
 							if(addAwards)
 							{
 								for(final Award award : A.getRewards())
-									achievedList.add(" ^k"+CMStrings.padLeft("awards", padding-1)+": "+
+									achievedList.add(" ^k"+CMStrings.padLeft(L("awards"), padding-1)+": "+
 											CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 							}
 						}
@@ -530,7 +530,7 @@ public class Achievements extends StdCommand
 								if(addAwards)
 								{
 									for(final Award award : A.getRewards())
-										achievedList.add(" ^k"+CMStrings.padLeft("awards", padding-1)+": "+
+										achievedList.add(" ^k"+CMStrings.padLeft(L("awards"), padding-1)+": "+
 												CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 								}
 							}

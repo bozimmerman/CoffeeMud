@@ -180,8 +180,8 @@ public class Skill_RustingStrike extends StdSkill
 								amt = 1;
 							F.setBite(F.nourishment());
 							F.setNourishment(F.nourishment() * amt);
-							F.setName("some rust");
-							F.setDisplayText("some rust lies here");
+							F.setName(L("some rust"));
+							F.setDisplayText(L("some rust lies here"));
 							F.basePhyStats().setWeight(amt);
 							F.phyStats().setWeight(amt);
 							F.setMaterial(RawMaterial.RESOURCE_DUST);

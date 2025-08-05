@@ -205,8 +205,8 @@ public class Fighter_RopeTrip extends FighterSkill
 			lasso = CMClass.getBasicItem("GenRideable");
 			lasso.setMaterial(RawMaterial.RESOURCE_HEMP);
 			((Rideable)lasso).setRideBasis(Rideable.Basis.LADDER);
-			lasso.setName("a lasso");
-			lasso.setDisplayText("a lasso is here");
+			lasso.setName(L("a lasso"));
+			lasso.setDisplayText(L("a lasso is here"));
 			return lasso;
 		}
 		return null;

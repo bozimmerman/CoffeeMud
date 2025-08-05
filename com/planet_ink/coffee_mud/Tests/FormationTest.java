@@ -78,9 +78,9 @@ public class FormationTest extends StdTest
 		{
 			final int[] test = tests[tnum];
 			final Area tempA=CMClass.getAreaType("StdArea");
-			tempA.setName("TempArea");
+			tempA.setName("TEMPAREA");
 			final Room R1=CMClass.getLocale("Plains");
-			R1.setRoomID("TempArea#1");
+			R1.setRoomID("TEMPAREA#1");
 			R1.setArea(tempA);
 			MOB leaderM = null;
 			MOB enemyM = null;

@@ -302,8 +302,8 @@ public class MasterPaintingSkill extends PaintingSkill
 		{
 			final List<String> recipe=recipes.get(i);
 			final Item I=CMClass.getBasicItem("GenItem");
-			I.setName("a most awesome item");
-			I.setDisplayText("the most awesome item sits here.");
+			I.setName(L("a most awesome item"));
+			I.setDisplayText(L("the most awesome item sits here."));
 			I.text();
 			final int numColors=this.requiredColorsInRecipe(recipe.get(RCP_MASK));
 			this.found=I;

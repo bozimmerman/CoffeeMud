@@ -177,14 +177,14 @@ public class Spacecollisions extends StdTest
 				if(expectHit != (swish < 10))
 				{
 					/*
-					mob.tell(li+"A) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
-					mob.tell(li+"A) collider coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
-					mob.tell(li+"A) final coords="+shipCoord2[0]+","+shipCoord2[1]+","+shipCoord2[2]);
-					mob.tell(li+"A) direction to target="+dir[0]+","+dir[1]);
-					mob.tell(li+"A) speed="+speed);
-					mob.tell(li+"A) original distance="+CMLib.space().getDistanceFrom(shipCoord1, targetCoord));
-					mob.tell(li+"A) current distance="+CMLib.space().getDistanceFrom(shipCoord2, targetCoord));
-					mob.tell(li+"A) min distance during move="+swish);
+					mob.tell(L("@x1A) orig coords=@x2,@x3,@x4",li,shipCoord1[0],shipCoord1[1],shipCoord1[2]));
+					mob.tell(L("@x1A) collider coords=@x2,@x3,@x4",li,targetCoord[0],targetCoord[1],targetCoord[2]));
+					mob.tell(L("@x1A) final coords=@x2,@x3,@x4",li,shipCoord2[0],shipCoord2[1],shipCoord2[2]));
+					mob.tell(L("@x1A) direction to target=@x2,@x3",li,dir[0],dir[1]));
+					mob.tell(L("@x1A) speed=@x2",li,speed));
+					mob.tell(L("@x1A) original distance=@x2",li,CMLib.space().getDistanceFrom(shipCoord1, targetCoord)));
+					mob.tell(L("@x1A) current distance=@x2",li,CMLib.space().getDistanceFrom(shipCoord2, targetCoord)));
+					mob.tell(L("@x1A) min distance during move=@x2",li,swish));
 					*/
 					return ("Error:"+expectHit+"!="+li+"A: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord)));
 				}
@@ -206,13 +206,13 @@ public class Spacecollisions extends StdTest
 				if(expectHit != (swish < 10))
 				{
 					/*
-					mob.tell(li+"B) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
-					mob.tell(li+"B) target coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
-					mob.tell(li+"B) final coords="+shipCoord2[0]+","+shipCoord2[1]+","+shipCoord2[2]);
-					mob.tell(li+"B) original direction to target="+dir[0]+","+dir[1]);
-					mob.tell(li+"B) adjusted direction to target="+dir[0]+","+dir[1]);
-					mob.tell(li+"B) speed="+speed);
-					mob.tell(li+"B) min distance during move="+swish);
+					mob.tell(L("@x1B) orig coords=@x2,@x3,@x4",li,shipCoord1[0],shipCoord1[1],shipCoord1[2]));
+					mob.tell(L("@x1B) target coords=@x2,@x3,@x4",li,targetCoord[0],targetCoord[1],targetCoord[2]));
+					mob.tell(L("@x1B) final coords=@x2,@x3,@x4",li,shipCoord2[0],shipCoord2[1],shipCoord2[2]));
+					mob.tell(L("@x1B) original direction to target=@x2,@x3",li,dir[0],dir[1]));
+					mob.tell(L("@x1B) adjusted direction to target=@x2,@x3",li,dir[0],dir[1]));
+					mob.tell(L("@x1B) speed=@x2",li,speed));
+					mob.tell(L("@x1B) min distance during move=@x2",li,swish));
 					*/
 					return ("Error:"+expectHit+"!="+li+"B: minDist="+swish+"/"+(CMLib.space().getDistanceFrom(shipCoord1, targetCoord)));
 				}

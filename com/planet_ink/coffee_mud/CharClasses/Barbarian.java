@@ -405,7 +405,7 @@ public class Barbarian extends StdCharClass
 	{
 		final StringBuilder str = new StringBuilder(super.getOtherLimitsDesc());
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
-			str.append("  Requires a Chaotic alignment to become a Barbarian.");
+			str.append(L("  Requires a Chaotic alignment to become a Barbarian."));
 		return str.toString().trim();
 	}
 

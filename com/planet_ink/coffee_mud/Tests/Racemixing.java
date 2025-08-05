@@ -69,7 +69,7 @@ public class Racemixing extends StdTest
 				if(RA!=null)
 				{
 					// well, it didn't crash
-					mob.tell(RA.name()+" generated");
+					mob.tell(L("@x1 generated",RA.name()));
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class Racemixing extends StdTest
 					if(RA!=null)
 					{
 						// well, it didn't crash
-						mob.tell(RA.name()+" generated");
+						mob.tell(L("@x1 generated",RA.name()));
 					}
 				}
 			}

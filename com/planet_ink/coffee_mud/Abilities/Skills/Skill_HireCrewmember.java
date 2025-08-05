@@ -472,7 +472,7 @@ public class Skill_HireCrewmember extends StdSkill
 							{
 								final String on = I.Name();
 								final int x=on.indexOf(' ');
-								I.setName(on.substring(0,x)+" ^wwhite^N"+on.substring(x));
+								I.setName(L("@x1 ^wwhite^N@x2",on.substring(0,x),on.substring(x)));
 								I.setDisplayText(CMStrings.replaceAll(I.displayText(), on, I.Name()));
 							}
 						}
@@ -499,7 +499,7 @@ public class Skill_HireCrewmember extends StdSkill
 							{
 								final String on = I.Name();
 								final int x=on.indexOf(' ');
-								I.setName(on.substring(0,x)+" ^bblue^N"+on.substring(x));
+								I.setName(L("@x1 ^bblue^N@x2",on.substring(0,x),on.substring(x)));
 								I.setDisplayText(CMStrings.replaceAll(I.displayText(), on, I.Name()));
 							}
 							break;

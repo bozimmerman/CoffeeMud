@@ -134,7 +134,7 @@ public class TickTock extends StdCommand
 					{
 						final TimeClock C = CMLib.time().localClock(mob);
 						C.setDateTime(C.fromTimePeriodCodeString(s));
-						mob.tell("Date/Time set.");
+						mob.tell(L("Date/Time set."));
 					}
 				}
 				else

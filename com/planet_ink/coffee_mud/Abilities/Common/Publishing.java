@@ -553,7 +553,7 @@ public class Publishing extends CommonSkill
 							continue;
 						final MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
 						if(!bookObj.containsKey("author"))
-							str.append("* This book might need to be republished.\n\r");
+							str.append(L("* This book might need to be republished.\n\r"));
 						str.append(index+") ^H"+bookName+"^?:\n\r");
 						String purchased="0";
 						String royalties="0";

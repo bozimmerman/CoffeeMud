@@ -91,7 +91,7 @@ public class Druid_Krakenform extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setName("a kraken");
+		affectableStats.setName(L("a kraken"));
 		affectableStats.setHeight(420);
 		affectableStats.setWeight(5000);
 	}
@@ -128,8 +128,8 @@ public class Druid_Krakenform extends StdAbility
 					((Container)ship).setCapacity(0);
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
-				ship.setName("a kraken");
-				ship.setDisplayText("a kraken is here");
+				ship.setName(L("a kraken"));
+				ship.setDisplayText(L("a kraken is here"));
 				ship.setStat("SPECIAL_NOUN_SHIP", "kraken");
 				ship.setStat("SPECIAL_VERB_SAIL","swim");
 				ship.setStat("SPECIAL_VERB_SAILING","swimming");
@@ -139,13 +139,13 @@ public class Druid_Krakenform extends StdAbility
 				if(ship instanceof PrivateProperty)
 					((PrivateProperty)ship).setOwnerName(mob.Name());
 				final Area A=ship.getArea();
-				A.setName("Krakenform_"+mob.Name());
+				A.setName(L("Krakenform_@x1",mob.Name()));
 				final Room deckR=CMClass.getLocale("ShipDeck");
 				deckR.setRoomID(A.getNewRoomID(R,-1));
 				deckR.setArea(A);
 				deckR.bringMobHere(mob, false);
 				final AmmunitionWeapon weap1=(AmmunitionWeapon)CMClass.getWeapon("GenSiegeWeapon");
-				weap1.setName("a tentacle");
+				weap1.setName(L("a tentacle"));
 				weap1.setAmmoCapacity(1);
 				weap1.setAmmoRemaining(1);
 				weap1.setAmmunitionType(ammoType);

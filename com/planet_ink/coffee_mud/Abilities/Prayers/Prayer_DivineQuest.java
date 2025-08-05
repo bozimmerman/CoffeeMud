@@ -111,11 +111,11 @@ public class Prayer_DivineQuest extends Prayer
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
 			if(affected instanceof MOB)
-				((MOB)affected).tell("You have failed the divine quest.");
+				((MOB)affected).tell(L("You have failed the divine quest."));
 		}
 		else
 		if(affected instanceof MOB)
-			((MOB)affected).tell("You have failed the divine quest.");
+			((MOB)affected).tell(L("You have failed the divine quest."));
 		super.unInvoke();
 	}
 
@@ -143,7 +143,7 @@ public class Prayer_DivineQuest extends Prayer
 			quest1.stopQuest();
 			quest1.enterDormantState();
 			CMLib.quests().delQuest(quest1);
-			mob.tell("You have successfully completed the divine quest.");
+			mob.tell(L("You have successfully completed the divine quest."));
 			mob.delEffect(this);
 			this.setAffectedOne(null);
 			return tickUninvoke();
@@ -231,7 +231,7 @@ public class Prayer_DivineQuest extends Prayer
 				Q.setScript(s,true);
 				if((Q.name().trim().length()==0)||(Q.duration()<0))
 					throw new CMException("Unable to create your quest.  Please consult the log.");
-				//mob.tell("Generated quest '"+Q.name()+"'");
+				//mob.tell(L("Generated quest '@x1'",Q.name()));
 				final Quest badQ=CMLib.quests().fetchQuest(Q.name());
 				if(badQ!=null)
 					throw new CMException("Unable to create your quest.  One of that name already exists!");

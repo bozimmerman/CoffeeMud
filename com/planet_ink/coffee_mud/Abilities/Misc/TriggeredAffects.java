@@ -428,23 +428,23 @@ public class TriggeredAffects extends StdAbility implements TriggeredAffect
 		final String message = values.get("MESSAGE");
 		if((id==null)||(id.trim().length()==0))
 		{
-			reportError("Missing ID in '"+txt+"'");
+			reportError(L("Missing ID in '@x1'",txt));
 			return;
 		}
 		if((tickstr==null)||(tickstr.trim().length()==0)||(CMath.s_int(tickstr)<=0))
 		{
-			reportError("Missing or bad TICKS in '"+txt+"'");
+			reportError(L("Missing or bad TICKS in '@x1'",txt));
 			return;
 		}
 		if((trigger==null)||(trigger.trim().length()==0))
 		{
-			reportError("Missing TRIGGER in '"+txt+"'");
+			reportError(L("Missing TRIGGER in '@x1'",txt));
 			return;
 		}
 		if((ontrigger==null)||(ontrigger.trim().length()==0)
 		||((!ontrigger.equalsIgnoreCase("ADD"))&&(!ontrigger.equalsIgnoreCase("REMOVE"))))
 		{
-			reportError("Missing or incorrect ONTRIGGER (ADD/REMOVE) in '"+txt+"'");
+			reportError(L("Missing or incorrect ONTRIGGER (ADD/REMOVE) in '@x1'",txt));
 			return;
 		}
 
@@ -454,7 +454,7 @@ public class TriggeredAffects extends StdAbility implements TriggeredAffect
 		trig.addTrigger(id, trigger, new HashMap<String,List<Social>>(), errors);
 		if(errors.size()>0)
 		{
-			reportError("Bad trigger in '"+txt+"' ("+errors.get(0)+")");
+			reportError(L("Bad trigger in '@x1' (@x2)",txt,errors.get(0)));
 			return;
 		}
 

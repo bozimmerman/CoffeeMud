@@ -401,7 +401,7 @@ public class Skill_CrowsNest extends StdSkill
 			for(final int dir : Directions.CODES())
 			{
 				final Room airRoom=CMClass.getLocale("InTheAir");
-				airRoom.setDisplayText("In mid-air above the deck");
+				airRoom.setDisplayText(L("In mid-air above the deck"));
 				airRoom.setSavable(false);
 				airRoom.setRoomID("");
 				airRoom.setArea(R.getArea());

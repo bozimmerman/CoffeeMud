@@ -95,9 +95,11 @@ public class Spaceinterception extends StdTest
 					obj1.setSpeed(pair.second.longValue());
 					if(!space.canMaybeIntercept(obj1, obj2, maxTicks, pair.second.longValue()))
 					{
-						mob.tell("Stupid #"+tests+": "+CMLib.english().coordDescShort(obj2.coordinates().toLongs())
-								+": "+CMLib.english().directionDescShort(obj2.direction().toDoubles())
-								+": "+obj2.speed());
+						mob.tell(L("Stupid #@x1: @x2: @x3: @x4",
+								""+tests,
+								CMLib.english().coordDescShort(obj2.coordinates().toLongs()),
+								CMLib.english().directionDescShort(obj2.direction().toDoubles()),
+								""+obj2.speed()));
 						continue;
 					}
 					int atti=0;

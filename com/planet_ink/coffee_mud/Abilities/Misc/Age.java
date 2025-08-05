@@ -852,9 +852,9 @@ public class Age extends StdAbility
 				if(CMLib.players().playerExistsAllHosts(babe.Name()))
 				{
 					if((liege != null)&&(!liege.isMonster()))
-						liege.tell(babe.name()+" can't grow up because someone stole that name.");
+						liege.tell(L("@x1 can't grow up because someone stole that name.",babe.name()));
 					else
-						CMLib.commands().postSay(babe, "I can't grow up because someone stole my name!");
+						CMLib.commands().postSay(babe, L("I can't grow up because someone stole my name!"));
 					if(getAgeCode()>Short.MAX_VALUE)
 						setMiscText(Long.toString(getAgeCode()-600000L));
 					return;

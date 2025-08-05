@@ -77,10 +77,13 @@ public class Spacemovereport1 extends StdTest
 						final long newAcceleration = 200;
 						int steps = 0;
 						final double totDirDiff = CMLib.space().getAngleDelta(curDir, accelDir);
-						mob.tell("Interesting: ");
-						mob.tell("Angle diff between "+Math.round(Math.toDegrees(curDir.xyd()))+"mk"+Math.round(Math.toDegrees(curDir.zd()))
-						+"   and   "+Math.round(Math.toDegrees(accelDir.xyd()))+"mk"+Math.round(Math.toDegrees(accelDir.zd()))
-						+"       is: "+Math.round(Math.toDegrees(totDirDiff)));
+						mob.tell(L("Interesting: "));
+						mob.tell(L("Angle diff between @x1mk@x2   and   @x3mk@x4       is: @x5",
+								""+Math.round(Math.toDegrees(curDir.xyd())),
+								""+Math.round(Math.toDegrees(curDir.zd())),
+								""+Math.round(Math.toDegrees(accelDir.xyd())),
+								""+Math.round(Math.toDegrees(accelDir.zd())),
+								""+Math.round(Math.toDegrees(totDirDiff))));
 						final double halfPI = Math.PI/2.0;
 						while(!curDir.equals(accelDir))
 						{
@@ -109,18 +112,19 @@ public class Spacemovereport1 extends StdTest
 							{
 								if(curSpeed < oldCurSpeed)
 								{
-									mob.tell("Step "+steps+" of "+
-											Math.round(Math.toDegrees(oldCurDir.xyd()))+"@"+Math.round(Math.toDegrees(oldCurDir.zd()))
-											+" -> "
-											+Math.round(Math.toDegrees(accelDir.xyd()))+"@"+Math.round(Math.toDegrees(accelDir.zd()))
-											+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
+									mob.tell(L("Step @x1 of @x2@@x3 -> @x4@@x5 (angle Diff @x6) went from speed @x7 to @x8",
+											""+steps,
+											""+Math.round(Math.toDegrees(oldCurDir.xyd())),
+											""+Math.round(Math.toDegrees(oldCurDir.zd())),
+											""+Math.round(Math.toDegrees(accelDir.xyd())),
+											""+Math.round(Math.toDegrees(accelDir.zd())),""+curDirDiff,""+oldCurSpeed,""+curSpeed));
 								}
 							}
 							steps++;
 						}
 						// Test Ideas
 						// test whether smaller angle diffs result in fewer steps.
-						mob.tell(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
+						mob.tell(L("@x1, =@x2                      fspeed=@x3",""+Math.round(Math.toDegrees(totDirDiff)),""+steps,""+curSpeed));
 						//results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
 					}
 				}

@@ -177,7 +177,7 @@ public class Template extends StdCommand
 						for(int i=0;i<numCols;i++)
 						{
 							list.append(CMStrings.padRight(L("ID"),col1)+" ");
-							list.append(CMStrings.padRight("Type",col2)+" ");
+							list.append(CMStrings.padRight(L("Type"),col2)+" ");
 							list.append(CMStrings.padRight(L("Name"),col3)+" ");
 						}
 						list.append("\n\r");

@@ -646,7 +646,7 @@ public class CalendarCmd extends StdCommand
 										data.append("<PERIOD>"+n+" "+P.name()+"</PERIOD>");
 								}
 								entry.data(data.toString());
-								S.println("Event created.");
+								S.println(L("Event created."));
 								CMLib.database().DBWriteJournal("SYSTEM_CALENDAR", entry);
 								CMLib.journals().resetCalendarEvents();
 								return;

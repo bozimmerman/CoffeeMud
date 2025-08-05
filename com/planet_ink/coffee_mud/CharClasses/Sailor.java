@@ -428,8 +428,8 @@ public class Sailor extends StdCharClass
 			final Weapon w=CMClass.getWeapon("GenWeapon");
 			if(w != null)
 			{
-				w.setName("a belaying pin");
-				w.setDisplayText("a belaying pin lies here.");
+				w.setName(L("a belaying pin"));
+				w.setDisplayText(L("a belaying pin lies here."));
 				w.setMaterial(RawMaterial.RESOURCE_WOOD);
 				w.setWeaponClassification(Weapon.CLASS_BLUNT);
 				w.setWeaponDamageType(Weapon.TYPE_BASHING);

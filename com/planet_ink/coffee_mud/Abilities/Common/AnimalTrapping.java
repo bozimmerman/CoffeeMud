@@ -223,7 +223,7 @@ public class AnimalTrapping extends GatheringSkill
 							else
 								stdM=CMClass.getMOB("GenMob");
 							stdM.setName(CMLib.english().startWithAorAn(raceR.name()));
-							stdM.setDisplayText(stdM.Name()+" is here");
+							stdM.setDisplayText(L("@x1 is here",stdM.Name()));
 							stdM.baseCharStats().setMyRace(raceR);
 							stdM.recoverPhyStats();
 							stdM.recoverCharStats();

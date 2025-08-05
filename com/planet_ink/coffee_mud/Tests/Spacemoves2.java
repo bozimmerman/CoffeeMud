@@ -87,10 +87,10 @@ public class Spacemoves2 extends StdTest
 			final Dir3D wrongTargetDir = new Dir3D(new double[] {Math.PI*2*ra.nextDouble(), Math.PI*ra.nextDouble()});
 			if(!shortDebug)
 			{
-				Log.debugOut(CMStrings.padRight("Dir", colWidth)+"|"+
-						 CMStrings.padRight("Target", colWidth)+"|"+
-						 CMStrings.padRight("Accel", colWidth)+"|"+
-						 CMStrings.padRight("NewDir", colWidth)+"|"+
+				Log.debugOut(CMStrings.padRight(L("Dir"), colWidth)+"|"+
+						 CMStrings.padRight(L("Target"), colWidth)+"|"+
+						 CMStrings.padRight(L("Accel"), colWidth)+"|"+
+						 CMStrings.padRight(L("NewDir"), colWidth)+"|"+
 						 "Delta");
 			}
 			o.setCoords(startCoords.copyOf());

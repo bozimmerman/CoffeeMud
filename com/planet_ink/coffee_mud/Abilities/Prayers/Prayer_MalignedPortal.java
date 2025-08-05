@@ -378,7 +378,7 @@ public class Prayer_MalignedPortal extends Prayer
 		if(mob.isInCombat())
 		{
 			if(secondsElapsed > 0)
-				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> prayer is disrupted."));
 			else
 				mob.tell(L("Being in combat disrupts your prayer."));
 			return false;
@@ -387,7 +387,7 @@ public class Prayer_MalignedPortal extends Prayer
 		||((secondsElapsed > 1) && (this.oldRoom != mob.location())))
 		{
 			if(secondsElapsed > 0)
-				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> prayer is disrupted."));
 			else
 				mob.tell(L("You can't do that right now."));
 			return false;
@@ -395,7 +395,7 @@ public class Prayer_MalignedPortal extends Prayer
 		if(!CMLib.flags().isStanding(mob))
 		{
 			if(secondsElapsed > 0)
-				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, "<S-YOUPOSS> prayer is disrupted.");
+				oldRoom.show(mob,null,null,CMMsg.MSG_OK_VISUAL, L("<S-YOUPOSS> prayer is disrupted."));
 			else
 				mob.tell(L("You need to stand up!"));
 			return false;

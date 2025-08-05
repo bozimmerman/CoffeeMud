@@ -789,7 +789,7 @@ public class Create extends StdCommand
 					newMOB.setName(CMLib.english().startWithAorAn(classC.name()));
 				else
 				if(level!=null)
-					newMOB.setName("a level "+level.intValue()+"er");
+					newMOB.setName(L("a level @x1er",""+level.intValue()));
 				newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
 				if(raceR!=null)
 					newMOB.baseCharStats().setMyRace(raceR);
@@ -871,14 +871,14 @@ public class Create extends StdCommand
 		final Race R1=CMClass.getRace(raceID1);
 		if(R1==null)
 		{
-			mob.tell("Unknown race: "+raceID1);
+			mob.tell(L("Unknown race: @x1",raceID1));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
 		final Race R2=CMClass.getRace(raceID2);
 		if(R2==null)
 		{
-			mob.tell("Unknown race: "+raceID2);
+			mob.tell(L("Unknown race: @x1",raceID2));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}

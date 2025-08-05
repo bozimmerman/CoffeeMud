@@ -1134,7 +1134,7 @@ public class DefaultClan implements Clan
 			}
 			if(others)
 			{
-				msg.append("^H"+CMStrings.padRight("All Others",COLCL_WIDTH)+":^.^N ");
+				msg.append("^H"+CMStrings.padRight(L("All Others"),COLCL_WIDTH)+":^.^N ");
 				msg.append(REL_COLORS[REL_NEUTRAL]).append(CMStrings.capitalizeAndLower(REL_DESCS[REL_NEUTRAL]));
 				msg.append("^N").append("\n\r");
 			}

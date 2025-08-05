@@ -291,7 +291,7 @@ public class Thief_StealBoon extends ThiefSkill
 		else
 		{
 			catalystI=CMClass.getBasicItem("GenItem");
-			catalystI.setName("the universe");
+			catalystI.setName(L("the universe"));
 		}
 
 		if(commands.size()<2)

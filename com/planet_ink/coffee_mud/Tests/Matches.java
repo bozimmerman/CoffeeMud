@@ -66,7 +66,7 @@ public class Matches extends StdTest
 			&&(S!=null)
 			&&(!S.isStopped()))
 			{
-				word = S.prompt("Enter a word: ");
+				word = S.prompt(L("Enter a word: "));
 				if(word.trim().length()==0)
 					break;
 				String match="x";
@@ -74,10 +74,10 @@ public class Matches extends StdTest
 				&&(S!=null)
 				&&(!S.isStopped()))
 				{
-					match = S.prompt("Enter a matcher: ");
+					match = S.prompt(L("Enter a matcher: "));
 					if(match.trim().length()==0)
 						break;
-					S.println("match="+CMStrings.matches(word, match, false));
+					S.println(L("match=@x1",""+CMStrings.matches(word, match, false)));
 				}
 			}
 		}

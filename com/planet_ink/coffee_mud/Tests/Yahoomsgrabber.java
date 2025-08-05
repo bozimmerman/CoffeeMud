@@ -159,7 +159,7 @@ public class Yahoomsgrabber extends StdTest
 				numTotal--;
 				F=new File(dir,""+numTotal+".json");
 			}
-			mob.tell(numTotal+": highest mail file found.");
+			mob.tell(L("@x1: highest mail file found.",""+numTotal));
 		}
 		while ((--numTimes) >= 0)
 		{
@@ -487,7 +487,7 @@ public class Yahoomsgrabber extends StdTest
 			{
 				if(mob != null)
 				{
-					mob.tell("Message "+lastMsgNum+" was a dup!");
+					mob.tell(L("Message @x1 was a dup!",""+lastMsgNum));
 					continue;
 				}
 				else
@@ -498,7 +498,7 @@ public class Yahoomsgrabber extends StdTest
 				CMLib.database().DBTouchJournalMessage(parent, msg.date());
 			CMLib.journals().clearJournalSummaryStats(forum);
 			if(mob != null)
-				mob.tell("Message "+lastMsgNum+" posted.");
+				mob.tell(L("Message @x1 posted.",""+lastMsgNum));
 		}
 		return "Post " + lastMsgNum + " submitted.";
 	}
@@ -513,7 +513,7 @@ public class Yahoomsgrabber extends StdTest
 			if(CMath.isInteger(rest))
 				mob.tell(copyYahooGroupMsg(mob,CMath.s_int(rest)));
 			else
-				mob.tell("18201 was a nice year.");
+				mob.tell(L("18201 was a nice year."));
 		}
 		catch(final Exception e)
 		{

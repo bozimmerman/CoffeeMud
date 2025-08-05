@@ -530,7 +530,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 						}
 					}
 				}
-				str.append("\n\rYou may learn ");
+				str.append(L("\n\rYou may learn "));
 				for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 				{
 					perLevelLimits limitObj = null;

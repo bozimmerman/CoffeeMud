@@ -775,7 +775,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		long closestPoint = Long.MAX_VALUE;
 		final SpaceObject winnerObj = (SpaceObject)CMClass.getBasicItem("Moonlet");
 		winnerObj.setRadius(ship.radius());
-		winnerObj.setName("Nav Point");
+		winnerObj.setName(L("Nav Point"));
 		try
 		{
 			for(final Coord3D p : points)
@@ -842,7 +842,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						&& (CMLib.space().getDistanceFrom(ship, collO) < collO.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 						{
 							newObj = (SpaceObject) CMClass.getBasicItem("Moonlet");
-							newObj.setName("Safe Point");
+							newObj.setName(L("Safe Point"));
 							newObj.setRadius(ship.radius());
 							newObj.setCoords(
 								CMLib.space().getLocation(ship.coordinates(), CMLib.space().getOppositeDir(angleFromCollider),
@@ -1904,7 +1904,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				final SpaceObject orbitTarget = (SpaceObject) CMClass.getBasicItem("Moonlet");
 				orbitTarget.setRadius(ship.radius());
-				orbitTarget.setName("Orbit Point above " + landingZone.Name());
+				orbitTarget.setName(L("Orbit Point above @x1",landingZone.Name()));
 				final Dir3D dirToLandingZone = CMLib.space().getDirection(ship, landingPlanet);
 				final long orbitalRadius = Math.round(landingPlanet.radius() +
 						CMath.mul(landingPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)*0.75);
@@ -2013,7 +2013,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					courseTarget = (SpaceObject)CMClass.getBasicItem("Moonlet");
 					courseTarget.setRadius(ship.radius());
-					courseTarget.setName("Nav Point");
+					courseTarget.setName(L("Nav Point"));
 					courseTarget.setCoords(targetCoords);
 				}
 			}

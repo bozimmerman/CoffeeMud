@@ -1322,9 +1322,9 @@ public class Modify extends StdCommand
 					int showNumber=0;
 					int doCmd=cmdDex;
 					String newScript=null;
-					if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,"Started: "+Q.running())))
+					if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,L("Started: @x1",""+Q.running()))))
 						doCmd=Q.running()?1:0;
-					if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,"Enabled: "+(!Q.suspended()))))
+					if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,L("Enabled: @x1",""+(!Q.suspended())))))
 						doCmd=Q.suspended()?2:3;
 					if(doCmd<0)
 					{
