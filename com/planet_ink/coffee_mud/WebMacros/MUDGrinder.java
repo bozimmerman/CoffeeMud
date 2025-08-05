@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Poisons.Poison;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1205,6 +1206,12 @@ public class MUDGrinder extends StdWebMacro
 			else
 			if(A instanceof Trap)
 				type="GenTrap";
+			final String ptype=httpReq.getUrlParameter("NEWPOISON");
+			if((ptype!=null)&&(ptype.length()>0))
+				type="GenPoison";
+			else
+			if(code==Ability.ACODE_POISON)
+				type="GenPoison";
 			if(code==Ability.ACODE_COMMON_SKILL)
 			{
 				gtype=httpReq.getUrlParameter("NEWGATHERINGSKILL");

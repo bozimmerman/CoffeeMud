@@ -81,6 +81,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 			return "GenGatheringSkill";
 		else
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+			return "GenPoison";
+		else
 		if((A instanceof Language)
 		&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 			return "GenLanguage";
@@ -114,6 +117,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		else
 		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 			CR=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
+		else
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+			CR=(Ability)CMClass.getAbility("GenPoison").copyOf();
 		else
 		if((A instanceof Language)
 		&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))

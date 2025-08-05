@@ -9569,6 +9569,62 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+
+	@Override
+	public void modifyGenPoison(final MOB mob, final Ability me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+
+		final String help = CMLib.help().getHelpText("MATHFORMULA",mob,true).toString()
+							+"\n\r"
+							+ L("For this formula, @x1 is the invoker level, @x2 is invoker expertise, "
+							+ "@x3 is affected level (if different), and @x4 is the 'rank' if applicable.");
+		while((mob.session()!=null)
+		&&(!mob.session().isStopped())
+		&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Poison name","NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
+			promptStatStr(mob,me,help,++showNumber,showFlag,"Duration Formula","TICKS",false);
+			promptStatStr(mob,me,help,++showNumber,showFlag,"Delay Formula","DELAY",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","STARTMSG",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Target Tell","TARGTELLMSG",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Affect Msg","AFFECTMSG",true);
+			promptStatBool(mob, me, ++showNumber, showFlag, "Affect Target", "AFFECTTARG");
+			promptStatBool(mob, me, ++showNumber, showFlag, "Force Peace", "MAKEPEACE");
+			promptStatStr(mob,me,help,++showNumber,showFlag,"Damage Formula","DAMAGE",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Done Msg","DONEMSG",true);
+			promptStatStr(mob,me,help,++showNumber,showFlag,"Addiction (0-100) Formula","ADDCHANCE",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Cast Msg","CASTMSG",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Cast Fail Msg","FAILMSG",true);
+			promptStatStr(mob,me,CMLib.help().getHelpText("Prop_HaveAdjuster",mob,true),++showNumber,showFlag,"Adjustments","ADJUSTMENTS",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
 	@Override
 	public void modifyGenGatheringSkill(final MOB mob, final Ability me, int showFlag) throws IOException
 	{

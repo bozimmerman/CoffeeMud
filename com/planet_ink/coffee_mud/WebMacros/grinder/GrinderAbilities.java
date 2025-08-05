@@ -242,6 +242,23 @@ public class GrinderAbilities
 			}
 		}
 
+		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+		{
+			old=httpReq.getUrlParameter("AFFECTTARG");
+			A.setStat("AFFECTTARG",(old==null)?"":""+old.equalsIgnoreCase("on"));
+			old=httpReq.getUrlParameter("MAKEPEACE");
+			A.setStat("MAKEPEACE",(old==null)?"":""+old.equalsIgnoreCase("on"));
+			final String[] poisonParms = new String[] {
+				"TICKS", "STARTMSG", "TARGTELLMSG", "AFFECTMSG",
+				"DAMAGE", "DONEMSG", "ADDCHANCE", "FAILMSG", "ADJUSTMENTS"
+			};
+			for(final String poisonParm : poisonParms)
+			{
+				old=httpReq.getUrlParameter(poisonParm);
+				A.setStat(poisonParm,(old==null)?"":old);
+			}
+		}
+
 		if(httpReq.isUrlParameter("ITEMXML_1")
 		&&(A instanceof ItemCollection))
 		{

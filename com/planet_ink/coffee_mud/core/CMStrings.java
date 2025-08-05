@@ -1871,7 +1871,7 @@ public class CMStrings
 	 *
 	 * @param str the stringbuffer to assess
 	 * @param values values to replace each variable with
-	 * @param highDex the index to use for @x0
+	 * @param highDex the index to use for @x1
 	 * @return the highest variable index used
 	 */
 	public final static int replaceVariables(final StringBuffer str, final String values[], int highDex)

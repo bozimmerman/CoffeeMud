@@ -50,6 +50,7 @@ public class AbilityData extends StdWebMacro
 		new String[] { "NEWWRIGHTSKILL", "GenWrightSkill" },
 		new String[] { "NEWGATHERINGSKILL", "GenGatheringSkill" },
 		new String[] { "NEWTRAP", "GenTrap" },
+		new String[] { "NEWPOISON", "GenPoison" },
 	};
 
 	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)
@@ -258,6 +259,10 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ISTRAP"))
 				{
 					return Boolean.toString(A instanceof Trap);
+				}
+				if(parms.containsKey("ISPOISON"))
+				{
+					return Boolean.toString(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON));
 				}
 				if(parms.containsKey("ISBOMB"))
 				{
@@ -1141,6 +1146,39 @@ public class AbilityData extends StdWebMacro
 						if(old==null)
 							old=A.getStat(normalParm);
 						str.append(old+", ");
+					}
+				}
+
+				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+				{
+					if(parms.containsKey("AFFECTTARG"))
+					{
+						String old=httpReq.getUrlParameter("AFFECTTARG");
+						if(old==null)
+							old=CMath.s_bool(A.getStat("AFFECTTARG"))?"on":"";
+						str.append(old.equalsIgnoreCase("on")?"CHECKED, ":", ");
+					}
+					if(parms.containsKey("MAKEPEACE"))
+					{
+						String old=httpReq.getUrlParameter("MAKEPEACE");
+						if(old==null)
+							old=CMath.s_bool(A.getStat("MAKEPEACE"))?"on":"";
+						str.append(old.equalsIgnoreCase("on")?"CHECKED, ":", ");
+					}
+
+					final String[] POISON_PARMS= {
+						"TICKS", "STARTMSG", "TARGTELLMSG", "AFFECTMSG",
+						"DAMAGE", "DONEMSG", "ADDCHANCE", "FAILMSG", "ADJUSTMENTS"
+					};
+					for(final String normalParm : POISON_PARMS)
+					{
+						if(parms.containsKey(normalParm))
+						{
+							String old=httpReq.getUrlParameter(normalParm);
+							if(old==null)
+								old=A.getStat(normalParm);
+							str.append(old+", ");
+						}
 					}
 				}
 

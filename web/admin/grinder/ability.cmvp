@@ -119,6 +119,7 @@
 <INPUT TYPE=HIDDEN NAME=NEWWRIGHTSKILL VALUE="@RequestParameter?NEWWRIGHTSKILL@">
 <INPUT TYPE=HIDDEN NAME=NEWGATHERINGSKILL VALUE="@RequestParameter?NEWGATHERINGSKILL@">
 <INPUT TYPE=HIDDEN NAME=NEWTRAP VALUE="@RequestParameter?NEWTRAP@">
+<INPUT TYPE=HIDDEN NAME=NEWPOISON VALUE="@RequestParameter?NEWPOISON@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
     Select a ability above to view/edit.
@@ -132,6 +133,9 @@
             <TD><FONT COLOR=YELLOW>Name: </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=NAME VALUE="@AbilityData?NAME@"></TD>
         </TR>
+        @if?AbilityData?ISPOISON@
+        <!-- does not apply, and i wonder how few it really does -->
+        @else@
         <TR>
             <TD><FONT COLOR=YELLOW>Source Verb: </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=VERB VALUE="@AbilityData?VERB@"></TD>
@@ -140,6 +144,7 @@
             <TD><FONT COLOR=YELLOW>Translation Verb: </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRANSVERB VALUE="@AbilityData?TRANSVERB@"></TD>
         </TR>
+        @endif@
         @if?AbilityData?ISLANGUAGE@
             @AbilityData?WORDLISTS&RESET@
             @AddRequestParameter?WLCOUNTER=0@
@@ -474,6 +479,88 @@
                 </TD>
                 <TD>
                     <INPUT TYPE=TEXT SIZE=5 MAXLENGTH=10 NAME=FINDTICK VALUE="@AbilityData?FINDTICK@">
+                </TD>
+            </TR>
+        @else@
+        @if?AbilityData?ISPOISON@
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Command Words: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Duration Formula: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=40  NAME=TICKS VALUE="@AbilityData?TICKS@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Start Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=STARTMSG VALUE="@AbilityData?STARTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Target Tell: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=TARGTELLMSG VALUE="@AbilityData?TARGTELLMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Affect Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=AFFECTMSG VALUE="@AbilityData?AFFECTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Affect Target: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=AFFECTTARG @AbilityData?AFFECTTARG@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Force Peace: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=MAKEPEACE @AbilityData?MAKEPEACE@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Damage Formula: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=DAMAGE VALUE="@AbilityData?DAMAGE@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Done Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=DONEMSG VALUE="@AbilityData?DONEMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Addiction (0-100): </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=ADDCHANCE VALUE="@AbilityData?ADDCHANCE@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Cast Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=CASTMSG VALUE="@AbilityData?CASTMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Fail Msg: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=FAILMSG VALUE="@AbilityData?FAILMSG@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Adjustments: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=50  NAME=ADJUSTMENTS VALUE="@AbilityData?ADJUSTMENTS@">
                 </TD>
             </TR>
         @else@
@@ -867,6 +954,7 @@
                     <FONT SIZE=-1 COLOR=WHITE>@x1=caster level, @x2=target level, @x3=level expertise, @x4-@x8=x1-x5 expertise, @x9=adjusted caster level</FONT>
                 </TD>
             </TR>
+        @endif@
         @endif@
         @endif@
         @endif@

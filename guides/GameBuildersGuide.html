@@ -23,7 +23,7 @@ Builders Guide</h1>
         <li><a href="#craftskills">Crafting Skills</a></li>
         <li><a href="#gatherskills">Gathering Skills</a></li>
         <li><a href="#wrightskill">Wrighting Skills</a></li>
-        <li><a href="#traps">Traps</a></li>
+        <li><a href="#traps">Traps</a></li><li><a href="#poisons">Poisons</a></li>
         <li><a href="#comps">Components</a></li>
         <li><a href="#allqualifys">All-Qualifys</a></li>
         <li><a href="#recipes">Recipes</a></li>
@@ -1280,7 +1280,138 @@ see when they enter HELP ABILITYNAME.</td>
         </tbody>
       </table>
       <br>
+      <br><br>
+      <strong><a name="traps"><font color="blue" size="5">Generic Poisons</font></a></strong>
+      <p>Poisons are affects drank, eaten or&nbsp;applied by Thieves to weapons, that harm the recipient, especially over time. &nbsp;</p>
+      <p>Although CoffeeMud
+includes a wide variety of &nbsp;poisons, it is not beyond the realm
+of possibility that you may want to
+add onto them. &nbsp;Therefore,
+CoffeeMud also allows you to define&nbsp;poisons outside of the
+java-realm. This can be done from the command line using the CREATE
+command. If you want to create a new poison called Sickly Sweet, for
+instance,
+you might enter:</p>
+      <p><strong>CREATE POISON Poison_SicklySweet</strong></p>
+      <p>And it would be done. The
+"<strong>Poison_SicklySweet</strong>" is the abilities
+Ability ID. The fact that it starts with "Poison_" is merely for
+descriptive purposes, to keep your&nbsp;poisons  organized together..</p>
+      <p>Whenever creating or
+modifying a new ability, the Archon is
+presented with a menu of selections and options available to customize
+the class. Here is a description of those options:</p>
+      <strong></strong>
+      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+        <tbody>
+          <tr>
+            <td width="25%"><strong>Property</strong></td>
+            <td width="75%"><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><em>Name</em></td>
+            <td>the name of the poison. Make this anything you
+like,
+but uniqueness is important for making help file entries.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Command Words</span></td>
+            <td>comma
+delimited list of invoking words. &nbsp;These are almost never used for
+poisons, which are invoked by victims, but just in case you make a
+monster that can inflict it, make sure the words are unique.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Duration Formula</span></td>
+            <td>an
+override to the total amount of time (in ticks) that the poison will
+affect the victim. &nbsp;The default time is based on the level of the
+victim, which you can retain by keeping this value 0. &nbsp;If you use
+a formula, it is as seen if you do AHELP MATH FORMULA. &nbsp;Allowed
+variables in the formula include: @x1 is the invoker level, @x2 is
+invoker expertise, @x3 is affected level (if different), and @x4 is the
+'rank' if applicable.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Delay Formula</span></td>
+            <td>the
+amount of time between damaging/messaging ticks as described below.
+&nbsp;The 'formula' is usually just a number, like 2 or 3. &nbsp;Butif you use a formula, it is as seen if you do AHELP MATH FORMULA.
+&nbsp;Allowed variables in the formula include: @x1 is the invoker level,
+@x2 is invoker expertise, @x3 is affected level (if different), and @x4
+is the 'rank' if applicable. </td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Start Msg</span></td>
+            <td>the message everyone sees when a poison first affects a victim.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Target Tell</span></td>
+            <td>a private message seen only by the afflicted one, usually empty.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Affect Msg</span></td>
+            <td>the message seen by everyone during every Poison tick. &nbsp;See Delay Formula for this period.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Affect Target</span></td>
+            <td>almost always true, this is whether the poison persists in the target, or is just one-shot.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Force Peace</span></td>
+            <td>usually false, this is whether a poisoned victim 'forgives' the one who poisoned them intentionally.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Damage Formula</span></td>
+            <td>the
+amount of damage taken during every Poison tick. &nbsp;See Delay
+Formula for more information on this tick period. &nbsp;This is usually
+a formula based on the level of the victim. &nbsp;If you use a formula, it is as seen if you do AHELP MATH FORMULA.
+&nbsp;Allowed variables in the formula include: @x1 is the invoker level,
+@x2 is invoker expertise, @x3 is affected level (if different), and @x4
+is the 'rank' if applicable.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Done Msg</span></td>
+            <td>when a poison runs its course, this is the private message sent to the sufferer.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Addiction Chance</span></td>
+            <td>usually
+0, this must be a number from 0-100, or a formula that resolves to such
+a number. &nbsp;Whenever a victim is afflicted by a poison, this is the
+percent chance they may gain an addiction to the poison. &nbsp;If you use a formula, it is as seen if you do AHELP MATH FORMULA.
+&nbsp;Allowed variables in the formula include: @x1 is the invoker level,
+@x2 is invoker expertise, @x3 is affected level (if different), and @x4
+is the 'rank' if applicable.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Cast Msg</span></td>
+            <td>the message seen when a poison is used like a skill instead of passively afflicted on a victim. &nbsp;Rarely used.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Cast Fail Msg</span></td>
+            <td>the message seen when the poison is attempted to be used as a skill, but fails due to proficiency checks. Rarely used.</td>
+          </tr>
+          <tr>
+            <td><span style="font-style: italic;">Adjustments</span></td>
+            <td>this
+optional string allows a poison to temporarily affect all manner of
+stats on a victim. &nbsp;See AHELP Prop_HaveAdjuster for the valid
+values you can put here.</td>
+          </tr>
+          
+          <tr>
+            <td style="font-style: italic;">Help
+Text</td>
+            <td>always starting
+with the string &lt;ABILITY&gt;, this is the entry players will
+see when they enter HELP ABILITYNAME.</td>
+          </tr>
+        </tbody>
+      </table>
       <br>
+<br>
       <strong><a name="comps"><font color="blue" size="5">Components
 (for Skills,
 Spells, etc..)</font></a></strong>
