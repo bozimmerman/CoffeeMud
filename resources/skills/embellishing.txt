@@ -35,4 +35,4 @@ a polished % buckle	26	10	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory
 a %-encrusted buckle	27	15	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	
 tiny % roses embroidered along the hem	28	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
 tiny % feathers embroidered along the hem	29	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
-% fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	
+% fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS "+LEFT WRIST" "+RIGHT WRIST"	

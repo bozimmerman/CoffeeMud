@@ -285,9 +285,10 @@ public class CMStrings
 	 * assuming there isn't already punctuation at the end.  Preserves any
 	 * trailing special color codes.
 	 * @param str the string to end with a period.
+	 * @param endChar the char to end sentence with
 	 * @return the string, with a period at the end.
 	 */
-	public final static String endWithAPeriod(final String str)
+	public final static String endWithAPeriod(final String str, final char endChar)
 	{
 		if((str==null)||(str.length()==0))
 			return str;
@@ -302,7 +303,7 @@ public class CMStrings
 			return str;
 		if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?'))
 			return str.trim()+" ";
-		return str.substring(0,x+1)+". "+str.substring(x+1).trim();
+		return str.substring(0,x+1)+endChar+" "+str.substring(x+1).trim();
 	}
 
 	/**

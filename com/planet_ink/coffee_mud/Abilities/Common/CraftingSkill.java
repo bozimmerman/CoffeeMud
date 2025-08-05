@@ -1503,7 +1503,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				if(x>=0)
 				{
 					final String weaponClass = Weapon.CLASS_DESCS[x];
-					for(int r=0;r<recipes.size();r++)
+					for(int r=RCP_LEVEL+1;r<recipes.size();r++)
 					{
 						final List<String> V=recipes.get(r);
 						if((V.contains(weaponClass))
@@ -1515,7 +1515,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				if(x>=0)
 				{
 					final String weaponType = Weapon.TYPE_DESCS[x];
-					for(int r=0;r<recipes.size();r++)
+					for(int r=RCP_LEVEL+1;r<recipes.size();r++)
 					{
 						final List<String> V=recipes.get(r);
 						if((V.contains(weaponType))
@@ -1541,12 +1541,13 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
-					for(int i=0;i<V.size();i++)
+					for(int i=RCP_LEVEL+1;i<V.size();i++)
 					{
 						final String str = V.get(i).toUpperCase();
 						if(str.equals(wearLoc)
 						||str.endsWith(":"+wearLoc)
-						||str.indexOf("||"+wearLoc)>0)
+						||(str.indexOf("+"+wearLoc)>0)
+						||(str.indexOf("||"+wearLoc)>0))
 						{
 							if(!matches.contains(V))
 								matches.add(V);
@@ -1567,7 +1568,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				for(int r=0;r<recipes.size();r++)
 				{
 					final List<String> V=recipes.get(r);
-					for(int v=0;v<V.size();v++)
+					for(int v=RCP_LEVEL+1;v<V.size();v++)
 					{
 						final String fieldUp=V.get(v).toUpperCase();
 						final int x=fieldUp.indexOf(wearLoc);

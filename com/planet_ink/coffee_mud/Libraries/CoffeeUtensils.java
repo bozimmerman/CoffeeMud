@@ -1279,7 +1279,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				ruinDescAdder=L("@x1 is ruined beyond repair.",CMStrings.capitalizeFirstLetter(I2.name()));
 				break;
 		}
-		I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
+		I2.setDescription(CMStrings.endWithAPeriod(I2.description(), '.')+" "+ruinDescAdder);
 		final String oldName=I2.Name();
 		I2.setName(CMLib.english().insertUnColoredAdjective(I2.Name(),L("ruined")));
 		final int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());

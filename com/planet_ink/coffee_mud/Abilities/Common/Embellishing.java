@@ -237,10 +237,25 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		final CraftingSkill craft = new CraftingSkill();
 		if(command.equals("list"))
 		{
-			String mask=CMParms.combine(commands,1);
+			List<List<String>> listRecipes = recipes;
+			String mask=CMParms.combine(commands,0);
 			boolean allFlag=false;
 			if(mask.equalsIgnoreCase("all"))
 			{
+				allFlag=true;
+				mask="";
+			}
+			@SuppressWarnings("unchecked")
+			final Item I = mob.fetchItem(null, Filterer.ANYTHING, mask);
+			if(I != null)
+			{
+				listRecipes = new ArrayList<List<String>>();
+				for(final List<String> recipe : recipes)
+				{
+					final String imask = recipe.get(RCP_CLASSTYPE);
+					if(CMLib.masking().maskCheck(imask, I, true))
+						listRecipes.add(recipe);
+				}
 				allFlag=true;
 				mask="";
 			}
@@ -251,8 +266,8 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 			};
 			buf.append("^H"+CMStrings.padRight(L("Item / Mats"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1]));
 			buf.append("^N\n\r");
-			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all"))
-					? recipes : craft.matchingRecipes(recipes, mask, true);
+			listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all"))
+					? listRecipes : craft.matchingRecipes(listRecipes, mask, true);
 			for(int r=0;r<listRecipes.size();r++)
 			{
 				final List<String> V=listRecipes.get(r);

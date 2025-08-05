@@ -536,7 +536,7 @@ ot	POUND <T-NAME>	You pound <T-HIM-HER> into a bloody mass.	<S-NAME> pounds <T-N
 mo	POUT	You quiver your lower lip and try to look pathetically helpless.	<S-NAME> quivers <S-HIS-HER> lower lip as <S-HIS-HER> eyes fill with tears.					
 mv	PRANCE	You prance around the room happily.	<S-NAME> prances around the room happily.					
 ww	PRAY	You feel righteous, and maybe a little foolish.	<S-NAME> begs and grovels to the powers that be.					
-ww	PRAY <T-NAME>	You crawl in the dust before <T-HIM-HER>.	<S-NAME> falls down and grovels in the dirt before <T-NAMESELF>.	<S-NAME> kisses the dirt at your feet.	No such person around; your prayers vanish into the endless voids.			
+ww	PRAY <T-NAME>	You pray to <T-HIM-HER>.	<S-NAME> kneels and prays to <T-NAMESELF>.	<S-NAME> prays to no one in particular.					
 ww	PRAY SELF	Talk about narcissism...	<S-NAME> performs some strange yoga-exercises and mumbles a prayer to <S-HIM-HERSELF>.					
 ww	PROPOSE	You propose to everyone in the room.	<S-NAME> proposes to everyone in the room.  Very odd.					
 mw	PROPOSE <T-NAME>	You kneel and romantically propose to <T-NAMESELF>.	<S-NAME> gets on one knee and proposes to <T-NAMESELF>.	<S-NAME> gets down on one knee and romantically proposes to you.	You must be lonely.  They aren't here.			

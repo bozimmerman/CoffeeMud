@@ -95,22 +95,27 @@ public class Mood extends StdAbility
 
 	protected enum MoodType
 	{
-		FORMAL("+ADJCHA 17","^Bformal","formally"),
-		POLITE("+ADJCHA 13","^Bpolite","politely"),
-		HAPPY("","^Yhappy","happily"),
-		HAPPYSILLY("","^Yhappy","happily"),
-		SAD("","^Csad","sadly"),
-		ANGRY("","^rangry","angrily"),
-		RUDE("","^grude","rudely"),
-		MEAN("","^rmean","meanly"),
-		PROUD("","^bproud","proudly"),
-		GRUMPY("","^Ggrumpy","grumpily"),
-		EXCITED("","^Wexcited","excitedly"),
-		SCARED("","^yscared","scaredly"),
-		LONELY("","^Clonely","lonely"),
-		REFLECTIVE("","^Creflective","reflectively"),
-		SILLY("","^psilly","sillily"),
-		APATHETIC("","^kapathetic", "apathetically")
+		FORMAL("+ADJCHA 17",CMLib.lang().L("^Bformal"),CMLib.lang().L("formally")),
+		POLITE("+ADJCHA 13",CMLib.lang().L("^Bpolite"),CMLib.lang().L("politely")),
+		HAPPY("",CMLib.lang().L("^Yhappy"),CMLib.lang().L("happily")),
+		HAPPYSILLY("",CMLib.lang().L("^Yhappy"),CMLib.lang().L("happily")),
+		SAD("",CMLib.lang().L("^Csad"),CMLib.lang().L("sadly")),
+		ANGRY("",CMLib.lang().L("^rangry"),CMLib.lang().L("angrily")),
+		RUDE("",CMLib.lang().L("^grude"),CMLib.lang().L("rudely")),
+		MEAN("",CMLib.lang().L("^rmean"),CMLib.lang().L("meanly")),
+		PROUD("",CMLib.lang().L("^bproud"),CMLib.lang().L("proudly")),
+		GRUMPY("",CMLib.lang().L("^Ggrumpy"),CMLib.lang().L("grumpily")),
+		EXCITED("",CMLib.lang().L("^Wexcited"),CMLib.lang().L("excitedly")),
+		SCARED("",CMLib.lang().L("^yscared"),CMLib.lang().L("scaredly")),
+		LONELY("",CMLib.lang().L("^Clonely"),CMLib.lang().L("lonely")),
+		REFLECTIVE("",CMLib.lang().L("^Creflective"),CMLib.lang().L("reflectively")),
+		SILLY("",CMLib.lang().L("^psilly"),CMLib.lang().L("sillily")),
+		APATHETIC("",CMLib.lang().L("^kapathetic"), CMLib.lang().L("apathetically")),
+		PASSIVE("",CMLib.lang().L("^Wpassive"), CMLib.lang().L("passively")),
+		HORNY("",CMLib.lang().L("^Rhorny"), CMLib.lang().L("hornily")),
+		QUEER("",CMLib.lang().L("^Rqueer"), CMLib.lang().L("queerly")),
+		LUSTY("",CMLib.lang().L("^Rlusty"), CMLib.lang().L("lustily")),
+		SUBMISSIVE("",CMLib.lang().L("^Wsubmissive"), CMLib.lang().L("submissively")),
 		;
 		final String statChanges;
 		final String adj;
@@ -137,62 +142,222 @@ public class Mood extends StdAbility
 
 	public final static String[] uglyPhrases=
 	{
-		"orc-brain",
-		"jerk",
-		"dork",
-		"dim-wit",
-		"excremental waste",
-		"squeegy",
-		"ding-dong",
-		"female-dog",
-		"smelly dork",
-		"geek",
-		"illegitimate offspring",
-		"gluteus maximus cavity",
-		"uncle copulator",
-		"ugly yokle",
-		"brainless goop",
-		"stupid noodle",
-		"stupid ugly-bottom",
-		"pig-dog",
-		"son of a silly person",
-		"silly K...kanigget",
-		"empty-headed animal",
-		"food trough wiper",
-		"perfidious mousedropping hoarder",
-		"son of a window-dresser",
-		"brightly-colored, mealy-templed, cranberry-smeller",
-		"electric donkey-bottom biter",
-		"bed-wetting type",
-		"tiny-brained wiper of other people`s bottoms"
+		CMLib.lang().L("orc-brain"),
+		CMLib.lang().L("jerk"),
+		CMLib.lang().L("dork"),
+		CMLib.lang().L("dim-wit"),
+		CMLib.lang().L("excremental waste"),
+		CMLib.lang().L("squeegy"),
+		CMLib.lang().L("ding-dong"),
+		CMLib.lang().L("female-dog"),
+		CMLib.lang().L("smelly dork"),
+		CMLib.lang().L("geek"),
+		CMLib.lang().L("illegitimate offspring"),
+		CMLib.lang().L("gluteus maximus cavity"),
+		CMLib.lang().L("uncle copulator"),
+		CMLib.lang().L("ugly yokle"),
+		CMLib.lang().L("brainless goop"),
+		CMLib.lang().L("stupid noodle"),
+		CMLib.lang().L("stupid ugly-bottom"),
+		CMLib.lang().L("pig-dog"),
+		CMLib.lang().L("son of a silly person"),
+		CMLib.lang().L("silly K...kanigget"),
+		CMLib.lang().L("empty-headed animal"),
+		CMLib.lang().L("food trough wiper"),
+		CMLib.lang().L("perfidious mousedropping hoarder"),
+		CMLib.lang().L("son of a window-dresser"),
+		CMLib.lang().L("brightly-colored, mealy-templed, cranberry-smeller"),
+		CMLib.lang().L("electric donkey-bottom biter"),
+		CMLib.lang().L("bed-wetting type"),
+		CMLib.lang().L("tiny-brained wiper of other people`s bottoms")
 	};
 
-	public static String[] sillySocials = new String[] {
-		"ADJUST","AGREE","AIR","ANGELIC","ANTICIPATE","APPLAUD","BABBLE","BARK","BAT",
-		"BEAM","BEARHUG","BECKON","BEER","BEG","BIRD","BITE","BKISS","BLINK","BLUSH",
-		"BOAST","BOGGLE","BONK","BONK","BONK","BONK","BOUNCE","BOW","CACKLE","CHARGE",
-		"CHEER","CHEST","CHORTLE","CHUCKLE","CLAP","COLLAPSE","COMB","COMMANDO","CONFUSED",
-		"CONSPIRE","CONTEMPLATE","COUGH","COZY","CURTSEY","DANCE","DISCODANCE","DOH",
-		"DROOL","DUCK","EARPLUG","EMBRACE","EYEBROW","FART","FIDGET","FLASH","FLEX",
-		"FLIRT","FLUTTER","FOOTSIE","FPALM","FROLICK","GIGGLE","GOOSE","GREET","GROUPHUG",
-		"HICCUP","HIGHFIVE","HOMEWORK","HOP","HOWL","HUSH","INNOCENT","JIG","KISS","LAUGH",
-		"LAUGH","LAUGH","LICK","MOO","MOON","MOSH","NIBBLE","NOOGIE","NTWIST","NUDGE",
-		"NUZZLE","PANT","PAT","PATPAT","PECK","PET","PIE","PILLOW","PINCH","POINT","POKE",
-		"POUNCE","PRANCE","PRAY","PURR","RASPBERRY","ROAR","ROFL","ROFL","ROFL","ROFL",
-		"ROFLMAO","ROFLMAO","ROFLMAO","ROLL","ROLLOVER","SERENADE","SHAKE","SILLY","SILLY",
-		"SILLY","SLOBBER","SLOWDANCE","SMILE","SMILE","SMIRK","SMIRK","SNOWBALL","SPIN",
-		"SQUEEL","SQUIRM","SSMILE","STRUT","SWEET","SWOON","TEASE","TEASE","THANK","THANK",
-		"THANK","TICKLE","TICKLE","TONGUE","TWERK","TWIDDLE","WHEW","WIGGY","WIGGY","WIGGY",
-		"WINK","WINK","WONDER","WORM","YEEHAW","ZERBERT"
-	};
+	public static String[] DEFAULT_SILLY_SOCIALS = null;
+	public  String[] sillySocials() {
+		if(DEFAULT_SILLY_SOCIALS == null)
+		{
+			DEFAULT_SILLY_SOCIALS = I(new String[] {
+				"ADJUST","AGREE","AIR","ANGELIC","ANTICIPATE","APPLAUD","BABBLE","BARK","BAT",
+				"BEAM","BEARHUG","BECKON","BEER","BEG","BIRD","BITE","BKISS","BLINK","BLUSH",
+				"BOAST","BOGGLE","BONK","BONK","BONK","BONK","BOUNCE","BOW","CACKLE","CHARGE",
+				"CHEER","CHEST","CHORTLE","CHUCKLE","CLAP","COLLAPSE","COMB","COMMANDO","CONFUSED",
+				"CONSPIRE","CONTEMPLATE","COUGH","COZY","CURTSEY","DANCE","DISCODANCE","DOH",
+				"DROOL","DUCK","EARPLUG","EMBRACE","EYEBROW","FART","FIDGET","FLASH","FLEX",
+				"FLIRT","FLUTTER","FOOTSIE","FPALM","FROLICK","GIGGLE","GOOSE","GREET","GROUPHUG",
+				"HICCUP","HIGHFIVE","HOMEWORK","HOP","HOWL","HUSH","INNOCENT","JIG","KISS","LAUGH",
+				"LAUGH","LAUGH","LICK","MOO","MOON","MOSH","NIBBLE","NOOGIE","NTWIST","NUDGE",
+				"NUZZLE","PANT","PAT","PATPAT","PECK","PET","PIE","PILLOW","PINCH","POINT","POKE",
+				"POUNCE","PRANCE","PRAY","PURR","RASPBERRY","ROAR","ROFL","ROFL","ROFL","ROFL",
+				"ROFLMAO","ROFLMAO","ROFLMAO","ROLL","ROLLOVER","SERENADE","SHAKE","SILLY","SILLY",
+				"SILLY","SLOBBER","SLOWDANCE","SMILE","SMILE","SMIRK","SMIRK","SNOWBALL","SPIN",
+				"SQUEEL","SQUIRM","SSMILE","STRUT","SWEET","SWOON","TEASE","TEASE","THANK","THANK",
+				"THANK","TICKLE","TICKLE","TONGUE","TWERK","TWIDDLE","WHEW","WIGGY","WIGGY","WIGGY",
+				"WINK","WINK","WONDER","WORM","YEEHAW","ZERBERT"
+			});
+		}
+		return DEFAULT_SILLY_SOCIALS;
+	}
 
-	public static String[] happySillySocials = new String[] {
-		"AGREE","ANGELIC","APPLAUD","BEAM","BEARHUG","BEER","BKISS","BOW","CHEER",
-		"CHUCKLE","CLAP","COZY","CURTSEY","DROOL","EMBRACE","EYEBROW",
-		"FLIRT","FLUTTER","GIGGLE","GREET","GROUPHUG","HIGHFIVE","JIG",
-		"LAUGH","PAT","PECK","PET","ROFL","ROFLMAO","SERENADE","SHAKE","SLOBBER",
-		"SMILE","SMILE","SMILE","SMILE","SQUEEL","SSMILE","SSMILE","THANK","THANK",
-		"THANK","TICKLE"
+	protected boolean isLustyMatch(final MOB mob, final MoodType moodType, final MOB M)
+	{
+		final char g = mob.baseCharStats().reproductiveCode();
+		return
+		 ((M!=null)
+		&&(M!=mob)
+		&&((moodType==MoodType.HORNY)
+			||((moodType==MoodType.LUSTY)
+				&&(M.baseCharStats().reproductiveCode()!=g)
+				&&(M.charStats().reproductiveCode()!=('N'))
+				&&(g!=('N')))
+			||((moodType==MoodType.QUEER)&&(M.baseCharStats().reproductiveCode()==g))))
+			;
+	}
+
+	public static String[] DEFAULT_HAPPY_SILLY_SOCIALS = null;
+	public  String[] happySillySocials() {
+		if(DEFAULT_HAPPY_SILLY_SOCIALS == null)
+		{
+			DEFAULT_HAPPY_SILLY_SOCIALS = I(new String[] {
+				"AGREE","ANGELIC","APPLAUD","BEAM","BEARHUG","BEER","BKISS","BOW","CHEER",
+				"CHUCKLE","CLAP","COZY","CURTSEY","DROOL","EMBRACE","EYEBROW",
+				"FLIRT","FLUTTER","GIGGLE","GREET","GROUPHUG","HIGHFIVE","JIG",
+				"LAUGH","PAT","PECK","PET","ROFL","ROFLMAO","SERENADE","SHAKE","SLOBBER",
+				"SMILE","SMILE","SMILE","SMILE","SQUEEL","SSMILE","SSMILE","THANK","THANK",
+				"THANK","TICKLE"
+			});
+		}
+		return DEFAULT_HAPPY_SILLY_SOCIALS;
+	}
+
+	public static String[] DEFAULT_HORNY_SOCIALS = null;
+	public  String[] hornySocials() {
+		if(DEFAULT_HORNY_SOCIALS == null)
+			DEFAULT_HORNY_SOCIALS = I(new String[] {
+				"BITE", "BKISS", "BLUSH", "BSHAKE", "CARESS", "COZY", "COMB", "EYE", "FLIRT",
+				"FOOTSIE", "FONDLE", "FROLICK", "FRENCH", "GROPE", "LAPDANCE", "MISCHIEVOUS",
+				"MOAN", "LUST", "NIBBLE", "OGLE", "PURSE", "PURR", "SMILE", "STRUT", "STRADDLE",
+				"SWOON"
+			});
+		return DEFAULT_HORNY_SOCIALS;
+	}
+
+	public static String[] DEFAULT_PASSIVE_SOCIALS = null;
+	public  String[] passiveSocials() {
+		if(DEFAULT_PASSIVE_SOCIALS == null)
+			DEFAULT_PASSIVE_SOCIALS = I(new String[] {"STARE","SULK","CONTEMPLATE","BLINK"});
+		return DEFAULT_PASSIVE_SOCIALS;
+	}
+
+	public static String[][] formalReplacements = new String[][]
+	{
+		{ CMLib.lang().L("you"),CMLib.lang().L("thou") },
+		{ CMLib.lang().L("you`ll"),CMLib.lang().L("thou willst") },
+		{ CMLib.lang().L("youll"),CMLib.lang().L("thou willst") },
+		{ CMLib.lang().L("you`re"),CMLib.lang().L("thou art") },
+		{ CMLib.lang().L("youre"),CMLib.lang().L("thou art") },
+		{ CMLib.lang().L("you`d"),CMLib.lang().L("thou wouldst") },
+		{ CMLib.lang().L("youd"),CMLib.lang().L("thou wouldst") },
+		{ CMLib.lang().L("you`ve"),CMLib.lang().L("thou hast") },
+		{ CMLib.lang().L("youve"),CMLib.lang().L("thou hast") },
+		{ CMLib.lang().L("he`s"),CMLib.lang().L("he ist") },
+		{ CMLib.lang().L("hes"),CMLib.lang().L("he ist") },
+		{ CMLib.lang().L("she`s"),CMLib.lang().L("she ist") },
+		{ CMLib.lang().L("shes"),CMLib.lang().L("she ist") },
+		{ CMLib.lang().L("it`s"),CMLib.lang().L("it ist") },
+		{ CMLib.lang().L("its"),CMLib.lang().L("it ist") },
+		{ CMLib.lang().L("it`ll"),CMLib.lang().L("it willst") },
+		{ CMLib.lang().L("itll"),CMLib.lang().L("it willst") },
+		{ CMLib.lang().L("it`d"),CMLib.lang().L("it wouldst") },
+		{ CMLib.lang().L("itd"),CMLib.lang().L("it wouldst") },
+		{ CMLib.lang().L("you"),CMLib.lang().L("thee") },
+		{ CMLib.lang().L("your"),CMLib.lang().L("thine") },
+		{ CMLib.lang().L("really"),CMLib.lang().L("indeed") },
+		{ CMLib.lang().L("mine"),CMLib.lang().L("my own") },
+		{ CMLib.lang().L("my"),CMLib.lang().L("mine") },
+		{ CMLib.lang().L("I`m"),CMLib.lang().L("we art") },
+		{ CMLib.lang().L("Im"),CMLib.lang().L("we art") },
+		{ CMLib.lang().L("I`ll"),CMLib.lang().L("we willst") },
+		{ CMLib.lang().L("Ill"),CMLib.lang().L("we willst") },
+		{ CMLib.lang().L("I`d"),CMLib.lang().L("we had") },
+		{ CMLib.lang().L("Id"),CMLib.lang().L("we had") },
+		{ CMLib.lang().L("I`ve"),CMLib.lang().L("we hast") },
+		{ CMLib.lang().L("Ive"),CMLib.lang().L("we hast") },
+		{ CMLib.lang().L("i am"),CMLib.lang().L("we art") },
+		{ CMLib.lang().L("i"),CMLib.lang().L("we") },
+		{ CMLib.lang().L("hi"),CMLib.lang().L("greetings") },
+		{ CMLib.lang().L("hello"),CMLib.lang().L("salutations") },
+		{ CMLib.lang().L("no"),CMLib.lang().L("negative") },
+		{ CMLib.lang().L("hey"),CMLib.lang().L("greetings") },
+		{ CMLib.lang().L("where is"),CMLib.lang().L("where might we find") },
+		{ CMLib.lang().L("how do"),CMLib.lang().L("how wouldst") },
+		{ CMLib.lang().L("can`t"),CMLib.lang().L("canst not") },
+		{ CMLib.lang().L("cant"),CMLib.lang().L("canst not") },
+		{ CMLib.lang().L("couldn`t"),CMLib.lang().L("couldst not") },
+		{ CMLib.lang().L("couldnt"),CMLib.lang().L("couldst not") },
+		{ CMLib.lang().L("aren`t"),CMLib.lang().L("are not") },
+		{ CMLib.lang().L("arent"),CMLib.lang().L("are not") },
+		{ CMLib.lang().L("didn`t"),CMLib.lang().L("didst not") },
+		{ CMLib.lang().L("didnt"),CMLib.lang().L("didst not") },
+		{ CMLib.lang().L("doesn`t"),CMLib.lang().L("doth not") },
+		{ CMLib.lang().L("doesnt"),CMLib.lang().L("doth not") },
+		{ CMLib.lang().L("does"),CMLib.lang().L("doth") },
+		{ CMLib.lang().L("wont"),CMLib.lang().L("willst not") },
+		{ CMLib.lang().L("won`t"),CMLib.lang().L("willst not") },
+		{ CMLib.lang().L("wasnt"),CMLib.lang().L("wast not") },
+		{ CMLib.lang().L("wasn`t"),CMLib.lang().L("wast not") },
+		{ CMLib.lang().L("werent"),CMLib.lang().L("were not") },
+		{ CMLib.lang().L("weren`t"),CMLib.lang().L("were not") },
+		{ CMLib.lang().L("wouldnt"),CMLib.lang().L("wouldst not") },
+		{ CMLib.lang().L("wouldn`t"),CMLib.lang().L("wouldst not") },
+		{ CMLib.lang().L("don`t"),CMLib.lang().L("doest not") },
+		{ CMLib.lang().L("dont"),CMLib.lang().L("doest not") },
+		{ CMLib.lang().L("haven`t"),CMLib.lang().L("hast not") },
+		{ CMLib.lang().L("havent"),CMLib.lang().L("hast not") },
+		{ CMLib.lang().L("hadn`t"),CMLib.lang().L("hath not") },
+		{ CMLib.lang().L("hadnt"),CMLib.lang().L("hath not") },
+		{ CMLib.lang().L("hasn`t"),CMLib.lang().L("hast not") },
+		{ CMLib.lang().L("hasnt"),CMLib.lang().L("hast not") },
+		{ CMLib.lang().L("have"),CMLib.lang().L("hast") },
+		{ CMLib.lang().L("had"),CMLib.lang().L("hath") },
+		{ CMLib.lang().L("isn`t"),CMLib.lang().L("is not") },
+		{ CMLib.lang().L("isnt"),CMLib.lang().L("is not") },
+		{ CMLib.lang().L("mustn`t"),CMLib.lang().L("must not") },
+		{ CMLib.lang().L("mustnt"),CMLib.lang().L("must not") },
+		{ CMLib.lang().L("needn`t"),CMLib.lang().L("need not") },
+		{ CMLib.lang().L("neednt"),CMLib.lang().L("need not") },
+		{ CMLib.lang().L("shouldn`t"),CMLib.lang().L("should not") },
+		{ CMLib.lang().L("shouldnt"),CMLib.lang().L("should not") },
+		{ CMLib.lang().L("are"),CMLib.lang().L("art") },
+		{ CMLib.lang().L("would"),CMLib.lang().L("wouldst") },
+		{ CMLib.lang().L("have"),CMLib.lang().L("hast") },
+		{ CMLib.lang().L("we`ll"),CMLib.lang().L("we willst") },
+		{ CMLib.lang().L("we`re"),CMLib.lang().L("we art") },
+		{ CMLib.lang().L("we`d"),CMLib.lang().L("we wouldst") },
+		{ CMLib.lang().L("we`ve"),CMLib.lang().L("we hast") },
+		{ CMLib.lang().L("weve"),CMLib.lang().L("we hast") },
+		{ CMLib.lang().L("they`ll"),CMLib.lang().L("they willst") },
+		{ CMLib.lang().L("theyll"),CMLib.lang().L("they willst") },
+		{ CMLib.lang().L("they`re"),CMLib.lang().L("they art") },
+		{ CMLib.lang().L("theyre"),CMLib.lang().L("they art") },
+		{ CMLib.lang().L("they`d"),CMLib.lang().L("they wouldst") },
+		{ CMLib.lang().L("theyd"),CMLib.lang().L("they wouldst") },
+		{ CMLib.lang().L("they`ve"),CMLib.lang().L("they hast") },
+		{ CMLib.lang().L("theyve"),CMLib.lang().L("they hast") },
+		{ CMLib.lang().L("there`s"),CMLib.lang().L("there ist") },
+		{ CMLib.lang().L("theres"),CMLib.lang().L("there ist") },
+		{ CMLib.lang().L("there`d"),CMLib.lang().L("there wouldst") },
+		{ CMLib.lang().L("thered"),CMLib.lang().L("there wouldst") },
+		{ CMLib.lang().L("there`ll"),CMLib.lang().L("there willst") },
+		{ CMLib.lang().L("therell"),CMLib.lang().L("there shall") },
+		{ CMLib.lang().L("that`s"),CMLib.lang().L("that ist") },
+		{ CMLib.lang().L("thats"),CMLib.lang().L("that ist") },
+		{ CMLib.lang().L("that`d"),CMLib.lang().L("that wouldst") },
+		{ CMLib.lang().L("thatd"),CMLib.lang().L("that wouldst") },
+		{ CMLib.lang().L("that`ll"),CMLib.lang().L("that willst") },
+		{ CMLib.lang().L("thatll"),CMLib.lang().L("that willst") },
+		{ CMLib.lang().L("is"),CMLib.lang().L("ist") },
+		{ CMLib.lang().L("will"),CMLib.lang().L("shall") },
+		{ CMLib.lang().L("would"),CMLib.lang().L("wouldst") }
 	};
 
 	@Override
@@ -259,6 +424,89 @@ public class Mood extends StdAbility
 				return true;
 			switch(mood)
 			{
+			case PASSIVE:
+			{
+				final Physical affected=this.affected;
+				if(affected instanceof MOB)
+				{
+					if(counter<=0)
+						counter=CMLib.dice().roll(1, 55, 5);
+					else
+					if(--counter<=1)
+					{
+						counter=2;
+						final int sillySocialIndex=CMLib.dice().roll(1, passiveSocials().length, -1);
+						final String socialName = passiveSocials()[sillySocialIndex];
+						final Social social = CMLib.socials().fetchSocial(socialName, true);
+						if(social != null)
+						{
+							counter=CMLib.dice().roll(1, 55, 5);
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								final MOB mob=(MOB)affected;
+								@Override
+								public void run()
+								{
+									mob.enqueCommand(new XVector<String>(socialName), 0, 0);
+								}
+							}, 500);
+						}
+					}
+				}
+				break;
+			}
+			case HORNY:
+			case LUSTY:
+			case QUEER:
+			{
+				final Physical affected=this.affected;
+				if(affected instanceof MOB)
+				{
+					if(counter<=0)
+						counter=CMLib.dice().roll(1, 55, 5);
+					else
+					if(--counter<=1)
+					{
+						counter=2;
+						final int sillySocialIndex=CMLib.dice().roll(1, passiveSocials().length, -1);
+						final String socialName = passiveSocials()[sillySocialIndex];
+						final Social social = CMLib.socials().fetchSocial(socialName, true);
+						if(social != null)
+						{
+							counter=CMLib.dice().roll(1, 22, 5);
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								final MOB mob=(MOB)affected;
+								final Room R = mob.location();
+								final MoodType mymood = mood;
+								@Override
+								public void run()
+								{
+									if((R!=null)&&(mob.location()==R)&&(CMLib.flags().isInTheGame(mob, true)))
+									{
+										MOB targetM = null;
+										//final char og =
+										for(int m=0;m<R.numInhabitants();m++)
+										{
+											final MOB M = R.fetchInhabitant(m);
+											if(isLustyMatch(mob,mymood,M))
+											{
+												targetM = M;
+												break;
+											}
+										}
+										if(targetM != null)
+											mob.enqueCommand(new XVector<String>(socialName,R.getContextName(targetM)), 0, 0);
+										else
+											counter=5;
+									}
+								}
+							}, 500);
+						}
+					}
+				}
+				break;
+			}
 			case SILLY: // silly
 			{
 				final Physical affected=this.affected;
@@ -270,8 +518,8 @@ public class Mood extends StdAbility
 					if(--counter<=1)
 					{
 						counter=2;
-						final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
-						final String socialName = sillySocials[sillySocialIndex];
+						final int sillySocialIndex=CMLib.dice().roll(1, sillySocials().length, -1);
+						final String socialName = sillySocials()[sillySocialIndex];
 						final Social social = CMLib.socials().fetchSocial(socialName, true);
 						if(social != null)
 						{
@@ -337,14 +585,17 @@ public class Mood extends StdAbility
 			stats.addAmbiance(mood.adj.toLowerCase()+"^?");
 	}
 
-	private String changeSay(final String msg, final String to)
+	private final static String DEFAULT_SAYS = CMLib.lang().L("say(s)");
+	private final static String DEFAULT_YELL = CMLib.lang().L("YELL(S)");
+
+	private String changeSay(final String sayWord, final String msg, final String to)
 	{
 		if(msg==null)
 			return null;
 		final int x=msg.indexOf('\'');
 		if(x<0)
 			return msg;
-		final int y=msg.indexOf(L("say(s)"));
+		final int y=msg.indexOf(sayWord);
 		if((y>=0)&&(y<x))
 			return msg.substring(0,y)+to+msg.substring(y+6);
 		return msg;
@@ -352,9 +603,16 @@ public class Mood extends StdAbility
 
 	private void changeAllSays(final CMMsg msg, final String to)
 	{
-		msg.setSourceMessage(changeSay(msg.sourceMessage(),to));
-		msg.setTargetMessage(changeSay(msg.targetMessage(),to));
-		msg.setOthersMessage(changeSay(msg.othersMessage(),to));
+		msg.setSourceMessage(changeSay(DEFAULT_SAYS,msg.sourceMessage(),to));
+		msg.setTargetMessage(changeSay(DEFAULT_SAYS,msg.targetMessage(),to));
+		msg.setOthersMessage(changeSay(DEFAULT_SAYS,msg.othersMessage(),to));
+	}
+
+	private void changeAllSays(final String sayWord, final CMMsg msg, final String to)
+	{
+		msg.setSourceMessage(changeSay(sayWord,msg.sourceMessage(),to));
+		msg.setTargetMessage(changeSay(sayWord,msg.targetMessage(),to));
+		msg.setOthersMessage(changeSay(sayWord,msg.othersMessage(),to));
 	}
 
 	public MOB target(final MOB mob, final Environmental target)
@@ -415,14 +673,14 @@ public class Mood extends StdAbility
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 			&&(mood != null)
-			&&(msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
+			&&(!msg.source().phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
 			{
 				String str=CMStrings.getSayFromMessage(msg.othersMessage());
 				if(str==null)
 					str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-					final MOB M=target(msg.source(),msg.target());
+					final MOB targetM=target(msg.source(),msg.target());
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
 						if(msg.sourceMinor()>= CMMsg.TYP_CHANNEL)
@@ -432,23 +690,26 @@ public class Mood extends StdAbility
 							if((C!=null) && (C.flags().contains(ChannelFlag.NOMOOD)))
 								return super.okMessage(myHost, msg);
 						}
-						final String[] tags={"<S-NAME>","You",msg.source().Name()};
-						String tag=null;
-						for (final String tag2 : tags)
+						if(mood.adv.length()>0)
 						{
-							tag=tag2;
-							if((msg.othersMessage()!=null)
-							&&(msg.othersMessage().indexOf(mood.adv)<0)
-							&&(msg.othersMessage().indexOf(tag)<msg.othersMessage().indexOf('\'')))
-								msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+mood.adv));
-							if((msg.targetMessage()!=null)
-							&&(msg.targetMessage().indexOf(mood.adv)<0)
-							&&(msg.targetMessage().indexOf(tag)<msg.targetMessage().indexOf('\'')))
-								msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+mood.adv));
-							if((msg.sourceMessage()!=null)
-							&&(msg.sourceMessage().indexOf(mood.adv)<0)
-							&&(msg.sourceMessage().indexOf(tag)<msg.sourceMessage().indexOf('\'')))
-								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+mood.adv));
+							final String[] tags={"<S-NAME>",L("You"),msg.source().Name()};
+							String tag=null;
+							for (final String tag2 : tags)
+							{
+								tag=tag2;
+								if((msg.othersMessage()!=null)
+								&&(msg.othersMessage().indexOf(mood.adv)<0)
+								&&(msg.othersMessage().indexOf(tag)<msg.othersMessage().indexOf('\'')))
+									msg.setOthersMessage(CMStrings.replaceFirst(msg.othersMessage(),tag,tag+" "+mood.adv));
+								if((msg.targetMessage()!=null)
+								&&(msg.targetMessage().indexOf(mood.adv)<0)
+								&&(msg.targetMessage().indexOf(tag)<msg.targetMessage().indexOf('\'')))
+									msg.setTargetMessage(CMStrings.replaceFirst(msg.targetMessage(),tag,tag+" "+mood.adv));
+								if((msg.sourceMessage()!=null)
+								&&(msg.sourceMessage().indexOf(mood.adv)<0)
+								&&(msg.sourceMessage().indexOf(tag)<msg.sourceMessage().indexOf('\'')))
+									msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+mood.adv));
+							}
 						}
 					}
 					final String oldStr=str;
@@ -456,147 +717,96 @@ public class Mood extends StdAbility
 					{
 					case FORMAL: // formal
 					{
-						if(str.toUpperCase().startsWith("YOU "))
-							str=CMStrings.replaceFirstWord(str,"you","thou");
-						str=CMStrings.replaceWord(str,"you`ll","thou willst");
-						str=CMStrings.replaceWord(str,"youll","thou willst");
-						str=CMStrings.replaceWord(str,"you`re","thou art");
-						str=CMStrings.replaceWord(str,"youre","thou art");
-						str=CMStrings.replaceWord(str,"you`d","thou wouldst");
-						str=CMStrings.replaceWord(str,"youd","thou wouldst");
-						str=CMStrings.replaceWord(str,"you`ve","thou hast");
-						str=CMStrings.replaceWord(str,"youve","thou hast");
-						str=CMStrings.replaceWord(str,"he`s","he ist");
-						str=CMStrings.replaceWord(str,"hes","he ist");
-						str=CMStrings.replaceWord(str,"she`s","she ist");
-						str=CMStrings.replaceWord(str,"shes","she ist");
-						str=CMStrings.replaceWord(str,"it`s","it ist");
-						str=CMStrings.replaceWord(str,"its","it ist");
-						str=CMStrings.replaceWord(str,"it`ll","it willst");
-						str=CMStrings.replaceWord(str,"itll","it willst");
-						str=CMStrings.replaceWord(str,"it`d","it wouldst");
-						str=CMStrings.replaceWord(str,"itd","it wouldst");
-						str=CMStrings.replaceWord(str,"you","thee");
-						str=CMStrings.replaceWord(str,"your","thine");
-						str=CMStrings.replaceWord(str,"really","indeed");
-						str=CMStrings.replaceWord(str,"mine","my own");
-						str=CMStrings.replaceWord(str,"my","mine");
-						str=CMStrings.replaceWord(str,"I`m","we art");
-						str=CMStrings.replaceWord(str,"Im","we art");
-						str=CMStrings.replaceWord(str,"I`ll","we willst");
-						str=CMStrings.replaceWord(str,"Ill","we willst");
-						str=CMStrings.replaceWord(str,"I`d","we had");
-						str=CMStrings.replaceWord(str,"Id","we had");
-						str=CMStrings.replaceWord(str,"I`ve","we hast");
-						str=CMStrings.replaceWord(str,"Ive","we hast");
-						str=CMStrings.replaceWord(str,"i am","we art");
-						str=CMStrings.replaceWord(str,"i","we");
-						str=CMStrings.replaceWord(str,"hi","greetings");
-						str=CMStrings.replaceWord(str,"hello","salutations");
-						str=CMStrings.replaceWord(str,"no","negative");
-						str=CMStrings.replaceWord(str,"hey","greetings");
-						str=CMStrings.replaceWord(str,"where is","where might we find");
-						str=CMStrings.replaceWord(str,"how do","how wouldst");
-						str=CMStrings.replaceWord(str,"can`t","canst not");
-						str=CMStrings.replaceWord(str,"cant","canst not");
-						str=CMStrings.replaceWord(str,"couldn`t","couldst not");
-						str=CMStrings.replaceWord(str,"couldnt","couldst not");
-						str=CMStrings.replaceWord(str,"aren`t","are not");
-						str=CMStrings.replaceWord(str,"arent","are not");
-						str=CMStrings.replaceWord(str,"didn`t","didst not");
-						str=CMStrings.replaceWord(str,"didnt","didst not");
-						str=CMStrings.replaceWord(str,"doesn`t","doth not");
-						str=CMStrings.replaceWord(str,"doesnt","doth not");
-						str=CMStrings.replaceWord(str,"does","doth");
-						str=CMStrings.replaceWord(str,"wont","willst not");
-						str=CMStrings.replaceWord(str,"won`t","willst not");
-						str=CMStrings.replaceWord(str,"wasnt","wast not");
-						str=CMStrings.replaceWord(str,"wasn`t","wast not");
-						str=CMStrings.replaceWord(str,"werent","were not");
-						str=CMStrings.replaceWord(str,"weren`t","were not");
-						str=CMStrings.replaceWord(str,"wouldnt","wouldst not");
-						str=CMStrings.replaceWord(str,"wouldn`t","wouldst not");
-						str=CMStrings.replaceWord(str,"don`t","doest not");
-						str=CMStrings.replaceWord(str,"dont","doest not");
-						str=CMStrings.replaceWord(str,"haven`t","hast not");
-						str=CMStrings.replaceWord(str,"havent","hast not");
-						str=CMStrings.replaceWord(str,"hadn`t","hath not");
-						str=CMStrings.replaceWord(str,"hadnt","hath not");
-						str=CMStrings.replaceWord(str,"hasn`t","hast not");
-						str=CMStrings.replaceWord(str,"hasnt","hast not");
-						str=CMStrings.replaceWord(str,"have","hast");
-						str=CMStrings.replaceWord(str,"had","hath");
-						str=CMStrings.replaceWord(str,"isn`t","is not");
-						str=CMStrings.replaceWord(str,"isnt","is not");
-						str=CMStrings.replaceWord(str,"mustn`t","must not");
-						str=CMStrings.replaceWord(str,"mustnt","must not");
-						str=CMStrings.replaceWord(str,"needn`t","need not");
-						str=CMStrings.replaceWord(str,"neednt","need not");
-						str=CMStrings.replaceWord(str,"shouldn`t","should not");
-						str=CMStrings.replaceWord(str,"shouldnt","should not");
-						str=CMStrings.replaceWord(str,"are","art");
-						str=CMStrings.replaceWord(str,"would","wouldst");
-						str=CMStrings.replaceWord(str,"have","hast");
-						str=CMStrings.replaceWord(str,"we`ll","we willst");
-						str=CMStrings.replaceWord(str,"we`re","we art");
-						str=CMStrings.replaceWord(str,"we`d","we wouldst");
-						str=CMStrings.replaceWord(str,"we`ve","we hast");
-						str=CMStrings.replaceWord(str,"weve","we hast");
-						str=CMStrings.replaceWord(str,"they`ll","they willst");
-						str=CMStrings.replaceWord(str,"theyll","they willst");
-						str=CMStrings.replaceWord(str,"they`re","they art");
-						str=CMStrings.replaceWord(str,"theyre","they art");
-						str=CMStrings.replaceWord(str,"they`d","they wouldst");
-						str=CMStrings.replaceWord(str,"theyd","they wouldst");
-						str=CMStrings.replaceWord(str,"they`ve","they hast");
-						str=CMStrings.replaceWord(str,"theyve","they hast");
-						str=CMStrings.replaceWord(str,"there`s","there ist");
-						str=CMStrings.replaceWord(str,"theres","there ist");
-						str=CMStrings.replaceWord(str,"there`d","there wouldst");
-						str=CMStrings.replaceWord(str,"thered","there wouldst");
-						str=CMStrings.replaceWord(str,"there`ll","there willst");
-						str=CMStrings.replaceWord(str,"therell","there shall");
-						str=CMStrings.replaceWord(str,"that`s","that ist");
-						str=CMStrings.replaceWord(str,"thats","that ist");
-						str=CMStrings.replaceWord(str,"that`d","that wouldst");
-						str=CMStrings.replaceWord(str,"thatd","that wouldst");
-						str=CMStrings.replaceWord(str,"that`ll","that willst");
-						str=CMStrings.replaceWord(str,"thatll","that willst");
-						str=CMStrings.replaceWord(str,"is","ist");
-						str=CMStrings.replaceWord(str,"will","shall");
-						str=CMStrings.replaceWord(str,"would","wouldst");
-						str=CMStrings.endWithAPeriod(str);
+						if(str.toUpperCase().startsWith(formalReplacements[0][0].toUpperCase()+" "))
+							str=CMStrings.replaceFirstWord(str,formalReplacements[0][0],formalReplacements[0][1]);
+						for(final String[] form : formalReplacements)
+							str=CMStrings.replaceWord(str,form[0],form[1]);
+						str=CMStrings.endWithAPeriod(str, '.');
 						switch(CMLib.dice().roll(1,15,0))
 						{
 						case 1:
-							changeAllSays(msg, "state(s)");
+							changeAllSays(msg, L("state(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "declare(s)");
+							changeAllSays(msg, L("declare(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "announce(s)");
+							changeAllSays(msg, L("announce(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "elucidate(s)");
+							changeAllSays(msg, L("elucidate(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "enunciate(s)");
+							changeAllSays(msg, L("enunciate(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "indicate(s)");
+							changeAllSays(msg, L("indicate(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "communicate(s)");
+							changeAllSays(msg, L("communicate(s)"));
 							break;
 						case 8:
-							changeAllSays(msg, "avow(s)");
+							changeAllSays(msg, L("avow(s)"));
 							break;
 						case 9:
-							changeAllSays(msg, "inform(s)");
+							changeAllSays(msg, L("inform(s)"));
 							break;
 						case 10:
-							changeAllSays(msg, "propound(s)");
+							changeAllSays(msg, ("propound(s)"));
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+					case PASSIVE:
+					{
+						if(msg.sourceMessage() != null)
+							msg.setSourceMessage(msg.sourceMessage().toLowerCase());
+						if(msg.targetMessage() != null)
+							msg.setTargetMessage(msg.targetMessage().toLowerCase());
+						if(msg.othersMessage() != null)
+							msg.setOthersMessage(msg.othersMessage().toLowerCase());
+						changeAllSays(DEFAULT_SAYS,msg, ("whisper(s)"));
+						changeAllSays(DEFAULT_YELL.toLowerCase(),msg, ("say(s)"));
+						break;
+					}
+					case HORNY:
+					case LUSTY:
+					case QUEER:
+					{
+						if(isLustyMatch(msg.source(),mood,targetM))
+						switch(CMLib.dice().roll(1, 13, -1))
+						{
+						case 0:
+							str = L("Darling, @x1", str);
+							break;
+						case 1:
+							str = L("Honey, @x1", str);
+							break;
+						case 2:
+							str = L("Sugar, @x1", str);
+							break;
+						case 3:
+							str = L("Sweetness, @x1", str);
+							break;
+						case 4:
+							str = L("Luscious, @x1", str);
+							break;
+						case 5:
+							str = L("@x1 Darling.", CMStrings.endWithAPeriod(str, ','));
+							break;
+						case 6:
+							str = L("@x1Honey.", CMStrings.endWithAPeriod(str, ','));
+							break;
+						case 7:
+							str = L("@x1Sugar.", CMStrings.endWithAPeriod(str, ','));
+							break;
+						case 8:
+							str = L("@x1Sweetness.", CMStrings.endWithAPeriod(str, ','));
+							break;
+						case 9:
+							str = L("@x1Luscious.", CMStrings.endWithAPeriod(str, ','));
 							break;
 						default:
 							break;
@@ -605,11 +815,11 @@ public class Mood extends StdAbility
 					}
 					case POLITE: // polite
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("HANDSHAKE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("HANDSHAKE",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,8,0))
 						{
@@ -617,10 +827,10 @@ public class Mood extends StdAbility
 							str = L("If you please, @x1", str);
 							break;
 						case 2:
-							str = L("@x1 Thank you.", CMStrings.endWithAPeriod(str));
+							str = L("@x1Thank you.", CMStrings.endWithAPeriod(str, '.'));
 							break;
 						case 3:
-							str = L("@x1 If you please.", CMStrings.endWithAPeriod(str));
+							str = L("@x1If you please.", CMStrings.endWithAPeriod(str, '.'));
 							break;
 						case 4:
 							str = L("Forgive me but, @x1", str);
@@ -637,14 +847,14 @@ public class Mood extends StdAbility
 						default:
 							if(msg.source().charStats().reproductiveCode()=='F')
 							{
-								if(M!=null)
-									msg.source().doCommand(new XVector<String>("CURTSEY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+								if(targetM!=null)
+									msg.source().doCommand(new XVector<String>("CURTSEY",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 								else
 									msg.source().doCommand(new XVector<String>("CURTSEY"),MUDCmdProcessor.METAFLAG_FORCED);
 							}
 							else
-							if(M!=null)
-								msg.source().doCommand(new XVector<String>("BOW",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							if(targetM!=null)
+								msg.source().doCommand(new XVector<String>("BOW",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector<String>("BOW"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
@@ -652,16 +862,57 @@ public class Mood extends StdAbility
 						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1:
-							changeAllSays(msg, "politely say(s)");
+							changeAllSays(msg, L("politely say(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "humbly say(s)");
+							changeAllSays(msg, L("humbly say(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "meekly say(s)");
+							changeAllSays(msg, L("meekly say(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "politely say(s)");
+							changeAllSays(msg, L("politely say(s)"));
+							break;
+						default:
+							break;
+						}
+						break;
+					}
+					case SUBMISSIVE:
+					{
+						switch(CMLib.dice().roll(1,11,0))
+						{
+						case 1:
+							str = L("If it pleases you, @x1", str);
+							break;
+						case 2:
+							str = L("Please, @x1", str);
+							break;
+						case 3:
+							str = L("If you'll permit, @x1", str);
+							break;
+						case 4:
+							str = L("Your call but, @x1", str);
+							break;
+						case 5:
+							str = L("If you'd like, @x1", str);
+							break;
+						case 6:
+							str = L("With your permission, @x1", str);
+							break;
+						case 7:
+							str = L("If it`s OK with you, @x1", str);
+							break;
+						case 8:
+							str = L("@x1or whatever you want.", CMStrings.endWithAPeriod(str,','));
+							break;
+						case 9:
+							if(targetM != null)
+								msg.source().doCommand(new XVector<String>("KNEEL",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							break;
+						case 10:
+							if(targetM != null)
+								msg.source().doCommand(new XVector<String>("GROVEL",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -685,13 +936,13 @@ public class Mood extends StdAbility
 							str = L("I don't care, but, @x1", str);
 							break;
 						case 5:
-							changeAllSays(msg, "apathetically say(s)");
+							changeAllSays(msg, L("apathetically say(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "shrug(s)");
+							changeAllSays(msg, L("shrug(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "passively say(s)");
+							changeAllSays(msg, L("passively say(s)"));
 							break;
 						default:
 							break;
@@ -701,68 +952,68 @@ public class Mood extends StdAbility
 					case HAPPY: // happy
 					case HAPPYSILLY: // happysilly
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("SMILE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("SMILE",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,7,0))
 						{
 						case 1:
-							changeAllSays(msg, "laugh(s)");
+							changeAllSays(msg, L("laugh(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "smile(s)");
+							changeAllSays(msg, L("smile(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "beam(s)");
+							changeAllSays(msg, L("beam(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "cheerfully say(s)");
+							changeAllSays(msg, L("cheerfully say(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "happily say(s)");
+							changeAllSays(msg, L("happily say(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "playfully say(s)");
+							changeAllSays(msg, L("playfully say(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "sweetly say(s)");
+							changeAllSays(msg, L("sweetly say(s)"));
 							break;
 						}
 						break;
 					}
 					case SAD: // sad
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("CRY",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("CRY",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,10,0))
 						{
 						case 1:
-							changeAllSays(msg, "sigh(s)");
+							changeAllSays(msg, L("sigh(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "cr(ys)");
+							changeAllSays(msg, L("cr(ys)"));
 							break;
 						case 3:
-							changeAllSays(msg, "sob(s)");
+							changeAllSays(msg, L("sob(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "sadly say(s)");
+							changeAllSays(msg, L("sadly say(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "moap(s)");
+							changeAllSays(msg, L("moap(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "sulk(s)");
+							changeAllSays(msg, L("sulk(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "ache(s)");
+							changeAllSays(msg, L("ache(s)"));
 							break;
 						default:
 							break;
@@ -774,29 +1025,29 @@ public class Mood extends StdAbility
 						switch(CMLib.dice().roll(1,10,0))
 						{
 						case 1:
-							changeAllSays(msg, "growl(s)");
+							changeAllSays(msg, L("growl(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "snarl(s)");
+							changeAllSays(msg, L("snarl(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "rage(s)");
+							changeAllSays(msg, L("rage(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "snap(s)");
+							changeAllSays(msg, L("snap(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "roar(s)");
+							changeAllSays(msg, L("roar(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "yell(s)");
+							changeAllSays(msg, L("yell(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "angrily say(s)");
+							changeAllSays(msg, L("angrily say(s)"));
 							break;
 						case 8:
-							if(M!=null)
-								msg.source().doCommand(new XVector<String>("GRUMBLE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							if(targetM!=null)
+								msg.source().doCommand(new XVector<String>("GRUMBLE",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector<String>("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
@@ -811,34 +1062,34 @@ public class Mood extends StdAbility
 						switch(CMLib.dice().roll(1,10,0))
 						{
 						case 1:
-							changeAllSays(msg, "sneer(s)");
+							changeAllSays(msg, L("sneer(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "jeer(s)");
+							changeAllSays(msg, L("jeer(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "sniff(s)");
+							changeAllSays(msg, L("sniff(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "disdainfully say(s)");
+							changeAllSays(msg, L("disdainfully say(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "insultingly say(s)");
+							changeAllSays(msg, L("insultingly say(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "scoff(s)");
+							changeAllSays(msg, L("scoff(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "rudely say(s)");
+							changeAllSays(msg, L("rudely say(s)"));
 							break;
 						case 8:
-							changeAllSays(msg, "gibe(s)");
+							changeAllSays(msg, L("gibe(s)"));
 							break;
 						case 9:
-							changeAllSays(msg, "mockingly say(s)");
+							changeAllSays(msg, L("mockingly say(s)"));
 							break;
 						case 10:
-							changeAllSays(msg, "interrupt(s)");
+							changeAllSays(msg, L("interrupt(s)"));
 							break;
 						default:
 							break;
@@ -850,34 +1101,34 @@ public class Mood extends StdAbility
 						switch(CMLib.dice().roll(1,10,0))
 						{
 						case 1:
-							changeAllSays(msg, "sneer(s)");
+							changeAllSays(msg, L("sneer(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "jeer(s)");
+							changeAllSays(msg, L("jeer(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "sniff(s)");
+							changeAllSays(msg, L("sniff(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "disdainfully say(s)");
+							changeAllSays(msg, L("disdainfully say(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "insultingly say(s)");
+							changeAllSays(msg, L("insultingly say(s)"));
 							break;
 						case 6:
-							changeAllSays(msg, "scoff(s)");
+							changeAllSays(msg, L("scoff(s)"));
 							break;
 						case 7:
-							changeAllSays(msg, "meanly say(s)");
+							changeAllSays(msg, L("meanly say(s)"));
 							break;
 						case 8:
-							changeAllSays(msg, "gibe(s)");
+							changeAllSays(msg, L("gibe(s)"));
 							break;
 						case 9:
-							changeAllSays(msg, "mockingly say(s)");
+							changeAllSays(msg, L("mockingly say(s)"));
 							break;
 						case 10:
-							changeAllSays(msg, "tauntingly say(s)");
+							changeAllSays(msg, L("tauntingly say(s)"));
 							break;
 						default:
 							break;
@@ -887,41 +1138,41 @@ public class Mood extends StdAbility
 							str=L("Hey @x1, @x2",uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)],str);
 						else
 						if(rand<15)
-							str=L("@x1..you @x2.",CMStrings.endWithAPeriod(str),uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]);
+							str=L("@x1..you @x2.",CMStrings.endWithAPeriod(str, '.'),uglyPhrases[CMLib.dice().roll(1,uglyPhrases.length,-1)]);
 						else
 						{
-							if(M!=null)
-								msg.source().doCommand(new XVector<String>("WHAP",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							if(targetM!=null)
+								msg.source().doCommand(new XVector<String>("WHAP",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector<String>("WHAP"),MUDCmdProcessor.METAFLAG_FORCED);
 						}
-						if((M!=null)
+						if((targetM!=null)
 						&&(CMLib.dice().roll(1,10,0)==1)
 						&&(!msg.source().isInCombat())
-						&&(!M.isInCombat())
-						&&(M.mayPhysicallyAttack(msg.source()))
-						&&(CMath.abs(M.phyStats().level()-msg.source().phyStats().level())<10))
-							M.setVictim(msg.source());
+						&&(!targetM.isInCombat())
+						&&(targetM.mayPhysicallyAttack(msg.source()))
+						&&(CMath.abs(targetM.phyStats().level()-msg.source().phyStats().level())<10))
+							targetM.setVictim(msg.source());
 						break;
 					}
 					case PROUD: // proud
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("FLEX",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("FLEX",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1:
-							changeAllSays(msg, "boast(s)");
+							changeAllSays(msg, L("boast(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "announce(s)");
+							changeAllSays(msg, L("announce(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "proudly say(s)");
+							changeAllSays(msg, L("proudly say(s)"));
 							break;
 						default:
 							break;
@@ -930,19 +1181,19 @@ public class Mood extends StdAbility
 					}
 					case GRUMPY: // grumpy
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
 							msg.source().doCommand(new XVector<String>("GRUMBLE"),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,2,0))
 						{
 						case 1:
-							changeAllSays(msg, "mutter(s)");
+							changeAllSays(msg, L("mutter(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "grumble(s)");
+							changeAllSays(msg, L("grumble(s)"));
 							break;
 						default:
 							break;
@@ -951,29 +1202,29 @@ public class Mood extends StdAbility
 					}
 					case EXCITED: // excited
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("EXCITED",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("EXCITED",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1:
-							changeAllSays(msg, "shout(s)");
+							changeAllSays(msg, L("shout(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "blurt(s)");
+							changeAllSays(msg, L("blurt(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, "screech(es)");
+							changeAllSays(msg, L("screech(es)"));
 							break;
 						case 4:
-							changeAllSays(msg, "excitedly say(s)");
+							changeAllSays(msg, L("excitedly say(s)"));
 							break;
 						case 5:
-							if(M!=null)
-								msg.source().doCommand(new XVector<String>("FIDGET",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							if(targetM!=null)
+								msg.source().doCommand(new XVector<String>("FIDGET",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector<String>("FIDGET"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
@@ -990,32 +1241,32 @@ public class Mood extends StdAbility
 					}
 					case SCARED: // scared
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("COWER",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("COWER",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,6,0))
 						{
 						case 1:
-							changeAllSays(msg, "meekly say(s)");
+							changeAllSays(msg, L("meekly say(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "stutter(s)");
+							changeAllSays(msg, L("stutter(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, ", shivering, say(s)");
+							changeAllSays(msg, L(", shivering, say(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "squeek(s)");
+							changeAllSays(msg, L("squeek(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "barely say(s)");
+							changeAllSays(msg, L("barely say(s)"));
 							break;
 						case 6:
-							if(M!=null)
-								msg.source().doCommand(new XVector<String>("WINCE",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							if(targetM!=null)
+								msg.source().doCommand(new XVector<String>("WINCE",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
 							else
 								msg.source().doCommand(new XVector<String>("WINCE"),MUDCmdProcessor.METAFLAG_FORCED);
 							break;
@@ -1028,28 +1279,28 @@ public class Mood extends StdAbility
 					}
 					case LONELY: // lonely
 					{
-						if((M!=null)
-						&&(lastOne!=M))
+						if((targetM!=null)
+						&&(lastOne!=targetM))
 						{
-							msg.source().doCommand(new XVector<String>("SIGH",M.Name()),MUDCmdProcessor.METAFLAG_FORCED);
-							lastOne=M;
+							msg.source().doCommand(new XVector<String>("SIGH",targetM.Name()),MUDCmdProcessor.METAFLAG_FORCED);
+							lastOne=targetM;
 						}
 						switch(CMLib.dice().roll(1,5,0))
 						{
 						case 1:
-							changeAllSays(msg, "sigh(s)");
+							changeAllSays(msg, L("sigh(s)"));
 							break;
 						case 2:
-							changeAllSays(msg, "whisper(s)");
+							changeAllSays(msg, L("whisper(s)"));
 							break;
 						case 3:
-							changeAllSays(msg, ", alone, say(s)");
+							changeAllSays(msg, L(", alone, say(s)"));
 							break;
 						case 4:
-							changeAllSays(msg, "mutter(s)");
+							changeAllSays(msg, L("mutter(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "whine(s)");
+							changeAllSays(msg, L("whine(s)"));
 							break;
 						default:
 							break;
@@ -1063,15 +1314,15 @@ public class Mood extends StdAbility
 						case 1:
 							break;
 						case 2:
-							changeAllSays(msg, "reflect(s)");
+							changeAllSays(msg, L("reflect(s)"));
 							break;
 						case 3:
 							break;
 						case 4:
-							changeAllSays(msg, "contemplate(s)");
+							changeAllSays(msg, L("contemplate(s)"));
 							break;
 						case 5:
-							changeAllSays(msg, "ponder(s)");
+							changeAllSays(msg, L("ponder(s)"));
 							break;
 						default:
 							break;
@@ -1149,8 +1400,8 @@ public class Mood extends StdAbility
 				   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 				&&(CMLib.dice().rollPercentage()<33))
 				{
-					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials.length, -1);
-					final String socialName = sillySocials[sillySocialIndex];
+					final int sillySocialIndex=CMLib.dice().roll(1, sillySocials().length, -1);
+					final String socialName = sillySocials()[sillySocialIndex];
 					final Social social = CMLib.socials().fetchSocial(socialName, true);
 					if(social != null)
 					{
@@ -1200,8 +1451,8 @@ public class Mood extends StdAbility
 				   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
 				&&(CMLib.dice().rollPercentage()<33))
 				{
-					final int sillySocialIndex=CMLib.dice().roll(1, happySillySocials.length, -1);
-					final String socialName = happySillySocials[sillySocialIndex];
+					final int sillySocialIndex=CMLib.dice().roll(1, happySillySocials().length, -1);
+					final String socialName = happySillySocials()[sillySocialIndex];
 					final Social social = CMLib.socials().fetchSocial(socialName, true);
 					if(social != null)
 					{
@@ -1267,30 +1518,30 @@ public class Mood extends StdAbility
 						switch(CMLib.dice().roll(1,10,0))
 						{
 						case 1:
-							addOn = ", but that`s not suprising, is it?";
+							addOn = L(", but that`s not suprising, is it?");
 							break;
 						case 2:
-							addOn = ". I rock.";
+							addOn = L(". I rock.");
 							break;
 						case 3:
-							addOn = ". I am **POWERFUL**.";
+							addOn = L(". I am **POWERFUL**.");
 							break;
 						case 4:
-							addOn = ". I am sooo cool.";
+							addOn = L(". I am sooo cool.");
 							break;
 						case 5:
-							addOn = ". You can`t touch me.";
+							addOn = L(". You can`t touch me.");
 							break;
 						case 6:
-							addOn = ".. never had a chance, either.";
+							addOn = L(".. never had a chance, either.");
 							break;
 						case 7:
-							addOn = ", with my PINKEE!";
+							addOn = L(", with my PINKEE!");
 							break;
 						default:
 							break;
 						}
-						((MOB)affected).doCommand(new XVector<String>(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),MUDCmdProcessor.METAFLAG_FORCED);
+						((MOB)affected).doCommand(new XVector<String>(CHANNELS[channelC],L("*I* just killed @x1",msg.source().Name())+addOn),MUDCmdProcessor.METAFLAG_FORCED);
 					}
 				}
 				break;

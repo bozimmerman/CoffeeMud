@@ -360,6 +360,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if(bonusChatData.length()>0)
 		{
 			final StringBuffer rsc = new StringBuffer(CMStrings.replaceAll(bonusChatData,";","\n\r"));
+			rsc.append("\n\r");
 			final ChattyGroup[] addGroups=parseChatData(rsc);
 			final ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
 			for(final ChattyEntry CE : addedChatEntries)
@@ -689,8 +690,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			}
 			if(sr<0)
 			{
+				ret=tsc.toString().trim();
 				tsc.setLength(0);
-				ret="";
+				if(ret.length()==0)
+					ret = null;
 			}
 			else
 			{

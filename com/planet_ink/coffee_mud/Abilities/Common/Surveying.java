@@ -280,7 +280,7 @@ public class Surveying extends CommonSkill
 									final String displayText=mob2.displayText(mob);
 									if((displayText.length()>0)
 									&&(CMLib.flags().canBeSeenBy(mob2,mob)))
-										roomMobs.add(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
+										roomMobs.add(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText), '.'));
 								}
 							}
 							if(roomMobs.size()==0)

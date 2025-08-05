@@ -1987,9 +1987,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if(compress)
 							finalLookStr.append(flags.getDispositionBlurbs(mob2,mob)+"^M ");
 						if((displayText.length()>0)&&(!useName))
-							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
+							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText), '.'));
 						else
-							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
+							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name()), '.'));
 						if(mob2 instanceof ShopKeeper)
 							finalLookStr.append("^</RShopM^>");
 						else

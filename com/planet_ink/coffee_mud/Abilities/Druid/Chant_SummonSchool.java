@@ -167,9 +167,9 @@ public class Chant_SummonSchool extends Chant
 				if(compress)
 					Say.append(CMLib.flags().getDispositionBlurbs(mob,mob)+"^M ");
 				if(mob.displayText(msg.source()).length()>0)
-					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source()))));
+					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.displayText(msg.source())), '.'));
 				else
-					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name())));
+					Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob.name()), '.'));
 				if(!compress)
 					Say.append(CMLib.flags().getDispositionBlurbs(mob,msg.source())+"^N\n\r");
 				else

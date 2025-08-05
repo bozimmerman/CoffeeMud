@@ -349,7 +349,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 							say.append("^I");
 							if(compress)
 								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^I");
-							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs, compress)));
+							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs, compress), '.'));
 							if(!compress)
 								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^N\n\r");
 							else
