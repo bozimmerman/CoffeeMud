@@ -6845,6 +6845,52 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("(no change)"));
 	}
 
+	protected String modifyCodedSpellList(final MOB mob, final String oldVal, final int[] showNumber, final int showFlag) throws java.io.IOException
+	{
+		final List<CMObject> spells=CMLib.coffeeMaker().getCodedSpellsOrBehaviors(oldVal);
+		final StringBuffer rawCheck = new StringBuffer("");
+		for(int s=0;s<spells.size();s++)
+		{
+			rawCheck.append(spells.get(s).ID()).append(";");
+			if(spells.get(s) instanceof Ability)
+				rawCheck.append(((Ability)spells.get(s)).text()).append(";");
+			else
+			if(spells.get(s) instanceof Behavior)
+				rawCheck.append(((Behavior)spells.get(s)).getParms()).append(";");
+		}
+		boolean okToProceed = true;
+		++showNumber[0];
+		String newVal = null;
+		while(okToProceed)
+		{
+			okToProceed = false;
+			spellsOrBehavs(mob,spells,showNumber[0],showFlag,true);
+			final StringBuffer sameCheck = new StringBuffer("");
+			for(int s=0;s<spells.size();s++)
+			{
+				sameCheck.append(spells.get(s).ID()).append(';');
+				if(spells.get(s) instanceof Ability)
+					sameCheck.append(((Ability)spells.get(s)).text()).append(";");
+				else
+				if(spells.get(s) instanceof Behavior)
+					sameCheck.append(((Behavior)spells.get(s)).getParms()).append(";");
+			}
+			if(sameCheck.toString().equals(rawCheck.toString()))
+				return oldVal;
+			try
+			{
+				newVal = CMLib.coffeeMaker().packCodedSpellsOrBehaviors(spells);
+			}
+			catch(final CMException e)
+			{
+				mob.tell(e.getMessage());
+				okToProceed = true;
+				break;
+			}
+		}
+		return (newVal==null)?oldVal:newVal.toString();
+	}
+
 	protected void genRaceBuddy(final MOB mob, final Race E, final int showNumber, final int showFlag, final String prompt, final String flag)
 		throws IOException
 	{
@@ -9597,6 +9643,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatBool(mob, me, ++showNumber, showFlag, L("Affect Target"), "AFFECTTARG");
 			promptStatBool(mob, me, ++showNumber, showFlag, L("Force Peace"), "MAKEPEACE");
 			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Damage Formula"),"DAMAGE",false);
+			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Mood"),"MOOD",true);
+			final int[] showNumberArray = new int[] {showNumber};
+			me.setStat("EFFECTS",modifyCodedSpellList(mob,me.getStat("EFFECTS"),showNumberArray,showFlag));
+			showNumber = showNumberArray[0];
 			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Done Msg"),"DONEMSG",true);
 			promptRawStatStr(mob,me,help,++showNumber,showFlag,L("Addiction (0-100) Formula"),"ADDCHANCE",false);
 			promptRawStatStr(mob,me,null,++showNumber,showFlag,L("Cast Msg"),"CASTMSG",true);

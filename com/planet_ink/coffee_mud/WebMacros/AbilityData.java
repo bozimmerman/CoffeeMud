@@ -80,6 +80,55 @@ public class AbilityData extends StdWebMacro
 		return list.toString();
 	}
 
+	public static String codedEffectsWebValue(final HTTPRequest httpReq, final Map<String,String> parms, final String oldVal, final String fieldName)
+	{
+		List<CMObject> spells=null;
+		if(httpReq.isUrlParameter(fieldName+"_AFFECT1"))
+		{
+			spells = new Vector<CMObject>();
+			int num=1;
+			String behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+			String theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
+			while((behav!=null)&&(theparm!=null))
+			{
+				if(behav.length()>0)
+				{
+					final Ability A=CMClass.getAbility(behav);
+					if(A!=null)
+					{
+						if(theparm.trim().length()>0)
+							A.setMiscText(theparm);
+						spells.add(A);
+					}
+					else
+					{
+						final Behavior B=CMClass.getBehavior(behav);
+						if(B!=null)
+						{
+							if(theparm.trim().length()>0)
+								B.setParms(theparm);
+							spells.add(B);
+						}
+					}
+				}
+				num++;
+				behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+				theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
+			}
+		}
+		else
+			spells = CMLib.coffeeMaker().getCodedSpellsOrBehaviors(oldVal);
+		try
+		{
+			return CMLib.coffeeMaker().packCodedSpellsOrBehaviors(spells);
+		}
+		catch(final Exception e)
+		{
+			return oldVal;
+		}
+	}
+
+
 	public static StringBuffer interprets(final Language E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
@@ -1173,6 +1222,52 @@ public class AbilityData extends StdWebMacro
 
 				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
 				{
+					if(parms.containsKey("EFFECTS"))
+					{
+						final String old = codedEffectsWebValue(httpReq, parms, A.getStat("EFFECTS"), "EFFECTS");
+						final List<CMObject> spells=CMLib.coffeeMaker().getCodedSpellsOrBehaviors(old);
+						final StringBuffer tabStr = new StringBuffer("");
+						tabStr.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+						for(int i=0;i<spells.size();i++)
+						{
+							final CMObject oA=spells.get(i);
+							tabStr.append("<TR><TD WIDTH=50%>");
+							tabStr.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME=\"EFFECTS_AFFECT"+(i+1)+"\">");
+							tabStr.append("<OPTION VALUE=\"\">Delete!");
+							tabStr.append("<OPTION VALUE=\""+oA.ID()+"\" SELECTED>"+oA.ID());
+							tabStr.append("</SELECT>");
+							tabStr.append("</TD><TD WIDTH=50%>");
+							final String parmstr=(oA instanceof Ability)?((Ability)oA).text():((Behavior)oA).getParms();
+							final String theparm=CMStrings.replaceAll(parmstr,"\"","&quot;");
+							tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(i+1)+"\" VALUE=\""+theparm+"\">");
+							tabStr.append("</TD></TR>");
+						}
+						tabStr.append("<TR><TD WIDTH=50%>");
+						tabStr.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME=\"EFFECTS_AFFECT"+(spells.size()+1)+"\">");
+						tabStr.append("<OPTION SELECTED VALUE=\"\">Select an Effect/Behav");
+						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						{
+							final Ability A1=a.nextElement();
+							if((A1.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+								continue;
+							final String cnam=A1.ID();
+							tabStr.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+						}
+						/*
+						for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
+						{
+							final Behavior B=b.nextElement();
+							final String cnam=B.ID();
+							tabStr.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+						}
+						*/
+						tabStr.append("</SELECT>");
+						tabStr.append("</TD><TD WIDTH=50%>");
+						tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(spells.size()+1)+"\" VALUE=\"\">");
+						tabStr.append("</TD></TR>");
+						tabStr.append("</TABLE>");
+						return tabStr.toString();
+					}
 					if(parms.containsKey("AFFECTTARG"))
 					{
 						String old=httpReq.getUrlParameter("AFFECTTARG");
@@ -1186,6 +1281,37 @@ public class AbilityData extends StdWebMacro
 						if(old==null)
 							old=CMath.s_bool(A.getStat("MAKEPEACE"))?"on":"";
 						str.append(old.equalsIgnoreCase("on")?"CHECKED, ":", ");
+					}
+
+					if(parms.containsKey("MOOD"))
+					{
+						String old=httpReq.getUrlParameter("MOOD");
+						if(old==null)
+							old=A.getStat("MOOD");
+						final Ability moodA = CMClass.getAbility("Mood");
+						final List<String> moods = new ArrayList<String>();
+						for(int i=0;;i++)
+						{
+							moodA.setMiscText(""+i);
+							final String name = moodA.text();
+							if(name.equals(""+i))
+								break;
+							moods.add(name);
+						}
+						final StringBuilder selStr = new StringBuilder("");
+						selStr.append("<OPTION VALUE=\"\"");
+						if(old.length()==0)
+							selStr.append(" SELECTED");
+						selStr.append(L(">N/A"));
+						for(final String mood : moods)
+						{
+							selStr.append("<OPTION VALUE=\""+mood+"\"");
+							if(old.equalsIgnoreCase(mood))
+								selStr.append(" SELECTED");
+							selStr.append(">"+mood);
+						}
+						return selStr.toString();
+
 					}
 
 					final String[] POISON_PARMS= {

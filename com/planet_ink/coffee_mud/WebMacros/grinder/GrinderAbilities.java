@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
 
 import com.planet_ink.coffee_web.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.AbilityData;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -249,14 +250,16 @@ public class GrinderAbilities
 			old=httpReq.getUrlParameter("MAKEPEACE");
 			A.setStat("MAKEPEACE",(old==null)?"":""+old.equalsIgnoreCase("on"));
 			final String[] poisonParms = new String[] {
-				"TICKS", "STARTMSG", "TARGTELLMSG", "AFFECTMSG",
+				"TICKS", "STARTMSG", "TARGTELLMSG", "AFFECTMSG", "MOOD",
 				"DAMAGE", "DONEMSG", "ADDCHANCE", "FAILMSG", "ADJUSTMENTS"
 			};
 			for(final String poisonParm : poisonParms)
 			{
 				old=httpReq.getUrlParameter(poisonParm);
-				A.setStat(poisonParm,(old==null)?"":old);
+				A.setStat(poisonParm,(old==null)?"":old.trim());
 			}
+			old=AbilityData.codedEffectsWebValue(httpReq, parms, A.getStat("EFFECTS"), "EFFECTS");
+			A.setStat("EFFECTS",old);
 		}
 
 		if(httpReq.isUrlParameter("ITEMXML_1")

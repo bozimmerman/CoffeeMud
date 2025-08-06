@@ -88,50 +88,6 @@ public class EditorCodedSpellList extends AbilityParmEditorImpl
 		return "";
 	}
 
-	public String rebuild(final List<CMObject> spells) throws CMException
-	{
-		final StringBuffer newVal = new StringBuffer("");
-		if(spells.size()==1)
-		{
-			newVal.append("*" + spells.get(0).ID() + ";");
-			if(spells.get(0) instanceof Ability)
-				newVal.append(((Ability)spells.get(0)).text());
-			else
-			if(spells.get(0) instanceof Behavior)
-				newVal.append(((Behavior)spells.get(0)).getParms());
-		}
-		else
-		{
-			if(spells.size()>1)
-			{
-				for(int s=0;s<spells.size();s++)
-				{
-					final String txt;
-					if(spells.get(s) instanceof Ability)
-						txt=((Ability)spells.get(s)).text();
-					else
-					if(spells.get(s) instanceof Behavior)
-						txt=((Behavior)spells.get(s)).getParms();
-					else
-						txt="";
-					if(txt.length()>0)
-					{
-						if((txt.indexOf(';')>=0)
-						||(CMClass.getAbility(txt.trim())!=null)
-						||(CMClass.getBehavior(txt.trim())!=null))
-							throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-					}
-					newVal.append(spells.get(s).ID());
-					if(txt.length()>0)
-						newVal.append(";" + txt);
-					if(s<(spells.size()-1))
-						newVal.append(";");
-				}
-			}
-		}
-		return newVal.toString();
-	}
-
 	@Override
 	public String[] fakeUserInput(final String oldVal)
 	{
@@ -197,7 +153,7 @@ public class EditorCodedSpellList extends AbilityParmEditorImpl
 			spells = CMLib.coffeeMaker().getCodedSpellsOrBehaviors(oldVal);
 		try
 		{
-			return rebuild(spells);
+			return CMLib.coffeeMaker().packCodedSpellsOrBehaviors(spells);
 		}
 		catch(final Exception e)
 		{
@@ -285,7 +241,7 @@ public class EditorCodedSpellList extends AbilityParmEditorImpl
 				return oldVal;
 			try
 			{
-				newVal = rebuild(spells);
+				newVal = CMLib.coffeeMaker().packCodedSpellsOrBehaviors(spells);
 			}
 			catch(final CMException e)
 			{

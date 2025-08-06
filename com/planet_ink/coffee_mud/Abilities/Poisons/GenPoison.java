@@ -111,7 +111,9 @@ public class GenPoison extends Poison
 		if(E instanceof GenPoison)
 		{
 			((GenPoison)E).ID=ID;
-			((GenPoison)E).adjusterA = (adjusterA == null) ? null : (Ability)adjusterA.copyOf();
+			((GenPoison)E).adjusterA = null;
+			((GenPoison)E).effects = null;
+			((GenPoison)E).mood = null;
 		}
 	}
 
@@ -138,8 +140,10 @@ public class GenPoison extends Poison
 	protected static final int	V_ADJS			= 13;	// S
 	protected static final int	V_PEAC			= 14;	// B
 	protected static final int	V_DAMG			= 15;	// P<S,F>
+	protected static final int	V_MOOD			= 16;	// S
+	protected static final int	V_EFFS			= 17;	// P<S,List<Ability>>
 
-	protected static final int	NUM_VS			= 16;	//
+	protected static final int	NUM_VS			= 18;	//
 
 	protected Object[] makeEmpty()
 	{
@@ -160,6 +164,8 @@ public class GenPoison extends Poison
 		O[V_ADJS]="";
 		O[V_PEAC]=Boolean.valueOf(false);
 		O[V_DAMG]=makeFormulaPair("@x4 + 1?@x1");
+		O[V_MOOD]="";
+		O[V_EFFS]=new Pair<String,List<Ability>>("",new ArrayList<Ability>(0));
 		return O;
 	}
 
@@ -169,7 +175,18 @@ public class GenPoison extends Poison
 		return new Pair<String,CompiledFormula>(formula, expr);
 	}
 
+	protected static Pair<String,List<Ability>> makeEffectsPair(final String effects)
+	{
+		final List<Ability> aV = new LinkedList<Ability>();
+		for(final CMObject o : CMLib.coffeeMaker().getCodedSpellsOrBehaviors(effects))
+			if(o instanceof Ability)
+				aV.add((Ability)o);
+		return new Pair<String,List<Ability>>(effects, aV);
+	}
+
 	protected Ability adjusterA = null;
+	protected List<Ability> effects = null;
+	protected Ability mood = null;
 
 	protected Ability getAdjusterA()
 	{
@@ -177,9 +194,59 @@ public class GenPoison extends Poison
 		{
 			adjusterA = CMClass.getAbility("Prop_Adjuster");
 			adjusterA.setAffectedOne(affected);
-			adjusterA.setMiscText((String)V(ID,V_ADJS));
+			adjusterA.setMiscText(CMStrings.replaceVariables((String)V(ID,V_ADJS),formulaVarss()));
 		}
 		return adjusterA;
+	}
+
+	protected final static List<Ability> emptyEffects = new ArrayList<Ability>(0);
+
+	protected List<Ability> getOtherEffects()
+	{
+		if(effects == null)
+		{
+			if(!(affected instanceof MOB))
+				return emptyEffects;
+			@SuppressWarnings("unchecked")
+			final Pair<String,List<Ability>> peffects = (Pair<String,List<Ability>>)V(ID,V_EFFS);
+			if(peffects.second.size()==0)
+				return emptyEffects;
+			final Physical affected=this.affected;
+			if(!(affected instanceof MOB))
+				return emptyEffects;
+			final List<Ability> neffects = new LinkedList<Ability>();
+			for(final Ability effA : peffects.second)
+			{
+				final Ability A = (Ability)effA.copyOf();
+				A.setMiscText(effA.text());
+				A.makeNonUninvokable();
+				A.makeLongLasting();
+				A.setAffectedOne(affected);
+			}
+			effects = neffects;
+		}
+		return effects;
+	}
+
+	protected Ability getMood()
+	{
+		if(mood == null)
+		{
+			final String moodStr = (String)V(ID,V_MOOD);
+			if(moodStr.length()==0)
+				return null;
+			final Physical affected=this.affected;
+			if(!(affected instanceof MOB))
+				return null;
+			mood = CMClass.getAbility("Mood");
+			if((mood == null)
+			||(affected.phyStats().isAmbiance(PhyStats.Ambiance.SUPPRESS_MOOD)))
+				return null;
+			mood.setMiscText(moodStr);
+			mood.setAffectedOne(affected);
+		}
+		mood.setAffectedOne(affected);
+		return mood;
 	}
 
 	protected double[] formulaVars()
@@ -198,12 +265,52 @@ public class GenPoison extends Poison
 		return vars;
 	}
 
+	protected int[] formulaVaris()
+	{
+		final int[] vars = new int[10];
+		if(invoker != null)
+		{
+			vars[0] = invoker.phyStats().level();
+			vars[1] = super.getXLEVELLevel(invoker);
+		}
+		if(affected != null)
+		{
+			vars[2] = affected.phyStats().level();
+		}
+		vars[3] = (int)Math.round(super.rank);
+		return vars;
+	}
+
+	protected String[] formulaVarss()
+	{
+		final String[] vars = new String[10];
+		if(invoker != null)
+		{
+			vars[0] = ""+invoker.phyStats().level();
+			vars[1] = ""+super.getXLEVELLevel(invoker);
+		}
+		if(affected != null)
+		{
+			vars[2] = ""+affected.phyStats().level();
+		}
+		vars[3] = ""+(int)Math.round(super.rank);
+		return vars;
+	}
+
 	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		final Ability adjusterA = getAdjusterA();
 		super.setAffectedOne(P);
-		adjusterA.setMiscText((String)V(ID,V_ADJS));
+		adjusterA.setMiscText(CMStrings.replaceVariables((String)V(ID,V_ADJS),formulaVarss()));
+	}
+
+	@Override
+	public void setInvoker(final MOB M)
+	{
+		final Ability adjusterA = getAdjusterA();
+		super.setInvoker(M);
+		adjusterA.setMiscText(CMStrings.replaceVariables((String)V(ID,V_ADJS),formulaVarss()));
 	}
 
 	@Override
@@ -296,6 +403,8 @@ public class GenPoison extends Poison
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		getAdjusterA().affectCharStats(affected, affectableStats);
+		for(final Ability A : getOtherEffects())
+			A.affectCharStats(affected, affectableStats);
 	}
 
 
@@ -303,12 +412,16 @@ public class GenPoison extends Poison
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		getAdjusterA().affectPhyStats(affected, affectableStats);
+		for(final Ability A : getOtherEffects())
+			A.affectPhyStats(affected, affectableStats);
 	}
 
 	@Override
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getAdjusterA().affectCharState(affectedMob, affectableMaxState);
+		for(final Ability A : getOtherEffects())
+			A.affectCharState(affectedMob, affectableMaxState);
 	}
 
 	@Override
@@ -317,7 +430,38 @@ public class GenPoison extends Poison
 		if(!super.tick(ticking, tickID))
 			return false;
 		getAdjusterA().tick(ticking, tickID);
+		final Ability mood = getMood();
+		if(mood != null)
+			mood.tick(affected, tickID);
+		for(final Ability A : getOtherEffects())
+			A.tick(ticking, tickID);
 		return true;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		final Ability mood = getMood();
+		if((mood != null)&&(!mood.okMessage(myHost, msg)))
+			return false;
+		for(final Ability A : getOtherEffects())
+			if(!A.okMessage(myHost, msg))
+				return false;
+		return true;
+	}
+
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		final Ability mood = getMood();
+		if(mood != null)
+			mood.executeMsg(myHost, msg);
+		for(final Ability A : getOtherEffects())
+			A.executeMsg(myHost, msg);
 	}
 
 	// lots of work to be done here
@@ -344,7 +488,9 @@ public class GenPoison extends Poison
 										 "FAILMSG", // 14S
 										 "ADJUSTMENTS", //15 S
 										 "MAKEPEACE", // 16B
-										 "DAMAGE" // 17P<S,F>
+										 "DAMAGE", // 17P<S,F>
+										 "MOOD", // 18S
+										 "EFFECTS", // 19S
 										};
 
 	@Override
@@ -417,6 +563,10 @@ public class GenPoison extends Poison
 			return ((Boolean) V(ID, V_PEAC)).toString();
 		case 17:
 			return ((Pair) V(ID, V_DAMG)).first.toString();
+		case 18:
+			return (String) V(ID, V_MOOD);
+		case 19:
+			return ((Pair) V(ID, V_EFFS)).first.toString();
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenPoison";
@@ -505,6 +655,12 @@ public class GenPoison extends Poison
 			break;
 		case 17:
 			SV(ID, V_DAMG, GenPoison.makeFormulaPair(val));
+			break;
+		case 18:
+			SV(ID, V_MOOD, val);
+			break;
+		case 19:
+			SV(ID, V_EFFS, GenPoison.makeEffectsPair(val));
 			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID().equalsIgnoreCase("GenPoison"))

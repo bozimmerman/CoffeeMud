@@ -696,7 +696,7 @@ public class StdAbility implements Ability
 	public void startTickDown(final MOB invokerMOB, final Physical affected, int tickTime)
 	{
 		if(invokerMOB!=null)
-			invoker=invokerMOB;
+			setInvoker(invokerMOB);
 
 		savable=false; // makes it so that the effect does not save!
 
@@ -1856,7 +1856,7 @@ public class StdAbility implements Ability
 	{
 		//expertiseCache=null; // this was insane!
 		if((mob!=null)&&(getXMAXRANGELevel(mob)>0)) // wut? this must be preventing an npe in some edge case...
-			invoker=mob;
+			setInvoker(mob);
 		if((!auto)&&(mob!=null))
 		{
 			isAnAutoEffect=false;
@@ -2090,7 +2090,7 @@ public class StdAbility implements Ability
 			else
 				return null;
 		}
-		invoker=mob;
+		setInvoker(mob);
 		final Ability newOne=(Ability)copyOf();
 		((StdAbility)newOne).canBeUninvoked=true;
 		tickAdjustmentFromStandard=getMaliciousTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);
@@ -2231,7 +2231,7 @@ public class StdAbility implements Ability
 
 	public Ability beneficialAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard)
 	{
-		invoker=mob;
+		setInvoker(mob);
 		final Ability newOne=(Ability)this.copyOf();
 		((StdAbility)newOne).canBeUninvoked=true;
 		tickAdjustmentFromStandard=getBeneficialTickdownTime(mob,target,tickAdjustmentFromStandard,asLevel);

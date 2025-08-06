@@ -1192,6 +1192,7 @@ public interface GenericBuilder extends CMLibrary
 	 * combinations, but, well, it seemed like a good idea at the time.
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(String)
+	 * @see GenericBuilder#packCodedSpellsOrBehaviors(List)
 	 *
 	 * @param I the Affectable one to look at the effects of
 	 * @return the coded string of those effects
@@ -1217,9 +1218,22 @@ public interface GenericBuilder extends CMLibrary
 	 * the Ability objects with any parameters of their own.
 	 * @see Affectable#effects()
 	 * @see GenericBuilder#getCodedSpellsOrBehaviors(PhysicalAgent)
+	 * @see GenericBuilder#packCodedSpellsOrBehaviors(List)
 	 *
 	 * @param spells the coded ability parameter affectable effects string
 	 * @return the list of ability which are the effects
 	 */
 	public List<CMObject> getCodedSpellsOrBehaviors(String spells);
+
+	/**
+	 * Takes a list of Abilities or Behaviors and returns the official coded list
+	 * @see Affectable#effects()
+	 * @see GenericBuilder#getCodedSpellsOrBehaviors(PhysicalAgent)
+	 * @see GenericBuilder#getCodedSpellsOrBehaviors(String)
+	 *
+	 * @param spells the list of abilities or behaviors
+	 * @return the coded string
+	 * @throws CMException any errors during encoding.
+	 */
+	public String packCodedSpellsOrBehaviors(final List<? extends CMObject> spells) throws CMException;
 }

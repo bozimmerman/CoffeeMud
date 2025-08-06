@@ -476,7 +476,6 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					for(final String err: errs)
 						Log.errOut(ID(),err);
 				}
-
 			}, 500);
 		}
 	}

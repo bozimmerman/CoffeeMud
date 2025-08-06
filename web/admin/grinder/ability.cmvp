@@ -87,6 +87,16 @@
             document.RESOURCES.action='/grinder/ability.cmvp';
             document.RESOURCES.submit();
         }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
         function Cancel()
         {
             window.close();
@@ -519,6 +529,20 @@
                 <TD><FONT COLOR=YELLOW>Affect Target: </FONT></TD>
                 <TD>
                     <INPUT TYPE=CHECKBOX NAME=AFFECTTARG @AbilityData?AFFECTTARG@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Mood: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MOOD>
+                    @AbilityData?MOOD@
+                    </SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Effects: </FONT></TD>
+                <TD>
+                    @AbilityData?EFFECTS@
                 </TD>
             </TR>
             <TR>

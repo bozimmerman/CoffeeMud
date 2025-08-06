@@ -6196,6 +6196,63 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String packCodedSpellsOrBehaviors(final List<? extends CMObject> spells) throws CMException
+	{
+		final StringBuffer newVal = new StringBuffer("");
+		if(spells.size()==1)
+		{
+			newVal.append("*" + spells.get(0).ID() + ";");
+			if(spells.get(0) instanceof Ability)
+				newVal.append(((Ability)spells.get(0)).text());
+			else
+			if(spells.get(0) instanceof Behavior)
+				newVal.append(((Behavior)spells.get(0)).getParms());
+		}
+		else
+		{
+			if(spells.size()>1)
+			{
+				for(int s=0;s<spells.size();s++)
+				{
+					String txt;
+					if(spells.get(s) instanceof Ability)
+						txt=((Ability)spells.get(s)).text();
+					else
+					if(spells.get(s) instanceof Behavior)
+						txt=((Behavior)spells.get(s)).getParms();
+					else
+						txt="";
+					if(txt.length()>0)
+					{
+						final StringBuilder cleaned = new StringBuilder("");
+						for(int i=0;i<txt.length();i++)
+							if((txt.charAt(i)=='\\')&&(i<txt.length()))
+							{
+								cleaned.append("\\"+txt.charAt(i+1));
+								i++;
+							}
+							else
+							if(txt.charAt(i)==';')
+								cleaned.append("\\;");
+							else
+								cleaned.append(txt.charAt(i));
+						txt = cleaned.toString();
+						if((CMClass.getAbility(txt.trim())!=null)
+						||(CMClass.getBehavior(txt.trim())!=null))
+							throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
+					}
+					newVal.append(spells.get(s).ID());
+					if(txt.length()>0)
+						newVal.append(";" + txt);
+					if(s<(spells.size()-1))
+						newVal.append(";");
+				}
+			}
+		}
+		return newVal.toString();
+	}
+
+	@Override
 	public List<CMObject> getCodedSpellsOrBehaviors(String spellsOrBehavsList)
 	{
 		final Vector<CMObject> spellsV=new Vector<CMObject>();
@@ -6224,7 +6281,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return spellsV;
 			}
 		}
-		final List<String> V=CMParms.parseSemicolons(spellsOrBehavsList,true);
+		final List<String> V=CMParms.parseAny(spellsOrBehavsList,';',false,true);
 		CMObject lastThing=null;
 		for(int v=0;v<V.size();v++)
 		{
