@@ -58,7 +58,7 @@
 	@loop@
 	@ClanGovernmentNext@
 	<TR>
-	<TD><a href="javascript:Government('@ClanGovernmentID@')"><FONT COLOR=WHITE><B>@ClanGovernmentID@</B></FONT></a></TD>
+	<TD><a href="javascript:Government('@ClanGovernmentID@')"><FONT COLOR="#FFFF8F"><U><B>@ClanGovernmentID@</B></U></FONT></a></TD>
 	<TD><FONT COLOR=WHITE>@ClanGovernmentData?NAME@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@ClanGovernmentData?SHORTDESC@</FONT></TD>
 	</TR>

@@ -90,7 +90,7 @@
     @loop@
     @FactionNext?ALL@
         <TR>
-        <TD><a href="javascript:Faction('@FactionID@','')"><FONT COLOR=WHITE><B>@FactionID@</B></FONT></a></TD>
+        <TD><a href="javascript:Faction('@FactionID@','')"><FONT COLOR="#FFFF8F"><U><B>@FactionID@</B></U></FONT></a></TD>
         <TD><FONT COLOR=WHITE><B>@FactionName@</B></FONT></a></TD>
         <TD><FONT COLOR=WHITE><B>@FactionData?MINRANGE@</B></FONT></a></TD>
         <TD><FONT COLOR=WHITE><B>@FactionData?MAXRANGE@</B></FONT></a></TD>

@@ -201,7 +201,7 @@
             @CatalogMobNext?ALL@
                 <TR>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_USAGE@</B></FONT></a></TD>
-                <TD><a href="javascript:CatalogMob('@RequestParameter?MOB@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_NAME@</B></FONT></a></TD>
+                <TD><a href="javascript:CatalogMob('@RequestParameter?MOB@','')"><FONT COLOR="#FFFF8F"><U><B>@RequestParameter?CATALOG_MOB_NAME@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_AREA@</B></FONT></a></TD>
@@ -281,7 +281,7 @@
             @CatalogItemNext?ALL@
                 <TR>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_USAGE@</B></FONT></a></TD>
-                <TD><a href="javascript:CatalogItem('@RequestParameter?ITEM@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_NAME@</B></FONT></a></TD>
+                <TD><a href="javascript:CatalogItem('@RequestParameter?ITEM@','')"><FONT COLOR="#FFFF8F"><U><B>@RequestParameter?CATALOG_ITEM_NAME@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>

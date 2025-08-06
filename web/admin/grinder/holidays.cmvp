@@ -65,7 +65,7 @@
     @loop@
     @HolidayNext@
     <TR>
-    <TD><a href="javascript:Holiday('@HolidayID@')"><FONT COLOR=WHITE><B>@HolidayID@</B></FONT></a></TD>
+    <TD><a href="javascript:Holiday('@HolidayID@')"><FONT COLOR="#FFFF8F"><U><B>@HolidayID@</B></U></FONT></a></TD>
     <TD><FONT COLOR=WHITE>@HolidayData?AREAS@</FONT></TD>
     <TD><FONT COLOR=WHITE>@HolidayData?SCHEDULE@</FONT></TD>
     <TD><FONT COLOR=WHITE>@HolidayData?DURATION@ ticks</FONT></TD>

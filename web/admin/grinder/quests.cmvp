@@ -111,7 +111,7 @@
 	@QuestNext@
 	<TD>
 		@AddRequestParameter?QNM=@@QuestData?NAME@@ @
-		<a href="javascript:Quest('@QuestData?NAME@')"><FONT COLOR=WHITE><B>@RequestParameter?QNM&ELLIPSE=50@</B></FONT></a>
+		<a href="javascript:Quest('@QuestData?NAME@')"><FONT COLOR="#FFFF8F"><U><B>@RequestParameter?QNM&ELLIPSE=50@</B></U></FONT></a>
 	</TD>
 	<TD><FONT COLOR=WHITE><B>@QuestData?AREA@</B></FONT></TD>
 	<TD><FONT COLOR=WHITE>

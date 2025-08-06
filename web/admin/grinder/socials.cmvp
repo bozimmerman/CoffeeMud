@@ -148,7 +148,7 @@
     @loop@
     @SocialNext@
     <TR>
-    <TD><a href="javascript:Social('@SocialID?ENCODED@')"><FONT COLOR=WHITE><B>@SocialID@</B></FONT></a></TD>
+    <TD><a href="javascript:Social('@SocialID?ENCODED@')"><FONT COLOR="#FFFF8F"><U><B>@SocialID@</B></U></FONT></a></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISNONE@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISSELF@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETMOB@Y@else@&nbsp;@endif@</FONT></TD>

@@ -79,7 +79,7 @@
         <!--  no nothing -->
         @else@
             <TR>
-            <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR=WHITE><B>@AbilityID@</B></FONT></a></TD>
+            <TD><a href="javascript:Ability('@AbilityID@','')"><FONT COLOR="#FFFF8F"><U><B>@AbilityID@</B></U></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@AbilityName@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@AbilityData?TYPENDOMAIN@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@AbilityData?QUALITY@</B></FONT></a></TD>

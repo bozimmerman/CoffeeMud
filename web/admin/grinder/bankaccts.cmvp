@@ -65,14 +65,14 @@
 		@loop@
 			@BankChainNext@
 		    <TR><TD WIDTH=30% VALIGN=TOP>
-			<a name="@BankChainName@" href="javascript:Clicked1('@BankChainName@')"><FONT COLOR=YELLOW>@BankChainName@</FONT></a>
+			<a name="@BankChainName@" href="javascript:Clicked1('@BankChainName@')"><FONT COLOR="#FFFF8F"><U>@BankChainName@</U></FONT></a>
 			@if?CheckReqParm?BANKCHAIN=@@RequestParameter?OLDCHAIN@@ @
 				@PlayerNext?RESET@
 				<UL>
 				@loop@
 					@PlayerNext@
 					@if?BankAccountInfo?HASACCT@
-						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')">@PlayerID@</a> <FONT SIZE=-1 COLOR=WHITE>(@BankAccountInfo?BALANCE@)</FONT></LI>
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')"><U>@PlayerID@</U></a> <FONT SIZE=-1 COLOR=WHITE>(@BankAccountInfo?BALANCE@)</FONT></LI>
 					@endif@
 				@back@
 				@ClanNext?RESET@
@@ -81,7 +81,7 @@
 				@loop@
 					@ClanNext@
 					@if?BankAccountInfo?HASACCT@
-						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?CLAN@')">@ClanID@</a></LI>
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?CLAN@')"><U>@ClanID@</U></a></LI>
 					@endif@
 				@back@
 				</UL>

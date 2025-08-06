@@ -78,7 +78,7 @@
 	@loop@
 	<TR>
 	@AccountNext@
-	<TD><a href="javascript:Account('@AccountID@')"><FONT COLOR=WHITE><B>@AccountID@</B></FONT></a>@if?AccountOnline@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
+	<TD><a href="javascript:Account('@AccountID@')"><FONT COLOR="#FFFF8F"><U><B>@AccountID@</B></U></FONT></a>@if?AccountOnline@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
 	@if?IsExpirationSystem@
 		<TD><FONT COLOR=WHITE>@AccountData?ACCOUNTEXPIRATION@</FONT></TD>
 	@else@

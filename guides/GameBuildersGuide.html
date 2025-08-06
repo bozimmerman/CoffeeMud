@@ -1460,12 +1460,16 @@ be used as a skill, but fails due to proficiency checks. Rarely used.</td>
 <td>ADJUSTMENTS</td><td>this
 optional string allows a poison to temporarily affect all manner of
 stats on a victim. &nbsp;See AHELP Prop_HaveAdjuster for the valid
-values you can put here. &nbsp;The integer values in the adjuster can also make use of the variables above: &nbsp;@x1 is the invoker
+values you can put here. &nbsp;The integer values in the adjuster can
+also make use of the variables above: &nbsp;@x1 is the invoker
 level,
 @x2 is invoker expertise, @x3 is affected level (if different), and @x4
 is the 'rank' if applicable.</td>
 </tr>
-<tr>
+<tr><td><span style="font-style: italic;">Mood</span></td><td>MOOD</td><td>an optional string that must match one of the MOOD command keywords. &nbsp;It causes the poison victim to be in this mood.</td></tr><tr><td><span style="font-style: italic;">Effects</span></td><td>EFFECTS</td><td>a
+list of effects that the poison victim is also under in addition to the
+poison. &nbsp; The encoding for UniPoison is identical to the format
+used in common skills, namely: <span style="font-family: monospace;">[ability id];[ability parms];[ability id];[ability parms]</span>, etc... Be sure to escape any backspashes or semicolons in the ability parms.</td></tr><tr>
 <td style="font-style: italic;">Help
 Text</td>
 <td>HELP</td><td>always starting

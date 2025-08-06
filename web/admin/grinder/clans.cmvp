@@ -60,7 +60,7 @@
 	@loop@
 	@ClanNext@
 	<TR>
-	<TD><a href="javascript:Clan('@ClanID@')"><FONT COLOR=WHITE><B>@ClanID@</B></FONT></a></TD>
+	<TD><a href="javascript:Clan('@ClanID@')"><FONT COLOR="#FFFF8F"><U><B>@ClanID@</B></U></FONT></a></TD>
 	<TD><FONT COLOR=WHITE>@ClanData?TYPE@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@ClanData?NUMMEMBERS@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@ClanData?STATUS@</FONT></TD>

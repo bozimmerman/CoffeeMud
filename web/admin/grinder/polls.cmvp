@@ -59,7 +59,7 @@
     @loop@
     @PollNext@
     <TR>
-    <TD><a href="javascript:Poll('@PollID?ENCODED@')"><FONT COLOR=WHITE><B>@PollID@</B></FONT></a></TD>
+    <TD><a href="javascript:Poll('@PollID?ENCODED@')"><FONT COLOR="#FFFF8F"><U><B>@PollID@</B></U></FONT></a></TD>
     <TD><FONT COLOR=WHITE>@PollData?SUBJECT@</FONT></TD>
     <TD><FONT COLOR=WHITE>
             @if?PollData?DOESEXPIRE@

@@ -62,7 +62,7 @@
     @loop@
     @AllQualifyNext?WHICH=ALL@
     <TR>
-    <TD><a href="javascript:AllQualifyItem('ALL','@RequestParameter?ALLQUALID@')"><FONT COLOR=WHITE>@RequestParameter?ALLQUALID@</FONT></a></TD>
+    <TD><a href="javascript:AllQualifyItem('ALL','@RequestParameter?ALLQUALID@')"><FONT COLOR="#FFFF8F"><U>@RequestParameter?ALLQUALID@</U></FONT></a></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?LEVEL&WHICH=ALL@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?AUTOGAIN&WHICH=ALL@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?VISIBILITY&WHICH=ALL@</FONT></TD>
@@ -97,7 +97,7 @@
     @loop@
     @AllQualifyNext?WHICH=EACH@
     <TR>
-    <TD><a href="javascript:AllQualifyItem('EACH','@RequestParameter?ALLQUALID@')"><FONT COLOR=WHITE>@RequestParameter?ALLQUALID@</FONT></a></TD>
+    <TD><a href="javascript:AllQualifyItem('EACH','@RequestParameter?ALLQUALID@')"><FONT COLOR="#FFFF8F"><U>@RequestParameter?ALLQUALID@</U></FONT></a></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?LEVEL&WHICH=EACH@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?AUTOGAIN&WHICH=EACH@</FONT></TD>
     <TD><FONT COLOR=WHITE>@AllQualifyData?VISIBILITY&WHICH=ALL@</FONT></TD>

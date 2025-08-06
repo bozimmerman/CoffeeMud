@@ -104,7 +104,7 @@
     <TR>
 	    <TD>
 		<INPUT TYPE=HIDDEN NAME=ROOM@DeityData?MOBCODE&ENCODED@ VALUE="">
-	    <a href="javascript:Deity('@DeityData?AREA@','@DeityData?ROOM@','@DeityData?MOBCODE@')"><FONT COLOR=WHITE><B>@DeityID@</B></FONT></a>
+	    <a href="javascript:Deity('@DeityData?AREA@','@DeityData?ROOM@','@DeityData?MOBCODE@')"><FONT COLOR="#FFFF8F"><U><B>@DeityID@</B></U></FONT></a>
 	    </TD>
 	    <TD><FONT COLOR=WHITE>@DeityData?LOCATION@</FONT></TD>
 	    <TD><FONT COLOR=WHITE>@DeityData?NUMPRIESTS@</FONT></TD>

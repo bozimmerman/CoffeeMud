@@ -67,9 +67,9 @@
     <TR>
 	    @if?ComponentData?ISSOCIAL@
 		    <TD><FONT COLOR=WHITE><B>Component Social:</B></FONT>&nbsp;
-		    <a href="javascript:Social('@ComponentID@','')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
+		    <a href="javascript:Social('@ComponentID@','')"><FONT COLOR="#FFFF8F"><U>@ComponentID@</U></FONT><</a></TD>
 		@else@
-		    <TD><a href="javascript:Component('@ComponentID@')"><FONT COLOR=WHITE>@ComponentID@</FONT></a></TD>
+		    <TD><a href="javascript:Component('@ComponentID@')"><FONT COLOR="#FFFF8F"><U>@ComponentID@</U></FONT></a></TD>
 		@endif@
     <TD COLSPAN=5><FONT COLOR=WHITE>@ComponentData?DESC@</FONT></TD>
     </TR>

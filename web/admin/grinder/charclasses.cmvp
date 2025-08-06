@@ -68,7 +68,7 @@
     @CharClassNext?ALL@
         @if?!CheckReqParm?CLASS=GenCharClass@
             <TR>
-            <TD><a href="javascript:CharClass('@CharClassID@','')"><FONT COLOR=WHITE><B>@CharClassID@</B></FONT></a></TD>
+            <TD><a href="javascript:CharClass('@CharClassID@','')"><FONT COLOR="#FFFF8F"><U><B>@CharClassID@</B></U></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@CharClassData?NAMELIST@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@CharClassData?BASE@</B></FONT></a></TD>
             <TD><FONT COLOR=WHITE><B>@if?CharClassData?ISGENERIC@Yes@endif@</B></FONT></a></TD>

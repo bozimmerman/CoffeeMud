@@ -58,7 +58,7 @@
     @loop@
     @PlaneNext@
     <TR>
-    <TD><a href="javascript:Plane('@PlanarID@')"><FONT COLOR=WHITE><U>@PlanarData?ID@</U></FONT></a></TD>
+    <TD><a href="javascript:Plane('@PlanarID@')"><FONT COLOR="#FFFF8F"><U>@PlanarData?ID@</U></FONT></a></TD>
     <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESCRIPTION&FILL@</FONT></TD>
     </TR>
     @back@

@@ -168,7 +168,7 @@
             @loop@
             @AchievementNext@
                 <TR>
-                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','PLAYER')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','PLAYER')"><FONT COLOR="#FFFF8F"><U><B>@AchievementID@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE SIZE=-1><B>@AchievementData?EVENT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
@@ -197,7 +197,7 @@
 	            @loop@
 	            @AchievementNext@
 	                <TR>
-	                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','ACCOUNT')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+	                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','ACCOUNT')"><FONT COLOR="#FFFF8F"><U><B>@AchievementID@</B></U></FONT></a></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
@@ -226,7 +226,7 @@
             @loop@
             @AchievementNext@
                 <TR>
-                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','CLAN')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','CLAN')"><FONT COLOR="#FFFF8F"><U><B>@AchievementID@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
@@ -270,7 +270,7 @@
             @loop@
             @AutoTitleNext?ALL@
                 <TR>
-                <TD><a href="javascript:Title('@AutoTitleID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoTitleID@</B></FONT></a></TD>
+                <TD><a href="javascript:Title('@AutoTitleID?ENCODED@','')"><FONT COLOR="#FFFF8F"><U><B>@AutoTitleID@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoTitleData?MAX@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoTitleData?MASK@</B></FONT></a></TD>
                 </TR>
@@ -312,7 +312,7 @@
             @loop@
                 @AutoAwardNext?ALL@
                 <TR>
-                <TD><a href="javascript:Award('@AutoAwardID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoAwardID@</B></FONT></a></TD>
+                <TD><a href="javascript:Award('@AutoAwardID?ENCODED@','')"><FONT COLOR="#FFFF8F"><U><B>@AutoAwardID@</B></U></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoAwardData?PMASK@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoAwardData?DMASK@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@AutoAwardData?PROPDESC@</B></FONT></a></TD>
