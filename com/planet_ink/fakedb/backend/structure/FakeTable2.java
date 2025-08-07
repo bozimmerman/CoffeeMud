@@ -92,6 +92,8 @@ public class FakeTable2 extends FakeTable
 	public void open() throws IOException
 	{
 		super.open();
+		if(version < 2)
+			return;
 		// if no exception was thrown, then we have a right to be here.
 
 		rowWidth = 1; // the - and * is still a good idea.

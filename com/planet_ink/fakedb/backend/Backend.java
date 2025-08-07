@@ -151,7 +151,7 @@ public class Backend
 				if (fakeTables.get(fakeTableName) != null)
 					throw new IOException("Can not read schema: tableName is missing: " + fakeTableName);
 
-				final FakeTable fakeTable = new FakeTable2(fakeTableName, new File(basePath, "fakedb.data." + fakeTableName));
+				final FakeTable fakeTable = new FakeTable(fakeTableName, new File(basePath, "fakedb.data." + fakeTableName));
 				fakeTable.version = version;
 				fakeTable.initializeColumns(in);
 				if(fakeTable.version > version)
