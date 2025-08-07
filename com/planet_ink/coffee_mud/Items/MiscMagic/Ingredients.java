@@ -52,22 +52,8 @@ public class Ingredients extends BagOfEndlessness
 
 	protected Item makeResource(final String name, final int type)
 	{
-		Item I=null;
-		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
-		||((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
-			I=CMClass.getItem("GenFoodResource");
-		else
-		if((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-			I=CMClass.getItem("GenLiquidResource");
-		else
-			I=CMClass.getItem("GenResource");
-		I.setName(name);
-		I.setDisplayText(L("@x1 has been left here.",name));
-		I.setDescription(L("It looks like @x1",name));
-		I.setMaterial(type);
-		I.setBaseValue(RawMaterial.CODES.VALUE(type));
-		I.basePhyStats().setWeight(1);
-		CMLib.materials().addEffectsToResource(I);
+
+		final Item I=CMLib.materials().makeItemResource(type);
 		I.recoverPhyStats();
 		I.setContainer(this);
 		if(I instanceof Decayable)

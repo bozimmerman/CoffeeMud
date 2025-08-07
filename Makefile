@@ -105,6 +105,10 @@ endif
 # Packages we should compile
 PACKAGES = \
 com.planet_ink.fakedb \
+com.planet_ink.fakedb.backend \
+com.planet_ink.fakedb.backend.structure \
+com.planet_ink.fakedb.backend.statements \
+com.planet_ink.fakedb.backend.jdbc \
 com.planet_ink.coffee_mud.Abilities \
 com.planet_ink.coffee_mud.application \
 com.planet_ink.coffee_mud.Areas \
@@ -502,6 +506,10 @@ com.planet_ink : $(call PACKAGE_OBJS,com.planet_ink)
 com.planet_ink.coffee_mud.Items : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items)
 com : $(call PACKAGE_OBJS,com)
 com.planet_ink.fakedb : $(call PACKAGE_OBJS,com.planet_ink.fakedb)
+com.planet_ink.fakedb.backend : $(call PACKAGE_OBJS,com.planet_ink.fakedb.backend)
+com.planet_ink.fakedb.backend.structure : $(call PACKAGE_OBJS,com.planet_ink.fakedb.backend.structure)
+com.planet_ink.fakedb.backend.jdbc : $(call PACKAGE_OBJS,com.planet_ink.fakedb.backend.jdbc)
+com.planet_ink.fakedb.backend.statements : $(call PACKAGE_OBJS,com.planet_ink.fakedb.backend.statements)
 com.planet_ink.coffee_mud.Abilities : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities)
 com.planet_ink.coffee_mud.application : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.application)
 com.planet_ink.coffee_mud.Areas : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Areas)
@@ -569,6 +577,8 @@ com.planet_ink.coffee_mud.Items.Software : $(call PACKAGE_OBJS,com.planet_ink.co
 com.planet_ink.coffee_mud.Items.Weapons : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Weapons)
 com.planet_ink.coffee_mud.Libraries.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.interfaces)
 com.planet_ink.coffee_mud.Libraries.layouts : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.layouts)
+com.planet_ink.coffee_mud.Libraries.layouts : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.editors)
+com.planet_ink.coffee_mud.Libraries.layouts : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.mcppkgs)
 com.planet_ink.coffee_mud.Locales.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Locales.interfaces)
 com.planet_ink.coffee_mud.MOBS.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.MOBS.interfaces)
 com.planet_ink.coffee_mud.Races.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Races.interfaces)

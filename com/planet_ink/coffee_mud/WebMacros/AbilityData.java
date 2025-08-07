@@ -1345,6 +1345,17 @@ public class AbilityData extends StdWebMacro
 					str.append(helpHelp(s,limit));
 				}
 
+				if(parms.containsKey("AHELP"))
+				{
+					String s=CMLib.help().getHelpText(A.ID(),null,true,parms.containsKey("PLAIN"));
+					if(s==null)
+						s=CMLib.help().getHelpText(A.Name(),null,true,parms.containsKey("PLAIN"));
+					int limit=78;
+					if(parms.containsKey("LIMIT"))
+						limit=CMath.s_int(parms.get("LIMIT"));
+					str.append(helpHelp(s,limit));
+				}
+
 				if(parms.containsKey("RANGES"))
 				{
 					final int min=A.minRange();

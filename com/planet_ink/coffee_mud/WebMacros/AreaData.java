@@ -249,9 +249,11 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("HELP"))
 				{
-					String s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
+					String s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
 					if(s==null)
-						s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
+						s=CMLib.help().getHelpText(A.Name(),null,false);
+					if(s==null)
+						s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
 					int limit=78;
 					if(parms.containsKey("LIMIT"))
 						limit=CMath.s_int(parms.get("LIMIT"));

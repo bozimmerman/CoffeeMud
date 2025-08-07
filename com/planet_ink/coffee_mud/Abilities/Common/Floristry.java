@@ -124,7 +124,8 @@ public class Floristry extends CommonSkill
 
 						commonTelL(mob,"@x1 appears to be @x2.",found.name(),flower);
 						String name=found.Name();
-						name=name.substring(0,name.length()-8).trim();
+						if(name.length()>8)
+							name=name.substring(0,name.length()-8).trim();
 						if(name.startsWith("a pound of"))
 							name="some"+name.substring(10);
 						if(name.length()>0)

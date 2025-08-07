@@ -6,6 +6,10 @@ SET JAVACPATH="%Java_Home%\bin\javac" -g -nowarn -deprecation
 IF "%1" == "docs" GOTO :DOCS
 
 %JAVACPATH% com/planet_ink/fakedb/*.java
+%JAVACPATH% com/planet_ink/fakedb/backend/*.java
+%JAVACPATH% com/planet_ink/fakedb/backend/jdbc/*.java
+%JAVACPATH% com/planet_ink/fakedb/backend/structure/*.java
+%JAVACPATH% com/planet_ink/fakedb/backend/statements/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Abilities/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/application/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Areas/*.java
