@@ -1,4 +1,4 @@
-package com.planet_ink.fakedb;
+package com.planet_ink.fakedb.backend.jdbc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +24,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Stack;
 
+import com.planet_ink.fakedb.backend.Connection;
+import com.planet_ink.fakedb.backend.statements.ImplAbstractStatement;
+import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
+import com.planet_ink.fakedb.backend.statements.ImplInsertStatement;
+import com.planet_ink.fakedb.backend.statements.ImplSelectStatement;
+import com.planet_ink.fakedb.backend.statements.ImplUpdateStatement;
+import com.planet_ink.fakedb.backend.statements.ImplAbstractStatement.StatementType;
+import com.planet_ink.fakedb.backend.structure.ComparableValue;
+import com.planet_ink.fakedb.backend.structure.FakeCondition;
+
 /*
    Copyright 2009-2025 Bo Zimmerman
 
@@ -41,9 +51,9 @@ import java.util.Stack;
  */
 public class PreparedStatement extends Statement implements java.sql.PreparedStatement
 {
-	private Backend.ImplAbstractStatement	stmt	= null;
+	private ImplAbstractStatement	stmt	= null;
 
-	PreparedStatement(final Connection c)
+	public PreparedStatement(final Connection c)
 	{
 		super(c);
 	}
@@ -104,17 +114,17 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		switch (stmt.getStatementType())
 		{
 		case SELECT:
-			myResultSet = (ResultSet) connection.getBackend().constructScan((Backend.ImplSelectStatement) stmt);
+			myResultSet = (ResultSet) connection.getBackend().constructScan((ImplSelectStatement) stmt);
 			return true;
 		case UPDATE:
-			connection.getBackend().updateRecord((Backend.ImplUpdateStatement) stmt);
+			connection.getBackend().updateRecord((ImplUpdateStatement) stmt);
 			return true;
 		case DELETE:
-			connection.getBackend().deleteRecord((Backend.ImplDeleteStatement) stmt);
+			connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
 			return true;
 		case INSERT:
 		{
-			final Backend.ImplInsertStatement istmt = (Backend.ImplInsertStatement) stmt;
+			final ImplInsertStatement istmt = (ImplInsertStatement) stmt;
 			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
 			return true;
@@ -126,9 +136,9 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public java.sql.ResultSet executeQuery() throws SQLException
 	{
-		if (stmt.getStatementType() != Backend.StatementType.SELECT)
+		if (stmt.getStatementType() != StatementType.SELECT)
 			throw new SQLException("Not a query.");
-		return connection.getBackend().constructScan((Backend.ImplSelectStatement) stmt);
+		return connection.getBackend().constructScan((ImplSelectStatement) stmt);
 	}
 
 	@Override
@@ -139,14 +149,14 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case SELECT:
 			throw new SQLException("Not a update.");
 		case UPDATE:
-			connection.getBackend().updateRecord((Backend.ImplUpdateStatement) stmt);
+			connection.getBackend().updateRecord((ImplUpdateStatement) stmt);
 			return 0;
 		case DELETE:
-			connection.getBackend().deleteRecord((Backend.ImplDeleteStatement) stmt);
+			connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
 			return 0;
 		case INSERT:
 		{
-			final Backend.ImplInsertStatement istmt = (Backend.ImplInsertStatement) stmt;
+			final ImplInsertStatement istmt = (ImplInsertStatement) stmt;
 			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
 			return 0;
@@ -443,23 +453,23 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		setObject(parameterIndex, null);
 	}
 
-	private boolean setRecursiveObject(final int parameterIndex, final Object x, final List<Backend.FakeCondition> conds, final int[] atIndex)
+	private boolean setRecursiveObject(final int parameterIndex, final Object x, final List<FakeCondition> conds, final int[] atIndex)
 	{
 		if ((conds != null) && (conds.size() > 0))
 		{
-			for (final Backend.FakeCondition cond : conds)
+			for (final FakeCondition cond : conds)
 			{
 				if (cond.unPrepared)
 				{
 					if (atIndex[0] == parameterIndex)
 					{
 						if (x == null)
-							cond.conditionValue = new Backend.ComparableValue(null);
+							cond.conditionValue = new ComparableValue(null);
 						else
 						if (x instanceof Comparable)
-							cond.conditionValue = new Backend.ComparableValue((Comparable<?>) x);
+							cond.conditionValue = new ComparableValue((Comparable<?>) x);
 						else
-							cond.conditionValue = new Backend.ComparableValue(x.toString());
+							cond.conditionValue = new ComparableValue(x.toString());
 						return true;
 					}
 					atIndex[0]++;

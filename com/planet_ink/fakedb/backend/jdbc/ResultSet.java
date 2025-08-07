@@ -1,4 +1,4 @@
-package com.planet_ink.fakedb;
+package com.planet_ink.fakedb.backend.jdbc;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -13,7 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import com.planet_ink.fakedb.Backend.*;
+import com.planet_ink.fakedb.*;
+import com.planet_ink.fakedb.backend.structure.ComparableValue;
+import com.planet_ink.fakedb.backend.structure.FakeColumn;
+import com.planet_ink.fakedb.backend.structure.FakeCondition;
+import com.planet_ink.fakedb.backend.structure.FakeTable;
+import com.planet_ink.fakedb.backend.structure.RecordInfo;
 
 /*
    Copyright 2001 Thomas Neumann
@@ -33,19 +38,19 @@ import com.planet_ink.fakedb.Backend.*;
  */
 public class ResultSet implements java.sql.ResultSet
 {
-	private final Statement							statement;
-	private final Backend.FakeTable					fakeTable;
-	private java.util.Iterator<Backend.RecordInfo>	iter;
-	private int										currentRow	= 0;
-	private final List<FakeCondition>				conditions;
-	private final ComparableValue[]					values;
-	private final int[]								showCols;
-	private final int[]								orderByKeyDexCols;
-	private final String[]							orderByConditions;
-	private final Map<String, Integer>				showColMap	= new Hashtable<String, Integer>();
-	private boolean									wasNullFlag	= false;
-	private Object									countValue	= null;
-	private boolean									closeStatementOnClose;
+	public  final Statement							statement;
+	public  final FakeTable							fakeTable;
+	public  java.util.Iterator<RecordInfo>			iter;
+	public  int										currentRow	= 0;
+	public  final List<FakeCondition>				conditions;
+	public  final ComparableValue[]					values;
+	public  final int[]								showCols;
+	public  final int[]								orderByKeyDexCols;
+	public  final String[]							orderByConditions;
+	public  final Map<String, Integer>				showColMap	= new Hashtable<String, Integer>();
+	public  boolean									wasNullFlag	= false;
+	public  Object									countValue	= null;
+	public  boolean									closeStatementOnClose;
 	private static final List<RecordInfo>			fakeList	= new Vector<RecordInfo>(1);
 	static
 	{
@@ -54,7 +59,7 @@ public class ResultSet implements java.sql.ResultSet
 		fakeList.add(info);
 	}
 
-	ResultSet(final Statement stmt, final Backend.FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions)
+	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions)
 	{
 		this.statement = stmt;
 		this.fakeTable = table;
@@ -105,7 +110,7 @@ public class ResultSet implements java.sql.ResultSet
 		{
 			if (!iter.hasNext())
 				return false;
-			final Backend.RecordInfo rowInfo = iter.next();
+			final RecordInfo rowInfo = iter.next();
 			if (countValue != null)
 			{
 				currentRow++;
@@ -757,13 +762,19 @@ public class ResultSet implements java.sql.ResultSet
 					return false;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return true;
-				case FakeColumn.TYPE_LONG:
+				case DATETIME:
 					return true;
-				case FakeColumn.TYPE_STRING:
+				case LONG:
+					return true;
+				case CLOB:
 					return false;
-				case FakeColumn.TYPE_UNKNOWN:
+				case BLOB:
+					return false;
+				case STRING:
+					return false;
+				case UNKNOWN:
 					return false;
 				}
 				return false;
@@ -776,15 +787,22 @@ public class ResultSet implements java.sql.ResultSet
 					throw new SQLException("Value out of range.");
 				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return 6;
-				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
+				final FakeColumn col = fakeTable.getColumnInfo(showCols[column - 1]);
+				switch (col.type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return 9;
-				case FakeColumn.TYPE_LONG:
+				case DATETIME:
 					return 19;
-				case FakeColumn.TYPE_STRING:
+				case LONG:
+					return 19;
+				case STRING:
+					return Math.min(40,col.size);
+				case CLOB:
 					return 40;
-				case FakeColumn.TYPE_UNKNOWN:
+				case BLOB:
+					return 40;
+				case UNKNOWN:
 					return 10;
 				}
 				return 10;
@@ -821,13 +839,16 @@ public class ResultSet implements java.sql.ResultSet
 					return 9;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return 9;
-				case FakeColumn.TYPE_LONG:
+				case DATETIME:
+				case LONG:
 					return 19;
-				case FakeColumn.TYPE_STRING:
+				case CLOB:
+				case STRING:
 					return Integer.MAX_VALUE;
-				case FakeColumn.TYPE_UNKNOWN:
+				case BLOB:
+				case UNKNOWN:
 					return 0;
 				}
 				return 0;
@@ -864,13 +885,19 @@ public class ResultSet implements java.sql.ResultSet
 					return java.sql.Types.INTEGER;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return java.sql.Types.INTEGER;
-				case FakeColumn.TYPE_LONG:
+				case LONG:
 					return java.sql.Types.BIGINT;
-				case FakeColumn.TYPE_STRING:
+				case DATETIME:
+					return java.sql.Types.BIGINT;
+				case STRING:
 					return java.sql.Types.VARCHAR;
-				case FakeColumn.TYPE_UNKNOWN:
+				case CLOB:
+					return java.sql.Types.CLOB;
+				case BLOB:
+					return java.sql.Types.BLOB;
+				case UNKNOWN:
 					return java.sql.Types.JAVA_OBJECT;
 				}
 				return java.sql.Types.JAVA_OBJECT;
@@ -885,13 +912,19 @@ public class ResultSet implements java.sql.ResultSet
 					return "integer";
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return "integer";
-				case FakeColumn.TYPE_LONG:
+				case LONG:
 					return "long";
-				case FakeColumn.TYPE_STRING:
+				case DATETIME:
+					return "datetime";
+				case STRING:
 					return "string";
-				case FakeColumn.TYPE_UNKNOWN:
+				case CLOB:
+					return "clob";
+				case BLOB:
+					return "blob";
+				case UNKNOWN:
 					return "unknown";
 				}
 				return "unknown";
@@ -928,13 +961,19 @@ public class ResultSet implements java.sql.ResultSet
 					return Integer.class.getName();
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
-				case FakeColumn.TYPE_INTEGER:
+				case INTEGER:
 					return Integer.class.getName();
-				case FakeColumn.TYPE_LONG:
+				case DATETIME:
 					return Long.class.getName();
-				case FakeColumn.TYPE_STRING:
+				case LONG:
+					return Long.class.getName();
+				case STRING:
 					return String.class.getName();
-				case FakeColumn.TYPE_UNKNOWN:
+				case CLOB:
+					return String.class.getName();
+				case BLOB:
+					return byte[].class.getName();
+				case UNKNOWN:
 					return String.class.getName();
 				}
 				return String.class.getName();

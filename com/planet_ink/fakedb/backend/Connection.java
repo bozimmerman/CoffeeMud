@@ -1,9 +1,13 @@
-package com.planet_ink.fakedb;
+package com.planet_ink.fakedb.backend;
 
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+
+import com.planet_ink.fakedb.backend.jdbc.PreparedStatement;
+import com.planet_ink.fakedb.backend.jdbc.Statement;
+
 import java.lang.ref.WeakReference;
 
 /*
@@ -36,7 +40,7 @@ public class Connection implements java.sql.Connection
 		System.err.println("Connection: " + x);
 	}
 
-	Backend getBackend()
+	public Backend getBackend()
 	{
 		return backend;
 	}

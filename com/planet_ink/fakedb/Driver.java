@@ -4,6 +4,8 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import com.planet_ink.fakedb.backend.Connection;
+
 /*
    Copyright 2001 Thomas Neumann
    Copyright 2004-2025 Bo Zimmerman

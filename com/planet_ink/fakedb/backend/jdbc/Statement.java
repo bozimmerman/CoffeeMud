@@ -1,11 +1,17 @@
-package com.planet_ink.fakedb;
+package com.planet_ink.fakedb.backend.jdbc;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.planet_ink.fakedb.Backend.ComparableValue;
-import com.planet_ink.fakedb.Backend.FakeTable;
+import com.planet_ink.fakedb.backend.Connection;
+import com.planet_ink.fakedb.backend.Backend.ConnectorType;
+import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
+import com.planet_ink.fakedb.backend.statements.ImplInsertStatement;
+import com.planet_ink.fakedb.backend.statements.ImplSelectStatement;
+import com.planet_ink.fakedb.backend.statements.ImplUpdateStatement;
+import com.planet_ink.fakedb.backend.structure.FakeCondition;
+import com.planet_ink.fakedb.backend.structure.FakeTable;
 
 /*
    Copyright 2001 Thomas Neumann
@@ -36,7 +42,7 @@ public class Statement implements java.sql.Statement
 	protected Connection	connection;
 	public String			lastSQL	= "null";
 
-	Statement(final Connection c)
+	public Statement(final Connection c)
 	{
 		connection = c;
 	}
@@ -171,24 +177,24 @@ public class Statement implements java.sql.Statement
 		return null;
 	}
 
-	public String parseWhereClause(final String tableName, final String sql, List<Backend.FakeCondition> conditions) throws java.sql.SQLException
+	public String parseWhereClause(final String tableName, final String sql, List<FakeCondition> conditions) throws java.sql.SQLException
 	{
 		int s = 0;
 		final String eow1 = " \t!=><";
-		final java.util.Stack<List<Backend.FakeCondition>> parenStack = new java.util.Stack<List<Backend.FakeCondition>>();
+		final java.util.Stack<List<FakeCondition>> parenStack = new java.util.Stack<List<FakeCondition>>();
 		while (s < sql.length())
 		{
 			while ((s < sql.length()) && (sql.charAt(s) == ' ' || sql.charAt(s) == '\t'))
 				s++;
 			if (s >= sql.length())
 				break;
-			Backend.FakeCondition condition = null;
+			FakeCondition condition = null;
 			if (sql.charAt(s) == '(')
 			{
 				condition = connection.getBackend().buildFakeCondition(tableName, null, null, null, false);
 				conditions.add(condition);
 				parenStack.push(conditions);
-				condition.contains = new ArrayList<Backend.FakeCondition>();
+				condition.contains = new ArrayList<FakeCondition>();
 				conditions = condition.contains;
 				s++;
 				continue;
@@ -296,13 +302,13 @@ public class Statement implements java.sql.Statement
 			if (peeker.equalsIgnoreCase("AND"))
 			{
 				s = e;
-				condition.connector = Backend.ConnectorType.AND;
+				condition.connector = ConnectorType.AND;
 			}
 			else
 			if (peeker.equalsIgnoreCase("OR"))
 			{
 				s = e;
-				condition.connector = Backend.ConnectorType.OR;
+				condition.connector = ConnectorType.OR;
 			}
 			else
 				break;
@@ -315,7 +321,7 @@ public class Statement implements java.sql.Statement
 
 	}
 
-	public Backend.ImplSelectStatement parseSelect(String sql, final String[] token) throws java.sql.SQLException
+	public ImplSelectStatement parseSelect(String sql, final String[] token) throws java.sql.SQLException
 	{
 		final List<String> cols = new ArrayList<String>();
 		sql = splitColumns(sql, cols);
@@ -326,7 +332,7 @@ public class Statement implements java.sql.Statement
 			throw new java.sql.SQLException("no from clause");
 		sql = split(sql, token);
 		final String tableName = token[0];
-		final List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
+		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
 		String[] orderVars = null;
 		String[] orderConditions = null;
 		if (sql.length() > 0)
@@ -360,7 +366,7 @@ public class Statement implements java.sql.Statement
 			if (sql.length() > 0)
 				throw new java.sql.SQLException("extra garbage: " + sql);
 		}
-		return new Backend.ImplSelectStatement(this, tableName, cols, conditions, orderVars, orderConditions);
+		return new ImplSelectStatement(this, tableName, cols, conditions, orderVars, orderConditions);
 	}
 
 	@Override
@@ -373,7 +379,7 @@ public class Statement implements java.sql.Statement
 			sql = split(sql, token);
 			if (!token[0].equalsIgnoreCase("select"))
 				throw new java.sql.SQLException("first query token not select");
-			final Backend.ImplSelectStatement stmt = parseSelect(sql, token);
+			final ImplSelectStatement stmt = parseSelect(sql, token);
 			return connection.getBackend().constructScan(stmt);
 		}
 		catch (final java.sql.SQLException e)
@@ -444,7 +450,7 @@ public class Statement implements java.sql.Statement
 		return result;
 	}
 
-	protected Backend.ImplInsertStatement parseInsert(String sql, final String[] token) throws java.sql.SQLException
+	protected ImplInsertStatement parseInsert(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("into"))
@@ -506,10 +512,10 @@ public class Statement implements java.sql.Statement
 		{
 			throw new java.sql.SQLException("something very bad");
 		}
-		return new Backend.ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
+		return new ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 	}
 
-	protected Backend.ImplUpdateStatement parseUpdate(String sql, final String[] token) throws java.sql.SQLException
+	protected ImplUpdateStatement parseUpdate(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		final String tableName = token[0];
@@ -584,18 +590,18 @@ public class Statement implements java.sql.Statement
 				}
 			}
 		}
-		final List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
+		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
 		if(sql.length()>0)
 		{
 			sql = parseWhereClause(tableName, sql, conditions);
 			if (conditions.size() == 0)
 				throw new java.sql.SQLException("no more where clause!");
 		}
-		return new Backend.ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
+		return new ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 
 	}
 
-	protected Backend.ImplDeleteStatement parseDelete(String sql, final String[] token) throws java.sql.SQLException
+	protected ImplDeleteStatement parseDelete(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("from"))
@@ -603,11 +609,11 @@ public class Statement implements java.sql.Statement
 		sql = split(sql, token);
 		final String tableName = token[0];
 		sql = split(sql, token);
-		List<Backend.FakeCondition> conditions;
+		List<FakeCondition> conditions;
 		if (token[0].equalsIgnoreCase("where"))
 		{
 			sql = skipWS(sql);
-			conditions = new ArrayList<Backend.FakeCondition>();
+			conditions = new ArrayList<FakeCondition>();
 			sql = parseWhereClause(tableName, sql, conditions);
 			if (conditions.size() == 0)
 				throw new java.sql.SQLException("no more where clause!");
@@ -615,11 +621,11 @@ public class Statement implements java.sql.Statement
 		else
 		if (token.length > 0)
 		{
-			conditions = new ArrayList<Backend.FakeCondition>();
+			conditions = new ArrayList<FakeCondition>();
 		}
 		else
 			throw new java.sql.SQLException("no other where clause");
-		return new Backend.ImplDeleteStatement(tableName, conditions);
+		return new ImplDeleteStatement(tableName, conditions);
 	}
 
 	@Override
@@ -639,20 +645,20 @@ public class Statement implements java.sql.Statement
 			sql = split(sql, token);
 			if (token[0].equalsIgnoreCase("insert"))
 			{
-				final Backend.ImplInsertStatement stmt = parseInsert(sql, token);
+				final ImplInsertStatement stmt = parseInsert(sql, token);
 				connection.getBackend().dupKeyCheck(stmt.tableName, stmt.columns, stmt.sqlValues);
 				connection.getBackend().insertValues(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("update"))
 			{
-				final Backend.ImplUpdateStatement stmt = parseUpdate(sql, token);
+				final ImplUpdateStatement stmt = parseUpdate(sql, token);
 				connection.getBackend().updateRecord(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("delete"))
 			{
-				final Backend.ImplDeleteStatement stmt = parseDelete(sql, token);
+				final ImplDeleteStatement stmt = parseDelete(sql, token);
 				connection.getBackend().deleteRecord(stmt);
 			}
 			else
@@ -762,7 +768,7 @@ public class Statement implements java.sql.Statement
 			{
 				return executeUpdate(lastSQL) == 0;
 			}
-			final Backend.ImplSelectStatement stmt = parseSelect(sql, token);
+			final ImplSelectStatement stmt = parseSelect(sql, token);
 			myResultSet = (ResultSet) connection.getBackend().constructScan(stmt);
 			return true;
 		}
