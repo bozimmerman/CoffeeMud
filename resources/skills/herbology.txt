@@ -28,3 +28,4 @@ parsley
 lavender
 cilantro
 nutmeg
+peppercorn

@@ -198,7 +198,7 @@ public class Plant extends Vine
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
-			CMLib.combat().recoverTick((MOB)ticking);
+			CMLib.combat().recoverTick((MOB)ticking, ((MOB)ticking).curState());
 		return true;
 	}
 

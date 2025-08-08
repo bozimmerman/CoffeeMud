@@ -182,7 +182,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 					for(int i2=0;i2<typ.second.intValue();i2++)
 					{
 						if(M.curState().getHitPoints()<M.maxState().getHitPoints())
-							changed = CMLib.combat().recoverTick(M) || changed;
+							changed = CMLib.combat().recoverTick(M, M.curState()) || changed;
 					}
 					break;
 				case HITS:
@@ -192,7 +192,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 						final int oldMana=M.curState().getMana();
 						final int oldMove=M.curState().getMovement();
 						for(int i2=0;i2<RecType.HITS.ordinal();i2++)
-							changed = CMLib.combat().recoverTick(M);
+							changed = CMLib.combat().recoverTick(M, M.curState());
 						M.curState().setMana(oldMana);
 						M.curState().setMovement(oldMove);
 					}
@@ -205,7 +205,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 						final int oldHP=M.curState().getHitPoints();
 						final int oldMove=M.curState().getMovement();
 						for(int i2=0;i2<RecType.MANA.ordinal();i2++)
-							CMLib.combat().recoverTick(M);
+							CMLib.combat().recoverTick(M, M.curState());
 						M.curState().setHitPoints(oldHP);
 						M.curState().setMovement(oldMove);
 					}
@@ -218,7 +218,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 						final int oldMana=M.curState().getMana();
 						final int oldHP=M.curState().getHitPoints();
 						for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
-							CMLib.combat().recoverTick(M);
+							CMLib.combat().recoverTick(M, M.curState());
 						M.curState().setMana(oldMana);
 						M.curState().setHitPoints(oldHP);
 					}

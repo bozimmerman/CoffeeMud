@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPoison extends Poison
+public class GenPoison extends Poison implements SpellHolder
 {
 	public String	ID	= "GenPoison";
 
@@ -462,6 +462,27 @@ public class GenPoison extends Poison
 			mood.executeMsg(myHost, msg);
 		for(final Ability A : getOtherEffects())
 			A.executeMsg(myHost, msg);
+	}
+
+	@Override
+	public List<Ability> getSpells()
+	{
+		final List<Ability> spells = new ArrayList<Ability>();
+		spells.add(this);
+		if(this.effects != null)
+			spells.addAll(this.effects);
+		return spells;
+	}
+
+	@Override
+	public String getSpellList()
+	{
+		return "";
+	}
+
+	@Override
+	public void setSpellList(final String list)
+	{
 	}
 
 	// lots of work to be done here

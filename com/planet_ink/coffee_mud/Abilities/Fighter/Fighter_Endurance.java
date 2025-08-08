@@ -105,7 +105,7 @@ public class Fighter_Endurance extends FighterSkill
 		{
 			final int bonus=(getXLEVELLevel(mob)/3)+1;
 			for(int x=0;x<bonus;x++)
-				CMLib.combat().recoverTick(mob);
+				CMLib.combat().recoverTick(mob, mob.curState());
 			final CharState curState = mob.curState();
 			final CharState maxState = mob.maxState();
 			if((curState.getHitPoints() < maxState.getHitPoints())

@@ -763,9 +763,10 @@ public interface CombatLibrary extends CMLibrary
 	 * in combat, it will help the mob recover some of their hit points,
 	 * mana, movement, etc.
 	 * @param mob the mob who is recovering
+	 * @param chgState the state to change, usually the mobs
 	 * @return true if something changed
 	 */
-	public boolean recoverTick(MOB mob);
+	public boolean recoverTick(MOB mob, CharState chgState);
 
 	/**
 	 * The heart of the alternative turn-based combat engine, this method is

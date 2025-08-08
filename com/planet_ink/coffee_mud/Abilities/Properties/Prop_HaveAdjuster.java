@@ -440,7 +440,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				}
 			}
 		}
+		this.addAbleAdjustments(ps, parameters[0], "ABLETICKS", "TICK+", charStatsV, errors);
 		this.addAbleAdjustments(ps, parameters[0], "ABLEPROFS", "PROF+", charStatsV, errors);
+		this.addAbleAdjustments(ps, parameters[0], "ABLEHPCOSTS", "HPCOST+", charStatsV, errors);
+		this.addAbleAdjustments(ps, parameters[0], "ABLEMNCOSTS", "MNCOST+", charStatsV, errors);
+		this.addAbleAdjustments(ps, parameters[0], "ABLEMVCOSTS", "MVCOST+", charStatsV, errors);
 		this.addAbleAdjustments(ps, parameters[0], "ABLELVLS", "LEVEL+", charStatsV, errors);
 		addIfPlussed(ps,parameters[0],"chr",CharStats.STAT_CHARISMA,charStatsV,errors);
 		this.charStateChanges=makeObjectArray(charStateV);

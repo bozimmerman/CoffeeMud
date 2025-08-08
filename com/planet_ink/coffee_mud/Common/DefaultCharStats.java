@@ -867,6 +867,15 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
+	public boolean isAbilityAdjustment(final String prefix)
+	{
+		final Map<String,Integer> prof=this.profAdj;
+		if((prof == null)||(prof.size()==0))
+			return false;
+		return prof.containsKey("HAS_"+prefix.toUpperCase().trim());
+	}
+
+	@Override
 	public int getAbilityAdjustment(final String ableID)
 	{
 
@@ -880,7 +889,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void adjustAbilityAdjustment(final String ableID, final int newValue)
+	public void adjustAbilityAdjustment(String ableID, final int newValue)
 	{
 		Map<String,Integer> prof=this.profAdj;
 		if(prof == null)
@@ -888,7 +897,15 @@ public class DefaultCharStats implements CharStats
 			prof = new TreeMap<String,Integer>();
 			this.profAdj=prof;
 		}
-		prof.put(ableID.toUpperCase(), Integer.valueOf(newValue));
+		ableID = ableID.toUpperCase();
+		final char[] chars = ableID.toCharArray();
+		for(int x=0;x<chars.length;x++)
+			if((chars[x]=='+')||(chars[x]=='-'))
+			{
+				prof.put("HAS_"+ableID.substring(0,x), Integer.valueOf(0));
+				break;
+			}
+		prof.put(ableID, Integer.valueOf(newValue));
 	}
 
 	@Override

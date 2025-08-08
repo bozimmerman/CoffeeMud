@@ -347,14 +347,9 @@ public class Addictions extends StdAbility
 			if(target != null)
 			{
 				addiction=target.Name().toUpperCase();
-				if(addiction.toUpperCase().startsWith("A POUND OF "))
+				addiction = CMLib.english().removeArticleLead(addiction);
+				if(addiction.toUpperCase().startsWith(L("POUND OF ")))
 					addiction=addiction.substring(11);
-				if(addiction.toUpperCase().startsWith("A "))
-					addiction=addiction.substring(2);
-				if(addiction.toUpperCase().startsWith("AN "))
-					addiction=addiction.substring(3);
-				if(addiction.toUpperCase().startsWith("SOME "))
-					addiction=addiction.substring(5);
 			}
 			else
 				addiction=text();

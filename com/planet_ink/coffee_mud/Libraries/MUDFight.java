@@ -1059,7 +1059,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean recoverTick(final MOB mob)
+	public boolean recoverTick(final MOB mob, final CharState chgState)
 	{
 		if((mob!=null)
 		&&(!mob.isInCombat()))
@@ -1099,26 +1099,26 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
 
 				if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
-					changed = !curState.adjHitPoints((int)Math.round(hpGain),maxState) || changed;
+					changed = !chgState.adjHitPoints((int)Math.round(hpGain),maxState) || changed;
 
 				vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
 				final double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
 
 				if(manaGain>0)
-					changed = !curState.adjMana((int)Math.round(manaGain),maxState) || changed;
+					changed = !chgState.adjMana((int)Math.round(manaGain),maxState) || changed;
 
 				vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
 				final double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
 
 				if(moveGain>0)
-					changed = !curState.adjMovement((int)Math.round(moveGain),maxState) || changed;
+					changed = !chgState.adjMovement((int)Math.round(moveGain),maxState) || changed;
 
 				if(((hpGain>0)||(manaGain>0)||(moveGain>0))
 				&&(!isSleeping)
 				&&(!isSittingOrRiding)
 				&&(!CMSecurity.isDisabled(DisFlag.FATIGUE))
-				&&(!mob.charStats().getMyRace().infatigueable()))
-					mob.curState().adjFatigue(Math.round(CMProps.getTickMillis()), mob.maxState());
+				&&(!charStats.getMyRace().infatigueable()))
+					chgState.adjFatigue(Math.round(CMProps.getTickMillis()), maxState);
 				return changed;
 			}
 		}

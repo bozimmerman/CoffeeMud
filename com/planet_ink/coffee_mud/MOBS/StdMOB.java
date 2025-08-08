@@ -4166,7 +4166,7 @@ public class StdMOB implements MOB
 
 					if((--recoverTickCter) <= 0)
 					{
-						CMLib.combat().recoverTick(this);
+						CMLib.combat().recoverTick(this, curState);
 						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE)
 								* (CharState.REAL_TICK_ADJUST_FACTOR + charStats().getStat(CharStats.STAT_RECOVERRATE5_ADJ));
 					}

@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class UniPoison extends GenPoison
+public class UniPoison extends GenPoison implements SpellHolder
 {
 	public UniPoison()
 	{
@@ -227,7 +227,7 @@ public class UniPoison extends GenPoison
 			setMiscText(val);
 			break;
 		default:
-			setStat(code, val);
+			super.setStat(code, val);
 			break;
 		}
 	}
@@ -249,5 +249,27 @@ public class UniPoison extends GenPoison
 			if(!getStat(code).equals(E.getStat(code)))
 				return false;
 		return true;
+	}
+
+	@Override
+	public List<Ability> getSpells()
+	{
+		final List<Ability> spells = new ArrayList<Ability>();
+		spells.add(this);
+		for(final Iterator<UniPoison> p = siblings.iterator(); p.hasNext(); )
+			spells.addAll(p.next().getSpells());
+		spells.addAll(super.getSpells());
+		return spells;
+	}
+
+	@Override
+	public String getSpellList()
+	{
+		return "";
+	}
+
+	@Override
+	public void setSpellList(final String list)
+	{
 	}
 }

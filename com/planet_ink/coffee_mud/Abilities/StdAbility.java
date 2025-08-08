@@ -740,6 +740,14 @@ public class StdAbility implements Ability
 					}
 				}
 			}
+			final CharStats charStats = mob.charStats();
+			if(charStats.isAbilityAdjustment("TICK"))
+			{
+				tickTime += charStats.getAbilityAdjustment("TICK+"+ID().toUpperCase());
+				tickTime += charStats.getAbilityAdjustment("TICK+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+				tickTime += charStats.getAbilityAdjustment("TICK+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
+				tickTime += charStats.getAbilityAdjustment("TICK+*");
+			}
 			if(mob.isPlayer())
 				CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.EFFECTSHAD, 1, this);
 			try
@@ -837,6 +845,8 @@ public class StdAbility implements Ability
 	protected int getPersonalLevelAdjustments(final MOB caster)
 	{
 		final CharStats charStats = caster.charStats();
+		if(!charStats.isAbilityAdjustment("LEVEL"))
+			return 0;
 		return  charStats.getAbilityAdjustment("LEVEL+"+ID().toUpperCase())
 			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES))
 			+ charStats.getAbilityAdjustment("LEVEL+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5))
@@ -1403,10 +1413,13 @@ public class StdAbility implements Ability
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
 				return true;
 			final CharStats charStats = mob.charStats();
-			pctChance += charStats.getAbilityAdjustment("PROF+"+ID().toUpperCase());
-			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
-			pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
-			pctChance += charStats.getAbilityAdjustment("PROF+*");
+			if(charStats.isAbilityAdjustment("PROF"))
+			{
+				pctChance += charStats.getAbilityAdjustment("PROF+"+ID().toUpperCase());
+				pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+				pctChance += charStats.getAbilityAdjustment("PROF+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
+				pctChance += charStats.getAbilityAdjustment("PROF+*");
+			}
 		}
 
 		final int xlevel = getXLEVELLevel(mob);
@@ -1583,6 +1596,43 @@ public class StdAbility implements Ability
 				usageCosts[costType]= rawCost - costDown;
 				if(usageCosts[costType]<minimum)
 					usageCosts[costType]=minimum;
+				if(mob != null)
+				{
+					final CharStats charStats = mob.charStats();
+					if(useHits && charStats.isAbilityAdjustment("HPCOST"))
+					{
+						int amt = 0;
+						amt += charStats.getAbilityAdjustment("HPCOST+"+ID().toUpperCase());
+						amt += charStats.getAbilityAdjustment("HPCOST+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+						amt += charStats.getAbilityAdjustment("HPCOST+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
+						amt += charStats.getAbilityAdjustment("HPCOST+*");
+						usageCosts[Ability.USAGEINDEX_HITPOINTS] += amt;
+						if(usageCosts[Ability.USAGEINDEX_HITPOINTS]<0)
+							usageCosts[Ability.USAGEINDEX_HITPOINTS]=0;
+					}
+					if(useMana && charStats.isAbilityAdjustment("MNCOST"))
+					{
+						int amt = 0;
+						amt += charStats.getAbilityAdjustment("MNCOST+"+ID().toUpperCase());
+						amt += charStats.getAbilityAdjustment("MNCOST+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+						amt += charStats.getAbilityAdjustment("MNCOST+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
+						amt += charStats.getAbilityAdjustment("MNCOST+*");
+						usageCosts[Ability.USAGEINDEX_MANA] += amt;
+						if(usageCosts[Ability.USAGEINDEX_MANA]<0)
+							usageCosts[Ability.USAGEINDEX_MANA]=0;
+					}
+					if(useMoves && charStats.isAbilityAdjustment("MVCOST"))
+					{
+						int amt = 0;
+						amt += charStats.getAbilityAdjustment("MVCOST+"+ID().toUpperCase());
+						amt += charStats.getAbilityAdjustment("MVCOST+"+Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES));
+						amt += charStats.getAbilityAdjustment("MVCOST+"+Ability.DOMAIN.DESCS.get((classificationCode()&Ability.ALL_DOMAINS)>> 5));
+						amt += charStats.getAbilityAdjustment("MVCOST+*");
+						usageCosts[Ability.USAGEINDEX_MOVEMENT] += amt;
+						if(usageCosts[Ability.USAGEINDEX_MOVEMENT]<0)
+							usageCosts[Ability.USAGEINDEX_MOVEMENT]=0;
+					}
+				}
 			}
 		}
 		return usageCosts;

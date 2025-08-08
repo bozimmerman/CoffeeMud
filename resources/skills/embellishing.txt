@@ -19,7 +19,7 @@ deep pockets	11	20	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LE
 a lace-trimmed hem	11	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
 decorative % stitching along the neckline and hem	12	20	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO	
 a scalloped hem	13	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-tiny % encircling the neckline	14	20	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % encircling the neckline	14	20	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)||(inventory:kept:1:FLOWERS:)	-WORNON +TORSO	
 many pockets	15	30	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
 tiny % seashells encircling the neckline	16	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
 a ruffled hem	17	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
@@ -35,4 +35,4 @@ a polished % buckle	26	10	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory
 a %-encrusted buckle	27	15	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	
 tiny % roses embroidered along the hem	28	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
 tiny % feathers embroidered along the hem	29	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
-% fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS "+LEFT WRIST" "+RIGHT WRIST"	
+% fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	

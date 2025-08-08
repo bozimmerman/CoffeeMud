@@ -121,9 +121,9 @@ public class Prayer_Regeneration extends Prayer
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 		&&(tickID==Tickable.TICKID_MOB))
 		{
-			CMLib.combat().recoverTick(mob);
-			CMLib.combat().recoverTick(mob);
-			CMLib.combat().recoverTick(mob);
+			CMLib.combat().recoverTick(mob, mob.curState());
+			CMLib.combat().recoverTick(mob, mob.curState());
+			CMLib.combat().recoverTick(mob, mob.curState());
 		}
 		return super.tick(ticking,tickID);
 	}

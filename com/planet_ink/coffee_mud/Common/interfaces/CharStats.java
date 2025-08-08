@@ -738,10 +738,25 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * The are followed by the exact ID() of the ability, or * for All, or
 	 * the skill classification name in uppercase, or the domain name in
 	 * uppercase.
+	 *
+	 * @see CharStats#isAbilityAdjustment(String)
+	 * @see CharStats#adjustAbilityAdjustment(String, int)
+	 *
 	 * @param ableID the ability ID, with an appropriate prefix
 	 * @return the numeric value associated with the adjustment.
 	 */
 	public int getAbilityAdjustment(String ableID);
+
+	/**
+	 * Returns whether the mob has an ability adjustment.
+	 *
+	 * @see CharStats#getAbilityAdjustment(String)
+	 * @see CharStats#adjustAbilityAdjustment(String, int)
+	 *
+	 * @param prefix the prefix, like PROF
+	 * @return true if the adjustment is there.
+	 */
+	public boolean isAbilityAdjustment(final String prefix);
 
 	/**
 	 * Sets the adjustments to mob abilities, whether proficiency or
@@ -752,6 +767,10 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * The are followed by the exact ID() of the ability, or * for All, or
 	 * the skill classification name in uppercase, or the domain name in
 	 * uppercase.
+	 *
+	 * @see CharStats#isAbilityAdjustment(String)
+	 * @see CharStats#getAbilityAdjustment(String)
+	 *
 	 * @param ableID the ability ID, with an appropriate prefix
 	 * @param newValue the numeric value associated with the adjustment.
 	 */

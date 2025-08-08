@@ -432,24 +432,38 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 						final Modifiable M = findModifiable(affected, changeStat);
 						if(M != null)
 						{
-							final String oldValue = M.getStat(changeStat);
+							final String oldValue = CMLib.coffeeMaker().getAnyGenStat(M,changeStat);
 							if(!perm)
 								previous.add(new Quad<Integer,Modifiable,String,String>(identity,M,changeStat,oldValue));
 							String finalVal = value;
-							if((value != null) && (value.indexOf('@')>=0))
+							if((finalVal != null) && ((finalVal.indexOf('@')>=0)||(finalVal.indexOf("${")>=0)))
 							{
-								if(CMath.isMathExpression(value))
+								int xs = finalVal.indexOf("${");
+								while (xs>=0)
+								{
+									final int xe=finalVal.indexOf("}",xs+2);
+									if(xe > xs)
+									{
+										final String var = finalVal.substring(xs+2,xe);
+										final String valValue = CMLib.coffeeMaker().getAnyGenStat(M,var);
+										finalVal = finalVal.substring(0,xs)+valValue+value.substring(xe+1);
+										xs = finalVal.indexOf("${",xs);
+									}
+									else
+										xs = finalVal.indexOf("${",xs+2);
+								}
+								if(CMath.isMathExpression(finalVal))
 								{
 									final double[] vars = new double[] {
 										CMath.s_double(oldValue),
 									};
-									if((value.indexOf('.')>=0)||((oldValue!=null)&&(oldValue.indexOf('.')>=0)))
-										finalVal = "" + CMath.parseMathExpression(value,vars);
+									if((finalVal.indexOf('.')>=0)||((oldValue!=null)&&(oldValue.indexOf('.')>=0)))
+										finalVal = "" + CMath.parseMathExpression(finalVal,vars);
 									else
-										finalVal = "" + CMath.parseIntExpression(value,vars);
+										finalVal = "" + CMath.parseIntExpression(finalVal,vars);
 								}
 							}
-							M.setStat(changeStat, finalVal);
+							CMLib.coffeeMaker().setAnyGenStat(M,changeStat, finalVal);
 							affected.recoverPhyStats();
 							if(affected instanceof MOB)
 							{

@@ -1775,7 +1775,19 @@ public class MUD extends Thread implements MudHost
 					return;
 			}
 			final CMProps page=CMProps.loadPropPage("//"+iniFile);
-			page.putAll(clArgs);
+			for(final String key: clArgs.keySet())
+			{
+				String skey = key;
+				final int x = skey.indexOf(':');
+				if((x>0)&&(x<skey.length()-1))
+				{
+					if(skey.charAt(x) == threadCode)
+						skey = key.substring(0,x);
+					else
+						continue;
+				}
+				page.put(skey,clArgs.get(key));
+			}
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
@@ -1981,7 +1993,19 @@ public class MUD extends Thread implements MudHost
 			iniFiles.addElement("coffeemud.ini");
 		String iniFile=iniFiles.firstElement();
 		final CMProps page=CMProps.loadPropPage("//"+iniFile);
-		page.putAll(clArgs);
+		for(final String key: clArgs.keySet())
+		{
+			String skey = key;
+			final int x = skey.indexOf(':');
+			if((x>0)&&(x<skey.length()-1))
+			{
+				if(skey.charAt(x) == '0')
+					skey = key.substring(0,x);
+				else
+					continue;
+			}
+			page.put(skey,clArgs.get(key));
+		}
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
 			long idNumber=new Random(System.currentTimeMillis()).nextLong();

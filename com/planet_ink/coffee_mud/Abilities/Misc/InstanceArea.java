@@ -1471,7 +1471,7 @@ public class InstanceArea extends StdAbility
 						{
 							final MOB M=m.nextElement();
 							for(int i=0;i<this.recoverRate;i++)
-								CMLib.combat().recoverTick(M);
+								CMLib.combat().recoverTick(M, M.curState());
 							if(this.fatigueRate>100)
 							{
 								M.curState().setHunger(M.maxState().maxHunger(M.baseWeight()));

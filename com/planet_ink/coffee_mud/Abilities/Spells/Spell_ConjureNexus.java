@@ -100,7 +100,7 @@ public class Spell_ConjureNexus extends Spell
 					final int oldMV=mob.curState().getMovement();
 					final int oldHU=mob.curState().getHunger();
 					final int oldTH=mob.curState().getThirst();
-					CMLib.combat().recoverTick(mob);
+					CMLib.combat().recoverTick(mob, mob.curState());
 					mob.curState().setHitPoints(oldHP);
 					mob.curState().setMovement(oldMV);
 					mob.curState().setHunger(oldHU);

@@ -56,7 +56,7 @@ public class FasterRecovery extends StdBehavior
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Triad<RecType,Integer,int[]>[] tickChanges = new Triad[0];
+	protected Triad<RecType,Object,int[]>[] tickChanges = new Triad[0];
 
 	@Override
 	public String accountForYourself()
@@ -68,7 +68,7 @@ public class FasterRecovery extends StdBehavior
 	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
-		final List<Triad<RecType,Integer,int[]>> lst = new ArrayList<Triad<RecType,Integer,int[]>>();
+		final List<Triad<RecType,Object,int[]>> lst = new ArrayList<Triad<RecType,Object,int[]>>();
 		for(final RecType r : RecType.values())
 		{
 			String val = CMParms.getParmStr(parameters, r.name(), "").trim();
@@ -83,22 +83,33 @@ public class FasterRecovery extends StdBehavior
 				}
 				if(Character.isDigit(val.charAt(0)))
 				{
-					int valn;
+					int valn = 0;
+					Object fval = null;
 					int ticks = 1;
 					final int x=val.indexOf('/');
 					if(x>0)
 					{
-						valn = CMath.s_int(val.substring(0,x).trim());
-						ticks = CMath.s_int(val.substring(x+1).trim());
+						final String ticksVal = val.substring(x+1).trim();
+						val = val.substring(0,x).trim();
+						if(CMath.isPct(val))
+							fval = Double.valueOf(CMath.s_pct(val));
+						else
+							valn = CMath.s_int(val);
+						ticks = CMath.s_int(ticksVal);
 					}
 					else
+					if(CMath.isPct(val))
+						fval = Double.valueOf(CMath.s_pct(val));
+					else
 						valn  = CMath.s_int(val);
-					if(valn != 0)
+					if((fval == null) && (valn != 0))
+						fval = Integer.valueOf(valn);
+					if(fval != null)
 					{
 						if(abs)
-							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks, 0}));
+							lst.add(new Triad<RecType,Object,int[]>(r,fval,new int[] {ticks, ticks, 0}));
 						else
-							lst.add(new Triad<RecType,Integer,int[]>(r,Integer.valueOf(valn),new int[] {ticks, ticks}));
+							lst.add(new Triad<RecType,Object,int[]>(r,fval,new int[] {ticks, ticks}));
 					}
 				}
 				else
@@ -106,15 +117,50 @@ public class FasterRecovery extends StdBehavior
 			}
 		}
 		@SuppressWarnings("unchecked")
-		final Triad<RecType,Integer,int[]>[] ch = new Triad[lst.size()];
+		final Triad<RecType,Object,int[]>[] ch = new Triad[lst.size()];
 		tickChanges = lst.toArray(ch);
+	}
+
+	protected int[] getRecoverAmt(final MOB M, final RecType type, final Object o)
+	{
+		if(o instanceof Integer)
+		{
+			final int val = ((Integer)o).intValue();
+			return new int[] {val, val, val};
+		}
+		else
+		if(o instanceof Double)
+		{
+			final double d = ((Double)o).doubleValue();
+			final CharState chkState = (CharState)M.curState().copyOf();
+			CMLib.combat().recoverTick(M, chkState);
+			if(d == 0)
+				return new int[] {0,0,0};
+			switch(type)
+			{
+			case BURST:
+			case HEALTH:
+				return new int[] {
+					(int)Math.round(CMath.mul(chkState.getHitPoints()-M.curState().getHitPoints(), d)),
+					(int)Math.round(CMath.mul(chkState.getMana()-M.curState().getMana(), d)),
+					(int)Math.round(CMath.mul(chkState.getMovement()-M.curState().getMovement(), d))
+				};
+			case HITS:
+				return new int[] { (int)Math.round(CMath.mul(chkState.getHitPoints()-M.curState().getHitPoints(), d)),0,0};
+			case MANA:
+				return new int[] { (int)Math.round(CMath.mul(chkState.getMana()-M.curState().getMana(), d)),0,0};
+			case MOVE:
+				return new int[] { (int)Math.round(CMath.mul(chkState.getMovement()-M.curState().getMovement(), d)),0,0};
+			}
+		}
+		return new int[] {0,0,0};
 	}
 
 	public void recoverTick(final MOB M)
 	{
 		if((M==null)||(tickChanges.length==0))
 			return;
-		for(final Triad<RecType,Integer,int[]> typ : tickChanges)
+		for(final Triad<RecType,Object,int[]> typ : tickChanges)
 		{
 			final int[] td;
 			synchronized(typ.third)
@@ -126,23 +172,23 @@ public class FasterRecovery extends StdBehavior
 			td[0] = td[1];
 			if((td.length==3) && (td[2] == 1))
 			{
-				final int val = typ.second.intValue();
+				final int[] vals = getRecoverAmt(M, typ.first, typ.second);
 				switch(typ.first)
 				{
 				case BURST:
 				case HEALTH:
-					M.curState().adjHitPoints(val, M.maxState());
-					M.curState().adjMana(val, M.maxState());
-					M.curState().adjMovement(val, M.maxState());
+					M.curState().adjHitPoints(vals[0], M.maxState());
+					M.curState().adjMana(vals[1], M.maxState());
+					M.curState().adjMovement(vals[2], M.maxState());
 					break;
 				case HITS:
-					M.curState().adjHitPoints(val, M.maxState());
+					M.curState().adjHitPoints(vals[0], M.maxState());
 					break;
 				case MANA:
-					M.curState().adjMana(val, M.maxState());
+					M.curState().adjMana(vals[1], M.maxState());
 					break;
 				case MOVE:
-					M.curState().adjMovement(val, M.maxState());
+					M.curState().adjMovement(vals[2], M.maxState());
 					break;
 				default:
 					break;
@@ -153,19 +199,40 @@ public class FasterRecovery extends StdBehavior
 				switch(typ.first)
 				{
 				case BURST:
-					for(int i2=0;i2<typ.second.intValue();i2++)
+					if(typ.second instanceof Integer)
+					{
+						for(int i2=0;i2<((Integer)typ.second).intValue();i2++)
+							M.tick(M,Tickable.TICKID_MOB);
+					}
+					else
+					if((typ.second instanceof Double)
+					&&(CMLib.dice().getRandomizer().nextDouble()<((Double)typ.second).doubleValue()))
 						M.tick(M,Tickable.TICKID_MOB);
 					break;
 				case HEALTH:
-					for(int i2=0;i2<typ.second.intValue();i2++)
-						CMLib.combat().recoverTick(M);
+					if(typ.second instanceof Integer)
+					{
+						for(int i2=0;i2<((Integer)typ.second).intValue();i2++)
+							CMLib.combat().recoverTick(M, M.curState());
+					}
+					else
+					if((typ.second instanceof Double)
+					&&(CMLib.dice().getRandomizer().nextDouble()<((Double)typ.second).doubleValue()))
+						CMLib.combat().recoverTick(M, M.curState());
 					break;
 				case HITS:
 				{
 					final int oldMana=M.curState().getMana();
 					final int oldMove=M.curState().getMovement();
-					for(int i2=0;i2<RecType.HITS.ordinal();i2++)
-						CMLib.combat().recoverTick(M);
+					if(typ.second instanceof Integer)
+					{
+						for(int i2=0;i2<((Integer)typ.second).intValue();i2++)
+							CMLib.combat().recoverTick(M, M.curState());
+					}
+					else
+					if((typ.second instanceof Double)
+					&&(CMLib.dice().getRandomizer().nextDouble()<((Double)typ.second).doubleValue()))
+						CMLib.combat().recoverTick(M, M.curState());
 					M.curState().setMana(oldMana);
 					M.curState().setMovement(oldMove);
 					break;
@@ -174,8 +241,15 @@ public class FasterRecovery extends StdBehavior
 				{
 					final int oldHP=M.curState().getHitPoints();
 					final int oldMove=M.curState().getMovement();
-					for(int i2=0;i2<RecType.MANA.ordinal();i2++)
-						CMLib.combat().recoverTick(M);
+					if(typ.second instanceof Integer)
+					{
+						for(int i2=0;i2<((Integer)typ.second).intValue();i2++)
+							CMLib.combat().recoverTick(M, M.curState());
+					}
+					else
+					if((typ.second instanceof Double)
+					&&(CMLib.dice().getRandomizer().nextDouble()<((Double)typ.second).doubleValue()))
+						CMLib.combat().recoverTick(M, M.curState());
 					M.curState().setHitPoints(oldHP);
 					M.curState().setMovement(oldMove);
 					break;
@@ -184,8 +258,15 @@ public class FasterRecovery extends StdBehavior
 				{
 					final int oldMana=M.curState().getMana();
 					final int oldHP=M.curState().getHitPoints();
-					for(int i2=0;i2<RecType.MOVE.ordinal();i2++)
-						CMLib.combat().recoverTick(M);
+					if(typ.second instanceof Integer)
+					{
+						for(int i2=0;i2<((Integer)typ.second).intValue();i2++)
+							CMLib.combat().recoverTick(M, M.curState());
+					}
+					else
+					if((typ.second instanceof Double)
+					&&(CMLib.dice().getRandomizer().nextDouble()<((Double)typ.second).doubleValue()))
+						CMLib.combat().recoverTick(M, M.curState());
 					M.curState().setMana(oldMana);
 					M.curState().setHitPoints(oldHP);
 					break;
