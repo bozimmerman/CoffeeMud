@@ -2598,7 +2598,7 @@ public class Create extends StdCommand
 						commands.add(1,"ITEM");
 						return execute(mob,commands,metaFlags);
 					}
-					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try: @x1",commandType,listOfThings()));
+					mob.tell(L("\n\rYou cannot create a '@x1'. However, you might try: @x2",commandType,listOfThings()));
 					return false;
 				}
 			}

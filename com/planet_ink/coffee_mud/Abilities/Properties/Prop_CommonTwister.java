@@ -77,6 +77,98 @@ public class Prop_CommonTwister extends Property
 
 	}
 
+	protected boolean commonTwist(final Ability skill, final Map<String,String> itemParms, final boolean overrideId)
+	{
+		final List<String> poss=new ArrayList<String>();
+		final int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
+		if(text().length()==0)
+		{
+			final Item I=CMLib.materials().makeItemResource(randomResource);
+			itemParms.put("NAME",I.Name());
+			itemParms.put("DISPLAYTEXT",I.displayText());
+			itemParms.put("MATERIAL",""+I.material());
+			itemParms.put("SECRET","");
+			itemParms.put("SUBTYPE","");
+		}
+		else
+		{
+			final String name = itemParms.get("NAME");
+			for(int v=0;v<changes.size();v++)
+			{
+				if(changes.get(v).first.equals("*")
+				||overrideId
+				||(changes.get(v).first.equalsIgnoreCase(skill.ID())))
+				{
+					final String two=changes.get(v).second;
+					if(two.equals("*")
+					||(CMLib.english().containsString(name,two)))
+						poss.add(changes.get(v).third);
+				}
+			}
+		}
+		if(poss.size()==0)
+			return true;
+		final String var=poss.get(CMLib.dice().roll(1,poss.size(),-1));
+		final String newname=CMParms.getParmStr(var,"NAME","");
+		final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
+		final String newmat=CMParms.getParmStr(var,"MATERIAL","");
+		final String newsub=CMParms.getParmStr(var,"SUBTYPE",null);
+
+		if(newname.length()>0)
+		{
+			if(newname.equals("*"))
+			{
+				final Item I=CMLib.materials().makeItemResource(randomResource);
+				itemParms.put("NAME",I.Name());
+			}
+			else
+				itemParms.put("NAME",newname);
+		}
+		if(newdisp.length()>0)
+		{
+			if(newdisp.equals("*"))
+			{
+				final Item I=CMLib.materials().makeItemResource(randomResource);
+				itemParms.put("DISPLAY",I.displayText());
+			}
+			else
+				itemParms.put("DISPLAY",newdisp);
+		}
+		if(newsub != null)
+			itemParms.put("SUBTYPE",newsub);
+		if(newmat.length()>0)
+		{
+			final int oldMatType = CMath.s_int(itemParms.get("MATERIAL"));
+			final String oldMatName=RawMaterial.CODES.NAME(oldMatType).toLowerCase();
+			int newMatCode=-1;
+			if(newmat.equals("*"))
+				newMatCode=randomResource;
+			else
+			{
+				newMatCode=CMLib.materials().findResourceCode(newmat,false);
+				if(newMatCode<0)
+				{
+					newMatCode=CMLib.materials().findMaterialCode(newmat,false);
+					if(newMatCode>0)
+						newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
+				}
+			}
+			if(newMatCode>=0)
+			{
+				itemParms.put("MATERIAL",""+newMatCode);
+				final String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
+				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),oldMatName,newMatName));
+				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),oldMatName,newMatName));
+				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+				itemParms.put("SECRET","");
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -84,106 +176,60 @@ public class Prop_CommonTwister extends Property
 
 		if((affected!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-		&&(msg.target() instanceof Item)
-		&&(((msg.sourceMinor()==CMMsg.TYP_ITEMGENERATED)&&(!((Item)msg.target()).phyStats().isAmbiance("-"+ID())))
-			||(((msg.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)||(msg.sourceCode()==(CMMsg.MSG_HANDS | CMMsg.MASK_SOUND)))
-				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_GATHERINGSKILL)))
-		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Area)
-		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
-		   ||((affected instanceof MOB)&&(msg.source()==affected))))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 		{
-			final List<String> poss=new ArrayList<String>();
-			final int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
-			if(text().length()==0)
+			if((msg.target() instanceof Room)
+			&&(msg.tool().ID().equals("Speculate"))
+			&&(msg.targetMessage()!=null))
 			{
-				final Item I=CMLib.materials().makeItemResource(randomResource);
-				msg.target().setName(I.Name());
-				msg.target().setDisplayText(I.displayText());
-				if(msg.target() instanceof Item)
+				final int matCode = RawMaterial.CODES.FIND_IgnoreCase(msg.targetMessage());
+				final Map<String,String> itemParms = new TreeMap<String,String>();
+				itemParms.put("NAME","a pound of "+msg.targetMessage());
+				itemParms.put("DISPLAYTEXT","a pound of "+msg.targetMessage()+" is here");
+				itemParms.put("MATERIAL",""+matCode);
+				itemParms.put("SECRET","");
+				itemParms.put("SUBTYPE","");
+				if(this.commonTwist((Ability)msg.tool(), itemParms, true))
 				{
-					((Item)msg.target()).setMaterial(I.material());
-					if(msg.target() instanceof RawMaterial)
-						((Item)msg.target()).setSecretIdentity("");
+					if(itemParms.get("SUBTYPE").length()>0)
+						msg.setTargetMessage(itemParms.get("SUBTYPE"));
+					else
+					{
+						final int newMat = CMath.s_int(itemParms.get("MATERIAL"));
+						if(newMat != matCode)
+							msg.setTargetMessage(RawMaterial.CODES.NAME(newMat));
+					}
 				}
 			}
 			else
+			if((msg.target() instanceof Item)
+			&&(((msg.sourceMinor()==CMMsg.TYP_ITEMGENERATED)&&(!((Item)msg.target()).phyStats().isAmbiance("-"+ID())))
+				||(((msg.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)||(msg.sourceCode()==(CMMsg.MSG_HANDS | CMMsg.MASK_SOUND)))
+					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_GATHERINGSKILL)))
+			&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Area)
+			   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
+			   ||((affected instanceof MOB)&&(msg.source()==affected))))
 			{
-				for(int v=0;v<changes.size();v++)
+				final Item I = (Item)msg.target();
+				final Map<String,String> itemParms = new TreeMap<String,String>();
+				itemParms.put("NAME",I.Name());
+				itemParms.put("DISPLAYTEXT",I.displayText());
+				itemParms.put("MATERIAL",""+I.material());
+				itemParms.put("SECRET",I.secretIdentity());
+				itemParms.put("SUBTYPE",(I instanceof RawMaterial)?((RawMaterial)I).getSubType():"");
+				if(this.commonTwist((Ability)msg.tool(), itemParms, false))
 				{
-					if(changes.get(v).first.equals("*")
-					||(changes.get(v).first.equalsIgnoreCase(msg.tool().ID())))
+					I.setName(itemParms.get("NAME"));
+					I.setDisplayText(itemParms.get("DISPLAY"));
+					I.setMaterial(CMath.s_int(itemParms.get("MATERIAL")));
+					if(I instanceof RawMaterial)
 					{
-						final String two=changes.get(v).second;
-						if(two.equals("*")
-						||(CMLib.english().containsString(msg.target().name(),two)))
-							poss.add(changes.get(v).third);
+						I.setSecretIdentity(itemParms.get("SECRET"));
+						((RawMaterial)I).setSubType(itemParms.get("SUBTYPE"));
 					}
+					I.phyStats().addAmbiance("-"+ID());
 				}
 			}
-			if(poss.size()==0)
-				return true;
-			final String var=poss.get(CMLib.dice().roll(1,poss.size(),-1));
-			final String newname=CMParms.getParmStr(var,"NAME","");
-			final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
-			final String newmat=CMParms.getParmStr(var,"MATERIAL","");
-			final String newsub=CMParms.getParmStr(var,"SUBTYPE",null);
-
-			if(newname.length()>0)
-			{
-				if(newname.equals("*"))
-				{
-					final Item I=CMLib.materials().makeItemResource(randomResource);
-					msg.target().setName(I.Name());
-				}
-				else
-					msg.target().setName(newname);
-			}
-			if(newdisp.length()>0)
-			{
-				if(newdisp.equals("*"))
-				{
-					final Item I=CMLib.materials().makeItemResource(randomResource);
-					msg.target().setDisplayText(I.displayText());
-				}
-				else
-					msg.target().setDisplayText(newdisp);
-			}
-			if((newsub != null)
-			&&(msg.target() instanceof RawMaterial))
-				((RawMaterial)msg.target()).setSubType(newsub);
-			if((newmat.length()>0)
-			&&(msg.target() instanceof Item))
-			{
-				final String oldMatName=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toLowerCase();
-				int newMatCode=-1;
-				if(newmat.equals("*"))
-					newMatCode=randomResource;
-				else
-				{
-					newMatCode=CMLib.materials().findResourceCode(newmat,false);
-					if(newMatCode<0)
-					{
-						newMatCode=CMLib.materials().findMaterialCode(newmat,false);
-						if(newMatCode>0)
-							newMatCode=CMLib.materials().getRandomResourceOfMaterial(newMatCode);
-					}
-					if(newMatCode>=0)
-					{
-						((Item)msg.target()).setMaterial(newMatCode);
-						final String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
-						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
-						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
-						msg.target().setName(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
-						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
-						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
-						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
-						if(msg.target() instanceof RawMaterial)
-							((Item)msg.target()).setSecretIdentity("");
-					}
-				}
-			}
-			((Item)msg.target()).phyStats().addAmbiance("-"+ID());
 		}
 		return super.okMessage(myHost,msg);
 	}

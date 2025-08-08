@@ -98,7 +98,7 @@ public class Consider extends StdCommand
 			if(mob.phyStats().level()>80)
 				theDiff=6;
 
-			final String name = heShe?targetMOB.charStats().HeShe():"@x1";
+			final String name = heShe?targetMOB.charStats().HeShe():targetMOB.name(mob);
 			final String targetName = target.name(mob);
 			final StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)

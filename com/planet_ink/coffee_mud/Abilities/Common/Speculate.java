@@ -89,6 +89,20 @@ public class Speculate extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
+	protected String getRoomResource(final MOB mob, final CMMsg msg, final Room room, final int resource)
+	{
+		final String resourceStr=RawMaterial.CODES.NAME(resource);
+		msg.setTarget(room);
+		msg.setTargetMessage(resourceStr);
+		if(room.okMessage(mob, msg))
+		{
+			room.send(mob, msg);
+			if(msg.targetMessage()!=null)
+				return msg.targetMessage();
+		}
+		return null;
+	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -104,20 +118,25 @@ public class Speculate extends CommonSkill
 					if(RawMaterial.CODES.IS_VALID(resource))
 					{
 						final StringBuffer str=new StringBuffer("");
-						String resourceStr=RawMaterial.CODES.NAME(resource);
-						str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
-						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THINK,null,null,null);
+						String resourceStr=getRoomResource(mob,msg,room,resource);
+						if(resourceStr!=null)
 						{
-							final Room room2=room.getRoomInDir(d);
-							if((room2!=null)
-							&&(room.getExitInDir(d)!=null)
-							&&(room.getExitInDir(d).isOpen()))
+							str.append(L("You think this spot would be good for @x1.\n\r",resourceStr.toLowerCase()));
+							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							{
-								resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
-								if(RawMaterial.CODES.IS_VALID(resource))
+								final Room room2=room.getRoomInDir(d);
+								if((room2!=null)
+								&&(room.getExitInDir(d)!=null)
+								&&(room.getExitInDir(d).isOpen()))
 								{
-									resourceStr=RawMaterial.CODES.NAME(resource);
-									str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
+									resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
+									if(RawMaterial.CODES.IS_VALID(resource))
+									{
+										resourceStr=getRoomResource(mob,msg,room2,resource);
+										if(resourceStr != null)
+											str.append(L("There looks like @x1 @x2.\n\r",resourceStr.toLowerCase(),CMLib.directions().getInDirectionName(d)));
+									}
 								}
 							}
 						}
