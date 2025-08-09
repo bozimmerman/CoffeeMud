@@ -197,6 +197,17 @@ public class Achievements extends StdCommand
 			case RETIRE:
 			case REMORT:
 			{
+				final Set<Achievement> alreadyGot = new HashSet<Achievement>();
+				for(final Agent agent : new Agent[] {Agent.PLAYER, Agent.ACCOUNT})
+				{
+					final Tattooable T = getTattooable(agent, whoM);
+					for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(T.findTattoo(A.getTattoo())!=null)
+							alreadyGot.add(A);
+					}
+				}
 				final Event E=(noAgent == NonAgentList.REMORT) ? Event.REMORT : Event.RETIRE;
 				final List<Achievement> awards = CMLib.achievements().fakeBumpAchievement(whoM, E, 1);
 				int numAwards=0;
@@ -205,11 +216,9 @@ public class Achievements extends StdCommand
 				final String agentName;
 				switch(noAgent)
 				{
-				case AWARDS: agentName=L("awards"); break;
-				case FUTURE: agentName=L("future"); break;
 				case REMORT: agentName=L("remort"); break;
 				case RETIRE: agentName=L("retire"); break;
-				default: agentName = ""; break;
+				default: agentName = L("broken achievements report"); break;
 				}
 				if(numAwards==0)
 					mob.tell(whoM,null,null,L("<S-YOUPOSS> next @x1 would grant <S-NAME> no new awards.", agentName));
@@ -219,6 +228,8 @@ public class Achievements extends StdCommand
 					int i=1;
 					for(final Achievement A : awards)
 					{
+						if(alreadyGot.contains(A))
+							continue;
 						if(A.getRewards().length>0)
 							str.append(L("\n\r^HFrom the achievement ^w'@x1'^N:",A.getDisplayStr()));
 						for(final Award award : A.getRewards())
@@ -227,18 +238,8 @@ public class Achievements extends StdCommand
 					str.append("\n\r");
 					mob.tell(mob,whoM,null,str.toString());
 				}
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
-				{
-					return false;
-				}
-				final List<Achievement> futureAwards = getAccountAwards(whoM);
-				if(futureAwards.size()==0)
-				{
-					return false;
-				}
-				mob.tell(whoM,null,null,L("^HFrom <S-YOUPOSS> previous achievements. ^?"));
+				return false;
 			}
-			//$FALL-THROUGH$
 			case FUTURE:
 			{
 				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)

@@ -4324,6 +4324,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						behaviorstr+="  "+(b+1)+") "+B+"\n\r";
 				}
 			}
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				behaviorstr = CMStrings.ellipse(behaviorstr, 50);
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
 			mob.tell(L("@x1. Titles: '@x2'.",""+showNumber,behaviorstr));

@@ -112,7 +112,6 @@ public class RandomQuests extends ActiveTicker
 			disable.set(true);
 	}
 
-
 	@Override
 	public void endBehavior(final PhysicalAgent forMe)
 	{

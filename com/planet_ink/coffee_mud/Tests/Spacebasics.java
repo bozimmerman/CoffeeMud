@@ -145,15 +145,15 @@ public class Spacebasics extends StdTest
 				if(cube1.intersects(cube2) != overlap)
 				{
 					/*
-					System.out.println("cube1, radius="+r1+", coordinates=");
-					System.out.println("x: "+cube1.lx +","+cube1.rx);
-					System.out.println("y: "+cube1.ty +","+cube1.by);
-					System.out.println("z: "+cube1.iz +","+cube1.oz);
-					System.out.println("cube2, radius="+r2+", coordinates=");
-					System.out.println("x: "+cube2.lx +","+cube2.rx);
-					System.out.println("y: "+cube2.ty +","+cube2.by);
-					System.out.println("z: "+cube2.iz +","+cube2.oz);
-					System.out.println("distance between centers = "+localDist);
+					Log.debugOut("cube1, radius="+r1+", coordinates=");
+					Log.debugOut("x: "+cube1.lx +","+cube1.rx);
+					Log.debugOut("y: "+cube1.ty +","+cube1.by);
+					Log.debugOut("z: "+cube1.iz +","+cube1.oz);
+					Log.debugOut("cube2, radius="+r2+", coordinates=");
+					Log.debugOut("x: "+cube2.lx +","+cube2.rx);
+					Log.debugOut("y: "+cube2.ty +","+cube2.by);
+					Log.debugOut("z: "+cube2.iz +","+cube2.oz);
+					Log.debugOut("distance between centers = "+localDist);
 					cube1.intersects(cube2);
 					*/
 					if(overlap)

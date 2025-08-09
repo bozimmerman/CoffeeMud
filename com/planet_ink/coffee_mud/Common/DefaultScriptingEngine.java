@@ -9165,6 +9165,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 19: // if
 			{
+				final ScriptLn curLine;
 				if(tt==null)
 				{
 					try
@@ -9193,10 +9194,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					script.get(ctx.line).second=tt;
 				}
 				boolean foundendif=false;
-				@SuppressWarnings({ "unchecked", "rawtypes" })
-				Triad<SubScript,SubScript,Integer> parsedBlocks = (Triad)script.get(ctx.line).third;
+				final Object triad = script.get(ctx.line).third;
+				final Triad<SubScript,SubScript,Integer> parsedBlocks;
 				SubScript subScript;
-				if(parsedBlocks==null)
+				if(triad==null)
 				{
 					Log.errOut("Null parsed blocks in "+s);
 					parsedBlocks = new Triad<SubScript,SubScript,Integer>(null,null,null);
@@ -9204,18 +9205,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					subScript=null;
 				}
 				else
-				if(parsedBlocks.third != null)
+				if(!(triad instanceof Triad))
 				{
-					if(condition)
-						subScript=parsedBlocks.first;
-					else
-						subScript=parsedBlocks.second;
-					ctx.line=parsedBlocks.third.intValue();
-					ctx.line--; // because we want to be pointing at the ENDIF with ctx.line++ happens below.
-					foundendif=true;
+					// when casting here fails, its because IF is NOW at this line, but something else used to be? like MPCALLFUNC...
+					// could this be a threadding issue? nah, contexts are always new, right?
+					logError(ctx,"IF","RUNTIME","Non-Triad!");
+					throw new IllegalArgumentException("Non-Triad (see above)");
 				}
 				else
-					subScript=null;
+				{
+					@SuppressWarnings("unchecked")
+					final Triad<SubScript,SubScript,Integer> pb = parsedBlocks = (Triad<SubScript,SubScript,Integer>)triad;
+					if(parsedBlocks.third != null)
+					{
+						if(condition)
+							subScript=parsedBlocks.first;
+						else
+							subScript=parsedBlocks.second;
+						ctx.line=parsedBlocks.third.intValue();
+						ctx.line--; // because we want to be pointing at the ENDIF with ctx.line++ happens below.
+						foundendif=true;
+					}
+					else
+						subScript=null;
+				}
 				int depth=0;
 				boolean ignoreUntilEndScript=false;
 				ctx.line++;

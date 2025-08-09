@@ -177,7 +177,6 @@ public class CalendarCmd extends StdCommand
 		final List<JournalEntry> entries = getGlobalCalendarByTimeStamps(fromTm, toTm);
 		if(whoM != null)
 		{
-			//System.out.println(CMLib.time().date2String24(fromTm)+"-"+CMLib.time().date2String24(toTm));
 			entries.addAll(CMLib.database().DBReadJournalMsgsByTimeStamps("SYSTEM_CALENDAR", whoM.Name(), fromTm, toTm));
 			for(final Pair<Clan,Integer> C : whoM.clans())
 			{
