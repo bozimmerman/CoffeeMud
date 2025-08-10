@@ -97,7 +97,7 @@ public class CMLib
 	{
 		DATABASE(DatabaseEngine.class),
 		THREADS(ThreadEngine.class),
-		INTERMUD(I3Interface.class),
+		INTERMUD(IntermudInterface.class),
 		WEBMACS(WebMacroLibrary.class),
 		LISTER(ListingLibrary.class),
 		MONEY(MoneyLibrary.class),
@@ -384,12 +384,12 @@ public class CMLib
 
 	/**
 	 * Returns a reference to this threads Intermud3 access library.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.I3Interface
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface
 	 * @return a reference to this threads Intermud3 access library.
 	 */
-	public static final I3Interface intermud()
+	public static final IntermudInterface intermud()
 	{
-		return (I3Interface)l().libraries[Library.INTERMUD.ordinal()];
+		return (IntermudInterface)l().libraries[Library.INTERMUD.ordinal()];
 	}
 
 	/**
@@ -936,12 +936,12 @@ public class CMLib
 
 	/**
 	 * Returns a reference to this instances Intermud3 access library.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.I3Interface
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface
 	 * @return a reference to this instances Intermud3 access library.
 	 */
-	public final I3Interface _intermud()
+	public final IntermudInterface _intermud()
 	{
-		return (I3Interface)libraries[Library.INTERMUD.ordinal()];
+		return (IntermudInterface)libraries[Library.INTERMUD.ordinal()];
 	}
 
 	/**

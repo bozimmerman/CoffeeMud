@@ -163,8 +163,8 @@ public class Tell extends StdCommand
 			{
 				final String mudName=targetName.substring(targetName.indexOf('@')+1);
 				targetName=targetName.substring(0,targetName.indexOf('@'));
-				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
-					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
+				if(CMLib.intermud().isAnyNonCM1Online())
+					CMLib.intermud().imudTell(mob,targetName,mudName,combinedCommands);
 				else
 					CMLib.commands().postCommandFail(mob,origCmds,L("Intermud is unavailable."));
 				return false;

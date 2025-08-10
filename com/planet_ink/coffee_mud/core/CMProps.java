@@ -193,6 +193,9 @@ public class CMProps extends Properties
 		AUTOAREAPROPS,
 		MOBDEATH,
 		I3ROUTERS,
+		RUNGVSERVER,
+		GVCLIENTID,
+		GVCLIENTSECRET,
 		IDLETIMERS,
 		PRICEFACTORS,
 		ITEMLOOTPOLICY,
@@ -601,7 +604,7 @@ public class CMProps extends Properties
 		WEATHER_FOG, // try to always and forever keep these at the end...
 		WEATHER_NONE // try to always and forever keep these at the end...
 		;
-		private String key;
+		private final String key;
 
 		private ListFile(final String key)
 		{

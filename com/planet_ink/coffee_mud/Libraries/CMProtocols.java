@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -3561,10 +3562,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		pkg.put("CHARSET", CMProps.getVar(CMProps.Str.CHARSETINPUT));
 		final List<String> intermuds = new ArrayList<String>(2);
-		if(CMLib.intermud().i3online())
+		if(CMLib.intermud().isOnline(InterProto.I3))
 			intermuds.add("I3");
-		if(CMLib.intermud().imc2online())
+		if(CMLib.intermud().isOnline(InterProto.IMC2))
 			intermuds.add("IMC2");
+		if(CMLib.intermud().isOnline(InterProto.Grapevine))
+			intermuds.add("Grapevine");
 		if(intermuds.size()>0)
 			pkg.put("INTERMUD", intermuds.toArray(new String[intermuds.size()]));
 		pkg.put("FAMILY","CoffeeMUD");

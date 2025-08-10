@@ -260,11 +260,10 @@ public class Who extends StdCommand
 		&&(mob!=null)
 		&&(mobName.startsWith("@")))
 		{
-			if((!(CMLib.intermud().i3online()))
-			&&(!CMLib.intermud().imc2online()))
+			if(!CMLib.intermud().isAnyNonCM1Online())
 				mob.tell(L("Intermud is unavailable."));
 			else
-				CMLib.intermud().i3who(mob,mobName.substring(1));
+				CMLib.intermud().imudWho(mob,mobName.substring(1));
 			return false;
 		}
 

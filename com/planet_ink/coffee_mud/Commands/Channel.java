@@ -68,7 +68,7 @@ public class Channel extends StdCommand
 			final boolean systemMsg=((Boolean)args[0]).booleanValue();
 			final String channelName=(String)args[1];
 			final String message=(String)args[2];
-			CMLib.channels().createAndSendChannelMessage(mob,channelName,message,systemMsg);
+			CMLib.channels().createAndSendChannelMessage(mob,channelName,message,systemMsg,false);
 			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
@@ -362,7 +362,7 @@ public class Channel extends StdCommand
 			return false;
 		}
 		else
-			CMLib.channels().createAndSendChannelMessage(mob,channelName,CMParms.combine(commands,0),systemMsg);
+			CMLib.channels().createAndSendChannelMessage(mob,channelName,CMParms.combine(commands,0),systemMsg,false);
 		return false;
 	}
 

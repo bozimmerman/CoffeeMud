@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.RemoteIMud;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -60,7 +62,7 @@ public class I3Cmd extends StdCommand
 		commands.remove(0);
 		if(commands.size()<1)
 		{
-			if(!CMLib.intermud().i3online())
+			if(!CMLib.intermud().isOnline(InterProto.I3))
 			{
 				mob.tell(L("I3 is unavailable."));
 				return false;
@@ -69,11 +71,26 @@ public class I3Cmd extends StdCommand
 			return false;
 		}
 		final String str=commands.get(0);
-		if((!CMLib.intermud().i3online())&&(!str.equalsIgnoreCase("restart")))
+		if((!CMLib.intermud().isOnline(InterProto.I3))&&(!str.equalsIgnoreCase("restart")))
 			mob.tell(L("I3 is unavailable."));
 		else
 		if(str.equalsIgnoreCase("list"))
-			CMLib.intermud().giveI3MudList(mob);
+		{
+			final boolean coffeemudOnly=((commands.size()>1)&&(commands.get(1).toLowerCase().startsWith("coffeemud")));
+			final List<RemoteIMud> muds = CMLib.intermud().getMudInfo(InterProto.I3, coffeemudOnly);
+			final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
+			final int col1Width=CMLib.lister().fixColWidth(25, mob);
+			final int col2Width=CMLib.lister().fixColWidth(25, mob);
+			for(final RemoteIMud m : muds)
+			{
+				if((m!=null)&&(m.mudLib!=null))
+				{
+					final String mudlib = m.mudLib.startsWith("CoffeeMud") ? "^H"+m.mudLib+"^?" : m.mudLib;
+					buf.append("["+CMStrings.padRight(m.name,col1Width)+"]["+CMStrings.padRight(mudlib,col2Width)+"] "+m.hostPort+"\n\r");
+				}
+			}
+			mob.session().wraplessPrintln(buf.toString());
+		}
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
@@ -87,11 +104,11 @@ public class I3Cmd extends StdCommand
 				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
-			CMLib.intermud().i3channelAdd(mob,CMParms.combine(commands,1));
+			CMLib.intermud().channelAdd(InterProto.I3,mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("channels"))
-			CMLib.intermud().giveI3ChannelsList(mob);
+			CMLib.intermud().getChannelsList(mob,InterProto.I3);
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{
@@ -105,7 +122,7 @@ public class I3Cmd extends StdCommand
 				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
-			CMLib.intermud().i3channelRemove(mob,CMParms.combine(commands,1));
+			CMLib.intermud().channelRemove(InterProto.I3,mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("listen"))
@@ -120,7 +137,7 @@ public class I3Cmd extends StdCommand
 				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
-			CMLib.intermud().i3channelListen(mob,CMParms.combine(commands,1));
+			CMLib.intermud().channelListen(InterProto.I3,mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("ping"))
@@ -130,7 +147,7 @@ public class I3Cmd extends StdCommand
 				i3Error(mob);
 				return false;
 			}
-			CMLib.intermud().i3pingRouter(mob);
+			CMLib.intermud().pingRouter(InterProto.I3,mob);
 		}
 		else
 		if(str.equalsIgnoreCase("restart"))
@@ -157,7 +174,7 @@ public class I3Cmd extends StdCommand
 				mob.tell(L("You did not specify a name!"));
 				return false;
 			}
-			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
+			CMLib.intermud().imudLocate(mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("silence"))
@@ -172,11 +189,11 @@ public class I3Cmd extends StdCommand
 				mob.tell(L("You did not specify a channel name!"));
 				return false;
 			}
-			CMLib.intermud().i3channelSilence(mob,CMParms.combine(commands,1));
+			CMLib.intermud().channelSilence(InterProto.I3,mob,CMParms.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("info"))
-			CMLib.intermud().i3mudInfo(mob,CMParms.combine(commands,1));
+			CMLib.intermud().mudInfo(InterProto.I3, mob,CMParms.combine(commands,1));
 		else
 			i3Error(mob);
 

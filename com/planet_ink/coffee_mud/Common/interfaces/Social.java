@@ -342,7 +342,7 @@ public interface Social extends Environmental, CMCommon
 	 * @param srcMask the src mask to logically OR with the generated message source code
 	 * @param fullCode the override target and others code from the one in this social
 	 * @param commands the commands as a string vector entered by the user
-	 * @param I3channelName the i3channel name or null if n/a
+	 * @param imudChanName the i3channel name or null if n/a
 	 * @param makeTarget true to manufacture a target, or false to use a real one
 	 *
 	 * @return the CMMsg that can now be sent to the world as a chat channel message
@@ -353,7 +353,7 @@ public interface Social extends Environmental, CMCommon
 							 int srcMask,
 							 int fullCode,
 							 List<String> commands,
-							 String I3channelName,
+							 String imudChanName,
 							 boolean makeTarget);
 
 	/**

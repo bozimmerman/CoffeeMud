@@ -481,10 +481,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final String mudName=targetName.substring(targetName.indexOf('@')+1);
 			targetName=targetName.substring(0,targetName.indexOf('@'));
-			if((!(CMLib.intermud().i3online()))&&(!(CMLib.intermud().imc2online())))
+			if(!CMLib.intermud().isAnyNonCM1Online())
 				mob.tell(L("Intermud is unavailable."));
 			else
-				CMLib.intermud().i3tell(mob,targetName,mudName,text);
+				CMLib.intermud().imudTell(mob,targetName,mudName,text);
 		}
 		else
 		{

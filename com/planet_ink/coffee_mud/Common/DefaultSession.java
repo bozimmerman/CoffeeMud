@@ -2711,7 +2711,10 @@ public class DefaultSession implements Session
 	public void stopSession(final boolean disconnect, final boolean removeMOB, final boolean dropSession, final boolean killThread)
 	{
 		if(disconnect)
+		{
 			doPing(SessionPing.DISCONNECT, null);
+			CMLib.intermud().registerPlayerOffline(mob);
+		}
 		setKillFlag(true);
 		setStatus(SessionStatus.LOGOUT5);
 		if(dropSession)

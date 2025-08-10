@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.I3Client;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -60,8 +59,7 @@ public class WhoIs extends Who
 		final int x=mobName.indexOf("@");
 		if(x>=0)
 		{
-			if((!(CMLib.intermud().i3online()))
-			&&(!CMLib.intermud().imc2online()))
+			if(!CMLib.intermud().isAnyNonCM1Online())
 				mob.tell(L("Intermud is unavailable."));
 			else
 			if(x==0)
@@ -70,35 +68,26 @@ public class WhoIs extends Who
 				if((mudName.toLowerCase().equals("coffeemuds")||mudName.toLowerCase().equals("all"))
 				&& (CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.I3)))
 				{
-					final List<String> muds = CMLib.intermud().getI3MudList(mudName.toLowerCase().equals("coffeemuds"));
+					final List<String> muds = CMLib.intermud().getAllMudList(mudName.toLowerCase().equals("coffeemuds"));
 					long time=0;
 					for(final String mud : muds)
 					{
 						CMLib.s_sleep(time + 1000);
 						long lastTime=System.currentTimeMillis();
-						CMLib.intermud().i3who(mob,mud);
+						CMLib.intermud().imudWho(mob,mud);
 						lastTime = System.currentTimeMillis() - lastTime;
 						if(lastTime > time)
 							time=lastTime;
 					}
 				}
 				else
-					CMLib.intermud().i3who(mob,mudName);
+					CMLib.intermud().imudWho(mob,mudName);
 			}
 			else
 			{
-				String mudName=mobName.substring(x+1);
+				final String mudName=mobName.substring(x+1);
 				mobName=mobName.substring(0,x);
-				if(I3Client.isAPossibleMUDName(mudName))
-				{
-					mudName=I3Client.translateName(mudName);
-					if(!I3Client.isUp(mudName))
-					{
-						mob.tell(L("@x1 is not available.",mudName));
-						return false;
-					}
-				}
-				CMLib.intermud().i3finger(mob,mobName,mudName);
+				CMLib.intermud().imudFinger(mob,mobName,mudName);
 			}
 			return false;
 		}

@@ -586,7 +586,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public CMMsg makeMessage(final MOB mob, final String str, final String end, final int srcMask, final int fullCode, final List<String> commands, final String I3channelName, final boolean makeTarget)
+	public CMMsg makeMessage(final MOB mob, final String str, final String end, final int srcMask, final int fullCode, final List<String> commands, final String imudChanName, final boolean makeTarget)
 	{
 		String targetStr = "";
 		if ((commands.size() > 1)
@@ -616,9 +616,9 @@ public class DefaultSocial implements Social
 			}
 			if (((target == null) && (makeTarget))
 			|| ((targetMud.length() > 0)
-				&& (I3channelName != null)
-				&& (CMLib.intermud().i3online())
-				&& (CMLib.intermud().isI3channel(I3channelName))))
+				&& (imudChanName != null)
+				&& (CMLib.intermud().isAnyNonCM1Online())
+				&& (CMLib.intermud().isAnyImudChannel(imudChanName))))
 			{
 				target = CMClass.getFactoryMOB();
 				target.setName(targetStr);

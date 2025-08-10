@@ -20,17 +20,19 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterQuery;
+import com.planet_ink.coffee_mud.Libraries.intermud.IMudClient;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.CM1Server;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.CoffeeMudI3Bridge;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.server.I3Server;
+import com.planet_ink.coffee_mud.Libraries.intermud.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.smtp.SMTPserver;
-import com.planet_ink.coffee_mud.core.intermud.IMudClient;
-import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
-import com.planet_ink.coffee_mud.core.intermud.i3.CoffeeMudI3Bridge;
-import com.planet_ink.coffee_mud.core.intermud.imc2.IMC2Driver;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.FileManager;
 import com.planet_ink.coffee_web.server.WebServer;
@@ -91,12 +93,9 @@ public class MUD extends Thread implements MudHost
 	protected static volatile int	 	 grpid				= 0;
 	protected static boolean			 bringDown			= false;
 	protected static String				 execExternalCommand	= null;
-	protected static I3Server			 i3server			= null;
-	protected static IMC2Driver			 imc2server			= null;
 	protected static List<WebServer>	 webServers			= new Vector<WebServer>();
 	protected static SMTPserver			 smtpServerThread	= null;
 	protected static List<DBConnector>	 databases			= new Vector<DBConnector>();
-	protected static List<CM1Server>	 cm1Servers			= new Vector<CM1Server>();
 	protected static final ServiceEngine serviceEngine		= new ServiceEngine();
 	protected static AtomicBoolean 		 bootSync			= new AtomicBoolean(false);
 	protected static Map<String,String>	 clArgs				= new Hashtable<String,String>();
@@ -713,65 +712,6 @@ public class MUD extends Thread implements MudHost
 		}
 
 		shutdownStateTime.set(System.currentTimeMillis());
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...CM1Servers");
-		for(final CM1Server cm1server : cm1Servers)
-		{
-			try
-			{
-				cm1server.shutdown();
-			}
-			catch (final Throwable ex)
-			{
-				Log.errOut(ex);
-			}
-			finally
-			{
-				if(S!=null)
-					S.println(CMLib.lang().L("@x1 stopped",cm1server.getName()));
-				if(debugMem) shutdownMemReport("CM1Server");
-			}
-		}
-		cm1Servers.clear();
-
-		shutdownStateTime.set(System.currentTimeMillis());
-		if(i3server!=null)
-		{
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...I3Server");
-			try
-			{
-				I3Server.shutdown();
-			}
-			catch (final Throwable ex)
-			{
-				Log.errOut(ex);
-			}
-			i3server=null;
-			if(S!=null)
-				S.println(CMLib.lang().L("I3Server stopped"));
-			Log.sysOut(Thread.currentThread().getName(),"I3Server stopped");
-			if(debugMem) shutdownMemReport("I3Server");
-		}
-
-		shutdownStateTime.set(System.currentTimeMillis());
-		if(imc2server!=null)
-		{
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...IMC2Server");
-			try
-			{
-				imc2server.shutdown();
-			}
-			catch (final Throwable ex)
-			{
-				Log.errOut(ex);
-			}
-			imc2server=null;
-			if(S!=null)
-				S.println(CMLib.lang().L("IMC2Server stopped"));
-			Log.sysOut(Thread.currentThread().getName(),"IMC2Server stopped");
-			if(debugMem) shutdownMemReport("IMC2Server");
-		}
-
-		shutdownStateTime.set(System.currentTimeMillis());
 		if(S!=null)
 			S.print(CMLib.lang().L("Stopping player Sessions..."));
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Stopping sessions");
@@ -991,158 +931,6 @@ public class MUD extends Thread implements MudHost
 	{
 		if(MUD.skipMapLoads)
 			return;
-		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final CMProps page=CMProps.instance();
-		try
-		{
-			if(page.getBoolean("RUNI3SERVER")
-			&&(tCode==MAIN_HOST)
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.I3)))
-			{
-				if(i3server!=null)
-					I3Server.shutdown();
-				i3server=null;
-				String playstate=page.getStr("MUDSTATE");
-				if((playstate==null) || (playstate.length()==0))
-					playstate=page.getStr("I3STATE");
-				if((playstate==null) || (!CMath.isInteger(playstate)))
-					playstate="Development";
-				else
-				switch(CMath.s_int(playstate.trim()))
-				{
-				case 0:
-					playstate = "MudLib Development";
-					break;
-				case 1:
-					playstate = "Restricted Access";
-					break;
-				case 2:
-					playstate = "Beta Testing";
-					break;
-				case 3:
-					playstate = "Open to the public";
-					break;
-				default:
-					playstate = "MudLib Development";
-					break;
-				}
-				final CoffeeMudI3Bridge imud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
-														 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
-														 CMLib.mud(0).getPublicPort(),
-														 playstate,
-														 CMLib.channels().getI3ChannelsList());
-				i3server=new I3Server();
-				int i3port=page.getInt("I3PORT");
-				if(i3port==0)
-					i3port=27766;
-				final String routersList = page.getStr("I3ROUTERS");
-				final List<String> routersSepV = CMParms.parseCommas(routersList, true);
-				if(routersSepV.size()>0)
-				{
-					final String mudName = CMProps.getVar(CMProps.Str.MUDNAME);
-					final String adminEmail = CMProps.getVar(CMProps.Str.ADMINEMAIL);
-					final String[] routersArray = routersSepV.toArray(new String[0]);
-					I3Server.start(mudName,i3port,imud,routersArray,adminEmail,smtpPort);
-				}
-			}
-		}
-		catch(final Exception e)
-		{
-			if(i3server!=null)
-				I3Server.shutdown();
-			i3server=null;
-		}
-	}
-
-	private static boolean stopCM1()
-	{
-		try
-		{
-			for(final CM1Server s : cm1Servers)
-			{
-				s.shutdown();
-				cm1Servers.remove(s);
-			}
-			return true;
-		}
-		catch(final Exception e)
-		{
-			return false;
-		}
-	}
-
-	private static boolean startCM1()
-	{
-		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final CMProps page=CMProps.instance();
-		CM1Server cm1server = null;
-		try
-		{
-			final String runcm1=page.getPrivateStr("RUNCM1SERVER");
-			if((runcm1!=null)&&(runcm1.equalsIgnoreCase("TRUE")))
-			{
-				final String iniFile = page.getStr("CM1CONFIG");
-				for(final CM1Server s : cm1Servers)
-				{
-					if(s.getINIFilename().equalsIgnoreCase(iniFile))
-					{
-						s.shutdown();
-						cm1Servers.remove(s);
-					}
-				}
-				cm1server=new CM1Server("CM1Server"+tCode,iniFile);
-				cm1server.start();
-				cm1Servers.add(cm1server);
-			}
-			return true;
-		}
-		catch(final Exception e)
-		{
-			if(cm1server!=null)
-			{
-				cm1server.shutdown();
-				cm1Servers.remove(cm1server);
-			}
-			return false;
-		}
-	}
-
-	private static void startIntermud2()
-	{
-		if(MUD.skipMapLoads)
-			return;
-		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final CMProps page=CMProps.instance();
-		try
-		{
-			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.IMC2)))
-			{
-				imc2server=new IMC2Driver();
-				if(!imc2server.imc_startup(false,
-											page.getStr("IMC2LOGIN").trim(),
-											CMProps.getVar(CMProps.Str.MUDNAME),
-											page.getStr("IMC2MYEMAIL").trim(),
-											page.getStr("IMC2MYWEB").trim(),
-											page.getStr("IMC2HUBNAME").trim(),
-											page.getInt("IMC2HUBPORT"),
-											page.getStr("IMC2PASS1").trim(),
-											page.getStr("IMC2PASS2").trim(),
-											CMLib.channels().getIMC2ChannelsList()))
-				{
-					Log.errOut(Thread.currentThread().getName(),"IMC2 Failed to start!");
-					imc2server=null;
-				}
-				else
-				{
-					CMLib.intermud().registerIMC2(imc2server);
-					imc2server.start();
-				}
-			}
-		}
-		catch(final Exception e)
-		{
-			Log.errOut(e);
-		}
 	}
 
 	@Override
@@ -1573,15 +1361,6 @@ public class MUD extends Thread implements MudHost
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.FACTIONS.name())))
 				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),CMLib.factions(),Tickable.TICKID_MOB,CMProps.getTickMillis(),10);
-
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
-			startCM1();
-
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting I3");
-			startIntermud3((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
-
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting IMC2");
-			startIntermud2();
 
 			checkedSleep(500);
 
@@ -2260,15 +2039,22 @@ public class MUD extends Thread implements MudHost
 			if(what.equalsIgnoreCase("CM1SERVER")&&(V.size()>2))
 			{
 				final String what2=V.get(2);
-				if(cm1Servers.size()==0)
+				if(!CMath.s_bool(CMLib.intermud().queryService(InterProto.CM1, InterQuery.RUNNING)))
 					return CMLib.lang().L("Failure");
-				final CM1Server svr=cm1Servers.get(0);
 				if(what2.equalsIgnoreCase("PORT"))
-					return ""+svr.getPort();
+					return CMLib.intermud().queryService(InterProto.CM1, InterQuery.PORT);
 				else
 				if(what2.equalsIgnoreCase("NAME"))
-					return ""+svr.getName();
+					return CMLib.intermud().queryService(InterProto.CM1, InterQuery.NAME);
 				return CMLib.lang().L("Failure");
+			}
+			else
+			if(what.equalsIgnoreCase("SMTP")&&(V.size()>2))
+			{
+				final String what2=V.get(2);
+				if(what2.equalsIgnoreCase("PORT"))
+					return ""+((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
+				return "";
 			}
 			else
 				return CMLib.lang().L("Failure");
@@ -2300,8 +2086,10 @@ public class MUD extends Thread implements MudHost
 			else
 			if(what.equalsIgnoreCase("IMC2"))
 			{
-				startIntermud2();
-				return CMLib.lang().L("Done");
+				if(CMLib.intermud().startIntermud(InterProto.IMC2, true))
+					return CMLib.lang().L("Done");
+				else
+					return CMLib.lang().L("Failure");
 			}
 			else
 			if(what.equalsIgnoreCase("WEB"))
@@ -2318,7 +2106,7 @@ public class MUD extends Thread implements MudHost
 			{
 				if(V.size()<3)
 					return CMLib.lang().L("Need Server Name");
-				if(startCM1())
+				if(CMLib.intermud().startIntermud(InterProto.CM1, true))
 					return CMLib.lang().L("Done");
 				else
 					return CMLib.lang().L("Failure");
@@ -2330,7 +2118,10 @@ public class MUD extends Thread implements MudHost
 				{
 					smtpServerThread = new SMTPserver(CMLib.mud(0)); // initializes variables, even if it's not used
 					smtpServerThread.start();
-					serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),smtpServerThread,Tickable.TICKID_EMAIL,CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
+					serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),
+							smtpServerThread,
+							Tickable.TICKID_EMAIL,
+							CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
 					return CMLib.lang().L("Done");
 				}
 				return CMLib.lang().L("Failure");
@@ -2352,25 +2143,20 @@ public class MUD extends Thread implements MudHost
 			else
 			if(what.equalsIgnoreCase("I3"))
 			{
-				if(i3server!=null)
-					I3Server.shutdown();
-				i3server=null;
+				CMLib.intermud().stopIntermud(InterProto.I3);
 				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("IMC2"))
 			{
-				if(imc2server!=null)
-					imc2server.shutdown();
+				CMLib.intermud().stopIntermud(InterProto.IMC2);
 				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("CM1"))
 			{
-				if(stopCM1())
-					return CMLib.lang().L("Done");
-				else
-					return CMLib.lang().L("Failure");
+				CMLib.intermud().stopIntermud(InterProto.CM1);
+				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("SMTP"))

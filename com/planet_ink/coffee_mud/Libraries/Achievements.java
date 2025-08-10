@@ -10081,7 +10081,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			final Achievement A2 = a.nextElement();
 			if(A2.getDisplayStr().equalsIgnoreCase(ID))
-				return A2.getDisplayStr().toUpperCase();
+				return A2.getTattoo().toUpperCase();
 		}
 		if(exact)
 			return null;
@@ -10095,7 +10095,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			final Achievement A2 = a.nextElement();
 			if(A2.getDisplayStr().toLowerCase().startsWith(ID.toLowerCase()))
-				return A2.getDisplayStr().toUpperCase();
+				return A2.getTattoo().toUpperCase();
 		}
 		return null;
 	}

@@ -4527,6 +4527,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			clan.first.updateClanPrivileges(mob);
 		if(mob.location()!=null)
 			CMLib.players().changePlayersLocation(mob, mob.location());
+		CMLib.intermud().registerPlayerOnline(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}
 

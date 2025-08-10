@@ -84,14 +84,14 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 	protected volatile long		lastPing	= System.currentTimeMillis();
 	protected HTTPIOHandler		ioHandler	= null;
 
-	protected final CoffeePipeSocket lsock;
-	protected final CoffeePipeSocket rsock;
-	protected final Session[]	sess;
-	protected final MudHost host;
-	protected final OutputStream mudOut;
-	protected final InputStream mudIn;
-	protected final ByteArrayOutputStream payload 	= new ByteArrayOutputStream();
-	protected final ByteArrayOutputStream msg		= new ByteArrayOutputStream();
+	protected final CoffeePipeSocket		lsock;
+	protected final CoffeePipeSocket		rsock;
+	protected final Session[]				sess;
+	protected final MudHost					host;
+	protected final OutputStream			mudOut;
+	protected final InputStream				mudIn;
+	protected final ByteArrayOutputStream	payload	= new ByteArrayOutputStream();
+	protected final ByteArrayOutputStream	msg		= new ByteArrayOutputStream();
 
 	private static final byte[] pingFrame 	= new byte[] {(byte)0x89, 0x00};
 	private static final byte[] emptyBytes 	= new byte[0];

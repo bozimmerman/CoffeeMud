@@ -73,7 +73,7 @@ public class ChanWho extends StdCommand
 				mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
 				return false;
 			}
-			CMLib.intermud().i3chanwho(mob,channel,mud);
+			CMLib.intermud().chanWho(mob,channel,mud);
 			return false;
 		}
 		final int channelInt=channels.getChannelIndex(channel.toUpperCase());

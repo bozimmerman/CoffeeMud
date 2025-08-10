@@ -5,19 +5,19 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.entities.Channel;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.entities.NameServer;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.entities.RNameServer;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3RouterThread;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.router.MudPeer;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.router.RouterPeer;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.server.ServerSecurityException;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.Channel;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.NameServer;
-import com.planet_ink.coffee_mud.core.intermud.i3.entities.RNameServer;
-import com.planet_ink.coffee_mud.core.intermud.i3.router.I3RouterThread;
-import com.planet_ink.coffee_mud.core.intermud.i3.router.MudPeer;
-import com.planet_ink.coffee_mud.core.intermud.i3.router.RouterPeer;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerSecurityException;
 
 /*
 Copyright 2024-2025 Bo Zimmerman
@@ -115,7 +115,7 @@ public class I3Router
 				try
 				{
 					initThreadGroup(daemon, debug);
-					com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.start(name, ip, port, password);
+					com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.start(name, ip, port, password);
 				}
 				catch(final Exception e)
 				{
@@ -128,7 +128,7 @@ public class I3Router
 			try
 			{
 				Thread.sleep(1000);
-				while(com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouter().running)
+				while(com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouter().running)
 				{
 					Thread.sleep(1000);
 				}
@@ -139,7 +139,7 @@ public class I3Router
 			}
 			finally
 			{
-				com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.shutdown();
+				com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.shutdown();
 			}
 			System.exit(0);
 		}
@@ -151,7 +151,7 @@ public class I3Router
 			boolean running=true;
 			while(running)
 			{
-				final I3RouterThread router = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouter();
+				final I3RouterThread router = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouter();
 				if(s.equalsIgnoreCase("?"))
 				{
 					System.out.println("Menu: ");
@@ -184,8 +184,8 @@ public class I3Router
 							rp.connect();
 							if(rp.isConnected())
 							{
-								com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.addObject(rp);
-								com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouter().initializePeer(rp);
+								com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.addObject(rp);
+								com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouter().initializePeer(rp);
 								System.out.println("Added peer '"+ns.name+"'");
 							}
 							else
@@ -202,7 +202,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
-						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouterPeers();
 						RouterPeer peer = null;
 						for(int i=0;i<peers.length;i++)
 							if(peers[i].name.equals(s))
@@ -211,7 +211,7 @@ public class I3Router
 							System.err.println("Peer '"+s+"' does not exist.");
 						else
 						{
-							com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.destroyObjectForever(peer);
+							com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.destroyObjectForever(peer);
 							System.err.println("Peer '"+s+"'has been destroyed.");
 						}
 					}
@@ -219,7 +219,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("mud "))
 					{
 						s=s.substring(4).trim();
-						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						final MudPeer[] muds = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
 							if(muds[i].mud_name.equals(s))
@@ -228,7 +228,7 @@ public class I3Router
 							System.err.println("Mud '"+s+"' does not exist.");
 						else
 						{
-							com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.destroyObjectForever(mud);
+							com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.destroyObjectForever(mud);
 							System.err.println("Mud '"+s+"'has been destroyed.");
 						}
 					}
@@ -236,12 +236,12 @@ public class I3Router
 					if(s.toLowerCase().startsWith("channel "))
 					{
 						s=s.substring(8).trim();
-						final Channel chan = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findChannel(s);
+						final Channel chan = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.findChannel(s);
 						if(chan == null)
 							System.err.println("Chan '"+s+"' does not exist.");
 						else
 						{
-							com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.destroyObjectForever(chan);
+							com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.destroyObjectForever(chan);
 							System.err.println("Chan '"+s+"'has been destroyed.");
 						}
 					}
@@ -255,7 +255,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
-						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouterPeers();
 						RouterPeer peer = null;
 						for(int i=0;i<peers.length;i++)
 							if(peers[i].name.equals(s))
@@ -275,7 +275,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("mud "))
 					{
 						s=s.substring(4).trim();
-						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						final MudPeer[] muds = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
 							if(muds[i].mud_name.equals(s))
@@ -289,7 +289,7 @@ public class I3Router
 						{
 							mud.close();
 							mud.state=0;
-							com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.sendMudChange(mud);
+							com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.sendMudChange(mud);
 							System.err.println("Mud '"+s+"'has been booted.");
 						}
 					}
@@ -302,7 +302,7 @@ public class I3Router
 					s=s.substring(5).trim();
 					if(s.equalsIgnoreCase("peers"))
 					{
-						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouterPeers();
 						for(final RouterPeer peer : peers)
 							System.out.println(
 									CMStrings.padRight(peer.name, 20)+" "+
@@ -316,7 +316,7 @@ public class I3Router
 					else
 					if(s.equalsIgnoreCase("channels"))
 					{
-						final Channel[] channels = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getChannels();
+						final Channel[] channels = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getChannels();
 						for(final Channel peer : channels)
 							System.out.println(
 									CMStrings.padRight(peer.channel, 20)+" "+
@@ -327,7 +327,7 @@ public class I3Router
 					else
 					if(s.equalsIgnoreCase("muds"))
 					{
-						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						final MudPeer[] muds = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getMudPeers();
 						for(final MudPeer peer : muds)
 							System.out.println(
 									CMStrings.padRight(peer.mud_name, 20)+" "+
@@ -347,7 +347,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("peer "))
 					{
 						s=s.substring(5).trim();
-						final RouterPeer[] peers = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getRouterPeers();
+						final RouterPeer[] peers = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getRouterPeers();
 						RouterPeer peer = null;
 						for(int i=0;i<peers.length;i++)
 							if(peers[i].name.equals(s))
@@ -369,7 +369,7 @@ public class I3Router
 					else
 					if(s.toLowerCase().startsWith("channels"))
 					{
-						final Channel chan = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.findChannel(s);
+						final Channel chan = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.findChannel(s);
 						if(chan == null)
 							System.err.println("Channel '"+s+"' does not exist.");
 						else
@@ -384,7 +384,7 @@ public class I3Router
 					if(s.toLowerCase().startsWith("mud "))
 					{
 						s=s.substring(4).trim();
-						final MudPeer[] muds = com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.getMudPeers();
+						final MudPeer[] muds = com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.getMudPeers();
 						MudPeer mud = null;
 						for(int i=0;i<muds.length;i++)
 							if(muds[i].mud_name.equals(s))
@@ -425,7 +425,7 @@ public class I3Router
 				if(running)
 					s = br.readLine();
 			}
-			com.planet_ink.coffee_mud.core.intermud.i3.router.I3Router.shutdown();
+			com.planet_ink.coffee_mud.Libraries.intermud.i3.router.I3Router.shutdown();
 			System.out.println("Bye-bye");
 			System.exit(0);
 		}
