@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Libraries.intermud;
+package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
@@ -52,12 +52,12 @@ import java.net.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IMudClient implements IntermudInterface
+public class IntermudClient implements IntermudInterface
 {
 	@Override
 	public String ID()
 	{
-		return "IMudClient";
+		return "IntermudClient";
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch(final Exception e)
 		{
-			return new IMudClient();
+			return new IntermudClient();
 		}
 	}
 
@@ -411,6 +411,8 @@ public class IMudClient implements IntermudInterface
 		startCM1();
 		startI3();
 		startIntermud2();
+		startGrapevine();
+		startDiscord();
 		return true;
 	}
 
@@ -484,6 +486,8 @@ public class IMudClient implements IntermudInterface
 	public boolean shutdown()
 	{
 		//final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
+		this.stopIntermud(InterProto.Grapevine);
+		this.stopIntermud(InterProto.DISCORD);
 		shutdownIntermud2();
 		shutdownI3();
 		shutdownCM1();
@@ -533,7 +537,7 @@ public class IMudClient implements IntermudInterface
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 		}
@@ -606,7 +610,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 		return true;
 	}
@@ -631,7 +635,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 	}
 
@@ -662,7 +666,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 	}
 
@@ -691,7 +695,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 	}
 
@@ -715,7 +719,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 	}
 
@@ -766,7 +770,7 @@ public class IMudClient implements IntermudInterface
 			}
 			catch (final Exception e)
 			{
-				Log.errOut("IMudClient", e);
+				Log.errOut("IntermudClient", e);
 			}
 		}
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -986,7 +990,7 @@ public class IMudClient implements IntermudInterface
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("IMudClient", e);
+			Log.errOut("IntermudClient", e);
 		}
 	}
 
@@ -1123,7 +1127,7 @@ public class IMudClient implements IntermudInterface
 			}
 			catch (final Exception e)
 			{
-				Log.errOut("IMudClient", e);
+				Log.errOut("IntermudClient", e);
 			}
 		}
 		if(imc2online())
@@ -1151,7 +1155,7 @@ public class IMudClient implements IntermudInterface
 			}
 			catch (final Exception e)
 			{
-				Log.errOut("IMudClient", e);
+				Log.errOut("IntermudClient", e);
 			}
 		}
 	}
@@ -1189,7 +1193,7 @@ public class IMudClient implements IntermudInterface
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 		}
@@ -1432,10 +1436,9 @@ public class IMudClient implements IntermudInterface
 			final RemoteIMud mud = new RemoteIMud();
 			final String online = ""+j.get("players_online_count");
 			mud.name = (String)j.get("game");
-			mud.mudLib = "Unknown";
+			mud.mudLib = (String)j.get("user_agent");
 			mud.proto = InterProto.Grapevine;
 			mud.numOnline = CMath.s_int(online);
-			mud.hostPort = "Unknown";
 			final Object[] cconnections = (Object[])j.get("connections");
 			if(cconnections != null)
 			{
@@ -1446,17 +1449,19 @@ public class IMudClient implements IntermudInterface
 						final MiniJSON.JSONObject cobj = (MiniJSON.JSONObject)cconnections[i];
 						if (cobj.getCheckedString("type").equalsIgnoreCase("telnet"))
 						{
-							mud.hostPort = j.getCheckedString("host")+":"+j.getCheckedLong("port");
+							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("port");
 							break;
 						}
 						else
 						if (cobj.getCheckedString("type").equalsIgnoreCase("secure telnet"))
-							mud.hostPort = j.getCheckedString("host")+":"+j.getCheckedLong("port");
+							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("port");
 					}
 					catch(final MiniJSON.MJSONException e)
 					{}
 				}
 			}
+			if(mud.hostPort.length()==0)
+				mud.hostPort = "Unknown";
 			list.add(mud);
 		}
 		return list;
@@ -1521,11 +1526,21 @@ public class IMudClient implements IntermudInterface
 		return true;
 	}
 
-	public boolean isI3channel(final String channelName)
+	public boolean isLocalI3channel(final String channelName)
 	{
 		if(!i3online())
 			return false;
 		final String remote=I3Client.getRemoteChannel(channelName);
+		if(remote.length()==0)
+			return false;
+		return true;
+	}
+
+	public boolean isRemoteI3Channel(final String channelName)
+	{
+		if(!i3online())
+			return false;
+		final String remote=I3Client.getLocalChannel(channelName);
 		if(remote.length()==0)
 			return false;
 		return true;
@@ -1699,14 +1714,22 @@ public class IMudClient implements IntermudInterface
 			return false;
 		case Grapevine:
 			if(grapevine != null)
+			{
+				if(grapevine.getLocalIMudChannelsList().contains(channelName))
+					return true;
 				return grapevine.getRemoteChannelsList().containsFirst(channelName);
+			}
 			break;
 		case DISCORD:
 			if(discord != null)
-				return discord.discordChanNames.containsKey(channelName.toLowerCase());
+			{
+				if(discord.getLocalIMudChannelsList().contains(channelName))
+					return true;
+				return discord.getRemoteChannelsList().containsFirst(channelName);
+			}
 			break;
 		case I3:
-			return isI3channel(channelName);
+			return isLocalI3channel(channelName) || isRemoteI3Channel(channelName);
 		case IMC2:
 			return isIMC2channel(channelName);
 		}
@@ -1800,7 +1823,7 @@ public class IMudClient implements IntermudInterface
 			break;
 		case DISCORD:
 			if(discord != null)
-				list = discord.getChannelsList();
+				list = discord.getRemoteChannelsList();
 			break;
 		case I3:
 			list = this.giveI3ChannelsList();

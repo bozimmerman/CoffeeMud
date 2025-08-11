@@ -26,7 +26,7 @@
 <li><a href="#mxp">MXP</a></li>
 <li><a href="#msdp">MSDP</a></li>
 <li><a href="#gmcp">GMCP</a></li>
-<li><a href="#mssp">MSSP</a></li><li><a href="#mpcp">MPCP</a></li></ul>
+<li><a href="#mssp">MSSP</a></li><li><a href="#mpcp">MPCP</a></li><li><a href="#grapevine">Grapevine</a></li><li><a href="#discord">DISCORD</a></li><li><a href="#twitter">Twitter/X</a></li><li><a href="#llm">Ollama/LLM</a></li></ul>
 </td>
 <td align="left" valign="top">
 <p>The
@@ -913,7 +913,37 @@ json-", "msdpreports":"-base64-", "gmcpsupports":"-embedded
 json-",&nbsp;"strcache":"{}", "mcpkey":"", "mcpkeypairs":"{}",
 "mcpsupports":"{}", "mttsbits":"269", "termheight":"44", "psuffix":"",
 "logintime":"1752782990306", "onlinetime":"1752782984016",
-"activetime":"1752783052211"}</td></tr></tbody></table><br /><br /><br /> <p></p>
+"activetime":"1752783052211"}</td></tr></tbody></table><br /><h2><a name="grapevine">Grapevine</a></h2>
+<p>The Grapevine Protocol
+allows&nbsp;mud information and status, channel and tell messages, and
+achievements to be shared between muds on its network. &nbsp;A detailed
+definition of the protocol can be found
+at <a href="https://grapevine.haus/docs">https://grapevine.haus/</a>. &nbsp;No special libraries or other java configuration is required to enable CoffeeMud support.
+</p>
+<p>Using the service requires going to the grapevine.haus website and
+registering your mud. &nbsp;Next, you generate a ClientID and Client
+Secret. &nbsp;These are then placed in the coffeemud.ini file under
+the&nbsp;<span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Consolas&quot;; font-size: 10pt; white-space: pre;"><span style="color: rgb(0, 0, 0);">GVCLIENTID and </span></span></span><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Consolas&quot;; font-size: 10pt; white-space: pre;"><span style="color: rgb(0, 0, 0);">GVCLIENTSECRET&nbsp;</span></span></span>fields.</p><p>On
+boot, CoffeeMud will connect to the grapevine hub and request mud,
+player, and achievements information. &nbsp;When assigning your local
+channels to grapevine, you can really only choose between gossip,
+testing, and moo at the moment. &nbsp;The GV command exists to manage
+and monitor the grapevine network from the command line.</p>As
+described in the docs, the Grapevine protocol is JSON over WebSock.
+&nbsp;The client side makes a Secure HTTP connection, and immediately
+switches to the WebSock protocol as normal for those protocols.
+&nbsp;Once switched, both sides may begin transmitting JSON documents
+over WebSock.<h2><a name="grapevine">DISCORD</a></h2>
+Channel messages may be&nbsp;shared between a local channel and a
+Discord channel. &nbsp;The protocol itself is mysterious, as it is
+hidden behind a downloaded library. &nbsp;See the <a href="InstallationGuide.html">Installation Guide</a> for more information on setting it up.<br /><br /><h2><a name="grapevine">Twitter/X</a></h2>CoffeeMud
+supports transmitting local&nbsp;messages from a local mud channel to
+an account on Twitter/X.&nbsp; This protocol is also hidden
+behind a downloaded library. &nbsp;See the <a href="InstallationGuide.html">Installation Guide</a> for more information on setting it up. <h2><a name="grapevine">Ollama/LLM</a></h2>
+Support for AI is through a library called LangChain4J, and includes
+dozens of LLM providers and their protocols. &nbsp;The messages from an
+AI can be used in everything from MOBPROG scripts, to Area/Quest
+generation, to MudChat. &nbsp;See the <a href="InstallationGuide.html">Installation Guide</a> for more information on setting it up.<p></p>
 
 
 

@@ -10069,26 +10069,46 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public String findAchievementID(String ID, final boolean exact)
+	public String findAchievementID(final String ID, final boolean exact)
 	{
 		if(ID==null)
 			return null;
-		ID = ID.replace('`','\'');
-		final Achievement A=this.getAchievement(ID.toUpperCase());
+		String UID=ID.toUpperCase();
+		final Achievement A = getAchievement(UID);
 		if(A!=null)
-			return ID.toUpperCase();
+			return UID;
 		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
 		{
 			final Achievement A2 = a.nextElement();
 			if(A2.getDisplayStr().equalsIgnoreCase(ID))
 				return A2.getTattoo().toUpperCase();
 		}
+		if((UID.indexOf('\'')>0)||(UID.indexOf('`')>0))
+		{
+			UID = UID.replace('`','\'');
+			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+			{
+				final Achievement A2 = a.nextElement();
+				if(A2.getDisplayStr().equalsIgnoreCase(ID))
+					return A2.getTattoo().toUpperCase();
+			}
+			if((A == null)&&(exact))
+			{
+				UID = UID.replace('\'','`');
+				for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
+				{
+					final Achievement A2 = a.nextElement();
+					if(A2.getDisplayStr().equalsIgnoreCase(ID))
+						return A2.getTattoo().toUpperCase();
+				}
+			}
+		}
 		if(exact)
 			return null;
 		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
 		{
 			final Achievement A2 = a.nextElement();
-			if(A2.getTattoo().toUpperCase().startsWith(ID.toUpperCase()))
+			if(A2.getTattoo().toUpperCase().startsWith(UID))
 				return A2.getTattoo().toUpperCase();
 		}
 		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)

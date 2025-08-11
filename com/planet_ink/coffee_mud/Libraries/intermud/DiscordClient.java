@@ -184,13 +184,21 @@ public class DiscordClient implements Closeable
 		return (discordApi != null);
 	}
 
-	public TriadList<String,String,String> getChannelsList()
+	public TriadList<String,String,String> getRemoteChannelsList()
 	{
 		// can't really know what other channels exist
 		final TriadList<String,String,String> list = new TriadVector<String,String,String>();
 		for(final String name : getTextChannels().keySet())
 			if(!list.containsFirst(name))
 				list.add(name,"Discord","");
+		return list;
+	}
+
+	public List<String> getLocalIMudChannelsList()
+	{
+		final List<String> list = new Vector<String>();
+		for(final CMChannel chan : channels)
+			list.add(chan.name());
 		return list;
 	}
 

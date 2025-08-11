@@ -22,11 +22,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
 import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterQuery;
-import com.planet_ink.coffee_mud.Libraries.intermud.IMudClient;
-import com.planet_ink.coffee_mud.Libraries.intermud.cm1.CM1Server;
-import com.planet_ink.coffee_mud.Libraries.intermud.i3.CoffeeMudI3Bridge;
-import com.planet_ink.coffee_mud.Libraries.intermud.i3.server.I3Server;
-import com.planet_ink.coffee_mud.Libraries.intermud.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
@@ -1614,10 +1609,7 @@ public class MUD extends Thread implements MudHost
 
 			// an arbitrary dividing line. After threadCode 0
 			if(threadCode==MAIN_HOST)
-			{
 				CMLib.registerLibrary(serviceEngine);
-				CMLib.registerLibrary(new IMudClient());
-			}
 			else
 			{
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.THREADS));

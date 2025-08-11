@@ -76,6 +76,7 @@ public class GrapevineClient extends Thread implements Closeable
 	protected final Map<String,MiniJSON.JSONObject>	knownMuds	= new ConcurrentHashMap<String,MiniJSON.JSONObject>();
 	protected final Map<String,MOB>					playerReq	= new ConcurrentHashMap<String,MOB>();
 	protected final Map<String,Achievement>			achieves	= new ConcurrentHashMap<String,Achievement>();
+	protected final ConcurrentLinkedQueue<byte[]>	outgoing	= new ConcurrentLinkedQueue<byte[]>();
 	protected final ByteArrayOutputStream			payload		= new ByteArrayOutputStream();
 	protected final ByteArrayOutputStream			msg			= new ByteArrayOutputStream();
 	private static final byte[]						pingFrame	= new byte[0];
@@ -190,6 +191,7 @@ public class GrapevineClient extends Thread implements Closeable
 					if((System.currentTimeMillis() - lastPing)>60000L)
 						ping();
 					Thread.sleep(1000);
+					dequeOutgoing();
 				}
 			}
 			catch(final SocketException ste)
@@ -214,6 +216,23 @@ public class GrapevineClient extends Thread implements Closeable
 				catch(final IOException ioe)
 				{}
 				clientSocket = null;
+			}
+		}
+	}
+
+	protected void dequeOutgoing()
+	{
+		if(outgoing.size()>0)
+		{
+			for(int i=0;i<5 && outgoing.size()>0;i++)
+			{
+				try
+				{
+					this.sendPacket(outgoing.remove(), WSPType.TEXT);
+				}
+				catch (final IOException e)
+				{
+				}
 			}
 		}
 	}
@@ -271,9 +290,12 @@ public class GrapevineClient extends Thread implements Closeable
 			str.append(CMStrings.padRight(CMLib.lang().L("Display name"), 15)).append(displayName).append("\n\r");
 		str.append(CMStrings.padRight(CMLib.lang().L("Description"), 15)).append(description).append("\n\r");
 		str.append(CMStrings.padRight(CMLib.lang().L("Homepage"), 15)).append(homepageUrl).append("\n\r");
-		str.append(CMStrings.padRight(CMLib.lang().L("User Agent"), 15)).append(userAgent).append("\n\r");
-		str.append(CMStrings.padRight(CMLib.lang().L("User Repo"), 15)).append(userAgentRepoUrl).append("\n\r");
-		str.append(CMStrings.padRight(CMLib.lang().L("Online"), 15)).append(online).append("\n\r");
+		if(userAgent != null)
+			str.append(CMStrings.padRight(CMLib.lang().L("User Agent"), 15)).append(userAgent).append("\n\r");
+		if(userAgentRepoUrl != null)
+			str.append(CMStrings.padRight(CMLib.lang().L("User Repo"), 15)).append(userAgentRepoUrl).append("\n\r");
+		if(online != null)
+			str.append(CMStrings.padRight(CMLib.lang().L("Online"), 15)).append(online).append("\n\r");
 		for(final String connection : connections)
 			str.append(CMStrings.padRight(CMLib.lang().L("Connection"), 15)).append(connection).append("\n\r");
 		str.append(CMStrings.padRight(CMLib.lang().L("Supports"), 15)).append(CMParms.toListString(supports)).append("\n\r");
@@ -338,8 +360,9 @@ public class GrapevineClient extends Thread implements Closeable
 				Log.errOut("Unknown Grapevine event: "+input);
 				return null;
 			}
-			Log.sysOut(input); //TODO:BZ:DELME
 			final String event = obj.getCheckedString("event");
+if(!event.equalsIgnoreCase("heartbeat"))
+Log.sysOut(input); //TODO:BZ:DELME
 			if(event.equalsIgnoreCase("heartbeat"))
 			{
 				obj = new MiniJSON.JSONObject();
@@ -375,8 +398,8 @@ public class GrapevineClient extends Thread implements Closeable
 				else
 				{
 					gameStatusReq(null,null);
-					//achievementsSync();
-					//playerStatusReq(null, null);
+					playerStatusReq(null, null);
+					achievementsSync();
 				}
 			}
 			else
@@ -394,7 +417,7 @@ public class GrapevineClient extends Thread implements Closeable
 				if(obj.containsKey("payload"))
 				{
 					final MiniJSON.JSONObject pobj = obj.getCheckedJSONObject("payload");
-					final String channel = pobj.getCheckedString("grapevine");
+					final String channel = pobj.getCheckedString("channel");
 					final String game = pobj.getCheckedString("game");
 					final String player = pobj.getCheckedString("name");
 					final String message = pobj.getCheckedString("message");
@@ -415,14 +438,17 @@ public class GrapevineClient extends Thread implements Closeable
 				{
 					final MiniJSON.JSONObject pobj = obj.getCheckedJSONObject("payload");
 					final String game = pobj.getCheckedString("game");
-					final String ref = pobj.getCheckedString("ref");
 					final Object[] players = pobj.getCheckedArray("players");
-					if(playerReq.containsKey(ref))
+					if(obj.containsKey("ref"))
 					{
-						final MOB M = playerReq.remove(ref);
-						M.tell(CMLib.lang().L("@x1 has @x2 players online: @x3",game,""+players.length,CMParms.toListString(players)));
+						final String ref = obj.getCheckedString("ref");
+						if(playerReq.containsKey(ref))
+						{
+							final MOB M = playerReq.remove(ref);
+							M.tell(CMLib.lang().L("@x1 has @x2 players online: @x3",game,""+players.length,CMParms.toListString(players)));
+						}
 					}
-					final MiniJSON.JSONObject mud = knownMuds.get(game);
+					final MiniJSON.JSONObject mud = knownMuds.get(game.toLowerCase());
 					mud.put("players", players);
 				}
 			}
@@ -493,7 +519,7 @@ public class GrapevineClient extends Thread implements Closeable
 					knownMuds.put(game.toLowerCase().trim(), pobj);
 					if(obj.containsKey("ref"))
 					{
-						final String ref = pobj.getCheckedString("ref");
+						final String ref = obj.getCheckedString("ref");
 						if(this.playerReq.containsKey(ref))
 						{
 							final MOB M = this.playerReq.remove(ref);
@@ -517,28 +543,42 @@ public class GrapevineClient extends Thread implements Closeable
 				if(obj.containsKey("payload"))
 				{
 					final MiniJSON.JSONObject pobj = obj.getCheckedJSONObject("payload");
-					final int total = pobj.getCheckedLong("title").intValue();
-					final Object[] aobjs = pobj.getCheckedArray("achievements");
+					final int total;
+					final Object[] aobjs;
+					if(event.equals("achievements/create"))
+					{
+						total=-1;
+						aobjs = new Object[] {pobj};
+					}
+					else
+					{
+						total = pobj.getCheckedLong("total").intValue();
+						aobjs = pobj.getCheckedArray("achievements");
+					}
 					for(final Object o : aobjs)
 					{
 						final MiniJSON.JSONObject aobj = (MiniJSON.JSONObject)o;
 						final String key = aobj.getCheckedString("key");
 						final String title = aobj.getCheckedString("title");
-						final String aid = CMLib.achievements().findAchievementID(event, true);
+						final String aid = CMLib.achievements().findAchievementID(title, true);
 						if(aid == null)
 							this.achievementsDelete(key);
 						else
 						{
+							boolean progress=true;
+							if(aobj.containsKey("partial_progress"))
+								progress=aobj.getCheckedBoolean("partial_progress").booleanValue();
 							final Achievement A = CMLib.achievements().getAchievement(aid);
 							if(A != null)
 							{
 								achieves.put(key, A);
-								if(!A.getDisplayStr().equals(title))
+								if((!A.getDisplayStr().equals(title))
+								||((A.getTargetCount()!=Integer.MIN_VALUE)!=progress))
 									this.achievementsUpdate(key, A);
 							}
 						}
 					}
-					if(total <= achieves.size())
+					if((total >=0) && (total <= achieves.size()))
 					{
 						final Set<Achievement> done = new HashSet<Achievement>();
 						for(final Achievement A : achieves.values())
@@ -879,7 +919,7 @@ public class GrapevineClient extends Thread implements Closeable
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("event", "players/status");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("ref", UUID.randomUUID().toString());
 			if(mob != null)
 				this.playerReq.put((String)obj.get("ref"), mob);
 			if(mudName != null)
@@ -903,7 +943,7 @@ public class GrapevineClient extends Thread implements Closeable
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("event", "games/status");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("ref", UUID.randomUUID().toString());
 			if(mob != null)
 				this.playerReq.put((String)obj.get("ref"), mob);
 			if((game != null)&&(game.length()>0))
@@ -927,7 +967,7 @@ public class GrapevineClient extends Thread implements Closeable
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("event", "achievements/sync");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("ref", UUID.randomUUID().toString());
 			sendPacket(obj.toString().getBytes(StandardCharsets.UTF_8),WSPType.TEXT);
 		}
 		catch(final IOException e)
@@ -942,12 +982,12 @@ public class GrapevineClient extends Thread implements Closeable
 		try
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
-			obj.put("event", "achievements/sync");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("event", "achievements/create");
+			obj.put("ref", UUID.randomUUID().toString());
 			final MiniJSON.JSONObject dobj = new MiniJSON.JSONObject();
 			dobj.put("title", A.getDisplayStr());
 			dobj.put("description", "");
-			dobj.put("points", Integer.valueOf(1));
+			dobj.put("points", Integer.valueOf(0));
 			dobj.put("display", Boolean.TRUE);
 			int targetScore = A.getTargetCount();
 			if(A.getEvent()==Event.STATVALUE)
@@ -959,13 +999,13 @@ public class GrapevineClient extends Thread implements Closeable
 			}
 			else
 			{
-				dobj.put("partial_progress",Boolean.FALSE);
+				dobj.put("partial_progress",Boolean.TRUE);
 				dobj.put("total_progress",Integer.valueOf(targetScore));
 			}
 			obj.put("payload", dobj);
-			sendPacket(obj.toString().getBytes(StandardCharsets.UTF_8),WSPType.TEXT);
+			outgoing.add(obj.toString().getBytes(StandardCharsets.UTF_8));
 		}
-		catch(final IOException e)
+		catch(final Exception e)
 		{
 			Log.errOut(e);
 			this.closeSocket();
@@ -977,13 +1017,13 @@ public class GrapevineClient extends Thread implements Closeable
 		try
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
-			obj.put("event", "achievements/key");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("event", "achievements/update");
+			obj.put("ref", UUID.randomUUID().toString());
 			final MiniJSON.JSONObject dobj = new MiniJSON.JSONObject();
 			dobj.put("key", key);
 			dobj.put("title", A.getDisplayStr());
 			dobj.put("description", "");
-			dobj.put("points", Integer.valueOf(1));
+			dobj.put("points", Integer.valueOf(0));
 			dobj.put("display", Boolean.TRUE);
 			int targetScore = A.getTargetCount();
 			if(A.getEvent()==Event.STATVALUE)
@@ -995,13 +1035,13 @@ public class GrapevineClient extends Thread implements Closeable
 			}
 			else
 			{
-				dobj.put("partial_progress",Boolean.FALSE);
+				dobj.put("partial_progress",Boolean.TRUE);
 				dobj.put("total_progress",Integer.valueOf(targetScore));
 			}
 			obj.put("payload", dobj);
-			sendPacket(obj.toString().getBytes(StandardCharsets.UTF_8),WSPType.TEXT);
+			outgoing.add(obj.toString().getBytes(StandardCharsets.UTF_8));
 		}
-		catch(final IOException e)
+		catch(final Exception e)
 		{
 			Log.errOut(e);
 			this.closeSocket();
@@ -1014,17 +1054,25 @@ public class GrapevineClient extends Thread implements Closeable
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("event", "achievements/delete");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("ref", UUID.randomUUID().toString());
 			final MiniJSON.JSONObject dobj = new MiniJSON.JSONObject();
 			dobj.put("key", key);
 			obj.put("payload", dobj);
-			sendPacket(obj.toString().getBytes(StandardCharsets.UTF_8),WSPType.TEXT);
+			outgoing.add(obj.toString().getBytes(StandardCharsets.UTF_8));
 		}
-		catch(final IOException e)
+		catch(final Exception e)
 		{
 			Log.errOut(e);
 			this.closeSocket();
 		}
+	}
+
+	public List<String> getLocalIMudChannelsList()
+	{
+		final List<String> list = new Vector<String>();
+		for(final CMChannel chan : channels)
+			list.add(chan.name());
+		return list;
 	}
 
 	public void sendMappedChannelMessage(final String player, final String channel, final String message)
@@ -1049,7 +1097,7 @@ public class GrapevineClient extends Thread implements Closeable
 			obj.put("event", "channels/send");
 			final MiniJSON.JSONObject dobj = new MiniJSON.JSONObject();
 			dobj.put("channel", channel);
-			dobj.put("player", player);
+			dobj.put("name", player);
 			dobj.put("message", message);
 			obj.put("payload", dobj);
 			sendPacket(obj.toString().getBytes(StandardCharsets.UTF_8),WSPType.TEXT);
@@ -1072,7 +1120,7 @@ public class GrapevineClient extends Thread implements Closeable
 		{
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("event", "tells/send");
-			obj.put("ref", UUID.randomUUID());
+			obj.put("ref", UUID.randomUUID().toString());
 			final MiniJSON.JSONObject dobj = new MiniJSON.JSONObject();
 			dobj.put("from_name", from);
 			dobj.put("to_name", to);
@@ -1151,7 +1199,7 @@ public class GrapevineClient extends Thread implements Closeable
 				authStr.append(",");
 		}
 		authStr.append("],");
-		authStr.append("\"version\": \"1.0.0\",");
+		authStr.append("\"version\": \"2.3.0\",");
 		authStr.append("\"user_agent\": \"CoffeeMud "+CMProps.getVar(CMProps.Str.MUDVER)+"\"");
 		authStr.append("}");
 		authStr.append("}");

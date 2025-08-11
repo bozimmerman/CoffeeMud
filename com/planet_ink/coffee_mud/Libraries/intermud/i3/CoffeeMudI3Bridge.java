@@ -393,7 +393,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					}
 					catch (final Exception e)
 					{
-						Log.errOut("IMudClient", e);
+						Log.errOut("IntermudClient", e);
 					}
 				}
 			}
@@ -441,7 +441,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 			break;
@@ -490,7 +490,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 			break;
@@ -593,7 +593,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 			break;
@@ -616,7 +616,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					}
 					catch (final Exception e)
 					{
-						Log.errOut("IMudClient", e);
+						Log.errOut("IntermudClient", e);
 					}
 				}
 			}
@@ -653,7 +653,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 				}
 				catch (final Exception e)
 				{
-					Log.errOut("IMudClient", e);
+					Log.errOut("IntermudClient", e);
 				}
 			}
 			break;
