@@ -560,7 +560,7 @@ public class GrapevineClient extends Thread implements Closeable
 						final String title = aobj.getCheckedString("title");
 						final String aid = CMLib.achievements().findAchievementID(title, true);
 						if(aid == null)
-							this.achievementsDelete(key);
+							achievementsDelete(key);
 						else
 						{
 							boolean progress=true;

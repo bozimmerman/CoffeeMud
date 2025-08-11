@@ -60,10 +60,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	// order is now significant, so they are Lists
-	private List<Achievement> 			playerAchievements	= null;
-	private List<Achievement> 			accountAchievements = null;
-	private List<Achievement> 			clanAchievements	= null;
-	private Map<Event,List<Achievement>>eventMap			= null;
+	private List<Achievement>				playerAchievements	= null;
+	private List<Achievement>				accountAchievements	= null;
+	private List<Achievement>				clanAchievements	= null;
+	private Map<Event, List<Achievement>>	eventMap			= null;
+	private final Map<String, String>		achievementFinder	= new STreeMap<String, String>();
+	private final Map<String,Achievement>	achievementMap		= new STreeMap<String, Achievement>();
 
 	private final static String achievementFilename  = "achievements.ini";
 
@@ -961,7 +963,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
 			return "Error: Blank or unknown achievement type: "+eventStr+"!";
-		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
+		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", "")).trim();
 		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
 		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
 		final int duration=CMParms.getParmInt(params, "DURATION", 0);
@@ -8121,6 +8123,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				eventMap.put(A.getEvent(), eventList);
 			}
 			eventList.add(A);
+			final String upperDisp = A.getDisplayStr().toUpperCase().trim();
+			final String uID = A.getTattoo().toUpperCase().trim();
+			achievementFinder.put(upperDisp, uID);
+			if(upperDisp.indexOf('\'')>=0)
+				achievementFinder.put(upperDisp.replace('`', '\''), uID);
+			if(upperDisp.indexOf('`')>=0)
+				achievementFinder.put(upperDisp.replace('\'', '`'), uID);
+			achievementMap.put(uID, A);
 		}
 		return null;
 	}
@@ -9111,12 +9121,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public Achievement getAchievement(final String tattoo)
 	{
-		for(final Enumeration<Achievement> a = achievements(null); a.hasMoreElements();)
-		{
-			final Achievement A=a.nextElement();
-			if(A.getTattoo().equalsIgnoreCase(tattoo))
-				return A;
-		}
+		if(tattoo != null)
+			return achievementMap.get(tattoo.toUpperCase().trim());
 		return null;
 	}
 
@@ -9773,6 +9779,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		playerAchievements=new SLinkedList<Achievement>();
 		clanAchievements=new SLinkedList<Achievement>();
 		eventMap=new TreeMap<Event,List<Achievement>>();
+		achievementFinder.clear();
+		achievementMap.clear();
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
@@ -10073,36 +10081,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if(ID==null)
 			return null;
-		String UID=ID.toUpperCase();
-		final Achievement A = getAchievement(UID);
+		String UID=ID.toUpperCase().trim();
+		Achievement A = getAchievement(UID);
+		if(A == null)
+		{
+			UID = achievementFinder.get(UID);
+			if(UID != null)
+				A=getAchievement(UID);
+		}
 		if(A!=null)
 			return UID;
-		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-		{
-			final Achievement A2 = a.nextElement();
-			if(A2.getDisplayStr().equalsIgnoreCase(ID))
-				return A2.getTattoo().toUpperCase();
-		}
-		if((UID.indexOf('\'')>0)||(UID.indexOf('`')>0))
-		{
-			UID = UID.replace('`','\'');
-			for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-			{
-				final Achievement A2 = a.nextElement();
-				if(A2.getDisplayStr().equalsIgnoreCase(ID))
-					return A2.getTattoo().toUpperCase();
-			}
-			if((A == null)&&(exact))
-			{
-				UID = UID.replace('\'','`');
-				for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
-				{
-					final Achievement A2 = a.nextElement();
-					if(A2.getDisplayStr().equalsIgnoreCase(ID))
-						return A2.getTattoo().toUpperCase();
-				}
-			}
-		}
 		if(exact)
 			return null;
 		for(final Enumeration<Achievement> a=achievements(null); a.hasMoreElements();)
@@ -10146,6 +10134,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		playerAchievements=null;
 		clanAchievements=null;
 		eventMap=null;
+		achievementFinder.clear();
+		achievementMap.clear();
 		return super.shutdown();
 	}
 }
