@@ -67,7 +67,6 @@ public class IntermudClient implements IntermudInterface
 	}
 
 	protected CoffeeMudI3Bridge	i3mud		= null;
-	protected I3Server			i3server	= null;
 	protected IMC2Driver		imc2		= null;
 	protected GrapevineClient	grapevine	= null;
 	protected DiscordClient		discord		= null;
@@ -169,7 +168,8 @@ public class IntermudClient implements IntermudInterface
 			discord = null;
 			break;
 		case I3:
-			this.shutdownI3();
+			if(i3mud != null)
+				shutdownI3();
 			break;
 		case IMC2:
 			this.shutdownIntermud2();
@@ -187,40 +187,9 @@ public class IntermudClient implements IntermudInterface
 			&&(tCode==MUD.MAIN_HOST)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.I3)))
 			{
-				if(i3server!=null)
-					I3Server.shutdown();
+				if(i3mud != null)
+					i3mud.shutdown();
 				i3mud = null;
-				i3server=null;
-				String playstate=page.getStr("MUDSTATE");
-				if((playstate==null) || (playstate.length()==0))
-					playstate=page.getStr("I3STATE");
-				if((playstate==null) || (!CMath.isInteger(playstate)))
-					playstate="Development";
-				else
-				switch(CMath.s_int(playstate.trim()))
-				{
-				case 0:
-					playstate = "MudLib Development";
-					break;
-				case 1:
-					playstate = "Restricted Access";
-					break;
-				case 2:
-					playstate = "Beta Testing";
-					break;
-				case 3:
-					playstate = "Open to the public";
-					break;
-				default:
-					playstate = "MudLib Development";
-					break;
-				}
-				i3mud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
-										 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
-										 CMLib.mud(0).getPublicPort(),
-										 playstate,
-										 CMLib.channels().getIMudChannelsList(InterProto.I3));
-				i3server=new I3Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0)
 					i3port=27766;
@@ -228,19 +197,25 @@ public class IntermudClient implements IntermudInterface
 				final List<String> routersSepV = CMParms.parseCommas(routersList, true);
 				if(routersSepV.size()>0)
 				{
-					final String mudName = CMProps.getVar(CMProps.Str.MUDNAME);
 					final String adminEmail = CMProps.getVar(CMProps.Str.ADMINEMAIL);
 					final String[] routersArray = routersSepV.toArray(new String[0]);
 					final int smtpPort = CMath.s_int(CMLib.host().executeCommand("GET SMTP PORT"));
-					I3Server.start(mudName,i3port,i3mud,routersArray,adminEmail,smtpPort);
+					i3mud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
+												 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
+												 CMLib.mud(0).getPublicPort(),
+												 CMLib.channels().getIMudChannelsList(InterProto.I3),
+												 i3port,
+												 routersArray,
+												 adminEmail,
+												 smtpPort
+												 );
 				}
 			}
 		}
 		catch(final Exception e)
 		{
-			if(i3server!=null)
-				I3Server.shutdown();
-			i3server=null;
+			if(i3mud!=null)
+				i3mud.shutdown();
 			i3mud = null;
 		}
 		return true;
@@ -442,18 +417,18 @@ public class IntermudClient implements IntermudInterface
 
 	protected void shutdownI3()
 	{
-		if(i3server!=null)
+		if(i3mud!=null)
 		{
 			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...I3Server");
 			try
 			{
-				I3Server.shutdown();
+				i3mud.shutdown();
 			}
 			catch (final Throwable ex)
 			{
 				Log.errOut(ex);
 			}
-			i3server=null;
+			i3mud=null;
 			//if(S!=null)
 			//	S.println(CMLib.lang().L("I3Server stopped"));
 			Log.sysOut(Thread.currentThread().getName(),"I3Server stopped");
@@ -510,8 +485,6 @@ public class IntermudClient implements IntermudInterface
 	{
 		if(mob==null)
 			return;
-		if((!i3online())&&(!imc2online()))
-			return;
 		if((mudName==null)||(mudName.length()==0))
 		{
 			mob.tell(L("You must specify a mud name."));
@@ -567,7 +540,7 @@ public class IntermudClient implements IntermudInterface
 
 	private boolean i3online()
 	{
-		return I3Client.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
+		return (i3mud != null) && (!CMSecurity.isDisabled(DisFlag.I3)) && i3mud.isOnline();
 	}
 
 	private boolean imc2online()
@@ -587,140 +560,6 @@ public class IntermudClient implements IntermudInterface
 			return;
 		}
 		imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(parms).name,"info",mob.phyStats().level(),0);
-	}
-
-	private boolean i3chanwho(final MOB mob, final String channel, String mudName)
-	{
-		if((mob==null)||(!i3online()))
-			return false;
-		if(!I3Client.isAPossibleMUDName(mudName))
-			return false;
-		mudName=I3Client.translateName(mudName);
-		if(!I3Client.isUp(mudName))
-			return false;
-		if(I3Client.getRemoteChannel(channel).length()==0)
-			return false;
-		final ChannelWhoRequest ck=new ChannelWhoRequest();
-		ck.sender_name=mob.Name();
-		ck.target_mud=mudName;
-		ck.channel= I3Client.getRemoteChannel(channel);
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
-		return true;
-	}
-
-	private void i3channelAdd(final MOB mob, final String channel)
-	{
-		if((mob==null)||(!i3online()))
-			return;
-		if((channel==null)||(channel.length()==0)||(I3Client.getLocalChannel(channel).length()==0))
-		{
-			mob.tell(L("You must specify an existing channel to add it to the i3 network."));
-			return;
-		}
-
-		final ChannelAdd ck=new ChannelAdd();
-		ck.sender_name=mob.Name();
-		ck.target_mud=I3Client.getNameServer().name;
-		ck.channel=channel;
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
-	}
-
-	private void i3channelListen(final MOB mob, final String channel)
-	{
-		if((mob==null)||(!i3online()))
-			return;
-		if((channel==null)||(channel.length()==0))
-		{
-			mob.tell(L("You must specify a channel name listed in your INI file."));
-			return;
-		}
-		if(I3Client.getLocalChannel(channel).length()==0)
-		{
-			if(I3Client.registerFakeChannel(channel).length()>0)
-				mob.tell(L("Channel was not officially registered."));
-			else
-				mob.tell(L("Channel listen failed."));
-		}
-		final ChannelListen ck=new ChannelListen();
-		ck.sender_name=mob.Name();
-		ck.target_mud=I3Client.getNameServer().name;
-		ck.channel= I3Client.getRemoteChannel(channel);
-		ck.onoff=1;
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
-	}
-
-	private void i3channelSilence(final MOB mob, final String channel)
-	{
-		if((mob==null)||(!i3online()))
-			return;
-		if((channel==null)
-		   ||(channel.length()==0)
-		   ||(I3Client.getLocalChannel(channel).length()==0))
-		{
-			mob.tell(L("You must specify an actual channel name."));
-			return;
-		}
-		if(I3Client.removeFakeChannel(channel).length()>0)
-			mob.tell(L("Unofficial channel closed."));
-
-		final ChannelListen ck=new ChannelListen();
-		ck.sender_name=mob.Name();
-		ck.target_mud=I3Client.getNameServer().name;
-		ck.channel=channel;
-		ck.onoff=0;
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
-	}
-
-	private void i3channelRemove(final MOB mob, final String channel)
-	{
-		if((mob==null)||(!i3online()))
-			return;
-		if((channel==null)||(channel.length()==0)||(I3Client.getRemoteChannel(channel).length()==0))
-		{
-			mob.tell(L("You must specify a valid InterMud 3 channel name."));
-			return;
-		}
-		final ChannelDelete ck=new ChannelDelete();
-		ck.sender_name=mob.Name();
-		ck.target_mud=I3Client.getNameServer().name;
-		ck.channel=channel;
-		ck.channel = I3Client.getRemoteChannel(ck.channel);
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
 	}
 
 	@Override
@@ -817,15 +656,6 @@ public class IntermudClient implements IntermudInterface
 			R.destroy();
 	}
 
-	public String getI3ChannelName(final String localChannelName)
-	{
-		final String fixedChannel = I3Client.getRemoteChannel(localChannelName);
-		if(((fixedChannel != null)&&(fixedChannel.length()>0)))
-			return fixedChannel;
-		else
-			return localChannelName;
-	}
-
 	protected void sendIMC2ChannelMsg(final MOB mob, final String channelName, String message)
 	{
 		int emote=0;
@@ -883,116 +713,6 @@ public class IntermudClient implements IntermudInterface
 		imc2.imc_send_chat(mob.name(),c.name,message,c.level,emote);
 	}
 
-	protected void sendI3ChannelMsg(final MOB mob, final String channelName, final String message)
-	{
-		final ChannelPacket ck;
-		if((message.startsWith(":")||message.startsWith(","))
-		&&(message.trim().length()>1))
-		{
-			String msgstr=message.substring(1);
-			final Vector<String> V=CMParms.parse(msgstr);
-			Social socialS=CMLib.socials().fetchSocial(V,true,false);
-			if(socialS==null)
-				socialS=CMLib.socials().fetchSocial(V,false,false);
-			CMMsg msg=null;
-			if((socialS!=null)
-			&&(socialS.meetsCriteriaToUse(mob)))
-			{
-				msg=socialS.makeChannelMsg(mob,0,channelName,V,true);
-				final int atDex = (msg.target()!=null) ? msg.target().name().indexOf('@') : -1;
-				if(atDex>=0)
-				{
-					final int x=atDex;
-					String mudName=msg.target().name().substring(x+1);
-					final String tellName=msg.target().name().substring(0,x);
-					if((mudName==null)||(mudName.length()==0))
-					{
-						mob.tell(L("You must specify a mud name."));
-						return;
-					}
-					if((tellName==null)||(tellName.length()<1))
-					{
-						mob.tell(L("You must specify someone to emote to."));
-						return;
-					}
-					if(!I3Client.isAPossibleMUDName(mudName))
-					{
-						mob.tell(L("'@x1' is an unknown mud.",mudName));
-						return;
-					}
-					mudName=I3Client.translateName(mudName);
-					if(!I3Client.isUp(mudName))
-					{
-						mob.tell(L("@x1 is not available.",mudName));
-						return;
-					}
-					ck = new ChannelTargetEmote();
-					ck.channel = this.getI3ChannelName(channelName);
-					ck.sender_name=mob.Name();
-					ck.sender_visible_name=mob.Name();
-					ck.target_mud=mudName;
-					ck.target_name=tellName;
-					((ChannelTargetEmote)ck).target_visible_name=tellName;
-					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
-						((ChannelTargetEmote)ck).message_target=socialI3FixOut(CMStrings.removeColors(msg.targetMessage()));
-					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
-						((ChannelTargetEmote)ck).message=socialI3FixOut(CMStrings.removeColors(msg.othersMessage()));
-				}
-				else
-				if(msg.target()!=null)
-				{
-					ck = new ChannelTargetEmote();
-					ck.target_name=msg.target().name();
-					ck.channel = this.getI3ChannelName(channelName);
-					ck.sender_name=mob.Name();
-					ck.sender_visible_name=mob.Name();
-					((ChannelTargetEmote)ck).target_visible_name=msg.target().name();
-					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
-						((ChannelTargetEmote)ck).message_target=socialI3FixOut(CMStrings.removeColors(msg.targetMessage()));
-				}
-				else
-				{
-					ck = new ChannelEmote();
-					ck.channel = this.getI3ChannelName(channelName);
-					ck.sender_name=mob.Name();
-					ck.sender_visible_name=mob.Name();
-				}
-				if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
-					ck.message=socialI3FixOut(CMStrings.removeColors(msg.othersMessage()));
-				else
-					ck.message=socialI3FixOut(CMStrings.removeColors(msg.sourceMessage()));
-				ck.message = ck.convertString(ck.message);
-			}
-			else
-			{
-				ck = new ChannelEmote();
-				ck.channel = this.getI3ChannelName(channelName);
-				ck.sender_name=mob.Name();
-				ck.sender_visible_name=mob.Name();
-				if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
-					msgstr=msgstr.trim();
-				else
-					msgstr=" "+msgstr.trim();
-				ck.message=socialI3FixOut("<S-NAME>"+msgstr);
-			}
-		}
-		else
-		{
-			ck = new ChannelMessage();
-			ck.channel = this.getI3ChannelName(channelName);
-			ck.sender_name=mob.Name();
-			ck.sender_visible_name=mob.Name();
-			ck.message=message;
-		}
-		try
-		{
-			ck.send();
-		}
-		catch (final Exception e)
-		{
-			Log.errOut("IntermudClient", e);
-		}
-	}
 
 	protected void sendGrapevineChannelMsg(final MOB mob, final String channelName, final String message)
 	{
@@ -1089,7 +809,7 @@ public class IntermudClient implements IntermudInterface
 			this.sendIMC2ChannelMsg(mob, channelName, message);
 
 		if(i3online() && I3Client.getRemoteChannel(channelName).length()>0)
-			this.sendI3ChannelMsg(mob, channelName, message);
+			i3mud.sendI3ChannelMsg(mob, channelName, message);
 
 		if(this.isOnline(InterProto.DISCORD))
 		{
@@ -1223,61 +943,6 @@ public class IntermudClient implements IntermudInterface
 		return buf.toString();
 	}
 
-	public List<I3Mud> i3MudFinder(final String parms)
-	{
-		final MudList list=I3Client.getAllMudsList();
-		if(list==null)
-			return null;
-		final Map<String,I3Mud> l=list.getMuds();
-		for(final I3Mud m : l.values())
-		{
-			if(m.mud_name.equals(parms))
-				return new XVector<I3Mud>(m);
-		}
-		for(final I3Mud m : l.values())
-		{
-			if(m.mud_name.equalsIgnoreCase(parms))
-				return new XVector<I3Mud>(m);
-		}
-		if(parms.startsWith("*")&&(!parms.endsWith("*")))
-		{
-			final List<I3Mud> muds=new XVector<I3Mud>();
-			for(final I3Mud m : l.values())
-			{
-				if(m.mud_name.toLowerCase().endsWith(parms.toLowerCase()))
-					muds.add(m);
-			}
-			return muds;
-		}
-		if(parms.endsWith("*")&&(!parms.startsWith("*")))
-		{
-			final List<I3Mud> muds=new XVector<I3Mud>();
-			for(final I3Mud m : l.values())
-			{
-				if(m.mud_name.toLowerCase().startsWith(parms.toLowerCase()))
-					muds.add(m);
-			}
-			return muds;
-		}
-		if(parms.endsWith("*")&&(parms.startsWith("*")))
-		{
-			final List<I3Mud> muds=new XVector<I3Mud>();
-			for(final I3Mud m : l.values())
-			{
-				if(m.mud_name.toLowerCase().indexOf(parms.toLowerCase())>=0)
-					muds.add(m);
-			}
-			return muds;
-		}
-		final List<I3Mud> muds=new XVector<I3Mud>();
-		for(final I3Mud m : l.values())
-		{
-			if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
-				muds.add(m);
-		}
-		return muds;
-	}
-
 	public void i3mudInfo(final MOB mob, final String parms)
 	{
 		if((mob==null)||(!i3online()))
@@ -1285,7 +950,7 @@ public class IntermudClient implements IntermudInterface
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\r");
-		final List<I3Mud> muds=this.i3MudFinder(parms);
+		final List<I3Mud> muds=(i3mud==null)?new ArrayList<I3Mud>():i3mud.i3MudFinder(parms);
 		if(muds.size()==0)
 			buf.append("Not found!");
 		else
@@ -1352,43 +1017,14 @@ public class IntermudClient implements IntermudInterface
 		return list;
 	}
 
-	protected List<I3Mud> getSortedI3Muds()
-	{
-		final Vector<I3Mud> list = new Vector<I3Mud>();
-		if(!i3online())
-			return list;
-		final MudList mudList=I3Client.getAllMudsList();
-		if(mudList!=null)
-		{
-			for(final I3Mud m : mudList.getMuds().values())
-			{
-				if(m.state<0)
-				{
-					boolean done=false;
-					for(int v=0;v<list.size();v++)
-					{
-						final I3Mud m2=list.elementAt(v);
-						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
-						{
-							list.insertElementAt(m,v);
-							done=true;
-							break;
-						}
-					}
-					if(!done)
-						list.addElement(m);
-				}
-			}
-		}
-		return list;
-	}
-
 	public List<String> getI3MudList(final boolean coffeemudOnly)
 	{
 		final List<String> list = new Vector<String>();
-		if(!i3online())
+		if(i3mud == null)
 			return list;
-		 final List<I3Mud> muds = getSortedI3Muds();
+		 final List<I3Mud> muds = i3mud.getSortedI3Muds();
+		 if(muds == null)
+			 return list;
 		 for(final I3Mud mud : muds)
 		 {
 			 if((mud!=null) && ((!coffeemudOnly) || mud.base_mudlib.startsWith("CoffeeMud")))
@@ -1400,9 +1036,9 @@ public class IntermudClient implements IntermudInterface
 	public List<RemoteIMud> getI3MudInfo(final boolean coffeemudOnly)
 	{
 		final List<RemoteIMud> list = new Vector<RemoteIMud>();
-		if(!i3online())
+		if(i3mud==null)
 			return list;
-		for(final I3Mud m : this.getSortedI3Muds())
+		for(final I3Mud m : i3mud.getSortedI3Muds())
 		{
 			final RemoteIMud mud = new RemoteIMud();
 			mud.name = m.mud_name;
@@ -1449,12 +1085,12 @@ public class IntermudClient implements IntermudInterface
 						final MiniJSON.JSONObject cobj = (MiniJSON.JSONObject)cconnections[i];
 						if (cobj.getCheckedString("type").equalsIgnoreCase("telnet"))
 						{
-							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("port");
+							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("mudPort");
 							break;
 						}
 						else
 						if (cobj.getCheckedString("type").equalsIgnoreCase("secure telnet"))
-							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("port");
+							mud.hostPort = cobj.getCheckedString("host")+":"+cobj.getCheckedLong("mudPort");
 					}
 					catch(final MiniJSON.MJSONException e)
 					{}
@@ -1524,43 +1160,6 @@ public class IntermudClient implements IntermudInterface
 		if(remote==null)
 			return false;
 		return true;
-	}
-
-	public boolean isLocalI3channel(final String channelName)
-	{
-		if(!i3online())
-			return false;
-		final String remote=I3Client.getRemoteChannel(channelName);
-		if(remote.length()==0)
-			return false;
-		return true;
-	}
-
-	public boolean isRemoteI3Channel(final String channelName)
-	{
-		if(!i3online())
-			return false;
-		final String remote=I3Client.getLocalChannel(channelName);
-		if(remote.length()==0)
-			return false;
-		return true;
-	}
-
-	public String socialI3FixOut(String str)
-	{
-		str=CMStrings.replaceAll(str,"<S-NAME>","$N");
-		str=CMStrings.replaceAll(str,"<T-NAME>","$O");
-		str=CMStrings.replaceAll(str,"<T-NAMESELF>","$O");
-		str=CMStrings.replaceAll(str,"<S-HIM-HER>","$m");
-		str=CMStrings.replaceAll(str,"<T-HIM-HER>","$M");
-		str=CMStrings.replaceAll(str,"<S-HIS-HER>","$s");
-		str=CMStrings.replaceAll(str,"<T-HIS-HER>","$S");
-		str=CMStrings.replaceAll(str,"<S-HE-SHE>","$e");
-		str=CMStrings.replaceAll(str,"<T-HE-SHE>","$E");
-		str=CMStrings.replaceAll(str,"\'","`");
-		if(str.equals(""))
-			return "$";
-		return str.trim();
 	}
 
 	public String socialNormalFixOut(final String sourceName, final String targetName, String str)
@@ -1729,7 +1328,9 @@ public class IntermudClient implements IntermudInterface
 			}
 			break;
 		case I3:
-			return isLocalI3channel(channelName) || isRemoteI3Channel(channelName);
+			if(i3mud != null)
+				return i3mud.isLocalI3channel(channelName) || i3mud.isRemoteI3Channel(channelName);
+			break;
 		case IMC2:
 			return isIMC2channel(channelName);
 		}
@@ -1790,7 +1391,8 @@ public class IntermudClient implements IntermudInterface
 			case DISCORD:
 				break;
 			case I3:
-				tried = tried || this.i3chanwho(mob, channel, mudName);
+				if(i3mud != null)
+					tried = tried || i3mud.i3chanwho(mob, channel, mudName);
 				break;
 			case IMC2:
 				break;
@@ -1867,7 +1469,8 @@ public class IntermudClient implements IntermudInterface
 			grapevine.subscribeChannel(channel);
 			break;
 		case I3:
-			this.i3channelListen(mob, channel);
+			if(i3mud != null)
+				i3mud.i3channelListen(mob, channel);
 			break;
 		case IMC2:
 			if(mob != null)
@@ -1899,10 +1502,12 @@ public class IntermudClient implements IntermudInterface
 			}
 			break;
 		case Grapevine:
-			grapevine.unsubscribeChannel(channel);
+			if(grapevine != null)
+				grapevine.unsubscribeChannel(channel);
 			break;
 		case I3:
-			this.i3channelSilence(mob, channel);
+			if(i3mud != null)
+				i3mud.i3channelSilence(mob, channel);
 			break;
 		case IMC2:
 			if(mob != null)
@@ -1938,7 +1543,8 @@ public class IntermudClient implements IntermudInterface
 				grapevine.subscribeChannel(channel);
 			break;
 		case I3:
-			this.i3channelAdd(mob, channel);
+			if(i3mud != null)
+				i3mud.i3channelAdd(mob, channel);
 			break;
 		case IMC2:
 			if(mob != null)
@@ -1970,10 +1576,12 @@ public class IntermudClient implements IntermudInterface
 			}
 			break;
 		case Grapevine:
-			grapevine.unsubscribeChannel(channel);
+			if(grapevine != null)
+				grapevine.unsubscribeChannel(channel);
 			break;
 		case I3:
-			this.i3channelRemove(mob, channel);
+			if(i3mud != null)
+				i3mud.i3channelRemove(mob, channel);
 			break;
 		case IMC2:
 			if(mob != null)
@@ -2002,7 +1610,7 @@ public class IntermudClient implements IntermudInterface
 		{
 			if(i3online() && I3Client.isAPossibleMUDName(mudName))
 			{
-				final List<I3Mud> muds = this.i3MudFinder(mudName);
+				final List<I3Mud> muds=i3mud.i3MudFinder(parms);
 				if(muds.size()==1)  // 2 means a non-exact match, and 0 is none
 				{
 					final StringBuilder buf=new StringBuilder("\n\r^HI3:^?");

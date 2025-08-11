@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.intermud.i3;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -16,6 +17,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
 import com.planet_ink.coffee_mud.Libraries.intermud.*;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.entities.I3Mud;
+import com.planet_ink.coffee_mud.Libraries.intermud.i3.entities.MudList;
 import com.planet_ink.coffee_mud.Libraries.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.i3.packets.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.i3.persist.*;
@@ -50,7 +53,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 	public String			name		= "CoffeeMud";
 	public String			i3state		= "Development";
 	public Room				universalR	= null;
-	public int				port		= 5555;
+	public int				mudPort		= 5555;
 	public List<CMChannel>	channels	= new XVector<CMChannel>();
 	public Map<String,Long>	inkeys		= new LimitedTreeMap<String,Long>(1200000,1000,true);
 	public Map<String,Long>	outkeys		= new LimitedTreeMap<String,Long>(1200000,1000,true);
@@ -125,12 +128,19 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
-	public CoffeeMudI3Bridge(final String name, final String version, final int port, final String i3status, final List<CMChannel> channels)
+	public CoffeeMudI3Bridge(final String name,
+							 final String version,
+							 final int publicMudPort,
+							 final List<CMChannel> channels,
+							 final int i3Port,
+							 final String[] routersList,
+							 final String adminEmail,
+							 final int smtpPort
+							 )
 	{
 		if(name!=null)
 			this.name=name;
-		if(i3status!=null)
-			this.i3state=i3status;
+		this.i3state=getPlayState();
 		if(version!=null)
 			this.version=version;
 		if(channels!=null)
@@ -146,7 +156,59 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 			imudChans.put(InterProto.I3,"diku_code");
 			this.channels.add(CMLib.channels().createNewChannel("GREET", imudChans, "", new HashSet<ChannelFlag>(),"",""));
 		}
-		this.port=port;
+		this.mudPort=publicMudPort;
+		try
+		{
+			I3Server.start(name,i3Port,this,routersList,adminEmail,smtpPort);
+		}
+		catch(final ServerSecurityException e)
+		{}
+	}
+
+	public void shutdown()
+	{
+		try
+		{
+			I3Server.shutdown();
+		}
+		catch (final Throwable ex)
+		{
+			Log.errOut(ex);
+		}
+	}
+
+	public boolean isOnline()
+	{
+		return I3Client.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
+	}
+
+	private String getPlayState()
+	{
+		String playState=CMProps.instance().getStr("MUDSTATE");
+		if((playState==null) || (playState.length()==0))
+			playState=CMProps.instance().getStr("I3STATE");
+		if((playState==null) || (!CMath.isInteger(playState)))
+			playState=L("Development");
+		else
+		switch(CMath.s_int(playState.trim()))
+		{
+		case 0:
+			playState = L("MudLib Development");
+			break;
+		case 1:
+			playState = L("Restricted Access");
+			break;
+		case 2:
+			playState = L("Beta Testing");
+			break;
+		case 3:
+			playState = L("Open to the public");
+			break;
+		default:
+			playState = L("MudLib Development");
+			break;
+		}
+		return playState;
 	}
 
 	public String L(final String str, final String ... xs)
@@ -228,6 +290,384 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 			return "";
 		return str.trim();
 	}
+
+	public boolean i3chanwho(final MOB mob, final String channel, String mudName)
+	{
+		if((mob==null)||(!isOnline()))
+			return false;
+		if(!I3Client.isAPossibleMUDName(mudName))
+			return false;
+		mudName=I3Client.translateName(mudName);
+		if(!I3Client.isUp(mudName))
+			return false;
+		if(I3Client.getRemoteChannel(channel).length()==0)
+			return false;
+		final ChannelWhoRequest ck=new ChannelWhoRequest();
+		ck.sender_name=mob.Name();
+		ck.target_mud=mudName;
+		ck.channel= I3Client.getRemoteChannel(channel);
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+		return true;
+	}
+
+	public void i3channelAdd(final MOB mob, final String channel)
+	{
+		if((mob==null)||(!isOnline()))
+			return;
+		if((channel==null)||(channel.length()==0)||(I3Client.getLocalChannel(channel).length()==0))
+		{
+			mob.tell(L("You must specify an existing channel to add it to the i3 network."));
+			return;
+		}
+
+		final ChannelAdd ck=new ChannelAdd();
+		ck.sender_name=mob.Name();
+		ck.target_mud=I3Client.getNameServer().name;
+		ck.channel=channel;
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+	}
+
+	public void i3channelListen(final MOB mob, final String channel)
+	{
+		if((mob==null)||(!isOnline()))
+			return;
+		if((channel==null)||(channel.length()==0))
+		{
+			mob.tell(L("You must specify a channel name listed in your INI file."));
+			return;
+		}
+		if(I3Client.getLocalChannel(channel).length()==0)
+		{
+			if(I3Client.registerFakeChannel(channel).length()>0)
+				mob.tell(L("Channel was not officially registered."));
+			else
+				mob.tell(L("Channel listen failed."));
+		}
+		final ChannelListen ck=new ChannelListen();
+		ck.sender_name=mob.Name();
+		ck.target_mud=I3Client.getNameServer().name;
+		ck.channel= I3Client.getRemoteChannel(channel);
+		ck.onoff=1;
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+	}
+
+	public void i3channelSilence(final MOB mob, final String channel)
+	{
+		if((mob==null)||(!isOnline()))
+			return;
+		if((channel==null)
+		   ||(channel.length()==0)
+		   ||(I3Client.getLocalChannel(channel).length()==0))
+		{
+			mob.tell(L("You must specify an actual channel name."));
+			return;
+		}
+		if(I3Client.removeFakeChannel(channel).length()>0)
+			mob.tell(L("Unofficial channel closed."));
+
+		final ChannelListen ck=new ChannelListen();
+		ck.sender_name=mob.Name();
+		ck.target_mud=I3Client.getNameServer().name;
+		ck.channel=channel;
+		ck.onoff=0;
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+	}
+
+	public void i3channelRemove(final MOB mob, final String channel)
+	{
+		if((mob==null)||(!isOnline()))
+			return;
+		if((channel==null)||(channel.length()==0)||(I3Client.getRemoteChannel(channel).length()==0))
+		{
+			mob.tell(L("You must specify a valid InterMud 3 channel name."));
+			return;
+		}
+		final ChannelDelete ck=new ChannelDelete();
+		ck.sender_name=mob.Name();
+		ck.target_mud=I3Client.getNameServer().name;
+		ck.channel=channel;
+		ck.channel = I3Client.getRemoteChannel(ck.channel);
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+	}
+
+	public boolean isLocalI3channel(final String channelName)
+	{
+		if(!isOnline())
+			return false;
+		final String remote=I3Client.getRemoteChannel(channelName);
+		if(remote.length()==0)
+			return false;
+		return true;
+	}
+
+	public boolean isRemoteI3Channel(final String channelName)
+	{
+		if(!isOnline())
+			return false;
+		final String remote=I3Client.getLocalChannel(channelName);
+		if(remote.length()==0)
+			return false;
+		return true;
+	}
+
+	public String getI3ChannelName(final String localChannelName)
+	{
+		final String fixedChannel = I3Client.getRemoteChannel(localChannelName);
+		if(((fixedChannel != null)&&(fixedChannel.length()>0)))
+			return fixedChannel;
+		else
+			return localChannelName;
+	}
+
+	public List<I3Mud> i3MudFinder(final String parms)
+	{
+		final MudList list=I3Client.getAllMudsList();
+		if(list==null)
+			return null;
+		final Map<String,I3Mud> l=list.getMuds();
+		for(final I3Mud m : l.values())
+		{
+			if(m.mud_name.equals(parms))
+				return new XVector<I3Mud>(m);
+		}
+		for(final I3Mud m : l.values())
+		{
+			if(m.mud_name.equalsIgnoreCase(parms))
+				return new XVector<I3Mud>(m);
+		}
+		if(parms.startsWith("*")&&(!parms.endsWith("*")))
+		{
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
+			{
+				if(m.mud_name.toLowerCase().endsWith(parms.toLowerCase()))
+					muds.add(m);
+			}
+			return muds;
+		}
+		if(parms.endsWith("*")&&(!parms.startsWith("*")))
+		{
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
+			{
+				if(m.mud_name.toLowerCase().startsWith(parms.toLowerCase()))
+					muds.add(m);
+			}
+			return muds;
+		}
+		if(parms.endsWith("*")&&(parms.startsWith("*")))
+		{
+			final List<I3Mud> muds=new XVector<I3Mud>();
+			for(final I3Mud m : l.values())
+			{
+				if(m.mud_name.toLowerCase().indexOf(parms.toLowerCase())>=0)
+					muds.add(m);
+			}
+			return muds;
+		}
+		final List<I3Mud> muds=new XVector<I3Mud>();
+		for(final I3Mud m : l.values())
+		{
+			if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
+				muds.add(m);
+		}
+		return muds;
+	}
+
+	public List<I3Mud> getSortedI3Muds()
+	{
+		final Vector<I3Mud> list = new Vector<I3Mud>();
+		if(!isOnline())
+			return list;
+		final MudList mudList=I3Client.getAllMudsList();
+		if(mudList!=null)
+		{
+			for(final I3Mud m : mudList.getMuds().values())
+			{
+				if(m.state<0)
+				{
+					boolean done=false;
+					for(int v=0;v<list.size();v++)
+					{
+						final I3Mud m2=list.elementAt(v);
+						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
+						{
+							list.insertElementAt(m,v);
+							done=true;
+							break;
+						}
+					}
+					if(!done)
+						list.addElement(m);
+				}
+			}
+		}
+		return list;
+	}
+
+	public String socialI3FixOut(String str)
+	{
+		str=CMStrings.replaceAll(str,"<S-NAME>","$N");
+		str=CMStrings.replaceAll(str,"<T-NAME>","$O");
+		str=CMStrings.replaceAll(str,"<T-NAMESELF>","$O");
+		str=CMStrings.replaceAll(str,"<S-HIM-HER>","$m");
+		str=CMStrings.replaceAll(str,"<T-HIM-HER>","$M");
+		str=CMStrings.replaceAll(str,"<S-HIS-HER>","$s");
+		str=CMStrings.replaceAll(str,"<T-HIS-HER>","$S");
+		str=CMStrings.replaceAll(str,"<S-HE-SHE>","$e");
+		str=CMStrings.replaceAll(str,"<T-HE-SHE>","$E");
+		str=CMStrings.replaceAll(str,"\'","`");
+		if(str.equals(""))
+			return "$";
+		return str.trim();
+	}
+
+	public void sendI3ChannelMsg(final MOB mob, final String channelName, final String message)
+	{
+		final ChannelPacket ck;
+		if((message.startsWith(":")||message.startsWith(","))
+		&&(message.trim().length()>1))
+		{
+			String msgstr=message.substring(1);
+			final Vector<String> V=CMParms.parse(msgstr);
+			Social socialS=CMLib.socials().fetchSocial(V,true,false);
+			if(socialS==null)
+				socialS=CMLib.socials().fetchSocial(V,false,false);
+			CMMsg msg=null;
+			if((socialS!=null)
+			&&(socialS.meetsCriteriaToUse(mob)))
+			{
+				msg=socialS.makeChannelMsg(mob,0,channelName,V,true);
+				final int atDex = (msg.target()!=null) ? msg.target().name().indexOf('@') : -1;
+				if(atDex>=0)
+				{
+					final int x=atDex;
+					String mudName=msg.target().name().substring(x+1);
+					final String tellName=msg.target().name().substring(0,x);
+					if((mudName==null)||(mudName.length()==0))
+					{
+						mob.tell(L("You must specify a mud name."));
+						return;
+					}
+					if((tellName==null)||(tellName.length()<1))
+					{
+						mob.tell(L("You must specify someone to emote to."));
+						return;
+					}
+					if(!I3Client.isAPossibleMUDName(mudName))
+					{
+						mob.tell(L("'@x1' is an unknown mud.",mudName));
+						return;
+					}
+					mudName=I3Client.translateName(mudName);
+					if(!I3Client.isUp(mudName))
+					{
+						mob.tell(L("@x1 is not available.",mudName));
+						return;
+					}
+					ck = new ChannelTargetEmote();
+					ck.channel = getI3ChannelName(channelName);
+					ck.sender_name=mob.Name();
+					ck.sender_visible_name=mob.Name();
+					ck.target_mud=mudName;
+					ck.target_name=tellName;
+					((ChannelTargetEmote)ck).target_visible_name=tellName;
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
+						((ChannelTargetEmote)ck).message_target=socialI3FixOut(CMStrings.removeColors(msg.targetMessage()));
+					if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
+						((ChannelTargetEmote)ck).message=socialI3FixOut(CMStrings.removeColors(msg.othersMessage()));
+				}
+				else
+				if(msg.target()!=null)
+				{
+					ck = new ChannelTargetEmote();
+					ck.target_name=msg.target().name();
+					ck.channel = getI3ChannelName(channelName);
+					ck.sender_name=mob.Name();
+					ck.sender_visible_name=mob.Name();
+					((ChannelTargetEmote)ck).target_visible_name=msg.target().name();
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
+						((ChannelTargetEmote)ck).message_target=socialI3FixOut(CMStrings.removeColors(msg.targetMessage()));
+				}
+				else
+				{
+					ck = new ChannelEmote();
+					ck.channel = getI3ChannelName(channelName);
+					ck.sender_name=mob.Name();
+					ck.sender_visible_name=mob.Name();
+				}
+				if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
+					ck.message=socialI3FixOut(CMStrings.removeColors(msg.othersMessage()));
+				else
+					ck.message=socialI3FixOut(CMStrings.removeColors(msg.sourceMessage()));
+				ck.message = ck.convertString(ck.message);
+			}
+			else
+			{
+				ck = new ChannelEmote();
+				ck.channel = this.getI3ChannelName(channelName);
+				ck.sender_name=mob.Name();
+				ck.sender_visible_name=mob.Name();
+				if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
+					msgstr=msgstr.trim();
+				else
+					msgstr=" "+msgstr.trim();
+				ck.message=socialI3FixOut("<S-NAME>"+msgstr);
+			}
+		}
+		else
+		{
+			ck = new ChannelMessage();
+			ck.channel = getI3ChannelName(channelName);
+			ck.sender_name=mob.Name();
+			ck.sender_visible_name=mob.Name();
+			ck.message=message;
+		}
+		try
+		{
+			ck.send();
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("IntermudClient", e);
+		}
+	}
+
 
 	@Override
 	public long getLastPacketReceivedTime()
@@ -809,12 +1249,12 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 	}
 
 	/**
-	 * @return the player port for this mud
+	 * @return the player mudPort for this mud
 	 */
 	@Override
 	public int getMudPort()
 	{
-		return port;
+		return mudPort;
 	}
 
 	/**
