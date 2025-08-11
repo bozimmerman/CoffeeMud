@@ -922,12 +922,6 @@ public class MUD extends Thread implements MudHost
 		return false;
 	}
 
-	private static void startIntermud3(final int smtpPort)
-	{
-		if(MUD.skipMapLoads)
-			return;
-	}
-
 	@Override
 	public void interrupt()
 	{
@@ -2070,35 +2064,11 @@ public class MUD extends Thread implements MudHost
 		if(word.equalsIgnoreCase("START")&&(V.size()>1))
 		{
 			final String what=V.get(1);
-			if(what.equalsIgnoreCase("I3"))
-			{
-				startIntermud3((smtpServerThread==null)?-1:smtpServerThread.getSMTPPort());
-				return CMLib.lang().L("Done");
-			}
-			else
-			if(what.equalsIgnoreCase("IMC2"))
-			{
-				if(CMLib.intermud().startIntermud(InterProto.IMC2, true))
-					return CMLib.lang().L("Done");
-				else
-					return CMLib.lang().L("Failure");
-			}
-			else
 			if(what.equalsIgnoreCase("WEB"))
 			{
 				if(V.size()<3)
 					return "Need Server Name";
 				if(startWebServer(CMProps.instance(),V.get(2)))
-					return CMLib.lang().L("Done");
-				else
-					return CMLib.lang().L("Failure");
-			}
-			else
-			if(what.equalsIgnoreCase("CM1"))
-			{
-				if(V.size()<3)
-					return CMLib.lang().L("Need Server Name");
-				if(CMLib.intermud().startIntermud(InterProto.CM1, true))
 					return CMLib.lang().L("Done");
 				else
 					return CMLib.lang().L("Failure");
@@ -2131,24 +2101,6 @@ public class MUD extends Thread implements MudHost
 					return CMLib.lang().L("Done");
 				else
 					return CMLib.lang().L("Failure");
-			}
-			else
-			if(what.equalsIgnoreCase("I3"))
-			{
-				CMLib.intermud().stopIntermud(InterProto.I3);
-				return CMLib.lang().L("Done");
-			}
-			else
-			if(what.equalsIgnoreCase("IMC2"))
-			{
-				CMLib.intermud().stopIntermud(InterProto.IMC2);
-				return CMLib.lang().L("Done");
-			}
-			else
-			if(what.equalsIgnoreCase("CM1"))
-			{
-				CMLib.intermud().stopIntermud(InterProto.CM1);
-				return CMLib.lang().L("Done");
 			}
 			else
 			if(what.equalsIgnoreCase("SMTP"))

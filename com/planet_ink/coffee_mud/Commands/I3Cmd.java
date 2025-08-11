@@ -50,7 +50,8 @@ public class I3Cmd extends StdCommand
 	public void i3Error(final MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
-			mob.tell(L("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, or I3 INFO [MUD]."));
+			mob.tell(L("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], "
+					+ "I3 SILENCE [CHANNEL], I3 PING [MUD], I3 LOCATE [NAME], I3 RESTART, I3 STOP, or I3 INFO [MUD]."));
 		else
 			mob.tell(L("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME]."));
 	}
@@ -150,6 +151,12 @@ public class I3Cmd extends StdCommand
 			CMLib.intermud().pingRouter(InterProto.I3,mob);
 		}
 		else
+		if(str.equalsIgnoreCase("STOP"))
+		{
+			CMLib.intermud().stopIntermud(InterProto.I3);
+			mob.tell(L("Done."));
+		}
+		else
 		if(str.equalsIgnoreCase("restart"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
@@ -157,14 +164,10 @@ public class I3Cmd extends StdCommand
 				i3Error(mob);
 				return false;
 			}
-			try
-			{
-				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
-			}
-			catch (final Exception e)
-			{
-				Log.errOut("I3Cmd", e);
-			}
+			if(CMLib.intermud().startIntermud(InterProto.I3,true))
+				mob.tell(L("Done."));
+			else
+				mob.tell(L("Failure."));
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))

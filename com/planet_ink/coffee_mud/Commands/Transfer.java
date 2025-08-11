@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -412,7 +413,7 @@ public class Transfer extends At
 			int port;
 			try
 			{
-				port = CMath.s_int(CMLib.host().executeCommand("GET CM1SERVER PORT"));
+				port = CMath.s_int(CMLib.intermud().queryService(InterProto.CM1,IntermudInterface.InterQuery.PORT));
 			}
 			catch (final Exception e)
 			{

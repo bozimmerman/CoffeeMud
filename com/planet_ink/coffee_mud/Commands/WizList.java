@@ -62,7 +62,7 @@ public class WizList extends StdCommand
 		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0)
-			mask="-ANYCLASS +Archon";
+			mask=CMProps.instance().getProperty("SYSOPMASK");
 		final MaskingLibrary.CompiledZMask compiledMask=CMLib.masking().maskCompile(mask);
 		for(final PlayerLibrary.ThinPlayer U : allUsers)
 		{

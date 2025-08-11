@@ -50,7 +50,7 @@ public class IMC2 extends StdCommand
 	public void IMC2Error(final MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMC2))
-			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, or IMC2 CHANNELS."));
+			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, IMC2 STOP, or IMC2 CHANNELS."));
 		else
 			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE"));
 	}
@@ -98,16 +98,18 @@ public class IMC2 extends StdCommand
 		if(str.equalsIgnoreCase("info"))
 			CMLib.intermud().mudInfo(InterProto.IMC2, mob,CMParms.combine(commands,1));
 		else
+		if(str.equalsIgnoreCase("STOP"))
+		{
+			CMLib.intermud().stopIntermud(InterProto.IMC2);
+			mob.tell(L("Done."));
+		}
+		else
 		if(str.equalsIgnoreCase("restart") && CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMC2))
 		{
-			try
-			{
-				mob.tell(CMLib.hosts().get(0).executeCommand("START IMC2"));
-			}
-			catch (final Exception e)
-			{
-				Log.errOut("IMC2Cmd", e);
-			}
+			if(CMLib.intermud().startIntermud(InterProto.IMC2,true))
+				mob.tell(L("Done."));
+			else
+				mob.tell(L("Failure."));
 		}
 		else
 			IMC2Error(mob);
