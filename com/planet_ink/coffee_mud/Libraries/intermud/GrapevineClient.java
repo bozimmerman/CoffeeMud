@@ -361,8 +361,6 @@ public class GrapevineClient extends Thread implements Closeable
 				return null;
 			}
 			final String event = obj.getCheckedString("event");
-if(!event.equalsIgnoreCase("heartbeat"))
-Log.sysOut(input); //TODO:BZ:DELME
 			if(event.equalsIgnoreCase("heartbeat"))
 			{
 				obj = new MiniJSON.JSONObject();
