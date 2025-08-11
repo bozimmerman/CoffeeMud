@@ -217,10 +217,6 @@ public class INIModify extends StdWebMacro
 				httpReq.addFakeUrlParameter("COMMANDJOURNALS", buildCommandJournalsVar(httpReq));
 			if(iniBuildVars.contains("FORUMJOURNALS"))
 				httpReq.addFakeUrlParameter("FORUMJOURNALS", buildForumJournalsVar(httpReq));
-			if(iniBuildVars.contains("ICHANNELS"))
-				httpReq.addFakeUrlParameter("ICHANNELS", buildIChannelsVar(httpReq));
-			if(iniBuildVars.contains("IMC2CHANNELS"))
-				httpReq.addFakeUrlParameter("IMC2CHANNELS", buildIMC2ChannelsVar(httpReq));
 
 			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((ipage==null)||(!ipage.isLoaded()))
@@ -273,9 +269,7 @@ public class INIModify extends StdWebMacro
 					||thisKey.equals("COMMANDJOURNALS")
 					||thisKey.equals("COLORSCHEME")
 					||thisKey.equals("FORUMJOURNALS")
-					||thisKey.equals("ICHANNELS")
-					||thisKey.equals("AUTOPURGE")
-					||thisKey.equals("IMC2CHANNELS"))
+					||thisKey.equals("AUTOPURGE"))
 						nextRule=true;
 					else
 						nextRule=false;
@@ -383,10 +377,8 @@ public class INIModify extends StdWebMacro
 				||modified(modified,"NIGHTHR"))
 					CMLib.time().globalClock().initializeINIClock(ipage);
 				if(modified(modified,"CHANNELS")
-				||(modified(modified,"ICHANNELS"))
 				||(modified(modified,"COMMANDJOURNALS"))
-				||(modified(modified,"FORUMJOURNALS"))
-				||(modified(modified,"IMC2CHANNELS")))
+				||(modified(modified,"FORUMJOURNALS")))
 				{
 					final String normalChannels=ipage.getStr("CHANNELS");
 					final String i3Channels=ipage.getBoolean("RUNI3SERVER") ? ipage.getStr("ICHANNELS") : "";
@@ -423,22 +415,26 @@ public class INIModify extends StdWebMacro
 				if(flag != null)
 					flags.add(flag);
 			}
-			String discName=httpReq.getUrlParameter("CHANNEL_"+index+"_DISCNAME");
-			if((discName!=null)&&(discName.trim().length()>0))
-				discName=CMStrings.replaceAll(discName," ","").trim();
-			if((discName==null)||(discName.trim().length()==0))
-			{
-				discName="";
-				flags.remove(ChannelsLibrary.ChannelFlag.DISCORD);
-			}
-			else
-				flags.add(ChannelsLibrary.ChannelFlag.DISCORD);
+			String imName=httpReq.getUrlParameter("CHANNEL_"+index+"_IMNAME");
+			if((imName==null)||(imName.trim().length()==0))
+				imName="";
 			for(final ChannelsLibrary.ChannelFlag flag : flags)
 			{
-				if(flag == ChannelsLibrary.ChannelFlag.DISCORD)
-					str.append(flag.name()).append("=").append(discName).append(" ");
-				else
+				switch(flag)
+				{
+				case DISCORD:
+					if((imName!=null)&&(imName.trim().length()>0))
+						imName=CMStrings.replaceAll(imName," ","").trim();
+					//$FALL-THROUGH$
+				case I3:
+				case IMC2:
+				case GRAPEVINE:
+					str.append(flag.name()).append("=").append(imName).append(" ");
+					break;
+				default:
 					str.append(flag.name()).append(" ");
+					break;
+				}
 			}
 			if(mask.trim().length()>0)
 				str.append(mask.trim().replace(',',' ')).append(" ");
@@ -453,11 +449,6 @@ public class INIModify extends StdWebMacro
 		final String firstPart=getChannelsValue(httpReq,index);
 		if(firstPart!=null)
 		{
-			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_I3NAME");
-			final String imc2Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMC2NAME");
-			if(((i3Name!=null)&&(i3Name.trim().length()>0))
-			||((imc2Name!=null)&&(imc2Name.trim().length()>0)))
-				return;
 			if(str.length()>4)
 				str.append(",\\\r\n\t");
 			str.append(firstPart);
@@ -478,7 +469,7 @@ public class INIModify extends StdWebMacro
 		final String firstPart=getChannelsValue(httpReq,index);
 		if(firstPart!=null)
 		{
-			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_I3NAME");
+			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMNAME");
 			if((i3Name!=null)&&(i3Name.trim().length()>0))
 			{
 				if(str.length()>4)
@@ -494,30 +485,6 @@ public class INIModify extends StdWebMacro
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
 			addIChannelsVar(httpReq,Integer.toString(index),str);
 		addIChannelsVar(httpReq,"",str);
-		return str.toString();
-	}
-
-	protected void addIMC2ChannelsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
-	{
-		final String firstPart=getChannelsValue(httpReq,index);
-		if(firstPart!=null)
-		{
-			final String imc2Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMC2NAME");
-			if((imc2Name!=null)&&(imc2Name.trim().length()>0))
-			{
-				if(str.length()>4)
-					str.append(",\\\r\n\t");
-				str.append(firstPart).append(" ").append(imc2Name);
-			}
-		}
-	}
-
-	protected String buildIMC2ChannelsVar(final HTTPRequest httpReq)
-	{
-		final StringBuilder str=new StringBuilder("\\\r\n\t");
-		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
-			addIMC2ChannelsVar(httpReq,Integer.toString(index),str);
-		addIMC2ChannelsVar(httpReq,"",str);
 		return str.toString();
 	}
 

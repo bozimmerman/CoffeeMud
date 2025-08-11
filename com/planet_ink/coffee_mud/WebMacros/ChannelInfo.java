@@ -83,10 +83,26 @@ public class ChannelInfo extends StdWebMacro
 					str.append(C.name()).append(", ");
 				if(parms.containsKey("COLOROVERRIDE"))
 					str.append(C.colorOverrideWords()).append(", ");
+				if(parms.containsKey("IMNAME"))
+				{
+					if(C.flags().contains(ChannelsLibrary.ChannelFlag.I3) && (C.i3name().length()>0))
+						str.append(C.i3name()).append(", ");
+					else
+					if(C.flags().contains(ChannelsLibrary.ChannelFlag.IMC2) && (C.imc2Name().length()>0))
+						str.append(C.imc2Name()).append(", ");
+					else
+					if(C.flags().contains(ChannelsLibrary.ChannelFlag.DISCORD) && (C.discordName().length()>0))
+						str.append(C.discordName()).append(", ");
+					else
+					if(C.flags().contains(ChannelsLibrary.ChannelFlag.GRAPEVINE) && (C.grapevineName().length()>0))
+						str.append(C.grapevineName()).append(", ");
+				}
 				if(parms.containsKey("I3NAME"))
 					str.append(C.i3name()).append(", ");
 				if(parms.containsKey("DISCNAME"))
 					str.append(C.discordName()).append(", ");
+				if(parms.containsKey("GRAPEVINENAME"))
+					str.append(C.grapevineName()).append(", ");
 				if(parms.containsKey("IMC2NAME"))
 					str.append(C.imc2Name()).append(", ");
 				if(parms.containsKey("MASK"))

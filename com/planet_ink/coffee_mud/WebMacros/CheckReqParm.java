@@ -44,13 +44,14 @@ public class CheckReqParm extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		final java.util.Map<String,String> parms=parseParms(parm);
+		final PairSVector<String,String> parms=parseOrderedParms(parm,false);
 		Boolean finalCondition=null;
-		for(String key : parms.keySet())
+		for(final Pair<String,String> p : parms)
 		{
+			String key = p.first;
 			if(key.length()==0)
 				continue;
-			final String equals=parms.get(key);
+			final String equals=p.second;
 			boolean not=false;
 			boolean thisCondition=true;
 			boolean orCondition=false;

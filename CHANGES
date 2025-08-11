@@ -24,6 +24,8 @@
  23. New prayers: Bolster Poison, Addicting Curse
  24. FasterRecovery can now slow recovery, including %.  See AHELP
  25. Prop_*Adjusters now support bumping casting costs.  See AHELP.
+ 26. CoffeeMud now supports the Grapevine network: see Installation Guide
+ 27. ICHANNELS ini entry is now deprecated, and its purpose folded into CHANNELS
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
