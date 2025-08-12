@@ -276,7 +276,7 @@ public class GatheringSkill extends CommonSkill
 			supportedResources.put(ID(), empty);
 			return empty;
 		}
-		final List<Integer> maskV=new Vector<Integer>();
+		final List<Integer> finalListV=new Vector<Integer>();
 		String str=mask;
 		while(mask.length()>0)
 		{
@@ -297,7 +297,7 @@ public class GatheringSkill extends CommonSkill
 					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
 					if(rsc>=0)
 					{
-						maskV.add(Integer.valueOf(rsc));
+						finalListV.add(Integer.valueOf(rsc));
 						found=true;
 					}
 				}
@@ -319,9 +319,9 @@ public class GatheringSkill extends CommonSkill
 					final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
 					if(m!=null)
 					{
-						final List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()));
-						maskV.addAll(rscs);
-						maskV.removeAll(notResources);
+						final List<Integer> rscs=new XArrayList<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()));
+						finalListV.addAll(rscs);
+						finalListV.removeAll(notResources);
 						found=rscs.size()>0;
 					}
 				}
@@ -329,12 +329,12 @@ public class GatheringSkill extends CommonSkill
 				{
 					final int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
 					if(rsc>=0)
-						maskV.add(Integer.valueOf(rsc));
+						finalListV.add(Integer.valueOf(rsc));
 				}
 			}
 		}
 		// sort, reverse, so most freq->least
-		Collections.sort(maskV,new Comparator<Integer>()
+		Collections.sort(finalListV,new Comparator<Integer>()
 		{
 			@Override
 			public int compare(final Integer o1, final Integer o2)
@@ -358,8 +358,8 @@ public class GatheringSkill extends CommonSkill
 				return 1;
 			}
 		});
-		supportedResources.put(ID(),maskV);
-		return maskV;
+		supportedResources.put(ID(),finalListV);
+		return finalListV;
 	}
 
 	public boolean bundle(final MOB mob, final List<String> what)
@@ -389,7 +389,7 @@ public class GatheringSkill extends CommonSkill
 		Item foundAnyway=null;
 		final List<RawMaterial> allFound=new ArrayList<RawMaterial>();
 		final List<Integer> maskV=myResources();
-		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
+		final Map<String,Ability> foundAblesH=new TreeMap<String,Ability>();
 		Ability A=null;
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 		int count=name.lastIndexOf('.');
@@ -461,7 +461,8 @@ public class GatheringSkill extends CommonSkill
 		}
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 			lowestNonZeroFoodNumber=0;
-		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,foundSecret,foundSubType);
+		final Item I=(Item)CMLib.materials().makeResource(foundResource,
+				Integer.toString(mob.location().domainType()),true,foundSecret,foundSubType);
 		if(I==null)
 		{
 			commonTelL(mob,"You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource);
@@ -494,8 +495,13 @@ public class GatheringSkill extends CommonSkill
 		}
 		if(I instanceof Decayable)
 			((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);
-		for(final Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
-			I.addNonUninvokableEffect((Ability)((Environmental)foundAblesH.get(e.nextElement())).copyOf());
+		for(final String key : foundAblesH.keySet())
+		{
+			final Ability oldA = foundAblesH.get(key);
+			final Ability newA = (Ability)oldA.copyOf();
+			newA.setMiscText(oldA.text());
+			I.addNonUninvokableEffect(newA);
+		}
 		R.recoverRoomStats();
 		return true;
 	}
