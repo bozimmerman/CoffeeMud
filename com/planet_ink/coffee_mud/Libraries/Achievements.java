@@ -10085,9 +10085,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		Achievement A = getAchievement(UID);
 		if(A == null)
 		{
-			UID = achievementFinder.get(UID);
-			if(UID != null)
-				A=getAchievement(UID);
+			final String UID2 = achievementFinder.get(UID);
+			if(UID2 != null)
+			{
+				UID=UID2;
+				A=getAchievement(UID2);
+			}
 		}
 		if(A!=null)
 			return UID;
