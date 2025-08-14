@@ -57,6 +57,7 @@ public class TrailTo extends StdCommand
 		final List<TrackingLibrary.TrackingFlag> removeOrder = new ArrayList<TrackingLibrary.TrackingFlag>();
 		final Set<TrailFlag> trailFlags = new HashSet<TrailFlag>();
 		boolean justTheFacts=false;
+		boolean roomids = false;
 		for(int c=commands.size()-1;c>=1;c--)
 		{
 			String s=commands.get(c).toUpperCase();
@@ -73,6 +74,12 @@ public class TrailTo extends StdCommand
 			if(s.startsWith("FALLBACK"))
 			{
 				fallback=true;
+				commands.remove(c);
+			}
+			else
+			if(s.startsWith("ROOMIDS"))
+			{
+				roomids=true;
 				commands.remove(c);
 			}
 			else
@@ -205,6 +212,46 @@ public class TrailTo extends StdCommand
 			}
 			if(trailFlags.contains(TrailFlag.CONFIRM))
 				Log.rawSysOut(str.toString());
+			return str.toString();
+		}
+		else
+		if(roomids)
+		{
+			final Room R2 = CMLib.map().getRoom(where);
+			final StringBuilder str = new StringBuilder("");
+			List<Room> trail = CMLib.tracking().findTrailToRoom(R1, R2, flags, radius);
+			if (trail == null)
+				str.append("No trail found to any room from here.");
+			else
+			{
+				Collections.reverse(trail);
+				for (final Room R : trail)
+				{
+					if (R != null)
+						str.append(CMLib.map().getExtendedRoomID(R)).append(", ");
+				}
+				if (str.length() > 2)
+					str.setLength(str.length() - 2); // remove trailing comma
+				if (trailFlags.contains(TrailFlag.CONFIRM))
+					Log.rawSysOut(str.toString());
+			}
+			str.append("\n\r\n\r");
+			trail = CMLib.tracking().findTrailToRoom(R1, R2, flags);
+			if (trail == null)
+				str.append("No trail found to any room from here.");
+			else
+			{
+				Collections.reverse(trail);
+				for (final Room R : trail)
+				{
+					if (R != null)
+						str.append(CMLib.map().getExtendedRoomID(R)).append(", ");
+				}
+				if (str.length() > 2)
+					str.setLength(str.length() - 2); // remove trailing comma
+				if (trailFlags.contains(TrailFlag.CONFIRM))
+					Log.rawSysOut(str.toString());
+			}
 			return str.toString();
 		}
 		else

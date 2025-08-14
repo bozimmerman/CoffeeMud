@@ -7000,7 +7000,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final List lrhso=(List)rhso;
 				for(final Object o2 : lrhso)
 				{
-					if(doMQLComparison(lhso, MQLClause.WhereComparator.EQ, o2, allFrom, from,E,ignoreStats,defPrefix,piece,defined))
+					final Object o3 = (o2 instanceof Environmental)?((Environmental)o2).ID():o2;
+					if(doMQLComparison(lhso, MQLClause.WhereComparator.EQ, o3, allFrom, from,E,ignoreStats,defPrefix,piece,defined))
 						return comp==(MQLClause.WhereComparator.IN);
 				}
 				return comp==(MQLClause.WhereComparator.NOTIN);

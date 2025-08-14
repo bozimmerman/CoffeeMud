@@ -207,11 +207,7 @@ public class Where extends StdCommand
 					}
 					catch(final MQLException e)
 					{
-						final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-						final PrintStream pw=new PrintStream(bout);
-						e.printStackTrace(pw);
-						pw.flush();
-						lines.append(e.getMessage()+"\n\r"+bout.toString());
+						lines.append(e.getMessage());
 					}
 				}
 				else

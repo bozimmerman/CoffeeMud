@@ -710,12 +710,21 @@ public class StdRideable extends StdMOB implements Rideable
 					case AIR_FLYING:
 						break;
 					case WATER_BASED:
-						if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
-						&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
+						if((!CMLib.flags().canBreatheThis(this,RawMaterial.RESOURCE_FRESHWATER))
+						&&(!CMLib.flags().canBreatheThis(this,RawMaterial.RESOURCE_SALTWATER)))
+						{
+							if((!CMLib.flags().isWaterySurfaceRoom(sourceRoom))
+							&&(!CMLib.flags().isWaterySurfaceRoom(targetRoom)))
+								ok=false;
+							if(CMLib.flags().isUnderWateryRoom(targetRoom))
+								ok=false;
+						}
+						else
+						if((!CMLib.flags().isWateryRoom(sourceRoom))
+						&&(!CMLib.flags().isWateryRoom(targetRoom)))
 							ok=false;
 						if((targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
-						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
-						||(CMLib.flags().isUnderWateryRoom(targetRoom)))
+						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR))
 							ok=false;
 						break;
 					default:

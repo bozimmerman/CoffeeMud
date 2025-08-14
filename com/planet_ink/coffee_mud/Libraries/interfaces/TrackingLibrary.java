@@ -65,6 +65,7 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#getShortestTrail(List)
 	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, int)
 	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags);
 	 *
 	 * @param location the starting room for the trail
 	 * @param destRoom the target room for the trail
@@ -77,8 +78,31 @@ public interface TrackingLibrary extends CMLibrary
 	/**
 	 * Returns a trail of rooms to move through in order to go from the given location
 	 * to the given destination room.  The trail will have the destination room first,
-	 * and the location last.  Providing radiant rooms is optional, but they should
-	 * have the location first and destination last.
+	 * and the location last.
+	 *
+	 * @see TrackingLibrary#trackNextDirectionFromHere(List, Room, boolean)
+	 * @see TrackingLibrary#findAllTrails(Room, List, List)
+	 * @see TrackingLibrary#findAllTrails(Room, Room, List)
+	 * @see TrackingLibrary#findTrailToAnyRoom(Room, List, TrackingFlags, int)
+	 * @see TrackingLibrary#findTrailToAnyRoom(Room, RFilter, TrackingFlags, int)
+	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
+	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int);
+	 * @see TrackingLibrary#getShortestTrail(List)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 *
+	 * @param location the starting room for the trail
+	 * @param destRoom the target room for the trail
+	 * @param flags any Radiant flags -- not used in the trail calculation
+	 * @return the trail, or null if a failure
+	 */
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags);
+
+	/**
+	 * Returns a trail of rooms to move through in order to go from the given location
+	 * to the given destination room.  The trail will have the destination room first,
+	 * and the location last.  This system does not use radiant rooms between the source
+	 * and target, so theoretically has no limits.
 	 *
 	 * @see TrackingLibrary#trackNextDirectionFromHere(List, Room, boolean)
 	 * @see TrackingLibrary#findAllTrails(Room, List, List)
@@ -89,6 +113,7 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#getShortestTrail(List)
 	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, int)
 	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags);
 	 *
 	 * @param location the starting room for the trail
 	 * @param destRoom the target room for the trail
@@ -238,8 +263,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @return the description of the way to get there
 	 */
 	public String getTrailToDescription(Room startR, List<Room> radiantV, String where,
-			Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms,
-			final String delimeter, int maxSecs);
+										Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms,
+										final String delimeter, int maxSecs);
 
 	/**
 	 * Searches for a room fitting to the given search string, within the given

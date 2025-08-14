@@ -1495,6 +1495,29 @@ public class ServiceEngine implements ThreadEngine
 		Log.debugOut(ID,dump.toString());
 	}
 
+	@Override
+	public String getFileStackTrace()
+	{
+		final StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		final StringBuilder sb = new StringBuilder("");
+		final Set<String> done=new TreeSet<String>();
+		final int depth = stackTrace.length;
+		for (int i = 1; i < depth; i++)
+		{
+			String filename = stackTrace[i].getFileName();
+			if(filename.endsWith(".java"))
+				filename = filename.substring(0, filename.length()-5);
+			if(!done.contains(filename))
+			{
+				done.add(filename);
+				sb.append(filename);
+				if (i < depth - 1)
+					sb.append(" <- ");
+			}
+		}
+		return sb.toString();
+	}
+
 	protected static void debugDumpThreadGroup(final ThreadGroup tGroup, final StringBuilder lines)
 	{
 		final int ac = tGroup.activeCount();

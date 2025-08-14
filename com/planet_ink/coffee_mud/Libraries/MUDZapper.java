@@ -919,7 +919,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if((str2.startsWith("+")||str2.startsWith("-"))
 					&&(!matchesLooseCode(str2)))
 					{
-						Log.errOut("Bad ZapperMask parm '"+str2+"' @ "+CMParms.combine(lV,0));
+						final String st = CMLib.threads().getFileStackTrace();
+						Log.errOut("Bad ZapperMask parm '"+str2+"' @ "+CMParms.combine(lV,0)+": "+st);
 						return v2;
 					}
 					return v2-1;

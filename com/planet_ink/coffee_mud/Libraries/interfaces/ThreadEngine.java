@@ -344,6 +344,12 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void clearDebri(Room room, LocalType typeCode);
 
 	/**
+	 * Returns a stack trace of filenames
+	 * @return a stack trace of filenames
+	 */
+	public String getFileStackTrace();
+
+	/**
 	 * Retreives special internal information from
 	 * the thread engine of the callers thread
 	 * group, mostly for the web server.

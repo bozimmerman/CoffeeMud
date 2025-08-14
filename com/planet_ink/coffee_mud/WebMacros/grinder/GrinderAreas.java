@@ -186,6 +186,13 @@ public class GrinderAreas
 		if(A==null)
 			return "Old Area not defined!";
 		areasNeedingUpdates.add(A);
+		final Area defaultParentArea=CMLib.map().getDefaultParentArea();
+		final List<Area> existingParents=new XVector<Area>(A.getParents());
+		if(defaultParentArea != null)
+			existingParents.remove(defaultParentArea);
+		final List<Area> existingChildren=new XVector<Area>(A.getChildren());
+		if(defaultParentArea == A)
+			existingChildren.clear();
 
 		boolean redoAllMyDamnRooms=false;
 		List<Room> allMyDamnRooms=null;
@@ -204,6 +211,8 @@ public class GrinderAreas
 			A=CMClass.getAreaType(className);
 			if(A==null)
 				return "The class you chose does not exist.  Choose another.";
+			areasNeedingUpdates.clear();
+			areasNeedingUpdates.add(A);
 			CMLib.map().delArea(oldA);
 			CMLib.map().addArea(A);
 			A.setName(oldA.Name());
@@ -465,10 +474,6 @@ public class GrinderAreas
 		}
 
 		// modify Parent Area list
-		final Area defaultParentArea=CMLib.map().getDefaultParentArea();
-		final List<Area> existingParents=new XVector<Area>(A.getParents());
-		if(defaultParentArea != null)
-			existingParents.remove(defaultParentArea);
 		final List<Area> newParents=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{
@@ -506,9 +511,6 @@ public class GrinderAreas
 		}
 
 		// modify Child Area list
-		final List<Area> existingChildren=new XVector<Area>(A.getChildren());
-		if(defaultParentArea == A)
-			existingChildren.clear();
 		final List<Area> newChildren=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{
