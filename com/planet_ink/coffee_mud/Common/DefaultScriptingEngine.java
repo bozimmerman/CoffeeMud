@@ -9586,70 +9586,83 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				final SubScript subScript=new SubScriptImpl(script);
-				subScript.add(new ScriptLn("",null,null));
-				int depth=0;
-				boolean foundnext=false;
-				boolean ignoreUntilEndScript=false;
-				ctx.line++;
-				while(ctx.line<script.size())
+				final ScriptLn forLine = script.get(ctx.line);
+				final SubScript subScript;
+				if(forLine.third instanceof Pair)
 				{
-					s=script.get(ctx.line).first;
-					tt=script.get(ctx.line).second;
-					if(tt!=null)
-						cmd=tt[0];
-					else
-						cmd=CMParms.getCleanBit(s,0).toUpperCase();
-					if((!ignoreUntilEndScript) && cmd.equals("NEXT")&&(depth==0))
+					@SuppressWarnings("unchecked")
+					final Pair<SubScript,Integer> p = (Pair<SubScript,Integer>)forLine.third;
+					subScript = p.first;
+					ctx.line = p.second.intValue();
+				}
+				else
+				{
+					subScript=new SubScriptImpl(script);
+					subScript.add(new ScriptLn("",null,null));
+					int depth=0;
+					boolean foundnext=false;
+					boolean ignoreUntilEndScript=false;
+					ctx.line++;
+					while(ctx.line<script.size())
 					{
-						if(tt==null)
-							tt=parseBits(ctx,"C");
-						foundnext=true;
-						break;
-					}
-					else
-					{
-						if(cmd.equals("<SCRIPT>"))
+						s=script.get(ctx.line).first;
+						tt=script.get(ctx.line).second;
+						if(tt!=null)
+							cmd=tt[0];
+						else
+							cmd=CMParms.getCleanBit(s,0).toUpperCase();
+						if((!ignoreUntilEndScript) && cmd.equals("NEXT")&&(depth==0))
 						{
 							if(tt==null)
 								tt=parseBits(ctx,"C");
-							ignoreUntilEndScript=true;
+							foundnext=true;
+							break;
 						}
 						else
-						if(cmd.equals("</SCRIPT>"))
 						{
-							if(tt==null)
-								tt=parseBits(ctx,"C");
-							ignoreUntilEndScript=false;
-						}
-						else
-						if(!ignoreUntilEndScript)
-						{
-							if(cmd.equals("FOR"))
-							{
-								if(tt==null)
-									tt=parseBits(ctx,"CcccCr");
-								depth++;
-							}
-							else
-							if(cmd.equals("NEXT"))
+							if(cmd.equals("<SCRIPT>"))
 							{
 								if(tt==null)
 									tt=parseBits(ctx,"C");
-								depth--;
+								ignoreUntilEndScript=true;
 							}
+							else
+							if(cmd.equals("</SCRIPT>"))
+							{
+								if(tt==null)
+									tt=parseBits(ctx,"C");
+								ignoreUntilEndScript=false;
+							}
+							else
+							if(!ignoreUntilEndScript)
+							{
+								if(cmd.equals("FOR"))
+								{
+									if(tt==null)
+										tt=parseBits(ctx,"CcccCr");
+									depth++;
+								}
+								else
+								if(cmd.equals("NEXT"))
+								{
+									if(tt==null)
+										tt=parseBits(ctx,"C");
+									depth--;
+								}
+							}
+							final ScriptLn line = script.get(ctx.line);
+							if(line != null)
+								subScript.add(line);
 						}
-						final ScriptLn line = script.get(ctx.line);
-						if(line != null)
-							subScript.add(line);
+						ctx.line++;
 					}
-					ctx.line++;
-				}
-				if(!foundnext)
-				{
-					logError(ctx,"FOR","Syntax"," Without NEXT!");
-					tickStatus=Tickable.STATUS_END;
-					return null;
+					if(!foundnext)
+					{
+						logError(ctx,"FOR","Syntax"," Without NEXT!");
+						tickStatus=Tickable.STATUS_END;
+						return null;
+					}
+					forLine.third = new Pair<SubScript,Integer>(subScript,Integer.valueOf(ctx.line));
 				}
 				if(subScript.size()>1)
 				{
@@ -9668,7 +9681,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
 						{
 							ctx.tmp[whichVar]=""+forLoop;
-							response=execute(ctx.push(subScript));
+							final MPContext newContext = ctx.push(subScript);
+							response=execute(newContext);
 							if(response!=null)
 								break;
 							if((System.currentTimeMillis()>tm) || (ctx.scripted.amDestroyed()))
@@ -9679,7 +9693,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						ctx.tmp[whichVar]=""+toInt;
 						if(response == null)
-							response=execute(ctx.push(subScript));
+						{
+							final MPContext newContext = ctx.push(subScript);
+							response=execute(newContext);
+						}
 						else
 						if(response.equalsIgnoreCase("break"))
 							response=null;

@@ -697,13 +697,13 @@ public class DefaultFaction implements Faction, MsgListener
 		case EDITALONE:
 			return Boolean.toString(showInEditor).toUpperCase();
 		case DEFAULT:
-			return CMParms.toSemicolonListString(defaults);
+			return CMParms.toSemicolonPairListString(defaults.elements(),true);
 		case AUTODEFAULTS:
-			return CMParms.toSemicolonListString(autoDefaults);
+			return CMParms.toSemicolonPairListString(autoDefaults.elements(),true);
 		case CHOICEINTRO:
 			return choiceIntro;
 		case AUTOCHOICES:
-			return CMParms.toSemicolonListString(choices);
+			return CMParms.toSemicolonPairListString(choices.elements(),true);
 		case RATEMODIFIER:
 			return "" + rateModifier;
 		case EXPERIENCE:

@@ -90,6 +90,18 @@ public class StdLibrary implements CMLibrary, Tickable
 		return CMLib.lang().fullSessionTranslation(FINDER.getCaller(), str, xs);
 	}
 
+	public String[] I(final String[] str)
+	{
+		for(int i=0;i<str.length;i++)
+			str[i]=CMLib.lang().commandWordTranslation(str[i]);
+		return str;
+	}
+
+	public String I(final String str)
+	{
+		return CMLib.lang().commandWordTranslation(str);
+	}
+
 	@Override
 	public String L(final Class<?> clazz, final String str, final String ... xs)
 	{

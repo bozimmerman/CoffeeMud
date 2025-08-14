@@ -378,6 +378,7 @@ public class GatheringSkill extends CommonSkill
 			commonTelL(mob,"@x1 is not an appropriate amount.",""+amount);
 			return false;
 		}
+		int weightHere=0;
 		int numHere=0;
 		final Room R=mob.location();
 		if(R==null)
@@ -432,15 +433,19 @@ public class GatheringSkill extends CommonSkill
 							foundAblesH.put(A.ID(),A);
 					}
 					foundResource=I.material();
-					numHere+=I.phyStats().weight();
+					weightHere+=I.phyStats().weight();
+					numHere++;
 					foundSubType=((RawMaterial)I).getSubType();
 					foundSecret=I.rawSecretIdentity();
 					allFound.add((RawMaterial)I);
 				}
 			}
 		}
-		if((numHere==0)||(foundResource<0))
+		if((weightHere==0)||(foundResource<0))
 		{
+			if(numHere > 0)
+				commonTelL(mob,"You can't bundle weightless @x1 with this skill.",foundAnyway.name());
+			else
 			if(foundAnyway!=null)
 				commonTelL(mob,"You can't bundle @x1 with this skill.",foundAnyway.name());
 			else
@@ -448,10 +453,10 @@ public class GatheringSkill extends CommonSkill
 			return false;
 		}
 		if(amount==Integer.MAX_VALUE)
-			amount=numHere;
-		if(numHere<amount)
+			amount=weightHere;
+		if(weightHere<amount)
 		{
-			commonTelL(mob,"You only see @x1 pounds of @x2 on the ground here.",""+numHere,name);
+			commonTelL(mob,"You only see @x1 pounds of @x2 on the ground here.",""+weightHere,name);
 			return false;
 		}
 		if(allFound.size()==1)

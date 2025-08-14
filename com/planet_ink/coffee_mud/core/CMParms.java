@@ -3326,6 +3326,35 @@ public class CMParms
 	}
 
 	/**
+	 * Converts the given pair objects to their string values
+	 * and returns them, semicolon delimited.  Pair values are
+	 * space delimited.
+	 * @param bytes the objects as strings to return
+	 * @param firstFirst true to put pair first entry first
+	 * @return the semicolon delimited list
+	 */
+	public final static String toSemicolonPairListString(final Enumeration<Pair<Integer,String>> bytes, final boolean firstFirst)
+	{
+		if((bytes==null)||(!bytes.hasMoreElements()))
+			return "";
+		Pair<Integer,String> p=bytes.nextElement();
+		final StringBuilder str=new StringBuilder();
+		if(firstFirst)
+			str.append(""+p.first.toString()).append(" ").append(p.second.toString());
+		else
+			str.append(""+p.second.toString()).append(" ").append(p.first.toString());
+		for(;bytes.hasMoreElements();)
+		{
+			p = bytes.nextElement();
+			if(firstFirst)
+				str.append(";").append(""+p.first.toString()).append(" ").append(p.second.toString());
+			else
+				str.append(";").append(""+p.second.toString()).append(" ").append(p.first.toString());
+		}
+		return str.toString();
+	}
+
+	/**
 	 * Converts the given objects to their string values
 	 * and returns them, semicolon delimited.
 	 * @param bytes the objects as strings to return

@@ -1157,7 +1157,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 			// auto defaults
 			boolean error=true;
-			meF.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(meF.autoDefaults()),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
+			meF.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonPairListString(meF.autoDefaults(),true),++showNumber,showFlag,L("Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    ")),true));
 
 			// non-auto defaults
 			error=true;
@@ -1167,7 +1167,7 @@ public class Factions extends StdLibrary implements FactionManager
 			while(error&&(mob.session()!=null)&&(!mob.session().isStopped()))
 			{
 				error=false;
-				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(meF.defaults()),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
+				final String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonPairListString(meF.defaults(),true),showNumber,showFlag,L("Other default values with zapper masks (semicolon delimited).\n\r    "));
 				if((showFlag!=showNumber)&&(showFlag>-999))
 					break;
 				final List<String> V=CMParms.parseSemicolons(newDefaults,true);
@@ -1180,7 +1180,7 @@ public class Factions extends StdLibrary implements FactionManager
 			}
 
 			// choices and choice intro
-			meF.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonListString(meF.choices()),++showNumber,showFlag,L("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
+			meF.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonPairListString(meF.choices(),true),++showNumber,showFlag,L("Optional new player value choices (semicolon-delimited).\n\r    ")),true));
 			if(meF.choices().hasMoreElements())
 				meF.setChoiceIntro(CMLib.genEd().prompt(mob,meF.choiceIntro(),++showNumber,showFlag,L("Optional choices introduction text. Filename")));
 

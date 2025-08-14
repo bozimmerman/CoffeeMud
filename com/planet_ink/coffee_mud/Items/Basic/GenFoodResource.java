@@ -51,7 +51,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		setDescription("");
 		material=RawMaterial.RESOURCE_BERRIES;
 		setNourishment(200);
-		basePhyStats().setWeight(0);
+		basePhyStats().setWeight(1);
 		recoverPhyStats();
 		decayTime=0;
 	}

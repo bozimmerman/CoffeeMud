@@ -226,15 +226,21 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
-
-			if(CMLib.flags().isOnFire(lighting))
+			if((lighting instanceof Container)
+			&&(CMLib.materials().getBurnDuration(lighting)==0))
 			{
-				commonTelL(mob,"@x1 is already on fire!",lighting.name());
-				return false;
+				//final List<Item> contents = ((Container)lighting).getContents();
+
 			}
 
-			verb=L("lighting @x1",lighting.name());
-			displayText=L("You are lighting @x1.",lighting.name());
+			final String lightingName = lighting.name();
+			if(CMLib.flags().isOnFire(lighting))
+			{
+				commonTelL(mob,"@x1 is already on fire!",lightingName);
+				return false;
+			}
+			verb=L("lighting @x1",lightingName);
+			displayText=L("You are lighting @x1.",lightingName);
 			final CMMsg preMsg=CMClass.getMsg(mob,lighting,this,CMMsg.MSG_OK_ACTION,null);
 			if((!mob.location().okMessage(mob,preMsg))
 			&&(preMsg.target() instanceof Item)
