@@ -974,7 +974,7 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 					for(int v=0;v<V.size();v++)
 					{
 						final Vector<?> V2=(Vector<?>)V.elementAt(v);
-						final String nom = fixColors((String)V2.elementAt(0));
+						final String nom = fixColors(V2.elementAt(0).toString());
 						final String idle=V2.elementAt(1).toString();
 						final String xtra = fixColors(V2.elementAt(2).toString());
 						buf.append("["+CMStrings.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");

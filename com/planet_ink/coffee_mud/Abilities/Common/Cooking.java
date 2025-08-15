@@ -685,7 +685,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		for(final Pair<PotIngredient,Integer> potIngredient : potContents)
 		{
 			boolean found;
-			if(honorHerbs()&&potIngredient.first.rscName.toUpperCase().equals("HERBS")) // herbs exception
+			if(honorHerbs()
+			&&(potIngredient.first.rscName!=null)
+			&&potIngredient.first.rscName.toUpperCase().equals("HERBS")) // herbs exception
 				found=true;
 			else
 				found = isIngredientInRecipe(potIngredient.first, Vr, perfectOnly);
