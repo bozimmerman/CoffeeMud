@@ -202,7 +202,8 @@ public class Burning extends StdAbility
 						final Container C=affI.container();
 						if((C instanceof Drink)
 						&&(affI.material()==((Drink)C).liquidType())
-						&&(((Drink)C).liquidRemaining()>0))
+						&&(((Drink)C).liquidRemaining()>0)
+						&&(C.getContents().size()<2))
 						{
 							final Item testResource = CMLib.materials().makeItemResource(((Drink)C).liquidType());
 							if(CMLib.materials().getBurnDuration(testResource)>0)
