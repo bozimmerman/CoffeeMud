@@ -158,11 +158,11 @@ public class Prop_CommonTwister extends Property
 				itemParms.put("MATERIAL",""+newMatCode);
 				final String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
 				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),oldMatName,newMatName));
-				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),oldMatName,newMatName));
+				itemParms.put("DISPLAYTEXT",CMStrings.replaceAll(itemParms.get("DISPLAYTEXT"),oldMatName,newMatName));
 				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
-				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+				itemParms.put("DISPLAYTEXT",CMStrings.replaceAll(itemParms.get("DISPLAYTEXT"),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
 				itemParms.put("NAME",CMStrings.replaceAll(itemParms.get("NAME"),oldMatName.toUpperCase(),newMatName.toUpperCase()));
-				itemParms.put("DISPLAY",CMStrings.replaceAll(itemParms.get("DISPLAY"),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+				itemParms.put("DISPLAYTEXT",CMStrings.replaceAll(itemParms.get("DISPLAYTEXT"),oldMatName.toUpperCase(),newMatName.toUpperCase()));
 				itemParms.put("SECRET","");
 			}
 		}
@@ -220,7 +220,7 @@ public class Prop_CommonTwister extends Property
 				if(this.commonTwist((Ability)msg.tool(), itemParms, false))
 				{
 					I.setName(itemParms.get("NAME"));
-					I.setDisplayText(itemParms.get("DISPLAY"));
+					I.setDisplayText(itemParms.get("DISPLAYTEXT"));
 					I.setMaterial(CMath.s_int(itemParms.get("MATERIAL")));
 					if(I instanceof RawMaterial)
 					{
