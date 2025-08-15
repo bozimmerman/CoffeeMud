@@ -871,7 +871,10 @@ public class StdItem implements Item
 	@Override
 	public void setDisplayText(final String newDisplayText)
 	{
-		displayText=newDisplayText;
+		if(newDisplayText == null)
+			displayText="";
+		else
+			displayText=newDisplayText;
 	}
 
 	@Override

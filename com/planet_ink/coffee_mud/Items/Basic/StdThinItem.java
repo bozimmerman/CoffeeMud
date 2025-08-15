@@ -103,7 +103,10 @@ public class StdThinItem implements Item
 
 	public void setDisplayText(final String newDisplayText)
 	{
-		displayText=newDisplayText;
+		if(newDisplayText == null)
+			displayText="";
+		else
+			displayText=newDisplayText;
 	}
 
 	@Override

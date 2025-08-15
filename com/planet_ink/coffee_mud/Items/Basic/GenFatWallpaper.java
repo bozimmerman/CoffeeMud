@@ -51,7 +51,10 @@ public class GenFatWallpaper extends GenWallpaper
 	@Override
 	public void setDisplayText(final String newText)
 	{
-		displayText=newText;
+		if(newText == null)
+			displayText="";
+		else
+			displayText=newText;
 	}
 
 	protected long expirationDate=0;

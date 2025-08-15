@@ -923,7 +923,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@Override
 	public String preItemParser(final String item)
 	{
-		return basicParser(item,"ITEM-PRE-PROCESSOR",true,true);
+		final String str = basicParser(item,"ITEM-PRE-PROCESSOR",true,true);
+		if(str == null)
+			return item;
+		return str;
 	}
 
 	@Override
@@ -942,7 +945,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	@Override
 	public String filterTranslation(final String item)
 	{
-		return basicParser(item,"FILTER-TRANSLATION",false,false);
+		final String str = basicParser(item,"FILTER-TRANSLATION",false,false);
+		if(str == null)
+			return item;
+		return str;
 	}
 
 	@Override
@@ -955,13 +961,19 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				return resp;
 			clazz = clazz.getSuperclass();
 		}
-		return basicParser(item,"SESSION-TRANSLATION",false,false);
+		final String str = basicParser(item,"SESSION-TRANSLATION",false,false);
+		if(str == null)
+			return item;
+		return str;
 	}
 
 	@Override
 	public String finalTranslation(final String item)
 	{
-		return basicParser(item,"FINAL-TRANSLATION",false,false);
+		final String str = basicParser(item,"FINAL-TRANSLATION",false,false);
+		if(str == null)
+			return item;
+		return str;
 	}
 
 	@Override
