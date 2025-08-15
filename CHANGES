@@ -26,6 +26,7 @@
  25. Prop_*Adjusters now support bumping casting costs.  See AHELP.
  26. CoffeeMud now supports the Grapevine network: see Installation Guide
  27. ICHANNELS ini entry is now deprecated, and its purpose folded into CHANNELS
+ 28. Lamp oil-filled bathtubs can now be set on fire, for what that's worth.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

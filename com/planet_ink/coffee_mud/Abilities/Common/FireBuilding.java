@@ -226,14 +226,45 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
+			String lightingName = lighting.name();
 			if((lighting instanceof Container)
 			&&(CMLib.materials().getBurnDuration(lighting)==0))
 			{
-				//final List<Item> contents = ((Container)lighting).getContents();
-
+				if((lighting instanceof Drink)
+				&&(((Drink)lighting).liquidHeld()>0)
+				&&(((Drink)lighting).liquidRemaining()>0)
+				&&(((Container)lighting).getContents().size()==0)
+				&&(lighting.owner() != null))
+				{
+					final Item testResource = CMLib.materials().makeItemResource(((Drink)lighting).liquidType());
+					if(CMLib.materials().getBurnDuration(testResource)>0)
+					{
+						testResource.setContainer((Container)lighting);
+						((Drink)lighting).setLiquidRemaining(((Drink)lighting).liquidRemaining()-1);
+						lighting.owner().addItem(testResource);
+						lighting = testResource;
+						lightingName = L("the @x1 in @x2",RawMaterial.CODES.NAME(((Drink)lighting).liquidType()),lighting.name());
+					}
+				}
+				else
+				{
+					Item lightThis = null;
+					for(final Item I : ((Container)lighting).getContents())
+					{
+						if((I instanceof RawMaterial)
+						&&(CMLib.materials().getBurnDuration(I)>0))
+							lightThis=I;
+						else
+							break;
+					}
+					if(lightThis != null)
+					{
+						lightingName = L("the @x1 in @x2",lightThis.name(),lighting.name());
+						lighting = lightThis;
+					}
+				}
 			}
 
-			final String lightingName = lighting.name();
 			if(CMLib.flags().isOnFire(lighting))
 			{
 				commonTelL(mob,"@x1 is already on fire!",lightingName);
@@ -314,7 +345,6 @@ public class FireBuilding extends CommonSkill
 			final FireBuilding fireBuild = (FireBuilding)mob.fetchEffect(ID());
 			if(fireBuild!=null)
 				fireBuild.durationOfBurn = this.durationOfBurn;
-
 		}
 		return true;
 	}
