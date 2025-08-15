@@ -586,6 +586,8 @@ public class Fighter_CallSteed extends StdAbility
 		newMOB.baseCharStats().setMyRace(R);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER, caster.charStats().getStat(CharStats.STAT_GENDER) == 'M' ? 'M' : 'F');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB, false);
+		if((R.racialCategory().equals(L("Fish")))&&(newMOB instanceof Rideable))
+			((Rideable)newMOB).setRideBasis(Rideable.Basis.WATER_BASED);
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
