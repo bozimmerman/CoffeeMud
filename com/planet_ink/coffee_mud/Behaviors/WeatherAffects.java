@@ -245,9 +245,10 @@ public class WeatherAffects extends PuddleMaker
 	{
 		if(room == null)
 			return Climate.WEATHER_CLEAR;
-		if(room.getArea() instanceof Boardable)
+		final Area A = room.getArea();
+		if(A instanceof Boardable)
 		{
-			room=CMLib.map().roomLocation(((Boardable)room.getArea()).getBoardableItem());
+			room=CMLib.map().roomLocation(((Boardable)A).getBoardableItem());
 			if(room == null)
 				return Climate.WEATHER_CLEAR;
 		}
