@@ -2371,7 +2371,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'R':
 				{
 					if ((mob.location() != null) && CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.SYSMSGS))
-						buf.append(mob.location().roomID());
+						buf.append(CMLib.map().getExtendedRoomID(mob.location()));
 					c++;
 					break;
 				}
