@@ -54,6 +54,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected static final TrackingFlags	EMPTY_FLAGS			= new DefaultTrackingFlags();
 	protected static final RFilters			EMPTY_FILTERS		= new DefaultRFilters();
 
+	protected final static int AREA_TRAIL_TIMEOUT_MS = 500;
+	protected final static int AREA_ROOM_MIN_MS = 300;
+
 	protected static class RFilterNode
 	{
 		private RFilterNode		next	= null;
@@ -2867,7 +2870,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						if((shortest == null)||(finalTrail.size()<shortest.size()))
 							shortest = finalTrail;
-						if((System.currentTimeMillis()-startTime)>Math.max(300,shortest.size()*3))
+						if((System.currentTimeMillis()-startTime)>Math.max(AREA_ROOM_MIN_MS,shortest.size()*5))
 							break;
 					}
 				}
@@ -3169,7 +3172,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						}
 					});
 
-					if((System.currentTimeMillis()-startTime)>2000)
+					if((System.currentTimeMillis()-startTime)>AREA_TRAIL_TIMEOUT_MS)
 						return;
 
 					for (final AreaTrackLink prev : sortedPreds)

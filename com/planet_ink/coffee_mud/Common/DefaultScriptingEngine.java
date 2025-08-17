@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
+import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -70,9 +71,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected static final Map<String,Integer>	funcH	= new HashMap<String,Integer>();
 	protected static final Map<String,Integer>	methH	= new HashMap<String,Integer>();
 	protected static final Map<String,Integer>	progH	= new HashMap<String,Integer>();
-	protected static final Map<String,Integer>	connH	= new HashMap<String,Integer>();
 	protected static final Map<String,Integer>	gstatH	= new HashMap<String,Integer>();
-	protected static final Map<String,Integer>	signH	= new HashMap<String,Integer>();
 
 	protected static final Map<String, AtomicInteger>	counterCache= Collections.synchronizedMap(new HashMap<String, AtomicInteger>());
 	protected static final Map<String, Pattern>			patterns	= Collections.synchronizedMap(new HashMap<String, Pattern>());
@@ -122,6 +121,79 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		debugBadScripts=CMSecurity.isDebugging(CMSecurity.DbgFlag.BADSCRIPTS);
 		Resources.instance();
 		resources = globalResources();
+	}
+
+	public static enum Signs
+	{
+		EQUL("=","=="),
+		/** Index and equate for &gt;= */
+		GTEQ(">=","=>"),
+		/** Index and equate for &gt; */
+		GRAT(">"),
+		/** Index and equate for &lt; */
+		LEST("<"),
+		/** Index and equate for &lt;= */
+		LTEQ("<=","=<"),
+		/** Index and equate for != */
+		NTEQ("!=", "<>"),
+		/** Index and equate for != */
+		IN(".in.",".IN.",".In.")
+		;
+		private final String[] signs;
+		private static final Map<String, Signs> signMap = new HashMap<>();
+		private Signs(final String... sign)
+		{
+			signs = sign;
+		}
+		public static Signs getSign(final String str)
+		{
+			if(signMap.size()==0)
+			{
+				for (final Signs s : Signs.values())
+				{
+					for (final String sign : s.signs)
+						signMap.put(sign, s);
+				}
+			}
+			return signMap.get(str);
+		}
+	}
+
+	/**
+	 * Connector enum for logical connectors
+	 */
+	public static enum Connector
+	{
+		/** index and equate for logical connector AND*/
+		AND,
+		/** index and equate for logical connector OR */
+		OR,
+		/** index and equate for logical connector NOT */
+		NOT,
+		/** index and equate for logical connector ANDNOT */
+		ANDNOT,
+		/** index and equate for logical connector ORNOT */
+		ORNOT
+		;
+		public static Connector getConnector(final String str)
+		{
+			if(str == null)
+				return null;
+			return (Connector)CMath.s_valueOf(Connector.class, str.toUpperCase().trim());
+		}
+		public static boolean isConnector(final String str)
+		{
+			return getConnector(str) != null;
+		}
+		/** A table to describe what happens when connectors are found sequentially (and and not or not and and, etc) */
+		public final static Connector[][] Map=
+		{
+			{Connector.AND,Connector.OR,Connector.ANDNOT,Connector.AND,Connector.ORNOT}, //and
+			{Connector.OR,Connector.OR,Connector.ORNOT,Connector.ORNOT,Connector.ORNOT}, //or
+			{Connector.ANDNOT,Connector.ORNOT,Connector.AND,Connector.AND,Connector.OR}, //not
+			{Connector.ANDNOT,Connector.ORNOT,Connector.AND,Connector.AND,Connector.ORNOT}, //andnot
+			{Connector.ORNOT,Connector.ORNOT,Connector.OR,Connector.ORNOT,Connector.ORNOT}, //ornot
+		};
 	}
 
 	/**
@@ -590,7 +662,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] tt=eval[0];
 		final String funcParms=tt[t];
 		final String[] tryTT=parseBits(funcParms,"ccr");
-		if(signH.containsKey(tryTT[1]))
+		if(Signs.getSign(tryTT[1])!=null)
 			tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 		else
 		{
@@ -1067,10 +1139,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						progH.put(progs[i],Integer.valueOf(i+1));
 					for(int i=0;i<progs.length;i++)
 						methH.put(progs[i],Integer.valueOf(Integer.MIN_VALUE));
-					for(int i=0;i<CONNECTORS.length;i++)
-						connH.put(CONNECTORS[i],Integer.valueOf(i));
-					for(int i=0;i<SIGNS.length;i++)
-						signH.put(SIGNS[i],Integer.valueOf(i));
 				}
 			}
 		}
@@ -1319,29 +1387,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected boolean simpleEvalStr(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
 		int x=arg1.compareToIgnoreCase(arg2);
-		final Integer SIGN=signH.get(cmp);
-		if(SIGN==null)
+		final Signs sign = Signs.getSign(cmp);
+		if(sign==null)
 		{
 			logError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
 			return false;
 		}
-		switch(SIGN.intValue())
+		switch(sign)
 		{
-		case SIGN_EQUL:
+		case EQUL:
 			return (x == 0);
-		case SIGN_EQGT:
-		case SIGN_GTEQ:
+		case GTEQ:
 			return (x == 0) || (x > 0);
-		case SIGN_EQLT:
-		case SIGN_LTEQ:
+		case LTEQ:
 			return (x == 0) || (x < 0);
-		case SIGN_GRAT:
+		case GRAT:
 			return (x > 0);
-		case SIGN_LEST:
+		case LEST:
 			return (x < 0);
-		case SIGN_NTEQ:
+		case NTEQ:
 			return (x != 0);
-		case SIGN_IN:
+		case IN:
 		{
 			x= arg2.indexOf(arg1);
 			if(x<0)
@@ -1358,29 +1424,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		long val1=CMath.s_long(arg1.trim());
 		final long val2=CMath.s_long(arg2.trim());
-		final Integer SIGN=signH.get(cmp);
-		if(SIGN==null)
+		final Signs sign=Signs.getSign(cmp);
+		if(sign==null)
 		{
 			logError(scripted,cmdName,"NOSIGN",val1+" "+cmp+" "+val2);
 			return false;
 		}
-		switch(SIGN.intValue())
+		switch(sign)
 		{
-		case SIGN_EQUL:
+		case EQUL:
 			return (val1 == val2);
-		case SIGN_EQGT:
-		case SIGN_GTEQ:
+		case GTEQ:
 			return val1 >= val2;
-		case SIGN_EQLT:
-		case SIGN_LTEQ:
+		case LTEQ:
 			return val1 <= val2;
-		case SIGN_GRAT:
+		case GRAT:
 			return (val1 > val2);
-		case SIGN_LEST:
+		case LEST:
 			return (val1 < val2);
-		case SIGN_NTEQ:
+		case NTEQ:
 			return (val1 != val2);
-		case SIGN_IN:
+		case IN:
 		{
 			val1 = arg2.indexOf(arg1);
 			if(val1<0)
@@ -1398,29 +1462,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		final double val1=CMath.s_parseMathExpression(arg1.trim());
 		final double val2=CMath.s_parseMathExpression(arg2.trim());
-		final Integer SIGN=signH.get(cmp);
-		if(SIGN==null)
+		final Signs sign = Signs.getSign(cmp);
+		if(sign==null)
 		{
 			logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
 			return false;
 		}
-		switch(SIGN.intValue())
+		switch(sign)
 		{
-		case SIGN_EQUL:
+		case EQUL:
 			return (val1 == val2);
-		case SIGN_EQGT:
-		case SIGN_GTEQ:
+		case GTEQ:
 			return val1 >= val2;
-		case SIGN_EQLT:
-		case SIGN_LTEQ:
+		case LTEQ:
 			return val1 <= val2;
-		case SIGN_GRAT:
+		case GRAT:
 			return (val1 > val2);
-		case SIGN_LEST:
+		case LEST:
 			return (val1 < val2);
-		case SIGN_NTEQ:
+		case NTEQ:
 			return (val1 != val2);
-		case SIGN_IN:
+		case IN:
 			return (""+val2).indexOf(""+val1) >=0;
 		default:
 			return (val1 == val2);
@@ -3005,7 +3067,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(funcH.containsKey(s))
 							state=STATE_MAYFUNCTION;
 						else
-						if(!connH.containsKey(s))
+						if(!Connector.isConnector(s))
 							throw new ScriptParseException("Unknown keyword: "+s);
 					}
 				}
@@ -3044,7 +3106,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								fdepth=0;
 							}
 							else
-							if(connH.containsKey(s))
+							if(Connector.isConnector(s))
 								state=STATE_MAIN;
 							else
 								throw new ScriptParseException("Unknown keyword: "+s);
@@ -3103,12 +3165,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(!Character.isWhitespace(evalC[c+1]))
 						{
 							s=new String(evalC,c,2);
-							if((!signH.containsKey(s))&&(evalC[c]!='!'))
+							if((Signs.getSign(s)==null)&&(evalC[c]!='!'))
 								s=""+evalC[c];
 						}
 						else
 							s=""+evalC[c];
-						if(!signH.containsKey(s))
+						if(Signs.getSign(s)==null)
 						{
 							c=dex-1;
 							state=STATE_MAIN;
@@ -3167,7 +3229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(evalC[c]==lastQuote)
 				{
 					if((V.size()>2)
-					&&(signH.containsKey(V.get(V.size()-1)))
+					&&(Signs.getSign(V.get(V.size()-1))!=null)
 					&&(V.get(V.size()-2).equals(")")))
 					{
 						final String sign=V.get(V.size()-1);
@@ -3199,7 +3261,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(s.length()>0)
 					{
 						if((V.size()>1)
-						&&(signH.containsKey(V.get(V.size()-1)))
+						&&(Signs.getSign(V.get(V.size()-1))!=null)
 						&&(V.get(V.size()-2).equals(")")))
 						{
 							final String sign=V.get(V.size()-1);
@@ -3253,9 +3315,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(stack.size()>0)
 		{
 			final Object O=stack.get(stack.size()-1);
-			if(O instanceof Integer)
+			if(O instanceof Connector)
 			{
-				final int connector=((Integer)O).intValue();
+				final Connector connector=(Connector)O;
 				stack.remove(stack.size()-1);
 				if((stack.size()>0)
 				&&((stack.get(stack.size()-1) instanceof Boolean)))
@@ -3264,17 +3326,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					stack.remove(stack.size()-1);
 					switch(connector)
 					{
-					case CONNECTOR_AND:
+					case AND:
 						trueFalse = preTrueFalse && trueFalse;
 						break;
-					case CONNECTOR_OR:
+					case OR:
 						trueFalse = preTrueFalse || trueFalse;
 						break;
-					case CONNECTOR_ANDNOT:
+					case ANDNOT:
 						trueFalse = preTrueFalse && (!trueFalse);
 						break;
-					case CONNECTOR_NOT:
-					case CONNECTOR_ORNOT:
+					case NOT:
+					case ORNOT:
 						trueFalse = preTrueFalse || (!trueFalse);
 						break;
 					}
@@ -3282,9 +3344,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				switch(connector)
 				{
-					case CONNECTOR_ANDNOT:
-					case CONNECTOR_NOT:
-					case CONNECTOR_ORNOT:
+					case ANDNOT:
+					case NOT:
+					case ORNOT:
 						trueFalse = !trueFalse;
 						break;
 					default:
@@ -3572,15 +3634,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 			else
-			if(connH.containsKey(tt[t]))
+			if(Connector.isConnector(tt[t]))
 			{
-				Integer curr=connH.get(tt[t]);
+				Connector curr=Connector.getConnector(tt[t]);
 				if((stack.size()>0)
-				&&(stack.get(stack.size()-1) instanceof Integer))
+				&&(stack.get(stack.size()-1) instanceof Connector))
 				{
-					final int old=((Integer)stack.get(stack.size()-1)).intValue();
+					final int old=((Connector)stack.get(stack.size()-1)).ordinal();
 					stack.remove(stack.size()-1);
-					curr=Integer.valueOf(CONNECTOR_MAP[old][curr.intValue()]);
+					curr=Connector.Map[old][curr.ordinal()];
 				}
 				stack.add(curr);
 			}
@@ -4987,7 +5049,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(lastKnownLocation!=null)
 					{
 						num=lastKnownLocation.numInhabitants();
-						if(signH.containsKey(tt[t+1]))
+						if(Signs.getSign(tt[t+1])!=null)
 						{
 							String name=varify(ctx,tt[t+0]);
 							startbit++;
@@ -5021,7 +5083,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					else
-					if(!signH.containsKey(tt[t+0]))
+					if(Signs.getSign(tt[t+0])==null)
 					{
 						logError(ctx,"NUMMOBSROOM","Syntax","No SIGN found: "+CMParms.combine(tt,t,t+tlen));
 						return returnable;
@@ -5665,7 +5727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String comp="==";
 					Environmental E=ctx.monster;
 					String arg2;
-					if(signH.containsKey(tt[t+1]))
+					if(Signs.getSign(tt[t+1])!=null)
 					{
 						E=getArgumentItem(tt[t+0],ctx);
 						comp=tt[t+1];
@@ -5724,7 +5786,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String comp="==";
 					Environmental E=ctx.monster;
 					String arg3;
-					if(signH.containsKey(tt[t+1]))
+					if(Signs.getSign(tt[t+1])!=null)
 					{
 						E=getArgumentItem(tt[t+0],ctx);
 						comp=tt[t+1];
@@ -5811,7 +5873,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String comp="==";
 					Environmental E=ctx.monster;
 					String arg2;
-					if(signH.containsKey(tt[t+1]))
+					if(Signs.getSign(tt[t+1])!=null)
 					{
 						E=getArgumentItem(tt[t+0],ctx);
 						comp=tt[t+1];
@@ -5942,33 +6004,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg1=tt[t+0];
 					final String arg2=tt[t+1];
 					final String arg3=tt[t+2];
-					final int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.trim());
-					if(index<0)
+					final TimePeriod timePeriod = TimePeriod.get(arg1);
+					if(timePeriod == null)
 						logError(ctx,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+ctx.scripted.name());
 					else
 					{
 						final Area A =CMLib.map().areaLocation(ctx.scripted);
 						if(A!=null)
 						{
-							String val=null;
-							switch(index)
-							{
-							case 2:
-								val = "" + A.getTimeObj().getDayOfMonth();
-								break;
-							case 3:
-								val = "" + A.getTimeObj().getDayOfMonth();
-								break;
-							case 4:
-								val = "" + A.getTimeObj().getMonth();
-								break;
-							case 5:
-								val = "" + A.getTimeObj().getYear();
-								break;
-							default:
-								val = "" + A.getTimeObj().getHourOfDay();
-								break;
-							}
+							final String val=""+A.getTimeObj().get(timePeriod);
 							returnable=simpleEval(ctx.scripted,val,arg3,arg2,"DATETIME");
 						}
 					}
@@ -6736,10 +6780,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(ctx,"EVAL","Syntax",CMParms.combine(tt,t));
 						return returnable;
 					}
-					if(cmp.equals("=="))
+					if(cmp.equals("==")||cmp.equals("="))
 						returnable=val.equals(arg4);
 					else
-					if(cmp.equals("!="))
+					if(cmp.equals("!=")||(cmp.equals("<>")))
 						returnable=!val.equals(arg4);
 					else
 						returnable=simpleEval(ctx.scripted, val, arg4, cmp, "EVAL");
@@ -8427,32 +8471,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 91: // datetime
 			{
 				final String arg1=CMParms.getCleanBit(funcParms,0);
-				final int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.toUpperCase().trim());
-				if(index<0)
+				final TimePeriod period = TimePeriod.get(arg1.toUpperCase().trim());
+				if(period == null)
 					logError(ctx,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+ctx.scripted.name());
 				else
 				{
 					final Area A = CMLib.map().areaLocation(ctx.scripted);
 					if(A!=null)
-					{
-						switch(index)
-						{
-						case 2:
-							results.append(A.getTimeObj().getDayOfMonth());
-							break;
-						case 3:
-							results.append(A.getTimeObj().getDayOfMonth());
-							break;
-						case 4:
-							results.append(A.getTimeObj().getMonth());
-							break;
-						case 5:
-							results.append(A.getTimeObj().getYear());
-							break;
-						default:
-							results.append(A.getTimeObj().getHourOfDay()); break;
-						}
-					}
+						results.append(A.getTimeObj().get(period));
 				}
 				break;
 			}
@@ -9605,8 +9631,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					ctx.line++;
 					while(ctx.line<script.size())
 					{
-						s=script.get(ctx.line).first;
-						tt=script.get(ctx.line).second;
+						final ScriptLn line = script.get(ctx.line);
+						if(line == null)
+						{
+							logError(ctx,"FOR","Runtime"," NULL LINE # "+ctx.line+"/"+script.size()+"!");
+							continue;
+						}
+						s=line.first;
+						tt=line.second;
 						if(tt!=null)
 							cmd=tt[0];
 						else
@@ -9650,9 +9682,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									depth--;
 								}
 							}
-							final ScriptLn line = script.get(ctx.line);
-							if(line != null)
-								subScript.add(line);
+							subScript.add(line);
 						}
 						ctx.line++;
 					}
