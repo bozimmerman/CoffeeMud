@@ -130,12 +130,22 @@ function inputKeyDown(e)
 		if(inputbacklogindex>0)
 		{
 			if((e.shiftKey)&&(inputbacklogindex>=0)&&(inputbacklogindex<inputbacklog.length))
-				inputTextArea.value=inputbacklog[inputbacklogindex];
+			{
+				if (inputbacklog[inputbacklogindex] === undefined)
+					inputTextArea.value='';
+				else
+					inputTextArea.value=inputbacklog[inputbacklogindex];
+			}
 			inputbacklogindex--;
 			if((inputTextArea.value=='')
 			||((inputbacklogindex<inputbacklog.length-1)
 				&&inputTextArea.value==inputbacklog[inputbacklogindex+1]))
-				inputTextArea.value=inputbacklog[inputbacklogindex];
+			{
+				if (inputbacklog[inputbacklogindex] === undefined)
+					inputTextArea.value='';
+				else
+					inputTextArea.value=inputbacklog[inputbacklogindex];
+			}
 		}
 	}
 	else
@@ -144,12 +154,22 @@ function inputKeyDown(e)
 		if(inputbacklogindex<inputbacklog.length-1)
 		{
 			if((e.shiftKey)&&(inputbacklogindex>=0)&&(inputbacklogindex<inputbacklog.length))
-				inputTextArea.value=inputbacklog[inputbacklogindex];
+			{
+				if (inputbacklog[inputbacklogindex] === undefined)
+					inputTextArea.value='';
+				else
+					inputTextArea.value=inputbacklog[inputbacklogindex];
+			}
 			inputbacklogindex++;
 			if((inputTextArea.value=='')
 			||((inputbacklogindex>0)
 				&&inputTextArea.value==inputbacklog[inputbacklogindex-1]))
-				inputTextArea.value=inputbacklog[inputbacklogindex];
+			{
+				if (inputbacklog[inputbacklogindex] === undefined)
+					inputTextArea.value='';
+				else
+					inputTextArea.value=inputbacklog[inputbacklogindex];
+			}
 		}
 	}
 	else
