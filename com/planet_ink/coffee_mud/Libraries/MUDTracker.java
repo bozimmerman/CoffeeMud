@@ -2914,15 +2914,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return t;
 	}
 
-	/*
 	protected int getApproximateDistance(final Area fromA, final Area toA)
 	{
 		if((fromA == toA)||(fromA == null)||(toA == null))
 			return 0;
 		int distance = 0;
-		final List<PairList<String,AreaTrackLink>> aTrails = getAreaNameTrail(fromA.getRandomProperRoom(), toA.getRandomProperRoom());
-		for(final PairList<String,AreaTrackLink> aTrail : aTrails)
+		final Enumeration<PairList<String,AreaTrackLink>> a = getAreaLinkTrail(fromA.getRandomProperRoom(), toA.getRandomProperRoom());
+		for(;a.hasMoreElements();)
 		{
+			final PairList<String, AreaTrackLink> aTrail = a.nextElement();
 			for(int i=0;i<aTrail.size();i++)
 			{
 				final String areaName = aTrail.get(i).first;
@@ -2936,10 +2936,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						distance += aT.diameter/2;
 				}
 			}
+			break;
 		}
 		return distance;
 	}
-	*/
 
 	protected void logGroupLinks(final AreaTrackLinksGroup group)
 	{
