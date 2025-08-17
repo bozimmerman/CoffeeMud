@@ -770,8 +770,8 @@ public interface TimeClock extends Tickable, CMCommon
 				if(us.equals("DATE"))
 					return DAY;
 			}
-			if(s.endsWith("s")||s.endsWith("S"))
-				return get(s.substring(0,s.length()-1));
+			if(us.endsWith("S"))
+				return get(us.substring(0,us.length()-1));
 			return null;
 		}
 
