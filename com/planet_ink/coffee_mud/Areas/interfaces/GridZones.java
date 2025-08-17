@@ -32,6 +32,7 @@ public interface GridZones extends Environmental
 	 * @return whether the room is a child
 	 */
 	public boolean isMyGridChild(Room loc);
+
 	/**
 	 * Returns the fully-qualified Room ID of this room
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -40,6 +41,7 @@ public interface GridZones extends Environmental
 	 * @return a fully qualified room ID
 	 */
 	public String getGridChildCode(Room loc);
+
 	/**
 	 * Returns the fully-qualified Room ID of this room
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -48,12 +50,21 @@ public interface GridZones extends Environmental
 	 * @return a Room object
 	 */
 	public Room getGridChild(String childCode);
+
 	/**
 	 * Returns a random Room object that is a child of this one.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a Room object
 	 */
 	public Room getRandomGridChild();
+
+	/**
+	 * Returns the first Room object that is a child of this one.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return a Room object
+	 */
+	public Room getFirstGridChild();
+
 	/**
 	 * Returns the X coordinate of the given Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -61,6 +72,7 @@ public interface GridZones extends Environmental
 	 * @return the x coordinate of the room
 	 */
 	public int getGridChildX(Room loc);
+
 	/**
 	 * Returns the Y coordinate of the given Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -92,16 +104,19 @@ public interface GridZones extends Environmental
 	 * @return the width
 	 */
 	public int xGridSize();
+
 	/**
 	 * Returns the total height of this grid
 	 * @return the height
 	 */
 	public int yGridSize();
+
 	/**
 	 * Sets the total width of this grid.
 	 * @param x the width
 	 */
 	public void setXGridSize(int x);
+
 	/**
 	 * Sets the total height of this grid.
 	 * @param y the height

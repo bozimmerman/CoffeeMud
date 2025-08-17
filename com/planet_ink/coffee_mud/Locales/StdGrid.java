@@ -363,6 +363,15 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
+	public Room getFirstGridChild()
+	{
+		final List<Room> V=getAllRooms();
+		if(V.size()==0)
+			return null;
+		return V.get(0);
+	}
+
+	@Override
 	public List<Room> getAllRooms()
 	{
 		final Room[][] subMap=getBuiltGrid();

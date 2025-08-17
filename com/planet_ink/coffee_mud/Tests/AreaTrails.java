@@ -81,8 +81,8 @@ public class AreaTrails extends StdTest
 		int fails = 0;
 		int success = 0;
 		final PairList<Room,Room> failPairs = new PairVector<Room,Room>();
-		long totalNewNanos = 0;
-		long totalOldNanos = 0;
+		long totalNewMillis = 0;
+		long totalOldMillis = 0;
 		int shortestFail = Integer.MAX_VALUE;
 		Pair<Room,Room> shortestFailPair = null;
 		for(final Area fromA : elligibleAreas)
@@ -92,29 +92,30 @@ public class AreaTrails extends StdTest
 				if((fromA == toA)||(fromA.getTimeObj() != toA.getTimeObj()))
 					continue;
 				tries++;
-				final Room fromRoom = fromA.getRandomProperRoom();
-				final Room toRoom = toA.getRandomProperRoom();
-				//Holy Grove#8950 to Sewers#7031 = S 8W 2S D S
-				//final Room fromRoom = CMLib.map().getRoom("Holy Grove#8950");
-				//final Room toRoom = CMLib.map().getRoom("Sewers#7031");
+				Room fromRoom = fromA.getRandomProperRoom();
+				if(fromRoom instanceof GridLocale)
+					fromRoom = ((GridLocale)fromRoom).getRandomGridChild();
+				Room toRoom = toA.getRandomProperRoom();
+				if(toRoom instanceof GridLocale)
+					toRoom = ((GridLocale)toRoom).getRandomGridChild();
 				if((fromRoom==null)||(toRoom==null))
 				{
 					mob.tell("No proper rooms in " + fromA.name() + " or " + toA.name());
 					continue;
 				}
-				long nanoStart = System.nanoTime();
+				long MilliStart = System.currentTimeMillis();
+				final List<Room> oldTrail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags, 150);
+				final long oldMillis = System.currentTimeMillis() - MilliStart;
+				totalOldMillis += oldMillis;
+				MilliStart = System.currentTimeMillis();
 				final List<Room> trail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags);
-				totalNewNanos += System.nanoTime() - nanoStart;
-				nanoStart = System.nanoTime();
-				final List<Room> oldTrail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags, 200);
-				totalOldNanos += System.nanoTime() - nanoStart;
+				final long newMillis = System.currentTimeMillis() - MilliStart;
+				totalNewMillis += newMillis;
 				final int otSize = (oldTrail == null) ? 0 : oldTrail.size();
 				if ((trail == null) || (trail.size() == 0) || (trail.get(0)!=toRoom))
 				{
 					if((oldTrail == null)||(oldTrail.size()==0))
-					{
-						//mob.tell(fromRoom.roomID()+"->"+toRoom.roomID()+" Also has no steps");
-					}
+						mob.tell(fromRoom.roomID()+"->"+toRoom.roomID()+" is an invalid trail, no steps found.");
 					else
 					{
 						failPairs.add(new Pair<Room,Room>(fromRoom,toRoom));
@@ -127,7 +128,7 @@ public class AreaTrails extends StdTest
 						if((trail != null) && (trail.size()>0))
 							mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" failed because last room is "+trail.get(0).roomID());
 						else
-							mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" failed");
+							mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" failed (old method steps = "+oldTrail.size()+")");
 					}
 				}
 				else
@@ -144,6 +145,7 @@ public class AreaTrails extends StdTest
 							success--;
 							fails++;
 							failPairs.add(new Pair<Room,Room>(fromRoom,toRoom));
+							//mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" has "+trail.size() + "/"+otSize+" steps");
 							mob.tell(".. but failed viability check from "+CMLib.map().getExtendedRoomID(R)+" to "+CMLib.map().getExtendedRoomID(trail.get(r)));
 							break;
 						}
@@ -156,14 +158,16 @@ public class AreaTrails extends StdTest
 					if(trail.size()<otSize/2)
 						mob.tell("=="+steps.toString()+"==");
 				}
+				mob.tell("   ^^ Times: Old: "+oldMillis+", New: "+newMillis);
 			}
 		}
 		mob.tell("Success "+success+"/"+tries);
 		mob.tell("Fail "+fails+"/"+tries);
-		mob.tell("Shortest fail "+shortestFail+"/"+tries+" from "+CMLib.map().getExtendedRoomID(shortestFailPair.first)+" to "+CMLib.map().getExtendedRoomID(shortestFailPair.second));
-		final long avgNewNanos = (totalNewNanos / tries);
-		final long avgOldNanos = (totalOldNanos / tries);
-		mob.tell("Average new nanos: "+avgNewNanos+", old nanos: "+avgOldNanos);
+		if (shortestFailPair != null)
+			mob.tell("Shortest fail "+shortestFail+"/"+tries+" from "+CMLib.map().getExtendedRoomID(shortestFailPair.first)+" to "+CMLib.map().getExtendedRoomID(shortestFailPair.second));
+		final long avgNewMillis = (totalNewMillis / tries);
+		final long avgOldMillis = (totalOldMillis / tries);
+		mob.tell("Average new Millis: "+avgNewMillis+", old Millis: "+avgOldMillis);
 		return null;
 	}
 }

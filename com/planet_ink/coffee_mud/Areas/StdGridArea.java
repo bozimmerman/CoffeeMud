@@ -220,6 +220,14 @@ public class StdGridArea extends StdArea implements Area, GridZones
 	}
 
 	@Override
+	public Room getFirstGridChild()
+	{
+		if(this.numberOfProperIDedRooms()>0)
+			return super.getRoom(this.getProperRoomnumbers().getRoomIDs().nextElement());
+		return null;
+	}
+
+	@Override
 	public Room getGridChild(final String childCode)
 	{
 		return CMLib.map().getRoom(childCode);

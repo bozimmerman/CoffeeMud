@@ -724,6 +724,21 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
+	public Room getFirstGridChild()
+	{
+		for (int x = 0; x < xGridSize(); x++)
+		{
+			for (int y = 0; y < yGridSize(); y++)
+			{
+				final Room R = getGridChild(x, y);
+				if (R != null)
+					return R;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public List<Room> getAllRoomsFilled()
 	{
 		if(rooms.size()==0)
