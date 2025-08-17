@@ -69,6 +69,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 		list.add(index, new WeakReference<T>(element));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized Iterator<T> iterator()
 	{
@@ -105,10 +106,11 @@ public class WeakArrayList<T> extends AbstractList<T>
 		this.lastCleaning.set(System.currentTimeMillis());
 	}
 
-	private final Filterer<T> WeakFilterer = new Filterer<T>()
+	@SuppressWarnings("rawtypes")
+	private final static Filterer WeakFilterer = new Filterer()
 	{
 		@Override
-		public boolean passesFilter(final T obj)
+		public boolean passesFilter(final Object obj)
 		{
 			return (obj != null);
 		}

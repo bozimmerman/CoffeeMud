@@ -87,8 +87,11 @@ public class AreaTrails extends StdTest
 		Pair<Room,Room> shortestFailPair = null;
 		for(final Area fromA : elligibleAreas)
 		{
-			for(final Area toA : elligibleAreas)
+			//for(final Area toA : elligibleAreas)
+			for(int a=0;a<10;a++)
 			{
+				final Area toA = CMLib.map().getRandomArea();
+
 				if((fromA == toA)||(fromA.getTimeObj() != toA.getTimeObj()))
 					continue;
 				tries++;
