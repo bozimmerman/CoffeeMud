@@ -760,12 +760,16 @@ public interface TimeClock extends Tickable, CMCommon
 		{
 			if(s==null)
 				return null;
+			final String us = s.toUpperCase().trim();
 			try
 			{
-				return valueOf(s.toUpperCase().trim());
+				return valueOf(us);
 			}
 			catch(final Exception e)
-			{}
+			{
+				if(us.equals("DATE"))
+					return DAY;
+			}
 			if(s.endsWith("s")||s.endsWith("S"))
 				return get(s.substring(0,s.length()-1));
 			return null;
