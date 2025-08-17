@@ -3269,6 +3269,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	protected AreaTrackData getAreaTrackData(final Area A)
 	{
+		//TODO: this relies entirely on non-thin areas or premature loads,
+		//  so a special case for thin areas is required to consider using it.
 		if (A == null)
 			return null;
 		final int numberOfProperIDedRooms = A.numberOfProperIDedRooms();
