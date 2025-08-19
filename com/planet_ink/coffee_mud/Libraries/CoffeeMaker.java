@@ -1679,7 +1679,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(newArea==null)
 			throw new CMException(unpackErr("Area","No class: "+areaClass));
 		newArea.setName(areaName);
-
 		newArea.setDescription(CMLib.coffeeFilter().safetyInFilter(xmlLib.getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(xmlLib.getIntFromPieces(aV,"ACLIM"));
 		newArea.setTheme(xmlLib.getIntFromPieces(aV,"ATECH"));

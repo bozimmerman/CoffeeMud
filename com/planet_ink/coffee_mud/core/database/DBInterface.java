@@ -858,6 +858,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<Room> DBReadAreaNavStructure(final String areaName)
+	{
+		return RoomLoader.DBReadAreaNavStructure(areaName);
+	}
+
+	@Override
 	public void DBUpdatePlayer(final MOB mob)
 	{
 		MOBloader.DBUpdate(mob);

@@ -975,6 +975,7 @@ public class Modify extends StdCommand
 					return;
 				}
 				myArea.setName(restStr);
+				CMLib.map().renamedArea(myArea);
 			}
 			else
 			if(command.equalsIgnoreCase("PASSIVE"))
@@ -1145,10 +1146,16 @@ public class Modify extends StdCommand
 				}
 			}
 			else
+			{
 				myArea.setName(oldName);
+				CMLib.map().renamedArea(myArea);
+			}
 		}
 		else
+		{
 			myArea.setName(oldName);
+			CMLib.map().renamedArea(myArea);
+		}
 		myArea.recoverPhyStats();
 		mob.location().recoverRoomStats();
 		if(!copyA.sameAs(myArea))

@@ -122,7 +122,10 @@ public class RoomLoader
 			while(R.next())
 			{
 				final String areaName=DBConnections.getRes(R,"CMAREA");
+				final String oldName = A.Name();
 				A.setName(areaName);
+				if(!oldName.equals(areaName))
+					CMLib.map().renamedArea(A);
 				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
 				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
@@ -1626,6 +1629,85 @@ public class RoomLoader
 				contents.add(thisItem);
 		}
 		return contents;
+	}
+
+	public List<Room> DBReadAreaNavStructure(final String areaName)
+	{
+		final List<Room> rooms = new ArrayList<Room>();
+		DBConnection D = null;
+		try
+		{
+			final Area fakeArea = CMClass.getAreaType("StdArea");
+			fakeArea.setName(areaName);
+			D = DB.DBFetch();
+			final TreeMap<String, Room> areaRooms = new TreeMap<String, Room>();
+			final Set<String> idStarts = new TreeSet<String>();
+			ResultSet R = D.query("SELECT CMROID, CMLOID, CMROTX FROM CMROOM WHERE CMAREA='" + DB.injectionClean(areaName) + "'");
+			while (R.next())
+			{
+				final String roomID = R.getString("CMROID");
+				final int x = roomID.indexOf('#');
+				if(x<0)
+					idStarts.add(roomID);
+				else
+					idStarts.add(roomID.substring(0,x));
+				final Room room = CMClass.getLocale(R.getString("CMLOID"));
+				if (room != null)
+				{
+					room.setRoomID(roomID);
+					room.setArea(fakeArea);
+					rooms.add(room);
+					room.setMiscText(R.getString("CMROTX"));
+					room.delAllBehaviors();
+					areaRooms.put(roomID, room);
+				}
+			}
+			R.close();
+			final StringBuilder whereClause = new StringBuilder("");
+			for(final String idStart : idStarts)
+			{
+				if(whereClause.length() > 0)
+					whereClause.append(" OR ");
+				whereClause.append("CMROID LIKE '").append(idStart).append("%'");
+			}
+			R = D.query("SELECT * FROM CMROEX WHERE " + whereClause.toString());
+			while (R.next())
+			{
+				final String roomID = R.getString("CMROID");
+				final Room room = areaRooms.get(roomID);
+				if (room != null)
+				{
+					final String exitID = R.getString("CMEXID");
+					final Exit exit = CMClass.getExit(exitID);
+					if (exit != null)
+					{
+						final String nextRoomID = R.getString("CMNRID");
+						if (nextRoomID.length() > 0)
+						{
+							Room nextRoom = areaRooms.get(nextRoomID);
+							if(nextRoom == null)
+								nextRoom = CMLib.map().getRoom(nextRoomID);
+							if(nextRoom != null)
+							{
+								final int dir  = R.getInt("CMDIRE");
+								room.setRawExit(dir, exit);
+								room.setRawDoor(dir, nextRoom);
+							}
+						}
+					}
+				}
+			}
+			R.close();
+		}
+		catch (final SQLException sqle)
+		{
+			Log.errOut("Area", sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return rooms;
 	}
 
 	protected List<String> DBReadAreaRoomIDs(final String areaName)

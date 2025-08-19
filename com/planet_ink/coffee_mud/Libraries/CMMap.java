@@ -171,6 +171,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void addArea(final Area newOne)
 	{
 		areasList.add(newOne);
+		renamedArea(newOne);
 		if((newOne instanceof SpaceObject)&&(!CMLib.space().isObjectInSpace((SpaceObject)newOne)))
 			CMLib.space().addObjectToSpace((SpaceObject)newOne);
 	}

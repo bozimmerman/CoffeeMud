@@ -80,6 +80,7 @@ public class AreaTrails extends StdTest
 		int tries = 0;
 		int fails = 0;
 		int success = 0;
+		double stepTotDeltas = 0;
 		final PairList<Room,Room> failPairs = new PairVector<Room,Room>();
 		long totalNewMillis = 0;
 		long totalOldMillis = 0;
@@ -94,7 +95,6 @@ public class AreaTrails extends StdTest
 
 				if((fromA == toA)||(fromA.getTimeObj() != toA.getTimeObj()))
 					continue;
-				tries++;
 				Room fromRoom = fromA.getRandomProperRoom();
 				if(fromRoom instanceof GridLocale)
 					fromRoom = ((GridLocale)fromRoom).getRandomGridChild();
@@ -106,19 +106,31 @@ public class AreaTrails extends StdTest
 					mob.tell("No proper rooms in " + fromA.name() + " or " + toA.name());
 					continue;
 				}
-				long MilliStart = System.currentTimeMillis();
+				long MilliStart;
+
+				long oldMillis;
+				MilliStart = System.currentTimeMillis();
 				final List<Room> oldTrail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags, 150);
-				final long oldMillis = System.currentTimeMillis() - MilliStart;
+				oldMillis = System.currentTimeMillis() - MilliStart;
 				totalOldMillis += oldMillis;
+				if((oldTrail==null)||(oldTrail.size()==0))
+					continue; // no hope for area-based test
+				tries++;
+
+				long newMillis;
 				MilliStart = System.currentTimeMillis();
 				final List<Room> trail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags);
-				final long newMillis = System.currentTimeMillis() - MilliStart;
+				newMillis = System.currentTimeMillis() - MilliStart;
 				totalNewMillis += newMillis;
+
+				final String testTrailName = CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom);
 				final int otSize = (oldTrail == null) ? 0 : oldTrail.size();
 				if ((trail == null) || (trail.size() == 0) || (trail.get(0)!=toRoom))
 				{
 					if((oldTrail == null)||(oldTrail.size()==0))
-						mob.tell(fromRoom.roomID()+"->"+toRoom.roomID()+" is an invalid trail, no steps found.");
+					{
+						//mob.tell(testTrailName+" is an invalid trail, no steps found.");
+					}
 					else
 					{
 						failPairs.add(new Pair<Room,Room>(fromRoom,toRoom));
@@ -129,17 +141,24 @@ public class AreaTrails extends StdTest
 						}
 						fails++;
 						if((trail != null) && (trail.size()>0))
-							mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" failed because last room is "+trail.get(0).roomID());
+							mob.tell(testTrailName+" failed because last room is "+trail.get(0).roomID());
 						else
-							mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" failed (old method steps = "+oldTrail.size()+")");
+							mob.tell(testTrailName+" failed (old method steps = "+oldTrail.size()+")");
+						mob.tell("   ^^ Times: Old: "+oldMillis+"ms, New: "+newMillis+"ms");
 					}
 				}
 				else
 				{
-					mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" has "+trail.size() + "/"+otSize+" steps");
+					mob.tell(testTrailName+" trail steps, new="+trail.size() + ", old="+otSize);
+					if((otSize > 0)&&(trail.size() > 0))
+					{
+						final double diff = CMath.div(trail.size(), otSize);
+						stepTotDeltas += diff;
+					}
+					success++;
+					/*
 					Room R = trail.get(trail.size()-1);
 					final StringBuilder steps = new StringBuilder(CMLib.map().getExtendedRoomID(R));
-					success++;
 					for(int r=trail.size()-2; r>=0;r--)
 					{
 						final int dir = CMLib.map().getRoomDir(R, trail.get(r));
@@ -148,7 +167,7 @@ public class AreaTrails extends StdTest
 							success--;
 							fails++;
 							failPairs.add(new Pair<Room,Room>(fromRoom,toRoom));
-							//mob.tell(CMLib.map().getExtendedRoomID(fromRoom)+"->"+CMLib.map().getExtendedRoomID(toRoom)+" has "+trail.size() + "/"+otSize+" steps");
+							//mob.tell(testTrailName+" has "+trail.size() + "/"+otSize+" steps");
 							mob.tell(".. but failed viability check from "+CMLib.map().getExtendedRoomID(R)+" to "+CMLib.map().getExtendedRoomID(trail.get(r)));
 							break;
 						}
@@ -160,17 +179,33 @@ public class AreaTrails extends StdTest
 					}
 					if(trail.size()<otSize/2)
 						mob.tell("=="+steps.toString()+"==");
+					*/
+					mob.tell("   ^^ Times: Old: "+oldMillis+"ms, New: "+newMillis+"ms");
 				}
-				mob.tell("   ^^ Times: Old: "+oldMillis+", New: "+newMillis);
 			}
 		}
-		mob.tell("Success "+success+"/"+tries);
-		mob.tell("Fail "+fails+"/"+tries);
+		final double avgDelta = (success == 0) ? 0 : (stepTotDeltas/success);
+		mob.tell("Success: "+success);
+		mob.tell("Fail: "+fails);
+		mob.tell("Total: "+(success + fails));
+		mob.tell("Invalid tests skipped: "+(tries - success - fails));
+		mob.tell("New method trails avg "+Math.round((avgDelta-1.00)*100)+"% longer than old method trails.");
 		if (shortestFailPair != null)
-			mob.tell("Shortest fail "+shortestFail+"/"+tries+" from "+CMLib.map().getExtendedRoomID(shortestFailPair.first)+" to "+CMLib.map().getExtendedRoomID(shortestFailPair.second));
+			mob.tell("(Shortest fail "+shortestFail+"/"+tries+" from "+CMLib.map().getExtendedRoomID(shortestFailPair.first)+" to "+CMLib.map().getExtendedRoomID(shortestFailPair.second)+")");
+		for (final Pair<Room, Room> failPair : failPairs)
+		{
+			mob.tell("Failed from " + CMLib.map().getExtendedRoomID(failPair.first) + " to " + CMLib.map().getExtendedRoomID(failPair.second));
+			/*
+			final List<Room> trail = CMLib.tracking().findTrailToRoom(failPair.first, failPair.second, flags);
+			if ((trail == null) || (trail.size() == 0))
+				mob.tell("   No trail found.");
+			else
+				mob.tell("   Retry succeeded tho.");
+			*/
+		}
 		final long avgNewMillis = (totalNewMillis / tries);
 		final long avgOldMillis = (totalOldMillis / tries);
-		mob.tell("Average new Millis: "+avgNewMillis+", old Millis: "+avgOldMillis);
+		mob.tell("Average times per trail: "+avgNewMillis+"ms, old Millis: "+avgOldMillis+"ms");
 		return null;
 	}
 }

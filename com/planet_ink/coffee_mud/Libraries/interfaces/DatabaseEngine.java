@@ -558,6 +558,16 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 * Reads the rooms and their exits and their properties into
+	 * a fake area of the given name.
+	 *
+	 * @param areaName the area to read
+	 * @return the list of rooms in the fake area.
+	 */
+	public List<Room> DBReadAreaNavStructure(final String areaName);
+
+	/**
+	 * Table category: DBMAP
 	 * Reads all the room numbers for the area with the given name from the
 	 * database and returns a compressed roomnumberset object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet

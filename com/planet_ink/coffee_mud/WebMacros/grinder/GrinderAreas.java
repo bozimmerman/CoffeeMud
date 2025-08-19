@@ -216,6 +216,7 @@ public class GrinderAreas
 			CMLib.map().delArea(oldA);
 			CMLib.map().addArea(A);
 			A.setName(oldA.Name());
+			CMLib.map().renamedArea(A);
 			redoAllMyDamnRooms=true;
 			areasNeedingUpdates.remove(oldA);
 			areasNeedingUpdates.add(A);
