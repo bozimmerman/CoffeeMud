@@ -94,9 +94,10 @@ public interface TrackingLibrary extends CMLibrary
 	 * @param location the starting room for the trail
 	 * @param destRoom the target room for the trail
 	 * @param flags any Radiant flags -- not used in the trail calculation
+	 * @param doubleCheck TODO
 	 * @return the trail, or null if a failure
 	 */
-	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags);
+	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, List<Room> doubleCheck);
 
 	/**
 	 * Returns a trail of rooms to move through in order to go from the given location

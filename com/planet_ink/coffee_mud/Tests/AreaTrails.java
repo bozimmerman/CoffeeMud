@@ -151,7 +151,7 @@ public class AreaTrails extends StdTest
 
 			long newMillis;
 			MilliStart = System.currentTimeMillis();
-			final List<Room> trail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags);
+			final List<Room> trail = CMLib.tracking().findTrailToRoom(fromRoom, toRoom, flags, oldTrail);
 			newMillis = System.currentTimeMillis() - MilliStart;
 			totalNewMillis += newMillis;
 

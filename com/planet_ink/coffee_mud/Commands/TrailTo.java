@@ -239,7 +239,7 @@ public class TrailTo extends StdCommand
 			}
 			str.append("\n\r\n\r");
 			millis = System.currentTimeMillis();
-			trail = CMLib.tracking().findTrailToRoom(R1, R2, flags);
+			trail = CMLib.tracking().findTrailToRoom(R1, R2, flags, trail);
 			str.append("new time = "+(System.currentTimeMillis() - millis)+"ms\n\r");
 			if (trail == null)
 				str.append("No trail found to any room from here.");
