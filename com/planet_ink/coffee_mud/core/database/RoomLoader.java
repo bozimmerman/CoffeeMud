@@ -1651,7 +1651,9 @@ public class RoomLoader
 					idStarts.add(roomID);
 				else
 					idStarts.add(roomID.substring(0,x));
-				final Room room = CMClass.getLocale(R.getString("CMLOID"));
+				Room room = CMClass.getLocale(R.getString("CMLOID"));
+				if(room instanceof AutoGenArea)
+					room = CMClass.getLocale("StdGrid");
 				if (room != null)
 				{
 					room.setRoomID(roomID);

@@ -55,6 +55,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected static final TrackingFlags	EMPTY_FLAGS			= new DefaultTrackingFlags();
 	protected static final RFilters			EMPTY_FILTERS		= new DefaultRFilters();
 
+	protected boolean						debug				= false;
+
 	protected final static int AREA_TRAILS_TIME_MS = 500;
 	protected final static int AREA_TRAIL_TIMEOUT_MS = 5000;
 
@@ -2794,21 +2796,77 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	protected void testAreaDataIntegrity(final AreaTrackData data)
 	{
+		final Set<TrackLink> outerLinks = new HashSet<TrackLink>();
+		final Set<String> allRoomIDs = new HashSet<String>();
 		for(final Enumeration<String> r = CMLib.map().getArea(data.areaName).getProperRoomnumbers().getRoomIDs();r.hasMoreElements();)
 		{
 			final String roomID = r.nextElement();
 			int found = 0;
-			for(final String key : data.groups.keySet())
+			for(final AreaRoomGroup group : data.groups)
 			{
-				final AreaRoomGroup group = data.groups.get(key);
 				if(group.groupRoomIDs.contains(roomID))
 					found++;
+				outerLinks.addAll(group.outerLinks);
+				for(final String rid : new XArrayList<String>(group.groupRoomIDs.getRoomIDs()))
+					allRoomIDs.add(rid.toLowerCase());
 			}
 			if (found == 0)
 				Log.errOut("AreaTrackData", "Room " + roomID + " in area " + data.areaName + " not found in any group!");
 			else
 			if (found > 1)
 				Log.errOut("AreaTrackData", "Room " + roomID + " in area " + data.areaName + " found in multiple groups!");
+		}
+		for(final Enumeration<String> r = CMLib.map().getArea(data.areaName).getProperRoomnumbers().getRoomIDs();r.hasMoreElements();)
+		{
+			final String rid = r.nextElement();
+			if (!allRoomIDs.contains(rid.toLowerCase()))
+			{
+				Log.errOut("AreaTrackData", "Room " + rid + " in area " + data.areaName + " not found in any group!");
+				continue;
+			}
+			final Room R = CMLib.map().getRoom(rid);
+			if(R instanceof GridLocale)
+				continue; // grid rooms are handled separately
+
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				final Room nR = R.getRoomInDir(d);
+				final Exit nE = R.getExitInDir(d);
+				if((nR != null)
+				&&(nE != null)
+				&&((nR.roomID().length()>0)||((nR.getGridParent()!=null)&&(!nR.getGridParent().roomID().isEmpty()))))
+				{
+					final String nrId = CMLib.map().getExtendedRoomID(nR);
+					if(allRoomIDs.contains(nrId.toLowerCase()))
+						continue;
+					int foundLevel = 0;
+					boolean found=false;
+					for (final TrackLink link : outerLinks)
+					{
+						if (link.homeRoomID.equalsIgnoreCase(rid))
+						{
+							foundLevel++;
+							if(link.destRoomID.equalsIgnoreCase(nrId))
+							{
+								foundLevel++;
+								if(link.destDirCode == d)
+								{
+									found = true;
+									outerLinks.remove(link);
+									break;
+								}
+							}
+						}
+					}
+					if(!found)
+					{
+						Log.errOut("IntegrityCheck", "Room " + rid  + " has exit to room " + nrId + ", but no link found! ("+foundLevel+")");
+						final AreaRoomGroup group = data.roomMap.get(rid.toLowerCase());
+						if(group != null)
+							Log.errOut("IntegrityCheck", "Room " + rid  + " does have a group in the area ("+group.groupRoomIDs.contains(rid)+", "+group.groupRoomIDs.roomCountAllAreas()+")");
+					}
+				}
+			}
 		}
 	}
 
@@ -2824,19 +2882,28 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Log.sysOut(str.toString());
 	}
 
-	protected void dumpTrails(final List<PairList<String, TrackLink>> allAreaTrails)
+	protected void dumpTrail(final List<TrackLink> allAreaTrails)
 	{
-		for(final PairList<String, TrackLink> p : allAreaTrails)
+		final StringBuilder str = new StringBuilder();
+		TrackLink priorLink = null;
+		for(final TrackLink p : allAreaTrails)
 		{
-			final StringBuilder str = new StringBuilder();
-			for(int i = 0; i < p.size(); i++)
+			if (p == null)
+				str.append("null, ");
+			else
 			{
-				final TrackLink link = p.getSecond(i);
-				if(link != null)
-					str.append("("+link.homeRoomID + "->" + link.destRoomID + "), ");
+				Integer z = null;
+				try
+				{
+					z = p.group.innerTrailWeights.get(priorLink).get(p);
+				}
+				catch(final Exception e)
+				{}
+				str.append("("+p.homeRoomID + "->" + p.destRoomID + "="+z+"), ");
 			}
-			Log.sysOut(str.toString());
+			priorLink = p;
 		}
+		Log.sysOut(str.toString());
 	}
 
 	//TODO:BZ:DELME
@@ -2856,9 +2923,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return null;
 		shortest = null;
 		final TrackLink prevLink = null;
+		int tries = 0;
 		for(final Enumeration<PairList<String, TrackLink>> t = getAreaLinkTrail(location, destRoom);t.hasMoreElements();)
 		{
 			final PairList<String, TrackLink> trail = t.nextElement();
+			tries++;
 			Room lastRoom = location;
 			final List<Room> finalTrail = new Vector<Room>();
 			for(final Pair<String, TrackLink> step : trail)
@@ -2933,24 +3002,27 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		if(shortest != null)
 			return shortest;
+
+		Log.errOut("Tracking", "findTrailToRoom failed to find trail from " + location.roomID() + " to " + destRoom.roomID() + " with flags: " + flags.toString()+" after "+ tries+" tries.");
 		return new Vector<Room>();
 	}
 
 	protected AreaTrackData buildFakeAreaTrail(final Area A)
 	{
 		final AreaTrackData t = new AreaTrackData(A.Name());
-		int num = 0;
 		for(final Enumeration<String> r = A.getProperRoomnumbers().getRoomIDs();r.hasMoreElements();)
 		{
-			final Room R = CMLib.map().getRoom(r.nextElement());
+			final String roomId = r.nextElement();
+			final Room R = CMLib.map().getRoom(roomId);
 			if(R == null)
 				continue;
 			final AreaRoomGroup group = new AreaRoomGroup(t);
 			group.fullData = t;
-			group.groupRoomIDs.add(CMLib.map().getExtendedRoomID(R));
+			group.groupRoomIDs.add(roomId);
+			group.diameter = 1;
 			t.centerRoom = R;
-			t.groups.put(""+num, group);
-			num++;
+			t.groups.add(group);
+			t.roomMap.put(roomId.toLowerCase(), group);
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				final Room nR = R.getRoomInDir(d);
@@ -2970,7 +3042,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 		}
-		t.diameter = (int)Math.round(Math.ceil(Math.sqrt(A.numberOfProperIDedRooms())));
+		t.diameter = 1;
 		t.numProperIDRooms = A.numberOfProperIDedRooms();
 		return t;
 	}
@@ -2987,7 +3059,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int		diameter			= 0;
 
 		// these are the member room groups and their links
-		final Map<String, AreaRoomGroup> groups = new Hashtable<String, AreaRoomGroup>();
+		final List<AreaRoomGroup>			groups	= new LinkedList<AreaRoomGroup>();
+		final Map<String, AreaRoomGroup>	roomMap	= Collections.synchronizedMap(new TreeMap<String, AreaRoomGroup>());
 
 		public AreaTrackData(final String name)
 		{
@@ -3000,11 +3073,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	 * and their links to other groups, either in the same area
 	 * or in other areas.
 	 */
-	private static class AreaRoomGroup
+	protected static class AreaRoomGroup
 	{
 		AreaTrackData			fullData		= null;
 		// this groups room ids
 		final RoomnumberSet		groupRoomIDs	= (RoomnumberSet) CMClass.getCommon("DefaultRoomnumberSet");
+		public int				diameter		= 0; // the diameter of this group, in sqrt(number of rooms)
 
 		/**
 		 * this groups incoming links from OTHER groups to this one.  It is built during the
@@ -3041,7 +3115,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	 */
 	private static class TrackLink
 	{
-		int				destDirCode	= -1;    // the direction code of the link, from home room to destination room
+		int				destDirCode	= -1;	// the direction code of the link, from home room to destination room
 		boolean			backLinked	= false; // whether this link has a perfect mirror link somewhere that goes back to its home room
 		String			destAreaID	= null;  // the area that this link links to
 		String			homeRoomID	= null;  // the room that this link originates from
@@ -3073,51 +3147,36 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
-	protected AreaRoomGroup getDestGroup(final TrackLink nextLink, final Area nextArea, final AreaTrackData nextBackTrailA)
-	{
-		if(nextLink == null)
-			return null;
-		if(nextLink.destGroup != null)
-			return nextLink.destGroup;
-		for(final String nextKey : nextBackTrailA.groups.keySet())
-		{
-			final AreaRoomGroup nextAreaLinks = nextBackTrailA.groups.get(nextKey);
-			if(nextAreaLinks.groupRoomIDs.contains(nextLink.destRoomID))
-			{
-				nextLink.destGroup = nextAreaLinks;
-				return nextAreaLinks;
-			}
-		}
-		return null; // means not found, but this line, in practice, is never reached.
-	}
-
 	protected PairList<String,AreaRoomGroup> getRadiantAreaGroups(final AreaRoomGroup fromGroup, final AreaRoomGroup toGroup)
 	{
-		if((fromGroup == null)||(toGroup == null))
+		if(fromGroup == null)
 			return null;
-		final PairList<String,AreaRoomGroup> finalTrail = new PairVector<String, AreaRoomGroup>();
+		final PairList<String,AreaRoomGroup> radiantGroups = new PairVector<String, AreaRoomGroup>();
 		if(fromGroup == toGroup)
-			return finalTrail;
+			return radiantGroups;
 		final Set<AreaRoomGroup> processed = new HashSet<AreaRoomGroup>();
 		final Set<AreaRoomGroup> found = new HashSet<AreaRoomGroup>();
-		final List<AreaRoomGroup> groupsToDo = new ArrayList<AreaRoomGroup>();
+		final LinkedList<AreaRoomGroup> groupsToDo = new LinkedList<AreaRoomGroup>();
 		groupsToDo.add(fromGroup);
 		while(groupsToDo.size()>0)
 		{
-			final AreaRoomGroup nextGroup = groupsToDo.remove(0);
+			final AreaRoomGroup nextGroup = groupsToDo.removeFirst();
 			if(processed.contains(nextGroup))
 				continue;
 			processed.add(nextGroup);
 			final String currentArea = nextGroup.fullData.areaName;
-			finalTrail.add(new Pair<String, AreaRoomGroup>(currentArea, nextGroup));
+			radiantGroups.add(new Pair<String, AreaRoomGroup>(currentArea, nextGroup));
 			if(nextGroup == toGroup)
-				return finalTrail; // found it!
+				return radiantGroups; // found it!
 			for(final TrackLink nextLink : nextGroup.outerLinks)
 			{
 				final Area nextArea = CMLib.map().getArea(nextLink.destAreaID);
-				final AreaTrackData nextBackTrailA = getAreaTrackData(nextArea);
-				final AreaRoomGroup destGroup = getDestGroup(nextLink, nextArea, nextBackTrailA);
-
+				final AreaTrackData nextAreaData = getAreaTrackData(nextArea);
+				final AreaRoomGroup destGroup;
+				if(nextLink.destGroup == null)
+					destGroup = nextLink.destGroup = nextAreaData.roomMap.get(nextLink.destRoomID.toLowerCase());
+				else
+					destGroup = nextLink.destGroup;
 				if(destGroup != null)
 				{
 					if((!processed.contains(destGroup))
@@ -3130,10 +3189,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					}
 				}
 				else
-					Log.errOut("Tracking", "No forward link found for "+nextLink.homeRoomID+"->"+nextLink.destRoomID+" in "+nextArea.Name()+" from "+currentArea);
+					Log.errOut("Tracking", "No forward group found for "+nextLink.homeRoomID+"->"+nextLink.destRoomID+" in "+nextArea.Name()+" from "+currentArea);
 			}
 		}
-		return finalTrail;
+		if(toGroup != null)
+		{
+			Log.errOut("Tracking", "No trail found to "+toGroup.fullData.areaName+" from "+fromGroup.fullData.areaName);
+			return null;
+		}
+		return radiantGroups;
 	}
 
 	protected Enumeration<PairList<String, TrackLink>> findAreaLinkTrails(final AreaRoomGroup targetGrp, final AreaRoomGroup startGrp, final PairList<String, AreaRoomGroup> radiantTrails)
@@ -3169,6 +3233,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				while ((nextTrail == null) && (!queue.isEmpty()))
 				{
 					final WeightedTrail pc = queue.poll();
+					if(debug)
+						dumpTrail(new XVector<TrackLink>(pc.path.secondIterator()));
 					final PairList<AreaRoomGroup, TrackLink> backwardPath = pc.path;
 					final int currentCost = pc.cost;
 					final AreaRoomGroup current = backwardPath.get(backwardPath.size()-1).first;
@@ -3202,7 +3268,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					else
 					{
 						if(currentTime>AREA_TRAIL_TIMEOUT_MS)
+						{
+							Log.errOut("Tracking", "Area trail search FULL timed out after "+currentTime+" ms for "+startGroup.fullData.areaName+" to "+targetGroup.fullData.areaName);
 							return;
+						}
 					}
 					for(final TrackLink inLink : sortedInLinks)
 					{
@@ -3210,34 +3279,26 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						if((done.contains(inLink))||(backwardPath.containsFirst(incomingGroup)))
 							continue;
 						int addCost = 0;
-						if((backwardPath.size()>1)&&(inLink.backLinked))
+						if(backwardPath.size()>1)
 						{
-							TrackLink entryLink = null;
-							for(final TrackLink potential : current.outerLinks)
+							addCost = current.fullData.diameter;
+							if(inLink.backLinked)
 							{
-								if((potential.homeRoomID.equals(inLink.destRoomID))
-								&&(potential.destRoomID.equals(inLink.homeRoomID))
-								&&(potential.destDirCode == Directions.getOpDirectionCode(inLink.destDirCode)))
+								for(final TrackLink potential : current.outerLinks)
 								{
-									entryLink = potential;
-									break;
+									if((potential.homeRoomID.equals(inLink.destRoomID))
+									&&(potential.destRoomID.equals(inLink.homeRoomID))
+									&&(potential.destDirCode == Directions.getOpDirectionCode(inLink.destDirCode)))
+									{
+										final TrackLink exitLink = backwardPath.get(backwardPath.size()-1).second;
+										if(exitLink != null && current.innerTrailWeights.containsKey(potential)
+										&& current.innerTrailWeights.get(potential).containsKey(exitLink))
+											addCost = current.innerTrailWeights.get(potential).get(exitLink).intValue();
+										break;
+									}
 								}
 							}
-							if(entryLink != null)
-							{
-								final TrackLink exitLink = backwardPath.get(backwardPath.size()-1).second;
-								if(exitLink != null && current.innerTrailWeights.containsKey(entryLink)
-								&& current.innerTrailWeights.get(entryLink).containsKey(exitLink))
-									addCost = current.innerTrailWeights.get(entryLink).get(exitLink).intValue();
-								else
-									addCost = current.fullData.diameter;
-							}
-							else
-								addCost = current.fullData.diameter;
 						}
-						else
-						if(backwardPath.size() > 1)
-							addCost = current.fullData.diameter;
 						final int newCost=currentCost+addCost+(backwardPath.size()*maxDiam);
 						final PairList<AreaRoomGroup, TrackLink> newPath = new PairArrayList<AreaRoomGroup, TrackLink>(backwardPath);
 						newPath.add(incomingGroup, inLink);
@@ -3276,36 +3337,30 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final AreaTrackData areaTrackData = getAreaTrackData(R.getArea());
 		if(areaTrackData == null)
 			return null;
-		final String roomID = CMLib.map().getExtendedRoomID(R);
-		for(final String group : areaTrackData.groups.keySet())
-		{
-			final AreaRoomGroup roomGroup = areaTrackData.groups.get(group);
-			if(roomGroup.groupRoomIDs.contains(roomID))
-				return roomGroup;
-		}
-		return null;
+		return areaTrackData.roomMap.get(CMLib.map().getExtendedRoomID(R).toLowerCase());
 	}
 
 	protected Enumeration<PairList<String, TrackLink>> getAreaLinkTrail(final Room fromR, final Room toR)
 	{
 		if((fromR == null)||(toR==null)||(fromR==toR))
 			return Collections.emptyEnumeration();
-		AreaRoomGroup fromGroup = getRoomTrackLinksGroup(fromR);
-		AreaRoomGroup toGroup = getRoomTrackLinksGroup(toR);
-		final PairList<String, AreaRoomGroup> areaTrails = this.getRadiantAreaGroups(fromGroup, toGroup);
-		if((areaTrails != null) && (areaTrails.size()>0))
+		final AreaRoomGroup fromGroup = getRoomTrackLinksGroup(fromR);
+		final AreaRoomGroup toGroup = getRoomTrackLinksGroup(toR);
+		if ((fromGroup == null) || (toGroup == null))
 		{
-			if(fromGroup == null)
-				fromGroup=areaTrails.getSecond(0);
-			if(toGroup == null)
-				toGroup=areaTrails.getSecond(areaTrails.size()-1);
-
-			return findAreaLinkTrails(toGroup, fromGroup, areaTrails);
+			Log.errOut("Tracking", "No area group found for room "+CMLib.map().getExtendedRoomID((fromGroup != null)?fromR:toR));
+			return Collections.emptyEnumeration();
 		}
+		final PairList<String, AreaRoomGroup> areaTrails = this.getRadiantAreaGroups(fromGroup, toGroup);
+		//final int toDex = areaTrails.indexOfSecond(toGroup);
+		if((areaTrails != null) && (areaTrails.size()>0))
+			return findAreaLinkTrails(toGroup, fromGroup, areaTrails);
+		else
+			Log.errOut("No area trail found from "+fromGroup.fullData.areaName+" to "+toGroup.fullData.areaName);
 		return Collections.emptyEnumeration();
 	}
 
-	protected Map<Room, Integer> getBFSDistances(final Room start, final Pair<Room,int[]> maxDistPair, final Map<Room, Room> parents, final AreaRoomGroup group, final Map<String, AreaRoomGroup> otherLinksMap, final Room breakRoom)
+	protected Map<Room, Integer> getBFSDistances(final Room start, final Pair<Room,int[]> maxDistPair, final Map<Room, Room> parents, final AreaRoomGroup group, final AreaTrackData otherGroups, final Room breakRoom)
 	{
 		final Map<Room, Integer> distances = new HashMap<Room,Integer>();
 		final LinkedList<Room> queue = new LinkedList<Room>();
@@ -3373,28 +3428,24 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						}
 					}
 					else
-					if((otherLinksMap!=null)
+					if((otherGroups!=null)
 					&&(!visited.contains(nR))
 					&&(nR.getArea().Name().equals(start.getArea().Name())))
 					{
 						visited.add(nR);
 						final String targetRoomID = map.getExtendedRoomID(nR);
-						for(final String key : otherLinksMap.keySet())
+						final AreaRoomGroup destGroup = otherGroups.roomMap.get(targetRoomID.toLowerCase());
+						if((destGroup != null) && (destGroup != group))
 						{
-							final AreaRoomGroup destGroup = otherLinksMap.get(key);
-							if((destGroup != group)
-							&&(destGroup.groupRoomIDs.contains(targetRoomID)))
-							{
-								final TrackLink link = new TrackLink();
-								link.homeRoomID = map.getExtendedRoomID(R);
-								link.destRoomID = map.getExtendedRoomID(nR);
-								link.destDirCode = d;
-								link.backLinked = nR.getRoomInDir(Directions.getOpDirectionCode(d))==R;
-								link.destAreaID = nR.getArea().Name();
-								link.group = group;
-								link.destGroup = destGroup;
-								group.outerLinks.add(link);
-							}
+							final TrackLink link = new TrackLink();
+							link.homeRoomID = map.getExtendedRoomID(R);
+							link.destRoomID = map.getExtendedRoomID(nR);
+							link.destDirCode = d;
+							link.backLinked = nR.getRoomInDir(Directions.getOpDirectionCode(d))==R;
+							link.destAreaID = nR.getArea().Name();
+							link.group = group;
+							link.destGroup = destGroup;
+							group.outerLinks.add(link);
 						}
 					}
 				}
@@ -3469,10 +3520,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	protected AreaRoomGroup buildAreaGroup(final AreaTrackData areaData, Room startR, final Pair<Room,int[]> maxDist, final Map<Room, Room> parents, final Map<String,Room> thinAreaRoomsMap, final int groupNum)
 	{
 		final AreaRoomGroup group = new AreaRoomGroup(areaData);
-		areaData.groups.put(""+groupNum, group);
+		areaData.groups.add(group);
 		group.groupRoomIDs.add(CMLib.map().getExtendedRoomID(startR));
 		final Set<Room> oldParents = new HashSet<Room>(parents.keySet());
-		getBFSDistances(startR, maxDist, parents, group, areaData.groups, null);
+		getBFSDistances(startR, maxDist, parents, group, areaData, null);
 		parents.put(startR, null);
 		if(startR instanceof GridLocale)
 		{
@@ -3504,9 +3555,33 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		if(group.outerLinks.size()>1)
 			buildInnerWeights(group, thinAreaRoomsMap);
-		if(group.groupRoomIDs.roomCountAllAreas() == 0)
+		final Enumeration<String> r = group.groupRoomIDs.getRoomIDs();
+		if(!r.hasMoreElements())
 			return null;
+		int numRooms = 0;
+		for (;r.hasMoreElements();)
+		{
+			areaData.roomMap.put(r.nextElement().toLowerCase(), group);
+			numRooms++;
+		}
+		group.diameter = (int)Math.round(Math.ceil(Math.sqrt(numRooms)));
 		return group;
+	}
+
+	protected AreaTrackData getCachedAreaTrackData(final String areaName)
+	{
+		@SuppressWarnings("unchecked")
+		Map<String, AreaTrackData> centerMap = (Map<String, AreaTrackData>)Resources.getResource("SYSTEM_MAP_AREATRACKDATA");
+		if(centerMap == null) {
+			centerMap = new java.util.concurrent.ConcurrentHashMap<String,AreaTrackData>();
+			Resources.submitResource("SYSTEM_MAP_AREATRACKDATA", centerMap);
+		}
+
+		final AreaTrackData oldTrail = centerMap.get(areaName);
+		if((oldTrail != null)
+		&& (oldTrail.centerRoom != null))
+			return oldTrail;
+		return null;
 	}
 
 	protected AreaTrackData getAreaTrackData(final Area A)
@@ -3518,7 +3593,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return null;
 
 		@SuppressWarnings("unchecked")
-		Map<String, AreaTrackData> centerMap = (Map<String, AreaTrackData>) Resources.getResource("SYSTEM_MAP_AREATRACKDATA");
+		Map<String, AreaTrackData> centerMap = (Map<String, AreaTrackData>)Resources.getResource("SYSTEM_MAP_AREATRACKDATA");
 		if(centerMap == null) {
 			centerMap = new java.util.concurrent.ConcurrentHashMap<String,AreaTrackData>();
 			Resources.submitResource("SYSTEM_MAP_AREATRACKDATA", centerMap);
@@ -3529,7 +3604,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		&& (oldTrail.numProperIDRooms == numberOfProperIDedRooms)
 		&& (oldTrail.centerRoom != null))
 			return oldTrail;
-		synchronized (CMClass.getSync(A.Name().intern()))
+		synchronized (CMClass.getSync(A.Name()))
 		{
 			oldTrail = centerMap.get(A.Name());
 			if((oldTrail != null)
@@ -3572,7 +3647,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			while((goodStartR == null) && (minSize > 1))
 			{
 				minSize /= 2;
-				final Enumeration<Room> r = (thinAreaRoomsMap != null) ? new IteratorEnumeration<Room>(thinAreaRoomsMap.values().iterator()): A.getProperMap();
+				final Enumeration<Room> r = (thinAreaRoomsMap != null) ? new IteratorEnumeration<Room>(thinAreaRoomsMap.values().iterator()): A.getCompleteMap();
 				Pair<Room,int[]> maxDistPair = null;
 				for(; r.hasMoreElements();)
 				{
@@ -3616,7 +3691,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				areaData.centerRoom = goodStartR;
 			areaData.diameter = maxDistData.second[0];
 			areaData.numProperIDRooms = numberOfProperIDedRooms;
-			final Enumeration<Room> r = (thinAreaRoomsMap != null) ? new IteratorEnumeration<Room>(thinAreaRoomsMap.values().iterator()): A.getProperMap();
+			final Enumeration<Room> r = (thinAreaRoomsMap != null) ? new IteratorEnumeration<Room>(thinAreaRoomsMap.values().iterator()): A.getCompleteMap();
 			for(;r.hasMoreElements();)
 			{
 				final Room R = r.nextElement();
@@ -3629,7 +3704,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			centerMap.put(A.Name(), areaData);
-			testAreaDataIntegrity(areaData);
+			for(final AreaRoomGroup group : areaData.groups)
+			{
+				for(final TrackLink link : group.outerLinks)
+				{
+					if(link.destGroup == null)
+						link.destGroup = areaData.roomMap.get(link.destRoomID.toLowerCase());
+				}
+			}
+			if((thinAreaRoomsMap != null)&&(thinAreaRoomsMap.size()>0))
+				CMLib.map().emptyAreaAndDestroyRooms(thinAreaRoomsMap.values().iterator().next().getArea());
+			testAreaDataIntegrity(areaData); //TODO:BZ:DELME
 			return areaData;
 		}
 	}
