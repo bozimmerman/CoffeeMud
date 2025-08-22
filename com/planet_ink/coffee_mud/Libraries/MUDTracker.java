@@ -2694,6 +2694,142 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return null;
 	}
 
+	protected void getRadiantRoomsOld(final Room room, final List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
+	{
+		int depth=0;
+		if(room==null)
+			return;
+		if(rooms.contains(room))
+			return;
+		final HashSet<Room> H=new HashSet<Room>(1000);
+		rooms.add(room);
+		if(rooms instanceof Vector<?>)
+			((Vector<Room>)rooms).ensureCapacity(200);
+		if(ignoreRooms != null)
+			H.addAll(ignoreRooms);
+		for(int r=0;r<rooms.size();r++)
+			H.add(rooms.get(r));
+		int min=0;
+		int size=rooms.size();
+		Room R1=null;
+		Room R=null;
+		Exit E=null;
+
+		int r=0;
+		int d=0;
+		final WorldMap map=CMLib.map();
+		while(depth<maxDepth)
+		{
+			for(r=min;r<size;r++)
+			{
+				R1=rooms.get(r);
+				for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					R=R1.getRoomInDir(d);
+					E=R1.getExitInDir(d);
+
+					if((R==null)||(E==null))
+						continue;
+					R=map.getRoom(R);
+					if((R==null)
+					||(H.contains(R))
+					||(filters.isFilteredOut(R1, R, E, d)))
+						continue;
+					rooms.add(R);
+					H.add(R);
+					if(R==radiateTo) // R can't be null here, so if they are equal, time to go!
+						return;
+				}
+			}
+			min=size;
+			size=rooms.size();
+			if(min==size)
+				return;
+			depth++;
+		}
+	}
+
+	@Override
+	public List<Room> findTrailToRoomOld(final Room location, final Room destRoom, final TrackingFlags flags, final int maxRadius, List<Room> radiant)
+	{
+		if((radiant==null)||(radiant.size()==0))
+		{
+			radiant=new ArrayList<Room>();
+			final RFilters filters = this.convertTrackingFlagsToFilters(flags);
+			getRadiantRoomsOld(location,radiant,filters,destRoom,maxRadius,null);
+			if(!radiant.contains(location))
+				radiant.add(0,location);
+		}
+		else
+		{
+			final List<Room> radiant2=new ArrayList<Room>(radiant.size());
+			int r=0;
+			boolean foundLocation=false;
+			Room O;
+			for(;r<radiant.size();r++)
+			{
+				O=radiant.get(r);
+				radiant2.add(O);
+				if((!foundLocation)&&(O==location))
+					foundLocation=true;
+				if(O==destRoom)
+					break;
+			}
+			if(!foundLocation)
+			{
+				radiant.add(0,location);
+				radiant2.add(0,location);
+			}
+			if(r>=radiant.size())
+				return null;
+			radiant=radiant2;
+		}
+		if((radiant.size()>0)&&(destRoom==radiant.get(radiant.size()-1)))
+		{
+			List<Room> thisTrail=new Vector<Room>();
+			final HashSet<Room> tried=new HashSet<Room>();
+			thisTrail.add(destRoom);
+			tried.add(destRoom);
+			Room R=null;
+			int index=radiant.size()-2;
+			if(destRoom!=location)
+			{
+				while(index>=0)
+				{
+					int best=-1;
+					for(int i=index;i>=0;i--)
+					{
+						R=radiant.get(i);
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							if((R.getRoomInDir(d)==thisTrail.get(thisTrail.size()-1))
+							&&(R.getExitInDir(d)!=null)
+							&&(!tried.contains(R)))
+								best=i;
+						}
+					}
+					if(best>=0)
+					{
+						R=radiant.get(best);
+						thisTrail.add(R);
+						tried.add(R);
+						if(R==location)
+							break;
+						index=best-1;
+					}
+					else
+					{
+						thisTrail.clear();
+						thisTrail=null;
+						break;
+					}
+				}
+			}
+			return thisTrail;
+		}
+		return null;
+	}
+
 	/* ===================================================================================================================== */
 	/* ====================================================Area Based Code================================================== */
 	/* ===================================================================================================================== */

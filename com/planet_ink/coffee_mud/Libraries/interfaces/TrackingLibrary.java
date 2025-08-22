@@ -101,6 +101,17 @@ public interface TrackingLibrary extends CMLibrary
 	public List<Room> findTrailToRoomByAreas(Room location, Room destRoom, TrackingFlags flags, List<Room> doubleCheck);
 
 	/**
+	 * Returns a room trail using the old algorithm.  Deprecated.
+	 * @param location the starting room for the trail
+	 * @param destRoom the target room for the trail
+	 * @param flags any Radiant flags -- not used in the trail calculation
+	 * @param maxRadius maximum radius for the Radiant rooms
+	 * @param radiant optional radiant rooms list
+	 * @return the trail, or null if a failure
+	 */
+	public List<Room> findTrailToRoomOld(final Room location, final Room destRoom, final TrackingFlags flags, final int maxRadius, List<Room> radiant);
+
+	/**
 	 * Returns a trail of rooms to move through in order to go from the given location
 	 * to the given destination room.  The trail will have the destination room first,
 	 * and the location last.
