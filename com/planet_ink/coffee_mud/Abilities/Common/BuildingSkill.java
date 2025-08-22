@@ -307,6 +307,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			returnToRoom=room.getArea().getRandomMetroRoom();
 		if(returnToRoom==null)
 			returnToRoom=CMLib.map().getRandomRoom();
+		if(room instanceof GridLocale)
+			((GridLocale)room).clearGrid(returnToRoom);
 		final Room theRoomToReturnTo=returnToRoom;
 		room.eachInhabitant(new EachApplicable<MOB>()
 		{
@@ -996,6 +998,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		synchronized(CMClass.getSync("SYNC"+room.roomID()))
 		{
 			room=CMLib.map().getRoom(room);
+			if(room.getGridParent()!=null)
+				room = room.getGridParent();
 			if(dir<0)
 			{
 
@@ -1105,6 +1109,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		if(area!=null)
 			area.delProperRoom(room);
 		R.setArea(room.getArea());
+		if(room instanceof GridLocale)
+			((GridLocale)room).clearGrid(R);
 		for(int a=room.numEffects()-1;a>=0;a--)
 		{
 			final Ability A=room.fetchEffect(a);
@@ -1424,7 +1430,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			return true;
 		}
 
-		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location()) || CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS);
+		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location())
+				|| CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS);
 		final String allWords=CMParms.combine(commands,0).toUpperCase();
 		for(int r=0;r<data.length;r++)
 		{
@@ -1485,9 +1492,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		final String dirName=commands.get(commands.size()-1);
 		dir=CMLib.directions().getGoodDirectionCode(dirName);
 
-		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof")||(dirName.equalsIgnoreCase("ceiling"))))
+		if((doingCode == Building.DEMOLISH)
+		&&(dirName.equalsIgnoreCase("roof")||(dirName.equalsIgnoreCase("ceiling"))))
 		{
 			this.canBeDoneSittingDown = true;
+			if(!canBuild
+			&&(mob.location().getGridParent()!=null)
+			&& (CMLib.law().doesOwnThisLand(mob, mob.location().getGridParent())))
+				canBuild = true;
 			final Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom,flags.contains(Flag.CAVEONLY)))
 			{
@@ -1531,8 +1543,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				}
 			}
 			this.canBeDoneSittingDown = true;
-			if((!CMLib.law().doesOwnThisLand(mob, mob.location()))
-			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS))
+			if(!canBuild
+			&&(mob.location().getGridParent()!=null)
+			&& (CMLib.law().doesOwnThisLand(mob, mob.location().getGridParent())))
+				canBuild = true;
+			if((!canBuild)
 			&&(title!=null)
 			&&(title.getOwnerName().length()>0))
 			{
