@@ -503,6 +503,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
+	/**
+	 * Updates a room with the provided land title and various options. This method handles updating items, exits,
+	 * and the room itself based on the given parameters.
+	 *
+	 * @param R The room to be updated.
+	 * @param T The land title associated with the room.
+	 * @param resetRoomName Whether to reset the room's name.
+	 * @param clearAllItems Whether to clear all items from the room.
+	 * @param optPlayerList A set of optional player names for additional checks or updates.
+	 * @param lastNumItems The number of items in the room before updates were made.
+	 * @param daysSinceItemsSaved The number of days since the items were last saved.
+	 * @return An array containing two integers:
+	 *         - The first integer is a status code. If it's -1, it indicates an error or failure occurred.
+	 *         - The second integer represents the number of updates made to the room.
+	 */
 	public static int[] updateLotWithThisData(Room R,
 											  final LandTitle T,
 											  final boolean resetRoomName,
