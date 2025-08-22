@@ -2176,7 +2176,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(json.containsKey("name"))
 							user=json.getCheckedString("name");
 						else
-							user=json.getCheckedString("account");
+							user=json.getCheckedString("not_account_or_user_or_username_or_name_"+json.toString());
 						final String pw=json.getCheckedString("password");
 						session.setStat("LOGIN_ACCOUNT", user);
 						session.setStat("LOGIN_PASSWORD", pw);
