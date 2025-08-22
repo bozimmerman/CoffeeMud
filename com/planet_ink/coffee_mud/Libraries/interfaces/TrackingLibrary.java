@@ -78,7 +78,8 @@ public interface TrackingLibrary extends CMLibrary
 	/**
 	 * Returns a trail of rooms to move through in order to go from the given location
 	 * to the given destination room.  The trail will have the destination room first,
-	 * and the location last.
+	 * and the location last.  This system does not use radiant rooms between the source
+	 * and target, so theoretically has no limits, but it sucks at its job.
 	 *
 	 * @see TrackingLibrary#trackNextDirectionFromHere(List, Room, boolean)
 	 * @see TrackingLibrary#findAllTrails(Room, List, List)
@@ -94,16 +95,15 @@ public interface TrackingLibrary extends CMLibrary
 	 * @param location the starting room for the trail
 	 * @param destRoom the target room for the trail
 	 * @param flags any Radiant flags -- not used in the trail calculation
-	 * @param doubleCheck TODO
+	 * @param doubleCheck for debugging purposes, a list of rooms that should be checked
 	 * @return the trail, or null if a failure
 	 */
-	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, List<Room> doubleCheck);
+	public List<Room> findTrailToRoomByAreas(Room location, Room destRoom, TrackingFlags flags, List<Room> doubleCheck);
 
 	/**
 	 * Returns a trail of rooms to move through in order to go from the given location
 	 * to the given destination room.  The trail will have the destination room first,
-	 * and the location last.  This system does not use radiant rooms between the source
-	 * and target, so theoretically has no limits.
+	 * and the location last.
 	 *
 	 * @see TrackingLibrary#trackNextDirectionFromHere(List, Room, boolean)
 	 * @see TrackingLibrary#findAllTrails(Room, List, List)

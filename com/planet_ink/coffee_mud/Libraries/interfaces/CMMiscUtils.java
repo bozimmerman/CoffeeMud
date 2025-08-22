@@ -101,6 +101,16 @@ public interface CMMiscUtils extends CMLibrary
 	public double memoryUse ( Environmental E, int number );
 
 	/**
+	 * Returns a ridiculous best guess on the amount of memory used
+	 * by the given object.
+	 * @param obj the object to check for a footprint of
+	 * @param shallowFields fields to treat as shallow, and not recurse into
+	 * @param visited a set of objects already visited, to prevent loops
+	 * @return the amount of memory used, very approximately
+	 */
+	public long memoryUsage(final Object obj, final List<String> shallowFields, Set<Object> visited);
+
+	/**
 	 * Nice english comma-delimited list, with oxford commas
 	 * and trailing "and" or "or" at the end.  If the list is
 	 * of environmental, it will use the name, otherwise, it

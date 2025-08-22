@@ -23,6 +23,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -447,6 +450,113 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		||((owner instanceof Room)&&(!((Room)owner).isContent(I))))
 			return true;
 		return false;
+	}
+
+	@Override
+	public long memoryUsage(final Object obj, final List<String> shallowFields, Set<Object> visited)
+	{
+		final int OBJECT_HEADER_SIZE = 12;
+		final int REFERENCE_SIZE = 4;
+		final int ARRAY_HEADER_SIZE = 12;
+		final int ALIGNMENT = 8;
+
+		if (obj == null)
+			return 0;
+		if (visited == null)
+			visited = new HashSet<>();
+		if (visited.contains(obj))
+			return 0;
+		visited.add(obj);
+		Class<?> clazz = obj.getClass();
+		long size = 0;
+		if(clazz.isArray())
+		{
+			size += ARRAY_HEADER_SIZE;
+			final int length = Array.getLength(obj);
+			final Class<?> componentType = clazz.getComponentType();
+			if(componentType.isPrimitive())
+			{
+				int primitiveSize;
+				if(componentType == byte.class || componentType == boolean.class)
+					primitiveSize = 1;
+				else
+				if (componentType == char.class || componentType == short.class)
+					primitiveSize = 2;
+				else
+				if (componentType == int.class || componentType == float.class)
+					primitiveSize = 4;
+				else
+				if (componentType == long.class || componentType == double.class)
+					primitiveSize = 8;
+				else
+					primitiveSize = 0;
+				size += (long) length * primitiveSize;
+			}
+			else
+			{
+				size += (long) length * REFERENCE_SIZE;
+				for(int i = 0; i < length; i++)
+				{
+					final Object element = Array.get(obj, i);
+					if(element != null)
+						size += memoryUsage(element, shallowFields, visited);
+				}
+			}
+		}
+		else
+		{
+			size += OBJECT_HEADER_SIZE;
+			while(clazz != null)
+			{
+				for(final Field field : clazz.getDeclaredFields())
+				{
+					if(Modifier.isStatic(field.getModifiers()))
+						continue;
+					field.setAccessible(true);
+					final String fieldName = field.getName();
+					if(shallowFields != null && shallowFields.contains(fieldName))
+					{
+						size += REFERENCE_SIZE;
+						continue;
+					}
+
+					Object fieldValue;
+					try
+					{
+						fieldValue = field.get(obj);
+					}
+					catch (final IllegalAccessException e)
+					{
+						size += REFERENCE_SIZE;
+						continue;
+					}
+					if(field.getType().isPrimitive())
+					{
+						final Class<?> type = field.getType();
+						if(type == byte.class || type == boolean.class)
+							size += 1;
+						else
+						if(type == char.class || type == short.class)
+							size += 2;
+						else
+						if(type == int.class || type == float.class)
+							size += 4;
+						else
+						if(type == long.class || type == double.class)
+							size += 8;
+					}
+					else
+					{
+						size += REFERENCE_SIZE;
+						if(fieldValue != null)
+							size += memoryUsage(fieldValue, shallowFields, visited);
+					}
+				}
+				clazz = clazz.getSuperclass();
+			}
+		}
+		size = ((size + ALIGNMENT - 1) / ALIGNMENT) * ALIGNMENT;
+		return size;
 	}
 
 	@Override

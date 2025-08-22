@@ -219,28 +219,7 @@ public class TrailTo extends StdCommand
 		{
 			final Room R2 = CMLib.map().getRoom(where);
 			final StringBuilder str = new StringBuilder("");
-			long millis = System.currentTimeMillis();
-			List<Room> trail = CMLib.tracking().findTrailToRoom(R1, R2, flags, radius);
-			str.append("old time = "+(System.currentTimeMillis() - millis)+"ms\n\r");
-			if (trail == null)
-				str.append("No trail found to any room from here.");
-			else
-			{
-				Collections.reverse(trail);
-				for (final Room R : trail)
-				{
-					if (R != null)
-						str.append(CMLib.map().getExtendedRoomID(R)).append(", ");
-				}
-				if (str.length() > 2)
-					str.setLength(str.length() - 2); // remove trailing comma
-				if (trailFlags.contains(TrailFlag.CONFIRM))
-					Log.rawSysOut(str.toString());
-			}
-			str.append("\n\r\n\r");
-			millis = System.currentTimeMillis();
-			trail = CMLib.tracking().findTrailToRoom(R1, R2, flags, trail);
-			str.append("new time = "+(System.currentTimeMillis() - millis)+"ms\n\r");
+			final List<Room> trail = CMLib.tracking().findTrailToRoom(R1, R2, flags, radius);
 			if (trail == null)
 				str.append("No trail found to any room from here.");
 			else
