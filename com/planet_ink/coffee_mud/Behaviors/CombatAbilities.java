@@ -145,6 +145,14 @@ public class CombatAbilities extends ActiveTicker
 			mob.baseCharStats().setCurrentClass(C);
 			mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
 		}
+		if((skillsNever!=null)&&(skillsNever.size()>0))
+		{
+			for (int s = 0; s < skillsNever.size(); s++)
+			{
+				mob.delAbility(mob.fetchAbility(skillsNever.get(s)));
+				mob.delEffect(mob.fetchEffect(skillsNever.get(s)));
+			}
+		}
 		mob.recoverCharStats();
 	}
 
@@ -217,7 +225,8 @@ public class CombatAbilities extends ActiveTicker
 			if((newOne!=null)
 			&&(!oldAbilities.contains(newOne)))
 			{
-				if(!CMLib.ableMapper().qualifiesByLevel(mob,newOne))
+				if((!CMLib.ableMapper().qualifiesByLevel(mob,newOne))
+				||((this.skillsNever!=null)&&(this.skillsNever.contains(newOne.ID()))))
 				{
 					mob.delAbility(newOne);
 					mob.delEffect(mob.fetchEffect(newOne.ID()));
