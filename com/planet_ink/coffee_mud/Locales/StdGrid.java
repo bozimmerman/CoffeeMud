@@ -915,6 +915,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			}
 			buildFinalLinks();
 			fillInTheExtraneousExternals(subMap,ox);
+			distributeStuff();
 		}
 		catch(final Exception e)
 		{
@@ -942,6 +943,32 @@ public class StdGrid extends StdRoom implements GridLocale
 		return false;
 	}
 
+	protected void distributeStuff()
+	{
+		if((super._roomID.length()==0)||(CMLib.hunt().isAnAdminHere(this, true)))
+			return;
+		final Enumeration<MOB> m=inhabitants();
+		while(m.hasMoreElements())
+		{
+			final MOB M = m.nextElement();
+			if((M != null)&&(isInhabitant(M)))
+			{
+				final Room R = this.getRandomGridChild();
+				R.bringMobHere(M, true);
+			}
+		}
+		final Enumeration<Item> i=items();
+		while(i.hasMoreElements())
+		{
+			final Item I = i.nextElement();
+			if((I != null)&&(I.container()==null))
+			{
+				final Room R = this.getRandomGridChild();
+				R.moveItemTo(I, Expire.Never, Move.Followers);
+			}
+		}
+	}
+
 	@Override
 	public void clearGrid(final Room backHere)
 	{
@@ -949,6 +976,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		{
 			if(subMap!=null)
 			{
+				final boolean isProperty = CMLib.law().isLandOwnable(this);
 				for (final Room[] element : subMap)
 				{
 					for(int y=0;y<element.length;y++)
@@ -992,6 +1020,9 @@ public class StdGrid extends StdRoom implements GridLocale
 									if(backHere!=null)
 										backHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 									else
+									if(isProperty)
+										this.moveItemTo(I);
+									else
 									if((I instanceof PrivateProperty)&&(((PrivateProperty)I).getOwnerName().length()>0))
 									{
 										final Room R=CMLib.map().getSafeRoomToMovePropertyTo(room, (PrivateProperty)I);
@@ -1005,10 +1036,13 @@ public class StdGrid extends StdRoom implements GridLocale
 										if((I instanceof PrivateProperty)&&(((PrivateProperty)I).getOwnerName().length()>0))
 											room.delItem(I);
 										else
+										if(isProperty)
+											this.moveItemTo(I);
+										else
 											I.destroy();
-										I.destroy();
 										if(room.isContent(I))
 										{
+											I.destroy();
 											I.setOwner(null);
 											room.delItem(I);
 										}

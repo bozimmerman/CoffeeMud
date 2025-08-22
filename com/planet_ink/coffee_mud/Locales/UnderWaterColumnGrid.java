@@ -231,6 +231,7 @@ public class UnderWaterColumnGrid extends UnderWaterGrid
 				}
 			}
 			buildFinalLinks();
+			distributeStuff();
 		}
 		catch(final Exception e)
 		{

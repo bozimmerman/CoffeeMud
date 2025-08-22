@@ -209,6 +209,7 @@ public class EndlessSky extends StdGrid
 				linkRoom(subMap[0][0],subMap[subMap.length-1][subMap[0].length-1],Directions.NORTHWEST,ox,ox);
 			if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 				linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
+			distributeStuff();
 		}
 		catch(final Exception e)
 		{

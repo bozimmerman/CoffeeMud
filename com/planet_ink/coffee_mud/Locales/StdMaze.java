@@ -202,6 +202,7 @@ public class StdMaze extends StdGrid
 			}
 			buildMaze();
 			buildFinalLinks();
+			distributeStuff();
 		}
 		catch(final Exception e)
 		{

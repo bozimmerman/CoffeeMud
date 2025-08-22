@@ -235,6 +235,7 @@ public class Whirlpool extends StdGrid
 
 			buildWhirl();
 			buildFinalLinks();
+			distributeStuff();
 		}
 		catch(final Exception e)
 		{
