@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.core.*;
@@ -448,6 +450,59 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return getATitledRoom() != null ? 1 : 0;
 	}
 
+
+	protected static PairList<Physical, Room> gatherGridItems(final Room R)
+	{
+		final PairList<Physical, Room> gridItems = new PairArrayList<Physical, Room>();
+		if (R instanceof GridLocale)
+		{
+			for (final Room sR : ((GridLocale) R).getAllRooms())
+			{
+				for (final Enumeration<Item> i = sR.items(); i.hasMoreElements();)
+				{
+					final Item I = i.nextElement();
+					if ((I != null) && (I.isSavable()) &&(sR.isContent(I)) && (I.container()==null))
+					{
+						gridItems.add(new Pair<Physical, Room>(I, sR));
+						R.moveItemTo(I,Expire.Never,Move.Followers);
+					}
+				}
+				for (final Enumeration<MOB> m = sR.inhabitants(); m.hasMoreElements();)
+				{
+					final MOB M = m.nextElement();
+					if ((M != null) && (M.isMonster()) && (M.isSavable()))
+					{
+						gridItems.add(new Pair<Physical, Room>(M, sR));
+						R.bringMobHere(M, true);
+					}
+				}
+			}
+		}
+		return gridItems;
+	}
+
+	protected static void restoreGridItems(final PairList<Physical, Room> gridItems)
+	{
+		for(final Pair<Physical, Room> thing : gridItems)
+		{
+			if(thing.first instanceof Item)
+			{
+				final Item I=(Item)thing.first;
+				final Room R=thing.second;
+				if((I!=null)&&(R!=null))
+					R.moveItemTo(I,Expire.Player_Drop,Move.Followers);
+			}
+			else
+			if (thing.first instanceof MOB)
+			{
+				final MOB M = (MOB) thing.first;
+				final Room R = thing.second;
+				if ((M != null) && (R != null))
+					R.bringMobHere(M, true);
+			}
+		}
+	}
+
 	public static int[] updateLotWithThisData(Room R,
 											  final LandTitle T,
 											  final boolean resetRoomName,
@@ -464,6 +519,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			R=CMLib.map().getRoom(R);
 			if(R==null)
 				return new int[] {-1,0};
+			final PairList<Physical,Room> gridItems = gatherGridItems(R);
 			if(T.getOwnerName().length()==0)
 			{
 				Item I=null;
@@ -546,6 +602,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if(updateRoom)
 					CMLib.database().DBUpdateRoom(R);
 				CMLib.law().colorRoomForSale(R,T,resetRoomName);
+				restoreGridItems(gridItems);
 				return new int[] {-1, 0};
 			}
 
@@ -572,6 +629,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					T.setOwnerName("");
 					T.updateLot(null);
 					CMLib.database().DBUpdateRoom(R);
+					restoreGridItems(gridItems);
 					return new int[] {-1, 0};
 				}
 			}
@@ -663,6 +721,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if((!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYITEMS))
 			&&(updateItems))
 				CMLib.database().DBUpdateItems(R);
+			restoreGridItems(gridItems);
 		}
 		return new int[] {R.numItems(), updateItems?0:(daysSinceItemsSaved+1)};
 	}
