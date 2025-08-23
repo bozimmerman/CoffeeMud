@@ -81,7 +81,10 @@ function inputSubmit(x)
 			return;
 	}
 	if(window.currWin)
+	{
+		window.currWin.scrollToBottom(window.currWin.window,0);
 		window.currWin.submitInput(x);
+	}
 	else
 		window.alert("You need to connect first!");
 }

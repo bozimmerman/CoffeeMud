@@ -342,7 +342,7 @@ window.defElements = {
 			"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
 	"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"A": new MXPElement("A", "<A NAME=\"&name;\" STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-			"HREF HINT NAME TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML, ""),
+			"HREF HINT NAME TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML|MXPBIT.SPECIAL, ""),
 	"SEND": new MXPElement("SEND", "<A NAME=\"&expire;\" STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"ContextDelayHide();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
 			"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, ""), // special done
 	"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
@@ -381,7 +381,7 @@ window.defElements = {
 	"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
 	"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
-	"INPUT": new MXPElement("INPUT", "<INPUT TYPE=&type; value=\"&value;\" onchange=\"SipWin(this).setVariable('&name;',this.value);SipWin(this).dispatchEvent('&name;');\" onclick=\"SipWin(this).dispatchEvent('&name;');\">", 
+	"INPUT": new MXPElement("INPUT", "<INPUT TYPE=&type; value=\"&value;\" onchange=\"SipWin(this).setEntity('&name;',this.value);SipWin(this).dispatchEvent('&name;');\" onclick=\"SipWin(this).dispatchEvent('&name;');\">", 
 		"NAME TYPE VALUE", "", MXPBIT.COMMAND)
 	// -------------------------------------------------------------------------
 };
@@ -1271,6 +1271,22 @@ var MXP = function(sipwin)
 			sipwin.connect('ws://'+host+':'+port);
 		}
 		else
+		if (tagName == "A")
+		{
+			var href = E.getAttributeValue("HREF");
+			if(href)
+			{
+				href = href.toLowerCase().trim();
+				if(href.startsWith('javascript:')
+				&&(isValidJavaScriptLine(href.substr(11).trim())))
+				{
+					// valid javascript call, do nothing
+				}
+				else
+					E.setAttributeValue('HREF','javascript:window.alert(\'Link disabled for security reasons.\');');
+			}
+		}
+		else
 		if (tagName == "SEND")
 		{
 			var prompt = E.getAttributeValue("PROMPT");
@@ -1294,11 +1310,14 @@ var MXP = function(sipwin)
 			E.setAttributeValue("HINT", "");
 			var hrefV = href.split('|').filter(str => str.trim() != '');
 			var hintV = hint.split('|').filter(str => str.trim() != '');
-			var self = this;
 			if (hrefV.length == 1)
 			{
-				href = hrefV[0].replaceAll("'", "\\'");
-				E.setAttributeValue("HREF", "javascript:addToPrompt('" + href + "'," + prompt + ")");
+				href = hrefV[0];
+				if(href.startsWith('win.'))
+					cmd = "window.currWin." + href.substr(4);
+				else
+					cmd = "addToPrompt('" + href.replaceAll("'", "\\'") + "'," + prompt + ")";
+				E.setAttributeValue("HREF", "javascript:"+cmd);
 				if (hintV.length > 1)
 					hint = hintV[0];
 				E.setAttributeValue("HINT", hint);
@@ -1863,7 +1882,7 @@ var MXP = function(sipwin)
 		else
 		if (tagName == "VERSION")
 		{
-			sipwin.wsocket.send("\033[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION=" 
+			sipwin.wsocket.send("\x1b[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION=" 
 				+ sipwin.siplet.VERSION_MAJOR + " REGISTERED=NO>\n");
 		}
 		else
@@ -1950,7 +1969,7 @@ var MXP = function(sipwin)
 					var newFrame = framechoices[name];
 					var dests = this.dests;
 					error.call = function() {
-						sipwin.htmlBuffer += "<BR>";
+						//sipwin.htmlBuffer += "<BR>";
 						sipwin.flushWindow();
 						if(dests.length > 0)
 							sipwin.window = dests.pop(); // the text window
@@ -2073,7 +2092,7 @@ var MXP = function(sipwin)
 						supportResponse += (" +" + tag + "." + parm);
 				}
 			}
-			sipwin.wsocket.send("\033[1z<SUPPORTS" + supportResponse + ">\n");
+			sipwin.wsocket.send("\x1b[1z<SUPPORTS" + supportResponse + ">\n");
 		}
 		else
 		if (tagName == "TAG")

@@ -2,7 +2,7 @@ var SipletActions = {
 	"win.submitInput": { text:"Send Command", args: 1},
 	"win.displayText": { text:"Display Text", args: 1},
 	"win.playSound": { text:"Play Sound", args: 1},
-	"win.setVariable": { text:"Set Variable", args: 2},
+	"win.setEntity": { text:"Set Entity", args: 2},
 	"win.runScript": { text:"Run Script", args: 1},
 	"win.enableTrigger": { text:"Enable Trigger", args: 1},
 	"win.disableTrigger": { text:"Disable Trigger", args: 1},
@@ -58,8 +58,8 @@ var PLUGINS = function(sipwin)
 			Object.freeze(mapper);
 			var win = Object.create(null);
 			var sipwinMethods = ['submitInput', 'submitHidden', 'displayText', 'playSound',
-			    'setVariable', 'runScript', 'enableTrigger', 'sendGMCP', 'sendMSDP', 'disableTrigger',
-			    'startTimer', 'clearTimer', 'displayAt', 'getVariable', 'process'];
+			    'setEntity', 'runScript', 'enableTrigger', 'sendGMCP', 'sendMSDP', 'disableTrigger',
+			    'startTimer', 'clearTimer', 'displayAt', 'getEntity', 'process'];
 			for(var k =0;k<sipwinMethods.length;k++)
 			{
 				var method = sipwinMethods[k];

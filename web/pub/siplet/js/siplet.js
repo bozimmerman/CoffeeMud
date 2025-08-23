@@ -510,11 +510,11 @@ function SipletWindow(windowName)
 					while(match !== null)
 					{
 						for(var i=0;i<match.length;i++)
-							this.setVariable('match'+i,match[i]);
+							this.setEntity('match'+i,match[i]);
 						trig.prev = this.textBufferPruneIndex + match.index + 1;
 						this.executeAction(trig.action);
 						for(var i=0;i<match.length;i++)
-							this.setVariable('match'+i,null);
+							this.setEntity('match'+i,null);
 						match = trig.pattern.exec(this.textBuffer);
 						if(trig.once)
 							trig.disabled=true;
@@ -688,11 +688,11 @@ function SipletWindow(windowName)
 					if(match !== null)
 					{
 						for(var i=0;i<match.length;i++)
-							this.setVariable('match'+i,match[i]);
+							this.setEntity('match'+i,match[i]);
 						txt = txt.replace(alias.pattern,this.fixVariables(alias.replace));
 						this.executeAction(alias.action);
 						for(var i=0;i<match.length;i++)
-							this.setVariable('match'+i,null);
+							this.setEntity('match'+i,null);
 						return txt
 					}
 				}
@@ -1146,7 +1146,7 @@ function SipletWindow(windowName)
 
 	this.displayAt = function(value, frame)
 	{
-		var framechoices = mxp.getFrameMap();
+		var framechoices = this.mxp.getFrameMap();
 		if(!(frame in framechoices))
 			return;
 		var frame = framechoices[frame];
@@ -1180,23 +1180,24 @@ function SipletWindow(windowName)
 		this.msp.PlaySound(key,url,0,50,50);
 	};
 
-	this.setVariable = function(key, value)
+	this.setEntity = function(key, value)
 	{
 		if((key !== undefined)&&(value !== undefined)&&(key != null))
 		{
-			key = this.fixVariables(key);
 			if(value == null)
-				delete this.mxp.entities[key];
+				delete this.mxp.entities[key.toLowerCase()];
 			else 
 				this.mxp.modifyEntity(key, this.fixVariables(value));
 			
 		}
 	};
 	
-	this.getVariable = function(key)
+	this.getEntity = function(key)
 	{
-		if(key in this.mxp.entities)
-			return this.fixVariables(this.mxp.entities[key]);
+		if((key === undefined)||(key == null))
+			return '';
+		if(key.toLowerCase() in this.mxp.entities)
+			return this.fixVariables(this.mxp.entities[key.toLowerCase()]);
 		return '';
 	};
 	

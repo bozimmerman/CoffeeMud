@@ -817,6 +817,19 @@ function EnsureQuotedStringArguments(str, args, okRegex)
 	return str;
 }
 
+function isValidJavaScriptLine(str)
+{
+	if(!str)
+		return false;
+	str = str.toLowerCase().trim();
+	if(((str.startsWith('window.currwin.'))
+		||(str.startsWith('addtoprompt'))
+		||(str.startsWith('win.')))
+	&& (/^\s*(?:[a-zA-Z_$][a-zA-Z_$0-9]*\s*\.\s*)*[a-zA-Z_$][a-zA-Z_$0-9]*\s*\(\s*(?:(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|true|false|-?\d*\.?\d+)\s*,?\s*)*\)\s*;?\s*$/.test(str)))
+		return true;
+	return false;
+}
+
 function SafeEval(str, context) 
 {
 	if (!str || !str.trim())
