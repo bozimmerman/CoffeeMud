@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.1',
-	VERSION_MINOR: '5',
+	VERSION_MINOR: '6',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
@@ -39,7 +39,8 @@ function SipletWindow(windowName)
 	this.mapper = new Mapper(this);
 	this.text = new TEXT([this.mxp,this.msp]);
 	this.topWindow = document.getElementById(windowName);
-	if(this.topWindow) this.topWindow.sipwin = this;
+	if(this.topWindow) 
+		this.topWindow.sipwin = this;
 	this.wsocket = null;
 	this.gauges=[];
 	this.gaugeWindow = null;
@@ -180,6 +181,11 @@ function SipletWindow(windowName)
 		this.fixOverflow();
 		this.plugins.reset();
 		this.resizeTermWindow(fontFace, fontSize);
+		this.window.addEventListener('paste', function() {
+			event.preventDefault();
+			var text = (event.clipboardData || window.clipboardData).getData('text');
+			addToPrompt(text,false);
+		});
 	}
 	
 	this.connect = function(url)
@@ -1457,18 +1463,19 @@ function AddNewSipletTabByHostNPort(host, port)
 
 function AddNewSipletTabByPB(which)
 {
+	debugger;
 	if(!which)
 		return;
 	var ogwhich = ''+which;
 	var global = ogwhich.startsWith('g');
 	var pb;
+	var disableInput = getConfig('window/disableInput','')==''?false:true;
 	if(global)
 	{
 		which = Number(ogwhich.substr(1));
 		if((which<0) || (which > window.phonebook.length))
 			return;
 		pb = window.phonebook[which];
-		pb.disableInput = getConfig('window/disableInput','')==''?false:true;
 	}
 	else
 	{
@@ -1477,6 +1484,8 @@ function AddNewSipletTabByPB(which)
 		if((which<0) || (which > phonebook.length))
 			return;
 		pb = phonebook[which];
+		if(pb.disableInput !== undefined)
+			disableInput = pb.disableInput;
 	}
 	var port = pb.port;
 	var defaultUrl;
@@ -1493,9 +1502,9 @@ function AddNewSipletTabByPB(which)
 	}
 	var siplet;
 	if(port === 'default')
-		siplet = AddNewSipletTab(defaultUrl,!pb.disableInput);
+		siplet = AddNewSipletTab(defaultUrl,!disableInput);
 	else
-		siplet = AddNewSipletTab(defaultUrl+'?port='+port,!pb.disableInput);
+		siplet = AddNewSipletTab(defaultUrl+'?port='+port,!disableInput);
 	if(window.isElectron)
 		siplet.tabTitle = pb.name;
 	else
