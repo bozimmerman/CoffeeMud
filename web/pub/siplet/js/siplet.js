@@ -1463,7 +1463,6 @@ function AddNewSipletTabByHostNPort(host, port)
 
 function AddNewSipletTabByPB(which)
 {
-	debugger;
 	if(!which)
 		return;
 	var ogwhich = ''+which;
