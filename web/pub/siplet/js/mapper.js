@@ -573,13 +573,13 @@ function Mapper(sipwin)
 	this.clearSpecialExits = function(roomId) {
 		if(roomId in this.rooms && this.rooms[roomId].exits) {
 			var room = this.rooms[roomId];
-			var exit = getExitDir(room,'special');
+			var exit = this.getExitDir(room,'special');
 			while(exit != null)
 			{
 				var x = room.exits.indexOf(exit);
 				if(x<0) break;
 				room.exits.splice(x,1);
-				exit = getExitDir(room,'special');
+				exit = this.getExitDir(room,'special');
 			}
 		}
 	};
@@ -626,7 +626,7 @@ function Mapper(sipwin)
 				}
 				if (!dir)
 					return false;
-				var existingExit = getExitDir(fromR,dir);
+				var existingExit = this.getExitDir(fromR,dir);
 				if (existingExit && existingExit.roomId == toId)
 					return true;
 				if (existingExit)
@@ -652,7 +652,7 @@ function Mapper(sipwin)
 		}
 	
 		if (toId in this.rooms) {
-			var existingExit = getExitDir(fromR,direction);
+			var existingExit = this.getExitDir(fromR,direction);
 			if (existingExit) {
 				if (existingExit.roomId == toId)
 					return true;
@@ -671,7 +671,7 @@ function Mapper(sipwin)
 			var delta = window.DirCodeDeltas[direction];
 			if (!delta)
 				return false; // Invalid direction
-			var existingExit = getExitDir(fromR,direction);
+			var existingExit = this.getExitDir(fromR,direction);
 			if (existingExit !== null)
 				return false;
 			var expectedX = fromR.x + delta.x;
@@ -680,7 +680,7 @@ function Mapper(sipwin)
 			for (var id in this.rooms) {
 				var room = this.rooms[id];
 				if (room.x === expectedX && room.y === expectedY && room.z === expectedZ &&
-					room.exits && getExitDir(room,oppositeDir) && getExitDir(room,oppositeDir).roomId == '') {
+					room.exits && this.getExitDir(room,oppositeDir) && this.getExitDir(room,oppositeDir).roomId == '') {
 					var exit = new MapExit({
 						roomId: id,
 						dir: direction
@@ -2435,7 +2435,7 @@ function Mapper(sipwin)
 		direction = GetDirCode(direction);
 		if(!direction)
 			return false;
-		var ex = getExitDir(room,direction);
+		var ex = this.getExitDir(room,direction);
 		if(ex == null)
 			return false;
 		return ex.blocked;
@@ -2504,7 +2504,7 @@ function Mapper(sipwin)
 		direction = GetDirCode(direction);
 		if(!direction)
 			return;
-		var ex = getExitDir(room,direction);
+		var ex = this.getExitDir(room,direction);
 		if(ex == null)
 			return;
 		ex.blocked = lockIfTrue;
@@ -2828,7 +2828,7 @@ function Mapper(sipwin)
 		var dirCode = GetDirCode(exitCommand);
 		if((!dirCode)||(!room.exits))
 			return false;
-		var exit = getExitDir(room,dirCode);
+		var exit = this.getExitDir(room,dirCode);
 		if(exit)
 		{
 			if(doorStatus < 0)
@@ -2853,7 +2853,7 @@ function Mapper(sipwin)
 		if(!(fromId in this.rooms))
 			return false;
 		var fromRoom = this.rooms[fromId];
-		var fexit = getExitDir(fromRoom,direction);
+		var fexit = this.getExitDir(fromRoom,direction);
 		if(fexit)
 		{
 			if(toId < 0)
@@ -2890,7 +2890,7 @@ function Mapper(sipwin)
 		if(!(roomId in this.rooms))
 			return false;
 		var room = this.rooms[roomId];
-		var exit = getExitDir(room,direction);
+		var exit = this.getExitDir(room,direction);
 		if(exit)
 		{
 			if((exit.roomId !== '')
@@ -2937,7 +2937,7 @@ function Mapper(sipwin)
 					exit = room.exits[k];
 		}
 		else
-			exit = getExitDir(room,dir);
+			exit = this.getExitDir(room,dir);
 		if(!exit)
 			return false;
 		exit.weight = weight;
