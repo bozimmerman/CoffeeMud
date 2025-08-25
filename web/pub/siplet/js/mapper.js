@@ -2162,7 +2162,7 @@ function Mapper(sipwin)
 		var distances = {};
 		var previous = {};
 		var commands = {};
-		var queue = new Set(Object.keys(this.rooms));
+		var queue = Object.keys(this.rooms);
 		distances[fromId] = 0;
 		queue.forEach(function(id) {
 			if (id != fromId) 
@@ -2170,18 +2170,20 @@ function Mapper(sipwin)
 			previous[id] = null;
 			commands[id] = null;
 		});
-		while (queue.size > 0) {
+		while (queue.length > 0) {
 			var minDist = Infinity;
 			var currentId = null;
-			queue.forEach(function(id) {
+			var currentIdx = null;
+			queue.forEach(function(id, idx) {
 				if (distances[id] < minDist) {
 					minDist = distances[id];
 					currentId = id;
+					currentIdx = idx;
 				}
 			});
 			if (!currentId || currentId == toId) 
 				break;
-			queue.delete(currentId);
+			delete queue[currentIdx];
 			if (this.roomLocked(currentId)) 
 				continue;
 			var exits = this.getRoomExits(currentId);
@@ -2189,7 +2191,7 @@ function Mapper(sipwin)
 			var roomWeight = this.getRoomWeight(currentId) || 1;
 			for (var dir in exits) {
 				var toId2 = exits[dir];
-				if (!(toId2 in this.rooms) || !queue.has(toId2)) 
+				if (!(toId2 in this.rooms) || !queue.some(id => id == toId2)) 
 					continue;
 				if (this.hasExitLock(currentId, dir))
 					continue;
@@ -2203,7 +2205,7 @@ function Mapper(sipwin)
 			}
 			for (var toId2 in specialExits) 
 			{
-				if (!(toId2 in this.rooms) || !queue.has(toId2)) 
+				if (!(toId2 in this.rooms) || !queuesome(id => id == toId2))
 					continue;
 				if (this.hasSpecialExitLock(currentId, toId2, specialExits[toId2][0])) 
 					continue;
