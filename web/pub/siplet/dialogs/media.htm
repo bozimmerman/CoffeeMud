@@ -56,7 +56,7 @@ var fixsmediapage=function(){
 				{
 					simg.style.visibility='visible';
 					img.src = 'media://'+nr.path;
-					updateMediaImagesInSpan(simg);
+					updateMediaImagesInSpan(window.sipfs, simg);
 				}
 			}
 		};
@@ -230,44 +230,70 @@ var fixsmediapage=function(){
 			}
 			var input = document.createElement('input');
 			input.type = 'file';
-			input.onchange = function(event) {
+			input.multiple = true;
+			input.onchange = function(event) 
+			{
 				if((!root.selected)||(!root.selected.isFolder))
 					return;
-				var file = event.target.files[0];
-				if (!file) return;
-				if (file.size > (1024 * 100)) {
-					SiAlert("Files are limited to 100kb.");
-					console.error('File too large:', file.size, 'bytes');
-					return;
-				};
-				var x = file.name.lastIndexOf('.');
-				if((x<0)||(!(file.name.substr(x+1).toLowerCase() in window.mimeTypes)))
+				var files = event.target.files;
+				if (!files || files.length === 0) return;
+				
+				var uploadCount = 0;
+				var totalFiles = files.length;
+				
+				for (var i = 0; i < files.length; i++) 
 				{
-					SiAlert("Invalid file type.");
-					return;
-				}
-				var newPath = root.selected.path + '/' + file.name;
-				window.sipfs.save(newPath, file, function(e){
-					if((!root.selected)||(!root.selected.isFolder))
-						return;
-					if(e)
+					(function(file) 
 					{
-						SiAlert(e);
-						console.error(e);
-						return;
+						if (file.size > (1024 * 100)) 
+						{
+							SiAlert("File '" + file.name + "' is too large (limit: 100kb). Skipping.");
+							console.error('File too large:', file.size, 'bytes');
+							checkCompletion();
+							return;
+						}
+						var x = file.name.lastIndexOf('.');
+						if((x<0)||(!(file.name.substr(x+1).toLowerCase() in window.mimeTypes)))
+						{
+							SiAlert("Invalid file type for '" + file.name + "'. Skipping.");
+							checkCompletion();
+							return;
+						}
+						var newPath = root.selected.path + '/' + file.name;
+						window.sipfs.save(newPath, file, function(e)
+						{
+							if((!root.selected)||(!root.selected.isFolder))
+								return;
+							if(e)
+							{
+								SiAlert("Error uploading '" + file.name + "': " + e);
+								console.error(e);
+								checkCompletion();
+								return;
+							}
+							var newNode = 
+							{
+								name: file.name,
+								path: newPath,
+								type: file.type,
+								id: -1,
+								parent: root.selected
+							};
+							root.selected.opened=true;
+							root.selected.entries.push(newNode);
+							checkCompletion();
+						});
+					})(files[i]);
+				}
+				
+				function checkCompletion() 
+				{
+					uploadCount++;
+					if (uploadCount === totalFiles) {
+						root.rootNode.innerHTML = '';
+						root.renderNode(root.rootNode, [root.tree]);
 					}
-					var newNode = {
-						name: file.name,
-						path: newPath,
-						type: file.type,
-						id: -1,
-						parent: root.selected
-					};
-					root.selected.opened=true;
-					root.selected.entries.push(newNode);
-					root.rootNode.innerHTML = '';
-					root.renderNode(root.rootNode, [root.tree]);
-				})
+				}
 			};
 			input.click();
 		};

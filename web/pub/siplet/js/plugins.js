@@ -23,7 +23,7 @@ var PLUGINS = function(sipwin)
 	this.timerList = null;
 	this.menuList = null;
 
-	this.addPluginFrame = function(pluginName, pluginCode)
+	this.addPluginFrame = function(pluginName, pluginCode, pluginJson)
 	{
 		var iframe = document.createElement("iframe");
 		iframe.setAttribute('id', "PLUGIN_" + pluginName.toUpperCase().replaceAll(' ','_'));
@@ -46,6 +46,14 @@ var PLUGINS = function(sipwin)
 				},
 				writeable: false
 			});
+			for(var key in pluginJson)
+			{
+				var pluginValue = pluginJson[key];
+				Object.defineProperty(iframe.contentWindow, key, {
+					value: pluginValue,
+					writeable: false
+				});
+			}
 			var mapper = Object.create(null);
 			for(var k in sipwin.mapper)
 			{
@@ -93,7 +101,7 @@ var PLUGINS = function(sipwin)
 			for(var i=0;i<global.length;i++)
 			{
 				if(global[i].code)
-					this.addPluginFrame(global[i].name,global[i].code);
+					this.addPluginFrame(global[i].name,global[i].code, global[i]);
 				this.plugins.push(JSON.parse(JSON.stringify(global[i])));
 			}
 		}
@@ -101,7 +109,7 @@ var PLUGINS = function(sipwin)
 			for(var i=0;i<sipwin.pb.plugins.length;i++)
 			{
 				if(sipwin.pb.plugins[i].code)
-					this.addPluginFrame(sipwin.pb.plugins[i].name,sipwin.pb.plugins[i].code);
+					this.addPluginFrame(sipwin.pb.plugins[i].name,sipwin.pb.plugins[i].code, sipwin.pb.plugins[i]);
 				this.plugins.push(JSON.parse(JSON.stringify(sipwin.pb.plugins[i])));
 			}
 		}
@@ -314,7 +322,6 @@ var PLUGINS = function(sipwin)
 		return this.timerList;
 	};
 
-	
 	this.validatedMenu = function(source, pmenu)
 	{
 		if(!pmenu)

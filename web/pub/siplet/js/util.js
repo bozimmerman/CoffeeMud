@@ -331,6 +331,147 @@ function SiFontPicker(labelText, callback)
 	setTimeout(function() { fontSelect.focus() }, 0);
 }
 
+function SiFilePicker(labelText, callback, multiple = false) 
+{
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) { e.stopPropagation(); };
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px;width:400px;max-height:80%;overflow:auto";
+	var label = document.createElement("div");
+	label.innerHTML = labelText;
+	var previewSpan = document.createElement("span");
+	previewSpan.style = "visibility:hidden;float:right";
+	var previewImg = document.createElement("img");
+	previewImg.style = "max-width:100px;max-height:100px;object-fit:contain";
+	previewSpan.appendChild(previewImg);
+	var treeSpan = document.createElement("div");
+	var rootNode = document.createElement("ul");
+	treeSpan.appendChild(rootNode);
+	var button = document.createElement("button");
+	button.textContent = "OK";
+	button.onclick = function() 
+	{
+		overlay.remove();
+		if(multiple)
+			callback(root.selected.map(n => 'media://' + n.path));
+		else
+			callback(root.selected ? 'media://' + root.selected.path : null);
+	};
+	var cancel = document.createElement("button");
+	cancel.textContent = "Cancel";
+	cancel.onclick = function() { overlay.remove(); };
+	treeSpan.onkeydown = function(e) 
+	{
+		e.stopPropagation();
+		if (e.key == "Enter") 
+			button.click();
+		if (e.key == "Escape")
+			overlay.remove();
+	};
+	dialog.append(label, previewSpan, treeSpan, button, cancel);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	setTimeout(function() { treeSpan.focus() }, 0);
+	var root = {};
+	root.selected = multiple ? [] : null;
+	root.tree = {};
+	root.rootNode = rootNode;
+	window.sipfs.getMediaTree(function(err,newtree){
+		if(err)
+		{
+			SiAlert(err);
+			return;
+		}
+		root.tree = newtree;
+		root.tree.opened = true;
+		root.tree.name = '/';
+		root.rootNode.innerHTML = '';
+		root.renderNode(root.rootNode, [root.tree]);
+	});
+	root.selectNode = function(nr)
+	{
+		previewSpan.style.visibility='hidden';
+		if(nr.isFolder)
+			nr.opened = !nr.opened;
+		else
+		{
+			if(multiple)
+			{
+				var idx = root.selected.indexOf(nr);
+				if(idx >= 0)
+					root.selected.splice(idx,1);
+				else
+					root.selected.push(nr);
+			}
+			else
+			{
+				if(root.selected)
+					root.selected.selected = false;
+				root.selected = nr;
+				nr.selected = true;
+			}
+			var x = nr.name.lastIndexOf('.');
+			if((x>0)
+			&&(nr.name.substr(x+1).toLowerCase() in window.imgMimeTypes))
+			{
+				previewSpan.style.visibility='visible';
+				previewImg.src = 'media://'+nr.path;
+				updateMediaImagesInSpan(window.sipfs, previewSpan);
+			}
+		}
+		root.rootNode.innerHTML = '';
+		root.renderNode(root.rootNode, [root.tree]);
+	};
+	root.renderNode = function(parent, nodes)
+	{
+		for(var i=0;i<nodes.length;i++)
+		{
+			var n = nodes[i];
+			var nr = document.createElement('li');
+			var tn;
+			var isSelected = multiple ? root.selected.includes(n) : (n == root.selected);
+			if(isSelected)
+			{
+				tn = document.createElement('b');
+				tn.style.fontSize = 16;
+				if (n.isFolder)
+					tn.style.color = 'blue';
+				else
+					tn.style.color = 'green';
+				tn.appendChild(document.createTextNode(n.name));
+			}
+			else
+			{
+				tn = document.createElement('span');
+				if (n.isFolder)
+					tn.style.color = 'blue';
+				else
+					tn.style.color = 'green';
+				tn.appendChild(document.createTextNode(n.name));
+			}
+			nr.appendChild(tn);
+			nr.node = n;
+			parent.appendChild(nr);
+			nr.onclick = function(event) {
+				event.stopPropagation();
+				root.selectNode(this.node); 
+			};
+			if(n.opened && n.isFolder)
+			{
+				if((n.children && n.children.length)
+				||(n.entries && n.entries.length))
+				{
+					var nc = document.createElement('ul');
+					nr.appendChild(nc);
+					root.renderNode(nc,n.children);
+					root.renderNode(nc,n.entries);
+				}
+			}
+		}
+	};
+}
+
 function SiAlert(text) {
 	var overlay = document.createElement("div");
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
@@ -354,7 +495,7 @@ function SiAlert(text) {
 	document.body.append(overlay);
 }
 
-function SiColorPicker(text, callback, includeAlpha = false) 
+function SiColorPicker(text, callback, includeAlpha = false)
 {
 	var overlay = document.createElement("div");
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
@@ -608,9 +749,8 @@ function SiConfirm(text, callback) {
 	setTimeout(function() { okButton.focus() }, 0);
 }
 
-function updateMediaImagesInSpan(span)
+function updateMediaImagesInSpan(sipfs, span)
 {
-	var sipfs = window.sipfs;
 	var images = span.querySelectorAll('img[src^="media://"]');
 	images.forEach(function(img) {
 		var path = img.getAttribute('src').substr(8);

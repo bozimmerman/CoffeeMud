@@ -10,7 +10,7 @@
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Plugins')">
 </TD></TR>
 <TD><TD COLSPAN=2>&nbsp;</TD></TR>
-<TR><TD WIDTH=20%>Load:</TD>
+<TR><TD WIDTH=20%>Load Plugin:</TD>
 	<TD WIDTH=80%>
 		${butt('File',"document.getElementById('PLUGINSROOT').selectFile();");}
 		<SPAN ID="PLUGINSBUILD">${butt('Build',"document.getElementById('PLUGINSROOT').trybuildplugin();");}</SPAN>
@@ -459,9 +459,13 @@
 			if(typeof node === 'string')
    			{
 				var mx = node.indexOf('media://');
-				while(mx>0) {
+				if(mx === 0)
+					list.push(node.substring(8))
+				else
+				while(mx>0) 
+				{
 					var ec = node.charAt(mx-1);
-					var me = node.indexOf(ec,me+5);
+					var me = node.indexOf(ec,mx+5);
 					if(me>mx)
 					{
 						list.push(node.substring(mx+8,me))

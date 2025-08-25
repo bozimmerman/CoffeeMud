@@ -1,15 +1,13 @@
-function SipletFileSystem(dbName) 
+window.GlobalSipletBlobCache = {};
+
+function SipletFileSystem(dbName, sipwin) 
 {
 	var self = this;
 	this.dbName = dbName || 'SipFileSystem';
 	this.storeName = 'files';
 	this.db = null;
 	this.enabled = ('indexedDB' in window);
-	this.blobCache = {};
-	this.iconsPath = '/icons';
-	this.iconFiles = [];
-	for (i=1; i<=2192; i++) 
-		this.iconFiles.push('fc'+i+'.png');
+	this.blobCache = window.GlobalSipletBlobCache;
 
 	this.init = function(callBack) 
 	{
@@ -29,7 +27,7 @@ function SipletFileSystem(dbName)
 			callBack(event.target.error);
 		};
 	};
-
+	
 	this.load = function(path, callBack, noCache) 
 	{
 		if(!this.enabled)
@@ -48,43 +46,9 @@ function SipletFileSystem(dbName)
 	this._load = function(path, callBack, noCache) 
 	{
 		path = this.normalizePath(path);
-		if (path.startsWith(this.iconsPath + '/')) 
-		{
-			var filename = path.substring(this.iconsPath.length + 1);
-			if (this.iconFiles.indexOf(filename)>=0)
-			{
-				if ((path in this.blobCache) && (true !== noCache)) 
-				{
-					callBack(null, this.blobCache[path].url);
-					return;
-				}
-				fetch(path.substring(1)).then(function(response) 
-				{
-					if (!response.ok)
-						throw new Error('File not found');
-					return response.blob();
-				}).then(function(blob) 
-				{
-					var url = URL.createObjectURL(blob);
-					if (true !== noCache)
-						self.blobCache[path] = { url: url, blob: blob };
-					callBack(null, url);
-				}).catch(function(err) 
-				{
-					callBack(err);
-				});
-				return;
-			} 
-			else 
-			{
-				callBack(new Error('no data'));
-				return;
-			}
-		}
-
-		
-		if((path in this.blobCache) && (true !== noCache))
-			callBack(null, this.blobCache[path].url);
+		var blobCache = this.blobCache;
+		if((path in blobCache) && (true !== noCache))
+			callBack(null, blobCache[path].url);
 		var tx = this.db.transaction(this.storeName, 'readonly');
 		var store = tx.objectStore(this.storeName);
 		var request = store.get(path);
@@ -102,7 +66,7 @@ function SipletFileSystem(dbName)
 					}
 					var blob = new Blob([array], { type: mimeType });
 					var url = URL.createObjectURL(blob);
-					self.blobCache[path] = { url: url, blob: blob };
+					blobCache[path] = { url: url, blob: blob };
 					callBack(null, url);
 				}
 				else
@@ -112,6 +76,58 @@ function SipletFileSystem(dbName)
 				callBack(new Error('no data'));
 		};
 		request.onerror = function() {
+			callBack(request.error);
+		};
+	};
+
+	this.loadAsBase64 = function(path, callBack, noCache) 
+	{
+		if(!this.enabled)
+			callBack('not supported');
+		if (this.db)
+			this._loadAsBase64(path, callBack, noCache);
+		else 
+		{
+			this.init(function(err) {
+				if (err) return callBack(err);
+				self._loadAsBase64(path, callBack, noCache);
+			});
+		}
+	};
+	
+	this._loadAsBase64 = function(path, callBack, noCache) 
+	{
+		path = this.normalizePath(path);
+		var tx = this.db.transaction(this.storeName, 'readonly');
+		var store = tx.objectStore(this.storeName);
+		var request = store.get(path);
+		request.onsuccess = function() 
+		{
+			if(request.result && request.result.data)
+			{
+				var data = request.result.data;
+				if (data.startsWith('data:'))
+				{
+					var base64 = data.split(',')[1];
+					callBack(null, base64);
+				}
+				else
+				{
+					try 
+					{
+						callBack(null, data);
+					} 
+					catch (err) 
+					{
+						callBack(err);
+					}
+				}
+			}
+			else
+				callBack(new Error('no data'));
+		};
+		request.onerror = function() 
+		{
 			callBack(request.error);
 		};
 	};
@@ -171,11 +187,6 @@ function SipletFileSystem(dbName)
 	this._save = function(path, data, callBack) 
 	{
 		path = this.normalizePath(path);
-		if(path.startsWith(this.iconsPath)) 
-		{
-			callBack(new Error('Cannot modify protected directory'));
-			return;
-		}
 		var parent = this.getParentPath(path);
 		this.normalizeData(path, data, function(err, finalData)
 		{
@@ -218,24 +229,10 @@ function SipletFileSystem(dbName)
 			});
 		}
 	};
-	
+
 	this._exists = function(path, callBack) 
 	{
 		path = this.normalizePath(path);
-		if(path === this.iconsPath) 
-		{
-			callBack(null, true);
-			return;
-		}
-		if(path.startsWith(this.iconsPath+'/')) 
-		{
-			var filename = path.substring(this.iconsPath.length+1);
-			if((!filename.includes('/'))&&(this.iconFiles.indexOf(filename)>=0))
-				callBack(null, true);
-			else
-				callBack(null, false);
-			return;
-		}
 		var tx = this.db.transaction(this.storeName, 'readonly');
 		var store = tx.objectStore(this.storeName);
 		var request = store.get(path);
@@ -278,11 +275,6 @@ function SipletFileSystem(dbName)
 		request.onsuccess = function() 
 		{
 			var entries = request.result;
-			me.iconFiles.forEach(function(filename) 
-			{
-				var iconPath = me.iconsPath+'/'+filename;
-				entries.push({ path: iconPath, parent: this.iconsPath });
-			});
 			var tree = buildTree(entries);
 			callBack(null, tree);
 		};
@@ -372,11 +364,6 @@ function SipletFileSystem(dbName)
 	this._delete = function(path, callBack) 
 	{
 		path = this.normalizePath(path);
-		if (path.startsWith(this.iconsPath)) 
-		{
-			callBack(new Error('Cannot delete from protected directory'));
-			return;
-		}
 		var tx = this.db.transaction(this.storeName, 'readwrite');
 		var store = tx.objectStore(this.storeName);
 		var request = store.delete(path);

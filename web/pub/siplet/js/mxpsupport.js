@@ -1665,7 +1665,7 @@ var MXP = function(sipwin)
 									imgop=parseFloat(imgop)/100.0;
 								newContentWindow.style.opacity = ''+imgop;
 							}
-							updateMediaImagesInSpan(newContentWindow);
+							updateMediaImagesInSpan(sipwin.sipfs, newContentWindow);
 						}
 						switch(alignx)
 						{

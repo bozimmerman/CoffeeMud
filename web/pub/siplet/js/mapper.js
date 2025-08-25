@@ -1,5 +1,5 @@
 // uses SortArray from util.js
-// uses window.sipfs in loadJsonMap and saveJsonMap from filesys.js
+// uses SipletFileSystem in loadJsonMap and saveJsonMap from filesys.js
 
 window.DirCodeNames =
 {
@@ -2482,7 +2482,7 @@ function Mapper(sipwin)
 	this.killMapInfo = function() {}; //TODO:
 	this.loadJsonMap = function(pathFileName) {
 		var self = this;
-		window.sipfs.load(pathFileName,function(err, fdata) {
+		sipwin.sipfs.load(pathFileName,function(err, fdata) {
 			if(!err)
 			{
 				var data = JSON.parse(fdata);
@@ -2685,7 +2685,7 @@ function Mapper(sipwin)
 			if(this[k] !== undefined)
 				doc[k] = this[k];
 		doc = JSON.stringify(doc);
-		window.sipfs.save(pathFileName, doc, function(e){});
+		sipwin.sipfs.save(pathFileName, doc, function(e){});
 	};
 	this.saveMap = this.saveJsonMap;
 	this.searchAreaUserData = function(key, value) {
@@ -3443,7 +3443,7 @@ function Mapper(sipwin)
 							ctx.drawImage(label.image,x - imgWidth / 2,y - imgHeight / 2,imgWidth,imgHeight);
 						} else if(!label._loading) {
 							label._loading = true;
-							window.sipfs.load(label.filePath,function(err, dataUrl) {
+							sipwin.sipfs.load(label.filePath,function(err, dataUrl) {
 								if(!err)
 								{
 									var img = new Image();

@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.1',
-	VERSION_MINOR: '6',
+	VERSION_MINOR: '7',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
@@ -61,7 +61,7 @@ function SipletWindow(windowName)
 	this.listeners = {};
 	this.logStream = null;
 	this.overflow = getConfig('window/overflow','WRAP');
-	this.sipfs = window.sipfs;
+	this.sipfs = new SipletFileSystem('SipletFileSystem', this);
 	this.debugFlush = false;
 	this.debugText = false;
 	var me = this;
@@ -356,7 +356,7 @@ function SipletWindow(windowName)
 			if(this.debugFlush)
 				console.log('Flush: '+this.htmlBuffer);
 			span.innerHTML = this.htmlBuffer;
-			updateMediaImagesInSpan(span);
+			updateMediaImagesInSpan(this.sipfs, span);
 			this.window.appendChild(span);
 			this.process(reprocess);
 			this.htmlBuffer='';
@@ -725,7 +725,7 @@ function SipletWindow(windowName)
 			x = this.evalAliasGroup(this.tempAliases, x);
 		return x;
 	};
-
+	
 	this.localAliases = function()
 	{
 		if(this.aliases == null)
@@ -1127,7 +1127,7 @@ function SipletWindow(windowName)
 		if(value)
 		{
 			var span = this.displayBit(value + '<BR>');
-			updateMediaImagesInSpan(span);
+			updateMediaImagesInSpan(this.sipfs, span);
 			DisplayFakeInput(null);
 			return span;
 		}

@@ -220,7 +220,7 @@ var MSP = function(sipwin)
 		if(file.startsWith('media://'))
 		{
 			var path = file.substr(8);
-			window.sipfs.load(path, function(err, data){
+			sipwin.sipfs.load(path, function(err, data){
 				if(err)
 					console.log(err);
 				else
@@ -240,7 +240,7 @@ var MSP = function(sipwin)
 		sounder.player.outerHTML = '';
 		delete this.sounders[type];
 		if(sounder.file)
-			window.sipfs.trimBlobCache(sounder.file);
+			sipwin.sipfs.trimBlobCache(sounder.file);
 	};
 
 	this.StopSound = function(key, type)
