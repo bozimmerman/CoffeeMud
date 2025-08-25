@@ -204,17 +204,6 @@ function MapRoom(args)
 		for(var key in args)
 			this[key] = args[key]
 	}
-	this.getExitDir = function(dir)
-	{
-		if(dir !== 'special')
-			dir = GetDirCode(dir);
-		if(!dir)
-			return null;
-		for(var i=0;i<this.exits.length;i++)
-			if(this.exits[i].dir == dir)
-				return this.exits[i];
-		return null;
-	}
 }
 
 function MapExit(args)
@@ -265,6 +254,18 @@ function Mapper(sipwin)
 		this.customEvents = {};
 	};
 	this.deleteMap();
+	
+	this.getExitDir = function(room, dir)
+	{
+		if(dir !== 'special')
+			dir = GetDirCode(dir);
+		if(!dir)
+			return null;
+		for(var i=0;i<room.exits.length;i++)
+			if(room.exits[i].dir == dir)
+				return room.exits[i];
+		return null;
+	};
 	
 	this.findAreaId = function(areaName) {
 		if(areaName && (areaName in this.areas))
@@ -572,13 +573,13 @@ function Mapper(sipwin)
 	this.clearSpecialExits = function(roomId) {
 		if(roomId in this.rooms && this.rooms[roomId].exits) {
 			var room = this.rooms[roomId];
-			var exit = room.getExitDir('special');
+			var exit = getExitDir(room,'special');
 			while(exit != null)
 			{
 				var x = room.exits.indexOf(exit);
 				if(x<0) break;
 				room.exits.splice(x,1);
-				exit = room.getExitDir('special');
+				exit = getExitDir(room,'special');
 			}
 		}
 	};
@@ -625,7 +626,7 @@ function Mapper(sipwin)
 				}
 				if (!dir)
 					return false;
-				var existingExit = fromR.getExitDir(dir);
+				var existingExit = getExitDir(fromR,dir);
 				if (existingExit && existingExit.roomId == toId)
 					return true;
 				if (existingExit)
@@ -651,7 +652,7 @@ function Mapper(sipwin)
 		}
 	
 		if (toId in this.rooms) {
-			var existingExit = fromR.getExitDir(direction);
+			var existingExit = getExitDir(fromR,direction);
 			if (existingExit) {
 				if (existingExit.roomId == toId)
 					return true;
@@ -670,7 +671,7 @@ function Mapper(sipwin)
 			var delta = window.DirCodeDeltas[direction];
 			if (!delta)
 				return false; // Invalid direction
-			var existingExit = fromR.getExitDir(direction);
+			var existingExit = getExitDir(fromR,direction);
 			if (existingExit !== null)
 				return false;
 			var expectedX = fromR.x + delta.x;
@@ -679,7 +680,7 @@ function Mapper(sipwin)
 			for (var id in this.rooms) {
 				var room = this.rooms[id];
 				if (room.x === expectedX && room.y === expectedY && room.z === expectedZ &&
-					room.exits && room.getExitDir(oppositeDir) && room.getExitDir(oppositeDir).roomId == '') {
+					room.exits && getExitDir(room,oppositeDir) && getExitDir(room,oppositeDir).roomId == '') {
 					var exit = new MapExit({
 						roomId: id,
 						dir: direction
@@ -2434,7 +2435,7 @@ function Mapper(sipwin)
 		direction = GetDirCode(direction);
 		if(!direction)
 			return false;
-		var ex = room.getExitDir(direction);
+		var ex = getExitDir(room,direction);
 		if(ex == null)
 			return false;
 		return ex.blocked;
@@ -2503,7 +2504,7 @@ function Mapper(sipwin)
 		direction = GetDirCode(direction);
 		if(!direction)
 			return;
-		var ex = room.getExitDir(direction);
+		var ex = getExitDir(room,direction);
 		if(ex == null)
 			return;
 		ex.blocked = lockIfTrue;
@@ -2827,7 +2828,7 @@ function Mapper(sipwin)
 		var dirCode = GetDirCode(exitCommand);
 		if((!dirCode)||(!room.exits))
 			return false;
-		var exit = room.getExitDir(dirCode);
+		var exit = getExitDir(room,dirCode);
 		if(exit)
 		{
 			if(doorStatus < 0)
@@ -2852,7 +2853,7 @@ function Mapper(sipwin)
 		if(!(fromId in this.rooms))
 			return false;
 		var fromRoom = this.rooms[fromId];
-		var fexit = fromRoom.getExitDir(direction);
+		var fexit = getExitDir(fromRoom,direction);
 		if(fexit)
 		{
 			if(toId < 0)
@@ -2889,7 +2890,7 @@ function Mapper(sipwin)
 		if(!(roomId in this.rooms))
 			return false;
 		var room = this.rooms[roomId];
-		var exit = room.getExitDir(direction);
+		var exit = getExitDir(room,direction);
 		if(exit)
 		{
 			if((exit.roomId !== '')
@@ -2936,7 +2937,7 @@ function Mapper(sipwin)
 					exit = room.exits[k];
 		}
 		else
-			exit = room.getExitDir(dir);
+			exit = getExitDir(room,dir);
 		if(!exit)
 			return false;
 		exit.weight = weight;
