@@ -2183,7 +2183,7 @@ function Mapper(sipwin)
 			});
 			if (!currentId || currentId == toId) 
 				break;
-			delete queue[currentIdx];
+			queue.splice(currentIdx,1);
 			if (this.roomLocked(currentId)) 
 				continue;
 			var exits = this.getRoomExits(currentId);
@@ -2205,7 +2205,7 @@ function Mapper(sipwin)
 			}
 			for (var toId2 in specialExits) 
 			{
-				if (!(toId2 in this.rooms) || !queuesome(id => id == toId2))
+				if (!(toId2 in this.rooms) || !queue.some(id => id == toId2))
 					continue;
 				if (this.hasSpecialExitLock(currentId, toId2, specialExits[toId2][0])) 
 					continue;
@@ -2214,7 +2214,7 @@ function Mapper(sipwin)
 				if (altDist < distances[toId2]) {
 					distances[toId2] = altDist;
 					previous[toId2] = currentId;
-					commands[toId2] = specialExits[toId][0];
+					commands[toId2] = specialExits[toId2][0];
 				}
 			}
 		}
@@ -3124,7 +3124,7 @@ function Mapper(sipwin)
 		delay = (typeof delay === 'number') ? delay : 0;
 		show = show !== false;
 		var commands = [];
-		var pattern = /(\d+)?([^,]+)(?=[^,]|$)/gi;
+		var pattern = /(\d+)?([^,]+)(?=,|$)/gi;
 		var match;
 		while ((match = pattern.exec(dirString.toLowerCase())) !== null) 
 		{
