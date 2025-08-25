@@ -957,17 +957,96 @@ function EnsureQuotedStringArguments(str, args, okRegex)
 	return str;
 }
 
-function isValidJavaScriptLine(str)
-{
-	if(!str)
+function isValidJavaScriptLine(str) {
+	if (!str)
 		return false;
 	str = str.toLowerCase().trim();
-	if(((str.startsWith('window.currwin.'))
-		||(str.startsWith('addtoprompt'))
-		||(str.startsWith('win.')))
-	&& (/^\s*(?:[a-zA-Z_$][a-zA-Z_$0-9]*\s*\.\s*)*[a-zA-Z_$][a-zA-Z_$0-9]*\s*\(\s*(?:(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|true|false|-?\d*\.?\d+)\s*,?\s*)*\)\s*;?\s*$/.test(str)))
+	if (!((str.startsWith('window.currwin.'))
+	|| (str.startsWith('addtoprompt'))
+	|| (str.startsWith('contextdelayhide'))
+	|| (str.startsWith('win.'))))
+		return false;
+
+	const prefixRegex = /^\s*(?:[a-za-z_$][a-za-z_$0-9]*\s*\.\s*)*[a-za-z_$][a-za-z_$0-9]*\s*\(/;
+	const prefixMatch = str.match(prefixRegex);
+	if (!prefixMatch) 
+		return false;
+
+	var extractInnerArgs = function(str)
+	{
+		var openPos=str.indexOf('(');
+		if(openPos===-1) 
+			return null;
+		var start=openPos+1;
+		var count=1;
+		var i=start;
+		var inQuote=false;
+		var quoteChar='';
+		var escape=false;
+		while(i<str.length) 
+		{
+			var c=str[i];
+			if(escape) 
+			{
+				escape=false;
+				i++;
+				continue;
+			}
+			if(c==='\\') 
+			{
+				escape=true;
+				i++;
+				continue;
+			}
+			if(inQuote) 
+			{
+				if(c===quoteChar)
+					inQuote=false;
+				i++;
+				continue;
+			}
+			if((c==='"')||(c==="'")) 
+			{
+				inQuote=true;
+				quoteChar=c;
+				i++;
+				continue;
+			}
+			if(c==='(') 
+				count++;
+			else 
+			if(c===')') 
+			{
+				count--;
+				if(count===0)
+					return str.slice(start, i).trim();
+			}
+			i++;
+		}
+		return null;
+	};
+	
+	var inner=extractInnerArgs(str);
+	if(inner===null)
+		return false;
+	var closingPos=str.indexOf('(', prefixMatch[0].length-1)+1+inner.length;
+	var suffix=str.slice(closingPos+1).trim();
+	if (!/^(;)?$/.test(suffix)) 
+		return false;
+	var sanitized='['+inner+']';
+	sanitized = sanitized
+		.replace(/\'(.*?)\'/g,'"$1"')
+		.replace(/([\{ ]*?)([a-z0-9_]*?)(\:)/gi,'$1"$2"$3')
+		.replace(/,\s*([\]\}])/g,'$1');
+	try 
+	{
+		JSON.parse(sanitized);
 		return true;
-	return false;
+	} 
+	catch (e) 
+	{
+		return false;
+	}
 }
 
 function SafeEval(str, context) 

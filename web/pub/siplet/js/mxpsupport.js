@@ -1277,6 +1277,9 @@ var MXP = function(sipwin)
 			if(href)
 			{
 				href = href.toLowerCase().trim();
+				if(href == '#')
+				{}
+				else
 				if(href.startsWith('javascript:')
 				&&(isValidJavaScriptLine(href.substr(11).trim())))
 				{
@@ -1284,6 +1287,28 @@ var MXP = function(sipwin)
 				}
 				else
 					E.setAttributeValue('HREF','javascript:window.alert(\'Link disabled for security reasons.\');');
+			}
+			var omo = E.getAttributeValue("ONMOUSEOVER");
+			if(omo)
+			{
+				omo = omo.toLowerCase().trim();
+				if(isValidJavaScriptLine(omo))
+				{
+					// valid javascript call, do nothing
+				}
+				else
+					E.setAttributeValue('ONMOUSEOVER','');
+			}
+			var onclk = E.getAttributeValue("ONCLICK");
+			if(onclk)
+			{
+				onclk = onclk.toLowerCase().trim();
+				if(isValidJavaScriptLine(onclk))
+				{
+					// valid javascript call, do nothing
+				}
+				else
+					E.setAttributeValue('ONCLICK','');
 			}
 		}
 		else
