@@ -389,7 +389,7 @@ function Mapper(sipwin)
 		if((roomId in this.rooms) || !(areaId in this.areas))
 			return null;
 		var room = new MapRoom({
-			areaId: areaId
+			areaId: Number(areaId)
 		});
 		this.rooms[roomId] = room;
 		return roomId;
@@ -2777,6 +2777,7 @@ function Mapper(sipwin)
 			all.push(k);
 		return SortArray(all);
 	};
+
 	this.setAreaName = function(areaId, newName) {
 		if(!newName)
 			return true;
@@ -2796,6 +2797,7 @@ function Mapper(sipwin)
 		}
 		return false;
 	};
+
 	this.setAreaUserData = function(areaId, key, value) {
 		if(areaId in this.areas)
 		{
@@ -2805,6 +2807,7 @@ function Mapper(sipwin)
 			area.userData[key] = value;
 		}
 	};
+
 	this.setCustomEnvColor = function(environmentId, r,g,b,a) {
 		if(environmentId in window.MapEnvs)
 			return false; // reserved for system or user
@@ -2876,7 +2879,7 @@ function Mapper(sipwin)
 		fromRoom.exits.push(fexit);
 		return true;
 	};
-	
+
 	this.setExitStub = function(roomId, direction, set) {
 		direction = GetDirCode(direction);
 		if(!direction)
