@@ -2282,9 +2282,9 @@ function Mapper(sipwin)
 	};
 	this.getRoomCoordinates = function(roomId) {
 		if(!(roomId in this.rooms))
-			return null;
+			return [null, null, null];
 		var room = this.rooms[roomId];
-		return {x:room.x,y:room.y,z:room.z};
+		return [room.x,room.y,room.z];
 	};
 	this.getRoomEnv = function(roomId) {
 		if(!(roomId in this.rooms))

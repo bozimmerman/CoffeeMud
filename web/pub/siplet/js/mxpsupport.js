@@ -1817,9 +1817,10 @@ var MXP = function(sipwin)
 						MakeDraggable(newTopWindow);
 					}
 					var contentWindow = document.createElement('div');
-					contentWindow.style.cssText = "position:absolute;top:"+contentTop+"px;left:0%;height:calc(100% - "+contentTop+");width:100%;";
+					contentWindow.style.cssText = "position:absolute;top:"+contentTop+";left:0%;height:calc(100% - "+contentTop+");width:100%;";
 					contentWindow.style.backgroundColor = 'black';
 					contentWindow.style.color = 'white';
+					contentWindow.style.top = contentTop;
 					newTopWindow.sprops = sprops;
 				    contentWindow.style.overflowY = 'hidden';
 				    contentWindow.style.overflowX = 'hidden';
