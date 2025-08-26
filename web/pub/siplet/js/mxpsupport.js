@@ -1739,16 +1739,16 @@ var MXP = function(sipwin)
 						}
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 						{
-						    newContentWindow.style.overflowY = 'auto';
-						    newContentWindow.style.overflowX = 'auto';
+							newContentWindow.style.overflowY = 'auto';
+							newContentWindow.style.overflowX = 'auto';
 						}
 						else
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
-						    newContentWindow.style.overflowX = 'auto';
+							newContentWindow.style.overflowX = 'auto';
 						else
 						{
 							if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
-							    newContentWindow.style.overflowY = 'auto';
+								newContentWindow.style.overflowY = 'auto';
 							newContentWindow.style.overflowWrap = 'break-word';
 							newContentWindow.style.wordWrap = 'break-word';
 							newContentWindow.style.whiteSpace = 'pre-wrap';
@@ -1774,8 +1774,8 @@ var MXP = function(sipwin)
 						newContainerDiv.append(titleBar);
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 						{
-						    newContentWindow.style.overflowY = 'auto';
-						    newContentWindow.style.overflowX = 'auto';
+							newContentWindow.style.overflowY = 'auto';
+							newContentWindow.style.overflowX = 'auto';
 						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
@@ -1808,6 +1808,12 @@ var MXP = function(sipwin)
 						titleBar.style.color = 'black';
 						contentTop = "20px";
 						titleBar.innerHTML = '&nbsp;'+title;
+						if((floating != null) && (floating.toLowerCase() == 'close'))
+						{
+							titleBar.innerHTML += '<IMG style="float: right; width: 16px; height: 16px;" '
+								+'ONCLICK="window.currWin.displayText(\'<FRAME NAME='+name+' ACTION=CLOSE>\');" '
+								+'SRC="images/close.gif">';
+						}
 						MakeDraggable(newTopWindow,titleBar);
 					}
 					else
@@ -1822,8 +1828,8 @@ var MXP = function(sipwin)
 					contentWindow.style.color = 'white';
 					contentWindow.style.top = contentTop;
 					newTopWindow.sprops = sprops;
-				    contentWindow.style.overflowY = 'hidden';
-				    contentWindow.style.overflowX = 'hidden';
+					contentWindow.style.overflowY = 'hidden';
+					contentWindow.style.overflowX = 'hidden';
 					if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
 					{
 						contentWindow.style.overflowY = 'auto';
@@ -1835,7 +1841,7 @@ var MXP = function(sipwin)
 					else
 					{
 						if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
-						    contentWindow.style.overflowY = 'auto';
+							contentWindow.style.overflowY = 'auto';
 						contentWindow.style.overflowWrap = 'break-word';
 						contentWindow.style.wordWrap = 'break-word';
 						contentWindow.style.whiteSpace = 'pre-wrap';
