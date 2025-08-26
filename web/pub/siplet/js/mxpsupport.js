@@ -359,8 +359,8 @@ window.defElements = {
 	"PASSWORD": new MXPElement("PASSWORD", "", "", "", MXPBIT.COMMAND | MXPBIT.SPECIAL),
 	"IMAGE": new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", 
 			"FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPBIT.COMMAND, "HSPACE VSPACE ISMAP"),
-	"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", 
-			"SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPBIT.COMMAND),
+	"IMG": new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align; STYLE=&style;>", 
+			"SRC HEIGHT=70 WIDTH=70 ALIGN STYLE", "", MXPBIT.COMMAND),
 	"FILTER": new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 	"SCRIPT": new MXPElement("SCRIPT", "", "", "", MXPBIT.COMMAND | MXPBIT.NOTSUPPORTED),
 	"ENTITY": new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", 
@@ -381,8 +381,8 @@ window.defElements = {
 	"AT": new MXPElement("AT", "", "NAME ATT", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"SOUND": new MXPElement("SOUND", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
 	"MUSIC": new MXPElement("MUSIC", "", "FNAME V=100 L=1 P=50 T U", "", MXPBIT.COMMAND|MXPBIT.SPECIAL),
-	"INPUT": new MXPElement("INPUT", "<INPUT TYPE=&type; value=\"&value;\" onchange=\"SipWin(this).setEntity('&name;',this.value);SipWin(this).dispatchEvent('&name;');\" onclick=\"SipWin(this).dispatchEvent('&name;');\">", 
-		"NAME TYPE VALUE", "", MXPBIT.COMMAND)
+	"INPUT": new MXPElement("INPUT", "<INPUT NAME=&name; &checked; TYPE=&type; value=\"&value;\" onchange=\"SipWin(this).setEntity('&name;',this.value);SipWin(this).dispatchEvent('&name;');\" onclick=\"SipWin(this).dispatchEvent('&name;');\">", 
+		"NAME TYPE VALUE CHECKED", "", MXPBIT.COMMAND)
 	// -------------------------------------------------------------------------
 };
 
