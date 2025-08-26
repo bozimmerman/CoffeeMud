@@ -715,6 +715,45 @@ function logDat(typ, dat, opts)
 	console.log(s);
 }
 
+function SiButtons(text, buttons, callback) 
+{
+	var overlay = document.createElement("div");
+	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
+	overlay.onkeydown = function(e) {
+		e.stopPropagation();
+		if (e.key == "Escape")
+			overlay.remove();
+	};
+	var dialog = document.createElement("div");
+	dialog.style = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;color:#fff;border:1px solid #fff;padding:10px";
+	var label = document.createElement("div");
+	label.textContent = text;
+	var buttonContainer = document.createElement("div");
+	buttonContainer.style = "display: flex; justify-content: space-around; margin-top: 10px;";
+	var buttonElems = [];
+	for(var i=0;i<buttons.length;i++)
+	{
+		function addButton(buttonName)
+		{
+			var button = document.createElement("button");
+			button.textContent = buttonName;
+			button.onclick = function() 
+			{
+				overlay.remove();
+				callback(buttonName);
+			};
+			buttonElems.push(button);
+		}
+		addButton(buttons[i]);
+	}
+	for(var i=0;i<buttonElems.length;i++)
+		buttonContainer.append(buttonElems[i]);
+	dialog.append(label, buttonContainer);
+	overlay.append(dialog);
+	document.body.append(overlay);
+	setTimeout(function() { buttonElems[0].focus() }, 0);
+}
+
 function SiConfirm(text, callback) 
 {
 	var overlay = document.createElement("div");
