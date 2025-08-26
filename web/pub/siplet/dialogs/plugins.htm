@@ -120,6 +120,15 @@
 							SiAlert('File is invalid JSON.');
 							return;
 						}
+						if('requires' in pcopy)
+						{
+							var requiredVersion = pcopy.requires;
+							if(CompareVersion(requiredVersion)>0)
+							{
+								SiAlert('Plugin requires version ' + requiredVersion + ' or higher.');
+								return;
+							}
+						}
 						var code='';
 						if('code' in pcopy)
 						{
@@ -546,6 +555,7 @@
 				var newp = {
 				  "name": name,
 				  "version": 1,
+				  "requires": VERSION_MAJOR+'.'+VERSION_MINOR,
 				  "code": "",
 				  "mxp":"",
 				  "triggers": [],
