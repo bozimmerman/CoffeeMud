@@ -4,6 +4,7 @@ var menuBackgroundColor = "#105010";
 var menuForegroundColor = "Yellow";
 var menuWindow = null;
 var menuTemp = null;
+var menuFontSize=12;
 
 var menuData = [
 	{"Window": [
@@ -90,16 +91,20 @@ function ReConfigureTopMenu(sipwin)
 	else
 		menuTemp = null;
 	var html = '';
-	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: 20px; table-layout: fixed; width: 100%;cursor: pointer;">';
-	html +='<TR style="height: 20px;" >';
+	html += '<TABLE style="border: 1px solid white; border-collapse: collapse; height: '+menuAreaHeight+'px; '
+		 				 +'table-layout: fixed; width: 100%;cursor: pointer;">';
+	html += '<TR style="height: ' + menuAreaHeight + 'px;" >';
 	var alreadyDone = {};
+	var tdWidth = 100;
+	var totalTDWidth = 0;
 	for(var to=0;to<menuData.length;to++)
 	{
+		totalTDWidth += tdWidth;
 		var topO = menuData[to];
 		var topN = Object.keys(topO)[0];
-		html += '<TD style="border: 1px solid white; padding: 0;"';
-		html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+20,this.offsetWidth,16,'+to+')" ';
-		html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
+		html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;"';
+		html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+'+menuAreaHeight+',150,'+menuFontSize+','+to+')" ';
+		html += '><FONT style="font-size: '+menuFontSize+'" COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 		html += topN + '</FONT></TD>';
 		alreadyDone[topN] = true;
 	}
@@ -109,13 +114,15 @@ function ReConfigureTopMenu(sipwin)
 		{
 			if(!alreadyDone[topN])
 			{
-				html += '<TD style="border: 1px solid white; padding: 0;"';
-				html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+20,this.offsetWidth,16,"'+key+'")" ';
-				html += '><FONT COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
+				totalTDWidth += tdWidth;
+				html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;"';
+				html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+'+menuAreaHeight+',150,'+menuFontSize+','+key+')" ';
+				html += '><FONT style="font-size: '+menuFontSize+'" COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 				html += key + '</FONT></TD>';
 			}
 		}
 	}
+	html += '<TD style="border: 1px solid white; padding: 0; width: calc(100% - '+totalTDWidth+'px);">&nbsp;</TD>';
 	html += '</TR></TABLE>';
 	menuArea.innerHTML = html;
 }
@@ -155,9 +162,9 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 	var hint='';
 	var m;
 	if(subMenu === true)
-		m = ContextSubMenuOpen(e, subList, left, top, width);
+		m = ContextSubMenuOpen(e, subList, left, top, width, 5);
 	else
-		m = ContextMenuOpen(e, subList, left, top, width);
+		m = ContextMenuOpen(e, subList, left, top, width, 5);
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
 	var as = Array.from(m.getElementsByTagName("A"));
