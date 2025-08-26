@@ -46,7 +46,8 @@ function IsContextSubMenuHover(e)
 	return IsContextHover(e, 'ctxsubmenu');
 }
 
-function ContextMenuOpen(e, menu, x,y,width) {
+function ContextMenuOpen(e, menu, x, y, width, marginBottom) 
+{
 	if (window.event) 
 		window.event.cancelBubble=true;
 	else
@@ -68,8 +69,10 @@ function ContextMenuOpen(e, menu, x,y,width) {
 	menuDiv.appendChild(pstyle);
 	for(var i=0;i<menuelements.length;i++)
 	{
+		menuelements[i].style.display = 'block';
+		if(marginBottom !== undefined)
+			menuelements[i].style.marginBottom = marginBottom+'px';
 		pstyle.appendChild(menuelements[i]);
-		pstyle.appendChild(document.createElement('br'));
 	}
 	return menuDiv;
 }
