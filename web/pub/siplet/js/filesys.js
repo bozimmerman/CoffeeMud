@@ -48,7 +48,10 @@ function SipletFileSystem(dbName, sipwin)
 		path = this.normalizePath(path);
 		var blobCache = this.blobCache;
 		if((path in blobCache) && (true !== noCache))
+		{
 			callBack(null, blobCache[path].url);
+			return;
+		}
 		var tx = this.db.transaction(this.storeName, 'readonly');
 		var store = tx.objectStore(this.storeName);
 		var request = store.get(path);
