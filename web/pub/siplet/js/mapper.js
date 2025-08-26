@@ -221,7 +221,8 @@ function MapExit(args)
 	}
 }
 
-window.MapBlock = {
+window.MapBlock = 
+{
 	areas: {},
 	nextAreaId: 1,
 	rooms: {},
@@ -254,6 +255,7 @@ function Mapper(sipwin)
 		this.customEvents = {};
 	};
 	this.deleteMap();
+	this.currentAreaView = null;
 	
 	this.getExitDir = function(room, dir)
 	{
@@ -492,42 +494,84 @@ function Mapper(sipwin)
 		return true;
 	}
 
-	this.centerview = function(roomId) {
-		if(roomId == null) {
+	this.viewArea = function(areaId)
+	{
+		this.currentAreaView = areaId;
+		var playerAreaId = this.rooms[this.centerView] ? this.rooms[this.centerView].areaId : null;
+		if(areaId == playerAreaId) 
+			this.currentAreaView = null;
+		if(this.mapWidget && this.mapWidget.titleBar) 
+			this.mapWidget.titleBar.textContent = this.areas[areaId].name;
+		if(this.mapWidget && this.mapWidget.layout) 
+		{
+			delete this.mapWidget.layout.offsetX;
+			delete this.mapWidget.layout.offsetY;
+		}
+	}
+
+	this.centerview = function(roomId) 
+	{
+		if(roomId == null) 
+		{
 			this.centerView = null;
 			if(this.mapWidget && this.mapWidget.titleBar)
 				this.mapWidget.titleBar.textContent = 'Map';
-		} else if(roomId in this.rooms) {
+		} 
+		else 
+		if(roomId in this.rooms) 
+		{
 			var room = this.rooms[roomId];
 			if(this.mapWidget 
 			&& this.mapWidget.titleBar 
-			&& (room.areaId in this.areas)) {
+			&& (room.areaId in this.areas))
 				this.mapWidget.titleBar.textContent = this.areas[room.areaId].name;
-			}
 			this.centerView = roomId;
+			this.currentAreaView = null;
 		}
 	};
 
-	this.clearAreaUserData = function(areaId) {
-		if(areaId in this.areas && this.areas[areaId].userData) {
+	this.getViewRoomId = function()
+	{
+		var currentRoomId = this.centerView;
+		if(!currentRoomId || !(currentRoomId in this.rooms)) 
+			return null;
+		if(this.currentAreaView === null)
+			return currentRoomId;
+		var currentRoom = this.rooms[currentRoomId];
+		var viewAreaId = this.currentAreaView || currentRoom.areaId;
+		var viewRoomId = this.getAreaCenterRoom(viewAreaId);
+		if(!viewRoomId) 
+			viewRoomId = currentRoomId;
+		return viewRoomId;
+	};
+
+	this.clearAreaUserData = function(areaId) 
+	{
+		if(areaId in this.areas && this.areas[areaId].userData) 
+		{
 			delete this.areas[areaId].userData;
 			return true;
 		}
 		return false;
 	};
 
-	this.clearAreaUserDataItem = function(areaId, key) {
-		if(key && areaId in this.areas && this.areas[areaId].userData) {
+	this.clearAreaUserDataItem = function(areaId, key) 
+	{
+		if(key && areaId in this.areas && this.areas[areaId].userData) 
+		{
 			var area = this.areas[areaId];
-			if(key in area.userData) {
+			if(key in area.userData) 
+			{
 				delete area.userData[key];
 				return true;
 			}
 		}
 		return false;
 	};
-	this.clearMapSelection = function() {
-		if (this.mapWidget) {
+	this.clearMapSelection = function() 
+	{
+		if (this.mapWidget) 
+		{
 			if(this.mapWidget.selectedRooms && this.mapWidget.selectedRooms.length)
 			{
 				this.mapWidget.selectedRooms = [];
@@ -537,31 +581,40 @@ function Mapper(sipwin)
 		}
 		return false;
 	};
-	this.clearMapUserData = function() {
-		if(this.userData) {
+	this.clearMapUserData = function() 
+	{
+		if(this.userData) 
+		{
 			delete this.userData;
 			return true;
 		}
 		return false;
 	};
-	this.clearMapUserDataItem = function(key) {
-		if(this.userData && key) {
-			if(key in this.userData) {
+	this.clearMapUserDataItem = function(key) 
+	{
+		if(this.userData && key) 
+		{
+			if(key in this.userData) 
+			{
 				delete this.userData[key];
 				return true;
 			}
 		}
 		return false;
 	};
-	this.clearRoomUserData = function(roomId) {
-		if(roomId in this.rooms && this.rooms[roomId].userData) {
+	this.clearRoomUserData = function(roomId) 
+	{
+		if(roomId in this.rooms && this.rooms[roomId].userData) 
+		{
 			delete this.rooms[roomId].userData;
 			return true;
 		}
 		return false;
 	};
-	this.clearRoomUserDataItem = function(roomId, key) {
-		if(key && roomId in this.rooms && this.rooms[roomId].userData) {
+	this.clearRoomUserDataItem = function(roomId, key) 
+	{
+		if(key && roomId in this.rooms && this.rooms[roomId].userData) 
+		{
 			var room = this.rooms[roomId];
 			if(key in room.userData) {
 				delete room.userData[key];
@@ -570,8 +623,10 @@ function Mapper(sipwin)
 		}
 		return false;
 	};
-	this.clearSpecialExits = function(roomId) {
-		if(roomId in this.rooms && this.rooms[roomId].exits) {
+	this.clearSpecialExits = function(roomId) 
+	{
+		if(roomId in this.rooms && this.rooms[roomId].exits) 
+		{
 			var room = this.rooms[roomId];
 			var exit = this.getExitDir(room,'special');
 			while(exit != null)
@@ -583,7 +638,8 @@ function Mapper(sipwin)
 			}
 		}
 	};
-	this.closeMapWidget = function() {
+	this.closeMapWidget = function() 
+	{
 		if (!this.mapWidget || !this.mapWidget.canvas)
 			return false;
 		if (this.mapWidget.mouseUpHandler)
@@ -598,18 +654,26 @@ function Mapper(sipwin)
 				this.mapWidget.canvas.parentNode.outerHTML = '';
 		}
 		this.deleteMap();
+		if(this.mapWidget)
+		{
+			delete this.mapWidget.draggedRooms;
+			delete this.mapWidget.dragOriginalPositions;
+		}
 		this.mapWidget = null;
 		this.canvas = null;
 		this.centerView = null; // Reset view to avoid referencing closed widget
 		return true;
 	};
 
-	this.connectExitStub = function(fromId, toId, direction) {
+	this.connectExitStub = function(fromId, toId, direction) 
+	{
 		if (!(fromId in this.rooms) || !this.rooms[fromId].exits)
 			return false;
 		var fromR = this.rooms[fromId];
-		if (direction === undefined) {
-			if (toId in this.rooms) {
+		if (direction === undefined) 
+		{
+			if (toId in this.rooms) 
+			{
 				var toR = this.rooms[toId];
 				var dx = toR.x - fromR.x;
 				var dy = toR.y - fromR.y;
@@ -617,9 +681,11 @@ function Mapper(sipwin)
 				if (dx === 0 && dy === 0 && dz === 0)
 					return false;
 				var dir;
-				for (var d in window.DirCodeDeltas) {
+				for (var d in window.DirCodeDeltas) 
+				{
 					var delta = window.DirCodeDeltas[d];
-					if (delta.x === dx && delta.y === dy && delta.z === dz) {
+					if (delta.x === dx && delta.y === dy && delta.z === dz) 
+					{
 						dir = d;
 						break;
 					}
@@ -637,23 +703,27 @@ function Mapper(sipwin)
 				});
 				fromR.exits.push(exit);
 				return true;
-			} else {
+			} 
+			else 
+			{
 				direction = GetDirCode(toId);
-				if (!direction) {
+				if (!direction)
 					return false;
-				}
 				toId = null;
 			}
-		} else {
+		} 
+		else 
+		{
 			direction = GetDirCode(direction);
-			if (!direction) {
+			if (!direction)
 				return false;
-			}
 		}
 	
-		if (toId in this.rooms) {
+		if (toId in this.rooms) 
+		{
 			var existingExit = this.getExitDir(fromR,direction);
-			if (existingExit) {
+			if (existingExit) 
+			{
 				if (existingExit.roomId == toId)
 					return true;
 				fromR.exits.splice(fromR.exits.indexOf(existingExit), 1);
@@ -664,7 +734,10 @@ function Mapper(sipwin)
 			});
 			fromR.exits.push(exit);
 			return true;
-		} else if (direction && !toId) {
+		} 
+		else 
+		if (direction && !toId) 
+		{
 			var oppositeDir = window.OpDirCodes[direction];
 			if (!oppositeDir)
 				return false;
@@ -677,10 +750,12 @@ function Mapper(sipwin)
 			var expectedX = fromR.x + delta.x;
 			var expectedY = fromR.y + delta.y;
 			var expectedZ = fromR.z + delta.z;
-			for (var id in this.rooms) {
+			for (var id in this.rooms) 
+			{
 				var room = this.rooms[id];
 				if (room.x === expectedX && room.y === expectedY && room.z === expectedZ &&
-					room.exits && this.getExitDir(room,oppositeDir) && this.getExitDir(room,oppositeDir).roomId == '') {
+					room.exits && this.getExitDir(room,oppositeDir) && this.getExitDir(room,oppositeDir).roomId == '') 
+				{
 					var exit = new MapExit({
 						roomId: id,
 						dir: direction
@@ -710,7 +785,8 @@ function Mapper(sipwin)
 		var labelId = 1;
 		while(labelId in area.labels)
 			labelId++;
-		area.labels[labelId] = {
+		area.labels[labelId] = 
+		{
 			text: text,
 			x: posX,
 			y: posY,
@@ -730,14 +806,16 @@ function Mapper(sipwin)
 		return labelId;
 	};
 
-	this.createMapImageLabel = function(areaId, filePath, posx, posy, posz, width, height, zoom, showOnTop, temporary) {
+	this.createMapImageLabel = function(areaId, filePath, posx, posy, posz, width, height, zoom, showOnTop, temporary) 
+	{
 		if (!(areaId in this.areas) || !filePath) 
 			return false;
 		var area = this.areas[areaId];
 		var labelId = 1;
 		while (labelId in area.labels)
 			labelId++;
-		area.labels[labelId] = {
+		area.labels[labelId] = 
+		{
 			type: 'image',
 			filePath: filePath,
 			x: posx || 0,
@@ -823,9 +901,11 @@ function Mapper(sipwin)
 			sipwin.topWindow.appendChild(container);
 			MakeDraggable(container, titleBar);
 			var resizeDebouncer = null;
-			container.addEventListener('resize', function() {
+			container.addEventListener('resize', function() 
+			{
 				if(resizeDebouncer == null)
-					resizeDebouncer =setTimeout(function() {
+					resizeDebouncer =setTimeout(function() 
+					{
 						var calced = getComputedStyle(container);
 						canvas.width = parseFloat(calced.width);
 						canvas.height = parseFloat(calced.height);
@@ -836,46 +916,77 @@ function Mapper(sipwin)
 		}
 		
 		var ctx = canvas.getContext('2d');
-		if (!ctx) {
+		if (!ctx) 
+		{
 			console.error("Failed to get 2D rendering context");
 			return null;
 		}
+		var isDraggingRoom = false;
+		var potentialDrag = false;
+		var dragStartMouseX = 0;
+		var dragStartMouseY = 0;
 		var isPanning = false;
 		var panStartX, panStartY, panOffsetX, panOffsetY;
-		var mouseDownHandler = function(event) {
+		var mouseDownHandler = function(event) 
+		{
 			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
 				return;
-			if(self.mapWidget.tooltip)
+			if (self.mapWidget.tooltip)
 				self.mapWidget.tooltip.style.display = 'none';
 			var rect = canvas.getBoundingClientRect();
 			var mouseX = event.clientX - rect.left;
 			var mouseY = event.clientY - rect.top;
+			if (event.button !== 0) return;
 			var { rooms } = self.mapWidget.layout;
-			var overNode = false;
-			for (var roomId in rooms) {
+			var hoverRoomId = null;
+			for (var roomId in rooms) 
+			{
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = mouseX - centerX;
 				var dy = mouseY - centerY;
 				var dist = Math.sqrt(dx * dx + dy * dy);
-				if (dist < radius) {
-					overNode = true;
+				if (dist < radius) 
+				{
+					hoverRoomId = roomId;
 					break;
 				}
 			}
-			if (!overNode) {
+			if (hoverRoomId) 
+			{
+				potentialDrag = true;
+				dragStartMouseX = mouseX;
+				dragStartMouseY = mouseY;
+				// Determine rooms to potentially drag: selected group if hovered is selected, else just hovered
+				self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
+				self.mapWidget.draggedRooms = self.mapWidget.selectedRooms.includes(hoverRoomId) 
+					? [...self.mapWidget.selectedRooms] 
+					: [hoverRoomId];
+				// Store original positions
+				self.mapWidget.dragOriginalPositions = {};
+				self.mapWidget.draggedRooms.forEach(id => {
+					var room = self.rooms[id];
+					self.mapWidget.dragOriginalPositions[id] = { x: room.x, y: room.y };
+				});
+			} 
+			else 
+			{
 				isPanning = true;
 				panStartX = event.clientX;
 				panStartY = event.clientY;
-				panOffsetX = self.mapWidget.layout.offsetX || (canvas.width / 2 - self.rooms[self.centerView].x * self.mapWidget.layout.tileSize * SpacingRatio);
-				panOffsetY = self.mapWidget.layout.offsetY || (canvas.height / 2 - self.rooms[self.centerView].y * self.mapWidget.layout.tileSize * SpacingRatio);
+				var viewRoomId = self.getViewRoomId() || self.centerView;
+				var viewRoom = self.rooms[viewRoomId];
+				panOffsetX = self.mapWidget.layout.offsetX || (canvas.width / 2 - viewRoom.x * self.mapWidget.layout.tileSize * SpacingRatio);
+				panOffsetY = self.mapWidget.layout.offsetY || (canvas.height / 2 - viewRoom.y * self.mapWidget.layout.tileSize * SpacingRatio);
 				canvas.style.cursor = "grabbing";
 			}
 		};
-		var mouseMoveHandler = function(event) {
-			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) {
+		var mouseMoveHandler = function(event) 
+		{
+			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms) 
+			{
 				canvas.style.cursor = "default";
-				if(self.mapWidget.tooltip)
-					self.mapWidget.tooltip.style.display='none';
+				if (self.mapWidget.tooltip)
+					self.mapWidget.tooltip.style.display = 'none';
 				return;
 			}
 			var rect = canvas.getBoundingClientRect();
@@ -883,17 +994,56 @@ function Mapper(sipwin)
 			var mouseY = event.clientY - rect.top;
 			var { rooms } = self.mapWidget.layout;
 			var hoverRoomId = null;
-			for (var roomId in rooms) {
+			for (var roomId in rooms) 
+			{
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = mouseX - centerX;
 				var dy = mouseY - centerY;
 				var dist = Math.sqrt(dx * dx + dy * dy);
-				if (dist < radius) {
+				if (dist < radius) 
+				{
 					hoverRoomId = roomId;
 					break;
 				}
 			}
-			if (!self.mapWidget.tooltip) {
+			if (potentialDrag || isDraggingRoom) 
+			{
+				var dx = mouseX - dragStartMouseX;
+				var dy = mouseY - dragStartMouseY;
+				var dist = Math.sqrt(dx * dx + dy * dy);
+				if (potentialDrag && dist > 5) 
+				{
+					potentialDrag = false;
+					isDraggingRoom = true;
+					if (self.mapWidget.tooltip)
+						self.mapWidget.tooltip.style.display = 'none';
+				}
+				if(isDraggingRoom) 
+				{
+					var tileSize = self.mapWidget.layout.tileSize;
+					var gridDx = Math.round(dx / (tileSize * SpacingRatio));
+					var gridDy = Math.round(dy / (tileSize * SpacingRatio));
+					self.mapWidget.draggedRooms.forEach(id => {
+						var orig = self.mapWidget.dragOriginalPositions[id];
+						self.setRoomCoordinates(id, orig.x + gridDx, orig.y + gridDy, self.rooms[id].z);
+					});
+					self.updateMap();
+					canvas.style.cursor = "move";
+					return; // Prevent panning during room drag
+				}
+			} 
+			else 
+			if (isPanning) 
+			{
+				var dx = event.clientX - panStartX;
+				var dy = event.clientY - panStartY;
+				self.mapWidget.layout.offsetX = panOffsetX + dx;
+				self.mapWidget.layout.offsetY = panOffsetY + dy;
+				self.updateMap();
+				canvas.style.cursor = "grabbing";
+			}
+			if (!self.mapWidget.tooltip) 
+			{
 				var div = document.createElement('div');
 				div.style.position = "absolute";
 				div.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
@@ -906,105 +1056,96 @@ function Mapper(sipwin)
 				sipwin.topWindow.appendChild(div);
 				self.mapWidget.tooltip = div;
 			}
-			if (isPanning) {
-				var dx = event.clientX - panStartX;
-				var dy = event.clientY - panStartY;
-				self.mapWidget.layout.offsetX = panOffsetX + dx;
-				self.mapWidget.layout.offsetY = panOffsetY + dy;
-				self.updateMap();
-				canvas.style.cursor = "grabbing";
-			}
-			if(hoverRoomId != null) { 
+			if (hoverRoomId != null) 
+			{
 				var roomName = self.getRoomName(hoverRoomId) || "Unnamed";
-				self.mapWidget.tooltip.textContent = 'ID: '+hoverRoomId+'\nName: '+roomName;
+				self.mapWidget.tooltip.textContent = 'ID: ' + hoverRoomId + '\nName: ' + roomName;
 				self.mapWidget.tooltip.style.left = (event.clientX + 10) + 'px';
 				self.mapWidget.tooltip.style.top = (event.clientY + 10) + 'px';
 				self.mapWidget.tooltip.style.display = "block";
-				canvas.style.cursor = "pointer";
-			} else {
+				canvas.style.cursor = "move"; // Indicate draggable
+			} 
+			else 
+			{
 				self.mapWidget.tooltip.style.display = 'none';
-				canvas.style.cursor = (hoverRoomId!=null) ? "pointer" : "grab";
+				canvas.style.cursor = "grab";
 			}
 		};
-		var mouseUpHandler = function(e) {
+		var mouseUpHandler = function(event) 
+		{
+			if (event.button !== 0) return;
 			if (isPanning) {
 				isPanning = false;
 				canvas.style.cursor = "grab";
 			}
-		};
-		var clickHandler = function(event) {
-			if (!self.mapWidget.layout || !self.mapWidget.layout.rooms)
-				return;
-			if(self.mapWidget.tooltip)
-				self.mapWidget.tooltip.style.display = 'none';
-			var rect = canvas.getBoundingClientRect();
-			var clickX = event.clientX - rect.left;
-			var clickY = event.clientY - rect.top;
-			var { rooms} = self.mapWidget.layout;
-			var closestRoomId = null;
-			var minDist = Infinity;
-			for (var roomId in rooms) {
-				var { centerX, centerY, radius } = rooms[roomId];
-				var dx = clickX - centerX;
-				var dy = clickY - centerY;
-				var dist = Math.sqrt(dx * dx + dy * dy);
-				if (dist < radius && dist < minDist) {
-					minDist = dist;
-					closestRoomId = roomId;
-				}
-			}
-			if (closestRoomId) 
-			{
-				if (event.ctrlKey) 
-				{
-					self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
-					var index = self.mapWidget.selectedRooms.indexOf(closestRoomId);
-					if (index >= 0)
-						self.mapWidget.selectedRooms.splice(index, 1);
-					else
-						self.mapWidget.selectedRooms.push(closestRoomId);
-				}
-				else if (event.shiftKey) 
-				{
-					if(self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length)
-					{
-						var lastRoom = self.rooms[self.mapWidget.selectedRooms[self.mapWidget.selectedRooms.length-1]];
-						var currRoom = self.rooms[closestRoomId];
-						var minX = Math.min(lastRoom.x, currRoom.x);
-						var maxX = Math.max(lastRoom.x, currRoom.x);
-						var minY = Math.min(lastRoom.y, currRoom.y);
-						var maxY = Math.max(lastRoom.y, currRoom.y);
-						var zLevel = currRoom.z;
-						self.mapWidget.selectedRooms = [];
-						for (var roomId in self.rooms) {
-							var room = self.rooms[roomId];
-							if (room.areaId == currRoom.areaId && room.z == zLevel &&
-								room.x >= minX && room.x <= maxX && room.y >= minY && room.y <= maxY
-								&& (self.mapWidget.selectedRooms.indexOf(roomId)<0))
-								self.mapWidget.selectedRooms.push(roomId);
-						}
+			if (isDraggingRoom) {
+				isDraggingRoom = false;
+				canvas.style.cursor = "grab";
+				// Optional: Add any post-drag logic, e.g., check for overlaps
+			} else if (potentialDrag) {
+				potentialDrag = false;
+				if (self.mapWidget.tooltip)
+					self.mapWidget.tooltip.style.display = 'none';
+				var rect = canvas.getBoundingClientRect();
+				var clickX = event.clientX - rect.left;
+				var clickY = event.clientY - rect.top;
+				var { rooms } = self.mapWidget.layout;
+				var closestRoomId = null;
+				var minDist = Infinity;
+				for (var roomId in rooms) {
+					var { centerX, centerY, radius } = rooms[roomId];
+					var dx = clickX - centerX;
+					var dy = clickY - centerY;
+					var dist = Math.sqrt(dx * dx + dy * dy);
+					if (dist < radius && dist < minDist) {
+						minDist = dist;
+						closestRoomId = roomId;
 					}
-					else
-					{
+				}
+				if (closestRoomId) {
+					if (event.ctrlKey) {
 						self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
 						var index = self.mapWidget.selectedRooms.indexOf(closestRoomId);
 						if (index >= 0)
 							self.mapWidget.selectedRooms.splice(index, 1);
 						else
 							self.mapWidget.selectedRooms.push(closestRoomId);
+					} else if (event.shiftKey) {
+						if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length) {
+							var lastRoom = self.rooms[self.mapWidget.selectedRooms[self.mapWidget.selectedRooms.length - 1]];
+							var currRoom = self.rooms[closestRoomId];
+							var minX = Math.min(lastRoom.x, currRoom.x);
+							var maxX = Math.max(lastRoom.x, currRoom.x);
+							var minY = Math.min(lastRoom.y, currRoom.y);
+							var maxY = Math.max(lastRoom.y, currRoom.y);
+							var zLevel = currRoom.z;
+							self.mapWidget.selectedRooms = [];
+							for (var roomId in self.rooms) {
+								var room = self.rooms[roomId];
+								if (room.areaId == currRoom.areaId && room.z == zLevel &&
+										room.x >= minX && room.x <= maxX && room.y >= minY && room.y <= maxY &&
+										(self.mapWidget.selectedRooms.indexOf(roomId) < 0))
+									self.mapWidget.selectedRooms.push(roomId);
+							}
+						} else {
+							self.mapWidget.selectedRooms = self.mapWidget.selectedRooms || [];
+							var index = self.mapWidget.selectedRooms.indexOf(closestRoomId);
+							if (index >= 0)
+								self.mapWidget.selectedRooms.splice(index, 1);
+							else
+								self.mapWidget.selectedRooms.push(closestRoomId);
+						}
+					} else {
+						self.centerview(closestRoomId);
+						if (self.mapWidget.selectedRooms && (self.mapWidget.selectedRooms.length > 0))
+							self.clearMapSelection();
 					}
-				}
-				else
-				{
-					self.centerview(closestRoomId);
-					if (self.mapWidget.selectedRooms && (self.mapWidget.selectedRooms.length > 0))
+					event.stopPropagation();
+					self.updateMap();
+				} else {
+					if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length > 0)
 						self.clearMapSelection();
 				}
-				event.stopPropagation();
-				self.updateMap();
-			} else {
-				if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length > 0)
-					self.clearMapSelection();
 			}
 		};
 		var menuHandler = function(e) {
@@ -1026,8 +1167,9 @@ function Mapper(sipwin)
 			var minDist = Infinity;
 			var gridX = Math.round((clickX - offsetX) / (tileSize * SpacingRatio));
 			var gridY = Math.round((clickY - offsetY) / (tileSize * SpacingRatio));
-			var zLevel = self.rooms[self.centerView]?(self.rooms[self.centerView].z || 0) : 0;
-			var areaId = self.rooms[self.centerView]?(self.rooms[self.centerView].areaId || Object.keys(self.areas)[0]) : Object.keys(self.areas)[0];
+			var viewRoomId = self.getViewRoomId();
+			var zLevel = self.rooms[viewRoomId] ? self.rooms[viewRoomId].z : 0;
+			var areaId = self.rooms[viewRoomId] ? self.rooms[viewRoomId].areaId : Object.keys(self.areas)[0];
 			for (var roomId in rooms) {
 				var { centerX, centerY, radius } = rooms[roomId];
 				var dx = clickX - centerX;
@@ -1138,7 +1280,7 @@ function Mapper(sipwin)
 					{
 						"n": "Create Area",
 						"a": function(event) {
-							   SiPrompt('Enter area name:',function(name){
+								 SiPrompt('Enter area name:',function(name){
 								if(name) {
 									var areaId = self.addAreaName(name);
 									self.updateMap();
@@ -1179,9 +1321,9 @@ function Mapper(sipwin)
 					 "e":""},
 					{"n":"Speedwalk to Room",
 					 "a": function(event) {
-						  self.clearMapSelection();
-						  var dirString = self.getPath(self.getPlayerRoom(), closestRoomId);
-						  if (dirString) self.speedwalk(dirString, false, 0, true);},
+							self.clearMapSelection();
+							var dirString = self.getPath(self.getPlayerRoom(), closestRoomId);
+							if (dirString) self.speedwalk(dirString, false, 0, true);},
 					 "e":""},
 					{"n":"Add Exit",
 					 "c": false,
@@ -1370,7 +1512,8 @@ function Mapper(sipwin)
 					 			}});
 					 	  subMenu.push({n:'Coordinates',
 					 			a:function(event) {
-					 				SiPrompt('Enter coordinates (x,y,z) for '+msg+':',function(i){
+									var coords = self.getRoomCoordinates(rid).join(',');
+					 				SiPrompt('New coordinates ('+coords+') for '+msg+':',function(i){
 					 				var regex = /^-?\\d+,-?\\d+,-?\\d+$/; 
 					 	  			if (regex.test(i)) { 
 					 					var xyz = i.split(',').map(Number);
@@ -1592,6 +1735,7 @@ function Mapper(sipwin)
 					 	  if(self.getAreaCenterRoom(areaId)!=null)
 							select.add(new Option(area.name,areaId));
 					 	}
+					 	select.selectedIndex = -1;
 					 	var node = this;
 					 	select.style.fontFamily = this.style.fontFamily;
 					 	select.style.fontSize = this.style.fontSize;
@@ -1602,10 +1746,12 @@ function Mapper(sipwin)
 							e.stopPropagation();
 						};
 					 	select.onchange=function(e){
-							self.centerview(self.getAreaCenterRoom(select.value));
+							self.viewArea(select.value);
 							self.updateMap();
 							e.stopPropagation();
 						};
+						var currentAreaId = self.rooms[self.centerView] ? self.rooms[self.centerView].areaId : Object.keys(self.areas)[0] || '';
+						select.value = currentAreaId;
 					 	node.innerHTML='';
 					 	node.appendChild(select);
 					 	},
@@ -1692,7 +1838,20 @@ function Mapper(sipwin)
 					 	var y = event.currentTarget.getBoundingClientRect().top + window.scrollY;
 					 	DropDownMenu(null,x,y,'auto',12,subMenu,true);
 					 	},
-					 "e":""}
+					 "e":""},
+					{"n":"Export Area",
+					 "a":function(event) {
+						var areaId = self.rooms[self.getViewRoomId()] ? self.rooms[self.getViewRoomId()].areaId : Object.keys(self.areas)[0];
+						if(!areaId) return;
+						var name = self.areas[areaId].name || 'area';
+						self.exportAreaToUser(areaId, name+'.json');
+					},
+					 "e":"Object.keys(window.currWin.mapper.areas).length > 0"},
+					{"n":"Import Area",
+					 "a":function(event) {
+						self.importAreaFromBrowser();
+					},
+					 "e":"true"},
 				];
 				menus = menus.concat(buildCustomMenu('room'));
 				DropDownMenu(e, e.clientX, e.clientY, 200, 12, menus);
@@ -1701,14 +1860,16 @@ function Mapper(sipwin)
 		var zoomHandler = function(event) {
 			event.preventDefault();
 			var delta = event.deltaY < 0 ? 0.1 : -0.1;
-			self.zoom = Math.max(0.5, Math.min(2.0, (self.zoom || 1.0) + delta));
+			var viewedAreaId = self.currentAreaView || (self.rooms[self.centerView] ? self.rooms[self.centerView].areaId : undefined);
+			var currentZoom = self.getMapZoom(viewedAreaId);
+			var newZoom = currentZoom + delta;
+			self.setMapZoom(newZoom, viewedAreaId); // caps are in there
 			self.updateMap();
 		};
 		canvas.addEventListener('mousedown', mouseDownHandler);
 		canvas.addEventListener('mousemove', mouseMoveHandler);
 		document.addEventListener('mouseup', mouseUpHandler);
 		canvas.addEventListener('contextmenu', menuHandler);
-		canvas.addEventListener('click', clickHandler);
 		canvas.addEventListener('wheel', zoomHandler);
 		this.mapWidget = {
 			canvas: canvas,
@@ -1720,7 +1881,6 @@ function Mapper(sipwin)
 			frame: typeof x === 'string' ? x : null,
 			titleBar: titleBar,
 			zoomHandler: zoomHandler,
-			clickHandler: clickHandler,
 			mouseDownHandler: mouseDownHandler,
 			mouseMoveHandler: mouseMoveHandler,
 			mouseUpHandler: mouseUpHandler
@@ -2707,7 +2867,152 @@ function Mapper(sipwin)
 		doc = JSON.stringify(doc);
 		sipwin.sipfs.save(pathFileName, doc, function(e){});
 	};
+	
 	this.saveMap = this.saveJsonMap;
+	
+	this.exportAreaJson = function(areaId) 
+	{
+		if (!(areaId in this.areas)) 
+			return null;
+		var areaData = JSON.parse(JSON.stringify(this.areas[areaId])); // Deep copy area
+		var roomsInArea = {};
+		for (var roomId in this.rooms) 
+		{
+			if (this.rooms[roomId].areaId === areaId)
+				roomsInArea[roomId] = JSON.parse(JSON.stringify(this.rooms[roomId]));
+		}
+		var usedEnvs = {};
+		for (var roomId in roomsInArea) 
+		{
+			var envId = roomsInArea[roomId].envId;
+			if (envId in this.envs) 
+				usedEnvs[envId] = JSON.parse(JSON.stringify(this.envs[envId]));
+		}
+		var areaHashes = {};
+		for (var hash in this.roomIdHash) 
+		{
+			var rid = this.roomIdHash[hash];
+			if (rid in roomsInArea) 
+				areaHashes[hash] = rid;
+		}
+		return {
+			area: areaData,
+			rooms: roomsInArea,
+			envs: usedEnvs,
+			hashes: areaHashes,
+		};
+	};
+	
+	this.exportAreaToUser = function(areaId, suggestedFileName) 
+	{
+		var areaJson = this.exportAreaJson(areaId);
+		if (!areaJson) 
+			return;
+		var doc = JSON.stringify(areaJson, null, 2);
+		var blob = new Blob([doc], { type: 'application/json' });
+		var url = URL.createObjectURL(blob);
+		var a = document.createElement('a');
+		a.href = url;
+		a.download = suggestedFileName || (this.areas[areaId].name + '.json');
+		sipwin.topWindow.appendChild(a);
+		a.click();
+		sipwin.topWindow.removeChild(a);
+		URL.revokeObjectURL(url);
+	};
+	
+	this.importAreaFromBrowser = function() 
+	{
+		var self = this;
+		var input = document.createElement('input');
+		input.type = 'file';
+		input.accept = '.json';
+		input.onchange = function(e) 
+		{
+			var file = e.target.files[0];
+			if (file) 
+			{
+				var reader = new FileReader();
+				reader.onload = function(ev) 
+				{
+					try 
+					{
+						var data = JSON.parse(ev.target.result);
+						self.mergeAreaJson(data);
+						self.updateMap();
+					} 
+					catch (err) 
+					{
+						console.error('Invalid JSON: ' + err);
+					}
+				};
+				reader.readAsText(file);
+			}
+		};
+		sipwin.topWindow.appendChild(input);
+		input.click();
+		sipwin.topWindow.removeChild(input);
+	};
+
+	this.mergeAreaJson = function(data) 
+	{
+		var self = this;
+		var existingAreaId = self.findAreaId(data.area.name);
+		if (existingAreaId !== null)
+			self.deleteArea(existingAreaId);
+		var newAreaId = self.createAreaId();
+		self.areas[newAreaId] = data.area;
+		self.areas[newAreaId].name = data.area.name; // Ensure name is set
+		var roomIdMap = {};
+		for(var oldRoomId in data.rooms) 
+		{
+			var newRoomId = self.createRoomId();
+			roomIdMap[oldRoomId] = newRoomId;
+			var room = data.rooms[oldRoomId];
+			room.areaId = newAreaId;
+			self.rooms[newRoomId] = room;
+		}
+		for(var newRoomId in self.rooms) 
+		{
+			var room = self.rooms[newRoomId];
+			if (room.exits) 
+			{
+				room.exits.forEach(function(exit) 
+				{
+					if (exit.roomId in roomIdMap)
+						exit.roomId = roomIdMap[exit.roomId]; // Remap intra-area
+					else 
+					if (exit.roomId && !(exit.roomId in self.rooms))
+						exit.roomId = '';
+				});
+			}
+			if (room.customLines) 
+			{
+				for (var dir in room.customLines) 
+				{
+					var line = room.customLines[dir];
+					if (line.to in roomIdMap)
+						line.to = roomIdMap[line.to];
+				}
+			}
+		}
+		for (var envId in data.envs) 
+		{
+			if (!(envId in self.envs)) 
+				self.envs[envId] = data.envs[envId];
+		}
+		for (var hash in data.hashes) 
+		{
+			var oldRoomId = data.hashes[hash];
+			if (oldRoomId in roomIdMap) 
+			{
+				self.roomIdHash[hash] = roomIdMap[oldRoomId];
+				self.rooms[roomIdMap[oldRoomId]].hash = hash;
+			}
+		}
+		self.nextAreaId = Math.max(self.nextAreaId, parseInt(newAreaId) + 1 || 1);
+		self.nextRoomId = Math.max(self.nextRoomId, Math.max(...Object.keys(self.rooms).map(Number)) + 1 || 1);
+	};
+	
 	this.searchAreaUserData = function(key, value) {
 		var all = [];
 		var keyMap = {};
@@ -2976,7 +3281,7 @@ function Mapper(sipwin)
 	};
 	
 	this.setMapZoom = function(zoom, areaId) {
-		zoom = Math.max(0.5, Math.min(2.0, zoom));
+		zoom = Math.max(0.5, Math.min(10.0, zoom));
 		if(areaId && (areaId in this.areas))
 		{
 			var area = this.areas[areaId];
@@ -3230,6 +3535,12 @@ function Mapper(sipwin)
 		return true;
 	}
 	
+	this.recenterOnCurrent = function() {
+		if(!this.mapWidget || !this.mapWidget.canvas || !this.centerView || !(this.centerView in this.rooms))
+			return;
+		this.mapWidget.reCenter = true;
+	};
+
 	this.updateMap = function() {
 		if (!this.mapWidget || !this.mapWidget.ctx) {
 			console.warn("Map widget not found. Call createMapper first.");
@@ -3252,8 +3563,17 @@ function Mapper(sipwin)
 			return;
 		}
 		var currentRoom = this.rooms[currentRoomId];
-		var areaId = currentRoom.areaId;
-		var zLevel = currentRoom.z;
+		var viewRoomId = this.getViewRoomId();
+		if(!viewRoomId) 
+		{
+			ctx.fillStyle = "#000";
+			ctx.fillText("No room selected", canvas.width / 2, canvas.height / 2);
+			ctx.restore();
+			return;
+		}
+		var viewRoom = this.rooms[viewRoomId];
+		var areaId = viewRoom.areaId;
+		var zLevel = viewRoom.z;
 		var roomsToDraw = Object.keys(this.rooms).filter(function(id) {
 			var room = self.rooms[id];
 			return room.areaId == areaId && room.z == zLevel;
@@ -3268,16 +3588,30 @@ function Mapper(sipwin)
 		});
 		var mapWidth = Math.max(maxX - minX + 1, 1);
 		var mapHeight = Math.max(maxY - minY + 1, 1);
-		var scale = this.zoom || 1.0;
+		var scale = this.getMapZoom(areaId);
 		var baseTileSize = Math.min(canvas.width / mapWidth, canvas.height / mapHeight);
 		var tileSize = baseTileSize * scale;
 		tileSize = Math.max(tileSize, Math.min(canvas.width, canvas.height) / 25);
 		var offsetX = this.mapWidget.layout && this.mapWidget.layout.offsetX !== undefined
 			? this.mapWidget.layout.offsetX
-			: canvas.width / 2 - currentRoom.x * tileSize * SpacingRatio;
+			: canvas.width / 2 - viewRoom.x * tileSize * SpacingRatio;
 		var offsetY = this.mapWidget.layout && this.mapWidget.layout.offsetY !== undefined
 			? this.mapWidget.layout.offsetY
-			: canvas.height / 2 - currentRoom.y * tileSize * SpacingRatio;
+			: canvas.height / 2 - viewRoom.y * tileSize * SpacingRatio;
+			
+		if(this.mapWidget.reCenter)
+		{
+			var currX = offsetX + viewRoom.x * tileSize * SpacingRatio;
+			var currY = offsetY + viewRoom.y * tileSize * SpacingRatio;
+			var radius = tileSize / 10;
+			if (currX + radius < 0 || currX - radius > canvas.width || currY + radius < 0 || currY - radius > canvas.height) {
+				this.mapWidget.reCenter = false;
+				offsetX = canvas.width / 2 - viewRoom.x * tileSize * SpacingRatio;
+				offsetY = canvas.height / 2 - viewRoom.y * tileSize * SpacingRatio;
+				this.mapWidget.layout.offsetX = offsetX;
+				this.mapWidget.layout.offsetY = offsetY;
+			}
+		}
 		this.mapWidget.layout = { tileSize, offsetX, offsetY, mapWidth, mapHeight, rooms: {} };
 		roomsToDraw.forEach(function(roomId) {
 			var room = self.rooms[roomId];
@@ -3375,7 +3709,7 @@ function Mapper(sipwin)
 					ctx.strokeStyle = `rgb(${line.color[0]}, ${line.color[1]}, ${line.color[2]})`;
 					ctx.lineWidth = Math.max(0.5, tileSize / 25);
 					ctx.stroke();
-					if (line.arrow) 
+					if (line.arrow)
 					{
 						var arrowSize = tileSize / 10;
 						var angle = Math.atan2(endY - startY, endX - startX);
@@ -3452,7 +3786,8 @@ function Mapper(sipwin)
 				ctx.stroke();
 			}
 		});
-		if (areaId in this.areas && this.areas[areaId].labels) {
+		if (areaId in this.areas && this.areas[areaId].labels)
+		{
 			var labels = this.areas[areaId].labels;
 			for (var labelId in labels) {
 				var label = labels[labelId];
@@ -3507,13 +3842,16 @@ function Mapper(sipwin)
 				}
 			}
 		}
-		var x = offsetX + currentRoom.x * tileSize * SpacingRatio;
-		var y = offsetY + currentRoom.y * tileSize * SpacingRatio;
-		ctx.beginPath();
-		ctx.arc(x, y, tileSize / 8, 0, 2 * Math.PI);
-		ctx.strokeStyle = "red";
-		ctx.lineWidth = Math.max(0.5, tileSize / 25);
-		ctx.stroke();
+		if(currentRoom.areaId === areaId && currentRoom.z === zLevel) 
+		{
+			var x = offsetX + currentRoom.x * tileSize * SpacingRatio;
+			var y = offsetY + currentRoom.y * tileSize * SpacingRatio;
+			ctx.beginPath();
+			ctx.arc(x, y, tileSize / 8, 0, 2 * Math.PI);
+			ctx.strokeStyle = "red";
+			ctx.lineWidth = Math.max(0.5, tileSize / 25);
+			ctx.stroke();
+		}
 		ctx.restore();
 	};
 }
