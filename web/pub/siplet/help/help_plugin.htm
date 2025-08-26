@@ -7,6 +7,7 @@ broken down below.  A minimalist plugin document looks like this:
 {
   "name": "my minimal plugin",
   "version": 1,
+  "requires": "3.6.8",
   "code": "",
   "mxp":"",
   "triggers": [],
@@ -16,7 +17,8 @@ broken down below.  A minimalist plugin document looks like this:
 }
 </PRE>
 The <B>name</B> may be any string, but try to keep it unique.  <B>Version</B>
-must be an integer or real number.  <B><a href="javascript:menuHelp('Mxp')">mxp</a></B> is a document of 
+must be an integer or real number.  <B>Version</B> is the minimum Sip/Siplet version. 
+<B><a href="javascript:menuHelp('Mxp')">mxp</a></B> is a document of 
 <a href="javascript:menuHelp('Entities')">MXP tags/entities</a> that your
 plugin contributes.  <B>Code</B> is your message handling 
 javascript.  The API is discussed in the last section.
