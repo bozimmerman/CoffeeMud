@@ -1556,7 +1556,7 @@ var MXP = function(sipwin)
 								fleft = tmp;
 							}
 							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
-														+ dePct(frame.sprops.width))+'%';
+														+ dePct(frame.sprops.pctwidth))+'%';
 							break;
 						case 1: //right
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
@@ -1566,7 +1566,7 @@ var MXP = function(sipwin)
 								fleft = tmp;
 							}
 							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
-														+ dePct(frame.sprops.width))+'%';
+														+ dePct(frame.sprops.pctwidth))+'%';
 							break;
 						case 2: // top
 							for(var i=peerDex+1;i<peerFrames.length;i++)
@@ -1576,7 +1576,7 @@ var MXP = function(sipwin)
 								ftop = tmp;
 							}
 							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
-														+ dePct(frame.sprops.height))+'%';
+														+ dePct(frame.sprops.pctheight))+'%';
 							break;
 						case 3: //bottom
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
@@ -1586,7 +1586,7 @@ var MXP = function(sipwin)
 								ftop = tmp;
 							}
 							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
-														+ dePct(frame.sprops.height))+'%';
+														+ dePct(frame.sprops.pctheight))+'%';
 							break;
 						}
 						for(var k in this.frames)
@@ -1666,6 +1666,8 @@ var MXP = function(sipwin)
 						var calced = getComputedStyle(sipwin.window);
 						width=fixISize(width,calced.width); // ensure they are %
 						height=fixISize(height,calced.height);
+						sprops.pctwidth = width;
+						sprops.pctheight = height;
 						var newContainerDiv = document.createElement('div');
 						newContainerDiv.style.cssText = containerDiv.style.cssText;
 						containerDiv.appendChild(newContainerDiv);
