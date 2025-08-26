@@ -149,7 +149,6 @@ function SipletFileSystem(dbName, sipwin)
 	{
 		if(!this.enabled)
 			callBack('not supported');
-console.info('save: '+ path);
 		if (this.db)
 			this._save(path, data, callBack);
 		else 
