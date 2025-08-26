@@ -1080,8 +1080,8 @@ function isValidJavaScriptLine(str)
 	var suffix=str.slice(closingPos+1).trim();
 	if (!/^(;)?$/.test(suffix)) 
 		return false;
-	if(inner.startsWith('this, event, '))
-		inner = inner.substr(13).trim();
+	while(inner.startsWith('this,')||inner.startsWith('event,'))
+		inner = inner.substr(inner.indexOf(',')+1).trim();
 	var sanitized='['+inner+']';
 	sanitized = sanitized
 		.replace(/\'(.*?)\'/g,'"$1"')
