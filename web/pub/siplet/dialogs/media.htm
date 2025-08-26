@@ -13,6 +13,7 @@
 <TR><TD colspan="2">
 	${butt('New Folder',"document.getElementById('MEDIAROOT').createNode();");}
 	${butt('Upload',"document.getElementById('MEDIAROOT').selectFile();");}
+	${butt('Download',"document.getElementById('MEDIAROOT').trydlmedia();");}
 	${butt('Delete',"document.getElementById('MEDIAROOT').trydelmedia();");}
 </TD></TR>
 </TABLE>
@@ -162,11 +163,6 @@ var fixsmediapage=function(){
 			var msg;
 			if(root.selected.isFolder)
 			{
-				if(root.selected.path == 'icons')
-				{
-					SiAlert("You can not delete icons.");
-					return;
-				}
 				msg = "Delete the folder '"+root.selected.path+"' and all of its children?!";
 				var stk = [];
 				stk.push(root.selected);
@@ -181,11 +177,6 @@ var fixsmediapage=function(){
 			}
 			else
 			{
-				if(root.selected.path.startsWith('/icons/'))
-				{
-					SiAlert("You can not delete icons.");
-					return;
-				}
 				msg = "Delete the file '"+root.selected.path+"'?";
 				nodesToDel.push(root.selected);
 			}
@@ -220,7 +211,54 @@ var fixsmediapage=function(){
 				root.renderNode(root.rootNode, [root.tree]);
 			});
 		};
-		
+
+		root.trydlmedia = function()
+		{
+			if(!root.selected)
+			{
+				SiAlert("You need to select a node.");
+				return;
+			}
+			if(root.name == '/')
+			{
+				SiAlert("You can not download root.");
+				return;
+			}
+			if(root.selected.isFolder)
+			{
+				SiAlert("You can not download a folder.");
+				return;
+			}
+			else
+			{
+				window.sipfs.load(root.selected.path,function(err, dataUrl) 
+				{
+					if (err) 
+					{
+						console.error('Error loading ' + path + ':', err);
+						return;
+					}
+					if(dataUrl)
+					{
+						if(!dataUrl.startsWith('blob:')) 
+						{
+							const blob = new Blob([dataUrl], { type: 'application/octet-stream' });
+							const url = URL.createObjectURL(blob);
+							setTimeout(() => URL.revokeObjectURL(url), 2000);
+							dataUrl = url;
+						}
+						const a = document.createElement('a');
+						a.style.display = 'none';
+						a.href = dataUrl;
+						a.download = root.selected.name;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+					}
+				});
+			}
+		};
+
 		root.selectFile = function() 
 		{
 			if((!root.selected)||(!root.selected.isFolder))
