@@ -752,7 +752,8 @@ function Mapper(sipwin)
 		return labelId;
 	};
 
-	this.createMapper = function(x, y, width, height) {
+	this.createMapper = function(x, y, width, height) 
+	{
 		if(this.mapWidget)
 		{
 			console.warn("Map widget already exists. Use resizeMapWidget or moveMapWidget.");
@@ -799,6 +800,18 @@ function Mapper(sipwin)
 			titleBar.style.padding = "2px 5px";
 			titleBar.style.userSelect = "none";
 			titleBar.textContent = "Map";
+			/*
+			var closeIcon = document.createElement('img');
+			closeIcon.style.float = "right";
+			closeIcon.style.width = "16px";
+			closeIcon.style.height = "16px";
+			closeIcon.src = "images/close.gif";
+			var me = this;
+			closeIcon.onclick = function() {
+				me.closeMapWidget();
+			};
+			titleBar.appendChild(closeIcon);
+			*/
 			container.appendChild(titleBar);
 			var canvas = document.createElement('canvas');
 			container.appendChild(canvas);
@@ -2551,9 +2564,11 @@ function Mapper(sipwin)
 			this.mapWidget.y = newY;
 		}
 	};
-	this.openMapWidget = function(Xpos, Ypos, width, height) {
+	this.openMapWidget = function(Xpos, Ypos, width, height) 
+	{
 		var saved = (this.userData && this.userData.layout)?this.userData.layout : null;
-		if (arguments.length === 0) {
+		if (arguments.length === 0) 
+		{
 			var frameName = (saved == null) ? null : saved.frameName;
 			if((saved != null)&&(saved.frameName))
 				return this.createMapper(frameName);
@@ -2563,12 +2578,14 @@ function Mapper(sipwin)
 			height = (saved == null) ? 150 : saved.height;
 			return this.createMapper(x,y,width,height);
 		}
-		if (arguments.length === 1 && typeof Xpos === "string") {
+		if (arguments.length === 1 && typeof Xpos === "string") 
+		{
 			return this.createMapper(Xpos);
 		}
 		if (arguments.length === 4 && typeof Xpos === "number" && 
 			typeof Ypos === "number" && typeof width === "number" && 
-			typeof height === "number") {
+			typeof height === "number") 
+		{
 			return this.createMapper(Xpos, Ypos, width, height);
 		}
 		console.error("Invalid parameters for openMapWidget.");
