@@ -384,10 +384,10 @@ var PLUGINS = function(sipwin)
 						pmenu = this.validatedMenu(key+'@'+this.plugins[i].name, pmenu);
 						if(pmenu)
 						{
-							for(var i=0;i<pmenu.length;i++)
-								pmenu[i].a = 'javascript:var win=window.currWin;' + pmenu[i].a;
+							for(var ii=0;ii<pmenu.length;ii++)
+								pmenu[ii].a = 'javascript:var win=window.currWin;' + pmenu[ii].a;
 							if(key in this.menuList)
-								this.menuList[key] = this.menuList[key].contat(pmenu);
+								this.menuList[key] = this.menuList[key].concat(pmenu);
 							else
 								this.menuList[key] = pmenu;
 						}
