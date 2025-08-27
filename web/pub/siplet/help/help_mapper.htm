@@ -127,6 +127,10 @@ Locates an area by ID or name, returning its ID.<BR><BR>
 Locates a room by ID or name, returning its ID.<BR><BR>
 <pre><B>confirmRoomId(roomId)</B></pre>
 Verifies a room ID, resolving by name if needed.<BR><BR>
+<pre><B>exportAreaJson(areaId)</B></pre> 
+Exports the specified area to a JSON string.<BR><BR>
+<pre><B>exportAreaToUser(areaId, suggestedFileName)</B></pre> 
+Downloads the specified area as a JSON file.<BR><BR>
 <pre><B>getAllAreaUserData(areaId)</B></pre>
 Returns all user data for the specified area.<BR><BR>
 <pre><B>getAllMapUserData()</B></pre>
@@ -219,12 +223,16 @@ Lists special exits from a room with their commands, optionally including all if
 Lists special exits by command with their target rooms, optionally including all if listAllExits is true.<BR><BR>
 <pre><B>gotoRoom(roomId)</B></pre>
 Navigates to a room by speedwalking along the shortest path.<BR><BR>
+<pre><B>getViewRoomId()</B></pre>
+Returns the room id used for focusing the map view.<BR><BR>
 <pre><B>hasExitLock(roomId, direction)</B></pre>
 Checks if a room's exit in a direction is locked.<BR><BR>
 <pre><B>hasSpecialExitLock(fromId, toId, moveCommand)</B></pre>
 Checks if a special exit between rooms is locked.<BR><BR>
 <pre><B>highlightRoom(roomId, color1Red, color1Green, color1Blue, color2Red, color2Green, color2Blue, highlightRadius, color1Alpha, color2Alpha)</B></pre>
 Highlights one or more rooms with custom colors and radius. roomId can be a single ID or array.<BR><BR>
+<pre><B>importAreaFromBrowser()</B></pre>
+Prompts the user to select and import a JSON area file.<BR><BR> 
 <pre><B>killMapInfo()</B></pre>
 Terminates map information display (not implemented).<BR><BR>
 <pre><B>loadJsonMap(pathFileName)</B></pre>
@@ -243,6 +251,8 @@ Repositions the map widget to new coordinates.<BR><BR>
 Opens the map widget with specified or saved parameters. Xpos can be a frame name or x-coordinate.<BR><BR>
 <pre><B>pauseSpeedwalk()</B></pre>
 Pauses an ongoing speedwalk sequence.<BR><BR>
+<pre><B>recenterOnCurrent</B></pre>
+Recenters the map view on the current player room.<BR><BR>
 <pre><B>registerMapInfo(label, func)</B></pre>
 Registers a function for map information display (not implemented).<BR><BR>
 <pre><B>resumeSpeedwalk()</B></pre>
@@ -321,4 +331,6 @@ Removes highlighting from one or more rooms. roomId can be a single ID or array.
 Clears the display character color for one or more rooms. roomId can be a single ID or array.<BR><BR>
 <pre><B>updateMap()</B></pre>
 Redraws the map widget with current data.<BR><BR>
+<pre><B>viewArea(areaId)</B></pre>
+Displays the given area on the map.<BR><BR>
 </DIV>
