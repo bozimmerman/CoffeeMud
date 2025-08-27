@@ -651,6 +651,7 @@ function Mapper(sipwin)
 			if(this.mapWidget.frame !== null)
 				this.mapWidget.canvas.outerHTML = '';
 			else
+			if(this.mapWidget.canvas.parentNode.parentNode)
 				this.mapWidget.canvas.parentNode.outerHTML = '';
 		}
 		this.deleteMap();
