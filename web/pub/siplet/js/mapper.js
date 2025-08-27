@@ -243,6 +243,7 @@ function Mapper(sipwin)
 		sipwin.mapper.closeMapWidget();
 	sipwin.mapper = self;
 
+	this.mapInfos = {};
 	this.centerView = null;
 	this.deleteMap = function() {
 		for(var k in window.MapBlock)
@@ -388,7 +389,8 @@ function Mapper(sipwin)
 		return true;
 	};
 
-	this.addRoom = function(roomId, areaId) {
+	this.addRoom = function(roomId, areaId) 
+	{
 		if((roomId in this.rooms) || !(areaId in this.areas))
 			return null;
 		var room = new MapRoom({
@@ -397,7 +399,9 @@ function Mapper(sipwin)
 		this.rooms[roomId] = room;
 		return roomId;
 	};
-	this.addSpecialExit = function(roomIdFrom, roomIdTo, moveCommand) {
+	
+	this.addSpecialExit = function(roomIdFrom, roomIdTo, moveCommand) 
+	{
 		if(!(roomIdFrom in this.rooms) || !(roomIdTo in this.rooms))
 			return false;
 		var froom = this.rooms[roomIdFrom];
@@ -1984,9 +1988,9 @@ function Mapper(sipwin)
 		}
 		return success;
 	};
-	this.disableMapInfo = function(label) {}; // TODO:
-	this.enableMapInfo = function(label) {}; // TODO:
-	this.getAllAreaUserData = function(areaId) {
+	
+	this.getAllAreaUserData = function(areaId) 
+	{
 		if(areaId in this.areas)
 		{
 			var area = this.areas[areaId];
@@ -1996,12 +2000,16 @@ function Mapper(sipwin)
 		}
 		return null;
 	};
-	this.getAllMapUserData = function() {
+	
+	this.getAllMapUserData = function() 
+	{
 		if(this.userData)
 			return this.userData;
 		return {};
 	};
-	this.getAllRoomEntrances = function(roomId) {
+	
+	this.getAllRoomEntrances = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var all = [];
@@ -2020,7 +2028,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getAllRoomUserData = function(roomId) {
+	
+	this.getAllRoomUserData = function(roomId) 
+	{
 		var roomIds = Array.isArray(roomId) ? roomId : [roomId];
 		var all = {};
 		for (var k = 0; k < roomIds.length; k++) {
@@ -2040,7 +2050,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getAreaExits = function(areaId, showExits) {
+	
+	this.getAreaExits = function(areaId, showExits) 
+	{
 		showExits = !!showExits;
 		if(!(areaId in this.areas))
 			return showExits?[]:{};
@@ -2051,7 +2063,9 @@ function Mapper(sipwin)
 			if(room.areaId == areaId && room.exits)
 			{
 				for(var d=0;d<room.exits.length;d++)
-					if(room.exits[d].roomId in this.rooms) {
+				{
+					if(room.exits[d].roomId in this.rooms) 
+					{
 						var oroom = this.rooms[room.exits[d].roomId];
 						if(oroom.areaId != areaId)
 						{
@@ -2068,14 +2082,19 @@ function Mapper(sipwin)
 							}
 						}
 					}
+				}
 			}
 		}
 		return all;
 	};
-	this.getAreaRooms = function(areaId) {
-		if(areaId in this.areas) {
+	
+	this.getAreaRooms = function(areaId) 
+	{
+		if(areaId in this.areas) 
+		{
 			var rooms = {};
-			for(var k in this.rooms) {
+			for(var k in this.rooms) 
+			{
 				if(this.rooms[k].areaId == areaId)
 					rooms[k] = this.rooms[k].name;
 			}
@@ -2083,10 +2102,14 @@ function Mapper(sipwin)
 		}
 		return null; 
 	};
-	this.getAreaRooms1 = function(areaId) {
-		if(areaId in this.areas) {
+	
+	this.getAreaRooms1 = function(areaId) 
+	{
+		if(areaId in this.areas) 
+		{
 			var rooms = [];
-			for(var k in this.rooms) {
+			for(var k in this.rooms) 
+			{
 				if(this.rooms[k].areaId == areaId)
 					rooms.push(k);
 			}
@@ -2094,8 +2117,11 @@ function Mapper(sipwin)
 		}
 		return null; 
 	};
-	this.getAreaCenterRoom = function(areaId) {
-		if(areaId in this.areas) {
+	
+	this.getAreaCenterRoom = function(areaId) 
+	{
+		if(areaId in this.areas) 
+		{
 			var rooms = this.getAreaRooms(areaId);
 			if(!rooms || !Object.keys(rooms).length)
 				return null;
@@ -2137,19 +2163,25 @@ function Mapper(sipwin)
 		}
 		return null; 
 	};
-	this.getAreaTable = function() {
+	
+	this.getAreaTable = function() 
+	{
 		var all = {};
 		for(var k in this.areas)
 			all[this.areas[k].name] = k;
 		return all;
 	};
-	this.getAreaTableSwap = function() {
+	
+	this.getAreaTableSwap = function() 
+	{
 		var all = {};
 		for(var k in this.areas)
 			all[k] = this.areas[k].name;
 		return all;
 	};
-	this.getAreaUserData = function(areaId, key) {
+	
+	this.getAreaUserData = function(areaId, key) 
+	{
 		if(!key || !(areaId in this.areas))
 			return null;
 		if(this.areas[areaId].userData)
@@ -2157,10 +2189,14 @@ function Mapper(sipwin)
 				return this.areas[areaId].userData[key];
 		return null;
 	};
-	this.getCustomEnvColorTable = function() {
+	
+	this.getCustomEnvColorTable = function() 
+	{
 		return this.envs;
 	};
-	this.getCustomLines = function(roomId) {
+	
+	this.getCustomLines = function(roomId) 
+	{
 		if (!(roomId in this.rooms))
 			return {};
 		var startRoom = this.rooms[roomId];
@@ -2205,8 +2241,11 @@ function Mapper(sipwin)
 		}
 		return result;
 	};
+	
 	this.getCustomLines1 = this.getCustomLines;
-	this.getDoors = function(roomId) {
+	
+	this.getDoors = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2221,7 +2260,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getExitStubs = function(roomId) {
+	
+	this.getExitStubs = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2237,9 +2278,11 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
+	
 	this.getExitStubs1 = this.getExitStubs;
 	
-	this.getExitWeights = function(roomId) {
+	this.getExitWeights = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2254,15 +2297,18 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getGridMode = function(areaId) {
+	this.getGridMode = function(areaId) 
+	{
 		if(!(areaId in this.areas))
 			return false;
 		var area = this.areas[areaId];
 		return area.gridMode;
 	};
-	this.getMapEvents = function() {
+	this.getMapEvents = function() 
+	{
 		var events = {};
-		for (var uniquename in this.customEvents) {
+		for (var uniquename in this.customEvents) 
+		{
 			events[uniquename] = {
 				eventName: this.customEvents[uniquename].eventName,
 				arguments: this.customEvents[uniquename].arguments
@@ -2271,12 +2317,15 @@ function Mapper(sipwin)
 		return events;
 	};
 
-	this.getMapLabel = function(areaId, labelIdOrText) {
+	this.getMapLabel = function(areaId, labelIdOrText) 
+	{
 		if (!(areaId in this.areas) || !labelIdOrText) 
 			return null;
 		var area = this.areas[areaId];
-		if(!(labelIdOrText in area.labels)) {
-			for(var k in area.labels) {
+		if(!(labelIdOrText in area.labels)) 
+		{
+			for(var k in area.labels) 
+			{
 				if(area.labels.text == labelIdOrText)
 					labelIdOrText = k;
 			}
@@ -2286,22 +2335,24 @@ function Mapper(sipwin)
 		return area.labels[labelIdOrText];
 	};
 
-	this.getMapLabels = function(areaId) {
+	this.getMapLabels = function(areaId) 
+	{
 		if (!(areaId in this.areas) || !labelIdOrText) 
 			return null;
 		var area = this.areas[areaId];
 		if(!area.labels)
 			return {};
 		var all = {};
-		for(var k in area.labels) {
+		for(var k in area.labels)
 			all[k] = area.labels[k].text || area.labels[k].filePath;
-		}
 		return all;
 	};
 
-	this.getMapMenus = function() {
+	this.getMapMenus = function() 
+	{
 		var menus = {};
-		for (var uniquename in this.customMenus) {
+		for (var uniquename in this.customMenus) 
+		{
 			menus[uniquename] = {
 				parent: this.customMenus[uniquename].parent,
 				displayName: this.customMenus[uniquename].displayName
@@ -2309,10 +2360,14 @@ function Mapper(sipwin)
 		}
 		return menus;
 	};
-	this.getMapSelection = function() {
+	
+	this.getMapSelection = function() 
+	{
 		return this.mapWidget && this.mapWidget.selectedRooms ? this.mapWidget.selectedRooms : [];
 	};
-	this.getMapUserData = function(key) {
+	
+	this.getMapUserData = function(key) 
+	{
 		if(!key || (!this.userData))
 			return null;
 		if(key in this.userData)
@@ -2320,7 +2375,8 @@ function Mapper(sipwin)
 		return null;
 	};
 
-	this.getMapZoom = function(areaId) {
+	this.getMapZoom = function(areaId) 
+	{
 		if(areaId && (areaId in this.areas))
 		{
 			var area = this.areas[areaId];
@@ -2329,7 +2385,8 @@ function Mapper(sipwin)
 		return this.zoom || 1.0;
 	};
 
-	this.getPath = function(fromId, toId) {
+	this.getPath = function(fromId, toId) 
+	{
 		if (!fromId || !toId 
 		|| !(fromId in this.rooms) 
 		|| !(toId in this.rooms))
@@ -2397,7 +2454,8 @@ function Mapper(sipwin)
 			return null;
 		var path = [];
 		var currentId = toId;
-		while (currentId != fromId) {
+		while (currentId != fromId) 
+		{
 			if (!previous[currentId]) 
 				break;
 			path.push(commands[currentId]);
@@ -2425,15 +2483,20 @@ function Mapper(sipwin)
 		return dirString.join(',');
 	};
 
-	this.getPlayerRoom = function() {
+	this.getPlayerRoom = function() 
+	{
 		return this.centerView;
 	};
-	this.getRoomArea = function(roomId) {
+	
+	this.getRoomArea = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		return this.rooms[roomId].areaId;
 	};
-	this.getRoomAreaName = function(roomId) {
+	
+	this.getRoomAreaName = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		var areaId = this.rooms[roomId].areaId;
@@ -2441,7 +2504,9 @@ function Mapper(sipwin)
 			return null;
 		return this.areas[areaId].name;
 	};
-	this.getRoomChar = function(roomId) {
+	
+	this.getRoomChar = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		var room = this.rooms[roomId];
@@ -2449,7 +2514,9 @@ function Mapper(sipwin)
 			return room.char;
 		return this.charDefault;
 	};
-	this.getRoomCharColor = function(roomId) {
+	
+	this.getRoomCharColor = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		var room = this.rooms[roomId];
@@ -2457,18 +2524,24 @@ function Mapper(sipwin)
 			return room.color;
 		return this.colorDefault;
 	};
-	this.getRoomCoordinates = function(roomId) {
+	
+	this.getRoomCoordinates = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [null, null, null];
 		var room = this.rooms[roomId];
 		return [room.x,room.y,room.z];
 	};
-	this.getRoomEnv = function(roomId) {
+	
+	this.getRoomEnv = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		return this.rooms[roomId].envId;
 	};
-	this.getRoomExits = function(roomId) {
+	
+	this.getRoomExits = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2483,28 +2556,44 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getRoomHashById = function(roomId) {
+	
+	this.getRoomHashById = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		return this.rooms[roomId].hash;
 	};
-	this.getRoomIdbyHash = function(hash) {
+	
+	this.getRoomIdbyHash = function(hash) 
+	{
 		if(hash in this.roomIdHash)
-			return this.roomIdHash[hash];
+		{
+			var roomId = this.roomIdHash[hash];
+			if (roomId in this.rooms)
+				return roomId;
+			delete this.roomIdHash[hash];
+			return -1;
+		}
 		return -1;
 	};
-	this.getRoomName = function(roomId) {
+	
+	this.getRoomName = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		return this.rooms[roomId].name;
 	};
-	this.getRooms = function() {
+	
+	this.getRooms = function() 
+	{
 		var all = {};
 		for(var k in this.rooms)
 			all[k] = this.rooms[k].name;
 		return all;
 	};
-	this.getRoomsByPosition = function(areaId, x, y, z) {
+	
+	this.getRoomsByPosition = function(areaId, x, y, z) 
+	{
 		var all = [];
 		for(var k in this.rooms)
 		{
@@ -2517,7 +2606,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getRoomUserData = function(fromId, key) {
+	
+	this.getRoomUserData = function(fromId, key) 
+	{
 		if(!key || !(fromId in this.rooms))
 			return null;
 		if(this.rooms[fromId].userData)
@@ -2525,21 +2616,29 @@ function Mapper(sipwin)
 				return this.rooms[fromId].userData[key];
 		return null;
 	};
-	this.getRoomUserDataKeys = function(roomId) {
+	
+	this.getRoomUserDataKeys = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		var all = [];
 		if(this.rooms[roomId].userData)
+		{
 			for(var key in this.rooms[roomId].userData)
 				all.push(key);
+		}
 		return all;
 	};
-	this.getRoomWeight = function(roomId) {
+	
+	this.getRoomWeight = function(roomId) 
+	{
 		if(!(roomId in this.rooms))
 			return null;
 		return this.rooms[roomId].weight;
 	};
-	this.getSpecialExits = function(roomId, listAllExits) {
+	
+	this.getSpecialExits = function(roomId, listAllExits) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2564,7 +2663,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.getSpecialExitsSwap = function(roomId, listAllExits) {
+	
+	this.getSpecialExitsSwap = function(roomId, listAllExits) 
+	{
 		if(!(roomId in this.rooms))
 			return [];
 		var room = this.rooms[roomId];
@@ -2589,7 +2690,9 @@ function Mapper(sipwin)
 		}
 		return all;
 	};
-	this.gotoRoom = function(roomId) {
+	
+	this.gotoRoom = function(roomId) 
+	{
 		if (!(roomId in this.rooms) || !this.centerView) 
 			return false;
 		var path = this.getPath(this.centerView, roomId);
@@ -2600,7 +2703,9 @@ function Mapper(sipwin)
 		this.updateMap();
 		return true;
 	};
-	this.hasExitLock = function(roomId, direction) {
+	
+	this.hasExitLock = function(roomId, direction) 
+	{
 		if(!(roomId in this.rooms))
 			return false;
 		var room = this.rooms[roomId];
@@ -2614,7 +2719,9 @@ function Mapper(sipwin)
 			return false;
 		return ex.blocked;
 	};
-	this.hasSpecialExitLock = function(fromId, toId, moveCommand) {
+	
+	this.hasSpecialExitLock = function(fromId, toId, moveCommand) 
+	{
 		if((!(fromId in this.rooms))||(!(toId in this.rooms)))
 			return false;
 		var room = this.rooms[fromId];
@@ -2628,7 +2735,9 @@ function Mapper(sipwin)
 		}
 		return false;
 	};
-	this.highlightRoom = function(roomId, color1Red, color1Green, color1Blue, color2Red, color2Green, color2Blue, highlightRadius, color1Alpha, color2Alpha) {
+	
+	this.highlightRoom = function(roomId, color1Red, color1Green, color1Blue, color2Red, color2Green, color2Blue, highlightRadius, color1Alpha, color2Alpha) 
+	{
 		color1Red = Math.max(0, Math.min(255, color1Red || 255));
 		color1Green = Math.max(0, Math.min(255, color1Green || 255));
 		color1Blue = Math.max(0, Math.min(255, color1Blue || 255));
@@ -2656,8 +2765,51 @@ function Mapper(sipwin)
 			this.updateMap();
 		return success;
 	};
-	this.killMapInfo = function() {}; //TODO:
-	this.loadJsonMap = function(pathFileName) {
+	
+	this.registerMapInfo = function(label, func) 
+	{
+		if(typeof func !== 'function') 
+			return false;
+		this.mapInfos[label] = { callback: func, enabled: false };
+		this.updateMap();
+		return true;
+	};
+	
+	this.killMapInfo = function(label) 
+	{
+		if (label in this.mapInfos) 
+		{
+			delete this.mapInfos[label];
+			this.updateMap();
+			return true;
+		}
+		return false;
+	};
+	
+	this.disableMapInfo = function(label) 
+	{
+		if (label in this.mapInfos) 
+		{
+			this.mapInfos[label].enabled = false;
+			this.updateMap();
+			return true;
+		}
+		return false;
+	};
+	
+	this.enableMapInfo = function(label) 
+	{
+		if (label in this.mapInfos) 
+		{
+			this.mapInfos[label].enabled = true;
+			this.updateMap();
+			return true;
+		}
+		return false;
+	};
+
+	this.loadJsonMap = function(pathFileName) 
+	{
 		var self = this;
 		sipwin.sipfs.load(pathFileName,function(err, fdata) {
 			if(!err)
@@ -2668,8 +2820,11 @@ function Mapper(sipwin)
 			}
 		}, true);
 	};
+	
 	this.loadMap = this.loadJsonMap;
-	this.lockExit = function(roomId, direction, lockIfTrue) {
+	
+	this.lockExit = function(roomId, direction, lockIfTrue) 
+	{
 		if(!(roomId in this.rooms))
 			return;
 		var room = this.rooms[roomId];
@@ -2755,7 +2910,6 @@ function Mapper(sipwin)
 	this.pauseSpeedwalk = function() {
 		this.pauseSpeedwalk = true;
 	};
-	this.registerMapInfo = function(label, func) {}; //TODO:
 
 	this.resumeSpeedwalk = function() {
 		this.pauseSpeedwalk = false;
@@ -3826,7 +3980,9 @@ function Mapper(sipwin)
 								}
 							}, false);
 						}
-					} else {
+					} 
+					else 
+					{
 						var baseFontSize = label.fontSize || 10;
 						var fontSize = Math.max(5, baseFontSize * scale);
 						ctx.fillStyle = label.bgColor;
@@ -3852,6 +4008,71 @@ function Mapper(sipwin)
 			ctx.strokeStyle = "red";
 			ctx.lineWidth = Math.max(0.5, tileSize / 25);
 			ctx.stroke();
+		}
+		
+		if(this.mapInfos.length)
+		{
+			var infos = [];
+			var roomId = this.centerView;
+			var selectionSize = this.mapWidget.selectedRooms ? this.mapWidget.selectedRooms.length : 1;
+			if (selectionSize > 1) 
+			{
+				var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+				this.mapWidget.selectedRooms.forEach(id => {
+					var r = this.rooms[id];
+					minX = Math.min(minX, r.x);
+					maxX = Math.max(maxX, r.x);
+					minY = Math.min(minY, r.y);
+					maxY = Math.max(maxY, r.y);
+				});
+				var cx = Math.round((minX + maxX) / 2);
+				var cy = Math.round((minY + maxY) / 2);
+				var closestId = null, minDist = Infinity;
+				this.mapWidget.selectedRooms.forEach(id => {
+					var r = this.rooms[id];
+					var d = Math.abs(r.x - cx) + Math.abs(r.y - cy);
+					if (d < minDist) { minDist = d; closestId = id; }
+				});
+				roomId = closestId || this.mapWidget.selectedRooms[0];
+			} 
+			else 
+			if (selectionSize === 1 && this.mapWidget.selectedRooms)
+				roomId = this.mapWidget.selectedRooms[0];
+			var areaId = this.rooms[roomId] ? this.rooms[roomId].areaId : null;
+			var displayedAreaId = this.currentAreaView || areaId;
+			
+			for (var lbl in this.mapInfos) 
+			{
+				if (this.mapInfos[lbl].enabled) 
+				{
+					var res = this.mapInfos[lbl].callback(roomId, selectionSize, areaId, displayedAreaId);
+					if (res && res.text) 
+					{
+						infos.push({
+							text: res.text,
+							isBold: !!res.isBold,
+							isItalic: !!res.isItalic,
+							color: res.color || { r: 255, g: 255, b: 255 }
+						});
+					}
+				}
+			}
+			
+			var fontSize = 12;
+			var lineHeight = fontSize + 2;
+			var totalHeight = infos.reduce((acc, info) => acc + (info.text.split('\n').length * lineHeight), 0);
+			var y = canvas.height - totalHeight - 10;
+			infos.forEach(info => {
+				var lines = info.text.split('\n');
+				lines.forEach(line => {
+					ctx.font = (info.isBold ? 'bold ' : '') + (info.isItalic ? 'italic ' : '') + fontSize + 'px Arial';
+					ctx.fillStyle = `rgb(${info.color.r}, ${info.color.g}, ${info.color.b})`;
+					ctx.textAlign = 'left';
+					ctx.textBaseline = 'top';
+					ctx.fillText(line, 10, y);
+					y += lineHeight;
+				});
+			});
 		}
 		ctx.restore();
 	};
