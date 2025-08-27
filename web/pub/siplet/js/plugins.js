@@ -54,6 +54,10 @@ var PLUGINS = function(sipwin)
 					writeable: false
 				});
 			}
+			Object.defineProperty(iframe.contentWindow, 'url', {
+				value: sipwin.url,
+				writeable: false
+			});
 			var mapper = Object.create(null);
 			for(var k in sipwin.mapper)
 			{
