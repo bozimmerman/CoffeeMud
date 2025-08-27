@@ -1066,7 +1066,8 @@ function SipletWindow(windowName)
 			{
 				var mainWindow = this.gaugeWindow.parentNode.firstChild;
 				mainWindow.style.top = this.gaugeWindow.top;
-				this.gaugeWindow.outerHTML = '';
+				if(this.gaugeWindow.parentNode)
+					this.gaugeWindow.outerHTML = '';
 				this.gaugeWindow = null;
 			}
 		}

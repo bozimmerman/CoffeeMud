@@ -646,7 +646,7 @@ function Mapper(sipwin)
 			document.removeEventListener('mouseup', this.mapWidget.mouseUpHandler);
 		if (this.mapWidget.tooltip && this.mapWidget.tooltip.parentNode)
 			this.mapWidget.tooltip.parentNode.removeChild(this.mapWidget.tooltip);
-		if(this.mapWidget.canvas)
+		if(this.mapWidget.canvas && this.mapWidget.canvas.parentNode)
 		{
 			if(this.mapWidget.frame !== null)
 				this.mapWidget.canvas.outerHTML = '';

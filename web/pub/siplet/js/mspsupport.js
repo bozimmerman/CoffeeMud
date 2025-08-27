@@ -237,7 +237,8 @@ var MSP = function(sipwin)
 			sounder.player.pause();
 		if(sounder.player.removeEventListener && sounder.endedHandler)
 			sounder.player.removeEventListener('ended', sounder.endedHandler);
-		sounder.player.outerHTML = '';
+		if(sounder.player.parentNode)
+			sounder.player.outerHTML = '';
 		delete this.sounders[type];
 		if(sounder.file)
 			sipwin.sipfs.trimBlobCache(sounder.file);
