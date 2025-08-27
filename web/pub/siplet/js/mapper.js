@@ -3616,15 +3616,16 @@ function Mapper(sipwin)
 		roomsToDraw.forEach(function(roomId) {
 			var room = self.rooms[roomId];
 			var exits = self.getRoomExits(roomId);
-			for (var dir in exits) {
+			for (var dir in exits) 
+			{
 				var toRoomId = exits[dir];
-				if (toRoomId in self.rooms && self.rooms[toRoomId].z == zLevel) {
+				if (toRoomId in self.rooms && self.rooms[toRoomId].z == zLevel && self.rooms[toRoomId].areaId == areaId) 
+				{
 					var toRoom = self.rooms[toRoomId];
 					var x1 = offsetX + room.x * tileSize * SpacingRatio;
 					var y1 = offsetY + room.y * tileSize * SpacingRatio;
 					var x2 = offsetX + toRoom.x * tileSize * SpacingRatio;
 					var y2 = offsetY + toRoom.y * tileSize * SpacingRatio;
-	
 					var radius  = tileSize / 10;
 					var dx = x2 - x1;
 					var dy = y2 - y1;
@@ -3641,7 +3642,6 @@ function Mapper(sipwin)
 						var startY = y1 + dy * scale;
 						var endX = x2 - dx * scale;
 						var endY = y2 - dy * scale;
-	
 						ctx.beginPath();
 						ctx.moveTo(startX, startY);
 						ctx.lineTo(endX, endY);
