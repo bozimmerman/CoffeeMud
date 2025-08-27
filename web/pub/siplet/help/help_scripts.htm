@@ -19,7 +19,7 @@ a global script name, then the phonebook one will be preferred.</LI>
 <LI>Script: The Javascript to execute.  Entities/Variables may be included in strings
 in scripts in the form '&amp;varname;'.</LI>
 </UL>
-<h3>Useful Variables <FONT COLOR=YELLOW>(Not available to plugins directly)</FONT></h3>
+<h3>Useful Variables <FONT COLOR=YELLOW>(Not available to plugins)</FONT></h3>
 
 <table border=1 style="color:white;font-size:12;">
 <thead>
@@ -79,6 +79,25 @@ in scripts in the form '&amp;varname;'.</LI>
 <tr><td style="font-family:monospace;">win.removeTempAlias(str)</td><td>Remove temp menu entries under str</td></tr>
 <tr><td style="font-family:monospace;">win.dispatchEvent(str)</td><td>Post an event string or json obj (w/'type')</td></tr>
 <tr><td style="font-family:monospace;">win.mapper.*</td><td>The visual <a href="javascript:menuHelp('Mapper')">Mapper</a> interface.</td></tr>
+</tbody>
+</table>
+<h3>Useful Variables <FONT COLOR=YELLOW>(Available only to plugins)</FONT></h3>
+<table border=1 style="color:white;font-size:12;">
+<thead>
+<tr><td>Variable</td><td>Description</td></tr>
+</thead>
+<tbody style="font-size:12px;color:white;">
+<tr><td style="font-family:monospace;">window.url</td><td>Current connection url</td></tr>
+<tr><td style="font-family:monospace;">window.localStorage</td><td>Media storage</td></tr>
+<tr><td style="font-family:monospace;">window.name<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.version<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.requires<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.code<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.mxp<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.triggers<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.aliases<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.timers<td>Plugin JSON field</td></tr>
+<tr><td style="font-family:monospace;">window.menus<td>Plugin JSON field</td></tr>
 </tbody>
 </table>
 <h3>Special events</h3>
