@@ -846,7 +846,7 @@ public class StdItem implements Item
 	@Override
 	public String secretIdentity()
 	{
-		if((secretIdentity!=null)&&(secretIdentity.length()>0))
+		if((secretIdentity!=null)&&(secretIdentity.length()>0)&&(!(this instanceof RawMaterial)))
 			return secretIdentity+"\n\rLevel: "+phyStats().level()+tackOns();
 		return description()+"\n\rLevel: "+phyStats().level()+tackOns();
 	}
