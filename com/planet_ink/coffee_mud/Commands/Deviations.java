@@ -416,16 +416,11 @@ public class Deviations extends StdCommand
 		return "+"+pval+"%";
 	}
 
-	public String getColor(final Physical P)
+	public String getColor(final Physical P, final int powerLevel)
 	{
 		final double lvl = P.phyStats().level();
-		final double plvl;
-		if(P instanceof Item)
-			plvl = CMLib.itemBuilder().timsLevelCalculator((Item)P);
-		else
-		if(P instanceof MOB)
-			plvl = CMLib.leveler().getPowerLevel((MOB)P);
-		else
+		final double plvl = powerLevel;
+		if(!((P instanceof MOB)||(P instanceof Item)))
 			return "";
 		if(plvl > (2.5 * lvl))
 			return "^r";
@@ -560,11 +555,12 @@ public class Deviations extends StdCommand
 										(W==null)?0:W.weaponClassification(),
 										maxRange,
 										I.rawProperLocationBitmap());
-				itemResults.append(getColor(I));
+				final int powerLevel = CMLib.itemBuilder().timsLevelCalculator(I);
+				itemResults.append(getColor(I,powerLevel));
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");
 				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4));
-				itemResults.append(CMStrings.padRight(""+CMLib.itemBuilder().timsLevelCalculator(I),4));
+				itemResults.append(CMStrings.padRight(""+powerLevel,4));
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.basePhyStats().attackAdjustment(),
 												vals,"ATTACK"),5)+" ");
@@ -603,10 +599,11 @@ public class Deviations extends StdCommand
 			else
 			{
 				final MOB M=(MOB)check.get(c);
-				mobResults.append(getColor(M));
+				final int powerLevel = CMLib.leveler().getPowerLevel(M);
+				mobResults.append(getColor(M,powerLevel));
 				mobResults.append(CMStrings.padRight(M.name(),20)+" ");
 				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4));
-				mobResults.append(CMStrings.padRight(""+CMLib.leveler().getPowerLevel(M),4));
+				mobResults.append(CMStrings.padRight(""+powerLevel,4));
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().attackAdjustment(),
 												CMLib.leveler().getLevelAttack(M)),5)+" ");

@@ -145,7 +145,16 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final double armLevel = ((103 - M.phyStats().armor()) / 3.0);
 		final double bonus = (1.0 + getAttackBonusNextLevel(M));
 		final double attLevel = (bonus!=0)?(M.phyStats().attackAdjustment() / bonus) : 0;
-		return (int)Math.round((dmgLevel+speedLevel+armLevel+attLevel)/4.0);
+		double hpLevel = CMath.div(M.phyStats().ability(),11.0)
+							 * CMath.div(M.maxState().getHitPoints(),M.baseState().getHitPoints());
+		for(final Enumeration<Behavior> b=M.behaviors();b.hasMoreElements();)
+		{
+			final Behavior B = b.nextElement();
+			final String s = (B==null)?"":B.getStat("COMBATMODE");
+			if(CMath.isInteger(s))
+				hpLevel += 0.1;
+		}
+		return (int)Math.round(hpLevel*((dmgLevel+speedLevel+armLevel+attLevel)/4.0));
 	}
 
 	public int getMoveBonusNextLevel(final MOB mob)
