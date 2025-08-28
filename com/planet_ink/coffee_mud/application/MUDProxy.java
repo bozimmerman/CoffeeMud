@@ -281,7 +281,12 @@ public class MUDProxy
 						try
 						{
 							if(!key.isValid())
+							{
+								closeKey(key);
 								continue;
+							}
+
+							//*** Acceptable
 							if(key.isAcceptable())
 							{
 								final ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
@@ -295,8 +300,10 @@ public class MUDProxy
 								final InetSocketAddress localAddress = (InetSocketAddress) serverChannel.getLocalAddress();
 								final int listenPort = localAddress.getPort();
 								clientChannel.configureBlocking(false);
+								clientChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 								final SocketChannel targetChannel = SocketChannel.open();
 								targetChannel.configureBlocking(false);
+								targetChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 								final Integer serverPortI = Integer.valueOf(listenPort);
 								final PairList<String,Integer> targetPorts = portMap.get(serverPortI);
 								final Pair<String,Integer> targetPort;
@@ -341,7 +348,8 @@ public class MUDProxy
 								}
 								Log.sysOut(listenPort+"","Connection from "+clientIp+"->"+targetPort.first+":"+targetPort.second);
 							}
-							else
+
+							//*** Connectable
 							if(key.isConnectable())
 							{
 								final SocketChannel serverChannel = (SocketChannel) key.channel();
@@ -403,10 +411,12 @@ public class MUDProxy
 									closeKey(key);
 								}
 							}
-							else
+
+							//*** Readable
 							if(key.isReadable())
 								handleRead(key);
-							else
+
+							//*** Writeable
 							if(key.isWritable())
 							{
 								final SelectionKey k = key;
@@ -428,6 +438,11 @@ public class MUDProxy
 									}
 								});
 							}
+						}
+						catch (final CancelledKeyException e)
+						{
+							key.cancel();
+							closeKey(key);
 						}
 						catch (final IOException e)
 						{
@@ -916,6 +931,12 @@ public class MUDProxy
 					break;
 				}
 			}
+			if(iByte<0)
+				throw new java.net.SocketException();
+		}
+		catch (final SocketException e)
+		{
+			//closeKey(key);
 		}
 		catch (final IOException e)
 		{
@@ -997,6 +1018,7 @@ public class MUDProxy
 							}
 							catch(final Exception e)
 							{
+								Log.debugOut("handleRead:"+myCtx.toString());
 								Log.errOut(e);
 							}
 						}
@@ -1021,6 +1043,8 @@ public class MUDProxy
 		final MUDProxy destContext = (MUDProxy)destKey.attachment();
 		try
 		{
+			if(bytesRead<0) // means we were never really reading
+				throw new SocketException();
 			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
 			final LinkedList<ByteBuffer> inputList = new LinkedList<ByteBuffer>();
 			synchronized(context.input)
@@ -1034,6 +1058,8 @@ public class MUDProxy
 				inputList.add(buffer);
 				buffer = ByteBuffer.allocate(BUFFER_SIZE);
 			}
+			if(bytesRead<0)
+				throw new java.net.SocketException();
 			if(inputList.size()>0)
 			{
 				final int br = bytesRead;
@@ -1079,6 +1105,7 @@ public class MUDProxy
 						}
 						catch(final Exception e)
 						{
+							Log.debugOut("writeThread:"+myCtx.toString());
 							Log.errOut(e);
 						}
 					}
@@ -1087,9 +1114,21 @@ public class MUDProxy
 		}
 		catch (final IOException e)
 		{
-			key.cancel();
-			closeKey(key);
-			return;
+			if((!context.isClient)&&(destContext!=null))
+			{
+				if(!destKey.isValid())
+				{
+					destKey.cancel();
+					closeKey(destKey);
+				}
+				else
+					putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
+			}
+			else
+			{
+				key.cancel();
+				closeKey(key);
+			}
 		}
 	}
 
@@ -1114,6 +1153,7 @@ public class MUDProxy
 			catch (final IOException e) {}
 			final SocketChannel newChannel=SocketChannel.open();
 			newChannel.configureBlocking(false);
+			newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 			final SelectionKey newServerKey = newChannel.register(selector, SelectionKey.OP_CONNECT, serverContext);
 			newServerKey.interestOps(SelectionKey.OP_CONNECT);
 			channelPairs.put(clientKey, newServerKey);
@@ -1135,6 +1175,7 @@ public class MUDProxy
 		final MUDProxy context = (MUDProxy)key.attachment();
 		if(context.outsidePortNum == -1)
 			return; // this is a distress socket
+		Log.debugOut("closeKey:"+context.toString());
 		final SelectionKey pairedKey;
 		synchronized(channelPairs)
 		{
@@ -1268,6 +1309,7 @@ public class MUDProxy
 															}
 															final SocketChannel newChannel=SocketChannel.open();
 															newChannel.configureBlocking(false);
+															newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 															final SelectionKey nkey = newChannel.register(selector, SelectionKey.OP_CONNECT, context);
 															nkey.interestOps(SelectionKey.OP_CONNECT);
 															channelPairs.put(partnerKey, nkey);
@@ -1276,6 +1318,7 @@ public class MUDProxy
 														}
 														catch(final Exception e)
 														{
+															Log.debugOut("disThread:"+context.toString());
 															Log.errOut(e);
 														}
 													}
@@ -1317,6 +1360,7 @@ public class MUDProxy
 													}
 													final SocketChannel pingChannel=SocketChannel.open();
 													pingChannel.configureBlocking(false);
+													pingChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 													pingChannel.connect(new InetSocketAddress(p.first, p.second.intValue()));
 													final SelectionKey key = pingChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,-1,p,"PROXY"));
 													key.interestOps(SelectionKey.OP_CONNECT);
@@ -1346,4 +1390,14 @@ public class MUDProxy
 			}
 		}
 	};
+
+	@Override
+	public String toString()
+	{
+		final String cs = isClient?"client":"server";
+		final String outs=(out instanceof ZOutputStream)?"zout":"out";
+		final String ins=(in instanceof ZInputStream)?"zin":"in";
+		final String dis=distressTime == 0?"ok":"distressed";
+		return cs+":"+ins+"/"+outs+":"+dis+":"+outsidePortNum+":"+this.ipAddress+" ("+this.port.first+":"+this.port.second+")";
+	}
 }

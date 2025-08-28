@@ -35,6 +35,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
 import com.planet_ink.coffee_web.util.CWThread;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -96,6 +97,8 @@ public class MUD extends Thread implements MudHost
 	protected static Map<String,String>	 clArgs				= new Hashtable<String,String>();
 	protected static boolean			 skipMapLoads		= false;
 
+	protected static LinkedList<Triad<Socket,Closeable,Long>> closeables	= new LinkedList<Triad<Socket,Closeable,Long>>();
+
 	private static final long 			SHUTDOWN_TIMEOUT 	= 5 * 60 * 1000;
 
 	public MUD(final String name)
@@ -136,6 +139,56 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 		return true;
+	}
+
+	private static void closeLater(final Socket S, final Closeable c)
+	{
+		synchronized(closeables)
+		{
+			final boolean hasAny = closeables.size() > 0;
+			closeables.add(new Triad<Socket, Closeable, Long>(S,c,new Long(System.currentTimeMillis()+1000)));
+			if(!hasAny)
+			{
+				new Thread(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						while(true)
+						{
+							final Triad<Socket,Closeable,Long> next;
+							synchronized(closeables)
+							{
+								if(closeables.size()==0)
+									return;
+								next = closeables.remove();
+							}
+							final long diff = next.third.longValue()-System.currentTimeMillis();
+							if(diff > 0)
+							{
+								try
+								{
+									Thread.sleep(diff);
+								}
+								catch(final Exception e) {}
+							}
+							try
+							{
+								next.second.close();
+							}
+							catch(final Exception e)
+							{}
+							try
+							{
+								next.first.close();
+							}
+							catch(final Exception e)
+							{}
+						}
+					}
+				}).run();
+			}
+		}
 	}
 
 	private class ConnectionAcceptor implements CMRunnable
@@ -210,9 +263,7 @@ public class MUD extends Thread implements MudHost
 							}
 							out.print(introText.toString());
 							out.flush();
-
-							checkedSleep(250);
-							out.close();
+							closeLater(sock, out);
 						}
 						catch(final IOException e)
 						{
@@ -278,8 +329,7 @@ public class MUD extends Thread implements MudHost
 						out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.Str.MUDSTATUS)+"\n\r");
 						out.println(rejectText);
 						out.flush();
-						checkedSleep(1000);
-						out.close();
+						closeLater(sock, out);
 					}
 					catch(final IOException e)
 					{
