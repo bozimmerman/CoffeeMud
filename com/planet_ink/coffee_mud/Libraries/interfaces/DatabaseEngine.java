@@ -719,11 +719,19 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERS
 	 * Populates and returns a list of player account
 	 * objects that match the given lowercase substring.
-	 * Does this by doing a full scan. :/
 	 * @param mask lowercase substring to search for or null
 	 * @return the list of playeraccount objects
 	 */
 	public List<PlayerAccount> DBListAccounts(String mask);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Populates and returns a list of player account
+	 * name that match the given lowercase substring.
+	 * @param mask lowercase substring to search for or null
+	 * @return the list of playeraccount objects
+	 */
+	public List<String> DBListAccountNames(String mask);
 
 	/**
 	 * Table category: DBPLAYERS

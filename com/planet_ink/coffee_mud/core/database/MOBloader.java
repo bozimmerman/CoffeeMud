@@ -3111,19 +3111,16 @@ public class MOBloader
 		PlayerAccount account = null;
 		try
 		{
-			// why in the hell is this a memory scan?
-			// case insensitivity from databases configured almost
-			// certainly by amateurs is the answer. That, and fakedb
-			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
 			login=CMStrings.capitalizeAndLower(DB.injectionClean(login));
-			final ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+login+"'");
-			if(R!=null) while(R.next())
-			{
-				final String username=DB.getRes(R,"CMANAM");
-				if(login.equalsIgnoreCase(username))
-					account = MakeAccount(username,R);
-			}
+			final ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM LIKE '"+login+"'");
+			if(R!=null)
+				while(R.next())
+				{
+					final String username=DB.getRes(R,"CMANAM");
+					if(login.equalsIgnoreCase(username))
+						account = MakeAccount(username,R);
+				}
 		}
 		catch(final Exception sqle)
 		{
@@ -3142,7 +3139,7 @@ public class MOBloader
 		PlayerAccount account = null;
 		final Vector<PlayerAccount> accounts = new Vector<PlayerAccount>();
 		if(mask!=null)
-			mask=mask.toLowerCase();
+			mask=DB.injectionClean(mask.toLowerCase());
 		try
 		{
 			// why in the hell is this a memory scan?
@@ -3150,16 +3147,53 @@ public class MOBloader
 			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMACCT");
-			if(R!=null) while(R.next())
-			{
-				final String username=DB.getRes(R,"CMANAM");
-				if((mask==null)||(mask.length()==0)||(username.toLowerCase().indexOf(mask)>=0))
+			final ResultSet R;
+			if(mask !=null)
+				R=D.query("SELECT * FROM CMACCT WHERE CMANAM LIKE '%"+mask+"%'");
+			else
+				R=D.query("SELECT * FROM CMACCT");
+			if(R!=null)
+				while(R.next())
 				{
-					account = MakeAccount(username,R);
-					accounts.add(account);
+					final String username=DB.getRes(R,"CMANAM");
+					{
+						account = MakeAccount(username,R);
+						accounts.add(account);
+					}
 				}
-			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return accounts;
+	}
+
+	public List<String> DBListAccountNames(String mask)
+	{
+		DBConnection D=null;
+		final Vector<String> accounts = new Vector<String>();
+		if(mask!=null)
+			mask=DB.injectionClean(mask.toLowerCase());
+		try
+		{
+			// why in the hell is this a memory scan?
+			// case insensitivity from databases configured almost
+			// certainly by amateurs is the answer. That, and fakedb
+			// doesn't understand 'LIKE'
+			D=DB.DBFetch();
+			final ResultSet R;
+			if(mask !=null)
+				R=D.query("SELECT CMANAM FROM CMACCT WHERE CMANAM LIKE '%"+mask+"%'");
+			else
+				R=D.query("SELECT CMANAM FROM CMACCT");
+			if(R!=null)
+				while(R.next())
+					accounts.add(DB.getRes(R,"CMANAM"));
 		}
 		catch(final Exception sqle)
 		{

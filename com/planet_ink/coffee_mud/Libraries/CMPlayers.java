@@ -2136,6 +2136,29 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
+	public Enumeration<String> accountNames(final String sort, final Map<String, Object> cache)
+	{
+		Vector<String> V=(cache==null)?null:(Vector<String>)cache.get("ACCOUNTNAMELISTVECTOR"+sort);
+		if(V==null)
+		{
+			if(!allAccountsLoaded)
+				V=new XVector<String>(CMLib.database().DBListAccountNames(null));
+			else
+			{
+				V = new Vector<String>();
+				for (final PlayerAccount A : accountsList)
+					V.add(A.getAccountName());
+			}
+			if((sort!=null)&&(sort.equalsIgnoreCase("NAME")))
+				Collections.sort(V);
+			if(cache!=null)
+				cache.put("ACCOUNTNAMELISTVECTOR"+sort,V);
+		}
+		return V.elements();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
 	public Enumeration<PlayerAccount> accounts(final String sort, final Map<String, Object> cache)
 	{
 		Vector<PlayerAccount> V=(cache==null)?null:(Vector<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);

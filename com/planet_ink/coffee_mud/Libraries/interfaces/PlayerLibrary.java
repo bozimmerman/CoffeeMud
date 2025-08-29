@@ -152,6 +152,21 @@ public interface PlayerLibrary extends CMLibrary
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
 
 	/**
+	 * Returns an enumeration of all account names, with optional NAME sort field,
+	 * and optional cache so that subsequent calls are faster.
+	 * The cache is a map that can contain a field called "ACCOUNTNAMESLISTVECTOR" plus
+	 * the sort field, and would be the vector of account namess that can be
+	 * enumerated over again.
+	 *
+	 * @see PlayerLibrary#accounts()
+	 *
+	 * @param sort null, "", or NAME
+	 * @param cache map that can contain a cashed enum vector
+	 * @return the enum of ALL player account names
+	 */
+	public Enumeration<String> accountNames(final String sort, final Map<String, Object> cache);
+
+	/**
 	 * Given two player characters, this will return whether they either
 	 * share an account.
 	 *

@@ -368,6 +368,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<String> DBListAccountNames(final String mask)
+	{
+		return MOBloader.DBListAccountNames(mask);
+	}
+
+
+	@Override
 	public void DBScanPrideAccountWinners(final CMCallback<Pair<String,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent)
 	{
 		MOBloader.DBScanPrideAccountWinners(callBack, scanCPUPercent);

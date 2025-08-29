@@ -60,7 +60,7 @@ public class NumPlayers extends StdWebMacro
 		}
 		if(parms.containsKey("ACCOUNTS"))
 		{
-			final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",httpReq.getRequestObjects());
+			final Enumeration<String> pe=CMLib.players().accountNames("",httpReq.getRequestObjects());
 			int x=0;
 			for(;pe.hasMoreElements();pe.nextElement())
 				x++;
