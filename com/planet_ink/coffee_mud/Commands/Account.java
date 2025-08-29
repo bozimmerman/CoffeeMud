@@ -41,6 +41,8 @@ public class Account extends StdCommand
 	{
 	}
 
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Session.class, String.class, PlayerAccount.class}};
+
 	private final String[]	access	= I(new String[] { "ACCOUNT" });
 
 	@Override
@@ -49,69 +51,19 @@ public class Account extends StdCommand
 		return access;
 	}
 
-	public static StringBuffer showCharLong(final String bgColor, final MOB seer, final ThinPlayer who)
+	public static StringBuffer showCharLong(final String bgColor, final PairList<PlayerSortCode, Integer> fields, final Session S, final ThinPlayer who)
 	{
 
 		final StringBuffer msg=new StringBuffer("");
-		msg.append("[^w"+bgColor);
-		final int[] cols={
-			CMLib.lister().fixColWidth(10,seer.session()),
-			CMLib.lister().fixColWidth(10,seer.session()),
-			CMLib.lister().fixColWidth(5,seer.session())
-		};
-		final MOB pM=CMLib.players().getPlayer(who.name());
-		CharClass C=(pM!=null)?pM.charStats().getCurrentClass():null;
-		if(C==null)
-			C=CMClass.getCharClass(who.charClass());
-		if(C==null)
-			C=CMClass.findCharClass(who.charClass());
-		if(C==null)
+		msg.append("^N");
+		for (final Pair<PlayerSortCode, Integer> p : fields)
 		{
-			final MOB mob=CMLib.players().getLoadPlayer(who.name());
-			if(mob==null)
-				return new StringBuffer("");
-			C=mob.charStats().getCurrentClass();
-		}
-
-		Race R=(pM!=null)?pM.charStats().getMyRace():null;
-		if(R==null)
-			R=CMClass.getRace(who.race());
-		if(R==null)
-			R=CMClass.getRace(who.race());
-		if(R==null)
-		{
-			final MOB mob=CMLib.players().getLoadPlayer(who.name());
-			if(mob==null)
-				return new StringBuffer("");
-			R=mob.charStats().getMyRace();
-		}
-
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-		{
-			if(C.raceless())
-				msg.append(CMStrings.padRight(" ",cols[0])+" ");
+			final String value = CMLib.players().getThinShowValue(who, p.first).toString();
+			if(p.first == PlayerSortCode.NAME)
+				msg.append("^H"+CMStrings.padRight(value,p.second.intValue())+"^N ");
 			else
-				msg.append(CMStrings.padRight(R.name(),cols[0])+" ");
+				msg.append(CMStrings.padRight(value,p.second.intValue())+" ");
 		}
-
-		String levelStr=(pM!=null)?(""+pM.phyStats().level()):null;
-		if(levelStr == null)
-			levelStr=""+who.level();
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-		{
-			if(R.classless())
-				msg.append(CMStrings.padRight(" ",cols[1])+" ");
-			else
-				msg.append(CMStrings.padRight(C.name(),cols[1])+" ");
-		}
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-		{
-			if(C.leveless()||R.leveless())
-				msg.append(CMStrings.padRight(" ",cols[2]));
-			else
-				msg.append(CMStrings.padRight(levelStr,cols[2]));
-		}
-		msg.append("^w"+bgColor+"] ^b"+bgColor + who.name()+"^N ");
 		final MOB mobOn = CMLib.players().getPlayer(who.name());
 		if((mobOn != null)&&(mobOn.session() != null)&&(!mobOn.session().isStopped()))
 			msg.append("^y*^N");
@@ -164,6 +116,88 @@ public class Account extends StdCommand
 		}
 		msg.append("\n\r");
 		return msg;
+	}
+
+	public String getAccountList(final Session sess, final String fieldList, final PlayerAccount account)
+	{
+		final StringBuilder str = new StringBuilder("");
+		boolean toggle = false;
+		final List<String> parts = CMParms.parseCommas(fieldList.toUpperCase(), true);
+		if(parts.size()==0)
+			parts.add("NAME");
+		final PlayerSortCode sortBy = CMLib.players().getCharThinSortCode(parts.get(0),true);
+		if(sortBy==null)
+		{
+			sess.println(L("Unrecognized sort criteria: @x1",parts.get(0)));
+			return null;
+		}
+		final List<PlayerSortCode> sortCodes = new ArrayList<PlayerSortCode>();
+		sortCodes.add(PlayerSortCode.NAME);
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
+			sortCodes.add(PlayerSortCode.RACE);
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+			sortCodes.add(PlayerSortCode.LEVEL);
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+			sortCodes.add(PlayerSortCode.CLASS);
+		for(int i=0;i<parts.size();i++)
+		{
+			final PlayerSortCode field = CMLib.players().getCharThinSortCode(parts.get(i),true);
+			if(field==null)
+			{
+				sess.println(L("Unrecognized field: @x1",parts.get(i)));
+				return null;
+			}
+			if (!sortCodes.contains(field))
+				sortCodes.add(field);
+		}
+		final PairList<PlayerSortCode, Integer> fieldLengths = new PairVector<PlayerSortCode, Integer>();
+		for(final PlayerSortCode code : sortCodes)
+		{
+			int longest = code.name().length()+1;
+			for(final Enumeration<PlayerLibrary.ThinPlayer> p = account.getThinPlayers(); p.hasMoreElements();)
+			{
+				final PlayerLibrary.ThinPlayer player = p.nextElement();
+				final String value = CMLib.players().getThinShowValue(player, code).toString();
+				if(value.length()+1 > longest)
+					longest =value.length()+1;
+			}
+			longest = CMLib.lister().fixColWidth(longest, sess);
+			fieldLengths.add(code, Integer.valueOf(longest));
+		}
+		str.append("^X");
+		for (final Pair<PlayerSortCode, Integer> p : fieldLengths)
+			str.append(CMStrings.padRight(L(CMStrings.capitalizeAndLower(p.first.name())),p.second.intValue())).append(" ");
+		str.append("^.^N\n\r");
+
+		final PlayerLibrary lib = CMLib.players();
+		final List<ThinPlayer> players = new XVector<ThinPlayer>(account.getThinPlayers());
+		Collections.sort(players, new Comparator<PlayerLibrary.ThinPlayer>() {
+			@Override
+			public int compare(final ThinPlayer o1, final ThinPlayer o2)
+			{
+				if(o1 == null)
+					return (o2 == null) ? 0 : -1;
+				if(o2 == null)
+					return 1;
+				@SuppressWarnings("unchecked")
+				final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, sortBy);
+				@SuppressWarnings("unchecked")
+				final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2, sortBy);
+				final int x= c1.compareTo(c2);
+				if(x != 0)
+					return x;
+				return lib.getThinSortValue(o1, PlayerSortCode.NAME).toString().compareTo(lib.getThinSortValue(o2,PlayerSortCode.NAME).toString());
+			}
+		});
+
+		for (final ThinPlayer player : players)
+		{
+			str.append("^N");
+			str.append(showCharLong("",fieldLengths,sess,player));
+			toggle = !toggle;
+		}
+		str.append("^N");
+		return str.toString();
 	}
 
 	@Override
@@ -232,54 +266,33 @@ public class Account extends StdCommand
 				str.append("\n\r");
 			}
 			str.append("\n\r");
-			str.append(CMStrings.padRight(L("^X@x1's characters:",account.getAccountName()),40)).append("^.^N\n\r");
-			boolean toggle = false;
+			//str.append(CMStrings.padRight(L("^X@x1's characters:",account.getAccountName()),40)).append("^.^N\n\r");
+
 			final String sortByStr;
 			if(commands.size()==1)
 				sortByStr="NAME";
 			else
 			{
-				sortByStr=CMParms.combine(commands,1).toUpperCase().trim();
+				commands.remove(0);
+				sortByStr=CMParms.combineWith(commands,',').toUpperCase().trim();
 			}
-			final PlayerSortCode sortBy = CMLib.players().getCharThinSortCode(sortByStr,true);
-			if(sortBy==null)
-			{
-				mob.tell(L("Unrecognized sort criteria: @x1",sortByStr));
+			final String acctList=getAccountList(mob.session(),sortByStr,account);
+			if(acctList == null)
 				return false;
-			}
-			final PlayerLibrary lib = CMLib.players();
-			final List<ThinPlayer> players = new XVector<ThinPlayer>(account.getThinPlayers());
-			Collections.sort(players, new Comparator<PlayerLibrary.ThinPlayer>() {
-				@Override
-				public int compare(final ThinPlayer o1, final ThinPlayer o2)
-				{
-					if(o1 == null)
-						return (o2 == null) ? 0 : -1;
-					if(o2 == null)
-						return 1;
-					@SuppressWarnings("unchecked")
-					final Comparable<Object> c1 = (Comparable<Object>)lib.getThinSortValue(o1, sortBy);
-					@SuppressWarnings("unchecked")
-					final Comparable<Object> c2 = (Comparable<Object>)lib.getThinSortValue(o2,sortBy);
-					final int x= c1.compareTo(c2);
-					if(x != 0)
-						return x;
-					return lib.getThinSortValue(o1, PlayerSortCode.NAME).toString().compareTo(lib.getThinSortValue(o2,PlayerSortCode.NAME).toString());
-				}
-			});
-
-			for (final ThinPlayer player : players)
-			{
-				str.append("^N");
-				str.append(showCharLong("",mob,player));
-				toggle = !toggle;
-			}
-			str.append("^N");
+			str.append(acctList);
 		}
 		else
 			str.append("?!");
 		mob.tell(str.toString());
 		return false;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return null;
+		return this.getAccountList((Session)args[0], (String)args[1], (PlayerAccount)args[2]);
 	}
 
 	@Override

@@ -1961,17 +1961,7 @@ public class DefaultClan implements Clan
 	{
 		if(getMinClanMembers()<=0)
 			return true;
-		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				final String B=protectedOnes.get(b);
-				if(B.equalsIgnoreCase(clanID()))
-					return true;
-			}
-		}
-		return false;
+		return CMLib.players().noPurge(clanID());
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenItemCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PrideCat;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -521,6 +522,7 @@ public interface PlayerLibrary extends CMLibrary
 	 * @see PlayerLibrary#getSortValue(MOB, PlayerSortCode)
 	 * @see PlayerLibrary#getThinSortValue(ThinPlayer, PlayerSortCode)
 	 * @see PlayerLibrary#getThinPlayer(String)
+	 * @see PlayerLibrary#getThinShowValue(ThinPlayer, PlayerSortCode)
 	 *
 	 * @param codeName the possible code name
 	 * @param loose true for startswith matches, false for exact
@@ -537,12 +539,31 @@ public interface PlayerLibrary extends CMLibrary
 	 * @see PlayerLibrary#getSortValue(MOB, PlayerSortCode)
 	 * @see PlayerLibrary#getCharThinSortCode(String, boolean)
 	 * @see PlayerLibrary#getThinPlayer(String)
+	 * @see PlayerLibrary#getThinShowValue(ThinPlayer, PlayerSortCode)
 	 *
 	 * @param player the character thinplayer obj
 	 * @param code the code for the value to return
 	 * @return the value of the code from the character
 	 */
 	public Object getThinSortValue(ThinPlayer player, PlayerSortCode code);
+
+	/**
+	 * Given a player character thinplayer obj, and a show code, this will
+	 * return the displayable value of that attribute.
+	 *
+	 *
+	 * @see PlayerLibrary.PlayerSortCode
+	 * @see PlayerLibrary.ThinPlayer
+	 * @see PlayerLibrary#getSortValue(MOB, PlayerSortCode)
+	 * @see PlayerLibrary#getCharThinSortCode(String, boolean)
+	 * @see PlayerLibrary#getThinPlayer(String)
+	 * @see PlayerLibrary#getThinSortValue(ThinPlayer, PlayerSortCode)
+	 *
+	 * @param player the character thinplayer obj
+	 * @param code the code for the value to return
+	 * @return the value of the code from the character
+	 */
+	public String getThinShowValue(final ThinPlayer player, final PlayerSortCode code);
 
 	/**
 	 * Given a player character mob, and a sort code, this will
@@ -761,6 +782,17 @@ public interface PlayerLibrary extends CMLibrary
 	public List<Pair<String,Integer>> getPreviousTopPrideAccounts(TimeClock.TimePeriod period, PrideStats.PrideStat stat);
 
 	/**
+	 * Reads and manipulates the No-Purge (protectedplayers.ini) list.
+	 * To add, send the name prefixed with "+".
+	 * To remove, send the name prefixed with "-".
+	 * To check, send the name with no prefix.
+	 * The name is case insensitive.
+	 * @param name the name to check, add, or remove
+	 * @return true if the name is on the no-purge list, or the add/remove was necessary
+	 */
+	public boolean noPurge(final String name);
+
+	/**
 	 * For systems that list users and allow sorting, here
 	 * is an enum of the popular sort codes, along with
 	 * popular alias for the code names.
@@ -776,7 +808,8 @@ public interface PlayerLibrary extends CMLibrary
 		AGE("HOURS"),
 		LAST("DATE"),
 		EMAIL("EMAILADDRESS"),
-		IP("LASTIP")
+		IP("LASTIP"),
+		REMAIN("REMAIN")
 		;
 		public String altName;
 		private PlayerSortCode(final String ln)

@@ -6346,10 +6346,8 @@ public class ListCmd extends StdCommand
 		{
 			final StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
 			final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-			if((protectedOnes!=null)&&(protectedOnes.size()>0))
-			for(int b=0;b<protectedOnes.size();b++)
-				str.append((b+1)+") "+(protectedOnes.get(b))+"\n\r");
-			s.wraplessPrintln(str.toString());
+			Collections.sort(protectedOnes, String.CASE_INSENSITIVE_ORDER);
+			s.wraplessPrintln(str.toString()+CMLib.lister().build4ColTable(mob, protectedOnes));
 			break;
 		}
 		case BANNED:

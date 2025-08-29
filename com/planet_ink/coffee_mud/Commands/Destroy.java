@@ -1934,25 +1934,12 @@ public class Destroy extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE))
 				return errorOut(mob);
-			int which=-1;
-			if(commands.size()>2)
-				which=CMath.s_int(commands.get(2));
-			if(which<=0)
-				mob.tell(L("Please enter a valid player number to delete.  Use List nopurge for more information."));
+			final String name = commands.get(2);
+			if(!CMLib.players().noPurge(name))
+				mob.tell(L("Please enter a valid player name to delete.  Use List nopurge for more information."));
 			else
 			{
-				final StringBuffer newNoPurge=new StringBuffer("");
-				final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-				if((protectedOnes!=null)&&(protectedOnes.size()>0))
-				{
-					for(int b=0;b<protectedOnes.size();b++)
-					{
-						final String B=protectedOnes.get(b);
-						if(((b+1)!=which)&&(B.trim().length()>0))
-							newNoPurge.append(B+"\n");
-					}
-				}
-				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
+				CMLib.players().noPurge("-"+name);
 				mob.tell(L("Ok."));
 			}
 		}

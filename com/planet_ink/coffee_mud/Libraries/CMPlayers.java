@@ -1554,23 +1554,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 			}
 		}
-		final StringBuffer newNoPurge=new StringBuffer("");
-		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		boolean somethingDone=false;
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				final String B=protectedOnes.get(b);
-				if(!B.equalsIgnoreCase(deadMOB.name()))
-					newNoPurge.append(B+"\n");
-				else
-					somethingDone=true;
-			}
-			if(somethingDone)
-				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
-		}
-
+		this.removeNoPurge(deadMOB.Name()); // if you are deleted, you are not protected
 		final PlayerStats pStats = deadMOB.playerStats();
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
@@ -1653,23 +1637,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return;
 		accountsList.remove(deadAccount);
 
-		final StringBuffer newNoPurge=new StringBuffer("");
-		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		boolean somethingDone=false;
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				final String B=protectedOnes.get(b);
-				if(!B.equalsIgnoreCase(deadAccount.getAccountName()))
-					newNoPurge.append(B+"\n");
-				else
-					somethingDone=true;
-			}
-			if(somethingDone)
-				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
-		}
-
+		this.removeNoPurge(deadAccount.getAccountName()); // if you are deleted, you are not protected
 		CMLib.journals().unsubscribeFromAll(deadAccount.getAccountName());
 		CMLib.database().DBDeleteAccount(deadAccount);
 		Log.sysOut(deadAccount.getAccountName()+" has been deleted.");
@@ -1794,8 +1762,105 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(!player.isPlayer())
 				return "";
 			return player.playerStats().getLastIP();
+		case REMAIN:
+		{
+			if (!player.isPlayer())
+				return "";
+			if (isNoPurge(player.Name()))
+				return "";
+			final Pair<Long,Long> times = this.getPurgeWarnTimes(player.playerStats().getLastDateTime(), player.phyStats().level());
+			if(times == null)
+				return "";
+			final long days = (times.first.longValue() - System.currentTimeMillis()) / TimeManager.MILI_DAY;
+			return Long.toString(days);
+		}
 		}
 		return player.Name();
+	}
+
+	@Override
+	public String getThinShowValue(final ThinPlayer player, final PlayerSortCode code)
+	{
+		final MOB pM=CMLib.players().getPlayer(player.name());
+		Race R=(pM!=null)?pM.charStats().getMyRace():null;
+		if(R==null)
+			R=CMClass.getRace(player.race());
+		if(R==null)
+			R=CMClass.getRace(player.race());
+		if(R==null)
+		{
+			final MOB mob=CMLib.players().getLoadPlayer(player.name());
+			if(mob!=null)
+				R=mob.charStats().getMyRace();
+			else
+				R=CMClass.getRace("Human");
+		}
+		CharClass C=(pM!=null)?pM.charStats().getCurrentClass():null;
+		if(C==null)
+			C=CMClass.getCharClass(player.charClass());
+		if(C==null)
+			C=CMClass.findCharClass(player.charClass());
+		if(C==null)
+		{
+			final MOB mob=CMLib.players().getLoadPlayer(player.name());
+			if(mob!=null)
+				C=mob.charStats().getCurrentClass();
+			else
+				C=CMClass.getCharClass("StdCharClass");
+		}
+		switch(code)
+		{
+		case NAME:
+			return player.name();
+		case RACE:
+		{
+			if(C.raceless())
+				return " ";
+			else
+				return R.name();
+		}
+		case CLASS:
+		{
+			if(R.classless())
+				return " ";
+			else
+			if(pM!=null)
+				return C.name(pM.charStats().getCurrentClassLevel());
+			else
+				return C.name();
+		}
+		case LEVEL:
+		{
+			String levelStr=(pM!=null)?(""+pM.phyStats().level()):null;
+			if(levelStr == null)
+				levelStr=""+player.level();
+			if(C.leveless()||R.leveless())
+				return " ";
+			else
+				return levelStr;
+		}
+		case AGE:
+			return "" + player.age();
+		case LAST:
+			if (player.last() <= 0)
+				return "N/A";
+			return CMLib.time().date2DateString(player.last());
+		case EMAIL:
+			return player.email();
+		case IP:
+			return player.ip();
+		case REMAIN:
+		{
+			if (isNoPurge(player.name()))
+				return "";
+			final Pair<Long,Long> times = this.getPurgeWarnTimes(player.last(), player.level());
+			if(times == null)
+				return "";
+			final long days = (times.first.longValue() - System.currentTimeMillis()) / TimeManager.MILI_DAY;
+			return L("@x1 days",Long.toString(days));
+		}
+		}
+		return "";
 	}
 
 	@Override
@@ -1819,6 +1884,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return player.email();
 		case IP:
 			return player.ip();
+		case REMAIN:
+		{
+			if (isNoPurge(player.name()))
+				return "";
+			final Pair<Long,Long> times = this.getPurgeWarnTimes(player.last(), player.level());
+			if(times == null)
+				return "";
+			final long days = (times.first.longValue() - System.currentTimeMillis()) / TimeManager.MILI_DAY;
+			return Long.toString(days);
+		}
 		}
 		return player.name();
 	}
@@ -2140,31 +2215,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
 	}
 
-	private boolean isProtected(final List<String> protectedOnes, final String name)
+	protected long[] getPurgeDays()
 	{
-		boolean protectedOne=false;
-		for(int p=0;p<protectedOnes.size();p++)
-		{
-			final String P=protectedOnes.get(p);
-			if(P.equalsIgnoreCase(name))
-			{
-				protectedOne=true;
-				break;
-			}
-		}
-		if(protectedOne)
-		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-				Log.debugOut(serviceClient.getName(),name+" is protected from purging.");
-			return true;
-		}
-		return false;
-	}
-
-	private boolean autoPurge()
-	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
-			return true;
 		final String mask=CMProps.getVar(CMProps.Str.AUTOPURGE);
 		if(mask.hashCode() != this.autoPurgeHash)
 		{
@@ -2203,15 +2255,134 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			this.autoPurgeHash=mask.hashCode();
 		}
+		return autoPurgeDaysLevels;
+	}
+
+	protected Pair<Long,Long> getPurgeWarnTimes(final long userLastLoginDateTime, final int level)
+	{
+		final long[] autoPurgeDaysLevels=getPurgeDays();
+		if(level>=autoPurgeDaysLevels.length)
+		{
+			if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
+			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+					Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
+				return null;
+			}
+			return new Pair<Long,Long>(
+				Long.valueOf(userLastLoginDateTime + autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]),
+				Long.valueOf(userLastLoginDateTime + prePurgeLevels[prePurgeLevels.length-1]));
+		}
+		else
+		if(level>=0)
+		{
+			if(autoPurgeDaysLevels[level]==0)
+			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+					Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
+				return null;
+			}
+			return new Pair<Long, Long>(
+					Long.valueOf(userLastLoginDateTime + autoPurgeDaysLevels[level]),
+					Long.valueOf(userLastLoginDateTime + prePurgeLevels[level]));
+		}
+		else
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" is level "+level+".  Skipping.");
+			return null;
+		}
+	}
+
+	protected Set<String> getNoPurgeList()
+	{
+		@SuppressWarnings("unchecked")
+		Set<String> protectedOnes = (Set<String>)Resources.getResource("protectedplayers.ini");
+		if(protectedOnes == null)
+		{
+			protectedOnes = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			final CMFile F=new CMFile(Resources.makeFileResourceName("protectedplayers.ini"),null,0);
+			final StringBuffer buf=F.text();
+			final List<String> lines = Resources.getFileLineVector(buf);
+			if(lines != null)
+				protectedOnes.addAll(lines);
+			Resources.submitResource("protectedplayers.ini",protectedOnes);
+		}
+		return protectedOnes;
+	}
+
+	protected boolean isNoPurge(final String name)
+	{
+		if(name == null)
+			return false;
+		return getNoPurgeList().contains(name);
+	}
+
+	protected void addNoPurge(final String name)
+	{
+		if(name == null)
+			return;
+		if(isNoPurge(name))
+			return;
+		final Set<String> names = this.getNoPurgeList();
+		names.add(CMStrings.capitalizeAndLower(name));
+		final StringBuilder str = new StringBuilder("");
+		for(final String n : names)
+			str.append(n).append("\n");
+		final CMFile F=new CMFile(Resources.makeFileResourceName("::protectedplayers.ini"),null,0);
+		F.saveText(str.toString());
+		Resources.removeResource("protectedplayers.ini");
+	}
+
+	protected void removeNoPurge(final String name)
+	{
+		if(name == null)
+			return;
+		if(!isNoPurge(name))
+			return;
+		final Set<String> names = this.getNoPurgeList();
+		names.remove(name);
+		final StringBuilder str = new StringBuilder("");
+		for(final String n : names)
+			str.append(n).append("\n");
+		final CMFile F=new CMFile(Resources.makeFileResourceName("::protectedplayers.ini"),null,0);
+		F.saveText(str.toString());
+		Resources.removeResource("protectedplayers.ini");
+	}
+
+	@Override
+	public boolean noPurge(final String name)
+	{
+		if(name == null)
+			return false;
+		if(name.startsWith("+"))
+		{
+			if(this.isNoPurge(name.substring(1)))
+				return false;
+			this.addNoPurge(name.substring(1));
+			return true;
+		}
+		else
+		if(name.startsWith("-"))
+		{
+			if(!this.isNoPurge(name.substring(1)))
+				return false;
+			this.removeNoPurge(name.substring(1));
+			return true;
+		}
+		else
+			return this.isNoPurge(name);
+	}
+
+	protected boolean autoPurge()
+	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
+			return true;
 		setThreadStatus(serviceClient,"autopurge process");
 		final List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		if(protectedOnes==null)
-			protectedOnes=new Vector<String>();
-
 		final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-			Log.debugOut(serviceClient.getName(),"Autopurge process start. "+allUsers.size()+" users loaded, "+protectedOnes.size()+" protected, and "+warnedOnes.size()+" previously warned.");
+			Log.debugOut(serviceClient.getName(),"Autopurge process start. "+allUsers.size()+" users loaded, and "+warnedOnes.size()+" previously warned.");
 
 		final StringBuilder warnStr=new StringBuilder("");
 		final Map<String,Long> warnMap=new TreeMap<String,Long>();
@@ -2248,41 +2419,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final String name=user.name();
 			final int level=user.level();
 			final long userLastLoginDateTime=user.last();
-			long purgeDateTime;
-			long warnDateTime;
-			if(level>=autoPurgeDaysLevels.length)
-			{
-				if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
-				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
-					continue;
-				}
-				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[autoPurgeDaysLevels.length-1];
-				warnDateTime=userLastLoginDateTime + prePurgeLevels[prePurgeLevels.length-1];
-			}
-			else
-			if(level>=0)
-			{
-				if(autoPurgeDaysLevels[level]==0)
-				{
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
-					continue;
-				}
-				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[level];
-				warnDateTime=userLastLoginDateTime + prePurgeLevels[level];
-			}
-			else
-			{
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-					Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" is level "+level+".  Skipping.");
+			final Pair<Long,Long> times = getPurgeWarnTimes(userLastLoginDateTime, level);
+			if (times == null)
 				continue;
-			}
-
+			final long purgeDateTime = times.first.longValue();
+			final long warnDateTime = times.second.longValue();
 			if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
 			{
-				if(isProtected(protectedOnes, name))
+				if(this.isNoPurge(name))
 					continue;
 
 				long foundWarningDateTime=-1;
@@ -2347,7 +2491,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				final PlayerAccount PA=pe.nextElement();
 				if((PA.numPlayers() > 0)
-				||(isProtected(protectedOnes, PA.getAccountName())))
+				||(noPurge(PA.getAccountName())))
 					continue;
 				final long lastDateTimePurge = PA.getLastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				final long lastUpdatedPurge = PA.getLastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));

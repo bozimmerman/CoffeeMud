@@ -45,43 +45,6 @@ public class NoPurge extends StdCommand
 		return access;
 	}
 
-	private int checkExisting(final String protectMe)
-	{
-		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				final String B=protectedOnes.get(b);
-				if(B.equalsIgnoreCase(protectMe))
-					return b;
-			}
-		}
-		return -1;
-	}
-
-	private void reallyProtect(final String protectMe)
-	{
-		final StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
-		if(protectMe.trim().length()>0)
-			str.append(protectMe+"\n");
-		Resources.updateFileResource("::protectedplayers.ini",str);
-	}
-
-	private void unProtect(final String protectMe)
-	{
-		final StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
-		if(str.toString().startsWith(protectMe+"\n"))
-			str.delete(0, protectMe.length()+1);
-		else
-		{
-			final int x=str.indexOf("\n"+protectMe+"\n");
-			if(x>0)
-				str.delete(x, protectMe.length()+1);
-		}
-		Resources.updateFileResource("::protectedplayers.ini",str);
-	}
-
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -100,16 +63,15 @@ public class NoPurge extends StdCommand
 			mob.tell(L("Protect whom?  '@x1' is not a known player.",protectMe));
 			return false;
 		}
-		final int existingIndex = checkExisting(protectMe);
-		if(existingIndex >= 0)
+		if(CMLib.players().noPurge(protectMe))
 		{
 			if(mob.Name().equalsIgnoreCase(protectMe))
-				mob.tell(L("You are already protected.  Do LIST NOPURGE and check out #@x1.",""+(existingIndex+1)));
+				mob.tell(L("You are already protected.  Do LIST NOPURGE."));
 			else
-				mob.tell(L("That player already protected.  Do LIST NOPURGE and check out #@x1.",""+(existingIndex+1)));
+				mob.tell(L("That player already protected.  Do LIST NOPURGE."));
 			return false;
 		}
-		this.reallyProtect(protectMe);
+		CMLib.players().noPurge("+"+protectMe);
 		if(mob.Name().equalsIgnoreCase(protectMe))
 			mob.tell(L("You are now protected from autopurge."));
 		else
@@ -123,17 +85,9 @@ public class NoPurge extends StdCommand
 		if((args.length==0)||(!(args[0] instanceof MOB)))
 			return Boolean.FALSE;
 		if((metaFlags & MUDCmdProcessor.METAFLAG_REVERSED) == MUDCmdProcessor.METAFLAG_REVERSED)
-		{
-			if(this.checkExisting(((MOB)args[0]).Name())<0)
-				return Boolean.FALSE;
-			this.unProtect(((MOB)args[0]).Name());
-		}
+			CMLib.players().noPurge("-"+((MOB)args[0]).Name());
 		else
-		{
-			if(this.checkExisting(((MOB)args[0]).Name())>=0)
-				return Boolean.FALSE;
-			this.reallyProtect(((MOB)args[0]).Name());
-		}
+			CMLib.players().noPurge("+"+((MOB)args[0]).Name());
 		return Boolean.TRUE;
 	}
 
