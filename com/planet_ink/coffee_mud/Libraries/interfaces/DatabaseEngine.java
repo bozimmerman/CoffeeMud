@@ -941,6 +941,15 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Returns the name of the account with the given email
+	 * address.
+	 * @param email the email address to look for
+	 * @return the name of the account, or null if not found
+	 */
+	public String DBAccountEmailSearch(final String email);
+
+	/**
+	 * Table category: DBPLAYERS
 	 * Returns the list of all characters as thinplayer
 	 * objects.  This is the whole bloody list.
 	 * @see PlayerLibrary.ThinPlayer

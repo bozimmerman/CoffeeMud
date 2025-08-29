@@ -256,6 +256,12 @@ public class MOBloader
 							break;
 						}
 					}
+					if(pstats.getAccount()==null)
+					{
+						final String accountName = this.DBGetAccountNameFromPlayer(mob.Name());
+						if(accountName.length()>0)
+							pstats.setAccount(CMLib.players().getLoadAccount(accountName));
+					}
 				}
 				CMLib.achievements().loadPlayerSkillAwards(mob, pstats);
 			}
@@ -541,6 +547,7 @@ public class MOBloader
 					if(pA.findPlayer(name)!=null)
 						return pA.getAccountName();
 				}
+				return this.DBGetAccountNameFromPlayer(name);
 			}
 			return "";
 		}
@@ -1956,7 +1963,7 @@ public class MOBloader
 			D=DB.DBFetch();
 			clan=DB.injectionClean(clan);
 			memberName=DB.injectionClean(CMStrings.capitalizeAndLower(memberName));
-			final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' AND CMUSERID='"+memberName+"'");
+			final ResultSet R=D.query("SELECT * FROM CMCHCL WHERE CMCLAN='"+clan+"' AND CMUSERID='"+memberName+"'");
 			if(R!=null)
 			{
 				member = BuildClanMemberRecord(R);
@@ -3366,6 +3373,52 @@ public class MOBloader
 						if(c.equalsIgnoreCase(player))
 							return aname;
 					}
+				}
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
+	public String DBAccountEmailSearch(String email)
+	{
+		if((email==null)||(email.trim().length()==0))
+			return "";
+		DBConnection D=null;
+		for(final Enumeration<PlayerAccount> e=CMLib.players().accounts();e.hasMoreElements();)
+		{
+			final PlayerAccount A=e.nextElement();
+			if(((A!=null)&&(A.getEmail().equalsIgnoreCase(email))))
+				return A.getAccountName();
+		}
+		final String playerName = this.DBPlayerEmailSearch(email);
+		if((playerName!=null)&&(playerName.length()>0))
+		{
+			final MOB M = CMLib.players().getPlayer(playerName);
+			final PlayerAccount A = ((M!=null)&&(M.playerStats()!=null))?M.playerStats().getAccount():null;
+			if((A!=null)&&(A.getEmail().equalsIgnoreCase(email)))
+				return A.getAccountName();
+		}
+		try
+		{
+			D=DB.DBFetch();
+			email=DB.injectionClean(email.trim());
+			final ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMAXML LIKE '%<EMAIL>"+email+"</EMAIL>%'");
+			if(R!=null)
+			{
+				while(R.next())
+				{
+					final String aname=DB.getRes(R,"CMANAM");
+					final PlayerAccount A = CMLib.players().getLoadAccount(aname);
+					if((A!=null)&&(A.getEmail().equalsIgnoreCase(email)))
+						return A.getAccountName();
 				}
 			}
 		}

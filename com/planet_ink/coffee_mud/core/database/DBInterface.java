@@ -300,6 +300,13 @@ public class DBInterface implements DatabaseEngine
 		MOBloader.DBUpdateEmail(mob);
 	}
 
+
+	@Override
+	public String DBAccountEmailSearch(final String email)
+	{
+		return MOBloader.DBAccountEmailSearch(email);
+	}
+
 	@Override
 	public String DBPlayerEmailSearch(final String email)
 	{

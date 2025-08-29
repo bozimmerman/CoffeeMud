@@ -603,18 +603,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(!CMProps.isUsingAccountSystem())
 			return null;
-		for(final Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
-		{
-			final PlayerAccount P=e.nextElement();
-			if(P.getEmail().equalsIgnoreCase(email))
-				return P;
-		}
-		for(final Enumeration<PlayerAccount> e=accounts("",null);e.hasMoreElements();)
-		{
-			final PlayerAccount P=e.nextElement();
-			if(P.getEmail().equalsIgnoreCase(email))
-				return P;
-		}
+		final String accountName = CMLib.database().DBAccountEmailSearch(email);
+		if (accountName != null)
+			return getLoadAccount(accountName);
 		return null;
 	}
 
