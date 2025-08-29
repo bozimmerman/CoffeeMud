@@ -404,10 +404,17 @@ public class MUDProxy
 								}
 								catch (final ConnectException e)
 								{
+									key.cancel();
+									closeKey(key);
+								}
+								catch (final NoConnectionPendingException e)
+								{
+									key.cancel();
 									closeKey(key);
 								}
 								catch (final IOException e)
 								{
+									key.cancel();
 									closeKey(key);
 								}
 							}
