@@ -305,6 +305,8 @@ public class Email extends StdCommand
 		}
 		pstats.setEmail(newEmail);
 		CMLib.database().DBUpdateEmail(mob);
+		if (pstats.getAccount() != null)
+			CMLib.database().DBUpdateAccount(pstats.getAccount());
 		if((commands!=null)
 		&&(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))

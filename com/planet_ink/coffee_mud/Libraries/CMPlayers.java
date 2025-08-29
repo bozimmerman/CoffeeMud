@@ -1695,6 +1695,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					//setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 					lib._database().DBUpdatePlayerAbilities(mob);
 					pStats.setLastUpdated(System.currentTimeMillis());
+					if (pStats.getAccount() != null)
+					{
+						lib._database().DBUpdateAccount(pStats.getAccount());
+						pStats.getAccount().setLastUpdated(System.currentTimeMillis());
+					}
 				}
 				if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
 				{
