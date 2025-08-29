@@ -2161,7 +2161,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					if(json!=null)
 						json=json.getCheckedJSONObject("root");
-					if(json != null)
+					if((json != null)&&(json.keySet().size()>0))
 					{
 						final String user;
 						if(json.containsKey("account"))
