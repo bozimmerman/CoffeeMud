@@ -94,6 +94,7 @@ public class Sleep extends StdCommand implements Tickable
 			A.setAbilityID("AutoWaker");
 			A.setTickable(this);
 			A.setMiscText(wait.name());
+			A.setSavable(false);
 			mob.addNonUninvokableEffect(A);
 		}
 		if(commands.size()<=1)
