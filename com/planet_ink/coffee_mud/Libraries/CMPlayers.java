@@ -1786,55 +1786,43 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(R==null)
 			R=CMClass.getRace(player.race());
 		if(R==null)
-			R=CMClass.getRace(player.race());
-		if(R==null)
-		{
-			final MOB mob=CMLib.players().getLoadPlayer(player.name());
-			if(mob!=null)
-				R=mob.charStats().getMyRace();
-			else
-				R=CMClass.getRace("Human");
-		}
+			R=CMClass.findRace(player.race());
 		CharClass C=(pM!=null)?pM.charStats().getCurrentClass():null;
 		if(C==null)
 			C=CMClass.getCharClass(player.charClass());
 		if(C==null)
 			C=CMClass.findCharClass(player.charClass());
-		if(C==null)
-		{
-			final MOB mob=CMLib.players().getLoadPlayer(player.name());
-			if(mob!=null)
-				C=mob.charStats().getCurrentClass();
-			else
-				C=CMClass.getCharClass("StdCharClass");
-		}
 		switch(code)
 		{
 		case NAME:
 			return player.name();
 		case RACE:
 		{
-			if(C.raceless())
+			if((C!=null)&&(C.raceless()))
 				return " ";
 			else
+			if(R!=null)
 				return R.name();
+			return player.race();
 		}
 		case CLASS:
 		{
-			if(R.classless())
+			if((R!=null)&&(R.classless()))
 				return " ";
 			else
 			if(pM!=null)
 				return C.name(pM.charStats().getCurrentClassLevel());
 			else
+			if(C!=null)
 				return C.name();
+			return player.charClass();
 		}
 		case LEVEL:
 		{
 			String levelStr=(pM!=null)?(""+pM.phyStats().level()):null;
 			if(levelStr == null)
 				levelStr=""+player.level();
-			if(C.leveless()||R.leveless())
+			if((C!=null)&&(R!=null)&&(C.leveless()||R.leveless()))
 				return " ";
 			else
 				return levelStr;
