@@ -9,6 +9,7 @@ import com.planet_ink.fakedb.backend.jdbc.PreparedStatement;
 import com.planet_ink.fakedb.backend.jdbc.Statement;
 import com.planet_ink.fakedb.backend.structure.FakeMetaData;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /*
@@ -88,9 +89,16 @@ public class Connection implements java.sql.Connection
 			if (backend == null)
 			{
 				backend = new Backend();
-				if (!backend.open(new java.io.File(path)))
-					throw new java.sql.SQLException("unable to open database");
-				databases.put(path, new WeakReference<Backend>(backend));
+				try
+				{
+					if (!backend.open(new java.io.File(path)))
+						throw new java.sql.SQLException("unable to open database");
+					databases.put(path, new WeakReference<Backend>(backend));
+				}
+				catch(final IOException e)
+				{
+					throw new java.sql.SQLException("Unable to open database: "+e.getMessage());
+				}
 			}
 			this.backend = backend;
 		}

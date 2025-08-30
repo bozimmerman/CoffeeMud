@@ -36,6 +36,9 @@ public class FakeTable
 	protected int				fileSize;
 	protected byte[]			fileBuffer;
 	protected IndexedRowMap		rowRecords	= new IndexedRowMap();
+	protected int				dataStart = 0;
+	protected String			schemaHash = "";
+	protected byte[]			dataHeader = new byte[0];
 
 	public final String			name;
 	public int					version		= 1;
@@ -127,6 +130,28 @@ public class FakeTable
 		rowRecords = new IndexedRowMap();
 	}
 
+	private void insertFileData(final int position, final byte[] data) throws IOException
+	{
+		final long originalLength = file.length();
+		final long bytesToShift  = originalLength - position;
+		file.setLength(originalLength + data.length);
+		final int bufferSize = 1024 * 1024;
+		final byte[] buffer = new byte[bufferSize];
+		long remain = bytesToShift;
+		while(remain >0)
+		{
+			final int bytesToCopy = (int) Math.min(bufferSize, remain);
+			file.seek(position + remain - bytesToCopy);
+			file.readFully(buffer, 0, bytesToCopy);
+			file.seek(position + data.length + remain - bytesToCopy);
+			file.write(buffer, 0, bytesToCopy);
+			remain -= bytesToCopy;
+		}
+		file.seek(position);
+		file.write(data);
+		file.getFD().sync();
+	}
+
 	/**
 	 * Open the data file, validate it, and index it if necc
 	 * @throws IOException
@@ -134,27 +159,59 @@ public class FakeTable
 	public void open() throws IOException
 	{
 		file = new RandomAccessFile(fileName, "rw");
-		fileSize = 0;
+		fileSize = 0;  // actual offset index during initial reading
 		fileBuffer = new byte[4096];
+		dataStart = 0;
 		final int c = file.read();
 		if(c > 0)
 		{
-			final int v = file.read();
-			if((c == 'V') && (v > 0))
+			int v = file.read();
+			if((c == 'V') && ((v > 47)&&(v<58)))
 			{
+				v=v-48;
 				if(version != v)
 					throw new IOException("Incompatible data files (expected V"+version+", got V"+v+")");
-				return;
+				final ByteArrayOutputStream out = new ByteArrayOutputStream();
+				int b = file.read();
+				while ((b >= 0) && (b != '\n'))
+				{
+					out.write(b);
+					b = file.read();
+				}
+				dataHeader = out.toByteArray();
+				String dataFormatHash = "";
+				for(int i=0;i<dataHeader.length;i++)
+				{
+					if((dataHeader[i] == 'H')&&(i<=dataHeader.length-9))
+					{
+						dataFormatHash = new String(dataHeader,i+1,8);
+						i += 8;
+					}
+				}
+				dataStart = (int)file.getFilePointer();
+				if ((dataFormatHash == null) || (!dataFormatHash.equals(this.schemaHash)))
+					throw new IOException("Incompatible fakedb data file for table "+name+".  Use DBUpgrade to convert.");
+				if(version == 2)
+					return;
 			}
 			else
-			if(version != 1)
-				throw new IOException("Incompatible data files (not V"+version+")");
-			else
-				file.seek(0);
+			{
+				final String header = "V1H"+schemaHash+"\n";
+				this.insertFileData(0, header.getBytes());
+				file.close();
+				open();
+				return;
+			}
 		}
 		else
-		if(version > 1)
+		{
+			final String header = "V"+version+"H"+schemaHash+"\n";
+			this.insertFileData(0, header.getBytes());
+			file.close();
+			open();
 			return;
+		}
+		fileSize = dataStart;
 
 		int remaining = 0;
 		int ofs = 0;
@@ -258,6 +315,8 @@ public class FakeTable
 
 	public void initializeColumns(final BufferedReader in) throws IOException
 	{
+		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+		crc.update((this.name + " " + this.version).getBytes());
 		final List<FakeColumn> columns = new ArrayList<FakeColumn>();
 		final List<String> keys = new ArrayList<String>();
 		final List<String> indexes = new ArrayList<String>();
@@ -268,6 +327,7 @@ public class FakeTable
 				break;
 			if (line.length() == 0)
 				break;
+			crc.update(line.getBytes());
 			int split = line.indexOf(' ');
 			if (split < 0)
 				throw new IOException("Can not read schema: expected space in line '" + line + "'");
@@ -347,6 +407,7 @@ public class FakeTable
 			}
 			columns.add(info);
 		}
+		this.schemaHash =  String.format("%08X", Long.valueOf(crc.getValue())).toUpperCase();
 		this.columns = new FakeColumn[columns.size()];
 		this.columnNames = new String[columns.size()];
 		this.columnHash = new Hashtable<String, Integer>();

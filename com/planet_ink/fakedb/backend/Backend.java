@@ -186,18 +186,10 @@ public class Backend
 	 * @param basePath
 	 * @return
 	 */
-	public boolean open(final File basePath)
+	public boolean open(final File basePath) throws IOException
 	{
-		try
-		{
-			readSchema(basePath, new File(basePath, "fakedb.schema"));
-			return true;
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-			return false;
-		}
+		readSchema(basePath, new File(basePath, "fakedb.schema"));
+		return true;
 	}
 
 	/**
