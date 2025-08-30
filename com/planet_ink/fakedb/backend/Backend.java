@@ -54,6 +54,15 @@ public class Backend
 
 	/**
 	 *
+	 * @return
+	 */
+	public Map<String, FakeTable> getFakeTables()
+	{
+		return fakeTables;
+	}
+
+	/**
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */

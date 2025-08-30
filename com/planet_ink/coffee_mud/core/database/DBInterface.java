@@ -1,6 +1,9 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
+import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -20,7 +23,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.sql.*;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
@@ -46,6 +53,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 */
 public class DBInterface implements DatabaseEngine
 {
+	private static final int currentVersion = 58;
+
 	@Override
 	public String ID()
 	{
@@ -1564,6 +1573,296 @@ public class DBInterface implements DatabaseEngine
 				DB.DBDone(DBToUse);
 		}
 		return results;
+	}
+
+	private int getLastAppliedVersion(final MiniJSON.JSONObject changesJson) throws Exception
+	{
+		DBConnection conn = null;
+		try
+		{
+			conn = DB.DBFetch();
+			final DatabaseMetaData meta = conn.getMetaData();
+			if(meta == null)
+				return Integer.MIN_VALUE;
+			final ResultSet rs = meta.getTables(null, null, "%", new String[]{"TABLE"});
+			final Set<String> dbTables = new HashSet<>();
+			final Map<String, String> tableCaseMap = new HashMap<>();
+			while(rs.next())
+			{
+				final String actualTableName = rs.getString("TABLE_NAME");
+				final String upperTableName = actualTableName.toUpperCase();
+				dbTables.add(upperTableName);
+				tableCaseMap.put(upperTableName, actualTableName);
+			}
+			rs.close();
+			final boolean stringsAreBlobs = meta.getDatabaseProductName().equalsIgnoreCase("fakedb");
+
+			final Map<String, Map<String, JSONObject>> dbColumnsByTable = new HashMap<>();
+			final Map<String, List<String>> dbPrimaryKeysByTable = new HashMap<>();
+			final Map<String, Set<String>> dbIndexSetsByTable = new HashMap<>();
+
+			for(final String upperT : dbTables)
+			{
+				final String actualT = tableCaseMap.getOrDefault(upperT, upperT);
+				final ResultSet colsRs = meta.getColumns(null, null, actualT, "%");
+				final Map<String, JSONObject> dbCols = new HashMap<>();
+				while(colsRs.next())
+				{
+					final String cname = colsRs.getString("COLUMN_NAME").toUpperCase();
+					final String typeName = colsRs.getString("TYPE_NAME").toUpperCase();
+					final int size = colsRs.getInt("COLUMN_SIZE");
+					final boolean nullable = colsRs.getString("IS_NULLABLE").equals("YES");
+					if(typeName == null)
+						throw new Exception("Unknown DB type " + typeName + " for column " + cname + " in table " + upperT);
+					final JSONObject column = new JSONObject();
+					column.put("name", cname);
+					column.put("type", typeName);
+					column.put("size", Long.valueOf(size));
+					column.put("nullable", Boolean.valueOf(nullable));
+					dbCols.put(cname, column);
+				}
+				colsRs.close();
+				dbColumnsByTable.put(upperT, dbCols);
+
+				// primary keys
+				final ResultSet pkRs = meta.getPrimaryKeys(null, null, actualT);
+				final List<String> dbKeys = new ArrayList<>();
+				while(pkRs.next())
+				{
+					final String col = pkRs.getString("COLUMN_NAME").toUpperCase();
+					dbKeys.add(col);
+				}
+				pkRs.close();
+				Collections.sort(dbKeys);
+				dbPrimaryKeysByTable.put(upperT, dbKeys);
+
+				// indexes
+				final ResultSet idxRs = meta.getIndexInfo(null, null, actualT, false, false);
+				final Map<String, List<String>> indexGroups = new HashMap<>();
+				while(idxRs.next())
+				{
+					final String idxName = idxRs.getString("INDEX_NAME");
+					if(idxName == null || idxName.equals("PRIMARY"))
+						continue;
+					final String col = idxRs.getString("COLUMN_NAME").toUpperCase();
+					indexGroups.computeIfAbsent(idxName, k -> new ArrayList<>()).add(col);
+				}
+				idxRs.close();
+				final Set<String> dbIndexSets = new HashSet<>();
+				for(final List<String> group : indexGroups.values())
+				{
+					Collections.sort(group);
+					dbIndexSets.add(String.join(",", group));
+				}
+				dbIndexSetsByTable.put(upperT, dbIndexSets);
+			}
+
+			final TreeMap<Integer, List<JSONObject>> changesByVersion = new TreeMap<>(Collections.reverseOrder());
+			for(final String key : changesJson.keySet())
+			{
+				final int ver = Integer.parseInt(key);
+				final Object[] arr = (Object[]) changesJson.get(key);
+				final List<JSONObject> list = new ArrayList<>();
+				for(final Object oc : arr)
+					list.add((JSONObject)oc);
+				changesByVersion.put(Integer.valueOf(ver), list);
+			}
+
+			for(final Integer ver : changesByVersion.keySet())
+			{
+				final List<JSONObject> list = changesByVersion.get(ver);
+				int validCount = 0;
+				for(final JSONObject c : list)
+				{
+					if(validateChange(c, dbTables, dbColumnsByTable, dbPrimaryKeysByTable, dbIndexSetsByTable, stringsAreBlobs))
+						validCount++;
+				}
+				if(validCount == list.size())
+					return ver.intValue();
+				else
+				if(validCount > 0)
+					return -ver.intValue();
+			}
+			return 0;
+		}
+		finally
+		{
+			if(conn != null)
+				DB.DBDone(conn);
+		}
+	}
+
+	private static boolean validateChange(final JSONObject c, final Set<String> dbTables,
+										  final Map<String, Map<String, JSONObject>> dbColumnsByTable,
+										  final Map<String, List<String>> dbPrimaryKeysByTable,
+										  final Map<String, Set<String>> dbIndexSetsByTable,
+										  final boolean stringsAreBlobs)
+		throws MiniJSON.MJSONException
+	{
+		if((!c.containsKey("name"))||(c.get("name")==null))
+			return false;
+		final String nameUpper = c.getCheckedString("name").toUpperCase();
+		final String action = c.getCheckedString("action").toUpperCase();
+		final boolean isAddOrModify = action.equals("ADD") || action.equals("MODIFY");
+		final String target = c.getCheckedString("target").toUpperCase();
+		if (target.equals("TABLE"))
+		{
+			final boolean exists = dbTables.contains(nameUpper);
+			if (isAddOrModify)
+				return exists;
+			if (action.equals("DELETE"))
+				return !exists;
+			return false;
+		}
+		else
+		{
+			if((!c.containsKey("table"))||(c.get("table")==null))
+				return false;
+			final String tname = c.getCheckedString("table");
+			final boolean tableExists = dbTables.contains(tname);
+			if (!tableExists)
+			{
+				if (isAddOrModify)
+					return false;
+				if (action.equals("DELETE"))
+					return true;
+				return false;
+			}
+			if (target.equals("COLUMN"))
+			{
+				final Map<String, JSONObject> dbCols = dbColumnsByTable.get(tname);
+				final JSONObject dc = dbCols.get(nameUpper);
+				final boolean exists = (dc != null);
+				if (isAddOrModify)
+				{
+					if (!exists)
+						return false;
+					final String[][] fieldGroups = new String[][] {
+						{"INT","INTEGER"},
+						{"LONG","BIGINT"},
+						{"VARCHAR", "CHAR", "STRING"},
+						{"TEXT","LONGTEXT"},
+						{"DATETIME"},
+						{"TIMESTAMP"},
+					};
+					int ctype = -1;
+					int dctype = -1;
+					for(int g = 0;g<fieldGroups.length;g++)
+					{
+						if(CMParms.contains(fieldGroups[g], c.getCheckedString("type").toUpperCase()))
+							ctype = g;
+						if(CMParms.contains(fieldGroups[g], dc.getCheckedString("type").toUpperCase()))
+							dctype = g;
+					}
+
+					if ((ctype>=0) && (dctype != ctype))
+					{
+						if(!stringsAreBlobs)
+							return false;
+						if ((ctype == 2) && (dctype != 3))
+							return false;
+						if ((ctype == 3) && (dctype != 2))
+							return false;
+					}
+					final int csize;
+					if(c.containsKey("size"))
+						csize = c.getCheckedLong("size").intValue();
+					else
+						csize = -1;
+					final int dcsize;
+					if(dc.containsKey("size"))
+						dcsize = dc.getCheckedLong("size").intValue();
+					else
+						dcsize = -1;
+					if (csize >= 0 && dcsize >= 0 && dcsize != csize)
+						return false;
+					return true;
+				}
+				else
+				if (action.equals("DELETE"))
+					return !exists;
+			}
+			else
+			if (target.equals("KEY"))
+			{
+				final List<String> dbPks = dbPrimaryKeysByTable.get(tname);
+				final Set<String> dbIdxs = dbIndexSetsByTable.get(tname);
+				final boolean inPk = dbPks.contains(nameUpper);
+				final boolean inIdx = dbIdxs.contains(nameUpper);
+				final boolean has = inPk || inIdx;
+				if (isAddOrModify)
+					return has;
+				if (action.equals("DELETE"))
+					return !has;
+			}
+			else
+			if (target.equals("INDEX"))
+			{
+				final Set<String> dbIdxs = dbIndexSetsByTable.get(tname);
+				final String name = c.getCheckedString("name");
+				final List<String> group = Arrays.asList(name.split(","));
+				final List<String> g = new ArrayList<>();
+				for (final String s : group)
+					g.add(s.trim().toUpperCase());
+				Collections.sort(g);
+				final String idxStr = String.join(",", g);
+				final boolean has = dbIdxs.contains(idxStr);
+				if (isAddOrModify)
+					return has;
+				if (action.equals("DELETE"))
+					return !has;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public String validateDatabaseVersion()
+	{
+		final File f = new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
+		if(!f.exists())
+		{
+			Log.errOut("Unable to find database changelist for validation.");
+			return null;
+		}
+		try
+		{
+			final String json = new String(Files.readAllBytes(f.toPath()));
+			final MiniJSON.JSONObject obj = (MiniJSON.JSONObject)new MiniJSON().parse(json);
+			try
+			{
+				final int lastAppliedVersion = getLastAppliedVersion(obj);
+				if(lastAppliedVersion == Integer.MIN_VALUE)
+					return "Unable to create a connection";
+				if(lastAppliedVersion > 0)
+				{
+					if(lastAppliedVersion < currentVersion)
+						return "Database is at version " + lastAppliedVersion + ", but version "+currentVersion+" is required.";
+					else
+					if(lastAppliedVersion == 0)
+						return "Database was empty, and needs to be initialized to version "+currentVersion+".";
+				}
+				else
+					return "Your database is at approximately version " + (-lastAppliedVersion) + ".  Please fix with DBUpgrade, or do it manually.";
+			}
+			catch (final Exception e)
+			{
+				Log.errOut("Unable to validate database.");
+				Log.errOut(e);
+				return null;
+			}
+		}
+		catch (final MJSONException e)
+		{
+			Log.errOut("Unable to parse database changelist for validation.");
+			return null;
+		}
+		catch (final IOException e)
+		{
+			Log.errOut("Unable to read database changelist for validation.");
+			return null;
+		}
+		return null;
 	}
 
 	@Override

@@ -1,0 +1,362 @@
+{
+  "1": [
+	{"action": "ADD", "target": "TABLE", "name": "CMCHAB"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABPF", "table": "CMCHAB", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABID", "table": "CMCHAB", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABUR", "table": "CMCHAB", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUSERID", "table": "CMCHAB", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABAB", "table": "CMCHAB", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABLVL", "table": "CMCHAB", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMABTX", "table": "CMCHAB", "type": "TEXT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMCHAR"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMRACE", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMALIG", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMAGEH", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMMANA", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSTRE", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMAMOR", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC", "table": "CMCHAR", "type": "VARCHAR", "size": 255},
+	{"action": "ADD", "target": "COLUMN", "name": "CMQUES", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPASS", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMGEND", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHAN", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMMOVE", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMHITP", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXLV", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDEXT", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMWEIT", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXPE", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMHEIT", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMWIMP", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMTRAI", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATE", "table": "CMCHAR", "type": "DATETIME"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCONS", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMLEVL", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMBTMP", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDAMG", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHAR", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLAS", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMINTE", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMLEIG", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMWISD", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMWORS", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPRAC", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMGOLD", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROID", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMATTA", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUSERID", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "TABLE", "name": "CMROEX"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDIRE", "table": "CMROEX", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXTX", "table": "CMROEX", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROID", "table": "CMROEX", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXID", "table": "CMROEX", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMNRID", "table": "CMROEX", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "TABLE", "name": "CMROCH"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHAB", "table": "CMROCH", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHTX", "table": "CMROCH", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHRE", "table": "CMROCH", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHLV", "table": "CMROCH", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROID", "table": "CMROCH", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHID", "table": "CMROCH", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHNM", "table": "CMROCH", "type": "INT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMJRNL"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMJRNL", "table": "CMJRNL", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFROM", "table": "CMJRNL", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATE", "table": "CMJRNL", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMJKEY", "table": "CMJRNL", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMMSGT", "table": "CMJRNL", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSUBJ", "table": "CMJRNL", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMTONM", "table": "CMJRNL", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "TABLE", "name": "CMAREA"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROTX", "table": "CMAREA", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSUBS", "table": "CMAREA", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLIM", "table": "CMAREA", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMAREA", "table": "CMAREA", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC", "table": "CMAREA", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMTYPE", "table": "CMAREA", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "TABLE", "name": "CMCHFO"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFONM", "table": "CMCHFO", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFOTX", "table": "CMCHFO", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFOAB", "table": "CMCHFO", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUSERID", "table": "CMCHFO", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFOID", "table": "CMCHFO", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFOLV", "table": "CMCHFO", "type": "INT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMROIT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITNM", "table": "CMROIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMHEIT", "table": "CMROIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITAB", "table": "CMROIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITID", "table": "CMROIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITUR", "table": "CMROIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROID", "table": "CMROIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLV", "table": "CMROIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLO", "table": "CMROIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITRE", "table": "CMROIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITTX", "table": "CMROIT", "type": "TEXT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMCHIT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITNM", "table": "CMCHIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMHEIT", "table": "CMCHIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITAB", "table": "CMCHIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITID", "table": "CMCHIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITUR", "table": "CMCHIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITWO", "table": "CMCHIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLV", "table": "CMCHIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUSERID", "table": "CMCHIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLO", "table": "CMCHIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITTX", "table": "CMCHIT", "type": "TEXT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMROOM"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC2", "table": "CMROOM", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC1", "table": "CMROOM", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROTX", "table": "CMROOM", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMAREA", "table": "CMROOM", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMROID", "table": "CMROOM", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMLOID", "table": "CMROOM", "type": "VARCHAR", "size": 50}
+  ],
+  "2": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMITNM", "table": "CMROIT", "type": "VARCHAR", "size": 100},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMITLO", "table": "CMROIT", "type": "VARCHAR", "size": 100},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMITNM", "table": "CMCHIT", "type": "VARCHAR", "size": 100},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMITLO", "table": "CMCHIT", "type": "VARCHAR", "size": 100}
+  ],
+  "3": [
+	{"action": "DELETE", "target": "COLUMN", "name": "CMABUR", "table": "CMCHAB", "type": "INT"},
+	{"action": "DELETE", "target": "COLUMN", "name": "CMABAB", "table": "CMCHAB", "type": "INT"},
+	{"action": "DELETE", "target": "COLUMN", "name": "CMABLVL", "table": "CMCHAB", "type": "INT"}
+  ],
+  "4": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMPRPT", "table": "CMCHAR", "type": "VARCHAR", "size": 250},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCOLR", "table": "CMCHAR", "type": "VARCHAR", "size": 50}
+  ],
+  "5": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMCLAS", "table": "CMCHAR", "type": "VARCHAR", "size": 200},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMLEVL", "table": "CMCHAR", "type": "VARCHAR", "size": 50}
+  ],
+  "6": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMTECH", "table": "CMAREA", "type": "INT"}
+  ],
+  "7": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLAN", "table": "CMCHAR", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLRO", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMLSIP", "table": "CMCHAR", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHRI", "table": "CMROCH", "type": "VARCHAR", "size": 100},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMCHNM", "table": "CMROCH", "type": "VARCHAR", "size": 100}
+  ],
+  "8": [
+	{"action": "ADD", "target": "TABLE", "name": "CMCLAN"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMACPT", "table": "CMCLAN", "type": "VARCHAR", "size": 255},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPOLI", "table": "CMCLAN", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMRCLL", "table": "CMCLAN", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDNAT", "table": "CMCLAN", "type": "VARCHAR"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC", "table": "CMCLAN", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMTYPE", "table": "CMCLAN", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLID", "table": "CMCLAN", "type": "VARCHAR", "size": 100}
+  ],
+  "10": [
+	{"action": "ADD", "target": "TABLE", "name": "CMQUESTS"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMQUESID", "table": "CMQUESTS", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMQUTYPE", "table": "CMQUESTS", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMQSCRPT", "table": "CMQUESTS", "type": "TEXT"}
+  ],
+  "11": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMQWINNS", "table": "CMQUESTS", "type": "TEXT"}
+  ],
+  "12": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMROID", "table": "CMCHAR", "type": "VARCHAR", "size": 100}
+  ],
+  "13": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDNAT", "table": "CMCLAN", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSTAT", "table": "CMCLAN", "type": "INT"}
+  ],
+  "14": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMEMAL", "table": "CMCHAR", "type": "VARCHAR", "size": 255}
+  ],
+  "15": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDATE", "table": "CMCHAR", "type": "VARCHAR", "size": 50},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDATE", "table": "CMJRNL", "type": "VARCHAR", "size": 50}
+  ],
+  "16": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMPFIL", "table": "CMCHAR", "type": "TEXT"}
+  ],
+  "17": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMSAVE", "table": "CMCHAR", "type": "VARCHAR", "size": 150}
+  ],
+  "18": [
+	{"action": "ADD", "target": "TABLE", "name": "CMGRAC"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMRDAT", "table": "CMGRAC", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMRCID", "table": "CMGRAC", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "TABLE", "name": "CMPDAT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSECT", "table": "CMPDAT", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPLID", "table": "CMPDAT", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPDAT", "table": "CMPDAT", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPKEY", "table": "CMPDAT", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "TABLE", "name": "CMCCAC"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCCID", "table": "CMCCAC", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCDAT", "table": "CMCCAC", "type": "TEXT"}
+  ],
+  "19": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDESC1", "table": "CMROOM", "type": "VARCHAR", "size": 255}
+  ],
+  "20": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMJKEY", "table": "CMJRNL", "type": "VARCHAR", "size": 255},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMSUBJ", "table": "CMJRNL", "type": "VARCHAR", "size": 255}
+  ],
+  "21": [
+	{"action": "ADD", "target": "TABLE", "name": "CMSTAT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMENDT", "table": "CMSTAT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSTRT", "table": "CMSTAT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATA", "table": "CMSTAT", "type": "TEXT"}
+  ],
+  "22": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMENDT", "table": "CMSTAT", "type": "LONG"},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMSTRT", "table": "CMSTAT", "type": "LONG"}
+  ],
+  "23": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMTROP", "table": "CMCLAN", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMMORG", "table": "CMCLAN", "type": "VARCHAR", "size": 50}
+  ],
+  "24": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMMXML", "table": "CMCHAR", "type": "TEXT"}
+  ],
+  "25": [
+	{"action": "ADD", "target": "TABLE", "name": "CMPOLL"},
+	{"action": "ADD", "target": "COLUMN", "name": "CHRESL", "table": "CMPOLL", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMBYNM", "table": "CMPOLL", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMNAME", "table": "CMPOLL", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMOPTN", "table": "CMPOLL", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFLAG", "table": "CMPOLL", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDESC", "table": "CMPOLL", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMSUBJ", "table": "CMPOLL", "type": "VARCHAR", "size": 255},
+	{"action": "ADD", "target": "COLUMN", "name": "CMQUAL", "table": "CMPOLL", "type": "VARCHAR", "size": 255}
+  ],
+  "26": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXPI", "table": "CMPOLL", "type": "LONG"}
+  ],
+  "27": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CHRESL", "table": "CMPOLL", "type": "TEXT"}
+  ],
+  "28": [
+	{"action": "ADD", "target": "TABLE", "name": "CMVFS"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDTYP", "table": "CMVFS", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMWHOM", "table": "CMVFS", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATA", "table": "CMVFS", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMMODD", "table": "CMVFS", "type": "LONG"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMFNAM", "table": "CMVFS", "type": "VARCHAR"}
+  ],
+  "29": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMCOLR", "table": "CMCHAR", "type": "VARCHAR", "size": 100}
+  ],
+  "30": [
+	{"action": "ADD", "target": "TABLE", "name": "CMGAAC"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMGAAT", "table": "CMGAAC", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMGAID", "table": "CMGAAC", "type": "VARCHAR", "size": 50}
+  ],
+  "31": [
+	{"action": "ADD", "target": "TABLE", "name": "CMACCT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMAXML", "table": "CMACCT", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHRS", "table": "CMACCT", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMANAM", "table": "CMACCT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPASS", "table": "CMACCT", "type": "VARCHAR", "size": 50}
+  ],
+  "32": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATA", "table": "CMJRNL", "type": "VARCHAR", "size": 255},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUPTM", "table": "CMJRNL", "type": "LONG"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMPART", "table": "CMJRNL", "type": "VARCHAR", "size": 75},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMJKEY", "table": "CMJRNL", "type": "VARCHAR", "size": 75},
+	{"action": "ADD", "target": "COLUMN", "name": "CMATTR", "table": "CMJRNL", "type": "INT"}
+  ],
+  "34": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMIMGP", "table": "CMJRNL", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMVIEW", "table": "CMJRNL", "type": "INT"}
+  ],
+  "36": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMREPL", "table": "CMJRNL", "type": "INT"}
+  ],
+  "37": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMGACL", "table": "CMGAAC", "type": "VARCHAR", "size": 50}
+  ],
+  "38": [
+	{"action": "DELETE", "target": "COLUMN", "name": "CMCLAN", "table": "CMCHAR", "type": "VARCHAR", "size": 100},
+	{"action": "DELETE", "target": "COLUMN", "name": "CMCLRO", "table": "CMCHAR", "type": "INT"},
+	{"action": "ADD", "target": "TABLE", "name": "CMCHCL"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLAN", "table": "CMCHCL", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLRO", "table": "CMCHCL", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMUSERID", "table": "CMCHCL", "type": "VARCHAR", "size": 50}
+  ],
+  "39": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMITWO", "table": "CMCHIT", "type": "LONG"}
+  ],
+  "40": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMQFLAGS", "table": "CMQUESTS", "type": "INT"}
+  ],
+  "41": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLSTS", "table": "CMCHCL", "type": "VARCHAR", "size": 100}
+  ],
+  "42": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDESC", "table": "CMCHAR", "type": "TEXT"}
+  ],
+  "43": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMCHID", "table": "CMCHAR", "type": "VARCHAR"}
+  ],
+  "44": [
+	{"action": "ADD", "target": "TABLE", "name": "CMBKLG"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMNAME", "table": "CMBKLG", "type": "VARCHAR"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATA", "table": "CMBKLG", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMINDX", "table": "CMBKLG", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMDATE", "table": "CMBKLG", "type": "LONG"}
+  ],
+  "45": [
+	{"action": "ADD", "target": "TABLE", "name": "CMCLIT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITNM", "table": "CMCLIT", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMHEIT", "table": "CMCLIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITAB", "table": "CMCLIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITID", "table": "CMCLIT", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITUR", "table": "CMCLIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITWO", "table": "CMCLIT", "type": "LONG"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLV", "table": "CMCLIT", "type": "INT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITLO", "table": "CMCLIT", "type": "VARCHAR", "size": 100},
+	{"action": "ADD", "target": "COLUMN", "name": "CMITTX", "table": "CMCLIT", "type": "TEXT"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCLID", "table": "CMCLIT", "type": "VARCHAR", "size": 100}
+  ],
+  "46": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMCLAS", "table": "CMCHAR", "type": "VARCHAR", "size": 250}
+  ],
+  "47": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMRCDT", "table": "CMGRAC", "type": "LONG"}
+  ],
+  "48": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMQUESID", "table": "CMQUESTS", "type": "VARCHAR", "size": 250}
+  ],
+  "49": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMRCID", "table": "CMGRAC", "type": "VARCHAR", "size": 250}
+  ],
+  "50": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMPKEY", "table": "CMPDAT", "type": "VARCHAR", "size": 255}
+  ],
+  "51": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMJRNL", "table": "CMJRNL", "type": "VARCHAR", "size": 100},
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMJKEY", "table": "CMJRNL", "type": "VARCHAR", "size": 160}
+  ],
+  "52": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMCOLR", "table": "CMCHAR", "type": "VARCHAR", "size": 255}
+  ],
+  "53": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMSNAM", "table": "CMBKLG", "type": "INT"}
+  ],
+  "54": [
+	{"action": "ADD", "target": "COLUMN", "name": "CMEXPI", "table": "CMJRNL", "type": "LONG"}
+  ],
+  "55": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMDATE", "table": "CMCHAR", "type": "VARCHAR", "size": 70}
+  ],
+  "56": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMRACE", "table": "CMCHAR", "type": "VARCHAR", "size": 250}
+  ],
+  "57": [
+	{"action": "MODIFY", "target": "COLUMN", "name": "CMBTMP", "table": "CMCHAR", "type": "LONG"}
+  ],
+  "58": [
+	{"action": "ADD", "target": "TABLE", "name": "CMCDAC"},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCDCL", "table": "CMCDAC", "type": "VARCHAR", "size": 250},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCDID", "table": "CMCDAC", "type": "VARCHAR", "size": 50},
+	{"action": "ADD", "target": "COLUMN", "name": "CMCDAT", "table": "CMCDAC", "type": "TEXT"}
+  ]
+}

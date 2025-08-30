@@ -76,7 +76,7 @@ public class DBConnection
 
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean				isFakeDB			= null;
-	
+
 	/** Track the thread that owns the connection */
 	private volatile Thread		lastThread			= null;
 
@@ -609,6 +609,18 @@ public class DBConnection
 		return responseCode;
 	}
 
+	public DatabaseMetaData getMetaData()
+	{
+		try
+		{
+			return myConnection.getMetaData();
+		}
+		catch (final SQLException e)
+		{
+			return null;
+		}
+	}
+
 	/**
 	 * returns whether this connection is ready for use
 	 *
@@ -670,7 +682,7 @@ public class DBConnection
 	/**
 	 * If the connection is in use, returns the status of the thread
 	 * that has claimed it.
-	 * 
+	 *
 	 * @return true if the thread is alive, false if no claimed thread, or its not alive
 	 */
 	public boolean isThreadAlive()
@@ -700,11 +712,11 @@ public class DBConnection
 		}
 		return isAlive;
 	}
-	
+
 	/**
 	 * Returns an empty stack trace, or a full one if the connection has
 	 * an owner thread and its not dead.
-	 *  
+	 *
 	 * @return a stack trace, always
 	 */
 	public java.lang.StackTraceElement[] getStackTrace()

@@ -165,6 +165,12 @@ public interface DatabaseEngine extends CMLibrary
 	public List<String[]> DBRawQuery(String sql) throws CMException;
 
 	/**
+	 * Validates that the database is at the proper version
+	 * @return null if the version is correct, otherwise an error message
+	 */
+	public String validateDatabaseVersion();
+
+	/**
 	 * Table category: DBMAP
 	 * Loads both the mob and item catalogs into the catalog library.
 	 */

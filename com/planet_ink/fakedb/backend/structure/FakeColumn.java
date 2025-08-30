@@ -29,6 +29,22 @@ public class FakeColumn
 		DATETIME,
 		CLOB,
 		BLOB
+		;
+		public int getSQLType()
+		{
+			switch(this)
+			{
+			case BLOB: return java.sql.Types.BLOB;
+			case CLOB: return java.sql.Types.CLOB;
+			case DATETIME: return java.sql.Types.TIMESTAMP;
+			case INTEGER: return java.sql.Types.INTEGER;
+			case LONG: return java.sql.Types.BIGINT;
+			case STRING: return java.sql.Types.VARCHAR;
+			case UNKNOWN:
+			default:
+				return java.sql.Types.OTHER;
+			}
+		}
 	}
 
 	public String		name		= "undefined";

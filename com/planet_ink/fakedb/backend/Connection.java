@@ -7,6 +7,7 @@ import java.util.concurrent.Executor;
 
 import com.planet_ink.fakedb.backend.jdbc.PreparedStatement;
 import com.planet_ink.fakedb.backend.jdbc.Statement;
+import com.planet_ink.fakedb.backend.structure.FakeMetaData;
 
 import java.lang.ref.WeakReference;
 
@@ -275,8 +276,7 @@ public class Connection implements java.sql.Connection
 	@Override
 	public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
 	{
-		log("getMetaData");
-		return null;
+		return new FakeMetaData(this.backend);
 	}
 
 	@Override

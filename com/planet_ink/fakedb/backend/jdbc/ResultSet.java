@@ -2,15 +2,21 @@ package com.planet_ink.fakedb.backend.jdbc;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.sql.NClob;
 import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLXML;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import com.planet_ink.fakedb.*;
@@ -80,7 +86,7 @@ public class ResultSet implements java.sql.ResultSet
 		}
 		for (int s = 0; s < showCols.length; s++)
 		{
-			if (showCols[s] == FakeColumn.INDEX_COUNT)
+			if(showCols[s] == FakeColumn.INDEX_COUNT)
 			{
 				showColMap.put("COUNT", Integer.valueOf(FakeColumn.INDEX_COUNT));
 				int ct = 0;
@@ -108,24 +114,24 @@ public class ResultSet implements java.sql.ResultSet
 	{
 		while (true)
 		{
-			if (!iter.hasNext())
+			if(!iter.hasNext())
 				return false;
 			final RecordInfo rowInfo = iter.next();
-			if (countValue != null)
+			if(countValue != null)
 			{
 				currentRow++;
 				return true;
 			}
-			if (conditions.size() > 0)
+			if(conditions.size() > 0)
 			{
 				final boolean[] dataLoaded = new boolean[1];
 				dataLoaded[0] = false;
-				if (!fakeTable.recordCompare(rowInfo, conditions, dataLoaded, values))
+				if(!fakeTable.recordCompare(rowInfo, conditions, dataLoaded, values))
 					continue;
 				currentRow++;
-				if (!dataLoaded[0])
+				if(!dataLoaded[0])
 					dataLoaded[0] = fakeTable.getRecord(values, rowInfo);
-				if (!dataLoaded[0])
+				if(!dataLoaded[0])
 					return false;
 				return true;
 			}
@@ -137,7 +143,7 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public void close() throws java.sql.SQLException
 	{
-		if ((this.statement != null) && (closeStatementOnClose))
+		if((this.statement != null) && (closeStatementOnClose))
 			this.statement.close();
 	}
 
@@ -150,13 +156,13 @@ public class ResultSet implements java.sql.ResultSet
 	private Object getProperValue(int columnIndex) throws SQLException
 	{
 		wasNullFlag = false;
-		if ((columnIndex < 1) || (columnIndex > showCols.length))
+		if((columnIndex < 1) || (columnIndex > showCols.length))
 			throw new SQLException("Illegal column number "+columnIndex+"/"+showCols.length);
 		columnIndex = showCols[columnIndex - 1];
-		if (columnIndex == FakeColumn.INDEX_COUNT)
+		if(columnIndex == FakeColumn.INDEX_COUNT)
 			return this.countValue;
 		final Object v = values[columnIndex].getValue();
-		if (v == null)
+		if(v == null)
 		{
 			wasNullFlag = true;
 			return null;
@@ -168,7 +174,7 @@ public class ResultSet implements java.sql.ResultSet
 	public String getString(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		return o.toString();
 	}
@@ -177,7 +183,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Array getArray(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		throw new java.sql.SQLException();
 	}
@@ -186,7 +192,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Blob getBlob(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		throw new java.sql.SQLException();
 	}
@@ -195,7 +201,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Clob getClob(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		throw new java.sql.SQLException();
 	}
@@ -204,7 +210,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Ref getRef(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		throw new java.sql.SQLException();
 	}
@@ -213,7 +219,7 @@ public class ResultSet implements java.sql.ResultSet
 	public boolean getBoolean(final int columnIndex) throws java.sql.SQLException
 	{
 		final String s = getString(columnIndex);
-		if ((s != null) && (s.length() > 0))
+		if((s != null) && (s.length() > 0))
 		{
 			switch (Character.toUpperCase(s.charAt(0)))
 			{
@@ -230,11 +236,11 @@ public class ResultSet implements java.sql.ResultSet
 	public byte getByte(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return 0;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return ((Integer) o).byteValue();
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return ((Long) o).byteValue();
 		try
 		{
@@ -262,11 +268,11 @@ public class ResultSet implements java.sql.ResultSet
 	public long getLong(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return 0;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return ((Integer) o).longValue();
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return ((Long) o).longValue();
 		try
 		{
@@ -282,11 +288,11 @@ public class ResultSet implements java.sql.ResultSet
 	public float getFloat(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return 0;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return ((Integer) o).floatValue();
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return ((Long) o).floatValue();
 		try
 		{
@@ -302,11 +308,11 @@ public class ResultSet implements java.sql.ResultSet
 	public double getDouble(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return 0;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return ((Integer) o).doubleValue();
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return ((Long) o).doubleValue();
 		try
 		{
@@ -322,7 +328,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.math.BigDecimal getBigDecimal(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return new java.math.BigDecimal(0);
 		try
 		{
@@ -350,7 +356,7 @@ public class ResultSet implements java.sql.ResultSet
 	public byte[] getBytes(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
 		try
 		{
@@ -366,11 +372,11 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Date getDate(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return new java.sql.Date(((Integer) o).longValue());
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return new java.sql.Date(((Long) o).longValue());
 		try
 		{
@@ -386,11 +392,11 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Time getTime(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return new java.sql.Time(((Integer) o).longValue());
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return new java.sql.Time(((Long) o).longValue());
 		try
 		{
@@ -406,11 +412,11 @@ public class ResultSet implements java.sql.ResultSet
 	public java.sql.Timestamp getTimestamp(final int columnIndex) throws java.sql.SQLException
 	{
 		final Object o = getProperValue(columnIndex);
-		if (o == null)
+		if(o == null)
 			return null;
-		if (o instanceof Integer)
+		if(o instanceof Integer)
 			return new java.sql.Timestamp(((Integer) o).longValue());
-		if (o instanceof Long)
+		if(o instanceof Long)
 			return new java.sql.Timestamp(((Long) o).longValue());
 		try
 		{
@@ -442,7 +448,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.io.InputStream getBinaryStream(final int columnIndex) throws java.sql.SQLException
 	{
 		final byte b[] = getBytes(columnIndex);
-		if (b == null)
+		if(b == null)
 			return null;
 		return new java.io.ByteArrayInputStream(b);
 	}
@@ -451,7 +457,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.io.Reader getCharacterStream(final int columnIndex) throws java.sql.SQLException
 	{
 		final String s = getString(columnIndex);
-		if (s == null)
+		if(s == null)
 			return null;
 		return new java.io.CharArrayReader(s.toCharArray());
 	}
@@ -467,7 +473,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.net.URL getURL(final int columnIndex) throws java.sql.SQLException
 	{
 		final String s = getString(columnIndex);
-		if (s == null)
+		if(s == null)
 			return null;
 		try
 		{
@@ -482,7 +488,7 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public int findColumn(final String columnName) throws java.sql.SQLException
 	{
-		if (!showColMap.containsKey(columnName))
+		if(!showColMap.containsKey(columnName))
 			return -1;
 		return showColMap.get(columnName).intValue() + 1;
 	}
@@ -730,9 +736,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isSearchable(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
 				return true;
 			}
@@ -746,9 +752,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int isNullable(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return columnNoNulls;
 				return fakeTable.getColumnInfo(showCols[column - 1]).canNull ? columnNullable : columnNoNulls;
 			}
@@ -756,9 +762,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isSigned(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
@@ -783,9 +789,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getColumnDisplaySize(final int column) throws SQLException
 			{
-				if ((column < 1) || (column > showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return 6;
 				final FakeColumn col = fakeTable.getColumnInfo(showCols[column - 1]);
 				switch (col.type)
@@ -817,9 +823,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnName(final int column) throws SQLException
 			{
-				if ((column < 1) || (column > showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "COUNT";
 				return fakeTable.getColumnName(showCols[column - 1]);
 			}
@@ -833,9 +839,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getPrecision(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return 9;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
@@ -863,9 +869,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getTableName(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "FAKEDB";
 				return fakeTable.getColumnInfo(showCols[column - 1]).tableName;
 			}
@@ -879,9 +885,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getColumnType(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return java.sql.Types.INTEGER;
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
@@ -906,9 +912,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnTypeName(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "integer";
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
@@ -939,9 +945,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isWritable(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
 				return true;
 			}
@@ -955,9 +961,9 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnClassName(final int column) throws SQLException
 			{
-				if ((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column >= showCols.length))
 					throw new SQLException("Value out of range.");
-				if (showCols[column - 1] == FakeColumn.INDEX_COUNT)
+				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return Integer.class.getName();
 				switch (fakeTable.getColumnInfo(showCols[column - 1]).type)
 				{
@@ -1351,7 +1357,7 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public void beforeFirst() throws java.sql.SQLException
 	{
-		if (fakeTable == null)
+		if(fakeTable == null)
 			throw new java.sql.SQLException();
 		iter = fakeTable.indexIterator(this.orderByKeyDexCols, this.orderByConditions);
 		currentRow = 0;
@@ -1537,41 +1543,41 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public <T> T getObject(final int columnIndex, final Class<T> type) throws SQLException
 	{
-		if (type == Long.class)
+		if(type == Long.class)
 			return (T) Long.valueOf(this.getLong(columnIndex));
-		if (type == Integer.class)
+		if(type == Integer.class)
 			return (T) Long.valueOf(this.getInt(columnIndex));
-		if (type == Short.class)
+		if(type == Short.class)
 			return (T) Short.valueOf(this.getShort(columnIndex));
-		if (type == String.class)
+		if(type == String.class)
 			return (T) String.valueOf(this.getString(columnIndex));
-		if (type == Short.class)
+		if(type == Short.class)
 			return (T) Short.valueOf(this.getShort(columnIndex));
-		if (type == Double.class)
+		if(type == Double.class)
 			return (T) Double.valueOf(this.getDouble(columnIndex));
-		if (type == Float.class)
+		if(type == Float.class)
 			return (T) Float.valueOf(this.getFloat(columnIndex));
-		if (type == Byte.class)
+		if(type == Byte.class)
 			return (T) Byte.valueOf(this.getByte(columnIndex));
-		if (type == Boolean.class)
+		if(type == Boolean.class)
 			return (T) Boolean.valueOf(this.getBoolean(columnIndex));
-		if (type == java.sql.Array.class)
+		if(type == java.sql.Array.class)
 			return (T) this.getArray(columnIndex);
-		if (type == java.sql.Blob.class)
+		if(type == java.sql.Blob.class)
 			return (T) this.getBlob(columnIndex);
-		if (type == java.sql.Clob.class)
+		if(type == java.sql.Clob.class)
 			return (T) this.getClob(columnIndex);
-		if (type == java.math.BigDecimal.class)
+		if(type == java.math.BigDecimal.class)
 			return (T) this.getBigDecimal(columnIndex);
-		if (type == byte[].class)
+		if(type == byte[].class)
 			return (T) this.getBytes(columnIndex);
-		if (type == java.sql.Date.class)
+		if(type == java.sql.Date.class)
 			return (T) this.getDate(columnIndex);
-		if (type == java.sql.Time.class)
+		if(type == java.sql.Time.class)
 			return (T) this.getTime(columnIndex);
-		if (type == java.sql.Timestamp.class)
+		if(type == java.sql.Timestamp.class)
 			return (T) this.getTimestamp(columnIndex);
-		if (type == Object.class)
+		if(type == Object.class)
 			return (T) this.getObject(columnIndex);
 		throw new SQLFeatureNotSupportedException();
 	}
@@ -1778,5 +1784,87 @@ public class ResultSet implements java.sql.ResultSet
 	public <T> T unwrap(final Class<T> iface) throws SQLException
 	{
 		return null;
+	}
+
+	public static java.sql.ResultSet createSimpleResultSet(final List<Map<String,Object>> rows)
+	{
+		final InvocationHandler handler = new InvocationHandler()
+		{
+			final List<Map<String,Object>> dat = rows;
+			final Set<String> colNames	= new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			{
+				for (final Map<String, Object> row : dat)
+					colNames.addAll(row.keySet());
+			}
+			int rowNum = -1;
+			@Override
+			public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable
+			{
+				final String methodName = method.getName();
+				if("next".equals(methodName))
+				{
+					return (++rowNum < dat.size()) ? Boolean.TRUE : Boolean.FALSE;
+				}
+				else
+				if("close".equals(methodName))
+				{
+					rowNum = Integer.MIN_VALUE;
+					return null;
+				}
+				else
+				if("isClosed".equals(methodName))
+					return (rowNum == Integer.MIN_VALUE) ? Boolean.TRUE : Boolean.FALSE;
+				else
+				if("getMetaData".equals(methodName))
+					throw new SQLException("No metadata here");
+				else
+				if (methodName.equals("getString") && (args != null) && (args.length == 1) && (args[0] instanceof String))
+				{
+					if ((rowNum < 0) || (rowNum >= dat.size()))
+						throw new SQLException("No current row");
+					final Object o = dat.get(rowNum).get(args[0]);
+					if (o == null)
+						return null;
+					return o.toString();
+				}
+				else
+				if (methodName.equals("getInt") && (args != null) && (args.length == 1) && (args[0] instanceof String))
+				{
+					if ((rowNum < 0) || (rowNum >= dat.size()))
+						throw new SQLException("No current row");
+					final Object o = dat.get(rowNum).get(args[0]);
+					if (o == null)
+						return null;
+					if(o instanceof Integer)
+						return o;
+					if (o instanceof Long)
+						return Integer.valueOf(((Long) o).intValue());
+					try
+					{
+						return Integer.valueOf(Integer.parseInt(o.toString().trim()));
+					}
+					catch(final Exception e)
+					{
+						return null;
+					}
+				}
+				else
+				if(methodName.startsWith("get") || methodName.startsWith("is") || methodName.startsWith("was"))
+					throw new SQLException("No data");
+				else
+					throw new SQLException("Method " + methodName + " not supported.");
+			}
+		};
+
+		return (java.sql.ResultSet) Proxy.newProxyInstance(
+			java.sql.ResultSet.class.getClassLoader(),
+			new Class<?>[] { java.sql.ResultSet.class },
+			handler
+		);
+	}
+
+	public static java.sql.ResultSet createEmptyResultSet()
+	{
+		return createSimpleResultSet(Collections.emptyList());
 	}
 }
