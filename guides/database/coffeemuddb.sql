@@ -43,7 +43,7 @@ CREATE TABLE CMPOLL (
 	CMSUBJ char (255) NULL ,
 	CMDESC text NULL ,
 	CMOPTN text NULL ,
-	CMFLAG bigint NULL ,
+	CMFLAG int NULL ,
 	CMQUAL char (255) NULL ,
 	CMRESL text NULL,
 	CMEXPI bigint NULL
