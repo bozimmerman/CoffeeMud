@@ -6,10 +6,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
+/*
+	Copyright 2025-2025 Bo Zimmerman
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		   http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+*/
 
 /**
  * A utility class to generate basic DDL SQL statements (CREATE TABLE, ALTER TABLE, etc.)
@@ -36,11 +52,11 @@ public class DDLGenerator
 		{
 			final String typeName = R.getString("TYPE_NAME").toUpperCase();
 			final int dataType = R.getInt("DATA_TYPE");
-			for (final String key : dbTypes.keySet())
+			for(final String key:dbTypes.keySet())
 			{
-				if (dbTypes.get(key).intValue() == dataType)
+				if(dbTypes.get(key).intValue()==dataType)
 				{
-					if (!typeMappings.containsKey(key))
+					if(!typeMappings.containsKey(key))
 						typeMappings.put(key, typeName);
 				}
 			}
@@ -57,7 +73,7 @@ public class DDLGenerator
 	public String getDropIndexSQL(final String indexName, final String tableName) throws SQLException
 	{
 		final String quote=metaData.getIdentifierQuoteString();
-		return "DROP INDEX " + quote + indexName + quote + " ON " + quote + tableName + quote + ";";
+		return "DROP INDEX "+quote+indexName+quote+" ON "+quote+tableName+quote+";";
 	}
 
 
@@ -71,7 +87,7 @@ public class DDLGenerator
 	public String getDropPrimaryKeySQL(final String tableName) throws SQLException
 	{
 		final String quote=metaData.getIdentifierQuoteString();
-		return "ALTER TABLE " + quote + tableName + quote + " DROP PRIMARY KEY;";
+		return "ALTER TABLE "+quote+tableName+quote+" DROP PRIMARY KEY;";
 	}
 
 	/**
@@ -98,7 +114,7 @@ public class DDLGenerator
 			sql.append(getDataTypeSQL(type, size));
 			if(!nullable)
 				sql.append(" NOT NULL");
-			if(i < columnDefs.size() - 1)
+			if(i<(columnDefs.size()-1))
 				sql.append(", ");
 		}
 		sql.append(");");
@@ -144,7 +160,7 @@ public class DDLGenerator
 		final StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quote).append(tableName).append(quote)
 							.append(modifyClause).append(quote).append(columnName).append(quote).append(" ")
 							.append(getDataTypeSQL(newType, newSize));
-		if(newNullable != null)
+		if(newNullable!=null)
 		{
 			if(!newNullable.booleanValue())
 				sql.append(" NOT NULL");
@@ -169,12 +185,12 @@ public class DDLGenerator
 		for(int i=0;i<columnNames.size();i++)
 		{
 			sql.append(quote).append(columnNames.get(i)).append(quote);
-			if(i<columnNames.size()-1)
+			if(i<(columnNames.size()-1))
 				sql.append(", ");
 		}
 		sql.append(");");
 		if(productName.contains("oracle") || productName.contains("db2"))
-			sql.insert(21+tableName.length(), " CONSTRAINT PK_" + tableName);
+			sql.insert(21+tableName.length(), " CONSTRAINT PK_"+tableName);
 		return sql.toString();
 	}
 
@@ -196,7 +212,7 @@ public class DDLGenerator
 		for(int i=0;i<columnNames.size();i++)
 		{
 			sql.append(quote).append(columnNames.get(i)).append(quote);
-			if(i < columnNames.size() - 1)
+			if(i<(columnNames.size()-1))
 				sql.append(", ");
 		}
 		sql.append(");");
@@ -214,8 +230,8 @@ public class DDLGenerator
 	private String getDataTypeSQL(final String type, final Integer size) throws SQLException
 	{
 		final String baseType=mapPortableType(type);
-		if((baseType.equalsIgnoreCase("CHAR") || baseType.equalsIgnoreCase("VARCHAR")) && size != null)
-			return baseType + "(" + size + ")";
+		if((baseType.equalsIgnoreCase("CHAR") || baseType.equalsIgnoreCase("VARCHAR")) && (size!=null))
+			return baseType+"("+size+")";
 		return baseType;
 	}
 
@@ -248,14 +264,14 @@ public class DDLGenerator
 	 * @param columnName The column name to drop
 	 * @return The generated SQL string.
 	 * @throws SQLException if an error occurs or if dropping columns is not
-	 *             supported
+	 *			 supported
 	 */
 	public String getDropColumnSQL(final String tableName, final String columnName) throws SQLException
 	{
 		if(!metaData.supportsAlterTableWithDropColumn())
 			throw new SQLException("Drop column not supported");
 		final String quote=metaData.getIdentifierQuoteString();
-		return "ALTER TABLE " + quote + tableName + quote + " DROP COLUMN " + quote + columnName + quote + ";";
+		return "ALTER TABLE "+quote+tableName+quote+" DROP COLUMN "+quote+columnName+quote+";";
 	}
 
 	/**
@@ -268,8 +284,187 @@ public class DDLGenerator
 	public String getDropTableSQL(final String tableName) throws SQLException
 	{
 		final String quote=metaData.getIdentifierQuoteString();
-		return "DROP TABLE " + quote + tableName + quote + ";";
+		return "DROP TABLE "+quote+tableName+quote+";";
 	}
+
+	/**
+	 * A helper class to represent a table schema during processing
+	 */
+	private static class DDLTable
+	{
+		String name;
+
+		LinkedHashMap<String, JSONObject>	columns			= new LinkedHashMap<>();
+		List<JSONObject>					keyActions		= new ArrayList<>();
+		List<JSONObject>					indexActions	= new ArrayList<>();
+
+		public DDLTable(final String name)
+		{
+			this.name = name;
+		}
+	}
+
+	/**
+	 * Given an array of schema versions (each a list of actions), computes the
+	 * final schema and generates the SQL statements to create it from scratch.
+	 *
+	 * @param versions Array of schema versions, each a list of action maps
+	 * @return List of SQL statements to create the final schema
+	 * @throws Exception if an error occurs during processing
+	 */
+	public List<String> getSchemaSQL(final List<JSONObject>[] versions) throws Exception
+	{
+		final List<JSONObject> finalSchema = getFinalSchema(versions);
+		return generateSQLForChanges(finalSchema);
+	}
+
+	/**
+	 * Given a list of schema versions (each a list of actions), computes the
+	 * final schema by applying all actions in order.
+	 *
+	 * @param versions List of schema versions, each a list of action maps
+	 * @return The final schema as a list of action maps
+	 */
+	private List<JSONObject> getFinalSchema(final List<JSONObject>[] versions)
+	{
+		final Map<String, DDLTable> schema = new HashMap<>();
+		final List<String> tableOrder = new ArrayList<>();
+
+		for(final List<JSONObject> version:versions)
+		{
+			for(final JSONObject action:version)
+			{
+				final String act=(String)action.get("action");
+				final String target=(String)action.get("target");
+				final String table=(String)action.get("table");
+
+				if((table!=null)
+				&& (!schema.containsKey(table)))
+				{
+					schema.put(table, new DDLTable(table));
+					tableOrder.add(table);
+				}
+
+				if("ADD".equals(act))
+				{
+					if("TABLE".equals(target))
+					{
+						final String name=(String) action.get("name");
+						if(!schema.containsKey(name))
+						{
+							schema.put(name, new DDLTable(name));
+							tableOrder.add(name);
+						}
+					}
+					else
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						final JSONObject props = new JSONObject();
+						if(action.containsKey("type"))
+							props.put("type", action.get("type"));
+						if(action.containsKey("size"))
+							props.put("size", action.get("size"));
+						if(action.containsKey("nullable"))
+							props.put("nullable", action.get("nullable"));
+						schema.get(table).columns.put(col, props);
+					}
+					else
+					if("KEY".equals(target))
+						schema.get(table).keyActions.add(action);
+					else
+					if("INDEX".equals(target))
+						schema.get(table).indexActions.add(action);
+				}
+				else
+				if("MODIFY".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						final Map<String, Object> props = schema.get(table).columns.get(col);
+						if(props!=null) {
+							if(action.containsKey("type")) props.put("type", action.get("type"));
+							if(action.containsKey("size")) props.put("size", action.get("size"));
+							if(action.containsKey("nullable")) props.put("nullable", action.get("nullable"));
+						}
+					}
+				}
+				else
+				if("DELETE".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						schema.get(table).columns.remove(col);
+						schema.get(table).keyActions.removeIf(k -> col.equals(k.get("name")));
+					}
+				}
+				else
+				if("MOVE".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String)action.get("name");
+						final String from=(String)action.get("from_table");
+						final String to=(String)action.get("to_table");
+						if(!schema.containsKey(to))
+						{
+							schema.put(to, new DDLTable(to));
+							tableOrder.add(to);
+						}
+						JSONObject props = schema.get(from).columns.remove(col);
+						if(props==null)
+							props = new JSONObject();
+						if(action.containsKey("type"))
+							props.put("type", action.get("type"));
+						if(action.containsKey("size"))
+							props.put("size", action.get("size"));
+						if(action.containsKey("nullable"))
+							props.put("nullable", action.get("nullable"));
+						schema.get(to).columns.put(col, props);
+						schema.get(from).keyActions.removeIf(k -> col.equals(k.get("name")));
+					}
+				}
+			}
+		}
+
+		final List<JSONObject> result = new ArrayList<>();
+		for(final String t : tableOrder)
+		{
+			final DDLTable tab = schema.get(t);
+			if(tab==null)
+				continue;
+			for(final Map.Entry<String, JSONObject> entry:tab.columns.entrySet())
+			{
+				final String col = entry.getKey();
+				final JSONObject props = entry.getValue();
+				final JSONObject addCol = new JSONObject();
+				addCol.put("action", "ADD");
+				addCol.put("target", "COLUMN");
+				addCol.put("name", col);
+				addCol.put("table", t);
+				if(props.containsKey("type"))
+					addCol.put("type", props.get("type"));
+				if(props.containsKey("size"))
+					addCol.put("size", props.get("size"));
+				if(props.containsKey("nullable"))
+					addCol.put("nullable", props.get("nullable"));
+				result.add(addCol);
+			}
+			for(final JSONObject key:tab.keyActions)
+				result.add(key);
+			for(final JSONObject index:tab.indexActions)
+				result.add(index);
+			final JSONObject addTable = new JSONObject();
+			addTable.put("action", "ADD");
+			addTable.put("target", "TABLE");
+			addTable.put("name", tab.name);
+			result.add(addTable);
+		}
+		return result;
+	}
+
 
 	/**
 	 * Generates SQL statements for a list of schema changes. Each change is
@@ -287,7 +482,7 @@ public class DDLGenerator
 		final Set<JSONObject> processed = new HashSet<>();
 		final Map<String, List<String>> pkAddsByTable = new HashMap<>();
 		final String quote = metaData.getIdentifierQuoteString();
-		for(final JSONObject change : changes)
+		for(final JSONObject change:changes)
 		{
 			if(processed.contains(change))
 				continue;
@@ -300,13 +495,13 @@ public class DDLGenerator
 				final List<JSONObject> moveChanges = new ArrayList<>();
 				final List<String> pkCols = new ArrayList<>();
 				final List<JSONObject> indexChanges = new ArrayList<>();
-				for(final JSONObject c : changes)
+				for(final JSONObject c:changes)
 				{
-					if(processed.contains(c) || c == change)
+					if(processed.contains(c) || (c==change))
 						continue;
 					final String ca = c.getCheckedString("action").toUpperCase();
 					final String ct = c.getCheckedString("target").toUpperCase();
-					String ctable = c.containsKey("table") ? c.getCheckedString("table").toUpperCase() : "";
+					String ctable = c.containsKey("table")?c.getCheckedString("table").toUpperCase():"";
 					if(ca.equals("MOVE"))
 						ctable = c.getCheckedString("to_table").toUpperCase();
 					if(ctable.equals(tableName))
@@ -337,17 +532,17 @@ public class DDLGenerator
 					}
 				}
 				sqls.add(getCreateTableSQL(tableName, columnDefs));
-				if (!pkCols.isEmpty())
+				if(!pkCols.isEmpty())
 					sqls.add(getAddPrimaryKeySQL(tableName, pkCols));
 				// handle data moves if any
 				if(!moveChanges.isEmpty())
 				{
 					final JSONObject firstMove = moveChanges.get(0);
 					final String fromTable = firstMove.getCheckedString("from_table").toUpperCase();
-					for(final JSONObject m : moveChanges)
+					for(final JSONObject m:moveChanges)
 					{
 						if(!m.getCheckedString("from_table").toUpperCase().equals(fromTable))
-							throw new Exception("Multiple from_tables for moves to new table " + tableName);
+							throw new Exception("Multiple from_tables for moves to new table "+tableName);
 					}
 					final ResultSet pkRs = metaData.getPrimaryKeys(null, null, fromTable);
 					final List<String> fromPkCols = new ArrayList<>();
@@ -365,47 +560,47 @@ public class DDLGenerator
 						}
 						idxs.close();
 						if(fromPkCols.isEmpty())
-							throw new Exception("No primary key found for from_table " + fromTable);
+							throw new Exception("No primary key found for from_table "+fromTable);
 					}
 					final StringBuilder insertCols = new StringBuilder();
 					final StringBuilder selectCols = new StringBuilder();
-					for(final String pk : fromPkCols)
+					for(final String pk:fromPkCols)
 					{
 						insertCols.append(quote).append(pk).append(quote).append(",");
 						selectCols.append(quote).append(pk).append(quote).append(",");
 					}
-					for(final JSONObject m : moveChanges)
+					for(final JSONObject m:moveChanges)
 					{
 						final String col = m.getCheckedString("name").toUpperCase();
 						insertCols.append(quote).append(col).append(quote).append(",");
 						selectCols.append(quote).append(col).append(quote).append(",");
 					}
-					if(insertCols.length() > 0)
-						insertCols.setLength(insertCols.length() - 1);
-					if(selectCols.length() > 0)
-						selectCols.setLength(selectCols.length() - 1);
-					final String transferSql = "INSERT INTO " + quote + tableName + quote + " (" + insertCols + ") SELECT " + selectCols + " FROM " + quote + fromTable + quote + ";";
+					if(insertCols.length()>0)
+						insertCols.setLength(insertCols.length()-1);
+					if(selectCols.length()>0)
+						selectCols.setLength(selectCols.length()-1);
+					final String transferSql = "INSERT INTO "+quote+tableName+quote+" ("+insertCols+") SELECT "+selectCols+" FROM "+quote+fromTable+quote+";";
 					sqls.add(transferSql);
-					for (final JSONObject m : moveChanges)
+					for(final JSONObject m:moveChanges)
 					{
 						sqls.add(getDropColumnSQL(fromTable, m.getCheckedString("name").toUpperCase()));
 					}
 				}
 				// add indexes
-				for(final JSONObject idx : indexChanges)
+				for(final JSONObject idx:indexChanges)
 				{
 					final String name = idx.getCheckedString("name");
-					final String idxName = tableName + "_IDX_" + name.replaceAll("[^A-Z0-9]","_");
+					final String idxName = tableName+"_IDX_"+name.replaceAll("[^A-Z0-9]","_");
 					final List<String> group = Arrays.asList(name.split(","));
 					final List<String> cols = new ArrayList<>();
-					for (final String s : group)
+					for(final String s:group)
 						cols.add(s.trim().toUpperCase());
 					sqls.add(getCreateIndexSQL(idxName, tableName, cols, false));
 				}
 				continue;
 			}
-			String table = change.containsKey("table") ? change.getCheckedString("table").toUpperCase() : null;
-			if(table == null && target.equals("TABLE"))
+			String table = change.containsKey("table")?change.getCheckedString("table").toUpperCase():null;
+			if((table==null) && target.equals("TABLE"))
 				table = change.getCheckedString("name").toUpperCase();
 			if(action.equals("ADD") && target.equals("COLUMN"))
 			{
@@ -422,8 +617,8 @@ public class DDLGenerator
 			{
 				final String col = change.getCheckedString("name").toUpperCase();
 				final String type = change.getCheckedString("type").toUpperCase();
-				final Integer size = change.containsKey("size") ? Integer.valueOf(change.getCheckedLong("size").intValue()) : null;
-				final Boolean nullable = change.containsKey("nullable") ? Boolean.valueOf(change.getCheckedBoolean("nullable").booleanValue()) : null;
+				final Integer size = change.containsKey("size")?Integer.valueOf(change.getCheckedLong("size").intValue()):null;
+				final Boolean nullable = change.containsKey("nullable")?Boolean.valueOf(change.getCheckedBoolean("nullable").booleanValue()):null;
 				sqls.add(getModifyColumnSQL(table, col, type, size, nullable));
 			}
 			else
@@ -452,10 +647,10 @@ public class DDLGenerator
 			if(action.equals("ADD") && target.equals("INDEX"))
 			{
 				final String name = change.getCheckedString("name");
-				final String idxName = table + "_IDX_" + name.replaceAll("[^A-Z0-9]","_");
+				final String idxName = table+"_IDX_"+name.replaceAll("[^A-Z0-9]","_");
 				final List<String> group = Arrays.asList(name.split(","));
 				final List<String> cols = new ArrayList<>();
-				for (final String s : group)
+				for(final String s:group)
 					cols.add(s.trim().toUpperCase());
 				sqls.add(getCreateIndexSQL(idxName, table, cols, false));
 			}
@@ -463,7 +658,7 @@ public class DDLGenerator
 			if(action.equals("DELETE") && target.equals("INDEX"))
 			{
 				final String name = change.getCheckedString("name");
-				final String idxName = table + "_IDX_" + name.replaceAll("[^A-Z0-9]","_");
+				final String idxName = table+"_IDX_"+name.replaceAll("[^A-Z0-9]","_");
 				sqls.add(getDropIndexSQL(idxName, table));
 			}
 			else
@@ -473,20 +668,18 @@ public class DDLGenerator
 				final String fromTable = change.getCheckedString("from_table").toUpperCase();
 				final String col = change.getCheckedString("name").toUpperCase();
 				final String type = change.getCheckedString("type").toUpperCase();
-				final Integer size = change.containsKey("size") ? Integer.valueOf(change.getCheckedLong("size").intValue()) : null;
+				final Integer size = change.containsKey("size")?Integer.valueOf(change.getCheckedLong("size").intValue()):null;
 				final Map<String, Object> colDef = new HashMap<>();
 				colDef.put("name", col);
 				colDef.put("type", type);
-				if(size != null)
+				if(size!=null)
 					colDef.put("size", size);
 				colDef.put("nullable", Boolean.TRUE);
 				sqls.add(getAddColumnSQL(toTable, colDef));
 				final ResultSet pkRs = metaData.getPrimaryKeys(null, null, fromTable);
 				final List<String> fromPkCols = new ArrayList<>();
 				while(pkRs.next())
-				{
 					fromPkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
-				}
 				pkRs.close();
 				if(fromPkCols.isEmpty())
 				{
@@ -498,19 +691,19 @@ public class DDLGenerator
 					idxs.close();
 					if(fromPkCols.isEmpty())
 					{
-						throw new Exception("No primary key found for from_table " + fromTable);
+						throw new Exception("No primary key found for from_table "+fromTable);
 					}
 				}
 				final StringBuilder insertCols = new StringBuilder();
 				final StringBuilder selectCols = new StringBuilder();
-				for(final String pk : fromPkCols)
+				for(final String pk:fromPkCols)
 				{
 					insertCols.append(quote).append(pk).append(quote).append(",");
 					selectCols.append(quote).append(pk).append(quote).append(",");
 				}
 				insertCols.append(quote).append(col).append(quote);
 				selectCols.append(quote).append(col).append(quote);
-				final String transferSql = "INSERT INTO " + quote + toTable + quote + " (" + insertCols + ") SELECT " + selectCols + " FROM " + quote + fromTable + quote + ";";
+				final String transferSql = "INSERT INTO "+quote+toTable+quote+" ("+insertCols+") SELECT "+selectCols+" FROM "+quote+fromTable+quote+";";
 				sqls.add(transferSql);
 				sqls.add(getDropColumnSQL(fromTable, col));
 			}

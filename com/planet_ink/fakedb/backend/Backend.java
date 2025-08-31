@@ -23,7 +23,10 @@ import java.util.*;
 
 import com.planet_ink.fakedb.backend.jdbc.ResultSet;
 import com.planet_ink.fakedb.backend.jdbc.Statement;
+import com.planet_ink.fakedb.backend.statements.ImplAlterStatement;
+import com.planet_ink.fakedb.backend.statements.ImplCreateStatement;
 import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
+import com.planet_ink.fakedb.backend.statements.ImplDropStatement;
 import com.planet_ink.fakedb.backend.statements.ImplInsertStatement;
 import com.planet_ink.fakedb.backend.statements.ImplSelectStatement;
 import com.planet_ink.fakedb.backend.statements.ImplUpdateStatement;
@@ -34,12 +37,18 @@ import com.planet_ink.fakedb.backend.structure.FakeTable;
 import com.planet_ink.fakedb.backend.structure.FakeTable2;
 import com.planet_ink.fakedb.backend.structure.RecordInfo;
 import com.planet_ink.fakedb.backend.structure.FakeColumn.FakeColType;
+import com.sun.tools.doclint.Messages.Group;
 
 public class Backend
 {
 	File							basePath;
 	private Map<String, FakeTable>	fakeTables	= new HashMap<String, FakeTable>();
 
+
+	public Backend(final File basePath)
+	{
+		this.basePath = basePath;
+	}
 	/**
 	*
 	*/
@@ -82,11 +91,10 @@ public class Backend
 	}
 
 	/**
-	 *
-	 * @param fakeTable
-	 * @param columns
-	 * @param sqlValues
-	 * @return
+	 * Check for duplicate keys
+	 * @param fakeTable the table
+	 * @param columns the columns
+	 * @param sqlValues the values
 	 * @throws java.sql.SQLException
 	 */
 	public void dupKeyCheck(final String tableName, final String[] doCols, final String[] sqlValues) throws java.sql.SQLException
@@ -129,78 +137,60 @@ public class Backend
 	}
 
 	/**
-	 *
-	 * @param basePath
-	 * @param schema
-	 * @throws IOException
+	 * Read the schema from a file
+	 * @param basePath The base path
+	 * @throws IOException if it fails
 	 */
-	public void readSchema(final File basePath, final File schema) throws IOException
+	public void readSchema(final File basePath) throws IOException
 	{
-		final BufferedReader in = new BufferedReader(new FileReader(schema));
-
-		try
+		final List<List<String>> schema = readRawSchema();
+		int version = 1;
+		for(final List<String> group : schema)
 		{
-			int version = 1;
-			while (true)
+			if((group.size()==0)||(group.get(0).startsWith("#")))
+				continue;
+			final String s = group.remove(0).toUpperCase().trim();
+			final int vx = s.lastIndexOf(' ');
+			if(vx > 0)
 			{
-				final String fakeTableName = in.readLine();
-				if (fakeTableName == null)
-					break;
-				final int vx = fakeTableName.lastIndexOf(' ');
-				if(vx > 0)
-				{
-					final String v = fakeTableName.substring(vx+1);
-					if((v.length()==2) && (v.startsWith("V"))&&(Character.isDigit(v.charAt(1))))
-						version = Integer.valueOf(v.substring(1)).intValue();
-				}
-				if (fakeTableName.length() == 0)
-					throw new IOException("Can not read schema: tableName is null");
-				if (fakeTableName.startsWith("#")) // comment
-					continue;
-				if (fakeTables.get(fakeTableName) != null)
-					throw new IOException("Can not read schema: tableName is missing: " + fakeTableName);
+				final String v = s.substring(vx+1);
+				if((v.length()==2) && (v.startsWith("V"))&&(Character.isDigit(v.charAt(1))))
+					version = Integer.valueOf(v.substring(1)).intValue();
+			}
+			if (fakeTables.get(s) != null)
+				throw new IOException("Can not read schema: tableName is duplicate: " + s);
 
-				final FakeTable fakeTable = new FakeTable(fakeTableName, new File(basePath, "fakedb.data." + fakeTableName));
-				fakeTable.version = version;
-				fakeTable.initializeColumns(in);
-				if(fakeTable.version > version)
-					version = fakeTable.version;
-				fakeTable.open();
-				fakeTables.put(fakeTableName, fakeTable);
-			}
-			for(final FakeTable tab : fakeTables.values())
-			{
-				tab.version = version;
-				for(final FakeColumn col : tab.columns)
-					col.version = version;
-			}
+			final FakeTable fakeTable = new FakeTable(s, new File(basePath, "fakedb.data." + s));
+			fakeTable.version = version;
+			fakeTable.initializeColumns(group);
+			if(fakeTable.version > version)
+				version = fakeTable.version;
+			fakeTable.open();
+			fakeTables.put(s, fakeTable);
 		}
-		finally
+		for(final FakeTable tab : fakeTables.values())
 		{
-			in.close();
+			tab.version = version;
+			for(final FakeColumn col : tab.columns)
+				col.version = version;
 		}
 	}
 
 	/**
-	 *
-	 * @param basePath
-	 * @return
+	 * Open the backend
+	 * @return true if it worked
 	 */
-	public boolean open(final File basePath) throws IOException
+	public boolean open() throws IOException
 	{
-		readSchema(basePath, new File(basePath, "fakedb.schema"));
+		fakeTables.clear();
+		readSchema(basePath);
 		return true;
 	}
 
 	/**
-	 *
-	 * @param s
-	 * @param tableName
-	 * @param cols
-	 * @param conditions
-	 * @param orderVars
-	 * @param orderModifiers
-	 * @return
+	 * Construct a scan
+	 * @param stmt The select statement
+	 * @return The result set
 	 * @throws java.sql.SQLException
 	 */
 	public java.sql.ResultSet constructScan(final ImplSelectStatement stmt) throws java.sql.SQLException
@@ -274,9 +264,7 @@ public class Backend
 
 	/**
 	 *
-	 * @param tableName
-	 * @param columns
-	 * @param dataValues
+	 * @param stmt
 	 * @throws java.sql.SQLException
 	 */
 	public void insertValues(final ImplInsertStatement stmt) throws java.sql.SQLException
@@ -335,11 +323,10 @@ public class Backend
 			throw new java.sql.SQLException("unable to insert record");
 	}
 
+
 	/**
-	 *
-	 * @param tableName
-	 * @param conditionVar
-	 * @param conditionValue
+	 * Delete records in a table
+	 * @param stmt The delete statement
 	 * @throws java.sql.SQLException
 	 */
 	public void deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
@@ -352,12 +339,8 @@ public class Backend
 	}
 
 	/**
-	 *
-	 * @param tableName
-	 * @param conditionVar
-	 * @param conditionValue
-	 * @param varNames
-	 * @param values
+	 * Update records in a table
+	 * @param stmt The update statement
 	 * @throws java.sql.SQLException
 	 */
 	public void updateRecord(final ImplUpdateStatement stmt) throws java.sql.SQLException
@@ -415,12 +398,12 @@ public class Backend
 	}
 
 	/**
-	 *
-	 * @param tableName
-	 * @param columnName
-	 * @param comparitor
-	 * @param value
-	 * @return
+	 * Build a fake condition
+	 * @param tableName Table name
+	 * @param columnName Column name
+	 * @param comparitor Comparitor string
+	 * @param value Value string
+	 * @return The fake condition
 	 * @throws java.sql.SQLException
 	 */
 	public FakeCondition buildFakeCondition(final String tableName, final String columnName, final String comparitor, final String value, final boolean unPrepared) throws java.sql.SQLException
@@ -513,6 +496,147 @@ public class Backend
 			fake.eq = true;
 		}
 		return fake;
+	}
+
+	public List<List<String>> readRawSchema()
+	{
+		final File schema = new File(basePath, "fakedb.schema");
+		final List<List<String>> groups = new ArrayList<List<String>>();
+		try(final BufferedReader in = new BufferedReader(new FileReader(schema)))
+		{
+			List<String> group = new ArrayList<String>();
+			groups.add(group);
+			String s = in.readLine();
+			while (s != null)
+			{
+				s=s.trim();
+				if(s.length()==0)
+				{
+					if(group.size()>0)
+					{
+						group = new ArrayList<String>();
+						groups.add(group);
+					}
+				}
+				else
+				if(s.startsWith("#"))
+				{
+					if((group.size()>0)&&(!group.get(0).startsWith("#")))
+					{
+						group = new ArrayList<String>();
+						groups.add(group);
+					}
+					group.add(s);
+				}
+				else
+				{
+					if((group.size()>0)&&(group.get(0).startsWith("#")))
+					{
+						group = new ArrayList<String>();
+						groups.add(group);
+					}
+					group.add(s);
+				}
+				s = in.readLine();
+			}
+			if(group.size()==0)
+				groups.remove(group);
+		}
+		catch(final IOException e)
+		{}
+		return groups;
+	}
+
+	public synchronized void rewriteRawSchema(final List<List<String>> groups) throws SQLException
+	{
+		final File schema = new File(basePath, "fakedb.schema");
+		final StringBuilder str = new StringBuilder("");
+		for (final List<String> group : groups)
+		{
+			for (final String s : group)
+				str.append(s + "\n");
+			str.append("\n");
+		}
+		try (final PrintWriter out = new PrintWriter(new FileWriter(schema)))
+		{
+			out.println(str.toString());
+			out.flush();
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to write schema file");
+		}
+	}
+
+	/**
+	 * Drop a table
+	 *
+	 * @param stmt The drop statement
+	 */
+	public void dropTable(final ImplDropStatement stmt) throws SQLException
+	{
+		final String tableName = stmt.tableName;
+		if (fakeTables.get(tableName) == null)
+			throw new java.sql.SQLException("table " + tableName + " doesn't exist");
+	}
+
+	/**
+	 * Alter a table
+	 * @param stmt The alter statement
+	 * @throws SQLException if it fails
+	 */
+	public void alterTable(final ImplAlterStatement stmt) throws SQLException
+	{
+		//TODO:
+	}
+
+
+	/**
+	 * Create a table
+	 *
+	 * @param stmt The create statement
+	 */
+	public void createTable(final ImplCreateStatement stmt) throws SQLException
+	{
+		final String tableName = stmt.tableName;
+		final FakeColumn[] columns = (FakeColumn[])stmt.extValues();
+		if (fakeTables.get(tableName) != null)
+			throw new java.sql.SQLException("table " + tableName + " already exists");
+		final List<List<String>> schema = readRawSchema();
+		int insert=-1;
+		if((schema.size()>1)
+		&&(schema.get(schema.size()-1).size()>0)
+		&&(schema.get(schema.size()-1).get(0).startsWith("#")))
+		{
+			for(int g=schema.size()-1;g>=0;g--)
+			{
+				if ((schema.get(g).size() > 0) && (!schema.get(g).get(0).startsWith("#")))
+				{
+					insert = g;
+					break;
+				}
+			}
+		}
+		final List<String> newTable = new ArrayList<String>();
+		newTable.add(tableName+" V1");
+		for (final FakeColumn col : columns)
+		{
+			col.tableName = tableName;
+			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : "") + (col.canNull ? "NULL " : ""));
+		}
+		if(insert<0)
+			schema.add(newTable);
+		else
+			schema.add(insert+1,newTable);
+		this.rewriteRawSchema(schema);
+		try
+		{
+			this.open();
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to re-open database after table create");
+		}
 	}
 
 }

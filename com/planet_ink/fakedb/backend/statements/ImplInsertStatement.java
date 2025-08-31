@@ -62,4 +62,70 @@ public class ImplInsertStatement extends ImplAbstractStatement
 	{
 		return StatementType.INSERT;
 	}
+
+
+	public static ImplInsertStatement parse(String sql, final String[] token) throws java.sql.SQLException
+	{
+		sql = split(sql, token);
+		if (!token[0].equalsIgnoreCase("into"))
+			throw new java.sql.SQLException("no into token");
+		sql = split(sql, token);
+		final String tableName = token[0];
+		sql = skipWS(sql);
+		if ((sql.length() <= 0) || (sql.charAt(0) != '('))
+			throw new java.sql.SQLException("no open paren");
+		sql = sql.substring(1);
+
+		final java.util.List<String> columnList = new java.util.LinkedList<String>();
+		while (true)
+		{
+			sql = skipWS(sql);
+			int index = sql.indexOf(',');
+			final int index2 = sql.indexOf(')');
+			if ((index < 0) || (index2 < index))
+				index = index2;
+			if (index < 0)
+				throw new java.sql.SQLException("no comma");
+			columnList.add(sql.substring(0, index).trim());
+			final char c = sql.charAt(index);
+			sql = skipWS(sql.substring(index + 1));
+			if (c == ')')
+				break;
+		}
+
+		sql = split(sql, token);
+		if (!token[0].equalsIgnoreCase("values"))
+			throw new java.sql.SQLException("no values");
+		sql = skipWS(sql);
+		if ((sql.length() <= 0) || (sql.charAt(0) != '('))
+			throw new java.sql.SQLException("no value open paren");
+		sql = sql.substring(1);
+
+		final java.util.List<String> valuesList = new java.util.LinkedList<String>();
+		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
+		while (true)
+		{
+			sql = skipWS(sql);
+			final String[] r = parseVal(sql);
+			final String val = r[1];
+			sql = skipWS(r[0]);
+			valuesList.add(val);
+			unPreparedValueList.add(Boolean.valueOf(r[2] != null));
+			if (sql.length() == 0)
+				throw new java.sql.SQLException("no sql again");
+			final char c = sql.charAt(0);
+			sql = skipWS(sql.substring(1));
+			if (c == ')')
+				break;
+			if (c != ',')
+				throw new java.sql.SQLException("no comma before last paren");
+		}
+		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
+			sql = skipWS(sql.substring(1));
+		if ((sql.length() > 0) || (columnList.size() != valuesList.size()))
+		{
+			throw new java.sql.SQLException("something very bad");
+		}
+		return new ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
+	}
 }

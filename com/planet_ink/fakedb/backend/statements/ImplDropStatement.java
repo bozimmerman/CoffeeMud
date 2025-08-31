@@ -1,13 +1,11 @@
 package com.planet_ink.fakedb.backend.statements;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.planet_ink.fakedb.backend.jdbc.Statement;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 /*
 Copyright 2001 Thomas Neumann
-Copyright 2004-2025 Bo Zimmerman
+Copyright 2025-2025 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,16 +24,14 @@ limitations under the License.
  *
  * @author Bo Zimmerman
  */
-public class ImplDeleteStatement extends ImplAbstractStatement
+public class ImplDropStatement extends ImplAbstractStatement
 {
-	public ImplDeleteStatement(final String tableName, final List<FakeCondition> conditions)
+	public ImplDropStatement(final String tableName)
 	{
 		this.tableName = tableName;
-		this.conditions = conditions;
 	}
 
 	public final String					tableName;
-	public final List<FakeCondition>	conditions;
 	private final Boolean[]				unPreparedValues	= new Boolean[0];
 
 	@Override
@@ -53,40 +49,27 @@ public class ImplDeleteStatement extends ImplAbstractStatement
 	@Override
 	public final List<FakeCondition> conditions()
 	{
-		return conditions;
+		return null;
 	}
 
 	@Override
 	public final StatementType getStatementType()
 	{
-		return StatementType.DELETE;
+		return StatementType.DROP;
 	}
 
-	public static ImplDeleteStatement parse(final Statement stmt, String sql, final String[] token) throws java.sql.SQLException
+	public static ImplDropStatement parse(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("from"))
-			throw new java.sql.SQLException("no from clause");
+		if (!token[0].equalsIgnoreCase("table"))
+			throw new java.sql.SQLException("no table token");
 		sql = split(sql, token);
-		final String tableName = token[0];
-		sql = split(sql, token);
-		List<FakeCondition> conditions;
-		if (token[0].equalsIgnoreCase("where"))
-		{
-			sql = skipWS(sql);
-			conditions = new ArrayList<FakeCondition>();
-			sql = stmt.parseWhereClause(tableName, sql, conditions);
-			if (conditions.size() == 0)
-				throw new java.sql.SQLException("no more where clause!");
-		}
-		else
-		if (token.length > 0)
-		{
-			conditions = new ArrayList<FakeCondition>();
-		}
-		else
-			throw new java.sql.SQLException("no other where clause");
-		return new ImplDeleteStatement(tableName, conditions);
+		final String tableName = token[0].toUpperCase().trim();
+		sql = skipWS(sql);
+		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
+			sql = skipWS(sql.substring(1));
+		return new ImplDropStatement(tableName);
 	}
+
 
 }

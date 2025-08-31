@@ -6,10 +6,14 @@ import java.util.List;
 
 import com.planet_ink.fakedb.backend.Connection;
 import com.planet_ink.fakedb.backend.Backend.ConnectorType;
+import com.planet_ink.fakedb.backend.statements.ImplAlterStatement;
+import com.planet_ink.fakedb.backend.statements.ImplCreateStatement;
 import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
+import com.planet_ink.fakedb.backend.statements.ImplDropStatement;
 import com.planet_ink.fakedb.backend.statements.ImplInsertStatement;
 import com.planet_ink.fakedb.backend.statements.ImplSelectStatement;
 import com.planet_ink.fakedb.backend.statements.ImplUpdateStatement;
+import com.planet_ink.fakedb.backend.structure.FakeColumn;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 import com.planet_ink.fakedb.backend.structure.FakeTable;
 
@@ -31,16 +35,15 @@ import com.planet_ink.fakedb.backend.structure.FakeTable;
  */
 public class Statement implements java.sql.Statement
 {
-	protected ResultSet	myResultSet						= null;
-	protected boolean	closeStatementOnResultSetClose	= false;
+	protected ResultSet		myResultSet						= null;
+	protected boolean		closeStatementOnResultSetClose	= false;
+	protected Connection	connection;
+	public String			lastSQL							= "null";
 
 	static protected void log(final String x)
 	{
 		System.err.println("Statement: " + x);
 	}
-
-	protected Connection	connection;
-	public String			lastSQL	= "null";
 
 	public Statement(final Connection c)
 	{
@@ -112,40 +115,6 @@ public class Statement implements java.sql.Statement
 			token[0] = sql.substring(0, index);
 			return sql.substring(index + 1);
 		}
-	}
-
-	protected String splitColumns(final String sql, final List<String> cols)
-	{
-		int s = 0;
-		while ((sql.length() > 0) && (s < sql.length()))
-		{
-			if ((s < sql.length()) && ((sql.charAt(s) == ' ') || (sql.charAt(s) == '\t')))
-				s++;
-			if (s >= sql.length())
-				return "";
-			int e = s;
-			while ((e < sql.length())
-			&& (sql.charAt(e) != ' ')
-			&& (sql.charAt(e) != '\t')
-			&& (sql.charAt(e) != ','))
-				e++;
-			if (e >= sql.length()) // was whatever it was the last word.. done
-				return sql.substring(s);
-			final String word = sql.substring(s, e);
-			cols.add(word);
-			if (sql.charAt(e) != ',')
-			{
-				while ((e < sql.length())
-				&& ((sql.charAt(e) == ' ') || (sql.charAt(e) == '\t')))
-					e++;
-			}
-			if ((e >= sql.length()) || (sql.charAt(e) != ','))
-				return sql.substring(e);
-			while (sql.charAt(e) == ',')
-				e++;
-			s = e;
-		}
-		return "";
 	}
 
 	@Override
@@ -318,55 +287,6 @@ public class Statement implements java.sql.Statement
 		if (s >= sql.length())
 			return "";
 		return sql.substring(s);
-
-	}
-
-	public ImplSelectStatement parseSelect(String sql, final String[] token) throws java.sql.SQLException
-	{
-		final List<String> cols = new ArrayList<String>();
-		sql = splitColumns(sql, cols);
-		if (cols.size() == 0)
-			throw new java.sql.SQLException("no columns given");
-		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("from"))
-			throw new java.sql.SQLException("no from clause");
-		sql = split(sql, token);
-		final String tableName = token[0];
-		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
-		String[] orderVars = null;
-		String[] orderConditions = null;
-		if (sql.length() > 0)
-		{
-			sql = split(sql, token);
-			if (token[0].equalsIgnoreCase("where"))
-			{
-				sql = parseWhereClause(tableName, sql, conditions);
-				if (conditions.size() == 0)
-					throw new java.sql.SQLException("no more where clause!");
-				sql = split(sql, token);
-			}
-			if ((token[0] != null) && (token[0].equalsIgnoreCase("order")))
-			{
-				sql = split(sql, token);
-				if (!token[0].equalsIgnoreCase("by"))
-					throw new java.sql.SQLException("no by token");
-				sql = split(sql, token);
-				orderVars = new String[] { token[0] };
-				orderConditions = new String[1];
-				if (sql.length() > 0)
-				{
-					split(sql, token);
-					if (token[0].equalsIgnoreCase("ASC") || token[0].equalsIgnoreCase("DESC"))
-					{
-						orderConditions = new String[] { token[0].toUpperCase().trim() };
-						sql = split(sql, token);
-					}
-				}
-			}
-			if (sql.length() > 0)
-				throw new java.sql.SQLException("extra garbage: " + sql);
-		}
-		return new ImplSelectStatement(this, tableName, cols, conditions, orderVars, orderConditions);
 	}
 
 	@Override
@@ -379,7 +299,7 @@ public class Statement implements java.sql.Statement
 			sql = split(sql, token);
 			if (!token[0].equalsIgnoreCase("select"))
 				throw new java.sql.SQLException("first query token not select");
-			final ImplSelectStatement stmt = parseSelect(sql, token);
+			final ImplSelectStatement stmt = ImplSelectStatement.parse(this,sql, token);
 			return connection.getBackend().constructScan(stmt);
 		}
 		catch (final java.sql.SQLException e)
@@ -387,245 +307,6 @@ public class Statement implements java.sql.Statement
 			log("unsupported SQL in executeQuery: " + sql);
 			throw e;
 		}
-	}
-
-	protected static String skipWS(final String sql)
-	{
-		int index;
-		for (index = 0; index < sql.length(); index++)
-		{
-			final char c = sql.charAt(index);
-			if ((c != ' ') && (c != '\t') && (c != '\r') && (c != '\n'))
-				break;
-		}
-		if (index == 0)
-			return sql;
-		return sql.substring(index);
-	}
-
-	protected static String[] parseVal(String sql)
-	{
-		final String[] result = new String[3];
-		sql = skipWS(sql);
-		if (sql.length() == 0)
-		{
-			result[0] = result[1] = "";
-			result[2] = null;
-		}
-		else
-		if (sql.charAt(0) == '\'')
-		{
-			final StringBuffer buffer = new StringBuffer();
-			int index;
-			for (index = 1; index < sql.length(); ++index)
-			{
-				char c = sql.charAt(index);
-				if (c == '\'')
-					break;
-				if (c == '\\')
-					c = sql.charAt(++index);
-				buffer.append(c);
-			}
-			if (index >= sql.length())
-				index = sql.length() - 1;
-			result[0] = sql.substring(index + 1);
-			result[1] = buffer.toString();
-			result[2] = null;
-		}
-		else
-		{
-			final StringBuffer buffer = new StringBuffer();
-			int index;
-			for (index = 0; index < sql.length(); ++index)
-			{
-				final char c = sql.charAt(index);
-				if ((c == ' ') || (c == ',') || (c == ')')|| ((c == ';')&&(index>0)))
-					break;
-				buffer.append(c);
-			}
-			result[0] = sql.substring(index);
-			result[1] = buffer.toString();
-			result[2] = buffer.toString().equals("?") ? "" : null;
-		}
-		return result;
-	}
-
-	protected ImplInsertStatement parseInsert(String sql, final String[] token) throws java.sql.SQLException
-	{
-		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("into"))
-			throw new java.sql.SQLException("no into token");
-		sql = split(sql, token);
-		final String tableName = token[0];
-		sql = skipWS(sql);
-		if ((sql.length() < 0) || (sql.charAt(0) != '('))
-			throw new java.sql.SQLException("no open paren");
-		sql = sql.substring(1);
-
-		final java.util.List<String> columnList = new java.util.LinkedList<String>();
-		while (true)
-		{
-			sql = skipWS(sql);
-			int index = sql.indexOf(',');
-			final int index2 = sql.indexOf(')');
-			if ((index < 0) || (index2 < index))
-				index = index2;
-			if (index < 0)
-				throw new java.sql.SQLException("no comma");
-			columnList.add(sql.substring(0, index).trim());
-			final char c = sql.charAt(index);
-			sql = skipWS(sql.substring(index + 1));
-			if (c == ')')
-				break;
-		}
-
-		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("values"))
-			throw new java.sql.SQLException("no values");
-		sql = skipWS(sql);
-		if ((sql.length() < 0) || (sql.charAt(0) != '('))
-			throw new java.sql.SQLException("no value open paren");
-		sql = sql.substring(1);
-
-		final java.util.List<String> valuesList = new java.util.LinkedList<String>();
-		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
-		while (true)
-		{
-			sql = skipWS(sql);
-			final String[] r = parseVal(sql);
-			final String val = r[1];
-			sql = skipWS(r[0]);
-			valuesList.add(val);
-			unPreparedValueList.add(Boolean.valueOf(r[2] != null));
-			if (sql.length() == 0)
-				throw new java.sql.SQLException("no sql again");
-			final char c = sql.charAt(0);
-			sql = skipWS(sql.substring(1));
-			if (c == ')')
-				break;
-			if (c != ',')
-				throw new java.sql.SQLException("no comma before last paren");
-		}
-		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
-			sql = skipWS(sql.substring(1));
-		if ((sql.length() > 0) || (columnList.size() != valuesList.size()))
-		{
-			throw new java.sql.SQLException("something very bad");
-		}
-		return new ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
-	}
-
-	protected ImplUpdateStatement parseUpdate(String sql, final String[] token) throws java.sql.SQLException
-	{
-		sql = split(sql, token);
-		final String tableName = token[0];
-		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("set"))
-			throw new java.sql.SQLException("no set");
-		final java.util.List<String> columnList = new java.util.LinkedList<String>();
-		final java.util.List<String> valueList = new java.util.LinkedList<String>();
-		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
-		final StringBuffer buffer = new StringBuffer();
-		while (true)
-		{
-			sql = skipWS(sql);
-			buffer.setLength(0);
-			while (sql.length() > 0)
-			{
-				final char c = sql.charAt(0);
-				if ((c == '=') || (c == ' '))
-					break;
-				buffer.append(c);
-				sql = sql.substring(1);
-			}
-			sql = skipWS(sql);
-			final String attr = buffer.toString();
-			if (sql.length() == 0)
-				throw new java.sql.SQLException("no more sql");
-			if (sql.charAt(0) != '=')
-			{
-				if (!attr.equalsIgnoreCase("where"))
-					throw new java.sql.SQLException("no where");
-				break;
-			}
-			sql = skipWS(sql.substring(1));
-			if (sql.length() == 0)
-				throw new java.sql.SQLException("no no sql no mo");
-			buffer.setLength(0);
-			if (sql.charAt(0) == '\'')
-			{
-				int sub = 1;
-				for (; sub < sql.length(); sub++)
-				{
-					char c = sql.charAt(sub);
-					if (c == '\'')
-						break;
-					if (c == '\\')
-						c = sql.charAt(++sub);
-					buffer.append(c);
-				}
-				columnList.add(attr);
-				valueList.add(buffer.toString());
-				sql = sql.substring(sub + 1);
-				unPreparedValueList.add(Boolean.valueOf(false));
-			}
-			else
-			{
-				final String[] r = parseVal(sql);
-				sql = r[0];
-				columnList.add(attr);
-				valueList.add(r[1]);
-				unPreparedValueList.add(Boolean.valueOf(r[2] != null));
-			}
-			sql = skipWS(sql);
-			if (sql.length() > 0)
-			{
-				if (sql.charAt(0) == ',')
-					sql = skipWS(sql.substring(1));
-				else
-				if(sql.charAt(0) == ';')
-				{
-					sql = skipWS(sql.substring(1));
-					break;
-				}
-			}
-		}
-		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
-		if(sql.length()>0)
-		{
-			sql = parseWhereClause(tableName, sql, conditions);
-			if (conditions.size() == 0)
-				throw new java.sql.SQLException("no more where clause!");
-		}
-		return new ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
-
-	}
-
-	protected ImplDeleteStatement parseDelete(String sql, final String[] token) throws java.sql.SQLException
-	{
-		sql = split(sql, token);
-		if (!token[0].equalsIgnoreCase("from"))
-			throw new java.sql.SQLException("no from clause");
-		sql = split(sql, token);
-		final String tableName = token[0];
-		sql = split(sql, token);
-		List<FakeCondition> conditions;
-		if (token[0].equalsIgnoreCase("where"))
-		{
-			sql = skipWS(sql);
-			conditions = new ArrayList<FakeCondition>();
-			sql = parseWhereClause(tableName, sql, conditions);
-			if (conditions.size() == 0)
-				throw new java.sql.SQLException("no more where clause!");
-		}
-		else
-		if (token.length > 0)
-		{
-			conditions = new ArrayList<FakeCondition>();
-		}
-		else
-			throw new java.sql.SQLException("no other where clause");
-		return new ImplDeleteStatement(tableName, conditions);
 	}
 
 	@Override
@@ -645,21 +326,39 @@ public class Statement implements java.sql.Statement
 			sql = split(sql, token);
 			if (token[0].equalsIgnoreCase("insert"))
 			{
-				final ImplInsertStatement stmt = parseInsert(sql, token);
+				final ImplInsertStatement stmt = ImplInsertStatement.parse(sql, token);
 				connection.getBackend().dupKeyCheck(stmt.tableName, stmt.columns, stmt.sqlValues);
 				connection.getBackend().insertValues(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("update"))
 			{
-				final ImplUpdateStatement stmt = parseUpdate(sql, token);
+				final ImplUpdateStatement stmt = ImplUpdateStatement.parse(this,sql, token);
 				connection.getBackend().updateRecord(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("delete"))
 			{
-				final ImplDeleteStatement stmt = parseDelete(sql, token);
+				final ImplDeleteStatement stmt = ImplDeleteStatement.parse(this,sql, token);
 				connection.getBackend().deleteRecord(stmt);
+			}
+			else
+			if (token[0].equalsIgnoreCase("create"))
+			{
+				final ImplCreateStatement stmt = ImplCreateStatement.parse(sql, token);
+				connection.getBackend().createTable(stmt);
+			}
+			else
+			if (token[0].equalsIgnoreCase("drop"))
+			{
+				final ImplDropStatement stmt = ImplDropStatement.parse(sql, token);
+				connection.getBackend().dropTable(stmt);
+			}
+			else
+			if (token[0].equalsIgnoreCase("alter"))
+			{
+				final ImplAlterStatement stmt = ImplAlterStatement.parse(sql, token);
+				connection.getBackend().alterTable(stmt);
 			}
 			else
 				throw new java.sql.SQLException("unimplemented command: " + token[0]);
@@ -768,7 +467,7 @@ public class Statement implements java.sql.Statement
 			{
 				return executeUpdate(lastSQL) == 0;
 			}
-			final ImplSelectStatement stmt = parseSelect(sql, token);
+			final ImplSelectStatement stmt = ImplSelectStatement.parse(this,sql, token);
 			myResultSet = (ResultSet) connection.getBackend().constructScan(stmt);
 			return true;
 		}

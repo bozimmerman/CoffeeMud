@@ -54,6 +54,7 @@ public class FakeColumn
 	public int			keyNumber	= -1;
 	public int			indexNumber	= -1;
 	public int			version		= 1;
+	public String		defaultValue= null;
 	public String		tableName;
 
 	public static final int	INDEX_COUNT		= Integer.MAX_VALUE;

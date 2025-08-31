@@ -1,5 +1,6 @@
 package com.planet_ink.fakedb.backend.statements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.planet_ink.fakedb.backend.jdbc.Statement;
@@ -67,5 +68,54 @@ public class ImplSelectStatement extends ImplAbstractStatement
 	public final StatementType getStatementType()
 	{
 		return StatementType.SELECT;
+	}
+
+
+	public static ImplSelectStatement parse(final Statement stmt, String sql, final String[] token) throws java.sql.SQLException
+	{
+		final List<String> cols = new ArrayList<String>();
+		sql = splitColumns(sql, cols);
+		if (cols.size() == 0)
+			throw new java.sql.SQLException("no columns given");
+		sql = split(sql, token);
+		if (!token[0].equalsIgnoreCase("from"))
+			throw new java.sql.SQLException("no from clause");
+		sql = split(sql, token);
+		final String tableName = token[0];
+		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
+		String[] orderVars = null;
+		String[] orderConditions = null;
+		if (sql.length() > 0)
+		{
+			sql = split(sql, token);
+			if (token[0].equalsIgnoreCase("where"))
+			{
+				sql = stmt.parseWhereClause(tableName, sql, conditions);
+				if (conditions.size() == 0)
+					throw new java.sql.SQLException("no more where clause!");
+				sql = split(sql, token);
+			}
+			if ((token[0] != null) && (token[0].equalsIgnoreCase("order")))
+			{
+				sql = split(sql, token);
+				if (!token[0].equalsIgnoreCase("by"))
+					throw new java.sql.SQLException("no by token");
+				sql = split(sql, token);
+				orderVars = new String[] { token[0] };
+				orderConditions = new String[1];
+				if (sql.length() > 0)
+				{
+					split(sql, token);
+					if (token[0].equalsIgnoreCase("ASC") || token[0].equalsIgnoreCase("DESC"))
+					{
+						orderConditions = new String[] { token[0].toUpperCase().trim() };
+						sql = split(sql, token);
+					}
+				}
+			}
+			if (sql.length() > 0)
+				throw new java.sql.SQLException("extra garbage: " + sql);
+		}
+		return new ImplSelectStatement(stmt, tableName, cols, conditions, orderVars, orderConditions);
 	}
 }

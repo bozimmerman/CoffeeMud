@@ -27,10 +27,13 @@ import java.util.Stack;
 import com.planet_ink.fakedb.backend.Connection;
 import com.planet_ink.fakedb.backend.statements.ImplAbstractStatement;
 import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
+import com.planet_ink.fakedb.backend.statements.ImplDropStatement;
 import com.planet_ink.fakedb.backend.statements.ImplInsertStatement;
 import com.planet_ink.fakedb.backend.statements.ImplSelectStatement;
 import com.planet_ink.fakedb.backend.statements.ImplUpdateStatement;
 import com.planet_ink.fakedb.backend.statements.ImplAbstractStatement.StatementType;
+import com.planet_ink.fakedb.backend.statements.ImplAlterStatement;
+import com.planet_ink.fakedb.backend.statements.ImplCreateStatement;
 import com.planet_ink.fakedb.backend.structure.ComparableValue;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 
@@ -68,22 +71,22 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			sql = split(sql, token);
 			if (token[0].equalsIgnoreCase("insert"))
 			{
-				stmt = parseInsert(sql, token);
+				stmt = ImplInsertStatement.parse(sql, token);
 			}
 			else
 			if (token[0].equalsIgnoreCase("update"))
 			{
-				stmt = parseUpdate(sql, token);
+				stmt = ImplUpdateStatement.parse(this, sql, token);
 			}
 			else
 			if (token[0].equalsIgnoreCase("delete"))
 			{
-				stmt = parseDelete(sql, token);
+				stmt = ImplDeleteStatement.parse(this,sql, token);
 			}
 			else
 			if (token[0].equalsIgnoreCase("select"))
 			{
-				stmt = parseSelect(sql, token);
+				stmt = ImplSelectStatement.parse(this, sql, token);
 			}
 			else
 				throw new java.sql.SQLException("unimplemented command: " + token[0]);
@@ -122,6 +125,15 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case DELETE:
 			connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
 			return true;
+		case CREATE:
+			connection.getBackend().createTable((ImplCreateStatement) stmt);
+			return true;
+		case DROP:
+			connection.getBackend().dropTable((ImplDropStatement) stmt);
+			return true;
+		case ALTER:
+			connection.getBackend().alterTable((ImplAlterStatement) stmt);
+			return true;
 		case INSERT:
 		{
 			final ImplInsertStatement istmt = (ImplInsertStatement) stmt;
@@ -153,6 +165,15 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			return 0;
 		case DELETE:
 			connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
+			return 0;
+		case CREATE:
+			connection.getBackend().createTable((ImplCreateStatement) stmt);
+			return 0;
+		case DROP:
+			connection.getBackend().dropTable((ImplDropStatement) stmt);
+			return 0;
+		case ALTER:
+			connection.getBackend().alterTable((ImplAlterStatement) stmt);
 			return 0;
 		case INSERT:
 		{

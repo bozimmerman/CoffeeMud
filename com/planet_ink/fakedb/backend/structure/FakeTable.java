@@ -313,20 +313,16 @@ public class FakeTable
 			vacuum();
 	}
 
-	public void initializeColumns(final BufferedReader in) throws IOException
+	public void initializeColumns(final List<String> in) throws IOException
 	{
 		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
 		crc.update((this.name + " " + this.version).getBytes());
 		final List<FakeColumn> columns = new ArrayList<FakeColumn>();
 		final List<String> keys = new ArrayList<String>();
 		final List<String> indexes = new ArrayList<String>();
-		while (true)
+		while (in.size()>0)
 		{
-			String line = in.readLine();
-			if (line == null)
-				break;
-			if (line.length() == 0)
-				break;
+			String line = in.remove(0).trim();
 			crc.update(line.getBytes());
 			int split = line.indexOf(' ');
 			if (split < 0)

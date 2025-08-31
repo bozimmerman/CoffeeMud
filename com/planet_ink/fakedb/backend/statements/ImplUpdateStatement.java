@@ -1,7 +1,9 @@
 package com.planet_ink.fakedb.backend.statements;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.planet_ink.fakedb.backend.jdbc.Statement;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 /*
 Copyright 2001 Thomas Neumann
@@ -64,4 +66,91 @@ public class ImplUpdateStatement extends ImplAbstractStatement
 	{
 		return StatementType.UPDATE;
 	}
+
+	public static ImplUpdateStatement parse(final Statement stmt, String sql, final String[] token) throws java.sql.SQLException
+	{
+		sql = split(sql, token);
+		final String tableName = token[0];
+		sql = split(sql, token);
+		if (!token[0].equalsIgnoreCase("set"))
+			throw new java.sql.SQLException("no set");
+		final java.util.List<String> columnList = new java.util.LinkedList<String>();
+		final java.util.List<String> valueList = new java.util.LinkedList<String>();
+		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
+		final StringBuffer buffer = new StringBuffer();
+		while (true)
+		{
+			sql = skipWS(sql);
+			buffer.setLength(0);
+			while (sql.length() > 0)
+			{
+				final char c = sql.charAt(0);
+				if ((c == '=') || (c == ' '))
+					break;
+				buffer.append(c);
+				sql = sql.substring(1);
+			}
+			sql = skipWS(sql);
+			final String attr = buffer.toString();
+			if (sql.length() == 0)
+				throw new java.sql.SQLException("no more sql");
+			if (sql.charAt(0) != '=')
+			{
+				if (!attr.equalsIgnoreCase("where"))
+					throw new java.sql.SQLException("no where");
+				break;
+			}
+			sql = skipWS(sql.substring(1));
+			if (sql.length() == 0)
+				throw new java.sql.SQLException("no no sql no mo");
+			buffer.setLength(0);
+			if (sql.charAt(0) == '\'')
+			{
+				int sub = 1;
+				for (; sub < sql.length(); sub++)
+				{
+					char c = sql.charAt(sub);
+					if (c == '\'')
+						break;
+					if (c == '\\')
+						c = sql.charAt(++sub);
+					buffer.append(c);
+				}
+				columnList.add(attr);
+				valueList.add(buffer.toString());
+				sql = sql.substring(sub + 1);
+				unPreparedValueList.add(Boolean.valueOf(false));
+			}
+			else
+			{
+				final String[] r = parseVal(sql);
+				sql = r[0];
+				columnList.add(attr);
+				valueList.add(r[1]);
+				unPreparedValueList.add(Boolean.valueOf(r[2] != null));
+			}
+			sql = skipWS(sql);
+			if (sql.length() > 0)
+			{
+				if (sql.charAt(0) == ',')
+					sql = skipWS(sql.substring(1));
+				else
+				if(sql.charAt(0) == ';')
+				{
+					sql = skipWS(sql.substring(1));
+					break;
+				}
+			}
+		}
+		final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
+		if(sql.length()>0)
+		{
+			sql = stmt.parseWhereClause(tableName, sql, conditions);
+			if (conditions.size() == 0)
+				throw new java.sql.SQLException("no more where clause!");
+		}
+		return new ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
+
+	}
+
 }

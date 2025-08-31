@@ -88,10 +88,10 @@ public class Connection implements java.sql.Connection
 				backend = ref.get();
 			if (backend == null)
 			{
-				backend = new Backend();
+				backend = new Backend(new java.io.File(path));
 				try
 				{
-					if (!backend.open(new java.io.File(path)))
+					if (!backend.open())
 						throw new java.sql.SQLException("unable to open database");
 					databases.put(path, new WeakReference<Backend>(backend));
 				}
