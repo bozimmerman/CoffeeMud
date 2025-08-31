@@ -1261,12 +1261,24 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
 					if(tCode == MAIN_HOST)
 					{
-						final String err = CMLib.database().validateDatabaseVersion();
+						String err = CMLib.database().validateDatabaseVersion();
 						if (err != null)
 						{
-							Log.errOut(Thread.currentThread().getName(),"Fatal database error");
 							Log.errOut(Thread.currentThread().getName(), err);
-							return false;
+							err = CMLib.database().upgradeDatabaseVersion();
+							if (err != null)
+							{
+								Log.errOut(Thread.currentThread().getName(), err);
+								fatalStartupError(t, 3);
+								return false;
+							}
+							err = CMLib.database().validateDatabaseVersion();
+							if (err != null)
+							{
+								Log.errOut(Thread.currentThread().getName(), err);
+								fatalStartupError(t, 3);
+								return false;
+							}
 						}
 					}
 					databases.add(currentDBconnector);

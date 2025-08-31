@@ -171,6 +171,12 @@ public interface DatabaseEngine extends CMLibrary
 	public String validateDatabaseVersion();
 
 	/**
+	 * Upgrades the database to the current version, if possible.
+	 * @return null if the version is correct or was upgraded, otherwise an error message
+	 */
+	public String upgradeDatabaseVersion();
+
+	/**
 	 * Table category: DBMAP
 	 * Loads both the mob and item catalogs into the catalog library.
 	 */

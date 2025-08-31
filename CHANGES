@@ -27,8 +27,8 @@
  26. CoffeeMud now supports the Grapevine network: see Installation Guide
  27. ICHANNELS ini entry is now deprecated, and its purpose folded into CHANNELS
  28. Lamp oil-filled bathtubs can now be set on fire, for what that's worth.
- 29. The MUD will now validate the database version on boot, and refuse to start if mismatched.
- 30. FakeDB: new v1.1 format -- more to come
+ 29. The MUD will now validate the database version on boot, and auto-upgrade if needed.
+ 30. FakeDB: new v1.1 format -- more to come.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
