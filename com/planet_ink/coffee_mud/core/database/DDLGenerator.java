@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -86,10 +87,26 @@ public class DDLGenerator
 	 */
 	public String getDropPrimaryKeySQL(final String tableName) throws SQLException
 	{
-		final String quote=metaData.getIdentifierQuoteString();
-		return "ALTER TABLE "+quote+tableName+quote+" DROP PRIMARY KEY;";
+		ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName);
+		String pkName = null;
+		while (pkRs.next())
+		{
+			pkName = pkRs.getString("PK_NAME");
+			if (pkName != null)
+				break;
+		}
+		pkRs.close();
+		final String quote = metaData.getIdentifierQuoteString();
+		if (pkName != null)
+		{
+			return "ALTER TABLE " + quote + tableName + quote + " DROP CONSTRAINT " + quote + pkName + quote + ";";
+		}
+		else
+		{
+			return "ALTER TABLE " + quote + tableName + quote + " DROP PRIMARY KEY;";
+		}
 	}
-
+	
 	/**
 	 * Generates CREATE TABLE SQL with support for column definitions including size, nullability, and primary keys
 	 * @param tableName The name of the table
@@ -149,6 +166,153 @@ public class DDLGenerator
 	 * Generates MODIFY COLUMN SQL with new size and nullability
 	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
 	 */
+	@SuppressWarnings("unchecked")
+	public List<String> getModifyColumnSQLServer(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
+	{
+		final List<String> sqls = new ArrayList<String>();
+		final String quote = metaData.getIdentifierQuoteString();
+		final List<String> pkCols = new ArrayList<>();
+		String pkName = null;
+		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		while (pkRs.next())
+		{
+			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
+			if (pkName == null)
+				pkName = pkRs.getString("PK_NAME");
+		}
+		pkRs.close();
+		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
+		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<>();
+		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		while (idxRs.next())
+		{
+			final short type = idxRs.getShort("TYPE");
+			if (type == DatabaseMetaData.tableIndexStatistic)
+				continue;
+			final String indexName = idxRs.getString("INDEX_NAME");
+			if (indexName == null)
+				continue;
+			if ((pkName != null) && indexName.equals(pkName))
+				continue; // Skip PK index
+			final boolean nonUnique = idxRs.getBoolean("NON_UNIQUE");
+			final String colName = idxRs.getString("COLUMN_NAME");
+			if (colName == null)
+				continue;
+			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			{
+				final Map<String, Object> m = new HashMap<>();
+				m.put("unique", Boolean.valueOf(!nonUnique));
+				m.put("columns", new ArrayList<Map<String, Object>>());
+				return m;
+			});
+			final Map<String, Object> colMap = new HashMap<>();
+			colMap.put("pos", Short.valueOf(ordinal));
+			colMap.put("col", colName.toUpperCase());
+			((List<Map<String, Object>>) index.get("columns")).add(colMap);
+		}
+		idxRs.close();
+		final List<Map<String, Object>> depIndexes = new ArrayList<>();
+		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet())
+		{
+			final String indexName = entry.getKey();
+			final Map<String, Object> index = entry.getValue();
+			final List<Map<String, Object>> cols = (List<Map<String, Object>>) index.get("columns");
+			boolean depends = false;
+			for (final Map<String, Object> c : cols)
+			{
+				if (((String) c.get("col")).equals(columnName.toUpperCase()))
+				{
+					depends = true;
+					break;
+				}
+			}
+			if (depends)
+			{
+				final Map<String, Object> dep = new HashMap<>();
+				dep.put("name", indexName);
+				dep.put("unique", index.get("unique"));
+				// Sort columns by position
+				cols.sort((a, b) -> ((Short) a.get("pos")).compareTo((Short) b.get("pos")));
+				final List<String> colList = new ArrayList<>();
+				for (final Map<String, Object> c : cols)
+					colList.add((String) c.get("col"));
+				dep.put("columns", colList);
+				depIndexes.add(dep);
+			}
+		}
+		if (isPkColumn)
+		{
+			String dropSql;
+			if (pkName != null)
+				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP CONSTRAINT " + quote + pkName + quote + ";";
+			else
+				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP PRIMARY KEY;";
+			sqls.add(dropSql);
+		}
+		for (final Map<String, Object> idx : depIndexes)
+		{
+			final String indexName = (String) idx.get("name");
+			sqls.add(getDropIndexSQL(indexName, actualTable));
+		}
+		Boolean effectiveNewNullable = newNullable;
+		if (effectiveNewNullable == null) {
+			final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+			final String isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
+			colRs.close();
+			effectiveNewNullable = Boolean.valueOf("YES".equals(isNullableStr));  // true if nullable, false if NOT NULL
+		}
+		sqls.add(getModifyColumnSQL(actualTable, columnName, newType, newSize, effectiveNewNullable));
+
+		for (final Map<String, Object> idx : depIndexes)
+		{
+			final String indexName = (String) idx.get("name");
+			final List<String> cols = (List<String>) idx.get("columns");
+			final boolean unique = ((Boolean) idx.get("unique")).booleanValue();
+			sqls.add(getCreateIndexSQL(indexName, actualTable, cols, unique));
+		}
+		if (isPkColumn)
+		{
+			boolean allNotNull = true;
+			for (final String pkCol : pkCols)
+			{
+				String isNullableStr;
+				if (pkCol.equals(columnName.toUpperCase()))
+				{
+					if (newNullable != null)
+						isNullableStr = newNullable.booleanValue() ? "YES" : "NO";
+					else
+					{
+						final ResultSet colRs = metaData.getColumns(null, null, actualTable, pkCol);
+						isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
+						colRs.close();
+					}
+				}
+				else
+				{
+					final ResultSet colRs = metaData.getColumns(null, null, actualTable, pkCol);
+					isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
+					colRs.close();
+				}
+				if ("YES".equals(isNullableStr))
+				{
+					allNotNull = false;
+					break;
+				}
+			}
+			Collections.sort(pkCols);
+			if (allNotNull)
+				sqls.add(getAddPrimaryKeySQL(actualTable, pkCols, null));
+			else
+				sqls.add(getCreateIndexSQL("UNQ_" + actualTable.replaceAll("[^A-Z0-9]","_"), actualTable, pkCols, true));
+		}
+		return sqls;
+	}
+
+	/**
+	 * Generates MODIFY COLUMN SQL with new size and nullability
+	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
+	 */
 	public String getModifyColumnSQL(final String tableName, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
 		final String quote=metaData.getIdentifierQuoteString();
@@ -177,8 +341,10 @@ public class DDLGenerator
 	 * @param tableName The table name
 	 * @param columnNames List of column names for the primary key (composite if multiple)
 	 */
-	public String getAddPrimaryKeySQL(final String tableName, final List<String> columnNames) throws SQLException
+	public String getAddPrimaryKeySQL(final String tableName, final List<String> columnNames, final Boolean nullable) throws SQLException
 	{
+		if((nullable != null) && (nullable.booleanValue()))
+			return this.getCreateIndexSQL("UNQ_" + tableName.replaceAll("[^A-Z0-9]","_"), tableName, columnNames, true);
 		final String quote=metaData.getIdentifierQuoteString();
 		final StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quote)
 				.append(tableName).append(quote).append(" ADD PRIMARY KEY (");
@@ -189,7 +355,7 @@ public class DDLGenerator
 				sql.append(", ");
 		}
 		sql.append(");");
-		if(productName.contains("oracle") || productName.contains("db2"))
+		if(productName.contains("oracle") || productName.contains("db2")|| productName.contains("sqlserver"))
 			sql.insert(21+tableName.length(), " CONSTRAINT PK_"+tableName);
 		return sql.toString();
 	}
@@ -301,9 +467,18 @@ public class DDLGenerator
 	{
 		final List<String> sqls = new ArrayList<>();
 		final Set<JSONObject> processed = new HashSet<>();
-		final Map<String, List<String>> pkAddsByTable = new HashMap<>();
+		final Map<String, String> tableCaseMap = new HashMap<>();
+		final ResultSet tablesRs = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+		while(tablesRs.next())
+		{
+			final String actualTableName = tablesRs.getString("TABLE_NAME");
+			tableCaseMap.put(actualTableName.toUpperCase(), actualTableName);
+		}
+		tablesRs.close();
+		final Map<String, List<String>> pkAddsByTable = new HashMap<String, List<String>>();
 		final String quote = metaData.getIdentifierQuoteString();
-		for(final JSONObject change:changes)
+		final Map<String,Boolean> nulledColumns = new HashMap<String,Boolean>();
+		for(final JSONObject change : changes)
 		{
 			if(processed.contains(change))
 				continue;
@@ -335,7 +510,7 @@ public class DDLGenerator
 							colDef.put("type", c.getCheckedString("type").toUpperCase());
 							if(c.containsKey("size"))
 								colDef.put("size", Integer.valueOf(c.getCheckedLong("size").intValue()));
-							colDef.put("nullable", Boolean.TRUE); // assume
+							colDef.put("nullable", c.containsKey("nullable") ? c.getCheckedBoolean("nullable") : Boolean.TRUE);
 							columnDefs.add(colDef);
 							if(ca.equals("MOVE"))
 								moveChanges.add(c);
@@ -354,7 +529,32 @@ public class DDLGenerator
 				}
 				sqls.add(getCreateTableSQL(tableName, columnDefs));
 				if(!pkCols.isEmpty())
-					sqls.add(getAddPrimaryKeySQL(tableName, pkCols));
+				{
+					boolean allNotNull = true;
+					for(final String pk : pkCols)
+					{
+						boolean found = false;
+						for(final Map<String, Object> col : columnDefs)
+						{
+							if(((String)col.get("name")).equals(pk))
+							{
+								found = true;
+								final boolean nul = ((Boolean)col.get("nullable")).booleanValue();
+								if(nul)
+									allNotNull = false;
+								break;
+							}
+						}
+						if(!found)
+							allNotNull = false;
+						if(!allNotNull)
+							break;
+					}
+					if(allNotNull)
+						sqls.add(getAddPrimaryKeySQL(tableName, pkCols, null));
+					else
+						sqls.add(getCreateIndexSQL("UNQ_" + tableName.replaceAll("[^A-Z0-9]","_"), tableName, pkCols, true));
+				}
 				// handle data moves if any
 				if(!moveChanges.isEmpty())
 				{
@@ -440,7 +640,13 @@ public class DDLGenerator
 				final String type = change.getCheckedString("type").toUpperCase();
 				final Integer size = change.containsKey("size")?Integer.valueOf(change.getCheckedLong("size").intValue()):null;
 				final Boolean nullable = change.containsKey("nullable")?Boolean.valueOf(change.getCheckedBoolean("nullable").booleanValue()):null;
-				sqls.add(getModifyColumnSQL(table, col, type, size, nullable));
+				final String actualTable = tableCaseMap.getOrDefault(table, table);
+				if(nullable != null)
+					nulledColumns.put(table+"."+col,nullable);
+				if(productName.contains("sql server"))
+					sqls.addAll(getModifyColumnSQLServer(actualTable, col, type, size, nullable));
+				else
+					sqls.add(getModifyColumnSQL(table, col, type, size, nullable));
 			}
 			else
 			if(action.equals("DELETE") && target.equals("COLUMN"))
@@ -532,8 +738,31 @@ public class DDLGenerator
 		for(final String table : pkAddsByTable.keySet())
 		{
 			final List<String> cols = pkAddsByTable.get(table);
-			if(!cols.isEmpty())
-				sqls.add(getAddPrimaryKeySQL(table, cols));
+			if(cols.isEmpty())
+				continue;
+			final String actualTable = tableCaseMap.getOrDefault(table, table);
+			boolean allNotNull = true;
+			for(final String col : cols)
+			{
+				final ResultSet colRs = metaData.getColumns(null, null, actualTable, col);
+				if(colRs.next())
+				{
+					if("YES".equals(colRs.getString("IS_NULLABLE")))
+						allNotNull = false;
+				}
+				else
+					allNotNull = false;
+				colRs.close();
+				if(!allNotNull)
+					break;
+			}
+			if(allNotNull)
+				sqls.add(getAddPrimaryKeySQL(table, cols,null));
+			else
+			{
+				final String indexName = "UNQ_" + table.replaceAll("[^A-Z0-9]","_");
+				sqls.add(getCreateIndexSQL(indexName, table, cols, true));
+			}
 		}
 		return sqls;
 	}

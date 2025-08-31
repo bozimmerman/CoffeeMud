@@ -70,7 +70,7 @@ public class DDLValidator
 
 		public DDLTable(final String name)
 		{
-			this.name = name;
+			this.name=name;
 		}
 	}
 
@@ -130,9 +130,12 @@ public class DDLValidator
 						typeName="LONG";
 						break;
 					case java.sql.Types.VARCHAR:
+					case java.sql.Types.NVARCHAR:
 					case java.sql.Types.CHAR:
 						typeName="VARCHAR";
 						break;
+					case -16:
+					case java.sql.Types.NCLOB:
 					case java.sql.Types.LONGVARCHAR:
 					case java.sql.Types.CLOB:
 						typeName="TEXT";
@@ -143,6 +146,8 @@ public class DDLValidator
 					case java.sql.Types.DATE:
 					case java.sql.Types.TIME:
 						typeName="DATETIME";
+						break;
+					default:
 						break;
 					}
 					final int size=colsRs.getInt("COLUMN_SIZE");
@@ -173,22 +178,16 @@ public class DDLValidator
 
 				// indexes
 				final ResultSet idxRs=meta.getIndexInfo(null, null, actualT, false, false);
-				final Map<String, List<String>> indexGroups=new HashMap<>();
+				final Set<String> dbIndexSets=new HashSet<>();
 				while(idxRs.next())
 				{
 					final String idxName=idxRs.getString("INDEX_NAME");
 					if(idxName==null||idxName.equals("PRIMARY"))
 						continue;
 					final String col=idxRs.getString("COLUMN_NAME").toUpperCase();
-					indexGroups.computeIfAbsent(idxName, k -> new ArrayList<>()).add(col);
+					dbIndexSets.add(col);
 				}
 				idxRs.close();
-				final Set<String> dbIndexSets=new HashSet<>();
-				for(final List<String> group : indexGroups.values())
-				{
-					Collections.sort(group);
-					dbIndexSets.add(String.join(",", group));
-				}
 				dbIndexSetsByTable.put(upperT, dbIndexSets);
 			}
 
@@ -205,9 +204,9 @@ public class DDLValidator
 					continue;
 				final List<JSONObject> list=changes[ver];
 				int validCount=0;
-				if ((oneChgIdx!=null)&&(oneChgIdx.intValue() >= 0)&&(oneChgIdx.intValue()<list.size()))
+				if((oneChgIdx!=null)&&(oneChgIdx.intValue() >= 0)&&(oneChgIdx.intValue()<list.size()))
 				{
-					if (validateChange(list.get(oneChgIdx.intValue()), dbTables, dbColumnsByTable, dbPrimaryKeysByTable, dbIndexSetsByTable, stringsAreBlobs))
+					if(validateChange(list.get(oneChgIdx.intValue()), dbTables, dbColumnsByTable, dbPrimaryKeysByTable, dbIndexSetsByTable, stringsAreBlobs))
 						return ver;
 					else
 						return 0;
@@ -421,14 +420,7 @@ public class DDLValidator
 			if(target.equals("INDEX"))
 			{
 				final Set<String> dbIdxs=dbIndexSetsByTable.get(tname);
-				final String name=c.getCheckedString("name");
-				final List<String> group=Arrays.asList(name.split(","));
-				final List<String> g=new ArrayList<>();
-				for(final String s : group)
-					g.add(s.trim().toUpperCase());
-				Collections.sort(g);
-				final String idxStr=String.join(",", g);
-				final boolean has=dbIdxs.contains(idxStr);
+				final boolean has=dbIdxs.contains(nameUpper);
 				if(action.equals("ADD")||action.equals("MODIFY"))
 					return has;
 				if(action.equals("DELETE"))
@@ -461,14 +453,14 @@ public class DDLValidator
 			final List<JSONObject>[] allChanges=new List[DBInterface.currentVersion+1];
 			for(int i=1;i<=DBInterface.currentVersion;i++)
 			{
-				if (!obj.containsKey(""+i))
+				if(!obj.containsKey(""+i))
 				{
 					allChanges[i]=new ArrayList<JSONObject>();
 					continue;
 				}
 				final Object[] arr=obj.getCheckedArray(""+i);
 				final List<JSONObject> changeSet=new ArrayList<JSONObject>();
-				for (final Object oc : arr)
+				for(final Object oc : arr)
 					changeSet.add((JSONObject)oc);
 				allChanges[i]=changeSet;
 			}
@@ -533,6 +525,328 @@ public class DDLValidator
 	}
 
 	/**
+	 * Validates a list of schema changes against the current database state, 
+	 * returning a list of error messages for any changes that cannot be applied.
+	 * For changes that add a new table and include modifications to that table, 
+	 * only errors for the table addition are reported to avoid redundant messages.
+	 *
+	 * @param changes the list of schema changes to validate
+	 * @return a list of error messages, empty if all changes are valid
+	 * @throws Exception if an error occurs accessing the database
+	 */
+	public List<String> validateChanges(final List<JSONObject> changes) throws Exception
+	{
+		final List<String> errors=new ArrayList<>();
+		DBConnection conn=null;
+		try
+		{
+			conn=DB.DBFetch();
+			final DatabaseMetaData meta=conn.getMetaData();
+			final ResultSet rs=meta.getTables(null, null, "%", new String[] { "TABLE" });
+			final Set<String> dbTables=new HashSet<>();
+			final Map<String, String> tableCaseMap=new HashMap<>();
+			while(rs.next())
+			{
+				final String actualTableName=rs.getString("TABLE_NAME");
+				final String upperTableName=actualTableName.toUpperCase();
+				dbTables.add(upperTableName);
+				tableCaseMap.put(upperTableName, actualTableName);
+			}
+			rs.close();
+
+			final Map<String, Map<String, JSONObject>> dbColumnsByTable=new HashMap<>();
+			final Map<String, List<String>> dbPrimaryKeysByTable=new HashMap<>();
+			final Map<String, Set<String>> dbIndexSetsByTable=new HashMap<>();
+
+			for(final String upperT : dbTables)
+			{
+				final String actualT=tableCaseMap.getOrDefault(upperT, upperT);
+				final ResultSet colsRs=meta.getColumns(null, null, actualT, "%");
+				final Map<String, JSONObject> dbCols=new HashMap<>();
+				while(colsRs.next())
+				{
+					final String cname=colsRs.getString("COLUMN_NAME").toUpperCase();
+					final int type=colsRs.getInt("DATA_TYPE");
+					String typeName=null;
+					switch (type)
+					{
+					case java.sql.Types.INTEGER:
+					case java.sql.Types.SMALLINT:
+					case java.sql.Types.TINYINT:
+						typeName="INT";
+						break;
+					case java.sql.Types.BIGINT:
+						typeName="LONG";
+						break;
+					case java.sql.Types.VARCHAR:
+					case java.sql.Types.NVARCHAR:
+					case java.sql.Types.CHAR:
+						typeName="VARCHAR";
+						break;
+					case -16:
+					case java.sql.Types.NCLOB:
+					case java.sql.Types.LONGVARCHAR:
+					case java.sql.Types.CLOB:
+						typeName="TEXT";
+						break;
+					case java.sql.Types.TIMESTAMP:
+						typeName="TIMESTAMP";
+						break;
+					case java.sql.Types.DATE:
+					case java.sql.Types.TIME:
+						typeName="DATETIME";
+						break;
+					}
+					if(typeName == null)
+						continue;
+					final int size=colsRs.getInt("COLUMN_SIZE");
+					final boolean nullable=colsRs.getString("IS_NULLABLE").equals("YES");
+					final JSONObject column=new JSONObject();
+					column.put("name", cname);
+					column.put("type", typeName);
+					column.put("size", Long.valueOf(size));
+					column.put("nullable", Boolean.valueOf(nullable));
+					dbCols.put(cname, column);
+				}
+				colsRs.close();
+				dbColumnsByTable.put(upperT, dbCols);
+
+				final ResultSet pkRs=meta.getPrimaryKeys(null, null, actualT);
+				final List<String> dbKeys=new ArrayList<>();
+				while(pkRs.next())
+				{
+					final String col=pkRs.getString("COLUMN_NAME").toUpperCase();
+					dbKeys.add(col);
+				}
+				pkRs.close();
+				Collections.sort(dbKeys);
+				dbPrimaryKeysByTable.put(upperT, dbKeys);
+				final ResultSet idxRs=meta.getIndexInfo(null, null, actualT, false, false);
+				final Set<String> dbIndexSets=new HashSet<>();
+				while(idxRs.next())
+				{
+					final String idxName=idxRs.getString("INDEX_NAME");
+					if((idxName == null)||(idxName.equals("PRIMARY")))
+						continue;
+					final String col=idxRs.getString("COLUMN_NAME").toUpperCase();
+					dbIndexSets.add(col);
+				}
+				idxRs.close();
+				dbIndexSetsByTable.put(upperT, dbIndexSets);
+			}
+			final Set<String> newTables=new HashSet<>();
+			for(final JSONObject c : changes)
+			{
+				try
+				{
+					final String act=c.getCheckedString("action").toUpperCase();
+					final String tgt=c.getCheckedString("target").toUpperCase();
+					if("ADD".equals(act) && "TABLE".equals(tgt))
+					{
+						final String name=c.getCheckedString("name").toUpperCase();
+						newTables.add(name);
+					}
+				}
+				catch (final MJSONException e)
+				{
+				}
+			}
+			for(final JSONObject c : changes)
+			{
+				try
+				{
+					final String act=c.getCheckedString("action").toUpperCase();
+					final String tgt=c.getCheckedString("target").toUpperCase();
+					final String name=c.getCheckedString("name");
+					final String nameUpper=name.toUpperCase();
+					final String table=c.containsKey("table") ? c.getCheckedString("table").toUpperCase() : null;
+					if(table != null && newTables.contains(table))
+						continue;
+
+					if("TABLE".equals(tgt))
+					{
+						final boolean exists=dbTables.contains(nameUpper);
+						if("ADD".equals(act))
+						{
+							if(exists)
+								errors.add("Cannot add table '"+name+"': already exists.");
+						}
+						else
+						if("DELETE".equals(act))
+						{
+							if(!exists)
+								errors.add("Cannot delete table '"+name+"': does not exist.");
+						}
+						else
+							errors.add("Unsupported action '"+act+"' for table: "+c.toString());
+					}
+					else
+					if("COLUMN".equals(tgt))
+					{
+						if(table == null)
+						{
+							errors.add("Column change missing 'table': "+c.toString());
+							continue;
+						}
+						final boolean tableExists=dbTables.contains(table);
+						if(!tableExists)
+						{
+							errors.add("Table '"+table+"' does not exist for column change: "+c.toString());
+							continue;
+						}
+						final Map<String, JSONObject> dbCols=dbColumnsByTable.get(table);
+						final boolean colExists=dbCols.containsKey(nameUpper);
+						if("ADD".equals(act))
+						{
+							if(colExists)
+								errors.add("Cannot add column '"+name+"' to table '"+table+"': already exists.");
+						}
+						else
+						if("MODIFY".equals(act))
+						{
+							if(!colExists)
+								errors.add("Cannot modify column '"+name+"' in table '"+table+"': does not exist.");
+						}
+						else
+						if("DELETE".equals(act))
+						{
+							if(!colExists)
+								errors.add("Cannot delete column '"+name+"' from table '"+table+"': does not exist.");
+						}
+						else
+							errors.add("Unsupported action '"+act+"' for column: "+c.toString());
+					}
+					else
+					if("KEY".equals(tgt))
+					{
+						if(table == null)
+						{
+							errors.add("Key change missing 'table': "+c.toString());
+							continue;
+						}
+						final boolean tableExists=dbTables.contains(table);
+						if(!tableExists)
+						{
+							errors.add("Table '"+table+"' does not exist for key change: "+c.toString());
+							continue;
+						}
+						final Map<String, JSONObject> dbCols=dbColumnsByTable.get(table);
+						if(!dbCols.containsKey(nameUpper))
+						{
+							errors.add("Column '"+name+"' does not exist in table '"+table+"' for key change.");
+							continue;
+						}
+						final List<String> dbPks=dbPrimaryKeysByTable.get(table);
+						final boolean isPk=dbPks.contains(nameUpper);
+						if("ADD".equals(act))
+						{
+							if(isPk)
+								errors.add("Cannot add key '"+name+"' to table '"+table+"': already a primary key.");
+						}
+						else
+						if("DELETE".equals(act))
+						{
+							if(!isPk)
+								errors.add("Cannot delete key '"+name+"' from table '"+table+"': not a primary key.");
+						}
+						else
+							errors.add("Unsupported action '"+act+"' for key: "+c.toString());
+					}
+					else
+					if("INDEX".equals(tgt))
+					{
+						if(table == null)
+						{
+							errors.add("Index change missing 'table': "+c.toString());
+							continue;
+						}
+						final boolean tableExists=dbTables.contains(table);
+						if(!tableExists)
+						{
+							errors.add("Table '"+table+"' does not exist for index change: "+c.toString());
+							continue;
+						}
+						final String idxName=c.getCheckedString("name");
+						final List<String> group=Arrays.asList(idxName.split(","));
+						final List<String> cols=new ArrayList<>();
+						for(final String s : group)
+							cols.add(s.trim().toUpperCase());
+						Collections.sort(cols);
+						final String idxStr=String.join(",", cols);
+						final Set<String> dbIdxs=dbIndexSetsByTable.get(table);
+						final boolean idxExists=dbIdxs.contains(idxStr);
+						if("ADD".equals(act))
+						{
+							if(idxExists)
+								errors.add("Cannot add index '"+idxName+"' to table '"+table+"': already exists.");
+							final Map<String, JSONObject> dbCols=dbColumnsByTable.get(table);
+							for(final String col : cols)
+							{
+								if(!dbCols.containsKey(col))
+									errors.add("Column '"+col+"' does not exist in table '"+table+"' for index add.");
+							}
+						}
+						else
+						if("DELETE".equals(act))
+						{
+							if(!idxExists)
+								errors.add("Cannot delete index '"+idxName+"' from table '"+table+"': does not exist.");
+						}
+						else
+							errors.add("Unsupported action '"+act+"' for index: "+c.toString());
+					}
+					else
+					if("MOVE".equals(act))
+					{
+						if(!"COLUMN".equals(tgt))
+						{
+							errors.add("Unsupported move target: "+c.toString());
+							continue;
+						}
+						final String fromTable=c.getCheckedString("from_table").toUpperCase();
+						final String toTable=c.getCheckedString("to_table").toUpperCase();
+						if(fromTable == null || toTable == null)
+						{
+							errors.add("Move column missing 'from_table' or 'to_table': "+c.toString());
+							continue;
+						}
+						final boolean fromExists=dbTables.contains(fromTable);
+						final boolean toExists=dbTables.contains(toTable);
+						if(!fromExists)
+							errors.add("From table '"+fromTable+"' does not exist for move column '"+name+"'.");
+						if(!toExists)
+							errors.add("To table '"+toTable+"' does not exist for move column '"+name+"'.");
+						if(fromExists)
+						{
+							final Map<String, JSONObject> dbColsFrom=dbColumnsByTable.get(fromTable);
+							if(!dbColsFrom.containsKey(nameUpper))
+								errors.add("Column '"+name+"' does not exist in from table '"+fromTable+"' for move.");
+						}
+						if(toExists)
+						{
+							final Map<String, JSONObject> dbColsTo=dbColumnsByTable.get(toTable);
+							if(dbColsTo.containsKey(nameUpper))
+								errors.add("Column '"+name+"' already exists in to table '"+toTable+"' for move.");
+						}
+					}
+					else
+						errors.add("Unsupported change: "+c.toString());
+				}
+				catch (final MJSONException e)
+				{
+					errors.add("Invalid change JSON: "+e.getMessage()+" for "+c.toString());
+				}
+			}
+			return errors;
+		}
+		finally
+		{
+			if(conn != null)
+				DB.DBDone(conn);
+		}
+	}
+	
+	/**
 	 * Validates the current database version against the changelist.
 	 * @return null if valid, otherwise an error string
 	 */
@@ -563,8 +877,8 @@ public class DDLValidator
 	 */
 	private List<JSONObject> getFinalSchema(final List<JSONObject>[] versions)
 	{
-		final Map<String, DDLTable> schema = new HashMap<>();
-		final List<String> tableOrder = new ArrayList<>();
+		final Map<String, DDLTable> schema=new HashMap<>();
+		final List<String> tableOrder=new ArrayList<>();
 
 		for(final List<JSONObject> version:versions)
 		{
@@ -575,14 +889,12 @@ public class DDLValidator
 				final String act=(String)action.get("action");
 				final String target=(String)action.get("target");
 				final String table=(String)action.get("table");
-
 				if((table!=null)
 				&& (!schema.containsKey(table)))
 				{
 					schema.put(table, new DDLTable(table));
 					tableOrder.add(table);
 				}
-
 				if("ADD".equals(act))
 				{
 					if("TABLE".equals(target))
@@ -598,7 +910,7 @@ public class DDLValidator
 					if("COLUMN".equals(target))
 					{
 						final String col=(String) action.get("name");
-						final JSONObject props = new JSONObject();
+						final JSONObject props=new JSONObject();
 						if(action.containsKey("type"))
 							props.put("type", action.get("type"));
 						if(action.containsKey("size"))
@@ -620,7 +932,7 @@ public class DDLValidator
 					if("COLUMN".equals(target))
 					{
 						final String col=(String) action.get("name");
-						final Map<String, Object> props = schema.get(table).columns.get(col);
+						final Map<String, Object> props=schema.get(table).columns.get(col);
 						if(props!=null) {
 							if(action.containsKey("type")) props.put("type", action.get("type"));
 							if(action.containsKey("size")) props.put("size", action.get("size"));
@@ -651,9 +963,9 @@ public class DDLValidator
 							schema.put(to, new DDLTable(to));
 							tableOrder.add(to);
 						}
-						JSONObject props = schema.get(from).columns.remove(col);
+						JSONObject props=schema.get(from).columns.remove(col);
 						if(props==null)
-							props = new JSONObject();
+							props=new JSONObject();
 						if(action.containsKey("type"))
 							props.put("type", action.get("type"));
 						if(action.containsKey("size"))
@@ -666,23 +978,22 @@ public class DDLValidator
 				}
 			}
 		}
-
-		final List<JSONObject> result = new ArrayList<>();
+		final List<JSONObject> result=new ArrayList<>();
 		for(final String t : tableOrder)
 		{
-			final DDLTable tab = schema.get(t);
+			final DDLTable tab=schema.get(t);
 			if(tab==null)
 				continue;
-			final JSONObject addTable = new JSONObject();
+			final JSONObject addTable=new JSONObject();
 			addTable.put("action", "ADD");
 			addTable.put("target", "TABLE");
 			addTable.put("name", tab.name);
 			result.add(addTable);
 			for(final Map.Entry<String, JSONObject> entry:tab.columns.entrySet())
 			{
-				final String col = entry.getKey();
-				final JSONObject props = entry.getValue();
-				final JSONObject addCol = new JSONObject();
+				final String col=entry.getKey();
+				final JSONObject props=entry.getValue();
+				final JSONObject addCol=new JSONObject();
 				addCol.put("action", "ADD");
 				addCol.put("target", "COLUMN");
 				addCol.put("name", col);
@@ -740,7 +1051,7 @@ public class DDLValidator
 		}
 		finally
 		{
-			if (conn!=null)
+			if(conn!=null)
 				DB.DBDone(conn);
 		}
 		return null;
@@ -764,7 +1075,7 @@ public class DDLValidator
 			final int oldVersion=-version;
 			final List<JSONObject> baseChanges=changes[-version];
 			final List<JSONObject> applicableChanges=new LinkedList<JSONObject>();
-			for (int c=0;c<baseChanges.size();c++)
+			for(int c=0;c<baseChanges.size();c++)
 			{
 				try
 				{
@@ -776,7 +1087,7 @@ public class DDLValidator
 					applicableChanges.add(baseChanges.get(c));
 				}
 			}
-			if (applicableChanges.size() >0)
+			if(applicableChanges.size() >0)
 			{
 				DBConnection conn=null;
 				try
@@ -804,19 +1115,21 @@ public class DDLValidator
 				}
 				finally
 				{
-					if (conn!=null)
+					if(conn!=null)
 						DB.DBDone(conn);
 				}
 				Log.sysOut("Database upgraded to version "+oldVersion);
 			}
 			version=getDatabaseVersionCode(true);
-			if((version==-oldVersion)||(version<oldVersion))
+			if((version==-oldVersion)||(version<Math.abs(oldVersion)))
 				return "Unable to upgrade database version "+oldVersion+".  Please do so manually.";
 		}
 		int oldVersion=version;
 		for(++version;version<=DBInterface.currentVersion;version++)
 		{
-			if (changes[version].size() >0)
+			if(changes[version]==null)
+				continue;
+			if(changes[version].size() >0)
 			{
 				DBConnection conn=null;
 				try
@@ -840,7 +1153,7 @@ public class DDLValidator
 					DB.DBDone(conn);
 					conn=null;
 					final int newVersion=getDatabaseVersionCode(true);
-					if(Math.abs(newVersion)==oldVersion)
+					if((Math.abs(newVersion)==oldVersion)||(newVersion<0))
 						return "Failed to upgrade database version "+version+".  Please do so manually.";
 					Log.sysOut("Database upgraded to version "+version);
 					version=newVersion;
@@ -852,7 +1165,7 @@ public class DDLValidator
 				}
 				finally
 				{
-					if (conn!=null)
+					if(conn!=null)
 						DB.DBDone(conn);
 				}
 				oldVersion=version;
