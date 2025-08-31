@@ -443,7 +443,7 @@ public class GatheringSkill extends CommonSkill
 		}
 		if((weightHere==0)||(foundResource<0))
 		{
-			if(numHere > 0)
+			if((numHere > 0)&&(foundAnyway!=null))
 				commonTelL(mob,"You can't bundle weightless @x1 with this skill.",foundAnyway.name());
 			else
 			if(foundAnyway!=null)

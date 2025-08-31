@@ -1464,6 +1464,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		case ORBITCRUISE:
 		{
+			if(targetObject==null)
+				break;
 			final double maxDistance = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
 			final double minDistance = targetObject.radius() + CMath.mul(0.75, maxDistance - targetObject.radius());
 			final long medDistance = Math.round(minDistance + ((maxDistance-minDistance)/2.0));

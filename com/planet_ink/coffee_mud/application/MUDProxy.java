@@ -335,18 +335,21 @@ public class MUDProxy
 									targetPort = null;
 									break;
 								}
-								targetChannel.connect(new InetSocketAddress(targetPort.first, targetPort.second.intValue()));
-								final Pair<String,Integer> clientPort = new Pair<String,Integer>(clientIp,Integer.valueOf(listenPort));
-								final SelectionKey clientKey =
-										clientChannel.register(selector, SelectionKey.OP_READ, new MUDProxy(true,listenPort,clientPort,clientIp));
-								final SelectionKey targetKey =
-										targetChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,listenPort,targetPort,targetPort.first));
-								synchronized(channelPairs)
+								if(targetPort != null)
 								{
-									channelPairs.put(clientKey, targetKey);
-									channelPairs.put(targetKey, clientKey);
+									targetChannel.connect(new InetSocketAddress(targetPort.first, targetPort.second.intValue()));
+									final Pair<String,Integer> clientPort = new Pair<String,Integer>(clientIp,Integer.valueOf(listenPort));
+									final SelectionKey clientKey =
+											clientChannel.register(selector, SelectionKey.OP_READ, new MUDProxy(true,listenPort,clientPort,clientIp));
+									final SelectionKey targetKey =
+											targetChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,listenPort,targetPort,targetPort.first));
+									synchronized(channelPairs)
+									{
+										channelPairs.put(clientKey, targetKey);
+										channelPairs.put(targetKey, clientKey);
+									}
+									Log.sysOut(listenPort+"","Connection from "+clientIp+"->"+targetPort.first+":"+targetPort.second);
 								}
-								Log.sysOut(listenPort+"","Connection from "+clientIp+"->"+targetPort.first+":"+targetPort.second);
 							}
 
 							//*** Connectable
@@ -385,7 +388,7 @@ public class MUDProxy
 											obj.putAll(serverContext.session);
 											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
 											serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
-											if(pairedKey!=null)
+											if((pairedKey!=null)&&(clientContext!=null))
 											{
 												clientContext.inter.add(ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
 														+"-- Connection restored --\n\r").getBytes()));

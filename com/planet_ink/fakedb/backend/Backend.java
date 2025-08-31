@@ -37,7 +37,6 @@ import com.planet_ink.fakedb.backend.structure.FakeTable;
 import com.planet_ink.fakedb.backend.structure.FakeTable2;
 import com.planet_ink.fakedb.backend.structure.RecordInfo;
 import com.planet_ink.fakedb.backend.structure.FakeColumn.FakeColType;
-import com.sun.tools.doclint.Messages.Group;
 
 public class Backend
 {

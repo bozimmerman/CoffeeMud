@@ -307,7 +307,7 @@ public class LocalizationHelper
 									innards = null;
 								}
 							}
-							if(cleanString)
+							if(cleanString && (innards!=null))
 							{
 								final String cs = innards.substring(1,innards.length()-1);
 								recordFound(classes, cs);
@@ -350,6 +350,7 @@ public class LocalizationHelper
 				System.out.println("\n\r* You can put USE/DEDUP lines in [session-translation]");
 				System.out.println("    in your translation_??_??.properties file.");
 				System.exit(-1);
+				return;
 			}
 			marker="L(";
 			if(args[0].toUpperCase().trim().startsWith("I"))

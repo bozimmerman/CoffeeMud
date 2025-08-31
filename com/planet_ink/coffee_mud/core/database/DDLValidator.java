@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,23 @@ public class DDLValidator
 	public DDLValidator(final DBConnector DB)
 	{
 		this.DB=DB;
+	}
+
+	/**
+	 * A helper class to represent a table schema during processing
+	 */
+	private static class DDLTable
+	{
+		String name;
+
+		LinkedHashMap<String, JSONObject>	columns			= new LinkedHashMap<>();
+		List<JSONObject>					keyActions		= new ArrayList<>();
+		List<JSONObject>					indexActions	= new ArrayList<>();
+
+		public DDLTable(final String name)
+		{
+			this.name = name;
+		}
 	}
 
 	/**
@@ -278,7 +296,7 @@ public class DDLValidator
 			{
 				if(CMParms.contains(fieldGroups[g], c.getCheckedString("type").toUpperCase()))
 					ctype=g;
-				if(CMParms.contains(fieldGroups[g], dc.getCheckedString("type").toUpperCase()))
+				if((dc!=null) && CMParms.contains(fieldGroups[g], dc.getCheckedString("type").toUpperCase()))
 					dctype=g;
 			}
 
@@ -297,7 +315,7 @@ public class DDLValidator
 			else
 				csize=-1;
 			final int dcsize;
-			if(dc.containsKey("size"))
+			if((dc!=null) && dc.containsKey("size"))
 				dcsize=dc.getCheckedLong("size").intValue();
 			else
 				dcsize=-1;
@@ -353,7 +371,7 @@ public class DDLValidator
 					{
 						if(CMParms.contains(fieldGroups[g], c.getCheckedString("type").toUpperCase()))
 							ctype=g;
-						if(CMParms.contains(fieldGroups[g], dc.getCheckedString("type").toUpperCase()))
+						if((dc!=null) && CMParms.contains(fieldGroups[g], dc.getCheckedString("type").toUpperCase()))
 							dctype=g;
 					}
 
@@ -372,7 +390,7 @@ public class DDLValidator
 					else
 						csize=-1;
 					final int dcsize;
-					if(dc.containsKey("size"))
+					if((dc!=null) && dc.containsKey("size"))
 						dcsize=dc.getCheckedLong("size").intValue();
 					else
 						dcsize=-1;
@@ -537,6 +555,155 @@ public class DDLValidator
 	}
 
 	/**
+	 * Given a list of schema versions (each a list of actions), computes the
+	 * final schema by applying all actions in order.
+	 *
+	 * @param versions List of schema versions, each a list of action maps
+	 * @return The final schema as a list of action maps
+	 */
+	private List<JSONObject> getFinalSchema(final List<JSONObject>[] versions)
+	{
+		final Map<String, DDLTable> schema = new HashMap<>();
+		final List<String> tableOrder = new ArrayList<>();
+
+		for(final List<JSONObject> version:versions)
+		{
+			if(version == null)
+				continue;
+			for(final JSONObject action: version)
+			{
+				final String act=(String)action.get("action");
+				final String target=(String)action.get("target");
+				final String table=(String)action.get("table");
+
+				if((table!=null)
+				&& (!schema.containsKey(table)))
+				{
+					schema.put(table, new DDLTable(table));
+					tableOrder.add(table);
+				}
+
+				if("ADD".equals(act))
+				{
+					if("TABLE".equals(target))
+					{
+						final String name=(String) action.get("name");
+						if(!schema.containsKey(name))
+						{
+							schema.put(name, new DDLTable(name));
+							tableOrder.add(name);
+						}
+					}
+					else
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						final JSONObject props = new JSONObject();
+						if(action.containsKey("type"))
+							props.put("type", action.get("type"));
+						if(action.containsKey("size"))
+							props.put("size", action.get("size"));
+						if(action.containsKey("nullable"))
+							props.put("nullable", action.get("nullable"));
+						schema.get(table).columns.put(col, props);
+					}
+					else
+					if("KEY".equals(target))
+						schema.get(table).keyActions.add(action);
+					else
+					if("INDEX".equals(target))
+						schema.get(table).indexActions.add(action);
+				}
+				else
+				if("MODIFY".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						final Map<String, Object> props = schema.get(table).columns.get(col);
+						if(props!=null) {
+							if(action.containsKey("type")) props.put("type", action.get("type"));
+							if(action.containsKey("size")) props.put("size", action.get("size"));
+							if(action.containsKey("nullable")) props.put("nullable", action.get("nullable"));
+						}
+					}
+				}
+				else
+				if("DELETE".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String) action.get("name");
+						schema.get(table).columns.remove(col);
+						schema.get(table).keyActions.removeIf(k -> col.equals(k.get("name")));
+					}
+				}
+				else
+				if("MOVE".equals(act))
+				{
+					if("COLUMN".equals(target))
+					{
+						final String col=(String)action.get("name");
+						final String from=(String)action.get("from_table");
+						final String to=(String)action.get("to_table");
+						if(!schema.containsKey(to))
+						{
+							schema.put(to, new DDLTable(to));
+							tableOrder.add(to);
+						}
+						JSONObject props = schema.get(from).columns.remove(col);
+						if(props==null)
+							props = new JSONObject();
+						if(action.containsKey("type"))
+							props.put("type", action.get("type"));
+						if(action.containsKey("size"))
+							props.put("size", action.get("size"));
+						if(action.containsKey("nullable"))
+							props.put("nullable", action.get("nullable"));
+						schema.get(to).columns.put(col, props);
+						schema.get(from).keyActions.removeIf(k -> col.equals(k.get("name")));
+					}
+				}
+			}
+		}
+
+		final List<JSONObject> result = new ArrayList<>();
+		for(final String t : tableOrder)
+		{
+			final DDLTable tab = schema.get(t);
+			if(tab==null)
+				continue;
+			final JSONObject addTable = new JSONObject();
+			addTable.put("action", "ADD");
+			addTable.put("target", "TABLE");
+			addTable.put("name", tab.name);
+			result.add(addTable);
+			for(final Map.Entry<String, JSONObject> entry:tab.columns.entrySet())
+			{
+				final String col = entry.getKey();
+				final JSONObject props = entry.getValue();
+				final JSONObject addCol = new JSONObject();
+				addCol.put("action", "ADD");
+				addCol.put("target", "COLUMN");
+				addCol.put("name", col);
+				addCol.put("table", t);
+				if(props.containsKey("type"))
+					addCol.put("type", props.get("type"));
+				if(props.containsKey("size"))
+					addCol.put("size", props.get("size"));
+				if(props.containsKey("nullable"))
+					addCol.put("nullable", props.get("nullable"));
+				result.add(addCol);
+			}
+			for(final JSONObject key:tab.keyActions)
+				result.add(key);
+			for(final JSONObject index:tab.indexActions)
+				result.add(index);
+		}
+		return result;
+	}
+
+	/**
 	 * Creates the database from scratch, using the changelist.
 	 *
 	 * @return null if successful, otherwise an error string
@@ -552,7 +719,7 @@ public class DDLValidator
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
 			final DDLGenerator ddlGen=new DDLGenerator(meta);
-			final List<String> sql=ddlGen.getSchemaSQL(changes);
+			final List<String> sql=ddlGen.generateSQLForChanges(getFinalSchema(changes));
 			for(final String s : sql)
 			{
 				try

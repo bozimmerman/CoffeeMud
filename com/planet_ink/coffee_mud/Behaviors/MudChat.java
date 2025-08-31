@@ -876,10 +876,15 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if(var.equals("ROOMDESC"))
 		{
 			final Room R = CMLib.map().roomLocation((Environmental)M);
-			if((R != null)&&(M instanceof MOB))
-				repl = R.displayText((MOB)M);
+			if(R!=null)
+			{
+				if(M instanceof MOB)
+					repl = R.displayText((MOB)M);
+				else
+					repl = R.displayText();
+			}
 			else
-				repl = R.displayText();
+				repl = "";
 		}
 		else
 		if(var.startsWith("PERSONALITY"))

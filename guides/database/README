@@ -1,3 +1,5 @@
+This directory contains SQL schema files for manually configuring a CoffeeMud database.
+
 coffeemuddbmssql.sql - schema for older versions of Microsoft SQL Server
 coffeemuddbaccess.sql - schema for Microsoft ACCESS (yea, I know -- but this was the first DB supported)
 coffeemuddbderby.sql - schema for IBM Cloudscape/Derby database

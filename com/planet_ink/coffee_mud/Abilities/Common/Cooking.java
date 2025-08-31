@@ -164,6 +164,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				java.util.Objects.equals(secretIdentity, oth.secretIdentity) &&
 				java.util.Objects.equals(itemName, oth.itemName);
 		}
+
+		@Override
+		public int hashCode()
+		{
+			return super.hashCode();
+		}
 	}
 
 	private static class Ingredients

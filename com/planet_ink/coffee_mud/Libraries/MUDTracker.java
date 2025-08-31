@@ -3290,6 +3290,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			return o == this;
 		}
+
+		@Override
+		public int hashCode()
+		{
+			return super.hashCode();
+		}
 	}
 
 	/**
@@ -3666,7 +3672,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						if((nR.getArea().Name().equals(start.getArea().Name()))
 						&&(nR.getRoomInDir(Directions.getOpDirectionCode(d)) == R))
 						{
-							if(outerMaybe.containsKey(nR))
+							if(outerMaybe.containsKey(nR)&&(group != null))
 								group.outerLinks.removeAll(outerMaybe.get(nR));
 							visited.add(nR);
 							queue.add(nR);
@@ -3712,7 +3718,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						visited.add(nR);
 						final String targetRoomID = map.getExtendedRoomID(nR);
 						final AreaRoomGroup destGroup = otherGroups.roomMap.get(targetRoomID.toLowerCase());
-						if((destGroup != null) && (destGroup != group))
+						if((destGroup != null)&&(destGroup != group)&&(group != null))
 						{
 							final TrackLink link = new TrackLink();
 							link.homeRoomID = map.getExtendedRoomID(R);

@@ -5157,7 +5157,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final Room mR = (M!=null)?M.location():null;
 								final Area mA = (mR!=null)?mR.getArea():null;
 								if((mA==A)
-								&&(mR!=null))
+								&&(mR!=null)
+								&&(M!=null))
 								{
 									num++;
 									if((whichI == num)
@@ -8003,7 +8004,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final MOB M = S.mob();
 						final Room mR = (M!=null)?M.location():null;
 						final Area mA = (mR!=null)?mR.getArea():null;
-						if((mA==A)&&(mR!=null))
+						if((mA==A)
+						&&(mR!=null)
+						&&(M!=null))
 						{
 							num++;
 							if((whichI == num)

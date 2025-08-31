@@ -6335,7 +6335,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						}
 						else
 						{
-							mob.addFaction(F.factionID(),amt.intValue());
+							if(mob != null)
+								mob.addFaction(F.factionID(),amt.intValue());
 							V.add(new Pair<String,Integer>(F.factionID(),amt));
 						}
 					}

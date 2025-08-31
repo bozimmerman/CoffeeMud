@@ -176,7 +176,7 @@ public class Spell_MageArmor extends Spell
 				mob.location().send(mob,msg);
 				final Spell_MageArmor A = (Spell_MageArmor)beneficialAffect(mob,target,asLevel,0);
 				success = A != null;
-				if(success)
+				if(success && (A!=null))
 					A.applyArmor(mob);
 			}
 		}
