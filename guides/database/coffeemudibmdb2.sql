@@ -12,7 +12,7 @@
 CREATE TABLE CMVFS (
 	CMFNAM varchar (255) NOT NULL,
 	CMDTYP int  NOT NULL,
-	CMMODD int NOT NULL,
+	CMMODD bigint NOT NULL,
 	CMWHOM varchar (50),
 	CMDATA CLOB,
 	PRIMARY KEY (CMFNAM)
@@ -41,8 +41,8 @@ CREATE TABLE CMCHAB (
   CMDATA : XML formatted data for this period
 */
 CREATE TABLE CMSTAT (
-	CMSTRT int NOT NULL,
-	CMENDT int NOT NULL,
+	CMSTRT bigint NOT NULL,
+	CMENDT bigint NOT NULL,
 	CMDATA CLOB,
 	PRIMARY KEY (CMSTRT)
 );
@@ -68,7 +68,7 @@ CREATE TABLE CMPOLL (
 	CMFLAG int ,
 	CMQUAL varchar (255) ,
 	CMRESL CLOB ,
-	CMEXPI int ,
+	CMEXPI bigint ,
 	PRIMARY KEY (CMNAME)
 );
 
@@ -153,7 +153,7 @@ CREATE TABLE CMCHAR (
 	CMATTA int ,
 	CMAMOR int ,
 	CMDAMG int ,
-	CMBTMP integer(8) ,
+	CMBTMP bigint,
 	CMLEIG varchar (50) ,
 	CMHEIT int ,
 	CMWEIT int ,
@@ -220,7 +220,7 @@ CREATE TABLE CMCHIT (
 	CMITID varchar (50),
 	CMITTX CLOB,
 	CMITLO varchar (100),
-	CMITWO int,
+	CMITWO bigint,
 	CMITUR int,
 	CMITLV int,
 	CMITAB int,
@@ -379,7 +379,7 @@ CREATE TABLE CMJRNL (
 	CMPART varchar (75) ,
 	CMATTR int,
 	CMDATA varchar (255) ,
-	CMUPTM integer(8),
+	CMUPTM bigint,
 	CMIMGP varchar (50),
 	CMVIEW int,
 	CMREPL int,
@@ -445,7 +445,7 @@ CREATE TABLE CMPDAT (
 CREATE TABLE CMGRAC (
 	CMRCID varchar (250)   NOT NULL,
 	CMRDAT CLOB ,
-	CMRCDT int ,
+	CMRCDT bigint ,
 	PRIMARY KEY (CMRCID)
 );
 
@@ -512,7 +512,7 @@ CREATE TABLE CMBKLG (
 	CMNAME varchar (50) NOT NULL,
 	CMINDX int NOT NULL,
 	CMSNAM int NOT NULL,
-	CMDATE integer(8),
+	CMDATE bigint,
 	CMDATA CLOB,
 	PRIMARY KEY (CMNAME,CMINDX)
 );
@@ -536,7 +536,7 @@ CREATE TABLE CMCLIT (
 	CMITID varchar (50),
 	CMITTX CLOB,
 	CMITLO varchar (100),
-	CMITWO int,
+	CMITWO bigint,
 	CMITUR int,
 	CMITLV int,
 	CMITAB int,

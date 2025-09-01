@@ -143,7 +143,7 @@ public class DDLValidator
 			if(meta==null)
 				return Integer.MIN_VALUE;
 			String productName=meta.getDatabaseProductName().toLowerCase();
-			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+			final String schema = (productName.contains("oracle") || productName.contains("db2")) ? conn.getSchema() : null;
 			final ResultSet rs=meta.getTables(null, schema, "%", new String[]{"TABLE"});
 			final Set<String> dbTables=new HashSet<>();
 			final Map<String, String> tableCaseMap=new HashMap<>();
@@ -1108,6 +1108,8 @@ public class DDLValidator
 					{
 						try
 						{
+							if(CMSecurity.isDebugging(DbgFlag.SQLERRORS))
+								Log.debugOut(s);
 							conn.update(s, 0);
 						}
 						catch (final SQLException e)
@@ -1167,6 +1169,8 @@ public class DDLValidator
 					{
 						try
 						{
+							if(CMSecurity.isDebugging(DbgFlag.SQLERRORS))
+								Log.debugOut(s);
 							conn.update(s, 0);
 						}
 						catch (final SQLException e)
