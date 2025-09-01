@@ -72,6 +72,10 @@ public class DBConnections
 	private long				lastReset			= 0;
 	/** check for whether these connections are fakedb */
 	private Boolean				isFakeDB			= null;
+	/** check for whether these connections are postgres */
+	private Boolean				isPostGres			= null;
+	/** For isPostGres, the list of all identifiers that need quoting */
+	private final Set<String> 	allIdentifiers		= new HashSet<String>();
 
 	/**
 	 * Initialize this class.  Must be called at first,
@@ -510,13 +514,62 @@ public class DBConnections
 		consecutiveFailures=0;
 		disconnected=false;
 		lockedUp=false;
-		if((isFakeDB==null)&&(newConn!=null))
+		if(newConn != null)
 		{
-			isFakeDB=Boolean.valueOf(newConn.isFakeDB());
+			if(isFakeDB == null)
+			{
+				isFakeDB=Boolean.valueOf(newConn.isFakeDB());
+			}
+			if(isPostGres == null)
+				isPostGres = setupPostGres(newConn);
 		}
 		return newConn;
 	}
 
+	private Boolean setupPostGres(DBConnection newConn)
+	{
+		synchronized(allIdentifiers)
+		{
+			if(isPostGres != null)
+				return isPostGres;
+			try
+			{
+				DatabaseMetaData data = newConn.getMetaData();
+				isPostGres = Boolean.valueOf((data != null)
+							&& (data.getDatabaseProductName().toLowerCase().contains("postgres")));
+			}
+			catch(Exception e)
+			{
+				isPostGres = Boolean.FALSE;
+			}
+			if(isPostGres.booleanValue())
+			{
+				this.allIdentifiers.clear();
+				try(BufferedReader br = new BufferedReader(new FileReader("guides"+File.separator+"database"+File.separator+"fakedb.schema")))
+				{
+					String s = br.readLine();
+					while(s != null)
+					{
+						s=s.trim();
+						if(!s.startsWith("#"))
+						{
+							int x = s.indexOf(' ');
+							if(x>0)
+								s=s.substring(0,x);
+							allIdentifiers.add(s.toUpperCase());
+						}
+						s=br.readLine();
+					}
+				}
+				catch(IOException e)
+				{
+					Log.errOut(e);
+				}
+			}
+		}
+		return isPostGres;
+	}
+	
 	public boolean isFakeDB()
 	{
 		if(isFakeDB==null)
@@ -1048,5 +1101,77 @@ public class DBConnections
 				DBDone(conn);
 		}
 		return status;
+	}
+	
+	/**
+	 * Wraps table and column names in double quotes for a given SQL statement,
+	 * using a map of table names to their column names for lookup and validation.
+	 * Skips quoting inside single-quoted string literals and handles escaped single quotes ('').
+	 * Assumes identifiers are case-sensitive as per the map and SQL.
+	 * Only quotes known tables/columns from the map; does not blindly replace all occurrences.
+	 *
+	 * @param sql The input SQL statement
+	 * @param allIdentifiers A set of table names and their column names
+	 * @return The modified SQL with quoted identifiers
+	 */
+	public String fixIdentifiers(String sql) 
+	{
+		if((isPostGres == null)||(!isPostGres.booleanValue()))
+			return sql;
+		StringBuilder result = new StringBuilder();
+		StringBuilder currentIdentifier = new StringBuilder();
+		boolean inString = false;
+		char quoteChar = '"';
+		for (int i = 0; i < sql.length(); i++) 
+		{
+			char c = sql.charAt(i);
+			if (inString) 
+			{
+				result.append(c);
+				if (c == '\'') 
+				{
+					if (i + 1 < sql.length() && sql.charAt(i + 1) == '\'') 
+					{
+						result.append('\'');
+						i++; // Skip the next '
+					} 
+					else
+						inString = false;
+				}
+			} 
+			else 
+			{
+				if (c == '\'')
+				{
+					result.append(c);
+					inString = true;
+				} 
+				else 
+				if (Character.isLetterOrDigit(c) || c == '_') 
+					currentIdentifier.append(c);
+				else 
+				{
+					if (currentIdentifier.length() > 0) 
+					{
+						String id = currentIdentifier.toString();
+						if (allIdentifiers.contains(id.toUpperCase()))
+							result.append(quoteChar).append(id).append(quoteChar);
+						else
+							result.append(id);
+						currentIdentifier.setLength(0);
+					}
+					result.append(c);
+				}
+			}
+		}
+		if (currentIdentifier.length() > 0) 
+		{
+			String id = currentIdentifier.toString();
+			if (allIdentifiers.contains(id.toUpperCase()))
+				result.append(quoteChar).append(id).append(quoteChar);
+			else
+				result.append(id);
+		}
+		return result.toString();
 	}
 }

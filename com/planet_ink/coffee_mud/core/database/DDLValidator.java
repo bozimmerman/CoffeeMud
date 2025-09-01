@@ -74,6 +74,44 @@ public class DDLValidator
 		}
 	}
 
+	public static String getPortableType(final int type, final String actualName)
+	{
+		String typeName=null;
+		switch (type)
+		{
+		case java.sql.Types.INTEGER:
+		case java.sql.Types.SMALLINT:
+		case java.sql.Types.TINYINT:
+			typeName="INT";
+			break;
+		case java.sql.Types.BIGINT:
+			typeName="LONG";
+			break;
+		case java.sql.Types.VARCHAR:
+		case java.sql.Types.NVARCHAR:
+		case java.sql.Types.CHAR:
+			if((actualName != null)&&(actualName.equalsIgnoreCase("text")))
+				typeName = "TEXT";
+			else
+				typeName="VARCHAR";
+			break;
+		case -16:
+		case java.sql.Types.NCLOB:
+		case java.sql.Types.LONGVARCHAR:
+		case java.sql.Types.CLOB:
+			typeName="TEXT";
+			break;
+		case java.sql.Types.TIMESTAMP:
+			typeName="TIMESTAMP";
+			break;
+		case java.sql.Types.DATE:
+		case java.sql.Types.TIME:
+			typeName="DATETIME";
+			break;
+		}
+		return typeName;
+	}
+	
 	/**
 	 * Current database version derived from the changelist.
 	 *
@@ -118,38 +156,8 @@ public class DDLValidator
 				{
 					final String cname=colsRs.getString("COLUMN_NAME").toUpperCase();
 					final int type=colsRs.getInt("DATA_TYPE");
-					String typeName=null;
-					switch (type)
-					{
-					case java.sql.Types.INTEGER:
-					case java.sql.Types.SMALLINT:
-					case java.sql.Types.TINYINT:
-						typeName="INT";
-						break;
-					case java.sql.Types.BIGINT:
-						typeName="LONG";
-						break;
-					case java.sql.Types.VARCHAR:
-					case java.sql.Types.NVARCHAR:
-					case java.sql.Types.CHAR:
-						typeName="VARCHAR";
-						break;
-					case -16:
-					case java.sql.Types.NCLOB:
-					case java.sql.Types.LONGVARCHAR:
-					case java.sql.Types.CLOB:
-						typeName="TEXT";
-						break;
-					case java.sql.Types.TIMESTAMP:
-						typeName="TIMESTAMP";
-						break;
-					case java.sql.Types.DATE:
-					case java.sql.Types.TIME:
-						typeName="DATETIME";
-						break;
-					default:
-						break;
-					}
+					final String actualTypeName = colsRs.getString("TYPE_NAME");
+					String typeName=getPortableType(type, actualTypeName);
 					final int size=colsRs.getInt("COLUMN_SIZE");
 					final boolean nullable=colsRs.getString("IS_NULLABLE").equals("YES");
 					if(typeName==null)
@@ -567,36 +575,8 @@ public class DDLValidator
 				{
 					final String cname=colsRs.getString("COLUMN_NAME").toUpperCase();
 					final int type=colsRs.getInt("DATA_TYPE");
-					String typeName=null;
-					switch (type)
-					{
-					case java.sql.Types.INTEGER:
-					case java.sql.Types.SMALLINT:
-					case java.sql.Types.TINYINT:
-						typeName="INT";
-						break;
-					case java.sql.Types.BIGINT:
-						typeName="LONG";
-						break;
-					case java.sql.Types.VARCHAR:
-					case java.sql.Types.NVARCHAR:
-					case java.sql.Types.CHAR:
-						typeName="VARCHAR";
-						break;
-					case -16:
-					case java.sql.Types.NCLOB:
-					case java.sql.Types.LONGVARCHAR:
-					case java.sql.Types.CLOB:
-						typeName="TEXT";
-						break;
-					case java.sql.Types.TIMESTAMP:
-						typeName="TIMESTAMP";
-						break;
-					case java.sql.Types.DATE:
-					case java.sql.Types.TIME:
-						typeName="DATETIME";
-						break;
-					}
+					final String actualTypeName = colsRs.getString("TYPE_NAME");
+					final String typeName = DDLValidator.getPortableType(type, actualTypeName);
 					if(typeName == null)
 						continue;
 					final int size=colsRs.getInt("COLUMN_SIZE");
@@ -864,6 +844,9 @@ public class DDLValidator
 				return "Database was empty, and needs to be initialized to version "+DBInterface.currentVersion+".";
 		}
 		else
+		if(lastAppliedVersion == 0)
+			return "Your database has an empty schema.";
+		else
 			return "Your database is at approximately version "+(-lastAppliedVersion)+", but version "+DBInterface.currentVersion+" is required.";
 		return null;
 	}
@@ -1035,6 +1018,7 @@ public class DDLValidator
 			{
 				try
 				{
+Log.sysOut(s);
 					conn.update(s, 0);
 				}
 				catch (final SQLException e)
@@ -1043,6 +1027,7 @@ public class DDLValidator
 					return "Unable to create to database: "+e.getMessage()+".  Please do so manually.";
 				}
 			}
+			Log.sysOut("Database tables successfully created.");
 		}
 		catch (final Exception e)
 		{
@@ -1122,7 +1107,22 @@ public class DDLValidator
 			}
 			version=getDatabaseVersionCode(true);
 			if((version==-oldVersion)||(version<Math.abs(oldVersion)))
-				return "Unable to upgrade database version "+oldVersion+".  Please do so manually.";
+			{
+				List<String> errors;
+				try
+				{
+					errors = this.validateChanges(applicableChanges);
+				}
+				catch (Exception e)
+				{
+					errors = new ArrayList<String>();
+					e.printStackTrace();
+				}
+				StringBuilder ester = new StringBuilder("");
+				for(final String s : errors)
+					ester.append(s).append(";");
+				return "Unable to upgrade database version "+oldVersion+": "+ester.toString()+".  Please do so manually.";
+			}
 		}
 		int oldVersion=version;
 		for(++version;version<=DBInterface.currentVersion;version++)
@@ -1154,7 +1154,13 @@ public class DDLValidator
 					conn=null;
 					final int newVersion=getDatabaseVersionCode(true);
 					if((Math.abs(newVersion)==oldVersion)||(newVersion<0))
-						return "Failed to upgrade database version "+version+".  Please do so manually.";
+					{
+						List<String> errors = this.validateChanges(changes[version]);
+						StringBuilder str = new StringBuilder("");
+						for(String e : errors)
+							str.append(e).append("; ");
+						return "Failed to upgrade database version "+version+": "+str.toString()+".  Please do so manually.";
+					}
 					Log.sysOut("Database upgraded to version "+version);
 					version=newVersion;
 				}

@@ -93,8 +93,8 @@ public class DBConnection
 	 *
 	 * Usage: DBConnection("","","");
 	 * @param parent 	the parent connections object
-	 * @param dbClass    JDBC Class
-	 * @param dbService    ODBC SERVICE
+	 * @param dbClass	JDBC Class
+	 * @param dbService	ODBC SERVICE
 	 * @param dbUser	ODBC LOGIN USERNAME
 	 * @param dbPass	ODBC LOGIN PASSWORD
 	 * @param dbParms	JDBC extra arguments
@@ -222,8 +222,8 @@ public class DBConnection
 	 * set up this connection for use
 	 *
 	 * Usage: use("begin transaction")
-	 * @param openerSQL    Any SQL string you'd like to send
-	 * @return boolean    The connection being used
+	 * @param openerSQL	Any SQL string you'd like to send
+	 * @return boolean	The connection being used
 	 */
 	public synchronized boolean use(final String openerSQL)
 	{
@@ -279,7 +279,7 @@ public class DBConnection
 	 * set up this connection for use
 	 *
 	 * Usage: useEmpty()
-	 * @return boolean    The connection being used
+	 * @return boolean	The connection being used
 	 */
 	public synchronized boolean useEmpty()
 	{
@@ -302,10 +302,10 @@ public class DBConnection
 	 * set up this connection for use as a prepared statement
 	 *
 	 * Usage: usePrepared("SQL String")
-	 * @param SQL    Any SQL string you'd like to use
-	 * @return boolean    The connection being used
+	 * @param sql	Any SQL string you'd like to use
+	 * @return boolean	The connection being used
 	 */
-	public synchronized boolean usePrepared(final String SQL)
+	public synchronized boolean usePrepared(final String sql)
 	{
 		if((!inUse)&&(ready()))
 		{
@@ -315,15 +315,15 @@ public class DBConnection
 			{
 				myStatement=null;
 				sqlserver=true;
-				lastSQL=SQL;
-				myPreparedStatement=myConnection.prepareStatement(SQL);
+				lastSQL=sql;
+				myPreparedStatement=myConnection.prepareStatement(fixIdentifiers(sql));
 				sqlserver=false;
 			}
 			catch(final SQLException e)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("Error prepare: "+SQL);
+					Log.errOut("Error prepare: "+sql);
 					Log.errOut("DBConnection",e);
 				}
 				sqlserver=false;
@@ -346,10 +346,10 @@ public class DBConnection
 	 * Requires an already in use connection.
 	 *
 	 * Usage: rePrepare("SQL String")
-	 * @param SQL    Any SQL string you'd like to use
-	 * @return boolean    The connection being used
+	 * @param sql	Any SQL string you'd like to use
+	 * @return boolean	The connection being used
 	 */
-	public synchronized boolean rePrepare(final String SQL)
+	public synchronized boolean rePrepare(final String sql)
 	{
 		if(inUse)
 		{
@@ -359,15 +359,15 @@ public class DBConnection
 			{
 				myStatement=null;
 				sqlserver=true;
-				lastSQL=SQL;
-				myPreparedStatement=myConnection.prepareStatement(SQL);
+				lastSQL=sql;
+				myPreparedStatement=myConnection.prepareStatement(fixIdentifiers(sql));
 				sqlserver=false;
 			}
 			catch(final SQLException e)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 				{
-					Log.errOut("Error reprepare: "+SQL);
+					Log.errOut("Error reprepare: "+sql);
 					Log.errOut("DBConnection",e);
 				}
 				else
@@ -463,7 +463,7 @@ public class DBConnection
 	 * execute a query, returning the resultset
 	 *
 	 * Usage: R=query("SELECT STATEMENT");
-	 * @param queryString    SQL query-style string
+	 * @param queryString	SQL query-style string
 	 * @return ResultSet	The results of the query
 	 * @throws SQLException a sql error
 	 */
@@ -482,7 +482,7 @@ public class DBConnection
 					R=myPreparedStatement.executeQuery();
 				else
 				if(myStatement!=null)
-					R=myStatement.executeQuery(queryString);
+					R=myStatement.executeQuery(fixIdentifiers(queryString));
 				else
 					lastError="DBConnection Statement not open.";
 				sqlserver=false;
@@ -548,9 +548,9 @@ public class DBConnection
 	 * execute an sql update, returning the status
 	 *
 	 * Usage: update("UPDATE STATEMENT");
-	 * @param updateString    SQL update-style string
-	 * @param retryNum    a retry number
-	 * @return int    The status of the update
+	 * @param updateString	SQL update-style string
+	 * @param retryNum	a retry number
+	 * @return int	The status of the update
 	 * @throws SQLException a sql error
 	 */
 	public int update(final String updateString, final int retryNum)
@@ -565,7 +565,7 @@ public class DBConnection
 				sqlserver=true;
 				lastQueryTime=System.currentTimeMillis();
 				if(myStatement!=null)
-					responseCode=myStatement.executeUpdate(updateString);
+					responseCode=myStatement.executeUpdate(fixIdentifiers(updateString));
 				else
 				if(myPreparedStatement!=null)
 					responseCode=myPreparedStatement.executeUpdate();
@@ -625,7 +625,7 @@ public class DBConnection
 	 * returns whether this connection is ready for use
 	 *
 	 * Usage: ready();
-	 * @return boolean    Whether this connection is ready
+	 * @return boolean	Whether this connection is ready
 	 */
 	public boolean ready()
 	{
@@ -636,7 +636,7 @@ public class DBConnection
 	 * returns whether this connection is in use
 	 *
 	 * Usage: inUse();
-	 * @return boolean    Whether this connection is in use
+	 * @return boolean	Whether this connection is in use
 	 */
 	public boolean inUse()
 	{
@@ -731,7 +731,7 @@ public class DBConnection
 	 * returns whether this connection is *probably* dead
 	 *
 	 * Usage: isProbablyDead();
-	 * @return boolean    Whether this connection is probably dead
+	 * @return boolean	Whether this connection is probably dead
 	 */
 	public boolean isProbablyDead()
 	{
@@ -751,7 +751,7 @@ public class DBConnection
 	 * returns whether this connection is *probably* locked up
 	 *
 	 * Usage: isProbablyLockedUp();
-	 * @return boolean    Whether this connection is locked up
+	 * @return boolean	Whether this connection is locked up
 	 */
 	public boolean isProbablyLockedUp()
 	{
@@ -765,7 +765,7 @@ public class DBConnection
 	 * returns an error if there was one
 	 *
 	 * Usage: getLastError();
-	 * @return String    The last error SQL string, if any
+	 * @return String	The last error SQL string, if any
 	 */
 	public String getLastError()
 	{
@@ -783,5 +783,17 @@ public class DBConnection
 	public PreparedStatement getPreparedStatement()
 	{
 		return myPreparedStatement;
+	}
+	
+	/**
+	 * Calls the DBConnections fixIdentifiers for postgres
+	 * @param sql the sql to leave alone
+	 * @return the left alone sql
+	 */
+	public String fixIdentifiers(final String sql)
+	{
+		if(myParent == null)
+			return sql;
+		return myParent.fixIdentifiers(sql);
 	}
 }

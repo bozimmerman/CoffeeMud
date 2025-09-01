@@ -145,7 +145,7 @@ public class BackLogLoader
 			if(existingVersion == null)
 				D.update("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE) VALUES ('TABLE_VERSION', 0, "+setVersion.intValue()+")", 0);
 			else
-				D.update("UPDATE CMBKLG SET CMDATE="+setVersion.intValue()+" WHERE CMNAME='TABLE_VERSION' AND CMINDX=0;", 0);
+				D.update("UPDATE CMBKLG SET CMDATE="+setVersion.intValue()+" WHERE CMNAME='TABLE_VERSION' AND CMINDX=0", 0);
 			return setVersion;
 		}
 		catch(final SQLException sqle)
@@ -257,7 +257,7 @@ public class BackLogLoader
 					{
 						final long ts = R.getLong("CMDATE");
 						final int index = R.getInt("CMINDX");
-						updateV.add("UPDATE CMBKLG SET CMINDX="+(index-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX="+index+" AND CMDATE="+ts+";");
+						updateV.add("UPDATE CMBKLG SET CMINDX="+(index-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX="+index+" AND CMDATE="+ts+"");
 					}
 					R.close();
 				}
@@ -267,7 +267,7 @@ public class BackLogLoader
 					if(R.next())
 					{
 						final long ts = R.getLong("CMDATE");
-						updateV.add("UPDATE CMBKLG SET CMDATE="+(ts-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX=0;");
+						updateV.add("UPDATE CMBKLG SET CMDATE="+(ts-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX=0");
 					}
 					R.close();
 				}
@@ -490,7 +490,7 @@ public class BackLogLoader
 						try
 						{
 							D=DB.DBFetch();
-							D.update("UPDATE CMBKLG SET CMSNAM=0;", 0);
+							D.update("UPDATE CMBKLG SET CMSNAM=0", 0);
 						}
 						catch(final Exception sqle)
 						{

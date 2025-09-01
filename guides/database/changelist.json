@@ -380,7 +380,7 @@
 	{"action": "MODIFY", "target": "COLUMN", "name": "CMCOLR", "table": "CMCHAR", "type": "VARCHAR", "size": 255}
   ],
   "53": [
-	{"action": "ADD", "target": "COLUMN", "name": "CMSNAM", "table": "CMBKLG", "type": "INT", "nullable": false}
+	{"action": "ADD", "target": "COLUMN", "name": "CMSNAM", "table": "CMBKLG", "type": "INT", "nullable": true}
   ],
   "54": [
 	{"action": "ADD", "target": "COLUMN", "name": "CMEXPI", "table": "CMJRNL", "type": "LONG", "nullable": true},

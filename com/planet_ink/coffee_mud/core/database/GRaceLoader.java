@@ -73,7 +73,7 @@ public class GRaceLoader
 		try
 		{
 			D=DB.DBFetch();
-			D.update("UPDATE CMGRAC SET CMRCDT="+System.currentTimeMillis()+" WHERE CMRCID='"+raceID+"';", 0);
+			D.update("UPDATE CMGRAC SET CMRCDT="+System.currentTimeMillis()+" WHERE CMRCID='"+raceID+"'", 0);
 		}
 		catch(final Exception sqle)
 		{
@@ -92,7 +92,7 @@ public class GRaceLoader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMGRAC WHERE CMRCID='"+raceID+"';");
+			final ResultSet R=D.query("SELECT * FROM CMGRAC WHERE CMRCID='"+raceID+"'");
 			if(R.next())
 			{
 				final long oneHour = (60L * 60L * 1000L);
@@ -131,7 +131,7 @@ public class GRaceLoader
 		for(final String id : que)
 		{
 			if(!id.equalsIgnoreCase("GenRace"))
-				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+id+"';");
+				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+id+"'");
 		}
 		if(updates.size()>0)
 		{
@@ -166,7 +166,7 @@ public class GRaceLoader
 				{
 					if(stat.creationDate() < oldestDate)
 					{
-						updates.add("DELETE FROM CMGRAC WHERE CMRCID='"+stat.ID()+"';");
+						updates.add("DELETE FROM CMGRAC WHERE CMRCID='"+stat.ID()+"'");
 						CMClass.delRace(R);
 						Log.sysOut("Expiring race '"+R.ID()+": "+R.name()+": "+CMLib.time().date2String(stat.creationDate()));
 					}
@@ -175,7 +175,7 @@ public class GRaceLoader
 			else
 			{
 				final long cDate = CMLib.dice().rollInRange(oldestDate, oldestHour);
-				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+stat.ID()+"';");
+				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+stat.ID()+"'");
 			}
 		}
 		if(updates.size()>0)

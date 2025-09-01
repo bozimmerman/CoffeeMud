@@ -863,7 +863,7 @@ public class RoomLoader
 		for(final String badRoomId : badRoomIDs)
 		{
 			Log.errOut("RoomLoader","Deleted exits for unknown room #"+badRoomId);
-			DB.update("DELETE FROM CMROEX WHERE CMROID='"+badRoomId+"';");
+			DB.update("DELETE FROM CMROEX WHERE CMROID='"+badRoomId+"'");
 		}
 	}
 
@@ -2460,21 +2460,21 @@ public class RoomLoader
 	protected List<String> getRoomDeleteStrings(final String roomID)
 	{
 		return new XVector<String>(
-			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"';",
-			"DELETE FROM CMROEX WHERE CMNRID='"+roomID+"';",
-			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"';",
-			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"';"
+			"DELETE FROM CMROEX WHERE CMROID='"+roomID+"'",
+			"DELETE FROM CMROEX WHERE CMNRID='"+roomID+"'",
+			"DELETE FROM CMROCH WHERE CMROID='"+roomID+"'",
+			"DELETE FROM CMROIT WHERE CMROID='"+roomID+"'"
 		);
 	}
 
 	protected List<String> getRoomDeleteQueries(final String roomID)
 	{
 		return new XVector<String>(
-			"SELECT * FROM CMROCH WHERE CMROID='"+roomID+"';",
-			"SELECT * FROM CMROEX WHERE CMROID='"+roomID+"';",
-			"SELECT * FROM CMROEX WHERE CMNRID='"+roomID+"';",
-			"SELECT * FROM CMROIT WHERE CMROID='"+roomID+"';",
-			"SELECT * FROM CMROOM WHERE CMROID='"+roomID+"';"
+			"SELECT * FROM CMROCH WHERE CMROID='"+roomID+"'",
+			"SELECT * FROM CMROEX WHERE CMROID='"+roomID+"'",
+			"SELECT * FROM CMROEX WHERE CMNRID='"+roomID+"'",
+			"SELECT * FROM CMROIT WHERE CMROID='"+roomID+"'",
+			"SELECT * FROM CMROOM WHERE CMROID='"+roomID+"'"
 		);
 	}
 
@@ -2493,7 +2493,7 @@ public class RoomLoader
 		{
 			for(final String update : getRoomDeleteStrings(room.roomID()))
 				DB.update(update);
-			DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"';");
+			DB.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 			total = 0;
 			for(final String query : getRoomDeleteQueries(room.roomID()))
 				total += (DB.queryRows(query)>0?1:0);
