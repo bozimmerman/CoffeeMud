@@ -543,6 +543,18 @@ public class DBConnection
 				getPreparedStatement().setString(t+1, vals[t]);
 		}
 	}
+	
+	public String getSchema()
+	{
+		try
+		{
+			return (myConnection == null)?null:myConnection.getSchema();
+		}
+		catch (SQLException e)
+		{
+			return null;
+		}
+	}
 
 	/**
 	 * execute an sql update, returning the status

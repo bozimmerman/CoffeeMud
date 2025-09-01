@@ -20,6 +20,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.CMParms;
+import com.planet_ink.coffee_mud.core.CMSecurity;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.MiniJSON;
 import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
@@ -74,11 +76,15 @@ public class DDLValidator
 		}
 	}
 
-	public static String getPortableType(final int type, final String actualName)
+	public static String getPortableType(final int type, final String actualName, int size)
 	{
 		String typeName=null;
 		switch (type)
 		{
+		case java.sql.Types.NUMERIC:
+		case java.sql.Types.DECIMAL:
+			typeName = (size > 9) ? "LONG" : "INT";
+		    break;
 		case java.sql.Types.INTEGER:
 		case java.sql.Types.SMALLINT:
 		case java.sql.Types.TINYINT:
@@ -130,7 +136,9 @@ public class DDLValidator
 			final DatabaseMetaData meta=conn.getMetaData();
 			if(meta==null)
 				return Integer.MIN_VALUE;
-			final ResultSet rs=meta.getTables(null, null, "%", new String[]{"TABLE"});
+			String productName=meta.getDatabaseProductName().toLowerCase();
+			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+			final ResultSet rs=meta.getTables(null, schema, "%", new String[]{"TABLE"});
 			final Set<String> dbTables=new HashSet<>();
 			final Map<String, String> tableCaseMap=new HashMap<>();
 			while(rs.next())
@@ -157,15 +165,15 @@ public class DDLValidator
 					final String cname=colsRs.getString("COLUMN_NAME").toUpperCase();
 					final int type=colsRs.getInt("DATA_TYPE");
 					final String actualTypeName = colsRs.getString("TYPE_NAME");
-					String typeName=getPortableType(type, actualTypeName);
-					final int size=colsRs.getInt("COLUMN_SIZE");
+					final int precision = colsRs.getInt("COLUMN_SIZE");
+					String typeName=getPortableType(type, actualTypeName, precision);
 					final boolean nullable=colsRs.getString("IS_NULLABLE").equals("YES");
 					if(typeName==null)
 						throw new Exception("Unknown DB type "+typeName+" for column "+cname+" in table "+upperT);
 					final JSONObject column=new JSONObject();
 					column.put("name", cname);
 					column.put("type", typeName);
-					column.put("size", Long.valueOf(size));
+					column.put("size", Long.valueOf(precision));
 					column.put("nullable", Boolean.valueOf(nullable));
 					dbCols.put(cname, column);
 				}
@@ -550,7 +558,9 @@ public class DDLValidator
 		{
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
-			final ResultSet rs=meta.getTables(null, null, "%", new String[] { "TABLE" });
+			String productName=meta.getDatabaseProductName().toLowerCase();
+			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+			final ResultSet rs=meta.getTables(null, schema, "%", new String[] { "TABLE" });
 			final Set<String> dbTables=new HashSet<>();
 			final Map<String, String> tableCaseMap=new HashMap<>();
 			while(rs.next())
@@ -576,15 +586,15 @@ public class DDLValidator
 					final String cname=colsRs.getString("COLUMN_NAME").toUpperCase();
 					final int type=colsRs.getInt("DATA_TYPE");
 					final String actualTypeName = colsRs.getString("TYPE_NAME");
-					final String typeName = DDLValidator.getPortableType(type, actualTypeName);
+					final int precision = colsRs.getInt("COLUMN_SIZE");
+					final String typeName = DDLValidator.getPortableType(type, actualTypeName, precision);
 					if(typeName == null)
 						continue;
-					final int size=colsRs.getInt("COLUMN_SIZE");
 					final boolean nullable=colsRs.getString("IS_NULLABLE").equals("YES");
 					final JSONObject column=new JSONObject();
 					column.put("name", cname);
 					column.put("type", typeName);
-					column.put("size", Long.valueOf(size));
+					column.put("size", Long.valueOf(precision));
 					column.put("nullable", Boolean.valueOf(nullable));
 					dbCols.put(cname, column);
 				}
@@ -1012,13 +1022,16 @@ public class DDLValidator
 		{
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
-			final DDLGenerator ddlGen=new DDLGenerator(meta);
+			final String productName=meta.getDatabaseProductName().toLowerCase();
+			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+			final DDLGenerator ddlGen=new DDLGenerator(meta,schema);
 			final List<String> sql=ddlGen.generateSQLForChanges(getFinalSchema(changes));
 			for(final String s : sql)
 			{
 				try
 				{
-Log.sysOut(s);
+					if(CMSecurity.isDebugging(DbgFlag.SQLERRORS))
+						Log.debugOut(s);
 					conn.update(s, 0);
 				}
 				catch (final SQLException e)
@@ -1055,6 +1068,8 @@ Log.sysOut(s);
 		int version=getDatabaseVersionCode(true);
 		if(version==0)
 			return createDatabase();
+		if(version==Integer.MIN_VALUE)
+			return "Unable to upgrade database: fatal error during version test.";
 		if(version<0)
 		{
 			final int oldVersion=-version;
@@ -1079,7 +1094,9 @@ Log.sysOut(s);
 				{
 					conn=DB.DBFetch();
 					final DatabaseMetaData meta=conn.getMetaData();
-					final DDLGenerator ddlGen=new DDLGenerator(meta);
+					final String productName=meta.getDatabaseProductName().toLowerCase();
+					final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+					final DDLGenerator ddlGen=new DDLGenerator(meta, schema);
 					final List<String> sql=ddlGen.generateSQLForChanges(applicableChanges);
 					for(final String s : sql)
 					{
@@ -1136,7 +1153,9 @@ Log.sysOut(s);
 				{
 					conn=DB.DBFetch();
 					final DatabaseMetaData meta=conn.getMetaData();
-					final DDLGenerator ddlGen=new DDLGenerator(meta);
+					final String productName=meta.getDatabaseProductName().toLowerCase();
+					final String schema = (productName.contains("oracle"))?conn.getSchema():null;
+					final DDLGenerator ddlGen=new DDLGenerator(meta,schema);
 					final List<String> sql=ddlGen.generateSQLForChanges(changes[version]);
 					for(final String s : sql)
 					{

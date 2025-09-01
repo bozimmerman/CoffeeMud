@@ -35,13 +35,17 @@ public class DDLGenerator
 {
 	private final DatabaseMetaData	metaData;
 	private final String			productName;
+	private final String			schema;
 	private final Map<String, String> typeMappings = new HashMap<>();
 	private final Map<Integer, String> sqlTypeToPortable = new HashMap<>();
 
-	public DDLGenerator(final DatabaseMetaData metaData) throws SQLException
+	public DDLGenerator(final DatabaseMetaData metaData, final String schema) throws SQLException
 	{
 		this.metaData=metaData;
+		this.schema=schema;
 		this.productName=metaData.getDatabaseProductName().toLowerCase();
+		if (this.productName.contains("oracle"))
+			typeMappings.put("TEXT", "CLOB");
 		final Map<String,Integer> dbTypes = new HashMap<>();
 		dbTypes.put("INT", Integer.valueOf(java.sql.Types.INTEGER));
 		dbTypes.put("LONG", Integer.valueOf(java.sql.Types.BIGINT));
@@ -57,7 +61,8 @@ public class DDLGenerator
 		{
 			final String typeName = R.getString("TYPE_NAME").toUpperCase();
 			final int dataType = R.getInt("DATA_TYPE");
-			String portableTypeName = DDLValidator.getPortableType(dataType, typeName);
+			final int precision = R.getInt("PRECISION");
+			String portableTypeName = DDLValidator.getPortableType(dataType, typeName, precision);
 			if(portableTypeName != null) 
 			{
 				if(!typeMappings.containsKey(portableTypeName) || typeName.equalsIgnoreCase(portableTypeName))
@@ -889,7 +894,10 @@ public class DDLGenerator
 			return this.getCreateIndexSQL("UNQ_" + tableName.replaceAll("[^A-Z0-9]","_"), tableName, columnNames, true);
 		final String quote=metaData.getIdentifierQuoteString();
 		final StringBuilder sql=new StringBuilder("ALTER TABLE ").append(quote)
-				.append(tableName).append(quote).append(" ADD PRIMARY KEY (");
+				.append(tableName).append(quote).append(" ADD");
+		if(productName.contains("oracle") || productName.contains("db2")|| productName.contains("sqlserver"))
+			sql.append(" CONSTRAINT PK_"+tableName);
+		sql.append(" PRIMARY KEY (");
 		for(int i=0;i<columnNames.size();i++)
 		{
 			sql.append(quote).append(columnNames.get(i)).append(quote);
@@ -897,8 +905,6 @@ public class DDLGenerator
 				sql.append(", ");
 		}
 		sql.append(")");
-		if(productName.contains("oracle") || productName.contains("db2")|| productName.contains("sqlserver"))
-			sql.insert(21+tableName.length(), " CONSTRAINT PK_"+tableName);
 		return sql.toString();
 	}
 
@@ -1014,7 +1020,7 @@ public class DDLGenerator
 		final List<String> sqls = new ArrayList<>();
 		final Set<JSONObject> processed = new HashSet<>();
 		final Map<String, String> tableCaseMap = new HashMap<>();
-		final ResultSet tablesRs = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+		final ResultSet tablesRs = metaData.getTables(null, schema, "%", new String[]{"TABLE"});
 		while(tablesRs.next())
 		{
 			final String actualTableName = tablesRs.getString("TABLE_NAME");
