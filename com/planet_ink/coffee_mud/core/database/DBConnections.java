@@ -70,12 +70,10 @@ public class DBConnections
 	protected boolean			transact			= false;
 	/** last time resetconnections called (or resetconnections) */
 	private long				lastReset			= 0;
-	/** check for whether these connections are fakedb */
-	private Boolean				isFakeDB			= null;
-	/** check for whether these connections are postgres */
-	private Boolean				isPostGres			= null;
 	/** For isPostGres, the list of all identifiers that need quoting */
 	private final Set<String> 	allIdentifiers		= new HashSet<String>();
+	/** the db type */
+	private String				dbLType				= "";
 
 	/**
 	 * Initialize this class.  Must be called at first,
@@ -516,79 +514,63 @@ public class DBConnections
 		lockedUp=false;
 		if(newConn != null)
 		{
-			if(isFakeDB == null)
+			if((dbLType==null)||(dbLType.length()==0))
 			{
-				isFakeDB=Boolean.valueOf(newConn.isFakeDB());
+				synchronized(this)
+				{
+					if((dbLType==null)||(dbLType.length()==0))
+					{
+						DatabaseMetaData data = newConn.getMetaData();
+						try
+						{
+							dbLType = (data != null) ? data.getDatabaseProductName().toLowerCase() : "";
+							if(dbLType.contains("postgres"))
+								setupPostGres(newConn);
+						}
+						catch(Exception e)
+						{
+							Log.errOut(e);
+						}
+					}
+				}
 			}
-			if(isPostGres == null)
-				isPostGres = setupPostGres(newConn);
 		}
 		return newConn;
 	}
 
-	private Boolean setupPostGres(DBConnection newConn)
+	private void setupPostGres(DBConnection newConn)
 	{
-		synchronized(allIdentifiers)
+		this.allIdentifiers.clear();
+		try(BufferedReader br = new BufferedReader(new FileReader("guides"+File.separator+"database"+File.separator+"fakedb.schema")))
 		{
-			if(isPostGres != null)
-				return isPostGres;
-			try
+			String s = br.readLine();
+			while(s != null)
 			{
-				DatabaseMetaData data = newConn.getMetaData();
-				isPostGres = Boolean.valueOf((data != null)
-							&& (data.getDatabaseProductName().toLowerCase().contains("postgres")));
-			}
-			catch(Exception e)
-			{
-				isPostGres = Boolean.FALSE;
-			}
-			if(isPostGres.booleanValue())
-			{
-				this.allIdentifiers.clear();
-				try(BufferedReader br = new BufferedReader(new FileReader("guides"+File.separator+"database"+File.separator+"fakedb.schema")))
+				s=s.trim();
+				if(!s.startsWith("#"))
 				{
-					String s = br.readLine();
-					while(s != null)
-					{
-						s=s.trim();
-						if(!s.startsWith("#"))
-						{
-							int x = s.indexOf(' ');
-							if(x>0)
-								s=s.substring(0,x);
-							allIdentifiers.add(s.toUpperCase());
-						}
-						s=br.readLine();
-					}
+					int x = s.indexOf(' ');
+					if(x>0)
+						s=s.substring(0,x);
+					allIdentifiers.add(s.toUpperCase());
 				}
-				catch(IOException e)
-				{
-					Log.errOut(e);
-				}
+				s=br.readLine();
 			}
 		}
-		return isPostGres;
+		catch(IOException e)
+		{
+			Log.errOut(e);
+		}
 	}
 	
 	public boolean isFakeDB()
 	{
-		if(isFakeDB==null)
-		{
-			final DBConnection c = DBFetchAny("",DBConnection.FetchType.EMPTY);
-			if(c!=null)
-			{
-				if(isFakeDB==null)
-				{
-					isFakeDB=Boolean.valueOf(c.isFakeDB());
-				}
-				c.doneUsing("");
-			}
-		}
-		if(isFakeDB!=null)
-		{
-			return isFakeDB.booleanValue();
-		}
-		return false;
+		return dbLType.contains("fakedb");
+	}
+	
+	public String getDBType()
+	{
+		return dbLType;
 	}
 
 	public DBConnection DBFetchPrepared(final String SQL)
@@ -1116,7 +1098,7 @@ public class DBConnections
 	 */
 	public String fixIdentifiers(String sql) 
 	{
-		if((isPostGres == null)||(!isPostGres.booleanValue()))
+		if(allIdentifiers.size()==0)
 			return sql;
 		StringBuilder result = new StringBuilder();
 		StringBuilder currentIdentifier = new StringBuilder();

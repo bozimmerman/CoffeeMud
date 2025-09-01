@@ -133,7 +133,7 @@ public class DBConnector
 
 	public boolean useBulkInserts()
 	{
-		return this.dbTransact;
+		return this.dbTransact && ((dbConnections==null)||(!dbConnections.getDBType().contains("oracle")));
 	}
 
 	public int getRecordCount(final DBConnection D, final ResultSet R)

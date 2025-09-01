@@ -83,8 +83,14 @@ public class DDLValidator
 		{
 		case java.sql.Types.NUMERIC:
 		case java.sql.Types.DECIMAL:
-			typeName = (size > 9) ? "LONG" : "INT";
-		    break;
+			if(size == 38)
+				typeName = "INT";
+			else
+			if(size == 20)
+				typeName = "LONG";
+			else
+				typeName = (size > 9) ? "LONG" : "INT";
+			break;
 		case java.sql.Types.INTEGER:
 		case java.sql.Types.SMALLINT:
 		case java.sql.Types.TINYINT:
