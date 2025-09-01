@@ -53,28 +53,28 @@ public class DDLGenerator
 		dbTypes.put("TEXT", Integer.valueOf(java.sql.Types.CLOB));
 		dbTypes.put("TIMESTAMP", Integer.valueOf(java.sql.Types.TIMESTAMP));
 		dbTypes.put("DATETIME", Integer.valueOf(java.sql.Types.DATE));
-		for (Map.Entry<String, Integer> entry : dbTypes.entrySet())
+		for (final Map.Entry<String, Integer> entry : dbTypes.entrySet())
 			if(!sqlTypeToPortable.containsKey(entry.getValue()))
 				sqlTypeToPortable.put(entry.getValue(), entry.getKey());
 		final ResultSet R = this.metaData.getTypeInfo();
-		while (R.next()) 
+		while (R.next())
 		{
 			final String typeName = R.getString("TYPE_NAME").toUpperCase();
 			final int dataType = R.getInt("DATA_TYPE");
 			final int precision = R.getInt("PRECISION");
-			String portableTypeName = DDLValidator.getPortableType(dataType, typeName, precision);
-			if(portableTypeName != null) 
+			final String portableTypeName = DDLValidator.getPortableType(dataType, typeName, precision);
+			if(portableTypeName != null)
 			{
 				if(!typeMappings.containsKey(portableTypeName) || typeName.equalsIgnoreCase(portableTypeName))
 					typeMappings.put(portableTypeName, typeName);
 				if (!sqlTypeToPortable.containsKey(Integer.valueOf(dataType)))
 					sqlTypeToPortable.put(Integer.valueOf(dataType), portableTypeName);
-			} 
-			else 
+			}
+			else
 			{
-				for (final String key : dbTypes.keySet()) 
+				for (final String key : dbTypes.keySet())
 				{
-					if (dbTypes.get(key).intValue() == dataType) 
+					if (dbTypes.get(key).intValue() == dataType)
 					{
 						if (!typeMappings.containsKey(key))
 							typeMappings.put(key, typeName);
@@ -83,11 +83,11 @@ public class DDLGenerator
 			}
 		}
 		R.close();
-		if (this.productName.contains("db2")) 
+		if (this.productName.contains("db2"))
 		{
 			typeMappings.put("TEXT", "LONG VARCHAR");
 		}
-		if (this.productName.contains("oracle")) 
+		if (this.productName.contains("oracle"))
 		{
 			typeMappings.put("INT", "INTEGER");
 			typeMappings.put("LONG", "NUMBER(20,0)");
@@ -124,7 +124,7 @@ public class DDLGenerator
 	 */
 	public String getDropPrimaryKeySQL(final String tableName) throws SQLException
 	{
-		ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName);
+		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName);
 		String pkName = null;
 		while (pkRs.next())
 		{
@@ -143,7 +143,7 @@ public class DDLGenerator
 			return "ALTER TABLE " + quote + tableName + quote + " DROP PRIMARY KEY";
 		}
 	}
-	
+
 	/**
 	 * Generates CREATE TABLE SQL with support for column definitions including size, nullability, and primary keys
 	 * @param tableName The name of the table
@@ -196,15 +196,15 @@ public class DDLGenerator
 		if(!nullable)
 		{
 			sql.append(" NOT NULL");
-			if(productName.contains("db2")) 
+			if(productName.contains("db2"))
 			{
 				String defaultVal = " DEFAULT ''"; // for VARCHAR/TEXT
-				if (type.equalsIgnoreCase("INT") || type.equalsIgnoreCase("LONG")) 
+				if (type.equalsIgnoreCase("INT") || type.equalsIgnoreCase("LONG"))
 					defaultVal = " DEFAULT 0";
-				else 
+				else
 				if (type.equalsIgnoreCase("DOUBLE") || type.equalsIgnoreCase("FLOAT"))
 					defaultVal = " DEFAULT 0.0";
-				else 
+				else
 				if (type.equalsIgnoreCase("TIMESTAMP") || type.equalsIgnoreCase("DATETIME"))
 					defaultVal = " DEFAULT CURRENT TIMESTAMP";
 				sql.append(defaultVal);
@@ -214,17 +214,17 @@ public class DDLGenerator
 		return sql.toString();
 	}
 
-	private boolean requiresColumnKeywordInAdd() 
+	private boolean requiresColumnKeywordInAdd()
 	{
-		return productName.contains("postgre") 
-			|| productName.contains("mysql") 
-			|| productName.contains("derby") 
-			|| productName.contains("hsql") 
+		return productName.contains("postgre")
+			|| productName.contains("mysql")
+			|| productName.contains("derby")
+			|| productName.contains("hsql")
 			|| productName.contains("access");
 	}
 
 	/**
-	 * 
+	 *
 	 * @param actualTable
 	 * @param columnName
 	 * @param newType
@@ -234,7 +234,7 @@ public class DDLGenerator
 	 * @throws SQLException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getModifyColumnSQLPostgreSQL(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException 
+	public List<String> getModifyColumnSQLPostgreSQL(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
 		final List<String> sqls = new ArrayList<String>();
 		final String quote = metaData.getIdentifierQuoteString();
@@ -245,7 +245,7 @@ public class DDLGenerator
 		int oldSize = -1;
 		boolean oldNullable = true;
 		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
-		if(colRs.next()) 
+		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
 			oldSize = colRs.getInt("COLUMN_SIZE");
@@ -264,7 +264,7 @@ public class DDLGenerator
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
 		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
-		while (pkRs.next()) 
+		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
 			if(pkName == null) pkName = pkRs.getString("PK_NAME");
@@ -273,22 +273,22 @@ public class DDLGenerator
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
 		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
-		while (idxRs.next()) 
+		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
-			if(type == DatabaseMetaData.tableIndexStatistic) 
+			if(type == DatabaseMetaData.tableIndexStatistic)
 				continue;
 			final String indexName = idxRs.getString("INDEX_NAME");
 			if((indexName == null)
 			||((pkName != null)
-				&&(indexName.equals(pkName))||(indexName.startsWith("SYS_IDX_SYS_PK_")))) 
+				&&(indexName.equals(pkName))||(indexName.startsWith("SYS_IDX_SYS_PK_"))))
 					continue;
 			final boolean nonUnique = idxRs.getBoolean("NON_UNIQUE");
 			final String colName = idxRs.getString("COLUMN_NAME");
-			if(colName == null) 
+			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<String, Object>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -302,34 +302,34 @@ public class DDLGenerator
 		}
 		idxRs.close();
 		final List<Map<String, Object>> depIndexes = new ArrayList<Map<String, Object>>();
-		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet()) 
+		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet())
 		{
 			final String indexName = entry.getKey();
 			final Map<String, Object> index = entry.getValue();
 			final List<Map<String, Object>> cols = (List<Map<String, Object>>) index.get("columns");
 			boolean depends = false;
-			for (final Map<String, Object> c : cols) 
+			for (final Map<String, Object> c : cols)
 			{
-				if(((String) c.get("col")).equals(columnName.toUpperCase())) 
+				if(((String) c.get("col")).equals(columnName.toUpperCase()))
 				{
 					depends = true;
 					break;
 				}
 			}
-			if(depends) 
+			if(depends)
 			{
 				final Map<String, Object> dep = new HashMap<String, Object>();
 				dep.put("name", indexName);
 				dep.put("unique", index.get("unique"));
 				cols.sort((a, b) -> ((Short) a.get("pos")).compareTo((Short) b.get("pos")));
 				final List<String> colList = new ArrayList<String>();
-				for (final Map<String, Object> c : cols) 
+				for (final Map<String, Object> c : cols)
 					colList.add((String) c.get("col"));
 				dep.put("columns", colList);
 				depIndexes.add(dep);
 			}
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			String dropSql;
 			if(pkName != null)
@@ -338,12 +338,12 @@ public class DDLGenerator
 				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP PRIMARY KEY";
 			sqls.add(dropSql);
 		}
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
-		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " " 
+		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " "
 								  + getDataTypeSQL(effectivePortableType, effectiveNewSizeInt);
 		sqls.add(addTempSql);
 		String copyExpr = quote + columnName + quote;
@@ -351,7 +351,7 @@ public class DDLGenerator
 			copyExpr = "SUBSTRING(" + copyExpr + ", 1, " + effectiveNewSize + ")";
 		final String copySql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = " + copyExpr;
 		sqls.add(copySql);
-		if(!effectiveNewNullable) 
+		if(!effectiveNewNullable)
 		{
 			final String replaceNullsSql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = '' WHERE " + quote + tempColumnName + quote + " IS NULL";
 			sqls.add(replaceNullsSql);
@@ -361,28 +361,28 @@ public class DDLGenerator
 		sqls.add("ALTER TABLE " + quote + actualTable + quote + " DROP COLUMN " + quote + columnName + quote);
 		final String renameSql = "ALTER TABLE " + quote + actualTable + quote + " RENAME COLUMN " + quote + tempColumnName + quote + " TO " + quote + columnName + quote;
 		sqls.add(renameSql);
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			final List<String> cols = (List<String>) idx.get("columns");
 			final boolean unique = ((Boolean) idx.get("unique")).booleanValue();
 			sqls.add(getCreateIndexSQL(indexName, actualTable, cols, unique));
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			boolean allNotNull = true;
-			for (final String pkCol : pkCols) 
+			for (final String pkCol : pkCols)
 			{
 				String isNullableStr;
 				if(pkCol.equals(columnName.toUpperCase()))
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
-				else 
+				else
 				{
 					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
-				if("YES".equals(isNullableStr)) 
+				if("YES".equals(isNullableStr))
 				{
 					allNotNull = false;
 					break;
@@ -396,9 +396,9 @@ public class DDLGenerator
 		}
 		return sqls;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param actualTable
 	 * @param columnName
 	 * @param newType
@@ -408,7 +408,7 @@ public class DDLGenerator
 	 * @throws SQLException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getModifyColumnSQLHSQLDB(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException 
+	public List<String> getModifyColumnSQLHSQLDB(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
 		final List<String> sqls = new ArrayList<String>();
 		final String quote = metaData.getIdentifierQuoteString();
@@ -419,7 +419,7 @@ public class DDLGenerator
 		int oldSize = -1;
 		boolean oldNullable = true;
 		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
-		if(colRs.next()) 
+		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
 			oldSize = colRs.getInt("COLUMN_SIZE");
@@ -438,7 +438,7 @@ public class DDLGenerator
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
 		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
-		while (pkRs.next()) 
+		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
 			if(pkName == null) pkName = pkRs.getString("PK_NAME");
@@ -447,22 +447,22 @@ public class DDLGenerator
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
 		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
-		while (idxRs.next()) 
+		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
-			if(type == DatabaseMetaData.tableIndexStatistic) 
+			if(type == DatabaseMetaData.tableIndexStatistic)
 				continue;
 			final String indexName = idxRs.getString("INDEX_NAME");
 			if((indexName == null)
 			||((pkName != null)
-				&&(indexName.equals(pkName))||(indexName.startsWith("SYS_IDX_SYS_PK_")))) 
+				&&(indexName.equals(pkName))||(indexName.startsWith("SYS_IDX_SYS_PK_"))))
 					continue;
 			final boolean nonUnique = idxRs.getBoolean("NON_UNIQUE");
 			final String colName = idxRs.getString("COLUMN_NAME");
-			if(colName == null) 
+			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<String, Object>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -476,34 +476,34 @@ public class DDLGenerator
 		}
 		idxRs.close();
 		final List<Map<String, Object>> depIndexes = new ArrayList<Map<String, Object>>();
-		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet()) 
+		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet())
 		{
 			final String indexName = entry.getKey();
 			final Map<String, Object> index = entry.getValue();
 			final List<Map<String, Object>> cols = (List<Map<String, Object>>) index.get("columns");
 			boolean depends = false;
-			for (final Map<String, Object> c : cols) 
+			for (final Map<String, Object> c : cols)
 			{
-				if(((String) c.get("col")).equals(columnName.toUpperCase())) 
+				if(((String) c.get("col")).equals(columnName.toUpperCase()))
 				{
 					depends = true;
 					break;
 				}
 			}
-			if(depends) 
+			if(depends)
 			{
 				final Map<String, Object> dep = new HashMap<String, Object>();
 				dep.put("name", indexName);
 				dep.put("unique", index.get("unique"));
 				cols.sort((a, b) -> ((Short) a.get("pos")).compareTo((Short) b.get("pos")));
 				final List<String> colList = new ArrayList<String>();
-				for (final Map<String, Object> c : cols) 
+				for (final Map<String, Object> c : cols)
 					colList.add((String) c.get("col"));
 				dep.put("columns", colList);
 				depIndexes.add(dep);
 			}
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			String dropSql;
 			if(pkName != null)
@@ -512,12 +512,12 @@ public class DDLGenerator
 				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP PRIMARY KEY";
 			sqls.add(dropSql);
 		}
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
-		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " " 
+		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " "
 								  + getDataTypeSQL(effectivePortableType, effectiveNewSizeInt);
 		sqls.add(addTempSql);
 		String copyExpr = quote + columnName + quote;
@@ -525,7 +525,7 @@ public class DDLGenerator
 			copyExpr = "SUBSTRING(" + copyExpr + ", 1, " + effectiveNewSize + ")";
 		final String copySql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = " + copyExpr;
 		sqls.add(copySql);
-		if(!effectiveNewNullable) 
+		if(!effectiveNewNullable)
 		{
 			final String replaceNullsSql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = '' WHERE " + quote + tempColumnName + quote + " IS NULL";
 			sqls.add(replaceNullsSql);
@@ -535,28 +535,28 @@ public class DDLGenerator
 		sqls.add("ALTER TABLE " + quote + actualTable + quote + " DROP COLUMN " + quote + columnName + quote);
 		final String renameSql = "ALTER TABLE " + quote + actualTable + quote + " ALTER COLUMN " + quote + tempColumnName + quote + " RENAME TO " + quote + columnName + quote;
 		sqls.add(renameSql);
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			final List<String> cols = (List<String>) idx.get("columns");
 			final boolean unique = ((Boolean) idx.get("unique")).booleanValue();
 			sqls.add(getCreateIndexSQL(indexName, actualTable, cols, unique));
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			boolean allNotNull = true;
-			for (final String pkCol : pkCols) 
+			for (final String pkCol : pkCols)
 			{
 				String isNullableStr;
 				if(pkCol.equals(columnName.toUpperCase()))
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
-				else 
+				else
 				{
 					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
-				if("YES".equals(isNullableStr)) 
+				if("YES".equals(isNullableStr))
 				{
 					allNotNull = false;
 					break;
@@ -570,9 +570,9 @@ public class DDLGenerator
 		}
 		return sqls;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<String> getModifyColumnSQLDB2(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException 
+	public List<String> getModifyColumnSQLDB2(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
 		final List<String> sqls = new ArrayList<String>();
 		final String quote = metaData.getIdentifierQuoteString();
@@ -583,7 +583,7 @@ public class DDLGenerator
 		String oldPortableType = "";
 		boolean oldNullable = true;
 		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
-		if(colRs.next()) 
+		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
 			oldSize = colRs.getInt("COLUMN_SIZE");
@@ -601,7 +601,7 @@ public class DDLGenerator
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
 		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
-		while (pkRs.next()) 
+		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
 			if(pkName == null) pkName = pkRs.getString("PK_NAME");
@@ -610,22 +610,22 @@ public class DDLGenerator
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
 		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
-		while (idxRs.next()) 
+		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
-			if(type == DatabaseMetaData.tableIndexStatistic) 
+			if(type == DatabaseMetaData.tableIndexStatistic)
 				continue;
 			final String indexName = idxRs.getString("INDEX_NAME");
 			if((indexName == null)
 			||((pkName != null)
-				&&(indexName.equals(pkName))||(indexName.startsWith("SQL"))||(indexName.startsWith("SYS_IDX_SYS_PK_")))) 
+				&&(indexName.equals(pkName))||(indexName.startsWith("SQL"))||(indexName.startsWith("SYS_IDX_SYS_PK_"))))
 					continue;
 			final boolean nonUnique = idxRs.getBoolean("NON_UNIQUE");
 			final String colName = idxRs.getString("COLUMN_NAME");
-			if(colName == null) 
+			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<String, Object>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -639,34 +639,34 @@ public class DDLGenerator
 		}
 		idxRs.close();
 		final List<Map<String, Object>> depIndexes = new ArrayList<Map<String, Object>>();
-		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet()) 
+		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet())
 		{
 			final String indexName = entry.getKey();
 			final Map<String, Object> index = entry.getValue();
 			final List<Map<String, Object>> cols = (List<Map<String, Object>>) index.get("columns");
 			boolean depends = false;
-			for (final Map<String, Object> c : cols) 
+			for (final Map<String, Object> c : cols)
 			{
-				if(((String) c.get("col")).equals(columnName.toUpperCase())) 
+				if(((String) c.get("col")).equals(columnName.toUpperCase()))
 				{
 					depends = true;
 					break;
 				}
 			}
-			if(depends) 
+			if(depends)
 			{
 				final Map<String, Object> dep = new HashMap<String, Object>();
 				dep.put("name", indexName);
 				dep.put("unique", index.get("unique"));
 				cols.sort((a, b) -> ((Short) a.get("pos")).compareTo((Short) b.get("pos")));
 				final List<String> colList = new ArrayList<String>();
-				for (final Map<String, Object> c : cols) 
+				for (final Map<String, Object> c : cols)
 					colList.add((String) c.get("col"));
 				dep.put("columns", colList);
 				depIndexes.add(dep);
 			}
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			String dropSql;
 			if(pkName != null)
@@ -675,12 +675,12 @@ public class DDLGenerator
 				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP PRIMARY KEY";
 			sqls.add(dropSql);
 		}
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
-		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " " 
+		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " "
 								  + getDataTypeSQL(effectivePortableType, effectiveNewSizeInt);
 		sqls.add(addTempSql);
 		String copyExpr = quote + columnName + quote;
@@ -688,7 +688,7 @@ public class DDLGenerator
 			copyExpr = "SUBSTR(" + copyExpr + ", 1, " + effectiveNewSize + ")";
 		final String copySql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = " + copyExpr;
 		sqls.add(copySql);
-		if(!effectiveNewNullable) 
+		if(!effectiveNewNullable)
 		{
 			final String replaceNullsSql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = '' WHERE " + quote + tempColumnName + quote + " IS NULL";
 			sqls.add(replaceNullsSql);
@@ -699,28 +699,28 @@ public class DDLGenerator
 		final String renameSql = "ALTER TABLE " + quote + actualTable + quote + " RENAME COLUMN " + quote + tempColumnName + quote + " TO " + quote + columnName + quote;
 		sqls.add(renameSql);
 		sqls.add("CALL SYSPROC.ADMIN_CMD('REORG TABLE " + actualTable + "')");
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			final List<String> cols = (List<String>) idx.get("columns");
 			final boolean unique = ((Boolean) idx.get("unique")).booleanValue();
 			sqls.add(getCreateIndexSQL(indexName, actualTable, cols, unique));
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			boolean allNotNull = true;
-			for (final String pkCol : pkCols) 
+			for (final String pkCol : pkCols)
 			{
 				String isNullableStr;
 				if(pkCol.equals(columnName.toUpperCase()))
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
-				else 
+				else
 				{
 					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
-				if("YES".equals(isNullableStr)) 
+				if("YES".equals(isNullableStr))
 				{
 					allNotNull = false;
 					break;
@@ -735,13 +735,13 @@ public class DDLGenerator
 		sqls.add("CALL SYSPROC.ADMIN_CMD('REORG TABLE " + actualTable + "')");
 		return sqls;
 	}
-	
+
 	/**
 	 * Generates MODIFY COLUMN SQL for Derby by dropping/re-adding via a temp column,
 	 * handling data copy with truncation if needed, and accounting for keys/indexes.
 	 * Adds temp as nullable to avoid NOT NULL add errors, copies data, replaces NULLs if needed,
 	 * then sets NOT NULL.
-	 * 
+	 *
 	 * @param actualTable
 	 * @param columnName
 	 * @param newType
@@ -804,7 +804,7 @@ public class DDLGenerator
 			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<String, Object>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -859,7 +859,7 @@ public class DDLGenerator
 			final String indexName = (String) idx.get("name");
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
-		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " " 
+		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD COLUMN " + quote + tempColumnName + quote + " "
 			+ getDataTypeSQL(effectivePortableType, effectiveNewSizeInt);
 		sqls.add(addTempSql);
 		String copyExpr = quote + columnName + quote;
@@ -950,7 +950,7 @@ public class DDLGenerator
 			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -1007,7 +1007,7 @@ public class DDLGenerator
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
 		Boolean effectiveNewNullable = newNullable;
-		if(effectiveNewNullable == null) 
+		if(effectiveNewNullable == null)
 		{
 			final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
 			final String isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
@@ -1069,7 +1069,7 @@ public class DDLGenerator
 	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
 	 */
 	@SuppressWarnings("unchecked")
-	public List<String> getModifyColumnSQLOracle(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException 
+	public List<String> getModifyColumnSQLOracle(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
 		final List<String> sqls = new ArrayList<String>();
 		final String quote = metaData.getIdentifierQuoteString();
@@ -1080,7 +1080,7 @@ public class DDLGenerator
 		int oldSize = -1;
 		boolean oldNullable = true;
 		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
-		if(colRs.next()) 
+		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
 			oldSize = colRs.getInt("COLUMN_SIZE");
@@ -1099,7 +1099,7 @@ public class DDLGenerator
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
 		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
-		while (pkRs.next()) 
+		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
 			if(pkName == null) pkName = pkRs.getString("PK_NAME");
@@ -1108,22 +1108,22 @@ public class DDLGenerator
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
 		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
-		while (idxRs.next()) 
+		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
-			if(type == DatabaseMetaData.tableIndexStatistic) 
+			if(type == DatabaseMetaData.tableIndexStatistic)
 				continue;
 			final String indexName = idxRs.getString("INDEX_NAME");
 			if((indexName == null)
 			||((pkName != null)
-				&&(indexName.equals(pkName) || indexName.startsWith("SYS_IDX_")))) 
+				&&(indexName.equals(pkName) || indexName.startsWith("SYS_IDX_"))))
 					continue;
 			final boolean nonUnique = idxRs.getBoolean("NON_UNIQUE");
 			final String colName = idxRs.getString("COLUMN_NAME");
-			if(colName == null) 
+			if(colName == null)
 				continue;
 			final short ordinal = idxRs.getShort("ORDINAL_POSITION");
-			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k -> 
+			final Map<String, Object> index = indexes.computeIfAbsent(indexName, k ->
 			{
 				final Map<String, Object> m = new HashMap<String, Object>();
 				m.put("unique", Boolean.valueOf(!nonUnique));
@@ -1137,34 +1137,34 @@ public class DDLGenerator
 		}
 		idxRs.close();
 		final List<Map<String, Object>> depIndexes = new ArrayList<Map<String, Object>>();
-		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet()) 
+		for (final Map.Entry<String, Map<String, Object>> entry : indexes.entrySet())
 		{
 			final String indexName = entry.getKey();
 			final Map<String, Object> index = entry.getValue();
 			final List<Map<String, Object>> cols = (List<Map<String, Object>>) index.get("columns");
 			boolean depends = false;
-			for (final Map<String, Object> c : cols) 
+			for (final Map<String, Object> c : cols)
 			{
-				if(((String) c.get("col")).equals(columnName.toUpperCase())) 
+				if(((String) c.get("col")).equals(columnName.toUpperCase()))
 				{
 					depends = true;
 					break;
 				}
 			}
-			if(depends) 
+			if(depends)
 			{
 				final Map<String, Object> dep = new HashMap<String, Object>();
 				dep.put("name", indexName);
 				dep.put("unique", index.get("unique"));
 				cols.sort((a, b) -> ((Short) a.get("pos")).compareTo((Short) b.get("pos")));
 				final List<String> colList = new ArrayList<String>();
-				for (final Map<String, Object> c : cols) 
+				for (final Map<String, Object> c : cols)
 					colList.add((String) c.get("col"));
 				dep.put("columns", colList);
 				depIndexes.add(dep);
 			}
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			String dropSql;
 			if(pkName != null)
@@ -1173,12 +1173,12 @@ public class DDLGenerator
 				dropSql = "ALTER TABLE " + quote + actualTable + quote + " DROP PRIMARY KEY";
 			sqls.add(dropSql);
 		}
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			sqls.add(getDropIndexSQL(indexName, actualTable));
 		}
-		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD " + quote + tempColumnName + quote + " " 
+		final String addTempSql = "ALTER TABLE " + quote + actualTable + quote + " ADD " + quote + tempColumnName + quote + " "
 								  + getDataTypeSQL(effectivePortableType, effectiveNewSizeInt);
 		sqls.add(addTempSql);
 		String copyExpr = quote + columnName + quote;
@@ -1188,7 +1188,7 @@ public class DDLGenerator
 			copyExpr = "TO_CLOB(" + copyExpr + ")";
 		final String copySql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = " + copyExpr;
 		sqls.add(copySql);
-		if(!effectiveNewNullable) 
+		if(!effectiveNewNullable)
 		{
 			final String replaceNullsSql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = '' WHERE " + quote + tempColumnName + quote + " IS NULL";
 			sqls.add(replaceNullsSql);
@@ -1198,28 +1198,28 @@ public class DDLGenerator
 		sqls.add("ALTER TABLE " + quote + actualTable + quote + " DROP COLUMN " + quote + columnName + quote);
 		final String renameSql = "ALTER TABLE " + quote + actualTable + quote + " RENAME COLUMN " + quote + tempColumnName + quote + " TO " + quote + columnName + quote;
 		sqls.add(renameSql);
-		for (final Map<String, Object> idx : depIndexes) 
+		for (final Map<String, Object> idx : depIndexes)
 		{
 			final String indexName = (String) idx.get("name");
 			final List<String> cols = (List<String>) idx.get("columns");
 			final boolean unique = ((Boolean) idx.get("unique")).booleanValue();
 			sqls.add(getCreateIndexSQL(indexName, actualTable, cols, unique));
 		}
-		if(isPkColumn) 
+		if(isPkColumn)
 		{
 			boolean allNotNull = true;
-			for (final String pkCol : pkCols) 
+			for (final String pkCol : pkCols)
 			{
 				String isNullableStr;
 				if(pkCol.equals(columnName.toUpperCase()))
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
-				else 
+				else
 				{
 					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
-				if("YES".equals(isNullableStr)) 
+				if("YES".equals(isNullableStr))
 				{
 					allNotNull = false;
 					break;
@@ -1573,17 +1573,17 @@ public class DDLGenerator
 				final Boolean desNullable = change.containsKey("nullable") ? change.getCheckedBoolean("nullable") : Boolean.TRUE;
 				final String actualTable = tableCaseMap.getOrDefault(table, table);
 				final ResultSet colRs = metaData.getColumns(null, null, actualTable, colName);
-				if(!colRs.next()) 
+				if(!colRs.next())
 				{
 					final Map<String, Object> colDef = new HashMap<>();
 					colDef.put("name", colName);
 					colDef.put("type", desType);
-					if(desSize != null) 
+					if(desSize != null)
 						colDef.put("size", desSize);
 					colDef.put("nullable", desNullable);
 					sqls.add(getAddColumnSQL(table, colDef));
-				} 
-				else 
+				}
+				else
 				{
 					final int currDataType = colRs.getInt("DATA_TYPE");
 					final String currType = sqlTypeToPortable.get(Integer.valueOf(currDataType));
@@ -1592,20 +1592,20 @@ public class DDLGenerator
 					boolean mismatch = false;
 					if((currType == null)||(!desType.equals(currType)))
 						mismatch = true;
-					else 
+					else
 					if((desSize != null)&&(desSize.intValue() != currSize))
 						mismatch = true;
-					else 
+					else
 					if(!desNullable.booleanValue() == (currNullable))
 						mismatch = true;
-					if(mismatch) 
+					if(mismatch)
 					{
 						if(productName.contains("sql server"))
 							sqls.addAll(getModifyColumnSQLServer(actualTable, colName, desType, desSize, desNullable));
-						else 
+						else
 						if(productName.contains("derby"))
 							sqls.addAll(getModifyColumnSQLDerby(actualTable, colName, desType, desSize, desNullable));
-						else 
+						else
 						if(productName.contains("hsql"))
 							sqls.addAll(getModifyColumnSQLHSQLDB(actualTable, colName, desType, desSize, desNullable));
 						else
@@ -1638,7 +1638,7 @@ public class DDLGenerator
 				else
 				if(productName.contains("derby"))
 					sqls.addAll(getModifyColumnSQLDerby(actualTable, col, type, size, nullable));
-				else 
+				else
 				if(productName.contains("hsql"))
 					sqls.addAll(getModifyColumnSQLHSQLDB(actualTable, col, type, size, nullable));
 				else
