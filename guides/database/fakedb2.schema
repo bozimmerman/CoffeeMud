@@ -231,4 +231,4 @@ CMITLV integer NULL
 CMITAB integer NULL
 CMHEIT integer NULL
 
-#CONVERTER=com.planet_ink.coffee_mud.core.database.DBUpgradeConversions
+#CONVERTER=com.planet_ink.coffee_mud.core.database.DBCopyConversions

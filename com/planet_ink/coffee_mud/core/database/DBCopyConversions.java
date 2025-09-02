@@ -22,7 +22,7 @@ import java.util.TreeMap;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DBUpgradeConversions
+public class DBCopyConversions
 {
 	private void pl(final PrintStream out, final String str)
 	{

@@ -190,7 +190,7 @@ public class FakeTable
 				}
 				dataStart = (int)file.getFilePointer();
 				if ((dataFormatHash == null) || (!dataFormatHash.equals(this.schemaHash)))
-					throw new IOException("Incompatible fakedb data file for table "+name+".  Use DBUpgrade to convert.");
+					throw new IOException("Incompatible fakedb data file for table "+name+".  Use DBCopy to convert.");
 				if(version == 2)
 					return;
 			}
