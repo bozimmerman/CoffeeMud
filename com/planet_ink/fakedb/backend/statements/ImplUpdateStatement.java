@@ -93,8 +93,11 @@ public class ImplUpdateStatement extends ImplAbstractStatement
 			}
 			sql = skipWS(sql);
 			final String attr = buffer.toString();
-			if (sql.length() == 0)
-				throw new java.sql.SQLException("no more sql");
+			if((sql.length() == 0)||(sql.equals(";")))
+			{
+				final List<FakeCondition> conditions = new ArrayList<FakeCondition>();
+				return new ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
+			}
 			if (sql.charAt(0) != '=')
 			{
 				if (!attr.equalsIgnoreCase("where"))
