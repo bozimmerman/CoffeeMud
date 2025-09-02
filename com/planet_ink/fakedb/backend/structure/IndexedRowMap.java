@@ -86,6 +86,13 @@ public class IndexedRowMap
 		}
 	}
 
+	public synchronized Iterator<RecordInfo> recordIterator(final boolean descending)
+	{
+		if(!descending)
+			return unsortedRecords.iterator();
+		return unsortedRecords.stream().sorted(Collections.reverseOrder()).iterator();
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public synchronized Iterator<RecordInfo> iterator(final int sortIndex, final boolean descending)
 	{

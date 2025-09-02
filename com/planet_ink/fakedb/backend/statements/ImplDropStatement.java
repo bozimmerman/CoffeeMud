@@ -63,11 +63,15 @@ public class ImplDropStatement extends ImplAbstractStatement
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("table"))
 			throw new java.sql.SQLException("no table token");
-		sql = split(sql, token);
-		final String tableName = token[0].toUpperCase().trim();
+		final String[] r = parseVal(sql);
+		sql = skipWS(r[0]);
+		final String tableName = r[1].trim().toUpperCase();
 		sql = skipWS(sql);
 		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
-			sql = skipWS(sql.substring(1));
+			sql = sql.substring(1);
+		sql = skipWS(sql);
+		if (sql.length() > 0)
+			throw new java.sql.SQLException("no more sql or missing comma/paren");
 		return new ImplDropStatement(tableName);
 	}
 

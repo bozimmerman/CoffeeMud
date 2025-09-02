@@ -21,6 +21,7 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.fakedb.backend.Backend;
 import com.planet_ink.fakedb.backend.Backend.ConnectorType;
 import com.planet_ink.fakedb.backend.Backend.FakeConditionResponder;
@@ -111,7 +112,6 @@ public class FakeTable
 
 	public void close()
 	{
-		fileName = null;
 		if (file != null)
 		{
 			try
@@ -313,6 +313,30 @@ public class FakeTable
 			vacuum();
 	}
 
+	public void rewriteDataFileHash(final List<String> schema)
+	{
+		close();
+		if((!fileName.exists())||(fileName.length()<10))
+			return;
+		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+		crc.update((this.name + " " + this.version).getBytes());
+		for (int i = 1; i < schema.size(); i++)
+			crc.update(schema.get(i).trim().getBytes());
+		final String schemaHash =  String.format("%08X", Long.valueOf(crc.getValue())).toUpperCase();
+		try
+		{
+			file = new RandomAccessFile(fileName, "rw");
+			file.seek(0);
+			file.write(("V"+version+"H"+schemaHash+"\n").getBytes());
+			file.getFD().sync();
+			file.close();
+			close();
+		}
+		catch (final IOException e)
+		{
+		}
+	}
+
 	public void initializeColumns(final List<String> in) throws IOException
 	{
 		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
@@ -353,7 +377,7 @@ public class FakeTable
 				{
 				case BLOB:
 				case CLOB:
-					version = 2;
+					//version = 2;
 					break;
 				default:
 					break;
@@ -430,7 +454,10 @@ public class FakeTable
 		final File tempFileName = new File(fileName.getName() + ".tmp");
 		final File tempFileName2 = new File(fileName.getName() + ".cpy");
 		final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
-		int newFileSize = 0;
+		file.seek(0);
+		for(int i=0;i<dataStart;i++)
+			tempOut.write(file.read());
+		int newFileSize = dataStart;
 		for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 		{
 			final RecordInfo info = iter.next();
@@ -791,6 +818,114 @@ public class FakeTable
 			connector = cond.connector;
 		}
 		return lastOne;
+	}
+
+	/**
+	 * Insert a new column into the table by inserting empty
+	 * values for the new column at the appropriate spots.
+	 */
+	public void addColumn()
+	{
+		if(file == null)
+			return;
+		try
+		{
+			final File tempFileName = new File(fileName.getName() + ".tmp");
+			final File tempFileName2 = new File(fileName.getName() + ".cpy");
+			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
+			file.seek(0);
+			for(int i=0;i<dataStart;i++)
+				tempOut.write(file.read());
+			int newFileSize = dataStart;
+			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
+			{
+				final RecordInfo info = iter.next();
+				file.seek(info.offset);
+				final int size = info.size+1;
+				if (size > fileBuffer.length)
+					increaseBuffer(size);
+				file.readFully(fileBuffer, 0, info.size);
+				fileBuffer[info.size] = (byte) 0x0A;
+				tempOut.write(fileBuffer, 0, size);
+				info.size = size;
+				info.offset = newFileSize;
+				newFileSize += info.size;
+			}
+			tempOut.getFD().sync();
+			tempOut.close();
+			file.close();
+			tempFileName2.delete();
+			fileName.renameTo(tempFileName2);
+			tempFileName.renameTo(fileName);
+			tempFileName2.delete();
+			file = new RandomAccessFile(fileName, "rw");
+			fileSize = newFileSize;
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("FakeTable", e);
+		}
+	}
+
+	public void removeColumn(final int index0)
+	{
+		if(file == null)
+			return;
+		try
+		{
+			final File tempFileName = new File(fileName.getName() + ".tmp");
+			final File tempFileName2 = new File(fileName.getName() + ".cpy");
+			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
+			file.seek(0);
+			for(int i=0;i<dataStart;i++)
+				tempOut.write(file.read());
+			int newFileSize = dataStart;
+			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
+			{
+				final RecordInfo info = iter.next();
+				file.seek(info.offset);
+				final byte[] recBuffer = new byte[info.size];
+				file.readFully(recBuffer, 0, info.size);
+				int currentPos = 0;
+				int newlinesFound = 0;
+				while (currentPos < info.size && newlinesFound < index0 + 1)
+				{
+					if (recBuffer[currentPos] == 0x0A)
+						newlinesFound++;
+					currentPos++;
+				}
+				final int startRemove = currentPos;
+				int endPos = startRemove;
+				while (endPos < info.size && recBuffer[endPos] != 0x0A)
+					endPos++;
+				final int removeLen = endPos - startRemove + 1;
+				final int newSize = info.size - removeLen;
+				System.arraycopy(recBuffer, endPos + 1, recBuffer, startRemove, info.size - (endPos + 1));
+				tempOut.write(recBuffer, 0, newSize);
+				info.offset = newFileSize;
+				newFileSize += newSize;
+				info.size = newSize;
+			}
+			tempOut.getFD().sync();
+			tempOut.close();
+			file.close();
+			tempFileName2.delete();
+			fileName.renameTo(tempFileName2);
+			tempFileName.renameTo(fileName);
+			tempFileName2.delete();
+			file = new RandomAccessFile(fileName, "rw");
+			fileSize = newFileSize;
+		}
+		catch (final IOException e)
+		{
+		}
+	}
+
+	public void eraseDataFile()
+	{
+		close();
+		if (fileName.exists())
+			fileName.delete();
 	}
 
 	/**

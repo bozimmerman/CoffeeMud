@@ -34,13 +34,14 @@ public class ImplAlterStatement extends ImplAbstractStatement
 		this.subType = subType;
 		this.objType = objType;
 		this.col = col;
+		this.changes=changes;
 	}
 
 	public final String			tableName;
 	public final StatementType 	subType;
 	public final String 		objType;
 	public final FakeColumn		col;
-	public final String[]		changes	= null;
+	public final String[]		changes;
 	private final Boolean[]		unPreparedValues	= new Boolean[0];
 
 	@Override
@@ -84,8 +85,9 @@ public class ImplAlterStatement extends ImplAbstractStatement
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("table"))
 			throw new java.sql.SQLException("no table token");
-		sql = split(sql, token);
-		final String tableName = token[0].toUpperCase().trim();
+		String[] r = parseVal(sql);
+		sql = skipWS(r[0]);
+		final String tableName = r[1].trim().toUpperCase();
 		sql = skipWS(sql);
 		sql = split(sql, token);
 		final String action = token[0].toUpperCase();
@@ -117,7 +119,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			else
 			if(next.startsWith("UNIQUE "))
 			{
-				sql=sql.substring(8);
+				sql=sql.substring(6);
 				sql=skipWS(sql);
 				what="PRIMARY";
 				if(sql.length()>4)
@@ -164,7 +166,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			if ((!what.equals("COLUMN")) && (!what.equals("PRIMARY")) && (!what.equals("INDEX")))
 				throw new java.sql.SQLException("no column/primary token");
 			sql = skipWS(sql);
-			final String[] r = parseVal(sql);
+			r = parseVal(sql);
 			final String name = r[1].toUpperCase().trim();
 			sql = skipWS(r[0]);
 			if ((sql.length() > 0) && (sql.charAt(0) == ';'))
@@ -176,8 +178,31 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			if ((what.equals("PRIMARY")) || (what.equals("INDEX")))
 			{
 				sql = skipWS(sql);
+				if(!sql.startsWith("("))
+					throw new java.sql.SQLException("no opening paren");
+				sql=skipWS(sql.substring(1));
 				final List<String> cols = new java.util.ArrayList<String>();
-				sql = splitColumns(sql, cols);
+				r = parseVal(sql);
+				String name = r[1].toUpperCase().trim();
+				cols.add(name);
+				sql = skipWS(r[0]);
+				while(true)
+				{
+					sql=skipWS(sql);
+					if(sql.startsWith(")"))
+					{
+						sql = sql.substring(1);
+						sql = skipWS(sql);
+						break;
+					}
+					if (!sql.startsWith(","))
+						throw new java.sql.SQLException("no comma or closing paren");
+					sql=skipWS(sql.substring(1));
+					r = parseVal(sql);
+					name = r[1].toUpperCase().trim();
+					sql = skipWS(r[0]);
+					cols.add(name);
+				}
 				sql = skipWS(sql);
 				if ((sql.length() > 0) && (sql.charAt(0) == ';'))
 					sql = skipWS(sql.substring(1));
@@ -197,14 +222,14 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			sql = skipWS(sql.substring(1));
 		}
 
-		String[] r = parseVal(sql);
+		r = parseVal(sql);
 		final String val = r[1].trim();
 		sql = skipWS(r[0]);
 		final FakeColumn col = new FakeColumn();
 		if((val.length()==0)||(!Character.isLetter(val.charAt(0))))
 			throw new java.sql.SQLException("Illegal column name: " + val);
 		col.name = val.toUpperCase().trim();
-		r = parseVal(sql);
+		r=parseVal(sql);
 		final String type = r[1].trim();
 		sql = skipWS(r[0]);
 		try
@@ -265,10 +290,16 @@ public class ImplAlterStatement extends ImplAbstractStatement
 				}
 			}
 		}
+		sql = skipWS(sql);
 		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
-			sql = skipWS(sql.substring(1));
+			sql = sql.substring(1);
+		sql = skipWS(sql);
+		if (sql.length() > 0)
+			throw new java.sql.SQLException("no more sql or missing comma/paren");
 		if(action.equals("ADD"))
 			return new ImplAlterStatement(tableName, StatementType.CREATE, what, new String[] {col.name}, col);
+		if(action.equals("DROP"))
+			return new ImplAlterStatement(tableName, StatementType.DROP, what, new String[] {col.name}, col);
 		if (action.equals("MODIFY") || action.equals("ALTER"))
 			return new ImplAlterStatement(tableName, StatementType.ALTER, what, new String[] { col.name }, col);
 		throw new java.sql.SQLException("Unknown action: " + action);

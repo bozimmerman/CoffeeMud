@@ -23,6 +23,7 @@ import java.util.*;
 
 import com.planet_ink.fakedb.backend.jdbc.ResultSet;
 import com.planet_ink.fakedb.backend.jdbc.Statement;
+import com.planet_ink.fakedb.backend.statements.ImplAbstractStatement.StatementType;
 import com.planet_ink.fakedb.backend.statements.ImplAlterStatement;
 import com.planet_ink.fakedb.backend.statements.ImplCreateStatement;
 import com.planet_ink.fakedb.backend.statements.ImplDeleteStatement;
@@ -100,7 +101,7 @@ public class Backend
 	{
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)
-			throw new java.sql.SQLException("unknown table " + tableName);
+			throw new java.sql.SQLException("unknown table for dup check " + tableName);
 		final List<FakeCondition> conditions = new ArrayList<FakeCondition>(2);
 		for (int i = 0; i < doCols.length; i++)
 		{
@@ -150,22 +151,26 @@ public class Backend
 				continue;
 			final String s = group.remove(0).toUpperCase().trim();
 			final int vx = s.lastIndexOf(' ');
+			String tableName = s;
 			if(vx > 0)
 			{
 				final String v = s.substring(vx+1);
 				if((v.length()==2) && (v.startsWith("V"))&&(Character.isDigit(v.charAt(1))))
+				{
+					tableName = s.substring(0,vx).trim();
 					version = Integer.valueOf(v.substring(1)).intValue();
+				}
 			}
-			if (fakeTables.get(s) != null)
-				throw new IOException("Can not read schema: tableName is duplicate: " + s);
+			if (fakeTables.get(tableName) != null)
+				throw new IOException("Can not read schema: tableName is duplicate: " + tableName);
 
-			final FakeTable fakeTable = new FakeTable(s, new File(basePath, "fakedb.data." + s));
+			final FakeTable fakeTable = new FakeTable(tableName, new File(basePath, "fakedb.data." + tableName));
 			fakeTable.version = version;
 			fakeTable.initializeColumns(group);
 			if(fakeTable.version > version)
 				version = fakeTable.version;
 			fakeTable.open();
-			fakeTables.put(s, fakeTable);
+			fakeTables.put(tableName, fakeTable);
 		}
 		for(final FakeTable tab : fakeTables.values())
 		{
@@ -181,6 +186,8 @@ public class Backend
 	 */
 	public boolean open() throws IOException
 	{
+		for(final FakeTable tab : fakeTables.values())
+			tab.close();
 		fakeTables.clear();
 		readSchema(basePath);
 		return true;
@@ -202,7 +209,7 @@ public class Backend
 		final String[] orderModifiers = stmt.orderModifiers;
 		final FakeTable table = fakeTables.get(tableName);
 		if (table == null)
-			throw new java.sql.SQLException("unknown table " + tableName);
+			throw new java.sql.SQLException("unknown table for scan " + tableName);
 		int[] showCols;
 		if ((cols.size() == 0) || (cols.contains("*")))
 		{
@@ -274,14 +281,14 @@ public class Backend
 
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)
-			throw new java.sql.SQLException("unknown table " + tableName);
+			throw new java.sql.SQLException("unknown table for insert " + tableName);
 
 		final ComparableValue[] values = new ComparableValue[fakeTable.columns.length];
 		for (int index = 0; index < columns.length; index++)
 		{
 			final int id = fakeTable.findColumn(columns[index]);
 			if (id < 0)
-				throw new java.sql.SQLException("unknown column " + columns[index]);
+				throw new java.sql.SQLException("unknown column for insert " + columns[index]);
 			final FakeColumn col = fakeTable.columns[id];
 			try
 			{
@@ -351,7 +358,7 @@ public class Backend
 
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)
-			throw new java.sql.SQLException("unknown table " + tableName);
+			throw new java.sql.SQLException("unknown table for update" + tableName);
 
 		final int[] vars = new int[varNames.length];
 		for (int index = 0; index < vars.length; index++)
@@ -409,7 +416,7 @@ public class Backend
 	{
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)
-			throw new java.sql.SQLException("unknown table " + tableName);
+			throw new java.sql.SQLException("unknown table for faking " + tableName);
 		final FakeCondition fake = new FakeCondition();
 		fake.unPrepared = unPrepared;
 		if (columnName == null)
@@ -567,6 +574,43 @@ public class Backend
 		}
 	}
 
+	private List<String> findTableDef(final String tableName, final List<List<String>> schema) throws SQLException
+	{
+		for (final List<String> group : schema)
+		{
+			if ((group.size() > 0) && (!group.get(0).startsWith("#")))
+			{
+				final String s = group.get(0).toUpperCase().trim();
+				final int vx = s.lastIndexOf(' ');
+				String tName = s;
+				if (vx > 0)
+				{
+					final String v = s.substring(vx + 1);
+					if ((v.length() == 2) && (v.startsWith("V")) && (Character.isDigit(v.charAt(1))))
+						tName = s.substring(0, vx).trim();
+				}
+				if (tName.equalsIgnoreCase(tableName))
+					return group;
+			}
+		}
+		throw new java.sql.SQLException("unknown table  for deffing" + tableName);
+	}
+
+	public String findColumnDef(final String columnName, final List<String> tableDef) throws SQLException
+	{
+		for (int i = 1; i < tableDef.size(); i++)
+		{
+			final String s = tableDef.get(i).toUpperCase().trim();
+			final int vx = s.indexOf(' ');
+			String cName = s;
+			if (vx > 0)
+				cName = s.substring(0, vx).trim();
+			if (cName.equalsIgnoreCase(columnName))
+				return tableDef.get(i);
+		}
+		return null;
+	}
+
 	/**
 	 * Drop a table
 	 *
@@ -577,6 +621,21 @@ public class Backend
 		final String tableName = stmt.tableName;
 		if (fakeTables.get(tableName) == null)
 			throw new java.sql.SQLException("table " + tableName + " doesn't exist");
+		final FakeTable fakeTable = fakeTables.remove(tableName);
+		final List<List<String>> schema = readRawSchema();
+		final List<String> tableDef = findTableDef(tableName,schema);
+		schema.remove(tableDef);
+		this.rewriteRawSchema(schema);
+		fakeTable.eraseDataFile();
+		try
+		{
+			this.open();
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to re-open database after table drop: " + e.getMessage());
+		}
+
 	}
 
 	/**
@@ -584,9 +643,133 @@ public class Backend
 	 * @param stmt The alter statement
 	 * @throws SQLException if it fails
 	 */
-	public void alterTable(final ImplAlterStatement stmt) throws SQLException
+	public synchronized void  alterTable(final ImplAlterStatement stmt) throws SQLException
 	{
-		//TODO:
+		final StatementType action = stmt.getSubStatementType();
+		final String objType = stmt.objType;
+		final FakeColumn col = (FakeColumn)stmt.extValues()[1];
+		final String tableName = stmt.tableName;
+		final FakeTable fakeTable = fakeTables.get(tableName);
+		if (fakeTable == null)
+			throw new java.sql.SQLException("unknown table for altering " + tableName);
+		final List<List<String>> schema = readRawSchema();
+		final List<String> tableDef = findTableDef(tableName,schema);
+		if(action == StatementType.CREATE)
+		{
+			if(objType.equals("COLUMN"))
+			{
+				if (findColumnDef(col.name, tableDef) != null)
+					throw new java.sql.SQLException("column " + col.name + " already exists");
+				tableDef.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : col.canNull ? "NULL " : ""));
+				fakeTable.addColumn();
+			}
+			else
+			if(objType.equals("PRIMARY"))
+			{
+				final String[] colNames = stmt.changes;
+				for(final String colName : colNames)
+				{
+					String colDef = findColumnDef(colName, tableDef);
+					if (colDef == null)
+						throw new java.sql.SQLException("column " + colName + " does not exist");
+					final int index = tableDef.indexOf(colDef);
+					if (colDef.toUpperCase().indexOf(" KEY") > 0)
+						throw new java.sql.SQLException("column " + colName + " is already a key");
+					final int secondSpaceIndex = colDef.indexOf(' ', colDef.indexOf(' ') + 1);
+					if (secondSpaceIndex < 0)
+						colDef = colDef + " KEY";
+					else
+						colDef = colDef.substring(0, secondSpaceIndex) + " KEY";
+					tableDef.set(index, colDef);
+				}
+			}
+			else
+			if(objType.equals("INDEX"))
+			{
+				final String[] colNames = stmt.changes;
+				for(final String colName : colNames)
+				{
+					String colDef = findColumnDef(colName, tableDef);
+					if (colDef == null)
+						throw new java.sql.SQLException("column " + colName + " does not exist");
+					final int index = tableDef.indexOf(colDef);
+					if (colDef.toUpperCase().indexOf(" KEY") > 0)
+						throw new java.sql.SQLException("column " + colName + " is already a key");
+					if (colDef.toUpperCase().indexOf(" INDEX") > 0)
+						throw new java.sql.SQLException("column " + colName + " is already a index");
+					final boolean nullable = colDef.toUpperCase().indexOf(" NULL") > 0;
+					final int secondSpaceIndex = colDef.indexOf(' ', colDef.indexOf(' ') + 1);
+					if (secondSpaceIndex < 0)
+						colDef = colDef + " INDEX";
+					else
+						colDef = colDef.substring(0, secondSpaceIndex) + " INDEX" + (nullable ? " NULL" : "");
+					tableDef.set(index, colDef);
+				}
+			}
+		}
+		else
+		if (action == StatementType.DROP)
+		{
+			if (objType.equals("COLUMN"))
+			{
+				final String colDef = findColumnDef(col.name, tableDef);
+				if (colDef == null)
+					throw new java.sql.SQLException("column " + col.name + " does not exist");
+				final int index = tableDef.indexOf(colDef);
+				tableDef.remove(index);
+				fakeTable.removeColumn(index-1);
+			}
+			else if (objType.equals("KEY"))
+			{
+				String colDef = findColumnDef(col.name, tableDef);
+				if (colDef == null)
+					throw new java.sql.SQLException("column " + col.name + " does not exist");
+				final int index = tableDef.indexOf(colDef);
+				if (colDef.toUpperCase().indexOf(" KEY") < 0)
+					throw new java.sql.SQLException("column " + col.name + " is not a key");
+				colDef = colDef.replaceAll("(?i) KEY", "");
+				tableDef.set(index, colDef);
+			}
+			else if (objType.equals("INDEX"))
+			{
+				String colDef = findColumnDef(col.name, tableDef);
+				if (colDef == null)
+					throw new java.sql.SQLException("column " + col.name + " does not exist");
+				final int index = tableDef.indexOf(colDef);
+				if (colDef.toUpperCase().indexOf(" INDEX") < 0)
+					throw new java.sql.SQLException("column " + col.name + " is not an index");
+				colDef = colDef.replaceAll("(?i) INDEX", "");
+				tableDef.set(index, colDef);
+			}
+		}
+		else
+		if(action == StatementType.ALTER)
+		{
+			if (!objType.equals("COLUMN"))
+				throw new java.sql.SQLException("can only alter columns");
+			final String colDef = findColumnDef(col.name, tableDef);
+			if (colDef == null)
+				throw new java.sql.SQLException("column " + col.name + " does not exist");
+			final int index = tableDef.indexOf(colDef);
+			final StringBuilder newColDef = new StringBuilder(col.name + " " + col.type.name().toLowerCase());
+			if (col.canNull)
+				newColDef.append(" NULL");
+			else
+				newColDef.append(" NOT NULL");
+			if (col.keyNumber > 0)
+				newColDef.append(" KEY");
+			tableDef.set(index, newColDef.toString());
+		}
+		fakeTable.rewriteDataFileHash(tableDef);
+		this.rewriteRawSchema(schema);
+		try
+		{
+			this.open();
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to re-open database after table alter: "+e.getMessage());
+		}
 	}
 
 
@@ -621,7 +804,7 @@ public class Backend
 		for (final FakeColumn col : columns)
 		{
 			col.tableName = tableName;
-			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : "") + (col.canNull ? "NULL " : ""));
+			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : col.canNull ? "NULL " : ""));
 		}
 		if(insert<0)
 			schema.add(newTable);
@@ -634,7 +817,7 @@ public class Backend
 		}
 		catch (final IOException e)
 		{
-			throw new SQLException("Unable to re-open database after table create");
+			throw new SQLException("Unable to re-open database after table create: "+e.getMessage());
 		}
 	}
 

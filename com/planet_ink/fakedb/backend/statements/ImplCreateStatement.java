@@ -78,8 +78,9 @@ public class ImplCreateStatement extends ImplAbstractStatement
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("table"))
 			throw new java.sql.SQLException("no table token");
-		sql = split(sql, token);
-		final String tableName = token[0].toUpperCase();
+		String[] r = parseVal(sql);
+		sql = skipWS(r[0]);
+		final String tableName = r[1].trim().toUpperCase();
 		sql = skipWS(sql);
 		if ((sql.length() <= 0) || (sql.charAt(0) != '('))
 			throw new java.sql.SQLException("no open paren");
@@ -91,7 +92,7 @@ public class ImplCreateStatement extends ImplAbstractStatement
 			sql = skipWS(sql);
 			if(sql.length()==0)
 				throw new java.sql.SQLException("Unexpected end of columns.");
-			String[] r = parseVal(sql);
+			r = parseVal(sql);
 			String val = r[1].trim();
 			sql = skipWS(r[0]);
 			if(val.equalsIgnoreCase("PRIMARY"))
@@ -103,8 +104,6 @@ public class ImplCreateStatement extends ImplAbstractStatement
 					throw new java.sql.SQLException("Illegal column name: PRIMARY");
 				if ((sql.length() <= 0) || (sql.charAt(0) != '('))
 					throw new java.sql.SQLException("no open paren for keys");
-				sql=sql.substring(1);
-				sql = skipWS(r[0]);
 				while(true)
 				{
 					r = parseVal(sql);
@@ -126,13 +125,13 @@ public class ImplCreateStatement extends ImplAbstractStatement
 					if(sql.charAt(0)==')')
 					{
 						sql=sql.substring(1);
-						sql = skipWS(r[0]);
+						sql = skipWS(sql);
 						break;
 					}
 					if(sql.charAt(0)==',')
 					{
 						sql=sql.substring(1);
-						sql = skipWS(r[0]);
+						sql = skipWS(sql);
 					}
 					else
 						throw new java.sql.SQLException("illegal char, not paren/comma for keys");
@@ -146,7 +145,7 @@ public class ImplCreateStatement extends ImplAbstractStatement
 			if((val.length()==0)||(!Character.isLetter(val.charAt(0))))
 				throw new java.sql.SQLException("Illegal column name: " + val);
 			col.name = val.toUpperCase().trim();
-			r = parseVal(sql);
+			r=parseVal(sql);
 			final String type = r[1].trim();
 			sql = skipWS(r[0]);
 			try
@@ -159,12 +158,17 @@ public class ImplCreateStatement extends ImplAbstractStatement
 			}
 			boolean exit = false;
 			boolean not=false;
+			col.canNull = true;
 			while(true)
 			{
 				if(sql.length()==0)
 					throw new java.sql.SQLException("Unexpected end of list.");
 				if(sql.startsWith(","))
+				{
+					sql=sql.substring(1);
+					sql = skipWS(sql);
 					break;
+				}
 				if(sql.startsWith(")"))
 				{
 					sql=sql.substring(1);
@@ -214,9 +218,12 @@ public class ImplCreateStatement extends ImplAbstractStatement
 				break;
 		}
 
+		sql = skipWS(sql);
 		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
-			sql = skipWS(sql.substring(1));
-
+			sql = sql.substring(1);
+		sql = skipWS(sql);
+		if (sql.length() > 0)
+			throw new java.sql.SQLException("no more sql or missing comma/paren");
 		return new ImplCreateStatement(tableName, columnList.toArray(new FakeColumn[0]));
 	}
 }

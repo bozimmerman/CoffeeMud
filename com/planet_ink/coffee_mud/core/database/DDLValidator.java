@@ -76,7 +76,7 @@ public class DDLValidator
 		}
 	}
 
-	public static String getPortableType(final int type, final String actualName, int size)
+	public static String getPortableType(final int type, final String actualName, final int size)
 	{
 		String typeName=null;
 		switch (type)
@@ -123,7 +123,7 @@ public class DDLValidator
 		}
 		return typeName;
 	}
-	
+
 	/**
 	 * Current database version derived from the changelist.
 	 *
@@ -142,7 +142,7 @@ public class DDLValidator
 			final DatabaseMetaData meta=conn.getMetaData();
 			if(meta==null)
 				return Integer.MIN_VALUE;
-			String productName=meta.getDatabaseProductName().toLowerCase();
+			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle") || productName.contains("db2")) ? conn.getSchema() : null;
 			final ResultSet rs=meta.getTables(null, schema, "%", new String[]{"TABLE"});
 			final Set<String> dbTables=new HashSet<>();
@@ -172,7 +172,7 @@ public class DDLValidator
 					final int type=colsRs.getInt("DATA_TYPE");
 					final String actualTypeName = colsRs.getString("TYPE_NAME");
 					final int precision = colsRs.getInt("COLUMN_SIZE");
-					String typeName=getPortableType(type, actualTypeName, precision);
+					final String typeName=getPortableType(type, actualTypeName, precision);
 					final boolean nullable=colsRs.getString("IS_NULLABLE").equals("YES");
 					if(typeName==null)
 						throw new Exception("Unknown DB type "+typeName+" for column "+cname+" in table "+upperT);
@@ -213,7 +213,7 @@ public class DDLValidator
 				dbIndexSetsByTable.put(upperT, dbIndexSets);
 			}
 
-			int startVer=DBInterface.currentVersion;
+			int startVer=changes.length-1;
 			int lastVer=1;
 			if(oneVer!=null)
 			{
@@ -472,19 +472,22 @@ public class DDLValidator
 			final String json=new String(Files.readAllBytes(f.toPath()));
 			final MiniJSON.JSONObject obj=(MiniJSON.JSONObject)new MiniJSON().parse(json);
 			@SuppressWarnings("unchecked")
-			final List<JSONObject>[] allChanges=new List[DBInterface.currentVersion+1];
-			for(int i=1;i<=DBInterface.currentVersion;i++)
+			List<JSONObject>[] allChanges=new List[1];
+			for(final String key : obj.keySet())
 			{
-				if(!obj.containsKey(""+i))
-				{
-					allChanges[i]=new ArrayList<JSONObject>();
-					continue;
-				}
-				final Object[] arr=obj.getCheckedArray(""+i);
+				final int i = Integer.parseInt(key);
+				final Object[] arr=obj.getCheckedArray(key);
 				final List<JSONObject> changeSet=new ArrayList<JSONObject>();
 				for(final Object oc : arr)
 					changeSet.add((JSONObject)oc);
+				if(i>=allChanges.length)
+					allChanges=Arrays.copyOf(allChanges, i+1);
 				allChanges[i]=changeSet;
+			}
+			for (int i=0;i<allChanges.length;i++)
+			{
+				if (allChanges[i] == null)
+					allChanges[i] = new ArrayList<JSONObject>();
 			}
 			return allChanges;
 		}
@@ -525,7 +528,7 @@ public class DDLValidator
 			}
 			if(lastAppliedVersion>0)
 			{
-				if(lastAppliedVersion<DBInterface.currentVersion)
+				if(lastAppliedVersion<changes.length-1)
 					return lastAppliedVersion;
 				else
 				if(lastAppliedVersion==0)
@@ -547,9 +550,9 @@ public class DDLValidator
 	}
 
 	/**
-	 * Validates a list of schema changes against the current database state, 
+	 * Validates a list of schema changes against the current database state,
 	 * returning a list of error messages for any changes that cannot be applied.
-	 * For changes that add a new table and include modifications to that table, 
+	 * For changes that add a new table and include modifications to that table,
 	 * only errors for the table addition are reported to avoid redundant messages.
 	 *
 	 * @param changes the list of schema changes to validate
@@ -564,7 +567,7 @@ public class DDLValidator
 		{
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
-			String productName=meta.getDatabaseProductName().toLowerCase();
+			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
 			final ResultSet rs=meta.getTables(null, schema, "%", new String[] { "TABLE" });
 			final Set<String> dbTables=new HashSet<>();
@@ -841,29 +844,33 @@ public class DDLValidator
 				DB.DBDone(conn);
 		}
 	}
-	
+
 	/**
 	 * Validates the current database version against the changelist.
 	 * @return null if valid, otherwise an error string
 	 */
 	public String validateDatabaseVersion()
 	{
+		final List<JSONObject>[] changes=this.getChangeLists(true);
+		if (changes == null)
+			return "Unable to read database changelist for validation.";
+		final int currentVersion = changes.length-1;
 		final int lastAppliedVersion=getDatabaseVersionCode(false);
 		if(lastAppliedVersion==Integer.MIN_VALUE)
 			return "Unable to validate database version.  Startup aborted.";
 		if(lastAppliedVersion>0)
 		{
-			if(lastAppliedVersion<DBInterface.currentVersion)
-				return "Database is at version "+lastAppliedVersion+", but version "+DBInterface.currentVersion+" is required.";
+			if(lastAppliedVersion<currentVersion)
+				return "Database is at version "+lastAppliedVersion+", but version "+currentVersion+" is required.";
 			else
 			if(lastAppliedVersion==0)
-				return "Database was empty, and needs to be initialized to version "+DBInterface.currentVersion+".";
+				return "Database was empty, and needs to be initialized to version "+currentVersion+".";
 		}
 		else
 		if(lastAppliedVersion == 0)
 			return "Your database has an empty schema.";
 		else
-			return "Your database is at approximately version "+(-lastAppliedVersion)+", but version "+DBInterface.currentVersion+" is required.";
+			return "Your database is at approximately version "+(-lastAppliedVersion)+", but version "+currentVersion+" is required.";
 		return null;
 	}
 
@@ -1138,19 +1145,19 @@ public class DDLValidator
 				{
 					errors = this.validateChanges(applicableChanges);
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					errors = new ArrayList<String>();
 					e.printStackTrace();
 				}
-				StringBuilder ester = new StringBuilder("");
+				final StringBuilder ester = new StringBuilder("");
 				for(final String s : errors)
 					ester.append(s).append(";");
 				return "Unable to upgrade database version "+oldVersion+": "+ester.toString()+".  Please do so manually.";
 			}
 		}
 		int oldVersion=version;
-		for(++version;version<=DBInterface.currentVersion;version++)
+		for(++version;version<=changes.length-1;version++)
 		{
 			if(changes[version]==null)
 				continue;
@@ -1184,9 +1191,9 @@ public class DDLValidator
 					final int newVersion=getDatabaseVersionCode(true);
 					if((Math.abs(newVersion)==oldVersion)||(newVersion<0))
 					{
-						List<String> errors = this.validateChanges(changes[version]);
-						StringBuilder str = new StringBuilder("");
-						for(String e : errors)
+						final List<String> errors = this.validateChanges(changes[version]);
+						final StringBuilder str = new StringBuilder("");
+						for(final String e : errors)
 							str.append(e).append("; ");
 						return "Failed to upgrade database version "+version+": "+str.toString()+".  Please do so manually.";
 					}

@@ -69,8 +69,9 @@ public class ImplUpdateStatement extends ImplAbstractStatement
 
 	public static ImplUpdateStatement parse(final Statement stmt, String sql, final String[] token) throws java.sql.SQLException
 	{
-		sql = split(sql, token);
-		final String tableName = token[0];
+		String[] r = parseVal(sql);
+		sql = skipWS(r[0]);
+		final String tableName = r[1].trim().toUpperCase();
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("set"))
 			throw new java.sql.SQLException("no set");
@@ -123,7 +124,7 @@ public class ImplUpdateStatement extends ImplAbstractStatement
 			}
 			else
 			{
-				final String[] r = parseVal(sql);
+				r = parseVal(sql);
 				sql = r[0];
 				columnList.add(attr);
 				valueList.add(r[1]);
@@ -149,6 +150,12 @@ public class ImplUpdateStatement extends ImplAbstractStatement
 			if (conditions.size() == 0)
 				throw new java.sql.SQLException("no more where clause!");
 		}
+		sql = skipWS(sql);
+		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
+			sql = sql.substring(1);
+		sql = skipWS(sql);
+		if (sql.length() > 0)
+			throw new java.sql.SQLException("no more sql or missing comma/paren");
 		return new ImplUpdateStatement(tableName, conditions, columnList.toArray(new String[0]), valueList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 
 	}

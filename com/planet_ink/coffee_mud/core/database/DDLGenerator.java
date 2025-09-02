@@ -168,6 +168,9 @@ public class DDLGenerator
 			sql.append(getDataTypeSQL(type, size));
 			if(!nullable)
 				sql.append(" NOT NULL");
+			else
+			if(productName.equals("fakedb") && (!col.containsKey("nullable")))
+				sql.append(" NULL");
 			if(i<(columnDefs.size()-1))
 				sql.append(", ");
 		}
@@ -1295,11 +1298,22 @@ public class DDLGenerator
 	public String getCreateIndexSQL(final String indexName, final String tableName, final List<String> columnNames, final boolean isUnique) throws SQLException
 	{
 		final String quote=metaData.getIdentifierQuoteString();
-		final StringBuilder sql=new StringBuilder("CREATE ");
+
+		final StringBuilder sql=new StringBuilder();
+		if(productName.contains("fakedb"))
+			sql.append("ALTER TABLE ").append(quote).append(tableName).append(quote).append(" ADD ");
+		else
+			sql.append("CREATE ");
 		if(isUnique)
 			sql.append("UNIQUE ");
-		sql.append("INDEX ").append(quote).append(indexName).append(quote).append(" ON ")
-			.append(quote).append(tableName).append(quote).append(" (");
+		sql.append("INDEX ");
+		if(productName.contains("fakedb"))
+			sql.append("(");
+		else
+		{
+			sql.append(quote).append(indexName).append(quote).append(" ON ")
+				.append(quote).append(tableName).append(quote).append(" (");
+		}
 		for(int i=0;i<columnNames.size();i++)
 		{
 			sql.append(quote).append(columnNames.get(i)).append(quote);

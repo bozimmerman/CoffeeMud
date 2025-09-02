@@ -189,7 +189,7 @@ public abstract class ImplAbstractStatement
 			for (index = 0; index < sql.length(); ++index)
 			{
 				final char c = sql.charAt(index);
-				if ((c == ' ') || (c == ',') || (c == ')')|| ((c == ';')&&(index>0)))
+				if ((c == ' ') || (c == ',') || (c == ')')|| (c == '(') || ((c == ';')&&(index>0)))
 					break;
 				buffer.append(c);
 			}

@@ -53,8 +53,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 */
 public class DBInterface implements DatabaseEngine
 {
-	public static final int currentVersion = 58;
-
 	@Override
 	public String ID()
 	{

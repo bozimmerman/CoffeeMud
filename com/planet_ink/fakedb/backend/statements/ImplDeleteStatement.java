@@ -67,8 +67,9 @@ public class ImplDeleteStatement extends ImplAbstractStatement
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("from"))
 			throw new java.sql.SQLException("no from clause");
-		sql = split(sql, token);
-		final String tableName = token[0];
+		final String[] r = parseVal(sql);
+		sql = skipWS(r[0]);
+		final String tableName = r[1].trim().toUpperCase();
 		sql = split(sql, token);
 		List<FakeCondition> conditions;
 		if (token[0].equalsIgnoreCase("where"))
@@ -86,6 +87,12 @@ public class ImplDeleteStatement extends ImplAbstractStatement
 		}
 		else
 			throw new java.sql.SQLException("no other where clause");
+		sql = skipWS(sql);
+		if ((sql.length() > 0) && (sql.charAt(0) == ';'))
+			sql = sql.substring(1);
+		sql = skipWS(sql);
+		if (sql.length() > 0)
+			throw new java.sql.SQLException("no more sql or missing comma/paren");
 		return new ImplDeleteStatement(tableName, conditions);
 	}
 

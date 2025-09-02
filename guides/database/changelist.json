@@ -401,5 +401,8 @@
 	{"action": "ADD", "target": "COLUMN", "name": "CMCDCL", "table": "CMCDAC", "type": "VARCHAR", "size": 250, "nullable": true},
 	{"action": "ADD", "target": "COLUMN", "name": "CMCDID", "table": "CMCDAC", "type": "VARCHAR", "size": 50, "nullable": false},
 	{"action": "ADD", "target": "COLUMN", "name": "CMCDAT", "table": "CMCDAC", "type": "TEXT", "nullable": true}
+  ],
+  "59": [
+	{"action": "ADD", "target": "INDEX", "name": "CMDATE", "table": "CMJRNL"}
   ]
 }
