@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.10</title>
+<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.11</title>
 
 <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
 <body>
+<!--lynx -dump -width=80 http://coffeemud.net:27777/pub/guides/InstallationGuide.html > install.txt-->
 <center>
 <table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
 <tbody>
@@ -16,104 +17,75 @@
 <td align="left" valign="top" width="35%">
 <ul>
 <li><a href="#installation">Installation</a></li>
-<li> <a href="#upgrading">Upgrading</a>
-<ul>
-<li><a href="#unchanged">Unchanged DB</a></li>
-<li><a href="#changedfdb">Changed
-w/fakedb</a></li>
-<li><a href="#changed">Changed w/o fakedb</a></li>
-</ul>
-</li>
+<li> <a href="#upgrading">Upgrading</a></li>
 <li><a href="#settings">Settings</a></li>
 <li><a href="#multihosts">Multiple Hosts</a></li>
 <li><a href="#proxyserver">Proxy Server</a></li>
 <li><a href="#integrations">Integrations
 (Discord, X, AI, etc)</a></li>
 <li><a href="#package">The CoffeeMud Package</a></li>
-<li> <a href="#database">The Database</a>
+<li> <a href="#database">Using a Real
+Database</a>
 <ul>
 <li><a href="#access">Microsoft Access</a></li>
 <li><a href="#mysqlwin">MySQL/ Win</a></li>
 <li><a href="#mysqllinux">MySQL/ Linux</a></li>
 <li><a href="#hsql">HSQL</a></li>
 <li><a href="#derby">Derby</a></li>
+<li><a href="#dbtrouble">Database
+Troubleshooting</a></li>
 </ul>
 </li>
-<li><a href="#localization">Localization</a></li><li><a href="#shutdown">Offline/ Shutdown</a></li>
+<li><a href="#localization">Localization</a></li>
+<li><a href="#shutdown">Offline/ Shutdown</a></li>
 </ul>
 </td>
 <td style="text-align: left;" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
 <h2><a name="installation">Installation</a></h2>
-<p>The first and most critical step in installing CoffeeMud
-5
-is to make sure that you have downloaded and installed the latest
-version of the Oracle Java&nbsp;SDK, though it only requires JDK
+<p>The first and most critical step in installing
+CoffeeMud&nbsp;is to make sure that you have downloaded and
+installed Oracle Java&nbsp;SDK/ JDK
 1.8 or
 better.&nbsp;If
 you are using some flavor of Unix or Linux instead of Windows, make
-sure you aren't trying to get by with GCJ, or OpenJVM -- CoffeeMud does
+sure you aren't trying to get by with GCJ, OpenJDK, or OpenJVM -- CoffeeMud does
 not
-support it, because it does not support CoffeeMud.</p>
+support it, because it does not support CoffeeMud. &nbsp;You should
+also make sure the "java" command is in your default PATH.</p>
 <p>Now, if you are upgrading from a previous version of
 CoffeeMud, you need to stop here and skip ahead to the section on
 upgrading. If this is your first installation, keep reading.</p>
-<p>You will now need to unpack the CoffeeMud.zip package
+<p>Unpack the CoffeeMud.zip package
 into a
 directory on your hard drive. This directory may be called, for
 instance, "CoffeeMud".</p>
-<p>If you are using a UNIX/Linux system, you should now
-bring up
-a console and cd to whatever directory you unpacked CoffeeMud to. You
-will first want to convert the dos-formatted install scripts to unix
-format. To do this, enter <code>dos2unix InstallUNIX.sh</code>
-and <code>dos2unix
-mudUNIX.sh</code>. Make sure you can write to mudUNIX.sh by
-issung the
-the command <code>chmod 766 mudUNIX.sh</code> Now, enter <code>sh
-InstallUNIX.sh</code> Follow the prompts by inputting the
-directory of
-JAVA; do not enter a trailing slash, for instance: <code>/opt/jdk/jdk1.8.0_22</code>
-Continue following the prompts: Say <code>y</code> if you
-want to
-compile the main program, <code>n</code> if you don't.
-Enter the name
-of your new MUD (this only works FIRST RUN; you cannot use this to
-change MUD's name in the FUTURE). Say <code>y</code> if
-you want to
-start your MUD now, and <code>n</code> if you don't. Hit
-enter after
-the nohup comes up.&nbsp;</p>
-<p>If you are using Windows, or you are using UNIX/Linux
-and have
-completed the above instructions...</p>
-<p class="bold">Congratulations!</p>
-<p>You have successfully installed CoffeeMud.</p>
+<p>UNIX/Linux users may now want to run the quick
+configuration tool. &nbsp;From a shell, cd into your CoffeeMud
+directory and enter:<br />
+</p>
+<p><code>chmod +x config.sh<br />
+./config.sh</code></p>
+<p>Now, if you just want to try the system out, then
+Congratulations: You have successfully installed CoffeeMud.</p>
 <p>You may wish, at this point, to investigate the settings
 and
-components of the CoffeeMud server. If so, by all means, continue
+components of the CoffeeMud server or use a real database instead of
+the sample fakedb included.&nbsp; If so, by all means, continue
 reading this document. If you couldn't care less, then go into the your
 CoffeeMud directory on a command line or DOS prompt and enter (for
 Windows or DOS users):</p>
-<p><code>java -classpath
-".;.\lib\js.jar;.\lib\jzlib.jar"
--Xmx85m com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
+<p><code>mud.bat Your Muds Name</code></p>
 <p>And for Unix, Linux, or FreeBSD users, the command
 differs
 only in the classpath:</p>
-<p><code>java -classpath
-".:./lib/js.jar:./lib/jzlib.jar"
--Xmx85m com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
+<p><code>chmod +x mud.sh<br />
+./mud.sh Your Muds Name</code></p>
 <p>This will start up the CoffeeMud server. Remember to
 change
-the "Your Muds Name" text at the end to the unique name you want to
+the "Your Muds Name" to a unique name you want to
 give your mud. If you are running Windows, you might also get away with
 first modifying the file <code>mud.bat</code>
-using your best text editor, and then executing that file. If you are
-running some
-flavor of FreeBSD, Unix, or Linux, you also have a mudLINUX.sh you may
-first modify, then make executable using the command <code>chmod
-755
-mudLINUX.sh,</code> and then execute.</p>
+using your best text editor, and then executing that file.&nbsp;</p>
 <p>Now, connect to the server on port 5555 using your
 telnet or
 other MUD client. Create yourself a new character. This new character
@@ -163,6 +135,7 @@ Panel.</li>
 <li>Set your START field</li>
 <li>Set your SOUNDPATH field</li>
 <li>Set your MXPIMAGEPATH field</li>
+<li>Possibly change the HASHPASSWORDS field</li>
 </ul>
 </li>
 <li>Read the <a href="ArchonGuide.html">Archon's
@@ -172,7 +145,7 @@ Builders
 Guide</a>.</li>
 <li>Check the <a href="BuildersFAQ.html">Builders
 FAQ</a>.</li>
-<li>Peruse the <a href="Reference.html">Reference
+<li>Browse the <a href="Reference.html">Reference
 Guide</a></li>
 <li>Remember the <a href="WebServer.html">Web
 Server Guide</a>.</li>
@@ -193,42 +166,31 @@ you are technically ready to play!</p>
 <h2><a name="upgrading">Upgrading From a
 Previous Version of
 CoffeeMud</a></h2>
-<p>There are three upgrade paths, one where the database
-schema
-was not changed (4.5.0 to 4.5.1), and two others where the database
-schema was changed (i.e. 4.7 to 5.0) . If you are unsure, or don't know
-how to tell, go ahead and follow the changed database schema process.</p>
-<h3><a name="unchanged">Unchanged Database
-Schema Process</a></h3>
-<p>If you are upgrading to a version where the database
-schema
-has (presumably) not changed, you still must expect that many other
-things probably have. Therefore, follow these steps:</p>
-<ul>
-<li>
-<p>First go into the directory that contains your olde
-version of CoffeeMud and obliterate the entire "com" path. Just wipe it
+<p>Upgrading from an older to a new version of Coffeemud is
+mostly a
+matter of replacing old code with new code, adding the new files, and
+merging configuration files that you previously changed.</p>
+<p>First, shut down your mud and back up your existing
+installation. &nbsp;I usally zip up the
+CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
+aside.</p>
+<p>Now, go into the CoffeeMud directory and obliterate the
+entire "com" path. Just wipe it
 away. You won't need it, and it will just cause problems anyway. If you
 had any custom classes in there, you might want to pull them out first
-and copy them elsewhere.</p>
-</li>
-<li>
+and copy them elsewhere, or restore them from your backup.</p>
 <p>Next, save away (in another directory) your
 coffeemud.ini
-file, and perhaps your mud.bat or mudLINUX.bat. Also save away any
+file, and perhaps your mud.bat or mud.sh. Also save away any
 files in the resources or web directory you might have customized to
 your mud, including perhaps your resources/text/intro.txt file for
 instance. &nbsp;Other files you might have changed include
 resources/achivements.ini,
 resources/titles.ini, or perhaps some of the skill recipes under
 resources/skills/*.</p>
-</li>
-<li>
 <p>Now unpack/unzip the new version of CoffeeMud on TOP
 of
 your olde one.</p>
-</li>
-<li>
 <p>Open up the coffeemud.ini file that comes with the
 new
 version and also open up your olde customized coffeemud.ini file you
@@ -238,134 +200,20 @@ differ from the new one. The idea here is that the new coffeemud.ini
 file may contain new settings you need to be aware of. However, your
 old custom settings will still apply in the new version -- especially
 your database settings for instance.</p>
-</li>
-<li>
 <p>Copy your intro.txt on top of the one from the new
 build.
 As in step 4, merge any other files back into their counterparts in the
 new build.</p>
-</li>
-<li>
-<p>Smile, you are done.</p>
-</li>
-</ul>
-<h3><a name="changedfdb">Changed FakeDB
-Database Schema Process</a></h3>
-<p>If you are upgrading to a version with an updated
-database
-schema, follow the correct instructions for your database type. If you
-are using fakedb, follow the instructions below. If you don't know
-whether or not you are using fakedb, then you ARE using fakedb and
-should follow these instructions:</p>
-<ul>
-<li>
-<p>Go into the CoffeeMud directory for your olde
-version and
-copy the entire fakedb data directory to somewhere else on your hard
-drive. On CoffeeMud versions 1.2 - 4.7, your fakedb data directory is
-located in your coffeemud folder in the "data" directory. In versions
-5.0 and higher, it is located in your coffeemud folder in the
-"resources/fakedb" directory. You should see a file called
-fakedb.schema, along with numerous fakedb.data.* files. Copy them all,
-and remember where you put them!</p>
-</li>
-<li>
-<p>Go back to the beginning of this section and follow
-steps
-1 through 5 from the <em>unchanged database schema</em>
-process.</p>
-</li>
-<li>
-<p>From the command line, go into your CoffeeMud
-directory,
-and from there into fakedb data directory. Delete all the files
-matching fakedb.data.*, praying you remembered where you saved this
-stuff away just 2 steps ago. &nbsp;Do NOT delete the fakedb.schema
-file! If everything
-went well, the new fakedb.schema from the new version of CoffeeMud is
-still in your fakedb data directory.</p>
-</li>
-<li>
-<p>Still from the command line, go into your CoffeeMud
-directory and enter the following: <code>java
-com.planet_ink.fakedb.DBCopy</code></p>
-</li>
-<li>
-<p>Follow the instructions for this little program.</p>
-</li>
-<li>
-<p>Smile, you are done.</p>
-</li>
-</ul>
-<h3><a name="changed">Changed Database Schema
-Process (not FakeDB)</a></h3>
-<p>Now, if you are upgrading to a version with an updated
-database schema and you are NOT using fakedb, but are using Access, SQL
-Server, MySQL, or some other database, follow these instructions:</p>
-<ul>
-<li>
-<p>Go into the CoffeeMud directory for your olde
-version and
-copy the entire fakedb data directory to somewhere else on your hard
-drive. On CoffeeMud versions 1.2 - 4.7, your fakedb data directory is
-located in your coffeemud folder in the "data" directory. In versions
-5.0 and higher, it is located in your coffeemud folder in the
-"resources/fakedb" directory. You should see a file called
-fakedb.schema, along with numerous fakedb.data.* files. Copy them all,
-and remember where you put them! Even though you aren't using FakeBD,
-you will still need to copy FakeDB's schema for use with the upgrade
-application.</p>
-</li>
-<li>
-<p>Go back to the beginning of this section and follow
-steps
-1 through 5 from the <em>unchanged database schema</em>
-process.</p>
-</li>
-<li>
-<p>Following the instructions provided by your database
-system, create a brand NEW database for the new version of CoffeeMud.
-You will need to use the appropriate database schema provided in the
-new version of CoffeeMud to do this. If you have forgotten what this
-means, consult the section of this document dealing with the CoffeeMud
-Database. Make sure you preserve your olde CoffeeMud database from the
-olde version!</p>
-</li>
-<li>
-<p>From the command line, go into your CoffeeMud
-directory
-and enter the following from the command line: <code>java</code><code>
--Xms16m -Xmx256m</code><code>
-com.planet_ink.fakedb.DBCopy</code></p>
-</li>
-<ul>
-<li>NOTE: You may need to add the classpath variable to
-your
-database connector (if not FakeDB). Refer to the first-time
-installation instructions for the CLASSPATH format. &nbsp;For
-example,
-if you are using a MYSQL drive, the command might look like:</li>
-<ul>
-<li><code>java
--Xms16m -Xmx256m -cp
-"/myjavastuff/drivers/mysql-connector-java-5.1.6-bin.jar"
-com.planet_ink.fakedb.DBCopy</code></li>
-</ul>
-</ul>
-<li>
-<p>Follow the instructions for this little program.</p>
-</li>
-<li>
-<p>Now open up your coffeemud.ini file and make any
-changes
-necessary to point CoffeeMud to the database for the new version. This
-may require creating a new ODBC data source, or just modifying the
-DBSERVICE line, depending on your database type.</p>
-</li>
-<li>
-<p>Smile, you are done.</p>
-</li>
-</ul>
+Smile, you are done with the upgrade process. &nbsp;You can now
+start up the new version.<br />
+<br />
+(Note:
+if the database schema changed between your old and new version,
+CoffeeMud will detect this and upgrade your database. &nbsp;If any
+errors occur during this process, the mud will not start, and you
+should consult the Troubleshooting section under "Using a Real
+Database")<br />
+<br />
 <br />
 <img src="images/settings.jpg" alt="settings" />
 <h2><a name="settings">Settings</a></h2>
@@ -435,7 +283,7 @@ you want it published to the I3 or IMC2 network. A number from 0
 <p>This setting designates the Room ID of the place on
 your
 map where new players will start off at. It also dictates where players
-are brought to when the Recall skill is used. By default, an arbitary
+are brought to when the Recall skill is used. By default, an arbitrary
 room ID has been assigned. Once you've put together a few areas, you
 had better update this setting before new players start arriving.</p>
 </li>
@@ -557,13 +405,22 @@ is not especially database intensive.</p>
 </li>
 <li> <span class="bold">DBREUSE,
 DBPINGINTERVALS</span>
-<p>These are for tweeking how CoffeeMud uses database
+<p>These are for tweaking how CoffeeMud uses database
 connections. &nbsp;DBREUSE is true to permit the mud to re-use
 existing
 connections over and over, instead of making new ones. &nbsp;When
 DBREUSE is true, DBPINGINTERVALS will help you keep them alive during
 dormancy by saying how frequently to ping those connections with a
 trivial query.</p>
+</li>
+<li>HASHPASSWORDS <br />
+This
+defines whether passwords are hashed before saving to the DB. It
+provides some level of security for those who don't trust their
+DB&nbsp;admins, or expose their DB to others.&nbsp; However,
+when users
+forget their passwords, the user will have to generate a new password
+to email it. Set to YES to start hashing passwords.<br />
 </li>
 </ul>
 <p>* In Addition to the above, you will find other numerous
@@ -664,7 +521,7 @@ circumstances arise, the optional proxy server may be the answer.
 and
 then connects to the main&nbsp;CoffeeMud server on their behalf,
 acting
-as a kind of "middle-man" for player connections. &nbsp; One
+as a kind of "middleman" for player connections. &nbsp; One
 benefit of a&nbsp;proxy server is that, should the CoffeeMud server
 connection be
 lost due to either a crash or shutdown, it can notify the player that
@@ -731,10 +588,12 @@ the mud server first, but both must be running for everything to work
 as you want it to. &nbsp;Because they both use the same ini files,
 the
 CoffeeMud server will also see the PROXY and MPCPKEY entries, and will
-report the PROXY port as its publically accessible port for users,
-instead of its normal listening PORT.</p><p>From
+report the PROXY port as its publicly accessible port for users,
+instead of its normal listening PORT.</p>
+<p>From
 inside a CoffeeMud connected to the proxy server, you can use the
-PROXYCTL command. &nbsp;It requires the random password that is only
+PROXYCTL command. &nbsp;It requires the random password that is
+only
 shown when the proxy server is started.</p>
 <p><img style="width: 73px; height: 73px;" src="images/integrations.jpg" alt="packages" /> </p>
 <h2><a name="integrations">Integrations</a></h2>
@@ -779,7 +638,7 @@ updated
 version of the jar file, that will probably be fine also.<br />
 <br />
 The fourth step is open up your coffeemud.ini file and make several
-changes. &nbsp;Set your javacord lib path:<br />
+changes. &nbsp;Set your Javacord lib path:<br />
 <div style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);">
 <div style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Courier New&quot;; font-size: 10pt; white-space: nowrap;">
 <p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">DISCORD_JAR_PATH=/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">lib</span><span style="color: rgb(63, 127, 95);">/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">javacord</span><span style="color: rgb(63, 127, 95);">-3.9.0-shaded.jar</span></p>
@@ -839,7 +698,10 @@ and download the LangChain4J jar file from the link under
 Coffeemud
 "lib" directory for reference later. &nbsp;Do not try to use any
 other version of their software for now, as the provided jar contains
-ALL of the integrations as well as the core library. &nbsp;This library <span style="font-weight: bold;">requires</span> that CoffeeMud main server be run with <span style="font-weight: bold;">Java 17</span> or higher, instead of the base requirement of Java 8.<br />
+ALL of the integrations as well as the core library. &nbsp;This
+library <span style="font-weight: bold;">requires</span>
+that CoffeeMud main server be run with <span style="font-weight: bold;">Java 17</span> or higher,
+instead of the base requirement of Java 8.<br />
 <br />
 The third step is open up your coffeemud.ini file and make several
 changes. &nbsp;Set your javacord lib path:<br />
@@ -864,41 +726,136 @@ LangChain4J documentation.<br />
 </div>
 <br />
 <table>
-<tbody><tr><th>LLM Type/Nickname</th><th>Required Methods</th></tr>
-<tr><td>OLLAMA</td><td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>ANTHROPIC</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>AZURE</td><td>LANGCHAIN4J_ENDPOINT, LANGCHAIN4J_APIKEY, LANGCHAIN4J_DEPLOYMENTNAME</td></tr>
-<tr><td>DASHSCOPE</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>GITHUB</td><td>LANGCHAIN4J_GITHUBTOKEN, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>GEMINI</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>VERTEXGEMINI</td><td>LANGCHAIN4J_PROJECT, LANGCHAIN4J_LOCATION, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>VERTEXPALM2</td><td>LANGCHAIN4J_ENDPOINT, LANGCHAIN4J_LOCATION, LANGCHAIN4J_PUBLISHER, LANGCHAIN4J_PROJECT, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>HUGGINGFACE</td><td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELID</td></tr>
-<tr><td>JLAMA</td><td>LANGCHAIN4J_MODELPATH</td></tr>
-<tr><td>LOCALAI</td><td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>MISTRAL</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>OPENAI</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>ORACLEGENAI</td><td>LANGCHAIN4J_COMPARTMENTID</td></tr>
-<tr><td>QIANFAN</td><td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_SECRETKEY</td></tr>
-<tr><td>CLOUDFLARE</td><td>LANGCHAIN4J_ACCOUNTID, LANGCHAIN4J_APITOKEN, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>ZHIPUAI</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>BEDROCK_ANTHROPIC</td><td>(uses AWS environment variables)</td></tr>
-<tr><td>BEDROCK_COHERE</td><td>(uses AWS environment variables)</td></tr>
-<tr><td>BEDROCK_LLAMA</td><td>(uses AWS environment variables)</td></tr>
-<tr><td>COHERE</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>DEEPINFRA</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>GROQ</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>IBM</td><td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELID, LANGCHAIN4J_PROJECTID</td></tr>
-<tr><td>NVIDIA</td><td>LANGCHAIN4J_APIKEY</td></tr>
-<tr><td>TOGETHERAI</td><td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELNAME</td></tr>
-<tr><td>XINFERENCE</td><td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td></tr>
-</tbody></table>
+<tbody>
+<tr>
+<th>LLM Type/Nickname</th>
+<th>Required Methods</th>
+</tr>
+<tr>
+<td>OLLAMA</td>
+<td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>ANTHROPIC</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>AZURE</td>
+<td>LANGCHAIN4J_ENDPOINT, LANGCHAIN4J_APIKEY,
+LANGCHAIN4J_DEPLOYMENTNAME</td>
+</tr>
+<tr>
+<td>DASHSCOPE</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>GITHUB</td>
+<td>LANGCHAIN4J_GITHUBTOKEN, LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>GEMINI</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>VERTEXGEMINI</td>
+<td>LANGCHAIN4J_PROJECT, LANGCHAIN4J_LOCATION,
+LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>VERTEXPALM2</td>
+<td>LANGCHAIN4J_ENDPOINT, LANGCHAIN4J_LOCATION,
+LANGCHAIN4J_PUBLISHER, LANGCHAIN4J_PROJECT, LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>HUGGINGFACE</td>
+<td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELID</td>
+</tr>
+<tr>
+<td>JLAMA</td>
+<td>LANGCHAIN4J_MODELPATH</td>
+</tr>
+<tr>
+<td>LOCALAI</td>
+<td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>MISTRAL</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>OPENAI</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>ORACLEGENAI</td>
+<td>LANGCHAIN4J_COMPARTMENTID</td>
+</tr>
+<tr>
+<td>QIANFAN</td>
+<td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_SECRETKEY</td>
+</tr>
+<tr>
+<td>CLOUDFLARE</td>
+<td>LANGCHAIN4J_ACCOUNTID, LANGCHAIN4J_APITOKEN,
+LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>ZHIPUAI</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>BEDROCK_ANTHROPIC</td>
+<td>(uses AWS environment variables)</td>
+</tr>
+<tr>
+<td>BEDROCK_COHERE</td>
+<td>(uses AWS environment variables)</td>
+</tr>
+<tr>
+<td>BEDROCK_LLAMA</td>
+<td>(uses AWS environment variables)</td>
+</tr>
+<tr>
+<td>COHERE</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>DEEPINFRA</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>GROQ</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>IBM</td>
+<td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELID,
+LANGCHAIN4J_PROJECTID</td>
+</tr>
+<tr>
+<td>NVIDIA</td>
+<td>LANGCHAIN4J_APIKEY</td>
+</tr>
+<tr>
+<td>TOGETHERAI</td>
+<td>LANGCHAIN4J_APIKEY, LANGCHAIN4J_MODELNAME</td>
+</tr>
+<tr>
+<td>XINFERENCE</td>
+<td>LANGCHAIN4J_BASEURL, LANGCHAIN4J_MODELNAME</td>
+</tr>
+</tbody>
+</table>
 <br />
 If you know your way around the LangChain4J API, other "builder"
 methods can also be included in the INI file in a similar way as the
-above. &nbsp;For example, to call the 'timeout' method, you would put
+above. &nbsp;For example, to call the 'timeout' method, you would
+put
 LANGCHAIN4J_TIMEOUT=30 in the INI file, and the mud will just figure
-out what you are trying to do.<br /><br />For actually using the LLM, see the MudChat guide, the "LLM" command for Archons, and the RandomAreas guide.<br />
+out what you are trying to do.<br />
+<br />
+For actually using the LLM, see the MudChat guide, the "LLM" command
+for Archons, and the RandomAreas guide.<br />
 <h3>X.COM/Twitter</h3>
 <p>CoffeeMud supports sending standard chat channel
 messages,
@@ -959,19 +916,68 @@ when configuring your server.</p>
 <p>The directories inside the <code>com</code>
 directory contain
 all the Java Class files, which are the executable portion of
-CoffeeMud. All of the Java source files are also found herein.</p><p><img style="width: 149px; height: 77px;" src="images/dir-app.jpg" alt="applications" /></p><p>The application directory is where you find&nbsp;the main executeable class files and tools.</p><table style="text-align: left; width: 678px; height: 192px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>AutoPlayTester</td><td>Eventually, this will kick off javascript-driven fake players. &nbsp;(not yet implemented)</td></tr><tr><td>I3Router</td><td>A router for the InterMud3 system. &nbsp;(alpha)</td></tr><tr><td>LocalizationHelper</td><td>Scrapes
+CoffeeMud. All of the Java source files are also found herein.</p>
+<p><img style="width: 149px; height: 77px;" src="images/dir-app.jpg" alt="applications" /></p>
+<p>The application directory is where you find&nbsp;the
+main executeable class files and tools.</p>
+<table style="text-align: left; width: 678px; height: 192px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>AutoPlayTester</td>
+<td>Eventually, this will kick off javascript-driven
+fake players. &nbsp;(not yet implemented)</td>
+</tr>
+<tr>
+<td>I3Router</td>
+<td>A router for the InterMud3 system.
+&nbsp;(alpha)</td>
+</tr>
+<tr>
+<td>LocalizationHelper</td>
+<td>Scrapes
 the java files and codebase for localizeable strings, which can then be
 inserted into your translation_??_??.properties file in the
 [session-translation] section. &nbsp;(See the section below on
-Localization).</td></tr><tr><td>MUD</td><td>The main CoffeeMud mud server application</td></tr><tr><td>MUDProxy</td><td>An MPCP-enabled proxy server to put in front of your mud. (see above)</td></tr><tr><td>OffLine</td><td>A
+Localization).</td>
+</tr>
+<tr>
+<td>MUD</td>
+<td>The main CoffeeMud mud server application</td>
+</tr>
+<tr>
+<td>MUDProxy</td>
+<td>An MPCP-enabled proxy server to put in front of
+your mud. (see above)</td>
+</tr>
+<tr>
+<td>OffLine</td>
+<td>A
 quick application you can run that reads the port numbers from your INI
-file, and gives connecting players a message that the mud is down. <a href="#shutdown">(See section below for more info)</a></td></tr><tr><td>RebuildRefDocs</td><td>Rebuilds
+file, and gives connecting players a message that the mud is down. <a href="#shutdown">(See section below for more info)</a></td>
+</tr>
+<tr>
+<td>RebuildRefDocs</td>
+<td>Rebuilds
 the /guides/refs reference files from your existing classes and help
-files. &nbsp;It will temporarily run the MUD in order to gain easier
-access. &nbsp;</td></tr><tr><td>Shutdown</td><td>Requires a user and password, and then sends a secure Shutdown command to a running MUD.</td></tr><tr><td>VFSShell</td><td>Gives
+files. &nbsp;It will temporarily run the MUD in order to gain
+easier
+access. &nbsp;</td>
+</tr>
+<tr>
+<td>Shutdown</td>
+<td>Requires a user and password, and then sends a
+secure Shutdown command to a running MUD.</td>
+</tr>
+<tr>
+<td>VFSShell</td>
+<td>Gives
 you access to the full VFS (including the DBFS) from the command line,
 without needing to log into the mud and use the SHELL command.
-&nbsp;Does not require that the MUD be running.</td></tr></tbody></table><p></p>
+&nbsp;Does not require that the MUD be running.</td>
+</tr>
+</tbody>
+</table>
+<p></p>
 <img src="images/dir-guides.jpg" alt="guides" />
 <p>The <code>guides</code> directory is where
 you'll find this
@@ -1163,7 +1169,12 @@ automatic
 mob reactions based on area. &nbsp;See AUTOREACTION in your
 coffeemud.ini file for more information on this system.</td>
 </tr>
-<tr><td>CustomProperty.js</td><td>An example Ability (acting as a Property) written in Rhino javascript.</td></tr><tr>
+<tr>
+<td>CustomProperty.js</td>
+<td>An example Ability (acting as a Property) written
+in Rhino javascript.</td>
+</tr>
+<tr>
 <td valign="top">deities.cmare<br />
 </td>
 <td valign="top">A cmare file with some
@@ -1171,9 +1182,13 @@ example deities to
 load into your mud. Use the IMPORT command to load this set of mobs.<br />
 </td>
 </tr>
-<tr><td>deityreaction.ini</td><td>A template for use by the Faction system for
+<tr>
+<td>deityreaction.ini</td>
+<td>A template for use by the Faction system for
 automatic deity reactions. &nbsp;See AUTOREACTION in your
-coffeemud.ini file for more information on this system.</td></tr><tr>
+coffeemud.ini file for more information on this system.</td>
+</tr>
+<tr>
 <td valign="top">factiontemplate.ini<br />
 </td>
 <td valign="top">A template file for use by
@@ -1190,7 +1205,11 @@ LOAD COMMAND resources/examples/FindRawMaterial.js to install it, and
 then
 enter FINDRAWMATERIAL IRON at the command line to run it.</td>
 </tr>
-<tr><td>junk.cmare</td><td>A cmare file containing example ITEMS. &nbsp;Used to show a sample CMARE file mostly.</td></tr>
+<tr>
+<td>junk.cmare</td>
+<td>A cmare file containing example ITEMS.
+&nbsp;Used to show a sample CMARE file mostly.</td>
+</tr>
 <tr>
 <td valign="top">Lemmings.js<br />
 </td>
@@ -1202,7 +1221,21 @@ resources/examples/Lemming.js to load it up, and see the Programmer's
 Guide for more information<br />
 </td>
 </tr>
-<tr><td>LogWrite.js</td><td>A simple JRUNnable command for writing an arbitrary string to the log.</td></tr><tr><td>manufacturers.xml</td><td>List of sample manufacturers for Tech game.</td></tr><tr><td>monsters.cmare</td><td>A cmare file containing example MOBs. &nbsp;Used to show a sample CMARE file mostly.</td></tr><tr>
+<tr>
+<td>LogWrite.js</td>
+<td>A simple JRUNnable command for writing an
+arbitrary string to the log.</td>
+</tr>
+<tr>
+<td>manufacturers.xml</td>
+<td>List of sample manufacturers for Tech game.</td>
+</tr>
+<tr>
+<td>monsters.cmare</td>
+<td>A cmare file containing example MOBs.
+&nbsp;Used to show a sample CMARE file mostly.</td>
+</tr>
+<tr>
 <td>namereaction.ini</td>
 <td>A template for use by the Faction system for
 automatic
@@ -1212,13 +1245,23 @@ file
 for more
 information on this system.</td>
 </tr>
-<tr><td>ObjectCounter.js</td><td>Counts the number of mobs and items and rooms in your map. &nbsp;Use JRUN to execute.</td></tr><tr><td>planarreaction.ini</td><td>A template for use by the Faction system for
+<tr>
+<td>ObjectCounter.js</td>
+<td>Counts the number of mobs and items and rooms in
+your map. &nbsp;Use JRUN to execute.</td>
+</tr>
+<tr>
+<td>planarreaction.ini</td>
+<td>A template for use by the Faction system for
 automatic
 mob reactions
-based on mob home plane of existence. &nbsp;See AUTOREACTION in your coffeemud.ini
+based on mob home plane of existence. &nbsp;See AUTOREACTION in
+your coffeemud.ini
 file
 for more
-information on this system.</td></tr><tr>
+information on this system.</td>
+</tr>
+<tr>
 <td>QuickWho.js</td>
 <td>Another sample Command class written in
 javascript as
@@ -1237,21 +1280,49 @@ file
 for more
 information on this system.</td>
 </tr>
-<tr><td>reputation.ini</td><td>Sample faction ini file,
+<tr>
+<td>reputation.ini</td>
+<td>Sample faction ini file,
 which you may add
 to the value of the FACTIONS tag in your coffeemud.ini file to make use
-of.</td></tr><tr>
+of.</td>
+</tr>
+<tr>
 <td>rplists.ini</td>
 <td>An example Delta to the standard lists.ini with
 more role-playey values.</td>
-</tr><tr><td>triumphgiver.script</td><td>An example MOBPROG script to make an NPC give end-game Triumph areas to players.</td></tr>
+</tr>
+<tr>
+<td>triumphgiver.script</td>
+<td>An example MOBPROG script to make an NPC give
+end-game Triumph areas to players.</td>
+</tr>
 </tbody>
 </table>
 <p>The <code>resources/factions</code>
 directory is where you
 should put all of your&nbsp;faction definition files. &nbsp;The
 standard faction shipped with the mud, called Alignment, is found in
-there.</p><table style="text-align: left; width: 789px; height: 95px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>alignment.ini</td><td>Definition to the main Alignment faction (Good/Evil/Neutral)</td></tr><tr><td>inclination.ini</td><td>Definition to the optional Inclination faction (Lawful/Chaotic/Moderate)</td></tr><tr><td>triumph.ini</td><td>Definition for the end-game Triumph faction</td></tr></tbody></table><p>The <code>resources/help</code> directory
+there.</p>
+<table style="text-align: left; width: 789px; height: 95px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>alignment.ini</td>
+<td>Definition to the main Alignment faction
+(Good/Evil/Neutral)</td>
+</tr>
+<tr>
+<td>inclination.ini</td>
+<td>Definition to the optional Inclination faction
+(Lawful/Chaotic/Moderate)</td>
+</tr>
+<tr>
+<td>triumph.ini</td>
+<td>Definition for the end-game Triumph faction</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>resources/help</code> directory
 is where you'll
 find
 all of the files responsible for the numerous standard and archon HELP
@@ -1261,7 +1332,98 @@ property files, meaning that they are in ENTRY=VALUE format. The VALUE
 may span several lines, so long as it ends with a backslash \. Files
 that contain help entries for the ARCHELP (archon help) command all
 start with arc_*, while those that do not are for the HELP (player
-help) command.</p><table style="text-align: left; width: 787px; height: 172px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>acctmenu.txt</td><td>The main account menu.</td></tr><tr><td>accts.txt</td><td>The help for the account menu</td></tr><tr><td>arc_behaviors.ini</td><td>Help entries for each game Behavior, available only from AHELP.</td></tr><tr><td>arc_help.ini</td><td>Help entries for administrative Commands, available from AHELP</td></tr><tr><td>arc_help.txt</td><td>Help text shown when no AHELP argument is given.</td></tr><tr><td>arc_misc.ini</td><td>Help entries for general administrative topics, available from AHELP</td></tr><tr><td>arc_properties.ini</td><td>Help entries for each game Property, available from AHELP</td></tr><tr><td>chant_help.ini</td><td>Help entries for game Chants.</td></tr><tr><td>common_help.ini</td><td>Help entries for game Common Skills</td></tr><tr><td>diseases.ini</td><td>Help entries for game Diseases</td></tr><tr><td>help.ini</td><td>Help entries for general game commands.</td></tr><tr><td>help.txt</td><td>Help text shown when no help argument is given.</td></tr><tr><td>misc_help.ini</td><td>Help entries for general topics, or topics that don't fit elsewhere.</td></tr><tr><td>poisons.txt</td><td>Help entries for poisons.</td></tr><tr><td>prayer_help.ini</td><td>Help entries for game Prayers.</td></tr><tr><td>skill_help.ini</td><td>Help entries for game Fighter, Thief, and General Skills.</td></tr><tr><td>songs_help.ini</td><td>Help entries for Songs, Dances, and Plays</td></tr><tr><td>spell_help.ini</td><td>Help entries for Spells.</td></tr><tr><td>traps.ini</td><td>Help entries for Traps.</td></tr><tr><td>zappermasks.txt</td><td>Help template for Zappermasks.</td></tr></tbody></table><p>The <code>resources/progs</code> directory
+help) command.</p>
+<table style="text-align: left; width: 787px; height: 172px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>acctmenu.txt</td>
+<td>The main account menu.</td>
+</tr>
+<tr>
+<td>accts.txt</td>
+<td>The help for the account menu</td>
+</tr>
+<tr>
+<td>arc_behaviors.ini</td>
+<td>Help entries for each game Behavior, available
+only from AHELP.</td>
+</tr>
+<tr>
+<td>arc_help.ini</td>
+<td>Help entries for administrative Commands,
+available from AHELP</td>
+</tr>
+<tr>
+<td>arc_help.txt</td>
+<td>Help text shown when no AHELP argument is given.</td>
+</tr>
+<tr>
+<td>arc_misc.ini</td>
+<td>Help entries for general administrative topics,
+available from AHELP</td>
+</tr>
+<tr>
+<td>arc_properties.ini</td>
+<td>Help entries for each game Property, available
+from AHELP</td>
+</tr>
+<tr>
+<td>chant_help.ini</td>
+<td>Help entries for game Chants.</td>
+</tr>
+<tr>
+<td>common_help.ini</td>
+<td>Help entries for game Common Skills</td>
+</tr>
+<tr>
+<td>diseases.ini</td>
+<td>Help entries for game Diseases</td>
+</tr>
+<tr>
+<td>help.ini</td>
+<td>Help entries for general game commands.</td>
+</tr>
+<tr>
+<td>help.txt</td>
+<td>Help text shown when no help argument is given.</td>
+</tr>
+<tr>
+<td>misc_help.ini</td>
+<td>Help entries for general topics, or topics that
+don't fit elsewhere.</td>
+</tr>
+<tr>
+<td>poisons.txt</td>
+<td>Help entries for poisons.</td>
+</tr>
+<tr>
+<td>prayer_help.ini</td>
+<td>Help entries for game Prayers.</td>
+</tr>
+<tr>
+<td>skill_help.ini</td>
+<td>Help entries for game Fighter, Thief, and General
+Skills.</td>
+</tr>
+<tr>
+<td>songs_help.ini</td>
+<td>Help entries for Songs, Dances, and Plays</td>
+</tr>
+<tr>
+<td>spell_help.ini</td>
+<td>Help entries for Spells.</td>
+</tr>
+<tr>
+<td>traps.ini</td>
+<td>Help entries for Traps.</td>
+</tr>
+<tr>
+<td>zappermasks.txt</td>
+<td>Help template for Zappermasks.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>resources/progs</code> directory
 contains several
 sample program files:<br />
 </p>
@@ -1281,7 +1443,17 @@ Scriptable behavior which has been added to a genmob, you can make that
 mob a blackjack dealer. See help on Scriptable for more information.<br />
 </td>
 </tr>
-<tr><td>bugreport.script</td><td>Sample script to demand more detail from players when entering BUGs.</td></tr><tr><td>changeRoomOwner.script</td><td>Changes the owner of the current room, assuming it's real estate. &nbsp;Use JRUN to execute.</td></tr><tr>
+<tr>
+<td>bugreport.script</td>
+<td>Sample script to demand more detail from players
+when entering BUGs.</td>
+</tr>
+<tr>
+<td>changeRoomOwner.script</td>
+<td>Changes the owner of the current room, assuming
+it's real estate. &nbsp;Use JRUN to execute.</td>
+</tr>
+<tr>
 <td>chardesc.script</td>
 <td>A sample script to use with your coffeemud.ini
 files'
@@ -1324,7 +1496,12 @@ tests to see if any mobs are outside their home areas. To execute,
 enter JRUN resources/progs/everyoneIsHome.js<br />
 </td>
 </tr>
-<tr><td>everoneIsTicking.js</td><td>Scans the map to find NPCs that are not getting tick-time. &nbsp;Use JRUN.</td></tr><tr>
+<tr>
+<td>everoneIsTicking.js</td>
+<td>Scans the map to find NPCs that are not getting
+tick-time. &nbsp;Use JRUN.</td>
+</tr>
+<tr>
 <td valign="top">heresy.script<br />
 </td>
 <td valign="top">Sample MOBPROG script to make
@@ -1360,10 +1537,19 @@ various triggers. Added to mobs the same way blackjack.script is added
 above.<br />
 </td>
 </tr>
-<tr><td>peekautoawards.js</td><td>Reports what auto-awards a given player is currently benefitting from. &nbsp;Use JRUN.</td></tr><tr><td>playerBackups.js</td><td>This
+<tr>
+<td>peekautoawards.js</td>
+<td>Reports what auto-awards a given player is
+currently benefitting from. &nbsp;Use JRUN.</td>
+</tr>
+<tr>
+<td>playerBackups.js</td>
+<td>This
 script, suitable for a cron job, extracts player records and generates
 player xml files in a backups directory, so long as the player has
-logged in in the last week or so.</td></tr><tr>
+logged in in the last week or so.</td>
+</tr>
+<tr>
 <td>scriptableTest.script</td>
 <td>A MOBPROG to test various triggers in Scriptable.</td>
 </tr>
@@ -1375,9 +1561,20 @@ demonstrate
 various triggers. Added to mobs the same way blackjack.script is added
 above.<br />
 </td>
-</tr><tr><td>topMonthyAwards.js</td><td>This script goes through the winners of the previous months top awards and gives them an award. &nbsp;Useful as a cron-job.</td></tr><tr><td>topMonthlyRpt.js</td><td>This
+</tr>
+<tr>
+<td>topMonthyAwards.js</td>
+<td>This script goes through the winners of the
+previous months top awards and gives them an award. &nbsp;Useful as
+a cron-job.</td>
+</tr>
+<tr>
+<td>topMonthlyRpt.js</td>
+<td>This
 script dumps the previous months top records as xml to the
-/resources/sys_reports directory.&nbsp; &nbsp;Also useful as a cron-job.</td></tr>
+/resources/sys_reports directory.&nbsp; &nbsp;Also useful as a
+cron-job.</td>
+</tr>
 </tbody>
 </table>
 <p>The <code>resources/quests</code> directory
@@ -1385,16 +1582,59 @@ contains several
 sample quests. Each quest is in its own directory, along with any
 supporting Scriptable *.script files, and any supporting mob or item
 *.cmare files. The CREATE QUEST command is used to load each of these
-*.quest files. Quests may also be loaded via the MUDGrinder.</p><table style="text-align: left; width: 788px; height: 172px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>holidays/holidays.quest</td><td>A Quest script defining all the Holidays quests.</td></tr><tr><td>random/all.xml</td><td>Basis for sorting out random quest templates using the random generator.</td></tr><tr><td>random/auto_*.xml</td><td>Various&nbsp;quest
+*.quest files. Quests may also be loaded via the MUDGrinder.</p>
+<table style="text-align: left; width: 788px; height: 172px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>holidays/holidays.quest</td>
+<td>A Quest script defining all the Holidays quests.</td>
+</tr>
+<tr>
+<td>random/all.xml</td>
+<td>Basis for sorting out random quest templates
+using the random generator.</td>
+</tr>
+<tr>
+<td>random/auto_*.xml</td>
+<td>Various&nbsp;quest
 templates for use with the random generator. &nbsp;Auto quests are
 quests that have no questgiver and can manage their own completion and
-awards.</td></tr><tr><td>random/normal_*.xml</td><td>Various&nbsp;quest
+awards.</td>
+</tr>
+<tr>
+<td>random/normal_*.xml</td>
+<td>Various&nbsp;quest
 templates for use with the random generator.
-&nbsp;Normal quests are quests that have a questgiver who the player
+&nbsp;Normal quests are quests that have a questgiver who the
+player
 accepts the quest from, and who gives the rewards and handles
-completion.</td></tr><tr><td>templates/auto_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates. Auto quests are quests that have no questgiver and can manage their own completion and awards.</td></tr><tr><td>templates/normal_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates.&nbsp;Normal quests are quests that have a questgiver who the player accepts
-the quest from, and who gives the rewards and handles completion.</td></tr><tr><td>templates/competitive_*.quest</td><td>Various quest scripts that are filled in by the QuestMaker, or by the random/*.xml templates. Competitive&nbsp;quests are quests that have a questgiver who many players can accept the
-same quest from, and who gives the rewards and handles completion, but only to the first completer.&nbsp; </td></tr></tbody></table><p>The <code>resources/randareas</code>
+completion.</td>
+</tr>
+<tr>
+<td>templates/auto_*.quest</td>
+<td>Various quest scripts that are filled in by the
+QuestMaker, or by the random/*.xml templates. Auto quests are quests
+that have no questgiver and can manage their own completion and awards.</td>
+</tr>
+<tr>
+<td>templates/normal_*.quest</td>
+<td>Various quest scripts that are filled in by the
+QuestMaker, or by the random/*.xml templates.&nbsp;Normal quests
+are quests that have a questgiver who the player accepts
+the quest from, and who gives the rewards and handles completion.</td>
+</tr>
+<tr>
+<td>templates/competitive_*.quest</td>
+<td>Various quest scripts that are filled in by the
+QuestMaker, or by the random/*.xml templates.
+Competitive&nbsp;quests are quests that have a questgiver who many
+players can accept the
+same quest from, and who gives the rewards and handles completion, but
+only to the first completer.&nbsp; </td>
+</tr>
+</tbody>
+</table>
+<p>The <code>resources/randareas</code>
 directory contains
 sample
 random area data templates, which all end with the *.xml extension. The
@@ -1420,7 +1660,12 @@ directory includes:<br />
 </p>
 <table style="text-align: left; margin-left: 0px; margin-right: auto;" border="1" width="100%">
 <tbody>
-<tr><td>age.txt</td><td>A table to assist aging mobs in race-changing/determination.</td></tr><tr>
+<tr>
+<td>age.txt</td>
+<td>A table to assist aging mobs in
+race-changing/determination.</td>
+</tr>
+<tr>
 <td valign="top">alchemy.txt</td>
 <td valign="top">Recipes for the Alchemy skill<br />
 </td>
@@ -1429,13 +1674,22 @@ directory includes:<br />
 <td>allqualifylist.txt</td>
 <td>List of skills that span across all classes.</td>
 </tr>
-<tr><td>areainstancetypes.txt</td><td>Definitions for the Triumph system that can modify an area instance based on faction.</td></tr><tr>
+<tr>
+<td>areainstancetypes.txt</td>
+<td>Definitions for the Triumph system that can
+modify an area instance based on faction.</td>
+</tr>
+<tr>
 <td valign="top">armorsmith.txt</td>
 <td valign="top">Recipes for the Armorsmithing
 skill<br />
 </td>
 </tr>
-<tr><td>atrapping.txt</td><td>Recipes for the AnimalTrapping skill</td></tr><tr>
+<tr>
+<td>atrapping.txt</td>
+<td>Recipes for the AnimalTrapping skill</td>
+</tr>
+<tr>
 <td valign="top">bake.txt</td>
 <td valign="top">Recipes for the Baking skill<br />
 </td>
@@ -1445,19 +1699,41 @@ skill<br />
 <td valign="top">Recipes for the Baking skill<br />
 </td>
 </tr>
-<tr><td>boatwright.txt</td><td>Recipes for the Boatwright skill</td></tr><tr><td>bodypierce.txt</td><td>Recipes for the BodyPiercing skill</td></tr><tr><td>bombs.txt</td><td>Recipes for the Make Bomb skill</td></tr><tr>
+<tr>
+<td>boatwright.txt</td>
+<td>Recipes for the Boatwright skill</td>
+</tr>
+<tr>
+<td>bodypierce.txt</td>
+<td>Recipes for the BodyPiercing skill</td>
+</tr>
+<tr>
+<td>bombs.txt</td>
+<td>Recipes for the Make Bomb skill</td>
+</tr>
+<tr>
 <td valign="top">cagebuilding.txt</td>
 <td valign="top">Recipes for the Blacksmithing
 skill<br />
 </td>
 </tr>
-<tr><td>caravanbuilding.cmare</td><td>CMARE file containing GenCaravan items, forming the recipes for the CaravanBuilding skill</td></tr><tr>
+<tr>
+<td>caravanbuilding.cmare</td>
+<td>CMARE file containing GenCaravan items, forming
+the recipes for the CaravanBuilding skill</td>
+</tr>
+<tr>
 <td valign="top">carpentry.txt</td>
 <td valign="top">Recipes for the Carpentry
 skill<br />
 </td>
 </tr>
-<tr><td>clancastles.cmare</td><td>CMARE file containing GenCastle items, forming a part of the recipes for the ClanCrafting skill</td></tr><tr>
+<tr>
+<td>clancastles.cmare</td>
+<td>CMARE file containing GenCastle items, forming a
+part of the recipes for the ClanCrafting skill</td>
+</tr>
+<tr>
 <td valign="top">clancraft.txt</td>
 <td valign="top">Recipes for the Clan Crafting
 skill, not involving castles<br />
@@ -1468,7 +1744,12 @@ skill, not involving castles<br />
 <td valign="top">Recipes for the Cobbler skill<br />
 </td>
 </tr>
-<tr><td>colors.txt</td><td>Color name definitions and other 256-&gt;16 color conversions</td></tr><tr>
+<tr>
+<td>colors.txt</td>
+<td>Color name definitions and other 256-&gt;16
+color conversions</td>
+</tr>
+<tr>
 <td valign="top">components.txt</td>
 <td valign="top">Definitions file for
 spell/skill
@@ -1476,13 +1757,45 @@ components. Can modify this file, or use CREATE/LIST/DESRTROY
 COMPONENTS commands<br />
 </td>
 </tr>
-<tr><td>construction.txt</td><td>Recipes for the Construction skill</td></tr><tr>
+<tr>
+<td>construction.txt</td>
+<td>Recipes for the Construction skill</td>
+</tr>
+<tr>
 <td valign="top">costume.txt</td>
 <td valign="top">Recipes for the Costuming
 skill<br />
 </td>
 </tr>
-<tr><td>decorations.txt</td><td>Recipes for the Decorating skill</td></tr><tr><td>drugs.txt</td><td>Recipes for the Drug Making skill</td></tr><tr><td>dyeing.txt</td><td>Recipes for the Dyeing skill</td></tr><tr><td>embellishing.txt</td><td>Recipes for the Embellishing skill</td></tr><tr><td>endowgemstones.txt</td><td>Recipes for the Endow Gemstones skill</td></tr><tr><td>endowiounstone.txt</td><td>Recipes for the Endow iounstones skill.</td></tr><tr><td>excavation.txt</td><td>Recipes for the excavation skill.</td></tr><tr>
+<tr>
+<td>decorations.txt</td>
+<td>Recipes for the Decorating skill</td>
+</tr>
+<tr>
+<td>drugs.txt</td>
+<td>Recipes for the Drug Making skill</td>
+</tr>
+<tr>
+<td>dyeing.txt</td>
+<td>Recipes for the Dyeing skill</td>
+</tr>
+<tr>
+<td>embellishing.txt</td>
+<td>Recipes for the Embellishing skill</td>
+</tr>
+<tr>
+<td>endowgemstones.txt</td>
+<td>Recipes for the Endow Gemstones skill</td>
+</tr>
+<tr>
+<td>endowiounstone.txt</td>
+<td>Recipes for the Endow iounstones skill.</td>
+</tr>
+<tr>
+<td>excavation.txt</td>
+<td>Recipes for the excavation skill.</td>
+</tr>
+<tr>
 <td valign="top">expertises.txt</td>
 <td valign="top">Definitions file for
 spell/skill
@@ -1490,24 +1803,40 @@ expertises. Can modify this file, or use CREATE/LIST/DESTROY EXPERTISES
 commands<br />
 </td>
 </tr>
-<tr><td>fishing.txt</td><td>Recipes for the Fishing skill.</td></tr><tr>
+<tr>
+<td>fishing.txt</td>
+<td>Recipes for the Fishing skill.</td>
+</tr>
+<tr>
 <td valign="top">fletching.txt</td>
 <td valign="top">Recipes for the Fletching
 skill<br />
 </td>
 </tr>
-<tr><td>floristry.txt</td><td>Recipes for the Floristry skill.</td></tr><tr>
+<tr>
+<td>floristry.txt</td>
+<td>Recipes for the Floristry skill.</td>
+</tr>
+<tr>
 <td valign="top">foodprep.txt</td>
 <td valign="top">Recipes for the FoodPrep skill<br />
 </td>
 </tr>
-<tr><td>gaolfood.txt</td><td>Recipes for the GaolFood skill</td></tr><tr>
+<tr>
+<td>gaolfood.txt</td>
+<td>Recipes for the GaolFood skill</td>
+</tr>
+<tr>
 <td valign="top">glassblowing.txt</td>
 <td valign="top">Recipes for the Glass Blowing
 skill<br />
 </td>
 </tr>
-<tr><td>gunsmith.txt</td><td>Recipes for the Gunsmithing skill.</td></tr><tr>
+<tr>
+<td>gunsmith.txt</td>
+<td>Recipes for the Gunsmithing skill.</td>
+</tr>
+<tr>
 <td valign="top">herbalism.txt</td>
 <td valign="top">Recipes for the Herbalism
 skill<br />
@@ -1519,7 +1848,19 @@ skill<br />
 skill<br />
 </td>
 </tr>
-<tr><td>hunting.txt</td><td>Recipes for the Hunting skill</td></tr><tr><td>improvedalchemy.txt</td><td>Recipes for the Improved Alchemy skill</td></tr><tr><td>improvedherbalism.txt</td><td>Recipes for the Improved Herbalism skill</td></tr><tr>
+<tr>
+<td>hunting.txt</td>
+<td>Recipes for the Hunting skill</td>
+</tr>
+<tr>
+<td>improvedalchemy.txt</td>
+<td>Recipes for the Improved Alchemy skill</td>
+</tr>
+<tr>
+<td>improvedherbalism.txt</td>
+<td>Recipes for the Improved Herbalism skill</td>
+</tr>
+<tr>
 <td valign="top">instruments.txt</td>
 <td valign="top">Recipes for the Instruments
 skill<br />
@@ -1538,25 +1879,45 @@ file for the
 Joke skill<br />
 </td>
 </tr>
-<tr><td>irrigation.txt</td><td>Recipes for the Irrigation skill</td></tr><tr>
+<tr>
+<td>irrigation.txt</td>
+<td>Recipes for the Irrigation skill</td>
+</tr>
+<tr>
 <td valign="top">jewelmaking.txt</td>
 <td valign="top">Recipes for the Jewelmaking
 skill<br />
 </td>
 </tr>
-<tr><td>lacquering.txt</td><td>Recipes for the Lacquering skill</td></tr><tr><td>landscaping.txt</td><td>Recipes for the Landscaping skill</td></tr><tr>
+<tr>
+<td>lacquering.txt</td>
+<td>Recipes for the Lacquering skill</td>
+</tr>
+<tr>
+<td>landscaping.txt</td>
+<td>Recipes for the Landscaping skill</td>
+</tr>
+<tr>
 <td valign="top">leatherworking.txt</td>
 <td valign="top">Recipes for the
 Leatherworking skill<br />
 </td>
 </tr>
-<tr><td>legendaryweaponsmith.txt</td><td>Recipes for the Legendary Weaponsmithing skill</td></tr><tr>
+<tr>
+<td>legendaryweaponsmith.txt</td>
+<td>Recipes for the Legendary Weaponsmithing skill</td>
+</tr>
+<tr>
 <td valign="top">liquors.txt</td>
 <td valign="top">Recipes for the Distilling
 skill<br />
 </td>
 </tr>
-<tr><td>masonry.txt</td><td>Recipes for the Masonry skill</td></tr><tr>
+<tr>
+<td>masonry.txt</td>
+<td>Recipes for the Masonry skill</td>
+</tr>
+<tr>
 <td valign="top">masterarmorsmith.txt</td>
 <td valign="top">Recipes for the Master
 Armorsmithing skill<br />
@@ -1568,7 +1929,11 @@ Armorsmithing skill<br />
 Costuming skill<br />
 </td>
 </tr>
-<tr><td>masterdyeing.txt</td><td>Recipes for the Master Dyeing skill</td></tr><tr>
+<tr>
+<td>masterdyeing.txt</td>
+<td>Recipes for the Master Dyeing skill</td>
+</tr>
+<tr>
 <td valign="top">masterleatherworking.txt</td>
 <td valign="top">Recipes for the Master
 Leatherworking skill<br />
@@ -1586,7 +1951,19 @@ Tailoring skill<br />
 Weaponsmithing skill<br />
 </td>
 </tr>
-<tr><td>mtraps.txt</td><td>Recipes for the Minor Trap skill</td></tr><tr><td>mycology.txt</td><td>Recipes for the Mycology skill</td></tr><tr><td>painting.txt</td><td>Recipes for the Painting skill</td></tr><tr>
+<tr>
+<td>mtraps.txt</td>
+<td>Recipes for the Minor Trap skill</td>
+</tr>
+<tr>
+<td>mycology.txt</td>
+<td>Recipes for the Mycology skill</td>
+</tr>
+<tr>
+<td>painting.txt</td>
+<td>Recipes for the Painting skill</td>
+</tr>
+<tr>
 <td valign="top">papermaking.txt</td>
 <td valign="top">Recipes for the Papermaking
 skill<br />
@@ -1607,14 +1984,31 @@ Walk</td>
 <td valign="top">Recipes for the Pottery skill<br />
 </td>
 </tr>
-<tr><td>predictions.xml</td><td>Recipes for the Prophecy skill, encoded as xml scripts</td></tr><tr><td>racialmounts.txt</td><td>Guidance for the Racial Mount skill</td></tr><tr>
+<tr>
+<td>predictions.xml</td>
+<td>Recipes for the Prophecy skill, encoded as xml
+scripts</td>
+</tr>
+<tr>
+<td>racialmounts.txt</td>
+<td>Guidance for the Racial Mount skill</td>
+</tr>
+<tr>
 <td valign="top">recipes.txt</td>
 <td valign="top">Recipes for the Cooking skill<br />
 </td>
 </tr>
-<tr><td>rodsmithing.txt</td><td>Recipes for the Rodsmithing skill</td></tr><tr><td>scribing.txt</td><td>Recipes for the&nbsp;Scroll
+<tr>
+<td>rodsmithing.txt</td>
+<td>Recipes for the Rodsmithing skill</td>
+</tr>
+<tr>
+<td>scribing.txt</td>
+<td>Recipes for the&nbsp;Scroll
 Scribing
-skill</td></tr><tr>
+skill</td>
+</tr>
+<tr>
 <td valign="top">scrimshaw.txt</td>
 <td valign="top">Recipes for the Scrimshawing
 skill<br />
@@ -1622,15 +2016,22 @@ skill<br />
 </tr>
 <tr>
 <td valign="top">sculpting.txt</td>
-<td valign="top">Recipes for the Sculpting skill<br />
+<td valign="top">Recipes for the Sculpting
+skill<br />
 </td>
 </tr>
 <tr>
-<td valign="top">shapeshift.txt<br /></td>
-<td valign="top">Recipes for Druid shapeshifting<br />
+<td valign="top">shapeshift.txt<br />
+</td>
+<td valign="top">Recipes for Druid
+shapeshifting<br />
 </td>
 </tr>
-<tr><td>shardmaking.txt</td><td>Recipes for the Shard Making skill</td></tr><tr>
+<tr>
+<td>shardmaking.txt</td>
+<td>Recipes for the Shard Making skill</td>
+</tr>
+<tr>
 <td valign="top">shipbuilding.cmare</td>
 <td valign="top">Recipes for the ShipWrighting
 skill (CMAREA file of GenSailingShip items)<br />
@@ -1645,7 +2046,15 @@ skill (CMAREA file of GenSailingShip items)<br />
 <td valign="top">Recipes for the Smelting skill<br />
 </td>
 </tr>
-<tr><td>songlyrics.txt</td><td>Lyrics for Bards to sing while spellcasting.</td></tr><tr><td>staffmaking.txt</td><td>Recipes for the StaffMaking skill</td></tr><tr>
+<tr>
+<td>songlyrics.txt</td>
+<td>Lyrics for Bards to sing while spellcasting.</td>
+</tr>
+<tr>
+<td>staffmaking.txt</td>
+<td>Recipes for the StaffMaking skill</td>
+</tr>
+<tr>
 <td valign="top">tailor.txt</td>
 <td valign="top">Recipes for the Tailoring
 skill<br />
@@ -1653,24 +2062,40 @@ skill<br />
 </tr>
 <tr>
 <td valign="top">taxidermy.txt</td>
-<td valign="top">Recipes/Descriptiong for the
+<td valign="top">Recipes/Description for the
 Taxidermy
 skill<br />
 </td>
 </tr>
-<tr><td>textiling.txt</td><td>Recipes for the Textiling skill</td></tr><tr>
+<tr>
+<td>textiling.txt</td>
+<td>Recipes for the Textiling skill</td>
+</tr>
+<tr>
 <td valign="top">torturesmith.txt</td>
 <td valign="top">Recipes for the
 Torturesmithing skill<br />
 </td>
 </tr>
-<tr><td>traps.txt</td><td>Recipes for the Make Traps skill</td></tr><tr><td>urchins.txt</td><td>Names of npcs for the Urchin skill</td></tr><tr>
+<tr>
+<td>traps.txt</td>
+<td>Recipes for the Make Traps skill</td>
+</tr>
+<tr>
+<td>urchins.txt</td>
+<td>Names of npcs for the Urchin skill</td>
+</tr>
+<tr>
 <td valign="top">wainwright.txt</td>
 <td valign="top">Recipes for the Wainwrighting
 skill<br />
 </td>
 </tr>
-<tr><td>wandmaking.txt</td><td>Recipes for the Wandmaking skill</td></tr><tr>
+<tr>
+<td>wandmaking.txt</td>
+<td>Recipes for the Wandmaking skill</td>
+</tr>
+<tr>
 <td valign="top">weaponsmith.txt</td>
 <td valign="top">Recipes for the
 Weaponsmithing skill<br />
@@ -1680,7 +2105,15 @@ Weaponsmithing skill<br />
 <td valign="top">weaving.txt</td>
 <td valign="top">Recipes for the Weaving skill<br />
 </td>
-</tr><tr><td>welding.txt</td><td>Recipes for the Welding skill</td></tr><tr><td>wish.txt</td><td>Rules for the Wish/Limited Wish spells</td></tr>
+</tr>
+<tr>
+<td>welding.txt</td>
+<td>Recipes for the Welding skill</td>
+</tr>
+<tr>
+<td>wish.txt</td>
+<td>Rules for the Wish/Limited Wish spells</td>
+</tr>
 </tbody>
 </table>
 <p>The <code>resources/text</code> directory
@@ -1729,7 +2162,8 @@ before character creation.</td>
 <tr>
 <td valign="top">down.txt<br />
 </td>
-<td valign="top">The text file displayed to users only when the
+<td valign="top">The text file displayed to
+users only when the
 OffLine
 application is running.<br />
 </td>
@@ -1740,7 +2174,12 @@ application is running.<br />
 creation
 regarding the email address prompt.</td>
 </tr>
-<tr><td>inclination.txt</td><td>The text shown to players before selecting an Inclination.</td></tr><tr>
+<tr>
+<td>inclination.txt</td>
+<td>The text shown to players before selecting an
+Inclination.</td>
+</tr>
+<tr>
 <td>intro.txt</td>
 <td>The text file displayed to users when they
 connect to
@@ -1813,7 +2252,6 @@ selection.<br />
 <td>A text file describing the basic stats to new
 players</td>
 </tr>
-
 <tr>
 <td valign="top">themes.txt<br />
 </td>
@@ -1828,17 +2266,27 @@ supported very well, however.<br />
 <td>Text file shown using the TOP command, displaying
 all time and monthly top accounts.</td>
 </tr>
-<tr><td>topaccounts-prev.txt</td><td>Text file shown using the TOP command, monthly top accounts for the previous month..</td></tr><tr>
+<tr>
+<td>topaccounts-prev.txt</td>
+<td>Text file shown using the TOP command, monthly
+top accounts for the previous month..</td>
+</tr>
+<tr>
 <td>topplayers.txt</td>
 <td>Text file shown using the TOP command, displaying
 all time and monthly top characters.</td>
-</tr><tr><td>topplayers-prev.txt</td><td>Text file shown using the TOP command, monthly top characters&nbsp; for the previous month..</td></tr>
+</tr>
+<tr>
+<td>topplayers-prev.txt</td>
+<td>Text file shown using the TOP command, monthly
+top characters&nbsp; for the previous month..</td>
+</tr>
 </tbody>
 </table>
 <br />
 <br />
 <img src="images/db.jpg" alt="database" />
-<h2><a name="database">The CoffeeMud Database</a></h2>
+<h2><a name="database">Using a Real Database</a></h2>
 <p>CoffeeMud requires a database for operation. A database
 is
 simply the place where all the rooms, items, monsters, players, pets,
@@ -1856,38 +2304,64 @@ small tasks it was designed for.</p>
 <p>For the more serious, CoffeeMud supports any JDBC or
 ODBC
 compliant database system. This includes such systems as Microsoft
-Access, Microsoft SQL Server, PostgreSQL, MySQL, Oracle, IBM DB2, and
-others. While this document cannot cover the step by step installation
-instructions for each of these systems, it can be pointed out that
-everything you need has been provided. Inside the "guides/database/"
-directory of your CoffeeMud package, you will find several files;  SQL 
-Scripts which can be used to create the necessary
-tables in: Microsoft SQL Server ("coffeemuddbmssql.sql"), MySQL or MariaDB
-("coffeemuddbmysql.sql"), Access ("coffeemuddbaccess.sql"), PostgreSQL
-("coffeemuddbpsql.sql"), Derby ("coffeemuddbderby.sql"), HSQLDB
-("coffeemuddbhsql.sql"), IBM DB2 ("coffeemudibmdb2.sql")and some of the
-others. The last ("fakedb.schema") is a copy of the same fakedb file from your
-"resources/fakedb" directory, in case it becomes corrupted.  Although
-the manner in which the SQL Scripts are used may differ from system to
-system, they cannot all be covered here. Some of the scripts may need
-to be changed slightly to work with some systems. Some systems will
-require each SQL Statement be issued independently instead of as part
-of a larger script. Please consult your database documentation for more
-information on this.</p>
-<p>In order to use your database with CoffeeMud, as
-specified in
-the section on Settings, you must provide CoffeeMud with a JDBC
-compliant Driver class. In a few cases, you may be creating a System
-ODBC Data Source. When this is the case, the driver "<code>sun.jdbc.odbc.JdbcOdbcDriver</code>"
-may be used to access the database.</p>
-<p>Most systems, however, such as MySQL, IBM DB2, and
-Microsoft
-SQL Server 2000, have native JDBC Drivers which may be used instead of
-the general ODBC Driver. These native JDBC Drivers tend to be far
-superior to their ODBC counterparts, and are highly recommended.</p>
+Access, Microsoft SQL Server, PostgreSQL, MySQL, HSQL, Oracle, IBM DB2,
+and
+others.&nbsp;</p>
+<p>While
+this document can not provide details instructions on every database,
+there are some general points to make that might guide your setup:</p>
+<ul>
+<li>Create your CoffeeMud database before attempting to
+use it. &nbsp;</li>
+<li>Give access to a database user that has privileges
+necessary to create, alter, and drop Tables, Indexes, and Keys.</li>
+</ul>
+<p>To use an external db, you must provide CoffeeMud with a
+JDBC
+compliant Driver class in the INI file (see above).&nbsp;Most
+database systems have native JDBC Drivers which may be used.
+&nbsp;These drivers will be in the form of a jar file (such as
+"mysql-connector-java-2.0.14-bin.jar"). &nbsp;This jar file should
+be
+added to your mud.bat or mud.sh classpath. &nbsp;For example:</p>
+<p style="font-family: monospace;" class=""><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;"></span></span>nohup
+java -classpath ".:./lib/js.jar:./lib/jzlib.jar<span style="font-weight: bold;">:/path/to/mysql-connector-java-2.0.14-bin.jar</span>"
+...</p>
+or<br />
+<br />
+<span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">java<br /><br />-<span style="text-decoration: underline;">classpath</span><br /><br />".;.\<span style="text-decoration: underline;">lib</span>\js.jar;.\<span style="text-decoration: underline;">lib</span>\jzlib.jar<span style="font-weight: bold;">;</span></span></span><span style="font-family: monospace; font-weight: bold;">\path\to\mysql-connector-java-2.0.14-bin.jar</span><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">"<br /><br />...</span></span>
+<p>Your next step is to make CoffeeMud aware of your
+database in your coffeemud.ini file:</p>
+<p>######################################################################<br />
+# JDBC Database fields<br />
+######################################################################<br />
+<br />
+# DBCLASS is the class name of the JDBC Driver, such as
+sun.jdbc.odbc.JdbcOdbcDriver<br />
+# DBSERVICE is the name of the JDBC Service as defined by your local
+operating system<br />
+# DBUSER is a user name required to log into the JDBC service<br />
+# DBPASS is the password for the above user name<br />
+# DBPARMS are misc jdbc properties in the format VAR1="VALUE"
+VAR2="VALUE"&nbsp; <br />
+# DBCONNECTIONS is the maximum number of connections to make to the
+database<br />
+# DBPINGINTERVALMINS is the number of minutes between forced pings of
+idle connections <br />
+# DBTRANSACT true to disable auto commit and also use batch inserts<br />
+# DBREUSE is true if you want the system to reuse connections instead
+of making new ones</p>
+<p>You should make sure you have a value for each of the
+above fields. &nbsp;</p>
+<p>After the above is done, you are ready to go.<br />
+</p>
 <p>The care and feeding of the tables used by CoffeeMud
 should be
-very low. The database will grow along with the areas created, and
+very low. &nbsp; The CoffeeMud server will inspect your database at
+startup and make sure you have the necessary tables, and that they are
+up to date. &nbsp;It will create your tables if they are missing,
+or upgrade them if they are outdated.</p>
+<p>The database will grow along with the areas created, and
 along with the number of players which join your MUD. All of this
 growth can be managed, however, within CoffeeMud itself, by your Archon
 administrative user. You should not need to, nor should you attempt to
@@ -1895,6 +2369,10 @@ affect individual rows in your database for any reason.</p>
 <h3><a name="access">Installing and using
 Microsoft Access with
 CoffeeMud on a Windows machine</a></h3>
+<p>The first database CoffeeMud supports, even before
+fakedb existed, was Microsoft Access. &nbsp;I am aware that no one
+will ever try to use this database, but these instructions for setting
+up will remain here, forever:</p>
 <ul>
 <li>
 <p>Open up Microsoft Access and select to create a
@@ -1964,14 +2442,15 @@ file that you saved in step 1. Click OK and then OK to get all the way
 back out of things.</p>
 </li>
 <li>
-<p>Open coffeemud.ini. Go to where it says "ODBC
+<p>Open coffeemud.ini. Go to where it says "JDBC
 Database
-fields". That section should instead look like this:</p>
-<pre>#------------------------<br /><br /># ODBC Database fields<br /><br />#------------------------<br /><br /># DBCLASS is the name of the ODBC Driver, typically sun.jdbc.odbc.JdbcOdbcDriver<br /><br /># DBSERVICE is the name of the ODBC Service as defined by your local operating system<br /><br /># DBUSER is a user name required to log into the ODBC service<br /><br /># DBPASS is the password for the above user name<br /><br /># DBCONNECTIONS is the number of independent connections to make to the database<br /><br />DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<br /><br />DBSERVICE=jdbc:odbc:CoffeeMudData<br /><br />DBUSER=<br /><br />DBPASS=<br /><br />DBCONNECTIONS=1<br /><br /></pre>
+fields". That section should instead look like this:<br />
+</p>
+<pre>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<br />DBSERVICE=jdbc:odbc:CoffeeMudData<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=1<br /></pre>
 <p>Where it says "<code>jdbc:odbc:CoffeeMudData</code>",
 make
 sure the part after "<code>jdbc:odbc:</code>"
-matches the DNS name you made earlier. Make sure your DBCONNECTIONS is
+matches the DSN name you made earlier. Make sure your DBCONNECTIONS is
 never set above 1 when using Microsoft Access. Now, reboot CoffeeMud,
 and you are done!</p>
 </li>
@@ -1981,14 +2460,13 @@ MySQL with CoffeeMud
 on a Windows machine</a></h3>
 <ul>
 <li>
-<p>Go to <a href="http://www.mysql.com">www.mysql.com</a>,
-click on Downloads (one of the tabs at the very top). Download the
-latest generally available production version.</p>
+<p>Go to <a href="http://www.mysql.com">www.mysql.com</a>.
+Download the
+latest generally available free production version.</p>
 </li>
 <li>
-<p>Go back to the Downloads tab, this time scroll down
-to
-MYSQL Connectors. Download the latest Connector/J, or whatever they are
+<p>Now find the MySQL Connectors / JDBC Driver on the
+same site. Download the latest Connector/J, or whatever they are
 calling their JDBC Driver at the time.</p>
 </li>
 <li>
@@ -1996,60 +2474,58 @@ calling their JDBC Driver at the time.</p>
 having
 problems.</p>
 </li>
+<li>Copy the connector/jdbc driver jar file over into
+your <code>c:\coffeemud\lib</code>
+folder.<code></code></li>
 <li>
-<p>Go to your coffeemud folder, open the <code>guides\database
-folder</code>,
-and you will see a file called "coffeemuddbmysql.sql". Open that file
-with a text editor or textpad etc... (you might want to make a backup
-copy first...) Now, add the following:</p>
-<pre># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:29:14<br />#<br /># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:27:39<br />#<br />use coffeemud &lt;----ADD THIS LINE!<br />CREATE TABLE CMCHAB (<br />CMUSERID char (50) NULL ,<br />CMABID char (50) NULL ,<br />CMABPF int NULL ,<br />CMABTX text NULL<br />etc..<br />etc..<br /></pre>
-<p>Now copy the edited coffeemuddbmysql.sql to your <code>c:\program
-files\mysql\bin</code>
-folder (or wherever you installed mysql).</p>
+<p>Now, open a DOS, Command, or shell window and enter
+these two commands: <br />
+<span style="font-family: monospace;">cd
+c:\program
+files\mysql\mysql&lt;tab&gt;\bin</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">mysql</span><br style="font-family: monospace;" />
+You should get a Welcome to the MySQL monitor etc.
+etc. etc.. and now the prompt should simply say "mysql&gt;" .
+&nbsp; If you don't, you may need to specify your mysql username
+and password, like: &nbsp;<span style="font-family: monospace;"><br />
+mysql -uroot -pmypassword</span></p>
 </li>
 <li>
-<p>Now, open a DOS window (Start &gt; Run &gt;
-type "cmd"
-and hit enter) and type cd c:\program
-files\mysql&lt;tab&gt;\bin and
-hit Enter. Type
-"mysql" and enter. You should get a Welcome to the MySQL monitor etc.
-etc. etc.. and now the prompt should simply say "mysql&gt;" . Now
-type
-"create database coffeemud;" (please note the semi-colon";"!!!) and hit
-enter. You should get "Query OK, 1 row affected &lt;0.11sec)" or
-something like that... then type "use coffeemud" and hit enter. Next
-enter "source coffeemuddbmysql.sql" and hit enter. After a moment or
-two, it will be done. Lastly, enter "\q", that should quit you out of
-the monitor.</p>
+<p><span style="font-family: monospace;"></span>Now
+enter: <br />
+<span style="font-family: monospace;">create
+database coffeemud;</span><br />
+(please note the semi-colon";"!!!). You should get "Query OK, 1 row
+affected &lt;0.11sec)" or
+something like that.</p>
 </li>
 <li>
-<p>If all went well, you should now have mysql running
-and
-a coffeemud database all set for it to access.</p>
+<p>Ensure the database user (e.g., 'root' in the example below) has
+full privileges to create, alter, and drop tables, indexes, and keys in
+the 'coffeemud' database. If using a non-root user, run a command like:
+</p><p><span style="font-family: monospace;">GRANT ALL PRIVILEGES ON coffeemud.* TO 'youruser'@'localhost'; FLUSH PRIVILEGES</span></p></li>
+<li><p>If all went well, you should now have mysql running
+with a blank database ready for population.</p></li>
+<li>
+<p>Go back and review the Using a Real Database main
+section.</p>
 </li>
 <li>
 <p>Now go to your coffeemud folder and open your
 coffeemud.ini file in a text editor, and look for the
 section that says:</p>
-<pre>DBCLASS=com.planet_ink.fakedb.Driver<br />DBSERVICE=jdbc:fakedb:resources/data<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=2<br /></pre>
-<p>and change it to:</p>
-<pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=<br />DBPASS=<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
+
+<p><span style="font-family: monospace;">DBCLASS=com.planet_ink.fakedb.Driver</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBSERVICE=jdbc:fakedb:resources/data</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBUSER=</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBPASS=</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBCONNECTIONS=2</span><br style="font-family: monospace;" />and change it to:</p>
+<pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=root<br />DBPASS=mypassword (or whatever)<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
 </li>
-<li>
-<p>Go back to the other file you downloaded in STEP 2,
-mysql-connector-java-???.zip, and now extract that into a temp
-folder. Inside, there should be a "mysql-connector-java-???.jar" file.
-Copy the jar file over into your <code>c:\coffeemud\lib</code>
-folder.&nbsp;<code>.</code></p>
-</li>
-<li>Open up the mud.bat file and add the name of the JAR
+<li>Open up the mud.bat file and add the name of the
+Connector/JDBC JAR
 file
 above to the classpath string. &nbsp;For example:</li>
 <ul>
 <li><span style="font-family: monospace;">java
 -classpath
-".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
+".;.\lib\js.jar;.\lib\jzlib.jar<span style="font-weight: bold;">;.\lib\</span></span><span style="font-family: monospace; font-weight: bold;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
 <li>** Your version of the connector jar file may vary!</li>
 </ul>
 <li>
@@ -2057,22 +2533,31 @@ above to the classpath string. &nbsp;For example:</li>
 just
 launch the mud.bat.</p>
 </li>
+<li>Watch the log carefully. &nbsp;It should say
+something about your database being empty, and then your tables
+created, followed by the mud actually starting up.</li>
 </ul>
 <h3><a name="mysqllinux">Installing and using
 MySQL with
 CoffeeMud on a UN*X or Linux machine</a></h3>
 <ul>
 <li>
-<p>Download and install mysql from <a href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
-Make sure mysqld is being run at boot time, and not by the root user.</p>
+<p>Go to <a href="http://www.mysql.com/">www.mysql.com</a>.
+Download the
+latest generally available free production version.</p>
 </li>
 <li>
-<p>Download and install the mysql jdbc api from <a href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
-Extract the .tar.gz file to a temporary directory. Then copy the
-extracted driver JAR file into your <span style="font-family: monospace;">/CoffeeMud/lib</span>
+<p>Install MySQL, and make sure mysqld is being run at
+boot time, and not by the root user.</p>
+</li>
+<li>
+<p>Download and install the mysql jdbc api fro<span style="text-decoration: underline;"></span>m
+the same web site. &nbsp;Copy the
+extracted driver JAR file into&nbsp;<br />
+your <span style="font-family: monospace;">/CoffeeMud/lib</span>
 directory.</p>
 </li>
-<li>Open up the mudUNIX.sh file and add the name of the
+<li>Open up the mud.sh file and add the name of the
 JAR
 file above to the classpath string. &nbsp;For example:</li>
 <ul>
@@ -2094,28 +2579,27 @@ reason, you can always do a "mysqladmin drop coffeemud".</p>
 <li>
 <p>Create a user for the new database (user in this
 example
-is called coffee). As root, type "mysql" into the shell. Now enter:
+is called coffee). As root, type "mysql" into the shell. Now enter:<br /><span style="font-family: monospace;">
 GRANT ALL ON coffeemud.* TO coffee@localhost IDENTIFIED BY "password";
-Enter a password for the user inside the quotes. Now type, "quit".</p>
-</li>
-<li>
-<p>Edit the file CoffeeMud/guides/coffeemuddbmysql.sql
-like
-so: at line 9 insert "use coffeemud" (assuming the new db is called
-coffeemud). Then save the changes.</p>
-</li>
-<li>
-<p>Run the SQL file as follows: from the shell type,
-"mysql
-&lt; coffeemuddbmysql.sql"</p>
+</span><br />Enter a password for the user inside the quotes. Now type, "quit".</p>
 </li>
 <li>
 <p>Edit the following settings in
 CoffeeMud/coffeemud.ini:</p>
 <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=coffee<br />DBPASS=password<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
 <p>(no quotes on the password here)<br />
-Save your changes and fire up CoffeeMud!</p>
+Save your changes.</p>
 </li>
+<li>
+<p>Now, with mysqld still running in the background,
+just
+launch the mud.sh.</p>
+</li>
+<li>Watch
+the log carefully. &nbsp;It should say something about your
+database being
+empty, and then your tables created, followed by the mud actually
+starting up.</li>
 </ul>
 <h3><a name="hsqldb">Installing and using
 HSQLDB with CoffeeMud</a></h3>
@@ -2151,9 +2635,12 @@ application.</p>
 create the
 database. The final parameter of the URL is the name of the database</p>
 <pre>Type: HSQL Database Engine Standalone<br />Driver: org.hsqldb.jdbcDriver<br />URL: jdbc:hsqldb:file:coffeemud<br />User: &lt;whatever you want&gt;<br />Password: &lt;whatever you want&gt;<br /></pre>
-<p>Now that the values have been filled in click ok.</p>
-<p>The tables necessary for CoffeeMUD can be setup by:</p>
-<pre>Open File Menu.<br />Select Open Script.<br />Find and open the coffeemuddbhsql.sql file in the CoffeeMUD\guides\database directory.<br />The script will then be loaded into the program.<br />Click the Execute button.<br />The system should return with and update count of 0.<br /></pre>
+<p>Now that the values have been filled in click ok.<br /><br />Ensure
+the database user (e.g., 'sa' in the example configuration below) has
+privileges to create, alter, and drop tables, indexes, and keys. In
+HSQLDB standalone mode, the default admin user like 'sa' has these
+privileges automatically; if using a custom user, connect to the
+database and run SQL like: <br /><span style="font-family: monospace;">CREATE USER youruser PASSWORD 'yourpass'; followed by SET SCHEMA PUBLIC; GRANT DBA TO youruser; </span><br />to assign full admin rights.<br /></p>
 <p>Now to shutdown the database and exit this utility:</p>
 <pre>Open Command Menu.<br />Select SHUTDOWN.<br />Click the Execute Button.<br />Open the File Menu.<br />Select Exit.<br /></pre>
 <p>The coffeemud database will exist in the folder
@@ -2171,15 +2658,23 @@ the
 database (relative from the root of the coffeemud directory) followed
 by the name of the database.</p>
 </li>
-<li> Shut down the database gracefully
-<p>Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
+<li>(Options) Shut down the database gracefully:&nbsp;
+Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
 in your text editor of choice. Go to the <code>public void
-killConnections()</code> function.</p>
-<p>Before the synchronized block opens add the
-following line:</p>
-<pre> update( "SHUTDOWN COMPACT" );<br /> <br /></pre>
+killConnections()</code> function.
+Before the synchronized block opens add the
+following line:
+<br />
+<span style="font-family: monospace;"> update(
+"SHUTDOWN COMPACT" );</span>
 <p>Now recompile the source and it will work like a
 dream...</p>
+</li>
+<li>Launch the mud and watch
+the log carefully. &nbsp;It should say something about your
+database being
+empty, and then your tables created, followed by the mud actually
+starting up.<br />
 </li>
 <li>Smile, you are done.</li>
 </ul>
@@ -2210,15 +2705,11 @@ database interface.</p>
 <pre>ij version 10.1<br />ij&gt;<br /></pre>
 <p>Now we will issue the command that will create the
 database.</p>
-<pre>connect 'jdbc:derby:coffeemud;create=true';<br /></pre>
-<p>After a time the ij&gt; prompt will return. Now
-to run the
-SQL that will set up the tables:</p>
-<pre>run '.\guides\database\coffeemuddbderby.sql';<br /></pre>
-<p>A description of all of the tables created will fill
-up
-the window. Finally, we must disconnect from the database and exit the
-utility.</p>
+<pre>connect 'jdbc:derby:coffeemud;create=true';<br /></pre>Ensure the
+database connection has privileges to create, alter, and drop tables,
+indexes, and keys. In Derby's embedded mode, no explicit user is
+needed, and the driver provides full privileges by default.<br /><br />Finally, we must disconnect from the database and exit the
+utility.
 <pre>disconnect;<br />exit;<br /></pre>
 <p>The coffeemud database will exist in a folder called
 'coffeemud' in the current working directory, and if CoffeeMUD is to
@@ -2231,17 +2722,23 @@ fields section. Comment out the current settings (place a # in front of
 them) and add the following lines below them:</p>
 <pre>#here are the settings for IBM Cloudscape/Derby/ApacheDB<br />DBCLASS=org.apache.derby.jdbc.EmbeddedDriver<br />DBSERVICE=jdbc:derby:coffeemud<br />DBREUSE=TRUE<br />DBCONNECTIONS=2<br /></pre>
 </li>
-<li> Smile, you are done... well mostly
+<li>Launch the mud and watch
+the log carefully. &nbsp;It should say something about your
+database being
+empty, and then your tables created, followed by the mud actually
+starting up.<br />
+</li>
+<li>&nbsp;Smile, you are done... well mostly
 <p>Currently there are some minor changes that must be
 made
 to the code for Derby to work properly.</p>
 </li>
-<li> Change?
-<p>This step is not really necessary, it just makes
+<li>(Optional) This step is not really necessary, it just
+makes
 things
 cleaner. Currently when CoffeeMUD is shut down it does not exit the
 database properly, I have not yet worked out a good way to fix this,
-however, the following will work:</p>
+however, the following will work:
 <p>Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
 in your text editor of choice. Go to the <code>public void
 killConnections()</code> function.</p>
@@ -2268,63 +2765,285 @@ these properties can be found at &lt;Derby Install
 Path&gt;\doc\pdf\tuning.pdf.</p>
 </li>
 </ul>
+<h3><a name="dbtrouble">Database
+Troubleshooting</a></h3>
+<p>During CoffeeMud startup, the mud server will connect to
+your main database and inspect the tables to see what version they are
+at. &nbsp;If it detects that the database is empty of tables, it
+will attempt to create them. &nbsp;If it detects that the database
+tables are not up-to-date, it will upgrade them. &nbsp;If any part
+of this process fails, your mud Will Not Start. &nbsp;If this
+happened to you, read on.</p>
+<p>First, make certain that the user you are using for your
+database has sufficient privileges to create, alter, and drop tables,
+indexes, and keys. &nbsp;These are the abilities the mud server
+must have to successfully create and maintain your database tables.
+&nbsp;Just doing this will probably fix your problems.<br />
+</p><p>Next, turn on more verbose SQL logging by adding SQLERRORS to
+the DEBUG= entry in your ini file. &nbsp;During your next mud start,
+SQL statements will start filling the log if errors occur.</p><p>
+After that, there is little more to say. &nbsp;The ability for the
+mud server to maintain its own database is fairly new, so we haven't
+had enough issues reported to really know what problems you will
+encounter yet.<br />
+<br />
+That said, there are various ways to fix your database tables when all
+hope is lost.<br />
+<br />
+If your database is brand new: you don't have any game or player data
+yet, OR you simply don't care, then you can create your database tables
+from scratch using the provided schema SQL. &nbsp;These files are
+located in your coffeemud install folder under /guides/database.
+&nbsp;They are as follows:</p>
+<ul>
+<li>SQL Server ("coffeemuddbmssql.sql")&nbsp;</li>
+<li>MySQL or MariaDB ("coffeemuddbmysql.sql")</li>
+<li>Microsoft Access ("coffeemuddbaccess.sql")</li>
+<li>PostgreSQL ("coffeemuddbpsql.sql")</li>
+<li>Derby/Cloudscape ("coffeemuddbderby.sql")</li>
+<li>HSQLDB ("coffeemuddbhsql.sql")</li>
+<li>IBM DB2 ("coffeemudibmdb2.sql")</li>
+<li>* fakedb ("fakedb.schema") &nbsp;(NOT SQL)</li>
+</ul>
+<p>To use them, you would need to consult your databases
+client instructions on executing SQL from a file. &nbsp;In any
+case, the SQL files will only create your tables, keys, and indexes, so
+you would need to make sure you are running the SQL against the correct
+database. &nbsp;For example, in MySQL, you would want to issue the
+command "use mydatabasename" before executing the SQL Script.</p>
+<p>For fakedb, you would not execute any sql, but simply
+copy the above file from the guides/database directory to your
+/resources/fakedb directory, and then delete all the fakedb.data.*
+files.</p>
+<p>Doing the above should be sufficient to get you going.</p>
+<p>If you are having trouble upgrading an existing database
+with lots of players and areas, and your mud fails to start because of
+errors in the database upgrade process, then you have two options:</p>
+<p>One option is to upgrade your database manually.
+&nbsp;You would consult your database client instructions for how
+to inspect your existing tables, and then compare them to the tables as
+described in one of the "*.sql" files listed above for your database.
+&nbsp;You would then need to manually issue the "ALTER TABLE..."
+command necessary to affect the necessary change. &nbsp; If you'd
+prefer, you can also open the file /guides/database/changelist.json in
+a text viewer, scroll to the very bottom, and read each versions
+changes, using those as a guide in how to correct your tables.</p>
+<p>Another option is to run the fakedb DBCopy tool.
+&nbsp;The purpose of this tool is to copy the data from one
+database to another, using the fakedb schemas from two different
+versions as a guide. &nbsp;It will dynamically compare the old and
+new fakedb schemas to figure out exactly what data to copy.</p>
+<p>The steps to using DBCopy are to </p>
+<ol><li>&nbsp;Make sure you have the file
+/path/to/CoffeeMud/guides/datatabase/fakedb.schema from both the OLD
+version and the NEW version of your server. &nbsp;Don't mix them up!
+&nbsp;</li><li>Create a NEW database in your existing system, with a new name.</li><li>In
+your NEW database, run the appropriate table creation script, as
+described above in this section, where it talks about re-creating a
+database from scratch.</li><li>Make sure you know the path to your JDBC driver for your database system, such as '<span style="font-family: monospace;">/lib/mysql-connector-java-5.1.6-bin.jar'</span></li><li>Go into your coffeemud directory and run the DBCopy tool like:<br /><span style="font-family: monospace;">java -classpath ".:/lib/mysql-connector-java-5.1.6-bin.jar" com.planet_ink.fakedb.DBCopy<br /></span>or, for windows: <br /><span style="font-family: monospace;">java -classpath ".;/lib/mysql-connector-java-5.1.6-bin.jar" com.planet_ink.fakedb.DBCopy</span></li><li>Follow
+the prompts carefully. &nbsp;It will ask you for the path to the old
+and new fakedb files. &nbsp;It will ask you for information from your
+coffeemud.ini, such as the DBCLASS (driver class), and the DBSERVICE.
+&nbsp;When entering the DBSERVER, make sure you differentiate between
+the old and new database.</li><li>When the program is done, your NEW database will have the correct schema, and all your old data.</li><li>Change
+the DBSERVICE field in&nbsp;coffeemud.ini file in your new version of
+coffeemud to reflect that it should connect to the new database instead
+of the old one.</li><li>Away you go!</li></ol>
+
+
+
 <br />
 <img style="width: 72px; height: 72px;" src="images/unflag.jpg" alt="offline and shutdown applications" />
 <h2><a name="localization">Localization</a></h2>
 <p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Localization
 is the process of replacing the existing english strings, names, and
 phrases that make up the base CoffeeMud package with equivalent strings
-in other human languages. &nbsp;It can also, however, be used just to
-tweek the existing english strings to have phrasing you prefer, such as
-adding an extra 'u' to all the instances of the word "Color". &nbsp;In
+in other human languages. &nbsp;It can also, however, be used just
+to
+tweak the existing english strings to have phrasing you prefer, such as
+adding an extra 'u' to all the instances of the word "Color".
+&nbsp;In
 any case, either of those two basic use-cases can benefit from the
-instructions here.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">CoffeeMud
+instructions here.</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">CoffeeMud
 is a giant dynamic english text generating engine, so translating it to
-other human languages is an enormous task. &nbsp;Many tens of thousands
+other human languages is an enormous task. &nbsp;Many tens of
+thousands
 of text strings are embedded throughout the package, and many of them
 are just text snippets meant to be combined together at runtime,
 usually when the number of phrasing variations is far too large to list
-out. &nbsp; &nbsp;And then you have pluralizing nouns, possessive
+out. &nbsp; &nbsp;And then you have pluralizing nouns,
+possessive
 nouns, and other linguistic rules that must be applied dynamically, as
 no builder wants to have to enter numerous name forms for the same
-item. &nbsp;It's just a very big task. &nbsp; But not an impossible one.</p><ul><li>Copy the input parser file<span>&nbsp;</span><span style="font-style: italic;">resources/parser_en_TX.properties</span><span>&nbsp;</span>into the same folder with a different language name, such as<span>&nbsp;</span><span style="font-style: italic;">resources/parser_fr_CA.properties</span><span>&nbsp;</span>for Canadian French. &nbsp;</li><li>Copy the output translation file<span>&nbsp;</span><span style="font-style: italic;">resources/translation_en_TX.properties</span><span>&nbsp;</span>and rename the copy, just like you did with the input parser file.</li><li>Open up coffeemud.ini file, find the entries for LANGUAGE= and COUNTRY= and change them accordingly.</li><li>Go into your CoffeeMud directory from a shell and enter:</li><ul style="font-family: monospace;"><li>java com.planet_ink.coffee_mud.application.LocalizationHelper I USE &gt; output.txt</li></ul><ul><li>Remember that output.txt file. &nbsp;We will use it again soon.</li></ul><li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/parser_??_??.properties</span><span>&nbsp;</span>and scroll down until you see [command-word-processor] and a line underneath it which says<span style="font-weight: bold;"><span>&nbsp;</span><span style="font-family: monospace;">#autoignore 9999</span></span>. &nbsp;</li><ul><ul><li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore 9999</span>. &nbsp;</li></ul><ul><li>Open up the <span style="font-style: italic;">output.txt</span> and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/parser_??_??.properties</span> under [command-word-processor], before the autoignore line.</li></ul><ul><li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with "new"</span>,
-translate all the <span style="font-family: monospace;">"new"</span>/with parts, leaving the <span style="font-family: monospace;">"old"</span> part unchanged.
-&nbsp;</li><li>Remove the "#" character from the front of the lines you change to activate
-it.</li></ul><ul><li>Save your changes to <span style="font-style: italic;">resources/parser_??_??.properties</span>.</li></ul><li>Go back into your CoffeeMud directory from a shell and enter:<span style="font-family: monospace;"></span></li><ul><li><span style="font-family: monospace;">java com.planet_ink.coffee_mud.application.LocalizationHelper T USE &gt; output.txt</span></li></ul><ul><li>Remember that altered output.txt file. &nbsp;We will use it again soon.</li></ul><li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/translation_??_??.properties</span><span>&nbsp;</span>and scroll down until you see [session-translation] and a line underneath it which says<span style="font-weight: bold; font-family: monospace;"><span>&nbsp;</span>#autoignore 9999</span>. &nbsp;</li><ul><li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore 9999</span>. &nbsp;</li></ul><ul><li>Open up the <span style="font-style: italic;">output.txt</span> and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/translation_??_??.properties</span> under [session-translation], before the autoignore line.</li></ul><ul><li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with "new"</span>, translate all the <span style="font-family: monospace;">"new"</span>/with parts, leaving the "old" part unchanged. &nbsp;</li><li>Remove the "#" character from the front of the lines you change to activate it.</li></ul><ul><li>Save the changed file.</li></ul></ul></ul><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Now
-log into your mud as your Archon and start entering commands.&nbsp;As
+item. &nbsp;It's just a very big task. &nbsp; But not an
+impossible one.</p>
+<ul>
+<li>Copy the input parser file<span>&nbsp;</span><span style="font-style: italic;">resources/parser_en_TX.properties</span><span>&nbsp;</span>into
+the same folder with a different language name, such as<span>&nbsp;</span><span style="font-style: italic;">resources/parser_fr_CA.properties</span><span>&nbsp;</span>for
+Canadian French. &nbsp;</li>
+<li>Copy the output translation file<span>&nbsp;</span><span style="font-style: italic;">resources/translation_en_TX.properties</span><span>&nbsp;</span>and
+rename the copy, just like you did with the input parser file.</li>
+<li>Open up coffeemud.ini file, find the entries for
+LANGUAGE= and COUNTRY= and change them accordingly.</li>
+<li>Go into your CoffeeMud directory from a shell and
+enter:</li>
+<ul style="font-family: monospace;">
+<li>java
+com.planet_ink.coffee_mud.application.LocalizationHelper I USE &gt;
+output.txt</li>
+</ul>
+<ul>
+<li>Remember that output.txt file. &nbsp;We will
+use it again soon.</li>
+</ul>
+<li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/parser_??_??.properties</span><span>&nbsp;</span>and
+scroll down until you see [command-word-processor] and a line
+underneath it which says<span style="font-weight: bold;"><span>&nbsp;</span><span style="font-family: monospace;">#autoignore 9999</span></span>.
+&nbsp;</li>
+<ul>
+<ul>
+<li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore
+9999</span>. &nbsp;</li>
+</ul>
+<ul>
+<li>Open up the <span style="font-style: italic;">output.txt</span>
+and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/parser_??_??.properties</span>
+under [command-word-processor], before the autoignore line.</li>
+</ul>
+<ul>
+<li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with
+"new"</span>,
+translate all the <span style="font-family: monospace;">"new"</span>/with
+parts, leaving the <span style="font-family: monospace;">"old"</span>
+part unchanged.
+&nbsp;</li>
+<li>Remove the "#" character from the front of the
+lines you change to activate
+it.</li>
+</ul>
+<ul>
+<li>Save your changes to <span style="font-style: italic;">resources/parser_??_??.properties</span>.</li>
+</ul>
+<li>Go back into your CoffeeMud directory from a shell
+and enter:<span style="font-family: monospace;"></span></li>
+<ul>
+<li><span style="font-family: monospace;">java
+com.planet_ink.coffee_mud.application.LocalizationHelper T USE &gt;
+output.txt</span></li>
+</ul>
+<ul>
+<li>Remember that altered output.txt file.
+&nbsp;We will use it again soon.</li>
+</ul>
+<li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/translation_??_??.properties</span><span>&nbsp;</span>and
+scroll down until you see [session-translation] and a line underneath
+it which says<span style="font-weight: bold; font-family: monospace;"><span>&nbsp;</span>#autoignore
+9999</span>. &nbsp;</li>
+<ul>
+<li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore
+9999</span>. &nbsp;</li>
+</ul>
+<ul>
+<li>Open up the <span style="font-style: italic;">output.txt</span>
+and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/translation_??_??.properties</span>
+under [session-translation], before the autoignore line.</li>
+</ul>
+<ul>
+<li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with
+"new"</span>, translate all the <span style="font-family: monospace;">"new"</span>/with
+parts, leaving the "old" part unchanged. &nbsp;</li>
+<li>Remove the "#" character from the front of the
+lines you change to activate it.</li>
+</ul>
+<ul>
+<li>Save the changed file.</li>
+</ul>
+</ul>
+</ul>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Now
+log into your mud as your Archon and start entering
+commands.&nbsp;As
 you enter commands and do things, the parser and translation files will
 fill up with unlocalized strings that were not previous caught.
-&nbsp;When you are satisfied you've seen every string and entered every
+&nbsp;When you are satisfied you've seen every string and entered
+every
 command you still need&nbsp; to localize, you can stop and let your
-users take care of the rest.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Last
+users take care of the rest.</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">Last
 step (for now at least), is to re-open your parser and translation
-property files and find the two sections we modified earlier. &nbsp;If
-any unlocalized strings were encontered, you will see that those
-sections have been appended lines like this:</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">IGNOREWHOLE "You are now speaking @x1."</span><br style="font-family: monospace;" /><span style="font-family: monospace;">IGNOREWHOLE "WIMPY"</span><br /></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You want to change those lines to <span style="font-family: monospace;">REPLACEEXACT</span> commands, while being careful to maintain case sensitivity, like this:<br /><span style="font-family: monospace;"></span></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">REPLACEEXACT "You are now speaking @x1." WITH "Que vous parlez @x1."</span><br style="font-family: monospace;" /><span style="font-family: monospace;">REPLACEEXACT "WIMPY" WITH "MAUVIETTE"</span><br /></p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You can keep the <span style="font-family: monospace;">AUTOIGNORE 9999</span>
+property files and find the two sections we modified earlier.
+&nbsp;If
+any unlocalized strings were encountered, you will see that those
+sections have been appended lines like this:</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">IGNOREWHOLE "You are now
+speaking @x1."</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">IGNOREWHOLE
+"WIMPY"</span><br />
+</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You
+want to change those lines to <span style="font-family: monospace;">REPLACEEXACT</span>
+commands, while being careful to maintain case sensitivity, like this:<br />
+<span style="font-family: monospace;"></span></p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">REPLACEEXACT "You are now
+speaking @x1." WITH "Que vous parlez @x1."</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">REPLACEEXACT
+"WIMPY" WITH "MAUVIETTE"</span><br />
+</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You
+can keep the <span style="font-family: monospace;">AUTOIGNORE
+9999</span>
 command at the bottom of the list, and it will continue to add any new
-strings it encounters which were missed the first time around.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">For
+strings it encounters which were missed the first time around.</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">For
 everything that the above does not catch, CoffeeMud supports other
 languages through a translation system which utilizes regular
 expressions. &nbsp;Again, read through the files
 resources/parser_en_TX.properties and
-resources/translation_en_TX.properties. &nbsp;The former translates text
+resources/translation_en_TX.properties. &nbsp;The former translates
+text
 entered by the user, the later translates text sent TO the user.
-&nbsp;Experimenting with these features will get you there, one phrase at a
-time.</p><p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">After this, it gets easy, but tedious:</p><ul><li>Localize the contents of the file&nbsp;<span style="font-style: italic;">/resources/lists.ini</span> There's a lot -- it's not called "lists" for no reason.</li><li>Localize the contents of the *.ini files in the&nbsp; /factions/ directory.</li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+&nbsp;Experimenting with these features will get you there, one
+phrase at a
+time.</p>
+<p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">After
+this, it gets easy, but tedious:</p>
+<ul>
+<li>Localize the contents of the file&nbsp;<span style="font-style: italic;">/resources/lists.ini</span>
+There's a lot -- it's not called "lists" for no reason.</li>
+<li>Localize the contents of the *.ini files in
+the&nbsp; /factions/ directory.</li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
 the contents of the *.txt and *.ini files in the /help/ directory,
 keeping in mind that many of the help commands should match the
 translated names of those commands from your work in the parser file
-above.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the contents of the *.txt files in the /skills/ directory.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the contents of the *.txt files in the /text/ directory.<br /></span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+above.</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the contents of the *.txt files in the /skills/ directory.</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the contents of the *.txt files in the /text/ directory.<br />
+</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
 /achievements.ini, /awards.txt, /clangovernments.xml, /chat.dat,
-/laws.ini, /lawtoc.ini, /movingrooom.xml, and /socials.txt</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+/laws.ini, /lawtoc.ini, /movingrooom.xml, and /socials.txt</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
 all the contents of the *.html and *.cmvp files in the /web/ directory
-(recursively). &nbsp;This should not take more than 10 years.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the text in the *.xml files in the /randareas/ directory.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize the *.quest and *.xml files under the /quests/ directory (recursively)</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+(recursively). &nbsp;This should not take more than 10 years.</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the text in the *.xml files in the /randareas/ directory.</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
+the *.quest and *.xml files under the /quests/ directory (recursively)</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">Localize
 the /resources/examples/areareaction.ini, deityreaction.ini,
 namereaction.ini, plarreaction.ini, racereaction.ini, reputation.ini,
-and triumpgiver.script files.</span></li><li><span style="font-family: &quot;Times New Roman&quot;;">If
-you have got here without physically dieing of old age, and you tested
+and triumpgiver.script files.</span></li>
+<li><span style="font-family: &quot;Times New Roman&quot;;">If
+you have got here without physically dying of old age, and you tested
 your results, send them to me, and I'll include them in the
-distribution!<br /></span></li></ul><span style="font-family: &quot;Times New Roman&quot;;"></span><br />
+distribution!<br />
+</span></li>
+</ul>
+<span style="font-family: &quot;Times New Roman&quot;;"></span><br />
 <br />
 <img src="images/nuked.jpg" alt="offline and shutdown applications" />
 <h2><a name="shutdown">The OffLine And

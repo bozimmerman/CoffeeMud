@@ -177,7 +177,10 @@ public class DBCopy
 								x = line.indexOf(' ');
 								if (x > 0)
 									line = line.substring(0, x).trim();
-								if (line.toUpperCase().startsWith("INT") || line.toUpperCase().startsWith("NUMB") || line.toUpperCase().startsWith("DOUB") || line.toUpperCase().startsWith("FLOAT"))
+								if (line.toUpperCase().startsWith("INT")
+								|| line.toUpperCase().startsWith("NUMB")
+								|| line.toUpperCase().startsWith("DOUB")
+								|| line.toUpperCase().startsWith("FLOAT"))
 									table.add('#' + name);
 								else
 									table.add('$' + name);
@@ -287,8 +290,12 @@ public class DBCopy
 								x = line.indexOf(' ');
 								if (x > 0)
 									line = line.substring(0, x).trim();
-								if (line.toUpperCase().startsWith("INT") || line.toUpperCase().startsWith("NUMB") || line.toUpperCase().startsWith("DOUB") || line.toUpperCase().startsWith("LONG")
-										|| line.toUpperCase().startsWith("TIME") || line.toUpperCase().startsWith("FLOAT"))
+								if (line.toUpperCase().startsWith("INT")
+								|| line.toUpperCase().startsWith("NUMB")
+								|| line.toUpperCase().startsWith("DOUB")
+								|| line.toUpperCase().startsWith("LONG")
+								|| line.toUpperCase().startsWith("TIME")
+								|| line.toUpperCase().startsWith("FLOAT"))
 									table.add('#' + name);
 								else
 									table.add('$' + name);

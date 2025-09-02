@@ -30,8 +30,8 @@ build.xml         : ANT build file for coffeemud binaries
 coffee.ico        : Windows icon file for shortcuts
 
 Linux:
-mudUNIX.sh        : Executing coffeemud. (See installation guide)
-InstallUNIX.sh    : Configuring mudUNIX.sh (See installation guide)
+mud.sh            : Executing coffeemud. (See installation guide)
+config.sh         : Configuring mud.sh (See installation guide)
 Makefile          : Building coffeemud. (See installation guide)
 build.xml         : ANT build file for coffeemud binaries
 

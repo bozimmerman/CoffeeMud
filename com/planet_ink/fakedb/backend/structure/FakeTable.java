@@ -21,6 +21,7 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.fakedb.backend.Backend;
 import com.planet_ink.fakedb.backend.Backend.ConnectorType;
@@ -316,7 +317,7 @@ public class FakeTable
 	public void rewriteDataFileHash(final List<String> schema)
 	{
 		close();
-		if((!fileName.exists())||(fileName.length()<10))
+		if((!fileName.exists())||(fileName.length()<10)||(dataStart<10))
 			return;
 		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
 		crc.update((this.name + " " + this.version).getBytes());
@@ -1024,14 +1025,18 @@ public class FakeTable
 							if(keyChanges != null)
 							{
 								for(int i=0;i<keyChanges.length;i++)
-									strVals[i] = keyChanges[i].getValue().toString();
+									if(keyChanges[i]!= null)
+										strVals[i] = keyChanges[i].getValue().toString();
 								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
 								for(int i=0;i<keyChanges.length;i++)
 								{
-									for (int k = 0; k < rowIndexData.length; k++)
+									if(keyChanges[i] != null)
 									{
-										if (columnIndexesOfIndexed[k] == i)
-											rowIndexData[k] = keyChanges[i];
+										for (int k = 0; k < rowIndexData.length; k++)
+										{
+											if (columnIndexesOfIndexed[k] == i)
+												rowIndexData[k] = keyChanges[i];
+										}
 									}
 								}
 							}
@@ -1051,7 +1056,6 @@ public class FakeTable
 			if((e instanceof SQLException)
 			&&((""+e.getMessage()).indexOf("dup")>=0))
 				throw (SQLException)e;
-			e.printStackTrace();
 			return -1;
 		}
 		return count[0];

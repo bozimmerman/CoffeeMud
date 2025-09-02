@@ -68,7 +68,7 @@ import java.sql.*;
 */
 public class MUD extends Thread implements MudHost
 {
-	public static final String	  HOST_VERSION	= "5.10.5.1";
+	public static final String	  HOST_VERSION	= "5.10.90.0";
 
 	private static enum MudState
 	{
@@ -1880,7 +1880,7 @@ public class MUD extends Thread implements MudHost
 			&& (page.getStr("MUD_NAME").toString().trim().length()>0))
 				nameID = page.getStr("MUD_NAME").toString().trim().replace('\'', '`');
 			else
-				System.err.println("*** Please give your mud a unique name in mud.bat or mudUNIX.sh!! ***");
+				System.err.println("*** Please give your mud a unique name in mud.bat or mud.sh!! ***");
 		}
 		else
 		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2025ByBoZimmerman" ))
