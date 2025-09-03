@@ -16,9 +16,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A cache is a collection that can be efficiently enumerated, and whose
+ * elements can be marked as recently used.
+ *
+ * @param <K> the type of object in the cache
+ */
 public interface CMCache<K> extends Collection<K>
 {
+	/**
+	 * Returns an enumeration of the elements in this cache.
+	 *
+	 * @return an enumeration of the elements in this cache
+	 */
 	public Enumeration<K> elements();
 
+	/**
+	 * Marks the given element as recently used.
+	 *
+	 * @param k the element to mark as recently used
+	 */
 	public void touch(K k);
 }

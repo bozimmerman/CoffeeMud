@@ -17,19 +17,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * An iterator wrapper for a List of objects that uses get(index) to retrieve
+ * the next object.
+ *
+ * @param <J> the type of object in the list
+ */
 public class ListGetIterator<J> implements Iterator<J>
 {
 	private volatile int	i = -1;
 	private final List<J>	coll;
 	private final Object	removerContext;
 
+	/** The callback to use when an item is removed */
 	private final ListIteratorRemover<Object, J>	remover;
 
+	/**
+	 * An interface to implement to get a callback when an item is removed from
+	 * the iterator.
+	 *
+	 * @param <K> the type of context object
+	 * @param <J> the type of object being removed
+	 */
 	public static interface ListIteratorRemover<K,J>
 	{
 		public void remove(final K context, final J j);
 	}
 
+	/**
+	 * Constructs an iterator wrapper for the given list of objects.
+	 *
+	 * @param col the list of objects to wrap
+	 * @throws NullPointerException if the given list is null
+	 */
 	public ListGetIterator(final List<J> col)
 	{
 		coll = col;
@@ -37,6 +58,14 @@ public class ListGetIterator<J> implements Iterator<J>
 		removerContext=null;
 	}
 
+	/**
+	 * Constructs an iterator wrapper for the given list of objects.
+	 *
+	 * @param col the list of objects to wrap
+	 * @param rem the callback to use when an item is removed
+	 * @param removerContext the context object to pass to the callback
+	 * @throws NullPointerException if the given list is null
+	 */
 	public ListGetIterator(final List<J> col, final ListIteratorRemover<Object,J> rem, final Object removerContext)
 	{
 		this.coll = col;
@@ -44,12 +73,22 @@ public class ListGetIterator<J> implements Iterator<J>
 		this.removerContext = removerContext;
 	}
 
+	/**
+	 * Returns whether there are more elements in this iterator.
+	 *
+	 * @return true if there are more elements, false otherwise
+	 */
 	@Override
 	public boolean hasNext()
 	{
 		return i<coll.size()-1;
 	}
 
+	/**
+	 * Returns the next element in this iterator.
+	 *
+	 * @return the next element in this iterator
+	 */
 	@Override
 	public J next()
 	{
@@ -66,6 +105,10 @@ public class ListGetIterator<J> implements Iterator<J>
 		}
 	}
 
+	/**
+	 * Removes the last element returned by this iterator from the underlying
+	 * collection. If a callback was specified, it will be called.
+	 */
 	@Override
 	public void remove()
 	{

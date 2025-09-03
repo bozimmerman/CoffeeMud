@@ -18,24 +18,42 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * A pair of objects, named first and second
+ * @param <T>
+ * @param <K>
+ */
 public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 {
 	private static final long serialVersionUID = 5801807195720264263L;
 	public T	first;
 	public K	second;
 
+	/**
+	 * Default constructor, initializes both elements to null
+	 */
 	public Pair()
 	{
 		first = null;
 		second = null;
 	}
 
+	/**
+	 * Constructor, initializes both elements to the given values
+	 *
+	 * @param frst the first element
+	 * @param scnd the second element
+	 */
 	public Pair(final T frst, final K scnd)
 	{
 		first = frst;
 		second = scnd;
 	}
 
+	/**
+	 * A converter that converts a Pair to its first value.
+	 */
 	public static final class FirstConverter<T, K> implements Converter<Pair<T, K>, T>
 	{
 		@Override
@@ -45,6 +63,9 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		}
 	}
 
+	/**
+	 * A converter that converts a Pair to its second value.
+	 */
 	public static final class SecondConverter<T, K> implements Converter<Pair<T, K>, K>
 	{
 		@Override
@@ -54,6 +75,11 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		}
 	}
 
+	/**
+	 * A comparator that compares Pairs by their first element
+	 * @param <T>
+	 * @param <K>
+	 */
 	public static final class FirstComparator<T, K> implements Comparator<Pair<T, K>>
 	{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -84,6 +110,12 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		}
 	}
 
+	/**
+	 * A comparator that compares Pairs by their second element
+	 *
+	 * @param <T>
+	 * @param <K>
+	 */
 	public static final class SecondComparator<T, K> implements Comparator<Pair<T, K>>
 	{
 		@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -114,6 +146,13 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		}
 	}
 
+	/**
+	 * A comparator that compares Pairs by their first element, and then by
+	 * their second element
+	 *
+	 * @param <T>
+	 * @param <K>
+	 */
 	public static final class DoubleComparator<T, K> implements Comparator<Pair<T, K>>
 	{
 		final FirstComparator<T, K>		fc	= new FirstComparator<T, K>();
@@ -129,18 +168,34 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		}
 	}
 
+	/**
+	 * Returns the first element of the pair
+	 *
+	 * @return the first element
+	 */
 	@Override
 	public T getKey()
 	{
 		return first;
 	}
 
+	/**
+	 * Returns the second element of the pair
+	 *
+	 * @return the second element
+	 */
 	@Override
 	public K getValue()
 	{
 		return second;
 	}
 
+	/**
+	 * Sets the second element of the pair
+	 *
+	 * @param value the new value for the second element
+	 * @return the value that was set
+	 */
 	@Override
 	public K setValue(final K value)
 	{
@@ -148,6 +203,13 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		return value;
 	}
 
+	/**
+	 * Standard equals method - true if both first and second elements are
+	 * equal
+	 *
+	 * @param o the other object
+	 * @return true if equal, false otherwise
+	 */
 	@Override
 	public boolean equals(final Object o)
 	{
@@ -161,6 +223,12 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 		return super.equals(o);
 	}
 
+	/**
+	 * Standard hashcode method - a combination of the hashcodes of the first
+	 * and second elements
+	 *
+	 * @return the hashcode
+	 */
 	@Override
 	public int hashCode()
 	{

@@ -18,6 +18,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A set of long numbers, which can be added to, removed from, and enumerated.
+ * The set is optimized for space, so that contiguous numbers are stored as
+ * ranges.
+ *
+ * @author Bo Zimmerman
+ */
 public class LongSet implements Set<Long>
 {
 	/**  Whether this number denotes the beginning of a grouping.*/
@@ -31,9 +38,14 @@ public class LongSet implements Set<Long>
 	/** a secondary mask value for marking numbers */
 	public static final long 	OPTION_FLAG_LONG= (LongSet.LONG_BITS+1)/2;
 
-	protected volatile int[] intArray=new int[0];
-	protected volatile long[] longArray=new long[0];
+	protected volatile int[]	intArray	= new int[0];
+	protected volatile long[]	longArray	= new long[0];
 
+	/**
+	 * Returns a copy of this set
+	 *
+	 * @return a copy of this set
+	 */
 	public LongSet copyOf()
 	{
 		final LongSet g=new LongSet();
@@ -45,6 +57,11 @@ public class LongSet implements Set<Long>
 		return g;
 	}
 
+	/**
+	 * Returns true if this set contains the given number.
+	 * @param x the number to look for
+	 * @return true if this set contains the given number.
+	 */
 	public boolean contains(final long x)
 	{
 		if(x==-1)
@@ -54,6 +71,12 @@ public class LongSet implements Set<Long>
 		return getLongIndex(x)>=0;
 	}
 
+	/**
+	 * Returns the index of the given int number, or -1 if not found.
+	 *
+	 * @param x the number to look for
+	 * @return the index of the given int number, or -1 if not found.
+	 */
 	public int getIntIndex(final int x)
 	{
 		int start=0;
@@ -86,6 +109,12 @@ public class LongSet implements Set<Long>
 		return (-start)-1;
 	}
 
+	/**
+	 * Returns the index of the given long number, or -1 if not found.
+	 *
+	 * @param y the number to look for
+	 * @return the index of the given long number, or -1 if not found.
+	 */
 	public int getLongIndex(final long y)
 	{
 		int start=0;
@@ -118,6 +147,11 @@ public class LongSet implements Set<Long>
 		return (-start)-1;
 	}
 
+	/**
+	 * Returns all of the int numbers in this set.
+	 *
+	 * @return all of the int numbers in this set.
+	 */
 	public int[] getAllIntNumbers()
 	{
 		int count=0;
@@ -147,6 +181,11 @@ public class LongSet implements Set<Long>
 		return nums;
 	}
 
+	/**
+	 * Returns all of the long numbers in this set.
+	 *
+	 * @return all of the long numbers in this set.
+	 */
 	public long[] getAllNumbers()
 	{
 		final long[] nums=new long[size()];
@@ -176,12 +215,19 @@ public class LongSet implements Set<Long>
 		return nums;
 	}
 
+	/**
+	 * Returns whether this set is empty.
+	 */
 	@Override
 	public boolean isEmpty()
 	{
 		return intArray.length == 0 && longArray.length == 0;
 	}
 
+	/**
+	 * Returns the number of elements in this set.
+	 * @return the number of elements in this set.
+	 */
 	@Override
 	public int size()
 	{
@@ -203,6 +249,12 @@ public class LongSet implements Set<Long>
 		return count;
 	}
 
+	/**
+	 * Grows the int array by the given amount at the given index.
+	 *
+	 * @param here the index to grow at
+	 * @param amount the amount to grow by
+	 */
 	private void growIntArray(final int here, final int amount)
 	{
 		final int[] newis=new int[intArray.length+amount];
@@ -213,6 +265,12 @@ public class LongSet implements Set<Long>
 		intArray=newis;
 	}
 
+	/**
+	 * Grows the long array by the given amount at the given index.
+	 *
+	 * @param here the index to grow at
+	 * @param amount the amount to grow by
+	 */
 	private void growLongArray(final int here, final int amount)
 	{
 		final long[] newis=new long[longArray.length+amount];
@@ -223,6 +281,12 @@ public class LongSet implements Set<Long>
 		longArray=newis;
 	}
 
+	/**
+	 * Removes the given number from this set.
+	 *
+	 * @param x the number to remove
+	 * @return true if it was found and removed, false otherwise
+	 */
 	public synchronized boolean remove(final long x)
 	{
 		if(x==-1)
@@ -233,6 +297,12 @@ public class LongSet implements Set<Long>
 			return removeLong(x);
 	}
 
+	/**
+	 * Removes all of the numbers in the given set from this set.
+	 *
+	 * @param grp the set of numbers to remove
+	 * @return true if all were found and removed, false otherwise
+	 */
 	public synchronized boolean remove(final LongSet grp)
 	{
 		final long[] dely=grp.getAllNumbers();
@@ -247,6 +317,12 @@ public class LongSet implements Set<Long>
 		return found;
 	}
 
+	/**
+	 * Shrinks the int array by the given amount at the given index.
+	 *
+	 * @param here the index to shrink at
+	 * @param amount the amount to shrink by
+	 */
 	private void shrinkIntArray(final int here, final int amount)
 	{
 		final int[] newis=new int[intArray.length-amount];
@@ -257,6 +333,12 @@ public class LongSet implements Set<Long>
 		intArray=newis;
 	}
 
+	/**
+	 * Shrinks the long array by the given amount at the given index.
+	 *
+	 * @param here the index to shrink at
+	 * @param amount the amount to shrink by
+	 */
 	private void shrinkLongArray(final int here, final int amount)
 	{
 		final long[] newis=new long[longArray.length-amount];
@@ -267,6 +349,11 @@ public class LongSet implements Set<Long>
 		longArray=newis;
 	}
 
+	/**
+	 * Checks the integrity of the int array.
+	 *
+	 * @return true if the int array is valid, false otherwise
+	 */
 	protected boolean checkIntArray()
 	{
 		for(int i=1;i<intArray.length;i++)
@@ -283,6 +370,11 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
+	/**
+	 * Checks the integrity of the long array.
+	 *
+	 * @return true if the long array is valid, false otherwise
+	 */
 	protected boolean checkLongArray()
 	{
 		for(int i=1;i<longArray.length;i++)
@@ -299,6 +391,9 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
+	/**
+	 * Consolodates the int array, combining any ranges that can be combined.
+	 */
 	private void consolodateInts()
 	{
 		for(int i=0;i<intArray.length-1;i++)
@@ -329,6 +424,9 @@ public class LongSet implements Set<Long>
 		}
 	}
 
+	/**
+	 * Consolodates the long array, combining any ranges that can be combined.
+	 */
 	private void consolodateLongs()
 	{
 		for(int i=0;i<longArray.length-1;i++)
@@ -359,6 +457,12 @@ public class LongSet implements Set<Long>
 		}
 	}
 
+	/**
+	 * Adds all of the numbers in the given set to this set.
+	 *
+	 * @param grp the set of numbers to add
+	 * @return this set
+	 */
 	public LongSet add(final LongSet grp)
 	{
 		if(grp==null)
@@ -369,6 +473,12 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
+	/**
+	 * Adds the given number to this set.
+	 *
+	 * @param x the number to add
+	 * @return this set
+	 */
 	public synchronized LongSet add(final long x)
 	{
 		if(x==-1)
@@ -380,6 +490,13 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
+	/**
+	 * Adds all of the numbers in the given range to this set, inclusive.
+	 *
+	 * @param from the number to start at
+	 * @param to the number to end at
+	 * @return this set
+	 */
 	public synchronized LongSet add(final long from, final long to)
 	{
 		if((from==-1)||(to<from))
@@ -391,6 +508,12 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
+	/**
+	 * Adds all of the numbers in the given range to this set, inclusive.
+	 *
+	 * @param x1 the number to start at
+	 * @param x2 the number to end at
+	 */
 	private void addLongRange(final long x1, final long x2)
 	{
 		if(x1 == x2)
@@ -476,6 +599,11 @@ public class LongSet implements Set<Long>
 		consolodateLongs();
 	}
 
+	/**
+	 * Adds the given number to this set.
+	 *
+	 * @param x the number to add
+	 */
 	private void addLong(final long x)
 	{
 		int index=getLongIndex(x);
@@ -549,6 +677,11 @@ public class LongSet implements Set<Long>
 		return;
 	}
 
+	/**
+	 * Adds the given number to this set.
+	 *
+	 * @param x the number to add
+	 */
 	private void addInt(final int x)
 	{
 		int index=getIntIndex(x);
@@ -622,6 +755,12 @@ public class LongSet implements Set<Long>
 		return;
 	}
 
+	/**
+	 * Removes the given long number from this set.
+	 *
+	 * @param x the number to remove
+	 * @return true if it was found and removed, false otherwise
+	 */
 	private boolean removeLong(final long x)
 	{
 		int index=getLongIndex(x);
@@ -689,6 +828,12 @@ public class LongSet implements Set<Long>
 		return false;
 	}
 
+	/**
+	 * Removes the given int number from this set.
+	 *
+	 * @param x the number to remove
+	 * @return true if it was found and removed, false otherwise
+	 */
 	private boolean removeInt(final int x)
 	{
 		int index=getIntIndex(x);
@@ -756,6 +901,12 @@ public class LongSet implements Set<Long>
 		return false;
 	}
 
+	/**
+	 * Adds all of the numbers in the given range to this set, inclusive.
+	 *
+	 * @param x1 the number to start at
+	 * @param x2 the number to end at
+	 */
 	private void addIntRange(final int x1, final int x2)
 	{
 		if(x1 == x2)
@@ -841,6 +992,15 @@ public class LongSet implements Set<Long>
 		consolodateInts();
 	}
 
+	/**
+	 * A test method for this class.
+	 *
+	 * @param g the group to test
+	 * @param used the set of numbers that should be in the group
+	 * @param span the maximum number that should be in the group
+	 * @return true if the group contains exactly the numbers in used, false
+	 *         otherwise
+	 */
 	private static boolean checkList(final LongSet g, final Set<Integer> used, final int span)
 	{
 		if(!g.checkIntArray())
@@ -865,6 +1025,11 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
+	/**
+	 * A test method for this class.
+	 *
+	 * @param args none
+	 */
 	protected static void test(final String[] args)
 	{
 		final Random r=new Random(System.currentTimeMillis());
@@ -910,12 +1075,25 @@ public class LongSet implements Set<Long>
 		}
 	}
 
+	/**
+	 * Adds the given number to this set.
+	 *
+	 * @param e the number to add
+	 * @return true if the number was added, false if it was already present
+	 */
 	@Override
 	public boolean add(final Long e)
 	{
 		return (e != null) && add(e.longValue()) != null;
 	}
 
+	/**
+	 * Adds all of the numbers in the given collection to this set.
+	 *
+	 * @param c the collection of Longs to add
+	 * @return true if all the numbers were added, false if any were already
+	 *         present
+	 */
 	@Override
 	public boolean addAll(final Collection<? extends Long> c)
 	{
@@ -930,6 +1108,9 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
+	/**
+	 * Removes all of the numbers from this set.
+	 */
 	@Override
 	public void clear()
 	{
@@ -940,6 +1121,13 @@ public class LongSet implements Set<Long>
 		}
 	}
 
+	/**
+	 * Converts the given object to a long value if it is a Number.
+	 *
+	 * @param o the object to convert
+	 * @return the long value of the object
+	 * @throws ClassCastException if the object is not a Number
+	 */
 	private long valueOf(final Object o)
 	{
 		if(o instanceof Long)
@@ -962,12 +1150,25 @@ public class LongSet implements Set<Long>
 		throw new ClassCastException("Not a number: "+o.getClass().getCanonicalName());
 	}
 
+	/**
+	 * Returns whether this set contains the given number.
+	 *
+	 * @param o the number to check for
+	 * @return true if the number is in this set, false otherwise
+	 */
 	@Override
 	public boolean contains(final Object o)
 	{
 		return this.contains(valueOf(o));
 	}
 
+	/**
+	 * Returns whether this set contains all of the numbers in the given
+	 * collection.
+	 *
+	 * @param c the collection of Longs to check for
+	 * @return true if all the numbers are in this set, false otherwise
+	 */
 	@Override
 	public boolean containsAll(final Collection<?> c)
 	{
@@ -982,6 +1183,11 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
+	/**
+	 * Returns an iterator over the numbers in this set.
+	 *
+	 * @return an iterator over the numbers in this set
+	 */
 	@Override
 	public Iterator<Long> iterator()
 	{
@@ -1018,12 +1224,24 @@ public class LongSet implements Set<Long>
 		};
 	}
 
+	/**
+	 * Removes the given number from this set.
+	 *
+	 * @param o the number to remove
+	 * @return true if it was found and removed, false otherwise
+	 */
 	@Override
 	public boolean remove(final Object o)
 	{
 		return this.remove(valueOf(o));
 	}
 
+	/**
+	 * Removes all of the numbers in the given collection from this set.
+	 *
+	 * @param c the collection of Longs to remove
+	 * @return true if all were found and removed, false otherwise
+	 */
 	@Override
 	public boolean removeAll(final Collection<?> c)
 	{
@@ -1039,6 +1257,13 @@ public class LongSet implements Set<Long>
 		return found;
 	}
 
+	/**
+	 * Retains only the numbers in this set that are also in the given
+	 * collection.
+	 *
+	 * @param c the collection of Longs to retain
+	 * @return true if any numbers were removed, false otherwise
+	 */
 	@Override
 	public boolean retainAll(final Collection<?> c)
 	{
@@ -1054,6 +1279,11 @@ public class LongSet implements Set<Long>
 		return foundAny;
 	}
 
+	/**
+	 * Constructs a Long array containing all of the numbers in this set.
+	 *
+	 * @return a Long array containing all of the numbers in this set
+	 */
 	@Override
 	public Object[] toArray()
 	{
@@ -1066,6 +1296,13 @@ public class LongSet implements Set<Long>
 		return all;
 	}
 
+	/**
+	 * A helper method for toArray(T[]).
+	 *
+	 * @param r the array to start with
+	 * @param it the iterator to get more elements from
+	 * @return an array containing all of the elements
+	 */
 	// from abstractcollection.java
 	@SuppressWarnings("unchecked")
 	private static <T> T[] finishToArray(T[] r, final Iterator<?> it)
@@ -1084,8 +1321,13 @@ public class LongSet implements Set<Long>
 		return (i == r.length) ? r : Arrays.copyOf(r, i);
 	}
 
+	/**
+	 * Constructs an array containing all of the numbers in this set.
+	 *
+	 * @param a the array to start with
+	 * @return an array containing all of the numbers in this set
+	 */
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public <T> T[] toArray(final T[] a)
 	{
@@ -1107,6 +1349,11 @@ public class LongSet implements Set<Long>
 		return it.hasNext() ? finishToArray(r, it) : r;
 	}
 
+	/**
+	 * Convenience method to return a string representation of this set.
+	 *
+	 * @return a string representation of this set
+	 */
 	@Override
 	public String toString()
 	{
@@ -1139,6 +1386,13 @@ public class LongSet implements Set<Long>
 		return str.toString();
 	}
 
+	/**
+	 * Parses a string representation of a LongSet. The string must be in the
+	 * format produced by toString().
+	 *
+	 * @param txt the string to parse
+	 * @return this set, or null if the string could not be parsed
+	 */
 	public LongSet parseString(String txt)
 	{
 		intArray=new int[0];
@@ -1172,6 +1426,11 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
+	/**
+	 * Returns a random number from this set.
+	 *
+	 * @return a random number from this set, or -1 if the set is empty
+	 */
 	public long getRandom()
 	{
 		final Random r=new Random();

@@ -20,17 +20,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 /**
-* The interface represents a 3d tube thing.
-* @author Bo Zimmerman
-*
-*/
+ * A bounded tube is a bounded sphere with a direction and distance. It
+ * represents a line segment with a radius.
+ *
+ * @author Bo Zimmerman
+ */
 public class BoundedTube extends BoundedSphere
 {
 	public Coord3D	exp;
 	public Dir3D 	dir;
 	public long		dist;
 
+	/**
+	 * Construct a bounded tube
+	 *
+	 * @param l the bounded sphere representing the start point and radius
+	 * @param direction the direction from the start point
+	 * @param distance the distance from the start point
+	 */
 	public BoundedTube(final BoundedSphere l, final Dir3D direction, final long distance)
 	{
 		super(l);
@@ -39,6 +48,11 @@ public class BoundedTube extends BoundedSphere
 		exp = new Coord3D(extendTo(distance));
 	}
 
+	/**
+	 * Construct a bounded tube with no direction or distance
+	 *
+	 * @param l the bounded sphere representing the start point and radius
+	 */
 	public BoundedTube(final BoundedSphere l)
 	{
 		super(l);
@@ -47,6 +61,11 @@ public class BoundedTube extends BoundedSphere
 		this.dist = 2;
 	}
 
+	/**
+	 * Extend the line to the given distance
+	 * @param distance the distance to extend to
+	 * @return the coordinate at that distance
+	 */
 	private Coord3D extendTo(final long distance)
 	{
 		final Coord3D start = xyz.copyOf();
@@ -59,6 +78,11 @@ public class BoundedTube extends BoundedSphere
 						   start.z().add(speed.multiply(z1)));
 	}
 
+	/**
+	 * Compare this bounded tube to another bounded object
+	 * @param o the other bounded object
+	 * @return negative if less than, positive if greater than, 0 if equal
+	 */
 	@Override
 	public int compareTo(final BoundedObject o)
 	{
@@ -82,6 +106,11 @@ public class BoundedTube extends BoundedSphere
 		return super.compareTo(o);
 	}
 
+	/**
+	 * Get the bounding sphere of this tube
+	 *
+	 * @return the bounding sphere
+	 */
 	@Override
 	public BoundedSphere getSphere()
 	{
@@ -93,6 +122,12 @@ public class BoundedTube extends BoundedSphere
 		return new BoundedSphere(xyz, radius);
 	}
 
+	/**
+	 * Check to see if this bounded tube intersects another bounded object
+	 *
+	 * @param two the other bounded object
+	 * @return true if they intersect
+	 */
 	@Override
 	public boolean intersects(final BoundedObject two)
 	{

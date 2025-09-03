@@ -30,13 +30,28 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * A TreeMap that uses case-insensitive string keys.
+ *
+ * @param <K> the type of object mapped to the string keys
+ */
 public class CaselessTreeMap<K> extends TreeMap<String,K>
 {
 	private static final long serialVersionUID = 5949532522375107316L;
+
+	/**
+	 * Constructs a new, empty map, sorted according to the natural ordering of
+	 * its keys (case-insensitive).
+	 */
 	public CaselessTreeMap()
 	{
 		super(comparatorIgnoreCase);
 	}
+
+	/**
+	 * A case-insensitive comparator for string keys.
+	 */
 	public static Comparator<String> comparatorIgnoreCase = new Comparator<String>()
 	{
 		@Override
@@ -45,6 +60,10 @@ public class CaselessTreeMap<K> extends TreeMap<String,K>
 			return arg0.compareToIgnoreCase(arg1);
 		}
 	};
+
+	/**
+	 * A case-sensitive comparator for string keys.
+	 */
 	public static Comparator<String> comparatorCaseSensitive = new Comparator<String>()
 	{
 		@Override

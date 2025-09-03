@@ -21,6 +21,12 @@ import com.planet_ink.coffee_mud.core.BigCMath;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A class for representing and manipulating vectors of arbitrary
+ * dimensionality, using BigDecimal math.
+ *
+ * @author Bo Zimmerman
+ */
 public class BigVector implements Comparable<BigVector>
 {
 	public static final BigDecimal	 ZERO	= BigDecimal.ZERO;
@@ -31,6 +37,11 @@ public class BigVector implements Comparable<BigVector>
 
 	protected final BigDecimal[] b;
 
+	/**
+	 * Constructs a BigVector of the given length, initialized to zero.
+	 *
+	 * @param len the length (number of dimensions) of the vector
+	 */
 	public BigVector(final int len)
 	{
 		if(len == 3)
@@ -43,6 +54,11 @@ public class BigVector implements Comparable<BigVector>
 		}
 	}
 
+	/**
+	 * Constructs a BigVector from the given array of long values.
+	 *
+	 * @param l the array of long values representing the vector's components
+	 */
 	public BigVector(final long[] l)
 	{
 		b=new BigDecimal[l.length];
@@ -50,6 +66,12 @@ public class BigVector implements Comparable<BigVector>
 			b[i]=BigDecimal.valueOf(l[i]);
 	}
 
+	/**
+	 * Constructs a 2D BigVector from the given long values.
+	 *
+	 * @param lx the x component of the vector
+	 * @param ly the y component of the vector
+	 */
 	public BigVector(final long lx, final long ly)
 	{
 		b=new BigDecimal[2];
@@ -57,6 +79,13 @@ public class BigVector implements Comparable<BigVector>
 		b[1]=BigDecimal.valueOf(ly);
 	}
 
+	/**
+	 * Constructs a 3D BigVector from the given long values.
+	 *
+	 * @param lx the x component of the vector
+	 * @param ly the y component of the vector
+	 * @param lz the z component of the vector
+	 */
 	public BigVector(final long lx, final long ly, final long lz)
 	{
 		b=new BigDecimal[3];
@@ -65,6 +94,11 @@ public class BigVector implements Comparable<BigVector>
 		b[2]=BigDecimal.valueOf(lz);
 	}
 
+	/**
+	 * Constructs a BigVector from the given array of double values.
+	 *
+	 * @param l the array of double values representing the vector's components
+	 */
 	public BigVector(final double[] l)
 	{
 		b=new BigDecimal[l.length];
@@ -72,21 +106,45 @@ public class BigVector implements Comparable<BigVector>
 			b[i]=BigDecimal.valueOf(l[i]);
 	}
 
+	/**
+	 * Copy constructor.
+	 *
+	 * @param v the BigVector to copy
+	 */
 	public BigVector(final BigVector v)
 	{
 		b=v.b.clone();
 	}
 
+	/**
+	 * Constructs a BigVector from the given array of BigDecimal values.
+	 *
+	 * @param vs the array of BigDecimal values representing the vector's
+	 *            components
+	 */
 	public BigVector(final BigDecimal... vs)
 	{
 		b=vs.clone();
 	}
 
+	/**
+	 * Returns the length (number of dimensions) of this vector.
+	 * @return the length (number of dimensions) of this vector
+	 */
 	public final int length()
 	{
 		return b.length;
 	}
 
+	/**
+	 * Returns a new BigVector that is the difference of this vector and the
+	 * given vector.
+	 *
+	 * @param v the vector to subtract
+	 * @return the difference of this vector and the given vector
+	 * @throws IllegalArgumentException if the vectors are of different
+	 *             dimensions
+	 */
 	public BigVector subtract(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -97,6 +155,13 @@ public class BigVector implements Comparable<BigVector>
 		return ab;
 	}
 
+	/**
+	 * Subtracts the given vector from this vector, modifying this vector.
+	 *
+	 * @param v the vector to subtract
+	 * @throws IllegalArgumentException if the vectors are of different
+	 *             dimensions
+	 */
 	public void subtractFrom(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -105,6 +170,15 @@ public class BigVector implements Comparable<BigVector>
 			b[i] = b[i].subtract(v.b[i]);
 	}
 
+	/**
+	 * Returns a new BigVector that is the sum of this vector and the given
+	 * vector.
+	 *
+	 * @param v the vector to add
+	 * @return the sum of this vector and the given vector
+	 * @throws IllegalArgumentException if the vectors are of different
+	 *             dimensions
+	 */
 	public BigVector add(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -115,6 +189,13 @@ public class BigVector implements Comparable<BigVector>
 		return ab;
 	}
 
+	/**
+	 * Adds the given vector to this vector, modifying this vector.
+	 *
+	 * @param v the vector to add
+	 * @throws IllegalArgumentException if the vectors are of different
+	 *             dimensions
+	 */
 	public void addFrom(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -123,6 +204,13 @@ public class BigVector implements Comparable<BigVector>
 			b[i] = b[i].add(v.b[i]);
 	}
 
+	/**
+	 * Returns the square root of a BigDecimal value using the Newton-Raphson
+	 * method.
+	 *
+	 * @param A the value to compute the square root of
+	 * @return the square root of the given BigDecimal value
+	 */
 	public final static BigDecimal sqrt(final BigDecimal A)
 	{
 		if(A.doubleValue()<0)
@@ -140,6 +228,14 @@ public class BigVector implements Comparable<BigVector>
 		return x1;
 	}
 
+	/**
+	 * Compares this BigVector to another object. The result is true if and only
+	 * if the argument is not null and is a BigVector object that has the same
+	 * dimensions and the same components as this vector.
+	 *
+	 * @param o the object to compare to
+	 * @return true if the objects are equal, false otherwise
+	 */
 	@Override
 	public boolean equals(final Object o)
 	{
@@ -156,12 +252,23 @@ public class BigVector implements Comparable<BigVector>
 		return o==this;
 	}
 
+	/**
+	 * Returns a hash code for this BigVector. The hash code is computed by
+	 * calling Arrays.hashCode on the internal array of BigDecimal components.
+	 *
+	 * @return a hash code for this BigVector
+	 */
 	@Override
 	public int hashCode()
 	{
 		return Arrays.hashCode(b);
 	}
 
+	/**
+	 * Returns the magnitude (length) of this vector.
+	 *
+	 * @return the magnitude of this vector
+	 */
 	public BigDecimal magnitude()
 	{
 		BigDecimal a = ZERO;
@@ -170,6 +277,11 @@ public class BigVector implements Comparable<BigVector>
 		return sqrt(a);
 	}
 
+	/**
+	 * Returns a new BigVector that is the unit vector of this vector.
+	 *
+	 * @return the unit vector of this vector
+	 */
 	public BigVector unitVector()
 	{
 		final BigVector ab=new BigVector(b.length);
@@ -179,6 +291,14 @@ public class BigVector implements Comparable<BigVector>
 		return ab;
 	}
 
+	/**
+	 * Returns the distance between this vector and the given vector.
+	 *
+	 * @param v the other vector
+	 * @return the distance between this vector and the given vector
+	 * @throws IllegalArgumentException if the vectors are of different
+	 *             dimensions
+	 */
 	public BigDecimal unitDistanceFrom(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -192,6 +312,9 @@ public class BigVector implements Comparable<BigVector>
 		return BigVector.sqrt(x0);
 	}
 
+	/**
+	 * Sets this vector to be the unit vector of itself.
+	 */
 	public void unitVectorFrom()
 	{
 		final BigDecimal mag = magnitude();
@@ -199,6 +322,13 @@ public class BigVector implements Comparable<BigVector>
 			b[i] = b[i].divide(mag, SCALE, RoundingMode.UP);
 	}
 
+	/**
+	 * Returns a new BigVector that is the scalar product of this vector and the
+	 * given number.
+	 *
+	 * @param num the number to multiply by
+	 * @return the scalar product of this vector and the given number
+	 */
 	public BigVector scalarProduct(final BigDecimal num)
 	{
 		final BigVector ab=new BigVector(b.length);
@@ -207,12 +337,25 @@ public class BigVector implements Comparable<BigVector>
 		return ab;
 	}
 
+	/**
+	 * Sets this vector to be the scalar product of itself and the given number.
+	 *
+	 * @param num the number to multiply by
+	 */
 	public void scalarProductFrom(final BigDecimal num)
 	{
 		for(int i=0;i<b.length;i++)
 			b[i] = b[i].multiply(num);
 	}
 
+	/**
+	 * Returns the dot product of this vector and the given vector.
+	 *
+	 * @param v the other vector
+	 * @return the dot product of this vector and the given vector
+	 * @throws IllegalArgumentException if the vectors are of different
+	 * 	dimensions
+	 */
 	public BigDecimal dotProduct(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -224,56 +367,123 @@ public class BigVector implements Comparable<BigVector>
 
 	}
 
+	/**
+	 * Returns the cosine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the cosine of a BigDecimal value.
+	 */
 	public static BigDecimal cos(final BigDecimal d)
 	{
 		return BigDecimal.valueOf(Math.cos(d.doubleValue()));
 	}
 
+	/**
+	 * Returns the arc-cosine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the arc-cosine of a BigDecimal value.
+	 */
 	public static BigDecimal acos(final BigDecimal d)
 	{
 		return BigDecimal.valueOf(Math.acos(d.doubleValue()));
 	}
 
+	/**
+	 * Returns the sine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the sine of a BigDecimal value.
+	 */
 	public static BigDecimal sin(final BigDecimal d)
 	{
 		return BigDecimal.valueOf(Math.sin(d.doubleValue()));
 	}
 
+	/**
+	 * Returns the tangent of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the tangent of a BigDecimal value.
+	 */
 	public static BigDecimal tan(final BigDecimal d)
 	{
 		return BigDecimal.valueOf(Math.tan(d.doubleValue()));
 	}
 
+	/**
+	 * Returns the arc-tangent of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the arc-tangent of a BigDecimal value.
+	 */
 	public static BigDecimal atan(final BigDecimal d)
 	{
 		return BigDecimal.valueOf(Math.atan(d.doubleValue()));
 	}
 
+	/**
+	 * Returns the cosine of a double value.
+	 *
+	 * @param d the value
+	 * @return the cosine of a double value.
+	 */
 	public static BigDecimal cos(final double d)
 	{
 		return BigDecimal.valueOf(Math.cos(d));
 	}
 
+	/**
+	 * Returns the arc-cosine of a double value.
+	 *
+	 * @param d the value
+	 * @return the arc-cosine of a double value.
+	 */
 	public static BigDecimal acos(final double d)
 	{
 		return BigDecimal.valueOf(Math.acos(d));
 	}
 
+	/**
+	 * Returns the sine of a double value.
+	 *
+	 * @param d the value
+	 * @return the sine of a double value.
+	 */
 	public static BigDecimal sin(final double d)
 	{
 		return BigDecimal.valueOf(Math.sin(d));
 	}
 
+	/**
+	 * Returns the tangent of a double value.
+	 *
+	 * @param d the value
+	 * @return the tangent of a double value.
+	 */
 	public static BigDecimal tan(final double d)
 	{
 		return BigDecimal.valueOf(Math.tan(d));
 	}
 
+	/**
+	 * Returns the arc-tangent of a double value.
+	 *
+	 * @param d the value
+	 * @return the arc-tangent of a double value.
+	 */
 	public static BigDecimal atan(final double d)
 	{
 		return BigDecimal.valueOf(Math.atan(d));
 	}
 
+	/**
+	 * Converts a 3D Cartesian coordinate BigVector to a 2D spherical coordinate
+	 * BigVector. The first element is the azimuthal angle in radians, the
+	 * second element is the polar angle in radians.
+	 *
+	 * @return the spherical coordinate BigVector
+	 */
 	public BigVector sphereToCartesian()
 	{
 		if(b.length != 2)
@@ -285,6 +495,14 @@ public class BigVector implements Comparable<BigVector>
 		return d;
 	}
 
+	/**
+	 * Returns the negative of the dot product of this vector and the given
+	 * vector.
+	 *
+	 * @param v the other vector
+	 * @return the negative of the dot product of this vector and the given
+	 *         vector
+	 */
 	public BigDecimal dotRemainder(final BigVector v)
 	{
 		if(b.length != v.length())
@@ -296,6 +514,13 @@ public class BigVector implements Comparable<BigVector>
 
 	}
 
+	/**
+	 * Returns a new BigVector that is the vector product of this vector and the
+	 * given vector. Only implemented for 3-dimensional vectors.
+	 *
+	 * @param v the other vector
+	 * @return the vector product of this vector and the given vector
+	 */
 	public BigVector vectorProduct(final BigVector v)
 	{
 		if((b.length != 3)||(v.length()!=3))
@@ -307,6 +532,11 @@ public class BigVector implements Comparable<BigVector>
 		return ab;
 	}
 
+	/**
+	 * Sets this vector to be the vector product of itself and the given vector.
+	 *
+	 * @param v the other vector
+	 */
 	public void vectorProductFrom(final BigVector v)
 	{
 		if((b.length != 3)||(v.length()!=3))
@@ -316,6 +546,12 @@ public class BigVector implements Comparable<BigVector>
 		b[2] = b[0].multiply(v.b[1]).subtract(b[1].multiply(v.b[0]));
 	}
 
+	/**
+	 * Converts this BigVector to an array of doubles by converting each
+	 * component to a double value.
+	 *
+	 * @return an array of doubles representing the components of this BigVector
+	 */
 	public double[] toDoubles()
 	{
 		final double[] res=new double[b.length];
@@ -324,6 +560,12 @@ public class BigVector implements Comparable<BigVector>
 		return res;
 	}
 
+	/**
+	 * Converts this BigVector to an array of longs by rounding each component
+	 * to the nearest long value.
+	 *
+	 * @return an array of longs representing the components of this BigVector
+	 */
 	public long[] toLongs()
 	{
 		final long[] res=new long[b.length];
@@ -332,6 +574,14 @@ public class BigVector implements Comparable<BigVector>
 		return res;
 	}
 
+	/**
+	 * Returns a string representation of this BigVector. The string
+	 * representation consists of a list of the vector's components in order,
+	 * enclosed in square brackets ("[]"). Adjacent components are separated by
+	 * the characters ", ".
+	 *
+	 * @return a string representation of this BigVector
+	 */
 	@Override
 	public String toString()
 	{
@@ -342,6 +592,16 @@ public class BigVector implements Comparable<BigVector>
 
 	}
 
+	/**
+	 * Compares this BigVector to another BigVector. The comparison is done
+	 * lexicographically, starting from the first dimension. If the dimensions
+	 * are different, the shorter vector is considered "less than" the longer
+	 * one.
+	 *
+	 * @param o the BigVector to compare to
+	 * @return a negative integer, zero, or a positive integer as this BigVector
+	 *         is less than, equal to, or greater than the specified BigVector
+	 */
 	@Override
 	public int compareTo(final BigVector o)
 	{

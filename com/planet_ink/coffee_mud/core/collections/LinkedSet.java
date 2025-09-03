@@ -16,7 +16,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class LinkedCollection<K> implements Set<K>
+
+/**
+ * A simple linked list implementation of a Set.
+ *
+ * @param <K> the type of object in the set
+ * @author Bo Zimmerman
+ */
+public class LinkedSet<K> implements Set<K>
 {
 	private volatile LinkedEntry<K> head = null;
 	private volatile LinkedEntry<K> tail = null;
@@ -24,6 +31,11 @@ public class LinkedCollection<K> implements Set<K>
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
+	/**
+	 * A single entry in the linked list.
+	 *
+	 * @param <K> the type of object in the set
+	 */
 	public static class LinkedEntry<K>
 	{
 		public LinkedEntry<K> prev;
@@ -36,7 +48,10 @@ public class LinkedCollection<K> implements Set<K>
 		}
 	}
 
-	public LinkedCollection()
+	/**
+	 * Constructor
+	 */
+	public LinkedSet()
 	{
 	}
 
@@ -46,6 +61,13 @@ public class LinkedCollection<K> implements Set<K>
 		return add(new LinkedEntry<K>(arg0));
 	}
 
+	/**
+	 * Add the given linked entry to the end of the list. If it is already in
+	 * the list, it is first removed.
+	 *
+	 * @param arg0 the entry to add
+	 * @return true if added, false otherwise
+	 */
 	public boolean add(final LinkedEntry<K> arg0)
 	{
 		if(head == arg0)
@@ -69,6 +91,11 @@ public class LinkedCollection<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Add all the items in the given collection to this one.
+	 *
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
 	@Override
 	public boolean addAll(final Collection<? extends K> arg0)
 	{
@@ -80,6 +107,9 @@ public class LinkedCollection<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Clear out the list.
+	 */
 	@Override
 	public void clear()
 	{
@@ -87,6 +117,14 @@ public class LinkedCollection<K> implements Set<K>
 		tail=null;
 	}
 
+	/**
+	 * Checks to see if the given object is in the list.
+	 *
+	 * @param arg0 the object to check for
+	 * @return true if found, false otherwise
+	 *
+	 * @see java.util.Collection#contains(java.lang.Object)
+	 */
 	@Override
 	public boolean contains(final Object arg0)
 	{
@@ -98,6 +136,13 @@ public class LinkedCollection<K> implements Set<K>
 		return false;
 	}
 
+	/**
+	 * Checks to see if all the items in the given collection are in this list.
+	 *
+	 * @param arg0 the collection to check for
+	 * @return true if all are found, false otherwise
+	 * @see java.util.Collection#containsAll(java.util.Collection)
+	 */
 	@Override
 	public boolean containsAll(final Collection<?> arg0)
 	{
@@ -109,12 +154,24 @@ public class LinkedCollection<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Checks to see if the list is empty.
+	 *
+	 * @return true if empty, false otherwise
+	 * @see java.util.Collection#isEmpty()
+	 */
 	@Override
 	public boolean isEmpty()
 	{
 		return head == null;
 	}
 
+	/**
+	 * Returns an iterator for the list.
+	 *
+	 * @return the iterator
+	 * @see java.lang.Iterable#iterator()
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<K> iterator()
@@ -122,10 +179,10 @@ public class LinkedCollection<K> implements Set<K>
 		if(head == null)
 			return empty;
 
-		final LinkedCollection<K> me1=this;
+		final LinkedSet<K> me1=this;
 		return new Iterator<K>()
 		{
-			final LinkedCollection<K> me=me1;
+			final LinkedSet<K> me=me1;
 			LinkedEntry<K> next = head;
 			LinkedEntry<K> curr = null;
 
@@ -160,6 +217,13 @@ public class LinkedCollection<K> implements Set<K>
 		};
 	}
 
+	/**
+	 * Remove the given object from the list, if it is in the list.
+	 *
+	 * @param arg0 the object to remove
+	 * @return true if removed, false otherwise
+	 * @see java.util.Collection#remove(java.lang.Object)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(final Object arg0)
@@ -193,6 +257,13 @@ public class LinkedCollection<K> implements Set<K>
 		}
 	}
 
+	/**
+	 * Remove all the items in the given collection from this list.
+	 *
+	 * @param arg0 the collection of items to remove
+	 * @return true if all were removed, false otherwise
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
 	@Override
 	public boolean removeAll(final Collection<?> arg0)
 	{
@@ -204,6 +275,13 @@ public class LinkedCollection<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Retain only the items in this list that are also in the given collection.
+	 *
+	 * @param arg0 the collection of items to retain
+	 * @return true if all were retained, false otherwise
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public boolean retainAll(final Collection<?> arg0)
@@ -223,6 +301,12 @@ public class LinkedCollection<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Returns the number of items in the list.
+	 *
+	 * @return the number of items
+	 * @see java.util.Collection#size()
+	 */
 	@Override
 	public int size()
 	{
@@ -236,6 +320,12 @@ public class LinkedCollection<K> implements Set<K>
 		return size;
 	}
 
+	/**
+	 * Returns an array containing all the items in the list.
+	 *
+	 * @return the array of items
+	 * @see java.util.Collection#toArray()
+	 */
 	@Override
 	public Object[] toArray()
 	{
@@ -246,6 +336,16 @@ public class LinkedCollection<K> implements Set<K>
 		return obj;
 	}
 
+	/**
+	 * Returns an array containing all the items in the list. If the given array
+	 * is big enough, it is used, otherwise a new array of the same type is
+	 * created.
+	 *
+	 * @param <T> the type of object in the array
+	 * @param a the array to use, if big enough
+	 * @return the array of items
+	 * @see java.util.Collection#toArray(T[])
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T[] toArray(final T[] a)

@@ -31,6 +31,15 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A TreeSet that is limited in size, and also limited in how long an entry can
+ * remain in the set without being accessed. When the max size is exceeded, or
+ * when an entry ages out, it is removed from the set. Accessing an entry (via
+ * add() or contains()) updates its last-accessed time.
+ *
+ * @param <K> the type of value
+ * @author Bo Zimmerman
+ */
 public class LimitedTreeSet<K> extends TreeSet<K>
 {
 	private static final long serialVersionUID = 5949532522375107316L;
@@ -41,8 +50,19 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 	private final boolean	caseLess;
 	private final boolean	grow;
 
+	/** The map of keys to their last-accessed time */
 	private final OrderedMap<K,long[]> expirations;
 
+	/**
+	 * Constructor
+	 *
+	 * @param expireMs the number of milliseconds an entry can remain idle in
+	 *            the set before expiring
+	 * @param max the maximum number of entries allowed in the set
+	 * @param caseInsensitive true to make String keys case insensitive
+	 * @param grow true to allow the max to grow if necessary, false to enforce
+	 *            it strictly
+	 */
 	public LimitedTreeSet(final long expireMs, final int max, final boolean caseInsensitive, final boolean grow)
 	{
 		super(new Comparator<Object>()
@@ -75,16 +95,35 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		this.grow=grow;
 	}
 
+	/**
+	 * Constructor - default grow=false
+	 *
+	 * @param expireMs the number of milliseconds an entry can remain idle in
+	 *            the set before expiring
+	 * @param max the maximum number of entries allowed in the set
+	 * @param caseInsensitive true to make String keys case insensitive, false
+	 *            otherwise
+	 */
 	public LimitedTreeSet(final long expireMs, final int max, final boolean caseInsensitive)
 	{
 		this(expireMs, max, caseInsensitive, false);
 	}
 
+	/**
+	 * Constructor - default 1 minute expiration, 100 max entries, case
+	 * Sensitive keys, grow=false
+	 */
 	public LimitedTreeSet()
 	{
 		this(60000,100,false);
 	}
 
+	/**
+	 * Adds the given key to the set.
+	 *
+	 * @param key the key to add
+	 * @return true if not already present, false otherwise
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean add(K key)
@@ -100,6 +139,12 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		}
 	}
 
+	/**
+	 * Adds all the keys in the given collection to the set.
+	 *
+	 * @param map the collection of keys to add
+	 * @return true if at least one was added, false otherwise
+	 */
 	@Override
 	public boolean addAll(final Collection<? extends K> map)
 	{
@@ -110,6 +155,10 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		return ok;
 	}
 
+	/**
+	 * Checks for and removes any expired entries, and if the size is over the
+	 * max, removes the oldest accessed entries until it is not.
+	 */
 	protected void check()
 	{
 		final long now=System.currentTimeMillis();
@@ -141,6 +190,15 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		}
 	}
 
+	/**
+	 * Checks to see if the given key is in the set. If the key is a String, and
+	 * this set was constructed with case insensitivity, the key will be
+	 * converted to lower-case before checking. Accessing an entry (via add() or
+	 * contains()) updates its last-accessed time.
+	 *
+	 * @param key the key to check for
+	 * @return true if the key is in the set, false otherwise
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean contains(Object key)
@@ -157,12 +215,20 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		}
 	}
 
+	/**
+	 * Returns the number of keys in the set.
+	 *
+	 * @return the number of keys
+	 */
 	@Override
 	public Iterator<K> iterator()
 	{
 		return super.iterator();
 	}
 
+	/**
+	 * Empties the set.
+	 */
 	@Override
 	public void clear()
 	{
@@ -174,6 +240,14 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		}
 	}
 
+	/**
+	 * Removes the given key from the set. If the key is a String, and this set
+	 * was constructed with case insensitivity, the key will be converted to
+	 * lower-case before checking.
+	 *
+	 * @param key the key to remove
+	 * @return true if the key was found and removed, false otherwise
+	 */
 	protected boolean internalRemove(Object key)
 	{
 		if(key instanceof String)
@@ -186,6 +260,14 @@ public class LimitedTreeSet<K> extends TreeSet<K>
 		}
 	}
 
+	/**
+	 * Removes the given key from the set. If the key is a String, and this set
+	 * was constructed with case insensitivity, the key will be converted to
+	 * lower-case before checking.
+	 *
+	 * @param key the key to remove
+	 * @return true if the key was found and removed, false otherwise
+	 */
 	@Override
 	public boolean remove(final Object key)
 	{

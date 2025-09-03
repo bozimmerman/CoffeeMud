@@ -21,26 +21,43 @@ import com.planet_ink.coffee_mud.core.BigCMath;
 */
 /**
  * Represents a directional vector in 3d space as a pair of BigDecimals
- * in radians.
+ * in radians, stored in a 2d BigVector.
+ *
  * The first of the pair is the full horizontal circle (2*pi), and the
  * second of the pair is the half z-axis circle (0-pi).
+ *
  * @author Bo Zimmerman
  *
  */
 public class Dir3D extends BigVector
 {
 	boolean safe = true;
+
+	/**
+	 * Construct an empty direction
+	 */
 	public Dir3D()
 	{
 		super(2);
 	}
 
+	/**
+	 * Construct a direction, optionally enforcing safeness
+	 *
+	 * @param safeness true to enforce safeness limits on the angles
+	 */
 	public Dir3D(final boolean safeness)
 	{
 		super(2);
-		safe=false;
+		safe=safeness;
 	}
 
+	/**
+	 * Construct a direction from another direction
+	 *
+	 * @param v the other direction
+	 * @throws IllegalArgumentException if the other direction is not 2d
+	 */
 	public Dir3D(final BigVector v)
 	{
 		super(2);
@@ -50,6 +67,12 @@ public class Dir3D extends BigVector
 		b[1]=v.b[1];
 	}
 
+	/**
+	 * Construct a direction from an array of doubles
+	 *
+	 * @param v the array of doubles, must be length 2
+	 * @throws IllegalArgumentException if the array is not length 2
+	 */
 	public Dir3D(final double[] v)
 	{
 		super(2);
@@ -58,6 +81,12 @@ public class Dir3D extends BigVector
 		xy(v[0]).z(BigDecimal.valueOf(v[1]));
 	}
 
+	/**
+	 * Construct a direction from an array of BigDecimals
+	 *
+	 * @param v the array of BigDecimals, must be length 2
+	 * @throws IllegalArgumentException if the array is not length 2
+	 */
 	public Dir3D(final BigDecimal[] v)
 	{
 		super(2);
@@ -66,23 +95,45 @@ public class Dir3D extends BigVector
 		xy(v[0]).z(v[1]);
 	}
 
+	/**
+	 * Construct a direction from two BigDecimals
+	 *
+	 * @param v0 the first BigDecimal, the horizontal angle
+	 * @param v1 the second BigDecimal, the vertical angle
+	 */
 	public Dir3D(final BigDecimal v0, final BigDecimal v1)
 	{
 		super(2);
 		xy(v0).z(v1);
 	}
 
+	/**
+	 * Construct a direction from two doubles
+	 *
+	 * @param v0 the first double, the horizontal angle
+	 * @param v1 the second double, the vertical angle
+	 */
 	public Dir3D(final double v0, final double v1)
 	{
 		super(2);
 		xy(v0).z(v1);
 	}
 
+	/**
+	 * Convert a double to a BigDecimal
+	 *
+	 * @param d the double
+	 * @return the BigDecimal
+	 */
 	public BigDecimal BigDecimal(final double d)
 	{
 		return BigDecimal.valueOf(d);
 	}
 
+	/**
+	 * Get the horizontal angle
+	 * @return the horizontal angle
+	 */
 	public BigDecimal xy()
 	{
 		if(b.length>0)
@@ -90,6 +141,11 @@ public class Dir3D extends BigVector
 		return ZERO;
 	}
 
+	/**
+	 * Get the vertical angle
+	 *
+	 * @return the vertical angle
+	 */
 	public BigDecimal z()
 	{
 		if(b.length>1)
@@ -97,6 +153,11 @@ public class Dir3D extends BigVector
 		return ZERO;
 	}
 
+	/**
+	 * Get the horizontal angle as a double
+	 *
+	 * @return the horizontal angle
+	 */
 	public double xyd()
 	{
 		if(b.length>0)
@@ -104,6 +165,11 @@ public class Dir3D extends BigVector
 		return 0;
 	}
 
+	/**
+	 * Get the vertical angle as a double
+	 *
+	 * @return the vertical angle
+	 */
 	public double zd()
 	{
 		if(b.length>1)
@@ -111,6 +177,12 @@ public class Dir3D extends BigVector
 		return 0;
 	}
 
+	/**
+	 * Get the indexed angle as a double
+	 *
+	 * @param x the index, 0 for horizontal, 1 for vertical
+	 * @return the angle at that index as a double
+	 */
 	public double getd(final int x)
 	{
 		if((x>=0)&&(x<b.length))
@@ -118,6 +190,12 @@ public class Dir3D extends BigVector
 		return 0;
 	}
 
+	/**
+	 * Get the indexed angle as a BigDecimal
+	 *
+	 * @param x the index, 0 for horizontal, 1 for vertical
+	 * @return the angle at that index as a BigDecimal
+	 */
 	public BigDecimal get(final int x)
 	{
 		if((x>=0)&&(x<b.length))
@@ -125,6 +203,12 @@ public class Dir3D extends BigVector
 		return null;
 	}
 
+	/**
+	 * Set the horizontal angle
+	 *
+	 * @param d the horizontal angle
+	 * @return this
+	 */
 	public Dir3D xy(BigDecimal d)
 	{
 		if(d!=null)
@@ -141,6 +225,12 @@ public class Dir3D extends BigVector
 		return this;
 	}
 
+	/**
+	 * Set the vertical angle
+	 *
+	 * @param d the vertical angle
+	 * @return this
+	 */
 	public Dir3D z(BigDecimal d)
 	{
 		if(d!=null)
@@ -167,21 +257,45 @@ public class Dir3D extends BigVector
 		return this;
 	}
 
+	/**
+	 * Make a copy of this direction
+	 *
+	 * @return the copy
+	 */
 	public Dir3D copyOf()
 	{
 		return new Dir3D(this);
 	}
 
+	/**
+	 * Set the horizontal angle
+	 *
+	 * @param d the horizontal angle
+	 * @return this
+	 */
 	public Dir3D xy(final double d)
 	{
 		return xy(new BigDecimal(d));
 	}
 
+	/**
+	 * Set the vertical angle
+	 *
+	 * @param d the vertical angle
+	 * @return this
+	 */
 	public Dir3D z(final double d)
 	{
 		return z(new BigDecimal(d));
 	}
 
+	/**
+	 * Sets the indexed angle
+	 * Use 0 for horizontal, 1 for vertical
+	 *
+	 * @param index the index
+	 * @param d the angle
+	 */
 	public void set(final int index, final double d)
 	{
 		if(index == 0)
@@ -191,6 +305,12 @@ public class Dir3D extends BigVector
 			z(d);
 	}
 
+	/**
+	 * Sets the indexed angle Use 0 for horizontal, 1 for vertical
+	 *
+	 * @param index the index
+	 * @param d the angle
+	 */
 	public void set(final int index, final BigDecimal d)
 	{
 		if(index == 0)
@@ -200,16 +320,34 @@ public class Dir3D extends BigVector
 			z(d);
 	}
 
+	/**
+	 * Add another direction to this one, producing a new direction
+	 *
+	 * @param v the other direction
+	 * @return the new direction
+	 */
 	public Dir3D add(final Dir3D v)
 	{
 		return new Dir3D(super.add(v));
 	}
 
+	/**
+	 * Subtract another direction from this one, producing a new direction
+	 *
+	 * @param v the other direction
+	 * @return the new direction
+	 */
 	public Dir3D subtract(final Dir3D v)
 	{
 		return new Dir3D(super.subtract(v));
 	}
 
+	/**
+	 * Create a 3d vector from this direction, given a magnitude
+	 *
+	 * @param magnitude the magnitude of the new vector
+	 * @return the new vector as an array of doubles
+	 */
 	public double[] toArray3(final double magnitude)
 	{
 		final double[] vector = new double[3];
@@ -221,6 +359,12 @@ public class Dir3D extends BigVector
 		return vector;
 	}
 
+	/**
+	 * Create a direction from a 3d vector
+	 *
+	 * @param vector the 3d vector
+	 * @return the new direction
+	 */
 	public static Dir3D fromArray3(final double[] vector)
 	{
 		final double magnitude = Math.sqrt(vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2]);
@@ -231,17 +375,31 @@ public class Dir3D extends BigVector
 		return new Dir3D(xyRad, zRad);
 	}
 
+	/**
+	 * Negate this direction, producing a new direction
+	 *
+	 * @return the new direction
+	 */
 	public Dir3D negate()
 	{
 		return new Dir3D(BigCMath.PI.add(xy()),BigCMath.PI.subtract(z()));
 	}
 
+	/**
+	 * Returns the hash code for this direction
+	 */
 	@Override
 	public int hashCode()
 	{
 		return xy().hashCode() << 32 | z().hashCode();
 	}
 
+	/**
+	 * Compares this direction to another object
+	 *
+	 * @param o the other object
+	 * @return true if the other object is a Dir3D and has the same angles
+	 */
 	@Override
 	public boolean equals(final Object o)
 	{

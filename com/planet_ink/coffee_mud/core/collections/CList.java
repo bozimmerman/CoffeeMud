@@ -16,9 +16,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A List that can also return an Enumeration, and be trimmed to size.
+ *
+ * @param <K> the type of object in the list
+ */
 public interface CList<K> extends List<K>
 {
+	/**
+	 * Returns an enumeration of the elements in this list.
+	 *
+	 * @return an enumeration of the elements in this list
+	 */
 	public Enumeration<K> elements();
 
+	/**
+	 * Trims the capacity of this list to be the list's current size.
+	 */
 	public void trimToSize();
 }

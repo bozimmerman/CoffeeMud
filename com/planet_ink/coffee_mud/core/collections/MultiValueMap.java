@@ -19,7 +19,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import com.planet_ink.coffee_mud.core.collections.LinkedCollection.LinkedEntry;
+import com.planet_ink.coffee_mud.core.collections.LinkedSet.LinkedEntry;
 
 /*
    Copyright 2022-2025 Bo Zimmerman

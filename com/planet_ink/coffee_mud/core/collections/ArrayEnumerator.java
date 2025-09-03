@@ -18,11 +18,24 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An enumeration wrapper for an array of objects.
+ *
+ * @param <K> the type of object in the array
+ */
 public class ArrayEnumerator<K> implements Enumeration<K>
 {
+	/** The array of objects to wrap. */
 	private final K[] set;
+	/** The current index in the array. */
 	private volatile int index = 0;
 
+	/**
+	 * Constructs an enumeration wrapper for the given array of objects.
+	 *
+	 * @param set the array of objects to wrap
+	 * @throws NullPointerException if the given array is null
+	 */
 	public ArrayEnumerator(final K[] set)
 	{
 		if(set == null)
@@ -30,12 +43,21 @@ public class ArrayEnumerator<K> implements Enumeration<K>
 		this.set=set;
 	}
 
+	/**
+	 * Returns whether there are more elements in this enumeration.
+	 */
 	@Override
 	public boolean hasMoreElements()
 	{
 		return index < set.length;
 	}
 
+	/**
+	 * Returns the next element in this enumeration.
+	 *
+	 * @throws NoSuchElementException if there are no more elements in this
+	 *             enumeration
+	 */
 	@Override
 	public K nextElement()
 	{

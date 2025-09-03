@@ -22,45 +22,166 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * A multi-dimensional list of objects, where each row has the same number
+ * of columns (dimensions).
+ *
+ * @param <T>
+ */
 public interface NList<T>
 {
+	/**
+	 * Clear out all the elements of this list.
+	 */
 	public void clear();
 
+	/**
+	 * Trim the internal storage of this list to the actual number of elements.
+	 */
 	public void trimToSize();
 
+	/**
+	 * Gets the index of the first occurrence of the given element in the
+	 * list, or -1 if it is not present.
+	 *
+	 * @param O the element to add
+	 * @return the index of the first occurrence of the given element
+	 */
 	public int indexOf(T O);
 
+	/**
+	 * Returns the elements at the given row as an array.
+	 *
+	 * @param x the row index
+	 * @return the elements at the given row as an array
+	 */
 	public T[] elementsAt(int x);
 
+	/**
+	 * Removes and returns the elements at the given row as an array.
+	 *
+	 * @param x the row index
+	 * @return the elements at the given row as an array
+	 */
 	public T[] removeElementsAt(int x);
 
+	/**
+	 * Returns a copy of this NList
+	 *
+	 * @return a copy of this NList
+	 */
 	public NList<T> copyOf();
 
+	/**
+	 * Sorts the list by the given dimension.  All elements in that dimension
+	 * must implement Comparable.
+	 *
+	 * @param dim the dimension to sort by
+	 */
 	public void sortBy(int dim);
 
+	/**
+	 * Adds a new row to the list.
+	 *
+	 * @param O the elements of the new row
+	 */
 	public void addSharedElements(T[] O);
 
+	/**
+	 * Returns whether or not the given element is contained in the list,
+	 *
+	 * @param O the element to look for
+	 * @return true if the element is found in the list
+	 */
 	public boolean contains(T O);
 
+	/**
+	 * Returns whether or not the given String is contained in the list,
+	 * ignoring case.
+	 *
+	 * @param S the String to look for
+	 * @return true if the String is found in the list
+	 */
 	public boolean containsIgnoreCase(String S);
 
+	/**
+	 * Returns the number of rows in the list.
+	 *
+	 * @return the number of rows in the list
+	 */
 	public int size();
 
+	/**
+	 * Removes the elements at the given row index.
+	 *
+	 * @param i the row index to remove
+	 */
 	public void removeElementAt(int i);
 
+	/**
+	 * Removes the elements at the given row index.
+	 *
+	 * @param i the row index to remove
+	 */
 	public void remove(int i);
 
+	/**
+	 * Removes the first row containing the given element.
+	 *
+	 * @param O the element to look for
+	 */
 	public void removeElement(T O);
 
+	/**
+	 * Returns a list of all the elements in the given dimension.
+	 *
+	 * @param dim the dimension to return
+	 * @return a list of all the elements in the given dimension
+	 */
 	public List<T> getDimensionList(int dim);
 
+	/**
+	 * Returns a list of all the elements in the given row.
+	 *
+	 * @param row the row to return
+	 * @return a list of all the elements in the given row
+	 */
 	public List<T> getRowList(int row);
 
+	/**
+	 * Gets the element at the given row and dimension.
+	 *
+	 * @param i row
+	 * @param dim dimension
+	 * @return the element at the given row and dimension
+	 */
 	public T elementAt(int i, int dim);
 
+	/**
+	 * Gets the element at the given row and dimension.
+	 *
+	 * @param i row
+	 * @param dim dimension
+	 * @return the element at the given row and dimension
+	 */
 	public T get(int i, int dim);
 
+	/**
+	 * Sets the element at the given row and dimension.
+	 *
+	 * @param index row
+	 * @param dim dimension
+	 * @param O the new value
+	 */
 	public void setElementAt(int index, int dim, T O);
 
+	/**
+	 * Sets the element at the given row and dimension.
+	 *
+	 * @param index row
+	 * @param dim dimension
+	 * @param O the new value
+	 */
 	public void set(int index, int dim, T O);
 }

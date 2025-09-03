@@ -20,20 +20,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-* The interface represents a 3d cubed thing.
-* @author Bo Zimmerman
-*
-*/
+ * A bounded cube is a rectangular prism defined by two corners, the lower left
+ * corner (lx,ty,iz) and the upper right corner (rx,by,oz). It can be used to
+ * represent a 3D area in space.
+ *
+ * @author Bo Zimmerman
+ */
 public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 {
 	public long	lx, ty, iz = 0;
 	public long	rx, by, oz = 0;
 
+	/**
+	 * Creates a new bounded cube with all coordinates set to zero.
+	 */
 	public BoundedCube()
 	{
 		super();
 	}
 
+	/**
+	 * Creates a new bounded cube with the given coordinates.
+	 *
+	 * @param lx the left x coordinate
+	 * @param rx the right x coordinate
+	 * @param ty the top y coordinate
+	 * @param by the bottom y coordinate
+	 * @param iz the inner z coordinate
+	 * @param oz the outer z coordinate
+	 */
 	public BoundedCube(final long lx, final long rx, final long ty, final long by, final long iz, final long oz)
 	{
 		super();
@@ -45,6 +60,12 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		this.oz = oz;
 	}
 
+	/**
+	 * Creates a new bounded cube with the given coordinates.
+	 *
+	 * @param coords the coordinates as an array of longs: [x,y,z]
+	 * @param radius the radius around the coordinates
+	 */
 	public BoundedCube(final long[] coords, final long radius)
 	{
 		super();
@@ -56,6 +77,12 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		this.oz = coords[2] + radius;
 	}
 
+	/**
+	 * Creates a new bounded cube with the given coordinates.
+	 *
+	 * @param coords the coordinates as a Coord3D object
+	 * @param radius the radius around the coordinates
+	 */
 	public BoundedCube(final Coord3D coords, final long radius)
 	{
 		super();
@@ -67,12 +94,22 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		this.oz = coords.z().longValue() + radius;
 	}
 
+	/**
+	 * Creates a new bounded cube that is a copy of the given bounded cube.
+	 *
+	 * @param l the bounded cube to copy
+	 */
 	public BoundedCube(final BoundedCube l)
 	{
 		super();
 		set(l);
 	}
 
+	/**
+	 * Sets this bounded cube to be a copy of the given bounded cube.
+	 *
+	 * @param l the bounded cube to copy
+	 */
 	public void set(final BoundedCube l)
 	{
 		this.lx = l.lx;
@@ -83,6 +120,11 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		this.oz = l.oz;
 	}
 
+	/**
+	 * Expands this bounded cube to include the given bounded cube.
+	 *
+	 * @param l the bounded cube to include
+	 */
 	public void union(final BoundedCube l)
 	{
 		if(l.lx < lx)
@@ -99,6 +141,10 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 			oz=l.oz;
 	}
 
+	/**
+	 * Returns the radius of this bounded cube, which is the distance from its center
+	 * 	to one of its corners.
+	 */
 	@Override
 	public long radius()
 	{
@@ -107,6 +153,13 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 								   +((oz - iz) * (oz - iz))));
 	}
 
+	/**
+	 * Expands this bounded cube in the given direction by the given distance.
+	 *
+	 * @param direction the direction to expand in
+	 * @param distance the distance to expand
+	 * @return a new bounded cube that is the result of the expansion
+	 */
 	public BoundedCube expand(final Dir3D direction, final long distance)
 	{
 		// this is silly -- it's just a giant cube
@@ -136,6 +189,11 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		return cube;
 	}
 
+	/**
+	 * Returns whether this bounded cube intersects with the given bounded object.
+	 * @param two the other bounded object
+	 * @return true if they intersect, false otherwise
+	 */
 	public boolean intersects(final BoundedObject two)
 	{
 		if(two==null)
@@ -151,6 +209,15 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		);
 	}
 
+	/**
+	 * Returns whether this bounded cube contains the given point.
+	 *
+	 * @param x the x coordinate of the point
+	 * @param y the y coordinate of the point
+	 * @param z the z coordinate of the point
+	 * @return true if the point is contained within this bounded cube, false
+	 *         otherwise
+	 */
 	public boolean contains(final long x, final long y, final long z)
 	{
 		return ((x >= lx)
@@ -161,6 +228,13 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 			  &&(z <= oz));
 	}
 
+	/**
+	 * Returns whether this bounded cube contains the given point.
+	 *
+	 * @param c the coordinates of the point as an array of longs: [x,y,z]
+	 * @return true if the point is contained within this bounded cube, false
+	 *         otherwise
+	 */
 	public boolean contains(final long[] c)
 	{
 		return ((c[0] >= lx)
@@ -171,6 +245,13 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 			  &&(c[2] <= oz));
 	}
 
+	/**
+	 * Returns whether this bounded cube contains the given point.
+	 *
+	 * @param c the coordinates of the point as a Coord3D object
+	 * @return true if the point is contained within this bounded cube, false
+	 *         otherwise
+	 */
 	public boolean contains(final Coord3D c)
 	{
 		return ((c.x().longValue() >= lx)
@@ -181,33 +262,60 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 			  &&(c.z().longValue() <= oz));
 	}
 
+	/**
+	 * Returns the width of this bounded cube.
+	 *
+	 * @return the width of this bounded cube
+	 */
 	public long width()
 	{
 		return rx - lx;
 	}
 
+	/**
+	 * Returns the height of this bounded cube.
+	 *
+	 * @return the height of this bounded cube
+	 */
 	public long height()
 	{
 		return by - ty;
 	}
 
+	/**
+	 * Returns the depth of this bounded cube.
+	 *
+	 * @return the depth of this bounded cube
+	 */
 	public long depth()
 	{
 		return oz - iz;
 	}
 
+	/**
+	 * Returns a BoundedSphere that completely contains this bounded cube.
+	 * @return a BoundedSphere that completely contains this bounded cube
+	 */
 	@Override
 	public BoundedSphere getSphere()
 	{
 		return new BoundedSphere(center(), radius());
 	}
 
+	/**
+	 * Returns the center of this bounded cube.
+	 *
+	 * @return the center of this bounded cube as a Coord3D object
+	 */
 	@Override
 	public Coord3D center()
 	{
 		return new Coord3D(new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)});
 	}
 
+	/**
+	 * Compares this bounded cube to another bounded object.
+	 */
 	@Override
 	public int compareTo(final BoundedObject o)
 	{
@@ -243,6 +351,9 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 		return 0;
 	}
 
+	/**
+	 * Returns this bounded cube.
+	 */
 	@Override
 	public BoundedCube getCube()
 	{
