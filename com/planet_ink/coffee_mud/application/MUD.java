@@ -5,6 +5,8 @@ import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.ConnectState;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
@@ -48,6 +50,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.net.*;
+import java.nio.file.Files;
 import java.util.*;
 import java.sql.*;
 
@@ -1211,6 +1214,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDNAME, name);
 
 			DBConnector currentDBconnector=null;
+			JSONObject dbChangeList = null;
 			String dbClass=page.getStr("DBCLASS");
 			if(tCode!=MAIN_HOST)
 			{
@@ -1229,6 +1233,28 @@ public class MUD extends Thread implements MudHost
 				{
 					CMLib.registerLibrary(baseEngine);
 					dbClass="";
+				}
+			}
+			else
+			{
+				final File f=new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
+				if(!f.exists())
+					Log.errOut("Unable to find database changelist for validation.");
+				else
+				{
+					try
+					{
+						final String json=new String(Files.readAllBytes(f.toPath()));
+						dbChangeList=(MiniJSON.JSONObject)new MiniJSON().parse(json);
+					}
+					catch (final MJSONException e)
+					{
+						Log.errOut("Unable to parse database changelist for validation.");
+					}
+					catch (final IOException e)
+					{
+						Log.errOut("Unable to read database changelist for validation.");
+					}
 				}
 			}
 			if(dbClass.length()>0)
@@ -1251,7 +1277,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
 				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,useQue,useQueStart);
 				currentDBconnector.reconnect();
-				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
+				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*"),dbChangeList));
 
 				final DBConnection DBTEST=currentDBconnector.DBFetchTest();
 				if(DBTEST!=null)
@@ -1670,7 +1696,7 @@ public class MUD extends Thread implements MudHost
 			}
 
 			final DBConnector currentDBconnector=new DBConnector();
-			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
+			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*"),null));
 			CMProps.setVar(CMProps.Str.MUDVER, HOST_VERSION);
 
 			// an arbitrary dividing line. After threadCode 0

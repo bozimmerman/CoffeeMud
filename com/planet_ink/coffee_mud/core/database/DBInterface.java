@@ -80,11 +80,13 @@ public class DBInterface implements DatabaseEngine
 	BackLogLoader	BackLogLoader	= null;
 	GCommandLoader	CommandLoader	= null;
 	DBConnector		DB				= null;
+	JSONObject		changeList		= null;
 
-	public DBInterface(final DBConnector DB, Set<String> privacyV)
+	public DBInterface(final DBConnector DB, Set<String> privacyV, final JSONObject changeList)
 	{
 		this.DB=DB;
 		DBConnector oldBaseDB=DB;
+		this.changeList = changeList;
 		final DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.Library.DATABASE);
 		if(privacyV == null)
 			privacyV = new HashSet<String>();
@@ -143,7 +145,7 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public CMObject newInstance()
 	{
-		return new DBInterface(DB, CMProps.getPrivateSubSet("DB.*"));
+		return new DBInterface(DB, CMProps.getPrivateSubSet("DB.*"), this.changeList);
 	}
 
 	@Override
@@ -1576,13 +1578,13 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public String validateDatabaseVersion()
 	{
-		return new DDLValidator(DB).validateDatabaseVersion();
+		return new DDLValidator(DB,changeList).validateDatabaseVersion();
 	}
 
 	@Override
 	public String upgradeDatabaseVersion()
 	{
-		return new DDLValidator(DB).upgradeDatabaseVersion();
+		return new DDLValidator(DB,changeList).upgradeDatabaseVersion();
 	}
 
 	@Override

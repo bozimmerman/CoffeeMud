@@ -36,6 +36,14 @@ import java.util.Hashtable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A DBConnector is a pool of DBConnection objects, all connected to the
+ * same database.  It manages the connections, and provides
+ * methods for querying and updating the database.
+ * It also provides some static convenience methods for
+ * cleaning strings for SQL statements, and for
+ * getting values from a ResultSet.
+ */
 public class DBConnector
 {
 	private DBConnections		dbConnections		= null;
@@ -51,6 +59,13 @@ public class DBConnector
 	private boolean				doErrorQueueing		= false;
 	private boolean				newErrorQueueing	= false;
 
+	/**
+	 * A single prepared batch entry, consisting of a SQL string
+	 * and a 2D array of CLOB strings.  Each row of the 2D array
+	 * is a separate execution of the SQL string, and each column
+	 * of the 2D array is a separate CLOB parameter to be
+	 * set on the prepared statement.
+	 */
 	public static final class DBPreparedBatchEntry
 	{
 		public DBPreparedBatchEntry(final String sql)
@@ -81,11 +96,29 @@ public class DBConnector
 		public final String[][]	clobs;
 	}
 
+	/**
+	 * Default constructor. All fields must be set manually, and then
+	 * reconnect() must be called before use.
+	 */
 	public DBConnector()
 	{
 		super();
 	}
 
+	/**
+	 * Full constructor.
+	 * @param dbClass the class name of the JDBC driver
+	 * @param dbService the database URL
+	 * @param dbUser the database user name
+	 * @param dbPass the database user password
+	 * @param dbParms additional connection parameters
+	 * @param numConnections the number of connections to maintain in the pool
+	 * @param dbPingIntMins the number of minutes between connection pings
+	 * @param reuse if true, connections are reused
+	 * @param transact if true, transactions are used for updates
+	 * @param doErrorQueueing if true, failed updates are queued for later retry
+	 * @param retryErrorQueue if true, queued updates are retried on reconnect
+	 */
 	public DBConnector (final String dbClass,
 						final String dbService,
 						final String dbUser,
@@ -114,6 +147,9 @@ public class DBConnector
 			this.dbPingIntMins=Integer.MAX_VALUE;
 	}
 
+	/**
+	 * Reconnect to the database using the current settings.
+	 */
 	public void reconnect()
 	{
 		if (dbConnections != null)
@@ -126,16 +162,30 @@ public class DBConnector
 			dbConnections.retryQueuedErrors();
 	}
 
+	/**
+	 * Get the database class name.
+	 * @return String the database class name
+	 */
 	public String service()
 	{
 		return dbService;
 	}
 
+	/**
+	 *  Should bulk inserts be used?
+	 * @return boolean true if bulk inserts should be used
+	 */
 	public boolean useBulkInserts()
 	{
 		return this.dbTransact && ((dbConnections==null)||(!dbConnections.getDBType().contains("oracle")));
 	}
 
+	/**
+	 * Get the number of records in a ResultSet.
+	 * @param D the DBConnection used to create the ResultSet, or null
+	 * @param R the ResultSet to count records in
+	 * @return int the number of records in the ResultSet
+	 */
 	public int getRecordCount(final DBConnection D, final ResultSet R)
 	{
 		if(D!=null)
@@ -154,6 +204,11 @@ public class DBConnector
 		return recordCount;
 	}
 
+	/**
+	 * Deregister the JDBC driver.
+	 * This should be called before application shutdown
+	 * @return boolean true if successful, false otherwise
+	 */
 	public boolean deregisterDriver()
 	{
 		if(dbConnections!=null)
@@ -161,46 +216,93 @@ public class DBConnector
 		return false;
 	}
 
+	/**
+	 * Check to see if this is a fake DB connection.
+	 */
 	public boolean isFakeDB()
 	{
 		return (dbConnections!=null)?dbConnections.isFakeDB():false;
 	}
 
+	/**
+	 * Execute a series of SQL statements.
+	 * @param updateStrings the SQL update strings to execute
+	 * @return the return code of the update.
+	 */
 	public int update(final String[] updateStrings)
 	{
 		return (dbConnections != null) ? dbConnections.update(updateStrings) : 0;
 	}
 
+	/**
+	 * Execute a single SQL statements.
+	 *
+	 * @param updateString the SQL update string to execute
+	 * @return the return code of the update.
+	 */
 	public int update(final String updateString)
 	{
 		return (dbConnections != null) ? dbConnections.update(new String[] { updateString }) : 0;
 	}
 
+	/**
+	 * Execute a series of SQL statements with CLOB parameters.
+	 * @param updateStrings the SQL update strings to execute
+	 * @param values the CLOB values to set on the prepared statements.
+	 * @return the return code of the update.
+	 */
 	public int updateWithClobs(final String[] updateStrings, final String[][][] values)
 	{
 		return (dbConnections != null) ? dbConnections.updateWithClobs(updateStrings, values) : 0;
 	}
 
+	/**
+	 * Execute a series of prepared SQL statements with CLOB parameters.
+	 * @param entries the prepared batch entries to execute
+	 * @return the return code of the update.
+	 */
 	public int updateWithClobs(final List<DBPreparedBatchEntry> entries)
 	{
 		return (dbConnections != null) ? dbConnections.updateWithClobs(entries) : 0;
 	}
 
+	/**
+	 * Execute a single prepared SQL statement with CLOB parameters.
+	 * @param entry the prepared batch entry to execute
+	 * @return the return code of the update.
+	 */
 	public int updateWithClobs(final DBPreparedBatchEntry entry)
 	{
 		return updateWithClobs(entry.sql, entry.clobs);
 	}
 
+	/**
+	 * Execute a single SQL statement with CLOB parameters.
+	 * @param updateString the SQL update string to execute
+	 * @param values the CLOB values to set on the prepared statement.
+	 * @return the return code of the update.
+	 */
 	public int updateWithClobs(final String updateString, final String... values)
 	{
 		return updateWithClobs(updateString, new String[][] { values });
 	}
 
+	/**
+	 * Execute a single SQL statement with multiple sets of CLOB parameters.
+	 * @param updateString the SQL update string to execute
+	 * @param values the CLOB values to set on the prepared statement.
+	 * @return the return code of the update.
+	 */
 	public int updateWithClobs(final String updateString, final String[][] values)
 	{
 		return (dbConnections != null) ? dbConnections.updateWithClobs(updateString, values) : 0;
 	}
 
+	/**
+	 * Execute a query, returning the ResultSet.
+	 * @param queryString the SQL query string to execute
+	 * @return ResultSet the results of the query
+	 */
 	public int queryRows(final String queryString)
 	{
 		return (dbConnections != null) ? dbConnections.queryRows(queryString) : 0;
@@ -246,11 +348,19 @@ public class DBConnector
 		return (dbConnections != null) ? dbConnections.DBFetchEmpty() : null;
 	}
 
+	/**
+	 * Return the number of connections made since startup
+	 * @return int    number of connections made
+	 */
 	public int numConnectionsMade()
 	{
 		return (dbConnections != null) ? dbConnections.numConnectionsMade() : 0;
 	}
 
+	/**
+	 * Return the number of connections currently in use
+	 * @return int    number of connections in use
+	 */
 	public int numDBConnectionsInUse()
 	{
 		return (dbConnections != null) ? dbConnections.numInUse() : 0;
@@ -288,20 +398,33 @@ public class DBConnector
 	 * will be trim()ed, and will not be NULL.
 	 *
 	 * Usage: str=getLongRes(R,"FIELD");
-	 * @param Results    The ResultSet object to use
-	 * @param Field 	   Field name to return
+	 * @param results    The ResultSet object to use
+	 * @param field 	   Field name to return
 	 * @return String    The value of the field being returned
 	 */
-	public String getRes(final ResultSet Results, final String Field)
+	public String getRes(final ResultSet results, final String field)
 	{
-		return DBConnections.getRes(Results, Field);
+		return DBConnections.getRes(results, field);
 	}
 
+	/**
+	 * When reading a database table, this routine will read in
+	 * the given Field NAME, returning the value.  The value
+	 * will be trim()ed, and will be "" if NULL.
+	 * @param Results   The ResultSet object to use
+	 * @param Field        Field name to return
+	 * @return String   The value of the field being returned
+	 */
 	public String getResQuietly(final ResultSet Results, final String Field)
 	{
 		return DBConnections.getResQuietly(Results, Field);
 	}
 
+	/**
+	 * Cleans a string so that it is safe to use in an SQL statement.
+	 * @param s   the string to be cleaned
+	 * @return String   the cleaned string
+	 */
 	public String injectionClean(final String s)
 	{
 		if(s==null)

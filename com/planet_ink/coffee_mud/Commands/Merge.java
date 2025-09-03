@@ -741,7 +741,7 @@ public class Merge extends StdCommand
 
 		dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,false,false);
 		dbConnector.reconnect();
-		final DBInterface dbInterface = new DBInterface(dbConnector,null);
+		final DBInterface dbInterface = new DBInterface(dbConnector, null, null);
 
 		final DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null)

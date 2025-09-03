@@ -141,7 +141,7 @@ public class VFShell
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
 					currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,useQue,useQueStart);
 					currentDBconnector.reconnect();
-					CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
+					CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*"),null));
 
 					final DBConnection DBTEST=currentDBconnector.DBFetch();
 					if(DBTEST!=null)
@@ -507,7 +507,7 @@ public class VFShell
 					}
 
 					@Override
-					public void doPing(final SessionPing ping, Object obj)
+					public void doPing(final SessionPing ping, final Object obj)
 					{
 
 					}

@@ -47,16 +47,44 @@ import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
  */
 public class DDLValidator
 {
-	private final DBConnector DB;
+	private final DBConnector	DB;
+	private List<JSONObject>[]	changes;
 
 	/**
 	 * Constructs a DDLValidator with the specified DBConnector.
 	 *
 	 * @param DB the database connector
 	 */
-	public DDLValidator(final DBConnector DB)
+	public DDLValidator(final DBConnector DB, final JSONObject changeList)
 	{
 		this.DB=DB;
+		if(changeList != null)
+		{
+			@SuppressWarnings("unchecked")
+			List<JSONObject>[] allChanges=new List[1];
+			for(final String key : changeList.keySet())
+			{
+				final int i = Integer.parseInt(key);
+				if(changeList.get(key) instanceof Object[])
+				{
+					final Object[] arr=(Object[])changeList.get(key);
+					final List<JSONObject> changeSet=new ArrayList<JSONObject>();
+					for(final Object oc : arr)
+						changeSet.add((JSONObject)oc);
+					if(i>=allChanges.length)
+						allChanges=Arrays.copyOf(allChanges, i+1);
+					allChanges[i]=changeSet;
+				}
+			}
+			for (int i=0;i<allChanges.length;i++)
+			{
+				if (allChanges[i] == null)
+					allChanges[i] = new ArrayList<JSONObject>();
+			}
+			changes = allChanges;
+		}
+		else
+			changes = null;
 	}
 
 	/**
@@ -453,59 +481,6 @@ public class DDLValidator
 	}
 
 	/**
-	 * Returns the changelists from the changelist JSON file.
-	 *
-	 * @param quiet true to suppress error messages
-	 * @return the changelists, or null if unable to read/parse
-	 */
-	private List<JSONObject>[] getChangeLists(final boolean quiet)
-	{
-		final File f=new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
-		if(!f.exists())
-		{
-			if(!quiet)
-				Log.errOut("Unable to find database changelist for validation.");
-			return null;
-		}
-		try
-		{
-			final String json=new String(Files.readAllBytes(f.toPath()));
-			final MiniJSON.JSONObject obj=(MiniJSON.JSONObject)new MiniJSON().parse(json);
-			@SuppressWarnings("unchecked")
-			List<JSONObject>[] allChanges=new List[1];
-			for(final String key : obj.keySet())
-			{
-				final int i = Integer.parseInt(key);
-				final Object[] arr=obj.getCheckedArray(key);
-				final List<JSONObject> changeSet=new ArrayList<JSONObject>();
-				for(final Object oc : arr)
-					changeSet.add((JSONObject)oc);
-				if(i>=allChanges.length)
-					allChanges=Arrays.copyOf(allChanges, i+1);
-				allChanges[i]=changeSet;
-			}
-			for (int i=0;i<allChanges.length;i++)
-			{
-				if (allChanges[i] == null)
-					allChanges[i] = new ArrayList<JSONObject>();
-			}
-			return allChanges;
-		}
-		catch (final MJSONException e)
-		{
-			if(!quiet)
-				Log.errOut("Unable to parse database changelist for validation.");
-			return null;
-		}
-		catch (final IOException e)
-		{
-			if(!quiet)
-				Log.errOut("Unable to read database changelist for validation.");
-			return null;
-		}
-	}
-
-	/**
 	 * Returns the current database version code, or Integer.MIN_VALUE if unable
 	 * to determine. Positive version means valid, negative means corrupted.
 	 *
@@ -514,7 +489,6 @@ public class DDLValidator
 	 */
 	public int getDatabaseVersionCode(final boolean quiet)
 	{
-		final List<JSONObject>[] changes=this.getChangeLists(quiet);
 		if(changes==null)
 			return Integer.MIN_VALUE;
 		try
@@ -851,9 +825,8 @@ public class DDLValidator
 	 */
 	public String validateDatabaseVersion()
 	{
-		final List<JSONObject>[] changes=this.getChangeLists(true);
 		if (changes == null)
-			return "Unable to read database changelist for validation.";
+			return "Unable to find database changelist for validation.";
 		final int currentVersion = changes.length-1;
 		final int lastAppliedVersion=getDatabaseVersionCode(false);
 		if(lastAppliedVersion==Integer.MIN_VALUE)
@@ -1027,7 +1000,6 @@ public class DDLValidator
 	 */
 	private String createDatabase()
 	{
-		final List<JSONObject>[] changes=getChangeLists(true);
 		if(changes==null)
 			return "Unable to upgrade database: no change lists found.";
 		DBConnection conn=null;
@@ -1075,7 +1047,6 @@ public class DDLValidator
 	 */
 	public String upgradeDatabaseVersion()
 	{
-		final List<JSONObject>[] changes=getChangeLists(true);
 		if(changes==null)
 			return "Unable to upgrade database: no change lists found.";
 		int version=getDatabaseVersionCode(true);
