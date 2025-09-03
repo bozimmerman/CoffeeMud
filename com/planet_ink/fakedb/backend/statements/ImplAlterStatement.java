@@ -142,7 +142,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			else
 			if(next.startsWith("COLUMN "))
 			{
-				sql=sql.substring(8);
+				sql=sql.substring(6);
 				sql=skipWS(sql);
 				what="COLUMN";
 			}
@@ -156,7 +156,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 			else
 			if(next.startsWith("INDEX "))
 			{
-				sql=sql.substring(6);
+				sql=sql.substring(5);
 				sql=skipWS(sql);
 				what="INDEX";
 			}
@@ -245,7 +245,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 		{
 			if(sql.length()==0)
 				throw new java.sql.SQLException("Unexpected end of list.");
-			if(sql.startsWith(","))
+			if(sql.startsWith(",")||sql.startsWith(";"))
 				break;
 			if(openingParen && sql.startsWith(")"))
 			{
@@ -277,10 +277,13 @@ public class ImplAlterStatement extends ImplAbstractStatement
 				sql = skipWS(r[0]);
 				if(parm.equals("PRIMARY")||parm.equals("KEY"))
 					col.keyNumber=1;
+				else
 				if(parm.equals("NOT"))
 					not=true;
+				else
 				if(parm.equals("NULL"))
 					col.canNull = !not;
+				else
 				if(parm.equals("DEFAULT")&&(col.defaultValue==null))
 				{
 					r = parseVal(sql);
@@ -288,6 +291,8 @@ public class ImplAlterStatement extends ImplAbstractStatement
 					sql = skipWS(r[0]);
 					col.defaultValue=parm;
 				}
+				else
+					throw new java.sql.SQLException("Unknown column attribute: "+parm+sql);
 			}
 		}
 		sql = skipWS(sql);

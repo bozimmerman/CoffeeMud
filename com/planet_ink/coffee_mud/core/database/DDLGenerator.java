@@ -222,6 +222,7 @@ public class DDLGenerator
 		return productName.contains("postgre")
 			|| productName.contains("mysql")
 			|| productName.contains("derby")
+			|| productName.contains("fakedb")
 			|| productName.contains("hsql")
 			|| productName.contains("access");
 	}

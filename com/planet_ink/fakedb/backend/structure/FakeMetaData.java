@@ -258,13 +258,13 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public boolean supportsAlterTableWithAddColumn() throws SQLException
 	{
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean supportsAlterTableWithDropColumn() throws SQLException
 	{
-		return false;
+		return true;
 	}
 
 	@Override

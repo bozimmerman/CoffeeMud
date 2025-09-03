@@ -712,12 +712,15 @@ public class Backend
 		{
 			if (objType.equals("COLUMN"))
 			{
-				final String colDef = findColumnDef(col.name, tableDef);
-				if (colDef == null)
-					throw new java.sql.SQLException("column " + col.name + " does not exist");
-				final int index = tableDef.indexOf(colDef);
-				tableDef.remove(index);
-				fakeTable.removeColumn(index-1);
+				for(final String name : stmt.changes)
+				{
+					final String colDef = findColumnDef(name, tableDef);
+					if (colDef == null)
+						throw new java.sql.SQLException("column " + name + " does not exist");
+					final int index = tableDef.indexOf(colDef);
+					tableDef.remove(index);
+					fakeTable.removeColumn(index-1);
+				}
 			}
 			else if (objType.equals("KEY"))
 			{
