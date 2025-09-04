@@ -1,4 +1,3 @@
-#DISPLAY_MASK	ITEM_LEVEL	BUILD_TIME_TICKS	NAME_MASK	MATERIALS_REQUIRED	ZAPPERMASK	CODED_SPELL_LIST
 a lace collar	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
 puffed sleeves	1	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
 a high neckline	2	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
@@ -11,28 +10,75 @@ elbow-length sleeves	6	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TO
 a ruffled skirt	6	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
 a deep hood	7	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
 short sleeves	7	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
+tiny pockets	8	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	*Prop_PropSetter;trigger=always bubble=false capacity=(${weight}+5)
 a lace-trimmed neckline	8	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
 a pleated skirt	9	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +LEGS	
 off-the-shoulder sleeves	10	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
 % shoulder patches	10	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO	
-deep pockets	11	20	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+deep pockets	11	20	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	*Prop_PropSetter;trigger=always bubble=false capacity=(${weight}+10)
 a lace-trimmed hem	11	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
 decorative % stitching along the neckline and hem	12	20	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO	
 a scalloped hem	13	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
 tiny % encircling the neckline	14	20	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)||(inventory:kept:1:FLOWERS:)	-WORNON +TORSO	
-many pockets	15	30	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	
+many pockets	15	30	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +TORSO +LEGS	*Prop_PropSetter;trigger=always bubble=false capacity=(${weight}+10)
 tiny % seashells encircling the neckline	16	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
 a ruffled hem	17	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
-tiny % encircling the neckline	18	35	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
+tiny % studs encircling the neckline	18	35	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
 a %-trimmed hood	19	25	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD	
+giant pockets	20	30	@x1 with @x2	(inventory:consumed:2:CLOTH:)	-WORNON +TORSO +LEGS	*Prop_PropSetter;trigger=always bubble=false capacity=(${weight}+25)
 tiny % roses embroidered around the neckline	20	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +TORSO	
 a simple % buckle	21	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +WAIST	
 % buttons down the front	22	5	@x1 with @x2	(inventory:consumed:1:METAL:)	-WORNON +TORSO +LEGS	
 a shiny % buckle	23	5	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
 tiny % feathers embroidered around the neckline	24	15	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO	
 a % inner lining	25	15	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +HEAD +TORSO +BACK +HANDS +FEET	
+enormous pockets	26	45	@x1 with @x2	(inventory:consumed:3:CLOTH:)	-WORNON +TORSO +LEGS	*Prop_PropSetter;trigger=always bubble=false capacity=(${weight}+50)
 a polished % buckle	26	10	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)	-WORNON +WAIST	
 a %-encrusted buckle	27	15	@x1 with @x2	(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)	-WORNON +WAIST	
 tiny % roses embroidered along the hem	28	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
 tiny % feathers embroidered along the hem	29	25	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS	
 % fastenings	30	5	@x1 with @x2	(inventory:consumed:1:WOODEN:)||(inventory:consumed:1:METAL:)||(inventory:consumed:1:STONE:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +TORSO +LEGS +LEFT_WRIST +RIGHT_WRIST	
+% buckles on the front	13	15	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)||(inventory:consumed:1:WOODEN:)	-WORNON +FEET	
+% buttons down the sides	14	15	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +FEET	
+thick-soles	15	15	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+a 1-inch platform	15	20	@x1 with @x2	(inventory:consumed:2:WOODEN:)	-WORNON +FEET	*Prop_WearAdjuster;height+1
+a 2-inch platform	20	25	@x1 with @x2	(inventory:consumed:3:WOODEN:)	-WORNON +FEET	*Prop_WearAdjuster;height+2
+a 3-inch platform	25	30	@x1 with @x2	(inventory:consumed:4:WOODEN:)	-WORNON +FEET	*Prop_WearAdjuster;height+3
+a 4-inch platform	30	35	@x1 with @x2	(inventory:consumed:5:WOODEN:)	-WORNON +FEET	*Prop_WearAdjuster;height+4
+with % toes	28	30	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:MITHRIL:)	-WORNON +FEET	
+% studs around the tops 	29	20	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)	-WORNON +FEET	
+patterns of flames down the sides	10	25	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+patterns of leaves down the sides	5	25	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+wavy patterns down the sides 	3	25	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+swirling designs down the sides	8	25	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+geometric designs down the sides	13	25	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+decorative % studs on the straps	30	25	@x1 with @x2	(inventory:consumed:1:METAL:)||(inventory:consumed:1:PRECIOUS:)||(inventory:consumed:1:MITHRIL:)||(inventory:consumed:1:WOODEN:)	-WORNON +FEET	
+pale pink roses embroidered on the toes	18	30	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+deep golden sunflowers embroidered on the toes	23	30	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+cream colored lilies embroidered on the toes	28	30	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+bejeweled % butterflies on the toes	17	30	@x1 with @x2	(inventory:consumed:1:PRECIOUS:)	-WORNON +FEET	
+tiny seashells on the toes	12	30	@x1 with @x2	(inventory:consumed:1:LEATHER:)	-WORNON +FEET	
+black laces	1	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+white laces	2	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+gold laces	3	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+silver laces	4	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+red laces	5	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+orange laces	6	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+yellow laces	7	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+green laces	8	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+blue laces	9	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+purple laces	10	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+pink laces	11	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+brown laces	12	5	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+black straps	16	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+white straps	17	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+gold straps	18	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+silver straps	19	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+red straps	20	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+orange straps	21	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+yellow straps	22	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+green straps	23	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+blue straps	24	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+purple straps	25	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+pink straps	26	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	
+brown straps	27	10	@x1 with @x2	(inventory:consumed:1:CLOTH:)	-WORNON +FEET	

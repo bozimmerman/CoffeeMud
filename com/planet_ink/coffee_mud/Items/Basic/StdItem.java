@@ -1294,7 +1294,7 @@ public class StdItem implements Item
 				mob.tell(L("@x1 looks too advanced for you.",name(msg.source())));
 				return false;
 			}
-			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2),msg.othersMessage()==null);
+			return canWearComplete(mob,(msg.value()<=0)?0:((1L<<msg.value())/2),msg.othersMessage()==null);
 		case CMMsg.TYP_WIELD:
 			if((!fitsOn(Wearable.WORN_WIELD))||(properWornBitmap==0))
 			{

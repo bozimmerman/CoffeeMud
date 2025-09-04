@@ -94,7 +94,7 @@ public class GenAbility extends StdAbility
 		O[V_MAXR]=Integer.valueOf(0);
 		O[V_MINR]=Integer.valueOf(0);
 		O[V_AUTO]=Boolean.FALSE;
-		O[V_FLAG]=Integer.valueOf(0);
+		O[V_FLAG]=Long.valueOf(0);
 		O[V_CLAS]=Integer.valueOf(Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION);
 		O[V_OMAN]=Integer.valueOf(-1);
 		O[V_USAG]=Integer.valueOf(Ability.USAGE_MANA);
@@ -237,7 +237,7 @@ public class GenAbility extends StdAbility
 	@Override
 	public long flags()
 	{
-		return ((Integer) V(ID, V_FLAG)).intValue();
+		return ((Long) V(ID, V_FLAG)).longValue();
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return ((Integer) V(ID, V_TKBC)).intValue();
 	}
@@ -1138,7 +1138,7 @@ public class GenAbility extends StdAbility
 		case 7:
 			return ((Boolean) V(ID, V_AUTO)).toString();
 		case 8:
-			return convert(Ability.FLAG_DESCS, ((Integer) V(ID, V_FLAG)).intValue(), true);
+			return convert(Ability.FLAG_DESCS, ((Long) V(ID, V_FLAG)).longValue(), true);
 		case 9:
 			return convertClassAndDomain(((Integer) V(ID, V_CLAS)).intValue());
 		case 10:
@@ -1249,16 +1249,16 @@ public class GenAbility extends StdAbility
 			SV(ID, V_TRIG, CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(), true)));
 			break;
 		case 5:
-			SV(ID, V_MAXR, Integer.valueOf(convert(Ability.RANGE_CHOICES, val, false)));
+			SV(ID, V_MAXR, Integer.valueOf((int)convert(Ability.RANGE_CHOICES, val, false)));
 			break;
 		case 6:
-			SV(ID, V_MINR, Integer.valueOf(convert(Ability.RANGE_CHOICES, val, false)));
+			SV(ID, V_MINR, Integer.valueOf((int)convert(Ability.RANGE_CHOICES, val, false)));
 			break;
 		case 7:
 			SV(ID, V_AUTO, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		case 8:
-			SV(ID, V_FLAG, Integer.valueOf(convert(Ability.FLAG_DESCS, val, true)));
+			SV(ID, V_FLAG, Long.valueOf(convert(Ability.FLAG_DESCS, val, true)));
 			break;
 		case 9:
 			SV(ID, V_CLAS, Integer.valueOf(convertClassAndDomain(val)));
@@ -1268,16 +1268,16 @@ public class GenAbility extends StdAbility
 			getHardOverrideManaCache().remove(ID());
 			break;
 		case 11:
-			SV(ID, V_USAG, Integer.valueOf(convert(Ability.USAGE_DESCS, val, true)));
+			SV(ID, V_USAG, Integer.valueOf((int)convert(Ability.USAGE_DESCS, val, true)));
 			break;
 		case 12:
-			SV(ID, V_CAFF, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			SV(ID, V_CAFF, Integer.valueOf((int)convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 13:
-			SV(ID, V_CTAR, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			SV(ID, V_CTAR, Integer.valueOf((int)convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 14:
-			SV(ID, V_QUAL, Integer.valueOf(convert(Ability.QUALITY_DESCS, val, false)));
+			SV(ID, V_QUAL, Integer.valueOf((int)convert(Ability.QUALITY_DESCS, val, false)));
 			break;
 		case 15:
 			SV(ID, V_HERE, val);
@@ -1304,7 +1304,7 @@ public class GenAbility extends StdAbility
 			SV(ID, V_PCST, val);
 			break;
 		case 23:
-			SV(ID, V_ATT2, Integer.valueOf(convert(CMMsg.TYPE_DESCS, val, false)));
+			SV(ID, V_ATT2, Integer.valueOf((int)convert(CMMsg.TYPE_DESCS, val, false)));
 			break;
 		case 24:
 			SV(ID, V_PAFF, val);
@@ -1354,14 +1354,14 @@ public class GenAbility extends StdAbility
 		}
 	}
 
-	private String convert(final String[] options, final int val, final boolean mask)
+	private String convert(final String[] options, final long val, final boolean mask)
 	{
 		if(mask)
 		{
 			final StringBuffer str=new StringBuffer("");
 			for(int i=0;i<options.length;i++)
 			{
-				if((val&(1<<i))>0)
+				if((val&(1L<<i))>0)
 					str.append(options[i]+",");
 			}
 			if(str.length()>0)
@@ -1374,7 +1374,7 @@ public class GenAbility extends StdAbility
 		}
 		else
 		if((val>=0)&&(val<options.length))
-			return options[val];
+			return options[(int)val];
 		return ""+val;
 	}
 
@@ -1441,29 +1441,29 @@ public class GenAbility extends StdAbility
 		return ""+val;
 	}
 
-	private int convert(final String[] options, final String val, final boolean mask)
+	private long convert(final String[] options, final String val, final boolean mask)
 	{
-		if(CMath.isInteger(val))
-			return CMath.s_int(val);
+		if(CMath.isLong(val))
+			return CMath.s_long(val);
 		for(int i=0;i<options.length;i++)
 		{
 			if(val.equalsIgnoreCase(options[i]))
-				return mask?(1<<i):i;
+				return mask?(1L<<i):i;
 		}
 		if(val.length()>0)
 		{
 			for(int i=0;i<options.length;i++)
 			{
 				if(options[i].toUpperCase().startsWith(val.toUpperCase()))
-					return mask?(1<<i):i;
+					return mask?(1L<<i):i;
 			}
 		}
 		if(mask)
 		{
 			final List<String> V=CMParms.parseCommas(val,true);
-			int num=0;
+			long num=0;
 			for(int v=0;v<V.size();v++)
-				num=num|(1<<convert(options,V.get(v),false));
+				num=num|(1L<<convert(options,V.get(v),false));
 			return num;
 		}
 		return 0;

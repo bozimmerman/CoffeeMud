@@ -102,7 +102,7 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 	}
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return (int)CMProps.getTicksPerDay();
 	}

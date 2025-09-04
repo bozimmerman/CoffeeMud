@@ -204,17 +204,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	private static class ScriptableResponse
 	{
 		/** The trigger code being executed */
-		public int triggerCode = 0;
+		public int			triggerCode	= 0;
 		/** The number of ticks to delay before triggering */
-		private int tickDelay=0;
+		private int			tickDelay	= 0;
 		/** (host) the object being scripted */
-		public MPContext ctx;
+		public MPContext	ctx;
 		/** (script) the actual script to execute for this event */
-		public SubScript scr;
+		public SubScript	scr;
 		/** the hash code for this whole thing */
-		private Integer hashCode = null;
+		private Integer		hashCode	= null;
 		/** when this event was queued */
-		private final long queuedAt = System.currentTimeMillis();
+		private final long	queuedAt	= System.currentTimeMillis();
 
 		/**
 		 * Create an event response object
@@ -13555,6 +13555,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<SubScript> scripts=(List<SubScript>)Resources.getResource(getScriptResourceKey());
 		if(scripts==null)
 		{
+			delayTargetTimes.clear();
+			delayProgCounters.clear();
+			lastTimeProgsDone.clear();
+			lastDayProgsDone.clear();
+			oncesDone.clear();
 			String scr=getScript();
 			scr=CMStrings.replaceAll(scr,"`","'");
 			scripts=parseScripts(scriptedE,scr);

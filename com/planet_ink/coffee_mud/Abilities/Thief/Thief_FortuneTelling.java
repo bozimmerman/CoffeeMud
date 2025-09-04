@@ -127,7 +127,7 @@ public class Thief_FortuneTelling extends Thief_Runecasting
 	protected long timeToNextCast = 0;
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return (int)CMProps.getTicksPerMudHour() * CMLib.time().globalClock().getHoursInDay();
 	}

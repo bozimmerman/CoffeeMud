@@ -57,7 +57,9 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		CHARACTER,
 		ACCOUNT,
 		GROUP,
-		CLAN
+		CLAN,
+		PLAYER,
+		NPC
 	}
 
 	protected BoundTo to = BoundTo.CHARACTER;
@@ -159,6 +161,16 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 						if(this.boundToName.equals(msg.source().Name()))
 							zap=false;
 						break;
+					case PLAYER:
+						if((this.boundToName.equals(msg.source().Name()))
+						||(!msg.source().isPlayer()))
+							zap=false;
+						break;
+					case NPC:
+						if((this.boundToName.equals(msg.source().Name()))
+						||(msg.source().isPlayer()))
+							zap=false;
+						break;
 					case GROUP:
 					{
 						final List<String> names=CMParms.parse(this.boundToName);
@@ -207,6 +219,8 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		switch(to)
 		{
 		case CHARACTER:
+		case PLAYER:
+		case NPC:
 			return mob.Name();
 		case GROUP:
 		{

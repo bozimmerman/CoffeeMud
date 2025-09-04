@@ -541,10 +541,10 @@ public class GenTrap extends StdTrap
 			super.ableCode = CMath.s_int(val);
 			break;
 		case 5:
-			SV(ID, V_CAFF, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			SV(ID, V_CAFF, Integer.valueOf((int)convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 6:
-			SV(ID, V_CTAR, Integer.valueOf(convert(Ability.CAN_DESCS, val, true)));
+			SV(ID, V_CTAR, Integer.valueOf((int)convert(Ability.CAN_DESCS, val, true)));
 			break;
 		case 7:
 			SV(ID, V_BOMB, Boolean.valueOf(CMath.s_bool(val)));
@@ -670,29 +670,29 @@ public class GenTrap extends StdTrap
 		return str.toString();
 	}
 
-	private int convert(final String[] options, final String val, final boolean mask)
+	private long convert(final String[] options, final String val, final boolean mask)
 	{
-		if(CMath.isInteger(val))
-			return CMath.s_int(val);
+		if(CMath.isLong(val))
+			return CMath.s_long(val);
 		for(int i=0;i<options.length;i++)
 		{
 			if(val.equalsIgnoreCase(options[i]))
-				return mask?(1<<i):i;
+				return mask?(1L<<i):i;
 		}
 		if(val.length()>0)
 		{
 			for(int i=0;i<options.length;i++)
 			{
 				if(options[i].toUpperCase().startsWith(val.toUpperCase()))
-					return mask?(1<<i):i;
+					return mask?(1L<<i):i;
 			}
 		}
 		if(mask)
 		{
 			final List<String> V=CMParms.parseCommas(val,true);
-			int num=0;
+			long num=0;
 			for(int v=0;v<V.size();v++)
-				num=num|(1<<convert(options,V.get(v),false));
+				num=num|(1L<<convert(options,V.get(v),false));
 			return num;
 		}
 		return 0;

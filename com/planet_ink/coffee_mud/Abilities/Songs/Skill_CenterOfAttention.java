@@ -92,7 +92,7 @@ public class Skill_CenterOfAttention extends BardSkill
 	}
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return (int)(CMProps.getMillisPerMudHour() / CMProps.getTickMillis() / 2);
 	}

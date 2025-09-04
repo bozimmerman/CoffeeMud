@@ -71,7 +71,7 @@ public class Prayer_ReflectPrayer extends Prayer
 	protected long timeToNextCast = 0;
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return 15;
 	}

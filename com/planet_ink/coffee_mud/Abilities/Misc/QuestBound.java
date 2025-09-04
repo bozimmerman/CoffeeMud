@@ -109,6 +109,12 @@ public class QuestBound implements Ability
 	}
 
 	@Override
+	public int getTicksBetweenCasts()
+	{
+		return 0;
+	}
+
+	@Override
 	public void setAbilityCode(final int newCode)
 	{
 	}

@@ -100,7 +100,7 @@ public class Thief_TurfWar extends ThiefSkill
 	protected long timeToNextCast = 0;
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);
 	}

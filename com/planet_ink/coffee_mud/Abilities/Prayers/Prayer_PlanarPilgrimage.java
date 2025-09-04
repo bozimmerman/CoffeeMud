@@ -137,7 +137,7 @@ public class Prayer_PlanarPilgrimage extends Prayer
 	}
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return (int)CMProps.getTicksPerDay();
 	}

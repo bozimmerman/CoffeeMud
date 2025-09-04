@@ -840,10 +840,10 @@ public class Import extends StdCommand
 				}
 				else
 				if(Character.isUpperCase(s.charAt(z)))
-					num=num|(1<<(s.charAt(z))-('A'));
+					num=num|(1L<<(s.charAt(z))-('A'));
 				else
 				if(Character.isLowerCase(s.charAt(z)))
-					num=num|(1<<(26+((s.charAt(z))-('a'))));
+					num=num|(1L<<(26+((s.charAt(z))-('a'))));
 
 			if(otherStyle)
 				return num;

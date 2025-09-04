@@ -329,6 +329,12 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		@Override
+		public int getTicksBetweenCasts()
+		{
+			return 0;
+		}
+
+		@Override
 		public boolean canTarget(final int can_code)
 		{
 			return false;

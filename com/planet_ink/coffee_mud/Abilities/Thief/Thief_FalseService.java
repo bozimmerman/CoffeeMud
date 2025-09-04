@@ -176,7 +176,7 @@ public class Thief_FalseService extends ThiefSkill
 	}
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return (int)(CMProps.getTicksPerMudHour() * 5);
 	}

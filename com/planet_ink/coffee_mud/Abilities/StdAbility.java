@@ -196,7 +196,8 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	protected int getTicksBetweenCasts()
+	@Override
+	public int getTicksBetweenCasts()
 	{
 		return 0;
 	}

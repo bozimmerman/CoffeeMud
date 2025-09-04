@@ -52,7 +52,8 @@ public class Prop_CommonTwister extends Property
 		return Ability.CAN_EXITS | Ability.CAN_ROOMS | Ability.CAN_AREAS | Ability.CAN_ITEMS | Ability.CAN_MOBS;
 	}
 
-	protected List<Triad<String, String, String>>	changes	= new Vector<Triad<String, String, String>>();
+	protected TriadList<String, String, String>	changes	= new TriadVector<String, String, String>();
+	protected Set<String> skillMask = new HashSet<String>();
 
 	@Override
 	public String accountForYourself()
@@ -65,14 +66,21 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
+		skillMask.clear();
 		final List<String> V=CMParms.parseSemicolons(text,true);
+		if(V.size()==0 && text.trim().length()==0)
+			skillMask.add("*");
+		else
 		for(int v=0;v<V.size();v++)
 		{
 			final String s=V.get(v);
 			final String skill=CMParms.getParmStr(s,"SKILL","");
 			final String mask=CMParms.getParmStr(s,"MASK","");
 			if((skill.length()>0)&&(mask.length()>0))
-				changes.add(new Triad<String,String,String>(skill,mask,s));
+			{
+				skillMask.add(skill.toUpperCase());
+				changes.add(skill,mask,s);
+			}
 		}
 
 	}
@@ -176,7 +184,8 @@ public class Prop_CommonTwister extends Property
 
 		if((affected!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+		&&(skillMask.contains("*")||skillMask.contains(msg.tool().ID().toUpperCase())))
 		{
 			if((msg.target() instanceof Room)
 			&&(msg.tool().ID().equals("Speculate"))
@@ -215,7 +224,7 @@ public class Prop_CommonTwister extends Property
 				itemParms.put("NAME",I.Name());
 				itemParms.put("DISPLAYTEXT",I.displayText());
 				itemParms.put("MATERIAL",""+I.material());
-				itemParms.put("SECRET",I.secretIdentity());
+				itemParms.put("SECRET",I.rawSecretIdentity());
 				itemParms.put("SUBTYPE",(I instanceof RawMaterial)?((RawMaterial)I).getSubType():"");
 				if(this.commonTwist((Ability)msg.tool(), itemParms, false))
 				{

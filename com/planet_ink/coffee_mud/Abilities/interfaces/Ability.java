@@ -101,6 +101,15 @@ public interface Ability extends Environmental
 	public int castingQuality(MOB mob, Physical target);
 
 	/**
+	 * Returns the number of ticks that must pass between uses of this skill.
+	 * This is not the duration of the skill, but rather the cooldown time after
+	 * use.
+	 *
+	 * @return number of ticks between uses
+	 */
+	public int getTicksBetweenCasts();
+
+	/**
 	 * Returns a bitmap giving some specific information about
 	 * the scope and purpose of the skill.  The bitmap is
 	 * composed of FLAG_* constants from the Ability interface.

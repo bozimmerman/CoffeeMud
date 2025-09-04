@@ -1090,7 +1090,7 @@ public interface Wearable extends Environmental
 				return;
 			long newCode = 0;
 			if(allCodes.length>0)
-				newCode = (long)1<<(allCodes.length-1);
+				newCode = 1L<<(allCodes.length-1);
 			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
 			allCodes[allCodes.length-1]=newCode;
 			descs=Arrays.copyOf(descs, descs.length+1);

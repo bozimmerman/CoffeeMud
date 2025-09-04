@@ -84,7 +84,7 @@ public class Spell_Majesty extends Spell
 	protected LimitedTreeSet<MOB>	noboth	= new LimitedTreeSet<MOB>(10000,100,false);
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		final long duration = CMProps.getTicksPerMudHour() * CMLib.time().globalClock().getHoursInDay();
 		return (int)duration;

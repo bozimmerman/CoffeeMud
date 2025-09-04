@@ -2709,7 +2709,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!(msg.target() instanceof Item))
 			return;
 		final Item item=(Item)msg.target();
-		final long wearLocation = (msg.value()<=0)?0:((long)(1<<msg.value())/2);
+		final long wearLocation = (msg.value()<=0)?0:((1L<<msg.value())/2);
 		final MOB mob=msg.source();
 		if(item.canWear(mob,wearLocation))
 		{

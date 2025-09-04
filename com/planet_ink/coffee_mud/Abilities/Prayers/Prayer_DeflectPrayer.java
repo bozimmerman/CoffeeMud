@@ -71,7 +71,7 @@ public class Prayer_DeflectPrayer extends Prayer
 	protected long timeToNextCast = 0;
 
 	@Override
-	protected int getTicksBetweenCasts()
+	public int getTicksBetweenCasts()
 	{
 		return 15;
 	}
