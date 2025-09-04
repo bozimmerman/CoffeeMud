@@ -1741,6 +1741,12 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return true;
 		}
+		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0)
+		{
+			mob.tell(L("'@x1' is a tweakable.  Try MODIFY TWEAK.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
 		return false;
 	}
 
@@ -1823,7 +1829,7 @@ public class Modify extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY TRAP [ABILITY ID]\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY POISON [ABILITY ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1860,6 +1866,46 @@ public class Modify extends StdCommand
 		CMLib.genEd().modifyGenPoison(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenPoison",A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
+		return true;
+	}
+
+	public boolean tweaks(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY TWEAK [ABILITY ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell(L("'@x1' is an invalid ability id.",classID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
+		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")<0)
+		{
+			if(wrongGenAbilityMessage(mob,A))
+				return false;
+			mob.tell(L("'@x1' is not a tweak.  Try MODIFY ABILITY.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
+		CMLib.genEd().modifyGenTweakAbility(mob,A,-1);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),"GenTweakAbility",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
 		return true;
 	}
@@ -2567,7 +2613,7 @@ public class Modify extends StdCommand
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, QUEST, COMMAND, "
 			+ "MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, HELP/AHELP, TRAP, CRON, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, "
-			+ "TIME, HOUR, POISON, UPDATE:, or ROOM");
+			+ "TIME, HOUR, POISON, TWEAK, UPDATE:, or ROOM");
 	}
 
 	@Override
@@ -2683,6 +2729,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
 			poisons(mob,commands);
+		}
+		else
+		if(commandType.equals("TWEAK"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			tweaks(mob,commands);
 		}
 		else
 		if(commandType.equals("COMMAND"))

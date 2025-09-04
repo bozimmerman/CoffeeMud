@@ -916,6 +916,53 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return newVal;
 	}
 
+	protected void promptStatPairsList(final MOB mob, final Modifiable me, final int showNumber, final int showFlag, final String fieldDisplayStr, final String stat)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		String keyList = me.getStat(stat);
+		int num = CMParms.parseAny(keyList, '\n', true).size();
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+num+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		boolean changed = false;
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			keyList = me.getStat(stat);
+			num=1;
+			final List<String> keys = CMParms.parseAny(keyList, '\n',true);
+			for(final String key : keys)
+				mob.tell("  "+key + " = '" + me.getStat(stat+(num++)) + "'");
+			final String choice=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
+			if(choice.length()==0)
+				return;
+			else
+			{
+				final int foundIndex = keys.indexOf(choice);
+				if(foundIndex <0)
+				{
+					final String value=mob.session().prompt(L("Enter a new value for '@x1':",choice),"");
+					if(value.length()>0)
+					{
+						me.setStat(stat+num, choice);
+						me.setStat(stat+num, value);
+						changed = true;
+						mob.tell(L("Added."));
+					}
+				}
+				else
+				{
+					changed = true;
+					me.setStat(stat+foundIndex, "");
+					mob.tell(L("Removed."));
+				}
+			}
+		}
+		if(!changed)
+			mob.tell(L("(no change)"));
+	}
+
 	@Override
 	public void genName(final MOB mob, final Environmental E, final int showNumber, final int showFlag) throws IOException
 	{
@@ -9275,6 +9322,76 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,L("The parameters for this field are LIKE the parameters for this property:\n\r\n\r@x1",CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString()),++showNumber,showFlag,L("Public effects"),"POSTCASTAFFECT",true);
 			promptStatStr(mob,me,L("The parameters for this field are LIKE the parameters for this property:\n\r\n\r@x1",CMLib.help().getHelpText("Prop_HereSpellCast",mob,true).toString()),++showNumber,showFlag,L("Extra castings"),"POSTCASTABILITY",true);
 			promptStatStr(mob,me,L("Enter a damage or healing formula. Use +-*/()?. @x1 Formula evaluates >0 for damage, <0 for healing. Requires Can Target!",varHelp),++showNumber,showFlag,L("Damage/Healing Formula"),"POSTCASTDAMAGE",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
+	@Override
+	public void modifyGenTweakAbility(final MOB mob, final Ability me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		final List<String> choices = new ArrayList<String>(CMClass.numPrototypes(CMObjectType.ABILITY));
+		for (final Enumeration<Ability> a = CMClass.abilities(); a.hasMoreElements();)
+		{
+			final Ability A = a.nextElement();
+			if(((A.classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_PROPERTY)
+			&&((A.classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_LANGUAGE)
+			&&((A.classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_TRAP)
+			&&((A.classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_COMMON_SKILL))
+				choices.add(A.ID());
+		}
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			promptStatChoices(mob,me,null,++showNumber,showFlag,L("Base Ability/Skill ID"),"ORIGINAL",choices.toArray());
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Ability/Skill name"),"NAME",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.ACODE.DESCS)+","+CMParms.toListString(Ability.DOMAIN.DESCS),++showNumber,showFlag,L("Type, Domain"),"CLASSIFICATION",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Command Words (comma sep)"),"TRIGSTR",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,L("Minimum Range"),"MINRANGE",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.RANGE_CHOICES),++showNumber,showFlag,L("Maximum Range"),"MAXRANGE",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Ticks Between Casts"),"TICKSBETWEENCASTS",true);
+			promptStatStr(mob,me,null,++showNumber,showFlag,L("Affect String"),"DISPLAY",true);
+			String newVal = prompt(mob, me.getStat("AUTOINVOKE"), showNumber, showFlag, L("Is Auto-invoking"), true, false, null, null, null);
+			if(newVal.toLowerCase().startsWith("y"))
+				newVal = "true";
+			else
+			if(newVal.length()>0)
+				newVal = ""+CMath.s_bool(newVal);
+			me.setStat("AUTOINVOKE", newVal);
+			newVal = prompt(mob, me.getStat("MAYENCHANT"), showNumber, showFlag, L("Is enchantable"), true, false, null, null, null);
+			if(newVal.toLowerCase().startsWith("y"))
+				newVal = "true";
+			else
+			if(newVal.length()>0)
+				newVal = ""+CMath.s_bool(newVal);
+			me.setStat("MAYENCHANT", newVal);
+			promptStatStr(mob,me,"0,"+CMParms.toListString(Ability.FLAG_DESCS),++showNumber,showFlag,L("Skill Flags (comma sep)"),"FLAGS",true);
+			promptStatInt(mob,me,L("-1,x,@x1,@x2-(1 to 100)",""+Integer.MAX_VALUE,""+Integer.MAX_VALUE),++showNumber,showFlag,L("Override Cost"),"OVERRIDEMANA");
+			promptStatStr(mob,me,CMParms.toListString(Ability.USAGE_DESCS),++showNumber,showFlag,L("Cost Type"),"USAGEMASK",true);
+			promptStatStr(mob,me,CMParms.toListString(Ability.QUALITY_DESCS),++showNumber,showFlag,L("Quality Code"),"QUALITY",true);
+			promptStatPairsList(mob, me, ++showNumber, showFlag, L("Strings"), "STRING");
 			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 
 			if (showFlag < -900)

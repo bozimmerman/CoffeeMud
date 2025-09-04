@@ -761,7 +761,106 @@
                     <INPUT TYPE=TEXT SIZE=5 NAME=MOD_ABILTIK VALUE="@AbilityData?MOD_ABILTIK@">
                 </TD>
             </TR>
-            @else@
+        @else@
+        @if?AbilityData?ISTWEAK@
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Original Ability: </FONT></TD>
+			    <TD>
+			        <SELECT NAME=ORIGINAL>
+			            <OPTION VALUE="">Unmodified (GenTweakAbility)
+			            @AbilityData?ORIGINAL_OPTIONS@  <!-- Backend populates with list of all abilities -->
+			        </SELECT>
+			    </TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Name: </FONT></TD>
+			    <TD><INPUT TYPE=TEXT SIZE=30 NAME=NAME VALUE="@AbilityData?NAME@"> (blank = unmodified)</TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Display Text: </FONT></TD>
+			    <TD><INPUT TYPE=TEXT SIZE=50 NAME=DISPLAY VALUE="@AbilityData?DISPLAY@"> (blank = unmodified, "null" for empty)</TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Trigger Strings: </FONT></TD>
+			    <TD><INPUT TYPE=TEXT SIZE=50 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@"> (comma-delimited, blank = unmodified)</TD>
+			</TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CLASSIFICATION_ACODE>
+			            <OPTION VALUE="">Unmodified
+                    @AbilityData?CLASSIFICATION_ACODE@
+                    </SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Domain: </FONT></TD>
+                <TD>
+                    <SELECT NAME=CLASSIFICATION_DOMAIN>
+			            <OPTION VALUE="">Unmodified
+                    @AbilityData?CLASSIFICATION_DOMAIN@
+                    </SELECT>
+                </TD>
+            </TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Max Range: </FONT></TD>
+			    <TD>
+			        <SELECT NAME=MAXRANGE>
+			            <OPTION VALUE="">Unmodified
+			            @AbilityData?RANGE_OPTIONS@
+			        </SELECT>
+			    </TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Auto-Invoke: </FONT></TD>
+			    <TD>
+			        <SELECT NAME=AUTOINVOKE>
+			            <OPTION VALUE="">Unmodified
+			            <OPTION VALUE="on">Yes
+			            <OPTION VALUE="off">No
+			        </SELECT>
+			    </TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+			    <TD>
+			        <SELECT NAME=FLAGS MULTIPLE>
+			            <OPTION VALUE="">Unmodified (add/remove via multi-select)
+			            @AbilityData?FLAG_OPTIONS@  <!-- Multi-select with current flags pre-selected -->
+			        </SELECT>
+			    </TD>
+			</TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Override Cost: </FONT></TD>
+                <TD>
+                    <SELECT NAME=OVERRIDEMANA>
+			            <OPTION VALUE="">Unmodified
+                    @AbilityData?OVERRIDEMANA@
+                    </SELECT>
+                    <INPUT TYPE=TEXT SIZE=3 MAXLENGTH=5 NAME=CUSTOMOVERRIDEMANA VALUE="@AbilityData?CUSTOMOVERRIDEMANA@">
+                </TD>
+            </TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>May Enchant: </FONT></TD>
+			    <TD>
+			        <SELECT NAME=MAYENCHANT>
+			            <OPTION VALUE="">Unmodified
+			            <OPTION VALUE="on">Yes
+			            <OPTION VALUE="off">No
+			        </SELECT>
+			    </TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>String Overrides: </FONT></TD>
+			    <TD>
+		            @AbilityData?STRING_ROWS@
+			    </TD>
+			</TR>
+			<TR>
+			    <TD><FONT COLOR=YELLOW>Help Text: </FONT></TD>
+			    <TD><TEXTAREA ROWS=5 COLS=50 NAME=HELP>@AbilityData?HELP@</TEXTAREA> (blank = unmodified)</TD>
+			</TR>
+        @else@
             <TR>
                 <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
                 <TD>
@@ -978,6 +1077,7 @@
                     <FONT SIZE=-1 COLOR=WHITE>@x1=caster level, @x2=target level, @x3=level expertise, @x4-@x8=x1-x5 expertise, @x9=adjusted caster level</FONT>
                 </TD>
             </TR>
+        @endif@
         @endif@
         @endif@
         @endif@

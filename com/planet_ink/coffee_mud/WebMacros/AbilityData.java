@@ -292,6 +292,10 @@ public class AbilityData extends StdWebMacro
 				{
 					return Boolean.toString(A instanceof Language);
 				}
+				if(parms.containsKey("ISTWEAK"))
+				{
+					return A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0?"true":"false";
+				}
 				if(parms.containsKey("ISCRAFTSKILL"))
 				{
 					return Boolean.toString((A instanceof ItemCraftor)
@@ -1220,6 +1224,45 @@ public class AbilityData extends StdWebMacro
 					}
 				}
 
+				if(parms.containsKey("STRING_ROWS"))
+				{
+					final PairList<String,String> V=new PairVector<String,String>();
+					int num=1;
+					if(!httpReq.isUrlParameter("STRINGROW"+num))
+					{
+						for (final String key : CMParms.parseCommas(A.getStat("STRING"), true))
+						{
+							final String val = A.getStat("STRING"+(num++));
+							V.add(key, val);
+						}
+					}
+					else
+					while(httpReq.isUrlParameter("STRINGROW"+(num++)))
+					{
+						final String key = httpReq.getUrlParameter("STRINGROW" + num);
+						final String val = httpReq.getUrlParameter("STRINGVAL" + num);
+						if ((key != null) && (key.length() > 0)&&(val.length()>0))
+							V.add(key, val);
+					}
+					final StringBuffer tabStr = new StringBuffer("");
+					tabStr.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+					for(int i=0;i<V.size();i++)
+					{
+						final Pair<String,String> p=V.get(i);
+						tabStr.append("<TR><TD WIDTH=50%>");
+						tabStr.append("\n\r<INPUT TYPE=TEXT NAME=\"STRINGROW"+(i+1)+"\" SIZE=50 VALUE=\""+CMStrings.replaceAll(p.first,"\"","&quot;")+"\">");
+						tabStr.append("</TD><TD WIDTH=50%>");
+						tabStr.append("\n\r<INPUT TYPE=TEXT NAME=\"STRINGVAL"+(i+1)+"\" SIZE=50 VALUE=\""+CMStrings.replaceAll(p.second,"\"","&quot;")+"\">");
+						tabStr.append("</TD></TR>");
+					}
+					tabStr.append("<TR><TD WIDTH=50%>");
+					tabStr.append("\n\r<INPUT TYPE=TEXT NAME=\"STRINGROW"+(V.size())+"\" SIZE=50 VALUE=\"\">");
+					tabStr.append("</TD><TD WIDTH=50%>");
+					tabStr.append("\n\r<INPUT TYPE=TEXT NAME=\"STRINGVAL"+(V.size())+"\" SIZE=50 VALUE=\"\">");
+					tabStr.append("</TD></TR>");
+					tabStr.append("</TABLE>");
+					return tabStr.toString();
+				}
 				if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
 				{
 					if(parms.containsKey("EFFECTS"))

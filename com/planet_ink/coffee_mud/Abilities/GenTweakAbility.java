@@ -128,8 +128,18 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 	@Override
 	public String L(String str, final String ... xs)
 	{
-		if (overrides.containsKey(ID) && overrides.get(ID).containsKey(str))
-			str = overrides.get(ID).get(str).toString();
+		if (overrides.containsKey(ID) && overrides.get(ID).containsKey("STRINGS"))
+		{
+			@SuppressWarnings("unchecked")
+			final Map<String,String> strings = (Map<String,String>)overrides.get(ID).get("STRINGS");
+			if(strings.containsKey(str))
+				str =strings.get(str);
+			else
+			{
+				for (final String key : strings.keySet())
+					str = CMStrings.replaceAll(str, key, strings.get(key));
+			}
+		}
 		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
@@ -185,6 +195,7 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 										 "HELP",//14I
 										 "MAYENCHANT",//15I
 										 "ORIGINAL",//16S
+										 "STRING",//17MAP
 										};
 
 	@Override
@@ -212,8 +223,17 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 	}
 
 	@Override
-	public String getStat(final String code)
+	public String getStat(String code)
 	{
+		int num=0;
+		int numDex=code.length();
+		while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1))))
+			numDex--;
+		if(numDex<code.length())
+		{
+			num=CMath.s_int(code.substring(numDex));
+			code=code.substring(0,numDex);
+		}
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -264,6 +284,25 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 		case 16:
 			return getLocalOverride("originalID") == null ? "GenTweakAbility" :
 				getLocalOverride("originalID").toString();
+		case 17:
+			if(overrides.containsKey(ID) && overrides.get(ID).containsKey("STRINGS"))
+			{
+				@SuppressWarnings("unchecked")
+				final Map<String,String> strings = (Map<String,String>)overrides.get(ID).get("STRINGS");
+				if(num == 0)
+					return CMParms.combine(new ArrayList<String>(strings.keySet()),'\n');
+				else
+				{
+					int dex = 1;
+					for (final String key : strings.keySet())
+					{
+						if (dex == num)
+							return strings.get(key);
+						dex++;
+					}
+				}
+			}
+			return "";
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenTweakAbility";
@@ -291,10 +330,6 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 		{
 			num=CMath.s_int(code.substring(numDex));
 			code=code.substring(0,numDex);
-		}
-		if(val.length()==0)
-		{
-
 		}
 		switch(getCodeNum(code))
 		{
@@ -407,6 +442,56 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 			{
 				this.overrideMethod("originalID", val);
 				this.originalA = null;
+			}
+			break;
+		case 17:
+			if((val.length()==0)&&(overrides.containsKey(ID)))
+			{
+				if(num==0)
+					overrides.get(ID).remove("STRINGS");
+				else
+				{
+					if (overrides.get(ID).containsKey("STRINGS"))
+					{
+						@SuppressWarnings("unchecked")
+						final Map<String, String> strings=(Map<String, String>)overrides.get(ID).get("STRINGS");
+						int dex = 1;
+						for(final String key : strings.keySet())
+						{
+							if(dex == num)
+							{
+								strings.remove(key);
+								break;
+							}
+							dex++;
+						}
+						if (strings.size() == 0)
+							overrides.get(ID).remove("STRINGS");
+					}
+				}
+			}
+			else
+			if((val.length()>0)&&(overrides.containsKey(ID)))
+			{
+				if (!overrides.get(ID).containsKey("STRINGS"))
+					overrides.get(ID).put("STRINGS", new Hashtable<String, String>());
+				@SuppressWarnings("unchecked")
+				final Map<String, String> strings=(Map<String, String>)overrides.get(ID).get("STRINGS");
+				if(num == 0)
+					strings.put(val, val);
+				else
+				{
+					int dex = 1;
+					for(final String key : strings.keySet())
+					{
+						if(dex == num)
+						{
+							strings.put(key, val);
+							break;
+						}
+						dex++;
+					}
+				}
 			}
 			break;
 		default:

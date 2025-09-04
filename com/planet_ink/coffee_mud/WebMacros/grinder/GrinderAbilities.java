@@ -79,7 +79,30 @@ public class GrinderAbilities
 		old=httpReq.getUrlParameter("TICKAFFECTS");
 		A.setStat("TICKAFFECTS",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		old=httpReq.getUrlParameter("AUTOINVOKE");
-		A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
+		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0)
+		{
+			if(old != null)
+			{
+				if (old.equalsIgnoreCase("on"))
+					A.setStat("AUTOINVOKE", "true");
+				else if (old.equalsIgnoreCase("off"))
+					A.setStat("AUTOINVOKE", "false");
+				else
+					A.setStat("AUTOINVOKE", "");
+			}
+			old=httpReq.getUrlParameter("MAYENCHANT");
+			if(old != null)
+			{
+				if (old.equalsIgnoreCase("on"))
+					A.setStat("MAYENCHANT", "true");
+				else if (old.equalsIgnoreCase("off"))
+					A.setStat("MAYENCHANT", "false");
+				else
+					A.setStat("MAYENCHANT", "");
+			}
+		}
+		else
+			A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		final Vector<String> V=new Vector<String>();
 		if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 		{

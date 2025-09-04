@@ -1642,6 +1642,46 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
+	public void genTweak(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE TWEAK [SKILL ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String classD=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classD);
+		if((A!=null)&&(A.isGeneric()))
+		{
+			mob.tell(L("A generic ability with the ID '@x1' already exists!",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		if(classD.indexOf(' ')>=0)
+		{
+			mob.tell(L("'@x1' is an invalid  id, because it contains a space.",classD));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final Ability CR;
+		if(A != null)
+		{
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill @x1 already exists. Use a different ID to override it",classD));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		else
+		{
+			CR=(Ability)CMClass.getAbility("GenTweakAbility").copyOf();
+			CR.setStat("CLASS",classD);
+		}
+		CMLib.genEd().modifyGenTweakAbility(mob,CR,-1);
+		CMLib.database().DBCreateAbility(CR.ID(),"GenTweakAbility",CR.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
+	}
+
 	public void allQualify(final MOB mob, final List<String> commands)
 	throws IOException
 	{
@@ -1688,7 +1728,7 @@ public class Create extends StdCommand
 			 + "CLAN, MOB, RACE, MIXEDRACE, ABILITY, LANGUAGE, CRAFTSKILL, HELP/AHELP, "
 			 + "ACHIEVEMENT, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, "
 			 + "WEBSERVER, DISABLEFLAG, ENABLEFLAG, NEWS, USER, TRAP, WRIGHTSKILL, COMMAND, "
-			 + "GATHERSKILL, POISON, CRON, TITLE, AWARD, or ROOM");
+			 + "GATHERSKILL, POISON, TWEAK, CRON, TITLE, AWARD, or ROOM");
 	}
 
 	public void classes(final MOB mob, final List<String> commands)
@@ -1951,6 +1991,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			gatherSkills(mob,commands);
+		}
+		else
+		if(commandType.equals("TWEAK"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			genTweak(mob,commands);
 		}
 		else
 		if(commandType.equals("POISON"))

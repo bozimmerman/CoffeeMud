@@ -161,6 +161,17 @@ public interface GenericEditor extends CMLibrary
 
 	/**
 	 * Prompts the given user using the mud's standard menu interface.
+	 * Allows the editing of an existing Generic Tweak Ability (non Lang/Common)
+	 *
+	 * @param mob the player doing the editing
+	 * @param me the object being edited
+	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
+	 * @throws IOException any i/o errors that occur (socket reset errors usually)
+	 */
+	public void modifyGenTweakAbility(MOB mob, Ability me, int showFlag) throws IOException;
+
+	/**
+	 * Prompts the given user using the mud's standard menu interface.
 	 * Allows the editing of an existing Generic Language.
 	 *
 	 * @param mob the player doing the editing
