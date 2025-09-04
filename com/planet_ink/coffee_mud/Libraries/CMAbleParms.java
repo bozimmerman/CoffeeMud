@@ -66,6 +66,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	{
 		if(A==null)
 			return null;
+		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0)
+			return "GenTweakAbility";
+		else
 		if(A instanceof Trap)
 			return "GenTrap";
 		else

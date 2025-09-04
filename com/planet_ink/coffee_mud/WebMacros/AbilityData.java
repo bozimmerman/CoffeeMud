@@ -51,6 +51,7 @@ public class AbilityData extends StdWebMacro
 		new String[] { "NEWGATHERINGSKILL", "GenGatheringSkill" },
 		new String[] { "NEWTRAP", "GenTrap" },
 		new String[] { "NEWPOISON", "GenPoison" },
+		new String[] { "NEWTWEAK", "GenTweakAbility" },
 	};
 
 	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)

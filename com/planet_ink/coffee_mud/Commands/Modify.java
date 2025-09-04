@@ -1705,6 +1705,12 @@ public class Modify extends StdCommand
 
 	protected boolean wrongGenAbilityMessage(final MOB mob, final Ability A)
 	{
+		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0)
+		{
+			mob.tell(L("'@x1' is a tweakable.  Try MODIFY TWEAK.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return true;
+		}
 		if(A instanceof Language)
 		{
 			mob.tell(L("'@x1' is a language.  Try MODIFY LANGUAGE.",A.ID()));
@@ -1738,12 +1744,6 @@ public class Modify extends StdCommand
 		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
 		{
 			mob.tell(L("'@x1' is a poison.  Try MODIFY POISON.",A.ID()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
-			return true;
-		}
-		if(A.getStat("JAVACLASS").toLowerCase().indexOf("tweak")>=0)
-		{
-			mob.tell(L("'@x1' is a tweakable.  Try MODIFY TWEAK.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return true;
 		}

@@ -1197,28 +1197,34 @@ public class MUDGrinder extends StdWebMacro
 			if((A!=null)&&(!A.isGeneric()))
 				return " @break@";
 			String type="GenAbility";
-			final int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
-			if(code==Ability.ACODE_LANGUAGE)
-				type="GenLanguage";
-			String gtype=httpReq.getUrlParameter("NEWTRAP");
-			if((gtype!=null)&&(gtype.length()>0))
-				type="GenTrap";
+			final String ttype=httpReq.getUrlParameter("NEWTWEAK");
+			if((ttype!=null)&&(ttype.length()>0))
+				type="GenTweakAbility";
 			else
-			if(A instanceof Trap)
-				type="GenTrap";
-			final String ptype=httpReq.getUrlParameter("NEWPOISON");
-			if((ptype!=null)&&(ptype.length()>0))
-				type="GenPoison";
-			else
-			if(code==Ability.ACODE_POISON)
-				type="GenPoison";
-			if(code==Ability.ACODE_COMMON_SKILL)
 			{
-				gtype=httpReq.getUrlParameter("NEWGATHERINGSKILL");
+				final int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
+				if(code==Ability.ACODE_LANGUAGE)
+					type="GenLanguage";
+				String gtype=httpReq.getUrlParameter("NEWTRAP");
 				if((gtype!=null)&&(gtype.length()>0))
-					type="GenGatheringSkill";
+					type="GenTrap";
 				else
-					type="GenCraftSkill";
+				if(A instanceof Trap)
+					type="GenTrap";
+				final String ptype=httpReq.getUrlParameter("NEWPOISON");
+				if((ptype!=null)&&(ptype.length()>0))
+					type="GenPoison";
+				else
+				if(code==Ability.ACODE_POISON)
+					type="GenPoison";
+				if(code==Ability.ACODE_COMMON_SKILL)
+				{
+					gtype=httpReq.getUrlParameter("NEWGATHERINGSKILL");
+					if((gtype!=null)&&(gtype.length()>0))
+						type="GenGatheringSkill";
+					else
+						type="GenCraftSkill";
+				}
 			}
 			if(A==null)
 			{
