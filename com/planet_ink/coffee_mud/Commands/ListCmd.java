@@ -4772,9 +4772,12 @@ public class ListCmd extends StdCommand
 		CLANS("CLANS",new SecFlag[]{SecFlag.CMDCLANS}),
 		DEBUGFLAG("DEBUGFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
 		DEBUGFLAGS("DEBUGFLAGS",new SecFlag[]{SecFlag.LISTADMIN}),
+		DEBUGS("DEBUGS",new SecFlag[]{SecFlag.LISTADMIN}),
 		DISABLEFLAG("DISABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
-		HOSTS("HOSTS",new SecFlag[]{SecFlag.LISTADMIN}),
 		DISABLEFLAGS("DISABLEFLAGS",new SecFlag[]{SecFlag.LISTADMIN}),
+		DISABLEDS("DISABLEDS",new SecFlag[]{SecFlag.LISTADMIN}),
+		DISABLES("DISABLES",new SecFlag[]{SecFlag.LISTADMIN}),
+		HOSTS("HOSTS",new SecFlag[]{SecFlag.LISTADMIN}),
 		ENABLEFLAG("ENABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
 		ALLQUALIFYS("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
 		NEWS("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
@@ -6565,6 +6568,15 @@ public class ListCmd extends StdCommand
 			break;
 		case ABILITYFLAGS:
 			s.wraplessPrintln(CMParms.toListString(Ability.FLAG_DESCS));
+			break;
+		case DISABLEDS:
+		case DISABLES:
+			s.println("\n\r^Disabled: ^?^.^N\n\r" + CMParms.toListString(CMSecurity.getDisablesEnum()) + "\n\r");
+			break;
+		case DEBUGS:
+			s.println("\n\r^Debug: ^?^.^N\n\r" + CMParms.toListString(CMSecurity.getDebugEnum()) + "\n\r");
+			break;
+		default:
 			break;
 		}
 	}

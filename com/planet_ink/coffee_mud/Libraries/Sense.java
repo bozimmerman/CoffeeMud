@@ -356,6 +356,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public boolean isKeptOverDeath(final Physical P)
+	{
+		return ((P instanceof Item)
+			  &&((P.phyStats().sensesMask() & PhyStats.SENSE_ITEMDEATHKEEPER)>0));
+	}
+
+	@Override
 	public boolean isSavable(final Physical P)
 	{
 		if((P==null)||((P.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0))

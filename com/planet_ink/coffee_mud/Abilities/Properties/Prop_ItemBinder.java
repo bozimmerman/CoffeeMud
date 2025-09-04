@@ -59,7 +59,8 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		GROUP,
 		CLAN,
 		PLAYER,
-		NPC
+		NPC,
+		NOONE
 	}
 
 	protected BoundTo to = BoundTo.CHARACTER;
@@ -73,6 +74,8 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	protected BoundOn on = BoundOn.PICKUP;
 
 	protected String boundToName = "";
+
+	protected boolean keepOverDeath = false;
 
 	protected String msgStr=defaultMessage();
 
@@ -100,6 +103,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 			on = BoundOn.PICKUP;
 
 		boundToName = CMStrings.deEscape(CMParms.getParmStr(text, "BOUND", ""));
+		keepOverDeath = CMParms.getParmBool(text, "DEATHKEEP", false);
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
 		super.setMiscText(text);
 	}
@@ -139,7 +143,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		if(mob.location()==null)
 			return true;
 
-		if(msg.amITarget(affected))
+		if(msg.amITarget(affected) && (to != BoundTo.NOONE))
 		{
 			switch(msg.targetMinor())
 			{
@@ -157,6 +161,9 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 					boolean zap = true;
 					switch(to)
 					{
+					case NOONE:
+						zap = false;
+						break;
 					case CHARACTER:
 						if(this.boundToName.equals(msg.source().Name()))
 							zap=false;
@@ -218,6 +225,8 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	{
 		switch(to)
 		{
+		case NOONE:
+			return "";
 		case CHARACTER:
 		case PLAYER:
 		case NPC:
@@ -247,9 +256,24 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		if ((keepOverDeath)
+		&&(affected instanceof Item)
+		&&(((Item)affected).owner() instanceof MOB))
+		{
+			if(on == BoundOn.PICKUP)
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMDEATHKEEPER);
+			else
+			if((on == BoundOn.EQUIP) && (((Item)affected).amBeingWornProperly()))
+				affectableStats.setSensesMask(affectableStats.sensesMask() | PhyStats.SENSE_ITEMDEATHKEEPER);
+		}
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amITarget(affected))
+		if(msg.amITarget(affected) && (to != BoundTo.NOONE))
 		{
 			switch(msg.targetMinor())
 			{

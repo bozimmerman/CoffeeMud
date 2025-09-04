@@ -30,6 +30,8 @@
  29. The MUD will now validate the database version on boot, and auto-upgrade if needed.
  30. FakeDB: new v1.1 format that stores ver, schema hashes, and validates data files.
  31. FakeDB now supports ALTER, DROP, and CREATE TABLE commands.
+ 32. You can now LIST DEBUGS or LIST DISABLES to see active flags.
+ 33. Prop_ItemBinder can now bind to noone, but can mark an item as preserved over death.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

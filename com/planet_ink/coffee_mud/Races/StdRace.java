@@ -1021,7 +1021,7 @@ public class StdRace implements Race
 			for(int i=0;i<mob.numItems();i++)
 			{
 				final Item thisItem=mob.getItem(i);
-				if(thisItem != null)
+				if((thisItem != null)&&(!CMLib.flags().isKeptOverDeath(thisItem)))
 					itemsToGo.add(thisItem);
 			}
 			for(Item thisItem : itemsToGo)

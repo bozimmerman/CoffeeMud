@@ -499,6 +499,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ITEMUNLEARNABLE=512;
 	/** a bit setting, as from sensesMask(), flagging this item/room as not allowing movement */
 	public final static int SENSE_ROOMNOMOVEMENT=1024;
+	public final static int SENSE_ITEMDEATHKEEPER=1024;
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unmappable */
 	public final static int SENSE_ROOMUNMAPPABLE=2048;
 	/** a bit setting, as from sensesMask(), flagging this item/room as being flagged for synchronization */

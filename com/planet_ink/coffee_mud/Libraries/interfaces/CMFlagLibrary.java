@@ -532,6 +532,16 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isHiddenInPlainSight(final Physical P);
 
 	/**
+	 * Returns whether the item is kept by their player
+	 * owner even if they die and are separated from their
+	 * corpse.
+	 *
+	 * @param P the item to check
+	 * @return true if it is kept over death
+	 */
+	public boolean isKeptOverDeath(final Physical P);
+
+	/**
 	 * Returns whether the given item is a container which,
 	 * when open, has accessible contents, and is also open.
 	 * @param I the item to check
