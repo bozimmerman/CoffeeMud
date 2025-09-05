@@ -345,6 +345,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			// which means they dont go away when item is removed.
 			if(EA!=null)
 			{
+				if(EA.invoker() == null)
+					EA.setInvoker(qualMOB);
 				if((maxTicks>0)
 				&&(maxTicks<Short.MAX_VALUE)
 				&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))

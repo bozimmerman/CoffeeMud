@@ -14541,7 +14541,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				case 54: // getting_prog
-					if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)
+					if((msg.targetMinor()==CMMsg.TYP_GET)&&canTrigger(20)&&canTrigger(54)
 					&&(msg.amISource(monster))
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
@@ -14557,6 +14557,71 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),checkInE,defaultItem,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 57: // wearing_prog
+					if(((msg.targetMinor()==CMMsg.TYP_WEAR)
+						||(msg.targetMinor()==CMMsg.TYP_HOLD)
+						||(msg.targetMinor()==CMMsg.TYP_WIELD))
+					&&canTrigger(57)&&canTrigger(23)
+					&&(msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						Item checkInE=(Item)msg.target();
+						if((msg.tool() instanceof Item)
+						&&(((Item)msg.tool()).container()==msg.target()))
+							checkInE=(Item)msg.tool();
+						final String check=standardTriggerCheck(script,t,checkInE,affecting,monster,msg.source(),msg.target(),checkInE,defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),checkInE,defaultItem,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 56: // riding_prog
+					if((msg.targetMinor()==CMMsg.TYP_MOUNT)
+					&&canTrigger(56)
+					&&(msg.amISource(monster))
+					&&(msg.target() instanceof Rideable)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final Environmental checkInE=msg.target();
+						final String check=standardTriggerCheck(script,t,checkInE,affecting,monster,msg.source(),msg.target(),defaultItem,defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,defaultItem,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 55: // ride_prog
+					if((msg.targetMinor()==CMMsg.TYP_MOUNT)
+					&&canTrigger(55)
+					&&(msg.amISource(monster))
+					&&(msg.target() instanceof Rideable)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final Environmental checkInE=msg.target();
+						final String check=standardTriggerCheck(script,t,checkInE,affecting,monster,msg.source(),msg.target(),defaultItem,defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,defaultItem,check,script,1, t);
 							if(!multiTriggers)
 								return;
 						}

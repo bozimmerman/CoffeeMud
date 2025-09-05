@@ -474,7 +474,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"GROUP_GREET_PROG", //52
 		"DROPPING_PROG", // 53
 		"GETTING_PROG", // 54
-		XMLLibrary.FILE_XML_BOUNDARY.toUpperCase().substring(0,XMLLibrary.FILE_XML_BOUNDARY.indexOf(' ')), // 55
+		"RIDE_PROG", // 55
+		"RIDING_PROG", // 56
+		"WEARING_PROG", // 57
+		XMLLibrary.FILE_XML_BOUNDARY.toUpperCase().substring(0,XMLLibrary.FILE_XML_BOUNDARY.indexOf(' ')), // 58
 	};
 
 	/** String list of all valid mobprog functions for logical expressions or string functions */

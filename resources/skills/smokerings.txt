@@ -1,0 +1,10 @@
+perfect	1	0	* a perfect smoke ring	
+swirling string	1	0	* a swirling string of smoke
+huge	1	0	* a huge smoke ring
+tiny train	1	0	* a train of tiny smoke rings
+tiny couple	1	0	* a couple of tiny smoke rings
+round	1	0	* a nice round smoke ring
+big three	1	0	* three big smoke rings
+enormous	1	0	* an ENORMOUS smoke ring
+tiny swirl	1	0	* a swirl of tiny smoke rings
+galley	1	0	* a smoke ring shaped like a galley

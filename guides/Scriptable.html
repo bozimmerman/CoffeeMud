@@ -2452,7 +2452,32 @@ have more than one remove_prog on a
 mob. Generally it is best not to have remove_progs with the same
 keywords in them, unless they are a remove_prog p with different
 keyword lists but some of the same keywords &#8211; for example a
-remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p>
+remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p><h3><a name="ride_prog">ride_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>wear_prog [keyword list]<br />wear_prog p [keyword list]<br />wear_prog all<br /></pre>
+
+      <p>This
+type of mobprog is
+triggered by mounting a rideable. If the target matches the keywords of
+the ride_prog, the prog is triggered. If there is a &#8216;p' placed
+before
+the keyword list, the keywords of the object must exactly match that of
+the ride_prog. If there is not, then any rideable with any of the
+keywords in the list in it will trigger it. If a ride_prog all is used,
+then the ride_prog will trigger from any thing mounted.&nbsp;</p>
+
+      <p>EXAMPLES:</p>
+
+      <pre>ride_prog horse<br /></pre><pre>ride_prog all<br /></pre>
+
+      <p>This will trigger if anything is mounted</p><h3><a name="riding_prog">riding_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>riding_prog [keyword list]<br />riding_prog p [keyword list]<br />riding_prog all</pre>
+As ride_prog, but only triggers when the scripted mob or player does the&nbsp;
 
       <h3><a name="sell_prog">sell_prog</a></h3>
 
@@ -2725,7 +2750,12 @@ Generally it is best not to have wear_progs with the same keywords in
 them, unless they are a wear_prog p with different keyword lists but
 some of the same keywords &#8211; for example a wear_prog p apple
 red
-juicy and a wear_prog p apple red poisoned.</p>
+juicy and a wear_prog p apple red poisoned.</p><h3><a name="wearing_prog">wearing_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>wearing_prog [keyword list]<br />wearing_prog p [keyword list]<br />wearing_prog all</pre>
+As wear_prog, but only triggers when the scripted mob or player does the wearing, wielding, or holding.<p></p>
 
       <h2><a name="codes">Scripting Codes</a></h2>
 

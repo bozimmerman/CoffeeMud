@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -41,7 +42,13 @@ public class Emoter extends ActiveTicker
 		return "Emoter";
 	}
 
-	protected int expires=0;
+	protected int				expires		= 0;
+	protected List<EmoteObj>	emotes		= null;
+	protected List<EmoteObj>	smells		= null;
+	protected List<EmoteObj>	puffs		= null;
+	protected List<String>		inroomIDs	= new XVector<String>(0, true);
+	protected CompiledZMask		mask		= null;
+
 	public Emoter()
 	{
 		super();
@@ -50,31 +57,99 @@ public class Emoter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(final String newParms)
+	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		expires=CMParms.getParmInt(parms,"expires",0);
-		inroomIDs=CMParms.parseCommas(CMParms.getParmStr(parms,"inroom","").toUpperCase().trim(),true);
 		emotes=null;
+		mask=null;
+		inroomIDs.clear();
 		smells=null;
+		puffs=null;
+		final EmoteObj flags = new EmoteObj();
+		emotes=new Vector<EmoteObj>();
+		char c=';';
+		String firstParms = newParms;
+		int x=newParms.indexOf(c);
+		if(x<0)
+		{
+			c='/';
+			x=newParms.indexOf(c); // try another char?
+		}
+
+		if(x>0)
+		{
+			firstParms=newParms.substring(0,x);
+			setEmoteTypes(CMParms.parse(firstParms),flags,false);
+			newParms=newParms.substring(x+1);
+		}
+		expires=CMParms.getParmInt(firstParms,"expires",0);
+		inroomIDs=CMParms.parseCommas(CMParms.getParmStr(firstParms,"inroom","").toUpperCase().trim(),true);
+		mask = null;
+		final String maskStr = CMParms.getParmStr(firstParms, "MASK", null);
+		if(maskStr != null)
+			this.mask=CMLib.masking().maskCompile(maskStr);
+
+		for(String thisEmote : CMParms.parseAny(newParms,c,true))
+		{
+			if(thisEmote.trim().length()==0)
+				continue;
+			final Vector<String> V=CMParms.parse(thisEmote);
+			final int oldSize = V.size();
+			final EmoteObj localFlags = flags.clone(null);
+			setEmoteTypes(V,localFlags,true);
+			if(V.size() != oldSize)
+				thisEmote=CMParms.combine(V,0);
+			if(thisEmote.length()>0)
+			{
+				if(localFlags.type==EMOTE_TYPE.EMOTE_SMELL)
+				{
+					if(smells==null)
+						smells=new Vector<EmoteObj>();
+					final EmoteObj newObj = localFlags.clone(thisEmote);
+					smells.add(newObj);
+				}
+				if(localFlags.type==EMOTE_TYPE.EMOTE_PUFF)
+				{
+					if(puffs==null)
+						puffs=new Vector<EmoteObj>();
+					final EmoteObj newObj = localFlags.clone(thisEmote);
+					puffs.add(newObj);
+				}
+				else
+				{
+					final EmoteObj newObj = localFlags.clone(thisEmote);
+					emotes.add(newObj);
+				}
+			}
+		}
 	}
 
-	protected List<EmoteObj> emotes=null;
-	protected List<EmoteObj> smells=null;
-	protected boolean broadcast=false;
-	protected boolean emoteOnly=false;
-	protected List<String> inroomIDs=new XVector<String>(0,true);
-
-	protected static class EmoteObj
+	protected static class EmoteObj implements Cloneable
 	{
-		public EMOTE_TYPE type;
-		public String msg;
-		public boolean broadcast;
-		public EmoteObj(final EMOTE_TYPE type, final String msg, final boolean broadcast)
+		public boolean broadcast=false;
+		public boolean emoteOnly=false;
+		public boolean privateE=false;
+		public String mask = null;
+		public MaskingLibrary.CompiledZMask zmask = null;
+		public EMOTE_TYPE type=EMOTE_TYPE.EMOTE_VISUAL;
+		public String msg = "";
+		public EmoteObj() {}
+		public EmoteObj clone(final String msg)
 		{
-			this.type=type;
-			this.msg=msg;
-			this.broadcast=broadcast;
+			try
+			{
+				final EmoteObj obj=(EmoteObj)super.clone();
+				obj.msg=msg;
+				if(obj.mask != null)
+					obj.zmask=CMLib.masking().maskCompile(mask);
+				else
+					obj.zmask=null;
+				return obj;
+			}
+			catch (final CloneNotSupportedException e)
+			{
+				return this;
+			}
 		}
 	}
 
@@ -83,10 +158,9 @@ public class Emoter extends ActiveTicker
 		EMOTE_VISUAL,
 		EMOTE_SOUND,
 		EMOTE_SMELL,
-		EMOTE_SOCIAL
+		EMOTE_SOCIAL,
+		EMOTE_PUFF
 	}
-
-	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
 	@Override
 	public String accountForYourself()
@@ -94,148 +168,149 @@ public class Emoter extends ActiveTicker
 		return "emoting";
 	}
 
-	protected boolean setEmoteType(String str)
+	protected boolean setEmoteType(final String str,final EmoteObj flags)
 	{
-		str=str.toUpperCase().trim();
-		if(str.equals("BROADCAST"))
-			broadcast=true;
-		else
-		if(str.equals("NOBROADCAST"))
-			broadcast=false;
-		else
-		if(str.equals("EMOTEONLY"))
-			emoteOnly=true;
-		else
-		if(str.equals("VISUAL")||(str.equals("SIGHT")))
-			emoteType=EMOTE_TYPE.EMOTE_VISUAL;
-		else
-		if(str.equals("AROMA")||(str.equals("SMELL")))
-			emoteType=EMOTE_TYPE.EMOTE_SMELL;
-		else
-		if(str.equals("SOUND")||(str.equals("NOISE")))
-			emoteType=EMOTE_TYPE.EMOTE_SOUND;
-		else
-		if(str.equals("SOCIAL"))
-			emoteType=EMOTE_TYPE.EMOTE_SOCIAL;
-		else
+		switch(str.toUpperCase().trim())
+		{
+		case "BROADCAST":
+			flags.broadcast=true;
+			break;
+		case "NOBROADCAST":
+			flags.broadcast=false;
+			break;
+		case "PUFF":
+			flags.type = EMOTE_TYPE.EMOTE_PUFF;
+			break;
+		case "PRIVATE":
+			flags.privateE=true;
+			break;
+		case "NOPRIVATE":
+			flags.privateE=false;
+			break;
+		case "EMOTEONLY":
+			flags.emoteOnly=true;
+			break;
+		case "VISUAL":
+		case "SIGHT":
+			flags.type=EMOTE_TYPE.EMOTE_VISUAL;
+			break;
+		case "AROMA":
+		case "SMELL":
+			flags.type=EMOTE_TYPE.EMOTE_SMELL;
+			break;
+		case "SOUND":
+		case "NOISE":
+			flags.type=EMOTE_TYPE.EMOTE_SOUND;
+			break;
+		case "SOCIAL":
+			flags.type=EMOTE_TYPE.EMOTE_SOCIAL;
+			break;
+		default:
 			return false;
+		}
 		return true;
 	}
 
-	protected void setEmoteTypes(final Vector<String> V, final boolean respectOnlyBeginningAndEnd)
+	protected void setEmoteTypes(final Vector<String> V, final EmoteObj flags, final boolean respectOnlyBeginningAndEnd)
 	{
 		if(respectOnlyBeginningAndEnd)
 		{
-			if(setEmoteType(V.firstElement()))
+			if(setEmoteType(V.firstElement(),flags))
 				V.removeElementAt(0);
 			else
-			if(setEmoteType(V.lastElement()))
+			if(setEmoteType(V.lastElement(),flags))
 				V.removeElementAt(V.size()-1);
 		}
 		else
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			if(setEmoteType(V.elementAt(v)))
+			if(setEmoteType(V.elementAt(v),flags))
 				V.removeElementAt(v);
 		}
 	}
 
-	protected List<EmoteObj> parseEmotes()
+	public boolean pufferCheck(final Environmental myHost, final CMMsg msg)
 	{
-		if(emotes!=null)
-			return emotes;
-		broadcast=false;
-		emoteOnly=false;
-		emoteType=EMOTE_TYPE.EMOTE_VISUAL;
-		emotes=new Vector<EmoteObj>();
-		String newParms=getParms();
-		char c=';';
-		int x=newParms.indexOf(c);
-		if(x<0)
+		if((msg.source() == myHost)||(msg.target() == myHost))
+			return true;
+		if ((myHost instanceof Room) || (myHost instanceof Area))
+			return true;
+		if(myHost instanceof Item)
 		{
-			c='/';
-			x=newParms.indexOf(c);
+			final Item I = (Item) myHost;
+			if((I.owner() == myHost)&&(I.amBeingWornProperly()))
+				return true;
+			if((I instanceof RawMaterial) && (I.container() == myHost))
+				return true;
 		}
-		if(x>0)
+		return false;
+	}
+
+	public void pickedEmote(final List<EmoteObj> obj, final Environmental myHost, final CMMsg msg)
+	{
+		final EmoteObj emote=obj.get(CMLib.dice().roll(1,obj.size(),-1));
+		MOB emoter=null;
+		if(myHost instanceof Room)
 		{
-			final String oldParms=newParms.substring(0,x);
-			setEmoteTypes(CMParms.parse(oldParms),false);
-			newParms=newParms.substring(x+1);
+			try
+			{
+				emoter=CMClass.getFactoryMOB();
+				emoter.setName(L("something here"));
+				emoteHere((Room)myHost,emoter,emote,msg.source(),emote.broadcast);
+			}
+			finally
+			{
+				emoter.destroy();
+			}
+			return;
 		}
-		final EMOTE_TYPE defaultType=emoteType;
-		final boolean defaultBroadcast=broadcast;
-		while(newParms.length()>0)
+		final Room room=getBehaversRoom(myHost);
+		if(room!=null)
 		{
-			String thisEmote=newParms;
-			x=newParms.indexOf(';');
-			if(x<0)
-				newParms="";
+			if(myHost instanceof MOB)
+			{
+				emoter=(MOB)myHost;
+				emoteHere(room,emoter,emote,null,true);
+			}
 			else
 			{
-				thisEmote=newParms.substring(0,x);
-				newParms=newParms.substring(x+1);
-			}
-			if(thisEmote.trim().length()>0)
-			{
-				final Vector<String> V=CMParms.parse(thisEmote);
-				emoteType=defaultType;
-				broadcast=defaultBroadcast;
-				setEmoteTypes(V,true);
-				thisEmote=CMParms.combine(V,0);
-				if(thisEmote.length()>0)
+				if((myHost instanceof Item)
+				&&(!CMLib.flags().isInTheGame((Item)myHost,false)))
+					return;
+				try
 				{
-					if(emoteType==EMOTE_TYPE.EMOTE_SMELL)
-					{
-						if(smells==null)
-							smells=new Vector<EmoteObj>();
-						smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
-					}
-					emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
+					emoter=CMClass.getFactoryMOB();
+					emoter.setName(myHost.name());
+					emoteHere(room,emoter,emote,null,true);
+				}
+				finally
+				{
+					emoter.destroy();
 				}
 			}
 		}
-		return emotes;
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((msg.amITarget(myHost))
+		if((msg.amITarget(myHost)||(myHost instanceof Area)||(myHost instanceof Room))
 		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(smells!=null)
 		&&(CMLib.flags().canSmell(msg.source()))
-		&&(smells!=null))
-		{
-			final EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
-			MOB emoter=null;
-			if(myHost instanceof Room)
-			{
-				emoter=CMClass.getFactoryMOB();
-				emoter.setName(L("something here"));
-				emoteHere((Room)myHost,emoter,emote,msg.source(),emote.broadcast);
-				emoter.destroy();
-				return;
-			}
-			final Room room=getBehaversRoom(myHost);
-			if(room!=null)
-			{
-				if(myHost instanceof MOB)
-				{
-					emoter=(MOB)myHost;
-					emoteHere(room,emoter,emote,null,true);
-				}
-				else
-				{
-					if((myHost instanceof Item)
-					&&(!CMLib.flags().isInTheGame((Item)myHost,false)))
-						return;
-					emoter=CMClass.getFactoryMOB();
-					emoter.setName(myHost.name());
-					emoteHere(room,emoter,emote,null,true);
-					emoter.destroy();
-				}
-			}
-		}
+		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
+			pickedEmote(smells,myHost,msg);
+		else
+		if((msg.targetMinor()==CMMsg.TYP_PUFF)
+		&&(msg.target() instanceof Light)
+		&&(msg.tool() instanceof Light)
+		&&(puffs!=null)
+		&&(pufferCheck(myHost,msg))
+		&&(msg.target()==msg.tool())
+		&&(((Light)msg.target()).amWearingAt(Wearable.WORN_MOUTH))
+		&&(((Light)msg.target()).isLit()))
+			pickedEmote(puffs,myHost,msg);
 	}
 
 	protected boolean inRoom(final Room room)
@@ -267,6 +342,9 @@ public class Emoter extends ActiveTicker
 			return;
 		if(!inRoom(room))
 			return;
+		if((mask!=null)&&(!CMLib.masking().maskCheck(mask, emoter, true)))
+			return;
+
 		CMMsg msg;
 		final Room oldLoc=emoter.location();
 		String str=emote.msg;
@@ -290,7 +368,7 @@ public class Emoter extends ActiveTicker
 			emoteTo.tell(emoter,emoteTo,null,str);
 			return;
 		}
-		if(emoteOnly)
+		if(emote.emoteOnly)
 			msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		else
 		switch(emote.type)
@@ -302,7 +380,8 @@ public class Emoter extends ActiveTicker
 			msg=CMClass.getMsg(emoter,null,CMMsg.MSG_NOISE,str);
 			break;
 		case EMOTE_SMELL:
-			msg=CMClass.getMsg(emoter,null,CMMsg.TYP_AROMA,str);
+		case EMOTE_PUFF:
+			msg=CMClass.getMsg(emoter,null,CMMsg.TYP_AROMA|CMMsg.MASK_EYES,str);
 			break;
 		default:
 		case EMOTE_SOCIAL:
@@ -320,7 +399,6 @@ public class Emoter extends ActiveTicker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		parseEmotes();
 		if((canAct(ticking,tickID))
 		&&(emotes.size()>0)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS)))
@@ -332,6 +410,10 @@ public class Emoter extends ActiveTicker
 				return false;
 			}
 			final EmoteObj emote=emotes.get(CMLib.dice().roll(1,emotes.size(),-1));
+			if((emote.zmask != null)
+			&&(ticking instanceof Environmental)
+			&&(!CMLib.masking().maskCheck(emote.zmask,(Environmental)ticking,true)))
+				return true;
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{
@@ -341,7 +423,9 @@ public class Emoter extends ActiveTicker
 				{
 					final Room R=r.nextElement();
 					// if a tree falls in a forest...
-					if((R!=null)&&(R.numInhabitants()>0)&&(R.numPCInhabitants()>0))
+					if((R!=null)
+					&&(R.numInhabitants() > 0)
+					&&(R.numPCInhabitants() > 0))
 						emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();
@@ -377,8 +461,11 @@ public class Emoter extends ActiveTicker
 						}
 						else
 						{
-							if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
-								return true;
+							if(ticking instanceof Item)
+							{
+								if(!CMLib.flags().isInTheGame((Item)ticking,false))
+									return true;
+							}
 
 							emoter=CMClass.getFactoryMOB();
 							killEmoter=true;
@@ -388,7 +475,7 @@ public class Emoter extends ActiveTicker
 								name=((Environmental)ticking).name();
 							if(mob!=null)
 							{
-								if(CMLib.flags().isInTheGame(mob,false))
+								if(CMLib.flags().isInTheGame(mob,false) && (!emote.privateE))
 									emoter.setName(L("@x1 carried by @x2",name,mob.name()));
 								else
 									emoter=null;

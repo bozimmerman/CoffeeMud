@@ -56,6 +56,7 @@ public class Prop_UseEmoter extends Property
 	protected volatile boolean	processing	= false;
 	protected List<EmoteObj>	emotes		= null;
 	protected List<EmoteObj>	smells		= null;
+	protected List<EmoteObj>	puffs		= null;
 	protected boolean			privateE	= false;
 	protected boolean			broadcast	= false;
 	protected int				chance		= 100;
@@ -75,19 +76,21 @@ public class Prop_UseEmoter extends Property
 		}
 	}
 
-	protected static enum EMOTE_TYPE { EMOTE_VISUAL, EMOTE_SOUND, EMOTE_SMELL, EMOTE_SOCIAL }
+	protected static enum EMOTE_TYPE
+	{
+		EMOTE_VISUAL,
+		EMOTE_SOUND,
+		EMOTE_SMELL,
+		EMOTE_SOCIAL,
+		EMOTE_PUFF
+	}
+
 	protected EMOTE_TYPE emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 
 	@Override
 	public String accountForYourself()
 	{
 		return "emoting when used";
-	}
-
-
-	@Override
-	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
-	{
 	}
 
 	protected boolean emoteNow(final CMMsg msg)
@@ -169,6 +172,67 @@ public class Prop_UseEmoter extends Property
 		return true;
 	}
 
+	public void untargetedEmote(final List<EmoteObj> whats, final CMMsg msg)
+	{
+		final EmoteObj emote=whats.get(CMLib.dice().roll(1,whats.size(),-1));
+		MOB emoter=null;
+		if(affected instanceof Room)
+		{
+			try
+			{
+				emoter=CMClass.getFactoryMOB();
+				emoteHere((Room)affected,emoter,emote,msg.source(),false);
+			}
+			finally
+			{
+				emoter.destroy();
+			}
+			return;
+		}
+		final Room room=CMLib.map().roomLocation(affected);
+		if(room!=null)
+		{
+			if(affected instanceof MOB)
+			{
+				emoter=(MOB)affected;
+				emoteHere(room,emoter,emote,null,true);
+			}
+			else
+			{
+				if((affected instanceof Item)
+				&&(!CMLib.flags().isInTheGame((Item)affected,false)))
+					return;
+				try
+				{
+					emoter=CMClass.getFactoryMOB();
+					emoter.setName(affected.name());
+					emoteHere(room,emoter,emote,null,true);
+				}
+				finally
+				{
+					emoter.destroy();
+				}
+			}
+		}
+	}
+
+	public boolean pufferCheck(final CMMsg msg)
+	{
+		if((msg.source() == affected)||(msg.target() == affected))
+			return true;
+		if ((affected instanceof Room) || (affected instanceof Area))
+			return true;
+		if(affected instanceof Item)
+		{
+			final Item I = (Item) affected;
+			if((I.owner() == affected)&&(I.amBeingWornProperly()))
+				return true;
+			if((I instanceof RawMaterial) && (I.container() == affected))
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -186,44 +250,27 @@ public class Prop_UseEmoter extends Property
 				return;
 
 			parseEmotes();
+			if((msg.targetMinor()==CMMsg.TYP_PUFF)
+			&&(puffs != null)
+			&&(msg.target() instanceof Light)
+			&&(msg.tool() instanceof Light)
+			&&(msg.target()==msg.tool())
+			&&(((Light)msg.target()).amWearingAt(Wearable.WORN_MOUTH))
+			&&(((Light)msg.target()).isLit())
+			&&(pufferCheck(msg))
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
+				untargetedEmote(puffs,msg);
+
 			if((emotes==null)||(emotes.size()==0))
 				return;
 
 			if((msg.amITarget(affected))
 			&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
-			&&(CMLib.flags().canSmell(msg.source()))
 			&&(smells!=null)
+			&&(CMLib.flags().canSmell(msg.source()))
 			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
-			{
-				final EmoteObj emote=smells.get(CMLib.dice().roll(1,smells.size(),-1));
-				MOB emoter=null;
-				if(affected instanceof Room)
-				{
-					emoter=CMClass.getFactoryMOB();
-					emoteHere((Room)affected,emoter,emote,msg.source(),false);
-					emoter.destroy();
-					return;
-				}
-				final Room room=CMLib.map().roomLocation(affected);
-				if(room!=null)
-				{
-					if(affected instanceof MOB)
-					{
-						emoter=(MOB)affected;
-						emoteHere(room,emoter,emote,null,true);
-					}
-					else
-					{
-						if((affected instanceof Item)
-						&&(!CMLib.flags().isInTheGame((Item)affected,false)))
-							return;
-						emoter=CMClass.getFactoryMOB();
-						emoter.setName(affected.name());
-						emoteHere(room,emoter,emote,null,true);
-						emoter.destroy();
-					}
-				}
-			}
+				untargetedEmote(smells,msg);
+
 			if((msg.amISource((MOB)myItem.owner()))
 			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true))))
 			{
@@ -271,37 +318,44 @@ public class Prop_UseEmoter extends Property
 		chance=CMParms.getParmInt(newMiscText,"chance",100);
 		emotes=null;
 		smells=null;
+		puffs=null;
 		mask=null;
 	}
 
-	protected boolean setEmoteType(String str)
+	protected boolean setEmoteType(final String str)
 	{
-		str=str.toUpperCase().trim();
-		if(str.equals("BROADCAST"))
+		switch(str.toUpperCase().trim())
+		{
+		case "BROADCAST":
 			broadcast=true;
-		else
-		if(str.equals("PRIVATE"))
+			break;
+		case "PRIVATE":
 			privateE=true;
-		else
-		if(str.equals("NOPRIVATE"))
+			break;
+		case "NOPRIVATE":
 			privateE=false;
-		else
-		if(str.equals("NOBROADCAST"))
+			break;
+		case "NOBROADCAST":
 			broadcast=false;
-		else
-		if(str.equals("VISUAL")||(str.equals("SIGHT")))
+			break;
+		case "VISUAL": case"SIGHT":
 			emoteType=EMOTE_TYPE.EMOTE_VISUAL;
-		else
-		if(str.equals("AROMA")||(str.equals("SMELL")))
+			break;
+		case "AROMA": case"SMELL":
 			emoteType=EMOTE_TYPE.EMOTE_SMELL;
-		else
-		if(str.equals("SOUND")||(str.equals("NOISE")))
+			break;
+		case "SOUND": case"NOISE":
 			emoteType=EMOTE_TYPE.EMOTE_SOUND;
-		else
-		if(str.equals("SOCIAL"))
+			break;
+		case "SOCIAL":
 			emoteType=EMOTE_TYPE.EMOTE_SOCIAL;
-		else
+			break;
+		case "PUFF":
+			emoteType = EMOTE_TYPE.EMOTE_PUFF;
+			break;
+		default:
 			return false;
+		}
 		return true;
 	}
 
@@ -328,6 +382,8 @@ public class Prop_UseEmoter extends Property
 		if(emotes!=null)
 			return emotes;
 		broadcast=false;
+		puffs=null;
+		smells=null;
 		mask=null;
 		emoteType=EMOTE_TYPE.EMOTE_VISUAL;
 		emotes=new Vector<EmoteObj>();
@@ -376,7 +432,14 @@ public class Prop_UseEmoter extends Property
 							smells=new Vector<EmoteObj>();
 						smells.add(new EmoteObj(emoteType,thisEmote,broadcast));
 					}
-					emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
+					if(emoteType==EMOTE_TYPE.EMOTE_PUFF)
+					{
+						if(puffs==null)
+							puffs=new Vector<EmoteObj>();
+						puffs.add(new EmoteObj(emoteType,thisEmote,broadcast));
+					}
+					else
+						emotes.add(new EmoteObj(emoteType,thisEmote,broadcast));
 				}
 			}
 		}
@@ -438,12 +501,16 @@ public class Prop_UseEmoter extends Property
 		msg=CMClass.getMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(emote.type==EMOTE_TYPE.EMOTE_SMELL)
 			msg.setSourceCode(CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA);
+		else
+		if(emote.type==EMOTE_TYPE.EMOTE_PUFF)
+			msg.setSourceCode(CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA|CMMsg.MASK_EYES);
 		if(room.okMessage(emoter,msg))
 		{
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				final MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(!M.isMonster()))
+				{
 					switch(emote.type)
 					{
 					case EMOTE_VISUAL:
@@ -460,10 +527,17 @@ public class Prop_UseEmoter extends Property
 							M.executeMsg(M,msg);
 						}
 						break;
+					case EMOTE_PUFF:
+						if(CMLib.flags().canSmell(M)||CMLib.flags().canSee(M))
+						{
+							M.executeMsg(M,msg);
+						}
+						break;
 					case EMOTE_SOCIAL:
 						// handled above
 						break;
 					}
+				}
 			}
 		}
 		if(oldLoc!=null)

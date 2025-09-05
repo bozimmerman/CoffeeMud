@@ -107,6 +107,12 @@ public class Skill_FindClanHome extends StdAbility
 	}
 
 	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

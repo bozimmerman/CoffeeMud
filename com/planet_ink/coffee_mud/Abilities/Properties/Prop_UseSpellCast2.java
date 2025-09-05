@@ -90,6 +90,12 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 				  &&(msg.amITarget(myItem)))
 					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
 				break;
+			case CMMsg.TYP_DROP:
+				if((!(myItem instanceof Drink))
+				  &&(!(myItem instanceof Food))
+				  &&(msg.amITarget(myItem)))
+					this.removeMyAffectsFrom(msg.source());
+				break;
 			}
 		}
 		finally

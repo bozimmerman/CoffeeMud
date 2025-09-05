@@ -45,6 +45,7 @@ public class StdSmokable extends StdContainer implements Light
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
 	protected boolean goesOutInTheRain=true;
+	protected volatile Pair<Item,List<Ability>> puffContents = null;
 
 	public StdSmokable()
 	{
@@ -183,6 +184,14 @@ public class StdSmokable extends StdContainer implements Light
 		return super.okMessage(myHost,msg);
 	}
 
+	public void clearPuffContents()
+	{
+		if(puffContents != null)
+			for (final Ability A : puffContents.second)
+				A.unInvoke();
+		puffContents = null;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -223,6 +232,7 @@ public class StdSmokable extends StdContainer implements Light
 					R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 burns out.",name()));
 				if(destroyedWhenBurnedOut())
 					destroy();
+				this.clearPuffContents();
 				R.recoverRoomStats();
 			}
 			else
@@ -236,6 +246,14 @@ public class StdSmokable extends StdContainer implements Light
 					final Item I=V.get(0);
 					final CMMsg msg=CMClass.getMsg(M, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR, null);
 					I.executeMsg(M, msg);
+					this.clearPuffContents();
+					if(I.numEffects()>0)
+					{
+						puffContents = new Pair<Item,List<Ability>>(I,new XArrayList<Ability>(I.effects()));
+						I.delAllEffects(false);
+						for(final Ability A : puffContents.second)
+							A.setAffectedOne(this);
+					}
 					I.destroy();
 					durationTicks=baseDuration;
 					tickStatus=Tickable.STATUS_NOT;
@@ -247,6 +265,7 @@ public class StdSmokable extends StdContainer implements Light
 					durationTicks=0;
 					if(destroyedWhenBurnedOut())
 						destroy();
+					this.clearPuffContents();
 					M.recoverPhyStats();
 					M.recoverCharStats();
 					M.recoverMaxState();
@@ -324,6 +343,14 @@ public class StdSmokable extends StdContainer implements Light
 							if(CMLib.dice().roll(1,100,0)==1)
 								getAddictedTo(msg.source(),I);
 							I.executeMsg(myHost, msg);
+							this.clearPuffContents();
+							if(I.numEffects()>0)
+							{
+								puffContents = new Pair<Item,List<Ability>>(I,new XArrayList<Ability>(I.effects()));
+								I.delAllEffects(false);
+								for(final Ability A : puffContents.second)
+									A.setAffectedOne(this);
+							}
 							I.destroy();
 						}
 					}
@@ -337,6 +364,11 @@ public class StdSmokable extends StdContainer implements Light
 				}
 				break;
 			}
+		}
+		if(puffContents != null)
+		{
+			for (final Ability A : puffContents.second)
+				A.executeMsg(this, msg);
 		}
 		super.executeMsg(myHost,msg);
 		if((msg.tool()==this)

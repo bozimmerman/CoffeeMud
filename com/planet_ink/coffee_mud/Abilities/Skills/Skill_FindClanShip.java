@@ -90,6 +90,12 @@ public class Skill_FindClanShip extends StdAbility
 	}
 
 	@Override
+	public int usageType()
+	{
+		return USAGE_MOVEMENT;
+	}
+
+	@Override
 	public long flags()
 	{
 		return Ability.FLAG_TRACKING;

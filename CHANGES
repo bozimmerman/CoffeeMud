@@ -32,6 +32,9 @@
  31. FakeDB now supports ALTER, DROP, and CREATE TABLE commands.
  32. You can now LIST DEBUGS or LIST DISABLES to see active flags.
  33. Prop_ItemBinder can now bind to noone, but can mark an item as preserved over death.
+ 34. Smoke Rings is now recipe driven, and players can select their ring style. 
+ 35. *Emoters props and behaviors now support PUFF emotes and some other features.
+ 36. New Scriptable triggers: WEARING_PROG, RIDE_PROG, RIDING_PROG
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

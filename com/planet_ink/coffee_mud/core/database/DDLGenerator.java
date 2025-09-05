@@ -33,11 +33,11 @@ import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
  */
 public class DDLGenerator
 {
-	private final DatabaseMetaData	metaData;
-	private final String			productName;
-	private final String			schema;
-	private final Map<String, String> typeMappings = new HashMap<>();
-	private final Map<Integer, String> sqlTypeToPortable = new HashMap<>();
+	private final DatabaseMetaData		metaData;
+	private final String				productName;
+	private final String				schema;
+	private final Map<String, String>	typeMappings		= new HashMap<>();
+	private final Map<Integer, String>	sqlTypeToPortable	= new HashMap<>();
 
 	public DDLGenerator(final DatabaseMetaData metaData, final String schema) throws SQLException
 	{
