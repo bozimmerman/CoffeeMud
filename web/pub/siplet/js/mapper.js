@@ -1943,7 +1943,7 @@ function Mapper(sipwin)
 		{
 			delete this.rooms[k];
 			if(k == this.centerView)
-				centerview((Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null);
+				this.centerview((Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null);
 		}
 		delete this.areas[areaId];
 		return true;
@@ -1969,7 +1969,7 @@ function Mapper(sipwin)
 			{
 				delete this.rooms[roomId];
 				if(roomId == this.centerView)
-					centerview((Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null);
+					this.centerview((Object.keys(this.rooms).length)?Object.keys(this.rooms)[0]:null);
 				for(var k in this.rooms)
 				{
 					var room = this.rooms[k];
