@@ -65,8 +65,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					break;
 				}
 				final char c = code.name().charAt(i);
-				final int hx = c - 'A';
-				final int lx = c - 'A' + ('a'-'A');
+				final int hx = Character.toUpperCase(c) - 'A';
+				final int lx = Character.toLowerCase(c) - 'A';
 				if ((hx < 0) || (lx >= here.next.length))
 					break;
 				VaryNode next = here.next[hx];
