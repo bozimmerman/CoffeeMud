@@ -241,8 +241,16 @@ public class AutoAwards extends StdAbility
 						forceApply = false;
 						final List<AutoProperties> chk = new ArrayList<AutoProperties>();
 						final int[] eHash = new int[] {0};
-						for(final TimePeriod key : myEntries.keySet())
-							gatherTimelyEntries(affected, myEntries.get(key), chk, eHash);
+						try
+						{
+							for(final TimePeriod key : myEntries.keySet())
+								gatherTimelyEntries(affected, myEntries.get(key), chk, eHash);
+						}
+						catch (final java.util.ConcurrentModificationException e)
+						{
+							savedHash=null;
+							return true;
+						}
 						if((affectHash==null)
 						||(affectHash[0] != eHash[0]))
 						{
