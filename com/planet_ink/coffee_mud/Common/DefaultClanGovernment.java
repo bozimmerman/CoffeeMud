@@ -1491,6 +1491,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			finalA.makeNonUninvokable();
 			finalA.setSavable(false); // must come AFTER the above
 			finalA.setAffectedOne(mob);
+			finalA.setMiscText(A.text());
 			finalV.add(finalA);
 		}
 		final ChameleonList<Ability> finalFinalV;

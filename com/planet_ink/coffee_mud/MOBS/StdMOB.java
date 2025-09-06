@@ -5074,7 +5074,7 @@ public class StdMOB implements MOB
 		if(affects == null)
 		{
 			final Iterator<Pair<Clan, Integer>> c = clans().iterator();
-			if(!c.hasNext())
+			if(!c.hasNext()) // default government is for global clans
 				affects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
 			else
 			{
