@@ -10129,10 +10129,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						if(arg2.equals("LEVEL"))
 						{
-							CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
+							CMLib.leveler().fillOutMOB(((MOB)newTarget),newTarget.basePhyStats().level());
 							((MOB)newTarget).recoverMaxState();
 							((MOB)newTarget).recoverCharStats();
-							((MOB)newTarget).recoverPhyStats();
+							newTarget.recoverPhyStats();
 							((MOB)newTarget).resetToMaxState();
 						}
 					}
@@ -10419,10 +10419,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						((MOB)newTarget).recoverMaxState();
 						if(arg2.equals("LEVEL"))
 						{
-							CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
+							CMLib.leveler().fillOutMOB(((MOB)newTarget),newTarget.basePhyStats().level());
 							((MOB)newTarget).recoverMaxState();
 							((MOB)newTarget).recoverCharStats();
-							((MOB)newTarget).recoverPhyStats();
+							newTarget.recoverPhyStats();
 							((MOB)newTarget).resetToMaxState();
 						}
 					}
@@ -10796,10 +10796,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									m.recoverPhyStats();
 									m.setContainer(container);
 									if(container instanceof MOB)
-										((MOB)container.owner()).addItem(m);
+										container.owner().addItem(m);
 									else
 									if(container instanceof Room)
-										((Room)container.owner()).addItem(m,ItemPossessor.Expire.Player_Drop);
+										container.owner().addItem(m,ItemPossessor.Expire.Player_Drop);
 									else
 									if(addHere instanceof MOB)
 										((MOB)addHere).addItem(m);
@@ -11006,7 +11006,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if(Ms.get(i) instanceof MOB)
 							{
-								m=(MOB)((MOB)Ms.get(i)).copyOf();
+								m=(MOB)Ms.get(i).copyOf();
 								m.text();
 								m.recoverPhyStats();
 								m.recoverCharStats();
@@ -11542,8 +11542,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Ability A=getAbility(language);
 				if((A instanceof Language)&&(newTarget instanceof MOB))
 				{
-					((Language)A).setProficiency(100);
-					((Language)A).autoInvocation((MOB)newTarget, false);
+					A.setProficiency(100);
+					A.autoInvocation((MOB)newTarget, false);
 					final Ability langA=((MOB)newTarget).fetchEffect(A.ID());
 					if(langA!=null)
 					{
@@ -11840,10 +11840,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(((Container) newContainer).owner() != ((Item)newTarget).owner())
 									{
 										if(((Container) newContainer).owner() instanceof Room)
-											((Room)((Container) newContainer).owner()).moveItemTo((Item)newTarget);
+											((Container) newContainer).owner().moveItemTo((Item)newTarget);
 										else
 										if(((Container) newContainer).owner() instanceof MOB)
-											((MOB)((Container) newContainer).owner()).moveItemTo((Item)newTarget);
+											((Container) newContainer).owner().moveItemTo((Item)newTarget);
 
 									}
 									((Item)newTarget).setContainer((Container)newContainer);
@@ -11914,58 +11914,69 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental newTarget=getArgumentMOB(tt[1],ctx);
 				final String faction=varify(ctx,tt[2]);
 				String range=varify(ctx,tt[3]).trim();
-				final Faction F=CMLib.factions().getFaction(faction);
-				if((newTarget!=null)&&(F!=null)&&(newTarget instanceof MOB))
+				if(newTarget instanceof MOB)
 				{
-					final MOB themob=(MOB)newTarget;
-					int curFaction = themob.fetchFaction(F.factionID());
-					if((curFaction == Integer.MAX_VALUE)||(curFaction == Integer.MIN_VALUE))
-						curFaction = F.findDefault(themob);
-					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
+					Faction F=CMLib.factions().getFaction(faction);
+					if(F == null)
 					{
-						final int amt=CMath.s_int(range.substring(2).trim());
-						if(amt < 0)
-							themob.tell(L("You gain @x1 faction with @x2.",""+(-amt),F.name()));
+						F=CMLib.factions().getFactionByName(faction);
+						if(F != null)
+							tt[2]=F.factionID();
 						else
-							themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
-						range=""+(curFaction-amt);
+							logError(ctx,"MPFACTION","RunTime","Faction '"+faction+"' is unknown.");
 					}
-					else
-					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
+					if(F!=null)
 					{
-						final int amt=CMath.s_int(range.substring(1).trim());
-						if(amt < 0)
-							themob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
-						else
-							themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
-						range=""+(curFaction+amt);
-					}
-					else
-					if(CMath.isInteger(range))
-						themob.tell(L("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
-
-					if(CMath.isInteger(range))
-						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
-					else
-					{
-						Faction.FRange FR=null;
-						final Enumeration<Faction.FRange> e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
-						if(e!=null)
-						for(;e.hasMoreElements();)
+						final MOB themob=(MOB)newTarget;
+						int curFaction = themob.fetchFaction(F.factionID());
+						if((curFaction == Integer.MAX_VALUE)||(curFaction == Integer.MIN_VALUE))
+							curFaction = F.findDefault(themob);
+						if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
 						{
-							final Faction.FRange FR2=e.nextElement();
-							if(FR2.name().equalsIgnoreCase(range))
-							{
-								FR = FR2;
-								break;
-							}
+							final int amt=CMath.s_int(range.substring(2).trim());
+							if(amt < 0)
+								themob.tell(L("You gain @x1 faction with @x2.",""+(-amt),F.name()));
+							else
+								themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
+							range=""+(curFaction-amt);
 						}
-						if(FR==null)
-							logError(ctx,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
+						else
+						if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
+						{
+							final int amt=CMath.s_int(range.substring(1).trim());
+							if(amt < 0)
+								themob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
+							else
+								themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
+							range=""+(curFaction+amt);
+						}
+						else
+						if(CMath.isInteger(range))
+							themob.tell(L("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
+
+						if(CMath.isInteger(range))
+							themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 						else
 						{
-							themob.tell(L("Your faction with @x1 is now @x2.",F.name(),FR.name()));
-							themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
+							Faction.FRange FR=null;
+							final Enumeration<Faction.FRange> e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
+							if(e!=null)
+							for(;e.hasMoreElements();)
+							{
+								final Faction.FRange FR2=e.nextElement();
+								if(FR2.name().equalsIgnoreCase(range))
+								{
+									FR = FR2;
+									break;
+								}
+							}
+							if(FR==null)
+								logError(ctx,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
+							else
+							{
+								themob.tell(L("Your faction with @x1 is now @x2.",F.name(),FR.name()));
+								themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
+							}
 						}
 					}
 				}
@@ -12149,13 +12160,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(((MOB)E).getStartRoom()!=null)
 								((MOB)E).killMeDead(false);
 							else
-								((MOB)E).destroy();
+								E.destroy();
 						}
 						else
 						if(E instanceof Item)
 						{
 							final ItemPossessor oE=((Item)E).owner();
-							((Item)E).destroy();
+							E.destroy();
 							if(oE!=null)
 								oE.recoverPhyStats();
 						}
@@ -12612,15 +12623,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 					if(caged!=null)
 					{
-						((Item)caged).basePhyStats().setAbility(1);
-						((Item)caged).recoverPhyStats();
+						caged.basePhyStats().setAbility(1);
+						caged.recoverPhyStats();
 					}
 					if((caged!=null)&&caged.cageMe((MOB)E)&&(lastKnownLocation!=null))
 					{
 						if((arg2.length()>0)&&(!arg2.equalsIgnoreCase(tt[1])))
-							((Item)caged).setName(arg2);
+							caged.setName(arg2);
 						if((arg3.length()>0)&&(!arg3.equalsIgnoreCase(tt[1])))
-							((Item)caged).setDisplayText(arg3);
+							caged.setDisplayText(arg3);
 						lastKnownLocation.addItem(caged,ItemPossessor.Expire.Player_Drop);
 						((MOB)E).killMeDead(false);
 					}
@@ -12632,7 +12643,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((M!=null)&&(lastKnownLocation!=null))
 					{
 						M.bringToLife(lastKnownLocation,true);
-						((Item)E).destroy();
+						E.destroy();
 					}
 				}
 				else
@@ -14644,7 +14655,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if(msg.target() instanceof Coins)
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.target().copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14665,7 +14676,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if(msg.target() instanceof Coins)
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.target().copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14739,7 +14750,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							if((msg.target() == affecting)
 							&&(affecting instanceof Food))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.target().copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),defaultItem,check,script,1, t);
 							if(!multiTriggers)
@@ -14765,7 +14776,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.target().copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
 							if(!multiTriggers)
@@ -14790,7 +14801,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),check, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.target().copyOf(),check, null).push(script));
 							else
 								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),(Item)msg.target(),(Item)msg.tool(),check,script,1, t);
 							if(!multiTriggers)
@@ -15158,7 +15169,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(t==null)
 							t=parseBits(script,0,"CR");
 						if((t!=null)
-						&&((Social)msg.tool()).Name().toUpperCase().startsWith(t[1]))
+						&&msg.tool().Name().toUpperCase().startsWith(t[1]))
 						{
 							final Item Tool=defaultItem;
 							if(msg.target() instanceof MOB)
