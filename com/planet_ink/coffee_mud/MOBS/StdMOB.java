@@ -2494,7 +2494,7 @@ public class StdMOB implements MOB
 		{
 			if((msg.tool() instanceof Item)
 			&&(((Item)msg.tool()).owner()==null)
-			&&(!((Item)msg.tool()).okMessage(myHost, msg)))
+			&&(!msg.tool().okMessage(myHost, msg)))
 				return false;
 
 			if((msg.sourceMinor() == CMMsg.TYP_DEATH)
@@ -3462,7 +3462,7 @@ public class StdMOB implements MOB
 		{
 			if((msg.tool() instanceof Item)
 			&&(((Item)msg.tool()).owner()==null))
-				((Item)msg.tool()).executeMsg(myHost, msg);
+				msg.tool().executeMsg(myHost, msg);
 			if((msg.sourceMajor(CMMsg.MASK_MALICIOUS))
 			&& (!msg.sourceMajor(CMMsg.MASK_INTERMSG))
 			&& (msg.target() instanceof MOB)
@@ -5711,7 +5711,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void adjustFaction(String which, final int amount)
+	public void adjustFaction(String which, int amount)
 	{
 		which = which.toUpperCase();
 		final Faction F = CMLib.factions().getFaction(which);
@@ -5719,7 +5719,15 @@ public class StdMOB implements MOB
 			return;
 		which = F.factionID().toUpperCase();
 		if(!factions.containsKey(which))
+		{
+			if(which.endsWith(".INI")
+			&&(factions.containsKey(which.substring(0,which.length()-4))))
+			{
+				amount += fetchFaction(which.substring(0,which.length()-4));
+				factions.remove(which.substring(0,which.length()-4));
+			}
 			addFaction(which, amount);
+		}
 		else
 			addFaction(which, fetchFaction(which) + amount);
 	}
