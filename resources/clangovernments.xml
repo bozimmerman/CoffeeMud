@@ -149,8 +149,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -317,8 +317,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -475,8 +475,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -640,8 +640,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -806,8 +806,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -1022,8 +1022,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -1107,8 +1107,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEXTERITY+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STRENGTH+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -1315,8 +1315,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -1467,8 +1467,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
@@ -1608,8 +1608,8 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
         <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
-        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10% SELF" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10% SELF" />
         <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
         <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
