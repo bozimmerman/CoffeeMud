@@ -20,11 +20,12 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    limitations under the License.
 */
 
-/*
+/**
  * A version of the Vector class that provides to "safe" adds
  * and removes by copying the underlying vector whenever those
  * operations are done.  Also maintains a tree, using the CMObject
  * ID() of the stored object as sort key.
+ * @param <T> the type of CMObject in the list
  */
 public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess
 {
@@ -32,18 +33,31 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	private volatile Vector<T> V;
 	private final    TreeMap<String,T> S;
 
+	/**
+	 * Construct a new CMSTreeVector
+	 */
 	public CMSTreeVector()
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param size the initial size
+	 */
 	public CMSTreeVector(final int size)
 	{
 		V=new Vector<T>(size);
 		S=new TreeMap<String,T>();
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param E the initial collection of objects
+	 */
 	public CMSTreeVector(final List<T> E)
 	{
 		V=new Vector<T>();
@@ -52,6 +66,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 			addAll(E);
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param E the initial collection of objects
+	 */
 	public CMSTreeVector(final T[] E)
 	{
 		V=new Vector<T>();
@@ -63,6 +82,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		}
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param E the initial collection of objects
+	 */
 	public CMSTreeVector(final Enumeration<T> E)
 	{
 		V=new Vector<T>();
@@ -74,6 +98,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		}
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param E the initial collection of objects
+	 */
 	public CMSTreeVector(final Iterator<T> E)
 	{
 		V=new Vector<T>();
@@ -82,6 +111,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 			addBoth(E.next());
 	}
 
+	/**
+	 * Construct a new CMSTreeVector
+	 *
+	 * @param E the initial collection of objects
+	 */
 	public CMSTreeVector(final Set<T> E)
 	{
 		V=new Vector<T>();
@@ -156,6 +190,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		}
 	}
 
+	/**
+	 * Returns the current capacity of the underlying vector.
+	 *
+	 * @return the current capacity of the underlying vector.
+	 */
 	public synchronized int capacity()
 	{
 		return V.capacity();
@@ -197,16 +236,33 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		V.copyInto(anArray);
 	}
 
+	/**
+	 * Returns the object at the given index.
+	 *
+	 * @param index the index of the object to return
+	 * @return the object at that index
+	 */
 	public synchronized T elementAt(final int index)
 	{
 		return V.elementAt(index);
 	}
 
+	/**
+	 * Returns an enumeration of the elements in the vector.
+	 *
+	 * @return an enumeration of the elements in the vector.
+	 */
 	public synchronized Enumeration<T> elements()
 	{
 		return V.elements();
 	}
 
+	/**
+	 * Ensures that the underlying vector has at least the given minimum
+	 * capacity.
+	 *
+	 * @param minCapacity the minimum capacity to ensure
+	 */
 	public synchronized void ensureCapacity(final int minCapacity)
 	{
 		V.ensureCapacity(minCapacity);
@@ -218,6 +274,11 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return o==this;
 	}
 
+	/**
+	 * Returns the first element in the vector.
+	 *
+	 * @return the first element in the vector.
+	 */
 	public synchronized T firstElement()
 	{
 		return V.firstElement();
@@ -235,6 +296,15 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return super.hashCode();
 	}
 
+	/**
+	 * Returns the index of the first occurrence of the given object in the
+	 * vector, starting at the given index.
+	 *
+	 * @param o the object to look for
+	 * @param index the index at which to start looking
+	 * @return the index of the first occurrence of the given object in the
+	 *         vector, starting at the given index.
+	 */
 	public synchronized int indexOf(final Object o, final int index)
 	{
 		return V.indexOf(o, index);
@@ -252,11 +322,25 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return V.isEmpty();
 	}
 
+	/**
+	 * Returns the last element in the vector.
+	 *
+	 * @return the last element in the vector.
+	 */
 	public synchronized T lastElement()
 	{
 		return V.lastElement();
 	}
 
+	/**
+	 * Returns the index of the last occurrence of the given object in the
+	 * vector, searching backwards starting at the given index.
+	 *
+	 * @param o the object to look for
+	 * @param index the index at which to start looking backwards
+	 * @return the index of the last occurrence of the given object in the
+	 *         vector, searching backwards starting at the given index.
+	 */
 	public synchronized int lastIndexOf(final Object o, final int index)
 	{
 		return V.lastIndexOf(o, index);
@@ -281,7 +365,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized T set(final int index, final T element)
 	{
@@ -299,6 +382,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return null;
 	}
 
+	/**
+	 * Sets the element at the given index to the given object.
+	 *
+	 * @param obj the object to set
+	 * @param index the index at which to set it
+	 */
 	public synchronized void setElementAt(final T obj, final int index)
 	{
 		set(index,obj);
@@ -330,7 +419,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("hiding")
-
 	@Override
 	public synchronized <T> T[] toArray(final T[] a)
 	{
@@ -351,7 +439,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized void add(final int index, final T element)
 	{
@@ -366,7 +453,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean add(final T e)
 	{
@@ -382,6 +468,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return false;
 	}
 
+	/**
+	 * Adds the given object to both the vector and the tree map.
+	 *
+	 * @param e the object to add
+	 * @return true if it was added, false if it was already present
+	 */
 	private boolean addBoth(final T e)
 	{
 		if(S.containsKey(e.ID().toUpperCase()))
@@ -392,7 +484,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean addAll(final Collection<? extends T> c)
 	{
@@ -407,7 +498,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean addAll(int index, final Collection<? extends T> c)
 	{
@@ -423,13 +513,17 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return oldSize < size();
 	}
 
+	/**
+	 * Adds the given object to the end of the vector.
+	 *
+	 * @param obj the object to add
+	 */
 	public synchronized void addElement(final T obj)
 	{
 		add(obj);
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized void clear()
 	{
@@ -438,6 +532,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		S.clear();
 	}
 
+	/**
+	 * Inserts the given object at the given index.
+	 *
+	 * @param obj the object to add
+	 * @param index the index at which to add it
+	 */
 	public synchronized void insertElementAt(final T obj, final int index)
 	{
 		if(obj==null)
@@ -453,7 +553,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean remove(final Object o)
 	{
@@ -468,6 +567,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return V.remove(o);
 	}
 
+	/**
+	 * Removes the given object from both the vector and the tree map.
+	 *
+	 * @param o the object to remove
+	 * @return true if it was removed from either, false if it was not present
+	 */
 	private boolean removeBoth(final Object o)
 	{
 		if(!(o instanceof CMObject))
@@ -480,6 +585,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return V.remove(o);
 	}
 
+	/**
+	 * Removes the given object from both the vector and the tree map.
+	 *
+	 * @param o the object to remove
+	 * @return true if it was removed from either, false if it was not present
+	 */
 	private boolean removeBoth(final CMObject o)
 	{
 		final String OID=o.ID().toUpperCase();
@@ -490,7 +601,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized T remove(final int index)
 	{
@@ -505,7 +615,6 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean removeAll(final Collection<?> c)
 	{
@@ -524,6 +633,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		S.clear();
 	}
 
+	/**
+	 * Finds the object in the tree map with the given ID.
+	 *
+	 * @param key the ID to look for
+	 * @return the object with that ID, or null if not found
+	 */
 	public T find(final String key)
 	{
 		if(key==null)
@@ -531,6 +646,12 @@ public class CMSTreeVector<T extends CMObject> implements Serializable, Iterable
 		return S.get(key.toUpperCase());
 	}
 
+	/**
+	 * Removes the given object from both the vector and the tree map.
+	 *
+	 * @param obj the object to remove
+	 * @return true if it was removed from either, false if it was not present
+	 */
 	public synchronized boolean removeElement(final Object obj)
 	{
 		return remove(obj);

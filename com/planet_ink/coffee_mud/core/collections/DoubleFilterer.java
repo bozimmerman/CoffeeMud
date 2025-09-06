@@ -15,8 +15,17 @@ package com.planet_ink.coffee_mud.core.collections;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A simple interface for filtering objects into three categories: allowed,
+ * rejected, or not applicable.
+ *
+ * @param <K> the type of object to be filtered
+ */
 public interface DoubleFilterer<K>
 {
+	/**
+	 * The result of a filtering operation.
+	 */
 	public static enum Result
 	{
 		ALLOWED,
@@ -24,8 +33,17 @@ public interface DoubleFilterer<K>
 		NOTAPPLICABLE
 	}
 
+	/**
+	 * Filters the given object, returning ALLOWED, REJECTED, or NOTAPPLICABLE.
+	 *
+	 * @param obj the object to be filtered
+	 * @return the result of the filtering operation
+	 */
 	public Result getFilterResult(K obj);
 
+	/**
+	 * A filterer that always returns NOTAPPLICABLE.
+	 */
 	@SuppressWarnings("rawtypes")
 	public static final DoubleFilterer ANYTHING=new DoubleFilterer()
 	{

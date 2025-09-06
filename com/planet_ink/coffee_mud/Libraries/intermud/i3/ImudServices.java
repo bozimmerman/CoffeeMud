@@ -49,23 +49,24 @@ public interface ImudServices
 	 * mudlib is not prepared to handle multiple threads,
 	 * just stack up incoming packets and pull them off
 	 * the stack during your main thread of execution.
+	 *
 	 * @param packet the incoming packet
 	 */
 	public abstract void receive(Packet packet);
 
 	/**
-	 * Returns the mud->key mapping for muds that want
+	 * Returns the mud to key mapping for muds that want
 	 * to connect to this server.
 	 *
-	 * @return the mud->key mapping
+	 * @return the mud to key mapping
 	 */
 	public abstract Map<String,Long> getIncomingKeys();
 
 	/**
-	 * Returns the mud->key mapping so that you can
+	 * Returns the mud to key mapping so that you can
 	 * connect to other muds.
 	 *
-	 * @return the mud->key mapping
+	 * @return the mud to key mapping
 	 */
 	public abstract Map<String,Long> getOutgoingKeys();
 

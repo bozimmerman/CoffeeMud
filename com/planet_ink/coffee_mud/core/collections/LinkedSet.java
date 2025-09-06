@@ -344,7 +344,6 @@ public class LinkedSet<K> implements Set<K>
 	 * @param <T> the type of object in the array
 	 * @param a the array to use, if big enough
 	 * @return the array of items
-	 * @see java.util.Collection#toArray(T[])
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

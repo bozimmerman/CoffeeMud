@@ -21,12 +21,23 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An enumeration that combines multiple lists into a single enumeration.
+ *
+ * @param <K> the type of object being enumerated
+ * @author Bo Zimmerman
+ */
 public class MultiListEnumeration<K> implements Enumeration<K>
 {
 	private final LinkedList<Iterable<K>> lists=new LinkedList<Iterable<K>>();
 	private volatile Iterator<Iterable<K>> listIter = null;
 	private volatile Iterator<K> iter = null;
 
+	/**
+	 * Construct a new multi-list enumeration
+	 *
+	 * @param esets the lists to combine
+	 */
 	public MultiListEnumeration(final Iterable<K>[] esets)
 	{
 		if((esets!=null)&&(esets.length>0))
@@ -34,6 +45,13 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		setup(false);
 	}
 
+	/**
+	 * Construct a new multi-list enumeration
+	 *
+	 * @param esetss the lists to combine
+	 * @param diffMethodSignature just to differentiate this constructor from
+	 *            the other one
+	 */
 	public MultiListEnumeration(final List<List<K>> esetss, final boolean diffMethodSignature)
 	{
 		if((esetss!=null)&&(esetss.size()>0))
@@ -41,12 +59,22 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		setup(false);
 	}
 
+	/**
+	 * Construct a new multi-list enumeration
+	 *
+	 * @param eset the list to combine
+	 */
 	public MultiListEnumeration(final Iterable<K> eset)
 	{
 		lists.add(eset);
 		setup(false);
 	}
 
+	/**
+	 * Initializes the enumeration by setting up the internal iterators
+	 *
+	 * @param startOver true to start over from the beginning
+	 */
 	private void setup(final boolean startOver)
 	{
 		if(startOver||(listIter==null))
@@ -58,6 +86,11 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		}
 	}
 
+	/**
+	 * Add another list to the enumeration
+	 *
+	 * @param set the list to add
+	 */
 	public void addEnumeration(final List<K> set)
 	{
 		if(set != null)

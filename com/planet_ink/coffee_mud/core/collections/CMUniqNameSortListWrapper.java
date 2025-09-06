@@ -19,8 +19,19 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * A SortedListWrap which uses the name of the CMObject to sort the list.
+ *
+ * @param <T> the type of object in the list
+ */
 public class CMUniqNameSortListWrapper<T extends CMObject> extends CMUniqSortListWrapper<T>
 {
+	/**
+	 * Construct a new CMUniqNameSortListWrapper
+	 *
+	 * @param list the list to wrap
+	 */
 	public CMUniqNameSortListWrapper(final List<T> list)
 	{
 		super(list);

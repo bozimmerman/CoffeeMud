@@ -162,8 +162,8 @@ public interface ProtocolLibrary extends CMLibrary
 	/**
 	 * Main entry point to handle GMCP commands from the user
 	 *
-	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, Map)
 	 *
 	 * @param session the session of the mob to report to
 	 * @param data the command sent by the user
@@ -177,8 +177,8 @@ public interface ProtocolLibrary extends CMLibrary
 	 * Called every second from each player session to deal with periodic GMCP
 	 * reports.
 	 *
-	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
-	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#processGmcp(Session, String, Map, Map)
+	 * @see ProtocolLibrary#invokeRoomChangeGmcp(Session, Map, Map, Map)
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
@@ -192,8 +192,8 @@ public interface ProtocolLibrary extends CMLibrary
 	 * GMCP appears to support getting a report from the protocol when entering
 	 * a new room.  This method is called to handle those reports.
 	 *
-	 * @see ProtocolLibrary#processGmcp(Session, String, Map)
-	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map)
+	 * @see ProtocolLibrary#processGmcp(Session, String, Map, Map)
+	 * @see ProtocolLibrary#pingGmcp(Session, Map, Map, Map)
 	 *
 	 * @param session the session of the mob to report to
 	 * @param reporteds the 'subscriptions' of the given session
@@ -273,7 +273,7 @@ public interface ProtocolLibrary extends CMLibrary
 	 * If true, it means there's a good chance you can create
 	 * an LLM session, but no guarantee.
 	 *
-	 * @see ProtocolLibrary#createLLMSession(Integer)
+	 * @see ProtocolLibrary#createLLMSession(String, Integer)
 	 *
 	 * @return true for LLM possibility
 	 */

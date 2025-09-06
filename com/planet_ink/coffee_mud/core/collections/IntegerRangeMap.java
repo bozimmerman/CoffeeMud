@@ -17,28 +17,49 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A Map whose keys are integer ranges, and which will return the value for any
+ * key that falls within a given range.
+ *
+ * @param <K> the value type
+ * @author Bo Zimmerman
+ *
+ */
 public class IntegerRangeMap<K> implements Map<int[],K>
 {
-	private final Map<IntegerRange,K> map;
-	private volatile int maxmin;
-	private volatile int maxmax;
+	private final Map<IntegerRange, K>	map;
+	private volatile int				maxmin;
+	private volatile int				maxmax;
+
+	/**
+	 * Construct a new IntegerRangeMap
+	 */
 	public IntegerRangeMap()
 	{
 		map = Collections.synchronizedMap(new TreeMap<IntegerRange,K>());
 		maxmin=-1;
 		maxmax = -1;
 	}
-	
+
+	/**
+	 * A converter which converts IntegerRange objects into int[] objects.
+	 *
+	 */
 	private static Converter<IntegerRange, int[]> keyConverter = new Converter<IntegerRange, int[]>()
 	{
 		@Override
-		public int[] convert(IntegerRange obj)
+		public int[] convert(final IntegerRange obj)
 		{
 			return obj.m;
 		}
 
 	};
-	
+
+	/**
+	 * A converter which converts Map Entries with IntegerRange keys into
+	 * Map Entries with int[] keys.
+	 *
+	 */
 	private final Converter<Map.Entry<IntegerRange, K>,Map.Entry<int[],K>> entryConverter = new Converter<Map.Entry<IntegerRange, K>,Map.Entry<int[],K>>()
 	{
 		@Override
@@ -59,7 +80,7 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 				}
 
 				@Override
-				public K setValue(K value)
+				public K setValue(final K value)
 				{
 					return e.setValue(value);
 				}
@@ -67,7 +88,13 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 		}
 
 	};
-	
+
+	/**
+	 * An integer range, inclusive of the min and max values.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static class IntegerRange implements Comparable<IntegerRange>
 	{
 		public final int[] m;
@@ -75,14 +102,14 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 		{
 			if(max<min)
 			{
-				int tmp = min;
+				final int tmp = min;
 				min=max;
 				max=tmp;
 			}
 			this.m = new int[] {min,max};
 		}
 		@Override
-		public int compareTo(IntegerRange o)
+		public int compareTo(final IntegerRange o)
 		{
 			if(o == null)
 				return 1;
@@ -92,7 +119,7 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 				return 1;
 			return 0;
 		}
-		
+
 		@Override
 		public boolean equals(final Object o)
 		{
@@ -120,7 +147,13 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 		return map.isEmpty();
 	}
 
-	protected IntegerRange makeRange(Object key)
+	/**
+	 * Convert the given key into an IntegerRange object.
+	 *
+	 * @param key the key to convert
+	 * @return the IntegerRange object, or null if it could not be converted
+	 */
+	protected IntegerRange makeRange(final Object key)
 	{
 		if(key == null)
 			return null;
@@ -128,65 +161,65 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 			return (IntegerRange)key;
 		if(key instanceof int[])
 		{
-			int[] k = (int[])key;
-			IntegerRange r = new IntegerRange(k[0],k[1]);
+			final int[] k = (int[])key;
+			final IntegerRange r = new IntegerRange(k[0],k[1]);
 			return r;
 		}
 		if(key instanceof Integer)
 		{
-			int k = ((Integer)key).intValue();
-			IntegerRange r = new IntegerRange(k,k);
+			final int k = ((Integer)key).intValue();
+			final IntegerRange r = new IntegerRange(k,k);
 			return r;
 		}
 		if(key instanceof Short)
 		{
-			int k = ((Short)key).intValue();
-			IntegerRange r = new IntegerRange(k,k);
+			final int k = ((Short)key).intValue();
+			final IntegerRange r = new IntegerRange(k,k);
 			return r;
 		}
 		if(key instanceof Long)
 		{
-			int k = ((Long)key).intValue();
-			IntegerRange r = new IntegerRange(k,k);
+			final int k = ((Long)key).intValue();
+			final IntegerRange r = new IntegerRange(k,k);
 			return r;
 		}
 		if(key instanceof Double)
 		{
-			int k = ((Double)key).intValue();
-			IntegerRange r = new IntegerRange(k,k);
+			final int k = ((Double)key).intValue();
+			final IntegerRange r = new IntegerRange(k,k);
 			return r;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public boolean containsKey(Object key)
+	public boolean containsKey(final Object key)
 	{
-		IntegerRange r = makeRange(key);
+		final IntegerRange r = makeRange(key);
 		if(r == null)
 			return false;
 		return map.containsKey(r);
 	}
 
 	@Override
-	public boolean containsValue(Object value)
+	public boolean containsValue(final Object value)
 	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public K get(Object key)
+	public K get(final Object key)
 	{
-		IntegerRange r = makeRange(key);
+		final IntegerRange r = makeRange(key);
 		if(r == null)
 			return null;
 		return map.get(r);
 	}
 
 	@Override
-	public K put(int[] key, K value)
+	public K put(final int[] key, final K value)
 	{
-		IntegerRange r = makeRange(key);
+		final IntegerRange r = makeRange(key);
 		if(r == null)
 			return null;
 		if(r.m[1] > maxmax)
@@ -198,18 +231,18 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 	}
 
 	@Override
-	public K remove(Object key)
+	public K remove(final Object key)
 	{
-		IntegerRange r = makeRange(key);
+		final IntegerRange r = makeRange(key);
 		if(r == null)
 			return null;
-		final K val = map.remove(r); 
+		final K val = map.remove(r);
 		if((val != null)
 		&&(r.m[1] >=maxmin))
 		{
 			maxmin=-1;
 			maxmax=-1;
-			for(IntegerRange rs : map.keySet())
+			for(final IntegerRange rs : map.keySet())
 			{
 				if(rs.m[0]>maxmax)
 				{
@@ -225,9 +258,9 @@ public class IntegerRangeMap<K> implements Map<int[],K>
 	{
 		return maxmax;
 	}
-	
+
 	@Override
-	public void putAll(Map<? extends int[], ? extends K> m)
+	public void putAll(final Map<? extends int[], ? extends K> m)
 	{
 		for(final Map.Entry<? extends int[], ? extends K> e : m.entrySet())
 			this.put(e.getKey(),e.getValue());

@@ -337,7 +337,7 @@ public interface AccountStats extends CMCommon, Achievable, PrideStats
 	 * @see AccountStats#isIgnored(String)
 	 *
 	 * @param category the name of the category
-	 * @param name the name to check
+	 * @param mob the mob to check
 	 * @return true if the given name is ignored
 	 */
 	public boolean isIgnored(final String category, final MOB mob);

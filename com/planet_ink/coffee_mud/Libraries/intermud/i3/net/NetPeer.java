@@ -33,6 +33,7 @@ public interface NetPeer extends java.io.Closeable
 
 	/**
 	 * Check if the peer is still connected
+	 * @return true if connected
 	 */
 	public boolean isConnected();
 

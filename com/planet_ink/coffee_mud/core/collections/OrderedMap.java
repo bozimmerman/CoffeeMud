@@ -96,6 +96,7 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 
 	/**
 	 * An iterator for the keys in the map.
+	 * @return an iterator of the keys
 	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<K> keyIterator()
@@ -107,6 +108,7 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 
 	/**
 	 * An iterator for the key-value pairs in the map.
+	 * @return an iterator of the key-value pairs
 	 */
 	@SuppressWarnings("unchecked")
 	public Iterator<Pair<K,J>> pairIterator()

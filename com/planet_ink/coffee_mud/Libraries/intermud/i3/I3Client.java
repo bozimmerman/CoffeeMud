@@ -89,6 +89,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 	 * @param adminEmail email address of mud admin
 	 * @param imud an instance of the mudlib implementation of com.planet_ink.coffee_mud.Libraries.intermud.i3.packets.ImudServices
 	 * @param peer and instance of the mudlib implementation of com.planet_ink.coffee_mud.Libraries.intermud.i3.packets.IntermudPeer
+	 * @param smtpPort the port number of the mud's SMTP server
 	 * @see com.planet_ink.coffee_mud.Libraries.intermud.i3.ImudServices
 	 * @see com.planet_ink.coffee_mud.Libraries.intermud.i3.persist.PersistentPeer
 	 */

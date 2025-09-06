@@ -22,21 +22,50 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * 	A searchable list, usually sorted or otherwise made worth searching.
+ * A specialized vector that holds only CMObjects, and keeps them sorted and
+ * unique based on their ID() value.
+ * @param <T> the type of CMObject in the list
+ */
 public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T>
 {
 	private boolean readOnly = false;
 	private final List<T> list;
 
+	/**
+	 * Construct a new CMUniqSortListWrapper
+	 *
+	 * @param list the backing list
+	 */
 	public CMUniqSortListWrapper(final List<T> list)
 	{
 		this.list=list;
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, case insensitive
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal
+	 */
 	protected int compareTo(final CMObject arg0, final String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, case insensitive, ignoring
+	 * case of the second argument
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal
+	 */
 	protected int compareToStarts(final CMObject arg0, final String arg1)
 	{
 		if(arg0.ID().toLowerCase().startsWith(arg1.toLowerCase()))
@@ -44,6 +73,16 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, case insensitive, ignoring
+	 * case of the second argument, and only looking at the start of the first
+	 * argument.
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal
+	 */
 	protected int compareToLowerStarts(final CMObject arg0, final String arg1)
 	{
 		if(arg0.ID().toLowerCase().startsWith(arg1))
@@ -51,6 +90,14 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, case insensitive
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal
+	 */
 	protected int compareTo(final CMObject arg0, final CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
@@ -257,6 +304,13 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 		return null;
 	}
 
+	/**
+	 * Find the first entry in the list whose ID() starts with the given string,
+	 * case insensitive.
+	 *
+	 * @param arg0 the string to match against the start of the ID()
+	 * @return the first matching entry, or null if none found
+	 */
 	public synchronized T findStartsWith(final String arg0)
 	{
 		if(arg0==null)
@@ -343,6 +397,12 @@ public class CMUniqSortListWrapper<T extends CMObject> implements SearchIDList<T
 		throw new java.lang.UnsupportedOperationException();
 	}
 
+	/**
+	 * Set whether this list is read-only. If it is, attempts to add or remove
+	 * items will fail.
+	 *
+	 * @param trueFalse true to make read-only, false to allow edits
+	 */
 	public void setReadOnly(final boolean trueFalse)
 	{
 		readOnly = trueFalse;

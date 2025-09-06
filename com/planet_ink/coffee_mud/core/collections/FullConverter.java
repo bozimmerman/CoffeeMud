@@ -14,8 +14,30 @@ package com.planet_ink.coffee_mud.core.collections;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A converter which can convert in both directions, and also takes a cardinal
+ * value for the forward conversion.
+ *
+ * @param <K> the input type
+ * @param <L> the output type
+ */
 public interface FullConverter<K, L>
 {
+	/**
+	 * Converts the given object of type K into an object of type L, using the
+	 * given cardinal value to influence the conversion.
+	 *
+	 * @param cardinal a cardinal value to influence the conversion
+	 * @param obj the object to convert
+	 * @return the converted object
+	 */
 	public L convert(int cardinal, K obj);
+
+	/**
+	 * Converts the given object of type L back into an object of type K.
+	 *
+	 * @param obj the object to convert
+	 * @return the converted object
+	 */
 	public K reverseConvert(L obj);
 }

@@ -17,10 +17,21 @@ import java.util.NoSuchElementException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An enumeration that wraps an iterator.
+ *
+ * @param <K> the type of object being enumerated
+ * @author Bo Zimmerman
+ */
 public class IteratorEnumeration<K> implements Enumeration<K>
 {
 	private final Iterator<K> i;
 
+	/**
+	 * Construct a new iterator enumeration
+	 *
+	 * @param i the iterator to wrap
+	 */
 	@SuppressWarnings("unchecked")
 	public IteratorEnumeration(final Iterator<K> i)
 	{

@@ -23,8 +23,27 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A two-way cross-referenced map, implemented with TreeMaps and TreeSets. The
+ * maximum number of K's per T and T's per K can be limited, so that when a new
+ * one is added, the oldest one is removed. Null T's and K's are supported.
+ *
+ * @param <T> the first key type
+ * @param <K> the second key type
+ * @author Bo Zimmerman
+ */
 public class CrossRefTreeMap<T, K>
 {
+	final Map<T,TreeSet<K>> map1		=new TreeMap<T,TreeSet<K>>(comparator);
+	final Map<K,TreeSet<T>> map2		=new TreeMap<K,TreeSet<T>>(comparator);
+	final int 				maxKsInMap1;
+	final int 				maxTsInMap2;
+	@SuppressWarnings("rawtypes")
+	private static final Set empty=new TreeSet();
+
+	/**
+	 * Comparator for objects that may be null
+	 */
 	final static Comparator<Object> comparator=new Comparator<Object>()
 	{
 		@Override
@@ -43,13 +62,15 @@ public class CrossRefTreeMap<T, K>
 			return o1.hashCode() > o2.hashCode() ? 1 : -1;
 		}
 	};
-	final Map<T,TreeSet<K>> map1		=new TreeMap<T,TreeSet<K>>(comparator);
-	final Map<K,TreeSet<T>> map2		=new TreeMap<K,TreeSet<T>>(comparator);
-	final int 				maxKsInMap1;
-	final int 				maxTsInMap2;
-	@SuppressWarnings("rawtypes")
-	private static final Set empty=new TreeSet();
 
+	/**
+	 * Construct a new CrossRefTreeMap
+	 *
+	 * @param maxFirstForEachSecond the maximum number of first keys to keep
+	 *            track of for each second key. Zero or negative means no limit.
+	 * @param maxSecondForEachFirst the maximum number of second keys to keep
+	 *            track of for each first key. Zero or negative means no limit.
+	 */
 	public CrossRefTreeMap(int maxFirstForEachSecond, int maxSecondForEachFirst)
 	{
 		if(maxSecondForEachFirst<=0)
@@ -60,11 +81,23 @@ public class CrossRefTreeMap<T, K>
 		maxTsInMap2=maxFirstForEachSecond;
 	}
 
+	/**
+	 * Returns true if this map contains the given first key
+	 *
+	 * @param t the first key
+	 * @return true if this map contains the given first key
+	 */
 	public boolean containsFirst(final T t)
 	{
 		return map1.containsKey(t);
 	}
 
+	/**
+	 * Returns true if this map contains the given second key
+	 *
+	 * @param k the second key
+	 * @return true if this map contains the given second key
+	 */
 	public boolean containsSecond(final K k)
 	{
 		return map2.containsKey(k);
@@ -87,7 +120,11 @@ public class CrossRefTreeMap<T, K>
 			return empty;
 		return tSet;
 	}
-
+	/**
+	 * Removes the given pair of keys from this map
+	 * @param t the first key
+	 * @param k the second key
+	 */
 	public synchronized void remove(final T t, final K k)
 	{
 		final TreeSet<K> tKs=map1.get(t);
@@ -120,6 +157,11 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
+	/**
+	 * Removes all pairs with the given first key from this map
+	 *
+	 * @param t the first key
+	 */
 	public synchronized void removeFirst(final T t)
 	{
 		final TreeSet<K> tKs=map1.get(t);
@@ -143,6 +185,11 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
+	/**
+	 * Removes all pairs with the given second key from this map
+	 *
+	 * @param k the second key
+	 */
 	public synchronized void removeSecond(final K k)
 	{
 		final TreeSet<T> kTs=map2.get(k);
@@ -166,6 +213,15 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
+	/**
+	 * Adds the given pair of keys to this map. If the maximum number of first
+	 * keys for the given second key is exceeded, the oldest one is removed. If
+	 * the maximum number of second keys for the given first key is exceeded,
+	 * the oldest one is removed.
+	 *
+	 * @param t the first key
+	 * @param k the second key
+	 */
 	public synchronized void change(final T t, final K k)
 	{
 		TreeSet<K> tKs=map1.get(t);
@@ -192,6 +248,9 @@ public class CrossRefTreeMap<T, K>
 			tKs.add(k);
 	}
 
+	/**
+	 * Clears this map
+	 */
 	public synchronized void clear()
 	{
 		map1.clear();

@@ -22,10 +22,18 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+/**
+ * A simple sorted vector of CMObjects, sorted by name
+ *
+ * @param <T> the type of CMObject in the list
+ */
 public class CMNSortSVec<T extends CMObject> extends SortedStrSVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 
+	/**
+	 * A converter that converts a CMObject to its name
+	 */
 	@SuppressWarnings("rawtypes")
 	private static final SortedStrSVector.Str idStringer=new SortedStrSVector.Str<CMObject>()
 	{
@@ -36,12 +44,20 @@ public class CMNSortSVec<T extends CMObject> extends SortedStrSVector<T> impleme
 		}
 	};
 
+	/**
+	 * Construct an empty CMNSortSVec
+	 *
+	 * @param size the initial size of the internal array
+	 */
 	@SuppressWarnings("unchecked")
 	public CMNSortSVec(final int size)
 	{
 		super(idStringer,size);
 	}
 
+	/**
+	 * Construct an empty CMNSortSVec
+	 */
 	@SuppressWarnings("unchecked")
 	public CMNSortSVec()
 	{

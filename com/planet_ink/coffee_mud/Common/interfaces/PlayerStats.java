@@ -170,7 +170,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Gets the saved pose string for players.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String, boolean)
 	 *
 	 * @return a saved pose string
 	 */
@@ -179,7 +179,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Gets the saved pose string for players.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setSavedPose(String, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#isPoseConstant()
 	 *
 	 * @return a saved pose string
@@ -193,7 +193,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#isPoseConstant()
 	 *
 	 * @param msg a saved pose string
-	 * @param const true to set as constant
+	 * @param constant true to set as constant
 	 */
 	public void setSavedPose(String msg, boolean constant);
 

@@ -18,15 +18,37 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An iterator that converts the objects in a backing iterator from one type to
+ * another using a Converter.
+ *
+ * @param <K> the backing collection type
+ * @param <L> the outward facing collection type
+ */
 public class ConvertingIterator<K, L> implements Iterator<L>
 {
 	private final Iterator<K> iterer;
 	private K currObj = null;
 	Converter<K, L> converter;
 
+	/**
+	 * Construct a new ConvertingIterator
+	 *
+	 * @param eset the backing iterator
+	 * @param conv the converter
+	 */
 	public ConvertingIterator(final Iterator<K> eset, final Converter<K, L> conv)
 	{
 		iterer=eset;
+		converter=conv;
+	}
+
+	/**
+	 * Set the converter for this iterator
+	 * @param conv the new converter
+	 */
+	public void setConverter(final Converter<K, L> conv)
+	{
 		converter=conv;
 	}
 

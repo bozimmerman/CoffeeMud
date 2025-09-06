@@ -20,8 +20,8 @@ import java.util.*;
 
 /**
  * A simple ArrayList implementation of a PairList
- * @param <T>
- * @param <K>
+ * @param <T> the type of the first element
+ * @param <K> the type of the second element
  */
 public class PairArrayList<T, K> extends ArrayList<Pair<T, K>> implements PairList<T, K>
 {

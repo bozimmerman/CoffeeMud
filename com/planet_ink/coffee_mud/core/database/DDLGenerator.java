@@ -39,6 +39,13 @@ public class DDLGenerator
 	private final Map<String, String>	typeMappings		= new HashMap<>();
 	private final Map<Integer, String>	sqlTypeToPortable	= new HashMap<>();
 
+	/**
+	 * Constructor
+	 *
+	 * @param metaData the database metadata object
+	 * @param schema the database schema name, or null
+	 * @throws SQLException if an error occurs
+	 */
 	public DDLGenerator(final DatabaseMetaData metaData, final String schema) throws SQLException
 	{
 		this.metaData=metaData;
@@ -150,6 +157,7 @@ public class DDLGenerator
 	 * @param columnDefs A list of Maps defining each column. Each map should contain:
 	 *   - "name", "type", "size", "nullable", "isPrimaryKey"
 	 * @return The generated SQL string.
+	 * @throws SQLException if an error occurs
 	 */
 	public String getCreateTableSQL(final String tableName, final List<Map<String, Object>> columnDefs) throws SQLException
 	{
@@ -182,6 +190,8 @@ public class DDLGenerator
 	 * Generates ADD COLUMN SQL with size and nullability.
 	 * @param tableName The table name.
 	 * @param colDef A map defining the column: "name" (String), "type" (String), "size" (Integer optional), "nullable" (Boolean default true)
+	 * @return The generated SQL string.
+	 * @throws SQLException if an error occurs or if ADD COLUMN is not supported.
 	 */
 	public String getAddColumnSQL(final String tableName, final Map<String, Object> colDef) throws SQLException
 	{
@@ -228,14 +238,15 @@ public class DDLGenerator
 	}
 
 	/**
+	 * Returns the Postgres-specific SQL for a MODIFY COLUMN operation.
 	 *
-	 * @param actualTable
-	 * @param columnName
-	 * @param newType
-	 * @param newSize
-	 * @param newNullable
-	 * @return
-	 * @throws SQLException
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLPostgreSQL(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
@@ -401,15 +412,17 @@ public class DDLGenerator
 		return sqls;
 	}
 
+
 	/**
+	 * Returns the HSQL-specific SQL for a MODIFY COLUMN operation.
 	 *
-	 * @param actualTable
-	 * @param columnName
-	 * @param newType
-	 * @param newSize
-	 * @param newNullable
-	 * @return
-	 * @throws SQLException
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLHSQLDB(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
@@ -575,6 +588,18 @@ public class DDLGenerator
 		return sqls;
 	}
 
+
+	/**
+	 * Returns the DB2-specific SQL for a MODIFY COLUMN operation.
+	 *
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLDB2(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
@@ -746,13 +771,13 @@ public class DDLGenerator
 	 * Adds temp as nullable to avoid NOT NULL add errors, copies data, replaces NULLs if needed,
 	 * then sets NOT NULL.
 	 *
-	 * @param actualTable
-	 * @param columnName
-	 * @param newType
-	 * @param newSize
-	 * @param newNullable
-	 * @return
-	 * @throws SQLException
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLDerby(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
@@ -920,6 +945,14 @@ public class DDLGenerator
 	/**
 	 * Generates MODIFY COLUMN SQL with new size and nullability, for SQL Server specifics
 	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
+	 *
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLServer(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
@@ -1069,8 +1102,16 @@ public class DDLGenerator
 	}
 
 	/**
-	 * Generates MODIFY COLUMN SQL with new size and nullability
+	 * Generates MODIFY COLUMN SQL with new size and nullability, for Oracle specifics
 	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
+	 *
+	 * @param actualTable the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the list of SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getModifyColumnSQLOracle(final String actualTable, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
@@ -1238,9 +1279,18 @@ public class DDLGenerator
 		return sqls;
 	}
 
+
 	/**
-	 * Generates MODIFY COLUMN SQL with new size and nullability
+	 * Generates MODIFY COLUMN SQL with new size and nullability, for SQL Server specifics
 	 * Note: Modifying nullability or size may have restrictions in some DBs (e.g., can't reduce size if data exists)
+	 *
+	 * @param tableName the table name
+	 * @param columnName the column name
+	 * @param newType the new type (or null to keep existing)
+	 * @param newSize the new size (or null to keep existing)
+	 * @param newNullable the new nullability (or null to keep existing)
+	 * @return the SQL statements to run
+	 * @throws SQLException if an error occurs
 	 */
 	public String getModifyColumnSQL(final String tableName, final String columnName, final String newType, final Integer newSize, final Boolean newNullable) throws SQLException
 	{
@@ -1268,6 +1318,9 @@ public class DDLGenerator
 	 * Generates ALTER TABLE ADD PRIMARY KEY SQL
 	 * @param tableName The table name
 	 * @param columnNames List of column names for the primary key (composite if multiple)
+	 * @param nullable If true, creates a unique index instead of a primary key
+	 * @return The generated SQL string
+	 * @throws SQLException if an error occurs
 	 */
 	public String getAddPrimaryKeySQL(final String tableName, final List<String> columnNames, final Boolean nullable) throws SQLException
 	{
@@ -1295,6 +1348,8 @@ public class DDLGenerator
 	 * @param tableName The table name
 	 * @param columnNames List of columns to index
 	 * @param isUnique Whether the index is unique
+	 * @return The generated SQL string
+	 * @throws SQLException if an error occurs
 	 */
 	public String getCreateIndexSQL(final String indexName, final String tableName, final List<String> columnNames, final boolean isUnique) throws SQLException
 	{

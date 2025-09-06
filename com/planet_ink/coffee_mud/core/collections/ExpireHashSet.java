@@ -17,31 +17,50 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-/*
+/**
  * A Set that does not return items after an ellapsed period of time after being added.
+ *
+ * @param <K> the type of object in the set
  */
 public class ExpireHashSet<K> implements Set<K>
 {
 	private final Map<K,Long> internalMap;
 	private long expirationTime = 2 * 60000; // two minutes
 
+	/**
+	 * Gets the default expiration time for newly added items.
+	 *
+	 * @return the time in milliseconds
+	 */
 	protected Long defTime()
 	{
 		return Long.valueOf(System.currentTimeMillis() + expirationTime);
 	}
 
-
+	/**
+	 * Constructs a new empty ExpireHashSet using the default timeout
+	 */
 	public ExpireHashSet()
 	{
 		internalMap = new SHashtable<K,Long>();
 	}
 
+	/**
+	 * Constructs a new empty ExpireHashSet using the given timeout
+	 *
+	 * @param expirationMs the time in milliseconds before an item expires
+	 */
 	public ExpireHashSet(final long expirationMs)
 	{
 		this();
 		this.expirationTime = expirationMs;
 	}
 
+	/**
+	 * Constructs a new ExpireHashSet containing the elements of the given set
+	 *
+	 * @param s the set of items to add
+	 */
 	public ExpireHashSet(final Set<K> s)
 	{
 		internalMap = new SHashtable<K,Long>();
@@ -96,6 +115,9 @@ public class ExpireHashSet<K> implements Set<K>
 		return internalMap.isEmpty();
 	}
 
+	/**
+	 * A filterer that removes expired items from the set
+	 */
 	protected Filterer<K> fconv = new Filterer<K>()
 	{
 		@Override

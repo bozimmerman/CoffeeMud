@@ -36,6 +36,14 @@ import com.planet_ink.coffee_mud.core.collections.LinkedSet.LinkedEntry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A Map that can hold multiple values for a single key. The values are held in
+ * a List, and the type of List is determined by the collectionClass parameter
+ * of the constructor. The default is Vector.
+ *
+ * @param <K> the key type
+ * @param <J> the value type
+ */
 public class MultiValueMap<K,J> implements Map<K,J>
 {
 	private final Map<K,List<J>>		map;
@@ -46,6 +54,10 @@ public class MultiValueMap<K,J> implements Map<K,J>
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator	empty				= EmptyIterator.INSTANCE;
 
+	/**
+	 * A remover that will remove the key from the map if its associated list
+	 * becomes empty.
+	 */
 	private final ListGetIterator.ListIteratorRemover<Object,J> remover = new ListGetIterator.ListIteratorRemover<Object,J>()
 	{
 		@Override
@@ -59,13 +71,24 @@ public class MultiValueMap<K,J> implements Map<K,J>
 		}
 	};
 
-
+	/**
+	 * Default constructor. Uses a Hashtable as the base map, and Vectors as the
+	 * lists of values.
+	 */
 	public MultiValueMap()
 	{
 		map = new Hashtable<K,List<J>>();
 		collectionClass = java.util.Vector.class;
 	}
 
+	/**
+	 * Constructor that allows you to specify the base map and the type of
+	 * collection used as the value lists.
+	 *
+	 * @param baseMap the base map to use
+	 * @param collectionClass the type of collection to use as the value lists.
+	 *            Must have a no-arg constructor. Default is Vector.
+	 */
 	public MultiValueMap(final Map<K,List<J>> baseMap, final Class<?> collectionClass)
 	{
 		map = baseMap;

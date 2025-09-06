@@ -23,6 +23,12 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A ListIterator that wraps multiple other ListIterators, iterating through
+ * each one in turn.
+ *
+ * @param <K> the type of object being iterated over
+ */
 public class MultiListListIterator<K> implements ListIterator<K>
 {
 	private final List<ListIterator<K>> iters=new ArrayList<ListIterator<K>>();
@@ -30,6 +36,11 @@ public class MultiListListIterator<K> implements ListIterator<K>
 	private volatile int listIndex = 0;
 	private volatile int itemIndex = 0;
 
+	/**
+	 * Constructs a new MultiListListIterator.
+	 *
+	 * @param esets the array of ListIterators to wrap
+	 */
 	public MultiListListIterator(final ListIterator<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
@@ -38,6 +49,11 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I);
 	}
 
+	/**
+	 * Constructs a new MultiListListIterator.
+	 *
+	 * @param esets the collection of ListIterators to wrap
+	 */
 	public MultiListListIterator(final Collection<ListIterator<K>> esets)
 	{
 		if((esets==null)||(esets.size()==0))
@@ -47,6 +63,11 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I);
 	}
 
+	/**
+	 * Constructs a new MultiListListIterator.
+	 *
+	 * @param esets the array of Lists to wrap
+	 */
 	public MultiListListIterator(final List<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
@@ -55,6 +76,11 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I.listIterator());
 	}
 
+	/**
+	 * Constructs a new MultiListListIterator.
+	 *
+	 * @param esets the collection of Lists to wrap
+	 */
 	public MultiListListIterator(final List<? extends List<K>> esets)
 	{
 		if(esets==null)
@@ -63,11 +89,19 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I.listIterator());
 	}
 
+	/**
+	 * Constructs a new MultiListListIterator.
+	 */
 	public MultiListListIterator()
 	{
 
 	}
 
+	/**
+	 * Adds another ListIterator to the end of this iterator.
+	 *
+	 * @param eset the ListIterator to add
+	 */
 	public void add(final ListIterator<K> eset)
 	{
 		iters.add(eset);

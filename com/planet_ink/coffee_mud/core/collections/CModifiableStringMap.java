@@ -21,10 +21,22 @@ import com.planet_ink.coffee_mud.core.interfaces.Modifiable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A simple wrapper around a Map&lt;String,String&gt; that implements the Modifiable
+ * interface.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public class CModifiableStringMap implements Map<String, String>, Modifiable
 {
 	final Map<String,String> baseMap;
 
+	/**
+	 * Construct a new CModifiableStringMap, wrapping the given base map.
+	 *
+	 * @param baseMap the map to wrap
+	 */
 	public CModifiableStringMap(final Map<String,String> baseMap)
 	{
 		this.baseMap=baseMap;

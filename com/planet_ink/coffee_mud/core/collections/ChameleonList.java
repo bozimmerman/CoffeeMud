@@ -129,7 +129,6 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	 * Adds an element to the list at a specific index, which is not supported.
 	 * @param arg0 the index at which to add
 	 * @param arg1 the element to add
-	 * @return never returns normally
 	 */
 	@Override
 	public void add(final int arg0, final K arg1)

@@ -17,6 +17,10 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An iterator that filters its elements through a Filterer.
+ * @param <K> the type of object being filtered
+ */
 public class FilteredIterator<K> implements Iterator<K>
 {
 	private final Iterator<K>	iter;
@@ -25,6 +29,12 @@ public class FilteredIterator<K> implements Iterator<K>
 	private boolean				initialized	= false;
 	private final boolean		delete;
 
+	/**
+	 * Construct a new filtered iterator
+	 *
+	 * @param eset the iterator to wrap
+	 * @param fil the filterer to use
+	 */
 	public FilteredIterator(final Iterator<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
@@ -32,6 +42,14 @@ public class FilteredIterator<K> implements Iterator<K>
 		delete=false;
 	}
 
+	/**
+	 * Construct a new filtered iterator
+	 *
+	 * @param eset the iterator to wrap
+	 * @param fil the filterer to use
+	 * @param delete true to cause filtered-out elements to be removed from the
+	 *            underlying iterator
+	 */
 	public FilteredIterator(final Iterator<K> eset, final Filterer<K> fil, final boolean delete)
 	{
 		iter=eset;
@@ -39,11 +57,20 @@ public class FilteredIterator<K> implements Iterator<K>
 		this.delete=delete;
 	}
 
+	/**
+	 * Set the filterer to be used
+	 *
+	 * @param fil the new filterer
+	 */
 	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}
 
+	/**
+	 * Stages the next element that passes the filterer, or null if there is
+	 * none.
+	 */
 	private void stageNextElement()
 	{
 		nextElement = null;
@@ -58,6 +85,9 @@ public class FilteredIterator<K> implements Iterator<K>
 		}
 	}
 
+	/**
+	 * Initializes the iterator by staging the first element
+	 */
 	private void initialize()
 	{
 		if(!initialized)

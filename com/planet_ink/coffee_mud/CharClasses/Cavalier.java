@@ -34,6 +34,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A Cavalier is a knightly class, focused on mounted combat and fighting from
+ * horseback. They gain many special abilities when fighting while mounted, and
+ * can even gain a special mount of their own as they advance in level. They are
+ * also able to use a wide variety of weapons and armor.
+ *
+ * @author Bo Zimmerman
+ */
 public class Cavalier extends StdCharClass
 {
 	@Override
@@ -116,6 +124,10 @@ public class Cavalier extends StdCharClass
 		return CharClass.ARMOR_ANY;
 	}
 
+	/**
+	 * Constructs the Cavalier class, and sets its stat adjustments.
+	 * It gains both strength and dexterity.
+	 */
 	public Cavalier()
 	{
 		super();

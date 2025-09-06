@@ -21,31 +21,63 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An enumeration that is made up of multiple enumerations.
+ *
+ * @param <K> the type of object being enumerated
+ */
 public class MultiEnumeration<K> implements Enumeration<K>
 {
 	private final LinkedList<Enumeration<? extends K>> enums=new LinkedList<Enumeration<? extends K>>();
 	private volatile Enumeration<? extends K> enumer=null;
 
+	/**
+	 * A builder interface for constructing a multi-enumeration
+	 *
+	 * @param <K> the type of object being enumerated
+	 */
 	public static interface MultiEnumeratorBuilder<K>
 	{
+		/**
+		 * Returns the multi-enumeration being built
+		 * @return the multi-enumeration being built
+		 */
 		public MultiEnumeration<K> getList();
 	}
 
+	/**
+	 * Construct a new multi-enumeration
+	 *
+	 * @param esets the enumerations to include
+	 */
 	public MultiEnumeration(final Collection<Enumeration<K>> esets)
 	{
 		if(esets!=null)
 			enums.addAll(esets);
 	}
 
+	/**
+	 * Construct a new multi-enumeration
+	 */
 	public MultiEnumeration()
 	{
 	}
 
+	/**
+	 * Construct a new multi-enumeration
+	 *
+	 * @param eset the enumeration to include
+	 */
 	public MultiEnumeration(final Enumeration<K> eset)
 	{
 		enums.add(eset);
 	}
 
+	/**
+	 * Construct a new multi-enumeration
+	 *
+	 * @param esets the enumerations to include
+	 */
 	public MultiEnumeration(final Enumeration<? extends K>[] esets)
 	{
 		if(esets != null)
@@ -55,6 +87,12 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		}
 	}
 
+	/**
+	 * Adds a new enumeration
+	 *
+	 * @param set the enumerations to add
+	 * @return this object
+	 */
 	public MultiEnumeration<K> addEnumeration(final Enumeration<? extends K> set)
 	{
 		if(set != null)

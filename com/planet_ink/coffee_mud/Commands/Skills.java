@@ -170,8 +170,6 @@ public class Skills extends StdCommand
 	 * Returns whether there are any crossings between a particular Ability type
 	 * and a particular Ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abilityCode()
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN.DESCS
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
 	 *
 	 * @param domain the domain mask
 	 * @param acode the ability code

@@ -45,6 +45,15 @@ import java.io.Serializable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * This is the CoffeeMud implementation of the ImudServices interface. It
+ * provides all the mudlib specific functionality needed by the
+ * Intermud 3 System.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public class CoffeeMudI3Bridge implements ImudServices, Serializable
 {
 	public static final long serialVersionUID=0;
@@ -128,6 +137,18 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
+	/**
+	 * Constructor
+	 *
+	 * @param name the mud name to register as
+	 * @param version the mud version to register as
+	 * @param publicMudPort the public port the mud is running on
+	 * @param channels the list of local channels to register with i3
+	 * @param i3Port the local port to run the i3 server on
+	 * @param routersList the list of routers to connect to
+	 * @param adminEmail the admin email address for this mud
+	 * @param smtpPort the smtp port to use for this mud
+	 */
 	public CoffeeMudI3Bridge(final String name,
 							 final String version,
 							 final int publicMudPort,
@@ -165,6 +186,9 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		{}
 	}
 
+	/**
+	 * Shuts down the I3 server
+	 */
 	public void shutdown()
 	{
 		try
@@ -177,11 +201,19 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		}
 	}
 
+	/**
+	 * Returns whether or not the I3 server is currently online
+	 * @return true if the I3 server is currently online
+	 */
 	public boolean isOnline()
 	{
 		return I3Client.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
 	}
 
+	/**
+	 * Returns the public availability state of this mud
+	 * @return the public availability state of this mud
+	 */
 	private String getPlayState()
 	{
 		String playState=CMProps.instance().getStr("MUDSTATE");
@@ -211,21 +243,43 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return playState;
 	}
 
+	/**
+	 * Localized static text translation
+	 * @param str the string to translate
+	 * @param xs the variables to insert into the translated string
+	 * @return the translated string
+	 */
 	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(getClass(), str, xs);
 	}
 
+	/**
+	 * Sets the local channels map
+	 * @param channels the map to set
+	 */
 	public void setChannelsMap(final List<CMChannel> channels)
 	{
 		this.channels=channels;
 	}
 
+	/**
+	 * Given a mob name, this method tries to find a matching online mob.
+	 * @param mobName the name of the mob to find
+	 * @return the matching online mob, or null if not found
+	 */
 	protected MOB findSessMob(final String mobName)
 	{
 		return CMLib.sessions().findCharacterOnline(mobName, true);
 	}
 
+	/**
+	 * Returns a universal room for use as a location for incoming I3 tells and
+	 * the like.
+	 *
+	 * @return a universal room for use as a location for incoming I3 tells and
+	 *         the like
+	 */
 	protected Room getUniversalRoom()
 	{
 		if(universalR==null)
@@ -235,6 +289,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return universalR;
 	}
 
+	/**
+	 * Fixes a color string coming in from I3 to use CoffeeMud's
+	 * standard color string conventions.
+	 *
+	 * @param str the string to fix
+	 * @return the fixed string
+	 */
 	public String fixColors(final String str)
 	{
 		final StringBuffer buf=new StringBuffer(str);
@@ -270,6 +331,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return buf.toString();
 	}
 
+	/**
+	 * Fixes a social string coming in from I3 to use CoffeeMud's
+	 * standard social string conventions.
+	 *
+	 * @param str the string to fix
+	 * @return the fixed string
+	 */
 	public String socialFixIn(String str)
 	{
 
@@ -291,6 +359,14 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return str.trim();
 	}
 
+	/**
+	 * Sends a channel who request to a remote mud on the I3 network
+	 *
+	 * @param mob the mob requesting the who
+	 * @param channel the channel to check
+	 * @param mudName the remote mud to check
+	 * @return true if the request was sent
+	 */
 	public boolean i3chanwho(final MOB mob, final String channel, String mudName)
 	{
 		if((mob==null)||(!isOnline()))
@@ -317,6 +393,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return true;
 	}
 
+	/**
+	 * Adds a channel to the I3 network. The channel must be a local channel,
+	 * meaning it is listed in the local channels list.
+	 *
+	 * @param mob the mob requesting the addition
+	 * @param channel the channel to add
+	 */
 	public void i3channelAdd(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!isOnline()))
@@ -341,6 +424,14 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		}
 	}
 
+	/**
+	 * Starts listening to a channel on the I3 network. If the channel is not a
+	 * local channel (meaning it is not listed in the local channels list), then
+	 * it will be added to the local channels list as an unofficial channel.
+	 *
+	 * @param mob the mob requesting to listen
+	 * @param channel the channel to listen to
+	 */
 	public void i3channelListen(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!isOnline()))
@@ -372,6 +463,14 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		}
 	}
 
+	/**
+	 * Stops listening to a channel on the I3 network. If the channel is not a
+	 * local channel (meaning it is not listed in the local channels list), then
+	 * it will be removed from the local channels list.
+	 *
+	 * @param mob the mob requesting to stop listening
+	 * @param channel the channel to stop listening to
+	 */
 	public void i3channelSilence(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!isOnline()))
@@ -401,6 +500,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		}
 	}
 
+	/**
+	 * Removes a channel from the I3 network. The channel must be a local
+	 * channel, meaning it is listed in the local channels list.
+	 *
+	 * @param mob the mob requesting the removal
+	 * @param channel the channel to remove
+	 */
 	public void i3channelRemove(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!isOnline()))
@@ -425,6 +531,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		}
 	}
 
+	/**
+	 * Returns true if the given channel name is a local I3 channel (meaning it
+	 * is listed in the local channels list).
+	 *
+	 * @param channelName the channel name to check
+	 * @return true if the given channel name is a local I3 channel
+	 */
 	public boolean isLocalI3channel(final String channelName)
 	{
 		if(!isOnline())
@@ -435,6 +548,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return true;
 	}
 
+	/**
+	 * Returns true if the given channel name is a remote I3 channel (meaning it
+	 * is not listed in the local channels list, but is known to I3).
+	 *
+	 * @param channelName the channel name to check
+	 * @return true if the given channel name is a remote I3 channel
+	 */
 	public boolean isRemoteI3Channel(final String channelName)
 	{
 		if(!isOnline())
@@ -445,6 +565,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return true;
 	}
 
+	/**
+	 * Given a local channel name, returns the remote channel name. Example:
+	 * getI3ChannelName("I3CHAT") might return "diku_chat"
+	 *
+	 * @param localChannelName the local channel name
+	 * @return the remote channel name
+	 */
 	public String getI3ChannelName(final String localChannelName)
 	{
 		final String fixedChannel = I3Client.getRemoteChannel(localChannelName);
@@ -454,6 +581,16 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 			return localChannelName;
 	}
 
+	/**
+	 * Given a string, tries to find an I3 mud with a matching name. The match
+	 * is first attempted as an exact match, then as a case-insensitive exact
+	 * match, then as a starts-with match, then as an ends-with match, then as a
+	 * contains match, and finally as a partial match (if the given string
+	 * contains spaces).
+	 *
+	 * @param parms the string to match against
+	 * @return a list of matching I3 muds
+	 */
 	public List<I3Mud> i3MudFinder(final String parms)
 	{
 		final MudList list=I3Client.getAllMudsList();
@@ -509,6 +646,12 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return muds;
 	}
 
+	/**
+	 * Returns a list of all known I3 muds, sorted alphabetically by name, and
+	 * only those that are currently online.
+	 *
+	 * @return a list of all known I3 muds
+	 */
 	public List<I3Mud> getSortedI3Muds()
 	{
 		final Vector<I3Mud> list = new Vector<I3Mud>();
@@ -540,6 +683,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return list;
 	}
 
+	/**
+	 * Converts a social message so that it will be properly interpreted by
+	 * other I3 muds.
+	 *
+	 * @param str the string to convert
+	 * @return the converted string
+	 */
 	public String socialI3FixOut(String str)
 	{
 		str=CMStrings.replaceAll(str,"<S-NAME>","$N");
@@ -557,6 +707,13 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 		return str.trim();
 	}
 
+	/**
+	 * Sends a message to the given I3 channel.
+	 *
+	 * @param mob the mob sending the message
+	 * @param channelName the channel to send it to
+	 * @param message the message to send
+	 */
 	public void sendI3ChannelMsg(final MOB mob, final String channelName, final String message)
 	{
 		final ChannelPacket ck;
@@ -669,24 +826,42 @@ public class CoffeeMudI3Bridge implements ImudServices, Serializable
 	}
 
 
+	/**
+	 * Returns the last packet received time.
+	 * @return the last packet received time
+	 */
 	@Override
 	public long getLastPacketReceivedTime()
 	{
 		return lastPacketReceivedTime;
 	}
 
+	/**
+	 * Sets the last packet received time to the current time.
+	 */
 	@Override
 	public void resetLastPacketReceivedTime()
 	{
 		lastPacketReceivedTime=System.currentTimeMillis();
 	}
 
+	/**
+	 * Returns the incoming keys timestamp map. This is used to prevent
+	 * replay attacks.
+	 * @return the incoming keys timestamp map
+	 */
 	@Override
 	public Map<String,Long> getIncomingKeys()
 	{
 		return inkeys;
 	}
 
+	/**
+	 * Returns a map of outgoing packet keys to timestamps. This is used to
+	 * prevent replay attacks.
+	 *
+	 * @return a map of outgoing packet keys to timestamps
+	 */
 	@Override
 	public Map<String,Long> getOutgoingKeys()
 	{

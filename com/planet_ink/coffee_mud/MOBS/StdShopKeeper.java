@@ -274,7 +274,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	 *
 	 * @param myHost the host
 	 * @param msg the message
-	 * @return true or false
 	 */
 	protected void stdMOBexecuteMsg(final Environmental myHost, final CMMsg msg)
 	{

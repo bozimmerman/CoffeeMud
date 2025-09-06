@@ -1423,8 +1423,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * <code>previous</code> method would return the element with the specified
 	 * index minus one.
 	 *
-	 * @param arg0 index of the first element to be returned from the list
-	 *            iterator (by a call to the <code>next</code> method)
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence), starting at the specified position in the list
 	 */

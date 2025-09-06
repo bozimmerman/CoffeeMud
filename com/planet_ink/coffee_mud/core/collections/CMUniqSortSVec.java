@@ -22,25 +22,52 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+/**
+ * A specialized vector that holds only CMObjects, and keeps them sorted and
+ * unique based on their ID() value.
+ *
+ * @param <T> the type of CMObject in the list
+ */
 public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 	private boolean readOnly = false;
 
+	/**
+	 * Construct a new CMUniqSortSVec
+	 * @param size the initial size
+	 */
 	public CMUniqSortSVec(final int size)
 	{
 		super(size);
 	}
 
+	/**
+	 * Construct a new CMUniqSortSVec
+	 */
 	public CMUniqSortSVec()
 	{
 	}
-
+	/**
+	 * Compare two CMObjects by their ID() value
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if equal
+	 */
 	protected int compareTo(final CMObject arg0, final String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, ignoring case, and returning 0
+	 * if arg0 starts with arg1, regardless of case.
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal or starts with
+	 */
 	protected int compareToStarts(final CMObject arg0, final String arg1)
 	{
 		if(arg0.ID().toLowerCase().startsWith(arg1.toLowerCase()))
@@ -48,6 +75,15 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value, ignoring case, and returning 0
+	 * if arg0 starts with arg1, regardless of case.
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal or starts with
+	 */
 	protected int compareToLowerStarts(final CMObject arg0, final String arg1)
 	{
 		if(arg0.ID().toLowerCase().startsWith(arg1))
@@ -55,6 +91,14 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
+	/**
+	 * Compare two CMObjects by their ID() value
+	 *
+	 * @param arg0 the first CMObject
+	 * @param arg1 the second CMObject
+	 * @return negative if arg0 is less than arg1, positive if greater, 0 if
+	 *         equal
+	 */
 	protected int compareTo(final CMObject arg0, final CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
@@ -261,6 +305,14 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return null;
 	}
 
+	/**
+	 * Returns the first object in the list whose ID() starts with the given
+	 * string, ignoring case.
+	 *
+	 * @param arg0 the string to match against
+	 * @return the first object in the list whose ID() starts with the given
+	 *         string, ignoring case.
+	 */
 	public synchronized T findStartsWith(final String arg0)
 	{
 		if(arg0==null)
@@ -347,6 +399,11 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		throw new java.lang.UnsupportedOperationException();
 	}
 
+	/**
+	 * Sets whether this list is read-only.  If it is, no changes to the list
+	 * are allowed.
+	 * @param trueFalse true to make read-only, false to allow changes
+	 */
 	public void setReadOnly(final boolean trueFalse)
 	{
 		readOnly = trueFalse;

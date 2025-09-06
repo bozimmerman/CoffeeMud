@@ -98,7 +98,7 @@ public class I3Router
 	/**
 	 * Directs the router thread to manage the given object
 	 * @throws ObjectLoadException thrown when a problem occurs loading the object
-	 * @param the object loaded
+	 * @param object the object loaded
 	 * @return the same object
 	 */
 	static public ServerObject addObject(final ServerObject object) throws ObjectLoadException {

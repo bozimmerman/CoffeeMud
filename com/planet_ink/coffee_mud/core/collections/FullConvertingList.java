@@ -17,13 +17,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A simple list wrapper that converts the inner list's objects from one type to
+ * another using a FullConverter.
+ *
+ * @param <L> the list's inner type
+ * @param <K> the list's outer type
+ * @author Bo Zimmerman
+ */
 public class FullConvertingList<L,K> implements List<K>
 {
-	private final List<L> list;
-	private final FullConverter<L, K> converter;
-	private Class<?> lClass = null;
-	private Class<?> kClass = null;
+	private final List<L>				list;
+	private final FullConverter<L, K>	converter;
+	private Class<?>					lClass	= null;
+	private Class<?>					kClass	= null;
 
+	/**
+	 * Constructs a new FullConvertingList.
+	 *
+	 * @param l the inner list to wrap
+	 * @param conv the converter to use
+	 */
 	public FullConvertingList(final List<L> l, final FullConverter<L, K> conv)
 	{
 		list=l;
@@ -227,7 +241,6 @@ public class FullConvertingList<L,K> implements List<K>
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public <T> T[] toArray(final T[] a)
 	{

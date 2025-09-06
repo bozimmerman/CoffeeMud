@@ -366,6 +366,7 @@ public interface JournalsLibrary extends CMLibrary
 	 * @param vbuf the text of the message
 	 * @param autoAdd true to go directly into line adding mode, false to start in menu
 	 * @return the resolution when done
+	 * @throws IOException if the session dies
 	 */
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException;
 

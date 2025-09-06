@@ -18,13 +18,25 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An iterator that converts its elements through a FullConverter.
+ *
+ * @param <K> the type of object being converted from
+ * @param <L> the type of object being converted to
+ */
 public class FullConvertingIterator<K, L> implements Iterator<L>
 {
-	private final Iterator<K> iterer;
-	private K currObj = null;
-	private final FullConverter<K, L> converter;
-	private int index = 0;
+	private final Iterator<K>			iterer;
+	private K							currObj	= null;
+	private final FullConverter<K, L>	converter;
+	private int							index	= 0;
 
+	/**
+	 * Construct a new converting iterator
+	 *
+	 * @param eset the iterator to wrap
+	 * @param conv the converter to use
+	 */
 	public FullConvertingIterator(final Iterator<K> eset, final FullConverter<K, L> conv)
 	{
 		iterer=eset;

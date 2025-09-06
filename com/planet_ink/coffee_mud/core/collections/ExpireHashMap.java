@@ -18,31 +18,52 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-/*
- * A Map that does not return items after an elapsed period of time after being added.
+/**
+ * A Map implementation that expires entries after a given time period.
+ * @param <K> the key type
+ * @param <J> the value type
  */
 public class ExpireHashMap<K,J> implements Map<K, J>
 {
 	private final Map<K,Pair<J,Long>> internalMap;
 	private long expirationTime = 2 * 60000; // two minutes
 
+	/**
+	 * Default expiration time in milliseconds.
+	 *
+	 * @return the default expiration time
+	 */
 	protected Long defTime()
 	{
 		return Long.valueOf(System.currentTimeMillis() + expirationTime);
 	}
 
 
+	/**
+	 * Construct a new ExpireHashMap
+	 */
 	public ExpireHashMap()
 	{
 		internalMap = new SHashtable<K,Pair<J,Long>>();
 	}
 
+	/**
+	 * Construct a new ExpireHashMap
+	 *
+	 * @param expirationMs the expiration time in milliseconds
+	 */
 	public ExpireHashMap(final long expirationMs)
 	{
 		this();
 		this.expirationTime = expirationMs;
 	}
 
+	/**
+	 * Construct a new ExpireHashMap, using the
+	 * default timeout.
+	 *
+	 * @param s the initial map to copy
+	 */
 	public ExpireHashMap(final Map<K,J> s)
 	{
 		internalMap = new SHashtable<K,Pair<J,Long>>();
@@ -67,6 +88,9 @@ public class ExpireHashMap<K,J> implements Map<K, J>
 		return false;
 	}
 
+	/**
+	 * Filterer that removes expired entries
+	 */
 	protected Filterer<K> fconv = new Filterer<K>()
 	{
 		@Override
@@ -84,12 +108,17 @@ public class ExpireHashMap<K,J> implements Map<K, J>
 		}
 	};
 
+	/**
+	 * Converter from Entry&lt;K,Pair&lt;J,Long&gt;&gt; to Entry&lt;K,J&gt;
+	 */
 	protected Converter<Entry<K,Pair<J,Long>>, Entry<K,J>> entryConverter =
-			new Converter<Entry<K,Pair<J,Long>>, Entry<K,J>>() {
+			new Converter<Entry<K,Pair<J,Long>>, Entry<K,J>>()
+	{
 				@Override
 				public Entry<K, J> convert(final Entry<K, Pair<J, Long>> obj)
 				{
-					return new Entry<K, J>() {
+					return new Entry<K, J>()
+					{
 						final K key = obj.getKey();
 						final J val = obj.getValue().first;
 						@Override
@@ -115,6 +144,9 @@ public class ExpireHashMap<K,J> implements Map<K, J>
 				}
 	};
 
+	/**
+	 * Converter from Pair&lt;J,Long&gt; to J
+	 */
 	protected Converter<Pair<J,Long>, J> pairConverter =
 			new Converter<Pair<J,Long>, J>() {
 				@Override

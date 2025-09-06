@@ -343,7 +343,7 @@ public interface TimeManager extends CMLibrary
 	 *
 	 * Usage: date2SmartEllapsedMudTime(time,true)
 	 * @param C the calendar to use, or null for global
-	 * @param time the time in miliseconds
+	 * @param millis the time in miliseconds
 	 * @param shortest true for short form, false otherwise
 	 * @return String Formatted ellapsed mud time
 	 */
@@ -384,8 +384,8 @@ public interface TimeManager extends CMLibrary
 	 * mudweeks, mudmonths, or mudyears
 	 * @param clock clock to use for muddays
 	 * @param val the expression
-	 * @throws any parsing errors
 	 * @return the number of ticks represented by the string
+	 * @throws CMException if it can't be parsed
 	 */
 	public int parseTickExpression(TimeClock clock, String val) throws CMException;
 

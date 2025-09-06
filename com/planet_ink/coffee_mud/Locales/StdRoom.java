@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
@@ -1587,7 +1588,7 @@ public class StdRoom implements Room
 			if(o instanceof MOB)
 			{
 				((MOB)o).recoverCharStats();
-				((MOB)o).recoverPhyStats();
+				o.recoverPhyStats();
 				((MOB)o).recoverMaxState();
 			}
 			recoverRoomStats();

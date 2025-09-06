@@ -22,10 +22,20 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * A SortedStrSVector that implements SearchIDList.
+ *
+ *
+ * @param <T> the type of CMObject in the list
+ */
 public class CMSortSVec<T extends CMObject> extends SortedStrSVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 
+	/**
+	 * Returns the sorted value from the CMObject, specifically the ID()
+	 */
 	@SuppressWarnings("rawtypes")
 	private static final SortedStrSVector.Str idStringer=new SortedStrSVector.Str<CMObject>()
 	{
@@ -36,12 +46,20 @@ public class CMSortSVec<T extends CMObject> extends SortedStrSVector<T> implemen
 		}
 	};
 
+	/**
+	 * Construct a new CMSortSVec
+	 *
+	 * @param size the initial size
+	 */
 	@SuppressWarnings("unchecked")
 	public CMSortSVec(final int size)
 	{
 		super(idStringer,size);
 	}
 
+	/**
+	 * Construct a new CMSortSVec
+	 */
 	@SuppressWarnings("unchecked")
 	public CMSortSVec()
 	{

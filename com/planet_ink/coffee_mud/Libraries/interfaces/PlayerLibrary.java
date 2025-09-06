@@ -1118,6 +1118,7 @@ public interface PlayerLibrary extends CMLibrary
 		/**
 		 * Returns an enumerator over this mobs clans.
 		 * This may result in a query, so use sparingly.
+		 * @return an enumerator over this mobs clans
 		 */
 		public Enumeration<String> clans();
 	}

@@ -218,6 +218,7 @@ public class DBConnector
 
 	/**
 	 * Check to see if this is a fake DB connection.
+	 * @return boolean true if this is a fake DB connection
 	 */
 	public boolean isFakeDB()
 	{

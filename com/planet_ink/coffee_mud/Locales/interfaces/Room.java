@@ -291,6 +291,18 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 		VISITED('V',-1),
 		ELSE('\n',-1),
 		VARIES('\r',-1),
+		FROMUNKOWN('F',-1),
+		FROMNORTH('F',Directions.NORTH),
+		FROMSOUTH('F',Directions.SOUTH),
+		FROMEAST('F',Directions.EAST),
+		FROMWEST('F',Directions.WEST),
+		FROMUP('F',Directions.UP),
+		FROMDOWN('F',Directions.DOWN),
+		FROMGATE('F',Directions.GATE),
+		FROMNORTHEAST('F',Directions.NORTHEAST),
+		FROMNORTHWEST('F',Directions.NORTHWEST),
+		FROMSOUTHEAST('F',Directions.SOUTHEAST),
+		FROMSOUTHWEST('F',Directions.SOUTHWEST),
 		;
 		public final char c;
 		public final int num;

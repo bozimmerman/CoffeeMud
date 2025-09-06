@@ -520,14 +520,14 @@ public class DBConnections
 				{
 					if((dbLType==null)||(dbLType.length()==0))
 					{
-						DatabaseMetaData data = newConn.getMetaData();
+						final DatabaseMetaData data = newConn.getMetaData();
 						try
 						{
 							dbLType = (data != null) ? data.getDatabaseProductName().toLowerCase() : "";
 							if(dbLType.contains("postgres"))
 								setupPostGres(newConn);
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							Log.errOut(e);
 						}
@@ -538,7 +538,7 @@ public class DBConnections
 		return newConn;
 	}
 
-	private void setupPostGres(DBConnection newConn)
+	private void setupPostGres(final DBConnection newConn)
 	{
 		this.allIdentifiers.clear();
 		try(BufferedReader br = new BufferedReader(new FileReader("guides"+File.separator+"database"+File.separator+"fakedb.schema")))
@@ -549,7 +549,7 @@ public class DBConnections
 				s=s.trim();
 				if(!s.startsWith("#"))
 				{
-					int x = s.indexOf(' ');
+					final int x = s.indexOf(' ');
 					if(x>0)
 						s=s.substring(0,x);
 					allIdentifiers.add(s.toUpperCase());
@@ -557,17 +557,17 @@ public class DBConnections
 				s=br.readLine();
 			}
 		}
-		catch(IOException e)
+		catch(final IOException e)
 		{
 			Log.errOut(e);
 		}
 	}
-	
+
 	public boolean isFakeDB()
 	{
 		return dbLType.contains("fakedb");
 	}
-	
+
 	public String getDBType()
 	{
 		return dbLType;
@@ -1084,7 +1084,7 @@ public class DBConnections
 		}
 		return status;
 	}
-	
+
 	/**
 	 * Wraps table and column names in double quotes for a given SQL statement,
 	 * using a map of table names to their column names for lookup and validation.
@@ -1093,49 +1093,48 @@ public class DBConnections
 	 * Only quotes known tables/columns from the map; does not blindly replace all occurrences.
 	 *
 	 * @param sql The input SQL statement
-	 * @param allIdentifiers A set of table names and their column names
 	 * @return The modified SQL with quoted identifiers
 	 */
-	public String fixIdentifiers(String sql) 
+	public String fixIdentifiers(final String sql)
 	{
 		if(allIdentifiers.size()==0)
 			return sql;
-		StringBuilder result = new StringBuilder();
-		StringBuilder currentIdentifier = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
+		final StringBuilder currentIdentifier = new StringBuilder();
 		boolean inString = false;
-		char quoteChar = '"';
-		for (int i = 0; i < sql.length(); i++) 
+		final char quoteChar = '"';
+		for (int i = 0; i < sql.length(); i++)
 		{
-			char c = sql.charAt(i);
-			if (inString) 
+			final char c = sql.charAt(i);
+			if (inString)
 			{
 				result.append(c);
-				if (c == '\'') 
+				if (c == '\'')
 				{
-					if (i + 1 < sql.length() && sql.charAt(i + 1) == '\'') 
+					if (i + 1 < sql.length() && sql.charAt(i + 1) == '\'')
 					{
 						result.append('\'');
 						i++; // Skip the next '
-					} 
+					}
 					else
 						inString = false;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				if (c == '\'')
 				{
 					result.append(c);
 					inString = true;
-				} 
-				else 
-				if (Character.isLetterOrDigit(c) || c == '_') 
+				}
+				else
+				if (Character.isLetterOrDigit(c) || c == '_')
 					currentIdentifier.append(c);
-				else 
+				else
 				{
-					if (currentIdentifier.length() > 0) 
+					if (currentIdentifier.length() > 0)
 					{
-						String id = currentIdentifier.toString();
+						final String id = currentIdentifier.toString();
 						if (allIdentifiers.contains(id.toUpperCase()))
 							result.append(quoteChar).append(id).append(quoteChar);
 						else
@@ -1146,9 +1145,9 @@ public class DBConnections
 				}
 			}
 		}
-		if (currentIdentifier.length() > 0) 
+		if (currentIdentifier.length() > 0)
 		{
-			String id = currentIdentifier.toString();
+			final String id = currentIdentifier.toString();
 			if (allIdentifiers.contains(id.toUpperCase()))
 				result.append(quoteChar).append(id).append(quoteChar);
 			else

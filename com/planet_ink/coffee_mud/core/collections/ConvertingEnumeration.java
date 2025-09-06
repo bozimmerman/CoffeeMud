@@ -18,23 +18,45 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An enumeration that converts the objects in a backing enumeration from one
+ * type to another using a Converter.
+ *
+ * @param <K> the backing collection type
+ * @param <L> the outward facing collection type
+ */
 public class ConvertingEnumeration<K, L> implements Enumeration<L>
 {
 	private final Enumeration<K> enumer;
 	Converter<K, L> converter;
 
+	/**
+	 * Construct a new ConvertingEnumeration
+	 *
+	 * @param eset the backing enumeration
+	 * @param conv the converter
+	 */
 	public ConvertingEnumeration(final Enumeration<K> eset, final Converter<K, L> conv)
 	{
 		enumer=eset;
 		converter=conv;
 	}
 
+	/**
+	 * Construct a new ConvertingEnumeration
+	 *
+	 * @param eset the backing iterator
+	 * @param conv the converter
+	 */
 	public ConvertingEnumeration(final Iterator<K> eset, final Converter<K, L> conv)
 	{
 		enumer=new IteratorEnumeration<K>(eset);
 		converter=conv;
 	}
-
+	/**
+	 * Set the converter for this enumeration
+	 * @param conv the new converter
+	 */
 	public void setConverter(final Converter<K, L> conv)
 	{
 		converter=conv;

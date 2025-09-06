@@ -442,10 +442,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int CAN_SEE_HIDDEN_ITEMS=4194304;
 
 	/**
-	 * STAT codes list, indexed by the 2nd root of the various sensesMask() CAN_SEE bitmasks
-	 * See also:
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagsLibrary#CAN_SEE_DESCS
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagsLibrary#CAN_SEE_VERB()
+	 * STAT codes list, indexed by the 2nd root of the various sensesMask() CAN SEE bitmasks
 	 */
 	public static final String[] CAN_SEE_CODES={
 		"CANNOTSEE",

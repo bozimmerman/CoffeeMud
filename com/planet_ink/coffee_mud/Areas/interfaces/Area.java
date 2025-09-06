@@ -507,7 +507,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @see Area#getPiety(String)
 	 * @see Area#isAreaStatsLoaded()
 	 *
-	 * @param Area.Stats stat the stat to return
+	 * @param stat Area.Stats the stat to return
 	 * @return the current integer statistic
 	 */
 	public int getIStat(Area.Stats stat);

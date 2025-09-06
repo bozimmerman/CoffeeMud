@@ -22,12 +22,23 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An iterable that is a combination of multiple iterables.
+ *
+ * @param <K> the type of object being iterated over
+ */
 public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 {
 	@SuppressWarnings("unchecked")
 	private Iterable<K>[] iters=new Iterable[0];
 	private int size=0;
 
+	/**
+	 * Construct a new multi-iterable
+	 *
+	 * @param esets the array of iterables to combine
+	 * @param newSize the total size of all the combined iterables
+	 */
 	public MultiIterable(final Iterable<K>[] esets, final int newSize)
 	{
 		if((esets==null)||(esets.length==0))
@@ -36,6 +47,12 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 		size=newSize;
 	}
 
+	/**
+	 * Construct a new multi-iterable
+	 *
+	 * @param esets the collection of iterables to combine
+	 * @param newSize the total size of all the combined iterables
+	 */
 	public MultiIterable(final Collection<? extends Iterable<? extends K>> esets, final int newSize)
 	{
 		if((esets==null)||(esets.size()==0))
@@ -44,10 +61,19 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 		size=newSize;
 	}
 
+	/**
+	 * Construct an empty multi-iterable
+	 */
 	public MultiIterable()
 	{
 	}
 
+	/**
+	 * Add another iterable to this multi-iterable
+	 *
+	 * @param eset the iterable to add
+	 * @param sizeAdd the size of the iterable being added
+	 */
 	public synchronized void add(final Iterable<K> eset, final int sizeAdd)
 	{
 		iters=Arrays.copyOf(iters, iters.length+1);

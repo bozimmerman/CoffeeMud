@@ -22,7 +22,7 @@ import javax.naming.OperationNotSupportedException;
    limitations under the License.
  */
 
-/*
+/***
  * A version of the CopyOnWriteArrayList class that provides to "safe" adds
  * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
@@ -30,6 +30,8 @@ import javax.naming.OperationNotSupportedException;
  * Actual Contract:
  * 1. Thread safe add/remove
  * 2. Iterator that is a snapshot of the moment it is called, and does not change afterwards.
+ *
+ * @param <T> the type of object contained in the list
  */
 public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
@@ -39,16 +41,31 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 
 	private List<T> list = Collections.synchronizedList(underList);
 
+	/**
+	 * Construct an empty synchronized vector.
+	 */
 	public SVector()
 	{
 		super();
 	}
 
+	/**
+	 * Construct an empty synchronized vector with the specified initial
+	 * capacity.
+	 *
+	 * @param size the initial capacity of the vector
+	 */
 	public SVector(final int size)
 	{
 		super();
 	}
 
+	/**
+	 * Construct a synchronized vector containing the elements of the specified
+	 * collection, in the order they are returned by the collection's iterator.
+	 *
+	 * @param T the collection whose elements are to be placed into this vector
+	 */
 	public SVector(final List<T> T)
 	{
 		super();
@@ -56,6 +73,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 			addAll(T);
 	}
 
+	/**
+	 * Construct a synchronized vector containing the elements of the specified
+	 * array, in the order they are returned by the array's iterator.
+	 *
+	 * @param T the array whose elements are to be placed into this vector
+	 */
 	public SVector(final T[] T)
 	{
 		super();
@@ -66,6 +89,13 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Construct a synchronized vector containing the elements of the specified
+	 * enumeration, in the order they are returned by the enumeration's
+	 * iterator.
+	 *
+	 * @param T the enumeration whose elements are to be placed into this vector
+	 */
 	public SVector(final Enumeration<T> T)
 	{
 		super();
@@ -76,6 +106,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Construct a synchronized vector containing the elements of the specified
+	 * iterator, in the order they are returned by the iterator's iterator.
+	 *
+	 * @param T the iterator whose elements are to be placed into this vector
+	 */
 	public SVector(final Iterator<T> T)
 	{
 		super();
@@ -86,6 +122,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Construct a synchronized vector containing the elements of the specified
+	 * set, in the order they are returned by the set's iterator.
+	 *
+	 * @param T the set whose elements are to be placed into this vector
+	 */
 	public SVector(final Set<T> T)
 	{
 		super();
@@ -96,6 +138,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Add all the elements of the given enumeration to this vector.
+	 *
+	 * @param T the collection to add
+	 */
 	public void addAll(final Enumeration<T> T)
 	{
 		if (T != null)
@@ -105,6 +152,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Add all the elements of the given list to this vector.
+	 *
+	 * @param T the collection to add
+	 */
 	public void addAll(final T[] T)
 	{
 		if (T != null)
@@ -114,6 +166,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Add all the elements of the given Iterator to this vector.
+	 *
+	 * @param T the Iterator to add
+	 */
 	public void addAll(final Iterator<T> T)
 	{
 		if (T != null)
@@ -123,6 +180,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Removes all the elements of the given Enumeration from this vector.
+	 *
+	 * @param T the collection to remove
+	 */
 	public void removeAll(final Enumeration<T> T)
 	{
 		if (T != null)
@@ -132,6 +194,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Removes all the elements of the given Iterator from this vector.
+	 *
+	 * @param T the Iterator to remove
+	 */
 	public void removeAll(final Iterator<T> T)
 	{
 		if (T != null)
@@ -141,6 +208,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Removes all the elements of the given list from this vector.
+	 *
+	 * @param T the collection to remove
+	 */
 	public void removeAll(final List<T> T)
 	{
 		if (T != null)
@@ -150,16 +222,33 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
+	/**
+	 * Returns the current capacity of this vector.  Since this vector
+	 * grows as needed, this method simply returns the current size.
+	 *
+	 * @return the current capacity of this vector
+	 */
 	public int capacity()
 	{
 		return size();
 	}
 
+	/**
+	 * Returns a non-synchronized version of this vector.
+	 *
+	 * @return a non-synchronized version of this vector
+	 */
 	public Vector<T> toVector()
 	{
 		return new XVector<T>(list);
 	}
 
+	/**
+	 * Returns a shallow copy of this vector. The elements themselves are not
+	 * cloned.
+	 *
+	 * @return a shallow copy of this vector
+	 */
 	@SuppressWarnings("unchecked")
 	public SVector<T> copyOf()
 	{
@@ -185,11 +274,24 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return copyOf();
 	}
 
+	/**
+	 * Copies the components of this vector into the specified array. The array
+	 * must be big enough to hold all the objects in this vector, or an
+	 * ArrayIndexOutOfBoundsException will be thrown.
+	 *
+	 * @param anArray the array into which the components get copied
+	 */
 	public void copyInto(final Object[] anArray)
 	{
 		toArray(anArray);
 	}
 
+	/**
+	 * Returns the component at the specified index.
+	 *
+	 * @param index the desired index
+	 * @return the component at the specified index
+	 */
 	public T elementAt(final int index)
 	{
 		return get(index);
@@ -219,26 +321,52 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		};
 	}
 
+	/**
+	 * Throws IllegalArgumentException, as this vector grows as needed.
+	 *
+	 * @param minCapacity the desired minimum capacity
+	 */
 	public void ensureCapacity(final int minCapacity)
 	{
 		throw new IllegalArgumentException();
 	}
 
+	/**
+	 * Returns the first component of this vector.
+	 * @return the first component of this vector
+	 */
 	public T firstElement()
 	{
 		return (size() == 0) ? null : get(0);
 	}
 
+	/**
+	 * Returns the last component of this vector.
+	 * @return the last component of this vector
+	 */
 	public T lastElement()
 	{
 		return (size() == 0) ? null : get(size() - 1);
 	}
 
+	/**
+	 * Sets the component at the specified index of this vector to be the
+	 * specified object. The previous component at that position is discarded.
+	 *
+	 * @param obj the object to set
+	 * @param index the desired index
+	 */
 	public void setElementAt(final T obj, final int index)
 	{
 		set(index, obj);
 	}
 
+	/**
+	 * Clears the vector if the new size is zero, otherwise throws
+	 * IllegalArgumentException, as this vector grows as needed.
+	 *
+	 * @param newSize the new desired size of the vector
+	 */
 	public void setSize(final int newSize)
 	{
 		if (newSize == 0)
@@ -247,21 +375,41 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 			throw new IllegalArgumentException();
 	}
 
+	/**
+	 * Does nothing, as this vector grows as needed.
+	 */
 	@Override
 	public void trimToSize()
 	{
 	}
 
+	/**
+	 * Adds the specified object to the end of this vector.
+	 *
+	 * @param obj the object to add
+	 */
 	public void addElement(final T obj)
 	{
 		add(obj);
 	}
 
+	/**
+	 * Inserts the specified object as a component in this vector at the
+	 * specified index. Each component in this vector with an index greater or
+	 * equal to the specified index is shifted upward to have an index one
+	 * greater than the value it had previously.
+	 *
+	 * @param obj the object to insert
+	 * @param index the desired index
+	 */
 	public void insertElementAt(final T obj, final int index)
 	{
 		add(index, obj);
 	}
 
+	/**
+	 * Removes all components from this vector and sets its size to zero.
+	 */
 	public void removeAllElements()
 	{
 		clear();
@@ -370,6 +518,13 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return list.get(index);
 	}
 
+	/**
+	 * Gets the element at the given index if it exists, or null if it does not.
+	 * This method never throws an exception.
+	 *
+	 * @param index the index to get
+	 * @return the object at that index, or null
+	 */
 	public T getSafe(final int index)
 	{
 		try
@@ -430,11 +585,22 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return list.subList(fromIndex, toIndex);
 	}
 
+	/**
+	 * An alias for remove(Object)
+	 *
+	 * @param obj the object to remove
+	 * @return true if it was removed
+	 */
 	public boolean removeElement(final Object obj)
 	{
 		return list.remove(obj);
 	}
 
+	/**
+	 * An alias for remove(int)
+	 *
+	 * @param index the index to remove
+	 */
 	public void removeElementAt(final int index)
 	{
 		list.remove(index);

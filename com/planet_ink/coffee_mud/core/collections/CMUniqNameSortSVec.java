@@ -17,6 +17,13 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+/**
+ * A searchable vector of CMObjects, sorted by name, and
+ * unique by name.
+ *
+ * @param <T> the type of CMObject
+ */
 public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 {
 	/**
@@ -24,16 +31,29 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 	 */
 	private static final long	serialVersionUID	= 5770001849890830938L;
 
+	/**
+	 * Construct a new CMUniqNameSortSVec
+	 *
+	 * @param size the initial size
+	 */
 	public CMUniqNameSortSVec(final int size)
 	{
 		super(size);
 	}
 
+	/**
+	 * Construct a new CMUniqNameSortSVec
+	 */
 	public CMUniqNameSortSVec()
 	{
 		super();
 	}
 
+	/**
+	 * Construct a new CMUniqNameSortSVec
+	 *
+	 * @param O the other vector to copy
+	 */
 	public CMUniqNameSortSVec(final CMUniqNameSortSVec<T> O)
 	{
 		super();
@@ -73,5 +93,4 @@ public class CMUniqNameSortSVec<T extends CMObject> extends CMUniqSortSVec<T>
 			return new CMUniqNameSortSVec<T>(this);
 		}
 	}
-
 }

@@ -754,7 +754,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * were still in the game.
 	 * @see MOB#setLocation(Room)
 	 * @see MOB#lastLocation()
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @return the room in which this mob/player is currently standing
 	 */
 	public Room location();
@@ -764,7 +764,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 *
 	 * @see MOB#location()
 	 * @see MOB#setLocation(Room)
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @return the room in which this mob/player is currently standing
 	 */
 	public Room lastLocation();
@@ -775,7 +775,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * were still in the game.
 	 * @see MOB#location()
 	 * @see MOB#lastLocation()
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.MOBCollection#isInhabitant(MOB)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.MOBCollection#isInhabitant(MOB)
 	 * @param newRoom the room in which this mob/player is currently standing
 	 */
 	public void setLocation(Room newRoom);

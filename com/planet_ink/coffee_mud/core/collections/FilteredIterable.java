@@ -17,17 +17,34 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * An iterable that filters its elements through a Filterer.
+ *
+ * @param <K> the type of object being filtered
+ */
 public class FilteredIterable<K> implements Iterable<K>
 {
 	private final Iterable<K>  iter;
 	private Filterer<K>  filterer;
 
+	/**
+	 * Construct a new filtered iterable
+	 *
+	 * @param eset the iterable to wrap
+	 * @param fil the filterer to use
+	 */
 	public FilteredIterable(final Iterable<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
 
+	/**
+	 * Set the filterer to be used
+	 *
+	 * @param fil the new filterer
+	 */
 	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;

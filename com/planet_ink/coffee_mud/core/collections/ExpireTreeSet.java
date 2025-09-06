@@ -17,8 +17,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-/*
+/**
  * A Set that does not return items after an ellapsed period of time after being added.
+ *
+ * @param <K> the type of object in the set
  */
 public class ExpireTreeSet<K> implements Set<K>
 {
@@ -26,16 +28,29 @@ public class ExpireTreeSet<K> implements Set<K>
 	private long expirationTime = 2 * 60000; // two minutes
 	private volatile long nextExpirationTime = Long.MAX_VALUE;
 
+	/**
+	 * Gets the default expiration time for newly added items.
+	 *
+	 * @return the time in milliseconds
+	 */
 	protected Long defTime()
 	{
 		return Long.valueOf(System.currentTimeMillis() + expirationTime);
 	}
 
+	/**
+	 * Constructs a new empty ExpireTreeSet using the default timeout
+	 */
 	public ExpireTreeSet()
 	{
 		internalMap = new STreeMap<K,Long>();
 	}
 
+	/**
+	 * Constructs a new empty ExpireTreeSet using the given timeout
+	 *
+	 * @param expirationMs the time in milliseconds before an item expires
+	 */
 	@SuppressWarnings("unchecked")
 	public ExpireTreeSet(final long expirationMs)
 	{
@@ -43,6 +58,11 @@ public class ExpireTreeSet<K> implements Set<K>
 		this.expirationTime = expirationMs;
 	}
 
+	/**
+	 * Constructs a new ExpireTreeSet containing the elements of the given set
+	 *
+	 * @param s the set of objects to add
+	 */
 	@SuppressWarnings("unchecked")
 	public ExpireTreeSet(final Set<K> s)
 	{
@@ -50,6 +70,11 @@ public class ExpireTreeSet<K> implements Set<K>
 		addAll(s);
 	}
 
+	/**
+	 * Checks the internal map for expired items, and removes them. This method
+	 * is called internally as needed, but can also be called manually to force
+	 * an expiration check.
+	 */
 	protected synchronized void expirationCheck()
 	{
 		if(System.currentTimeMillis() > nextExpirationTime)
@@ -100,6 +125,14 @@ public class ExpireTreeSet<K> implements Set<K>
 		return true;
 	}
 
+	/**
+	 * Adds all the given items to this set, each with the given expiration
+	 * time.
+	 *
+	 * @param c the collection of items to add
+	 * @param expirationMs the time in milliseconds before an item expires
+	 * @return true if all items were added, false otherwise
+	 */
 	public boolean addAll(final Collection<? extends K> c, final long expirationMs)
 	{
 		for(final K k : c)
@@ -141,6 +174,10 @@ public class ExpireTreeSet<K> implements Set<K>
 		return internalMap.isEmpty();
 	}
 
+	/**
+	 * A Filterer that only accepts non-expired items.
+	 *
+	 */
 	protected Filterer<K> fconv = new Filterer<K>()
 	{
 		@Override

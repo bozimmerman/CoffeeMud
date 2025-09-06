@@ -758,7 +758,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat
 	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
-	 * @return the arrays of lists of top winner players
 	 */
 	public void DBScanPridePlayerWinners(final CMCallback<Pair<ThinPlayer,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent);
 
@@ -775,7 +774,6 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat
 	 * @param callBack a call back containing the user id and data for each period
 	 * @param scanCPUPercent the percent (0-100) to spend working
-	 * @return the arrays of lists of top winner accounts
 	 */
 	public void DBScanPrideAccountWinners(final CMCallback<Pair<String,Pair<Long,int[]>[]>> callBack, final short scanCPUPercent);
 
@@ -1161,7 +1159,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBGetClanMember(String, String)
 	 * @see DatabaseEngine#DBUpdateClanMembership(String, String, int)
 	 * @see DatabaseEngine#DBUpdateClanKills(String, String, int, int)
-	 * @param clan the name of the clan to read members for
+	 * @param userID the name of the clan to read members for
 	 * @return the list of all the members clans
 	 */
 	public List<String> DBReadMemberClans(String userID);
@@ -1840,6 +1838,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Read a specific set of data for the given player, belonging
 	 * to the given section
+	 *
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
@@ -2302,6 +2301,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadCommands()
 	 * @see DatabaseEngine#DBCreateCommand(String, String, String)
 	 * @param classID the ID of the command to delete
+	 * @return an AckRecord containing the deleted command, or null if not found
 	 */
 	public AckRecord DBDeleteCommand(String classID);
 

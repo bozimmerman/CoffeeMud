@@ -35,6 +35,7 @@
  34. Smoke Rings is now recipe driven, and players can select their ring style. 
  35. *Emoters props and behaviors now support PUFF emotes and some other features.
  36. New Scriptable triggers: WEARING_PROG, RIDE_PROG, RIDING_PROG
+ 37. Room varies now supports varying the room description by entry direction.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

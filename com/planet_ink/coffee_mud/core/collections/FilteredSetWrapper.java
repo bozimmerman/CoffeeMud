@@ -36,6 +36,12 @@ public class FilteredSetWrapper<T> implements Set<T>
 	private final Filterer<T>	filter;
 	private final Set<T>		list;
 
+	/**
+	 * Construct a new FilteredSetWrapper
+	 *
+	 * @param list the set to wrap
+	 * @param filter the filter to use
+	 */
 	public FilteredSetWrapper(final Set<T> list, final Filterer<T> filter)
 	{
 		super();

@@ -29,7 +29,7 @@ var menuData = [
 		{"n":"Plugins",
 		 "e":"window.currWin!=null && window.currWin.pb && window.currWin.pb.pb",
 		 "a":"javascript:menuPlugins('local');"},
-		{"n":"Capture Log",
+		{"n":"Capture",
 		 "v":"window.isElectron",
 		 "e":"window.currWin && window.currWin.wsopened",
 		 "a":"javascript:menuCapture();"},

@@ -16,11 +16,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A simple List implementation that converts the objects in a backing
+ * collection from one type to another using a Converter.
+ *
+ * @param <L> the backing collection type
+ * @param <K> the outward facing collection type
+ */
 public class ConvertingList<L,K> implements List<K>
 {
 	private final List<L> list;
 	Converter<L, K> converter;
 
+	/**
+	 * Construct a new ConvertingList
+	 *
+	 * @param l the backing collection
+	 * @param conv the converter
+	 */
 	public ConvertingList(final List<L> l, final Converter<L, K> conv)
 	{
 		list=l;
@@ -183,7 +196,6 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public <T> T[] toArray(final T[] a)
 	{

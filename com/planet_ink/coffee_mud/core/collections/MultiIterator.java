@@ -20,11 +20,21 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * An iterator that iterates across multiple iterators in sequence.
+ *
+ * @param <K> the type of object being iterated over
+ */
 public class MultiIterator<K> implements Iterator<K>
 {
 	private final LinkedList<Iterator<K>> iters=new LinkedList<Iterator<K>>();
 	private volatile Iterator<K> iter=null;
 
+	/**
+	 * Construct a new multi-iterator
+	 *
+	 * @param esets the array of iterators to iterate across
+	 */
 	public MultiIterator(final Iterator<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
@@ -33,6 +43,11 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I);
 	}
 
+	/**
+	 * Construct a new multi-iterator
+	 *
+	 * @param esets the collection of iterators to iterate across
+	 */
 	public MultiIterator(final Collection<Iterator<K>> esets)
 	{
 		if((esets==null)||(esets.size()==0))
@@ -42,6 +57,11 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I);
 	}
 
+	/**
+	 * Construct a new multi-iterator
+	 *
+	 * @param esets the array of iterables to iterate across
+	 */
 	public MultiIterator(final Iterable<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
@@ -50,6 +70,11 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I.iterator());
 	}
 
+	/**
+	 * Construct a new multi-iterator
+	 *
+	 * @param esets the collection of iterables to iterate across
+	 */
 	public MultiIterator(final Iterable<? extends Iterable<K>> esets)
 	{
 		if(esets==null)
@@ -58,11 +83,19 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I.iterator());
 	}
 
+	/**
+	 * Construct a new multi-iterator
+	 */
 	public MultiIterator()
 	{
 
 	}
 
+	/**
+	 * Add another iterator to the end of this multi-iterator
+	 *
+	 * @param eset the iterator to add
+	 */
 	public void add(final Iterator<K> eset)
 	{
 		iters.add(eset);

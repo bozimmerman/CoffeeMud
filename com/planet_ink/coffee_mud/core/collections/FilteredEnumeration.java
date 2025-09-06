@@ -18,6 +18,13 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A FilteredEnumeration is an enumeration that filters the elements of another
+ * enumeration through a filterer interface.
+ *
+ * @param <K> the type of object being enumerated
+ * @author Bo Zimmerman
+ */
 public class FilteredEnumeration<K> implements Enumeration<K>
 {
 	private final Enumeration<K>  enumer;
@@ -25,17 +32,29 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
 
+	/**
+	 * Construct a new filtered enumeration
+	 *
+	 * @param eset the enumeration to wrap
+	 * @param fil the filterer to use
+	 */
 	public FilteredEnumeration(final Enumeration<K> eset, final Filterer<K> fil)
 	{
 		enumer=eset;
 		filterer=fil;
 	}
 
+	/**
+	 * Set the filterer to be used
+	 * @param fil the new filterer
+	 */
 	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}
-
+	/**
+	 * Stages the next element that passes the filterer, or null if there
+	 */
 	private void stageNextElement()
 	{
 		nextElement = null;
@@ -48,6 +67,9 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 		}
 	}
 
+	/**
+	 * Initializes the enumeration by staging the first element
+	 */
 	private void initialize()
 	{
 		if(!initialized)

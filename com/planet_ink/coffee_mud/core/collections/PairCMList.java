@@ -22,8 +22,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
 /**
  * A simple linked list implementation of a PairList, based on CMList.
- * @param <T>
- * @param <K>
+ * @param <T> the type of the first object
+ * @param <K> the type of the second object
  */
 public final class PairCMList<T, K> extends CMList<Pair<T, K>> implements PairList<T, K>
 {

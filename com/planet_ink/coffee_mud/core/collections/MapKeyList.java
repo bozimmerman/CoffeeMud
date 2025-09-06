@@ -17,11 +17,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A thin wrapper around a map that allows the keys to be viewed as a list.
+ * Attempts to modify the list will modify the underlying map as well.
+ *
+ * @param <K> the key type
+ * @param <L> the value type
+ * @author Bo Zimmerman
+ */
 public class MapKeyList<K, L> extends XVector<K>
 {
 	private static final long serialVersionUID = -1879194850201942089L;
 	private final Map<K, L> m;
 
+	/**
+	 * Construct a new MapKeyList, wrapping the given map.
+	 *
+	 * @param map the map to wrap
+	 */
 	public MapKeyList(final Map<K, L> map)
 	{
 		super((map==null)?0:map.size(),true);
@@ -32,6 +45,7 @@ public class MapKeyList<K, L> extends XVector<K>
 		}
 		this.m=map;
 	}
+
 	@Override
 	public synchronized Iterator<K> iterator()
 	{

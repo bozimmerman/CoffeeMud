@@ -32,15 +32,31 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * A multi-dimensional vector class. Each element of the DVector is an array of
+ * Objects, all of the same length (the number of dimensions). The first object
+ * in each array is used when searching or sorting.
+ *
+ * This is one of the oldest and most hated classes in CoffeeMud, but it is
+ * still found in quite a few places. It is synchronized, and not very fast.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 {
-	public static final long 	serialVersionUID=43353454350L;
-	protected int 				dimensions=1;
-	private final SVector<Object[]> 	stuff;
-	private final static int 	MAX_SIZE=10;
+	public static final long		serialVersionUID	= 43353454350L;
+	protected int					dimensions			= 1;
+	private final SVector<Object[]>	stuff;
+	private final static int		MAX_SIZE			= 10;
 
 	public final static DVector empty = new DVector(1);
 
+	/**
+	 * Constructs a new DVector with the given number of dimensions.
+	 * @param dim the number of dimensions
+	 */
 	public DVector(final int dim)
 	{
 		if(dim<1)
@@ -51,6 +67,13 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff=new SVector<Object[]>(1);
 	}
 
+	/**
+	 * Constructs a new DVector with the given number of dimensions and starting
+	 * size.
+	 *
+	 * @param dim the number of dimensions
+	 * @param startingSize the initial capacity
+	 */
 	public DVector(final int dim, final int startingSize)
 	{
 		if(dim<1)
@@ -161,6 +184,11 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		}
 	}
 
+	/**
+	 * Sorts the DVector according to the given comparator.
+	 *
+	 * @param comparator the comparator to use
+	 */
 	public synchronized void sortBy(final Comparator<Object[]> comparator)
 	{
 		if(stuff!=null)
@@ -173,6 +201,13 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		}
 	}
 
+	/**
+	 * Converts a Map into a 2-dimensional DVector, where the first dimension is
+	 * the key, and the second dimension is the value.
+	 *
+	 * @param h the map to convert
+	 * @return the newly created DVector
+	 */
 	public static DVector toNVector(final Map<? extends Object,? extends Object> h)
 	{
 		final DVector DV=new DVector(2);
@@ -191,6 +226,12 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.addElement(O);
 	}
 
+	/**
+	 * Adds an element to the end of the DVector. The number of objects in the
+	 * array must match the number of dimensions of the DVector.
+	 *
+	 * @param Os the array of objects to add
+	 */
 	public synchronized void addElement(final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -198,6 +239,12 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.addElement(Os);
 	}
 
+	/**
+	 * Adds an element to the end of the DVector. The number of objects in the
+	 * array must match the number of dimensions of the DVector.
+	 *
+	 * @param Os the array of objects to add
+	 */
 	public synchronized void add(final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -303,6 +350,13 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.elementAt(index)[dim-1]=O;
 	}
 
+	/**
+	 * Inserts an element into the DVector at the given index. The number of
+	 * objects in the array must match the number of dimensions of the DVector.
+	 *
+	 * @param here the index at which to insert the new element
+	 * @param Os the array of objects to add
+	 */
 	public synchronized void insertElementAt(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)
@@ -310,6 +364,13 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.insertElementAt(Os,here);
 	}
 
+	/**
+	 * Inserts an element into the DVector at the given index. The number of
+	 * objects in the array must match the number of dimensions of the DVector.
+	 *
+	 * @param here the index at which to insert the new element
+	 * @param Os the array of objects to add
+	 */
 	public synchronized void add(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)

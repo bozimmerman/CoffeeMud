@@ -32,6 +32,7 @@ public interface ProtocolHandler
 	 * @param handler the I/O handler that generated the processing
 	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from
+	 * @return the processed buffers
 	 *
 	 * @throws HTTPException any parse or protocol errors
 	 */

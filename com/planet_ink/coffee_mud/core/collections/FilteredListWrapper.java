@@ -36,6 +36,12 @@ public class FilteredListWrapper<T> implements List<T>
 	private final Filterer<T>	filter;
 	private final List<T>		list;
 
+	/**
+	 * Construct a new FilteredListWrapper
+	 *
+	 * @param list the list to wrap
+	 * @param filter the filter to use
+	 */
 	public FilteredListWrapper(final List<T> list, final Filterer<T> filter)
 	{
 		super();

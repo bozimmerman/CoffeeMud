@@ -1664,6 +1664,7 @@ public class CMStrings
 	 * given string with the given string.
 	 * @param msg the string to parse out from
 	 * @param rep the string to replace
+	 * @return the new string, or unchanged if there is nothing to do
 	 */
 	public final static String replaceSayInMessage(final String msg, final String rep)
 	{
@@ -1933,7 +1934,7 @@ public class CMStrings
 	/**
 	 * Strips punctuation characters, leaving only letters and
 	 * numbers and such.  Removes all this:
-	 * !@#$%^&*()+&lt;>.,'\";:) {}[]|\\/?~
+	 * !@#$%^&amp;*()+&lt;&gt;.,'\";:) {}[]|\\/?~
 	 * Including spaces, for some reason.
 	 * @param s the string to strip
 	 * @return the stripped string
@@ -3590,6 +3591,7 @@ public class CMStrings
 	 * @param strs the string array
 	 * @param index the array index
 	 * @param def what to return if out-of-range
+	 * @return the string at index, or def if out-of-range
 	 */
 	public final static String s_indexStr(final String[] strs, final int index, final String def)
 	{

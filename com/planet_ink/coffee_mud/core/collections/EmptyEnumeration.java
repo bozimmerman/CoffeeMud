@@ -19,6 +19,10 @@ import java.util.NoSuchElementException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+/**
+ * An empty enumeration.
+ * @param <K> the type of object enumerated
+ */
 public class EmptyEnumeration<K> implements Enumeration<K>
 {
 	@SuppressWarnings("rawtypes")

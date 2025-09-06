@@ -52,6 +52,39 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			globalMonitors = new SLinkedList<WeakReference<MsgMonitor>>();
 
 	protected Ability awarenessA=null;
+	protected VaryNode varyRoot = new VaryNode();
+	{
+		for(final VariationCode code : VariationCode.values())
+		{
+			VaryNode here = varyRoot;
+			for(int i=0;i<=code.name().length();i++)
+			{
+				if (i == code.name().length())
+				{
+					here.code=code;
+					break;
+				}
+				final char c = code.name().charAt(i);
+				final int hx = c - 'A';
+				final int lx = c - 'A' + ('a'-'A');
+				if ((hx < 0) || (lx >= here.next.length))
+					break;
+				VaryNode next = here.next[hx];
+				if(next == null)
+				{
+					next = new VaryNode();
+					here.next[hx]=next;
+					here.next[lx]=next;
+				}
+				here=next;
+			}
+		}
+	}
+	private class VaryNode
+	{
+		public VaryNode[] next = new VaryNode[60];
+		public VariationCode code = null;
+	}
 
 	@Override
 	public boolean handleUnknownCommand(final MOB mob, final List<String> command)
@@ -2876,72 +2909,92 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		boolean addMe = true;
 		while(aligatorDex>=0)
 		{
-			for(final VariationCode code : VariationCode.values())
+			int codeDex = aligatorDex+1;
+			VaryNode n = varyRoot;
+			while (aligatorDex < text.length() && n != null)
 			{
-				if(text.startsWith(code.openTag, aligatorDex))
+				final int x = text.charAt(codeDex)-'A';
+				if((x<0)||(x>=n.next.length))
+					break;
+				n = n.next[x];
+				if((n==null)||(n.code!=null))
+					break;
+				codeDex++;
+			}
+			if((n != null) && (n.code != null))
+			{
+				final VariationCode code=n.code;
+				buf.append(text.substring(curDex, aligatorDex));
+				final int openLen;
+				int y;
+				if(code == VariationCode.MASK)
 				{
-					buf.append(text.substring(curDex, aligatorDex));
-					final int openLen;
-					int y;
-					if(code == VariationCode.MASK)
+					final int x=text.indexOf('>',aligatorDex+1);
+					final int z=text.indexOf(' ',aligatorDex+1);
+					if((z<0)||(x<0)||(z>x))
+						break;
+					final String openTag="<"+text.substring(aligatorDex+1,z)+">";
+					y=text.indexOf("</"+openTag.substring(1),x);
+					if(y<0)
 					{
-						final int x=text.indexOf('>',aligatorDex+1);
-						final int z=text.indexOf(' ',aligatorDex+1);
-						if((z<0)||(x<0)||(z>x))
-							break;
-						final String openTag="<"+text.substring(aligatorDex+1,z)+">";
-						y=text.indexOf("</"+openTag.substring(1),x);
-						if(y<0)
-						{
-							curDex = text.length();
-							y=text.length();
-						}
-						else
-							curDex = y+openTag.length()+1;
-						openLen=x-aligatorDex+1;
-						addMe = CMLib.masking().maskCheck(CMLib.xml().restoreAngleBrackets(text.substring(z,x)), mob, true);
+						curDex = text.length();
+						y=text.length();
 					}
 					else
+						curDex = y+openTag.length()+1;
+					openLen=x-aligatorDex+1;
+					addMe = CMLib.masking().maskCheck(CMLib.xml().restoreAngleBrackets(text.substring(z,x)), mob, true);
+				}
+				else
+				{
+					openLen=code.openTag.length();
+					y=text.indexOf(code.closeTag,aligatorDex+openLen);
+					if(y<0)
 					{
-						openLen=code.openTag.length();
-						y=text.indexOf(code.closeTag,aligatorDex+openLen);
-						if(y<0)
+						curDex = text.length();
+						y=text.length();
+					}
+					else
+						curDex = y+code.closeTag.length();
+					switch(code.c)
+					{
+					case '\n':
+						addMe = !addMe;
+						break;
+					case '\r':
+						addMe = true;
+						break;
+					case 'W':
+						addMe = A.getClimateObj().weatherType(null) == code.num;
+						break;
+					case 'C':
+						addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
+						break;
+					case 'S':
+						addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
+						break;
+					case 'M':
+						addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
+						break;
+					case 'V':
+						addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(room)));
+						break;
+					case 'F':
+						if(mob != null)
 						{
-							curDex = text.length();
-							y=text.length();
+							if(code.num<0)
+								addMe = CMLib.map().getRoomDir(room, mob.lastLocation()) < 0;
+							else
+								addMe = room.getRoomInDir(code.num) == mob.lastLocation();
 						}
 						else
-							curDex = y+code.closeTag.length();
-						switch(code.c)
-						{
-						case '\n':
-							addMe = !addMe;
-							break;
-						case '\r':
-							addMe = true;
-							break;
-						case 'W':
-							addMe = A.getClimateObj().weatherType(null) == code.num;
-							break;
-						case 'C':
-							addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
-							break;
-						case 'S':
-							addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
-							break;
-						case 'M':
-							addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
-							break;
-						case 'V':
-							addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(room)));
-							break;
-						}
+							addMe = code.num < 0;
+						break;
 					}
-					if(addMe)
-						buf.append(parseVariesCodes(mob,A,room,text.substring(aligatorDex+openLen,y)));
-					aligatorDex=curDex-1;
-					break;
 				}
+				if(addMe)
+					buf.append(parseVariesCodes(mob,A,room,text.substring(aligatorDex+openLen,y)));
+				aligatorDex=curDex-1;
 			}
 			if(aligatorDex >= text.length()-1)
 				break;

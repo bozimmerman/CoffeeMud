@@ -14,8 +14,25 @@ package com.planet_ink.coffee_mud.core.collections;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A simple interface for converting objects of one type to another.
+ *
+ * @param <K> the input object type
+ * @param <L> the output object type
+ */
 public interface Converter<K, L>
 {
+	/**
+	 * Converts the given object from one type to another.
+	 *
+	 * @param obj the object to be converted
+	 * @return the converted object
+	 */
+	public L convert(K obj);
+
+	/**
+	 * A converter that converts strings to lower case.
+	 */
 	public final static Converter<String,String> toLowerCase=new Converter<String,String>()
 	{
 		@Override
@@ -25,5 +42,16 @@ public interface Converter<K, L>
 		}
 	};
 
-	public L convert(K obj);
+	/**
+	 * A converter that converts strings to upper case.
+	 */
+	public final static Converter<String,String> toUpperCase=new Converter<String,String>()
+	{
+		@Override
+		public String convert(final String obj)
+		{
+			return obj.toUpperCase();
+		}
+	};
+
 }

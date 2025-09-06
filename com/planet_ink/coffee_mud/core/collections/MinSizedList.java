@@ -15,11 +15,24 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A list wrapper that prevents removing elements if it would make the list
+ * smaller than it was when the wrapper was created.
+ *
+ * @param <K> the type of object in the list
+ * @author Bo Zimmerman
+ *
+ */
 public class MinSizedList<K> implements List<K>
 {
 	private final List<K> list;
 	private final int minSize;
 
+	/**
+	 * Wrap the given list in a min-size wrapper
+	 *
+	 * @param l the list to wrap
+	 */
 	public MinSizedList(final List<K> l)
 	{
 		list=l;

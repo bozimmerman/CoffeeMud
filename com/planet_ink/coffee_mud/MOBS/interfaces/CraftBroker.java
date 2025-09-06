@@ -97,7 +97,7 @@ public interface CraftBroker extends ShopKeeper
 
 	/**
 	 * Gets the commission percentage.
-	 * @see CraftBroker#setCommissionPct(int)
+	 * @see CraftBroker#setCommissionPct(double)
 	 * @return the commission percentage
 	 */
 	public double commissionPct();

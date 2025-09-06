@@ -54,6 +54,7 @@ public class DDLValidator
 	 * Constructs a DDLValidator with the specified DBConnector.
 	 *
 	 * @param DB the database connector
+	 * @param changeList the JSON object representing the changelist
 	 */
 	public DDLValidator(final DBConnector DB, final JSONObject changeList)
 	{
@@ -155,7 +156,7 @@ public class DDLValidator
 	/**
 	 * Current database version derived from the changelist.
 	 *
-	 * @param changesJson the changelist JSON object
+	 * @param changes the changelist JSON object
 	 * @param oneVer if non-null, only check this version
 	 * @param oneChgIdx if non-null, only check this change index
 	 * @return the current database version, or -database version if corrupted

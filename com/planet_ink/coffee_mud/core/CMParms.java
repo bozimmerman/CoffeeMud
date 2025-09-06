@@ -104,6 +104,7 @@ public class CMParms
 	/**
 	 * Combine object arrays into a single one.
 	 * @param objs the arrays
+	 * @param <T> the type of array
 	 * @return the combined array
 	 */
 	@SuppressWarnings("unchecked")

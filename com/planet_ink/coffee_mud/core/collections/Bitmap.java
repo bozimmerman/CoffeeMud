@@ -164,7 +164,6 @@ public class Bitmap
 	 * Converts this bitmap to an array of booleans. The array will be the same
 	 * length as the number of bits in the bitmap.
 	 * @param bits the array of booleans to fill
-	 * @return the array of booleans
 	 */
 	public void toBoolArray(final boolean[] bits)
 	{

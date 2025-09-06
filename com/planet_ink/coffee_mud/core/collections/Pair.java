@@ -21,8 +21,8 @@ import java.util.*;
 
 /**
  * A pair of objects, named first and second
- * @param <T>
- * @param <K>
+ * @param <T> the type of the first object
+ * @param <K> the type of the second object
  */
 public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 {
@@ -77,8 +77,8 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 
 	/**
 	 * A comparator that compares Pairs by their first element
-	 * @param <T>
-	 * @param <K>
+	 * @param <T> the type of the first object
+	 * @param <K> the type of the second object
 	 */
 	public static final class FirstComparator<T, K> implements Comparator<Pair<T, K>>
 	{
@@ -113,8 +113,8 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 	/**
 	 * A comparator that compares Pairs by their second element
 	 *
-	 * @param <T>
-	 * @param <K>
+	 * @param <T> the type of the first object
+	 * @param <K> the type of the second object
 	 */
 	public static final class SecondComparator<T, K> implements Comparator<Pair<T, K>>
 	{
@@ -150,8 +150,8 @@ public class Pair<T, K> implements Map.Entry<T, K>, Serializable
 	 * A comparator that compares Pairs by their first element, and then by
 	 * their second element
 	 *
-	 * @param <T>
-	 * @param <K>
+	 * @param <T> the type of the first object
+	 * @param <K> the type of the second object
 	 */
 	public static final class DoubleComparator<T, K> implements Comparator<Pair<T, K>>
 	{

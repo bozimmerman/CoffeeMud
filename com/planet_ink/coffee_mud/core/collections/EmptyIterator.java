@@ -19,6 +19,10 @@ import java.util.NoSuchElementException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+/**
+ * An empty iterator implementation.
+ * @param <K> the type of object iterated over
+ */
 public class EmptyIterator<K> implements Iterator<K>
 {
 	private EmptyIterator()
@@ -44,6 +48,12 @@ public class EmptyIterator<K> implements Iterator<K>
 	}
 
 	@SuppressWarnings("rawtypes")
+	/**
+	 * A singleton instance of an empty iterator
+	 */
 	public static final Iterator		INSTANCE		= new EmptyIterator();
+	/**
+	 * A singleton instance of an empty string iterator
+	 */
 	public static final Iterator<String>STRINSTANCE	= new EmptyIterator<String>();
 }

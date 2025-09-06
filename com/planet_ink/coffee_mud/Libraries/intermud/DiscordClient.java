@@ -204,6 +204,8 @@ public class DiscordClient implements Closeable
 
 	/**
 	 * Requires including special library and special configuration.
+	 *
+	 * @param chanName the channel to send to
 	 * @param msg the message to send
 	 */
 	public void sendDiscordMsg(final String chanName, final String msg)

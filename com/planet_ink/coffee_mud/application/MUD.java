@@ -1214,7 +1214,6 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDNAME, name);
 
 			DBConnector currentDBconnector=null;
-			JSONObject dbChangeList = null;
 			String dbClass=page.getStr("DBCLASS");
 			if(tCode!=MAIN_HOST)
 			{
@@ -1233,28 +1232,6 @@ public class MUD extends Thread implements MudHost
 				{
 					CMLib.registerLibrary(baseEngine);
 					dbClass="";
-				}
-			}
-			else
-			{
-				final File f=new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
-				if(!f.exists())
-					Log.errOut("Unable to find database changelist for validation.");
-				else
-				{
-					try
-					{
-						final String json=new String(Files.readAllBytes(f.toPath()));
-						dbChangeList=(MiniJSON.JSONObject)new MiniJSON().parse(json);
-					}
-					catch (final MJSONException e)
-					{
-						Log.errOut("Unable to parse database changelist for validation.");
-					}
-					catch (final IOException e)
-					{
-						Log.errOut("Unable to read database changelist for validation.");
-					}
 				}
 			}
 			if(dbClass.length()>0)
@@ -1277,6 +1254,28 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
 				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,useQue,useQueStart);
 				currentDBconnector.reconnect();
+
+
+				JSONObject dbChangeList = null;
+				final File f=new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
+				if(!f.exists())
+					Log.errOut("Unable to find database changelist for validation.");
+				else
+				{
+					try
+					{
+						final String json=new String(Files.readAllBytes(f.toPath()));
+						dbChangeList=(MiniJSON.JSONObject)new MiniJSON().parse(json);
+					}
+					catch (final MJSONException e)
+					{
+						Log.errOut("Unable to parse database changelist for validation.");
+					}
+					catch (final IOException e)
+					{
+						Log.errOut("Unable to read database changelist for validation.");
+					}
+				}
 				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*"),dbChangeList));
 
 				final DBConnection DBTEST=currentDBconnector.DBFetchTest();
@@ -1285,26 +1284,23 @@ public class MUD extends Thread implements MudHost
 				if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
 				{
 					Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
-					if(tCode == MAIN_HOST)
+					String err = CMLib.database().validateDatabaseVersion();
+					if (err != null)
 					{
-						String err = CMLib.database().validateDatabaseVersion();
+						Log.errOut(Thread.currentThread().getName(), err);
+						err = CMLib.database().upgradeDatabaseVersion();
 						if (err != null)
 						{
 							Log.errOut(Thread.currentThread().getName(), err);
-							err = CMLib.database().upgradeDatabaseVersion();
-							if (err != null)
-							{
-								Log.errOut(Thread.currentThread().getName(), err);
-								fatalStartupError(t, 3);
-								return false;
-							}
-							err = CMLib.database().validateDatabaseVersion();
-							if (err != null)
-							{
-								Log.errOut(Thread.currentThread().getName(), err);
-								fatalStartupError(t, 3);
-								return false;
-							}
+							fatalStartupError(t, 3);
+							return false;
+						}
+						err = CMLib.database().validateDatabaseVersion();
+						if (err != null)
+						{
+							Log.errOut(Thread.currentThread().getName(), err);
+							fatalStartupError(t, 3);
+							return false;
 						}
 					}
 					databases.add(currentDBconnector);

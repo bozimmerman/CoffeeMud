@@ -27,7 +27,7 @@ import java.util.Vector;
  * A multi-dimensional list of objects, where each row has the same number
  * of columns (dimensions).
  *
- * @param <T>
+ * @param <T> the type of objects in this list
  */
 public interface NList<T>
 {

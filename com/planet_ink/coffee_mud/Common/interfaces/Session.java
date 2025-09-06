@@ -574,7 +574,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	/**
 	 * Force the current player to logoff, end the session, and/or kill the thread.
-	 * @param disconnect TODO
+	 * @param disconnect true to notify external systems that player is going offline
 	 * @param removeMOB true to remove the mob from the game
 	 * @param dropSession true to force closed sockets, and removed session
 	 * @param killThread true to force a thread death, and false to be more lenient
@@ -754,6 +754,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 
 	/**
 	 * Whether the given bit(s) in MTTS were set or cleared.
+	 * @param bitmap the bits to check
 	 * @return true if all the bits are set, false otherwise
 	 */
 	public boolean getMTTS(int bitmap);
@@ -992,7 +993,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 *
 	 * @param command the command
 	 * @param doc the json doc
-	 * return true if MPCP was enabled, and the command was sent
+	 * @return true if MPCP was enabled, and the command was sent
 	 */
 	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc);
 

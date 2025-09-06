@@ -773,7 +773,7 @@ public interface AchievementLibrary extends CMLibrary
 	 *
 	 * @param mob the mob to give awards to
 	 * @param rewardStr the rewards definition
-	 * @return
+	 * @return the message describing the awards given
 	 */
 	public String giveAwards(final MOB mob, final String rewardStr);
 

@@ -18,11 +18,26 @@ import com.planet_ink.coffee_mud.core.CMParms;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A MultiList is a list that contains multiple other lists, and presents them
+ * as one big list. Adding new items only adds to the last list in the
+ * collection. Removing items removes them from the first list they are found
+ * in. Iteration and indexing is done as if all the lists were one big list.
+ *
+ * @param <T> the type of objects in the lists
+ * @author Bo Zimmerman
+ *
+ */
 @SuppressWarnings("unchecked")
 public class MultiList<T> implements List<T>
 {
 	private final Vector<List<T>> collections = new Vector<List<T>>();
 
+	/**
+	 * Constructs a new MultiList containing the given lists.
+	 *
+	 * @param colls the lists to include
+	 */
 	public MultiList(final List<T>... colls)
 	{
 		super();
@@ -33,6 +48,9 @@ public class MultiList<T> implements List<T>
 		collections.trimToSize();
 	}
 
+	/**
+	 * Constructs a new empty MultiList.
+	 */
 	public MultiList()
 	{
 		super();
@@ -55,6 +73,12 @@ public class MultiList<T> implements List<T>
 		return false;
 	}
 
+	/**
+	 * Add a new list to the collection of lists.
+	 *
+	 * @param arg0 the list to add
+	 * @return true, always
+	 */
 	public boolean addAll(final List<T> arg0)
 	{
 		collections.add(arg0);
@@ -228,7 +252,6 @@ public class MultiList<T> implements List<T>
 	}
 
 	@SuppressWarnings("hiding")
-
 	@Override
 	public <T> T[] toArray(T[] arg0)
 	{
@@ -371,5 +394,4 @@ public class MultiList<T> implements List<T>
 			newList.add(i.next());
 		return newList;
 	}
-
 }

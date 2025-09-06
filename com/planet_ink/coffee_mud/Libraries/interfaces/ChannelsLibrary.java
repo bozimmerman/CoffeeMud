@@ -311,7 +311,7 @@ public interface ChannelsLibrary extends CMLibrary
 	 * Sends the given channel message from the given sender to the given session on the
 	 * given channelNumbered channel.
 	 * @see ChannelsLibrary#getNumChannels()
-	 * @see ChannelsLibrary#createAndSendChannelMessage(MOB, String, String, boolean)
+	 * @see ChannelsLibrary#createAndSendChannelMessage(MOB, String, String, boolean, boolean)
 	 * @param ses the session to send the channel message to
 	 * @param areareq true if the sender and session must be in the same area, false otherwise
 	 * @param channelNumber the channel index number of the message

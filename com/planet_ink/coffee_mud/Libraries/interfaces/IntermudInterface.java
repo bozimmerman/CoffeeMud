@@ -225,7 +225,6 @@ public interface IntermudInterface extends CMLibrary
 	 * Returns whether the given string represents
 	 * a real mud-mapped intermud channel name
 	 *
-	 * @param proto the service to query
 	 * @param channelName the channel name to check
 	 * @return true if its real, false otherwise
 	 */
