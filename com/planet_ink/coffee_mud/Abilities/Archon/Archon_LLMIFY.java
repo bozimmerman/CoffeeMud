@@ -298,17 +298,18 @@ public class Archon_LLMIFY extends ArchonSkill
 			mob.tell(L("You cannot LLMify @x1.",target.name(mob)));
 			return false;
 		}
-		if(target.session()!=null)
+		final Session sess = target.session();
+		if(sess!=null)
 		{
 			if(target.soulMate()!=null)
 			{
 				mob.tell(L("You cannot LLMify @x1.",target.name(mob)));
 				return false;
 			}
-			target.session().setMob(null);
+			sess.setMob(null);
 			target.setSession(null);
 			mob.tell(L("@x1 is losing the LLM.",target.name(mob)));
-			target.session().stopSession(false, false, true, true);
+			sess.stopSession(false, false, true, true);
 			return true;
 		}
 

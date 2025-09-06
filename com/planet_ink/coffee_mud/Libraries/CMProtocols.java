@@ -698,7 +698,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		String image=null;
 		if(O instanceof Race)
 		{
-			image=getHashedMXPImage(H,"RACE_"+((Race)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"RACE_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"RACECAT_"+((Race)O).racialCategory().toUpperCase().replace(' ','_'));
 			if(image==null)
@@ -723,7 +723,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Room)
 		{
-			image=getHashedMXPImage(H,"ROOM_"+((Room)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"ROOM_"+O.ID().toUpperCase());
 			if(image==null)
 				if(CMath.bset(((Room)O).domainType(),Room.INDOORS))
 					image=getHashedMXPImage(H,"LOCALE_INDOOR_"+Room.DOMAIN_INDOORS_DESCS[((Room)O).domainType()-Room.INDOORS]);
@@ -737,7 +737,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Exit)
 		{
-			image=getHashedMXPImage(H,"EXIT_"+((Exit)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"EXIT_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"EXIT_"+((Exit)O).doorName().toUpperCase());
 			if(image==null)
@@ -785,7 +785,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof ClanItem)
 		{
-			image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"CLAN_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"CLAN_"+((ClanItem)O).getClanItemType().toString().toUpperCase());
 			if(image==null)
@@ -887,7 +887,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof PowerGenerator)
 		{
-			final String key = "POWERGENERATOR_"+((Electronics)O).ID().toUpperCase();
+			final String key = "POWERGENERATOR_"+O.ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,"POWERGENERATOR_"+key);
 			else
@@ -896,7 +896,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof PowerSource)
 		{
-			final String key = "POWERSOURCE_"+((Electronics)O).ID().toUpperCase();
+			final String key = "POWERSOURCE_"+O.ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
@@ -905,7 +905,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof ElecPanel)
 		{
-			final String key = "ELECPANEL_"+((Electronics)O).ID().toUpperCase();
+			final String key = "ELECPANEL_"+O.ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
@@ -923,7 +923,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof TechComponent)
 		{
-			final String key = "SHIPCOMP_"+((TechComponent)O).ID().toUpperCase();
+			final String key = "SHIPCOMP_"+O.ID().toUpperCase();
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
@@ -987,7 +987,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Wand)
 		{
-			image=getHashedMXPImage(H,"WAND_"+((Wand)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"WAND_"+O.ID().toUpperCase());
 			if(image==null)
 			{
 				final Ability A=((Wand)O).getSpell();
@@ -1000,7 +1000,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Food)
 		{
-			image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"FOOD_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
 			if(image==null)
@@ -1011,7 +1011,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Drink)
 		{
-			image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"DRINK_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()));
 			if(image==null)
@@ -1022,7 +1022,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Light)
 		{
-			image=getHashedMXPImage(H,"LIGHT_"+((Light)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"LIGHT_"+O.ID().toUpperCase());
 			image=getHashedMXPImage(H,"LIGHT_"+RawMaterial.Material.findByMask(((Light)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null)
 				image=getHashedMXPImage(H,"LIGHT_*");
@@ -1030,7 +1030,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Container)
 		{
-			image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"CONTAINER_"+O.ID().toUpperCase());
 			final String lid=((Container)O).hasADoor()?"LID_":"";
 			if(image==null)
 				image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
@@ -1045,7 +1045,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			image=getHashedMXPImage(H,"ITEM_MISCMAGIC");
 		if((image==null)&&(O instanceof Item))
 		{
-			image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
+			image=getHashedMXPImage(H,"ITEM_"+O.ID().toUpperCase());
 			if(image==null)
 				image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
 			if(image==null)
@@ -3904,7 +3904,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		try
 		{
-			final Double TEMPERATURE = Double.valueOf(0.5);
+			final Double TEMPERATURE = Double.valueOf(0.7);
 			final Long TIMEOUT_SECONDS = Long.valueOf(20);
 			// Load LangChain4j classes dynamically
 			final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
