@@ -137,7 +137,7 @@ public class AutoPlayTester
 								sock.getOutputStream().flush();
 								response= new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
 								sock.getOutputStream().write(response);
-								sock.getOutputStream().write("Core.Supports.Set [\"Core 1\", \"Char 1\", \"Room 1\", \"Group 1\", \"Comm 1\"]".getBytes());
+								sock.getOutputStream().write("Core.Supports.Set [\"Core 1\", \"Char 1\", \"Room 1\", \"Group 1\", \"Comm 1\", \"Room.Info 1\", \"Char.Login 1\"]".getBytes());
 								response= new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
 								sock.getOutputStream().write(response);
 								sock.getOutputStream().flush();

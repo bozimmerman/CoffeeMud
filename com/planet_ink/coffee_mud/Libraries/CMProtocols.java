@@ -2000,6 +2000,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 			}
 			bout.write(Session.TELNETBYTES_GMCP_HEAD);
+			if(CMSecurity.isDebugging(DbgFlag.GMCP))
+				Log.debugOut("GMCP Sent: "+json);
 			bout.write(jsonBytes);
 			bout.write(Session.TELNETBYTES_END_SB);
 		}
@@ -3088,6 +3090,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	@Override
 	public byte[] processGmcp(final Session session, final String data, final Map<String,Double> supportables, final Map<Object,Object> reportables)
 	{
+		if(CMSecurity.isDebugging(DbgFlag.GMCP))
+			Log.debugOut("GMCP Recv: "+data);
 		final String doc=processGmcpStr(session, data, supportables, reportables);
 		if(doc != null)
 		{
@@ -3100,6 +3104,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command, final Map<Object,Object> reportables)
 	{
+		if(CMSecurity.isDebugging(DbgFlag.GMCP))
+			Log.debugOut("GMCP Ping: "+command);
 		final String chunkStr=processGmcpStr(session, command, supportables, reportables);
 		if(chunkStr!=null)
 		{
