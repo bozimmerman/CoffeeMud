@@ -188,12 +188,14 @@ function SipletWindow(windowName)
 
 	if(this.topWindow)
 	{
-		this.topWindow.onclick = function(e) 
+		this.topWindow.onmouseup = function(e) 
 		{
 			ContextDelayHide(); 
 			if(e.target.tagName == 'INPUT')
 				return;
-			setInputBoxFocus(); 
+			const selection = window.getSelection();
+			if(selection.toString().length === 0)
+				setInputBoxFocus(); 
 		};
 		var fontFace = getConfig('window/fontface', 'monospace');
 		var fontSize = getConfig('window/fontsize', '16px');
