@@ -1,4 +1,5 @@
-var SipletActions = {
+var SipletActions = 
+{
 	"win.submitInput": { text:"Send Command", args: 1},
 	"win.displayText": { text:"Display Text", args: 1},
 	"win.playSound": { text:"Play Sound", args: 1},
@@ -101,7 +102,8 @@ var PLUGINS = function(sipwin)
 		if(!sipwin.topContainer)
 			return;
 		var global = GetGlobalPlugins();
-		if(global && Array.isArray(global)) {
+		if(global && Array.isArray(global)) 
+		{
 			for(var i=0;i<global.length;i++)
 			{
 				if(global[i].code)
@@ -123,13 +125,15 @@ var PLUGINS = function(sipwin)
 		this.menuList = null;
 	};
 	
-	this.postEvent = function(event) {
+	this.postEvent = function(event) 
+	{
 		for(var k in this.framesMap)
 			if(this.framesMap[k].contentWindow)
 				this.framesMap[k].contentWindow.postMessage({ type: 'message', payload: event}, '*');
 	};
 	
-	this.postEventToPlugin = function(plugin, event) {
+	this.postEventToPlugin = function(plugin, event) 
+	{
 		if(plugin in this.framesMap)
 			if(this.framesMap[plugin].contentWindow)
 				this.framesMap[plugin].contentWindow.postMessage({ type: 'message', payload: event}, '*');
@@ -167,7 +171,8 @@ var PLUGINS = function(sipwin)
 		{
 			if(isValidAction(palias.action))
 			{
-				var newOne = {
+				var newOne = 
+				{
 					name: palias.name,
 					regex: palias.regex,
 					replace: palias.replace,
@@ -224,7 +229,8 @@ var PLUGINS = function(sipwin)
 		{
 			if(isValidAction(ptrigger.action))
 			{
-				var newOne = {
+				var newOne = 
+				{
 					name: ptrigger.name,
 					regex: ptrigger.regex,
 					once: ptrigger.once,
@@ -289,7 +295,8 @@ var PLUGINS = function(sipwin)
 			if(['repeat','multiple','once'].indexOf(ptimer.option)<0)
 				console.warn("Bad option in "+source+" timer (repeat, multiple, once)");
 			{
-				var newOne = {
+				var newOne = 
+				{
 					name: ptimer.name,
 					delay: Number(ptimer.delay),
 					option: ptimer.option,

@@ -174,21 +174,22 @@ function SipletWindow(windowName)
 	
 	this.sendRaw = function(arr)
 	{
-		if (Array.isArray(arr) && (arr.length > 0) 
+		if(Array.isArray(arr) && (arr.length > 0) 
 		&& this.wsopened && this.wsocket)
 			this.wsocket.send(new Uint8Array(arr).buffer);
 	};
 
 	this.sendStr = function(str)
 	{
-		if ((typeof str === 'string')
+		if((typeof str === 'string')
 		&& str && this.wsopened && this.wsocket)
 			this.wsocket.send(str);
 	};
 
 	if(this.topWindow)
 	{
-		this.topWindow.onclick = function(e) {
+		this.topWindow.onclick = function(e) 
+		{
 			ContextDelayHide(); 
 			if(e.target.tagName == 'INPUT')
 				return;
@@ -214,13 +215,14 @@ function SipletWindow(windowName)
 		this.fixOverflow();
 		this.plugins.reset();
 		this.resizeTermWindow(fontFace, fontSize);
-		this.window.addEventListener('paste', function() {
+		this.window.addEventListener('paste', function() 
+		{
 			event.preventDefault();
 			var text = (event.clipboardData || window.clipboardData).getData('text');
 			addToPrompt(text,false);
 		});
 	}
-	
+
 	this.connect = function(url)
 	{
 		this.closeSocket();
@@ -259,7 +261,7 @@ function SipletWindow(windowName)
 
 	this.closeSocket = function()
 	{
-		if (this.wsocket && this.wsocket.readyState === WebSocket.OPEN)
+		if(this.wsocket && (this.wsocket.readyState === WebSocket.OPEN))
 			this.wsocket.close();
 	};
 	
@@ -272,7 +274,8 @@ function SipletWindow(windowName)
 	
 	this.process = function(s)
 	{
-		if(!s) return s;
+		if(!s) 
+			return s;
 		try
 		{
 			var oldResume = this.text.resume;
@@ -291,7 +294,8 @@ function SipletWindow(windowName)
 			if((!this.mxp.active())&&(this.fixVariables))
 				s = this.fixVariables(s);
 		}
-		catch(e) { 
+		catch(e) 
+		{ 
 			console.warn(e);
 		}
 		this.flushWindow = oldFlush;
@@ -320,12 +324,14 @@ function SipletWindow(windowName)
 	this.reset = function()
 	{
 		this.closeLog();
-		while (this.topWindow.children.length > 1) {
+		while (this.topWindow.children.length > 1)
+		{
 			this.topWindow.removeChild(this.topWindow.lastChild);
 		}
 		this.topContainer = this.topWindow.firstChild;
 		this.topContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
-		while (this.topContainer.children.length > 1) {
+		while (this.topContainer.children.length > 1) 
+		{
 			this.topContainer.removeChild(this.topContainer.lastChild);
 		}
 		this.window = this.topContainer.firstChild;
@@ -369,7 +375,8 @@ function SipletWindow(windowName)
 	
 	this.htmlBuffer = '';
 	this.numLines = 0;
-	this.flushWindow = function() {
+	this.flushWindow = function() 
+	{
 		if(this.htmlBuffer.length > 0)
 		{
 			var rescroll = this.isAtBottom(-10);
@@ -525,7 +532,8 @@ function SipletWindow(windowName)
 		};
 	};
 
-	this.menus = function() {
+	this.menus = function() 
+	{
 		return this.plugins.menus(this.tempMenus)
 	};
 	
@@ -700,9 +708,14 @@ function SipletWindow(windowName)
 			{
 				for(var i=0;i<calls.length;i++)
 				{
-					try {
+					try 
+					{
 						calls[i](event);
-					} catch(e){console.error(e);}
+					} 
+					catch(e)
+					{
+						console.error(e);
+					}
 					if(event.cancelBubble)
 						return;
 				}
@@ -1149,7 +1162,8 @@ function SipletWindow(windowName)
 		if(tries > 10)
 			return;
 		var me = this;
-		setTimeout(function(){
+		setTimeout(function()
+		{
 			rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
 			me.scrollToBottom(rewin,++tries);
 		},50);
@@ -1272,9 +1286,12 @@ function SipletWindow(windowName)
 				json = event;
 			else
 			{
-				try {
+				try 
+				{
 					json = JSON.parse(''+event);
-				} catch(e) {
+				} 
+				catch(e) 
+				{
 					json = {'type':'event', 'data': event};
 				}
 			}
@@ -1316,9 +1333,12 @@ function SipletWindow(windowName)
 			return;
 		if(typeof json === "string")
 		{
-			try {
+			try 
+			{
 				json = JSON.parse(json);
-			} catch(e) {
+			} 
+			catch(e) 
+			{
 				console.error(e);
 				return;
 			}
@@ -1362,21 +1382,26 @@ function SipletWindow(windowName)
 			console.log('MSDP json is not a JSON object.');
 			return;
 		}
-		var addMSDPStr = function(response, val) {
+		var addMSDPStr = function(response, val) 
+		{
 			for(var i=0;i<val.length;i++)
 				response.push(val.charCodeAt(i));
 		}
-		var addMSDP = function(response, val) {
-			if(Array.isArray(val)) {
+		var addMSDP = function(response, val) 
+		{
+			if(Array.isArray(val)) 
+			{
 				response.push(MSDPOP.MSDP_ARRAY_OPEN);
 				for(var i=0;i<val.length;i++)
 					addMSDP(response, val[i]);
 				response.push(MSDPOP.MSDP_ARRAY_CLOSE);
 				return;
 			}
-			if(isMSDPJSONObj(val)) {
+			if(isMSDPJSONObj(val)) 
+			{
 				response.push(MSDPOP.MSDP_TABLE_OPEN);
-				for(var key in val) {
+				for(var key in val) 
+				{
 					response.push(MSDPOP.MSDP_VAR);
 					addMSDPStr(response, key);
 					response.push(MSDPOP.MSDP_VAL);
@@ -1388,7 +1413,8 @@ function SipletWindow(windowName)
 			addMSDPStr(response, ''+val);
 		};
 		var response = [TELOPT.IAC, TELOPT.SB, TELOPT.MSDP];
-		for(var key in json) {
+		for(var key in json) 
+		{
 			response.push(MSDPOP.MSDP_VAR);
 			addMSDPStr(response, key);
 			response.push(MSDPOP.MSDP_VAL);
@@ -1434,7 +1460,8 @@ function SipletWindow(windowName)
 		return this.wsopened;
 	};
 	
-	this.openLog = function(filePath) {
+	this.openLog = function(filePath) 
+	{
 		try 
 		{
 			if(this.logStream)
@@ -1442,14 +1469,17 @@ function SipletWindow(windowName)
 			const fs = require('fs');
 			this.logStream = fs.createWriteStream(filePath, {flags: 'w'});
 			this.tab.style.border='1px solid yellow';
-		} catch(e) {
+		} 
+		catch(e) 
+		{
 			this.tab.style.border='1px solid red';
 			console.error(e);
 			this.logStream = null;
 		}
 	};
 	
-	this.closeLog = function(filePath) {
+	this.closeLog = function(filePath) 
+	{
 		this.tab.style.border='1px solid white';
 		if(this.logStream != null)
 			this.logStream.end();
@@ -1466,7 +1496,8 @@ function SipletWindow(windowName)
 		}
 	};
 	
-	this.writeLog = function(msg) {
+	this.writeLog = function(msg) 
+	{
 		if(this.logStream != null)
 		{
 			try {
@@ -1485,7 +1516,8 @@ function AddNewSipletTabByHostNPort(host, port)
 	var defaultUrl = protocol + '//' + host;
 	var siplet = AddNewSipletTab(defaultUrl+'?port='+port);
 	siplet.tabTitle = host + '('+port+')';
-	siplet.pb = {
+	siplet.pb = 
+	{
 		name: host + '('+port+')',
 		host: host,
 		port: port
@@ -1547,6 +1579,7 @@ function AddNewSipletTabByPB(which)
 		siplet.tabTitle = pb.user + '@' + pb.name + ' ('+pb.port+')';
 	siplet.pb = pb;
 	siplet.pbwhich = ogwhich;
+	siplet.plugins.reset();
 	setInputBoxFocus();
 	ReConfigureTopMenu(siplet);
 	return siplet;
@@ -1696,6 +1729,7 @@ function UpdateSipetTabsByPBIndex(which)
 			siplet.pb = pb;
 			if(siplet.triggers != null)
 				siplet.triggers = null;
+			siplet.plugins.reset();
 		}
 	}
 }
@@ -1704,16 +1738,21 @@ function PostGlobalEvent(event)
 {
 	for(var k in window.siplets)
 	{
-		try {
+		try 
+		{
 			window.siplets[k].dispatchEvent(event);
-		} catch(e) {
+		} 
+		catch(e) 
+		{
 			console.error(e);
 		}
 	}
 }
 
-setTimeout(function() {
-	var updateSipletConfigs = function() {
+setTimeout(function() 
+{
+	var updateSipletConfigs = function() 
+	{
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
@@ -1725,7 +1764,8 @@ setTimeout(function() {
 	addConfigListener('window/lines', updateSipletConfigs);
 	addConfigListener('window/overflow', updateSipletConfigs);
 
-	var updateSipletWindows = function() {
+	var updateSipletWindows = function() 
+	{
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];

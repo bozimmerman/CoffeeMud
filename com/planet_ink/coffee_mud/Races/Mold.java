@@ -150,6 +150,7 @@ public class Mold extends StdRace
 		affectableState.setHitPoints(affectableState.getHitPoints()*4);
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
+		affectableState.setMana(0);
 		affectedMOB.curState().setMana(0);
 	}
 
