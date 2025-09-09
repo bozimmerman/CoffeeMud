@@ -367,7 +367,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 										{
 											imud.resetLastPacketReceivedTime();
 											I3Server.shutdown();
-											CMLib.hosts().get(0).executeCommand("START I3");
+											CMLib.intermud().startIntermud(InterProto.I3, true);
 											Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 										}
 										catch(final Exception e)
@@ -648,7 +648,7 @@ public class I3Client implements Runnable, Persistent, Serializable
 							{
 								//logMemory();
 								I3Server.shutdown();
-								CMLib.hosts().get(0).executeCommand("START I3");
+								CMLib.intermud().startIntermud(InterProto.I3, true);
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 							}
 							catch(final Exception e)

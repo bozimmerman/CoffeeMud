@@ -9,7 +9,7 @@ var socialsCache = [];
 
 var s;
 var mudUsesAccountSystem = false;
-if(!login())
+if(!connect())
 {
 	stderr("Unable to login!");
 	AutoCrash___UNABLE_TO_LOGIN;
