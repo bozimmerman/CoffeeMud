@@ -31,14 +31,29 @@ import java.io.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * Shutdown is a class for sending a shutdown command to a running CoffeeMud
+ * server.
+ *
+ * @author Bo Zimmerman
+ */
 public class Shutdown
 {
 
+	/**
+	 * Default constructor
+	 */
 	public Shutdown()
 	{
 		super();
 	}
 
+	/**
+	 * Sends a shutdown command to a running CoffeeMud server.
+	 *
+	 * @param a the arguments: host, port, username, password, (optional reboot
+	 *            true/false), (optional external command)
+	 */
 	public static void main(final String a[])
 	{
 		final PrintStream outStream = System.out;

@@ -68,10 +68,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+/**
+ * CoffeeMud Application entry point class. This is a simple command line shell
+ * that allows filesystem commands to be executed against the virtual file
+ * system.
+ *
+ * @author Bo Zimmerman
+ *
+ */
 public class VFShell
 {
 	public final static PrintStream outStream = System.out;
 
+	/**
+	 * Application entry point for the VFShell application
+	 *
+	 * @param args the command line arguments
+	 */
 	public static void main(final String[] args)
 	{
 		final ThreadGroup g=new ThreadGroup("0");

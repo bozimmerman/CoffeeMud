@@ -37,6 +37,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+/**
+ * Proxy server for CoffeeMud MUDs, allowing load balancing and
+ * MCCP2 support across reboots.
+ *
+ * @author BZ
+ */
 public class MUDProxy
 {
 	private static final int	BUFFER_SIZE	= 65536;
@@ -57,6 +63,9 @@ public class MUDProxy
 	private static final Map<Integer, AtomicInteger>
 		strategyMap		= new Hashtable<Integer, AtomicInteger>();
 
+	/**
+	 * Strategies for incoming connections.
+	 */
 	private static enum LBStrategy
 	{
 		ROUNDROBIN,
@@ -64,6 +73,10 @@ public class MUDProxy
 		RANDOM
 	}
 
+	/**
+	 * Parse states for traffic from the mud, allowing it to react to
+	 * messages from the mud, or maintain MCCP across reboots.
+	 */
 	private static enum ParseState
 	{
 		NORMAL,
@@ -76,6 +89,9 @@ public class MUDProxy
 		ANSI_CSI
 	}
 
+	/**
+	 * Traffic parsing state handler class.
+	 */
 	private static class ParseStatus
 	{
 		private ParseState					state		= ParseState.NORMAL;
@@ -100,6 +116,15 @@ public class MUDProxy
 	private final ConcurrentLinkedQueue<ByteBuffer>	inter	= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
 	private final ConcurrentLinkedQueue<ByteBuffer>	output	= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output
 
+	/**
+	 * A MUDProxy class instance represents a connection between either a user or the mud and this proxy server.
+	 *
+	 * @param client true if this instance represents a user connection, false if it represents a mud connection
+	 * @param outsidePort the outside port number the user connected to
+	 * @param port the host:port pair of the other end of this connection
+	 * @param remoteIP the IP address of the user, or the mud, depending
+	 * @throws IOException if an error occurs
+	 */
 	private MUDProxy(final boolean client, final int outsidePort, final Pair<String,Integer> port, final String remoteIP) throws IOException
 	{
 		this.outsidePortNum = outsidePort;
@@ -109,6 +134,9 @@ public class MUDProxy
 		this.in = new PassThroughInputStream(this.inputPipe);
 	}
 
+	/**
+	 * Close the given selection key and its associated channel, and its paired channel/key.
+	 */
 	public static class ProxyChannel
 	{
 		public volatile SocketChannel chan;
@@ -120,6 +148,15 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Main entry point for the proxy server.
+	 *
+	 * The arguments are similar to the MUD (MUD.java), in that
+	 * you can specify as many BOOT=inifilename.ini files containing
+	 * port information.  You can also specify a STRATEGY=strategy
+	 *
+	 * @param a the arguments
+	 */
 	public static void main(final String a[])
 	{
 		Thread.currentThread().setName("PROXY");
@@ -247,7 +284,7 @@ public class MUDProxy
 					Log.sysOut("Listening on port " + proxyPort + " -> " + fw.first + ":" + fw.second);
 			}
 			distressThread.start();
-			while(true)
+			while(true) //main proxy server loop
 			{
 				try
 				{
@@ -272,6 +309,7 @@ public class MUDProxy
 							}
 						}
 					}
+					// main selection processing loop
 					selector.select();
 					final Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 					while(keys.hasNext())
@@ -474,6 +512,14 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Track the number of connections to a given port, positive for mud-side,
+	 * @param proxyPort true if mud-side, false if user-side
+	 * @param portNumber the port number
+	 * @param addSub +1 to add a connection, -1 to remove one, 0 to just get the current count
+	 * @param max the maximum number to count up to before rolling over to 0
+	 * @return the current count after the add/sub operation
+	 */
 	public static int trackPort(final boolean proxyPort, Integer portNumber, final int addSub, final int max)
 	{
 		synchronized(MUDProxy.strategyMap)
@@ -496,6 +542,12 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Creates a valid MCCP packet from the given command string.
+	 *
+	 * @param command the command string with JSON
+	 * @return the byte array representing the MCCP packet
+	 */
 	private static byte[] makeMPCPPacket(final String command)
 	{
 		try
@@ -525,7 +577,16 @@ public class MUDProxy
 		return new byte[0];
 	}
 
-
+	/**
+	 * Writes the given ByteBuffer data to the channel represented
+	 * by the given selection key and MUDProxy context, filtering
+	 * it through the output filter first.
+	 *
+	 * @param key the selection key
+	 * @param targetContext the MUDProxy context
+	 * @param buffer the data to write
+	 * @return the filtered data ready to write
+	 */
 	private static ByteBuffer writeFilter(final SelectionKey key, final MUDProxy targetContext, final ByteBuffer buffer)
 	{
 		final byte[] checkBuf = new byte[buffer.remaining()];
@@ -554,6 +615,15 @@ public class MUDProxy
 		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
 	}
 
+
+	/**
+	 * Handles a writeable selection key, writing all data
+	 * in the output queue to the channel, filtering it
+	 * first.
+	 *
+	 * @param key the selection key
+	 * @throws IOException if an error occurs
+	 */
 	private static void handleWrite(final SelectionKey key) throws IOException
 	{
 		final SocketChannel channel = (SocketChannel) key.channel();
@@ -605,6 +675,14 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Processes an MPCP packet received from the mud side.
+	 * Handles what few commands are defined for the Proxy server.
+	 *
+	 * @param key the selection key
+	 * @param context the MUDProxy context
+	 * @param suboptionData the suboption data containing the MCCP Packet
+	 */
 	private static void processMPCPPacket(final SelectionKey key, final MUDProxy context, final byte[] suboptionData)
 	{
 		// context is the target (mud facing) context, anything else is a waste of time.
@@ -702,6 +780,9 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * An input stream that simply passes bytes through.
+	 */
 	public static class PassThroughInputStream extends FilterInputStream
 	{
 		public PassThroughInputStream(final InputStream in)
@@ -710,13 +791,26 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * A ByteArrayInputStream that can be refilled with a new buffer.
+	 */
 	public static class RefilByteArrayInputStream extends ByteArrayInputStream
 	{
+		/**
+		 * Constructor
+		 *
+		 * @param buf the initial buffer, usually empty
+		 */
 		public RefilByteArrayInputStream(final byte[] buf)
 		{
 			super(buf);
 		}
 
+		/**
+		 * Refill this stream with a new buffer.
+		 *
+		 * @param newBuf the new buffer
+		 */
 		public void refill(final byte[] newBuf)
 		{
 			this.buf = newBuf;
@@ -726,6 +820,16 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Filter the given input stream through the telnet and ANSI filters,
+	 * writing the results to the given output stream.
+	 *
+	 * @param key the selection key
+	 * @param context the MUDProxy context
+	 * @param status the parse status
+	 * @param in the input stream
+	 * @param output the output stream
+	 */
 	private static void filter(final SelectionKey key, final MUDProxy context, final ParseStatus status, InputStream in, OutputStream output)
 	{
 		int streamType = Session.TELNET_COMPRESS2;
@@ -954,6 +1058,15 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Reads the given ByteBuffer data, filtering it through the input filter
+	 * first, and returning the filtered data as a new ByteBuffer.
+	 *
+	 * @param key the selection key
+	 * @param sourceContext the MUDProxy context
+	 * @param buffer the data to read
+	 * @return the filtered data ready to write
+	 */
 	private static ByteBuffer readFilter(final SelectionKey key, final MUDProxy sourceContext, final ByteBuffer buffer)
 	{
 		final ParseStatus status;
@@ -977,6 +1090,14 @@ public class MUDProxy
 		return ByteBuffer.wrap(output.toByteArray());
 	}
 
+	/**
+	 * Handles a readable selection key, reading all available data from the
+	 * channel, filtering it first, and then queuing it for writing to the
+	 * paired channel.
+	 *
+	 * @param key the selection key
+	 * @throws IOException if an error occurs
+	 */
 	private static void handleRead(final SelectionKey key) throws IOException
 	{
 		final SocketChannel channel = (SocketChannel) key.channel();
@@ -1142,6 +1263,18 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Puts the given server and client keys into distress mode, closing the
+	 * server channel, notifying the client, and opening a new server channel to
+	 * replace the old one.
+	 *
+	 * @param serverKey the server selection key
+	 * @param serverChannel the server socket channel
+	 * @param serverContext the server MUDProxy context
+	 * @param clientKey the client selection key
+	 * @param clientChannel the client socket channel
+	 * @param clientContext the client MUDProxy context
+	 */
 	private static void putKeyInDistress(final SelectionKey serverKey,
 										 final SocketChannel serverChannel,
 										 final MUDProxy serverContext,
@@ -1177,6 +1310,13 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * Closes the given selection key and its paired key, if any. If the key is
+	 * a server key, it will be put into distress mode instead of being closed
+	 * outright.
+	 *
+	 * @param key the selection key to close
+	 */
 	private static void closeKey(final SelectionKey key)
 	{
 		if (key == null)
@@ -1242,6 +1382,10 @@ public class MUDProxy
 		}
 	}
 
+	/**
+	 * A background thread that periodically checks for connections in distress
+	 * mode, and attempts to re-establish them.
+	 */
 	public static Thread distressThread = new Thread()
 	{
 		@Override

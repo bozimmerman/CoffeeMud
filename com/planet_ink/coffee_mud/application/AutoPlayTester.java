@@ -25,7 +25,11 @@ import com.planet_ink.coffee_mud.core.CMStrings;
    limitations under the License.
 */
 /**
- * Work in progress.
+ * A simple telnet client that can be scripted using javascript
+ * to automate testing of a CoffeeMud server.
+ * Usage: AutoPlayTester [host] [port] [character name] [script path]
+ * The script path should point to a javascript file.
+ *
  * @author Bo Zimmerman
  *
  */
@@ -48,6 +52,14 @@ public class AutoPlayTester
 
 	private static final PrintStream	outStream = System.out;
 
+	/**
+	 * Constructs a new AutoPlayTester object
+	 *
+	 * @param host the host to connect to
+	 * @param port the port to connect to
+	 * @param charName the character name to use
+	 * @param script the script file path to use
+	 */
 	public AutoPlayTester(final String host, final int port, final String charName, final String script)
 	{
 		this.host=host;
@@ -56,6 +68,13 @@ public class AutoPlayTester
 		this.filename=script;
 	}
 
+	/**
+	 * Fills the input buffer with any available data from the socket. Handles
+	 * telnet negotiation and GMCP messages.
+	 *
+	 * @return the input buffer
+	 * @throws IOException if an I/O error occurs
+	 */
 	public LinkedList<String> bufferFill() throws IOException
 	{
 		int c;
@@ -212,13 +231,24 @@ public class AutoPlayTester
 		return inbuffer;
 	}
 
-
+	/**
+	 * A hook for reacting to any incoming text before it is placed in the input
+	 * buffer.
+	 *
+	 * @param s the incoming text
+	 * @return the text to be placed in the input buffer
+	 */
 	public String globalReactionary(final String s)
 	{
 		outStream.println(s);
 		return s;
 	}
 
+	/**
+	 * Sleeps for the given amount of time, ignoring any exceptions.
+	 *
+	 * @param time the time to sleep in milliseconds
+	 */
 	public void s_sleep(final long time)
 	{
 		try
@@ -230,6 +260,18 @@ public class AutoPlayTester
 		}
 	}
 
+	/**
+	 * Waits for a line matching the given regular expression to appear in the
+	 * input buffer. If the regular expression contains capturing groups, the
+	 * contents of those groups are returned in an array.
+	 *
+	 * @param regEx the regular expression to match
+	 * @param num the number of capturing groups to return
+	 * @return an array of strings containing the contents of the capturing
+	 *         groups, or a single element array containing the entire line if
+	 *         there are no capturing groups
+	 * @throws IOException if an I/O error occurs or if the wait times out
+	 */
 	public String[] waitFor(final String regEx, final int num) throws IOException
 	{
 		final long waitUntil = System.currentTimeMillis() + (60 * 1000);
@@ -268,6 +310,13 @@ public class AutoPlayTester
 		throw new IOException("wait for "+regEx+" timed out.");
 	}
 
+	/**
+	 * Writes a line to the output stream, followed by a newline, and flushes
+	 * the stream.
+	 *
+	 * @param s the line to write
+	 * @throws IOException if an I/O error occurs
+	 */
 	public void writeln(final String s) throws IOException
 	{
 		outStream.println(s);
@@ -276,7 +325,11 @@ public class AutoPlayTester
 		out.flush();
 	}
 
-	public boolean login()
+	/**
+	 * Connects to the server using the established host and port
+	 * @return true if the connection was successful, false otherwise
+	 */
+	public boolean connect()
 	{
 		try
 		{
@@ -294,6 +347,12 @@ public class AutoPlayTester
 		return false;
 	}
 
+	/**
+	 * Reads in a javascript file, processing any //include directives
+	 *
+	 * @param filename the file to read
+	 * @return the contents of the file, with any includes processed
+	 */
 	public String getJavaScript(final String filename)
 	{
 		final StringBuilder js=new StringBuilder("");
@@ -319,6 +378,9 @@ public class AutoPlayTester
 		return js.toString();
 	}
 
+	/**
+	 * Runs the script specified in the constructor
+	 */
 	public void run()
 	{
 		outStream.println("Executing: "+filename);
@@ -340,6 +402,12 @@ public class AutoPlayTester
 		Context.exit();
 	}
 
+	/**
+	 * A Rhino context class that exposes certain AutoPlayTester methods to javascript
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	protected static class JScriptEvent extends ScriptableObject
 	{
 		@Override
@@ -350,7 +418,7 @@ public class AutoPlayTester
 
 		static final long serialVersionUID=43;
 		protected AutoPlayTester testObj;
-		public static final String[] functions={ "tester", "toJavaString", "writeLine", "login", "stdout",
+		public static final String[] functions={ "tester", "toJavaString", "writeLine", "connect", "stdout",
 												 "stderr", "waitFor", "waitForOptions","waitForMultiMatch", "startsWith",
 												 "name","rand","sleep","clearOutbuffer","getAccumulated", "pollGMCP",
 												 "sendGMCP"};
@@ -377,9 +445,9 @@ public class AutoPlayTester
 			}
 		}
 
-		public boolean login()
+		public boolean connect()
 		{
-			return testObj.login();
+			return testObj.connect();
 		}
 
 		public String name()
@@ -520,6 +588,12 @@ public class AutoPlayTester
 		}
 	}
 
+	/**
+	 * Converts a string to an integer, returning 0 if the conversion fails
+	 *
+	 * @param INT the string to convert
+	 * @return the integer value of the string, or 0 if the conversion fails
+	 */
 	public final static int s_int(final String INT)
 	{
 		try
@@ -532,6 +606,12 @@ public class AutoPlayTester
 		}
 	}
 
+	/**
+	 * Usage: AutoPlayTester [host] [port] [character name] [script path] The
+	 * script path should point to a javascript file.
+	 *
+	 * @param args the command line arguments
+	 */
 	public static void main(final String[] args)
 	{
 		if(args.length<4)

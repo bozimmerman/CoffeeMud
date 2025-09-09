@@ -766,7 +766,7 @@ public class UpgradeTool
 				index++;
 				continue;
 			}
-			while(trimmed.endsWith("\\") && index+1<lines.size())
+			while(trimmed.endsWith("\\") && (index+1<lines.size()))
 			{
 				index++;
 				original=lines.get(index);
@@ -1201,6 +1201,13 @@ public class UpgradeTool
 		int				type;	// 0 remove, 1 insert
 		List<String>	lines;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param pos The position in the user file.
+		 * @param type The type of operation (0 remove, 1 insert).
+		 * @param lines The lines to insert (for insert operations).
+		 */
 		public Operation(final int pos, final int type, final List<String> lines)
 		{
 			this.pos=pos;
@@ -1383,6 +1390,12 @@ public class UpgradeTool
 		protected List<DiffEntry<VALUE>>	diff;
 		protected int						length	= -1;
 
+		/**
+		 * Constructor.
+		 *
+		 * @param x The first list.
+		 * @param y The second list.
+		 */
 		public LCS(final List<VALUE> x, final List<VALUE> y)
 		{
 			this.x=x;
@@ -1390,6 +1403,9 @@ public class UpgradeTool
 			lengths=new int[x.size()+1][y.size()+1];
 		}
 
+		/**
+		 * Calculate the lengths table for the LCS algorithm.
+		 */
 		public void calculateLcs()
 		{
 			for(int i=1; i<x.size()+1; i++)
@@ -1404,6 +1420,11 @@ public class UpgradeTool
 			}
 		}
 
+		/**
+		 * Get the length of the Longest Common Subsequence.
+		 *
+		 * @return The length of the LCS.
+		 */
 		public int length()
 		{
 			if(length<0)
@@ -1414,6 +1435,11 @@ public class UpgradeTool
 			return length;
 		}
 
+		/**
+		 * Get the diff between the two lists as a list of DiffEntry objects.
+		 *
+		 * @return The list of DiffEntry objects representing the diff.
+		 */
 		public List<DiffEntry<VALUE>> diff()
 		{
 			calculateLcs();
@@ -1425,6 +1451,12 @@ public class UpgradeTool
 			return this.diff;
 		}
 
+		/**
+		 * Recursive helper method to compute the diff.
+		 *
+		 * @param i The current index in the first list.
+		 * @param j The current index in the second list.
+		 */
 		private void diff(final int i, final int j)
 		{
 			if((i>0)&&(j>0)&& x.get(i-1).equals(y.get(j-1)))
@@ -1446,6 +1478,12 @@ public class UpgradeTool
 			}
 		}
 
+		/**
+		 * Get a mapping of matching indices between the two lists.
+		 *
+		 * @return A map where keys are indices in the first list and values are
+		 *         corresponding indices in the second list.
+		 */
 		public Map<Integer, Integer> getMatching()
 		{
 			calculateLcs();
@@ -1454,6 +1492,13 @@ public class UpgradeTool
 			return matching;
 		}
 
+		/**
+		 * Recursive helper method to compute the matching indices.
+		 *
+		 * @param i The current index in the first list.
+		 * @param j The current index in the second list.
+		 * @param matching The map to store matching indices.
+		 */
 		private void getMatching(final int i, final int j, final Map<Integer, Integer> matching)
 		{
 			if((i>0) &&(j>0) && x.get(i-1).equals(y.get(j-1)))
@@ -1470,6 +1515,11 @@ public class UpgradeTool
 		}
 	}
 
+	/**
+	 * Class representing a single entry in the diff output.
+	 *
+	 * @param <VALUE> The type of the value in the diff entry.
+	 */
 	public static class DiffEntry<VALUE>
 	{
 		private final DiffType	type;
@@ -1492,6 +1542,9 @@ public class UpgradeTool
 		}
 	}
 
+	/**
+	 * Enum representing the type of difference in the diff output.
+	 */
 	public enum DiffType
 	{
 		ADD("+ "),

@@ -69,10 +69,22 @@ import java.sql.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * This is the main class for the CoffeeMud server application. It is
+ * responsible for accepting incoming socket connections, and passing them off
+ * to individual sessions.
+ * It also contains the main method, which is responsible for
+ * initializing the entire CoffeeMud system, as well as shutting it down.
+ *
+ * @author Bo Zimmerman
+ */
 public class MUD extends Thread implements MudHost
 {
 	public static final String	  HOST_VERSION	= "5.10.90.0";
 
+	/**
+	 * Enumeration of the possible states of the MUD server.
+	 */
 	private static enum MudState
 	{
 		STARTING,
@@ -91,7 +103,7 @@ public class MUD extends Thread implements MudHost
 
 	protected static volatile int	 	 grpid				= 0;
 	protected static boolean			 bringDown			= false;
-	protected static String				 execExternalCommand	= null;
+	protected static String				 execExternalCommand= null;
 	protected static List<WebServer>	 webServers			= new Vector<WebServer>();
 	protected static SMTPserver			 smtpServerThread	= null;
 	protected static List<DBConnector>	 databases			= new Vector<DBConnector>();
@@ -104,12 +116,24 @@ public class MUD extends Thread implements MudHost
 
 	private static final long 			SHUTDOWN_TIMEOUT 	= 5 * 60 * 1000;
 
+	/**
+	 * Constructor
+	 * @param name the name of this mud host
+	 */
 	public MUD(final String name)
 	{
 		super(name);
 		threadGroup=Thread.currentThread().getThreadGroup();
 	}
 
+	/**
+	 * Creates a new MUD instance of the same class as this one
+	 * Why does this still exist?
+	 *
+	 * @param data any data to pass to the constructor
+	 * @return a new MUD instance
+	 * @throws Exception if the constructor cannot be found or invoked
+	 */
 	public MUD createInstance(final String data) throws Exception
 	{
 		return getClass().getConstructor(String.class).newInstance(data);
@@ -131,6 +155,12 @@ public class MUD extends Thread implements MudHost
 		return threadGroup;
 	}
 
+	/**
+	 * Sleeps for the given number of milliseconds, catching any exceptions
+	 *
+	 * @param millis the number of milliseconds to sleep
+	 * @return true if the sleep was successful, false if interrupted
+	 */
 	private static boolean checkedSleep(final long millis)
 	{
 		try
@@ -144,6 +174,15 @@ public class MUD extends Thread implements MudHost
 		return true;
 	}
 
+	/**
+	 * Closes the given socket and closeable (usually a printwriter) after a
+	 * short delay, in order to allow any buffered data to be sent.
+	 * This is done in a separate thread so that the main mud thread is not
+	 * held up.
+	 *
+	 * @param S the socket to close
+	 * @param c the closeable to close
+	 */
 	private static void closeLater(final Socket S, final Closeable c)
 	{
 		synchronized(closeables)
@@ -194,13 +233,24 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
+	/**
+	 * A private class which handles accepting a single connection.
+	 */
 	private class ConnectionAcceptor implements CMRunnable
 	{
-		Socket sock;
-		long startTime=0;
-		String name = null;
-		Session[] sess = new Session[] {null};
+		Socket		sock;
+		long		startTime	= 0;
+		String		name		= null;
+		Session[]	sess		= new Session[] { null };
 
+		/**
+		 * Constructor
+		 *
+		 * @param sock the socket to handle
+		 * @param name the name of this acceptor thread
+		 * @throws SocketException if the socket cannot be modified
+		 * @throws IOException if an IO error occurs
+		 */
 		public ConnectionAcceptor(final Socket sock, final String name) throws SocketException, IOException
 		{
 			this.sock=sock;
@@ -214,6 +264,10 @@ public class MUD extends Thread implements MudHost
 			return startTime;
 		}
 
+		/**
+		 * Returns the name of this acceptor thread
+		 * @return the name of this acceptor thread
+		 */
 		protected String name()
 		{
 			if(this.name == null)
@@ -379,12 +433,22 @@ public class MUD extends Thread implements MudHost
 		return "English";
 	}
 
+	/**
+	 * Sets the current running state of this mud host.
+	 *
+	 * @param st the new state
+	 */
 	public void setState(final MudState st)
 	{
 		if(st!=state)
 			state=st;
 	}
 
+	/**
+	 * The main loop for this mud host. It waits for incoming socket
+	 * connections, and passes them off to individual sessions.
+	 * If an error occurs, it shuts down the entire host.
+	 */
 	@Override
 	public void run()
 	{
@@ -483,11 +547,20 @@ public class MUD extends Thread implements MudHost
 		interrupt(); // kill the damn archon thread.
 	}
 
+	/**
+	 * Shuts down the mud, without any user intervention.
+	 */
 	public static void defaultShutdown()
 	{
 		globalShutdown(null,true,null);
 	}
 
+	/**
+	 * If debugging is on, this method will report memory usage to the log, and
+	 * attempt to force garbage collection.
+	 *
+	 * @param blockName a name to associate with this memory report
+	 */
 	private static void shutdownMemReport(final String blockName)
 	{
 		try
@@ -511,6 +584,15 @@ public class MUD extends Thread implements MudHost
 		Log.debugOut("Memory: "+blockName+": "+(total-free)+"/"+total);
 	}
 
+	/**
+	 * Shuts down all the libraries in the given set, reporting progress to the
+	 * given session, and updating the shutdown state time.
+	 *
+	 * @param lib the library set to shut down
+	 * @param S the session to report progress to
+	 * @param shutdownStateTime the atomic long containing the last update time
+	 * @param debugMem true if memory debugging is on
+	 */
 	protected static void shutdownLibrarySet(final Library lib, final Session S, final AtomicLong shutdownStateTime, final boolean debugMem)
 	{
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
@@ -535,6 +617,15 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
+	/**
+	 * The main shutdown procedure for the entire CoffeeMud system. It will save
+	 * all players, notify all objects of the shutdown, and then shut down all
+	 * libraries in an appropriate order.
+	 *
+	 * @param S the session to report progress to, or null
+	 * @param keepItDown true to keep the mud down, false to restart
+	 * @param externalCommand an external command to run if restarting, or null
+	 */
 	public static void globalShutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
 		CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
@@ -919,6 +1010,14 @@ public class MUD extends Thread implements MudHost
 		Log.debugOut("Final Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
 
+	/**
+	 * Starts up a web server of the given name, using the given properties to
+	 * determine if it should be started, and with what debugging options.
+	 *
+	 * @param page the properties to use
+	 * @param serverName the name of the server (and .ini file) to start
+	 * @return true if the server was started, false otherwise
+	 */
 	private static boolean startWebServer(final CMProps page, final String serverName)
 	{
 		try
@@ -946,6 +1045,12 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
+	/**
+	 * Stops the web server with the given name.
+	 *
+	 * @param serverName the name of the server to stop
+	 * @return true if it was stopped, false otherwise
+	 */
 	private static boolean stopWebServer(final String serverName)
 	{
 		try
@@ -992,6 +1097,16 @@ public class MUD extends Thread implements MudHost
 		super.interrupt();
 	}
 
+	/**
+	 * Returns the number of active threads in the given thread group. This
+	 * method is more accurate than ThreadGroup.activeCount(), because it
+	 * actually enumerates the threads, and counts only those which are alive.
+	 *
+	 * @param tGroup the thread group to check
+	 * @param nonDaemonsOnly true to count only non-daemon threads, false to
+	 *            count all
+	 * @return the number of active threads in the group
+	 */
 	public static int activeThreadCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		int realAC=0;
@@ -1009,6 +1124,15 @@ public class MUD extends Thread implements MudHost
 		return realAC;
 	}
 
+	/**
+	 * Kills all the active threads in the given thread group. This method
+	 * returns the number of threads it actually tried to kill.
+	 *
+	 * @param tGroup the thread group to check
+	 * @param nonDaemonsOnly true to kill only non-daemon threads, false to kill
+	 *            all
+	 * @return the number of threads killed
+	 */
 	private static int killCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		int killed=0;
@@ -1030,6 +1154,13 @@ public class MUD extends Thread implements MudHost
 		return killed;
 	}
 
+	/**
+	 * Lists all the active threads in the given thread group to the log.
+	 *
+	 * @param tGroup the thread group to check
+	 * @param nonDaemonsOnly true to list only non-daemon threads, false to list
+	 *            all
+	 */
 	private static void threadList(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		if(tGroup==null)
@@ -1114,10 +1245,31 @@ public class MUD extends Thread implements MudHost
 		return "http://" + CMProps.getVar(Str.MUDDOMAIN)+":"+ports[0]+"/";
 	}
 
+	/**
+	 * A hook for subclasses to do any final initialization after the main
+	 * initialization is done, and before the mud is declared "running".
+	 */
 	protected void postInitialization()
 	{
 	}
 
+	/**
+	 * A thread which manages a mud group, including its own thread
+	 * group, and its own database connections.  It will spawn
+	 * a MUD host for each port to listen on.
+	 *
+	 * A single CoffeeMud process may contain one or more HostGroups,
+	 * each represented by its own INI file and settings, with its
+	 * own thread group.  Each HostGroup may contain one or more
+	 * MudHosts, each representing a port to listen on.
+	 *
+	 * There is always a main HostGroup and one or more children,
+	 * which may share all or no resources, including database connection,
+	 * with the main HostGroup.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
 	private static class HostGroup extends Thread
 	{
 		private String	name		= null;
@@ -1128,6 +1280,14 @@ public class MUD extends Thread implements MudHost
 		private boolean	failedStart	= false;
 		//protected ThreadGroup threadGroup;
 
+		/**
+		 * Constructs a new HostGroup thread, with the given parent thread
+		 * group, mud name, and ini file name.
+		 *
+		 * @param G the parent thread group
+		 * @param mudName the name of the mud
+		 * @param iniFileName the name of the ini file
+		 */
 		public HostGroup(final ThreadGroup G, final String mudName, final String iniFileName)
 		{
 			super(G,"HOST"+grpid);
@@ -1143,16 +1303,35 @@ public class MUD extends Thread implements MudHost
 			}
 		}
 
+		/**
+		 * Returns whether or not this mud host has finished
+		 * initialization and started.
+		 * @return true if started, false otherwise
+		 */
+
 		public boolean isStarted()
 		{
 			return hostStarted;
 		}
 
+		/**
+		 * Returns whether or not this mud host failed
+		 * to start.
+		 *
+		 * @return true if failed, false otherwise
+		 */
 		public boolean failedToStart()
 		{
 			return failedStart;
 		}
 
+		/**
+		 * Reports a fatal startup error, which will prevent the mud from
+		 * starting.
+		 *
+		 * @param t the thread in which the error occurred
+		 * @param type the type of error encountered
+		 */
 		public void fatalStartupError(final Thread t, final int type)
 		{
 			String errorInternal=null;
@@ -1183,6 +1362,14 @@ public class MUD extends Thread implements MudHost
 			CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 		}
 
+		/**
+		 * Initializes this mud host group, including loading the properties, starting
+		 * the database connections, and preparing to listen for connections by
+		 * spawning all of its MUDs.  It also waits for the main host group to
+		 * finish, after loading any private resources it may have.
+		 *
+		 * @return true if successful, false otherwise
+		 */
 		protected boolean initHost()
 		{
 			final Thread t=Thread.currentThread();
@@ -1254,8 +1441,6 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
 				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,useQue,useQueStart);
 				currentDBconnector.reconnect();
-
-
 				JSONObject dbChangeList = null;
 				final File f=new File("guides"+File.separatorChar+"database"+File.separatorChar+"changelist.json");
 				if(!f.exists())
@@ -1360,7 +1545,8 @@ public class MUD extends Thread implements MudHost
 			}
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
-			// wait for baseC
+
+			// waits for main host to finish loading resources
 			while((tCode!=MudHost.MAIN_HOST)
 			&&(!bootSync.get())
 			&&(CMLib.s_sleep(500)))
@@ -1825,6 +2011,22 @@ public class MUD extends Thread implements MudHost
 		return V;
 	}
 
+	/**
+	 * The main entry point for the CoffeeMud server application. It initializes
+	 * the server, loads configurations, and starts a host group for each
+	 * ini file encountered.
+	 *
+	 * Command line arguments include BOOT= to specify ini files, and
+	 * a name for the mud (no spaces).  If no BOOT= argument is
+	 * given, "coffeemud.ini" is assumed.  If no name is given,
+	 * a unique name is generated.  You can also override any ini
+	 * file entry by using NAME=VALUE, where NAME is the ini file
+	 * entry, and VALUE is the value to set it to.  If you
+	 * want to specify a NAME=VALUE for a specific host group,
+	 * use NAME:X=VALUE, where X is the thread group number.
+	 *
+	 * @param a Command-line arguments passed to the application
+	 */
 	public static void main(final String a[])
 	{
 		String nameID="";
@@ -2051,6 +2253,15 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
+	/**
+	 * Attempts to execute an external restart command. If the command is "hard"
+	 * or null, it will look for a script named "restart.sh" (on Unix) or
+	 * "restart.bat" (on Windows) in the current working directory. Otherwise,
+	 * it will attempt to execute the given command directly.
+	 *
+	 * @param command The command to execute, or "hard"/null to use default
+	 *            scripts
+	 */
 	public static void execExternalRestart(final String command)
 	{
 		final Runtime r=Runtime.getRuntime();
@@ -2106,6 +2317,33 @@ public class MUD extends Thread implements MudHost
 		return (System.currentTimeMillis()-startupTime)/1000;
 	}
 
+	/**
+	 * Executes a command on the CoffeeMud server concerning resources
+	 * presently still managed by the main server and not a library.
+	 *
+	 * The following commands are currently supported:
+	 *
+	 * GET SMTP PORT Returns the port number the SMTP server is running on,
+	 *   or -1 if it is not running.
+	 * TICK SMTP Forces the SMTP server to run a tick.
+	 * START WEB [name] Starts the web server with the given name, as defined
+	 *   in the ini file.
+	 * STOP WEB [name] Stops the web server with the given name, as defined
+	 *   in the ini file.
+	 * START SMTP Starts the SMTP server.
+	 * STOP SMTP Stops the SMTP server.
+	 * WEBSERVER [name] PORT Returns the port number the web server with the
+	 *   given name is running on.
+	 * WEBSERVER [name] DEBUG [flags] Sets the debug flags for the web server
+	 *   with the given name. Flags are defined in the ini file.
+	 * WEBSERVER [name] ACCESS [flags] Sets the access log flags for the web
+	 *   server with the given name.
+	 *
+	 * Flags are defined in the ini file.
+	 *
+	 * @param cmd The command to execute
+	 * @return The result of the command
+	 */
 	@Override
 	public String executeCommand(final String cmd) throws Exception
 	{
@@ -2116,19 +2354,6 @@ public class MUD extends Thread implements MudHost
 		if(word.equalsIgnoreCase("GET")&&(V.size()>1))
 		{
 			final String what=V.get(1);
-			if(what.equalsIgnoreCase("CM1SERVER")&&(V.size()>2))
-			{
-				final String what2=V.get(2);
-				if(!CMath.s_bool(CMLib.intermud().queryService(InterProto.CM1, InterQuery.RUNNING)))
-					return CMLib.lang().L("Failure");
-				if(what2.equalsIgnoreCase("PORT"))
-					return CMLib.intermud().queryService(InterProto.CM1, InterQuery.PORT);
-				else
-				if(what2.equalsIgnoreCase("NAME"))
-					return CMLib.intermud().queryService(InterProto.CM1, InterQuery.NAME);
-				return CMLib.lang().L("Failure");
-			}
-			else
 			if(what.equalsIgnoreCase("SMTP")&&(V.size()>2))
 			{
 				final String what2=V.get(2);

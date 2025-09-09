@@ -24,12 +24,12 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-	import java.net.*;
+import java.net.*;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
 
-	/*
+/*
 	Copyright 2000-2025 Bo Zimmerman
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,6 +43,10 @@ import java.io.*;
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
+ */
+/**
+ * OffLine is a class for running a simple off-line server that tells
+ * connecting users that the MUD is down.
  */
 public class OffLine extends Thread implements MudHost
 {
@@ -64,6 +68,9 @@ public class OffLine extends Thread implements MudHost
 	ServerSocket servsock=null;
 	protected final long startupTime = System.currentTimeMillis();
 
+	/**
+	 * Default constructor
+	 */
 	public OffLine()
 	{
 		super("MUD-OffLineServer");
@@ -75,6 +82,15 @@ public class OffLine extends Thread implements MudHost
 		return Thread.currentThread().getThreadGroup();
 	}
 
+	/**
+	 * This method is for handling fatal startup errors. It prints an error
+	 * message, and kills the current thread.
+	 *
+	 * @param t the thread to kill
+	 * @param type the type of error (1=initHost with no properties, 2=initHost
+	 *            with no port, 3=initHost with no bind, 4=fatal exception,
+	 *            5=server did not start)
+	 */
 	public static void fatalStartupError(final Thread t, final int type)
 	{
 		String errorInternal=null;
@@ -100,6 +116,13 @@ public class OffLine extends Thread implements MudHost
 		CMLib.killThread(t,500,1);
 	}
 
+	/**
+	 * This method initializes the host, and waits for the server to start
+	 * running. It then sets all mudThreads to accept connections.
+	 *
+	 * @param t the thread to kill on error
+	 * @return true if everything is ok, false if there was a problem
+	 */
 	private static boolean initHost(final Thread t)
 	{
 
@@ -125,6 +148,13 @@ public class OffLine extends Thread implements MudHost
 		return true;
 	}
 
+	/**
+	 * This method closes the socket and associated streams.
+	 *
+	 * @param sock the socket to close
+	 * @param in the input stream to close
+	 * @param out the output stream to close
+	 */
 	private void closeSocks(Socket sock, BufferedReader in, PrintWriter out)
 	{
 		try
@@ -148,6 +178,12 @@ public class OffLine extends Thread implements MudHost
 		}
 	}
 
+	/**
+	 * This method retrieves a file from disk, or from the resource cache.
+	 *
+	 * @param fileName the path and name of the file to retrieve
+	 * @return the file's contents as a StringBuffer
+	 */
 	public StringBuffer getFile(final String fileName)
 	{
 		StringBuffer offLineText=(StringBuffer)Resources.getResource(fileName);
@@ -186,9 +222,8 @@ public class OffLine extends Thread implements MudHost
 	}
 
 	@Override
-	public Session[] acceptConnection(Socket sock)
-	throws SocketException, IOException
-{
+	public Session[] acceptConnection(Socket sock) throws SocketException, IOException
+	{
 		sock.setSoLinger(true,3);
 		state=1;
 
@@ -439,6 +474,14 @@ public class OffLine extends Thread implements MudHost
 		return port;
 	}
 
+	/**
+	 * This is the main method that starts everything off.
+	 *
+	 * Takes the same command line arguments as the MUD
+	 * (MUD.java), as in mud name, BOOT= ini files, etc.
+	 *
+	 * @param a the command line arguments
+	 */
 	public static void main(final String a[])
 	{
 		CMProps page=null;

@@ -52,8 +52,23 @@ import java.io.*;
 	See the License for the specific language governing permissions and
 	limitations under the License.
  */
+/**
+ * Rebuilds the reference docs in the guides directory.
+ * @author BZ
+ */
 public class RebuildRefDocs
 {
+	/**
+	 * Entry point for the rebuild tool.
+	 * It take the same arguments as the MUD because it
+	 * actually boots the mud and uses the classes loaded to generate
+	 * the reference docs for all the skills and classes and races
+	 * and so forth loaded.  It then shuts it all down.
+	 *
+	 * The actual rebuilding is done by the RebuildReferenceDocs macro.
+	 *
+	 * @param args same as MUD.java (BOOT= for ini files, mud name, etc.
+	 */
 	public static void main(final String[] args)
 	{
 		MUD.skipMapLoads = true;

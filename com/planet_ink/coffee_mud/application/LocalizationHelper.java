@@ -27,6 +27,14 @@ import com.planet_ink.coffee_mud.core.collections.Pair;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A tool for helping with localization of CoffeeMud. It scans all java files
+ * for instances of I("string") and L("string") and reports those strings,
+ * de-dupped, and categorizes them by class. It also reports any strings it
+ * can't figure out.
+ *
+ * @author Bo Zimmerman
+ */
 public class LocalizationHelper
 {
 	private static Map<String, Set<String>>	found		= new TreeMap<String, Set<String>>();
@@ -35,7 +43,13 @@ public class LocalizationHelper
 	private static Set<String>				unfound		= new TreeSet<String>();
 	private static String					marker		= "L(";
 
-
+	/**
+	 * Returns true if the given string is a clean string, meaning it starts and
+	 * ends with a quote, and has no unescaped quotes inside.
+	 *
+	 * @param innards the string to check
+	 * @return true if it is a clean string
+	 */
 	protected static boolean isCleanString(final String innards)
 	{
 		boolean cleanString=false;
@@ -51,6 +65,13 @@ public class LocalizationHelper
 		return cleanString;
 	}
 
+	/**
+	 * Returns the column number of the first non-whitespace character in the
+	 * given string. Tabs count as 1 column, spaces as 1/4 column.
+	 *
+	 * @param str the string to check
+	 * @return the column number of the first non-whitespace character
+	 */
 	public static int getCol1(final String str)
 	{
 		double col = 0;
@@ -67,6 +88,12 @@ public class LocalizationHelper
 		return (int)Math.round(Math.floor(col));
 	}
 
+	/**
+	 * Records a found string for the given class.
+	 *
+	 * @param classes the stack of classes
+	 * @param str the string to record
+	 */
 	public static void recordFound(final Stack<Pair<String,Integer>> classes, String str)
 	{
 		if(str.trim().length()==0)
@@ -88,6 +115,13 @@ public class LocalizationHelper
 		foundAll.add(str);
 	}
 
+	/**
+	 * Recursively scans the given directory for java files, and processes them
+	 * for localization strings.
+	 *
+	 * @param F the file or directory to scan
+	 * @throws IOException if an error occurs reading a file
+	 */
 	public static void doDir(final File F) throws IOException
 	{
 		if(F.isDirectory())
@@ -330,16 +364,31 @@ public class LocalizationHelper
 		}
 	}
 
-	enum cmds{ ALL,BROKE,USE,DEDUP}
+	/**
+	 * The commands this tool can execute.
+	 */
+	private static enum LocCmds
+	{
+		ALL,
+		BROKE,
+		USE,
+		DEDUP
+	}
 
+	/**
+	 * The main method of the tool. Expects two arguments, either I or T, and
+	 * then a command.
+	 *
+	 * @param args the command line arguments
+	 */
 	public static void main(final String[] args)
 	{
 		try
 		{
-			cmds cd = cmds.ALL;
+			LocCmds cd = LocCmds.ALL;
 			if((args.length<2)
 			||("IT".indexOf(args[0].toUpperCase().trim())<0)
-			||((cd=(cmds)CMath.s_valueOf(cmds.class, args[1].toUpperCase().trim()))==null))
+			||((cd=(LocCmds)CMath.s_valueOf(LocCmds.class, args[1].toUpperCase().trim()))==null))
 			{
 				System.out.println("Command usage: LocalizationHelper <I or T> <command>");
 				System.out.println("I for parser input, T for translator.  Commands include:");
@@ -356,9 +405,9 @@ public class LocalizationHelper
 			if(args[0].toUpperCase().trim().startsWith("I"))
 				marker="I(";
 			doDir(new File(".\\com\\planet_ink\\coffee_mud\\".replace('\\', File.separatorChar)));
-			if(cd == cmds.ALL)
+			if(cd == LocCmds.ALL)
 				System.out.println("Good       : "+foundDeDup.size()+"/"+foundAll.size());
-			if((cd == cmds.ALL)||(cd == cmds.BROKE))
+			if((cd == LocCmds.ALL)||(cd == LocCmds.BROKE))
 				System.out.println("Unscrapable: "+unfound.size());
 			switch(cd)
 			{

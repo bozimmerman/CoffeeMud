@@ -34,8 +34,35 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+/**
+ * This is the main class for the I3 router application. It can be run from the
+ * command line, and will start up an I3 router with the given parameters. It
+ * also provides an interactive command line interface for managing the router.
+ *
+ * Required parameters: --name <router name> : The name of this router. --ip <ip
+ * address> : The IP address to bind to. --port <port> : The port number to
+ * listen on. --password <number> : The router password (0 - 999999).
+ *
+ * Optional parameters: --debug=1 : Turn on debug messages. --daemon=1 : Run in
+ * daemon mode (no interactive prompt).
+ *
+ * Example usage: java -cp . com.planet_ink.coffee_mud.application.I3Router
+ * --name MyRouter --ip --port 12345 --password 123456 --debug=1 --daemon=1
+ *
+ * Most of the meat of the router is done in the I3RouterThread class, which
+ * is down in the Libraries.intermud.i3.router package.
+ *
+ * @author Bo Zimmerman
+ * @version 1.0.0
+ */
 public class I3Router
 {
+	/**
+	 * Get the parameter value from the command line arguments.
+	 * @param args the command line arguments
+	 * @param parmid the parameter id to look for
+	 * @return the parameter value, or null if not found
+	 */
 	public static String getArgParm(final String[] args, final String parmid)
 	{
 		for(int i = 0;i<args.length;i++)
@@ -59,6 +86,12 @@ public class I3Router
 		return null;
 	}
 
+	/**
+	 * Initialize the thread group for the router.
+	 *
+	 * @param daemon if &gt; 0, run in daemon mode
+	 * @param debug if &gt; 0, turn on debug messages
+	 */
 	public static void initThreadGroup(final int daemon, final int debug)
 	{
 		final Log log = Log.newInstance();
@@ -87,7 +120,11 @@ public class I3Router
 		}
 	}
 
-
+	/**
+	 * The main method for the I3 router application.
+	 *
+	 * @param args the command line arguments
+	 */
 	public static void main(final String[] args)
 	{
 		final String name = getArgParm(args,"--name");
