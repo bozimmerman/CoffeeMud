@@ -88,4 +88,28 @@ echo "Running UpgradeTool from temporary directory..."
 java -cp "$CP" com.planet_ink.coffee_mud.application.UpgradeTool "$@"
 TOOL_ERROR=$?
 
-#
+# Cleanup temp directory
+rm -rf "$TEMP_DIR" >/dev/null 2>&1
+echo "Temporary directory cleaned up."
+
+if [ $TOOL_ERROR -eq 0 ]; then
+    echo "Upgrade successful. Deleting backups..."
+    remove_dir "$ROOT/com.bak"
+    if [ -d "$ROOT/lib.bak" ]; then
+        remove_dir "$ROOT/lib.bak"
+    fi
+else
+    echo "Upgrade failed. Restoring backups..."
+    remove_dir "$ROOT/com"
+    move_dir "$ROOT/com.bak" "$ROOT/com"
+    if [ $BACKED_UP_LIB -eq 1 ]; then
+        remove_dir "$ROOT/lib"
+        move_dir "$ROOT/lib.bak" "$ROOT/lib"
+    else
+        if [ -d "$ROOT/lib" ]; then
+            remove_dir "$ROOT/lib"
+        fi
+    fi
+fi
+
+exit 0
