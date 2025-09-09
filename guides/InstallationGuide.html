@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.11</title>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
+<title>Installing and Using CoffeeMud 5.11</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
 <body>
 <!--lynx -dump -width=80 http://coffeemud.net:27777/pub/guides/InstallationGuide.html > install.txt-->
 <center>
@@ -169,7 +169,20 @@ CoffeeMud</a></h2>
 <p>Upgrading from an older to a new version of Coffeemud is
 mostly a
 matter of replacing old code with new code, adding the new files, and
-merging configuration files that you previously changed.</p>
+merging configuration files that you previously changed. &nbsp;That
+said, there are two ways to do it: &nbsp;the new auto-magic way, or the
+old manual way.</p><p><span style="font-weight: bold;">The Auto-Magic Way</span></p><p><span style="font-weight: bold;"></span>First, shut down your mud and back up your existing
+installation. &nbsp;I usally zip up the
+CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
+aside.</p><p>Next, for Windows users, run the:</p><pre>upgrade.bat</pre><p>and for Linux/Mac users, drop into a shell and run:</p><pre>dos2unix upgrade.sh<br />chmod +x upgrade.sh<br />./upgrade.sh</pre><p>This
+will download the latest official version, unzip it, compile it, and
+merge changes to the various resources, web files, and guides.
+&nbsp;The upgrade tool will do its very best to preserve the new data
+and your customized changes, but nothing is perfect. &nbsp;I recommend
+testing the holy heck out of your mud after doing this. &nbsp;If the
+upgrade tool fails OR you just lack confidence in automagic, you can
+instead proceed to the manual way; otherwise, you are done and ready to
+run your new version of CoffeeMud!</p><p><span style="font-weight: bold;">The Manuall Way</span></p>
 <p>First, shut down your mud and back up your existing
 installation. &nbsp;I usally zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file

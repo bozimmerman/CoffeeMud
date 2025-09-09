@@ -118,7 +118,7 @@ public class UpgradeTool
 				paths.add(".");
 				final String classpath = String.join(File.pathSeparator, paths);
 				final Iterable<? extends javax.tools.JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(javaFiles);
-				final List<String> options = Arrays.asList("-cp", classpath, "-d", root.toAbsolutePath().toString());
+				final List<String> options = Arrays.asList("-cp", classpath, "-d", root.toAbsolutePath().toString(), "-nowarn");
 				final Boolean success = compiler.getTask(null, fileManager, null, options, null, compilationUnits).call();
 				if(!success.booleanValue())
 					throw new RuntimeException("Compilation failed.");
