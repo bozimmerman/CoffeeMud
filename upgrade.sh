@@ -15,9 +15,13 @@ if [ -z "$JAVA_HOME" ]; then
 fi
 
 TOOLS_JAR="$JAVA_HOME/lib/tools.jar"
-if [ ! -f "$TOOLS_JAR" ]; then
-    echo "tools.jar not found at $TOOLS_JAR. Ensure JDK is installed and JAVA_HOME is set correctly."
-    exit 1
+# Check if tools.jar exists; if not, assume newer JDK and skip it
+if [ -f "$TOOLS_JAR" ]; then
+    CP="$TEMP_DIR:$TOOLS_JAR"
+else
+    CP="$TEMP_DIR"
+    # Optional: Add a message for debugging
+    echo "tools.jar not found; assuming JDK 9+ and proceeding without it."
 fi
 
 TEMP_DIR="/tmp/cmudupgradetool_$RANDOM"
@@ -48,7 +52,7 @@ if [ -d "$ROOT/lib" ]; then
 fi
 
 echo "Running UpgradeTool from temporary directory..."
-java -cp "$TEMP_DIR:$TOOLS_JAR" com.planet_ink.coffee_mud.application.UpgradeTool "$@"
+java -cp "$CP" com.planet_ink.coffee_mud.application.UpgradeTool "$@"
 TOOL_ERROR=$?
 
 # Cleanup temp directory

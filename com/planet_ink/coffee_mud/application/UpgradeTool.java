@@ -228,7 +228,12 @@ public class UpgradeTool
 		if(minorMatcher.find())
 			minor = minorMatcher.group(1) != null ? minorMatcher.group(1) : minorMatcher.group(2);
 		if(!major.equals("0") || !minor.equals("0"))
-			return major + "." + minor + ".0.0";
+		{
+			String ver = major + "." + minor;
+			while (ver.split("\\.").length != 4)
+				ver += ".0";
+			return ver;
+		}
 		throw new IOException("Cannot find HOST_VERSION or HOST_VERSION_MAJOR/MINOR in MUD.java");
 	}
 

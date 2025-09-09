@@ -13,9 +13,12 @@ if not defined JAVA_HOME (
 )
 
 set TOOLS_JAR=%JAVA_HOME%\lib\tools.jar
-if not exist "%TOOLS_JAR%" (
-    echo tools.jar not found at %TOOLS_JAR%. Ensure JDK is installed and JAVA_HOME is set correctly.
-    exit /b 1
+rem Check if tools.jar exists; if not, assume newer JDK and proceed without it
+if exist "%TOOLS_JAR%" (
+    set CP=%TEMP_DIR%;%TOOLS_JAR%
+) else (
+    set CP=%TEMP_DIR%
+    echo tools.jar not found; assuming JDK 9+ and proceeding without it.
 )
 
 set TEMP_DIR=%TEMP%\cmudupgradetool_%RANDOM%
@@ -42,7 +45,7 @@ if exist "%ROOT%\lib" (
 )
 
 echo Running UpgradeTool from temporary directory...
-java -cp "%TEMP_DIR%;%TOOLS_JAR%" com.planet_ink.coffee_mud.application.UpgradeTool %*
+java -cp "%CP%" com.planet_ink.coffee_mud.application.UpgradeTool %*
 set TOOL_ERROR=%ERRORLEVEL%
 
 rem Cleanup temp directory
