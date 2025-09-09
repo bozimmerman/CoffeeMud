@@ -13,6 +13,7 @@ if not defined JAVA_HOME (
 )
 
 set TOOLS_JAR=%JAVA_HOME%\lib\tools.jar
+set TEMP_DIR=%TEMP%\cmudupgradetool_%RANDOM%
 rem Check if tools.jar exists; if not, assume newer JDK and proceed without it
 if exist "%TOOLS_JAR%" (
     set CP=%TEMP_DIR%;%TOOLS_JAR%
@@ -21,7 +22,6 @@ if exist "%TOOLS_JAR%" (
     echo tools.jar not found; assuming JDK 9+ and proceeding without it.
 )
 
-set TEMP_DIR=%TEMP%\cmudupgradetool_%RANDOM%
 mkdir "%TEMP_DIR%\com\planet_ink\coffee_mud\application" >nul 2>&1
 
 rem Copy UpgradeTool*.class files
