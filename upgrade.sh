@@ -1,5 +1,38 @@
 #!/bin/bash
 
+move_dir() {
+    local source="$1"
+    local target="$2"
+    local retries=20
+    while [ $retries -gt 0 ]; do
+        mv "$source" "$target" >/dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            return 0
+        fi
+        ((retries--))
+        echo "Access denied on move ($source -> $target); retrying in 1 second... ($retries retries left)"
+        sleep 1
+    done
+    echo "Failed to move $source to $target after 20 retries."
+    exit 1
+}
+
+remove_dir() {
+    local dir="$1"
+    local retries=20
+    while [ $retries -gt 0 ]; do
+        rm -rf "$dir" >/dev/null 2>&1
+        if [ ! -d "$dir" ]; then
+            return 0
+        fi
+        ((retries--))
+        echo "Access denied on remove $dir; retrying in 1 second... ($retries retries left)"
+        sleep 1
+    done
+    echo "Failed to remove $dir after 20 retries."
+    exit 1
+}
+
 # Set root directory (current dir)
 ROOT="$PWD"
 
@@ -40,27 +73,19 @@ echo "Backing up directories..."
 if [ -d "$ROOT/com.bak" ]; then
     rm -rf "$ROOT/com.bak" >/dev/null 2>&1
 fi
+move_dir "$ROOT/com" "$ROOT/com.bak"
 
+BACKED_UP_LIB=0
 if [ -d "$ROOT/lib" ]; then
     if [ -d "$ROOT/lib.bak" ]; then
         rm -rf "$ROOT/lib.bak" >/dev/null 2>&1
     fi
+    move_dir "$ROOT/lib" "$ROOT/lib.bak"
+    BACKED_UP_LIB=1
 fi
 
 echo "Running UpgradeTool from temporary directory..."
 java -cp "$CP" com.planet_ink.coffee_mud.application.UpgradeTool "$@"
 TOOL_ERROR=$?
 
-# Cleanup temp directory
-rm -rf "$TEMP_DIR" >/dev/null 2>&1
-echo "Temporary directory cleaned up."
-
-if [ $TOOL_ERROR -eq 0 ]; then
-    echo "Upgrade successful. Deleting backups..."
-else
-    echo "Upgrade failed. Restoring backups..."
-    if [ -d "$ROOT/lib" ]; then
-    fi
-fi
-
-exit 0
+#
