@@ -47,6 +47,7 @@ if [ -z "$JAVA_HOME" ]; then
     fi
 fi
 
+TEMP_DIR="/tmp/cmudupgradetool_$RANDOM"
 TOOLS_JAR="$JAVA_HOME/lib/tools.jar"
 # Check if tools.jar exists; if not, assume newer JDK and skip it
 if [ -f "$TOOLS_JAR" ]; then
@@ -57,7 +58,6 @@ else
     echo "tools.jar not found; assuming JDK 9+ and proceeding without it."
 fi
 
-TEMP_DIR="/tmp/cmudupgradetool_$RANDOM"
 mkdir -p "$TEMP_DIR/com/planet_ink/coffee_mud/application" >/dev/null 2>&1
 
 # Copy UpgradeTool*.class files
