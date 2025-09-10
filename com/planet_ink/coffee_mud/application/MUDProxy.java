@@ -51,6 +51,7 @@ public class MUDProxy
 	private static LBStrategy	strategy	= LBStrategy.ROUNDROBIN;
 	private static Random		rand		= new Random(System.nanoTime());
 	private static String		ctlPassword = ""+(rand.nextInt(90000) + 10000);
+	private static boolean		packetDebug	= false;
 
 	private static final Map<SelectionKey, SelectionKey>
 		channelPairs	= new Hashtable<SelectionKey, SelectionKey>();
@@ -403,7 +404,7 @@ public class MUDProxy
 										final MUDProxy clientContext =(pairedKey!=null) ? ((MUDProxy)pairedKey.attachment()) : null;
 										serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
 										MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
-										serverChannel.write(ByteBuffer.wrap(new byte[] {
+										chanWrite(serverChannel,ByteBuffer.wrap(new byte[] {
 											(byte)Session.TELNET_IAC,
 											(byte)Session.TELNET_WILL,
 											(byte)Session.TELNET_MPCP
@@ -417,7 +418,7 @@ public class MUDProxy
 										}
 										final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
 																				serverContext.ipAddress;
-										serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+										chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
 												+ "\"client_address\":\""+clientAddr+"\","
 												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 										if(serverContext.distressTime != 0)
@@ -425,7 +426,7 @@ public class MUDProxy
 											final JSONObject obj = new MiniJSON.JSONObject();
 											obj.putAll(serverContext.session);
 											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
-											serverChannel.write(ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
+											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
 											if((pairedKey!=null)&&(clientContext!=null))
 											{
 												clientContext.inter.add(ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
@@ -647,7 +648,7 @@ public class MUDProxy
 					final ByteBuffer buffer = context.output.peek();
 					while (buffer.hasRemaining())
 					{
-						final int bytesWritten = channel.write(buffer);
+						final int bytesWritten = chanWrite(channel,buffer);
 						if (bytesWritten == 0)
 						{
 							key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
@@ -738,6 +739,12 @@ public class MUDProxy
 				if(obj.containsKey("password")
 				&&(obj.getCheckedString("password").equals(ctlPassword)))
 				{
+					if(command.equalsIgnoreCase("debugon"))
+						packetDebug=true;
+					else
+					if(command.equalsIgnoreCase("debugoff"))
+						packetDebug=false;
+					else
 					if(command.equalsIgnoreCase("listsessions"))
 					{
 						final MiniJSON.JSONObject robj = new MiniJSON.JSONObject();
@@ -1106,7 +1113,7 @@ public class MUDProxy
 		try
 		{
 			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-			while((bytesRead = channel.read(buffer))>0)
+			while((bytesRead = chanRead(channel,buffer))>0)
 			{
 				buffer.flip();
 				context.input.add(buffer);
@@ -1183,7 +1190,7 @@ public class MUDProxy
 				inputList.addAll(context.input);
 				context.input.clear();
 			}
-			while((bytesRead = channel.read(buffer))>0)
+			while((bytesRead = chanRead(channel,buffer))>0)
 			{
 				buffer.flip();
 				inputList.add(buffer);
@@ -1196,12 +1203,13 @@ public class MUDProxy
 				final int br = bytesRead;
 				MUD.serviceEngine.executeRunnable(new Runnable()
 				{
-					final LinkedList<ByteBuffer> input = inputList;
-					final int bytesRead = br;
-					final MUDProxy myCtx = context;
-					final SelectionKey k = key;
-					final MUDProxy destCtx = destContext;
-					final SelectionKey destK = destKey;
+					final LinkedList<ByteBuffer>	input		= inputList;
+					final int						bytesRead	= br;
+					final MUDProxy					myCtx		= context;
+					final SelectionKey				k			= key;
+					final MUDProxy					destCtx		= destContext;
+					final SelectionKey				destK		= destKey;
+
 					@Override
 					public void run()
 					{
@@ -1544,6 +1552,70 @@ public class MUDProxy
 			}
 		}
 	};
+
+	/**
+	 * Reads bytes from the given channel into the given ByteBuffer. If packet
+	 * debugging is enabled, the bytes will be logged.
+	 *
+	 * @param chan the channel to read from
+	 * @param bytes the buffer to read into
+	 * @return the number of bytes read
+	 * @throws IOException if an error occurs
+	 */
+	private static int chanRead(final SocketChannel chan, final ByteBuffer bytes) throws IOException
+	{
+		final int numRead = chan.read(bytes);
+		if (packetDebug && (numRead > 0))
+			Log.debugOut("PROXY", "RCVD:\n" + bytesToHexAscii(Arrays.copyOfRange(bytes.array(), 0, numRead)));
+		return numRead;
+	}
+
+	/**
+	 * Writes bytes from the given ByteBuffer to the given channel. If packet
+	 * debugging is enabled, the bytes will be logged.
+	 *
+	 * @param chan the channel to write to
+	 * @param bytes the buffer to write from
+	 * @return the number of bytes written
+	 * @throws IOException if an error occurs
+	 */
+	private static int chanWrite(final SocketChannel chan, final ByteBuffer bytes) throws IOException
+	{
+		if(packetDebug)
+			Log.debugOut("PROXY","SENT:\n"+bytesToHexAscii(bytes.array()));
+		return chan.write(bytes);
+	}
+
+	/**
+	 * Converts the given byte array to a hex+ascii string, suitable for
+	 * debugging.
+	 *
+	 * @param bytes the bytes to convert
+	 * @return the hex+ascii string
+	 */
+	private static String bytesToHexAscii(final byte[] bytes)
+	{
+		if((bytes == null)||(bytes.length == 0))
+			return "";
+		final StringBuilder result = new StringBuilder();
+		final int bytesPerLine = 16;
+		for (int i = 0; i < bytes.length; i += bytesPerLine)
+		{
+			final StringBuilder hex = new StringBuilder();
+			final StringBuilder ascii = new StringBuilder();
+			for (int j = 0; j < bytesPerLine && i + j < bytes.length; j++)
+			{
+				final byte b = bytes[i + j];
+				hex.append(String.format("%02X ", Byte.valueOf(b)));
+				ascii.append(((b >= 32)&&(b <= 126))?(char)b:'.');
+			}
+			String hexStr = hex.toString();
+			if (hexStr.length() < bytesPerLine * 3)
+				hexStr = String.format("%-" + (bytesPerLine * 3) + "s", hexStr);
+			result.append(hexStr).append("  ").append(ascii).append("\n");
+		}
+		return result.toString();
+	}
 
 	@Override
 	public String toString()
