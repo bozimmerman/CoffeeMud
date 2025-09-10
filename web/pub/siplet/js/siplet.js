@@ -1601,14 +1601,24 @@ function AddNewSipletTab(url, ib)
 		ib = (getConfig('window/disableInput','')==''?true:false);
 	var windowName = 'W'+window.nextId;
 	window.nextId++;
+	var host = document.createElement('DIV');
+	window.windowArea.appendChild(host);
+	var shadow = host.attachShadow({mode: 'open'});
+	var slot = document.createElement('slot');
+	shadow.appendChild(slot);
 	var newTopElement=document.createElement('DIV');
 	var newWinContainer=document.createElement('DIV');
 	var newWindow=document.createElement('DIV');
 	newTopElement.id = windowName;
-	window.windowArea.appendChild(newTopElement);
+	host.appendChild(newTopElement);
 	newTopElement.appendChild(newWinContainer);
 	newWinContainer.appendChild(newWindow);
 	newWinContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
+	host.style.position='absolute';
+	host.style.top = '0%';
+	host.style.height = '100%';
+	host.style.width = '100%';
+	host.style.left = '0%';
 	var siplet = new SipletWindow(windowName); // makes a deep copy
 	siplet.tab = AddNewTab();
 	siplet.tab.innerHTML = 'Connecting to ' + url + '...';
