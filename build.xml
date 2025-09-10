@@ -2,15 +2,18 @@
 	<target name="init">
 		<echo>This Ant Build file was created by Josh Mueller for use with CoffeeMUD</echo>
 		<echo>Ant is available from the Apache Software Foundation (ant.apache.org)</echo>
-		<echo>There are three options; compile, doc, and clean</echo>
-		<echo>compile compiles all java source files in and below this directory</echo>
-		<echo>doc generates all the javadoc for packages com.planet_ink.coffee_mud.*, com.pannet_ink.fakedb, and com.planet_ink.siplet.*</echo>
-		<echo>clean removes all compiled code from this directory and below</echo>
+		<echo></echo>
+		<echo>There are four options; compile, doc, upgrade-jar, and clean:</echo>
+		<echo></echo>
+		<echo>compile     compiles all java source files in and below this directory</echo>
+		<echo>doc         generates all the javadoc for all coffee_mud packages</echo>
+		<echo>clean       removes all compiled code from this directory and below</echo>
+		<echo>upgrade-jar builds a stand-alone runnable jar for upgrading CoffeeMud</echo>
 	</target>
 	<target name="compile">
 		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.8" source="1.8" debug="on" memoryMaximumSize="1024m" fork="on">
 			<compilerarg value="-Xlint:unchecked" />
-    	</javac>
+		</javac>
 		<echo>Compiliation done.</echo>
 	</target>
 	<target name="doc">
@@ -22,6 +25,15 @@
 	  <delete>
 		  <fileset dir="." includes="**/*.class"/>
 	  </delete>
+	</target>
+	<target name="upgrade-jar" depends="compile">
+		<jar destfile="cm_upgrade_tool.jar">
+			<manifest>
+				<attribute name="Main-Class" value="com.planet_ink.coffee_mud.application.UpgradeTool"/>
+			</manifest>
+			<fileset dir="." includes="com/planet_ink/coffee_mud/application/UpgradeTool.class com/planet_ink/coffee_mud/application/UpgradeTool$*.class"/>
+		</jar>
+		<echo>cm_upgrade_tool.jar created.</echo>
 	</target>
 </project>
 
