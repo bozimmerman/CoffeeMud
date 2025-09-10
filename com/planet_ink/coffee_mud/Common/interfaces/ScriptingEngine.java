@@ -730,7 +730,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		public MPContext parent = null;
 
 		/**
-		 *  MPContext constructor
+		 * MPContext constructor
+		 *
 		 * @param scripted the object that is scripted
 		 * @param monster a mob representation of the scripted object
 		 * @param source the source of the event

@@ -521,7 +521,7 @@ public class ListCmd extends StdCommand
 		if(I instanceof Container)
 		{
 			if(((Container)I).capacity()>=I.phyStats().weight())
-				xml.append("|Capacity="+(((Container)I).capacity() - ((Container)I).basePhyStats().weight()));
+				xml.append("|Capacity="+(((Container)I).capacity() - I.basePhyStats().weight()));
 			if(((Container)I).capacity()>=I.phyStats().weight())
 				xml.append("|Contains="+CMLib.commands().makeContainerTypes((Container)I));
 		}
@@ -1085,6 +1085,10 @@ public class ListCmd extends StdCommand
 							&&(element.getClassName().equalsIgnoreCase("sun.misc.Unsafe")))
 								isAlive=false;
 							else
+							if(element.getMethodName().equalsIgnoreCase("park")
+							&&(element.getClassName().equalsIgnoreCase("jdk.internal.misc.Unsafe")))
+								isAlive=false;
+							else
 							if(element.getMethodName().equalsIgnoreCase("wait")
 							&&(element.getClassName().equalsIgnoreCase("java.lang.Object")))
 								isAlive=false;
@@ -1153,9 +1157,9 @@ public class ListCmd extends StdCommand
 		tGroup.enumerate(tArray,false);
 		tGroup.enumerate(tgArray,false);
 
-		for (int i = 0; i<ac; ++i)
+		for(int i=0; i<ac; ++i)
 		{
-			if (tArray[i] != null)
+			if(tArray[i] != null)
 			{
 				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
 					continue;
@@ -1164,11 +1168,11 @@ public class ListCmd extends StdCommand
 			}
 		}
 
-		if (agc > 0)
+		if(agc > 0)
 		{
-			for (int i = 0; i<agc; ++i)
+			for(int i = 0; i<agc; ++i)
 			{
-				if (tgArray[i] != null)
+				if(tgArray[i] != null)
 				{
 					final Thread T=findThread(name,tgArray[i],ignoreZeroTickThreads);
 					if(T!=null)
@@ -5293,7 +5297,7 @@ public class ListCmd extends StdCommand
 		{
 			final Boardable S=s.nextElement();
 			str.append(CMStrings.padRight(S.Name(), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
-			if((S instanceof SpaceObject)&&(((SpaceShip)S).getIsDocked()==null))
+			if((S instanceof SpaceObject)&&(S.getIsDocked()==null))
 				str.append(CMStrings.padRight(CMParms.toListString(((SpaceObject)S).coordinates().toLongs()), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");
 			else
 				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(S)), CMLib.lister().fixColWidth(30.0,viewerS))).append(" ");

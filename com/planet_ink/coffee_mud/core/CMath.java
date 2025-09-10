@@ -52,6 +52,9 @@ public class CMath
 	private static Random 				rand			= new Random(System.currentTimeMillis());
 	private final static boolean[]		IS_HEX_DIGITS	= new boolean[128];
 
+	@SuppressWarnings("rawtypes")
+	private static final Map<Class<Enum<? extends Enum>>,Map<String,Enum<? extends Enum>>> enumCache = new Hashtable<Class<Enum<? extends Enum>>, Map<String,Enum<? extends Enum>>>();
+
 	static
 	{
 		for(int l=0;l<63;l++)
@@ -303,14 +306,20 @@ public class CMath
 	{
 		if((c==null)||(s==null))
 			return null;
-		try
+		if(!enumCache.containsKey(c))
 		{
-			return Enum.valueOf(c, s);
+			synchronized(c)
+			{
+				if(!enumCache.containsKey(c))
+				{
+					final Map<String,Enum<? extends Enum>> map = new HashMap<String,Enum<? extends Enum>>();
+					for (final Enum e : c.getEnumConstants())
+						map.put(e.name(), e);
+					enumCache.put((Class<Enum<? extends Enum>>) c, map);
+				}
+			}
 		}
-		catch(final Exception e)
-		{
-			return null;
-		}
+		return enumCache.get(c).get(s);
 	}
 
 
@@ -320,7 +329,7 @@ public class CMath
 	 * @param lst the list of strings to look
 	 * @return the enums that matched
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("rawtypes" )
 	public final static List<Enum<? extends Enum>> s_valuesOf(final Class<? extends Enum> c, final List<String> lst)
 	{
 		final List<Enum<? extends Enum>> enums = new Vector<Enum<? extends Enum>>(5);
@@ -328,13 +337,9 @@ public class CMath
 			return enums;
 		for(final String s : lst)
 		{
-			try
-			{
-				enums.add(Enum.valueOf(c, s));
-			}
-			catch(final Exception e)
-			{
-			}
+			final Enum<? extends Enum> e = s_valueOf(c, s);
+			if(e != null)
+				enums.add(e);
 		}
 		return enums;
 	}

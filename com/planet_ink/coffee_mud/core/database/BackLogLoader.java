@@ -207,19 +207,28 @@ public class BackLogLoader
 			}
 			catch(final Exception sqle)
 			{
-				// retry for duplicate entries, but how could that even happen?!
-				Log.errOut("Retry: "+sqle.getMessage());
-				DB.DBDone(D);
-				final int counter2 = getCounter(channelName, true);
-				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMSNAM, CMINDX, CMDATE, CMDATA) "
-						+ "VALUES ('"+channelName+"', "+subNameField+", "+counter2+", "+System.currentTimeMillis()+", ?)");
-				D.setPreparedClobs(new String[]{entry});
-				D.update("",0);
+				if((sqle.getMessage() != null)&&(sqle.getMessage().toLowerCase().indexOf("incorrect string")>=0))
+				{
+					Log.errOut("BackLog",sqle.getMessage());
+					Log.errOut("Encoding error in addBackLogEntry: "+entry);
+				}
+				else
+				{
+					// retry for duplicate entries, but how could that even happen?!
+					Log.errOut("Retry: "+sqle.getMessage());
+					DB.DBDone(D);
+					final int counter2 = getCounter(channelName, true);
+					D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMSNAM, CMINDX, CMDATE, CMDATA) "
+							+ "VALUES ('"+channelName+"', "+subNameField+", "+counter2+", "+System.currentTimeMillis()+", ?)");
+					D.setPreparedClobs(new String[]{entry});
+					D.update("",0);
+				}
 			}
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("BackLog",sqle);
+			Log.errOut("BackLog",sqle.getMessage());
+			Log.errOut("Encoding error in addBackLogEntry: "+entry);
 		}
 		finally
 		{

@@ -320,6 +320,9 @@ public class Skill_Track extends StdSkill
 									}
 								}
 							}
+							else
+							if((mob.location()==oldRoom)&&(mob.isMonster()))
+								nextDirection=dir;
 						}
 					}
 					else

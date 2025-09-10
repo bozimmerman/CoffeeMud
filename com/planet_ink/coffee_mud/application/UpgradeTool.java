@@ -1058,7 +1058,8 @@ public class UpgradeTool
 					if(le != null)
 					{
 						chosenComments=new ArrayList<>(le.comments);
-						if((ue != null && ue.value.equals(be.value)) || ue==null)
+						if(((ue != null)&& ue.value.equals(be.value))
+						|| (ue==null))
 						{
 							chosenValue=le.value;
 							chosenEntryLine=le.entryLine;
@@ -1067,7 +1068,7 @@ public class UpgradeTool
 						{
 							chosenValue=ue.value;
 							chosenEntryLine=ue.entryLine;
-							if(!le.value.equals(be.value))
+							if((!le.value.equals(be.value))&&(!ue.value.equals(le.value)))
 								valueConflict=true;
 						}
 					}
@@ -1077,7 +1078,7 @@ public class UpgradeTool
 				else
 				{
 					chosenComments=ue != null ? new ArrayList<>(ue.comments) : new ArrayList<>(le.comments);
-					if(le != null && ue != null && !ue.value.equals(le.value))
+					if((le != null)&&(ue != null)&&(!ue.value.equals(le.value)))
 						valueConflict=true;
 				}
 				me.value=chosenValue;

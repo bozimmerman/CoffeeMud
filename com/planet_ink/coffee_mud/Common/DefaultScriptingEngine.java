@@ -177,8 +177,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		;
 		public static Connector getConnector(final String str)
 		{
-			if(str == null)
-				return null;
+			if(str == null) return null;
 			return (Connector)CMath.s_valueOf(Connector.class, str.toUpperCase().trim());
 		}
 		public static boolean isConnector(final String str)
@@ -3613,10 +3612,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final List<Object> stack=new ArrayList<Object>();
 		for(int t=startEval;t<tt.length;t++)
 		{
-			if(tt[t].equals("("))
-				stack.add(tt[t]);
+			final String s = tt[t];
+			if(s.equals("("))
+				stack.add(s);
 			else
-			if(tt[t].equals(")"))
+			if(s.equals(")"))
 			{
 				if(stack.size()>0)
 				{
@@ -3634,9 +3634,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 			else
-			if(Connector.isConnector(tt[t]))
+			if(Connector.isConnector(s))
 			{
-				Connector curr=Connector.getConnector(tt[t]);
+				Connector curr=Connector.getConnector(s);
 				if((stack.size()>0)
 				&&(stack.get(stack.size()-1) instanceof Connector))
 				{
@@ -3647,13 +3647,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				stack.add(curr);
 			}
 			else
-			if(funcH.containsKey(tt[t]))
+			if(funcH.containsKey(s))
 			{
-				final Integer funcCode=funcH.get(tt[t]);
+				final Integer funcCode=funcH.get(s);
 				if((t==tt.length-1)
 				||(!tt[t+1].equals("(")))
 				{
-					logError(ctx,"GENERAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
+					logError(ctx,"GENERAL","SYNTAX","No ( for fuction "+s+": "+CMParms.toListString(tt));
 					return false;
 				}
 				t+=2;
