@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.2',
-	VERSION_MINOR: '1',
+	VERSION_MINOR: '2',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
@@ -400,7 +400,8 @@ function SipletWindow(windowName)
 			span.innerHTML = this.htmlBuffer;
 			updateMediaImagesInSpan(this.sipfs, span);
 			this.window.appendChild(span);
-			this.process(reprocess);
+			if(this.mxp.partial == null)
+				this.process(reprocess);
 			this.htmlBuffer='';
 			if(window.currWin != me)
 			{
@@ -510,7 +511,8 @@ function SipletWindow(windowName)
 				}
 			}
 		}
-		me.flushWindow();
+		if(this.bin.entries.length == 0)
+			me.flushWindow();
 		me.triggerCheck();
 	};
 	
