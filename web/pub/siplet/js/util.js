@@ -23,7 +23,7 @@ window.imgMimeTypes =
 
 function isLetter(c)
 {
-	if ((typeof c === 'string')&&(c.length>0))
+	if((typeof c === 'string')&&(c.length>0))
 		c = c.charCodeAt(0);
 	return ((((c>=97)&&(c<=122))
 			||((c>=65)&&(c<=90))));
@@ -31,14 +31,14 @@ function isLetter(c)
 
 function isLowerCase(c)
 {
-	if ((typeof c === 'string')&&(c.length>0))
+	if((typeof c === 'string')&&(c.length>0))
 		c = c.charCodeAt(0);
 	return (c>=97)&&(c<=122);
 }
 
 function isUpperCase(c)
 {
-	if ((typeof c === 'string')&&(c.length>0))
+	if((typeof c === 'string')&&(c.length>0))
 		c = c.charCodeAt(0);
 	return (c>=65)&&(c<=90);
 }
@@ -50,7 +50,7 @@ function isLetterOrDigit(c)
 
 function isDigit(c)
 {
-	if ((typeof c === 'string')&&(c.length>0))
+	if((typeof c === 'string')&&(c.length>0))
 		c = c.charCodeAt(0);
 	return (c>=48)&&(c<=90);
 }
@@ -61,7 +61,7 @@ function isNumber(c)
 		return false;
 	if(typeof c === 'number')
 		return true;
-	if ((typeof c === 'string')&&(c.length>0))
+	if((typeof c === 'string')&&(c.length>0))
 		return (!isNaN(c)) && (!isNaN(parseFloat(c)));
 	return false;
 }
@@ -77,14 +77,20 @@ function SortArray(arr)
 {
 	return arr.sort(function(a, b) 
 	{
-		if (a == null && b == null) return 0;
-		if (a == null) return 1;
-		if (b == null) return -1;
+		if(a == null && b == null) 
+			return 0;
+		if(a == null) 
+			return 1;
+		if(b == null) 
+			return -1;
 		const isANumber = typeof a === 'number' && !isNaN(a);
 		const isBNumber = typeof b === 'number' && !isNaN(b);
-		if (isANumber && !isBNumber) return -1;
-		if (!isANumber && isBNumber) return 1;
-		if (isANumber && isBNumber) return a - b;
+		if(isANumber && !isBNumber) 
+			return -1;
+		if(!isANumber && isBNumber) 
+			return 1;
+		if(isANumber && isBNumber) 
+			return a - b;
 		return String(a).localeCompare(String(b));
 	});
 }
@@ -100,7 +106,7 @@ function setSelectByValue(select, value)
 {
 	for (let i = 0; i < select.options.length; i++) 
 	{
-		if (select.options[i].value == value) 
+		if(select.options[i].value == value) 
 		{
 			select.selectedIndex = i;
 			break;
@@ -113,7 +119,8 @@ function isValidAction(s)
 	if(!s) 
 		return false;
 	var x = s.indexOf('(');
-	if(x<0) return false;
+	if(x<0) 
+		return false;
 	if((!s.endsWith(')'))&&(!s.endsWith(');'))) 
 		return false;
 	var cmd = s.substr(0,x);
@@ -130,7 +137,7 @@ function isValidAction(s)
 function isValidExpression(exp) {
 	try 
 	{
-		if (exp.trim().length === 0)
+		if(exp.trim().length === 0)
 			return false;
 		var depth = 0;
 		var inString = false;
@@ -138,38 +145,40 @@ function isValidExpression(exp) {
 		var inComment = false;
 		for (var i = 0; i < exp.length; i++) 
 		{
-			if (inComment) {
-				inComment =  (exp[i] !== '\n');
+			if(inComment) 
+			{
+				inComment = (exp[i] !== '\n');
 				continue;
 			}
-			if (inString) {
-				inString =  ! (exp[i] === stringChar && exp[i - 1] !== '\\');
+			if(inString) 
+			{
+				inString = !(exp[i] === stringChar && exp[i - 1] !== '\\');
 				continue;
 			}
-			if (exp[i] === '"' || exp[i] === "'") 
+			if(exp[i] === '"' || exp[i] === "'") 
 			{
 				inString = true;
 				stringChar = exp[i];
 			} 
 			else 
-			if (exp[i] === '/' && exp[i + 1] === '/')
+			if(exp[i] === '/' && exp[i + 1] === '/')
 				inComment = true;
 			else 
-			if (exp[i] === '{')
+			if(exp[i] === '{')
 				depth++;
 			else 
-			if (exp[i] === '}') 
+			if(exp[i] === '}') 
 			{
 				depth--;
-				if (depth < 0)
+				if(depth < 0)
 					return false;
 			}
 		}
-		if (inString)
+		if(inString)
 			return false;
-		if (depth !== 0)
+		if(depth !== 0)
 			return false;
-		if (exp.trim().startsWith('}'))
+		if(exp.trim().startsWith('}'))
 			return false;
 		new Function(exp);
 		return true;
@@ -209,12 +218,6 @@ function escapeHTML(s)
 		.replace(/>/g, '&gt;')
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&#39;');
-}
-
-function brCount(s)
-{
-	var matches = s.match(/<br\s*\/?>/gi) || [];
-	return matches.length;
 }
 
 function butt(t,js)
@@ -265,8 +268,10 @@ function SiPrompt(text, callback)
 	input.maxLength = 30;
 	input.onkeydown = function(e) {
 		e.stopPropagation();
-		if (e.key == "Enter") button.click();
-		if (e.key == "Escape") overlay.remove();
+		if(e.key == "Enter") 
+			button.click();
+		if(e.key == "Escape") 
+			overlay.remove();
 	};
 	var button = document.createElement("button");
 	button.textContent = "OK";
@@ -322,9 +327,9 @@ function SiFontPicker(labelText, callback)
 	fontSelect.onkeydown = sizeSelect.onkeydown = function(e) 
 	{
 		e.stopPropagation();
-		if (e.key == "Enter") 
+		if(e.key == "Enter") 
 			button.click();
-		if (e.key == "Escape")
+		if(e.key == "Escape")
 			overlay.remove();
 	};
 	dialog.append(label, fontSelect, sizeSelect, button);
@@ -366,9 +371,9 @@ function SiFilePicker(labelText, callback, multiple = false)
 	treeSpan.onkeydown = function(e) 
 	{
 		e.stopPropagation();
-		if (e.key == "Enter") 
+		if(e.key == "Enter") 
 			button.click();
-		if (e.key == "Escape")
+		if(e.key == "Escape")
 			overlay.remove();
 	};
 	dialog.append(label, previewSpan, treeSpan, button, cancel);
@@ -437,7 +442,7 @@ function SiFilePicker(labelText, callback, multiple = false)
 			{
 				tn = document.createElement('b');
 				tn.style.fontSize = 16;
-				if (n.isFolder)
+				if(n.isFolder)
 					tn.style.color = 'blue';
 				else
 					tn.style.color = 'green';
@@ -446,7 +451,7 @@ function SiFilePicker(labelText, callback, multiple = false)
 			else
 			{
 				tn = document.createElement('span');
-				if (n.isFolder)
+				if(n.isFolder)
 					tn.style.color = 'blue';
 				else
 					tn.style.color = 'green';
@@ -490,8 +495,10 @@ function SiAlert(text)
 	};
 	overlay.onkeydown = function(e) {
 		e.stopPropagation();
-		if (e.key == "Enter") button.click();
-		if (e.key == "Escape") overlay.remove();
+		if(e.key == "Enter") 
+			button.click();
+		if(e.key == "Escape") 
+			overlay.remove();
 	};
 	dialog.append(label, button);
 	overlay.append(dialog);
@@ -527,7 +534,7 @@ function SiColorPicker(text, callback, includeAlpha = false)
 	valueWrapper.append(valueLabel, valueSlider);
 	var alphaSlider = includeAlpha ? document.createElement("input") : null;
 	var alphaWrapper = null;
-	if (includeAlpha) {
+	if(includeAlpha) {
 		var alphaLabel = document.createElement('div');
 		alphaLabel.textContent = 'transparency';
 		alphaLabel.style = "position:absolute;color:#fff;font-size:16px;margin:0;padding:0;top:2px;left:50px;z-index:2;";
@@ -599,7 +606,7 @@ function SiColorPicker(text, callback, includeAlpha = false)
 		v = valueSlider.value / 100;
 		updatePreview();
 	};
-	if (includeAlpha) {
+	if(includeAlpha) {
 		alphaSlider.oninput = function() {
 			a = alphaSlider.value / 100;
 			updatePreview();
@@ -619,11 +626,13 @@ function SiColorPicker(text, callback, includeAlpha = false)
 		callback(result);
 	};
 	overlay.onkeydown = function(e) {
-		if (e.key == "Escape") overlay.remove();
+		if(e.key == "Escape") 
+			overlay.remove();
 	};
 	dialog.append(label, canvas, valueWrapper);
 	dialog.append(preview);
-	if (includeAlpha) dialog.append(alphaWrapper);
+	if(includeAlpha) 
+		dialog.append(alphaWrapper);
 	dialog.append(button);
 	overlay.append(dialog);
 	document.body.append(overlay);
@@ -631,9 +640,9 @@ function SiColorPicker(text, callback, includeAlpha = false)
 	updatePreview();
 }
 
-function SiSwatchPicker(text, colors, callback) 
+function SiSwatchPicker(text, colors, callback)
 {
-	if (!Array.isArray(colors) 
+	if(!Array.isArray(colors)
 	|| colors.length === 0 
 	|| !colors.every(c => Array.isArray(c) && c.length === 3 && c.every(n => Number.isInteger(n) && n >= 0 && n <= 255))) 
 		return;
@@ -673,7 +682,8 @@ function SiSwatchPicker(text, colors, callback)
 		callback([...selectedColor]);
 	};
 	overlay.onkeydown = function(e) {
-		if (e.key === "Escape") overlay.remove();
+		if(e.key === "Escape") 
+			overlay.remove();
 	};
 	dialog.append(label, swatchContainer, preview, button);
 	overlay.append(dialog);
@@ -721,7 +731,7 @@ function SiButtons(text, buttons, callback)
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
 	overlay.onkeydown = function(e) {
 		e.stopPropagation();
-		if (e.key == "Escape")
+		if(e.key == "Escape")
 			overlay.remove();
 	};
 	var dialog = document.createElement("div");
@@ -760,10 +770,10 @@ function SiConfirm(text, callback)
 	overlay.style = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999";
 	overlay.onkeydown = function(e) {
 		e.stopPropagation();
-		if (e.key == "Enter")
+		if(e.key == "Enter")
 			okButton.click();
 		else 
-		if (e.key == "Escape")
+		if(e.key == "Escape")
 			overlay.remove();
 	};
 	var dialog = document.createElement("div");
@@ -799,7 +809,7 @@ function updateMediaImagesInSpan(sipfs, span)
 		var path = img.getAttribute('src').substr(8);
 		sipfs.load(path, function(err, dataUrl) 
 		{
-			if (err) 
+			if(err) 
 			{
 				console.error('Error loading ' + path + ':', err);
 				return;
@@ -810,7 +820,7 @@ function updateMediaImagesInSpan(sipfs, span)
 	});
 	
 	var bgImage = span.style.backgroundImage || '';
-	if (bgImage.includes('media://'))
+	if(bgImage.includes('media://'))
 	{
   		var regex = /(?:url\(['"]?(media:\/\/[^)'"]+)['"]?\)|(media:\/\/[^'\s)]+))/;
   		var match = regex.exec(bgImage);
@@ -820,7 +830,7 @@ function updateMediaImagesInSpan(sipfs, span)
 			mediaUrl = mediaUrl.replace(/^media:\/\//, '').trim();
 			sipfs.load(mediaUrl, function(err, dataUrl) 
 			{
-				if (err) 
+				if(err) 
 				{
 					console.error('Error loading ' + mediaUrl + ':', err);
 					return;
@@ -950,7 +960,7 @@ function EnsureQuotedStringArguments(str, args, okRegex)
 			nparts[i] = EnsureQuotedStringArguments(nparts[i],1,okRegex);
 		while (nparts.length < nargs)
 			nparts.push("''");
-		if (nparts.length > nargs)
+		if(nparts.length > nargs)
 			nparts = nparts.slice(0, nargs);
 		return nparts.join(',');
 	}
@@ -1002,10 +1012,10 @@ function EnsureQuotedStringArguments(str, args, okRegex)
 
 function isValidJavaScriptLine(str) 
 {
-	if (!str)
+	if(!str)
 		return false;
 	str = str.toLowerCase().trim();
-	if (!((str.startsWith('window.currwin.'))
+	if(!((str.startsWith('window.currwin.'))
 	|| (str.startsWith('addtoprompt'))
 	|| (str.startsWith('contextdelayhide'))
 	|| (str.startsWith('return mxpcontextmenu'))
@@ -1016,7 +1026,7 @@ function isValidJavaScriptLine(str)
 		str = str.substr(7).trim();
 	const prefixRegex = /^\s*(?:[a-za-z_$][a-za-z_$0-9]*\s*\.\s*)*[a-za-z_$][a-za-z_$0-9]*\s*\(/;
 	const prefixMatch = str.match(prefixRegex);
-	if (!prefixMatch) 
+	if(!prefixMatch) 
 		return false;
 
 	var extractInnerArgs = function(str)
@@ -1078,7 +1088,7 @@ function isValidJavaScriptLine(str)
 		return false;
 	var closingPos=str.indexOf('(', prefixMatch[0].length-1)+1+inner.length;
 	var suffix=str.slice(closingPos+1).trim();
-	if (!/^(;)?$/.test(suffix)) 
+	if(!/^(;)?$/.test(suffix)) 
 		return false;
 	while(inner.startsWith('this,')||inner.startsWith('event,'))
 		inner = inner.substr(inner.indexOf(',')+1).trim();
@@ -1100,21 +1110,21 @@ function isValidJavaScriptLine(str)
 
 function SafeEval(str, context) 
 {
-	if (!str || !str.trim())
+	if(!str || !str.trim())
 		return true;
-	if (str.includes('isConnected()'))
+	if(str.includes('isConnected()'))
 		str = str.replace(/isConnected\(\)/g, 'wsopened');
 	var tokens =  str.match(/[\w.]+/g)?.map(t => t.trim()) || [];
 	var operators = str.match(/\s*(&&|\|\|)\s*/g)?.map(op => op.trim()) || [];
 	var values = tokens.map(function(token) {
-		if (token.includes('('))
+		if(token.includes('('))
 			return false;
 		try {
 			var value = context;
 			for (var key of token.split('.')) 
 			{
 				value = value[key];
-				if (value === undefined || value === null) 
+				if(value === undefined || value === null) 
 					return false;
 			}
 			return value;
@@ -1125,12 +1135,35 @@ function SafeEval(str, context)
 	var result = values[0];
 	for (var i = 0; i < operators.length; i++) 
 	{
-		if (operators[i] === '&&')
+		if(operators[i] === '&&')
 			result = result && values[i + 1];
-		else if (operators[i] === '||')
+		else if(operators[i] === '||')
 			result = result || values[i + 1];
 	}
 	return !!result;
+}
+
+function brCount(html)
+{
+	var re = /<br\s*\/?>/gi;
+	var matches = html.match(re) || [];
+	var cleaned = html.replace(/<[^>]+>/g,'').trim();
+	return matches.length + (cleaned.length > 0 ? 1 : 0);
+}
+
+function findNthBrPos(html, n)
+{
+	var pos = 0;
+	var re = /<br\s*\/?>/gi;
+	for(var i=0; i<n; i++)
+	{
+		re.lastIndex = pos;
+		var match = re.exec(html);
+		if(!match)
+			return -1;
+		pos = match.index + match[0].length;
+	}
+	return pos;
 }
 
 function SipWin(elem)
@@ -1173,7 +1206,7 @@ function populateDivFromUrl(div, url, callback)
 			div.innerHTML = txt;
 			var scripts = div.getElementsByTagName("script");
 			for (var script of scripts)
-				if (script.textContent)
+				if(script.textContent)
 					eval(script.textContent);
 			if(callback !== undefined && callback)
 				callback();
