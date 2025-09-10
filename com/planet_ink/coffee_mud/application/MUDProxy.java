@@ -5,6 +5,7 @@ import javax.crypto.spec.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.io.*;
 import java.nio.*;
@@ -45,13 +46,13 @@ limitations under the License.
  */
 public class MUDProxy
 {
-	private static final int	BUFFER_SIZE	= 65536;
-	private static String		mpcpKey		= "";
-	private static Selector		selector	= null;
-	private static LBStrategy	strategy	= LBStrategy.ROUNDROBIN;
-	private static Random		rand		= new Random(System.nanoTime());
-	private static String		ctlPassword = ""+(rand.nextInt(90000) + 10000);
-	private static boolean		packetDebug	= false;
+	private static final int		BUFFER_SIZE		= 65536;
+	private static String			mpcpKey			= "";
+	private static Selector			selector		= null;
+	private static LBStrategy		strategy		= LBStrategy.ROUNDROBIN;
+	private static Random			rand			= new Random(System.nanoTime());
+	private static String			ctlPassword		= "" + (rand.nextInt(90000) + 10000);
+	private static boolean			packetDebug		= false;
 
 	private static final Map<SelectionKey, SelectionKey>
 		channelPairs	= new Hashtable<SelectionKey, SelectionKey>();
@@ -106,16 +107,17 @@ public class MUDProxy
 	private final int						outsidePortNum;
 	private final ParseStatus				readStatus		= new ParseStatus();
 	private final ParseStatus				writeStatus		= new ParseStatus();
-	private final RefilByteArrayInputStream inputPipe		= new RefilByteArrayInputStream(new byte[0]);
-	private  	  InputStream				in				= null;
-	private final ByteArrayOutputStream 	outputPipe		= new ByteArrayOutputStream();
-	private  	  OutputStream				out				= new FilterOutputStream(outputPipe);
-	private final Map<String,Object>		session			= new Hashtable<String,Object>();
-	private 	  long						distressTime	= 0;
-
-	private final ConcurrentLinkedQueue<ByteBuffer>	input	= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
-	private final ConcurrentLinkedQueue<ByteBuffer>	inter	= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
-	private final ConcurrentLinkedQueue<ByteBuffer>	output	= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output
+	private final RefilByteArrayInputStream	inputPipe		= new RefilByteArrayInputStream(new byte[0]);
+	private InputStream						in				= null;
+	private final ByteArrayOutputStream		outputPipe		= new ByteArrayOutputStream();
+	private OutputStream					out				= new FilterOutputStream(outputPipe);
+	private final Map<String, Object>		session			= new Hashtable<String, Object>();
+	private long							distressTime	= 0;
+	private final AtomicBoolean				isProcessing	= new AtomicBoolean(false);
+	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<>();
+	private final Queue<ByteBuffer>			input			= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
+	private final Queue<ByteBuffer>			inter			= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
+	private final Queue<ByteBuffer>			output			= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output
 
 	/**
 	 * A MUDProxy class instance represents a connection between either a user or the mud and this proxy server.
@@ -146,6 +148,63 @@ public class MUDProxy
 		{
 			this.chan=chan;
 			this.context=context;
+		}
+	}
+
+	private static class ReadProcessor implements Runnable
+	{
+		private final MUDProxy		myCtx;
+		private final SelectionKey	k;
+		private final MUDProxy		destCtx;
+		private final SelectionKey	destK;
+		private final boolean		eof;
+
+		public ReadProcessor(final MUDProxy myCtx, final SelectionKey k, final MUDProxy destCtx, final SelectionKey destK, final boolean eof)
+		{
+			this.myCtx = myCtx;
+			this.k = k;
+			this.destCtx = destCtx;
+			this.destK = destK;
+			this.eof = eof;
+		}
+
+		@Override
+		public void run()
+		{
+			try
+			{
+				while(true)
+				{
+					ByteBuffer buffer;
+					while((buffer = myCtx.pendingInputs.poll()) != null)
+					{
+						final ByteBuffer b = readFilter(k, myCtx, buffer);
+						synchronized(destCtx.output)
+						{
+							destCtx.inter.add(b);
+						}
+					}
+					handleWrite(destK);
+					if(myCtx.pendingInputs.isEmpty())
+					{
+						myCtx.isProcessing.set(false);
+						if(!myCtx.pendingInputs.isEmpty())
+						{
+							if(myCtx.isProcessing.compareAndSet(false, true))
+								continue;
+						}
+						break;
+					}
+				}
+				if(eof)
+					closeKey(k);
+			}
+			catch (final Exception e)
+			{
+				Log.debugOut("readThread:" + myCtx.toString());
+				Log.errOut(e);
+				closeKey(k);
+			}
 		}
 	}
 
@@ -1167,13 +1226,13 @@ public class MUDProxy
 		}
 		// now handle normal server->client or client->server reads
 		final SelectionKey destKey = channelPairs.get(key);
-		if (destKey == null)
+		if(destKey == null)
 		{
 			closeKey(key);
 			return;
 		}
 		final SocketChannel destChannel = (SocketChannel) destKey.channel();
-		if (destChannel == null)
+		if(destChannel == null)
 		{
 			closeKey(key);
 			return;
@@ -1181,77 +1240,35 @@ public class MUDProxy
 		final MUDProxy destContext = (MUDProxy)destKey.attachment();
 		try
 		{
+			boolean eof = false;
 			if(bytesRead<0) // means we were never really reading
-				throw new SocketException();
-			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
-			final LinkedList<ByteBuffer> inputList = new LinkedList<ByteBuffer>();
-			synchronized(context.input)
+				eof=true;
+			else
 			{
-				inputList.addAll(context.input);
-				context.input.clear();
-			}
-			while((bytesRead = chanRead(channel,buffer))>0)
-			{
-				buffer.flip();
-				inputList.add(buffer);
-				buffer = ByteBuffer.allocate(BUFFER_SIZE);
-			}
-			if(bytesRead<0)
-				throw new java.net.SocketException();
-			if(inputList.size()>0)
-			{
-				final int br = bytesRead;
-				MUD.serviceEngine.executeRunnable(new Runnable()
+				ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+				final LinkedList<ByteBuffer> inputList = new LinkedList<ByteBuffer>();
+				synchronized(context.input)
 				{
-					final LinkedList<ByteBuffer>	input		= inputList;
-					final int						bytesRead	= br;
-					final MUDProxy					myCtx		= context;
-					final SelectionKey				k			= key;
-					final MUDProxy					destCtx		= destContext;
-					final SelectionKey				destK		= destKey;
-
-					@Override
-					public void run()
-					{
-						try
-						{
-							synchronized(myCtx.input)
-							{
-								while(input.size()>0)
-								{
-									final ByteBuffer buffer = input.removeFirst();
-									if(buffer != null)
-									{
-										final ByteBuffer b = readFilter(k, myCtx, buffer);
-										try
-										{
-											synchronized(destCtx.output)
-											{
-												destCtx.inter.add(b);
-												handleWrite(destK);
-											}
-										}
-										catch(final IOException e)
-										{
-											closeKey(destK);
-											Log.errOut(e);
-										}
-									}
-								}
-								if(bytesRead<0)
-									closeKey(k);
-							}
-						}
-						catch(final Exception e)
-						{
-							Log.debugOut("writeThread:"+myCtx.toString());
-							Log.errOut(e);
-						}
-					}
-				});
+					inputList.addAll(context.input);
+					context.input.clear();
+				}
+				while((bytesRead = chanRead(channel,buffer)) > 0)
+				{
+					buffer.flip();
+					inputList.add(buffer);
+					buffer = ByteBuffer.allocate(BUFFER_SIZE);
+				}
+				if(bytesRead < 0)
+					eof = true;
+				context.pendingInputs.addAll(inputList);
+			}
+			if((context.pendingInputs.size() > 0)|| eof)
+			{
+				if(!context.isProcessing.getAndSet(true))
+					MUD.serviceEngine.executeRunnable(new ReadProcessor(context, key, destContext, destKey, eof));
 			}
 		}
-		catch (final IOException e)
+		catch(final IOException e)
 		{
 			if((!context.isClient)&&(destContext!=null))
 			{

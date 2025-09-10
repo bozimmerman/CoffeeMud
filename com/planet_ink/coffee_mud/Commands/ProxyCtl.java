@@ -108,12 +108,7 @@ public class ProxyCtl extends StdCommand
 			final String command = commands.get(2);
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("password", password);
-			if(command.equalsIgnoreCase("listsessions"))
-				mob.session().sendMPCPPacket(command, obj);
-			else
-			{
-				mob.tell(L("Unknown command '@x1'.",command));
-			}
+			mob.session().sendMPCPPacket(command, obj);
 		}
 		return false;
 	}
