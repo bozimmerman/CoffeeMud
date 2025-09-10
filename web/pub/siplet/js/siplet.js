@@ -79,10 +79,10 @@ function SipletWindow(windowName)
 	this.gaugeWindow = null;
 	this.textBuffer = '';
 	this.textBufferPruneIndex = 0;
-	this.tempMenus  = null;
+	this.tempMenus = null;
 	this.globalTriggers = GetGlobalTriggers();
 	this.triggers = null;
-	this.tempTriggers  = null;
+	this.tempTriggers = null;
 	this.globalAliases = GetGlobalAliases();
 	this.aliases = null;
 	this.tempAliases = null;
@@ -236,7 +236,7 @@ function SipletWindow(windowName)
 			this.tab.style.backgroundColor="yellow";
 			this.tab.style.color="black";
 		}
-		this.wsocket.onopen = function(event)  
+		this.wsocket.onopen = function(event)
 		{
 			me.dispatchEvent({type: 'connect',data:url});
 			me.wsopened=true; 
@@ -247,7 +247,7 @@ function SipletWindow(windowName)
 			me.window.style.color="white";
 			me.startTimers();
 		};
-		this.wsocket.onclose = function(event)  
+		this.wsocket.onclose = function(event)
 		{ 
 			me.closeLog();
 			me.flushWindow();
@@ -340,7 +340,7 @@ function SipletWindow(windowName)
 		this.window.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 		this.window.style.overflowY = 'auto';
 		this.window.style.overflowX = 'hidden';
-  		this.MSPsupport = false;
+		this.MSPsupport = false;
 		this.MSDPsupport = false;
 		this.GMCPsupport = false;
 		this.MXPsupport = false;
@@ -377,12 +377,12 @@ function SipletWindow(windowName)
 	
 	this.htmlBuffer = '';
 	this.numLines = 0;
+	
 	this.flushWindow = function() 
 	{
 		if(this.htmlBuffer.length > 0)
 		{
 			var rescroll = this.isAtBottom(-10);
-			var span = document.createElement('span');
 			var reprocess = '';
 			if(this.mxp.openElements.length)
 			{
@@ -397,6 +397,7 @@ function SipletWindow(windowName)
 			this.numLines += brCount(this.htmlBuffer);
 			if(this.debugFlush)
 				console.log('Flush: '+this.htmlBuffer);
+			var span = document.createElement('span');
 			span.innerHTML = this.htmlBuffer;
 			updateMediaImagesInSpan(this.sipfs, span);
 			this.window.appendChild(span);
@@ -408,12 +409,17 @@ function SipletWindow(windowName)
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
 			}
-			while((this.numLines > me.maxLines)
+			if((this.numLines > me.maxLines)
 			&&(this.window.childElementCount > 1))
 			{
-				var child = this.window.firstChild;
-				this.numLines -= brCount(child.innerHTML);
-				this.window.removeChild(child);
+				var downMax = me.maxLines * 3 / 4;
+				while((this.numLines > downMax)
+				&&(this.window.childElementCount > 1))
+				{
+					var child = this.window.firstChild;
+					this.numLines -= brCount(child.innerHTML);
+					this.window.removeChild(child);
+				}
 			}
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
@@ -421,6 +427,7 @@ function SipletWindow(windowName)
 		}
 	};
 	
+		
 	this.onReceive = function(e)
 	{
 		var entries = me.bin.parse(e.data);
