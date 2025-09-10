@@ -84,28 +84,33 @@ public class ProxyCtl extends StdCommand
 						mob.tell(CMLib.lister().build2ColTable(mob, new IteratorEnumeration<String>(cols.iterator())));
 					}
 					else
-					{
-						mob.tell(L("The proxy server said @x1.",CMParms.combine(commands,1)));
-					}
+					if(command.equalsIgnoreCase("message") && obj.containsKey("message"))
+						mob.tell(L("The proxy server said: @x1",obj.getCheckedString("message")));
+					else
+						mob.tell(L("The proxy server said: @x1",CMParms.combine(commands,1)));
 				}
 				catch (final MJSONException e)
 				{
 					Log.errOut(e);
-					mob.tell(L("The proxy server said @x1.",CMParms.combine(commands,1)));
+					mob.tell(L("The proxy server said: @x1",CMParms.combine(commands,1)));
 				}
 				return false;
 			}
 		}
 		else
-		if((commands.size()<3)||(mob.isMonster()))
+		if((commands.size()<2)||(mob.isMonster()))
 		{
-			mob.tell(L("Send what? You need the password, a command, and any arguments"));
+			mob.tell(L("Send what? You probably need the password, a command, and any arguments"));
 			return false;
 		}
 		else
 		{
-			final String password = commands.get(1);
-			final String command = commands.get(2);
+			final String password;
+			if(CMath.isLong(commands.get(1)))
+				password = commands.remove(1);
+			else
+				password = "1";
+			final String command = commands.get(1);
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("password", password);
 			mob.session().sendMPCPPacket(command, obj);

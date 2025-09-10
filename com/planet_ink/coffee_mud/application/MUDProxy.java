@@ -736,6 +736,41 @@ public class MUDProxy
 	}
 
 	/**
+	 * Commands that can be sent via MPCP from the mud to the proxy server.
+	 */
+	private static enum MPCPCommand
+	{
+		SESSIONINFO,
+		DISCONNECT,
+		DEBUGON,
+		DEBUGOFF,
+		LISTSESSIONS,
+		CLIENTINFO,
+		LIST,
+		COMMANDS,
+		MESSAGE
+	}
+
+	/**
+	 * Sends an MPCP MESSAGE packet to the mud side.
+	 *
+	 * @param key the selection key
+	 * @param context the MUDProxy context
+	 * @param message the message
+	 * @throws IOException if an error occurs
+	 */
+	private static void sendMPCPMsg(final SelectionKey key, final MUDProxy context, final String message) throws IOException
+	{
+		final byte[] bytes = MUDProxy.makeMPCPPacket("MESSAGE {\"message\":"
+				+ "\""+MiniJSON.toJSONString(message)+"\",\"timestamp\":"+System.currentTimeMillis()+"}");
+		synchronized (context.output)
+		{
+			context.output.add(ByteBuffer.wrap(bytes));
+		}
+		handleWrite(key);
+	}
+
+	/**
 	 * Processes an MPCP packet received from the mud side.
 	 * Handles what few commands are defined for the Proxy server.
 	 *
@@ -767,19 +802,34 @@ public class MUDProxy
 			if(x>0)
 			{
 				final String command = str.substring(0,x).trim();
+				final MPCPCommand cmd;
+				try
+				{
+					cmd = MPCPCommand.valueOf(command.toUpperCase());
+				}
+				catch(final Exception e)
+				{
+					sendMPCPMsg(key,context,"Unknown command: '"+command+"'");
+					return;
+				}
 				final String jsonStr = str.substring(x+1).trim();
 				final MiniJSON.JSONObject obj = new MiniJSON().parseObject(jsonStr);
 				final Long timestamp = obj.getCheckedLong("timestamp");
 				if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>1000)
 					return;
 				obj.remove("timestamp");
-				if(command.equalsIgnoreCase("sessioninfo"))
+				final boolean authorized = obj.containsKey("password")
+										&& (obj.getCheckedString("password").equals(ctlPassword));
+				switch(cmd)
 				{
+				case CLIENTINFO:
+					// currently ignored
+					break;
+				case SESSIONINFO:
 					context.session.clear();
 					context.session.putAll(obj);
-				}
-				else
-				if(command.equalsIgnoreCase("disconnect"))
+					break;
+				case DISCONNECT:
 				{
 					if(context.isClient)
 						closeKey(key);
@@ -793,18 +843,28 @@ public class MUDProxy
 						if(pairedKey != null)
 							closeKey(pairedKey);
 					}
+					break;
 				}
-				else
-				if(obj.containsKey("password")
-				&&(obj.getCheckedString("password").equals(ctlPassword)))
-				{
-					if(command.equalsIgnoreCase("debugon"))
-						packetDebug=true;
+				case DEBUGON:
+					if(authorized)
+					{
+						packetDebug = true;
+						sendMPCPMsg(key,context,"Packet debugging turned on.");
+					}
 					else
-					if(command.equalsIgnoreCase("debugoff"))
-						packetDebug=false;
+						sendMPCPMsg(key,context,"Not authorized.");
+					break;
+				case DEBUGOFF:
+					if(authorized)
+					{
+						packetDebug = false;
+						sendMPCPMsg(key,context,"Packet debugging turned off.");
+					}
 					else
-					if(command.equalsIgnoreCase("listsessions"))
+						sendMPCPMsg(key,context,"Not authorized.");
+					break;
+				case LISTSESSIONS:
+					if(authorized)
 					{
 						final MiniJSON.JSONObject robj = new MiniJSON.JSONObject();
 						final List<MiniJSON.JSONObject> sessions = new ArrayList<MiniJSON.JSONObject>();
@@ -837,6 +897,21 @@ public class MUDProxy
 						}
 						handleWrite(key);
 					}
+					else
+						sendMPCPMsg(key,context,"Not authorized.");
+					break;
+				case LIST:
+				case COMMANDS:
+					final StringBuilder cmds = new StringBuilder("Available commands: ");
+					for (final MPCPCommand c : MPCPCommand.values())
+						cmds.append(c.name()).append(", ");
+					if(cmds.length()>2)
+						cmds.setLength(cmds.length()-2);
+					sendMPCPMsg(key,context,cmds.toString());
+					break;
+				case MESSAGE:
+					Log.sysOut("MPCP",obj.getCheckedString("message"));
+					break;
 				}
 			}
 		}

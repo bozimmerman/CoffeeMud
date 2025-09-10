@@ -1906,7 +1906,8 @@ public class DefaultSession implements Session
 								}
 							}
 							else
-							if((mob!=null)&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.SHUTDOWN)))
+							if((mob!=null)
+							&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.SHUTDOWN)))
 							{
 								final Command C = CMClass.getCommand("ProxyCtl");
 								if(C!=null)
