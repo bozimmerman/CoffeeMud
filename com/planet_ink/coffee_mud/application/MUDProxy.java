@@ -1243,7 +1243,7 @@ public class MUDProxy
 	{
 		final SocketChannel channel = (SocketChannel) key.channel();
 		final MUDProxy context = (MUDProxy)key.attachment();
-		int bytesRead;
+		int bytesRead = 0;
 		try
 		{
 			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
