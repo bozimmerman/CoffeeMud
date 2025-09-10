@@ -511,7 +511,7 @@ function SipletWindow(windowName)
 				}
 			}
 		}
-		if(this.bin.entries.length == 0)
+		if(entries.length == 0)
 			me.flushWindow();
 		me.triggerCheck();
 	};
