@@ -517,7 +517,7 @@ public class Transfer extends At
 		{
 			String rest = cmd.toString().substring(6).trim();
 			final List<String> rV=CMParms.parseSpaces(rest,true);
-			if(rV.size()>1)
+			if((rV.size()>1)&&(CMLib.english().parseSpaceDistance(rV.get(rV.size()-1))!=null))
 			{
 				final String last=rV.remove(rV.size()-1);
 				final BigDecimal distl = CMLib.english().parseSpaceDistance(last);
