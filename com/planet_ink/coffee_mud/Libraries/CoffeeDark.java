@@ -248,11 +248,11 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
 			final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
 			final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
-			for(long x=0;x<SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
+			for(long x=0;x<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
 			{
-				for(long y=0;y<SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
+				for(long y=0;y<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
 				{
-					for(long z=0;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
+					for(long z=0;z<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
 					{
 						final Coord3D coords = new Coord3D(new long[] {x, y, z});
 						final BoundedCube cube = new BoundedCube(x,x+dmsPerXSector,y,y+dmsPerYSector,z,z+dmsPerZSector);
@@ -266,12 +266,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			}
 			for(long x=dmsPerXSector;x<SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
 			{
+				final long maxX = Math.min(x + dmsPerXSector, SpaceObject.Distance.GalaxyRadius.dm);
 				for(long y=dmsPerYSector;y<SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
 				{
+					final long maxY = Math.min(y + dmsPerYSector, SpaceObject.Distance.GalaxyRadius.dm);
 					for(long z=dmsPerZSector;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
 					{
+						final long maxZ = Math.min(z + dmsPerZSector, SpaceObject.Distance.GalaxyRadius.dm);
 						final Coord3D coords = new Coord3D(new long[] {-x, -y, -z});
-						final BoundedCube cube = new BoundedCube(-x,-x+dmsPerXSector,-y,-y+dmsPerYSector,-z,-z+dmsPerZSector);
+						final BoundedCube cube = new BoundedCube(-x,maxX,-y,maxY,-z,maxZ);
 						final String name = getSectorName(coords);
 						if(tempMap.containsKey(name) || (coords.z().longValue()>0L))
 							Log.errOut("Argh!!");
@@ -311,11 +314,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigVector to = new BigVector(toAngle).sphereToCartesian();
 		BigDecimal dotProd = from.dotProduct(to);
 		if(dotProd.compareTo(BigCMath.ONE)>0)
-			dotProd=BigCMath.TWO.subtract(dotProd);
+			dotProd=BigCMath.ONE;
 		if(dotProd.compareTo(BigCMath.MIN_ONE)<0)
-			dotProd=BigCMath.MIN_ONE.multiply(dotProd).subtract(BigCMath.TWO);
-		//final BigDecimal fromag = from.magnitude();
-		//final BigDecimal tomag = to.magnitude();
+			dotProd=BigCMath.MIN_ONE;
 		final double finalDelta = Math.acos(dotProd.doubleValue());
 		if(Double.isNaN(finalDelta) || Double.isInfinite(finalDelta))
 		{
@@ -451,7 +452,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		BigDecimal newDirectionYaw;
 		BigDecimal newDirectionPitch;
 		final BigDecimal deltaMultiplier =  Dir3D.sin(anglesDelta);//BigCMath.sqrt(Dir3D.sin(anglesDelta));
-		final BigDecimal yawMin =  deltaMultiplier.multiply((BigCMath.POINT01.add(yawDelta.multiply(BigCMath.ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue())))))));
+		final BigDecimal yawMin =  BigCMath.max(BigCMath.ZERO,deltaMultiplier.multiply((BigCMath.POINT01.add(yawDelta.multiply(BigCMath.ONEPOINT01.subtract(BigDecimal.valueOf(Math.sin(curDirectionPitch.doubleValue()))))))));
 		BigDecimal accelerationMultiplier;
 		if(currentSpeed.compareTo(BigCMath.ZERO)==0)
 			accelerationMultiplier = BigCMath.ONE;
@@ -676,23 +677,22 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public long getRelativeSpeed(final SpaceObject O1, final SpaceObject O2)
 	{
-		final BigDecimal speed1 = new BigDecimal(O1.speed());
-		final BigDecimal speed2 = new BigDecimal(O1.speed());
-		final BigDecimal x1 = O1.coordinates().x();
-		final BigDecimal y1 = O1.coordinates().y();
-		final BigDecimal z1 = O1.coordinates().z();
-		final BigDecimal x2 = O2.coordinates().x();
-		final BigDecimal y2 = O2.coordinates().y();
-		final BigDecimal z2 = O2.coordinates().z();
-		return Math.round(Math.sqrt((speed1.multiply(x1)
-										.subtract(speed2.multiply(x2).multiply(speed1.multiply(x1)))
-										.subtract(speed2.multiply(x2)))
-									.add(speed1.multiply(y1)
-										.subtract(speed2.multiply(y1).multiply(speed1.multiply(y1)))
-										.subtract(speed2.multiply(y2)))
-									.add(speed1.multiply(z1)
-										.subtract(speed2.multiply(z1).multiply(speed1.multiply(z1)))
-										.subtract(speed2.multiply(z2))).doubleValue()));
+		final BigDecimal speed1 = BigDecimal.valueOf(O1.speed());
+		final BigDecimal speed2 = BigDecimal.valueOf(O2.speed());
+		final Dir3D dir1 = O1.direction();
+		final BigDecimal vx1 = speed1.multiply(Dir3D.cos(dir1.xy())).multiply(Dir3D.sin(dir1.z()));
+		final BigDecimal vy1 = speed1.multiply(Dir3D.sin(dir1.xy())).multiply(Dir3D.sin(dir1.z()));
+		final BigDecimal vz1 = speed1.multiply(Dir3D.cos(dir1.z()));
+
+		final Dir3D dir2 = O2.direction();
+		final BigDecimal vx2 = speed2.multiply(Dir3D.cos(dir2.xy())).multiply(Dir3D.sin(dir2.z()));
+		final BigDecimal vy2 = speed2.multiply(Dir3D.sin(dir2.xy())).multiply(Dir3D.sin(dir2.z()));
+		final BigDecimal vz2 = speed2.multiply(Dir3D.cos(dir2.z()));
+
+		final BigDecimal dx = vx1.subtract(vx2);
+		final BigDecimal dy = vy1.subtract(vy2);
+		final BigDecimal dz = vz1.subtract(vz2);
+		return Math.round(Math.sqrt(dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz)).doubleValue()));
 	}
 
 	@Override
@@ -972,52 +972,101 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double getMinDistanceFrom(final Coord3D vec1s, final Coord3D vec1e, final Coord3D vec2s, final Coord3D vec2e)
 	{
-		if(vec1s.equals(vec1e))
-			return this.getMinDistanceFrom(vec2s,vec2e,vec1s);
-		if(vec2s.equals(vec2e))
-			return this.getMinDistanceFrom(vec1s,vec1e,vec2s);
-		final Coord3D bigVec1s = new Coord3D(vec1s);
-		final Coord3D bigVec1e = new Coord3D(vec2e);
-		final Coord3D bigVec2s = new Coord3D(vec2s);
-		final Coord3D bigVec2e = new Coord3D(vec2e);
+		final BigDecimal d1x = vec1e.x().subtract(vec1s.x());
+		final BigDecimal d1y = vec1e.y().subtract(vec1s.y());
+		final BigDecimal d1z = vec1e.z().subtract(vec1s.z());
 
-		final Coord3D d1 = bigVec1e.subtract(bigVec1s);
-		final Coord3D d2 = bigVec2e.subtract(bigVec2s);
+		final BigDecimal d2x = vec2e.x().subtract(vec2s.x());
+		final BigDecimal d2y = vec2e.y().subtract(vec2s.y());
+		final BigDecimal d2z = vec2e.z().subtract(vec2s.z());
 
-		final Coord3D w0 = bigVec1s.subtract(bigVec2s);
-		final Coord3D w1 = bigVec1e.subtract(bigVec2e);
+		final BigDecimal w0x = vec1s.x().subtract(vec2s.x());
+		final BigDecimal w0y = vec1s.y().subtract(vec2s.y());
+		final BigDecimal w0z = vec1s.z().subtract(vec2s.z());
 
-		final BigDecimal a = d1.dotProduct(d1);
-		final BigDecimal b = d1.dotProduct(d2);
-		final BigDecimal c = d2.dotProduct(d2);
-		//final BigDecimal d = d1.dotProduct(w0);
-		final BigDecimal e = d2.dotProduct(w0);
-		final BigDecimal f = d1.dotProduct(w1);
-		final BigDecimal g = d2.dotProduct(w1);
+		final BigDecimal a = d1x.multiply(d1x).add(d1y.multiply(d1y)).add(d1z.multiply(d1z));
+		final BigDecimal b = d1x.multiply(d2x).add(d1y.multiply(d2y)).add(d1z.multiply(d2z));
+		final BigDecimal c = d2x.multiply(d2x).add(d2y.multiply(d2y)).add(d2z.multiply(d2z));
+		final BigDecimal d = d1x.multiply(w0x).add(d1y.multiply(w0y)).add(d1z.multiply(w0z));
+		final BigDecimal e = d2x.multiply(w0x).add(d2y.multiply(w0y)).add(d2z.multiply(w0z));
 
 		final BigDecimal denom = a.multiply(c).subtract(b.multiply(b));
-		if(denom.doubleValue() < 0.001)
-			return CMath.posMin(getDistanceFrom(vec1s, vec2s),getDistanceFrom(vec1e, vec2e));
+		if (denom.doubleValue() < 0.001)
+		{
+			// Parallel: min of 4 endpoint-to-segment distances
+			final double d11 = pointToSegmentDistance(vec2s, vec1s, vec1e);
+			final double d12 = pointToSegmentDistance(vec2e, vec1s, vec1e);
+			final double d21 = pointToSegmentDistance(vec1s, vec2s, vec2e);
+			final double d22 = pointToSegmentDistance(vec1e, vec2s, vec2e);
+			return CMath.posMin(d11, CMath.posMin(d12, CMath.posMin(d21, d22)));
+		}
 
-		final BigDecimal s = b.multiply(e).subtract(c.multiply(f)).divide(denom,Dir3D.SCALE,RoundingMode.UP);
-		final BigDecimal t = a.multiply(g).subtract(b.multiply(f)).divide(denom,Dir3D.SCALE,RoundingMode.UP);
+		final BigDecimal s = b.multiply(e).subtract(c.multiply(d)).divide(denom, Dir3D.SCALE, RoundingMode.UP);
+		final BigDecimal t = a.multiply(e).subtract(b.multiply(d)).divide(denom, Dir3D.SCALE, RoundingMode.UP);
 
-		final BigDecimal[] v1 = new BigDecimal[] {
-			bigVec1s.x().add(s.multiply(bigVec1e.x().subtract(bigVec1s.x()))),
-			bigVec1s.y().add(s.multiply(bigVec1e.y().subtract(bigVec1s.y()))),
-			bigVec1s.z().add(s.multiply(bigVec1e.z().subtract(bigVec1s.z())))
-		};
+		final boolean sInSegment = s.compareTo(BigDecimal.ZERO) >= 0 && s.compareTo(BigDecimal.ONE) <= 0;
+		final boolean tInSegment = t.compareTo(BigDecimal.ZERO) >= 0 && t.compareTo(BigDecimal.ONE) <= 0;
 
-		final BigDecimal[] v2 = new BigDecimal[] {
-			bigVec1e.x().add(t.multiply(bigVec2e.x().subtract(bigVec2s.x()))),
-			bigVec2e.y().add(t.multiply(bigVec2e.y().subtract(bigVec2s.y()))),
-			bigVec2e.z().add(t.multiply(bigVec2e.z().subtract(bigVec2s.z())))
-		};
-		final BigDecimal minDist = Coord3D.sqrt(
-			v2[0].subtract(v1[0]).multiply(v2[0].subtract(v1[0])).add(
-			v2[1].subtract(v1[1]).multiply(v2[1].subtract(v1[1]))).add(
-			v2[2].subtract(v1[2]).multiply(v2[2].subtract(v1[2]))));
-		return minDist.doubleValue();
+		if (sInSegment && tInSegment)
+		{
+			// Closest points on segments
+			final BigDecimal v1x = vec1s.x().add(s.multiply(d1x));
+			final BigDecimal v1y = vec1s.y().add(s.multiply(d1y));
+			final BigDecimal v1z = vec1s.z().add(s.multiply(d1z));
+
+			final BigDecimal v2x = vec2s.x().add(t.multiply(d2x));
+			final BigDecimal v2y = vec2s.y().add(t.multiply(d2y));
+			final BigDecimal v2z = vec2s.z().add(t.multiply(d2z));
+
+			final BigDecimal dx = v1x.subtract(v2x);
+			final BigDecimal dy = v1y.subtract(v2y);
+			final BigDecimal dz = v1z.subtract(v2z);
+			return Math.sqrt(dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz)).doubleValue());
+		}
+		else
+		{
+			// Min of endpoint-to-segment distances
+			final double d11 = pointToSegmentDistance(vec2s, vec1s, vec1e);
+			final double d12 = pointToSegmentDistance(vec2e, vec1s, vec1e);
+			final double d21 = pointToSegmentDistance(vec1s, vec2s, vec2e);
+			final double d22 = pointToSegmentDistance(vec1e, vec2s, vec2e);
+			return CMath.posMin(d11, CMath.posMin(d12, CMath.posMin(d21, d22)));
+		}
+	}
+
+	private double pointToSegmentDistance(final Coord3D p, final Coord3D a, final Coord3D b)
+	{
+		final BigDecimal abx = b.x().subtract(a.x());
+		final BigDecimal aby = b.y().subtract(a.y());
+		final BigDecimal abz = b.z().subtract(a.z());
+
+		final BigDecimal len2 = abx.multiply(abx).add(aby.multiply(aby)).add(abz.multiply(abz));
+		if (len2.compareTo(BigDecimal.ZERO) == 0)
+		{
+			final BigDecimal dx = p.x().subtract(a.x());
+			final BigDecimal dy = p.y().subtract(a.y());
+			final BigDecimal dz = p.z().subtract(a.z());
+			return Math.sqrt(dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz)).doubleValue());
+		}
+
+		final BigDecimal apx = p.x().subtract(a.x());
+		final BigDecimal apy = p.y().subtract(a.y());
+		final BigDecimal apz = p.z().subtract(a.z());
+
+		BigDecimal tt = apx.multiply(abx).add(apy.multiply(aby)).add(apz.multiply(abz)).divide(len2, Dir3D.SCALE, RoundingMode.HALF_UP);
+		if (tt.compareTo(BigDecimal.ZERO) < 0)
+			tt = BigDecimal.ZERO;
+		else if (tt.compareTo(BigDecimal.ONE) > 0)
+			tt = BigDecimal.ONE;
+
+		final BigDecimal cx = a.x().add(tt.multiply(abx));
+		final BigDecimal cy = a.y().add(tt.multiply(aby));
+		final BigDecimal cz = a.z().add(tt.multiply(abz));
+
+		final BigDecimal dx = p.x().subtract(cx);
+		final BigDecimal dy = p.y().subtract(cy);
+		final BigDecimal dz = p.z().subtract(cz);
+		return Math.sqrt(dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz)).doubleValue());
 	}
 
 	@Override
@@ -1409,6 +1458,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							CMLib.english().coordDescShort(O.coordinates().toLongs()));
 				}
 
+				final Map<SpaceObject, Pair<Dir3D, Double>> forceMap = new HashMap<SpaceObject, Pair<Dir3D, Double>>();
 				for(final SpaceObject cO : cOs)
 				{
 					if((cO != O)
@@ -1427,7 +1477,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
 							final Dir3D directionTo=getDirection(O, cO);
-							accelSpaceObject(O, directionTo, gravitationalMove);
+							Pair<Dir3D, Double> force = forceMap.get(O);
+							if (force == null)
+								force = new Pair<>(directionTo, Double.valueOf(gravitationalMove));
+							else
+							{
+								force.first = getMiddleAngle(force.first, directionTo);
+								force.second = Double.valueOf(gravitationalMove + force.second.doubleValue());
+							}
+							forceMap.put(O, force);
 							inAirFlag = true;
 						}
 						if((O instanceof Weapon)&&(isDebugging) && moving)
@@ -1481,10 +1539,10 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						}
 					}
 				}
+				for (final Map.Entry<SpaceObject, Pair<Dir3D, Double>> entry : forceMap.entrySet())
+					accelSpaceObject(entry.getKey(), entry.getValue().first, entry.getValue().second.doubleValue());
 				if(S!=null)
-				{
 					S.setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,inAirFlag);
-				}
 			}
 		}
 	}

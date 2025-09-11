@@ -88,6 +88,15 @@ public class BigCMath
 		return result;
 	}
 
+	public static BigDecimal max(final BigDecimal one, final BigDecimal two)
+	{
+		if (one == null)
+			return two;
+		if (two == null)
+			return one;
+		return one.compareTo(two) >= 0 ? one : two;
+	}
+
 	public static BigDecimal sqrt(final BigDecimal value)
 	{
 		if(value.doubleValue()<=0)

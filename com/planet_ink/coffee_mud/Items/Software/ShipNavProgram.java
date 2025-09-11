@@ -1907,7 +1907,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				final SpaceObject orbitTarget = (SpaceObject) CMClass.getBasicItem("Moonlet");
 				orbitTarget.setRadius(ship.radius());
 				orbitTarget.setName(L("Orbit Point above @x1",landingZone.Name()));
-				final Dir3D dirToLandingZone = CMLib.space().getDirection(ship, landingPlanet);
+				final Dir3D dirToLandingZone = CMLib.space().getDirection(landingPlanet.coordinates(), landingZone.coordinates());
 				final long orbitalRadius = Math.round(landingPlanet.radius() +
 						CMath.mul(landingPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)*0.75);
 				final Coord3D orbitalCoords = CMLib.space().getLocation(landingPlanet.coordinates(), dirToLandingZone, orbitalRadius);
