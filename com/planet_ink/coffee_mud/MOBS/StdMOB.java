@@ -5073,17 +5073,24 @@ public class StdMOB implements MOB
 		List<Ability> affects = clanAffects;
 		if(affects == null)
 		{
-			final Iterator<Pair<Clan, Integer>> c = clans().iterator();
-			if(!c.hasNext()) // default government is for global clans
-				affects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
-			else
+			synchronized(clans)
 			{
-				final ReadOnlyMultiList<Ability> effects = new ReadOnlyMultiList<Ability>();
-				for(; c.hasNext();)
-					effects.addList(c.next().first.clanEffects(this));
-				affects = effects;
+				affects = clanAffects;
+				if(affects == null)
+				{
+					final Iterator<Pair<Clan, Integer>> c = clans().iterator();
+					if(!c.hasNext()) // default government is for global clans
+						affects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
+					else
+					{
+						final ReadOnlyMultiList<Ability> effects = new ReadOnlyMultiList<Ability>();
+						for(; c.hasNext();)
+							effects.addList(c.next().first.clanEffects(this));
+						affects = effects;
+					}
+					clanAffects = affects;
+				}
 			}
-			clanAffects = affects;
 		}
 		return affects;
 	}
@@ -5150,7 +5157,8 @@ public class StdMOB implements MOB
 						Log.debugOut("User '" + Name() + "' had membership in '" + clanID + "' changed from " + p.second.toString() + " to role " + role);
 					p.second = Integer.valueOf(role);
 				}
-				clans.put(clanID, p);
+				else
+					clans.move(0,clanID);
 			}
 		}
 	}
@@ -5282,9 +5290,9 @@ public class StdMOB implements MOB
 	@Override
 	public int numAllEffects()
 	{
-		int size = affects.size() + charStats().getMyRace().numRacialEffects(this);
-		for(final Pair<Clan, Integer> p : clans())
-			size += p.first.numClanEffects(this);
+		final int size = affects.size()
+				+ charStats().getMyRace().numRacialEffects(this)
+				+ clanEffects().size();
 		return size;
 	}
 
