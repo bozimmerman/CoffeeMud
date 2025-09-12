@@ -45,8 +45,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 
 	protected int			maxThrust		= 8900000;
 	protected int			minThrust		= 0;
-	protected long			specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
-	protected double		fuelEfficiency	= 0.33;
+	protected double		specificImpulse	= 0.33;
 	protected boolean		constantThrust	= true;
 	protected volatile double		thrust	= 0;
 
@@ -74,23 +73,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		return super.sameAs(E);
 	}
 
-	protected static double getFuelDivisor()
-	{
-		return 100.0;
-	}
-
-	@Override
-	public double getFuelEfficiency()
-	{
-		return fuelEfficiency;
-	}
-
-	@Override
-	public void setFuelEfficiency(final double amt)
-	{
-		fuelEfficiency = amt;
-	}
-
 	@Override
 	public int getMaxThrust()
 	{
@@ -116,7 +98,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public long getSpecificImpulse()
+	public double getSpecificImpulse()
 	{
 		return specificImpulse;
 	}
@@ -128,7 +110,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public void setSpecificImpulse(final long amt)
+	public void setSpecificImpulse(final double amt)
 	{
 		if(amt > 0)
 			specificImpulse = amt;
@@ -246,24 +228,39 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		}
 	}
 
+	protected static double getFuelFactor()
+	{
+		return 0.5;
+	}
+
 	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, final ShipDir portDir, double thrust)
 	{
 		if((portDir != ShipDir.AFT)&&(portDir != ShipDir.FORWARD))
 			thrust = 1.0;
 		final int fuel=(int)Math.round(
-			CMath.ceiling(
-				thrust
-				*me.getFuelEfficiency()
-				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))
-				/ getFuelDivisor()
-			)
-		);
+			CMath.ceiling(thrust /
+					(getFuelFactor()
+					* (me.getMinThrust() + (me.getMaxThrust()-me.getMinThrust())/2.0) // bigger engines naturally more efficient?
+					* me.getSpecificImpulse()
+					* Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())))));
 		if((thrust>0)&&(fuel<=0))
 			return 1;
 		return fuel;
 	}
 
-	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final ShipDirectional.ShipDir portDir, final double amount)
+	public static double getInjectedThrust(final ShipEngine me, final double injection)
+	{
+		double thrust=CMath.mul(me.getInstalledFactor(), (me.getMinThrust() + CMath.mul((me.getMaxThrust()-me.getMinThrust()), injection)));
+		if(thrust > me.getMaxThrust())
+			thrust=me.getMaxThrust();
+		final double actualMinThrust = me.getInstalledFactor() * me.getMinThrust();
+		if (thrust < actualMinThrust)
+			thrust = actualMinThrust;
+		return thrust;
+	}
+
+	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI,
+										final ShipDirectional.ShipDir portDir, final double injection, final boolean simulation)
 	{
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
@@ -273,59 +270,45 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			return reportError(me, controlI, mob, lang.L("@x1 @x2 and fires, but nothing happens.",me.name(mob),rumbleWord),
 					lang.L("Failure: @x1: exhaust ports.",me.name(mob)));
 		final SpaceShip ship=(SpaceShip)obj;
-		if((portDir==null)||(amount<0))
+		if((portDir==null)||(injection<0))
 			return reportError(me, controlI, mob, lang.L("@x1 @x2s loudly, but accomplishes nothing.",me.name(mob),rumbleWord),
 					lang.L("Failure: @x1: exhaust control.",me.name(mob)));
 		if(!CMParms.contains(me.getAvailPorts(), portDir))
 			return reportError(me, controlI, mob, lang.L("@x1 @x2 a little, but accomplishes nothing.",me.name(mob),rumbleWord),
 					lang.L("Failure: @x1: port control.",me.name(mob)));
-		double thrust=me.getInstalledFactor() * amount;
-		if(thrust > me.getMaxThrust())
-			thrust=me.getMaxThrust();
+		final double thrust=getInjectedThrust(me, injection);
+		double amount = thrust;
 		if(me.subjectToWearAndTear())
 		{
 			if(me.usesRemaining()<75)
 			{
 				final double pct = CMath.mul(me.usesRemaining(), 100.0) + (0.35 * manufacturer.getReliabilityPct());
 				if(pct < 1.0)
-					thrust = thrust * pct;
+					amount = amount * pct;
 			}
 		}
-		else
-			thrust=manufacturer.getReliabilityPct() * thrust;
 		if(portDir==ShipDirectional.ShipDir.AFT) // when thrusting aft, the thrust is continual, so save it
 		{
 			if(amount == 0.0)
 			{
-				if(me.getThrust()>0.0)
-				{
-					me.setThrust(0.0);
-					//return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Info: @x1: Engine shut down.",me.name(mob)));
-				}
 				me.setThrust(0.0);
 				return false;
 			}
-			if(me.getThrust()==0.0)
-			{
-				me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
-				//return reportError(me, controlI, mob, lang.L("@x1 roars to life.",me.name(mob)), lang.L("Info: @x1: Engine activated.",me.name(mob)));
-			}
-			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
+			me.setThrust(thrust); // also, its always the intended amount, not the adjusted amount
 		}
 
-		final int fuelToConsume=getFuelToConsume(me, manufacturer, portDir, thrust);
+		final int fuelToConsume=getFuelToConsume(me, manufacturer, portDir, thrust); // is based off desired thrust -- NOT the amount of thrust
 
 		final double acceleration;
 		if(portDir==ShipDirectional.ShipDir.AFT) // when thrusting aft, there's a smidgeon more power
 		{
-			acceleration = (thrust * me.getSpecificImpulse() / ship.getMass());
-			if(acceleration < me.getMinThrust())
+			acceleration = CMath.div(amount,  ship.getMass()); // actual acceleration from the actual amount
+			if(acceleration < 0.000001)
 				return reportError(me, controlI, mob, lang.L("@x1 @x2 loudly, but nothing happens.",me.name(mob),rumbleWord),
 						lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
 		}
 		else // if we ever make multi-directional thrusters that don't care about facing, change this
-			acceleration = thrust;
-
+			acceleration = injection;
 		//if((amount > 1)&&((portDir!=ShipDirComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
 		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a @x2 and hear the blast of @x1.",me.name(mob),rumbleWord));
 		if(acceleration == 0.0)
@@ -336,11 +319,17 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 					lang.L("Failure: @x1: insufficient engine thrust capacity.",me.name(mob)));
 		}
 		else
-		if(me.consumeFuel(fuelToConsume))
+		if(simulation || me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
+			if(CMSecurity.isDebugging(DbgFlag.SPACEMOVES))
+			{
+				final String word = simulation?"SimThrust: ":"Thrusting: ";
+				Log.debugOut("StdShipThruster",word+me.name()+" dir="+portDir.name()+" amt="+amount+" acc="+acceleration+" fuel="+fuelToConsume);
+			}
 			final String code=TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
-			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			final int msgType = CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG | (simulation?CMMsg.MASK_INTERMSG:0);
+			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, msgType, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
 				spaceObject.executeMsg(mob, msg);
@@ -376,7 +365,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			if(parms==null)
 				return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 			if(command == TechCommand.THRUST)
-				return executeThrust(me, circuitKey, mob, controlI, (ShipDirectional.ShipDir)parms[0],((Double)parms[1]).doubleValue());
+				return executeThrust(me, circuitKey, mob, controlI, (ShipDirectional.ShipDir)parms[0],((Double)parms[1]).doubleValue(),msg.targetMajor(CMMsg.MASK_INTERMSG));
 			return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 		}
 	}
@@ -421,11 +410,15 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final int fuelToConsume=getFuelToConsume(me, manufacturer, ShipDirectional.ShipDir.AFT, me.getThrust());
 						if(me.consumeFuel(fuelToConsume))
 						{
+							double derivedInjection = 0.0;
+							final double maxMinusMin = me.getMaxThrust() - me.getMinThrust();
+							if (maxMinusMin > 0)
+								derivedInjection = (me.getThrust() / me.getInstalledFactor() - me.getMinThrust()) / maxMinusMin;
 							final SpaceObject obj=CMLib.space().getSpaceObject(me, true);
 							if(obj instanceof SpaceShip)
 							{
 								final SpaceObject ship=((SpaceShip)obj).getShipSpaceObject();
-								final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(me.getThrust()));
+								final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(derivedInjection));
 								final CMMsg msg2=CMClass.getMsg(msg.source(), me, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 								if(me.owner() instanceof Room)
 								{
@@ -444,7 +437,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final CMMsg msg2=CMClass.getMsg(msg.source(), me, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 						if(me.owner() instanceof Room)
 						{
-							if(((Room)me.owner()).okMessage(msg.source(), msg2))
+							if(me.owner().okMessage(msg.source(), msg2))
 								((Room)me.owner()).send(msg.source(), msg2);
 						}
 						else

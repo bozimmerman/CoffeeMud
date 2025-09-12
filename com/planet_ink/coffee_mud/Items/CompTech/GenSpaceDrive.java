@@ -84,7 +84,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 
 	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
-										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS","RECHRATE"};
+										   "NA","SPECIMPL","MINTHRUST","ISCONST","AVAILPORTS","RECHRATE"};
 
 	@Override
 	public String getStat(final String code)
@@ -108,7 +108,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 		case 6:
 			return "" + getSpecificImpulse();
 		case 7:
-			return "" + Math.round(getFuelEfficiency() * 100);
+			return "" + Math.round(getSpecificImpulse() * 100);
 		case 8:
 			return "" + getMinThrust();
 		case 9:
@@ -152,7 +152,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			setSpecificImpulse(CMath.s_parseLongExpression(val));
 			break;
 		case 7:
-			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			setSpecificImpulse(CMath.s_parseMathExpression(val) / 100.0);
 			break;
 		case 8:
 			setMinThrust(CMath.s_parseIntExpression(val));

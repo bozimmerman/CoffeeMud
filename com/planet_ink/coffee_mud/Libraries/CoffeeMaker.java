@@ -62,7 +62,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final int x=newText.indexOf('@');
 				final String dbstr=CMLib.database().DBReadRoomMOBMiscText(newText.substring(6,x),
-																  ((Object)mob).getClass().getName()+newText.substring(x).trim());
+																  mob.getClass().getName()+newText.substring(x).trim());
 				if(dbstr!=null)
 					return dbstr;
 				Log.errOut("Unable to re-read mob data: "+newText);
@@ -643,8 +643,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ShipEngine)
 		{
 			text.append(xmlLib.convertXMLtoTag("SSTHRUST",""+((ShipEngine)E).getMaxThrust()));
-			text.append(xmlLib.convertXMLtoTag("SSIMPL",""+((ShipEngine)E).getSpecificImpulse()));
-			text.append(xmlLib.convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getFuelEfficiency()));
+			text.append(xmlLib.convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getSpecificImpulse()));
 			text.append(xmlLib.convertXMLtoTag("SSNTHRUST",""+((ShipEngine)E).getMinThrust()));
 			text.append(xmlLib.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isReactionEngine()));
 			text.append(xmlLib.convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
@@ -2750,7 +2749,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
 			if(E instanceof Boardable)
-				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
+				E.setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
 			((Area)E).setAtmosphere(CMLib.xml().getIntFromPieces(V,"AATMO",((Area)E).getAtmosphereCode()));
 			final List<XMLLibrary.XMLTag> VP=CMLib.xml().getContentsFromPieces(V,"PARENTS");
@@ -4213,8 +4212,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ShipEngine)
 		{
 			((ShipEngine)E).setMaxThrust(xml.getIntFromPieces(buf,"SSTHRUST"));
-			((ShipEngine)E).setSpecificImpulse(xml.getIntFromPieces(buf,"SSIMPL"));
-			((ShipEngine)E).setFuelEfficiency(xml.getDoubleFromPieces(buf,"SSFEFF"));
+			((ShipEngine)E).setSpecificImpulse(xml.getDoubleFromPieces(buf,"SSFEFF"));
 			((ShipEngine)E).setMinThrust(xml.getIntFromPieces(buf,"SSNTHRUST"));
 			((ShipEngine)E).setReactionEngine(xml.getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
@@ -5299,7 +5297,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if((E instanceof Item)&&(parent==null))
 			parent=((Item)E).owner();
 		if(E instanceof Area)
-			return ((Area)E).Name()+" ("+((Area)E).ID()+")";
+			return E.Name()+" ("+E.ID()+")";
 		if(E instanceof Room)
 			str.append(((Room)E).roomID()+" ("+E.ID()+")");
 		else
@@ -5367,7 +5365,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((PhysicalAgent)E).addBehavior(newOne);
 			}
 		}
-		if((E instanceof Area)&&(((Area)E).isSavable()))
+		if((E instanceof Area)&&(E.isSavable()))
 			addAutoPropsToAreaIfNecessary((Area)E);
 
 		if(E instanceof Physical)

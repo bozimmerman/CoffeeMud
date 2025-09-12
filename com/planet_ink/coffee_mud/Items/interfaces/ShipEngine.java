@@ -118,43 +118,32 @@ public interface ShipEngine extends TechComponent
 	public void setThrust(double aftThrust);
 
 	/**
+	 * Gets the specific impulse of this engine.
 	 * Specific Impulse has to do with the efficiency of conversion of
-	 * fuel into thrust.
+	 * fuel into thrust.  It essentially determines the fuel consumption
+	 * by dividing the thrust / specific impulse * constant.
+	 *
 	 * @see ShipEngine#setSpecificImpulse(long)
 	 * @return efficiency of conversion of fuel into thrust
 	 */
-	public long getSpecificImpulse();
+	public double getSpecificImpulse();
 
 	/**
+	 * Sets the specific impulse of this engine.
 	 * Specific Impulse has to do with the efficiency of conversion of
-	 * fuel into thrust.
+	 * fuel into thrust.  It essentially determines the fuel consumption
+	 * by dividing the thrust / specific impulse * constant.
+	 *
 	 * @see ShipEngine#getSpecificImpulse()
 	 * @param amt efficiency of conversion of fuel into thrust
 	 */
-	public void setSpecificImpulse(long amt);
-
-	/**
-	 * Gets the fuel efficiency pct, denoting how well the engine uses
-	 * fuel to product thrust.  Basically, this is what specific impulse
-	 * SHOULD be.
-	 * @see ShipEngine#setFuelEfficiency(double)
-	 * @return the fuel efficiency pct
-	 */
-	public double getFuelEfficiency();
-
-	/**
-	 * Sets the fuel efficiency pct, denoting how well the engine uses
-	 * fuel to product thrust.  Basically, this is what specific impulse
-	 * SHOULD be.
-	 * @see ShipEngine#getFuelEfficiency()
-	 * @param amt the fuel efficiency pct
-	 */
-	public void setFuelEfficiency(double amt);
+	public void setSpecificImpulse(double amt);
 
 	/**
 	 * Forces this engine to consumer some amount of its
 	 * fuel, without any other effect. If there was not enough
 	 * fuel to be consumed, it might result in de-activation.
+	 *
 	 * @param amount the amount of fuel to consume
 	 * @return true if there was NOT enough fuel, false if fuel was consumed OK.
 	 */

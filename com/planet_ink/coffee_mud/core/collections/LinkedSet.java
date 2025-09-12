@@ -30,6 +30,8 @@ public class LinkedSet<K> implements Set<K>
 
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
+	@SuppressWarnings("rawtypes" )
+	private static final ListIterator emptyl=EmptyListIterator.INSTANCE;
 
 	/**
 	 * A single entry in the linked list.
@@ -59,6 +61,26 @@ public class LinkedSet<K> implements Set<K>
 	public boolean add(final K arg0)
 	{
 		return add(new LinkedEntry<K>(arg0));
+	}
+
+	public boolean addFirst(final K arg0)
+	{
+		final LinkedEntry<K> entry = new LinkedEntry<K>(arg0);
+		entry.next = head;
+		head = entry;
+		if(tail == null)
+			tail = entry;
+		return true;
+	}
+
+	public boolean addLast(final K arg0)
+	{
+		final LinkedEntry<K> entry = new LinkedEntry<K>(arg0);
+		entry.next = tail;
+		tail = entry;
+		if(head == null)
+			head = entry;
+		return true;
 	}
 
 	/**
@@ -164,6 +186,127 @@ public class LinkedSet<K> implements Set<K>
 	public boolean isEmpty()
 	{
 		return head == null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<K> listIterator()
+	{
+		if(head == null)
+			return emptyl;
+		final LinkedSet<K> me1=this;
+		return new ListIterator<K>()
+		{
+			final LinkedSet<K>	me			= me1;
+			LinkedEntry<K>		next		= head;
+			LinkedEntry<K>		curr		= null;
+			LinkedEntry<K>		prev		= null;
+			int					nextIndex	= 0;
+			int					prevIndex	= -1;
+
+			@Override
+			public boolean hasNext()
+			{
+				return next != null;
+			}
+
+			@Override
+			public K next()
+			{
+				if(next != null)
+				{
+					prev = curr;
+					curr = next;
+					final K k = next.value;
+					next = next.next;
+					prevIndex = nextIndex;
+					nextIndex++;
+					return k;
+				}
+				throw new NoSuchElementException();
+			}
+
+			@Override
+			public boolean hasPrevious()
+			{
+				return prev != null;
+			}
+
+			@Override
+			public K previous()
+			{
+				if(prev != null)
+				{
+					final K k = curr.value;
+					next = curr;
+					curr = prev;
+					prev = prev.prev;
+					nextIndex--;
+					prevIndex = nextIndex-1;
+					return k;
+				}
+				throw new NoSuchElementException();
+			}
+
+			@Override
+			public int nextIndex()
+			{
+				return nextIndex;
+			}
+
+			@Override
+			public int previousIndex()
+			{
+				return prevIndex;
+			}
+
+			@Override
+			public void remove()
+			{
+				if(curr != null)
+				{
+					if(curr.prev != null)
+						curr.prev.next = curr.next;
+					else
+						me.head = curr.next;
+					if(curr.next != null)
+						curr.next.prev = curr.prev;
+					else
+						me.tail = curr.prev;
+					nextIndex--;
+					prevIndex = nextIndex - 1;
+					curr = null;
+				}
+				else
+					throw new IllegalStateException("remove() called without next() or previous()");
+			}
+
+			@Override
+			public void set(final K e)
+			{
+				if(curr != null)
+					curr.value = e;
+				else
+					throw new IllegalStateException();
+			}
+
+			@Override
+			public void add(final K e)
+			{
+				final LinkedEntry<K> entry = new LinkedEntry<>(e);
+				entry.prev = curr;
+				entry.next = next;
+				if(curr != null)
+					curr.next = entry;
+				else
+					head = entry;
+				if(next != null)
+					next.prev = entry;
+				else
+					tail = entry;
+				nextIndex++;
+				prevIndex++;
+			}
+		};
 	}
 
 	/**
@@ -276,6 +419,30 @@ public class LinkedSet<K> implements Set<K>
 	}
 
 	/**
+	 * Returns the first item in the list.
+	 *
+	 * @return the first item, or null if none
+	 */
+	public K getFirst()
+	{
+		if (head == null)
+			return null;
+		return head.value;
+	}
+
+	/**
+	 * Returns the last item in the list.
+	 *
+	 * @return the last item, or null if none
+	 */
+	public K getLast()
+	{
+		if (tail == null)
+			return null;
+		return tail.value;
+	}
+
+	/**
 	 * Retain only the items in this list that are also in the given collection.
 	 *
 	 * @param arg0 the collection of items to retain
@@ -351,10 +518,10 @@ public class LinkedSet<K> implements Set<K>
 	{
 		final int size=size();
 		final Object[] array = toArray();
-		if (a.length < size)
+		if(a.length < size)
 			return (T[]) Arrays.copyOf(array, size, a.getClass());
 		System.arraycopy(array, 0, a, 0, size);
-		if (a.length > size)
+		if(a.length > size)
 			a[size] = null;
 		return a;
 	}

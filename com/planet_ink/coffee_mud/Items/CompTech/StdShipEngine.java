@@ -45,8 +45,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	protected int			maxThrust		= 8900000;
 	protected int			minThrust		= 0;
 	protected double		thrust			= 0;
-	protected long			specificImpulse	= 10000;
-	protected double		fuelEfficiency	= 0.33;
+	protected double		specificImpulse	= 0.33;
 	protected boolean		constantThrust	= true;
 	protected final long[]	lastThrustMs	= new long[] { 0 };
 
@@ -74,15 +73,15 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public double getFuelEfficiency()
+	public double getSpecificImpulse()
 	{
-		return fuelEfficiency;
+		return specificImpulse;
 	}
 
 	@Override
-	public void setFuelEfficiency(final double amt)
+	public void setSpecificImpulse(final double amt)
 	{
-		fuelEfficiency = amt;
+		specificImpulse = amt;
 	}
 
 	@Override
@@ -107,18 +106,6 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	public void setThrust(final double current)
 	{
 		thrust = current;
-	}
-
-	@Override
-	public long getSpecificImpulse()
-	{
-		return specificImpulse;
-	}
-
-	@Override
-	public void setSpecificImpulse(final long amt)
-	{
-		specificImpulse = amt;
 	}
 
 	@Override

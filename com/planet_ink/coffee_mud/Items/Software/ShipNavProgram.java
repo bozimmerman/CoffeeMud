@@ -202,7 +202,8 @@ public class ShipNavProgram extends ShipSensorProgram
 	protected boolean cancelNavigation(final boolean isComplete)
 	{
 		final boolean didSomething = navTrack != null || courseSet;
-		if((!isComplete)||((navTrack!=null)&&(navTrack.nextTrack==null)))
+		if((!isComplete)
+		||((navTrack!=null)&&(navTrack.nextTrack==null)))
 			lastInject = null;
 		navTrack=null;
 		course.clear();
@@ -342,7 +343,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				||(!engineE.isReactionEngine())
 				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
-					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG|CMMsg.MASK_INTERMSG, null, CMMsg.NO_EFFECT,null);
 					final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
 					msg.setTargetMessage(code);
 					this.trySendMsgToItem(mob, engineE, msg);
@@ -378,7 +379,10 @@ public class ShipNavProgram extends ShipSensorProgram
 				dampenerFound = true;
 		}
 		if(!dampenerFound)
+		{
+			addScreenMessage(L("No inertial dampeners found."));
 			return SpaceObject.ACCELERATION_TYPICALSPACEROCKET;
+		}
 		return SpaceObject.ACCELERATION_DAMAGED*10;
 	}
 
@@ -419,7 +423,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					{
 						msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 						this.savedAngle = null;
-						final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
+						final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1.0));
 						msg.setTargetMessage(code);
 						this.trySendMsgToItem(M, engineE, msg);
 						if(this.savedAngle==null)
@@ -510,7 +514,6 @@ public class ShipNavProgram extends ShipSensorProgram
 		else
 			engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
-		final boolean isDocked = ship.getIsDocked()!=null;
 		try
 		{
 			for(final ShipEngine engineE : engines)
@@ -522,15 +525,16 @@ public class ShipNavProgram extends ShipSensorProgram
 						targetAcceleration = maxAceleration;
 					int tries=100;
 					double lastTryAmt;
-					if(this.injects.containsKey(engineE))
+					final Double[] engInject = this.injects.get(engineE);
+					if((engInject != null)&&(engInject[0] != null))
 					{
-						lastTryAmt = this.injects.get(engineE)[0].doubleValue();
+						lastTryAmt = engInject[0].doubleValue();
 						savedAcceleration=this.injects.get(engineE)[1];
 					}
 					else
-						lastTryAmt= 0.0001;
+						lastTryAmt=CMath.mul(targetAcceleration, ship.getMass()) / CMath.mul(engineE.getMaxThrust(),engineE.getSpecificImpulse());
 					final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
-					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG|CMMsg.MASK_INTERMSG, null, CMMsg.NO_EFFECT,null);
 					Double prevAcceleration = Double.valueOf(0.0);
 					int stableCounter = 0;
 					while(--tries>0)
@@ -544,8 +548,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						if(thisLastAccel!=null)
 						{
 							final double ratio = targetAcceleration/thisLastAccel.doubleValue();
-							if((thisLastAccel.doubleValue() >= targetAcceleration)
-							&&((!isDocked)||(ship.getIsDocked()==null)))
+							if(thisLastAccel.doubleValue() >= targetAcceleration)
 							{
 								this.lastInject=Double.valueOf(lastTryAmt);
 								this.injects.put(engineE,new Double[] {lastInject,savedAcceleration});
@@ -864,7 +867,7 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected boolean confirmNavEnginesOK(final SpaceShip ship, final Collection<ShipEngine> programEngines)
 	{
-		final Double lastInject=this.lastInject;
+		Double lastInject=this.lastInject;
 		if((ship==null)
 		||(programEngines==null)
 		||(programEngines.size()==0))
@@ -875,7 +878,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			return false;
  		}
 		if(lastInject==null)
+		{
 			primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, programEngines.iterator().next());
+			lastInject = this.lastInject;
+		}
 		if(lastInject==null)
 		{
 			String reason =  "";
@@ -1609,7 +1615,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
-						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
 				}
@@ -1623,7 +1630,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
-						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut("Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
 						newInject = forceAccelerationAllProgramEngines(programEngines, targetAcceleration);
 					}
 				}
@@ -1688,7 +1696,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(targetAcceleration.doubleValue() < SpaceObject.ACCELERATION_DAMAGED)
 			{
 				final int gs = (int)Math.round(targetAcceleration.doubleValue()/SpaceObject.ACCELERATION_G);
-				addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to @x1Gs.",""+gs));
+				addScreenMessage(L("Limiting acceleration to @x1Gs.",""+gs));
 			}
 			if(cancelNavigation(false))
 				addScreenMessage(L("Warning. Previous program cancelled."));
@@ -1755,7 +1763,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if (targetAcceleration.doubleValue() < SpaceObject.ACCELERATION_DAMAGED)
 			{
 				final int gs = (int) Math.round(targetAcceleration.doubleValue() / SpaceObject.ACCELERATION_G);
-				addScreenMessage(L("No inertial dampeners found. Limiting acceleration to @x1 Gs.",""+gs));
+				addScreenMessage(L("Limiting acceleration to @x1 Gs.",""+gs));
 			}
 			final List<ShipEngine> programEngines = new XVector<ShipEngine>(engineE);
 
@@ -1797,6 +1805,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			if(cancelNavigation(false))
 				addScreenMessage(L("Warning. Previous program cancelled."));
+			lastInject = null; // force recalculation of inject
 			ShipEngine engineE=null;
 			if(!flipForAllStop(ship))
 			{
@@ -1919,25 +1928,30 @@ public class ShipNavProgram extends ShipSensorProgram
 					cancelNavigation(false);
 					return false;
 				}
-				Log.debugOut("Ship coordinates: " + Arrays.toString(ship.coordinates().toLongs()));
-				Log.debugOut("Planet coordinates: " + Arrays.toString(landingPlanet.coordinates().toLongs()));
-				Log.debugOut("Nav point coordinates: " + Arrays.toString(orbitTarget.coordinates().toLongs()));
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+				{
+					Log.debugOut("Ship coordinates: " + Arrays.toString(ship.coordinates().toLongs()));
+					Log.debugOut("Planet coordinates: " + Arrays.toString(landingPlanet.coordinates().toLongs()));
+					Log.debugOut("Nav point coordinates: " + Arrays.toString(orbitTarget.coordinates().toLongs()));
 
-				Log.debugOut("Distance ship to planet: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, landingPlanet)));
-				Log.debugOut("Distance planet to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(landingPlanet, orbitTarget)));
-				Log.debugOut("Distance ship to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, orbitTarget)));
+					Log.debugOut("Distance ship to planet: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, landingPlanet)));
+					Log.debugOut("Distance planet to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(landingPlanet, orbitTarget)));
+					Log.debugOut("Distance ship to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, orbitTarget)));
 
-				Log.debugOut("Direction ship to planet: " + CMLib.english().directionDescShort(CMLib.space().getDirection(ship.coordinates(), landingPlanet.coordinates()).toDoubles()));
-				Log.debugOut("Direction planet to orbit: " + CMLib.english().directionDescShort(CMLib.space().getDirection(landingPlanet.coordinates(), orbitTarget.coordinates()).toDoubles()));
+					Log.debugOut("Direction ship to planet: " + CMLib.english().directionDescShort(CMLib.space().getDirection(ship.coordinates(), landingPlanet.coordinates()).toDoubles()));
+					Log.debugOut("Direction planet to orbit: " + CMLib.english().directionDescShort(CMLib.space().getDirection(landingPlanet.coordinates(), orbitTarget.coordinates()).toDoubles()));
+				}
 
 				navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, orbitTarget, programEngines, new XLinkedList<SpaceObject>(navs));
-				Log.debugOut("Calculated nav path:");
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut("Calculated nav path:");
 				for (int i = 0; i < navs.size(); i++)
 				{
 					final SpaceObject navPoint = navs.get(i);
 					final long distFromShip = CMLib.space().getDistanceFrom(ship, navPoint) - ship.radius() - Math.round(navPoint.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
 					final Dir3D dirFromShip = CMLib.space().getDirection(ship, navPoint);
-					Log.debugOut("Nav point " + (i+1) + ": Dist: " + CMLib.english().distanceDescShort(distFromShip) + ", Dir: " + CMLib.english().directionDescShort(dirFromShip.toDoubles()) + ", Coords: " + Arrays.toString(navPoint.coordinates().toLongs()));
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut("Nav point " + (i+1) + ": Dist: " + CMLib.english().distanceDescShort(distFromShip) + ", Dir: " + CMLib.english().directionDescShort(dirFromShip.toDoubles()) + ", Coords: " + Arrays.toString(navPoint.coordinates().toLongs()));
 				}
 				final ShipNavTrack landTrack = new ShipNavTrack(ShipNavProcess.LAND, landingPlanet, programEngines);
 				navTrack.setNextTrack(landTrack);

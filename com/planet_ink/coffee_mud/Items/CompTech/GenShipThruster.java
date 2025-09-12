@@ -86,7 +86,7 @@ public class GenShipThruster extends StdShipThruster
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 										   "POWERCAP","POWERREM","CONSUMEDTYPES","MAXTHRUST","ACTIVATED",
 										   "MANUFACTURER", "INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
+										   "NA","SPECIMPL","MINTHRUST","ISCONST","AVAILPORTS",
 										   "RECHRATE"};
 
 	@Override
@@ -136,7 +136,7 @@ public class GenShipThruster extends StdShipThruster
 		case 14:
 			return "" + getSpecificImpulse();
 		case 15:
-			return "" + Math.round(getFuelEfficiency() * 100);
+			return "" + Math.round(getSpecificImpulse() * 100);
 		case 16:
 			return "" + getMinThrust();
 		case 17:
@@ -214,7 +214,7 @@ public class GenShipThruster extends StdShipThruster
 			setSpecificImpulse(CMath.s_parseLongExpression(val));
 			break;
 		case 15:
-			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			setSpecificImpulse(CMath.s_parseMathExpression(val) / 100.0);
 			break;
 		case 16:
 			setMinThrust(CMath.s_parseIntExpression(val));

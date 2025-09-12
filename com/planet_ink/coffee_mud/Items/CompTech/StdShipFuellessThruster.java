@@ -46,8 +46,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	protected int			maxThrust		= 8900000;
 	protected int			minThrust		= 0;
 	protected double		thrust			= 0;
-	protected long			specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
-	protected double		fuelEfficiency	= 0.33;
+	protected double		specificImpulse	= 0.33;
 	protected boolean		constantThrust	= true;
 	protected final long[]	lastThrustMs	= new long[] { 0 };
 
@@ -76,18 +75,6 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public double getFuelEfficiency()
-	{
-		return fuelEfficiency;
-	}
-
-	@Override
-	public void setFuelEfficiency(final double amt)
-	{
-		fuelEfficiency = amt;
-	}
-
-	@Override
 	public int getMaxThrust()
 	{
 		return maxThrust;
@@ -112,13 +99,13 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public long getSpecificImpulse()
+	public double getSpecificImpulse()
 	{
 		return specificImpulse;
 	}
 
 	@Override
-	public void setSpecificImpulse(final long amt)
+	public void setSpecificImpulse(final double amt)
 	{
 		specificImpulse = amt;
 	}

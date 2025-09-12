@@ -1444,11 +1444,7 @@ public class ItemData extends StdWebMacro
 						break;
 					case SPECIMPULSE:
 						if(I instanceof ShipEngine)
-							str.append((firstTime) ? (""+((ShipEngine)I).getSpecificImpulse()) : old).append(", ");
-						break;
-					case FUELEFFICIENCY:
-						if(I instanceof ShipEngine)
-							str.append((firstTime) ? CMath.toPct(((ShipEngine)I).getFuelEfficiency()) : old).append(", ");
+							str.append((firstTime) ? CMath.toPct(((ShipEngine)I).getSpecificImpulse()) : old).append(", ");
 						break;
 					case INSTALLFACTOR:
 						if(I instanceof TechComponent)

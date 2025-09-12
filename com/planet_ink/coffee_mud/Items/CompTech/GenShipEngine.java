@@ -86,7 +86,7 @@ public class GenShipEngine extends StdShipEngine
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
 										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "MAXTHRUST","SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
+										   "MAXTHRUST","NA","SPECIMPL","MINTHRUST","ISCONST","AVAILPORTS",
 										   "RECHRATE"};
 
 	@Override
@@ -138,7 +138,7 @@ public class GenShipEngine extends StdShipEngine
 		case 15:
 			return "" + getSpecificImpulse();
 		case 16:
-			return "" + Math.round(getFuelEfficiency() * 100);
+			return "" + Math.round(getSpecificImpulse() * 100);
 		case 17:
 			return "" + getMinThrust();
 		case 18:
@@ -219,7 +219,7 @@ public class GenShipEngine extends StdShipEngine
 			setSpecificImpulse(CMath.s_parseLongExpression(val));
 			break;
 		case 16:
-			setFuelEfficiency(CMath.s_parseMathExpression(val) / 100.0);
+			setSpecificImpulse(CMath.s_parseMathExpression(val) / 100.0);
 			break;
 		case 17:
 			setMinThrust(CMath.s_parseIntExpression(val));

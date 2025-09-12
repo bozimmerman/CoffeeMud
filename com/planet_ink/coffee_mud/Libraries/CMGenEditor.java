@@ -5350,7 +5350,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							item=(Item)item.copyOf();
 							if(item !=null)
 							{
-								((Physical)item).recoverPhyStats();
+								item.recoverPhyStats();
 								me.addItem(item);
 							}
 						}
@@ -6228,7 +6228,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			final StringBuilder buf=new StringBuilder();
 			buf.append(showNumber+". ");
-			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),CMLib.english().coordDescShort(E.coordinates().toLongs())));
+			buf.append(L("Radius: @x1, Coords in space: @x2\n\r",CMLib.english().sizeDescShort(E.radius()),
+																CMLib.english().coordDescShort(E.coordinates().toLongs())));
 			buf.append(L("@x1. Moving: ",CMStrings.SPACES.substring(0,(""+showNumber).length())));
 			if(E.speed()<=0)
 				buf.append("no");
@@ -10625,8 +10626,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, L("Min thrust")));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, L("Max thrust")));
 				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, L("Reaction engine")));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, L("Fuel Spec Impulse")));
-				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, L("Fuel Effic. %"))/100.0);
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse()*100.0, ++showNumber, showFlag, L("Fuel Spec Impulse. %"))/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, L("Avail. ports")).toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof ShipDirectional)
@@ -11070,8 +11070,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setMinThrust(prompt(mob, E.getMinThrust(), ++showNumber, showFlag, L("Min thrust")));
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, L("Max thrust")));
 				E.setReactionEngine(prompt(mob, E.isReactionEngine(), ++showNumber, showFlag, L("Reaction based")));
-				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, L("Fuel Spec Impulse")));
-				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, L("Fuel Effic. %"))/100.0);
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse()*100.0, ++showNumber, showFlag, L("Fuel Spec Impulse. %"))/100.0);
 				E.setAvailPorts(CMParms.parseEnumList(ShipDirectional.ShipDir.class,prompt(mob, CMParms.toListString(E.getAvailPorts()), ++showNumber, showFlag, L("Avail. ports")).toUpperCase(),',').toArray(new ShipDirectional.ShipDir[0]));
 			}
 			if(me instanceof TechComponent)

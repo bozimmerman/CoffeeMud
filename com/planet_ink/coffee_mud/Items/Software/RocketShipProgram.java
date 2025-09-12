@@ -494,7 +494,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 					+"Power       : "+E.powerRemaining()+"/"+E.powerCapacity()+"\n\r"
 					+(E.subjectToWearAndTear()
 					?"Status      : "+E.usesRemaining()+"%\n\r":"")
-					+"Efficiency  : "+Math.round(E1.getFuelEfficiency()*100)+"%\n\r"
+					+"Efficiency  : "+Math.round(E1.getSpecificImpulse()*100)+"%\n\r"
 					+"Min Thrust  : "+E1.getMinThrust()+"\n\r"
 					+"Max Thrust  : "+E1.getMaxThrust()+"\n\r"
 					+"Curr Thrust : "+(Math.round(E1.getThrust()*10000)/1000.0)+"\n\r"
@@ -712,7 +712,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 		final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 		if(E.owner() instanceof Room)
 		{
-			if(((Room)E.owner()).okMessage(mob, msg))
+			if(E.owner().okMessage(mob, msg))
 				((Room)E.owner()).send(mob, msg);
 		}
 		else

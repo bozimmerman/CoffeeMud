@@ -37,8 +37,8 @@ import com.planet_ink.coffee_mud.core.collections.LinkedSet.LinkedEntry;
  */
 public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 {
-	private final LinkedSet<Pair<K, J>>					coll	= new LinkedSet<Pair<K, J>>();
-	private final HashMap<K, LinkedEntry<Pair<K, J>>>	map		= new HashMap<K, LinkedEntry<Pair<K, J>>>();
+	private final LinkedSet<Pair<K, J>>	coll	= new LinkedSet<Pair<K, J>>(); // not a list because of concurrentmodification issues
+	private final HashMap<K, Pair<K, J>>map		= new HashMap<K, Pair<K, J>>();
 
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
@@ -130,18 +130,18 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 	@Override
 	public synchronized J put(final K key, final J value)
 	{
-		final LinkedEntry<Pair<K,J>> p;
+		final Pair<K,J> p;
 		if(map.containsKey(key))
 		{
 			p = map.get(key);
-			p.value.second = value;
+			p.second = value;
 		}
 		else
-			p=new LinkedEntry<Pair<K,J>>(new Pair<K,J>(key, value));
+			p=new Pair<K,J>(key, value);
 		coll.add(p);
-		final LinkedEntry<Pair<K,J>> added = map.put(key, p);
+		final Pair<K,J> added = map.put(key, p);
 		if(added != null)
-			return added.value.second;
+			return added.second;
 		return null;
 	}
 
@@ -165,17 +165,16 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 	 * @param key the key to remove
 	 * @return the value that was associated with the key, or null if none
 	 */
-	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public synchronized J remove(final Object key)
 	{
 		if(map.containsKey(key))
 		{
-			final LinkedEntry<Pair<K,J>> l = map.get(key);
+			final Pair<K,J> l = map.get(key);
 			if(coll.remove(l))
 			{
 				map.remove(key);
-				return l.value.second;
+				return l.second;
 			}
 
 		}
@@ -248,8 +247,44 @@ public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 	public synchronized J get(final Object key)
 	{
 		if(map.containsKey(key))
-			return map.get(key).value.second;
+			return map.get(key).second;
 		return null;
+	}
+
+	public synchronized boolean move(final int position, final K key)
+	{
+		if((key==null)||(!map.containsKey(key)))
+			return false;
+		if((position<0)||(position>=coll.size()))
+			return false;
+		final Pair<K,J> pair=map.get(key);
+		if(pair == null)
+			return false;
+		if((position==0)&&(pair == coll.getFirst()))
+			return true;
+		if((position==coll.size()-1)&&(pair == coll.getLast()))
+			return true;
+		if(position == 0)
+		{
+			coll.remove(pair);
+			coll.addFirst(pair);
+		}
+		else
+		if (position == coll.size()) // was size-1, but now it's size
+		{
+			coll.remove(pair);
+			coll.addLast(pair);
+		}
+		else
+		if(coll.remove(pair))
+		{
+			final ListIterator<Pair<K, J>> li = coll.listIterator();
+			for (int i = 0; i < position; i++)
+				li.next();
+			li.add(pair);
+			return true;
+		}
+		return false;
 	}
 
 	/**

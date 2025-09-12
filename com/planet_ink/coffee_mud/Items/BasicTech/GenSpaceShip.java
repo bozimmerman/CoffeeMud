@@ -185,7 +185,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 				newCoordinates = CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
 			else
 			{
-				SpaceObject op = CMLib.space().getSpaceObject(R, false);
+				final SpaceObject op = CMLib.space().getSpaceObject(R, false);
 				if(op != null)
 					newCoordinates = CMLib.space().moveSpaceObject(op.coordinates(), direction(), radius()+radius());
 				else
@@ -312,6 +312,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 						{
 							if(command==Technical.TechCommand.ACCELERATION)
 							{
+								final boolean simulation = msg.targetMajor(CMMsg.MASK_INTERMSG);
 								final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
@@ -326,54 +327,69 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 									case STARBOARD:
 										if(dockR==null)
 										{
-											finalAcceleration = -CMath.mul(amount,0.017);
+											finalAcceleration = -Math.toRadians(amount);
 											effectiveAcceleration = finalAcceleration;
-											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
-											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+											if(!simulation)
+											{
+												CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
+												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+											}
 										}
 										break;
 									case PORT:
 										if(dockR==null)
 										{
-											finalAcceleration = CMath.mul(amount,0.017);
+											finalAcceleration = Math.toRadians(amount);
 											effectiveAcceleration = finalAcceleration;
-											CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
-											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+											if(!simulation)
+											{
+												CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
+												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+											}
 										}
 										break;
 									case DORSEL:
 										if(dockR==null)
 										{
-											finalAcceleration = -CMath.mul(amount,0.017);
+											finalAcceleration = -Math.toRadians(amount);
 											effectiveAcceleration = finalAcceleration;
-											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
-											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+											if(!simulation)
+											{
+												CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
+												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+											}
 										}
 										break;
 									case VENTRAL:
 										if(dockR==null)
 										{
-											finalAcceleration = CMath.mul(amount,0.017);
+											finalAcceleration = Math.toRadians(amount);
 											effectiveAcceleration = finalAcceleration;
-											CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
-											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+											if(!simulation)
+											{
+												CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
+												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+											}
 										}
 										break;
 									case FORWARD:
 									case AFT: // breaking thrusters
 									{
-										if(dockR!=null)
+										if(!simulation)
 										{
-											if(dir == ShipDir.FORWARD)
+											if(dockR!=null)
 											{
-												if(amount > SpaceObject.ACCELERATION_G)
+												if(dir == ShipDir.FORWARD)
 												{
-													unDock(true);
-													dockR=null;
+													if(amount > SpaceObject.ACCELERATION_G)
+													{
+														unDock(true);
+														dockR=null;
+													}
 												}
 											}
 										}
@@ -386,18 +402,20 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											// a non-constant thruster means the ship attains speed in one burst,
 											// and slows in one burst as well.  It is therefore right and good
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
-											this.setSpeed(0);
+											if(!simulation)
+												this.setSpeed(0);
 										}
 										//force/mass is the Gs felt by the occupants.. not force-mass
 										finalAcceleration = amount*inAirFactor;
 										effectiveAcceleration = finalAcceleration-this.speedTick;
-										if((dockR==null) && (effectiveAcceleration > 0))
+										if(((dockR==null) && (effectiveAcceleration > 0))
+										&&(!simulation))
 										{
 											final Dir3D moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
-											CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
+												CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +effectiveAcceleration);
-											this.speedTick += effectiveAcceleration;
+												this.speedTick += effectiveAcceleration;
 											if((speed() < prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
 												setSpeed(0.0);
 										}
@@ -409,7 +427,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 									final MOB mob=CMClass.getFactoryMOB();
 									try
 									{
-										final CMMsg msg2=CMClass.getMsg(mob, this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+										final int msgType = CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG;// | (simulation?CMMsg.MASK_INTERMSG:0);
+										final CMMsg msg2=CMClass.getMsg(mob, this, this, CMMsg.NO_EFFECT, null, msgType, code, CMMsg.NO_EFFECT,null);
 										this.sendComputerMessage(mob, msg2);
 									}
 									finally
@@ -749,7 +768,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 				{
 					if(E.owner() instanceof Room)
 					{
-						if(((Room)E.owner()).okMessage(mob, msg))
+						if(E.owner().okMessage(mob, msg))
 							((Room)E.owner()).send(mob, msg);
 					}
 					else
