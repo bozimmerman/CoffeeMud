@@ -222,78 +222,18 @@ public class ShipNavProgram extends ShipSensorProgram
 	 */
 	protected Double fixInjection(final Double lastInject, final Double lastAcceleration, final double targetAcceleration)
 	{
-		final Double newInject;
-		if(targetAcceleration <= 0)
+		if (targetAcceleration <= 0)
 			return Double.valueOf(0);
-		if(lastAcceleration.doubleValue() < targetAcceleration)
-		{
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .00001))
-				newInject = Double.valueOf(lastInject.doubleValue()*10000.0);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .0001))
-				newInject = Double.valueOf(lastInject.doubleValue()*999.0);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .001))
-				newInject = Double.valueOf(lastInject.doubleValue()*99.0);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .01))
-				newInject = Double.valueOf(lastInject.doubleValue()*5.9);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .1))
-				newInject = Double.valueOf(lastInject.doubleValue()*9.9);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * .5))
-				newInject = Double.valueOf(lastInject.doubleValue()*1.25);
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.9))
-				newInject = Double.valueOf(1.07 * lastInject.doubleValue());
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.95))
-				newInject = Double.valueOf(1.02 * lastInject.doubleValue());
-			else
-			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.99))
-				newInject = Double.valueOf(1.01 * lastInject.doubleValue());
-			else
-				newInject = Double.valueOf(1.001 * lastInject.doubleValue());
-		}
+		if (lastAcceleration == null || lastAcceleration.doubleValue() == 0.0)
+			return Double.valueOf(lastInject.doubleValue() * 10.0);
+		double ratio = targetAcceleration / lastAcceleration.doubleValue();
+		if (ratio > 100.0)
+			ratio = 100.0;
 		else
-		if(lastAcceleration.doubleValue() > targetAcceleration)
-		{
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000000))
-				newInject = Double.valueOf(lastInject.doubleValue()/90000.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 100000))
-				newInject = Double.valueOf(lastInject.doubleValue()/9000.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 10000))
-				newInject = Double.valueOf(lastInject.doubleValue()/900.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000))
-				newInject = Double.valueOf(lastInject.doubleValue()/90.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 100))
-				newInject = Double.valueOf(lastInject.doubleValue()/9.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 10))
-				newInject = Double.valueOf(lastInject.doubleValue()/5.0);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 2))
-				newInject = Double.valueOf(lastInject.doubleValue()/1.25);
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.1))
-				newInject = Double.valueOf(0.93 * lastInject.doubleValue());
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.05))
-				newInject = Double.valueOf(0.98 * lastInject.doubleValue());
-			else
-			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.01))
-				newInject = Double.valueOf(0.99 * lastInject.doubleValue());
-			else
-				newInject = Double.valueOf(0.999 * lastInject.doubleValue());
-		}
-		else
-			newInject=lastInject;
-		return newInject;
+		if (ratio < 0.01)
+			ratio = 0.01;
+		final double dampedRatio = ratio * 0.95;
+		return Double.valueOf(lastInject.doubleValue() * dampedRatio);
 	}
 
 	/**
@@ -1369,11 +1309,22 @@ public class ShipNavProgram extends ShipSensorProgram
 			final long medDistance = Math.round(minDistance + ((maxDistance-minDistance)/2.0));
 			final Dir3D dirToPlanet = CMLib.space().getDirection(ship, targetObject);
 			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
-			if (orbitParams == null)
+			if(orbitParams == null)
 			{
-				final Dir3D targetFacing = (distance < minDistance) ? CMLib.space().getOppositeDir(dirToPlanet) : dirToPlanet;
+				final Dir3D[] perpDirs = CMLib.space().getPerpendicularAngles(dirToPlanet);
+				Dir3D targetFacing = perpDirs[0];
+				double minDiff = CMLib.space().getAngleDelta(ship.direction(), targetFacing);
+				for(int i=1;i<perpDirs.length; i++)
+				{
+					final double diff = CMLib.space().getAngleDelta(ship.direction(), perpDirs[i]);
+					if(diff<minDiff)
+					{
+						targetFacing = perpDirs[i];
+						minDiff = diff;
+					}
+				}
 				changeFacing(ship, targetFacing);
-				targetAcceleration = findTargetAcceleration(programEngines.get(0)) * 0.5;
+				targetAcceleration = findTargetAcceleration(programEngines.get(0)) * 0.6;
 				newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
 				for (final ShipEngine engineE : programEngines)
 					performSimpleThrust(engineE, newInject, false);
@@ -1487,9 +1438,10 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbit."));
 				return;
 			}
-			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
 			final Dir3D targetDir = orbitParams.first;
 			final double targetSpeed = orbitParams.second.doubleValue();
+			/*
+			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
 			final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
 			final double speedDiff = ship.speed() - targetSpeed;
 			if (dirDelta > 0.11 || Math.abs(speedDiff) > 1 || (Math.abs(distance - medDistance) > 150))
@@ -1498,6 +1450,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				//super.addScreenMessage(L("Orbit drift detected, re-aligning."));
 				return;
 			}
+			*/
 			ship.setCoords(newCoords);
 			ship.setFacing(targetDir.copyOf());
 			ship.setDirection(targetDir.copyOf());
