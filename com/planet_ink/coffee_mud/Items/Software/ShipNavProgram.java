@@ -1722,7 +1722,25 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for (final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			final List<SpaceObject> navs = calculateNavigation(ship, programPlanet, allObjects);
+			SpaceObject approachTarget = programPlanet;
+			final long distance = CMLib.space().getDistanceFrom(ship, programPlanet);
+			final double maxDistance = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
+			final double minDistance = programPlanet.radius() + CMath.mul(0.75, maxDistance - programPlanet.radius());
+			final long medDistance = Math.round(minDistance + ((maxDistance - minDistance) / 2.0));
+			List<SpaceObject> navs;
+			if (distance < (programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS * 0.75))
+			{
+				final Dir3D dirFromPlanetToShip = CMLib.space().getDirection(programPlanet, ship);
+				final Coord3D orbitalPointCoords = CMLib.space().moveSpaceObject(programPlanet.coordinates(), dirFromPlanetToShip, medDistance);
+				final SpaceObject orbitalPoint = (SpaceObject) CMClass.getBasicItem("Moonlet");
+				orbitalPoint.setRadius(ship.radius());
+				orbitalPoint.setName(L("Orbital Point"));
+				orbitalPoint.setCoords(orbitalPointCoords);
+				approachTarget = orbitalPoint;
+				navs = calculateNavigation(ship, orbitalPoint, allObjects);
+			}
+			else
+				navs = calculateNavigation(ship, programPlanet, allObjects);
 			if (navs == null)
 			{
 				addScreenMessage(L("Error: Unable to navigate to orbital position."));
@@ -1730,7 +1748,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final List<ShipEngine> approachEngines = new XVector<ShipEngine>(engineE);
-			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, programPlanet, approachEngines, new XLinkedList<SpaceObject>(navs));
+			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, approachTarget, approachEngines, new XLinkedList<SpaceObject>(navs));
 			final ShipNavTrack orbitTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines, Long.valueOf(-1));
 			navTrack.setNextTrack(orbitTrack);
 			addScreenMessage(L("Orbit procedure initiated."));
