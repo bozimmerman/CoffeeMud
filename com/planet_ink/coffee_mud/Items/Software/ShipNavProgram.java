@@ -215,30 +215,6 @@ public class ShipNavProgram extends ShipSensorProgram
 	/**
 	 * Generate a new engine injection amount from a previous and desired acceleration.
 	 *
-	 * @param lastInject the last injection amount
-	 * @param lastAcceleration the previous acceleration in dm/s
-	 * @param targetAcceleration the target acceleration in dm/s
-	 * @return the new injection amount
-	 */
-	protected Double fixInjection(final Double lastInject, final Double lastAcceleration, final double targetAcceleration)
-	{
-		if (targetAcceleration <= 0)
-			return Double.valueOf(0);
-		if (lastAcceleration == null || lastAcceleration.doubleValue() == 0.0)
-			return Double.valueOf(lastInject.doubleValue() * 10.0);
-		double ratio = targetAcceleration / lastAcceleration.doubleValue();
-		if (ratio > 100.0)
-			ratio = 100.0;
-		else
-		if (ratio < 0.01)
-			ratio = 0.01;
-		final double dampedRatio = ratio * 0.95;
-		return Double.valueOf(lastInject.doubleValue() * dampedRatio);
-	}
-
-	/**
-	 * Generate a new engine injection amount from a previous and desired acceleration.
-	 *
 	 * @param newInject the last injection amount
 	 * @param targetAcceleration the target acceleration in dm/s
 	 * @return the new injection amount
@@ -250,7 +226,26 @@ public class ShipNavProgram extends ShipSensorProgram
 		if((this.savedAcceleration !=null)
 		&&(newInject != null)
 		&& (targetAcceleration != 0.0))
-			newInject=fixInjection(newInject,this.savedAcceleration,targetAcceleration);
+		{
+			if (targetAcceleration <= 0)
+				newInject=Double.valueOf(0);
+			else
+			if (this.savedAcceleration == null || this.savedAcceleration.doubleValue() == 0.0)
+				newInject = Double.valueOf(0.5);
+			else
+			{
+				double ratio = targetAcceleration / this.savedAcceleration.doubleValue();
+				if (ratio > 100.0)
+					ratio = 100.0;
+				else
+				if (ratio < 0.01)
+					ratio = 0.01;
+				final double dampedRatio = ratio * 0.95;
+				newInject = Double.valueOf(lastInject.doubleValue() * dampedRatio);
+			}
+		}
+		if (newInject != null)
+			newInject = Double.valueOf(Math.max(0.0, Math.min(1.0, newInject.doubleValue())));
 		return newInject;
 	}
 
