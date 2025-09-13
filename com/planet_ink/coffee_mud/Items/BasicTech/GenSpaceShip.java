@@ -157,7 +157,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 		if((CMSecurity.isDebugging(DbgFlag.SPACESHIP))&&(getIsDocked()==null))
 			Log.debugOut("SpaceShip "+name()+" is docking at '"+R.displayText()+"' ("+R.roomID()+")");
 		if(R instanceof LocationRoom)
-			setCoords(CMLib.space().moveSpaceObject(((LocationRoom)R).coordinates(), ((LocationRoom)R).getDirectionFromCore(), radius()));
+			setCoords(((LocationRoom)R).coordinates());
 		CMLib.space().delObjectInSpace(getShipSpaceObject());
 		setSpeed(0);
 		super.dockHere(R);
