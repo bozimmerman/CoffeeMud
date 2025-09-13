@@ -228,10 +228,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public Room getIsDocked()
 	{
-		if (area instanceof Boardable)
-			return ((Boardable)area).getIsDocked();
 		if(owner() instanceof Room)
 			return ((Room)owner());
+		if (area instanceof Boardable)
+			return ((Boardable)area).getIsDocked();
 		return null;
 	}
 

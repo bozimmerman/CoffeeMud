@@ -354,7 +354,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				}
 				else
 				{
-					str.append(L("\n\rThis system is ready to receive software."));
+					boolean found=false;
+					for(final Item I : getContents())
+						found=found || (I instanceof Software);
+					if(found)
+						str.append(L("\n\rThe system is booting up."));
+					else
+						str.append(L("\n\rThis system is ready to receive software."));
 				}
 			}
 		}

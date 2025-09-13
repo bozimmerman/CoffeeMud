@@ -292,6 +292,26 @@ public class BigVector implements Comparable<BigVector>
 	}
 
 	/**
+	 * Converts a 3D Cartesian coordinate BigVector to a Dir3D direction. The x
+	 * and y components are used to calculate the yaw (azimuthal angle), and the
+	 * z component is used to calculate the pitch (polar angle).
+	 *
+	 * @return the Dir3D direction
+	 * @throws IllegalArgumentException if this vector is not 3-dimensional
+	 */
+	public Dir3D toDir3D()
+	{
+		if (b.length != 3)
+			throw new IllegalArgumentException("Different 3D dimensions");
+		final double x = b[0].doubleValue();
+		final double y = b[1].doubleValue();
+		final double z = b[2].doubleValue();
+		final double yaw = Math.atan2(y, x);
+		final double pitch = Math.acos(Math.max(-1.0, Math.min(1.0, z)));
+		return new Dir3D(BigDecimal.valueOf(yaw), BigDecimal.valueOf(pitch));
+	}
+
+	/**
 	 * Returns the distance between this vector and the given vector.
 	 *
 	 * @param v the other vector
@@ -618,5 +638,30 @@ public class BigVector implements Comparable<BigVector>
 				return c;
 		}
 		return 0;
+	}
+
+	/**
+	 * Returns the cross product of this vector and the given vector.
+	 * @param v the other vector
+	 * @return the cross product of this vector and the given vector
+	 */
+	public BigVector crossProduct(final BigVector v)
+	{
+		return this.vectorProduct(v);
+	}
+
+	/**
+	 * Converts this Cartesian vector (x,y,z) to a spherical direction (yaw, pitch).
+	 * Assumes the vector is normalized (unit length); if not, normalize first.
+	 * Yaw (xy): atan2(y, x) in [-PI, PI]
+	 * Pitch (z): acos(z) in [0, PI]
+	 * @return Dir3D representing the spherical angles
+	 */
+	public Dir3D cartesianToSphere()
+	{
+		final double[] doubles = this.toDoubles();
+		final double yaw = Math.atan2(doubles[1], doubles[0]);
+		final double pitch = Math.acos(Math.max(-1.0, Math.min(1.0, doubles[2])));
+		return new Dir3D(BigDecimal.valueOf(yaw), BigDecimal.valueOf(pitch));
 	}
 }

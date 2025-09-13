@@ -235,17 +235,18 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 
 	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, final ShipDir portDir, double thrust)
 	{
-		if((portDir != ShipDir.AFT)&&(portDir != ShipDir.FORWARD))
+		if((portDir != ShipDir.AFT) && (portDir != ShipDir.FORWARD))
 			thrust = 1.0;
-		final int fuel=(int)Math.round(
-			CMath.ceiling(thrust /
-					(getFuelFactor()
-					* (me.getMinThrust() + (me.getMaxThrust()-me.getMinThrust())/2.0) // bigger engines naturally more efficient?
-					* me.getSpecificImpulse()
-					* Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())))));
-		if((thrust>0)&&(fuel<=0))
-			return 1;
-		return fuel;
+		final SpaceObject ship = CMLib.space().getSpaceObject(me, true);
+		final double shipMass = (ship != null)?ship.getMass():1e6;
+		final double efficiency = manufacturer.getEfficiencyPct();
+		final double isp = me.getSpecificImpulse();
+		final double normThrust = thrust/1e6;
+		final double normMass = shipMass/1e6;
+		final double fuelScale = 1.0;
+		final double rawFuel =(normThrust*normMass)/(isp*efficiency)*fuelScale;
+		final int fuel = (int) Math.round(rawFuel);
+		return ((thrust>0)&&(fuel <= 0)) ? 1 : fuel;
 	}
 
 	public static double getInjectedThrust(final ShipEngine me, final double injection)

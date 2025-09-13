@@ -347,4 +347,9 @@ public class Coord3D extends BigVector
 		}
 		return super.equals(o);
 	}
+
+	public Coord3D crossProduct(final Coord3D v)
+	{
+		return new Coord3D(super.vectorProduct(v));
+	}
 }

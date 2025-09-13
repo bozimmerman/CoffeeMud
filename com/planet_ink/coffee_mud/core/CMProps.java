@@ -2288,7 +2288,7 @@ public class CMProps extends Properties
 		if(objs[var.ordinal()]==null)
 		{
 			objs[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
-			p.sysLstFileSet[var.ordinal()]=null;
+			//p.sysLstFileSet[var.ordinal()]=null; // OMG WHY?????
 		}
 		return ((String[])objs[var.ordinal()]);
 	}
@@ -2318,7 +2318,7 @@ public class CMProps extends Properties
 					finalPairs.add(new Pair<String,String>(pair.get(0).trim(), pair.get(1).trim()));
 			}
 			objs[var.ordinal()]=finalPairs.toArray(new Pair[pairStrs.size()]);
-			p.sysLstFileSet[var.ordinal()]=null;
+			//p.sysLstFileSet[var.ordinal()]=null; // OMG WHY?????
 		}
 		return ((Pair[])objs[var.ordinal()]);
 	}
@@ -2379,7 +2379,7 @@ public class CMProps extends Properties
 					finalArray[s]=CMParms.toStringArray(CMParms.parseAny(baseArray[s], '|', false));
 			}
 			objs[var.ordinal()]=finalArray;
-			p.sysLstFileSet[var.ordinal()]=null;
+			//p.sysLstFileSet[var.ordinal()]=null; // OMG WHY?!
 		}
 		return (Object[][])objs[var.ordinal()];
 	}
@@ -2415,7 +2415,7 @@ public class CMProps extends Properties
 				}
 			}
 			objs[var.ordinal()]=finalSet;
-			p.sysLstFileSet[var.ordinal()]=null;
+			//p.sysLstFileSet[var.ordinal()]=null; // OMG WHY?!
 		}
 		return (Object[][][])objs[var.ordinal()];
 	}

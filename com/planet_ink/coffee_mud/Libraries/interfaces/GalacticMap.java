@@ -187,6 +187,18 @@ public interface GalacticMap extends CMLibrary
 	public Pair<Dir3D, Double> calculateOrbit(final SpaceObject o, final SpaceObject p);
 
 	/**
+	 * Given a ship in orbit around a planet, and the old radius of that orbit,
+	 * this will return the new direction and speed to maintain orbit at the
+	 * current radius.
+	 *
+	 * @param ship the ship in orbit
+	 * @param planet the planet being orbited
+	 * @param oldRadius the old radius of the orbit
+	 * @return the new direction and speed and coordinates to maintain orbit
+	 */
+	public Triad<Dir3D, Double, Coord3D> getOrbitalMaintenance(final SpaceShip ship, final SpaceObject planet, final long oldRadius);
+
+	/**
 	 * Given two vectors, this will return the minimum
 	 * distance between the two vectors.
 	 *
@@ -701,7 +713,7 @@ public interface GalacticMap extends CMLibrary
 	 * @param S the ship
 	 * @return the planet or star gravitying the ship, and force.
 	 */
-	public Pair<SpaceObject,Double> getGravityForcer(final SpaceObject S);
+	public Pair<Dir3D,Double> getGravityForcer(final SpaceObject S);
 
 	/**
 	 * Estimates the average orbital speed required to maintain

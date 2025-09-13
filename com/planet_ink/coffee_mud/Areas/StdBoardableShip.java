@@ -51,7 +51,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	private long			expirationDate  = 0;
 	protected boolean   	amDestroyed 	= false;
 	protected String		_name			= "a sailing ship";
-	protected Room			savedDock   	= null;
+	protected Room			savedDock		= null;
 	protected String		displayText 	= "";
 	protected String		description 	= "";
 	protected String		miscText		= "";

@@ -1,14 +1,10 @@
 package com.planet_ink.coffee_mud.Libraries;
-import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
-import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
-import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,10 +47,29 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	protected static final double		ZERO_ALMOST				= 0.000001;
 	protected static final double		PI_TIMES_2				= Math.PI * 2.0;
 
-	protected final int					QUADRANT_WIDTH			= 10;
+	protected final int									QUADRANT_WIDTH	= 10;
+	protected long										tickCounter		= 0;
+	protected final RTree<SpaceObject>					space			= new RTree<SpaceObject>();
+	protected final Map<String, BoundedCube>			sectorMap		= new Hashtable<String, BoundedCube>();
+	protected final Map<SpaceObject, GravityCacheEntry>	gravCache		= new Hashtable<SpaceObject, GravityCacheEntry>();
 
-	protected final RTree<SpaceObject>			space		= new RTree<SpaceObject>();
-	protected final Map<String, BoundedCube>	sectorMap	= new Hashtable<String, BoundedCube>();
+	private static class GravityCacheEntry
+	{
+		public final long	tick;
+		public double		accel;
+		public Dir3D		dir;
+
+		private GravityCacheEntry(final double a, final Dir3D d, final long tick)
+		{
+			accel = a;
+			dir = d;
+			this.tick = tick;
+		}
+		private GravityCacheEntry(final long tick)
+		{
+			this(0.0,null,tick);
+		}
+	}
 
 	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
 	{
@@ -191,23 +206,32 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public String getSectorName(final Coord3D coords)
 	{
-		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
-		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
-		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
+		final String[] xsecs = CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
+		final String[] ysecs = CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
+		final String[] zsecs = CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
 
-		final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
-		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
-		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
+		final int xOffset = xsecs.length / 2;
+		final int yOffset = ysecs.length / 2;
+		final int zOffset = zsecs.length / 2;
+		if ((xOffset * 2 != xsecs.length) || (yOffset * 2 != ysecs.length) || (zOffset * 2 != zsecs.length))
+			throw new IllegalStateException("Sector name lists must have even lengths for symmetry");
 
+		// size of each sector in distance-measure units, covering only -R..+R
+		final long dmsPerXSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / xsecs.length;
+		final long dmsPerYSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / ysecs.length;
+		final long dmsPerZSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / zsecs.length;
+
+		// which sector index the coord falls into
 		final long secDeX = coords.x().longValue() / dmsPerXSector;
 		final long secDeY = coords.y().longValue() / dmsPerYSector;
 		final long secDeZ = coords.z().longValue() / dmsPerZSector;
 
-		final StringBuilder sectorName = new StringBuilder("");
-		sectorName.append(xsecs[(int)secDeX + xsecs.length/2]).append(" ");
-		sectorName.append(ysecs[(int)secDeY + ysecs.length/2]).append(" ");
-		sectorName.append(zsecs[(int)secDeZ + zsecs.length/2]);
-		return sectorName.toString();
+		// shift by offset so 0 is centered, wrap safely into bounds
+		final int fSecDeX = Math.floorMod((int) (secDeX + xOffset), xsecs.length);
+		final int fSecDeY = Math.floorMod((int) (secDeY + yOffset), ysecs.length);
+		final int fSecDeZ = Math.floorMod((int) (secDeZ + zOffset), zsecs.length);
+
+		return xsecs[fSecDeX] + " " + ysecs[fSecDeY] + " " + zsecs[fSecDeZ];
 	}
 
 	@Override
@@ -217,9 +241,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
 
-		final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
-		final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
-		final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
+		final long dmsPerXSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / xsecs.length;
+		final long dmsPerYSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / ysecs.length;
+		final long dmsPerZSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / zsecs.length;
 
 		final Coord3D sectorCoords = coords.copyOf();
 		if(sectorCoords.x().longValue()<0)
@@ -244,40 +268,32 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 			final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 			final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
+			final int xOffset = xsecs.length / 2;
+			final int yOffset = ysecs.length / 2;
+			final int zOffset = zsecs.length / 2;
+			if (xOffset * 2 != xsecs.length || yOffset * 2 != ysecs.length || zOffset * 2 != zsecs.length)
+				throw new IllegalStateException("Sector name lists must have even lengths for symmetry");
 
-			final long dmsPerXSector = (SpaceObject.Distance.GalaxyRadius.dm / (xsecs.length)) * 2L;
-			final long dmsPerYSector = (SpaceObject.Distance.GalaxyRadius.dm / (ysecs.length)) * 2L;
-			final long dmsPerZSector = (SpaceObject.Distance.GalaxyRadius.dm / (zsecs.length)) * 2L;
-			for(long x=0;x<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
-			{
-				for(long y=0;y<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
-				{
-					for(long z=0;z<=SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
-					{
-						final Coord3D coords = new Coord3D(new long[] {x, y, z});
-						final BoundedCube cube = new BoundedCube(x,x+dmsPerXSector,y,y+dmsPerYSector,z,z+dmsPerZSector);
-						final String name = getSectorName(coords);
-						if(tempMap.containsKey(name) || (coords.z().longValue()<0L))
-							Log.errOut("Argh!");
-						else
-							tempMap.put(name, cube);
-					}
-				}
-			}
-			for(long x=dmsPerXSector;x<SpaceObject.Distance.GalaxyRadius.dm-dmsPerXSector;x+=dmsPerXSector)
+			final long dmsPerXSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / xsecs.length;
+			final long dmsPerYSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / ysecs.length;
+			final long dmsPerZSector = (2L * SpaceObject.Distance.GalaxyRadius.dm) / zsecs.length;
+
+			for (long x = -SpaceObject.Distance.GalaxyRadius.dm; x < SpaceObject.Distance.GalaxyRadius.dm; x += dmsPerXSector)
 			{
 				final long maxX = Math.min(x + dmsPerXSector, SpaceObject.Distance.GalaxyRadius.dm);
-				for(long y=dmsPerYSector;y<SpaceObject.Distance.GalaxyRadius.dm-dmsPerYSector;y+=dmsPerYSector)
+				for (long y = -SpaceObject.Distance.GalaxyRadius.dm; y < SpaceObject.Distance.GalaxyRadius.dm; y += dmsPerYSector)
 				{
 					final long maxY = Math.min(y + dmsPerYSector, SpaceObject.Distance.GalaxyRadius.dm);
-					for(long z=dmsPerZSector;z<SpaceObject.Distance.GalaxyRadius.dm-dmsPerZSector;z+=dmsPerZSector)
+					for (long z = -SpaceObject.Distance.GalaxyRadius.dm; z < SpaceObject.Distance.GalaxyRadius.dm; z += dmsPerZSector)
 					{
 						final long maxZ = Math.min(z + dmsPerZSector, SpaceObject.Distance.GalaxyRadius.dm);
-						final Coord3D coords = new Coord3D(new long[] {-x, -y, -z});
-						final BoundedCube cube = new BoundedCube(-x,maxX,-y,maxY,-z,maxZ);
+
+						final Coord3D coords = new Coord3D(new long[] { x, y, z });
+						final BoundedCube cube = new BoundedCube(x, maxX, y, maxY, z, maxZ);
 						final String name = getSectorName(coords);
-						if(tempMap.containsKey(name) || (coords.z().longValue()>0L))
-							Log.errOut("Argh!!");
+
+						if (tempMap.containsKey(name))
+							Log.errOut("Duplicate sector name: " + name);
 						else
 							tempMap.put(name, cube);
 					}
@@ -317,7 +333,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			dotProd=BigCMath.ONE;
 		if(dotProd.compareTo(BigCMath.MIN_ONE)<0)
 			dotProd=BigCMath.MIN_ONE;
-		final double finalDelta = Math.acos(dotProd.doubleValue());
+		final double finalDelta = BigCMath.acos(dotProd).doubleValue();
 		if(Double.isNaN(finalDelta) || Double.isInfinite(finalDelta))
 		{
 			Log.errOut("NaN finalDelta = "+ finalDelta+"= ("+fromAngle.xy()+","+fromAngle.z()+") -> ("+toAngle.xy()+","+toAngle.z()+")");
@@ -350,14 +366,17 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public Dir3D getMiddleAngle(final Dir3D angle1, final Dir3D angle2)
 	{
-		final Dir3D middleAngle = new Dir3D (angle1.xy(), angle1.z());
-		if(!angle1.xy().equals(angle2.xy()))
-		{
-			final BigDecimal xyd = getShortestYawDelta(angle1.xy(),angle2.xy());
-			middleAngle.xy(middleAngle.xy().add(xyd.divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP)));
-		}
-		middleAngle.z((angle1.z().add(angle2.z())).divide(BigCMath.TWO,Dir3D.SCALE,RoundingMode.UP));
-		return middleAngle;
+		final BigVector v1 = new BigVector(angle1).sphereToCartesian();
+		final BigVector v2 = new BigVector(angle2).sphereToCartesian();
+		final BigVector sum = v1.add(v2);
+		final BigDecimal mag = sum.magnitude();
+		if (mag.compareTo(BigCMath.ZERO) == 0)
+			return angle1.copyOf(); // fallback if perfect cancel
+		final BigVector unit = sum.scalarProduct(BigCMath.ONE.divide(mag, BigVector.SCALE, BigVector.ROUND));
+		final double[] unitDoubles = unit.toDoubles();
+		final double yaw = Math.atan2(unitDoubles[1], unitDoubles[0]);
+		final double pitch = Math.acos(Math.max(-1.0, Math.min(1.0, unitDoubles[2])));
+		return new Dir3D(BigDecimal.valueOf(yaw), BigDecimal.valueOf(pitch));
 	}
 
 	@Override
@@ -474,8 +493,6 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if((nearFinalYawDelta.compareTo(yawMin)<0)&&(yawDelta.compareTo(yawMin)>0))
 				nearFinalYawDelta = yawMin;
 			newDirectionYaw = curDirectionYaw.add(nearFinalYawDelta.multiply(yawSign));
-			if((newDirectionYaw.compareTo(BigCMath.ZERO) > 0) && ((BigCMath.PI_TIMES_2.subtract(newDirectionYaw)).compareTo(BigCMath.ZERO_ALMOST)<0))
-				newDirectionYaw=BigCMath.ZERO;
 		}
 		final BigDecimal pitchMin = BigCMath.POINT1;
 		if(pitchDelta.compareTo(pitchMin)<=0)
@@ -567,7 +584,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		if(yD >= 315.0 || yD<45.0)
 			return ShipDir.FORWARD;
 		if(yD >= 135.0 && yD <225.0)
-			return ShipDir.VENTRAL;
+			return ShipDir.AFT;
 		if(yD >= 45.0 && yD <135.0)
 			return ShipDir.PORT;
 		if(yD >= 225.0 && yD <315.0)
@@ -631,16 +648,13 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal z=toCoords.z().subtract(fromCoords.z());
 		final BigDecimal xy = x.multiply(x).add(y.multiply(y));
 		if((x.doubleValue()!=0)||(y.doubleValue()!=0))
-		{
-			final BigDecimal sqrtxy = BigCMath.sqrt(xy);
-			final BigDecimal ybysqrtxy=y.divide(sqrtxy,50,RoundingMode.HALF_EVEN);
-			if(x.doubleValue()<0)
-				dir.xy(Math.PI-Math.asin(ybysqrtxy.doubleValue()));
-			else
-				dir.xy(Math.asin(ybysqrtxy.doubleValue()));
-		}
+			dir.xy(BigCMath.atan2(y,x));
 		if((x.doubleValue()!=0)||(y.doubleValue()!=0)||(z.doubleValue()!=0))
-			dir.z(Math.acos(z.divide(BigCMath.sqrt(z.multiply(z).add(xy)),50,RoundingMode.HALF_EVEN).doubleValue()));
+		{
+			final BigDecimal zNorm = z.divide(BigCMath.sqrt(z.multiply(z).add(xy)), BigVector.SCALE, BigVector.ROUND)
+					 .max(BigCMath.MIN_ONE).min(BigCMath.ONE);
+			dir.z(BigVector.acos(zNorm));
+		}
 		return dir;
 	}
 
@@ -938,11 +952,21 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			final Coord3D P0S=new Coord3D(moveSpaceObject(runnerO.coordinates(), runnerO.direction(), Math.round(runnerO.speed())));
 			final Coord3D V0=P0S.subtract(P0);
 			final BigDecimal S1=BigDecimal.valueOf(speedToUse);
-			BigDecimal A=V0.dotProduct(V0).subtract(S1.multiply(S1));
-			if(A.doubleValue()==0.0)
+			final BigDecimal A=V0.dotProduct(V0).subtract(S1.multiply(S1));
+			if(A.compareTo(BigCMath.ZERO_ALMOST) <= 0)
 			{
-				final Coord3D V01=new Coord3D(V0.x().add(BigDecimal.ONE),V0.y(),V0.z());
-				A=V01.dotProduct(V01).subtract(S1.multiply(S1));
+				final BigDecimal perpDist = V0.crossProduct(P1.subtract(P0)).magnitude();
+				if (perpDist.compareTo(BigDecimal.valueOf(chaserO.radius() + runnerO.radius())) > 0)
+					return null; // no intersection
+				final BigDecimal projT = P0.subtract(P1).dotProduct(V0).divide(V0.dotProduct(V0), Coord3D.SCALE, Coord3D.ROUND);
+				if (projT.compareTo(BigDecimal.ZERO) < 0)
+					return null;
+				final Coord3D intersectPt = P0.add(new Coord3D(V0.scalarProduct(projT)));
+				final Dir3D finalDir = getDirection(chaserO.coordinates(), intersectPt);
+				final long timeToIntercept = projT.multiply(S1).longValueExact();
+				if (timeToIntercept > maxTicks * speedToUse)
+					return null;
+				return new Pair<Dir3D, Long>(finalDir, Long.valueOf(speedToUse));
 			}
 			final BigDecimal B=BigCMath.TWO.multiply(P0.dotProduct(V0).add(P1.scalarProduct(BigCMath.ONE.negate()).dotProduct(V0)));
 			final BigDecimal C=P0.dotProduct(P0).add(P1.dotProduct(P1)).add(P1.scalarProduct(BigCMath.TWO.negate()).dotProduct(P0));
@@ -991,7 +1015,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal e = d2x.multiply(w0x).add(d2y.multiply(w0y)).add(d2z.multiply(w0z));
 
 		final BigDecimal denom = a.multiply(c).subtract(b.multiply(b));
-		if (denom.doubleValue() < 0.001)
+		final BigDecimal SMALL_DENOM = BigDecimal.valueOf(0.001);
+		if((denom.compareTo(SMALL_DENOM.negate())>0)&&(denom.compareTo(SMALL_DENOM)<0))
 		{
 			// Parallel: min of 4 endpoint-to-segment distances
 			final double d11 = pointToSegmentDistance(vec2s, vec1s, vec1e);
@@ -1053,7 +1078,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final BigDecimal apy = p.y().subtract(a.y());
 		final BigDecimal apz = p.z().subtract(a.z());
 
-		BigDecimal tt = apx.multiply(abx).add(apy.multiply(aby)).add(apz.multiply(abz)).divide(len2, Dir3D.SCALE, RoundingMode.HALF_UP);
+		BigDecimal tt = apx.multiply(abx).add(apy.multiply(aby)).add(apz.multiply(abz)).divide(len2, 64, RoundingMode.HALF_UP);
 		if (tt.compareTo(BigDecimal.ZERO) < 0)
 			tt = BigDecimal.ZERO;
 		else if (tt.compareTo(BigDecimal.ONE) > 0)
@@ -1097,8 +1122,43 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public Triad<Dir3D, Double, Coord3D> getOrbitalMaintenance(final SpaceShip ship, final SpaceObject planet, final long desiredRadius)
+	{
+		if (planet == null)
+			return null;
+		final Coord3D currentCoords = ship.coordinates();
+		final long currentRadius = CMLib.space().getDistanceFrom(currentCoords, planet.coordinates());
+		final Dir3D radial = CMLib.space().getDirection(ship, planet);
+		final Dir3D currentDir = ship.direction();
+		final double g = CMLib.space().getGravityForce(ship, planet);
+		final double baseSpeed = Math.sqrt(g * desiredRadius);
+		final long drift = currentRadius - desiredRadius;
+		final double dv = (Math.abs(drift) / (double) desiredRadius) * baseSpeed * Math.signum(drift);
+		final double candidateSpeed = baseSpeed + dv;
+		final BigVector radialVec = new BigVector(radial).sphereToCartesian();
+		final BigVector currentVec = new BigVector(currentDir).sphereToCartesian();
+		final BigVector perpVec = radialVec.crossProduct(currentVec);
+		final BigDecimal perpMag = perpVec.magnitude();
+		BigVector unitPerpVec;
+		if (perpMag.compareTo(BigCMath.ZERO) == 0)
+			unitPerpVec = new BigVector(BigCMath.ZERO, BigCMath.ONE, BigCMath.ZERO);
+		else
+			unitPerpVec = perpVec.scalarProduct(BigCMath.ONE.divide(perpMag, BigVector.SCALE, BigVector.ROUND));
+		final double blendFactor = 0.1;
+		final BigVector blendedVec = currentVec.scalarProduct(BigDecimal.valueOf(1.0 - blendFactor)).add(unitPerpVec.scalarProduct(BigDecimal.valueOf(blendFactor)));
+		final Dir3D candidateDir = blendedVec.cartesianToSphere();
+		candidateDir.z(BigCMath.PI_BY_2);
+		final Dir3D targetDir = candidateDir;
+		final double targetSpeed = candidateSpeed;
+		final Coord3D orbitalPoint = CMLib.space().moveSpaceObject(planet.coordinates(), CMLib.space().getOppositeDir(radial), desiredRadius);
+		return new Triad<Dir3D, Double, Coord3D>(targetDir, Double.valueOf(targetSpeed), orbitalPoint);
+	}
+
+	@Override
 	public Pair<Dir3D, Double> calculateOrbit(final SpaceObject o, final SpaceObject p)
 	{
+		if((o == null)||(p == null)||(o.getMass() <= 0)||(p.getMass() <= 0))
+			return null;
 		final double force = getGravityForce(o, p);
 		if(force > 0.0)
 		{
@@ -1185,8 +1245,12 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	protected List<Coord3D> plotFullCourse(final Coord3D osrc, final long sradius, final Coord3D otarget, final long tradius,
-									   final Set<Coord3D> exceptions, final Set<Coord3D> ignoreTargets)
+									   final Set<Coord3D> exceptions, final Set<Coord3D> ignoreTargets, final int depth)
 	{
+		final int MAX_DEPTH = 50;
+		if (depth > MAX_DEPTH)
+			return null;
+
 		final List<Coord3D> course = new LinkedList<Coord3D>();
 		final Coord3D src=osrc.copyOf();
 		final Coord3D target = otarget.copyOf();
@@ -1276,7 +1340,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				{
 					final Set<Coord3D> ignore = new XHashSet<Coord3D>(ignoreTargets);
 					ignore.add(newSubTarget);
-					final List<Coord3D> subCourse =  plotFullCourse(newSubTarget, sradius, target, tradius, exceptions, ignore);
+					final List<Coord3D> subCourse =  plotFullCourse(newSubTarget, sradius, target, tradius, exceptions, ignore, depth+1);
 					if(subCourse != null)
 					{
 						course.add(newSubTarget);
@@ -1297,7 +1361,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		exceptions.add(otarget);
 
 		final HashSet<Coord3D> ignoreTargets = new HashSet<Coord3D>();
-		final List<Coord3D> course = plotFullCourse(osrc, sradius, otarget, tradius, exceptions, ignoreTargets);
+		final List<Coord3D> course = plotFullCourse(osrc, sradius, otarget, tradius, exceptions, ignoreTargets,0);
 		if(course == null)
 			return new ArrayList<Coord3D>();
 		while(course.size()>maxTicks)
@@ -1313,7 +1377,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public double estimateOrbitalSpeed(final SpaceObject planet)
 	{
-		if (planet == null || planet.getMass() <= 0)
+		if((planet == null)||(planet.getMass() <= 0)||(planet.radius() <= 0))
 			return 0.0;
 		final long maxDistance = Math.round(CMath.mul(planet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS));
 		final long minDistance = planet.radius() + Math.round(CMath.mul(0.75, maxDistance - planet.radius()));
@@ -1336,25 +1400,52 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
-	public Pair<SpaceObject,Double> getGravityForcer(final SpaceObject S)
+	public Pair<Dir3D, Double> getGravityForcer(final SpaceObject S)
 	{
-		final BoundedCube baseCube=new BoundedCube(S.coordinates(), SpaceObject.Distance.StarBRadius.dm);
-		SpaceObject rO = null;
-		double rForce = 0;
+		if (S.amDestroyed())
+			return null;
+
+		final GravityCacheEntry entry = gravCache.get(S);
+		if((entry != null)
+		&&(entry.tick == tickCounter))
+		{
+			if (entry.accel > 0.0)
+				return new Pair<Dir3D, Double>(entry.dir, Double.valueOf(entry.accel));
+			return null;
+		}
+		BigVector totalGrav = new BigVector(BigCMath.ZERO, BigCMath.ZERO, BigCMath.ZERO);
+		final BoundedCube baseCube = new BoundedCube(S.coordinates(), 10*SpaceObject.Distance.LightSecond.dm);
 		for(final SpaceObject O : getSpaceObjectsInBound(baseCube))
 		{
-			if(O == S)
+			if((O == S) || (O.amDestroyed()))
 				continue;
-			final double f = getGravityForce(S,O);
-			if(f>rForce)
+			final double f = getGravityForce(S, O);
+			if(f > 0)
 			{
-				rO = O;
-				rForce = f;
+				final Dir3D thisDir = getDirection(S.coordinates(), O.coordinates());
+				final BigVector unitVec = new BigVector(thisDir).sphereToCartesian();
+				final BigVector forceVec = unitVec.scalarProduct(BigDecimal.valueOf(f));
+				totalGrav = totalGrav.add(forceVec); // Sum vectors
 			}
 		}
-		if(rO == null)
-			return null;
-		return new Pair<SpaceObject, Double>(rO,Double.valueOf(rForce));
+		final BigDecimal mag = totalGrav.magnitude();
+		Pair<Dir3D, Double> pair = null;
+		if(mag.compareTo(BigCMath.ZERO) > 0)
+		{
+			final BigVector unit = totalGrav.scalarProduct(BigCMath.ONE.divide(mag, BigVector.SCALE, BigVector.ROUND)); // Normalize
+			final Dir3D gravDir = unit.cartesianToSphere();
+			final double gravForce = mag.doubleValue();
+			pair = new Pair<Dir3D, Double>(gravDir, Double.valueOf(gravForce));
+			final GravityCacheEntry newEntry = new GravityCacheEntry(gravForce, gravDir, tickCounter);
+			gravCache.put(S, newEntry);
+		}
+		else
+		{
+			// Cache zero
+			final GravityCacheEntry zeroEntry = new GravityCacheEntry(tickCounter);
+			gravCache.put(S, zeroEntry);
+		}
+		return pair;
 	}
 
 	@Override
@@ -1423,9 +1514,15 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP)||isDebuggingHARD;
 		final Vector<SpaceObject> space = new XVector<SpaceObject>(getSpaceObjects());
 		Collections.sort(space, speedSorter);
+		tickCounter++;
 		for(final Enumeration<SpaceObject> o = space.elements(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
+			if(O.amDestroyed())
+			{
+				gravCache.remove(O);
+				continue;
+			}
 			if(!(O instanceof Area))
 			{
 				final SpaceShip S=(O instanceof SpaceShip)?(SpaceShip)O:null;
@@ -1448,7 +1545,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				// why are we doing all this for an object that's not even moving?!  Because gravity!
 				//TODO: passify stellar objects that never show up on each others gravitational map, for a period of time
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,2*Math.round(speed)));
+				final List<SpaceObject> cOs=getSpaceObjectsWithin(O, 0, Math.max(10*SpaceObject.Distance.LightSecond.dm,2*Math.round(speed)));
 				final long oMass = O.getMass();
 				// objects should already be sorted by closeness for good collision detection
 				if(isDebuggingHARD && moving)
@@ -1457,8 +1554,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							CMLib.english().directionDescShort(O.direction().toDoubles())+" to "+
 							CMLib.english().coordDescShort(O.coordinates().toLongs()));
 				}
-
-				final Map<SpaceObject, Pair<Dir3D, Double>> forceMap = new HashMap<SpaceObject, Pair<Dir3D, Double>>();
+				BigVector totalGrav = new BigVector(BigCMath.ZERO, BigCMath.ZERO, BigCMath.ZERO);
 				for(final SpaceObject cO : cOs)
 				{
 					if((cO != O)
@@ -1477,16 +1573,9 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
 							final Dir3D directionTo=getDirection(O, cO);
-							Pair<Dir3D, Double> force = forceMap.get(O);
-							if (force == null)
-								force = new Pair<>(directionTo, Double.valueOf(gravitationalMove));
-							else
-							{
-								force.first = getMiddleAngle(force.first, directionTo);
-								force.second = Double.valueOf(gravitationalMove + force.second.doubleValue());
-							}
-							forceMap.put(O, force);
-							inAirFlag = true;
+							final BigVector unitVec = new BigVector(directionTo).sphereToCartesian();
+							final BigVector forceVec = unitVec.scalarProduct(BigDecimal.valueOf(gravitationalMove));
+							totalGrav = totalGrav.add(forceVec);
 						}
 						if((O instanceof Weapon)&&(isDebugging) && moving)
 						{
@@ -1539,12 +1628,24 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						}
 					}
 				}
-				for (final Map.Entry<SpaceObject, Pair<Dir3D, Double>> entry : forceMap.entrySet())
-					accelSpaceObject(entry.getKey(), entry.getValue().first, entry.getValue().second.doubleValue());
+				final BigDecimal mag = totalGrav.magnitude();
+				if(mag.compareTo(BigCMath.ZERO) > 0)
+				{
+					final BigVector unit = totalGrav.scalarProduct(BigCMath.ONE.divide(mag, BigVector.SCALE, BigVector.ROUND));
+					final Dir3D gravDir = unit.cartesianToSphere();
+					final double gravAccel = mag.doubleValue();
+					accelSpaceObject(O, gravDir, gravAccel);
+					final GravityCacheEntry newEntry = new GravityCacheEntry(gravAccel, gravDir, tickCounter);
+					inAirFlag = true;
+					gravCache.put(O, newEntry);
+				}
+				else
+					gravCache.put(O, new GravityCacheEntry(tickCounter));
 				if(S!=null)
 					S.setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,inAirFlag);
 			}
 		}
+		gravCache.keySet().retainAll(space);
 	}
 
 	@Override

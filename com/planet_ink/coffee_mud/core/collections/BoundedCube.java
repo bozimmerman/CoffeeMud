@@ -359,4 +359,11 @@ public class BoundedCube implements Comparable<BoundedObject>, BoundedObject
 	{
 		return this;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "X: " + Long.toString(lx) + " to " + Long.toString(rx) + ", Y: " + Long.toString(ty) + " to " + Long.toString(by) + ", Z: "
+				+ Long.toString(iz) + " to " + Long.toString(oz);
+	}
 }

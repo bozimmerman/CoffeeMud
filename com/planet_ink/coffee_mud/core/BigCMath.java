@@ -65,29 +65,6 @@ public class BigCMath
 		PIPLUS_TIMES_2 = PIPLUS.multiply(BigCMath.TWO);
 	}
 
-	public static BigDecimal atan(final BigDecimal invX)
-	{
-		return atan(invX, SCALE);
-	}
-
-	public static BigDecimal atan(final BigDecimal invX, final int scale)
-	{
-		final BigDecimal invXsq = invX.multiply(invX);
-		BigDecimal num = BigDecimal.ONE.divide(invX, SCALE, ROUND);
-		BigDecimal result = num;
-		BigDecimal term;
-		int i=1;
-		do
-		{
-			num=num.divide(invXsq, SCALE, ROUND);
-			final BigDecimal denom=TWO.multiply(BigDecimal.valueOf(i).add(BigDecimal.ONE));
-			term = num.divide(denom, SCALE, ROUND);
-			result = ((i % 2) == 0) ? result.add(term) : result.subtract(term);
-			i++;
-		} while(term.compareTo(BigDecimal.ZERO) != 0);
-		return result;
-	}
-
 	public static BigDecimal max(final BigDecimal one, final BigDecimal two)
 	{
 		if (one == null)
@@ -125,6 +102,108 @@ public class BigCMath
 		}
 		return x1;
 		*/
+	}
+
+	/**
+	 * Returns the cosine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the cosine of a BigDecimal value.
+	 */
+	public static BigDecimal cos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.cos(d.doubleValue()));
+	}
+
+	/**
+	 * Returns the arc-cosine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the arc-cosine of a BigDecimal value.
+	 */
+	public static BigDecimal acos(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.acos(d.doubleValue()));
+	}
+
+	/**
+	 * Returns the sine of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the sine of a BigDecimal value.
+	 */
+	public static BigDecimal sin(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.sin(d.doubleValue()));
+	}
+
+	/**
+	 * Returns the arc-sine of a BigDecimal value.
+	 * @param d the value
+	 * @return the arc-sine of a BigDecimal value.
+	 */
+	public static BigDecimal asin(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.asin(d.doubleValue()));
+	}
+
+	/**
+	 * Returns the tangent of a BigDecimal value.
+	 *
+	 * @param d the value
+	 * @return the tangent of a BigDecimal value.
+	 */
+	public static BigDecimal tan(final BigDecimal d)
+	{
+		return BigDecimal.valueOf(Math.tan(d.doubleValue()));
+	}
+
+	/**
+	 * Returns the arc-tangent2 of a BigDecimal value.
+	 *
+	 * @param invX the value
+	 * @param invY the value
+	 * @return the arc-tangent of a BigDecimal value.
+	 */
+	public static BigDecimal atan2(final BigDecimal invX, final BigDecimal invY)
+	{
+		return BigDecimal.valueOf(Math.atan2(invX.doubleValue(), invY.doubleValue()));
+	}
+
+	/**
+	 * Returns the arc-tangent of a BigDecimal value.
+	 *
+	 * @param invX the value
+	 * @return the arc-tangent of a BigDecimal value.
+	 */
+	public static BigDecimal atan(final BigDecimal invX)
+	{
+		return atan(invX, SCALE);
+	}
+
+	/**
+	 * Returns the arc-tangent of a BigDecimal value.
+	 *
+	 * @param invX the value
+	 * @param scale the scale to use
+	 * @return the arc-tangent of a BigDecimal value.
+	 */
+	public static BigDecimal atan(final BigDecimal invX, final int scale)
+	{
+		final BigDecimal invXsq = invX.multiply(invX);
+		BigDecimal num = BigDecimal.ONE.divide(invX, SCALE, ROUND);
+		BigDecimal result = num;
+		BigDecimal term;
+		int i=1;
+		do
+		{
+			num=num.divide(invXsq, SCALE, ROUND);
+			final BigDecimal denom=TWO.multiply(BigDecimal.valueOf(i).add(BigDecimal.ONE));
+			term = num.divide(denom, SCALE, ROUND);
+			result = ((i % 2) == 0) ? result.add(term) : result.subtract(term);
+			i++;
+		} while(term.compareTo(BigDecimal.ZERO) != 0);
+		return result;
 	}
 
 }

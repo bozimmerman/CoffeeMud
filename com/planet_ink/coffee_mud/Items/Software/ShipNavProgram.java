@@ -153,7 +153,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		STOP(ShipNavState.STOP, List.class),
 		LAUNCH(ShipNavState.LAUNCHING, SpaceObject.class, List.class),
 		LAND(ShipNavState.PRE_STOP, SpaceObject.class, List.class),
-		ORBIT(ShipNavState.ORBITSEARCH, SpaceObject.class, List.class),
+		ORBIT(ShipNavState.ORBITSEARCH, SpaceObject.class, List.class, Long.class),
 		APPROACH(ShipNavState.APPROACH, SpaceObject.class, List.class, LinkedList.class)
 		;
 
@@ -974,58 +974,41 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected Dir3D graviticCourseAdjustments(final SpaceShip ship, final Dir3D dir)
 	{
-		/*
-		final Pair<SpaceObject, Double> gravitor = CMLib.space().getGravityForcer(ship);
-		if (gravitor != null)
+		final Pair<Dir3D, Double> gravitor = CMLib.space().getGravityForcer(ship);
+		if((gravitor != null)&&(gravitor.second.doubleValue()>0))
 		{
-			final SpaceObject gravObj = gravitor.first;
-			final double gravAccel = gravitor.second.doubleValue(); // dm/s2 from engine logs
-			final Dir3D gravDir = CMLib.space().getDirection(ship.coordinates(), gravObj.coordinates());
+			final Dir3D gravDir = gravitor.first;
+			final double gravAccel = gravitor.second.doubleValue();
 			final Dir3D antiGravDir = CMLib.space().getOppositeDir(gravDir);
-			final long distance = CMLib.space().getDistanceFrom(ship, gravObj);
-			final double gravityRadius = gravObj.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
-
-			// Convert to 3D Cartesian unit vectors
-			final double[] targetVector = dir.toArray3(1.0);
-			final double[] antiGravVector = antiGravDir.toArray3(1.0);
-
-			double weight = gravAccel / this.targetAcceleration.doubleValue();
-			weight = Math.min(weight * (gravityRadius / Math.max(distance, 1.0)), 0.8);
-			final double[] counterVector = new double[3];
-			for (int i = 0; i < 3; i++) {
-				counterVector[i] = (1.0 - weight) * targetVector[i] + weight * antiGravVector[i];
-			}
-			// Normalize counterVector to unit length
+			final double thrustAccel = this.targetAcceleration.doubleValue();
+			if(thrustAccel <= 0)
+				return dir;
+			final double tilt = Math.asin(Math.min(gravAccel / thrustAccel, 1.0));
+			final double weight = Math.sin(tilt);
+			final double[] baseVec = dir.toArray3(1.0);
+			final double[] antiVec = antiGravDir.toArray3(1.0);
+			final double[] blended = new double[3];
+			for(int i=0; i<3; i++)
+				blended[i] = ((1.0 - weight) * baseVec[i]) + (weight * antiVec[i]);
 			double norm = 0.0;
-			for (final double v : counterVector) {
+			for (final double v : blended)
 				norm += v * v;
-			}
 			norm = Math.sqrt(norm);
-			if (norm > 0) {
-				for (int i = 0; i < 3; i++) {
-					counterVector[i] /= norm;
-				}
+			if(norm > BigCMath.ALMOST_ZERO.doubleValue())
+			{
+				for (int i=0; i<3; i++)
+					blended[i] /= norm;
 			}
-			Dir3D newDir = Dir3D.fromArray3(counterVector);
-
-			if (distance < gravObj.radius() * 1.5) {  // Increased threshold for earlier emergency correction
-				newDir = antiGravDir;
-				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP)) {
-					Log.debugOut("Emergency correction: Facing away from gravitor at distance=" + distance);
-				}
+			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			{
+				Log.debugOut(ship.Name(), "gravAccel=" + gravAccel + ", thrust=" + thrustAccel + ", tilt=" + Math.toDegrees(tilt) + "°, targetDir="
+						+ CMLib.english().directionDescShort(dir.toDoubles()) + ", adjustedDir=" + CMLib.english().directionDescShort(blended));
 			}
-
-			if (CMSecurity.isDebugging(DbgFlag.SPACESHIP)) {
-				Log.debugOut(ship.Name(), "gravAccel=" + gravAccel + ", weight=" + weight +
-					", distance=" + distance + ", gravityRadius=" + gravityRadius +
-					", targetDir=" + CMLib.english().directionDescShort(dir.toDoubles()) +
-					", newDir=" + CMLib.english().directionDescShort(newDir.toDoubles()));
-			}
-			return newDir;
+			return Dir3D.fromArray3(blended);
 		}
-		*/
 		return dir;
 	}
+
 	protected void doNavigation(final ShipNavTrack track)
 	{
 		final SpaceObject spaceObj=CMLib.space().getSpaceObject(this,true);
@@ -1050,6 +1033,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						+" state: "+track.state.toString()
 						+", speed: "+	CMLib.english().distanceDescShort(Math.round(ship.speed()))
 						+", dir: "+		CMLib.english().directionDescShort(ship.direction().toDoubles())
+						+", coord:"+	CMParms.toListString(ship.coordinates().toLongs())
 						);
 		}
 
@@ -1158,11 +1142,13 @@ public class ShipNavProgram extends ShipSensorProgram
 						-Math.round(CMath.mul(intTarget.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
 				Dir3D dirToITarget = CMLib.space().getDirection(ship.coordinates(), intTarget.coordinates());
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
+				{
 					Log.debugOut(ship.name(),
 							"Target: " + intTarget.Name()
 						+ ", Dist: " + CMLib.english().distanceDescShort(distToITarget)
 						+ ", Dir: " + CMLib.english().directionDescShort(dirToITarget.toDoubles())
 						);
+				}
 				double directionDiff = CMLib.space().getAngleDelta(ship.direction(), dirToITarget);
 				// see if we've hit a waypoint
 				{
@@ -1303,6 +1289,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					Log.debugOut(ship.name(), "ORBITSEARCH: Initialized savedAcceleration=" + savedAcceleration);
 			}
+			navTrack.setArg(Long.class,Long.valueOf(-1));
 			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
 			final double maxDistance = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
 			final double minDistance = targetObject.radius() + CMath.mul(0.75, maxDistance - targetObject.radius());
@@ -1348,11 +1335,24 @@ public class ShipNavProgram extends ShipSensorProgram
 				final double pitchDelta = Math.abs(angleDiff.zd());
 				final double currentSpeed = ship.speed();
 				final double speedDelta = Math.abs(currentSpeed - targetSpeed);
-				if (yawDelta > 0.01 || pitchDelta > 0.01)
+				if((currentSpeed>targetSpeed* 1.2)&&(distance > medDistance))
 				{
-					final Dir3D thrustDir = targetDir; // Thrust toward targetDir to align velocity
+					targetAcceleration = Math.abs(targetSpeed - currentSpeed)*0.5;
+					final Dir3D retroDir = CMLib.space().getOppositeDir(ship.direction());
+					changeFacing(ship, retroDir);
+					newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
+					for (final ShipEngine engineE : programEngines)
+						performSimpleThrust(engineE, newInject, false);
+					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut(ship.name(), "ORBITSEARCH: Forced decel, speed=" + currentSpeed + " > target=" + targetSpeed);
+				}
+				if((yawDelta>0.01)||(pitchDelta>0.01))
+				{
+					final Dir3D thrustDir = targetDir;
 					final double maxAccel = findTargetAcceleration(programEngines.get(0));
-					targetAcceleration = maxAccel * Math.min((yawDelta + pitchDelta) / Math.PI, 0.5); // Limit to half max for precision
+					targetAcceleration = maxAccel * Math.min((yawDelta + pitchDelta) / Math.PI, 0.5);
+					if (currentSpeed > targetSpeed)
+						targetAcceleration *= 0.4;
 
 					// Simulate thrust to ensure direction improvement
 					final Dir3D testDir = ship.direction().copyOf();
@@ -1380,7 +1380,14 @@ public class ShipNavProgram extends ShipSensorProgram
 				else
 				if (speedDelta > 0.5)
 				{
-					final Dir3D thrustDir = (currentSpeed > targetSpeed) ? CMLib.space().getOppositeDir(targetDir) : targetDir;
+					Dir3D thrustDir;
+					if (currentSpeed > targetSpeed)
+					{
+						thrustDir = CMLib.space().getOppositeDir(ship.direction());
+						changeFacing(ship, thrustDir);
+					}
+					else
+						thrustDir = targetDir;
 					final double maxAccel = findTargetAcceleration(programEngines.get(0));
 					targetAcceleration = maxAccel * Math.min(speedDelta / targetSpeed, 0.5); // Limit to half max for stability
 
@@ -1388,8 +1395,12 @@ public class ShipNavProgram extends ShipSensorProgram
 					final Dir3D testDir = ship.direction().copyOf();
 					final double testSpeed = CMLib.space().accelSpaceObject(testDir, currentSpeed, thrustDir, targetAcceleration);
 					final double testSpeedDelta = Math.abs(testSpeed - targetSpeed);
-
-					if (testSpeedDelta < speedDelta)
+					boolean improves = false;
+					if(currentSpeed > targetSpeed)
+						improves = (testSpeed < currentSpeed);
+					else
+						improves = (testSpeed > currentSpeed);
+					if(improves)
 					{
 						changeFacing(ship, thrustDir);
 						newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
@@ -1400,6 +1411,13 @@ public class ShipNavProgram extends ShipSensorProgram
 									", pitchDelta=" + pitchDelta + ", speedDelta=" + speedDelta +
 									", thrustDir=" + CMLib.english().directionDescShort(thrustDir.toDoubles()) +
 									", accel=" + targetAcceleration + ", inject=" + newInject);
+					}
+					else
+					if(ship.speed()>targetSpeed)
+					{
+						this.stopAllThrust(programEngines, false);
+						if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(ship.name(), "ORBITSEARCH: Over speed, thrust shut down.");
 					}
 					else
 					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
@@ -1423,38 +1441,21 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			if(targetObject==null)
 				break;
-			final double maxDistance = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS);
-			final double minDistance = targetObject.radius() + CMath.mul(0.75, maxDistance - targetObject.radius());
-			final long medDistance = Math.round(minDistance + ((maxDistance-minDistance)/2.0));
-			final Dir3D planetDir = CMLib.space().getDirection(targetObject, ship);
-			final Coord3D oldCoords = ship.coordinates();
-			final Coord3D newCoords = CMLib.space().getLocation(targetObject.coordinates(), planetDir, medDistance);
-			ship.setCoords(newCoords);
-			final Pair<Dir3D, Double> orbitParams = CMLib.space().calculateOrbit(ship, targetObject);
-			ship.setCoords(oldCoords);
+			if(navTrack.getArg(Long.class).longValue()<0)
+				navTrack.setArg(Long.class, Long.valueOf(CMLib.space().getDistanceFrom(ship, targetObject)));
+			final Triad<Dir3D, Double, Coord3D> orbitParams = CMLib.space().getOrbitalMaintenance(ship, targetObject, navTrack.getArg(Long.class).longValue());
 			if (orbitParams == null)
 			{
 				cancelNavigation(false);
-				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbit."));
+				super.addScreenMessage(L("Orbit program aborted: unable to calculate orbital maintenance."));
 				return;
 			}
 			final Dir3D targetDir = orbitParams.first;
 			final double targetSpeed = orbitParams.second.doubleValue();
-			/*
-			final long distance = CMLib.space().getDistanceFrom(ship, targetObject);
-			final double dirDelta = CMLib.space().getAngleDelta(ship.direction(), targetDir);
-			final double speedDiff = ship.speed() - targetSpeed;
-			if (dirDelta > 0.11 || Math.abs(speedDiff) > 1 || (Math.abs(distance - medDistance) > 150))
-			{
-				track.state = ShipNavState.ORBITSEARCH;
-				//super.addScreenMessage(L("Orbit drift detected, re-aligning."));
-				return;
-			}
-			*/
-			ship.setCoords(newCoords);
 			ship.setFacing(targetDir.copyOf());
 			ship.setDirection(targetDir.copyOf());
 			ship.setSpeed(targetSpeed);
+			ship.setCoords(orbitParams.third.copyOf());
 			break;
 		}
 		case LANDING_APPROACH:
@@ -1655,7 +1656,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				addScreenMessage(L("Warning. Previous program cancelled."));
 			final List<ShipEngine> programEngines=new XVector<ShipEngine>(engineE);
 			if(uword.equalsIgnoreCase("ORBIT"))
-				navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
+				navTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines, Long.valueOf(-1));
 			else
 				navTrack = new ShipNavTrack(ShipNavProcess.LAUNCH, programPlanet, programEngines);
 			addScreenMessage(L("Launch procedure initiated."));
@@ -1676,10 +1677,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			SpaceObject programPlanet = null;
-			if (ship.getIsDocked() != null)
-			{
+			if(ship.getIsDocked() != null)
 				programPlanet = CMLib.space().getSpaceObject(ship.getIsDocked(), true);
-			}
 			else
 			{
 				// Find the nearest planet from sensor data
@@ -1732,7 +1731,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			final List<ShipEngine> approachEngines = new XVector<ShipEngine>(engineE);
 			navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, programPlanet, approachEngines, new XLinkedList<SpaceObject>(navs));
-			final ShipNavTrack orbitTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines);
+			final ShipNavTrack orbitTrack = new ShipNavTrack(ShipNavProcess.ORBIT, programPlanet, programEngines, Long.valueOf(-1));
 			navTrack.setNextTrack(orbitTrack);
 			addScreenMessage(L("Orbit procedure initiated."));
 			return false;
@@ -1908,7 +1907,9 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				final ShipNavTrack landTrack = new ShipNavTrack(ShipNavProcess.LAND, landingPlanet, programEngines);
 				navTrack.setNextTrack(landTrack);
-				if(CMLib.space().getGravityForcer(ship) != null)
+				final long distance = CMLib.space().getDistanceFrom(ship, programPlanet);
+				if((CMLib.space().getGravityForcer(ship) != null)
+				&& (distance < (programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS * 0.5)))
 					navTrack.state = ShipNavState.PRE_STOP;
 				addScreenMessage(L("Navigating to orbital position above landing zone: @x1.", landingZone.Name()));
 			}
