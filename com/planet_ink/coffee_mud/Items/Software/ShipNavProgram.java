@@ -334,6 +334,11 @@ public class ShipNavProgram extends ShipSensorProgram
 
 	protected boolean changeFacing(final SpaceShip ship, final Dir3D newFacing)
 	{
+		if(ship.getIsDocked() != null)
+		{
+			ship.setFacing(newFacing);
+			return true;
+		}
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
@@ -1277,6 +1282,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			break;
 		case ORBITSEARCH:
 		{
+
 			if (targetObject == null)
 			{
 				cancelNavigation(false);
@@ -1728,7 +1734,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final double minDistance = programPlanet.radius() + CMath.mul(0.75, maxDistance - programPlanet.radius());
 			final long medDistance = Math.round(minDistance + ((maxDistance - minDistance) / 2.0));
 			List<SpaceObject> navs;
-			if (distance < (programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS * 0.75))
+			if (distance < minDistance)
 			{
 				final Dir3D dirFromPlanetToShip = CMLib.space().getDirection(programPlanet, ship);
 				final Coord3D orbitalPointCoords = CMLib.space().moveSpaceObject(programPlanet.coordinates(), dirFromPlanetToShip, medDistance);
