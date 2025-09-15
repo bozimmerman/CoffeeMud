@@ -155,7 +155,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 */
 	public static enum Distance
 	{
-		Decameter("dm",1L),
+		Decameter("dam",1L),
 		Hectometer("hm",10L),
 		Kilometer("km",100L),
 		Megameter("Mm",100000L),
@@ -163,13 +163,13 @@ public interface SpaceObject extends Environmental, BoundedObject
 		AstroUnit("au",14959787100L),
 		DistanceBetweenStars("sd",946073047258080L*4L),
 		SpaceCombatPointBlank("pb",20000L),
-		LightYear("lY",946073047258080L),
+		LightYear("ly",946073047258080L),
 		LightMonth("lM",946073047258080L/12L),
-		LightDay("lD",946073047258080L/365L),
+		LightDay("ld",946073047258080L/365L),
 		LightHour("lh",946073047258080L/(365L*24L)),
 		LightMinute("lm",946073047258080L/(365L*24L*60L)),
 		LightSecond("ls",946073047258080L/(365L*24L*60L*60L)),
-		Parsec("p",3085677580000000L),
+		Parsec("pc",3085677580000000L),
 		GalaxyRadius("xr",946073047258080L*9000L),
 		MoonRadius("mr",173740L),
 		AsteroidRadius("mr",26300L),

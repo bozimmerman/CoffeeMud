@@ -498,11 +498,11 @@ public class BigVector implements Comparable<BigVector>
 	}
 
 	/**
-	 * Converts a 3D Cartesian coordinate BigVector to a 2D spherical coordinate
-	 * BigVector. The first element is the azimuthal angle in radians, the
-	 * second element is the polar angle in radians.
+	 * Converts a 2D spherical coordinate BigVector to a 3D Cartesian coordinate
+	 * BigVector. The input first element is the azimuthal angle in radians,
+	 * the second element is the polar angle in radians.
 	 *
-	 * @return the spherical coordinate BigVector
+	 * @return the Cartesian coordinate BigVector (unit length)
 	 */
 	public BigVector sphereToCartesian()
 	{

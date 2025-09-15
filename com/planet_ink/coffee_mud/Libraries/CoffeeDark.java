@@ -366,8 +366,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	@Override
 	public Dir3D getMiddleAngle(final Dir3D angle1, final Dir3D angle2)
 	{
-		final BigVector v1 = new BigVector(angle1).sphereToCartesian();
-		final BigVector v2 = new BigVector(angle2).sphereToCartesian();
+		final BigVector v1 = new Dir3D(angle1).sphereToCartesian();
+		final BigVector v2 = new Dir3D(angle2).sphereToCartesian();
 		final BigVector sum = v1.add(v2);
 		final BigDecimal mag = sum.magnitude();
 		if (mag.compareTo(BigCMath.ZERO) == 0)
@@ -1375,6 +1375,24 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public Pair<Dir3D, Double> getNetAccelerationAfterGravity(final SpaceObject ship, final Dir3D thrustDir, final double thrustAccel)
+	{
+		if (thrustAccel <= 0.0)
+			return null;
+		final Pair<Dir3D, Double> grav = getGravityForcer(ship);
+		if (grav == null || grav.second.doubleValue() <= 0.01)
+			return new Pair<Dir3D, Double>(thrustDir, Double.valueOf(thrustAccel));
+		final BigVector gravVec = new BigVector(grav.first).sphereToCartesian().scalarProduct(BigDecimal.valueOf(grav.second.doubleValue()));
+		final BigVector thrustVec = new BigVector(thrustDir).sphereToCartesian().scalarProduct(BigDecimal.valueOf(thrustAccel));
+		final BigVector netVec = thrustVec.subtract(gravVec);
+		final BigDecimal netMag = netVec.magnitude();
+		if (netMag.compareTo(BigCMath.ZERO_ALMOST) <= 0)
+			return null; // Grav wins, no thrust
+		final Dir3D netDir = netVec.cartesianToSphere();
+		return new Pair<Dir3D, Double>(netDir, Double.valueOf(netMag.doubleValue()));
+	}
+
+	@Override
 	public double estimateOrbitalSpeed(final SpaceObject planet)
 	{
 		if((planet == null)||(planet.getMass() <= 0)||(planet.radius() <= 0))
@@ -1393,7 +1411,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 			if (distance < graviRadiusMax)
 			{
 				final double gravityInfluence = calculateGravityForce(distance, graviRadiusMax);
-				return Math.sqrt(CMath.mul(planet.getMass(), gravityInfluence) / orbitalRadius);
+				return Math.sqrt(CMath.mul(gravityInfluence , orbitalRadius));
 			}
 		}
 		return 0.0;

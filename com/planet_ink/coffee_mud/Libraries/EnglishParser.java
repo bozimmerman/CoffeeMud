@@ -535,7 +535,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 		if(min==null)
-			return (sign*d)+"dm";
+			return (sign*d)+"dam";
 		return min;
 	}
 

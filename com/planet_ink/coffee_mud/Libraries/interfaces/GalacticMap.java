@@ -726,6 +726,15 @@ public interface GalacticMap extends CMLibrary
 	public double estimateOrbitalSpeed(final SpaceObject planet);
 
 	/**
+	 * Computes net acceleration and direction after subtracting gravity influence.
+	 * @param ship The ship (for gravity lookup)
+	 * @param thrustDir Desired thrust direction
+	 * @param thrustAccel Raw thrust magnitude (dm/tick²)
+	 * @return Pair<Dir3D netDir, Double netAccel> or null if no meaningful grav
+	 */
+	public Pair<Dir3D, Double> getNetAccelerationAfterGravity(final SpaceObject ship, final Dir3D thrustDir, final double thrustAccel);
+
+	/**
 	 * Given a ship war component, returns the directions in which it is
 	 * currently covering.
 	 *

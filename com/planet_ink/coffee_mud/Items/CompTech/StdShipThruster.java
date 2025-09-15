@@ -325,7 +325,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
 			if(CMSecurity.isDebugging(DbgFlag.SPACEMOVES))
 			{
-				final String word = simulation?"SimThrust: ":"Thrusting: ";
+				final String word = simulation?"Set Thrust: ":"Thrusting: ";
 				Log.debugOut("StdShipThruster",word+me.name()+" dir="+portDir.name()+" amt="+amount+" acc="+acceleration+" fuel="+fuelToConsume);
 			}
 			final String code=TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isReactionEngine()));
