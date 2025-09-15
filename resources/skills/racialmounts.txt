@@ -1,6 +1,7 @@
 #Race	Mount Racial Category	Default Mount Race
 *	Equine	Horse
 Human	Equine	Horse
+Beastkin	Canine	DireWolf
 Drow	Arachnid	GiantSpider
 Duergar	Porcine	DireBoar
 Dwarf	Ursine	DireBear

@@ -1,23 +1,82 @@
-flysting	DRINK	Poison_Sting	1	SOME INSECT GUTS	1	WATER	1										
-beesting	DRINK	Poison_BeeSting	1	SOME INSECT GUTS	1	LEMONS	1										
-bloodboil	DRINK	*Poison_Bloodboil;	5	SOME ZOMBIE BLOOD	1	WATER	1	LEMONS	1								
-peppersauce	DRINK	Poison_Peppersauce	7	PEPPERS	1	WATER	1										
-venom	DRINK	Poison_Venom	10	SOME SNAKE BLOOD	1												
-mindsap	DRINK	Poison_Mindsap	12	LEAD	1	WATER	1	LAMP OIL	1								
+beesting venom	DRINK	Poison_BeeSting	1	SOME INSECT GUTS	1	LEMONS	1										
+glowgell	DRINK	*Poison_Glowgell;	1	HONEY	1	SOME INSECT GUTS	1										
+simple perfume	GenPerfume	smell(s) good.;<S-HAS-HAVE> a grand aroma.;smell(s) flowery.;	1	WATER	1	FLOWERS	1										
+flysting venom	DRINK	Poison_Sting	2	WATER	1	SOME INSECT GUTS	1										
+eau d`garbage	GenPerfume	smell(s) like a rat drowned in a puddle.	2	MILK	1	DIRT	1										
+sickly sniff	GenPerfume	do(es) NOT smell of death!;absolutely do(es) not stink of disease!!!;reek(s) like something other than infection.;could not smell ANY more alive. For real!;shouldn`t even worry about seeing a doctor! Everything is a-okay!	3	SOME UNDEAD BLOOD	1	MUSHROOMS	1										
+Lesser churlening poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	4	SOME HALFLING BLOOD	1	HERBS	1										
+bloodboil poison	DRINK	*Poison_Bloodboil;	5	SOME ZOMBIE BLOOD	1	WATER	1	LEMONS	1								
+precious parfum	GenPerfume	smell(s) of trumpet vines and spring.;<S-HAS-HAVE> a sweet smell of honey and true love.; smell(s) like vanilla and fond memories.	6	WATER	1	VINE	1	FLOWERS	1								
+peppersauce	DRINK	Poison_Peppersauce	7	WATER	1	PEPPERS	1										
+itchysauce	DRINK	Poison_Hives	8	WATER	1	HERBS	1										
+slumberall	DRINK	Poison_Slumberall	9	MILK	1	POULTRY	1	SEAWEED	1								
+snake venom	DRINK	Poison_Venom	10	SOME SNAKE BLOOD	1												
+Lesser toxin	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))*2)	11	SOME ELF BLOOD	1	HERBS	1										
+wood-cutting cologne	GenPerfume	<S-HAS-HAVE> a musky scent.; smell(s) like an unbathed construction worker.;smell(s) like sweat and lumber.;smell(s) underpaid and overworked.	12	LAMP OIL	1	HIDE	1										
+Lesser foggening poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;wis-(6+@x2)	14	SOME CHICKEN BLOOD	1	HERBS	1										
+mindsap poison	DRINK	Poison_Mindsap	13	WATER	1	LAMP OIL	1	LEAD	1								
 heartstopper	DRINK	Poison_Heartstopper	15	LAMP OIL	1	SEAWEED	1	POTATOES	1								
 goblindrip	DRINK	Poison_GoblinDrip	16	SOME GOBLIN BLOOD	1	COPPER	1										
-decrepifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1								
-XXX	DRINK	Poison_XXX	18	SOME SNAKE BLOOD	1	LEAD	1	SOME TROLL BLOOD	1								
-slumberall	DRINK	Poison_Slumberall	9	POULTRY	1	MILK	1	SEAWEED	1								
-glowgell	DRINK	*Poison_Glowgell;	1	SOME INSECT GUTS	1	HONEY	1										
-ghoultouch	DRINK	*Poison_Ghoultouch;	25	SOME GHOUL BLOOD	1	KNUCKLE BONE	1										
-simple perfume	GenPerfume	smell(s) good.;<S-HAS-HAVE> a grand aroma.;smell(s) flowery.;	1	FLOWERS	1	WATER	1										
-eau d`garbage	GenPerfume	smell(s) like a rat drowned in a puddle.	2	DIRT	1	MILK	1										
-the holy aroma	GenPerfume	smell(s) of elderberries. It remind(s) you of your father.;smell(s) like <S-HE-SHE> may have farted in your general direction.	72	CHEESE	1	WATER	1										
-all day spray	GenPerfume	smell(s) like unstoppable perseverance! Also mint.;smell(s) like pure endurance.;<S-HAS-HAVE> a sweet air of persistence all around.	24	LEATHER	1	WATER	1										
-sickly sniff	GenPerfume	do(es) NOT smell of death!;absolutely do(es) not stink of disease!!!;reek(s) like something other than infection.;could not smell ANY more alive. For real!;shouldn`t even worry about seeing a doctor! Everything is a-okay!	3	MUSHROOMS	1	SOME UNDEAD BLOOD	1										
-precious parfum	GenPerfume	smell(s) of trumpet vines and spring.;<S-HAS-HAVE> a sweet smell of honey and true love.; smell(s) like vanilla and fond memories.	6	FLOWERS	1	VINE	1	WATER									
-wood-cutting cologne	GenPerfume	<S-HAS-HAVE> a musky scent.; smell(s) like an unbathed construction worker.;smell(s) like sweat and lumber.;smell(s) underpaid and overworked.	12	HIDE	1	LAMP OIL	1										
-pixie paramour	GenPerfume	smell(s) like the sweetest of roses.;<S-HAS-HAVE> a lovely fragrance like nectar.;<S-HAS-HAVE> butterflies and bees swooning nearby from the scent.	36	FLOWERS	1	HERBS	1	HONEY	1								
-berserker`s rage	GenPerfume	smell(s) like the heat of battle.;<S-HAS-HAVE> the scent of fallen foes.;<S-HAS-HAVE> a scent that makes the blood surge with adrenaline.	48	LEATHER	1	BLOOD	1										
-coastal gale	GenPerfume	smell(s) of sea salt and rum.;smell(s) nautical.;give(s) off whiffs of scurvy.	60	FISH	1	LIQUOR	1										
+Lesser dulling poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	17	SOME COW BLOOD	1	HERBS	1										
+XXX toxin	DRINK	Poison_XXX	18	SOME SNAKE BLOOD	1	SOME TROLL BLOOD	1	LEAD	1								
+Concentrated churlening poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	19	SOME HALFLING BLOOD	1	FUNGUS	1										
+Lesser quavering poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	21	SOME RAT BLOOD	1	HERBS	1										
+decrepifier	DRINK	Poison_Decreptifier	20	WATER	1	TOMATOES	1	ESSENCE OF GOLEM	1								
+Lesser weakening poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;str-(6+@x2)	23	SOME KOBOLD BLOOD	1	HERBS	1										
+all day spray	GenPerfume	smell(s) like unstoppable perseverance! Also mint.;smell(s) like pure endurance.;<S-HAS-HAVE> a sweet air of persistence all around.	24	WATER	1	LEATHER	1										
+ghoultouch poison	DRINK	*Poison_Ghoultouch;	25	SOME GHOUL BLOOD	1	KNUCKLE BONE	1										
+Concentrated toxin	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))*2)	26	SOME ELF BLOOD	1	FUNGUS	1										
+Lesser sickening poison	DRINK	*UniPoison;TICKS=24 DELAY=2 DAMAGE=1?(2+((@x1/@x3)*(1+2*@x2+(@x1/12)))) ADJUSTMENTS=prop_adjuster;con-(6+@x2)	28	SOME LIZARD BLOOD	1	HERBS	1										
+numbing agent	DRINK	Poison_Anesthesia	27	WATER	1	FLOWERS	1	COPPER	1								
+Concentrated foggening poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;wis-(6+@x2)	29	SOME CHICKEN BLOOD	1	FUNGUS	1										
+Concentrated dulling poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	31	SOME COW BLOOD	1	FUNGUS	1										
+jellyfishsting venom	DRINK	*Poison_Sting;rank=3	32	SALT WATER	1	FISH	1										
+scorpionsting venom	DRINK	*Poison_BeeSting;rank=3	33	SOME SCORPION PINCERS	1	LEMONS	1										
+Concentrated quavering poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	37	SOME RAT BLOOD	1	FUNGUS	1										
+Moderate churlening poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	34	SOME HALFLING BLOOD	1	NUTS	1										
+bloodroil poison	DRINK	*Poison_Bloodboil;rank=3	35	SOME MUMMY BLOOD	1	SALT WATER	1	LEMONS	1								
+pixie paramour	GenPerfume	smell(s) like the sweetest of roses.;<S-HAS-HAVE> a lovely fragrance like nectar.;<S-HAS-HAVE> butterflies and bees swooning nearby from the scent.	36	HONEY	1	HERBS	1	FLOWERS	1								
+Concentrated weakening poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;str-(6+@x2)	39	SOME KOBOLD BLOOD	1	FUNGUS	1										
+scratchysauce	DRINK	*Poison_Hives;rank=3	38	SALT WATER	1	HERBS	1										
+supervenom	DRINK	*Poison_Venom;rank=3	40	SOME COBRA BLOOD	1												
+Moderate toxin	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))*2)	41	SOME ELF BLOOD	1	NUTS	1										
+Concentrated sickening poison	DRINK	*UniPoison;TICKS=8 DELAY=4 DAMAGE=1?(6+((@x1/@x3)*(3+18*@x2+@x1))) ADJUSTMENTS=prop_adjuster;con-(6+@x2)	42	SOME LIZARD BLOOD	1	FUNGUS	1										
+mindtap poison	DRINK	*Poison_Mindsap;rank=3	43	SALT WATER	1	LAMP OIL	1	LEAD	1								
+Moderate foggening poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;wis-(6+@x2)	44	SOME CHICKEN BLOOD	1	NUTS	1										
+heartsmasher	DRINK	*Poison_Heartstopper;rank=3	45	LAMP OIL	1	SEAWEED	1	GARLIC	1								
+greater goblindrip	DRINK	*Poison_GoblinDrip;rank=3	46	SOME GOBLIN BLOOD	1	STEEL	1										
+Moderate dulling poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	47	SOME COW BLOOD	1	NUTS	1										
+deadly toxin	DRINK	*Poison_XXX;rank=3	48	SOME COBRA BLOOD	1	SOME TROLL BLOOD	1	LEAD	1								
+berserker`s rage	GenPerfume	smell(s) like the heat of battle.;<S-HAS-HAVE> the scent of fallen foes.;<S-HAS-HAVE> a scent that makes the blood surge with adrenaline.	48	BLOOD	1	LEATHER	1										
+Enduring churlening poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	51	SOME HALFLING BLOOD	1	SUGAR	1	TIN	1								
+Moderate quavering poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	49	SOME RAT BLOOD	1	NUTS	1										
+improved decrepifier	DRINK	*Poison_Decreptifier;rank=3	50	SOME GHOUL BLOOD	1	TOMATOES	1	ESSENCE OF GOLEM	1								
+Moderate weakening poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;str-(6+@x2)	53	SOME KOBOLD BLOOD	1	NUTS	1										
+Enduring toxin	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))*2)	56	SOME ELF BLOOD	1	SUGAR	1	TIN	1								
+damping agent	DRINK	*Poison_Anesthesia;rank=3	57	MILK	1	FLOWERS	1	NICKEL	1								
+Moderate sickening poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;con-(6+@x2)	58	SOME LIZARD BLOOD	1	NUTS	1										
+Enduring foggening poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;wis-(6+@x2)	59	SOME CHICKEN BLOOD	1	SUGAR	1	TIN	1								
+coastal gale	GenPerfume	smell(s) of sea salt and rum.;smell(s) nautical.;give(s) off whiffs of scurvy.	60	LIQUOR	1	FISH	1										
+Enduring dulling poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	61	SOME COW BLOOD	1	SUGAR	1	TIN	1								
+mantaraysting venom	DRINK	*Poison_Sting;rank=6	62	LIQUOR	1	FISH	1	MUSHROOMS	1								
+spider venom	DRINK	*Poison_BeeSting;rank=6	63	SOME SPIDER LEGS	1	ANISE	1										
+Enduring quavering poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	66	SOME RAT BLOOD	1	SUGAR	1	TIN	1								
+Greater churlening poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	64	SOME HALFLING BLOOD	1	MUSHROOMS	1	LEAD	1								
+lavablood poison	DRINK	*Poison_Bloodboil;rank=6	65	LIQUOR	1	COAL	1	LEMONS	1								
+Enduring weakening poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;str-(6+@x2)	69	SOME KOBOLD BLOOD	1	SUGAR	1	TIN	1								
+rashysauce	DRINK	*Poison_Hives;rank=6	68	LIQUOR	1	SEAWEED	1										
+ultravenom	DRINK	*Poison_Venom;rank=6	70	SOME NAGA BLOOD	1												
+Greater toxin	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))*2)	71	SOME ELF BLOOD	1	MUSHROOMS	1	LEAD	1								
+Enduring sickening poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;con-(6+@x2)	72	SOME LIZARD BLOOD	1	SUGAR	1	TIN	1								
+the holy aroma	GenPerfume	smell(s) of elderberries. It remind(s) you of your father.;smell(s) like <S-HE-SHE> may have farted in your general direction.	72	WATER	1	CHEESE	1										
+Greater foggening poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;wis-(6+@x2)	74	SOME CHICKEN BLOOD	1	MUSHROOMS	1	LEAD	1								
+mindzap poison	DRINK	*Poison_Mindsap;rank=6	73	LAMP OIL	1	LIQUOR	1	LEAD	1								
+widowmaker	DRINK	*Poison_Heartstopper;rank=6	75	LAMP OIL	1	SEAWEED	1	MUSHROOMS	1								
+lifedrainer	DRINK	*Poison_GoblinDrip;rank=6	76	SOME GOBLIN BLOOD	1	MITHRIL	1										
+Greater dulling poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	77	SOME COW BLOOD	1	MUSHROOMS	1	LEAD	1								
+superdeadly toxin	DRINK	*Poison_XXX;rank=6	78	SOME NAGA BLOOD	1	SOME TROLL BLOOD	1	LEAD	1								
+Greater quavering poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	79	SOME RAT BLOOD	1	MUSHROOMS	1	LEAD	1								
+greater decrepifier	DRINK	*Poison_Decreptifier;rank=6	80	SOME GHOUL BLOOD	1	ROSEMARY	1	ESSENCE OF GOLEM	1								
+Greater weakening poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;str-(6+@x2)	83	SOME KOBOLD BLOOD	1	MUSHROOMS	1	LEAD	1								
+deadening agent	DRINK	*Poison_Anesthesia;rank=6	87	HONEY	1	FLOWERS	1	SILVER	1								
+Greater sickening poison	DRINK	*UniPoison;TICKS=30 DELAY=5 DAMAGE=5?(9+((@x1/@x3)*(2+12*@x2+(@x1/2)))) ADJUSTMENTS=prop_adjuster;con-(6+@x2)	89	SOME LIZARD BLOOD	1	MUSHROOMS	1	LEAD	1								
