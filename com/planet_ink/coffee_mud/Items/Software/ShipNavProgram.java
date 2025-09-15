@@ -1301,11 +1301,6 @@ public class ShipNavProgram extends ShipSensorProgram
 			Dir3D targetDir;
 			if (orbitParams == null || distanceFromPlanet > maxDistance || distanceFromPlanet < minDistance)
 			{
-				// Ship is outside orbital range, navigate to an orbital entry point
-				final long entryRadius = Math.round(medDistance);
-				final SpaceObject fakeOrbitalPoint = (SpaceObject) CMClass.getBasicItem("Moonlet");
-				fakeOrbitalPoint.setRadius(ship.radius());
-				fakeOrbitalPoint.setName(L("Orbital Entry Point"));
 				final Dir3D[] perpDirs = CMLib.space().getPerpendicularAngles(dirToPlanet);
 				Dir3D perpFacing = perpDirs[0];
 				double minDiff = CMLib.space().getAngleDelta(ship.direction(), perpDirs[0]);
@@ -1318,50 +1313,34 @@ public class ShipNavProgram extends ShipSensorProgram
 						minDiff = diff;
 					}
 				}
-				final long leadTicks = Math.max(10L, Math.round(distanceFromPlanet / Math.max(ship.speed(), 1)));
-				final long leadDistance = Math.round(ship.speed() * leadTicks);
-				final Coord3D leadPos = CMLib.space().moveSpaceObject(ship.coordinates(), ship.direction(), leadDistance);
-				final Coord3D perpOffset = CMLib.space().moveSpaceObject(leadPos, perpFacing, Math.round(0.1 * entryRadius));
-				final Dir3D toOffset = CMLib.space().getDirection(targetObject.coordinates(), perpOffset);
-				final Coord3D entryPoint = CMLib.space().getLocation(targetObject.coordinates(), toOffset, entryRadius);
-				fakeOrbitalPoint.setCoords(entryPoint);
-
-				// Calculate intercept to the entry point
 				targetSpeed = CMLib.space().estimateOrbitalSpeed(targetObject);
-				final Pair<Dir3D, Long> intercept = CMLib.space().calculateIntercept(ship, fakeOrbitalPoint, Math.max((long) currentSpeed, (long) targetSpeed), 100);
-				if (intercept != null && intercept.second.longValue() > 0)
-					targetDir = intercept.first;
-				else
-					targetDir = CMLib.space().getDirection(ship.coordinates(), entryPoint);
-				final double entryAngle = CMLib.space().getAngleDelta(targetDir, dirToPlanet);
-				if ((entryAngle < Math.PI / 2 - 0.52) || (entryAngle > Math.PI / 2 + 0.52))
-					targetDir = CMLib.space().getMiddleAngle(targetDir, perpFacing);
-				// Game decel: Always oppose current momentum for braking
-				Dir3D thrustFacing = targetDir;
-				double signedSpeedDelta = targetSpeed - currentSpeed;
-				if (currentSpeed > targetSpeed * 1.2)
-				{
-					thrustFacing = CMLib.space().getOppositeDir(ship.direction());
-					signedSpeedDelta = -signedSpeedDelta;
-				}
-				fakeOrbitalPoint.destroy();
-
-				// Adjust direction and speed to reach the entry point
-				targetDir = graviticCourseAdjustments(ship, targetDir);
+				// Base direction toward median: inward for outer, outward for inner
+				Dir3D baseDir = dirToPlanet;
+				if (distanceFromPlanet < minDistance)
+					baseDir = CMLib.space().getOppositeDir(dirToPlanet);
+				targetDir = CMLib.space().getMiddleAngle(baseDir, perpFacing);
+				final double speedDelta = targetSpeed - currentSpeed;
+				Dir3D thrustDir = targetDir;
+				double accelAmount = 0.0;
 				final double maxAccel = findTargetAcceleration(programEngines.get(0));
-				targetAcceleration = maxAccel * 0.5;
-				double speedDelta = Math.abs(currentSpeed - targetSpeed);
-				if (speedDelta > maxAccel)
-					speedDelta = maxAccel;
-				if (currentSpeed > targetSpeed * 1.2)
-					targetDir = CMLib.space().getOppositeDir(ship.direction());
-				changeFacing(ship, thrustFacing);
-				newInject = calculateMarginalTargetInjection(lastInject, speedDelta);
+				if (currentSpeed > targetSpeed)
+				{
+					final Dir3D brakeDir = CMLib.space().getOppositeDir(ship.direction());
+					thrustDir = CMLib.space().getMiddleAngle(brakeDir, targetDir);
+					accelAmount = Math.min(currentSpeed, maxAccel);
+				}
+				else
+					accelAmount = Math.min(Math.abs(speedDelta), maxAccel);
+				thrustDir = graviticCourseAdjustments(ship, thrustDir);
+				targetAcceleration = accelAmount;
+				changeFacing(ship, thrustDir);
+				newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
+
 				for (final ShipEngine engineE : programEngines)
 					simulateThrust(engineE, newInject, false);
-				if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut(ship.name(), "ORBITSEARCH: Navigating to orbital entry, distance=" + distanceFromPlanet + ", speed=" + currentSpeed + ", targetSpeed=" + targetSpeed + ", targetAccel="
-							+ targetAcceleration + ", inject=" + newInject);
+				Log.debugOut(ship.name(), "ORBITSEARCH: Navigating towards orbital zone median ("
+						+ (distanceFromPlanet > maxDistance ? "outer" : "inner") + "), distance=" + distanceFromPlanet
+						+ ", speed=" + currentSpeed + ", targetSpeed=" + targetSpeed + ", targetAccel=" + targetAcceleration + ", inject=" + newInject);
 			}
 			else
 			{
