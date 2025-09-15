@@ -1499,8 +1499,10 @@ public class ShipNavProgram extends ShipSensorProgram
 						- ship.radius();
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
 				final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAcceleration.doubleValue(), 2.0));
+				final double distanceLimit1 = ship.speed()*40;
+				final double distanceLimit2 = Math.cbrt(distance*1000);
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
-				||(distance < ship.speed() * 20))
+				||(distance < distanceLimit1))
 				{
 					targetAcceleration = 0.0;
 					if(ship.speed() > this.targetAcceleration.doubleValue())
@@ -1514,7 +1516,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					if(ship.speed()>CMLib.space().getDistanceFrom(ship, targetObject)/4)
 						targetAcceleration = ship.speed() - 1.0;
 					else
-					if(ship.speed()>3.0)
+					if(ship.speed()>4.0)
 						targetAcceleration = ship.speed()/2;
 					else
 					if(ship.speed()>2.0)
@@ -1524,7 +1526,10 @@ public class ShipNavProgram extends ShipSensorProgram
 					this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
+					{
+						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate
+								+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+distanceLimit1);
+					}
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship, SpaceObject.ACCELERATION_DAMAGED, null);
@@ -1534,10 +1539,10 @@ public class ShipNavProgram extends ShipSensorProgram
 					}
 				}
 				else
-				if((distance > distanceToCritRadius) && (ship.speed() < Math.sqrt(distance)))
+				if((distance > distanceToCritRadius) && (ship.speed() < distanceLimit2))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+Math.sqrt(distance));
+						Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+distanceLimit2);
 					this.changeFacing(ship, dirToPlanet);
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
