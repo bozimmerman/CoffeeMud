@@ -256,7 +256,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		do
 		{
 			for(final ShipEngine engineE : programEngines)
-				simulateThrust(engineE,newInject, true);
+				programThrust(engineE,newInject);
 			if((CMath.abs(targetAcceleration)-this.savedAcceleration.doubleValue())<.01)
 				break;
 			newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
@@ -265,11 +265,11 @@ public class ShipNavProgram extends ShipSensorProgram
 		return newInject;
 	}
 
-	protected void simulateThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
+	protected void programThrust(final ShipEngine engineE, final Double thrustInject)
 	{
-		this.doThrust(engineE, thrustInject, alwaysThrust, true);
+		this.setThrust(engineE, thrustInject, true);
 	}
-	protected void doThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust, final boolean simulate)
+	protected void setThrust(final ShipEngine engineE, final Double thrustInject, final boolean program)
 	{
 		final MOB mob=CMClass.getFactoryMOB();
 		try
@@ -282,7 +282,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				||(!engineE.isReactionEngine())
 				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
-					final int type = CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG|(simulate?CMMsg.MASK_INTERMSG:0);
+					final int type = CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG|(program?CMMsg.MASK_INTERMSG:0);
 					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, type, null, CMMsg.NO_EFFECT,null);
 					final String code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
 					msg.setTargetMessage(code);
@@ -298,12 +298,12 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 	}
 
-	protected void performSingleThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
+	protected void performSingleThrust(final ShipEngine engineE, final Double thrustInject)
 	{
 		final Double oldInject=this.lastInject;
 		final Double oldAccel=this.savedAcceleration;
 		final Double oldDelta=this.savedSpeedDelta;
-		doThrust(engineE, thrustInject, alwaysThrust,false);
+		setThrust(engineE, thrustInject, false);
 		this.lastInject=oldInject;
 		this.savedAcceleration=oldAccel;
 		this.savedSpeedDelta=oldDelta;
@@ -846,7 +846,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return;
 		}
 		for(final ShipEngine engineE : programEngines)
-			doThrust(engineE,Double.valueOf(0.0), true,false);
+			setThrust(engineE,Double.valueOf(0.0), false);
 	}
 
 	protected boolean checkNavComplete(final ShipNavTrack track, final SpaceShip ship, final SpaceObject targetObject)
@@ -1271,14 +1271,14 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(doInject)
 			{
 				for(final ShipEngine engineE : programEngines)
-					simulateThrust(engineE,newInject, false);
+					programThrust(engineE,newInject);
 			}
 			break;
 		}
 		case LAUNCHING:
 			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			for(final ShipEngine engineE : programEngines)
-				simulateThrust(engineE,newInject, false);
+				programThrust(engineE,newInject);
 			break;
 		case ORBITSEARCH:
 		{
@@ -1337,7 +1337,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				newInject = calculateMarginalTargetInjection(lastInject, targetAcceleration);
 
 				for (final ShipEngine engineE : programEngines)
-					simulateThrust(engineE, newInject, false);
+					programThrust(engineE, newInject);
 				Log.debugOut(ship.name(), "ORBITSEARCH: Navigating towards orbital zone median ("
 						+ (distanceFromPlanet > maxDistance ? "outer" : "inner") + "), distance=" + distanceFromPlanet
 						+ ", speed=" + currentSpeed + ", targetSpeed=" + targetSpeed + ", targetAccel=" + targetAcceleration + ", inject=" + newInject);
@@ -1359,7 +1359,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					track.state = ShipNavState.ORBITCRUISE;
 					newInject = Double.valueOf(0.0);
 					for (final ShipEngine engineE : programEngines)
-						simulateThrust(engineE, newInject, true);
+						programThrust(engineE, newInject);
 					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(ship.name(),
 								"ORBITSEARCH: Transition to ORBITCRUISE, distance=" + distanceFromPlanet + ", speed=" + ship.speed() + ", dir=" + CMLib.english().directionDescShort(targetDir.toDoubles()));
@@ -1384,7 +1384,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							targetDir = CMLib.space().getOppositeDir(ship.direction()); // Decelerate
 						newInject = calculateMarginalTargetInjection(lastInject, speedDelta);
 						for (final ShipEngine engineE : programEngines)
-							simulateThrust(engineE, newInject, false);
+							programThrust(engineE, newInject);
 					}
 					if (CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut(ship.name(), "ORBITSEARCH: Maintaining orbit, distance=" + distanceFromPlanet + ", speed=" + currentSpeed + ", targetSpeed=" + targetSpeed + ", yawDelta=" + yawDelta + ", pitchDelta="
@@ -1449,7 +1449,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
-						performSingleThrust(engineE,Double.valueOf(0.0), false);
+						performSingleThrust(engineE,Double.valueOf(0.0));
 						break;
 					}
 					else
@@ -1459,7 +1459,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					if((ticksToDecellerate<50)||(diff > 10.0))
 						this.changeFacing(ship, dirToPlanet);
 					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
-					simulateThrust(engineE,newInject, false);
+					programThrust(engineE,newInject);
 				}
 				break;
 			}
@@ -1560,7 +1560,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						+"/speed="+ship.speed()+"/inject="+((newInject != null) ? newInject.toString():"null"));
 			}
 			for(final ShipEngine engineE : programEngines)
-				simulateThrust(engineE,newInject, true);
+				programThrust(engineE,newInject);
 			break;
 		}
 		default:
