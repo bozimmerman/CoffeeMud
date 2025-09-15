@@ -65,6 +65,7 @@ public class GenShipProgram extends GenSoftware
 	protected volatile List<TechComponent>	components			= null;
 	protected volatile List<TechComponent>	dampers				= null;
 	protected volatile List<TechComponent>	miscsystems			= null;
+	protected volatile List<TechComponent>	insertials			= null;
 
 	protected final static PrioritizingLimitedMap<String,TechComponent> cachedComponents = new PrioritizingLimitedMap<String,TechComponent>(1000,60000,600000,0);
 
@@ -141,12 +142,7 @@ public class GenShipProgram extends GenSoftware
 	{
 		if(message == null)
 		{
-			engines				= null;
-			sensors				= null;
-			weapons				= null;
-			shields				= null;
-			components			= null;
-			dampers				= null;
+			this.decache();
 			cachedComponents.clear();
 		}
 		super.onDeactivate(mob, message);
@@ -180,7 +176,7 @@ public class GenShipProgram extends GenSoftware
 		{
 			if(E.owner() instanceof Room)
 			{
-				if(((Room)E.owner()).okMessage(mob, msg))
+				if(E.owner().okMessage(mob, msg))
 				{
 					((Room)E.owner()).send(mob, msg);
 					return true;
@@ -228,7 +224,7 @@ public class GenShipProgram extends GenSoftware
 	{
 		if(targetE.owner() instanceof Room)
 		{
-			if(((Room)targetE.owner()).okMessage(mob, msg))
+			if(targetE.owner().okMessage(mob, msg))
 				((Room)targetE.owner()).send(mob, msg);
 		}
 		else
@@ -246,6 +242,7 @@ public class GenShipProgram extends GenSoftware
 		components	= null;
 		dampers		= null;
 		miscsystems = null;
+		insertials = null;
 	}
 
 	protected synchronized List<TechComponent> getComponent(final TechType type)
@@ -395,6 +392,21 @@ public class GenShipProgram extends GenSoftware
 		return dampers;
 	}
 
+	protected synchronized List<TechComponent> getInertials()
+	{
+		if(insertials == null)
+		{
+			final List<TechComponent> stuff=getTechComponents();
+			insertials=new Vector<TechComponent>(1);
+			for(final TechComponent E : stuff)
+			{
+				if(E.getTechType()==TechType.SHIP_INERTIAL)
+					insertials.add(E);
+			}
+		}
+		return insertials;
+	}
+
 	protected ShipEngine findEngineByName(final String name)
 	{
 		return (ShipEngine)findComponentByName(getEngines(), "ENGINE", name);
@@ -532,7 +544,7 @@ public class GenShipProgram extends GenSoftware
 						msg=CMClass.getMsg(mob, component, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 						if(component.owner() instanceof Room)
 						{
-							if(((Room)component.owner()).okMessage(mob, msg))
+							if(component.owner().okMessage(mob, msg))
 								((Room)component.owner()).send(mob, msg);
 						}
 						else
@@ -598,7 +610,7 @@ public class GenShipProgram extends GenSoftware
 						msg=CMClass.getMsg(mob, component, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 						if(component.owner() instanceof Room)
 						{
-							if(((Room)component.owner()).okMessage(mob, msg))
+							if(component.owner().okMessage(mob, msg))
 								((Room)component.owner()).send(mob, msg);
 						}
 						else
