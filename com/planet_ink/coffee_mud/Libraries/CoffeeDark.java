@@ -1484,6 +1484,31 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public Dir3D getGraviticCourseCorrection(final Dir3D dir, final double thrustAccel, final Dir3D gravDir, final double gravAccel)
+	{
+		final Dir3D antiGravDir = CMLib.space().getOppositeDir(gravDir);
+		if(thrustAccel <= 0)
+			return dir;
+		final double tilt = Math.asin(Math.min(gravAccel / thrustAccel, 1.0));
+		final double weight = Math.sin(tilt);
+		final double[] baseVec = dir.toArray3(1.0);
+		final double[] antiVec = antiGravDir.toArray3(1.0);
+		final double[] blended = new double[3];
+		for(int i=0; i<3; i++)
+			blended[i] = ((1.0 - weight) * baseVec[i]) + (weight * antiVec[i]);
+		double norm = 0.0;
+		for (final double v : blended)
+			norm += v * v;
+		norm = Math.sqrt(norm);
+		if(norm > BigCMath.ALMOST_ZERO.doubleValue())
+		{
+			for (int i=0; i<3; i++)
+				blended[i] /= norm;
+		}
+		return Dir3D.fromArray3(blended);
+	}
+
+	@Override
 	public boolean sendSpaceEmissionEvent(final SpaceObject srcP, final Environmental tool, final int emissionType, final String msgStr)
 	{
 		return sendSpaceEmissionEvent(srcP, tool, 30L*SpaceObject.Distance.LightSecond.dm, emissionType, msgStr);

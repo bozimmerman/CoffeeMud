@@ -707,6 +707,19 @@ public interface GalacticMap extends CMLibrary
 	public double getGravityForce(SpaceObject S, SpaceObject cO);
 
 	/**
+	 * Given a desired acceleration and a gravitational acceleration,
+	 * this will return the new direction to thrust in order to
+	 * maintain the desired acceleration.
+	 *
+	 * @param dir the desired direction
+	 * @param thrustAccel the desired acceleration
+	 * @param gravDir the direction of gravity
+	 * @param gravAccel the acceleration of gravity
+	 * @return the new direction to thrust in
+	 */
+	public Dir3D getGraviticCourseCorrection(final Dir3D dir, final double thrustAccel, final Dir3D gravDir, final double gravAccel);
+
+	/**
 	 * Returns the object exerting the most gravity force on the
 	 * other given object, or null if nothing is.
 	 *
