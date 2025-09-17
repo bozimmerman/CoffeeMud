@@ -1026,23 +1026,31 @@ public class ShipNavProgram extends ShipSensorProgram
 	{
 		final double turnDiff = Math.abs(CMLib.space().getAngleDelta(ship.direction(), ship.facing()));
 		final double offTurnDiff = Math.abs(CMLib.space().getAngleDelta(ship.direction(), CMLib.space().getOppositeDir(ship.facing())));
+		final List<EngProfile> profiles = new XArrayList<EngProfile>(engines);
+		for (final Iterator<EngProfile> i = profiles.iterator(); i.hasNext();)
+		{
+			final EngProfile prof = i.next();
+			if (!prof.canAccelerate)
+				i.remove();
+			final double minAccel = prof.accelleration(prof.injection(0));
+			if ((targetAcceleration < minAccel)
+			&& (Math.abs(targetAcceleration - minAccel) > Math.max(0.5, minAccel * 0.2)))
+				i.remove();
+		}
 		// we check angles forward and back aligned because sometimes we are slowing down
 		if((turnDiff < 1) && (offTurnDiff < 1))
 		{
 			// pick profile optimized for speed
 			EngProfile best = null;
 			double bestDiff = Double.MAX_VALUE;
-			for (final EngProfile prof : engines)
+			for (final EngProfile prof : profiles)
 			{
-				if(prof.canAccelerate)
+				final double testAccel = prof.accelleration(prof.injection(targetAcceleration));
+				final double diff = Math.abs(targetAcceleration - testAccel);
+				if(diff < bestDiff)
 				{
-					final double testAccel = prof.accelleration(prof.injection(targetAcceleration));
-					final double diff = Math.abs(targetAcceleration - testAccel);
-					if(diff < bestDiff)
-					{
-						best = prof;
-						bestDiff = diff;
-					}
+					best = prof;
+					bestDiff = diff;
 				}
 			}
 			if(best != null)
@@ -1051,10 +1059,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		// pick profile optimized for control
 		EngProfile best = null;
 		double bestDiff = Double.MAX_VALUE;
-		for (final EngProfile prof : engines)
+		for (final EngProfile prof : profiles)
 		{
-			if(!prof.canAccelerate)
-				continue;
 			if(best == null)
 				best = prof;
 			else
@@ -1064,7 +1070,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			{
 				final double testAccel = prof.accelleration(prof.injection(targetAcceleration));
 				final double diff = Math.abs(targetAcceleration - testAccel);
-				if (diff < bestDiff)
+				if(diff < bestDiff)
 				{
 					best = prof;
 					bestDiff = diff;
@@ -1072,6 +1078,23 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 		}
 		return best;
+	}
+
+	private boolean programAccelerationThrust(final SpaceShip ship, final List<EngProfile> programEngines, final double acceleration)
+	{
+		final EngProfile accelEngine = getAccelProfile(ship, programEngines, acceleration);
+		if (accelEngine == null)
+		{
+			cancelNavigation(false);
+			if (this.navTrack != null)
+				super.addScreenMessage(L("@x1 program aborted with error (acceleration control failure).", CMStrings.capitalizeAndLower(this.navTrack.proc.name())));
+			else
+				super.addScreenMessage(L("Program aborted with error (acceleration control failure)."));
+			return false;
+		}
+		final Double newInject = Double.valueOf(accelEngine.injection(acceleration));
+		programThrust(accelEngine.engine, newInject);
+		return true;
 	}
 
 	protected void doNavigation(final ShipNavTrack track)
@@ -1342,29 +1365,17 @@ public class ShipNavProgram extends ShipSensorProgram
 		case DEPROACH:
 		case PRE_STOP:
 		{
-			final EngProfile accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
-			if (accelEngine == null)
-			{
-				cancelNavigation(false);
-				super.addScreenMessage(L("Program aborted with error (acceleration control failure)."));
-				return;
-			}
-			final Double newInject=Double.valueOf(accelEngine.injection(targetAcceleration));
 			if(doInject)
-				programThrust(accelEngine.engine,newInject);
+			{
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
+					return;
+			}
 			break;
 		}
 		case LAUNCHING:
 		{
-			final EngProfile engine = getAccelProfile(ship, programEngines, targetAcceleration);
-			if (engine == null)
-			{
-				cancelNavigation(false);
-				super.addScreenMessage(L("Launch program aborted with error (acceleration control failure)."));
+			if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 				return;
-			}
-			final Double newInject=Double.valueOf(engine.injection(targetAcceleration));
-			programThrust(engine.engine,newInject);
 			break;
 		}
 		case ORBITSEARCH:
@@ -1421,15 +1432,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				thrustDir = graviticCourseAdjustments(ship, thrustDir, targetAcceleration);
 				targetAcceleration = accelAmount;
 				changeFacing(ship, turnEngine, thrustDir);
-				final EngProfile engine = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (engine == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Launch program aborted with error (acceleration control failure)."));
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 					return;
-				}
-				final Double newInject= Double.valueOf(engine.injection(targetAcceleration));
-				programThrust(engine.engine, newInject);
 				// dam/s is km/s times 10, which means km/s is dam/s divided by 10
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					Log.debugOut(ship.name(), "ORBITSEARCH: Navigating towards orbital zone median ("
@@ -1480,15 +1484,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					{
 						if (currentSpeed > targetSpeed * 1.2)
 							targetDir = CMLib.space().getOppositeDir(ship.direction()); // Decelerate
-						final EngProfile accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
-						if (accelEngine == null)
-						{
-							cancelNavigation(false);
-							super.addScreenMessage(L("Orbit program aborted with error (acceleration control failure)."));
+						if (!this.programAccelerationThrust(ship, programEngines, speedDelta))
 							return;
-						}
-						final Double newInject = Double.valueOf(accelEngine.injection(speedDelta));
-						programThrust(accelEngine.engine, newInject);
 					}
 				}
 			}
@@ -1553,15 +1550,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(movingAway)
 			{
 				this.changeFacing(ship, turnEngine, dirToTarget);
-				final EngProfile engineE = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (engineE == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error (acceleration control failure)."));
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 					return;
-				}
-				final Double newInject=Double.valueOf(engineE.injection(targetAcceleration));
-				programThrust(engineE.engine,newInject);
 				break;
 			}
 			else
@@ -1588,15 +1578,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					this.stopAllThrust(programEngines, false);
 					break;
 				}
-				final EngProfile engineE = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (engineE == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error (acceleration control failure)."));
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 					return;
-				}
-				final Double newInject=Double.valueOf(engineE.injection(targetAcceleration));
-				programThrust(engineE.engine,newInject);
 				break;
 			}
 		}
@@ -1626,7 +1609,6 @@ public class ShipNavProgram extends ShipSensorProgram
 			final double ticksToDecellerate = CMath.div(ship.speed(),targetAcceleration);
 			final double distanceLimit1 = ship.speed()*40;
 			final double distanceLimit2 = Math.cbrt(distance*1000);
-			EngProfile accelEngine = null;
 			if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed/2)
 			||(distance < distanceLimit1))
 			{
@@ -1647,20 +1629,13 @@ public class ShipNavProgram extends ShipSensorProgram
 				else
 					targetAcceleration = 0.5;
 				this.changeFacing(ship, turnEngine, CMLib.space().getOppositeDir(dirToPlanet));
-				accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (accelEngine == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error (acceleration control failure)."));
-					return;
-				}
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 				{
 					Log.debugOut(ship.Name(),"Landing Deccelerating @ " +  targetAcceleration + " because "+Math.round(ticksToDecellerate)
 							+ " > " + Math.round(ticksToDestinationAtCurrentSpeed)+"  or "+Math.round(distance)+" < "+Math.round(distanceLimit1));
 				}
-				final Double newInject=Double.valueOf(accelEngine.injection(targetAcceleration));
-				programThrust(accelEngine.engine,newInject);
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
+					return;
 			}
 			else
 			if((distance > distanceToCritRadius) && (ship.speed() < distanceLimit2))
@@ -1671,34 +1646,14 @@ public class ShipNavProgram extends ShipSensorProgram
 					+" and "+Math.round(ship.speed())+"dam/s < "+Math.round(distanceLimit2));
 				}
 				this.changeFacing(ship, turnEngine, dirToPlanet);
-				accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (accelEngine == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error (acceleration control failure)."));
+				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 					return;
-				}
-				Double newInject=Double.valueOf(accelEngine.injection(targetAcceleration));
-				if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
-				{
-					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut(ship.Name(),"Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
-					newInject = Double.valueOf(accelEngine.injection(targetAcceleration));
-				}
-				programThrust(accelEngine.engine,newInject);
 			}
 			else
 			{
 				//this.changeFacing(ship, CMLib.space().getOppositeDir(dirToPlanet));
-				final Double newInject=Double.valueOf(0.0);
-				accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
-				if (accelEngine == null)
-				{
-					cancelNavigation(false);
-					super.addScreenMessage(L("Landing program aborted with error (acceleration control failure)."));
+				if (!this.programAccelerationThrust(ship, programEngines, 0.0))
 					return;
-				}
-				programThrust(accelEngine.engine,newInject);
 			}
 			break;
 		}
@@ -1715,18 +1670,23 @@ public class ShipNavProgram extends ShipSensorProgram
 		return super.checkPowerCurrent(value);
 	}
 
+	protected SpaceShip getShip(final Software sw)
+	{
+		final SpaceObject spaceObject = CMLib.space().getSpaceObject(sw, true);
+		final SpaceShip ship = (spaceObject instanceof SpaceShip) ? (SpaceShip) spaceObject : null;
+		if (ship == null)
+			addScreenMessage(L("Error: Malfunctioning hull interface."));
+		return ship;
+	}
+
 	protected SoftwareProcedure launchProcedure = new SoftwareProcedure()
 	{
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(ship.getIsDocked() == null)
 			{
 				addScreenMessage(L("Error: Ship is already launched."));
@@ -1760,13 +1720,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject = CMLib.space().getSpaceObject(sw, true);
-			final SpaceShip ship = (spaceObject instanceof SpaceShip) ? (SpaceShip) spaceObject : null;
-			if (ship == null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
+			final SpaceShip ship=getShip(sw);
+			if(ship==null)
 				return false;
-			}
 			SpaceObject programPlanet = null;
 			if(ship.getIsDocked() != null)
 				programPlanet = CMLib.space().getSpaceObject(ship.getIsDocked(), true);
@@ -1776,7 +1732,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for (final TechComponent sensor : getShipSensors())
 					allObjects.addAll(takeNewSensorReport(sensor));
-				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				Collections.sort(allObjects, new DistanceSorter(ship));
 				for (final SpaceObject O : allObjects)
 				{
 					if (O.getMass() > SpaceObject.MOONLET_MASS)
@@ -1849,13 +1805,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if((ship.getIsDocked() != null)||(ship.speed()==0.0))
 			{
 				addScreenMessage(L("Error: Ship is already stopped."));
@@ -1887,13 +1839,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(ship.getIsDocked() != null)
 			{
 				addScreenMessage(L("Error: Ship is already landed."));
@@ -1907,7 +1855,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			Collections.sort(allObjects, new DistanceSorter(ship));
 			SpaceObject landingPlanet = null;
 			LocationRoom landingZone = null;
 			for(final SpaceObject O : allObjects)
@@ -2018,13 +1966,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(parsed.size()<2)
 			{
 				addScreenMessage(L("Error: COURSE requires the name/coordinates of the target.   Try HELP."));
@@ -2037,7 +1981,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : getShipSensors())
 					allObjects.addAll(takeNewSensorReport(sensor));
-				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				Collections.sort(allObjects, new DistanceSorter(ship));
 				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 				if(targetObj == null)
 					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
@@ -2084,13 +2028,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(parsed.size()<2)
 			{
 				addScreenMessage(L("Error: FACE requires the name of the object.   Try HELP."));
@@ -2105,7 +2045,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			Collections.sort(allObjects, new DistanceSorter(ship));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 			if(targetObj == null)
 				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
@@ -2120,7 +2060,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final Dir3D facing=ship.facing();
-			final Dir3D dirTo = CMLib.space().getDirection(spaceObject, targetObj);
+			final Dir3D dirTo = CMLib.space().getDirection(ship, targetObj);
 			double fdist1=(facing.xy().compareTo(dirTo.xy())>0)?facing.xyd()-dirTo.xyd():dirTo.xyd()-facing.xyd();
 			final double fdist2=(facing.z().compareTo(dirTo.z())>0)?facing.zd()-dirTo.zd():dirTo.zd()-facing.zd();
 			if(fdist1>Math.PI)
@@ -2225,13 +2165,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(parsed.size()<2)
 			{
 				addScreenMessage(L("Error: APPROACH requires the name of the object.   Try HELP."));
@@ -2246,7 +2182,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			Collections.sort(allObjects, new DistanceSorter(ship));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 			if(targetObj == null)
 				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
@@ -2303,13 +2239,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			final ShipEngine engineE=findEngineByName(uword);
 			if(engineE==null)
 			{
@@ -2412,13 +2344,9 @@ public class ShipNavProgram extends ShipSensorProgram
 		@Override
 		public boolean execute(final Software sw, final String uword, final MOB mob, final String unparsed, final List<String> parsed)
 		{
-			final SpaceObject spaceObject=CMLib.space().getSpaceObject(sw,true);
-			final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+			final SpaceShip ship=getShip(sw);
 			if(ship==null)
-			{
-				addScreenMessage(L("Error: Malfunctioning hull interface."));
 				return false;
-			}
 			if(parsed.size()<2)
 			{
 				addScreenMessage(L("Error: MOON requires the name of the object.   Try HELP."));
@@ -2433,7 +2361,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 			for(final TechComponent sensor : getShipSensors())
 				allObjects.addAll(takeNewSensorReport(sensor));
-			Collections.sort(allObjects, new DistanceSorter(spaceObject));
+			Collections.sort(allObjects, new DistanceSorter(ship));
 			SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
 			if(targetObj == null)
 				targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
@@ -2448,7 +2376,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return false;
 			}
 			final Dir3D facing=ship.facing();
-			final Dir3D notDirTo=CMLib.space().getDirection(spaceObject, targetObj);
+			final Dir3D notDirTo=CMLib.space().getDirection(ship, targetObj);
 			final Dir3D dirTo = CMLib.space().getOppositeDir(notDirTo);
 			double fdist1=(facing.xy().compareTo(dirTo.xy())>0)?facing.xyd()-dirTo.xyd():dirTo.xyd()-facing.xyd();
 			final double fdist2=(facing.z().compareTo(dirTo.z())>0)?facing.zd()-dirTo.zd():dirTo.zd()-facing.zd();
