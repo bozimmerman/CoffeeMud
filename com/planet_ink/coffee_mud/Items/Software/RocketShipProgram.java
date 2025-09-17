@@ -150,10 +150,15 @@ public class RocketShipProgram extends ShipTacticalProgram
 				if(orb instanceof Area)
 				{
 					final long distance=CMLib.space().getDistanceFrom(shipSpaceObject, orb);
-					if((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+					final double maxDistance = CMath.mul(orb.radius(), SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX);
+					if((distance > orb.radius()) && (distance < maxDistance))
 						altitudePlanet=orb; // since they are sorted, this would be the nearest.
-					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
-						orbitingPlanet=orb; // since they are sorted, this would be the nearest.
+					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN) && (distance<maxDistance))
+					{
+						final Triad<Dir3D, Double, Coord3D> t = CMLib.space().getOrbitalMaintenance(ship, altitudePlanet, distance);
+						if((t != null)&&(Math.abs(ship.speed()-t.second.doubleValue())<2.0))
+							orbitingPlanet=orb; // since they are sorted, this would be the nearest.
+					}
 					break;
 				}
 			}
@@ -167,7 +172,7 @@ public class RocketShipProgram extends ShipTacticalProgram
 			{
 				str.append("\n\r");
 				str.append("^H").append(CMStrings.padRight(L("Orbiting"),10));
-				str.append("^N").append(CMStrings.padRight(orbitingPlanet.name(),20));
+				str.append("^N").append(CMStrings.padRight(orbitingPlanet.name(),25));
 			}
 			else
 			if(altitudePlanet != null)

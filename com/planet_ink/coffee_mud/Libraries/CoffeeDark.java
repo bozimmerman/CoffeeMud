@@ -1629,7 +1629,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 				// objects should already be sorted by closeness for good collision detection
 				if(isDebuggingHARD && moving)
 				{
-					Log.debugOut("Space Object "+O.name()+" moved "+speed+" in dir " +
+					Log.debugOut("Space Object "+O.name()+" moved "+Math.round(speed)+"dam/s in dir " +
 							CMLib.english().directionDescShort(O.direction().toDoubles())+" to "+
 							CMLib.english().coordDescShort(O.coordinates().toLongs()));
 				}
@@ -1650,7 +1650,7 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 						if(gravitationalMove > 0)
 						{
 							if(isDebugging)
-								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
+								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+"dam towards " +cO.Name());
 							final Dir3D directionTo=getDirection(O, cO);
 							final BigVector unitVec = new BigVector(directionTo).sphereToCartesian();
 							final BigVector forceVec = unitVec.scalarProduct(BigDecimal.valueOf(gravitationalMove));

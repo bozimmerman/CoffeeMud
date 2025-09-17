@@ -332,8 +332,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											if(!simulation)
 											{
 												CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
-												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+												//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												//	Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
 											}
 										}
 										break;
@@ -345,8 +345,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											if(!simulation)
 											{
 												CMLib.space().changeDirection(facing, finalAcceleration, 0.0);
-												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
+												//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												//	Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.xyd());
 											}
 										}
 										break;
@@ -358,8 +358,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											if(!simulation)
 											{
 												CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
-												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+												//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												//	Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
 											}
 										}
 										break;
@@ -371,8 +371,8 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 											if(!simulation)
 											{
 												CMLib.space().changeDirection(facing, 0.0, finalAcceleration);
-												if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-													Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
+												//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												//	Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing.zd());
 											}
 										}
 										break;

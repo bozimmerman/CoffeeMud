@@ -395,17 +395,12 @@ public class ShipNavProgram extends ShipSensorProgram
 		CMLib.space().getOppositeDir(ship.facing()); // I think this is to normalize the facing dir
 		try
 		{
+			final Dir3D currentFacing = ship.facing().copyOf();
 			double angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
 			int tries=100;
 			while((angleDiff > 0.0001)&&(--tries>0))
 			{
 				// step one, face opposite direction of motion
-				if(isDebugging)
-				{
-					Log.debugOut(ship.Name()+" maneuvering to go from "+
-								CMLib.english().directionDescShort(ship.facing().toDoubles())
-							+"  to  "+CMLib.english().directionDescShort(newFacing.toDoubles()));
-				}
 				final ShipEngine engineE = turnProfile.engine;
 				{
 					if((CMParms.contains(engineE.getAvailPorts(),ShipDirectional.ShipDir.STARBOARD))
@@ -431,7 +426,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								final Double thrust = Double.valueOf(angleDelta.xy().abs().doubleValue() / angleAchievedPerPt);
 								if(isDebuggingTurns)
 								{
-									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+
+									Log.debugOut(ship.Name(),"Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+
 											dir+" to delta, and go from "+
 											Math.toDegrees(ship.facing().xyd())+" to "+Math.toDegrees(newFacing.xyd())+
 											", angle delta = "+Math.toDegrees(angleDelta.xyd()));
@@ -448,7 +443,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							/*
 							if(isDebuggingTurns)
 							{
-								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
+								Log.debugOut(ship.Name(),"Turn Deltas now: "+(Math.round(angleDelta[0]*100)/100.0)+" + "+(Math.round(angleDelta[1]*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta[0])+Math.abs(angleDelta[1]))*100)/100.0));
 							}
 							*/
@@ -464,7 +459,7 @@ public class ShipNavProgram extends ShipSensorProgram
 								final Double thrust = Double.valueOf(Math.abs(angleDelta.zd()) / angleAchievedPerPt);
 								if(isDebuggingTurns)
 								{
-									Log.debugOut("Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "
+									Log.debugOut(ship.Name(),"Thrusting "+thrust+"*"+angleAchievedPerPt+" to "+dir+" to achieve delta, and go from "
 												+ship.facing().zd()+" to "+newFacing.zd());
 								}
 								msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
@@ -478,7 +473,7 @@ public class ShipNavProgram extends ShipSensorProgram
 							angleDelta = CMLib.space().getAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 							if(isDebuggingTurns)
 							{
-								Log.debugOut("Turn Deltas now: "+(Math.round(angleDelta.xyd()*100)/100.0)+" + "+(Math.round(angleDelta.zd()*100)/100.0)
+								Log.debugOut(ship.Name(),"Turn Deltas now: "+(Math.round(angleDelta.xyd()*100)/100.0)+" + "+(Math.round(angleDelta.zd()*100)/100.0)
 										+"=="+(Math.round(Math.abs((angleDelta.xyd())+Math.abs(angleDelta.zd()))*100)/100.0));
 							}
 						}
@@ -488,6 +483,13 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				angleDiff = CMLib.space().getAngleDelta(ship.facing(), newFacing);
 			}
+			if(isDebugging && !Arrays.equals(currentFacing.toDoubles(), ship.facing().toDoubles()))
+			{
+				Log.debugOut(ship.Name(),"Facing Change from "+
+							CMLib.english().directionDescShort(currentFacing.toDoubles())
+							+" to "+CMLib.english().directionDescShort(ship.facing().toDoubles()));
+			}
+
 			if(tries > 0)
 				return true;
 		}
@@ -748,7 +750,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			winnerObj.destroy();
 		}
 		if (newObj == null && CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			Log.debugOut("SubCourseCheck", "No valid points from " + fromObj.name() + " to " + toObj.name() + ", tested " + points.length + " points");
+		{
+			Log.debugOut(ship.Name(), "No valid points from " + fromObj.name()
+						+ " to " + toObj.name() + ", tested " + points.length + " points");
+		}
 		return newObj;
 	}
 
@@ -1425,9 +1430,11 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				final Double newInject= Double.valueOf(engine.injection(targetAcceleration));
 				programThrust(engine.engine, newInject);
-				Log.debugOut(ship.name(), "ORBITSEARCH: Navigating towards orbital zone median ("
-						+ (distanceFromPlanet > maxDistance ? "outer" : "inner") + "), distance=" + distanceFromPlanet
-						+ ", speed=" + currentSpeed + ", targetSpeed=" + targetSpeed + ", targetAccel=" + targetAcceleration + ", inject=" + newInject);
+				// dam/s is km/s times 10, which means km/s is dam/s divided by 10
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut(ship.name(), "ORBITSEARCH: Navigating towards orbital zone median ("
+							+ (distanceFromPlanet > maxDistance ? "outer" : "inner") + "), distance=" + distanceFromPlanet
+							+ ", speed=" + Math.round(currentSpeed) + "dam/s, targetSpeed=" + Math.round(targetSpeed) + "dam/s, targetAccel=" + targetAcceleration);
 			}
 			else
 			{
@@ -1458,7 +1465,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				else
 				{
 					// Adjust direction and speed to maintain orbit
-					final Dir3D angleDiff = CMLib.space().getAngleDiff(ship.direction(), targetDir);
+					final Dir3D angleDiff = CMLib.space().getAngleDiff(ship.direction(), targetDir); // - or +
 					final double yawDelta = Math.abs(angleDiff.xyd());
 					final double pitchDelta = Math.abs(angleDiff.zd());
 					final double speedDelta = Math.abs(currentSpeed - targetSpeed);
@@ -1563,7 +1570,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				final double ticksToDestinationAtCurrentSpeed = CMath.div(distanceToCritRadius, ship.speed());
 				final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut("LAPPROACH: T2Decel:"+ticksToDecellerate+", T2D@CS="+ticksToDestinationAtCurrentSpeed+", Diff="+diff);
+					Log.debugOut(ship.Name(),"LAPPROACH: T2Decel:"+ticksToDecellerate+", T2D@CS="+ticksToDestinationAtCurrentSpeed+", Diff="+diff);
 				if((diff < 1) || (diff < Math.sqrt(0.5 * ticksToDecellerate)))
 				{
 					this.stopAllThrust(programEngines, false);
@@ -1649,8 +1656,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 				{
-					Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate
-							+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+distanceLimit1);
+					Log.debugOut(ship.Name(),"Landing Deccelerating @ " +  targetAcceleration + " because "+Math.round(ticksToDecellerate)
+							+ " > " + Math.round(ticksToDestinationAtCurrentSpeed)+"  or "+Math.round(distance)+" < "+Math.round(distanceLimit1));
 				}
 				final Double newInject=Double.valueOf(accelEngine.injection(targetAcceleration));
 				programThrust(accelEngine.engine,newInject);
@@ -1659,7 +1666,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			if((distance > distanceToCritRadius) && (ship.speed() < distanceLimit2))
 			{
 				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+distanceLimit2);
+				{
+					Log.debugOut(ship.Name(),"Landing Accelerating because " +  Math.round(distance) +" > "+Math.round(distanceToCritRadius)
+					+" and "+Math.round(ship.speed())+"dam/s < "+Math.round(distanceLimit2));
+				}
 				this.changeFacing(ship, turnEngine, dirToPlanet);
 				accelEngine = getAccelProfile(ship, programEngines, targetAcceleration);
 				if (accelEngine == null)
@@ -1672,7 +1682,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
+						Log.debugOut(ship.Name(),"Landing Accelerating Check "+  Math.abs(this.savedAcceleration.doubleValue()-targetAcceleration));
 					newInject = Double.valueOf(accelEngine.injection(targetAcceleration));
 				}
 				programThrust(accelEngine.engine,newInject);
@@ -1966,21 +1976,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					cancelNavigation(false);
 					return false;
 				}
-				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-				{
-					Log.debugOut("Ship coordinates: " + Arrays.toString(ship.coordinates().toLongs()));
-					Log.debugOut("Planet coordinates: " + Arrays.toString(landingPlanet.coordinates().toLongs()));
-					Log.debugOut("Nav point coordinates: " + Arrays.toString(orbitTarget.coordinates().toLongs()));
-					Log.debugOut("Distance ship to planet: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, landingPlanet)));
-					Log.debugOut("Distance planet to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(landingPlanet, orbitTarget)));
-					Log.debugOut("Distance ship to orbit: " + CMLib.english().distanceDescShort(CMLib.space().getDistanceFrom(ship, orbitTarget)));
-					Log.debugOut("Direction ship to planet: " + CMLib.english().directionDescShort(CMLib.space().getDirection(ship.coordinates(), landingPlanet.coordinates()).toDoubles()));
-					Log.debugOut("Direction planet to orbit: " + CMLib.english().directionDescShort(CMLib.space().getDirection(landingPlanet.coordinates(), orbitTarget.coordinates()).toDoubles()));
-				}
-
 				navTrack = new ShipNavTrack(ShipNavProcess.APPROACH, orbitTarget, engines, new XLinkedList<SpaceObject>(navs));
-				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-					Log.debugOut("Calculated nav path:");
 				for (int i=0; i<navs.size(); i++)
 				{
 					final SpaceObject navPoint = navs.get(i);
@@ -1989,7 +1985,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					final Dir3D dirFromShip = CMLib.space().getDirection(ship, navPoint);
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 					{
-						Log.debugOut("Nav point " + (i+1) + ": Dist: " + CMLib.english().distanceDescShort(distFromShip)
+						Log.debugOut(ship.Name(),"Nav point " + (i+1) + ": Dist: " + CMLib.english().distanceDescShort(distFromShip)
 								+ ", Dir: " + CMLib.english().directionDescShort(dirFromShip.toDoubles())
 								+ ", Coords: " + Arrays.toString(navPoint.coordinates().toLongs()));
 					}
