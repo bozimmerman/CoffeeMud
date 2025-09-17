@@ -148,7 +148,7 @@ public class GenPoison extends Poison implements SpellHolder
 	protected Object[] makeEmpty()
 	{
 		final Object[] O=new Object[NUM_VS];
-		O[V_NAME]="Generic Poison";
+		O[V_NAME]="Poison";
 		O[V_TRIG]=new String[]{"GPOISON"};
 		O[V_HELP]="<ABILITY>This poison is not yet documented.";
 		O[V_TICKS]=makeFormulaPair("0");
@@ -289,10 +289,15 @@ public class GenPoison extends Poison implements SpellHolder
 			vars[0] = ""+invoker.phyStats().level();
 			vars[1] = ""+super.getXLEVELLevel(invoker);
 		}
-		if(affected != null)
+		else
 		{
-			vars[2] = ""+affected.phyStats().level();
+			vars[0] = "0";
+			vars[1] = "0";
 		}
+		if(affected != null)
+			vars[2] = ""+affected.phyStats().level();
+		else
+			vars[2] = "0";
 		vars[3] = ""+(int)Math.round(super.rank);
 		return vars;
 	}
