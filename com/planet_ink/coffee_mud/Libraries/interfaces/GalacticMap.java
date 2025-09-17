@@ -199,6 +199,21 @@ public interface GalacticMap extends CMLibrary
 	public Triad<Dir3D, Double, Coord3D> getOrbitalMaintenance(final SpaceShip ship, final SpaceObject planet, final long oldRadius);
 
 	/**
+	 * Returns whether a straight line trajectory between the ship's current
+	 * position and the target position is safe, meaning it doesn't come within
+	 * a certain factor of any object in space.
+	 *
+	 * @param ship the ship to check
+	 * @param target the target coordinates
+	 * @param maxDistance the maximum distance to check for objects
+	 * @param safePeriFactor the factor of safety, 1.0 means don't come within
+	 *            the radius of any object, 2.0 means don't come within twice
+	 *            the radius of any object, etc.
+	 * @return true if the trajectory is safe, false otherwise
+	 */
+	public boolean isSafeTrajectory(final SpaceObject ship, final Coord3D target, final long maxDistance, final double safePeriFactor);
+
+	/**
 	 * Given two vectors, this will return the minimum
 	 * distance between the two vectors.
 	 *

@@ -1604,7 +1604,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final Room bodyRoom;
 			if((body!=null)
 			&&(body.owner() instanceof Room)
-			&&(((Room)body.owner()).isContent(body)))
+			&&(body.owner().isContent(body)))
 				bodyRoom=(Room)body.owner();
 			else
 				bodyRoom=deathRoom;
@@ -1741,7 +1741,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Object[] hitWords = null;
 		if(E instanceof Ability)
 		{
-			final String ID = ((Ability)E).ID().trim();
+			final String ID = E.ID().trim();
 			for (final Object[][] addOnList : addOns)
 			{
 				if(((String)addOnList[0][0]).equalsIgnoreCase(ID))
@@ -2137,7 +2137,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			targeted=false;
 		else
 		if(msg.tool() instanceof Ability)
-			tool=((Ability)msg.tool()).name();
+			tool=msg.tool().name();
 
 		String tackOn=null;
 		switch(msg.targetMinor())
@@ -2403,7 +2403,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(((MOB)riddenM).rangeToTarget() != mob.rangeToTarget())
 			{
 				((MOB)riddenM).setRangeToTarget(mob.rangeToTarget());
-				((MOB)riddenM).recoverPhyStats();
+				riddenM.recoverPhyStats();
 			}
 		}
 		if((mob instanceof Rideable)
@@ -2418,7 +2418,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(((MOB)R).rangeToTarget() != mob.rangeToTarget())
 					{
 						((MOB)R).setRangeToTarget(mob.rangeToTarget());
-						((MOB)R).recoverPhyStats();
+						R.recoverPhyStats();
 					}
 				}
 			}
@@ -2487,7 +2487,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				return;
 			if(msg.value() >= SpaceObject.ACCELERATION_INSTANTDEATH)
 			{
-				R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> is crushed to jelly by acceleration!"));
+				R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> <S-IS-ARE> crushed to jelly by acceleration!"));
 				postDeath(null, mob, msg);
 			}
 			else

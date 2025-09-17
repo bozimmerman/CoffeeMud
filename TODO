@@ -5,6 +5,7 @@ TECH TODO:
       (Kinetic Energy (inertia) KE=0.5*mass*velocity*velocity)
       discharge of all stored inertial power to stop the ship entirely
    *. fix drive fuel consumption!
+   *. impulse engines (can move any mass up to 0.25C)
    *. make warp engines -- see tech doc
    *. make ship active scanners
    *. make communication system

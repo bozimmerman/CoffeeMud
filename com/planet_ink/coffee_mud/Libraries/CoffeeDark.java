@@ -1182,6 +1182,42 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public boolean isSafeTrajectory(final SpaceObject ship, final Coord3D target, final long maxDistance, final double safePeriFactor)
+	{
+		if (ship == null || target == null || maxDistance <= 0)
+			return false;
+		final long planetR = ship.radius() * 2;
+		final double safePeri = planetR * safePeriFactor;
+		final Coord3D startPos = ship.coordinates().copyOf();
+		Dir3D dirToTarget = getDirection(startPos, target);
+		final double thrustAccel = Math.min(ship.speed() / 10.0, SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
+		final long ticks = Math.max(1, (long) (maxDistance / Math.max(1.0, ship.speed())));
+		final double dt = 1.0;
+		Coord3D pos = startPos.copyOf();
+		final Dir3D velDir = ship.direction().copyOf();
+		double speed = ship.speed();
+		double minR = Double.MAX_VALUE;
+		for (int t=0; t<ticks; t++)
+		{
+			final Pair<Dir3D, Double> grav = getGravityForcer(ship);
+			if (grav != null && grav.second.doubleValue() > 0)
+				speed = accelSpaceObject(velDir, speed, grav.first, grav.second.doubleValue() * dt);
+			dirToTarget = getDirection(pos, target);
+			final Dir3D thrustDir = getMiddleAngle(velDir, dirToTarget);
+			speed = accelSpaceObject(velDir, speed, thrustDir, thrustAccel * dt);
+			pos = moveSpaceObject(pos, velDir, (long) speed);
+			final double currR = getDistanceFrom(pos, startPos);
+			if (currR < minR)
+				minR = currR;
+			if (minR < safePeri)
+				return false;
+			if (getDistanceFrom(pos, target) < ship.radius() * 2)
+				break;
+		}
+		return minR >= safePeri;
+	}
+
+	@Override
 	public ShipDir[] getCurrentBattleCoveredDirections(final ShipDirectional comp)
 	{
 		final ShipDir[] currCoverage;

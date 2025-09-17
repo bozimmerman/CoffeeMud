@@ -323,7 +323,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		if(simulation || me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			if(CMSecurity.isDebugging(DbgFlag.SPACEMOVES))
+			if(CMSecurity.isDebugging(DbgFlag.SPACEMOVES) && (!simulation)&&(fuelToConsume>1))
 			{
 				final String word = simulation?"Set Thrust: ":"Thrusting: ";
 				Log.debugOut("StdShipThruster",word+me.name()+" dir="+portDir.name()+" amt="+amount+" acc="+acceleration+" fuel="+fuelToConsume);
