@@ -137,6 +137,14 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 	}
 
 	@Override
+	public boolean isCollinear(final SpaceObject a, final SpaceObject b, final SpaceObject c, final double tol)
+	{
+		final Dir3D ab = getDirection(a, b);
+		final Dir3D bc = getDirection(b, c);
+		return getAngleDelta(ab, bc) < tol;
+	}
+
+	@Override
 	public long getDistanceFrom(final SpaceObject O1, final SpaceObject O2)
 	{
 		return getDistanceFrom(O1.coordinates(),O2.coordinates());

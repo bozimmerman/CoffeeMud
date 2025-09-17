@@ -4783,7 +4783,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
-			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
+			if(mob.session()!=null)
+			{
+				mob.session().rawPrint(L("@x1. Effects: '",""+showNumber));
+				mob.session().rawPrint(affectstr);
+				mob.session().rawPrintln("'.");
+			}
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			behave=mob.session().prompt(L("Enter an effect to add/remove (?)\n\r:"),"");

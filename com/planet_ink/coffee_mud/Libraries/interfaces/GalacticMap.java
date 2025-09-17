@@ -178,6 +178,20 @@ public interface GalacticMap extends CMLibrary
 	public double getMinDistanceFrom(final Coord3D prevPos, final Coord3D curPosition, final Coord3D objPos);
 
 	/**
+	 * Given three space objects, this will return whether they are collinear
+	 * within a certain tolerance.
+	 *
+	 * @see GalacticMap#isCollinear(SpaceObject, SpaceObject, SpaceObject,
+	 *      double)
+	 *
+	 * @param a the first space object
+	 * @param b the second space object
+	 * @param c the third space object
+	 * @return true if they are collinear
+	 */
+	public boolean isCollinear(SpaceObject a, SpaceObject b, SpaceObject c, double tol);
+
+	/**
 	 * Calculates the best available orbit.
 	 *
 	 * @param o the space ship that wants to orbit

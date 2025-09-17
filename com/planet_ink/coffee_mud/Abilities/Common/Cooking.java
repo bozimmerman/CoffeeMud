@@ -394,10 +394,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 								food.setMiscText(buildingI.text());
 								food.recoverPhyStats();
 								if(cookingPot.owner() instanceof Room)
-									((Room)cookingPot.owner()).addItem(food,ItemPossessor.Expire.Player_Drop);
+									cookingPot.owner().addItem(food,ItemPossessor.Expire.Player_Drop);
 								else
 								if(cookingPot.owner() instanceof MOB)
-									((MOB)cookingPot.owner()).addItem(food);
+									cookingPot.owner().addItem(food);
 								CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 								food.setContainer(cookingPot);
 								if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
@@ -460,7 +460,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				int material;
 				if(pot instanceof RawMaterial)
 				{
-					material = ((RawMaterial)pot).material();
+					material = pot.material();
 					i.itemName = pot.Name();
 					i.secretIdentity = pot.secretIdentity();
 				}
@@ -507,7 +507,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				i.secretIdentity = I.secretIdentity();
 				final Pair<PotIngredient,Integer> use = ensureContent(i, potIngredients);
 				if(I instanceof RawMaterial)
-					use.second = Integer.valueOf(use.second.intValue() + ((RawMaterial)I).phyStats().weight());
+					use.second = Integer.valueOf(use.second.intValue() + I.phyStats().weight());
 				else
 					use.second = Integer.valueOf(use.second.intValue() + 1);
 			}
@@ -585,7 +585,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 	private boolean ingredientMatch(final PotIngredient potIngr, String recipeIng, final boolean perfectOnly)
 	{
-		//TODO:BZ:FINISHME
 		if(recipeIng.length()>0)
 		{
 			recipeIng = recipeIng.toUpperCase().trim();
@@ -601,7 +600,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					if(potIngr.rscCat.equals(recipeIng))
 						return true;
 				}
-				if((potIngr.subType == null) && (potIngr.rscCat == null))
+				if((potIngr.subType == null)
+				&& (potIngr.rscCat == null))
 				{
 					final int rsc = RawMaterial.CODES.FIND_CaseSensitive(recipeIng);
 					if((rsc > 0)&&(recipeIng.equals(potIngr.rscName)))
@@ -917,11 +917,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					if((I instanceof Food)
 					&&(material<0))
 					{
-						switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
+						switch(I.material()&RawMaterial.MATERIAL_MASK)
 						{
 						case RawMaterial.MATERIAL_VEGETATION:
 						case RawMaterial.MATERIAL_FLESH:
-							material=((Food)I).material();
+							material=I.material();
 							break;
 						}
 					}
@@ -1130,7 +1130,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(buildingI!=null)
 		{
 			if(buildingI instanceof RawMaterial)
-				((RawMaterial)buildingI).setSecretIdentity(buildingI.name());
+				buildingI.setSecretIdentity(buildingI.name());
 			else
 			if(mob!=null)
 				buildingI.setSecretIdentity(L("This was prepared by @x1.",mob.Name()));
