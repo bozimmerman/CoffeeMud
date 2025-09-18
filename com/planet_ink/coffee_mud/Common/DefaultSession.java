@@ -1193,6 +1193,12 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
+			final MOB M = mob;
+			final String errMsg = (ioe == null)? "unk" : ioe.getMessage();
+			if(M != null)
+				Log.errOut("Killing "+M.name()+"'s session: "+errMsg, ioe);
+			else
+				Log.errOut("Killing Unknowns session: "+errMsg, ioe);
 			stopSession(false,true,true, false);
 			setKillFlag(true);
 		}
