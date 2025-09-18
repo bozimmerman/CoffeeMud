@@ -771,7 +771,7 @@ public interface GalacticMap extends CMLibrary
 	 * Computes net acceleration and direction after subtracting gravity influence.
 	 * @param ship The ship (for gravity lookup)
 	 * @param thrustDir Desired thrust direction
-	 * @param thrustAccel Raw thrust magnitude (dm/tick²)
+	 * @param thrustAccel Raw thrust magnitude (dm/tick)
 	 * @return Pair<Dir3D netDir, Double netAccel> or null if no meaningful grav
 	 */
 	public Pair<Dir3D, Double> getNetAccelerationAfterGravity(final SpaceObject ship, final Dir3D thrustDir, final double thrustAccel);
