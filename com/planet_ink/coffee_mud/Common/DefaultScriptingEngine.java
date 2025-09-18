@@ -10743,10 +10743,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						tt=parseBits(ctx,"Cr");
 					this.lastLoaded = null;
-					String name=varify(ctx,tt[1]);
-					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
+					String name = null;
 					Container container=null;
-					if(containerIndex>=0)
+					final int earlyContIndeX = tt[1].toUpperCase().lastIndexOf(" INTO ");
+					if((earlyContIndeX>0)&&(tt[1].substring(earlyContIndeX+6).indexOf("$")>=0))
+					{
+						final Physical P= this.getArgumentItem(tt[1].substring(earlyContIndeX+6).trim(), ctx);
+						if(P instanceof Container)
+						{
+							name = varify(ctx,tt[1].substring(0,earlyContIndeX).trim());
+							container=(Container)P;
+						}
+					}
+					if (name == null)
+						name=varify(ctx,tt[1]);
+					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
+					if((containerIndex>=0)&&(container == null))
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),ctx.monster,lastKnownLocation,containers,false);
@@ -10828,13 +10840,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Room putRoom = lastKnownLocation;
 				if(tt==null)
 					tt=parseBits(ctx,"Cr");
-				String name=varify(ctx,tt[1]);
+				String name = null;
+				Container container=null;
+				final int earlyContIndeX = tt[1].toUpperCase().lastIndexOf(" INTO ");
+				if((earlyContIndeX>0)&&(tt[1].substring(earlyContIndeX+6).indexOf("$")>=0))
+				{
+					final Physical P= this.getArgumentItem(tt[1].substring(earlyContIndeX+6).trim(), ctx);
+					if(P instanceof Container)
+					{
+						name = varify(ctx,tt[1].substring(0,earlyContIndeX).trim());
+						container=(Container)P;
+					}
+				}
+				if(name == null)
+					name=varify(ctx,tt[1]);
 				if(putRoom!=null)
 				{
 					final ArrayList<Environmental> Is=new ArrayList<Environmental>();
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
-					Container container=null;
-					if(containerIndex>=0)
+					if((containerIndex>=0)&&(container == null))
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
 						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,putRoom,containers,false);
@@ -10913,6 +10937,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					lastKnownLocation.recoverRoomStats();
 				}
+				else
+					Log.debugOut("DefaultScriptingEngine", "mpoloadroom found no room!");
 				break;
 			}
 			case 84: // mpoloadshop
