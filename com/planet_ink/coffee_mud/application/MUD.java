@@ -361,7 +361,8 @@ public class MUD extends Thread implements MudHost
 						catch (final Exception ex)
 						{
 						}
-						sess[0].handshake(introText.toString());
+						if (sess[0].getStatus() == Session.SessionStatus.HANDSHAKE_OPEN)
+							sess[0].handshake(introText.toString());
 						CMLib.sessions().add(sess[0]);
 						sock = null;
 						try {

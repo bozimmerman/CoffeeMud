@@ -1900,8 +1900,10 @@ public class DefaultSession implements Session
 								final boolean wasmccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
 										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
 								for(final String key : getStatCodes())
+								{
 									if(obj.containsKey(key.toLowerCase()))
 										setStat(key,obj.get(key.toLowerCase()).toString());
+								}
 								this.inputCallback=null;
 								final boolean ismccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
 										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
@@ -1912,6 +1914,7 @@ public class DefaultSession implements Session
 									if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 										changeTelnetMode(rawout,TELNET_COMPRESS2,true);
 								}
+								this.needPrompt=true;
 							}
 							else
 							if((mob!=null)
