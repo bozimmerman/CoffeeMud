@@ -10906,6 +10906,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
+					if(Is.size()==0)
+						Log.debugOut("DefaultScriptingEngine", "mpoloadroom found no items ("+name+")!");
 					for(int i=0;i<Is.size();i++)
 					{
 						if(Is.get(i) instanceof Item)
