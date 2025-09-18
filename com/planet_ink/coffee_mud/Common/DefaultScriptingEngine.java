@@ -10906,8 +10906,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
+					//TODO:DELME:BZ delete these debug lines
 					if(Is.size()==0)
 						Log.debugOut("DefaultScriptingEngine", "mpoloadroom found no items ("+name+")!");
+					if ((container != null) && (container.owner() != putRoom))
+						Log.debugOut("DefaultScriptingEngine", "mpoloadroom found foreign container ("+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(container))+")!");
 					for(int i=0;i<Is.size();i++)
 					{
 						if(Is.get(i) instanceof Item)
