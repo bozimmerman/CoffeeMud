@@ -54,6 +54,9 @@ public class Fighter_FavoredMount extends StdAbility
 
 	private String desc = null;
 	private Pair<String, String> pair = null;
+	private volatile boolean norecurse1 = false;
+	private volatile boolean norecurse2 = false;
+	private volatile boolean norecurse3 = false;
 
 	@Override
 	public String displayText()
@@ -258,13 +261,23 @@ public class Fighter_FavoredMount extends StdAbility
 				&&(isMount(msg.source(),(MOB)msg.source().riding()))
 				&&(((MOB)msg.target()).riding()==null))
 				{
-					if(!msg.target().okMessage(myHost, msg))
-						return false;
-					if((msg.tool() instanceof Physical)
-					&&(!msg.tool().okMessage(myHost, msg)))
-						return false;
-					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
-					// cavy as target doesn't work because eval-order
+					try
+					{
+						if(norecurse1)
+							return true;
+						norecurse1=true;
+						if(!msg.target().okMessage(myHost, msg))
+							return false;
+						if((msg.tool() instanceof Physical)
+						&&(!msg.tool().okMessage(myHost, msg)))
+							return false;
+						msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+						// cavy as target doesn't work because eval-order
+					}
+					finally
+					{
+						norecurse1=false;
+					}
 				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_GET)
@@ -273,9 +286,19 @@ public class Fighter_FavoredMount extends StdAbility
 				&&(!CMLib.utensils().reachableItem(msg.source(),msg.target()))
 				&&(isMount(msg.source(),(MOB)msg.source().riding())))
 				{
-					if(!msg.target().okMessage(myHost, msg))
-						return false;
-					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+					try
+					{
+						if(norecurse2)
+							return true;
+						norecurse2=true;
+						if(!msg.target().okMessage(myHost, msg))
+							return false;
+						msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+					}
+					finally
+					{
+						norecurse2=false;
+					}
 				}
 			}
 			else
@@ -285,13 +308,23 @@ public class Fighter_FavoredMount extends StdAbility
 			&&(isMount((MOB)msg.target(),(MOB)((MOB)msg.target()).riding()))
 			&&(msg.source().riding()==null))
 			{
-				if(!msg.target().okMessage(myHost, msg))
-					return false;
-				if((msg.tool() instanceof Physical)
-				&&(!msg.tool().okMessage(myHost, msg)))
-					return false;
-				msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
-				// cavy as target doesn't work because eval-order
+				try
+				{
+					if(norecurse3)
+						return true;
+					norecurse3=true;
+					if(!msg.target().okMessage(myHost, msg))
+						return false;
+					if((msg.tool() instanceof Physical)
+					&&(!msg.tool().okMessage(myHost, msg)))
+						return false;
+					msg.setTargetCode(msg.targetCode()|CMMsg.MASK_ALWAYS);
+					// cavy as target doesn't work because eval-order
+				}
+				finally
+				{
+					norecurse3=false;
+				}
 			}
 		}
 
@@ -309,7 +342,7 @@ public class Fighter_FavoredMount extends StdAbility
 			lastLeave=0;
 			final Physical affected = this.affected;
 			if(affected instanceof MOB)
-				((MOB)affected).recoverPhyStats();
+				affected.recoverPhyStats();
 		}
 		return true;
 	}
