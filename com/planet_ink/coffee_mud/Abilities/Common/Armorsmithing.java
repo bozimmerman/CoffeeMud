@@ -99,6 +99,14 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return "metal";
 	}
 
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -537,9 +545,9 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				((Armor)buildingI).basePhyStats().setArmor(0);
+				buildingI.basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
+					buildingI.basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,hardness);
 			}
 			if(buildingI instanceof Container)

@@ -101,6 +101,14 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_MAXRANGE	= 11;
 	protected static final int	RCP_EXTRAREQ	= 12;
 	protected static final int	RCP_SPELL		= 13;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)

@@ -167,6 +167,8 @@ public class GrinderAbilities
 		A.setStat("CANBUNDLE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("CANSIT");
 		A.setStat("CANSIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+		old=httpReq.getUrlParameter("NEEDFIRE");
+		A.setStat("NEEDFIRE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("ISCOSMETIC");
 		A.setStat("ISCOSMETIC",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("SOUND");
@@ -364,7 +366,7 @@ public class GrinderAbilities
 				}
 			}
 			((Language)A).languagesSupported().clear();
-			((Language)A).languagesSupported().add(((Language)A).ID());
+			((Language)A).languagesSupported().add(A.ID());
 			if(httpReq.isUrlParameter("INTERPRET1"))
 			{
 				int x=1;
@@ -372,7 +374,7 @@ public class GrinderAbilities
 				{
 					final String word=httpReq.getUrlParameter("INTERPRET"+x).trim();
 					if((word != null)
-					&&(!((Language)A).ID().equals(word))
+					&&(!A.ID().equals(word))
 					&&(CMClass.getAbility(word) instanceof Language))
 						((Language)A).languagesSupported().add(CMClass.getAbility(word).ID());
 					x++;

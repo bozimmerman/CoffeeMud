@@ -426,7 +426,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			Item fire=null;
-			if(fireRequired)
+			if(isFireRequired())
 			{
 				fire=getRequiredFire(mob,autoGenerate);
 				if(fire==null)

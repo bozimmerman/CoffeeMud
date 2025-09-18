@@ -2980,12 +2980,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(room)));
 						break;
 					case 'F':
-						if(mob != null)
+						if((mob != null)&&(mob.lastLocation()!=null))
 						{
-							if(code.num<0)
-								addMe = CMLib.map().getRoomDir(room, mob.lastLocation()) < 0;
+							if(code.num < 0)
+								addMe = CMLib.map().getRoomDir(mob.lastLocation(), room) < 0;
 							else
-								addMe = room.getRoomInDir(code.num) == mob.lastLocation();
+								addMe = mob.lastLocation().getRoomInDir(Directions.getOpDirectionCode(code.num)) == room;
 						}
 						else
 							addMe = code.num < 0;

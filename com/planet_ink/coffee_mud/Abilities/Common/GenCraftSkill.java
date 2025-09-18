@@ -75,7 +75,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int	V_CNBN			= 8;	// B
 	private static final int	V_SOND			= 9;	// S
 	private static final int	V_CNST			= 10;	// B
-	private static final int	NUM_VS			= 11;	// S
+	private static final int	V_FIRE			= 11;	// B
+	private static final int	NUM_VS			= 12;	// S
 
 	//
 
@@ -132,6 +133,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		O[V_CNBN]=Boolean.valueOf(true);
 		O[V_SOND]="sawing.wav";
 		O[V_CNST]=Boolean.valueOf(false);
+		O[V_FIRE]=Boolean.valueOf(false);
 		return O;
 	}
 
@@ -232,6 +234,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 										 "CANBUNDLE",//10S
 										 "SOUND",//11S
 										 "CANSIT",//12S
+										 "NEEDFIRE",//13B
 										};
 
 	@Override
@@ -293,6 +296,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			return (String) V(ID, V_SOND);
 		case 12:
 			return Boolean.toString(((Boolean) V(ID, V_CNST)).booleanValue());
+		case 13:
+			return this.isFireRequired()?"true":"false";
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenCraftSkill";
@@ -369,6 +374,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 12:
 			SV(ID, V_CNST, Boolean.valueOf(CMath.s_bool(val)));
 			break;
+		case 13:
+			SV(ID, V_FIRE, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill"))
 				parseAllXML(val);
@@ -435,6 +443,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
+	}
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return ((Boolean)V(ID,V_FIRE)).booleanValue();
 	}
 
 	@Override
@@ -693,6 +707,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
+			if(this.isFireRequired())
+			{
+				final Item fire=getRequiredFire(mob,autoGenerate);
+				if(fire==null)
+					return false;
+			}
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false))
@@ -714,6 +734,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
+			if(this.isFireRequired())
+			{
+				final Item fire=getRequiredFire(mob,autoGenerate);
+				if(fire==null)
+					return false;
+			}
 			if((!this.mayICraft(mob, buildingI))&&(!super.isMadeOfSupportedResource(buildingI)))
 			{
 				commonTelL(mob,"That's can't be refitted with this skill.");
@@ -743,6 +769,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			aborted=false;
 			key=null;
 			messedUp=false;
+			if(this.isFireRequired())
+			{
+				final Item fire=getRequiredFire(mob,autoGenerate);
+				if(fire==null)
+					return false;
+			}
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 			{
@@ -899,7 +931,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			else
 			if(buildingI instanceof Weapon)
 			{
-				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
+				buildingI.setRawLogicalAnd((capacity>1));
 			}
 			if(buildingI instanceof Weapon)
 			{
@@ -907,15 +939,15 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
-				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+				buildingI.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				if(!(buildingI instanceof Container))
 					buildingI.basePhyStats().setAttackAdjustment(buildingI.basePhyStats().attackAdjustment()+(int)canContain);
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				((Armor)buildingI).basePhyStats().setArmor(0);
+				buildingI.basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
+					buildingI.basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,hardness);
 			}
 			if(buildingI instanceof Light)
@@ -927,7 +959,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					((Light)buildingI).setDuration(200);
 					if((buildingI.fitsOn(Wearable.WORN_MOUTH))
 					||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
-						((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
+						((Container)buildingI).setCapacity(buildingI.basePhyStats().weight()+1);
 					else
 						((Container)buildingI).setCapacity(0);
 				}

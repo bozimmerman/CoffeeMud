@@ -255,6 +255,14 @@
                 </TD>
             </TR>
             <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Fire Required: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=NEEDFIRE @AbilityData?NEEDFIRE@>
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
                 <TD>
                     <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>

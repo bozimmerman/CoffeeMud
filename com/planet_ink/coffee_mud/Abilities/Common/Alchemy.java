@@ -92,6 +92,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 
 	String oldName="";
 	protected Ability theSpell=null;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -100,7 +107,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		{
 			final MOB mob=(MOB)affected;
 			if((buildingI==null)
-			||((fireRequired)
+			||((isFireRequired())
 				&&(getRequiredFire(mob,0)==null)
 				&&(mob.location()==activityRoom))
 			||(theSpell==null))

@@ -96,6 +96,14 @@ public class Pottery extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 8;
 
 	protected DoorKey key=null;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 
 	@Override
 	public List<List<String>> fetchMyRecipes(final MOB mob)

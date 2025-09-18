@@ -90,6 +90,14 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	protected static final int	RCP_FINALRSC	= 6;
 	protected static final int	RCP_SUBTYPE		= 7;
 	protected static final int	RCP_SPELL		= 8;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)

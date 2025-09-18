@@ -501,7 +501,7 @@ public class CommonSkill extends StdAbility
 	public Item getRequiredFire(final MOB mob,final int autoGenerate)
 	{
 		if((autoGenerate>0)
-		||((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired)))
+		||((this instanceof CraftingSkill)&&(!((CraftingSkill)this).isFireRequired())))
 		{
 			if(fakeFire != null)
 				return fakeFire;

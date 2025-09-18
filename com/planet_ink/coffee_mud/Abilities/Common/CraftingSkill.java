@@ -71,7 +71,6 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 
 	protected Item			buildingI		= null;
 	protected RecipesBook	recipeHolder	= null;
-	protected boolean		fireRequired	= true;
 
 	protected LinkedList<String> last25items = new LinkedList<String>();
 
@@ -183,6 +182,11 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	public double getItemWeightMultiplier(final boolean bundling)
 	{
 		return 1.0;
+	}
+
+	protected boolean isFireRequired()
+	{
+		return true;
 	}
 
 	public int getStandardWeight(final int baseWoodRequired, final int otherResourceCd, final boolean bundling)

@@ -94,6 +94,14 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 8;
 
 	protected DoorKey key = null;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -101,7 +109,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if(fireRequired)
+			if(isFireRequired())
 			{
 				if((buildingI==null)
 				||((getRequiredFire(mob,0)==null)
@@ -501,7 +509,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 		{
-			((Armor)buildingI).basePhyStats().setArmor(0);
+			buildingI.basePhyStats().setArmor(0);
 			setWearLocation(buildingI,misctype,0);
 		}
 		if((misctype.indexOf("STATUE")>=0)
@@ -558,7 +566,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				((Light)buildingI).setDuration((capacity > 200) ? capacity : 200);
 				if((buildingI.fitsOn(Wearable.WORN_MOUTH))
 				||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
-					((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
+					((Container)buildingI).setCapacity(buildingI.basePhyStats().weight()+1);
 				else
 					((Container)buildingI).setCapacity(0);
 			}

@@ -156,16 +156,16 @@ HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type unarmed
 # UNARMEDFOCUS@x1=Unarmed Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 # HELP_=<EXPERTISE>The ability for fighters to wield higher level natural weapons.
 
-BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon +Skill_InstrumentBash,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
+BLUNTSTRIKE@x1=Blunt Striking @x2,10,LEVEL,-SKILL +Specialization_BluntWeapon +Skill_InstrumentBash  +Specialization_Staff,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to hit more often when using a blunt-class weapon.
 
-BLUNTPIERCE@x1=Blunt Piercing @x2,10,X2,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+BLUNTPIERCE@x1=Blunt Piercing @x2,10,X2,-SKILL +Specialization_BluntWeapon +Specialization_Staff,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type blunt-class weapon.
 
-BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
+BLUNTBASH@x1=Blunt Bashing @x2,10,X3,-SKILL +Specialization_BluntWeapon +Specialization_Staff,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a bashing-type blunt-class weapon.
 
-BLUNTFOCUS@x1=Blunt Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_BluntWeapon,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
+BLUNTFOCUS@x1=Blunt Focus @x2,10,X4,-BASECLASS +Fighter -SKILL +Specialization_BluntWeapon +Specialization_Staff,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability for fighters to use wield higher level blunt-class weapons.
 
 EDGEDSTRIKE@x1=Edged Striking @x2,10,LEVEL,-SKILL +Specialization_EdgedWeapon +Specialization_Dagger,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0

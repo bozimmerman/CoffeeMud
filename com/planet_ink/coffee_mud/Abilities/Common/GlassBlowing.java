@@ -95,6 +95,13 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 8;
 
 	protected DoorKey key=null;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
 
 	@Override
 	public List<List<String>> fetchMyRecipes(final MOB mob)
@@ -553,7 +560,7 @@ public class GlassBlowing extends EnhancedCraftingSkill implements ItemCraftor
 				((Light)buildingI).setDuration((capacity > 200) ? capacity : 200);
 				if((buildingI.fitsOn(Wearable.WORN_MOUTH))
 				||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
-					((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
+					((Container)buildingI).setCapacity(buildingI.basePhyStats().weight()+1);
 				else
 					((Container)buildingI).setCapacity(0);
 			}

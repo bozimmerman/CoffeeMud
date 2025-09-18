@@ -37,6 +37,7 @@
  36. New Scriptable triggers: WEARING_PROG, RIDE_PROG, RIDING_PROG
  37. Room varies now supports varying the room description by entry direction.
  38. New Archon skill: LLMIFY, for making LLM-powered mobs, if you can.
+ 39. GenCraftingSkill now supports a fire requirement.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

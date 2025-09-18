@@ -100,6 +100,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	protected static final int	RCP_SPELL		= 10;
 
 	protected Pair<Item,String> beingDone=null;
+	protected boolean fireRequired = true;
+
+	@Override
+	protected boolean isFireRequired()
+	{
+		return fireRequired;
+	}
+
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -744,9 +752,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			addSpellsOrBehaviors(buildingI,spell,deadMats.getLostProps(),deadComps.getLostProps());
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				((Armor)buildingI).basePhyStats().setArmor(0);
+				buildingI.basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)buildingI).basePhyStats().setArmor(armordmg);
+					buildingI.basePhyStats().setArmor(armordmg);
 				setWearLocation(buildingI,misctype,0);
 			}
 			if(buildingI.ID().endsWith("Dice"))
