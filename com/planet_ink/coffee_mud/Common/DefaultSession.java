@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
@@ -2251,6 +2252,11 @@ public class DefaultSession implements Session
 			setClientTelnetMode(last,true);
 			if(!mightSupportTelnetMode(last))
 				changeTelnetModeBackwards(last,false);
+			else
+			if ((last == TELNET_MPCP) && (!CMProps.isState(HostState.RUNNING)))
+			{
+				// ignore it for now -- its only supported when we're running
+			}
 			else
 			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);

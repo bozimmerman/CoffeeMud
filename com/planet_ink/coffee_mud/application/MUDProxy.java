@@ -921,7 +921,7 @@ public class MUDProxy
 				final String jsonStr = str.substring(x+1).trim();
 				final MiniJSON.JSONObject obj = new MiniJSON().parseObject(jsonStr);
 				final Long timestamp = obj.getCheckedLong("timestamp");
-				final long timeout = context.isClient ? 30000 : 1000;
+				final long timeout = context.isClient ? 5000 : 1000;
 				if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>timeout)
 					return;
 				obj.remove("timestamp");
@@ -978,21 +978,36 @@ public class MUDProxy
 						for(final SelectionKey k : channelPairs.keySet())
 						{
 							final SelectionKey pk = channelPairs.get(k);
-							if(k.attachment() instanceof MUDProxy)
+							final MUDProxy sessProxy = (MUDProxy)k.attachment();
+							if(sessProxy.isClient
+							&& (sessProxy.outsidePortNum >0))
 							{
-								final MUDProxy sessProxy = (MUDProxy)k.attachment();
-								if(sessProxy.isClient
-								&& (sessProxy.outsidePortNum >0)
-								&& (channelPairs.containsKey(pk))
+								final MiniJSON.JSONObject sObj = new MiniJSON.JSONObject();
+								sObj.put("type", "client");
+								sObj.put("source",sessProxy.ipAddress+":"+sessProxy.outsidePortNum);
+								if((channelPairs.containsKey(pk))
 								&& (pk.attachment() instanceof MUDProxy)
 								&& (!((MUDProxy)pk.attachment()).isClient))
 								{
 									final MUDProxy pProxy=(MUDProxy)pk.attachment();
-									final MiniJSON.JSONObject sObj = new MiniJSON.JSONObject();
-									sObj.put("source",sessProxy.ipAddress+":"+sessProxy.outsidePortNum);
 									sObj.put("target",pProxy.port.first+":"+pProxy.port.second.toString());
-									sessions.add(sObj);
 								}
+								sessions.add(sObj);
+							}
+							else
+							{
+								final MiniJSON.JSONObject sObj = new MiniJSON.JSONObject();
+								sObj.put("type", "server");
+								sObj.put("source",sessProxy.ipAddress+":"+sessProxy.outsidePortNum);
+								if((channelPairs.containsKey(pk))
+								&& (pk.attachment() instanceof MUDProxy)
+								&& (((MUDProxy)pk.attachment()).isClient))
+								{
+									final MUDProxy pProxy=(MUDProxy)pk.attachment();
+									sObj.put("target",pProxy.port.first+":"+pProxy.port.second.toString());
+								}
+								sObj.put("distress",""+sessProxy.distressTime);
+								sessions.add(sObj);
 							}
 						}
 						robj.put("sessions", sessions.toArray());
@@ -1132,9 +1147,7 @@ public class MUDProxy
 					{
 						status.mpcpCommand.reset();
 						if(status.command==(byte)Session.TELNET_SB)
-						{
 							status.state = ParseState.SB_202;
-						}
 						else
 						{
 							if(status.command == (byte)Session.TELNET_DO)
@@ -1441,7 +1454,11 @@ public class MUDProxy
 					buffer = ByteBuffer.allocate(BUFFER_SIZE);
 				}
 				if(bytesRead < 0)
+				{
 					eof = true;
+					if(!context.isClient) //TODO: is this a terrible idea?
+						putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
+				}
 				context.pendingInputs.addAll(inputList);
 			}
 			if((context.pendingInputs.size() > 0)|| eof)
@@ -1501,6 +1518,8 @@ public class MUDProxy
 				serverChannel.close();
 			}
 			catch (final IOException e) {}
+			if (clientKey.isValid())
+				handleWrite(clientKey);
 			final SocketChannel newChannel=SocketChannel.open();
 			newChannel.configureBlocking(false);
 			newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
@@ -1645,7 +1664,8 @@ public class MUDProxy
 										{
 											dTime = p.second;
 										}
-										if(xP.second.distressTime < dTime.longValue())
+										if((dTime.longValue() > 0)
+										&& (xP.second.distressTime < dTime.longValue()))
 										{
 											synchronized(runnables)
 											{
