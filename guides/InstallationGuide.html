@@ -605,9 +605,16 @@ report the PROXY port as its publicly accessible port for users,
 instead of its normal listening PORT.</p>
 <p>From
 inside a CoffeeMud connected to the proxy server, you can use the
-PROXYCTL command. &nbsp;It requires the random password that is
+PROXYCTL command. &nbsp;It requires the control password that is
 only
-shown when the proxy server is started. &nbsp;Use PROXYCTL LIST to see the available MPCP commands.</p>
+shown when the proxy server is started. &nbsp;Use PROXYCTL LIST to see
+the available MPCP commands. You can also send commands from the
+machine running the proxy server by executing the proxy server MUDProxy
+class with the CMD argument, but you must also know the &nbsp;proxy
+client port number,MPCPKEY and the control password: <br /></p><p><code>java -classpath
+".:./lib/js.jar:./lib/jzlib.jar"
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code><code> CMD 5555 mympcpkey 10101 LIST</code></p>
+<p></p>
 <p><img style="width: 73px; height: 73px;" src="images/integrations.jpg" alt="packages" /> </p>
 <h2><a name="integrations">Integrations</a></h2>
 CoffeeMud supports several different integrations with external
