@@ -12544,7 +12544,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String which=tt[1];
 				final Environmental E=getArgumentItem(which,ctx);
 				final String arg2=varify(ctx,tt[2]);
-				final String arg3=varify(ctx,tt[3]);
+				String arg3=varify(ctx,tt[3]);
 				if(!which.equals("*"))
 				{
 					if(E==null)
@@ -12558,11 +12558,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((which.length()>0)&&(arg2.length()>0))
 				{
 					if(this.llmSession == null)
-						this.llmSession = CMLib.protocol().createArchonLLMSession();
+					{
+						this.llmSession = CMLib.protocol().createLLMSession(arg3, Integer.valueOf(5));
+						arg3="";
+					}
 					if(this.llmSession == null)
 						logError(ctx,"MPLLM","RunTime","Could not create LLM Session.");
 					else
+					if(arg3.length()>0)
 						setVar(which,arg2,llmSession.chat(arg3));
+					else
+						setVar(which,arg2,arg3);
 				}
 				break;
 			}
