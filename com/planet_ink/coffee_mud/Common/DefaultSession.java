@@ -425,7 +425,13 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
+	public void handshake(final String introText)
+	{
+		prompt(new HandshakeCallback(250, introText));
+	}
+
+	@Override
+	public boolean initialize(final Socket s, final String groupName)
 	{
 		this.groupName=groupName;
 		sock=s;
@@ -444,7 +450,7 @@ public class DefaultSession implements Session
 				rawin=new BufferedInputStream(new ByteArrayInputStream(new byte[0]));
 				in=new BufferedReader(new InputStreamReader(rawin));
 				out=new PrintWriter(new OutputStreamWriter(rawout));
-				return;
+				return true;
 			}
 
 			this.ipAddress = sock.getInetAddress().getHostAddress();
@@ -494,8 +500,8 @@ public class DefaultSession implements Session
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
 				&&(mightSupportTelnetMode(TELNET_MSSP)))
 					changeTelnetMode(rawout,TELNET_MSSP,true);
-				prompt(new HandshakeCallback(250,introTextStr));
 			}
+			return true;
 		}
 		catch(final Exception e)
 		{
@@ -503,6 +509,7 @@ public class DefaultSession implements Session
 				Log.errOut(e);
 			else
 				Log.errOut(e.getMessage());
+			return false;
 		}
 	}
 

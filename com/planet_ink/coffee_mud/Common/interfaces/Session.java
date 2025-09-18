@@ -60,13 +60,24 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	}
 
 	/**
-	 * Negotiates various telnet options (or attempts to), and
-	 * prints the introTextStr to the user.
+	 * Sets up and negotiates various initial telnet options (or attempts to).
+	 *
+	 * If the socket is null, sets up buffers for a temp session.
+	 * If the session status is HANDSHAKE_OPEN, skips most negotiation.
+	 *
 	 * @param s the socket the user connected from
 	 * @param groupName the name of the thread group the session goes to
-	 * @param introTextStr introductory text string (Hello!)
+	 * @return true if all went well
 	 */
-	public void initializeSession(Socket s, String groupName, String introTextStr);
+	public boolean initialize(Socket s, String groupName);
+
+	/**
+	 * Does a deeper handshake, negotiating specific MXP tags, and finally
+	 * sends the given intro text to the user.
+	 *
+	 * @param introText the text to send after handshake
+	 */
+	public void handshake(final String introText);
 
 	/**
 	 * Returns the group name to which this session belongs

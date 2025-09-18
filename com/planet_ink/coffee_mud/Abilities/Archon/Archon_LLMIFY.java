@@ -345,7 +345,8 @@ public class Archon_LLMIFY extends ArchonSkill
 						public void run()
 						{
 							s.setIdleTimers();
-							s.initializeSession(sock, Thread.currentThread().getThreadGroup().getName(), "");
+							if(s.initialize(sock, Thread.currentThread().getThreadGroup().getName()))
+								s.handshake("");
 							s.setIdleTimers();
 						}
 					});

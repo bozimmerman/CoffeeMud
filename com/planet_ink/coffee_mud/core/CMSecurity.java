@@ -2190,26 +2190,6 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns the String version of the socket ip address,
-	 * or the word 'unknown'.
-	 *
-	 * @param sock the socket to get the address from
-	 * @return the word 'unknown' or the socket address
-	 */
-	public static final String getSocketAddress(final Socket sock)
-	{
-		String address="unknown";
-		try
-		{
-			address=sock.getInetAddress().getHostAddress().trim();
-		}
-		catch(final Exception e)
-		{
-		}
-		return address;
-	}
-
-	/**
 	 * Returns the Resource-global list of ip address statistics.
 	 * @return the Resource-global list of ip address statistics.
 	 */
@@ -2228,11 +2208,10 @@ public class CMSecurity
 	/**
 	 * If the given socket appears on the temporary ip block list,
 	 * then this will remove the entry.
-	 * @param sock the socket to prevent blockage for
+	 * @param address the socket to prevent blockage for
 	 */
-	public static final void clearConnectState(final Socket sock)
+	public static final void clearConnectState(final String address)
 	{
-		final String address=getSocketAddress(sock);
 		if(!isDisabled(DisFlag.CONNSPAMBLOCK))
 		{
 			if(!CMProps.isOnWhiteList(CMProps.WhiteList.IPSCONN, address))
@@ -2261,13 +2240,12 @@ public class CMSecurity
 	 *
 	 * @see CMSecurity.ConnectState
 	 *
-	 * @param sock the socket to check and bump
+	 * @param address the address to check and bump
 	 * @param numAtAddress null, or a 1 dimensional array to return the number of recent conns
 	 * @return the connect state
 	 */
-	public static final ConnectState getConnectState(final Socket sock, final int[] numAtAddress)
+	public static final ConnectState getConnectState(final String address, final int[] numAtAddress)
 	{
-		final String address=getSocketAddress(sock);
 		ConnectState proceed=ConnectState.NORMAL;
 		if(isBanned(address))
 			proceed=ConnectState.BANNED;

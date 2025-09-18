@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -112,7 +113,7 @@ public class MUD extends Thread implements MudHost
 	protected static Map<String,String>	 clArgs				= new Hashtable<String,String>();
 	protected static boolean			 skipMapLoads		= false;
 
-	protected static LinkedList<Triad<Socket,Closeable,Long>> closeables	= new LinkedList<Triad<Socket,Closeable,Long>>();
+	protected static LinkedList<Quad<Socket,Closeable,Long,Session>> closeables	= new LinkedList<Quad<Socket,Closeable,Long,Session>>();
 
 	private static final long 			SHUTDOWN_TIMEOUT 	= 5 * 60 * 1000;
 
@@ -180,15 +181,16 @@ public class MUD extends Thread implements MudHost
 	 * This is done in a separate thread so that the main mud thread is not
 	 * held up.
 	 *
+	 * @param sess the session to close
 	 * @param S the socket to close
 	 * @param c the closeable to close
 	 */
-	private static void closeLater(final Socket S, final Closeable c)
+	private static void closeLater(final Session sess, final Socket S, final Closeable c)
 	{
 		synchronized(closeables)
 		{
 			final boolean hasAny = closeables.size() > 0;
-			closeables.add(new Triad<Socket, Closeable, Long>(S,c,new Long(System.currentTimeMillis()+1000)));
+			closeables.add(new Quad<Socket, Closeable, Long, Session>(S,c,new Long(System.currentTimeMillis()+1000),sess));
 			if(!hasAny)
 			{
 				new Thread(new Runnable()
@@ -198,7 +200,7 @@ public class MUD extends Thread implements MudHost
 					{
 						while(true)
 						{
-							final Triad<Socket,Closeable,Long> next;
+							final Quad<Socket,Closeable,Long,Session> next;
 							synchronized(closeables)
 							{
 								if(closeables.size()==0)
@@ -216,6 +218,8 @@ public class MUD extends Thread implements MudHost
 							}
 							try
 							{
+								if(next.fourth != null)
+									next.fourth.doPing(SessionPing.DISCONNECT, null);
 								next.second.close();
 							}
 							catch(final Exception e)
@@ -287,11 +291,13 @@ public class MUD extends Thread implements MudHost
 			startTime=System.currentTimeMillis();
 			try
 			{
+				sess[0]=(Session)CMClass.getCommon("DefaultSession");
+				sess[0].initialize(sock, threadGroup().getName());
 				if (acceptConns)
 				{
-					final String address = CMSecurity.getSocketAddress(sock);
+					final String address = sess[0].getAddress();
 					final int[] numAtAddress = new int[] {0};
-					final ConnectState proceed = CMSecurity.getConnectState(sock, numAtAddress);
+					final ConnectState proceed = CMSecurity.getConnectState(address, numAtAddress);
 					if(proceed != ConnectState.NORMAL)
 					{
 						final int abusiveCount=numAtAddress[0]-(int)CMSecurity.CONN_MAX_PER_ADDR+1;
@@ -320,12 +326,13 @@ public class MUD extends Thread implements MudHost
 							}
 							out.print(introText.toString());
 							out.flush();
-							closeLater(sock, out);
+							closeLater(sess[0],sock, out);
 						}
 						catch(final IOException e)
 						{
 							// dont say anything, just eat it.
 						}
+						sess[0]=null;
 						sock = null;
 					}
 					else
@@ -354,8 +361,7 @@ public class MUD extends Thread implements MudHost
 						catch (final Exception ex)
 						{
 						}
-						sess[0]=(Session)CMClass.getCommon("DefaultSession");
-						sess[0].initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
+						sess[0].handshake(introText.toString());
 						CMLib.sessions().add(sess[0]);
 						sock = null;
 						try {
@@ -386,12 +392,13 @@ public class MUD extends Thread implements MudHost
 						out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.Str.MUDSTATUS)+"\n\r");
 						out.println(rejectText);
 						out.flush();
-						closeLater(sock, out);
+						closeLater(sess[0],sock, out);
 					}
 					catch(final IOException e)
 					{
 						// dont say anything, just eat it.
 					}
+					sess[0]=null;
 					sock = null;
 				}
 				else
@@ -403,6 +410,7 @@ public class MUD extends Thread implements MudHost
 					catch (final Exception e)
 					{
 					}
+					sess[0]=null;
 					sock = null;
 				}
 			}

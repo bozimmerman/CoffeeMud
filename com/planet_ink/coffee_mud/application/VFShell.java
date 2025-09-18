@@ -419,9 +419,14 @@ public class VFShell
 					}
 
 					@Override
-					public void initializeSession(final Socket s, final String groupName, final String introTextStr)
+					public boolean initialize(final Socket s, final String groupName)
 					{
+						return true;
 					}
+
+					@Override
+					public void handshake(final String introText)
+					{}
 
 					@Override
 					public String getGroupName()

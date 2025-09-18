@@ -70,7 +70,7 @@ public class GenMirror extends GenItem
 			looker.basePhyStats().setSensesMask(lastLooker.phyStats().sensesMask());
 			final CMMsg msg = CMClass.getMsg(looker, lastLooker, null, CMMsg.TYP_LOOK, null);
 			final Session fakeS=(Session)CMClass.getCommon("FakeSession");
-			fakeS.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),"MEMORY");
+			fakeS.initialize(null,"MEMORY");
 			fakeS.setMob(looker);
 			looker.setSession(fakeS);
 			CMLib.commands().handleBeingLookedAt(msg);

@@ -149,6 +149,26 @@ public class ProcessSMTPrequest implements Runnable
 			CMStrings.convertHtmlToText(finalData);
 	}
 
+	/**
+	 * Returns the String version of the socket ip address,
+	 * or the word 'unknown'.
+	 *
+	 * @param sock the socket to get the address from
+	 * @return the word 'unknown' or the socket address
+	 */
+	public static final String getSocketAddress(final Socket sock)
+	{
+		String address="unknown";
+		try
+		{
+			address=sock.getInetAddress().getHostAddress().trim();
+		}
+		catch(final Exception e)
+		{
+		}
+		return address;
+	}
+
 	@Override
 	public void run()
 	{
@@ -268,7 +288,8 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							replyData=("250 Message accepted for delivery."+cr).getBytes();
-							CMSecurity.clearConnectState(sock);
+							final String address=getSocketAddress(sock);
+							CMSecurity.clearConnectState(address);
 							msgsSent++;
 							boolean startBuffering=false;
 							StringBuilder finalData=new StringBuilder("");

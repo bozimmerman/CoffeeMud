@@ -12,6 +12,7 @@ import java.nio.*;
 import java.nio.channels.*;
 import java.nio.charset.*;
 import java.net.*;
+import java.security.*;
 
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
@@ -208,6 +209,104 @@ public class MUDProxy
 		}
 	}
 
+	public static void sendControlCommand(final String a[])
+	{
+		if (a.length < 5)
+		{
+			System.err.println("PROXY/ERROR: Invalid command line. Format: MUDProxy CMD [port] [keypassword] [<ctlpassword>] [command] ");
+			System.exit(-1);
+		}
+		final int port = CMath.s_int(a[1]);
+		if((port <= 0)||(port > 65535))
+		{
+			System.err.println("PROXY/ERROR: Invalid port: " + a[1]);
+			System.exit(-1);
+		}
+		final String keypassword = a[2];
+		if (keypassword.length()==0)
+		{
+			System.err.println("PROXY/ERROR: Invalid key password: " + keypassword);
+			System.exit(-1);
+		}
+		final String ctlpassword = a[3];
+		if (CMath.s_int(ctlpassword) < 10000)
+		{
+			System.err.println("PROXY/ERROR: Invalid control password: " + ctlpassword);
+			System.exit(-1);
+		}
+		mpcpKey = keypassword;
+		final StringBuilder cmd = new StringBuilder("");
+		for (int i = 4; i < a.length; i++)
+			cmd.append(a[i]).append(" ");
+		final String command = cmd.toString().trim();
+		try (Socket sock = new Socket("localhost", port))
+		{
+			final String payload = command.toUpperCase().trim()+" {\"message\":\"" + MiniJSON.toJSONString(command) + "\""
+					+ ",\"password\":\"" + MiniJSON.toJSONString(ctlpassword) + "\""
+					+ ",\"timestamp\":" + System.currentTimeMillis() + "}";
+			final byte[] packet = makeMPCPPacket(payload);
+			sock.getOutputStream().write(packet);
+			sock.getOutputStream().write(makeMPCPPacket("DISCONNECT {\"password\":\"" + MiniJSON.toJSONString(ctlpassword) + "\""
+											+ ",\"timestamp\":" + System.currentTimeMillis() + "}"));
+			sock.getOutputStream().flush();
+			System.out.println("Control command sent: " + command);
+			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			final InputStream in = sock.getInputStream();
+			final long startTime = System.currentTimeMillis();
+			sock.setSoTimeout(5000);
+			while(System.currentTimeMillis() - startTime < 5000)
+			{
+				try
+				{
+					final int read = in.read();
+					if(read >=0)
+						bout.write(read);
+					else
+						break;
+				}
+				catch (final SocketTimeoutException e)
+				{
+					break;
+				}
+			}
+			final StringBuilder str = new StringBuilder("");
+			final byte[] b = bout.toByteArray();
+			for (int i = 0; i < b.length-10; i++)
+			{
+				if(((b[i]&0xff)==Session.TELNET_IAC)
+				&&((b[i+1]&0xff)==Session.TELNET_SB)
+				&&((b[i+2]&0xff) == Session.TELNET_MPCP))
+				{
+					i+=23;
+					while((i<b.length-1)&&((b[i]&0xff)!=Session.TELNET_IAC))
+						str.append((char)b[i++]);
+					final String s = str.toString();
+					final int x = s.indexOf('{');
+					if(x>0)
+					{
+						final MiniJSON.JSONObject obj = new MiniJSON().parseObject(s.substring(x));
+						if (obj.containsKey("message"))
+						{
+							str.setLength(0);
+							str.append(obj.getCheckedString("message"));
+						}
+					}
+					break;
+				}
+			}
+			if (str.length() > 0)
+				System.out.println("Response: " + str.toString().trim());
+			else
+				System.out.println("No response received.");
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+			System.err.println("PROXY/ERROR: Failed to send command: " + e.getMessage());
+			System.exit(-1);
+		}
+	}
+
 	/**
 	 * Main entry point for the proxy server.
 	 *
@@ -219,6 +318,11 @@ public class MUDProxy
 	 */
 	public static void main(final String a[])
 	{
+		if((a.length>0)&&(a[0].length()>0)&&(Character.toUpperCase(a[0].charAt(0))=='C'))
+		{
+			sendControlCommand(a);
+			return;
+		}
 		Thread.currentThread().setName("PROXY");
 		final Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
@@ -326,7 +430,7 @@ public class MUDProxy
 			System.exit(-1);
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v"+MUD.HOST_VERSION);
+		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v" + MUD.HOST_VERSION);
 		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2025 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);
@@ -675,7 +779,6 @@ public class MUDProxy
 		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
 	}
 
-
 	/**
 	 * Handles a writeable selection key, writing all data
 	 * in the output queue to the channel, filtering it
@@ -781,7 +884,10 @@ public class MUDProxy
 	private static void processMPCPPacket(final SelectionKey key, final MUDProxy context, final byte[] suboptionData)
 	{
 		// context is the target (mud facing) context, anything else is a waste of time.
-		if(context.isClient)
+		if(context.isClient
+		&& !context.ipAddress.equals("127.0.0.1")
+		&& !context.ipAddress.equals("0:0:0:0:0:0:0:1")
+		&& !context.ipAddress.equals("::1"))
 			return;
 		final byte[] digest = new byte[20];
 		final ByteBuffer rdr = ByteBuffer.wrap(suboptionData);
@@ -815,7 +921,8 @@ public class MUDProxy
 				final String jsonStr = str.substring(x+1).trim();
 				final MiniJSON.JSONObject obj = new MiniJSON().parseObject(jsonStr);
 				final Long timestamp = obj.getCheckedLong("timestamp");
-				if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>1000)
+				final long timeout = context.isClient ? 30000 : 1000;
+				if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>timeout)
 					return;
 				obj.remove("timestamp");
 				final boolean authorized = obj.containsKey("password")

@@ -224,7 +224,7 @@ public class Archon_Record extends ArchonSkill
 					if(this.stripCRLF)
 						sessF.setStat("STRIPCRLF", "true");
 					this.stripSnoop = this.stripCRLF = false;
-					sessF.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),filename);
+					sessF.initialize(null,filename);
 					sessF.setMob(target);
 					if(target.session()==null)
 						target.setSession(sessF);

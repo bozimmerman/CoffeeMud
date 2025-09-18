@@ -117,13 +117,18 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
+	public boolean initialize(final Socket s, final String groupName)
 	{
-		if (introTextStr.equalsIgnoreCase("MEMORY"))
+		if (groupName.equalsIgnoreCase("MEMORY"))
 			bout = new ByteArrayOutputStream();
 		else
-			theFile = new CMFile(introTextStr, null, CMFile.FLAG_LOGERRORS);
+			theFile = new CMFile(groupName, null, CMFile.FLAG_LOGERRORS);
+		return true;
 	}
+
+	@Override
+	public void handshake(final String introText)
+	{}
 
 	@Override
 	public String getGroupName()
@@ -234,7 +239,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void doPing(final SessionPing ping, Object obj)
+	public void doPing(final SessionPing ping, final Object obj)
 	{
 
 	}

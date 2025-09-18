@@ -395,6 +395,26 @@ public class SMTPserver extends Thread implements Tickable
 		sock.getOutputStream().flush();
 	}
 
+	/**
+	 * Returns the String version of the socket ip address,
+	 * or the word 'unknown'.
+	 *
+	 * @param sock the socket to get the address from
+	 * @return the word 'unknown' or the socket address
+	 */
+	public static final String getSocketAddress(final Socket sock)
+	{
+		String address="unknown";
+		try
+		{
+			address=sock.getInetAddress().getHostAddress().trim();
+		}
+		catch(final Exception e)
+		{
+		}
+		return address;
+	}
+
 	@Override
 	public void run()
 	{
@@ -447,7 +467,7 @@ public class SMTPserver extends Thread implements Tickable
 						Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
 					if(CMProps.isState(CMProps.HostState.RUNNING)
 					&& (!CMLib.threads().isAllSuspended())
-					&& (CMSecurity.getConnectState(sock, null) == ConnectState.NORMAL))
+					&& (CMSecurity.getConnectState(getSocketAddress(sock), null) == ConnectState.NORMAL))
 						threadPool.execute(new ProcessSMTPrequest(sock,this));
 					else
 					{
