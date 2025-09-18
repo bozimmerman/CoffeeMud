@@ -206,6 +206,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return true;
 	}
 
+	/**
+	 * Returns a list of all the players in this area or the parent area.
+	 *
+	 * @param rec the instance child record
+	 * @return the list of players
+	 */
 	protected List<MOB> getAreaPlayerMOBs(final AreaInstanceChild rec)
 	{
 		final List<WeakReference<MOB>> V=rec.mobs;
@@ -417,11 +423,11 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		&&(isRoom((Room)msg.target()))
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
+			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 			if(msg.source().isMonster())
 			{
-				final Set<MOB> friends=msg.source().getGroupMembers(new HashSet<MOB>());
 				boolean playerInvolved=false;
-				for(final MOB M : friends)
+				for(final MOB M : grp)
 					playerInvolved = playerInvolved || (!M.isMonster());
 				if(!playerInvolved)
 				{
@@ -429,12 +435,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					return false;
 				}
 			}
-			final Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
 			final List<AreaInstanceChild> childSearchGroup;
 			synchronized(instanceChildren)
 			{
 				childSearchGroup = new XVector<AreaInstanceChild>(instanceChildren);
 			}
+			// first, see if any of the group is already in a child area
 			int myDex=-1;
 			AreaInstanceChild myRec = null;
 			for(int i=0;i<childSearchGroup.size();i++)
@@ -450,6 +456,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 				}
 			}
+			// if not, see if any of the group is in a child area
 			for(int i=0;i<childSearchGroup.size();i++)
 			{
 				if(i!=myDex)
