@@ -1767,7 +1767,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Environmental findSomethingCalledThis(final String thisName, final MOB meMOB, final Room imHere, List<Environmental> OBJS, final boolean mob)
+	protected Environmental findSomethingCalledThis(final String thisName, final MPContext ctx, final MOB meMOB, final Room imHere, List<Environmental> OBJS, final boolean mob)
 	{
 		if(thisName.length()==0)
 			return null;
@@ -1847,6 +1847,43 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				areaThing=(meMOB!=null)?meMOB.findItem(thisName):null;
 			try
 			{
+				if (areaThing == null)
+				{
+					if(mob)
+					{
+						if((meMOB!=null)&&(meMOB.name().equalsIgnoreCase(thisName)))
+							areaThing=meMOB;
+						else
+						if((ctx.source!=null)&&(ctx.source.name().equalsIgnoreCase(thisName)))
+							areaThing=ctx.source;
+						else
+						if((ctx.target instanceof MOB)&&ctx.target.name().equalsIgnoreCase(thisName))
+							areaThing=ctx.target;
+						else
+						if ((ctx.scripted instanceof MOB) && ctx.scripted.name().equalsIgnoreCase(thisName))
+							areaThing = ctx.scripted;
+						else
+						if ((this.lastKnownLocation != null) && (this.lastKnownLocation.fetchInhabitant(thisName)!=null))
+							areaThing = this.lastKnownLocation.fetchInhabitant(thisName);
+					}
+					else
+					{
+						if((ctx.target instanceof Item)&&ctx.target.name().equalsIgnoreCase(thisName))
+							areaThing=ctx.target;
+						else
+						if ((ctx.scripted instanceof Item) && ctx.scripted.name().equalsIgnoreCase(thisName))
+							areaThing = ctx.scripted;
+						else
+						if ((this.lastKnownLocation != null) && (this.lastKnownLocation.fetchInhabitant(thisName)!=null))
+							areaThing = this.lastKnownLocation.fetchInhabitant(thisName);
+						else
+						if((meMOB!=null)&&(meMOB.name().equalsIgnoreCase(thisName)))
+							areaThing=meMOB;
+						else
+						if((ctx.source!=null)&&(ctx.source.name().equalsIgnoreCase(thisName)))
+							areaThing=ctx.source;
+					}
+				}
 				if(areaThing==null)
 				{
 					final Area A=imHere.getArea();
@@ -10703,7 +10740,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(lastKnownLocation!=null)
 				{
 					if(Ms.size()==0)
-						findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Ms,true);
+						findSomethingCalledThis(name,ctx,ctx.monster,lastKnownLocation,Ms,true);
 					for(int i=0;i<Ms.size();i++)
 					{
 						if(Ms.get(i) instanceof MOB)
@@ -10761,7 +10798,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((containerIndex>=0)&&(container == null))
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
-						findSomethingCalledThis(name.substring(containerIndex+6).trim(),ctx.monster,lastKnownLocation,containers,false);
+						findSomethingCalledThis(name.substring(containerIndex+6).trim(),ctx,ctx.monster,lastKnownLocation,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
 							if((containers.get(c) instanceof Container)
@@ -10795,7 +10832,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(m!=null)
 							Is.add(m);
 						else
-							findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Is,false);
+							findSomethingCalledThis(name,ctx,ctx.monster,lastKnownLocation,Is,false);
 						for(int i=0;i<Is.size();i++)
 						{
 							if(Is.get(i) instanceof Item)
@@ -10861,7 +10898,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((containerIndex>=0)&&(container == null))
 					{
 						final ArrayList<Environmental> containers=new ArrayList<Environmental>();
-						findSomethingCalledThis(name.substring(containerIndex+6).trim(),null,putRoom,containers,false);
+						findSomethingCalledThis(name.substring(containerIndex+6).trim(),ctx,null,putRoom,containers,false);
 						for(int c=0;c<containers.size();c++)
 						{
 							if(containers.get(c) instanceof Container)
@@ -10896,11 +10933,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						else
 						{
-							findSomethingCalledThis(name,ctx.monster,putRoom,Is,false);
+							findSomethingCalledThis(name,ctx,ctx.monster,putRoom,Is,false);
 							if((container!=null)
 							&&(Is.size()==0))
 							{
-								findSomethingCalledThis(tt[1],ctx.monster,putRoom,Is,false);
+								findSomethingCalledThis(tt[1],ctx,ctx.monster,putRoom,Is,false);
 								if(Is.size()>0)
 									container=null;
 							}
@@ -10975,7 +11012,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(I!=null)
 							Is.add(I);
 						else
-							findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Is,false);
+							findSomethingCalledThis(name,ctx,ctx.monster,lastKnownLocation,Is,false);
 						for(int i=0;i<Is.size();i++)
 						{
 							if(Is.get(i) instanceof Item)
@@ -11032,7 +11069,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(lastKnownLocation!=null)
 					{
 						if(Ms.size()==0)
-							findSomethingCalledThis(name,ctx.monster,lastKnownLocation,Ms,true);
+							findSomethingCalledThis(name,ctx,ctx.monster,lastKnownLocation,Ms,true);
 						for(int i=0;i<Ms.size();i++)
 						{
 							if(Ms.get(i) instanceof MOB)
