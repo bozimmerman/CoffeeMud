@@ -47,7 +47,7 @@ heartsmasher	DRINK	*Poison_Heartstopper;rank=3	45	LAMP OIL	1	SEAWEED	1	GARLIC	1
 greater goblindrip	DRINK	*Poison_GoblinDrip;rank=3	46	SOME GOBLIN BLOOD	1	STEEL	1										
 moderate dulling poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;int-(6+@x2)	47	SOME COW BLOOD	1	NUTS	1										
 deadly toxin	DRINK	*Poison_XXX;rank=3	48	SOME COBRA BLOOD	1	SOME TROLL BLOOD	1	LEAD	1								
-berserker`s rage	GenPerfume	smell(s) like the heat of battle.;<S-HAS-HAVE> the scent of fallen foes.;<S-HAS-HAVE> a scent that makes the blood surge with adrenaline.	48	BLOOD	1	LEATHER	1										
+berserker`s rage	GenPerfume	smell(s) like the heat of battle.;<S-HAS-HAVE> the scent of fallen foes.;<S-HAS-HAVE> a scent that makes the blood surge with adrenaline.	48	SOME HUMAN BLOOD	1	LEATHER	1										
 moderate quavering poison	DRINK	*UniPoison;TICKS=27 DELAY=3 DAMAGE=1?(6+((@x1/@x3)*(1+6*@x2+(@x1/4)))) ADJUSTMENTS=prop_adjuster;dex-(6+@x2)	49	SOME RAT BLOOD	1	NUTS	1										
 improved decrepifier	DRINK	*Poison_Decreptifier;rank=3	50	SOME GHOUL BLOOD	1	TOMATOES	1	ESSENCE OF GOLEM	1								
 enduring churlening poison	DRINK	*UniPoison;TICKS=50+10*@x2 DELAY=5 DAMAGE=1?(3+((@x1/@x3)*(1+3*@x2+(@x1/9)))) ADJUSTMENTS=prop_adjuster;cha-(6+@x2)	51	SOME HALFLING BLOOD	1	SUGAR	1	TIN	1								
