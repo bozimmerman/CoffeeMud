@@ -292,7 +292,7 @@ public class MUD extends Thread implements MudHost
 			try
 			{
 				sess[0]=(Session)CMClass.getCommon("DefaultSession");
-				sess[0].initialize(sock, threadGroup().getName());
+				final boolean initialized = sess[0].initialize(sock, threadGroup().getName());
 				if (acceptConns)
 				{
 					final String address = sess[0].getAddress();
@@ -361,13 +361,16 @@ public class MUD extends Thread implements MudHost
 						catch (final Exception ex)
 						{
 						}
-						if (sess[0].getStatus() == Session.SessionStatus.HANDSHAKE_OPEN)
+						if (initialized)
 							sess[0].handshake(introText.toString());
 						CMLib.sessions().add(sess[0]);
 						sock = null;
-						try {
+						try
+						{
 							sess[0].run();
-						} catch(final Throwable t) {
+						}
+						catch(final Throwable t)
+						{
 							Log.errOut(t);
 						}
 						Log.sysOut(name(),"Connection from "+sess[0].getAddress());

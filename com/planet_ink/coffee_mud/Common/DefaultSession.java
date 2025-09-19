@@ -501,8 +501,9 @@ public class DefaultSession implements Session
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP))
 				&&(mightSupportTelnetMode(TELNET_MSSP)))
 					changeTelnetMode(rawout,TELNET_MSSP,true);
+				return true;
 			}
-			return true;
+			return false;
 		}
 		catch(final Exception e)
 		{
