@@ -90,8 +90,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Room					homeKnownLocation= null;
 	protected Tickable				altStatusTickable= null;
 	protected List<Integer>			oncesDone		 = Collections.synchronizedList(new ArrayList<Integer>());
-	protected Map<Integer,Integer>	delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,Integer>());
-	protected Map<Integer,int[]>	delayProgCounters= Collections.synchronizedMap(new HashMap<Integer,int[]>());
+	protected Map<Integer,int[]>	delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,int[]>());
 	protected Map<Integer,Integer>	lastTimeProgsDone= Collections.synchronizedMap(new HashMap<Integer,Integer>());
 	protected Map<Integer,Integer>	lastDayProgsDone = Collections.synchronizedMap(new HashMap<Integer,Integer>());
 	protected Set<Integer>			registeredEvents = new HashSet<Integer>();
@@ -1028,8 +1027,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		homeKnownLocation= null;
 		altStatusTickable= null;
 		oncesDone = Collections.synchronizedList(new ArrayList<Integer>());
-		delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,Integer>());
-		delayProgCounters= Collections.synchronizedMap(new HashMap<Integer,int[]>());
+		delayTargetTimes = Collections.synchronizedMap(new HashMap<Integer,int[]>());
 		lastTimeProgsDone= Collections.synchronizedMap(new HashMap<Integer,Integer>());
 		lastDayProgsDone = Collections.synchronizedMap(new HashMap<Integer,Integer>());
 		registeredEvents = new HashSet<Integer>();
@@ -10943,11 +10941,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
-					//TODO:DELME:BZ delete these debug lines
-					if(Is.size()==0)
-						Log.debugOut("DefaultScriptingEngine", "mpoloadroom found no items ("+name+")!");
-					if ((container != null) && (container.owner() != putRoom))
-						Log.debugOut("DefaultScriptingEngine", "mpoloadroom found foreign container ("+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(container))+")!");
 					for(int i=0;i<Is.size();i++)
 					{
 						if(Is.get(i) instanceof Item)
@@ -10979,8 +10972,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					lastKnownLocation.recoverRoomStats();
 				}
-				else
-					Log.debugOut("DefaultScriptingEngine", "mpoloadroom found no room!");
 				break;
 			}
 			case 84: // mpoloadshop
@@ -13641,7 +13632,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(scripts==null)
 		{
 			delayTargetTimes.clear();
-			delayProgCounters.clear();
 			lastTimeProgsDone.clear();
 			lastDayProgsDone.clear();
 			oncesDone.clear();
@@ -15548,13 +15538,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 16: // delay_prog
 				if((!mob.amDead())&&canTrigger(16))
 				{
-					int targetTick=-1;
 					final Integer thisScriptIndexI=Integer.valueOf(thisScriptIndex);
-					final int[] delayProgCounter;
 					synchronized(delayTargetTimes)
 					{
+						final int[] delayProgCounter;
 						if(delayTargetTimes.containsKey(thisScriptIndexI))
-							targetTick=delayTargetTimes.get(thisScriptIndexI).intValue();
+							delayProgCounter=delayTargetTimes.get(thisScriptIndexI);
 						else
 						{
 							if(t==null)
@@ -15565,31 +15554,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								int high=CMath.s_int(t[2]);
 								if(high<low)
 									high=low;
-								targetTick=CMLib.dice().roll(1,high-low+1,low-1);
-								delayTargetTimes.put(thisScriptIndexI,Integer.valueOf(targetTick));
+								final int targetTick=CMLib.dice().roll(1,high-low+1,low-1);
+								delayProgCounter =new int[]{targetTick};
+								delayTargetTimes.put(thisScriptIndexI,delayProgCounter);
 							}
+							else
+								delayProgCounter =new int[]{0};
 						}
-						if(delayProgCounters.containsKey(thisScriptIndexI))
-							delayProgCounter=delayProgCounters.get(thisScriptIndexI);
-						else
+						if(--delayProgCounter[0]<=0)
 						{
-							delayProgCounter=new int[]{0};
-							delayProgCounters.put(thisScriptIndexI,delayProgCounter);
+							delayTargetTimes.remove(thisScriptIndexI);
+							execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 						}
 					}
-					boolean exec=false;
-					synchronized(delayProgCounter)
-					{
-						if(delayProgCounter[0]>=targetTick)
-						{
-							exec=true;
-							delayProgCounter[0]=0;
-						}
-						else
-							delayProgCounter[0]++;
-					}
-					if(exec)
-						execute(new MPContext(affecting,mob,mob,mob,defaultItem,null,null, null).push(script));
 				}
 				break;
 			case 7: // fight_Prog
