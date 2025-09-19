@@ -110,6 +110,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected volatile Object		cachedRef		 = null;
 	protected boolean				runWithoutPCs	 = true;
 	protected LLMSession			llmSession		 = null;
+	protected Map<String,String>	miscArgVars		 = new Hashtable<String,String>(1);
 
 	protected final PrioritizingLimitedMap<String,Room> roomFinder=new PrioritizingLimitedMap<String,Room>(5,30*60000L,60*60000L,20);
 
@@ -9899,7 +9900,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCr");
-				final String arg2=tt[1];
+				final String arg2=tt[1].toUpperCase().trim();
 				final String arg3=varify(ctx,tt[2]);
 				if(arg2.equals("SCOPE"))
 					setVarScope(arg3);
@@ -9924,6 +9925,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				if(arg2.equals("NEEDPC"))
 					this.runWithoutPCs = !CMath.s_bool(arg3);
+				else
+				if(arg2.startsWith("LLM"))
+					miscArgVars.put(arg2, arg3);
 				else
 					logError(ctx,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
 				break;
@@ -12587,8 +12591,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(this.llmSession == null)
 					{
-						this.llmSession = CMLib.protocol().createLLMSession(arg3, Integer.valueOf(5));
-						arg3="";
+						int maxMsgs = 5;
+						String prompt = arg3;
+						if(this.miscArgVars.containsKey("LLMMAXMSGS"))
+							maxMsgs = CMath.s_int(this.miscArgVars.get("LLMMAXMSGS"));
+						if(this.miscArgVars.containsKey("LLMPROMPT"))
+							prompt = this.miscArgVars.get("LLMPROMPT").toString();
+						else
+							arg3="";
+						this.llmSession = CMLib.protocol().createLLMSession(prompt, Integer.valueOf(maxMsgs));
 					}
 					if(this.llmSession == null)
 						logError(ctx,"MPLLM","RunTime","Could not create LLM Session.");

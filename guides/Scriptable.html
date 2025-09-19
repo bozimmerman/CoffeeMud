@@ -5533,11 +5533,24 @@ command queries an integrated LLM service (see Installation Guide) with
 the given prompt, and then creates a
 variable for a mob or player and stores the LLMs response in it.
 &nbsp;See the MPSETVAR command for more information on the mob name and
-variable name fields, and how they work.</p><p>Be warned that this command may take a very long time to execute. &nbsp;Factor that into your considerations when using it..</p>
+variable name fields, and how they work.</p><p>Be
+warned that this command may take a very long time to execute.
+&nbsp;Factor that into your considerations when using it. &nbsp;<br />The
+default memory will be 10 messages, and the preserved prompt will be
+whatever the&nbsp;[mob name] [variable name] was set to before the very
+first call to MPLLM. &nbsp;You can also override these with the
+MPSETINTERNAL command by defining the LLMMAXMSGS and/or the LLMPROMPT
+variables.</p>
 
       <p>EXAMPLES:</p>
 
-      <pre>mpllm $i bugs 'Give me only one interesting tidbit about bugs.' <br /></pre><h3><a name="mploadquestobj">mploadquestobj</a></h3>
+      <pre>mpllm $i bugs 'Give me only one interesting tidbit about bugs.'<br /><br /></pre>SPECIAL
+NOTES: &nbsp;Because of the way the initial prompt becomes sticky, it
+is a VERY good idea to put an initial MPLLM command in a ONCE_PROG, so
+that you ensure that the first call to MPLLM is setting the prompt to
+what you want it to be. Otherwise, the initial prompt may be something
+random, become sticky, and influence all subsequent MPLLM calls in the
+same script. <h3><a name="mploadquestobj">mploadquestobj</a></h3>
 
       <p>Usage:</p>
 
@@ -6349,7 +6362,7 @@ this script keeps triggering RAND_PROG or other tick-based triggers
 even when the area is passive. Values are true or false.</li><li><span style="font-weight: bold;">NEEDPC</span>:
 Whether this script keeps triggering RAND_PROG or other tick-based
 triggers even when the scripted object's room contains no PCs.
-&nbsp;Values are true or false.</li>
+&nbsp;Values are true or false.</li><li><span style="font-weight: bold;">LLMPROMPT, LLMMAXMSGS</span>: see the MPLLM command.</li>
 
       </ul>
 

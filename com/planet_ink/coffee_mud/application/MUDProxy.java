@@ -4,6 +4,7 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,12 +56,14 @@ public class MUDProxy
 	private static String			ctlPassword		= "" + (rand.nextInt(90000) + 10000);
 	private static boolean			packetDebug		= false;
 
+	private static final Map<String,Pair<String, Integer>>
+		allPorts		= new Hashtable<String,Pair<String, Integer>>();
 	private static final Map<SelectionKey, SelectionKey>
 		channelPairs	= new Hashtable<SelectionKey, SelectionKey>();
 	private static final Map<Integer, PairList<String, Integer>>
 		portMap			= new Hashtable<Integer, PairList<String, Integer>>();
-	private static final Map<Pair<String, Integer>, Pair<SelectionKey, Long>>
-		distressPingers	= new Hashtable<Pair<String, Integer>, Pair<SelectionKey, Long>>();
+	private static final Map<Pair<String, Integer>, Triad<SelectionKey,Long,Boolean>>
+		distressPingers	= new Hashtable<Pair<String, Integer>, Triad<SelectionKey,Long,Boolean>>();
 	private static final List<Runnable>
 		runnables		= new Vector<Runnable>();
 	private static final Map<Integer, AtomicInteger>
@@ -106,6 +109,7 @@ public class MUDProxy
 	private final String					ipAddress;
 	private final boolean					isClient;
 	private final int						outsidePortNum;
+	private volatile long					distressedTime	= 0;
 	private final ParseStatus				readStatus		= new ParseStatus();
 	private final ParseStatus				writeStatus		= new ParseStatus();
 	private final RefilByteArrayInputStream	inputPipe		= new RefilByteArrayInputStream(new byte[0]);
@@ -113,7 +117,6 @@ public class MUDProxy
 	private final ByteArrayOutputStream		outputPipe		= new ByteArrayOutputStream();
 	private OutputStream					out				= new FilterOutputStream(outputPipe);
 	private final Map<String, Object>		session			= new Hashtable<String, Object>();
-	private long							distressTime	= 0;
 	private final AtomicBoolean				isProcessing	= new AtomicBoolean(false);
 	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<>();
 	private final Queue<ByteBuffer>			input			= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
@@ -174,9 +177,9 @@ public class MUDProxy
 		{
 			try
 			{
-				while(true)
+				ByteBuffer buffer;
+				while (!myCtx.pendingInputs.isEmpty())
 				{
-					ByteBuffer buffer;
 					while((buffer = myCtx.pendingInputs.poll()) != null)
 					{
 						final ByteBuffer b = readFilter(k, myCtx, buffer);
@@ -186,16 +189,6 @@ public class MUDProxy
 						}
 					}
 					handleWrite(destK);
-					if(myCtx.pendingInputs.isEmpty())
-					{
-						myCtx.isProcessing.set(false);
-						if(!myCtx.pendingInputs.isEmpty())
-						{
-							if(myCtx.isProcessing.compareAndSet(false, true))
-								continue;
-						}
-						break;
-					}
 				}
 				if(eof)
 					closeKey(k);
@@ -205,6 +198,10 @@ public class MUDProxy
 				Log.debugOut("readThread:" + myCtx.toString());
 				Log.errOut(e);
 				closeKey(k);
+			}
+			finally
+			{
+				myCtx.isProcessing.set(false);
 			}
 		}
 	}
@@ -308,6 +305,24 @@ public class MUDProxy
 	}
 
 	/**
+	 * Get an existing or new Pair<String,Integer> representing the given host
+	 * and port. Used to reduce memory usage.
+	 *
+	 * @param host the host
+	 * @param port the port
+	 * @return the shared Pair<String,Integer>
+	 */
+	public synchronized static Pair<String, Integer> getPort(final String host, final Integer port)
+	{
+		final String key = ((host==null)?"":host.toLowerCase()) + ":" + port.toString();
+		if (allPorts.containsKey(key))
+			return allPorts.get(key);
+		final Pair<String,Integer> p = new Pair<String,Integer>(host,port);
+		allPorts.put(key, p);
+		return p;
+	}
+
+	/**
 	 * Main entry point for the proxy server.
 	 *
 	 * The arguments are similar to the MUD (MUD.java), in that
@@ -389,7 +404,7 @@ public class MUDProxy
 					if(CMath.isInteger(port))
 					{
 						portNum = CMath.s_int(port);
-						portV.add(new Pair<String,Integer>(host,Integer.valueOf(portNum)));
+						portV.add(getPort(host,Integer.valueOf(portNum)));
 					}
 				}
 				if(portNum <= 0)
@@ -540,7 +555,7 @@ public class MUDProxy
 								if(targetPort != null)
 								{
 									targetChannel.connect(new InetSocketAddress(targetPort.first, targetPort.second.intValue()));
-									final Pair<String,Integer> clientPort = new Pair<String,Integer>(clientIp,Integer.valueOf(listenPort));
+									final Pair<String,Integer> clientPort = getPort(clientIp,Integer.valueOf(listenPort));
 									final SelectionKey clientKey =
 											clientChannel.register(selector, SelectionKey.OP_READ, new MUDProxy(true,listenPort,clientPort,clientIp));
 									final SelectionKey targetKey =
@@ -584,8 +599,9 @@ public class MUDProxy
 										chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
 												+ "\"client_address\":\""+clientAddr+"\","
 												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
-										if(serverContext.distressTime != 0)
+										if((clientContext!=null)&&(clientContext.distressedTime != 0))
 										{
+											clientContext.distressedTime=0;
 											final JSONObject obj = new MiniJSON.JSONObject();
 											obj.putAll(serverContext.session);
 											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
@@ -598,7 +614,6 @@ public class MUDProxy
 												Log.sysOut(clientContext.outsidePortNum+"","Connection restored "+clientContext.ipAddress
 														+"->"+serverContext.port.first+":"+serverContext.port.second);
 											}
-											serverContext.distressTime=0;
 										}
 										key.interestOps(SelectionKey.OP_READ);
 									}
@@ -992,6 +1007,9 @@ public class MUDProxy
 									final MUDProxy pProxy=(MUDProxy)pk.attachment();
 									sObj.put("target",pProxy.port.first+":"+pProxy.port.second.toString());
 								}
+								else
+									sObj.put("target","");
+								sObj.put("distress",Boolean.valueOf(sessProxy.distressedTime!=0));
 								sessions.add(sObj);
 							}
 							else
@@ -1006,7 +1024,7 @@ public class MUDProxy
 									final MUDProxy pProxy=(MUDProxy)pk.attachment();
 									sObj.put("target",pProxy.port.first+":"+pProxy.port.second.toString());
 								}
-								sObj.put("distress",""+sessProxy.distressTime);
+								sObj.put("distress",Boolean.FALSE);
 								sessions.add(sObj);
 							}
 						}
@@ -1152,12 +1170,8 @@ public class MUDProxy
 						{
 							if(status.command == (byte)Session.TELNET_DO)
 							{
-								if(context.outsidePortNum == -1)
-								{
-									final Pair<SelectionKey,Long> d = MUDProxy.distressPingers.get(context.port);
-									if(d != null)
-										d.second = Long.valueOf(System.currentTimeMillis());
-								}
+								if(MUDProxy.distressPingers.containsKey(context.port))
+									MUDProxy.distressPingers.get(context.port).third=Boolean.TRUE;
 							}
 							status.state = ParseState.NORMAL;
 						}
@@ -1456,7 +1470,8 @@ public class MUDProxy
 				if(bytesRead < 0)
 				{
 					eof = true;
-					if(!context.isClient) //TODO: is this a terrible idea?
+					if((!context.isClient)
+					&&(context.outsidePortNum>0))
 						putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
 				}
 				context.pendingInputs.addAll(inputList);
@@ -1512,21 +1527,20 @@ public class MUDProxy
 		{
 			clientContext.inter.add(ByteBuffer.wrap(bmsg));
 			clientKey.interestOps(clientKey.interestOps() | SelectionKey.OP_WRITE);
-			serverContext.distressTime=System.currentTimeMillis();
+			clientContext.distressedTime=System.currentTimeMillis()-1000; // quick retry
+			synchronized(channelPairs)
+			{
+				channelPairs.remove(serverKey);
+				MUDProxy.trackPort(true,serverContext.port.second, -1,Integer.MAX_VALUE);
+			}
 			try
 			{
 				serverChannel.close();
+				serverKey.cancel();
 			}
 			catch (final IOException e) {}
 			if (clientKey.isValid())
 				handleWrite(clientKey);
-			final SocketChannel newChannel=SocketChannel.open();
-			newChannel.configureBlocking(false);
-			newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
-			final SelectionKey newServerKey = newChannel.register(selector, SelectionKey.OP_CONNECT, serverContext);
-			newServerKey.interestOps(SelectionKey.OP_CONNECT);
-			channelPairs.put(clientKey, newServerKey);
-			channelPairs.put(newServerKey, clientKey);
 			Log.sysOut(serverContext.outsidePortNum+"","Connection suspended "+clientContext.ipAddress
 					+"->"+serverContext.port.first+":"+serverContext.port.second);
 		}
@@ -1549,9 +1563,9 @@ public class MUDProxy
 			return;
 		final SocketChannel channel = (SocketChannel) key.channel();
 		final MUDProxy context = (MUDProxy)key.attachment();
-		if(context.outsidePortNum == -1)
-			return; // this is a distress socket
-		Log.debugOut("closeKey:"+context.toString());
+		//if(!channelPairs.containsKey(key)) // this made distress pingers no longer close
+		//	return; // this is an unknown key, ignore it.
+		Log.debugOut("closeKey:"+context.toString()+", valid="+key.isValid());
 		final SelectionKey pairedKey;
 		synchronized(channelPairs)
 		{
@@ -1568,22 +1582,27 @@ public class MUDProxy
 			{
 				pairedChannel = (SocketChannel) pairedKey.channel();
 				pairedContext = (MUDProxy)pairedKey.attachment();
-				channelPairs.remove(pairedKey);
-				if((pairedContext != null) && (!pairedContext.isClient))
-					MUDProxy.trackPort(true,pairedContext.port.second, -1,Integer.MAX_VALUE);
 			}
 		}
-		if((!context.isClient)
-		&&(pairedChannel!=null))
+		if((!context.isClient) // if its a server socket,
+		&&(pairedChannel!=null)
+		&&(context.outsidePortNum>0))
 		{
-			if(context.distressTime == 0)
-				putKeyInDistress(key,channel,context,pairedKey,pairedChannel,pairedContext);
-			return;
+			putKeyInDistress(key,channel,context,pairedKey,pairedChannel,pairedContext);
+			pairedChannel = null; // so we don't close it below
 		}
 		try
 		{
 			if (pairedChannel != null)
+			{
+				synchronized(channelPairs)
+				{
+					channelPairs.remove(pairedKey);
+					if((pairedContext != null) && (!pairedContext.isClient))
+						MUDProxy.trackPort(true,pairedContext.port.second, -1,Integer.MAX_VALUE);
+				}
 				pairedChannel.close();
+			}
 		}
 		catch (final IOException e) {}
 		try
@@ -1592,19 +1611,72 @@ public class MUDProxy
 		}
 		catch (final IOException e) {}
 		key.cancel();
-		if(pairedChannel != null)
+		Log.sysOut(context.outsidePortNum+"","Connection lost "+context.ipAddress
+				+"->"+context.port.first+":"+context.port.second);
+	}
+
+	public static void reconnectClient(final SelectionKey key, final MUDProxy context, final MUDProxy server)
+	{
+		synchronized(runnables)
 		{
-			final MUDProxy context1 = (MUDProxy)key.attachment();
-			final SelectionKey pKey = pairedChannel.keyFor(key.selector());
-			if(pKey != null)
+			runnables.add(new Runnable()
 			{
-				final MUDProxy context2 = (MUDProxy)pKey.attachment();
-				final MUDProxy clientContext = context1.isClient?context1:context2;
-				final MUDProxy serverContext = context1.isClient?context2:context1;
-				final int listenPort = serverContext.outsidePortNum;
-				Log.sysOut(listenPort+"","Connection lost "+clientContext.ipAddress
-						+"->"+serverContext.port.first+":"+serverContext.port.second);
-			}
+				final SelectionKey clientKey = key;
+				final MUDProxy clientContext = context;
+				final MUDProxy serverContext = server;
+				@Override
+				public void run()
+				{
+					try
+					{
+						clientContext.distressedTime = System.currentTimeMillis(); // update so we don't try again too soon
+						final SocketChannel newChannel=SocketChannel.open();
+						newChannel.configureBlocking(false);
+						newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
+						final SelectionKey nkey = newChannel.register(selector, SelectionKey.OP_CONNECT, serverContext);
+						nkey.interestOps(SelectionKey.OP_CONNECT);
+						channelPairs.put(clientKey, nkey);
+						channelPairs.put(nkey, clientKey);
+						newChannel.connect(new InetSocketAddress(serverContext.port.first,serverContext.port.second.intValue()));
+					}
+					catch(final Exception e)
+					{
+						Log.debugOut("disThread:"+context.toString());
+						Log.errOut(e);
+					}
+				}
+			});
+			selector.wakeup();
+		}
+	}
+
+	public static void startPinger(final Pair<String,Integer> port)
+	{
+		synchronized(runnables)
+		{
+			runnables.add(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					try
+					{
+						final SocketChannel pingChannel=SocketChannel.open();
+						pingChannel.configureBlocking(false);
+						pingChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
+						pingChannel.connect(new InetSocketAddress(port.first, port.second.intValue()));
+						final SelectionKey key = pingChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,-1,port,"PROXY"));
+						key.interestOps(SelectionKey.OP_CONNECT);
+						final Triad<SelectionKey,Long,Boolean> pinger = new Triad<SelectionKey,Long,Boolean>(key,Long.valueOf(System.currentTimeMillis()), Boolean.FALSE);
+						distressPingers.put(port, pinger);
+					}
+					catch(final Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
+			});
+			selector.wakeup();
 		}
 	}
 
@@ -1618,14 +1690,13 @@ public class MUDProxy
 		public void run()
 		{
 			super.setName("PROXY_DISTRESS");
-			boolean lastDistress=false;
 			try
 			{
 				while(true)
 				{
 					if(runnables.size()>0)
 						selector.wakeup();
-					Thread.sleep(lastDistress?10000:20000);
+					Thread.sleep((MUDProxy.distressPingers.size()>0)?2000:10000);
 					try
 					{
 						final Map<SelectionKey, SelectionKey> pairs = new HashMap<SelectionKey, SelectionKey>();
@@ -1633,81 +1704,50 @@ public class MUDProxy
 						{
 							pairs.putAll(channelPairs);
 						}
-						final Map<Pair<String,Integer>, List<Pair<SelectionKey,MUDProxy>>> distresses =
-								new HashMap<Pair<String,Integer>, List<Pair<SelectionKey,MUDProxy>>>();
+						final Map<Pair<String,Integer>, List<Triad<SelectionKey,MUDProxy,MUDProxy>>> distresses =
+								new HashMap<Pair<String,Integer>, List<Triad<SelectionKey,MUDProxy,MUDProxy>>>();
 						for(final SelectionKey key : pairs.keySet())
 						{
-							final MUDProxy proxy = (MUDProxy)key.attachment();
-							if((proxy != null)
-							&& (proxy.distressTime != 0)
-							&& (!proxy.isClient))
+							final MUDProxy clientProxy = (MUDProxy)key.attachment();
+							if((clientProxy != null)
+							&& (clientProxy.isClient)
+							&& (clientProxy.distressedTime!=0))
 							{
-								lastDistress=true;
-								if(!distresses.containsKey(proxy.port))
-									distresses.put(proxy.port, new ArrayList<Pair<SelectionKey,MUDProxy>>());
-								distresses.get(proxy.port).add(new Pair<SelectionKey,MUDProxy>(key,proxy));
+								final SelectionKey serverKey = pairs.get(key);
+								final MUDProxy serverProxy = (MUDProxy)serverKey.attachment();
+								if(!distresses.containsKey(serverProxy.port))
+									distresses.put(serverProxy.port, new ArrayList<Triad<SelectionKey,MUDProxy,MUDProxy>>());
+								distresses.get(serverProxy.port).add(new Triad<SelectionKey,MUDProxy,MUDProxy>(key,clientProxy,serverProxy));
 							}
 						}
+						// clean out deprecated distress pingers
+						for(final Pair<String,Integer> serverPort : allPorts.values())
+							if(!distresses.containsKey(serverPort))
+							{
+								final Triad<SelectionKey,Long,Boolean> p = MUDProxy.distressPingers.get(serverPort);
+								if(p != null)
+								{
+									p.first.cancel();
+									MUDProxy.distressPingers.remove(serverPort);
+								}
+							}
 						if(distresses.size() > 0)
 						{
 							final Set<Pair<String,Integer>> toPings = new HashSet<Pair<String,Integer>>();
 							for(final Pair<String,Integer> port : distresses.keySet())
 							{
-								final Pair<SelectionKey,Long> p = MUDProxy.distressPingers.get(port);
-								if(p != null)
+								final Triad<SelectionKey,Long,Boolean> p = MUDProxy.distressPingers.get(port);
+								if((p != null)&&p.third.booleanValue())
 								{
-									for(final Iterator<Pair<SelectionKey,MUDProxy>> i = distresses.get(port).iterator();i.hasNext();)
+									final List<Triad<SelectionKey,MUDProxy,MUDProxy>> clientList = distresses.get(port);
+									for(final Iterator<Triad<SelectionKey,MUDProxy,MUDProxy>> i = clientList.iterator();i.hasNext();)
 									{
-										final Pair<SelectionKey,MUDProxy> xP = i.next();
-										Long dTime;
-										synchronized(p)
-										{
-											dTime = p.second;
-										}
-										if((dTime.longValue() > 0)
-										&& (xP.second.distressTime < dTime.longValue()))
-										{
-											synchronized(runnables)
-											{
-												runnables.add(new Runnable()
-												{
-													final SelectionKey partnerKey = channelPairs.get(xP.first);
-													final SelectionKey key = xP.first;
-													final MUDProxy context = xP.second;
-													@Override
-													public void run()
-													{
-														try
-														{
-															// need to create a whole new socket channel
-															final SocketChannel chan = (SocketChannel)key.channel();
-															key.cancel();
-															chan.close();
-															synchronized(channelPairs)
-															{
-																channelPairs.remove(key);
-																channelPairs.remove(partnerKey);
-															}
-															final SocketChannel newChannel=SocketChannel.open();
-															newChannel.configureBlocking(false);
-															newChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
-															final SelectionKey nkey = newChannel.register(selector, SelectionKey.OP_CONNECT, context);
-															nkey.interestOps(SelectionKey.OP_CONNECT);
-															channelPairs.put(partnerKey, nkey);
-															channelPairs.put(nkey, partnerKey);
-															newChannel.connect(new InetSocketAddress(context.port.first,context.port.second.intValue()));
-														}
-														catch(final Exception e)
-														{
-															Log.debugOut("disThread:"+context.toString());
-															Log.errOut(e);
-														}
-													}
-												});
-											}
-										}
-										else
-											toPings.add(port);
+										final Triad<SelectionKey,MUDProxy,MUDProxy> disPair = i.next();
+										final MUDProxy clientContext = disPair.second;
+										if((clientContext.distressedTime>0)
+										&&((System.currentTimeMillis()-clientContext.distressedTime)>10000))
+											MUDProxy.reconnectClient(disPair.first, clientContext, disPair.third);
+										// else, if client is not yet 10 seconds in distress, but pinger says OK, wait
 									}
 								}
 								else
@@ -1717,44 +1757,11 @@ public class MUDProxy
 							{
 								for(final Pair<String,Integer> port : toPings)
 								{
-									synchronized(runnables)
-									{
-										runnables.add(new Runnable()
-										{
-											final Pair<String,Integer> p = port;
-											@Override
-											public void run()
-											{
-												try
-												{
-													Pair<SelectionKey,Long> pinger = distressPingers.get(p);
-													if(pinger != null)
-													{
-														final SelectionKey key = pinger.first;
-														if(key != null)
-														{
-															final SocketChannel chan = (SocketChannel)key.channel();
-															if(chan != null)
-																chan.close();
-															key.cancel();
-														}
-													}
-													final SocketChannel pingChannel=SocketChannel.open();
-													pingChannel.configureBlocking(false);
-													pingChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
-													pingChannel.connect(new InetSocketAddress(p.first, p.second.intValue()));
-													final SelectionKey key = pingChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,-1,p,"PROXY"));
-													key.interestOps(SelectionKey.OP_CONNECT);
-													pinger = new Pair<SelectionKey,Long>(key,Long.valueOf(0));
-													distressPingers.put(p, pinger);
-												}
-												catch(final Exception e)
-												{
-													Log.errOut(e);
-												}
-											}
-										});
-									}
+									final Triad<SelectionKey,Long,Boolean> p = MUDProxy.distressPingers.get(port);
+									if ((p != null)
+									&& (System.currentTimeMillis() - p.second.longValue()) < 10000)
+										continue;
+									MUDProxy.startPinger(port);
 								}
 							}
 						}
@@ -1842,7 +1849,7 @@ public class MUDProxy
 		final String cs = isClient?"client":"server";
 		final String outs=(out instanceof ZOutputStream)?"zout":"out";
 		final String ins=(in instanceof ZInputStream)?"zin":"in";
-		final String dis=distressTime == 0?"ok":"distressed";
+		final String dis=(this.distressedTime!=0)?"distressed":"ok";
 		return cs+":"+ins+"/"+outs+":"+dis+":"+outsidePortNum+":"+this.ipAddress+" ("+this.port.first+":"+this.port.second+")";
 	}
 }

@@ -168,7 +168,8 @@ public class Spell_StoreAromas extends Spell
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().length()>0))
 		{
-			aromas.add(msg.othersMessage());
+			if(aromas.size()<(Math.max(10,adjustedLevel(invoker(),0)/2)))
+				aromas.add(msg.othersMessage());
 			return false;
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_SNIFF)

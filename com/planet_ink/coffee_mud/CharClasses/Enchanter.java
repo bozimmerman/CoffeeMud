@@ -80,6 +80,7 @@ public class Enchanter extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Advancement",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_MassSleep",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Alarm",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_LesserPermanency",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_MindFog",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Enthrall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Brainwash",0,"",false,SecretFlag.SECRET);

@@ -114,7 +114,8 @@ public class Spell_SpyingStone extends Spell
 		else
 		if((msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null)
-		&&(msg.othersMessage().length()>0))
+		&&(msg.othersMessage().length()>0)
+		&&(msgs.size()<Math.max(25,adjustedLevel(invoker(),0))))
 			msgs.add(CMLib.coffeeFilter().fullOutFilter(null, null, msg.source(), msg.target(), msg.tool(), CMStrings.removeColors(msg.othersMessage()), false));
 	}
 
