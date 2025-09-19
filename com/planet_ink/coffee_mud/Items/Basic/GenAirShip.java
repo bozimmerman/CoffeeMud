@@ -44,25 +44,25 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSailingShip extends GenNavigableBoardable
+public class GenAirShip extends GenNavigableBoardable
 {
 	@Override
 	public String ID()
 	{
-		return "GenSailingShip";
+		return "GenAirShip";
 	}
 
-	public GenSailingShip()
+	public GenAirShip()
 	{
 		super();
-		setName("a sailing ship [NEWNAME]");
-		setDisplayText("a sailing ship [NEWNAME] is here.");
-		this.verb_sail = L("sail");
-		this.verb_sailing = L("sailing");
+		setName("an air ship [NEWNAME]");
+		setDisplayText("aa air ship [NEWNAME] is here.");
+		this.verb_sail = L("fly");
+		this.verb_sailing = L("flying");
 		this.noun_word = L("ship");
-		this.anchor_name= L("anchor");
-		this.anchor_verbed = L("lowered");
-		this.head_offTheDeck = L("^HOff the deck you see: ^N");
+		this.anchor_name= L("rope");
+		this.anchor_verbed = L("secured");
+		this.head_offTheDeck = L("^HOff the side you see: ^N");
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(2);
 		this.recoverPhyStats();
@@ -73,7 +73,7 @@ public class GenSailingShip extends GenNavigableBoardable
 	{
 		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
-		return L("a sailing ship");
+		return L("an air ship");
 	}
 
 	@Override
@@ -83,16 +83,26 @@ public class GenSailingShip extends GenNavigableBoardable
 		if(owner instanceof Room)
 		{
 			if(usesRemaining()>0)
-				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
 			else
 				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
 		}
 	}
 
 	@Override
+	protected boolean canAnchorFromHere(final Room R)
+	{
+		if ((R == null)
+		|| (!CMLib.map().hasASky(R))
+		|| (R.getRoomInDir(Directions.DOWN) != null))
+			return false;
+		return true;
+	}
+
+	@Override
 	public Basis navBasis()
 	{
-		return Rideable.Basis.WATER_BASED;
+		return Rideable.Basis.AIR_FLYING;
 	}
 
 	private final static Map<String, NavigatingCommand> navCommandWords = new Hashtable<String, NavigatingCommand>();
@@ -109,7 +119,18 @@ public class GenSailingShip extends GenNavigableBoardable
 				switch(N)
 				{
 				case NAVIGATE:
-					navCommandWords.put("SAIL", N);
+					navCommandWords.put("FLOAT", N);
+					break;
+				case RAISE_ANCHOR:
+					navCommandWords.put("RELEASE_TIEDOWNS", N);
+					navCommandWords.put("RELEASE_ROPES", N);
+					navCommandWords.put("RELEASE_ROPE", N);
+					navCommandWords.put("RELEASE_TIEDOWN", N);
+					navCommandWords.put("RELEASE_TIES", N);
+					break;
+				case LOWER_ANCHOR:
+					navCommandWords.put("TIEDOWN", N);
+					navCommandWords.put("TIE_DOWN", N);
 					break;
 				default:
 					navCommandWords.put(N.name().toUpperCase().trim(), N);
@@ -165,40 +186,28 @@ public class GenSailingShip extends GenNavigableBoardable
 	{
 		if(R!=null)
 		{
-			if((R.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
-			||(R.domainType()==Room.DOMAIN_INDOORS_SEAPORT)
-			||(R.domainType()==Room.DOMAIN_INDOORS_CAVE_SEAPORT))
+			if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				return R;
 			TrackingLibrary.TrackingFlags flags;
 			flags = CMLib.tracking().newFlags()
 					.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-					.plus(TrackingLibrary.TrackingFlag.NOAIR)
+					.plus(TrackingLibrary.TrackingFlag.OUTDOORONLY)
+					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
 					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY);
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 			for(final Room R2 : rooms)
 			{
-				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
-				||(R2.domainType()==Room.DOMAIN_INDOORS_SEAPORT)
-				||(R2.domainType()==Room.DOMAIN_INDOORS_CAVE_SEAPORT))
+				if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					return R2;
 			}
 			for(final Room R2 : rooms)
 			{
-				if(CMLib.flags().isDeepWaterySurfaceRoom(R2))
-				{
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						final Room adjacentR = R2.getRoomInDir(d);
-						final Exit adjacentE = R2.getExitInDir(d);
-						if((adjacentR!=null)
-						&&(adjacentE!=null)
-						&&(adjacentE.isOpen())
-						&&(!CMLib.flags().isWateryRoom(adjacentR)))
-							return adjacentR;
-					}
-				}
+				if(CMLib.map().hasASky(R2)
+				&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+				&&(R2.domainType()!=Room.DOMAIN_INDOORS_AIR))
+					return R2;
 			}
 		}
 		return null;
@@ -212,7 +221,11 @@ public class GenSailingShip extends GenNavigableBoardable
 		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if((R!=null)&& CMLib.flags().isDeepWaterySurfaceRoom(R) &&(CMLib.map().getExtendedRoomID(R).length()>0))
+			if((R!=null)
+			&&(CMLib.map().hasASky(R)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
+			&&(CMLib.map().getExtendedRoomID(R).length()>0))
 				return R;
 		}
 		return null;
@@ -224,27 +237,28 @@ public class GenSailingShip extends GenNavigableBoardable
 		final Room R=CMLib.map().roomLocation(this);
 		if((R==null)
 		|| R.amDestroyed()
-		|| ((!CMLib.flags().isFalling(this))
-			&& (R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-			&& (R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-			&& (getAnyExitDir(R)<0)))
+		|| ((!CMLib.flags().isFalling(this)) && (getAnyExitDir(R)<0)))
 			return true;
 		return false;
 
 	}
 
+	protected boolean isAirShipRoom(final Room R)
+	{
+		if((CMLib.map().hasASky(R))
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		||(R.domainType()==Room.DOMAIN_INDOORS_AIR))
+			return true;
+		return false;
+	}
+
 	@Override
 	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
 	{
-		if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
-		&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
-		&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
-		&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
+		if(!isAirShipRoom(destRoom))
 		{
-			if(CMLib.flags().isWateryRoom(thisRoom))
-				announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction),verb_sail));
-			else
-				announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
+			announceToAllAboard(L("As there is no where to @x2 @x1, <S-NAME> go(es) nowhere.",CMLib.directions().getInDirectionName(direction),verb_sail));
 			courseDirections.clear();
 			return false;
 		}
@@ -265,7 +279,7 @@ public class GenSailingShip extends GenNavigableBoardable
 					if((R2!=null)
 					&&(thisRoom.getExitInDir(d)!=null)
 					&&(thisRoom.getExitInDir(d).isOpen())
-					&&(!CMLib.flags().isWateryRoom(R2)))
+					&&(!isAirShipRoom(R2)))
 					{
 						return Directions.getOpDirectionCode(d);
 					}
@@ -282,7 +296,7 @@ public class GenSailingShip extends GenNavigableBoardable
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null)
 			return 0;
-		if((!CMLib.flags().isUnderWateryRoom(R))
+		if((!isAirShipRoom(R))
 		&&(this.usesRemaining()>0))
 			return 0;
 		return super.expirationDate();
@@ -292,8 +306,8 @@ public class GenSailingShip extends GenNavigableBoardable
 	protected MOB getFactoryAttacker(final Room thisRoom)
 	{
 		final MOB mob = super.getFactoryAttacker(thisRoom);
-		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
-		mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
+		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_FLYING);
+		mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_FLYING);
 		return mob;
 	}
 
@@ -302,43 +316,10 @@ public class GenSailingShip extends GenNavigableBoardable
 	{
 		if((msg.target() == this)
 		&&(msg.tool()!=null)
-		&&(msg.tool().ID().equals("AWaterCurrent")))
+		&&(msg.tool().ID().equals("AnAirCurrent")))
 		{
 			if(anchorDown)
 				return false;
-		}
-		else
-		if((msg.targetMinor()==CMMsg.TYP_SIT)
-		&&(msg.target()==this)
-		&&(msg.source().location()==owner())
-		&&(CMLib.flags().isWateryRoom(msg.source().location()))
-		&&(!CMLib.flags().isFlying(msg.source()))
-		&&(!CMLib.flags().isFalling((Physical)msg.target()))
-		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(), super.getDestinationRoom(msg.source().location()))))
-		{
-			final Rideable ride=msg.source().riding();
-			if(ticksSinceMove < 2)
-			{
-				if(ride == null)
-					msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
-				else
-					msg.source().tell(msg.source(),this,ride,CMLib.lang().L("<S-NAME> chase(s) <T-NAME> around in <O-NAME>."));
-				return false;
-			}
-			else
-			if(ride == null)
-			{
-				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from the water."));
-				return false;
-			}
-			else
-			if(!CMLib.flags().isClimbing(msg.source()))
-			{
-				msg.source().tell(CMLib.lang().L("You'll need some assistance to board a ship from @x1, such as some means to climb up.",ride.name(msg.source())));
-				return false;
-			}
-			else
-				msg.source().setRiding(null); // if you're climbing, you're not riding any more
 		}
 		if(!super.okMessage(myHost, msg))
 			return false;
@@ -353,7 +334,8 @@ public class GenSailingShip extends GenNavigableBoardable
 		&&(I!=this)
 		&&(CMLib.flags().canBeSeenBy(I, sourceM)))
 		{
-			if(!CMLib.flags().isDeepWaterySurfaceRoom(thisRoom))
+			if((thisRoom.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+			&&(thisRoom.domainType()!=Room.DOMAIN_INDOORS_AIR))
 			{
 				sourceM.tell(L("You are not able to engage in combat with @x1 here.",I.name()));
 				return Boolean.FALSE;
@@ -368,8 +350,8 @@ public class GenSailingShip extends GenNavigableBoardable
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
 		{
-			CMLib.tracking().makeSink(this, baseR, false);
-			final String sinkString = L("<T-NAME> start(s) sinking!");
+			CMLib.tracking().makeFall(this, baseR, false);
+			final String sinkString = L("<T-NAME> start(s) falling!");
 			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
 			this.announceToNonOuterViewers(victorM, sinkString);
 		}
@@ -433,10 +415,9 @@ public class GenSailingShip extends GenNavigableBoardable
 					}
 					if(fixSky)
 					{
-						final boolean wasWater=CMLib.flags().isUnderWateryRoom(oldR);
-						final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
-						final boolean isSunk = isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
-						if(wasWater || isSunk)
+						final boolean wasAir=this.isAirShipRoom(oldR);
+						final boolean isSunk = isGrounded();
+						if(wasAir || isSunk)
 						{
 							for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 							{
@@ -472,22 +453,29 @@ public class GenSailingShip extends GenNavigableBoardable
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenSailingShip))
+		if(!(E instanceof GenAirShip))
 			return false;
 		return super.sameAs(E);
+	}
+
+	protected boolean isGrounded()
+	{
+		if(this.usesRemaining()<=0)
+		{
+			if(owner() instanceof Room)
+			{
+				final Room R = (Room)owner();
+				if(((R.domainType()!=Room.DOMAIN_OUTDOORS_AIR) && (R.domainType()!=Room.DOMAIN_INDOORS_AIR))
+				||(R.getRoomInDir(Directions.DOWN)==null))
+					return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public boolean amDead()
 	{
-		final ItemPossessor owner = owner();
-		if((owner instanceof Room)
-		&&(this.area instanceof Boardable))
-		{
-			final Room R = (Room)owner;
-			final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
-			return isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
-		}
-		return amDestroyed();
+		return isGrounded() || amDestroyed();
 	}
 }

@@ -105,6 +105,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		LOWER_ANCHOR,
 		STEER,
 		NAVIGATE,
+		RISE,
+		DIVE,
 		COURSE,
 		SET_COURSE,
 		TENDER,
@@ -125,22 +127,21 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			this.phyStats.setWeight(phyStats.weight()+(this.area.numberOfProperIDedRooms() * 1200));
 	}
 
-	protected NavigatingCommand findNavCommand(final String word, final String secondWord)
+	protected Pair<NavigatingCommand, Integer> findNavCommand(final String word, final String secondWord)
 	{
 		if(word == null)
 			return null;
-		NavigatingCommand cmd=null;
 		if(commandWords.size()==0)
 		{
 			for(final NavigatingCommand N : NavigatingCommand.values())
 				commandWords.put(N.name().toUpperCase().trim(), N);
 		}
 
-		if((secondWord!=null)&&(secondWord.length()>0))
-			cmd = commandWords.get((word+"_"+secondWord).toUpperCase().trim());
-		if(cmd == null)
-			cmd = commandWords.get(word.toUpperCase().trim());
-		return cmd;
+		if((secondWord!=null)&&(secondWord.length()>0)&&(commandWords.containsKey((word+"_"+secondWord).toUpperCase().trim())))
+			return new Pair<NavigatingCommand, Integer>(commandWords.get((word+"_"+secondWord).toUpperCase().trim()),Integer.valueOf(2));
+		if (commandWords.containsKey(word.toUpperCase().trim()))
+			return new Pair<NavigatingCommand, Integer>(commandWords.get(word.toUpperCase().trim()), Integer.valueOf(1));
+		return null;
 	}
 
 	protected int ticksPerTurn()
@@ -235,6 +236,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		return true;
 	}
 
+	protected boolean canAnchorFromHere(final Room R)
+	{
+		return true;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -246,11 +252,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			if(cmds.size()==0)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
-			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			final NavigatingCommand cmd=this.findNavCommand(word, secondWord);
+			String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
+			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
+			final int restNum = (cmd==null)?0:cmd.second.intValue();
 			if(cmd != null)
 			{
-				switch(cmd)
+				switch(cmd.first)
 				{
 				case FOLLOW:
 					// handled by command-fail
@@ -273,7 +280,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						msg.source().tell(L("Not while you are in combat!"));
 						return false;
 					}
-					final String rest = CMParms.combine(cmds,1);
+					final String rest = CMParms.combine(cmds,restNum);
 					final Item I=thisRoom.findItem(rest);
 					if((I instanceof StdNavigableBoardable)&&(I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 					{
@@ -338,7 +345,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) in place."));
 						else
 						{
-							final String str=CMParms.combine(cmds,1).toLowerCase();
+							final String str=CMParms.combine(cmds,restNum).toLowerCase();
 							if(("overboard").startsWith(str) || ("water").startsWith(str))
 							{
 								if(!canJumpFromHere(mobR))
@@ -381,7 +388,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							msg.source().tell(L("You must be on deck to raise a tendered item."));
 							return false;
 						}
-						final String rest = CMParms.combine(cmds,1);
+						final String rest = CMParms.combine(cmds,restNum);
 						final Item I=R.findItem(rest);
 						if((I!=this)
 						&&(I!=null)
@@ -439,7 +446,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 							msg.source().tell(L("You must be on deck to lower that."));
 							return false;
 						}
-						final String rest = CMParms.combine(cmds,1);
+						if(!canAnchorFromHere(targetR))
+						{
+							msg.source().tell(L("You can't do that that here."));
+							return false;
+						}
+						final String rest = CMParms.combine(cmds,restNum);
 						final Item I=R.findItem(rest);
 						if((I!=this)
 						&&(I!=null)
@@ -609,6 +621,13 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					}
 					break;
 				}
+				case DIVE:
+					secondWord="DOWN";
+					//$FALL-THROUGH$
+				case RISE:
+					if(secondWord.length()==0)
+						secondWord="UP";
+					//$FALL-THROUGH$
 				case NAVIGATE:
 				{
 					if(!securityCheck(msg.source()))
@@ -846,8 +865,8 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			if(cmds.size()<2)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
-			final NavigatingCommand cmd=this.findNavCommand(word, "");
-			if(cmd == NavigatingCommand.FOLLOW)
+			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, "");
+			if(cmd.first == NavigatingCommand.FOLLOW)
 			{
 				final String arg=CMParms.combine(cmds,1);
 				final Room R=CMLib.map().roomLocation(this);
@@ -907,12 +926,19 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			if(cmds.size()==0)
 				return true;
 			final String word=cmds.get(0).toUpperCase();
-			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			final NavigatingCommand cmd=this.findNavCommand(word, secondWord);
+			String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
+			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
 			if(cmd == null)
 				return true;
-			switch(cmd)
+			switch(cmd.first)
 			{
+			case DIVE:
+				secondWord="DOWN";
+				//$FALL-THROUGH$
+			case RISE:
+				if(secondWord.length()==0)
+					secondWord="UP";
+				//$FALL-THROUGH$
 			case NAVIGATE:
 			{
 				final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
@@ -1019,10 +1045,10 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			final NavigatingCommand cmd=this.findNavCommand(word, secondWord);
+			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
 			if(cmd != null)
 			{
-				switch(cmd)
+				switch(cmd.first)
 				{
 				default:
 					break;

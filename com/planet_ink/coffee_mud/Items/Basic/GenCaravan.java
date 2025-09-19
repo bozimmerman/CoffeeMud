@@ -96,11 +96,10 @@ public class GenCaravan extends GenNavigableBoardable
 	private final static Map<String, NavigatingCommand> navCommandWords = new Hashtable<String, NavigatingCommand>();
 
 	@Override
-	protected NavigatingCommand findNavCommand(final String word, final String secondWord)
+	protected Pair<NavigatingCommand, Integer> findNavCommand(final String word, final String secondWord)
 	{
 		if(word == null)
 			return null;
-		NavigatingCommand cmd=null;
 		if(navCommandWords.size()==0)
 		{
 			for(final NavigatingCommand N : NavigatingCommand.values())
@@ -126,11 +125,11 @@ public class GenCaravan extends GenNavigableBoardable
 			}
 		}
 
-		if((secondWord!=null)&&(secondWord.length()>0))
-			cmd = navCommandWords.get((word+"_"+secondWord).toUpperCase().trim());
-		if(cmd == null)
-			cmd = navCommandWords.get(word.toUpperCase().trim());
-		return cmd;
+		if((secondWord!=null)&&(secondWord.length()>0)&&(navCommandWords.containsKey((word+"_"+secondWord).toUpperCase().trim())))
+			return new Pair<NavigatingCommand, Integer>(navCommandWords.get((word+"_"+secondWord).toUpperCase().trim()),Integer.valueOf(2));
+		if (navCommandWords.containsKey(word.toUpperCase().trim()))
+			return new Pair<NavigatingCommand, Integer>(navCommandWords.get(word.toUpperCase().trim()), Integer.valueOf(1));
+		return null;
 	}
 
 	@Override

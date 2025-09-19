@@ -39,6 +39,7 @@
  38. New Archon skill: LLMIFY, for making LLM-powered mobs, if you can.
  39. GenCraftingSkill now supports a fire requirement.
  40. Poisons list expanded.
+ 41. New large rideables: GenAirShip
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

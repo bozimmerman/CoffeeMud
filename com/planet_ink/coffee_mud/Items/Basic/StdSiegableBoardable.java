@@ -52,7 +52,7 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 		return "StdSiegableBoardable";
 	}
 
-	private final static Map<String, SiegeCommand> commandWords = new Hashtable<String, SiegeCommand>();
+	protected final static Map<String, SiegeCommand> commandWords = new Hashtable<String, SiegeCommand>();
 
 	protected SiegeCommand findSiegeCommand(final String word, final String secondWord)
 	{
