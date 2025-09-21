@@ -758,13 +758,15 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected boolean translateOthersMessage(final CMMsg msg, final String sourceWords)
 	{
-		if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
+		if((msg.othersMessage()!=null)
+		&&(msg.othersMessage().indexOf('\'')>0))
 		{
 			String otherMes=fixSayVerb(msg.othersMessage(), getTranslationVerb());
 			if(msg.target()!=null)
 				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),
-					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			final CMMsg newMsg = CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,sourceWords),name()),CMMsg.NO_EFFECT,null);
+			msg.addTrailerMsg(newMsg);
 			return true;
 		}
 		return false;
@@ -777,8 +779,9 @@ public class StdLanguage extends StdAbility implements Language
 			String targetMes=fixSayVerb(msg.targetMessage(), getTranslationVerb());
 			if(msg.target()!=null)
 				targetMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),targetMes,false);
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),
-					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(targetMes,sourceWords),name()),CMMsg.NO_EFFECT,null));
+			final CMMsg newMsg = CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),
+					L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(targetMes,sourceWords),name()),CMMsg.NO_EFFECT,null);
+			msg.addTrailerMsg(newMsg);
 			return true;
 		}
 		return false;
@@ -791,8 +794,9 @@ public class StdLanguage extends StdAbility implements Language
 			final ChannelsLibrary.CMChannel C = CMLib.channels().getChannelFromMsg(msg);
 			if((C==null)||(!C.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE)))
 			{
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
-						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())));
+				final CMMsg newMsg = CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
+						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name()));
+				msg.addTrailerMsg(newMsg);
 				return true;
 			}
 		}

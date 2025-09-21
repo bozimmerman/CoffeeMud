@@ -6451,7 +6451,7 @@ public class ListCmd extends StdCommand
 		case HOLIDAYS:
 		{
 			String areaName=null;
-			if(!CMParms.combine(commands, 1).equalsIgnoreCase("ALL"))
+			if((commands.size()>1)&&(!CMParms.combine(commands, 1).equalsIgnoreCase("ALL")))
 				areaName=mob.location().getArea().Name().toUpperCase().trim();
 			s.wraplessPrintln(CMLib.quests().listHolidays(areaName));
 			break;

@@ -33,14 +33,16 @@ TECH TODO:
    *. Multiple SPACE arrays for planes of existence.
 
 NON-TECH (Short Term) TODO:
-   *. Classes missing planar 35's: Arcanist Assassin Burglar Delver Gypsy Healer Jester Minstrel Thief 
-   *. Classes missing planar 35's: Missionary Necromancer Pirate Prancer Reliquist Templar Trapper
+   *. Classes missing planar 35's: Arcanist Assassin Burglar Gypsy Healer Jester Thief 
+   *. Classes missing planar 35's: Delver (create perm portal to earth plane in their private property)
+   *. Classes missing planar 35's: Minstrel (Melody of Plane -- group  bonus if minstral has been there previously for awhile)
+   *. Classes missing planar 35's: Prancer (Planar Two-Step -- shifts the group to another plane from another plane)
+   *. Classes missing planar 35's: Missionary Necromancer Pirate Reliquist Templar Trapper
 NON-TECH (Long Term) TODO:
    *. MudChat - integrate with Percolator for mood/attitude based adjective variety
    *. Builder Achievements, Archon Achievements
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
-   *. Port Siplet to C++ and shove it inside a Chromium window.
    *. Start on Spell Research?
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project

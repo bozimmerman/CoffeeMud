@@ -889,7 +889,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 				for(final CMMsg msg2 : msg.trailerMsgs())
 				{
-					if((msg!=msg2)&&(R.okMessage(M,msg2)))
+					if((msg!=msg2)
+					&&(R.okMessage(M,msg2)))
 						M.executeMsg(M,msg2);
 				}
 				msg.trailerMsgs().clear();
@@ -1115,7 +1116,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				if(chanNum >= 0)
 				{
 					msg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+chanNum));
-					myChanLib.sendChannelCMMsgTo(S,areareq,chanNum,msg,mob);
+					myChanLib.sendChannelCMMsgTo(S,areareq,chanNum,(CMMsg)msg.copyOf(),mob); // copy because trailers
 				}
 			}
 		}
