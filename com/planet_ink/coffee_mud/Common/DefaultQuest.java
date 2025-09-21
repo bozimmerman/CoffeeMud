@@ -77,6 +77,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	private TimeClock	popularClock		= null;
 	private Area		areaGuessA			= null;
 
+	private final AtomicBoolean			starting			= new AtomicBoolean(false);
 	public PairList<String,StringBuffer>internalFiles		= null;
 	private final AtomicBoolean			suspended			= new AtomicBoolean(false);
 	protected final Map<String,Long>	stepEllapsedTimes	= Collections.synchronizedMap(new HashMap<String,Long>());
@@ -591,7 +592,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				((ScriptingEngine)B).registerDefaultQuest(this);
 		}
 		if((E instanceof Item)
-		&&((((Item)E).numBehaviors()>0)||(((Item)E).numScripts()>0))
+		&&((E.numBehaviors()>0)||(E.numScripts()>0))
 		&&(!CMLib.threads().isTicking(E, Tickable.TICKID_ITEM_BEHAVIOR)))
 		{
 			CMLib.threads().startTickDown(E,Tickable.TICKID_ITEM_BEHAVIOR,1);
@@ -4343,99 +4344,109 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	// will call stopQuestInternal first to shut it down.
 	public boolean startQuestInternal()
 	{
-		final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
-		if(prefix.length()>0)
-			Log.debugOut("Quest",prefix+name()+" Start Internal called ("+running()+": resetting state and starting from scratch.");
-
-		if(running())
+		if(!this.starting.getAndSet(true))
 		{
-			stopQuestInternal();
-			resetData=null;
-		}
-
-		final List<Object> args=new ArrayList<Object>();
-		questState=new QuestState();
-		final List<Object> baseScript=parseLoadScripts(script(),new ArrayList<Object>(),args,true);
-		if((!isCopy())
-		&&(getSpawn()!=Quest.Spawn.NO.ordinal()))
-		{
-			final Spawn spawn = Quest.Spawn.values()[getSpawn()];
-			switch(spawn)
+			try
 			{
-			case NO:
-				break;
-			case FIRST:
-			case TRUE:
-			case ONCE:
-				spawnQuest(script(),baseScript,false, spawn == Quest.Spawn.ONCE);
-				break;
-			case ANY:
-			case ANYONCE:
+				final String prefix = CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS)?("QuestScript#"+parseId+" "):"";
+				if(prefix.length()>0)
+					Log.debugOut("Quest",prefix+name()+" Start Internal called ("+running()+": resetting state and starting from scratch.");
+
+				if(running())
 				{
-					final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
-					final String stepScript = parsed.size()==0?"":parsed.get(CMLib.dice().roll(1, parsed.size(), -1));
-					spawnQuest(stepScript,baseScript,true, spawn == Quest.Spawn.ANYONCE);
-					break;
+					stopQuestInternal();
+					resetData=null;
 				}
-			case ALL:
-			case ALLONCE:
+
+				final List<Object> args=new ArrayList<Object>();
+				questState=new QuestState();
+				final List<Object> baseScript=parseLoadScripts(script(),new ArrayList<Object>(),args,true);
+				if((!isCopy())
+				&&(getSpawn()!=Quest.Spawn.NO.ordinal()))
 				{
-					final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
-					for(int p=0;p<parsed.size();p++)
-						spawnQuest(parsed.get(p),baseScript,true, spawn == Quest.Spawn.ALLONCE);
-					break;
+					final Spawn spawn = Quest.Spawn.values()[getSpawn()];
+					switch(spawn)
+					{
+					case NO:
+						break;
+					case FIRST:
+					case TRUE:
+					case ONCE:
+						spawnQuest(script(),baseScript,false, spawn == Quest.Spawn.ONCE);
+						break;
+					case ANY:
+					case ANYONCE:
+						{
+							final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
+							final String stepScript = parsed.size()==0?"":parsed.get(CMLib.dice().roll(1, parsed.size(), -1));
+							spawnQuest(stepScript,baseScript,true, spawn == Quest.Spawn.ANYONCE);
+							break;
+						}
+					case ALL:
+					case ALLONCE:
+						{
+							final List<String> parsed=CMLib.quests().parseQuestSteps(parseFinalQuestScript(baseScript),0,false);
+							for(int p=0;p<parsed.size();p++)
+								spawnQuest(parsed.get(p),baseScript,true, spawn == Quest.Spawn.ALLONCE);
+							break;
+						}
+					}
+					lastStartDateTime=System.currentTimeMillis();
+					enterDormantState();
+					return false; // always return false, since, per se, this quest is NOT started.
 				}
-			}
-			lastStartDateTime=System.currentTimeMillis();
-			enterDormantState();
-			return false; // always return false, since, per se, this quest is NOT started.
-		}
-		try
-		{
-			parseQuestScript(baseScript,args,0);
-		}
-		catch(final Exception t)
-		{
-			questState.error=true;
-			Log.errOut("DefaultQuest",t);
-		}
-		if(questState.error)
-		{
-			if(!questState.beQuiet)
-			{
-				int retry=0;
-				if((durable)&&(resetData==null))
-					retry=10;
+				try
+				{
+					parseQuestScript(baseScript,args,0);
+				}
+				catch(final Exception t)
+				{
+					questState.error=true;
+					Log.errOut("DefaultQuest",t);
+				}
+				if(questState.error)
+				{
+					if(!questState.beQuiet)
+					{
+						int retry=0;
+						if((durable)&&(resetData==null))
+							retry=10;
+						else
+						if(resetData!=null)
+							retry=resetData[0];
+						Log.errOut("Quest",prefix+"Errors starting '"
+								+name()
+								+"', quest not started"
+								+((retry>0)?", retry in "+retry+".":"."));
+					}
+					if((durable)&&(resetData==null))
+					{
+						resetQuest(10);
+						return false;
+					}
+					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTFAILEDSTART);
+				}
 				else
-				if(resetData!=null)
-					retry=resetData[0];
-				Log.errOut("Quest",prefix+"Errors starting '"
-						+name()
-						+"', quest not started"
-						+((retry>0)?", retry in "+retry+".":"."));
+				if(!questState.done)
+					Log.errOut("Quest",prefix+"Nothing parsed in '"+name()+"', quest not started.");
+				else
+				if(duration()<0)
+				{
+					Log.errOut("Quest",prefix+"No duration, quest '"+name()+"' not started.");
+					questState.error=true;
+				}
+				if((!questState.error)&&(questState.done))
+				{
+					enterRunningState();
+					return true;
+				}
+				stopQuestInternal();
 			}
-			if((durable)&&(resetData==null))
+			finally
 			{
-				resetQuest(10);
-				return false;
+				starting.set(false);
 			}
-			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTFAILEDSTART);
 		}
-		else
-		if(!questState.done)
-			Log.errOut("Quest",prefix+"Nothing parsed in '"+name()+"', quest not started.");
-		else
-		if(duration()<0)
-		{
-			Log.errOut("Quest",prefix+"No duration, quest '"+name()+"' not started.");
-			questState.error=true;
-		}
-		if((!questState.error)&&(questState.done))
-		{
-			enterRunningState();
-			return true;
-		}
-		stopQuestInternal();
 		return false;
 	}
 
@@ -4494,7 +4505,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final MOB M=CMClass.getFactoryMOB(P.name(),P.phyStats().level(),CMLib.map().roomLocation(P));
 							try
 							{
-								for(final Enumeration<ScriptingEngine> se= ((Behavable)P).scripts(); se.hasMoreElements();)
+								for(final Enumeration<ScriptingEngine> se= P.scripts(); se.hasMoreElements();)
 								{
 									final ScriptingEngine SE=se.nextElement();
 									if(SE!=null)
@@ -4531,11 +4542,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(P instanceof Item)
 						{
 							if((CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
-							&&(!((Item)P).amDestroyed()))
+							&&(!P.amDestroyed()))
 							{
 								if(debug)
 									Log.debugOut("QuestScript#"+parseId+": Destroying "+P.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(P)));
-								((Item)P).destroy();
+								P.destroy();
 							}
 							else
 								PO.restoreOwner();
@@ -4636,7 +4647,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									Behavior B=BB.fetchBehavior(((Behavior)O).ID());
 									if((E instanceof MOB)&&(B instanceof ScriptingEngine))
 										((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
-									if((V.size()>2)
+									if((V.size()>2) // existing parms always means restoring changed parms
 									&&(V.get(2) instanceof String))
 									{
 										if(B==null)
@@ -4650,7 +4661,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										if(debug)
 											Log.debugOut("QuestScript#"+parseId+": Reverting bparms on "+B.name()+" on "+E.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(E)));
 									}
-									else
+									else // lack of parms means the behavior was new, so remove it
 									if(B!=null)
 									{
 										if(debug)
@@ -5475,6 +5486,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(affected==null)
 			return;
 		runtimeRegisterObject(affected);
+		if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+		{
+			final boolean exists = affected.fetchEffect(abilityID) != null;
+			String msg =  "QuestScript#"+parseId+": Registering ";
+			msg += give ? "given ": "a ";
+			msg += exists ? "existing " : "missing ";
+			Log.debugOut(msg+" effect "+abilityID+" on "+affected.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected)));
+		}
 		final List<Object> V=Collections.synchronizedList(new ArrayList<Object>());
 		V.add(affected);
 		Ability A4=affected.fetchEffect(abilityID);
@@ -5509,8 +5528,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
-			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
-				Log.debugOut("QuestScript#"+parseId+": Registering effect "+abilityID+" on "+affected.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(affected)));
 			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
@@ -5521,6 +5538,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(behaving==null)
 			return;
 		runtimeRegisterObject(behaving);
+		if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
+		{
+			final boolean exists = behaving.fetchBehavior(behaviorID) != null;
+			String msg =  "QuestScript#"+parseId+": Registering ";
+			msg += give ? "given ": "a ";
+			msg += exists ? "existing " : "missing ";
+			Log.debugOut(msg + " behavior "+behaviorID+" on "+behaving.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(behaving)));
+		}
 		final List<Object> V=Collections.synchronizedList(new ArrayList<Object>());
 		V.add(behaving);
 		Behavior B=behaving.fetchBehavior(behaviorID);
@@ -5551,8 +5576,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		B.registerDefaultQuest(name());
 		synchronized(questState)
 		{
-			if(CMSecurity.isDebugging(DbgFlag.QUESTSCRIPTS))
-				Log.debugOut("QuestScript#"+parseId+": Registering effect "+behaviorID+" on "+behaving.Name()+" @"+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(behaving)));
 			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}

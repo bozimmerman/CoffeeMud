@@ -52,6 +52,7 @@ public class CommonSpeaker extends StdBehavior
 	protected String	language	= "Common";
 	protected Language	lang		= null;
 	protected String	prevLang	= null;
+	protected MOB		obj			= null;
 
 	@Override
 	public CMObject copyOf()
@@ -65,6 +66,9 @@ public class CommonSpeaker extends StdBehavior
 	@Override
 	public void setParms(final String parameters)
 	{
+		if((lang != null)&&(obj != null))
+			this.endBehavior(obj);
+		obj=null;
 		lang=null;
 		prevLang=null;
 		super.setParms(parameters);
@@ -157,6 +161,7 @@ public class CommonSpeaker extends StdBehavior
 			}
 			if(mob instanceof MOB)
 			{
+				this.obj=(MOB)mob;
 				final Ability A=((MOB)mob).fetchAbility(L.ID());
 				if(A==null)
 				{

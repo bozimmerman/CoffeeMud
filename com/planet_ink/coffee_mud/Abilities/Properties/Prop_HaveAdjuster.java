@@ -246,7 +246,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	private final String getParmStr(final Map<String,String> ps, final String newText, final String parm, final String def)
 	{
-		if(ps.containsKey(parm))
+		if((parm!=null)&&ps.containsKey(parm))
 			return ps.get(parm);
 		return def;
 	}
@@ -713,7 +713,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	public boolean canApply(final MOB mob)
 	{
 		if((affected instanceof Item)
-		&&(!((Item)affected).amDestroyed())
+		&&(!affected.amDestroyed())
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true)))
 		&&(setCheck((Item)affected)))
 			return true;
