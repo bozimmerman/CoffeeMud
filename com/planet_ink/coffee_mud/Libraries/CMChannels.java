@@ -1116,7 +1116,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				if(chanNum >= 0)
 				{
 					msg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+chanNum));
-					myChanLib.sendChannelCMMsgTo(S,areareq,chanNum,(CMMsg)msg.copyOf(),mob); // copy because trailers
+					myChanLib.sendChannelCMMsgTo(S,areareq,chanNum,msg,mob);
 				}
 			}
 		}
