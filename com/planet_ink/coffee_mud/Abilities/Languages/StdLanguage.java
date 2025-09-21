@@ -794,8 +794,9 @@ public class StdLanguage extends StdAbility implements Language
 			final ChannelsLibrary.CMChannel C = CMLib.channels().getChannelFromMsg(msg);
 			if((C==null)||(!C.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE)))
 			{
-				final CMMsg newMsg = CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),
-						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name()));
+				final CMMsg newMsg = CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),
+						L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords),name())
+						,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(newMsg);
 				return true;
 			}
