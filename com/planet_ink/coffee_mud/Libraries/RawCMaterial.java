@@ -64,10 +64,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			return false;
 		final ItemPossessor O=I.owner();
 		if(O instanceof MOB)
-			((MOB)O).delItem(I);
+			O.delItem(I);
 		else
 		if(O instanceof Room)
-			((Room)O).delItem(I);
+			O.delItem(I);
 		I.setOwner(null);
 		I.destroy();
 		return true;
@@ -743,6 +743,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			return CMStrings.capitalizeAndLower(getMaterialDesc(I.material()));
 		if(I instanceof Weapon)
 			return "weapons";
+		if(I instanceof FalseLimb)
+			return "body part";
 		if(I instanceof Armor)
 			return "armor";
 		if(I instanceof Coins)
@@ -1372,7 +1374,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				I=R.getItem(r);
 				if(I instanceof RawMaterial)
 				{
-					final int rawMaterialCode=((RawMaterial)I).material();
+					final int rawMaterialCode=I.material();
 					final int subHashCode = ((RawMaterial)I).getSubType().hashCode();
 					if((material1 > 0)
 					&&(material1==rawMaterialCode)
@@ -1403,7 +1405,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				I=R.getItem(r);
 				if(I instanceof RawMaterial)
 				{
-					final int rawMaterialCode=((RawMaterial)I).material();
+					final int rawMaterialCode=I.material();
 					if((material1 > 0)
 					&&(material1==rawMaterialCode))
 						V.add(I);
