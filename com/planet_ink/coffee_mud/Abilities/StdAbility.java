@@ -1873,13 +1873,11 @@ public class StdAbility implements Ability
 	{
 		if(mob==null)
 			return false;
+		final String keyWord = (this.triggerStrings()!=null) && (this.triggerStrings().length>0) ? this.triggerStrings()[0] : Name();
+		final List<String> oldCommand = command;
+		command = new XArrayList<String>(keyWord);
 		if(command != null)
-		{
-			final List<String> oldCommand = command;
-			final String keyWord = (this.triggerStrings()!=null) && (this.triggerStrings().length>0) ? this.triggerStrings()[0] : Name();
-			command = new XArrayList<String>(keyWord);
 			command.addAll(oldCommand);
-		}
 		if(auto
 		&&(mob.isMonster())
 		&&(target instanceof MOB)
