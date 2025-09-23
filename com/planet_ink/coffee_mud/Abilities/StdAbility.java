@@ -833,6 +833,34 @@ public class StdAbility implements Ability
 		failureTell(mob,null,false,L(commonTelStr,vars),commands);
 	}
 
+	protected void commonFaiL(final MOB mob, final List<String> commands,
+							  final Environmental target, final Environmental tool,
+							  String str, final String... vars)
+	{
+		if(mob.isMonster())
+		{
+			str = CMStrings.replaceWord(str, "you are", "I am");
+			str = CMStrings.replaceWord(str, "you", "I");
+			str = CMStrings.replaceWord(str, "your", "my");
+			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = L(str,vars);
+			if(target!=null)
+				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
+			if(tool!=null)
+				str=CMStrings.replaceAll(str,"<O-NAME>",tool.name());
+			CMLib.commands().postSay(mob,null,str,false,false);
+			return;
+		}
+		final Room R=mob.location();
+		final CMMsg cmsg=CMClass.getMsg(mob,target,tool,
+				CMMsg.MSG_SKILLFAIL,L(str,vars),
+				CMMsg.NO_EFFECT,CMParms.combineQuoted(commands,0),
+				CMMsg.NO_EFFECT,null);
+		if(!R.okMessage(mob,cmsg))
+			return;
+		R.send(mob,cmsg);
+	}
+
 	protected void commonTell(final MOB mob, String str)
 	{
 		if(mob==null)
