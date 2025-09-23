@@ -244,7 +244,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 			return false;
 		if(!CMLib.flags().isWaterySurfaceRoom(R))
 		{
-			commonTelL(mob,"You must be on the surface of the water to find driftwood.");
+			commonFaiL(mob,commands,"You must be on the surface of the water to find driftwood.");
 			return false;
 		}
 		return super.invoke(mob, commands, givenTarget, auto, asLevel);

@@ -387,7 +387,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		}
 		if(matche == null)
 		{
-			commonTelL(mob,"Decorate what? '@x1' is unknown. Try DECORATE LIST.",word);
+			commonFaiL(mob,commands,"Decorate what? '@x1' is unknown. Try DECORATE LIST.",word);
 			return false;
 		}
 		if(commands.size()==0)
@@ -413,7 +413,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
-			commonTelL(mob,"You can't decorate here.");
+			commonFaiL(mob,commands,"You can't decorate here.");
 			return false;
 		}
 
@@ -425,7 +425,7 @@ public class Decorating extends CommonSkill implements RecipeDriven
 		case Room.DOMAIN_INDOORS_WOOD:
 			break;
 		default:
-			commonTelL(mob,"You can't mount anything here.");
+			commonFaiL(mob,commands,"You can't mount anything here.");
 			return false;
 		}
 

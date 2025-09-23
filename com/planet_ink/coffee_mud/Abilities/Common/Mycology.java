@@ -269,7 +269,7 @@ public class Mycology extends CommonSkill implements RecipeDriven
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -282,7 +282,7 @@ public class Mycology extends CommonSkill implements RecipeDriven
 		||(((RawMaterial)target).getSubType().length()>0)
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can only identify unknown mushrooms or fungi.");
+			commonFaiL(mob,commands,"You can only identify unknown mushrooms or fungi.");
 			return false;
 		}
 		if(isLimitedToOne() && target.basePhyStats().weight()>1)

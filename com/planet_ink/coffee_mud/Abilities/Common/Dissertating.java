@@ -317,7 +317,7 @@ public class Dissertating extends CraftingSkill
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTelL(mob,"You'll need to pick that up first.");
+				commonFaiL(mob,commands,"You'll need to pick that up first.");
 				return false;
 			}
 			if((((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
@@ -325,28 +325,28 @@ public class Dissertating extends CraftingSkill
 			&&(buildingI.material()!=RawMaterial.RESOURCE_HEMP)
 			&&(buildingI.material() != RawMaterial.RESOURCE_SILK))
 			{
-				commonTelL(mob,"@x1 isn't even made of paper or silk!",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 isn't even made of paper or silk!",buildingI.name(mob));
 				return false;
 			}
 			if(((buildingI instanceof MiscMagic))
 			||(buildingI instanceof Recipes)
 			||(!buildingI.isGeneric()))
 			{
-				commonTelL(mob,"There's can't write a dissertation on @x1!",buildingI.name(mob));
+				commonFaiL(mob,commands,"There's can't write a dissertation on @x1!",buildingI.name(mob));
 				return false;
 			}
 			if(buildingI instanceof Scroll)
 			{
 				if(((Scroll)buildingI).getSpells().size()>0)
 				{
-					commonTelL(mob,"You can only write on blank scrolls.");
+					commonFaiL(mob,commands,"You can only write on blank scrolls.");
 					return false;
 				}
 			}
 			else
 			if(buildingI.readableText().length()>0)
 			{
-				commonTelL(mob,"You can only write on blank paper.");
+				commonFaiL(mob,commands,"You can only write on blank paper.");
 				return false;
 			}
 			String recipeName=CMParms.combine(commands,0);
@@ -364,7 +364,7 @@ public class Dissertating extends CraftingSkill
 					||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 					||(!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID())))
 					{
-						commonTelL(mob,"You can't write a dissertation on '@x1'.",recipeName);
+						commonFaiL(mob,commands,"You can't write a dissertation on '@x1'.",recipeName);
 						return false;
 					}
 					else
@@ -372,7 +372,7 @@ public class Dissertating extends CraftingSkill
 						theSpell=A;
 					else
 					{
-						commonTelL(mob,"You aren't ready to write a dissertation on '@x1' yet.",recipeName);
+						commonFaiL(mob,commands,"You aren't ready to write a dissertation on '@x1' yet.",recipeName);
 						return false;
 					}
 				}
@@ -431,7 +431,7 @@ public class Dissertating extends CraftingSkill
 				else
 				if(theSpell==null)
 				{
-					commonTelL(mob,"You don't know how to write a dissertation on '@x1'.  Try \"SKILLS\" for a list.",recipeName);
+					commonFaiL(mob,commands,"You don't know how to write a dissertation on '@x1'.  Try \"SKILLS\" for a list.",recipeName);
 					return false;
 				}
 				manaToLose+=spellLevel(mob,theSpell)*10;

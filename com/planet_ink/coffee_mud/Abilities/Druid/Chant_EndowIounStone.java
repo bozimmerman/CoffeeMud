@@ -253,7 +253,7 @@ public class Chant_EndowIounStone extends Chant implements ItemCraftor
 			features.append(", \"mend <item>\" to mend broken items, \"scan\" to scan for mendable items");
 			features.append(", \"refit <item>\" to resize wearables");
 			features.append(", or \"stop\" to cancel.");
-			commonTelL(mob,features.toString());
+			commonFaiL(mob,commands,features.toString());
 			return false;
 		}
 		final String targetName = CMParms.combine(commands,1);

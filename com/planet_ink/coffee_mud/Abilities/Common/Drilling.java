@@ -206,13 +206,13 @@ public class Drilling extends GatheringSkill
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).phyStats().weight()))
 		{
-			commonTelL(mob,"@x1 doesn't look like it can hold anything.",I.name(mob));
+			commonFaiL(mob,commands,"@x1 doesn't look like it can hold anything.",I.name(mob));
 			return false;
 		}
 		final int resourceType=mob.location().myResource();
 		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
-			commonTelL(mob,"@x1 doesn't look like it can hold a liquid.",I.name(mob));
+			commonFaiL(mob,commands,"@x1 doesn't look like it can hold a liquid.",I.name(mob));
 			return false;
 		}
 		final List<Item> V=((Container)I).getContents();
@@ -225,14 +225,14 @@ public class Drilling extends GatheringSkill
 				{
 					if(I2.material()!=resourceType)
 					{
-						commonTelL(mob,"@x1 needs to have the @x2 removed first.",I.name(mob),I2.name(mob));
+						commonFaiL(mob,commands,"@x1 needs to have the @x2 removed first.",I.name(mob),I2.name(mob));
 						return false;
 					}
 				}
 			}
 			if(((Drink)I).liquidRemaining()>0)
 			{
-				commonTelL(mob,"You need to empty @x1 first.",I.name(mob));
+				commonFaiL(mob,commands,"You need to empty @x1 first.",I.name(mob));
 				return false;
 			}
 		}
@@ -242,7 +242,7 @@ public class Drilling extends GatheringSkill
 		playSound=null;
 		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_LIQUID,mob.location()))
 		{
-			commonTelL(mob,"You don't think this is a good place to drill.");
+			commonFaiL(mob,commands,"You don't think this is a good place to drill.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

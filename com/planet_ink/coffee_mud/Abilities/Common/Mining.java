@@ -187,7 +187,7 @@ public class Mining extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_METAL,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_MITHRIL,mob.location())))
 		{
-			commonTelL(mob,"You don't think this is a good place to mine.");
+			commonFaiL(mob,commands,"You don't think this is a good place to mine.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

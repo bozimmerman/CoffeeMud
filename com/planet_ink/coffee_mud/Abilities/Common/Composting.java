@@ -354,7 +354,7 @@ public class Composting extends GatheringSkill
 			}
 			if(mine==null)
 			{
-				commonTelL(mob,"You don't have anything you can compost.");
+				commonFaiL(mob,commands,"You don't have anything you can compost.");
 				return false;
 			}
 		}
@@ -384,12 +384,12 @@ public class Composting extends GatheringSkill
 		});
 		if(mine==null)
 		{
-			commonTelL(mob,"You'll need to have some @x1 on the ground first.",foundShortName);
+			commonFaiL(mob,commands,"You'll need to have some @x1 on the ground first.",foundShortName);
 			return false;
 		}
 		if(!isCompostable(mob,mine))
 		{
-			commonTelL(mob,"'@x1' is not suitable for composting.",mine.Name());
+			commonFaiL(mob,commands,"'@x1' is not suitable for composting.",mine.Name());
 			return false;
 		}
 		foundShortName = mine.name();

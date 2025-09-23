@@ -81,7 +81,7 @@ public class Spell_SeeAura extends Spell
 			return false;
 		if(target==mob)
 		{
-			commonTelL(mob,"Um, you could just enter SCORE.");
+			commonFaiL(mob,commands,"Um, you could just enter SCORE.");
 			return false;
 		}
 

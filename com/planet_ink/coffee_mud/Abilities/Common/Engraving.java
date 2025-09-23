@@ -129,13 +129,13 @@ public class Engraving extends CommonSkill
 			*/
 			if(CMLib.ableParms().getCraftingBrand(target).length()==0)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.  It must be a crafted item. ",target.name(mob));
+				commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.  It must be a crafted item. ",target.name(mob));
 				return false;
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -143,7 +143,7 @@ public class Engraving extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write to engrave.");
+			commonFaiL(mob,commands,"You must know how to write to engrave.");
 			return false;
 		}
 
@@ -156,7 +156,7 @@ public class Engraving extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can't engrave onto that material.");
+			commonFaiL(mob,commands,"You can't engrave onto that material.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

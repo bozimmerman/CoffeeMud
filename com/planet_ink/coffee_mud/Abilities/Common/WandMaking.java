@@ -456,7 +456,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to @x1 a '@x1'.  Try \"@x3 list\" for a list.",getActiveVerb(),recipeName,keyWord);
+				commonFaiL(mob,commands,"You don't know how to @x1 a '@x1'.  Try \"@x3 list\" for a list.",getActiveVerb(),recipeName,keyWord);
 				return false;
 			}
 
@@ -500,7 +500,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 					}
 					if((fire==null)||(!mob.location().isContent(fire)))
 					{
-						commonTelL(mob,"You'll need to build a fire first.");
+						commonFaiL(mob,commands,"You'll need to build a fire first.");
 						return false;
 					}
 				}
@@ -523,7 +523,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

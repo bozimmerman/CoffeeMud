@@ -130,7 +130,7 @@ public class MeatCuring extends CommonSkill
 		final Item target = super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",what);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",what);
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -138,19 +138,19 @@ public class MeatCuring extends CommonSkill
 		if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH)
 		||(!(target instanceof Food)))
 		{
-			commonTelL(mob,"You can't cure that.");
+			commonFaiL(mob,commands,"You can't cure that.");
 			return false;
 		}
 
 		if(target.fetchEffect("Poison_Rotten")!=null)
 		{
-			commonTelL(mob,"That's already rotten and can't be cured.");
+			commonFaiL(mob,commands,"That's already rotten and can't be cured.");
 			return false;
 		}
 
 		if(target.fetchEffect("Prayer_Purify")!=null)
 		{
-			commonTelL(mob,"That's already been cured.");
+			commonFaiL(mob,commands,"That's already been cured.");
 			return false;
 		}
 

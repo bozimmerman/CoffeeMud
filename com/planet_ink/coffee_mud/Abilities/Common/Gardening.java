@@ -292,7 +292,7 @@ public class Gardening extends GatheringSkill
 		verb=L("planting");
 		if((!auto)&&(!R.getArea().getClimateObj().canSeeTheSun(R)))
 		{
-			commonTelL(mob,"You need clear sunlight to do your gardening.  Check the time and weather.");
+			commonFaiL(mob,commands,"You need clear sunlight to do your gardening.  Check the time and weather.");
 			return false;
 		}
 
@@ -304,17 +304,17 @@ public class Gardening extends GatheringSkill
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
 		&&(R.myResource()!=RawMaterial.RESOURCE_DIRT))
 		{
-			commonTelL(mob,"The land is not suitable for gardening here.");
+			commonFaiL(mob,commands,"The land is not suitable for gardening here.");
 			return false;
 		}
 		if((!auto)&&(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT))
 		{
-			commonTelL(mob,"The current drought conditions make gardening useless.");
+			commonFaiL(mob,commands,"The current drought conditions make gardening useless.");
 			return false;
 		}
 		if(R.fetchEffect(ID())!=null)
 		{
-			commonTelL(mob,"It looks like a garden is already growing here.");
+			commonFaiL(mob,commands,"It looks like a garden is already growing here.");
 			return false;
 		}
 		if(mob.isMonster()
@@ -350,7 +350,7 @@ public class Gardening extends GatheringSkill
 			}
 			if(mine==null)
 			{
-				commonTelL(mob,"You don't have anything you can plant.");
+				commonFaiL(mob,commands,"You don't have anything you can plant.");
 				return false;
 			}
 		}
@@ -408,7 +408,7 @@ public class Gardening extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTelL(mob,"You've never heard of an herb or flower called '@x1'.",CMParms.combine(commands,0));
+			commonFaiL(mob,commands,"You've never heard of an herb or flower called '@x1'.",CMParms.combine(commands,0));
 			return false;
 		}
 
@@ -424,19 +424,19 @@ public class Gardening extends GatheringSkill
 		}
 		if(mine==null)
 		{
-			commonTelL(mob,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
+			commonFaiL(mob,commands,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
 			return false;
 		}
 		final String mineName=mine.name();
 		mine=CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
-			commonTelL(mob,"'@x1' is not suitable for use as seed.",mineName);
+			commonFaiL(mob,commands,"'@x1' is not suitable for use as seed.",mineName);
 			return false;
 		}
 		if(!(isPotentialCrop(R,code)))
 		{
-			commonTelL(mob,"'@x1' does not seem to be taking root here.",mineName);
+			commonFaiL(mob,commands,"'@x1' does not seem to be taking root here.",mineName);
 			return false;
 		}
 

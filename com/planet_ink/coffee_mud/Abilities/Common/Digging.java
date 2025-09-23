@@ -194,7 +194,7 @@ public class Digging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SAND,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_STONE,mob.location())))
 		{
-			commonTelL(mob,"You don't think this is a good place to dig for gems.");
+			commonFaiL(mob,commands,"You don't think this is a good place to dig for gems.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

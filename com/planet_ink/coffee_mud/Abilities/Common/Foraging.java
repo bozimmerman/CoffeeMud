@@ -187,7 +187,7 @@ public class Foraging extends GatheringSkill
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_SALT,mob.location()))
 		&&(!confirmPossibleMaterialLocation(RawMaterial.RESOURCE_COTTON,mob.location())))
 		{
-			commonTelL(mob,"You don't think this is a good place to forage.");
+			commonFaiL(mob,commands,"You don't think this is a good place to forage.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -532,7 +532,7 @@ public class Publishing extends CommonSkill
 		if((commands.size()<1)
 		||((commands.size()==1)&&(!commands.get(0).equalsIgnoreCase("LIST"))))
 		{
-			commonTelL(mob,"Publish what, at what asking price? If you already published, try LIST.");
+			commonFaiL(mob,commands,"Publish what, at what asking price? If you already published, try LIST.");
 			return false;
 		}
 		if(commands.size()==1)
@@ -598,14 +598,14 @@ public class Publishing extends CommonSkill
 				{
 					if(C.getMonth() <= lastPubC.getMonth())
 					{
-						commonTelL(mob,"You won't be able to publish any more books this month.");
+						commonFaiL(mob,commands,"You won't be able to publish any more books this month.");
 						return false;
 					}
 				}
 				else
 				if(C.getYear() < lastPubC.getYear())
 				{
-					commonTelL(mob,"You last published in the year @x1?!!",""+lastPubC.getYear());
+					commonFaiL(mob,commands,"You last published in the year @x1?!!",""+lastPubC.getYear());
 					return false;
 				}
 			}
@@ -626,7 +626,7 @@ public class Publishing extends CommonSkill
 		}
 		if(startHere < 0)
 		{
-			commonTelL(mob,"You haven't specified an asking price.");
+			commonFaiL(mob,commands,"You haven't specified an asking price.");
 			return false;
 		}
 		final List<String> remainV=new ArrayList<String>();
@@ -639,7 +639,7 @@ public class Publishing extends CommonSkill
  		final Item target = super.getTarget(mob, mob.location(), givenTarget, remainV, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",CMParms.combine(remainV));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",CMParms.combine(remainV));
 			return false;
 		}
 
@@ -648,12 +648,12 @@ public class Publishing extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTelL(mob,"You can't publish something like that.");
+			commonFaiL(mob,commands,"You can't publish something like that.");
 			return false;
 		}
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTelL(mob,"That's not even readable!");
+			commonFaiL(mob,commands,"That's not even readable!");
 			return false;
 		}
 
@@ -661,13 +661,13 @@ public class Publishing extends CommonSkill
 		String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
 		{
-			commonTelL(mob,"You aren't permitted to publish that.");
+			commonFaiL(mob,commands,"You aren't permitted to publish that.");
 			return false;
 		}
 		*/
 		if(!target.isGeneric())
 		{
-			commonTelL(mob,"You aren't able to publish that.");
+			commonFaiL(mob,commands,"You aren't able to publish that.");
 			return false;
 		}
 

@@ -141,7 +141,7 @@ public class Spell_Claireaudience extends Spell
 			if(scryList.length()>0)
 				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
 			else
-				commonTelL(mob,"Cast on whom?");
+				commonFaiL(mob,commands,"Cast on whom?");
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();

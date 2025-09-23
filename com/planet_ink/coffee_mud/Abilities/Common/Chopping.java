@@ -182,7 +182,7 @@ public class Chopping extends GatheringSkill
 		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
 		&&(!CMParms.contains(RawMaterial.CODES.WOODIES(), mob.location().myResource())))
 		{
-			commonTelL(mob,"You can't find anything to chop here.");
+			commonFaiL(mob,commands,"You can't find anything to chop here.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

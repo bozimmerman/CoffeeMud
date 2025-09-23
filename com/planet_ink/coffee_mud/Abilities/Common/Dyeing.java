@@ -143,13 +143,13 @@ public class Dyeing extends PaintingSkill
 		}
 		if(commands.size()<2)
 		{
-			commonTelL(mob,"You must specify what you want to dye, and color to dye it or the word remove, or specify LIST.");
+			commonFaiL(mob,commands,"You must specify what you want to dye, and color to dye it or the word remove, or specify LIST.");
 			return false;
 		}
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -162,7 +162,7 @@ public class Dyeing extends PaintingSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can't dye that material.");
+			commonFaiL(mob,commands,"You can't dye that material.");
 			return false;
 		}
 		for(final List<String> list : recipes)
@@ -180,7 +180,7 @@ public class Dyeing extends PaintingSkill
 		}
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTelL(mob,"You can't dye anything '@x1'. Try DYEING LIST for a list or use REMOVE as the color.",writing);
+			commonFaiL(mob,commands,"You can't dye anything '@x1'. Try DYEING LIST for a list or use REMOVE as the color.",writing);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

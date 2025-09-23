@@ -272,7 +272,7 @@ public class Organizing extends CommonSkill
 			if((CMLib.law().getLandTitle(mob.location())!=null)
 			&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 			{
-				commonTelL(mob,"You need the owners permission to organize stuff here.");
+				commonFaiL(mob,commands,"You need the owners permission to organize stuff here.");
 				return false;
 			}
 		}
@@ -281,14 +281,14 @@ public class Organizing extends CommonSkill
 			final Physical I=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY, false);
 			if((!(I instanceof ItemPossessor)) && (!(I instanceof Container)))
 			{
-				commonTelL(mob,"You cannot organize the contents of '@x1'.",str);
+				commonFaiL(mob,commands,"You cannot organize the contents of '@x1'.",str);
 				return false;
 			}
 			if(I instanceof MOB)
 			{
 				if(!mob.getGroupMembers(new HashSet<MOB>()).contains(I))
 				{
-					commonTelL(mob,"You aren't allowed to organize stuff for @x1.",I.Name());
+					commonFaiL(mob,commands,"You aren't allowed to organize stuff for @x1.",I.Name());
 					return false;
 				}
 			}
@@ -298,7 +298,7 @@ public class Organizing extends CommonSkill
 				if((CMLib.law().getLandTitle(mob.location())!=null)
 				&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					commonTelL(mob,"You need the owners permission to organize stuff here.");
+					commonFaiL(mob,commands,"You need the owners permission to organize stuff here.");
 					return false;
 				}
 			}

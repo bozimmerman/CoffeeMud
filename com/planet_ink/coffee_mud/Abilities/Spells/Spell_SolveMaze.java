@@ -85,7 +85,7 @@ public class Spell_SolveMaze extends Spell
 		final Room targetR=mob.location();
 		if((targetR==null) || (targetR.getGridParent()==null))
 		{
-			commonTelL(mob,"This spell only works when you are in a maze");
+			commonFaiL(mob,commands,"This spell only works when you are in a maze");
 			return false;
 		}
 

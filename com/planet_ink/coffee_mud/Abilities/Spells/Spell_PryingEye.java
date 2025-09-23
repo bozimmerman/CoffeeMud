@@ -156,7 +156,7 @@ public class Spell_PryingEye extends Spell
 			final int dir=CMLib.directions().getDirectionCode(o.toString());
 			if(dir<0)
 			{
-				commonTelL(mob,"'@x1' is not a valid direction.",o.toString());
+				commonFaiL(mob,commands,"'@x1' is not a valid direction.",o.toString());
 				return false;
 			}
 			directions.add(Integer.valueOf(dir));

@@ -446,7 +446,7 @@ public class Surveying extends CommonSkill
 			physP=mob.location().getArea();
 		else
 		{
-			commonTelL(mob,"'@x1' is neither the word ROOM nor AREA.",commands.get(0));
+			commonFaiL(mob,commands,"'@x1' is neither the word ROOM nor AREA.",commands.get(0));
 			return false;
 		}
 		Item catalogI=null;
@@ -476,19 +476,19 @@ public class Surveying extends CommonSkill
 		}
 		if(physP==null)
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 		if(catalogI==null)
 		{
-			commonTelL(mob,"You don't seem to have a proper catalog.");
+			commonFaiL(mob,commands,"You don't seem to have a proper catalog.");
 			return false;
 		}
 
 		final Ability writeA=mob.fetchAbility("Skill_Write");
 		if(writeA==null)
 		{
-			commonTelL(mob,"You must know how to write to entitle.");
+			commonFaiL(mob,commands,"You must know how to write to entitle.");
 			return false;
 		}
 

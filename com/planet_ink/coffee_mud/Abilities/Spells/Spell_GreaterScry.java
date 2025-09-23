@@ -197,7 +197,7 @@ public class Spell_GreaterScry extends Spell
 		}
 		if(target == null)
 		{
-			commonTelL(mob,"You can't seem to focus on '@x1'.",targetName);
+			commonFaiL(mob,commands,"You can't seem to focus on '@x1'.",targetName);
 			return false;
 		}
 
@@ -210,7 +210,7 @@ public class Spell_GreaterScry extends Spell
 		else
 		if(A!=null)
 		{
-			commonTelL(mob,"You can't seem to focus on '@x1'.",targetName);
+			commonFaiL(mob,commands,"You can't seem to focus on '@x1'.",targetName);
 			return false;
 		}
 

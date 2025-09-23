@@ -460,7 +460,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTelL(mob,"@x1 isn't a liquid container.",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 isn't a liquid container.",buildingI.name(mob));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)

@@ -429,17 +429,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				return false;
 			if((!CMParms.contains(pm, buildingI.material())))
 			{
-				commonTelL(mob,"That's not made of any sort of weavable material.  It can't be refitted.");
+				commonFaiL(mob,commands,"That's not made of any sort of weavable material.  It can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTelL(mob,"You don't know how to refit that sort of thing.");
+				commonFaiL(mob,commands,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -494,7 +494,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName);
+				commonFaiL(mob,commands,"You don't know how to weave a '@x1'.  Try \"weave list\" for a list.",recipeName);
 				return false;
 			}
 
@@ -538,7 +538,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

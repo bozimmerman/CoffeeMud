@@ -111,29 +111,29 @@ public class SlaveTrading extends CommonSkill
 		final MOB slaveM=getVisibleRoomTarget(mob,str);
 		if(slaveM==null)
 		{
-			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+			commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 
 		if(!CMLib.flags().canBeSeenBy(slaveM,mob))
 		{
-			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+			commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if(!slaveM.isMonster())
 		{
-			commonTelL(mob,slaveM,null,"You can't sell <T-NAME> as a slave.");
+			commonFaiL(mob,commands,slaveM,null,"You can't sell <T-NAME> as a slave.");
 			return false;
 		}
 		if(CMLib.flags().isAnimalIntelligence(slaveM))
 		{
-			commonTelL(mob,slaveM,null,"You can't sell <T-NAME> as a slave.  Animals are not slaves.");
+			commonFaiL(mob,commands,slaveM,null,"You can't sell <T-NAME> as a slave.  Animals are not slaves.");
 			return false;
 		}
 
 		if(!CMLib.flags().isASlave(slaveM, mob))
 		{
-			commonTelL(mob,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
+			commonFaiL(mob,commands,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
 			return false;
 		}
 

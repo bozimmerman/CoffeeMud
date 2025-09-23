@@ -232,7 +232,7 @@ public class Labeling extends CommonSkill
 		}
 		if(commands.size()<1)
 		{
-			commonTelL(mob,"You must specify what you want to label.  Start with the word remove to remove a tag label.");
+			commonFaiL(mob,commands,"You must specify what you want to label.  Start with the word remove to remove a tag label.");
 			return false;
 		}
 		final String what=CMParms.combine(commands);
@@ -252,7 +252,7 @@ public class Labeling extends CommonSkill
 				}
 				if(!ok)
 				{
-					commonTelL(mob,"You aren't allowed to work on '@x1'.",what);
+					commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.",what);
 					return false;
 				}
 				*/
@@ -260,20 +260,20 @@ public class Labeling extends CommonSkill
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",what);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",what);
 			return false;
 		}
 
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write to label.");
+			commonFaiL(mob,commands,"You must know how to write to label.");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTelL(mob,"You can't label that.");
+			commonFaiL(mob,commands,"You can't label that.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

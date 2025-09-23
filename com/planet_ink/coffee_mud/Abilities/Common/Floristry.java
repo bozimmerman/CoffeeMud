@@ -193,7 +193,7 @@ public class Floristry extends CommonSkill
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -205,7 +205,7 @@ public class Floristry extends CommonSkill
 		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can only identify unknown flowers.");
+			commonFaiL(mob,commands,"You can only identify unknown flowers.");
 			return false;
 		}
 		if(isLimitedToOne() && target.basePhyStats().weight()>1)

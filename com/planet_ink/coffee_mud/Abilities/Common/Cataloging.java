@@ -339,7 +339,7 @@ public class Cataloging extends CommonSkill
 				catalogI=this.findCatalogBook(mob, physP);
 				if(catalogI==null)
 				{
-					commonTelL(mob,"You need to specify a proper catalog for '@x1'.",physP.name(mob));
+					commonFaiL(mob,commands,"You need to specify a proper catalog for '@x1'.",physP.name(mob));
 					return false;
 				}
 			}
@@ -367,24 +367,24 @@ public class Cataloging extends CommonSkill
 		}
 		if(physP==null)
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 		if(!(physP instanceof Item))
 		{
-			commonTelL(mob,"You can't catalog @x1",physP.name());
+			commonFaiL(mob,commands,"You can't catalog @x1",physP.name());
 			return false;
 		}
 		if(catalogI==null)
 		{
-			commonTelL(mob,"You don't seem to have a proper catalog.");
+			commonFaiL(mob,commands,"You don't seem to have a proper catalog.");
 			return false;
 		}
 
 		final Ability writeA=mob.fetchAbility("Skill_Write");
 		if(writeA==null)
 		{
-			commonTelL(mob,"You must know how to write to entitle.");
+			commonFaiL(mob,commands,"You must know how to write to entitle.");
 			return false;
 		}
 

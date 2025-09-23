@@ -225,7 +225,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			S=mob.amFollowing().session();
 		if(S==null)
 		{
-			commonTelL(mob,"I can't work! I need a player to follow!");
+			commonFaiL(mob,commands,"I can't work! I need a player to follow!");
 			return false;
 		}
 
@@ -235,7 +235,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 			{
-				commonTelL(mob,"You need the owners permission to paint the walls here.");
+				commonFaiL(mob,commands,"You need the owners permission to paint the walls here.");
 				return false;
 			}
 		}
@@ -301,7 +301,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			canvasI=mob.location().findItem(null,what);
 			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
-				commonTelL(mob,"You don't see any canvases called '@x1' sitting here.",what);
+				commonFaiL(mob,commands,"You don't see any canvases called '@x1' sitting here.",what);
 				return false;
 			}
 			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
@@ -309,7 +309,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
 			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
-				commonTelL(mob,"You cannot paint on '@x1'.",what);
+				commonFaiL(mob,commands,"You cannot paint on '@x1'.",what);
 				return false;
 			}
 
@@ -333,7 +333,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to paint a '@x1'.  Try \"paint list\" for a list.",recipeName);
+				commonFaiL(mob,commands,"You don't know how to paint a '@x1'.  Try \"paint list\" for a list.",recipeName);
 				return false;
 			}
 		}
@@ -619,7 +619,7 @@ public class Painting extends CommonSkill implements RecipeDriven
 
 		if(building == null)
 		{
-			this.commonTelL(mob,"I have no idea what I'm doing.");
+			this.commonFaiL(mob,commands,"I have no idea what I'm doing.");
 			return false;
 		}
 

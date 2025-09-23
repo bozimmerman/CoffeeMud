@@ -134,7 +134,7 @@ public class Domesticating extends CommonSkill
 		final MOB M=getVisibleRoomTarget(mob,str);
 		if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 		{
-			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+			commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if(!M.isMonster())
@@ -142,7 +142,7 @@ public class Domesticating extends CommonSkill
 			if(newName!=null)
 				commonTelL(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTelL(mob,M,null,"You can't domesticate <T-NAME>.");
+				commonFaiL(mob,commands,M,null,"You can't domesticate <T-NAME>.");
 			return false;
 		}
 		if(!CMLib.flags().isAnAnimal(M))
@@ -150,13 +150,13 @@ public class Domesticating extends CommonSkill
 			if(newName!=null)
 				commonTelL(mob,M,null,"You can't name <T-NAME>.");
 			else
-				commonTelL(mob,M,null,"You don't know how to domesticate <T-NAME>.");
+				commonFaiL(mob,commands,M,null,"You don't know how to domesticate <T-NAME>.");
 			return false;
 		}
 		final String theName=newName;
 		if((newName!=null)&&(M.amFollowing()==null))
 		{
-			commonTelL(mob,"You can only name someones pet.");
+			commonFaiL(mob,commands,"You can only name someones pet.");
 			return false;
 		}
 		else
@@ -164,12 +164,12 @@ public class Domesticating extends CommonSkill
 		{
 			if(newName.trim().length()==0)
 			{
-				commonTelL(mob,"You must specify a name.");
+				commonFaiL(mob,commands,"You must specify a name.");
 				return false;
 			}
 			if(newName.indexOf(' ')>=0)
 			{
-				commonTelL(mob,"The name may not contain a space.");
+				commonFaiL(mob,commands,"The name may not contain a space.");
 				return false;
 			}
 			newName=CMLib.coffeeFilter().secondaryUserInputFilter(newName);

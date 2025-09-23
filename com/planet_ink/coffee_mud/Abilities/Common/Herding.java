@@ -171,7 +171,7 @@ public class Herding extends CommonSkill
 
 		if(mob.riding() == null)
 		{
-			super.commonTelL(mob,"You need to be mounted to do this.");
+			super.commonFaiL(mob,commands,"You need to be mounted to do this.");
 			return false;
 		}
 
@@ -204,7 +204,7 @@ public class Herding extends CommonSkill
 		}
 		if(exampleM == null)
 		{
-			super.commonTelL(mob,"You don't see any '@x1' you can herd here.",raceName);
+			super.commonFaiL(mob,commands,"You don't see any '@x1' you can herd here.",raceName);
 			return false;
 		}
 
@@ -223,7 +223,7 @@ public class Herding extends CommonSkill
 		final int direction = CMLib.directions().getDirectionCode(dirName);
 		if(direction < 0)
 		{
-			super.commonTelL(mob,"'@x1' is not a proper direction.",dirName);
+			super.commonFaiL(mob,commands,"'@x1' is not a proper direction.",dirName);
 			return false;
 		}
 
@@ -266,7 +266,7 @@ public class Herding extends CommonSkill
 		}
 		if(herd.size()==0)
 		{
-			commonTelL(mob,"No one seems to be paying attention to you.");
+			commonFaiL(mob,commands,"No one seems to be paying attention to you.");
 			return false;
 		}
 		verb=L("herding @x1 @x2",pluralRaces,finalDirName);

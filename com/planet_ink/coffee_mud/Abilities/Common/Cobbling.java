@@ -350,17 +350,17 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				return false;
 			if(!buildingI.fitsOn(Wearable.WORN_FEET))
 			{
-				commonTelL(mob,"That's not footwear.  That can't be refitted.");
+				commonFaiL(mob,commands,"That's not footwear.  That can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTelL(mob,"You don't know how to refit that sort of thing.");
+				commonFaiL(mob,commands,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -409,7 +409,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"cobble list\" for a list.",recipeName);
+				commonFaiL(mob,commands,"You don't know how to make a '@x1'.  Try \"cobble list\" for a list.",recipeName);
 				return false;
 			}
 
@@ -453,7 +453,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

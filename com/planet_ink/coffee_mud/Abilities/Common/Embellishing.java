@@ -306,7 +306,7 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		}
 		if(foundRecipe == null)
 		{
-			commonTelL(mob,"@x1 what? '@x2' is unknown. Try @x3 LIST.",_skillName,command,_commandWord);
+			commonFaiL(mob,commands,"@x1 what? '@x2' is unknown. Try @x3 LIST.",_skillName,command,_commandWord);
 			return false;
 		}
 		if(commands.size()==0)
@@ -326,12 +326,12 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		final String imask = foundRecipe.get(RCP_CLASSTYPE);
 		if(!CMLib.masking().maskCheck(imask, I, true))
 		{
-			commonTelL(mob,"You can not @x2 @x1 with that recipe.",I.name(mob),_skillName);
+			commonFaiL(mob,commands,"You can not @x2 @x1 with that recipe.",I.name(mob),_skillName);
 			return false;
 		}
 		if(wasEmbellished(I))
 		{
-			commonTelL(mob,"You can not @x2 @x1 any more than it is.",I.name(mob),_skillName);
+			commonFaiL(mob,commands,"You can not @x2 @x1 any more than it is.",I.name(mob),_skillName);
 			return false;
 		}
 		//should they specify the extra material? nah -- other skills don't

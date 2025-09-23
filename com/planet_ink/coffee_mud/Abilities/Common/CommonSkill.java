@@ -878,13 +878,13 @@ public class CommonSkill extends StdAbility
 			if((!allowedInTheDark())
 			&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
 			{
-				commonTelL(mob,"<S-NAME> can't see to do that!");
+				commonFaiL(mob,commands,"<S-NAME> can't see to do that!");
 				return false;
 			}
 			if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))
 			||CMLib.flags().isSleeping(mob))
 			{
-				commonTelL(mob,"You need to stand up!");
+				commonFaiL(mob,commands,"You need to stand up!");
 				return false;
 			}
 			for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
@@ -912,7 +912,7 @@ public class CommonSkill extends StdAbility
 			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
 				commonTelL(mob,"You must be at full mana to do that.");
 			else
-				commonTelL(mob,"You don't have enough mana to do that.");
+				commonFaiL(mob,commands,"You don't have enough mana to do that.");
 			return false;
 		}
 		if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
@@ -920,7 +920,7 @@ public class CommonSkill extends StdAbility
 			if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
 				commonTelL(mob,"You must be at full movement to do that.");
 			else
-				commonTelL(mob,"You don't have enough movement to do that.  You are too tired.");
+				commonFaiL(mob,commands,"You don't have enough movement to do that.  You are too tired.");
 			return false;
 		}
 		if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
@@ -928,7 +928,7 @@ public class CommonSkill extends StdAbility
 			if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
 				commonTelL(mob,"You must be at full health to do that.");
 			else
-				commonTelL(mob,"You don't have enough hit points to do that.");
+				commonFaiL(mob,commands,"You don't have enough hit points to do that.");
 			return false;
 		}
 		if(!checkComponents(mob,commands))

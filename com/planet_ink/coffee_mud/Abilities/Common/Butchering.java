@@ -208,13 +208,13 @@ public class Butchering extends GatheringSkill
 		   ||((DeadBody)I).isPlayerCorpse()
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
-			commonTelL(mob,"You can't butcher @x1.",I.name(mob));
+			commonFaiL(mob,commands,"You can't butcher @x1.",I.name(mob));
 			return false;
 		}
 		final List<RawMaterial> resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
-			commonTelL(mob,"There doesn't appear to be any good parts on @x1.",I.name(mob));
+			commonFaiL(mob,commands,"There doesn't appear to be any good parts on @x1.",I.name(mob));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

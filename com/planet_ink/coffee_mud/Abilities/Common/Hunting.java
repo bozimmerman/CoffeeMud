@@ -322,7 +322,7 @@ public class Hunting extends GatheringSkill
 					}
 					if(stdM == null)
 					{
-						commonTelL(mob,"There are no signs of life here.");
+						commonFaiL(mob,commands,"There are no signs of life here.");
 						return false;
 					}
 					MOB genM=stdM;

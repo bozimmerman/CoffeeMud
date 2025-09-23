@@ -739,7 +739,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		&&(!auto)
 		&&(!CMLib.masking().maskCheck(playerMask, mob, true)))
 		{
-			commonTelL(mob,"To do this, you must meet these requirements:  @x1.",CMLib.masking().maskDesc(playerMask, false));
+			commonFaiL(mob,commands,"To do this, you must meet these requirements:  @x1.",CMLib.masking().maskDesc(playerMask, false));
 			return false;
 		}
 

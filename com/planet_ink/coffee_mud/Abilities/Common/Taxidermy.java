@@ -205,7 +205,7 @@ public class Taxidermy extends CraftingSkill
 		final Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
-			commonTelL(mob,"You don't see anything called '@x1' here.",str);
+			commonFaiL(mob,commands,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
 		foundShortName=I.Name();
@@ -213,7 +213,7 @@ public class Taxidermy extends CraftingSkill
 		||(((DeadBody)I).isPlayerCorpse())
 		||(((DeadBody)I).getMobName().length()==0))
 		{
-			commonTelL(mob,"You don't know how to stuff @x1.",I.name(mob));
+			commonFaiL(mob,commands,"You don't know how to stuff @x1.",I.name(mob));
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -221,7 +221,7 @@ public class Taxidermy extends CraftingSkill
 			final Item I2=mob.location().getItem(i);
 			if(I2.container()==I)
 			{
-				commonTelL(mob,"You need to remove the contents of @x1 first.",I2.name(mob));
+				commonFaiL(mob,commands,"You need to remove the contents of @x1 first.",I2.name(mob));
 				return false;
 			}
 		}

@@ -218,7 +218,7 @@ public class Recollecting extends CommonSkill
 		success=false;
 		if(this.getApplicableItems(mob).size()==0)
 		{
-			commonTelL(mob,"There are no writings here!");
+			commonFaiL(mob,commands,"There are no writings here!");
 			return false;
 		}
 		if(commands.size()==0)

@@ -195,7 +195,7 @@ public class Fishing extends GatheringSkill
 		}
 		if(!maybeFish)
 		{
-			commonTelL(mob,"The fishing doesn't look too good around here.");
+			commonFaiL(mob,commands,"The fishing doesn't look too good around here.");
 			return false;
 		}
 		verb=L("fishing");

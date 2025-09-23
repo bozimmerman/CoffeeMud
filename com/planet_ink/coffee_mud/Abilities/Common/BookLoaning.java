@@ -1615,7 +1615,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			Item I=(Item)curShop.removeStock(itemName,mob);
 			if(I==null)
 			{
-				commonTelL(mob,"'@x1' is not on the list.",itemName);
+				commonFaiL(mob,commands,"'@x1' is not on the list.",itemName);
 				return false;
 			}
 			final String iname=I.name();
@@ -1693,7 +1693,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			if((I instanceof Container)
 			&&(((Container)I).getContents().size()>0))
 			{
-				commonTelL(mob,I,null,"You may not loan out <T-NAME>.");
+				commonFaiL(mob,commands,I,null,"You may not loan out <T-NAME>.");
 				return false;
 			}
 			if(target==null)
@@ -1708,13 +1708,13 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 
 		if(itemsV.size()==0)
 		{
-			commonTelL(mob,"You don't seem to be carrying '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to be carrying '@x1'.",itemName);
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTelL(mob,"You failed to specify a value for '@x1'.",itemName);
+			commonFaiL(mob,commands,"You failed to specify a value for '@x1'.",itemName);
 			return false;
 		}
 
@@ -1723,7 +1723,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTelL(mob,target,null,"You fail to make <T-NAME> available to borrow.");
+			commonFaiL(mob,commands,target,null,"You fail to make <T-NAME> available to borrow.");
 			return false;
 		}
 

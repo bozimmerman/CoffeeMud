@@ -174,7 +174,7 @@ public class FireBuilding extends CommonSkill
 			lighting=null;
 			if((mob.location().domainType()&Room.INDOORS)>0)
 			{
-				commonTelL(mob,"You can't seem to find any deadwood around here.");
+				commonFaiL(mob,commands,"You can't seem to find any deadwood around here.");
 				return false;
 			}
 			switch(mob.location().domainType())
@@ -186,7 +186,7 @@ public class FireBuilding extends CommonSkill
 			case Room.DOMAIN_OUTDOORS_WOODS:
 				break;
 			default:
-				commonTelL(mob,"You can't seem to find any dry deadwood around here.");
+				commonFaiL(mob,commands,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
 			duration=getDuration(25,mob,1,3);
@@ -204,7 +204,7 @@ public class FireBuilding extends CommonSkill
 			||(CMath.bset(lighting.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
 			||(!CMLib.flags().isGettable(lighting)))
 			{
-				commonTelL(mob,"For some reason, @x1 just won't catch.",lighting.name());
+				commonFaiL(mob,commands,"For some reason, @x1 just won't catch.",lighting.name());
 				return false;
 			}
 			if(lighting instanceof Light)
@@ -212,7 +212,7 @@ public class FireBuilding extends CommonSkill
 				final Light l=(Light)lighting;
 				if(l.isLit())
 				{
-					commonTelL(mob,"@x1 is already lit!",l.name());
+					commonFaiL(mob,commands,"@x1 is already lit!",l.name());
 					return false;
 				}
 				if(CMLib.flags().isGettable(lighting)
@@ -267,7 +267,7 @@ public class FireBuilding extends CommonSkill
 
 			if(CMLib.flags().isOnFire(lighting))
 			{
-				commonTelL(mob,"@x1 is already on fire!",lightingName);
+				commonFaiL(mob,commands,"@x1 is already on fire!",lightingName);
 				return false;
 			}
 			verb=L("lighting @x1",lightingName);
@@ -283,20 +283,20 @@ public class FireBuilding extends CommonSkill
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());
 				if((t!=null)&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 				{
-					commonTelL(mob,"You are not allowed to burn anything here.");
+					commonFaiL(mob,commands,"You are not allowed to burn anything here.");
 					return false;
 				}
 			}
 			durationOfBurn=CMLib.materials().getBurnDuration(lighting);
 			if(durationOfBurn<0)
 			{
-				commonTelL(mob,"You need to cook that, if you can.");
+				commonFaiL(mob,commands,"You need to cook that, if you can.");
 				return false;
 			}
 			else
 			if(durationOfBurn==0)
 			{
-				commonTelL(mob,"That won't burn.");
+				commonFaiL(mob,commands,"That won't burn.");
 				return false;
 			}
 			if((lighting.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)

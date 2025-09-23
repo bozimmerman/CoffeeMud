@@ -375,7 +375,7 @@ public class Farming extends GatheringSkill
 			return false;
 		if(R.fetchEffect(ID())!=null)
 		{
-			commonTelL(mob,"It looks like a crop is already growing here.");
+			commonFaiL(mob,commands,"It looks like a crop is already growing here.");
 			return false;
 		}
 		if(mob.isMonster()
@@ -411,7 +411,7 @@ public class Farming extends GatheringSkill
 			}
 			if(mine==null)
 			{
-				commonTelL(mob,"You don't have anything you can plant.");
+				commonFaiL(mob,commands,"You don't have anything you can plant.");
 				return false;
 			}
 		}
@@ -467,7 +467,7 @@ public class Farming extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTelL(mob,"You can't seem to grow '@x1'  Is it on the ground?.",CMParms.combine(commands,0));
+			commonFaiL(mob,commands,"You can't seem to grow '@x1'  Is it on the ground?.",CMParms.combine(commands,0));
 			return false;
 		}
 
@@ -497,19 +497,19 @@ public class Farming extends GatheringSkill
 			if(seedProb)
 				commonTelL(mob,"You'll need to have some @x1 Seeds on the ground first.",foundShortName);
 			else
-				commonTelL(mob,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
+				commonFaiL(mob,commands,"You'll need to have some @x1 to seed from on the ground first.",foundShortName);
 			return false;
 		}
 		final String mineName=mine.name();
 		mine=CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
-			commonTelL(mob,"'@x1' is not suitable for use as a seed crop.",mineName);
+			commonFaiL(mob,commands,"'@x1' is not suitable for use as a seed crop.",mineName);
 			return false;
 		}
 		if(!(isPotentialCrop(R,code)))
 		{
-			commonTelL(mob,"'@x1' does not seem to be taking root here.",mineName);
+			commonFaiL(mob,commands,"'@x1' does not seem to be taking root here.",mineName);
 			return false;
 		}
 

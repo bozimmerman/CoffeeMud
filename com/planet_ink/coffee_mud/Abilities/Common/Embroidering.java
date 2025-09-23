@@ -113,7 +113,7 @@ public class Embroidering extends CommonSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -121,7 +121,7 @@ public class Embroidering extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write to embroider.");
+			commonFaiL(mob,commands,"You must know how to write to embroider.");
 			return false;
 		}
 
@@ -129,7 +129,7 @@ public class Embroidering extends CommonSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can't embroider onto that material.");
+			commonFaiL(mob,commands,"You can't embroider onto that material.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

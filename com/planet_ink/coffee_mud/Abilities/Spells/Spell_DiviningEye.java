@@ -90,7 +90,7 @@ public class Spell_DiviningEye extends Spell
 		final Ability pryingEyeA=mob.fetchEffect("Spell_PryingEye");
 		if(pryingEyeA==null)
 		{
-			commonTelL(mob,"This spell requires an active prying eye.");
+			commonFaiL(mob,commands,"This spell requires an active prying eye.");
 			return false;
 		}
 
@@ -99,13 +99,13 @@ public class Spell_DiviningEye extends Spell
 		final Ability A=CMLib.english().getSkillToInvoke(mob, commands);
 		if(A==null)
 		{
-			commonTelL(mob,"'@x1' does not refer to any diviner spell you know.",commandStr);
+			commonFaiL(mob,commands,"'@x1' does not refer to any diviner spell you know.",commandStr);
 			return false;
 		}
 		if(((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 		||((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_DIVINATION))
 		{
-			commonTelL(mob,"'@x1' is not a diviner spell you know.",A.name());
+			commonFaiL(mob,commands,"'@x1' is not a diviner spell you know.",A.name());
 			return false;
 		}
 

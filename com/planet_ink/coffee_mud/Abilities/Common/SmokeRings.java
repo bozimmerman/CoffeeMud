@@ -221,7 +221,7 @@ public class SmokeRings extends CommonSkill implements RecipeDriven
 		}
 		if(match == null)
 		{
-			commonTelL(mob,"Smoke how? '@x1' is unknown. Try @x2 LIST.",word,triggerStrings[0]);
+			commonFaiL(mob,commands,"Smoke how? '@x1' is unknown. Try @x2 LIST.",word,triggerStrings[0]);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

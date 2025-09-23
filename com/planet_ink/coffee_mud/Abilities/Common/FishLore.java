@@ -150,7 +150,7 @@ public class FishLore extends CommonSkill
 
 		if((R.domainType()&Room.INDOORS)>0)
 		{
-			commonTelL(mob,"You can't do this indoors!");
+			commonFaiL(mob,commands,"You can't do this indoors!");
 			return false;
 		}
 		if((mob.riding()!=null)&&(mob.riding().rideBasis()==Rideable.Basis.WATER_BASED))
@@ -165,7 +165,7 @@ public class FishLore extends CommonSkill
 
 		if(fishRoom==null)
 		{
-			this.commonTelL(mob,"You need to be on the water, or in a boat to use this skill.");
+			this.commonFaiL(mob,commands,"You need to be on the water, or in a boat to use this skill.");
 			return false;
 		}
 

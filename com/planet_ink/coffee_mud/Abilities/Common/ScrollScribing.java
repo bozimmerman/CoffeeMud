@@ -370,7 +370,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTelL(mob,"You'll need to pick that up first.");
+				commonFaiL(mob,commands,"You'll need to pick that up first.");
 				return false;
 			}
 			if((((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
@@ -378,7 +378,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			&&(buildingI.material()!=RawMaterial.RESOURCE_HIDE)
 			&&(buildingI.material() != RawMaterial.RESOURCE_SILK))
 			{
-				commonTelL(mob,"@x1 isn't even made of paper or silk!",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 isn't even made of paper or silk!",buildingI.name(mob));
 				return false;
 			}
 			if((!(buildingI instanceof Scroll))
@@ -386,7 +386,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			||(!(buildingI instanceof MiscMagic))
 			||(buildingI instanceof Recipes))
 			{
-				commonTelL(mob,"There's can't enscribe magic on @x1!",buildingI.name(mob));
+				commonFaiL(mob,commands,"There's can't enscribe magic on @x1!",buildingI.name(mob));
 				return false;
 			}
 			if(((Scroll)buildingI).getSpells().size()>0)
@@ -401,7 +401,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(level <= 0)
 				{
-					commonTelL(mob,"You can only scribe on blank scrolls, or a scroll with enough free space on it.");
+					commonFaiL(mob,commands,"You can only scribe on blank scrolls, or a scroll with enough free space on it.");
 					return false;
 				}
 			}
@@ -475,7 +475,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				else
 				if(theSpell==null)
 				{
-					commonTelL(mob,"You don't know how to enscribe '@x1'.  Try \"enscribe list\" for a list.",recipeName);
+					commonFaiL(mob,commands,"You don't know how to enscribe '@x1'.  Try \"enscribe list\" for a list.",recipeName);
 					return false;
 				}
 				manaToLose+=spellLevel(mob,theSpell)*10;
@@ -499,12 +499,12 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					{
 						if(spell.ID().equals(theSpell.ID()))
 						{
-							commonTelL(mob,"That spell is already scribed onto @x1.",buildingI.name());
+							commonFaiL(mob,commands,"That spell is already scribed onto @x1.",buildingI.name());
 							return false;
 						}
 						if((spell.classificationCode()&Ability.ALL_ACODES)!=theSpellType)
 						{
-							commonTelL(mob,"This scroll is not suitable for receiving that kind of writing.");
+							commonFaiL(mob,commands,"This scroll is not suitable for receiving that kind of writing.");
 							return false;
 						}
 					}
@@ -512,7 +512,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((CMath.bset(theSpell.flags(), Ability.FLAG_CLANMAGIC)))
 			{
-				commonTelL(mob,"That spell cannot be scribed onto a scroll.");
+				commonFaiL(mob,commands,"That spell cannot be scribed onto a scroll.");
 				return false;
 			}
 

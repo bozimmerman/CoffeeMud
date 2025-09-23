@@ -104,7 +104,7 @@ public class Pimping extends CommonSkill
 		}
 		else
 		{
-			commonTelL(mob,"Pimp whom to whom?");
+			commonFaiL(mob,commands,"Pimp whom to whom?");
 			return false;
 		}
 		if(commands.size()==0)
@@ -118,7 +118,7 @@ public class Pimping extends CommonSkill
 			return false;
 		if(!CMLib.flags().isASlave(slaveM, mob))
 		{
-			commonTelL(mob,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
+			commonFaiL(mob,commands,slaveM,null,"<T-NAME> do(es)n't seem to be your slave.");
 			return false;
 		}
 

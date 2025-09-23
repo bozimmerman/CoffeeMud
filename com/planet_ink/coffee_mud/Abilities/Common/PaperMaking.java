@@ -289,7 +289,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		if(foundRecipe==null)
 		{
-			commonTelL(mob,"You don't know how to make a '@x1'.  Try \"papermake list\" for a list.",recipeName);
+			commonFaiL(mob,commands,"You don't know how to make a '@x1'.  Try \"papermake list\" for a list.",recipeName);
 			return false;
 		}
 
@@ -365,7 +365,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
-			commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+			commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

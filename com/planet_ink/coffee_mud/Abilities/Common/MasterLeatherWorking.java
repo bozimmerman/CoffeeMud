@@ -508,17 +508,17 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			{
-				commonTelL(mob,"That's not made of leather.  That can't be refitted.");
+				commonFaiL(mob,commands,"That's not made of leather.  That can't be refitted.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTelL(mob,"You don't know how to refit that sort of thing.");
+				commonFaiL(mob,commands,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -580,7 +580,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to make a '@x1'.  Try \"mleatherwork list\" for a list.",recipeName);
+				commonFaiL(mob,commands,"You don't know how to make a '@x1'.  Try \"mleatherwork list\" for a list.",recipeName);
 				return false;
 			}
 
@@ -627,7 +627,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,30,4);

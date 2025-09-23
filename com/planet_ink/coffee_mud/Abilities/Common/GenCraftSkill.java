@@ -742,17 +742,17 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if((!this.mayICraft(mob, buildingI))&&(!super.isMadeOfSupportedResource(buildingI)))
 			{
-				commonTelL(mob,"That's can't be refitted with this skill.");
+				commonFaiL(mob,commands,"That's can't be refitted with this skill.");
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
 			{
-				commonTelL(mob,"You don't know how to refit that sort of thing.");
+				commonFaiL(mob,commands,"You don't know how to refit that sort of thing.");
 				return false;
 			}
 			if(buildingI.phyStats().height()==0)
 			{
-				commonTelL(mob,"@x1 is already the right size.",buildingI.name(mob));
+				commonFaiL(mob,commands,"@x1 is already the right size.",buildingI.name(mob));
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
@@ -803,7 +803,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to @x1 a '@x2'.  Try \"@x3 list\" for a list.",noun.toLowerCase(),recipeName,noun.toLowerCase());
+				commonFaiL(mob,commands,"You don't know how to @x1 a '@x2'.  Try \"@x3 list\" for a list.",noun.toLowerCase(),recipeName,noun.toLowerCase());
 				return false;
 			}
 
@@ -850,7 +850,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

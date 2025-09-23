@@ -178,7 +178,7 @@ public class Scalp extends CommonSkill
 		}
 		if(I.fetchEffect(ID())!=null)
 		{
-			commonTelL(mob,"@x1 has already been scalped.",I.name(mob));
+			commonFaiL(mob,commands,"@x1 has already been scalped.",I.name(mob));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

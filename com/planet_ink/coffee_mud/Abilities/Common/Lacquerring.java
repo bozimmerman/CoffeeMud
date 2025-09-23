@@ -137,7 +137,7 @@ public class Lacquerring extends PaintingSkill
 		}
 		if(commands.size()<2)
 		{
-			commonTelL(mob,"You must specify what you want to lacqer, and color to it to be or the word REMOVE, or specify LIST.");
+			commonFaiL(mob,commands,"You must specify what you want to lacqer, and color to it to be or the word REMOVE, or specify LIST.");
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
@@ -157,13 +157,13 @@ public class Lacquerring extends PaintingSkill
 			*/
 			if(CMLib.ableParms().getCraftingBrand(target).length()==0)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.  It must be a crafted item.",target.name(mob));
+				commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.  It must be a crafted item.",target.name(mob));
 				return false;
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -177,7 +177,7 @@ public class Lacquerring extends PaintingSkill
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		||(!target.isGeneric()))
 		{
-			commonTelL(mob,"You can't lacquer that material.");
+			commonFaiL(mob,commands,"You can't lacquer that material.");
 			return false;
 		}
 
@@ -198,7 +198,7 @@ public class Lacquerring extends PaintingSkill
 		}
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTelL(mob,"You can't lacquer anything '@x1'. Try LACQUER LIST for a list, or use REMOVE as the color.",writing);
+			commonFaiL(mob,commands,"You can't lacquer anything '@x1'. Try LACQUER LIST for a list, or use REMOVE as the color.",writing);
 			return false;
 		}
 

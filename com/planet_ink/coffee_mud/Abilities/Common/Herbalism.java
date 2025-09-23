@@ -408,22 +408,22 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTelL(mob,"You'll need to pick that up first.");
+				commonFaiL(mob,commands,"You'll need to pick that up first.");
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTelL(mob,"There's nothing in @x1 to brew!",buildingI.name(mob));
+				commonFaiL(mob,commands,"There's nothing in @x1 to brew!",buildingI.name(mob));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
 			{
-				commonTelL(mob,"You can't drink out of a @x1.",buildingI.name(mob));
+				commonFaiL(mob,commands,"You can't drink out of a @x1.",buildingI.name(mob));
 				return false;
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTelL(mob,"The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob));
+				commonFaiL(mob,commands,"The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob));
 				return false;
 			}
 			final String recipeName=CMParms.combine(commands,0);
@@ -458,7 +458,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((theSpell==null)||(recipe==null))
 			{
-				commonTelL(mob,"You don't know how to brew '@x1'.  Try \"@x2 list\" for a list.",recipeName,keyword);
+				commonFaiL(mob,commands,"You don't know how to brew '@x1'.  Try \"@x2 list\" for a list.",recipeName,keyword);
 				return false;
 			}
 			int experienceToLose=10;
@@ -496,7 +496,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					}
 					if(!ok)
 					{
-						commonTelL(mob,"This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob));
+						commonFaiL(mob,commands,"This brew requires @x1.  Please place some inside the @x2 and try again.",ingredient.toLowerCase(),buildingI.name(mob));
 						return false;
 					}
 				}
@@ -519,7 +519,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(!ok)
 				{
-					commonTelL(mob,"The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob));
+					commonFaiL(mob,commands,"The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob));
 					return false;
 				}
 			}

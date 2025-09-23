@@ -116,7 +116,7 @@ public class Spell_FindDirections extends Spell
 
 		if(A==null)
 		{
-			commonTelL(mob,"You know of nowhere called \"@x1\".",CMParms.combine(commands));
+			commonFaiL(mob,commands,"You know of nowhere called \"@x1\".",CMParms.combine(commands));
 			return false;
 		}
 

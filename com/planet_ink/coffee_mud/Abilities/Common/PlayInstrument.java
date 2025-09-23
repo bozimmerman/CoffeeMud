@@ -262,7 +262,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 
 		if(mob.fetchEffect(ID())!=null)
 		{
-			commonTelL(mob,"You are already playing an instrument.  Use PLAYINSTRUMENT STOP to stop.");
+			commonFaiL(mob,commands,"You are already playing an instrument.  Use PLAYINSTRUMENT STOP to stop.");
 			return false;
 		}
 
@@ -271,7 +271,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 		{
 			if(!usingInstrument((MusicalInstrument)mob.riding(),mob))
 			{
-				commonTelL(mob,"You need to free your hands to play @x1.",mob.riding().name());
+				commonFaiL(mob,commands,"You need to free your hands to play @x1.",mob.riding().name());
 				return false;
 			}
 			target=(MusicalInstrument)mob.riding();
@@ -280,7 +280,7 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 			target=this.getInstrumentPlayed(mob);
 		if(target==null)
 		{
-			commonTelL(mob,"You need an instrument to play one!");
+			commonFaiL(mob,commands,"You need an instrument to play one!");
 			return false;
 		}
 

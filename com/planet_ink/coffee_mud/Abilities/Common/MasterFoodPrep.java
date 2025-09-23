@@ -90,7 +90,7 @@ public class MasterFoodPrep extends FoodPrep
 			final Item target=getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 			if(target==null)
 			{
-				commonTelL(mob,"The syntax is @x1 CHOP [FOOD].",triggerStrings()[0]);
+				commonFaiL(mob,commands,"The syntax is @x1 CHOP [FOOD].",triggerStrings()[0]);
 				return false;
 			}
 			if((!(target instanceof Food))
@@ -99,13 +99,13 @@ public class MasterFoodPrep extends FoodPrep
 			||(target.numberOfItems()>1)
 			||(CMLib.flags().isABonusItems(target)))
 			{
-				commonTelL(mob,"You can't chop @x1.",target.name(mob));
+				commonFaiL(mob,commands,"You can't chop @x1.",target.name(mob));
 				return false;
 			}
 			Food F = (Food)target;
 			if(F.basePhyStats().weight()<=1)
 			{
-				commonTelL(mob,"You can't chop @x1, as it's already as small as you can chop it.",target.name(mob));
+				commonFaiL(mob,commands,"You can't chop @x1, as it's already as small as you can chop it.",target.name(mob));
 				return false;
 			}
 			final CMMsg msg = CMClass.getMsg(mob, target, this,

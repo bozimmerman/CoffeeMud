@@ -146,7 +146,7 @@ public class Spell_Clairevoyance extends Spell
 			if(scryList.length()>0)
 				commonTelL(mob,"Cast on or revoke from whom?  You currently have @x1 on the following: @x2.",name(),scryList.toString());
 			else
-				commonTelL(mob,"Cast on whom?");
+				commonFaiL(mob,commands,"Cast on whom?");
 			return false;
 		}
 		final String mobName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -176,13 +176,13 @@ public class Spell_Clairevoyance extends Spell
 			newRoom=target.location();
 		else
 		{
-			commonTelL(mob,"You can't seem to focus on '@x1'.",mobName);
+			commonFaiL(mob,commands,"You can't seem to focus on '@x1'.",mobName);
 			return false;
 		}
 
 		if(mob==target)
 		{
-			commonTelL(mob,"You can't cast this on yourself!");
+			commonFaiL(mob,commands,"You can't cast this on yourself!");
 			return false;
 		}
 
@@ -195,7 +195,7 @@ public class Spell_Clairevoyance extends Spell
 		else
 		if((A!=null)||(scries.containsFirst(target)))
 		{
-			commonTelL(mob,"You can't seem to focus on '@x1'.",mobName);
+			commonFaiL(mob,commands,"You can't seem to focus on '@x1'.",mobName);
 			return false;
 		}
 

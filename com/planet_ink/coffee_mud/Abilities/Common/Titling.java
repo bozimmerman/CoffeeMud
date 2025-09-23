@@ -255,7 +255,7 @@ public class Titling extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.",(commands.get(0)));
+				commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.",(commands.get(0)));
 				return false;
 			}
 			*/
@@ -264,7 +264,7 @@ public class Titling extends CommonSkill
 			target=null;
 		if(target==null)
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0));
@@ -283,7 +283,7 @@ public class Titling extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write to entitle.");
+			commonFaiL(mob,commands,"You must know how to write to entitle.");
 			return false;
 		}
 
@@ -292,12 +292,12 @@ public class Titling extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTelL(mob,"You can't give a title to something like that.");
+			commonFaiL(mob,commands,"You can't give a title to something like that.");
 			return false;
 		}
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTelL(mob,"That's not even readable!");
+			commonFaiL(mob,commands,"That's not even readable!");
 			return false;
 		}
 
@@ -305,30 +305,30 @@ public class Titling extends CommonSkill
 		 *String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
 		{
-			commonTelL(mob,"You aren't permitted to entitle that.");
+			commonFaiL(mob,commands,"You aren't permitted to entitle that.");
 			return false;
 		}
 		 */
 		if(!target.isGeneric())
 		{
-			commonTelL(mob,"You aren't able to give that a title.");
+			commonFaiL(mob,commands,"You aren't able to give that a title.");
 			return false;
 		}
 
 		if(BookNaming.isAlreadyNamed(target.Name()))
 		{
-			commonTelL(mob,"That already has a name.");
+			commonFaiL(mob,commands,"That already has a name.");
 			return false;
 		}
 		if(target.fetchEffect("Copyright")!=null)
 		{
-			commonTelL(mob,"This book is copyrighted, and can't be renamed.");
+			commonFaiL(mob,commands,"This book is copyrighted, and can't be renamed.");
 			return false;
 		}
 
 		if(CMParms.combine(commands, 0).length()>60)
 		{
-			commonTelL(mob,"That title is too long.");
+			commonFaiL(mob,commands,"That title is too long.");
 			return false;
 		}
 

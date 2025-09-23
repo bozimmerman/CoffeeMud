@@ -228,12 +228,12 @@ public class Transcribing extends CommonSkill
 		if((copyToI instanceof RecipesBook)
 		&&(((RecipesBook)copyToI).getTotalRecipePages() <= ((RecipesBook)copyToI).getRecipeCodeLines().length))
 		{
-			commonTelL(mob,"@x1 is full.",copyToI.name(mob));
+			commonFaiL(mob,commands,"@x1 is full.",copyToI.name(mob));
 			return false;
 		}
 		if((copyToI instanceof Recipes) != (copyFromI instanceof Recipes))
 		{
-			commonTelL(mob,"@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob));
+			commonFaiL(mob,commands,"@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob));
 			return false;
 		}
 		if((copyFromI instanceof Recipes)
@@ -242,13 +242,13 @@ public class Transcribing extends CommonSkill
 		&&(CMClass.getAbilityPrototype(((Recipes)copyToI).getCommonSkillID())!=null)
 		&&(CMClass.getAbilityPrototype(((Recipes)copyToI).getCommonSkillID())!=CMClass.getAbilityPrototype(((Recipes)copyFromI).getCommonSkillID())))
 		{
-			commonTelL(mob,"@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob));
+			commonFaiL(mob,commands,"@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob));
 			return false;
 		}
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write.");
+			commonFaiL(mob,commands,"You must know how to write.");
 			return false;
 		}
 

@@ -193,7 +193,7 @@ public class Shearing extends CommonSkill
 		if((getMyWool(target).size()<=0)
 		||(!target.okMessage(target,CMClass.getMsg(target,target,this,CMMsg.MSG_OK_ACTION,null))))
 		{
-			commonTelL(mob,target,null,"You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>.");
+			commonFaiL(mob,commands,target,null,"You can't shear <T-NAME>, there's no wool left on <T-HIM-HER>.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

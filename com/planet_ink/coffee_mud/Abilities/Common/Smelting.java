@@ -370,7 +370,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			}
 			if(foundRecipe==null)
 			{
-				commonTelL(mob,"You don't know how to smelt '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase());
+				commonFaiL(mob,commands,"You don't know how to smelt '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase());
 				return false;
 			}
 			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
@@ -421,7 +421,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
-				commonTelL(mob,"There's no such thing as @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
+				commonFaiL(mob,commands,"There's no such thing as @x1!!!",foundRecipe.get(RCP_CLASSTYPE));
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);

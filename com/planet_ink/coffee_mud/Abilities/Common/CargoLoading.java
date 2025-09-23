@@ -245,13 +245,13 @@ public class CargoLoading extends CommonSkill
 			shipName=possShipI.Name();
 			if(!(possShipI instanceof Boardable))
 			{
-				commonTelL(mob,"@x1 is not cargo loadable.",possShipI.name());
+				commonFaiL(mob,commands,"@x1 is not cargo loadable.",possShipI.name());
 				return false;
 			}
 			if((I instanceof Boardable)
 			||(!CMLib.flags().isGettable(I)))
 			{
-				commonTelL(mob,"You can't load @x1 as cargo!",I.name());
+				commonFaiL(mob,commands,"You can't load @x1 as cargo!",I.name());
 				return false;
 			}
 			final PrivateProperty propRecord = CMLib.law().getPropertyRecord(possShipI);
@@ -259,7 +259,7 @@ public class CargoLoading extends CommonSkill
 			{
 				if(!CMLib.law().doesHaveWeakPrivilegesWith(mob, propRecord))
 				{
-					commonTelL(mob,"You aren't permitted to load cargo onto @x1,",possShipI.Name());
+					commonFaiL(mob,commands,"You aren't permitted to load cargo onto @x1,",possShipI.Name());
 					return false;
 				}
 			}
@@ -278,7 +278,7 @@ public class CargoLoading extends CommonSkill
 			}
 			if(cargoR == null)
 			{
-				commonTelL(mob,"There appears to be no space on board @x1 for @x2.",possShipI.Name(),I.Name());
+				commonFaiL(mob,commands,"There appears to be no space on board @x1 for @x2.",possShipI.Name(),I.Name());
 				return false;
 			}
 			this.loadingI=I;
@@ -291,7 +291,7 @@ public class CargoLoading extends CommonSkill
 			shipName=possShipI.Name();
 			if(!(possShipI instanceof Boardable))
 			{
-				commonTelL(mob,"@x1 is not cargo loadable.",possShipI.name());
+				commonFaiL(mob,commands,"@x1 is not cargo loadable.",possShipI.name());
 				return false;
 			}
 			final PrivateProperty propRecord = CMLib.law().getPropertyRecord(possShipI);
@@ -299,7 +299,7 @@ public class CargoLoading extends CommonSkill
 			{
 				if(!CMLib.law().doesHaveWeakPrivilegesWith(mob, propRecord))
 				{
-					commonTelL(mob,"You aren't permitted to unload cargo off of @x1,",possShipI.Name());
+					commonFaiL(mob,commands,"You aren't permitted to unload cargo off of @x1,",possShipI.Name());
 					return false;
 				}
 			}
@@ -322,14 +322,14 @@ public class CargoLoading extends CommonSkill
 			}
 			if(cargoR==null)
 			{
-				commonTelL(mob,"You couldn't find any reachable cargo called '@x1' on board @x2.",cargoV.get(0),shipName);
+				commonFaiL(mob,commands,"You couldn't find any reachable cargo called '@x1' on board @x2.",cargoV.get(0),shipName);
 				return false;
 			}
 		}
 
 		if((this.loadingI != null)&&(this.loadingI.phyStats().weight() > (1000 + (1000*super.getXLEVELLevel(mob)))))
 		{
-			commonTelL(mob,"You just don't have the expertise to move that much weight");
+			commonFaiL(mob,commands,"You just don't have the expertise to move that much weight");
 			return false;
 		}
 

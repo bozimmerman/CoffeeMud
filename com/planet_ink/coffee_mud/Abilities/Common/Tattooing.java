@@ -182,7 +182,7 @@ public class Tattooing extends CommonSkill
 		}
 		if(partNum<0)
 		{
-			commonTelL(mob,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
+			commonFaiL(mob,commands,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -200,23 +200,23 @@ public class Tattooing extends CommonSkill
 		&&(!CMLib.flags().isBoundOrHeld(target))
 		&&(!CMLib.flags().isSleeping(target)))
 		{
-			commonTelL(mob,target,null,"<T-NAME> seem(s) unwilling to cooperate.");
+			commonFaiL(mob,commands,target,null,"<T-NAME> seem(s) unwilling to cooperate.");
 			return false;
 		}
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
-			commonTelL(mob,"That location is not available for tattooing.");
+			commonFaiL(mob,commands,"That location is not available for tattooing.");
 			return false;
 		}
 		if(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0)
 		{
-			commonTelL(mob,"That location is currently covered by something.");
+			commonFaiL(mob,commands,"That location is currently covered by something.");
 			return false;
 		}
 		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
 		{
-			commonTelL(mob,"You need to wait until @x1 is at full health.",target.name(mob));
+			commonFaiL(mob,commands,"You need to wait until @x1 is at full health.",target.name(mob));
 			return false;
 		}
 
@@ -237,14 +237,14 @@ public class Tattooing extends CommonSkill
 		{
 			if(tatToRemove==null)
 			{
-				commonTelL(mob,"There is no tattoo there to remove.");
+				commonFaiL(mob,commands,"There is no tattoo there to remove.");
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTelL(mob,"That location is already completely decorated.");
+			commonFaiL(mob,commands,"That location is already completely decorated.");
 			return false;
 		}
 

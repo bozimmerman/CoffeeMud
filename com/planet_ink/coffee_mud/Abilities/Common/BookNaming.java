@@ -201,26 +201,26 @@ public class BookNaming extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.",itemName);
+				commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.",itemName);
 				return false;
 			}
 			*/
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 		if(target.fetchEffect("Copyright")!=null)
 		{
-			commonTelL(mob,"This book is copyrighted, and can't be renamed.");
+			commonFaiL(mob,commands,"This book is copyrighted, and can't be renamed.");
 			return false;
 		}
 
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write to name a book.");
+			commonFaiL(mob,commands,"You must know how to write to name a book.");
 			return false;
 		}
 
@@ -229,13 +229,13 @@ public class BookNaming extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTelL(mob,"You can't give a name to something like that.");
+			commonFaiL(mob,commands,"You can't give a name to something like that.");
 			return false;
 		}
 
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTelL(mob,"That's not even readable!");
+			commonFaiL(mob,commands,"That's not even readable!");
 			return false;
 		}
 
@@ -243,20 +243,20 @@ public class BookNaming extends CommonSkill
 		||(CMath.s_int(nameType)<1)
 		||(CMath.s_int(nameType)>PREFIXES.length))
 		{
-			commonTelL(mob,"'@x1' is not a valid name form number.  Try BNAME LIST.",nameType);
+			commonFaiL(mob,commands,"'@x1' is not a valid name form number.  Try BNAME LIST.",nameType);
 			return false;
 		}
 		nameType = PREFIXES[CMath.s_int(nameType)-1];
 		final String nameWord = CMParms.combine(commands,2).trim();
 		if(nameWord.length()>20)
 		{
-			commonTelL(mob,"The name must be under 20 characters.");
+			commonFaiL(mob,commands,"The name must be under 20 characters.");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTelL(mob,"You aren't able to give that a name.");
+			commonFaiL(mob,commands,"You aren't able to give that a name.");
 			return false;
 		}
 

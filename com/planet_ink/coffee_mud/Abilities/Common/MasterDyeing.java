@@ -177,7 +177,7 @@ public class MasterDyeing extends MasterPaintingSkill
 					}
 				}
 			}
-			commonTelL(mob,"^NColors you can choose: @x1^N.\n\r",colors.substring(0,colors.length()-2));
+			commonFaiL(mob,commands,"^NColors you can choose: @x1^N.\n\r",colors.substring(0,colors.length()-2));
 			return false;
 		}
 		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("remove")))
@@ -196,7 +196,7 @@ public class MasterDyeing extends MasterPaintingSkill
 		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",(commands.get(0)));
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",(commands.get(0)));
 			return false;
 		}
 		commands.remove(commands.get(0)); // remove item
@@ -231,19 +231,19 @@ public class MasterDyeing extends MasterPaintingSkill
 				}
 				if(colorsFound.size()==numFound)
 				{
-					commonTelL(mob,"The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors);
+					commonFaiL(mob,commands,"The first color in '@x1' is unrecognized. Try MASTERDYE COLORS",workColors);
 					return false;
 				}
 			}
 			if((colorsFound.size()<2)
 			&&(!writing.equalsIgnoreCase("remove")))
 			{
-				commonTelL(mob,"At least two colors is required.");
+				commonFaiL(mob,commands,"At least two colors is required.");
 				return false;
 			}
 			if(colorsFound.size()>3)
 			{
-				commonTelL(mob,"You may not list more than 3 colors.");
+				commonFaiL(mob,commands,"You may not list more than 3 colors.");
 				return false;
 			}
 			if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
@@ -253,7 +253,7 @@ public class MasterDyeing extends MasterPaintingSkill
 				&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
 			||(!target.isGeneric()))
 			{
-				commonTelL(mob,"You can't dye that material.");
+				commonFaiL(mob,commands,"You can't dye that material.");
 				return false;
 			}
 
@@ -281,7 +281,7 @@ public class MasterDyeing extends MasterPaintingSkill
 				if(name.equalsIgnoreCase(writing)
 				&&(level<=adjustedLevel(mob,asLevel)))
 				{
-					commonTelL(mob,"I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size());
+					commonFaiL(mob,commands,"I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size());
 					return false;
 				}
 			}
@@ -289,7 +289,7 @@ public class MasterDyeing extends MasterPaintingSkill
 
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTelL(mob,"You can't dye anything '@x1'. Try MASTERDYEING LIST for a list or use REMOVE as the color.",writing);
+			commonFaiL(mob,commands,"You can't dye anything '@x1'. Try MASTERDYEING LIST for a list or use REMOVE as the color.",writing);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

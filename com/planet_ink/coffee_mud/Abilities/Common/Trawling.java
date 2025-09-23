@@ -177,7 +177,7 @@ public class Trawling extends GatheringSkill
 
 		if(fishRoom==null)
 		{
-			this.commonTelL(mob,"You need to be on the deck of a ship to trawl.");
+			this.commonFaiL(mob,commands,"You need to be on the deck of a ship to trawl.");
 			return false;
 		}
 		for(final int fishCode : RawMaterial.CODES.FISHES())
@@ -194,7 +194,7 @@ public class Trawling extends GatheringSkill
 		}
 		if(!maybeFish)
 		{
-			commonTelL(mob,"The fishing doesn't look too good around here.");
+			commonFaiL(mob,commands,"The fishing doesn't look too good around here.");
 			return false;
 		}
 		verb=L("trawling");

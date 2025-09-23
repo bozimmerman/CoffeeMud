@@ -157,7 +157,7 @@ public class BookEditing extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTelL(mob,"You aren't allowed to work on '@x1'.",itemName);
+				commonFaiL(mob,commands,"You aren't allowed to work on '@x1'.",itemName);
 				return false;
 			}
 			*/

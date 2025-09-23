@@ -803,7 +803,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			Environmental E=getShop().removeStock(itemName,mob);
 			if(E==null)
 			{
-				commonTelL(mob,"'@x1' is not on the list.",itemName);
+				commonFaiL(mob,commands,"'@x1' is not on the list.",itemName);
 				return false;
 			}
 			final String iname=E.name();
@@ -881,7 +881,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(((E instanceof Container)&&(((Container)E).getContents().size()>0))
 			||(!canSell(mob, E)))
 			{
-				commonTelL(mob,E,null,"You may not put <T-NAME> up for sale.");
+				commonFaiL(mob,commands,E,null,"You may not put <T-NAME> up for sale.");
 				return false;
 			}
 			if(target==null)
@@ -896,13 +896,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(itemsV.size()==0)
 		{
-			commonTelL(mob,"You don't seem to be carrying '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to be carrying '@x1'.",itemName);
 			return false;
 		}
 
 		if((getShop().numberInStock(target)<=0)&&(val<=0))
 		{
-			commonTelL(mob,"You failed to specify a price for '@x1'.",itemName);
+			commonFaiL(mob,commands,"You failed to specify a price for '@x1'.",itemName);
 			return false;
 		}
 
@@ -911,7 +911,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		if(!proficiencyCheck(mob,0,auto))
 		{
-			commonTelL(mob,target,null,"You fail to put <T-NAME> up for sale.");
+			commonFaiL(mob,commands,target,null,"You fail to put <T-NAME> up for sale.");
 			return false;
 		}
 

@@ -264,14 +264,14 @@ public class Lecturing extends CommonSkill
 			{
 				if(C.getMonth() <= lastPubC.getMonth())
 				{
-					commonTelL(mob,"You've already lectured this month.");
+					commonFaiL(mob,commands,"You've already lectured this month.");
 					return false;
 				}
 			}
 			else
 			if(C.getYear() < lastPubC.getYear())
 			{
-				commonTelL(mob,"You last lectured in the year @x1?!!",""+lastPubC.getYear());
+				commonFaiL(mob,commands,"You last lectured in the year @x1?!!",""+lastPubC.getYear());
 				return false;
 			}
 		}
@@ -294,14 +294,14 @@ public class Lecturing extends CommonSkill
 			if(A!=null)
 				commonTelL(mob,"You don't know anything about @x1, and can't lecture about it.",A.Name());
 			else
-				commonTelL(mob,"You don't know anything about '@x1', and can't lecture about it.",calledThis);
+				commonFaiL(mob,commands,"You don't know anything about '@x1', and can't lecture about it.",calledThis);
 			return false;
 		}
 		this.lectureID=A.ID();
 		this.lectureName=A.Name();
 		if(this.getApplicableStudents(mob).size()<3)
 		{
-			commonTelL(mob,"You'll need at least three students here who know @x1 to give a lecture.",A.Name());
+			commonFaiL(mob,commands,"You'll need at least three students here who know @x1 to give a lecture.",A.Name());
 			return false;
 		}
 

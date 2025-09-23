@@ -1310,13 +1310,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 		{
-			commonTelL(mob,"The syntax for this skill is @x1 [CONTAINER]",triggerStrings()[0]);
+			commonFaiL(mob,commands,"The syntax for this skill is @x1 [CONTAINER]",triggerStrings()[0]);
 			return false;
 		}
 
 		if(!(target instanceof Container))
 		{
-			commonTelL(mob,"There's nothing in @x1 to @x2!",target.name(mob),cookWordShort());
+			commonFaiL(mob,commands,"There's nothing in @x1 to @x2!",target.name(mob),cookWordShort());
 			return false;
 		}
 		for(int a=0;a<mob.numEffects();a++)
@@ -1324,18 +1324,18 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			final Ability A=mob.fetchEffect(a);
 			if((A instanceof Cooking) && (((Cooking)A).cookingPot==target))
 			{
-				commonTelL(mob,"That is already in use.");
+				commonFaiL(mob,commands,"That is already in use.");
 				return false;
 			}
 		}
 		if(!isMineForCooking(mob,(Container)target))
 		{
-			commonTelL(mob,"You probably need to pick that up first.");
+			commonFaiL(mob,commands,"You probably need to pick that up first.");
 			return false;
 		}
 		if(!meetsLidRequirements(mob,(Container)target))
 		{
-			commonTelL(mob,"You need a closeable container to bake that in, and you need to close it to begin.");
+			commonFaiL(mob,commands,"You need a closeable container to bake that in, and you need to close it to begin.");
 			return false;
 		}
 		switch(target.material()&RawMaterial.MATERIAL_MASK)
@@ -1347,7 +1347,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		case RawMaterial.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTelL(mob,"@x1 is not suitable to @x2 in.",target.name(mob),cookWordShort());
+			commonFaiL(mob,commands,"@x1 is not suitable to @x2 in.",target.name(mob),cookWordShort());
 			return false;
 		}
 
@@ -1389,7 +1389,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			if(closeRecipes.size()==0)
 			{
-				commonTelL(mob,"You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?");
+				commonFaiL(mob,commands,"You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?");
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)

@@ -95,7 +95,7 @@ public class Spell_DistantVision extends Spell
 
 		if(thisRoom==null)
 		{
-			commonTelL(mob,"You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0));
+			commonFaiL(mob,commands,"You can't seem to fixate on a place called '@x1'.",CMParms.combine(commands,0));
 			return false;
 		}
 

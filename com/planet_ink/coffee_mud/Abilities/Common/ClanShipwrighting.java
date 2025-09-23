@@ -129,7 +129,7 @@ public class ClanShipwrighting extends Shipwright
 			}
 			if(foundC==null)
 			{
-				commonTelL(mob,"You aren't authorized to build ships for a clan.");
+				commonFaiL(mob,commands,"You aren't authorized to build ships for a clan.");
 				return false;
 			}
 		}

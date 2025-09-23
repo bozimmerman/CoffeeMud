@@ -175,7 +175,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		&&(target.fetchEffect("Hamstring")==null)
 		&&(target.fetchEffect("Injury")==null))
 		{
-			super.commonTelL(mob,target,null,"<T-NAME> <T-IS-ARE> not bleeding, broken or injured!");
+			super.commonFaiL(mob,commands,target,null,"<T-NAME> <T-IS-ARE> not bleeding, broken or injured!");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

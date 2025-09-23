@@ -96,12 +96,12 @@ public class Spell_Augury extends Spell
 		}
 		else
 		{
-			commonTelL(mob,"Divine the fate of which direction?");
+			commonFaiL(mob,commands,"Divine the fate of which direction?");
 			return false;
 		}
 		if((exit==null)||(room==null))
 		{
-			commonTelL(mob,"You couldn't go that way if you wanted to!");
+			commonFaiL(mob,commands,"You couldn't go that way if you wanted to!");
 			return false;
 		}
 

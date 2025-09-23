@@ -179,7 +179,7 @@ public class Shepherding extends CommonSkill
 			if(errorM != null)
 				super.commonTelL(mob,"The '@x1' here seem too large to be shepherded normally.",raceName);
 			else
-				super.commonTelL(mob,"You don't see any '@x1' you can shepherd here.",raceName);
+				super.commonFaiL(mob,commands,"You don't see any '@x1' you can shepherd here.",raceName);
 			return false;
 		}
 
@@ -199,7 +199,7 @@ public class Shepherding extends CommonSkill
 		final int direction = CMLib.directions().getDirectionCode(dirName);
 		if(direction < 0)
 		{
-			super.commonTelL(mob,"'@x1' is not a proper direction.",dirName);
+			super.commonFaiL(mob,commands,"'@x1' is not a proper direction.",dirName);
 			return false;
 		}
 
@@ -239,7 +239,7 @@ public class Shepherding extends CommonSkill
 		}
 		if(herd.size()==0)
 		{
-			commonTelL(mob,"No one seems to be paying attention to you.");
+			commonFaiL(mob,commands,"No one seems to be paying attention to you.");
 			return false;
 		}
 		verb=L("shepherding @x1 @x2",pluralRaces,finalDirName);
