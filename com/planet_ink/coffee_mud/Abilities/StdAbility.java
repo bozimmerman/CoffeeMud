@@ -778,14 +778,20 @@ public class StdAbility implements Ability
 		tickDown=tickTime;
 	}
 
+	protected String commonRedirectPronouns(String str)
+	{
+		str = CMStrings.replaceWord(str, "you are", "I am");
+		str = CMStrings.replaceWord(str, "you", "I");
+		str = CMStrings.replaceWord(str, "your", "my");
+		str = CMStrings.replaceWord(str, "you've", "I've");
+		return str;
+	}
+
 	protected void commonTelL(final MOB mob, final Environmental target, final Environmental tool, String str, final String... vars)
 	{
 		if(mob.isMonster())
 		{
-			str = CMStrings.replaceWord(str, "you are", "I am");
-			str = CMStrings.replaceWord(str, "you", "I");
-			str = CMStrings.replaceWord(str, "your", "my");
-			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = commonRedirectPronouns(str);
 			str = L(str,vars);
 			if(target!=null)
 				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
@@ -803,10 +809,7 @@ public class StdAbility implements Ability
 			return;
 		if(mob.isMonster())
 		{
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you are", "I am");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you", "I");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "your", "my");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you've", "I've");
+			commonTelStr = commonRedirectPronouns(commonTelStr);
 			commonTelStr = L(commonTelStr,vars);
 			CMLib.commands().postSay(mob,null,commonTelStr,false,false);
 			return;
@@ -821,10 +824,7 @@ public class StdAbility implements Ability
 			return;
 		if(mob.isMonster())
 		{
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you are", "I am");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you", "I");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "your", "my");
-			commonTelStr = CMStrings.replaceWord(commonTelStr, "you've", "I've");
+			commonTelStr = commonRedirectPronouns(commonTelStr);
 			commonTelStr = L(commonTelStr,vars);
 			CMLib.commands().postSay(mob,null,commonTelStr,false,false);
 			return;
@@ -839,10 +839,7 @@ public class StdAbility implements Ability
 	{
 		if(mob.isMonster())
 		{
-			str = CMStrings.replaceWord(str, "you are", "I am");
-			str = CMStrings.replaceWord(str, "you", "I");
-			str = CMStrings.replaceWord(str, "your", "my");
-			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = commonRedirectPronouns(str);
 			str = L(str,vars);
 			if(target!=null)
 				str=CMStrings.replaceAll(str,"<T-NAME>",target.name());
@@ -868,10 +865,7 @@ public class StdAbility implements Ability
 
 		if(mob.isMonster())
 		{
-			str = CMStrings.replaceWord(str, "you are", "I am");
-			str = CMStrings.replaceWord(str, "you", "I");
-			str = CMStrings.replaceWord(str, "your", "my");
-			str = CMStrings.replaceWord(str, "you've", "I've");
+			str = commonRedirectPronouns(str);
 			CMLib.commands().postSay(mob,null,str,false,false);
 			return;
 		}
