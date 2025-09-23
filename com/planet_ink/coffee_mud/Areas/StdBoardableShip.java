@@ -911,6 +911,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 			{
 			case CMMsg.TYP_HUH:
 			case CMMsg.TYP_COMMANDFAIL:
+			case CMMsg.TYP_SKILLFAIL:
 			case CMMsg.TYP_COMMAND:
 				this.shipItem.executeMsg(myHost, msg);
 				break;
