@@ -1869,13 +1869,17 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
-	protected boolean failureTell(final MOB mob, final Environmental target, final boolean auto, final String msgStr, final List<String> command)
+	protected boolean failureTell(final MOB mob, final Environmental target, final boolean auto, final String msgStr, List<String> command)
 	{
 		if(mob==null)
 			return false;
-		final String keyWord = (this.triggerStrings()!=null) && (this.triggerStrings().length>0) ? this.triggerStrings()[0] : Name();
 		if(command != null)
-			command.add(0, keyWord);
+		{
+			final List<String> oldCommand = command;
+			final String keyWord = (this.triggerStrings()!=null) && (this.triggerStrings().length>0) ? this.triggerStrings()[0] : Name();
+			command = new XArrayList<String>(keyWord);
+			command.addAll(oldCommand);
+		}
 		if(auto
 		&&(mob.isMonster())
 		&&(target instanceof MOB)
