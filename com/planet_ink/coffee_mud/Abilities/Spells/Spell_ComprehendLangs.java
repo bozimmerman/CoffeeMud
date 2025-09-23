@@ -176,7 +176,7 @@ public class Spell_ComprehendLangs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> comprehension."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> comprehension."), commands);
 			return false;
 		}
 

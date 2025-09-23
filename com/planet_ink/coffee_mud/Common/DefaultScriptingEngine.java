@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -13381,9 +13382,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				final String achieveID=varify(ctx,tt[2]);
 				final String amt=varify(ctx,tt[3]);
+				boolean grant = false;
+				if("".equalsIgnoreCase(amt)
+				&& (ctx.scripted instanceof MOB)
+				&& (CMSecurity.isAllowedEverywhere((MOB)ctx.scripted, SecFlag.CMDPLAYERS)))
+					grant=true;
+				else
 				if((amt.length()==0)||(!CMath.isInteger(amt)))
 				{
-					logError(ctx,"MPACHIEVE","Syntax","Not an amount '"+amt+"'");
+					logError(ctx,"MPACHIEVE","Syntax","Not 'grant' or an amount '"+amt+"'");
 					break;
 				}
 				final Achievement A = CMLib.achievements().getAchievement(achieveID);
@@ -13392,7 +13399,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(ctx,"MPACHIEVE","RunTime","No Achievement '"+achieveID+"'");
 					break;
 				}
-				CMLib.achievements().bumpAchievement((MOB)M, A, CMath.s_int(amt), new Object[0]);
+				if(grant)
+					CMLib.achievements().grantAchievement((MOB)M, A);
+				else
+					CMLib.achievements().bumpAchievement((MOB)M, A, CMath.s_int(amt), new Object[0]);
 				break;
 			}
 			case 100: // MPACCUSE

@@ -173,7 +173,7 @@ public class Paladin_ChaosRage extends StdAbility
 
 		if((target.fetchEffect(this.ID())!=null)||(target.fetchEffect("Fighter_Berzerk")!=null))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already in a chaotic rage."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already in a chaotic rage."), commands);
 			return false;
 		}
 

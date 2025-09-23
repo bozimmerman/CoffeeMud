@@ -217,7 +217,7 @@ public class Chant_SnatchLight extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already snatching light."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already snatching light."), commands);
 			return false;
 		}
 

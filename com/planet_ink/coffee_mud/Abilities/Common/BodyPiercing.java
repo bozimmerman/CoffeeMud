@@ -220,7 +220,7 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 			&&(CMLib.flags().isAliveAwakeMobile(target,true))
 			&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			{
-				commonTelL(mob,"@x1 doesn't want any piercings.",target.Name());
+				commonFaiL(mob,commands,"@x1 doesn't want any piercings.",target.Name());
 				return false;
 			}
 		}
@@ -264,7 +264,7 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 		else
 		if((partNum<0)||(wearLocName==null))
 		{
-			commonTelL(mob,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
+			commonFaiL(mob,commands,"'@x1' is not a valid location.  Valid locations include: @x2",part,allParts.toString().substring(2));
 			return false;
 		}
 		final long wornCode=codes.get(partNum);
@@ -276,12 +276,12 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
 		{
-			commonTelL(mob,"That location is not available for piercing. Make sure no clothing is being worn there.");
+			commonFaiL(mob,commands,"That location is not available for piercing. Make sure no clothing is being worn there.");
 			return false;
 		}
 		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
 		{
-			commonTelL(mob,"You need to wait until @x1 is at full health.",target.name(mob));
+			commonFaiL(mob,commands,"You need to wait until @x1 is at full health.",target.name(mob));
 			return false;
 		}
 
@@ -296,14 +296,14 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 		{
 			if(numTattsDone<=0)
 			{
-				commonTelL(mob,"There is no piercing there to heal.");
+				commonFaiL(mob,commands,"There is no piercing there to heal.");
 				return false;
 			}
 		}
 		else
 		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
-			commonTelL(mob,"That location is already decorated.");
+			commonFaiL(mob,commands,"That location is already decorated.");
 			return false;
 		}
 
@@ -313,14 +313,14 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 			{
 				if(target.findTattoo(wearLocName+":Pierced "+wornName.toLowerCase())==null)
 				{
-					commonTelL(mob,"There is no piercing there to heal.  Did you use the full body part name?");
+					commonFaiL(mob,commands,"There is no piercing there to heal.  Did you use the full body part name?");
 					return false;
 				}
 			}
 			else
 			if(target.findTattoo(wearLocName+":A pierced "+wornName.toLowerCase())==null)
 			{
-				commonTelL(mob,"There is no piercing there to heal.  Did you use the full body part name?");
+				commonFaiL(mob,commands,"There is no piercing there to heal.  Did you use the full body part name?");
 				return false;
 			}
 		}

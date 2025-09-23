@@ -178,7 +178,7 @@ public class Prayer_PreserveKnowledge extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already under the effects of this prayer."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already under the effects of this prayer."), commands);
 			return false;
 		}
 

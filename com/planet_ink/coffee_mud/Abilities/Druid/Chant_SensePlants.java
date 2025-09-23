@@ -192,7 +192,7 @@ public class Chant_SensePlants extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing @x1.",word()));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing @x1.",word()), commands);
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

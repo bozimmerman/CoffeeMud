@@ -253,7 +253,7 @@ public class Prayer_DeflectPrayer extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already deflecting prayers."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already deflecting prayers."), commands);
 			return false;
 		}
 

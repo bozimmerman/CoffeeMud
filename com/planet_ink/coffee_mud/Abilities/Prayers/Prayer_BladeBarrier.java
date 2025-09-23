@@ -159,7 +159,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> @x1.",name().toLowerCase()));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> @x1.",name().toLowerCase()), commands);
 			return false;
 		}
 

@@ -164,7 +164,7 @@ public class BookEditing extends CommonSkill
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTelL(mob,"You don't seem to have a '@x1'.",itemName);
+			commonFaiL(mob,commands,"You don't seem to have a '@x1'.",itemName);
 			return false;
 		}
 
@@ -172,7 +172,7 @@ public class BookEditing extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTelL(mob,"You must know how to write.");
+			commonFaiL(mob,commands,"You must know how to write.");
 			return false;
 		}
 
@@ -181,26 +181,26 @@ public class BookEditing extends CommonSkill
 		&&(target.material()!=RawMaterial.RESOURCE_SILK)
 		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
-			commonTelL(mob,"You can't edit something like that.");
+			commonFaiL(mob,commands,"You can't edit something like that.");
 			return false;
 		}
 
 		if(!CMLib.flags().isReadable(target))
 		{
-			commonTelL(mob,"That's not even readable!");
+			commonFaiL(mob,commands,"That's not even readable!");
 			return false;
 		}
 
 		if((target instanceof Recipes)
 		&&((pageNum.length()==0)||(!pageNum.startsWith("DELETE "))))
 		{
-			commonTelL(mob,"You can't edit that with this skill, but only delete pages.");
+			commonFaiL(mob,commands,"You can't edit that with this skill, but only delete pages.");
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTelL(mob,"You aren't able to give that a name.");
+			commonFaiL(mob,commands,"You aren't able to give that a name.");
 			return false;
 		}
 

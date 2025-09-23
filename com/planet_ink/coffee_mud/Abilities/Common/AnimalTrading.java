@@ -91,7 +91,7 @@ public class AnimalTrading extends CommonSkill
 			return false;
 		if(commands.size()==0)
 		{
-			commonTelL(mob,"Sell what?");
+			commonFaiL(mob,commands,"Sell what?");
 			return false;
 		}
 
@@ -101,17 +101,17 @@ public class AnimalTrading extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnAnimal(M)))
 			{
-				commonTelL(mob,"You can't sell @x1.",M.name(mob));
+				commonFaiL(mob,commands,"You can't sell @x1.",M.name(mob));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTelL(mob,"@x1 doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.",M.name(mob));
+				commonFaiL(mob,commands,"@x1 doesn't seem willing to cooperate.  You need to bind the animal before you can sell it.",M.name(mob));
 				return false;
 			}
 			taming=M;
@@ -157,13 +157,13 @@ public class AnimalTrading extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTelL(mob,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
+				commonFaiL(mob,commands,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
@@ -189,7 +189,7 @@ public class AnimalTrading extends CommonSkill
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				if(taming instanceof Item)
-					((Item)taming).destroy();
+					taming.destroy();
 			}
 		}
 		else

@@ -910,28 +910,28 @@ public class CommonSkill extends StdAbility
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
 			if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-				mob.tell(L("You must be at full mana to do that."));
+				commonTelL(mob,"You must be at full mana to do that.");
 			else
-				mob.tell(L("You don't have enough mana to do that."));
+				commonTelL(mob,"You don't have enough mana to do that.");
 			return false;
 		}
 		if(mob.curState().getMovement()<consumed[Ability.USAGEINDEX_MOVEMENT])
 		{
 			if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-				mob.tell(L("You must be at full movement to do that."));
+				commonTelL(mob,"You must be at full movement to do that.");
 			else
-				mob.tell(L("You don't have enough movement to do that.  You are too tired."));
+				commonTelL(mob,"You don't have enough movement to do that.  You are too tired.");
 			return false;
 		}
 		if(mob.curState().getHitPoints()<consumed[Ability.USAGEINDEX_HITPOINTS])
 		{
 			if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-				mob.tell(L("You must be at full health to do that."));
+				commonTelL(mob,"You must be at full health to do that.");
 			else
-				mob.tell(L("You don't have enough hit points to do that."));
+				commonTelL(mob,"You don't have enough hit points to do that.");
 			return false;
 		}
-		if(!checkComponents(mob))
+		if(!checkComponents(mob,commands))
 			return false;
 		mob.curState().adjMana(-consumed[0],mob.maxState());
 		mob.curState().adjMovement(-consumed[1],mob.maxState());

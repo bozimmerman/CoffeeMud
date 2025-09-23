@@ -272,7 +272,7 @@ public class Chant_FindPlant extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to @x1",name()));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to @x1",name()), commands);
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);

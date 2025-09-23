@@ -159,7 +159,7 @@ public class Chant_WaterWalking extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already a water walker."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already a water walker."), commands);
 			return false;
 		}
 

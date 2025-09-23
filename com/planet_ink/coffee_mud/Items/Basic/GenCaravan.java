@@ -109,6 +109,10 @@ public class GenCaravan extends GenNavigableBoardable
 				case NAVIGATE:
 					navCommandWords.put("DRIVE", N);
 					break;
+				case RISE:
+					break;
+				case DIVE:
+					break;
 				case RAISE_ANCHOR:
 					navCommandWords.put("RELEASE_BRAKE", N);
 					navCommandWords.put("UNSET_BRAKE", N);

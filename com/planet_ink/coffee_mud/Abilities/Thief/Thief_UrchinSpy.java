@@ -272,7 +272,7 @@ public class Thief_UrchinSpy extends ThiefSkill
 						if(A!=null)
 						{
 							final int[] consumed = A.usageCost(mob, false);
-							if(!A.testUsageCost(mob,false,consumed,true))
+							if(!A.testUsageCost(mob,false,consumed,true,new XArrayList<String>("SNEAK")))
 								A=null;
 						}
 						if(A!=null)

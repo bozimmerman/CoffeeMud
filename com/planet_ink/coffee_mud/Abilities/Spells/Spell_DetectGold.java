@@ -273,7 +273,7 @@ public class Spell_DetectGold extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting golden things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting golden things."), commands);
 			return false;
 		}
 

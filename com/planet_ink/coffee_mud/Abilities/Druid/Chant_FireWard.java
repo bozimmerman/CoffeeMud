@@ -98,7 +98,7 @@ public class Chant_FireWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding fire."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding fire."), commands);
 			return false;
 		}
 

@@ -157,7 +157,7 @@ public class Thief_Alertness extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already alert."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already alert."), commands);
 			return false;
 		}
 

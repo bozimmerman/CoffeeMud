@@ -193,13 +193,13 @@ public class Spell_PolymorphSelf extends Spell
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."), commands);
 			return false;
 		}
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."), commands);
 			return false;
 		}
 

@@ -131,7 +131,7 @@ public class Prayer_BrighteningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already surrounded by a brightening aura."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already surrounded by a brightening aura."), commands);
 			return false;
 		}
 

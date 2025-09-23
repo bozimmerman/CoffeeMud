@@ -125,7 +125,7 @@ public class Chant_Camelback extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a camel's back."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a camel's back."), commands);
 			return false;
 		}
 

@@ -130,7 +130,7 @@ public class Spell_PredictWeather extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting weather."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting weather."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

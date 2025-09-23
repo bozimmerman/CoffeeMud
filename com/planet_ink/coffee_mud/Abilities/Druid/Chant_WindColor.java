@@ -436,7 +436,7 @@ public class Chant_WindColor extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already watching the winds."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already watching the winds."), commands);
 			return false;
 		}
 

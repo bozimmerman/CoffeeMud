@@ -170,7 +170,7 @@ public class Chant_WarningWinds extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already attuned to the winds."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already attuned to the winds."), commands);
 			return false;
 		}
 

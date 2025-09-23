@@ -133,7 +133,7 @@ public class Chant_CheetahBurst extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already at a cheetah's speed."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already at a cheetah's speed."), commands);
 			return false;
 		}
 

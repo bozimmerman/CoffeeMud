@@ -243,7 +243,7 @@ public class GenTrap extends StdTrap
 				failureTell(mob,mob,false,
 						L("You lack the necessary materials to set @x1, the requirements are: @x2.",
 						name(),
-						CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements)));
+						CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements)), new XArrayList<String>((P==null)?"":P.name()));
 				return false;
 			}
 		}

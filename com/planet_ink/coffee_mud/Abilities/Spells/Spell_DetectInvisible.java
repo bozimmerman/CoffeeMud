@@ -142,7 +142,7 @@ public class Spell_DetectInvisible extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting invisibility."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting invisibility."), commands);
 			return false;
 		}
 

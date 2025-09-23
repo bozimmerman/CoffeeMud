@@ -135,7 +135,7 @@ public int castingQuality(final MOB mob, final Physical target)
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-IS-ARE> keeping enemies at arms length."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-IS-ARE> keeping enemies at arms length."), commands);
 			return false;
 		}
 

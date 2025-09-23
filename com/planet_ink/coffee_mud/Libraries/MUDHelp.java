@@ -20,6 +20,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /*
@@ -869,6 +871,114 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return p.second;
 	}
 
+	protected String getScriptableHelp(final String key)
+	{
+		@SuppressWarnings("unchecked")
+		Map<String,String> methodHelp = (Map<String,String>)Resources.getResource("PARSED_SCRIPTABLE_HELP");
+		if(methodHelp == null)
+		{
+			methodHelp = new Hashtable<String,String>();
+			Resources.submitResource("PARSED_SCRIPTABLE_HELP", methodHelp);
+		}
+		if (methodHelp.containsKey(key))
+			return methodHelp.get(key);
+		if(!new CMFile("/guides/Scriptable.html",null).canRead())
+		{
+			Log.errOut("Help","No Scriptable found");
+			return L("Help Not Found");
+		}
+		final StringBuffer scriptFile = new CMFile("/guides/Scriptable.html", null).text();
+		final String mpregex = "<[Hh]3[^>]*>\\s*<[Aa](?:\\s+[^>]*?)?[Nn][Aa][Mm][Ee]\\s*=\\s*([\"'])((?:(?!\\1).)*)\\1(?:[^>]*?)>\\s*\\2\\s*</[Aa]>\\s*</[Hh]3>";
+		final Pattern mpp = Pattern.compile(mpregex, Pattern.DOTALL);
+		final Matcher mpatch = mpp.matcher(scriptFile);
+		String block = null;
+		int blockAt = -1;
+		while(mpatch.find())
+		{
+			final int startIndex = mpatch.start();
+			final String mkey = mpatch.group(2);
+			if(blockAt >=0)
+			{
+				block = scriptFile.substring(blockAt, startIndex);
+				break;
+			}
+			else
+			if(mkey.equalsIgnoreCase(key))
+				blockAt = startIndex;
+		}
+		if ((blockAt >= 0) && (block == null))
+			block = scriptFile.substring(blockAt);
+		if(block == null)
+		{
+			Log.errOut("Help","No help found for script method: "+key+" in Scriptable.html");
+			return L("Help Not Found");
+		}
+		String usage="";
+		String example="";
+		String description="";
+		int ex = block.toLowerCase().indexOf("example:");
+		if(ex < 0)
+			ex = block.toLowerCase().indexOf("examples:");
+		if(ex >0)
+		{
+			String newBlock = block.substring(0,ex).trim();
+			ex = block.indexOf(":",ex);
+			example = block.substring(ex+1).trim();
+			final int xx = example.indexOf("<p>SPECIAL NOTE");
+			if( xx > 0)
+			{
+				newBlock += example.substring(xx);
+				example = example.substring(0,xx).trim();
+			}
+			example = CMStrings.convertHtmlToText(new StringBuilder(example)).trim();
+			block = newBlock;
+		}
+		final int ux = block.toLowerCase().indexOf("usage:");
+		if(ux >0)
+		{
+			block = block.substring(ux+6).trim();
+			final int endOfUsage = block.toLowerCase().indexOf("<p>");
+			if(endOfUsage>0)
+			{
+				usage = CMStrings.convertHtmlToText(new StringBuilder(block.substring(0, endOfUsage))).trim();
+				description = block.substring(endOfUsage);
+			}
+			else
+				description = block;
+		}
+		else
+			description=block;
+		description = CMStrings.replaceAll(CMStrings.replaceAll(description,"\r",""),"\n"," ").trim();
+		description = CMStrings.convertHtmlToText(new StringBuilder(description)).trim();
+		final StringBuilder help = new StringBuilder("");
+		help.append("Command  : "+key+"\n\r");
+		if (usage.length() > 0)
+		{
+			for (final String use : usage.split("\n"))
+			{
+				help.append("Usage    : ");
+				help.append(use.trim());
+				help.append("\n\r");
+			}
+		}
+		if(example.length() > 0)
+		{
+			String str = "Example  : ";
+			for (String eg : example.split("\n"))
+			{
+				help.append(str);
+				if(eg.trim().length()>78-11)
+					eg = CMStrings.limit(eg.trim(), 78-11).trim();
+				help.append(eg.trim());
+				help.append("\n\r");
+				str = "           ";
+			}
+		}
+		help.append("\n\r").append(description).append("\n\r");
+		methodHelp.put(key, help.toString());
+		return help.toString();
+	}
+
 	protected String replacePercent(final String thisStr, final String withThis)
 	{
 		if(withThis.length()==0)
@@ -1240,7 +1350,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
-		// INEXACT searches start here
+		if((helpText == null)
+		&& (rHelpFile == this.getArcHelpFile())
+		&& helpKey.startsWith("MP")
+		&& (CMParms.contains(ScriptingEngine.methods,helpKey)))
+			helpText=normalizeHelpText(getScriptableHelp(helpKey),skip);
+
+		/**
+		 *  INEXACT searches start here *********
+		 */
 		if(helpText==null)
 		{
 			for(final Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)

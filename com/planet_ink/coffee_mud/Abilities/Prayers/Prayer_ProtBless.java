@@ -140,7 +140,7 @@ public class Prayer_ProtBless extends Prayer
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from blessings."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from blessings."), commands);
 			return false;
 		}
 

@@ -253,7 +253,7 @@ public class Skill_RopeTricks extends StdSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already doing rope tricks!"));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already doing rope tricks!"), commands);
 			return false;
 		}
 

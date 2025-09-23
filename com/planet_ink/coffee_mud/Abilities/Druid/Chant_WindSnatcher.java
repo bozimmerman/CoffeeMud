@@ -164,7 +164,7 @@ public class Chant_WindSnatcher extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already snatching the wind."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already snatching the wind."), commands);
 			return false;
 		}
 

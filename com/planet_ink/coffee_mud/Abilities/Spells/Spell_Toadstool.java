@@ -152,7 +152,7 @@ public class Spell_Toadstool extends Spell
 
 		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already polymorphed."), commands);
 			return false;
 		}
 

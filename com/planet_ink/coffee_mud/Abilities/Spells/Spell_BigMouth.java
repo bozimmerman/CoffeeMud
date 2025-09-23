@@ -650,7 +650,7 @@ public class Spell_BigMouth extends Spell implements MOBPossessor, ItemCollectio
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already the owner of a huge mouth."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already the owner of a huge mouth."), commands);
 			return false;
 		}
 

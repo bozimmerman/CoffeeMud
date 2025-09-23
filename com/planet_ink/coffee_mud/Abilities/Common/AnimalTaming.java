@@ -182,18 +182,18 @@ public class AnimalTaming extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if((!M.isMonster())
 			   ||(!CMLib.flags().isAnAnimal(M)))
 			{
-				commonTelL(mob,"You can't tame @x1.",M.name(mob));
+				commonFaiL(mob,commands,"You can't tame @x1.",M.name(mob));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
+				commonFaiL(mob,commands,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 				return false;
 			}
 			taming=M;
@@ -226,13 +226,13 @@ public class AnimalTaming extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			taming=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTelL(mob,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
+				commonFaiL(mob,commands,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();

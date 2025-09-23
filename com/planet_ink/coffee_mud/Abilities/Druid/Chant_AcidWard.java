@@ -97,7 +97,7 @@ public class Chant_AcidWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding acid."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding acid."), commands);
 			return false;
 		}
 

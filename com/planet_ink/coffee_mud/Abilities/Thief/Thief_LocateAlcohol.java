@@ -277,12 +277,12 @@ public class Thief_LocateAlcohol extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to find a stiff drink."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to find a stiff drink."), commands);
 			return false;
 		}
 		if(!CMLib.flags().canSmell(target))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> unable to smell alcohol."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> unable to smell alcohol."), commands);
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);

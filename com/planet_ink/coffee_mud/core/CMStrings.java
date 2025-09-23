@@ -2835,7 +2835,7 @@ public class CMStrings
 						if(xset[0].equals(tag))
 						{
 							finalData.insert(start, xset[1]);
-							start=start+xset[1].length()-1;
+							start=start+xset[1].length();
 							break;
 						}
 					}
@@ -2881,11 +2881,29 @@ public class CMStrings
 					else
 					if (code.equals("quot"))
 						finalData.insert(start, '"');
+					else
+					if (code.startsWith("#")
+					&& (CMath.isInteger(code.substring(1))))
+					{
+						final int num = CMath.s_int(code.substring(1));
+						if (num < 65536)
+							finalData.insert(start, Character.toString((char) num));
+					}
 					i=start-1;
 					start=-1;
 				}
 				else
-				if((!Character.isLetter(c))||((i-start)>10))
+				if(i == start + 1)
+				{
+					if((!Character.isLetterOrDigit(c)) && (c != '#'))
+						start = -1;
+				}
+				else
+				if(i-start>10)
+					start = -1;
+				else
+				if((!Character.isLetter(c))
+				&&((!Character.isDigit(c))||(finalData.charAt(start+1)!='#')))
 					start=-1;
 				break;
 			}

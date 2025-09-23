@@ -138,7 +138,7 @@ public class Spell_Untraceable extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already untraceable."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already untraceable."), commands);
 			return false;
 		}
 

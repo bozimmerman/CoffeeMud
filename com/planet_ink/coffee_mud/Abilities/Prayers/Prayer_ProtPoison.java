@@ -140,7 +140,7 @@ public class Prayer_ProtPoison extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from poison."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from poison."), commands);
 			return false;
 		}
 

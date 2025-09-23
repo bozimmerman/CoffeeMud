@@ -155,7 +155,7 @@ public class Chant_Thorns extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already covered in thorns."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already covered in thorns."), commands);
 			return false;
 		}
 

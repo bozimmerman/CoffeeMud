@@ -115,7 +115,7 @@ public class Spell_Light extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a light above <S-HIM-HER>."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a light above <S-HIM-HER>."), commands);
 			return false;
 		}
 

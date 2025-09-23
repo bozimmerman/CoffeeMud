@@ -107,7 +107,7 @@ public class Chant_HardenSkin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-YOUPOSS> skin is already hard."));
+			failureTell(mob,target,auto,L("<S-YOUPOSS> skin is already hard."), commands);
 			return false;
 		}
 

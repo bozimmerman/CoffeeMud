@@ -137,7 +137,7 @@ public class Chant_Hawkeye extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> hawk vision."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> hawk vision."), commands);
 			return false;
 		}
 

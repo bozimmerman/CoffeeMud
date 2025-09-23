@@ -187,7 +187,7 @@ public class Thief_CutThroat extends ThiefSkill
 		}
 		if(lastMOB.equals(target+""))
 		{
-			failureTell(mob,target,auto,L("@x1 is watching <S-HIS-HER> neck too closely to do that again.",target.name(mob)));
+			failureTell(mob,target,auto,L("@x1 is watching <S-HIS-HER> neck too closely to do that again.",target.name(mob)), commands);
 			return false;
 		}
 		if(mob.isInCombat())

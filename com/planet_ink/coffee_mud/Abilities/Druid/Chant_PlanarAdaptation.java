@@ -155,7 +155,7 @@ public class Chant_PlanarAdaptation extends Chant
 				return false;
 			if(this.getBreatheSet(mob) == adaptA.fixSet)
 			{
-				failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already adapted to this plane of existence."));
+				failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already adapted to this plane of existence."), commands);
 				return false;
 			}
 			else

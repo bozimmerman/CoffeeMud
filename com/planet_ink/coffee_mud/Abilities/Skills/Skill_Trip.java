@@ -200,7 +200,7 @@ public class Skill_Trip extends StdSkill
 		if(CMLib.flags().isSitting(target)
 		||CMLib.flags().isSleeping(target))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> is already on the floor!"));
+			failureTell(mob,target,auto,L("<S-NAME> is already on the floor!"), commands);
 			return false;
 		}
 

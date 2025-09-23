@@ -176,7 +176,7 @@ public class Thief_Detection extends ThiefSkill
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting hidden things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting hidden things."), commands);
 			return false;
 		}
 

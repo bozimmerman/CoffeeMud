@@ -123,7 +123,7 @@ public class Spell_Infravision extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already using infravision."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already using infravision."), commands);
 			return false;
 		}
 

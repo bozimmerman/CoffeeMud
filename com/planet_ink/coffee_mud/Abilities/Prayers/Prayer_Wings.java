@@ -116,7 +116,7 @@ public class Prayer_Wings extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> wings."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> wings."), commands);
 			return false;
 		}
 

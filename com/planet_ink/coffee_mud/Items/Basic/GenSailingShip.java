@@ -111,6 +111,10 @@ public class GenSailingShip extends GenNavigableBoardable
 				case NAVIGATE:
 					navCommandWords.put("SAIL", N);
 					break;
+				case RISE:
+					break;
+				case DIVE:
+					break;
 				default:
 					navCommandWords.put(N.name().toUpperCase().trim(), N);
 				}

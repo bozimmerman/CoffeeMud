@@ -1,4 +1,4 @@
-# Build 5.10.6 Release ??/??/2025
+# Build 5.11.0 Release ??/??/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
   2. CoffeeMud now integrates with LLMs via LangChain4J.  See installation guide.
   3. New admin command: LLM, for chatting with your AI, and Scriptable has MPLLM
@@ -39,7 +39,8 @@
  38. New Archon skill: LLMIFY, for making LLM-powered mobs, if you can.
  39. GenCraftingSkill now supports a fire requirement.
  40. Poisons list expanded.
- 41. New large rideables: GenAirShip
+ 41. New large rideables: GenAirShip, GenBalloon
+ 42, AHELP can now be used by archons to get help on MP commands.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

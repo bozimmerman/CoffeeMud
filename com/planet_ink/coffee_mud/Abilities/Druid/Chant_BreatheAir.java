@@ -129,7 +129,7 @@ public class Chant_BreatheAir extends Chant
 		if((target.fetchEffect(this.ID())!=null)
 		||(CMParms.contains(target.charStats().getBreathables(),RawMaterial.RESOURCE_AIR)))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already an air breather."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already an air breather."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

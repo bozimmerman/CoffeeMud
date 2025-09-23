@@ -104,7 +104,7 @@ public class Chant_SoaringEagle extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the wings of an eagle."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the wings of an eagle."), commands);
 			return false;
 		}
 

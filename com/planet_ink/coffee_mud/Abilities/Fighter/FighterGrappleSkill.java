@@ -142,7 +142,7 @@ public class FighterGrappleSkill extends FighterSkill
 			{
 				final Room R=mob.location();
 				final int[] consumed = usageCost(mob, false);
-				if(!testUsageCost(mob,true,consumed,false))
+				if(!testUsageCost(mob,true,consumed,false,new XArrayList<String>("GRAPPLE")))
 					return false;
 				mob.curState().adjMana(-consumed[0],mob.maxState());
 				mob.curState().adjMovement(-consumed[1],mob.maxState());

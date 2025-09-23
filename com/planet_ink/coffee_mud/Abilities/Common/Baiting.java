@@ -192,7 +192,7 @@ public class Baiting extends GatheringSkill
 
 			if((fishRoom==null)||(!CMLib.flags().isWateryRoom(fishRoom)))
 			{
-				this.commonTelL(mob,"You need to be on the water, or in a boat to use this skill.");
+				this.commonFaiL(mob,commands,"You need to be on the water, or in a boat to use this skill.");
 				return false;
 			}
 		}
@@ -200,7 +200,7 @@ public class Baiting extends GatheringSkill
 			fishRoom=R;
 		if(fishRoom.fetchEffect(ID())!=null)
 		{
-			commonTelL(mob,"It looks like bait has already been dropped here.");
+			commonFaiL(mob,commands,"It looks like bait has already been dropped here.");
 			return false;
 		}
 
@@ -228,7 +228,7 @@ public class Baiting extends GatheringSkill
 		else
 		if(commands.size()==0)
 		{
-			commonTelL(mob,"Bait for what kind of fish?");
+			commonFaiL(mob,commands,"Bait for what kind of fish?");
 			return false;
 		}
 		int code=-1;
@@ -261,25 +261,25 @@ public class Baiting extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTelL(mob,"You've never heard of a fish called '@x1'.",CMParms.combine(commands,0));
+			commonFaiL(mob,commands,"You've never heard of a fish called '@x1'.",CMParms.combine(commands,0));
 			return false;
 		}
 
 		if(mine==null)
 		{
-			commonTelL(mob,"You'll need to have some @x1 first if you want to use it as bait.",foundShortName);
+			commonFaiL(mob,commands,"You'll need to have some @x1 first if you want to use it as bait.",foundShortName);
 			return false;
 		}
 		final String mineName=mine.name();
 		mine=CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
-			commonTelL(mob,"'@x1' is not suitable for use as bait.",mineName);
+			commonFaiL(mob,commands,"'@x1' is not suitable for use as bait.",mineName);
 			return false;
 		}
 		if(!(isPotentialCrop(fishRoom,code)))
 		{
-			commonTelL(mob,"'@x1' does not seem to be of any use as bait here.",mineName);
+			commonFaiL(mob,commands,"'@x1' does not seem to be of any use as bait here.",mineName);
 			return false;
 		}
 

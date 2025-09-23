@@ -115,7 +115,7 @@ public class Chant_StabilizeForm extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already has a stabilized form."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already has a stabilized form."), commands);
 			return false;
 		}
 

@@ -122,7 +122,7 @@ public class Chant_SenseMetal extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing metals."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing metals."), commands);
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

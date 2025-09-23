@@ -117,7 +117,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting weather."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting weather."), commands);
 			return false;
 		}
 

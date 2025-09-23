@@ -230,7 +230,7 @@ public class Fighter_DismountingBlow extends FighterSkill
 
 		if(target.riding()==null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE>n't mounted on anything!"));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE>n't mounted on anything!"), commands);
 			return false;
 		}
 

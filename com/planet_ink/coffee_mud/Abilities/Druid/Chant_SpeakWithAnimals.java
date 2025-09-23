@@ -422,7 +422,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-YOUPOSS> can already @x1.",canSpeakWithWhat()));
+			failureTell(mob,target,auto,L("<S-YOUPOSS> can already @x1.",canSpeakWithWhat()), commands);
 			return false;
 		}
 

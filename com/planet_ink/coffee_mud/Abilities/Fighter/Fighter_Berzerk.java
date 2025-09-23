@@ -154,7 +154,7 @@ public class Fighter_Berzerk extends FighterSkill
 
 		if((target.fetchEffect(this.ID())!=null)||(target.fetchEffect("Paladin_ChaosRage")!=null))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already berzerk."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already berzerk."), commands);
 			return false;
 		}
 

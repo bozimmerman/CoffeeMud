@@ -207,7 +207,7 @@ public class Chant_SummonSchool extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a school here."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a school here."), commands);
 			return false;
 		}
 

@@ -232,7 +232,7 @@ public class Prayer_SenseBombs extends Prayer
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing bombs."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing bombs."), commands);
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

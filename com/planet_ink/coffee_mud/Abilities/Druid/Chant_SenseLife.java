@@ -164,7 +164,7 @@ public class Chant_SenseLife extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing life echoes."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing life echoes."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -747,6 +747,17 @@ public interface AchievementLibrary extends CMLibrary
 	public void bumpAchievement(final MOB mob, final Achievement A, final int bumpNum, final Object... parms);
 
 	/**
+	 * Forces the given achievement to be granted to the given mob, along with
+	 * all the awards.  If the achievement is account based, their account gets
+	 * the achievement. If the achievement is clan based, all their clans get it.
+	 *
+	 * @param mob the mob to grant the achievement to
+	 * @param A the achievement to grant
+	 * @return true if it was granted, false if not (already had it, didn't apply)
+	 */
+	public boolean grantAchievement(final MOB mob, final Achievement A);
+
+	/**
 	 * When an event occurs that might possible cause a player to have one of their achievements bumped,
 	 * this method is called with event specific parameters which might possibly cause the achievement
 	 * to be bumped in the tracker, which might cause it to be completed as well.  This method does

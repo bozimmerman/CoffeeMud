@@ -133,7 +133,7 @@ public class Prayer_DarkeningAura extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already surrounded by a darkening aura."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already surrounded by a darkening aura."), commands);
 			return false;
 		}
 

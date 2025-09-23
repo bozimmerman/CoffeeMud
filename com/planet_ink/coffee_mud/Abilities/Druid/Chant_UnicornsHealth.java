@@ -103,7 +103,7 @@ public class Chant_UnicornsHealth extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the health of a unicorn."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the health of a unicorn."), commands);
 			return false;
 		}
 

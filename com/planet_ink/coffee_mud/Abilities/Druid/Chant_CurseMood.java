@@ -141,7 +141,7 @@ public class Chant_CurseMood extends Chant
 			return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> mood cursed."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> mood cursed."), commands);
 			return false;
 		}
 

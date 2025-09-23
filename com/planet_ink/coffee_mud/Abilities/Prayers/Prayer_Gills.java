@@ -119,7 +119,7 @@ public class Prayer_Gills extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> gills."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> gills."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

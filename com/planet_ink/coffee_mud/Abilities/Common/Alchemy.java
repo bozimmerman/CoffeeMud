@@ -450,12 +450,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			if(!mob.isMine(buildingI))
 			{
-				commonTelL(mob,"You'll need to pick that up first.");
+				commonFaiL(mob,commands,"You'll need to pick that up first.");
 				return false;
 			}
 			if(!(buildingI instanceof Container))
 			{
-				commonTelL(mob,"There's nothing in @x1 to brew!",buildingI.name(mob));
+				commonFaiL(mob,commands,"There's nothing in @x1 to brew!",buildingI.name(mob));
 				return false;
 			}
 			if(!(buildingI instanceof Drink))
@@ -465,12 +465,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTelL(mob,"The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob));
+				commonFaiL(mob,commands,"The @x1 contains no liquid base.  Water is probably fine.",buildingI.name(mob));
 				return false;
 			}
 			if(buildingI.material()!=RawMaterial.RESOURCE_GLASS)
 			{
-				commonTelL(mob,"You can only brew into glass containers.");
+				commonFaiL(mob,commands,"You can only brew into glass containers.");
 				return false;
 			}
 			activity = CraftingActivity.CRAFTING;
@@ -500,7 +500,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			}
 			if(theSpell==null)
 			{
-				commonTelL(mob,"You don't know how to brew '@x1'.  Try \"brew list\" for a list.",recipeName);
+				commonFaiL(mob,commands,"You don't know how to brew '@x1'.  Try \"brew list\" for a list.",recipeName);
 				return false;
 			}
 			int experienceToLose=10;
@@ -530,7 +530,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					found=true;
 					if(V.size()>0)
 					{
-						commonTelL(mob,"The extraneous stuff from the @x1 must be removed before starting.",buildingI.name(mob));
+						commonFaiL(mob,commands,"The extraneous stuff from the @x1 must be removed before starting.",buildingI.name(mob));
 						return false;
 					}
 				}
@@ -542,13 +542,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						found=true;
 					else
 					{
-						commonTelL(mob,"The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob));
+						commonFaiL(mob,commands,"The @x1 must be removed from the @x2 before starting.",I.name(mob),buildingI.name(mob));
 						return false;
 					}
 				}
 				if(!found)
 				{
-					commonTelL(mob,"This recipe requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob));
+					commonFaiL(mob,commands,"This recipe requires @x1.  Please place some inside the @x2 and try again.",ingredient,buildingI.name(mob));
 					return false;
 				}
 			}

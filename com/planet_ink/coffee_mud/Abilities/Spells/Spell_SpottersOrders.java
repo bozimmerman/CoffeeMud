@@ -227,13 +227,13 @@ public class Spell_SpottersOrders extends Spell
 			target=(MOB)givenTarget;
 		if(!target.isInCombat())
 		{
-			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not in combat."));
+			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not in combat."), commands);
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already knowledgable about <S-HIS-HER> target."), commands);
 			return false;
 		}
 

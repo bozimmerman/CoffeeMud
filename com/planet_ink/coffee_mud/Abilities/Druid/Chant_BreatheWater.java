@@ -112,7 +112,7 @@ public class Chant_BreatheWater extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already a water breather."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already a water breather."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

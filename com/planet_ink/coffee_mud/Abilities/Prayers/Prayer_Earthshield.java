@@ -128,7 +128,7 @@ public class Prayer_Earthshield extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()), commands);
 			return false;
 		}
 

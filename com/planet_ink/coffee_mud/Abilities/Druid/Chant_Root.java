@@ -152,7 +152,7 @@ public class Chant_Root extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already rooted."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already rooted."), commands);
 			return false;
 		}
 

@@ -98,7 +98,7 @@ public class Chant_GasWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding gas."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already warding gas."), commands);
 			return false;
 		}
 

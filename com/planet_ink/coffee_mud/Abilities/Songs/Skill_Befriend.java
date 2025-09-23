@@ -291,7 +291,7 @@ public class Skill_Befriend extends BardSkill
 
 		if(target.amFollowing()!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> is already someone elses friend."));
+			failureTell(mob,target,auto,L("<S-NAME> is already someone elses friend."), commands);
 			return false;
 		}
 
@@ -301,7 +301,7 @@ public class Skill_Befriend extends BardSkill
 		{
 			if(!target.charStats().getMyRace().ID().equalsIgnoreCase(raceReq))
 			{
-				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceReq.toLowerCase()));
+				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceReq.toLowerCase()), commands);
 				return false;
 			}
 		}
@@ -310,14 +310,14 @@ public class Skill_Befriend extends BardSkill
 		{
 			if(!target.charStats().getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 			{
-				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceCat.toLowerCase()));
+				failureTell(mob,target,auto,L("<S-NAME> is not a @x1.",raceCat.toLowerCase()), commands);
 				return false;
 			}
 		}
 		else
 		if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
 		{
-			failureTell(mob,target,auto,L("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()));
+			failureTell(mob,target,auto,L("<S-NAME> is not a fellow @x1.",mob.charStats().getMyRace().racialCategory()), commands);
 			return false;
 		}
 
@@ -328,7 +328,7 @@ public class Skill_Befriend extends BardSkill
 			final int mine=target.fetchFaction(F.factionID());
 			if(F.fetchRange(his)!=F.fetchRange(mine))
 			{
-				failureTell(mob,target,auto,L("<S-NAME> is not @x1, like yourself.",F.fetchRangeName(mine)));
+				failureTell(mob,target,auto,L("<S-NAME> is not @x1, like yourself.",F.fetchRangeName(mine)), commands);
 				return false;
 			}
 		}

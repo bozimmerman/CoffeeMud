@@ -314,7 +314,7 @@ public class Spell_DetectWater extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting liquid things."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting liquid things."), commands);
 			return false;
 		}
 

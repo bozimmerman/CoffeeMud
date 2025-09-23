@@ -196,7 +196,7 @@ public class Chant_AiryAura extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already exuding an airy aura."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already exuding an airy aura."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

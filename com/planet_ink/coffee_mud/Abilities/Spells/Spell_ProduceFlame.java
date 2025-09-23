@@ -136,7 +136,7 @@ public class Spell_ProduceFlame extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> flaming hands."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> flaming hands."), commands);
 			return false;
 		}
 

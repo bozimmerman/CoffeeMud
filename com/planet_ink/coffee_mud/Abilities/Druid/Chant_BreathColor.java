@@ -297,7 +297,7 @@ public class Chant_BreathColor extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already watching breath colors."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already watching breath colors."), commands);
 			return false;
 		}
 

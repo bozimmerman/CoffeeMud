@@ -173,7 +173,7 @@ public class Spell_DetectMagic extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting magic."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting magic."), commands);
 			return false;
 		}
 

@@ -176,19 +176,19 @@ public class AnimalBonding extends CommonSkill
 		bonding=null;
 		if(!CMLib.flags().canBeSeenBy(M,mob))
 		{
-			commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+			commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 			return false;
 		}
 		if((!M.isMonster())
 		||(!M.isMonster())
 		||(!CMLib.flags().isAnAnimal(M)))
 		{
-			commonTelL(mob,"You can't bond with @x1.",M.name(mob));
+			commonFaiL(mob,commands,"You can't bond with @x1.",M.name(mob));
 			return false;
 		}
 		if(M.amFollowing() != mob)
 		{
-			commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
+			commonFaiL(mob,commands,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 			return false;
 		}
 		bonding=M;

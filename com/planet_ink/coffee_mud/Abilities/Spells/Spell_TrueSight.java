@@ -187,7 +187,7 @@ public class Spell_TrueSight extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> true sight."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> true sight."), commands);
 			return false;
 		}
 

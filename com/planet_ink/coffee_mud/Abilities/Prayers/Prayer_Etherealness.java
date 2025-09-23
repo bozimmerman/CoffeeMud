@@ -186,7 +186,7 @@ public class Prayer_Etherealness extends Prayer
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already ethereal."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already ethereal."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

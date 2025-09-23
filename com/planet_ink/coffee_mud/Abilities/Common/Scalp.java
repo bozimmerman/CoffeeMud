@@ -173,7 +173,7 @@ public class Scalp extends CommonSkill
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
 		   ||(((DeadBody)I).charStats().getMyRace().bodyMask()[Race.BODY_HEAD]==0))
 		{
-			commonTelL(mob,"You can't scalp @x1.",I.name(mob));
+			commonFaiL(mob,commands,"You can't scalp @x1.",I.name(mob));
 			return false;
 		}
 		if(I.fetchEffect(ID())!=null)

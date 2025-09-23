@@ -115,7 +115,7 @@ public class Chant_AnimalFriendship extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already friendly to animals."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already friendly to animals."), commands);
 			return false;
 		}
 

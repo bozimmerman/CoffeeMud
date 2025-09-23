@@ -178,7 +178,7 @@ public class Chant_FurCoat extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a fur coat."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a fur coat."), commands);
 			return false;
 		}
 

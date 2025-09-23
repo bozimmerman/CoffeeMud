@@ -314,6 +314,8 @@ public class GenTweakAbility extends StdAbility implements InvocationHandler
 				final Ability delegate = getDelegate();
 				if(delegate == this)
 					return super.getStat(code);
+				if(delegate == null)
+					return "";
 				return delegate.getStat(code);
 			}
 		}

@@ -102,7 +102,7 @@ public class Chant_EnhanceBody extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already enhanced."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already enhanced."), commands);
 			return false;
 		}
 

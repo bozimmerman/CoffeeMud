@@ -174,7 +174,7 @@ public class Prayer_AuraIntolerance extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("The aura of intolerance is already with <S-NAME>."));
+			failureTell(mob,target,auto,L("The aura of intolerance is already with <S-NAME>."), commands);
 			return false;
 		}
 		if((!auto)&&((mob.charStats().getWorshipCharID().length()==0)

@@ -815,6 +815,24 @@ public class StdAbility implements Ability
 		mob.tell(L(commonTelStr,vars));
 	}
 
+	protected void commonFaiL(final MOB mob, final List<String> commands, String commonTelStr, final String... vars)
+	{
+		if(mob==null)
+			return;
+		if(mob.isMonster())
+		{
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you are", "I am");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you", "I");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "your", "my");
+			commonTelStr = CMStrings.replaceWord(commonTelStr, "you've", "I've");
+			commonTelStr = L(commonTelStr,vars);
+			CMLib.commands().postSay(mob,null,commonTelStr,false,false);
+			return;
+		}
+
+		failureTell(mob,null,false,L(commonTelStr,vars),commands);
+	}
+
 	protected void commonTell(final MOB mob, String str)
 	{
 		if(mob==null)
@@ -945,7 +963,7 @@ public class StdAbility implements Ability
 	}
 
 	//BZ: The magical pre-cast mana-saving range check, pt 1/2
-	protected boolean checkTargetRange(final MOB mob, final MOB target)
+	protected boolean checkTargetRange(final MOB mob, final MOB target, final List<String> commands)
 	{
 		if((target != null)
 		&&(target!=mob)
@@ -957,7 +975,7 @@ public class StdAbility implements Ability
 			  ||((target.getVictim()==mob)&&(target.rangeToTarget()<minRange())))
 			)
 			{
-				failureTell(mob,mob,false,L("You are too close to @x1 to do that.",target.name()));
+				failureTell(mob,mob,false,L("You are too close to @x1 to do that.",target.name()), commands);
 				return false;
 			}
 			else
@@ -967,7 +985,7 @@ public class StdAbility implements Ability
 			  ||((target.getVictim()==mob)&&(target.rangeToTarget()>maxRange())))
 			)
 			{
-				failureTell(mob,mob,false,L("You are too far away from @x1 to do that.",target.name()));
+				failureTell(mob,mob,false,L("You are too far away from @x1 to do that.",target.name()), commands);
 				return false;
 			}
 		}
@@ -1018,7 +1036,7 @@ public class StdAbility implements Ability
 				target=mob;
 			if(target == null)
 			{
-				failureTell(mob,mob,false,L("You need to specify a target."));
+				failureTell(mob,mob,false,L("You need to specify a target."), commands);
 				return null;
 			}
 		}
@@ -1049,9 +1067,9 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.length()==0)
-					failureTell(mob,mob,false,L("You don't see them here."));
+					failureTell(mob,mob,false,L("You don't see them here."), commands);
 				else
-					failureTell(mob,mob,false,L("You don't see anyone called '@x1' here.",targetName));
+					failureTell(mob,mob,false,L("You don't see anyone called '@x1' here.",targetName), commands);
 			}
 			return null;
 		}
@@ -1061,14 +1079,14 @@ public class StdAbility implements Ability
 			if((givenTarget==null)&&(!quiet))
 			{
 				if(target==mob)
-					failureTell(mob,mob,false,L("You are already affected by @x1.",name()));
+					failureTell(mob,mob,false,L("You are already affected by @x1.",name()), commands);
 				else
-					failureTell(mob,target,false,L("<S-NAME> is already affected by @x1.",name()));
+					failureTell(mob,target,false,L("<S-NAME> is already affected by @x1.",name()), commands);
 			}
 			return null;
 		}
 
-		if(!checkTargetRange(mob,target))
+		if(!checkTargetRange(mob,target,commands))
 			target=null;
 
 		return target;
@@ -1167,10 +1185,10 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.trim().length()==0)
-					failureTell(mob,mob,false,L("You don't see that here."));
+					failureTell(mob,mob,false,L("You don't see that here."), commands);
 				else
 				if(!CMLib.flags().isSleeping(mob))
-					failureTell(mob,mob,false,L("You don't see '@x1' here.",targetName));
+					failureTell(mob,mob,false,L("You don't see '@x1' here.",targetName), commands);
 			}
 			return null;
 		}
@@ -1182,7 +1200,7 @@ public class StdAbility implements Ability
 				if(!quiet)
 				{
 					if(target==mob)
-						failureTell(mob,mob,false,L("You are already affected by @x1.",name()));
+						failureTell(mob,mob,false,L("You are already affected by @x1.",name()), commands);
 					else
 						mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
 				}
@@ -1273,7 +1291,7 @@ public class StdAbility implements Ability
 	}
 
 	protected Item evalTargetItem(final MOB mob, final Room location, final Environmental givenTarget, final Environmental target,
-								  final String targetName, final String ogTargetName, final boolean quiet)
+								  final String targetName, final String ogTargetName, final boolean quiet, final List<String> commands)
 	{
 		if((target==null)
 		||(!(target instanceof Item))
@@ -1282,25 +1300,25 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(targetName.length()==0)
-					failureTell(mob,mob,false,L("You need to be more specific."));
+					failureTell(mob,mob,false,L("You need to be more specific."), commands);
 				else
 				if((target==null)||(target instanceof Item))
 				{
 					if(targetName.trim().length()==0)
-						failureTell(mob,mob,false,L("You don't see that here."));
+						failureTell(mob,mob,false,L("You don't see that here."), commands);
 					else
 					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
 					{
 						if(location != null)
-							failureTell(mob,mob,false,L("You don't see anything called '@x1' here.",ogTargetName));
+							failureTell(mob,mob,false,L("You don't see anything called '@x1' here.",ogTargetName), commands);
 						else
-							failureTell(mob,mob,false,L("You don't have anything called '@x1'.",ogTargetName));
+							failureTell(mob,mob,false,L("You don't have anything called '@x1'.",ogTargetName), commands);
 					}
 					else // this was added for clan donate (and other things I'm sure) while sleeping.
-						failureTell(mob,mob,false,L("You don't see '@x1' in your dreams.",ogTargetName));
+						failureTell(mob,mob,false,L("You don't see '@x1' in your dreams.",ogTargetName), commands);
 				}
 				else
-					mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
+					failureTell(mob,target,false,L("You can't do that to <T-NAMESELF>."),commands);
 			}
 			return null;
 		}
@@ -1330,7 +1348,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetName, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetName, quiet, commands);
 
 	}
 
@@ -1366,7 +1384,7 @@ public class StdAbility implements Ability
 		if(target!=null)
 			targetName=target.name();
 
-		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetname, quiet);
+		return evalTargetItem(mob, location, givenTarget, target, targetName, ogTargetname, quiet, commands);
 	}
 
 	@Override
@@ -1829,17 +1847,32 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
-	protected boolean failureTell(final MOB mob, final MOB targetM, final boolean auto, final String msg)
+	protected boolean failureTell(final MOB mob, final Environmental target, final boolean auto, final String msgStr, final List<String> command)
 	{
 		if(mob==null)
 			return false;
+		final String keyWord = (this.triggerStrings()!=null) && (this.triggerStrings().length>0) ? this.triggerStrings()[0] : Name();
+		if(command != null)
+			command.add(0, keyWord);
 		if(auto
 		&&(mob.isMonster())
-		&&(targetM!=null)
-		&&(targetM.isPlayer()))
-			targetM.tell(targetM,null,null,msg);
+		&&(target instanceof MOB)
+		&&((MOB)target).isPlayer())
+		{
+			final Room R=((MOB)target).location();
+			final CMMsg cmsg=CMClass.getMsg((MOB)target,null,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			if(!R.okMessage(target,cmsg))
+				return false;
+			R.send((MOB)target,cmsg);
+		}
 		else
-			mob.tell(targetM,null,null,msg);
+		{
+			final Room R=mob.location();
+			final CMMsg cmsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			if(!R.okMessage(mob,cmsg))
+				return false;
+			R.send(mob,cmsg);
+		}
 		return false;
 	}
 
@@ -1864,16 +1897,16 @@ public class StdAbility implements Ability
 	}
 
 	// needs to be public because StdAbility is not local to any of the skills
-	public boolean testUsageCost(final MOB mob, final boolean auto, final int[] consumed, final boolean quiet)
+	public boolean testUsageCost(final MOB mob, final boolean auto, final int[] consumed, final boolean quiet, final List<String> commands)
 	{
 		if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 		{
 			if(!quiet)
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
-					failureTell(mob,mob,auto,L("You must be at full mana to do that."));
+					failureTell(mob,mob,auto,L("You must be at full mana to do that."), commands);
 				else
-					failureTell(mob,mob,auto,L("You don't have enough mana to do that."));
+					failureTell(mob,mob,auto,L("You don't have enough mana to do that."), commands);
 			}
 			return false;
 		}
@@ -1882,9 +1915,9 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(mob.maxState().getMovement()==consumed[Ability.USAGEINDEX_MOVEMENT])
-					failureTell(mob,mob,auto,L("You must be at full movement to do that."));
+					failureTell(mob,mob,auto,L("You must be at full movement to do that."), commands);
 				else
-					failureTell(mob,mob,auto,L("You don't have enough movement to do that.  You are too tired."));
+					failureTell(mob,mob,auto,L("You don't have enough movement to do that.  You are too tired."), commands);
 			}
 			return false;
 		}
@@ -1893,9 +1926,9 @@ public class StdAbility implements Ability
 			if(!quiet)
 			{
 				if(mob.maxState().getHitPoints()==consumed[Ability.USAGEINDEX_HITPOINTS])
-					failureTell(mob,mob,auto,L("You must be at full health to do that."));
+					failureTell(mob,mob,auto,L("You must be at full health to do that."), commands);
 				else
-					failureTell(mob,mob,auto,L("You don't have enough hit points to do that."));
+					failureTell(mob,mob,auto,L("You don't have enough hit points to do that."), commands);
 			}
 			return false;
 		}
@@ -1926,14 +1959,14 @@ public class StdAbility implements Ability
 			{
 				final TimeClock C=room.getArea().getTimeObj();
 				if(C!=null)
-					failureTell(mob,mob,auto,L("You must wait @x1 before you can do that again.",C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())));
+					failureTell(mob,mob,auto,L("You must wait @x1 before you can do that again.",C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())), commands);
 				return false;
 			}
 
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			&&(CMLib.flags().isBound(mob)))
 			{
-				failureTell(mob,mob,auto,L("You are bound!"));
+				failureTell(mob,mob,auto,L("You are bound!"), commands);
 				return false;
 			}
 
@@ -1962,7 +1995,7 @@ public class StdAbility implements Ability
 					final double amtPenalty = rule.amtPenalty();
 					if(amtPenalty < 0)
 					{
-						failureTell(mob,mob,auto,L("You can't do that again just yet."));
+						failureTell(mob,mob,auto,L("You can't do that again just yet."), commands);
 						return false;
 					}
 					else
@@ -1989,7 +2022,7 @@ public class StdAbility implements Ability
 			else
 				timeCache=null;
 
-			if(!testUsageCost(mob,false,consumed,auto))
+			if(!testUsageCost(mob,false,consumed,auto,commands))
 				return false;
 
 			if((minCastWaitTime()>0)&&(lastCastHelp>0))
@@ -1997,16 +2030,16 @@ public class StdAbility implements Ability
 				if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
 				{
 					if(minCastWaitTime()<=1000)
-						failureTell(mob,mob,auto,L("You need a second to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need a second to recover before doing that again."), commands);
 					else
 					if(minCastWaitTime()<=5000)
-						failureTell(mob,mob,auto,L("You need a few seconds to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need a few seconds to recover before doing that again."), commands);
 					else
-						failureTell(mob,mob,auto,L("You need awhile to recover before doing that again."));
+						failureTell(mob,mob,auto,L("You need awhile to recover before doing that again."), commands);
 					return false;
 				}
 			}
-			if(!checkComponents(mob))
+			if(!checkComponents(mob,commands))
 				return false;
 			if(timeCache!=null)
 			{
@@ -2027,7 +2060,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-	protected boolean checkComponents(final MOB mob)
+	protected boolean checkComponents(final MOB mob, final List<String> commands)
 	{
 		if((mob!=null)
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
@@ -2041,7 +2074,7 @@ public class StdAbility implements Ability
 				{
 					failureTell(mob,mob,false,L("The requirements to use this @x1 are: @x2.",
 							Ability.ACODE.DESCS.get(classificationCode()&Ability.ALL_ACODES).toLowerCase(),
-							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())));
+							CMLib.ableComponents().getAbilityComponentDesc(mob,ID())), commands);
 					if(!mob.isPlayer())
 						CMLib.ableComponents().startAbilityComponentTrigger(mob, this);
 					return false;

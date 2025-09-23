@@ -166,7 +166,7 @@ public class Spell_DetectAmbush extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting ambushes."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting ambushes."), commands);
 			return false;
 		}
 

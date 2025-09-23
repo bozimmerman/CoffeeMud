@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 
 /*
-   Copyright 2014-2025 Bo Zimmerman
+   Copyright 2025-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,8 +55,8 @@ public class GenAirShip extends GenNavigableBoardable
 	public GenAirShip()
 	{
 		super();
-		setName("an air ship [NEWNAME]");
-		setDisplayText("aa air ship [NEWNAME] is here.");
+		setName("the air ship [NEWNAME]");
+		setDisplayText("the air ship [NEWNAME] is here.");
 		this.verb_sail = L("fly");
 		this.verb_sailing = L("flying");
 		this.noun_word = L("ship");
@@ -119,7 +119,7 @@ public class GenAirShip extends GenNavigableBoardable
 				switch(N)
 				{
 				case NAVIGATE:
-					navCommandWords.put("FLOAT", N);
+					navCommandWords.put("SAIL", N);
 					break;
 				case RAISE_ANCHOR:
 					navCommandWords.put("RELEASE_TIEDOWNS", N);

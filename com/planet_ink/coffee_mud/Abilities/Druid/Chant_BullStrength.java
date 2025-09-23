@@ -104,7 +104,7 @@ public class Chant_BullStrength extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the strength of a bull."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the strength of a bull."), commands);
 			return false;
 		}
 

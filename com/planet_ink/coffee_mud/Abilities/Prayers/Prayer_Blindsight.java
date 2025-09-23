@@ -147,7 +147,7 @@ public class Prayer_Blindsight extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the blindsight."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> the blindsight."), commands);
 			return false;
 		}
 

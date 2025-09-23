@@ -168,7 +168,7 @@ public class Chant_LocatePlants extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to find plant life."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to find plant life."), commands);
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);

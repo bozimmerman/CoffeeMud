@@ -141,9 +141,9 @@ public class Archon_Injure extends ArchonSkill
 		if(gone==null)
 		{
 			if(part==null)
-				failureTell(mob,target,auto,L("<S-NAME> has no parts."));
+				failureTell(mob,target,auto,L("<S-NAME> has no parts."), commands);
 			else
-				failureTell(mob,target,auto,L("<S-NAME> has no part called '@x1'.",part.toLowerCase()));
+				failureTell(mob,target,auto,L("<S-NAME> has no part called '@x1'.",part.toLowerCase()), commands);
 			return false;
 		}
 

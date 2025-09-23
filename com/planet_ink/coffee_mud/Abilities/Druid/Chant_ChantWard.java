@@ -135,7 +135,7 @@ public class Chant_ChantWard extends Chant
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already affected by @x1.",name()), commands);
 			return false;
 		}
 

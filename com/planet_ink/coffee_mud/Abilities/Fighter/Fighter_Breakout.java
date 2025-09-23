@@ -174,17 +174,17 @@ public class Fighter_Breakout extends FighterSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to break out of <S-HIS-HER> bonds."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already trying to break out of <S-HIS-HER> bonds."), commands);
 			return false;
 		}
 		if(!CMLib.flags().isAliveAwakeMobile(mob,true))
 		{
-			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound!"));
+			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound!"), commands);
 			return false;
 		}
 		if(CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING).size()==0)
 		{
-			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound by anything which can be broken out of."));
+			failureTell(mob,target,auto,L("<T-NAME> <T-IS-ARE> not bound by anything which can be broken out of."), commands);
 			return false;
 		}
 

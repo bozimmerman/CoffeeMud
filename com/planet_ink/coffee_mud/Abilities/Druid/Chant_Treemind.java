@@ -123,7 +123,7 @@ public class Chant_Treemind extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already have the mind of a tree."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already have the mind of a tree."), commands);
 			return false;
 		}
 

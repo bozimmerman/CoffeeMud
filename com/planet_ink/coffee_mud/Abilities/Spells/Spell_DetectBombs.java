@@ -231,7 +231,7 @@ public class Spell_DetectBombs extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting bombs."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already detecting bombs."), commands);
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

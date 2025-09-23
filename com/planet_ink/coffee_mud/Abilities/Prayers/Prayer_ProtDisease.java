@@ -141,7 +141,7 @@ public class Prayer_ProtDisease extends Prayer
 			return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from disease."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> protection from disease."), commands);
 			return false;
 		}
 

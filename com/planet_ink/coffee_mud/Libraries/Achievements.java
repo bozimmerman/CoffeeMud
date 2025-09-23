@@ -8272,6 +8272,37 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
+	public boolean grantAchievement(final MOB mob, final Achievement A)
+	{
+		if((mob == null)||(A==null))
+			return false;
+		final PlayerStats pStats = mob.playerStats();
+		final PlayerAccount account = (pStats==null)?null:pStats.getAccount();
+		switch(A.getAgent())
+		{
+		case PLAYER:
+			if(pStats == null)
+				return false;
+			return this.evaluatePlayerAchievement(A, pStats, mob, true);
+		case ACCOUNT:
+			if(account == null)
+				return false;
+			return this.evaluateAccountAchievement(A, account, mob, true);
+		case CLAN:
+		{
+			boolean done = false;
+			for(final Pair<Clan,Integer> c : mob.clans())
+			{
+				final Clan C=c.first;
+				done = this.evaluateClanAchievement(A,  C, null, true) || done;
+			}
+			return done;
+		}
+		}
+		return false;
+	}
+
+	@Override
 	public void possiblyBumpAchievement(final MOB mob, final Event E, final int bumpNum, final Object... parms)
 	{
 		if((mob != null)
@@ -9329,7 +9360,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
 						.append(((TattooAward)award).isForAccount()?" ACCOUNT=TRUE":"")
-						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(((TattooAward)award).getDescription())+"\")"));
+						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(award.getDescription())+"\")"));
 				break;
 			case MOB:
 				awardStr.append(" ").append(((CatalogAward)award).getAmount())
@@ -9655,12 +9686,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		Resources.removeResource(loadAchievementFilename);
 	}
 
-	private boolean evaluatePlayerAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)
+	private boolean evaluatePlayerAchievement(final Achievement A, final PlayerStats pStats, final MOB mob, final boolean autoGrant)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
 			final Tracker T=pStats.getAchievementTracker(A, mob, mob);
-			if(T.isAchieved(mob))
+			if(T.isAchieved(mob)||autoGrant)
 			{
 				return giveAwards(A, pStats, mob, mob,AchievementLoadFlag.NORMAL);
 			}
@@ -9668,14 +9699,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 
-	private boolean evaluateAccountAchievement(final Achievement A, final PlayerAccount account, final MOB mob)
+	private boolean evaluateAccountAchievement(final Achievement A, final PlayerAccount account, final MOB mob, final boolean autoGrant)
 	{
 		if(account != null)
 		{
 			if(account.findTattoo(A.getTattoo())==null)
 			{
 				final Tracker T=account.getAchievementTracker(A, mob, mob);
-				if(T.isAchieved(mob))
+				if(T.isAchieved(mob)||autoGrant)
 				{
 					return giveAwards(A, account, account, mob,AchievementLoadFlag.NORMAL);
 				}
@@ -9684,14 +9715,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 
-	private boolean evaluateClanAchievement(final Achievement A, final Clan C, MOB mob)
+	private boolean evaluateClanAchievement(final Achievement A, final Clan C, MOB mob, final boolean autoGrant)
 	{
 		if(C != null)
 		{
 			if(C.findTattoo(A.getTattoo())==null)
 			{
 				final Tracker T=C.getAchievementTracker(A, C, mob);
-				if(T.isAchieved(C))
+				if(T.isAchieved(C)||autoGrant)
 				{
 					if(mob == null)
 						mob = CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
@@ -9714,7 +9745,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(final Enumeration<Achievement> a=achievements(Agent.PLAYER);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(evaluatePlayerAchievement(A, P, mob))
+			if(evaluatePlayerAchievement(A, P, mob,false))
 				somethingDone = true;
 		}
 		return somethingDone;
@@ -9735,7 +9766,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		for(final Enumeration<Achievement> a=achievements(Agent.ACCOUNT);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(evaluateAccountAchievement(A, C, mob))
+			if(evaluateAccountAchievement(A, C, mob,false))
 				somethingDone = true;
 		}
 		return somethingDone;
@@ -9753,7 +9784,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			for(final Enumeration<Achievement> a=achievements(Agent.CLAN);a.hasMoreElements();)
 			{
 				final Achievement A=a.nextElement();
-				if(evaluateClanAchievement(A, C, null)) // the mob is loaded later, if necc
+				if(evaluateClanAchievement(A, C, null,false)) // the mob is loaded later, if necc
 					somethingDone = true;
 			}
 		}

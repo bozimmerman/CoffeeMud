@@ -318,7 +318,7 @@ public class Chant_SenseWater extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing water."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already sensing water."), commands);
 			return false;
 		}
 		final boolean success=proficiencyCheck(mob,0,auto);

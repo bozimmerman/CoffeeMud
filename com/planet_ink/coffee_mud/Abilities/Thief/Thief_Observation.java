@@ -130,7 +130,7 @@ public class Thief_Observation extends ThiefSkill
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already observing."));
+			failureTell(mob,target,auto,L("<S-NAME> <S-IS-ARE> already observing."), commands);
 			return false;
 		}
 

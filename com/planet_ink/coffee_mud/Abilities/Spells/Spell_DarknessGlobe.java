@@ -196,7 +196,7 @@ public class Spell_DarknessGlobe extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a darkness globe around <S-HIM-HER>."));
+			failureTell(mob,target,auto,L("<S-NAME> already <S-HAS-HAVE> a darkness globe around <S-HIM-HER>."), commands);
 			return false;
 		}
 

@@ -199,7 +199,7 @@ public class AnimalTraining extends CommonSkill
 		valid+=".";
 		if(commands.size()<2)
 		{
-			commonTelL(mob,"Train whom to do what? @x1",valid);
+			commonFaiL(mob,commands,"Train whom to do what? @x1",valid);
 			return false;
 		}
 		skill=null;
@@ -237,7 +237,7 @@ public class AnimalTraining extends CommonSkill
 		}
 		if(skill==null)
 		{
-			commonTelL(mob,"Train whom to do what? @x1",valid);
+			commonFaiL(mob,commands,"Train whom to do what? @x1",valid);
 			return false;
 		}
 
@@ -248,18 +248,18 @@ public class AnimalTraining extends CommonSkill
 		{
 			if(!CMLib.flags().canBeSeenBy(M,mob))
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnAnimal(M)))
 			{
-				commonTelL(mob,"You can't train @x1.",M.name(mob));
+				commonFaiL(mob,commands,"You can't train @x1.",M.name(mob));
 				return false;
 			}
 			if((CMLib.flags().canMove(M))
 			&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTelL(mob,"@x1 doesn't seem willing to cooperate.",M.name(mob));
+				commonFaiL(mob,commands,"@x1 doesn't seem willing to cooperate.",M.name(mob));
 				return false;
 			}
 			trainingM=M;
@@ -292,13 +292,13 @@ public class AnimalTraining extends CommonSkill
 			}
 			if(cage==null)
 			{
-				commonTelL(mob,"You don't see anyone called '@x1' here.",str);
+				commonFaiL(mob,commands,"You don't see anyone called '@x1' here.",str);
 				return false;
 			}
 			trainingM=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((trainingM==null)||(!CMLib.flags().canBeSeenBy(trainingM,mob))||(!(trainingM instanceof CagedAnimal)))
 			{
-				commonTelL(mob,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
+				commonFaiL(mob,commands,"You don't see any creatures in @x1 called '@x2'.",cage.name(),CMParms.combine(commands,0));
 				return false;
 			}
 			M=((CagedAnimal)trainingM).unCageMe();
@@ -316,17 +316,17 @@ public class AnimalTraining extends CommonSkill
 			if(CMath.s_bool(skill.getStat("EXISTS:"+lang.ID()+" `^"+skillto.name().toLowerCase()))
 			)//&&CMath.s_bool(skill.getStat("EXISTS:#"+mob.Name())))
 			{
-				commonTelL(mob,"@x1 already knows how to do that for you.",M.name(mob));
+				commonFaiL(mob,commands,"@x1 already knows how to do that for you.",M.name(mob));
 				return false;
 			}
 		}
 		else
 		if(((skill instanceof Behavior)
-			&&(M.fetchBehavior(((Behavior)skill).ID())!=null)
+			&&(M.fetchBehavior(skill.ID())!=null)
 			)
-		||(skill instanceof Ability)&&(M.fetchAbility(((Ability)skill).ID())!=null))
+		||(skill instanceof Ability)&&(M.fetchAbility(skill.ID())!=null))
 		{
-			commonTelL(mob,"@x1 already knows how to do that.",M.name(mob));
+			commonFaiL(mob,commands,"@x1 already knows how to do that.",M.name(mob));
 			return false;
 		}
 
