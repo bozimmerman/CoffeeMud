@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.application;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.MalformedInputException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -12,10 +14,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+
+import com.sun.org.apache.xml.internal.serializer.Version;
+
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 
@@ -49,7 +55,7 @@ limitations under the License.
 public class UpgradeTool
 {
 
-	private static final String VERSION_URL="http://www.zimmers.net/anonftp/pub/projects/coffeemud/latestversion.txt";
+	private static final String VERSION_URL="http://www.zimmers.net/anonftp/pub/projects/coffeemud/versions.txt";
 	private static final String	ZIP_URL_TEMPLATE="http://www.zimmers.net/anonftp/pub/projects/coffeemud/all/CoffeeMud_%s.zip";
 	private static final String	ZIP_HEAD_TEMPLATE="http://www.coffeemud.net:8080/svnhead/CoffeeMud_Hourly.zip";
 
@@ -73,18 +79,58 @@ public class UpgradeTool
 					latestVer += ".0";
 			}
 		}
+		Path backupZip = null;
 		final Path root=Paths.get(".");
 		try
 		{
-			final String userVer=getUserVersion(root);
+			String userVer=getUserVersion(root);
+			final List<String> versions = getVersions();
 			if(latestVer==null)
-				latestVer=getLatestVersion();
+				latestVer = versions.get(versions.size()-1);
 			if(userVer.equals(latestVer))
 			{
 				System.out.println("Already at version "+userVer+".");
-				return;
+				System.exit(0);
+			}
+			if(!versions.contains(userVer))
+			{
+				for (int i = versions.size() - 1; i >= 0; i--)
+				{
+					final String v = versions.get(i);
+					if (compareVersions(v, userVer) < 0)
+					{
+						if(i == versions.size()-1)
+						{
+							System.err.println("Current version " + userVer + " not found, and is beyond the latest.");
+							System.err.println("Cancelled.");
+							System.exit(1);
+						}
+						System.out.println("Current version " + userVer + " not found. Assuming upgrade from " + v + ".");
+						userVer = v;
+						break;
+					}
+				}
+				// check for the next-lowest version?
+			}
+			if((!versions.contains(latestVer))
+			&& (!latestVer.equals("HEAD")))
+			{
+				System.err.println("Requested version " + userVer + " not found in version list.");
+				final StringBuilder verList = new StringBuilder();
+				for (final String v : versions)
+					verList.append(v).append(", ");
+				if (verList.length() > 2)
+					verList.setLength(verList.length() - 2);
+				System.err.println("Available versions: " + verList);
+				System.exit(1);
 			}
 			checkPermissions(root);
+			backupZip = root.resolve("CoffeeMud_Backup_" + userVer + ".zip");
+			if(!Files.exists(backupZip))
+			{
+				System.out.println("Creating backup: " + backupZip);
+				zipDirectory(root, backupZip);
+			}
 
 			System.out.println("Upgrading CoffeeMud from "+userVer+" to "+latestVer+"...");
 
@@ -176,6 +222,22 @@ public class UpgradeTool
 		{
 			System.err.println("Upgrade failed: "+e.getMessage());
 			e.printStackTrace();
+			if (backupZip != null && Files.exists(backupZip))
+			{
+				System.err.println("Restoring from backup: " + backupZip);
+				try
+				{
+					unzip(backupZip, root);
+					System.err.println("Restoration complete.");
+				}
+				catch (final IOException ioe)
+				{
+					System.err.println("Restoration failed: " + ioe.getMessage());
+					ioe.printStackTrace();
+				}
+			}
+			else
+				System.err.println("No backup available to restore.");
 			System.exit(1);
 		}
 	}
@@ -272,30 +334,94 @@ public class UpgradeTool
 	}
 
 	/**
-	 * Get the latest stable version from the version URL.
-	 *
-	 * @return The latest version string.
-	 * @throws IOException If the version cannot be fetched or parsed.
+	 * Get the list of available versions from the version URL.
+	 * @return A list of version strings.
+	 * @throws IOException If the version list cannot be fetched or parsed.
 	 */
-	private static String getLatestVersion() throws IOException
+	private static List<String> getVersions() throws IOException
 	{
 		final URL url=new URL(VERSION_URL+"?time="+System.currentTimeMillis());
 		final HttpURLConnection conn =(HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "text/plain");
 		final BufferedReader reader=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String line;
-		final StringBuilder response=new StringBuilder();
-		while((line=reader.readLine()) != null)
-			response.append(line);
+		final List<String> versions = new Vector<String>();
+		String version;
+		while((version=reader.readLine()) != null)
+		{
+			version = version.trim().replace('_','.');
+			if((version.length()>0)&&(version.indexOf('.')>0))
+			{
+				while(version.split("\\.").length<4)
+					version+=".0";
+				versions.add(version);
+			}
+		}
 		reader.close();
-		String version=response.toString().trim();
-		version=version.replace("_", ".");
-		if(version.length()==0)
+		if(versions.size()==0)
 			throw new IOException("Cannot parse latest version from zimmmrs.net");
-		while(version.split("\\.").length!=4)
-			version+=".0";
-		return version;
+		versions.sort(new Comparator<String>() {
+			@Override
+			public int compare(final String v1, final String v2)
+			{
+				return compareVersions(v1, v2);
+			}
+		});
+		return versions;
+	}
+
+	/**
+	 * Recursively zip a directory and its contents.
+	 *
+	 * @param sourceDir The source directory path to zip.
+	 * @param zipFile The destination zip file path.
+	 * @throws IOException If zipping fails.
+	 */
+	private static void zipDirectory(final Path sourceDir, final Path zipFile) throws IOException
+	{
+		try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zipFile)))
+		{
+			Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>()
+			{
+				@Override
+				public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException
+				{
+					zos.putNextEntry(new ZipEntry(sourceDir.relativize(dir).toString() + "/"));
+					zos.closeEntry();
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException
+				{
+					zos.putNextEntry(new ZipEntry(sourceDir.relativize(file).toString()));
+					Files.copy(file, zos);
+					zos.closeEntry();
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		}
+	}
+
+	/**
+	 * Compare two version strings in the format "x.y.z.w".
+	 *
+	 * @param v1 The first version string.
+	 * @param v2 The second version string.
+	 * @return Negative if v1 < v2, positive if v1 > v2, zero if equal.
+	 */
+	private static int compareVersions(final String v1, final String v2)
+	{
+		final String[] p1 = v1.split("\\.");
+		final String[] p2 = v2.split("\\.");
+		for (int i = 0; i < 4; i++)
+		{
+			final int n1 = Integer.parseInt(p1[i]);
+			final int n2 = Integer.parseInt(p2[i]);
+			if (n1 != n2)
+				return Integer.compare(n1, n2);
+		}
+		return 0;
 	}
 
 	/**
@@ -442,11 +568,24 @@ public class UpgradeTool
 	 */
 	private static boolean isTextFile(final Path file)
 	{
+		final String fileName = file.getFileName().toString().toLowerCase();
+		if (fileName.endsWith(".ini")
+		|| fileName.endsWith(".properties")
+		|| fileName.endsWith(".cmare")
+		|| fileName.endsWith(".txt")
+		|| fileName.endsWith(".bat")
+		|| fileName.endsWith(".sh")
+		|| fileName.endsWith(".xml")
+		|| fileName.endsWith(".quest")
+		|| fileName.endsWith(".script")
+		|| fileName.endsWith(".js"))
+			return true;
 		try(BufferedReader reader=Files.newBufferedReader(file, StandardCharsets.UTF_8))
 		{
 			String line;
+			long x = 0;
 			while((line=reader.readLine()) != null)
-				line=line+line; // unused
+				x = line.length() + x;
 			return true;
 		}
 		catch(final IOException e)
@@ -473,6 +612,33 @@ public class UpgradeTool
 		if(Files.size(file1) != Files.size(file2))
 			return false;
 		return Arrays.equals(Files.readAllBytes(file1),  Files.readAllBytes(file2));
+	}
+
+	/**
+	 * Reads all lines from a file using UTF-8 decoding, tolerantly handling
+	 * malformed input by replacing invalid sequences with the Unicode
+	 * replacement character (?). This preserves the structure of the lines
+	 * while substituting un decodable parts.
+	 *
+	 * @param file The path to the file to read.
+	 * @return A list of strings, each representing a line from the file.
+	 * @throws IOException If an I/O error occurs reading from the file.
+	 */
+	private static List<String> readAllLinesTolerant(final Path file) throws IOException
+	{
+		final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder();
+		decoder.onMalformedInput(CodingErrorAction.REPLACE);
+		decoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+		final List<String> lines = new ArrayList<>();
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(file), decoder)))
+		{
+			String line;
+			while ((line = reader.readLine()) != null)
+			{
+				lines.add(line);
+			}
+		}
+		return lines;
 	}
 
 	/**
@@ -503,6 +669,14 @@ public class UpgradeTool
 				final Path baseFile=baseDir.resolve(rel);
 				final Path latestFile=file;
 
+				final String fileNameStr = userFile.getFileName().toString();
+				if(userDir.getFileName().toString().equals("guides")
+				&&(fileNameStr.toLowerCase().endsWith(".html")))
+				{
+					Files.copy(latestFile, userFile, StandardCopyOption.REPLACE_EXISTING);
+					return FileVisitResult.CONTINUE;
+				}
+
 				if(sameFiles(baseFile,userFile))
 				{
 					Files.copy(latestFile, userFile, StandardCopyOption.REPLACE_EXISTING);
@@ -525,11 +699,10 @@ public class UpgradeTool
 					return FileVisitResult.CONTINUE;
 				}
 
-				final List<String> baseLines=Files.readAllLines(baseFile, StandardCharsets.UTF_8);
-				final List<String> userLines=Files.readAllLines(userFile, StandardCharsets.UTF_8);
-				final List<String> latestLines=Files.readAllLines(latestFile, StandardCharsets.UTF_8);
+				final List<String> baseLines=readAllLinesTolerant(baseFile);
+				final List<String> userLines=readAllLinesTolerant(userFile);
+				final List<String> latestLines=readAllLinesTolerant(latestFile);
 
-				final String fileNameStr=userFile.getFileName().toString();
 				List<String> merged;
 				if(fileNameStr.endsWith(".ini") || fileNameStr.endsWith(".properties"))
 					merged=iniThreeWayMerge(baseLines, userLines, latestLines, userFile.toString());
@@ -586,9 +759,9 @@ public class UpgradeTool
 					continue;
 				}
 
-				final List<String> baseLines=Files.readAllLines(baseFile, StandardCharsets.UTF_8);
-				final List<String> userLines=Files.readAllLines(userFile, StandardCharsets.UTF_8);
-				final List<String> latestLines=Files.readAllLines(latestFile, StandardCharsets.UTF_8);
+				final List<String> baseLines=readAllLinesTolerant(baseFile);
+				final List<String> userLines=readAllLinesTolerant(userFile);
+				final List<String> latestLines=readAllLinesTolerant(latestFile);
 
 				final String fileNameStr=userFile.getFileName().toString();
 				List<String> merged;
@@ -1460,23 +1633,33 @@ public class UpgradeTool
 		 */
 		private void diff(final int i, final int j)
 		{
-			if((i>0)&&(j>0)&& x.get(i-1).equals(y.get(j-1)))
+			final List<DiffEntry<VALUE>> tempDiff = new ArrayList<>();
+			int ci = i;
+			int cj = j;
+			while (ci > 0 || cj > 0)
 			{
-				diff(i-1, j-1);
-				diff.add(new DiffEntry<>(DiffType.EQUAL, x.get(i-1)));
+				if ((ci > 0) && (cj > 0) && (x.get(ci - 1).equals(y.get(cj - 1))))
+				{
+					tempDiff.add(new DiffEntry<>(DiffType.EQUAL, x.get(ci - 1)));
+					ci--;
+					cj--;
+				}
+				else
+				if ((cj > 0) && ((ci == 0) || (lengths[ci][cj - 1] >= lengths[ci - 1][cj])))
+				{
+					tempDiff.add(new DiffEntry<>(DiffType.ADD, y.get(cj - 1)));
+					cj--;
+				}
+				else
+				if ((ci > 0) && ((cj == 0) || (lengths[ci][cj - 1] < lengths[ci - 1][cj])))
+				{
+					tempDiff.add(new DiffEntry<>(DiffType.REMOVE, x.get(ci - 1)));
+					ci--;
+				}
 			}
-			else
-			if((j>0)&&((i==0) || lengths[i][j-1] >= lengths[i-1][j]))
-			{
-				diff(i, j-1);
-				diff.add(new DiffEntry<>(DiffType.ADD, y.get(j-1)));
-			}
-			else
-			if((i>0)&&((j==0) || lengths[i][j-1]<lengths[i-1][j]))
-			{
-				diff(i-1, j);
-				diff.add(new DiffEntry<>(DiffType.REMOVE, x.get(i-1)));
-			}
+			// Reverse the list since we built it from the end
+			Collections.reverse(tempDiff);
+			this.diff = tempDiff;
 		}
 
 		/**
@@ -1502,17 +1685,23 @@ public class UpgradeTool
 		 */
 		private void getMatching(final int i, final int j, final Map<Integer, Integer> matching)
 		{
-			if((i>0) &&(j>0) && x.get(i-1).equals(y.get(j-1)))
+			int ci = i;
+			int cj = j;
+			while ((ci > 0)||(cj > 0))
 			{
-				getMatching(i-1, j-1, matching);
-				matching.put(Integer.valueOf(i-1), Integer.valueOf(j-1));
+				if ((ci > 0)&&(cj > 0)&&(x.get(ci - 1).equals(y.get(cj - 1))))
+				{
+					matching.put(Integer.valueOf(ci - 1), Integer.valueOf(cj - 1));
+					ci--;
+					cj--;
+				}
+				else
+				if((cj > 0)&& ((ci == 0) || (lengths[ci][cj - 1] >= lengths[ci - 1][cj])))
+					cj--;
+				else
+				if ((ci > 0) && ((cj == 0) || (lengths[ci][cj - 1] < lengths[ci - 1][cj])))
+					ci--;
 			}
-			else
-			if((j>0)&&((i==0) ||(lengths[i][j-1] >= lengths[i-1][j])))
-				getMatching(i, j-1, matching);
-			else
-			if((i>0)&&((j==0) ||(lengths[i][j-1]<lengths[i-1][j])))
-				getMatching(i-1, j, matching);
 		}
 	}
 
