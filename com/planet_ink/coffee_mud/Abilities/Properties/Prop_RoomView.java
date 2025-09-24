@@ -55,7 +55,8 @@ public class Prop_RoomView extends Property
 	protected Room newRoom=null;
 	protected boolean longlook = false;
 	protected boolean attack = false;
-	protected String viewedRoomID = "";
+	protected String uviewedRoomID = "";
+	protected int uviewedRoomDir = -1;
 	//protected Integer[] dirAdj = new Integer[0];
 
 	@Override
@@ -66,6 +67,7 @@ public class Prop_RoomView extends Property
 		longlook=false;
 		attack=false;
 		newRoom=null;
+		uviewedRoomDir=-1;
 		if(x>=0)
 		{
 			final String parms=text.substring(0,x);
@@ -75,54 +77,106 @@ public class Prop_RoomView extends Property
 				else
 				if(str.equalsIgnoreCase("ATTACK"))
 					longlook=true;
-			viewedRoomID=text.substring(x+1).trim();
+			uviewedRoomID=text.substring(x+1).trim().toUpperCase();
 		}
 		else
-			viewedRoomID=text.trim();
+			uviewedRoomID=text.trim();
+		if (uviewedRoomID.endsWith("NOUT"))
+		{
+			uviewedRoomDir = CMLib.directions().getGoodDirectionCode(uviewedRoomID.substring(0,uviewedRoomID.length()-4));
+			if(uviewedRoomDir < 0)
+				Log.errOut("Unknown direction in room code: "+uviewedRoomID);
+			else
+				uviewedRoomID = "NOUT";
+		}
+		else
+			uviewedRoomDir = CMLib.directions().getGoodDirectionCode(uviewedRoomID);
 	}
 
 	@Override
 	public String accountForYourself()
 	{
-		return "Different View of "+viewedRoomID;
+		return "Different View of "+uviewedRoomID;
+	}
+
+	protected Room getNewRoom()
+	{
+		if(uviewedRoomID.equals("OUT")||uviewedRoomID.equals("NOUT"))
+		{
+			Room newRoom = CMLib.map().roomLocation(affected);
+			if((newRoom != null)&&(newRoom.getArea() instanceof Boardable))
+			{
+				final Room thereR=CMLib.map().roomLocation(((Boardable)newRoom.getArea()).getBoardableItem());
+				if(thereR!=null)
+				{
+					newRoom=thereR;
+					if (uviewedRoomID.endsWith("NOUT"))
+					{
+						final int dir = this.uviewedRoomDir;
+						Room R = newRoom.getRoomInDir(dir);
+						Exit E = newRoom.getExitInDir(dir);
+						if ((R != null)
+						&& (E != null)
+						&& (E.isOpen())
+						&& (!CMLib.flags().isHidden(E)))
+						{
+							newRoom = R;
+							while((newRoom.roomID().length()==0)
+							&&((newRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+								||(newRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
+								||(newRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+								||(newRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
+							{
+								if(newRoom.numInhabitants()>0)
+									break;
+								boolean foundBoardable = false;
+								for (final Enumeration<Item> i = newRoom.items(); i.hasMoreElements();)
+								{
+									final Item I = i.nextElement();
+									if ((I != null)
+									&& (I.container() == null)
+									&& (I instanceof Rideable))
+									{
+										foundBoardable=true;
+										break;
+									}
+								}
+								if (foundBoardable)
+									break;
+								R = newRoom.getRoomInDir(dir);
+								E = newRoom.getExitInDir(dir);
+								if ((R == null)
+								|| (E == null)
+								|| (!E.isOpen())
+								|| (CMLib.flags().isHidden(E)))
+									break;
+								newRoom = R;
+							}
+						}
+					}
+				}
+			}
+			this.newRoom = newRoom;
+		}
+		else
+		if((newRoom==null)
+		||(newRoom.amDestroyed()))
+		{
+			if(uviewedRoomDir < 0)
+				newRoom=CMLib.map().getRoom(uviewedRoomID);
+			else
+			{
+				final Room hereR=CMLib.map().roomLocation(affected);
+				if(hereR != null)
+					newRoom=hereR.getRoomInDir(uviewedRoomDir);
+			}
+		}
+		return newRoom;
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((newRoom==null)
-		||(newRoom.amDestroyed()))
-		{
-			if(viewedRoomID.equalsIgnoreCase("OUT"))
-			{
-				final Room hereR=CMLib.map().roomLocation(affected);
-				if(hereR != null)
-				{
-					if(hereR.getArea() instanceof Boardable)
-					{
-						final Room thereR=CMLib.map().roomLocation(((Boardable)hereR.getArea()).getBoardableItem());
-						if(thereR!=null)
-							newRoom=thereR;
-					}
-					else
-						newRoom=hereR;
-				}
-			}
-			else
-			{
-				newRoom=CMLib.map().getRoom(viewedRoomID);
-				if(newRoom == null)
-				{
-					final int dirCode = CMLib.directions().getDirectionCode(viewedRoomID);
-					if(dirCode >= 0)
-					{
-						final Room hereR=CMLib.map().roomLocation(affected);
-						if(hereR != null)
-							newRoom=hereR.getRoomInDir(dirCode);
-					}
-				}
-			}
-		}
 		if(newRoom==null)
 			return super.okMessage(myHost,msg);
 
@@ -130,10 +184,17 @@ public class Prop_RoomView extends Property
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item)))
 		{
 			if((msg.amITarget(affected))
-			&&(newRoom.fetchEffect(ID())==null))
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
 			{
-				if(longlook && (msg.targetMinor()==CMMsg.TYP_EXAMINE))
+				final Room newRoom=getNewRoom();
+				if((newRoom==null)
+				||(newRoom.fetchEffect(ID())!=null))
+					return super.okMessage(myHost,msg);
+
+				if(longlook)
 				{
+					if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
+						return super.okMessage(myHost,msg);
 					msg.addTrailerRunnable(new Runnable()
 					{
 						final Room R=newRoom;
@@ -153,21 +214,15 @@ public class Prop_RoomView extends Property
 					});
 				}
 				else
-				if(longlook && (msg.targetMinor()==CMMsg.TYP_LOOK))
-					return super.okMessage(myHost,msg);
-				else
 				{
-					if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+					final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
+								  msg.sourceCode(),msg.sourceMessage(),
+								  msg.targetCode(),msg.targetMessage(),
+								  msg.othersCode(),msg.othersMessage());
+					if(newRoom.okMessage(msg.source(),msg2))
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(),newRoom,msg.tool(),
-									  msg.sourceCode(),msg.sourceMessage(),
-									  msg.targetCode(),msg.targetMessage(),
-									  msg.othersCode(),msg.othersMessage());
-						if(newRoom.okMessage(msg.source(),msg2))
-						{
-							newRoom.executeMsg(msg.source(),msg2);
-							return false;
-						}
+						newRoom.executeMsg(msg.source(),msg2);
+						return false;
 					}
 				}
 			}
@@ -191,6 +246,10 @@ public class Prop_RoomView extends Property
 						final String rest = CMParms.combine(parsedFail,1);
 						final MOB sourceM=msg.source();
 						final Room wasR=(Room)affected;
+						final Room newRoom=getNewRoom();
+						if((newRoom==null)
+						||(newRoom.fetchEffect(ID())!=null))
+							return super.okMessage(myHost,msg);
 						final MOB M=newRoom.fetchInhabitant(rest);
 						if((M!=null)
 						&&(CMLib.flags().canBeSeenBy(M, sourceM))

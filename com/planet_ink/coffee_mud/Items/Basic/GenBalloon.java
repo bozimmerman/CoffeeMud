@@ -57,15 +57,18 @@ public class GenBalloon extends GenAirShip
 		super();
 		setName("the balloon called [NEWNAME]");
 		setDisplayText("the balloon [NEWNAME] is here.");
-		this.verb_sail = L("fly");
-		this.verb_sailing = L("flying");
+		this.verb_sail = L("float");
+		this.verb_sailing = L("floating");
 		this.noun_word = L("balloon");
 		this.anchor_name= L("rope");
 		this.anchor_verbed = L("secured");
 		this.head_offTheDeck = L("^HOff the side you see: ^N");
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		basePhyStats().setAbility(1);
+		basePhyStats().setArmor(-50);
 		this.recoverPhyStats();
+		this.ticksPerTurn=1;
+		this.ticksPerMoves=3;
 	}
 
 	@Override
@@ -74,6 +77,20 @@ public class GenBalloon extends GenAirShip
 		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a balloon");
+	}
+
+	@Override
+	protected boolean preNavigateCheck(final Room thisRoom, final int direction, final Room destRoom)
+	{
+		if((direction==Directions.UP)||(direction==Directions.DOWN))
+			return super.preNavigateCheck(thisRoom, direction, destRoom);
+		if ((destRoom.domainType() != Room.DOMAIN_OUTDOORS_AIR) && (destRoom.domainType() != Room.DOMAIN_INDOORS_AIR))
+		{
+			announceToAllAboard(L("<S-NAME> scrape(s) along the ground, going nowhere.", CMLib.directions().getInDirectionName(direction), verb_sail));
+			courseDirections.clear();
+			return false;
+		}
+		return true;
 	}
 
 	private final static Map<String, NavigatingCommand> navCommandWords = new Hashtable<String, NavigatingCommand>();
@@ -90,6 +107,7 @@ public class GenBalloon extends GenAirShip
 				switch(N)
 				{
 				case NAVIGATE:
+					navCommandWords.put("FLOAT", N);
 					break;
 				case RAISE_ANCHOR:
 					navCommandWords.put("RELEASE_TIEDOWNS", N);
@@ -113,6 +131,36 @@ public class GenBalloon extends GenAirShip
 		if (navCommandWords.containsKey(word.toUpperCase().trim()))
 			return new Pair<NavigatingCommand, Integer>(navCommandWords.get(word.toUpperCase().trim()), Integer.valueOf(1));
 		return null;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if (!super.tick(ticking, tickID))
+			return false;
+		if((tickID == Tickable.TICKID_AREA)
+		&&(!amInTacticalMode())
+		&& (area != null)
+		&& (CMLib.dice().rollPercentage()==1))
+		{
+			final Room thisRoom=CMLib.map().roomLocation(this);
+			if((thisRoom != null)
+			&&(thisRoom.getRoomInDir(Directions.DOWN)!=null))
+			{
+				boolean noaboard=true;
+				for(final Enumeration<Room> r=area.getFilledCompleteMap();r.hasMoreElements();)
+				{
+					final Room R = r.nextElement();
+					noaboard = noaboard && (R!=null) && (R.numInhabitants()==0);
+					if (!noaboard)
+						break;
+				}
+				if(noaboard)
+					this.navMove(Directions.DOWN);
+			}
+		}
+
+		return true;
 	}
 
 	@Override

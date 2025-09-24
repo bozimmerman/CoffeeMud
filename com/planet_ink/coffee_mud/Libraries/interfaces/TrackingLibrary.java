@@ -344,13 +344,14 @@ public interface TrackingLibrary extends CMLibrary
 	/**
 	 * Causes the given mob or item to 'fall' from one room to another,
 	 * usually down, if it can.
-	 *
+	 * @param mob who caused the one to fall, if any
 	 * @param P the thing to fall
 	 * @param room the things location
 	 * @param reverseFall true to fall UP instead of down
+	 *
 	 * @return true if falling was started, false otherwise
 	 */
-	public boolean makeFall(Physical P, Room room, boolean reverseFall);
+	public boolean makeFall(MOB mob, Physical P, Room room, boolean reverseFall);
 
 	/**
 	 * If the given mob is riding anything, this will schedule a check

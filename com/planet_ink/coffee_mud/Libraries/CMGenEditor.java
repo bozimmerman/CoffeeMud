@@ -11044,6 +11044,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDisplayText(mob,me,++showNumber,showFlag);
 			genDescription(mob,me,++showNumber,showFlag);
 			genLevel(mob,me,++showNumber,showFlag);
+			if(me instanceof SiegableItem)
+				this.genArmor(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
 			if(me instanceof Technical)

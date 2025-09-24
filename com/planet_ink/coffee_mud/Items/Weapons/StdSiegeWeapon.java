@@ -863,7 +863,19 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 						else
 						if(aiming!=null)
 						{
-							final boolean wasHit = Arrays.equals(aiming, coordsToHit);
+							boolean wasHit = Arrays.equals(aiming, coordsToHit);
+							final int armor = siegeTarget.phyStats().armor() - phyStats().armor();
+							if(armor>0)
+							{
+								if (CMLib.dice().rollPercentage() < armor)
+									wasHit = false;
+							}
+							else
+							if(armor<0)
+							{
+								if (-CMLib.dice().rollPercentage() > armor)
+									wasHit = true;
+							}
 							CMLib.combat().postSiegeAttack(mob, this, siegeTarget, w, wasHit);
 							if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
 							{
@@ -1327,7 +1339,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 		{
 			((MOB)myOwner).recoverCharStats();
 			((MOB)myOwner).recoverMaxState();
-			((MOB)myOwner).recoverPhyStats();
+			myOwner.recoverPhyStats();
 		}
 		else
 		if(myOwner!=null)

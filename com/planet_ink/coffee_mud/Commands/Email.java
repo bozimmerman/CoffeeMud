@@ -9,11 +9,14 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -241,24 +244,63 @@ public class Email extends StdCommand
 				}
 				if(mob.session()==null)
 					return false;
-				final String subject=mob.session().prompt(L("Email Subject: "),"").trim();
-				if(subject.length()==0)
+				final Session session=mob.session();
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					mob.tell(L("Aborted"));
-					return false;
-				}
-				if(mob.session()==null)
-					return false;
-				final String message=mob.session().prompt(L("Enter your message\n\r: "),"").trim();
-				if(message.trim().length()==0)
-				{
-					mob.tell(L("Aborted"));
-					return false;
-				}
-				if(mob.session()==null)
-					return false;
-				CMLib.smtp().emailOrJournal(mob.Name(), mob.Name(), M.Name(), subject, message);
-				mob.tell(L("Your email has been sent."));
+					@Override
+					public void showPrompt()
+					{
+						session.promptPrint(L("Subject: "));
+					}
+
+					@Override
+
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						final String of=this.input;
+						if((of.trim().length()==0)||(of.indexOf('<')>=0))
+						{
+							mob.tell(L("Aborted"));
+							return;
+						}
+						final String subject = of.trim();
+						if(mob.session()==null)
+							return;
+						mob.session().println(L("Enter your message: "));
+						final List<String> message = new Vector<String>();
+						CMLib.journals().makeMessageASync(mob, subject, message, true, new MsgMkrCallback() {
+							List<String> msgV = message;
+							final MOB targM = M;
+							@Override
+							public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
+							{
+								if(res == MsgMkrResolution.SAVEFILE)
+								{
+									final String message = CMParms.combineWith(msgV,'\n');
+									if(message.trim().length()==0)
+									{
+										mob.tell(L("Aborted"));
+										return;
+									}
+									if(sess==null)
+									{
+										mob.tell(L("Aborted."));
+										return;
+									}
+									CMLib.smtp().emailOrJournal(mob.Name(), mob.Name(), targM.Name(), subject, message);
+									mob.tell(L("Your email has been sent."));
+								}
+								else
+									mob.tell(L("Email Cancelled."));
+							}
+						});
+					}
+				});
 				return true;
 			}
 		}

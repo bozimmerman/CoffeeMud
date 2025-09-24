@@ -137,6 +137,40 @@ window.gmcpPackages.push({
 	}
 });
 
+window.gmcpPackages.push({
+	name: "IRE.Composer.Edit",
+	lname: "ire.composer.",
+	version: "1",
+	edit: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		window.sipletInputTitle = msg["title"];
+		window.sipletInputText = msg["text"];
+		var content = getOptionWindow("Siplet.Input",60,40);
+		populateDivFromUrl(content, 'dialogs/editor.htm');
+		window.SubmitSipletInputEntry = function()
+		{
+			var textarea = content.getElementsByTagName('textarea')[0];
+			if(textarea)
+			{
+				var txt = textarea.value;
+				txt = txt.replaceAll('\r','\\r')
+						.replaceAll('\n','\\n');
+				window.currWin.submitInput(txt);
+				hideOptionWindow();
+				setTimeout(setInputBoxFocus,500);
+			}
+		};
+		var SipletInputEntryFocus = function()
+		{
+			var textarea = content.getElementsByTagName('textarea')[0];
+			if(textarea)
+				textarea.focus();
+		};
+		setTimeout(SipletInputEntryFocus,1000);
+	}
+});
+
 function ParseGMCPPkg(pkg)
 {
 	if(!pkg)

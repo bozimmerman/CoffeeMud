@@ -80,6 +80,15 @@ public class Falling extends StdAbility
 	boolean			hitTheCeiling		= false;
 	int				damageToTake		= 0;
 	protected int	fallTickDown		= 1;
+	protected MOB	damagerMOB			= null;
+
+	@Override
+	public void setInvoker(final MOB mob)
+	{
+		super.setInvoker(mob);
+		if(damagerMOB==null)
+			damagerMOB=mob;
+	}
 
 	protected boolean reversed()
 	{
@@ -279,6 +288,53 @@ public class Falling extends StdAbility
 				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,L("<O-NAME> falls in from @x1.",(reversed()?"below":"above")));
+				damageToTake += 1;
+				final Room newRoom = room;
+				if((newRoom != null)
+				&& (!canFallFrom(newRoom,direction))) // it landed
+				{
+					final MOB damagerM = this.damagerMOB;
+					unInvoke();
+					if(damagerM != null)
+					{
+						boolean hitSomething = false;
+						for (final Enumeration<MOB> m = newRoom.inhabitants(); m.hasMoreElements();)
+						{
+							final MOB M = m.nextElement();
+							if((M!=null)
+							&&(damagerM != M)
+							&&(damagerM.mayPhysicallyAttack(M))
+							&&(CMLib.dice().rollPercentage()<=5))
+							{
+								CMLib.combat().postDamage(damagerM, M, item, item.phyStats().weight()*Math.max(1,damageToTake),
+										CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,Weapon.TYPE_BASHING,
+										L("<O-NAME> hit(s) and <DAMAGES> <T-NAME>."));
+								hitSomething=true;
+								break;
+							}
+						}
+						if(!hitSomething)
+						{
+							for(final Enumeration<Item> i=newRoom.items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if((I!=null)
+								&&(I.container()==null)
+								&&(I instanceof Boardable)
+								&&(CMLib.dice().rollPercentage()<=15))
+								{
+									CMLib.combat().postItemDamage(damagerM, I, item,
+											item.phyStats().weight() * Math.max(1, damageToTake),
+											CMMsg.TYP_JUSTICE, L("<O-NAME> hit(s) <T-NAME>."));
+									break;
+								}
+							}
+						}
+						if(item.subjectToWearAndTear())
+							CMLib.combat().postItemDamage(damagerM, item, this, damageToTake*10,  CMMsg.TYP_JUSTICE, null);
+					}
+					return false;
+				}
 				return true;
 			}
 			if(reversed())
@@ -376,7 +432,7 @@ public class Falling extends StdAbility
 		{
 			final Falling F=new Falling();
 			F.setProficiency(proficiency());
-			F.invoker=null;
+			F.damagerMOB=mob;
 			if(P instanceof MOB)
 				F.invoker=(MOB)P;
 			else

@@ -1525,7 +1525,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
-			L("^HCoffeeMud Message Maker Options:^N\n\r"+
+			L("\n\r^HCoffeeMud Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
 			"^XD)^.^Welete one or more lines\n\r"+
 			"^XL)^.^Wist the entire text file\n\r"+
@@ -1630,7 +1630,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					this.noTrim=true;
 					break;
 				case MENU:
-					sess.promptPrint(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")));
+					sess.promptPrint(L("\n\r^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")));
 					break;
 				case SAVECONFIRM:
 					sess.promptPrint(L("Save and exit, are you sure (N/y)? "));
@@ -1699,7 +1699,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case INPUT:
 				{
 					if((this.input.length()==0)||(this.input.equals(".")))
+					{
+						if(autoAdd && (mob.session() != null))
+							mob.session().println(getMsgMkrHelp(mob.session()));
 						state=MsgMkrState.MENU;
+					}
 					else
 						vbuf.add(this.input);
 					break;

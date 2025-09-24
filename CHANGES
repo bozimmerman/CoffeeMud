@@ -41,6 +41,8 @@
  40. Poisons list expanded.
  41. New large rideables: GenAirShip, GenBalloon
  42, AHELP can now be used by archons to get help on MP commands.
+ 43. Falling items can now hit and damage mobs below them, or boardables.
+ 44. Email Command now uses the message maker for longer messages.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

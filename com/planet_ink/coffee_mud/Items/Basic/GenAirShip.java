@@ -94,7 +94,7 @@ public class GenAirShip extends GenNavigableBoardable
 	{
 		if ((R == null)
 		|| (!CMLib.map().hasASky(R))
-		|| (R.getRoomInDir(Directions.DOWN) != null))
+		|| ((R.getRoomInDir(Directions.DOWN) != null))&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT))
 			return false;
 		return true;
 	}
@@ -350,7 +350,7 @@ public class GenAirShip extends GenNavigableBoardable
 		final Room baseR=CMLib.map().roomLocation(this);
 		if(baseR!=null)
 		{
-			CMLib.tracking().makeFall(this, baseR, false);
+			CMLib.tracking().makeFall(victorM, this, baseR, false);
 			final String sinkString = L("<T-NAME> start(s) falling!");
 			baseR.show(victorM, this, CMMsg.MSG_OK_ACTION, sinkString);
 			this.announceToNonOuterViewers(victorM, sinkString);

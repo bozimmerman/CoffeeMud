@@ -121,7 +121,7 @@ public class InTheAir extends StdRoom
 		}
 		final TrackingLibrary tracker = CMLib.tracking();
 		for(final Physical P : needToFall)
-			tracker.makeFall(P,room,reversed);
+			tracker.makeFall(msg.source(),P,room,reversed);
 	}
 
 	@Override

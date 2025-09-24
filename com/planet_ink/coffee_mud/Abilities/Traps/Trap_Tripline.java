@@ -141,7 +141,7 @@ public class Trap_Tripline extends StdTrap
 					if((R.getRoomInDir(Directions.DOWN)!=null)
 					&&(R.getExitInDir(Directions.DOWN)!=null)
 					&&(R.getExitInDir(Directions.DOWN).isOpen()))
-						CMLib.tracking().makeFall(target,R,false);
+						CMLib.tracking().makeFall(target,target,R, false);
 				}
 			}
 		}

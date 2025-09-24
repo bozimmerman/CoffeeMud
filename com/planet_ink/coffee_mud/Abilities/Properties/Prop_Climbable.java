@@ -130,14 +130,14 @@ public class Prop_Climbable extends Property
 			&&((!(msg.tool() instanceof Rideable))
 			   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.Basis.LADDER))
 			&&(!CMLib.flags().isFlying((Item)msg.tool())))
-				CMLib.tracking().makeFall((Item)msg.tool(),R,false);
+				CMLib.tracking().makeFall(msg.source(),(Item)msg.tool(),R, false);
 			else
 			if((msg.targetMinor()==CMMsg.TYP_DROP)
 			&&(msg.target() instanceof Item)
 			&&((!(msg.target() instanceof Rideable))
 			   ||(((Rideable)msg.target()).rideBasis()!=Rideable.Basis.LADDER))
 			&&(!CMLib.flags().isFlying((Item)msg.target())))
-				CMLib.tracking().makeFall((Item)msg.target(),R,false);
+				CMLib.tracking().makeFall(msg.source(),(Item)msg.target(),R, false);
 			else
 			if((msg.amITarget(affected)||(msg.tool()==affected))
 			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
@@ -168,7 +168,7 @@ public class Prop_Climbable extends Property
 							if(CMLib.flags().isClimbing(mob))
 								CMLib.tracking().walk(mob,Directions.DOWN,false,true);
 							else
-								CMLib.tracking().makeFall(mob,R,false);
+								CMLib.tracking().makeFall(msg.source(),mob,R, false);
 						}
 					}
 				}

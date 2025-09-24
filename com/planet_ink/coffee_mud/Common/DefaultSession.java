@@ -692,7 +692,7 @@ public class DefaultSession implements Session
 			if((!gmcpSupports.containsKey(lowerEventName))
 			&& (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
 				return false;
-			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+			if(CMSecurity.isDebugging(DbgFlag.GMCP))
 				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			bout.write(TELNETBYTES_GMCP_HEAD);

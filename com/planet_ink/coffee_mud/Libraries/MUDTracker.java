@@ -1321,7 +1321,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				final String inDir=CMLib.directions().getFromDirectionName(dir, CMLib.flags().getDirType(toHere));
 				((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}
-			((Room)enterMsg.target()).executeMsg(M, enterMsg);
+			enterMsg.target().executeMsg(M, enterMsg);
 			if(M.location()!=((Room)enterMsg.target()))
 				((Room)enterMsg.target()).bringMobHere(M,true);
 			return true;
@@ -1574,8 +1574,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			rideables.add(riding);
 			addRiders(theRider,riding,riders);
-			if(((Rider)riding).riding()!=theRider.riding())
-				riding=((Rider)riding).riding();
+			if(riding.riding()!=theRider.riding())
+				riding=riding.riding();
 			else
 				riding=null;
 		}
@@ -1612,7 +1612,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(!move(((MOB)riding),directionCode,false,false,true,false,running))
 				{
 					if(theRider instanceof MOB)
-						((MOB)theRider).tell(L("@x1 won't seem to let you go that way.",((MOB)riding).name()));
+						((MOB)theRider).tell(L("@x1 won't seem to let you go that way.",riding.name()));
 					for(;r.hasPrevious();)
 					{
 						riding=r.previous();
@@ -1999,7 +1999,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 							&&(CMLib.flags().isInTheGame((MOB)R,true)))
 							{
 								thatRoom.bringMobHere((MOB)R,true);
-								((MOB)R).setRiding((Rideable)I);
+								R.setRiding((Rideable)I);
 								CMLib.commands().postLook((MOB)R,true);
 								thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
 							}
@@ -2424,7 +2424,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean makeFall(final Physical P, final Room room, final boolean reverseFall)
+	public boolean makeFall(final MOB mob, final Physical P, final Room room, final boolean reverseFall)
 	{
 		if((P==null)||(room==null))
 			return false;
@@ -2447,7 +2447,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 					falling.setMiscText(reverseFall?"REVERSED":"NORMAL");
 					falling.setAffectedOne(room);
-					falling.invoke(null,null,P,true,0);
+					falling.invoke(mob,null,P,true,0);
 					return true;
 				}
 			}

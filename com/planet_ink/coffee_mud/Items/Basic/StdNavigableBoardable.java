@@ -56,6 +56,7 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected volatile Room			prevItemRoom		= null;
 	protected volatile Item			following			= null;
 	protected int					ticksPerTurn		= 1;
+	protected int					ticksPerMoves		= 1;
 
 	protected static String	DEFAULT_NAVIGATE_STRING		= CMLib.lang().L("navigate");
 	protected static String	DEFAULT_NAVIGATING_STRING	= CMLib.lang().L("navigating");
@@ -147,6 +148,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 	protected int ticksPerTurn()
 	{
 		return ticksPerTurn;
+	}
+
+	protected int ticksPerMove()
+	{
+		return ticksPerMoves;
 	}
 
 	@Override
@@ -690,9 +696,15 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 						}
 					}
 					if((ticksSinceLastTurn<ticksPerTurn())
-					&&((dir) != getDirectionFacing(dir)))
+					&&(dir != getDirectionFacing(dir)))
 					{
 						msg.source().tell(L("@x1 can't change direction that quickly.  You must wait a bit longer.",name(msg.source())));
+						return false;
+					}
+					if((ticksSinceMove<ticksPerMove())
+					&&(dir == getDirectionFacing(dir)))
+					{
+						msg.source().tell(L("@x1 can't move that quickly.  You must wait a bit longer.",name(msg.source())));
 						return false;
 					}
 					if(anchorDown)
@@ -1312,6 +1324,9 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 					final int directionFacing = getDirectionFacing(newDirection);
 					if((ticksSinceLastTurn<ticksPerTurn())
 					&&((newDirection) != directionFacing))
+						break;
+					if((ticksSinceMove<ticksPerMove())
+					&&((newDirection) == directionFacing))
 						break;
 					switch(navMove(newDirection))
 					{

@@ -178,7 +178,8 @@ public class GrinderItems
 			case ISARMOR: // is armor
 				break;
 			case ARMOR: // armor
-				if(I instanceof Armor)
+				if((I instanceof Armor)
+				||((I instanceof Boardable))&&(old!=null)&&(old.length()>0))
 					I.basePhyStats().setArmor(CMath.s_int(old));
 				break;
 			case WORNDATA: // worn data
