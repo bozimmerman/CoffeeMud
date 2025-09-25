@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 
 /*
  Copyright 2000-2025 Bo Zimmerman
@@ -3815,9 +3816,15 @@ public class StdMOB implements MOB
 					&& (mySession.getClientTelnetMode(Session.TELNET_GMCP)))
 					{
 						if (msg.othersMinor() == CMMsg.TYP_ENTER)
-							mySession.sendGMCPEvent("room.enter", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
-						if (msg.othersMinor() == CMMsg.TYP_LEAVE)
-							mySession.sendGMCPEvent("room.leave", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+						{
+							mySession.sendInlineCommand(InProto.GMCP,
+									"room.enter", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+						}
+						else
+						{
+							mySession.sendInlineCommand(InProto.GMCP,
+									"room.leave", "\"" + MiniJSON.toJSONString(srcM.Name()) + "\"");
+						}
 					}
 				}
 				if((!isMonster())

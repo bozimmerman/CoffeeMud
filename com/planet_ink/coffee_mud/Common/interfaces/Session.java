@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -966,47 +967,28 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void initTelnetMode(long mobbitmap);
 
 	/**
-	 * Returns true if the given max tag will be accepted by the client.
-	 * @param tag the tag to check
-	 * @return true if allowed, false otherwise
-	 */
-	public boolean isAllowedMxp(String tag);
-
-	/**
 	 * Returns true if this client supports the given package at the
-	 * given version.
+	 * given version for the given inline protocol, like GMCP, MXP, etc
+	 * @see ProtocolLibrary.InProto#GMCP
+	 *
+	 * @param protocol package for which protocol
 	 * @param packageName the package to check
 	 * @param version the version of the package to check
 	 * @return true if there's support, false otherwise
 	 */
-	public boolean isAllowedMcp(String packageName, float version);
+	public boolean isInlineAllowed(InProto protocol, String packageName, float version);
 
 	/**
-	 * Sends a properly formatted MCP command to the session, if it or its package is supported.
+	 * Sends a properly formatted inline command to the session, if it or its package is supported
+	 * by the given inline protocol, like GMCP, MXP, etc
+	 * @see ProtocolLibrary.InProto#GMCP
+	 *
+	 * @param protocol package for which protocol
 	 * @param packageCommand the fully formed command
 	 * @param parms the variable parameters, already well formed
 	 * @return true if it was sent, false otherwise
 	 */
-	public boolean sendMcpCommand(String packageCommand, String parms);
-
-	/**
-	 * Potentially sends the GMCP event of the given name with the given json
-	 * doc.
-	 * @param eventName the event name, like comm.channel
-	 * @param json the json doc, like {"blah":"BLAH"}
-	 * @return true if GMCP was enabled for this session, false otherwise
-	 */
-	public boolean sendGMCPEvent(final String eventName, final String json);
-
-	/**
-	 * If the mud is connected to a proxy server, this will send the given
-	 * command and json doc to the proxy server.
-	 *
-	 * @param command the command
-	 * @param doc the json doc
-	 * @return true if MPCP was enabled, and the command was sent
-	 */
-	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc);
+	public boolean sendInlineCommand(InProto protocol, String packageCommand, String parms);
 
 	/**
 	 * Send this session fake input as if the user had typed it in.

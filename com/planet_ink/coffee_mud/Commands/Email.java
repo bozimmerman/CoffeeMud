@@ -281,7 +281,10 @@ public class Email extends StdCommand
 							{
 								if(res == MsgMkrResolution.SAVEFILE)
 								{
-									final String message = CMParms.combineWith(msgV,'\n');
+									final StringBuilder msg=new StringBuilder("");
+									for (int v = 0; v < msgV.size(); v++)
+										msg.append(msgV.get(v)).append("\r\n");
+									final String message = msg.toString();
 									if(message.trim().length()==0)
 									{
 										mob.tell(L("Aborted"));

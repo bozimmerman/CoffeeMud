@@ -665,7 +665,7 @@ public class StdJournal extends StdItem implements Book
 						{
 							if(res == MsgMkrResolution.SAVEFILE)
 							{
-								String newMsgTxt = CMParms.combineWith(vbuf,"\n");
+								String newMsgTxt = CMParms.combineWith(vbuf,"\n\r");
 								final int charLimit = getMaxCharsPerPage();
 								if((charLimit > 0)
 								&&(newMsgTxt.length()>charLimit))

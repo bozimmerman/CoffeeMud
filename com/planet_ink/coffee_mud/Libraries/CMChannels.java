@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFla
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -881,7 +882,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				final String chanMsgStr = CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()).trim();
 				final String filteredMsgStr = CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), chanMsgStr, false).trim();
 				final String jsonMsgStr = MiniJSON.toJSONString(CMStrings.unWWrap(filteredMsgStr));
-				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+channel.name()+"\",\"msg\":\""+jsonMsgStr+"\",\"player\":\""+player+"\"}");
+				ses.sendInlineCommand(InProto.GMCP,
+						"comm.channel", "{\"chan\":\""+channel.name()+"\",\"msg\":\""+jsonMsgStr+"\",\"player\":\""+player+"\"}");
 			}
 			M.executeMsg(M,msg);
 			didIt=true;

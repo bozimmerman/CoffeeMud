@@ -1174,13 +1174,18 @@ public class Modify extends StdCommand
 				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
 		copyClock.setHourOfDay(myArea.getTimeObj().getHourOfDay());
-		if((!copyA.sameAs(myArea))
-		||(oldClock != myArea.getTimeObj())
+		if(!copyA.sameAs(myArea))
+			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
+		else
+		if((oldClock != myArea.getTimeObj())
 		||(oldClock.getDaysInMonth() != copyClock.getDaysInMonth())
 		||(oldClock.getMonthsInYear() != copyClock.getMonthsInYear())
 		||(oldClock.getHoursInDay() != copyClock.getHoursInDay())
-		||(!Arrays.equals(oldClock.getDawnToDusk(), copyClock.getDawnToDusk())))
-			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
+		||(!Arrays.equals(oldClock.getDawnToDusk(), copyClock.getDawnToDusk()))
+		||(!Arrays.equals(oldClock.getMonthNames(), copyClock.getMonthNames()))
+		||(!Arrays.equals(oldClock.getYearNames(), copyClock.getYearNames()))
+		||(!Arrays.equals(oldClock.getWeekNames(), copyClock.getWeekNames())))
+			Log.sysOut("Rooms",mob.Name()+" modified calendar on area "+myArea.Name()+".");
 		copyA.destroy();
 	}
 

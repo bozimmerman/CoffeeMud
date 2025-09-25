@@ -127,7 +127,7 @@ public class Prayer_FeedTheDead extends Prayer
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
-					L(auto?"<T-NAME> gain(s) fake life!":"^S<S-NAME> @x1 for <T-NAMESELF> to be fed.^?",prayWord(mob)));
+					L(auto?"<T-NAME> gain(s) fake life!": "^S<S-NAME> @x1 for <T-NAMESELF> to be fed.^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -135,7 +135,7 @@ public class Prayer_FeedTheDead extends Prayer
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
 				{
 					final int adjLevel = adjustedLevel(mob,asLevel);
-					amount+=(adjustedLevel(mob,asLevel)-target.phyStats().level())
+					amount+=(adjLevel-target.phyStats().level())
 						  *(adjLevel/3);
 				}
 				amount=CMLib.leveler().postExperience(target,"ABILITY:"+ID(),null,null,amount, false);

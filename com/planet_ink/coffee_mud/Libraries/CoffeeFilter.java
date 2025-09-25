@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.SpecialColor;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -720,7 +721,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				else
 				if((S==null)
 				||(!S.getClientTelnetMode(Session.TELNET_MXP))
-				||(!S.isAllowedMxp(str.substring(index,enDex+2))))
+				||(!S.isInlineAllowed(InProto.MXP,str.substring(index,enDex+2),0)))
 				{
 					str.delete(index,enDex+2);
 					enDex=index-1;
@@ -745,7 +746,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				else
 				if((S==null)
 				||(!S.getClientTelnetMode(Session.TELNET_MXP))
-				||(!S.isAllowedMxp(str.substring(index,enDex+1))))
+				||(!S.isInlineAllowed(InProto.MXP,str.substring(index,enDex+1),0)))
 				{
 					str.delete(index,enDex+1);
 					enDex=index-1;
@@ -1404,7 +1405,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							{
 								if((S!=null)
 								&&(S.getClientTelnetMode(Session.TELNET_MXP))
-								&&(S.isAllowedMxp(buf.substring(loop,loop+1))))
+								&&(S.isInlineAllowed(InProto.MXP,buf.substring(loop,loop+1),0)))
 								{
 									buf.delete(loop,loop+1);
 									buf.insert(loop,"&lt;".toCharArray());

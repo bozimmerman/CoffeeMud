@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -113,7 +114,7 @@ public class ProxyCtl extends StdCommand
 			final String command = commands.get(1);
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("password", password);
-			mob.session().sendMPCPPacket(command, obj);
+			mob.session().sendInlineCommand(InProto.MPCP,command, obj.toString());
 		}
 		return false;
 	}

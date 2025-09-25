@@ -43,6 +43,7 @@
  42, AHELP can now be used by archons to get help on MP commands.
  43. Falling items can now hit and damage mobs below them, or boardables.
  44. Email Command now uses the message maker for longer messages.
+ 45. Many more editors now support the Siplet.Input pop-up box.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

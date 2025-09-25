@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries.interfaces;
 import java.util.List;
 import java.util.Map;
 
+import com.planet_ink.coffee_mud.core.collections.Converter;
+import com.planet_ink.coffee_mud.core.collections.TreeList;
 import com.planet_ink.coffee_mud.core.collections.XHashtable;
 import com.planet_ink.coffee_mud.core.collections.XVector;
 
@@ -389,6 +391,32 @@ public interface XMLLibrary extends CMLibrary
 	 */
 	public Map<String,String> fromXML(final String str);
 
+	/**
+	 * A list which sorts its tags by tab name for quick lookups.
+	 */
+	public static class XMLTags extends TreeList<XMLTag>
+	{
+		private static final Converter<XMLTag, Comparable<?>>	conv = new Converter<XMLTag, Comparable<?>>()
+		{
+			@Override
+			public Comparable<?> convert(final XMLTag obj)
+			{
+				if (obj.tag() != null)
+					return obj.tag().toLowerCase();
+				return "" + obj;
+			}
+		};
+		public XMLTags()
+		{
+			super(conv);
+		}
+	}
+
+	/**
+	 * A single xml tag, with attributes, value, and child tags.
+	 *
+	 * @author Bo Zimmerman
+	 */
 	public interface XMLTag
 	{
 		/* (non-Javadoc)

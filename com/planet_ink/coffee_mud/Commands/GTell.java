@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -127,7 +128,8 @@ public class GTell extends StdCommand
 		if((mob.session()!=null)
 		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
-			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+			mob.session().sendInlineCommand(InProto.GMCP,
+					"comm.channel", "{\"chan\":\"GTELL\","
 					+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
 					+ ",\"player\":\""+mob.name()+"\"}");
 		}
@@ -165,7 +167,8 @@ public class GTell extends StdCommand
 				&&(target!=mob)
 				&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
 				{
-					target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"GTELL\","
+					target.session().sendInlineCommand(InProto.GMCP,
+							"comm.channel", "{\"chan\":\"GTELL\","
 							+ "\"msg\":\""+MiniJSON.toJSONString(rawTextMsgStr)+"\""
 							+ ",\"player\":\""+mob.name()+"\"}");
 				}

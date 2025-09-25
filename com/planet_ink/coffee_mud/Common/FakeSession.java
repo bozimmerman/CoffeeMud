@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
@@ -204,12 +205,6 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public boolean isAllowedMxp(final String tag)
-	{
-		return false;
-	}
-
-	@Override
 	public boolean isFake()
 	{
 		return true;
@@ -218,18 +213,6 @@ public class FakeSession implements Session
 	@Override
 	public void setIdleTimers()
 	{
-	}
-
-	@Override
-	public boolean sendGMCPEvent(final String eventName, final String json)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
-	{
-		return false;
 	}
 
 	@Override
@@ -824,13 +807,13 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public boolean isAllowedMcp(final String packageName, final float version)
+	public boolean isInlineAllowed(final InProto protocol, final String packageName, final float version)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean sendMcpCommand(final String packageCommand, final String parms)
+	public boolean sendInlineCommand(final InProto protocol, final String packageCommand, final String parms)
 	{
 		return false;
 	}

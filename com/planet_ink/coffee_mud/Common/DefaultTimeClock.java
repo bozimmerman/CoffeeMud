@@ -204,6 +204,8 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public void setDawnToDusk(final int dawn, final int day, final int dusk, final int night)
 	{
+		if((dawn+day+dusk+night)<this.getHoursInDay())
+			Log.debugOut("Suspicious hour settings: "+dawn+"/"+day+"/"+dusk+"/"+night+"/"+getHoursInDay(),new Exception());
 		dawnToDusk[TimeOfDay.DAWN.ordinal()]=dawn;
 		dawnToDusk[TimeOfDay.DAY.ordinal()]=day;
 		dawnToDusk[TimeOfDay.DUSK.ordinal()]=dusk;
@@ -293,12 +295,16 @@ public class DefaultTimeClock implements TimeClock
 		if(page.containsKey("YEARDESC"))
 			setYearNames(CMParms.toStringArray(CMParms.parseCommas(page.getStr("YEARDESC"),true)));
 
-		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
-				&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
-		setDawnToDusk(  CMath.s_int(page.getStr("DAWNHR")),
-						CMath.s_int(page.getStr("DAYHR")),
-						CMath.s_int(page.getStr("DUSKHR")),
-						CMath.s_int(page.getStr("NIGHTHR")));
+		if(page.containsKey("DAWNHR")
+		&&page.containsKey("DAYHR")
+		&&page.containsKey("DUSKHR")
+		&&page.containsKey("NIGHTHR"))
+		{
+			setDawnToDusk(  CMath.s_int(page.getStr("DAWNHR")),
+							CMath.s_int(page.getStr("DAYHR")),
+							CMath.s_int(page.getStr("DUSKHR")),
+							CMath.s_int(page.getStr("NIGHTHR")));
+		}
 
 		CMProps.setIntVar(CMProps.Int.TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
 		CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
@@ -530,7 +536,11 @@ public class DefaultTimeClock implements TimeClock
 	{
 		try
 		{
-			final TimeClock C=(TimeClock)this.clone();
+			final DefaultTimeClock C=(DefaultTimeClock)this.clone();
+			C.dawnToDusk=this.dawnToDusk.clone();
+			C.monthsInYear=this.monthsInYear.clone();
+			C.weekNames=this.weekNames.clone();
+			C.yearNames=this.yearNames.clone();
 			return C;
 		}
 		catch(final CloneNotSupportedException e)

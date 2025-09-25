@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -249,23 +250,161 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public boolean isAllowedMcp(final String packageName, final float version)
+	public boolean isInlineAllowed(final InProto protocol, final String packageName, final float version)
 	{
-		final float[] chk = mcpSupported.get(packageName);
-		if((chk == null)||(version < chk[0])||(version>chk[1])||(mcpKey[0] == null))
+		switch(protocol)
 		{
-			return false;
+		case MSDP:
+		{
+			if ((!getClientTelnetMode(TELNET_MSDP)) || (msdpReportables.size() == 0))
+				return false;
+			final String lowerPackageName = packageName.toLowerCase().trim();
+			if (!msdpReportables.containsKey(lowerPackageName))
+				return false;
+			return true;
 		}
-		return true;
+		case MPCP:
+		{
+			if (!getClientTelnetMode(TELNET_MPCP))
+				return false;
+			return true;
+		}
+		case MCP:
+		{
+			final float[] chk = mcpSupported.get(packageName);
+			if((chk == null)||(version < chk[0])||(version>chk[1])||(mcpKey[0] == null))
+			{
+				return false;
+			}
+			return true;
+		}
+		case MXP:
+		{
+			if(!getClientTelnetMode(TELNET_MXP))
+				return false;
+			if(packageName.startsWith("^<"))
+			{
+				if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
+					return false;
+				int x=packageName.indexOf(' ');
+				if(x<0)
+					x=packageName.indexOf('>');
+				if((x>0)&&(this.mxpSupportSet.contains("-"+packageName.substring(2,x))))
+					return false;
+			}
+			else
+			if(packageName.startsWith("&"))
+			{
+				if(terminalType.equalsIgnoreCase("mushclient"))
+					return true;
+			}
+			return true;
+		}
+		case GMCP:
+		{
+			if((!getClientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
+				return false;
+			final String lowerEventName=packageName.toLowerCase().trim();
+			final int x=lowerEventName.lastIndexOf('.');
+			if((x<0)&&(!gmcpSupports.containsKey(lowerEventName)))
+				return false;
+			if((!gmcpSupports.containsKey(lowerEventName))
+			&& (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
+				return false;
+			return true;
+		}
+		}
+		return false;
 	}
 
 	@Override
-	public boolean sendMcpCommand(final String packageCommand, final String parms)
+	public boolean sendInlineCommand(final InProto protocol, final String packageCommand, String parms)
 	{
-		if(mcpKey[0] != null)
+		switch(protocol)
 		{
-			rawPrintln("#$#"+packageCommand+" "+mcpKey[0]+" "+parms);
-			return true;
+		case MCP:
+		{
+			if(mcpKey[0] != null)
+			{
+				rawPrintln("#$#"+packageCommand+" "+mcpKey[0]+" "+parms);
+				return true;
+			}
+			break;
+		}
+		case GMCP:
+		{
+			if (!isInlineAllowed(protocol, packageCommand, 0))
+				return false;
+			try
+			{
+				final String lowerEventName=packageCommand.toLowerCase().trim();
+				if(CMSecurity.isDebugging(DbgFlag.GMCP))
+					Log.debugOut("GMCP Sent: "+(lowerEventName+" "+parms));
+				final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				bout.write(TELNETBYTES_GMCP_HEAD);
+				bout.write((lowerEventName+" "+parms).getBytes());
+				bout.write(TELNETBYTES_END_SB);
+				synchronized(gmcpSupports)
+				{
+					rawBytesOut(rawout,bout.toByteArray());
+				}
+				return true;
+			}
+			catch(final IOException e)
+			{
+				killFlag=true;
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
+			return false;
+		}
+		case MPCP:
+		{
+			if(!getClientTelnetMode(TELNET_MPCP))
+				return false;
+			try
+			{
+				final MiniJSON.JSONObject doc = new MiniJSON().parseObject(parms);
+				doc.put("timestamp", Long.valueOf(System.currentTimeMillis()));
+				parms = doc.toString();
+				final String mpcpKey = CMProps.getVar(CMProps.Str.MPCPKEY);
+				final byte[] keyBytes = mpcpKey.getBytes(StandardCharsets.UTF_8);
+				final byte[] payloadBytes = (packageCommand+" "+parms).getBytes(StandardCharsets.UTF_8);
+				final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
+				final Mac mac = Mac.getInstance("HmacSHA1");
+				mac.init(keySpec);
+				final ByteArrayOutputStream packetOut = new ByteArrayOutputStream();
+				packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SB, (byte)Session.TELNET_MPCP});
+				for(final byte b : mac.doFinal(payloadBytes))
+				{
+					if (b == (byte)0xFF)
+						packetOut.write(new byte[] {(byte)0xFF,(byte)0xFF});
+					else
+						packetOut.write(b);
+				}
+				packetOut.write(payloadBytes);
+				packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SE});
+				rawBytesOut(rawout, packetOut.toByteArray());
+				return true;
+			}
+			catch(final Exception e)
+			{
+				Log.errOut(e);
+			}
+			return false;
+		}
+		case MSDP:
+			if(!getClientTelnetMode(TELNET_MSDP))
+				return false;
+			return false;
+		case MXP:
+			if(!getClientTelnetMode(TELNET_MXP))
+				return false;
+			return false;
+		default:
+			break;
 		}
 		return false;
 	}
@@ -654,65 +793,6 @@ public class DefaultSession implements Session
 		rawBytesOut(out, command);
 		//rawout.flush(); rawBytesOut already flushes
 		setServerTelnetMode(telnetCode,onOff);
-	}
-
-	@Override
-	public boolean isAllowedMxp(final String tagString)
-	{
-		if(tagString.startsWith("^<"))
-		{
-			if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
-				return false;
-			int x=tagString.indexOf(' ');
-			if(x<0)
-				x=tagString.indexOf('>');
-			if((x>0)&&(this.mxpSupportSet.contains("-"+tagString.substring(2,x))))
-				return false;
-		}
-		else
-		if(tagString.startsWith("&"))
-		{
-			if(terminalType.equalsIgnoreCase("mushclient"))
-				return true;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean sendGMCPEvent(final String eventName, final String json)
-	{
-		if((!getClientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
-			return false;
-		try
-		{
-			final String lowerEventName=eventName.toLowerCase().trim();
-			final int x=lowerEventName.lastIndexOf('.');
-			if((x<0)&&(!gmcpSupports.containsKey(lowerEventName)))
-				return false;
-			if((!gmcpSupports.containsKey(lowerEventName))
-			&& (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
-				return false;
-			if(CMSecurity.isDebugging(DbgFlag.GMCP))
-				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
-			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-			bout.write(TELNETBYTES_GMCP_HEAD);
-			bout.write((lowerEventName+" "+json).getBytes());
-			bout.write(TELNETBYTES_END_SB);
-			synchronized(gmcpSupports)
-			{
-				rawBytesOut(rawout,bout.toByteArray());
-			}
-			return true;
-		}
-		catch(final IOException e)
-		{
-			killFlag=true;
-		}
-		catch(final Exception e)
-		{
-			Log.errOut(e);
-		}
-		return false;
 	}
 
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
@@ -3906,48 +3986,13 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public boolean sendMPCPPacket(final String command, final MiniJSON.JSONObject doc)
-	{
-		if(!getClientTelnetMode(TELNET_MPCP))
-			return false;
-		try
-		{
-			doc.put("timestamp", Long.valueOf(System.currentTimeMillis()));
-			final String mpcpKey = CMProps.getVar(CMProps.Str.MPCPKEY);
-			final byte[] keyBytes = mpcpKey.getBytes(StandardCharsets.UTF_8);
-			final byte[] payloadBytes = (command+" "+doc.toString()).getBytes(StandardCharsets.UTF_8);
-			final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
-			final Mac mac = Mac.getInstance("HmacSHA1");
-			mac.init(keySpec);
-			final ByteArrayOutputStream packetOut = new ByteArrayOutputStream();
-			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SB, (byte)Session.TELNET_MPCP});
-			for(final byte b : mac.doFinal(payloadBytes))
-			{
-				if (b == (byte)0xFF)
-					packetOut.write(new byte[] {(byte)0xFF,(byte)0xFF});
-				else
-					packetOut.write(b);
-			}
-			packetOut.write(payloadBytes);
-			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SE});
-			rawBytesOut(rawout, packetOut.toByteArray());
-			return true;
-		}
-		catch(final Exception e)
-		{
-			Log.errOut(e);
-		}
-		return false;
-	}
-
-	@Override
 	public void doPing(final SessionPing ping, final Object obj)
 	{
 		switch(ping)
 		{
 		case DISCONNECT:
 			if(getClientTelnetMode(TELNET_MPCP))
-				sendMPCPPacket("Disconnect", new MiniJSON.JSONObject());
+				sendInlineCommand(InProto.MPCP,"Disconnect", "{}");
 			break;
 		case GMCP_PING_ALL:
 			if(getClientTelnetMode(TELNET_GMCP))
@@ -4000,7 +4045,7 @@ public class DefaultSession implements Session
 				for(final String stat : this.getStatCodes())
 					doc.put(stat.toLowerCase(), getStat(stat));
 				doc.remove("lastmsg");
-				sendMPCPPacket("SessionInfo", doc);
+				sendInlineCommand(InProto.MPCP,"SessionInfo", doc.toString());
 			}
 			break;
 		}

@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCall
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -516,7 +517,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
-				sess.sendGMCPEvent("Siplet.Input", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
+				sess.sendInlineCommand(InProto.GMCP,
+						"Siplet.Input", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
 				sess.safeRawPrintln(numStr+fieldDisp+": '"+showVal+"'.");
 			}
 			else
@@ -527,7 +529,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
-		final boolean mcp =sess.isAllowedMcp("dns-org-mud-moo-simpleedit", (float)1.0);
+		final boolean mcp =sess.isInlineAllowed(InProto.MCP, "dns-org-mud-moo-simpleedit", (float)1.0);
 		final String promptStr=L("Enter a new value@x1@x2@x3\n\r:",(emptyOK?" (or NULL)":""),(mcp?" (or \\#$#)":""),(help!=null?" (?)":""));
 		while(newName.equals("?")&&(mob.session()!=null)&&(!sess.isStopped()))
 		{
@@ -535,8 +537,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(mcp && newName.equals("\\#$#"))
 			{
 				final int tag=Math.abs(new Random(System.currentTimeMillis()).nextInt());
-				sess.sendMcpCommand("dns-org-mud-moo-simpleedit-content",
-						" reference: #64.name name: Data type: string content*: \"\" _data-tag: "+tag);
+				sess.sendInlineCommand(InProto.MCP,
+						"dns-org-mud-moo-simpleedit-content", " reference: #64.name name: Data type: string content*: \"\" _data-tag: "+tag);
 				final List<String> strs = Resources.getFileLineVector(new StringBuffer(oldVal));
 				for(final String s : strs)
 					sess.rawPrintln("#$#* "+tag+" content: "+s);

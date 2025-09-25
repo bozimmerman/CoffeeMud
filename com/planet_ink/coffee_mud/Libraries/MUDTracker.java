@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilters;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
@@ -1668,7 +1669,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			mob.tell(L("You can't go that way."));
 			final Session sess=mob.session();
 			if((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)))
-				sess.sendGMCPEvent("room.wrongdir", "\""+CMLib.directions().getDirectionChar(directionCode)+"\"");
+			{
+				sess.sendInlineCommand(InProto.GMCP,
+						"room.wrongdir", "\""+CMLib.directions().getDirectionChar(directionCode)+"\"");
+			}
 			return false;
 		}
 

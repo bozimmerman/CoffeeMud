@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1604,6 +1605,58 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			back.callBack(M,sess,MsgMkrResolution.CANCELFILE);
 			return;
 		}
+		if(sess.isInlineAllowed(InProto.GMCP, "Siplet.Input", 0))
+		{
+			final StringBuilder oldVal=new StringBuilder("");
+			for (int v = 0; v < vbuf.size(); v++)
+			{
+				if (v > 0)
+					oldVal.append("\n\r");
+				oldVal.append(vbuf.get(v));
+			}
+			sess.sendInlineCommand(InProto.GMCP,
+					"Siplet.Input", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\","
+									+ "\"text\":\""+MiniJSON.toJSONString(oldVal.toString())+"\"}");
+			sess.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+			{
+				final MOB		mob		= M;
+				final Session	sess	= mob.session();
+
+				@Override
+				public void timedOut()
+				{
+					back.callBack(mob, sess, MsgMkrResolution.CANCELFILE);
+					waiting = false;
+				}
+
+				@Override
+				public void callBack()
+				{
+					if ((mob.session() == null) || (sess.isStopped()))
+					{
+						back.callBack(mob, sess, MsgMkrResolution.CANCELFILE);
+						return;
+					}
+					if ((this.input == null) || (this.input.length() == 0))
+					{
+						back.callBack(mob, sess, MsgMkrResolution.CANCELFILE);
+						return;
+					}
+					vbuf.clear();
+					this.input = CMStrings.replaceAll(this.input, "%0D", "\n\r");
+					final String[] lines = this.input.split("\n\r");
+					for (final String line : lines)
+						vbuf.add(line);
+					back.callBack(mob, sess, MsgMkrResolution.SAVEFILE);
+				}
+
+				@Override
+				public void showPrompt()
+				{
+				}
+			});
+			return;
+		}
 		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter an empty line to exit.^.^N");
 		sess.println(L("^HCoffeeMud Message Maker^N"));
 		if(autoAdd)
@@ -1993,7 +2046,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							final StringBuilder oldDoc=new StringBuilder();
 							for(final String s : vbuf)
 								oldDoc.append(s).append("\n");
-							sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+							sess.sendInlineCommand(InProto.GMCP,
+									"IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\","
+									+ "\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 							state=MsgMkrState.GMCPWAIT;
 							break;
 						}
@@ -2161,7 +2216,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					for(final String s : vbuf)
 						oldDoc.append(s).append("\n");
 					vbuf.clear();
-					sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+					sess.sendInlineCommand(InProto.GMCP,
+							"IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\","
+							+ "\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 					oldDoc=null;
 					String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
 					if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))

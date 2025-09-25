@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -73,7 +74,8 @@ public class Say extends StdCommand
 		if((mob.session()!=null)
 		&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
-			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+			mob.session().sendInlineCommand(InProto.GMCP,
+					"comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 					MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null,
 							CMStrings.removeColors(msg.sourceMessage()), false)).trim())
 					+"\",\"player\":\""+player+"\"}");
@@ -93,7 +95,8 @@ public class Say extends StdCommand
 					if((M == target)
 					&&(msg.targetMessage()!=null))
 					{
-						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+						M.session().sendInlineCommand(InProto.GMCP,
+								"comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 								MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
 										CMStrings.removeColors(msg.targetMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");
@@ -101,7 +104,8 @@ public class Say extends StdCommand
 					else
 					if(msg.othersMessage()!=null)
 					{
-						M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+						M.session().sendInlineCommand(InProto.GMCP,
+								"comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 								MiniJSON.toJSONString(CMStrings.unWWrap(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null,
 										CMStrings.removeColors(msg.othersMessage()), false)).trim())
 								+"\",\"player\":\""+player+"\"}");

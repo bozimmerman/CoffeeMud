@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -655,7 +656,7 @@ public class StdAbility implements Ability
 							"-"+(Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)>>5)).toLowerCase();
 					final String json = "{\"name\":\""+name()+"\",\"group\":\""+domain+"\"}";
 					session.doPing(SessionPing.GMCP_PING_EFFECTS, Long.valueOf(mob.numEffects()+1));
-					session.sendGMCPEvent("char.effects.add", json);
+					session.sendInlineCommand(InProto.GMCP,"char.effects.add", json);
 				}
 			}
 		}
@@ -675,7 +676,7 @@ public class StdAbility implements Ability
 							"-"+(Ability.DOMAIN.DESCS.get((code&Ability.ALL_DOMAINS)>>5)).toLowerCase();
 					final String json = "{\"name\":\""+name()+"\",\"group\":\""+domain+"\"}";
 					session.doPing(SessionPing.GMCP_PING_EFFECTS, Long.valueOf(mob.numEffects()-1));
-					session.sendGMCPEvent("char.effects.remove", json);
+					session.sendInlineCommand(InProto.GMCP,"char.effects.remove", json);
 				}
 			}
 		}

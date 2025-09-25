@@ -51,6 +51,18 @@ import java.util.*;
 public interface ProtocolLibrary extends CMLibrary
 {
 	/**
+	 * The abstract inline protocol list
+	 */
+	public static enum InProto
+	{
+		MXP, // mud extension protocol
+		GMCP, // generic mud communication protocol
+		MSDP, // mud server data protocol
+		MCP, // mud control protocol?
+		MPCP // mud proxy control protocol?
+	}
+
+	/**
 	 * Generates an MSP sound tag
 	 *
 	 * @param soundName the name of the MSP sound
