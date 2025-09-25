@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -393,13 +393,13 @@ public class Prop_Artifact extends Property
 			{
 				final XMLLibrary lib = CMLib.xml();
 				final String data=itemSet.get(0).xml();
-				final List<XMLLibrary.XMLTag> xml=lib.parseAllXML(data);
+				final List<XMLTag> xml=lib.parseAllXML(data);
 				for(int c=0;c<xml.size();c++)
 				{
 					final XMLTag iblk=xml.get(c);
 					if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
 					{
-						final List<XMLLibrary.XMLTag> roomData=iblk.contents();
+						final List<XMLTag> roomData=iblk.contents();
 						final String roomID=lib.getValFromPieces(roomData,"ROOMID");
 						final String MOBname=lib.getValFromPieces(roomData,"MOB");
 						extraInfo.append(CMStrings.padRight(L("Artifact ID"), 15)).append(": ").append(getItemID()).append("\n\r");
@@ -456,7 +456,7 @@ public class Prop_Artifact extends Property
 						registeredArtifacts.remove(getItemID());
 					final String data=itemSet.get(0).xml();
 					final XMLLibrary lib = CMLib.xml();
-					final List<XMLLibrary.XMLTag> xml=lib.parseAllXML(data);
+					final List<XMLTag> xml=lib.parseAllXML(data);
 					if(xml!=null)
 					{
 						for(int c=0;c<xml.size();c++)
@@ -464,7 +464,7 @@ public class Prop_Artifact extends Property
 							final XMLTag iblk=xml.get(c);
 							if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
 							{
-								final List<XMLLibrary.XMLTag> roomData=iblk.contents();
+								final List<XMLTag> roomData=iblk.contents();
 								final String roomID=lib.getValFromPieces(roomData,"ROOMID");
 								final String MOBname=lib.getValFromPieces(roomData,"MOB");
 								final Room R=CMLib.map().getRoomAllHosts(roomID);

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -332,7 +332,7 @@ public class Thief_Runecasting extends ThiefSkill
 		try
 		{
 			@SuppressWarnings("unchecked")
-			List<XMLLibrary.XMLTag> predictionRoot = (List<XMLLibrary.XMLTag>)Resources.getResource("SYSTEM_PREDICTION_SCRIPTS");
+			List<XMLTag> predictionRoot = (List<XMLTag>)Resources.getResource("SYSTEM_PREDICTION_SCRIPTS");
 			if(predictionRoot == null)
 			{
 				final CMFile file = new CMFile(Resources.buildResourcePath("skills/predictions.xml"),null);

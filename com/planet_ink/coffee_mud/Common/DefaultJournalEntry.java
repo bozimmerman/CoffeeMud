@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Law.TreasurySet;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -435,10 +436,10 @@ public class DefaultJournalEntry implements JournalEntry, XMLConfigureable
 	public void setXML(final String xml)
 	{
 		final XMLLibrary xmlLib=CMLib.xml();
-		final List<XMLLibrary.XMLTag> dat=xmlLib.parseAllXML(xml);
+		final List<XMLTag> dat=xmlLib.parseAllXML(xml);
 		if(dat.size()>0 && dat.get(0).tag().equals("JENTRY"))
 		{
-			final XMLLibrary.XMLTag tag = dat.get(0);
+			final XMLTag tag = dat.get(0);
 			key=xmlLib.restoreAngleBrackets(tag.getParmValue("KEY"));
 			from=xmlLib.restoreAngleBrackets(tag.getParmValue("FROM"));
 			to=xmlLib.restoreAngleBrackets(tag.getParmValue("TO"));

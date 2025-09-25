@@ -15,8 +15,8 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.MOBS.GenShopkeeper;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -514,7 +514,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					msg.source().tell(L("Unable to load this area.  Please try again later."));
 					return false;
 				}
-				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+				final List<XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new TreeSet<String>());
 				String idName = "";

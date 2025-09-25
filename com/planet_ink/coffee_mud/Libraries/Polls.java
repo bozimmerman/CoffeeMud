@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -433,7 +433,7 @@ public class Polls extends StdLibrary implements PollManager
 		final Vector<Poll.PollOption> options=new Vector<Poll.PollOption>();
 		P.setOptions(options);
 		final String optionsXML=data.optionsXml();
-		List<XMLLibrary.XMLTag> V2=CMLib.xml().parseAllXML(optionsXML);
+		List<XMLTag> V2=CMLib.xml().parseAllXML(optionsXML);
 		XMLTag OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
 		if((OXV!=null)&&(OXV.contents()!=null)&&(OXV.contents().size()>0))
 		for(int v2=0;v2<OXV.contents().size();v2++)

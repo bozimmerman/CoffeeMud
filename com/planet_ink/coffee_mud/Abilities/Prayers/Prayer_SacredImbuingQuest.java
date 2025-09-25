@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -290,7 +290,7 @@ public class Prayer_SacredImbuingQuest extends Prayer
 					Log.errOut("Unable to generate a quest for "+targetM.name()+" because file not found: randareas/example.xml");
 					return null;
 				}
-				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+				final List<XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				if(!definedIDs.containsKey("QUEST_CRITERIA"))
 					definedIDs.put("QUEST_CRITERIA", "-NAME \"+"+targetM.Name()+"\" -NPC");
 				definedIDs.put("DURATION", ""+CMProps.getTicksPerHour());

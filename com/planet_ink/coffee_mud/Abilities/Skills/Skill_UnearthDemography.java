@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -127,8 +128,8 @@ public class Skill_UnearthDemography extends StdAbility
 		{
 			knownAreaInfo.clear();
 			final XMLLibrary xml=CMLib.xml();
-			final List<XMLLibrary.XMLTag> areaStrsV = xml.parseAllXML(text);
-			for(final XMLLibrary.XMLTag atag : areaStrsV)
+			final List<XMLTag> areaStrsV = xml.parseAllXML(text);
+			for(final XMLTag atag : areaStrsV)
 			{
 				if(atag.tag().equalsIgnoreCase("AREA"))
 				{
@@ -140,7 +141,7 @@ public class Skill_UnearthDemography extends StdAbility
 					&&(atag.contents().size()>0))
 					{
 						knownAreaInfo.put(name, races);
-						for(final XMLLibrary.XMLTag rtag : atag.contents())
+						for(final XMLTag rtag : atag.contents())
 						{
 							if(rtag.tag().equalsIgnoreCase("RACE"))
 							{
@@ -151,7 +152,7 @@ public class Skill_UnearthDemography extends StdAbility
 									races.put(id, fields);
 									if((rtag.contents()!=null)&&(rtag.contents().size()>0))
 									{
-										for(final XMLLibrary.XMLTag ftag : rtag.contents())
+										for(final XMLTag ftag : rtag.contents())
 										{
 											if(ftag.tag().equalsIgnoreCase("FIELD"))
 											{

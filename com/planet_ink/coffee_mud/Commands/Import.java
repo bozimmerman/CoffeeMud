@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -5461,7 +5462,7 @@ public class Import extends StdCommand
 					if(buf == null)
 						buf = new StringBuffer("");
 					CMStrings.dikufyLineEndings(buf);
-					final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
+					final List<List<XMLTag>> areas=new ArrayList<List<XMLTag>>();
 					if(session!=null)
 						session.rawPrint(L("Unpacking area(s) from file: '@x1'...",areaFileName));
 					String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
@@ -5481,7 +5482,7 @@ public class Import extends StdCommand
 					{
 						if(session!=null)
 							session.rawPrint(L("Unpacking area #@x1/@x2...",""+(a+1),""+num));
-						final List<XMLLibrary.XMLTag> area=areas.get(0);
+						final List<XMLTag> area=areas.get(0);
 						error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true, true);
 						if(session!=null)
 							session.rawPrintln("!");
@@ -5568,7 +5569,7 @@ public class Import extends StdCommand
 					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
-					final List<XMLLibrary.XMLTag> areaD=new ArrayList<XMLLibrary.XMLTag>();
+					final List<XMLTag> areaD=new ArrayList<XMLTag>();
 					String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -5691,7 +5692,7 @@ public class Import extends StdCommand
 					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.rawPrint(L("Unpacking stuff from file: '@x1'...",areaFileName));
-					final List<XMLLibrary.XMLTag> xmlFirst=CMLib.xml().parseAllXML(buf);
+					final List<XMLTag> xmlFirst=CMLib.xml().parseAllXML(buf);
 					if((xmlFirst.size()==0)||(!xmlFirst.get(0).tag().equalsIgnoreCase("CATALOG")))
 					{
 						returnAnError(session,"No catalog data in '"+areaFileName+"' here.",compileErrors,errorList);

@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -390,10 +390,10 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	@Override
 	public void parseXML(final String xml)
 	{
-		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
 			return;
-		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
+		final List<XMLTag> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
 		root.clear();
 		String ID=null;
 		String NUMS=null;

@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.StdLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -289,7 +289,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		{
 			startTime=start;
 			endTime=end;
-			final List<XMLLibrary.XMLTag> all=xmlLib.parseAllXML(data);
+			final List<XMLTag> all=xmlLib.parseAllXML(data);
 			if((all==null)||(all.size()==0))
 				return;
 			highestOnline=xmlLib.getIntFromPieces(all,"HIGH");

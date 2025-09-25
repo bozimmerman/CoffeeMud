@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.RoomContent;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1541,7 +1541,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		@Override
 		public void build(final String catadata)
 		{
-			List<XMLLibrary.XMLTag> V=null;
+			List<XMLTag> V=null;
 			if((catadata!=null)&&(catadata.length()>0))
 			{
 				V=CMLib.xml().parseAllXML(catadata);
@@ -1907,20 +1907,20 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	@Override
 	public String addCataDataFromXML(final String xmlBuffer, final List<CataData> addHere, final List<? extends Physical> nameMatchers, final Session S)
 	{
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(xmlBuffer);
 		if(xml==null)
 			return unpackErr("CataDats","null 'xml'");
 		final List<Map<String,CataData>> sets = new ArrayList<Map<String,CataData>>();
-		for(final Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
+		for(final Iterator<XMLTag> t= xml.iterator();t.hasNext();)
 		{
-			final XMLLibrary.XMLTag tag = t.next();
+			final XMLTag tag = t.next();
 			if(tag.tag().equalsIgnoreCase("CATADATAS"))
 			{
 				final Map<String,CataData> set = new TreeMap<String,CataData>();
 				sets.add(set);
-				for(final Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
+				for(final Iterator<XMLTag> t2= tag.contents().iterator();t2.hasNext();)
 				{
-					final XMLLibrary.XMLTag cataDataTag = t2.next();
+					final XMLTag cataDataTag = t2.next();
 					if(cataDataTag.tag().equalsIgnoreCase("CATALOGDATA"))
 					{
 						final CataData catDat = sampleCataData(cataDataTag.toString());

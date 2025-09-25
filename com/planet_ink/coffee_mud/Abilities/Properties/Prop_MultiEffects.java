@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -79,8 +80,8 @@ public class Prop_MultiEffects extends Property
 			final List<Ability> newProps=new ArrayList<Ability>();
 			if(newMiscText.trim().startsWith("<"))
 			{
-				final List<XMLLibrary.XMLTag> all=CMLib.xml().parseAllXML(newMiscText);
-				for(final XMLLibrary.XMLTag tag : all)
+				final List<XMLTag> all=CMLib.xml().parseAllXML(newMiscText);
+				for(final XMLTag tag : all)
 				{
 					if(tag.tag().equals("PROP"))
 					{

@@ -22,8 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2001-2025 Bo Zimmerman
@@ -144,10 +144,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 
 		/* (non-Javadoc)
-		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag)
 		 */
 		/* (non-Javadoc)
-		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag)
 		 */
 		@Override
 		public void addContent(final XMLTag x)
@@ -1611,7 +1611,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public List<String> parseXMLList(final String numberedList)
 	{
-		final List<XMLLibrary.XMLTag> xml=parseAllXML(numberedList);
+		final List<XMLTag> xml=parseAllXML(numberedList);
 		final Vector<String> V=new Vector<String>();
 		for(int v=0;v<xml.size();v++)
 			V.addElement(this.restoreAngleBrackets(xml.get(v).value()));

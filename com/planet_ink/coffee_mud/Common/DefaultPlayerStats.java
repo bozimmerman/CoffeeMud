@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.ExpertiseAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
@@ -1135,7 +1135,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		int t=-1;
 		while((++t)>=0)
 		{
-			final XMLLibrary.XMLTag tag = xmlLib.getPieceFromPieces(xml,"TITLE"+t);
+			final XMLTag tag = xmlLib.getPieceFromPieces(xml,"TITLE"+t);
 			if(tag == null)
 				break;
 			final String titleStr = xmlLib.restoreAngleBrackets(tag.value());
@@ -1179,7 +1179,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
 		if(debug)
 			Log.debugOut("XML="+xmlStr);
-		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(xmlStr);
+		final List<XMLTag> xml = xmlLib.parseAllXML(xmlStr);
 		String str=xmlLib.getValFromPieces(xml,"FRIENDS");
 		if(debug)
 			Log.debugOut("FRIENDS="+str);
@@ -1405,7 +1405,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 
 		setStat("AUTOINVSET",CMLib.xml().restoreAngleBrackets(xmlLib.getValFromPieces(xml,"AUTOINVSET")));
 
-		final XMLLibrary.XMLTag xpPiece = CMLib.xml().getPieceFromPieces(xml, "XP");
+		final XMLTag xpPiece = CMLib.xml().getPieceFromPieces(xml, "XP");
 		if(xpPiece != null)
 		{
 			this.maxRolePlayXP = CMath.s_int(xpPiece.getParmValue("MAXRP"));

@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2014-2025 Bo Zimmerman
@@ -143,7 +143,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		if(packageText().length()==0)
 			return null;
-		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
+		final List<XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 		if(buf==null)
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM'.");
@@ -157,7 +157,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		}
 		final String itemi=iblk.getValFromPieces("PICLASS");
 		final Environmental newOne=CMClass.getItem(itemi);
-		final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
+		final List<XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
 		{
 			Log.errOut("Packaged","Error parsing 'PAKITEM' data.");
@@ -183,7 +183,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		if(number<=0)
 			return V;
 		Item firstItem = null;
-		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
+		final List<XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 		final StringBuilder newXml=new StringBuilder("");
 		if(buf!=null)
 		{
@@ -199,7 +199,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 						final int numOfThese = iblk.getIntFromPieces("PINUM");
 						final String itemi=iblk.getValFromPieces("PICLASS");
 						final Environmental newOne=CMClass.getItem(itemi);
-						final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
+						final List<XMLTag> idat=iblk.getContentsFromPieces("PIDATA");
 						if((idat!=null)&&(newOne!=null)&&(newOne instanceof Item))
 						{
 							Item I=(Item)newOne;
@@ -263,7 +263,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	{
 		if(this.numberOfItemsInPackage <= 0)
 		{
-			final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
+			final List<XMLTag> buf=CMLib.xml().parseAllXML(packageText());
 			if(buf!=null)
 			{
 				for(int p=0;p<buf.size();p++)

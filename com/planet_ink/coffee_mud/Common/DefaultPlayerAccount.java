@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -403,7 +403,7 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 	public void setXML(final String str)
 	{
 		final XMLLibrary xmlLib = CMLib.xml();
-		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(str);
+		final List<XMLTag> xml = xmlLib.parseAllXML(str);
 		final String[] codes=getStatCodes();
 		for (final String code : codes)
 		{

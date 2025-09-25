@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -490,10 +491,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			||uClassID.startsWith("<AREA>")
 			||uClassID.startsWith("<ROOM>"))
 			{
-				final List<XMLLibrary.XMLTag> pieces=CMLib.xml().parseAllXML(classID);
+				final List<XMLTag> pieces=CMLib.xml().parseAllXML(classID);
 				if(pieces.size()>0)
 				{
-					final XMLLibrary.XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
+					final XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
 					if(tag != null)
 					{
 						final String realClassID=CMLib.xml().getValFromPieces(tag.contents(), "CLASSID");

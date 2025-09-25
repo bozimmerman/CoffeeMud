@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -769,7 +770,7 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 
 	private void parseAllXML(final String xml)
 	{
-		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
 			return;
 		for(int c=0;c<getStatCodes().length;c++)

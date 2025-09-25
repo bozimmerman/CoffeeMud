@@ -3,6 +3,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -59,11 +60,11 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 	{
 		if(oldVal.trim().startsWith("<"))
 		{
-			final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
+			final List<XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
 			if(xml.size()>0)
 			{
 				final String nameXML=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ITEXT");
-				final List<XMLLibrary.XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
+				final List<XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
 				final String name=CMLib.xml().getValFromPieces(nameTags, "NAME");
 				final String classID=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ICLAS");
 				return name+" ("+classID+")";
@@ -109,11 +110,11 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 		&&(val.length()>0)
 		&&(val.trim().startsWith("<")))
 		{
-			final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
+			final List<XMLTag> xml = CMLib.xml().parseAllXML(oldVal);
 			if(xml.size()>0)
 			{
 				final String nameXML=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ITEXT");
-				final List<XMLLibrary.XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
+				final List<XMLTag> nameTags=CMLib.xml().parseAllXML(CMLib.xml().restoreAngleBrackets(nameXML));
 				final String name=CMLib.xml().getValFromPieces(nameTags, "NAME");
 				final String classID=CMLib.xml().getValFromPieces(xml.get(0).contents(), "ICLAS");
 				return name+" ("+classID+")";
@@ -134,10 +135,10 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 		{
 			if(oldVal.trim().startsWith("<"))
 			{
-				final List<XMLLibrary.XMLTag> pieces=CMLib.xml().parseAllXML(oldVal);
+				final List<XMLTag> pieces=CMLib.xml().parseAllXML(oldVal);
 				if(pieces.size()>0)
 				{
-					final XMLLibrary.XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
+					final XMLTag tag = CMLib.xml().getPieceFromPieces(pieces, "ITEM");
 					if(tag != null)
 					{
 						String realClassID=CMLib.xml().getValFromPieces(tag.contents(), "ICLAS");

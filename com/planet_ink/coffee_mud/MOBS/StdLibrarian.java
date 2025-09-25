@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -110,7 +111,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				{
 					try
 					{
-						for (final XMLLibrary.XMLTag tag : xml.parseAllXML(data.xml()))
+						for (final XMLTag tag : xml.parseAllXML(data.xml()))
 						{
 							if (tag.tag().equalsIgnoreCase("OBJECT"))
 							{

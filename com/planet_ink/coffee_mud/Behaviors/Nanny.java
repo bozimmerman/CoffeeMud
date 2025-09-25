@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -865,7 +865,7 @@ public class Nanny extends StdBehavior
 				parms=parms.substring(0,3);
 				if(codes.trim().length()>0)
 				{
-					final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(codes);
+					final List<XMLTag> V=CMLib.xml().parseAllXML(codes);
 					XMLTag P=null;
 					long time=0;
 					String eName=null;

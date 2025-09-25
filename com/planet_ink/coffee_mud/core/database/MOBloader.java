@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PrideCat;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinnerPlayer;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -239,7 +240,7 @@ public class MOBloader
 					}
 				}
 				mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-				final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+				final List<XMLTag> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
 				R.close();
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
@@ -451,7 +452,7 @@ public class MOBloader
 		case ALIGNMENT:
 		{
 			final String alignmentID=CMLib.factions().getAlignmentID();
-			final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(queryCMCHARStr(name, "CMMXML"));
+			final List<XMLTag> CleanXML=CMLib.xml().parseAllXML(queryCMCHARStr(name, "CMMXML"));
 			for(final Pair<String,Integer> p : CMLib.coffeeMaker().unpackFactionFromXML(null,CleanXML))
 				if(p.first.equalsIgnoreCase(alignmentID))
 					return p.second;
@@ -478,7 +479,7 @@ public class MOBloader
 		}
 		case FACTIONS:
 		{
-			final List<XMLLibrary.XMLTag> CleanXML=CMLib.xml().parseAllXML(queryCMCHARStr(name, "CMMXML"));
+			final List<XMLTag> CleanXML=CMLib.xml().parseAllXML(queryCMCHARStr(name, "CMMXML"));
 			return CMLib.coffeeMaker().unpackFactionFromXML(null,CleanXML);
 		}
 		case INVENTORY:
@@ -739,7 +740,7 @@ public class MOBloader
 		case ALIGNMENT:
 		{
 			final String alignmentID=CMLib.factions().getAlignmentID();
-			final List<XMLLibrary.XMLTag> xmlTags=CMLib.xml().parseAllXML(queryCMCHARStr(name,"CMMXML"));
+			final List<XMLTag> xmlTags=CMLib.xml().parseAllXML(queryCMCHARStr(name,"CMMXML"));
 			final List<Pair<String,Integer>> oldPack = CMLib.coffeeMaker().unpackFactionFromXML(null,xmlTags);
 			for(final Pair<String,Integer> p : oldPack)
 			{
@@ -747,9 +748,9 @@ public class MOBloader
 					p.second = Integer.valueOf(value.toString());
 			}
 			final String newXML = CMLib.coffeeMaker().getFactionXML(null, oldPack);
-			final XMLLibrary.XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
+			final XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
 			final StringBuilder newXMLStr = new StringBuilder("");
-			for(final XMLLibrary.XMLTag tag : xmlTags)
+			for(final XMLTag tag : xmlTags)
 			{
 				if(tag.tag().equalsIgnoreCase("FACTIONS"))
 					newXMLStr.append(newFactionsTag.toString());
@@ -782,7 +783,7 @@ public class MOBloader
 		case EXPERS:
 		{
 			final String buf=queryCMCHARStr(name, "CMPFIL");
-			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
+			final List<XMLTag> tags=CMLib.xml().parseAllXML(buf);
 			@SuppressWarnings("unchecked")
 			final List<String> Ts=(List<String>)value;
 			final StringBuilder tbuf=new StringBuilder("");
@@ -793,7 +794,7 @@ public class MOBloader
 				tbuf.append(T.toString());
 			}
 			final StringBuilder str = new StringBuilder("");
-			for(final XMLLibrary.XMLTag tag : tags)
+			for(final XMLTag tag : tags)
 			{
 				if(tag.tag().equalsIgnoreCase("EDUS"))
 					tag.setValue(tbuf.toString());
@@ -804,13 +805,13 @@ public class MOBloader
 		}
 		case FACTIONS:
 		{
-			final List<XMLLibrary.XMLTag> xmlTags=CMLib.xml().parseAllXML(queryCMCHARStr(name,"CMMXML"));
+			final List<XMLTag> xmlTags=CMLib.xml().parseAllXML(queryCMCHARStr(name,"CMMXML"));
 			@SuppressWarnings("unchecked")
 			final XVector<Pair<String,Integer>> newPack = new XVector<Pair<String,Integer>>((List<Pair<String,Integer>>)value);
 			final String newXML = CMLib.coffeeMaker().getFactionXML(null, newPack);
-			final XMLLibrary.XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
+			final XMLTag newFactionsTag=CMLib.xml().parseAllXML(newXML).get(0);
 			final StringBuilder newXMLStr = new StringBuilder("");
-			for(final XMLLibrary.XMLTag tag : xmlTags)
+			for(final XMLTag tag : xmlTags)
 			{
 				if(tag.tag().equalsIgnoreCase("FACTIONS"))
 					newXMLStr.append(newFactionsTag.toString());
@@ -925,7 +926,7 @@ public class MOBloader
 		case TATTS:
 		{
 			final String buf=queryCMCHARStr(name, "CMPFIL");
-			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(buf);
+			final List<XMLTag> tags=CMLib.xml().parseAllXML(buf);
 			@SuppressWarnings("unchecked")
 			final List<Tattoo> Ts=(List<Tattoo>)value;
 			final StringBuilder tbuf=new StringBuilder("");
@@ -936,7 +937,7 @@ public class MOBloader
 				tbuf.append(T.toString());
 			}
 			final StringBuilder str = new StringBuilder("");
-			for(final XMLLibrary.XMLTag tag : tags)
+			for(final XMLTag tag : tags)
 			{
 				if(tag.tag().equalsIgnoreCase("TATTS"))
 					tag.setValue(tbuf.toString());
@@ -1249,7 +1250,7 @@ public class MOBloader
 							extraContentR=(Room)CMLib.coffeeMaker().unpackUnknownFromXML(addOnXml);
 						}
 						newItem.setMiscText(text);
-						final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
+						final List<XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
 						if((xml!=null)&&(xml.size()>0))
 						{
 							final String roomID=xml.get(0).parms().get("ID");
@@ -1348,7 +1349,7 @@ public class MOBloader
 									itemR.moveItemTo(I, Expire.Never, Move.Followers);
 							}
 							if((leadR!=null)&&(newItem instanceof Rider))
-								((Rider)newItem).setRiding(leadR);
+								newItem.setRiding(leadR);
 						}
 						extraContentR.destroy();
 						extraContentR=null;
@@ -2454,11 +2455,11 @@ public class MOBloader
 					String insert="";
 					if((thisItem instanceof Rider)
 					&&(thisItem instanceof NavigableItem)
-					&&(((Rider)thisItem).riding()!=null))
+					&&(thisItem.riding()!=null))
 					{
 						final Room R=CMLib.map().roomLocation(thisItem);
 						final Room fakeR=CMClass.getLocale("StoneRoom");
-						Rideable leadR=((Rider)thisItem).riding();
+						Rideable leadR=thisItem.riding();
 						while(leadR != null)
 						{
 							if(leadR instanceof MOB)
@@ -2574,7 +2575,7 @@ public class MOBloader
 		for(final PlayerData pd : pdV)
 		{
 			final String fakeName = pd.who();
-			final List<XMLLibrary.XMLTag> pieces = xLib.parseAllXML(pd.xml());
+			final List<XMLTag> pieces = xLib.parseAllXML(pd.xml());
 			final PrideCat cat = PrideCat.valueOf(xLib.getValFromPieces(pieces,"PCAT"));
 			final String unit = xLib.getValFromPieces(pieces, "PUNIT");
 			final PrideStat stat = PrideStat.valueOf(xLib.getValFromPieces(pieces, "PSTAT"));

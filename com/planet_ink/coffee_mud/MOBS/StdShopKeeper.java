@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -212,7 +213,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMLib.encoder().decompressString((byte[]) miscText));
 				else
 					shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
-				final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(shoptext);
+				final List<XMLTag> xml = CMLib.xml().parseAllXML(shoptext);
 				if (xml != null)
 				{
 					CMLib.coffeeMaker().populateShops(this, xml);

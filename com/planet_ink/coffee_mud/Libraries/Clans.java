@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
@@ -1203,17 +1203,17 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public ClanGovernment[] parseGovernmentXML(final StringBuffer xml)
 	{
-		final List<XMLLibrary.XMLTag> xmlV = CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> xmlV = CMLib.xml().parseAllXML(xml);
 		final XMLTag clanTypesTag = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPES");
-		List<XMLLibrary.XMLTag> clanTypes = null;
+		List<XMLTag> clanTypes = null;
 		if(clanTypesTag != null)
 			clanTypes = clanTypesTag.contents();
 		else
 		{
-			final XMLLibrary.XMLTag clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
+			final XMLTag clanType = CMLib.xml().getPieceFromPieces(xmlV, "CLANTYPE");
 			if(clanType != null)
 			{
-				clanTypes = new SVector<XMLLibrary.XMLTag>();
+				clanTypes = new SVector<XMLTag>();
 				clanTypes.add(clanType);
 			}
 			else

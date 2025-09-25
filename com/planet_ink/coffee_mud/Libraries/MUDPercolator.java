@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTags;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -257,7 +257,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return;
 		for(int v=0;v<xmlRoot.size();v++)
 		{
-			final XMLLibrary.XMLTag piece = xmlRoot.get(v);
+			final XMLTag piece = xmlRoot.get(v);
 			final String id = piece.getParmValue("ID");
 			if((id!=null)&&(id.length()>0))
 			{
@@ -367,7 +367,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								else
 									Log.errOut("Unable to merge SELECT parm on tags with ID: "+id+".");
 							}
-							for(final XMLLibrary.XMLTag subPiece : src.contents())
+							for(final XMLTag subPiece : src.contents())
 							{
 								final Boolean subMergeVal;
 								if((subPiece.parms()==null)||(!subPiece.parms().containsKey("MERGE")))
@@ -644,7 +644,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		try
 		{
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(R,null,null,"EXIT", piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(R,null,null,"EXIT", piece, defined,true);
 			if((choices!=null)&&(choices.size()>0))
 			{
 				for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++)
@@ -774,14 +774,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final String tagName="AREA";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 			{
 				return null;
 			}
 			while(choices.size()>0)
 			{
-				final XMLLibrary.XMLTag valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
+				final XMLTag valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
 				choices.remove(valPiece);
 				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
@@ -1407,7 +1407,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final List<MOB> V = new Vector<MOB>();
 			final String tagName="MOB";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -1438,12 +1438,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final String tagName="ROOM";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return null;
 			while(choices.size()>0)
 			{
-				final XMLLibrary.XMLTag valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
+				final XMLTag valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
 				choices.remove(valPiece);
 				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
@@ -1498,7 +1498,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final PairVector<Room,Exit[]> DV = new PairVector<Room,Exit[]>();
 			final String tagName="ROOM";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return DV;
 			for(int c=0;c<choices.size();c++)
@@ -1982,7 +1982,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			@Override
 			public String attempt() throws CMException, PostProcessException
 			{
-				final List<XMLLibrary.XMLTag> choices = getAllChoices(mob,ignoreStats,"MOB_","FACTION", piece, this.defined, true);
+				final List<XMLTag> choices = getAllChoices(mob,ignoreStats,"MOB_","FACTION", piece, this.defined, true);
 				if((choices!=null)&&(choices.size()>0))
 				{
 					for(int c=0;c<choices.size();c++)
@@ -2096,7 +2096,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final List<Exit> V = new Vector<Exit>();
 			final String tagName="EXIT";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2161,7 +2161,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final List<Triad<Environmental,Integer,Long>> V = new Vector<Triad<Environmental,Integer,Long>>();
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,"SHOPINVENTORY", piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,null,"SHOPINVENTORY", piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2268,7 +2268,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final List<Item> V = new Vector<Item>();
 			final String tagName="ITEM";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2309,7 +2309,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final List<Item> V = new Vector<Item>();
 			final String tagName="CONTENT";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2852,7 +2852,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final List<Ability> V = new Vector<Ability>();
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2883,7 +2883,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			final List<Behavior> V = new Vector<Behavior>();
 			final String tagName="BEHAVIOR";
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -2909,7 +2909,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final List<Race> V = new Vector<Race>();
 		final String tagName="RACE";
-		final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
+		final List<XMLTag> choices = getAllChoices(E,null,null,tagName, piece, defined,true);
 		if((choices==null)||(choices.size()==0))
 			return V;
 		for(int c=0;c<choices.size();c++)
@@ -2977,7 +2977,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final List<AbilityMapping> V = new Vector<AbilityMapping>();
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -3036,7 +3036,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		try
 		{
 			final List<Item> V = new Vector<Item>();
-			final List<XMLLibrary.XMLTag> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
+			final List<XMLTag> choices = getAllChoices(E,null,prefix,tagName, piece, defined,true);
 			if((choices==null)||(choices.size()==0))
 				return V;
 			for(int c=0;c<choices.size();c++)
@@ -3380,7 +3380,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		tagName=tagName.toUpperCase().trim();
 		final PairList<XMLTag, String> found = new PairVector<XMLTag, String>();
-		final List<XMLLibrary.XMLTag> choices = getAllChoices(E, ignoreStats, defPrefix, tagName, piece, defined, true);
+		final List<XMLTag> choices = getAllChoices(E, ignoreStats, defPrefix, tagName, piece, defined, true);
 		if((choices==null)||(choices.size()==0))
 		{
 			if(!optional)
@@ -3595,12 +3595,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		if(asDefined == null)
 			processDefined=piece;
-		final List<XMLLibrary.XMLTag> choices =new ArrayList<XMLLibrary.XMLTag>();
+		final List<XMLTag> choices =new ArrayList<XMLTag>();
 
 		// so, this looks at sub-tags JUST to see what type they are.  If they are something interesting,
 		// then choices are grabbed, on THIS xml piece, with that tag id.
 		final Set<String> done=new HashSet<String>();
-		for(final XMLLibrary.XMLTag subTag : piece.contents())
+		for(final XMLTag subTag : piece.contents())
 		{
 			if(done.contains(subTag.tag()))
 				continue;
@@ -4069,7 +4069,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection == null)
 			return choices;
 		selection=selection.toUpperCase().trim();
-		List<XMLLibrary.XMLTag> selectedChoicesV=null;
+		List<XMLTag> selectedChoicesV=null;
 		if(selection.equals("NONE"))
 			selectedChoicesV= new Vector<XMLTag>();
 		else
@@ -4131,7 +4131,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
+			final List<XMLTag> cV=new XArrayList<XMLTag>(choices);
 			final List<Integer> wV=new XArrayList<Integer>(choices.size(),true);
 			for(int c=0;c<cV.size();c++)
 			{
@@ -4198,7 +4198,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
+			final List<XMLTag> cV=new XArrayList<XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);
@@ -4213,7 +4213,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(num<0)
 				throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
+			final List<XMLTag> cV=new XArrayList<XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);
@@ -4227,7 +4227,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
+			final List<XMLTag> cV=new XArrayList<XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);
@@ -5347,11 +5347,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(str.startsWith("<AREAS>"))
 		{
 			final List<Area> areaList=new LinkedList<Area>();
-			final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
+			final List<List<XMLTag>> areas=new ArrayList<List<XMLTag>>();
 			String err=CMLib.coffeeMaker().fillAreasVectorFromXML(str,areas,null,null);
 			if((err!=null)&&(err.length()>0))
 				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+mql);
-			for(final List<XMLLibrary.XMLTag> area : areas)
+			for(final List<XMLTag> area : areas)
 				err=CMLib.coffeeMaker().unpackAreaFromXML(area, null, null, true, false);
 			for(final Area A : areaList)
 			{
@@ -5367,7 +5367,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<Room> roomList=new LinkedList<Room>();
 			final Area dumbArea=CMClass.getAreaType("StdArea");
 			CMLib.flags().setSavable(dumbArea, false);
-			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(str);
+			final List<XMLTag> tags=CMLib.xml().parseAllXML(str);
 			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false);
 			if((err!=null)&&(err.length()>0)||(!dumbArea.getProperMap().hasMoreElements()))
 				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+mql);

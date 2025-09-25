@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -711,7 +711,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return;
 		}
 
-		final List<XMLLibrary.XMLTag> xmlV=CMLib.xml().parseAllXML(text);
+		final List<XMLTag> xmlV=CMLib.xml().parseAllXML(text);
 		if(xmlV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing data.");
@@ -736,7 +736,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(parm!=null)
 			shop.setIgnoreMask(parm);
 
-		final List<XMLLibrary.XMLTag> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
+		final List<XMLTag> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
 		if(iV==null)
 		{
 			Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -756,7 +756,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			PhysicalAgent newOne=CMClass.getItem(itemi);
 			if(newOne==null)
 				newOne=CMClass.getMOB(itemi);
-			final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("IDATA");
+			final List<XMLTag> idat=iblk.getContentsFromPieces("IDATA");
 			if((idat==null)||(newOne==null))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");

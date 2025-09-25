@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -693,13 +693,13 @@ public class GenCharClass extends StdCharClass
 	{
 		if(parms.trim().length()==0)
 			return;
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(parms);
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenCharClass","Unable to parse: "+parms);
 			return;
 		}
-		final List<XMLLibrary.XMLTag> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
+		final List<XMLTag> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
 		if (classData == null)
 		{
 			Log.errOut("GenCharClass", "Unable to get CCLASS data.");
@@ -793,7 +793,7 @@ public class GenCharClass extends StdCharClass
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(classData,"HELP"));
 		raceRequiredList=CMParms.parseCommas(CMLib.xml().getValFromPieces(classData,"RACQUAL"), true).toArray(new String[0]);
 		final List<Pair<String,Integer>> statQuals=new ArrayList<Pair<String,Integer>>();
-		final List<XMLLibrary.XMLTag> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
+		final List<XMLTag> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
 		if((mV!=null)&&(mV.size()>0))
 		{
 			for(final XMLTag p : mV)
@@ -848,7 +848,7 @@ public class GenCharClass extends StdCharClass
 			CMLib.coffeeMaker().setCharState(startAdjState, saState);
 		}
 
-		List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
+		List<XMLTag> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
 		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
 		{
@@ -909,7 +909,7 @@ public class GenCharClass extends StdCharClass
 		}
 
 		// now OUTFIT!
-		final List<XMLLibrary.XMLTag> oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
+		final List<XMLTag> oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{

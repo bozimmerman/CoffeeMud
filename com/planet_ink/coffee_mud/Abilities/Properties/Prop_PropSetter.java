@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -148,8 +149,8 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 			previous.clear();
 			if(xml.length()>0)
 			{
-				final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
-				for(final XMLLibrary.XMLTag tag : tags)
+				final List<XMLTag> tags = CMLib.xml().parseAllXML(xml);
+				for(final XMLTag tag : tags)
 				{
 					if((tag.getParmValue("STAT")!=null)
 					&&(tag.getParmValue("ID")!=null))

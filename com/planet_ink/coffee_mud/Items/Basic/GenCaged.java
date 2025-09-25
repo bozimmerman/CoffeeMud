@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2003-2025 Bo Zimmerman
@@ -134,7 +134,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		MOB M=null;
 		if(cageText().length()==0)
 			return M;
-		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(cageText());
+		final List<XMLTag> buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
@@ -149,7 +149,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		final String itemi=iblk.getValFromPieces("MICLASS");
 		final String startr=iblk.getValFromPieces("MISTART");
 		final Environmental newOne=CMClass.getMOB(itemi);
-		final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("MIDATA");
+		final List<XMLTag> idat=iblk.getContentsFromPieces("MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");

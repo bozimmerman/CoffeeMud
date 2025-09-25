@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMa
 import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.Librarian.CheckedOutRecord;
@@ -116,8 +117,8 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		{
 			if((dat.xml().length()>0)&&(dat.xml().startsWith("<")))
 			{
-				final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(dat.xml());
-				for(final XMLLibrary.XMLTag tag : xml)
+				final List<XMLTag> xml = xmlLib.parseAllXML(dat.xml());
+				for(final XMLTag tag : xml)
 				{
 					if(tag.tag().equals("REQUEST"))
 					{
@@ -234,8 +235,8 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 			final String xmlStr = dat.xml();
 			if((xmlStr.length()>0)&&(xmlStr.startsWith("<")))
 			{
-				final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(xmlStr);
-				for(final XMLLibrary.XMLTag tag : xml)
+				final List<XMLTag> xml = xmlLib.parseAllXML(xmlStr);
+				for(final XMLTag tag : xml)
 				{
 					if(tag.tag().equals("REQUEST"))
 					{
@@ -649,7 +650,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					return false;
 				}
 				if((msg.tool() instanceof Item)
-				&& (!CMLib.law().mayOwnThisItem(msg.source(), (Item)msg.tool()))
+				&& (!CMLib.law().mayOwnThisItem(msg.source(), msg.tool()))
 				&& ((!CMLib.flags().isEvil(this))
 					||(CMLib.flags().isLawful(this))))
 				{

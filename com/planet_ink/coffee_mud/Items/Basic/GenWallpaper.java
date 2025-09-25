@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -432,7 +433,7 @@ public class GenWallpaper implements Item
 	@Override
 	public void setMiscText(final String newText)
 	{
-		final List<XMLLibrary.XMLTag> V = CMLib.xml().parseAllXML(newText);
+		final List<XMLTag> V = CMLib.xml().parseAllXML(newText);
 		if (V != null)
 		{
 			setName(CMLib.xml().getValFromPieces(V, "NAME"));

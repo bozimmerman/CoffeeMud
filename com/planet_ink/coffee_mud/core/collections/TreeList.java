@@ -38,8 +38,12 @@ import com.planet_ink.coffee_mud.core.collections.LinkedSet.LinkedEntry;
  */
 public class TreeList<J> implements List<J>,  Iterable<J>
 {
-	private final List<J>							coll	= new ArrayList<J>();
+	private final List<J>							coll;
 	private final TreeMap<Comparable<?>, List<J>>	map		= new TreeMap<Comparable<?>, List<J>>();
+	/**
+	 * A converter that converts a J to its comparable value.
+	 */
+	private Converter<J, Comparable<?>> converter;
 
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
@@ -49,22 +53,19 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 	{
 		if (conv != null)
 			converter = conv;
+		else
+			throw new IllegalArgumentException();
+		coll = new ArrayList<J>();
 	}
 
-	/**
-	 * A converter that converts a J to its comparable value.
-	 */
-	private Converter<J, Comparable<?>> converter = new Converter<J, Comparable<?>>()
+	public TreeList(final Converter<J, Comparable<?>> conv, final int initialCapacity)
 	{
-		@Override
-		public Comparable<?> convert(final J obj)
-		{
-			if (obj instanceof Comparable<?>)
-				return (Comparable<?>) obj;
-			return "" + obj;
-		}
-
-	};
+		if (conv != null)
+			converter = conv;
+		else
+			throw new IllegalArgumentException();
+		coll = new ArrayList<J>(initialCapacity);
+	}
 
 	/**
 	 * An iterator for the values in the map.
@@ -97,13 +98,24 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 			public void remove()
 			{
 				if(last != null)
-					TreeList.this.remove(last);
+				{
+					synchronized (TreeList.this)
+					{
+						it.remove();
+					}
+					final Comparable<?> key = converter.convert(last);
+					final List<J> lst = map.get(key);
+					if (lst == null)
+						return;
+					if((lst.remove(last)) && (lst.size()==0))
+						map.remove(key);
+				}
 			}
 		};
 	}
 
 	@Override
-	public int size()
+	public synchronized int size()
 	{
 		return coll.size();
 	}
@@ -114,22 +126,60 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 		return size()==0;
 	}
 
+	/**
+	 * Returns a set of the keys in the map.
+	 *
+	 * @return a set of the keys in the map.
+	 */
+	public synchronized List<J> getValuesByKey(final Comparable<?> key)
+	{
+		final List<J> lst = map.get(key);
+		if(lst == null)
+			return null;
+		return new ReadOnlyList<J>(lst);
+	}
+
+	/**
+	 * Returns the first value associated with the given key.
+	 *
+	 * @param key the key
+	 * @return the first value associated with the given key.
+	 */
+	public synchronized J getFirstByKey(final Comparable<?> key)
+	{
+		final List<J> lst = map.get(key);
+		if (lst == null)
+			return null;
+		return lst.get(0);
+	}
+
+	private boolean containsKey(final Comparable<?> key)
+	{
+		return map.containsKey(key);
+	}
+
+	private boolean containsValue(final J value)
+	{
+		final Comparable<?> key=converter.convert(value);
+		final List<J> lst = map.get(key);
+		if(lst == null)
+			return false;
+		return lst.contains(value);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean contains(final Object o)
+	public synchronized boolean contains(final Object o)
 	{
-		if(o instanceof Comparable<?>)
-			return map.containsKey(o);
-		else
+		try
 		{
-			try
-			{
-				return map.containsKey(converter.convert((J)o));
-			}
-			catch (final ClassCastException e)
-			{
-				return false;
-			}
+			return containsValue((J)o);
+		}
+		catch (final ClassCastException e)
+		{
+			if(o instanceof Comparable<?>)
+				return containsKey((Comparable<?>)o);
+			return false;
 		}
 	}
 
@@ -152,9 +202,13 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 		if(found)
 		{
 			final Comparable<?> key=converter.convert(e);
-			if (!map.containsKey(key))
-				map.put(key, new LinkedList<J>());
-			map.get(key).add(e);
+			List<J> lst = map.get(key);
+			if (lst == null)
+			{
+				lst = new LinkedList<J>();
+				map.put(key, lst);
+			}
+			lst.add(e);
 		}
 		return found;
 	}
@@ -168,14 +222,10 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 			final Comparable<?> key = converter.convert((J)o);
 			if (!map.containsKey(key))
 				return false;
+			final boolean found = coll.remove(o);
 			final List<J> lst = map.get(key);
-			final boolean found = lst.remove(o);
-			if (found)
-			{
-				coll.remove(o);
-				if (lst.size() == 0)
-					map.remove(key);
-			}
+			if (lst.remove(o) && (lst.size()==0))
+				map.remove(key);
 			return found;
 		}
 		catch (final ClassCastException e)
@@ -187,9 +237,9 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 	@Override
 	public boolean containsAll(final Collection<?> c)
 	{
-		boolean found=false;
+		boolean found=true;
 		for (final Object o : c)
-			found = contains(o) || found;
+			found = found && contains(o);
 		return found;
 	}
 
@@ -235,11 +285,11 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 	}
 
 	@Override
-	public synchronized boolean addAll(final int index, final Collection<? extends J> c)
+	public synchronized boolean addAll(int index, final Collection<? extends J> c)
 	{
 		for (final J o : c)
-			add(index, o);
-		return true;
+			add(index++, o);
+		return c.size()>0;
 	}
 
 	@Override
@@ -261,28 +311,28 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 	{
 		coll.add(index, element);
 		final Comparable<?> key=converter.convert(element);
-		if (!map.containsKey(key))
-			map.put(key, new LinkedList<J>());
-		map.get(key).add(element);
+		List<J> lst = map.get(key);
+		if (lst == null)
+		{
+			lst = new LinkedList<J>();
+			map.put(key, lst);
+		}
+		lst.add(element);
 	}
 
 	@Override
 	public synchronized J remove(final int index)
 	{
-		final J o = coll.get(index); // let it throw an exception if index is bad
+		final J o = coll.remove(index); // let it throw an exception if index is bad
 		if (o == null)
 			return null;
 		final Comparable<?> key = converter.convert(o);
-		if (!map.containsKey(key))
-			return o;
 		final List<J> lst = map.get(key);
-		final boolean found = lst.remove(o);
-		if (found)
-		{
-			coll.remove(o);
-			if (lst.size() == 0)
-				map.remove(key);
-		}
+		if (lst == null)
+			return o;
+		lst.remove(o);
+		if (lst.size() == 0)
+			map.remove(key);
 		return o;
 	}
 
@@ -375,7 +425,14 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 			public void remove()
 			{
 				if(previ>=0)
+				{
 					TreeList.this.remove(previ);
+					if(previ < i)
+					{
+						i--;
+						previ--;
+					}
+				}
 			}
 
 			@Override
@@ -389,6 +446,8 @@ public class TreeList<J> implements List<J>,  Iterable<J>
 			public void add(final J e)
 			{
 				TreeList.this.add(i,e);
+				i++;
+				previ++;
 			}
 		};
 	}

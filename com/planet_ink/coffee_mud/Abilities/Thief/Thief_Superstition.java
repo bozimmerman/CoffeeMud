@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -105,7 +106,7 @@ public class Thief_Superstition extends ThiefSkill
 		&&(text().indexOf('<') >= 0)
 		&&(affected instanceof MOB))
 		{
-			final List<XMLLibrary.XMLTag> set = CMLib.xml().parseAllXML(text());
+			final List<XMLTag> set = CMLib.xml().parseAllXML(text());
 			final String say = CMLib.xml().getValFromPieces(set, "SAY");
 			final String wear = CMLib.xml().getValFromPieces(set, "WEAR");
 			final String lang = CMLib.xml().getValFromPieces(set, "LANG");
@@ -288,7 +289,7 @@ public class Thief_Superstition extends ThiefSkill
 	{
 		if((text().length()>0)&&(text().indexOf('<')>=0))
 		{
-			final List<XMLLibrary.XMLTag> set = CMLib.xml().parseAllXML(text());
+			final List<XMLTag> set = CMLib.xml().parseAllXML(text());
 			final String say = CMLib.xml().getValFromPieces(set, "SAY");
 			final String wear = CMLib.xml().getValFromPieces(set, "WEAR");
 			final String language = CMLib.xml().getValFromPieces(set, "LANG");

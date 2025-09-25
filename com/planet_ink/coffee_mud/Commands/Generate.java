@@ -13,8 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -124,7 +123,7 @@ public class Generate extends StdCommand
 			return false;
 		}
 		final StringBuffer xml = file.textUnformatted();
-		final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 		final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 		definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new XTreeSet<String>(definedIDs.keys()));

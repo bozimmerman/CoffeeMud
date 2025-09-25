@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1060,9 +1060,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{
-			final List<XMLLibrary.XMLTag> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
-			final List<XMLLibrary.XMLTag> xMans=new SLinkedList<XMLLibrary.XMLTag>();
-			for(final XMLLibrary.XMLTag x : xDoc)
+			final List<XMLTag> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
+			final List<XMLTag> xMans=new SLinkedList<XMLTag>();
+			for(final XMLTag x : xDoc)
 			{
 				if(x.tag().equalsIgnoreCase("MANUFACTURER"))
 					xMans.add(x);

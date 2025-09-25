@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2003-2025 Bo Zimmerman
@@ -158,8 +158,8 @@ public class Thief_TrophyCount extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(str);
-			final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
+			final List<XMLTag> buf=CMLib.xml().parseAllXML(str);
+			final List<XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{

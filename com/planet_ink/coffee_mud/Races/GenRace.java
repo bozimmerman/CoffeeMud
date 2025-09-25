@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2003-2025 Bo Zimmerman
@@ -631,13 +631,13 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Unable to parse empty xml");
 			return;
 		}
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(parms);
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
-		final List<XMLLibrary.XMLTag> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
+		final List<XMLTag> raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
 		if(raceData==null)
 		{
 			Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+".");
@@ -759,7 +759,7 @@ public class GenRace extends StdRace
 			getAgingChart()[v]=CMath.s_int(aV.get(v));
 		clrStatChgDesc();
 		// now RESOURCES!
-		List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
+		List<XMLTag> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
@@ -782,7 +782,7 @@ public class GenRace extends StdRace
 		}
 
 		// now OUTFIT!
-		final List<XMLLibrary.XMLTag> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
+		final List<XMLTag> oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
@@ -806,7 +806,7 @@ public class GenRace extends StdRace
 		}
 
 		this.naturalWeaponChoices = new Weapon[0];
-		final XMLLibrary.XMLTag wblk=CMLib.xml().getPieceFromPieces(raceData,"WEAPON");
+		final XMLTag wblk=CMLib.xml().getPieceFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
 			final Weapon naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk.contents(),"ICLASS"));

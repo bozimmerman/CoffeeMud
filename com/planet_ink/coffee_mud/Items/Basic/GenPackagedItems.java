@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -170,7 +170,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	{
 		if (packageText().length() == 0)
 			return null;
-		final List<XMLLibrary.XMLTag> buf = CMLib.xml().parseAllXML(packageText());
+		final List<XMLTag> buf = CMLib.xml().parseAllXML(packageText());
 		if (buf == null)
 		{
 			Log.errOut("Packaged", "Error parsing 'PAKITEM'.");
@@ -184,7 +184,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 		}
 		final String itemi = iblk.getValFromPieces( "PICLASS");
 		final Environmental newOne = CMClass.getItem(itemi);
-		final List<XMLLibrary.XMLTag> idat = iblk.getContentsFromPieces( "PIDATA");
+		final List<XMLTag> idat = iblk.getContentsFromPieces( "PIDATA");
 		if ((idat == null) || (newOne == null) || (!(newOne instanceof Item)))
 		{
 			Log.errOut("Packaged", "Error parsing 'PAKITEM' data.");

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder.GenMOBCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1322,20 +1323,20 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return str.toString();
 	}
 
-	protected void putRecordXML(final List<Pair<String,Integer>>[][] tops, final XMLLibrary.XMLTag statRoot)
+	protected void putRecordXML(final List<Pair<String,Integer>>[][] tops, final XMLTag statRoot)
 	{
-		for(final XMLLibrary.XMLTag perTag : statRoot.contents())
+		for(final XMLTag perTag : statRoot.contents())
 		{
 			final TimePeriod period = (TimePeriod)CMath.s_valueOf(TimePeriod.class, perTag.getParmValue("TYPE"));
 			if(period != null)
 			{
-				for(final XMLLibrary.XMLTag statTag : perTag.contents())
+				for(final XMLTag statTag : perTag.contents())
 				{
 					final PrideStat pride = (PrideStat)CMath.s_valueOf(PrideStat.class, statTag.getParmValue("TYPE"));
 					if(pride != null)
 					{
 						tops[period.ordinal()][pride.ordinal()] = new XVector<Pair<String,Integer>>();
-						for(final XMLLibrary.XMLTag valTag : statTag.contents())
+						for(final XMLTag valTag : statTag.contents())
 						{
 							final String name = valTag.getParmValue("NAME");
 							final Integer value = Integer.valueOf(CMath.s_int(valTag.value()));
@@ -1364,11 +1365,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final CMFile F=new CMFile(filename, null);
 		if(!F.exists())
 			return;
-		final List<XMLLibrary.XMLTag> all = CMLib.xml().parseAllXML(F.text());
-		final XMLLibrary.XMLTag statsTag = CMLib.xml().getPieceFromPieces(all, "STATS");
+		final List<XMLTag> all = CMLib.xml().parseAllXML(F.text());
+		final XMLTag statsTag = CMLib.xml().getPieceFromPieces(all, "STATS");
 		if(statsTag != null)
 		{
-			for(final XMLLibrary.XMLTag statTag : statsTag.contents())
+			for(final XMLTag statTag : statsTag.contents())
 			{
 				if(statTag.tag().equals("STAT"))
 				{
@@ -1389,7 +1390,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						final Map<String,List<Pair<String,Integer>>[][]> catNames = new Hashtable<String,List<Pair<String,Integer>>[][]>();
 						prevTopPlayerCats.put(catType, catNames);
-						for(final XMLLibrary.XMLTag catTag : statTag.contents())
+						for(final XMLTag catTag : statTag.contents())
 						{
 							final String catName = catTag.getParmValue("CAT");
 							if(catName == null)

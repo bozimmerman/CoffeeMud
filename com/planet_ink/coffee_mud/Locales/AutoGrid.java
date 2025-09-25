@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.GridLocale.CrossExit;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -143,7 +143,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 				super.buildGrid();
 				return;
 			}
-			final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
+			final List<XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 			final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
 			CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new TreeSet<String>());
 			String idName = "";

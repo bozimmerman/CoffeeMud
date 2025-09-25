@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -136,7 +136,7 @@ public class Prayer_Prophecy extends Prayer
 		try
 		{
 			@SuppressWarnings("unchecked")
-			List<XMLLibrary.XMLTag> predictionRoot = (List<XMLLibrary.XMLTag>)Resources.getResource("SYSTEM_PREDICTION_SCRIPTS");
+			List<XMLTag> predictionRoot = (List<XMLTag>)Resources.getResource("SYSTEM_PREDICTION_SCRIPTS");
 			if(predictionRoot == null)
 			{
 				final CMFile file = new CMFile(Resources.buildResourcePath("skills/predictions.xml"),null);

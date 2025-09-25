@@ -21,7 +21,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 /*
    Copyright 2004-2025 Bo Zimmerman
@@ -559,21 +559,21 @@ public class Conquerable extends Arrest
 				final String data=itemSet.get(0).xml();
 				if(CMSecurity.isDebugging(DbgFlag.CONQUEST))
 					Log.debugOut(myArea.Name() +": clan items loaded = "+itemSet.size()+", "+((data.indexOf("GenClanFlag")>=0)?"including the flag":"without a flag!"));
-				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
+				final List<XMLTag> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
 					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
 					prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
 					conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
-					final List<XMLLibrary.XMLTag> allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
+					final List<XMLTag> allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
 					for(int c=0;c<allData.size();c++)
 					{
 						final XMLTag iblk=allData.get(c);
 						if((iblk.tag().equalsIgnoreCase("ACITEM"))&&(iblk.contents()!=null))
 						{
-							final List<XMLLibrary.XMLTag> roomData=iblk.contents();
+							final List<XMLTag> roomData=iblk.contents();
 							final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 							final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 							final Room R=CMLib.map().getRoom(roomID);

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -83,7 +84,7 @@ public class ClanLoader
 							final String roomXML=text.substring(0,roomX+2);
 							text=text.substring(roomX+2);
 							newItem.setMiscText(text);
-							final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
+							final List<XMLTag> xml=CMLib.xml().parseAllXML(roomXML);
 							if((xml!=null)&&(xml.size()>0))
 							{
 								final String roomID=xml.get(0).parms().get("ID");

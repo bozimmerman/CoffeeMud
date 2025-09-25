@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -401,14 +402,20 @@ public interface XMLLibrary extends CMLibrary
 			@Override
 			public Comparable<?> convert(final XMLTag obj)
 			{
-				if (obj.tag() != null)
-					return obj.tag().toLowerCase();
-				return "" + obj;
+				return obj.tag().toLowerCase();
 			}
 		};
-		public XMLTags()
+		public XMLTags() { super(conv); }
+		public XMLTags(final int size) { super(conv, size); }
+		public XMLTags(final XMLTag tag)
 		{
-			super(conv);
+			super(conv, 1);
+			add(tag);
+		}
+		public XMLTags(final Collection<XMLTag> tags)
+		{
+			super(conv, tags.size());
+			addAll(tags);
 		}
 	}
 
@@ -425,7 +432,7 @@ public interface XMLLibrary extends CMLibrary
 		public XMLTag copyOf();
 
 		/* (non-Javadoc)
-		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag)
+		 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag#addContent(com.planet_ink.coffee_mud.Libraries.interfaces.XMLTag)
 		 */
 		public void addContent(XMLTag x);
 

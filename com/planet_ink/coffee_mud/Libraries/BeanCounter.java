@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -614,13 +614,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	protected void parseDebt(final List<DebtItem> debt, final String debtor, final String xml)
 	{
-		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null)
 		{
 			Log.errOut("BeanCounter","Unable to parse: "+xml);
 			return;
 		}
-		final List<XMLLibrary.XMLTag> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
+		final List<XMLTag> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
 		if(debtData==null)
 		{
 			Log.errOut("BeanCounter","Unable to get debt data");

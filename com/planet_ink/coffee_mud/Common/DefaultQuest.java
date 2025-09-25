@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -6036,7 +6036,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			text=text.substring(0,x);
 			if((xml.length()>0)&&(internalFiles==null))
 			{
-				final List<XMLLibrary.XMLTag> topXMLV=CMLib.xml().parseAllXML(xml);
+				final List<XMLTag> topXMLV=CMLib.xml().parseAllXML(xml);
 				for(int t=0;t<topXMLV.size();t++)
 				{
 					final XMLTag filePiece=topXMLV.get(t);

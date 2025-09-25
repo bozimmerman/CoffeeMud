@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.Librarian.CheckedOutRecord;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -294,10 +295,10 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	protected void parseRecords(final String text)
 	{
 		final XMLLibrary xml=CMLib.xml();
-		final List<XMLLibrary.XMLTag> tags=xml.parseAllXML(text);
-		final List<XMLLibrary.XMLTag> recs=xml.getContentsFromPieces(tags, "CHECKEDOUTRECORDS");
+		final List<XMLTag> tags=xml.parseAllXML(text);
+		final List<XMLTag> recs=xml.getContentsFromPieces(tags, "CHECKEDOUTRECORDS");
 		this.records.clear();
-		for(final XMLLibrary.XMLTag rec : recs)
+		for(final XMLTag rec : recs)
 		{
 			final CheckedOutRecord R=new CheckedOutRecord();
 			R.itemName=xml.restoreAngleBrackets(rec.getParmValue("ITEM"));

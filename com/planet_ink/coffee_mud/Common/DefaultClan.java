@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -540,13 +540,13 @@ public class DefaultClan implements Clan
 				final String rawxml=V.get(v).xml();
 				if(rawxml.trim().length()==0)
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
-				final List<XMLLibrary.XMLTag> xml=xmlLib.parseAllXML(rawxml);
+				final List<XMLTag> xml=xmlLib.parseAllXML(rawxml);
 				if(xml==null)
 				{
 					Log.errOut("Clans","Unable to parse: "+rawxml);
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				}
-				final List<XMLLibrary.XMLTag> voteData=xmlLib.getContentsFromPieces(xml,"BALLOTS");
+				final List<XMLTag> voteData=xmlLib.getContentsFromPieces(xml,"BALLOTS");
 				if(voteData==null)
 				{
 					Log.errOut("Clans","Unable to get BALLOTS data.");
@@ -558,7 +558,7 @@ public class DefaultClan implements Clan
 				CV.voteStatus=xmlLib.getIntFromPieces(voteData,"STATUS");
 				CV.matter=xmlLib.getValFromPieces(voteData,"CMD");
 				CV.votes=new PairVector<String,Boolean>();
-				final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(voteData,"VOTES");
+				final List<XMLTag> xV=xmlLib.getContentsFromPieces(voteData,"VOTES");
 				if((xV!=null)&&(xV.size()>0))
 				{
 					for(int x=0;x<xV.size();x++)
@@ -1558,14 +1558,14 @@ public class DefaultClan implements Clan
 		government=0;
 		if(politics.trim().length()==0)
 			return;
-		final List<XMLLibrary.XMLTag> xml=xmlLib.parseAllXML(politics);
+		final List<XMLTag> xml=xmlLib.parseAllXML(politics);
 		if(xml==null)
 		{
 			Log.errOut("Clans","Unable to parse: "+politics);
 			return;
 		}
 
-		final List<XMLLibrary.XMLTag> poliData=xmlLib.getContentsFromPieces(xml,"POLITICS");
+		final List<XMLTag> poliData=xmlLib.getContentsFromPieces(xml,"POLITICS");
 		if(poliData==null)
 		{
 			Log.errOut("Clans","Unable to get POLITICS data.");
@@ -1627,7 +1627,7 @@ public class DefaultClan implements Clan
 			this.addTattoo(tattoo);
 
 		// now RESOURCES!
-		final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(poliData,"RELATIONS");
+		final List<XMLTag> xV=xmlLib.getContentsFromPieces(poliData,"RELATIONS");
 		if((xV!=null)&&(xV.size()>0))
 		{
 			for(int x=0;x<xV.size();x++)

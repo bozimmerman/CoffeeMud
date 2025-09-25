@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -244,9 +245,9 @@ public class Fighter_CallSteed extends StdAbility
 			favored = new Vector<MOB>();
 			if (super.text().trim().startsWith("<MOBS>"))
 			{
-				final List<XMLLibrary.XMLTag> pieces = CMLib.xml().parseAllXML(super.text());
+				final List<XMLTag> pieces = CMLib.xml().parseAllXML(super.text());
 				CMLib.coffeeMaker().addMOBsFromXML(pieces, favored, null);
-				for (final XMLLibrary.XMLTag tag : pieces)
+				for (final XMLTag tag : pieces)
 				{
 					if (tag.tag().equals("LAST"))
 					{

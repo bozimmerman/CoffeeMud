@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -133,7 +134,7 @@ public class DefaultPrideStats implements PrideStats
 		return rest.toString();
 	}
 
-	protected void setXML(final XMLLibrary xmlLib, final List<XMLLibrary.XMLTag> xml)
+	protected void setXML(final XMLLibrary xmlLib, final List<XMLTag> xml)
 	{
 		final String[] nextPeriods=xmlLib.getValFromPieces(xml, "NEXTPRIDEPERIODS").split(",");
 		final String[] prideStats=xmlLib.getValFromPieces(xml, "PRIDESTATS").split(";");
@@ -152,7 +153,7 @@ public class DefaultPrideStats implements PrideStats
 	public void setXML(final String str)
 	{
 		final XMLLibrary xmlLib = CMLib.xml();
-		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(str);
+		final List<XMLTag> xml = xmlLib.parseAllXML(str);
 		this.setXML(xmlLib, xml);
 	}
 }

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1103,7 +1104,7 @@ public class DefaultTimeClock implements TimeClock
 				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1000</YEAR>";
 			else
 				timeRsc=bitV.get(0).xml();
-			final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(timeRsc);
+			final List<XMLTag> V=CMLib.xml().parseAllXML(timeRsc);
 			setHourOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 			setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 			setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));

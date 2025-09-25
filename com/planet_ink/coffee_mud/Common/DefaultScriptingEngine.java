@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -498,7 +498,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(key.startsWith("SCRIPTVAR-"))
 				resources._removeResource(key);
 		}
-		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
+		final List<XMLTag> V=CMLib.xml().parseAllXML(xml);
 		for(int v=0;v<V.size();v++)
 		{
 			final XMLTag piece=V.get(v);
@@ -1001,8 +1001,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(script.get(i).getTriggerCode()==55)
 				{
 					@SuppressWarnings("unchecked")
-					final List<XMLLibrary.XMLTag> tags = (List<XMLLibrary.XMLTag>)script.get(i).get(0).third;
-					for(final XMLLibrary.XMLTag tag : tags)
+					final List<XMLTag> tags = (List<XMLTag>)script.get(i).get(0).third;
+					for(final XMLTag tag : tags)
 					{
 						if(tag.tag().equalsIgnoreCase("FILE")
 						&&(named.equalsIgnoreCase(CMLib.xml().getValFromPieces(tag.contents(), "NAME", ""))))
@@ -1262,7 +1262,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(xml.length()>0)
 		{
 			final SubScript xmlS = new SubScriptImpl(null);
-			final List<XMLLibrary.XMLTag> tags = CMLib.xml().parseAllXML(xml);
+			final List<XMLTag> tags = CMLib.xml().parseAllXML(xml);
 			xmlS.add(new ScriptLn(XMLLibrary.FILE_XML_BOUNDARY,null,tags));
 			parsedScript.add(xmlS);
 		}
@@ -1508,7 +1508,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		monsters=Collections.synchronizedList(new ArrayList<MOB>());
 		if(xml!=null)
 		{
@@ -1566,7 +1566,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		monsters=Collections.synchronizedList(new ArrayList<MOB>());
 		if(xml!=null)
 		{
@@ -1648,7 +1648,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		items=Collections.synchronizedList(new ArrayList<Item>());
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"ITEMS")!=null)
@@ -1706,7 +1706,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		items=Collections.synchronizedList(new ArrayList<Item>());
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
+		final List<XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)

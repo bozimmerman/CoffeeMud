@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -121,8 +122,8 @@ public class Skill_StableMount extends StdAbility
 			stables.put(A.Name(), stable);
 			return stable;
 		}
-		final List<XMLLibrary.XMLTag> pieces = CMLib.xml().parseAllXML(super.text());
-		for (final XMLLibrary.XMLTag tag : pieces)
+		final List<XMLTag> pieces = CMLib.xml().parseAllXML(super.text());
+		for (final XMLTag tag : pieces)
 		{
 			if(!tag.tag().equalsIgnoreCase("STABLE"))
 				continue;
@@ -130,7 +131,7 @@ public class Skill_StableMount extends StdAbility
 			if(area == null)
 				continue;
 			stable = new Vector<MOB>();
-			final List<XMLLibrary.XMLTag> mobs = CMLib.xml().getPiecesFromPieces(tag.contents(), "MOBS");
+			final List<XMLTag> mobs = CMLib.xml().getPiecesFromPieces(tag.contents(), "MOBS");
 			if(mobs == null)
 				continue;
 			stables.put(CMLib.xml().restoreAngleBrackets(area), stable);

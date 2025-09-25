@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
 import java.util.*;
 
@@ -2534,7 +2534,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final String xml=auctionData.msg();
 			if(xml.length()==0)
 				continue;
-			List<XMLLibrary.XMLTag> xmlV=CMLib.xml().parseAllXML(xml);
+			List<XMLTag> xmlV=CMLib.xml().parseAllXML(xml);
 			xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
 			final String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
 			final double oldBid=CMath.s_double(bid);
