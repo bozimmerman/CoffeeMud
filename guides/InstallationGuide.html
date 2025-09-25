@@ -174,12 +174,28 @@ said, there are two ways to do it: &nbsp;the new auto-magic way, or the
 old manual way.</p><p><span style="font-weight: bold;">The Auto-Magic Way</span></p><p><span style="font-weight: bold;"></span>First, shut down your mud and back up your existing
 installation. &nbsp;I usally zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
-aside.</p><p>Next, for Windows users, run the:</p><pre>upgrade.bat</pre><p>and for Linux/Mac users, drop into a shell and run:</p><pre>dos2unix upgrade.sh<br />chmod +x upgrade.sh<br />./upgrade.sh</pre><p>This
-will download the latest official version, unzip it, compile it, and
-merge changes to the various resources, web files, and guides.
+aside.</p><p>Next, for Windows users, run the:</p><pre>upgrade.bat</pre><p>and for Linux/Mac users, drop into a shell and run:</p><pre>dos2unix upgrade.sh<br />chmod +x upgrade.sh<br />./upgrade.sh</pre><p>If you are starting from an Unofficial build version, e.g. <span style="font-family: monospace;">5.10.3.2</span>,
+then the upgrade tool will tell you as much, and ask for an official
+build version, recommending the next lowest to yours. &nbsp;You can
+specify an alternative starting version with the <span style="font-family: monospace;">--from=</span> command line argument, for example: <span style="font-family: monospace;">upgrade.bat --from=5.10.3.0</span> or <span style="font-family: monospace;">./upgrade.sh --from=</span><span style="font-family: monospace;">5.10.3.0&nbsp;</span>
+&nbsp;Be aware that this will cause the upgrade tool to prefer the
+older changes to the latest ones, since it can't tell what the user
+changed or not.</p><p>The
+upgrade tool will make a backup of your current installation, download
+the latest official version and the base version, unzip them, and check
+your directory for extensive changes. &nbsp;If extensive changes from
+the base version were found, you will get an error message saying as
+much, and will need to specify the <span style="font-family: monospace;">--merge</span> command line argument to allow the tool to proceed, e.g. &nbsp;<span style="font-family: monospace;">upgrade.bat --merge</span> or <span style="font-family: monospace;">./upgrade.sh --merge</span></p><p>The
+upgrade tool will then compile the new version while preserving your
+custom added classes, but overwrite any changed classes with the new
+version, so no java merging occurs.&nbsp;
+It will then merge changes to the various resources, web files, and
+guides.
 &nbsp;The upgrade tool will do its very best to preserve the new data
-and your customized changes, but nothing is perfect. &nbsp;I recommend
-testing the holy heck out of your mud after doing this. &nbsp;If the
+and your customized text file changes, but nothing is perfect. &nbsp;I
+recommend
+inspecting the files with reported conflicts, and testing the holy heck
+out of your mud after doing this. &nbsp;<br /><br />If the
 upgrade tool fails OR you just lack confidence in automagic, you can
 instead proceed to the manual way; otherwise, you are done and ready to
 run your new version of CoffeeMud!</p><p><span style="font-weight: bold;">The Manuall Way</span></p>
@@ -207,21 +223,19 @@ your olde one.</p>
 <p>Open up the coffeemud.ini file that comes with the
 new
 version and also open up your olde customized coffeemud.ini file you
-saved away in step 2. Merge over from the old ini file the settings
+saved away earlier. Merge over from the old ini file the settings
 that
 differ from the new one. The idea here is that the new coffeemud.ini
 file may contain new settings you need to be aware of. However, your
 old custom settings will still apply in the new version -- especially
-your database settings for instance.</p>
+your database settings.</p>
 <p>Copy your intro.txt on top of the one from the new
-build.
-As in step 4, merge any other files back into their counterparts in the
+build, and merge any other files back into their counterparts in the
 new build.</p>
 Smile, you are done with the upgrade process. &nbsp;You can now
 start up the new version.<br />
-<br />
-(Note:
-if the database schema changed between your old and new version,
+<br /><span style="color: rgb(0, 153, 0);">
+Note!</span> If the database schema changed between your old and new version,
 CoffeeMud will detect this and upgrade your database. &nbsp;If any
 errors occur during this process, the mud will not start, and you
 should consult the Troubleshooting section under "Using a Real

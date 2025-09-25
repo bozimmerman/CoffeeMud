@@ -69,22 +69,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected int		waitRemaining		= -1;
 	protected int		ticksRemaining		= -1;
 	protected long		lastStartDateTime	= System.currentTimeMillis();
-	private boolean		stoppingQuest		= false;
+	protected boolean	stoppingQuest		= false;
 	protected int		spawn				= Quest.Spawn.NO.ordinal();
-	private QuestState	questState			= new QuestState();
-	private boolean		copy				= false;
-	private int[]		resetData			= null;
-	private TimeClock	popularClock		= null;
-	private Area		areaGuessA			= null;
+	protected QuestState questState			= new QuestState();
+	protected boolean	copy				= false;
+	protected int[]		resetData			= null;
+	protected TimeClock	popularClock		= null;
+	protected Area		areaGuessA			= null;
 
-	private final AtomicBoolean			starting			= new AtomicBoolean(false);
-	public PairList<String,StringBuffer>internalFiles		= null;
-	private final AtomicBoolean			suspended			= new AtomicBoolean(false);
-	protected final Map<String,Long>	stepEllapsedTimes	= Collections.synchronizedMap(new HashMap<String,Long>());
-	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
-	protected volatile Behavable		checkAcceptHost		= null;
-	protected volatile ScriptingEngine	checkAcceptEng		= null;
-	protected final Object[] 			objs				= new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+	protected final AtomicBoolean			starting			= new AtomicBoolean(false);
+	protected PairList<String, StringBuffer>internalFiles		= null;
+	protected final AtomicBoolean			suspended			= new AtomicBoolean(false);
+	protected final Map<String, Long>		stepEllapsedTimes	= Collections.synchronizedMap(new HashMap<String, Long>());
+	protected final Map<String, Long>		winners				= new CaselessTreeMap<Long>();
+	protected volatile Behavable			checkAcceptHost		= null;
+	protected volatile ScriptingEngine		checkAcceptEng		= null;
+	protected final Object[]				objs				= new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 
 	protected volatile int parseId = 0;
 	protected final static AtomicInteger globalParseId			= new AtomicInteger(0);

@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,6 +60,21 @@ public class UpgradeTool
 	private static final String	ZIP_URL_TEMPLATE="http://www.zimmers.net/anonftp/pub/projects/coffeemud/all/CoffeeMud_%s.zip";
 	private static final String	ZIP_HEAD_TEMPLATE="http://www.coffeemud.net:8080/svnhead/CoffeeMud_Hourly.zip";
 
+
+	public static void dumpUsage()
+	{
+		System.err.println("Usage:           java -cp . com.planet_ink.coffee_mud.application.UpgradeTool [options]");
+		System.err.println("");
+		System.err.println("--to=[version]   If unspecified, the latest stable version will be used.");
+		System.err.println("                 If \"HEAD\" is specified, the latest HEAD snapshot will be used.");
+		System.err.println("--from=[version] Set current version.  If unspecified, uses source version.");
+		System.err.println("                 Choosing a version far from the actual source will increase conflicts.");
+		System.err.println("--merge          Merge changes even if non-common local files have been modified from base.");
+		System.err.println("--versions       Dump the available versions and exit.");
+		System.err.println("--help Show this help message.");
+		System.exit(1);
+	}
+
 	/**
 	 * Main method to run the upgrade tool.
 	 *
@@ -67,23 +83,91 @@ public class UpgradeTool
 	 */
 	public static void main(final String[] args)
 	{
+		boolean merge = false;
 		String latestVer=null;
+		String userOverrideVer = null;
 		if(args.length>0)
 		{
-			if(args[0].equalsIgnoreCase("HEAD"))
-				latestVer="HEAD";
-			else
+			for(int i=0;i<args.length;i++)
 			{
-				latestVer=args[0];
-				while(latestVer.split("\\.").length != 4)
-					latestVer += ".0";
+				if(args[i].startsWith("--"))
+				{
+					if(args[i].equalsIgnoreCase("--help"))
+						dumpUsage();
+					else
+					if (args[i].equalsIgnoreCase("--merge"))
+						merge = true;
+					else
+					if (args[i].equalsIgnoreCase("--versions"))
+					{
+						try
+						{
+							final List<String> versions = getVersions();
+							System.out.println("Available versions:");
+							for (final String v : versions)
+								System.out.println("  " + v);
+							System.exit(0);
+						}
+						catch (final IOException e)
+						{
+							System.err.println("Failed to fetch version list: " + e.getMessage());
+							System.exit(1);
+						}
+					}
+					else
+					if (args[i].startsWith("--from="))
+					{
+						String version = args[i].substring(7).trim();
+						if (version.startsWith("\"") && version.endsWith("\"") && (version.length()>1))
+							version = version.substring(1, version.length() - 1).trim();
+						if (!Pattern.matches("\\d+(\\.\\d+){0,3}", version))
+						{
+							System.err.println("Invalid version format: " + version);
+							dumpUsage();
+						}
+						while(version.split("\\.").length != 4)
+							version += ".0";
+						userOverrideVer=version;
+					}
+					else
+					if(args[i].equalsIgnoreCase("--to=HEAD"))
+						latestVer="HEAD";
+					else
+					if (args[i].startsWith("--to="))
+					{
+						String version = args[i].substring(5).trim();
+						if (version.startsWith("\"") && version.endsWith("\"") && (version.length()>1))
+							version = version.substring(1, version.length() - 1).trim();
+						if (!Pattern.matches("\\d+(\\.\\d+){0,3}", version))
+						{
+							System.err.println("Invalid version format: " + version);
+							dumpUsage();
+						}
+						while(version.split("\\.").length != 4)
+							version += ".0";
+						latestVer=version;
+					}
+					else
+					{
+						System.err.println("Invalid argument: " + args[i]);
+						dumpUsage();
+					}
+				}
+				else
+				{
+					System.err.println("Invalid argument: " + args[i]);
+					dumpUsage();
+				}
 			}
 		}
 		Path backupZip = null;
 		final Path root=Paths.get(".");
 		try
 		{
-			String userVer=getUserVersion(root);
+			String userVer=userOverrideVer;
+			final String foundUserVer = getUserVersion(root);
+			if(userVer == null)
+				userVer = foundUserVer;
 			final List<String> versions = getVersions();
 			if(latestVer==null)
 				latestVer = versions.get(versions.size()-1);
@@ -105,12 +189,23 @@ public class UpgradeTool
 							System.err.println("Cancelled.");
 							System.exit(1);
 						}
+						if(userOverrideVer == null)
+						{
+							System.err.println("Current version " + userVer + " not found.  Next available lowest was " + v + ".");
+							System.err.println("No valid current version was specified on the command line, so cancelling.");
+							System.exit(1);
+						}
+						if(!v.equals(userOverrideVer))
+						{
+							System.err.println("Current version " + userVer + " not found.  Next available lowest was " + v + ".");
+							System.err.println("Unable to upgrade from an unknown version.");
+							System.exit(1);
+						}
 						System.out.println("Current version " + userVer + " not found. Assuming upgrade from " + v + ".");
 						userVer = v;
 						break;
 					}
 				}
-				// check for the next-lowest version?
 			}
 			if((!versions.contains(latestVer))
 			&& (!latestVer.equals("HEAD")))
@@ -124,12 +219,19 @@ public class UpgradeTool
 				System.err.println("Available versions: " + verList);
 				System.exit(1);
 			}
+
 			checkPermissions(root);
-			backupZip = root.resolve("CoffeeMud_Backup_" + userVer + ".zip");
+			backupZip = root.resolve("CoffeeMud_Backup_" + foundUserVer + ".zip");
 			if(!Files.exists(backupZip))
 			{
 				System.out.println("Creating backup: " + backupZip);
 				zipDirectory(root, backupZip);
+			}
+
+			if(!Files.exists(root.resolve("com")))
+			{
+				System.err.println("Cannot find 'com' directory. Ensure you are running this in the CoffeeMud root directory.");
+				System.exit(1);
 			}
 
 			System.out.println("Upgrading CoffeeMud from "+userVer+" to "+latestVer+"...");
@@ -142,16 +244,26 @@ public class UpgradeTool
 				final Path baseExtract=tempDir.resolve("base");
 				unzip(baseZip, baseExtract);
 
+				if(!merge)
+				{
+					final List<Path> modified=isModifiedFromBase(baseExtract, root);
+					if (modified.size() > 0)
+					{
+						System.err.println("The current installation has been modified from the base version.");
+						System.err.println("The following files differ from the base version:");
+						for (final Path p : modified)
+							System.err.println("  " + p);
+						System.err.println("No --merge was specified, so cancelling.");
+						if(Files.exists(tempDir))
+							deleteDirectory(tempDir);
+						System.exit(1);
+					}
+				}
+
 				final Path latestZip=tempDir.resolve("latest.zip");
 				downloadZip(latestVer, latestZip);
 				final Path latestExtract=tempDir.resolve("latest");
 				unzip(latestZip, latestExtract);
-
-				if(Files.exists(root.resolve("com")))
-					UpgradeTool.deleteDirectory(root.resolve("com"));
-				copyDirectory(latestExtract.resolve("com"), root.resolve("com"));
-				if(Files.exists(latestExtract.resolve("lib")))
-					copyDirectory(latestExtract.resolve("lib"), root.resolve("lib"));
 
 				Files.walkFileTree(root.resolve("com"), new SimpleFileVisitor<Path>()
 				{
@@ -163,6 +275,12 @@ public class UpgradeTool
 						return FileVisitResult.CONTINUE;
 					}
 				});
+				if(Files.exists(root.resolve("com")))
+					mergeJava(root, "com", latestExtract, baseExtract);
+				if(Files.exists(root.resolve("lib")))
+					mergeJava(root, "lib", latestExtract, baseExtract);
+				else
+					copyDirectory(latestExtract.resolve("lib"), root.resolve("lib"));
 
 				System.out.println("Compiling Java sources...");
 				final JavaCompiler compiler=ToolProvider.getSystemJavaCompiler();
@@ -180,20 +298,26 @@ public class UpgradeTool
 							javaFiles.add(p.toAbsolutePath().toString());
 					}
 				}
-				final List<String> paths=Files.list(root.resolve("lib"))
-												.filter(p -> p.toString().endsWith(".jar"))
-												.map(Path::toAbsolutePath)
-												.map(Path::toString)
-												.collect(Collectors.toList());
+				final List<String> paths;
+				if(Files.exists(root.resolve("lib")))
+				{
+					paths=Files.list(root.resolve("lib"))
+							.filter(p -> p.toString().endsWith(".jar"))
+							.map(Path::toAbsolutePath)
+							.map(Path::toString)
+							.collect(Collectors.toList());
+				}
+				else
+					paths = new ArrayList<String>();
 				paths.add(".");
 				final String classpath=String.join(File.pathSeparator, paths);
 				final Iterable<? extends javax.tools.JavaFileObject> compilationUnits=fileManager.getJavaFileObjectsFromStrings(javaFiles);
-				final List<String> options=Arrays.asList("-cp", classpath, "-d", root.toAbsolutePath().toString(), "-nowarn");
+				final List<String> options=Arrays.asList("-cp", classpath, "-d", root.toAbsolutePath().toString(), "-Xlint:none");
 				final Boolean success=compiler.getTask(null, fileManager, null, options, null, compilationUnits).call();
 				if(!success.booleanValue())
 					throw new RuntimeException("Compilation failed.");
 
-				System.out.println("Merging root files...");
+				System.out.println("Merging root, resource, and web files...");
 				mergeRootFiles(baseExtract, latestExtract, root);
 				deleteObsoleteRootFiles(baseExtract, latestExtract, root);
 
@@ -205,7 +329,7 @@ public class UpgradeTool
 					final Path userDir=root.resolve(dir);
 					if(Files.exists(latestDir))
 					{
-						System.out.println("Merging directory: "+dir);
+						//System.out.println("Merging directory: "+dir);
 						mergeDirectory(baseDir, latestDir, userDir);
 						deleteObsoleteFiles(baseDir, latestDir, userDir);
 					}
@@ -240,6 +364,87 @@ public class UpgradeTool
 				System.err.println("No backup available to restore.");
 			System.exit(1);
 		}
+	}
+
+	private static void mergeJava(final Path root, final String rDir, final Path latestExtract, final Path baseExtract) throws IOException
+	{
+		final Map<Path, byte[]> preservedFiles = new HashMap<>();
+		Files.walkFileTree(root.resolve(rDir), new SimpleFileVisitor<Path>()
+		{
+			@Override
+			public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException
+			{
+				if (file.toString().endsWith(".java")||rDir.equals("lib"))
+				{
+					final Path rel = root.resolve(rDir).relativize(file);
+					if (!Files.exists(baseExtract.resolve(rDir).resolve(rel))
+					&& !Files.exists(latestExtract.resolve(rDir).resolve(rel)))
+						preservedFiles.put(file, Files.readAllBytes(file));
+				}
+				return FileVisitResult.CONTINUE;
+			}
+		});
+		// Delete existing directory if it exists
+		if (Files.exists(root.resolve(rDir)))
+			deleteDirectory(root.resolve(rDir));
+		// Copy latest directory
+		copyDirectory(latestExtract.resolve(rDir), root.resolve(rDir));
+		// Copy preserved user Java files back to com directory
+		for(final Map.Entry<Path, byte[]> entry : preservedFiles.entrySet())
+		{
+			final Path dest = root.resolve(entry.getKey());
+			Files.createDirectories(dest.getParent());
+			Files.write(dest, entry.getValue());
+			System.out.println("Preserved user Java file: " + dest);
+		}
+	}
+
+	/**
+	 * Checks if the existing installation is unmodified from the base version.
+	 * Includes Java files but skips .class files, ignores new files in the user directory.
+	 *
+	 * @param baseExtract The extracted base version directory.
+	 * @param userDir The user installation directory.
+	 * @return an empty list, or those modified from base.
+	 * @throws IOException If file access fails.
+	 */
+	private static List<Path> isModifiedFromBase(final Path baseExtract, final Path userDir) throws IOException
+	{
+		final List<Path> modified = new Vector<Path>();
+		Files.walkFileTree(baseExtract, new SimpleFileVisitor<Path>()
+		{
+			@Override
+			public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException
+			{
+				final String dirName = dir.getFileName().toString();
+				if ( dirName.equals("text"))
+					return FileVisitResult.SKIP_SUBTREE;
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException
+			{
+				if (file.getFileName().toString().endsWith(".class")
+				||file.getFileName().toString().endsWith(".bat")
+				||file.getFileName().toString().endsWith(".sh")
+				||file.getFileName().toString().endsWith("intro.jpg")
+				||file.getFileName().toString().endsWith("laws.ini")
+				||file.getFileName().toString().equals("coffeemud.ini"))
+					return FileVisitResult.CONTINUE;
+				final Path rel = baseExtract.relativize(file);
+				final Path userFile = userDir.resolve(rel);
+				if(!Files.exists(userFile) || !sameFiles(file, userFile))
+				{
+					synchronized (modified)
+					{
+						modified.add(userFile);
+					}
+				}
+				return FileVisitResult.CONTINUE;
+			}
+		});
+		return modified;
 	}
 
 	/**
@@ -386,6 +591,12 @@ public class UpgradeTool
 				@Override
 				public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException
 				{
+					final String dirName = dir.getFileName().toString();
+					if (dirName.equals(".git")
+					|| dirName.equals(".svn")
+					|| dirName.equals("com.bak")
+					|| dirName.equals("lib.bak"))
+						return FileVisitResult.SKIP_SUBTREE;
 					zos.putNextEntry(new ZipEntry(sourceDir.relativize(dir).toString() + "/"));
 					zos.closeEntry();
 					return FileVisitResult.CONTINUE;
@@ -394,6 +605,9 @@ public class UpgradeTool
 				@Override
 				public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException
 				{
+					final String fileName = file.getFileName().toString();
+					if (fileName.endsWith(".zip") && fileName.startsWith("CoffeeMud_Backup_"))
+						return FileVisitResult.CONTINUE;
 					zos.putNextEntry(new ZipEntry(sourceDir.relativize(file).toString()));
 					Files.copy(file, zos);
 					zos.closeEntry();
@@ -687,7 +901,8 @@ public class UpgradeTool
 					Files.copy(latestFile, userFile, StandardCopyOption.REPLACE_EXISTING);
 					return FileVisitResult.CONTINUE;
 				}
-				if(!Files.exists(baseFile))
+				if((!Files.exists(baseFile))
+				||(baseFile.getFileName().toString().startsWith("intro")))
 				{
 					if(!sameFiles(latestFile,userFile))
 						System.out.println("Keeping user file: "+userFile);
@@ -802,7 +1017,7 @@ public class UpgradeTool
 					final byte[] baseBytes=Files.readAllBytes(baseFile);
 					if(Arrays.equals(userBytes, baseBytes))
 					{
-						System.out.println("Deleting obsolete unchanged file: "+userFile);
+						//System.out.println("Deleting obsolete unchanged file: "+userFile);
 						Files.delete(userFile);
 					}
 					else
@@ -838,7 +1053,7 @@ public class UpgradeTool
 					final byte[] baseBytes=Files.readAllBytes(baseFile);
 					if(Arrays.equals(userBytes, baseBytes))
 					{
-						System.out.println("Deleting obsolete unchanged file: "+userFile);
+						//System.out.println("Deleting obsolete unchanged file: "+userFile);
 						Files.delete(userFile);
 					}
 					else
@@ -856,7 +1071,7 @@ public class UpgradeTool
 					{
 						if(!stream.iterator().hasNext())
 						{
-							System.out.println("Deleting empty directory: "+dir);
+							//System.out.println("Deleting empty directory: "+dir);
 							Files.delete(dir);
 						}
 					}
@@ -1307,8 +1522,8 @@ public class UpgradeTool
 					System.out.println("Keeping modified obsolete entry: "+me.key+" in section ["+sectionName+"] in "+fileName);
 					finalEntries.add(me);
 				}
-				else
-					System.out.println("Deleting obsolete unchanged entry: "+me.key+" in section ["+sectionName+"] in "+fileName);
+				//else
+				//	System.out.println("Deleting obsolete unchanged entry: "+me.key+" in section ["+sectionName+"] in "+fileName);
 			}
 			m.entries=finalEntries;
 		}
@@ -1346,8 +1561,8 @@ public class UpgradeTool
 				System.out.println("Keeping modified obsolete section: ["+sectionName+"] in "+fileName);
 				finalMergedSections.add(m);
 			}
-			else
-				System.out.println("Deleting obsolete unchanged section: ["+sectionName+"] in "+fileName);
+			//else
+			//	System.out.println("Deleting obsolete unchanged section: ["+sectionName+"] in "+fileName);
 		}
 
 		final List<String> merged=new ArrayList<>();

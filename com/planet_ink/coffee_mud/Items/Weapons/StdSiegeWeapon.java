@@ -864,7 +864,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 						if(aiming!=null)
 						{
 							boolean wasHit = Arrays.equals(aiming, coordsToHit);
-							final int armor = siegeTarget.phyStats().armor() - phyStats().armor();
+							final int armor = siegeTarget.phyStats().armor() - phyStats().attackAdjustment();
 							if(armor>0)
 							{
 								if (CMLib.dice().rollPercentage() < armor)

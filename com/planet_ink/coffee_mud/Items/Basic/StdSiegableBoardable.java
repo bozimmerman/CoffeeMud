@@ -1182,7 +1182,19 @@ public class StdSiegableBoardable extends StdBoardable implements SiegableItem
 									if(index >= 0)
 									{
 										final int[] coordsAimedAt = aimings.remove(index).second;
-										final boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
+										boolean wasHit = Arrays.equals(coordsAimedAt, coordsToHit);
+										final int armor = siegeTarget.phyStats().armor() - w.phyStats().attackAdjustment();
+										if(armor>0)
+										{
+											if (CMLib.dice().rollPercentage() < armor)
+												wasHit = false;
+										}
+										else
+										if(armor<0)
+										{
+											if (-CMLib.dice().rollPercentage() > armor)
+												wasHit = true;
+										}
 										CMLib.combat().postSiegeAttack(mob, this, siegeTarget, w, wasHit);
 										if(CMSecurity.isDebugging(DbgFlag.SIEGECOMBAT))
 										{
