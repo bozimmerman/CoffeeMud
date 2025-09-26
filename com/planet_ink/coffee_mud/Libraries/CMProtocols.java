@@ -4201,7 +4201,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 						final String finalMsg = (p==null)?msg:(p + " " + msg);
 						p=null;
-						final StringBuffer resp = new StringBuffer(ai.chat(finalMsg));
+						String respStr;
+						try
+						{
+							respStr = ai.chat(finalMsg);
+						}
+						catch(final Exception e)
+						{
+							respStr = "";
+						}
+						final StringBuffer resp = new StringBuffer(respStr);
 						CMStrings.dikufyLineEndings(resp);
 						CMStrings.normalizeCharacters(resp);
 						if((resp.length()>2)
