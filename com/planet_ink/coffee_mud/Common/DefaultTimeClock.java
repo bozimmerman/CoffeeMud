@@ -205,7 +205,7 @@ public class DefaultTimeClock implements TimeClock
 	@Override
 	public void setDawnToDusk(final int dawn, final int day, final int dusk, final int night)
 	{
-		if((dawn+day+dusk+night)<this.getHoursInDay())
+		if((getHoursInDay()<48) && (dawn+day+dusk+night)<this.getHoursInDay())
 		{
 			Log.debugOut("Suspicious hour settings: "+dawn+"/"+day+"/"+dusk+"/"+night+"/"+getHoursInDay());
 			Log.debugOut("Suspicious",new Exception());
