@@ -138,7 +138,10 @@ public class Prayer_FeedTheDead extends Prayer
 					amount+=(adjLevel-target.phyStats().level())
 						  *(adjLevel/3);
 				}
+				final int xp = target.getExperience();
 				amount=CMLib.leveler().postExperience(target,"ABILITY:"+ID(),null,null,amount, false);
+				if (target.getExperience() <= xp)
+					mob.tell(mob,target,null,L("<T-NAME> did not gain any more experience."));
 				if((CMLib.dice().rollPercentage() < amount)
 				&&(target.isMonster())
 				&&(target.fetchEffect("Loyalty")==null)
