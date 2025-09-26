@@ -4208,7 +4208,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 						catch(final Exception e)
 						{
-							respStr = "";
+							respStr = "LLM Error: "+e.getMessage();
 						}
 						final StringBuffer resp = new StringBuffer(respStr);
 						CMStrings.dikufyLineEndings(resp);
