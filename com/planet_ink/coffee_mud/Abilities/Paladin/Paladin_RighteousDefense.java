@@ -90,6 +90,7 @@ public class Paladin_RighteousDefense extends PaladinSkill
 		final MOB mob=(MOB)affected;
 		if((msg.target() instanceof MOB)
 		&&(msg.source()!=mob)
+		&&(msg.source()!=msg.target())
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(oncePerRound)
 		&&((!((MOB)msg.target()).isInCombat())||(!msg.source().isInCombat()))
