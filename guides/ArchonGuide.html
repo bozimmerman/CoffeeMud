@@ -3981,20 +3981,18 @@ the exits list.</td>
 <br>
 <br>
 <p><strong><a name="geni7-3"><font style="background-color: lime;">The
-"GenSailingShip", "GenCaravan", "GenCastle", "GenClanCastle"</font></a></strong></p>
-<p>These are&nbsp; Portal type
-items that have&nbsp;self contained instanced areas with custom
+"GenSailingShip", "GenCaravan", "GenBalloon", "GenAirShip", "GenSubmersible", "GenCastle", "GenClanCastle"</font></a></strong></p>
+<p>These are&nbsp;Portal type
+items that have&nbsp;self contained&nbsp;areas with custom
 rooms,
-property ownership, and, for sailing ships and
-caravans,&nbsp;special nvaigation commands. As an object, they
+property ownership, and, for non-castles,&nbsp;special nvaigation commands. As an object, they
 have all the properties of the GenPortal above except that the portal
 can be moved around, and still exited from inside the instanced Area,
 so long as the
 special building rules are followed. &nbsp;These objects are
 saved
 along with the owning player or clan, and come back into existence
-when the player or clan does.</p>
-Sailing ships and caravans ares intended to be sold to players or clans
+when the player or clan does.</p>Most ares intended to be sold to players or clans
 through
 shopkeepers that operate in the same area (but not necessarily the same
 room) as either a SeaPort locale room,&nbsp; the shore to an ocean
@@ -4051,12 +4049,12 @@ weapons, &nbsp;and weight="900" will allow two light weapons or one
 normal or one light. etc.<br>
 <br>
 When this is completed, you
-can add the GenSailingShip/GenCaravan
+can add the GenSailingShip, GenCaravan, etc
 item to the shopkeepers inventory. &nbsp;Don't run around with
 ships or caravans or castles in
 your own inventory, or, for goodness sake, inside another ship.<br>
 <br>
-Whenever a GenSailingShip/GenCaravan/GenCastle is
+Whenever a GenSailingShip, GenCaravan, GenAirShip, GenCastle, etc is
 created, much like the GenPortal, GenContainer, GenExit, and
 GenRideables,
 you are presented with a list of properties to fill in. Pressing enter
@@ -4083,7 +4081,11 @@ or Player.</td>
 <td><span style="font-style: italic;">Price</span></td>
 <td>The price, in base
 value, of the property.</td>
-</tr>
+</tr><tr><td><span style="font-style: italic;">Armor (0-100)</span></td><td>Bonus
+siege combat miss %; keep this at its default value of 0. &nbsp;If &gt;
+0, it is a percent chance of being missed even if otherwise hit. If
+&lt; 0, it is a percent change of being hit, even if otherwise missed.
+&nbsp;It can be adjusted by the Attack Adjustment of siege weapons.</td></tr>
 </tbody>
 </table>
 <br>
