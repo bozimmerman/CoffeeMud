@@ -137,13 +137,37 @@ public class FilteredListWrapper<T> implements List<T>
 	@Override
 	public boolean addAll(final Collection<? extends T> c)
 	{
-		return list.addAll(c);
+		boolean changed = false;
+		if(c != null)
+		{
+			for (final T t : c)
+			{
+				if (filter.passesFilter(t))
+				{
+					list.add(t);
+					changed = true;
+				}
+			}
+		}
+		return changed;
 	}
 
 	@Override
-	public boolean addAll(final int index, final Collection<? extends T> c)
+	public boolean addAll(int index, final Collection<? extends T> c)
 	{
-		return list.addAll(index, c);
+		boolean changed = false;
+		if(c != null)
+		{
+			for (final T t : c)
+			{
+				if (filter.passesFilter(t))
+				{
+					list.add(index++,t);
+					changed= true;
+				}
+			}
+		}
+		return changed;
 	}
 
 	@Override
