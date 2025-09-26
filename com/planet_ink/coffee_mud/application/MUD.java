@@ -293,7 +293,18 @@ public class MUD extends Thread implements MudHost
 			{
 				sess[0]=(Session)CMClass.getCommon("DefaultSession");
 				if(sess[0] == null) // during startup, this can happen!
+				{
+					if(sock != null)
+					{
+						try
+						{
+							sock.close();
+						}
+						catch(final Exception e)
+						{}
+					}
 					return;
+				}
 				final boolean initialized = sess[0].initialize(sock, threadGroup().getName());
 				if (acceptConns)
 				{
