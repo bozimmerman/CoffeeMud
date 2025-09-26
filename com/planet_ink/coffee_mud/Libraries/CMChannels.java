@@ -1005,8 +1005,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String str="["+channelName+"]"+nameAppendage+" '"+message+"'^</CHANNEL^>^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 			{
-				str="<S-NAME>"+nameAppendage+" "+str;
-				message = "(<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+message;
+				if((chan.discordName()!=null)&&(chan.discordName().length()>0))
+					str = "(<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+str;
+				else
+					str="<S-NAME>"+nameAppendage+" "+str;
 			}
 			msg=CMClass.getMsg(mob,null,null,
 					CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|srcCode,channelColor+"^<CHANNEL \""+channelName+"\"^>"+str,
