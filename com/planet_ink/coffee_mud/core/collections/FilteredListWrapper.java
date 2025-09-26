@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.naming.OperationNotSupportedException;
-
 /*
    Copyright 2022-2025 Bo Zimmerman
 
@@ -96,7 +94,7 @@ public class FilteredListWrapper<T> implements List<T>
 	{
 		final Object[] os = toArray();
 		if(os.length>a.length)
-			a = (F[])new Object[os.length];
+			a = (F[])java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), os.length);
 		for(int i=0;i<os.length;i++)
 			a[i] = (F)os[i];
 		return a;
