@@ -292,6 +292,8 @@ public class MUD extends Thread implements MudHost
 			try
 			{
 				sess[0]=(Session)CMClass.getCommon("DefaultSession");
+				if(sess[0] == null)
+					return;
 				final boolean initialized = sess[0].initialize(sock, threadGroup().getName());
 				if (acceptConns)
 				{
