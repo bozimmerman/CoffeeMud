@@ -21,8 +21,6 @@ import javax.tools.JavaCompiler;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-import com.sun.org.apache.xml.internal.serializer.Version;
-
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 
