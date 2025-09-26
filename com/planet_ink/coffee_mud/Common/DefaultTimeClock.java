@@ -206,7 +206,10 @@ public class DefaultTimeClock implements TimeClock
 	public void setDawnToDusk(final int dawn, final int day, final int dusk, final int night)
 	{
 		if((dawn+day+dusk+night)<this.getHoursInDay())
-			Log.debugOut("Suspicious hour settings: "+dawn+"/"+day+"/"+dusk+"/"+night+"/"+getHoursInDay(),new Exception());
+		{
+			Log.debugOut("Suspicious hour settings: "+dawn+"/"+day+"/"+dusk+"/"+night+"/"+getHoursInDay());
+			Log.debugOut("Suspicious",new Exception());
+		}
 		dawnToDusk[TimeOfDay.DAWN.ordinal()]=dawn;
 		dawnToDusk[TimeOfDay.DAY.ordinal()]=day;
 		dawnToDusk[TimeOfDay.DUSK.ordinal()]=dusk;
