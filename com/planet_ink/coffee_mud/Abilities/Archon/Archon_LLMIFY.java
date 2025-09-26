@@ -47,7 +47,7 @@ public class Archon_LLMIFY extends ArchonSkill
 		return "Archon_LLMIFY";
 	}
 
-	private final static String localizedName = CMLib.lang().L("LLMify");
+	private final static String localizedName = CMLib.lang().L("MOBLLMIFY");
 
 	@Override
 	public String name()
@@ -73,7 +73,7 @@ public class Archon_LLMIFY extends ArchonSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private static final String[] triggerStrings = I(new String[] { "LLMIFY" });
+	private static final String[] triggerStrings = I(new String[] { "MOBLLMIFY" });
 
 	@Override
 	public String[] triggerStrings()
