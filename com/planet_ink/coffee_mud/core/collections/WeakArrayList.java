@@ -50,7 +50,16 @@ public class WeakArrayList<T> extends AbstractList<T>
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
-		return super.remove(element);
+		for (int i = 0; i < list.size(); i++)
+		{
+			final WeakReference<T> W = list.get(i);
+			if ((W != null) && (W.get() == element))
+			{
+				list.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
