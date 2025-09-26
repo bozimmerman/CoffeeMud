@@ -675,7 +675,9 @@ public interface PhyStats extends CMCommon, Modifiable
 		SUPPRESS_AMBIANCE_BOUND("-BOUND"),
 		SUPPRESS_AMBIANCE_FLYING("-FLYING"),
 		SUPPRESS_AMBIANCE_FALLING("-FALLING"),
-		SUPPRESS_ROBBERY("-ROBBERY")
+		SUPPRESS_ROBBERY("-ROBBERY"),
+		NO_AUTO_BUCK("@NOAUTOBUCK"),
+		TAMED("@TAMED")
 		;
 		private final String code;
 		private Ambiance(final String code)

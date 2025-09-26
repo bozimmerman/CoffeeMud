@@ -187,7 +187,7 @@ public class Skill_BreakMount extends StdSkill
 		{
 			final MOB mob=(MOB)affected;
 			super.helpProficiency(mob, 0);
-			if(mnt.second.basePhyStats().isAmbiance("@NOAUTOBUCK"))
+			if(mnt.second.basePhyStats().isAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code()))
 				this.makeMountPermanent();
 			else
 			if((mob.location() != CMLib.map().roomLocation(mnt.second))

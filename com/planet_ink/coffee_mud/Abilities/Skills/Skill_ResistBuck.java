@@ -111,8 +111,8 @@ public class Skill_ResistBuck extends StdSkill
 			{
 				if(--mountTicks <= 0)
 				{
-					if(!mountM.basePhyStats().isAmbiance("@NOAUTOBUCK"))
-						mountM.basePhyStats().addAmbiance("@NOAUTOBUCK");
+					if(!mountM.basePhyStats().isAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code()))
+						mountM.basePhyStats().addAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code());
 					final Behavior B = mountM.fetchBehavior("Skill_Buck");
 					if(B != null)
 						mountM.delBehavior(B);
@@ -133,7 +133,7 @@ public class Skill_ResistBuck extends StdSkill
 	{
 		if((msg.target()==affected)
 		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).ID().equals("Skill_Buck"))
+		&&(msg.tool().ID().equals("Skill_Buck"))
 		&&(affected instanceof MOB))
 		{
 			final MOB mob = (MOB)affected;

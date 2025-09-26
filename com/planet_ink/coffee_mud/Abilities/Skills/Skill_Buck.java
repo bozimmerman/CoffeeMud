@@ -159,8 +159,8 @@ public class Skill_Buck extends StdSkill implements Behavior
 		&&(affected instanceof MOB))
 		{
 			((MOB)affected).delBehavior(this);
-			((MOB)affected).basePhyStats().addAmbiance("@NOAUTOBUCK");
-			((MOB)affected).recoverPhyStats();
+			affected.basePhyStats().addAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code());
+			affected.recoverPhyStats();
 		}
 	}
 
@@ -170,16 +170,16 @@ public class Skill_Buck extends StdSkill implements Behavior
 		if(!mob.isPlayer())
 		{
 			final PhyStats stats = mob.phyStats();
-			if(stats.isAmbiance("@TAMED"))
+			if(stats.isAmbiance(PhyStats.Ambiance.TAMED.code()))
 			{
-				if(!stats.isAmbiance("@NOAUTOBUCK"))
+				if(!stats.isAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code()))
 				{
-					mob.basePhyStats().addAmbiance("@NOAUTOBUCK");
-					stats.addAmbiance("@NOAUTOBUCK");
+					mob.basePhyStats().addAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code());
+					stats.addAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code());
 				}
 			}
 			else
-			if(!stats.isAmbiance("@NOAUTOBUCK"))
+			if(!stats.isAmbiance(PhyStats.Ambiance.NO_AUTO_BUCK.code()))
 			{
 				final Behavior B = mob.fetchBehavior(ID());
 				if(B == null)
