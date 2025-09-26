@@ -2734,7 +2734,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								for(final SavedClass C : charClasses())
 								{
-									if(C.plusNameStart.startsWith(s))
+									if(C.plusNameStart.startsWith(s)
+									||C.plusIdStart.startsWith(s))
 									{
 										className = C.name;
 										found=true;
@@ -2775,7 +2776,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								for(final SavedClass C : charClasses())
 								{
-									if(C.minusNameStart.startsWith(s))
+									if(C.minusNameStart.startsWith(s)
+									||C.minusIdStart.startsWith(s))
 									{
 										className = C.name;
 										found = true;
@@ -4295,7 +4297,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								{
 									for(final SavedClass C : charClasses())
 									{
-										if(C.plusNameStart.startsWith(str2))
+										if(C.plusNameStart.startsWith(str2)
+										||(C.plusIdStart.startsWith(str2)))
 										{
 											charClassC = C;
 											found=true;
@@ -4307,7 +4310,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								{
 									for(final SavedClass C : charClasses())
 									{
-										if(C.minusNameStart.startsWith(str2))
+										if(C.minusNameStart.startsWith(str2)
+										||C.minusIdStart.startsWith(str2))
 										{
 											charClassC = C;
 											found=true;

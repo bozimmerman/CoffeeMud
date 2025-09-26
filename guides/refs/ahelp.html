@@ -35,6 +35,8 @@
 			
 			<li> <a href="#AHELP">AHELP</a>
 			
+			<li> <a href="#AMBIANCES">AMBIANCES</a>
+			
 			<li> <a href="#ANNOUNCE">ANNOUNCE</a>
 			
 			<li> <a href="#ARCHONSTAFF">ARCHONSTAFF</a>
@@ -213,11 +215,11 @@
 			
 			<li> <a href="#LIST_DEBUGFLAG">LIST_DEBUGFLAG</a>
 			
-			<li> <a href="#LIST_DEBUGFLAGS">LIST_DEBUGFLAGS</a>
+			<li> <a href="#LIST_DEBUGS">LIST_DEBUGS</a>
+			
+			<li> <a href="#LIST_DISABLEDS">LIST_DISABLEDS</a>
 			
 			<li> <a href="#LIST_DISABLEFLAG">LIST_DISABLEFLAG</a>
-			
-			<li> <a href="#LIST_DISABLEFLAGS">LIST_DISABLEFLAGS</a>
 			
 			<li> <a href="#LIST_DISEASES">LIST_DISEASES</a>
 			
@@ -258,6 +260,8 @@
 			<li> <a href="#LIST_LIBRARIES">LIST_LIBRARIES</a>
 			
 			<li> <a href="#LIST_LINKAGES">LIST_LINKAGES</a>
+			
+			<li> <a href="#LIST_LIST">LIST_LIST</a>
 			
 			<li> <a href="#LIST_LOCALES">LIST_LOCALES</a>
 			
@@ -325,6 +329,8 @@
 			
 			<li> <a href="#LIST_SESSIONS">LIST_SESSIONS</a>
 			
+			<li> <a href="#LIST_SHIPS">LIST_SHIPS</a>
+			
 			<li> <a href="#LIST_SKILLS">LIST_SKILLS</a>
 			
 			<li> <a href="#LIST_SOCIALS">LIST_SOCIALS</a>
@@ -385,6 +391,10 @@
 			
 			<li> <a href="#LIST_WORLD">LIST_WORLD</a>
 			
+			<li> <a href="#LLM">LLM</a>
+			
+			<li> <a href="#LLMIFY">LLMIFY</a>
+			
 			<li> <a href="#LOAD">LOAD</a>
 			
 			<li> <a href="#MARKOOC">MARKOOC</a>
@@ -432,6 +442,8 @@
 			<li> <a href="#POOF">POOF</a>
 			
 			<li> <a href="#POSSESS">POSSESS</a>
+			
+			<li> <a href="#PROXYCTL">PROXYCTL</a>
 			
 			<li> <a href="#PURGE">PURGE</a>
 			
@@ -561,6 +573,11 @@
 			<p>
 			<a name="AHELP"><B>AHELP</B></a>
 			<pre>Command : AHELP <BR>Usage   : AHELP [TOPICNAME] <BR>Example : ahelp ahelp <BR>Short(s):  <BR>A command to view the Administrative help commands.</pre>
+			</P>
+			
+			<p>
+			<a name="AMBIANCES"><B>AMBIANCES</B></a>
+			<pre>Ambiances are flags that are attached to mobs, items, and rooms which typically<BR>add a special suffix to the display text of the object.  Typical ones you may<BR>be used to are "(burning)" "(glowing)" etc.  These can be added with the<BR>AmbianceAdder or Prop_Adjuster properties, or from using an associated skill. <BR> <BR>There are also Special ambiance flags which are invisible, but still have an<BR>effect on gameplay, typically by suppressing other ambiances.  These include: <BR>"@CHAOS" - can see Chaos <BR>"[error]DECK_ROOM" - is a deck room <BR>"@FLOATING" - is floating <BR>"#OFFICER" - is an officer of the law <BR>"#JUDGE" - is a judge of law <BR>"-ANTIWEATHER" - suppresses weather effects <BR>"#GOOD" - seems good, but isn't <BR>"#EVIL" - seems evil, but isn't <BR>"#NEUTRAL" - seems neutral but isn't <BR>"#LAW" - seems lawful but isn't <BR>"#CHAOS" - seems chaotic but isn't <BR>"#MODERATE" - seems moderate but isn't <BR>"-MOOD" - suppresses mood effects <BR>"-DRUNKEN" - suppresses drunken effects <BR>"-ALL" - suppresses all ambiances <BR>"-MOST" - suppresses most ambiances <BR>"-OFFICER" - suppresses officer ambiance <BR>"-EVIL" - suppresses evil ambiance <BR>"-GOOD" - suppresses good ambiance <BR>"-INVISIBLE" - suppresses invisible ambiance <BR>"-SNEAKING" - suppresses sneaking ambiance <BR>"-HIDDEN" - suppresses hidden ambiance <BR>"-HEAT" - suppresses heat ambiance <BR>"-MAGIC" - suppresses magic ambiance <BR>"-METAL" - suppresses metal ambiance <BR>"-GLOWING" - suppresses glowing ambiance <BR>"-BUSY" - suppresses busy ambiance <BR>"-CHAOS" - suppresses chaos ambiance <BR>"-LAW" - suppresses law ambiance <BR>"-BOUND" - suppresses bound ambiance <BR>"-FLYING" - suppresses flying ambiance <BR>"-FALLING" - suppresses falling ambiance <BR>"-ROBBERY" - suppresses robbery ambiance <BR>"@NOAUTOBUCK" - suppresses auto-bucking behavior <BR>"@TAMED" - is tamed</pre>
 			</P>
 			
 			<p>
@@ -1005,22 +1022,22 @@
 			
 			<p>
 			<a name="LIST_DEBUGFLAG"><B>LIST_DEBUGFLAG</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST DEBUGFLAG <BR>Example  : list debugflag <BR>Lists all the debug flags that have been turned on in your system.  These flags<BR>cause extra messaging to appear in your mud log (mud.log), assuming DBGMSGS has<BR>been appropriately set in your coffeemud.ini file.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST DEBUGFLAG <BR>Example  : list debugflag <BR>Lists all the debug flags that have been turned on in your system.  These flags<BR>cause extra messaging to appear in your mud log (mud.log), assuming DBGMSGS has<BR>been appropriately set in your coffeemud.ini file.  Use LIST DEBUGS to see all<BR>active debug flags.</pre>
 			</P>
 			
 			<p>
-			<a name="LIST_DEBUGFLAGS"><B>LIST_DEBUGFLAGS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST DEBUGFLAGS <BR>Example  : list debugflags <BR>Lists all the available debug flags in your mud.</pre>
+			<a name="LIST_DEBUGS"><B>LIST_DEBUGS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST DEBUGS <BR>Example  : list debugs <BR>Lists all the active debug flags in your mud.  Use LIST DEBUGFLAG to see all<BR>available.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_DISABLEDS"><B>LIST_DISABLEDS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST DISABLEDS <BR>Example  : list disableds <BR>Lists all the active disable flags in your mud.  Use LIST DISABLEFLAGS to see<BR>all available.</pre>
 			</P>
 			
 			<p>
 			<a name="LIST_DISABLEFLAG"><B>LIST_DISABLEFLAG</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST DISABLEFLAG <BR>Example  : list disableflag <BR>Lists all the disabled subsystems in your mud.</pre>
-			</P>
-			
-			<p>
-			<a name="LIST_DISABLEFLAGS"><B>LIST_DISABLEFLAGS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST DISABLEFLAGS <BR>Example  : list disableflags <BR>Lists all the available disable flags in your mud.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST DISABLEFLAG <BR>Example  : list disableflag <BR>Lists all the disabled subsystems in your mud.  Use LIST DISABLES to see all<BR>active disable flags.</pre>
 			</P>
 			
 			<p>
@@ -1121,6 +1138,11 @@
 			<p>
 			<a name="LIST_LINKAGES"><B>LIST_LINKAGES</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST LINKAGES (WORLD) (SUBSTATS) <BR>Example  : list linkages <BR>This bizarre command will list area rooms, showing number of rooms, number of<BR>mobs, average mob levels, and average alignment.  It will also show how many<BR>groups of rooms refer back to other rooms in the area, and which areas rooms in<BR>this area link to. If you add the WORLD parameter, then all areas are listed. <BR>If you add the SUBSTATS parameter, then the linking areas stats are shown<BR>instead of the linking room ids.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_LIST"><B>LIST_LIST</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST LIST <BR>Example  : list list <BR>Lists the other things you can list.</pre>
 			</P>
 			
 			<p>
@@ -1289,6 +1311,11 @@
 			</P>
 			
 			<p>
+			<a name="LIST_SHIPS"><B>LIST_SHIPS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST SHIPS <BR>Example  : list ships <BR>Shows all the active ships, sailing and space-bourne, in the universe.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_SKILLS"><B>LIST_SKILLS</B></a>
 			<pre>Command  : LIST  <BR>Usage    : LIST SKILLS (DOMAIN) <BR>Example  : list skills <BR>Shows the list of all skills (ability ids) available to archons.</pre>
 			</P>
@@ -1439,6 +1466,16 @@
 			</P>
 			
 			<p>
+			<a name="LLM"><B>LLM</B></a>
+			<pre>Command : LLM <BR>Usage   : LLM [MESSAGE]/RESET <BR>Example : llm hello there mr robot! <BR>Example : llm reset <BR>Short(s):  <BR>A command for the conversing with the LLM, if one is integrated.  The LLM can<BR>be reset for the current user with the RESET argument.</pre>
+			</P>
+			
+			<p>
+			<a name="LLMIFY"><B>LLMIFY</B></a>
+			<pre> <BR>Skill    : LLMIFY <BR>Domain   : Archon <BR>Use Cost : Movement (50)  <BR>Quality  : Malicious <BR>Targets  : Creatures  <BR>Range    : Touch - Range 1 <BR>Commands : LLMIFY <BR>Usage    : LLMIFY [MOB NAME] (STOP/[PROMPT]) <BR>Example  : LLMIFY orc Respond only with the word 'smile' <BR>If you have an LLM configured on this mud, this command will infect an NPC with<BR>it, allowing all mud messages that the mob receives to be sent to the LLM, and<BR>the LLM's response to be sent back as commands.  If you can come up with a<BR>useful prompt that does something useful, please email zac@coffeemud.net. Use<BR>LLMIFY -mob name - STOP to turn it off.</pre>
+			</P>
+			
+			<p>
 			<a name="LOAD"><B>LOAD</B></a>
 			<pre>Command : LOAD <BR>Usage   : LOAD [OBJECT TYPE] [PATH/NAME] <BR>Example : load resource banned.ini <BR>Example : load ability /myclasses/blah.class <BR>Example : load weapon /myclasses/blah2.class <BR>Example : load class com.planet_ink.coffee_mud.Items.Weapons.Sword.class <BR>Example : load weapon com/planet_ink/coffee_mud/Items/Weapons/Sword.java <BR>Short(s):  <BR>A command for the loading of resources, faction ini files, unloaded areas, or<BR>class files of java or javascript. <BR> <BR>Use LIST RESOURCES to see a list of resources. <BR> <BR>Use LOAD AREA area name re-load areas in the database that have been unloaded. <BR> <BR>For class files, the LIST command can also show whats already loaded.  This<BR>command will automatically attempt to unload a class if it is already loaded. <BR>If the specified class is a java source file or javascript, it will attempt to<BR>compile it first.  For loading classes, the second parameter may be the word<BR>"class" and the system will attempt to correct your ambiguity.  If it is unable<BR>to determine the type of class being loaded, however, you may get an error.  It<BR>is therefore better just to use the load [CLASS-TYPE] syntax instead.</pre>
 			</P>
@@ -1559,6 +1596,11 @@
 			</P>
 			
 			<p>
+			<a name="PROXYCTL"><B>PROXYCTL</B></a>
+			<pre>Command : PROXYCTL <BR>Usage   : PROXYCTL ([PASSWORD]) [COMMAND] [ARGUMENTS] <BR>Short(s):  <BR>If your mud is connected to the proxy server, this command allows you to send<BR>special control requests to that server and get responses.  The password is<BR>obtained from the proxy servers log, and changes every time you start the<BR>server. Use PROXYCTL LIST to see available commands.</pre>
+			</P>
+			
+			<p>
 			<a name="PURGE"><B>PURGE</B></a>
 			<pre>Command : PURGE <BR>Usage   : PURGE [ITEM TYPE] ...  <BR>Example : purge orc <BR>Example : purge item longsword <BR>Example : purge item longsword@an orc <BR>Short(s):  <BR>This command is a weak form of DESTROY, allowing only items and mobs to be<BR>destroyed.  Rejuvinating mobs will still rejuvenate when purge is used, unlike<BR>destroy.</pre>
 			</P>
@@ -1625,7 +1667,7 @@
 			
 			<p>
 			<a name="STAT"><B>STAT</B></a>
-			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA/CRIME)) (PLAYERS) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat clan bob <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back.  Adding<BR>the PLAYERS flag at the end shows player stats instead of character stats for<BR>the min/avg online stat ONLY. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, DEITY, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED,<BR>AREASEXPLORED, ROOMSEXPLORED, ALIGNMENT, INCLINATION, FACTIONS, FACTIONID,<BR>FACTIONAMT, MATTRIB, OBJATTRIB, CLAN, CLANROLE, LEVELTIMES, POBJECTS,<BR>BUDGETRESETDATE, INVENTORYRESETDATE, and CHARSTATS.  As per the player version<BR>of this command, you can also use basic stats, such as: HITS, MANA, MOVE,<BR>HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE, MAXHUNGER, MAXTHIRST,<BR>MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, WISDOM,<BR>GENDER, PARALYSIS, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID,<BR>ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE, TRAPS, MAXSTRENGTH,<BR>MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION, MAXCHARISMA, MAXWISDOM,<BR>REJUVRATE, AGE, DETECTION, DOUBT, FAITH, WEIGHTADJ, LEVEL, SENSES, ARMOR,<BR>DAMAGE, ATTACK, DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP (experience),<BR>XPFNL (experience for next level), and XPTNL (experience to next level),<BR>QUESTPOINTS, TRAINS, PRACTICES, and any factions shown in the score command,<BR>such as ALIGNMENT.  Many of the basic character stats, such as INTELLIGENCE,<BR>etc, can also be prefixed like CURRENT_INTELLIGENCE to ensure you are getting<BR>the fully adjusted value.</pre>
+			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA/CRIME)) (PLAYERS) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat clan bob <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back.  Adding<BR>the PLAYERS flag at the end shows player stats instead of character stats for<BR>the min/avg online stat ONLY. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, DEITY, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED,<BR>AREASEXPLORED, ROOMSEXPLORED, ALIGNMENT, INCLINATION, FACTIONS, FACTIONID,<BR>FACTIONAMT, MATTRIB, OBJATTRIB, CLAN, CLANROLE, LEVELTIMES, POBJECTS,<BR>BUDGETRESETDATE, INVENTORYRESETDATE, IDLETICKS, PEACETICKS, BIRTHDATE, AGEMINS,<BR>AGENAME, GENDERNAME, MAXHUNGER, MAXTHIRST, SHOPGOODSLIST, ALIGNMENTDESC, SPEED,<BR>and CHARSTATS.  As per the player version of this command, you can also use<BR>basic stats, such as: HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS,<BR>MAXMANA, MAXMOVE, MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE,<BR>DEXTERITY, CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD,<BR>WATER, GAS, MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC,<BR>DISEASE, TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, REJUVRATE, AGE, DETECTION, DOUBT, FAITH, WEIGHTADJ,<BR>LEVEL, SENSES, ARMOR, DAMAGE, ATTACK, DISPOSITION, REJUV, WEIGHT, UNSAVABLE,<BR>ABILITY, HEIGHT, XP (experience), XPFNL (experience for next level), and XPTNL<BR>(experience to next level), QUESTPOINTS, TRAINS, PRACTICES, and any factions<BR>shown in the score command, such as ALIGNMENT.  Many of the basic character<BR>stats, such as INTELLIGENCE, etc, can also be prefixed like<BR>CURRENT_INTELLIGENCE to ensure you are getting the fully adjusted value.</pre>
 			</P>
 			
 			<p>
