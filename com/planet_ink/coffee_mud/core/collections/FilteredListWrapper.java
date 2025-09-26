@@ -169,13 +169,14 @@ public class FilteredListWrapper<T> implements List<T>
 	@Override
 	public T get(final int index)
 	{
-		final T t = list.get(index);
-		if(!filter.passesFilter(t))
+		T t = list.get(index);
+		while(!filter.passesFilter(t))
 		{
 			list.remove(index);
 			if(index < size())
-				return get(index);
-			return null;
+				t=get(index);
+			else
+				return null;
 		}
 		return t;
 	}
