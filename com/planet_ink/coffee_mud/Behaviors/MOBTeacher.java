@@ -47,6 +47,7 @@ public class MOBTeacher extends CombatAbilities
 
 	protected MOB		myMOB				= null;
 	protected boolean	teachEverything		= true;
+	protected boolean	noTeaching			= false;
 	protected boolean	noCommon			= false;
 	protected boolean	noExpertises		= false;  // doubles as a "done ticking" flag
 	protected boolean	noHLExpertises		= false;
@@ -257,6 +258,11 @@ public class MOBTeacher extends CombatAbilities
 					noHLExpertises=true;
 					V.remove(v);
 				}
+				if(s.equalsIgnoreCase("NOTEACH")||s.equalsIgnoreCase("NOTEACHING"))
+				{
+					noTeaching=true;
+					V.remove(v);
+				}
 			}
 		}
 
@@ -330,7 +336,7 @@ public class MOBTeacher extends CombatAbilities
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(host instanceof MOB)
+		if((!noTeaching)&&(host instanceof MOB))
 		{
 			if(((MOB)host).isAttributeSet(MOB.Attrib.NOTEACH))
 				((MOB)host).setAttribute(MOB.Attrib.NOTEACH,false);
