@@ -262,598 +262,598 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
 			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
 			final int restNum = (cmd==null)?0:cmd.second.intValue();
-			if(cmd != null)
+			if(cmd == null)
+				return super.okMessage(myHost, msg);
+			switch(cmd.first)
 			{
-				switch(cmd.first)
+			case FOLLOW:
+				// handled by command-fail
+				break;
+			case TENDER:
+			{
+				if(cmds.size()==1)
 				{
-				case FOLLOW:
-					// handled by command-fail
-					break;
-				case TENDER:
-				{
-					if(cmds.size()==1)
-					{
-						msg.source().tell(L("You must specify another @x1 to offer aboard.",noun_word));
-						return false;
-					}
-					final Room thisRoom = (Room)owner();
-					if(thisRoom==null)
-					{
-						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
-						return false;
-					}
-					if(this.siegeTarget!=null)
-					{
-						msg.source().tell(L("Not while you are in combat!"));
-						return false;
-					}
-					final String rest = CMParms.combine(cmds,restNum);
-					final Item I=thisRoom.findItem(rest);
-					if((I instanceof StdNavigableBoardable)&&(I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
-					{
-						final StdNavigableBoardable tenderToI = (StdNavigableBoardable)I;
-						if(tenderToI.siegeTarget != null)
-						{
-							msg.source().tell(L("Not while @x1 is in in combat!",tenderToI.Name()));
-							return false;
-						}
-						final MOB mob = CMLib.tracking().createNavigationMob(this);
-						try
-						{
-							if(tenderToI.tenderItem == this)
-							{
-								final Boardable myArea=(Boardable)this.getArea();
-								final Boardable hisArea=(Boardable)tenderToI.getArea();
-								if((myArea.getIsDocked()==null)||(hisArea.getIsDocked()==null))
-								{
-									msg.source().tell(L("Both ships must first be docked."));
-									return false;
-								}
-								if(thisRoom.show(mob, tenderToI, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> connect(s) her gangplank with <T-NAME>")))
-								{
-									this.tenderItem = tenderToI;
-									final Room hisExitRoom = hisArea.unDock(false);
-									final Room myExitRoom = myArea.unDock(false);
-									myArea.dockHere(hisExitRoom);
-									hisArea.dockHere(myExitRoom);
-								}
-							}
-							else
-							{
-								if(thisRoom.show(mob, tenderToI, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> extend(s) her gangplank toward(s) <T-NAME>")))
-									this.tenderItem = tenderToI;
-							}
-						}
-						finally
-						{
-							mob.destroy();
-						}
-						return false;
-					}
-					else
-					{
-						msg.source().tell(L("You don't see the @x2 '@x1' here to board",rest,noun_word));
-						return false;
-					}
+					msg.source().tell(L("You must specify another @x1 to offer aboard.",noun_word));
+					return false;
 				}
-				case JUMP:
+				final Room thisRoom = (Room)owner();
+				if(thisRoom==null)
 				{
-					final Room thisRoom = (Room)owner();
-					if(thisRoom==null)
+					msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
+					return false;
+				}
+				if(this.siegeTarget!=null)
+				{
+					msg.source().tell(L("Not while you are in combat!"));
+					return false;
+				}
+				final String rest = CMParms.combine(cmds,restNum);
+				final Item I=thisRoom.findItem(rest);
+				if((I instanceof StdNavigableBoardable)&&(I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+				{
+					final StdNavigableBoardable tenderToI = (StdNavigableBoardable)I;
+					if(tenderToI.siegeTarget != null)
 					{
-						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
+						msg.source().tell(L("Not while @x1 is in in combat!",tenderToI.Name()));
 						return false;
 					}
-					final MOB mob=msg.source();
-					final Room mobR = mob.location();
-					if(mobR != null)
+					final MOB mob = CMLib.tracking().createNavigationMob(this);
+					try
 					{
-						if(cmds.size()<2)
-							mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) in place."));
+						if(tenderToI.tenderItem == this)
+						{
+							final Boardable myArea=(Boardable)this.getArea();
+							final Boardable hisArea=(Boardable)tenderToI.getArea();
+							if((myArea.getIsDocked()==null)||(hisArea.getIsDocked()==null))
+							{
+								msg.source().tell(L("Both ships must first be docked."));
+								return false;
+							}
+							if(thisRoom.show(mob, tenderToI, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> connect(s) her gangplank with <T-NAME>")))
+							{
+								this.tenderItem = tenderToI;
+								final Room hisExitRoom = hisArea.unDock(false);
+								final Room myExitRoom = myArea.unDock(false);
+								myArea.dockHere(hisExitRoom);
+								hisArea.dockHere(myExitRoom);
+							}
+						}
 						else
 						{
-							final String str=CMParms.combine(cmds,restNum).toLowerCase();
-							if(("overboard").startsWith(str) || ("water").startsWith(str))
-							{
-								if(!canJumpFromHere(mobR))
-								{
-									mob.tell(L("You must be on deck to jump overboard."));
-									return false;
-								}
-								if(mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) overboard.")))
-								{
-									CMLib.tracking().walkForced(mob, mobR, thisRoom, true, true, L("<S-NAME> arrive(s) from @x1.",name()));
-									if((mob.location()==thisRoom)
-									&&(!CMLib.flags().isWateryRoom(thisRoom)))
-									{
-										final int directDamage = mob.maxState().getHitPoints()/10;
-										CMLib.combat().postDamage(mob,mob,null,directDamage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
-												L("The fall <DAMAGES> <T-NAME>!"));
-									}
-								}
-							}
-							else
-								msg.source().tell(L("Jump where?  Try JUMP OVERBOARD."));
+							if(thisRoom.show(mob, tenderToI, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> extend(s) her gangplank toward(s) <T-NAME>")))
+								this.tenderItem = tenderToI;
 						}
-						return false;
+					}
+					finally
+					{
+						mob.destroy();
 					}
 					return false;
 				}
-				case RAISE:
+				else
 				{
-					if(!securityCheck(msg.source()))
+					msg.source().tell(L("You don't see the @x2 '@x1' here to board",rest,noun_word));
+					return false;
+				}
+			}
+			case JUMP:
+			{
+				final Room thisRoom = (Room)owner();
+				if(thisRoom==null)
+				{
+					msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
+					return false;
+				}
+				final MOB mob=msg.source();
+				final Room mobR = mob.location();
+				if(mobR != null)
+				{
+					if(cmds.size()<2)
+						mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) in place."));
+					else
 					{
-						msg.source().tell(getNoPermissionStr());
-						return false;
-					}
-					final Room R=CMLib.map().roomLocation(this);
-					final Room targetR=msg.source().location();
-					if((R!=null)&&(targetR!=null))
-					{
-						if(!canTenderFromHere(targetR))
+						final String str=CMParms.combine(cmds,restNum).toLowerCase();
+						if(("overboard").startsWith(str) || ("water").startsWith(str))
 						{
-							msg.source().tell(L("You must be on deck to raise a tendered item."));
-							return false;
-						}
-						final String rest = CMParms.combine(cmds,restNum);
-						final Item I=R.findItem(rest);
-						if((I!=this)
-						&&(I!=null)
-						&&(CMLib.flags().canBeSeenBy(I, msg.source())))
-						{
-							if((I instanceof Rideable)
-							&&(((Rideable)I).mobileRideBasis())
-							&&(!(I instanceof Boardable)))
+							if(!canJumpFromHere(mobR))
 							{
-								if(smallTenderRequests.contains(I))
-								{
-									final MOB riderM=getBestRider(R,(Rideable)I);
-									if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
-									&&(R.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) <T-NAME> up onto @x1.",name())))
-									&&((riderM==null)||(R.show(riderM, targetR, CMMsg.MSG_ENTER, null))))
-									{
-										smallTenderRequests.remove(I);
-										targetR.moveItemTo(I, Expire.Never, Move.Followers);
-									}
-									return false;
-								}
-								else
-								{
-									msg.source().tell(L("You can only raise @x1 once it has tendered itself.",I.name()));
-									return false;
-								}
-							}
-							else
-							{
-								msg.source().tell(L("You don't think @x1 is a suitable target.",I.name()));
+								mob.tell(L("You must be on deck to jump overboard."));
 								return false;
+							}
+							if(mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) overboard.")))
+							{
+								CMLib.tracking().walkForced(mob, mobR, thisRoom, true, true, L("<S-NAME> arrive(s) from @x1.",name()));
+								if((mob.location()==thisRoom)
+								&&(!CMLib.flags().isWateryRoom(thisRoom)))
+								{
+									final int directDamage = mob.maxState().getHitPoints()/10;
+									CMLib.combat().postDamage(mob,mob,null,directDamage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
+											L("The fall <DAMAGES> <T-NAME>!"));
+								}
 							}
 						}
 						else
-						{
-							msg.source().tell(L("You don't see '@x1' out there!",rest));
-							return false;
-						}
+							msg.source().tell(L("Jump where?  Try JUMP OVERBOARD."));
 					}
-					break;
+					return false;
 				}
-				case LOWER:
+				return false;
+			}
+			case RAISE:
+			{
+				if(!securityCheck(msg.source()))
 				{
-					if(!securityCheck(msg.source()))
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				final Room targetR=msg.source().location();
+				if((R!=null)&&(targetR!=null))
+				{
+					if(!canTenderFromHere(targetR))
 					{
-						msg.source().tell(getNoPermissionStr());
+						msg.source().tell(L("You must be on deck to raise a tendered item."));
 						return false;
 					}
-					final Room R=msg.source().location();
-					final Room targetR=CMLib.map().roomLocation(this);
-					if((R!=null)&&(targetR!=null))
+					final String rest = CMParms.combine(cmds,restNum);
+					final Item I=R.findItem(rest);
+					if((I!=this)
+					&&(I!=null)
+					&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 					{
-						if(!canTenderFromHere(targetR))
+						if((I instanceof Rideable)
+						&&(((Rideable)I).mobileRideBasis())
+						&&(!(I instanceof Boardable)))
 						{
-							msg.source().tell(L("You must be on deck to lower that."));
-							return false;
-						}
-						if(!canAnchorFromHere(targetR))
-						{
-							msg.source().tell(L("You can't do that that here."));
-							return false;
-						}
-						final String rest = CMParms.combine(cmds,restNum);
-						final Item I=R.findItem(rest);
-						if((I!=this)
-						&&(I!=null)
-						&&(CMLib.flags().canBeSeenBy(I, msg.source())))
-						{
-							if((I instanceof Rideable)
-							&&(((Rideable)I).mobileRideBasis())
-							&&((((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)
-								||(((Rideable)I).rideBasis()==Rideable.Basis.AIR_FLYING)
-								||(((Rideable)I).rideBasis()==Rideable.Basis.LAND_BASED)
-								||(((Rideable)I).rideBasis()==Rideable.Basis.WAGON)))
+							if(smallTenderRequests.contains(I))
 							{
 								final MOB riderM=getBestRider(R,(Rideable)I);
 								if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
-								&&(targetR.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) <T-NAME> off of @x1.",name())))
+								&&(R.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) <T-NAME> up onto @x1.",name())))
 								&&((riderM==null)||(R.show(riderM, targetR, CMMsg.MSG_ENTER, null))))
 								{
-									this.smallTenderRequests.remove(I);
+									smallTenderRequests.remove(I);
 									targetR.moveItemTo(I, Expire.Never, Move.Followers);
 								}
 								return false;
 							}
 							else
 							{
-								msg.source().tell(L("You don't think @x1 is a suitable thing for lowering.",I.name()));
+								msg.source().tell(L("You can only raise @x1 once it has tendered itself.",I.name()));
 								return false;
 							}
 						}
 						else
 						{
-							msg.source().tell(L("You don't see '@x1' out there!",rest));
+							msg.source().tell(L("You don't think @x1 is a suitable target.",I.name()));
 							return false;
 						}
 					}
-					break;
-				}
-				case RAISE_ANCHOR:
-				{
-					if(disableCmds.contains("ANCHOR"))
-						return true;
-					if(!securityCheck(msg.source()))
-					{
-						msg.source().tell(getNoPermissionStr());
-						return false;
-					}
-					if(safetyMove())
-					{
-						msg.source().tell(L("The @x1 has moved!",noun_word));
-						return false;
-					}
-					final Room R=CMLib.map().roomLocation(this);
-					if(!anchorDown)
-						msg.source().tell(L("The @x1 is not @x2.",anchor_name,anchor_verbed));
 					else
-					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
-								L("<S-NAME> @x2(s) the @x1 on <T-NAME>.",anchor_name,word.toLowerCase()));
-						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
-						{
-							R.send(msg.source(), msg2);
-							anchorDown=false;
-						}
+						msg.source().tell(L("You don't see '@x1' out there!",rest));
+						return false;
 					}
+				}
+				break;
+			}
+			case LOWER:
+			{
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
 					return false;
 				}
-				case LOWER_ANCHOR:
+				final Room R=msg.source().location();
+				final Room targetR=CMLib.map().roomLocation(this);
+				if((R!=null)&&(targetR!=null))
 				{
-					if(disableCmds.contains("ANCHOR"))
-						return true;
-					if(!securityCheck(msg.source()))
+					if(!canTenderFromHere(targetR))
 					{
-						msg.source().tell(getNoPermissionStr());
+						msg.source().tell(L("You must be on deck to lower that."));
 						return false;
 					}
-					stopFollowing(msg.source());
-					if(safetyMove())
+					if(!canAnchorFromHere(targetR))
 					{
-						msg.source().tell(L("The @x1 has moved!",noun_word));
+						msg.source().tell(L("You can't do that that here."));
 						return false;
 					}
-					final Room R=CMLib.map().roomLocation(this);
-					if(anchorDown)
-						msg.source().tell(L("The @x1 is already @x2.",anchor_name,anchor_verbed));
-					else
-					if(R!=null)
+					final String rest = CMParms.combine(cmds,restNum);
+					final Item I=R.findItem(rest);
+					if((I!=this)
+					&&(I!=null)
+					&&(CMLib.flags().canBeSeenBy(I, msg.source())))
 					{
-						final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
-								L("<S-NAME> @x1(s) the @x2 on <T-NAME>.",word.toLowerCase(),anchor_name));
-						if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+						if((I instanceof Rideable)
+						&&(((Rideable)I).mobileRideBasis())
+						&&((((Rideable)I).rideBasis()==Rideable.Basis.WATER_BASED)
+							||(((Rideable)I).rideBasis()==Rideable.Basis.AIR_FLYING)
+							||(((Rideable)I).rideBasis()==Rideable.Basis.LAND_BASED)
+							||(((Rideable)I).rideBasis()==Rideable.Basis.WAGON)))
 						{
-							R.send(msg.source(), msg2);
-							this.sendAreaMessage(msg2, true);
-							anchorDown=true;
-						}
-					}
-					return false;
-				}
-				case STEER:
-				{
-					if(!securityCheck(msg.source()))
-					{
-						msg.source().tell(getNoPermissionStr());
-						return false;
-					}
-					stopFollowing(msg.source());
-					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
-					{
-						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
-						return false;
-					}
-					if(safetyMove())
-					{
-						msg.source().tell(L("The @x1 has moved!",noun_word));
-						return false;
-					}
-					if((courseDirection >=0)||(courseDirections.size()>0))
-					{
-						if(!this.amInTacticalMode())
-							msg.source().tell(L("Your previous course has been cancelled."));
-						courseDirection = -1;
-						courseDirections.clear();
-					}
-					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
-					if(dir<0)
-					{
-						msg.source().tell(L("Steer the @x1 which direction?",noun_word));
-						return false;
-					}
-					final Room R=CMLib.map().roomLocation(this);
-					if((R==null)||(msg.source().location()==null))
-					{
-						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
-						return false;
-					}
-					if(!canSteer(msg.source(), msg.source().location()))
-						return false;
-					final String dirName = CMLib.directions().getDirectionName(dir);
-					if(!this.amInTacticalMode())
-					{
-						final Room targetRoom=R.getRoomInDir(dir);
-						final Exit targetExit=R.getExitInDir(dir);
-						if((targetRoom==null)||(targetExit==null))
-						{
-							msg.source().tell(L("There doesn't look to be anything in that direction."));
-							return false;
-						}
-						if(!targetExit.isOpen())
-						{
-							msg.source().tell(L("@x1 blocks your way.",targetExit.closedText()));
-							return false;
-						}
-					}
-					else
-					{
-						directionFacing = getDirectionFacing(dir);
-						if(dir == this.directionFacing)
-						{
-							msg.source().tell(L("Your @x2 is already @x3 @x1.",dirName,noun_word,verb_sailing));
-							return false;
-						}
-					}
-					if(anchorDown)
-					{
-						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
-						return false;
-					}
-					break;
-				}
-				case DIVE:
-					secondWord="DOWN";
-					//$FALL-THROUGH$
-				case RISE:
-					if(secondWord.length()==0)
-						secondWord="UP";
-					//$FALL-THROUGH$
-				case NAVIGATE:
-				{
-					if(!securityCheck(msg.source()))
-					{
-						msg.source().tell(getNoPermissionStr());
-						return false;
-					}
-					stopFollowing(msg.source());
-					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
-					{
-						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
-						return false;
-					}
-					if(safetyMove())
-					{
-						msg.source().tell(L("The @x1 has moved!",noun_word));
-						return false;
-					}
-					if((courseDirection >=0)||(courseDirections.size()>0))
-					{
-						if(!this.amInTacticalMode())
-							msg.source().tell(L("Your previous course has been cancelled."));
-						courseDirection = -1;
-						courseDirections.clear();
-					}
-					final Room R=CMLib.map().roomLocation(this);
-					if((R==null)||(msg.source().location()==null))
-					{
-						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
-						return false;
-					}
-					if(!canSteer(msg.source(), msg.source().location()))
-						return false;
-					final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
-					if(dir<0)
-					{
-						msg.source().tell(L("@x1 the @x2 which direction?",CMStrings.capitalizeFirstLetter(verb_sail),noun_word));
-						return false;
-					}
-					if(!this.amInTacticalMode())
-					{
-						final Room targetRoom=R.getRoomInDir(dir);
-						final Exit targetExit=R.getExitInDir(dir);
-						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
-						{
-							msg.source().tell(L("There doesn't look to be anything in that direction."));
-							return false;
-						}
-					}
-					else
-					{
-						final String dirName = CMLib.directions().getDirectionName(directionFacing);
-						directionFacing = getDirectionFacing(dir);
-						if(dir != this.directionFacing)
-						{
-							msg.source().tell(L("When in tactical mode, your @x2 can only @x3"+
-												" @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName,noun_word,verb_sail.toUpperCase()));
-							return false;
-						}
-					}
-					if((ticksSinceLastTurn<ticksPerTurn())
-					&&(dir != getDirectionFacing(dir)))
-					{
-						msg.source().tell(L("@x1 can't change direction that quickly.  You must wait a bit longer.",name(msg.source())));
-						return false;
-					}
-					if((ticksSinceMove<ticksPerMove())
-					&&(dir == getDirectionFacing(dir)))
-					{
-						msg.source().tell(L("@x1 can't move that quickly.  You must wait a bit longer.",name(msg.source())));
-						return false;
-					}
-					if(anchorDown)
-					{
-						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
-						return false;
-					}
-					break;
-				}
-				case COURSE:
-				case SET_COURSE:
-				{
-					if(!securityCheck(msg.source()))
-					{
-						msg.source().tell(getNoPermissionStr());
-						return false;
-					}
-					stopFollowing(msg.source());
-					if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
-					{
-						msg.source().tell(L("The @x1 won't seem to move!",noun_word));
-						return false;
-					}
-					if(safetyMove())
-					{
-						msg.source().tell(L("The @x1 has moved!",noun_word));
-						return false;
-					}
-					if((courseDirection >=0)||(courseDirections.size()>0))
-					{
-						if(!this.amInTacticalMode())
-							msg.source().tell(L("Your previous course has been cancelled."));
-						courseDirection = -1;
-						courseDirections.clear();
-					}
-					final Room R=CMLib.map().roomLocation(this);
-					if((R==null)||(msg.source().location()==null))
-					{
-						msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
-						return false;
-					}
-					if(!canSteer(msg.source(), msg.source().location()))
-						return false;
-					int dirIndex = 1;
-					if(word.equals("SET"))
-						dirIndex = 2;
-					int firstDir = -1;
-					this.courseDirections.clear();
-					if(amInTacticalMode())
-					{
-						final int speed=getMaxSpeed();
-						final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
-						if(dirIndex >= cmds.size())
-						{
-							msg.source().tell(L("Your @x4 is currently @x6 @x1. To set a course, you must specify up to @x2 directions of travel, "
-												+ "of which only the last may be something other than @x3.",
-												dirFacingName,""+speed,dirFacingName,noun_word,verb_sailing));
-							return false;
-						}
-						final List<String> dirNames = new ArrayList<String>();
-						final int[] coordinates = Arrays.copyOf(getTacticalCoords(),2);
-						int otherDir = -1;
-						for(;dirIndex<cmds.size();dirIndex++)
-						{
-							final String dirWord=cmds.get(dirIndex);
-							final int dir=CMLib.directions().getCompassDirectionCode(dirWord);
-							if(dir<0)
+							final MOB riderM=getBestRider(R,(Rideable)I);
+							if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
+							&&(targetR.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) <T-NAME> off of @x1.",name())))
+							&&((riderM==null)||(R.show(riderM, targetR, CMMsg.MSG_ENTER, null))))
 							{
-								msg.source().tell(L("@x1 is not a valid direction.",dirWord));
-								return false;
+								this.smallTenderRequests.remove(I);
+								targetR.moveItemTo(I, Expire.Never, Move.Followers);
 							}
-							if((otherDir < 0) && (dir == directionFacing))
+							return false;
+						}
+						else
+						{
+							msg.source().tell(L("You don't think @x1 is a suitable thing for lowering.",I.name()));
+							return false;
+						}
+					}
+					else
+					{
+						msg.source().tell(L("You don't see '@x1' out there!",rest));
+						return false;
+					}
+				}
+				break;
+			}
+			case RAISE_ANCHOR:
+			{
+				if(disableCmds.contains("ANCHOR"))
+					return true;
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The @x1 has moved!",noun_word));
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if(!anchorDown)
+					msg.source().tell(L("The @x1 is not @x2.",anchor_name,anchor_verbed));
+				else
+				if(R!=null)
+				{
+					final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
+							L("<S-NAME> @x2(s) the @x1 on <T-NAME>.",anchor_name,word.toLowerCase()));
+					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+					{
+						R.send(msg.source(), msg2);
+						anchorDown=false;
+					}
+				}
+				return false;
+			}
+			case LOWER_ANCHOR:
+			{
+				if(disableCmds.contains("ANCHOR"))
+					return true;
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				stopFollowing(msg.source());
+				if(safetyMove())
+				{
+					msg.source().tell(L("The @x1 has moved!",noun_word));
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if(anchorDown)
+					msg.source().tell(L("The @x1 is already @x2.",anchor_name,anchor_verbed));
+				else
+				if(R!=null)
+				{
+					final CMMsg msg2=CMClass.getMsg(msg.source(), this, null, CMMsg.MSG_NOISYMOVEMENT,
+							L("<S-NAME> @x1(s) the @x2 on <T-NAME>.",word.toLowerCase(),anchor_name));
+					if((R.okMessage(msg.source(), msg2) && this.okAreaMessage(msg2, true)))
+					{
+						R.send(msg.source(), msg2);
+						this.sendAreaMessage(msg2, true);
+						anchorDown=true;
+					}
+				}
+				return false;
+			}
+			case STEER:
+			{
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				stopFollowing(msg.source());
+				if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+				{
+					msg.source().tell(L("The @x1 won't seem to move!",noun_word));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The @x1 has moved!",noun_word));
+					return false;
+				}
+				if((courseDirection >=0)||(courseDirections.size()>0))
+				{
+					if(!this.amInTacticalMode())
+						msg.source().tell(L("Your previous course has been cancelled."));
+					courseDirection = -1;
+					courseDirections.clear();
+				}
+				final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
+				if(dir<0)
+				{
+					msg.source().tell(L("Steer the @x1 which direction?",noun_word));
+					return false;
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if((R==null)||(msg.source().location()==null))
+				{
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+					return false;
+				}
+				if(!canSteer(msg.source(), msg.source().location()))
+					return false;
+				final String dirName = CMLib.directions().getDirectionName(dir);
+				if(!this.amInTacticalMode())
+				{
+					final Room targetRoom=R.getRoomInDir(dir);
+					final Exit targetExit=R.getExitInDir(dir);
+					if((targetRoom==null)||(targetExit==null))
+					{
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+					if(!targetExit.isOpen())
+					{
+						msg.source().tell(L("@x1 blocks your way.",targetExit.closedText()));
+						return false;
+					}
+				}
+				else
+				{
+					directionFacing = getDirectionFacing(dir);
+					if(dir == this.directionFacing)
+					{
+						msg.source().tell(L("Your @x2 is already @x3 @x1.",dirName,noun_word,verb_sailing));
+						return false;
+					}
+				}
+				if(anchorDown)
+				{
+					msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
+					return false;
+				}
+				break;
+			}
+			case DIVE:
+				secondWord="DOWN";
+				//$FALL-THROUGH$
+			case RISE:
+				if(secondWord.length()==0)
+					secondWord="UP";
+				//$FALL-THROUGH$
+			case NAVIGATE:
+			{
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				stopFollowing(msg.source());
+				if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+				{
+					msg.source().tell(L("The @x1 won't seem to move!",noun_word));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The @x1 has moved!",noun_word));
+					return false;
+				}
+				if((courseDirection >=0)||(courseDirections.size()>0))
+				{
+					if(!this.amInTacticalMode())
+						msg.source().tell(L("Your previous course has been cancelled."));
+					courseDirection = -1;
+					courseDirections.clear();
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if((R==null)||(msg.source().location()==null))
+				{
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+					return false;
+				}
+				if(!canSteer(msg.source(), msg.source().location()))
+					return false;
+				final int dir=CMLib.directions().getCompassDirectionCode(secondWord);
+				if(dir<0)
+				{
+					msg.source().tell(L("@x1 the @x2 which direction?",CMStrings.capitalizeFirstLetter(verb_sail),noun_word));
+					return false;
+				}
+				if(!this.amInTacticalMode())
+				{
+					final Room targetRoom=R.getRoomInDir(dir);
+					final Exit targetExit=R.getExitInDir(dir);
+					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					{
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+				}
+				else
+				{
+					final String dirName = CMLib.directions().getDirectionName(directionFacing);
+					directionFacing = getDirectionFacing(dir);
+					if(dir != this.directionFacing)
+					{
+						msg.source().tell(L("When in tactical mode, your @x2 can only @x3"+
+											" @x1.  Use COURSE for more complex maneuvers, or STEER.",dirName,noun_word,verb_sail.toUpperCase()));
+						return false;
+					}
+				}
+				if((ticksSinceLastTurn<ticksPerTurn())
+				&&(dir != getDirectionFacing(dir)))
+				{
+					msg.source().tell(L("@x1 can't change direction that quickly.  You must wait a bit longer.",name(msg.source())));
+					return false;
+				}
+				if((ticksSinceMove<ticksPerMove())
+				&&(dir == getDirectionFacing(dir)))
+				{
+					msg.source().tell(L("@x1 can't move that quickly.  You must wait a bit longer.",name(msg.source())));
+					return false;
+				}
+				if(anchorDown)
+				{
+					msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
+					return false;
+				}
+				break;
+			}
+			case COURSE:
+			case SET_COURSE:
+			{
+				if(!securityCheck(msg.source()))
+				{
+					msg.source().tell(getNoPermissionStr());
+					return false;
+				}
+				stopFollowing(msg.source());
+				if(CMLib.flags().isFalling(this) || ((this.subjectToWearAndTear() && (usesRemaining()<=0))))
+				{
+					msg.source().tell(L("The @x1 won't seem to move!",noun_word));
+					return false;
+				}
+				if(safetyMove())
+				{
+					msg.source().tell(L("The @x1 has moved!",noun_word));
+					return false;
+				}
+				if((courseDirection >=0)||(courseDirections.size()>0))
+				{
+					if(!this.amInTacticalMode())
+						msg.source().tell(L("Your previous course has been cancelled."));
+					courseDirection = -1;
+					courseDirections.clear();
+				}
+				final Room R=CMLib.map().roomLocation(this);
+				if((R==null)||(msg.source().location()==null))
+				{
+					msg.source().tell(L("You are nowhere, so you won`t be moving anywhere."));
+					return false;
+				}
+				if(!canSteer(msg.source(), msg.source().location()))
+					return false;
+				int dirIndex = 1;
+				if(word.equals("SET"))
+					dirIndex = 2;
+				int firstDir = -1;
+				this.courseDirections.clear();
+				if(amInTacticalMode())
+				{
+					final int speed=getMaxSpeed();
+					final String dirFacingName = CMLib.directions().getDirectionName(directionFacing);
+					if(dirIndex >= cmds.size())
+					{
+						msg.source().tell(L("Your @x4 is currently @x6 @x1. To set a course, you must specify up to @x2 directions of travel, "
+											+ "of which only the last may be something other than @x3.",
+											dirFacingName,""+speed,dirFacingName,noun_word,verb_sailing));
+						return false;
+					}
+					final List<String> dirNames = new ArrayList<String>();
+					final int[] coordinates = Arrays.copyOf(getTacticalCoords(),2);
+					int otherDir = -1;
+					for(;dirIndex<cmds.size();dirIndex++)
+					{
+						final String dirWord=cmds.get(dirIndex);
+						final int dir=CMLib.directions().getCompassDirectionCode(dirWord);
+						if(dir<0)
+						{
+							msg.source().tell(L("@x1 is not a valid direction.",dirWord));
+							return false;
+						}
+						if((otherDir < 0) && (dir == directionFacing))
+						{
+							Directions.adjustXYByDirections(coordinates[0], coordinates[1], dir);
+							final Room targetRoom=R.getRoomInDir(dir);
+							final Exit targetExit=R.getExitInDir(dir);
+							if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
 							{
-								Directions.adjustXYByDirections(coordinates[0], coordinates[1], dir);
-								final Room targetRoom=R.getRoomInDir(dir);
-								final Exit targetExit=R.getExitInDir(dir);
-								if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+								if(getLowestTacticalDistanceFromThis() >= R.maxRange())
 								{
-									if(getLowestTacticalDistanceFromThis() >= R.maxRange())
-									{
-										msg.source().tell(L("There doesn't look to be anywhere you can @x1 in that direction.",verb_sail));
-										return false;
-									}
+									msg.source().tell(L("There doesn't look to be anywhere you can @x1 in that direction.",verb_sail));
+									return false;
 								}
 							}
-							if(this.courseDirections.size() >= speed)
-							{
-								msg.source().tell(L("Your course may not exceed your tactical speed, which is @x1 moves.", ""+speed));
-								return false;
-							}
-							if(otherDir > 0)
-							{
-								msg.source().tell(L("Your course includes a change of direction, from @x1 to @x2.  "
-												+ "In tactical maneuvers, a changes of direction must be at the end of the course settings.",
-												dirFacingName,CMLib.directions().getDirectionName(otherDir)));
-								return false;
-							}
-							else
-							if(dir != directionFacing)
-								otherDir = dir;
-							dirNames.add(CMLib.directions().getDirectionName(dir).toLowerCase());
-							this.courseDirections.add(Integer.valueOf(dir));
 						}
-						this.courseDirection = this.removeTopCourse();
-						if((this.courseDirections.size()==0)||(getBottomCourse()>=0))
-							this.courseDirections.add(Integer.valueOf(-1));
+						if(this.courseDirections.size() >= speed)
+						{
+							msg.source().tell(L("Your course may not exceed your tactical speed, which is @x1 moves.", ""+speed));
+							return false;
+						}
+						if(otherDir > 0)
+						{
+							msg.source().tell(L("Your course includes a change of direction, from @x1 to @x2.  "
+											+ "In tactical maneuvers, a changes of direction must be at the end of the course settings.",
+											dirFacingName,CMLib.directions().getDirectionName(otherDir)));
+							return false;
+						}
+						else
+						if(dir != directionFacing)
+							otherDir = dir;
+						dirNames.add(CMLib.directions().getDirectionName(dir).toLowerCase());
+						this.courseDirections.add(Integer.valueOf(dir));
+					}
+					this.courseDirection = this.removeTopCourse();
+					if((this.courseDirections.size()==0)||(getBottomCourse()>=0))
+						this.courseDirections.add(Integer.valueOf(-1));
 
-						this.announceToOuterViewers(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",
-								CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]),true)));
-					}
-					else
+					this.announceToOuterViewers(msg.source(),L("<S-NAME> order(s) a course setting of @x1.",
+							CMLib.english().toEnglishStringList(dirNames.toArray(new String[0]),true)));
+				}
+				else
+				{
+					if(dirIndex >= cmds.size())
 					{
-						if(dirIndex >= cmds.size())
-						{
-							msg.source().tell(L("To set a course, you must specify some directions of travel, separated by spaces."));
-							return false;
-						}
-						for(;dirIndex<cmds.size();dirIndex++)
-						{
-							final String dirWord=cmds.get(dirIndex);
-							final int dir=CMLib.directions().getCompassDirectionCode(dirWord);
-							if(dir<0)
-							{
-								msg.source().tell(L("@x1 is not a valid direction.",dirWord));
-								return false;
-							}
-							if(firstDir < 0)
-								firstDir = dir;
-							else
-								this.courseDirections.add(Integer.valueOf(dir));
-						}
-						final Room targetRoom=R.getRoomInDir(firstDir);
-						final Exit targetExit=R.getExitInDir(firstDir);
-						if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
-						{
-							this.courseDirection=-1;
-							this.courseDirections.clear();
-							msg.source().tell(L("There doesn't look to be anything in that direction."));
-							return false;
-						}
-						if((this.courseDirections.size()==0)||(getBottomCourse()>=0))
-							this.courseDirections.add(Integer.valueOf(-1));
-						steer(msg.source(),R, firstDir);
+						msg.source().tell(L("To set a course, you must specify some directions of travel, separated by spaces."));
+						return false;
 					}
-					if(anchorDown)
-						msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
-					return false;
+					for(;dirIndex<cmds.size();dirIndex++)
+					{
+						final String dirWord=cmds.get(dirIndex);
+						final int dir=CMLib.directions().getCompassDirectionCode(dirWord);
+						if(dir<0)
+						{
+							msg.source().tell(L("@x1 is not a valid direction.",dirWord));
+							return false;
+						}
+						if(firstDir < 0)
+							firstDir = dir;
+						else
+							this.courseDirections.add(Integer.valueOf(dir));
+					}
+					final Room targetRoom=R.getRoomInDir(firstDir);
+					final Exit targetExit=R.getExitInDir(firstDir);
+					if((targetRoom==null)||(targetExit==null)||(!targetExit.isOpen()))
+					{
+						this.courseDirection=-1;
+						this.courseDirections.clear();
+						msg.source().tell(L("There doesn't look to be anything in that direction."));
+						return false;
+					}
+					if((this.courseDirections.size()==0)||(getBottomCourse()>=0))
+						this.courseDirections.add(Integer.valueOf(-1));
+					steer(msg.source(),R, firstDir);
 				}
-				}
+				if(anchorDown)
+					msg.source().tell(L("The @x1 is @x2, so you won`t be moving anywhere.",anchor_name,anchor_verbed));
+				return false;
+			}
+			//default: break;
 			}
 			if(cmd != null)
 			{
@@ -876,9 +876,11 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		{
 			final List<String> cmds=CMParms.parse(msg.targetMessage());
 			if(cmds.size()<2)
-				return true;
+				return super.okMessage(myHost, msg);
 			final String word=cmds.get(0).toUpperCase();
 			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, "");
+			if(cmd == null)
+				return super.okMessage(myHost, msg);
 			if(cmd.first == NavigatingCommand.FOLLOW)
 			{
 				final String arg=CMParms.combine(cmds,1);
@@ -937,12 +939,12 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 		{
 			final List<String> cmds=CMParms.parse(msg.sourceMessage());
 			if(cmds.size()==0)
-				return true;
+				return super.okMessage(myHost, msg);
 			final String word=cmds.get(0).toUpperCase();
 			String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
 			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
 			if(cmd == null)
-				return true;
+				return super.okMessage(myHost, msg);
 			switch(cmd.first)
 			{
 			case DIVE:
@@ -1059,77 +1061,75 @@ public class StdNavigableBoardable extends StdSiegableBoardable implements Navig
 			final String word=cmds.get(0).toUpperCase();
 			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
 			final Pair<NavigatingCommand,Integer> cmd=this.findNavCommand(word, secondWord);
-			if(cmd != null)
+			if(cmd == null)
+				return super.okMessage(myHost, msg);
+			switch(cmd.first)
 			{
-				switch(cmd.first)
+			default:
+				break;
+			case TENDER:
+			{
+				if(disableCmds.contains("TENDER"))
+					return false;
+				if(cmds.size()==1)
 				{
-				default:
-					break;
-				case TENDER:
-				{
-					if(disableCmds.contains("TENDER"))
-						return false;
-					if(cmds.size()==1)
-					{
-						msg.source().tell(L("You must specify another @x1 to offer to board.",noun_word));
-						return false;
-					}
-					final Room thisRoom = (Room)owner();
-					if(thisRoom==null)
-					{
-						msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
-						return false;
-					}
-					/*//TODO: maybe check to see if the lil "+noun_word+" is
-					if(this.targetedI!=null)
-					{
-						msg.source().tell(L("Not while you are in combat!"));
-						return false;
-					}
-					*/
-					final String rest = CMParms.combine(cmds,1);
-					final Item meI=thisRoom.findItem(rest);
-					if((meI==this)
-					&&(CMLib.flags().canBeSeenBy(this, msg.source())))
-					{
-						if(siegeTarget != null)
-						{
-							msg.source().tell(L("Not while @x1 is in in combat!",Name()));
-							return false;
-						}
-						final Room R=CMLib.map().roomLocation(msg.source());
-						if((R!=null)
-						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE,
-								L("<S-NAME> tender(s) @x1 alonside <T-NAME>, waiting to be raised on board.",msg.source().riding().name()))))
-						{
-							for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
-							{
-								final Item I=i.next();
-								if(!R.isContent(I))
-									smallTenderRequests.remove(I);
-							}
-							final Rideable sR=msg.source().riding();
-							if(sR instanceof Item)
-							{
-								final Item isR = (Item)sR;
-								if(!smallTenderRequests.contains(isR))
-									smallTenderRequests.add(isR);
-							}
-						}
-						return false;
-					}
-					else
-					{
-						msg.source().tell(L("You don't see the @x2 '@x1' here to tender with",rest,noun_word));
-						return false;
-					}
+					msg.source().tell(L("You must specify another @x1 to offer to board.",noun_word));
+					return false;
 				}
+				final Room thisRoom = (Room)owner();
+				if(thisRoom==null)
+				{
+					msg.source().tell(L("This @x1 is nowhere to be found!",noun_word));
+					return false;
+				}
+				/*//TODO: maybe check to see if the lil "+noun_word+" is
+				if(this.targetedI!=null)
+				{
+					msg.source().tell(L("Not while you are in combat!"));
+					return false;
+				}
+				*/
+				final String rest = CMParms.combine(cmds,1);
+				final Item meI=thisRoom.findItem(rest);
+				if((meI==this)
+				&&(CMLib.flags().canBeSeenBy(this, msg.source())))
+				{
+					if(siegeTarget != null)
+					{
+						msg.source().tell(L("Not while @x1 is in in combat!",Name()));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(msg.source());
+					if((R!=null)
+					&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE,
+							L("<S-NAME> tender(s) @x1 alonside <T-NAME>, waiting to be raised on board.",msg.source().riding().name()))))
+					{
+						for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
+						{
+							final Item I=i.next();
+							if(!R.isContent(I))
+								smallTenderRequests.remove(I);
+						}
+						final Rideable sR=msg.source().riding();
+						if(sR instanceof Item)
+						{
+							final Item isR = (Item)sR;
+							if(!smallTenderRequests.contains(isR))
+								smallTenderRequests.add(isR);
+						}
+					}
+					return false;
+				}
+				else
+				{
+					msg.source().tell(L("You don't see the @x2 '@x1' here to tender with",rest,noun_word));
+					return false;
 				}
 			}
+			//default: break;
+			}
 		}
-		if(!super.okMessage(myHost, msg))
-			return false;
-		return true;
+		return super.okMessage(myHost, msg);
 	}
 
 	@Override
