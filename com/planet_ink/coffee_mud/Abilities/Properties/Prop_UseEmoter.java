@@ -185,7 +185,8 @@ public class Prop_UseEmoter extends Property
 			}
 			finally
 			{
-				emoter.destroy();
+				if(emoter != null)
+					emoter.destroy();
 			}
 			return;
 		}
@@ -210,7 +211,8 @@ public class Prop_UseEmoter extends Property
 				}
 				finally
 				{
-					emoter.destroy();
+					if(emoter != null)
+						emoter.destroy();
 				}
 			}
 		}

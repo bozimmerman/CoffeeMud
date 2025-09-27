@@ -260,7 +260,8 @@ public class Emoter extends ActiveTicker
 			}
 			finally
 			{
-				emoter.destroy();
+				if(emoter != null)
+					emoter.destroy();
 			}
 			return;
 		}
@@ -285,7 +286,8 @@ public class Emoter extends ActiveTicker
 				}
 				finally
 				{
-					emoter.destroy();
+					if(emoter != null)
+						emoter.destroy();
 				}
 			}
 		}
@@ -472,7 +474,7 @@ public class Emoter extends ActiveTicker
 							final MOB mob=getBehaversMOB(ticking);
 							String name=ticking.name();
 							if(ticking instanceof Environmental)
-								name=((Environmental)ticking).name();
+								name=ticking.name();
 							if(mob!=null)
 							{
 								if(CMLib.flags().isInTheGame(mob,false) && (!emote.privateE))

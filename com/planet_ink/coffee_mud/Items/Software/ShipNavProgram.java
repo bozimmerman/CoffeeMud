@@ -2332,7 +2332,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				return true;
 			}
 			CMMsg msg = null;
-			if(thrustAmount > 0)
+			if((thrustAmount > 0)&&(profile!=null))
 			{
 				final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(profile.injection(thrustAmount)));
 				msg=CMClass.getMsg(mob, engineE, sw, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);

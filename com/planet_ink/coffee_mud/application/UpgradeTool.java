@@ -1459,11 +1459,14 @@ public class UpgradeTool
 						}
 					}
 					else
+					if(ue != null)
 						chosenComments=new ArrayList<>(ue.comments);
 				}
 				else
 				{
-					chosenComments=ue != null ? new ArrayList<>(ue.comments) : new ArrayList<>(le.comments);
+					chosenComments=ue != null 
+							? new ArrayList<>(ue.comments) 
+							: (le != null) ? new ArrayList<>(le.comments) : new ArrayList<>();
 					if((le != null)&&(ue != null)&&(!ue.value.equals(le.value)))
 						valueConflict=true;
 				}
