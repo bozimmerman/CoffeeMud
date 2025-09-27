@@ -53,9 +53,8 @@ public class StdShipInertialBattery extends StdElecCompItem
 		setName("an inertial battery");
 		setDisplayText("an inertial battery sits here.");
 		setDescription("");
-		super.setRechargeRate((float)0.1);
-		super.setPowerCapacity(10000);
-		super.setPowerCapacity(SpaceObject.VELOCITY_LIGHT/2);
+		super.setRechargeRate((float)0.01);
+		super.setPowerCapacity(SpaceObject.VELOCITY_LIGHT/4);
 	}
 
 	@Override
@@ -118,20 +117,17 @@ public class StdShipInertialBattery extends StdElecCompItem
 				final TechCommand command=TechCommand.findCommand(msg.targetMessage());
 				if((command==null)||(command!=Technical.TechCommand.ACCELERATION))
 					return true;
-Log.debugOut("Inertial", "Found acceleration command: "+msg.targetMessage());
 				final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 				if(parms==null)
 					return true;
 				final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 				final double amount=((Double)parms[1]).doubleValue();
 				final boolean isAccellerator = ((Boolean)parms[2]).booleanValue();
-Log.debugOut("Inertial", "Dir: "+dir.name()+" Amount: "+amount+" isAccellerator: "+isAccellerator);
-				if((dir != ShipDirectional.ShipDir.AFT)
+				if(((dir != ShipDirectional.ShipDir.FORWARD)&&(dir != ShipDirectional.ShipDir.AFT))
 				||(!isAccellerator)
 				||(amount<=0))
 					return true;
 				final double delta = CMLib.space().getAngleDelta(ship.facing(), ship.direction());
-Log.debugOut("Inertial", "Delta: "+delta);
 				if(delta < 0.000001)
 					return true;
 				//final double
