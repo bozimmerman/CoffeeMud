@@ -260,8 +260,10 @@ public class MOBloader
 					if(pstats.getAccount()==null)
 					{
 						final String accountName = this.DBGetAccountNameFromPlayer(mob.Name());
-						if(accountName.length()>0)
+						if((accountName != null) && (accountName.length()>0))
 							pstats.setAccount(CMLib.players().getLoadAccount(accountName));
+						else
+							Log.errOut("MOBloader","Couldn't find account for player "+mob.Name());
 					}
 				}
 				CMLib.achievements().loadPlayerSkillAwards(mob, pstats);

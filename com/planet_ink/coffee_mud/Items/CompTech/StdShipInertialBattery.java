@@ -53,6 +53,8 @@ public class StdShipInertialBattery extends StdElecCompItem
 		setName("an inertial battery");
 		setDisplayText("an inertial battery sits here.");
 		setDescription("");
+		super.setRechargeRate((float)0.1);
+		super.setPowerCapacity(10000);
 		super.setPowerCapacity(SpaceObject.VELOCITY_LIGHT/2);
 	}
 
@@ -80,7 +82,8 @@ public class StdShipInertialBattery extends StdElecCompItem
 	@Override
 	public int powerNeeds()
 	{
-		return activated()?(int)Math.min((powerCapacity - power), (int)Math.round((double)powerCapacity * getRechargeRate())):0;
+		final int amt = activated()?(int)Math.min((powerCapacity - power), (int)Math.round((double)powerCapacity * getRechargeRate())):0;
+		return amt;
 	}
 
 	protected synchronized SpaceShip getMyShip()
@@ -101,7 +104,7 @@ public class StdShipInertialBattery extends StdElecCompItem
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		if(msg.target() == getMyShip())
+		if(msg.target() == getMyShip().getShipSpaceObject())
 		{
 			final SpaceShip ship = getMyShip();
 			if((ship != null)
@@ -113,21 +116,22 @@ public class StdShipInertialBattery extends StdElecCompItem
 			&&(ship.speed()>0))
 			{
 				final TechCommand command=TechCommand.findCommand(msg.targetMessage());
-				if(command==null)
+				if((command==null)||(command!=Technical.TechCommand.ACCELERATION))
 					return true;
+Log.debugOut("Inertial", "Found acceleration command: "+msg.targetMessage());
 				final Object[] parms=command.confirmAndTranslate(msg.targetMessage());
 				if(parms==null)
 					return true;
-				if(command!=Technical.TechCommand.ACCELERATION)
-					return true;
 				final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 				final double amount=((Double)parms[1]).doubleValue();
-				final boolean isConst = ((Boolean)parms[2]).booleanValue();
+				final boolean isAccellerator = ((Boolean)parms[2]).booleanValue();
+Log.debugOut("Inertial", "Dir: "+dir.name()+" Amount: "+amount+" isAccellerator: "+isAccellerator);
 				if((dir != ShipDirectional.ShipDir.AFT)
-				||(!isConst)
+				||(!isAccellerator)
 				||(amount<=0))
 					return true;
 				final double delta = CMLib.space().getAngleDelta(ship.facing(), ship.direction());
+Log.debugOut("Inertial", "Delta: "+delta);
 				if(delta < 0.000001)
 					return true;
 				//final double
@@ -135,17 +139,20 @@ public class StdShipInertialBattery extends StdElecCompItem
 						super.getComputedEfficiency() *
 						this.getFinalManufacturer().getEfficiencyPct());
 				double removedSpeed=ship.speed();
+				double massFactor = Math.sqrt(ship.getMass());
+				if(massFactor < 1.0)
+					massFactor = 1.0;
 				final double retainingDelta = 1.0-CMath.div(delta, (Math.PI/2.0));
 				if((retainingDelta > 0.0)&&(retainingDelta<1.0)) // retain SOME speed!
 					removedSpeed = CMath.mul(ship.speed(), retainingDelta);
-
+				final double powerCost = removedSpeed;//TODO:  * massFactor?
 				final Dir3D newDirections = ship.facing().copyOf();
 				double efficiency = this.getFinalManufacturer().getEfficiencyPct();
-				if(removedSpeed <= speedAbsorbAbility)
-					this.setPowerRemaining(Math.round(speedAbsorbAbility-removedSpeed));
+				if(powerCost <= speedAbsorbAbility)
+					this.setPowerRemaining(Math.round(speedAbsorbAbility-powerCost));
 				else // failure case
 				{
-					efficiency *= CMath.div(removedSpeed, ship.speed());
+					efficiency *= CMath.div(powerCost, ship.speed());
 					this.setPowerRemaining(0);
 				}
 				ship.setSpeed(ship.speed()-removedSpeed);

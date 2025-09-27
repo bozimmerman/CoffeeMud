@@ -460,7 +460,17 @@ public class DefaultAreaIStats implements AreaIStats
 						else
 						{
 							final long startTime = System.currentTimeMillis();
-							final Room R = CMLib.database().DBReadRoomObject(roomID, false, false);
+							Room R = CMLib.database().DBReadRoomObject(roomID, false, false);
+							if((R==null)
+							&&(CMath.bset(areaA.flags(),Area.FLAG_INSTANCE_CHILD))
+							&&(roomID.indexOf('_')>0)
+							&&(CMath.isInteger(roomID.substring(0,roomID.indexOf('_')))))
+							{
+								final String otherRoomId = roomID.substring(roomID.indexOf('_')+1);
+								R = CMLib.database().DBReadRoomObject(otherRoomId, false, false);
+								if(R != null)
+									roomID = otherRoomId;
+							}
 							if(R == null)
 								Log.debugOut("Unknown roomID building '"+areaA.Name()+"' istats: "+roomID);
 							else
