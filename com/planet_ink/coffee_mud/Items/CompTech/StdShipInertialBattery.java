@@ -122,9 +122,9 @@ public class StdShipInertialBattery extends StdElecCompItem
 					return true;
 				final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 				final double amount=((Double)parms[1]).doubleValue();
-				final boolean isAccellerator = ((Boolean)parms[2]).booleanValue();
+				final boolean isAccelerator = ((Boolean)parms[2]).booleanValue();
 				if(((dir != ShipDirectional.ShipDir.FORWARD)&&(dir != ShipDirectional.ShipDir.AFT))
-				||(!isAccellerator)
+				||(!isAccelerator)
 				||(amount<=0))
 					return true;
 				final double delta = CMLib.space().getAngleDelta(ship.facing(), ship.direction());

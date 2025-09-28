@@ -375,10 +375,10 @@ public class StdCompLauncher extends StdElecCompContainer implements TechCompone
 										double launchSpeed = SpaceObject.VELOCITY_SOUND;
 										if(launchedO.speed() > 0)
 											launchSpeed = launchedO.speed();
-										final int accellerationOfShipInSameDirectionAsWeapon = 4; //TODO: magic numbers suck
+										final int accelerationOfShipInSameDirectionAsWeapon = 4; //TODO: magic numbers suck
 										//TODO: adding ship.speed() is wrong because you could be firing aft.
 										final Coord3D firstCoords = CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
-												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accellerationOfShipInSameDirectionAsWeapon));
+												(int)Math.round(ship.radius()+launchedO.radius()+ship.speed()+accelerationOfShipInSameDirectionAsWeapon));
 										launchedO.setCoords(firstCoords);
 										launchedO.setDirection(targetDirection);
 										launchSpeed = (power/100.0) * launchSpeed * getComputedEfficiency();

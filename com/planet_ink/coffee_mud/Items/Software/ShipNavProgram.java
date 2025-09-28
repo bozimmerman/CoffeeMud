@@ -257,7 +257,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		 * @param inject 0 to 1.0, 0 with 0 being minimal thrust, 1.0 being max
 		 * @return the expected SAFE acceleration at that thrust injection level
 		 */
-		public double accelleration(double inject)
+		public double acceleration(double inject)
 		{
 			if(inject > 1.0)
 				inject = 1.0;
@@ -540,6 +540,14 @@ public class ShipNavProgram extends ShipSensorProgram
 					}
 					ship.tick(M, Tickable.TICKID_PROPERTY_SPECIAL); // clear the speed ticker
 					this.trySendMsgToItem(M, engineE, restoreMsg);
+				}
+				boolean foundNonZero = false;
+				for(int i=0;i<=10;i++)
+					foundNonZero = foundNonZero || (accelValues[i]>0);
+				if(!foundNonZero)
+				{
+					Log.errOut("ShipNavProgram","Engine "+engineE.Name()+" on ship "+ship.Name()+" could not be profiled!");
+					continue;
 				}
 				final EngProfile profile = new EngProfile(engineE, accelValues);
 				profiles.add(profile);
@@ -1001,10 +1009,10 @@ public class ShipNavProgram extends ShipSensorProgram
 			if(prof.canAccelerate)
 			{
 				if(bestAccel == Double.MAX_VALUE)
-					bestAccel = prof.accelleration(1.0);
+					bestAccel = prof.acceleration(1.0);
 				else
 				{
-					final double bestAccelChk = prof.accelleration(1.0);
+					final double bestAccelChk = prof.acceleration(1.0);
 					if (bestAccel < bestAccelChk)
 						bestAccel = bestAccelChk;
 				}
@@ -1023,7 +1031,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final EngProfile prof = i.next();
 			if (!prof.canAccelerate)
 				i.remove();
-			final double minAccel = prof.accelleration(prof.injection(0));
+			final double minAccel = prof.acceleration(prof.injection(0));
 			if ((targetAcceleration < minAccel)
 			&& (Math.abs(targetAcceleration - minAccel) > Math.max(0.5, minAccel * 0.2)))
 				i.remove();
@@ -1036,7 +1044,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			double bestDiff = Double.MAX_VALUE;
 			for (final EngProfile prof : profiles)
 			{
-				final double testAccel = prof.accelleration(prof.injection(targetAcceleration));
+				final double testAccel = prof.acceleration(prof.injection(targetAcceleration));
 				final double diff = Math.abs(targetAcceleration - testAccel);
 				if(diff < bestDiff)
 				{
@@ -1059,7 +1067,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				best = prof;
 			else
 			{
-				final double testAccel = prof.accelleration(prof.injection(targetAcceleration));
+				final double testAccel = prof.acceleration(prof.injection(targetAcceleration));
 				final double diff = Math.abs(targetAcceleration - testAccel);
 				if(diff < bestDiff)
 				{
@@ -1219,6 +1227,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				SpaceObject intTarget = navList.getFirst();
 				long distToITarget = (spaceLibrary.getDistanceFrom(ship, intTarget) -
 						ship.radius() - Math.round(CMath.mul(intTarget.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)));
+				if(targetAcceleration > distToITarget/2.0)
+					targetAcceleration = distToITarget/2.0;
 				Dir3D dirToITarget = spaceLibrary.getDirection(ship.coordinates(), intTarget.coordinates());
 				if (CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
 				{
@@ -1274,7 +1284,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				// first see if we are actually underway...
 				if ((ship.speed() > targetAcceleration) && (targetAcceleration > 0.0))
 				{
-					final double stopDistance = (ship.speed() / 2.0) * (ticksToStop + 1);
+					final double stopDistance = ((ship.speed() / 2.0) * (ticksToStop + 1)) + (100 + Math.round(ship.speed() / 2.0));
 					// now see if we need to adjust decelleration during deproach
 					Dir3D correctFacing;
 					// final Dir3D correctDirection = dirToITarget;
@@ -1423,8 +1433,8 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				else
 					accelAmount = Math.min(Math.abs(speedDelta), maxAccel);
-				thrustDir = graviticCourseAdjustments(ship, thrustDir, targetAcceleration);
 				targetAcceleration = accelAmount;
+				thrustDir = graviticCourseAdjustments(ship, thrustDir, targetAcceleration);
 				changeFacing(ship, turnEngine, thrustDir);
 				if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
 					return;

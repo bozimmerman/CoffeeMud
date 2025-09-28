@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -55,31 +56,31 @@ public interface ShipEngine extends TechComponent
 
 	/**
 	 * Gets the maximum amount of thrust that this engine can put out.
-	 * @see ShipEngine#setMaxThrust(int)
+	 * @see ShipEngine#setMaxThrust(double)
 	 * @return the maximum amount of thrust that this engine can put out.
 	 */
-	public int getMaxThrust();
+	public double getMaxThrust();
 
 	/**
 	 * Sets the maximum amount of thrust that this engine can put out.
 	 * @see ShipEngine#getMaxThrust()
 	 * @param max the maximum amount of thrust that this engine can put out.
 	 */
-	public void setMaxThrust(int max);
+	public void setMaxThrust(double max);
 
 	/**
 	 * Gets the minimum amount of thrust that this engine can put out.
-	 * @see ShipEngine#setMinThrust(int)
+	 * @see ShipEngine#setMinThrust(double)
 	 * @return the minimum amount of thrust that this engine can put out.
 	 */
-	public int getMinThrust();
+	public double getMinThrust();
 
 	/**
 	 * Sets the minimum amount of thrust that this engine can put out.
 	 * @see ShipEngine#getMinThrust()
 	 * @param min the minimum amount of thrust that this engine can put out.
 	 */
-	public void setMinThrust(int min);
+	public void setMinThrust(double min);
 
 	/**
 	 * Gets whether this engine, once thrust is engaged, will continue
@@ -148,4 +149,82 @@ public interface ShipEngine extends TechComponent
 	 * @return true if there was NOT enough fuel, false if fuel was consumed OK.
 	 */
 	public boolean consumeFuel(int amount);
+
+	/**
+	 * An Accelerator is an object that knows how to make a particular
+	 * type of ShipEngine work.  Different engines have different
+	 * physics and fuel consumption models, and so each engine
+	 * type has its own Accelerator class.
+	 * @return the Accelerator object for this engine
+	 */
+	public static interface ShipAccelerator
+	{
+		
+		/**
+		 * Execute the activate command, which is a command
+		 * sent to the ship's thruster to cause thrust in
+		 * some direction.
+		 * @param msg the thruster message
+		 * @return true if the command was successfully executed
+		 */
+		public boolean executeActivateCommand(final CMMsg msg, final String circuitKey);
+		
+		/**
+		 * Execute the deactivate command, which is a command
+		 * sent to the ship's thruster to stop thrusting.
+		 * @param msg the thruster message
+		 * @return true if the command was successfully executed
+		 */
+		public boolean executeDeactivateCommand(final MOB mob);
+		
+		/**
+		 * Execute the ongoing thrust command, which is a command
+		 * sent to the ship's thruster to continue thrusting.
+		 * @param mob the mob acting as agent
+		 * @param circuitKey the key of the circuit that contains this thruster
+		 * @return true if the command was successfully executed
+		 */
+		public boolean executeOngoingThrustCommand(final MOB mob, final String circuitKey);
+		
+		/**
+		 * Execute a thrust action, which is an action
+		 * sent to the ship's thruster to cause thrust in
+		 * some direction.
+		 * @param mob the mob doing the thrusting
+		 * @param controlI the software controlling the engine
+		 * @param circuitKey the key of the circuit that contains this thruster
+		 * @param portDir the direction of the thrust
+		 * @param injection the amount of thrust to inject
+		 * @param simulation true if this is just a simulation
+		 * @return true if the command was successfully executed
+		 */
+		public boolean executeThrust(final MOB mob, final Software controlI, final String circuitKey, 
+									final ShipDirectional.ShipDir portDir, final double injection, final boolean simulation);
+		
+		/**
+		 * Given an amount of injection 0-1, return the amount of thrust
+		 * that will actually be sent into the ship's movement.
+		 * This may be less than the requested amount, due to
+		 * engine limitations.
+		 * @param injection the amount of thrust to inject
+		 * @return the amount of thrust that will actually be injected
+		 */
+		public double getInjectedThrust(final double injection);
+		
+		/**
+		 * Given a direction and an amount of thrust, return the
+		 * amount of fuel that will be consumed.
+		 * @param portDir the direction of the thrust
+		 * @param thrust the amount of thrust to be generated
+		 * @return the amount of fuel that will be consumed
+		 */
+		public int getFuelToConsume(final ShipDir portDir, double thrust);
+		
+		/**
+		 * Returns the fuel factor, which is a multiplier
+		 * applied to all fuel consumption calculations.
+		 * @return the fuel factor
+		 */
+		public double getFuelThrustCap();
+	}
 }

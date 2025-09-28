@@ -9,8 +9,10 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.CompTech.StdShipThruster.StdAccelerator;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipEngine.ShipAccelerator;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -42,12 +44,13 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 		return "StdShipEngine";
 	}
 
-	protected int			maxThrust		= 8900000;
-	protected int			minThrust		= 0;
-	protected double		thrust			= 0;
-	protected double		specificImpulse	= 0.33;
-	protected boolean		constantThrust	= true;
-	protected final long[]	lastThrustMs	= new long[] { 0 };
+	protected double			maxThrust		= 8900000;
+	protected double			minThrust		= 0;
+	protected double			thrust			= 0;
+	protected double			specificImpulse	= 0.33;
+	protected boolean			constantThrust	= true;
+	protected final long[]		lastThrustMs	= new long[] { 0 };
+	protected ShipAccelerator	accelerator		= new StdAccelerator(this);
 
 	protected ShipDirectional.ShipDir[] ports = ShipDirectional.ShipDir.values();
 
@@ -85,13 +88,13 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public int getMaxThrust()
+	public double getMaxThrust()
 	{
 		return maxThrust;
 	}
 
 	@Override
-	public void setMaxThrust(final int max)
+	public void setMaxThrust(final double max)
 	{
 		maxThrust = max;
 	}
@@ -130,17 +133,38 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				if(accelerator.executeActivateCommand(msg, circuitKey))
+					activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if(activated())
+					accelerator.executeDeactivateCommand(msg.source());
+				setThrust(0);
+				activate(false);
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+			{
+				if(activated())
+					accelerator.executeOngoingThrustCommand(msg.source(), circuitKey);
+				break;
+			}
+			}
+		}
 	}
 
 	@Override
-	public int getMinThrust()
+	public double getMinThrust()
 	{
 		return minThrust;
 	}
 
 	@Override
-	public void setMinThrust(final int min)
+	public void setMinThrust(final double min)
 	{
 		this.minThrust = min;
 	}

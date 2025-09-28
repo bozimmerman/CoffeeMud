@@ -4211,9 +4211,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ShipEngine)
 		{
-			((ShipEngine)E).setMaxThrust(xml.getIntFromPieces(buf,"SSTHRUST"));
+			((ShipEngine)E).setMaxThrust(xml.getDoubleFromPieces(buf,"SSTHRUST"));
 			((ShipEngine)E).setSpecificImpulse(xml.getDoubleFromPieces(buf,"SSFEFF"));
-			((ShipEngine)E).setMinThrust(xml.getIntFromPieces(buf,"SSNTHRUST"));
+			((ShipEngine)E).setMinThrust(xml.getDoubleFromPieces(buf,"SSNTHRUST"));
 			((ShipEngine)E).setReactionEngine(xml.getBoolFromPieces(buf,"SSCONST",true));
 			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)

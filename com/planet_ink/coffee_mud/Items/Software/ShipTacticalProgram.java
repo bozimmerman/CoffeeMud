@@ -217,15 +217,15 @@ public class ShipTacticalProgram extends ShipNavProgram
 							if(targetO != null)
 							{
 								// use initial direction to calculate starting position
-								final double futureAccellerationInSameDirectionAsAmmo;
+								final double futureAccelerationInSameDirectionAsAmmo;
 								final double angleDiff = Math.cos(CMLib.space().getAngleDelta(ship.direction(), targetDirection));
 								if(angleDiff > 0.0)
-									futureAccellerationInSameDirectionAsAmmo=1.0 + CMath.mul(angleDiff,ship.speed());
+									futureAccelerationInSameDirectionAsAmmo=1.0 + CMath.mul(angleDiff,ship.speed());
 								else
-									futureAccellerationInSameDirectionAsAmmo=0.0;
+									futureAccelerationInSameDirectionAsAmmo=0.0;
 								ammoO.setCoords(CMLib.space().moveSpaceObject(ship.coordinates(), targetDirection,
 										(int)Math.round(ship.radius()+ammoO.radius()+1.0
-										+futureAccellerationInSameDirectionAsAmmo)));
+										+futureAccelerationInSameDirectionAsAmmo)));
 								final long maxChaseTimeMs = 300000; //TODO: magic numbers suck
 								final int maxTicks = (int)(maxChaseTimeMs/CMProps.getTickMillis());
 								final double maxSpeed = CMath.mul((ammoI.phyStats().speed()/100.0), SpaceObject.VELOCITY_LIGHT);
