@@ -103,11 +103,10 @@ public class StdShipInertialBattery extends StdElecCompItem
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		if(msg.target() == getMyShip().getShipSpaceObject())
+		final SpaceShip ship = getMyShip();
+		if((ship!=null) && (msg.target() == ship.getShipSpaceObject()))
 		{
-			final SpaceShip ship = getMyShip();
-			if((ship != null)
-			&&(msg.targetMinor()==CMMsg.TYP_ACTIVATE)
+			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)
 			&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
 			&&(msg.targetMessage()!=null)
 			&&(super.activated())
@@ -121,14 +120,15 @@ public class StdShipInertialBattery extends StdElecCompItem
 				if(parms==null)
 					return true;
 				final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
-				final double amount=((Double)parms[1]).doubleValue();
+				double amount=((Double)parms[1]).doubleValue();
 				final boolean isAccelerator = ((Boolean)parms[2]).booleanValue();
 				if(((dir != ShipDirectional.ShipDir.FORWARD)&&(dir != ShipDirectional.ShipDir.AFT))
 				||(!isAccelerator)
 				||(amount<=0))
 					return true;
 				final double delta = CMLib.space().getAngleDelta(ship.facing(), ship.direction());
-				if(delta < 0.000001)
+				// Only absorb speed if facing is more than 90 degrees away from direction (i.e., decelerating)
+				if(delta < (Math.PI/2.0))
 					return true;
 				//final double
 				final double speedAbsorbAbility = CMath.mul(this.powerRemaining(),
@@ -139,9 +139,9 @@ public class StdShipInertialBattery extends StdElecCompItem
 				if(massFactor < 1.0)
 					massFactor = 1.0;
 				final double retainingDelta = 1.0-CMath.div(delta, (Math.PI/2.0));
-				if((retainingDelta > 0.0)&&(retainingDelta<1.0)) // retain SOME speed!
+				if((retainingDelta > 0.0)&&(retainingDelta<1.0))
 					removedSpeed = CMath.mul(ship.speed(), retainingDelta);
-				final double powerCost = removedSpeed;//TODO:  * massFactor?
+				final double powerCost = removedSpeed;
 				final Dir3D newDirections = ship.facing().copyOf();
 				double efficiency = this.getFinalManufacturer().getEfficiencyPct();
 				if(powerCost <= speedAbsorbAbility)
@@ -165,6 +165,9 @@ public class StdShipInertialBattery extends StdElecCompItem
 				}
 				ship.direction().xy(newDirections.xy());
 				ship.direction().z(newDirections.z());
+				amount = Math.max(amount-removedSpeed, 0);
+				final String code=TechCommand.ACCELERATION.makeCommand(dir,Double.valueOf(amount),Boolean.valueOf(isAccelerator));
+				msg.setTargetMessage(code);
 			}
 		}
 		return true;

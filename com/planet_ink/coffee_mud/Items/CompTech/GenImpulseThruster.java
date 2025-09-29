@@ -71,9 +71,16 @@ public class GenImpulseThruster extends GenShipFuellessThruster
 	@Override
 	public double getMaxThrust()
 	{
-		final SpaceObject ship=getShip();
-		if(ship!=null)
-			return CMath.mul(maxSpeed -ship.speed(), ship.getMass());
+		final SpaceObject ship = getShip();
+		if (ship instanceof SpaceShip)
+		{
+			final double phi = CMLib.space().getAngleDelta(ship.direction(), ((SpaceShip)ship).facing());
+			final double cosPhi = Math.cos(phi);
+			final double vParallel = ship.speed() * cosPhi;
+			final double limitingV = Math.max(0.0, vParallel);
+			final double effectiveMaxV = maxSpeed - limitingV;
+			return CMath.mul(effectiveMaxV, ship.getMass());
+		}
 		return super.getMaxThrust();
 	}
 

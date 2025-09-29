@@ -263,6 +263,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long ACCELERATION_UNCONSCIOUSNESS=ACCELERATION_G*15;
 	/** acceleration at which you are severely damaged (40" fall), in decameters/s */
 	public static final long ACCELERATION_DAMAGED=ACCELERATION_G*30;
+	/** acceleration at which you are severely damaged (40" fall), in decameters/s */
+	public static final long ACCELERATION_ATMOSPHERE=ACCELERATION_G*300;
 	/** acceleration at which you are devestated, in decameters/s */
 	public static final long ACCELERATION_INSTANTDEATH=ACCELERATION_G*60;
 

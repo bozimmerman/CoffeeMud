@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipDirectional.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Software.SWServices;
+import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip.ShipFlag;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -53,6 +54,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		return "ShipNavProgram";
 	}
 
+	protected static final double 	MIN_THRUST_INJECT	= 0.001;
+	
 	protected volatile Double		savedAcceleration	= null;
 	protected volatile Double		savedSpeedDelta		= null;
 	protected volatile Double		savedAngle			= null;
@@ -232,6 +235,15 @@ public class ShipNavProgram extends ShipSensorProgram
 					&& CMParms.contains(engine.getAvailPorts(), ShipDir.STARBOARD)
 					&& CMParms.contains(engine.getAvailPorts(), ShipDir.VENTRAL)
 					&& CMParms.contains(engine.getAvailPorts(), ShipDir.PORT));
+			if (accelChart[0] > 0 && accelChart[1] > 0)
+			{
+				final double sLow = accelChart[0] / MIN_THRUST_INJECT;
+				final double sHigh = accelChart[1] / 0.1;
+				final double ratio = sLow / sHigh;
+				final boolean canDoSubMin = (ratio >= 0.9) && (ratio <= 1.1);
+				if (canDoSubMin)
+					accelChart[0] = 0;
+			}
 		}
 		/**
 		 * Returns whether this engine is capable of speed-agnostic turning
@@ -284,7 +296,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			if (desiredAccel < accelChart[10])
 			{
 				if (desiredAccel < accelChart[0])
-					return 0.001 * (desiredAccel / accelChart[0]);
+					return MIN_THRUST_INJECT * (desiredAccel / accelChart[0]);
 				for (int i = 0; i < 10; i++)
 				{
 					if ((accelChart[i] <= desiredAccel)
@@ -528,7 +540,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						restoreMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 					for(int i=0;i<=10;i++)
 					{
-						final double inject = (i==0?0.001:(i/10.0));
+						final double inject = (i==0?MIN_THRUST_INJECT:(i/10.0));
 						final CMMsg msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG|CMMsg.MASK_INTERMSG, null, CMMsg.NO_EFFECT,null);
 						code=TechCommand.THRUST.makeCommand(ShipDirectional.ShipDir.AFT, Double.valueOf(inject));
 						msg.setTargetMessage(code);
@@ -959,7 +971,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			// orbit is forever now
 			break;
 		case STOP:
-			if(ship.speed()  <= 0.01)
+			if(ship.speed()  <= SpaceObject.ACCELERATION_TYPICALROCKET)
 			{
 				ship.setSpeed(0.0); // that's good enough, for now.
 				this.stopAllThrust(programEngines, true);
@@ -1145,6 +1157,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			super.addScreenMessage(L("@x1 program aborted with error (@x2).", track.proc.name(), reason));
 			return;
 		}
+		if(ship.getShipFlag(ShipFlag.IN_THE_AIR)||(ship.getIsDocked()!=null))
+			targetAcceleration = Math.min(targetAcceleration, SpaceObject.ACCELERATION_ATMOSPHERE);
 		switch(track.state)
 		{
 		// the landing steps check if you are in position to go into land phase, and if you
@@ -1171,7 +1185,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		//$FALL-THROUGH$
 		case STOP:
 		{
-			if(ship.speed() > 0.5)
+			if(ship.speed() >= SpaceObject.ACCELERATION_TYPICALROCKET)
 			{
 				final Dir3D stopFacing = spaceLibrary.getOppositeDir(ship.direction());
 				//stopFacing = this.graviticCourseAdjustments(ship, stopFacing);
@@ -1234,7 +1248,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				{
 					Log.debugOut(ship.name(), "Approach Target: " + intTarget.Name() + ", Dist: "
 							+ CMLib.english().distanceDescShort(distToITarget) + ", Dir: "
-							+ CMLib.english().directionDescShort(dirToITarget.toDoubles()));
+							+ CMLib.english().directionDescShort(dirToITarget.toDoubles())+", Accel: "+targetAcceleration);
 				}
 				double directionDiff = spaceLibrary.getAngleDelta(ship.direction(), dirToITarget);
 				final Pair<Dir3D, Double> grav = spaceLibrary.getGravityForcer(ship);
@@ -1274,6 +1288,8 @@ public class ShipNavProgram extends ShipSensorProgram
 					if (popped)
 					{
 						targetAcceleration = getMaxAcceleration(ship, programEngines);
+						if(targetAcceleration > distToITarget/2.0)
+							targetAcceleration = distToITarget/2.0;
 						track.state = ShipNavState.APPROACH;
 					}
 				}
@@ -1528,7 +1544,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		}
 		case LANDING_APPROACH:
 		{
-			targetAcceleration = targetAcceleration * 0.8; // give slightly more room
+			targetAcceleration = Math.min(targetAcceleration, SpaceObject.ACCELERATION_ATMOSPHERE);
 			if(targetObject==null)
 			{
 				final String reason = L("no target planetary information");
@@ -1547,7 +1563,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			final double atmoWidth = CMath.mul(targetObject.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - targetObject.radius();
 			final long critRadius = Math.round(targetObject.radius() + (atmoWidth/2.0));
 			final long distanceToCritRadius=distanceToPlanet - critRadius - ship.radius();
-			final boolean movingAway = spaceLibrary.getAngleDiff(ship.direction(), dirToTarget).magnitude().doubleValue()>Math.PI/4.0;
+			final boolean movingAway = spaceLibrary.getAngleDiff(ship.direction(), dirToTarget).magnitude().doubleValue()>Math.PI/2.75;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
 			{
 				Log.debugOut(ship.name(),
@@ -1567,6 +1583,8 @@ public class ShipNavProgram extends ShipSensorProgram
 			}
 			else
 			{
+				if(targetAcceleration > distanceToCritRadius/2.0)
+					targetAcceleration = distanceToCritRadius/2.0;
 				final double ticksToDecellerate = CMath.div(ship.speed(),targetAcceleration);
 				final double ticksToDestinationAtCurrentSpeed = CMath.div(distanceToCritRadius, ship.speed());
 				final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
@@ -1608,6 +1626,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				super.addScreenMessage(L("Landing program aborted with error (@x1).",reason));
 				return;
 			}
+			targetAcceleration = Math.min(targetAcceleration, SpaceObject.ACCELERATION_DAMAGED *.8);
 			targetAcceleration = Math.min(targetAcceleration, ship.speed());
 			final Dir3D dirToPlanet = spaceLibrary.getDirection(ship, targetObject);
 			//if we aren't facing correctly, now is the time to worry about that

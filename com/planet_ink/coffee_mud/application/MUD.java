@@ -1709,7 +1709,7 @@ public class MUD extends Thread implements MudHost
 					{
 						Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
 						CMLib.time().globalClock().setYear(1000);
-						final String id="START";//New Area#0";
+						final String id="New Area#0";
 						final Area newArea=CMClass.getAreaType("StdArea");
 						newArea.setName(CMLib.lang().L("New Area"));
 						CMLib.map().addArea(newArea);
