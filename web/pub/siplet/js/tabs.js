@@ -65,7 +65,7 @@ function CloseTab(img)
 	var siplet = tab.siplet;
 	siplet.close();
 	try {
-		siplet.topWindow.parentElement.remove();
+		siplet.topWindow.outerHTML = '';
 	} catch(e) { }
 	var isCurrent =(window.currWin == siplet);
 	var i = window.siplets.indexOf(siplet);
