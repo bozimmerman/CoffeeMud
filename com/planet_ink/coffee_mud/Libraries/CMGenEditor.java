@@ -8899,8 +8899,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				final Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
+					final boolean auto=CMath.s_bool(E.getStat("GETCABLEGAIN"+v));
+					if(auto)
+						parts.append(A.ID()+"/"+E.getStat("GETCABLEPROF"+v)+", ");
+					else
+						parts.append("("+A.ID()+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
 					ables.addElement(A);
+
 					data.addElement(A.ID()+";"+
 							E.getStat("GETCABLEPROF"+v)+";"+
 							E.getStat("GETCABLELVL"+v)+";"+
