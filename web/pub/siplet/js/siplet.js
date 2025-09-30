@@ -394,34 +394,56 @@ function SipletWindow(windowName)
 				}
 			}
 			this.htmlBuffer = reprocess + this.htmlBuffer;
-			this.numLines += brCount(this.htmlBuffer);
 			if(this.debugFlush)
 				console.log('Flush: '+this.htmlBuffer);
 			var span = document.createElement('span');
 			span.innerHTML = this.htmlBuffer;
 			updateMediaImagesInSpan(this.sipfs, span);
-			this.window.appendChild(span);
+			var brCt = brCount(this.htmlBuffer);
+			var trimCount = this.maxLines / 10;
+			if((this.window.childElementCount == 0)
+			||(this.window.lastChild.brCount >= trimCount))
+			{
+				var container = document.createElement('span');
+				container.style.contentVisibility = 'auto';
+				container.appendChild(span);
+				this.window.appendChild(container);
+				this.window.lastChild.brCount = 0;
+			}
+			else
+			{
+				if(this.window.lastChild.brCount === undefined)
+					this.window.lastChild.brCount = brCount(this.window.lastChild.innerHTML);
+				this.window.lastChild.appendChild(span);
+			}
+			var measuredHeight = span.offsetHeight;
+			this.window.lastChildooc .style.containIntrinsicSize = `auto ${measuredHeight}px`;
+			this.window.lastChild.brCount += brCt;
+			this.numLines += brCt;
 			if(this.mxp.partial == null)
 				this.process(reprocess);
 			this.htmlBuffer='';
-			if(window.currWin != me)
+			if(window.currWin != this)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
 			}
-			while((this.numLines > me.maxLines)
+			if((this.numLines > this.maxLines)
 			&&(this.window.childElementCount > 1))
 			{
-				var child = this.window.firstChild;
-				this.numLines -= brCount(child.innerHTML);
-				this.window.removeChild(child);
+				while(this.numLines > this.maxLines - trimCount)
+				{
+					var child = this.window.firstChild;
+					var brCt = child.brCount;
+					this.window.removeChild(child);
+					this.numLines -= brCt;
+				}
 			}
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
 			DisplayFakeInput(null);
 		}
 	};
-	
 		
 	this.onReceive = function(e)
 	{
@@ -1195,6 +1217,7 @@ function SipletWindow(windowName)
 			var span = document.createElement('span');
 			this.writeLogHtml(value);
 			span.innerHTML = value.replaceAll('\n','<BR>');
+			span.brCount = brCount(span.innerHTML);
 			this.window.appendChild(span);
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
