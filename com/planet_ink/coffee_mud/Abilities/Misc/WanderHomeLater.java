@@ -135,14 +135,18 @@ public class WanderHomeLater extends StdAbility
 				unInvoke();
 			else
 			if(respectFollow
-			&& (M.amFollowing()!=null)
-			&& (M.amFollowing().location()==M.location()))
+			&&(((M.amFollowing()!=null)&& (M.amFollowing().location()==M.location()))
+				||((M instanceof Rideable)&&(((Rideable)M).numRiders()>0))))
 				unInvoke();
 			else
 			if(CMLib.flags().canActAtAll(M)
 			&&(!M.isInCombat())
 			&&(ignoreFollow || (M.amFollowing()==null)))
 			{
+				if((M instanceof Rideable)
+				&&(ignoreFollow)
+				&&(((Rideable)M).numRiders()>0))
+					return super.tick(ticking, tickID);
 				if(M.getStartRoom()!=null)
 				{
 					final Room startRoom= M.getStartRoom();
