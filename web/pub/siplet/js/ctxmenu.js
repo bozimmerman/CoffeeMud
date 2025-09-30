@@ -1,10 +1,17 @@
 function ContextDelayHide()
 {
+	var menu = document.getElementById('ctxmenu');
+	var submenu = document.getElementById('ctxsubmenu');
+	if((menu==null)&&(submenu==null))
+		return;
 	setTimeout(ContextHideAll,250);
 }
 
 function ContextDelaySubHide()
 {
+	var submenu = document.getElementById('ctxsubmenu');
+	if(submenu==null)
+		return;
 	setTimeout(ContextHideSub,250);
 }
 
@@ -57,11 +64,13 @@ function ContextMenuOpen(e, menu, x, y, width, marginBottom)
 		e.preventDefault();
 	var menuelements = BuildContextMenuEntries(menu);
 	var menuDiv = CreateContextDiv('ctxmenu',x,y,width);
-	menuDiv.onmouseleave = function(e) {
+	menuDiv.onmouseleave = function(e) 
+	{
 		if(!IsContextHover(e))
 			ContextDelayHide();
 	}
-	menuDiv.onclick = function() {
+	menuDiv.onclick = function() 
+	{
 		ContextDelayHide();
 	};
 	var pstyle = document.createElement('p');

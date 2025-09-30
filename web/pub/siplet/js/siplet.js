@@ -54,7 +54,7 @@ function SipletWindow(windowName)
 	this.charHeight = parseFloat(getConfig('window/fontsize', '16px')) * 0.7;
 	this.pixelWidth = 800;
 	this.pixelHeight = 600;
-	this.maxLines = getConfig('window/lines',1000);
+	this.maxLines = getConfig('window/lines',10000);
 	this.MSDPsupport = false;
 	this.GMCPsupport = false;
 	this.MSPsupport = false;
@@ -190,8 +190,9 @@ function SipletWindow(windowName)
 	{
 		this.topWindow.onmouseup = function(e) 
 		{
-			ContextDelayHide(); 
-			if(e.target.tagName == 'INPUT')
+			ContextDelayHide();
+			if((e.target.tagName == 'INPUT')
+			||(e.target.tagName == 'TEXTAREA'))
 				return;
 			const selection = window.getSelection();
 			if(selection.toString().length === 0)
@@ -373,10 +374,96 @@ function SipletWindow(windowName)
 		this.resetTimers();
 		this.mxpFix();
 		this.fixOverflow();
+		this.observer.disconnect();
+		this.containerStorage.clear();
 	};
 	
 	this.htmlBuffer = '';
 	this.numLines = 0;
+	this.containerStorage = new Map();
+	
+	this.handleIntersection = function(entries) 
+	{
+		entries.forEach(function(entry)
+		{
+			var container = entry.target;
+			if (entry.isIntersecting) 
+			{
+				var storedHtml = this.containerStorage.get(container);
+				if (storedHtml !== undefined && container.innerHTML === '') 
+				{
+					container.style.height = '';
+					container.innerHTML = storedHtml;
+				}
+			} 
+			else 
+			{
+				if (container.innerHTML !== '') 
+				{
+					const height = container.offsetHeight;
+					if (height > 0) 
+					{
+						this.containerStorage.set(container, container.innerHTML);
+						container.innerHTML = '';
+						container.style.height = height + 'px';
+					}
+				}
+			}
+		});
+	};
+
+	this.observer = new IntersectionObserver(this.handleIntersection.bind(this), 
+	{
+		root: this.window,
+		rootMargin: '300px 0px 300px 0px',
+		threshold: 0
+	});
+
+	this.flushBit = function(html)
+	{
+		var span = document.createElement('span');
+		span.innerHTML = html;
+		updateMediaImagesInSpan(this.sipfs, span);
+		var brCt = brCount(html);
+		var trimCount = this.maxLines / 10;
+		var container;
+		if((this.window.childElementCount == 0)
+		||(this.window.lastChild.brCount >= trimCount))
+		{
+			container = document.createElement('div');
+			container.appendChild(span);
+			this.window.appendChild(container);
+			container.brCount = 0;
+			this.observer.observe(container);
+		}
+		else
+		{
+			container = this.window.lastChild;
+			container.appendChild(span);
+		}
+		if (container.innerHTML === '') 
+		{
+			const storedHtml = this.containerStorage.get(container) || '';
+			container.style.height = '';
+			container.innerHTML = storedHtml;
+		}
+		container.brCount += brCt;
+		this.numLines += brCt;
+		if((this.numLines > this.maxLines)
+		&&(this.window.childElementCount > 1))
+		{
+			while(this.numLines > this.maxLines - trimCount)
+			{
+				var child = this.window.firstChild;
+				var brCt = child.brCount;
+				this.observer.unobserve(child);
+				this.containerStorage.delete(child);
+				this.window.removeChild(child);
+				this.numLines -= brCt;
+			}
+		}
+		return span;
+	}
 	
 	this.flushWindow = function() 
 	{
@@ -396,30 +483,7 @@ function SipletWindow(windowName)
 			this.htmlBuffer = reprocess + this.htmlBuffer;
 			if(this.debugFlush)
 				console.log('Flush: '+this.htmlBuffer);
-			var span = document.createElement('span');
-			span.innerHTML = this.htmlBuffer;
-			updateMediaImagesInSpan(this.sipfs, span);
-			var brCt = brCount(this.htmlBuffer);
-			var trimCount = this.maxLines / 10;
-			if((this.window.childElementCount == 0)
-			||(this.window.lastChild.brCount >= trimCount))
-			{
-				var container = document.createElement('span');
-				container.style.contentVisibility = 'auto';
-				container.appendChild(span);
-				this.window.appendChild(container);
-				this.window.lastChild.brCount = 0;
-			}
-			else
-			{
-				if(this.window.lastChild.brCount === undefined)
-					this.window.lastChild.brCount = brCount(this.window.lastChild.innerHTML);
-				this.window.lastChild.appendChild(span);
-			}
-			var measuredHeight = span.offsetHeight;
-			this.window.lastChildooc .style.containIntrinsicSize = `auto ${measuredHeight}px`;
-			this.window.lastChild.brCount += brCt;
-			this.numLines += brCt;
+			this.flushBit(this.htmlBuffer);
 			if(this.mxp.partial == null)
 				this.process(reprocess);
 			this.htmlBuffer='';
@@ -427,17 +491,6 @@ function SipletWindow(windowName)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
 				this.tab.style.color = "black";
-			}
-			if((this.numLines > this.maxLines)
-			&&(this.window.childElementCount > 1))
-			{
-				while(this.numLines > this.maxLines - trimCount)
-				{
-					var child = this.window.firstChild;
-					var brCt = child.brCount;
-					this.window.removeChild(child);
-					this.numLines -= brCt;
-				}
 			}
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
@@ -1214,11 +1267,9 @@ function SipletWindow(windowName)
 		if(value)
 		{
 			var rescroll = this.isAtBottom(-10);
-			var span = document.createElement('span');
 			this.writeLogHtml(value);
-			span.innerHTML = value.replaceAll('\n','<BR>');
-			span.brCount = brCount(span.innerHTML);
-			this.window.appendChild(span);
+			var html = value.replaceAll('\n','<BR>');
+			var span = this.flushBit(html);
 			if(rescroll)
 				this.scrollToBottom(this.window,0);
 			return span;
@@ -1784,7 +1835,7 @@ setTimeout(function()
 		for(var i=0;i<window.siplets.length;i++)
 		{
 			var siplet = window.siplets[i];
-			siplet.maxLines = getConfig('window/lines', '1000');
+			siplet.maxLines = getConfig('window/lines', '10000');
 			siplet.overflow = getConfig('window/overflow','WRAP');
 			siplet.fixOverflow();
 		}
