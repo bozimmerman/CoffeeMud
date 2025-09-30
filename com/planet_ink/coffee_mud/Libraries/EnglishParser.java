@@ -2875,6 +2875,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 							return -1;
 						}
+						boolean unpackage = false;
 						final Environmental toWhat;
 						if(fromWhat instanceof RawMaterial)
 						{
@@ -2882,13 +2883,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							{
 								toWhat=CMLib.materials().splitBundle((Item)fromWhat,maxToGive,null);
 								if(toWhat != null)
+								{
 									maxToGive = 1;
+									unpackage=true;
+								}
 							}
 							else
 								toWhat=fromWhat;
 						}
 						else
+						{
 							toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
+							if(toWhat != null)
+								unpackage=true;
+						}
 						if(toWhat==null)
 						{
 							if(throwError)
@@ -2898,9 +2906,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							}
 						}
 						else
-						if(getOnly&&mob.isMine(fromWhat)&&mob.isMine(toWhat))
+						if(getOnly
+						&& mob.isMine(fromWhat)
+						&& mob.isMine(toWhat))
 						{
-							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You already have that."));
+							if(unpackage)
+								CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You get @x1 from @x2.",toWhat.name(),fromWhat.name()));
+							else
+								CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You already have that."));
 							return -1;
 						}
 						else
