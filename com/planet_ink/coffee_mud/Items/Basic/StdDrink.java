@@ -110,12 +110,36 @@ public class StdDrink extends StdContainer implements Drink,Item
 	{
 		if ((material() & RawMaterial.MATERIAL_MASK) == RawMaterial.MATERIAL_LIQUID)
 			return material();
+		/*
+		if(liquidRemaining()<1)
+		{
+			final List<Item> V=getContents();
+			for(int v=0;v<V.size();v++)
+			{
+				if((V.get(v) instanceof Drink)
+				&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+					return V.get(v).material();
+			}
+		}
+		*/
 		return liquidType;
 	}
 
 	@Override
 	public void setLiquidType(final int newLiquidType)
 	{
+		/*
+		if(liquidRemaining()<1)
+		{
+			final List<Item> V=getContents();
+			for(int v=0;v<V.size();v++)
+			{
+				if((V.get(v) instanceof Drink)
+				&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+					((Drink)V.get(v)).setLiquidType(newLiquidType);
+			}
+		}
+		*/
 		liquidType = newLiquidType;
 	}
 
@@ -191,10 +215,11 @@ public class StdDrink extends StdContainer implements Drink,Item
 						mob.tell(L("@x1 is empty.",name()));
 						return false;
 					}
-					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
-					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
+					final int liquidType = liquidType();
+					if((liquidType==RawMaterial.RESOURCE_SALTWATER)
+					||(liquidType==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell(L("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
+						mob.tell(L("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType).toLowerCase()));
 						return false;
 					}
 					return true;
@@ -245,9 +270,14 @@ public class StdDrink extends StdContainer implements Drink,Item
 						mob.tell(L("@x1 is empty.",thePuddle.name()));
 						return false;
 					}
-					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+					final int liquidType = liquidType();
+					final int puddleLiquidType = thePuddle.liquidType();
+					if((liquidType!=puddleLiquidType)&&(containsLiquid()))
 					{
-						mob.tell(L("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",RawMaterial.CODES.NAME(liquidType()).toLowerCase(),name(),RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()));
+						mob.tell(L("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",
+								RawMaterial.CODES.NAME(liquidType).toLowerCase(),
+								name(),
+								RawMaterial.CODES.NAME(puddleLiquidType).toLowerCase()));
 						return false;
 
 					}
@@ -319,10 +349,10 @@ public class StdDrink extends StdContainer implements Drink,Item
 								addHereI.setLiquidRemaining(0);
 								((RawMaterial)addHereI).setContainer(this);
 								if(((RawMaterial)thePuddle).owner() instanceof MOB)
-									((MOB)(((RawMaterial)thePuddle).owner())).addItem((RawMaterial)addHereI);
+									(((RawMaterial)thePuddle).owner()).addItem((RawMaterial)addHereI);
 								else
 								if(((RawMaterial)thePuddle).owner() instanceof Room)
-									((Room)(((RawMaterial)thePuddle).owner())).addItem((RawMaterial)addHereI,ItemPossessor.Expire.Player_Drop);
+									(((RawMaterial)thePuddle).owner()).addItem((RawMaterial)addHereI,ItemPossessor.Expire.Player_Drop);
 							}
 							addHereI.setLiquidRemaining(addHereI.liquidRemaining() + amountToTake);
 							addHereI.setLiquidHeld(addHereI.liquidHeld() + amountToTake);
@@ -339,7 +369,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					if((thePuddle.liquidRemaining()<=0)
 					&&(thePuddle instanceof Item)
 					&&((thePuddle.disappearsAfterDrinking())||(thePuddle instanceof RawMaterial)))
-						((Item)thePuddle).destroy();
+						thePuddle.destroy();
 					if((amountOfLiquidRemaining<=0)
 					&&((disappearsAfterDrinking)||(this instanceof RawMaterial)))
 						destroy();

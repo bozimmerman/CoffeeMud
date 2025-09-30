@@ -255,10 +255,10 @@ function DisplayFakeInput(key)
 			{
 				if(window.currWin.lastChild !== span)
 				{
-					window.currWin.window.removeChild(span);
-					window.currWin.window.appendChild(span);
+					span.remove();
+					window.currWin.flushNode(span,0);
 				}
-				window.currWin.window.removeChild(span2);
+				span2.remove();
 				span.innerHTML += key;
 			}
 		}
@@ -294,7 +294,7 @@ function TurnOnBoxlessInputCursor()
 		}, 500);
 	} 
 	if(window.currWin && window.currWin.window && (inputcursor.parentNode === null))
-		window.currWin.window.appendChild(inputcursor);
+		window.currWin.flushNode(inputcursor,0);
 }
 
 document.onkeydown = function(e) {

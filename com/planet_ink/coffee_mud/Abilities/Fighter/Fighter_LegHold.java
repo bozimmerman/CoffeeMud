@@ -103,6 +103,12 @@ public class Fighter_LegHold extends FighterGrappleSkill
 	}
 
 	@Override
+	protected boolean requiresStanding()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -126,7 +132,12 @@ public class Fighter_LegHold extends FighterGrappleSkill
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+			int msgCode = CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0);
+			if(CMLib.flags().isSitting(mob))
+				msgCode = msgCode | CMMsg.MASK_HANDS | CMMsg.MASK_MALICIOUS | CMMsg.MASK_SOUND;
+			else
+				msgCode = msgCode | CMMsg.MSK_MALICIOUS_MOVE;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,msgCode,
 					auto?L("<T-NAME> get(s) <T-HIMHERSELF> in a(n) @x1!",name().toLowerCase()):
 						L("^F^<FIGHT^><S-NAME> put(s) <T-NAME> in a @x1!^</FIGHT^>^?",name().toLowerCase()));
 			CMLib.color().fixSourceFightColor(msg);

@@ -75,11 +75,21 @@ public class Spell_AlterSubstance extends Spell
 
 	public String newName="";
 	public int oldMaterial=0;
+	public boolean drinkFlag=false;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
+		if(drinkFlag
+		&& (super.canBeUninvoked())
+		&& (affected instanceof Drink)
+		&& (!((Drink)affected).containsLiquid()))
+		{
+			super.unInvoke(); // skip my messaging
+			affected.delEffect(this);
+			return;
+		}
 		if(newName.length()>0)
 			affectableStats.setName(newName);
 	}
@@ -90,7 +100,24 @@ public class Spell_AlterSubstance extends Spell
 		if((affected instanceof Item)&&(super.canBeUninvoked()))
 		{
 			final Item I=(Item)affected;
-			I.setMaterial(oldMaterial);
+			if(drinkFlag && (I instanceof Drink))
+			{
+				if (I instanceof Container)
+				{
+					final List<Item> liqItems = ((Container) I).getContents();
+					for (int i = 0; i < liqItems.size(); i++)
+					{
+						final Item I2 = liqItems.get(i);
+						if ((I2 instanceof Drink) && (((Drink) I2).liquidType() == ((Drink) I).liquidType()))
+							((Drink) I2).setLiquidType(oldMaterial);
+					}
+				}
+				if(I.material()==((Drink)I).liquidType())
+					I.setMaterial(oldMaterial);
+				((Drink)I).setLiquidType(oldMaterial);
+			}
+			else
+				I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
 				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 reverts to its natural form.",I.name()));
 			else
@@ -143,6 +170,18 @@ public class Spell_AlterSubstance extends Spell
 			mob.tell(L("'@x1' is not a known substance!",material));
 			return false;
 		}
+		oldMaterial=target.material();
+		if((target instanceof Drink)
+		&&(((Drink)target).containsLiquid()))
+		{
+			oldMaterial = ((Drink)target).liquidType();
+			drinkFlag = true;
+		}
+		if (oldMaterial == newMaterial)
+		{
+			mob.tell(L("@x1 is already made of @x2.", target.name(), material));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -156,10 +195,34 @@ public class Spell_AlterSubstance extends Spell
 			{
 				mob.location().send(mob,msg);
 				material=CMStrings.capitalizeAndLower(material);
-				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> change(s) into @x1!",material));
-				oldMaterial=target.material();
-				target.setMaterial(newMaterial);
 				final String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
+				if(drinkFlag)
+				{
+					((Drink)target).setLiquidType(newMaterial);
+					if(target instanceof Container)
+					{
+						final List<Item> liqItems = ((Container)target).getContents();
+						for (int i = 0; i < liqItems.size(); i++)
+						{
+							final Item I = liqItems.get(i);
+							if ((I instanceof Drink)
+							&& (((Drink) I).liquidType() == oldMaterial))
+								((Drink) I).setLiquidType(newMaterial);
+						}
+					}
+					if(target.material()==oldMaterial)
+					{
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> change(s) into @x1!",material));
+						target.setMaterial(newMaterial);
+					}
+					else
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("The @x1 in <T-NAME> change(s) into @x2!",oldResourceName.toLowerCase(), material));
+				}
+				else
+				{
+					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> change(s) into @x1!",material));
+					target.setMaterial(newMaterial);
+				}
 				final String oldMaterialName=RawMaterial.Material.findByMask(oldMaterial&RawMaterial.MATERIAL_MASK).desc();
 				String oldName=target.name().toUpperCase();
 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);

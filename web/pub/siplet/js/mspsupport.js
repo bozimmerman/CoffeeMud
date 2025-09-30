@@ -186,7 +186,7 @@ var MSP = function(sipwin)
 		{
 			var mimeType = window.mimeTypes[ext];
 			self.sounders[sounderName] = sounder;
-			sipwin.window.appendChild(sounder.player);
+			sipwin.flushNode(sounder.player,0);
 			sounder.player.setAttribute('src', src);
 			sounder.player.setAttribute('type', mimeType);
 			sounder.player.setAttribute('hidden','true');

@@ -521,17 +521,17 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_CLOTHES:
 					if((I instanceof Armor)
-					&&(((Armor)I).fitsOn(Wearable.WORN_ABOUT_BODY)
-					   ||((Armor)I).fitsOn(Wearable.WORN_ARMS)
-					   ||((Armor)I).fitsOn(Wearable.WORN_LEGS)
-					   ||((Armor)I).fitsOn(Wearable.WORN_HEAD)
-					   ||((Armor)I).fitsOn(Wearable.WORN_TORSO)
-					   ||((Armor)I).fitsOn(Wearable.WORN_WAIST)))
+					&&(I.fitsOn(Wearable.WORN_ABOUT_BODY)
+					   ||I.fitsOn(Wearable.WORN_ARMS)
+					   ||I.fitsOn(Wearable.WORN_LEGS)
+					   ||I.fitsOn(Wearable.WORN_HEAD)
+					   ||I.fitsOn(Wearable.WORN_TORSO)
+					   ||I.fitsOn(Wearable.WORN_WAIST)))
 						return true;
 					break;
 				case CONTAIN_FOOTWEAR:
 					if((I instanceof Armor)
-					&&(((Armor)I).fitsOn(Wearable.WORN_FEET)))
+					&&(I.fitsOn(Wearable.WORN_FEET)))
 						return true;
 					break;
 				case CONTAIN_RAWMATERIALS:
@@ -546,7 +546,7 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_ONEHANDWEAPONS:
 					if((I instanceof Weapon)
-					&&(((Weapon)I).rawLogicalAnd()==false))
+					&&(I.rawLogicalAnd()==false))
 						return true;
 					break;
 				case CONTAIN_BODIES:
@@ -747,7 +747,7 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
-	public ReadOnlyList<Item> getContents()
+	public ReadOnlyList<Item> getContents()  //TODO: this could use caching love, if poss
 	{
 		final List<Item> V=new ArrayList<Item>();
 		final ItemPossessor owner = owner();

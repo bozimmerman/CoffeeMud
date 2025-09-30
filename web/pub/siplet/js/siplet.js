@@ -6,7 +6,7 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.2',
-	VERSION_MINOR: '2',
+	VERSION_MINOR: '4',
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
@@ -418,22 +418,16 @@ function SipletWindow(windowName)
 		rootMargin: '300px 0px 300px 0px',
 		threshold: 0
 	});
-
-	this.flushBit = function(html)
+	
+	this.flushNode = function(node, brCt)
 	{
-		html = html.replace(/<font[^>]*><\/font>/gi, '');
-		html = html.replace(/(<font[^>]*>)+$/gi, '');
-		var span = document.createElement('span');
-		span.innerHTML = html;
-		updateMediaImagesInSpan(this.sipfs, span);
-		var brCt = brCount(html);
 		var trimCount = this.maxLines / 10;
 		var container;
 		if((this.window.childElementCount == 0)
 		||(this.window.lastChild.brCount >= trimCount))
 		{
 			container = document.createElement('div');
-			container.appendChild(span);
+			container.appendChild(node);
 			this.window.appendChild(container);
 			container.brCount = 0;
 			this.observer.observe(container);
@@ -441,7 +435,7 @@ function SipletWindow(windowName)
 		else
 		{
 			container = this.window.lastChild;
-			container.appendChild(span);
+			container.appendChild(node);
 		}
 		if (container.innerHTML === '') 
 		{
@@ -464,8 +458,19 @@ function SipletWindow(windowName)
 				this.numLines -= brCt;
 			}
 		}
+	};
+
+	this.flushBit = function(html)
+	{
+		html = html.replace(/<font[^>]*><\/font>/gi, '');
+		html = html.replace(/(<font[^>]*>)+$/gi, '');
+		var span = document.createElement('span');
+		span.innerHTML = html;
+		updateMediaImagesInSpan(this.sipfs, span);
+		var brCt = brCount(html);
+		this.flushNode(span, brCt);
 		return span;
-	}
+	};
 	
 	this.flushWindow = function() 
 	{

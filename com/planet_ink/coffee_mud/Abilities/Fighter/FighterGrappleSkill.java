@@ -409,6 +409,11 @@ public class FighterGrappleSkill extends FighterSkill
 		}
 	}
 
+	protected boolean requiresStanding()
+	{
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -454,7 +459,9 @@ public class FighterGrappleSkill extends FighterSkill
 			return false;
 		}
 
-		if((!isImmobilizing())&&(!CMLib.flags().isStanding(mob)))
+		if(requiresStanding()
+		&&(!isImmobilizing())
+		&&(!CMLib.flags().isStanding(mob)))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;
