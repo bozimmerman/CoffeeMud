@@ -115,7 +115,9 @@ public class Skill_ControlUndead extends StdSkill
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(!((MOB)affected).isMonster())
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
+		&&(msg.amISource((MOB)affected)
+			||msg.amISource(((MOB)affected).amFollowing())
+			||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
@@ -137,12 +139,14 @@ public class Skill_ControlUndead extends StdSkill
 		// from trying to do ANYTHING except sleep
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.amISource(getCharmer())||((mob.amFollowing()!=null)&&(msg.source()==mob.amFollowing()))))
+		&&(msg.amISource(getCharmer())
+			||((mob.amFollowing()!=null)&&(msg.source()==mob.amFollowing()))))
 			unInvoke();
 		else
 		if((msg.amISource(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.amITarget(getCharmer())||((mob.amFollowing()!=null)&&(msg.target()==mob.amFollowing()))))
+		&&(msg.amITarget(getCharmer())
+			||((mob.amFollowing()!=null)&&(msg.target()==mob.amFollowing()))))
 		{
 			if((!invoker().isInCombat())&&(msg.source().getVictim()!=invoker()))
 			{
@@ -230,7 +234,9 @@ public class Skill_ControlUndead extends StdSkill
 				||((mob.getStartRoom()!=null)
 					&&(mob.getStartRoom().getArea()!=mob.location().getArea())
 					&&(CMLib.flags().canMove(mob))
-					&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
+					&&(CMLib.flags().isAggressiveTo(mob,null)
+						||(invoker==null)
+						||(!mob.location().isInhabitant(invoker)))))
 					CMLib.tracking().wanderAway(mob,true,true);
 				else
 				if((invoker!=null)&&(invoker!=mob))
