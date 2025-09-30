@@ -389,8 +389,8 @@ function SipletWindow(windowName)
 			var container = entry.target;
 			if (entry.isIntersecting) 
 			{
-				var storedHtml = this.containerStorage.get(container);
-				if (storedHtml !== undefined && container.innerHTML === '') 
+				var storedHtml = me.containerStorage.get(container);
+				if ((storedHtml !== undefined)&&(container.innerHTML === '')) 
 				{
 					container.style.height = '';
 					container.innerHTML = storedHtml;
@@ -398,12 +398,12 @@ function SipletWindow(windowName)
 			} 
 			else 
 			{
-				if (container.innerHTML !== '') 
+				if(container.innerHTML !== '') 
 				{
-					const height = container.offsetHeight;
+					var height = container.offsetHeight;
 					if (height > 0) 
 					{
-						this.containerStorage.set(container, container.innerHTML);
+						me.containerStorage.set(container, container.innerHTML);
 						container.innerHTML = '';
 						container.style.height = height + 'px';
 					}
@@ -421,6 +421,8 @@ function SipletWindow(windowName)
 
 	this.flushBit = function(html)
 	{
+		html = html.replace(/<font[^>]*><\/font>/gi, '');
+		html = html.replace(/(<font[^>]*>)+$/gi, '');
 		var span = document.createElement('span');
 		span.innerHTML = html;
 		updateMediaImagesInSpan(this.sipfs, span);
