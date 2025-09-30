@@ -1143,12 +1143,22 @@ function SafeEval(str, context)
 	return !!result;
 }
 
-function brCount(html)
+function brCount(html) 
 {
 	var re = /<br\s*\/?>/gi;
 	var matches = html.match(re) || [];
-	var cleaned = html.replace(/<[^>]+>/g,'').trim();
-	return matches.length + (cleaned.length > 0 ? 1 : 0);
+	if (matches.length === 0) 
+	{
+		var cleaned = html.replace(/<[^>]+>/g, '').trim();
+		return cleaned.length > 0 ? 1 : 0;
+	}
+	var lastMatchEnd = 0;
+	var match;
+	while ((match = re.exec(html)) !== null)
+		lastMatchEnd = match.index + match[0].length;
+	var afterLast = html.substring(lastMatchEnd);
+	var cleanedAfter = afterLast.replace(/<[^>]+>/g, '').trim();
+	return matches.length + (cleanedAfter.length > 0 ? 1 : 0);
 }
 
 function findNthBrPos(html, n)
