@@ -1149,7 +1149,9 @@ Be
 careful when using narrowing terms to make sure they make sense for the
 term prior to them. &nbsp;For example, if importing mobs from a cmare
 file, AREAS will not likely resolve to anything, since the mobs aren't
-in the world yet.<br />
+in the world yet. &nbsp;When using MQL in Scriptable, the implied
+context for the from&nbsp;clause will be the scripted object itself, so
+bear that in mind: &nbsp;if your script is on a room, then <span style="font-family: monospace;">SELECT: * from mobs</span> will select the mobs in the room.<br />
       <br />
 The SELECT: clause can include one or more
 comma-delimited properties of &nbsp;the objects in the from clause, or

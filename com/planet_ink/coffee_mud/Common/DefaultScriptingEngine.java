@@ -9598,15 +9598,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			case 62: // for x = 1 to 100
+			case 62: // for x = 1 to 100, for x in
 			{
 				if(tt==null)
-					tt=parseBits(ctx,"CcccCr");
-				if(tt[5].length()==0)
 				{
-					logError(ctx,"FOR","Syntax","5 parms required!");
-					tickStatus=Tickable.STATUS_END;
-					return null;
+					tt=parseBits(ctx,"CcccCr");
+					if(tt[2].equalsIgnoreCase("in"))
+						tt=parseBits(ctx,"CcCr");
 				}
 				final String varStr=tt[1];
 				if((varStr.length()!=2)||(varStr.charAt(0)!='$')||(!Character.isDigit(varStr.charAt(1))))
@@ -9624,33 +9622,81 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if(!tt[2].equals("="))
-				{
-					logError(ctx,"FOR","Syntax","'"+s+"' is illegal for syntax!");
-					tickStatus=Tickable.STATUS_END;
-					return null;
-				}
-
+				final int fromInt;
+				int toInt;
 				int toAdd=0;
-				if(tt[4].equals("TO<"))
-					toAdd=-1;
-				else
-				if(tt[4].equals("TO>"))
-					toAdd=1;
-				else
-				if(!tt[4].equals("TO"))
+				List<Object> inList = null;
+				if(tt.length==4) // for in
 				{
-					logError(ctx,"FOR","Syntax","'"+s+"' is illegal for syntax!");
-					tickStatus=Tickable.STATUS_END;
-					return null;
+					if((tt[3].indexOf(':')==6)
+					&&(tt[3].substring(0, 6).toLowerCase().equals("select")))
+					{
+						try
+						{
+							final List<Map<String,Object>> m = CMLib.percolator().doMQLSelectObjects(ctx.scripted, tt[3]);
+							inList=new ArrayList<Object>(m.size());
+							for (final Map<String, Object> map : m)
+							{
+								if(m.size()==0)
+									continue;
+								final CMObject O = (CMObject) map.get(map.keySet().iterator().next());
+								if (O != null)
+									inList.add(O);
+							}
+						}
+						catch (final MQLException e)
+						{
+							logError(ctx,"FOR","Bad MQL",e.getMessage()+": "+tt[3]);
+							tickStatus=Tickable.STATUS_END;
+							return null;
+						}
+					}
+					else
+					{
+						final List<String> objs = CMParms.parseCommas(tt[3], false);
+						inList=new ArrayList<Object>(objs.size());
+						for (int o = 0; o < objs.size(); o++)
+							inList.add(varify(ctx, objs.get(o)));
+					}
+					fromInt=0;
+					toInt=inList.size()-1;
 				}
-				final String from=varify(ctx,tt[3]).trim();
-				final String to=varify(ctx,tt[5]).trim();
-				if((!CMath.isInteger(from))||(!CMath.isInteger(to)))
+				else
 				{
-					logError(ctx,"FOR","Syntax","'"+from+"-"+to+"' is illegal range!");
-					tickStatus=Tickable.STATUS_END;
-					return null;
+					if(tt[5].length()==0)
+					{
+						logError(ctx,"FOR","Syntax","5 parms required!");
+						tickStatus=Tickable.STATUS_END;
+						return null;
+					}
+					if(!tt[2].equals("="))
+					{
+						logError(ctx,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+						tickStatus=Tickable.STATUS_END;
+						return null;
+					}
+					if(tt[4].equals("TO<"))
+						toAdd=-1;
+					else
+					if(tt[4].equals("TO>"))
+						toAdd=1;
+					else
+					if(!tt[4].equals("TO"))
+					{
+						logError(ctx,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+						tickStatus=Tickable.STATUS_END;
+						return null;
+					}
+					final String from=varify(ctx,tt[3]).trim();
+					final String to=varify(ctx,tt[5]).trim();
+					if((!CMath.isInteger(from))||(!CMath.isInteger(to)))
+					{
+						logError(ctx,"FOR","Syntax","'"+from+"-"+to+"' is illegal range!");
+						tickStatus=Tickable.STATUS_END;
+						return null;
+					}
+					fromInt=CMath.s_int(from);
+					toInt=CMath.s_int(to);
 				}
 				final ScriptLn forLine = script.get(ctx.line);
 				final SubScript subScript;
@@ -9739,8 +9785,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
 					//  source.tell(L("Statement @x1",((String)V.elementAt(v))));
-					final int fromInt=CMath.s_int(from);
-					int toInt=CMath.s_int(to);
 					final int increment=(toInt>=fromInt)?1:-1;
 					String response=null;
 					if(((increment>0)&&(fromInt<=(toInt+toAdd)))
@@ -9750,7 +9794,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final long tm=System.currentTimeMillis()+(10 * 1000);
 						for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
 						{
-							ctx.tmp[whichVar]=""+forLoop;
+							if ((inList != null) && (forLoop < inList.size()))
+								ctx.tmp[whichVar] = inList.get(forLoop);
+							else
+								ctx.tmp[whichVar]=""+forLoop;
 							final MPContext newContext = ctx.push(subScript);
 							response=execute(newContext);
 							if(response!=null)
@@ -9761,7 +9808,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							}
 						}
-						ctx.tmp[whichVar]=""+toInt;
+						if ((inList != null) && (toInt < inList.size()))
+							ctx.tmp[whichVar] = inList.get(toInt);
+						else
+							ctx.tmp[whichVar]=""+toInt;
 						if(response == null)
 						{
 							final MPContext newContext = ctx.push(subScript);

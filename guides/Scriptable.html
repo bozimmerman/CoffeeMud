@@ -4547,26 +4547,30 @@ we do not need to include a <span style="font-weight: bold;">default</span>
 case.
       <h3><a name="for">for, next</a></h3>
 
-      <p>Usage:</p>
+      <p>Usages:</p>
 
-      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /></pre>
+      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /><br />for $[digit] IN list, of, things, $n<br />[commands]<br />...<br />next<br /><br /><br />for $[digit] IN SELECT: * FROM ...<br />[commands]<br />...<br />next<br /><br /></pre>
 
-      <p>The for command is the
+      <p>The
+for command is the
 simplest way to execute one or more
 other commands numerous times. It allows you to specify a numeric range
-for the scripting engine to count from and to, executing the commands
+for the scripting engine to count from and to, specity a range of
+terms, or specify the result on an MQL query. &nbsp; Executing the
+commands
 after the for statement (and before the next statement) as many times
-as is required to complete the counting. The value of the current digit
-during counting is stored in one of the temporary variables $0, $1, $2,
-$3, ... $9. Here's an example:</p>
+as is required to complete the counting. When executing the commands,
+the temporary variable used $[digit] will be the value of the current
+digit, the current word from the list, or the current object from the
+MQL query. Here's some examples:</p>
 
-      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /></pre>
+      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /><br />for $0 in orange, blue, green<br /> mpecho My new favorite color is $0<br />next<br /><br />for $0 in SELECT: * from mobs<br /> mpecho I have done this $0 times!<br />next      <br /></pre>
 
       <p>If you execute the above
 script, you will see the mpecho
-command repeated 10 times, which is one time for every digit between 1
-and 10. Each time it executes the mpecho command, the value of the
-temporary variable $0 will be incremented. That's the basics, simple
+command repeated as many times as specific, e.g. one time for every digit between 1
+and 10, or one time for each color, etc. Each time it executes the mpecho command, the value of the
+temporary variable $0 will be changed. That's the basics, simple
 huh?</p>
 
       <p>For loops can be nested,
@@ -4601,7 +4605,7 @@ instance:</p>
 
       <p>The above would display 0
 1 2 3 4, whereas, with a normal 'to'
-key word, it would have counted 0 1 2 3 4 5.</p>
+key word, it would have counted 0 1 2 3 4 5.</p><p>For more information on how to use MQL SELECT: queries, see the last section in the <a href="RandomAreas.html#mql">Random Areas</a> document. &nbsp;Remember that the FROM context for all queries will be the scripted object itself.</p>
 
       <h3><a name="script">&lt;SCRIPT&gt;</a></h3>
 
