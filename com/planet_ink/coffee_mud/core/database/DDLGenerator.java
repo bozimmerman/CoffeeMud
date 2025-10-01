@@ -36,8 +36,8 @@ public class DDLGenerator
 	private final DatabaseMetaData		metaData;
 	private final String				productName;
 	private final String				schema;
-	private final Map<String, String>	typeMappings		= new HashMap<>();
-	private final Map<Integer, String>	sqlTypeToPortable	= new HashMap<>();
+	private final Map<String, String>	typeMappings		= new HashMap<String, String>();
+	private final Map<Integer, String>	sqlTypeToPortable	= new HashMap<Integer, String>();
 
 	/**
 	 * Constructor
@@ -53,7 +53,7 @@ public class DDLGenerator
 		this.productName=metaData.getDatabaseProductName().toLowerCase();
 		if (this.productName.contains("oracle"))
 			typeMappings.put("TEXT", "CLOB");
-		final Map<String,Integer> dbTypes = new HashMap<>();
+		final Map<String,Integer> dbTypes = new HashMap<String,Integer>();
 		dbTypes.put("INT", Integer.valueOf(java.sql.Types.INTEGER));
 		dbTypes.put("LONG", Integer.valueOf(java.sql.Types.BIGINT));
 		dbTypes.put("VARCHAR", Integer.valueOf(java.sql.Types.VARCHAR));

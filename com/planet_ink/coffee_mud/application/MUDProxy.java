@@ -118,7 +118,7 @@ public class MUDProxy
 	private OutputStream					out				= new FilterOutputStream(outputPipe);
 	private final Map<String, Object>		session			= new Hashtable<String, Object>();
 	private final AtomicBoolean				isProcessing	= new AtomicBoolean(false);
-	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<>();
+	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<ByteBuffer>();
 	private final Queue<ByteBuffer>			input			= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
 	private final Queue<ByteBuffer>			inter			= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
 	private final Queue<ByteBuffer>			output			= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output

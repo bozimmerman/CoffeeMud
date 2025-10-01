@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -53,31 +54,43 @@ public class Prop_LimitedEquip extends Property
 		return Ability.CAN_ITEMS;
 	}
 
-	protected int		maxEquips	= 1;
-	protected String	id			= null;
-	protected String	msgStr		= "";
+	protected boolean		get			= false;
+	protected int			maxEquips	= 1;
+	protected String		id			= null;
+	protected CompiledZMask	mask		= null;
+	protected String		msgStr		= "";
 
 	@Override
 	public String accountForYourself()
 	{
 		if(CMath.s_int(text())<=0)
-			return "Only 1 may be equipped";
+		{
+			if(get)
+				return L("Only 1 may be picked up.");
+			else
+				return L("Only 1 may be equipped.");
+		}
 		final int x=text().indexOf(';');
 		final String numStr;
 		if(x<0)
 			numStr = text();
 		else
 			numStr=text().substring(0,x);
-		return L("Only @x1 may be equipped.",numStr);
+		if(get)
+			return L("Only @x1 may be picked up.",numStr);
+		else
+			return L("Only @x1 may be equipped.",numStr);
 	}
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
+		get=false;
 		maxEquips=1;
 		this.id=null;
 		this.msgStr="";
+		this.mask=null;
 		if(newMiscText.length()>0)
 		{
 			final int x=newMiscText.indexOf(';');
@@ -87,6 +100,7 @@ public class Prop_LimitedEquip extends Property
 			else
 			{
 				final String parms = newMiscText.substring(x+1).trim();
+				get = CMParms.getParmBool(parms, "GET", false);
 				final String newId = CMParms.getParmStr(parms, "ID", "");
 				if(newId.trim().length()>0)
 					this.id=newId;
@@ -94,6 +108,9 @@ public class Prop_LimitedEquip extends Property
 				final String newMsgStr = CMParms.getParmStr(parms, "MESSAGE", "");
 				if(newMsgStr.trim().length()>0)
 					this.msgStr=newMsgStr.trim();
+				final String maskStr = CMParms.getParmStr(parms, "MASK", "");
+				if(maskStr.trim().length()>0)
+					this.mask=CMLib.masking().maskCompile(maskStr.trim());
 			}
 			if(CMath.isInteger(numStr))
 				maxEquips = CMath.s_int(numStr);
@@ -124,6 +141,38 @@ public class Prop_LimitedEquip extends Property
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+		if(get)
+		{
+			if((msg.targetMinor()==CMMsg.TYP_GET)
+			&&(msg.target()==affected)
+			&&(CMProps.isState(CMProps.HostState.RUNNING))
+			&&(affected instanceof Item)
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true)))
+			&&(!msg.source().isMine(affected)))
+			{
+				final Item affI=(Item)msg.target();
+				final String affId = getId(affI);
+				int alreadyGetCount = 0;
+				for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+				{
+					final Item I=i.nextElement();
+					if((I != affI)
+					&&(affI.ID().equals(I.ID()))
+					&&(affId.equals(getId(I))))
+						alreadyGetCount++;
+				}
+				if(alreadyGetCount >= this.maxEquips)
+				{
+					if((msgStr==null)
+					||(msgStr.trim().length()==0))
+						msg.source().tell(L("You may not get any more of those."));
+					else
+						msg.source().tell(msgStr);
+					return false;
+				}
+			}
+		}
+		else
 		if((msg.targetMinor()==CMMsg.TYP_WEAR)
 		&&(msg.target()==affected)
 		&&(CMProps.isState(CMProps.HostState.RUNNING))
@@ -131,7 +180,8 @@ public class Prop_LimitedEquip extends Property
 		{
 			final Item affI=(Item)msg.target();
 			final ItemPossessor owner=affI.owner();
-			if(owner instanceof MOB)
+			if((owner instanceof MOB)
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, owner, true))))
 			{
 				final MOB M=(MOB)owner;
 				final String affId = getId(affI);

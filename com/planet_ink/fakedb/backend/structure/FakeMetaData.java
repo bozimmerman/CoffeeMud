@@ -799,11 +799,11 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getTables(final String catalog, final String schemaPattern, final String tableNamePattern, final String[] types) throws SQLException
 	{
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>> ();
 		final Map<String,FakeTable> tables = this.backend.getFakeTables();
 		for(final String key : tables.keySet())
 		{
-			final Map<String,Object> row = new HashMap<>();
+			final Map<String,Object> row = new HashMap<String,Object>();
 			if(patternMatch(key,tableNamePattern))
 			{
 				row.put("TABLE_NAME", key);
@@ -829,9 +829,9 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getTableTypes() throws SQLException
 	{
-		final Map<String,Object> row = new HashMap<>();
+		final Map<String,Object> row = new HashMap<String,Object>();
 		row.put("TABLE_TYPE", "TABLE");
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>>();
 		rows.add(row);
 		return com.planet_ink.fakedb.backend.jdbc.ResultSet.createSimpleResultSet(rows);
 	}
@@ -839,7 +839,7 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getColumns(final String catalog, final String schemaPattern, final String tableNamePattern, final String columnNamePattern) throws SQLException
 	{
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>>();
 		final Map<String,FakeTable> tables = this.backend.getFakeTables();
 		FakeTable table = null;
 		for(final String key : tables.keySet())
@@ -858,7 +858,7 @@ public class FakeMetaData implements DatabaseMetaData
 				if((colName!=null)
 				&&(patternMatch(colName,columnNamePattern)))
 				{
-					final Map<String,Object> row = new HashMap<>();
+					final Map<String,Object> row = new HashMap<String,Object>();
 					row.put("TABLE_NAME", table.name);
 					row.put("COLUMN_NAME", colName);
 					row.put("DATA_TYPE", Integer.valueOf(col.type.getSQLType()));
@@ -915,7 +915,7 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getPrimaryKeys(final String catalog, final String schema, final String tablePattern) throws SQLException
 	{
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>>();
 		final Map<String,FakeTable> tables = this.backend.getFakeTables();
 		FakeTable table = null;
 		for(final String key : tables.keySet())
@@ -932,7 +932,7 @@ public class FakeMetaData implements DatabaseMetaData
 			{
 				if (col.keyNumber >= 0)
 				{
-					final Map<String, Object> row = new HashMap<>();
+					final Map<String, Object> row = new HashMap<String,Object>();
 					row.put("TABLE_NAME", table.name);
 					row.put("COLUMN_NAME", col.name);
 					row.put("KEY_SEQ", Integer.valueOf(col.keyNumber + 1));
@@ -965,12 +965,12 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getTypeInfo() throws SQLException
 	{
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>>();
 		for (final FakeColumn.FakeColType t : FakeColumn.FakeColType.values())
 		{
 			if (t != FakeColumn.FakeColType.UNKNOWN)
 			{
-				final Map<String, Object> row = new HashMap<>();
+				final Map<String, Object> row = new HashMap<String,Object>();
 				row.put("TYPE_NAME", t.name());
 				row.put("DATA_TYPE", Integer.valueOf(t.getSQLType()));
 				row.put("PRECISION", Integer.valueOf(0));
@@ -998,7 +998,7 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public ResultSet getIndexInfo(final String catalog, final String schema, final String tablePattern, final boolean unique, final boolean approximate) throws SQLException
 	{
-		final List<Map<String,Object>> rows = new ArrayList<>();
+		final List<Map<String,Object>> rows = new ArrayList<Map<String,Object>>();
 		final Map<String,FakeTable> tables = this.backend.getFakeTables();
 		FakeTable table = null;
 		for(final String key : tables.keySet())
@@ -1015,7 +1015,7 @@ public class FakeMetaData implements DatabaseMetaData
 			{
 				if(col.indexNumber >= 0)
 				{
-					final Map<String, Object> row = new HashMap<>();
+					final Map<String, Object> row = new HashMap<String,Object>();
 					row.put("TABLE_NAME", table.name);
 					row.put("NON_UNIQUE", Boolean.valueOf(col.keyNumber < 0));
 					row.put("INDEX_QUALIFIER", null);

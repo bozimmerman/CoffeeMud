@@ -174,7 +174,7 @@ public class FlatFileFS implements Closeable
 
 	public synchronized List<Map.Entry<String, Integer>> listAllFiles() throws IOException
 	{
-		final List<Map.Entry<String, Integer>> files = new ArrayList<>();
+		final List<Map.Entry<String, Integer>> files = new ArrayList<Map.Entry<String, Integer>>();
 		traverse(rootDirEntry, files);
 		return files;
 	}
@@ -186,7 +186,7 @@ public class FlatFileFS implements Closeable
 		traverse(getLeft(entryId), files);
 		final String name = getNodeName(entryId);
 		final int size = getFileSize(entryId);
-		files.add(new AbstractMap.SimpleEntry<>(name, Integer.valueOf(size)));
+		files.add(new AbstractMap.SimpleEntry<String, Integer>(name, Integer.valueOf(size)));
 		traverse(getRight(entryId), files);
 	}
 

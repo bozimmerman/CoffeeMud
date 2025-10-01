@@ -141,7 +141,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		IN(".in.",".IN.",".In.")
 		;
 		private final String[] signs;
-		private static final Map<String, Signs> signMap = new HashMap<>();
+		private static final Map<String, Signs> signMap = new HashMap<String, Signs>();
 		private Signs(final String... sign)
 		{
 			signs = sign;

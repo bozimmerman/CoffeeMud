@@ -285,7 +285,7 @@ public class UpgradeTool
 				if(compiler==null)
 					throw new RuntimeException("No Java compiler available. Ensure JDK is installed.");
 				final StandardJavaFileManager fileManager=compiler.getStandardFileManager(null, null, null);
-				final List<String> javaFiles = new ArrayList<>();
+				final List<String> javaFiles = new ArrayList<String>();
 				try (Stream<Path> walk = Files.walk(root.resolve("com")))
 				{
 					final Iterator<Path> it = walk.iterator();
@@ -366,7 +366,7 @@ public class UpgradeTool
 
 	private static void mergeJava(final Path root, final String rDir, final Path latestExtract, final Path baseExtract) throws IOException
 	{
-		final Map<Path, byte[]> preservedFiles = new HashMap<>();
+		final Map<Path, byte[]> preservedFiles = new HashMap<Path, byte[]>();
 		Files.walkFileTree(root.resolve(rDir), new SimpleFileVisitor<Path>()
 		{
 			@Override
@@ -1464,8 +1464,8 @@ public class UpgradeTool
 				}
 				else
 				{
-					chosenComments=ue != null 
-							? new ArrayList<>(ue.comments) 
+					chosenComments=ue != null
+							? new ArrayList<>(ue.comments)
 							: (le != null) ? new ArrayList<>(le.comments) : new ArrayList<>();
 					if((le != null)&&(ue != null)&&(!ue.value.equals(le.value)))
 						valueConflict=true;

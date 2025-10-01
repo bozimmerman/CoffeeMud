@@ -2734,7 +2734,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									}
 								}
 							}
-							doc.append("},\"idexits\":{");
+							doc.append("},");
+							doc.append("\"idexits\":{");
 							comma=false;
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
@@ -2821,6 +2822,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\": {")
 											.append("\"id\":").append(CMath.abs(room2ID.hashCode())).append(",")
 											.append("\"door\":\"").append(E2.hasADoor()?"door":"").append("\",")
+											.append("\"open\":").append(""+E2.isOpen()).append(",")
+											.append("\"locked\":").append(""+E2.isLocked()).append(",")
 											.append("\"move\":\"").append(move).append("\"")
 											.append("}");
 									}

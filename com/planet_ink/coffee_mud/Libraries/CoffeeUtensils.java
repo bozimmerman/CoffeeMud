@@ -447,7 +447,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								  ||(owner==R)
 								  ||(I.ultimateContainer(R)==R)))
 		||(owner==null)
-		||((owner instanceof Room)&&(!((Room)owner).isContent(I))))
+		||((owner instanceof Room)&&(!owner.isContent(I))))
 			return true;
 		return false;
 	}
@@ -463,7 +463,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if (obj == null)
 			return 0;
 		if (visited == null)
-			visited = new HashSet<>();
+			visited = new HashSet<Object>();
 		if (visited.contains(obj))
 			return 0;
 		visited.add(obj);
@@ -661,7 +661,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if((target instanceof Light)
 		&&(((Light)target).isLit()))
 		{
-			((Light)target).tick(target,Tickable.TICKID_LIGHT_FLICKERS);
+			target.tick(target,Tickable.TICKID_LIGHT_FLICKERS);
 			((Light)target).light(false);
 		}
 	}
@@ -710,7 +710,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if(A!=null)
 				level=level-CMLib.ableMapper().lowestQualifyingLevel(A.ID())+2;
 			((Wand)target).setSpell(null);
-			((Wand)target).setUsesRemaining(0);
+			target.setUsesRemaining(0);
 			doneSomething=true;
 		}
 		else

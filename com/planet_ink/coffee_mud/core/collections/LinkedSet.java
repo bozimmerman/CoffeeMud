@@ -292,7 +292,7 @@ public class LinkedSet<K> implements Set<K>
 			@Override
 			public void add(final K e)
 			{
-				final LinkedEntry<K> entry = new LinkedEntry<>(e);
+				final LinkedEntry<K> entry = new LinkedEntry<K>(e);
 				entry.prev = curr;
 				entry.next = next;
 				if(curr != null)
