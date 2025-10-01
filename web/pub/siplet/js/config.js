@@ -1,5 +1,7 @@
 window.configlisteners = {};
 window.sipConfigName = 'config1.1';
+if(window.isSpecialClient)
+	window.sipConfigname = 'special1.1';
 window.config = localStorage.getItem(window.sipConfigName);
 if(window.config) 
 	window.config = JSON.parse(window.config);
@@ -233,5 +235,35 @@ function GetGlobalElements()
 function GetGlobalPlugins()
 {
 	return JSON.parse(JSON.stringify(getConfig('/global/plugins', window.defPlugins)));
+}
+
+if(window.isSpecialClient)
+{
+	window.phonebook.push({
+		name: "CoffeeMud",
+		host: "coffeemud.net",
+		port: 2323,
+		disableInput: false,
+		icon: "media://cmico.jpg"
+	},{
+		name: "CoffeeMud PVP",
+		host: "coffeemud.net",
+		port: 2324,
+		disableInput: false,
+		icon: "media://cmpvp.jpg"
+	},{
+		name: "CoffeeMud HardCore",
+		host: "coffeemud.net",
+		port: 2325,
+		disableInput: false,
+		icon: "media://cmhc.jpg"
+	},{
+		name: "CoffeeMud RolePlay",
+		host: "coffeemud.net",
+		port: 2326,
+		disableInput: false,
+		icon: "media://cmrp.jpg"
+	}
+	)		
 }
 
