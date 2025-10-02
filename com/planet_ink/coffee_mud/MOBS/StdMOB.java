@@ -142,6 +142,7 @@ public class StdMOB implements MOB
 	protected volatile List<Ability>		racialAffects		= null;
 	protected volatile List<Ability>		clanAffects			= null;
 	protected SHashtable<String, FData>		factions			= new SHashtable<String, FData>(1);
+	protected STreeSet<String>				tags				= null;
 	protected volatile WeakReference<Item>	possWieldedItem		= null;
 	protected volatile WeakReference<Item>	possHeldItem		= null;
 
@@ -4425,6 +4426,47 @@ public class StdMOB implements MOB
 	}
 
 	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
+	}
+
+	@Override
 	public void addItem(final Item item)
 	{
 		if((item != null) && (!item.amDestroyed()))
@@ -5651,7 +5693,10 @@ public class StdMOB implements MOB
 	{
 		final Tattoo T = findTattoo(of);
 		if(T != null)
-			 return tattoos.remove(T);
+		{
+			//CMLib.map().delObjectTag(T.getTattooName(), this);
+			return tattoos.remove(T);
+		}
 		return false;
 	}
 
@@ -5663,6 +5708,7 @@ public class StdMOB implements MOB
 		|| (of.getTattooName().length() == 0)
 		|| findTattoo(of.getTattooName()) != null)
 			return;
+		//CMLib.map().addObjectTag(of.getTattooName(), this);
 		tattoos.addElement(of);
 	}
 
@@ -5676,6 +5722,7 @@ public class StdMOB implements MOB
 		final Tattoo tat = findTattoo(of.getTattooName());
 		if(tat == null)
 			return;
+		//CMLib.map().delObjectTag(of.getTattooName(), this);
 		tattoos.remove(tat);
 	}
 

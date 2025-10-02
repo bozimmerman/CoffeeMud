@@ -72,6 +72,7 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	protected SLinkedList<Area>			parents			= new SLinkedList<Area>();
 	protected STreeMap<String,String>	blurbFlags		= new STreeMap<String,String>();
 	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
+	protected STreeSet<String>			tags			= null;
 
 	@Override
 	public void initializeClass()
@@ -436,6 +437,47 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	@Override
 	public void setArchivePath(final String pathFile)
 	{
+	}
+
+	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
 	}
 
 	@Override

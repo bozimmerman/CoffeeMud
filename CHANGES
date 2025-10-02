@@ -47,6 +47,7 @@
  46. GMCP now supports exit open/locked status
  47. Prop_LimitedEquip will now also act as Limited Get if flagged as such.
  48. Scriptable: FOR-NEXT can now loop over lists and MQL query object.
+ 49. Most objects can be TAGged for enhanced zapper-masking, MQL querying, and checking in scripts.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

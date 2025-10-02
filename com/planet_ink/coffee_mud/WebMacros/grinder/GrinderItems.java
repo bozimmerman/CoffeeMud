@@ -78,7 +78,7 @@ public class GrinderItems
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
 		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP,
-		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER,POWLEVEL
+		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER,POWLEVEL,TAGS
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -242,6 +242,15 @@ public class GrinderItems
 					I.setRawLogicalAnd(old.equals("on"));
 				break;
 			case ISTRAPPED: // is trapped
+				break;
+			case TAGS: // tags
+				{
+					final List<String> V=CMParms.parseSemicolons(old,true);
+					for(final Enumeration<String> e=I.tags();e.hasMoreElements();)
+						I.delTag(e.nextElement());
+					for(final String tatt : V)
+						I.addTag(tatt);
+				}
 				break;
 			case READABLESPELLS: // readable spells
 				if(((I instanceof SpellHolder))

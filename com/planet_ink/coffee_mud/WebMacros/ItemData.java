@@ -954,6 +954,16 @@ public class ItemData extends StdWebMacro
 							str.append(">"+InstrumentType.values()[r].name());
 						}
 						break;
+					case TAGS: // tgs
+						if(firstTime)
+						{
+							old="";
+							for(final Enumeration<String> e=M.tags();e.hasMoreElements();)
+								str.append(e.nextElement()).append(";");
+						}
+						else
+							str.append(old);
+						break;
 					case ISAMMO: // is ammunition
 						if(I instanceof Ammunition)
 							return "true";

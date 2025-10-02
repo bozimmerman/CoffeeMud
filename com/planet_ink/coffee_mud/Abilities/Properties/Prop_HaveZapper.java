@@ -390,6 +390,8 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 							break;
 						case TATTOO:
 						case _TATTOO:
+						case TAG:
+						case _TAG:
 						case _FACTION:
 						case FACTION:
 							lvlAdj -= 9;

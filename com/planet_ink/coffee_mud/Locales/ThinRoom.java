@@ -108,7 +108,6 @@ public class ThinRoom implements Room
 		return Tickable.STATUS_NOT;
 	}
 
-
 	protected String	roomID	= "";
 	protected Area		myArea	= null;
 	protected Exit[]	exits	= sexits;
@@ -932,6 +931,29 @@ public class ThinRoom implements Room
 	public int numBehaviors()
 	{
 		return 0;
+	}
+
+	@Override
+	public void addTag(final String tag)
+	{
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		return false;
 	}
 
 	private static final Enumeration<Behavior> emptyBehaviors = new EmptyEnumeration<Behavior>();

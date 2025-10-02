@@ -58,6 +58,18 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
+	public static void editTags(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final CMObject o)
+	{
+		if(parms.containsKey("TAGS") && (o instanceof Taggable) && (httpReq.isUrlParameter("TAGS")))
+		{
+			final Taggable T=(Taggable)o;
+			for (final Enumeration<String> t = T.tags(); t.hasMoreElements();)
+				T.delTag(t.nextElement());
+			for(final String tag : CMParms.parseSemicolons(httpReq.getUrlParameter("TAGS"), true))
+				T.addTag(tag);
+		}
+	}
+
 	public static String editRoom(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final MOB whom, Room R)
 	{
 		if(R==null)
@@ -115,6 +127,8 @@ public class GrinderRooms
 			if(name.length()>250)
 				return "The name you entered is too long.";
 			R.setDisplayText(name);
+
+			editTags(httpReq,parms,R);
 
 			// description
 			String desc=CMStrings.fixMudCRLF(httpReq.getUrlParameter("DESCRIPTION"));

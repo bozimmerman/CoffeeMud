@@ -78,7 +78,8 @@ public interface GenericBuilder extends CMLibrary
 		DAMAGE,
 		ATTACK,
 		READABLETEXT,
-		IMG
+		IMG,
+		TAGS
 		;
 		private static String[] CODES=null;
 
@@ -125,7 +126,8 @@ public interface GenericBuilder extends CMLibrary
 		EXPS,
 		IMG,
 		FACTIONS,
-		VARMONEY
+		VARMONEY,
+		TAGS
 		;
 		private static String[] CODES=null;
 

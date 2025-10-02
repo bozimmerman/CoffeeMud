@@ -127,6 +127,17 @@ public class Spell_AlterSubstance extends Spell
 		super.unInvoke();
 	}
 
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.source().isMine(affected)))
+		||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		||(msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+			unInvoke();
+		return super.okMessage(host,msg);
+	}
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{

@@ -705,6 +705,28 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
+	public void addTag(final String tag)
+	{
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+	}
+
+	@Override
+	public Enumeration<String> tags()
+	{
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		return false;
+	}
+
+	@Override
 	public void addNonUninvokableEffect(final Ability to)
 	{
 	}

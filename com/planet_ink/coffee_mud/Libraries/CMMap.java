@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -76,12 +77,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	};
 
-	public Map<Integer,List<WeakReference<MsgListener>>>
-								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
-	public Map<String,SLinkedList<LocatedPair>>
-								scriptHostMap			= new STreeMap<String,SLinkedList<LocatedPair>>();
+	public Map<Integer, List<Reference<MsgListener>>>	globalHandlers	= new SHashtable<Integer, List<Reference<MsgListener>>>();
+	public Map<String, List<LocatedPair>>				scriptHostMap	= new STreeMap<String, List<LocatedPair>>();
+	public Map<String, List<Taggable>>					taggedMap		= new STreeMap<String, List<Taggable>>(String.CASE_INSENSITIVE_ORDER);
 
-	private static class LocatedPairImpl implements LocatedPair
+	private static class LocatedPairImpl implements LocatedPair, CMObject
 	{
 		final WeakReference<Room> roomW;
 		final WeakReference<PhysicalAgent> objW;
@@ -102,6 +102,47 @@ public class CMMap extends StdLibrary implements WorldMap
 		public PhysicalAgent obj()
 		{
 			return objW.get();
+		}
+
+		@Override
+		public int compareTo(final CMObject o)
+		{
+			return name().compareTo(o.name());
+		}
+
+		@Override
+		public String ID()
+		{
+			final PhysicalAgent obj=objW.get();
+			if(obj != null)
+				return obj.ID();
+			return "";
+		}
+
+		@Override
+		public String name()
+		{
+			final PhysicalAgent obj=objW.get();
+			if(obj != null)
+				return obj.Name();
+			return "";
+		}
+
+		@Override
+		public CMObject newInstance()
+		{
+			return this; // can't make new ones of these
+		}
+
+		@Override
+		public CMObject copyOf()
+		{
+			return this; // can't copy these
+		}
+
+		@Override
+		public void initializeClass()
+		{
 		}
 	}
 
@@ -393,15 +434,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(E==null)
 			return;
-		List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+		List<Reference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
 		if(V==null)
 		{
-			V=new SLinkedList<WeakReference<MsgListener>>();
+			V=new SLinkedList<Reference<MsgListener>>();
 			globalHandlers.put(Integer.valueOf(category),V);
 		}
 		synchronized(V)
 		{
-			for (final WeakReference<MsgListener> W : V)
+			for (final Reference<MsgListener> W : V)
 			{
 				if(W.get()==E)
 					return;
@@ -413,12 +454,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public void delGlobalHandler(final MsgListener E, final int category)
 	{
-		final List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+		final List<Reference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
 		if((E==null)||(V==null))
 			return;
 		synchronized(V)
 		{
-			for (final WeakReference<MsgListener> W : V)
+			for (final Reference<MsgListener> W : V)
 			{
 				if(W.get()==E)
 					V.remove(W);
@@ -520,7 +561,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean sendGlobalMessage(final MOB host, final int category, final CMMsg msg)
 	{
-		final List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+		final List<Reference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
 		if(V==null)
 			return true;
 		synchronized(V)
@@ -529,7 +570,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				MsgListener O=null;
 				Environmental E=null;
-				for(final WeakReference<MsgListener> W : V)
+				for(final Reference<MsgListener> W : V)
 				{
 					O=W.get();
 					if(O instanceof Environmental)
@@ -553,7 +594,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					else
 						V.remove(W);
 				}
-				for(final WeakReference<MsgListener> W : V)
+				for(final Reference<MsgListener> W : V)
 				{
 					O=W.get();
 					if(O !=null)
@@ -2073,7 +2114,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				area = room.getArea();
 			if(area == null)
 				area =getStartArea(AE);
-			delScriptHost(area, AE);
+			if(area != null)
+				delScriptHost(area.Name(), AE);
 		}
 	}
 
@@ -2107,21 +2149,25 @@ public class CMMap extends StdLibrary implements WorldMap
 				area = room.getArea();
 			if(area == null)
 				area = getStartArea(AE);
-			if(o instanceof MOB)
+			if(area != null)
 			{
-				if(!((MOB)o).isPlayer())
+				final String hostKey = area.Name();
+				if(o instanceof MOB)
 				{
-					addScriptHost(area, room, AE);
-					for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
-						addScriptHost(area, room, i.nextElement());
+					if(!((MOB)o).isPlayer())
+					{
+						addScriptHost(hostKey, room, AE);
+						for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+							addScriptHost(hostKey, room, i.nextElement());
+					}
 				}
+				else
+					addScriptHost(hostKey, room, AE);
 			}
-			else
-				addScriptHost(area, room, AE);
 		}
 	}
 
-	protected void cleanScriptHosts(final SLinkedList<LocatedPair> hosts, final PhysicalAgent oneToDel, final boolean fullCleaning)
+	protected void cleanScriptHosts(final List<LocatedPair> hosts, final PhysicalAgent oneToDel, final boolean fullCleaning)
 	{
 		PhysicalAgent PA;
 		for (final LocatedPair W : hosts)
@@ -2159,14 +2205,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	protected boolean isAScriptHost(final Area area, final PhysicalAgent host)
+	protected boolean isAScriptHost(final String hostKey, final PhysicalAgent host)
 	{
-		if(area == null)
+		if(hostKey == null)
 			return false;
-		return isAScriptHost(scriptHostMap.get(area.Name()), host);
+		return isAScriptHost(scriptHostMap.get(hostKey), host);
 	}
 
-	protected boolean isAScriptHost(final SLinkedList<LocatedPair> hosts, final PhysicalAgent host)
+	protected boolean isAScriptHost(final List<LocatedPair> hosts, final PhysicalAgent host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0))
 			return false;
@@ -2178,35 +2224,35 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	protected final Object getScriptHostSemaphore(final Area area)
+	protected final Object getScriptHostSemaphore(final String hostKey)
 	{
 		final Object semaphore;
-		if(SCRIPT_HOST_SEMAPHORES.containsKey(area.Name()))
-			semaphore=SCRIPT_HOST_SEMAPHORES.get(area.Name());
+		if(SCRIPT_HOST_SEMAPHORES.containsKey(hostKey))
+			semaphore=SCRIPT_HOST_SEMAPHORES.get(hostKey);
 		else
 		{
 			synchronized(SCRIPT_HOST_SEMAPHORES)
 			{
 				semaphore=new Object();
-				SCRIPT_HOST_SEMAPHORES.put(area.Name(), semaphore);
+				SCRIPT_HOST_SEMAPHORES.put(hostKey, semaphore);
 			}
 		}
 		return semaphore;
 	}
 
-	protected void addScriptHost(final Area area, final Room room, final PhysicalAgent host)
+	protected void addScriptHost(final String hostKey, final Room room, final PhysicalAgent host)
 	{
-		if((area==null) || (host == null))
+		if((hostKey==null) || (host == null))
 			return;
-		if(!isAQualifyingScriptHost(host))
+		if(!isAQualifyingScriptHost(host)) // filters by actually having a script
 			return;
-		synchronized(getScriptHostSemaphore(area))
+		synchronized(getScriptHostSemaphore(hostKey))
 		{
-			SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
+			List<LocatedPair> hosts = scriptHostMap.get(hostKey);
 			if(hosts == null)
 			{
 				hosts=new SLinkedList<LocatedPair>();
-				scriptHostMap.put(area.Name(), hosts);
+				scriptHostMap.put(hostKey, hosts);
 			}
 			else
 			{
@@ -2218,26 +2264,26 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected void delScriptHost(Area area, final PhysicalAgent oneToDel)
+	protected void delScriptHost(String hostKey, final PhysicalAgent oneToDel)
 	{
 		if(oneToDel == null)
 			return;
-		if(area == null)
+		if(hostKey == null)
 		{
 			for(final Area A : areasList)
 			{
-				if(isAScriptHost(A,oneToDel))
+				if(isAScriptHost(A.Name(),oneToDel))
 				{
-					area = A;
+					hostKey = A.Name();
 					break;
 				}
 			}
 		}
-		if(area == null)
+		if(hostKey == null)
 			return;
-		synchronized(getScriptHostSemaphore(area))
+		synchronized(getScriptHostSemaphore(hostKey))
 		{
-			final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
+			final List<LocatedPair> hosts = scriptHostMap.get(hostKey);
 			if(hosts==null)
 				return;
 			cleanScriptHosts(hosts, oneToDel, false);
@@ -2256,7 +2302,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		else
 		{
-			final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
+			final List<LocatedPair> hosts = scriptHostMap.get(area.Name());
 			if(hosts==null)
 				return EmptyEnumeration.INSTANCE;
 			V.add(hosts);
@@ -2282,6 +2328,83 @@ public class CMMap extends StdLibrary implements WorldMap
 				return W;
 			}
 		};
+	}
+
+	@Override
+	public void addObjectTag(final String tag, final Taggable obj)
+	{
+		if((obj==null)||(tag==null))
+			return;
+		final List<Taggable> objs;
+		synchronized(taggedMap)
+		{
+			if(taggedMap.containsKey(tag))
+				objs = taggedMap.get(tag);
+			else
+			{
+				objs = new WeakCMArrayList<Taggable>();
+				taggedMap.put(tag, objs);
+			}
+		}
+		synchronized (objs)
+		{
+			if (objs.contains(obj))
+				return;
+			objs.add(obj);
+		}
+	}
+
+	@Override
+	public void delObjectTag(final String tag, final Taggable obj)
+	{
+		if((obj==null)||(tag==null))
+			return;
+		final List<Taggable> objs;
+		synchronized (taggedMap)
+		{
+			objs = taggedMap.get(tag);
+		}
+		if(objs == null)
+			return;
+		synchronized (objs)
+		{
+			objs.remove(obj);
+			// dont clear empty ones, just let it be
+		}
+	}
+
+	@Override
+	public boolean isTaggedObject(final String tag, final Taggable obj)
+	{
+		if((obj==null)||(tag==null))
+			return false;
+		final List<Taggable> objs;
+		synchronized (taggedMap)
+		{
+			objs = taggedMap.get(tag);
+		}
+		if(objs == null)
+			return false;
+		synchronized (objs)
+		{
+			return objs.contains(obj);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Enumeration<Taggable> getTaggedObjects(final String tag)
+	{
+		if (tag == null)
+			return EmptyEnumeration.INSTANCE;
+		final List<Taggable> objs;
+		synchronized (taggedMap)
+		{
+			objs = taggedMap.get(tag);
+		}
+		if(objs == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<Taggable>(objs.iterator());
 	}
 
 	@Override
@@ -2571,8 +2694,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 
 		setThreadStatus(serviceClient,"cleaning scripts");
-		for(final String areaKey : scriptHostMap.keySet())
-			cleanScriptHosts(scriptHostMap.get(areaKey), null, true);
+		for(final String key : scriptHostMap.keySet())
+			cleanScriptHosts(scriptHostMap.get(key), null, true);
 
 		final long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
 		setThreadStatus(serviceClient,"checking");
@@ -2595,11 +2718,11 @@ public class CMMap extends StdLibrary implements WorldMap
 					&&(mob.lastTickedDateTime()<lastDateTime))
 					{
 						final boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
-						final boolean isDead=mob.amDead();
-						final Room startR=mob.getStartRoom();
-						final String wasFrom=(startR!=null)?startR.roomID():"NULL";
 						if(!ticked)
 						{
+							final boolean isDead=mob.amDead();
+							final Room startR=mob.getStartRoom();
+							final String wasFrom=(startR!=null)?startR.roomID():"NULL";
 							if(!mob.isPlayer())
 							{
 								if(ticked)

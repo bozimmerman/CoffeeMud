@@ -2503,10 +2503,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(vchrs.charAt(t+replLen+1)=='$')
 					vchrs.replace(t+replLen+1, vchrs.length(), varify(ctx,vchrs.substring(t+replLen+1, vchrs.length())));
-				if(vchrs.substring(t+replLen).startsWith(".LENGTH#"))
+				final String vrest = vchrs.substring(t+replLen);
+				if(vrest.startsWith(".LENGTH#"))
 				{
 					middle=""+CMParms.parse(middle).size();
 					replLen += 8;
+				}
+				else
+				if(vrest.startsWith(".DECOMMA#"))
+				{
+					middle=""+CMParms.combineQuoted(CMParms.parseCommas(middle,false),0);
+					replLen += 9;
+				}
+				else
+				if(vrest.startsWith(".DESEMICOLON#"))
+				{
+					middle=""+CMParms.combineQuoted(CMParms.parseSemicolons(middle,false),0);
+					replLen += 13;
 				}
 				else
 				if((t+replLen<vchrs.length()-1)
@@ -5468,6 +5481,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						returnable=false;
 					break;
 				}
+				case 118: // hastag
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(ctx,tt[t+1]);
+					final Environmental E=getArgumentMOB(arg1,ctx);
+					if(arg2.length()==0)
+					{
+						logError(ctx,"HASTATTOO","Syntax",CMParms.combine(tt,t));
+						break;
+					}
+					else
+					if((E!=null)&&(E instanceof Taggable))
+						returnable=((Taggable)E).hasTag(arg2);
+					else
+						returnable=false;
+					break;
+				}
 				case 109: // hastattootime
 				{
 					if(tlen==1)
@@ -7662,6 +7694,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 118: // hastag
+			{
+				final String arg1=CMParms.cleanBit(funcParms);
+				final Environmental E=getArgumentMOB(arg1,ctx);
+				if((E!=null)&&(E instanceof Taggable))
+					results.append(CMParms.combineQuoted(new XArrayList<String>(((Taggable)E).tags()), 0));
+				break;
+			}
 			case 109: // hastattootime
 			{
 				final String arg1=CMParms.getCleanBit(funcParms,0);
@@ -9207,7 +9247,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final JScriptEvent scope = new JScriptEvent(this,ctx);
 						cx.initStandardObjects(scope);
-						final String[] names = { "host", "source", "target", "monster", "item", "item1", "item2", "message" ,"getVar", "setVar", "toJavaString", "getCMType", "objs"};
+						final String[] names = {
+							"host",
+							"source",
+							"target",
+							"monster",
+							"item",
+							"item1",
+							"item2",
+							"message",
+							"objs",
+							"getVar",
+							"setVar",
+							"toJavaString",
+							"getCMType"
+						};
 						scope.defineFunctionProperties(names, JScriptEvent.class,
 													   ScriptableObject.DONTENUM);
 						cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);

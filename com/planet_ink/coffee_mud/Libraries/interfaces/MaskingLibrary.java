@@ -528,7 +528,9 @@ public interface MaskingLibrary extends CMLibrary
 		_PARENTAREA,
 		PARENTAREA,
 		_DOMAIN,
-		DOMAIN
+		DOMAIN,
+		_TAG("-TAGS"),
+		TAG("+TAGS"),
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)

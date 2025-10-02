@@ -539,6 +539,8 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("DIRECTION1") && (A instanceof SpaceObject))
 					str.append(((SpaceObject)A).direction().zd());
 
+				str.append(RoomData.getTags(A,httpReq,parms));
+
 				if(parms.containsKey("SPEED") && (A instanceof SpaceObject))
 					str.append(((SpaceObject)A).speed());
 

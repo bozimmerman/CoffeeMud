@@ -156,9 +156,11 @@ public class Thief_Runecasting extends ThiefSkill
 						case ALIGNMENT:
 						case FACTION:
 						case TATTOO:
+						case TAG:
 						case _ALIGNMENT:
 						case _FACTION:
 						case _TATTOO:
+						case _TAG:
 							return false;
 						case IF:
 						case NPC:

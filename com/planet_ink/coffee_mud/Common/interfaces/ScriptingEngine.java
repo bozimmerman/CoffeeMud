@@ -599,7 +599,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"QUESTAREA", // 114
 		"EXPERTISE", // 115
 		"ROOMPC", // 116
-		"AREAPC" //117
+		"AREAPC", //117
+		"HASTAG" //118
 	};
 
 	/** String list of all valid mobprog commands */
@@ -763,6 +764,11 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 			}
 			else
 				this.tmp = tmp;
+		}
+
+		public MPContext(final MPContext old)
+		{
+			this(old.scripted, old.monster, old.source, old.target, old.primaryItem, old.secondaryItem, old.msg, old.tmp);
 		}
 
 		public MPContext push(final SubScript script)

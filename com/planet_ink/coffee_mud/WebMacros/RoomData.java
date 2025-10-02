@@ -49,7 +49,14 @@ public class RoomData extends StdWebMacro
 	{
 		return "RoomData";
 	}
-	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
+	static final String[][] STAT_CHECKS={
+		{"DISPLAY","NAME"},
+		{"CLASS","CLASSES"},
+		{"DESCRIPTION","DESCRIPTION"},
+		{"XSIZE","XGRID"},
+		{"YSIZE","XGRID"},
+		{"IMAGE","IMAGE"}
+	};
 
 
 	private static class RoomStuff
@@ -685,6 +692,18 @@ public class RoomData extends StdWebMacro
 		return mergeReq;
 	}
 
+	public static String getTags(final CMObject o, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
+	{
+		if((parms.containsKey("TAGS"))&&(o instanceof Taggable))
+		{
+			String tags=httpReq.getUrlParameter("TAGS");
+			if(tags==null)
+				tags = CMParms.toSemicolonListString(((Taggable)o).tags());
+			return tags;
+		}
+		return "";
+	}
+
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -784,6 +803,7 @@ public class RoomData extends StdWebMacro
 					name=R.rawImage();
 				str.append(name);
 			}
+			str.append(getTags(R,httpReq,parms));
 			if(parms.containsKey("DESCRIPTION"))
 			{
 				String desc=httpReq.getUrlParameter("DESCRIPTION");

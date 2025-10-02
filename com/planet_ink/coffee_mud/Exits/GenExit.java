@@ -301,7 +301,7 @@ public class GenExit extends StdExit implements Modifiable
 		"CLASS", "NAME", "DISPLAY", "DESCRIPTION", "DOOR",
 		"LEVEL", "ABILITY", "ISREADABLE", "AFFBEHAV", "DISPOSITION",
 		"READABLETEXT", "HASADOOR", "DEFCLOSED", "HASALOCK", "DEFLOCKED",
-		"KEYNAME", "RESETTIME","CLOSEWORD","OPENWORD","CLOSEDTEXT"
+		"KEYNAME", "RESETTIME","CLOSEWORD","OPENWORD","CLOSEDTEXT", "TAGS"
 	};
 
 	@Override
@@ -372,6 +372,8 @@ public class GenExit extends StdExit implements Modifiable
 			return this.openWord();
 		case 19:
 			return this.closedText();
+		case 20:
+			return CMParms.toListString(this.tags()); // tags
 		}
 		return "";
 	}
@@ -458,6 +460,12 @@ public class GenExit extends StdExit implements Modifiable
 			break;
 		case 19:
 			this.closedText = val;
+			break;
+		case 20:
+			for (final Enumeration<String> e = tags(); e.hasMoreElements();)
+				delTag(e.nextElement());
+			for (final String s : CMParms.parseCommas(val, true))
+				addTag(s);
 			break;
 		}
 	}

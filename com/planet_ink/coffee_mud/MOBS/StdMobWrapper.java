@@ -172,6 +172,34 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 		return "";
 	}
 
+
+	@Override
+	public void addTag(final String tag)
+	{
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if(mob != null)
+			return mob.tags();
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if(mob != null)
+			return mob.hasTag(tag);
+		return false;
+	}
+
 	@Override
 	public String miscTextFormat()
 	{

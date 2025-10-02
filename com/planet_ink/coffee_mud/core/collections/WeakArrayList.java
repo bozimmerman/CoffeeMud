@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,10 +22,10 @@ import java.util.concurrent.atomic.AtomicLong;
 */
 public class WeakArrayList<T> extends AbstractList<T>
 {
-	private final ArrayList<WeakReference<T>>	list;
-	private final AtomicBoolean					needsCleaning	= new AtomicBoolean(false);
-	private final AtomicLong					lastCleaning	= new AtomicLong(0);
-	private static final long					cleanIntervalMs	= 30000;
+	protected final ArrayList<WeakReference<T>>	list;
+	protected final AtomicBoolean				needsCleaning	= new AtomicBoolean(false);
+	protected final AtomicLong					lastCleaning	= new AtomicLong(0);
+	protected static final long					cleanIntervalMs	= 30000;
 
 	public WeakArrayList()
 	{
@@ -103,7 +104,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 		return list.get(index).get();
 	}
 
-	private synchronized void cleanReleased()
+	protected synchronized void cleanReleased()
 	{
 		for (final Iterator<WeakReference<T>> it = list.iterator(); it.hasNext();)
 		{
@@ -116,16 +117,18 @@ public class WeakArrayList<T> extends AbstractList<T>
 	}
 
 	@SuppressWarnings("rawtypes")
-	private final static Filterer WeakFilterer = new Filterer()
+	protected final static Filterer WeakFilterer = new Filterer()
 	{
 		@Override
 		public boolean passesFilter(final Object obj)
 		{
+			if(obj instanceof Reference)
+				return ((Reference)obj).get() != null;
 			return (obj != null);
 		}
 	};
 
-	private final Converter<WeakReference<T>, T> WeakConverter = new Converter<WeakReference<T>, T>()
+	protected final Converter<WeakReference<T>, T> WeakConverter = new Converter<WeakReference<T>, T>()
 	{
 		@Override
 		public T convert(final WeakReference<T> obj)

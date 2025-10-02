@@ -164,6 +164,14 @@
 @endif@
 @endif@
 <TR>
+	<TD><FONT COLOR="#66FFFF"><B>Tags:</B></FONT>
+	</TD>
+    <TD COLSPAN=2>
+    <INPUT TYPE=TEXT NAME=TAGS SIZE=30 VALUE="@RoomData?TAGS@">
+    <FONT SIZE=-1><I>Semicolon delimited</I>
+    </TD>
+</TR>
+<TR>
 	<TD><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
 	<BR><A target=HELP HREF="/behaviors.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
     <TD COLSPAN=2>

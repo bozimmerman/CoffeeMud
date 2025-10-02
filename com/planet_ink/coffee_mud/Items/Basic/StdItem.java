@@ -73,6 +73,7 @@ public class StdItem implements Item
 	protected SVector<Ability>			affects		= null;
 	protected SVector<Behavior>			behaviors	= null;
 	protected SVector<ScriptingEngine>	scripts		= null;
+	protected STreeSet<String>			tags		= null;
 
 	@SuppressWarnings("rawtypes")
 	protected ApplyAffectPhyStats		affectPhyStats	= new ApplyAffectPhyStats(this);
@@ -264,6 +265,9 @@ public class StdItem implements Item
 		affects=null;
 		behaviors=null;
 		scripts=null;
+		tags=null;
+		for (final Enumeration<String> t = I.tags(); t.hasMoreElements();)
+			addTag(t.nextElement());
 		for(final Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
 		{
 			final Behavior B=e.nextElement();
@@ -1868,6 +1872,47 @@ public class StdItem implements Item
 			mob.delItem(this);
 		}
 		recoverPhyStats();
+	}
+
+	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
 	}
 
 	@Override

@@ -17,6 +17,8 @@ import java.util.*;
 */
 public class ReadOnlyList<K> implements List<K>
 {
+	public static final ReadOnlyList<?> empty=new ReadOnlyList<Object>(new ArrayList<Object>(0));
+
 	private final List<K> list;
 
 	public ReadOnlyList(final List<K> l)

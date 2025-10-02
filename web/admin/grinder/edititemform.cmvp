@@ -1134,6 +1134,14 @@
 @endif@
 @endif@
 @endif@
+<TR>
+	<TD><FONT COLOR="#66FFFF"><B>Tags:</B></FONT>
+	</TD>
+    <TD COLSPAN=2>
+    <INPUT TYPE=TEXT NAME=TAGS SIZE=30 VALUE="@ItemData?TAGS@">
+    <FONT SIZE=-1><I>Semicolon delimited</I>
+    </TD>
+</TR>
 @if?CheckReqParm?<ITEM=CATALOG-@
 	<TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this item later to set Auto-Spawn information.</B></FONT></TD></TR>
 	@if?ItemData?ISGENERIC@

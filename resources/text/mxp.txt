@@ -55,6 +55,8 @@
 <!ELEMENT MaxMana EMPTY FLAG="Set maxmana">
 <!ELEMENT Move FLAG="Set move">
 <!ELEMENT MaxMove EMPTY FLAG="Set maxmove">
+<!ELEMENT Point EMPTY FLAG="Set point">
+<!ELEMENT MaxPoint EMPTY FLAG="Set maxpoint">
 <VERSION>
 <SUPPORT image send gauge font b image.url sound.u frame dest destination>
 </P>

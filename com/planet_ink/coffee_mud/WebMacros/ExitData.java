@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderExits.ExitDataField;
 
 import java.util.*;
 
@@ -41,14 +42,6 @@ public class ExitData extends StdWebMacro
 		return "ExitData";
 	}
 
-	private static final String[] okparms={
-		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-		"LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-		"CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-		"HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-		"READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-		"ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-		"MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
 	public static String dispositions(final Physical P,
 									  final boolean firstTime,
 									  final HTTPRequest httpReq,
@@ -111,20 +104,20 @@ public class ExitData extends StdWebMacro
 			return "@break@";
 
 		final StringBuffer str=new StringBuffer("");
-		for(int o=0;o<okparms.length;o++)
-		if(parms.containsKey(okparms[o]))
+		for(final ExitDataField field : ExitDataField.values())
+		if(parms.containsKey(field.name()))
 		{
-			String old=httpReq.getUrlParameter(okparms[o]);
+			String old=httpReq.getUrlParameter(field.name());
 			if(old==null)
 				old="";
-			switch(o)
+			switch(field)
 			{
-			case 0: // name
+			case NAME: // name
 				if(firstTime)
 					old=X.Name();
 				str.append(old);
 				break;
-			case 1: // classes
+			case CLASSES: // classes
 				{
 					if(firstTime)
 						old=CMClass.classID(X);
@@ -147,26 +140,26 @@ public class ExitData extends StdWebMacro
 					}
 				}
 				break;
-			case 2: // displaytext
+			case DISPLAYTEXT: // displaytext
 				if(firstTime)
 					old=X.displayText();
 				str.append(old);
 				break;
-			case 3: // description
+			case DESCRIPTION: // description
 				if(firstTime)
 					old=X.description();
 				str.append(old);
 				break;
-			case 4: // level
+			case LEVEL: // level
 				if(firstTime)
 					old=""+X.basePhyStats().level();
 				str.append(old);
 				break;
-			case 5: // levelrestricted;
+			case LEVELRESTRICTED: // levelrestricted;
 				break;
-			case 6: // istrapped
+			case ISTRAPPED: // istrapped
 				break;
-			case 7: // hasadoor
+			case HASADOOR: // hasadoor
 				if(firstTime)
 					old=X.hasADoor()?"checked":"";
 				else
@@ -174,12 +167,12 @@ public class ExitData extends StdWebMacro
 					old="checked";
 				str.append(old);
 				break;
-			case 8: // closedtext
+			case CLOSEDTEXT: // closedtext
 				if(firstTime)
 					old=X.closedText();
 				str.append(old);
 				break;
-			case 9: // defaultsclosed
+			case DEFAULTSCLOSED: // defaultsclosed
 				if(firstTime)
 					old=X.defaultsClosed()?"checked":"";
 				else
@@ -187,21 +180,21 @@ public class ExitData extends StdWebMacro
 					old="checked";
 				str.append(old);
 				break;
-			case 10: // openword
+			case OPENWORD: // openword
 				if(firstTime)
 					old=X.openWord();
 				if(old.length()==0)
 					old="open";
 				str.append(old);
 				break;
-			case 11: // closeword
+			case CLOSEWORD: // closeword
 				if(firstTime)
 					old=X.closeWord();
 				if(old.length()==0)
 					old="close";
 				str.append(old);
 				break;
-			case 12: // hasalock
+			case HASALOCK: // hasalock
 				if(firstTime)
 					old=X.hasALock()?"checked":"";
 				else
@@ -209,7 +202,7 @@ public class ExitData extends StdWebMacro
 					old="checked";
 				str.append(old);
 				break;
-			case 13: // defaultslocked
+			case DEFAULTSLOCKED: // defaultslocked
 				if(firstTime)
 					old=X.defaultsLocked()?"checked":"";
 				else
@@ -217,12 +210,12 @@ public class ExitData extends StdWebMacro
 					old="checked";
 				str.append(old);
 				break;
-			case 14: // keyname
+			case KEYNAME: // keyname
 				if(firstTime)
 					old=X.keyName();
 				str.append(old);
 				break;
-			case 15: // isreadable
+			case ISREADABLE: // isreadable
 				if(firstTime)
 					old=X.isReadable()?"checked":"";
 				else
@@ -230,48 +223,58 @@ public class ExitData extends StdWebMacro
 					old="checked";
 				str.append(old);
 				break;
-			case 16: // readable text
+			case READABLETEXT: // readable text
 				if(firstTime)
 					old=X.readableText();
 				str.append(old);
 				break;
-			case 17: // isclassrestricuted
+			case ISCLASSRESTRICTED: // isclassrestricuted
 				break;
-			case 18: // restrictedclasses
+			case RESTRICTEDCLASSES: // restrictedclasses
 				break;
-			case 19: // isalignmentrestricuted
+			case ISALIGNMENTRESTRICTED: // isalignmentrestricuted
 				break;
-			case 20: // restrictedalignments
+			case RESTRICTEDALIGNMENTS: // restrictedalignments
 				break;
-			case 21: // misc text
+			case MISCTEXT: // misc text
 				if(firstTime)
 					old=X.text();
 				str.append(old);
 				break;
-			case 22: // is generic
+			case ISGENERIC: // is generic
 				if(X.isGeneric())
 					return "true";
 				return "false";
-			case 23: // door name
+			case TAGS: // tags
+				if(firstTime)
+				{
+					old="";
+					for(final Enumeration<String> e=X.tags();e.hasMoreElements();)
+						str.append(e.nextElement()).append(";");
+				}
+				else
+					str.append(old);
+				break;
+			case DOORNAME: // door name
 				if(firstTime)
 					old=X.doorName();
 				if(old.length()==0)
 					old="door";
 				str.append(old);
 				break;
-			case 24: // image
+			case IMAGE: // image
 				if(firstTime)
 					old=X.rawImage();
 				str.append(old);
 				break;
-			case 25: // open ticks
+			case OPENTICKS: // open ticks
 				if((firstTime)||(old.length()==0))
 					old=Integer.toString(X.openDelayTicks());
 				str.append(old);
 				break;
 			}
 			if(firstTime)
-				httpReq.addFakeUrlParameter(okparms[o],old.equals("checked")?"on":old);
+				httpReq.addFakeUrlParameter(field.name(),old.equals("checked")?"on":old);
 
 		}
 		str.append(ExitData.dispositions(X,firstTime,httpReq,parms));

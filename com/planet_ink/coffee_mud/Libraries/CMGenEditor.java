@@ -4315,8 +4315,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		String behave="NO";
-		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
+		String tattName="NO";
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(tattName.length()>0))
 		{
 			String tattoostr="";
 			for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
@@ -4328,10 +4328,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("@x1. Tattoos: '@x2'.",""+showNumber,tattoostr));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
-			behave=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
-			if(behave.length()>0)
+			tattName=mob.session().prompt(L("Enter a tattoo to add/remove\n\r:"),"");
+			if(tattName.length()>0)
 			{
-				final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(behave);
+				final Tattoo pT=((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattName);
 				final Tattoo T=M.findTattoo(pT.getTattooName());
 				if(T!=null)
 				{
@@ -4340,8 +4340,45 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
-					mob.tell(L("@x1 added.",behave.trim().toUpperCase()));
+					mob.tell(L("@x1 added.",tattName.trim().toUpperCase()));
 					M.addTattoo(pT);
+				}
+			}
+			else
+				mob.tell(L("(no change)"));
+		}
+	}
+
+	protected void genTags(final MOB mob, final Taggable M, final int showNumber, final int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		String tagName="NO";
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(tagName.length()>0))
+		{
+			String tagList="";
+			for(final Enumeration<String> e=M.tags();e.hasMoreElements();)
+				tagList+=e.nextElement()+", ";
+			if(tagList.length()>0)
+				tagList=tagList.substring(0,tagList.length()-2);
+			if((tagList.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
+				tagList=tagList.substring(0,60)+"...";
+			mob.tell(L("@x1. Tags: '@x2'.",""+showNumber,tagList));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+			tagName=mob.session().prompt(L("Enter a tag to add/remove\n\r:"),"");
+			if(tagName.length()>0)
+			{
+				if(M.hasTag(tagName))
+				{
+					mob.tell(L("@x1 removed.",tagName));
+					M.delTag(tagName);
+				}
+				else
+				{
+					mob.tell(L("@x1 added.",tagName));
+					M.addTag(tagName);
 				}
 			}
 			else
@@ -10704,6 +10741,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof LandTitle)
 				genTitleRoom(mob,(LandTitle)me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -10770,6 +10808,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -10897,6 +10936,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Perfume)
 				((Perfume)me).setSmellList(prompt(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,L("Smells list (; delimited)")));
 			genImage(mob,me,++showNumber,showFlag);
+			if(me instanceof Taggable)
+				genTags(mob,(Taggable)me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if((me instanceof PhysicalAgent) && (((PhysicalAgent)me).numScripts()>0))
@@ -11004,6 +11045,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11141,6 +11183,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			//if(me instanceof PrivateProperty)
 			//	me.setStat("OWNER",prompt(mob,((PrivateProperty)me).getOwnerName(),++showNumber,showFlag,CMStrings.capitalizeAndLower("Property Owner")));
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11252,6 +11295,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11338,6 +11382,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11404,6 +11449,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11465,6 +11511,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 			if(me.numScripts()>0)
@@ -11603,6 +11650,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me.numScripts()>0)
 				genScripts(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 
@@ -11741,6 +11789,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genEmail(mob,me.playerStats(),++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			genTags(mob,me,++showNumber,showFlag);
 			genScripts(mob,me,++showNumber,showFlag);
 			if(me.playerStats()!=null)
 			{
@@ -12195,6 +12244,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(M.numScripts()>0)
 				genScripts(mob,M,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
+			if(me instanceof Taggable)
+				genTags(mob,(Taggable)me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
 
@@ -12261,6 +12312,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			//genClimateType(mob,R,++showNumber,showFlag);
 			//R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
+			genTags(mob,R,++showNumber,showFlag);
 			genBehaviors(mob,R,++showNumber,showFlag);
 			genAffects(mob,R,++showNumber,showFlag);
 			for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
@@ -12517,6 +12569,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genBehaviors(mob,myArea,++showNumber,showFlag);
 			genAffects(mob,myArea,++showNumber,showFlag);
 			genImage(mob,myArea,++showNumber,showFlag);
+			genTags(mob,myArea,++showNumber,showFlag);
 			for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
 				myArea.setStat(myArea.getStatCodes()[x],prompt(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
 			if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))

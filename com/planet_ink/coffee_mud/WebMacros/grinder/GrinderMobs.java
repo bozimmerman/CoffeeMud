@@ -63,7 +63,7 @@ public class GrinderMobs
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES,
 		CURRENCIES, CURRENCY,CATARATE,CATALIVE,CATAMASK,CATACAP,
-		ISBROKER, BROCHAIN, MAXLISTINGS, COMMISSIONPCT
+		ISBROKER, BROCHAIN, MAXLISTINGS, COMMISSIONPCT, TAGS
 		;
 
 		public boolean isGenField;
@@ -737,6 +737,15 @@ public class GrinderMobs
 							M.delTattoo(e.nextElement());
 						for(final String tatt : V)
 							M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
+					}
+					break;
+				case TAGS: // tags
+					{
+						final List<String> V=CMParms.parseSemicolons(old,true);
+						for(final Enumeration<String> e=M.tags();e.hasMoreElements();)
+							M.delTag(e.nextElement());
+						for(final String tatt : V)
+							M.addTag(tatt);
 					}
 					break;
 				case EXPERTISES: // expertises

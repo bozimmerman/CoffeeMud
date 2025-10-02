@@ -877,6 +877,55 @@ public interface WorldMap extends CMLibrary
 	 */
 	public Map<String,TimeClock> getClockCache();
 
+	/**
+	 * Returns a list of all objects tagged with the given tag.
+	 *
+	 * @see WorldMap#addObjectTag(String, Taggable)
+	 * @see WorldMap#delObjectTag(String, Taggable)
+	 * @see WorldMap#isTaggedObject(String, Taggable)
+	 *
+	 * @param tag the tag to search for
+	 * @return the list of tagged objects
+	 */
+	public Enumeration<Taggable> getTaggedObjects(final String tag);
+
+	/**
+	 * Returns whether the given object is tagged with the given tag.
+	 *
+	 * @see WorldMap#addObjectTag(String, Taggable)
+	 * @see WorldMap#delObjectTag(String, Taggable)
+	 * @see WorldMap#getTaggedObjects(String)
+	 *
+	 * @param tag the tag to search for
+	 * @param obj the object to check for the tag
+	 * @return true if the object has the tag, false otherwise
+	 */
+	public boolean isTaggedObject(final String tag, final Taggable obj);
+
+	/**
+	 * Removes the given tag from the given object.
+	 *
+	 * @see WorldMap#addObjectTag(String, Taggable)
+	 * @see WorldMap#isTaggedObject(String, Taggable)
+	 * @see WorldMap#getTaggedObjects(String)
+	 *
+	 * @param tag the tag to remove
+	 * @param obj the object to remove the tag from
+	 */
+	public void delObjectTag(final String tag, final Taggable obj);
+
+	/**
+	 * Adds the given tag to the given object.
+	 *
+	 * @see WorldMap#delObjectTag(String, Taggable)
+	 * @see WorldMap#isTaggedObject(String, Taggable)
+	 * @see WorldMap#getTaggedObjects(String)
+	 *
+	 * @param tag the tag to add
+	 * @param obj the object to add the tag to
+	 */
+	public void addObjectTag(final String tag, final Taggable obj);
+
 	/* ***********************************************************************/
 	/* *							 MISC		 							 */
 	/* ***********************************************************************/
@@ -955,7 +1004,7 @@ public interface WorldMap extends CMLibrary
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public static interface LocatedPair
+	public static interface LocatedPair extends CMObject
 	{
 		/**
 		 * The room the Thing was found in.

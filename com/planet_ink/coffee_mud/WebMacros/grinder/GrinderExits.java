@@ -34,16 +34,17 @@ import java.util.*;
 */
 public class GrinderExits
 {
-	private static final String[] okparms=
+	public enum ExitDataField
 	{
-	  "NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
-	  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
-	  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
-	  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
-	  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-	  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"
-	};
+		NAME,CLASSES,DISPLAYTEXT,DESCRIPTION,
+		LEVEL,LEVELRESTRICTED,ISTRAPPED,HASADOOR,
+		CLOSEDTEXT,DEFAULTSCLOSED,OPENWORD,CLOSEWORD,
+		HASALOCK,DEFAULTSLOCKED,KEYNAME,ISREADABLE,
+		READABLETEXT,ISCLASSRESTRICTED,RESTRICTEDCLASSES,
+		ISALIGNMENTRESTRICTED,RESTRICTEDALIGNMENTS,
+		MISCTEXT,ISGENERIC,DOORNAME,IMAGE,OPENTICKS,
+		TAGS
+	}
 
 	public static String dispositions(final Physical P, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
@@ -74,9 +75,9 @@ public class GrinderExits
 			if(X==null)
 				return "No Exit to edit?!";
 
-			for(int o=0;o<okparms.length;o++)
+			for (final ExitDataField field : ExitDataField.values())
 			{
-				String parm=okparms[o];
+				String parm=field.name();
 				boolean generic=true;
 				if(parm.startsWith(" "))
 				{
@@ -88,86 +89,95 @@ public class GrinderExits
 					old="";
 				if(X.isGeneric()||(!generic))
 				{
-					switch(o)
+					switch(field)
 					{
-					case 0: // name
+					case NAME: // name
 						X.setName(old);
 						break;
-					case 1: // classes
+					case CLASSES: // classes
 						break;
-					case 2: // displaytext
+					case DISPLAYTEXT: // displaytext
 						X.setDisplayText(old);
 						break;
-					case 3: // description
+					case DESCRIPTION: // description
 						X.setDescription(old);
 						break;
-					case 4: // level
+					case LEVEL: // level
 						X.basePhyStats().setLevel(CMath.s_int(old));
 						break;
-					case 5: // levelrestricted;
+					case LEVELRESTRICTED: // levelrestricted;
 						break;
-					case 6: // istrapped
+					case ISTRAPPED: // istrapped
 						break;
-					case 7: // hasadoor
+					case HASADOOR: // hasadoor
 						if(old.equals("on"))
 							X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),X.hasALock(),X.hasALock(),X.defaultsLocked());
 						else
 							X.setDoorsNLocks(false,true,false,false,false,false);
 						break;
-					case 8: // closedtext
+					case CLOSEDTEXT: // closedtext
 						X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old);
 						break;
-					case 9: // defaultsclosed
+					case DEFAULTSCLOSED: // defaultsclosed
 						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),old.equals("on"),X.hasALock(),X.isLocked(),X.defaultsLocked());
 						break;
-					case 10: // openword
+					case OPENWORD: // openword
 						X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());
 						break;
-					case 11: // closeword
+					case CLOSEWORD: // closeword
 						X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());
 						break;
-					case 12: // hasalock
+					case HASALOCK: // hasalock
 						if(old.equals("on"))
 							X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),true,X.defaultsLocked(),X.defaultsLocked());
 						else
 							X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),false,false,false);
 						break;
-					case 13: // defaultslocked
+					case DEFAULTSLOCKED: // defaultslocked
 						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),X.hasALock(),X.isLocked(),old.equals("on"));
 						break;
-					case 14: // keyname
+					case KEYNAME: // keyname
 						if(X.hasALock()&&(old.length()>0))
 							X.setKeyName(old);
 						break;
-					case 15: // isreadable
+					case ISREADABLE: // isreadable
 						X.setReadable(old.equals("on"));
 						break;
-					case 16: // readable text
+					case READABLETEXT: // readable text
 						if(X.isReadable())
 							X.setReadableText(CMStrings.fixMudCRLF(old));
 						break;
-					case 17: // isclassrestricuted
+					case ISCLASSRESTRICTED: // isclassrestricuted
 						break;
-					case 18: // restrictedclasses
+					case RESTRICTEDCLASSES: // restrictedclasses
 						break;
-					case 19: // isalignmentrestricuted
+					case ISALIGNMENTRESTRICTED: // isalignmentrestricuted
 						break;
-					case 20: // restrictedalignments
+					case RESTRICTEDALIGNMENTS: // restrictedalignments
 						break;
-					case 21: // misctext
+					case MISCTEXT: // misctext
 						if(!X.isGeneric())
 							X.setMiscText(old);
 						break;
-					case 22: // is generic
+					case ISGENERIC: // is generic
 						break;
-					case 23: // door name
+					case DOORNAME: // door name
 						X.setExitParams(old,X.closeWord(),X.openWord(),X.closedText());
 						break;
-					case 24: // image
+					case IMAGE: // image
 						X.setImage(old);
 						break;
-					case 25:
+					case OPENTICKS:
 						X.setOpenDelayTicks(CMath.s_int(old));
+						break;
+					case TAGS: // tags
+						{
+							final List<String> V=CMParms.parseSemicolons(old,true);
+							for(final Enumeration<String> e=X.tags();e.hasMoreElements();)
+								X.delTag(e.nextElement());
+							for(final String tatt : V)
+								X.addTag(tatt);
+						}
 						break;
 					}
 				}

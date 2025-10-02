@@ -57,6 +57,7 @@ public class StdExit implements Exit
 	protected CList<Behavior>		behaviors	= null;
 	protected CList<ScriptingEngine>scripts		= null;
 	protected Exit					me			= this;
+	protected STreeSet<String>		tags		= null;
 
 	protected ApplyAffectPhyStats<Ability>	affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
 
@@ -334,6 +335,9 @@ public class StdExit implements Exit
 		affects=null;
 		behaviors=null;
 		scripts=null;
+		tags=null;
+		for (final Enumeration<String> t = X.tags(); t.hasMoreElements();)
+			addTag(t.nextElement());
 		Ability A;
 		for(final Enumeration<Ability> a=X.effects();a.hasMoreElements();)
 		{
@@ -967,6 +971,48 @@ public class StdExit implements Exit
 		if(link.length()>0)
 			miscText="{#"+link+"#}"+miscText;
 	}
+
+	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
+	}
+
 
 	@Override
 	public void addNonUninvokableEffect(final Ability to)

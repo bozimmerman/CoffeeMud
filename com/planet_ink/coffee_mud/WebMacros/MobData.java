@@ -1160,7 +1160,7 @@ public class MobData extends StdWebMacro
 					final String deityName=httpReq.getUrlParameter("NEWMOBNAME");
 					if((M!=null)&&(deityName!=null))
 					{
-						M.setDisplayText(CMStrings.replaceAll(((Deity)M).displayText(),CMStrings.capitalizeFirstLetter(M.name()),deityName));
+						M.setDisplayText(CMStrings.replaceAll(M.displayText(),CMStrings.capitalizeFirstLetter(M.name()),deityName));
 						((Deity)M).setClericRitual(CMStrings.replaceAll(((Deity)M).getClericRitual(),M.name(),deityName));
 						((Deity)M).setWorshipRitual(CMStrings.replaceAll(((Deity)M).getWorshipRitual(),M.name(),deityName));
 					}
@@ -1689,6 +1689,16 @@ public class MobData extends StdWebMacro
 						old="";
 						for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 							str.append(e.nextElement().toString()).append(";");
+					}
+					else
+						str.append(old);
+					break;
+				case TAGS: // tags
+					if(firstTime)
+					{
+						old="";
+						for(final Enumeration<String> e=M.tags();e.hasMoreElements();)
+							str.append(e.nextElement()).append(";");
 					}
 					else
 						str.append(old);

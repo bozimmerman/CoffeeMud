@@ -1403,6 +1403,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						v=appendCommaList(buf,V,v,"-");
 					}
 					break;
+				case _TAG: // -Tag
+					{
+						if(multipleQuals(V,v,"+"))
+							buf.append(skipFirstWord?L("The the following tags: "):L("Requires the following tags: "));
+						else
+							buf.append(skipFirstWord?L("The the following tag: "):L("Requires the following tag: "));
+						v=appendCommaList(buf,V,v,"+");
+					}
+					break;
+				case TAG: // +Tag
+					{
+						if(multipleQuals(V,v,"-"))
+							buf.append(L("Disallows the following tags: "));
+						else
+							buf.append(L("Disallows the following tag: "));
+						v=appendCommaList(buf,V,v,"-");
+					}
+					break;
 				case _WEAPONAMMO: // -WeaponAmmo
 					{
 						buf.append(skipFirstWord?L("The weapons that use: "):L("Requires weapons that use: "));
@@ -4541,6 +4559,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case _TATTOO: // -Tattoos
+				case _TAG: // -Tag
 				case _MOOD: // -Mood
 				case _ACCCHIEVE: // -Accchieves
 				case _EXPERTISE: // -expertise
@@ -4773,6 +4792,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
 				case TATTOO: // +Tattoos
+				case TAG: // +Tag
 				case MOOD: // +Mood
 				case ACCCHIEVE: // +Accchieves
 				case EXPERTISE: // +expertise
@@ -6250,6 +6270,30 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							if((mob.findTattoo((String)o)!=null)
 							||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
+								return false;
+						}
+					}
+					break;
+				case _TAG: // -tag
+					{
+						boolean found=false;
+						for(final Object o : entry.parms())
+						{
+							if(mob.hasTag((String)o))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case TAG: // +tag
+					{
+						for(final Object o : entry.parms())
+						{
+							if(mob.hasTag((String)o))
 								return false;
 						}
 					}
@@ -9491,6 +9535,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _CLANLEVEL: // -clanlevel
 				case _TATTOO: // -tattoo
 				case TATTOO: // +tattoo
+				case _TAG: // -tag
+				case TAG: // +tag
 				case _MOOD: // -mood
 				case MOOD: // +mood
 				case _OFFICER: // -officer

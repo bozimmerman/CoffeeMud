@@ -77,6 +77,7 @@ public class StdRoom implements Room
 	protected SVector<ScriptingEngine>	scripts				= null;
 	protected SVector<MOB>				inhabitants			= new SVector<MOB>(1);
 	protected SVector<Item>				contents			= new SVector<Item>(1);
+	protected STreeSet<String>			tags				= null;
 	protected Room						me					= this;
 
 	@SuppressWarnings("rawtypes")
@@ -260,6 +261,9 @@ public class StdRoom implements Room
 		affects=null;
 		behaviors=null;
 		scripts=null;
+		tags=null;
+		for (final Enumeration<String> t = R.tags(); t.hasMoreElements();)
+			addTag(t.nextElement());
 		exits=new Exit[exits.length];
 		Arrays.fill(exits, null);
 		doors=new Room[doors.length];
@@ -2054,6 +2058,47 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
+	}
+
+	@Override
 	public MOB fetchRandomInhabitant()
 	{
 		if(inhabitants.isEmpty())
@@ -2083,7 +2128,6 @@ public class StdRoom implements Room
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public List<MOB> fetchInhabitants(final String inhabitantID)
 	{
@@ -3190,7 +3234,10 @@ public class StdRoom implements Room
 		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
 	}
 
-	protected static final String[]	STDCODES	= { "CLASS", "DISPLAY", "DESCRIPTION", "TEXT", "AFFBEHAV", "IMAGE", "CLIMATE", "ATMOSPHERE", "ROOMID" };
+	protected static final String[]	STDCODES	= {
+			"CLASS", "DISPLAY", "DESCRIPTION", "TEXT", "AFFBEHAV",
+			"IMAGE", "CLIMATE", "ATMOSPHERE", "ROOMID", "TAGS"
+	};
 	private static String[]			codes		= null;
 
 	@Override
@@ -3235,6 +3282,8 @@ public class StdRoom implements Room
 			return "" + getAtmosphereCode();
 		case 8:
 			return ""+CMLib.map().getExtendedRoomID(this);
+		case 9:
+			return CMParms.toListString(tags());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -3280,6 +3329,12 @@ public class StdRoom implements Room
 		}
 		case 8:
 			this.setRoomID(val);
+			break;
+		case 9:
+			for (final Enumeration<String> e = tags(); e.hasMoreElements();)
+				delTag(e.nextElement());
+			for (final String s : CMParms.parseCommas(val, true))
+				addTag(s);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

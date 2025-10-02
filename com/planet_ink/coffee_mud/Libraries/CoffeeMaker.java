@@ -5200,7 +5200,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("PROP",getPhyStatsStr(((Physical)E).basePhyStats())));
 		text.append(getExtraEnvironmentalXML(E));
 		if(E instanceof PhysicalAgent)
-			text.append(getGenScriptsXML((PhysicalAgent)E,false));
+		{
+			final PhysicalAgent pA = (PhysicalAgent)E;
+			text.append(getGenScriptsXML(pA,false));
+			if(pA.tags().hasMoreElements())
+			{
+				text.append("<TAGS>");
+				for(final Enumeration<String> e=pA.tags(); e.hasMoreElements();)
+				{
+					final String tag = e.nextElement();
+					text.append(CMLib.xml().convertXMLtoTag("TAG", tag));
+				}
+				text.append("</TAGS>");
+			}
+		}
 		return text.toString();
 	}
 
@@ -5279,14 +5292,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected void setEnvProperties(final Environmental E, final List<XMLTag> buf)
 	{
-		E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
-		E.setDescription(CMLib.xml().getValFromPieces(buf,"DESC"));
-		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
+		final XMLLibrary xmlLib = CMLib.xml();
+		E.setName(xmlLib.getValFromPieces(buf,"NAME"));
+		E.setDescription(xmlLib.getValFromPieces(buf,"DESC"));
+		E.setDisplayText(xmlLib.getValFromPieces(buf,"DISP"));
 		if(E instanceof Physical)
-			setPhyStats(((Physical)E).basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+			setPhyStats(((Physical)E).basePhyStats(),xmlLib.getValFromPieces(buf,"PROP"));
 		unpackExtraEnvironmentalXML(E,buf);
 		if(E instanceof PhysicalAgent)
-			unpackGenScriptsXML((PhysicalAgent)E,buf,false);
+		{
+			final PhysicalAgent pA = (PhysicalAgent)E;
+			unpackGenScriptsXML(pA,buf,false);
+			final XMLTag tag = xmlLib.getPieceFromPieces(buf, "TAGS");
+			if(tag != null)
+			{
+				for (final Enumeration<String> e = pA.tags(); e.hasMoreElements();)
+					pA.delTag(e.nextElement());
+				for (final XMLTag tagTag : tag.contents())
+					pA.addTag(tagTag.value());
+			}
+		}
 	}
 
 	protected String identifier(final Environmental E, Environmental parent)
@@ -5521,6 +5546,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return I.readableText(); // readabletext
 		case IMG:
 			return I.rawImage(); // img
+		case TAGS:
+			return CMParms.toListString(I.tags()); // tags
 		// case 23:
 		//	return getGenScripts(I,false);
 		}
@@ -5653,6 +5680,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case IMG:
 			I.setImage(val);
 			break; // img
+		case TAGS:
+			for (final Enumeration<String> e = I.tags(); e.hasMoreElements();)
+				I.delTag(e.nextElement());
+			for (final String tag : CMParms.parseCommas(val, true))
+				I.addTag(tag);
+			break; // tags
 		/*
 		case 23:
 		{
@@ -5776,6 +5809,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return M.getFactionListing(); // factions
 		case VARMONEY:
 			return "" + M.getMoneyVariation(); // varmoney
+		case TAGS:
+			return CMParms.toListString(M.tags()); // tags
 		// case 23:
 		//	return getGenScripts(M,false);
 		}
@@ -5920,6 +5955,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case IMG:
 			M.setImage(val);
 			break; // img
+		case TAGS:
+			for (final Enumeration<String> e = M.tags(); e.hasMoreElements();)
+				M.delTag(e.nextElement());
+			for (final String tag : CMParms.parseCommas(val, true))
+				M.addTag(tag);
+			break; // tags
 		case FACTIONS:
 		{
 			final List<String> V10 = CMParms.parseSemicolons(val, true); // factions

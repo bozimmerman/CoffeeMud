@@ -25,12 +25,13 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 *
 * A Physical object capable of initiating an effect on the world.
 * (Even if it is normally passive)
+*
 * @see com.planet_ink.coffee_mud.core.interfaces.Physical
 * @see com.planet_ink.coffee_mud.core.interfaces.Behavable
 *
 * @author Bo Zimmerman
 *
 */
-public interface PhysicalAgent extends Physical, Behavable
+public interface PhysicalAgent extends Physical, Behavable, Taggable
 {
 }

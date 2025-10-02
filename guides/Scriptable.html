@@ -3232,16 +3232,16 @@ designated in the quest script. Counting starts at 1.</td>
 followed by
 a period and a
 literal number to designate a particular word inside a string of many
-words. For instance, if $o evaluates to "a magic wand", then $o.1 would
-evalulate to "magic". If $l evaluated to "orc bob hassan", then $l.2
+words. The words are space delimited, and optionally double-quoted.&nbsp; For instance, if $o evaluates to&nbsp;<span style="font-weight: bold;">a magic wand</span>, then $o.1 would
+evalulate to&nbsp;<span style="font-weight: bold;">magic</span>. If $l evaluated to&nbsp;<span style="font-weight: bold;">orc "bob bob" hassan</span>, then $l.2
 would give "hassan". This can be very useful when used with the $l or
 $L codes to iterate through the contents of a room. This syntax can
 also be used to generate substrings by following the number with two
 periods "..". For instance, of $l evaluates to "orc bob hassan", then
-$l.1.. would give "bob hassan". &nbsp;You can also add .LENGTH# to
+$l.1.. would give "bob bob hassan". &nbsp;</p><p>Add .LENGTH# to
 the
 end of a variable to return the number of words contained inside the
-string.</p>
+string.</p><p>Add .DECOMMA# to the end of a variable to convert a comma-delimited list to the optional quoted words as described above.</p><p>Add .DESEMICOLON# to the end of a variable to convert a seicolon-delimited list to the optional quoted words as described above.</p>
 
       <p><a name="percentCode"> The last code we are
 going to
@@ -4549,7 +4549,7 @@ case.
 
       <p>Usages:</p>
 
-      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /><br />for $[digit] IN list, of, things, $n<br />[commands]<br />...<br />next<br /><br /><br />for $[digit] IN SELECT: * FROM ...<br />[commands]<br />...<br />next<br /><br /></pre>
+      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /><br />for $[digit] IN list "of many" things $n<br />[commands]<br />...<br />next<br /><br /><br />for $[digit] IN SELECT: * FROM ...<br />[commands]<br />...<br />next<br /><br /></pre>
 
       <p>The
 for command is the
@@ -4564,7 +4564,7 @@ the temporary variable used $[digit] will be the value of the current
 digit, the current word from the list, or the current object from the
 MQL query. Here's some examples:</p>
 
-      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /><br />for $0 in orange, blue, green<br /> mpecho My new favorite color is $0<br />next<br /><br />for $0 in SELECT: * from mobs<br /> mpecho I have done this $0 times!<br />next      <br /></pre>
+      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /><br />for $0 in orange "light blue" green<br /> mpecho My new favorite color is $0<br />next<br /><br />for $0 in SELECT: * from mobs<br /> mpecho I have done this $0 times!<br />next      <br /></pre>
 
       <p>If you execute the above
 script, you will see the mpecho

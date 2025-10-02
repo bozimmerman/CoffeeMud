@@ -94,7 +94,6 @@ public class Prayer_Disenchant extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.basePhyStats().setAbility(0);
 				CMLib.utensils().disenchantItem(target);
 				target.recoverPhyStats();
 				mob.location().recoverRoomStats();

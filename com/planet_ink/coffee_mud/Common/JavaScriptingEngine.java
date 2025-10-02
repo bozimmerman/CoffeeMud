@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.mozilla.javascript.ClassShutter;
@@ -22,6 +23,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.Quest;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptLn;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
 import com.planet_ink.coffee_mud.Exits.interfaces.Exit;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
@@ -30,6 +33,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.collections.SHashSet;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.CMStrings;
@@ -60,6 +64,8 @@ limitations under the License.
 public class JavaScriptingEngine extends ScriptableObject implements ScriptingEngine, Cloneable
 {
 	private static final long serialVersionUID = 7866852658454850983L;
+	public static final Set<String> methH=new SHashSet<String>(ScriptingEngine.methods); // JavaScripting includes MOBPROG support built-in
+	public static final Set<String> funcH=new SHashSet<String>(ScriptingEngine.funcs); // JavaScripting includes MOBPROG support built-in
 
 	protected String		script				= "";
 	protected Quest			quest				= null;
@@ -70,6 +76,7 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 	protected boolean		approvedScripts		= false;
 	protected AtomicBoolean jsscopeLock			= new AtomicBoolean(false);
 
+	protected final ScriptingEngine mpEngine	= (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 	protected transient MPContext	mpContext	= null;
 	protected volatile MOB			factoryMOB	= null;
 
@@ -125,7 +132,19 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 		"quest",
 		"setupState",
 		"toJavaString",
-		"getCMType"
+		"getCMType",
+		"mob",
+		"getVar",
+		"setVar",
+		"host",
+		"source",
+		"target",
+		"monster",
+		"item",
+		"item1",
+		"item2",
+		"message",
+		"objs",
 	};
 
 	private Scriptable getScope()
@@ -235,6 +254,8 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 	@Override
 	public Object get(final String name, final Scriptable start)
 	{
+		if (super.has(name, start))
+			return super.get(name, start);
 		if (name.startsWith("$") && (name.length()<4))
 		{
 			final Object value = this.getArgumentItem(name, mpContext);
@@ -244,6 +265,195 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 				if (cx != null)
 					return Context.javaToJS(value, this);
 			}
+		}
+		if (super.has(name, start) || (mpContext==null))
+			return super.get(name, start);
+		if (methH.contains(name)
+		|| funcH.contains(name)
+		|| (name.endsWith("$")&&(funcH.contains(name.substring(0,name.length()-1)))))
+		{
+			return new Function()
+			{
+				@Override
+				public Object call(final Context cx, final Scriptable scope, final Scriptable thisObj, final Object[] args)
+				{
+					if(methH.contains(name))
+					{
+						final StringBuilder strb=new StringBuilder(name);
+						if(args.length==1)
+							strb.append(" ").append(String.valueOf(args[0]));
+						else
+						for(int i=0;i<args.length;i++)
+							if(i==args.length-1)
+								strb.append(" ").append(String.valueOf(args[i]));
+							else
+								strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+						final SubScript DV=new SubScript()
+						{
+							private static final long serialVersionUID = -8744471025411719363L;
+							@Override
+							public int getTriggerCode()
+							{
+								return 0;
+							}
+
+							@Override
+							public String[] getTriggerArgs()
+							{
+								return (size()>0)?get(0).second:null;
+							}
+
+							@Override
+							public String getTriggerLine()
+							{
+								return (size()>0)?get(0).first:"";
+							}
+
+							@Override
+							public String[] getTriggerBits()
+							{
+								return CMParms.getCleanBits(getTriggerLine());
+							}
+
+							@Override
+							public void setFlag(final String flag)
+							{
+							}
+
+							@Override
+							public boolean isFlagSet(final String flag)
+							{
+								return false;
+							}
+
+						};
+						DV.add(new ScriptLn("JS_PROG",null,null));
+						DV.add(new ScriptLn(strb.toString(),null,null));
+						final MPContext ctx = new MPContext(mpContext);
+						return mpEngine.execute(ctx.push(DV));
+					}
+					if(name.endsWith("$"))
+					{
+						final StringBuilder strb=new StringBuilder(name.substring(0,name.length()-1)).append("(");
+						if(args.length==1)
+							strb.append(" ").append(String.valueOf(args[0]));
+						else
+						for(int i=0;i<args.length;i++)
+							if(i==args.length-1)
+								strb.append(" ").append(String.valueOf(args[i]));
+							else
+								strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+						strb.append(" ) ");
+						final MPContext ctx = new MPContext(mpContext);
+						return mpEngine.functify(ctx,strb.toString());
+					}
+					final String[] sargs=new String[args.length+3];
+					sargs[0]=name;
+					sargs[1]="(";
+					for(int i=0;i<args.length;i++)
+						sargs[i+2]=String.valueOf(args[i]);
+					sargs[sargs.length-1]=")";
+					final String[][] eval={sargs};
+					final MPContext ctx = new MPContext(mpContext);
+					return Boolean.valueOf(mpEngine.eval(ctx,eval,0));
+				}
+
+				@Override
+				public void delete(final String arg0)
+				{
+				}
+
+				@Override
+				public void delete(final int arg0)
+				{
+				}
+
+				@Override
+				public Object get(final String arg0, final Scriptable arg1)
+				{
+					return null;
+				}
+
+				@Override
+				public Object get(final int arg0, final Scriptable arg1)
+				{
+					return null;
+				}
+
+				@Override
+				public String getClassName()
+				{
+					return null;
+				}
+
+				@Override
+				public Object getDefaultValue(final Class<?> arg0)
+				{
+					return null;
+				}
+
+				@Override
+				public Object[] getIds()
+				{
+					return null;
+				}
+
+				@Override
+				public Scriptable getParentScope()
+				{
+					return null;
+				}
+
+				@Override
+				public Scriptable getPrototype()
+				{
+					return null;
+				}
+
+				@Override
+				public boolean has(final String arg0, final Scriptable arg1)
+				{
+					return false;
+				}
+
+				@Override
+				public boolean has(final int arg0, final Scriptable arg1)
+				{
+					return false;
+				}
+
+				@Override
+				public boolean hasInstance(final Scriptable arg0)
+				{
+					return false;
+				}
+
+				@Override
+				public void put(final String arg0, final Scriptable arg1, final Object arg2)
+				{
+				}
+
+				@Override
+				public void put(final int arg0, final Scriptable arg1, final Object arg2)
+				{
+				}
+
+				@Override
+				public void setParentScope(final Scriptable arg0)
+				{
+				}
+
+				@Override
+				public void setPrototype(final Scriptable arg0)
+				{
+				}
+
+				@Override
+				public Scriptable construct(final Context arg0, final Scriptable arg1, final Object[] arg2)
+				{
+					return null;
+				}
+			};
 		}
 		return super.get(name, start); // Standard for other props
 	}
@@ -364,7 +574,7 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 		if((defaultQuestName.length()>0)
 		&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
 		{
-			if(this.quest == null)
+			if(this.quest != null)
 				return quest;
 			named = defaultQuestName;
 		}
@@ -382,13 +592,19 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 			if(Q!=null)
 			{
 				if(Q.name().equalsIgnoreCase(named))
-				{
-					if(Q.running())
-						return Q;
-				}
+					break;
+				else
+				if(Q.running())
+					break;
 			}
 		}
-		return CMLib.quests().fetchQuest(named);
+		if(Q == null)
+			Q = CMLib.quests().fetchQuest(named);
+		if((this.quest==null)
+		&&(defaultQuestName.length()>0)
+		&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
+			this.quest=Q;
+		return Q;
 	}
 
 	@Override
@@ -1014,7 +1230,7 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 		final Object myVarValue = get(varName, this);
 		if(myVarValue != Scriptable.NOT_FOUND)
 			return Context.jsToJava(myVarValue, String.class).toString();
-		return null;
+		return mpEngine. getVar(context, variable);
 	}
 
 	@Override
@@ -1022,12 +1238,15 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 	{
 		final String varName = (context.length()>0)?context+"_"+variable:variable;
 		final Object myVarValue = get(varName, this);
-		return (myVarValue != Scriptable.NOT_FOUND);
+		if(myVarValue == Scriptable.NOT_FOUND)
+			return mpEngine.isVar(context, variable);
+		return true;
 	}
 
 	@Override
 	public void setVar(final String context, final String variable, final String value)
 	{
+		mpEngine.setVar(context, variable, value);
 		final String varName = (context.length()>0)?context+"_"+variable:variable;
 		if(value == null)
 			this.delete(varName);
@@ -1166,9 +1385,77 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 		return typ.name().toLowerCase();
 	}
 
+	public MOB mob()
+	{
+		if(this.mpContext != null)
+			return this.mpContext.monster;
+		return null;
+	}
+
 	public Quest quest()
 	{
 		return quest;
+	}
+
+	public Environmental host()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.scripted;
+	}
+
+	public MOB source()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.source;
+	}
+
+	public Environmental target()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.target;
+	}
+
+	public MOB monster()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.monster;
+	}
+
+	public Item item()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.primaryItem;
+	}
+
+	public Item item2()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.secondaryItem;
+	}
+
+	public Item item1()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.primaryItem;
+	}
+
+	public Object[] objs()
+	{
+		if (mpContext == null)
+			return null;
+		return mpContext.tmp;
+	}
+
+	public String message()
+	{
+		return mpContext.msg;
 	}
 
 	public QuestState setupState()

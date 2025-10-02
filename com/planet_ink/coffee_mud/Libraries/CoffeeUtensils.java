@@ -721,7 +721,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		else
 		if((target.phyStats().ability()>0)
-		&&(!(target instanceof Coins)))
+		&&(!(target instanceof Coins))
+		&&(!(target instanceof PackagedItems)))
 		{
 			level=level-(target.basePhyStats().ability()*3);
 			target.basePhyStats().setAbility(0);

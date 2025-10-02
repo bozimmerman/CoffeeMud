@@ -94,7 +94,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		RACES,
 		SHOP,
 		SHOPS,
-		SHOPITEMS
+		SHOPITEMS,
+		TAGGED
 	}
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
@@ -5425,13 +5426,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			from.addAll(doMQLSelectObjs(E, ignoreStats, defPrefix, fromClause[0], piece, defined));
 			return from;
 		}
-		for(final String f : fromClause)
+
+		for(int fi=0;fi<fromClause.length;fi++)
 		{
+			final String f=fromClause[fi];
 			final MQLSpecialFromSet set=(MQLSpecialFromSet)CMath.s_valueOf(MQLSpecialFromSet.class, f);
 			if(set != null)
 			{
 				switch(set)
 				{
+				case TAGGED:
+					if(fi<fromClause.length-1)
+					{
+						from.addAll(new XArrayList<Taggable>(CMLib.map().getTaggedObjects(fromClause[fi + 1])));
+						fi++;
+					}
+					else
+						throw new MQLException("Missing tag value after TAGGED in " + mql);
+					break;
 				case AREA:
 					if(from.size()==0)
 					{

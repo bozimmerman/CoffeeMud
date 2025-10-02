@@ -627,6 +627,34 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	{
 	}
 
+
+	@Override
+	public void addTag(final String tag)
+	{
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (item != null)
+			return item.tags();
+		return EmptyEnumeration.INSTANCE;
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if(item != null)
+			return item.hasTag(tag);
+		return false;
+	}
+
 	@Override
 	public Container container()
 	{

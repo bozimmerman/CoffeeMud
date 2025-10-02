@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -128,6 +129,14 @@ public class JConsole extends StdCommand
 					if(this.input.equals("<") && !addMode[0])
 					{
 						addMode[0]=true;
+						if(session.isInlineAllowed(InProto.GMCP, "Siplet.Input", 0))
+						{
+							final String oldVal = inpBuilder.toString();
+							session.sendInlineCommand(InProto.GMCP,
+									"Siplet.Input", "{\"title\":\"JConsole JavaScript\","
+													+ "\"text\":\""+MiniJSON.toJSONString(oldVal.toString())+"\"}");
+							inpBuilder.setLength(0);
+						}
 						session.prompt(IC[0].reset());
 						return;
 					}
@@ -136,6 +145,14 @@ public class JConsole extends StdCommand
 						addMode[0]=false;
 						this.input=inpBuilder.toString();
 						inpBuilder.setLength(0);
+					}
+					if (addMode[0] && session.isInlineAllowed(InProto.GMCP, "Siplet.Input", 0))
+					{
+						this.input = CMStrings.replaceAll(this.input, "%0D", "\n");
+						this.input += "\n";
+						inpBuilder.setLength(0);
+						inpBuilder.append(this.input);
+						addMode[0]=false;
 					}
 					if(addMode[0])
 						inpBuilder.append(this.input).append("\n");

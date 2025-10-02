@@ -130,9 +130,11 @@ public class Thief_Tasseography extends Thief_Runecasting
 						case ALIGNMENT:
 						case FACTION:
 						case TATTOO:
+						case TAG:
 						case _ALIGNMENT:
 						case _FACTION:
 						case _TATTOO:
+						case _TAG:
 							return true;
 						default:
 							break;

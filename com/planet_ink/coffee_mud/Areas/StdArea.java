@@ -85,6 +85,7 @@ public class StdArea implements Area
 	protected SVector<Behavior>			behaviors		= new SVector<Behavior>(1);
 	protected SVector<String>			subOps			= new SVector<String>(1);
 	protected SVector<ScriptingEngine>	scripts			= new SVector<ScriptingEngine>(1);
+	protected STreeSet<String>			tags			= null;
 	protected Area						me				= this;
 	protected TimeClock					myClock			= null;
 	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
@@ -1406,6 +1407,47 @@ public class StdArea implements Area
 	}
 
 	@Override
+	public void addTag(final String tag)
+	{
+		if(tags == null)
+			tags = new STreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if(!tags.contains(tag))
+		{
+			tags.add(tag);
+			CMLib.map().addObjectTag(tag, this);
+		}
+	}
+
+	@Override
+	public void delTag(final String tag)
+	{
+		if(tags == null)
+			return;
+		if(tags.contains(tag))
+		{
+			tags.remove(tag);
+			CMLib.map().delObjectTag(tag, this);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<String> tags()
+	{
+		if (tags == null)
+			return EmptyEnumeration.INSTANCE;
+		return new IteratorEnumeration<String>(tags.iterator());
+	}
+
+	@Override
+	public boolean hasTag(final String tag)
+	{
+		if (tags == null)
+			return false;
+		return tags.contains(tag);
+	}
+
+	@Override
 	public void addEffect(final Ability to)
 	{
 		if (to == null)
@@ -2655,7 +2697,7 @@ public class StdArea implements Area
 			"CLASS", "CLIMATE", "DESCRIPTION", "TEXT", "THEME", "BLURBS",
 			"PREJUDICE", "BUDGET", "DEVALRATE", "INVRESETRATE", "IGNOREMASK",
 			"PRICEMASKS", "ATMOSPHERE",	"AUTHOR", "NAME", "PLAYERLEVEL", "PASSIVEMINS",
-			"CURRENCY", "AFFBEHAV"
+			"CURRENCY", "AFFBEHAV", "TAGS"
 			};
 	private static String[]			codes			= null;
 
@@ -2721,6 +2763,8 @@ public class StdArea implements Area
 			return this.getRawCurrency();
 		case 18:
 			return CMLib.coffeeMaker().getExtraEnvironmentalXML(this);
+		case 19:
+			return CMParms.toListString(tags());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2821,6 +2865,12 @@ public class StdArea implements Area
 			delAllEffects(true);
 			delAllBehaviors();
 			CMLib.coffeeMaker().unpackExtraEnvironmentalXML(this, CMLib.xml().parseAllXML(val));
+			break;
+		case 19:
+			for (final Enumeration<String> e = tags(); e.hasMoreElements();)
+				delTag(e.nextElement());
+			for (final String s : CMParms.parseCommas(val, true))
+				addTag(s);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
