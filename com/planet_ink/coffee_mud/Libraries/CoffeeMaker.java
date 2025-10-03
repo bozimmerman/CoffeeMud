@@ -342,6 +342,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(xmlLib.convertXMLtoTag("MREJV",""+M.basePhyStats().rejuv()));
 			str.append(((E.isGeneric()?"":xmlLib.convertXMLtoTag("MTEXT",""+M.text()))));
 		}
+		if(E instanceof PhysicalAgent)
+		{
+			final PhysicalAgent pA = (PhysicalAgent)E;
+			str.append(getGenScriptsXML(pA,false));
+			if(pA.tags().hasMoreElements())
+			{
+				str.append("<TAGS>");
+				for(final Enumeration<String> e=pA.tags(); e.hasMoreElements();)
+				{
+					final String tag = e.nextElement();
+					str.append(CMLib.xml().convertXMLtoTag("TAG", tag));
+				}
+				str.append("</TAGS>");
+			}
+		}
 		return str.toString();
 	}
 
@@ -2843,6 +2858,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			M.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
 			if(!M.isGeneric())
 				M.setMiscText(CMLib.xml().getValFromPieces(V,"MTEXT"));
+		}
+		if(E instanceof PhysicalAgent)
+		{
+			final PhysicalAgent pA = (PhysicalAgent)E;
+			final XMLTag tag = CMLib.xml().getPieceFromPieces(V, "TAGS");
+			if(tag != null)
+			{
+				for (final Enumeration<String> e = pA.tags(); e.hasMoreElements();)
+					pA.delTag(e.nextElement());
+				for (final XMLTag tagTag : tag.contents())
+					pA.addTag(tagTag.value());
+			}
 		}
 	}
 

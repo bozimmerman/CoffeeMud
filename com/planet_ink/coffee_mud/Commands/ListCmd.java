@@ -955,6 +955,25 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
+	public StringBuilder taggedObjects(final Session viewerS, final Enumeration<Taggable> t)
+	{
+		final int COL_LEN1=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(25.0,viewerS);
+		final StringBuilder lines=new StringBuilder("^X"+CMStrings.padRight(L("ID"),COL_LEN1)+"|"
+										   +CMStrings.padRight(L("Name"),COL_LEN2)+"|"
+										   +"Location^?^.\n\r");
+		for(;t.hasMoreElements();)
+		{
+			final Taggable T=t.nextElement();
+			lines.append(CMStrings.padRight(T.ID(), COL_LEN1)+" ")
+				.append(CMStrings.padRight(T.name(), COL_LEN2)+" ")
+				.append((T instanceof Environmental)?(CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation((Environmental)T))+" "):"")
+				.append("\n\r");
+		}
+
+		return lines;
+	}
+
 	public StringBuilder roomTypes(final MOB mob, final Enumeration<Room> these, final Room likeRoom, final List<String> commands)
 	{
 		final StringBuilder lines=new StringBuilder("");
@@ -6497,7 +6516,7 @@ public class ListCmd extends StdCommand
 			{
 				final String tag = CMParms.combine(commands, 1);
 				final Enumeration<Taggable> tagged = CMLib.map().getTaggedObjects(tag);
-				s.wraplessPrintln(CMLib.lister().build3ColTable(mob, tagged));
+				s.wraplessPrintln(taggedObjects(mob.session(), tagged).toString());
 			}
 			break;
 		case ALLQUALIFYS:
