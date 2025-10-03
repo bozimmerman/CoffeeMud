@@ -232,7 +232,8 @@ public class Prayer_WaterToWine extends Prayer
 								if (alchiA != null)
 								{
 									alchiA.setInvoker(mob);
-									target.addNonUninvokableEffect(alchiA);
+									target.addEffect(alchiA);
+									alchiA.makeLongLasting();
 									((Drink)I).setLiquidTypeName(L("wine"));
 								}
 							}
@@ -257,7 +258,8 @@ public class Prayer_WaterToWine extends Prayer
 				if (this.myPoison != null)
 				{
 					myPoison.setInvoker(mob);
-					target.addNonUninvokableEffect(myPoison);
+					target.addEffect(myPoison);
+					myPoison.makeLongLasting();
 				}
 				final String oldMaterialName=RawMaterial.Material.findByMask(oldMaterial&RawMaterial.MATERIAL_MASK).desc();
 				String oldName=target.name().toUpperCase();
