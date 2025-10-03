@@ -1951,7 +1951,7 @@ public class DefaultSession implements Session
 		case TELNET_MPCP:
 			{
 				if((suboptionData.length>21)
-				&&CMProps.isState(CMProps.HostState.RUNNING))
+				&&CMProps.isState(CMProps.HostState.RUNNING)) // because proxy clients were too early
 				{
 					final byte[] digest = new byte[20];
 					final ByteBuffer rdr = ByteBuffer.wrap(suboptionData);
