@@ -1950,7 +1950,8 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_MPCP:
 			{
-				if(suboptionData.length>21)
+				if((suboptionData.length>21)
+				&&CMProps.isState(CMProps.HostState.RUNNING))
 				{
 					final byte[] digest = new byte[20];
 					final ByteBuffer rdr = ByteBuffer.wrap(suboptionData);
