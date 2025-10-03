@@ -1756,11 +1756,11 @@ public interface RawMaterial extends Item
 			smells[resourceIndex] = smell;
 			effects[resourceIndex] = abilityID;
 			effectAs[resourceIndex] = null;
-			if(descs[resourceIndex] != null)
+			if((descs[resourceIndex] != null)
+			&&(descLookup.get(descs[resourceIndex]).intValue() == resourceCode))
 				descLookup.remove(descs[resourceIndex]);
 			descs[resourceIndex] = name;
 			descLookup.put(name, Integer.valueOf(resourceCode));
-			//TODO: replace in cache
 			final int[] newRow = { resourceCode, value, frequ, hardness, buoyancy };
 			data[resourceIndex] = newRow;
 		}
