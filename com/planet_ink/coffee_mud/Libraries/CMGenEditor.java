@@ -2122,7 +2122,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genDrinkType(final MOB mob, final LiquidHolder E, final int showNumber, final int showFlag) throws IOException
 	{
-		mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(E.liquidType())));
+		mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,
+				RawMaterial.CODES.NAME(E.liquidType())));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		boolean q=false;

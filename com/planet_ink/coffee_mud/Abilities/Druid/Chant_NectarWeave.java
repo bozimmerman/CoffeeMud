@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_AlterSubstance extends Spell
+public class Chant_NectarWeave extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_AlterSubstance";
+		return "Chant_NectarWeave";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Alter Substance");
+	private final static String localizedName = CMLib.lang().L("Nectarweave");
 
 	@Override
 	public String name()
@@ -75,6 +75,7 @@ public class Spell_AlterSubstance extends Spell
 
 	public String newName="";
 	public int oldMaterial=0;
+	public String oldSubType="";
 	public boolean drinkFlag=false;
 
 	@Override
@@ -110,8 +111,6 @@ public class Spell_AlterSubstance extends Spell
 						final Item I2 = liqItems.get(i);
 						if ((I2 instanceof Drink) && (((Drink) I2).liquidType() == ((Drink) I).liquidType()))
 							((Drink) I2).setLiquidType(oldMaterial);
-						if (I.material() == ((Drink) I).liquidType())
-							I.setMaterial(oldMaterial);
 					}
 				}
 				if(I.material()==((Drink)I).liquidType())
@@ -133,25 +132,17 @@ public class Spell_AlterSubstance extends Spell
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(canBeUninvoked())
-		{
-			if(((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.source().isMine(affected)))
-			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-			||(msg.targetMinor()==CMMsg.TYP_EXPIRE)
-			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-				unInvoke();
-		}
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.source().isMine(affected)))
+		||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		||(msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+			unInvoke();
 		return super.okMessage(host,msg);
 	}
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		String material="";
-		if(commands.size()>0)
-		{
-			material=commands.get(commands.size()-1);
-			commands.remove(material);
-		}
+		String material="honey";
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
@@ -206,7 +197,8 @@ public class Spell_AlterSubstance extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somaticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
+					auto?"":L("^S<S-NAME> chant(s) over <T-NAMESELF> slowly and sweetly.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -224,8 +216,6 @@ public class Spell_AlterSubstance extends Spell
 							if ((I instanceof Drink)
 							&& (((Drink) I).liquidType() == oldMaterial))
 								((Drink) I).setLiquidType(newMaterial);
-							if (I.material() == oldMaterial)
-								I.setMaterial(newMaterial);
 						}
 					}
 					if(target.material()==oldMaterial)
@@ -259,7 +249,7 @@ public class Spell_AlterSubstance extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
+			beneficialWordsFizzle(mob,target,L("^S<S-NAME> chant(s) over <T-NAMESELF>, but the magic sours.^?"));
 
 		// return whether it worked
 		return success;

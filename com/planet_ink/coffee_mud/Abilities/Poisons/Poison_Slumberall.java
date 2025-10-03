@@ -108,6 +108,7 @@ public class Poison_Slumberall extends Poison
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(fallenYet))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}

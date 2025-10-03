@@ -9,6 +9,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -1013,6 +1015,8 @@ public interface RawMaterial extends Item
 		private String[]	effects			= new String[0];
 		private Ability[][]	effectAs		= new Ability[0][];
 
+		private final Map<String,Integer> descLookup		= new TreeMap<String,Integer>(String.CASE_INSENSITIVE_ORDER);
+
 		private PairList<Integer, Double>[]	buckets	= null;
 
 		/**
@@ -1178,9 +1182,10 @@ public interface RawMaterial extends Item
 			if (rsc == null)
 				return -1;
 			final CODES C = c();
-			final int x = CMParms.indexOf(C.descs, rsc);
-			if (x >= 0)
-				return C.allCodes[x];
+			final Integer I = C.descLookup.get(rsc);
+			if ((I!=null)
+			&&(C.descs[I.intValue() & RESOURCE_MASK].equals(rsc)))
+				return I.intValue();
 			return -1;
 		}
 
@@ -1195,9 +1200,9 @@ public interface RawMaterial extends Item
 			if (rsc == null)
 				return -1;
 			final CODES C = c();
-			final int x = CMParms.indexOfIgnoreCase(C.descs, rsc);
-			if (x >= 0)
-				return C.allCodes[x];
+			final Integer I = C.descLookup.get(rsc);
+			if(I!=null)
+				return I.intValue();
 			return -1;
 		}
 
@@ -1663,6 +1668,7 @@ public interface RawMaterial extends Item
 			}
 			descs = Arrays.copyOf(descs, descs.length + 1);
 			descs[descs.length - 1] = name;
+			descLookup.put(name, Integer.valueOf(material));
 
 			smells = Arrays.copyOf(smells, smells.length + 1);
 			smells[smells.length - 1] = smell;

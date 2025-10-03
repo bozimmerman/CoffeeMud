@@ -103,10 +103,10 @@ public class GoatDoe extends Goat implements Drink
 			if(container.owner()!=null)
 			{
 				if(container.owner() instanceof MOB)
-					((MOB)container.owner()).addItem(I);
+					container.owner().addItem(I);
 				else
 				if(container.owner() instanceof Room)
-					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
+					container.owner().addItem(I,ItemPossessor.Expire.Resource);
 			}
 		}
 	}
@@ -128,6 +128,16 @@ public class GoatDoe extends Goat implements Drink
 	{
 		return Integer.MAX_VALUE - 1000;
 	}
+
+	@Override
+	public String liquidTypeName()
+	{
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{}
 
 	@Override
 	public int liquidType()

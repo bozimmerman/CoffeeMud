@@ -32,7 +32,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Poison_Clarity extends Poison {
+public class Poison_Clarity extends Poison
+{
 	@Override
 	public String ID()
 	{
@@ -119,6 +120,7 @@ public class Poison_Clarity extends Poison {
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+(int)Math.round(rank));
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+(10*(int)Math.round(rank)));
 	}

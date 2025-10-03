@@ -417,6 +417,7 @@ public class GenPoison extends Poison implements SpellHolder
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		super.affectPhyStats(affected,affectableStats);
 		getAdjusterA().affectPhyStats(affected, affectableStats);
 		for(final Ability A : getOtherEffects())
 			A.affectPhyStats(affected, affectableStats);

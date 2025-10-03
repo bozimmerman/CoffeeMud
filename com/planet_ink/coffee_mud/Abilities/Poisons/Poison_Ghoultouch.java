@@ -112,6 +112,7 @@ public class Poison_Ghoultouch extends Poison
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
@@ -119,6 +120,7 @@ public class Poison_Ghoultouch extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);

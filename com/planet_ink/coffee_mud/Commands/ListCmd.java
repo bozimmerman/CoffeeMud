@@ -4817,6 +4817,7 @@ public class ListCmd extends StdCommand
 		MSGMASKS("MSGMASKS", new SecFlag[] {SecFlag.LISTADMIN}),
 		HELP("HELP", new SecFlag[] {SecFlag.LISTADMIN}),
 		LIST("LIST", new SecFlag[] {SecFlag.LISTADMIN}),
+		TAGS("TAGS", new SecFlag[] {SecFlag.LISTADMIN}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -6488,6 +6489,16 @@ public class ListCmd extends StdCommand
 			break;
 		case ENABLEFLAG:
 			s.println("\n\r^xEnable Settings: ^?^.^N\n\r" + CMParms.toListString(new XVector<Object>(CMSecurity.getEnablesEnum())) + "\n\r");
+			break;
+		case TAGS:
+			if ((commands.size() < 2) || (CMParms.combine(commands, 1).equalsIgnoreCase("ALL")))
+				s.wraplessPrintln(CMLib.lister().build3ColTable(mob, CMLib.map().getRegisteredTags()));
+			else
+			{
+				final String tag = CMParms.combine(commands, 1);
+				final Enumeration<Taggable> tagged = CMLib.map().getTaggedObjects(tag);
+				s.wraplessPrintln(CMLib.lister().build3ColTable(mob, tagged));
+			}
 			break;
 		case ALLQUALIFYS:
 			s.wraplessPrintln(listAllQualifies(mob.session(), commands).toString());

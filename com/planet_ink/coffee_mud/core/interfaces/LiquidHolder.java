@@ -75,6 +75,27 @@ public interface LiquidHolder extends Environmental
 	public void setLiquidType(int newLiquidType);
 
 	/**
+	 * The displayable name of the liquid type in this container.
+	 * Usually derived from liquidType();
+	 *
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.LiquidHolder#liquidType()
+	 *
+	 * @return the displayable name of the liquid type in this container.
+	 */
+	public String liquidTypeName();
+
+	/**
+	 * Sets the displayable name of the liquid type in this container. Usually
+	 * derived from liquidType(), but overrideable here.
+	 * This field is NOT persisted.
+	 *
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.LiquidHolder#liquidType()
+	 *
+	 * @param name the displayable name of the liquid type in this container.
+	 */
+	public void setLiquidTypeName(String name);
+
+	/**
 	 * Sets the total amount of liquid possible to be contained in this liquid container.
 	 * @param amount total liquid contained herein.
 	 */

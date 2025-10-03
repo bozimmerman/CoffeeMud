@@ -878,6 +878,20 @@ public interface WorldMap extends CMLibrary
 	public Map<String,TimeClock> getClockCache();
 
 	/**
+	 * Returns an enumeration of all registered tags in the world map. Tags are
+	 * arbitrary strings that can be applied to any object in the game using the
+	 * addObjectTag/delObjectTag methods.
+	 *
+	 * @see WorldMap#addObjectTag(String, Taggable)
+	 * @see WorldMap#delObjectTag(String, Taggable)
+	 * @see WorldMap#isTaggedObject(String, Taggable)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Taggable
+	 *
+	 * @return the enumeration of all registered tags
+	 */
+	public Enumeration<String> getRegisteredTags();
+
+	/**
 	 * Returns a list of all objects tagged with the given tag.
 	 *
 	 * @see WorldMap#addObjectTag(String, Taggable)

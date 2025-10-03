@@ -324,6 +324,17 @@ document.onkeydown = function(e) {
 				}
 			}
 		}
+		else
+		if ("123456789".indexOf(e.key) >= 0) 
+		{
+			var idx = parseInt(e.key);
+			if ((idx > 0) && (idx <= window.tabTabs.length)) 
+			{
+				var tab = window.tabTabs[idx-1];
+				if (tab)
+					SetCurrentTabByTab(tab);
+			}
+		}
 		/* wont work because !inputvisible means immediate char sends.
 		else
 		if(!isInputVisible() && !isDialogOpen())

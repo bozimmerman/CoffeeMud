@@ -112,6 +112,7 @@ public class Poison_BeeSting extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-(int)Math.round(rank));
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)

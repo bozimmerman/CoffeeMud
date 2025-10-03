@@ -255,6 +255,16 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	@Override
+	public String liquidTypeName()
+	{
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{}
+
+	@Override
 	public int liquidType()
 	{
 		return liquidType;

@@ -2331,6 +2331,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public Enumeration<String> getRegisteredTags()
+	{
+		synchronized (taggedMap)
+		{
+			return new IteratorEnumeration<String>(new TreeSet<String>(taggedMap.keySet()).iterator());
+		}
+	}
+
+	@Override
 	public void addObjectTag(final String tag, final Taggable obj)
 	{
 		if((obj==null)||(tag==null))

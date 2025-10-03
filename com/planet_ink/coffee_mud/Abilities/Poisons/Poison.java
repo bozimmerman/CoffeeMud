@@ -160,9 +160,11 @@ public class Poison extends StdAbility implements HealthCondition
 		return false;
 	}
 
-	protected boolean	processing	= false;
-	protected double	rank		= 1.0;
-	protected int		poisonTick	= 3;
+	protected boolean	processing		= false;
+	protected double	rank			= 1.0;
+	protected String	itemAmbiance	= null;
+	protected String	mobAmbiance		= null;
+	protected int		poisonTick		= 3;
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -171,6 +173,8 @@ public class Poison extends StdAbility implements HealthCondition
 		if(newMiscText.length()>0)
 		{
 			rank = CMParms.getParmDouble(newMiscText, "RANK", 1.0);
+			itemAmbiance = CMParms.getParmStr(newMiscText, "ITEMAMBIANCE", null);
+			mobAmbiance = CMParms.getParmStr(newMiscText, "MOBAMBIANCE", null);
 		}
 	}
 
@@ -250,6 +254,23 @@ public class Poison extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof MOB)
+		{
+			if (mobAmbiance != null)
+				affectableStats.addAmbiance(mobAmbiance);
+		}
+		else
+		if(affected != null)
+		{
+			if (itemAmbiance != null)
+				affectableStats.addAmbiance(itemAmbiance);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -286,6 +307,7 @@ public class Poison extends StdAbility implements HealthCondition
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		if((affected==null)||(!ID().equals("Poison")))
 			return;
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-5);
@@ -420,13 +442,33 @@ public class Poison extends StdAbility implements HealthCondition
 						else
 							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 						if(POISON_AFFECTTARGET())
-							success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1)!=null;
+						{
+							final Poison newP = (Poison)maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1);
+							if((auto)&&(givenTarget!=null)&&(commands.size()>0))
+							{
+								final String args = CMParms.combineQuoted(commands,0);
+								final String ambiance = CMParms.getParmStr(args, "ITEMAMBIANCE", null);
+								if(ambiance != null)
+									newP.setMiscText(newP.text()+" ITEMAMBIANCE=\""+ambiance+"\"");
+							}
+							success=(newP!=null);
+						}
 						else
 							success=true;
 					}
 					else
 					if(target instanceof Physical)
-						success=maliciousAffect(mob,(Physical)target,asLevel,100,-1)!=null;
+					{
+						final Poison newP = (Poison)maliciousAffect(mob,(Physical)target,asLevel,100,-1);
+						if((auto)&&(givenTarget!=null)&&(commands.size()>0))
+						{
+							final String args = CMParms.combineQuoted(commands,0);
+							final String ambiance = CMParms.getParmStr(args, "ITEMAMBIANCE", null);
+							if(ambiance != null)
+								newP.setMiscText(newP.text()+" ITEMAMBIANCE=\""+ambiance+"\"");
+						}
+						success = (newP != null);
+					}
 				}
 				else
 					success=false;

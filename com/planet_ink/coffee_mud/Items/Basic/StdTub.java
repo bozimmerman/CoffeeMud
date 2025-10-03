@@ -40,12 +40,13 @@ public class StdTub extends StdRideable implements Drink
 		return "StdTub";
 	}
 
-	protected int amountOfThirstQuenched=250;
-	protected int amountOfLiquidHeld=2000;
-	protected int amountOfLiquidRemaining=2000;
-	protected boolean disappearsAfterDrinking=false;
-	protected int liquidType=RawMaterial.RESOURCE_FRESHWATER;
-	protected long decayTime=0;
+	protected int				amountOfThirstQuenched	= 250;
+	protected int				amountOfLiquidHeld		= 2000;
+	protected int				amountOfLiquidRemaining	= 2000;
+	protected boolean			disappearsAfterDrinking	= false;
+	protected int				liquidType				= RawMaterial.RESOURCE_FRESHWATER;
+	protected long				decayTime				= 0;
+	protected volatile String	overrideTypeName		= null;
 
 	public StdTub()
 	{
@@ -105,6 +106,20 @@ public class StdTub extends StdRideable implements Drink
 	public int liquidRemaining()
 	{
 		return amountOfLiquidRemaining;
+	}
+
+	@Override
+	public String liquidTypeName()
+	{
+		if (overrideTypeName != null)
+			return overrideTypeName;
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{
+		this.overrideTypeName = name;
 	}
 
 	@Override
@@ -296,7 +311,7 @@ public class StdTub extends StdRideable implements Drink
 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell(L("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
+						mob.tell(L("You don't want to be drinking @x1.",liquidTypeName()));
 						return false;
 					}
 					return true;
@@ -319,9 +334,11 @@ public class StdTub extends StdRideable implements Drink
 						mob.tell(L("@x1 is empty.",thePuddle.name()));
 						return false;
 					}
-					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+					if((liquidRemaining()>0)
+					&&(liquidType()!=thePuddle.liquidType()))
 					{
-						mob.tell(L("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",RawMaterial.CODES.NAME(liquidType()).toLowerCase(),name(),RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()));
+						mob.tell(L("There is still some @x1 left in @x2.  You must empty it before you can fill it with @x3.",
+								liquidTypeName(),name(),thePuddle.liquidTypeName()));
 						return false;
 
 					}

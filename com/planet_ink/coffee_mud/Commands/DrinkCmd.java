@@ -82,7 +82,7 @@ public class DrinkCmd extends StdCommand
 		if((thisThang instanceof Drink)
 		&&(((Drink)thisThang).liquidRemaining()>0)
 		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
-			str=L("<S-NAME> take(s) a drink of @x1 from <T-NAMESELF>.",RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase());
+			str=L("<S-NAME> take(s) a drink of @x1 from <T-NAMESELF>.",((Drink)thisThang).liquidTypeName());
 		else
 		if(thisThang instanceof Container)
 		{

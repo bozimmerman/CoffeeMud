@@ -101,9 +101,9 @@ public class GenLantern extends GenLightSource implements LiquidHolder
 					if((msg.tool()!=msg.target())
 					&&(msg.tool() instanceof Drink))
 					{
-						if(((Drink)msg.tool()).liquidType()!=liquidType())
+						if(!((Drink)msg.tool()).liquidTypeName().equals(liquidTypeName()))
 						{
-							mob.tell(L("You can only fill @x1 with @x1!",name(),RawMaterial.CODES.NAME(liquidType()).toLowerCase()));
+							mob.tell(L("You can only fill @x1 with @x1!",name(),liquidTypeName()));
 							return false;
 						}
 						final Drink thePuddle=(Drink)msg.tool();
@@ -174,6 +174,16 @@ public class GenLantern extends GenLightSource implements LiquidHolder
 	{
 		return amountOfLiquidRemaining;
 	}
+
+	@Override
+	public String liquidTypeName()
+	{
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{}
 
 	@Override
 	public int liquidType()

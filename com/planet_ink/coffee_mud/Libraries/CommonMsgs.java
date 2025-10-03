@@ -1619,14 +1619,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((item instanceof LiquidHolder)
 				&&(((LiquidHolder)item).liquidRemaining()>0))
 				{
-					final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
 					final int myResource=((LiquidHolder)item).liquidType();
+					final String myResourceName = ((LiquidHolder)item).liquidTypeName();
+					final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
 					l.setMaterial(myResource);
 					((LiquidHolder)l).setLiquidType(myResource);
 					l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 					l.basePhyStats().setWeight(1);
-					final String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
-					l.setName(L("some @x1",name));
+					//TODO: having sub-types for proper naming sure would be nice.
+					l.setName(L("some @x1",myResourceName));
 					l.setDisplayText(L("some @x1 sits here.",name));
 					l.setDescription("");
 					CMLib.materials().addEffectsToResource(l);

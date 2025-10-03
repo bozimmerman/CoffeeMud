@@ -189,13 +189,15 @@ public class Poison_Alcohol extends Poison
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		super.affectPhyStats(affected, affectableStats);
 		if((affected instanceof MOB)&&(drunkness>0))
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).phyStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+affected.phyStats().level()));
 	}
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);

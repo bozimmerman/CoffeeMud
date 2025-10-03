@@ -129,6 +129,7 @@ public class Poison_Sickening extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-9-(int)Math.round(rank));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)
 			affectableStats.setStat(CharStats.STAT_CONSTITUTION,1);

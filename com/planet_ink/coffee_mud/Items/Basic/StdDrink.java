@@ -47,6 +47,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int		liquidType				= RawMaterial.RESOURCE_FRESHWATER;
 	protected long		decayTime				= 0;
 
+	protected volatile String overrideType		= null;
+
 	public StdDrink()
 	{
 		super();
@@ -103,6 +105,20 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public boolean disappearsAfterDrinking()
 	{
 		return disappearsAfterDrinking;
+	}
+
+	@Override
+	public String liquidTypeName()
+	{
+		if (this.overrideType != null)
+			return this.overrideType;
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{
+		this.overrideType = name;
 	}
 
 	@Override
@@ -219,7 +235,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					if((liquidType==RawMaterial.RESOURCE_SALTWATER)
 					||(liquidType==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell(L("You don't want to be drinking @x1.",RawMaterial.CODES.NAME(liquidType).toLowerCase()));
+						mob.tell(L("You don't want to be drinking @x1.",liquidTypeName()));
 						return false;
 					}
 					return true;

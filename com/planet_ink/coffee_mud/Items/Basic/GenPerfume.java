@@ -66,6 +66,12 @@ public class GenPerfume extends StdPerfume
 	}
 
 	@Override
+	public String liquidTypeName()
+	{
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
 	public int liquidType()
 	{
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)

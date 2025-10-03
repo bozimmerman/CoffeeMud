@@ -112,6 +112,7 @@ public class Poison_Bloodboil extends Poison
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(20*rank));
 	}
@@ -119,6 +120,7 @@ public class Poison_Bloodboil extends Poison
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
+		super.affectCharStats(affected, affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-(int)Math.round(rank));
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)-(4+(int)Math.round(rank)));
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)

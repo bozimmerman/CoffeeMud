@@ -128,6 +128,12 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	@Override
+	public String liquidTypeName()
+	{
+		return RawMaterial.CODES.NAME(liquidType()).toLowerCase();
+	}
+
+	@Override
 	public int liquidType()
 	{
 		return liquidType;
@@ -138,6 +144,10 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		liquidType = newLiquidType;
 	}
+
+	@Override
+	public void setLiquidTypeName(final String name)
+	{}
 
 	@Override
 	public void setThirstQuenched(final int amount)
