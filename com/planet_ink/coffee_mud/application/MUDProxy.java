@@ -105,6 +105,8 @@ public class MUDProxy
 		private final ByteArrayOutputStream	mpcpCommand	= new ByteArrayOutputStream();
 	}
 
+	private final long						creationTime	= System.currentTimeMillis();
+	private long							connectTime		= System.currentTimeMillis();
 	private final Pair<String, Integer>		port;
 	private final String					ipAddress;
 	private final boolean					isClient;
@@ -574,6 +576,7 @@ public class MUDProxy
 							{
 								final SocketChannel serverChannel = (SocketChannel) key.channel();
 								final MUDProxy serverContext = (MUDProxy)key.attachment();
+								serverContext.connectTime=System.currentTimeMillis();
 								try
 								{
 									if (serverChannel.finishConnect())
@@ -601,6 +604,7 @@ public class MUDProxy
 												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 										if((clientContext!=null)&&(clientContext.distressedTime != 0))
 										{
+											clientContext.connectTime=System.currentTimeMillis();
 											clientContext.distressedTime=0;
 											final JSONObject obj = new MiniJSON.JSONObject();
 											obj.putAll(serverContext.session);
@@ -1170,8 +1174,13 @@ public class MUDProxy
 						{
 							if(status.command == (byte)Session.TELNET_DO)
 							{
-								if(MUDProxy.distressPingers.containsKey(context.port))
+								if(MUDProxy.distressPingers.containsKey(context.port)
+								&&(!MUDProxy.distressPingers.get(context.port).third.booleanValue()))
+								{
+									Log.sysOut(context.outsidePortNum+"","MPCP validated "+context.ipAddress
+											+"->"+context.port.first+":"+context.port.second);
 									MUDProxy.distressPingers.get(context.port).third=Boolean.TRUE;
+								}
 							}
 							status.state = ParseState.NORMAL;
 						}
@@ -1471,7 +1480,10 @@ public class MUDProxy
 				{
 					eof = true;
 					if((!context.isClient)
-					&&(context.outsidePortNum>0))
+					&&(context.outsidePortNum>0)
+					&&((context.session.size()>0)
+						||((System.currentTimeMillis()-context.creationTime>15000)
+								&&(System.currentTimeMillis()-context.connectTime>7000))))
 						putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
 				}
 				context.pendingInputs.addAll(inputList);
@@ -1492,6 +1504,10 @@ public class MUDProxy
 					closeKey(destKey);
 				}
 				else
+				if((context.outsidePortNum>0)
+				&&((context.session.size()>0)
+					||((System.currentTimeMillis()-context.creationTime>15000)
+							&&(System.currentTimeMillis()-context.connectTime>7000))))
 					putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
 			}
 			else
@@ -1565,7 +1581,7 @@ public class MUDProxy
 		final MUDProxy context = (MUDProxy)key.attachment();
 		//if(!channelPairs.containsKey(key)) // this made distress pingers no longer close
 		//	return; // this is an unknown key, ignore it.
-		Log.debugOut("closeKey:"+context.toString()+", valid="+key.isValid());
+		Log.debugOut("closeKey:"+context.toString()+", keyAlive="+key.isValid());
 		final SelectionKey pairedKey;
 		synchronized(channelPairs)
 		{
@@ -1586,7 +1602,10 @@ public class MUDProxy
 		}
 		if((!context.isClient) // if its a server socket,
 		&&(pairedChannel!=null)
-		&&(context.outsidePortNum>0))
+		&&(context.outsidePortNum>0)
+		&&((context.session.size()>0)
+				||((System.currentTimeMillis()-context.creationTime>15000)
+					&&(System.currentTimeMillis()-context.connectTime>7000))))
 		{
 			putKeyInDistress(key,channel,context,pairedKey,pairedChannel,pairedContext);
 			pairedChannel = null; // so we don't close it below
@@ -1737,7 +1756,8 @@ public class MUDProxy
 							for(final Pair<String,Integer> port : distresses.keySet())
 							{
 								final Triad<SelectionKey,Long,Boolean> p = MUDProxy.distressPingers.get(port);
-								if((p != null)&&p.third.booleanValue())
+								if((p != null)
+								&&p.third.booleanValue())
 								{
 									final List<Triad<SelectionKey,MUDProxy,MUDProxy>> clientList = distresses.get(port);
 									for(final Iterator<Triad<SelectionKey,MUDProxy,MUDProxy>> i = clientList.iterator();i.hasNext();)
@@ -1745,7 +1765,7 @@ public class MUDProxy
 										final Triad<SelectionKey,MUDProxy,MUDProxy> disPair = i.next();
 										final MUDProxy clientContext = disPair.second;
 										if((clientContext.distressedTime>0)
-										&&((System.currentTimeMillis()-clientContext.distressedTime)>10000))
+										&&(p.second.longValue()>clientContext.distressedTime))
 											MUDProxy.reconnectClient(disPair.first, clientContext, disPair.third);
 										// else, if client is not yet 10 seconds in distress, but pinger says OK, wait
 									}
