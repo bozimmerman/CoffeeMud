@@ -1045,6 +1045,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_COMPRESS=85;
 	/** TELNET CODE: text compression, protocol 2*/
 	public static final int TELNET_COMPRESS2=86;
+	/** TELNET CODE: text compression, protocol 2*/
+	public static final int TELNET_COMPRESS3=87;
 	/** TELNET CODE: MSP SOund protocol*/
 	public static final int TELNET_MSP=90;
 	/** TELNET CODE: MXP Extended protocol*/

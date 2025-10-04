@@ -2002,6 +2002,8 @@ public class DefaultSession implements Session
 									if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
 										changeTelnetMode(rawout,TELNET_COMPRESS2,true);
 								}
+								this.lastKeystroke = System.currentTimeMillis();
+								this.afkTime = 0;
 								this.needPrompt=true;
 							}
 							else

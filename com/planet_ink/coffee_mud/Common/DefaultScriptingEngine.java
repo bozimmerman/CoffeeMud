@@ -9706,6 +9706,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					else
+					if(tt[3].startsWith("#"))
+						inList = new XArrayList<Object>(CMLib.map().getTaggedObjects(tt[3].substring(1)));
+					else
 					{
 						final List<String> objs = CMParms.parseCommas(tt[3], false);
 						inList=new ArrayList<Object>(objs.size());

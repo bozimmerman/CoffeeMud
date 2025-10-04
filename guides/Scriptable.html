@@ -4549,22 +4549,22 @@ case.
 
       <p>Usages:</p>
 
-      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /><br />for $[digit] IN list "of many" things $n<br />[commands]<br />...<br />next<br /><br /><br />for $[digit] IN SELECT: * FROM ...<br />[commands]<br />...<br />next<br /><br /></pre>
+      <pre>for $[digit] = [number] to [number]<br />[commands]<br />...<br />next<br /><br />for $[digit] IN list "of many" things $n<br />[commands]<br />...<br />next<br /><br /><br />for $[digit] IN SELECT: * FROM ...<br />[commands]<br />...<br />next<br /><br />for $[digit] IN #mytag<br />[commands]<br />...<br />next<br /><br /></pre>
 
       <p>The
 for command is the
 simplest way to execute one or more
 other commands numerous times. It allows you to specify a numeric range
 for the scripting engine to count from and to, specity a range of
-terms, or specify the result on an MQL query. &nbsp; Executing the
+terms,&nbsp;the result on an MQL query, or a group of tagged objects. &nbsp; Executing the
 commands
 after the for statement (and before the next statement) as many times
 as is required to complete the counting. When executing the commands,
 the temporary variable used $[digit] will be the value of the current
-digit, the current word from the list, or the current object from the
-MQL query. Here's some examples:</p>
+digit, the current word from the list,&nbsp;the current object from the
+MQL query or tagged group. Here's some examples:</p>
 
-      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /><br />for $0 in orange "light blue" green<br /> mpecho My new favorite color is $0<br />next<br /><br />for $0 in SELECT: * from mobs<br /> mpecho I have done this $0 times!<br />next      <br /></pre>
+      <pre>for $0 = 1 to 10<br /> mpecho I have done this $0 times!<br />next<br /><br />for $0 in orange "light blue" green<br /> mpecho My new favorite color is $0<br />next<br /><br />for $0 in SELECT: * from mobs<br /> mpecho .. and my name is $0 !<br />next<br /><br />for $0 in #mytag<br /> mpecho .. and my name is $0 !<br />next<br /></pre>
 
       <p>If you execute the above
 script, you will see the mpecho

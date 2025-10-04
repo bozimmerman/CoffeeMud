@@ -1,19 +1,16 @@
-^HArchon help^N
-
-^HCommands^N
-after ahelp announce as at atopics
-ban boot beacon chargen cloak
-copy create destroy deviations dress dumpfile 
-expire export generate gmodify goto i3 imc2 
-import jrun kill link list load merge modify 
-nopurge order pause poof possess purge reset
-restring save shell shutdown snoop stat 
-sysmsgs take ticktock trailto transfer
-unlink unload visible where wizemote wizinv
-
-^HSkills^N
-multiwatch wrath hush freeze banish record metacraft
-accuse infect injure matrixpossess stinkify shame
-markooc
+^XArchon help:^.^M
+^HBuilding^N       list create destroy modify link unlink copy save restring
+               sysmsgs take stat outfit deviations pause reset template purge
+^HAdv Building^N   generate import export gmodify catalog deviations merge
+               every async after
+^HMovement:^N      at transfer goto trailto poof cloak visible wizinv
+^HPlayers:^N       ban boot beacon expire snoop nopurge order stat 
+^HToys:^N          as possess chargen jconsole jrun dumpfile llm mprun
+^HSystem:^N        load unload shutdown ticktock shell i3 imc2 proxyctl 
+^HCommunication:^N announce wizemote motd
+^HInformation:^N   ahelp atopics where affects list stat
+^HArchon Skills^N  multiwatch wrath hush freeze banish record metacraft
+               accuse infect injure matrixpossess stinkify shame 
+               markooc llmify
 
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!

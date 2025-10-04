@@ -70,7 +70,7 @@ public class Chant_NectarWeave extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_NATURELORE;
 	}
 
 	public String newName="";

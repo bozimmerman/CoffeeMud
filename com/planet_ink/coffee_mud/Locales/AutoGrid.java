@@ -197,7 +197,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 			if((!(definedIDs.get(idName) instanceof XMLTag))
 			||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
 			{
-				Log.errOut(L("The area id '@x1' has not been defined in the data file for @x2.",idName,roomID()));
+				Log.errOut(L("The area id '@x1' has not been defined in the data file for AutoGrid @x2.",idName,roomID()));
 				super.buildGrid();
 				return;
 			}
@@ -217,12 +217,12 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 			}
 			if(!definedIDs.containsKey("LEVEL_RANGE"))
 			{
-				Log.warnOut(L("LEVEL_RANGE is missing argument for @x1",roomID()));
+				Log.warnOut(L("LEVEL_RANGE is missing argument for AutoGrid @x1",roomID()));
 				definedIDs.put("LEVEL_RANGE", ""+1);
 			}
 			if(!definedIDs.containsKey("AGGROCHANCE"))
 			{
-				Log.warnOut(L("AGGROCHANCE is missing argument for @x1",roomID()));
+				Log.warnOut(L("AGGROCHANCE is missing argument for AutoGrid @x1",roomID()));
 				definedIDs.put("AGGROCHANCE", "50");
 			}
 			try
@@ -244,7 +244,7 @@ public class AutoGrid extends StdGrid implements GridLocale, AutoGenArea
 				}
 				catch(final CMException cme)
 				{
-					Log.errOut(L("Required ids for @x1 were missing: @x2 for @x3",idName,cme.getMessage(),roomID()));
+					Log.errOut(L("Required ids for AutoGrid @x1 were missing: @x2 for @x3",idName,cme.getMessage(),roomID()));
 					super.buildGrid();
 					return;
 				}
