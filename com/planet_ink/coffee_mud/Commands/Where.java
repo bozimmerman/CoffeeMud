@@ -162,6 +162,25 @@ public class Where extends StdCommand
 					areaFlag=true;
 					who=who.substring(5).trim();
 				}
+				if(who.toUpperCase().startsWith("#"))
+				{
+					final String tag =who.substring(1).trim();
+					for (final Enumeration<Taggable> e = CMLib.map().getTaggedObjects(tag); e.hasMoreElements();)
+					{
+						final Taggable O = e.nextElement();
+						if(O instanceof Physical)
+						{
+							final Physical P = (Physical)O;
+							final Room R = CMLib.map().roomLocation(P);
+							lines.append("^!"+CMStrings.padRight(cataMark(P)+P.name(mob),firstColWidth)+"^N| ");
+							if(R != null)
+								lines.append(R.displayText(mob));
+							lines.append(" (^<LSTROOMID^>"+getRoomDesc(mob,R,P)+"^</LSTROOMID^>)");
+							lines.append("\n\r");
+						}
+					}
+				}
+				else
 				if(who.toUpperCase().startsWith("SELECT:"))
 				{
 					lines.setLength(0);

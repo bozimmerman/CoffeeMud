@@ -172,6 +172,39 @@ public class RoomLoader
 		return true;
 	}
 
+	public List<String> findTaggedObjectRooms(final String tag)
+	{
+		final String cleanTag = DB.injectionClean(tag);
+		final Set<String> rooms = new TreeSet<String>();
+		DBConnection D = null;
+		try
+		{
+			D = DB.DBFetch();
+			ResultSet R = D.query("SELECT CMROID FROM CMROOM WHERE CMROTX LIKE '%<TAG>" + cleanTag + "</TAG>%'");
+			while (R.next())
+				rooms.add(DBConnections.getRes(R, "CMROID"));
+			R = D.query("SELECT CMROID FROM CMROIT WHERE CMITTX LIKE '%<TAG>" + cleanTag + "</TAG>%'");
+			while (R.next())
+				rooms.add(DBConnections.getRes(R, "CMROID"));
+			R = D.query("SELECT CMROID FROM CMROCH WHERE CMCHTX LIKE '%<TAG>" + cleanTag + "</TAG>%'");
+			while (R.next())
+				rooms.add(DBConnections.getRes(R, "CMROID"));
+			R = D.query("SELECT CMROID FROM CMROEX WHERE CMEXTX LIKE '%<TAG>" + cleanTag + "</TAG>%'");
+			while (R.next())
+				rooms.add(DBConnections.getRes(R, "CMROID"));
+		}
+		catch (final SQLException sqle)
+		{
+			Log.errOut("RoomSet", sqle);
+			return null;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return new XArrayList<String>(rooms);
+	}
+
 	public Area DBReadAreaObject(String areaName)
 	{
 		DBConnection D=null;
@@ -1158,7 +1191,7 @@ public class RoomLoader
 					else
 					{
 						room.addInhabitant((MOB)P);
-						((MOB)P).recoverPhyStats();
+						P.recoverPhyStats();
 						((MOB)P).recoverMaxState();
 						((MOB)P).recoverCharStats();
 						((MOB)P).resetToMaxState();

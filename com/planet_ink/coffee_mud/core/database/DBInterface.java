@@ -408,6 +408,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<String> findTaggedObjectRooms(final String tag)
+	{
+		return RoomLoader.findTaggedObjectRooms(tag);
+	}
+
+	@Override
 	public String DBIsAreaName(final String name)
 	{
 		return RoomLoader.DBIsAreaName(name);

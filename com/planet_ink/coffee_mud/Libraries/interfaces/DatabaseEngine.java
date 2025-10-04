@@ -330,6 +330,18 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 *
+	 * Scans for all roomIDs that have the given tag
+	 * applied to them, or contained in an exit, item,
+	 * or mob therein.
+	 *
+	 * @param tag the tag to search for
+	 * @return the list of room ids that have this tag
+	 */
+	public List<String> findTaggedObjectRooms(final String tag);
+
+	/**
+	 * Table category: DBMAP
 	 * Permanently Loads and returns a single Room object,
 	 * without populating its contents yet. This is often done in
 	 * preparation to read the content, the exits, or both.

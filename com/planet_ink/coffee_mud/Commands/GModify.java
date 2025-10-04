@@ -51,15 +51,25 @@ public class GModify extends StdCommand
 	private static final int	FLAG_SUBSTRING		= 2;
 	private static final int	FLAG_OR				= 4;
 	private static final int	FLAG_AND			= 8;
-	private static final int	EQUATOR_$			= 0;
-	private static final int	EQUATOR_EQ			= 1;
-	private static final int	EQUATOR_NEQ			= 2;
-	private static final int	EQUATOR_GT			= 3;
-	private static final int	EQUATOR_LT			= 4;
-	private static final int	EQUATOR_LTEQ		= 5;
-	private static final int	EQUATOR_GTEQ		= 6;
 
-	private static final Map<Object,Integer> EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
+	private enum GComp
+	{
+		EQUATOR_$,
+		EQUATOR_EQ,
+		EQUATOR_NEQ,
+		EQUATOR_GT,
+		EQUATOR_LT,
+		EQUATOR_LTEQ,
+		EQUATOR_GTEQ;
+		private static String[] choices = new String[]{"$","=","!=",">","<","<=",">="};
+		public static GComp get(final String eq)
+		{
+			final int x = CMParms.indexOf(choices, eq);
+			if(x<0)
+				return null;
+			return GComp.values()[x];
+		}
+	}
 
 	public static String getStat(final Environmental E, final String stat)
 	{
@@ -223,7 +233,7 @@ public class GModify extends StdCommand
 			else
 			if((stat.equalsIgnoreCase("RESOURCE"))
 			&&(E instanceof Item))
-				((Item)E).setStat("MATERIAL", value);
+				E.setStat("MATERIAL", value);
 			else
 			if((stat.equalsIgnoreCase("MATERIALTYPE"))
 			&&(E instanceof Item))
@@ -254,9 +264,9 @@ public class GModify extends StdCommand
 					}
 				}
 				if((mat&RawMaterial.MATERIAL_MASK) != mat)
-					((Item)E).setStat("MATERIAL", ""+mat);
+					E.setStat("MATERIAL", ""+mat);
 				else
-					((Item)E).setStat("MATERIAL", RawMaterial.CODES.NAME(RawMaterial.CODES.MOST_FREQUENT(mat)));
+					E.setStat("MATERIAL", RawMaterial.CODES.NAME(RawMaterial.CODES.MOST_FREQUENT(mat)));
 			}
 			else
 			if((stat.equalsIgnoreCase("GENDER"))
@@ -406,10 +416,19 @@ public class GModify extends StdCommand
 		Log.sysOut("GMODIFY",msg);
 	}
 
-	private static Environmental tryModfy(final MOB mob, final Session sess, final Room room, Environmental E, final DVector changes, final DVector onfields, final boolean noisy)
+	private static Environmental tryModfy(final MOB mob, final Session sess, final Room room, Environmental E,
+										  final List<GMod> changes, final List<GMod> onfields, final boolean noisy,
+										  final String tag)
 	{
 		if((sess==null)||(sess.isStopped()))
 			return null;
+		if(tag != null)
+		{
+			if(!(E instanceof Taggable))
+				return null;
+			if(!(((Taggable)E).hasTag(tag)))
+				return null;
+		}
 		try
 		{
 			Thread.sleep(1);
@@ -422,155 +441,140 @@ public class GModify extends StdCommand
 		boolean didAnything=false;
 		if(noisy)
 			gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
-		String field=null;
-		String value=null;
-		String equator=null;
-		String stat=null;
-		int codes=-1;
-		Pattern pattern=null;
 		boolean checkedOut=true;
-		Matcher M=null;
 		final TriadArrayList<String,Integer,Integer> matches=new TriadArrayList<String,Integer,Integer>();
 		int lastCode=FLAG_AND;
-		for(int i=0;i<onfields.size();i++)
+		for(final GMod gm : onfields)
 		{
-			field=(String)onfields.get(i,1);
-			equator=(String)onfields.get(i,2);
-			value=(String)onfields.get(i,3);
-			codes=((Integer)onfields.get(i,4)).intValue();
-			pattern=(Pattern)onfields.get(i,5);
 			if(noisy)
-				gmodifydebugtell(mob,field+"/"+getStat(E,field)+"/"+value+"/"+getStat(E,field).equals(value));
+				gmodifydebugtell(mob,gm.key+"/"+getStat(E,gm.key)+"/"+gm.value+"/"+getStat(E,gm.key).equals(gm.value));
+			String value = gm.value;
 			int matchStart=-1;
 			int matchEnd=-1;
-			stat=getStat(E,field);
-			final Integer EQ=EQUATORS.get(equator);
-			if(EQ!=null)
+			String stat=getStat(E,gm.key);
+			switch(gm.eq)
 			{
-				switch(EQ.intValue())
+			case EQUATOR_$:
+				if(gm.patt!=null)
 				{
-				case EQUATOR_$:
-					if(pattern!=null)
+					if(!CMath.bset(gm.flag,FLAG_SUBSTRING))
 					{
-						if(!CMath.bset(codes,FLAG_SUBSTRING))
-						{
-							if(stat.matches(value))
-							{
-								matchStart=0;
-								matchEnd=stat.length();
-							}
-						}
-						else
-						{
-							M=pattern.matcher(stat);
-							M.reset();
-							if(M.find())
-							{
-								matchStart=M.start();
-								matchEnd=M.end();
-							}
-						}
-					}
-					break;
-				case EQUATOR_EQ:
-				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.bset(codes,FLAG_SUBSTRING))
-					{
-						matchStart=stat.indexOf(value);
-						matchEnd=matchStart+value.length();
-					}
-					else
-					if(stat.equals(value))
-					{
-						matchStart=0;
-						matchEnd=stat.length();
-					}
-					break;
-				}
-				case EQUATOR_NEQ:
-				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.bset(codes,FLAG_SUBSTRING))
-					{
-						if(stat.indexOf(value)<0)
+						if(stat.matches(value))
 						{
 							matchStart=0;
 							matchEnd=stat.length();
 						}
 					}
 					else
-					if(!stat.equals(value))
+					{
+						final Matcher M=gm.patt.matcher(stat);
+						M.reset();
+						if(M.find())
+						{
+							matchStart=M.start();
+							matchEnd=M.end();
+						}
+					}
+				}
+				break;
+			case EQUATOR_EQ:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
+				{
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
+				}
+				if(CMath.bset(gm.flag,FLAG_SUBSTRING))
+				{
+					matchStart=stat.indexOf(value);
+					matchEnd=matchStart+value.length();
+				}
+				else
+				if(stat.equals(value))
+				{
+					matchStart=0;
+					matchEnd=stat.length();
+				}
+				break;
+			}
+			case EQUATOR_NEQ:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
+				{
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
+				}
+				if(CMath.bset(gm.flag,FLAG_SUBSTRING))
+				{
+					if(stat.indexOf(value)<0)
 					{
 						matchStart=0;
 						matchEnd=stat.length();
 					}
-					break;
 				}
-				case EQUATOR_GT:
+				else
+				if(!stat.equals(value))
 				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.isNumber(stat)&&CMath.isNumber(value))
-						matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
-					else
-						matchStart=(stat.compareTo(value)>0)?0:-1;
-					break;
+					matchStart=0;
+					matchEnd=stat.length();
 				}
-				case EQUATOR_LT:
+				break;
+			}
+			case EQUATOR_GT:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
 				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.isNumber(stat)&&CMath.isNumber(value))
-						matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
-					else
-						matchStart=(stat.compareTo(value)<0)?0:-1;
-					break;
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
 				}
-				case EQUATOR_LTEQ:
+				if(CMath.isNumber(stat)&&CMath.isNumber(value))
+					matchStart=(CMath.s_long(stat)>CMath.s_long(value))?0:-1;
+				else
+					matchStart=(stat.compareTo(value)>0)?0:-1;
+				break;
+			}
+			case EQUATOR_LT:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
 				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.isNumber(stat)&&CMath.isNumber(value))
-						matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
-					else
-						matchStart=(stat.compareTo(value)<=0)?0:-1;
-					break;
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
 				}
-				case EQUATOR_GTEQ:
+				if(CMath.isNumber(stat)&&CMath.isNumber(value))
+					matchStart=(CMath.s_long(stat)<CMath.s_long(value))?0:-1;
+				else
+					matchStart=(stat.compareTo(value)<0)?0:-1;
+				break;
+			}
+			case EQUATOR_LTEQ:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
 				{
-					if(!CMath.bset(codes,FLAG_CASESENSITIVE))
-					{
-						stat=stat.toLowerCase();
-						value=value.toLowerCase();
-					}
-					if(CMath.isNumber(stat)&&CMath.isNumber(value))
-						matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
-					else
-						matchStart=(stat.compareTo(value)>=0)?0:-1;
-					break;
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
 				}
+				if(CMath.isNumber(stat)&&CMath.isNumber(value))
+					matchStart=(CMath.s_long(stat)<=CMath.s_long(value))?0:-1;
+				else
+					matchStart=(stat.compareTo(value)<=0)?0:-1;
+				break;
+			}
+			case EQUATOR_GTEQ:
+			{
+				if(!CMath.bset(gm.flag,FLAG_CASESENSITIVE))
+				{
+					stat=stat.toLowerCase();
+					value=value.toLowerCase();
 				}
+				if(CMath.isNumber(stat)&&CMath.isNumber(value))
+					matchStart=(CMath.s_long(stat)>=CMath.s_long(value))?0:-1;
+				else
+					matchStart=(stat.compareTo(value)>=0)?0:-1;
+				break;
+			}
 			}
 			if(matchStart>=0)
-				matches.add(field,Integer.valueOf(matchStart),Integer.valueOf(matchEnd));
+				matches.add(gm.key,Integer.valueOf(matchStart),Integer.valueOf(matchEnd));
 			if(CMath.bset(lastCode,FLAG_AND))
 				checkedOut=checkedOut&&(matchStart>=0);
 			else
@@ -578,36 +582,40 @@ public class GModify extends StdCommand
 				checkedOut=checkedOut||(matchStart>=0);
 			else
 				checkedOut=(matchStart>=0);
-			lastCode=codes;
+			lastCode=gm.flag;
 		}
 		if(checkedOut)
 		{
 			if(changes.size()==0)
 				mob.tell(CMLib.lang().L("Matched on @x1 from @x2.",E.name(),CMLib.map().getExtendedRoomID(room)));
 			else
-			for(int i=0;i<changes.size();i++)
+			for(final GMod gm : changes)
 			{
-				field=(String)changes.get(i,1);
-				value=(String)changes.get(i,3);
-				codes=((Integer)changes.get(i,4)).intValue();
-				if(field.equalsIgnoreCase("DESTROY"))
+				String value=gm.value;
+				if(gm.key.equalsIgnoreCase("DESTROY"))
 				{
 					if(CMath.s_bool(value))
 					{
 						if(E instanceof Room)
 						{
-							Log.sysOut("GMODIFY","Room "+CMLib.map().getDescriptiveExtendedRoomID((Room)E)+" was DESTROYED by "+mob.Name()+"!");
+							final String msgStr = "Room "+CMLib.map().getDescriptiveExtendedRoomID((Room)E)+" was DESTROYED by "+mob.Name()+"!";
+							mob.tell(msgStr);
+							Log.sysOut("GMODIFY",msgStr);
 							CMLib.map().obliterateMapRoom((Room)E);
 						}
 						else
 						if((E instanceof MOB)&&(((MOB)E).isPlayer()))
 						{
-							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
+							final String msgStr = E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!";
+							mob.tell(msgStr);
+							Log.sysOut("GMODIFY",msgStr);
 							CMLib.players().obliteratePlayer((MOB)E, true, true);
 						}
 						else
 						{
-							Log.sysOut("GMODIFY",E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!");
+							final String msgStr = E.Name()+" in "+room.roomID()+" was DESTROYED by "+mob.Name()+"!";
+							mob.tell(msgStr);
+							Log.sysOut("GMODIFY",msgStr);
 							E.destroy();
 						}
 						return E;
@@ -615,14 +623,14 @@ public class GModify extends StdCommand
 					continue;
 				}
 				if(noisy)
-					gmodifydebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+value+"/"+(!getStat(E,field).equals(value)));
-				if(CMath.bset(codes,FLAG_SUBSTRING))
+					gmodifydebugtell(mob,E.name()+" wants to change "+gm.key+" value "+getStat(E,gm.key)+" to "+value+"/"+(!getStat(E,gm.key).equals(value)));
+				if(CMath.bset(gm.flag,FLAG_SUBSTRING))
 				{
 					int matchStart=-1;
 					int matchEnd=-1;
 					for(int m=0;m<matches.size();m++)
 					{
-						if(matches.get(m).first.equals(field))
+						if(matches.get(m).first.equals(gm.key))
 						{
 							matchStart=matches.get(m).second.intValue();
 							matchEnd=matches.get(m).third.intValue();
@@ -630,14 +638,16 @@ public class GModify extends StdCommand
 					}
 					if(matchStart>=0)
 					{
-						stat=getStat(E,field);
+						final String stat=getStat(E,gm.key);
 						value=stat.substring(0,matchStart)+value+stat.substring(matchEnd);
 					}
 				}
-				if(!getStat(E,field).equals(value))
+				if(!getStat(E,gm.key).equals(value))
 				{
-					Log.sysOut("GMODIFY","The "+CMStrings.capitalizeAndLower(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,field)+" to "+value+".");
-					E=setStat(E,field,value);
+					final String msgStr="The "+CMStrings.capitalizeAndLower(gm.key)+" field on "+E.Name()+" in "+room.roomID()+" was changed from "+getStat(E,gm.key)+" to "+value+".";
+					mob.tell(msgStr);
+					Log.sysOut("GMODIFY",msgStr);
+					E=setStat(E,gm.key,value);
 					if(E==null)
 						return null;
 					didAnything=true;
@@ -679,62 +689,78 @@ public class GModify extends StdCommand
 		}
 	}
 
-	protected String getAllFieldsMsg(final Set<String> allKnownFields)
+	protected Set<String> getAllStatFields()
 	{
-		final StringBuffer allFieldsMsg=new StringBuffer("");
-		addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
-		for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+		return getAllStatKeys().second;
+	}
+
+	protected String getAllStatFieldsMsg()
+	{
+		return getAllStatKeys().first;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected synchronized Pair<String, Set<String>> getAllStatKeys()
+	{
+		if(!Resources.isResource("SYSTEM_ALL_STAT_KEYS"))
 		{
-			final Faction F=f.nextElement();
-			if(F.isPreLoaded())
+			final Set<String> allKnownFields=new HashSet<String>();
+			final StringBuffer allFieldsMsg=new StringBuffer("");
+			addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
+			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 			{
-				allFieldsMsg.append(F.factionID().toUpperCase()).append(" ");
-				allKnownFields.add(F.factionID().toUpperCase());
+				final Faction F=f.nextElement();
+				if(F.isPreLoaded())
+				{
+					allFieldsMsg.append(F.factionID().toUpperCase()).append(" ");
+					allKnownFields.add(F.factionID().toUpperCase());
+				}
 			}
-		}
-		final PhyStats phy = (PhyStats)CMClass.getCommon("DefaultPhyStats");
-		for(final String stat : phy.getStatCodes())
-		{
-			if(!allKnownFields.contains(stat))
+			final PhyStats phy = (PhyStats)CMClass.getCommon("DefaultPhyStats");
+			for(final String stat : phy.getStatCodes())
 			{
-				allKnownFields.add(stat);
-				allFieldsMsg.append(stat).append(" ");
+				if(!allKnownFields.contains(stat))
+				{
+					allKnownFields.add(stat);
+					allFieldsMsg.append(stat).append(" ");
+				}
 			}
-		}
-		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT "
-				+ "DELFACTION RESOURCE MATERIALTYPE REBALANCE");
-		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY",
-				"ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION","REBALANCE"}));
-		allFieldsMsg.append(" (** Players Only: ");
-		final CharStats chy = (CharStats)CMClass.getCommon("DefaultCharStats");
-		allKnownFields.add("CHARCLASS");
-		allFieldsMsg.append("CHARCLASS").append(" ");
-		for(final String stat : chy.getStatCodes())
-		{
-			if(!allKnownFields.contains(stat))
+			allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT "
+					+ "DELFACTION RESOURCE MATERIALTYPE REBALANCE");
+			allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY",
+					"ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION","REBALANCE"}));
+			allFieldsMsg.append(" (** Players Only: ");
+			final CharStats chy = (CharStats)CMClass.getCommon("DefaultCharStats");
+			allKnownFields.add("CHARCLASS");
+			allFieldsMsg.append("CHARCLASS").append(" ");
+			for(final String stat : chy.getStatCodes())
 			{
-				allKnownFields.add(stat);
-				allFieldsMsg.append(stat).append(" ");
+				if(!allKnownFields.contains(stat))
+				{
+					allKnownFields.add(stat);
+					allFieldsMsg.append(stat).append(" ");
+				}
 			}
-		}
-		final CharState che = (CharState)CMClass.getCommon("DefaultCharState");
-		for(final String stat : che.getStatCodes())
-		{
-			if(!allKnownFields.contains(stat))
+			final CharState che = (CharState)CMClass.getCommon("DefaultCharState");
+			for(final String stat : che.getStatCodes())
 			{
-				allKnownFields.add(stat);
-				allFieldsMsg.append(stat).append(" ");
+				if(!allKnownFields.contains(stat))
+				{
+					allKnownFields.add(stat);
+					allFieldsMsg.append(stat).append(" ");
+				}
 			}
+			allFieldsMsg.append(")");
+			Resources.submitResource("SYSTEM_ALL_STAT_KEYS", new Pair<String, Set<String>>(allFieldsMsg.toString(), allKnownFields));
 		}
-		allFieldsMsg.append(")");
-		return allFieldsMsg.toString();
+		return (Pair<String, Set<String>>)Resources.getResource("SYSTEM_ALL_STAT_KEYS");
 	}
 
 	protected static void fixDeities(final Room R)
@@ -753,6 +779,33 @@ public class GModify extends StdCommand
 			&&(M.getStartRoom()==R))
 				CMLib.map().registerWorldObjectLoaded(R.getArea(), R, M);
 		}
+	}
+
+	private static class GMod
+	{
+		final String key;
+		final String value;
+		final GComp eq;
+		final int flag;
+		final Pattern patt;
+
+		public GMod(final String key, final GComp eq, final String value, final int flag, final Pattern patt)
+		{
+			this.key = key;
+			this.value = value;
+			this.eq = eq;
+			this.flag = flag;
+			this.patt = patt;
+		}
+
+		public static Converter<GMod, String> toKeyConverter= new Converter<GMod, String>()
+		{
+			@Override
+			public String convert(final GMod obj)
+			{
+				return obj.key;
+			}
+		};
 	}
 
 	@Override
@@ -776,13 +829,14 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 			commands.get(0).equalsIgnoreCase("?"))
 		{
-			mob.tell(L("Valid field names are @x1",this.getAllFieldsMsg(new HashSet<String>()).toString()));
+			mob.tell(L("Valid field names are @x1",this.getAllStatFieldsMsg()));
 			return false;
 		}
 
+		String tag = null;
 		boolean doPlayersOnly=false;
-		if((commands.size()>0)&&
-			commands.get(0).equalsIgnoreCase("room"))
+		final String cmd = (commands.size()>0) ? commands.get(0).toLowerCase() : "";
+		if(cmd.equals("room"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -793,8 +847,7 @@ public class GModify extends StdCommand
 			placesToDo.add(mob.location());
 		}
 		else
-		if((commands.size()>0)&&
-			commands.get(0).equalsIgnoreCase("area"))
+		if(cmd.equals("area"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
@@ -805,8 +858,7 @@ public class GModify extends StdCommand
 			placesToDo.add(mob.location().getArea());
 		}
 		else
-		if((commands.size()>0)&&
-			commands.get(0).equalsIgnoreCase("world"))
+		if(cmd.equals("world"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
@@ -814,11 +866,10 @@ public class GModify extends StdCommand
 				return false;
 			}
 			commands.remove(0);
-			placesToDo=new Vector<Places>();
+			placesToDo=new ArrayList<Places>();
 		}
 		else
-		if((commands.size()>0)&&
-			commands.get(0).equalsIgnoreCase("players"))
+		if(cmd.equals("players"))
 		{
 			if((!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			||(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)))
@@ -827,19 +878,33 @@ public class GModify extends StdCommand
 				return false;
 			}
 			commands.remove(0);
-			placesToDo=new Vector<Places>();
+			placesToDo=new ArrayList<Places>();
 			doPlayersOnly=true;
 		}
 		else
+		if(cmd.startsWith("#"))
+		{
+			tag = commands.get(0).substring(1);
+			final List<String> roomIDs = CMLib.database().findTaggedObjectRooms(tag);
+			commands.remove(0);
+			placesToDo=new ArrayList<Places>();
+			for (final String roomID : roomIDs)
+			{
+				final Room R = CMLib.map().getRoom(roomID);
+				if((R != null)&&(!placesToDo.contains(R))&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY)))
+					placesToDo.add(R);
+			}
+		}
+		else
 			placesToDo.add(mob.location());
-		final DVector changes=new DVector(5);
-		final DVector onfields=new DVector(5);
-		DVector use=null;
+		final List<GMod> changes=new LinkedList<GMod>();
+		final List<GMod> onfields=new LinkedList<GMod>();
+		List<GMod> use=null;
 
 		use=onfields;
-		final Vector<String> newSet=new Vector<String>();
-		final HashSet<String> allKnownFields=new HashSet<String>();
-		final String fieldsMsg = this.getAllFieldsMsg(allKnownFields);
+		final List<String> newSet=new ArrayList<String>();
+		final Set<String> allKnownFields=this.getAllStatFields();
+		final String fieldsMsg = this.getAllStatFieldsMsg();
 		StringBuffer s=new StringBuffer("");
 		for(int i=0;i<commands.size();i++)
 		{
@@ -877,7 +942,7 @@ public class GModify extends StdCommand
 			{
 				int eq=-1;
 				int divLen=0;
-				Integer code=Integer.valueOf(0);
+				int code=0;
 				while((divLen==0)&&((++eq)<str.length()))
 					switch(str.charAt(eq))
 					{
@@ -907,7 +972,13 @@ public class GModify extends StdCommand
 					mob.tell(L("String '@x1' does not contain an equation divider.  Even CHANGE needs at least an = sign!",str));
 					return false;
 				}
-				final String equator=str.substring(eq,eq+divLen);
+				final String equatorStr=str.substring(eq,eq+divLen);
+				final GComp equator=GComp.get(equatorStr);
+				if (equator == null)
+				{
+					mob.tell(L("'@x1' is not a valid equation divider.  Valid ones are =, !=, >, <, >=, <=, and $ (for regex).", equatorStr));
+					return false;
+				}
 				String val=str.substring(eq+divLen);
 				String key=str.substring(0,eq).trim();
 
@@ -939,10 +1010,10 @@ public class GModify extends StdCommand
 				{
 					final String attach=val.substring(eq,eq+divBackLen).trim();
 					if(attach.equals("&&"))
-						code=Integer.valueOf(code.intValue()|FLAG_AND);
+						code=code|FLAG_AND;
 					else
 					if(attach.equals("||"))
-						code=Integer.valueOf(code.intValue()|FLAG_OR);
+						code=code|FLAG_OR;
 					str=val.substring(eq+divBackLen);
 					val=val.substring(0,eq);
 				}
@@ -961,21 +1032,21 @@ public class GModify extends StdCommand
 					if(cd.length()!=2)
 						break;
 					if(cd.equalsIgnoreCase("ss"))
-						code=Integer.valueOf(code.intValue()|FLAG_SUBSTRING);
+						code=code|FLAG_SUBSTRING;
 					if(cd.equalsIgnoreCase("cs"))
-						code=Integer.valueOf(code.intValue()|FLAG_CASESENSITIVE);
+						code=code|FLAG_CASESENSITIVE;
 					val=val.substring(x2+1);
 				}
-				if(equator.equals("$"))
+				if(equator == GComp.EQUATOR_$)
 				{
 					int patCodes=Pattern.DOTALL;
-					if(!CMath.bset(code.intValue(),FLAG_CASESENSITIVE))
+					if(!CMath.bset(code,FLAG_CASESENSITIVE))
 						patCodes=patCodes|Pattern.CASE_INSENSITIVE;
 					P=Pattern.compile(val,patCodes);
 				}
 				key=key.toUpperCase().trim();
 				if(allKnownFields.contains(key))
-					use.add(key,equator,val,code,P);
+					use.add(new GMod(key,equator,val,code,P));
 				else
 				{
 					mob.tell(L("'@x1' is an unknown field name.  Valid fields include: @x2",key,fieldsMsg.toString()));
@@ -983,9 +1054,9 @@ public class GModify extends StdCommand
 				}
 			}
 		}
-		if((onfields.size()==0)&&(changes.size()==0))
+		if((onfields.size()==0)&&(changes.size()==0)&&(tag==null))
 		{
-			mob.tell(L("You must specify either WHEN, or CHANGES parameters for valid matches to be made."));
+			mob.tell(L("You must specify either WHEN, a tag, or CHANGES parameters for valid matches to be made."));
 			return false;
 		}
 
@@ -1013,7 +1084,7 @@ public class GModify extends StdCommand
 				if(M!=null)
 				{
 					final Room room=(M.location()==null)?mob.location():M.location();
-					final boolean changed = tryModfy(mob, sess, room, M, changes, onfields, noisy) != null;
+					final boolean changed = tryModfy(mob, sess, room, M, changes, onfields, noisy, tag) != null;
 					if(!M.amDestroyed())
 					{
 						if(!wasLoaded)
@@ -1033,12 +1104,8 @@ public class GModify extends StdCommand
 						if(changed)
 							CMLib.database().DBUpdatePlayer(M);
 					}
-					if((sess!=null)&&(changes.size()>0))
-						sess.rawPrint(".");
 				}
 			}
-			if(sess!=null)
-				sess.rawPrintln(L("!\n\rDone!"));
 			return true;
 		}
 
@@ -1076,8 +1143,6 @@ public class GModify extends StdCommand
 			else
 			if(placesToDo.get(i) instanceof Room)
 			{
-				if(mob.session()!=null)
-					mob.session().rawPrint(".");
 			}
 			else
 				return false;
@@ -1088,14 +1153,14 @@ public class GModify extends StdCommand
 			if(changes.size()==0)
 				mob.session().safeRawPrintln(L("Searching..."));
 			else
-				mob.session().safeRawPrint(L("Searching, modifying and saving..."));
+				mob.session().safeRawPrintln(L("Searching, modifying and saving..."));
 		}
 		if(noisy)
 			gmodifydebugtell(mob,"Rooms to do: "+placesToDo.size());
 		if(noisy)
-			gmodifydebugtell(mob,"When fields="+CMParms.toListString(onfields.getDimensionList(1)));
+			gmodifydebugtell(mob,"When fields="+CMParms.toListString(new ConvertingList<GMod,String>(onfields, GMod.toKeyConverter)));
 		if(noisy)
-			gmodifydebugtell(mob,"Change fields="+CMParms.toListString(changes.getDimensionList(1)));
+			gmodifydebugtell(mob,"Change fields="+CMParms.toListString(new ConvertingList<GMod,String>(changes, GMod.toKeyConverter)));
 		Log.sysOut("GModify",mob.Name()+" "+whole+".");
 		final Session sess=mob.session();
 
@@ -1117,7 +1182,7 @@ public class GModify extends StdCommand
 				if(!areasSeen.contains(A))
 				{
 					areasSeen.add(A);
-					final Area possNewA = (Area)tryModfy(mob,sess,R,A,changes,onfields,noisy);
+					final Area possNewA = (Area)tryModfy(mob,sess,R,A,changes,onfields,noisy, tag);
 					if(possNewA != null)
 						CMLib.database().DBUpdateArea(A.Name(), possNewA);
 				}
@@ -1138,7 +1203,7 @@ public class GModify extends StdCommand
 				boolean savemobs=false;
 				boolean saveitems=false;
 				boolean saveroom=false;
-				final Room possNewRoom=(Room)tryModfy(mob,sess,R,R,changes,onfields,noisy);
+				final Room possNewRoom=(Room)tryModfy(mob,sess,R,R,changes,onfields,noisy, tag);
 				if(possNewRoom!=null)
 				{
 					R=possNewRoom;
@@ -1149,7 +1214,7 @@ public class GModify extends StdCommand
 					final Item I=R.getItem(i);
 					if(I==null)
 						continue;
-					final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy);
+					final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy, tag);
 					if(newI!=null)
 					{
 						saveitems=true;
@@ -1164,7 +1229,7 @@ public class GModify extends StdCommand
 					MOB M=R.fetchInhabitant(m);
 					if((M!=null)&&(M.isSavable()))
 					{
-						final MOB newM=(MOB)tryModfy(mob,sess,R,M,changes,onfields,noisy);
+						final MOB newM=(MOB)tryModfy(mob,sess,R,M,changes,onfields,noisy, tag);
 						if(newM!=null)
 						{
 							savemobs=true;
@@ -1181,7 +1246,7 @@ public class GModify extends StdCommand
 								final Item I=M.getItem(i);
 								if(I==null)
 									continue;
-								final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy);
+								final Item newI=(Item)tryModfy(mob,sess,R,I,changes,onfields,noisy, tag);
 								if(newI!=null)
 								{
 									savemobs=true;
@@ -1202,7 +1267,7 @@ public class GModify extends StdCommand
 									final Environmental E2=P.product;
 									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
-										final Environmental E3=tryModfy(mob,sess,R,E2,changes,onfields,noisy);
+										final Environmental E3=tryModfy(mob,sess,R,E2,changes,onfields,noisy, tag);
 										if(E3!=null)
 										{
 											savemobs=true;
@@ -1226,8 +1291,6 @@ public class GModify extends StdCommand
 					CMLib.database().DBUpdateItems(R);
 				if(savemobs)
 					CMLib.database().DBUpdateMOBs(R);
-				if((sess!=null)&&(changes.size()>0))
-					sess.rawPrint(".");
 				A.setAreaState(oldFlag);
 				if(changes.size()==0)
 				{
@@ -1249,7 +1312,7 @@ public class GModify extends StdCommand
 		}
 
 		if(sess!=null)
-			sess.rawPrintln(L("!\n\rDone!"));
+			sess.rawPrintln(L("\n\rDone!"));
 		for(int i=0;i<placesToDo.size();i++)
 		{
 			final Room R=(Room)placesToDo.get(i);
