@@ -1798,7 +1798,7 @@ function FindSipletsByPB(pb)
 	return found;
 }
 
-function UpdateSipetTabsByPBIndex(which)
+function UpdateSipletTabsByPBIndex(which)
 {
 	if((which+'').startsWith('g'))
 		return;

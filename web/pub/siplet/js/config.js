@@ -1,6 +1,6 @@
 window.configlisteners = {};
 window.sipConfigName = 'config1.1';
-if(Sipet.COFFEE_MUD)
+if(Siplet.COFFEE_MUD)
 	window.sipConfigName = 'cmconfig1.1';
 window.config = localStorage.getItem(window.sipConfigName);
 if(window.config) 
