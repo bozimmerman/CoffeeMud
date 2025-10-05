@@ -37,7 +37,7 @@ public class Beastkin extends StdRace
 	@Override
 	public String ID()
 	{
-		return "Animal";
+		return "Beastkin";
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Beastkin");
