@@ -6794,7 +6794,7 @@ public class Import extends StdCommand
 							else
 							if(CMParms.numBits(codeStr)==5)
 							{
-								/*TODO:BZ all is still well -- from weird modified rom. */
+								/*TODO: all is still well -- from weird modified rom. */
 							}
 							else
 							if(CMParms.numBits(codeStr)!=3)
