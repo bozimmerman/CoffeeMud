@@ -114,8 +114,6 @@ public class JournalInfo extends StdWebMacro
 		List<JournalEntry> msgs=(objs==null)?null:(List<JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
 		{
-if((parent != null)&&(parent.length()>0))
-	System.out.println("STOP"); //TODO:BZ:DELME
 			if((page==null)||(page.length()==0))
 				msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, true);
 			else

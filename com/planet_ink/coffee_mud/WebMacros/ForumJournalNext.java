@@ -107,7 +107,7 @@ public class ForumJournalNext extends StdWebMacro
 				httpReq.getRequestObjects().put("JOURNALLIST",journals);
 			}
 		}
-		
+
 		String lastID="";
 		final Set<String> H=CMLib.journals().getArchonJournalNames();
 		boolean allForumJournals=false;
@@ -121,7 +121,9 @@ public class ForumJournalNext extends StdWebMacro
 			final String B=journals.get(j);
 			if((!allForumJournals)&&(H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 				continue;
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))
+			if(((last==null)||((last.length()>0))
+			&&(last.equals(lastID))
+			&&(!B.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("JOURNAL",B);
 				return "";

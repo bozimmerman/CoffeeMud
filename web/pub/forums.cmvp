@@ -44,6 +44,7 @@
 		{
 			document.FORUM.action="forumsall.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
+			document.FORUM.JOURNAL.value='';
 			document.FORUM.JOURNALPAGE.value='';
 			document.FORUM.DBSEARCH.value=which;
 			handleSubmit(document.FORUM);

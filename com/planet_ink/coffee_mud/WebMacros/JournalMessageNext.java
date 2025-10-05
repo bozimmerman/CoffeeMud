@@ -49,6 +49,16 @@ public class JournalMessageNext extends StdWebMacro
 		final String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null)
 			return " @break@";
+		String last=httpReq.getUrlParameter("JOURNALMESSAGE");
+		if(parms.containsKey("RESET"))
+		{
+			if(last!=null)
+			{
+				httpReq.removeUrlParameter("JOURNALMESSAGE");
+				httpReq.removeUrlParameter("JOURNALCARDINAL");
+			}
+			return "";
+		}
 
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
@@ -56,7 +66,8 @@ public class JournalMessageNext extends StdWebMacro
 		if(journal==null)
 			return " @break@";
 		boolean authenticatedToRead = false;
-		if(httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL")==null)
+		if((httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL")==null)
+		||(!journalName.equals(httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL_NAME"))))
 		{
 			if (!journal.authorizationCheck(M, ForumJournalFlags.READ))
 				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
@@ -66,6 +77,7 @@ public class JournalMessageNext extends StdWebMacro
 				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
 			else
 				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", journal);
+			httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL_NAME", journalName);
 		}
 		authenticatedToRead=httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL") == journal;
 		if(parms.containsKey("AUTHCHECK"))
@@ -76,17 +88,7 @@ public class JournalMessageNext extends StdWebMacro
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
 		if(srch!=null)
 			srch=srch.toLowerCase();
-		String last=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinal=CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
-		if(parms.containsKey("RESET"))
-		{
-			if(last!=null)
-			{
-				httpReq.removeUrlParameter("JOURNALMESSAGE");
-				httpReq.removeUrlParameter("JOURNALCARDINAL");
-			}
-			return "";
-		}
 		String page=httpReq.getUrlParameter("JOURNALPAGE");
 		if(page==null)
 			page=parms.get("JOURNALPAGE");
