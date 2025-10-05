@@ -955,7 +955,7 @@ public class ItemData extends StdWebMacro
 						}
 						break;
 					case TAGS: // tgs
-						if(firstTime)
+						if(firstTime && (M != null))
 						{
 							old="";
 							for(final Enumeration<String> e=M.tags();e.hasMoreElements();)
