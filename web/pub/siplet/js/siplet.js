@@ -6,7 +6,8 @@ window.nextId = 0;
 var Siplet =
 {
 	VERSION_MAJOR: '3.2',
-	VERSION_MINOR: '4',
+	VERSION_MINOR: '5',
+	COFFEE_MUD: false,
 	NAME: window.isElectron?'Sip':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };

@@ -62,7 +62,7 @@ function ConfigureSiplet()
     window.winAreaHeight = 'calc(100% - '+(winAreaTop+inputAreaHeight)+'px)';
     window.windowArea.style.cssText='background-color:black;position:absolute;width:100%;top:'+window.winAreaTop+'px;height:'+winAreaHeight+';';
     window.addEventListener("beforeunload", CloseAllSiplets);
-    LoadGlobalPhonebook();
+    setTimeout(LoadGlobalPhonebook, 500);
     document.body.style.fontFamily='Arial';
     document.body.style.fontSize='14';
     var resizeDebouncer = null;

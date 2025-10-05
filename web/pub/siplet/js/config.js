@@ -1,7 +1,7 @@
 window.configlisteners = {};
 window.sipConfigName = 'config1.1';
-if(window.isSpecialClient)
-	window.sipConfigname = 'special1.1';
+if(Sipet.COFFEE_MUD)
+	window.sipConfigName = 'cmconfig1.1';
 window.config = localStorage.getItem(window.sipConfigName);
 if(window.config) 
 	window.config = JSON.parse(window.config);
@@ -128,19 +128,31 @@ function FindAScript(scripts, value, ci)
 
 function LoadGlobalPhonebook()
 {
+	window.phonebook = getConfig('/phonebook/dial',[]);
 	if(isElectron)
 	{
-		window.phonebook.push({
+		if(phonebook.length == 0)
+		{
+			phonebook.push({
 			"name": "CoffeeMUD",
 			"host": "coffeemud.net",
-			"port": "23"});
+				"port": "23"}
+			);
+			setConfig('/phonebook/dial', phonebook);
+			if(Siplet.COFFEE_MUD)
+				setConfig('/phonebook/auto','g0');
+		}
 		setTimeout(function() { AutoConnect(); },100);
 		return;
 	}
+	// NON-ELECTRON
+	if(window.phonebook.length == 0)
+	{
 	window.phonebook.push({
 		"name": "Default MUD",
 		"port": "default"
 	});
+	}
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/MudPhonebook', true);
 	xhr.onreadystatechange = function() {
@@ -236,34 +248,3 @@ function GetGlobalPlugins()
 {
 	return JSON.parse(JSON.stringify(getConfig('/global/plugins', window.defPlugins)));
 }
-
-if(window.isSpecialClient)
-{
-	window.phonebook.push({
-		name: "CoffeeMud",
-		host: "coffeemud.net",
-		port: 2323,
-		disableInput: false,
-		icon: "media://cmico.jpg"
-	},{
-		name: "CoffeeMud PVP",
-		host: "coffeemud.net",
-		port: 2324,
-		disableInput: false,
-		icon: "media://cmpvp.jpg"
-	},{
-		name: "CoffeeMud HardCore",
-		host: "coffeemud.net",
-		port: 2325,
-		disableInput: false,
-		icon: "media://cmhc.jpg"
-	},{
-		name: "CoffeeMud RolePlay",
-		host: "coffeemud.net",
-		port: 2326,
-		disableInput: false,
-		icon: "media://cmrp.jpg"
-	}
-	)		
-}
-
