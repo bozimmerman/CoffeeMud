@@ -1,23 +1,10 @@
 package com.planet_ink.coffee_web.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.sql.Date;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.planet_ink.coffee_web.http.HTTPException;
-import com.planet_ink.coffee_web.http.HTTPStatus;
-import com.planet_ink.coffee_web.http.MIMEType;
-import com.planet_ink.coffee_web.interfaces.DataBuffers;
-import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
-import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.interfaces.HTTPResponse;
-import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
-import com.planet_ink.coffee_web.util.CWDataBuffers;
-import com.planet_ink.coffee_web.util.CWThread;
 
 /*
    Copyright 2025-2025 Bo Zimmerman

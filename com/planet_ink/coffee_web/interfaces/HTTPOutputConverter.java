@@ -4,7 +4,6 @@ import java.io.File;
 import java.nio.ByteBuffer;
 
 import com.planet_ink.coffee_web.http.HTTPException;
-import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.util.CWConfig;
 
 /*

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.planet_ink.coffee_web.http.HTTPException;
-import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.interfaces.HTTPResponse;

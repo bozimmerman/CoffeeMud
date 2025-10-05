@@ -3,7 +3,6 @@ package com.planet_ink.coffee_web.http;
 import java.io.File;
 import java.sql.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
 
