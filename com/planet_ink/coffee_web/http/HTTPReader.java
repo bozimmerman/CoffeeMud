@@ -785,7 +785,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	 * @param headerOutput the map to put headers into
 	 * @return the bytebuffer with the content body, or null if the impossible occurs
 	 */
-	public static final ByteBuffer parseCGIContent(final ByteBuffer inputBuffer, final Map<HTTPHeader,String> headerOutput)
+	public static final ByteBuffer parseCGIContent(final ByteBuffer inputBuffer, final Map<HTTPHeader, String> headerOutput)
 	{
 		char c;	// current character being HDR_INLINE
 		ParseState state = ParseState.HDR_INLINE;

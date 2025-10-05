@@ -19,7 +19,7 @@
 		function Threads()
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("thread.cmvp?AUTH=@Authenticate?AUTH@&TICKGROUPCOUNTER=0",
+			w=window.open("thread.cmvp?TICKGROUPCOUNTER=0",
 				"Thread",strFeatures, false);
 		}
 	//-->
@@ -42,7 +42,7 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="resources.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 </CENTER>
 <P>
 <FONT COLOR=#CCFFFF><B>CoffeeMud System Report:</B></FONT><P>

@@ -189,14 +189,14 @@
 		}
 		function Cancel()
 		{
-			document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+			document.location.href='player.cmvp?PLAYER=@PlayerID@';
 		}
 	//-->
 	</script>
 </head>
 <body BGCOLOR=BLACK>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="player.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="">

@@ -44,7 +44,7 @@ public class TellMessageNext extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return " @break@";
 		final java.util.Map<String,String> parms=parseParms(parm);
@@ -59,7 +59,7 @@ public class TellMessageNext extends StdWebMacro
 			return "";
 		}
 		httpReq.addFakeUrlParameter("TELLMESSAGENEXTPAGE", "false");
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(mob!=null)
 		{
 			int pageSize = CMath.s_int(pageSizeStr);

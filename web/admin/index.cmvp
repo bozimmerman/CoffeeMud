@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?Authenticate@ @AddFile?/grinder/loggedin.cmvp@ @else@
 
 <html>
 <head>
@@ -67,3 +68,4 @@
 </DIV>
 </body>
 </html>
+@endif@

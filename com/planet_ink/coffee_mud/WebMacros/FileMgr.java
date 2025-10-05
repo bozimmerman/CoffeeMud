@@ -115,7 +115,7 @@ public class FileMgr extends StdWebMacro
 		{
 			file="";
 		}
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return "[authentication error]";
 		try

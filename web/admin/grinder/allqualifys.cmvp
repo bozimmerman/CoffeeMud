@@ -13,7 +13,7 @@
         function AllQualifyItem(which,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=600,alwaysRaised=yes,dependent=yes";
-            w=window.open("allqualify.cmvp?AUTH=@Authenticate?AUTH@&ALLQUALWHICH="+which+"&ALLQUALID="+action,
+            w=window.open("allqualify.cmvp?ALLQUALWHICH="+which+"&ALLQUALID="+action,
                 "All Qualify Item for "+action,strFeatures, false);
         }
         function Clicked(val)
@@ -46,7 +46,6 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="allqualifys.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ All-Qualified Skills</H2></FONT></TD></TR>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><H2>Abilities for ALL Classes</H2></FONT></TD></TR>

@@ -10,13 +10,13 @@
  	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&INSHOP=@RequestParameterEncoded?INSHOP@&ERRMSG=@RequestParameterEncoded?ERRMSG@" NAME=MAP>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu3.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&INSHOP=@RequestParameterEncoded?INSHOP@" NAME=MENU>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&INSHOP=@RequestParameterEncoded?INSHOP@&ERRMSG=@RequestParameterEncoded?ERRMSG@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu3.cmvp?AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&ITEM=@RequestParameterEncoded?ITEM@&MOB=@RequestParameterEncoded?MOB@&INSHOP=@RequestParameterEncoded?INSHOP@" NAME=MENU>
 	</FRAMESET>
 </HTML>
 @else@
 @if?RequestParameter?SINGLEMOB@
-	@DelRequestParameter?ALLBUT&AUTH&AREA&ROOM&MOB&SINGLEMOB@
+	@DelRequestParameter?ALLBUT&AREA&ROOM&MOB&SINGLEMOB@
 	@AddFile?/grinder/editmobform.cmvp@
 @else@
 <HTML>
@@ -25,8 +25,8 @@
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MAP>
-	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MENU>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MAP>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AREA=@AreaIDEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&MAPLEVEL=@RequestParameterEncoded?MAPLEVEL@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MENU>
 </FRAMESET>
 
 </HTML>

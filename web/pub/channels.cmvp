@@ -15,7 +15,7 @@
 			if(window.confirm('Delete message?'))
 			{
 				var strFeatures="top=0,left=0,resizeable=no,scrollbars=no,height=0,width=0,alwaysRaised=yes,dependent=yes";
-				w=window.open("channeldo.cmvp?AUTH=@Authenticate?AUTH@&CHANNEL="+ch+"&TIME="+tm,"Ability",strFeatures, false);
+				w=window.open("channeldo.cmvp?CHANNEL="+ch+"&TIME="+tm,"Ability",strFeatures, false);
 			}
 		}
 	//-->

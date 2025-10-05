@@ -15,14 +15,14 @@
             if(confirm('Create a new title?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
-                w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=",
+                w=window.open("autotitle.cmvp?AUTOTITLE=",
                     "Title",strFeatures, false);
             }
         }
         function Title(autotitleid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=450,alwaysRaised=yes,dependent=yes";
-            w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,
+            w=window.open("autotitle.cmvp?AUTOTITLE="+autotitleid+action,
                 "Title",strFeatures, false);
         }
         function NewAward()
@@ -30,14 +30,14 @@
             if(confirm('Create a new award?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=350,width=750,alwaysRaised=yes,dependent=yes";
-                w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=",
+                w=window.open("autoaward.cmvp?AUTOAWARD=",
                     "Award",strFeatures, false);
             }
         }
         function Award(autoawardid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=350,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD="+autoawardid+action,
+            w=window.open("autoaward.cmvp?AUTOAWARD="+autoawardid+action,
                 "Award",strFeatures, false);
         }
         function NewAchievement(agent)
@@ -45,14 +45,14 @@
             if(confirm('Create a new achievement?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-                w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&AGENT="+agent+"&ACHIEVEMENT=",
+                w=window.open("achievement.cmvp?AGENT="+agent+"&ACHIEVEMENT=",
                     "Achievement",strFeatures, false);
             }
         }
         function Achievement(achievementid,agent)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT="+achievementid+"&AGENT="+agent,
+            w=window.open("achievement.cmvp?ACHIEVEMENT="+achievementid+"&AGENT="+agent,
                 "Achievement",strFeatures, false);
         }
         function Clicked(action)
@@ -151,7 +151,6 @@
         <TR>
         <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
-            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
             <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Player Achievements Manager</H2></FONT></TD></TR>
@@ -257,7 +256,6 @@
         <TR>
         <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
-            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
             <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Title Manager</H2></FONT></TD></TR>
@@ -298,7 +296,6 @@
         <TR>
         <TD WIDTH=100% COLSPAN=@RequestParameter?COLS@>
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoawards.cmvp">
-            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
             <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Awards Manager</H2></FONT></TD></TR>

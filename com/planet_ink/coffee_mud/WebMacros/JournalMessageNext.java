@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -49,12 +50,28 @@ public class JournalMessageNext extends StdWebMacro
 		if(journalName==null)
 			return " @break@";
 
-		if(CMLib.journals().isArchonJournalName(journalName))
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
+		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
+		final JournalsLibrary.ForumJournal journal=CMLib.journals().getForumJournal(journalName,setClan);
+		if(journal==null)
+			return " @break@";
+		boolean authenticatedToRead = false;
+		if(httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL")==null)
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
-			if((M==null)||(!CMSecurity.isASysOp(M)))
-				return " @break@";
+			if (!journal.authorizationCheck(M, ForumJournalFlags.READ))
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
+			else
+			if(CMLib.journals().isArchonJournalName(journalName)
+			&&((M==null)||(!CMSecurity.isASysOp(M))))
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
+			else
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", journal);
 		}
+		authenticatedToRead=httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL") == journal;
+		if(parms.containsKey("AUTHCHECK"))
+			return ""+authenticatedToRead;
+		if (!authenticatedToRead)
+			return " @break@";
 
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
 		if(srch!=null)
@@ -120,16 +137,28 @@ public class JournalMessageNext extends StdWebMacro
 				return Long.toString((pages.size()-1)*pageLimit);
 			return "";
 		}
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if(cardinal == 0)
+		{
+			String fMsgCardinal=httpReq.getUrlParameter("REPLYCARDINAL");
+			if(fMsgCardinal != null)
+			{
+				if (fMsgCardinal.endsWith(","))
+					fMsgCardinal = fMsgCardinal.substring(0, fMsgCardinal.length() - 1);
+				final int x = fMsgCardinal.lastIndexOf(',');
+				if (x > 0)
+					fMsgCardinal = fMsgCardinal.substring(x + 1);
+				cardinal = CMath.s_int(fMsgCardinal);
+			}
+		}
 		cardinal++;
 		JournalEntry entry = null;
 		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 		if(mpage==null)
 			mpage=parms.get("MESSAGEPAGE");
+		if(mpage==null)
+			mpage="0";
 		final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
-		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
-		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
 		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());
 		if(parms.containsKey("REVERSE")
 		&&(msgs.size()>1)

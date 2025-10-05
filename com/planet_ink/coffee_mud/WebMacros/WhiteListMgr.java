@@ -98,7 +98,7 @@ public class WhiteListMgr extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if((M==null)||(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.BAN)))
 			return " @break@";
 

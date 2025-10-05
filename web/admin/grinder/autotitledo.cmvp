@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=REAUTOTITLE@
     @if?CheckReqParm?NEWAUTOTITLEID=@
-        document.location.href='autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=@AutoTitleDataID@';
+        document.location.href='autotitle.cmvp?AUTOTITLE=@AutoTitleDataID@';
     @else@
-        document.location.href='autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=@RequestParameterEncoded?NEWAUTOTITLEID@&NEWAUTOTITLEAUTOTITLE=@RequestParameterEncoded?NEWAUTOTITLEID@';
+        document.location.href='autotitle.cmvp?AUTOTITLE=@RequestParameterEncoded?NEWAUTOTITLEID@&NEWAUTOTITLEAUTOTITLE=@RequestParameterEncoded?NEWAUTOTITLEID@';
     @endif@
 @endif@
 //-->

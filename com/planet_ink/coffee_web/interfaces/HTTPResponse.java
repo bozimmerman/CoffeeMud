@@ -1,5 +1,12 @@
 package com.planet_ink.coffee_web.interfaces;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import com.planet_ink.coffee_web.http.Cookie;
+import com.planet_ink.coffee_web.http.HTTPHeader;
+import com.planet_ink.coffee_web.http.HTTPStatus;
+
 /*
    Copyright 2012-2025 Bo Zimmerman
 
@@ -28,7 +35,14 @@ public interface HTTPResponse
 	 *
 	 * @param httpStatusCode
 	 */
-	public void setStatusCode(int httpStatusCode);
+	public void setStatusCode(HTTPStatus httpStatusCode);
+
+	/**
+	 * Gets the response HTTP code
+	 *
+	 * @return the response HTTP code
+	 */
+	public HTTPStatus getStatus();
 
 	/**
 	 * Sets the response header to specified value
@@ -39,12 +53,49 @@ public interface HTTPResponse
 	public void setHeader(String name, String value);
 
 	/**
-	 * Sets the cookie to specified value
+	 * Gets the response header value
 	 *
 	 * @param name The parameter name
-	 * @param value The parameter value
+	 * @return The parameter value
 	 */
-	public void setCookie(String name, String value);
+	public String getHeader(String name);
+
+	/**
+	 * Removes the response header
+	 *
+	 * @param name The parameter name
+	 */
+	public void removeHeader(String name);
+
+	/**
+	 * Gets an iterator over all the response header names
+	 *
+	 * @return an iterator over all the response header names
+	 */
+	public Iterator<String> getHeaderNames();
+
+	/**
+	 * Populates the final map with all current headers,
+	 * including mime type, cookies, and other headers.
+	 *
+	 * @return the map populated
+	 */
+	public Map<HTTPHeader, String> getPopulatedHeaders();
+
+	/**
+	 * Gets the cookie value
+	 *
+	 * @param name The parameter name
+	 * @return The parameter value
+	 */
+	public Cookie getCookie(String name);
+
+	/**
+	 * Sets the cookie to specified value
+	 *
+	 * @param cookie the cookie definition
+	 */
+	public void setCookie(Cookie name);
 
 	/**
 	 * Sets the mime type to be returned to the client
@@ -52,4 +103,11 @@ public interface HTTPResponse
 	 * @param mimeType The mime type to set
 	 */
 	public void setMimeType(String mimeType);
+
+	/**
+	 * Gets the mime type to be returned to the client
+	 *
+	 * @return The mime type
+	 */
+	public String getMimeType();
 }

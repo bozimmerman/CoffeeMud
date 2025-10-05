@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=RECLASS@
     @if?CheckReqParm?NEWCLASSID=@
-        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@';
+        document.location.href='charclass.cmvp?CLASS=@CharClassID@';
     @else@
-        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@RequestParameterEncoded?NEWCLASSID@&NEWCLASS=@RequestParameterEncoded?NEWCLASSID@';
+        document.location.href='charclass.cmvp?CLASS=@RequestParameterEncoded?NEWCLASSID@&NEWCLASS=@RequestParameterEncoded?NEWCLASSID@';
     @endif@
 @endif@
 //-->

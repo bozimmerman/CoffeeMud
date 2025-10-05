@@ -13,7 +13,7 @@
         function Social(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=500,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action,
+            w=window.open("social.cmvp?SOCIAL="+action,
             	"Social",strFeatures, false);
         }
         function Clicked(action)
@@ -129,7 +129,7 @@
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="socials.cmvp">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=10 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
     <TR>

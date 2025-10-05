@@ -30,7 +30,7 @@
         function OpenClick(file,named)
         {
             var strFeatures="top=50,left=50,scrollbars=yes,resizeable=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23%3CP%3D@RequestParameterEncoded?PLAYER@%3E%3CR%3D@RequestParameterEncoded?ROOM@%3E%3CM%3D@RequestParameterEncoded?MOB@%3E%3CI%3D@RequestParameterEncoded?ITEM@%3E%3CSI%3D@RequestParameterEncoded?SHOPITEM@%3E","Map",strFeatures);
+            w=window.open(file+"?AREA=ITEM%23%3CP%3D@RequestParameterEncoded?PLAYER@%3E%3CR%3D@RequestParameterEncoded?ROOM@%3E%3CM%3D@RequestParameterEncoded?MOB@%3E%3CI%3D@RequestParameterEncoded?ITEM@%3E%3CSI%3D@RequestParameterEncoded?SHOPITEM@%3E","Map",strFeatures);
         }
 		function EditBehavior(ME)
 		{
@@ -125,7 +125,7 @@
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editplayeritemdone.cmvp">
 	<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerID@">
 @endif@
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=RESPONSEFIELD VALUE="@RequestParameter?RESPONSEFIELD@">
 <INPUT TYPE=HIDDEN NAME=REPLACEFIELD VALUE="@RequestParameter?REPLACEFIELD@">
 <INPUT TYPE=HIDDEN NAME=DELITEM VALUE="">

@@ -57,7 +57,7 @@ public class ForumInfo extends StdWebMacro
 		&&parms.containsKey("ALLFORUMJOURNALS"))
 			securityOverride=true;
 
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if((!securityOverride)&&(CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 

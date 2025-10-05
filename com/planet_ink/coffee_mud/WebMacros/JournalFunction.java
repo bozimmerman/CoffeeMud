@@ -60,7 +60,7 @@ public class JournalFunction extends StdWebMacro
 
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		final JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journalName,setClan);
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(CMLib.journals().isArchonJournalName(journalName))
 		{
 			if((M==null)||(!CMSecurity.isASysOp(M)))

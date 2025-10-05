@@ -283,7 +283,7 @@ public class CharClassData extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)

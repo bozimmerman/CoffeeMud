@@ -82,7 +82,7 @@ public class SocialData extends StdWebMacro
 		}
 		if(parms.containsKey("TOVFS"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			final CMFile lf=new CMFile("///resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
@@ -105,7 +105,7 @@ public class SocialData extends StdWebMacro
 		}
 		if(parms.containsKey("TOLFS"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			final CMFile lf=new CMFile("::/resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
@@ -128,7 +128,7 @@ public class SocialData extends StdWebMacro
 		}
 		if(parms.containsKey("NOVFS"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			final CMFile vf=new CMFile("::/resources/socials.txt",M);
@@ -142,7 +142,7 @@ public class SocialData extends StdWebMacro
 		}
 		if(parms.containsKey("NOLFS"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			final CMFile vf=new CMFile("///resources/socials.txt",M);
@@ -172,7 +172,7 @@ public class SocialData extends StdWebMacro
 
 		if(parms.containsKey("EDIT"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			if((isCompSocial)
@@ -365,7 +365,7 @@ public class SocialData extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS))

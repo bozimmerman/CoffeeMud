@@ -53,7 +53,7 @@ public class RandomAreaTemplates extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return "[authentication error]";
 		try

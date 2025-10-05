@@ -475,7 +475,7 @@ public class ClanGovernmentData extends StdWebMacro
 			}
 			if(parms.containsKey("RABLE"))
 			{
-				final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+				final MOB mob=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 				str.append(RaceData.dynAbilities(mob,G.getClanLevelAbilities(null,null,Integer.valueOf(Integer.MAX_VALUE)),G.getName(),G,httpReq,parms,1,parms.get("FONT"))+", ");
 			}
 			if(parms.containsKey("REFFS"))

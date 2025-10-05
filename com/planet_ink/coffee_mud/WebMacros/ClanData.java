@@ -234,7 +234,7 @@ public class ClanData extends StdWebMacro
 			{
 				final boolean webify=parms.containsKey("WEBCOLOR");
 				final boolean decolor=parms.containsKey("NOCOLOR");
-				final MOB M=Authenticate.getAuthenticatedMob(httpReq);
+				final MOB M=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 				boolean authorized = false;
 				if(M!=null)
 				{
@@ -257,9 +257,7 @@ public class ClanData extends StdWebMacro
 					return Integer.toString(numPlayers);
 				}
 				if(parms.containsKey("AUTHORIZED")||parms.containsKey("AUTH"))
-				{
 					return Boolean.toString(authorized);
-				}
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("PREMISE"))
 				{

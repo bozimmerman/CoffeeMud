@@ -543,7 +543,7 @@ public class WebSock extends StdWebMacro implements ProtocolHandler, Tickable
 				cript.reset();
 				cript.update(tokenStr.getBytes("utf8"));
 				final String token = B64Encoder.B64encodeBytes(cript.digest());
-				httpResp.setStatusCode(101);
+				httpResp.setStatusCode(HTTPStatus.S101_SWITCHING_PROTOCOLS);
 				exception.getErrorHeaders().put(HTTPHeader.Common.CONNECTION, HTTPHeader.Common.UPGRADE.toString());
 				exception.getErrorHeaders().put(HTTPHeader.Common.UPGRADE, httpReq.getHeader("upgrade"));
 				exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_ACCEPT, token);

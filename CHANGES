@@ -48,6 +48,7 @@
  47. Prop_LimitedEquip will now also act as Limited Get if flagged as such.
  48. Most objects can be TAGged for enhanced zapper-masking, MQL querying, GMODIFY, WHERE, and in scripts.
  49. Scriptable: FOR-NEXT can now loop over lists MQL query results, and tagged objects.
+ 50. The entire MUDGrinder and web system uses cookie-based auth now, and forums use GET instead of POST.
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

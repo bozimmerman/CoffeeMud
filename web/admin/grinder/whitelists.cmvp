@@ -33,7 +33,7 @@
 		}
 		function Refresh()
 		{
-			document.location.href='whitelists.cmvp?AUTH=@Authenticate?AUTH@';
+			document.location.href='whitelists.cmvp';
 		}
 	//-->
 	</script>
@@ -63,7 +63,7 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=WHITELIST TARGET=_top METHOD=POST ACTION="whitelists.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	
 	<INPUT TYPE=HIDDEN NAME=FUNC VALUE="">
 	<INPUT TYPE=HIDDEN NAME=FTYP VALUE="">
 	<CENTER><FONT COLOR=RED><B>

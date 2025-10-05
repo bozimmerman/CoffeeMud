@@ -38,9 +38,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=REACHIEVEMENT@
     @if?CheckReqParm?TATTOO=@
-        document.location.href='achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT=@AchievementID@';
+        document.location.href='achievement.cmvp?ACHIEVEMENT=@AchievementID@';
     @else@
-        document.location.href='achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT=@RequestParameterEncoded?ACHIEVEMENT@';
+        document.location.href='achievement.cmvp?ACHIEVEMENT=@RequestParameterEncoded?ACHIEVEMENT@';
     @endif@
 @endif@
 //-->

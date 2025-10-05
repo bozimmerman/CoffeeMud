@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.http.MIMEType;
@@ -53,7 +54,7 @@ public class HelloWorldServlet implements SimpleServlet
 		}
 		catch (final IOException e)
 		{
-			response.setStatusCode(500);
+			response.setStatusCode(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 	}
 
@@ -77,7 +78,7 @@ public class HelloWorldServlet implements SimpleServlet
 		}
 		catch (final IOException e)
 		{
-			response.setStatusCode(500);
+			response.setStatusCode(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 	}
 
@@ -89,10 +90,10 @@ public class HelloWorldServlet implements SimpleServlet
 		else
 		{
 			for(final String cookieName : request.getCookieNames())
-				response.setCookie(cookieName, request.getCookie(cookieName));
+				response.setCookie(new Cookie(cookieName, request.getCookie(cookieName)));
 			for(final String field : request.getUrlParameters())
 				response.setHeader("X-"+field, request.getUrlParameter(field));
-			response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
+			response.setStatusCode(HTTPStatus.S204_NO_CONTENT);
 		}
 	}
 
@@ -105,7 +106,7 @@ public class HelloWorldServlet implements SimpleServlet
 	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if((method != HTTPMethod.POST) && (method!=HTTPMethod.GET))
-			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 }

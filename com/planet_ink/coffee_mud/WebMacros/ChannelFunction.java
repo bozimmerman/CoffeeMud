@@ -56,7 +56,7 @@ public class ChannelFunction extends StdWebMacro
 			return " @break@";
 		if(last.length()>0)
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob!=null)
 			{
 				final int code=CMLib.channels().getChannelIndex(last);

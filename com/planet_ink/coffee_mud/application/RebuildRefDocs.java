@@ -1,5 +1,6 @@
 	package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_web.http.HTTPReqResponse;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.interfaces.HTTPResponse;
 import com.planet_ink.coffee_web.server.WebServer;
@@ -109,17 +110,7 @@ public class RebuildRefDocs
 			public void run()
 			{
 				Log.errOut("Running Rebuild Ref Docs");
-				final HTTPResponse resp = new HTTPResponse()
-				{
-					@Override
-					public void setStatusCode(final int httpStatusCode) { }
-					@Override
-					public void setHeader(final String name, final String value) { }
-					@Override
-					public void setCookie(final String name, final String value) { }
-					@Override
-					public void setMimeType(final String mimeType) { }
-				};
+				final HTTPResponse resp = new HTTPReqResponse();
 				final Map<String, String>	params	= new HashMap<String, String>();
 				final Map<String, Object>	objects	= new HashMap<String, Object>();
 				final WebMacro W = CMClass.getWebMacro("RebuildReferenceDocs".toUpperCase());

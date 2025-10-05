@@ -60,7 +60,7 @@ public class ForumJournalNext extends StdWebMacro
 			httpReq.getRequestObjects().remove("JOURNALLIST");
 			return "";
 		}
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 		{
 			if(guestM==null)

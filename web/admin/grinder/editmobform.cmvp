@@ -140,7 +140,7 @@
 		function Trigger(field, value)
 		{
 			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("/grinder/trigger.cmvp?FIELD="+field+"&AUTH="+encodeURIComponent("@Authenticate?AUTH@")+"&"+field+"="+encodeURIComponent(value),
+			w=window.open("/grinder/trigger.cmvp?FIELD="+field+"&"+field+"="+encodeURIComponent(value),
 			            "Trigger/Ritual Worksheet",strFeatures, false);
 		}
 	//-->
@@ -179,7 +179,7 @@
 	<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
 	<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 @endif@
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">

@@ -62,7 +62,7 @@ public class PostOfficeNext extends StdWebMacro
 				return "";
 			}
 			String lastID="";
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return " @break@";
 			if((player!=null)&&(player.length()>0))

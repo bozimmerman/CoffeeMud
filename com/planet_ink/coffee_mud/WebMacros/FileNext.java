@@ -65,7 +65,7 @@ public class FileNext extends StdWebMacro
 		if(path==null)
 			path="";
 		final String last=httpReq.getUrlParameter("FILE");
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return "[authentication error]";
 		if(parms.containsKey("RESET"))

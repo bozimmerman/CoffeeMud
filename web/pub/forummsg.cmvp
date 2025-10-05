@@ -1,5 +1,7 @@
+@if?!JournalMessageNext?AUTHCHECK@
+@AddFile?/forums.cmvp@
+@else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<META CHARSET="utf-8"/>
@@ -11,138 +13,160 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
-		var abort=false;
 		function DoReply(which)
 		{
-			if(abort) return;
-			abort=true;
 			document.FORUM.FUNCTION.value='REPLY';
 			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.QUOTEDMESSAGE.value='';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
         function Register()
         {
             document.FORUM.LASTPAGE.value='forummsg.cmvp?@RequestParametersEncoded@';
             document.FORUM.action='register.cmvp';
-            document.FORUM.submit();
+            handleSubmit(document.FORUM);
         }
 		function QuoteReply(which)
 		{
-			if(abort) 
-				return;
-			abort=true;
 			document.FORUM.FUNCTION.value='REPLY';
 			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.QUOTEDMESSAGE.value=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function EditMsg(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.FUNCTION.value='EDITPOST';
 			document.FORUM.JOURNALMESSAGE.value=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function EditReply(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.JOURNALPARENT.value=document.FORUM.JOURNALMESSAGE.value;
 			document.FORUM.FUNCTION.value='EDITPOST';
 			document.FORUM.JOURNALMESSAGE.value=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function Cancel(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forum.cmvp";
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function CancelTo(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function Forgot()
 		{
 			document.FORUM.LASTPAGE.value='/forum.cmvp';
 			document.FORUM.action="forgot.cmvp";
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function DeleteReply(which)
 		{
-			if(abort) return;
 			if(window.confirm('Confirm: Delete this reply?'))
 			{
-				abort=true;
 				document.FORUM.action='forummsg.cmvp';
 				document.FORUM.JOURNALPARENT.value=document.FORUM.JOURNALMESSAGE.value;
 				document.FORUM.JOURNALMESSAGE.value=which;
 				document.FORUM.FUNCTION.value='DELETEREPLY';
-				document.FORUM.submit();
+				handleSubmit(document.FORUM);
 			}
 		}
 		function DeleteMsg(which)
 		{
-			if(abort) return;
 			if(window.confirm('Confirm: Delete this post and all responses?'))
 			{
-				abort=true;
 				document.FORUM.JOURNALPAGE.value=document.FORUM.MESSAGEPAGE.value;
 				document.FORUM.MESSAGEPAGE.value='';
 				document.FORUM.JOURNALPARENT.value='';
 				document.FORUM.action='forum.cmvp';
 				document.FORUM.JOURNALMESSAGE.value=which;
 				document.FORUM.FUNCTION.value='DELETE';
-				document.FORUM.submit();
+				handleSubmit(document.FORUM);
 			}
 		}
-		function NextPage(which)
+		function NextPage(which,lastcard)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forummsg.cmvp";
-			document.FORUM.MESSAGEPAGE.value='';
 			if(document.FORUM.MESSAGEPAGE.value=='')
 				document.FORUM.MESSAGEPAGE.value='0';
 			document.FORUM.MESSAGEPAGE.value=document.FORUM.MESSAGEPAGE.value+','+which;
-			document.FORUM.submit();
+			if(document.FORUM.REPLYCARDINAL.value=='')
+				document.FORUM.REPLYCARDINAL.value='0';
+			document.FORUM.REPLYCARDINAL.value=document.FORUM.REPLYCARDINAL.value+','+lastcard;
+			handleSubmit(document.FORUM);
 		
 		}
 		function PrevPage(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forummsg.cmvp";
-			document.FORUM.MESSAGEPAGE.value='';
 			var x=document.FORUM.MESSAGEPAGE.value.lastIndexOf(',');
 			if(x>0)
 				document.FORUM.MESSAGEPAGE.value=document.FORUM.MESSAGEPAGE.value.substr(0,x);
 			else
 				document.FORUM.MESSAGEPAGE.value='0';
-			document.FORUM.submit();
+			x=document.FORUM.REPLYCARDINAL.value.lastIndexOf(',');
+			if(x>0)
+				document.FORUM.REPLYCARDINAL.value=document.FORUM.REPLYCARDINAL.value.substr(0,x);
+			else
+				document.FORUM.REPLYCARDINAL.value='0';
+			handleSubmit(document.FORUM);
+		}
+		
+        function logout() 
+        {
+			document.cookie = 'CMAUTH=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+			document.FORUM.JOURNAL.value='';
+			document.FORUM.action = 'forums.cmvp';
+			handleSubmit(document.FORUM);
+        }
+		
+		function handleSubmit(form) 
+		{
+			var params = [];
+			var elements = form.elements;
+			for(var i=0; i<elements.length; i++) 
+			{
+				var el = elements[i];
+				var name = el.name;
+				var value = el.value.trim();
+				if (!name || el.disabled || (el.type === 'submit' || el.type === 'button'))
+					continue;
+				if (value !== '')
+					params.push(encodeURIComponent(name) + '=' + encodeURIComponent(value));
+			}
+			var cleanUrl = form.action;
+			if (params.length > 0)
+				cleanUrl += (form.action.indexOf('?') > -1 ? '&' : '?') + params.join('&');
+			if (typeof window.location.assign === 'function')
+				window.location.assign(cleanUrl);
+			else
+				window.location.href = cleanUrl;
+			return false;
 		}
 	//-->
 	</SCRIPT>
 </head>
 
 <body>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forummsg.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=GET ACTION="forummsg.cmvp">
 @if?CheckReqParm?FUNCTION=DELETEREPLY@ 
 	@AddRequestParameter?DELMSG=@@JournalFunction?DELETEREPLY@@ @
 @endif@
 @if?CheckReqParm?FUNCTION=EDIT@ 
 	@AddRequestParameter?DELMSG=@@JournalFunction?EDIT@@ @
 @endif@
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@JournalInfo?KEY@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="@RequestParameter?MESSAGEPAGE@">
+<INPUT TYPE=HIDDEN NAME=REPLYCARDINAL VALUE="@RequestParameter?REPLYCARDINAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="">
 <INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
@@ -152,9 +176,9 @@
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
     <TD>@if?CheckReqParm?CLAN=@
-        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@">
         @else@
-        <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
+        <a href="index.cmvp">
         @endif@
         <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
@@ -164,7 +188,7 @@
 	@if?!Authenticate?SETPLAYER@ 
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
-		<INPUT TYPE=SUBMIT VALUE=Login>
+		<INPUT TYPE=SUBMIT VALUE=Login onclick="document.FORUM.METHOD='POST'; document.FORUM.action='forummsg.cmvp';">
         @if?IsAccountSystem@
             <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
             <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
@@ -173,6 +197,7 @@
 		<FONT SIZE=-2><a href="javascript:Forgot()">Forgot</a></FONT>
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
+        <a href="javascript:logout()">(logout)</a>
 	@endif@
 	</TD>
 	</TR>
@@ -200,7 +225,7 @@
 	<TD COLSPAN=2>
 		<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 		<TR VALIGN=CENTER HEIGHT=15>
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:Cancel('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbback.gif>&nbsp;&nbsp;<B>Forum</B>
@@ -210,7 +235,7 @@
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
 			@if?CheckReqParm?FORUMREFERER=@
 			@else@
-				<TD WIDTH=160px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:CancelTo('@RequestParameter?FORUMREFERER@')">
+				<TD WIDTH=160px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				
 					<a href="javascript:CancelTo('@RequestParameter?FORUMREFERER@')" style="text-decoration:none">
 						<FONT COLOR=WHITE SIZE=-1>
@@ -220,7 +245,7 @@
 				</TD>
 			@endif@
 			@if?ForumInfo?CANPOST@
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoReply('')">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:DoReply('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbulb.gif>&nbsp;&nbsp;<B>Post Reply</B>
@@ -263,7 +288,7 @@
 				@loop@
 					@JournalInfo?ATTACHNEXT@
 					&nbsp;
-					<a href="/FileData?ATTACHMENT=TRUE&AUTH=@RequestParameterEncoded?AUTH@&PATH=@RequestParameterEncoded?ATTACHPATH@&FILE=@RequestParameterEncoded?ATTACHNAME@">
+					<a href="/FileData?ATTACHMENT=TRUE&PATH=@RequestParameterEncoded?ATTACHPATH@&FILE=@RequestParameterEncoded?ATTACHNAME@">
 					<IMG BORDER=0 src=images/msgclip.png>@RequestParameter?ATTACHNAME@<BR>
 					</a>
 				@back@
@@ -274,7 +299,7 @@
 			<TR VALIGN=CENTER HEIGHT=15>
 				<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
 				@if?JournalInfo?CANEDIT@
-					<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:EditMsg('@JournalInfo?KEY@')">
+					<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 					<a href="javascript:EditMsg('@JournalInfo?KEY@')" style="text-decoration:none">
 						<FONT COLOR=LIGHTBLUE SIZE=-1>
 						&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docgear.gif>&nbsp;&nbsp;<B>Edit</B>
@@ -284,7 +309,7 @@
 					</TD>
 				@endif@
 				@if?ForumInfo?CANADMIN@
-					<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DeleteMsg('@JournalInfo?KEY@')">
+					<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 					<a href="javascript:DeleteMsg('@JournalInfo?KEY@')" style="text-decoration:none">
 						<FONT COLOR=LIGHTBLUE SIZE=-1>
 						&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docx.gif>&nbsp;&nbsp;<B>Delete</B>
@@ -293,14 +318,14 @@
 					</TD>
 				@endif@
 				@if?ForumInfo?CANREPLY@
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:QuoteReply('@JournalInfo?KEY@')">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				<a href="javascript:QuoteReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=LIGHTBLUE SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Quote</B>
 					</FONT>
 				</a>
 				</TD>
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoReply('@JournalInfo?KEY@')">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				<a href="javascript:DoReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=LIGHTBLUE SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Reply</B>
@@ -324,7 +349,7 @@
 			<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 			<TR>
 				<TD WIDTH=50%>&nbsp;<FONT COLOR=WHITE SIZE=-1>@JournalInfo?DATE@</FONT>&nbsp;</TD>
-				<TD WIDTH=50% ALIGN=RIGHT>&nbsp;<FONT COLOR=WHITE SIZE=-1>Reply #@JournalInfo?CARDINAL@</FONT>&nbsp;</TD>
+				<TD WIDTH=50% ALIGN=RIGHT>&nbsp;<FONT COLOR=WHITE SIZE=-1>Reply #@JournalInfo?CARDINAL@</FONT>&nbsp;@AddRequestParameter?REPLYCARDINAL=@@JournalInfo?CARDINAL@@ @</TD>
 			</TR>
 			</TABLE>
 		</TD>
@@ -345,7 +370,7 @@
 				@loop@
 					@JournalInfo?ATTACHNEXT@
 					&nbsp;
-					<a href="/FileData?ATTACHMENT=TRUE&AUTH=@RequestParameterEncoded?AUTH@&PATH=@RequestParameterEncoded?ATTACHPATH@&FILE=@RequestParameterEncoded?ATTACHNAME@">
+					<a href="/FileData?ATTACHMENT=TRUE&PATH=@RequestParameterEncoded?ATTACHPATH@&FILE=@RequestParameterEncoded?ATTACHNAME@">
 					<IMG BORDER=0 src=images/msgclip.png>@RequestParameter?ATTACHNAME@<BR>
 					</a>
 				@back@
@@ -356,7 +381,7 @@
 		<TR VALIGN=CENTER HEIGHT=15>
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
 			@if?JournalInfo?CANEDIT@
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:EditReply('@JournalInfo?KEY@')">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				<a href="javascript:EditReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docgear.gif>&nbsp;&nbsp;<B>Edit</B>
@@ -366,7 +391,7 @@
 				</TD>
 			@endif@
 			@if?ForumInfo?CANADMIN@
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DeleteReply('@JournalInfo?KEY@')">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				<a href="javascript:DeleteReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docx.gif>&nbsp;&nbsp;<B>Delete</B>
@@ -375,14 +400,14 @@
 				</TD>
 			@endif@
 			@if?ForumInfo?CANREPLY@
-			<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:QuoteReply('@JournalInfo?KEY@')">
+			<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:QuoteReply('@JournalInfo?KEY@')" style="text-decoration:none">
 				<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Quote</B>
 				</FONT>
 			</a>
 			</TD>
-			<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoReply('@JournalInfo?KEY@')">
+			<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:DoReply('@JournalInfo?KEY@')" style="text-decoration:none">
 				<FONT COLOR=LIGHTBLUE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Reply</B>
@@ -413,7 +438,7 @@
 		<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 		<TR VALIGN=CENTER HEIGHT=15>
 			@if?CheckReqParm?MESSAGEPAGE=0@ @else@ @if?CheckReqParm?MESSAGEPAGE=@ @else@
-			<TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:PrevPage('')">
+			<TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:PrevPage('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docback.gif><B>Previous</B>
@@ -424,8 +449,8 @@
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
 			</TD>
 			@if?CheckReqParm?!LASTENTRYTIME=@
-			<TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NextPage('@RequestParameter?LASTENTRYTIME@')">
-			<a href="javascript:NextPage('')" style="text-decoration:none">
+			<TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
+			<a href="javascript:NextPage('@RequestParameter?LASTENTRYTIME@','@RequestParameter?REPLYCARDINAL@')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				<B>Next</B>&nbsp;&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docforward.gif>
 				</FONT>
@@ -441,3 +466,4 @@
 </FORM>
 </body>
 </html>
+@endif@

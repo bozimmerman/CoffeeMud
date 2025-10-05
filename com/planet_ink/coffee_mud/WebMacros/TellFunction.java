@@ -53,7 +53,7 @@ public class TellFunction extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(mob!=null)
 		{
 			final String whom=httpReq.getUrlParameter("TELLWHOM");

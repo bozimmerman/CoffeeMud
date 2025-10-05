@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=RERACE@
     @if?CheckReqParm?NEWRACEID=@
-        document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
+        document.location.href='race.cmvp?RACE=@RaceID@';
     @else@
-        document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RequestParameterEncoded?NEWRACEID@&NEWRACE=@RequestParameterEncoded?NEWRACEID@';
+        document.location.href='race.cmvp?RACE=@RequestParameterEncoded?NEWRACEID@&NEWRACE=@RequestParameterEncoded?NEWRACEID@';
     @endif@
 @endif@
 //-->

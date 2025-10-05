@@ -281,7 +281,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("AREALIST"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
@@ -291,7 +291,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("PLANETLIST"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
@@ -301,7 +301,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("TREELIST"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
@@ -316,7 +316,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELAREA"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Area A=getLoggedArea(httpReq,mob);
@@ -329,7 +329,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITACCOUNT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("ACCOUNT");
@@ -351,7 +351,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELACCOUNT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("ACCOUNT");
@@ -379,7 +379,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCATALOGMOB"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			String last=httpReq.getUrlParameter("DELMOB");
@@ -404,7 +404,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCATALOGITEM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			String last=httpReq.getUrlParameter("DELITEM");
@@ -429,7 +429,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCOMPONENT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("COMPONENT");
@@ -450,7 +450,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITCOMPONENT")||parms.containsKey("ADDCOMPONENT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("COMPONENT");
@@ -469,7 +469,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELPLANE"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("PLANE");
@@ -493,7 +493,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITPLANE")||parms.containsKey("ADDPLANE"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("PLANE");
@@ -503,7 +503,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PLANES))
 				return "@break@";
-			final String err=new GrinderPlanes().runMacro(httpReq,parm);
+			final String err=new GrinderPlanes().runMacro(httpReq,httpResp,parm);
 			if(err.length()>0)
 				return err;
 			//Log.sysOut("Grinder",mob.Name()+" modified plane "+last);
@@ -512,7 +512,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELALLQUALIFY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("ALLQUALID");
@@ -539,7 +539,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITALLQUALIFY")||parms.containsKey("ADDALLQUALIFY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("ALLQUALID");
@@ -558,7 +558,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCLAN"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("CLAN");
@@ -578,7 +578,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITCLAN"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("CLAN");
@@ -601,7 +601,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDCLAN"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("NEWCLANID");
@@ -628,7 +628,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCLANGOVERNMENT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("GOVERNMENT");
@@ -649,7 +649,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITCLANGOVERNMENT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("GOVERNMENT");
@@ -672,7 +672,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("IMPORTAREA"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			byte[] bufBytes=null;
@@ -719,7 +719,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDAREA"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			final String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null)
 				return "false";
@@ -747,7 +747,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			String AREA=httpReq.getUrlParameter("AREA");
 			final Area A=getAreaObject(AREA);
 			if(A==null)
@@ -764,7 +764,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELEXIT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -780,7 +780,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCOMMAND"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Command C=CMClass.getCommand(httpReq.getUrlParameter("COMMAND"));
@@ -806,7 +806,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -837,7 +837,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKEXIT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -859,7 +859,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("CREATEEXIT"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -875,7 +875,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKAREA"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -901,7 +901,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
@@ -933,7 +933,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELHOLIDAY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("HOLIDAY");
@@ -949,7 +949,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITHOLIDAY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String last=httpReq.getUrlParameter("HOLIDAY");
@@ -966,7 +966,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELRACE"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Race R=null;
@@ -990,7 +990,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITRACE"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Race R=null;
@@ -1034,7 +1034,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELCLASS"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			CharClass C=null;
@@ -1059,7 +1059,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITCLASS"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			CharClass C=null;
@@ -1103,7 +1103,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELFACTION"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Faction F=null;
@@ -1124,7 +1124,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITFACTION"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Faction F=null;
@@ -1162,7 +1162,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELABILITY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Ability A=null;
@@ -1183,7 +1183,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITABILITY"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Ability A=null;
@@ -1250,7 +1250,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITCOMMAND"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			Command C=null;
@@ -1294,7 +1294,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITITEM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String player=httpReq.getUrlParameter("PLAYER");
@@ -1309,7 +1309,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITMOB"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String roomID=httpReq.getUrlParameter("ROOM");
@@ -1322,7 +1322,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITPLAYER"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final MOB M=CMLib.players().getLoadPlayer(httpReq.getUrlParameter("PLAYER"));
@@ -1334,7 +1334,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELROOM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
@@ -1383,7 +1383,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("RESETROOM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
@@ -1420,7 +1420,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String link=httpReq.getUrlParameter("LINK");
@@ -1448,7 +1448,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("MASSACCOUNTCREATE"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String dataStr=httpReq.getUrlParameter("ACCOUNTNAMES");
@@ -1547,7 +1547,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("PAINTROOMS"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");
@@ -1644,7 +1644,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDGRIDROOM"))
 		{
-			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(mob==null)
 				return "@break@";
 			final String AREA=httpReq.getUrlParameter("AREA");

@@ -58,7 +58,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return "[Unauthorized]";
 		if(!CMSecurity.isASysOp(M))
@@ -77,7 +77,9 @@ public class RebuildReferenceDocs extends StdWebMacro
 				final CMFile df=new CMFile("/guides/refs/"+sf.getName().substring(0,sfLen-5)+".html",M);
 				if(!df.canWrite())
 					return "[Unwrittable: "+df.getName()+"]";
-				final byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime, lastFoundMacro, new StringBuffer(new String(sf.raw()))).toString().getBytes();
+				final byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime,
+																				lastFoundMacro, new StringBuffer(new String(sf.raw())),
+																				httpResp).toString().getBytes();
 				for(int b=0;b<savable.length-5;b++)
 				{
 					if((savable[b]=='.') &&(savable[b+1]=='c') &&(savable[b+2]=='m') &&(savable[b+3]=='v') &&(savable[b+4]=='p'))

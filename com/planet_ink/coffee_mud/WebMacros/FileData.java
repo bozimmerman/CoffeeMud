@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -78,12 +79,12 @@ public class FileData extends StdWebMacro
 			filename=filename.substring(x+1);
 		final MIMEType mimeType = MIMEType.All.getMIMEType(filename);
 		if(mimeType != null)
-			httpResp.setHeader("Content-Type", mimeType.getType());
-		httpResp.setHeader("Content-Disposition", "attachment; filename="+filename);
+			httpResp.setHeader(HTTPHeader.Common.CONTENT_TYPE.toString(), mimeType.getType());
+		httpResp.setHeader(HTTPHeader.Common.CONTENT_DISPOSITION.toString(), "attachment; filename="+filename);
 
 		if(filename.length()==0)
 			return null;
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return null;
 		if(httpReq.getUrlParameter("ATTACHMENT")!=null)

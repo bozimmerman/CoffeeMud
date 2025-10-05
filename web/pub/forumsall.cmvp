@@ -1,5 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<META CHARSET="utf-8"/>
@@ -73,13 +72,19 @@
             document.FORUM.submit();
         
         }
-    //-->
+        
+        function logout() 
+        {
+			document.cookie = 'CMAUTH=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+			document.FORUM.action = 'forums.cmvp';
+			document.FORUM.submit();
+        }
+        //-->
     </SCRIPT>
 </head>
 
 <body>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=GET ACTION="forum.cmvp">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 @AddRequestParameter?CURRJOURNAL=@@RequestParameter?JOURNAL@@ @
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
@@ -93,7 +98,7 @@
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
     <TR>
     <TD WIDTH=10px>&nbsp;</TD>
-    <TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+    <TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@">
         <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
     </TD>
@@ -102,13 +107,14 @@
     @if?!Authenticate?SETPLAYER@ 
         Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
         Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
-        <INPUT TYPE=SUBMIT VALUE=Login>
+		<INPUT TYPE=SUBMIT VALUE=Login onclick="document.FORUM.METHOD='POST'; document.FORUM.action='forum.cmvp';">
         @if?IsAccountSystem@
             <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
             <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
         @endif@
     @else@
         Logged in as <B>@PlayerData?NAME@</B>
+        <a href="javascript:logout()">(logout)</a>
     @endif@
     </TD>
     </TR>

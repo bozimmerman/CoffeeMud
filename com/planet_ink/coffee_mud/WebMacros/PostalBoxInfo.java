@@ -51,7 +51,7 @@ public class PostalBoxInfo extends StdWebMacro
 		final String chain=httpReq.getUrlParameter("POSTCHAIN");
 		if(chain==null)
 			return " @break@";
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return " @break@";
 

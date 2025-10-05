@@ -31,6 +31,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
@@ -135,7 +136,7 @@ public class ImageVerificationImage extends StdWebMacro
 				{
 					final MIMEType mimeType = MIMEType.All.getMIMEType(getFilename(httpReq,""));
 					if(mimeType != null)
-						httpResp.setHeader("Content-Type", mimeType.getType());
+						httpResp.setHeader(HTTPHeader.Common.CONTENT_TYPE.toString(), mimeType.getType());
 				}
 				final SLinkedList<ImgCacheEntry> cache = getVerifyCache();
 				String value=null;

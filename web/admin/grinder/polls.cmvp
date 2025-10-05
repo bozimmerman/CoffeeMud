@@ -13,7 +13,7 @@
         function Poll(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=500,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("poll.cmvp?AUTH=@Authenticate?AUTH@&POLL="+action,
+            w=window.open("poll.cmvp?POLL="+action,
             	"Poll",strFeatures, false);
         }
         function Clicked(action)
@@ -45,7 +45,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="polls.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Poll Manager</H2></FONT></TD></TR>
 	<TR>

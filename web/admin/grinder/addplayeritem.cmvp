@@ -5,7 +5,7 @@
 @MUDGrinder?EDITPLAYER@
 
 @if?!CheckReqParm?ERRMSG=@ 
-	@AddFile?player.cmvp&AUTH=@Authenticate?AUTH@&PLAYER=@@RequestParameterEncoded?PLAYER@@ @
+	@AddFile?player.cmvp&PLAYER=@@RequestParameterEncoded?PLAYER@@ @
 @else@ 
 <HTML>
 <head>
@@ -14,8 +14,8 @@
  	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 </head>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MAP>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenupi.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MENU>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/edititemform.cmvp?PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenupi.cmvp?PLAYER=@RequestParameterEncoded?PLAYER@&ITEM=@RequestParameterEncoded?ITEM@" NAME=MENU>
 	</FRAMESET>
 </HTML>
 @endif@

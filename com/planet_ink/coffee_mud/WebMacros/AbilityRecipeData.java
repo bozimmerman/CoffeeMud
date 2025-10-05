@@ -196,7 +196,7 @@ public class AbilityRecipeData extends StdWebMacro
 							return L("The value for field @x is invalid.",editor.colHeader());
 						dataRow.get(c).second=newVal;
 					}
-					final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+					final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 					if(M==null)
 						return " @break@";
 					final boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));
@@ -213,7 +213,7 @@ public class AbilityRecipeData extends StdWebMacro
 						recipeData.dataRows().remove(row-1);
 					else
 						return " @break@";
-					final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+					final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 					if(M==null)
 						return " @break@";
 					final boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));

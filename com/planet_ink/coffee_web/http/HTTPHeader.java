@@ -236,6 +236,29 @@ public interface HTTPHeader
 		}
 
 		/**
+		 * Finds the appropriate HTTPHeader object for the given header
+		 * Creates one if it doesn't exist.
+		 * @param str the string to match
+		 * @return the HTTPHeader object
+		 */
+		public static HTTPHeader findOrCreate(final String str)
+		{
+			try
+			{
+				return Common.valueOf(str.toUpperCase().replace('-','_'));
+			}
+			catch (final Exception e)
+			{
+			}
+			for(final HTTPHeader head : Common.values())
+			{
+				if(head.lowerCaseName().equalsIgnoreCase(str))
+					return head;
+			}
+			return createNew(str);
+		}
+
+		/**
 		 * Set the static keep alive header from your configuration
 		 * @param header
 		 */

@@ -68,7 +68,7 @@ public class FileInfo extends StdWebMacro
 		String file=httpReq.getUrlParameter("FILE");
 		if(file==null)
 			file="";
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return "[authentication error]";
 		try

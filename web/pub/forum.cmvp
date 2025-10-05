@@ -1,5 +1,7 @@
+@if?!JournalMessageNext?AUTHCHECK@
+@AddFile?/forums.cmvp@
+@else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<META CHARSET="utf-8"/>
@@ -11,57 +13,51 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
-		var abort=false;
-        function Register()
-        {
-            document.FORUM.LASTPAGE.value='forum.cmvp?@RequestParametersEncoded@';
-            document.FORUM.action='register.cmvp';
-            document.FORUM.submit();
-        }
+		function Register()
+		{
+			document.FORUM.LASTPAGE.value='forum.cmvp?@RequestParametersEncoded@';
+			document.FORUM.action='register.cmvp';
+			handleSubmit(document.FORUM);
+		}
 		function DoMessage(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.JOURNALMESSAGE.value=which;
 			document.FORUM.action='forummsg.cmvp';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function DoAdmin(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forumadmin.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function NewMessage(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.FUNCTION.value='NEWPOST';
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function Cancel(which)
 		{
-			if(abort) return; abort=true;
 			@if?!CheckReqParm?CLAN=@
 			document.FORUM.action="index.cmvp";
-    		@else@
-            document.FORUM.action="forums.cmvp";
-            @endif@
+			@else@
+			document.FORUM.action="forums.cmvp";
+			@endif@
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function DoSearch(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
 			document.FORUM.DBSEARCH.value=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function searchKeyPress(e,value)
 		{
@@ -77,18 +73,16 @@
 
 		function NextPage(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			if(document.FORUM.JOURNALPAGE.value=='')
 				document.FORUM.JOURNALPAGE.value='0';
 			document.FORUM.JOURNALPAGE.value=document.FORUM.JOURNALPAGE.value+','+which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		
 		}
 		function PrevPage(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			var x=document.FORUM.JOURNALPAGE.value.lastIndexOf(',');
@@ -96,7 +90,7 @@
 				document.FORUM.JOURNALPAGE.value=document.FORUM.JOURNALPAGE.value.substr(0,x);
 			else
 				document.FORUM.JOURNALPAGE.value='0';
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		
 		}
 		
@@ -104,7 +98,7 @@
 		{
 			document.FORUM.LASTPAGE.value='/forum.cmvp';
 			document.FORUM.action="forgot.cmvp";
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		
 		function sayUnsubscribe()
@@ -113,7 +107,7 @@
 			{
 				document.FORUM.action="forum.cmvp";
 				document.FORUM.FUNCTION.value="UNSUBSCRIBE";
-				document.FORUM.submit();
+				handleSubmit(document.FORUM);
 			}
 		}
 		
@@ -123,16 +117,47 @@
 			{
 				document.FORUM.action="forum.cmvp";
 				document.FORUM.FUNCTION.value="SUBSCRIBE";
-				document.FORUM.submit();
+				handleSubmit(document.FORUM);
 			}
+		}
+		
+		function logout() 
+		{
+			document.cookie = 'CMAUTH=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+			document.FORUM.JOURNAL.value='';
+			document.FORUM.action = 'forums.cmvp';
+			handleSubmit(document.FORUM);
+		}
+		
+		function handleSubmit(form) 
+		{
+			var params = [];
+			var elements = form.elements;
+			for(var i=0; i<elements.length; i++) 
+			{
+				var el = elements[i];
+				var name = el.name;
+				var value = el.value.trim();
+				if (!name || el.disabled || (el.type === 'submit' || el.type === 'button'))
+					continue;
+				if (value !== '')
+					params.push(encodeURIComponent(name) + '=' + encodeURIComponent(value));
+			}
+			var cleanUrl = form.action;
+			if (params.length > 0)
+				cleanUrl += (form.action.indexOf('?') > -1 ? '&' : '?') + params.join('&');
+			if (typeof window.location.assign === 'function')
+				window.location.assign(cleanUrl);
+			else
+				window.location.href = cleanUrl;
+			return false;
 		}
 	//-->
 	</SCRIPT>
 </head>
 
 <body>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=GET ACTION="forum.cmvp">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
@@ -144,30 +169,31 @@
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
 	<TD>@if?CheckReqParm?CLAN=@
-	    <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
-	    @else@
-        <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
-	    @endif@
-        <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
+		<a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@">
+		@else@
+		<a href="index.cmvp">
+		@endif@
+		<IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
 		</a>
 	</TD>
 	<TD ALIGN=RIGHT VALIGN=TOP>
 		<FONT COLOR=BLACK SIZE=-1>
-    @if?!CheckReqParm?CLAN=@
-        @if?!Authenticate?SETPLAYER@<!-- -->@endif@
-    @else@
+	@if?!CheckReqParm?CLAN=@
+		@if?!Authenticate?SETPLAYER@<!-- -->@endif@
+	@else@
 	@if?!Authenticate?SETPLAYER@ 
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
-		<INPUT TYPE=SUBMIT VALUE=Login>
-        @if?IsAccountSystem@
-            <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
-            <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
-        @endif@
+		<INPUT TYPE=SUBMIT VALUE=Login onclick="document.FORUM.METHOD='POST'; document.FORUM.action='forum.cmvp';">
+		@if?IsAccountSystem@
+			<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
+			<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
+		@endif@
 		<BR>
 		<FONT SIZE=-2><a href="javascript:Forgot()">Forgot</a></FONT>
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
+		<a href="javascript:logout()">(logout)</a>
 		@if?ForumInfo?ISSMTPFORWARD@
 			@if?CheckReqParm?FUNCTION=SUBSCRIBE@
 				<BR><FONT SIZE=-2 COLOR=RED><B>@JournalFunction?SUBSCRIBE@</B></FONT>
@@ -214,7 +240,7 @@
 	<TD COLSPAN=6>
 		<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 		<TR VALIGN=CENTER HEIGHT=15>
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:Cancel('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbback.gif>&nbsp;&nbsp;<B>@if?!CheckReqParm?CLAN=@Home@else@Forums@endif@</B>
@@ -224,7 +250,7 @@
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
 			</TD>
 			@if?ForumInfo?CANADMIN@
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoAdmin('')">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:DoAdmin('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/dochammer.gif>&nbsp;&nbsp;<B>Admin</B>
@@ -233,7 +259,7 @@
 			</TD>
 			@endif@
 			@if?ForumInfo?CANPOST@
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NewMessage('')">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 			<a href="javascript:NewMessage('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbulb.gif>&nbsp;&nbsp;<B>New Thread</B>
@@ -306,7 +332,7 @@
 			<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 			<TR VALIGN=CENTER HEIGHT=15>
 				@if?CheckReqParm?JOURNALPAGE=0@ @else@ @if?CheckReqParm?JOURNALPAGE=@ @else@
-				<TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:PrevPage('')">
+				<TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 				<a href="javascript:PrevPage('')" style="text-decoration:none">
 					<FONT COLOR=WHITE SIZE=-1>
 					<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docback.gif><B>Previous</B>
@@ -317,8 +343,8 @@
 				<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
 				</TD>
 				@if?CheckReqParm?!LASTENTRYTIME=@
-				<TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NextPage('@RequestParameter?LASTENTRYTIME@')">
-				<a href="javascript:NextPage('')" style="text-decoration:none">
+				<TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
+				<a href="javascript:NextPage('@RequestParameter?LASTENTRYTIME@')" style="text-decoration:none">
 					<FONT COLOR=WHITE SIZE=-1>
 					<B>Next</B>&nbsp;&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docforward.gif>
 					</FONT>
@@ -335,7 +361,7 @@
 <TABLE WIDTH=80% BORDER=0 CELLSPACING=1 CELLPADDING=1>
 <TR VALIGN=CENTER HEIGHT=15>
 	@if?CheckReqParm?DBSEARCH=@
-		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch(document.FORUM.SEARCHBOX.value)">
+		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 		<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none">
 			<FONT COLOR=WHITE SIZE=-1>
 			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docquestion.gif>&nbsp;&nbsp;<B>Search Forum</B>
@@ -344,7 +370,7 @@
 		</TD>
 		<TD>&nbsp;&nbsp;&nbsp;<INPUT TYPE=TEXT SIZE=50 VALUE="" NAME=SEARCHBOX ONKEYDOWN="searchKeyPress(event,this.value)"></FONT></TD>
 	@else@
-		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch('')">
+		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 		<a href="javascript:DoSearch('')" style="text-decoration:none">
 			<FONT COLOR=WHITE SIZE=-1>
 			&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docback.gif>&nbsp;&nbsp;<B>View All Msgs</B>
@@ -359,3 +385,4 @@
 </FORM>
 </body>
 </html>
+@endif@

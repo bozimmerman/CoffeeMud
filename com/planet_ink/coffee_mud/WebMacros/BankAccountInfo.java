@@ -102,7 +102,7 @@ public class BankAccountInfo extends StdWebMacro
 			final String last=httpReq.getUrlParameter("BANKCHAIN");
 			if(last==null)
 				return " @break@";
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return " @break@";
 			String player=httpReq.getUrlParameter("PLAYER");

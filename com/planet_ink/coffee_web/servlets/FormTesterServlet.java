@@ -35,7 +35,7 @@ public class FormTesterServlet implements SimpleServlet
 	@Override
 	public void doGet(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
-		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class FormTesterServlet implements SimpleServlet
 		}
 		catch (final IOException e)
 		{
-			response.setStatusCode(500);
+			response.setStatusCode(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class FormTesterServlet implements SimpleServlet
 	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method != HTTPMethod.POST)
-			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 }

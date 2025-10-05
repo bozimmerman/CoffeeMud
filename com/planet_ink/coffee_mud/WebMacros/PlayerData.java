@@ -482,7 +482,7 @@ public class PlayerData extends StdWebMacro
 			MOB M=CMLib.players().getLoadPlayer(last);
 			if(M==null)
 			{
-				final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+				final MOB authM=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 				if((authM!=null)&&(authM.Name().equalsIgnoreCase(last)))
 					M=authM;
 				else

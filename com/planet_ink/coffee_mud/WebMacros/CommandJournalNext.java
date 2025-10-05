@@ -54,7 +54,7 @@ public class CommandJournalNext extends StdWebMacro
 				httpReq.removeUrlParameter("COMMANDJOURNAL");
 			return "";
 		}
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		String lastID="";
 		boolean allJournals=false;
 		if((Thread.currentThread() instanceof CWThread)

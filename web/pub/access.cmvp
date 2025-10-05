@@ -32,6 +32,12 @@
 			document.ACCESS.LASTPAGE.value='/access.cmvp';
 			Clicked('forgot.cmvp');
 		}
+		function Logout(action)
+		{
+			document.cookie = 'CMAUTH=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -73,7 +79,6 @@
 		</FORM>
 	@else@
 		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
-		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
 		<INPUT TYPE=HIDDEN NAME=CLAN VALUE="">
@@ -103,6 +108,8 @@
 			@back@
 			<BR>
 			<A href="javascript:Clicked('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Public Pages</B></FONT></a>
+			<BR>
+			<A href="javascript:Logout('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Logout</B></FONT></a>
 			<BR>
 		</TD></TR>
 		</TABLE>

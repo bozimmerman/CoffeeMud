@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=REFACTION@
     @if?CheckReqParm?NEWFACTIONID=@
-        document.location.href='faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION=@FactionID@';
+        document.location.href='faction.cmvp?FACTION=@FactionID@';
     @else@
-        document.location.href='faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION=@RequestParameterEncoded?NEWFACTIONID@&NEWFACTION=@RequestParameterEncoded?NEWFACTIONID@';
+        document.location.href='faction.cmvp?FACTION=@RequestParameterEncoded?NEWFACTIONID@&NEWFACTION=@RequestParameterEncoded?NEWFACTIONID@';
     @endif@
 @endif@
 //-->

@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPResponse;
 
 import java.util.*;
 /*
@@ -131,10 +132,12 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	 * @param processStartTime a 1-dimensional array with start time-ms, for timeouts
 	 * @param lastFoundMacro a 1-dimensional array for storing the last found macro
 	 * @param data the page data, which will be modified and returned by the filter
+	 * @param response the response object, for setting cookies and such
 	 * @return the modified and filtered page data
 	 * @throws HTTPRedirectException an http redirect exception found
 	 */
-	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer data) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime,
+										  String[] lastFoundMacro, StringBuffer data, HTTPResponse response) throws HTTPRedirectException;
 
 	/**
 	 * Searches for web-macro commands in the given string and, if found,

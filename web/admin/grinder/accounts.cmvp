@@ -19,7 +19,7 @@
 		function Account(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT="+action,"Account",strFeatures, false);
+			w=window.open("account.cmvp?ACCOUNT="+action,"Account",strFeatures, false);
 		}
 		function Clicked(action)
 		{
@@ -29,7 +29,7 @@
 		function Player(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER="+action,"Player",strFeatures, false);
+			w=window.open("player.cmvp?PLAYER="+action,"Player",strFeatures, false);
 		}
 		
 	//-->
@@ -60,7 +60,6 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="accounts.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Manager</H2></FONT></TD></TR>

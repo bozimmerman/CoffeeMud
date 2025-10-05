@@ -14,6 +14,7 @@ import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPResponse;
 import com.planet_ink.coffee_web.server.WebServer;
 import com.planet_ink.coffee_web.util.CWConfig;
 
@@ -66,12 +67,12 @@ public class CWHTMLConverter implements HTTPOutputConverter
 	 * @param config the http configuration (optional, may be null)
 	 * @param request the http request bring processed  (optional, may be null)
 	 * @param pageFile the file whose data is being converted
-	 * @param status the status of the request (so far)
+	 * @param response the response objects for inspection or modification
 	 * @param buffer the input buffer
 	 * @throws HTTPException
 	 */
 	@Override
-	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPStatus status, final ByteBuffer buffer) throws HTTPException
+	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPResponse response, final ByteBuffer buffer) throws HTTPException
 	{
 		final int oldPosition=buffer.position();
 		final ByteArrayOutputStream out=new ByteArrayOutputStream();
@@ -118,12 +119,12 @@ public class CWHTMLConverter implements HTTPOutputConverter
 									out.write((""+request.getUrlPath()).getBytes());
 								break;
 							case HTTPSTATUS:
-								if(status != null)
-									out.write((""+status.getStatusCode()).getBytes());
+								if(response != null)
+									out.write((""+response.getStatus()).getBytes());
 								break;
 							case HTTPSTATUSINFO:
-								if(status != null)
-									out.write(status.description().getBytes());
+								if(response != null)
+									out.write(response.getStatus().description().getBytes());
 								break;
 							case WEBSERVERVERSION:
 								out.write((""+WebServer.VERSION).getBytes());

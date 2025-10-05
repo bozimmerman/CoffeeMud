@@ -160,7 +160,7 @@
 	</TABLE>
 	<BR>
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=INIFORM TARGET=_top METHOD=POST ACTION="/grinder/control.cmvp">
-	<a name="INICHANGES"><INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@"></a>
+	<a name="INICHANGES"></a>
 	<INPUT TYPE=HIDDEN NAME=INIPAGE VALUE="@RequestParameter?INIPAGE@">
 	@if?CheckReqParm?CONTROL=ADD@ @INIModify?ADDKEY&KEY=@@RequestParameter?KEY@@&NEAR=@@RequestParameter?NEAR@@&BLAH@<FONT COLOR=RED>** Key Added ** </FONT>@endif@
 	@if?CheckReqParm?CONTROL=DEL@ @INIModify?DELKEY&KEY=@@RequestParameter?KEY@@&NEAR=@@RequestParameter?NEAR@@&BLAH@ <FONT COLOR=RED>** Key Deleted ** </FONT>@endif@

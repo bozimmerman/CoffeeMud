@@ -18,7 +18,7 @@
         	mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=700,alwaysRaised=yes,dependent=yes";
-            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
+            w=window.open("editmobform.cmvp?AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
             	"MAP",strFeatures, false);
         }
         
@@ -30,7 +30,7 @@
         	var mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=700,alwaysRaised=yes,dependent=yes";
-            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
+            w=window.open("editmobform.cmvp?NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
             	"EDITDEITY",strFeatures, false);
         }
         
@@ -87,7 +87,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="deities.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
     <TABLE WIDTH=100% BORDER=1>

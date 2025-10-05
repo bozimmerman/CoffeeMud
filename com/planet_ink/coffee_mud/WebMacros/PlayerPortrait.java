@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -70,7 +71,7 @@ public class PlayerPortrait extends StdWebMacro
 	{
 		final MIMEType mimeType = MIMEType.All.getMIMEType(getFilename(httpReq,""));
 		if(mimeType != null)
-			httpResp.setHeader("Content-Type", mimeType.getType());
+			httpResp.setHeader(HTTPHeader.Common.CONTENT_TYPE.toString(), mimeType.getType());
 		final String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return null; // for binary macros, null is BREAK
 		byte[] img=null;

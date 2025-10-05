@@ -76,14 +76,14 @@ public class ServerInfoServlet implements SimpleServlet
 		}
 		catch (final IOException e)
 		{
-			response.setStatusCode(500);
+			response.setStatusCode(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 	}
 
 	@Override
 	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
-		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class ServerInfoServlet implements SimpleServlet
 	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method!=HTTPMethod.GET)
-			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 }

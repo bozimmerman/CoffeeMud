@@ -68,7 +68,7 @@ public class AccountOnline extends StdWebMacro
 			else
 			{
 				final String login=Authenticate.getLogin(httpReq);
-				if(Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
+				if(Authenticate.authenticated(httpReq,httpResp,login,Authenticate.getPassword(httpReq)))
 				{
 					if(A==null)
 						A = CMLib.players().getLoadAccount(last);

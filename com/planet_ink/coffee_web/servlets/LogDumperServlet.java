@@ -77,7 +77,7 @@ public class LogDumperServlet implements SimpleServlet
 					}
 					catch (final Exception e)
 					{
-					} 
+					}
 					// java really needs an " i don't care " syntax for
 					// exception handling
 				}
@@ -98,7 +98,7 @@ public class LogDumperServlet implements SimpleServlet
 	@Override
 	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
-		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class LogDumperServlet implements SimpleServlet
 	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method!=HTTPMethod.GET)
-			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
+			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED);
 	}
 
 }

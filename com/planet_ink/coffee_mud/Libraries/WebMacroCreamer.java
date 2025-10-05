@@ -20,11 +20,14 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPException;
+import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.HTTPMethod;
+import com.planet_ink.coffee_web.http.HTTPReqResponse;
 import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPResponse;
 import com.planet_ink.coffee_web.interfaces.SimpleServlet;
 import com.planet_ink.coffee_web.interfaces.SimpleServletRequest;
 import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
@@ -77,12 +80,12 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	});
 
 	@Override
-	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPStatus status, final ByteBuffer buffer) throws HTTPException
+	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPResponse response, final ByteBuffer buffer) throws HTTPException
 	{
-		if (request.getRequestObjects().get("SYSTEM_HTTP_STATUS") == null)
+		if((request.getRequestObjects().get("SYSTEM_HTTP_STATUS") == null) && (response != null))
 		{
-			request.getRequestObjects().put("SYSTEM_HTTP_STATUS", Integer.toString(status.getStatusCode()));
-			request.getRequestObjects().put("SYSTEM_HTTP_STATUS_INFO", status.description());
+			request.getRequestObjects().put("SYSTEM_HTTP_STATUS", Integer.toString(response.getStatus().getStatusCode()));
+			request.getRequestObjects().put("SYSTEM_HTTP_STATUS_INFO", response.getStatus().description());
 		}
 		final long[] systemStartTime = new long[] { System.currentTimeMillis() };
 		if ((pageFile.getParent() != null)
@@ -96,7 +99,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 		try
 		{
-			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime, new String[] { "" }, new StringBuffer(new String(buffer.array(),"UTF-8"))).toString().getBytes("UTF-8"));
+			return ByteBuffer.wrap(virtualPageFilter(request, request.getRequestObjects(), systemStartTime,
+													new String[] { "" }, new StringBuffer(new String(buffer.array(),"UTF-8")),
+													response).toString().getBytes("UTF-8"));
 		}
 		catch (final UnsupportedEncodingException e)
 		{
@@ -284,8 +289,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public StringBuffer virtualPageFilter(final StringBuffer data, final Map<String,String> parms, final Map<String,Object> objs) throws HTTPRedirectException
 	{
+		final HTTPResponse resp = new HTTPReqResponse();
 		return virtualPageFilter(createFakeRequest(parms,objs),
-			new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, data);
+			new Hashtable<String, Object>(), new long[] { System.currentTimeMillis() }, new String[] { "" }, data, resp);
 	}
 
 	@Override
@@ -370,7 +376,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	// OK - this parser is getting a bit ugly now;
 	// I'm probably gonna replace it soon
 	@Override
-	public StringBuffer virtualPageFilter(final HTTPRequest request, final Map<String, Object> objects, final long[] processStartTime, final String[] lastFoundMacro, final StringBuffer s) throws HTTPRedirectException
+	public StringBuffer virtualPageFilter(final HTTPRequest request, final Map<String, Object> objects,
+										  final long[] processStartTime, final String[] lastFoundMacro,
+										  final StringBuffer s, final HTTPResponse response) throws HTTPRedirectException
 	{
 		String redirectTo = null;
 		final boolean debugMacros = CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS);
@@ -420,7 +428,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									}
 									if (debugMacros)
 										Log.debugOut("ProcessHTTPRequest", "Found IF macro: " + foundMacro);
-									final String q = runMacro(request, foundMacro, lastFoundMacro, isAdminServer);
+									final String q = runMacro(request, response, foundMacro, lastFoundMacro, isAdminServer);
 									if (debugMacros)
 										Log.debugOut("ProcessHTTPRequest", "Ran IF macro: " + foundMacro + "=" + q);
 									if ((q != null) && (q.equalsIgnoreCase(compare)))
@@ -588,7 +596,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									}
 									if (debugMacros)
 										Log.debugOut("ProcessHTTPRequest", "Found ELIF macro: " + foundMacro);
-									final String q = runMacro(request, foundMacro, lastFoundMacro, isAdminServer);
+									final String q = runMacro(request, response, foundMacro, lastFoundMacro, isAdminServer);
 									if (debugMacros)
 										Log.debugOut("ProcessHTTPRequest", "Ran ELIF macro: " + foundMacro + "=" + q);
 									if ((q != null) && (q.equalsIgnoreCase(compare)))
@@ -660,7 +668,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									}
 									try
 									{
-										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
+										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2), response));
 									}
 									catch (final HTTPRedirectException e)
 									{
@@ -699,7 +707,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								if (debugMacros)
 									Log.debugOut("ProcessHTTPRequest", "Found FOR macro: " + foundMacro);
 								final String varName = forCond.substring(0, fc).trim().toUpperCase();
-								String q = runMacro(request, forCond.substring(fc + 1).trim(), lastFoundMacro, isAdminServer);
+								String q = runMacro(request, response, forCond.substring(fc + 1).trim(), lastFoundMacro, isAdminServer);
 								if (q == null)
 									q = forCond.substring(fc + 1).trim();
 								if (debugMacros)
@@ -724,7 +732,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									{
 										request.addFakeUrlParameter(varName.toUpperCase(), qq);
 										request.addFakeUrlParameter(varName.toLowerCase(), qq);
-										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
+										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2), response));
 									}
 									catch (final HTTPRedirectException e)
 									{
@@ -795,7 +803,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							try
 							{
 								final int l = foundMacro.length();
-								final String q = runMacro(request, foundMacro, lastFoundMacro, isAdminServer);
+								final String q = runMacro(request, response, foundMacro, lastFoundMacro, isAdminServer);
 								if (debugMacros)
 									Log.debugOut("ProcessHTTPRequest", "Ran Macro: " + foundMacro + "=" + q);
 								if (q != null)
@@ -843,7 +851,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return s;
 	}
 
-	protected String runMacro(final HTTPRequest request, String foundMacro, final String[] lastFoundMacro, final boolean isAdminServer) throws HTTPRedirectException, HTTPServerException
+	protected String runMacro(final HTTPRequest request, final HTTPResponse response, String foundMacro,
+							  final String[] lastFoundMacro, final boolean isAdminServer) throws HTTPRedirectException, HTTPServerException
 	{
 		final int x = foundMacro.indexOf('?');
 		StringBuffer parms = null;
@@ -858,7 +867,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				if ((newFoundMacro != null) && (newFoundMacro.length() > 0))
 				{
 					final int l = newFoundMacro.length();
-					final String qq = runMacro(request, newFoundMacro, lastFoundMacro, isAdminServer);
+					final String qq = runMacro(request, response, newFoundMacro, lastFoundMacro, isAdminServer);
 					if (qq != null)
 						parms.replace(y, y + l + 2, qq);
 					else
@@ -890,7 +899,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					q = new String(bin);
 			}
 			else
-				q = W.runMacro(request, (parms == null) ? null : parms.toString(), null);
+				q = W.runMacro(request, (parms == null) ? null : parms.toString(), response);
 			if (q != null)
 				return q;
 			return "[error]";
@@ -1152,7 +1161,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				{
 					try
 					{
-						response.setHeader("Content-Type", MIMEType.All.getMIMEType("").getType());
+						response.setHeader(HTTPHeader.Common.CONTENT_TYPE.toString(), MIMEType.All.getMIMEType("").getType());
 						byte[] responseData;
 						if (W.preferBinary())
 							responseData = W.runBinaryMacro(request, "", response);

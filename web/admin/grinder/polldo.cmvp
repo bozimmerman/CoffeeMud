@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=REPOLL@
     @if?CheckReqParm?NEWPOLLID=@
-        document.location.href='poll.cmvp?AUTH=@Authenticate?AUTH@&POLL=@RequestParameterEncoded?POLL@';
+        document.location.href='poll.cmvp?POLL=@RequestParameterEncoded?POLL@';
     @else@
-        document.location.href='poll.cmvp?AUTH=@Authenticate?AUTH@&POLL=@RequestParameterEncoded?NEWPOLLID@';
+        document.location.href='poll.cmvp?POLL=@RequestParameterEncoded?NEWPOLLID@';
     @endif@
 @endif@
 //-->

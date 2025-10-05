@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -57,9 +58,9 @@ public class AreaXML extends StdWebMacro
 		return true;
 	}
 
-	public String getFilename(final HTTPRequest httpReq, final String filename)
+	public String getFilename(final HTTPRequest httpReq, final HTTPResponse httpResp, final String filename)
 	{
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(mob==null)
 			return "area.xml";
 		final Area pickedA=getLoggedArea(httpReq,mob);
@@ -89,10 +90,10 @@ public class AreaXML extends StdWebMacro
 	@Override
 	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
-		httpResp.setHeader("Content-Disposition", "attachment; filename="+getFilename(httpReq,""));
-		httpResp.setHeader("Content-Type", "application/cmare");
+		httpResp.setHeader(HTTPHeader.Common.CONTENT_DISPOSITION.toString(), "attachment; filename="+getFilename(httpReq,httpResp, ""));
+		httpResp.setHeader(HTTPHeader.Common.CONTENT_TYPE.toString(), "application/cmare");
 
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(mob==null)
 			return null;
 		final Area pickedA=getLoggedArea(httpReq,mob);

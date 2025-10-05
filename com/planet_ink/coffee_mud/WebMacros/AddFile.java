@@ -74,7 +74,7 @@ public class AddFile extends StdWebMacro
 							return " @break@";
 						else
 						{
-							final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+							final MOB mob=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 							final CMFile tF = new CMFile(template,mob);
 							if((!tF.exists())||(!tF.canRead()))
 								return " @break@";
@@ -87,7 +87,7 @@ public class AddFile extends StdWebMacro
 									httpReq.getRequestObjects(),
 									processStartTime,
 									lastFoundMacro,
-									new StringBuffer(new String(tF.raw()))).toString().getBytes();
+									new StringBuffer(new String(tF.raw())),httpResp).toString().getBytes();
 							nF.saveRaw(savable);
 						}
 					}

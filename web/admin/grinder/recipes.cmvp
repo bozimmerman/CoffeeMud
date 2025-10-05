@@ -23,7 +23,7 @@
 						recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
 				}
 				var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-				w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&RECIPEABILITY="+recipeid,
+				w=window.open("recipe.cmvp?RECIPEABILITY="+recipeid,
 					"Recipe",strFeatures, false);
 			}
 		}
@@ -80,7 +80,7 @@
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="recipes.cmvp">
 	<INPUT TYPE=HIDDEN NAME=NEWCLASSFIELD1 VALUE="">
 	<INPUT TYPE=HIDDEN NAME="ITEM_NUM" VALUE="">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	
 	<FONT COLOR=YELLOW><B>Common Skill:
 		<SELECT NAME=RECIPEABILITY ONCHANGE="Refresh();">
 			<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill

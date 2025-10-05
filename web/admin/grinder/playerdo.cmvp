@@ -20,7 +20,7 @@ window.close();
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player @PlayerID@ has been booted from the system.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -28,7 +28,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('The personalized image for @PlayerID@ has been deleted.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -36,7 +36,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player @PlayerID@ has been banned.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -44,7 +44,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player Email Address has been banned.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -52,7 +52,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player IP Address has been banned.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -60,7 +60,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player account will not expire.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -68,7 +68,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player account is now expired.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@
@@ -76,7 +76,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Player has been modified.');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+document.location.href='player.cmvp?PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
 @endif@

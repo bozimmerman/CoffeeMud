@@ -5,7 +5,7 @@
 <BODY>
 @MUDGrinder?EDITITEM@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/player.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerID@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="EDIT">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="FIRSTTIME">
@@ -14,7 +14,7 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(alert) alert('Operation Completed:');
-document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@&FUNCTION=EDIT&ACTION=FIRSTTIME';
+document.location.href='player.cmvp?PLAYER=@PlayerID@&FUNCTION=EDIT&ACTION=FIRSTTIME';
 //-->
 </SCRIPT>
 </FORM>

@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.planet_ink.coffee_web.interfaces.HTTPFileGetter;
 import com.planet_ink.coffee_web.interfaces.HTTPIOHandler;
 import com.planet_ink.coffee_web.interfaces.HTTPOutputConverter;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.planet_ink.coffee_web.interfaces.HTTPResponse;
 import com.planet_ink.coffee_web.interfaces.SimpleServlet;
 import com.planet_ink.coffee_web.interfaces.SimpleServletRequest;
 import com.planet_ink.coffee_web.interfaces.SimpleServletSession;
@@ -433,7 +435,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		if(oldSessionID == null)
 		{
 			session = config.getSessions().createSession(request);
-			servletResponse.setCookie("cwsessid", session.getSessionId());
+			servletResponse.setCookie(new Cookie("cwsessid", session.getSessionId()));
 		}
 		else
 		{
@@ -478,7 +480,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			{
 				session.touch();
 				stats.endProcessing(System.nanoTime() - startTime);
-				lastHttpStatusCode=servletResponse.getStatusCode();
+				lastHttpStatusCode=servletResponse.getStatus().getStatusCode();
 			}
 		}
 		catch (final HTTPException e)
@@ -582,7 +584,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		final String cgiExecPath = cgiFile.getAbsolutePath();
 		final String cgiRootStr = cgiFile.getParentFile().getAbsolutePath();
 		final CGIProcessor cgiProcessor = new CGIProcessor(cgiExecPath, cgiRootStr, cgiMountPath, remainderSubPath);
-		final ByteBuffer output = cgiProcessor.convertOutput(config, request, cgiFile, HTTPStatus.S200_OK, ByteBuffer.wrap(new byte[0]));
+		final HTTPResponse response = new HTTPReqResponse();
+		final ByteBuffer output = cgiProcessor.convertOutput(config, request, cgiFile, response, ByteBuffer.wrap(new byte[0]));
+		headers.putAll(response.getPopulatedHeaders());
 		return new CWDataBuffers(HTTPReader.parseCGIContent(output, headers), System.currentTimeMillis(), false);
 	}
 
@@ -642,7 +646,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				try
 				{
 					converter = converterClass.getDeclaredConstructor().newInstance();
-					return new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis(), true);
+					final HTTPResponse requestResponse = new HTTPReqResponse();
+					return new CWDataBuffers(converter.convertOutput(config, request, pathFile, requestResponse, buffers.flushToBuffer()), System.currentTimeMillis(), true);
 				}
 				catch (final Exception e)
 				{
@@ -746,7 +751,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 									extraHeaders.put(HTTPHeader.Common.EXPIRES, "MON, 01 Jan 1970 01:00:00 000");
 								}
 							}
-							buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), dateTime, true);
+							final HTTPResponse requestResponse = new HTTPReqResponse();
+							buffers=new CWDataBuffers(converter.convertOutput(config, request, pathFile, requestResponse, buffers.flushToBuffer()), dateTime, true);
+							extraHeaders.putAll(requestResponse.getPopulatedHeaders());
 							buffers = handleEncodingRequest(request, null, buffers, extraHeaders);
 						}
 						catch (final Exception e)

@@ -13,7 +13,7 @@
 		function Clan(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
+			w=window.open("clan.cmvp?CLAN="+action,
 				"Clan",strFeatures, false);
 		}
 		function Clicked(action)
@@ -46,7 +46,7 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="clans.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Manager</H2></FONT></TD></TR>
 	<TR>

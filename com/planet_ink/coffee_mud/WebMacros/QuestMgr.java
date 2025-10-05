@@ -52,7 +52,7 @@ public class QuestMgr extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		Quest Q=null;
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		final String name=(M==null)?"Someone":M.Name();
 		if(parms.containsKey("CREATE"))
 		{

@@ -20,7 +20,7 @@ window.close();
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(alert) alert('Account @AccountID@ has been booted from the system.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -28,7 +28,7 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(alert) alert('Account @AccountID@ has been banned.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -36,7 +36,7 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(alert) alert('Account Email Address has been banned.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -44,7 +44,7 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(alert) alert('Account IP Address has been banned.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -52,7 +52,7 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Account will not expire.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -60,7 +60,7 @@ document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 if(window.alert) alert('Account is now expired.');
-document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 //-->
 </SCRIPT>
 @endif@
@@ -71,12 +71,12 @@ var msg ='@MUDGrinder?EDITACCOUNT@';
 if(msg != '')
 {
 	if(alert) alert(msg);
-	document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@&FUNCTION=EDIT';
+	document.location.href='account.cmvp?ACCOUNT=@AccountID@&FUNCTION=EDIT';
 }
 else
 {
 	if(alert) alert('Account successfully modified.');
-	document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+	document.location.href='account.cmvp?ACCOUNT=@AccountID@';
 }
 //-->
 </SCRIPT>

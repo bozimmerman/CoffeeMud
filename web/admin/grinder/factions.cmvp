@@ -25,14 +25,14 @@
             if(confirm('Load/Create a file in your resources directory called '+factionid+'?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-                w=window.open("faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+factionid+action,
+                w=window.open("faction.cmvp?FACTION="+factionid+action,
                 	"Faction",strFeatures, false);
             }
         }
         function Faction(factionid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+factionid+action,
+            w=window.open("faction.cmvp?FACTION="+factionid+action,
             	"Faction",strFeatures, false);
         }
         function Clicked(action)
@@ -71,7 +71,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="factions.cmvp">
-    <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+    
     <INPUT TYPE=HIDDEN NAME=COMMAND VALUE="">
     <INPUT TYPE=HIDDEN NAME=FACTION VALUE="">
     @if?CheckReqParm?COMMAND=TOGGLEPRELOAD@

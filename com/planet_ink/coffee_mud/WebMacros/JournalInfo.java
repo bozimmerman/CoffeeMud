@@ -90,14 +90,15 @@ public class JournalInfo extends StdWebMacro
 		else
 		if(parent.equals("*"))
 			parent=null;
-		else
-		if(parent.length()>0)
+		if((parent!=null)&&(parent.length()>0))
 		{
 			page=mpage;
 			dbsearch=null;
 		}
 		if(page!=null)
 		{
+			if(page.endsWith(","))
+				page=page.substring(0,page.length()-1);
 			if(page.length()==0)
 				page="0";
 			else
@@ -113,6 +114,8 @@ public class JournalInfo extends StdWebMacro
 		List<JournalEntry> msgs=(objs==null)?null:(List<JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
 		{
+if((parent != null)&&(parent.length()>0))
+	System.out.println("STOP"); //TODO:BZ:DELME
 			if((page==null)||(page.length()==0))
 				msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, true);
 			else
@@ -254,7 +257,7 @@ public class JournalInfo extends StdWebMacro
 			}
 		}
 
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 
@@ -280,7 +283,7 @@ public class JournalInfo extends StdWebMacro
 		else
 		{
 			final String page=httpReq.getUrlParameter("JOURNALPAGE");
-			final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+			String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 			final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 			final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 			int pageLimit;
@@ -290,6 +293,8 @@ public class JournalInfo extends StdWebMacro
 				pageLimit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 			if(pageLimit <= 0)
 				pageLimit=Integer.MAX_VALUE;
+			if(mpage == null)
+				mpage="0";
 			if((page!=null)&&(page.length()>0))
 			{
 				final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());

@@ -13,13 +13,13 @@
         function Component(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=550,alwaysRaised=yes,dependent=yes";
-            w=window.open("component.cmvp?AUTH=@Authenticate?AUTH@&COMPONENT="+action,
+            w=window.open("component.cmvp?COMPONENT="+action,
                 "Component for "+action,strFeatures, false);
         }
 	    function Social(action,newsoc)
 	    {
 	        var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action+"&NEWSOCIAL="+newsoc+"&COMPONENT=true",
+            w=window.open("social.cmvp?SOCIAL="+action+"&NEWSOCIAL="+newsoc+"&COMPONENT=true",
                 	"Component Social",strFeatures, false);
 	    }
         function Clicked(val)
@@ -53,7 +53,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="components.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=COMPONENT VALUE="">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Skill Components</H2></FONT></TD></TR>

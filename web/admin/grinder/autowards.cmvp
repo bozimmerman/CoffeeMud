@@ -15,14 +15,14 @@
             if(confirm('Create a new award rule?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
-                w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=",
+                w=window.open("autoaward.cmvp?AUTOAWARD=",
                 	"Award",strFeatures, false);
             }
         }
         function Award(autoawardid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
-            w=window.open("autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD="+autoawardid+action,
+            w=window.open("autoaward.cmvp?AUTOAWARD="+autoawardid+action,
             	"Award",strFeatures, false);
         }
         function Clicked(action)
@@ -54,7 +54,6 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoawards.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Award Manager</H2></FONT></TD></TR>
     <TR>

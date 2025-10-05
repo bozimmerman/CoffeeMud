@@ -23,7 +23,7 @@
 		}
 		function Refresh()
 		{
-			document.location.href='banners.cmvp?AUTH=@Authenticate?AUTH@';
+			document.location.href='banners.cmvp';
 		}
 	//-->
 	</script>
@@ -51,7 +51,6 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="banners.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<CENTER><FONT COLOR=RED><B>@BanListMgr?DELETE@ @BanListMgr?ADD@</B></FONT></CENTER>
 	<BR>
 	<TABLE WIDTH=100% BORDER=1>

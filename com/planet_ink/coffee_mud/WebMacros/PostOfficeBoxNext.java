@@ -61,7 +61,7 @@ public class PostOfficeBoxNext extends StdWebMacro
 			return "";
 		}
 
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(M==null)
 			return " @break@";
 

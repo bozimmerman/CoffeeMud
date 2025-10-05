@@ -18,7 +18,7 @@
                 return;
             }
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("race.cmvp?AUTH=@Authenticate?AUTH@&RACE="+raceid+action,
+            w=window.open("race.cmvp?RACE="+raceid+action,
             	"Race",strFeatures, false);
         }
         function Clicked(action)
@@ -50,7 +50,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="races.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Race Manager</H2></FONT></TD></TR>
 	<TR>

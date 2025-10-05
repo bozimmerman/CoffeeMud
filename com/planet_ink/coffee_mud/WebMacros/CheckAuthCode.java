@@ -41,11 +41,11 @@ public class CheckAuthCode extends StdWebMacro
 		return "CheckAuthCode";
 	}
 
-	public Hashtable<String,String> getAuths(final HTTPRequest httpReq)
+	public Hashtable<String,String> getAuths(final HTTPRequest httpReq, final HTTPResponse httpResp)
 	{
 		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return null;
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		if(mob==null)
 			return null;
 		@SuppressWarnings("unchecked")
@@ -108,7 +108,7 @@ public class CheckAuthCode extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
-		final Hashtable<String,String> auths=getAuths(httpReq);
+		final Hashtable<String,String> auths=getAuths(httpReq, httpResp);
 		if(auths==null)
 			return "false";
 		final boolean sysop=auths.get("SYSOP").equalsIgnoreCase("true");

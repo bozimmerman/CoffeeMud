@@ -51,7 +51,7 @@ public class AutoTitleData extends StdWebMacro
 
 		if(parms.containsKey("EDIT"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES))
@@ -94,7 +94,7 @@ public class AutoTitleData extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES))

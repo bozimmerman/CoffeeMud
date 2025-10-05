@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -56,68 +57,90 @@ public class Authenticate extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
-			return getAuth(httpReq);
-		final String login=getLogin(httpReq);
+			return getAuth(httpReq, httpResp);
+		String login=getLogin(httpReq);
 		if((parms!=null)&&(parms.containsKey("SETPLAYER")))
+		{
+			if(login==null)
+				login="";
 			httpReq.addFakeUrlParameter("PLAYER",login);
+		}
 		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.isUsingAccountSystem()))
 		{
-			final MOB mob=getAuthenticatedMob(httpReq);
+			final MOB mob=getAuthenticatedMob(httpReq, httpResp);
 			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
 				httpReq.addFakeUrlParameter("ACCOUNT",mob.playerStats().getAccount().getAccountName());
 		}
-		if(authenticated(httpReq,login,getPassword(httpReq)))
+		if(authenticated(httpReq,httpResp,login,getPassword(httpReq)))
 			return "true";
+		httpResp.setCookie(new Cookie("CMAUTH", ""));
+		httpReq.addFakeUrlParameter("PLAYER","");
+		httpReq.addFakeUrlParameter("ACCOUNT","");
 		return "false";
 	}
 
-	public static String getAuth(final HTTPRequest httpReq)
+	public static String getAuth(final HTTPRequest httpReq, final HTTPResponse httpResp)
 	{
 		try
 		{
 			final String loginUrlStr= URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getLogin(httpReq)),"UTF-8");
 			final String passwordUrlStr=URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getPassword(httpReq)),"UTF-8");
-			return loginUrlStr+"-"+passwordUrlStr;
+			final String authStr = loginUrlStr+"-"+passwordUrlStr;
+			if((!httpReq.getCookieNames().contains("CMAUTH"))&&(loginUrlStr.length()>0)&&(passwordUrlStr.length()>0))
+				httpResp.setCookie(new Cookie("CMAUTH", authStr));
+			return authStr;
 		}
 		catch(final Exception u)
 		{
 			return "false";
 		}
 	}
-	
-	public static boolean authenticated(final HTTPRequest httpReq, final String login, final String password)
+
+	public static boolean authenticated(final HTTPRequest httpReq, final HTTPResponse httpResp, final String login, final String password)
 	{
 		if(!CMProps.isState(CMProps.HostState.RUNNING))
 			return false;
-		final MOB mob=CMLib.players().getLoadPlayer(login);
-		if((mob!=null)
-		&&(mob.playerStats()!=null)
-		&&(mob.playerStats().matchesPassword(password))
-		&&(mob.Name().trim().length()>0)
-		&&(!CMSecurity.isBanned(mob.Name())))
+		try
 		{
-			final long lastLogin = System.currentTimeMillis() - mob.playerStats().getLastDateTime();
-			if(lastLogin > ONE_REAL_DAY)
-				mob.playerStats().setLastDateTime(System.currentTimeMillis());
-			return true;
-		}
-		if(CMProps.isUsingAccountSystem())
-		{
-			final PlayerAccount acct=CMLib.players().getLoadAccount(login);
-			if((acct!=null)
-			&&(acct.matchesPassword(password))
-			&&(!CMSecurity.isBanned(acct.getAccountName())))
+			final String loginUrlStr= URLEncoder.encode(CMLib.encoder().filterEncrypt(login),"UTF-8");
+			final String passwordUrlStr=URLEncoder.encode(CMLib.encoder().filterEncrypt(password),"UTF-8");
+			final String authStr = loginUrlStr+"-"+passwordUrlStr;
+			final MOB mob=CMLib.players().getLoadPlayer(login);
+			if((mob!=null)
+			&&(mob.playerStats()!=null)
+			&&(mob.playerStats().matchesPassword(password))
+			&&(mob.Name().trim().length()>0)
+			&&(!CMSecurity.isBanned(mob.Name())))
 			{
-				final long lastLogin = System.currentTimeMillis() - acct.getLastDateTime();
+				final long lastLogin = System.currentTimeMillis() - mob.playerStats().getLastDateTime();
 				if(lastLogin > ONE_REAL_DAY)
-					acct.setLastDateTime(System.currentTimeMillis());
+					mob.playerStats().setLastDateTime(System.currentTimeMillis());
+				httpResp.setCookie(new Cookie("CMAUTH", authStr));
 				return true;
 			}
+			if(CMProps.isUsingAccountSystem())
+			{
+				final PlayerAccount acct=CMLib.players().getLoadAccount(login);
+				if((acct!=null)
+				&&(acct.matchesPassword(password))
+				&&(!CMSecurity.isBanned(acct.getAccountName())))
+				{
+					final long lastLogin = System.currentTimeMillis() - acct.getLastDateTime();
+					if(lastLogin > ONE_REAL_DAY)
+						acct.setLastDateTime(System.currentTimeMillis());
+					httpResp.setCookie(new Cookie("CMAUTH", authStr));
+					return true;
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
 		}
 		return false;
 	}
 
-	public static MOB getAuthenticatedMob(final HTTPRequest httpReq)
+	public static MOB getAuthenticatedMob(final HTTPRequest httpReq, final HTTPResponse httpResp)
 	{
 		if(httpReq.getRequestObjects().get("AUTHENTICATED_USER")!=null)
 		{
@@ -127,37 +150,52 @@ public class Authenticate extends StdWebMacro
 			return (MOB)o;
 		}
 		MOB mob=null;
-		final String login = getLogin(httpReq);
-		if((login != null)&&(login.length()>0))
+		String authStr = null;
+		try
 		{
-			final String password = getPassword(httpReq);
-			mob=CMLib.players().getLoadPlayer(login);
-			if((mob==null)
-			||(mob.playerStats()==null)
-			||((CMProps.isUsingAccountSystem()) && (mob.playerStats().getAccount()==null)))
+			final String login = getLogin(httpReq);
+			if((login != null)&&(login.length()>0))
 			{
-				if(CMProps.isUsingAccountSystem())
+				final String password = getPassword(httpReq);
+				final String loginUrlStr= URLEncoder.encode(CMLib.encoder().filterEncrypt(login),"UTF-8");
+				final String passwordUrlStr=URLEncoder.encode(CMLib.encoder().filterEncrypt(password),"UTF-8");
+				authStr = loginUrlStr+"-"+passwordUrlStr;
+				mob=CMLib.players().getLoadPlayer(login);
+				if((mob==null)
+				||(mob.playerStats()==null)
+				||((CMProps.isUsingAccountSystem()) && (mob.playerStats().getAccount()==null)))
 				{
-					final PlayerAccount acct=CMLib.players().getLoadAccount(login);
-					if((acct!=null)
-					&&(acct.matchesPassword(password))
-					&&(!CMSecurity.isBanned(acct.getAccountName())))
-						mob=acct.getAccountMob();
+					if(CMProps.isUsingAccountSystem())
+					{
+						final PlayerAccount acct=CMLib.players().getLoadAccount(login);
+						if((acct!=null)
+						&&(acct.matchesPassword(password))
+						&&(!CMSecurity.isBanned(acct.getAccountName())))
+							mob=acct.getAccountMob();
+						else
+							mob=null;
+					}
 					else
 						mob=null;
 				}
 				else
+				if((!mob.playerStats().matchesPassword(password))
+				||(mob.Name().trim().length()==0)
+				||(CMSecurity.isBanned(mob.Name()))
+				||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().getAccountName()))))
 					mob=null;
 			}
-			else
-			if((!mob.playerStats().matchesPassword(password))
-			||(mob.Name().trim().length()==0)
-			||(CMSecurity.isBanned(mob.Name()))
-			||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().getAccountName()))))
-				mob=null;
+		}
+		catch(final Exception e)
+		{
+			Log.errOut(e);
 		}
 		if(mob!=null)
+		{
 			httpReq.getRequestObjects().put("AUTHENTICATED_USER",mob);
+			if(authStr != null)
+				httpResp.setCookie(new Cookie("CMAUTH", authStr));
+		}
 		else
 			httpReq.getRequestObjects().put("AUTHENTICATED_USER",new Object());
 		return mob;
@@ -198,7 +236,7 @@ public class Authenticate extends StdWebMacro
 			}
 			return login;
 		}
-		final String auth=httpReq.getUrlParameter("AUTH");
+		final String auth = httpReq.getCookie("CMAUTH");
 		if(auth==null)
 			return "";
 		final int x = auth.indexOf('-');
@@ -212,7 +250,7 @@ public class Authenticate extends StdWebMacro
 		String password=httpReq.getUrlParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))
 			return password;
-		final String auth=httpReq.getUrlParameter("AUTH");
+		final String auth = httpReq.getCookie("CMAUTH");
 		if(auth==null)
 			return "";
 		final int x = auth.indexOf('-');

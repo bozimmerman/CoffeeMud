@@ -67,7 +67,7 @@
 		function AddNewItem()
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=600,alwaysRaised=yes,dependent=yes";
-			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.NEWITEM&REPLACEFIELD=NEWITEM","Skill_Item",strFeatures, false);
+			w=window.open("edititemform.cmvp?ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.NEWITEM&REPLACEFIELD=NEWITEM","Skill_Item",strFeatures, false);
 		}
 		function EditItemDone()
 		{
@@ -117,7 +117,6 @@
 </head>
 <body BGCOLOR=BLACK>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="ability.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=NEWABILITYID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">

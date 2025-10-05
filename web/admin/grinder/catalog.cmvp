@@ -15,14 +15,14 @@
             if(confirm('Create a file in your resources directory called '+catalogid+'?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-                w=window.open("catalog.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+catalogid+action,
+                w=window.open("catalog.cmvp?FACTION="+catalogid+action,
                 	"Faction",strFeatures, false);
             }
         }
         function Catalog(catalogid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("catalog.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+catalogid+action,
+            w=window.open("catalog.cmvp?FACTION="+catalogid+action,
             	"Faction",strFeatures, false);
         }
         function CatalogMob(mobcode,x)
@@ -37,7 +37,7 @@
                 x=encodeURI(x);
                 xtra='&NEWMOBNAME='+x
             }
-            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=ANY&ROOM=ANY&MOB="+mobcode+"&SINGLEMOB=true"+xtra,
+            w=window.open("editmobform.cmvp?AREA=ANY&ROOM=ANY&MOB="+mobcode+"&SINGLEMOB=true"+xtra,
             	"MAP",strFeatures, false);
         }
         
@@ -80,7 +80,7 @@
                 x=encodeURI(x);
                 xtra='&NEWITEMNAME='+x
             }
-            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=ANY&ROOM=ANY&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,
+            w=window.open("edititemform.cmvp?AREA=ANY&ROOM=ANY&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,
             	"MAP",strFeatures, false);
         }
         
@@ -141,7 +141,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="catalogs.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
 <INPUT TYPE=HIDDEN NAME=CATACAT VALUE="@RequestParameter?CATACAT@">
 @AddRequestParameter?CURRCAT=@@RequestParameter?CATACAT@@ @

@@ -1060,7 +1060,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("RABLE"))
 				{
-					final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
+					final MOB mob=Authenticate.getAuthenticatedMob(httpReq, httpResp);
 					str.append(dynAbilities(mob,R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				}
 				if(parms.containsKey("REFFS"))

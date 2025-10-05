@@ -39,9 +39,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=RESOCIAL@
     @if?CheckReqParm?NEWSOCIALID=@
-        document.location.href='social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL=@RequestParameterEncoded?SOCIAL@';
+        document.location.href='social.cmvp?SOCIAL=@RequestParameterEncoded?SOCIAL@';
     @else@
-        document.location.href='social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL=@RequestParameterEncoded?NEWSOCIALID@';
+        document.location.href='social.cmvp?SOCIAL=@RequestParameterEncoded?NEWSOCIALID@';
     @endif@
 @endif@
 //-->

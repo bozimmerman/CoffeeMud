@@ -230,7 +230,7 @@ public class CommandData extends StdWebMacro
 						{
 							final String cmdWord = (C.getAccessWords()!=null)&&C.getAccessWords().length>0
 									?C.getAccessWords()[0]:"WORD";
-							final MOB rM = Authenticate.getAuthenticatedMob(httpReq);
+							final MOB rM = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 							if(rM != null)
 								old=""+C.actionsCost(rM, new XArrayList<String>(cmdWord));
 							else
@@ -260,7 +260,7 @@ public class CommandData extends StdWebMacro
 					{
 						final String cmdWord = (C.getAccessWords()!=null)&&C.getAccessWords().length>0
 								?C.getAccessWords()[0]:"WORD";
-						final MOB rM = Authenticate.getAuthenticatedMob(httpReq);
+						final MOB rM = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 						if(rM != null)
 							old=""+C.combatActionsCost(rM, new XArrayList<String>(cmdWord));
 						else

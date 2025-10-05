@@ -10,30 +10,30 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
-	var abort=false;
 		function Clicked(action)
 		{
+			document.FORUM.action="forums.cmvp";
 			document.FORUM.action=action;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function DoForum(journal)
 		{
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.JOURNAL.value=journal;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function Forgot()
 		{
 			document.FORUM.LASTPAGE.value='/forum.cmvp';
 			document.FORUM.action="forgot.cmvp";
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function DoMessage(journal,msg)
 		{
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.JOURNAL.value=journal;
 			document.FORUM.JOURNALMESSAGE.value=msg;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function Register()
 		{
@@ -42,12 +42,11 @@
 		}
 		function DoSearch(which)
 		{
-			if(abort) return; abort=true;
 			document.FORUM.action="forumsall.cmvp";
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
 			document.FORUM.DBSEARCH.value=which;
-			document.FORUM.submit();
+			handleSubmit(document.FORUM);
 		}
 		function searchKeyPress(e,value)
 		{
@@ -61,13 +60,44 @@
 				DoSearch(value);
 			}
 		}
+		
+        function logout() 
+        {
+			document.cookie = 'CMAUTH=; expires=; path=/';
+			document.FORUM.JOURNAL.value='';
+			document.FORUM.action = 'forums.cmvp';
+			handleSubmit(document.FORUM);
+        }
+		
+		function handleSubmit(form)
+		{
+			var params = [];
+			var elements = form.elements;
+			for(var i=0; i<elements.length; i++) 
+			{
+				var el = elements[i];
+				var name = el.name;
+				var value = el.value.trim();
+				if (!name || el.disabled || (el.type === 'submit' || el.type === 'button'))
+					continue;
+				if (value !== '')
+					params.push(encodeURIComponent(name) + '=' + encodeURIComponent(value));
+			}
+			var cleanUrl = form.action;
+			if (params.length > 0)
+				cleanUrl += (form.action.indexOf('?') > -1 ? '&' : '?') + params.join('&');
+			if (typeof window.location.assign === 'function')
+				window.location.assign(cleanUrl);
+			else
+				window.location.href = cleanUrl;
+			return false;
+		}
 	//-->
 	</SCRIPT>
 </head>
 
 <body>
-<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forums.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=GET ACTION="forums.cmvp">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="">
 <INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
@@ -76,7 +106,7 @@
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
-	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@">
         <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
 		</a>
 	</TD>
@@ -85,7 +115,7 @@
 	@if?!Authenticate?SETPLAYER@ 
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
-		<INPUT TYPE=SUBMIT VALUE=Login>
+		<INPUT TYPE=SUBMIT VALUE=Login onclick="document.FORUM.METHOD='POST'; document.FORUM.action='forums.cmvp';">
 		@if?IsAccountSystem@
 			<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
 			<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
@@ -94,6 +124,7 @@
 		<FONT SIZE=-2><a href="javascript:Forgot()">Forgot</a></FONT>
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
+        <a href="javascript:logout()">(logout)</a>
 	@endif@
 	</TD>
 	</TR>
@@ -153,7 +184,7 @@
 <BLOCKQUOTE>
 <TABLE WIDTH=80% BORDER=0 CELLSPACING=1 CELLPADDING=1>
 <TR VALIGN=CENTER HEIGHT=15>
-	<TD WIDTH=150px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch(document.FORUM.SEARCHBOX.value)">
+	<TD WIDTH=150px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15>
 	<a href="javascript:DoSearch(document.FORUM.SEARCHBOX.value)" style="text-decoration:none">
 		<FONT COLOR=WHITE SIZE=-1>
 		&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docquestion.gif>&nbsp;&nbsp;<B>Search All Forums</B>

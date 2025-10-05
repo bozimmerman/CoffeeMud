@@ -100,7 +100,7 @@ public class JournalNext extends StdWebMacro
 		}
 		String lastID="";
 		final Set<String> H=CMLib.journals().getArchonJournalNames();
-		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		for(int j=0;j<journals.size();j++)
 		{
 			final String B=journals.get(j);

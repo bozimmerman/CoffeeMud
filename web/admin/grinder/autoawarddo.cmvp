@@ -33,9 +33,9 @@
 @endif@
 @if?CheckReqParm?FUNCTION=REAUTOAWARD@
     @if?CheckReqParm?NEWAUTOAWARDID=@
-        document.location.href='autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=@AutoAwardDataID@';
+        document.location.href='autoaward.cmvp?AUTOAWARD=@AutoAwardDataID@';
     @else@
-        document.location.href='autoaward.cmvp?AUTH=@Authenticate?AUTH@&AUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@&NEWAUTOAWARDAUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@';
+        document.location.href='autoaward.cmvp?AUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@&NEWAUTOAWARDAUTOAWARD=@RequestParameterEncoded?NEWAUTOAWARDID@';
     @endif@
 @endif@
 //-->

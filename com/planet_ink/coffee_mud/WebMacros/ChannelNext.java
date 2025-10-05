@@ -53,7 +53,7 @@ public class ChannelNext extends StdWebMacro
 				httpReq.removeUrlParameter("CHANNEL");
 			return "";
 		}
-		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+		final MOB mob = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		boolean allChannels=false;
 		if((Thread.currentThread() instanceof CWThread)
 		&&CMath.s_bool(((CWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))

@@ -19,7 +19,7 @@
         function AddNewItem(FIELD)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
+            w=window.open("edititemform.cmvp?ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
             	"Class_Item",strFeatures, false);
         }
         function AddItem(ME)
@@ -33,7 +33,7 @@
         function EditItem(ME,FIELD)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
+            w=window.open("edititemform.cmvp?ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
             	"Class_Item",strFeatures, false);
         }
         function AddMember(v)
@@ -179,7 +179,7 @@
 </head>
 <body BGCOLOR=BLACK>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="charclass.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=NEWCLASSID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">

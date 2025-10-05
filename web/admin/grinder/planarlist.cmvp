@@ -13,7 +13,7 @@
         function Plane(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=790,alwaysRaised=yes,dependent=yes";
-            w=window.open("plane.cmvp?AUTH=@Authenticate?AUTH@&PLANE="+action,
+            w=window.open("plane.cmvp?PLANE="+action,
                 "Plane of "+action,strFeatures, false);
         }
         function Clicked(val)
@@ -46,7 +46,7 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="planarlist.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=COMPONENT VALUE="">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Planes of Existence</H2></FONT></TD></TR>

@@ -45,7 +45,7 @@
 <body BGCOLOR=BLACK>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=MAP METHOD=POST ACTION="editareascriptslist.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@RequestParameter?AREA@">
 <INPUT TYPE=HIDDEN NAME=ITEMNAME VALUE="@RequestParameter?ITEMNAME@">
 <INPUT TYPE=HIDDEN NAME=ITEMHASH VALUE="@RequestParameter?ITEMHASH@">
@@ -107,7 +107,7 @@
 						var areacode=encodeURI(document.RESOURCES.AREA.value);
 						room =encodeURI(room);
 						room=room.replace("#","%23");
-						w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+areacode+"&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,
+						w=window.open("edititemform.cmvp?AREA="+areacode+"&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,
 							"ITEM",strFeatures, false);
 					}
 				}

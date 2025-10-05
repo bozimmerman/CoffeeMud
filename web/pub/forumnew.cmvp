@@ -1,5 +1,7 @@
+@if?!JournalMessageNext?AUTHCHECK@
+@AddFile?/forums.cmvp@
+@else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<META CHARSET="utf-8"/>
@@ -94,7 +96,14 @@
     			    forumEditors[i].nicInstances[i2].saveContent();
 			document.FORUM.submit();
 		}
-		
+        function logout() 
+        {
+			document.cookie = 'CMAUTH=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+			document.FORUM.JOURNAL.value='';
+			document.FORUM.action = 'forums.cmvp';
+			document.FORUM.submit();
+        }
+        
 	//-->
 	</SCRIPT>
 </head>
@@ -109,7 +118,6 @@
 <INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@"> <!-- for responses -->
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="@RequestParameter?MESSAGEPAGE@">
 @endif@
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
@@ -119,9 +127,9 @@
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
     <TD>@if?CheckReqParm?CLAN=@
-        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+        <a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@">
         @else@
-        <a href="index.cmvp?AUTH=@Authenticate?AUTH@">
+        <a href="index.cmvp">
         @endif@
         <IMG BORDER=0 src=images/cm50.gif ALT="Exit Forums">
         </a>
@@ -131,13 +139,14 @@
 	@if?!Authenticate?SETPLAYER@ 
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
-		<INPUT TYPE=SUBMIT VALUE=Login>
+		<INPUT TYPE=SUBMIT VALUE=Login onclick="document.FORUM.METHOD='POST'; document.FORUM.action='forumnew.cmvp';">
         @if?IsAccountSystem@
             <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
             <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
         @endif@
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
+        <a href="javascript:logout()">(logout)</a>
 	@endif@
 	</TD>
 	</TR>
@@ -250,3 +259,4 @@
 </FORM>
 </body>
 </html>
+@endif@

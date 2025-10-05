@@ -60,7 +60,7 @@
 		}
         function Cancel()
         {
-            document.location.href='clan.cmvp?AUTH=@Authenticate?AUTH@';
+        	window.close();
         }
 		function OpenUp(file,named)
 		{
@@ -73,7 +73,7 @@
 </head>
 <body BGCOLOR=BLACK>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="clan.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=CLAN VALUE="@ClanID@">
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>

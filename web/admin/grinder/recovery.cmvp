@@ -50,7 +50,7 @@
 <FONT COLOR=WHITE>
 <h3>Stat Recovery Rates every 5 Ticks (20 seconds)</h3><P>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=POOPY TARGET=_top METHOD=POST ACTION="/grinder/recovery.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <SELECT NAME=WHICH ONCHANGE="reload();">
 <OPTION VALUE=HP @if?CheckReqParm?WHICH=HP@SELECTED@endif@>Hit Points
 <OPTION VALUE=MN @if?CheckReqParm?WHICH=MN@SELECTED@endif@>Mana

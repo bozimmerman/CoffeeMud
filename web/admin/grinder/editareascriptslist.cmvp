@@ -13,19 +13,19 @@
 		function AreaScriptCustom(path, rsc)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+path,"Script",strFeatures, false);
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AREASCRIPT="+path,"Script",strFeatures, false);
 		}
 		
 		function AreaHosts(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+action,"Script",strFeatures, false);
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaIDEncoded@&AREASCRIPT="+action,"Script",strFeatures, false);
 		}
 		
 		function AreaScript(path, file, rsc)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-			w=window.open("browsefile.cmvp?AREA=@AreaIDEncoded@&AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file+"&RESOURCE="+rsc,"Script",strFeatures, false);
+			w=window.open("browsefile.cmvp?AREA=@AreaIDEncoded@&PATH="+path+"&FILE="+file+"&RESOURCE="+rsc,"Script",strFeatures, false);
 		}
 		
 		function Clicked(action)
@@ -45,7 +45,7 @@
 <body BGCOLOR=BLACK>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=MAP METHOD=POST ACTION="editareascriptslist.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ @AreaName@ Script Manager</H2></FONT></TD></TR>

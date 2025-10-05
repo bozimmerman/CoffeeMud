@@ -54,7 +54,7 @@ public class GrinderPlanes
 		return "";
 	}
 
-	public String runMacro(final HTTPRequest httpReq, final String parm)
+	public String runMacro(final HTTPRequest httpReq, final HTTPResponse httpResp, final String parm)
 	{
 		String last=httpReq.getUrlParameter("PLANE");
 		if(last==null)
@@ -522,7 +522,7 @@ public class GrinderPlanes
 
 				}
 			}
-			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
+			final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 			if(M==null)
 				return "[authentication error]";
 			final boolean exists = planeSet.getPlanarVars(last)!=null;

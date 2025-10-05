@@ -23,7 +23,7 @@
 		}
 		function Refresh()
 		{
-			document.location.href='masscreate.cmvp?AUTH=@Authenticate?AUTH@';
+			document.location.href='masscreate.cmvp';
 		}
 	//-->
 	</script>
@@ -54,7 +54,7 @@
 	</TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="masscreate.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	
 	<INPUT TYPE=HIDDEN NAME=DOSTUFF VALUE="">
 	@if?CheckReqParm?DOSTUFF=TRUE@
 		<CENTER><FONT COLOR=RED><B>@MUDGrinder?MASSACCOUNTCREATE@</B></FONT></CENTER>
