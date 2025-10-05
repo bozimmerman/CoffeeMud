@@ -3,48 +3,6 @@ window.siplets = [];
 window.windowArea = null;
 window.nextId = 0;
 
-var Siplet =
-{
-	VERSION_MAJOR: '3.2',
-	VERSION_MINOR: '5',
-	COFFEE_MUD: false,
-	NAME: window.isElectron?'Sip':'Siplet',
-	R: /^win\.[\w]+(\.[\w]+)*$/
-};
-
-function VersionArray(str)
-{
-	var parts = String(str).split('.');
-	var ver = [];
-	for(var i=0;i<parts.length;i++) 
-	{
-		var n = parseInt(parts[i]);
-		if (isNaN(n))
-			n = 0;
-		ver.push(n);
-	}
-	return ver;
-}
-
-function CompareVersion(comp)
-{
-	var cparts = VersionArray(comp);
-	var parts = VersionArray(Siplet.VERSION_MAJOR+'.'+Siplet.VERSION_MINOR);
-	var i=0;
-	for(i=0;i<cparts.length && i<parts.length;i++)
-	{
-		if (parts[i]<cparts[i])
-			return 1;
-		if (parts[i]>cparts[i])
-			return -1;
-	}
-	if (i<cparts.length)
-		return 1;
-	if (i<parts.length)
-		return -1;
-	return 0;
-}
-
 function SipletWindow(windowName)
 {
 	this.decoder = new TextDecoder("utf-8");

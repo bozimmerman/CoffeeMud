@@ -1,3 +1,12 @@
+var Siplet =
+{
+	VERSION_MAJOR: '3.2',
+	VERSION_MINOR: '5',
+	COFFEE_MUD: false,
+	NAME: window.isElectron?'Sip':'Siplet',
+	R: /^win\.[\w]+(\.[\w]+)*$/
+};
+
 window.configlisteners = {};
 window.sipConfigName = 'config1.1';
 if(Siplet.COFFEE_MUD)
@@ -107,6 +116,39 @@ function addConfigListener(path, func)
 	window.configlisteners[path].push(func);
 }
 
+function VersionArray(str)
+{
+	var parts = String(str).split('.');
+	var ver = [];
+	for(var i=0;i<parts.length;i++) 
+	{
+		var n = parseInt(parts[i]);
+		if (isNaN(n))
+			n = 0;
+		ver.push(n);
+	}
+	return ver;
+}
+
+function CompareVersion(comp)
+{
+	var cparts = VersionArray(comp);
+	var parts = VersionArray(Siplet.VERSION_MAJOR+'.'+Siplet.VERSION_MINOR);
+	var i=0;
+	for(i=0;i<cparts.length && i<parts.length;i++)
+	{
+		if (parts[i]<cparts[i])
+			return 1;
+		if (parts[i]>cparts[i])
+			return -1;
+	}
+	if (i<cparts.length)
+		return 1;
+	if (i<parts.length)
+		return -1;
+	return 0;
+}
+
 function FindAScript(scripts, value, ci)
 {
 	if((!scripts)||(!Array.isArray(scripts)))
@@ -129,16 +171,17 @@ function FindAScript(scripts, value, ci)
 function LoadGlobalPhonebook()
 {
 	window.phonebook = getConfig('/phonebook/dial',[]);
+	var firstRun = window.phonebook.length == 0;
 	if(isElectron)
 	{
-		if(phonebook.length == 0)
+		if(firstRun)
 		{
-			phonebook.push({
+			window.phonebook.push({
 			"name": "CoffeeMUD",
 			"host": "coffeemud.net",
 				"port": "23"}
 			);
-			setConfig('/phonebook/dial', phonebook);
+			setConfig('/phonebook/dial', window.phonebook);
 			if(Siplet.COFFEE_MUD)
 				setConfig('/phonebook/auto','g0');
 		}
@@ -146,12 +189,13 @@ function LoadGlobalPhonebook()
 		return;
 	}
 	// NON-ELECTRON
-	if(window.phonebook.length == 0)
+	if(firstRun)
 	{
-	window.phonebook.push({
-		"name": "Default MUD",
-		"port": "default"
-	});
+		window.phonebook.push({
+			"name": "Default MUD",
+			"port": "default"
+		});
+		setConfig('/phonebook/auto','g0');
 	}
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/MudPhonebook', true);
@@ -163,7 +207,11 @@ function LoadGlobalPhonebook()
 			{
 				var entries = pb["phonebook"];
 				if(Array.isArray(entries) && (entries.length > 0))
+				{
+					
 					window.phonebook = entries;
+					setConfig('/phonebook/dial', window.phonebook);
+				}
 			}
 			AutoConnect();
 		}
