@@ -3,16 +3,10 @@
 	<TD WIDTH=20%>Quick Conn:</TD>
 	<TD>Host:<INPUT TYPE=TEXT ID="QUICKCONNECTHOST" SIZE=20> Port: <INPUT TYPE=TEXT ID="QUICKCONNECTPORT" SIZE=3>
 		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Windows')">
-		${
-			butt('Connect',"var el = document.getElementById('PHONEBOOKROOT');if(el)el.quickconnect();");
-			if(Siplet.COFFEE_MUD)
-			{
-				document.getElementById('QUICKCONNECTHOST').value='coffeemud.net';
-				document.getElementById('QUICKCONNECTPORT').value='23';
-			}
-		}
-</TD></TR>
-</TR><TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
+		${butt('Connect',"var el = document.getElementById('PHONEBOOKROOT');if(el)el.quickconnect();");}
+	</TD>
+</TR>
+<TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE>Phonebook</TD>
 </TR><TR>
 	<TD>Select:</TD>
 	<TD><SELECT ID="CONNECTPHONEBOOK" ONCHANGE="document.getElementById('PHONEBOOKROOT').dropdownselected();">
@@ -72,6 +66,11 @@
 	var fixphonebookpage=function(){
 	if(document.getElementById('PHONEBOOKDELETE'))
 	{
+		if(Siplet.COFFEE_MUD)
+		{
+			document.getElementById('QUICKCONNECTHOST').value='coffeemud.net';
+			document.getElementById('QUICKCONNECTPORT').value='23';
+		}
 		var RED = '#FF555B';
 		var root = document.getElementById('PHONEBOOKROOT');
 		var phbkField = document.getElementById('CONNECTPHONEBOOK');
