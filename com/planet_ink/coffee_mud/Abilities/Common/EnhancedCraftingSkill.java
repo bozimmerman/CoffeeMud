@@ -386,6 +386,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		String stage=null;
 		String key=null;
 		final List<String> types=getThisSkillsExpertises();
+		final Set<String> found = new TreeSet<String>();
 		for(int t=0;t<types.size();t++)
 		{
 			key=types.get(t);
@@ -406,8 +407,11 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 							def=CMLib.expertises().getDefinition(key+(s+1));
 						if(def==null)
 							def=CMLib.expertises().getDefinition(key);
-						if(def!=null)
+						if((def!=null)&&(!found.contains(def.getStageNames()[s])))
+						{
+							found.add(def.getStageNames()[s]);
 							extras.append(def.getStageNames()[s]+", ");
+						}
 					}
 				}
 			}
