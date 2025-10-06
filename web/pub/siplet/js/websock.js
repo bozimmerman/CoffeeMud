@@ -1,5 +1,3 @@
-window.isElectron = typeof window.process === 'object' && window.process.versions && window.process.versions.electron;
-
 if (isElectron) 
 {
 	window.WebSocket = function(url) {

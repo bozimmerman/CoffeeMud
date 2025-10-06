@@ -1,3 +1,4 @@
+window.isElectron = typeof window.process === 'object' && window.process.versions && window.process.versions.electron;
 var Siplet =
 {
 	VERSION_MAJOR: '3.2',
