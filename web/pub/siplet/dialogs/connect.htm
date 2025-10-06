@@ -69,7 +69,13 @@
 		
 		root.makephonebookname = function(user,name,port)
 		{
-			return user + '@' + name + ' (' + port + ')';
+			var pbname = '';
+			if((user !== undefined) && (user))
+				pbname = user + '@';
+			pbname += name;
+			if((port !== undefined) && (port))
+				pbname += ' (' + port + ')';
+			return pbname;
 		};
 		
 		var phonebook = getConfig('/phonebook/dial',[]);
@@ -143,8 +149,9 @@
 			for(var i=0;i < gphonebook.length;i++)
 			{
 				var pb = gphonebook[i];
-				qcdd.add(new Option(pb.name + ' ('+pb.port+')', 'g'+i));
-				var opt = new Option(pb.name + ' ('+pb.port+')', 'g'+i);
+				var name = root.makephonebookname(pb.user,pb.name,pb.port);
+				qcdd.add(new Option(name, 'g'+i));
+				var opt = new Option(name, 'g'+i);
 				acdd.add(opt);
 				if(auto == opt.value)
 					opt.selected=true;
@@ -152,8 +159,9 @@
 			for(var i=0;i < phonebook.length;i++)
 			{
 				var pb = phonebook[i];
-				qcdd.add(new Option(pb.user+'@'+pb.name + ' ('+pb.port+')', ''+i));
-				var opt = new Option(pb.user+'@'+pb.name + ' ('+pb.port+')', ''+i);
+				var name = root.makephonebookname(pb.user,pb.name,pb.port);
+				qcdd.add(new Option(name, ''+i));
+				var opt = new Option(name, ''+i);
 				acdd.add(opt);
 				if(auto == opt.value)
 					opt.selected=true;
