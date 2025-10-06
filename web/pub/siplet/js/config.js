@@ -185,7 +185,7 @@ function LoadGlobalPhonebook()
 		if(Array.isArray(savedPhonebook) && (savedPhonebook.length == 0))
 		{
 			savedPhonebook.push(window.phonebook[0]);
-			setConfig('/phonebook/dial', window.phonebook);
+			setConfig('/phonebook/dial', savedPhonebook);
 			if(Siplet.COFFEE_MUD)
 				setConfig('/phonebook/auto','g0');
 		}
@@ -195,7 +195,8 @@ function LoadGlobalPhonebook()
 	// NON-ELECTRON
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/MudPhonebook', true);
-	xhr.onreadystatechange = function() {
+	xhr.onreadystatechange = function()
+	{
 		if((xhr.readyState === 4)&&(xhr.status === 200)) 
 		{
 			var pb = JSON.parse(xhr.responseText);
@@ -205,7 +206,8 @@ function LoadGlobalPhonebook()
 				if(Array.isArray(entries) && (entries.length > 0))
 				{
 					window.phonebook = entries;
-					setConfig('/phonebook/auto','g0');
+					if(getConfig('/phonebook/auto')==null)
+						setConfig('/phonebook/auto','g0');
 				}
 			}
 			AutoConnect();
