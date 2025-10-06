@@ -173,25 +173,23 @@ function LoadGlobalPhonebook()
 	window.phonebook = [];
 	if(isElectron)
 	{
-		window.phonebook.push({
-			"name": "CoffeeMUD",
-			"host": "coffeemud.net",
-			"port": "23",
-			"user": "",
-			"accountName": "",
-			"password": "",
-			"disableInput": false,
-			"bsCode": 8
-		});
 		var savedPhonebook = getConfig('/phonebook/dial', []);
 		if(Array.isArray(savedPhonebook) && (savedPhonebook.length == 0))
 		{
-			var defaultPBEntry = JSON.parse(JSON.stringify(window.phonebook[0]));
-			defaultPBEntry.pb = true;
-			savedPhonebook.push(defaultPBEntry);
+			savedPhonebook.push({
+				"name": "CoffeeMUD",
+				"host": "coffeemud.net",
+				"port": "23",
+				"user": "",
+				"accountName": "",
+				"password": "",
+				"disableInput": false,
+				"bsCode": 8,
+				"pb": true
+			});
 			setConfig('/phonebook/dial', savedPhonebook);
 			if(Siplet.COFFEE_MUD)
-				setConfig('/phonebook/auto','g0');
+				setConfig('/phonebook/auto','0');
 		}
 		setTimeout(function() { AutoConnect(); },100);
 		return;
