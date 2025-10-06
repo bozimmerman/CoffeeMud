@@ -186,7 +186,9 @@ function LoadGlobalPhonebook()
 		var savedPhonebook = getConfig('/phonebook/dial', []);
 		if(Array.isArray(savedPhonebook) && (savedPhonebook.length == 0))
 		{
-			savedPhonebook.push(window.phonebook[0]);
+			var defaultPBEntry = JSON.parse(JSON.stringify(window.phonebook[0]));
+			defaultPBEntry.pb = true;
+			savedPhonebook.push(defaultPBEntry);
 			setConfig('/phonebook/dial', savedPhonebook);
 			if(Siplet.COFFEE_MUD)
 				setConfig('/phonebook/auto','g0');
