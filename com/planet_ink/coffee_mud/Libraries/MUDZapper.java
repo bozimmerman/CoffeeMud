@@ -5420,7 +5420,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								catch(final ScriptParseException spe)
 								{
 									Log.errOut("MUDZapper","Script parse Exception for "+str2);
-									Log.errOut("MUDZapper",spe);
+									//Log.errOut("MUDZapper",spe);
 								}
 							}
 							v=V.size();
