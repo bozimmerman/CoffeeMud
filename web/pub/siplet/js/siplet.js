@@ -529,9 +529,8 @@ function SipletWindow(windowName)
 					}
 					catch(e)
 					{
-						for (var i=0; i < blk.data.length; i++) {
+						for (var i=0; i < blk.data.length; i++)
 							newText += String.fromCharCode( blk.data[i]);
-						}
 					}
 				}
 				newText = me.text.process(newText);
@@ -991,7 +990,8 @@ function SipletWindow(windowName)
 		}
 		var timerCopy = JSON.parse(JSON.stringify(timer));
 		var me = this;
-		var execute = function() {
+		var execute = function()
+		{
 			me.executeAction(timer.action);
 			if(timer.option == 'repeat')
 			{
@@ -1421,9 +1421,12 @@ function SipletWindow(windowName)
 			return;
 		if(typeof json === "string")
 		{
-			try {
+			try
+			{
 				json = JSON.parse(json);
-			} catch(e) {
+			}
+			catch(e)
+			{
 				console.error(e);
 				return;
 			}
