@@ -178,8 +178,10 @@ function LoadGlobalPhonebook()
 			"host": "coffeemud.net",
 			"port": "23",
 			"user": "",
-			"account": "",
-			"password": ""
+			"accountName": "",
+			"password": "",
+			"disableInput": false,
+			"bsCode": 8
 		});
 		var savedPhonebook = getConfig('/phonebook/dial', []);
 		if(Array.isArray(savedPhonebook) && (savedPhonebook.length == 0))
