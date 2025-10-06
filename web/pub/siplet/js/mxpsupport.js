@@ -1595,6 +1595,7 @@ var MXP = function(sipwin)
 							&&(frame.contains(this.frames[k])))
 								delete this.frames[k];
 						}
+						sipwin.cleanDiv(frame);
 						parentFrame.removeChild(frame);
 						delete this.frames[name];
 						if(parentFrame.parentNode == sipwin.topWindow)
@@ -1602,8 +1603,8 @@ var MXP = function(sipwin)
 					}
 					else
 					{
+						sipwin.cleanDiv(frame);
 						delete this.frames[name];
-						// so simple!
 						sipwin.topWindow.removeChild(frame);
 					}
 				}

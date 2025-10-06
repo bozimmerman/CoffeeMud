@@ -13,6 +13,7 @@
 <TR><TD WIDTH=20%>Load Plugin:</TD>
 	<TD WIDTH=80%>
 		${butt('File',"document.getElementById('PLUGINSROOT').selectFile();");}
+		${butt('Download',"document.getElementById('PLUGINSROOT').downloadPlugins();");}
 		<SPAN ID="PLUGINSBUILD">${butt('Build',"document.getElementById('PLUGINSROOT').trybuildplugin();");}</SPAN>
 </TD></TR>
 <TR><TD WIDTH=20%>Plugin:<IMG ID="PLUGINSHELP1" SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Plugin')">
@@ -98,6 +99,10 @@
 			scode.editor.getWrapperElement().style.backgroundColor = scode.style.backgroundColor;
 		};
 
+		root.downloadPlugins = function() {
+			menuPlugins(global?'global':'', 'dialogs/getplugins.htm')
+		};
+		
 		root.selectFile = function() {
 			var input = document.createElement('input');
 			input.type = 'file';

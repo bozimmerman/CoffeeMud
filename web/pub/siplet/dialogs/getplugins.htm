@@ -1,0 +1,217 @@
+<SPAN  ID="PLUGINSROOT"></SPAN>
+<SCRIPT>
+	var fixpluginspage=function()
+	{
+	if(document.getElementById('PLUGINSROOT'))
+	{
+		var RED = '#FF555B';
+		var root = document.getElementById('PLUGINSROOT');
+		var plugins = root.parentNode.plugins;
+		var global = root.parentNode.which == 'global';
+		delete root.parentNode.plugins;
+		delete root.parentNode.which;
+		var newPlugins = [];
+		root.downloadPlugins = function() 
+		{
+			var xhr = new XMLHttpRequest();
+			root.innerHTML = '<h1><font color=blue>Checking for Plugins...</font></h1>';
+			xhr.open('GET', 'https://www.zimmers.net/otherprojs/sipplugins.json?cachebuster=' + new Date().getTime(), true);
+			xhr.onreadystatechange = function() 
+			{
+				if((xhr.readyState === 4)&&(xhr.status === 200)) 
+				{
+					newPlugins = [];
+					var pluginJson = JSON.parse(xhr.responseText.trim());
+					root.innerHTML = '<h3><font color=blue>Available Plugins</font></h3>';
+					if(pluginJson && pluginJson.plugins && pluginJson.plugins.length>0)
+					{
+						for(var i=0;i<pluginJson.plugins.length;i++)
+						{
+							var p = pluginJson.plugins[i];
+							var requiredVersion = p.requires;
+							if (CompareVersion(requiredVersion) > 0)
+								continue;
+							newPlugins.push(p);
+							p.installed = false;
+							p.update = false;
+							for(var x=0;x<plugins.length;x++)
+							{
+								var pl = plugins[x];
+								if(pl.name == p.name)
+								{
+									p.installed = true;
+									p.update = pl.version != p.version;
+								}
+							}
+							var ea = '<a href="javascript:document.getElementById(\'PLUGINSROOT\').installPlugin(' + i + ')">';
+							var eh = '<div style="display:block;">';
+							eh += '<b>' + p.displayName + '</b>';
+							eh += '<img align=left src="' + p.icon + '" width=128 height=128 hspace=8 vspace=4>';
+							eh += '<div>';
+							eh += '<b>Version:</b> ' + p.version;
+							if (p.installed) 
+							{
+								if(p.update)
+									eh += ' '+ea+'<font color=' + RED + '>Update</font></a>';
+								else
+									eh += ' <font color=green>(Installed)</font>';
+							}
+							else
+								eh += ' '+ea+'<font color=blue>Install</font></a>';
+							eh += "</div>";
+							eh += '<p>' + p.description + '</p>';
+							eh += "</div><br clear=all>";
+							root.innerHTML += eh;
+						}
+					}
+				}
+			};
+			xhr.onerror = function() 
+			{
+				root.innerHTML = '<h1><font color=red>Plugin Check Failed</font></h1>';
+				root.innerHTML += '<a href="javascript:document.getElementById(\'PLUGINSROOT\').downloadPlugins()">Retry</a>';
+			};
+			xhr.send();
+		};
+		root.downloadPlugins();
+
+		root.installPlugin = function(index)
+		{
+			if((index<0)||(index>=newPlugins.length))
+				return;
+			var p = newPlugins[index];
+			if((!p)||(!p.url))
+					return;
+			root.innerHTML = '<h1><font color=blue>Installing '+p.displayName+'...</font></h1>';
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', p.url + '?cachebuster=' + new Date().getTime(), true);
+			xhr.onreadystatechange = function() 
+			{
+				if((xhr.readyState === 4)&&(xhr.status === 200)) 
+				{
+					var pluginJson = xhr.responseText;
+					try 
+					{
+						var pcopy;
+						pcopy=JSON.parse(pluginJson);
+						if('media' in pcopy)
+						{
+							var media = pcopy.media;
+							root.saveMedia(media);
+						}
+						for(var i=0;i<plugins.length;i++)
+						{
+							var pl = plugins[i];
+							if(pl.name == pcopy.name)
+							{
+								plugins.splice(i,1);
+								break;
+							}
+						}
+						plugins.push(pcopy);
+					}
+					catch(e)
+					{
+						SiAlert('File is invalid JSON.');
+						return;
+					}
+				}
+				root.downloadPlugins();
+			};
+			xhr.onerror = function() 
+			{
+				root.innerHTML = '<h1><font color=red>Plugin Install Failed</font></h1>';
+				root.innerHTML += '<a href="javascript:document.getElementById(\'PLUGINSROOT\').downloadPlugins()">Return to Plugin List</a>';
+			};
+			xhr.send();
+		};
+		
+		root.saveMedia = function(media)
+		{
+			if((!Array.isArray(media)) || (media.length == 0))
+				return;
+			var overwriteOption = 'Yes';
+			var saveMedia;
+			saveMedia = function()
+			{
+				if(media.length == 0)
+					return;
+				var file = media.pop();
+				if(file.path && file.data)
+				{
+					window.sipfs.exists(file.path, function(e,tf) 
+					{
+						if(e || !tf)
+						{
+							window.sipfs.save(file.path, file.data, function(e){
+								saveMedia();
+							});
+						}
+						else
+						if(overwriteOption === 'All')
+						{
+							window.sipfs.save(file.path, file.data, function(e){
+								saveMedia();
+							});
+						}
+						else
+						if(overwriteOption === 'Yes' || overwriteOption === 'No')
+						{
+							var buttons = ['All','Yes','No', 'Cancel'];
+							SiButtons('Overwrite '+file.path+'?', buttons, function(r){
+								overwriteOption = r;
+								if((overwriteOption === 'Yes')||(overwriteOption === 'All'))
+								{
+									window.sipfs.save(file.path, file.data, function(e){
+										saveMedia();
+									});
+								}
+								else
+								if(overwriteOption === 'No')
+									saveMedia();
+							});
+						}
+					});
+				}
+				else
+					saveMedia();
+			};
+			saveMedia();
+		};
+		
+		root.modifyplugins = function()
+		{
+			if(global)
+			{
+				setConfig('/global/plugins', plugins);
+				for(var i=0;i < window.siplets.length; i++)
+					window.siplets[i].plugins.reset();
+			}
+			else
+			{
+				var phonebook = getConfig('/phonebook/dial',[]);
+				if((window.currWin.pb) 
+				&& (window.currWin.pbwhich) 
+				&& (!window.currWin.pbwhich.startsWith('g')))
+				{
+					var pbindex = Number(window.currWin.pbwhich);
+					var pb = phonebook[pbindex];
+					pb.plugins = JSON.parse(JSON.stringify(plugins));
+					var found = FindSipletsByPB(pb);
+					if(!In(window.currWin, found))
+						found.push(window.currWin);
+					for(var i=0;i < found.length;i++)
+					{
+						found[i].pb = pb;
+						found[i].plugins.reset();
+					}
+					setConfig('/phonebook/dial',phonebook);
+				}
+			}
+		};
+	}
+	else
+		setTimeout(fixpluginspage, 10);
+	}
+	setTimeout(fixpluginspage, 10);
+</SCRIPT>

@@ -324,7 +324,7 @@ function menuScripts(value)
 	populateDivFromUrl(content, 'dialogs/scripts.htm');
 }
 
-function menuPlugins(value)
+function menuPlugins(value, page)
 {
 	var which = 'Global';
 	if((value != 'global')&&(window.currWin != null)&&(window.currWin.pb))
@@ -338,7 +338,10 @@ function menuPlugins(value)
 			window.currWin.pb.plugins = [];
 		content.plugins = JSON.parse(JSON.stringify(window.currWin.pb.plugins));
 	}
-	populateDivFromUrl(content, 'dialogs/plugins.htm');
+	if(page === undefined)
+		populateDivFromUrl(content, 'dialogs/plugins.htm');
+	else
+		populateDivFromUrl(content, page);
 }
 
 function menuTimers(value)

@@ -283,19 +283,30 @@ function SipletWindow(windowName)
 	if(this.topContainer)
 		setTimeout(function() { me.mxpFix(); },1);
 
+	this.cleanDiv = function(elem)
+	{
+		if (elem.observer) 
+		{
+			elem.observer.disconnect();
+			elem.containerStorage.clear();
+			elem.observer = null;
+			elem.handleIntersection = null;
+			elem.containerStorage = null;
+		}
+		for (var i = 0; i < elem.children.length; i++)
+			this.cleanDiv(elem.children[i]);
+	};
+	
 	this.reset = function()
 	{
 		this.closeLog();
+		this.cleanDiv(this.topWindow);
 		while (this.topWindow.children.length > 1)
-		{
 			this.topWindow.removeChild(this.topWindow.lastChild);
-		}
 		this.topContainer = this.topWindow.firstChild;
 		this.topContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 		while (this.topContainer.children.length > 1) 
-		{
 			this.topContainer.removeChild(this.topContainer.lastChild);
-		}
 		this.window = this.topContainer.firstChild;
 		this.window.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 		this.window.style.overflowY = 'auto';
@@ -333,56 +344,58 @@ function SipletWindow(windowName)
 		this.resetTimers();
 		this.mxpFix();
 		this.fixOverflow();
-		this.observer.disconnect();
-		this.containerStorage.clear();
 	};
 	
 	this.htmlBuffer = '';
 	this.numLines = 0;
-	this.containerStorage = new Map();
 	
-	this.handleIntersection = function(entries) 
+	this.attachObserver = function(win)
 	{
-		entries.forEach(function(entry)
+		win.containerStorage = new Map();
+		win.handleIntersection = function(entries) 
 		{
-			var container = entry.target;
-			if (entry.isIntersecting) 
+			entries.forEach(function(entry)
 			{
-				var storedHtml = me.containerStorage.get(container);
-				if ((storedHtml !== undefined)&&(container.innerHTML === '')) 
+				var container = entry.target;
+				if (entry.isIntersecting) 
 				{
-					container.style.height = '';
-					container.innerHTML = storedHtml;
-				}
-			} 
-			else 
-			{
-				if(container.innerHTML !== '') 
-				{
-					var height = container.offsetHeight;
-					if (height > 0) 
+					var storedHtml = win.containerStorage.get(container);
+					if ((storedHtml !== undefined)&&(container.innerHTML === '')) 
 					{
-						me.containerStorage.set(container, container.innerHTML);
-						container.innerHTML = '';
-						container.style.height = height + 'px';
+						container.style.height = '';
+						container.innerHTML = storedHtml;
+					}
+				} 
+				else 
+				{
+					if(container.innerHTML !== '') 
+					{
+						var height = container.offsetHeight;
+						if (height > 0) 
+						{
+							win.containerStorage.set(container, container.innerHTML);
+							container.innerHTML = '';
+							container.style.height = height + 'px';
+						}
 					}
 				}
-			}
+			});
+		};
+		win.observer = new IntersectionObserver(win.handleIntersection.bind(win), 
+		{
+			root: win,
+			rootMargin: '300px 0px 300px 0px',
+			threshold: 0
 		});
-	};
-
-	this.observer = new IntersectionObserver(this.handleIntersection.bind(this), 
-	{
-		root: this.window,
-		rootMargin: '300px 0px 300px 0px',
-		threshold: 0
-	});
+	}
 	
 	this.flushNode = function(node, brCt)
 	{
 		var trimCount = this.maxLines / 10;
 		if(trimCount > 1000)
 			trimCount = 1000;
+		if(!this.window.observer)
+			this.attachObserver(this.window);
 		var container;
 		if((this.window.childElementCount == 0)
 		||(this.window.lastChild.brCount >= trimCount))
@@ -391,7 +404,7 @@ function SipletWindow(windowName)
 			container.appendChild(node);
 			this.window.appendChild(container);
 			container.brCount = 0;
-			this.observer.observe(container);
+			this.window.observer.observe(container);
 		}
 		else
 		{
@@ -400,7 +413,7 @@ function SipletWindow(windowName)
 		}
 		if (container.innerHTML === '') 
 		{
-			const storedHtml = this.containerStorage.get(container) || '';
+			const storedHtml = this.window.containerStorage.get(container) || '';
 			container.style.height = '';
 			container.innerHTML = storedHtml;
 		}
@@ -413,8 +426,8 @@ function SipletWindow(windowName)
 			{
 				var child = this.window.firstChild;
 				var brCt = child.brCount;
-				this.observer.unobserve(child);
-				this.containerStorage.delete(child);
+				this.window.observer.unobserve(child);
+				this.window.containerStorage.delete(child);
 				this.window.removeChild(child);
 				this.numLines -= brCt;
 			}
