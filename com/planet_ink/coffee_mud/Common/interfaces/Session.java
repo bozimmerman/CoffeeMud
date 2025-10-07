@@ -655,11 +655,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Blocks for a short amount of time, returning an input
 	 * string only if the user happens to have hit enter.
+	 * @param timeout TODO
 	 * @return a string entered by the user
 	 * @throws IOException exceptions thrown, typically a timeout
 	 * @throws SocketException exceptions thrown, typically socket error
 	 */
-	public String readlineContinue()
+	public String readlineContinue(long timeout)
 		throws IOException, SocketException;
 
 	/**

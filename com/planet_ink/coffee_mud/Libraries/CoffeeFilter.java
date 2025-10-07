@@ -1193,6 +1193,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						{
 							if((S!=null)
 							&&(S.getClientTelnetMode(Session.TELNET_MSP)||S.getClientTelnetMode(Session.TELNET_MXP))
+							&&((S.mob()==null)||(S.mob().isAttributeSet(MOB.Attrib.SOUND)))
 							&&((source==null)
 							   ||(source==mob)
 							   ||(CMLib.flags().canBeHeardSpeakingBy(source,mob))))

@@ -708,7 +708,7 @@ public class VFShell
 					public String prompt(final String Message, final String Default)
 					{
 						onlyPrint(Message, false);
-						final String msg = readlineContinue();
+						final String msg = readlineContinue(0);
 						if (msg.length() == 0)
 							return Default;
 						return msg;
@@ -718,7 +718,7 @@ public class VFShell
 					public void prompt(final InputCallback callBack)
 					{
 						callBack.showPrompt();
-						callBack.setInput(readlineContinue());
+						callBack.setInput(readlineContinue(0));
 						callBack.callBack();
 					}
 
@@ -759,7 +759,7 @@ public class VFShell
 					public String choose(final String Message, final String Choices, final String Default)
 					{
 						onlyPrint(Message, false);
-						final String msg = readlineContinue();
+						final String msg = readlineContinue(0);
 						if (msg.length() == 0)
 							return Default;
 						if (Choices.toUpperCase().indexOf(msg.toUpperCase().trim()) >= 0)
@@ -782,11 +782,11 @@ public class VFShell
 					@Override
 					public String blockingIn(final long timeoutMillis, final boolean filter)
 					{
-						return readlineContinue();
+						return readlineContinue(timeoutMillis);
 					}
 
 					@Override
-					public String readlineContinue()
+					public String readlineContinue(final long timeout)
 					{
 						try
 						{

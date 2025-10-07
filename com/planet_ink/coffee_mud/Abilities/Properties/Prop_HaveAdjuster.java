@@ -246,7 +246,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 
 	private final String getParmStr(final Map<String,String> ps, final String newText, final String parm, final String def)
 	{
-		if((parm!=null)&&ps.containsKey(parm))
+		if((parm!=null)&&(ps!=null)&&(parm!=null)&&ps.containsKey(parm))
 			return ps.get(parm);
 		return def;
 	}

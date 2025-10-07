@@ -603,7 +603,7 @@ public class DefaultSession implements Session
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			CMLib.s_sleep(250);
-			this.readlineContinue();
+			this.readlineContinue(10000); // must handle big mpcp and similar requests
 			if(status == SessionStatus.HANDSHAKE_OPEN)
 			{
 				if(!mcpDisabled)
@@ -2694,10 +2694,12 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public String readlineContinue() throws IOException, SocketException
+	public String readlineContinue(final long timeout) throws IOException, SocketException
 	{
 		if((in==null)||(out==null))
 			return "";
+		final long now = System.currentTimeMillis();
+		final long stopTime = (timeout>=now)?timeout:(now+timeout);
 		int code=-1;
 		while(!killFlag)
 		{
@@ -2717,7 +2719,7 @@ public class DefaultSession implements Session
 				continue;
 			if(code==0)
 				break;
-			if(code==-1)
+			if((code==-1)||(System.currentTimeMillis()>stopTime))
 				return null;
 		}
 
@@ -3142,7 +3144,7 @@ public class DefaultSession implements Session
 				try
 				{
 					setInputLoopTime(); // update the input loop time so we don't get suspicious
-					final String input=readlineContinue();
+					final String input=readlineContinue(PINGTIMEOUT);
 					if(input != null)
 					{
 						callBack.setInput(input);
@@ -3554,7 +3556,7 @@ public class DefaultSession implements Session
 				return;
 			}
 			else
-				input=readlineContinue();
+				input=readlineContinue(PINGTIMEOUT);
 			if(input==null)
 			{
 				if((System.currentTimeMillis()-lastWriteTime)>PINGTIMEOUT)

@@ -1848,25 +1848,25 @@ public class MUD extends Thread implements MudHost
 					return;
 			}
 			final CMProps page=CMProps.loadPropPage("//"+iniFile);
-			for(final String key: clArgs.keySet())
-			{
-				String skey = key;
-				final int x = skey.indexOf(':');
-				if((x>0)&&(x<skey.length()-1))
-				{
-					if(skey.charAt(x) == threadCode)
-						skey = key.substring(0,x);
-					else
-						continue;
-				}
-				page.put(skey,clArgs.get(key));
-			}
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
 				System.err.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"A terminal error has occured!");
 				return;
+			}
+			for(final String key: clArgs.keySet())
+			{
+				String skey = key;
+				final int x = skey.indexOf(':');
+				if((x>0)&&(x<skey.length()-1))
+				{
+					if(skey.charAt(x+1) == threadCode)
+						skey = key.substring(0,x);
+					else
+						continue;
+				}
+				page.put(skey,clArgs.get(key));
 			}
 			page.resetSystemVars();
 			CMProps.setState(CMProps.HostState.BOOTING);
@@ -2085,7 +2085,7 @@ public class MUD extends Thread implements MudHost
 			final int x = skey.indexOf(':');
 			if((x>0)&&(x<skey.length()-1))
 			{
-				if(skey.charAt(x) == '0')
+				if(skey.charAt(x+1) == '0')
 					skey = key.substring(0,x);
 				else
 					continue;

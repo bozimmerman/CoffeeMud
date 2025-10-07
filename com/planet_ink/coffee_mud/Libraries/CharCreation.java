@@ -211,7 +211,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		public String acceptInput(final Session session) throws SocketException, IOException
 		{
 			final boolean wasNull = (lastInput == null) || (session == null);
-			lastInput=(session == null) ? null : session.readlineContinue();
+			lastInput=(session == null) ? null : session.readlineContinue(500);
 			if(wasNull && (lastInput != null))
 				lastInput=CMLib.lang().rawInputParser(lastInput);
 			return lastInput;
@@ -1143,7 +1143,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			try
 			{
-				final String s = session.readlineContinue();
+				final String s = session.readlineContinue(500);
 				if((s!=null) && s.equalsIgnoreCase("MSSP-REQUEST")
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
 				{
