@@ -126,7 +126,7 @@ public class Skill_Songcraft extends BardSkill
 			if(myLevel<lvl)
 				myLevel=lvl;
 			if(((!hasAble)
-			||proficiencyCheck(mob,0,false))
+				||proficiencyCheck(mob,0,false))
 			&&(lowestLevel<=myLevel))
 			{
 				final Ability A=(Ability)copyOf();
