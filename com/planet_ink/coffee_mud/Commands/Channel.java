@@ -158,7 +158,7 @@ public class Channel extends StdCommand
 		if(commands.size()==0)
 		{
 			int size = CMLib.channels().getChannelQue(channelInt, 0, 5, mob).size();
-			if(size>0)
+			if((size>0)&&(!mob.isMonster()))
 			{
 				if(size>5)
 					size=5;
