@@ -3490,7 +3490,7 @@ command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 AREAGROUP</span> <span style="color: rgb(102, 51, 102);">([AREA
-NAME OR NAMES])</span>
+NAME,&nbsp; NAMES, #TAG])</span>
 - essentially the same as set ROOMGROUP below, this will set the
 current designated roomgroup to the rooms in the area(s) specified.
 Although this does nothing in itself, it is important for the several
@@ -3498,14 +3498,14 @@ commands which load mobs and items. The area name ANY may be given to
 choose a random area. Several area names may be specified, separated by
 spaces and word-grouped with double-quotes. &nbsp;The area name ALL
 may
-be given to select all world areas. &nbsp;
+be given to select all world areas, and #MyTagName will select areas tagged as given. &nbsp;
 If no area name is given, this will CLEAR the ROOMGROUP designation.
 This can have a profound impact on how subsequent mob or item loading,
 or room setting commands work. This command will automatically clear
 the AREA setting.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 ROOMGROUP</span> <span style="color: rgb(102, 51, 102);">([ROOM
-NAME])</span>
+NAME, #TAG])</span>
 - will set the ROOMGROUP to the set specified. If an area has been
 previously designated, and not cleared (see SET AREA), then the rooms
 will be selected from the designated area according to the room name
@@ -3514,7 +3514,7 @@ name of ANY is given, then the rooms will be chosen randomly from the
 world, or the area if designated. Several room names may be specified
 as choices by setting the first room name as ANY, followed by your
 other room name choices, separated by spaces.The room name ALL may be
-given to select all designated rooms. &nbsp;
+given to select all designated rooms, and #MyTagName will select all rooms with the given tag. &nbsp;
 If no room name is given, this will effectly clear the ROOMGROUP
 designation (but it will not clear the area designation!). Valid room
 names include map room IDs such as MyArea#123, or key words from the
@@ -3630,12 +3630,12 @@ command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 MOBGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
-([MOB NAME])</span>
+([MOB NAME, #TAG])</span>
 - will designate a set of mobs with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
 ZAPPERMASKS will apply in addition to the name
 mask entered before the MASK= string. Use a name of ALL to select all
-appropriate mobs.&nbsp;The mobs chosen will be selected from those
+appropriate mobs. Unless a #tag is used, the mobs chosen will be selected from those
 in
 the designated ROOMGROUP (if one is designated), AREA (if one is
 designated) or the world. The mobs must exist somewhere in the map for
@@ -3732,12 +3732,12 @@ one from the group will be chosen.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span>
 <span style="color: rgb(102, 51, 102);">([ITEM
-NAME])</span>
+NAME, #TAG])</span>
 - will designate a set of items with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
 ZAPPERMASKS will apply in addition to the item
 name entered before the MASK= string. Use an item name of ALL to select
-all appropriate items. &nbsp;The items chosen will be selected from
+all appropriate items. &nbsp;Unless a #tag is used, the items chosen will be selected from
 those in the designated ROOMGROUP (if one is designated), the AREA (if
 one is designated) or the world. The items must exist somewhere in the
 map for this command to work. Normally an item will not be placed in

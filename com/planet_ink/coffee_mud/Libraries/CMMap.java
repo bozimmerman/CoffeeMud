@@ -2385,7 +2385,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean isTaggedObject(final String tag, final Taggable obj)
 	{
-		if((obj==null)||(tag==null))
+		if(tag==null)
 			return false;
 		final List<Taggable> objs;
 		synchronized (taggedMap)
@@ -2394,6 +2394,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		if(objs == null)
 			return false;
+		if(obj == null)
+			return true;
 		synchronized (objs)
 		{
 			return objs.contains(obj);

@@ -902,6 +902,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			final int oldSize=areas.size();
 			if(areaName.equalsIgnoreCase("any"))
 				areas.add(CMLib.map().getRandomArea());
+			else
+			if(areaName.startsWith("#")&&(CMLib.map().isTaggedObject(areaName.substring(1), null)))
+			{
+				for(final Enumeration<Taggable> t = CMLib.map().getTaggedObjects(areaName.substring(1));t.hasMoreElements();)
+				{
+					final Taggable T = t.nextElement();
+					if(T instanceof Area)
+						areas.add((Area)T);
+				}
+			}
 			final boolean addAll=areaName.equalsIgnoreCase("all");
 			if(oldSize==areas.size())
 			{
@@ -1417,6 +1427,23 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final List<MOB> choices3=new ArrayList<MOB>();
 							try
 							{
+								if(mobName.startsWith("#")&&(CMLib.map().isTaggedObject(mobName.substring(1), null)))
+								{
+									for(final Enumeration<Taggable> t = CMLib.map().getTaggedObjects(mobName.substring(1));t.hasMoreElements();)
+									{
+										final Taggable T = t.nextElement();
+										if((T instanceof MOB)
+										&&(!((MOB)T).isPlayer())
+										&&(!((MOB)T).getGroupLeader().isPlayer()))
+										{
+											if((mask!=null)&&(!CMLib.masking().maskCheck(mask,(MOB)T,true)))
+												continue;
+											choices=choices0;
+											choices0.add((MOB)T);
+										}
+									}
+								}
+								else
 								for(final Enumeration<Room> e=getAppropriateRoomSet(q);e.hasMoreElements();)
 								{
 									final Room R2=e.nextElement();
@@ -1570,6 +1597,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final boolean addAll=itemName.equalsIgnoreCase("all");
 							try
 							{
+								if(itemName.startsWith("#")&&(CMLib.map().isTaggedObject(itemName.substring(1), null)))
+								{
+									for(final Enumeration<Taggable> t = CMLib.map().getTaggedObjects(itemName.substring(1));t.hasMoreElements();)
+									{
+										final Taggable T = t.nextElement();
+										if(T instanceof Item)
+										{
+											if((mask!=null)&&(!CMLib.masking().maskCheck(mask,(Item)T,true)))
+												continue;
+											choices=choices0;
+											choices0.add((Item)T);
+										}
+									}
+								}
+								else
 								for(final Enumeration<Room> e=getAppropriateRoomSet(q);e.hasMoreElements();)
 								{
 									final Room R2=e.nextElement();
@@ -2022,6 +2064,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								final boolean addAll=localeName.equalsIgnoreCase("any")
 											 ||localeName.equalsIgnoreCase("all");
+								if(localeName.startsWith("#")&&(CMLib.map().isTaggedObject(localeName.substring(1), null)))
+								{
+									for(final Enumeration<Taggable> t = CMLib.map().getTaggedObjects(localeName.substring(1));t.hasMoreElements();)
+									{
+										final Taggable T = t.nextElement();
+										if(T instanceof Room)
+										{
+											if((mask!=null)&&(!CMLib.masking().maskCheck(mask,(Room)T,true)))
+												continue;
+											choices=choices0;
+											choices0.add((Room)T);
+										}
+									}
+								}
+								else
 								for(final Enumeration<Room> r=getAppropriateRoomSet(q, useThese);r.hasMoreElements();)
 								{
 									final Room R2=r.nextElement();

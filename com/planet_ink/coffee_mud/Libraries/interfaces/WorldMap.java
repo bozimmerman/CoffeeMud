@@ -905,13 +905,14 @@ public interface WorldMap extends CMLibrary
 
 	/**
 	 * Returns whether the given object is tagged with the given tag.
+	 * Send a null object just to check if the tag exists at all.
 	 *
 	 * @see WorldMap#addObjectTag(String, Taggable)
 	 * @see WorldMap#delObjectTag(String, Taggable)
 	 * @see WorldMap#getTaggedObjects(String)
 	 *
 	 * @param tag the tag to search for
-	 * @param obj the object to check for the tag
+	 * @param obj the object to check for the tag (or null)
 	 * @return true if the object has the tag, false otherwise
 	 */
 	public boolean isTaggedObject(final String tag, final Taggable obj);
