@@ -38,7 +38,7 @@ CMCHAN integer NULL
 CMATTA integer NULL
 CMAMOR integer NULL
 CMDAMG integer NULL
-CMBTMP integer NULL
+CMBTMP long NULL
 CMLEIG string NULL
 CMHEIT integer NULL
 CMWEIT integer NULL
