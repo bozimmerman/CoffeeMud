@@ -1985,22 +1985,23 @@ public class DefaultSession implements Session
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{
 								obj.remove("timestamp");
-								final boolean wasmccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
-										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
+								final int wasMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
+										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
+										: -1;
 								for(final String key : getStatCodes())
 								{
 									if(obj.containsKey(key.toLowerCase()))
 										setStat(key,obj.get(key.toLowerCase()).toString());
 								}
 								this.inputCallback=null;
-								final boolean ismccp2 = this.getClientTelnetMode(Session.TELNET_COMPRESS2)
-										||this.getClientTelnetMode(Session.TELNET_COMPRESS);
-								if(ismccp2 && !wasmccp2)
+								final int isMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
+										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
+										: -1;
+								if((isMccpCode>0) && (wasMccpCode<0)) // if the restored connection wants mccp, kill it with fire.
 								{
-									this.setClientTelnetMode(Session.TELNET_COMPRESS, false);
-									this.setClientTelnetMode(Session.TELNET_COMPRESS2, false);
-									if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
-										changeTelnetMode(rawout,TELNET_COMPRESS2,true);
+									this.setClientTelnetMode(isMccpCode, false);
+									//if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
+									//	changeTelnetMode(rawout,isMccpCode,true);
 								}
 								this.lastKeystroke = System.currentTimeMillis();
 								this.afkTime = 0;
