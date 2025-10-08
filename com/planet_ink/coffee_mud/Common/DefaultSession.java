@@ -2716,12 +2716,12 @@ public class DefaultSession implements Session
 				}
 			}
 			code=nonBlockingIn(true);
-			if(code==1)
-				continue;
-			if(code==0)
-				break;
 			if((code==-1)||(System.currentTimeMillis()>stopTime))
 				return null;
+			if(code==0)
+				break;
+			if(code==1)
+				continue;
 		}
 
 		final StringBuilder inStr=new StringBuilder(input);
