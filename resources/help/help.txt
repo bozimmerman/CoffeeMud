@@ -1,15 +1,15 @@
-^HMOVEMENT^N                        ^HCOMMUNICATION^?
+^HMOVEMENT^N                            ^HCOMMUNICATION^?
 north south east west up down       say tell reply channels socials
 recall mount crawl climb swim go    quiet emote yell ask whisper
 sleep wake rest stand enter run     gossip ooc gratz auction music
 
-^HCOMBAT/SPELLS/SKILLS^?            ^HINFORMATION^?
+^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
 kill flee wimpy practice train      help credits commands where
 pray cast sing chant play           look exits topics time who
 chants spells skills spells         areas score gods topics helplist
 prayers languages quality
                                     ^HGROUPS^?
-^HOBJECTS^?                         follow group gtell split
+^HOBJECTS^?                             follow group gtell split
 inventory equipment look compare
 get put drop give wear wield hold   ^HOTHER^?
 eat drink fill sniff examine push   ! quit password switch config ansi
