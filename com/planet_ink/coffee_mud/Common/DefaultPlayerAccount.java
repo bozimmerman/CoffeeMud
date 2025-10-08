@@ -569,6 +569,16 @@ public class DefaultPlayerAccount extends DefaultPrideStats implements PlayerAcc
 					thinPlayers.add((tP!=null) ? tP : CMLib.players().getEmptyThinPlayerObject(name));
 				}
 			}
+			else
+			{
+				for(int p=0;p<thinPlayers.size();p++)
+				{
+					final ThinPlayer P = thinPlayers.elementAt(p);
+					final MOB M = CMLib.players().getPlayer(P.name());
+					if((M != null)&&(M.phyStats().level() != P.level()))
+						thinPlayers.set(p,CMLib.players().getThinPlayer(M.Name()));
+				}
+			}
 		}
 		return thinPlayers.elements();
 	}

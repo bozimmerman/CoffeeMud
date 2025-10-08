@@ -1745,33 +1745,62 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 	{
 		if(commands.size()<3)
 			return pm;
+		int foundFrom=-1;
 		for(int i=1;i<commands.size()-1;i++)
 		{
 			if(commands.get(i).equalsIgnoreCase("from"))
 			{
-				final String possRsc=CMParms.combine(commands,i+1);
-				final int rscCode=RawMaterial.CODES.FIND_StartsWith(possRsc);
-				if(rscCode > 0)
-				{
-					boolean found=false;
-					for(final int p : pm)
-					{
-						if((rscCode&RawMaterial.MATERIAL_MASK)==p)
-							found=true;
-					}
-					if(!found)
-					{
-						if(mob!=null)
-							commonTelL(mob,"'@x1' is not a valid resource type for this skill.",possRsc);
-						return null;
-					}
-					while(commands.size()>i)
-						commands.remove(commands.size()-1);
-					return new int[] {rscCode};
-				}
+				foundFrom=i+1;
+				break;
 			}
 		}
-		return pm;
+		if (foundFrom < 0)
+			return pm;
+		final Map<String,Integer> subCodes = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
+		if(mob.location()!=null)
+		{
+			for (final Enumeration<Item> i = mob.items(); i.hasMoreElements();)
+			{
+				final Item I = i.nextElement();
+				if (I instanceof RawMaterial)
+					subCodes.put(((RawMaterial)I).getSubType(),Integer.valueOf(I.material()));
+			}
+			for (final Enumeration<Item> i = mob.location().items(); i.hasMoreElements();)
+			{
+				final Item I = i.nextElement();
+				if (I instanceof RawMaterial)
+					subCodes.put(((RawMaterial)I).getSubType(),Integer.valueOf(I.material()));
+			}
+		}
+		final String possRsc=CMParms.combine(commands,foundFrom);
+		final int rscCode=RawMaterial.CODES.FIND_StartsWith(possRsc);
+		if(rscCode > 0)
+		{
+			boolean found=false;
+			for(final int p : pm)
+			{
+				if((rscCode&RawMaterial.MATERIAL_MASK)==p)
+					found=true;
+			}
+			if(!found)
+			{
+				if(mob!=null)
+					commonTelL(mob,"'@x1' is not a valid resource type for this skill.",possRsc);
+				return null;
+			}
+			while(commands.size()>foundFrom)
+				commands.remove(commands.size()-1);
+			return new int[] {rscCode};
+		}
+		else
+		if(subCodes.containsKey(possRsc))
+		{
+			while(commands.size()>foundFrom)
+				commands.remove(commands.size()-1);
+			return new int[] {subCodes.get(possRsc).intValue()};
+		}
+		else
+			return pm;
 	}
 
 	protected Vector<Item> getAllMendable(final MOB mob, final Environmental from, final Item contained)
