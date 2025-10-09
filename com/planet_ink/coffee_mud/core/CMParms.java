@@ -1968,9 +1968,9 @@ public class CMParms
 		final Map<Character,List<String>> chkMap;
 		final Map<String,String> uMap;
 		Triad<Map<Character,List<String>>,Map<String,String>,Map<String,Map<String,String>>> cache;
-		if(parsedLooses.containsKey(parmList))
+		cache=parsedLooses.get(parmList);
+		if(cache != null)
 		{
-			cache=parsedLooses.get(parmList);
 			if(cache.third.containsKey(str))
 				return cache.third.get(str);
 			chkMap=cache.first;
