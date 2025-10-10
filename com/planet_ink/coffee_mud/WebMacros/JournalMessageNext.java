@@ -62,24 +62,27 @@ public class JournalMessageNext extends StdWebMacro
 
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq, httpResp);
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
-		final JournalsLibrary.ForumJournal journal=CMLib.journals().getForumJournal(journalName,setClan);
-		if(journal==null)
-			return " @break@";
+		final JournalsLibrary.ForumJournal forumJournal=CMLib.journals().getForumJournal(journalName,setClan);
 		boolean authenticatedToRead = false;
 		if((httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL")==null)
 		||(!journalName.equals(httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL_NAME"))))
 		{
-			if (!journal.authorizationCheck(M, ForumJournalFlags.READ))
-				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
-			else
 			if(CMLib.journals().isArchonJournalName(journalName)
 			&&((M==null)||(!CMSecurity.isASysOp(M))))
-				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", new Object());
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", Boolean.FALSE);
 			else
-				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", journal);
-			httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL_NAME", journalName);
+			if(forumJournal != null)
+			{
+				if (!forumJournal.authorizationCheck(M, ForumJournalFlags.READ))
+					httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", Boolean.FALSE);
+				else
+					httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL", forumJournal);
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL_NAME", journalName);
+			}
+			else
+				httpReq.getRequestObjects().put("AUTHENTICATED_JOURNAL_NAME", journalName);
 		}
-		authenticatedToRead=httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL") == journal;
+		authenticatedToRead=httpReq.getRequestObjects().get("AUTHENTICATED_JOURNAL") == forumJournal;
 		if(parms.containsKey("AUTHCHECK"))
 			return ""+authenticatedToRead;
 		if (!authenticatedToRead)
@@ -161,7 +164,7 @@ public class JournalMessageNext extends StdWebMacro
 			mpage="0";
 		final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
-		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());
+		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,forumJournal,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());
 		if(parms.containsKey("REVERSE")
 		&&(msgs.size()>1)
 		&&(msgs.get(0).update()>msgs.get(msgs.size()-1).update()))
