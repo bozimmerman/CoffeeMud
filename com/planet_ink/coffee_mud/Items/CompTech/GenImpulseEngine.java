@@ -47,27 +47,27 @@ public class GenImpulseEngine extends GenShipEngine
 		basePhyStats.setWeight(5000);
 		setDisplayText("a generic impulse engine sits here.");
 		setDescription("");
-		super.setMaxThrust(CMath.mul(SpaceObject.VELOCITY_LIGHT,50000.0));
+		super.setMaxThrust(maxSpeed);
 	}
-	
-	private static final double maxSpeed =  CMath.div(SpaceObject.VELOCITY_LIGHT,4.0);
-			
+
+	private static final double maxSpeed =  SpaceObject.VELOCITY_SUBLIGHT;
+
 	private volatile SpaceObject ship = null;
 
 	@Override
-	public void setOwner(ItemPossessor owner)
+	public void setOwner(final ItemPossessor owner)
 	{
 		super.setOwner(owner);
 		ship = null;
 	}
-	
+
 	public SpaceObject getShip()
 	{
 		if(ship == null)
 			ship = CMLib.space().getSpaceObject(this, true);
 		return ship;
 	}
-	
+
 	@Override
 	public double getMaxThrust()
 	{

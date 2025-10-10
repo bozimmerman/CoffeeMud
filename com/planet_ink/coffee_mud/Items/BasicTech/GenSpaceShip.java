@@ -315,7 +315,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 								final boolean simulation = msg.targetMajor(CMMsg.MASK_INTERMSG);
 								final ShipDirectional.ShipDir dir=(ShipDirectional.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
-								final boolean isConst = ((Boolean)parms[2]).booleanValue();
+								final boolean isReaction = ((Boolean)parms[2]).booleanValue();
 								double finalAcceleration = 0;
 								double effectiveAcceleration = 0;
 								final double prevSpeed = speed();
@@ -397,7 +397,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
 										//^^ this should be LIKE acceleration, except it can be modified by antigrav stuff
-										if(!isConst)
+										if(!isReaction)
 										{
 											// a non-constant thruster means the ship attains speed in one burst,
 											// and slows in one burst as well.  It is therefore right and good

@@ -32,25 +32,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenImpulseThruster extends GenShipFuellessThruster
+public class GenWarpEngine extends GenShipEngine
 {
 	@Override
 	public String ID()
 	{
-		return "GenImpulseThruster";
+		return "GenWarpEngine";
 	}
 
-	public GenImpulseThruster()
+	public GenWarpEngine()
 	{
 		super();
-		setName("a generic impulse thruster");
+		setName("a generic warp engine");
 		basePhyStats.setWeight(5000);
-		setDisplayText("a generic impulse thruster sits here.");
+		setDisplayText("a generic impulse warp sits here.");
 		setDescription("");
 		super.setMaxThrust(maxSpeed);
+		super.setMinThrust(SpaceObject.VELOCITY_WARP1);
+		super.setReactionEngine(false);
 	}
 
-	private static final double maxSpeed =  SpaceObject.VELOCITY_SUBLIGHT;
+	private static final double maxSpeed =  SpaceObject.VELOCITY_WARP9;
 
 	private volatile SpaceObject ship = null;
 
@@ -87,7 +89,7 @@ public class GenImpulseThruster extends GenShipFuellessThruster
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenImpulseThruster))
+		if(!(E instanceof GenWarpEngine))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

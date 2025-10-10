@@ -290,7 +290,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	/** velocity constant for the speed of light, numbers are in dm/s */
 	public static final long VELOCITY_LIGHT=29979245;
 	/** velocity constant for the speed of sublight */
-	public static final long VELOCITY_SUBLIGHT=26981325;
+	public static final long VELOCITY_SUBLIGHT=VELOCITY_LIGHT/4;
 	/** velocity constant for the speed of sound */
 	public static final long VELOCITY_SOUND=34;
 	/** velocity constant for the speed of orbiting */
