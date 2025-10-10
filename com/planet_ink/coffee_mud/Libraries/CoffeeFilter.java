@@ -151,7 +151,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			}
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
-			Log.debugOut("CoffeeFilter","OUTPUT: ?: "+buf.toString());
+		{
+			Log.debugOut("CoffeeFilter","FTOUT: ?: "+buf.toString());
+		}
 		return buf.toString();
 	}
 
@@ -958,7 +960,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			S.setCurrentColor(normalColor);
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
-			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
+			Log.debugOut("CoffeeFilter",(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+" FTOUT: "+ buf.toString());
 		return buf.toString();
 	}
 
@@ -1034,7 +1036,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
-			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
+			Log.debugOut("CoffeeFilter",(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+" FTOUT: "+buf.toString());
 		return buf.toString();
 	}
 
@@ -1921,7 +1923,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		//*/
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
-			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
+			Log.debugOut("CoffeeFilter",(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+" FTOUT: "+buf.toString());
 		return buf.toString();
 	}
 

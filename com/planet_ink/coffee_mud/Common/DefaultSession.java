@@ -1231,18 +1231,19 @@ public class DefaultSession implements Session
 				{
 					if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
 						return;
+					final String name = (mob != null)?mob.name():(this.acct!=null?acct.getAccountName():getAddress());
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
 					if(debugBinOutput && Log.debugChannelOn())
 					{
-						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						final StringBuilder str=new StringBuilder(name+" BOUT: '");
 						for(final byte c : bytes)
 							str.append((c & 0xff)).append(" ");
 						Log.debugOut( str.toString()+"'");
 					}
 					if(debugStrOutput && Log.debugChannelOn())
 					{
-						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						final StringBuilder str=new StringBuilder(name+" BOUT: '");
 						for(final byte c : bytes)
 							str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+(char)c));
 						Log.debugOut( str.toString()+"'");
@@ -1307,18 +1308,19 @@ public class DefaultSession implements Session
 					return;
 				try
 				{
+					final String name = (mob != null)?mob.name():(this.acct!=null?acct.getAccountName():getAddress());
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
 					if(debugBinOutput && Log.debugChannelOn())
 					{
-						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						final StringBuilder str=new StringBuilder(name+" BOUT: '");
 						for(final char c : chars)
 							str.append((c & 0xff)).append(" ");
 						Log.debugOut( str.toString()+"'");
 					}
 					if(debugStrOutput && Log.debugChannelOn())
 					{
-						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						final StringBuilder str=new StringBuilder(name+" BOUT: '");
 						for(final char c : chars)
 							str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+c));
 						Log.debugOut( str.toString()+"'");
@@ -2660,7 +2662,7 @@ public class DefaultSession implements Session
 				return null;
 			snoopSupportPrint(str+"\n\r",true);
 			if(debugStrInput)
-				Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+				Log.debugOut(getAddress()+" TIN: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 			final MOB mob=this.mob;
 			if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
 				needPrompt=true;
@@ -2686,7 +2688,7 @@ public class DefaultSession implements Session
 			if(inStr.substring(0, 3).equals("#$#"))
 			{
 				if(debugStrInput)
-					Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+					Log.debugOut(getAddress()+" TIN: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 				if(CMLib.protocol().mcp(this,inStr,mcpKey,mcpSupported,mcpKeyPairs))
 					return false;
 			}
@@ -2738,7 +2740,7 @@ public class DefaultSession implements Session
 			return null;
 		snoopSupportPrint(str+"\n\r",true);
 		if(debugStrInput && (inStr.length()>0))
-			Log.debugOut("INPUT: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
+			Log.debugOut(getAddress()+" TIN: "+(mob==null?"":mob.Name())+": '"+inStr.toString()+"'");
 		final MOB mob=this.mob;
 		if((mob != null)&&(mob.isAttributeSet(Attrib.NOREPROMPT)))
 			needPrompt=true;
@@ -3802,7 +3804,8 @@ public class DefaultSession implements Session
 				{
 					if(debugBinInputBuf.length()>0)
 					{
-						Log.debugOut("BINPUT: "+(mob==null?"":mob.Name())+": '"+debugBinInputBuf.toString()+"'");
+						final String name = (mob != null)?mob.name():(acct!=null?acct.getAccountName():getAddress());
+						Log.debugOut(name+" BIN: '"+debugBinInputBuf.toString()+"'");
 						debugBinInputBuf.setLength(0);
 					}
 					return !killFlag;
