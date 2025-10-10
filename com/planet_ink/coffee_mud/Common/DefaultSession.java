@@ -1274,12 +1274,15 @@ public class DefaultSession implements Session
 		}
 		catch (final Exception ioe)
 		{
-			final MOB M = mob;
 			final String errMsg = (ioe == null)? "unk" : ioe.getMessage();
-			if(M != null)
-				Log.errOut("Killing "+M.name()+"'s session: "+errMsg);
-			else
-				Log.errOut("Killing Unknown session: "+errMsg);
+			if(errMsg.toLowerCase().indexOf("broken pipe")<0)
+			{
+				final MOB M = mob;
+				if(M != null)
+					Log.errOut("Killing "+M.name()+"'s session: "+errMsg);
+				else
+					Log.errOut("Killing Unknown session: "+errMsg);
+			}
 			stopSession(false,true,true, false);
 			setKillFlag(true);
 		}
