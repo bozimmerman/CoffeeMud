@@ -210,7 +210,7 @@ var TELNET = function(sipwin)
 								response = response.concat(this.newEnvironVar(typ,"JOB",sipwin.jobid));
 							}
 							if((varName == 'CHARSET')||(varName.length == 0))
-								response = response.concat(this.newEnvironVar(typ,"CHARSET",(sipwin.pb && sipwin.pb.accountName)?sipwin.pb.accountName:''));
+								response = response.concat('UTF-8');
 							if((varName == 'CLIENT_NAME')||(varName.length == 0))
 								response = response.concat(this.newEnvironVar(typ,"CLIENT_NAME",Siplet.NAME));
 							if((varName == 'CLIENT_VERSION')||(varName.length == 0))
