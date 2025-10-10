@@ -29,7 +29,7 @@ function SipletWindow(windowName)
 	this.mxp = new MXP(this);
 	this.plugins = new PLUGINS(this);
 	this.mapper = new Mapper(this);
-	this.text = new TEXT([this.mxp,this.msp]);
+	this.text = new TEXT(this,[this.mxp,this.msp]);
 	this.topWindow = document.getElementById(windowName);
 	if(this.topWindow) 
 		this.topWindow.sipwin = this;

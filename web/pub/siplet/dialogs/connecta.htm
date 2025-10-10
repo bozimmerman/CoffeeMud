@@ -100,26 +100,31 @@
 		}
 		phbkField.selectedIndex=-1;
 
+		root.startAddNew = function(clear)
+		{
+			if(Number(phbkField.value)>=0)
+				phbkField.selectedIndex=0;
+			delButt.style.visibility='hidden';
+			if(clear) nameField.value='';
+			nameField.style.backgroundColor=RED;
+			if(clear) hostField.value='';
+			hostField.style.backgroundColor=RED;
+			if(clear) portField.value='';
+			portField.style.backgroundColor=RED;
+			if(clear) acctField.value='';
+			acctField.style.backgroundColor='white';
+			if(clear) userField.value='';
+			userField.style.backgroundColor='white';
+			if(clear) passField.value='';
+			passField.style.backgroundColor='white';
+			disinField.checked=false;
+			inbsField.selectedIndex = 0;
+		};
+		
 		root.dropdownselected = function()
 		{
 			if(Number(phbkField.value)<0)
-			{
-				delButt.style.visibility='hidden';
-				nameField.value='';
-				nameField.style.backgroundColor=RED;
-				hostField.value='';
-				hostField.style.backgroundColor=RED;
-				portField.value='';
-				portField.style.backgroundColor=RED;
-				acctField.value='';
-				acctField.style.backgroundColor='white';
-				userField.value='';
-				userField.style.backgroundColor='white';
-				passField.value='';
-				passField.style.backgroundColor='white';
-				disinField.checked=false;
-				inbsField.selectedIndex = 0;
-			}
+				root.startAddNew(true);
 			else
 			if(Number(phbkField.value) < phonebook.length)
 			{
@@ -179,7 +184,7 @@
 		root.fixphonebookfields = function()
 		{
 			if(phbkField.selectedIndex < 0)
-				return;
+				root.startAddNew(false);
 			var pbindex = Number(phbkField.value);
 			var gphonebook = window.phonebook;
 			var mybpentry = {};

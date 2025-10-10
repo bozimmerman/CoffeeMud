@@ -1,4 +1,4 @@
-function TEXT(textParsers)
+function TEXT(sipwin, textParsers)
 {
 	this.resume = null;
 	this.reset = function()
@@ -131,6 +131,30 @@ function TEXT(textParsers)
 					var audio = new Audio('images/ding.wav');
 					audio.play();
 					i-=1;
+				}
+				break;
+			case '\b':
+				{
+					str = str.substr(0, i) + str.substr(i + 1);
+					if (i > 0) 
+					{
+						var x = i-1;
+						if(str[x]=='>')
+						{
+							while((x>0)&&(str[x]!='<')) x--;
+							if(x>0)
+								x--;
+						}
+						str = str.substr(0, x) + str.substr(i);
+						i = x-1;
+					}
+					else
+					{
+						var node = findLastNonEmptyTextNode(sipwin.window);
+						if(node !== null)
+							node.textContent  = node.textContent.substr(0, node.textContent.length - 1);
+						i -= 1;
+					}
 				}
 				break;
 			case '<':

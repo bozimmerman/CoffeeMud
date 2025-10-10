@@ -98,21 +98,27 @@
 			acctRow.style.visibility = pb.accounts?'visible':'hidden';
 			root.fixphonebookfields();
 		};
+
+		root.startAddNew = function(clear)
+		{
+			if(Number(phbkField.value)>=0)
+				phbkField.selectedIndex=0;
+			if(portField.selectedIndex < 0)
+				portField.selectedIndex=0;
+			acctRow.style.visibility='visible';
+			delButt.style.visibility='hidden';
+			if(clear) acctField.value='';
+			acctField.style.backgroundColor=RED;
+			if(clear) userField.value='';
+			userField.style.backgroundColor=RED;
+			if(clear) passField.value='';
+			passField.style.backgroundColor=RED;
+		};
 		
 		root.dropdownselected = function()
 		{
 			if(Number(phbkField.value)<0)
-			{
-				portField.selectedIndex=0;
-				acctRow.style.visibility='visible';
-				delButt.style.visibility='hidden';
-				acctField.value='';
-				acctField.style.backgroundColor=RED;
-				userField.value='';
-				userField.style.backgroundColor=RED;
-				passField.value='';
-				passField.style.backgroundColor=RED;
-			}
+				root.startAddNew(true);
 			else
 			if(Number(phbkField.value) < phonebook.length)
 			{
@@ -172,7 +178,7 @@
 		root.fixphonebookfields = function()
 		{
 			if(phbkField.selectedIndex < 0)
-				return;
+				root.startAddNew(false);
 			var gphonebook = window.phonebook;
 			var portWhich = portField.selectedIndex;
 			var pbindex = Number(phbkField.value);

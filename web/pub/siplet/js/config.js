@@ -4,7 +4,7 @@ var Siplet =
 	VERSION_MAJOR: '3.2',
 	VERSION_MINOR: '5',
 	COFFEE_MUD: false,
-	NAME: window.isElectron?'Sip':'Siplet',
+	NAME: window.isElectron?'Sip MUD Client':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
 };
 

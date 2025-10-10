@@ -1143,6 +1143,20 @@ function SafeEval(str, context)
 	return !!result;
 }
 
+function findLastNonEmptyTextNode(node) 
+{
+	const children = node.childNodes;
+	for (let i = children.length - 1; i >= 0; i--) {
+		const child = children[i];
+		if (child.nodeType === Node.TEXT_NODE && child.textContent.trim() !== '')
+			return child;
+		const result = findLastNonEmptyTextNode(child);
+		if (result)
+			return result;
+	}
+	return null;
+}
+
 function brCount(html) 
 {
 	var re = /<br\s*\/?>/gi;

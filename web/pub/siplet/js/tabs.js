@@ -29,7 +29,11 @@ function ConfigureMainTabs(obj)
 		if(window.siplets.length > 0)
 		{
 			var copySiplet = window.siplets[window.siplets.length-1];
-			var win = AddNewSipletTab(copySiplet.url);
+			var win;
+			if(copySiplet.pbwhich)
+				win = AddNewSipletTabByPB(copySiplet.pbwhich);
+			else
+				win = AddNewSipletTab(copySiplet.url);
 			if(win) {
 				win.pb = copySiplet.pb;
 				win.pbwhich = copySiplet.pbwhich;
