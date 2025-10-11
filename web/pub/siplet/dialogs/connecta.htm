@@ -98,7 +98,10 @@
 			var newOption = new Option(name,''+i);
 			phbkField.add(newOption);
 		}
-		phbkField.selectedIndex=-1;
+		if(phonebook.length==0)
+			phbkField.selectedIndex=0;
+		else
+			phbkField.selectedIndex=1;
 
 		root.startAddNew = function(clear)
 		{
@@ -180,6 +183,7 @@
 			}
 		};
 		root.fixtopdropdowns();
+		root.dropdownselected();
 		
 		root.fixphonebookfields = function()
 		{
