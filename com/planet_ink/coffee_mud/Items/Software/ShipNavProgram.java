@@ -55,7 +55,7 @@ public class ShipNavProgram extends ShipSensorProgram
 	}
 
 	protected static final double 	MIN_THRUST_INJECT	= 0.001;
-	
+
 	protected volatile Double		savedAcceleration	= null;
 	protected volatile Double		savedSpeedDelta		= null;
 	protected volatile Double		savedAngle			= null;
@@ -1157,6 +1157,7 @@ public class ShipNavProgram extends ShipSensorProgram
 			super.addScreenMessage(L("@x1 program aborted with error (@x2).", track.proc.name(), reason));
 			return;
 		}
+		targetAcceleration = Math.min(track.speedLimit, targetAcceleration);
 		if(ship.getShipFlag(ShipFlag.IN_THE_AIR)||(ship.getIsDocked()!=null))
 			targetAcceleration = Math.min(targetAcceleration, SpaceObject.ACCELERATION_ATMOSPHERE);
 		switch(track.state)
@@ -1164,6 +1165,8 @@ public class ShipNavProgram extends ShipSensorProgram
 		// the landing steps check if you are in position to go into land phase, and if you
 		// are in the proper landing phase, that you are trying to stop
 		case LANDING:
+			targetAcceleration = Math.min(targetAcceleration, SpaceObject.ACCELERATION_ATMOSPHERE);
+			//$FALL-THROUGH$
 		case LANDING_APPROACH:
 		case PRE_STOP:
 		{
@@ -1187,7 +1190,7 @@ public class ShipNavProgram extends ShipSensorProgram
 		{
 			if(ship.speed() >= SpaceObject.ACCELERATION_TYPICALROCKET)
 			{
-				final Dir3D stopFacing = spaceLibrary.getOppositeDir(ship.direction());
+				final Dir3D stopFacing = spaceLibrary.getOppositeDir(ship.direction()); //TODO: not necessary if ship has forward thrust, or if non-reaction
 				//stopFacing = this.graviticCourseAdjustments(ship, stopFacing);
 				final double angleDelta = spaceLibrary.getAngleDelta(ship.facing(), stopFacing); // starboard is -, port is +
 				if(angleDelta>.02)
@@ -1199,7 +1202,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						return;
 					}
 				}
-				if(ship.speed() < targetAcceleration)
+				if(targetAcceleration > ship.speed())
 					targetAcceleration = ship.speed();
 			}
 			else
@@ -1246,12 +1249,28 @@ public class ShipNavProgram extends ShipSensorProgram
 				Dir3D dirToITarget = spaceLibrary.getDirection(ship.coordinates(), intTarget.coordinates());
 				if (CMSecurity.isDebugging(CMSecurity.DbgFlag.SPACESHIP))
 				{
-					Log.debugOut(ship.name(), "Approach Target: " + intTarget.Name() + ", Dist: "
-							+ CMLib.english().distanceDescShort(distToITarget) + ", Dir: "
-							+ CMLib.english().directionDescShort(dirToITarget.toDoubles())+", Accel: "+targetAcceleration);
+					Log.debugOut(ship.name(), CMStrings.capitalizeAndLower(track.state.name()) +" Target: " + intTarget.Name()
+							+ ", Dist: " + CMLib.english().distanceDescShort(distToITarget)
+							+ ", Dir: " + CMLib.english().directionDescShort(dirToITarget.toDoubles())
+							+ ", Accel: "+targetAcceleration);
 				}
-				double directionDiff = spaceLibrary.getAngleDelta(ship.direction(), dirToITarget);
 				final Pair<Dir3D, Double> grav = spaceLibrary.getGravityForcer(ship);
+				if(grav == null)
+				{
+					final EngProfile prelimProfile = this.getAccelProfile(ship, programEngines, targetAcceleration);
+					if((prelimProfile != null) && (!prelimProfile.engine.isReactionEngine()))
+					{
+						changeFacing(ship, turnEngine, dirToITarget);
+						if (!this.programAccelerationThrust(ship, programEngines, targetAcceleration))
+							return;
+						break;
+					}
+					else
+						targetAcceleration = Math.min(SpaceObject.VELOCITY_SUBLIGHT, targetAcceleration);
+				}
+				else
+					targetAcceleration = Math.min(SpaceObject.VELOCITY_SUBLIGHT, targetAcceleration);
+				double directionDiff = spaceLibrary.getAngleDelta(ship.direction(), dirToITarget);
 				final double gravAccel = (grav != null) ? grav.second.doubleValue() : 0.0;
 				double radialAngle = 0.0;
 				if (grav != null)
@@ -1306,7 +1325,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					// final Dir3D correctDirection = dirToITarget;
 					if ((ticksToStop > 0) && (track.state == ShipNavState.DEPROACH))
 					{
-						correctFacing = spaceLibrary.getOppositeDir(ship.direction());
+						correctFacing = spaceLibrary.getOppositeDir(ship.direction());  //TODO: not necessary if ship has forward thrust, or if non-reaction
 						// if(spaceLibrary.getAngleDelta(ship.direction(),
 						final double overUnderDistance = stopDistance - distToITarget;
 						if (overUnderDistance > targetAcceleration * 2)
@@ -1329,7 +1348,7 @@ public class ShipNavProgram extends ShipSensorProgram
 						{
 							track.state = ShipNavState.DEPROACH;
 							// ensure we are mooning our direction
-							correctFacing = spaceLibrary.getOppositeDir(ship.direction());
+							correctFacing = spaceLibrary.getOppositeDir(ship.direction()); //TODO: not necessary if ship has forward thrust, or if non-reaction
 						}
 					}
 					// correctFacing is now at the Ideal point.
@@ -1435,7 +1454,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				// Base direction toward median: inward for outer, outward for inner
 				Dir3D baseDir = dirToPlanet;
 				if (distanceFromPlanet < minDistance)
-					baseDir = spaceLibrary.getOppositeDir(dirToPlanet);
+					baseDir = spaceLibrary.getOppositeDir(dirToPlanet); //TODO: not necessary if ship has forward thrust, or if non-reaction
 				targetDir = spaceLibrary.getMiddleAngle(baseDir, perpFacing);
 				final double speedDelta = targetSpeed - currentSpeed;
 				Dir3D thrustDir = targetDir;
@@ -1443,7 +1462,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				final double maxAccel = getMaxAcceleration(ship, programEngines);
 				if (currentSpeed > targetSpeed)
 				{
-					final Dir3D brakeDir = spaceLibrary.getOppositeDir(ship.direction());
+					final Dir3D brakeDir = spaceLibrary.getOppositeDir(ship.direction()); //TODO: not necessary if ship has forward thrust, or if non-reaction
 					thrustDir = spaceLibrary.getMiddleAngle(brakeDir, targetDir);
 					accelAmount = Math.min(currentSpeed, maxAccel);
 				}
@@ -1510,7 +1529,7 @@ public class ShipNavProgram extends ShipSensorProgram
 					if (speedDelta > 0.01)
 					{
 						if (currentSpeed > targetSpeed * 1.2)
-							targetDir = spaceLibrary.getOppositeDir(ship.direction()); // Decelerate
+							targetDir = spaceLibrary.getOppositeDir(ship.direction());  //TODO: not necessary if ship has forward thrust, or if non-reaction
 						if (!this.programAccelerationThrust(ship, programEngines, speedDelta))
 							return;
 					}
@@ -1601,7 +1620,7 @@ public class ShipNavProgram extends ShipSensorProgram
 				}
 				else
 				if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed/2)
-					this.changeFacing(ship, turnEngine, spaceLibrary.getOppositeDir(ship.direction()));
+					this.changeFacing(ship, turnEngine, spaceLibrary.getOppositeDir(ship.direction()));  //TODO: not necessary if ship has forward thrust, or if non-reaction
 				else
 				if(ticksToDecellerate < ticksToDestinationAtCurrentSpeed*1.2)
 					this.changeFacing(ship, turnEngine, dirToTarget);

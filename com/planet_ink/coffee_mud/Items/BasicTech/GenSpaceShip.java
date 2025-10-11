@@ -412,7 +412,7 @@ public class GenSpaceShip extends GenBoardable implements Electronics, SpaceShip
 										&&(!simulation))
 										{
 											final Dir3D moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.space().getOppositeDir(facing());
-												CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
+											CMLib.space().accelSpaceObject(this,moveDir,effectiveAcceleration); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +effectiveAcceleration);
 												this.speedTick += effectiveAcceleration;
