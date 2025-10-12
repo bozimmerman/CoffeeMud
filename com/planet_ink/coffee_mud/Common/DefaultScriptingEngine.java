@@ -9481,7 +9481,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						script.get(ctx.line).third=Collections.synchronizedMap(new HashMap<String,Integer>());
 				}
 				@SuppressWarnings("unchecked")
-				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(ctx.line).third;
+				Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.get(ctx.line).third;
+				if(skipSwitchMap==null)
+				{
+					skipSwitchMap=Collections.synchronizedMap(new HashMap<String,Integer>());
+					script.get(ctx.line).third=skipSwitchMap;
+				}
 				final String var=varify(ctx,tt[1]).trim();
 				final SubScript subScript=new SubScriptImpl(script);
 				subScript.add(new ScriptLn("",null,null));
