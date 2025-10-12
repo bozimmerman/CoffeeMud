@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.Log;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>
+public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, List<K>, Queue<K>
 {
 	private static final long	   serialVersionUID	= -4174213459327144771L;
 	private volatile LinkedList<K>	L;
@@ -175,8 +175,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized void addFirst(final K arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -184,8 +182,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized void addLast(final K arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -215,7 +211,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		return L.contains(arg0);
 	}
 
-	@Override
 	public synchronized Iterator<K> descendingIterator()
 	{
 		return new ReadOnlyIterator<K>(L.descendingIterator());
@@ -241,13 +236,11 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		return L.get(arg0);
 	}
 
-	@Override
 	public synchronized K getFirst()
 	{
 		return L.getFirst();
 	}
 
-	@Override
 	public synchronized K getLast()
 	{
 		return L.getLast();
@@ -282,7 +275,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 
 	@SuppressWarnings("unchecked")
 
-	@Override
 	public synchronized boolean offerFirst(final K arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -291,7 +283,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 
 	@SuppressWarnings("unchecked")
 
-	@Override
 	public synchronized boolean offerLast(final K arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -304,13 +295,11 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		return L.peek();
 	}
 
-	@Override
 	public synchronized K peekFirst()
 	{
 		return L.peekFirst();
 	}
 
-	@Override
 	public synchronized K peekLast()
 	{
 		return L.peekLast();
@@ -327,7 +316,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 
 	@SuppressWarnings("unchecked")
 
-	@Override
 	public synchronized K pollFirst()
 	{
 		L = (LinkedList<K>) L.clone();
@@ -335,8 +323,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized K pollLast()
 	{
 		L = (LinkedList<K>) L.clone();
@@ -344,8 +330,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized K pop()
 	{
 		L = (LinkedList<K>) L.clone();
@@ -353,8 +337,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized void push(final K arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -380,7 +362,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized boolean remove(final Object arg0)
 	{
@@ -389,8 +370,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized K removeFirst()
 	{
 		L = (LinkedList<K>) L.clone();
@@ -398,8 +377,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized boolean removeFirstOccurrence(final Object arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -407,8 +384,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized K removeLast()
 	{
 		L = (LinkedList<K>) L.clone();
@@ -416,8 +391,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override
 	public synchronized boolean removeLastOccurrence(final Object arg0)
 	{
 		L = (LinkedList<K>) L.clone();
@@ -425,7 +398,6 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public synchronized K set(final int arg0, final K arg1)
 	{

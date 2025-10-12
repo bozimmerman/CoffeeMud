@@ -28,7 +28,7 @@ import java.util.*;
  * @param <K> the type of elements held in this collection
  * @author Bo Zimmerman
  */
-public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>
+public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, List<K>, Queue<K>
 {
 	private static final long	serialVersionUID	= -4174213459327144471L;
 	private static final Random	rand				= new Random(System.currentTimeMillis());
@@ -517,7 +517,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @param arg0 the element to add
 	 */
-	@Override
 	public synchronized void addFirst(final K arg0)
 	{
 		addAfter(null,arg0);
@@ -528,7 +527,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @param arg0 the element to add
 	 */
-	@Override
 	public synchronized void addLast(final K arg0)
 	{
 		addAfter(tail,arg0);
@@ -693,7 +691,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * from the end of the list to the beginning.
 	 * @return a sequential iterator over the elements in this list
 	 */
-	@Override
 	public Iterator<K> descendingIterator()
 	{
 		final CMListNode firstNode=nodeAt(size-1);
@@ -779,7 +776,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * Returns the first element in this list.
 	 * @return the first element in this list
 	 */
-	@Override
 	public K getFirst()
 	{
 		final CMListNode node = nodeAt(0);
@@ -792,7 +788,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * Returns the last element in this list.
 	 * @return the last element in this list
 	 */
-	@Override
 	public K getLast()
 	{
 		final CMListNode node = nodeAt(size-1);
@@ -1012,7 +1007,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @param arg0 the element to add
 	 * @return true
 	 */
-	@Override
 	public synchronized boolean offerFirst(final K arg0)
 	{
 		addFirst(arg0);
@@ -1025,7 +1019,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @param arg0 the element to add
 	 * @return true
 	 */
-	@Override
 	public synchronized boolean offerLast(final K arg0)
 	{
 		addLast(arg0);
@@ -1049,7 +1042,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @return the first element in this list, or null if the list is empty
 	 */
-	@Override
 	public K peekFirst()
 	{
 		if(size == 0)
@@ -1062,7 +1054,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @return the last element in this list, or null if the list is empty
 	 */
-	@Override
 	public K peekLast()
 	{
 		if(size == 0)
@@ -1090,7 +1081,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @return the first element from this list, or null if this list is empty
 	 */
-	@Override
 	public synchronized K pollFirst()
 	{
 		if(size == 0)
@@ -1104,7 +1094,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @return the last element from this list, or null if this list is empty
 	 */
-	@Override
 	public synchronized K pollLast()
 	{
 		if(size == 0)
@@ -1120,7 +1109,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *         stack represented by this list)
 	 * @throws NoSuchElementException if this list is empty
 	 */
-	@Override
 	public synchronized K pop()
 	{
 		return removeFirst();
@@ -1132,7 +1120,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 *
 	 * @param arg0 the element to push
 	 */
-	@Override
 	public synchronized void push(final K arg0)
 	{
 		addFirst(arg0);
@@ -1194,7 +1181,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @return the first element from this list
 	 * @throws NoSuchElementException if the list is empty
 	 */
-	@Override
 	public synchronized K removeFirst()
 	{
 		final CMListNode node=nodeAt(0);
@@ -1217,7 +1203,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @param arg0 element to be removed from this list, if present
 	 * @return <code>true</code> if the list contained the specified element
 	 */
-	@Override
 	public synchronized boolean removeFirstOccurrence(final Object arg0)
 	{
 		final CMListNode node = findFirstNode(arg0);
@@ -1233,7 +1218,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @return the last element from this list
 	 * @throws NoSuchElementException if the list is empty
 	 */
-	@Override
 	public synchronized K removeLast()
 	{
 		final CMListNode node=nodeAt(size-1);
@@ -1255,7 +1239,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	 * @param arg0 element to be removed from this list, if present
 	 * @return <code>true</code> if the list contained the specified element
 	 */
-	@Override
 	public synchronized boolean removeLastOccurrence(final Object arg0)
 	{
 		final CMListNode node = findLastNode(arg0);
