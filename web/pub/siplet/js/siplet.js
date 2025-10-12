@@ -212,7 +212,7 @@ function SipletWindow(windowName)
 			me.closeLog();
 			me.flushWindow();
 			if(me.tab && me.tab.innerHTML.startsWith("Connecting"))
-				me.tab.innerHTML = 'Failed connection to ' + url;
+				me.tab.innerHTML = 'Failed connection to ' + cleanUrlName(url);
 			me.dispatchEvent({type: 'closesock',data:url});
 			me.wsopened=false; 
 			me.tab.style.backgroundColor="#FF555B";
@@ -1648,6 +1648,18 @@ function AddNewSipletTabByPB(which)
 	return siplet;
 }
 
+function cleanUrlName(url)
+{
+	if(!window.isElectron)
+		return url;
+	if(url.startsWith('ws://'))
+		url = url.substr(5);
+	else
+	if (url.startsWith('wss://'))
+		url = url.substr(6);
+	return url;
+}
+
 function AddNewSipletTab(url, ib)
 {
 	if((ib === undefined) || (ib == null))
@@ -1664,7 +1676,7 @@ function AddNewSipletTab(url, ib)
 	newWinContainer.style.cssText = 'position:absolute;top:0%;left:0%;width:100%;height:100%;'
 	var siplet = new SipletWindow(windowName); // makes a deep copy
 	siplet.tab = AddNewTab();
-	siplet.tab.innerHTML = 'Connecting to ' + url + '...';
+	siplet.tab.innerHTML = 'Connecting to ' + cleanUrlName(url) + '...';
 	siplet.tab.siplet = siplet;
 	siplet.url = url;
 	window.siplets.push(siplet);
