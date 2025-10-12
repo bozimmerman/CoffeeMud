@@ -1495,14 +1495,23 @@ var MXP = function(sipwin)
 					return;
 				return Math.round(Math.ceil(x / y * 100.0)) + '%';
 			};
-			var dePct = function(s)
+			var addDim = function(a, b) 
 			{
-				if(s==null || (s==undefined))
-					return null;
-				if(s.endsWith('%'))
-					return Number(s.substr(0,s.length-1));
-				return getPixels(s);
+				if (a === '0' || a === '0px' || a === '0%') 
+					return b;
+				if (b === '0' || b === '0px' || b === '0%') 
+					return a;
+				return `calc(${a} + ${b})`;
 			};
+			var subDim = function(a, b) 
+			{
+				if (b === '0' || b === '0px' || b === '0%') 
+					return a;
+				if (a === '0' || a === '0px' || a === '0%') 
+					return `calc(0 - ${b})`;
+				return `calc(${a} - ${b})`;
+			};
+			
 			var name = E.getAttributeValue("NAME");
 			var action = E.getAttributeValue("ACTION"); // open,close,redirect
 			if(action == null)
@@ -1545,45 +1554,43 @@ var MXP = function(sipwin)
 						peerFrames.push(privilegedFrame);
 						var peerDex = peerFrames.indexOf(frame);
 						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
-						var shiftw = dePct(frame.sprops.pctwidth);
-						var shifth = dePct(frame.sprops.pctheight);
+						var fleft = frame.style.left;
+						var ftop = frame.style.top;
+						var shiftw = sprops.width;
+						var shifth = sprops.height;
 						switch(alignx)
 						{
 						case 0: // scooch all left
 							for(var i=peerDex+1;i<peerFrames.length;i++)
 							{
 								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = (dePct(tmp) - shiftw) + '%';
+								peerFrames[i].style.left = subDim(tmp, shiftw);
 							}
-							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
-														+ dePct(frame.sprops.pctwidth))+'%';
+							privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
 							break;
 						case 1: //right
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
 							{
 								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = (dePct(tmp) + shiftw) + '%';
+								peerFrames[i].style.left = addDim(tmp, shiftw);
 							}
-							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
-														+ dePct(frame.sprops.pctwidth))+'%';
+							privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
 							break;
 						case 2: // top
 							for(var i=peerDex+1;i<peerFrames.length;i++)
 							{
 								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = (dePct(tmp) - shifth) + '%';
+								peerFrames[i].style.top = subDim(tmp, shifth);
 							}
-							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
-														+ dePct(frame.sprops.pctheight))+'%';
+							privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
 							break;
 						case 3: //bottom
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
 							{
 								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = (dePct(tmp) + shifth) + '%';
+								peerFrames[i].style.top = addDim(tmp, shifth);
 							}
-							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
-														+ dePct(frame.sprops.pctheight))+'%';
+							privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
 							break;
 						}
 						for(var k in this.frames)
@@ -1617,9 +1624,12 @@ var MXP = function(sipwin)
 					if(s==null || (s==undefined))
 						return null;
 					if(typeof s === 'number')
-						return s;
+						return s + 'px'; // Changed: Append 'px' if plain number
+					s = s.trim();
 					if((s.length>1)&&(s.endsWith("c"))&&(isDigit(s[0])))
 						return (Number(s.substr(0,s.length-1))*16)+'px';
+					if (!s.endsWith('%') && !s.endsWith('px') && !isNaN(parseFloat(s)))
+						return s + 'px';
 					return s;
 				};
 				if(width == null)
@@ -1638,8 +1648,8 @@ var MXP = function(sipwin)
 					"align": align, 
 					"left": left, 
 					"top": top, 
-					"width": width,
-					"height": height,
+					"width": width, // Changed: Store string with unit (renamed from pctwidth)
+					"height": height, // Changed: Store string with unit (renamed from pctheight)
 					"scrolling": scrolling,
 					"floating": floating
 				};
@@ -1662,10 +1672,9 @@ var MXP = function(sipwin)
 						var siblingDiv = sipwin.window;
 						var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
 						var calced = getComputedStyle(sipwin.window);
-						width=fixISize(width,calced.width); // ensure they are %
-						height=fixISize(height,calced.height);
-						sprops.pctwidth = width;
-						sprops.pctheight = height;
+						// Removed: width=fixISize(width,calced.width); (no longer force %)
+						// Removed: height=fixISize(height,calced.height);
+						// Removed: sprops.pctwidth/height (use width/height strings directly)
 						var newContainerDiv = document.createElement('div');
 						newContainerDiv.style.cssText = containerDiv.style.cssText;
 						containerDiv.appendChild(newContainerDiv);
@@ -1698,35 +1707,35 @@ var MXP = function(sipwin)
 							newContainerDiv.style.left = siblingDiv.style.left;
 							newContainerDiv.style.top = siblingDiv.style.top;
 							newContainerDiv.style.height = siblingDiv.style.height;
-							siblingDiv.style.left = (dePct(siblingDiv.style.left) + dePct(width))+'%';
 							newContainerDiv.style.width = width;
-							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
+							// Changed: Use addDim/subDim
+							siblingDiv.style.left = addDim(siblingDiv.style.left, width);
+							siblingDiv.style.width = subDim(siblingDiv.style.width, width);
 							break;
 						case 1: // right
-							newContainerDiv.style.left = (dePct(siblingDiv.style.left)
-														+dePct(siblingDiv.style.width)
-														-dePct(width))+'%';
-							siblingDiv.style.width = (dePct(siblingDiv.style.width) - dePct(width))+'%';
+							// Changed: Use addDim/subDim
+							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), width);
 							newContainerDiv.style.top = siblingDiv.style.top;
 							newContainerDiv.style.height = siblingDiv.style.height;
 							newContainerDiv.style.width = width;
+							siblingDiv.style.width = subDim(siblingDiv.style.width, width);
 							break;
 						case 2: // top
 							newContainerDiv.style.top = siblingDiv.style.top;
 							newContainerDiv.style.left = siblingDiv.style.left;
 							newContainerDiv.style.width = siblingDiv.style.width;
-							siblingDiv.style.top = (dePct(siblingDiv.style.top) + dePct(height))+'%';
 							newContainerDiv.style.height = height;
-							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
+							// Changed: Use addDim/subDim
+							siblingDiv.style.top = addDim(siblingDiv.style.top, height);
+							siblingDiv.style.height = subDim(siblingDiv.style.height, height);
 							break;
 						case 3: // bottom
-							newContainerDiv.style.top = (dePct(siblingDiv.style.top)
-														+dePct(siblingDiv.style.height)
-														-dePct(height))+'%';
-							siblingDiv.style.height = (dePct(siblingDiv.style.height) - dePct(height))+'%';
+							// Changed: Use addDim/subDim
+							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), height);
 							newContainerDiv.style.left = siblingDiv.style.left;
 							newContainerDiv.style.width = siblingDiv.style.width;
 							newContainerDiv.style.height = height;
+							siblingDiv.style.height = subDim(siblingDiv.style.height, height);
 							break;
 						}
 						newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
@@ -1794,6 +1803,7 @@ var MXP = function(sipwin)
 					var newTopWindow = document.createElement('div');
 					if(window.sipcounter === undefined) window.sipcounter=1;
 					newTopWindow.id = "WIN" + (window.sipcounter++);
+					// Note: Already handles px/% via fixSize updates
 					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";";
 					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 					newTopWindow.style.backgroundColor = 'darkgray';
