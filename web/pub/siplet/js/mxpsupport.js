@@ -1530,6 +1530,7 @@ var MXP = function(sipwin)
 					if(sprops.internal != null)
 					{
 						var parentFrame = frame.parentNode;
+						// the privilegedFrame is ALWAYS the first child in a container.  This is correct!
 						var privilegedFrame = parentFrame.childNodes[0];
 						var peerFrames = [];
 						for(var i=2;i<parentFrame.childNodes.length;i++)
@@ -1544,8 +1545,6 @@ var MXP = function(sipwin)
 						peerFrames.push(privilegedFrame);
 						var peerDex = peerFrames.indexOf(frame);
 						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
-						var fleft = frame.style.left;
-						var ftop = frame.style.top;
 						var shiftw = dePct(frame.sprops.pctwidth);
 						var shifth = dePct(frame.sprops.pctheight);
 						switch(alignx)
