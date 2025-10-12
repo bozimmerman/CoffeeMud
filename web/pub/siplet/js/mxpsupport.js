@@ -1546,14 +1546,15 @@ var MXP = function(sipwin)
 						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
 						var fleft = frame.style.left;
 						var ftop = frame.style.top;
+						var shiftw = dePct(frame.sprops.pctwidth);
+						var shifth = dePct(frame.sprops.pctheight);
 						switch(alignx)
 						{
 						case 0: // scooch all left
 							for(var i=peerDex+1;i<peerFrames.length;i++)
 							{
 								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = fleft;
-								fleft = tmp;
+								peerFrames[i].style.left = (dePct(tmp) - shiftw) + '%';
 							}
 							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
 														+ dePct(frame.sprops.pctwidth))+'%';
@@ -1562,8 +1563,7 @@ var MXP = function(sipwin)
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
 							{
 								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = fleft;
-								fleft = tmp;
+								peerFrames[i].style.left = (dePct(tmp) + shiftw) + '%';
 							}
 							privilegedFrame.style.width = (dePct(privilegedFrame.style.width)
 														+ dePct(frame.sprops.pctwidth))+'%';
@@ -1572,8 +1572,7 @@ var MXP = function(sipwin)
 							for(var i=peerDex+1;i<peerFrames.length;i++)
 							{
 								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = ftop;
-								ftop = tmp;
+								peerFrames[i].style.top = (dePct(tmp) - shifth) + '%';
 							}
 							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
 														+ dePct(frame.sprops.pctheight))+'%';
@@ -1582,8 +1581,7 @@ var MXP = function(sipwin)
 							for(var i=peerDex+1;i<peerFrames.length-1;i++)
 							{
 								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = ftop;
-								ftop = tmp;
+								peerFrames[i].style.top = (dePct(tmp) + shifth) + '%';
 							}
 							privilegedFrame.style.height = (dePct(privilegedFrame.style.height)
 														+ dePct(frame.sprops.pctheight))+'%';
