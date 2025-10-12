@@ -1463,38 +1463,6 @@ var MXP = function(sipwin)
 		else
 		if (tagName=="FRAME")
 		{
-			var getPixels = function(s)
-			{
-				if(s==null || (s==undefined))
-					return null;
-				if(typeof s === 'number')
-					return s;
-				if(isNumber(s))
-					return Number(s);
-				else
-				if(s.endsWith("px"))
-					return Number(s.substr(0,s.length-2));
-				else
-					return null;
-			};
-			var fixISize = function(s,curr)
-			{
-				if((s==null)||(s==undefined)||(!curr))
-					return null;
-				if(typeof s === 'number')
-					s = ''+s;
-				else
-				{
-					s=s.trim();
-					if(s.endsWith('%'))
-						return s;
-				}
-				var x = getPixels(s);
-				var y = getPixels(curr);
-				if((x == null)||(y==null)) 
-					return;
-				return Math.round(Math.ceil(x / y * 100.0)) + '%';
-			};
 			var addDim = function(a, b) 
 			{
 				if (a === '0' || a === '0px' || a === '0%') 
