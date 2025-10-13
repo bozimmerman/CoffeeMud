@@ -61,6 +61,33 @@ public class Areas extends StdCommand
 
 		for(int i=1;i<commands.size();i++)
 		{
+			final String s=commands.get(i);
+			if((s.toUpperCase().equals("ORDER")||s.toUpperCase().equals("SORT"))
+			&&((i<commands.size()-2)
+			&&(commands.get(i+1).toUpperCase().equals("BY"))))
+			{
+				commands.set(i,"SORT="+CMParms.combine(commands,i+2));
+				while (commands.size() > i + 1)
+					commands.remove(i + 1);
+				break;
+			}
+			if((s.toUpperCase().equals("SORT"))
+			&&(i<commands.size()-1))
+			{
+				if((i<commands.size()-2)
+				&& (commands.get(i + 1).toUpperCase().equals("=")))
+					commands.remove(i+1);
+				if(commands.get(i+1).startsWith("="))
+					commands.set(i,"SORT"+CMParms.combine(commands,i+1));
+				else
+					commands.set(i,"SORT="+CMParms.combine(commands,i+1));
+				while (commands.size() > i + 1)
+					commands.remove(i + 1);
+				break;
+			}
+		}
+		for(int i=1;i<commands.size();i++)
+		{
 			String s=commands.get(i);
 			if(s.toUpperCase().startsWith("SORT=NA"))
 			{

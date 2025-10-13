@@ -618,6 +618,26 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns whether the given string contains any from the string array, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * in-sensitive.
+	 * @param thisStr the string to look in
+	 * @param words the strings/sword to look for
+	 * @return true if a word is in the string, and false otherwise
+	 */
+	public final static boolean containsAnyWordIgnoreCase(final String thisStr, final String[] words)
+	{
+		if((thisStr==null)
+		||(words==null)
+		||(thisStr.length()==0)
+		||(words.length==0))
+			return false;
+		for (int x = 0; x < words.length; x++)
+			words[x] = words[x].toLowerCase();
+		return containsAnyWord(thisStr.toLowerCase(),words);
+	}
+
+	/**
 	 * Returns whether the first string starts with the second string, case insensitive.
 	 *
 	 * @param thisStr the string to search
@@ -682,6 +702,37 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns whether the given string contains any from the string array, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * sensitive.  It returns the index of the first word found
+	 * @param thisStr the string to look in
+	 * @param words the array of strings/words to look for
+	 * @return -1, or the index of the first found word in the string
+	 */
+	public final static int indexOfAnyWord(final String thisStr, final String[] words)
+	{
+		if((thisStr==null)
+		||(words==null)
+		||(thisStr.length()==0)
+		||(words.length==0))
+			return -1;
+		for(int i=thisStr.length()-1;i>=0;i--)
+		{
+			for(int x=0;x<words.length;x++)
+			{
+				if((thisStr.charAt(i)==words[x].charAt(0))
+				&&((i==0)||(!Character.isLetter(thisStr.charAt(i-1)))))
+				{
+					if((thisStr.substring(i).startsWith(words[x]))
+					&&((thisStr.length()==i+words[x].length())||(!Character.isLetter(thisStr.charAt(i+words[x].length())))))
+						return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
 	 * Returns whether the given string contains the second string, without any following
 	 * letter, which is the CMStrings definition of a "word".  This check is case
 	 * sensitive.
@@ -692,6 +743,19 @@ public class CMStrings
 	public final static boolean containsWord(final String thisStr, final String word)
 	{
 		return indexOfWord(thisStr,word) >=0;
+	}
+
+	/**
+	 * Returns whether the given string contains any of the array strings, without any following
+	 * letter, which is the CMStrings definition of a "word".  This check is case
+	 * sensitive.
+	 * @param thisStr the string to look in
+	 * @param words the strings/words to look for
+	 * @return true if a word is in the string, and false otherwise
+	 */
+	public final static boolean containsAnyWord(final String thisStr, final String[] words)
+	{
+		return indexOfAnyWord(thisStr,words) >=0;
 	}
 
 	/**
@@ -4439,6 +4503,8 @@ public class CMStrings
 			return true;
 		i = new int[]{ 0 };
 		final Boolean value = matchExpression(tokens, i, variables);
+		if(value == null)
+			throw new IllegalArgumentException("Invalid expression" + expression);
 		return value.booleanValue();
 	}
 

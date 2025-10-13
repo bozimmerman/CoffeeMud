@@ -3,11 +3,83 @@
 # MASK	- Prop_WearAdjuster arguments
 # XLEVEL - XP LEVEL (determines how much XP is lost)
 # EXPERTISE - blank, or a required expertise id (or higher)
-Small attack penalty	1	attack-5	-2	
-Small mana bonus	1	mana+5	1	
-Small hit point bonus	1	hit+5	1	
-Small hit point and movement bonus	1	hit+5 move+5	2	
-Small attack bonus	1	attack+5	5	
-Small strength bonus	1	str+1	15	PRESERVING1
-Decent intelligence bonus	1	int+2	30	PRESERVING3
-Decent wisdom bonus	1	wis+3	45	PRESERVING4
+diminuitive attack bonus	1	attack+2	10	
+inferior attack bonus	9	attack+18	90	ALERT1
+tiny attack bonus	17	attack+34	170	ALERT2
+lesser attack bonus	25	attack+50	250	ALERT3
+small attack bonus	33	attack+66	330	ALERT4
+medium attack bonus	41	attack+82	410	ALERT5
+large attack bonus	49	attack+98	490	ALERT6
+greater attack bonus	57	attack+114	570	ALERT7
+huge attack bonus	65	attack+130	650	ALERT8
+superior attack bonus	73	attack+146	730	ALERT9
+gargantuan attack bonus	81	attack+162	810	ALERT10
+diminuitive mana bonus	2	mana+4	20	
+inferior mana bonus	10	mana+20	100	REDUCEDDIVINATION1
+tiny mana bonus	18	mana+36	180	REDUCEDDIVINATION2
+lesser mana bonus	26	mana+52	260	REDUCEDDIVINATION3
+small mana bonus	34	mana+68	340	REDUCEDDIVINATION4
+medium mana bonus	42	mana+84	420	REDUCEDDIVINATION5
+large mana bonus	50	mana+100	500	REDUCEDDIVINATION6
+greater mana bonus	58	mana+116	580	REDUCEDDIVINATION7
+huge mana bonus	66	mana+132	660	REDUCEDDIVINATION8
+superior mana bonus	74	mana+148	740	REDUCEDDIVINATION9
+gargantuan mana bonus	82	mana+164	820	REDUCEDDIVINATION10
+diminuitive hit point bonus	5	hit+10	50	
+inferior hit point bonus	13	hit+26	130	STREETLORE1
+tiny hit point bonus	21	hit+42	210	STREETLORE2
+lesser hit point bonus	29	hit+58	290	STREETLORE3
+small hit point bonus	37	hit+74	370	STREETLORE4
+medium hit point bonus	45	hit+90	450	STREETLORE5
+large hit point bonus	53	hit+106	530	STREETLORE6
+greater hit point bonus	61	hit+122	610	STREETLORE7
+huge hit point bonus	69	hit+138	690	STREETLORE8
+superior hit point bonus	77	hit+154	770	STREETLORE9
+gargantuan hit point bonus	85	hit+170	850	STREETLORE10
+diminuitive move bonus	8	move+16	80	
+inferior move bonus	16	move+32	160	EXTENDEDDIVINATION1
+tiny move bonus	24	move+48	240	EXTENDEDDIVINATION2
+lesser move bonus	32	move+64	320	EXTENDEDDIVINATION3
+small move bonus	40	move+80	400	EXTENDEDDIVINATION4
+medium move bonus	48	move+96	480	EXTENDEDDIVINATION5
+large move bonus	56	move+112	560	EXTENDEDDIVINATION6
+greater move bonus	64	move+128	640	EXTENDEDDIVINATION7
+huge move bonus	72	move+144	720	EXTENDEDDIVINATION8
+superior move bonus	80	move+160	800	EXTENDEDDIVINATION9
+gargantuan move bonus	88	move+176	880	EXTENDEDDIVINATION10
+minor charisma bonus	11	cha+1	100	ARCANELORE1
+lesser charisma bonus	26	cha+2	200	ARCANELORE2
+moderate charisma bonus	41	cha+3	400	ARCANELORE3
+greater charisma bonus	56	cha+4	800	ARCANELORE4
+major charisma bonus	71	cha+5	1200	ARCANELORE5
+superior charisma bonus	86	cha+6	1600	ARCANELORE6
+minor intelligence bonus	12	int+1	100	POWERDIVINATION1
+lesser intelligence bonus	27	int+2	200	POWERDIVINATION2
+moderate intelligence bonus	42	int+3	400	POWERDIVINATION3
+greater intelligence bonus	57	int+4	800	POWERDIVINATION4
+major intelligence bonus	72	int+5	1200	POWERDIVINATION5
+superior intelligence bonus	87	int+6	1600	POWERDIVINATION6
+minor dexterity bonus	13	dex+1	100	EVASIVE1
+lesser dexterity bonus	28	dex+2	200	EVASIVE2
+moderate dexterity bonus	43	dex+3	400	EVASIVE3
+greater dexterity bonus	58	dex+4	800	EVASIVE4
+major dexterity bonus	73	dex+5	1200	EVASIVE5
+superior dexterity bonus	88	dex+6	1600	EVASIVE6
+minor strength bonus	14	str+1	100	MARTIALLORE1
+lesser strength bonus	29	str+2	200	MARTIALLORE2
+moderate strength bonus	44	str+3	400	MARTIALLORE3
+greater strength bonus	59	str+4	800	MARTIALLORE4
+major strength bonus	74	str+5	1200	MARTIALLORE5
+superior strength bonus	89	str+6	1600	MARTIALLORE6
+minor wisdom bonus	15	wis+1	100	NATURELORE1
+lesser wisdom bonus	30	wis+2	200	NATURELORE2
+moderate wisdom bonus	45	wis+3	400	NATURELORE3
+greater wisdom bonus	60	wis+4	800	NATURELORE4
+major wisdom bonus	75	wis+5	1200	NATURELORE5
+superior wisdom bonus	90	wis+6	1600	NATURELORE6
+minor constitution bonus	16	con+1	100	RANGEDDIVINATION1
+lesser constitution bonus	31	con+2	200	RANGEDDIVINATION2
+moderate constitution bonus	46	con+3	400	RANGEDDIVINATION3
+greater constitution bonus	61	con+4	800	RANGEDDIVINATION4
+major constitution bonus	76	con+5	1200	RANGEDDIVINATION5
+superior constitution bonus	91	con+6	1600	RANGEDDIVINATION6

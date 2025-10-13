@@ -177,9 +177,6 @@ public class Prop_RoomView extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(newRoom==null)
-			return super.okMessage(myHost,msg);
-
 		if((affected!=null)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item)))
 		{
@@ -190,7 +187,6 @@ public class Prop_RoomView extends Property
 				if((newRoom==null)
 				||(newRoom.fetchEffect(ID())!=null))
 					return super.okMessage(myHost,msg);
-
 				if(longlook)
 				{
 					if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)

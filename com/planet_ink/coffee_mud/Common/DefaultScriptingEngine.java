@@ -9657,7 +9657,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			case 62: // for x = 1 to 100, for x in
+			case 62: // for x = 1 to 100, for x in, for, next
 			{
 				if(tt==null)
 				{

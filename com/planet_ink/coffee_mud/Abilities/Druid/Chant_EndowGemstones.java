@@ -84,6 +84,24 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				final StringBuffer str = F.text();
 				V.addAll(CMLib.utensils().loadRecipeList(str.toString(), true));
 			}
+			for (final Iterator<List<String>> r = V.iterator(); r.hasNext();)
+			{
+				final List<String> R = r.next();
+				if (R.size() <= RCP_EXPERTISE)
+					r.remove();
+			}
+			V.sort(new Comparator<List<String>>()
+			{
+				@Override
+				public int compare(final List<String> o1, final List<String> o2)
+				{
+					final int lvl1 = CMath.s_int(o1.get(RCP_LEVEL));
+					final int lvl2 = CMath.s_int(o2.get(RCP_LEVEL));
+					if (lvl1 != lvl2)
+						return lvl1 - lvl2;
+					return o1.get(RCP_FINALNAME).compareTo(o2.get(RCP_FINALNAME));
+				}
+			});
 			V=new ReadOnlyList<List<String>>(V);
 			if(V.size()==0)
 				Log.errOut(ID(),"Recipes not found!");
@@ -153,6 +171,11 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	protected int getXPCost(final MOB mob, final int xlvl)
+	{
+		return 490 + (10 * xlvl);
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -161,23 +184,25 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		{
 			final int[] cols = new int[] {
 					CMLib.lister().fixColWidth(5, mob.session()),
-					CMLib.lister().fixColWidth(35, mob.session()),
-					CMLib.lister().fixColWidth(30, mob.session())
+					CMLib.lister().fixColWidth(30, mob.session()),
+					CMLib.lister().fixColWidth(30, mob.session()),
+					CMLib.lister().fixColWidth(7, mob.session()),
 			};
 			final StringBuilder str = new StringBuilder("");
 			str.append("^H")
 				.append(CMStrings.padRight(L("Effect"), cols[1]))
 				.append(CMStrings.padRight(L("Lvl"), cols[0]))
+				.append(CMStrings.padRight(L("XP Cost"), cols[3]))
 				.append(CMStrings.padRight(L("Expertise"), cols[2]))
 				.append("\n\r");
 			boolean toggle = false;
-			for(final List<String> recipe : this.fetchRecipes())
+			final List<List<String>> recipes = this.fetchRecipes();
+			for(final List<String> recipe : recipes)
 			{
-				if(recipe.size()<=RCP_EXPERTISE)
-					continue;
 				toggle = !toggle;
 				final int lvl = CMath.s_int(recipe.get(RCP_LEVEL));
-				final int xlvl = CMath.s_int(recipe.get(RCP_XLEVEL));
+				final int xpCostLvl = CMath.s_int(recipe.get(RCP_XLEVEL));
+				final int experienceToLose=getXPCost(mob, xpCostLvl);
 				final String name = recipe.get(RCP_FINALNAME);
 				final String expertise = recipe.get(RCP_EXPERTISE);
 				//final String mask = recipe.get(RCP_FINALNAME);
@@ -186,7 +211,8 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				{
 					str.append(toggle?"^W":"^w")
 					.append(CMStrings.padRight(name, cols[1]))
-					.append(CMStrings.padRight(""+xlvl, cols[0]))
+					.append(CMStrings.padRight(""+lvl, cols[0]))
+					.append(CMStrings.padRight(""+experienceToLose, cols[3]))
 					.append(CMStrings.padRight((def==null)?"":def.name(), cols[2]))
 					.append("\n\r");
 				}
@@ -274,6 +300,11 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 			mob.tell(L("'@x1' does not match an endowment.  Try LIST.",commands.get(0)));
 			return false;
 		}
+		if(gemI.phyStats().level() < CMath.s_int(foundRecipe.get(RCP_LEVEL)))
+		{
+			mob.tell(L("@x1 is not high enough level to hold that endowment.", gemI.name(mob)));
+			return false;
+		}
 		final int xlvl = CMath.s_int(foundRecipe.get(RCP_XLEVEL));
 		final String mask = foundRecipe.get(RCP_MASK);
 		final String expertise = foundRecipe.get(RCP_EXPERTISE);
@@ -287,7 +318,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 			}
 		}
 
-		int experienceToLose=490 + (10 * xlvl);
+		int experienceToLose=getXPCost(mob, xlvl);
 		if((mob.getExperience()-experienceToLose)<0)
 		{
 			mob.tell(L("You don't have enough experience to endow this chant on @x1.",target.name(mob)));
@@ -310,7 +341,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly!"));
 				gemI.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
-				gemI.basePhyStats().setLevel(gemI.basePhyStats().level()+xlvl);
+				//gemI.basePhyStats().setLevel(gemI.basePhyStats().level()+xlvl);
 				final Ability adjusterA = CMClass.getAbility("Prop_WearAdjuster");
 				adjusterA.setMiscText(mask);
 				((AbilityContainer)A).addAbility(adjusterA);

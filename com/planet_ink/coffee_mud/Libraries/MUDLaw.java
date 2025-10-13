@@ -835,16 +835,19 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
 			}
+			final String titleName = title.landPropertyID();
 			Item I=R.findItem(null,"$id$");
-			if((I==null)||(!I.ID().equals("GenWallpaper")))
+			if((I==null)||(!I.ID().equals("GenWallpaper"))||(I.Name().indexOf(titleName)<0))
 			{
+				if(I!=null)
+					I.destroy();
 				I=CMClass.getItem("GenWallpaper");
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
 				final StringBuilder txt = new StringBuilder("");
 				//not super important whether this size is correct, as it won't be later anyway.
 				final int size = title.getNumTitledRooms();
-				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
+				txt.append(CMLib.lang().L("This room is part of lot @x1.  ", titleName));
 				if(size > 1)
 					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));
 				if(!title.allowsExpansionConstruction())

@@ -424,7 +424,10 @@ public class Thief_Runecasting extends ThiefSkill
 			{
 				if((this.reports == null)||(this.reports.size()==0))
 				{
-					CMLib.commands().postSay(iM, forM, L("That is your future, <T-NAME>."));
+					if(iM == forM)
+						CMLib.commands().postSay(iM, forM, L("That is my future!"));
+					else
+						CMLib.commands().postSay(iM, forM, L("That is your future, <T-NAME>."));
 					unInvoke();
 					return false;
 				}

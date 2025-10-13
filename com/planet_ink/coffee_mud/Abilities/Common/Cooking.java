@@ -1378,8 +1378,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final List<List<String>> closeRecipes=new ArrayList<List<String>>();
 		for(int v=0;v<allRecipes.size();v++)
 		{
-			if(v==26)
-				System.out.println("DELME!"); //TODO:BZ:DELME
 			final List<String> recipeV=allRecipes.get(v);
 			if(recipeHasSomeIngredientsInPot(recipeV))
 				closeRecipes.add(recipeV);

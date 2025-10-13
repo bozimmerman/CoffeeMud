@@ -173,7 +173,7 @@ public class Get extends StdCommand
 					final int weight=((RawMaterial)getThis).phyStats().weight();
 					if((weight>1)
 					&&(weight>=maxToGet)
-					&&(CMStrings.containsWordIgnoreCase(((RawMaterial)getThis).name(), "bundle")))
+					&&(CMStrings.containsWordIgnoreCase(getThis.name(), "bundle")))
 					{
 						if(weight>maxToGet)
 							getThis=CMLib.materials().splitBundle((RawMaterial)getThis, maxToGet,container);
