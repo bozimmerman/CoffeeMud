@@ -128,6 +128,29 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 		return "endowgemstones.txt";
 	}
 
+	public List<String> matchingRecipeNames(final MOB mob, final String recipeName, final boolean beLoose)
+	{
+		final List<List<String>> recipes=CMLib.utensils().addExtRecipes(mob,ID(),this.fetchRecipes());
+		final List<String> matches = new Vector<String>();
+		for(final List<String> list : recipes)
+		{
+			final String name=list.get(RecipeDriven.RCP_FINALNAME);
+			if(name.equalsIgnoreCase(recipeName)
+			||(beLoose && (name.toUpperCase().startsWith(recipeName.toUpperCase()))))
+				matches.add(name);
+		}
+		if((matches.size()==0)&&(beLoose))
+		{
+			for(final List<String> list : recipes)
+			{
+				final String name=list.get(RecipeDriven.RCP_FINALNAME);
+				if(name.toUpperCase().indexOf(recipeName.toUpperCase())>=0)
+					matches.add(name);
+			}
+		}
+		return matches;
+	}
+
 	@Override
 	public List<String> matchingRecipeNames(final String recipeName, final boolean beLoose)
 	{
@@ -179,6 +202,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final List<List<String>> recipes=CMLib.utensils().addExtRecipes(mob,ID(),this.fetchRecipes());
 		final boolean list = (commands.size()>0) && "list".startsWith(commands.get(0).toLowerCase());
 		if(list)
 		{
@@ -196,7 +220,6 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 				.append(CMStrings.padRight(L("Expertise"), cols[2]))
 				.append("\n\r");
 			boolean toggle = false;
-			final List<List<String>> recipes = this.fetchRecipes();
 			for(final List<String> recipe : recipes)
 			{
 				toggle = !toggle;
@@ -257,16 +280,15 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 			return false;
 		}
 		final Item gemI=(Item)target;
-
-		List<String> matches = this.matchingRecipeNames(commands.get(0), false);
+		List<String> matches = this.matchingRecipeNames(mob, commands.get(0), false);
 		if(matches.size()==0)
-			matches = this.matchingRecipeNames(commands.get(0), true);
+			matches = this.matchingRecipeNames(mob, commands.get(0), true);
 		String recipeName = null;
 		for(final String rn : matches)
 		{
 			if(recipeName != null)
 				break;
-			for(final List<String> recipe : this.fetchRecipes())
+			for(final List<String> recipe : recipes)
 			{
 				final String name = recipe.get(RCP_FINALNAME);
 				if(name.equalsIgnoreCase(rn))
@@ -286,7 +308,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 			return false;
 		}
 		List<String> foundRecipe = null;
-		for(final List<String> recipe : this.fetchRecipes())
+		for(final List<String> recipe : recipes)
 		{
 			final String name = recipe.get(RCP_FINALNAME);
 			if(name.equals(recipeName))

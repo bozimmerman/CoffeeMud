@@ -131,7 +131,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	{
 		if(qualifyMask(I)==null)
 			return null;
-		if(((Weapon)I).rawLogicalAnd())
+		if(I.rawLogicalAnd())
 			return I;
 		return null;
 	}

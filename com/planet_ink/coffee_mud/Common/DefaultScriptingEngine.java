@@ -9359,7 +9359,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final ScriptLn ln = script.get(ctx.line);
 					if(ln==null)
 					{
-						script.remove(ctx.line);
+						ctx.line++;
 						continue;
 					}
 					s=ln.first;

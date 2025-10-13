@@ -111,6 +111,8 @@ public class Thief_SilentWield extends ThiefSkill
 		final Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null)
 			return false;
+		if(commands.size()==0)
+			commands.add(item.Name());
 		if(!CMath.bset(item.rawProperLocationBitmap(), Wearable.WORN_WIELD))
 		{
 			mob.tell(L("That can't be wielded."));
