@@ -494,7 +494,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					else
 					if(CMParms.indexOf( RawMaterial.CODES.BERRIES(), I.material())>=0)
 						i.rscCat = "BERRIES";
-					i.itemName = i.rscName;
+					i.itemName=I.name();
+					//i.itemName = i.rscName;
 				}
 				else
 				if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
@@ -588,6 +589,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(recipeIng.length()>0)
 		{
 			recipeIng = recipeIng.toUpperCase().trim();
+			if(potIngr.itemName != null)
+			{
+				if (potIngr.itemName.equalsIgnoreCase(recipeIng))
+					return true;
+			}
 			if(potIngr.rscName != null)
 			{
 				if(potIngr.subType != null)
@@ -1372,6 +1378,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final List<List<String>> closeRecipes=new ArrayList<List<String>>();
 		for(int v=0;v<allRecipes.size();v++)
 		{
+			if(v==26)
+				System.out.println("DELME!"); //TODO:BZ:DELME
 			final List<String> recipeV=allRecipes.get(v);
 			if(recipeHasSomeIngredientsInPot(recipeV))
 				closeRecipes.add(recipeV);
