@@ -2559,35 +2559,32 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if (generalItemFilterer.size() == 0)
 		{
+			final String[] armorWords = I(new String[] {"armor", "armors"});
 			generalItemFilterer.put("ARMOR", new Filterer<Environmental>() {
 				@Override
 				public boolean passesFilter(final Environmental obj)
 				{
-					return obj.name().equalsIgnoreCase("armor")
-							|| obj.name().equalsIgnoreCase("armors")
+					return CMStrings.containsAnyWordIgnoreCase(obj.name(),armorWords)
 							|| (obj instanceof Armor);
 				}
 			});
 			generalItemFilterer.put("ARMORS", generalItemFilterer.get("ARMOR"));
+			final String[] weaponWords = I(new String[] {"weapon", "weapons"});
 			generalItemFilterer.put("WEAPON", new Filterer<Environmental>() {
 				@Override
 				public boolean passesFilter(final Environmental obj)
 				{
-					return obj.name().equalsIgnoreCase("weapon")
-							|| obj.name().equalsIgnoreCase("weapons")
+					return CMStrings.containsAnyWordIgnoreCase(obj.name(),weaponWords)
 							|| (obj instanceof Weapon);
 				}
 			});
 			generalItemFilterer.put("WEAPONS", generalItemFilterer.get("WEAPON"));
+			final String[] coinWords = I(new String[] {"coin", "coins","currency", "currencies","money"});
 			generalItemFilterer.put("COIN", new Filterer<Environmental>() {
 				@Override
 				public boolean passesFilter(final Environmental obj)
 				{
-					return obj.name().equalsIgnoreCase("coin")
-							|| obj.name().equalsIgnoreCase("coins")
-							|| obj.name().equalsIgnoreCase("currency")
-							|| obj.name().equalsIgnoreCase("currencies")
-							|| obj.name().equalsIgnoreCase("money")
+					return CMStrings.containsAnyWordIgnoreCase(obj.name(),coinWords)
 							|| (obj instanceof Coins);
 				}
 			});
@@ -2595,12 +2592,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			generalItemFilterer.put("CURRENCY", generalItemFilterer.get("COIN"));
 			generalItemFilterer.put("CURRENCIES", generalItemFilterer.get("COIN"));
 			generalItemFilterer.put("MONEY", generalItemFilterer.get("COIN"));
+			final String[] itemWords = I(new String[] {"item", "items"});
 			generalItemFilterer.put("ITEM", new Filterer<Environmental>() {
 				@Override
 				public boolean passesFilter(final Environmental obj)
 				{
-					return obj.name().equalsIgnoreCase("item")
-							|| obj.name().equalsIgnoreCase("items")
+					return CMStrings.containsAnyWordIgnoreCase(obj.name(),itemWords)
 							|| (obj instanceof Item);
 				}
 			});
