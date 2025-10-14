@@ -1199,6 +1199,14 @@ function SipWin(elem)
 	return undefined;
 }
 
+function setRecursiveDisplay(element, displayValue) 
+{
+	element.style.display = displayValue;
+	var children = element.children; // Use children for element nodes only
+	for (var i = 0; i < children.length; i++)
+		setRecursiveDisplay(children[i], displayValue);
+}
+
 function populateDivFromUrl(div, url, callback) 
 {
 	var xhr = new XMLHttpRequest();

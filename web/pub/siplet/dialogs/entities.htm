@@ -56,7 +56,8 @@
 			dd.add(opt);
 		}
 		dd.selectedIndex = -1;
-		root.entitieselected = function() {
+		root.entitieselected = function() 
+		{
 			if(dd.value == "-1")
 			{
 				sname.value='';
@@ -75,7 +76,8 @@
 				stext.style.backgroundColor = 'white';
 			}
 		};
-		root.entityfieldchange = function() {
+		root.entityfieldchange = function() 
+		{
 			if((mxpField.value.trim().length == 0)
 			&&(window.currWin !== null))
 				loadbutt.style.visibility = 'visible';
@@ -190,12 +192,14 @@
 				}
 			}
 		};
-		root.trydelentity = function() {
+		root.trydelentity = function() 
+		{
 			var val = dd.value;
 			var entityindex = Number(val);
 			if(entityindex < 0)
 				return;
-			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?', function() {
+			SiConfirm('Delete '+dd.options[dd.selectedIndex].text+'?', function() 
+			{
 				var currIndex=dd.selectedIndex;
 				dd.selectedIndex=-1;
 				dd.remove(currIndex);
@@ -209,7 +213,8 @@
 			});
 		};
 		
-		root.tryloadmxp = function() {
+		root.tryloadmxp = function() 
+		{
 			var newMXP = '';
 			if(window.currWin !== null)
 			{

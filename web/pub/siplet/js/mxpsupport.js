@@ -350,7 +350,7 @@ window.defElements = {
 	"SUPPORT": new MXPElement("SUPPORT", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
 	"GAUGE": new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"STAT": new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
-	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING IMAGE IMGOP", 
+	"FRAME": new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING IMAGE IMGOP DOCK", 
 			"", MXPBIT.SPECIAL | MXPBIT.COMMAND),
 	"DEST": new MXPElement("DEST", "", "NAME EOF", "", MXPBIT.SPECIAL),
 	"DESTINATION": new MXPElement("DESTINATION", "", "NAME EOF", "", MXPBIT.SPECIAL),
@@ -1492,6 +1492,7 @@ var MXP = function(sipwin)
 			var width = E.getAttributeValue("WIDTH");
 			var height = E.getAttributeValue("HEIGHT");
 			var scrolling = E.getAttributeValue("SCROLLING");
+			var dock = E.getAttributeValue("DOCK");
 			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
 			var image = E.getAttributeValue("IMAGE") || '';
 			var imgop = E.getAttributeValue("IMGOP") || '';
@@ -1502,12 +1503,101 @@ var MXP = function(sipwin)
 				if((name != null) && (name in framechoices))
 				{
 					var frame = framechoices[name];
-					//TODO: what if frame == sipwin.window?
+					var container = frame;
+					if(!container.sprops) 
+						return; // Not a valid frame
+					
+					var isTabContent = false;
+					var tabbedContainer = null;
+					var contentArea = null;
+					var tabBar = null;
+					if (frame.parentNode 
+					&& frame.parentNode.parentNode 
+					&& frame.parentNode.parentNode.sprops 
+					&& frame.parentNode.parentNode.sprops.tabbed) 
+					{
+						isTabContent = true;
+						tabbedContainer = frame.parentNode.parentNode;
+						contentArea = frame.parentNode;
+						tabBar = tabbedContainer.children[1];
+					}
+					if(isTabContent) 
+					{
+						var tabs = tabbedContainer.sprops.tabs;
+						var tabIndex = tabs.findIndex(t => t.content === frame);
+						if (tabIndex < 0) 
+							return;
+						var tab = tabs[tabIndex];
+						var wasActive = tabbedContainer.sprops.activeTab === tab;
+						sipwin.cleanDiv(frame);
+						contentArea.removeChild(frame);
+						tabBar.removeChild(tab.button);
+						tabs.splice(tabIndex, 1);
+						if(wasActive && (tabs.length > 0))
+							switchTab(tabs[0], tabbedContainer);
+						if(tabs.length === 1) 
+						{
+							var remaining = tabs[0];
+							tabbedContainer.removeChild(tabBar);
+							tabbedContainer.removeChild(contentArea);
+							var restoredTop = remaining.title ? '20px' : '0px';
+							remaining.content.style.position = 'absolute';
+							remaining.content.style.top = restoredTop;
+							remaining.content.style.left = '0px';
+							remaining.content.style.width = '100%';
+							remaining.content.style.height = `calc(100% - ${restoredTop})`;
+							tabbedContainer.appendChild(remaining.content);
+							if (remaining.title) 
+							{
+								var titleBar = document.createElement('div');
+								titleBar.style.position = 'absolute';
+								titleBar.style.top = '0px';
+								titleBar.style.left = '0px';
+								titleBar.style.width = '100%';
+								titleBar.style.height = '20px';
+								titleBar.style.backgroundColor = 'white';
+								titleBar.style.color = 'black';
+								titleBar.innerHTML = `&nbsp;${remaining.title}`;
+								tabbedContainer.appendChild(titleBar);
+							}
+							delete tabbedContainer.sprops.tabbed;
+							delete tabbedContainer.sprops.tabs;
+							delete tabbedContainer.sprops.activeTab;
+							delete tabbedContainer.sprops.tabPos;
+							delete tabbedContainer.sprops.tabDirection;
+						}
+						delete this.frames[name];
+						if(tabbedContainer.parentNode === sipwin.topWindow) 
+							sipwin.resizeTermWindow();
+					}
+					else
+					if(frame.sprops && frame.sprops.tabbed) 
+					{
+						// Close entire tabbed container: Clean all tabs
+						var tabsCopy = [...frame.sprops.tabs];
+						contentArea = frame.children[0];
+						tabBar = frame.children[1];
+						tabsCopy.forEach(tab => 
+						{
+							sipwin.cleanDiv(tab.content);
+							contentArea.removeChild(tab.content);
+							tabBar.removeChild(tab.button);
+							if (tab.name) 
+								delete this.frames[tab.name];
+						});
+						frame.removeChild(contentArea);
+						frame.removeChild(tabBar);
+						delete frame.sprops.tabbed;
+						delete frame.sprops.tabs;
+						delete frame.sprops.activeTab;
+						delete frame.sprops.tabPos;
+						delete frame.sprops.tabDirection;
+					}
+					
 					var sprops = frame.sprops;
 					if(sprops.internal != null)
 					{
 						var parentFrame = frame.parentNode;
-						// the privilegedFrame is ALWAYS the first child in a container.  This is correct!
 						var privilegedFrame = parentFrame.childNodes[0];
 						var peerFrames = [];
 						for(var i=2;i<parentFrame.childNodes.length;i++)
@@ -1522,8 +1612,6 @@ var MXP = function(sipwin)
 						peerFrames.push(privilegedFrame);
 						var peerDex = peerFrames.indexOf(frame);
 						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
-						var fleft = frame.style.left;
-						var ftop = frame.style.top;
 						var shiftw = sprops.width;
 						var shifth = sprops.height;
 						switch(alignx)
@@ -1612,6 +1700,7 @@ var MXP = function(sipwin)
 					"name": name,
 					"action": action,
 					"title": title,
+					"dock": dock,
 					"internal": internal,
 					"align": align, 
 					"left": left, 
@@ -1632,6 +1721,178 @@ var MXP = function(sipwin)
 					throw error;
 				}
 				else
+				if((dock != null) && (dock.trim().length>0))
+				{
+					var tabPos = 'above';
+					var tabFrame = dock;
+					var d = dock.indexOf(' ');
+					if(d > 0) 
+					{
+						tabPos = dock.substr(0, d).trim().toLowerCase();
+						tabFrame = dock.substr(d + 1).trim();
+					}
+					if(!(tabFrame in framechoices)) 
+						return; // Invalid target
+					var peerContainer = framechoices[tabFrame];
+					if(!peerContainer.sprops) 
+						return; // Invalid sprops
+
+					var isTabbed = !!peerContainer.sprops.tabbed;
+					var tabBar, contentArea;
+					var tabDirection = (tabPos === 'left' || tabPos === 'right') ? 'vertical' : 'horizontal';
+					var tabBarWidth = (tabDirection === 'vertical') ? '150px' : '100%'; // Adjustable for vertical
+					var tabBarHeight = (tabDirection === 'vertical') ? '100%' : '20px';
+					var tabBarTop = (tabPos === 'below') ? 'calc(100% - 20px)' : '0px';
+					var tabBarLeft = (tabPos === 'right') ? 'calc(100% - 150px)' : '0px';
+					var contentTop = (tabPos === 'below') ? '0px' : ((tabDirection === 'horizontal') ? '20px' : '0px');
+					var contentLeft = (tabPos === 'right') ? '0px' : ((tabDirection === 'vertical') ? '150px' : '0px');
+					var contentWidth = (tabDirection === 'vertical') ? 'calc(100% - 150px)' : '100%';
+					var contentHeight = (tabPos === 'below') ? 'calc(100% - 20px)' : ((tabDirection === 'horizontal') ? 'calc(100% - 20px)' : '100%');
+					var createTabButton = function(label, clickFunc, tabName) 
+					{
+						var btn = document.createElement('span');
+						btn.style.padding = '2px 10px';
+						btn.style.border = '1px solid black';
+						btn.style.margin = '2px';
+						btn.style.cursor = 'pointer';
+						btn.style.display = (tabDirection === 'vertical') ? 'block' : 'inline-block';
+						btn.innerHTML = label;
+						btn.onclick = clickFunc;
+						return btn;
+					};
+					var switchTab = function(tab, container) 
+					{
+						container.sprops.tabs.forEach(function(t) 
+						{
+							t.content.style.display = 'none';
+							t.button.style.backgroundColor = '';
+						});
+						tab.content.style.display = 'block';
+						tab.button.style.backgroundColor = 'lightgray';
+						container.sprops.activeTab = tab;
+					};
+
+					if (!isTabbed) 
+					{
+						var originalContent = peerContainer.children[0];
+						var originalTitleBar = (peerContainer.children.length > 1) ? peerContainer.children[1] : null;
+						var titleFromBar = originalTitleBar ? originalTitleBar.innerHTML.replace(/&nbsp;/, '').trim() : '';
+						var originalTitle = titleFromBar || peerContainer.sprops.title || peerContainer.sprops.name || 'Main';
+						var originalName = peerContainer.sprops.name;
+
+						if (originalTitleBar)
+							peerContainer.removeChild(originalTitleBar);
+
+						tabBar = document.createElement('div');
+						tabBar.style.position = 'absolute';
+						tabBar.style.top = tabBarTop;
+						tabBar.style.left = tabBarLeft;
+						tabBar.style.width = tabBarWidth;
+						tabBar.style.height = tabBarHeight;
+						tabBar.style.backgroundColor = 'white';
+						tabBar.style.color = 'black';
+						tabBar.style.overflow = 'auto';
+						if (tabDirection === 'horizontal')
+						{
+							tabBar.style.overflowX = 'auto';
+							tabBar.style.overflowY = 'hidden';
+							tabBar.style.whiteSpace = 'nowrap';
+						}
+						else
+							tabBar.style.overflow = 'auto';
+						contentArea = document.createElement('div');
+						contentArea.style.position = 'absolute';
+						contentArea.style.top = contentTop;
+						contentArea.style.left = contentLeft;
+						contentArea.style.width = contentWidth;
+						contentArea.style.height = contentHeight;
+						contentArea.style.overflow = 'hidden';
+
+						peerContainer.removeChild(originalContent);
+						contentArea.appendChild(originalContent);
+						originalContent.style.position = 'absolute';
+						originalContent.style.top = '0px';
+						originalContent.style.left = '0px';
+						originalContent.style.width = '100%';
+						originalContent.style.height = '100%';
+
+						peerContainer.appendChild(contentArea);
+						peerContainer.appendChild(tabBar);
+
+						var originalTab =
+						{
+							name: originalName,
+							title: originalTitle,
+							content: originalContent,
+							button: createTabButton(originalTitle, () => switchTab(originalTab, peerContainer), originalName)
+						};
+						tabBar.appendChild(originalTab.button);
+						peerContainer.sprops.tabbed = true;
+						peerContainer.sprops.tabs = [originalTab];
+						peerContainer.sprops.tabPos = tabPos;
+						peerContainer.sprops.tabDirection = tabDirection;
+						if (originalName)
+							this.frames[originalName] = originalContent;
+						switchTab(originalTab, peerContainer);
+					}
+					else
+					{
+						contentArea = peerContainer.children[0];
+						tabBar = peerContainer.children[1];
+						tabPos = peerContainer.sprops.tabPos;
+						tabDirection = peerContainer.sprops.tabDirection;
+					}
+					var newContent = document.createElement('div');
+					newContent.style.position = 'absolute';
+					newContent.style.top = '0px';
+					newContent.style.left = '0px';
+					newContent.style.width = '100%';
+					newContent.style.height = '100%';
+					newContent.style.backgroundColor = 'black';
+					newContent.style.color = 'white';
+					newContent.style.border = '1px solid white';
+					newContent.style.overflowY = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'y') ? 'auto' : 'hidden';
+					newContent.style.overflowX = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'x') ? 'auto' : 'hidden';
+					if(!scrolling || scrolling.toLowerCase() !== 'yes')
+					{
+						newContent.style.overflowWrap = 'break-word';
+						newContent.style.wordWrap = 'break-word';
+						newContent.style.whiteSpace = 'pre-wrap';
+					}
+					if (image) 
+					{
+						newContent.style.backgroundImage = `url("${image}")`;
+						newContent.style.backgroundSize = 'cover';
+						newContent.style.backgroundPosition = 'center';
+						newContent.style.backgroundRepeat = 'no-repeat';
+						if (imgop && imgop.trim())
+						{
+							let opacity = imgop.trim();
+							if (!opacity.startsWith('.')) 
+								opacity = parseFloat(opacity) / 100;
+							newContent.style.opacity = opacity;
+						}
+						updateMediaImagesInSpan(sipwin.sipfs, newContent);
+					}
+					contentArea.appendChild(newContent);
+					newContent.style.display = 'none';
+					var newTab = 
+					{
+						name: name,
+						title: title || name,
+						content: newContent,
+						button: createTabButton(title || name, () => switchTab(newTab, peerContainer), name)
+					};
+					tabBar.appendChild(newTab.button);
+					peerContainer.sprops.tabs.push(newTab);
+					this.frames[name] = newContent;
+					if (action.toUpperCase() === 'REDIRECT') 
+						sipwin.window = newContent;
+					switchTab(newTab, peerContainer);
+					if (peerContainer.parentNode === sipwin.topWindow) 
+						sipwin.resizeTermWindow();
+				}
+				else
 				if(internal != null)
 				{
 					var alignx = (!align)?-1:aligns.indexOf(align.toUpperCase().trim());
@@ -1639,20 +1900,36 @@ var MXP = function(sipwin)
 					{
 						var siblingDiv = sipwin.window;
 						var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
-						var calced = getComputedStyle(sipwin.window);
-						// Removed: width=fixISize(width,calced.width); (no longer force %)
-						// Removed: height=fixISize(height,calced.height);
-						// Removed: sprops.pctwidth/height (use width/height strings directly)
+						var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
+						if(isInTabbed) 
+						{
+							var tabContent = sipwin.window;
+							tabContent.style.position = 'relative';
+							var wrapper = document.createElement('div');
+							wrapper.style.position = 'absolute';
+							wrapper.style.top = '0px';
+							wrapper.style.left = '0px';
+							wrapper.style.width = '100%';
+							wrapper.style.height = '100%';
+							while (tabContent.firstChild)
+								wrapper.appendChild(tabContent.firstChild);
+							tabContent.appendChild(wrapper);
+							siblingDiv = wrapper;
+							sipwin.window = wrapper;
+							containerDiv = tabContent;
+						}
 						var newContainerDiv = document.createElement('div');
 						newContainerDiv.style.cssText = containerDiv.style.cssText;
+						newContainerDiv.style.display = 'block';
 						containerDiv.appendChild(newContainerDiv);
 						var newContentWindow = document.createElement('div');
 						newContentWindow.style.cssText = sipwin.window.style.cssText;
+						newContentWindow.style.display = '';
 						newContentWindow.style.left = '0%';
 						newContentWindow.style.top = '0%';
 						newContentWindow.style.width = '100%';
 						newContentWindow.style.height = '100%';
-						newContentWindow.style.border = "solid white";
+						newContentWindow.style.border = "1px solid white";
 						newContentWindow.style.boxSizing = "border-box";
 						if(image)
 						{
@@ -1676,12 +1953,10 @@ var MXP = function(sipwin)
 							newContainerDiv.style.top = siblingDiv.style.top;
 							newContainerDiv.style.height = siblingDiv.style.height;
 							newContainerDiv.style.width = width;
-							// Changed: Use addDim/subDim
 							siblingDiv.style.left = addDim(siblingDiv.style.left, width);
 							siblingDiv.style.width = subDim(siblingDiv.style.width, width);
 							break;
 						case 1: // right
-							// Changed: Use addDim/subDim
 							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), width);
 							newContainerDiv.style.top = siblingDiv.style.top;
 							newContainerDiv.style.height = siblingDiv.style.height;
@@ -1693,12 +1968,10 @@ var MXP = function(sipwin)
 							newContainerDiv.style.left = siblingDiv.style.left;
 							newContainerDiv.style.width = siblingDiv.style.width;
 							newContainerDiv.style.height = height;
-							// Changed: Use addDim/subDim
 							siblingDiv.style.top = addDim(siblingDiv.style.top, height);
 							siblingDiv.style.height = subDim(siblingDiv.style.height, height);
 							break;
 						case 3: // bottom
-							// Changed: Use addDim/subDim
 							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), height);
 							newContainerDiv.style.left = siblingDiv.style.left;
 							newContainerDiv.style.width = siblingDiv.style.width;
@@ -1730,7 +2003,6 @@ var MXP = function(sipwin)
 							newContentWindow.style.wordWrap = 'break-word';
 							newContentWindow.style.whiteSpace = 'pre-wrap';
 						}
-						// how we can get the new windows real width
 						var titleBar;
 						if((title != null) && (title.trim().length>0))
 						{
@@ -1769,9 +2041,9 @@ var MXP = function(sipwin)
 				&&(height != null))
 				{
 					var newTopWindow = document.createElement('div');
-					if(window.sipcounter === undefined) window.sipcounter=1;
+					if(window.sipcounter === undefined) 
+						window.sipcounter=1;
 					newTopWindow.id = "WIN" + (window.sipcounter++);
-					// Note: Already handles px/% via fixSize updates
 					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";";
 					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 					newTopWindow.style.backgroundColor = 'darkgray';
@@ -1978,14 +2250,16 @@ var MXP = function(sipwin)
 					var error = new Error('');
 					var newFrame = framechoices[name];
 					var dests = this.dests;
-					error.call = function() {
+					error.call = function() 
+					{
 						//sipwin.htmlBuffer += "<BR>";
 						sipwin.flushWindow();
 						if(dests.length > 0)
 							sipwin.window = dests.pop(); // the text window
 						else
 							sipwin.window = sipwin.topWindow.firstChild.firstChild;
-						setTimeout(function(){
+						setTimeout(function()
+						{
 							DisplayFakeInput(null);
 						},1);
 					};
@@ -1994,13 +2268,14 @@ var MXP = function(sipwin)
 				else
 				{
 					var frame = framechoices[name];
-					if(frame.firstChild)
+					if(frame.sprops && frame.firstChild)
 						frame = frame.firstChild;
 					this.dests.push(sipwin.window);
 					var error = new Error('');
 					if(eof != null)
 						frame.innerHTML = '';
-					error.call = function() {
+					error.call = function() 
+					{
 						sipwin.flushWindow();
 						sipwin.window = frame;
 					};
