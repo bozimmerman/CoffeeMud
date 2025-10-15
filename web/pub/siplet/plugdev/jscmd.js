@@ -1,6 +1,6 @@
 function showHelp()
 {
-	win.displayText('<FRAME JSCMDHELP SCROLLING=y TITLE="GMCP Help" ACTION=OPEN FLOATING=close SCROLLING=y TOP=10% LEFT=15% WIDTH=450 HEIGHT=250>');
+	win.displayText('<FRAME JSCMDHELP SCROLLING=y TITLE="JSCmd Help" ACTION=OPEN FLOATING=close SCROLLING=y TOP=10% LEFT=15% WIDTH=450 HEIGHT=250>');
 	var html = '<DEST NAME=JSCMDHELP EOF><FONT COLOR=WHITE>';
 	html += 'Enter <B>/js [command]</B> to execute some JavaScript.<BR><BR>';
 	html += 'Double &quot;quotes&quot; and \\backslashes must be escaped with \\..<BR><BR>';
