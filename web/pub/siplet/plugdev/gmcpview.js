@@ -19,9 +19,9 @@ window.onevent=function(event)
 		if(!viewon)
 			return;
 		win.displayText('<BR><FONT COLOR=WHITE><B>'+event.command+'</B></FONT><BR>'+JSON.stringify(event.data,null,2))
+		return;
 	}
-	else
-	if(event.data)
+	if(event.data && event.data.toLowerCase)
 	{
 		if(event.data === 'Help')
 		{

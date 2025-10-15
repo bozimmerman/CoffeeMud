@@ -1,0 +1,29 @@
+{
+   "name":"JSCmd",
+   "version":1,
+   "requires":"3.2.0",
+   "mxp":"",
+   "triggers":[
+      
+   ],
+   "menus":{
+      "Help":[
+         {
+            "n":"JSCmd Plugin",
+            "a":"win.sendPlugin('JSCmd','Help');"
+         }
+      ]
+   },
+   "aliases":[
+      {
+         "name":"SendGMCP",
+         "regex":true,
+         "replace":"",
+         "pattern":"\\/js (.*)",
+         "action":"win.sendPlugin('JSCmd',\"&match1;\");"
+      }
+   ],
+   "timers":[
+      
+   ]
+}

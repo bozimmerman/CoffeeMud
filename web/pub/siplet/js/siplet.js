@@ -1355,8 +1355,13 @@ function SipletWindow(windowName)
 					json = {'type':'event', 'data': event};
 				}
 			}
-			if(!('type' in json))
-				json['type'] = 'event';
+			if(isJsonObject(json))
+			{
+				if(!('type' in json))
+					json['type'] = 'event';
+			}
+			else
+				json = {'type':'event', 'data': event};
 			var doc = this.fixVariables(JSON.stringify(json));
 			this.plugins.postEventToPlugin(plugin, JSON.parse(doc));	
 		}

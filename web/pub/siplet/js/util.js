@@ -66,7 +66,8 @@ function isNumber(c)
 	return false;
 }
 
-function isJsonObject(variable) {
+function isJsonObject(variable) 
+{
 	return variable !== null 
 		&& typeof variable === 'object' 
 		&& !Array.isArray(variable) 
