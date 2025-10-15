@@ -102,7 +102,7 @@ function ReConfigureTopMenu(sipwin)
 		totalTDWidth += tdWidth;
 		var topO = menuData[to];
 		var topN = Object.keys(topO)[0];
-		html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;"';
+		html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;" tabindex="0"';
 		html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+'+menuAreaHeight+',150,'+menuFontSize+','+to+')" ';
 		html += '><FONT style="font-size: '+menuFontSize+'" COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 		html += topN + '</FONT></TD>';
@@ -115,7 +115,7 @@ function ReConfigureTopMenu(sipwin)
 			if(!alreadyDone[topN])
 			{
 				totalTDWidth += tdWidth;
-				html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;"';
+				html += '<TD style="border: 1px solid white; padding: 0;width:'+tdWidth+'px;" tabindex="0"';
 				html += ' ONCLICK="DropDownMenu(event,this.offsetLeft,this.offsetTop+'+menuAreaHeight+',150,'+menuFontSize+','+key+')" ';
 				html += '><FONT style="font-size: '+menuFontSize+'" COLOR="'+menuForegroundColor+'"><B>&nbsp;&nbsp;';
 				html += key + '</FONT></TD>';
@@ -165,6 +165,7 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		m = ContextSubMenuOpen(e, subList, left, top, width, 5);
 	else
 		m = ContextMenuOpen(e, subList, left, top, width, 5);
+	m.topId = e.currentTarget;
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
 	var as = Array.from(m.getElementsByTagName("A"));
@@ -173,7 +174,83 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		as[a].style.color=menuForegroundColor;
 		as[a].style.fontSize=fontSize;
 		as[a].style.textDecoration = 'none';
+		(function(link)
+		{
+			link.addEventListener('mouseenter', function() {
+				link.focus();
+			});
+			link.addEventListener('mouseleave', function() {
+				link.blur();
+			});
+			link.addEventListener('focus', function() {
+				this.style.color = menuBackgroundColor;
+				this.style.backgroundColor = menuForegroundColor;
+			});
+			link.addEventListener('blur', function() {
+				this.style.color = menuForegroundColor;
+				this.style.backgroundColor = menuBackgroundColor;
+			});
+		})(as[a]);
 	}
+	m.addEventListener('keydown', function (event) 
+	{
+		if (!m || !m.contains(document.activeElement)) 
+			return;
+		var currentIndex = as.indexOf(document.activeElement);
+		if (currentIndex < 0) 
+			return;
+		if(event.key === 'ArrowDown')
+		{
+			currentIndex = (currentIndex + 1) % as.length;
+			event.preventDefault();
+			as[currentIndex].focus();
+			return;
+		}
+		else 
+		if(event.key === 'ArrowUp')
+		{
+			currentIndex = (currentIndex - 1 + as.length) % as.length;
+			event.preventDefault();
+			as[currentIndex].focus();
+			return;
+		}
+		if(event.key === 'ArrowLeft')
+		{
+			event.preventDefault();
+			topMenuFocusMove(m.topId,-1);
+			return;
+		}
+		else 
+		if(event.key === 'ArrowRight')
+		{
+			event.preventDefault();
+			topMenuFocusMove(m.topId,1);
+			return;
+		}
+		if(event.key.length == 1)
+		{
+			for(var a=0;a<as.length;a++)
+			{
+				if(as[a].textContent[0].toLowerCase() == event.key)
+				{
+					as[a].focus();
+					setTimeout(function(){
+						as[a].click();
+					},1);
+					return;
+				}
+			}
+		}
+	});
+	setTimeout(function(){
+		var menu = document.getElementById('ctxmenu');
+		if(menu == m)
+		{
+			var first = menu.querySelectorAll('a');
+			if(first && first.length)
+				first[0].focus();
+		}
+	},1);
 	return m;
 }
 
@@ -185,6 +262,94 @@ function hideOptionWindow()
 		menuWindow.onclick = function() {};
 		var contentWindow = menuWindow.getElementsByTagName('div')[1];
 		contentWindow.innerHTML = '';
+	}
+}
+
+function optionWindowFocus()
+{
+	if((menuWindow != null)
+	&&(menuWindow.style.visibility == 'visible'))
+		focusFirstFocusable(menuWindow);
+}
+
+function optionWindowTab(e, shift)
+{
+	if((menuWindow != null)
+	&&(menuWindow.style.visibility == 'visible'))
+	{
+		var elems = getTabbableElements(menuWindow);
+		if(elems && elems.length)
+		{
+			var x = Array.from(elems).indexOf(document.activeElement);
+			if(shift && document.activeElement == elems[0])
+			{
+				e.preventDefault();
+				elems[elems.length-1].focus();
+				return;
+			}
+			if(!shift && document.activeElement == elems[elems.length-1])
+			{
+				e.preventDefault();
+				elems[0].focus();
+				return;
+			}
+		}
+	}
+}
+
+function topMenuFocusMove(td, move)
+{
+	var mv = (move === undefined)?0:move;
+	var menu = document.getElementById('ctxmenu');
+	if(!menu)
+		return;
+	
+	var cols = menuArea.querySelectorAll('tr');
+	if(cols && (cols.length > 0))
+	{
+		var rows = cols[0].querySelectorAll('td');
+		if((!rows) || (!rows.length))
+			return;
+		ContextHideAll();
+		for(var r=0;r<rows.length-1;r++)
+		{
+			if(td == rows[r])
+			{
+				var nr = r + mv;
+				if(nr < 0)
+					nr = rows.length-2;
+				else
+				if(nr >= rows.length-1)
+					nr = 0;
+				rows[nr].focus();
+				rows[nr].click();
+				return;
+			}
+		}
+	}
+}
+
+function topMenuFocus(key)
+{
+	ContextHideAll();
+	var cols = menuArea.querySelectorAll('tr');
+	if(cols && (cols.length > 0))
+	{
+		var rows = cols[0].querySelectorAll('td');
+		if((!rows) || (!rows.length))
+			return;
+		for(var r=0;r<rows.length;r++)
+		{
+			if(!rows[r].textContent)
+				continue;
+			var rowKey = rows[r].textContent.trim()[0].toLowerCase();
+			if(key == rowKey)
+			{
+				rows[r].focus();
+				rows[r].click();
+				return;
+			}
+		}
 	}
 }
 
@@ -223,9 +388,11 @@ function getOptionWindow(heading, w, h)
 	menuWindow.style.width = w+'%';
 	menuWindow.style.visibility = 'visible';
 	titleBar.innerHTML = '<FONT COLOR=BLACK>'+heading+'</FONT>'+
-		'<IMG style="float: right; width: 16px; height: 16px;" '
+		'<IMG alt="Close" style="float: right; width: 16px; height: 16px;"  tabindex="0" '
 		+'ONCLICK="hideOptionWindow();" '
+		+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
 		+'SRC="images/close.gif">';
+	setTimeout(optionWindowFocus,250);
 	return contentWindow;
 }
 
@@ -450,15 +617,21 @@ function MakeDraggable(div, titlebar)
 	let isResizing = false;
 	let startX, startY, initialLeft, initialTop, initialWidth, initialHeight;
 	var moveThreshold = 5;
+	
+	function isDraggable(e)
+	{
+		return (e.target === div)
+				||((!e.target.onclick) 
+					&&(!e.target.onchange) 
+					&&(!e.target.oninput)
+					&&(getComputedStyle(e.target).pointerEvents !== 'none')
+					&&(!['input', 'select', 'textarea', 'button', 'a'].includes(e.target.tagName.toLowerCase())));
+		
+	}
+	
 	function onMouseDown(e, chkResize)
 	{
-		const isDraggable =(e.target === div) 
-						||((!e.target.onclick) 
-							&&(!e.target.onchange) 
-							&&(!e.target.oninput)
-							&&(getComputedStyle(e.target).pointerEvents !== 'none')
-							&&(!['input', 'select', 'textarea', 'button', 'a'].includes(e.target.tagName.toLowerCase())));
-		if(!isDraggable)
+		if(!isDraggable(e))
 			return;
 		if((e.target === div)||(!e.target.onclick))
 		{
@@ -497,7 +670,10 @@ function MakeDraggable(div, titlebar)
 			return;
 		var dx = e.clientX - startX;
 		var dy = e.clientY - startY;
-		if (!isDragging && !isResizing && (Math.abs(dx) > moveThreshold || Math.abs(dy) > moveThreshold))
+		if((!isDragging) 
+		&&(!isResizing)
+		&&((Math.abs(dx) > moveThreshold) 
+			||(Math.abs(dy) > moveThreshold)))
 		{
 			if(resizeClick)
 				isResizing = true;
@@ -535,7 +711,29 @@ function MakeDraggable(div, titlebar)
 		isDragging = false;
 		resizeClick = false;
 		isResizing = false;
+		div.style.cursor='default';
 	}
+	
+	div.addEventListener('mousemove', function(e) 
+	{
+		if ((!window.currWin)||(!window.currWin.topWindow))
+			return;
+		if((!isDragging)&&(!isResizing)) 
+		{
+			if(!isDraggable(e))
+				return;
+			var style = getComputedStyle(div);
+			var left = parseFloat(style.left) || 0;
+			var top = parseFloat(style.top) || 0;
+			var width = parseFloat(style.width) || 0;
+			var height = parseFloat(style.height) || 0;
+			if((e.clientX > left + width - 20)
+			&&(e.clientY > top + height - 20))
+				div.style.cursor = 'se-resize';
+			else
+				div.style.cursor = 'default';
+		}
+	});
 	dragWidget.addEventListener('mousedown', onMouseDown);
 	if(dragWidget != div)
 		div.addEventListener('mousedown', function(e) { onMouseDown(e,true);});

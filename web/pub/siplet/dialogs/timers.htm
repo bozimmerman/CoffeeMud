@@ -6,7 +6,7 @@
 		>
 		<OPTION VALUE="-1">Add New Timer
 		</SELECT>
-		<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Timers')">
+		${contextHelpButt('Timers Help','Timers','RIGHT');}
 </TD></TR>
 <TR><TD COLSPAN=2>&nbsp;</TD>
 <TR><TD WIDTH=20%>Name:</TD><TD>
@@ -70,7 +70,7 @@
 	<INPUT id="TIMERAVALUE" type="text"
 		ONCHANGE="var root = document.getElementById('TIMERSROOT'); root.timerfieldchange(); "
 		ONBLUR="var root = document.getElementById('TIMERSROOT'); root.timeractionvalueblur(this);"
-	><IMG SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Actions')">
+	>${contextHelpButt('Actions Help','Actions','');}
 </TD></TR>
 <TR><TD colspan="2">
 	<SPAN ID="TIMERDELETE">${butt('Delete',"document.getElementById('TIMERSROOT').trydeltimer();");}</SPAN>

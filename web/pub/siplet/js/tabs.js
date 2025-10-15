@@ -127,12 +127,16 @@ function AddNewTab()
 				if(tab.siplet && !tab.siplet.isConnected())
 				{
 					var reconn = '<IMG style="position:absolute;top:0;right:18px;width:16px; height:16px;" '
-					+'ONCLICK="ReconnectTab(this);" TITLE="Re-Connect"'
+					+'alt="Reconnect"  tabindex="0" '
+					+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
+					+'ONCLICK="ReconnectTab(this);" TITLE="Re-Connect" '
 					+'SRC="images/recon.gif">';
 					tab.innerHTML += reconn;
 				}
 				var close = '<IMG style="position:absolute;top:0;right:0;width:16px; height:16px;" '
-				+'ONCLICK="CloseTab(this);"  TITLE="Close Tab"'
+				+' alt="Close"  tabindex="0" '
+				+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
+				+'ONCLICK="CloseTab(this);"  TITLE="Close Tab" '
 				+'SRC="images/close.gif">';
 				tab.innerHTML += close;
 			}

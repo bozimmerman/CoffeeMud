@@ -297,14 +297,34 @@ function TurnOnBoxlessInputCursor()
 		window.currWin.flushNode(inputcursor,0);
 }
 
-document.onkeydown = function(e) {
+document.onkeydown = function(e) 
+{
 	var win = window.currWin;
-	if(win == null)
-		return;
 	if(e.altKey)
 	{
+		e.preventDefault();
+		if(e.key.length == 1)
+			setTimeout(function(){topMenuFocus(e.key);},150);
+		else
+		{
+			var ctxOpen = IsAnyContextMenuOpen();
+			var dlgOpen = isDialogOpen(); 
+			if((!ctxOpen) && (!dlgOpen))
+				topMenuFocus('w')
+			else
+			{
+				if(ctxOpen)
+					ContextHideAll();
+				if(dlgOpen)
+					optionWindowFocus();
+				else
+					setInputBoxFocus();
+			}
+		}
 		if(e.key == 'o')
 		{
+			if(win == null)
+				return;
 			if(window.isElectron && win)
 			{
 				if(win.logStream != null)
@@ -381,7 +401,7 @@ document.onkeydown = function(e) {
 		*/
 	}
 	else
-	if(!isInputVisible() && !isDialogOpen())
+	if(!isInputVisible() && !isDialogOpen() && (win != null))
 	{
 		if(e.key === 'Backspace')
 		{
@@ -448,5 +468,19 @@ document.onkeydown = function(e) {
 			}
 			//TODO bell? 7?
 		}
+	}
+	else
+	if(e.key == 'Escape')
+	{
+		hideOptionWindow();
+		ContextHideAll();
+		if(!IsAnyContextMenuOpen())
+			setInputBoxFocus();
+	}
+	else
+	if((e.key == 'Tab') || (e.key == '\t'))
+	{
+		if(isDialogOpen())
+			optionWindowTab(e,e.shiftKey);
 	}
 };

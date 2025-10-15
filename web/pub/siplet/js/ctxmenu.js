@@ -23,6 +23,12 @@ function ContextHideAll()
 		menu.outerHTML='';
 }
 
+function IsAnyContextMenuOpen()
+{
+	var menu = document.getElementById('ctxmenu');
+	return (menu != null);
+}
+
 function ContextHideSub()
 {
 	var menu = document.getElementById('ctxsubmenu');
@@ -55,10 +61,10 @@ function IsContextSubMenuHover(e)
 
 function ContextMenuOpen(e, menu, x, y, width, marginBottom) 
 {
-	if (window.event) 
+	if(window.event) 
 		window.event.cancelBubble=true;
 	else
-	if (e && e.stopPropagation) 
+	if(e && e.stopPropagation) 
 		e.stopPropagation();
 	if(e && e.preventDefault)
 		e.preventDefault();

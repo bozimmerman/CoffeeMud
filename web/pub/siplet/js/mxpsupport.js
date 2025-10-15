@@ -2060,9 +2060,10 @@ var MXP = function(sipwin)
 						titleBar.innerHTML = '&nbsp;'+title;
 						if((floating != null) && (floating.toLowerCase() == 'close'))
 						{
-							titleBar.innerHTML += '<IMG style="float: right; width: 16px; height: 16px;" '
+							titleBar.innerHTML += '<IMG alt="Close" style="float: right; width: 16px; height: 16px;" '
+								+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
 								+'ONCLICK="window.currWin.displayText(\'<FRAME NAME='+name+' ACTION=CLOSE>\');" '
-								+'SRC="images/close.gif">';
+								+' tabindex="0" SRC="images/close.gif">';
 						}
 						MakeDraggable(newTopWindow,titleBar);
 					}

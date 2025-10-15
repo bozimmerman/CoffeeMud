@@ -46,7 +46,8 @@
 							var ea = '<a href="javascript:document.getElementById(\'PLUGINSROOT\').installPlugin(' + i + ')">';
 							var eh = '<div style="display:block;">';
 							eh += '<b>' + p.displayName + '</b>';
-							eh += '<img align=left src="' + p.icon + '" width=128 height=128 hspace=8 vspace=4>';
+							eh += '<img align=left alt="Install '+p.displayName+'"'
+								+' src="' + p.icon + '" width=128 height=128 hspace=8 vspace=4>';
 							eh += '<div>';
 							eh += '<b>Version:</b> ' + p.version;
 							if (p.installed) 

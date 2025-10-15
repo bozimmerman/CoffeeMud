@@ -221,11 +221,25 @@ function escapeHTML(s)
 		.replace(/'/g, '&#39;');
 }
 
+function contextHelpButt(t,y,a)
+{
+	return '<IMG '
+		+(a?('ALIGN='+a+' '):'')
+		+' alt="'+t+'" SRC="images/help.gif" tabindex="0" '
+		+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\"'
+		+' ONCLICK="ContextHelp(this,event,\''+y+'\')">';
+}
+
 function butt(t,js)
 {
-	return "<span style=\"display: inline-block; background-image: url('images/lilButt.gif'); background-position: center;"
-		+"background-repeat: no-repeat; background-size: 100% 100%; padding: 5px 10px; white-space: nowrap; cursor: pointer; line-height: 10px;\"" 
-		+"onclick=\""+js+"\"><font face=\"Arial\" color=\"purple\" size=\"-2\"><b>"+t+"</b></font></span>";
+	return "<span tabindex=\"0\""
+		  +" role=\"button\""
+		  +" area-label=\""+t+"\""
+		  +" style=\"display: inline-block; background-image: url('images/lilButt.gif'); background-position: center;"
+		  +"         background-repeat: no-repeat; background-size: 100% 100%; padding: 5px 10px; white-space: nowrap; cursor: pointer; line-height: 10px;\"" 
+		  +" onclick=\""+js+"\" "
+		  +" onkeydown=\"if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.click(); }\">"
+		  +"<font face=\"Arial\" color=\"purple\" size=\"-2\"><b>"+t+"</b></font></span>";
 }
 
 function extractUnclosedFontTags(span, htmlBuffer) 
@@ -1189,6 +1203,46 @@ function findNthBrPos(html, n)
 		pos = match.index + match[0].length;
 	}
 	return pos;
+}
+
+function getTabbableElements(container) 
+{
+	if (!container) 
+		return [];
+	var selector = `
+		a[href]:not([disabled]),
+		area[href]:not([disabled]),
+		button:not([disabled]),
+		input:not([disabled]),
+		select:not([disabled]),
+		textarea:not([disabled]),
+		iframe:not([disabled]),
+		[tabindex]:not([tabindex="-1"]):not([disabled]),
+		[contenteditable]:not([contenteditable="false"]):not([disabled])
+	`.replace(/\s+/g, '');
+
+	var candidates = container.querySelectorAll(selector);
+	return Array.from(candidates).filter(function(el) 
+	{
+		if(el.disabled) 
+			return false;
+		if(el.getAttribute('aria-hidden') === 'true')
+			return false;
+		var style = window.getComputedStyle(el);
+		if((style.display === 'none')||(style.visibility === 'hidden')) 
+			return false;
+		var rect = el.getBoundingClientRect();
+		if(rect.width <= 0 || rect.height <= 0) 
+			return false;
+		return el.offsetParent !== null;
+	});
+}
+
+function focusFirstFocusable(container) 
+{
+	var focusableElements = getTabbableElements(container);
+	if(focusableElements && focusableElements.length > 0)
+		focusableElements[0].focus();
 }
 
 function SipWin(elem)

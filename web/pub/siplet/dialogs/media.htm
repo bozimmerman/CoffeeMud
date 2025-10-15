@@ -1,5 +1,5 @@
 <SPAN  ID="MEDIAROOT">
-<IMG ALIGN=RIGHT SRC="images/help.gif" ONCLICK="ContextHelp(this,event,'Media')">
+${contextHelpButt('Media Help','Media','RIGHT');}
 <TABLE WIDTH=100% BORDER=0 style="font-size:12;height:200px;table-layout:fixed">
 <TR>
 	<TD COLSPAN=2 VALIGN=TOP>
@@ -89,11 +89,18 @@ var fixsmediapage=function(){
 				}
 				nr.appendChild(tn);
 				nr.node = n;
+				nr.tabIndex = "0";
 				parent.appendChild(nr);
 				nr.onclick = function(event) {
 					event.stopPropagation();
 					root.selectNode(this.node); 
 				};
+				nr.onkeydown=function(event) 
+				{
+					if(event.key === 'Enter' || event.key === ' ') 
+					{ event.preventDefault(); this.click(); }
+				};
+
 				if(n.opened && n.isFolder)
 				{
 					if((n.children && n.children.length)
