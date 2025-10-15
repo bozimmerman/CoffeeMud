@@ -2842,9 +2842,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									final String room2ID=CMLib.map().getExtendedRoomID(R2);
 									if(room2ID.length()>0)
 									{
-										if(comma)
-											doc.append(",");
-										comma=true;
 										String move="normal";
 										if(CMLib.flags().isCrawlable(R2))
 											move="crawl";
@@ -2859,8 +2856,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										comma=true;
 										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\": {")
 											.append("\"id\":\"").append(room2ID).append("\",")
-											.append("\"door\":\"").append(E2.hasADoor()?"door":"").append("\"")
-											.append("\"move\":\"").append(move).append("\",")
+											.append("\"door\":\"").append(E2.hasADoor()?"door":"").append("\",")
+											.append("\"move\":\"").append(move).append("\"")
 											.append("}");
 									}
 								}
@@ -3142,16 +3139,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return null;
 		try
 		{
+			boolean updateRoomHash = false;
 			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			byte[] buf;
 			if(supportables.containsKey("room.info")
-				||supportables.containsKey("room"))
+			||supportables.containsKey("room"))
 			{
 				final Long oldRoomHash=reporteds.get("system.currentRoom");
 				if((oldRoomHash==null)
 				||(room.hashCode() != oldRoomHash.intValue()))
 				{
-					reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+					updateRoomHash = true;
 					final String command="room.info";
 					final char[] cmd=command.toCharArray();
 					buf=processGmcp(session, new String(cmd), supportables, reportables);
@@ -3159,6 +3157,23 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						bout.write(buf);
 				}
 			}
+			if(supportables.containsKey("room.exits")
+			||supportables.containsKey("room"))
+			{
+				final Long oldRoomHash=reporteds.get("system.currentRoom");
+				if((oldRoomHash==null)
+				||(room.hashCode() != oldRoomHash.intValue()))
+				{
+					updateRoomHash = true;
+					final String command="room.exits";
+					final char[] cmd=command.toCharArray();
+					buf=processGmcp(session, new String(cmd), supportables, reportables);
+					if(buf!=null)
+						bout.write(buf);
+				}
+			}
+			if(updateRoomHash)
+				reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
 			if(supportables.containsKey("room.mobiles")
 				||supportables.containsKey("room"))
 			{
