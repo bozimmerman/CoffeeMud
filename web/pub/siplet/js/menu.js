@@ -452,17 +452,17 @@ function MakeDraggable(div, titlebar)
 	var moveThreshold = 5;
 	function onMouseDown(e, chkResize)
 	{
-		const isDraggable = e.target === div || 
-						(!e.target.onclick && 
-						 !e.target.onchange && 
-						 !e.target.oninput && 
-						 getComputedStyle(e.target).pointerEvents !== 'none' &&
-						 !['input', 'select', 'textarea', 'button', 'a'].includes(e.target.tagName.toLowerCase()));
+		const isDraggable =(e.target === div) 
+						||((!e.target.onclick) 
+							&&(!e.target.onchange) 
+							&&(!e.target.oninput)
+							&&(getComputedStyle(e.target).pointerEvents !== 'none')
+							&&(!['input', 'select', 'textarea', 'button', 'a'].includes(e.target.tagName.toLowerCase())));
 		if(!isDraggable)
 			return;
-		if (e.target === div || !e.target.onclick)
+		if((e.target === div)||(!e.target.onclick))
 		{
-			if (!window.currWin || !window.currWin.topWindow) 
+			if((!window.currWin)||(!window.currWin.topWindow)) 
 				return;
 			var style = getComputedStyle(div);
 			e.preventDefault();
@@ -493,7 +493,7 @@ function MakeDraggable(div, titlebar)
 
 	function onMouseMove(e)
 	{
-		if ((!window.currWin) || (!window.currWin.topWindow))
+		if ((!window.currWin)||(!window.currWin.topWindow))
 			return;
 		var dx = e.clientX - startX;
 		var dy = e.clientY - startY;
@@ -504,7 +504,7 @@ function MakeDraggable(div, titlebar)
 			else
 				isDragging = true;
 		}
-		if (isDragging)
+		if(isDragging)
 		{
 			var rect = window.currWin.topWindow.getBoundingClientRect();
 			var width = div.offsetWidth;
@@ -515,7 +515,7 @@ function MakeDraggable(div, titlebar)
 			div.style.top = `${newY}px`;
 		}
 		else
-		if (isResizing)
+		if(isResizing)
 		{
 			var rect = window.currWin.topWindow.getBoundingClientRect();
 			var width = div.offsetWidth;
