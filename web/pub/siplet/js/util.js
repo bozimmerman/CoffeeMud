@@ -1246,6 +1246,8 @@ function focusFirstFocusable(container)
 	{
 		var first = focusableElements[0];
 		if((first.tagName.toLowerCase()!='img')
+		||(first.alt === undefined)
+		||(first.alt != 'Close')
 		||(focusableElements.length == 1))
 		{
 			first.focus();
