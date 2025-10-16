@@ -33,6 +33,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import org.mozilla.javascript.*;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -11885,7 +11887,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						//if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
 						//	Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
-						final DefaultScriptingEngine S=(DefaultScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 						S.setSavable(savable);
 						S.setVarScope(scope);
 						if(m2.trim().equals("*"))
@@ -11908,9 +11910,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							S.tick(newTarget,Tickable.TICKID_MOB);
 							for(int i=0;i<5;i++)
 								S.dequeResponses(null);
-							for(final SubScript scr : S.getScripts(newTarget))
-								if(scr.isFlagSet("SPAWN"))
-									script.setFlag("SPAWN");
+							{
+								try
+								{
+									final Method M = S.getClass().getDeclaredMethod("getScripts", Environmental.class);
+									@SuppressWarnings("unchecked")
+									final List<SubScript> scripts = (List<SubScript>) M.invoke(S, newTarget);
+									for(final SubScript scr : scripts)
+										if(scr.isFlagSet("SPAWN"))
+											script.setFlag("SPAWN");
+								}
+								catch(final Exception e)
+								{
+									Log.errOut(e);
+								}
+							}
 						}
 						if(delete)
 							newTarget.delScript(S);
