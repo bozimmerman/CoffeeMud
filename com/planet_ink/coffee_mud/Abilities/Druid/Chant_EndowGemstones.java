@@ -113,7 +113,7 @@ public class Chant_EndowGemstones extends Chant implements RecipeDriven
 	@Override
 	public String getRecipeFormat()
 	{
-		return"ITEM_NAME\tITEM_LEVEL\tBUILDER_MASK\tXLEVEL\tEXPERTISE";
+		return"ITEM_NAME\tITEM_LEVEL\tADJUSTER_ARGS\tXLEVEL\tEXPERTISE";
 	}
 
 	protected static final int	RCP_FINALNAME	= 0;
