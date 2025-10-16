@@ -9852,6 +9852,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final int increment=(toInt>=fromInt)?1:-1;
 					String response=null;
 					if(((fromInt>=0)||(inList==null))
+					&&((toInt>=0)||(inList==null))
 					&&(((increment>0)&&(fromInt<=(toInt+toAdd)))
 						||((increment<0)&&(fromInt>=(toInt+toAdd)))))
 					{
@@ -9873,7 +9874,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							}
 						}
-						if ((inList != null) && (inList.size()>0) && (toInt >=0) && (toInt < inList.size()))
+						if ((inList != null) && (toInt < inList.size()))
 							ctx.tmp[whichVar] = inList.get(toInt);
 						else
 							ctx.tmp[whichVar]=""+toInt;
