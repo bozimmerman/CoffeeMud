@@ -183,11 +183,14 @@ function BuildContextMenuEntries(menuObj)
 				if(obj.a.startsWith("javascript:"))
 					entry.onclick = new Function(obj.a.substr(11));
 				else
-					entry.onclick = (function(a,f){ 
-						return function() {
-							addToPrompt (a, f);
-							setInputBoxFocus();
-						};})(obj.a,obj.sf);
+				entry.onclick = (function(a,f)
+				{ 
+					return function() 
+					{
+						addToPrompt (a, f);
+						setInputBoxFocus();
+					};
+				})(obj.a,obj.sf);
 				entry.textContent = obj.n;
 			}
 			else
