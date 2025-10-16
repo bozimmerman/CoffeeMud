@@ -125,6 +125,37 @@ function ReConfigureTopMenu(sipwin)
 	html += '<TD style="border: 1px solid white; padding: 0; width: calc(100% - '+totalTDWidth+'px);">&nbsp;</TD>';
 	html += '</TR></TABLE>';
 	menuArea.innerHTML = html;
+	menuArea.lookupKeys = {};
+	var entries = menuArea.querySelectorAll('td');
+	if(entries == null)
+		return;
+	for(var e=0;e<entries.length;e++)
+	{
+		var td = entries[e];
+		var t = td.textContent.trim().toLowerCase();
+		for(var i=0;i<t.length;i++)
+		{
+			var c = t[i];
+			if(!(c in menuArea.lookupKeys))
+			{
+				menuArea.lookupKeys[c] = td; 
+				var font = td.querySelector('font');
+				var text = font.textContent.trim();
+				font.innerHTML = '';
+				var beforeText = text.substring(0, i);
+				var charText = text.substring(i, i + 1);
+				var afterText = text.substring(i + 1);
+				if(beforeText)
+					font.appendChild(document.createTextNode(beforeText));
+				var u = document.createElement('u');
+				u.appendChild(document.createTextNode(charText));
+				font.appendChild(u);
+				if(afterText)
+					font.appendChild(document.createTextNode(afterText));
+				break;
+			}
+		}
+	}
 }
 
 function ConfigureTopMenu(obj)
@@ -168,6 +199,7 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 	m.topId = e.currentTarget;
 	m.style.background = menuBackgroundColor;
 	m.style.color = menuForegroundColor;
+	m.lookupKeys = {};
 	var as = Array.from(m.getElementsByTagName("A"));
 	for(var a=0;a<as.length;a++)
 	{
@@ -190,6 +222,26 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 				this.style.color = menuForegroundColor;
 				this.style.backgroundColor = menuBackgroundColor;
 			});
+			var text = link.textContent;
+			for(var i = 0;i<text.length;i++)
+			{
+				if(!(text[i].toLowerCase() in m.lookupKeys))
+				{
+					m.lookupKeys[text[i].toLowerCase()] = link;
+					link.innerHTML = '';
+					var beforeText = text.substring(0, i);
+					var charText = text.substring(i, i + 1);
+					var afterText = text.substring(i + 1);
+					if(beforeText)
+						link.appendChild(document.createTextNode(beforeText));
+					var u = document.createElement('u');
+					u.appendChild(document.createTextNode(charText));
+					link.appendChild(u);
+					if(afterText)
+						link.appendChild(document.createTextNode(afterText));
+					break;
+				}
+			}
 		})(as[a]);
 	}
 	m.addEventListener('keydown', function (event) 
@@ -229,17 +281,15 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		}
 		if(event.key.length == 1)
 		{
-			for(var a=0;a<as.length;a++)
+			var k = (''+event.key).toLowerCase(); 
+			if(k in m.lookupKeys)
 			{
-				if(as[a].textContent[0].toLowerCase() == event.key)
-				{
-					as[a].focus();
-					setTimeout(function(){
-						as[a].click();
-					},1);
-					return;
-				}
-			}
+				var a = m.lookupKeys[k];
+				a.focus();
+				setTimeout(function(){
+					a.click();
+				},1);
+			} 
 		}
 	});
 	setTimeout(function(){
@@ -342,11 +392,12 @@ function topMenuFocus(key)
 		{
 			if(!rows[r].textContent)
 				continue;
-			var rowKey = rows[r].textContent.trim()[0].toLowerCase();
-			if(key == rowKey)
+			var k = (''+key).toLowerCase(); 
+			if(k in menuArea.lookupKeys)
 			{
-				rows[r].focus();
-				rows[r].click();
+				var a = menuArea.lookupKeys[k];
+				a.focus();
+				a.click();
 				return;
 			}
 		}
