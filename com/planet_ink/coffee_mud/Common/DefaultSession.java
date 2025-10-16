@@ -65,6 +65,8 @@ public class DefaultSession implements Session
 {
 	protected static final int		SOTIMEOUT		= 300;
 	protected static final int		PINGTIMEOUT  	= 30000;
+	protected static final int		HSIDLETIMEOUT	= 3 * 60000;
+	protected static final int		HNDSHAKETIMEOUT	= 8 * 60000;
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final char[]	PINGCHARS		= {0};
 	protected static final String	TIMEOUT_MSG		= "Timed Out.";
@@ -152,6 +154,7 @@ public class DefaultSession implements Session
 	protected long			 promptLastShown	 = 0;
 	protected char 			 threadGroupChar	 = '\0';
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
+	protected volatile long  lastReadTime		 = System.currentTimeMillis();
 	protected boolean		 debugStrInput		 = false;
 	protected boolean		 debugStrOutput		 = false;
 	protected boolean		 debugBinOutput		 = false;
@@ -2403,6 +2406,7 @@ public class DefaultSession implements Session
 			final int read = rawin.read();
 			if(read==-1)
 				throw new java.io.InterruptedIOException(".");
+			lastReadTime = System.currentTimeMillis();
 			if(debugBinInput && Log.debugChannelOn())
 				debugBinInputBuf.append(read & 0xff).append(" ");
 			return read;
@@ -2421,15 +2425,19 @@ public class DefaultSession implements Session
 			{
 				final char c=fakeInput.charAt(0);
 				fakeInput.delete(0, 1);
+				lastReadTime = System.currentTimeMillis();
 				return c;
 			}
 			fakeInput=null;
 		}
 		int b = readByte();
+		if(b>=0)
+			lastReadTime = System.currentTimeMillis();
 		if(1==inMaxBytesPerChar)
 			return b;
 		if((b==TELNET_IAC)||((b&0xff)==TELNET_IAC)||(b=='\033')||(b==27)||(in==null))
 			return b;
+		lastReadTime = System.currentTimeMillis();
 		charWriter.write(b);
 		int maxBytes=inMaxBytesPerChar;
 		while((in!=null)
@@ -2905,6 +2913,7 @@ public class DefaultSession implements Session
 			try
 			{
 				Log.sysOut("Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
+				sock.setSoLinger(true, 5);
 				setStatus(SessionStatus.LOGOUT7);
 				sock.shutdownInput();
 				setStatus(SessionStatus.LOGOUT8);
@@ -2962,6 +2971,7 @@ public class DefaultSession implements Session
 				return;
 			try
 			{
+				setStatus(SessionStatus.LOGOUT2);
 				loggingOutObj[0]=true;
 				final MOB mob=this.mob;
 				final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
@@ -3021,9 +3031,14 @@ public class DefaultSession implements Session
 				if(inTheGame)
 					CMLib.database().DBUpdateFollowers(M);
 			}
+			catch(final Exception e)
+			{
+				Log.errOut("LLogout",e.getMessage());
+			}
 			finally
 			{
 				loggingOutObj[0]=false;
+				setStatus(SessionStatus.LOGOUT3);
 			}
 		}
 	}
@@ -3348,6 +3363,9 @@ public class DefaultSession implements Session
 				setStatus(SessionStatus.LOGIN);
 			}
 			else
+			if((System.currentTimeMillis()-lastReadTime)>HSIDLETIMEOUT)
+				loginSession=null;
+			else
 			if(!loginSession.skipInputThisTime())
 			{
 				final String lastInput = loginSession.acceptInput(this);
@@ -3361,7 +3379,10 @@ public class DefaultSession implements Session
 					setInputLoopTime();
 			}
 			if(loginSession == null)
+			{
+				doPing(SessionPing.DISCONNECT, null);
 				killFlag = true;
+			}
 			else
 			if(!killFlag)
 			{
@@ -3389,6 +3410,7 @@ public class DefaultSession implements Session
 			{
 				loginSession=null;
 			}
+			doPing(SessionPing.DISCONNECT, null);
 			setStatus(SessionStatus.LOGOUT);
 		}
 		catch(final SocketException e)
