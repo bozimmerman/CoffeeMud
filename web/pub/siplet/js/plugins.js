@@ -10,6 +10,7 @@ var SipletActions =
 	"win.startTimer": { text:"Start Timer", args: 1},
 	"win.clearTimer": { text:"Stop Timer", args: 1},
 	"win.displayAt": { text:"Send to Frame", args: 2},
+	"win.clearWindow": { text:"Clear Window/Frame", args: 1},
 	"win.sendPlugin": { text:"Plugin Event", args: 2},
 	"win.submitHidden": { text:"Send Hidden", args: 1}
 };
@@ -72,7 +73,7 @@ var PLUGINS = function(sipwin)
 			var win = Object.create(null);
 			var sipwinMethods = ['submitInput', 'submitHidden', 'displayText', 'playSound',
 			    'setEntity', 'runScript', 'enableTrigger', 'sendGMCP', 'sendMSDP', 'disableTrigger',
-			    'startTimer', 'clearTimer', 'displayAt', 'getEntity', 'process'];
+			    'startTimer', 'clearTimer', 'displayAt', 'getEntity', 'process', 'clearWindow'];
 			for(var k =0;k<sipwinMethods.length;k++)
 			{
 				var method = sipwinMethods[k];

@@ -1263,10 +1263,26 @@ function SipletWindow(windowName)
 		}
 		return null;
 	};
+	
+	this.clearWindow = function(frame)
+	{
+		var framechoices = this.mxp.getFrameMap();
+		if((frame === undefined)||(frame===null)||(!frame.length))
+			frame='_top';
+		if(!(frame in framechoices))
+			return;
+		var frame = framechoices[frame];
+		if(frame.firstChild)
+			frame = frame.firstChild;
+		this.cleanDiv(frame);
+		frame.innerHTML = '';
+	}
 
 	this.displayAt = function(value, frame)
 	{
 		var framechoices = this.mxp.getFrameMap();
+		if((frame === undefined)||(frame===null)||(!frame.length))
+			frame='_top';
 		if(!(frame in framechoices))
 			return;
 		var frame = framechoices[frame];

@@ -2370,7 +2370,10 @@ var MXP = function(sipwin)
 					this.dests.push(sipwin.window);
 					var error = new Error('');
 					if(eof != null)
+					{
+						sipwin.cleanDiv(frame);
 						frame.innerHTML = '';
+					}
 					error.call = function() 
 					{
 						sipwin.flushWindow();
