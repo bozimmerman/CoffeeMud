@@ -1958,37 +1958,121 @@ var MXP = function(sipwin)
 							}
 							updateMediaImagesInSpan(sipwin.sipfs, newContentWindow);
 						}
+						var isFullWidth = width.endsWith('%') && parseFloat(width) === 100;
+						var isFullHeight = height.endsWith('%') && parseFloat(height) === 100;
+						if ((alignx === 0 || alignx === 1) && isFullWidth) 
+						{
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							siblingDiv.style.width = '0px';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+						}
+						else
+						if ((alignx === 2 || alignx === 3) && isFullHeight) 
+						{
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							siblingDiv.style.height = '0px';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+						}
+						else
 						switch(alignx)
 						{
 						case 0: // left
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = width;
-							siblingDiv.style.left = addDim(siblingDiv.style.left, width);
-							siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+							if (width === '100%') 
+							{
+								var occupied = '0px';
+								var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
+								if (priorLeft) 
+									occupied = priorLeft.style.width || '0px';
+								containerDiv.style.setProperty('--occupied-left', occupied);
+								newContainerDiv.style.left = 'var(--occupied-left)';
+								newContainerDiv.style.top = siblingDiv.style.top;
+								newContainerDiv.style.height = siblingDiv.style.height;
+								newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
+								siblingDiv.style.width = 'var(--occupied-left)';
+							}
+							else 
+							{
+								newContainerDiv.style.left = siblingDiv.style.left;
+								newContainerDiv.style.top = siblingDiv.style.top;
+								newContainerDiv.style.height = siblingDiv.style.height;
+								newContainerDiv.style.width = width;
+								siblingDiv.style.left = addDim(siblingDiv.style.left, width);
+								siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+							}
 							break;
 						case 1: // right
-							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), width);
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = width;
-							siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+							if (width === '100%') 
+							{
+								var occupied = '0px';
+								var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
+								if (priorRight) 
+									occupied = priorRight.style.width || '0px';
+								containerDiv.style.setProperty('--occupied-right', occupied);
+								newContainerDiv.style.right = 'var(--occupied-right)';
+								newContainerDiv.style.top = siblingDiv.style.top;
+								newContainerDiv.style.height = siblingDiv.style.height;
+								newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
+								siblingDiv.style.width = 'var(--occupied-right)';
+							}
+							else 
+							{
+								newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), width);
+								newContainerDiv.style.top = siblingDiv.style.top;
+								newContainerDiv.style.height = siblingDiv.style.height;
+								newContainerDiv.style.width = width;
+								siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+							}
 							break;
 						case 2: // top
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = height;
-							siblingDiv.style.top = addDim(siblingDiv.style.top, height);
-							siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+							if (height === '100%') 
+							{
+								var occupied = '0px';
+								var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
+								if (priorTop) 
+									occupied = priorTop.style.height || '0px';
+								containerDiv.style.setProperty('--occupied-bottom', occupied);
+								newContainerDiv.style.bottom = 'var(--occupied-bottom)';
+								newContainerDiv.style.left = siblingDiv.style.left;
+								newContainerDiv.style.width = siblingDiv.style.width;
+								newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
+								siblingDiv.style.height = 'var(--occupied-bottom)';
+							}
+							else 
+							{
+								newContainerDiv.style.top = siblingDiv.style.top;
+								newContainerDiv.style.left = siblingDiv.style.left;
+								newContainerDiv.style.width = siblingDiv.style.width;
+								newContainerDiv.style.height = height;
+								siblingDiv.style.top = addDim(siblingDiv.style.top, height);
+								siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+							}
 							break;
 						case 3: // bottom
-							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), height);
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = height;
-							siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+							if (height === '100%') 
+							{
+								var occupied = '0px';
+								var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
+								if (priorBottom) 
+									occupied = priorBottom.style.height || '0px';
+								containerDiv.style.setProperty('--occupied-top', occupied);
+								newContainerDiv.style.top = 'var(--occupied-top)';
+								newContainerDiv.style.left = siblingDiv.style.left;
+								newContainerDiv.style.width = siblingDiv.style.width;
+								newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
+								siblingDiv.style.height = 'var(--occupied-top)';
+							}
+							else 
+							{
+								newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), height);
+								newContainerDiv.style.left = siblingDiv.style.left;
+								newContainerDiv.style.width = siblingDiv.style.width;
+								newContainerDiv.style.height = height;
+								siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+							}
 							break;
 						}
 						newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
