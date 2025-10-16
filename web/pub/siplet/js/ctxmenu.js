@@ -185,7 +185,9 @@ function BuildContextMenuEntries(menuObj)
 				else
 					entry.onclick = (function(a,f){ 
 						return function() {
-							addToPrompt (a, f);};})(obj.a,obj.sf);
+							addToPrompt (a, f);
+							setInputBoxFocus();
+						};})(obj.a,obj.sf);
 				entry.textContent = obj.n;
 			}
 			else
@@ -227,7 +229,31 @@ function ContextHelp(obj, e,title)
 function MXPContextMenu(obj, e, href, hint, prompt)
 {
 	var menuObj = ParseMXPContextMenu(obj, href, hint, prompt);
-	var menuDiv= ContextMenuOpen(e, menuObj, e.pageX-40, e.pageY-10, 200);
+	var menuDiv;
+	if(e.pageX && e.pageY && (e.pageX > 0) && (e.pageY > 0))
+		menuDiv = ContextMenuOpen(e, menuObj, e.pageX-40, e.pageY-10, 200);
+	else
+	{
+		var x,y;
+		var target = obj || e.target || e.srcElement;
+		if(target && target.getBoundingClientRect)
+		{
+			var rect = target.getBoundingClientRect();
+			x = rect.left + (rect.width / 2) - 115 + window.scrollX;
+			y = rect.bottom + 5 + window.scrollY - 15;
+			var menuWidth = obj.style.width;
+			var menuHeightEstimate = obj.style.height;
+			x = Math.max(5, Math.min(x, window.innerWidth - menuWidth));
+			y = Math.max(5, Math.min(y, window.innerHeight - menuHeightEstimate));
+		}
+		else
+		{
+			x = 10;
+			y = 10;
+		}
+		menuDiv = ContextMenuOpen(e, menuObj, x, y, 200);
+		focusFirstFocusable(menuDiv);
+	}
 	menuDiv.style.border = "1px solid";
 	menuDiv.style.borderColor = "white";
 	menuDiv.style.left = (parseInt(menuDiv.style.left || "0") + 10) + "px";
