@@ -1807,6 +1807,10 @@ var MXP = function(sipwin)
 						contentArea.style.width = contentWidth;
 						contentArea.style.height = contentHeight;
 						contentArea.style.overflow = 'hidden';
+						contentArea.setAttribute('role', 'log');
+						contentArea.setAttribute('aria-live', 'polite');
+						contentArea.setAttribute('aria-atomic', 'false');
+						contentArea.setAttribute('aria-busy', 'false');
 
 						peerContainer.removeChild(originalContent);
 						contentArea.appendChild(originalContent);
@@ -1850,6 +1854,10 @@ var MXP = function(sipwin)
 					newContent.style.height = '100%';
 					newContent.style.backgroundColor = 'black';
 					newContent.style.color = 'white';
+					newContent.setAttribute('role', 'log');
+					newContent.setAttribute('aria-live', 'polite');
+					newContent.setAttribute('aria-atomic', 'false');
+					newContent.setAttribute('aria-busy', 'false');
 					newContent.style.border = '1px solid white';
 					newContent.style.overflowY = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'y') ? 'auto' : 'hidden';
 					newContent.style.overflowX = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'x') ? 'auto' : 'hidden';
@@ -1931,6 +1939,10 @@ var MXP = function(sipwin)
 						newContentWindow.style.height = '100%';
 						newContentWindow.style.border = "1px solid white";
 						newContentWindow.style.boxSizing = "border-box";
+						newContentWindow.setAttribute('role', 'log');
+						newContentWindow.setAttribute('aria-live', 'polite');
+						newContentWindow.setAttribute('aria-atomic', 'false');
+						newContentWindow.setAttribute('aria-busy', 'false');
 						if(image)
 						{
 							newContentWindow.style.backgroundImage = 'url("'+image+'")';

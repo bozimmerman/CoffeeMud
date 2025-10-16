@@ -172,6 +172,10 @@ function SipletWindow(windowName)
 			o.style.width = '100%';
 			o.style.left = '0%';
 		});
+		this.window.setAttribute('role', 'log');
+		this.window.setAttribute('aria-live', 'polite');
+		this.window.setAttribute('aria-atomic', 'false');
+		this.window.setAttribute('aria-busy', 'false');
 		this.window.style.overflowY = 'auto';
 		this.window.style.overflowX = 'auto';
 		this.fixOverflow();
@@ -442,7 +446,9 @@ function SipletWindow(windowName)
 		span.innerHTML = html;
 		updateMediaImagesInSpan(this.sipfs, span);
 		var brCt = brCount(html);
+		this.window.setAttribute('aria-busy', 'true');
 		this.flushNode(span, brCt);
+		this.window.setAttribute('aria-busy', 'false');
 		return span;
 	};
 	

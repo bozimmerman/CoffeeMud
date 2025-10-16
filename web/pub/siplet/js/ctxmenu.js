@@ -224,7 +224,7 @@ function ContextHelp(obj, e,title)
 	});
 }
 
-function MXPContextMenu(obj, e, href, hint, prompt) 
+function MXPContextMenu(obj, e, href, hint, prompt)
 {
 	var menuObj = ParseMXPContextMenu(obj, href, hint, prompt);
 	var menuDiv= ContextMenuOpen(e, menuObj, e.pageX-40, e.pageY-10, 200);
