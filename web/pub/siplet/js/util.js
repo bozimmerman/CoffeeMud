@@ -135,7 +135,8 @@ function isValidAction(s)
 	return IsQuotedStringArgument(arg,action.args,Siplet.R);
 };
 
-function isValidExpression(exp) {
+function isValidExpression(exp) 
+{
 	try 
 	{
 		if(exp.trim().length === 0)
@@ -144,7 +145,7 @@ function isValidExpression(exp) {
 		var inString = false;
 		var stringChar = null;
 		var inComment = false;
-		for (var i = 0; i < exp.length; i++) 
+		for (var i=0; i<exp.length; i++) 
 		{
 			if(inComment) 
 			{
@@ -162,7 +163,7 @@ function isValidExpression(exp) {
 				stringChar = exp[i];
 			} 
 			else 
-			if(exp[i] === '/' && exp[i + 1] === '/')
+			if((exp[i] === '/') && (exp[i + 1] === '/'))
 				inComment = true;
 			else 
 			if(exp[i] === '{')

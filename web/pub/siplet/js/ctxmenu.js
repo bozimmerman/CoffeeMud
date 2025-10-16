@@ -130,7 +130,8 @@ function ContextSubMenuOpen(e, menu, x,y,width) {
 	ContextHideSub();
 	var menuelements = BuildContextMenuEntries(menu);
 	var menuDiv = CreateContextDiv('ctxsubmenu',x,y,width);
-	menuDiv.onmouseleave = function(e) {
+	menuDiv.onmouseleave = function(e) 
+	{
 		if(!IsContextHover(e))
 			ContextDelayHide();
 		else

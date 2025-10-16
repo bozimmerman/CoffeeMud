@@ -132,22 +132,23 @@ function ReConfigureTopMenu(sipwin)
 	for(var e=0;e<entries.length;e++)
 	{
 		var td = entries[e];
-		var t = td.textContent.trim().toLowerCase();
-		for(var i=0;i<t.length;i++)
+		var font = td.querySelector('font');
+		if(!font || (!font.textContent))
+			continue;
+		var text = font.textContent.trim();
+		for(var i=0;i<text.length;i++)
 		{
-			var c = t[i];
+			var c=text[i].toLowerCase();
 			if(!(c in menuArea.lookupKeys))
 			{
-				menuArea.lookupKeys[c] = td; 
-				var font = td.querySelector('font');
-				var text = font.textContent.trim();
-				font.innerHTML = '';
-				var beforeText = text.substring(0, i);
-				var charText = text.substring(i, i + 1);
-				var afterText = text.substring(i + 1);
+				menuArea.lookupKeys[c]=td;
+				font.innerHTML='';
+				var beforeText=text.substring(0,i);
+				var charText=text.substring(i,i+1);
+				var afterText = text.substring(i+1);
 				if(beforeText)
 					font.appendChild(document.createTextNode(beforeText));
-				var u = document.createElement('u');
+				var u=document.createElement('u');
 				u.appendChild(document.createTextNode(charText));
 				font.appendChild(u);
 				if(afterText)
@@ -189,8 +190,6 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 		subList = menuTemp[to];
 	else
 		subList = to;
-	var href='';
-	var hint='';
 	var m;
 	if(subMenu === true)
 		m = ContextSubMenuOpen(e, subList, left, top, width, 5);
@@ -205,7 +204,7 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 	{
 		as[a].style.color=menuForegroundColor;
 		as[a].style.fontSize=fontSize;
-		as[a].style.textDecoration = 'none';
+		as[a].style.textDecoration='none';
 		(function(link)
 		{
 			link.addEventListener('mouseenter', function() {
@@ -222,24 +221,31 @@ function DropDownMenu(e, left, top, width, fontSize, to, subMenu)
 				this.style.color = menuForegroundColor;
 				this.style.backgroundColor = menuBackgroundColor;
 			});
-			var text = link.textContent;
-			for(var i = 0;i<text.length;i++)
+			if(link.onclick)
 			{
-				if(!(text[i].toLowerCase() in m.lookupKeys))
+				var font = link.querySelector('font');
+				if(!font)
+					font = link;
+				var text = font.textContent;
+				for(var i=0;i<text.length;i++)
 				{
-					m.lookupKeys[text[i].toLowerCase()] = link;
-					link.innerHTML = '';
-					var beforeText = text.substring(0, i);
-					var charText = text.substring(i, i + 1);
-					var afterText = text.substring(i + 1);
-					if(beforeText)
-						link.appendChild(document.createTextNode(beforeText));
-					var u = document.createElement('u');
-					u.appendChild(document.createTextNode(charText));
-					link.appendChild(u);
-					if(afterText)
-						link.appendChild(document.createTextNode(afterText));
-					break;
+					var c = text[i].toLowerCase();
+					if(!(c in m.lookupKeys))
+					{
+						m.lookupKeys[c]=font;
+						font.innerHTML='';
+						var beforeText=text.substring(0,i);
+						var charText=text.substring(i,i+1);
+						var afterText=text.substring(i+1);
+						if(beforeText)
+							font.appendChild(document.createTextNode(beforeText));
+						var u = document.createElement('u');
+						u.appendChild(document.createTextNode(charText));
+						font.appendChild(u);
+						if(afterText)
+							font.appendChild(document.createTextNode(afterText));
+						break;
+					}
 				}
 			}
 		})(as[a]);
