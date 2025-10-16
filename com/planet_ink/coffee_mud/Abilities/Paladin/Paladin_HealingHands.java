@@ -93,6 +93,23 @@ public class Paladin_HealingHands extends StdAbility
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if((mob != target)
+			&& (!PaladinSkill.isPaladinGoodSide(mob)))
+				return Ability.QUALITY_MALICIOUS;
+			else
+			if((mob == target)
+			&&(CMLib.flags().isUndead(mob)))
+				return Ability.QUALITY_MALICIOUS;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
@@ -157,7 +174,7 @@ public class Paladin_HealingHands extends StdAbility
 						target.tell(L("You feel a little better!"));
 				}
 				else
-					CMLib.combat().postDamage(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEATH,
+					CMLib.combat().postDamage(mob,target,this,healing,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL|CMMsg.MASK_MALICIOUS,
 							Weapon.TYPE_BURNING,L("The touch <DAMAGES> <T-NAME>!"));
 				lastCastHelp=System.currentTimeMillis();
 			}
