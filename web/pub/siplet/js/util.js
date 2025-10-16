@@ -1243,7 +1243,16 @@ function focusFirstFocusable(container)
 {
 	var focusableElements = getTabbableElements(container);
 	if(focusableElements && focusableElements.length > 0)
-		focusableElements[0].focus();
+	{
+		var first = focusableElements[0];
+		if((first.tagName.toLowerCase()!='img')
+		||(focusableElements.length == 1))
+		{
+			first.focus();
+			return;
+		}
+		focusableElements[1].focus();
+	}
 }
 
 function SipWin(elem)
