@@ -341,8 +341,8 @@ window.defElements = {
 	"FONT": new MXPElement("FONT", "<FONT STYLE=\"color: &color;;background-color: &back;;font-family: &face;;font-size: &size;;\">", 
 			"FACE SIZE COLOR BACK STYLE", "", MXPBIT.SPECIAL|MXPBIT.HTML),
 	"NOBR": new MXPElement("NOBR", "", "", "", MXPBIT.SPECIAL | MXPBIT.COMMAND), // special
-	"A": new MXPElement("A", "<A NAME=\"&name;\" STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\">",
-			"HREF HINT NAME TITLE=HINT STYLE ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML|MXPBIT.SPECIAL, ""),
+	"A": new MXPElement("A", "<A NAME=\"&name;\" STYLE=\"&lcc;\" ONMOUSEOVER=\"&onmouseover;\" ONCLICK=\"&onclick;\" HREF=\"&href;\" TITLE=\"&hint;\" TARGET=\"&target;\">",
+			"HREF HINT NAME TITLE=HINT STYLE TARGET ONMOUSEOUT ONMOUSEOVER ONCLICK", "", MXPBIT.HTML|MXPBIT.SPECIAL, ""),
 	"SEND": new MXPElement("SEND", "<A NAME=\"&expire;\" STYLE=\"&lcc;\" HREF=\"&href;\" ONMOUSEOUT=\"ContextDelayHide();\" ONCLICK=\"&onclick;\" TITLE=\"&hint;\">", 
 			"HREF HINT PROMPT EXPIRE STYLE", "", MXPBIT.SPECIAL, ""), // special done
 	"EXPIRE": new MXPElement("EXPIRE", "", "NAME", "", MXPBIT.SPECIAL | MXPBIT.COMMAND),
@@ -1279,6 +1279,11 @@ var MXP = function(sipwin)
 				href = href.toLowerCase().trim();
 				if(href == '#')
 				{}
+				else
+				if(href.startsWith('http://')||href.startsWith('https://'))
+				{
+					E.setAttributeValue("TARGET","_blank");	
+				}
 				else
 				if(href.startsWith('javascript:')
 				&&(isValidJavaScriptLine(href.substr(11).trim())))

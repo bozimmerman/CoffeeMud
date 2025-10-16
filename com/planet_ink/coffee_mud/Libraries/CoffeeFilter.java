@@ -87,6 +87,23 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	private Hashtable<String, Pronoun>	tagTable	= null;
 	private ColorState					normalColor	= null;
 
+	private static final boolean[] isUrlEndChar = new boolean[128];
+	{
+		for (int i = 0; i < 32; i++)
+			isUrlEndChar[i] = true;
+		isUrlEndChar[127] = true;
+		isUrlEndChar[' '] = true;
+		isUrlEndChar['"'] = true;
+		isUrlEndChar['<'] = true;
+		isUrlEndChar['>'] = true;
+		isUrlEndChar['\\'] = true;
+		isUrlEndChar['^'] = true;
+		isUrlEndChar['`'] = true;
+		isUrlEndChar['{'] = true;
+		isUrlEndChar['|'] = true;
+		isUrlEndChar['}'] = true;
+	}
+
 	@Override
 	public void initializeClass()
 	{
@@ -1148,13 +1165,25 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int firstAlpha=-1;
 		int amperStop = -1;
 		boolean doPostFilter = false;
-
+		int anchorIndex = -1;
+		final boolean mxpEnabled = (S!=null) && S.getClientTelnetMode(Session.TELNET_MXP);
 		while(buf.length()>loop)
 		{
 			int lastSp=-1;
 			while((loop<len)&&(buf.length()>loop))
 			{
-				switch(buf.charAt(loop))
+				final char c = buf.charAt(loop);
+				if((anchorIndex>0)&&(isUrlEndChar[c%127]))
+				{
+					final String url = buf.substring(anchorIndex,loop-1);
+					final String insertUrl = "<A HREF=\""+url+"\">";
+					buf.insert(loop, "</A>");
+					buf.insert(anchorIndex,insertUrl);
+					anchorIndex=-1;
+					loop+=4+insertUrl.length();
+					len+=4+insertUrl.length();
+				}
+				switch(c)
 				{
 				case ' ':
 					{
@@ -1194,13 +1223,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						if((x>=0)&&(y>=x))
 						{
 							if((S!=null)
-							&&(S.getClientTelnetMode(Session.TELNET_MSP)||S.getClientTelnetMode(Session.TELNET_MXP))
+							&&(S.getClientTelnetMode(Session.TELNET_MSP)||mxpEnabled)
 							&&((S.mob()==null)||(S.mob().isAttributeSet(MOB.Attrib.SOUND)))
 							&&((source==null)
 							   ||(source==mob)
 							   ||(CMLib.flags().canBeHeardSpeakingBy(source,mob))))
 							{
-								if(S.getClientTelnetMode(Session.TELNET_MXP))
+								if(mxpEnabled)
 								{
 									buf.setCharAt(loop, ' ');
 									buf.setCharAt(loop+1, '<');
@@ -1232,8 +1261,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					break;
 				case '>':
-					if((S!=null)
-					&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+					if(mxpEnabled)
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&gt;".toCharArray());
@@ -1241,12 +1269,21 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					break;
 				case '"':
-					if((S!=null)
-					&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+					if(mxpEnabled)
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&quot;".toCharArray());
 						loop+=5;
+					}
+					break;
+				case ':':
+					if((mxpEnabled)&&(anchorIndex<0))
+					{
+						if((loop<buf.length()-3)
+						&&(buf.substring(loop+1,loop+3).equals("//"))
+						&&(loop>6)
+						&&(buf.substring(loop-4,loop).equals("http")||buf.substring(loop-5,loop).equals("https")))
+							anchorIndex=(buf.charAt(loop-1)=='s')?loop-5:loop-4;
 					}
 					break;
 				case '&':
@@ -1255,8 +1292,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					else
 					if(loop<buf.length()-3)
 					{
-						if((S!=null)
-						&&(S.getClientTelnetMode(Session.TELNET_MXP)))
+						if(mxpEnabled)
 						{
 							if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
 							&&(!buf.substring(loop,loop+3).equalsIgnoreCase("gt;")))
@@ -1406,8 +1442,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							final Pronoun P=getPronounTagTable().get(cmd.substring(1));
 							if(P==null)
 							{
-								if((S!=null)
-								&&(S.getClientTelnetMode(Session.TELNET_MXP))
+								if(mxpEnabled
 								&&(S.isInlineAllowed(InProto.MXP,buf.substring(loop,loop+1),0)))
 								{
 									buf.delete(loop,loop+1);
