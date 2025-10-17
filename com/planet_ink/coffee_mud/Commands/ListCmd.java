@@ -1744,6 +1744,7 @@ public class ListCmd extends StdCommand
 		final long free=Runtime.getRuntime().freeMemory()/1024;
 		final long total=Runtime.getRuntime().totalMemory()/1024;
 		buf.append(L("The system is utilizing ^H@x1^?kb out of ^H@x2^?kb.\n\r",""+(total-free),""+total));
+		buf.append(L("There are ^H@x1^? active out of ^H@x2^? live worker threads.\n\r",CMLib.threads().getSystemReport("numactivethreads"),CMLib.threads().getSystemReport("numthreads")));
 		buf.append(L("\n\r^xTickables report:^.^N\n\r"));
 		final String totalTickers=CMLib.threads().getSystemReport("totalTickers");
 		final String tickGroupSize=CMLib.threads().getSystemReport("TICKGROUPSIZE");
@@ -1768,7 +1769,6 @@ public class ListCmd extends StdCommand
 		*/
 		buf.append("\n\r");
 		buf.append(L("^xServices report:^.^N\n\r"));
-		buf.append(L("There are ^H@x1^? active out of ^H@x2^? live worker threads.\n\r",CMLib.threads().getSystemReport("numactivethreads"),CMLib.threads().getSystemReport("numthreads")));
 		int threadNum=0;
 		String threadName=CMLib.threads().getSystemReport("Thread"+threadNum+"name");
 		while(threadName.trim().length()>0)

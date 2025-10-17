@@ -1104,7 +1104,7 @@ public class StdAbility implements Ability
 				if(target==mob)
 					failureTell(mob,mob,false,L("You are already affected by @x1.",name()), commands);
 				else
-					failureTell(mob,target,false,L("<T-NAME> is already affected by @x1.",name()), commands);
+					failureTell(mob,target,false,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()), commands);
 			}
 			return null;
 		}
@@ -1225,7 +1225,7 @@ public class StdAbility implements Ability
 					if(target==mob)
 						failureTell(mob,mob,false,L("You are already affected by @x1.",name()), commands);
 					else
-						mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
+						mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
 				}
 			}
 			return null;

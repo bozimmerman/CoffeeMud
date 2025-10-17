@@ -3001,7 +3001,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									for(final Ability A : allMyGroups.get(grp))
 										doc.append("\"").append(MiniJSON.toJSONString(A.name())).append("\",");
 									doc.setCharAt(doc.length()-1,']');
-									break;
+									if(!all)
+										break;
 								}
 							}
 							doc.append("}");
