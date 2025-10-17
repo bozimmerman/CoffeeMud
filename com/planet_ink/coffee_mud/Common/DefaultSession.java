@@ -3161,16 +3161,17 @@ public class DefaultSession implements Session
 
 		try
 		{
+			final InputCallback callBack=this.inputCallback;
 			if(killFlag)
 			{
 				setStatus(SessionStatus.LOGOUT);
-				if(inputCallback != null)
-				{
-					inputCallback.timedOut();
-					inputCallback = null;
-				}
+				if(callBack != null)
+					callBack.timedOut();
+				this.inputCallback=null;
+				preLogout(mob);
+				logoutFinal();
 			}
-			final InputCallback callBack=this.inputCallback;
+			else
 			if(callBack!=null)
 			{
 				try
