@@ -3162,7 +3162,14 @@ public class DefaultSession implements Session
 		try
 		{
 			if(killFlag)
+			{
 				setStatus(SessionStatus.LOGOUT);
+				if(inputCallback != null)
+				{
+					inputCallback.timedOut();
+					inputCallback = null;
+				}
+			}
 			final InputCallback callBack=this.inputCallback;
 			if(callBack!=null)
 			{
