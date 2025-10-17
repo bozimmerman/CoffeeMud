@@ -1885,7 +1885,7 @@ public class StdAbility implements Ability
 		&&((MOB)target).isPlayer())
 		{
 			final Room R=((MOB)target).location();
-			final CMMsg cmsg=CMClass.getMsg((MOB)target,null,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			final CMMsg cmsg=CMClass.getMsg((MOB)target,(MOB)target,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
 			if(!R.okMessage(target,cmsg))
 				return false;
 			R.send((MOB)target,cmsg);
@@ -1893,7 +1893,7 @@ public class StdAbility implements Ability
 		else
 		{
 			final Room R=mob.location();
-			final CMMsg cmsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			final CMMsg cmsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SKILLFAIL,msgStr,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
 			if(!R.okMessage(mob,cmsg))
 				return false;
 			R.send(mob,cmsg);
