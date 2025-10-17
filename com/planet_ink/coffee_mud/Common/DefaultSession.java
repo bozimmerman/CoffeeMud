@@ -2959,6 +2959,12 @@ public class DefaultSession implements Session
 		return ipAddress;
 	}
 
+	/**
+	 * Used for switch, logout, and true quits.  Should not change
+	 * the session state, since those three are so diff.
+	 *
+	 * @param M the mob logging out -- but why?
+	 */
 	private void preLogout(final MOB M)
 	{
 		if(M==null)
@@ -2973,7 +2979,6 @@ public class DefaultSession implements Session
 		}
 		try
 		{
-			setStatus(SessionStatus.LOGOUT2);
 			final MOB mob=this.mob;
 			final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
 			if(inTheGame
@@ -3039,7 +3044,6 @@ public class DefaultSession implements Session
 		finally
 		{
 			loggingOutObj[0]=false;
-			setStatus(SessionStatus.LOGOUT3);
 		}
 	}
 
