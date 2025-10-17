@@ -2692,7 +2692,14 @@ public class CMMap extends StdLibrary implements WorldMap
 							final LandTitle T=(LandTitle)A;
 							if(!titlesDone.contains(T))
 							{
-								T.updateLot(playerList);
+								CMLib.threads().executeRunnable(new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										T.updateLot(playerList);
+									}
+								});
 								titlesDone.add(T);
 							}
 						}

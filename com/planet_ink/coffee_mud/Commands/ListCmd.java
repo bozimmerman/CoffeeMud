@@ -6180,7 +6180,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrint(listMQL(mob, false, commands));
 			break;
 		case DBCONNECTIONS:
-			s.wraplessPrint(listDB(mob, commands));
+			s.print(listDB(mob, commands));
 			break;
 		case WEAPONS:
 			s.println("^HWeapon Item IDs:^N");

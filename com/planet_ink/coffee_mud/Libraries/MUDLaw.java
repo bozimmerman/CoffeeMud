@@ -837,7 +837,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			}
 			final String titleName = title.landPropertyID();
 			Item I=R.findItem(null,"$id$");
-			if((I==null)||(!I.ID().equals("GenWallpaper"))||(I.Name().indexOf(titleName)<0))
+			if((I==null)||(!I.ID().equals("GenWallpaper"))||(I.description().indexOf(titleName)<0))
 			{
 				if(I!=null)
 					I.destroy();
