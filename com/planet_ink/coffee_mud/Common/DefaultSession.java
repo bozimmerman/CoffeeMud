@@ -2965,81 +2965,83 @@ public class DefaultSession implements Session
 	{
 		if(M==null)
 			return;
+		if(loggingOutObj[0])
+			return;
 		synchronized(loggingOutObj)
 		{
 			if(loggingOutObj[0])
 				return;
-			try
+			loggingOutObj[0]=true;
+		}
+		try
+		{
+			setStatus(SessionStatus.LOGOUT2);
+			final MOB mob=this.mob;
+			final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+			if(inTheGame
+			&& (M.location()!=null)
+			&&(mob!=null)
+			&&((!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
+				||(CMLib.sessions().numSessions()>1)))
 			{
-				setStatus(SessionStatus.LOGOUT2);
-				loggingOutObj[0]=true;
-				final MOB mob=this.mob;
-				final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-				if(inTheGame
-				&& (M.location()!=null)
-				&&(mob!=null)
-				&&((!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
-					||(CMLib.sessions().numSessions()>1)))
+				final List<Room> rooms=new ArrayList<Room>(1);
+				rooms.add(M.location());
+				for(final MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
 				{
-					final List<Room> rooms=new ArrayList<Room>(1);
-					rooms.add(M.location());
-					for(final MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+					if((M2.location()!=null)&&(!rooms.contains(M2.location())))
+						rooms.add(M2.location());
+				}
+				final CMMsg quitMsg=CMClass.getMsg(mob, CMMsg.MSG_QUIT, null);
+				for(final Room R : rooms)
+				{
+					try
 					{
-						if((M2.location()!=null)&&(!rooms.contains(M2.location())))
-							rooms.add(M2.location());
+						R.send(M, quitMsg);
 					}
-					final CMMsg quitMsg=CMClass.getMsg(mob, CMMsg.MSG_QUIT, null);
-					for(final Room R : rooms)
-					{
-						try
-						{
-							R.send(M, quitMsg);
-						}
-						catch (final Throwable t)
-						{ /* and eat it */
-							Log.errOut(t.getMessage());
-						}
+					catch (final Throwable t)
+					{ /* and eat it */
+						Log.errOut(t.getMessage());
 					}
 				}
+			}
 
-				while((getLastPKFight()>0)
-				&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
-				&&(mob!=null))
-					CMLib.s_sleep(1000);
-				String name=M.Name();
-				if(name.trim().length()==0)
-					name="Unknown";
-				if((M.isInCombat())&&(M.location()!=null))
-				{
-					CMLib.commands().postFlee(mob,"NOWHERE");
-					M.makePeace(false);
-				}
-				if(!CMLib.flags().isCloaked(M))
-				{
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS, M);
-					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true,M);
-				}
-				if(!M.isAttributeSet(Attrib.PRIVACY))
-					CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
+			while((getLastPKFight()>0)
+			&&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
+			&&(mob!=null))
+				CMLib.s_sleep(1000);
+			String name=M.Name();
+			if(name.trim().length()==0)
+				name="Unknown";
+			if((M.isInCombat())&&(M.location()!=null))
+			{
+				CMLib.commands().postFlee(mob,"NOWHERE");
+				M.makePeace(false);
+			}
+			if(!CMLib.flags().isCloaked(M))
+			{
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS, M);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true,M);
+			}
+			if(!M.isAttributeSet(Attrib.PRIVACY))
+				CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
 
-				// the player quit message!
-				CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
-				if(M.playerStats()!=null)
-					M.playerStats().setLastDateTime(System.currentTimeMillis());
-				Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
-				if(inTheGame)
-					CMLib.database().DBUpdateFollowers(M);
-			}
-			catch(final Exception e)
-			{
-				Log.errOut("LLogout",e.getMessage());
-			}
-			finally
-			{
-				loggingOutObj[0]=false;
-				setStatus(SessionStatus.LOGOUT3);
-			}
+			// the player quit message!
+			CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
+			if(M.playerStats()!=null)
+				M.playerStats().setLastDateTime(System.currentTimeMillis());
+			Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
+			if(inTheGame)
+				CMLib.database().DBUpdateFollowers(M);
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("LLogout",e.getMessage());
+		}
+		finally
+		{
+			loggingOutObj[0]=false;
+			setStatus(SessionStatus.LOGOUT3);
 		}
 	}
 
