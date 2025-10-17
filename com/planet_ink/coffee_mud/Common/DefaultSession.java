@@ -347,10 +347,8 @@ public class DefaultSession implements Session
 				bout.write(TELNETBYTES_GMCP_HEAD);
 				bout.write((lowerEventName+" "+parms).getBytes());
 				bout.write(TELNETBYTES_END_SB);
-				synchronized(gmcpSupports)
-				{
-					rawBytesOut(rawout,bout.toByteArray());
-				}
+				// rawBytesOut already handles async grouping issues
+				rawBytesOut(rawout,bout.toByteArray());
 				return true;
 			}
 			catch(final IOException e)
