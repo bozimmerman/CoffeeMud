@@ -2436,6 +2436,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD))
+		&&(CMProps.isState(HostState.RUNNING))
 		&&(tickStatus == Tickable.STATUS_NOT))
 		{
 			try
@@ -2587,7 +2588,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final List<Environmental> stuffToGo=new LinkedList<Environmental>();
 			final List<Room> roomsToGo=new LinkedList<Room>();
 			final CMMsg expireMsg=CMClass.getMsg(expireM,null,null,CMMsg.MSG_EXPIRE,null);
-			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements() && CMProps.isState(HostState.RUNNING);)
 			{
 				final Room R=r.nextElement();
 				expireM.setLocation(R);
@@ -2622,7 +2623,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						}
 					}
 				}
-				if(stuffToGo.size()>0)
+				if((stuffToGo.size()>0)&&(CMProps.isState(HostState.RUNNING)))
 				{
 					boolean success=true;
 					for(final Environmental E : stuffToGo)
@@ -2639,8 +2640,9 @@ public class CMMap extends StdLibrary implements WorldMap
 					stuffToGo.clear();
 				}
 			}
-			for(final Room R : roomsToGo)
+			for(final Iterator<Room> r=roomsToGo.iterator();r.hasNext() && CMProps.isState(HostState.RUNNING);)
 			{
+				final Room R = r.next();
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				setThreadStatus(serviceClient,"expirating room "+getExtendedRoomID(R));
@@ -2664,7 +2666,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		try
 		{
 			final Set<LandTitle> titlesDone = new HashSet<LandTitle>();
-			for(final Enumeration<Area> a=areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=areas();a.hasMoreElements() && CMProps.isState(HostState.RUNNING);)
 			{
 				final Area A=a.nextElement();
 				if(A.numEffects()>0)
@@ -2678,7 +2680,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					}
 				}
 			}
-			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
+			for(final Enumeration<Room> r=rooms();r.hasMoreElements() && CMProps.isState(HostState.RUNNING);)
 			{
 				final Room R=r.nextElement();
 				// roomid > 0? these are unfilled...
@@ -2705,14 +2707,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 
 		setThreadStatus(serviceClient,"cleaning scripts");
-		for(final String key : scriptHostMap.keySet())
-			cleanScriptHosts(scriptHostMap.get(key), null, true);
+		if(CMProps.isState(HostState.RUNNING))
+		{
+			for(final String key : scriptHostMap.keySet())
+				cleanScriptHosts(scriptHostMap.get(key), null, true);
+		}
 
 		final long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
 		setThreadStatus(serviceClient,"checking");
 		try
 		{
-			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
+			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements() && CMProps.isState(HostState.RUNNING);)
 			{
 				final Room R=r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
