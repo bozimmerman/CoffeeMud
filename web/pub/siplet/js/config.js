@@ -1,8 +1,8 @@
 window.isElectron = typeof window.process === 'object' && window.process.versions && window.process.versions.electron;
 var Siplet =
 {
-	VERSION_MAJOR: '3.2',
-	VERSION_MINOR: '6',
+	VERSION_MAJOR: '3.3',
+	VERSION_MINOR: '0',
 	COFFEE_MUD: false,
 	NAME: window.isElectron?'Sip MUD Client':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
