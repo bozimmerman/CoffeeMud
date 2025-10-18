@@ -2105,6 +2105,12 @@ public class MUD extends Thread implements MudHost
 				{
 					md.update(InetAddress.getLocalHost().getHostName().getBytes());
 				} catch(final Exception e){}
+				try
+				{
+					md.update(System.getenv("PROCESSOR_IDENTIFIER").getBytes());
+				} catch(final Exception e){}
+				for(final File F : File.listRoots())
+					md.update(F.getAbsolutePath().getBytes());
 				md.update(System.getProperty("os.name").getBytes());
 				try
 				{
