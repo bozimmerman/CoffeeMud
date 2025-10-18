@@ -52,6 +52,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.net.*;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.sql.*;
 
@@ -2094,35 +2096,35 @@ public class MUD extends Thread implements MudHost
 		}
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
-			long idNumber=new Random(System.currentTimeMillis()).nextLong();
+			final StringBuilder sb = new StringBuilder();
 			try
 			{
-				idNumber=0;
-				for(final Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
+				MessageDigest md;
+				md = MessageDigest.getInstance("SHA-256");
+				try
 				{
-					final NetworkInterface n=e.nextElement();
-					idNumber^=n.getDisplayName().hashCode();
-					try
+					md.update(InetAddress.getLocalHost().getHostName().getBytes());
+				} catch(final Exception e){}
+				md.update(System.getProperty("os.name").getBytes());
+				try
+				{
+					for(final Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
 					{
-						final Method m=n.getClass().getMethod("getHardwareAddress");
-						final Object o=m.invoke(n);
-						if(o instanceof byte[])
-						{
-							for(int i=0;i<((byte[])o).length;i++)
-								idNumber^=((byte[])o)[0] << (i*8);
-						}
+						final NetworkInterface n = e.nextElement();
+						md.update(n.getDisplayName().getBytes());
+						final byte[] mac = n.getHardwareAddress();
+						if(mac!=null)
+							md.update(mac);
 					}
-					catch (final Exception e1)
-					{
-					}
-				}
+				} catch(final Exception e){}
+				final byte[] digest = md.digest();
+				for (final byte b : digest)
+					sb.append(String.format("%02x",Byte.valueOf(b)));
 			}
-			catch (final Exception e1)
-			{
+			catch(final Exception e){
+				sb.append(Integer.toHexString(new Random().nextInt()));
 			}
-			if(idNumber<0)
-				idNumber=idNumber*-1;
-			nameID=nameID+idNumber;
+			nameID="CoffeeBean_"+sb.toString();
 			if((page != null)
 			&& page.containsKey("MUD_NAME")
 			&& (page.getStr("MUD_NAME") != null)
@@ -2132,7 +2134,7 @@ public class MUD extends Thread implements MudHost
 				System.err.println("*** Please give your mud a unique name in mud.bat or mud.sh!! ***");
 		}
 		else
-		if(nameID.equalsIgnoreCase( "TheRealCoffeeMudCopyright2000-2025ByBoZimmerman" ))
+		if(nameID.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman" ))
 			nameID="CoffeeMud";
 		if ((page==null)||(!page.isLoaded()))
 		{
