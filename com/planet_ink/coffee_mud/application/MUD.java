@@ -2118,10 +2118,16 @@ public class MUD extends Thread implements MudHost
 					}
 				} catch(final Exception e){}
 				final byte[] digest = md.digest();
-				for (final byte b : digest)
-					sb.append(String.format("%02x",Byte.valueOf(b)));
+				int number = 0;
+				for(int b=0;b<digest.length;b+=4)
+				{
+					final int x = (digest[b+0] << 24) | (digest[b+1] << 16) | (digest[b+2] << 8) | digest[b+3];
+					number ^= x;
+				}
+				sb.append(Integer.toHexString(number));
 			}
-			catch(final Exception e){
+			catch(final Exception e)
+			{
 				sb.append(Integer.toHexString(new Random().nextInt()));
 			}
 			nameID="CoffeeBean_"+sb.toString();
