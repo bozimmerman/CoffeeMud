@@ -2136,7 +2136,7 @@ public class MUD extends Thread implements MudHost
 			{
 				sb.append(Integer.toHexString(new Random().nextInt()));
 			}
-			nameID="My_Muds_Name_"+sb.toString();
+			nameID="Unnamed_CM_"+sb.toString();
 			if((page != null)
 			&& page.containsKey("MUD_NAME")
 			&& (page.getStr("MUD_NAME") != null)
