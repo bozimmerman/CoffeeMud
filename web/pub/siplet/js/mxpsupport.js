@@ -1739,7 +1739,7 @@ var MXP = function(sipwin)
 					if(!(tabFrame in framechoices)) 
 						return; // Invalid target
 					var peerContainer = framechoices[tabFrame];
-					if (peerContainer.parentNode 
+					if(peerContainer.parentNode 
 					&& peerContainer.parentNode.parentNode 
 					&& peerContainer.parentNode.parentNode.sprops 
 					&& peerContainer.parentNode.parentNode.sprops.tabbed)
