@@ -92,7 +92,7 @@ public class ServletResponse extends HTTPReqResponse implements SimpleServletRes
 	public DataBuffers generateOutput(final HTTPRequest request) throws HTTPException
 	{
 		final StringBuilder str=new StringBuilder("");
-		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(statusCode).append(" ").append(statusString).append(EOLN);
+		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(statusCode.getStatusCode()).append(" ").append(statusString).append(EOLN);
 		final HashSet<String> normalizedHeaders = new HashSet<String>();
 		for(final String header : headers.keySet())
 		{
