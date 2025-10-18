@@ -1739,6 +1739,11 @@ var MXP = function(sipwin)
 					if(!(tabFrame in framechoices)) 
 						return; // Invalid target
 					var peerContainer = framechoices[tabFrame];
+					if (peerContainer.parentNode 
+					&& peerContainer.parentNode.parentNode 
+					&& peerContainer.parentNode.parentNode.sprops 
+					&& peerContainer.parentNode.parentNode.sprops.tabbed)
+						peerContainer = peerContainer.parentNode.parentNode;
 					if(!peerContainer.sprops) 
 						return; // Invalid sprops
 
@@ -1840,7 +1845,7 @@ var MXP = function(sipwin)
 						peerContainer.sprops.tabs = [originalTab];
 						peerContainer.sprops.tabPos = tabPos;
 						peerContainer.sprops.tabDirection = tabDirection;
-						if (originalName)
+						if(originalName)
 							this.frames[originalName] = originalContent;
 						switchTab(originalTab, peerContainer);
 					}
