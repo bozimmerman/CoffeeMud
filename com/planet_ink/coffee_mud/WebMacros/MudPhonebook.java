@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.HTTPHeader;
+import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -71,6 +73,7 @@ public class MudPhonebook extends StdWebMacro
 			}
 		}
 		obj.put("phonebook", entries.toArray());
+		httpResp.setMimeType(MIMEType.All.json.getType());
 		return obj.toString();
 	}
 
