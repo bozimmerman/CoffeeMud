@@ -2171,6 +2171,7 @@ public class MUD extends Thread implements MudHost
 			{
 				if(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
 				{
+					CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
 					ServiceEngine.panicDumpAllThreads();
 					MUD.globalShutdown(null,true,null);
 				}
