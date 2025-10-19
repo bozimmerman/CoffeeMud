@@ -19,6 +19,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.*;
 import java.util.*;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
 /*
    Copyright 2004-2025 Bo Zimmerman
 
@@ -258,38 +261,21 @@ public class Load extends StdCommand
 					{
 						while(name.startsWith("/"))
 							name=name.substring(1);
-						Class<?> C=null;
-						Object CO=null;
-						try
+						final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+						if (compiler == null)
 						{
-							C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());
-							if(C!=null)
-								CO=C.getDeclaredConstructor().newInstance();
-						}
-						catch(final Exception e)
-						{
-							Log.errOut("Load",e.getMessage());
-						}
-						final ByteArrayOutputStream bout=new ByteArrayOutputStream();
-						final PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout));
-						if(CO==null)
-						{
-							mob.tell(L("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud."));
+							mob.tell(L("Unable to instantiate compiler. Ensure you're running on a full JDK, not JRE."));
 							return false;
 						}
+						final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 						final String[] args=new String[]{name};
-						if(C!=null)
+						final int returnVal=compiler.run(null,bout,bout,args);
+						if(returnVal!=0)
 						{
-							final java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass(),PrintWriter.class});
-							final Object returnVal=M.invoke(CO,new Object[]{args,pout});
-							if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
-							{
-								pout.flush();
-								mob.tell(L("Compile failed:"));
-								if(mob.session()!=null)
-									mob.session().rawOut(bout.toString());
-								return false;
-							}
+							mob.tell(L("Compile failed:"));
+							if (mob.session() != null)
+								mob.session().rawPrint(bout.toString());
+							return false;
 						}
 						name=name.substring(0,name.length()-5)+".class";
 					}
