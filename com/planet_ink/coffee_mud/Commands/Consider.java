@@ -38,7 +38,7 @@ public class Consider extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"CONSIDER","CONS","CON","COS","CO"});
+	private final String[] access=I(new String[]{"CONSIDER"});
 	@Override
 	public String[] getAccessWords()
 	{
