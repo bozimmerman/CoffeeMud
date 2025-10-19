@@ -2164,20 +2164,6 @@ public class MUD extends Thread implements MudHost
 		for(final Log.Type logType : Log.Type.values())
 			Log.instance().configureLog(logType, page.getStr(logType.getLogCode()));
 
-		final Thread shutdownHook=new Thread("ShutdownHook")
-		{
-			@Override
-			public void run()
-			{
-				if(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
-				{
-					CMProps.setAllStates(CMProps.HostState.SHUTTINGDOWN);
-					ServiceEngine.panicDumpAllThreads();
-					MUD.globalShutdown(null,true,null);
-				}
-			}
-		};
-
 		while(!bringDown)
 		{
 			CMProps.setAllStates(CMProps.HostState.BOOTING);
@@ -2247,6 +2233,19 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
+					final Runnable shutdownRun = new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							if(!CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
+							{
+								ServiceEngine.panicDumpAllThreads();
+								MUD.globalShutdown(null,true,null);
+							}
+						}
+					};
+					final Thread shutdownHook=new Thread(mainThreadGroup,shutdownRun,"ShutdownHook");
 					Runtime.getRuntime().addShutdownHook(shutdownHook);
 					for(int i=0;i<CMLib.hosts().size();i++)
 						CMLib.hosts().get(i).setAcceptConnections(true);
