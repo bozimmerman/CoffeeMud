@@ -43,28 +43,30 @@
     </TD>
 </TR>
 </TABLE>
-<IMG SRC="images/pyramid.jpg" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<h3>CoffeeMud Admin Server</H3>
+<h3>MUDGrinder Admin Server</H3>
+<IMG SRC="images/bluecup.jpg" ALT="Dark Coffee Cup" BORDER="0"><br>
+	<br>
+	<FORM  ACCEPT-CHARSET="UTF-8" NAME=LOGINFORM METHOD=POST ACTION=/grinder/loggedin.cmvp TARGET=_top>
+	<TABLE WIDTH=200 BORDER=1>
+	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Login</B></FONT></TD></TR>
+	<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
+	<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
+	<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Login></TD></TR>
+	</TABLE>
+	</FORM>
 <B>@WEBSERVERVERSION@ '@WEBSERVERNAME@'</B> on port <B>@WEBSERVERPORT@</B><br>
-<br>
 @AddRequestParameter?BOOTSTATUS=@@MUDSERVERPORT@@ @
 @if?CheckReqParm?BOOTSTATUS=[error]@
 	MUD Server: <b>@MUDSERVERVERSION@</b>: <b>@MUDSERVERSTATUS@</B><br>
 @else@
 	MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT?LOCAL@</b>: <b>@MUDSERVERSTATUS@</B><br>
 @endif@
-	<br>
-	<a href="http://@MudInfo?DOMAIN@:@WebServerPort?SERVER&PUB@/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
-	<br>
-	<FORM  ACCEPT-CHARSET="UTF-8" NAME=LOGINFORM METHOD=POST ACTION=/grinder/loggedin.cmvp TARGET=_top>
-	<TABLE WIDTH=200 BORDER=1>
-	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Login to MUDGrinder</B></FONT></TD></TR>
-	<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
-	<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
-	<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Login></TD></TR>
-	</TABLE>
-	</FORM>
+<a href="http://@MudInfo?DOMAIN@:@WebServerPort?SERVER&PUB@/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
+@if?!DBInfo?ISFAKEDB@
 <br>
+<FONT SIZE=-1><FONT COLOR=YELLOW>Note:</FONT> You are using fakeDB, the default embedded database.  Please consider 
+switching to an external database system if you plan on a large world with high activity.</FONT>
+@endif@
 </DIV>
 </body>
 </html>
