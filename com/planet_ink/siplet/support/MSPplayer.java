@@ -75,10 +75,10 @@ public class MSPplayer extends Thread
 				if (url == null)
 					clip = ((Applet) applet).getAudioClip(((Applet) applet).getCodeBase(), key);
 				else
-					clip = ((Applet) applet).getAudioClip(new URL(url + key));
+					clip = ((Applet) applet).getAudioClip(new URI(url + key).toURL());
 			}
 		}
-		catch (final MalformedURLException m)
+		catch (final Exception m)
 		{
 			clip = null;
 			playing = false;

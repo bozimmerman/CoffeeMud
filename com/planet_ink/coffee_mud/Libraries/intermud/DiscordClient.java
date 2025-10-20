@@ -99,9 +99,9 @@ public class DiscordClient implements Closeable
 		URL jarUrl;
 		try
 		{
-			jarUrl = new URL("vfs:" + jarPath);
+			jarUrl = new URI("vfs:" + jarPath).toURL();
 		}
-		catch (final MalformedURLException e)
+		catch (final Exception e)
 		{
 			Log.errOut(e);
 			return;

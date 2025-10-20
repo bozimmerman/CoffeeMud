@@ -3743,7 +3743,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			encodedParams.add("oauth_signature=\"" + URLEncoder.encode(signature, "UTF-8") + "\"");
 			final String oauthHeader = "OAuth " + String.join(", ", encodedParams);
 
-			final URL url = new URL(REQUEST_URL);
+			final URL url = new URI(REQUEST_URL).toURL();
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Authorization", oauthHeader);
@@ -3912,9 +3912,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final URL jarUrl;
 		try
 		{
-			jarUrl = new URL("vfs:" + jarPath);
+			jarUrl = new URI("vfs:" + jarPath).toURL();
 		}
-		catch (final MalformedURLException e)
+		catch (final Exception e)
 		{
 			Log.errOut(e);
 			this.llmModel = Long.valueOf(System.currentTimeMillis());

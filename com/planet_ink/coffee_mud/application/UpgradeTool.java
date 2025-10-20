@@ -543,7 +543,15 @@ public class UpgradeTool
 	 */
 	private static List<String> getVersions() throws IOException
 	{
-		final URL url=new URL(VERSION_URL+"?time="+System.currentTimeMillis());
+		final URL url;
+		try
+		{
+			url=new URI(VERSION_URL+"?time="+System.currentTimeMillis()).toURL();
+		}
+		catch(final Exception e)
+		{
+			throw new IOException(e);
+		}
 		final HttpURLConnection conn =(HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "text/plain");
@@ -646,10 +654,17 @@ public class UpgradeTool
 	{
 		final String tag=version.replace(".", "_");
 		final URL url;
-		if(version.equals("HEAD"))
-			url=new URL(ZIP_HEAD_TEMPLATE);
-		else
-			url=new URL(String.format(ZIP_URL_TEMPLATE, tag));
+		try
+		{
+			if(version.equals("HEAD"))
+				url=new URI(ZIP_HEAD_TEMPLATE).toURL();
+			else
+				url=new URI(String.format(ZIP_URL_TEMPLATE, tag)).toURL();
+		}
+		catch(final Exception e)
+		{
+			throw new IOException(e);
+		}
 		final HttpURLConnection conn =(HttpURLConnection) url.openConnection();
 		final int contentLength=conn.getContentLength();
 		System.out.println("Downloading "+url+" ...");
