@@ -59,6 +59,28 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		DEFINE
 	}
 
+	private static Locale createLocale(final String language, final String country)
+	{
+		try
+		{
+			final java.lang.reflect.Method ofMethod = Locale.class.getMethod("of", String.class, String.class);
+			return (Locale) ofMethod.invoke(null, language, country);
+		}
+		catch (final Exception e)
+		{
+			try
+			{
+				final java.lang.reflect.Constructor<Locale> constructor =
+						Locale.class.getConstructor(String.class, String.class);
+				return constructor.newInstance(language, country);
+			}
+			catch (final Exception e2)
+			{
+				throw new RuntimeException("Failed to create Locale", e);
+			}
+		}
+	}
+
 	@Override
 	public void setLocale(final String lang, final String state)
 	{
@@ -71,7 +93,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			{
 				country=state;
 				language=lang;
-				currentLocale = new Locale(language, country);
+				currentLocale = createLocale(language, country);
 				clear();
 			}
 		}
