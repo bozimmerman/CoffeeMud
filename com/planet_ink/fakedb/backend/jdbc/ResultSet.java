@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.URI;
 import java.sql.NClob;
 import java.sql.RowId;
 import java.sql.SQLException;
@@ -477,9 +478,9 @@ public class ResultSet implements java.sql.ResultSet
 			return null;
 		try
 		{
-			return new java.net.URL(s);
+			return new URI(s).toURL();
 		}
-		catch (final java.net.MalformedURLException e)
+		catch (final Exception e)
 		{
 			throw new java.sql.SQLException(e.getMessage());
 		}
