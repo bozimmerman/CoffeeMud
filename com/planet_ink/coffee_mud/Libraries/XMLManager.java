@@ -1662,7 +1662,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String fromPOJOtoXML(final Object o)
 	{
 		final StringBuilder str=new StringBuilder("");
+		if((o==null)||(o.getClass()==null))
+			return "";
 		final Field[] fields = o.getClass().getDeclaredFields();
+		if(fields==null)
+			return "";
 		for(final Field field : fields)
 		{
 			try

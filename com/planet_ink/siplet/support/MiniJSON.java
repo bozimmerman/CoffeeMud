@@ -883,9 +883,13 @@ public class MiniJSON
 	 */
 	public String fromPOJOtoJSON(final Object o)
 	{
+		if((o==null)||(o.getClass()==null))
+			return "null";
 		final StringBuilder str=new StringBuilder("");
 		str.append("{");
 		final Field[] fields = o.getClass().getDeclaredFields();
+		if(fields==null)
+			return "{}";
 		boolean firstField=true;
 		for(final Field field : fields)
 		{

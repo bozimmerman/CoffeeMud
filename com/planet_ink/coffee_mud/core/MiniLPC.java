@@ -942,9 +942,13 @@ public class MiniLPC
 	 */
 	public String fromPOJOtoLPC(final Object o)
 	{
+		if((o==null)||(o.getClass()==null))
+			return "";
 		final StringBuilder str=new StringBuilder("");
 		str.append("([");
 		final Field[] fields = o.getClass().getDeclaredFields();
+		if(fields==null)
+			return "([])";
 		for(final Field field : fields)
 		{
 			try
