@@ -342,11 +342,10 @@ public class Connection implements java.sql.Connection
 	{
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public java.util.Map getTypeMap() throws java.sql.SQLException
+	public java.util.Map<String, Class<?>> getTypeMap() throws java.sql.SQLException
 	{
-		return new java.util.HashMap();
+		return new java.util.HashMap<String, Class<?>>();
 	}
 
 	@Override
