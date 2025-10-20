@@ -845,7 +845,8 @@ public class Destroy extends StdCommand
 			try
 			{
 				final Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
-				C = (Command)classC.newInstance();
+				final java.lang.reflect.Constructor<?> constructor = classC.getConstructor();
+				C = (Command)constructor.newInstance();
 				CMClass.addClass(CMObjectType.COMMAND, C);
 				CMClass.reloadCommandWords();
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of the world just changed?!"));
@@ -1118,7 +1119,7 @@ public class Destroy extends StdCommand
 								else
 								if(E instanceof Area)
 								{
-									Log.infoOut(mob.name()+" deleted area "+((Area)E).Name());
+									Log.infoOut(mob.name()+" deleted area "+E.Name());
 									destroyE=E;
 								}
 								else
@@ -1140,7 +1141,7 @@ public class Destroy extends StdCommand
 									{
 										roomID=((MOB)I.owner()).getStartRoom().roomID();
 										saveE=(I.owner());
-										Log.infoOut(mob.name()+" deleted "+E.name()+" from "+((MOB)I.owner()).Name()+" in "+R.roomID());
+										Log.infoOut(mob.name()+" deleted "+E.name()+" from "+I.owner().Name()+" in "+R.roomID());
 									}
 								}
 								else

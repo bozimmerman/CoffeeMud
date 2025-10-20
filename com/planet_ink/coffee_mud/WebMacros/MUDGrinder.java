@@ -794,7 +794,8 @@ public class MUDGrinder extends StdWebMacro
 				try
 				{
 					final Class<?> classC = Class.forName(rec.typeClass(), true, CMClass.instance());
-					C = (Command)classC.newInstance();
+					final java.lang.reflect.Constructor<?> constructor = classC.getConstructor();
+					C = (Command)constructor.newInstance();
 					CMClass.addClass(CMObjectType.COMMAND, C);
 				}
 				catch (final Exception e)

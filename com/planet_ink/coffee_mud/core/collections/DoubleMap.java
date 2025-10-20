@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 import java.util.*;
+
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 /*
    Copyright 2013-2025 Bo Zimmerman
 
@@ -52,8 +54,9 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		super();
 		try
 		{
-			H1=(Map<K,F>)clas.newInstance();
-			H2=(Map<F,K>)clas.newInstance();
+			final java.lang.reflect.Constructor<?> constructor = clas.getConstructor();
+			H1=(Map<K,F>)constructor.newInstance();
+			H2=(Map<F,K>)constructor.newInstance();
 		}
 		catch (final Exception e)
 		{
