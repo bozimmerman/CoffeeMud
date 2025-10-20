@@ -949,13 +949,10 @@ public class MiniLPC
 		{
 			try
 			{
-				field.setAccessible(true);
-				if(field.isAccessible())
-				{
-					str.append("\"").append(field.getName()).append("\":");
-					str.append(fromPOJOFieldtoLPC(field.getType(),field.get(o)));
-					str.append(",");
-				}
+				try {  field.setAccessible(true);}catch(final Exception e) {}
+				str.append("\"").append(field.getName()).append("\":");
+				str.append(fromPOJOFieldtoLPC(field.getType(),field.get(o)));
+				str.append(",");
 			}
 			catch (final IllegalArgumentException e)
 			{
@@ -991,10 +988,9 @@ public class MiniLPC
 		{
 			try
 			{
-				field.setAccessible(true);
-				if(field.isAccessible() && lpcObj.containsKey(field.getName()))
+				try {  field.setAccessible(true);}catch(final Exception e) {}
+				if(lpcObj.containsKey(field.getName()))
 				{
-
 					final Object jo = lpcObj.get(field.getName());
 					if((jo == null) || (jo == MiniLPC.NULL))
 						field.set(o, null);
@@ -1131,7 +1127,7 @@ public class MiniLPC
 			}
 			catch (final IllegalAccessException e)
 			{
-				throw new MLPCException(e.getMessage(),e);
+				// just continue
 			}
 			catch (final InstantiationException e)
 			{

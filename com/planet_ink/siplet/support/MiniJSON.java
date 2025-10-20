@@ -891,16 +891,13 @@ public class MiniJSON
 		{
 			try
 			{
-				field.setAccessible(true);
-				if(field.isAccessible())
-				{
-					if(!firstField)
-						str.append(",");
-					else
-						firstField=false;
-					str.append("\"").append(field.getName()).append("\":");
-					str.append(fromPOJOFieldtoJSON(field.getType(),field.get(o)));
-				}
+				try {  field.setAccessible(true);}catch(final Exception e) {}
+				if(!firstField)
+					str.append(",");
+				else
+					firstField=false;
+				str.append("\"").append(field.getName()).append("\":");
+				str.append(fromPOJOFieldtoJSON(field.getType(),field.get(o)));
 			}
 			catch (final IllegalArgumentException e)
 			{
@@ -936,10 +933,9 @@ public class MiniJSON
 		{
 			try
 			{
-				field.setAccessible(true);
-				if(field.isAccessible() && jsonObj.containsKey(field.getName()))
+				try {  field.setAccessible(true);}catch(final Exception e) {}
+				if(jsonObj.containsKey(field.getName()))
 				{
-
 					final Object jo = jsonObj.get(field.getName());
 					if((jo == null) || (jo == MiniJSON.NULL))
 						field.set(o, null);
@@ -1076,7 +1072,7 @@ public class MiniJSON
 			}
 			catch (final IllegalAccessException e)
 			{
-				throw new MJSONException(e.getMessage(),e);
+				// just continue
 			}
 			catch (final InstantiationException e)
 			{

@@ -1667,20 +1667,17 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			try
 			{
-				field.setAccessible(true);
-				if(field.isAccessible())
+				try {  field.setAccessible(true);}catch(final Exception e) {}
+				str.append("<").append(field.getName());
+				final Object obj = field.get(o);
+				if(obj == null)
+					str.append(" ISNULL=TRUE />");
+				else
 				{
-					str.append("<").append(field.getName());
-					final Object obj = field.get(o);
-					if(obj == null)
-						str.append(" ISNULL=TRUE />");
-					else
-					{
-						str.append(">");
-						str.append(fromPOJOFieldtoXML(field.getType(),field.get(o)));
-					}
-					str.append("</").append(field.getName()).append(">");
+					str.append(">");
+					str.append(fromPOJOFieldtoXML(field.getType(),field.get(o)));
 				}
+				str.append("</").append(field.getName()).append(">");
 			}
 			catch (final IllegalArgumentException e)
 			{
@@ -1734,9 +1731,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			try
 			{
-				field.setAccessible(true);
+				try {  field.setAccessible(true);}catch(final Exception e) {}
 				final XMLTag valTag = getPieceFromPieces(xmlObj, field.getName());
-				if(field.isAccessible() && (valTag!=null))
+				if(valTag!=null)
 				{
 					if(valTag.parms().containsKey("ISNULL")
 					&&(valTag.parms().get("ISNULL").equalsIgnoreCase("TRUE")))
@@ -1878,7 +1875,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			}
 			catch (final IllegalAccessException e)
 			{
-				throw new IllegalArgumentException(e.getMessage(),e);
+				// just continue
 			}
 			catch (final InstantiationException e)
 			{
