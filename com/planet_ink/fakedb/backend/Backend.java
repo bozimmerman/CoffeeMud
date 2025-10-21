@@ -555,7 +555,10 @@ public class Backend
 
 	public synchronized void rewriteRawSchema(final List<List<String>> groups) throws SQLException
 	{
+		if(!basePath.exists())
+			basePath.mkdirs();
 		final File schema = new File(basePath, "fakedb.schema");
+
 		final StringBuilder str = new StringBuilder("");
 		for (final List<String> group : groups)
 		{
