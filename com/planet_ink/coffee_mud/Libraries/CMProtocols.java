@@ -1570,7 +1570,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			buf.write(Session.MSDP_VAR);
 			buf.write("MUD_NAME".getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAL);
-			buf.write(CMProps.getVar(CMProps.Str.MUDNAME).getBytes(Session.MSDP_CHARSET));
+			buf.write(CMProps.getVar(CMProps.Str.MUD_NAME).getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAR);
 			buf.write("MUD_HOST".getBytes(Session.MSDP_CHARSET));
 			buf.write(Session.MSDP_VAL);
@@ -1701,7 +1701,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			break;
 		case SERVER_ID:
-			buf.write(CMProps.getVar(CMProps.Str.MUDNAME).getBytes(Session.MSDP_CHARSET));
+			buf.write(CMProps.getVar(CMProps.Str.MUD_NAME).getBytes(Session.MSDP_CHARSET));
 			break;
 		case SERVER_TIME:
 			buf.write(CMLib.time().date2APTimeString(System.currentTimeMillis()).getBytes(Session.MSDP_CHARSET));
@@ -3571,7 +3571,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				ports.add(Integer.toString(CMLib.hosts().get(i).getPublicPort()));
 			pkg.put("PORT",ports.toArray(new String[ports.size()]));
 		}
-		pkg.put("NAME",CMProps.getVar(CMProps.Str.MUDNAME));
+		pkg.put("NAME",CMProps.getVar(CMProps.Str.MUD_NAME));
 		if(host != null)
 		{
 			final long uptime = (System.currentTimeMillis() / 1000) - CMLib.host().getUptimeSecs();

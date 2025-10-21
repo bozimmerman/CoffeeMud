@@ -200,7 +200,7 @@ public class IntermudClient implements IntermudInterface
 					final String adminEmail = CMProps.getVar(CMProps.Str.ADMINEMAIL);
 					final String[] routersArray = routersSepV.toArray(new String[0]);
 					final int smtpPort = CMath.s_int(CMLib.host().executeCommand("GET SMTP PORT"));
-					i3mud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUDNAME),
+					i3mud=new CoffeeMudI3Bridge(CMProps.getVar(CMProps.Str.MUD_NAME),
 												 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
 												 CMLib.mud(0).getPublicPort(),
 												 CMLib.channels().getIMudChannelsList(InterProto.I3),
@@ -354,7 +354,7 @@ public class IntermudClient implements IntermudInterface
 				imc2=new IMC2Driver();
 				if(!imc2.imc_startup(false,
 											page.getStr("IMC2LOGIN").trim(),
-											CMProps.getVar(CMProps.Str.MUDNAME),
+											CMProps.getVar(CMProps.Str.MUD_NAME),
 											page.getStr("IMC2MYEMAIL").trim(),
 											page.getStr("IMC2MYWEB").trim(),
 											page.getStr("IMC2HUBNAME").trim(),
@@ -751,7 +751,7 @@ public class IntermudClient implements IntermudInterface
 						return;
 					}
 					final String finalMsg = socialNormalFixOut(
-							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUDNAME),
+							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUD_NAME),
 							msg.target().name(),CMStrings.removeColors(msg.othersMessage()));
 					grapevine.sendMappedChannelMessage(mob.Name(), channelName, finalMsg);
 				}
@@ -759,7 +759,7 @@ public class IntermudClient implements IntermudInterface
 				if(msg.target()!=null)
 				{
 					final String finalMsg = socialNormalFixOut(
-							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUDNAME),
+							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUD_NAME),
 							msg.target().name(),
 							CMStrings.removeColors(msg.othersMessage()));
 					grapevine.sendMappedChannelMessage(mob.Name(), channelName, finalMsg);
@@ -767,7 +767,7 @@ public class IntermudClient implements IntermudInterface
 				else
 				{
 					final String finalMsg = socialNormalFixOut(
-							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUDNAME),
+							mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUD_NAME),
 							msg.target().name(),
 							CMStrings.removeColors(msg.othersMessage()));
 					grapevine.sendMappedChannelMessage(mob.Name(), channelName, finalMsg);

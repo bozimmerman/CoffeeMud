@@ -211,7 +211,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 					for(int i=0;i<256;i++)
 						encrFilter[i]^=domain.charAt(i % domain.length());
 				}
-				final String name=CMProps.getVar(CMProps.Str.MUDNAME);
+				final String name=CMProps.getVar(CMProps.Str.MUD_NAME);
 				if(name.length()>0)
 				{
 					for(int i=0;i<256;i++)

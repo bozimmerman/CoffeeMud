@@ -58,7 +58,7 @@ public class WizList extends StdCommand
 		if(isArchonLooker)
 			head.append(CMStrings.padRight(L("Last"),18)+" ");
 		head.append("] Character Name^.^?\n\r");
-		mob.tell("^x["+CMStrings.centerPreserve(L("The Administrators of @x1",CMProps.getVar(CMProps.Str.MUDNAME)),head.length()-10)+"]^.^?");
+		mob.tell("^x["+CMStrings.centerPreserve(L("The Administrators of @x1",CMProps.getVar(CMProps.Str.MUD_NAME)),head.length()-10)+"]^.^?");
 		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0)

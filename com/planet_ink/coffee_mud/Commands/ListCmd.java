@@ -197,7 +197,7 @@ public class ListCmd extends StdCommand
 		{
 			str.append(CMStrings.padRight(host.threadGroup().getName(), colWidths[0]));
 			str.append(CMStrings.padRight(host.getPort()+"", colWidths[1]));
-			final String name = CMProps.instance(host.threadGroup().getName().charAt(0)).getStr(Str.MUDNAME);
+			final String name = CMProps.instance(host.threadGroup().getName().charAt(0)).getStr(Str.MUD_NAME);
 			str.append(CMStrings.padRight(name, colWidths[2]));
 			str.append("^?\n\r"); // this is brilliant, at is swaps colors!
 		}

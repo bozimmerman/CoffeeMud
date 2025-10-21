@@ -364,7 +364,7 @@ public class DefaultLawSet implements Law
 			final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
 			if(owerName.length()==0)
 				owerName=M.Name();
-			M.tell(CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord,fifthWord));
+			M.tell(CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUD_NAME),fourWord,fifthWord));
 		}
 		else
 		{
@@ -382,8 +382,8 @@ public class DefaultLawSet implements Law
 					if(owerName.length()==0)
 						owerName=M.Name();
 					final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
-					final String subj = CMStrings.replaceVariables(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
-					final String msg = CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+					final String subj = CMStrings.replaceVariables(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUD_NAME),fourWord);
+					final String msg = CMStrings.replaceVariables(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUD_NAME),fourWord);
 					return sendGameMail(M.Name(), subj, msg);
 				}
 			}

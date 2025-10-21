@@ -1006,7 +1006,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 			{
 				if((chan.discordName()!=null)&&(chan.discordName().length()>0))
-					str = "(<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+str;
+					str = "(<S-NAME>"+"@"+CMProps.getVar(CMProps.Str.MUD_NAME)+nameAppendage+") "+str;
 				else
 					str="<S-NAME>"+nameAppendage+" "+str;
 			}
@@ -1035,7 +1035,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					message=CMStrings.removeColors(msg.othersMessage());
 					if(msg.target()!=null)
 						message=CMStrings.replaceAll(message,"<T-NAME>",msg.target().name());
-					message=CMStrings.replaceAll(message,"["+channelName+"]","(@"+CMProps.getVar(Str.MUDNAME)+")");
+					message=CMStrings.replaceAll(message,"["+channelName+"]","(@"+CMProps.getVar(Str.MUD_NAME)+")");
 				}
 			}
 			else
@@ -1052,7 +1052,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						CMMsg.NO_EFFECT,null,
 						CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+reststr);
 				if((chan.discordName()!=null)&&(chan.discordName().length()>0))
-					message=mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+msgstr;
+					message=mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUD_NAME)+nameAppendage+msgstr;
 			}
 		}
 		else
@@ -1062,7 +1062,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 					CMMsg.NO_EFFECT,null,
 					CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME>"+nameAppendage+" "+CMLib.english().makePlural(channelName)+" '"+message+"'^</CHANNEL^>^N^.");
 			if((chan.discordName()!=null)&&(chan.discordName().length()>0))
-				message="("+mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUDNAME)+nameAppendage+") "+message;
+				message="("+mob.Name()+"@"+CMProps.getVar(CMProps.Str.MUD_NAME)+nameAppendage+") "+message;
 		}
 
 		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC)

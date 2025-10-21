@@ -497,7 +497,7 @@ public class MUD extends Thread implements MudHost
 			catch (final UnknownHostException e)
 			{
 				Log.errOut(Thread.currentThread().getName(),
-						CMProps.getVar(CMProps.Str.MUDNAME)+" Server could not bind to address " + CMProps.getVar(CMProps.Str.MUDBINDADDRESS));
+						CMProps.getVar(CMProps.Str.MUD_NAME)+" Server could not bind to address " + CMProps.getVar(CMProps.Str.MUDBINDADDRESS));
 			}
 		}
 
@@ -507,13 +507,13 @@ public class MUD extends Thread implements MudHost
 
 			if(port != publicPort)
 				Log.sysOut(Thread.currentThread().getName(),
-						CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port +" ("+publicPort+")");
+						CMProps.getVar(CMProps.Str.MUD_NAME)+" Server started on port: "+port +" ("+publicPort+")");
 			else
 				Log.sysOut(Thread.currentThread().getName(),
-						CMProps.getVar(CMProps.Str.MUDNAME)+" Server started on port: "+port);
+						CMProps.getVar(CMProps.Str.MUD_NAME)+" Server started on port: "+port);
 			if (bindAddr != null)
 				Log.sysOut(Thread.currentThread().getName(),
-						CMProps.getVar(CMProps.Str.MUDNAME)+" Server bound to: "+bindAddr.toString());
+						CMProps.getVar(CMProps.Str.MUD_NAME)+" Server bound to: "+bindAddr.toString());
 			CMLib.hosts().add(this);
 			String oldPorts = CMProps.getVar(CMProps.Str.LOCALMUDPORTS);
 			if(oldPorts == null)
@@ -1425,7 +1425,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setBoolVar(CMProps.Bool.MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
 			CMProps.setBoolVar(CMProps.Bool.ACCOUNTSNOCACHE,nocache.contains("ACCOUNTS"));
 			CMProps.setBoolVar(CMProps.Bool.PLAYERSNOCACHE,nocache.contains("PLAYERS"));
-			CMProps.setUpLowVar(CMProps.Str.MUDNAME, name);
+			CMProps.setUpLowVar(CMProps.Str.MUD_NAME, name);
 
 			DBConnector currentDBconnector=null;
 			String dbClass=page.getStr("DBCLASS");
@@ -1869,6 +1869,7 @@ public class MUD extends Thread implements MudHost
 						continue;
 				}
 				page.put(skey,clArgs.get(key));
+				CMProps.getCommandLineOverrides().put(skey, clArgs.get(key));
 			}
 			page.resetSystemVars();
 			CMProps.setState(CMProps.HostState.BOOTING);
@@ -1917,7 +1918,7 @@ public class MUD extends Thread implements MudHost
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.Library.INTERMUD));
 			}
 			CMProps.setVar(CMProps.Str.INIPATH,iniFile,false);
-			CMProps.setUpLowVar(CMProps.Str.MUDNAME,name.replace('\'','`'));
+			CMProps.setUpLowVar(CMProps.Str.MUD_NAME,name.replace('\'','`'));
 			try
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting");
@@ -2143,7 +2144,7 @@ public class MUD extends Thread implements MudHost
 			&& (page.getStr("MUD_NAME").toString().trim().length()>0))
 				nameID = page.getStr("MUD_NAME").toString().trim().replace('\'', '`');
 			else
-				System.err.println("*** Please give your mud a unique name in mud.bat or mud.sh!! ***");
+				System.err.println("*** Please give your mud a unique name!***");
 		}
 		else
 		if(nameID.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman" ))

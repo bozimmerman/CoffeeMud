@@ -265,7 +265,7 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Item)
 			&&((!(E instanceof ArchonOnly))
-				||(CMSecurity.isASysOp(mob)&&(CMProps.getVar(CMProps.Str.MUDNAME).toLowerCase().indexOf("coffeemud")>=0))))
+				||(CMSecurity.isASysOp(mob)&&(CMProps.getVar(CMProps.Str.MUD_NAME).toLowerCase().indexOf("coffeemud")>=0))))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYITEMS))
 				{

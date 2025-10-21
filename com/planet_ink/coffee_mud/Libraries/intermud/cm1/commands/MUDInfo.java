@@ -73,7 +73,7 @@ public class MUDInfo extends CM1Command
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+"]");
 			else
 			if(parameters.equalsIgnoreCase("NAME"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDNAME)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUD_NAME)+"]");
 			else
 			if(parameters.equalsIgnoreCase("WHO"))
 				req.sendMsg("[OK "+getWhos()+"]");
@@ -96,7 +96,7 @@ public class MUDInfo extends CM1Command
 		for(final MudHost host : CMLib.hosts())
 		{
 			final char groupC = host.threadGroup().getName().charAt(0);
-			final String name = CMProps.instance(groupC).getStr(CMProps.Str.MUDNAME);
+			final String name = CMProps.instance(groupC).getStr(CMProps.Str.MUD_NAME);
 			if(!list.contains(name))
 				list.add(name);
 		}

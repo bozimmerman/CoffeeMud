@@ -68,7 +68,7 @@ public class MudInfo extends StdWebMacro
 		if(parms.containsKey("MAILBOX"))
 			return CMProps.getVar(CMProps.Str.MAILBOX);
 		if(parms.containsKey("NAME"))
-			return CMProps.getVar(CMProps.Str.MUDNAME);
+			return CMProps.getVar(CMProps.Str.MUD_NAME);
 		if(parms.containsKey("CHARSET"))
 			return CMProps.getVar(CMProps.Str.CHARSETOUTPUT);
 		if(parms.containsKey("PORT"))

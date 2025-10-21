@@ -609,7 +609,7 @@ public class DefaultSession implements Session
 			{
 				if(!mcpDisabled)
 					rawBytesOut(rawout,("\n\r#$#mcp version: 2.1 to: 2.1\n\r").getBytes(CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-				rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
+				rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUD_NAME)+"...\n\r").getBytes("US-ASCII"));
 				setServerTelnetMode(TELNET_ANSI,true);
 				setClientTelnetMode(TELNET_ANSI,true);
 				setServerTelnetMode(TELNET_ANSI16,false);

@@ -60,7 +60,7 @@ public class MudPhonebook extends StdWebMacro
 			{
 				final MiniJSON.JSONObject entry = new MiniJSON.JSONObject();
 				final char threadCode = host.threadGroup().getName().charAt(0);
-				final String name = CMProps.instance(threadCode).getStr(CMProps.Str.MUDNAME);
+				final String name = CMProps.instance(threadCode).getStr(CMProps.Str.MUD_NAME);
 				final boolean account=CMProps.instance(threadCode).getInt(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
 				entry.put("name", name);
 				entry.put("port", Long.valueOf(host.getPublicPort()));

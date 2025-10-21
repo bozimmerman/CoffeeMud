@@ -2555,7 +2555,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		//  timeLeft is in millis
 		final String from="AutoPurgeWarning";
 		final String to=mob.Name();
-		final String subj=CMProps.getVar(CMProps.Str.MUDNAME)+" Autopurge Warning: "+to;
+		final String subj=CMProps.getVar(CMProps.Str.MUD_NAME)+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft<0)
 			timeLeft = 1000*60*60*24;

@@ -368,7 +368,7 @@ public final class IMC2Driver extends Thread
 		imc_name=loginName;
 		imc_log_on=1; // logging?
 		this_imcmud.autoconnect=true;
-		imc_siteinfo.name=CMProps.getVar(CMProps.Str.MUDNAME);
+		imc_siteinfo.name=CMProps.getVar(CMProps.Str.MUD_NAME);
 		imc_siteinfo.host=host;
 		imc_siteinfo.port=CMath.s_int(CMParms.parse(CMProps.getVar(CMProps.Str.ALLMUDPORTS)).elementAt(0));
 		imc_siteinfo.email=email;
@@ -1061,7 +1061,7 @@ public final class IMC2Driver extends Thread
 
 	final String update_wholist()
 	{
-		final StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.Str.MUDNAME)+":\\n\\r");
+		final StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.Str.MUD_NAME)+":\\n\\r");
 		final Command C=CMClass.getCommand("Who");
 		if(C!=null)
 		{

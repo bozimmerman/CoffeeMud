@@ -63,7 +63,7 @@ public class Shutdown extends StdCommand implements Tickable
 			tm = " now";
 		else
 			tm=" in "+tm;
-		return L("\n\r\n\r^Z@x1 will be @x2@x3@x4^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm,reason);
+		return L("\n\r\n\r^Z@x1 will be @x2@x3@x4^.^?\n\r",CMProps.getVar(CMProps.Str.MUD_NAME),(keepItDown?"shutting down":"restarting"),tm,reason);
 	}
 
 	protected void showDisplayableShutdownTimeRemaining()
@@ -146,7 +146,7 @@ public class Shutdown extends StdCommand implements Tickable
 					mob.tell(L("I don't know how to shutdown within the next @x1 @x2; try `5 minutes` or something similar.",""+wait,multiplier));
 					return false;
 				}
-				if((!mob.session().confirm(L("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),""+wait,multiplier.toLowerCase()),"N")))
+				if((!mob.session().confirm(L("Shutdown @x1 in @x2 @x3 (y/N)?",CMProps.getVar(CMProps.Str.MUD_NAME),""+wait,multiplier.toLowerCase()),"N")))
 					return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
@@ -165,7 +165,7 @@ public class Shutdown extends StdCommand implements Tickable
 					mob.session().println(L("'@x1' is not a valid time.",atWhat));
 					return false;
 				}
-				if((!mob.session().confirm(L("Shutdown @x1 at @x2 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME),CMLib.time().date2String(C)),"N")))
+				if((!mob.session().confirm(L("Shutdown @x1 at @x2 (y/N)?",CMProps.getVar(CMProps.Str.MUD_NAME),CMLib.time().date2String(C)),"N")))
 					return false;
 				shuttingDownCompletes=C.getTimeInMillis();
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((C.getTimeInMillis()-System.currentTimeMillis())/2)-100;
@@ -185,7 +185,7 @@ public class Shutdown extends StdCommand implements Tickable
 		if(!startCountDown)
 		{
 			if((!noPrompt)
-			&&(!mob.session().confirm(L("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),"N")))
+			&&(!mob.session().confirm(L("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUD_NAME)),"N")))
 				return false;
 
 			shuttingDownMob=null;
@@ -225,7 +225,7 @@ public class Shutdown extends StdCommand implements Tickable
 			public void run()
 			{
 				for(final Session S : CMLib.sessions().allIterable())
-					S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting")));
+					S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUD_NAME),(keepItDown?"shutting down":"restarting")));
 				if(keepItDown)
 					Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 				else

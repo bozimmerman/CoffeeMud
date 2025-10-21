@@ -60,6 +60,8 @@ public class CMProps extends Properties
 	protected static final char[]	FILTER_CHARS		= FILTER_PATTERN.toCharArray();
 	private static final double[]	EMPTY_DOUBLE_VARS	= new double[99];
 
+	private final Properties clOverride = new Properties();
+
 	/**
 	 * Constructor for a property object that applies only to this thread group.
 	 */
@@ -114,6 +116,17 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Returns the command line overrides of the file
+	 * property entries.
+	 *
+	 * @return the command line overrides
+	 */
+	public static final Properties getCommandLineOverrides()
+	{
+		return p().clOverride;
+	}
+
+	/**
 	 * Constants for the state of the host.
 	 * These are tied to threads, unlike
 	 * MUD object.
@@ -160,7 +173,7 @@ public class CMProps extends Properties
 		COMMONCOST,
 		LANGCOST,
 		AUTOPURGE,
-		MUDNAME,
+		MUD_NAME,
 		MUDVER,
 		MUDSTATUS,
 		ALLMUDPORTS,
@@ -879,12 +892,16 @@ public class CMProps extends Properties
 	*/
 	public final String getStr(final String tagToGet)
 	{
-		final String thisTag=CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
-		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+		final String tagValue;
+		if(this.clOverride.containsKey(tagToGet))
+			tagValue = CMStrings.convertHtmlEntities(this.clOverride.getProperty(tagToGet));
+		else
+			tagValue=CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
+		if((tagValue==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			return props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if(thisTag==null)
+		if(tagValue==null)
 			return "";
-		return thisTag;
+		return tagValue;
 	}
 
 	/** retrieve a particular .ini file entry as a string, or use a default
@@ -896,12 +913,16 @@ public class CMProps extends Properties
 	*/
 	public final String getStr(final String tagToGet, final String defaultVal)
 	{
-		String thisTag=CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
-		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
-			thisTag=props[MudHost.MAIN_HOST].getStr(tagToGet);
-		if((thisTag==null)||(thisTag.length()==0))
+		String tagValue;
+		if(this.clOverride.containsKey(tagToGet))
+			tagValue = CMStrings.convertHtmlEntities(this.clOverride.getProperty(tagToGet));
+		else
+			tagValue =CMStrings.convertHtmlEntities(this.getProperty(tagToGet));
+		if((tagValue==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+			tagValue=props[MudHost.MAIN_HOST].getStr(tagToGet);
+		if((tagValue==null)||(tagValue.length()==0))
 			return defaultVal;
-		return thisTag;
+		return tagValue;
 	}
 
 	/** retrieve particular .ini file entrys as a string array
@@ -2623,6 +2644,8 @@ public class CMProps extends Properties
 		setVar(Str.ESC8,getStr("ESCAPE8"));
 		setVar(Str.ESC9,getStr("ESCAPE9"));
 		setVar(Str.MSPPATH,getStr("SOUNDPATH"),false);
+		if((getStr("MUD_NAME")!=null) && (getStr("MUD_NAME").length()>0))
+			CMProps.setUpLowVar(CMProps.Str.MUD_NAME, getStr("MUD_NAME"));
 		setVar(Str.AUTOPURGE,getStr("AUTOPURGE"));
 		setIntVar(Int.ACCOUNTPURGEDAYS,getStr("ACCOUNTPURGE"),14);
 		setVar(Str.IDLETIMERS,getStr("IDLETIMERS"));
