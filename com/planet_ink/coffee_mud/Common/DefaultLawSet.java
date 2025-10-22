@@ -94,8 +94,11 @@ public class DefaultLawSet implements Law
 	private final List<List<String>>	otherCrimes		= new Vector<List<String>>();
 	private final List<String[]>		otherBits		= new Vector<String[]>();
 	private final Map<String, String[]>	abilityCrimes	= new Hashtable<String, String[]>();
+	private final Map<String, String[]>	abilityCrimeCash= new TreeMap<String, String[]>();
+	private final Map<String, String[]>	affectCrimeCash	= new TreeMap<String, String[]>();
 	private final Map<String, String[]>	basicCrimes		= new Hashtable<String, String[]>();
 	private final Map<String, Object>	taxLaws			= new Hashtable<String, Object>();
+	private final static String[]		emptyLaw		= new String[0];
 
 	private final List<Pair<List<String>,String[]>>		bannedStuff= new Vector<Pair<List<String>,String[]>>();
 
@@ -284,6 +287,53 @@ public class DefaultLawSet implements Law
 	public Integer[] jailTimes()
 	{
 		return jailTimes;
+	}
+
+	@Override
+	public String[] findAffectCrime(final Ability A)
+	{
+		final String[] O = affectCrimeCash.get(A.ID());
+		if(O != null)
+			return (O.length>0) ? O : null;
+		String[] info=abilityCrimes().get("$"+A.ID().toUpperCase());
+		if(info==null)
+			info=abilityCrimes().get("$"+CMLib.flags().getAbilityType_(A));
+		if(info==null)
+			info=abilityCrimes().get("$"+CMLib.flags().getAbilityDomain(A));
+		if(info == null)
+		{
+			affectCrimeCash.put(A.ID(), emptyLaw);
+			return null;
+		}
+		else
+		{
+			affectCrimeCash.put(A.ID(), info);
+			return info;
+		}
+	}
+
+
+	@Override
+	public String[] findAbilityCrime(final Ability A)
+	{
+		final String[] O = abilityCrimeCash.get(A.ID());
+		if(O != null)
+			return (O.length>0) ? O : null;
+		String[] info=abilityCrimes().get(A.ID().toUpperCase());
+		if(info==null)
+			info=abilityCrimes().get(CMLib.flags().getAbilityType_(A));
+		if(info==null)
+			info=abilityCrimes().get(CMLib.flags().getAbilityDomain(A));
+		if(info == null)
+		{
+			abilityCrimeCash.put(A.ID(), emptyLaw);
+			return null;
+		}
+		else
+		{
+			abilityCrimeCash.put(A.ID(), info);
+			return info;
+		}
 	}
 
 	@Override
@@ -812,6 +862,8 @@ public class DefaultLawSet implements Law
 			basicCrimes.put("PROPERTYROB",getInternalBits(basicLaw));
 
 		abilityCrimes.clear();
+		abilityCrimeCash.clear();
+		affectCrimeCash.clear();
 		otherCrimes.clear();
 		otherBits.clear();
 		bannedStuff.clear();

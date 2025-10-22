@@ -277,6 +277,29 @@ public interface Law extends CMCommon
 	public java.util.Map<String,String[]> abilityCrimes();
 
 	/**
+	 * Returns whether the given Ability is a crime, when actively
+	 * used by someone.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
+	 *
+	 * @param A the Ability
+	 * @return null, or the crime information
+	 */
+	public String[] findAbilityCrime(final Ability A);
+
+	/**
+	 * Returns whether the given Ability is a crime, when found
+	 * as an effect on someone.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#BIT_CRIMENAME
+	 *
+	 * @param A the Ability
+	 * @return null, or the crime information
+	 */
+	public String[] findAffectCrime(final Ability A);
+
+
+	/**
 	 * Method for accessing the crimes, flags, and consequences
 	 * defined as the most basic law.  The returned map is
 	 * indexed by the basic crimes ID, and includes NUDITY, ARMED,
