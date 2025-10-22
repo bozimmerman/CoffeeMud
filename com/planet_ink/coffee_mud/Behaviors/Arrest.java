@@ -65,6 +65,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected Map<String, Object>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, Object>());
 	protected Map<String,Boolean>	bannedItemCache		= new LimitedTreeMap<String,Boolean>(99999,1000,false);
 	protected Set<String>			bannedMOBCheck		= new LimitedTreeSet<String>(60000,250,false);
+	protected Set<MOB>				tickMobsSet			= Collections.synchronizedSet(new HashSet<MOB>());
 	protected String				lawName				= "laws.ini";
 	protected Properties 			extraParms			= new Properties();
 	protected String				extraLawParms		= "";
@@ -2483,49 +2484,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return;
 		if(msg.source()==null)
 			return;
-		if (lastAreaName == null) lastAreaName = myArea.Name();
-
-		// the archons pardon
-		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(msg.sourceMessage()!=null)
-		&&(isAnUltimateAuthorityHere(msg.source(),laws)))
-		{
-			final int x=msg.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
-			if(x>0)
-			{
-				int y=msg.sourceMessage().lastIndexOf('\'');
-				if(y<x)
-					y=msg.sourceMessage().lastIndexOf('`');
-				String name=null;
-				if(y>x)
-					name=msg.sourceMessage().substring(x+16,y).trim();
-				else
-					name=msg.sourceMessage().substring(x+16).trim();
-				if(name.length()>0)
-				{
-					for(final LegalWarrant W : laws.warrants())
-					{
-						if((W.criminal()!=null)&&(CMLib.english().containsString(W.criminal().Name(),name)))
-						{
-							final Ability A=W.criminal().fetchEffect("Prisoner");
-							if(A!=null)
-								A.unInvoke();
-							if(W.jail()!=W.criminal().location())
-							{
-								if(W.arrestingOfficer()!=null)
-									dismissOfficer(W.arrestingOfficer());
-								laws.warrants().remove(W);
-							}
-							else
-							{
-								W.setCrime("pardoned");
-								W.setOffenses(0);
-							}
-						}
-					}
-				}
-			}
-		}
+		if(lastAreaName == null)
+			lastAreaName = myArea.Name();
 
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(msg.tool() instanceof MOB)
@@ -2577,18 +2537,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(R==null)
 			return;
 
+		String[] info;
 		if((msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
-		&&((laws.abilityCrimes().containsKey(msg.tool().ID().toUpperCase()))
-			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityType_((Ability)msg.tool())))
-			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityDomain((Ability)msg.tool()))))
+		&&((info=laws.findAbilityCrime((Ability)msg.tool()))!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
-			String[] info=laws.abilityCrimes().get(msg.tool().ID().toUpperCase());
-			if(info==null)
-				info=laws.abilityCrimes().get(CMLib.flags().getAbilityType_((Ability)msg.tool()));
-			if(info==null)
-				info=laws.abilityCrimes().get(CMLib.flags().getAbilityDomain((Ability)msg.tool()));
 			fillOutWarrant(msg.source(),
 							laws,
 							myArea,
@@ -2600,30 +2554,34 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							info[Law.BIT_WARNMSG]);
 		}
 
-		for(final Enumeration<Ability> a=msg.source().effects();a.hasMoreElements();)
+		tickMobsSet.add(msg.source());
+
+		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
+		&& (msg.source().isPlayer())
+		&& (R!=null))
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)
-			&&(!A.isAutoInvoked())
-			&&((A.canBeUninvoked()||(!msg.source().isMonster())))
-			&&((laws.abilityCrimes().containsKey("$"+A.ID().toUpperCase()))
-				||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityType_(A)))
-				||(laws.abilityCrimes().containsKey("$"+CMLib.flags().getAbilityDomain(A)))))
+			for(final LegalWarrant W : laws.warrants())
 			{
-				String[] info=laws.abilityCrimes().get("$"+A.ID().toUpperCase());
-				if(info==null)
-					info=laws.abilityCrimes().get("$"+CMLib.flags().getAbilityType_(A));
-				if(info==null)
-					info=laws.abilityCrimes().get("$"+CMLib.flags().getAbilityDomain(A));
-				fillOutWarrant(msg.source(),
-								laws,
-								myArea,
-								null,
-								info[Law.BIT_CRIMELOCS],
-								info[Law.BIT_CRIMEFLAGS],
-								info[Law.BIT_CRIMENAME],
-								info[Law.BIT_SENTENCE],
-								info[Law.BIT_WARNMSG]);
+				if((W.criminal()==msg.source())
+				&&(W.arrestingOfficer()!=null)
+				&&(R.isInhabitant(W.arrestingOfficer())))
+				{
+					CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
+					if(laws.basicCrimes().containsKey("RESISTINGARREST"))
+					{
+						info=laws.basicCrimes().get("RESISTINGARREST");
+						fillOutWarrant(msg.source(),
+										laws,
+										myArea,
+										null,
+										info[Law.BIT_CRIMELOCS],
+										info[Law.BIT_CRIMEFLAGS],
+										info[Law.BIT_CRIMENAME],
+										info[Law.BIT_SENTENCE],
+										info[Law.BIT_WARNMSG]);
+					}
+					break;
+				}
 			}
 		}
 
@@ -2671,8 +2629,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(targetIsOfficer
 						&&(W.criminal()==msg.source())
 						&&(W.arrestingOfficer()!=null)
-						&&(W.criminal().location()!=null)
-						&&(W.criminal().location().isInhabitant(W.arrestingOfficer())))
+						&&(R!=null)
+						&&(R.isInhabitant(W.arrestingOfficer())))
 							justResisting=true;
 						else
 						if((!targetIsOfficer)
@@ -2694,7 +2652,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					if(laws.basicCrimes().containsKey("RESISTINGARREST"))
 					{
-						final String[] info=laws.basicCrimes().get("RESISTINGARREST");
+						info=laws.basicCrimes().get("RESISTINGARREST");
 						fillOutWarrant(msg.source(),
 										laws,
 										myArea,
@@ -2742,7 +2700,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				{
 					if(CMLib.english().containsString(msg.othersMessage(),V.get(v)))
 					{
-						final String[] info=laws.otherBits().get(i);
+						info=laws.otherBits().get(i);
 						fillOutWarrant(msg.source(),
 										laws,
 										myArea,
@@ -2816,6 +2774,35 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return true;
 		}
 		final boolean debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST);
+		if(this.tickMobsSet.size()>0)
+		{
+			final List<MOB> list = new ArrayList<MOB>();
+			list.addAll(this.tickMobsSet);
+			this.tickMobsSet.clear();
+			String[] info;
+			for(final MOB M : list)
+			{
+				for(final Enumeration<Ability> a=M.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)
+					&&(!A.isAutoInvoked())
+					&&((A.canBeUninvoked()||(!M.isMonster())))
+					&&((info=laws.findAffectCrime(A))!=null))
+					{
+						fillOutWarrant(M,
+										laws,
+										myArea,
+										null,
+										info[Law.BIT_CRIMELOCS],
+										info[Law.BIT_CRIMEFLAGS],
+										info[Law.BIT_CRIMENAME],
+										info[Law.BIT_SENTENCE],
+										info[Law.BIT_WARNMSG]);
+					}
+				}
+			}
+		}
 
 		laws.propertyTaxTick(myArea,debugging);
 
