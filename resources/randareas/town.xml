@@ -324,8 +324,8 @@ See guides/RandomAreas.html for information about documents of this type.
 					</DESCRIPTION>
 					<DESCRIPTION>The hallway to the rooms is beyond the front desk. $desc_exits</DESCRIPTION>
 				</DESCRIPTION>
-				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
-				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
+				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR != '' AND $ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
+				<EXIT class="Open" condition="$ROOMLINK_DIR == '' OR $ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
 				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
 				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER" condition="$pop_mobs!='false'">
 					<NAME>Innkeeper ${c:fantasy_name1}</NAME>
