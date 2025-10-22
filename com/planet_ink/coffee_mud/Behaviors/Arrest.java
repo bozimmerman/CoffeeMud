@@ -65,7 +65,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected Map<String, Object>	suppressedCrimes	= Collections.synchronizedMap(new TreeMap<String, Object>());
 	protected Map<String,Boolean>	bannedItemCache		= new LimitedTreeMap<String,Boolean>(99999,1000,false);
 	protected Set<String>			bannedMOBCheck		= new LimitedTreeSet<String>(60000,250,false);
-	protected Set<MOB>				tickMobsSet			= Collections.synchronizedSet(new HashSet<MOB>());
+	protected Set<MOB>				tickMobsSet			= new HashSet<MOB>(); // synchronized in Use
 	protected String				lawName				= "laws.ini";
 	protected Properties 			extraParms			= new Properties();
 	protected String				extraLawParms		= "";
@@ -2554,7 +2554,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							info[Law.BIT_WARNMSG]);
 		}
 
-		tickMobsSet.add(msg.source());
+		synchronized(tickMobsSet)
+		{
+			tickMobsSet.add(msg.source());
+		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
 		&& (msg.source().isPlayer())
@@ -2777,8 +2780,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(this.tickMobsSet.size()>0)
 		{
 			final List<MOB> list = new ArrayList<MOB>();
-			list.addAll(this.tickMobsSet);
-			this.tickMobsSet.clear();
+			synchronized(tickMobsSet)
+			{
+				list.addAll(this.tickMobsSet);
+				this.tickMobsSet.clear();
+			}
 			String[] info;
 			for(final MOB M : list)
 			{
@@ -3131,7 +3137,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						makePeace(officer.location());
 						CMLib.commands().postStand(W.criminal(),true, false);
 						W.setTravelAttemptTime(System.currentTimeMillis());
-						if(startTracking(officer,W.jail()))
+						if(destR==officer.location())
+						{
+							makePeace(officer.location());
+							W.setState(Law.STATE_REPORTING);
+						}
+						else
+						if(startTracking(officer,W.jail())) // 'jail' is the judge location here
 							makePeace(officer.location());
 						else
 						{
