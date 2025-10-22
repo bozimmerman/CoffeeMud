@@ -2,6 +2,8 @@ BUGS/UNTESTED STUFF:
 
 TECH TODO:
    *. make warp engines -- see tech doc
+   *. jump gates (min speed 0.05 speed of light, variable for the builders, turn on an off)
+   *. heinlein's jump drives vs space folding
    *. make ship active scanners
    *. make communication system
    *. Improve the Rocket Ship Programs user interface, especially plugins
