@@ -2095,60 +2095,23 @@ public class MUD extends Thread implements MudHost
 			}
 			page.put(skey,clArgs.get(key));
 		}
-		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))
+		if((nameID.length()==0)
+		||(nameID.equalsIgnoreCase( "CoffeeMud"))
+		||nameID.equalsIgnoreCase("Your Muds Name"))
 		{
-			final StringBuilder sb = new StringBuilder();
-			try
-			{
-				MessageDigest md;
-				md = MessageDigest.getInstance("SHA-256");
-				try
-				{
-					md.update(InetAddress.getLocalHost().getHostName().getBytes());
-				} catch(final Exception e){}
-				try
-				{
-					md.update(System.getenv("PROCESSOR_IDENTIFIER").getBytes());
-				} catch(final Exception e){}
-				for(final File F : File.listRoots())
-					md.update(F.getAbsolutePath().getBytes());
-				md.update(System.getProperty("os.name").getBytes());
-				try
-				{
-					for(final Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
-					{
-						final NetworkInterface n = e.nextElement();
-						md.update(n.getDisplayName().getBytes());
-						final byte[] mac = n.getHardwareAddress();
-						if(mac!=null)
-							md.update(mac);
-					}
-				} catch(final Exception e){}
-				final byte[] digest = md.digest();
-				int number = 0;
-				for(int b=0;b<digest.length;b+=4)
-				{
-					final int x = (digest[b+0] << 24) | (digest[b+1] << 16) | (digest[b+2] << 8) | digest[b+3];
-					number ^= x;
-				}
-				sb.append(Integer.toHexString(number));
-			}
-			catch(final Exception e)
-			{
-				sb.append(Integer.toHexString(new Random().nextInt()));
-			}
-			nameID="Unnamed_CM_"+sb.toString();
+			nameID = CMProps.getFakeMudName();
 			if((page != null)
 			&& page.containsKey("MUD_NAME")
 			&& (page.getStr("MUD_NAME") != null)
 			&& (page.getStr("MUD_NAME").toString().trim().length()>0))
+			{
 				nameID = page.getStr("MUD_NAME").toString().trim().replace('\'', '`');
+				if(nameID.equalsIgnoreCase("CoffeeMud"))
+					nameID = CMProps.getFakeMudName();
+			}
 			else
 				System.err.println("*** Please give your mud a unique name!***");
 		}
-		else
-		if(nameID.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman" ))
-			nameID="CoffeeMud";
 		if ((page==null)||(!page.isLoaded()))
 		{
 			Log.instance().configureLogFile("mud",1);
@@ -2189,7 +2152,9 @@ public class MUD extends Thread implements MudHost
 				&& (myPage.get("MUD_NAME") != null)
 				&& (myPage.get("MUD_NAME").toString().trim().length()>0))
 				{
-					final String myName = myPage.get("MUD_NAME").toString().trim().replace('\'', '`');
+					String myName = myPage.get("MUD_NAME").toString().trim().replace('\'', '`');
+					if(myName.equalsIgnoreCase("CoffeeMud"))
+						myName = CMProps.getFakeMudName();
 					if(!usedNames.contains(myName))
 						mudName = myName;
 					usedNames.add(myName);

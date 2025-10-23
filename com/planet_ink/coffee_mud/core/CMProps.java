@@ -19,8 +19,12 @@ import java.util.regex.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.security.MessageDigest;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -1308,7 +1312,7 @@ public class CMProps extends Properties
 			{
 				if(c == Str.class)
 				{
-					p().sysVars[((Str)CMath.s_valueOf(c, varName)).ordinal()] = value;
+					CMProps.setVar((Str)CMath.s_valueOf(c, varName), value);
 					return true;
 				}
 				else
@@ -1701,6 +1705,19 @@ public class CMProps extends Properties
 			return ;
 		if(val==null)
 			val="";
+		if(varNum == Str.MUD_NAME)
+		{
+			final String oldVal = props.sysVars[varNum.ordinal()];
+			if((oldVal!=null)
+			&&oldVal.equalsIgnoreCase("CoffeeMud"))
+			{
+				if(val.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman"))
+					val="CoffeeMud";
+			}
+			else
+			if(val.equalsIgnoreCase("CoffeeMud"))
+				return;
+		}
 		props.sysVars[varNum.ordinal()]=val;
 		if(varNum==Str.PKILL)
 		{
@@ -3749,6 +3766,56 @@ public class CMProps extends Properties
 			final String deferXPMask=ln;
 			CMProps.setVar(Str.EXPDEFER_MASK, deferXPMask.toUpperCase());
 		}
+	}
+
+	/**
+	 * Builds a machine-specific mud name and returns it.
+	 *
+	 * @return fake mud name
+	 */
+	public static String getFakeMudName()
+	{
+		final StringBuilder sb = new StringBuilder();
+		try
+		{
+			MessageDigest md;
+			md = MessageDigest.getInstance("SHA-256");
+			try
+			{
+				md.update(InetAddress.getLocalHost().getHostName().getBytes());
+			} catch(final Exception e){}
+			try
+			{
+				md.update(System.getenv("PROCESSOR_IDENTIFIER").getBytes());
+			} catch(final Exception e){}
+			for(final File F : File.listRoots())
+				md.update(F.getAbsolutePath().getBytes());
+			md.update(System.getProperty("os.name").getBytes());
+			try
+			{
+				for(final Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
+				{
+					final NetworkInterface n = e.nextElement();
+					md.update(n.getDisplayName().getBytes());
+					final byte[] mac = n.getHardwareAddress();
+					if(mac!=null)
+						md.update(mac);
+				}
+			} catch(final Exception e){}
+			final byte[] digest = md.digest();
+			int number = 0;
+			for(int b=0;b<digest.length;b+=4)
+			{
+				final int x = (digest[b+0] << 24) | (digest[b+1] << 16) | (digest[b+2] << 8) | digest[b+3];
+				number ^= x;
+			}
+			sb.append(Integer.toHexString(number));
+		}
+		catch(final Exception e)
+		{
+			sb.append(Integer.toHexString(new Random().nextInt()));
+		}
+		return "Unnamed_CM_"+sb.toString();
 	}
 
 	/**
