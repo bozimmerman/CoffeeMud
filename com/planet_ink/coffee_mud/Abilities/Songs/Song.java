@@ -599,6 +599,8 @@ public class Song extends StdAbility
 					{
 						final MOB follower=(MOB)element;
 						final Room R2=follower.location();
+						if(R2==null)
+							continue;
 
 						// malicious songs must not affect the invoker!
 						int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -617,9 +619,9 @@ public class Song extends StdAbility
 							final CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
+							if((R.okMessage(mob,msg2))&&(R2.okMessage(mob,msg3)))
 							{
-								R2.send(follower,msg2);
+								R.send(follower,msg2);
 								if(msg2.value()<=0)
 								{
 									R2.send(follower,msg3);
