@@ -11,6 +11,7 @@
 		<echo>upgrade-jar builds a stand-alone runnable jar for upgrading CoffeeMud</echo>
 	</target>
 	<target name="compile">
+		<echo message="Using JDK version: ${java.version} from ${java.home}"/>
 		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.8" source="1.8" debug="on" memoryMaximumSize="1024m" fork="on" includeantruntime="false">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
@@ -18,6 +19,7 @@
 	</target>
 	<target name="doc">
 		<echo>Beginning Javadoc generation</echo>
+		<echo message="Using JDK version: ${java.version} from ${java.home}"/>
 		<javadoc sourcepath="." classpath=".;./lib/js.jar;./lib/jzlib.jar" destdir=".\docs" packagenames="com\planet_ink\coffee_mud.*" maxmemory="1024m" verbose="on" linksource="yes" source="1.8" author="true" version="true" use="true"/>
 		<echo>Javadoc generation complete.</echo>
 	</target>
