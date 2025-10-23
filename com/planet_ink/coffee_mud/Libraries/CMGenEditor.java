@@ -9608,6 +9608,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can bundle"),"CANBUNDLE");
 			promptStatBool(mob,me,null,++showNumber,showFlag,L("Can sit"),"CANSIT");
 			promptStatBool(mob,me,null,++showNumber,showFlag,L("Need fire"),"NEEDFIRE");
+			promptStatBool(mob,me,null,++showNumber,showFlag,L("No hardness nonus"),"NOHARDBONUS");
 			promptStatStr(mob,me,null,++showNumber,showFlag,L("MSP file"),"SOUND",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,L("Help Text"),"HELP",true);
 

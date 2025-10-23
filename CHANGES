@@ -37,7 +37,7 @@
  36. New Scriptable triggers: WEARING_PROG, RIDE_PROG, RIDING_PROG
  37. Room varies now supports varying the room description by entry direction.
  38. New Archon skill: LLMIFY, for making LLM-powered mobs, if you can.
- 39. GenCraftingSkill now supports a fire requirement.
+ 39. GenCraftingSkill now supports a fire requirement, and can skip mat. hardness bonus.
  40. New Endow Gemstones and Jewelry recipes, Poisons list expanded.
  41. New large rideables: GenAirShip, GenBalloon
  42, AHELP can now be used by archons to get help on MP commands.
@@ -50,6 +50,7 @@
  49. Scriptable: FOR-NEXT can now loop over lists MQL query results, and tagged objects.
  50. The entire MUDGrinder and web system uses cookie-based auth now, and forum reads use GET instead of POST.
  51. When MXP is enabled, MUD will now wrap httpx:// urls into anchors for the client.
+ 52. The Installation Guide has been modified extensively.  It's worth a new look
 
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)

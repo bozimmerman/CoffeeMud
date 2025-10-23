@@ -262,6 +262,14 @@
                 </TD>
             </TR>
             <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>No Hardness Bonus: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=NOHARDBONUS @AbilityData?NOHARDBONUS@>
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
                 <TD>
                     <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>

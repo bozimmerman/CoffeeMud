@@ -169,6 +169,8 @@ public class GrinderAbilities
 		A.setStat("CANSIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("NEEDFIRE");
 		A.setStat("NEEDFIRE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+		old=httpReq.getUrlParameter("NOHARDBONUS");
+		A.setStat("NOHARDBONUS",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("ISCOSMETIC");
 		A.setStat("ISCOSMETIC",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("SOUND");

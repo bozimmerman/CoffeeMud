@@ -87,6 +87,7 @@ public class Chant_EndowIounStone extends Chant implements ItemCraftor
 			A.setStat("CANBUNDLE", "false");
 			A.setStat("SOUND", "true");
 			A.setStat("CANSIT", "true");
+			A.setStat("NOHARDBONUS", "true");
 			//A.setStat("SOUND", "true");
 			skillA=A;
 		}

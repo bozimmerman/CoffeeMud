@@ -77,7 +77,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int	V_SOND			= 9;	// S
 	private static final int	V_CNST			= 10;	// B
 	private static final int	V_FIRE			= 11;	// B
-	private static final int	NUM_VS			= 12;	// S
+	private static final int	V_HARD			= 12;	// B
+	private static final int	NUM_VS			= 13;	// S
 
 	//
 
@@ -135,6 +136,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		O[V_SOND]="sawing.wav";
 		O[V_CNST]=Boolean.valueOf(false);
 		O[V_FIRE]=Boolean.valueOf(false);
+		O[V_HARD]=Boolean.valueOf(false);
 		return O;
 	}
 
@@ -236,6 +238,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 										 "SOUND",//11S
 										 "CANSIT",//12S
 										 "NEEDFIRE",//13B
+										 "NOHARDBONUS",//14B
 										};
 
 	@Override
@@ -299,6 +302,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			return Boolean.toString(((Boolean) V(ID, V_CNST)).booleanValue());
 		case 13:
 			return this.isFireRequired()?"true":"false";
+		case 14:
+			return this.skipHardnessBonus()?"true":"false";
 		default:
 			if (code.equalsIgnoreCase("javaclass"))
 				return "GenCraftSkill";
@@ -378,6 +383,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 13:
 			SV(ID, V_FIRE, Boolean.valueOf(CMath.s_bool(val)));
 			break;
+		case 14:
+			SV(ID, V_HARD, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill"))
 				parseAllXML(val);
@@ -450,6 +458,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	protected boolean isFireRequired()
 	{
 		return ((Boolean)V(ID,V_FIRE)).booleanValue();
+	}
+
+	protected boolean skipHardnessBonus()
+	{
+		return ((Boolean)V(ID,V_HARD)).booleanValue();
 	}
 
 	@Override
@@ -870,7 +883,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(numRequired, data[1][FOUND_CODE], bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
+			final int hardness=skipHardnessBonus()?0:(RawMaterial.CODES.HARDNESS(buildingI.material())-3);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);

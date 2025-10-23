@@ -1069,6 +1069,15 @@ public class AbilityData extends StdWebMacro
 						old=old.equalsIgnoreCase("on")?"true":"false";
 					str.append(old.equalsIgnoreCase("true")?"checked":"");
 				}
+				if(parms.containsKey("NOHARDBONUS"))
+				{
+					String old=httpReq.getUrlParameter("NOHARDBONUS");
+					if(old==null)
+						old=A.getStat("NOHARDBONUS");
+					else
+						old=old.equalsIgnoreCase("on")?"true":"false";
+					str.append(old.equalsIgnoreCase("true")?"checked":"");
+				}
 				if(parms.containsKey("ISCOSMETIC"))
 				{
 					String old=httpReq.getUrlParameter("ISCOSMETIC");
