@@ -108,13 +108,13 @@ public class MOTD extends StdCommand
 				multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_NEWS", false, max));
 				if(max>multiJournal.size())
 					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CoffeeMud News", false, max-multiJournal.size())); // deprecated
+				// now have a list of all messages, with newest at top, sorted downward so oldest at the bottom.
 
-
+				final int firstToShow = (oldOk && (max<multiJournal.size()-1)) ? max : multiJournal.size()-1;
 				//should read these descending, trim to the max, then iterate.
-				for(final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal)
-						;entries.hasNext() && (max>=0); max--)
+				for(int i=firstToShow;i>=0 && (max>0);i--)
 				{
-					final JournalEntry entry=entries.next();
+					final JournalEntry entry=multiJournal.get(i);
 					final String from=entry.from();
 					final long last=entry.date();
 					String to=entry.to();
@@ -123,6 +123,7 @@ public class MOTD extends StdCommand
 					final long compdate=entry.update();
 					if((compdate>pStats.getLastDateTime())||(oldOk))
 					{
+						max--;
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
 										||from.equalsIgnoreCase(mob.Name());
 						if(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true))
