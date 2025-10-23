@@ -2759,10 +2759,18 @@ public class CMMap extends StdLibrary implements WorldMap
 										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob is being ignored."));
 								}
 								else
+								if(startR==null)
 								{
 									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 									+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
 									mob.destroy();
+								}
+								else
+								{
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
+									+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  Sent home."));
+									R.delInhabitant(mob);
+									mob.bringToLife(startR, true);
 								}
 							}
 							else
