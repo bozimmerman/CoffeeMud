@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.11</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
+</head>
 <body>
 <!--lynx -dump -width=80 http://coffeemud.net:27777/pub/guides/InstallationGuide.html > install.txt-->
 <center>
@@ -44,7 +46,8 @@ Troubleshooting</a></li>
 <td style="text-align: left;" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
 <h2><a name="installation">Installation</a></h2>
 CoffeeMud can be installed using a variety of methods on a variety of
-platforms. &nbsp;See below for the option that suits you best. &nbsp;If you are upgrading from a previous version of
+platforms. &nbsp;See below for the option that suits you best.
+&nbsp;If you are upgrading from a previous version of
 CoffeeMud, you need to stop here and skip ahead to the section on
 upgrading. If this is your first installation, keep reading.
 <p><span style="font-weight: bold;">Installing
@@ -61,8 +64,8 @@ folder typically. &nbsp;Using File Explorer, go there, open the
 mud.log file and make sure it started up ok before proceeding.</p>
 <p><span style="font-weight: bold;">Installing
 using the RPM Package (Fedora/Red Hat Linux)</span></p>
-<p>Install the rpm package on your redhat-based
-distribution using the rpm command line:</p>
+<p>Install the rpm package on your Red Hat-based
+distribution using the dnf command line:</p>
 <p style="font-family: monospace;">sudo dnf install
 ./coffeemud-5.10.99.91-1.noarch.rpm</p>
 <p>This will extract the server to the /opt/coffeemud
@@ -118,7 +121,8 @@ Congratulations: You have successfully installed CoffeeMud.</p>
 and
 components of the CoffeeMud server or use a real database instead of
 the sample fakedb included.&nbsp; If so, by all means, continue
-reading this document. If you couldn't care less, then go into the your
+reading this document. If you couldn't care less, then go
+into&nbsp;your
 CoffeeMud directory on a command line or DOS prompt and enter (for
 Windows or DOS users):</p>
 <p><code>mud.bat</code></p>
@@ -150,7 +154,8 @@ into your database right away. If so, you should enter:</p>
 <pre>ahelp import<br /></pre>
 <p>This will tell you how to import *.CMARE files, which
 are
-CoffeeMud formatted area files.&nbsp;Other formats are supported as
+pre-built CoffeeMud formatted Area files.&nbsp;Other formats are
+supported as
 well.
 &nbsp;Another way to quickly see some content in your mud is to
 enter
@@ -170,7 +175,10 @@ engine, you should do the following:</p>
 <li>Go through the <a href="../coffeemud.ini">coffeemud.ini</a>
 file, and use the <a href="MUDGrinder.html">MudGrinders</a>
 Control
-Panel.</li><ul><li>Set your MUD_NAME field.</li></ul>
+Panel.</li>
+<ul>
+<li>Set your MUD_NAME field.</li>
+</ul>
 <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
 <ul>
 <li>Set your DOMAIN field</li>
@@ -223,7 +231,7 @@ old manual way.</p>
 Auto-Magic Way</span></p>
 <p><span style="font-weight: bold;"></span>First,
 shut down your mud and back up your existing
-installation. &nbsp;I usally zip up the
+installation. &nbsp;I usually zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
 aside.</p>
 <p>Next, for Windows users, run the:</p>
@@ -269,7 +277,7 @@ upgrade tool fails OR you just lack confidence in automagic, you can
 instead proceed to the manual way; otherwise, you are done and ready to
 run your new version of CoffeeMud!</p>
 <p><span style="font-weight: bold;">The
-Manuall Way</span></p>
+Manual Way</span></p>
 <p>First, shut down your mud and back up your existing
 installation. &nbsp;I usally zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
@@ -299,7 +307,8 @@ that
 differ from the new one. The idea here is that the new coffeemud.ini
 file may contain new settings you need to be aware of. However, your
 old custom settings will still apply in the new version -- especially
-your database settings.</p>
+your database settings. &nbsp;Tools for merging include things like
+meld, diff, WinMerge, etc.</p>
 <p>Copy your intro.txt on top of the one from the new
 build, and merge any other files back into their counterparts in the
 new build.</p>
@@ -340,7 +349,8 @@ web site.</p>
 <li>MUD_NAME<br />
 <br />
 This is probably the first thing you'll want to change. &nbsp;Make
-it unique!<br /><br />
+it unique!<br />
+<br />
 </li>
 <li><span class="bold">SYSMSGS, ERRMSGS,
 WRNMSGS, DBGMSGS,
@@ -505,7 +515,8 @@ for fakedb, and thus blank by default.</p>
 <p>This is the number of independent connections to
 make to
 the database through your JDBC/ODBC driver. 1 or 2 is plenty. CoffeeMud
-is not especially database intensive.</p>
+is not especially database intensive, but 4-10 is best if you plan on
+heavier loads.</p>
 </li>
 <li> <span class="bold">DBREUSE,
 DBPINGINTERVALS</span>
@@ -548,8 +559,7 @@ other information.</p>
 <p><code>java -classpath
 ".:./lib/js.jar:./lib/jzlib.jar
 -Xmx256m com.planet_ink.coffee_mud.application.MUD
-boot=coffeemud1.ini boot=coffeemud2.ini "Your Two-Headed Muds Common
-Name"</code></p>
+boot=coffeemud1.ini boot=coffeemud2.ini</code></p>
 <p>The first BOOT parameter is considered by the CoffeeMud
 Engine
 to be the Primary Host (HOST0), and any game resources that are shared
@@ -2439,12 +2449,12 @@ database systems have native JDBC Drivers which may be used.
 "mysql-connector-java-2.0.14-bin.jar"). &nbsp;This jar file should
 be
 added to your mud.bat or mud.sh classpath. &nbsp;For example:</p>
-<p style="font-family: monospace;" class=""><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;"></span></span>nohup
-java -classpath ".:./lib/js.jar:./lib/jzlib.jar<span style="font-weight: bold;">:/path/to/mysql-connector-java-2.0.14-bin.jar</span>"
+<p><span style="font-family: monospace;" class="">nohup
+java -classpath ".:./lib/js.jar:./lib/jzlib.jar</span><span style="font-weight: bold; font-family: monospace;">:/path/to/mysql-connector-java-2.0.14-bin.jar"</span>
 ...</p>
-or<br />
-<br />
-<span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">java<br /><br /><br /><br /><br /><br /><br /><br />-<span style="text-decoration: underline;">classpath</span><br /><br /><br /><br /><br /><br /><br /><br />".;.\<span style="text-decoration: underline;">lib</span>\js.jar;.\<span style="text-decoration: underline;">lib</span>\jzlib.jar<span style="font-weight: bold;">;</span></span></span><span style="font-family: monospace; font-weight: bold;">\path\to\mysql-connector-java-2.0.14-bin.jar</span><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">"<br /><br /><br /><br /><br /><br /><br /><br />...</span></span>
+or
+<p><span style="font-family: monospace;" class="">java
+-classpath ".;.\lib\js.jar;.\lib\jzlib.jar;</span><span style="font-family: monospace; font-weight: bold;">\path\to\mysql-connector-java-2.0.14-bin.jar</span>...</p>
 <p>Your next step is to make CoffeeMud aware of your
 database in your coffeemud.ini file:</p>
 <p>######################################################################<br />
@@ -2651,7 +2661,7 @@ above to the classpath string. &nbsp;For example:</li>
 <ul>
 <li><span style="font-family: monospace;">java
 -classpath
-".;.\lib\js.jar;.\lib\jzlib.jar<span style="font-weight: bold;">;.\lib\</span></span><span style="font-family: monospace; font-weight: bold;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
+".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span style="font-family: monospace; font-weight: bold;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
 <li>** Your version of the connector jar file may vary!</li>
 </ul>
 <li>
@@ -2978,7 +2988,7 @@ versions as a guide. &nbsp;It will dynamically compare the old and
 new fakedb schemas to figure out exactly what data to copy.</p>
 <p>The steps to using DBCopy are to </p>
 <ol>
-<li>&nbsp;Make sure you have the file
+<li>Backup your Database</li><li>Make sure you have the file
 /path/to/CoffeeMud/guides/datatabase/fakedb.schema from both the OLD
 version and the NEW version of your server. &nbsp;Don't mix them
 up!
