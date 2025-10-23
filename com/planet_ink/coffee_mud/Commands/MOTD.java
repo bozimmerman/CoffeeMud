@@ -80,12 +80,14 @@ public class MOTD extends StdCommand
 		}
 		else
 			commands=DEFAULT_CMD;
-		int max=5;
+		final int max;
 		if((commands.size()>2)&&(CMath.isInteger(commands.get(commands.size()-1))))
 		{
 			max=CMath.s_int(commands.get(commands.size()-1));
 			commands.remove(commands.size()-1);
 		}
+		else
+			max=5;
 		final String parm=CMParms.combine(commands,1).toUpperCase();
 		oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
 		final PlayerStats pStats = mob.playerStats();
@@ -109,10 +111,20 @@ public class MOTD extends StdCommand
 				if(max>multiJournal.size())
 					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CoffeeMud News", false, max-multiJournal.size())); // deprecated
 				// now have a list of all messages, with newest at top, sorted downward so oldest at the bottom.
+				if(!oldOk)
+				{
+					for(final Iterator<JournalEntry> i=multiJournal.iterator();i.hasNext();)
+					{
+						final JournalEntry E = i.next();
+						final long compdate=E.update();
+						if(compdate<pStats.getLastDateTime())
+							i.remove();
+					}
+				}
 
-				final int firstToShow = (oldOk && (max<multiJournal.size()-1)) ? max : multiJournal.size()-1;
+				int firstToShow = (max-1<multiJournal.size()-1) ? max-1 : multiJournal.size()-1;
 				//should read these descending, trim to the max, then iterate.
-				for(int i=firstToShow;i>=0 && (max>0);i--)
+				for(int i=firstToShow;i>=0;i--)
 				{
 					final JournalEntry entry=multiJournal.get(i);
 					final String from=entry.from();
@@ -120,27 +132,22 @@ public class MOTD extends StdCommand
 					String to=entry.to();
 					final String subject=entry.subj();
 					String message=entry.msg();
-					final long compdate=entry.update();
-					if((compdate>pStats.getLastDateTime())||(oldOk))
+					boolean allMine=to.equalsIgnoreCase(mob.Name())
+									||from.equalsIgnoreCase(mob.Name());
+					if(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true))
 					{
-						max--;
-						boolean allMine=to.equalsIgnoreCase(mob.Name())
-										||from.equalsIgnoreCase(mob.Name());
-						if(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true))
-						{
-							allMine=true;
-							to=CMLib.masking().maskDesc(to.trim().substring(5),true);
-						}
-						if(to.equalsIgnoreCase("ALL")||allMine)
-						{
-							if(message.startsWith("<cmvp>"))
-								message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
-							buf.append("\n\rNews: "+CMLib.time().date2String(last)
-									 +"\n\rFROM: "+CMStrings.padRight(from,15)
-									 +"\n\rTO  : "+CMStrings.padRight(to,15)
-									 +"\n\rSUBJ: "+subject+"\n\r"+message);
-							buf.append("\n\r--------------------------------------\n\r");
-						}
+						allMine=true;
+						to=CMLib.masking().maskDesc(to.trim().substring(5),true);
+					}
+					if(to.equalsIgnoreCase("ALL")||allMine)
+					{
+						if(message.startsWith("<cmvp>"))
+							message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
+						buf.append("\n\rNews: "+CMLib.time().date2String(last)
+								 +"\n\rFROM: "+CMStrings.padRight(from,15)
+								 +"\n\rTO  : "+CMStrings.padRight(to,15)
+								 +"\n\rSUBJ: "+subject+"\n\r"+message);
+						buf.append("\n\r--------------------------------------\n\r");
 					}
 				}
 
@@ -148,10 +155,10 @@ public class MOTD extends StdCommand
 				{
 					multiJournal.clear();
 					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CLAN_MOTD_"+clanPair.first.clanID(), false, max));
-					for(final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal)
-							;entries.hasNext() && (max>=0); max--)
+					firstToShow = (max-1<multiJournal.size()-1) ? max-1 : multiJournal.size()-1;
+					for(int i=firstToShow;i>=0;i--)
 					{
-						final JournalEntry entry=entries.next();
+						final JournalEntry entry=multiJournal.get(i);
 						final String subject=entry.subj();
 						final String message=entry.msg();
 						buf.append("\n\r"+subject+":^N\n\r"+message);
@@ -375,12 +382,12 @@ public class MOTD extends StdCommand
 							if(sub.startsWith(" C :"))
 							{
 								sub=sub.substring(4).trim();
-								final int cn = CMLib.channels().getChannelIndex(sub);
-								final int lowestIndex = CMLib.channels().getChannelQueIndex(cn, mob, pStats.getLastDateTime());
+								final int chanIdx = CMLib.channels().getChannelIndex(sub);
+								final int lowestIndex = CMLib.channels().getChannelQueIndex(chanIdx, mob, pStats.getLastDateTime());
 								if(lowestIndex >= 0)
 								{
-									final String channelName = CMLib.channels().getChannel(cn).name();
-									final int lastIndex = CMLib.channels().getChannelQuePageEnd(cn, mob);
+									final String channelName = CMLib.channels().getChannel(chanIdx).name();
+									final int lastIndex = CMLib.channels().getChannelQuePageEnd(chanIdx, mob);
 									session.println(L("You missed the last @x1 message(s) on the @x2 channel.",""+(lastIndex-lowestIndex)+1,channelName));
 									/*
 									final Command C = CMClass.getCommand("Channel");
