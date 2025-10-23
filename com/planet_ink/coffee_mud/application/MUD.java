@@ -669,8 +669,6 @@ public class MUD extends Thread implements MudHost
 					final long ellapsed=System.currentTimeMillis()-shutdownStateTime.get();
 					if(ellapsed > SHUTDOWN_TIMEOUT)
 					{
-						if(externalCommand!=null)
-							MUD.execExternalRestart(externalCommand);
 						Log.errOut("** Shutdown timeout. **");
 						final StringBuilder lines=new StringBuilder("");
 						lines.append("\n\r^HThread: ^N"+currentShutdownThread.getName()+"\n\r");
@@ -2250,57 +2248,10 @@ public class MUD extends Thread implements MudHost
 			{
 				if(execExternalCommand!=null)
 				{
-					execExternalRestart(execExternalCommand);
 					execExternalCommand=null;
 					bringDown=true;
 				}
 			}
-		}
-	}
-
-	/**
-	 * Attempts to execute an external restart command. If the command is "hard"
-	 * or null, it will look for a script named "restart.sh" (on Unix) or
-	 * "restart.bat" (on Windows) in the current working directory. Otherwise,
-	 * it will attempt to execute the given command directly.
-	 *
-	 * @param command The command to execute, or "hard"/null to use default
-	 *            scripts
-	 */
-	public static void execExternalRestart(final String command)
-	{
-		final Runtime r=Runtime.getRuntime();
-		try
-		{
-			if((command==null) || (command.equalsIgnoreCase("hard")))
-			{
-				if(new File("./restart.sh").exists())
-				{
-					r.exec("sh restart.sh".split(" "));
-					Log.sysOut("Attempted to execute 'restart.sh' in "+new File(".").getCanonicalPath());
-				}
-				else
-				if(new File(".\\restart.bat").exists())
-				{
-					r.exec(new String[] {"cmd.exe","/c","start","","restart.bat"});
-					Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
-				}
-			}
-			else
-			if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0)
-			{
-				r.exec(new String[] {"cmd.exe","/c","start","",command});
-				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
-			}
-			else
-			{
-				r.exec(new String[] {"sh",command});
-				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
-			}
-		}
-		catch (final IOException e)
-		{
-			Log.errOut(e);
 		}
 	}
 
