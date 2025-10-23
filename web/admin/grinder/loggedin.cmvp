@@ -122,7 +122,8 @@
 <TABLE WIDTH=100% BORDER=0>
 <TR>
 	<TD VALIGN=TOP WIDTH=33%>
-		<a href="javascript:openplayers();"><FONT COLOR=WHITE ALIGN=LEFT>@NUMPLAYERS@ players online</FONT></a>
+		<font color=WHITE>@MudInfo?NAME@</font>&nbsp;
+		<a href="javascript:openplayers();"><FONT COLOR=GRAY ALIGN=LEFT>@NUMPLAYERS@ players online</FONT></a>
 	</TD>
 	<TD VALIGN=TOP ALIGN=CENTER WIDTH=33%>
 		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
