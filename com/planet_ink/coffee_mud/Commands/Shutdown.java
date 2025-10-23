@@ -210,9 +210,9 @@ public class Shutdown extends StdCommand implements Tickable
 			public void run()
 			{
 				for(final Session S : CMLib.sessions().allIterable())
-					S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 is now @x2!^.^?\n\r",CMProps.getVar(CMProps.Str.MUD_NAME),"shutting down"));
+					S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 is now shutting down!^.^?\n\r",CMProps.getVar(CMProps.Str.MUD_NAME)));
 				Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
-				mob.tell(L("Starting @x1...shutdown"));
+				mob.tell(L("Starting @x1...shutdown",CMProps.getVar(CMProps.Str.MUD_NAME)));
 				com.planet_ink.coffee_mud.application.MUD.globalShutdown(mob.session(),false,"");
 			}
 		}.start();
