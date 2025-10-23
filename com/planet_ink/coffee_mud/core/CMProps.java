@@ -1711,7 +1711,9 @@ public class CMProps extends Properties
 			if(val.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman"))
 				val="CoffeeMud";
 			else
-			if(val.equalsIgnoreCase("CoffeeMud"))
+			if(val.trim().equalsIgnoreCase("CoffeeMud")
+			||(val.trim().length()==0)
+			||(val.trim().equalsIgnoreCase("Your Muds Name")))
 			{
 				if((oldVal!=null)
 				&&(oldVal.equalsIgnoreCase("CoffeeMud")))
