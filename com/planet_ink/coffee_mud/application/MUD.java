@@ -83,7 +83,7 @@ import java.sql.*;
  */
 public class MUD extends Thread implements MudHost
 {
-	public static final String	  HOST_VERSION	= "5.10.99.91";
+	public static final String	  HOST_VERSION	= "5.11.0";
 
 	/**
 	 * Enumeration of the possible states of the MUD server.

@@ -1,4 +1,4 @@
-# Build 5.11.0 Release ??/??/2025
+# Build 5.11.0 Release 10/23/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
   2. CoffeeMud now integrates with LLMs via LangChain4J.  See installation guide.
   3. New admin command: LLM, for chatting with your AI, and Scriptable has MPLLM
@@ -38,7 +38,7 @@
  37. Room varies now supports varying the room description by entry direction.
  38. New Archon skill: LLMIFY, for making LLM-powered mobs, if you can.
  39. GenCraftingSkill now supports a fire requirement, and can skip mat. hardness bonus.
- 40. New Endow Gemstones and Jewelry recipes, Poisons list expanded.
+ 40. New Endow Gemstones, Ioun Stones, and Jewelry recipes, Poisons list expanded.
  41. New large rideables: GenAirShip, GenBalloon
  42, AHELP can now be used by archons to get help on MP commands.
  43. Falling items can now hit and damage mobs below them, or boardables.
