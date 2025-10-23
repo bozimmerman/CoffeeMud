@@ -1708,15 +1708,17 @@ public class CMProps extends Properties
 		if(varNum == Str.MUD_NAME)
 		{
 			final String oldVal = props.sysVars[varNum.ordinal()];
-			if((oldVal!=null)
-			&&oldVal.equalsIgnoreCase("CoffeeMud"))
-			{
-				if(val.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman"))
-					val="CoffeeMud";
-			}
+			if(val.equalsIgnoreCase("TheRealCoffeeMudCopyright2000-2025ByBoZimmerman"))
+				val="CoffeeMud";
 			else
 			if(val.equalsIgnoreCase("CoffeeMud"))
-				return;
+			{
+				if((oldVal!=null)
+				&&(oldVal.equalsIgnoreCase("CoffeeMud")))
+					return;
+				else
+					val=getFakeMudName();
+			}
 		}
 		props.sysVars[varNum.ordinal()]=val;
 		if(varNum==Str.PKILL)
