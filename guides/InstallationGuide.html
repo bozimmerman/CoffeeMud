@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.11</title>
 
-<title>Installing and Using CoffeeMud 5.11</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
+</head>
 <body>
 <!--lynx -dump -width=80 http://coffeemud.net:27777/pub/guides/InstallationGuide.html > install.txt-->
 <center>
@@ -17,6 +19,7 @@
 <td align="left" valign="top" width="35%">
 <ul>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#start">Getting Started</a></li>
 <li> <a href="#upgrading">Upgrading</a></li>
 <li><a href="#settings">Settings</a></li>
 <li><a href="#multihosts">Multiple Hosts</a></li>
@@ -42,15 +45,65 @@ Troubleshooting</a></li>
 </td>
 <td style="text-align: left;" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
 <h2><a name="installation">Installation</a></h2>
+CoffeeMud can be installed using a variety of methods on a variety of
+platforms. &nbsp;See below for the option that suits you best. &nbsp;If you are upgrading from a previous version of
+CoffeeMud, you need to stop here and skip ahead to the section on
+upgrading. If this is your first installation, keep reading.
+<p><span style="font-weight: bold;">Installing
+using Chocolatey Package (Windows)</span></p>
+<p>From an Administrative DOS command line (cmd.exe) or
+Powershell, or in a Run prompt, enter:<br />
+</p>
+<p style="font-family: monospace;"> choco install
+coffeemud</p>
+<p>After the install, open Windows Services and find the
+CoffeeMud Server service. &nbsp;Right click and select Start.
+&nbsp;You'll find CoffeeMud in the "C:\Program Files\CoffeeMud"
+folder typically. &nbsp;Using File Explorer, go there, open the
+mud.log file and make sure it started up ok before proceeding.</p>
+<p><span style="font-weight: bold;">Installing
+using the RPM Package (Fedora/Red Hat Linux)</span></p>
+<p>Install the rpm package on your redhat-based
+distribution using the rpm command line:</p>
+<p style="font-family: monospace;">sudo dnf install
+./coffeemud-5.10.99.91-1.noarch.rpm</p>
+<p>This will extract the server to the /opt/coffeemud
+directory and create a new 'coffeemud' service.</p>
+<p>Start the service using systemctl:</p>
+<p style="font-family: monospace;">systemctl start
+coffeemud</p>
+<p>Now wait 30 seconds or so and make sure it started up by
+doing:<br />
+</p>
+<p style="font-family: monospace;">systemctl status
+coffeemud</p>
+<p>If all looks well, you are successfully installed.</p>
+<p><span style="font-weight: bold;">Installing
+using the DEB Package (Ubuntu/Debian Linux)</span></p>
+<p>Install the deb package on your debian-based
+distribution using the apt command line:</p>
+<p style="font-family: monospace;">sudo apt install
+./coffeemud-5.10.99.91-1.deb</p>
+<p>This will extract the server to the /opt/coffeemud
+directory and create a new 'coffeemud' service.</p>
+<p>Start the service using systemctl:</p>
+<p style="font-family: monospace;">systemctl start
+coffeemud</p>
+<p>Now wait 30 seconds or so and make sure it started up by
+doing:<br />
+</p>
+<p style="font-family: monospace;">systemctl status
+coffeemud</p>
+<p>If all looks well, you are successfully installed.</p>
+<span style="font-weight: bold;"></span>
+<p><span style="font-weight: bold;">Installing
+from the CoffeeMud*.zip Package (All)</span></p>
 <p>The first and most critical step in installing
 CoffeeMud&nbsp;is to make sure that you have downloaded and
-installed&nbsp;Java&nbsp;SDK/ JDK
-1.8 or
+installed&nbsp;Java&nbsp;SDK/ JDK 1.8 or
 better.&nbsp;You should
-also make sure the "java" command is in your default PATH, and "javac" as well, if you need to re-compile the codebase.</p>
-<p>Now, if you are upgrading from a previous version of
-CoffeeMud, you need to stop here and skip ahead to the section on
-upgrading. If this is your first installation, keep reading.</p>
+also make sure the "java" command is in your default PATH, and "javac"
+as well, if you need to re-compile the codebase.&nbsp;</p>
 <p>Unpack the CoffeeMud.zip package
 into a
 directory on your hard drive. This directory may be called, for
@@ -70,21 +123,20 @@ the sample fakedb included.&nbsp; If so, by all means, continue
 reading this document. If you couldn't care less, then go into the your
 CoffeeMud directory on a command line or DOS prompt and enter (for
 Windows or DOS users):</p>
-<p><code>mud.bat Your Muds Name</code></p>
+<p><code>mud.bat</code></p>
 <p>And for Unix, Linux, or FreeBSD users, the command
 differs
 only in the classpath:</p>
 <p><code>chmod +x mud.sh<br />
-./mud.sh Your Muds Name</code></p>
-<p>This will start up the CoffeeMud server. Remember to
-change
-the "Your Muds Name" to a unique name you want to
-give your mud. If you are running Windows, you might also get away with
-first modifying the file <code>mud.bat</code>
-using your best text editor, and then executing that file.&nbsp;</p>
-<p>You can now connect to the server on port 5555 using your
+./mud.sh</code></p>
+<p>This will start up the CoffeeMud server.</p>
+<h2><a name="start">Getting Started</a></h2>
+<p>You can now connect to the server on port 5555 using
+your
 telnet or
-other MUD client, or by opening <a href="http://localhost:27744">http://localhost:27744</a> in a browser and clicking the Play Now link. &nbsp; Create yourself a new character. This new character
+other MUD client, or by opening <a href="http://localhost:27744">http://localhost:27744</a>
+in a browser and clicking the Play Now link. &nbsp; Create yourself
+a new character. This new character
 will be your administrative player, or Archon, so most of the player
 settings, such as class, race, stats, etc. won't matter much (though I
 would stay away from the Apprentice class). When your
@@ -166,35 +218,60 @@ CoffeeMud</a></h2>
 mostly a
 matter of replacing old code with new code, adding the new files, and
 merging configuration files that you previously changed. &nbsp;That
-said, there are two ways to do it: &nbsp;the new auto-magic way, or the
-old manual way.</p><p><span style="font-weight: bold;">The Auto-Magic Way</span></p><p><span style="font-weight: bold;"></span>First, shut down your mud and back up your existing
+said, there are two ways to do it: &nbsp;the new auto-magic way, or
+the
+old manual way.</p>
+<p><span style="font-weight: bold;">The
+Auto-Magic Way</span></p>
+<p><span style="font-weight: bold;"></span>First,
+shut down your mud and back up your existing
 installation. &nbsp;I usally zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
-aside.</p><p>Next, for Windows users, run the:</p><pre>upgrade.bat</pre><p>and for Linux/Mac users, drop into a shell and run:</p><pre>dos2unix upgrade.sh<br />chmod +x upgrade.sh<br />./upgrade.sh</pre><p>If you are starting from an Unofficial build version, e.g. <span style="font-family: monospace;">5.10.3.2</span>,
+aside.</p>
+<p>Next, for Windows users, run the:</p>
+<pre>upgrade.bat</pre>
+<p>and for Linux/Mac users, drop into a shell and run:</p>
+<pre>dos2unix upgrade.sh<br />chmod +x upgrade.sh<br />./upgrade.sh</pre>
+<p>If you are starting from an Unofficial build version,
+e.g. <span style="font-family: monospace;">5.10.3.2</span>,
 then the upgrade tool will tell you as much, and ask for an official
 build version, recommending the next lowest to yours. &nbsp;You can
-specify an alternative starting version with the <span style="font-family: monospace;">--from=</span> command line argument, for example: <span style="font-family: monospace;">upgrade.bat --from=5.10.3.0</span> or <span style="font-family: monospace;">./upgrade.sh --from=</span><span style="font-family: monospace;">5.10.3.0&nbsp;</span>
+specify an alternative starting version with the <span style="font-family: monospace;">--from=</span> command
+line argument, for example: <span style="font-family: monospace;">upgrade.bat
+--from=5.10.3.0</span> or <span style="font-family: monospace;">./upgrade.sh --from=</span><span style="font-family: monospace;">5.10.3.0&nbsp;</span>
 &nbsp;Be aware that this will cause the upgrade tool to prefer the
 older changes to the latest ones, since it can't tell what the user
-changed or not.</p><p>The
+changed or not.</p>
+<p>The
 upgrade tool will make a backup of your current installation, download
 the latest official version and the base version, unzip them, and check
-your directory for extensive changes. &nbsp;If extensive changes from
+your directory for extensive changes. &nbsp;If extensive changes
+from
 the base version were found, you will get an error message saying as
-much, and will need to specify the <span style="font-family: monospace;">--merge</span> command line argument to allow the tool to proceed, e.g. &nbsp;<span style="font-family: monospace;">upgrade.bat --merge</span> or <span style="font-family: monospace;">./upgrade.sh --merge</span></p><p>The
+much, and will need to specify the <span style="font-family: monospace;">--merge</span> command
+line argument to allow the tool to proceed, e.g. &nbsp;<span style="font-family: monospace;">upgrade.bat --merge</span>
+or <span style="font-family: monospace;">./upgrade.sh
+--merge</span></p>
+<p>The
 upgrade tool will then compile the new version while preserving your
 custom added classes, but overwrite any changed classes with the new
 version, so no java merging occurs.&nbsp;
 It will then merge changes to the various resources, web files, and
 guides.
-&nbsp;The upgrade tool will do its very best to preserve the new data
-and your customized text file changes, but nothing is perfect. &nbsp;I
+&nbsp;The upgrade tool will do its very best to preserve the new
+data
+and your customized text file changes, but nothing is perfect.
+&nbsp;I
 recommend
 inspecting the files with reported conflicts, and testing the holy heck
-out of your mud after doing this. &nbsp;<br /><br />If the
+out of your mud after doing this. &nbsp;<br />
+<br />
+If the
 upgrade tool fails OR you just lack confidence in automagic, you can
 instead proceed to the manual way; otherwise, you are done and ready to
-run your new version of CoffeeMud!</p><p><span style="font-weight: bold;">The Manuall Way</span></p>
+run your new version of CoffeeMud!</p>
+<p><span style="font-weight: bold;">The
+Manuall Way</span></p>
 <p>First, shut down your mud and back up your existing
 installation. &nbsp;I usally zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
@@ -230,8 +307,9 @@ build, and merge any other files back into their counterparts in the
 new build.</p>
 Smile, you are done with the upgrade process. &nbsp;You can now
 start up the new version.<br />
-<br /><span style="color: rgb(0, 153, 0);">
-Note!</span> If the database schema changed between your old and new version,
+<br />
+<span style="color: rgb(0, 153, 0);">Note!</span>
+If the database schema changed between your old and new version,
 CoffeeMud will detect this and upgrade your database. &nbsp;If any
 errors occur during this process, the mud will not start, and you
 should consult the Troubleshooting section under "Using a Real
@@ -261,7 +339,12 @@ they just aren't discussed here. The best way to modify those "other"
 settings is through the Control Panel in the <a href="MUDGrinder.html">MUDGrinder</a>
 web site.</p>
 <ul>
-<li> <span class="bold">SYSMSGS, ERRMSGS,
+<li>MUD_NAME<br />
+<br />
+This is probably the first thing you'll want to change. &nbsp;Make
+it unique!<br /><br />
+</li>
+<li><span class="bold">SYSMSGS, ERRMSGS,
 WRNMSGS, DBGMSGS,
 ACCMSGS, HLPMSGS</span>
 <p>These entries refer to logged system messages,
@@ -617,13 +700,17 @@ instead of its normal listening PORT.</p>
 inside a CoffeeMud connected to the proxy server, you can use the
 PROXYCTL command. &nbsp;It requires the control password that is
 only
-shown when the proxy server is started. &nbsp;Use PROXYCTL LIST to see
+shown when the proxy server is started. &nbsp;Use PROXYCTL LIST to
+see
 the available MPCP commands. You can also send commands from the
 machine running the proxy server by executing the proxy server MUDProxy
 class with the CMD argument, but you must also know the &nbsp;proxy
-client port number,MPCPKEY and the control password: <br /></p><p><code>java -classpath
+client port number,MPCPKEY and the control password: <br />
+</p>
+<p><code>java -classpath
 ".:./lib/js.jar:./lib/jzlib.jar"
--Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code><code> CMD 5555 mympcpkey 10101 LIST</code></p>
+-Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code><code>
+CMD 5555 mympcpkey 10101 LIST</code></p>
 <p></p>
 <p><img style="width: 73px; height: 73px;" src="images/integrations.jpg" alt="packages" /> </p>
 <h2><a name="integrations">Integrations</a></h2>
@@ -2359,7 +2446,7 @@ java -classpath ".:./lib/js.jar:./lib/jzlib.jar<span style="font-weight: bold;">
 ...</p>
 or<br />
 <br />
-<span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">java<br /><br />-<span style="text-decoration: underline;">classpath</span><br /><br />".;.\<span style="text-decoration: underline;">lib</span>\js.jar;.\<span style="text-decoration: underline;">lib</span>\jzlib.jar<span style="font-weight: bold;">;</span></span></span><span style="font-family: monospace; font-weight: bold;">\path\to\mysql-connector-java-2.0.14-bin.jar</span><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">"<br /><br />...</span></span>
+<span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">java<br /><br /><br /><br /><br /><br /><br /><br />-<span style="text-decoration: underline;">classpath</span><br /><br /><br /><br /><br /><br /><br /><br />".;.\<span style="text-decoration: underline;">lib</span>\js.jar;.\<span style="text-decoration: underline;">lib</span>\jzlib.jar<span style="font-weight: bold;">;</span></span></span><span style="font-family: monospace; font-weight: bold;">\path\to\mysql-connector-java-2.0.14-bin.jar</span><span style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255); font-family: monospace;"><span style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-size: 10pt; white-space: pre;">"<br /><br /><br /><br /><br /><br /><br /><br />...</span></span>
 <p>Your next step is to make CoffeeMud aware of your
 database in your coffeemud.ini file:</p>
 <p>######################################################################<br />
@@ -2530,12 +2617,19 @@ affected &lt;0.11sec)" or
 something like that.</p>
 </li>
 <li>
-<p>Ensure the database user (e.g., 'root' in the example below) has
+<p>Ensure the database user (e.g., 'root' in the
+example below) has
 full privileges to create, alter, and drop tables, indexes, and keys in
 the 'coffeemud' database. If using a non-root user, run a command like:
-</p><p><span style="font-family: monospace;">GRANT ALL PRIVILEGES ON coffeemud.* TO 'youruser'@'localhost'; FLUSH PRIVILEGES</span></p></li>
-<li><p>If all went well, you should now have mysql running
-with a blank database ready for population.</p></li>
+</p>
+<p><span style="font-family: monospace;">GRANT
+ALL PRIVILEGES ON coffeemud.* TO 'youruser'@'localhost'; FLUSH
+PRIVILEGES</span></p>
+</li>
+<li>
+<p>If all went well, you should now have mysql running
+with a blank database ready for population.</p>
+</li>
 <li>
 <p>Go back and review the Using a Real Database main
 section.</p>
@@ -2544,8 +2638,12 @@ section.</p>
 <p>Now go to your coffeemud folder and open your
 coffeemud.ini file in a text editor, and look for the
 section that says:</p>
-
-<p><span style="font-family: monospace;">DBCLASS=com.planet_ink.fakedb.Driver</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBSERVICE=jdbc:fakedb:resources/data</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBUSER=</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBPASS=</span><br style="font-family: monospace;" /><span style="font-family: monospace;">DBCONNECTIONS=2</span><br style="font-family: monospace;" />and change it to:</p>
+<p><span style="font-family: monospace;">DBCLASS=com.planet_ink.fakedb.Driver</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">DBSERVICE=jdbc:fakedb:resources/data</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">DBUSER=</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">DBPASS=</span><br style="font-family: monospace;" />
+<span style="font-family: monospace;">DBCONNECTIONS=2</span><br style="font-family: monospace;" />
+and change it to:</p>
 <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=root<br />DBPASS=mypassword (or whatever)<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
 </li>
 <li>Open up the mud.bat file and add the name of the
@@ -2609,9 +2707,11 @@ reason, you can always do a "mysqladmin drop coffeemud".</p>
 <li>
 <p>Create a user for the new database (user in this
 example
-is called coffee). As root, type "mysql" into the shell. Now enter:<br /><span style="font-family: monospace;">
-GRANT ALL ON coffeemud.* TO coffee@localhost IDENTIFIED BY "password";
-</span><br />Enter a password for the user inside the quotes. Now type, "quit".</p>
+is called coffee). As root, type "mysql" into the shell. Now enter:<br />
+<span style="font-family: monospace;">GRANT ALL
+ON coffeemud.* TO coffee@localhost IDENTIFIED BY "password";
+</span><br />
+Enter a password for the user inside the quotes. Now type, "quit".</p>
 </li>
 <li>
 <p>Edit the following settings in
@@ -2665,12 +2765,19 @@ application.</p>
 create the
 database. The final parameter of the URL is the name of the database</p>
 <pre>Type: HSQL Database Engine Standalone<br />Driver: org.hsqldb.jdbcDriver<br />URL: jdbc:hsqldb:file:coffeemud<br />User: &lt;whatever you want&gt;<br />Password: &lt;whatever you want&gt;<br /></pre>
-<p>Now that the values have been filled in click ok.<br /><br />Ensure
+<p>Now that the values have been filled in click ok.<br />
+<br />
+Ensure
 the database user (e.g., 'sa' in the example configuration below) has
 privileges to create, alter, and drop tables, indexes, and keys. In
 HSQLDB standalone mode, the default admin user like 'sa' has these
 privileges automatically; if using a custom user, connect to the
-database and run SQL like: <br /><span style="font-family: monospace;">CREATE USER youruser PASSWORD 'yourpass'; followed by SET SCHEMA PUBLIC; GRANT DBA TO youruser; </span><br />to assign full admin rights.<br /></p>
+database and run SQL like: <br />
+<span style="font-family: monospace;">CREATE
+USER youruser PASSWORD 'yourpass'; followed by SET SCHEMA PUBLIC; GRANT
+DBA TO youruser; </span><br />
+to assign full admin rights.<br />
+</p>
 <p>Now to shutdown the database and exit this utility:</p>
 <pre>Open Command Menu.<br />Select SHUTDOWN.<br />Click the Execute Button.<br />Open the File Menu.<br />Select Exit.<br /></pre>
 <p>The coffeemud database will exist in the folder
@@ -2688,7 +2795,8 @@ the
 database (relative from the root of the coffeemud directory) followed
 by the name of the database.</p>
 </li>
-<li>(Options) Shut down the database gracefully:&nbsp;
+<li>(Options) Shut down the database
+gracefully:&nbsp;
 Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
 in your text editor of choice. Go to the <code>public void
 killConnections()</code> function.
@@ -2735,10 +2843,13 @@ database interface.</p>
 <pre>ij version 10.1<br />ij&gt;<br /></pre>
 <p>Now we will issue the command that will create the
 database.</p>
-<pre>connect 'jdbc:derby:coffeemud;create=true';<br /></pre>Ensure the
+<pre>connect 'jdbc:derby:coffeemud;create=true';<br /></pre>
+Ensure the
 database connection has privileges to create, alter, and drop tables,
 indexes, and keys. In Derby's embedded mode, no explicit user is
-needed, and the driver provides full privileges by default.<br /><br />Finally, we must disconnect from the database and exit the
+needed, and the driver provides full privileges by default.<br />
+<br />
+Finally, we must disconnect from the database and exit the
 utility.
 <pre>disconnect;<br />exit;<br /></pre>
 <p>The coffeemud database will exist in a folder called
@@ -2809,10 +2920,14 @@ database has sufficient privileges to create, alter, and drop tables,
 indexes, and keys. &nbsp;These are the abilities the mud server
 must have to successfully create and maintain your database tables.
 &nbsp;Just doing this will probably fix your problems.<br />
-</p><p>Next, turn on more verbose SQL logging by adding SQLERRORS to
-the DEBUG= entry in your ini file. &nbsp;During your next mud start,
-SQL statements will start filling the log if errors occur.</p><p>
-After that, there is little more to say. &nbsp;The ability for the
+</p>
+<p>Next, turn on more verbose SQL logging by adding
+SQLERRORS to
+the DEBUG= entry in your ini file. &nbsp;During your next mud
+start,
+SQL statements will start filling the log if errors occur.</p>
+<p>After that, there is little more to say. &nbsp;The
+ability for the
 mud server to maintain its own database is fairly new, so we haven't
 had enough issues reported to really know what problems you will
 encounter yet.<br />
@@ -2864,24 +2979,47 @@ database to another, using the fakedb schemas from two different
 versions as a guide. &nbsp;It will dynamically compare the old and
 new fakedb schemas to figure out exactly what data to copy.</p>
 <p>The steps to using DBCopy are to </p>
-<ol><li>&nbsp;Make sure you have the file
+<ol>
+<li>&nbsp;Make sure you have the file
 /path/to/CoffeeMud/guides/datatabase/fakedb.schema from both the OLD
-version and the NEW version of your server. &nbsp;Don't mix them up!
-&nbsp;</li><li>Create a NEW database in your existing system, with a new name.</li><li>In
+version and the NEW version of your server. &nbsp;Don't mix them
+up!
+&nbsp;</li>
+<li>Create a NEW database in your existing system, with a
+new name.</li>
+<li>In
 your NEW database, run the appropriate table creation script, as
 described above in this section, where it talks about re-creating a
-database from scratch.</li><li>Make sure you know the path to your JDBC driver for your database system, such as '<span style="font-family: monospace;">/lib/mysql-connector-java-5.1.6-bin.jar'</span></li><li>Go into your coffeemud directory and run the DBCopy tool like:<br /><span style="font-family: monospace;">java -classpath ".:/lib/mysql-connector-java-5.1.6-bin.jar" com.planet_ink.fakedb.DBCopy<br /></span>or, for windows: <br /><span style="font-family: monospace;">java -classpath ".;/lib/mysql-connector-java-5.1.6-bin.jar" com.planet_ink.fakedb.DBCopy</span></li><li>Follow
-the prompts carefully. &nbsp;It will ask you for the path to the old
-and new fakedb files. &nbsp;It will ask you for information from your
+database from scratch.</li>
+<li>Make sure you know the path to your JDBC driver for
+your database system, such as '<span style="font-family: monospace;">/lib/mysql-connector-java-5.1.6-bin.jar'</span></li>
+<li>Go into your coffeemud directory and run the DBCopy
+tool like:<br />
+<span style="font-family: monospace;">java
+-classpath ".:/lib/mysql-connector-java-5.1.6-bin.jar"
+com.planet_ink.fakedb.DBCopy<br />
+</span>or, for windows: <br />
+<span style="font-family: monospace;">java
+-classpath ".;/lib/mysql-connector-java-5.1.6-bin.jar"
+com.planet_ink.fakedb.DBCopy</span></li>
+<li>Follow
+the prompts carefully. &nbsp;It will ask you for the path to the
+old
+and new fakedb files. &nbsp;It will ask you for information from
+your
 coffeemud.ini, such as the DBCLASS (driver class), and the DBSERVICE.
-&nbsp;When entering the DBSERVER, make sure you differentiate between
-the old and new database.</li><li>When the program is done, your NEW database will have the correct schema, and all your old data.</li><li>Change
-the DBSERVICE field in&nbsp;coffeemud.ini file in your new version of
+&nbsp;When entering the DBSERVER, make sure you differentiate
+between
+the old and new database.</li>
+<li>When the program is done, your NEW database will have
+the correct schema, and all your old data.</li>
+<li>Change
+the DBSERVICE field in&nbsp;coffeemud.ini file in your new version
+of
 coffeemud to reflect that it should connect to the new database instead
-of the old one.</li><li>Away you go!</li></ol>
-
-
-
+of the old one.</li>
+<li>Away you go!</li>
+</ol>
 <br />
 <img style="width: 72px; height: 72px;" src="images/unflag.jpg" alt="offline and shutdown applications" />
 <h2><a name="localization">Localization</a></h2>
@@ -2955,39 +3093,33 @@ it.</li>
 <ul>
 <li>Save your changes to <span style="font-style: italic;">resources/parser_??_??.properties</span>.</li>
 </ul>
-</ul><li>Go back into your CoffeeMud directory from a shell
-and enter:<span style="font-family: monospace;"></span></li><ul>
-
+</ul>
+<li>Go back into your CoffeeMud directory from a shell
+and enter:<span style="font-family: monospace;"></span></li>
+<ul>
 <li><span style="font-family: monospace;">java
 com.planet_ink.coffee_mud.application.LocalizationHelper T USE &gt;
 output.txt</span></li>
-
-
 <li>Remember that altered output.txt file.
 &nbsp;We will use it again soon.</li>
-
-</ul><li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/translation_??_??.properties</span><span>&nbsp;</span>and
+</ul>
+<li>Open up your copy of<span>&nbsp;</span><span style="font-style: italic;">resources/translation_??_??.properties</span><span>&nbsp;</span>and
 scroll down until you see [session-translation] and a line underneath
 it which says<span style="font-weight: bold; font-family: monospace;"><span>&nbsp;</span>#autoignore
-9999</span>. &nbsp;</li><ul>
-
+9999</span>. &nbsp;</li>
+<ul>
 <li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore
 9999</span>. &nbsp;</li>
-
-
 <li>Open up the <span style="font-style: italic;">output.txt</span>
 and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/translation_??_??.properties</span>
 under [session-translation], before the autoignore line.</li>
-
-
 <li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with
 "new"</span>, translate all the <span style="font-family: monospace;">"new"</span>/with
 parts, leaving the "old" part unchanged. &nbsp;</li>
 <li>Remove the "#" character from the front of the
 lines you change to activate it.</li>
-
-<li>Save the changed file.</li><ul>
-
+<li>Save the changed file.</li>
+<ul>
 </ul>
 </ul>
 </ul>
