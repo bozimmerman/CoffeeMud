@@ -2691,6 +2691,26 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							buf.append((FR==null)?"":FR.name());
 							c+=2;
 							break;
+						case 'w':
+						{
+							final int weatherIndex = A.getClimateObj().weatherType(mob.location());
+							if((weatherIndex>=0)&&(weatherIndex<Climate.WEATHER_DESCS.length))
+								buf.append(Climate.WEATHER_DESCS[weatherIndex].toLowerCase());
+							c+=2;
+							break;
+						}
+						case 'W':
+							buf.append(A.getClimateObj().weatherDescription(mob.location()));
+							c+=2;
+							break;
+						case 't':
+							buf.append(A.getTimeObj().getShortestTimeDescription());
+							c+=2;
+							break;
+						case 'T':
+							buf.append(A.getTimeObj().timeDescription(mob, R));
+							c+=2;
+							break;
 						default:
 							c+=1;
 							break;
