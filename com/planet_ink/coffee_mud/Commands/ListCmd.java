@@ -1325,8 +1325,24 @@ public class ListCmd extends StdCommand
 			cmds.remove(0);
 		}
 		if(cmds.size()==0)
-			return new StringBuilder("List what script details? Try LIST SCRIPTS (AREA) (COUNT/DETAILS/CUSTOM)");
+			return new StringBuilder("List what script details? Try LIST SCRIPTS (AREA) (COUNT/DETAILS/CUSTOM/ERRORS)");
 		final String rest=CMParms.combine(cmds,0);
+		if(rest.equalsIgnoreCase("errors"))
+		{
+			final StringBuilder logStr = new StringBuilder("");
+			int lineNum=0;
+			final Log.LogReader log=Log.instance().getLogReader();
+			String line=log.nextLine();
+			while((line!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
+			{
+				line = line.trim();
+				if((line.length()>16)&&(line.substring(16).startsWith(" error Scripting ")))
+					logStr.append((++lineNum)+line.substring(0,16)+": "+line.substring(38)+"\n\r");
+				line=log.nextLine();
+			}
+			log.close();
+			return logStr;
+		}
 		final DVector scriptTree=new DVector(6);
 		Area A=null;
 		Room R=null;

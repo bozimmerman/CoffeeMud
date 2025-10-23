@@ -2096,7 +2096,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			GMCPCommand cmd;
 			try
 			{
-				cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
+				try
+				{
+					cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
+				}
+				catch(final Exception e)
+				{
+					Log.errOut("Unknown GMCP Pkg"+pkg.toLowerCase());
+					return null;
+				}
 				switch(cmd)
 				{
 				case client:
