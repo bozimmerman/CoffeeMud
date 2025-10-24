@@ -616,6 +616,10 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	public List<List<String>> preCommandParser(final List<String> commands)
 	{
 		final List<String> workCmdList=new XVector<String>(commands);
+		/*
+		 * why? turns \n into \\n, which turns into \<cr>, which is ugly
+		 * Also, this turns double backslashes, unescaped to single, back to double,
+		 *   displayed as double, which is wrong.
 		StringBuilder s;
 		String cs;
 		for(int commandIndex=0;commandIndex<workCmdList.size();commandIndex++)
@@ -635,6 +639,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			workCmdList.set(commandIndex, s.toString());
 		}
+		*/
 		final String combinedWithTabs=CMParms.combineWithTabs(workCmdList,0);
 		workCmdList.clear();
 		workCmdList.add(combinedWithTabs);
