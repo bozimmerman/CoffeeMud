@@ -35,12 +35,12 @@ if not exist "%TEMP_DIR%\com\planet_ink\coffee_mud\application\UpgradeTool.class
 
 echo Backing up directories...
 if exist "%ROOT%\com.bak" rd /s /q "%ROOT%\com.bak" >nul 2>&1
-call :moveDir "%ROOT%\com" "%ROOT%\com.bak"
+call :copyDir "%ROOT%\com" "%ROOT%\com.bak"
 
 set BACKED_UP_LIB=0
 if exist "%ROOT%\lib" (
     if exist "%ROOT%\lib.bak" rd /s /q "%ROOT%\lib.bak" >nul 2>&1
-    call :moveDir "%ROOT%\lib" "%ROOT%\lib.bak"
+    call :copyDir "%ROOT%\lib" "%ROOT%\lib.bak"
     set BACKED_UP_LIB=1
 )
 
@@ -87,6 +87,21 @@ echo Access denied on move (%source% -> %target%); retrying in 1 second... (%ret
 timeout /t 1 /nobreak >nul
 goto retryMove
 
+:copyDir
+set "source=%~1"
+set "target=%~2"
+set retries=20
+:retryCopy
+xcopy "%source%" "%target%\" /E /I /H /R /Y /Q >nul 2>&1
+if not errorlevel 1 goto :eof
+set /a retries-=1
+if %retries%==0 (
+    echo Failed to copy %source% to %target% after 20 retries.
+    exit /b 1
+)
+echo Access denied on copy (%source% -> %target%); retrying in 1 second... (%retries% retries left)
+timeout /t 1 /nobreak >nul
+goto retryCopy
 :removeDir
 set "dir=%~1"
 set retries=20
