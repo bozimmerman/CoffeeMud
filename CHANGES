@@ -1,3 +1,6 @@
+# Build 5.11.1 Release ??/??/20??
+  1. Proxy server reconnects now bypass conn-spam blocks
+
 # Build 5.11.0 Release 10/23/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
   2. CoffeeMud now integrates with LLMs via LangChain4J.  See installation guide.
@@ -51,7 +54,6 @@
  50. The entire MUDGrinder and web system uses cookie-based auth now, and forum reads use GET instead of POST.
  51. When MXP is enabled, MUD will now wrap httpx:// urls into anchors for the client.
  52. The Installation Guide has been modified extensively.  It's worth a new look
-
 # Build 5.10.5 Release 07/12/2025
   *  DATABASE CHANGED! (new CMCDAC table)
   1. New Generic Commands!, see GameBuildersGuide for more information.
