@@ -1594,7 +1594,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
-		if(helpText==null)
+		if((helpText==null)
+		&&(rHelpFile == getHelpFile())) // its complicated, but ahelp is not allowed to help us here
 		{
 			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
 			{
