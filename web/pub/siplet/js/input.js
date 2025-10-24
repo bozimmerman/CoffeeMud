@@ -310,7 +310,7 @@ document.onkeydown = function(e)
 			var ctxOpen = IsAnyContextMenuOpen();
 			var dlgOpen = isDialogOpen(); 
 			if((!ctxOpen) && (!dlgOpen))
-				topMenuFocus('w')
+			{}
 			else
 			{
 				if(ctxOpen)
