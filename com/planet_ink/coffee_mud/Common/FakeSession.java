@@ -807,6 +807,12 @@ public class FakeSession implements Session
 	}
 
 	@Override
+	public boolean isReconnectSession()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean isInlineAllowed(final InProto protocol, final String packageName, final float version)
 	{
 		return false;

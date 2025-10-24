@@ -475,6 +475,12 @@ public class VFShell
 					}
 
 					@Override
+					public boolean isReconnectSession()
+					{
+						return false;
+					}
+
+					@Override
 					public boolean isPendingLogin(final String otherLoginName)
 					{
 						return false;

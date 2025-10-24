@@ -655,7 +655,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Blocks for a short amount of time, returning an input
 	 * string only if the user happens to have hit enter.
-	 * @param timeout TODO
+	 * @param timeout ms before timeout
 	 * @return a string entered by the user
 	 * @throws IOException exceptions thrown, typically a timeout
 	 * @throws SocketException exceptions thrown, typically socket error
@@ -670,6 +670,15 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return a list of strings list commands
 	 */
 	public LinkedList<List<String>> getHistory();
+
+	/**
+	 * Returns true if the session was the result of a proxy
+	 * reconnect, giving it special exemptions.
+	 *
+	 * @return true if its from a reconnect.
+	 */
+	public boolean isReconnectSession();
+
 
 	/**
 	 * Returns the player MOB attached to this session object.

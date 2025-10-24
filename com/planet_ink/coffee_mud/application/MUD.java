@@ -83,7 +83,7 @@ import java.sql.*;
  */
 public class MUD extends Thread implements MudHost
 {
-	public static final String	  HOST_VERSION	= "5.11.0";
+	public static final String	  HOST_VERSION	= "5.11.0.1";
 
 	/**
 	 * Enumeration of the possible states of the MUD server.
@@ -312,7 +312,11 @@ public class MUD extends Thread implements MudHost
 				{
 					final String address = sess[0].getAddress();
 					final int[] numAtAddress = new int[] {0};
-					final ConnectState proceed = CMSecurity.getConnectState(address, numAtAddress);
+					final ConnectState proceed;
+					if(sess[0].isReconnectSession())
+						proceed = ConnectState.NORMAL;
+					else
+						proceed = CMSecurity.getConnectState(address, numAtAddress);
 					if(proceed != ConnectState.NORMAL)
 					{
 						final int abusiveCount=numAtAddress[0]-(int)CMSecurity.CONN_MAX_PER_ADDR+1;

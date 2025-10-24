@@ -104,6 +104,7 @@ public class DefaultSession implements Session
 	protected PlayerAccount  acct				 = null;
 	protected boolean   	 killFlag			 = false;
 	protected boolean   	 needPrompt			 = false;
+	protected boolean		 isReconnect		 = false;
 	protected long		 	 afkTime			 = 0;
 	protected String		 afkMessage			 = null;
 	protected StringBuffer   input				 = new StringBuffer("");
@@ -250,6 +251,12 @@ public class DefaultSession implements Session
 	public int getGroupID()
 	{
 		return this.threadGroupChar;
+	}
+
+	@Override
+	public boolean isReconnectSession()
+	{
+		return isReconnect;
 	}
 
 	@Override
@@ -1986,7 +1993,11 @@ public class DefaultSession implements Session
 							if(Math.abs(System.currentTimeMillis()-timestamp.longValue())>1000)
 								break;
 							if(command.equalsIgnoreCase("clientinfo"))
+							{
 								this.ipAddress = obj.getCheckedString("client_address");
+								if(obj.containsKey("reconnect"))
+									this.isReconnect = obj.getCheckedBoolean("reconnect").booleanValue();
+							}
 							else
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{

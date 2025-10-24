@@ -599,11 +599,12 @@ public class MUDProxy
 										}
 										final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
 																				serverContext.ipAddress;
-										chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-												+ "\"client_address\":\""+clientAddr+"\","
-												+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 										if((clientContext!=null)&&(clientContext.distressedTime != 0))
 										{
+											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+													+ "\"client_address\":\""+clientAddr+"\","
+													+"\"reconnect\": true,"
+													+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 											clientContext.connectTime=System.currentTimeMillis();
 											clientContext.distressedTime=0;
 											final JSONObject obj = new MiniJSON.JSONObject();
@@ -618,6 +619,12 @@ public class MUDProxy
 												Log.sysOut(clientContext.outsidePortNum+"","Connection restored "+clientContext.ipAddress
 														+"->"+serverContext.port.first+":"+serverContext.port.second);
 											}
+										}
+										else
+										{
+											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+													+ "\"client_address\":\""+clientAddr+"\","
+													+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
 										}
 										key.interestOps(SelectionKey.OP_READ);
 									}
