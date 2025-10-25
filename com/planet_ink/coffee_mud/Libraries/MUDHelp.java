@@ -1309,30 +1309,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
-		if((helpText==null)
-		&&(rHelpFile == getHelpFile())) // its complicated, but ahelp is not allowed to help us here
-		{
-			final List<String> skills = new ArrayList<String>(2);
-			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
-			{
-				final ItemCraftor cA = e.nextElement();
-				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, false);
-				if(matches.size()>0)
-				{
-					helpKey = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),"")).toUpperCase().trim();
-					skills.add(cA.name());
-				}
-			}
-			if(skills.size()>0)
-			{
-				final String recipeHelp = L("@x1 is an item that is craftable by @x2.",helpKey,
-						CMLib.english().toEnglishStringList(skills));
-				helpText=normalizeHelpText(recipeHelp,skip);
-				if(helpText != null)
-					return new Triad<String, String, HelpMatchType>(helpKey, helpText, HelpMatchType.SKILL_RECIPE);
-			}
-		}
-
 		if(helpText==null)
 		{
 			String subKey=helpKey;
@@ -1358,6 +1334,31 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		&& helpKey.startsWith("MP")
 		&& (CMParms.contains(ScriptingEngine.methods,helpKey)))
 			helpText=normalizeHelpText(getScriptableHelp(helpKey),skip);
+
+
+		if((helpText==null)
+		&&(rHelpFile == getHelpFile())) // its complicated, but ahelp is not allowed to help us here
+		{
+			final List<String> skills = new ArrayList<String>(2);
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			{
+				final ItemCraftor cA = e.nextElement();
+				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, false);
+				if(matches.size()>0)
+				{
+					helpKey = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),"")).toUpperCase().trim();
+					skills.add(cA.name());
+				}
+			}
+			if(skills.size()>0)
+			{
+				final String recipeHelp = L("@x1 is an item that is craftable by @x2.",helpKey,
+						CMLib.english().toEnglishStringList(skills));
+				helpText=normalizeHelpText(recipeHelp,skip);
+				if(helpText != null)
+					return new Triad<String, String, HelpMatchType>(helpKey, helpText, HelpMatchType.SKILL_RECIPE);
+			}
+		}
 
 		if((helpText == null)
 		&& (rHelpFile == this.getArcHelpFile()))
@@ -1594,24 +1595,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 		}
 
-		if((helpText==null)
-		&&(rHelpFile == getHelpFile())) // its complicated, but ahelp is not allowed to help us here
-		{
-			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
-			{
-				final ItemCraftor cA = e.nextElement();
-				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, true);
-				if(matches.size()>0)
-				{
-					final String recipeName = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),""));
-					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
-					helpText=normalizeHelpText(recipeHelp,skip);
-					if(helpText != null)
-						return new Triad<String, String, HelpMatchType>(recipeName.toUpperCase().trim(), helpText, HelpMatchType.SKILL_RECIPE);
-				}
-			}
-		}
-
 		if(helpText==null)
 		{
 			String subKey=helpKey;
@@ -1629,6 +1612,24 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				helpKey=subKey;
 				matchType = HelpMatchType.COMMAND;
 				helpText=normalizeHelpText(((Modifiable)C).getStat("HELP"),skip);
+			}
+		}
+
+		if((helpText==null)
+		&&(rHelpFile == getHelpFile())) // its complicated, but ahelp is not allowed to help us here
+		{
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			{
+				final ItemCraftor cA = e.nextElement();
+				final List<String> matches = cA.matchingRecipeNames(helpKeyWSpaces, true);
+				if(matches.size()>0)
+				{
+					final String recipeName = CMStrings.capitalizeAndLower(replacePercent(matches.get(0),""));
+					final String recipeHelp = L("@x1 is an item that is craftable by @x2.",recipeName,cA.name());
+					helpText=normalizeHelpText(recipeHelp,skip);
+					if(helpText != null)
+						return new Triad<String, String, HelpMatchType>(recipeName.toUpperCase().trim(), helpText, HelpMatchType.SKILL_RECIPE);
+				}
 			}
 		}
 
