@@ -848,7 +848,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * *note Very likely this will be moved into lists.ini at some point, because too many words
 	 * See the constructor below.
 	 */
-	public static enum CharStat
+	public static enum DefCharStat
 	{
 		STRENGTH(STAT_STRENGTH,"S","STRENGTH","STRENGTH","STRONG",-1,CStatType.BASE),
 		INTELLIGENCE(STAT_INTELLIGENCE,"I","INTELLIGENCE","INTELLIGENCE","INTELLIGENT",-1,CStatType.BASE),
@@ -918,7 +918,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 * @param saveMsgCode a CMMsg type code that triggers a saving throw, or -1
 		 * @param type one of the CStatType categories this code goes in
 		 */
-		private CharStat(final int statCode, final String abbr, final String desc, final String name,
+		private DefCharStat(final int statCode, final String abbr, final String desc, final String name,
 						 final String attDesc, final int saveMsgCode, final CStatType type)
 		{
 			this.statCode=statCode;
@@ -937,13 +937,13 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 * Map of default char stat names to charstat objects, used ONLY during boot, as the ini
 	 * files may adjust or add to the ACTUAL stat codes, which won't be reflected here.
 	 */
-	public static final Map<String,CharStat> DEF_CHAR_STAT_NAMES_MAP = new Hashtable<String,CharStat>();
+	public static final Map<String,DefCharStat> DEF_CHAR_STAT_NAMES_MAP = new Hashtable<String,DefCharStat>();
 
 	/**
 	 * Map of default char stat descriptions to charstat objects, used ONLY during boot, as the ini
 	 * files may adjust or add to the ACTUAL stat codes, which won't be reflected here.
 	 */
-	public static final Map<String,CharStat> DEF_CHAR_STAT_DESCS_MAP = new Hashtable<String,CharStat>();
+	public static final Map<String,DefCharStat> DEF_CHAR_STAT_DESCS_MAP = new Hashtable<String,DefCharStat>();
 
 	/**
 	 * Global character stat code data collector
@@ -980,7 +980,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 
 			final String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
 			final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
-			for(final CharStat stat : CharStat.values())
+			for(final DefCharStat stat : DefCharStat.values())
 				addAllStat(stat.statCode,stat.abbr,stat.desc,stat.name,stat.attDesc,stat.saveMsgCode,stat.type);
 			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{
@@ -1000,7 +1000,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 				{
 					final String repStat=stat;
 					stat=type;
-					CharStat oldStat = CharStats.DEF_CHAR_STAT_NAMES_MAP.get(repStat);
+					DefCharStat oldStat = CharStats.DEF_CHAR_STAT_NAMES_MAP.get(repStat);
 					if(oldStat == null)
 						oldStat = CharStats.DEF_CHAR_STAT_DESCS_MAP.get(repStat);
 					if(oldStat == null)
