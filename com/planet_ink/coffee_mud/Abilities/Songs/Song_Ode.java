@@ -97,7 +97,8 @@ public class Song_Ode extends Song
 		{""+CMMsg.TYP_SPEAK,"cs",""+CharStats.STAT_WISDOM,"<O-NAME>, the chatty one, fills us with <O-HIS-HER> wisdom!"},
 		{""+CMMsg.TYP_WATER,"ca",""+CharStats.STAT_SAVE_WATER,"<O-NAME>, the wet one, keeps us so dry!"},
 		{""+CMMsg.TYP_WEAPONATTACK,"e","a","<O-NAME> the viscious has shown us to take arms!"},
-		{""+CMMsg.TYP_LEAVE,"s","v","<O-NAME>, the wanderer, gives us our second wind!"}
+		{""+CMMsg.TYP_LEAVE,"s","v","<O-NAME>, the wanderer, gives us our second wind!"},
+		{""+CMMsg.TYP_POLYMORPH,"pp",""+CharStats.STAT_SAVE_POLYMORPH,"<O-NAME> polymorphs <O-HIS-HER> enemies, that we may stay ourselves!"},
 	};
 
 	public String composition()

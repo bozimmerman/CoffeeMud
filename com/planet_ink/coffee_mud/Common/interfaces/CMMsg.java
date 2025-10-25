@@ -1268,6 +1268,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_NEEDRELOAD=148;
 	/** MINOR_MASK minor action code type, denoting a skill that was mistargeted */
 	public static final int TYP_SKILLFAIL=149;
+	/** MINOR_MASK minor action code type, denoting a polymorph attack */
+	public static final int TYP_POLYMORPH=150;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1299,7 +1301,7 @@ public interface CMMsg extends CMCommon
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
 		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
 		"ENDQUEST","WINQUEST","HOLYEVENT","EMISSION", "BODYDROP", "GLANCE", "RITUAL",
-		"PUFF", "TRAIN", "BROKERADD", "NEEDRELOAD", "SKILLFAIL"
+		"PUFF", "TRAIN", "BROKERADD", "NEEDRELOAD", "SKILLFAIL","POLYMORPH"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */

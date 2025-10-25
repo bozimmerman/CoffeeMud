@@ -178,7 +178,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String race;
-		Race R=null;
+		Race RA=null;
 		if(!auto)
 		{
 			if(commands.size()==0)
@@ -191,8 +191,8 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 		else
 		if((commands.size()>0)
-		&&((R=CMClass.findRace(CMParms.combine(commands,0)))!=null))
-			race = R.ID();
+		&&((RA=CMClass.findRace(CMParms.combine(commands,0)))!=null))
+			race = RA.ID();
 		else
 			race="doesntexist";
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -203,19 +203,19 @@ public class Spell_ImprovedPolymorph extends Spell
 			mob.tell(L("You cannot hold enough energy to cast this on yourself."));
 			return false;
 		}
-		R=race.equalsIgnoreCase("any")?CMClass.randomRace():CMClass.getRace(race);
-		if((R==null)&&(!auto))
+		RA=race.equalsIgnoreCase("any")?CMClass.randomRace():CMClass.getRace(race);
+		if((RA==null)&&(!auto))
 		{
 			if(mob.isMonster())
 			{
-				R=CMClass.randomRace();
+				RA=CMClass.randomRace();
 				for(int i=0;i<10;i++)
 				{
-					if((R!=null)
-					&&(CMProps.isTheme(R.availabilityCode()))
-					&&(R!=mob.charStats().getMyRace()))
+					if((RA!=null)
+					&&(CMProps.isTheme(RA.availabilityCode()))
+					&&(RA!=mob.charStats().getMyRace()))
 						break;
-					R=CMClass.randomRace();
+					RA=CMClass.randomRace();
 				}
 			}
 			else
@@ -225,16 +225,16 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 		}
 		else
-		if(R==null)
+		if(RA==null)
 		{
-			R=CMClass.randomRace();
+			RA=CMClass.randomRace();
 			for(int i=0;i<10;i++)
 			{
-				if((R!=null)
-				&&(CMProps.isTheme(R.availabilityCode()))
-				&&(R!=mob.charStats().getMyRace()))
+				if((RA!=null)
+				&&(CMProps.isTheme(RA.availabilityCode()))
+				&&(RA!=mob.charStats().getMyRace()))
 					break;
-				R=CMClass.randomRace();
+				RA=CMClass.randomRace();
 			}
 		}
 
@@ -244,9 +244,9 @@ public class Spell_ImprovedPolymorph extends Spell
 			return false;
 		}
 
-		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
+		if((RA!=null)&&(!CMath.bset(RA.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell(L("You can't turn @x1 into a '@x2'!",target.name(mob),R.name()));
+			mob.tell(L("You can't turn @x1 into a '@x2'!",target.name(mob),RA.name()));
 			return false;
 		}
 
@@ -260,7 +260,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			targetStatTotal+=target.baseCharStats().getStat(s);
 			fakeMOB.baseCharStats().setStat(s,target.baseCharStats().getStat(s));
 		}
-		fakeMOB.baseCharStats().setMyRace(R);
+		fakeMOB.baseCharStats().setMyRace(RA);
 		fakeMOB.recoverCharStats();
 		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
@@ -306,14 +306,20 @@ public class Spell_ImprovedPolymorph extends Spell
 		if((success)&&((auto)||((levelDiff-statDiff)>-100)))
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final Room targetR = CMLib.map().roomLocation(target);
+			if(targetR==null)
+				return false;
+			final int malicious=(!target.getGroupMembers(new HashSet<MOB>()).contains(mob))?CMMsg.MASK_MALICIOUS:0;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?"));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,malicious|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((targetR.okMessage(mob,msg))&&((targetR.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				targetR.send(mob,msg);
+				targetR.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					newRace=R;
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
+					newRace=RA;
+					targetR.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
 					final Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0);
 					if(morph != null)
 					{

@@ -130,7 +130,7 @@ public class Spell_PolymorphObject extends Spell
 			{
 				((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL, item, L("<S-NAME> reverts to its previous form."));
 				for(final Item I : previousItems)
-					((Room)item.owner()).addItem(I, Expire.Player_Drop);
+					item.owner().addItem(I, Expire.Player_Drop);
 				previousItems = null;
 			}
 			else
@@ -138,7 +138,7 @@ public class Spell_PolymorphObject extends Spell
 			{
 				((MOB)item.owner()).tell(((MOB)item.owner()),item,null,L("<T-NAME> reverts to its previous form."));
 				for(final Item I : previousItems)
-					((MOB)item.owner()).addItem(I);
+					item.owner().addItem(I);
 				previousItems = null;
 			}
 			affected.destroy();
@@ -283,12 +283,16 @@ public class Spell_PolymorphObject extends Spell
 		if(success)
 		{
 			invoker=mob;
+			final Room targetR = CMLib.map().roomLocation(targetI);
+			if(targetR==null)
+				return false;
 			final CMMsg msg=CMClass.getMsg(mob,targetI,this,somaticCastCode(mob,targetI,auto),L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAME> polymorphing it into @x1.^?",intoI.name()));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg2=CMClass.getMsg(mob,targetI,this,CMMsg.MSK_CAST_SOMANTIC|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((targetR.okMessage(mob,msg))&&((targetR.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-
-				if(msg.value()>0)
+				targetR.send(mob,msg);
+				targetR.send(mob,msg2);
+				if((msg.value()>0)||(msg2.value()>0))
 					return false;
 				final Spell_PolymorphObject A=(Spell_PolymorphObject)super.beneficialAffect(mob, intoI, asLevel, 0);
 				if(A!=null)
@@ -311,7 +315,7 @@ public class Spell_PolymorphObject extends Spell
 				}
 				else
 					mob.addItem(intoI);
-				mob.location().recoverRoomStats();
+				targetR.recoverRoomStats();
 			}
 		}
 		else

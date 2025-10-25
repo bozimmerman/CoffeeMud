@@ -143,6 +143,10 @@ public class Chant_Shamblermorph extends Chant
 		if(target==null)
 			return false;
 
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null)
+			R=mob.location();
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -155,10 +159,12 @@ public class Chant_Shamblermorph extends Chant
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,(malicious?CMMsg.MASK_MALICIOUS:0)|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("Leaves sprout from <S-YOUPOSS> skin as <S-HE-SHE> grow(s) into a Shambling Mound!"));
 					if(malicious)

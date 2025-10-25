@@ -220,6 +220,7 @@ Spell_ResistFire	SCALES
 Spell_ResistGas	LIMESTONE
 Spell_ResistMagicMissiles	SCALES
 Spell_ResistParalyzation	IVORY
+Spell_ResistPolymorph	IVORY
 Spell_ResistPetrification	GARNET
 Spell_ResistPoison	GRANITE
 Spell_Shield	BRASS

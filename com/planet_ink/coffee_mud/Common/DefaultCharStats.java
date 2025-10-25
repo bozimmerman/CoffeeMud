@@ -831,6 +831,8 @@ public class DefaultCharStats implements CharStats
 			return getStat(STAT_SAVE_SONGS);
 		case STAT_SAVE_CHANTS:
 			return getStat(STAT_SAVE_CHANTS);
+		case STAT_SAVE_POLYMORPH:
+			return getStat(STAT_SAVE_PARALYSIS)+(int)Math.round(CMath.div(getStat(STAT_CONSTITUTION)+getStat(STAT_STRENGTH),2.0));
 		}
 		return getStat(which);
 	}

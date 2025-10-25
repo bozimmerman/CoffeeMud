@@ -227,11 +227,16 @@ public class Spell_PolymorphSelf extends Spell
 		if(success)
 		{
 			invoker=mob;
+			final Room targetR = CMLib.map().roomLocation(target);
+			if(targetR==null)
+				return false;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> whisper(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((targetR.okMessage(mob,msg))&&((targetR.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				targetR.send(mob,msg);
+				targetR.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					newRace=R;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));

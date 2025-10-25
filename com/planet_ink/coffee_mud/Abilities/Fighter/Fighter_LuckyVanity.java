@@ -157,6 +157,7 @@ public class Fighter_LuckyVanity extends FighterSkill implements Runnable
 			charStats.setStat(CharStats.STAT_SAVE_MIND, charStats.getStat(CharStats.STAT_SAVE_MIND)+(int)bonus);
 			charStats.setStat(CharStats.STAT_SAVE_POISON, charStats.getStat(CharStats.STAT_SAVE_POISON)+(int)bonus);
 			charStats.setStat(CharStats.STAT_SAVE_PARALYSIS, charStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+(int)bonus);
+			charStats.setStat(CharStats.STAT_SAVE_POLYMORPH, charStats.getStat(CharStats.STAT_SAVE_POLYMORPH)+(int)bonus);
 			charStats.setStat(CharStats.STAT_SAVE_DISEASE, charStats.getStat(CharStats.STAT_SAVE_DISEASE)+(int)bonus);
 			charStats.setStat(CharStats.STAT_SAVE_TRAPS, charStats.getStat(CharStats.STAT_SAVE_TRAPS)+(int)bonus);
 		}

@@ -12889,9 +12889,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								kill=true;
 							else
 							{
-								for(int i4=0;i4<CharStats.DEFAULT_STAT_MSG_MAP.length;i4++)
+								for(int i4=0;i4<CharStats.CODES.CMMSGMAP().length;i4++)
 								{
-									final int code4=CharStats.DEFAULT_STAT_MSG_MAP[i4];
+									final int code4=CharStats.CODES.CMMSGMAP()[i4];
 									if((code4>0)&&(CMMsg.TYPE_DESCS[code4&CMMsg.MINOR_MASK].equals(s4)))
 									{
 										damageType=code4;

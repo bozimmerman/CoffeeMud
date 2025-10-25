@@ -240,6 +240,10 @@ public class Chant_Treemorph extends Chant
 		if(target==null)
 			return false;
 
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null)
+			R=mob.location();
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -251,11 +255,14 @@ public class Chant_Treemorph extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final int malicious=(!target.getGroupMembers(new HashSet<MOB>()).contains(mob))?CMMsg.MASK_MALICIOUS:0;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) at <T-NAMESELF>.^?"));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,malicious|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int a=0;
 					while(a<target.numEffects()) // personal effects

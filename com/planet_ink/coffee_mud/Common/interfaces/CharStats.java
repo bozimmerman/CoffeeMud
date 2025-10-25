@@ -138,8 +138,10 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	public static final int STAT_RECOVERRATE5_ADJ=45;
 	/** stat constant for xp adjustment % */
 	public static final int STAT_XP_ADJ_PCT=46;
+	/** stat constant for xp adjustment % */
+	public static final int STAT_SAVE_POLYMORPH=47;
 	/** constant for total number of stat codes */
-	public final static int DEFAULT_NUM_STATS=47;
+	public final static int DEFAULT_NUM_STATS=48;
 
 	/**
 	 * Copies the internal data of this object into another of kind.
@@ -826,266 +828,122 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 	 */
 	public void addItemDeficiency(String zapperMask);
 
-	/** string array of abbreviations of each stat code, ordered by numeric value */
-	public static final String[] DEFAULT_STAT_ABBR=
+	/**
+	 * General categories for the default Char Stat codes
+	 */
+	public static enum CStatType
 	{
-		"S",
-		"I",
-		"D",
-		"C",
-		"CH",
-		"W",
-		"G",
-		"vPY",
-		"vF",
-		"vC",
-		"vW",
-		"vG",
-		"vMI",
-		"V",
-		"vJ",
-		"vA",
-		"vE",
-		"vP",
-		"vU",
-		"vM",
-		"vD",
-		"vT",
-		"mS",
-		"mI",
-		"mD",
-		"mC",
-		"mCH",
-		"mW",
-		"A",
-		"vH",
-		"vO",
-		"vC",
-		"Wa",
-		"vWB",
-		"vWP",
-		"vWS",
-		"vMS",
-		"vMP",
-		"vMG",
-		"vMC",
-		"cRW",
-		"cRM",
-		"cDW",
-		"cDM",
-		"F",
-		"R",
-		"XP"
-	};
+		/** BASE - meaning a basic physical attribute, like strength */
+		BASE,
+		/** MAX - a cap/max value on a physical attribute, like strength */
+		MAX,
+		/** SAVE - a saving throw */
+		SAVE,
+		/** MISC - doesn't fit in any above */
+		MISC
+	}
 
-	/** string array of descriptions of each stat code, ordered by numeric value */
-	public static final String[] DEFAULT_STAT_DESCS=
+	/**
+	 * Basic definitions of all the default char stat codes.
+	 * *note Very likely this will be moved into lists.ini at some point, because too many words
+	 * See the constructor below.
+	 */
+	public static enum CharStat
 	{
-		"STRENGTH",
-		"INTELLIGENCE",
-		"DEXTERITY",
-		"CONSTITUTION",
-		"CHARISMA",
-		"WISDOM",
-		"GENDER",
-		"PARALYSIS SAVE",
-		"SAVE VS FIRE",
-		"SAVE VS COLD",
-		"SAVE VS WATER",
-		"SAVE VS GAS",
-		"SAVE VS MIND",
-		"GENERAL SAVE",
-		"JUSTICE SAVE",
-		"SAVE VS ACID",
-		"SAVE VS ELECTRICITY",
-		"SAVE VS POISON",
-		"SAVE VS UNDEAD",
-		"SAVE VS MAGIC",
-		"SAVE VS DISEASE",
-		"SAVE VS TRAPS",
-		"MAX STRENGTH ADJ.",
-		"MAX INTELLIGENCE ADJ.",
-		"MAX DEXTERITY ADJ.",
-		"MAX CONSTITUTION ADJ.",
-		"MAX CHARISMA ADJ.",
-		"MAX WISDOM ADJ.",
-		"AGE",
-		"SAVE VS DETECTION",
-		"SAVE VS OVERLOOKING",
-		"SAVE VS CONVERSIONS",
-		"WEIGHT ADJUSTMENT",
-		"SAVE VS BLUNT",
-		"SAVE VS PIERCE",
-		"SAVE VS SLASH",
-		"SAVE VS SPELLS",
-		"SAVE VS PRAYERS",
-		"SAVE VS SONGS",
-		"SAVE VS CHANTS",
-		"CRIT WEAPON CHANCE PCT",
-		"CRIT MAGIC CHANCE PCT",
-		"CRIT WEAPON DAMAGE PCT",
-		"CRIT MAGIC DAMAGE PCT",
-		"FAITH",
-		"REJUVENATION RATE ADJ",
-		"XP ADJUSTMENT PCT"
-	};
+		STRENGTH(STAT_STRENGTH,"S","STRENGTH","STRENGTH","STRONG",-1,CStatType.BASE),
+		INTELLIGENCE(STAT_INTELLIGENCE,"I","INTELLIGENCE","INTELLIGENCE","INTELLIGENT",-1,CStatType.BASE),
+		DEXTERITY(STAT_DEXTERITY,"D","DEXTERITY","DEXTERITY","DEXTEROUS",-1,CStatType.BASE),
+		CONSTITUTION(STAT_CONSTITUTION,"C","CONSTITUTION","CONSTITUTION","HEALTHY",-1,CStatType.BASE),
+		CHARISMA(STAT_CHARISMA,"CH","CHARISMA","CHARISMA","CHARISMATIC",-1,CStatType.BASE),
+		WISDOM(STAT_WISDOM,"W","WISDOM","WISDOM","WISE",-1,CStatType.BASE),
+		GENDER(STAT_GENDER,"G","GENDER","GENDER","",-1,CStatType.MISC),
+		SAVE_PARALYSIS(STAT_SAVE_PARALYSIS,"vPY","PARALYSIS SAVE","PARALYSIS","RESISTANT TO PARALYSIS",CMMsg.TYP_PARALYZE,CStatType.SAVE),
+		SAVE_FIRE(STAT_SAVE_FIRE,"vF","SAVE VS FIRE","FIRE","RESISTANT TO FIRE",CMMsg.TYP_FIRE,CStatType.SAVE),
+		SAVE_COLD(STAT_SAVE_COLD,"vC","SAVE VS COLD","COLD","RESISTANT TO COLD",CMMsg.TYP_COLD,CStatType.SAVE),
+		SAVE_WATER(STAT_SAVE_WATER,"vW","SAVE VS WATER","WATER","RESISTANT TO WATER",CMMsg.TYP_WATER,CStatType.SAVE),
+		SAVE_GAS(STAT_SAVE_GAS,"vG","SAVE VS GAS","GAS","RESISTANT TO GAS",CMMsg.TYP_GAS,CStatType.SAVE),
+		SAVE_MIND(STAT_SAVE_MIND,"vMI","SAVE VS MIND","MIND","RESISTANT TO MIND ATTACKS",CMMsg.TYP_MIND,CStatType.SAVE),
+		SAVE_GENERAL(STAT_SAVE_GENERAL,"V","GENERAL SAVE","GENERAL","RESISTANT",CMMsg.TYP_GENERAL,CStatType.SAVE),
+		SAVE_JUSTICE(STAT_SAVE_JUSTICE,"vJ","JUSTICE SAVE","JUSTICE","RESISTANT TO UNDIGNIFIED ATTACKS",CMMsg.TYP_JUSTICE,CStatType.SAVE),
+		SAVE_ACID(STAT_SAVE_ACID,"vA","SAVE VS ACID","ACID","RESISTANT TO ACID",CMMsg.TYP_ACID,CStatType.SAVE),
+		SAVE_ELECTRIC(STAT_SAVE_ELECTRIC,"vE","SAVE VS ELECTRICITY","ELECTRICITY","RESISTANT TO ELECTRICITY",CMMsg.TYP_ELECTRIC,CStatType.SAVE),
+		SAVE_POISON(STAT_SAVE_POISON,"vP","SAVE VS POISON","POISON","RESISTANT TO POISON",CMMsg.TYP_POISON,CStatType.SAVE),
+		SAVE_UNDEAD(STAT_SAVE_UNDEAD,"vU","SAVE VS UNDEAD","UNDEAD","RESISTANT TO UNDEAD",CMMsg.TYP_UNDEAD,CStatType.SAVE),
+		SAVE_MAGIC(STAT_SAVE_MAGIC,"vM","SAVE VS MAGIC","MAGIC","RESISTANT TO MAGIC",CMMsg.TYP_CAST_SPELL,CStatType.SAVE),
+		SAVE_DISEASE(STAT_SAVE_DISEASE,"vD","SAVE VS DISEASE","DISEASE","RESISTANT TO DISEASE",CMMsg.TYP_DISEASE,CStatType.SAVE),
+		SAVE_TRAPS(STAT_SAVE_TRAPS,"vT","SAVE VS TRAPS","TRAPS","RESISTANT TO TRAPS",-1,CStatType.SAVE),
+		MAX_STRENGTH_ADJ(STAT_MAX_STRENGTH_ADJ,"mS","MAX STRENGTH ADJ.","MAXSTRENGTH","POTENTIALLY STRONG",-1,CStatType.MAX),
+		MAX_INTELLIGENCE_ADJ(STAT_MAX_INTELLIGENCE_ADJ,"mI","MAX INTELLIGENCE ADJ.","MAXINTELLIGENCE","POTENTIALLY INTELLIGENT",-1,CStatType.MAX),
+		MAX_DEXTERITY_ADJ(STAT_MAX_DEXTERITY_ADJ,"mD","MAX DEXTERITY ADJ.","MAXDEXTERITY","POTENTIALLY DEXTROUS",-1,CStatType.MAX),
+		MAX_CONSTITUTION_ADJ(STAT_MAX_CONSTITUTION_ADJ,"mC","MAX CONSTITUTION ADJ.","MAXCONSTITUTION","POTENTIALLY HEALTHY",-1,CStatType.MAX),
+		MAX_CHARISMA_ADJ(STAT_MAX_CHARISMA_ADJ,"mCH","MAX CHARISMA ADJ.","MAXCHARISMA","POTENTIALLY CHARISMATIC",-1,CStatType.MAX),
+		MAX_WISDOM_ADJ(STAT_MAX_WISDOM_ADJ,"mW","MAX WISDOM ADJ.","MAXWISDOM","POTENTIALLY WISE",-1,CStatType.MAX),
+		AGE(STAT_AGE,"A","AGE","AGE","OLD",-1,CStatType.MISC),
+		SAVE_DETECTION(STAT_SAVE_DETECTION,"vH","SAVE VS DETECTION","DETECTION","CONCEALED",-1,CStatType.SAVE),
+		SAVE_OVERLOOKING(STAT_SAVE_OVERLOOKING,"vO","SAVE VS OVERLOOKING","OVERLOOKING","WATCHFUL",-1,CStatType.SAVE),
+		SAVE_DOUBT(STAT_SAVE_DOUBT,"vB","SAVE VS CONVERSIONS","DOUBT","DOUBTFUL",-1,CStatType.SAVE),
+		WEIGHTADJ(STAT_WEIGHTADJ,"Wa","WEIGHT ADJUSTMENT","WEIGHTADJ","",-1,CStatType.MISC),
+		SAVE_BLUNT(STAT_SAVE_BLUNT,"vWB","SAVE VS BLUNT","SAVEBLUNT","RESISTANT TO BLUNT",-1,CStatType.SAVE),
+		SAVE_PIERCE(STAT_SAVE_PIERCE,"vWP","SAVE VS PIERCE","SAVEPIERCE","RESISTANT TO PIERCE",-1,CStatType.SAVE),
+		SAVE_SLASH(STAT_SAVE_SLASH,"vWS","SAVE VS SLASH","SAVESLASH","RESISTANT TO SLASH",-1,CStatType.SAVE),
+		SAVE_SPELLS(STAT_SAVE_SPELLS,"vMS","SAVE VS SPELLS","SAVESPELLS","RESISTANT TO SPELLS",-1,CStatType.SAVE),
+		SAVE_PRAYERS(STAT_SAVE_PRAYERS,"vMP","SAVE VS PRAYERS","SAVEPRAYERS","RESISTANT TO PRAYERS",-1,CStatType.SAVE),
+		SAVE_SONGS(STAT_SAVE_SONGS,"vMG","SAVE VS SONGS","SAVESONGS","RESISTANT TO SONGS",-1,CStatType.SAVE),
+		SAVE_CHANTS(STAT_SAVE_CHANTS,"vMC","SAVE VS CHANTS","SAVECHANTS","RESISTANT TO CHANTS",-1,CStatType.SAVE),
+		CRIT_CHANCE_PCT_WEAPON(STAT_CRIT_CHANCE_PCT_WEAPON,"cRW","CRIT WEAPON CHANCE PCT","CRITPCTWEAPONS","BONUS TO WEAPON CRIT CHANCE",-1,CStatType.MISC),
+		CRIT_CHANCE_PCT_MAGIC(STAT_CRIT_CHANCE_PCT_MAGIC,"cRM","CRIT MAGIC CHANCE PCT","CRITPCTMAGIC","BONUS TO MAGIC CRIT CHANCE",-1,CStatType.MISC),
+		CRIT_DAMAGE_PCT_WEAPON(STAT_CRIT_DAMAGE_PCT_WEAPON,"cDW","CRIT WEAPON DAMAGE PCT","CRITDMGWEAPONS","BONUS TO WEAPON CRIT DAMAGE",-1,CStatType.MISC),
+		CRIT_DAMAGE_PCT_MAGIC(STAT_CRIT_DAMAGE_PCT_MAGIC,"cDM","CRIT MAGIC DAMAGE PCT","CRITDMGMAGIC","BONUS TO MAGIC CRIT DAMAGE",-1,CStatType.MISC),
+		FAITH(STAT_FAITH,"F","FAITH","FAITH","FAITHFUL",-1,CStatType.MISC),
+		RECOVERRATE5_ADJ(STAT_RECOVERRATE5_ADJ,"RR","REJUVENATION RATE ADJ","REJUVRATE","REJUVENATINGLY DIFFERENT",-1,CStatType.MISC),
+		XP_ADJ_PCT(STAT_XP_ADJ_PCT,"XP","XP ADJUSTMENT PCT","XPADJPCT","EXPERIENTIAL",-1,CStatType.MISC),
+		SAVE_POLYMORPH(STAT_SAVE_POLYMORPH,"vY","SAVE VS POLYMORPH/PETRIFY","POLYMORPH","ACTUALIZED",CMMsg.TYP_POLYMORPH,CStatType.SAVE),
+		;
+		public int statCode;
+		public String abbr;
+		public String desc;
+		public String name;
+		public String attDesc;
+		public int saveMsgCode;
+		public CStatType type;
 
-	/** string array of descriptions of each stat code, ordered by numeric value */
-	public static final String[] DEFAULT_STAT_NAMES=
-	{
-		"STRENGTH",
-		"INTELLIGENCE",
-		"DEXTERITY",
-		"CONSTITUTION",
-		"CHARISMA",
-		"WISDOM",
-		"GENDER",
-		"PARALYSIS",
-		"FIRE",
-		"COLD",
-		"WATER",
-		"GAS",
-		"MIND",
-		"GENERAL",
-		"JUSTICE",
-		"ACID",
-		"ELECTRICITY",
-		"POISON",
-		"UNDEAD",
-		"MAGIC",
-		"DISEASE",
-		"TRAPS",
-		"MAXSTRENGTH",
-		"MAXINTELLIGENCE",
-		"MAXDEXTERITY",
-		"MAXCONSTITUTION",
-		"MAXCHARISMA",
-		"MAXWISDOM",
-		"AGE",
-		"DETECTION",
-		"OVERLOOKING",
-		"DOUBT",
-		"WEIGHTADJ",
-		"SAVEBLUNT",
-		"SAVEPIERCE",
-		"SAVESLASH",
-		"SAVESPELLS",
-		"SAVEPRAYERS",
-		"SAVESONGS",
-		"SAVECHANTS",
-		"CRITPCTWEAPONS",
-		"CRITPCTMAGIC",
-		"CRITDMGWEAPONS",
-		"CRITDMGMAGIC",
-		"FAITH",
-		"REJUVRATE",
-		"XPADJPCT"
-	};
+		/**
+		 * Build a default stat code object from default data.
+		 *
+		 * @param statCode the hard coded stat code value, which could be ordinal I suppose
+		 * @param abbr abbreviations of a stat code
+		 * @param desc description of a stat code, which MAY have spaces
+		 * @param name name of a stat code, which may NOT have spaces
+		 * @param attDesc attribute description of someone with this stat, spaces allowed
+		 * @param saveMsgCode a CMMsg type code that triggers a saving throw, or -1
+		 * @param type one of the CStatType categories this code goes in
+		 */
+		private CharStat(final int statCode, final String abbr, final String desc, final String name,
+						 final String attDesc, final int saveMsgCode, final CStatType type)
+		{
+			this.statCode=statCode;
+			this.abbr = abbr;
+			this.desc = desc;
+			this.name = name;
+			this.attDesc=attDesc;
+			this.saveMsgCode=saveMsgCode;
+			this.type = type;
+			DEF_CHAR_STAT_NAMES_MAP.put(name,this);
+			DEF_CHAR_STAT_DESCS_MAP.put(desc,this);
+		}
+	}
 
-	/** string array of attributable descriptions of each stat code, ordered by numeric value */
-	public static final String[] DEFAULT_STAT_DESC_ATTS=
-	{
-		"STRONG",
-		"INTELLIGENT",
-		"DEXTEROUS",
-		"HEALTHY",
-		"CHARISMATIC",
-		"WISE",
-		"",
-		"RESISTANT TO PARALYSIS",
-		"RESISTANT TO FIRE",
-		"RESISTANT TO COLD",
-		"RESISTANT TO WATER",
-		"RESISTANT TO GAS",
-		"RESISTANT TO MIND ATTACKS",
-		"RESISTANT",
-		"RESISTANT TO UNDIGNIFIED ATTACKS",
-		"RESISTANT TO ACID",
-		"RESISTANT TO ELECTRICITY",
-		"RESISTANT TO POISON",
-		"RESISTANT TO UNDEAD",
-		"RESISTANT TO MAGIC",
-		"RESISTANT TO DISEASE",
-		"RESISTANT TO TRAPS",
-		"POTENTIALLY STRONG",
-		"POTENTIALLY INTELLIGENT",
-		"POTENTIALLY DEXTROUS",
-		"POTENTIALLY HEALTHY",
-		"POTENTIALLY CHARISMATIC",
-		"POTENTIALLY WISE",
-		"OLD",
-		"CONCEALED",
-		"WATCHFUL",
-		"DOUBTFUL",
-		"",
-		"RESISTANT TO BLUNT",
-		"RESISTANT TO PIERCE",
-		"RESISTANT TO SLASH",
-		"RESISTANT TO SPELLS",
-		"RESISTANT TO PRAYERS",
-		"RESISTANT TO SONGS",
-		"RESISTANT TO CHANTS",
-		"BONUS TO WEAPON CRIT CHANCE",
-		"BONUS TO MAGIC CRIT CHANCE",
-		"BONUS TO WEAPON CRIT DAMAGE",
-		"BONUS TO MAGIC CRIT DAMAGE",
-		"FAITHFUL",
-		"REJUVENATINGLY DIFFERENT",
-		"EXPERIENTIAL"
-	};
+	/**
+	 * Map of default char stat names to charstat objects, used ONLY during boot, as the ini
+	 * files may adjust or add to the ACTUAL stat codes, which won't be reflected here.
+	 */
+	public static final Map<String,CharStat> DEF_CHAR_STAT_NAMES_MAP = new Hashtable<String,CharStat>();
 
-	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
-	public static int[] DEFAULT_STAT_MSG_MAP=
-	{
-		-1, // strength
-		-1, // intelligence
-		-1, // dexterity
-		-1, // constitution
-		-1, // charisma
-		-1, // wisdom
-		-1, // gender
-		CMMsg.TYP_PARALYZE,
-		CMMsg.TYP_FIRE,
-		CMMsg.TYP_COLD,
-		CMMsg.TYP_WATER,
-		CMMsg.TYP_GAS,
-		CMMsg.TYP_MIND,
-		CMMsg.TYP_GENERAL,
-		CMMsg.TYP_JUSTICE,
-		CMMsg.TYP_ACID,
-		CMMsg.TYP_ELECTRIC,
-		CMMsg.TYP_POISON,
-		CMMsg.TYP_UNDEAD,
-		CMMsg.TYP_CAST_SPELL,
-		CMMsg.TYP_DISEASE,
-		-1, // traps
-		-1, // max str
-		-1, // max int
-		-1, // max
-		-1, // max dex
-		-1, // max con
-		-1, // max cha
-		-1, // max wis
-		-1, // age
-		-1, // save conceilment
-		-1, // save overlooking
-		-1, // doubt
-		-1, // weight adjustment
-		-1, // save blunt
-		-1, // save pierce
-		-1, // save slash
-		-1, // save spells
-		-1, // save prayers
-		-1, // save songs
-		-1, // save chants
-		-1, // bonus weapon crit chance
-		-1, // bonus magic crit chance
-		-1, // bonus weapon crit damage
-		-1, // bonus magic crit damage
-		-1, // faith
-		-1, // rejuv rate
-		-1, // xp rate
-	};
+	/**
+	 * Map of default char stat descriptions to charstat objects, used ONLY during boot, as the ini
+	 * files may adjust or add to the ACTUAL stat codes, which won't be reflected here.
+	 */
+	public static final Map<String,CharStat> DEF_CHAR_STAT_DESCS_MAP = new Hashtable<String,CharStat>();
 
 	/**
 	 * Global character stat code data collector
@@ -1097,7 +955,7 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 
 		private int[]			baseStatCodes				= new int[0];
 		private int[]			maxStatCodes				= new int[0];
-		private int[]			MaxBaseCrossCodes			= new int[0];
+		private int[]			maxBaseCrossCodes			= new int[0];
 		private int[]			allStatCodes				= new int[0];
 		private int[]			savingThrowCodes			= new int[0];
 		private boolean[]		isBaseStatCode				= new boolean[0];
@@ -1122,25 +980,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 
 			final String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
 			final String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
-			for(int i=STAT_STRENGTH;i<=STAT_WISDOM;i++)
-				addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			addAllStat(DEFAULT_STAT_ABBR[STAT_GENDER],DEFAULT_STAT_DESCS[STAT_GENDER],DEFAULT_STAT_NAMES[STAT_GENDER],
-						DEFAULT_STAT_DESC_ATTS[STAT_GENDER],DEFAULT_STAT_MSG_MAP[STAT_GENDER],false);
-			for(int i=STAT_SAVE_PARALYSIS;i<=STAT_SAVE_TRAPS;i++)
-				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			int baseCtr=0;
-			for(int i=STAT_MAX_STRENGTH_ADJ;i<=STAT_MAX_WISDOM_ADJ;i++)
-				addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			addAllStat(DEFAULT_STAT_ABBR[STAT_AGE],DEFAULT_STAT_DESCS[STAT_AGE],DEFAULT_STAT_NAMES[STAT_AGE],
-						DEFAULT_STAT_DESC_ATTS[STAT_AGE],DEFAULT_STAT_MSG_MAP[STAT_AGE],false);
-			for(int i=STAT_SAVE_DETECTION;i<=STAT_SAVE_DOUBT;i++)
-				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int i=STAT_WEIGHTADJ;i<=STAT_WEIGHTADJ;i++)
-				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
-			for(int i=STAT_SAVE_BLUNT;i<=STAT_SAVE_CHANTS;i++)
-				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int i=STAT_CRIT_CHANCE_PCT_WEAPON;i<DEFAULT_NUM_STATS;i++)
-				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
+			for(final CharStat stat : CharStat.values())
+				addAllStat(stat.statCode,stat.abbr,stat.desc,stat.name,stat.attDesc,stat.saveMsgCode,stat.type);
 			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{
 				final String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
@@ -1159,32 +1000,33 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 				{
 					final String repStat=stat;
 					stat=type;
-					oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
-					if(oldStatCode<0)
-						oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
-					if(oldStatCode>=0)
-						type="REPLACE";
-					else
+					CharStat oldStat = CharStats.DEF_CHAR_STAT_NAMES_MAP.get(repStat);
+					if(oldStat == null)
+						oldStat = CharStats.DEF_CHAR_STAT_DESCS_MAP.get(repStat);
+					if(oldStat == null)
 					{
 						Log.errOut("CharStats","Bad coffeemud.ini charstat row, bad stat name: "+repStat);
 						continue;
 					}
+					oldStatCode=oldStat.statCode;
+					type="REPLACE";
 				}
 				final String abbr=V.get(1);
 				final String desc=V.get(2).toUpperCase();
 				final String adj=V.get(3).toUpperCase();
 				if(type.equalsIgnoreCase("BASE"))
 				{
-					addBaseStat(abbr, desc, stat, adj, -1);
-					final int baseStatCode=allStatCodes.length-1;
-					addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
+					final int baseStatCode=allStatCodes.length;
+					addAllStat(baseStatCode,abbr,desc,stat,adj,-1,CStatType.BASE);
+					final int maxStatCode=allStatCodes.length;
+					addAllStat(maxStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1,CStatType.MAX);
 				}
 				else
 				if(type.equalsIgnoreCase("SAVE"))
-					addSavingThrow(abbr,desc,stat,adj,-1);
+					addAllStat(allStatCodes.length,abbr,desc,stat,adj,-1,CStatType.SAVE);
 				else
 				if(type.equalsIgnoreCase("OTHER"))
-					addAllStat(abbr,desc,stat,adj,-1,false);
+					addAllStat(allStatCodes.length,abbr,desc,stat,adj,-1,CStatType.MISC);
 				else
 				if(replace&&(oldStatCode>=0))
 				{
@@ -1318,8 +1160,8 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		 */
 		public int toMaxBase(final int max)
 		{
-			if(max<MaxBaseCrossCodes.length)
-				return MaxBaseCrossCodes[max];
+			if(max<maxBaseCrossCodes.length)
+				return maxBaseCrossCodes[max];
 			return -1;
 		}
 		/**
@@ -1619,89 +1461,79 @@ public interface CharStats extends CMCommon, Modifiable, DeityWorshipper
 		}
 
 		/**
-		 * Adds a new base stat to this object for all mobs and players to share
-		 * @param abbr 1-3 letter short code for this stat
-		 * @param desc longer description of this stat
-		 * @param name space-free coded name of this stat
-		 * @param attDesc description of someone with this stat in abundance
-		 * @param cmmsgMap a CMMsg messf code that saves with this stat
-		 */
-		public void addBaseStat(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
-		{
-			baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
-			baseStatCodes[baseStatCodes.length-1]=allStatCodes.length;
-			baseStatNames=Arrays.copyOf(baseStatNames, baseStatNames.length+1);
-			baseStatNames[baseStatNames.length-1]=name;
-			addAllStat(abbr,desc,name,attDesc,cmmsgMap,true);
-		}
-
-		/**
-		 * Adds a new max stat to this object for all mobs and players to share
-		 * @param baseCode corresponding base stat code
-		 * @param abbr 1-3 letter short code for this stat
-		 * @param desc longer description of this stat
-		 * @param name space-free coded name of this stat
-		 * @param attDesc description of someone with this stat in abundance
-		 * @param cmmsgMap a CMMsg message code that saves with this stat
-		 */
-		public void addMaxStat(final int baseCode, final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
-		{
-			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
-			final int maxCode = allStatCodes.length;
-			maxStatCodes[maxStatCodes.length-1]=maxCode;
-
-			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
-
-			MaxBaseCrossCodes=Arrays.copyOf(MaxBaseCrossCodes, allStatCodes.length);
-			MaxBaseCrossCodes[maxCode]=baseCode;
-			MaxBaseCrossCodes[baseCode]=maxCode;
-		}
-
-		/**
-		 * Adds a new saving throw stat to this object for all mobs and players to share
-		 * @param abbr 1-3 letter short code for this stat
-		 * @param desc longer description of this stat
-		 * @param name space-free coded name of this stat
-		 * @param attDesc description of someone with this stat in abundance
-		 * @param cmmsgMap a CMMsg message code that saves with this stat
-		 */
-		public void addSavingThrow(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
-		{
-			savingThrowCodes=Arrays.copyOf(savingThrowCodes, savingThrowCodes.length+1);
-			savingThrowCodes[savingThrowCodes.length-1]=allStatCodes.length;
-			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
-		}
-
-		/**
 		 * Adds a new miscellaneous stat to this object for all mobs and players to share
+		 * @param code the official hard coded stat code
 		 * @param abbr 1-3 letter short code for this stat
 		 * @param desc longer description of this stat
 		 * @param name space-free coded name of this stat
 		 * @param attDesc description of someone with this stat in abundance
 		 * @param cmmsgMap a CMMsg message code that saves with this stat
 		 * @param base true if the code is a base stat, false if a save or something else
+		 * @param type the CStatType category of this
 		 */
-		public void addAllStat(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap, final boolean base)
+		public void addAllStat(final int code, final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap, final CStatType type)
 		{
-			allStatCodes=Arrays.copyOf(allStatCodes, allStatCodes.length+1);
-			allStatCodes[allStatCodes.length-1]=allStatCodes.length-1;
+			switch(type)
+			{
+			case BASE:
+			{
+				baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
+				baseStatCodes[baseStatCodes.length-1]=code;
+				baseStatNames=Arrays.copyOf(baseStatNames, baseStatNames.length+1);
+				baseStatNames[baseStatNames.length-1]=name;
+				break;
+			}
+			case SAVE:
+			{
+				savingThrowCodes=Arrays.copyOf(savingThrowCodes, savingThrowCodes.length+1);
+				savingThrowCodes[savingThrowCodes.length-1]=code;
+				break;
+			}
+			case MAX:
+			{
+				int baseCode = -1;
+				try
+				{
+					for(int x=0;x<baseStatNames.length;x++)
+						if(name.toUpperCase().indexOf(baseStatNames[x].toUpperCase())>=0)
+							baseCode = baseStatCodes[x];
+					if(baseCode <0)
+						throw new IllegalArgumentException("Unknown baseStatName "+name);
+					maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
+					maxStatCodes[maxStatCodes.length-1]=code;
+					if(code >= maxBaseCrossCodes.length)
+						maxBaseCrossCodes=Arrays.copyOf(maxBaseCrossCodes, code+1);
+					maxBaseCrossCodes[code]=baseCode;
+					maxBaseCrossCodes[baseCode]=code;
+				}
+				catch(final Exception e)
+				{
+				}
+				break;
+			}
+			case MISC:
+				break;
+			}
+			if(code >= allStatCodes.length)
+				allStatCodes=Arrays.copyOf(allStatCodes, code+1);
+			allStatCodes[code]=allStatCodes.length-1;
 			isBaseStatCode=Arrays.copyOf(isBaseStatCode, allStatCodes.length);
-			isBaseStatCode[allStatCodes.length-1]=base;
+			isBaseStatCode[code]=(type == CStatType.BASE);
 			statAbbreviations=Arrays.copyOf(statAbbreviations, allStatCodes.length);
-			statAbbreviations[allStatCodes.length-1]=abbr;
+			statAbbreviations[code]=abbr;
 			statDescriptions=Arrays.copyOf(statDescriptions, allStatCodes.length);
-			statDescriptions[allStatCodes.length-1]=desc.toUpperCase().trim();
+			statDescriptions[code]=desc.toUpperCase().trim();
 			statNames=Arrays.copyOf(statNames, allStatCodes.length);
-			statNames[allStatCodes.length-1]=name.toUpperCase().trim().replace(' ','_');
+			statNames[code]=name.toUpperCase().trim().replace(' ','_');
 			shortNames=Arrays.copyOf(shortNames, allStatCodes.length);
 			if(name.length()>3)
-				shortNames[allStatCodes.length-1]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_')).substring(0, 3);
+				shortNames[code]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_')).substring(0, 3);
 			else
-				shortNames[allStatCodes.length-1]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_'));
+				shortNames[code]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_'));
 			statAttributionDescriptions=Arrays.copyOf(statAttributionDescriptions, allStatCodes.length);
-			statAttributionDescriptions[allStatCodes.length-1]=attDesc.toUpperCase();
+			statAttributionDescriptions[code]=attDesc.toUpperCase();
 			statCMMsgMapping=Arrays.copyOf(statCMMsgMapping, allStatCodes.length);
-			statCMMsgMapping[allStatCodes.length-1]=cmmsgMap;
+			statCMMsgMapping[code]=cmmsgMap;
 			rvsStatCMMsgMapping.put(Integer.valueOf(cmmsgMap), Integer.valueOf(allStatCodes.length-1));
 		}
 	}

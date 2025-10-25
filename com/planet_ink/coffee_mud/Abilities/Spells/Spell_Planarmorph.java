@@ -373,8 +373,8 @@ public class Spell_Planarmorph extends Spell
 		final boolean mixWithMale = target.charStats().reproductiveCode() == 'M';
 		final Race fatherR=mixWithMale?target.charStats().getMyRace():motherR;
 		motherR=mixWithMale?motherR:target.charStats().getMyRace();
-		final Race R=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);
-		if(R==null)
+		final Race RA=CMLib.utensils().getMixedRace(motherR.ID(), fatherR.ID(), false);
+		if(RA==null)
 		{
 			mob.tell(L("This magic does not seem to work for you here!"));
 			return false;
@@ -390,7 +390,7 @@ public class Spell_Planarmorph extends Spell
 		final MOB fakeMOB=CMClass.getFactoryMOB();
 		for(final int s: CharStats.CODES.BASECODES())
 			fakeMOB.baseCharStats().setStat(s,mob.baseCharStats().getStat(s));
-		fakeMOB.baseCharStats().setMyRace(R);
+		fakeMOB.baseCharStats().setMyRace(RA);
 		fakeMOB.recoverCharStats();
 		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
@@ -404,11 +404,17 @@ public class Spell_Planarmorph extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
-			if(mob.location().okMessage(mob,msg))
+			final Room targetR = CMLib.map().roomLocation(target);
+			if(targetR==null)
+				return false;
+			final int malicious=(!target.getGroupMembers(new HashSet<MOB>()).contains(mob))?CMMsg.MASK_MALICIOUS:0;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(RA.name())));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,malicious|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((targetR.okMessage(mob,msg))&&((targetR.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				targetR.send(mob,msg);
+				targetR.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					//mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(R.name())));
 					final Ability cA = beneficialAffect(mob,target,asLevel,0);

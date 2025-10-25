@@ -91,9 +91,7 @@ public class Chant_StabilizeForm extends Chant
 		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
-		&&(msg.tool() instanceof Ability)
-		&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_POLYMORPHING)))
+		&&(msg.targetMinor()==CMMsg.TYP_POLYMORPH))
 		{
 			if((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
 			{

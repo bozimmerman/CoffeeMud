@@ -146,6 +146,7 @@ public class Halfling extends StdRace
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.adjStat(CharStats.STAT_STRENGTH,-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+10);
+		affectableStats.setStat(CharStats.STAT_SAVE_POLYMORPH,affectableStats.getStat(CharStats.STAT_SAVE_POLYMORPH)+10);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)+10);
 	}
 
@@ -156,6 +157,7 @@ public class Halfling extends StdRace
 		affectableStats.adjStat(CharStats.STAT_DEXTERITY,-1);
 		affectableStats.adjStat(CharStats.STAT_STRENGTH,+1);
 		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)-10);
+		affectableStats.setStat(CharStats.STAT_SAVE_POLYMORPH,affectableStats.getStat(CharStats.STAT_SAVE_POLYMORPH)-10);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,affectableStats.getStat(CharStats.STAT_SAVE_DETECTION)-10);
 	}
 

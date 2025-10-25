@@ -800,13 +800,13 @@ public class Create extends StdCommand
 				if(classC!=null)
 				{
 					final Ability A=CMClass.getAbility("Prop_Trainer");
-					final String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
+					final String attack=CharStats.CODES.DESC(classC.getAttackAttribute());
 					final int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 					final StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
 					for(int i=0;i<classC.maxStatAdjustments().length;i++)
 					{
 						if(classC.maxStatAdjustments()[i]!=0)
-							txt.append(" "+CharStats.DEFAULT_STAT_DESCS[i]+"="+(highatt+classC.maxStatAdjustments()[i]));
+							txt.append(" "+CharStats.CODES.DESC(i)+"="+(highatt+classC.maxStatAdjustments()[i]));
 					}
 					if(classC.maxStatAdjustments()[classC.getAttackAttribute()]==0)
 						txt.append(" "+attack+"="+highatt);

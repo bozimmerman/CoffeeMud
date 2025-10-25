@@ -260,6 +260,10 @@ public class Chant_Reincarnation extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		Room R=CMLib.map().roomLocation(target);
+		if(R==null)
+			R=mob.location();
+
 		if(success)
 		{
 			int modifier=0;
@@ -268,9 +272,11 @@ public class Chant_Reincarnation extends Chant
 			final CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),
 					auto?L("^S<S-NAME> get(s) put under a reincarnation geas!^?"):
 						L("^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|modifier|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				final Ability A = beneficialAffect(mob,target,asLevel,1800);
 				if(A != null)
 				{

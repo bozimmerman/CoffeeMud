@@ -57,6 +57,7 @@ Spell_Confusion	FISH	POTION
 Spell_Delirium	BEEF	POTION
 Spell_Fly	FEATHERS	POTION
 Spell_ResistParalyzation	BERRIES	POTION
+Spell_ResistPolymorph	BERRIES	POTION
 Spell_GiantStrength	GREENS	POTION
 Spell_Frenzy	COFFEEBEANS	POTION
 Spell_Nondetection	JADE	POTION

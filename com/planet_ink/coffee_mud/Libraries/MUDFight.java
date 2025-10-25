@@ -2290,6 +2290,20 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 				tackOn = L("<S-NAME> resist(s) the @x1 from <T-NAME>.",tool);
 			break;
+		case CMMsg.TYP_POLYMORPH:
+			if(!targeted)
+			{
+				if(tool == null)
+					tackOn = L("<S-NAME> resist(s) the polymorph.");
+				else
+					tackOn = L("<S-NAME> resist(s) the @x1.",tool);
+			}
+			else
+			if(tool == null)
+				tackOn = L("<S-NAME> resist(s) the polymorph from <T-NAME>.");
+			else
+				tackOn = L("<S-NAME> resist(s) the @x1 from <T-NAME>.",tool);
+			break;
 		case CMMsg.TYP_SONIC:
 			if(!targeted)
 			{
@@ -2430,10 +2444,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if ((msg.targetMinor() != CMMsg.TYP_WEAPONATTACK) && (msg.value() <= 0))
 		{
-			int charStatCode = -1;
 			int chanceToFail = 0;
 			if(msg.tool() instanceof Ability)
 			{
+				int charStatCode = -1;
 				switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
 				{
 				case Ability.ACODE_CHANT:
@@ -2449,29 +2463,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					charStatCode=CharStats.STAT_SAVE_SONGS;
 					break;
 				}
-				if((charStatCode > 0)
-				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
-					chanceToFail = mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
+				if(charStatCode > 0)
+					chanceToFail = mob.charStats().getSave(charStatCode);
 			}
-			if(charStatCode<0)
-				charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
+			final int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.targetMinor());
 			if(charStatCode >= 0)
-			{
 				chanceToFail += mob.charStats().getSave(charStatCode);
-				if (chanceToFail > (Integer.MIN_VALUE/2))
-				{
-					final int diff = (mob.phyStats().level() - msg.source().phyStats().level());
-					final int diffSign = diff < 0 ? -1 : 1;
-					chanceToFail += (diffSign * (diff * diff));
-					if (chanceToFail < 5)
-						chanceToFail = 5;
-					else
-					if (chanceToFail > 95)
-						chanceToFail = 95;
+			if (chanceToFail > (Integer.MIN_VALUE/2))
+			{
+				final int diff = (mob.phyStats().level() - msg.source().phyStats().level());
+				final int diffSign = diff < 0 ? -1 : 1;
+				chanceToFail += (diffSign * (diff * diff));
+				if (chanceToFail < 5)
+					chanceToFail = 5;
+				else
+				if (chanceToFail > 95)
+					chanceToFail = 95;
 
-					if (CMLib.dice().rollPercentage() < chanceToFail)
-						CMLib.combat().resistanceMsgs(msg.source(), mob, msg); // also applies the +1 to msg.value()
-				}
+				if (CMLib.dice().rollPercentage() < chanceToFail)
+					CMLib.combat().resistanceMsgs(msg.source(), mob, msg); // also applies the +1 to msg.value()
 			}
 		}
 		return true;

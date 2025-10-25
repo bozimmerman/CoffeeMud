@@ -230,11 +230,17 @@ public class Spell_FleshStone extends Spell
 		if(success)
 		{
 			invoker=mob;
+			final Room targetR = CMLib.map().roomLocation(target);
+			if(targetR==null)
+				return false;
+			final int malicious=(!target.getGroupMembers(new HashSet<MOB>()).contains(mob))?CMMsg.MASK_MALICIOUS:0;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,malicious|CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_POLYMORPH|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((targetR.okMessage(mob,msg))&&((targetR.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				targetR.send(mob,msg);
+				targetR.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int a=0;
 					while(a<target.numEffects()) // personal effects

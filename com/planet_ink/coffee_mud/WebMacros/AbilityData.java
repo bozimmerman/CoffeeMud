@@ -578,7 +578,7 @@ public class AbilityData extends StdWebMacro
 						for (int e=0;e<CMMsg.TYPE_DESCS.length;e++)
 						{
 							final String element=CMMsg.TYPE_DESCS[e];
-							if(CMParms.contains(CharStats.DEFAULT_STAT_MSG_MAP,e))
+							if(CMParms.contains(CharStats.CODES.CMMSGMAP(),e))
 								str.append("<OPTION VALUE=\""+element+"\""+(old.equalsIgnoreCase(element)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(element));
 						}
 						str.append(", ");

@@ -301,6 +301,7 @@ public class Undead extends StdRace
 				case CMMsg.TYP_GAS:
 				case CMMsg.TYP_MIND:
 				case CMMsg.TYP_PARALYZE:
+				case CMMsg.TYP_POLYMORPH:
 				case CMMsg.TYP_POISON:
 				case CMMsg.TYP_DISEASE:
 					if((!mob.amDead())
@@ -390,7 +391,8 @@ public class Undead extends StdRace
 		CharStats.STAT_SAVE_GAS,
 		CharStats.STAT_SAVE_PARALYSIS,
 		CharStats.STAT_SAVE_UNDEAD,
-		CharStats.STAT_SAVE_DISEASE
+		CharStats.STAT_SAVE_DISEASE,
+		CharStats.STAT_SAVE_POLYMORPH
 
 	};
 

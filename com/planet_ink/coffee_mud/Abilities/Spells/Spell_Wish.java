@@ -529,7 +529,7 @@ public class Spell_Wish extends Spell
 						{
 							newMOB=CMClass.getMOB("GenMOB");
 							newMOB.setName(L("CopyOf@x1",foundThang.Name()));
-							newMOB.setDisplayText(((MOB) foundThang).displayText(mob));
+							newMOB.setDisplayText(foundThang.displayText(mob));
 							newMOB.setDescription(foundThang.description());
 						}
 						else
@@ -753,15 +753,15 @@ public class Spell_Wish extends Spell
 					if(CMLib.utensils().canBePlayerDestroyed(mob, (Item)target, false, true))
 					{
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 quietly vanishes.",target.name()));
-						((Item)target).destroy();
+						target.destroy();
 					}
 				}
 				else
 				if(target instanceof MOB)
 				{
 					final int exp=mob.getExperience();
-					if(((MOB)target).phyStats().level()>mob.phyStats().level())
-						levelDiffXPLoss = (((MOB)target).phyStats().level()-mob.phyStats().level())*50;
+					if(target.phyStats().level()>mob.phyStats().level())
+						levelDiffXPLoss = (target.phyStats().level()-mob.phyStats().level())*50;
 					CMLib.combat().postDeath(mob,(MOB)target,null);
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 					&&!mob.charStats().getCurrentClass().expless()
@@ -994,7 +994,7 @@ public class Spell_Wish extends Spell
 							if(target instanceof MOB)
 								((MOB)target).recoverCharStats();
 							if(target instanceof MOB)
-								((MOB)target).recoverPhyStats();
+								target.recoverPhyStats();
 						}
 						if(target instanceof MOB)
 							mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
@@ -1115,12 +1115,12 @@ public class Spell_Wish extends Spell
 				if(!isLegalTarget(mob, target, true, myWish))
 					return false;
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).basePhyStats().weight();
+				int weight=target.basePhyStats().weight();
 				weight-=50;
 				if(weight<=0)
 					weight=1;
-				((MOB)target).basePhyStats().setWeight(weight);
-				((MOB)target).recoverPhyStats();
+				target.basePhyStats().setWeight(weight);
+				target.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now lighter!",target.name()));
 				lastCastTime = System.currentTimeMillis();
 				return true;
@@ -1134,10 +1134,10 @@ public class Spell_Wish extends Spell
 				if(!isLegalTarget(mob, target, true, myWish))
 					return false;
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).basePhyStats().weight();
+				int weight=target.basePhyStats().weight();
 				weight+=50;
-				((MOB)target).basePhyStats().setWeight(weight);
-				((MOB)target).recoverPhyStats();
+				target.basePhyStats().setWeight(weight);
+				target.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now heavier!",target.name()));
 				lastCastTime = System.currentTimeMillis();
 				return true;
@@ -1325,12 +1325,12 @@ public class Spell_Wish extends Spell
 				if(!isLegalTarget(mob, target, true, myWish))
 					return false;
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).basePhyStats().height();
+				int weight=target.basePhyStats().height();
 				weight-=12;
 				if(weight<=0)
 					weight=5;
-				((MOB)target).basePhyStats().setHeight(weight);
-				((MOB)target).recoverPhyStats();
+				target.basePhyStats().setHeight(weight);
+				target.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now shorter!",target.name()));
 				lastCastTime = System.currentTimeMillis();
 				return true;
@@ -1345,10 +1345,10 @@ public class Spell_Wish extends Spell
 				if(!isLegalTarget(mob, target, true, myWish))
 					return false;
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).basePhyStats().height();
+				int weight=target.basePhyStats().height();
 				weight+=12;
-				((MOB)target).basePhyStats().setHeight(weight);
-				((MOB)target).recoverPhyStats();
+				target.basePhyStats().setHeight(weight);
+				target.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now taller!",target.name()));
 				lastCastTime = System.currentTimeMillis();
 				return true;
@@ -1405,9 +1405,9 @@ public class Spell_Wish extends Spell
 					final int oldCat=((MOB)target).baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
-					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),((MOB)target).baseCharStats().reproductiveCode());
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(target.basePhyStats(),((MOB)target).baseCharStats().reproductiveCode());
 					((MOB)target).recoverCharStats();
-					((MOB)target).recoverPhyStats();
+					target.recoverPhyStats();
 					CMLib.utensils().confirmWearability((MOB)target);
 					if(!((MOB)target).isMonster())
 						((MOB)target).baseCharStats().setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
@@ -1457,7 +1457,7 @@ public class Spell_Wish extends Spell
 						CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_CLASSCHANGE);
 					((MOB)target).baseCharStats().getCurrentClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
-					((MOB)target).recoverPhyStats();
+					target.recoverPhyStats();
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now a @x2!",target.name(),C.name(((MOB)target).baseCharStats().getCurrentClassLevel())));
 					lastCastTime = System.currentTimeMillis();
 					return true;
@@ -1856,6 +1856,10 @@ public class Spell_Wish extends Spell
 				}
 				if(myWish.indexOf(" PARALY")>=0)
 					foundAttribute=CharStats.STAT_SAVE_PARALYSIS;
+				if(myWish.indexOf(" POLYM")>=0)
+					foundAttribute=CharStats.STAT_SAVE_POLYMORPH;
+				if(myWish.indexOf(" PETRIF")>=0)
+					foundAttribute=CharStats.STAT_SAVE_POLYMORPH;
 				if(myWish.indexOf(" FIRE")>=0)
 					foundAttribute=CharStats.STAT_SAVE_FIRE;
 				if(myWish.indexOf(" FLAMES")>=0)

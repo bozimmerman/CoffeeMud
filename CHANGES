@@ -1,5 +1,7 @@
 # Build 5.11.1 Release ??/??/20??
   1. Proxy server reconnects now bypass conn-spam blocks
+  2. New Save vs Polymorph saving throw, also applies to petrification
+  3. New Spell: Resist Polymorph
 
 # Build 5.11.0 Release 10/23/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.

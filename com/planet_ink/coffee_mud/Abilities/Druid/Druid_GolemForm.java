@@ -351,7 +351,7 @@ public class Druid_GolemForm extends StdAbility
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_POLYMORPH,null);
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
