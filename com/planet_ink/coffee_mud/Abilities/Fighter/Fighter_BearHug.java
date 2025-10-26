@@ -48,12 +48,15 @@ public class Fighter_BearHug extends FighterGrappleSkill
 		return localizedName;
 	}
 
+	private final static String localizedDisplayName1 = CMLib.lang().L("(Bear-Hugging)");
+	private final static String localizedDisplayName2 = CMLib.lang().L("(Bear-Hugged)");
+
 	@Override
 	public String displayText()
 	{
 		if(affected==invoker)
-			return "(Bear-Hugging)";
-		return "(Bear-Hugged)";
+			return localizedDisplayName1;
+		return localizedDisplayName2;
 	}
 
 	private static final String[] triggerStrings =I(new String[] {"BEARHUG"});
