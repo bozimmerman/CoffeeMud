@@ -12,7 +12,7 @@
 	</target>
 	<target name="compile">
 		<echo message="Using JDK version: ${java.version} from ${java.home}"/>
-		<javac srcdir="." classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.8" source="1.8" debug="on" memoryMaximumSize="1024m" fork="on" includeantruntime="false">
+		<javac srcdir="." encoding="UTF-8" classpath=".;./lib/js.jar;./lib/jzlib.jar" nowarn="yes" deprecation="on" target="1.8" source="1.8" debug="on" memoryMaximumSize="1024m" fork="on" includeantruntime="false">
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 		<echo>Compiliation done.</echo>
