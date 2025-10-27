@@ -1219,6 +1219,7 @@ function SipletWindow(windowName)
 	this.isAtBottom = function()
 	{
 		var div = this.window;
+		div.offsetHeight;
 		const distanceFromBottom = div.scrollHeight - div.scrollTop - div.clientHeight;
 		const halfVisibleArea = div.clientHeight * 0.7;
 		return distanceFromBottom < halfVisibleArea;
@@ -1229,11 +1230,12 @@ function SipletWindow(windowName)
 		if(tries > 10)
 			return;
 		var me = this;
-		setTimeout(function()
+		requestAnimationFrame(function()
 		{
+			rewin.scrollHeight;
 			rewin.scrollTop = rewin.scrollHeight - rewin.clientHeight;
 			me.scrollToBottom(rewin,++tries);
-		},50);
+		});
 	};
 	
 	this.displayText = function(value)
