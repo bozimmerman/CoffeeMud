@@ -99,7 +99,10 @@ function inputKeyPress(e)
 		if(window.currWin.wsopened)
 		{
 			inputSubmit(inputTextArea.value);
-			inputTextArea.value='';
+			if(getConfig('window/clearInput','')=='')
+				inputTextArea.value='';
+			else
+				inputTextArea.select();
 		}
 		else
 		SiConfirm('Reconnect?',function(tf) {

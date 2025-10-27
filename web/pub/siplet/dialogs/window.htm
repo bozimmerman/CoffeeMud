@@ -13,10 +13,9 @@
 			<OPTION VALUE="Courier" ${getConfig('window/fontface','monospace').toLowerCase()=='courier'?'SELECTED':''}>Courier
 			<OPTION VALUE="Courier New" ${getConfig('window/fontface','monospace').toLowerCase()=='courier new'?'SELECTED':''}>Courier New
 		</SELECT>
+		&nbsp;Size:
+		<INPUT SIZE=3 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize','16px'))}"> 
 	</TD>
-</TR><TR>
-	<TD>Text Font Size</TD>
-	<TD><INPUT SIZE=5 ONCHANGE="setConfig('window/fontsize',this.value+'px');" VALUE="${parseInt(getConfig('window/fontsize','16px'))}"></TD>
 </TR><TR>
 	<TD>Sound</TD>
 	<TD><SELECT ID="VOLUME" ONCHANGE="setConfig('window/volume',this.value);">
@@ -46,6 +45,12 @@ s += '<INPUT TYPE=CHECKBOX NAME=INPUT';
 if(getConfig('window/disableInput','')!='')
 	s += ' CHECKED';
 s += ' ONCLICK="setConfig(\'window/disableInput\',this.checked?\'true\':\'\');">';
+s += '</TD>';
+s += '<TR><TD>Clear Input</TD><TD>';
+s += '<INPUT TYPE=CHECKBOX NAME=INPUT';
+if(getConfig('window/clearInput','')=='')
+	s += ' CHECKED';
+s += ' ONCLICK="setConfig(\'window/clearInput\',this.checked?\'\':\'false\');">';
 s += '</TD>';
 }
 <TR><TD COLSPAN=2></TD>

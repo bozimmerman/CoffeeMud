@@ -2,7 +2,7 @@ window.isElectron = typeof window.process === 'object' && window.process.version
 var Siplet =
 {
 	VERSION_MAJOR: '3.3',
-	VERSION_MINOR: '1',
+	VERSION_MINOR: '2',
 	COFFEE_MUD: false,
 	NAME: window.isElectron?'Sip MUD Client':'Siplet',
 	R: /^win\.[\w]+(\.[\w]+)*$/
@@ -185,6 +185,7 @@ function LoadGlobalPhonebook()
 				"accountName": "",
 				"password": "",
 				"disableInput": false,
+				"clearInput": true,
 				"bsCode": 8,
 				"pb": true
 			});
