@@ -17,6 +17,10 @@ window.onevent=function(event)
 			showHelp();
 			return;
 		}
+		if(!event.type)
+			return;
+		if(event.type !== 'event')
+			return;
 		try
 		{
 			var x = eval(event.data);

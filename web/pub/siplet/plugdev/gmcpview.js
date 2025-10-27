@@ -47,6 +47,10 @@ window.onevent=function(event)
 			viewon = false;
 			return;
 		}
+		if(!event.type)
+			return;
+		if(event.type !== 'event')
+			return;
 		var x = event.data.indexOf(' ');
 		if(x<0)
 		{

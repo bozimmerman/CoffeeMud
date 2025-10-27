@@ -1,6 +1,6 @@
 {
    "name":"JSCmd",
-   "version":1,
+   "version":2,
    "requires":"3.2.0",
    "mxp":"",
    "triggers":[
@@ -25,5 +25,6 @@
    ],
    "timers":[
       
-   ]
+   ],
+   "code":"function showHelp()\n{\n\twin.displayText('<FRAME JSCMDHELP SCROLLING=y TITLE=\"JSCmd Help\" ACTION=OPEN FLOATING=close SCROLLING=y TOP=10% LEFT=15% WIDTH=450 HEIGHT=250>');\n\tvar html = '<DEST NAME=JSCMDHELP EOF><FONT COLOR=WHITE>';\n\thtml += 'Enter <B>/js [command]</B> to execute some JavaScript.<BR><BR>';\n\thtml += 'Double &quot;quotes&quot; and \\\\backslashes must be escaped with \\\\..<BR><BR>';\n\thtml += 'See help on Scripts for API information.<BR><BR>';\n\twin.displayAt(html,'JSCMDHELP');\n}\n\nwindow.onevent=function(event)\n{\n\tif(event.data && event.data.startsWith)\n\t{\n\t\tif(event.data === 'Help')\n\t\t{\n\t\t\tshowHelp();\n\t\t\treturn;\n\t\t}\n\t\tif(!event.type)\n\t\t\treturn;\n\t\tif(event.type !== 'event')\n\t\t\treturn;\n\t\ttry\n\t\t{\n\t\t\tvar x = eval(event.data);\n\t\t\tif(!event.data.startsWith('win.'))\n\t\t\t{\n\t\t\t\tif(x !== undefined)\n\t\t\t\t\twin.displayText('<BR><FONT COLOR=WHITE>JavaScript result: ' + x+'</FONT><BR>');\n\t\t\t}\n\t\t}\n\t\tcatch(e)\n\t\t{\n\t\t\twin.displayText('<BR><FONT COLOR=WHITE>JavaScript error: ' + e+'</FONT><BR>');\n\t\t}\n\t}\n};\n"
 }
