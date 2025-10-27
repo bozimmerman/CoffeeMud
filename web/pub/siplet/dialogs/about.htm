@@ -6,7 +6,7 @@
 		if(window.isElectron)
 		{
 			var xhr = new XMLHttpRequest();
-			xhr.open('GET', 'http://www.zimmers.net/otherprojs/sipversion.txt?cachebuster=' + new Date().getTime(), true);
+			xhr.open('GET', 'http://www.zimmers.net/projects/sip/sipversion.txt?cachebuster=' + new Date().getTime(), true);
 			xhr.onreadystatechange = function() {
 				if((xhr.readyState === 4)&&(xhr.status === 200)) 
 				{

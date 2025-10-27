@@ -15,7 +15,7 @@
 		{
 			var xhr = new XMLHttpRequest();
 			root.innerHTML = '<h1><font color=blue>Checking for Plugins...</font></h1>';
-			xhr.open('GET', 'https://www.zimmers.net/otherprojs/sipplugins.json?cachebuster=' + new Date().getTime(), true);
+			xhr.open('GET', 'https://www.zimmers.net/projects/sip/sipplugins.json?cachebuster=' + new Date().getTime(), true);
 			xhr.onreadystatechange = function() 
 			{
 				if((xhr.readyState === 4)&&(xhr.status === 200)) 
