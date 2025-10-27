@@ -177,6 +177,7 @@ public class Assassin extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_Garrote",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Evesdrop",false);

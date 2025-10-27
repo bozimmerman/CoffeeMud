@@ -150,8 +150,8 @@ public class Thief_Garrote extends FighterGrappleSkill
 		if(CMLib.flags().isARope(I))
 			return true;
 		if((I instanceof Weapon)
-		&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_FLAILED)
-		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+		&&(((Weapon)I).weaponClassification()==Weapon.CLASS_FLAILED)
+		&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER))
 			return true;
 		return false;
 	}
@@ -200,7 +200,7 @@ public class Thief_Garrote extends FighterGrappleSkill
 		}
 		if(lastMOB.equals(target+""))
 		{
-			failureTell(mob,target,auto,L("@x1 is watching <S-HIS-HER> back too fall for that again.",target.name(mob)), commands);
+			failureTell(mob,target,auto,L("<T-NAME> is watching <T-HIS-HER> back too closely to fall for that again."), commands);
 			return false;
 		}
 		if(mob.isInCombat())
@@ -220,7 +220,7 @@ public class Thief_Garrote extends FighterGrappleSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;
 
 		final boolean hit=(auto)
@@ -229,7 +229,7 @@ public class Thief_Garrote extends FighterGrappleSkill
 		boolean success=proficiencyCheck(mob,0,auto)&&(hit);
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT),
-				auto?"":L("<S-NAME> attempt(s) to garrote <T-NAMESELF> with @x1!",I.name(mob)));
+				auto?"":L("<S-NAME> sneak(s) up behind <T-NAMESELF> with @x1!",I.name(mob)));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -245,7 +245,11 @@ public class Thief_Garrote extends FighterGrappleSkill
 				return false;
 			}
 			else
+			{
 				success = finishGrapple(mob,14,target, asLevel);
+				if(success)
+					mob.location().show(mob,target,I,CMMsg.MSG_OK_VISUAL,L("<S-NAME> garrote(s) <T-NAME>!"));
+			}
 		}
 		else
 			success=false;

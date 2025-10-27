@@ -263,6 +263,7 @@ public class Reliquist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerUnholyArmor",false,"+SKILLS -Prayer_EmpowerHolyArmor -Prayer_EmpowerSacredArmor"); // special A
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerSacredArmor",false,"+SKILLS -Prayer_EmpowerHolyArmor -Prayer_EmpowerUnholyArmor"); // special A
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Garrote",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_InciteDivineFeud",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_ProtectSacredItem",false, new XVector<String>("Prayer_ProtectItem"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_WhipStrip",0,false);
