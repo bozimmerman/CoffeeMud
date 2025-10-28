@@ -94,6 +94,10 @@ public class DDLGenerator
 		{
 			typeMappings.put("TEXT", "LONG VARCHAR");
 		}
+		if (productName.contains("mysql"))
+		{
+			typeMappings.put("TEXT", "LONGTEXT");
+		}
 		if (this.productName.contains("oracle"))
 		{
 			typeMappings.put("INT", "INTEGER");
