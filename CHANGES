@@ -1,8 +1,9 @@
-# Build 5.11.1 Release ??/??/20??
+# Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
   2. New Save vs Polymorph saving throw, also applies to petrification
   3. New Spell: Resist Polymorph
   4. New thief skill: Garrote
+  5. Nasty bug fixed: LONGTEXT fields in MySQL DBs created as TEXT.
 
 # Build 5.11.0 Release 10/23/2025
   1. CoffeeMud now has an optional Proxy server.  See installation guide.
