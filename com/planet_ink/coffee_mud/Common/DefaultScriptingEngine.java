@@ -14834,7 +14834,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 55: // ride_prog
 					if((msg.targetMinor()==CMMsg.TYP_MOUNT)
 					&&canTrigger(55)
-					&&(msg.amISource(monster))
+					&&(!msg.amISource(monster))
 					&&(msg.target() instanceof Rideable)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{

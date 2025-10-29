@@ -3004,16 +3004,20 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								final String groupName=this.getAbilityGroupName(grp.intValue());
 								if(all||groupName.equals(group))
 								{
-									doc.append("\"group\":\""+MiniJSON.toJSONString(groupName)+"\",");
-									doc.append("\"list\":[");
+									doc.append("\""+MiniJSON.toJSONString(groupName)+"\":");
+									doc.append("[");
 									for(final Ability A : allMyGroups.get(grp))
 										doc.append("\"").append(MiniJSON.toJSONString(A.name())).append("\",");
 									doc.setCharAt(doc.length()-1,']');
 									if(!all)
 										break;
 								}
+								doc.append(",");
 							}
-							doc.append("}");
+							if(doc.charAt(doc.length()-1)==',')
+								doc.setCharAt(doc.length()-1,'}');
+							else
+								doc.append("}");
 							return doc.toString();
 						}
 						if((group != null)&&(group.length()>0)

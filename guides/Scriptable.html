@@ -116,7 +116,7 @@
 
             <li><a href="#put_prog">put_prog</a></li>
 
-            <li><a href="#putting_prog">putting_prog</a></li>
+            <li><a href="#putting_prog">putting_prog</a></li><li>ride_prog</li><li>riding_prog</li>
 
             <li><a href="#rand_prog">rand_prog</a></li>
 
@@ -2460,7 +2460,7 @@ remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p><h3><a 
 
       <p>This
 type of mobprog is
-triggered by mounting a rideable. If the target matches the keywords of
+triggered by witnessing someone mounting a rideable. If the target matches the keywords of
 the ride_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
@@ -2472,12 +2472,26 @@ then the ride_prog will trigger from any thing mounted.&nbsp;</p>
 
       <pre>ride_prog horse<br /></pre><pre>ride_prog all<br /></pre>
 
-      <p>This will trigger if anything is mounted</p><h3><a name="riding_prog">riding_prog</a></h3>
+      <p>This will trigger if anything is mounted by anyone.</p><h3><a name="riding_prog">riding_prog</a></h3>
 
       <p>Usage:</p>
 
       <pre>riding_prog [keyword list]<br />riding_prog p [keyword list]<br />riding_prog all</pre>
-As ride_prog, but only triggers when the scripted mob or player does the&nbsp;
+As ride_prog, but only triggers when the scripted mob or player does
+the mounting instead of witnessing someone else doing it.&nbsp; If the
+target matches the keywords of
+the riding_prog, the prog is triggered. If there is a 'p' placed
+before
+the keyword list, the keywords of the object must exactly match that of
+the&nbsp;riding_prog. If there is not, then any rideable with any of
+the
+keywords in the list in it will trigger it. If a&nbsp;riding_prog all
+is used,
+then the ride_prog will trigger from any thing mounted. <br /><p>EXAMPLES:</p>
+
+      <pre>riding_prog horse<br /></pre><pre>riding_prog all<br /></pre>
+
+      <p>This will trigger if anything is mounted by the scripted.</p>
 
       <h3><a name="sell_prog">sell_prog</a></h3>
 

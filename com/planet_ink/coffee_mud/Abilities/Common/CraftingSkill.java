@@ -1788,7 +1788,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 					commonTelL(mob,"'@x1' is not a valid resource type for this skill.",possRsc);
 				return null;
 			}
-			while(commands.size()>foundFrom)
+			while(commands.size()>=foundFrom)
 				commands.remove(commands.size()-1);
 			return new int[] {rscCode};
 		}
