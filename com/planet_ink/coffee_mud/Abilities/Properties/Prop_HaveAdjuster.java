@@ -326,6 +326,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		final List<String> errors = new LinkedList<String>();
 		final Map<String,String> ps = CMParms.parseLooseParms(parameters[0], allParms, errors);
+		if(ps == null)
+		{
+			errors.add("PS was null (probably a loose parms cache failure)");
+			displayErrors(errors);
+			return;
+		}
 		if(parameters[0].startsWith("+")
 		|| parameters[0].startsWith("-"))
 			errors.add("Likely bad arguments: "+parameters[0]);
@@ -450,6 +456,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		this.charStateChanges=makeObjectArray(charStateV);
 		this.phyStatsChanges=makeObjectArray(phyStatsV);
 		this.charStatsChanges=makeObjectArray(charStatsV);
+		displayErrors(errors);
+	}
+
+	public void displayErrors(final List<String> errors)
+	{
 		if(errors.size()>0)
 		{
 			final Prop_HaveAdjuster meSave=this;
