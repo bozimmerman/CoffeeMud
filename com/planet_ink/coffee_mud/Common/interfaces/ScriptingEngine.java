@@ -364,6 +364,15 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		private static final long serialVersionUID = 6156845948200028480L;
 
 		/**
+		 * Special runtime flags for subscripts
+		 */
+		public static enum ScriptFlag
+		{
+			SPAWN,
+			SYNTAX_ERROR
+		}
+
+		/**
 		 * Returns the trigger code for this entire script
 		 *
 		 * @return the trigger code
@@ -397,7 +406,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * executor know how to handle it.
 		 * @param flag the flag to set
 		 */
-		public abstract void setFlag(String flag);
+		public abstract void setFlag(ScriptFlag flag);
 
 		/**
 		 * Checks a special flags on this script, to let the
@@ -405,7 +414,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * @param flag the flag to look for
 		 * @return true if the flag was set.
 		 */
-		public abstract boolean isFlagSet(String flag);
+		public abstract boolean isFlagSet(ScriptFlag flag);
 	}
 
 	/** The number of local variables associated with an execution of a script */

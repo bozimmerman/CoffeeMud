@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PrideStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.SubScript.ScriptFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
@@ -297,7 +298,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		private String				triggerLine	= null;
 		private String[]			triggerBits	= null;
 		private final SubScript		parent;
-		private final Set<String>	flags		= Collections.synchronizedSet(new TreeSet<String>());
+
+		private final Set<ScriptFlag>	flags	= Collections.synchronizedSet(new HashSet<ScriptFlag>());
 
 		@Override
 		public boolean add(final ScriptLn line)
@@ -375,21 +377,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 
 		@Override
-		public void setFlag(final String flag)
+		public void setFlag(final ScriptFlag flag)
 		{
 			if(flag == null)
 				return;
-			flags.add(flag.toUpperCase().trim());
+			flags.add(flag);
 			if(parent != null)
 				parent.setFlag(flag);
 		}
 
 		@Override
-		public boolean isFlagSet(final String flag)
+		public boolean isFlagSet(final ScriptFlag flag)
 		{
 			if(flag == null)
 				return false;
-			return flags.contains(flag.toUpperCase().trim());
+			return flags.contains(flag);
 		}
 	}
 
@@ -1364,7 +1366,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected void logError(final MPContext context, final String cmdName, final String errType, final String errMsg)
 	{
 		final Environmental scripted = context.scripted;
-		logError(scripted,cmdName,errType,errMsg);
+		if(errType.equals("Syntax"))
+			context.script.setFlag(ScriptFlag.SYNTAX_ERROR);
+		logError(scripted,cmdName,errType,context.script.getTriggerLine()+"/"+errMsg);
 	}
 
 	protected void logError(final Environmental scripted, final String cmdName, final String errType, final String errMsg)
@@ -9178,6 +9182,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final boolean traceDebugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTTRACE);
 		if(traceDebugging && ctx.line == 1 && script.size()>0 && script.getTriggerLine().length()>0)
 			Log.debugOut(CMStrings.padRight(ctx.scripted.Name(), 15)+": * EXECUTE: "+script.getTriggerLine());
+		if(script.isFlagSet(ScriptFlag.SYNTAX_ERROR))
+			return null;
 		for(;ctx.line<script.size();ctx.line++)
 		{
 			s=script.get(ctx.line).first;
@@ -9784,7 +9790,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final ScriptLn line = script.get(ctx.line);
 						if(line == null)
 						{
-							logError(ctx,"FOR","Runtime"," NULL LINE # "+ctx.line+"/"+script.size()+"!");
+							logError(ctx,"FOR","Syntax"," NULL LINE # "+ctx.line+"/"+script.size()+"!");
 							continue;
 						}
 						s=line.first;
@@ -10053,7 +10059,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCr");
-				script.setFlag("SPAWN");
+				script.setFlag(ScriptFlag.SPAWN);
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String promptStr=varify(ctx,tt[3]);
@@ -10077,7 +10083,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCCr");
-				script.setFlag("SPAWN");
+				script.setFlag(ScriptFlag.SPAWN);
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String defaultVal=varify(ctx,tt[3]);
@@ -10102,7 +10108,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"CCCCCr");
-				script.setFlag("SPAWN");
+				script.setFlag(ScriptFlag.SPAWN);
 				final Environmental newTarget=getArgumentItem(tt[1],ctx);
 				final String var=varify(ctx,tt[2]);
 				final String choices=varify(ctx,tt[3]);
@@ -11918,8 +11924,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									@SuppressWarnings("unchecked")
 									final List<SubScript> scripts = (List<SubScript>) M.invoke(S, newTarget);
 									for(final SubScript scr : scripts)
-										if(scr.isFlagSet("SPAWN"))
-											script.setFlag("SPAWN");
+										if(scr.isFlagSet(ScriptFlag.SPAWN))
+											script.setFlag(ScriptFlag.SPAWN);
 								}
 								catch(final Exception e)
 								{
@@ -12701,7 +12707,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tt==null)
 					tt=parseBits(ctx,"Cccr");
-				script.setFlag("SPAWN");
+				script.setFlag(ScriptFlag.SPAWN);
 				String which=tt[1];
 				final Environmental E=getArgumentItem(which,ctx);
 				final String arg2=varify(ctx,tt[2]);
@@ -13605,7 +13611,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
 						if(D==null)
-							logError(ctx,"MPENABLE","Syntax","Unknown skill/expertise: "+cast);
+							logError(ctx,"MPENABLE","Runtime","Unknown skill/expertise: "+cast);
 						else
 						if((newTarget!=null)&&(newTarget instanceof MOB))
 							((MOB)newTarget).addExpertise(D.ID());
@@ -16013,7 +16019,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
  						}
 						SB.ctx.script = SB.scr;
 						SB.ctx.line = 1;
-						if(spawnOk && SB.scr.isFlagSet("SPAWN"))
+						if(spawnOk && SB.scr.isFlagSet(ScriptFlag.SPAWN))
 						{
 							final MPContext context = SB.ctx;
 							CMLib.threads().executeRunnable(new Runnable()

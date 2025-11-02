@@ -316,12 +316,12 @@ public class JavaScriptingEngine extends ScriptableObject implements ScriptingEn
 							}
 
 							@Override
-							public void setFlag(final String flag)
+							public void setFlag(final ScriptFlag flag)
 							{
 							}
 
 							@Override
-							public boolean isFlagSet(final String flag)
+							public boolean isFlagSet(final ScriptFlag flag)
 							{
 								return false;
 							}
