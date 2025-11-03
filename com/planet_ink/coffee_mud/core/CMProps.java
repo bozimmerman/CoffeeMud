@@ -16,12 +16,7 @@ import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
@@ -730,6 +725,58 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Split an input stream from a properties file into multiple streams
+	 * based on sections like [sectionname].
+	 * Sections will always be all-uppercase.  The default section is "".
+	 * @param in the main input stream
+	 * @return the section stream pairs
+	 */
+	public static PairList<String, InputStream> splitSections(final InputStream in)
+	{
+		String section = "";
+		final PairList<String,ByteArrayOutputStream> sections = new PairArrayList<String,ByteArrayOutputStream>();
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		sections.add("", bout);
+		try(final BufferedReader rdr = new BufferedReader(new InputStreamReader(in,"UTF-8")))
+		{
+			String s = rdr.readLine();
+			while(s != null)
+			{
+				final String ts = s.trim();
+				if(ts.startsWith("[")&&(ts.endsWith("]")))
+				{
+					section=ts.substring(1,ts.length()-2).trim().toUpperCase();
+					if(sections.indexOfFirst(section)>=0)
+						bout=sections.getSecond(sections.indexOfFirst(section));
+					else
+					{
+						bout = new ByteArrayOutputStream();
+						sections.add(section,bout);
+					}
+				}
+				else
+					bout.write((s+"\n").getBytes("UTF-8"));
+				s=rdr.readLine();
+			}
+		}
+		catch(final IOException e)
+		{
+		}
+		final PairList<String,InputStream> finalSections = new PairArrayList<String,InputStream>();
+		for(final Pair<String,ByteArrayOutputStream> p : sections)
+		{
+			try
+			{
+				p.second.flush();
+				finalSections.add(p.first, new ByteArrayInputStream(p.second.toByteArray()));
+			}
+			catch(final Exception e)
+			{}
+		}
+		return finalSections;
+	}
+
+	/**
 	 * Creates a properties object for the callers thread group using the given file path
 	 * as input for the properties.
 	 * @param filename a file from which to draw the properties.
@@ -832,7 +879,8 @@ public class CMProps extends Properties
 			final CMFile F=new CMFile(iniFilename,null);
 			if(F.exists())
 			{
-				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
+				final InputStream mainStream = new ByteArrayInputStream(F.textUnformatted().toString().getBytes());
+				load(mainStream);
 				loaded=true;
 			}
 			else
@@ -1029,6 +1077,12 @@ public class CMProps extends Properties
 		}
 	}
 
+	/**
+	 * Returns whether the common account system is activated.
+	 * If not, it uses the player-character system.
+	 *
+	 * @return true if account system is used
+	 */
 	public static final boolean isUsingAccountSystem()
 	{
 		return getIntVar(Int.COMMONACCOUNTSYSTEM) > 1;

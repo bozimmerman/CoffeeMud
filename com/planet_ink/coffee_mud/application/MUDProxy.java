@@ -373,64 +373,74 @@ public class MUDProxy
 			Log.instance().configureLog(logType, "BOTH");
 		for(final String iniFile : iniFiles)
 		{
-			final CMProps page=CMProps.loadPropPage("//"+iniFile);
-			if ((page==null)||(!page.isLoaded()))
+			final PairList<String,InputStream> sections = new PairArrayList<String, InputStream>();
+			final CMFile F=new CMFile(iniFile,null);
+			if(F.exists())
+			{
+				final InputStream mainStream = new ByteArrayInputStream(F.textUnformatted().toString().getBytes());
+				sections.addAll(CMProps.splitSections(mainStream));
+			}
+			else
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
 				System.err.println("PROXY/ERROR: Unable to read ini file: '"+iniFile+"'.");
 				System.exit(-1);
 				return;
 			}
-			final String key = page.getPrivateStr("MPCPKEY");
-			if((key != null)&&(key.length()>0))
-				mpcpKey = key;
-			final String proxy = page.getPrivateStr("PROXY");
-			final String portStr  = page.getPrivateStr("PORT");
-			if((proxy != null)&&(proxy.trim().length()>0)
-			&&(portStr != null)&&(portStr.trim().length()>0))
+			for(final Pair<String,InputStream> sec : sections)
 			{
-				final List<String> proxies = CMParms.parseCommas(proxy, true);
-				final List<String> ports = CMParms.parseCommas(portStr, true);
-				final PairList<String,Integer> portV = new PairArrayList<String,Integer>();
-				int portNum = -1;
-				for(final String str : ports)
+				final CMProps page = new CMProps(sec.second);
+				final String key = page.getPrivateStr("MPCPKEY");
+				if((key != null)&&(key.length()>0))
+					mpcpKey = key;
+				final String proxy = page.getPrivateStr("PROXY");
+				final String portStr  = page.getPrivateStr("PORT");
+				if((proxy != null)&&(proxy.trim().length()>0)
+				&&(portStr != null)&&(portStr.trim().length()>0))
 				{
-					String host = "localhost";
-					String port = str.trim();
-					final int x = str.indexOf(':');
-					if(x>0)
+					final List<String> proxies = CMParms.parseCommas(proxy, true);
+					final List<String> ports = CMParms.parseCommas(portStr, true);
+					final PairList<String,Integer> portV = new PairArrayList<String,Integer>();
+					int portNum = -1;
+					for(final String str : ports)
 					{
-						host = str.substring(0,x);
-						port = str.substring(x+1).trim();
+						String host = "localhost";
+						String port = str.trim();
+						final int x = str.indexOf(':');
+						if(x>0)
+						{
+							host = str.substring(0,x);
+							port = str.substring(x+1).trim();
+						}
+						if(CMath.isInteger(port))
+						{
+							portNum = CMath.s_int(port);
+							portV.add(getPort(host,Integer.valueOf(portNum)));
+						}
 					}
-					if(CMath.isInteger(port))
+					if(portNum <= 0)
 					{
-						portNum = CMath.s_int(port);
-						portV.add(getPort(host,Integer.valueOf(portNum)));
-					}
-				}
-				if(portNum <= 0)
-				{
-					Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read port from ini file: '"+iniFile+"'.");
-					System.err.println("PROXY/ERROR: Unable to read port from ini file: '"+iniFile+"'.");
-					System.exit(-1);
-					return;
-				}
-				for(final String proxyPort : proxies)
-				{
-					final int proxyNum = CMath.s_int(proxyPort);
-					if(proxyNum <= 0)
-					{
-						Log.errOut(Thread.currentThread().getName(),"ERROR: Invalid proxy port '"+proxyPort+" in ini file: '"+iniFile+"'.");
-						System.err.println("PROXY/ERROR: Invalid proxy port '"+proxyPort+" in ini file: '"+iniFile+"'.");
+						Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read port from ini file: '"+iniFile+"'.");
+						System.err.println("PROXY/ERROR: Unable to read port from ini file: '"+iniFile+"'.");
 						System.exit(-1);
 						return;
 					}
-					final Integer proxyI = Integer.valueOf(proxyNum);
-					if(!portMap.containsKey(proxyI))
-						portMap.put(proxyI, new PairVector<String,Integer>());
-					for(final Pair<String,Integer> mudPort : portV)
-						portMap.get(proxyI).add(mudPort);
+					for(final String proxyPort : proxies)
+					{
+						final int proxyNum = CMath.s_int(proxyPort);
+						if(proxyNum <= 0)
+						{
+							Log.errOut(Thread.currentThread().getName(),"ERROR: Invalid proxy port '"+proxyPort+" in ini file: '"+iniFile+"'.");
+							System.err.println("PROXY/ERROR: Invalid proxy port '"+proxyPort+" in ini file: '"+iniFile+"'.");
+							System.exit(-1);
+							return;
+						}
+						final Integer proxyI = Integer.valueOf(proxyNum);
+						if(!portMap.containsKey(proxyI))
+							portMap.put(proxyI, new PairVector<String,Integer>());
+						for(final Pair<String,Integer> mudPort : portV)
+							portMap.get(proxyI).add(mudPort);
+					}
 				}
 			}
 		}
