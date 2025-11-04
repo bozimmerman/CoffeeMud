@@ -99,10 +99,8 @@ public class CMarket extends StdBehavior
 	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
-		// final String marketTypeStr = CMParms.getParmStr(parameters,
-		// "MARKETTYPE", MarketType.STOCK.name()).toUpperCase().trim();
-		// final MarketType mt = (MarketType)CMath.s_valueOf(MarketType.class,
-		// marketTypeStr);
+		// final String marketTypeStr = CMParms.getParmStr(parameters, "MARKETTYPE", MarketType.STOCK.name()).toUpperCase().trim();
+		// final MarketType mt = (MarketType)CMath.s_valueOf(MarketType.class, marketTypeStr);
 		// marketType = (mt != null) ? mt : MarketType.STOCK;
 		this.updateDays = CMParms.getParmInt(parameters, "UPDATEDAYS", 24);
 		this.waitDaysAfterBankruptcy = CMParms.getParmInt(parameters, "WAITDAYAB", 10);

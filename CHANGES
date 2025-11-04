@@ -1,3 +1,6 @@
+# Build 5.11.? Release ??/??/202?
+ 1. New Scriptable function: ISGROUP 
+
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
   2. New Save vs Polymorph saving throw, also applies to petrification

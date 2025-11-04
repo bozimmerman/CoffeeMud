@@ -4136,6 +4136,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						returnable=true;
 					break;
 				}
+				case 119: // isgroup
+				{
+					final String arg1=CMParms.cleanBit(tt[t+0]);
+					final String arg2=CMParms.cleanBit(tt[t+1]);
+					final Environmental E1=getArgumentMOB(arg1,ctx);
+					final Environmental E2=getArgumentMOB(arg2,ctx);
+					if((E1==null)||(!(E1 instanceof MOB))||(E2==null)||(!(E2 instanceof Rider)))
+						returnable=false;
+					else
+						returnable=((MOB)E1).getGroupMembersAndRideables(new HashSet<Rider>()).contains(E2);
+					break;
+				}
 				case 73: // isservant
 				{
 					final String arg1=CMParms.cleanBit(tt[t+0]);
@@ -7424,6 +7436,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).amFollowing()!=null)
 				&&(((MOB)E).amFollowing().location()==lastKnownLocation))
 					results.append(((MOB)E).amFollowing().name());
+				break;
+			}
+			case 119: // isgroup
+			{
+				final String arg1=CMParms.cleanBit(funcParms);
+				final Environmental E=getArgumentMOB(arg1,ctx);
+				if((E!=null)&&(E instanceof MOB)&&(lastKnownLocation!=null))
+				{
+					for(final MOB M : ((MOB)E).getGroupMembers(new HashSet<MOB>()))
+						results.append("'"+M.name()+"' ");
+				}
 				break;
 			}
 			case 73: // isservant

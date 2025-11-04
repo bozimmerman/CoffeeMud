@@ -79,6 +79,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		PLAYER,
 		MOBS,
 		MOB,
+		GROUP,
 		NPCS,
 		NPC,
 		ITEMS,
@@ -5688,6 +5689,41 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 					}
 					break;
+				case GROUP:
+				{
+					if(from.size()==0)
+					{
+						final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
+						if(oE==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+					}
+					if((from.size()==0)||(!(from.get(0) instanceof MOB)))
+						throw new MQLException("Invalid sub-from "+f+" on "+(""+from.get(0))+" in "+mql);
+					final List<Object> old = new ArrayList<Object>(from.size());
+					old.addAll(from);
+					from.clear();
+					final Set<MOB> done = new HashSet<MOB>();
+					final Set<MOB> grp = new HashSet<MOB>();
+					for(final Object o : old)
+					{
+						if((!(o instanceof MOB))||(done.contains(o)))
+							continue;
+						final MOB M = (MOB)o;
+						done.add(M);
+						from.add(M);
+						grp.clear();
+						for(final MOB M2 : M.getGroupMembers(grp))
+							if(!done.contains(M2))
+							{
+								done.add(M2);
+								from.add(M2);
+							}
+					}
+					break;
+				}
 				case MOB:
 					if(from.size()==0)
 					{

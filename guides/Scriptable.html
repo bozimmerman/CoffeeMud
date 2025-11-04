@@ -423,7 +423,7 @@ Operators</a></li>
 
             <li><a href="#isfollow">isfollow</a></li>
 
-            <li><a href="#isgood">isgood</a></li>
+            <li><a href="#isgood">isgood</a></li><li><a href="#isgroup">isgroup</a></li>
 
             <li><a href="#ishere">ishere</a></li>
 
@@ -3717,7 +3717,7 @@ alignment string of the given mob.</td>
 
           </tr>
 
-          <tr>
+          <tr><td>ISGROUP([code])</td><td>Returns the names of the members of the given mobs group.</td></tr><tr>
 
             <td>ISHERE()</td>
 
@@ -7545,7 +7545,18 @@ character is good.</p>
 
       <p>EXAMPLE:</p>
 
-      <pre>if isgood($i)<br /> mpecho I am good!<br />else<br /> mpecho I am either neutral or evil.<br />endif<br /></pre>
+      <pre>if isgood($i)<br /> mpecho I am good!<br />else<br /> mpecho I am either neutral or evil.<br />endif<br /></pre><h3><a name="isgroup">isgroup</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>isgroup(character character)<br /></pre>
+
+      <p>This checks to see if the
+two characters are in the same group together..</p>
+
+      <p>EXAMPLE:</p>
+
+      <pre>if isgroup($i $n)<br /> mpecho I am in a group with you!<br />else<br /> mpecho I am not in your group.<br />endif</pre>
 
       <h3><a name="ishere">ishere</a></h3>
 
