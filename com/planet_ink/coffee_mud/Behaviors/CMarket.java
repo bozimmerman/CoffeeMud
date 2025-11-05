@@ -12,11 +12,15 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -42,40 +46,361 @@ public class CMarket extends StdBehavior
 		return "CMarket";
 	}
 
-	/*
-	 * private enum MarketType { STOCK, REGIONAL, BOND, COMMODITY, RACIAL,
-	 * PLAYER }
-	 *
-	 * private MarketType marketType = MarketType.STOCK;
+	public PhysicalAgent	host					= null;
+
+	private enum GroupBy
+	{
+		NOTHING,
+		ALL,
+		SHOPTYPE,
+		RACE
+	}
+
+	/**
+	 * A single stock definition, which is tracked
+	 * and based on db records.
 	 */
-	private int				updateDays				= 24;
-	private int				waitDaysAfterBankruptcy	= 10;
-	private int				maxStocks				= 10;
-	private boolean			allowsClans				= true;
-	private boolean			groupShopkeepers		= false;
-	private boolean			groupShopkeepersByType	= false;
-	private String			nameMask				= "The Stock";
-	private CompiledZMask	shopkeeperMask			= null;
-	private CompiledZMask	areaMask				= null;
-	private PhysicalAgent	host					= null;
-
-	private volatile TimeClock nextUpdate = null;
-
-	private boolean isApplicableArea(final Environmental E)
+	private class StockDef
 	{
-		final Area A = CMLib.map().areaLocation(E);
-		if (A == null)
-			return false;
-		return areaMask == null || (CMLib.masking().maskCheck(areaMask, A, true));
+		//public final String ID;
+		public final String name;
+
+		public StockDef(final String id, final String name)
+		{
+			//this.ID = id;
+			this.name = name;
+		}
 	}
 
-	private boolean isApplicableShopKeeper(final Environmental E)
+	private synchronized String getCode(final String areaName, String name)
 	{
-		final ShopKeeper SK = CMLib.coffeeShops().getShopKeeper(E);
-		if (SK == null)
-			return false;
-		return shopkeeperMask == null || (CMLib.masking().maskCheck(shopkeeperMask, E, true));
+		final String letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+		@SuppressWarnings("unchecked")
+		Map<String,String> names = (Map<String,String>)Resources.getResource("CMKT_AREA_DATA");
+		if(names == null)
+		{
+			names = new TreeMap<String,String>();
+			final List<PlayerData> dat = CMLib.database().DBReadPlayerData(areaName, "CMKTDATA", "CMKTDATA/"+areaName);
+			if((dat != null)&&(dat.size()>0))
+			{
+				final List<XMLTag> tags = CMLib.xml().parseAllXML(dat.get(0).xml());
+				for(final XMLTag tag : tags)
+				{
+					if(tag.tag().equals("N"))
+						names.put(tag.getParmValue("ID"),tag.value());
+				}
+			}
+			Resources.submitResource("CMKT_AREA_DATA",names);
+		}
+		name = CMLib.english().removeArticleLead(name);
+		name = CMStrings.removePunctuation(name).toLowerCase();
+		if(names.containsKey(name))
+			return names.get(name);
+		final TreeSet<String> ids = new TreeSet<String>();
+		for(final String n : names.keySet())
+			ids.add(names.get(n));
+		String cd = "";
+		final List<String> words = CMParms.parseSpaces(name,true);
+		for(int x=0;x<words.size()-1 && (cd.length()<2);x++)
+			for(int y=x+1;y<words.size();y++)
+			{
+				final String c = (""+words.get(x).charAt(0)+words.get(y).charAt(0)).toUpperCase();
+				if(!ids.contains(c))
+				{
+					cd = c;
+					break;
+				}
+			}
+		if(cd.length()==0)
+		{
+			final String word = words.get(0);
+			for(int x=0;x<word.length()-1 && (cd.length()<2);x++)
+				for(int y=x+1;y<word.length();y++)
+				{
+					final String c = (""+word.charAt(x)+word.charAt(y)).toUpperCase();
+					if(!ids.contains(c))
+					{
+						cd = c;
+						break;
+					}
+				}
+			if(cd.length()==0)
+				cd=word.substring(0,2).toUpperCase();
+		}
+		int x=0;
+		while(ids.contains(cd))
+			cd = ""+cd.charAt(0)+letters.charAt(x++);
+		names.put(name, cd);
+		final StringBuilder data = new StringBuilder("");
+		for(final String key : names.keySet())
+			data.append("<N ID=\""+names.get(key)+"\">").append(key).append("</N>");
+		CMLib.database().DBReCreatePlayerData(areaName, "CMKTDATA", "CMKTDATA/"+areaName,data.toString());
+		return cd;
 	}
+
+	/**
+	 * Configuration for a stock or set of stocks
+	 */
+	private class MarketConf
+	{
+		public int				updateDays				= 24;
+		public int				waitDaysAfterBankruptcy	= 10;
+		public int				maxStocks				= 10;
+		public boolean			allowsClans				= true;
+		public boolean			groupAreas				= false;
+		public GroupBy			groupBy					= GroupBy.NOTHING;
+		public String			nameMask				= "The Stock";
+		public String			shopkeeperMaskStr		= "";
+		public CompiledZMask	shopkeeperMask			= null;
+		public String			areaMaskStr				= "";
+		public CompiledZMask	areaMask				= null;
+		public Integer			hash					= null;
+
+		public final Set<ShopKeeper>					nonShops		= new SHashSet<ShopKeeper>();
+		public final Set<StockDef>						stocks			= new SHashSet<StockDef>();
+		public final Map<ShopKeeper, List<StockDef>>	shopStocksMap	= new SHashtable<ShopKeeper, List<StockDef>>();
+		//public volatile TimeClock						nextUpdate		= null;
+
+		public MarketConf()
+		{
+			updateDays = 24;
+			waitDaysAfterBankruptcy = 10;
+			maxStocks = 10;
+			nameMask = "The Stock";
+			allowsClans = false;
+			groupAreas = false;
+			shopkeeperMaskStr = "";
+			shopkeeperMask = null;
+			areaMaskStr = "";
+			this.areaMask = null;
+			groupBy = GroupBy.NOTHING;
+		}
+
+		public MarketConf(final Map<String,String> props, MarketConf defaults)
+		{
+			final String marketTypeStr = props.getOrDefault("MARKETTYPE", "");
+			final ShortcutMarketTypes mt = (ShortcutMarketTypes)CMath.s_valueOf(ShortcutMarketTypes.class, marketTypeStr);
+			if(mt != null)
+			{
+				final Map<String,String> mapped = CMParms.parseEQParms(mt.parms);
+				defaults = new MarketConf(mapped, defaults); // basically just copies defaults
+			}
+			updateDays = CMath.s_int(props.getOrDefault("UPDATEDAYS", ""+defaults.updateDays));
+			waitDaysAfterBankruptcy = CMath.s_int(props.getOrDefault("WAITDAYAB", ""+defaults.waitDaysAfterBankruptcy));
+			maxStocks = CMath.s_int(props.getOrDefault("MAXSTOCKS", ""+defaults.maxStocks));
+			nameMask = props.getOrDefault("NAME", ""+defaults.nameMask);
+			allowsClans = CMath.s_bool(props.getOrDefault("ALLOWCLANS", ""+defaults.allowsClans));
+			groupAreas = CMath.s_bool(props.getOrDefault("AREAGROUP", ""+defaults.groupAreas));
+			shopkeeperMaskStr = props.getOrDefault("SHOPMASK", ""+defaults.shopkeeperMaskStr);
+			shopkeeperMask = (shopkeeperMaskStr.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(shopkeeperMaskStr);
+			areaMaskStr = props.getOrDefault("AREAMASK", ""+defaults.areaMaskStr);
+			areaMask = (areaMaskStr.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(areaMaskStr);
+			final String groupByStr = props.getOrDefault("GROUPBY", ""+defaults.groupBy.name());
+			final GroupBy gb = (GroupBy)CMath.s_valueOf(GroupBy.class, groupByStr);
+			if(gb != null)
+				groupBy=gb;
+		}
+
+		public boolean isApplicableArea(final Area A)
+		{
+			if(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+				return false;
+			return areaMask == null || (CMLib.masking().maskCheck(areaMask, A, true));
+		}
+
+		@SuppressWarnings("unused")
+		public List<StockDef> getShopStock(final Environmental E)
+		{
+			final ShopKeeper SK = CMLib.coffeeShops().getShopKeeper(E);
+			if((SK == null)||(nonShops.contains(SK)))
+				return null;
+			final Room R = CMLib.map().roomLocation(E);
+			if(R ==null)
+				return null;
+			final Area A = R.getArea();
+			if(A ==null)
+				return null;
+			Area hostA=A;
+			if(groupAreas)
+				hostA = CMLib.map().areaLocation(host);
+			if(hostA == null)
+				return null;
+			if(shopStocksMap.containsKey(SK))
+				return shopStocksMap.get(SK);
+			if(E instanceof MOB)
+			{
+				final Area sA = CMLib.map().getStartArea(E);
+				if((sA == null)||(!hostA.inMyMetroArea(sA)))
+				{
+					nonShops.add(SK);
+					return null;
+				}
+				if(((MOB)E).isPlayer())
+				{
+					if(!this.allowsClans)
+					{
+						nonShops.add(SK);
+						return null;
+					}
+				}
+			}
+			if(shopkeeperMask != null && (!CMLib.masking().maskCheck(shopkeeperMask, E, true)))
+			{
+				nonShops.add(SK);
+				return null;
+			}
+			if(!isApplicableArea(A))
+			{
+				nonShops.add(SK);
+				return null;
+			}
+			synchronized(stocks)
+			{
+				synchronized(shopStocksMap)
+				{
+					if(shopStocksMap.containsKey(SK))
+						return shopStocksMap.get(SK);
+					final ArrayList<StockDef> list = new ArrayList<StockDef>();
+					switch(groupBy)
+					{
+					case NOTHING:
+					{
+						final String name;
+						if((E instanceof PhysicalAgent) && CMLib.flags().isMobile((PhysicalAgent)E))
+							name = L("@x1 of @x2",E.name(),hostA.Name());
+						else
+							name = R.displayText();
+						final String id = "G"+getCode(hostA.Name(), E.name())+getCode("CMKT_AREA_CODES", hostA.Name());
+						StockDef def = null;
+						for(final Iterator<StockDef> d = stocks.iterator();d.hasNext();)
+						{
+							final StockDef def2 = d.next();
+							if(def2.name.equals(name))
+								def=def2;
+						}
+						if(def == null)
+						{
+							def = new StockDef(id,name);
+							stocks.add(def);
+						}
+						list.add(def);
+						break;
+					}
+					case RACE:
+					{
+						final String race =(E instanceof MOB)?((MOB)E).baseCharStats().raceName():L("Vendor");
+						final String name = L("@x1 Goods of @x2",race,hostA.Name());
+						StockDef def = null;
+						for(final Iterator<StockDef> d = stocks.iterator();d.hasNext();)
+						{
+							final StockDef def2 = d.next();
+							if(def2.name.equals(name))
+								def=def2;
+						}
+						if(def == null)
+						{
+							final String id = "R"+getCode(hostA.Name(), race)+getCode("CMKT_AREA_CODES", hostA.Name());
+							def = new StockDef(id,name);
+							stocks.add(def);
+						}
+						list.add(def);
+						break;
+					}
+					case SHOPTYPE:
+					{
+						final List<Integer> types = new ArrayList<Integer>();
+						if(SK.getShop().isSold(ShopKeeper.DEAL_ANYTHING))
+							types.add(Integer.valueOf(ShopKeeper.DEAL_ANYTHING));
+						else
+						for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
+						{
+							if(SK.getShop().isSold(d))
+								types.add(Integer.valueOf(d));
+						}
+						for(final Integer typeCode : types)
+						{
+							final String type = CMLib.coffeeShops().localizedStoreItemTerm(typeCode.intValue());
+							final String name = L("@x1 of @x2",type,hostA.Name());
+							StockDef def = null;
+							for(final Iterator<StockDef> d = stocks.iterator();d.hasNext();)
+							{
+								final StockDef def2 = d.next();
+								if(def2.name.equals(name))
+									def=def2;
+							}
+							if(def == null)
+							{
+								final String id = "C"+getCode(hostA.Name(), type)+getCode("CMKT_AREA_CODES", hostA.Name());
+								def = new StockDef(id,name);
+								stocks.add(def);
+							}
+							list.add(def);
+						}
+						break;
+					}
+					case ALL:
+						if(stocks.size()>0)
+							list.add(stocks.iterator().next());
+						else
+						{
+							final String name = L("Shops of @x1",hostA.Name());
+							final String id = "G"+getCode("CMKT_AREA_CODES", hostA.Name());
+							final StockDef def = new StockDef(id,name);
+							list.add(def);
+							stocks.add(def);
+						}
+						break;
+					}
+					shopStocksMap.put(SK, list);
+				}
+				return shopStocksMap.get(SK);
+			}
+		}
+
+		@Override
+		public int hashCode()
+		{
+			if(this.hash == null)
+			{
+				this.hash = Integer.valueOf(Objects.hash(
+						Integer.valueOf(updateDays),Integer.valueOf(waitDaysAfterBankruptcy),Integer.valueOf(maxStocks),
+						Boolean.valueOf(allowsClans), Boolean.valueOf(groupAreas), groupBy, nameMask, shopkeeperMaskStr,
+						areaMaskStr));
+			}
+			return this.hash.intValue();
+		}
+
+		@Override
+		public boolean equals(final Object o)
+		{
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			final MarketConf m = (MarketConf)o;
+			return (m.updateDays==updateDays) && (m.waitDaysAfterBankruptcy==waitDaysAfterBankruptcy) && (m.maxStocks==maxStocks)
+				&& (m.allowsClans == allowsClans) && (m.groupAreas == groupAreas) && (m.groupBy==groupBy) && Objects.equals(m.nameMask,nameMask)
+				&& Objects.equals(m.shopkeeperMaskStr,shopkeeperMaskStr)&& Objects.equals(m.areaMaskStr,areaMaskStr);
+		}
+	}
+
+	private enum ShortcutMarketTypes
+	{
+		STOCK("GROUPBY=NOTHING NAME=\"Stock\" "),
+		REGIONAL("GROUPBY=ALL NAME=\"Regional Stock\" "),
+		BOND("AREAMASK=\"-EFFECTS +Arrest +EFFECTS -Conquerable\" GROUPBY=ALL NAME=\"Bond\" "),
+		COMMODITY("GROUPBY=SHOPTYPE  NAME=\"Commodity\" "),
+		RACIAL("GROUPBY=RACE  NAME=\"Racial Stock\" "),
+		PLAYER("ALLOWCLANS=TRUE SHOPMASK=\"-NPC\" GROUPBY=NOTHING NAME=\"Clan Stock\" ")
+		;
+		public String parms = "";
+		private ShortcutMarketTypes(final String pms)
+		{
+			parms=pms;
+		}
+	}
+
+	private final List<MarketConf> configs = Collections.synchronizedList(new LinkedList<MarketConf>());
 
 	@Override
 	protected int canImproveCode()
@@ -96,22 +421,75 @@ public class CMarket extends StdBehavior
 	}
 
 	@Override
+	public List<String> externalFiles()
+	{
+		final List<String> externalFiles = new ArrayList<String>();
+		for(final CMFile F : getConfigFiles(CMParms.parseEQParms(getParms())))
+			externalFiles.add(F.getAbsolutePath());
+		return externalFiles;
+	}
+
+	private boolean hostReady()
+	{
+		if(host == null)
+			return false;
+		if(host instanceof Area)
+		{
+			final Area A = (Area)host;
+			if(!A.isAreaStatsLoaded())
+				return false;
+			for(final Enumeration<Area> a = A.getChildren();a.hasMoreElements();)
+				if(!a.nextElement().isAreaStatsLoaded())
+					return false;
+		}
+		return true;
+	}
+
+	private synchronized List<CMFile> getConfigFiles(final Map<String,String> mapped)
+	{
+		final List<CMFile> files = new ArrayList<CMFile>();
+		final String configFiles = mapped.getOrDefault("CONF", mapped.getOrDefault("CONFS",mapped.getOrDefault("CONFIG",mapped.getOrDefault("CONFIGS",""))));
+		if(configFiles.length()>0)
+		{
+			for(final String fileName : CMParms.parseCommas(configFiles, true))
+			{
+				final CMFile F = new CMFile(fileName,null,0);
+				if(F.exists() && F.canRead())
+					files.add(F);
+			}
+		}
+		return files;
+	}
+
+	private synchronized void configure()
+	{
+		if((configs.size()>0) || (getParms().length()==0) || (!hostReady()))
+			return;
+		final Map<String,String> mapped = CMParms.parseEQParms(getParms());
+		final MarketConf base = new MarketConf(mapped,new MarketConf());
+		for(final CMFile F : getConfigFiles(mapped))
+		{
+			final List<String> lines = Resources.getFileLineVector(F.text());
+			final ByteArrayInputStream in = new ByteArrayInputStream(CMParms.combine(lines,'\n').getBytes());
+			final Properties props = new Properties();
+			try
+			{
+				props.load(in);
+				configs.add(new MarketConf(mapped, base));
+			}
+			catch (final IOException e)
+			{
+			}
+		}
+		if(configs.size()==0)
+			configs.add(base);
+	}
+
+	@Override
 	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
-		// final String marketTypeStr = CMParms.getParmStr(parameters, "MARKETTYPE", MarketType.STOCK.name()).toUpperCase().trim();
-		// final MarketType mt = (MarketType)CMath.s_valueOf(MarketType.class, marketTypeStr);
-		// marketType = (mt != null) ? mt : MarketType.STOCK;
-		this.updateDays = CMParms.getParmInt(parameters, "UPDATEDAYS", 24);
-		this.waitDaysAfterBankruptcy = CMParms.getParmInt(parameters, "WAITDAYAB", 10);
-		this.maxStocks = CMParms.getParmInt(parameters, "MAXSTOCKS", 10);
-		this.nameMask = CMParms.getParmStr(parameters, "NAME", "The Stock");
-		this.allowsClans = CMParms.getParmBool(parameters, "ALLOWCLANS", true);
-		final String shopMask = CMParms.getParmStr(parameters, "SHOPMASK", "");
-		this.shopkeeperMask = (shopMask.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(shopMask);
-		final String areaMask = CMParms.getParmStr(parameters, "AREAMASK", "");
-		this.areaMask = (areaMask.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(areaMask);
-		this.groupShopkeepers = CMParms.getParmBool(parameters, "GROUPSHOPS", true);
-		this.groupShopkeepersByType = CMParms.getParmBool(parameters, "GROUPTYPES", true);
+		configs.clear();
+		configure();
 	}
 }
