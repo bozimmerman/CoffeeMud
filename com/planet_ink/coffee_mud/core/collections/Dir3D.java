@@ -391,7 +391,7 @@ public class Dir3D extends BigVector
 	@Override
 	public int hashCode()
 	{
-		return xy().hashCode() << 32 | z().hashCode();
+		return xy().hashCode() << 16 | z().hashCode();
 	}
 
 	/**

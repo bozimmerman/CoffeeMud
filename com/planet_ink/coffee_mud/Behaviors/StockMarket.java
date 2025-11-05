@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -38,12 +38,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMarket extends StdBehavior
+public class StockMarket extends StdBehavior
 {
 	@Override
 	public String ID()
 	{
-		return "CMarket";
+		return "StockMarket";
 	}
 
 	public PhysicalAgent	host					= null;
@@ -80,7 +80,7 @@ public class CMarket extends StdBehavior
 		if(names == null)
 		{
 			names = new TreeMap<String,String>();
-			final List<PlayerData> dat = CMLib.database().DBReadPlayerData(areaName, "CMKTDATA", "CMKTDATA/"+areaName);
+			final List<PAData> dat = CMLib.database().DBReadAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName);
 			if((dat != null)&&(dat.size()>0))
 			{
 				final List<XMLTag> tags = CMLib.xml().parseAllXML(dat.get(0).xml());
@@ -134,7 +134,7 @@ public class CMarket extends StdBehavior
 		final StringBuilder data = new StringBuilder("");
 		for(final String key : names.keySet())
 			data.append("<N ID=\""+names.get(key)+"\">").append(key).append("</N>");
-		CMLib.database().DBReCreatePlayerData(areaName, "CMKTDATA", "CMKTDATA/"+areaName,data.toString());
+		CMLib.database().DBReCreateAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName,data.toString());
 		return cd;
 	}
 

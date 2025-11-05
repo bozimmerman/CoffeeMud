@@ -164,6 +164,12 @@ CMSECT string NULL
 CMPKEY string KEY
 CMPDAT string NULL
 
+CMADAT
+CMAREA string NULL
+CMSECT string NULL
+CMAKEY string KEY
+CMADAT string NULL
+
 CMGRAC
 CMRCID string KEY
 CMRDAT string NULL

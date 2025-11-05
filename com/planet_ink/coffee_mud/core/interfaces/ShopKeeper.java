@@ -114,7 +114,8 @@ public interface ShopKeeper extends Environmental, Economics
 	public final static int DEAL_CHILDREN=35;
 
 	/** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
-	public final static int[][] DEAL_CONFLICTS={
+	public final static int[][] DEAL_CONFLICTS=
+	{
 		{DEAL_POSTMAN,DEAL_CLANPOSTMAN},
 		{DEAL_CLANBANKER,DEAL_BANKER},
 		{DEAL_SHIPSELLER,DEAL_CSHIPSELLER,DEAL_LANDSELLER,DEAL_CLANDSELLER},

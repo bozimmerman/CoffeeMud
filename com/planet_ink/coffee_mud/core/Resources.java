@@ -870,10 +870,14 @@ public class Resources
 		final String filenameId = filename;
 		filename=(vfsFile?"::":localFile?"//":"")+filename;
 		final CMFile F=new CMFile(filename,null,reportErrors?CMFile.FLAG_LOGERRORS:0);
-		final StringBuffer buf=F.text();
-		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
-			_submitResource(filenameId,buf);
-		return buf;
+		if(F.exists() && F.canRead())
+		{
+			final StringBuffer buf=F.text();
+			if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
+				_submitResource(filenameId,buf);
+			return buf;
+		}
+		return new StringBuffer();
 	}
 
 	/**

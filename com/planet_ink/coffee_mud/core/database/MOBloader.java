@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PrideCat;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
@@ -2571,10 +2571,10 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
-		final List<PlayerData> pdV = CMLib.database().DBReadPlayerSectionData("SYSTEM_PRIDE_PARCHIVE");
+		final List<PAData> pdV = CMLib.database().DBReadPlayerSectionData("SYSTEM_PRIDE_PARCHIVE");
 		final XMLLibrary xLib = CMLib.xml();
 		final Long now = Long.valueOf(System.currentTimeMillis());
-		for(final PlayerData pd : pdV)
+		for(final PAData pd : pdV)
 		{
 			final String fakeName = pd.who();
 			final List<XMLTag> pieces = xLib.parseAllXML(pd.xml());

@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary.BuySellFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
@@ -106,14 +106,14 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	private List<Quad<String,String,Integer,Double>> loadRequests(final String shelfName)
 	{
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
-		final List<PlayerData> data;
+		final List<PAData> data;
 		if(shelfName == null)
 			data = CMLib.database().DBReadPlayerSectionData(shopKey);
 		else
 			data = CMLib.database().DBReadPlayerData(shelfName, shopKey);
 		final List<Quad<String,String,Integer,Double>> list = new ArrayList<Quad<String,String,Integer,Double>>();
 		final XMLLibrary xmlLib = CMLib.xml();
-		for(final PlayerData dat : data)
+		for(final PAData dat : data)
 		{
 			if((dat.xml().length()>0)&&(dat.xml().startsWith("<")))
 			{
@@ -226,10 +226,10 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	private List<Triad<String,String,Long>> scanRequests()
 	{
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
-		final List<PlayerData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
+		final List<PAData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
 		final List<Triad<String,String,Long>> list = new Vector<Triad<String,String,Long>>();
 		final XMLLibrary xmlLib=CMLib.xml();
-		for(final PlayerData dat : data)
+		for(final PAData dat : data)
 		{
 			Long time = Long.valueOf(System.currentTimeMillis()-1);
 			final String xmlStr = dat.xml();
@@ -255,8 +255,8 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	{
 		final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
 		final CoffeeShop shop = ((CoffeeShop)CMClass.getCommon("DoubleCoffeeShop")).build(this);
-		final List<PlayerData> data = CMLib.database().DBReadPlayerData(shelfName, shopKey);
-		for(final PlayerData dat : data)
+		final List<PAData> data = CMLib.database().DBReadPlayerData(shelfName, shopKey);
+		for(final PAData dat : data)
 		{
 			if(dat.xml().length()>0)
 			{
@@ -278,9 +278,9 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 	private List<Triad<String,String,Long>> scanResults()
 	{
 		final String shopKey = "BROKER_SHOP_"+brokerChain().toUpperCase().replace(' ', '_');
-		final List<PlayerData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
+		final List<PAData> data = CMLib.database().DBReadPlayerSectionData(shopKey);
 		final List<Triad<String,String,Long>> list = new Vector<Triad<String,String,Long>>();
-		for(final PlayerData dat : data)
+		for(final PAData dat : data)
 		{
 			Long time = Long.valueOf(System.currentTimeMillis()-1);
 			final String xml = dat.xml();

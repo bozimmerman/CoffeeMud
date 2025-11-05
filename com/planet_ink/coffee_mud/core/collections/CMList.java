@@ -1388,14 +1388,7 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	@Override
 	public int hashCode()
 	{
-		int hashCode = 1;
-		final Iterator<K> i = iterator();
-		while (i.hasNext())
-		{
-			final K obj = i.next();
-			hashCode = 31*hashCode + (obj==null ? 0 : obj.hashCode());
-		}
-		return hashCode;
+		return Objects.hash(toArray());
 	}
 
 	/**

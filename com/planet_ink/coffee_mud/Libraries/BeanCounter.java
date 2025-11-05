@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -734,11 +734,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<DebtItem> getDebtOwed(final String owedTo)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadPlayerDataByKeyMask("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
+		final List<PAData> rows=CMLib.database().DBReadPlayerDataByKeyMask("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
 		final List<DebtItem> debt=new Vector<DebtItem>(rows.size()); // return value
 		for(int r=0;r<rows.size();r++)
 		{
-			final PlayerData row=rows.get(r);
+			final PAData row=rows.get(r);
 			final String debtor=row.who();
 			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
@@ -838,11 +838,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<DebtItem> getDebt(final String name, final String owedTo)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
+		final List<PAData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
 		final List<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			final PlayerData row=rows.get(r);
+			final PAData row=rows.get(r);
 			final String debtor=row.who();
 			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
@@ -853,11 +853,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public List<DebtItem> getDebt(final String name)
 	{
-		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT");
+		final List<PAData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT");
 		final List<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			final PlayerData row=rows.get(r);
+			final PAData row=rows.get(r);
 			final String debtor=row.who();
 			final String xml=row.xml();
 			parseDebt(debt,debtor,xml);
@@ -1077,10 +1077,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		synchronized(CMClass.getSync((this+"LEDGER"+bankName)))
 		{
-			final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
+			final List<PAData> V=CMLib.database().DBReadPlayerData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))
 			{
-				final DatabaseEngine.PlayerData D=V.get(0);
+				final DatabaseEngine.PAData D=V.get(0);
 				String last=D.xml();
 				if(last.length()>4096)
 				{
@@ -1100,7 +1100,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		final Set<String> chains = new HashSet<String>();
 		final Set<String> bankChains = new XHashSet<String>(CMLib.city().bankChains(null));
-		final Set<String> sections = CMLib.database().DBReadUniqueSections(owner);
+		final Set<String> sections = CMLib.database().DBReadUniquePlayerSections(owner);
 		for(final String sect : sections)
 		{
 			if(bankChains.contains(sect))
@@ -1114,10 +1114,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		if((bankName==null)||(owner==null))
 			return null;
-		final List<PlayerData> V=CMLib.database().DBReadPlayerData(owner, bankName);
+		final List<PAData> V=CMLib.database().DBReadPlayerData(owner, bankName);
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData D=V.get(v);
+			final DatabaseEngine.PAData D=V.get(v);
 			final String last=D.xml();
 			if(last.startsWith("COINS;"))
 			{
@@ -1141,14 +1141,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public boolean modifyBankGold(final String bankName, final String owner, final String explanation, final String currency, final double deltaAmount)
 	{
-		final List<PlayerData> V;
+		final List<PAData> V;
 		if((bankName==null)||(bankName.length()==0))
 			V=CMLib.database().DBReadAllPlayerData(owner);
 		else
 			V=CMLib.database().DBReadPlayerData(owner, bankName);
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData D=V.get(v);
+			final DatabaseEngine.PAData D=V.get(v);
 			final String last=D.xml();
 			if(last.startsWith("COINS;"))
 			{

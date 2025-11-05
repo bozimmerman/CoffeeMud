@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -268,19 +268,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		@Override
 		public int hashCode()
 		{
-			if(this.hashCode != null)
-				return this.hashCode.intValue();
-			int hc = triggerCode;
-			hc ^= (ctx.scripted == null)?0:ctx.scripted.hashCode();
-			hc ^= (ctx.source == null)?0:ctx.source.hashCode();
-			hc ^= (ctx.target == null)?0:ctx.target.hashCode();
-			hc ^= (ctx.monster == null)?0:ctx.monster.hashCode();
-			hc ^= (ctx.primaryItem == null)?0:ctx.primaryItem.hashCode();
-			hc ^= (ctx.secondaryItem == null)?0:ctx.secondaryItem.hashCode();
-			hc ^= (scr == null)?0:scr.hashCode();
-			hc ^= (ctx.msg == null)?0:ctx.msg.hashCode();
-			hashCode = Integer.valueOf(hc);
-			return hc;
+			if(this.hashCode == null)
+			{
+				this.hashCode = Integer.valueOf(Objects.hash(Integer.valueOf(triggerCode),
+						ctx.scripted, ctx.source, ctx.target, ctx.monster, ctx.primaryItem,
+						ctx.secondaryItem, scr, ctx.msg));
+			}
+			return this.hashCode.intValue();
 		}
 	}
 
@@ -12801,9 +12795,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								val="";
 						}
 						if(val.length()>0)
-							db.DBReCreatePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
+							db.DBReCreateAreaData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2,val);
 						else
-							db.DBDeletePlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+							db.DBDeleteAreaData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					}
 				}
 				break;
@@ -12817,7 +12811,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentItem(which,ctx);
 				if(arg2.length()>0)
 				{
-					List<PlayerData> V=null;
+					List<PAData> V=null;
 					which=getVarHost(E,which,ctx);
 					DatabaseEngine db= CMLib.database();
 					if((E instanceof MOB) && ((MOB)E).isPlayer())
@@ -12827,13 +12821,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							db = CMLib.get(threadId)._database();
 					}
 					if(arg2.equals("*"))
-						V=db.DBReadPlayerData(which,"SCRIPTABLEVARS");
+						V=db.DBReadAreaData(which,"SCRIPTABLEVARS");
 					else
-						V=db.DBReadPlayerData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
+						V=db.DBReadAreaData(which,"SCRIPTABLEVARS",which.toUpperCase()+"_SCRIPTABLEVARS_"+arg2);
 					if((V!=null)&&(V.size()>0))
 					for(int v=0;v<V.size();v++)
 					{
-						final DatabaseEngine.PlayerData VAR=V.get(v);
+						final DatabaseEngine.PAData VAR=V.get(v);
 						String varName=VAR.key();
 						if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
 							varName=varName.substring((which+"_SCRIPTABLEVARS_").length());

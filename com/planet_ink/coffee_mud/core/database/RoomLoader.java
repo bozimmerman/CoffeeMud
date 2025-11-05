@@ -2544,6 +2544,7 @@ public class RoomLoader
 	{
 		return new XVector<String>(
 			"DELETE FROM CMAREA WHERE CMAREA='"+areaName+"'",
+			"DELETE FROM CMADAT WHERE CMAREA='"+areaName+"'",
 			"DELETE FROM CMPDAT WHERE CMPLID='"+areaName+"' AND CMSECT='TIMECLOCK'"
 		);
 	}

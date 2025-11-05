@@ -1618,7 +1618,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				&&(((MOB)product).getStartRoom()!=null))
 					((MOB)product).killMeDead(false);
 				else
-					((MOB)product).destroy();
+					product.destroy();
 			}
 			else
 			if(product instanceof Ability)
@@ -2031,6 +2031,86 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
+	public String localizedStoreItemTerm(final int soldCodeIndex)
+	{
+		switch(soldCodeIndex)
+		{
+		case ShopKeeper.DEAL_GENERAL:
+			return L("General items");
+		case ShopKeeper.DEAL_ARMOR:
+			return L("Armor");
+		case ShopKeeper.DEAL_MAGIC:
+			return L("Miscellaneous Magic Items");
+		case ShopKeeper.DEAL_WEAPONS:
+			return L("Weapons");
+		case ShopKeeper.DEAL_PETS:
+			return L("Pets and Animals");
+		case ShopKeeper.DEAL_LEATHER:
+			return L("Leather");
+		case ShopKeeper.DEAL_INVENTORYONLY:
+			return L("Inventory");
+		case ShopKeeper.DEAL_TRAINER:
+			return L("Skill training");
+		case ShopKeeper.DEAL_CASTER:
+			return L("Spells/Prayers");
+		case ShopKeeper.DEAL_ALCHEMIST:
+			return L("Potions");
+		case ShopKeeper.DEAL_INNKEEPER:
+			return L("Inn Keeper services");
+		case ShopKeeper.DEAL_JEWELLER:
+			return L("Precious stones and jewellery");
+		case ShopKeeper.DEAL_BANKER:
+			return L("Banking services");
+		case ShopKeeper.DEAL_CLANBANKER:
+			return L("Clan Banking services");
+		case ShopKeeper.DEAL_LANDSELLER:
+			return L("Real estate");
+		case ShopKeeper.DEAL_CLANDSELLER:
+			return L("Clan estates");
+		case ShopKeeper.DEAL_ANYTECHNOLOGY:
+			return L("Any technology");
+		case ShopKeeper.DEAL_BUTCHER:
+			return L("Meats");
+		case ShopKeeper.DEAL_FOODSELLER:
+			return L("Foodstuff");
+		case ShopKeeper.DEAL_GROWER:
+			return L("Vegetables");
+		case ShopKeeper.DEAL_HIDESELLER:
+			return L("Hides and Furs");
+		case ShopKeeper.DEAL_LUMBERER:
+			return L("Lumber");
+		case ShopKeeper.DEAL_METALSMITH:
+			return L("Metal ores");
+		case ShopKeeper.DEAL_STONEYARDER:
+			return L("Stone and rock");
+		case ShopKeeper.DEAL_SHIPSELLER:
+			return L("Ships");
+		case ShopKeeper.DEAL_CSHIPSELLER:
+			return L("Clan Ships");
+		case ShopKeeper.DEAL_SLAVES:
+			return L("Slaves");
+		case ShopKeeper.DEAL_CHILDREN:
+			return L("Children");
+		case ShopKeeper.DEAL_POSTMAN:
+			return L("Postman services");
+		case ShopKeeper.DEAL_CLANPOSTMAN:
+			return L("Clan Postman services");
+		case ShopKeeper.DEAL_AUCTIONEER:
+			return L("Auctioneer services");
+		case ShopKeeper.DEAL_INSTRUMENTS:
+			return L("Musical instruments");
+		case ShopKeeper.DEAL_BOOKS:
+			return L("Books");
+		case ShopKeeper.DEAL_READABLES:
+			return L("Readables");
+		case ShopKeeper.DEAL_CLOTHSPINNER:
+			return L("Cloths");
+		default:
+			return L("... I have no idea WHAT I sell");
+		}
+	}
+
+	@Override
 	public String storeKeeperString(final CoffeeShop shop, final ShopKeeper keeper)
 	{
 		if(shop==null)
@@ -2038,126 +2118,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 			return L("*Anything*");
 
-		final Vector<String> V=new Vector<String>();
+		final List<String> V=new ArrayList<String>();
 		for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
 		{
 			if(shop.isSold(d))
-			{
-				switch(d)
-				{
-				case ShopKeeper.DEAL_GENERAL:
-					V.addElement(L("General items"));
-					break;
-				case ShopKeeper.DEAL_ARMOR:
-					V.addElement(L("Armor"));
-					break;
-				case ShopKeeper.DEAL_MAGIC:
-					V.addElement(L("Miscellaneous Magic Items"));
-					break;
-				case ShopKeeper.DEAL_WEAPONS:
-					V.addElement(L("Weapons"));
-					break;
-				case ShopKeeper.DEAL_PETS:
-					V.addElement(L("Pets and Animals"));
-					break;
-				case ShopKeeper.DEAL_LEATHER:
-					V.addElement(L("Leather"));
-					break;
-				case ShopKeeper.DEAL_INVENTORYONLY:
-					V.addElement(L("Only my Inventory"));
-					break;
-				case ShopKeeper.DEAL_TRAINER:
-					V.addElement(L("Training in skills/spells/prayers/songs"));
-					break;
-				case ShopKeeper.DEAL_CASTER:
-					V.addElement(L("Caster of spells/prayers"));
-					break;
-				case ShopKeeper.DEAL_ALCHEMIST:
-					V.addElement(L("Potions"));
-					break;
-				case ShopKeeper.DEAL_INNKEEPER:
-					V.addElement(L("My services as an Inn Keeper"));
-					break;
-				case ShopKeeper.DEAL_JEWELLER:
-					V.addElement(L("Precious stones and jewellery"));
-					break;
-				case ShopKeeper.DEAL_BANKER:
-					V.addElement(L("My services as a Banker"));
-					break;
-				case ShopKeeper.DEAL_CLANBANKER:
-					V.addElement(L("My services as a Banker to Clans"));
-					break;
-				case ShopKeeper.DEAL_LANDSELLER:
-					V.addElement(L("Real estate"));
-					break;
-				case ShopKeeper.DEAL_CLANDSELLER:
-					V.addElement(L("Clan estates"));
-					break;
-				case ShopKeeper.DEAL_ANYTECHNOLOGY:
-					V.addElement(L("Any technology"));
-					break;
-				case ShopKeeper.DEAL_BUTCHER:
-					V.addElement(L("Meats"));
-					break;
-				case ShopKeeper.DEAL_FOODSELLER:
-					V.addElement(L("Foodstuff"));
-					break;
-				case ShopKeeper.DEAL_GROWER:
-					V.addElement(L("Vegetables"));
-					break;
-				case ShopKeeper.DEAL_HIDESELLER:
-					V.addElement(L("Hides and Furs"));
-					break;
-				case ShopKeeper.DEAL_LUMBERER:
-					V.addElement(L("Lumber"));
-					break;
-				case ShopKeeper.DEAL_METALSMITH:
-					V.addElement(L("Metal ores"));
-					break;
-				case ShopKeeper.DEAL_STONEYARDER:
-					V.addElement(L("Stone and rock"));
-					break;
-				case ShopKeeper.DEAL_SHIPSELLER:
-					V.addElement(L("Ships"));
-					break;
-				case ShopKeeper.DEAL_CSHIPSELLER:
-					V.addElement(L("Clan Ships"));
-					break;
-				case ShopKeeper.DEAL_SLAVES:
-					V.addElement(L("Slaves"));
-					break;
-				case ShopKeeper.DEAL_CHILDREN:
-					V.addElement(L("Children"));
-					break;
-				case ShopKeeper.DEAL_POSTMAN:
-					V.addElement(L("My services as a Postman"));
-					break;
-				case ShopKeeper.DEAL_CLANPOSTMAN:
-					V.addElement(L("My services as a Postman for Clans"));
-					break;
-				case ShopKeeper.DEAL_AUCTIONEER:
-					V.addElement(L("My services as an Auctioneer"));
-					break;
-				case ShopKeeper.DEAL_INSTRUMENTS:
-					V.addElement(L("Musical instruments"));
-					break;
-				case ShopKeeper.DEAL_BOOKS:
-					V.addElement(L("Books"));
-					break;
-				case ShopKeeper.DEAL_READABLES:
-					V.addElement(L("Readables"));
-					break;
-				case ShopKeeper.DEAL_CLOTHSPINNER:
-					V.addElement(L("Cloths"));
-					break;
-				default:
-					V.addElement(L("... I have no idea WHAT I sell"));
-					break;
-				}
-			}
+				V.add(localizedStoreItemTerm(d));
 		}
 		if((keeper!=null)&&(keeper.getWhatIsSoldZappermask().length()>0))
-			V.addElement(CMLib.masking().maskDesc(keeper.getWhatIsSoldZappermask()));
+			V.add(CMLib.masking().maskDesc(keeper.getWhatIsSoldZappermask()));
 		return CMParms.toListString(V);
 	}
 

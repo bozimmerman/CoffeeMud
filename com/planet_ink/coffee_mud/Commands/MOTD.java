@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
@@ -179,7 +179,7 @@ public class MOTD extends StdCommand
 				}
 				if((postalChains.size()>0)&&(P!=null))
 				{
-					List<PlayerData> V=CMLib.database().DBReadPlayerData(mob.Name(),postalChains);
+					List<PAData> V=CMLib.database().DBReadPlayerData(mob.Name(),postalChains);
 					final Map<PostOffice,int[]> res=getPostalResults(V,pStats.getLastDateTime());
 					for(final Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
@@ -496,13 +496,13 @@ public class MOTD extends StdCommand
 		return L("@x1 @x2 items still waiting at the @x3 branch of the @x4 post office.",whom,""+ct[1],branchName,P.postalChain());
 	}
 
-	private Map<PostOffice,int[]> getPostalResults(final List<PlayerData> mailData, final long newTimeDate)
+	private Map<PostOffice,int[]> getPostalResults(final List<PAData> mailData, final long newTimeDate)
 	{
 		final Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
 		PostOffice P=null;
 		for(int i=0;i<mailData.size();i++)
 		{
-			final DatabaseEngine.PlayerData letter=mailData.get(i);
+			final DatabaseEngine.PAData letter=mailData.get(i);
 			final String chain=letter.section();
 			String branch=letter.key();
 			final int x=branch.indexOf(';');

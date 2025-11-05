@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.RoomContent;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1791,17 +1791,17 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return ID.toUpperCase().trim();
 	}
 
-	public Map<String,PlayerData> getBuilderTemplates(final String playerName, final boolean extend)
+	public Map<String,PAData> getBuilderTemplates(final String playerName, final boolean extend)
 	{
-		final Map<String, PlayerData> allMyTemplates=new Hashtable<String, PlayerData>();
+		final Map<String, PAData> allMyTemplates=new Hashtable<String, PAData>();
 		if((playerName==null)
 		||(playerName.length()==0))
 			return allMyTemplates;
-		final List<PlayerData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
-		final List<PlayerData> sDat = CMLib.database().DBReadPlayerSectionData(templateSharedSection);
-		for(final PlayerData PD : pDat)
+		final List<PAData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
+		final List<PAData> sDat = CMLib.database().DBReadPlayerSectionData(templateSharedSection);
+		for(final PAData PD : pDat)
 			allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim(), PD);
-		for(final PlayerData PD : sDat)
+		for(final PAData PD : sDat)
 		{
 			if(PD.who().equalsIgnoreCase(playerName))
 			{
@@ -1818,12 +1818,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public List<Triad<String, String, String>> getBuilderTemplateList(final String playerName)
 	{
 		final List<Triad<String, String, String>> list = new Vector<Triad<String, String, String>>();
-		final Map<String, PlayerData> PDs=getBuilderTemplates(playerName,false);
+		final Map<String, PAData> PDs=getBuilderTemplates(playerName,false);
 		if((PDs!=null)&&(PDs.size()>0))
 		{
 			for(final String ID : PDs.keySet())
 			{
-				final PlayerData pData = PDs.get(ID);
+				final PAData pData = PDs.get(ID);
 				CMClass.CMObjectType typ=CMLib.coffeeMaker().getUnknownTypeFromXML(pData.xml());
 				if(typ == null)
 					typ=CMClass.CMObjectType.WEBMACRO;
@@ -1847,7 +1847,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		if((ID==null)||(ID.length()==0))
 			return null;
-		final PlayerData PD=getBuilderTemplates(playerName,true).get(ID.toUpperCase().trim());
+		final PAData PD=getBuilderTemplates(playerName,true).get(ID.toUpperCase().trim());
 		if(PD==null)
 			return null;
 		return CMLib.coffeeMaker().unpackUnknownFromXML(PD.xml());
@@ -1876,7 +1876,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		if((ID==null)||(ID.length()==0))
 			return false;
-		final PlayerData PD=getBuilderTemplates(playerName,false).get(ID.toUpperCase().trim());
+		final PAData PD=getBuilderTemplates(playerName,false).get(ID.toUpperCase().trim());
 		if(PD==null)
 			return false;
 		if(!PD.who().equalsIgnoreCase(playerName))

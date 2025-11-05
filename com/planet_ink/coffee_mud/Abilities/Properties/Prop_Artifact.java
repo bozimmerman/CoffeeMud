@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -155,7 +155,7 @@ public class Prop_Artifact extends Property
 				new Exception().printStackTrace(new java.io.PrintStream(o));
 				o.close();
 				if(o.toString().indexOf("Commands.Destroy.execute")>=0)
-					CMLib.database().DBDeletePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					CMLib.database().DBDeleteAreaData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			}
 			catch (final Exception e)
 			{
@@ -330,7 +330,7 @@ public class Prop_Artifact extends Property
 				{
 					if((I.owner() instanceof MOB)
 					&&((!((MOB)I.owner()).isMonster())
-						||(CMLib.players().getPlayerAllHosts(((MOB)I.owner()).Name())!=null)))
+						||(CMLib.players().getPlayerAllHosts(I.owner().Name())!=null)))
 						R.moveItemTo(I);
 				}
 			}
@@ -345,7 +345,7 @@ public class Prop_Artifact extends Property
 			{
 				if(autoreset)
 				{
-					final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+					final List<PAData> itemSet=CMLib.database().DBReadAreaData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 					if((itemSet!=null)&&(itemSet.size()>0))
 						return;
 				}
@@ -361,7 +361,7 @@ public class Prop_Artifact extends Property
 					if(M.getStartRoom()!=null)
 					{
 						data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
-						data.append(lib.convertXMLtoTag("MOB",((MOB)I.owner()).Name()));
+						data.append(lib.convertXMLtoTag("MOB",I.owner().Name()));
 					}
 					else
 						data.append(lib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
@@ -378,7 +378,7 @@ public class Prop_Artifact extends Property
 				destroyArtifact(I);
 				synchronized(CMClass.getSync("SYSTEM_ARTIFACT_SAVER"))
 				{
-					CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
+					CMLib.database().DBReCreateAreaData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 				}
 			}
 		}
@@ -388,7 +388,7 @@ public class Prop_Artifact extends Property
 		&&(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)))
 		{
 			final StringBuilder extraInfo = new StringBuilder("\n\r^N");
-			final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+			final List<PAData> itemSet=CMLib.database().DBReadAreaData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				final XMLLibrary lib = CMLib.xml();
@@ -449,7 +449,7 @@ public class Prop_Artifact extends Property
 				&&(CMLib.flags().isInTheGame((Item)affected,true)))
 					return false;
 				final String iRoomID = CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(affected));
-				final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+				final List<PAData> itemSet=CMLib.database().DBReadAreaData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
 					if(registeredArtifacts.containsKey(getItemID()))
@@ -610,7 +610,7 @@ public class Prop_Artifact extends Property
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNDESTROYABLE);
 			if(((Item)affected).subjectToWearAndTear())
 				((Item)affected).setUsesRemaining(100);
-			((Item)affected).setExpirationDate(0);
+			affected.setExpirationDate(0);
 		}
 	}
 }

@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -106,8 +106,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			final XMLLibrary xml = CMLib.xml();
 			synchronized (records)
 			{
-				final List<PlayerData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryRecordKey());
-				for (final PlayerData data : pData)
+				final List<PAData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryRecordKey());
+				for (final PAData data : pData)
 				{
 					try
 					{

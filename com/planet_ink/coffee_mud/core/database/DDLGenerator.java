@@ -1513,7 +1513,7 @@ public class DDLGenerator
 					String ctable = c.containsKey("table")?c.getCheckedString("table").toUpperCase():"";
 					if(ca.equals("MOVE"))
 						ctable = c.getCheckedString("to_table").toUpperCase();
-					if(ctable.equals(tableName))
+					if(ctable.equals(tableName) && (!ct.equals("ROWS")))
 					{
 						processed.add(c);
 						if(ct.equals("COLUMN"))
@@ -1696,6 +1696,35 @@ public class DDLGenerator
 					}
 				}
 				colRs.close();
+			}
+			else
+			if (action.equals("MOVE") && target.equals("ROWS"))
+			{
+				final String fromTable = change.getCheckedString("from_table").toUpperCase();
+				final String toTable = change.getCheckedString("to_table").toUpperCase();
+				final String where = change.getCheckedString("where");
+				final String name = change.getCheckedString("name");
+				final List<String> columns = Arrays.asList(name.split(","));
+				for (int i = 0; i < columns.size(); i++)
+					columns.set(i, columns.get(i).trim().toUpperCase());
+				final StringBuilder selectCols = new StringBuilder();
+				final StringBuilder qmCols = new StringBuilder("");
+				for (final String col : columns)
+				{
+					selectCols.append(quote).append(col).append(quote).append(",");
+					qmCols.append("?").append(",");
+				}
+				if (selectCols.length() > 0)
+				{
+					selectCols.setLength(selectCols.length() - 1);
+					qmCols.setLength(qmCols.length() - 1);
+				}
+				final String selectSql = "SELECT " + selectCols + " FROM " + quote + fromTable + quote + " WHERE " + where;
+				sqls.add(selectSql);
+				final String insertSql = "INSERT INTO " + quote + toTable + quote + " VALUES ( " + qmCols + ")";
+				sqls.add(insertSql);
+				final String deleteSql = "DELETE FROM " + quote + fromTable + quote + " WHERE " + where;
+				sqls.add(deleteSql);
 			}
 			else
 			if(action.equals("MODIFY") && target.equals("COLUMN"))

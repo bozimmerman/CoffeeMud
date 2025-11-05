@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
@@ -188,7 +188,7 @@ public class DefaultClan implements Clan
 	{
 		if(lastClanKillLog==null)
 		{
-			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
+			final List<PAData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
 			clanKills.clear();
 			if(V.size()==0)
 				lastClanKillLog="";
@@ -531,7 +531,7 @@ public class DefaultClan implements Clan
 	{
 		if(voteList==null)
 		{
-			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
+			final List<PAData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
 			final XMLLibrary xmlLib=CMLib.xml();
 			voteList=new Vector<ClanVote>();
 			for(int v=0;v<V.size();v++)

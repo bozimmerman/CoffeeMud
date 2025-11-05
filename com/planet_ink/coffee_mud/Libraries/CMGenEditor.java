@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Disposition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary.Senses;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
@@ -1251,7 +1251,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(newName.equalsIgnoreCase("global"))
 			{
 				A.setTimeObj((TimeClock)CMLib.time().globalClock().copyOf());
-				CMLib.database().DBDeletePlayerData(A.Name(),"TIMECLOCK");
+				CMLib.database().DBDeleteAreaData(A.Name(),"TIMECLOCK");
 				continue;
 			}
 

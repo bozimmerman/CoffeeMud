@@ -75,9 +75,9 @@ public class PostalBoxInfo extends StdWebMacro
 			final PostOffice P=CMLib.city().getPostOffice(chain, "*");
 			if(P!=null)
 			{
-				final List<DatabaseEngine.PlayerData> data = CMLib.database().DBReadPlayerData(box, chain);
+				final List<DatabaseEngine.PAData> data = CMLib.database().DBReadPlayerData(box, chain);
 				mailPieces=new ArrayList<MailPiece>(data.size());
-				for(final DatabaseEngine.PlayerData PD : data)
+				for(final DatabaseEngine.PAData PD : data)
 				{
 					if((PD!=null)
 					&&(PD.key().indexOf(';')>0))

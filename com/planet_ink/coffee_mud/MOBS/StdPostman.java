@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.PostOffice.MailPiece;
@@ -217,11 +217,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public boolean delFromBox(final String boxName, final Item thisThang)
 	{
-		final List<PlayerData> V=getBoxRowPDData(boxName);
+		final List<PAData> V=getBoxRowPDData(boxName);
 		boolean found=false;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+";")))
 			{
@@ -249,12 +249,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	public Map<String, String> getOurOpenBoxes(final String boxName)
 	{
 		final Hashtable<String,String> branches=new Hashtable<String,String>();
-		final List<PlayerData> V=CMLib.database().DBReadPlayerData(boxName,postalChain());
+		final List<PAData> V=CMLib.database().DBReadPlayerData(boxName,postalChain());
 		if(V==null)
 			return branches;
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if(PD!=null)
 			{
 				final String key=PD.key();
@@ -281,12 +281,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public void deleteBoxHere(final String boxName)
 	{
-		final List<PlayerData> V=getBoxRowPDData(boxName);
+		final List<PAData> V=getBoxRowPDData(boxName);
 		if(V==null)
 			return;
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+"/")))
 			{
@@ -295,13 +295,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 	}
 
-	public List<PlayerData> getAllLocalBoxPD(final String boxName)
+	public List<PAData> getAllLocalBoxPD(final String boxName)
 	{
-		final List<PlayerData> V=getBoxRowPDData(boxName);
-		final List<PlayerData> mine=new Vector<PlayerData>();
+		final List<PAData> V=getBoxRowPDData(boxName);
+		final List<PAData> mine=new Vector<PAData>();
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+";")))
 			{
@@ -311,7 +311,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return mine;
 	}
 
-	public List<PlayerData> getBoxRowPDData(final String mob)
+	public List<PAData> getBoxRowPDData(final String mob)
 	{
 		return CMLib.database().DBReadPlayerData(mob,postalChain());
 	}
@@ -319,10 +319,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public Item findBoxContents(final String boxName, final String likeThis)
 	{
-		final List<PlayerData> V=getBoxRowPDData(boxName);
+		final List<PAData> V=getBoxRowPDData(boxName);
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+";")))
 			{
@@ -340,10 +340,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public MailPiece findExactBoxData(final String boxName, final Item likeThis)
 	{
-		final List<PlayerData> V=getBoxRowPDData(boxName);
+		final List<PAData> V=getBoxRowPDData(boxName);
 		for(int v=0;v<V.size();v++)
 		{
-			final DatabaseEngine.PlayerData PD=V.get(v);
+			final DatabaseEngine.PAData PD=V.get(v);
 			if((PD!=null)
 			&&(PD.key().startsWith(postalBranch()+";")))
 			{
@@ -563,15 +563,15 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			}
 			if(proceed)
 			{
-				List<PlayerData> postalDataV=getBoxRowPDData(postalChain());
+				List<PAData> postalDataV=getBoxRowPDData(postalChain());
 				if(postalDataV==null)
-					postalDataV=new ArrayList<PlayerData>(0);
+					postalDataV=new ArrayList<PAData>(0);
 				// first parse all the pending mail,
 				// and remove it from the sorter
 				final List<MailPiece> parsed=new ArrayList<MailPiece>(postalDataV.size());
 				for(int v=0;v<postalDataV.size();v++)
 				{
-					final DatabaseEngine.PlayerData PD=postalDataV.get(v);
+					final DatabaseEngine.PAData PD=postalDataV.get(v);
 					if(PD.key().startsWith(postalBranch()+";"))
 					{
 						parsed.add(parsePostalItemData(PD.xml()));
@@ -612,7 +612,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				{
 					for(int v=0;v<postalDataV.size();v++)
 					{
-						final DatabaseEngine.PlayerData V2=postalDataV.get(v);
+						final DatabaseEngine.PAData V2=postalDataV.get(v);
 						if(V2.key().startsWith(postalBranch()+";"))
 						{
 							final MailPiece data=parsePostalItemData(V2.xml());
@@ -959,7 +959,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					List<PlayerData> allPostalData=null;
+					List<PAData> allPostalData=null;
 					final String theName=getSenderName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 						allPostalData=getAllLocalBoxPD(theName);
@@ -968,7 +968,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						allPostalData=getAllLocalBoxPD(theName);
 						if(mob.isMarriedToLiege())
 						{
-							final List<PlayerData> PDV=getAllLocalBoxPD(mob.getLiegeID());
+							final List<PAData> PDV=getAllLocalBoxPD(mob.getLiegeID());
 							if((PDV!=null)&&(PDV.size()>0))
 								allPostalData.addAll(PDV);
 						}
@@ -986,7 +986,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						mob.tell(str.toString());
 						for(int i=0;i<allPostalData.size();i++)
 						{
-							final DatabaseEngine.PlayerData PD=allPostalData.get(i);
+							final DatabaseEngine.PAData PD=allPostalData.get(i);
 							// already filtered by getAllLocalBoxPD
 							final MailPiece pieces=parsePostalItemData(PD.xml());
 							final Item I=makeItem(pieces);

@@ -543,14 +543,14 @@ public class DBConnection
 				getPreparedStatement().setString(t+1, vals[t]);
 		}
 	}
-	
+
 	public String getSchema()
 	{
 		try
 		{
 			return (myConnection == null)?null:myConnection.getSchema();
 		}
-		catch (SQLException e)
+		catch (final SQLException e)
 		{
 			return null;
 		}
@@ -796,7 +796,7 @@ public class DBConnection
 	{
 		return myPreparedStatement;
 	}
-	
+
 	/**
 	 * Calls the DBConnections fixIdentifiers for postgres
 	 * @param sql the sql to leave alone

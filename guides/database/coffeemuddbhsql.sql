@@ -423,7 +423,7 @@ CREATE TABLE CMCLAN (
 /**
   TABLE CMPDAT - Player Data (bank accounts, etc)
   CMPLID: Player character name/id
-  CMSECT: Data section/category (CONQITEMS, bank chains, etc)
+  CMSECT: Data section/category (bank chains, etc)
   CMPKEY: Unique player data entry key, for updates
   CMPDAT: Actual data, usually xml, very CMSECT dependent 
 */
@@ -433,6 +433,21 @@ CREATE TABLE CMPDAT (
 	CMPKEY varchar (255) ,
 	CMPDAT LONGVARCHAR NULL ,
 	PRIMARY KEY (CMPLID,CMSECT,CMPKEY)
+);
+
+/**
+  TABLE CMAREA - Area Data (conquest, etc)
+  CMAREA: Area name/id
+  CMSECT: Data section/category (CONQITEMS, etc)
+  CMAKEY: Unique area data entry key, for updates
+  CMADAT: Actual data, usually xml, very CMSECT dependent 
+*/
+CREATE TABLE CMADAT (
+	CMAREA varchar (100) ,
+	CMSECT varchar (100) ,
+	CMAKEY varchar (255) ,
+	CMADAT LONGVARCHAR NULL ,
+	PRIMARY KEY (CMAREA,CMSECT,CMAKEY)
 );
 
 /**

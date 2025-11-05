@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -114,12 +114,12 @@ public class StdClanDonationList extends StdClanItem
 				if(CMLib.flags().canBeSeenBy(this,mob))
 				{
 					final StringBuffer text=new StringBuffer("");
-					final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"DONATIONS");
+					final List<PAData> V=CMLib.database().DBReadPlayerData(clanID(),"DONATIONS");
 					final Vector<Object[]> sorted=new Vector<Object[]>();
 					String key=null;
 					int x=0;
 					long val=0;
-					DatabaseEngine.PlayerData set=null;
+					DatabaseEngine.PAData set=null;
 					while(V.size()>0)
 					{
 						set=V.get(0);

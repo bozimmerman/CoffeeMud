@@ -102,6 +102,15 @@ public interface ShoppingLibrary extends CMLibrary
 
 	/**
 	 * Returns a brief plain ordinary camel-cased description of what kind
+	 * of sold shop things this is: Miscellaneous Magic Items, General Items, etc.
+	 *
+	 * @param soldCodeIndex the shopkeeper code
+	 * @return the items sold description
+	 */
+	public String localizedStoreItemTerm(int soldCodeIndex);
+
+	/**
+	 * Returns a brief plain ordinary camel-cased description of what kind
 	 * of shopkeeper this is: Miscellaneous Magic Items, General Items, etc.
 	 *
 	 * @param shop coffee shop inventory to check

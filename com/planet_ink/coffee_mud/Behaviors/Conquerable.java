@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 
@@ -378,7 +378,7 @@ public class Conquerable extends Arrest
 			{
 				laws.setInternalStr("ACTIVATED","FALSE");
 				laws.resetLaw();
-				CMLib.database().DBReCreatePlayerData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+				CMLib.database().DBReCreateAreaData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
 		}
 		synchronized(clanItems)
@@ -404,7 +404,7 @@ public class Conquerable extends Arrest
 			{
 			}
 			if((C==null)&&(clanItems.size()==0)&&(myArea!=null))
-				CMLib.database().DBDeletePlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+				CMLib.database().DBDeleteAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 		}
 		holdingClan="";
 		conquestDate=0;
@@ -553,7 +553,7 @@ public class Conquerable extends Arrest
 		{
 			final HashSet<Room> doneRooms=new HashSet<Room>();
 			clanItems.clear();
-			final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+			final List<PAData> itemSet=CMLib.database().DBReadAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				final String data=itemSet.get(0).xml();
@@ -898,7 +898,7 @@ public class Conquerable extends Arrest
 					final ClanItem I=clanItems.getFirst(i);
 					final Room R=CMLib.map().roomLocation(I);
 					if((R==msg.target())
-					&&(!((Item)I).amDestroyed())
+					&&(!I.amDestroyed())
 					&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
 						return false;
 				}
@@ -1579,17 +1579,17 @@ public class Conquerable extends Arrest
 						final Room R=CMLib.map().roomLocation(I);
 						if((R!=null)
 						&&(((Area)myHost).inMyMetroArea(R.getArea()))
-						&&(!((Item)I).amDestroyed())
+						&&(!I.amDestroyed())
 						&&((!(I.owner() instanceof MOB))||(((MOB)I.owner()).isMonster()))
 						&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
 						{
 							data.append("<ACITEM>");
-							if(((Item)I).owner() instanceof Room)
+							if(I.owner() instanceof Room)
 								data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 							else
-							if(((Item)I).owner() instanceof MOB)
+							if(I.owner() instanceof MOB)
 							{
-								final MOB M=(MOB)((Item)I).owner();
+								final MOB M=(MOB)I.owner();
 								if((M.getStartRoom()!=null)
 								&&(myArea.inMyMetroArea(M.getStartRoom().getArea())))
 								{
@@ -1599,12 +1599,12 @@ public class Conquerable extends Arrest
 							}
 							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
 							data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
-							data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
+							data.append(CMLib.xml().convertXMLtoTag("IUSES",I.usesRemaining()));
 							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
 							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
-							((Item)I).destroy();
+							I.destroy();
 						}
 					}
 					clanItems.clear();
@@ -1614,7 +1614,7 @@ public class Conquerable extends Arrest
 				prevHoldingClan="";
 				clanControlPoints=new STreeMap<String,int[]>();
 				data.append("</ACITEMS>");
-				CMLib.database().DBReCreatePlayerData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
+				CMLib.database().DBReCreateAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
 		}
 	}

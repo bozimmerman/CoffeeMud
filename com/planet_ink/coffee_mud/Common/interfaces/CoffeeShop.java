@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -315,7 +316,7 @@ public interface CoffeeShop extends CMCommon
 		@Override
 		public int hashCode()
 		{
-			return product.hashCode() ^ number ^ price;
+			return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(price));
 		}
 	}
 

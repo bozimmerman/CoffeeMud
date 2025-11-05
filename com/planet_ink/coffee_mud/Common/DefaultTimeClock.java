@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1010,7 +1010,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 		if((loaded)&&(loadName!=null))
 		{
-			CMLib.database().DBReCreatePlayerData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
+			CMLib.database().DBReCreateAreaData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
 			"<HOUR>"+getHourOfDay()+"</HOUR>"+
 			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
 			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
@@ -1101,7 +1101,7 @@ public class DefaultTimeClock implements TimeClock
 		if(process)
 		{
 			loaded=true;
-			final List<PlayerData> bitV=CMLib.database().DBReadPlayerData(loadName,"TIMECLOCK");
+			final List<PAData> bitV=CMLib.database().DBReadAreaData(loadName,"TIMECLOCK");
 			String timeRsc=null;
 			if((bitV==null)||(bitV.size()==0))
 				timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1000</YEAR>";

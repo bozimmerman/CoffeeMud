@@ -310,6 +310,16 @@ public class DDLValidator
 
 		if(action.equals("MOVE"))
 		{
+			if(target.equals("ROWS"))
+			{
+				final String from_table = c.getCheckedString("from_table").toUpperCase();
+				final String where = c.getCheckedString("where");
+				if (!dbTables.contains(from_table))
+					return true;
+				final String sql = "SELECT * FROM " + from_table + " WHERE " + where;
+				final int numFound = DB.queryRows(sql);
+				return numFound==0;
+			}
 			if(!target.equals("COLUMN"))
 				return false;
 			if((!c.containsKey("from_table"))||(c.get("from_table")==null)||(!c.containsKey("to_table"))||(c.get("to_table")==null))
@@ -772,6 +782,8 @@ public class DDLValidator
 					else
 					if("MOVE".equals(act))
 					{
+						if(tgt.equals("ROWS"))
+							continue;
 						if(!"COLUMN".equals(tgt))
 						{
 							errors.add("Unsupported move target: "+c.toString());
@@ -1083,13 +1095,40 @@ public class DDLValidator
 					final String schema = (productName.contains("oracle"))?conn.getSchema():null;
 					final DDLGenerator ddlGen=new DDLGenerator(meta, schema);
 					final List<String> sql=ddlGen.generateSQLForChanges(applicableChanges);
-					for(final String s : sql)
+					for(int i=0;i<sql.size();i++)
 					{
 						try
 						{
+							final String s = sql.get(i);
 							if(CMSecurity.isDebugging(DbgFlag.SQLERRORS))
 								Log.debugOut(s);
-							conn.update(s, 0);
+							if(s.toUpperCase().startsWith("SELECT ")
+							&& (i<sql.size()-1)
+							&& sql.get(i+1).toUpperCase().startsWith("INSERT "))
+							{
+								final List<String[]> datas = new LinkedList<String[]>();
+								final ResultSet R = conn.query(s);
+								while(R.next())
+								{
+									final String[] data = new String[R.getMetaData().getColumnCount()];
+									for(int c=1;c<=data.length;c++)
+										data[c-1]=R.getString(c);
+									datas.add(data);
+								}
+								DB.DBDone(conn);
+								conn=DB.DBFetch();
+								final String insert = sql.get(++i);
+								for(final String[] data : datas)
+								{
+									conn.rePrepare(insert);
+									conn.setPreparedClobs(data);
+									conn.update("", 0);
+								}
+								DB.DBDone(conn);
+								conn=DB.DBFetch();
+							}
+							else
+								conn.update(s, 0);
 						}
 						catch (final SQLException e)
 						{
@@ -1144,13 +1183,40 @@ public class DDLValidator
 					final String schema = (productName.contains("oracle"))?conn.getSchema():null;
 					final DDLGenerator ddlGen=new DDLGenerator(meta,schema);
 					final List<String> sql=ddlGen.generateSQLForChanges(changes[version]);
-					for(final String s : sql)
+					for(int i=0;i<sql.size();i++)
 					{
 						try
 						{
+							final String s = sql.get(i);
 							if(CMSecurity.isDebugging(DbgFlag.SQLERRORS))
 								Log.debugOut(s);
-							conn.update(s, 0);
+							if(s.toUpperCase().startsWith("SELECT ")
+							&& (i<sql.size()-1)
+							&& sql.get(i+1).toUpperCase().startsWith("INSERT "))
+							{
+								final List<String[]> datas = new LinkedList<String[]>();
+								final ResultSet R = conn.query(s);
+								while(R.next())
+								{
+									final String[] data = new String[R.getMetaData().getColumnCount()];
+									for(int c=1;c<=data.length;c++)
+										data[c-1]=R.getString(c);
+									datas.add(data);
+								}
+								DB.DBDone(conn);
+								conn=DB.DBFetch();
+								final String insert = sql.get(++i);
+								for(final String[] data : datas)
+								{
+									conn.rePrepare(insert);
+									conn.setPreparedClobs(data);
+									conn.update("", 0);
+								}
+								DB.DBDone(conn);
+								conn=DB.DBFetch();
+							}
+							else
+								conn.update(s, 0);
 						}
 						catch (final SQLException e)
 						{

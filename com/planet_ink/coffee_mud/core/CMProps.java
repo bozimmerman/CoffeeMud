@@ -2014,7 +2014,7 @@ public class CMProps extends Properties
 			@Override
 			public int hashCode()
 			{
-				return costType.hashCode() ^ costDefinition.hashCode() ^ currency.hashCode();
+				return Objects.hash(costType, costDefinition, currency);
 			}
 		};
 	}

@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -750,14 +750,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		final int day=A.getTimeObj().getDayOfMonth();
 		final int year=A.getTimeObj().getYear();
 		final Object O=Resources.getResource("RENTAL INFO/"+owner);
-		List<PlayerData> pDataV=null;
+		List<PAData> pDataV=null;
 		if(O instanceof List)
-			pDataV=(List<PlayerData>)O;
+			pDataV=(List<PAData>)O;
 		else
 			pDataV=CMLib.database().DBReadPlayerData(owner,"RENTAL INFO");
 		if(pDataV==null)
-			pDataV=new Vector<PlayerData>();
-		DatabaseEngine.PlayerData pData = null;
+			pDataV=new Vector<PAData>();
+		DatabaseEngine.PAData pData = null;
 		if(pDataV.size()==0)
 		{
 			final String section="RENTAL INFO";

@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -89,7 +89,7 @@ public class StdPlayerBook extends StdBook
 		CMLib.database().DBDeletePlayerData(from, cat, key);
 	}
 
-	protected JournalEntry createEntryFromData(final PlayerData data, final boolean addAuthors, final int chapter)
+	protected JournalEntry createEntryFromData(final PAData data, final boolean addAuthors, final int chapter)
 	{
 		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		entry.key		(data.key());
@@ -133,11 +133,11 @@ public class StdPlayerBook extends StdBook
 			return new ArrayList<JournalEntry>();
 		final List<JournalEntry> entries = new ArrayList<JournalEntry>();
 		final String cat="BOOK_"+key;
-		final List<PlayerData> jentries = CMLib.database().DBReadPlayerSectionData(cat);
-		Collections.sort(jentries, new Comparator<PlayerData>()
+		final List<PAData> jentries = CMLib.database().DBReadPlayerSectionData(cat);
+		Collections.sort(jentries, new Comparator<PAData>()
 		{
 			@Override
-			public int compare(final PlayerData o1, final PlayerData o2)
+			public int compare(final PAData o1, final PAData o2)
 			{
 				final String key1=o1.key();
 				final String key2=o2.key();
@@ -156,14 +156,14 @@ public class StdPlayerBook extends StdBook
 		});
 
 		final Set<String> authors=new TreeSet<String>();
-		for(final PlayerData data : jentries)
+		for(final PAData data : jentries)
 		{
 			if(!authors.contains(data.who()))
 				authors.add(data.who());
 		}
 		final boolean addAuthors = authors.size() > 1;
 		int chapter=1;
-		for(final PlayerData data : jentries)
+		for(final PAData data : jentries)
 		{
 			entries.add(createEntryFromData(data,addAuthors,chapter));
 			chapter++;

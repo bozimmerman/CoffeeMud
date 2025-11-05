@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -101,19 +101,19 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Physical body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		DatabaseEngine.PlayerData nonPlayerData=null;
+		DatabaseEngine.PAData nonPlayerData=null;
 		boolean playerCorpse=false;
 		if((body==null)
 		&&(CMSecurity.isASysOp(mob)))
 		{
-			final List<PlayerData> V=CMLib.database().DBReadPlayerSectionData("HEAVEN");
+			final List<PAData> V=CMLib.database().DBReadPlayerSectionData("HEAVEN");
 			final Vector<Physical> allObjs=new Vector<Physical>();
-			final Vector<DatabaseEngine.PlayerData> allDataPs=new Vector<DatabaseEngine.PlayerData>();
+			final Vector<DatabaseEngine.PAData> allDataPs=new Vector<DatabaseEngine.PAData>();
 			if((V!=null)&&(V.size()>0))
 			{
 				for(int v=0;v<V.size();v++)
 				{
-					final DatabaseEngine.PlayerData dataP=V.get(v);
+					final DatabaseEngine.PAData dataP=V.get(v);
 					final String data=dataP.xml();
 					final PhysicalAgent obj=parseHeavenlyData(data);
 					if(obj!=null)
@@ -178,7 +178,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 						M=mob.location().fetchInhabitant(i);
 						if((M!=null)&&(!M.isMonster()))
 						{
-							final List<PlayerData> V=CMLib.database().DBReadPlayerData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+ageA.text());
+							final List<PAData> V=CMLib.database().DBReadPlayerData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+ageA.text());
 							if((V!=null)&&(V.size()>0))
 							{
 								nonPlayerData=V.get(0);

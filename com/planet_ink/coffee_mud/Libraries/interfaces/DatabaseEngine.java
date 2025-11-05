@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.database.ClanLoader;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
-import com.planet_ink.coffee_mud.core.database.DataLoader;
+import com.planet_ink.coffee_mud.core.database.PDataLoader;
 import com.planet_ink.coffee_mud.core.database.GAbilityLoader;
 import com.planet_ink.coffee_mud.core.database.GCClassLoader;
 import com.planet_ink.coffee_mud.core.database.GRaceLoader;
@@ -1830,12 +1830,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Just as it says, this method reads all player data, which is
 	 * the only way to get all bank data at the same time, for example.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBDeleteAllPlayerData(String)
 	 * @param playerID the user id of the player to read all data for
 	 * @return all of this players data.
 	 */
-	public List<PlayerData> DBReadAllPlayerData(String playerID);
+	public List<PAData> DBReadAllPlayerData(String playerID);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1851,7 +1851,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Read a specific set of data for the given player, belonging
 	 * to the given section
 	 *
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
@@ -1860,13 +1860,13 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section the section/type of data to read.
 	 * @return the data for the player in the section
 	 */
-	public List<PlayerData> DBReadPlayerData(String playerID, String section);
+	public List<PAData> DBReadPlayerData(String playerID, String section);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Read a specific set of keys for the given player, belonging
 	 * to the given section
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
@@ -1930,7 +1930,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Reads in all data for the given player which also belongs to any
 	 * one of the given sections/data types.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
@@ -1939,13 +1939,13 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param sections the sections/types of data to return records for
 	 * @return the player data records that match the player and sections
 	 */
-	public List<PlayerData> DBReadPlayerData(String player, List<String> sections);
+	public List<PAData> DBReadPlayerData(String player, List<String> sections);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads in all unique sections with the given owner/name
 	 *
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
@@ -1953,7 +1953,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param name the user id of the player/clan/whatever
 	 * @return the list of unique sections
 	 */
-	public Set<String> DBReadUniqueSections(String name);
+	public Set<String> DBReadUniquePlayerSections(String name);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -1984,14 +1984,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Reads in all player data for all players for the given
 	 * data type/section. Use this sparingly!
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
 	 * @see DatabaseEngine#DBExistsPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
 	 * @param section the section, type of data to delete
 	 * @return the player data in the given section for all players
 	 */
-	public List<PlayerData> DBReadPlayerSectionData(String section);
+	public List<PAData> DBReadPlayerSectionData(String section);
 
 	/**
 	 * Table category: DBPLAYERDATA
@@ -2006,7 +2006,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Reads what is probably a single player data entry, but could be more.
 	 * All fields are required.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerDataByKeyMask(String, String)
 	 * @see DatabaseEngine#DBReadPlayerDataEntry(String)
 	 * @param playerID the name/userid of the player to read data for
@@ -2014,38 +2014,38 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param key the key of the specific entry(s) to return
 	 * @return the player data entry to return
 	 */
-	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key);
+	public List<PAData> DBReadPlayerData(String playerID, String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads a list of data entries in a given section and selecting
 	 * keys by a regular expression.  This is a scanning call by section.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerData(String, String, String)
 	 * @see DatabaseEngine#DBReadPlayerDataEntry(String)
 	 * @param section the section/type of data to return
 	 * @param keyMask the regular expression to match against keys
 	 * @return the player data entries returned.
 	 */
-	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask);
+	public List<PAData> DBReadPlayerDataByKeyMask(String section, String keyMask);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads what is probably a single player data entry, but could be more?
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerDataByKeyMask(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, String, String)
 	 * @param key the key of the specific entry(s) to return
 	 * @return the player data entry to return
 	 */
-	public List<PlayerData> DBReadPlayerDataEntry(String key);
+	public List<PAData> DBReadPlayerDataEntry(String key);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Updates what is probably a single player data entry, but could be more,
 	 * by setting the xml data itself for a given key.
 	 * All fields are required.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String, String)
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @param playerID the name/userid of the player to delete data for
@@ -2059,7 +2059,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERDATA
 	 * Deletes what is probably a single player data entry, but could be more.
 	 * All fields are required.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBUpdatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @param playerID the name/userid of the player to delete data for
@@ -2074,7 +2074,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * upsert where, if the key already exists, an update is done, otherwise
 	 * an insert is done.
 	 * All fields are required.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
 	 *
@@ -2084,13 +2084,13 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param xml the new data to save for this entry.
 	 * @return the filled in PlayerData record, for both create and update
 	 */
-	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml);
+	public PAData DBReCreatePlayerData(String name, String section, String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Creates a single player data entry.
 	 * All fields are required.
-	 * @see DatabaseEngine.PlayerData
+	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
 	 *
@@ -2100,15 +2100,292 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param data the new xml to save for this entry.
 	 * @return the filled in PlayerData record
 	 */
-	public PlayerData DBCreatePlayerData(String player, String section, String key, String data);
+	public PAData DBCreatePlayerData(String player, String section, String key, String data);
 
 	/**
-	 * Table category: DBPLAYERDATA
+	 * Table category: DBMAP
 	 * Initializes the artifact ability tickers by reading them
 	 * from the CMPDAT table, creating a Prop_Artifact ability,
 	 * and setting it to start ticking.
 	 */
 	public void DBReadArtifacts();
+
+
+	/**
+	 * Table category: DBMAP
+	 * Just as it says, this method reads all area data, which is
+	 * the only way to get all bank data at the same time, for example.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBDeleteAllAreaData(String)
+	 * @param areaID the area id of the area to read all data for
+	 * @return all of this areas data.
+	 */
+	public List<PAData> DBReadAllAreaData(String areaID);
+
+	/**
+	 * Table category: DBMAP
+	 * Deletes all area data belonging to the area, of all
+	 * types and sections, all over.  BOOM.
+	 * @see DatabaseEngine#DBReadAllAreaData(String)
+	 * @param name the area id/name of the area to delete all data of
+	 */
+	public void DBDeleteAllAreaData(String name);
+
+	/**
+	 * Table category: DBMAP
+	 * Read a specific set of data for the given area, belonging
+	 * to the given section
+	 *
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBCountAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 * @see DatabaseEngine#DBReadAreaDataKeys(String, String)
+	 * @param areaID the area id for the area to read data for
+	 * @param section the section/type of data to read.
+	 * @return the data for the area in the section
+	 */
+	public List<PAData> DBReadAreaData(String areaID, String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Read a specific set of keys for the given area, belonging
+	 * to the given section
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBCountAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 * @param areaID the area id for the area to read data for
+	 * @param section the section/type of data to read.
+	 * @return the keys for the area in the section
+	 */
+	public List<String> DBReadAreaDataKeys(String areaID, String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Counts the number of rows of data/entries
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 * @see DatabaseEngine#DBReadAreaDataKeys(String, String)
+	 * @param areaID the area id of the area to count the data of
+	 * @param section the section/type of data to count
+	 * @return the number of entries for the given area and section
+	 */
+	public int DBCountAreaData(String areaID, String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Counts the number of rows of data/entries per section.
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 * @see DatabaseEngine#DBReadAreaDataKeys(String, String)
+	 *
+	 * @param section the cross-area section of data
+	 * @return the number of entries for the given section
+	 */
+	public int DBCountAreaData(String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Returns the list of unique authors for a given section
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 *
+	 * @param section the cross-area section of data
+	 * @return the unique authors for a given section
+	 */
+	public List<String> DBReadAreaDataAreaNamesBySection(String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Deletes all of the data for the given area of the
+	 * given section/type.
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBCountAreaData(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, List)
+	 * @param areaID the area id of the area to delete the data of
+	 * @param section the section/type of data to delete
+	 */
+	public void DBDeleteAreaData(String areaID, String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads in all data for the given area which also belongs to any
+	 * one of the given sections/data types.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBCountAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBExistsAreaData(String, String)
+	 * @param area the area id of the area to delete the data of
+	 * @param sections the sections/types of data to return records for
+	 * @return the area data records that match the area and sections
+	 */
+	public List<PAData> DBReadAreaData(String area, List<String> sections);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads in all unique sections with the given owner/name
+	 *
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaData(String, String)
+	 * @see DatabaseEngine#DBCountAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String)
+	 * @see DatabaseEngine#DBExistsAreaData(String, String)
+	 * @param name the area id of the area/whatever
+	 * @return the list of unique sections
+	 */
+	public Set<String> DBReadUniqueAreaSections(String name);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads in all unique area names for all areas for the given
+	 * data type/section.
+	 * @see DatabaseEngine#DBReadAreaSectionData(String)
+	 * @see DatabaseEngine#DBDeleteAreaSectionData(String)
+	 * @see DatabaseEngine#DBExistsAreaData(String, String)
+	 * @param section the section to read area names for
+	 * @return the list of all unique names in this section
+	 */
+	public List<String> DBReadAreaDataAreasBySection(String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Check all unique area names for all areas for the given
+	 * name/section.
+	 * @see DatabaseEngine#DBReadAreaSectionData(String)
+	 * @see DatabaseEngine#DBReadAreaDataAreasBySection(String)
+	 * @see DatabaseEngine#DBDeleteAreaSectionData(String)
+	 * @param section the section to read area names for
+	 * @param name the name of the area
+	 * @return true if the area data exists
+	 */
+	public boolean DBExistsAreaData(final String section, final String name);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads in all area data for all areas for the given
+	 * data type/section. Use this sparingly!
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaDataAreasBySection(String)
+	 * @see DatabaseEngine#DBExistsAreaData(String, String)
+	 * @see DatabaseEngine#DBDeleteAreaSectionData(String)
+	 * @param section the section, type of data to delete
+	 * @return the area data in the given section for all areas
+	 */
+	public List<PAData> DBReadAreaSectionData(String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Deletes all area data of the given section/type.
+	 * @see DatabaseEngine#DBReadAreaDataAreasBySection(String)
+	 * @see DatabaseEngine#DBReadAreaSectionData(String)
+	 * @param section the section, type of data to delete
+	 */
+	public void DBDeleteAreaSectionData(String section);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads what is probably a single area data entry, but could be more.
+	 * All fields are required.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaDataByKeyMask(String, String)
+	 * @see DatabaseEngine#DBReadAreaDataEntry(String)
+	 * @param areaID the name/areaid of the area to read data for
+	 * @param section the section/type of data to return
+	 * @param key the key of the specific entry(s) to return
+	 * @return the area data entry to return
+	 */
+	public List<PAData> DBReadAreaData(String areaID, String section, String key);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads a list of data entries in a given section and selecting
+	 * keys by a regular expression.  This is a scanning call by section.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaData(String, String, String)
+	 * @see DatabaseEngine#DBReadAreaDataEntry(String)
+	 * @param section the section/type of data to return
+	 * @param keyMask the regular expression to match against keys
+	 * @return the area data entries returned.
+	 */
+	public List<PAData> DBReadAreaDataByKeyMask(String section, String keyMask);
+
+	/**
+	 * Table category: DBMAP
+	 * Reads what is probably a single area data entry, but could be more?
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReadAreaDataByKeyMask(String, String)
+	 * @see DatabaseEngine#DBReadAreaData(String, String, String)
+	 * @param key the key of the specific entry(s) to return
+	 * @return the area data entry to return
+	 */
+	public List<PAData> DBReadAreaDataEntry(String key);
+
+	/**
+	 * Table category: DBMAP
+	 * Updates what is probably a single area data entry, but could be more,
+	 * by setting the xml data itself for a given key.
+	 * All fields are required.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBDeleteAreaData(String, String, String)
+	 * @see DatabaseEngine#DBReCreateAreaData(String, String, String, String)
+	 * @param areaID the name/areaid of the area to delete data for
+	 * @param section the section/type of data to delete
+	 * @param key the key of the specific entry(s) to update
+	 * @param xml the new data to save for this entry.
+	 */
+	public void DBUpdateAreaData(String areaID, String section, String key, String xml);
+
+	/**
+	 * Table category: DBMAP
+	 * Deletes what is probably a single area data entry, but could be more.
+	 * All fields are required.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBUpdateAreaData(String, String, String, String)
+	 * @see DatabaseEngine#DBReCreateAreaData(String, String, String, String)
+	 * @param areaID the name/areaid of the area to delete data for
+	 * @param section the section/type of data to delete
+	 * @param key the key of the specific entry(s) to delete
+	 */
+	public void DBDeleteAreaData(String areaID, String section, String key);
+
+	/**
+	 * Table category: DBMAP
+	 * Creates or Updates a single area data entry.  This is the same as an
+	 * upsert where, if the key already exists, an update is done, otherwise
+	 * an insert is done.
+	 * All fields are required.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReCreateAreaData(String, String, String, String)
+	 * @see DatabaseEngine#DBCreateAreaData(String, String, String, String)
+	 *
+	 * @param name the areaid/area id of the entry to create/update
+	 * @param section the section/type of data to create/update
+	 * @param key the key of the specific entry(s) to create/update
+	 * @param xml the new data to save for this entry.
+	 * @return the filled in AreaData record, for both create and update
+	 */
+	public PAData DBReCreateAreaData(String name, String section, String key, String xml);
+
+	/**
+	 * Table category: DBMAP
+	 * Creates a single area data entry.
+	 * All fields are required.
+	 * @see DatabaseEngine.PAData
+	 * @see DatabaseEngine#DBReCreateAreaData(String, String, String, String)
+	 * @see DatabaseEngine#DBCreateAreaData(String, String, String, String)
+	 *
+	 * @param area the areaid/area id of the entry to create
+	 * @param section the section/type of data to create
+	 * @param key the key of the specific entry(s) to create
+	 * @param data the new xml to save for this entry.
+	 * @return the filled in AreaData record
+	 */
+	public PAData DBCreateAreaData(String area, String section, String key, String data);
 
 	/**
 	 * Table category: DBRACE
@@ -2790,39 +3067,39 @@ public interface DatabaseEngine extends CMLibrary
 	public void checkUpgradeBacklogTable(final ChannelsLibrary channels);
 
 	/**
-	 * Table category: DBPLAYERDATA
+	 * Table category: DBPLAYERDATA, DBAREADATA
 	 * A record of Data information from the database.
 	 * This is usually a XML document record of some sort.
-	 * Since it is keyed by player, it is typically very safe to obliterate
-	 * all records belonging to a player name whenever the player
-	 * needs to go.
+	 * Since it is keyed by player or area name, it is typically very safe to obliterate
+	 * all records belonging to a player name or area whenever the player
+	 * or area needs to go.
 	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public static interface PlayerData
+	public static interface PAData
 	{
 		/**
-		 * Gets the official Name of the player that
+		 * Gets the official Name of the player/area that
 		 * owns this record.
-		 * @see DatabaseEngine.PlayerData#who(String)
-		 * @return name of the player
+		 * @see DatabaseEngine.PAData#who(String)
+		 * @return name of the player/area
 		 */
 		public String who();
 
 		/**
-		 * Sets the official Name of the player that
+		 * Sets the official Name of the player/area that
 		 * owns this record.
-		 * @see DatabaseEngine.PlayerData#who()
-		 * @param who name of the player
+		 * @see DatabaseEngine.PAData#who()
+		 * @param who name of the player/area
 		 * @return this
 		 */
-		public PlayerData who(String who);
+		public PAData who(String who);
 
 		/**
 		 * Gets the section/category to which this
 		 * data belongs.
-		 * @see DatabaseEngine.PlayerData#section(String)
+		 * @see DatabaseEngine.PAData#section(String)
 		 * @return the data category
 		 */
 		public String section();
@@ -2830,18 +3107,18 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * Sets the section/category to which this
 		 * data belongs.
-		 * @see DatabaseEngine.PlayerData#section()
+		 * @see DatabaseEngine.PAData#section()
 		 * @param section the data category
 		 * @return this
 		 */
-		public PlayerData section(String section);
+		public PAData section(String section);
 
 		/**
 		 * Sets the unique key that identifies this record
 		 * of data.  It must be unique in the whole DB,
-		 * and can be anything from a GUID to a player/
+		 * and can be anything from a GUID to a player/area/
 		 * section combination.
-		 * @see DatabaseEngine.PlayerData#key(String)
+		 * @see DatabaseEngine.PAData#key(String)
 		 * @return the unique record key
 		 */
 		public String key();
@@ -2849,19 +3126,19 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * Sets the unique key that identifies this record
 		 * of data.  It must be unique in the whole DB,
-		 * and can be anything from a GUID to a player/
+		 * and can be anything from a GUID to a player/area/
 		 * section combination.
-		 * @see DatabaseEngine.PlayerData#key()
+		 * @see DatabaseEngine.PAData#key()
 		 * @param key the unique record key
 		 * @return this
 		 */
-		public PlayerData key(String key);
+		public PAData key(String key);
 
 		/**
 		 * Gets the actual data document that is the payload
 		 * of this record.  It is typically an XML
 		 * document.
-		 * @see DatabaseEngine.PlayerData#xml(String)
+		 * @see DatabaseEngine.PAData#xml(String)
 		 * @return the xml document payload
 		 */
 		public String xml();
@@ -2870,11 +3147,11 @@ public interface DatabaseEngine extends CMLibrary
 		 * Sets the actual data document that is the payload
 		 * of this record.  It is typically an XML
 		 * document.
-		 * @see DatabaseEngine.PlayerData#xml()
+		 * @see DatabaseEngine.PAData#xml()
 		 * @param xml the xml document payload
 		 * @return this
 		 */
-		public PlayerData xml(String xml);
+		public PAData xml(String xml);
 	}
 
 	/**
