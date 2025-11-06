@@ -668,12 +668,14 @@ is as follows:</p><pre>&lt;?xml version="1.0"?&gt;<br />&lt;FILE&gt;&lt;NAME&gt;
 
       <h2><a name="events">Scripting Events</a></h2>
 
-      <p>Below are a list of the
+      <p>Below
+are a list of the
 valid event triggers, along with their
 parameters, and a description of the events or circumstances under
 which the events occur. * Note: Most triggers fire after a short delay,
 and
-only when the scripted mob is healthy and non-follower. See the
+only when the scripted mob is healthy and non-follower and otherwise
+free to act, so check the individual triggers for such caveats. See the
 MPSETINTERNAL
 command to change default global triggering behavior.</p>
 
@@ -717,14 +719,17 @@ enters the room where the mob currently is. This means every time.
       <pre>all_greet_prog -RACE +Elf<br /></pre>
 
 This prog will be triggered 100% of the time whenever an elf enters the room where the mob currently is.
-      <p>SPECIAL NOTES: You'll
+      <p>SPECIAL
+NOTES: You'll
 probably want to do a large number of if
 checks in all_greet_progs, specifically in the difference between mobs
 and player characters. Note that all_greet_progs will trigger even if a
 person is sneaking, though the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, sense sneaking
 to see sneakers, and will not see people if blinded. Also, be sure to
-check out arrive_prog, which is a nice counterpart to greet_prog.</p>
+check out arrive_prog, which is a nice counterpart to greet_prog. * The
+triggered object must be able to act (move, not near death, not a
+follower, etc).</p>
 
       <h3><a name="act_prog">act_prog</a></h3>
 
@@ -824,7 +829,7 @@ time.</p>
       <p>SPECIAL NOTES: You'll
 probably want to make sure you understand the difference between the
 arrive_prog and greet_prog/all_greet_prog. &nbsp;Scripted Exits and
-Rooms will never trigger this event.</p>
+Rooms will never trigger this event.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="bribe_prog">bribe_prog</a></h3>
 
@@ -866,7 +871,7 @@ have multiple bribe_progs on the same
 mob. However, these must be listed in order from largest gold amount to
 smallest gold amount. So if you have a bribe_prog 250 and a bribe_prog
 100, the 250 must be listed first, and then the 100. If you don't do
-this your larger sum bribe_progs will never be triggered.</p>
+this your larger sum bribe_progs will never be triggered.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="buy_prog">buy_prog</a></h3>
 
@@ -914,7 +919,7 @@ Generally it is best not to have buy_progs with the same keywords in
 them, unless they are a buy_prog p with different keyword lists but
 some of the same keywords &#8211; for example a buy_prog p apple
 red
-juicy and a buy_prog p apple red poisoned.
+juicy and a buy_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).
       </p>
       <h3><a name="cast_prog">cast_prog</a></h3>
 
@@ -955,7 +960,7 @@ spell or skill is used on the mob.</p>
 have more than one cast_prog on a mob.
 Generally it is best not to have cast_progs with the same keywords in
 them, unless they are a cast_prog p with different keyword lists but
-some of the same keywords &#8211; for example a cast_prog p Spell_Fireball and a cast_prog p Spell_FlamingHands</p>
+some of the same keywords &#8211; for example a cast_prog p Spell_Fireball and a cast_prog p Spell_FlamingHands</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="casting_prog">casting_prog</a></h3>
 
@@ -1000,7 +1005,7 @@ mob casts the spell that&nbsp; has the exact ID of Spell_Fireball.&nbsp;</p>
 have more than one casting_prog on a mob.
 Generally it is best not to have casting_progs with the same keywords in
 them, unless they are a casting_prog p with different keyword lists but
-some of the same keywords &#8211; for example a casting_prog p Spell_Fireball and a casting_prog p Spell_IceLance</p>
+some of the same keywords &#8211; for example a casting_prog p Spell_Fireball and a casting_prog p Spell_IceLance</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
 
       <h3><a name="channel_prog">channel_prog</a></h3>
@@ -1092,7 +1097,7 @@ have more than one close_prog on an
 item, mob, or room. Generally it is best not to have close_progs with
 the same keywords in them, unless they are a close_progs p with
 different keyword lists but some of the same keywords - for example a
-close_progs p door gate and a close_prog p door to the gate.</p>
+close_progs p door gate and a close_prog p door to the gate.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="cnclmsg_prog">cnclmsg_prog</a></h3>
 
@@ -1223,7 +1228,7 @@ have more than one consume_prog on a
 mob. Generally it is best not to have consume_progs with the same
 keywords in them, unless they are a consume_prog p with different
 keyword lists but some of the same keywords &#8211; for example a
-consume_prog p apple red juicy and a consume_prog p apple red poisoned.</p>
+consume_prog p apple red juicy and a consume_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="damage_prog">damage_prog</a></h3>
 
@@ -1363,7 +1368,7 @@ Generally it is best not to have drop_progs with the same keywords in
 them, unless they are a drop_prog p with different keyword lists but
 some of the same keywords &#8211; for example a drop_prog p apple
 red
-juicy and a drop_prog p apple red poisoned..
+juicy and a drop_prog p apple red poisoned..</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).
       </p>
       <h3><a name="dropping_prog">dropping_prog</a></h3>
 
@@ -1405,7 +1410,7 @@ or every time, the mob enters a room.</p>
 
       <p>SPECIAL
 NOTES: This program is triggered on a normal delay unless it is
-multiply triggered, in which case it will occur once, but immediately.</p>
+multiply triggered, in which case it will occur once, but immediately.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="execmsg_prog">execmsg_prog</a></h3>
 
@@ -1502,7 +1507,7 @@ or every time, a mob leaves the room.
       </p>
       <pre>exit_prog -RACE +Elf<br /></pre>
 
-This will trigger whenever an elf leave the room.
+This will trigger whenever an elf leave the room.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).
       <h3><a name="fight_prog">fight_prog</a></h3>
 
       <p>Usage:</p>
@@ -1608,13 +1613,13 @@ Generally it is best not to have get_progs with the same keywords in
 them, unless they are a get_prog p with different keyword lists but
 some of the same keywords &#8211; for example a get_prog p apple
 red
-juicy and a get_prog p apple red poisoned.</p>
+juicy and a get_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
       <h3><a name="getting_prog">getting_prog</a></h3>
 
       <p>Usage:</p>
 
       <pre>getting_prog [keyword list]<br />getting_prog p [keyword list]<br />getting_prog all</pre>
-As get_prog, but only triggers when the scripted mob or player does the getting.
+As get_prog, but only triggers when the scripted mob or player does the getting.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).
       <h3><a name="give_prog">give_prog</a></h3>
 
       <p>Usage:</p>
@@ -1670,7 +1675,7 @@ have the mob use the mpjunk command to get rid of the object given so
 people cannot steal the item back and use it again. It does depend on
 what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a give_prog all to have the mob drop
-items other than the ones it will accept in other give_progs.</p>
+items other than the ones it will accept in other give_progs.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
       <h3><a name="giving_prog">giving_prog</a></h3>
 
       <p>Usage:</p>
@@ -1729,7 +1734,7 @@ have the mob use the mpjunk command to get rid of the object given so
 people cannot steal the item back and use it again. It does depend on
 what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a giving_prog all to have the mob drop
-items other than the ones it will accept in other giving_progs.</p>
+items other than the ones it will accept in other giving_progs.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="greet_prog">greet_prog</a></h3>
 
@@ -1774,7 +1779,7 @@ person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
 see people if blinded. Lastly, make sure you check out arrive_prog,
 which
-is a useful counterpart to greet_prog</p>
+is a useful counterpart to greet_prog.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
       <h3><a name="group_greet_prog">group_greet_prog</a></h3>
 
       <p>Usage:</p>
@@ -1818,7 +1823,7 @@ person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
 see people if blinded. Lastly, make sure you check out arrive_prog,
 which
-is a useful counterpart to greet_prog</p>
+is a useful counterpart to greet_prog.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="hitprcnt_prog">hitprcnt_prog</a></h3>
 
@@ -1943,7 +1948,7 @@ levels. This means every time.</p>
 program will trigger every time a player
 levels, regardless of whether they are in the same room, or even
 whether the scripted monster can see or detect the player. The
-exception to this is cloaked admins, which will not trigger.</p>
+exception to this is cloaked admins, which will not trigger.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="lock_prog">lock_prog</a></h3>
 
@@ -1993,7 +1998,7 @@ have more than one lock_prog on an
 item, mob, or room. Generally it is best not to have lock_progs with
 the same keywords in them, unless they are a lock_prog p with different
 keyword lists but some of the same keywords - for example a lock_prog p
-door gate and a lock_prog p door to the gate</p>
+door gate and a lock_prog p door to the gate.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="login_prog">login_prog</a></h3>
 
@@ -2104,7 +2109,7 @@ looked at.</p>
 
       <p>MULTIPLE PROGS: It is
 generally useless to have more than one
-look_prog on an item, mob, or room.</p>
+look_prog on an item, mob, or room.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="once_prog">once_prog</a></h3>
 
@@ -2177,7 +2182,7 @@ have more than one open_prog on an
 item, mob, or room. Generally it is best not to have open_progs with
 the same keywords in them, unless they are a open_progs p with
 different keyword lists but some of the same keywords - for example a
-open_prog p door gate and a open_prog p door to the gate.</p>
+open_prog p door gate and a open_prog p door to the gate.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="quest_time_prog">quest_time_prog</a></h3>
 
@@ -2267,7 +2272,7 @@ Generally it is best not to have put_progs with the same keywords in
 them, unless they are a put_prog p with different keyword lists but
 some of the same keywords &#8211; for example a put_prog p apple
 red
-juicy and a put_prog p apple red poisoned. </p>
+juicy and a put_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc). </p>
 
       <h3><a name="putting_prog">putting_prog</a></h3>
 
@@ -2321,7 +2326,7 @@ in
 them, unless they are a put_prog p with different keyword lists but
 some of the same keywords &#8211; for example a putting_prog p apple
 red
-juicy and a putting_prog p apple red poisoned.</p>
+juicy and a putting_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="rand_prog">rand_prog</a></h3>
 
@@ -2452,7 +2457,7 @@ have more than one remove_prog on a
 mob. Generally it is best not to have remove_progs with the same
 keywords in them, unless they are a remove_prog p with different
 keyword lists but some of the same keywords &#8211; for example a
-remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p><h3><a name="ride_prog">ride_prog</a></h3>
+remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p><h3><a name="ride_prog">ride_prog</a></h3>
 
       <p>Usage:</p>
 
@@ -2472,7 +2477,7 @@ then the ride_prog will trigger from any thing mounted.&nbsp;</p>
 
       <pre>ride_prog horse<br /></pre><pre>ride_prog all<br /></pre>
 
-      <p>This will trigger if anything is mounted by anyone.</p><h3><a name="riding_prog">riding_prog</a></h3>
+      <p>This will trigger if anything is mounted by anyone.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p><h3><a name="riding_prog">riding_prog</a></h3>
 
       <p>Usage:</p>
 
@@ -2491,7 +2496,7 @@ then the ride_prog will trigger from any thing mounted. <br /><p>EXAMPLES:</p>
 
       <pre>riding_prog horse<br /></pre><pre>riding_prog all<br /></pre>
 
-      <p>This will trigger if anything is mounted by the scripted.</p>
+      <p>This will trigger if anything is mounted by the scripted.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="sell_prog">sell_prog</a></h3>
 
@@ -2539,7 +2544,7 @@ Generally it is best not to have sell_progs with the same keywords in
 them, unless they are a sell_prog p with different keyword lists but
 some of the same keywords &#8211; for example a sell_prog p apple
 red
-juicy and a sell_prog p apple red poisoned.</p>
+juicy and a sell_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="social_prog">social_prog</a></h3>
 
@@ -2603,7 +2608,7 @@ have more than one speak_prog on a
 mob. It is generally not a good idea to have more than one speak_prog
 be triggered by the same expression.</p>
       <p>
-      </p>
+      SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
       <h3><a name="speech_prog">speech_prog</a></h3>
 
       <p>Usage:</p>
@@ -2642,7 +2647,7 @@ said. Note that punctuation counts, although you don't *have* to use it.</p>
       <p>MULTIPLE PROGS: You can
 have more than one speech_prog on a
 mob. It is generally not a good idea to have more than one speech_prog
-be triggered by the same expression.</p>
+be triggered by the same expression.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="time_prog">time_prog</a></h3>
 
@@ -2716,7 +2721,7 @@ have more than one unlock_prog on an
 item, mob, or room. Generally it is best not to have unlock_progs with
 the same keywords in them, unless they are a unlock_prog p with
 different keyword lists but some of the same keywords - for example a
-unlock_prog p door gate and a unlock_prog p door to the gate.</p>
+unlock_prog p door gate and a unlock_prog p door to the gate.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="wear_prog">wear_prog</a></h3>
 
@@ -2764,12 +2769,12 @@ Generally it is best not to have wear_progs with the same keywords in
 them, unless they are a wear_prog p with different keyword lists but
 some of the same keywords &#8211; for example a wear_prog p apple
 red
-juicy and a wear_prog p apple red poisoned.</p><h3><a name="wearing_prog">wearing_prog</a></h3>
+juicy and a wear_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).</p><h3><a name="wearing_prog">wearing_prog</a></h3>
 
       <p>Usage:</p>
 
       <pre>wearing_prog [keyword list]<br />wearing_prog p [keyword list]<br />wearing_prog all</pre>
-As wear_prog, but only triggers when the scripted mob or player does the wearing, wielding, or holding.<p></p>
+As wear_prog, but only triggers when the scripted mob or player does the wearing, wielding, or holding.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).<p></p>
 
       <h2><a name="codes">Scripting Codes</a></h2>
 

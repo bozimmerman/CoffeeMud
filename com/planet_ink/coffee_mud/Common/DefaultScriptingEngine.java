@@ -1058,7 +1058,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public boolean isFreeToBeTriggered(final Tickable affecting)
 	{
 		if(alwaysTriggers)
-			return CMLib.flags().canActAtAll(affecting);
+		{
+			if((affecting instanceof Contingent)&&(((Contingent)affecting).amDestroyed()))
+				return false;
+			if(affecting instanceof Environmental)
+				return CMLib.flags().isInTheGame((Environmental)affecting, true);
+			return true;
+		}
 		else
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
