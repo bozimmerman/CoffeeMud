@@ -284,11 +284,25 @@ public class Backend
 			throw new java.sql.SQLException("unknown table for insert " + tableName);
 
 		final ComparableValue[] values = new ComparableValue[fakeTable.columns.length];
-		for (int index = 0; index < columns.length; index++)
+		for (int index = 0; index < sqlValues.length; index++)
 		{
-			final int id = fakeTable.findColumn(columns[index]);
+			final int id;
+			final String colName;
+			if(index < columns.length)
+			{
+				colName = columns[index];
+				id = fakeTable.findColumn(colName);
+			}
+			else
+			if(index < fakeTable.columnNames.length)
+			{
+				colName = fakeTable.columnNames[index];
+				id = fakeTable.findColumn(colName);
+			}
+			else
+				throw new java.sql.SQLException("missing column for insert: " + (index+1));
 			if (id < 0)
-				throw new java.sql.SQLException("unknown column for insert " + columns[index]);
+				throw new java.sql.SQLException("unknown column for insert " + colName);
 			final FakeColumn col = fakeTable.columns[id];
 			try
 			{

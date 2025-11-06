@@ -73,25 +73,27 @@ public class ImplInsertStatement extends ImplAbstractStatement
 		sql = skipWS(r[0]);
 		final String tableName = r[1].trim().toUpperCase();
 		sql = skipWS(sql);
-		if ((sql.length() <= 0) || (sql.charAt(0) != '('))
-			throw new java.sql.SQLException("no open paren");
-		sql = sql.substring(1);
-
 		final java.util.List<String> columnList = new java.util.LinkedList<String>();
-		while (true)
+		if(sql.length()<=0)
+			throw new java.sql.SQLException("no open paren or values");
+		if(sql.charAt(0) == '(')
 		{
-			sql = skipWS(sql);
-			int index = sql.indexOf(',');
-			final int index2 = sql.indexOf(')');
-			if ((index < 0) || (index2 < index))
-				index = index2;
-			if (index < 0)
-				throw new java.sql.SQLException("no comma");
-			columnList.add(sql.substring(0, index).trim());
-			final char c = sql.charAt(index);
-			sql = skipWS(sql.substring(index + 1));
-			if (c == ')')
-				break;
+			sql = sql.substring(1);
+			while (true)
+			{
+				sql = skipWS(sql);
+				int index = sql.indexOf(',');
+				final int index2 = sql.indexOf(')');
+				if ((index < 0) || (index2 < index))
+					index = index2;
+				if (index < 0)
+					throw new java.sql.SQLException("no comma");
+				columnList.add(sql.substring(0, index).trim());
+				final char c = sql.charAt(index);
+				sql = skipWS(sql.substring(index + 1));
+				if (c == ')')
+					break;
+			}
 		}
 
 		sql = split(sql, token);
@@ -127,7 +129,7 @@ public class ImplInsertStatement extends ImplAbstractStatement
 		sql = skipWS(sql);
 		if (sql.length() > 0)
 			throw new java.sql.SQLException("no more sql or missing comma/paren");
-		if (columnList.size() != valuesList.size())
+		if((columnList.size()!=0) && (columnList.size() != valuesList.size()))
 			throw new java.sql.SQLException("column values mismatch");
 		return new ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 	}
