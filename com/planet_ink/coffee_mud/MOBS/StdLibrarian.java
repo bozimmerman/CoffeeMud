@@ -106,7 +106,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			final XMLLibrary xml = CMLib.xml();
 			synchronized (records)
 			{
-				final List<PAData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryRecordKey());
+				final List<PAData> pData = CMLib.database().DBReadAreaDataEntry(this.getLibraryRecordKey());
 				for (final PAData data : pData)
 				{
 					try
@@ -208,7 +208,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				Log.errOut(getLibraryRecordKey(), e);
 			}
 		}
-		CMLib.database().DBReCreatePlayerData(getLibraryRecordKey(), "LIBRARY_RECORDS", getLibraryRecordKey(), json.toString());
+		CMLib.database().DBReCreateAreaData(getLibraryRecordKey(), "LIBRARY_RECORDS", getLibraryRecordKey(), json.toString());
 	}
 
 	@Override

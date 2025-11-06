@@ -415,6 +415,6 @@
 	{"action": "ADD", "target": "COLUMN", "name": "CMAKEY", "table": "CMADAT", "type": "VARCHAR", "size": 100, "nullable": false},
 	{"action": "ADD", "target": "COLUMN", "name": "CMADAT", "table": "CMADAT", "type": "TEXT", "nullable": true},
 	{"action": "MOVE", "target": "ROWS", "name": "CMPLID,CMSECT,CMPKEY,CMPDAT", "from_table": "CMPDAT", "to_table": "CMADAT",
-		"where": "CMSECT = 'ARREST' OR CMSECT = 'CONQITEMS' OR  CMSECT = 'TIMECLOCK' OR CMSECT = 'ARTIFACTS' OR CMSECT = 'SCRIPTABLEVARS'"}
+		"where": "CMSECT = 'ARREST' OR CMSECT = 'CONQITEMS' OR  CMSECT = 'TIMECLOCK' OR CMSECT = 'ARTIFACTS' OR CMSECT = 'SCRIPTABLEVARS' OR CMSECT='LIBRARY_RECORDS' "}
   ]
 }

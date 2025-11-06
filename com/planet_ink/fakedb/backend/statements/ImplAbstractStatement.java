@@ -122,7 +122,9 @@ public abstract class ImplAbstractStatement
 				e++;
 			if (e >= sql.length()) // was whatever it was the last word.. done
 				return sql.substring(s);
-			final String word = sql.substring(s, e);
+			String word = sql.substring(s, e).trim();
+			if(word.startsWith("'")&&word.endsWith("'"))
+				word=word.substring(1,word.length()-1);
 			cols.add(word);
 			if (sql.charAt(e) != ',')
 			{

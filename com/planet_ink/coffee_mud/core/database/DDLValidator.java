@@ -1116,15 +1116,15 @@ public class DDLValidator
 									datas.add(data);
 								}
 								DB.DBDone(conn);
-								conn=DB.DBFetch();
 								final String insert = sql.get(++i);
 								for(final String[] data : datas)
 								{
+									conn=DB.DBFetch();
 									conn.rePrepare(insert);
 									conn.setPreparedClobs(data);
 									conn.update("", 0);
+									DB.DBDone(conn);
 								}
-								DB.DBDone(conn);
 								conn=DB.DBFetch();
 							}
 							else
