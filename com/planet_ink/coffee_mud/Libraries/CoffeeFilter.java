@@ -1175,7 +1175,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				final char c = buf.charAt(loop);
 				if((anchorIndex>0)&&(isUrlEndChar[c%127]))
 				{
-					final String url = buf.substring(anchorIndex,loop-1);
+					final String url = buf.substring(anchorIndex,loop-1).trim();
 					final String insertUrl = "<A HREF=\""+url+"\">";
 					buf.insert(loop, "</A>");
 					buf.insert(anchorIndex,insertUrl);
