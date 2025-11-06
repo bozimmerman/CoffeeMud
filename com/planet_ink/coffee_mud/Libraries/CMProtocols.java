@@ -3011,8 +3011,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									doc.setCharAt(doc.length()-1,']');
 									if(!all)
 										break;
+									doc.append(",");
 								}
-								doc.append(",");
 							}
 							if(doc.charAt(doc.length()-1)==',')
 								doc.setCharAt(doc.length()-1,'}');
