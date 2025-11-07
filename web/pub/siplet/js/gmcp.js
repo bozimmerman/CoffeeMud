@@ -196,7 +196,7 @@ window.gmcpPackages.push({
 		if(!(id in framechoices))
 		{
 			var rest="width=25%";
-			if(["top","bottom"].indexOf(dock)>=0)
+			if(["top","bottom"].indexOf(dock.toLowerCase())>=0)
 				rest="height=25%";
 			if(dock != "")
 				sipwin.process('<FRAME ACTION=OPEN INTERNAL NAME="'+id+'"  TITLE="WebView" ALIGN='+dock+' '+rest+'>');
