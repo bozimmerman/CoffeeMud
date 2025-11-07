@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.Expertise
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -126,6 +127,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	protected Map<String,int[]>		combatSpams		= new STreeMap<String,int[]>();
 	protected Set<PlayerFlag>		playFlags		= new SHashSet<PlayerFlag>();
 	protected List<LevelInfo>		levelInfo		= new SVector<LevelInfo>();
+	protected Map<String,Boolean>	autoApproves	= new Hashtable<String,Boolean>();
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
@@ -993,6 +995,37 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		return list.toString();
 	}
 
+	private String getApprovalList()
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final String key : this.autoApproves.keySet())
+		{
+			final Boolean b = autoApproves.get(key);
+			if(b.booleanValue())
+				str.append(key+":T");
+			else
+				str.append(key+":F");
+			str.append(",");
+		}
+		if(str.length()==0)
+			return "";
+		return str.toString().substring(0,str.length()-1);
+	}
+
+	private void setApprovalList(final String str)
+	{
+		this.autoApproves.clear();
+		final String[] lst = str.split(",");
+		for(final String ent : lst)
+		{
+			if(ent.endsWith(":T"))
+				autoApproves.put(ent.substring(0,ent.length()-2), Boolean.TRUE);
+			else
+			if(ent.endsWith(":F"))
+				autoApproves.put(ent.substring(0,ent.length()-2), Boolean.FALSE);
+		}
+	}
+
 	@Override
 	public String getXML()
 	{
@@ -1000,6 +1033,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		final String ignoredStr=getPrivateList(getIgnored());
 		final String subscriptionStr=getPrivateList(getSubscriptions());
 		final String privateListStr=getPrivateList(introductions);
+		final String appListStr=getApprovalList();
 		final StringBuffer rest=new StringBuffer("");
 		final String[] codes=getStatCodes();
 		for(int x=getSaveStatIndex();x<codes.length;x++)
@@ -1053,7 +1087,8 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			+"<XP RP="+this.rolePlayXP+" MAXRP="+this.maxRolePlayXP+" DEF="+this.deferredXP+" MAXDEF="+this.maxDeferredXP+" />"
 			+"<LASTXPMILLIS>"+this.lastXPDateTime+"</LASTXPMILLIS>"
 			+"<NUMDEATHS>"+this.deathCounter+"</NUMDEATHS>"
-			+((playFlags.size()>0)?"<FLAGS>"+this.getStat("FLAGS")+"</FLAGS>":"")
+			+((playFlags.size()>0)?"<FLAGS>"+getStat("FLAGS")+"</FLAGS>":"")
+			+((appListStr.length()>0)?"<APPROVES>"+appListStr+"</APPROVES>":"")
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -1374,7 +1409,6 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			else
 				achievementers.put(A.getTattoo(), A.getTracker("0"));
 		}
-
 		final String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
@@ -1392,6 +1426,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			if((str != null)&&(str.length()>0))
 				account = CMLib.players().getLoadAccount(str);
 		}
+		this.setApprovalList(xmlLib.getValFromPieces(xml, "APPROVES"));
 
 		final String[] allAccStats=xmlLib.getValFromPieces(xml, "PCCSTATS").split(";");
 		if(allAccStats.length>=5)
@@ -1450,6 +1485,25 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		return securityFlags;
 	}
 
+	@Override
+	public Boolean getAutoApproved(final String ID)
+	{
+		if(ID == null)
+			return null;
+		return autoApproves.get(ID.toUpperCase());
+	}
+
+	@Override
+	public void setAutoApproved(final String ID, final Boolean yOrN)
+	{
+		if(ID != null)
+		{
+			if(yOrN == null)
+				autoApproves.remove(ID.toUpperCase());
+			else
+				autoApproves.put(ID.toUpperCase(), yOrN);
+		}
+	}
 	@Override
 	public void setPoofs(final String poofIn, final String poofOut, final String tranPoofIn, final String tranPoofOut)
 	{
