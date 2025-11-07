@@ -1101,6 +1101,28 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public void setLastXPAwardMillis(long time);
 
 	/**
+	 * Returns whether this given ID (like a command or whatever)
+	 * is marked for auto-approval, and thus can bypass any approval
+	 * prompts.  Returns TRUE to auto-approve, FALSE to auto-disapprove,
+	 * or NULL.
+	 *
+	 * @param ID the command or whatever
+	 * @return True, False, or null
+	 */
+	public Boolean getAutoApproved(final String ID);
+
+	/**
+	 * Sets whether this given ID (like a command or whatever)
+	 * is marked for auto-approval, and thus can bypass any approval
+	 * prompts.  Send TRUE to auto-approve, FALSE to auto-disapprove,
+	 * or NULL.
+	 *
+	 * @param ID the command or whatever
+	 * @param yOrN True, False, or null
+	 */
+	public void setAutoApproved(final String ID, Boolean yOrN);
+
+	/**
 	 * Checks whether the given string flag is set for this player.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setFlag(PlayerFlag, boolean)
 	 * @param flag the flag name
