@@ -211,7 +211,7 @@ window.gmcpPackages.push({
 			frame = frame.firstChild;
 		sipwin.cleanDiv(frame);
 		var iframeId = "webview_iframe_"+id.replace(' ','_');
-		frame.innerHTML = '<iframe id="'+iframeId+'"style="width: 100%; height: 100%; border: none;"></iframe>';
+		frame.innerHTML = '<iframe id="'+iframeId+'"style="width: 100%; height: 100%; border: none; background-color: white;"></iframe>';
 		fetch(url, {
 			method: 'GET',
 			headers: headerObj
