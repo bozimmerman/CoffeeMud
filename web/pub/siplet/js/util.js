@@ -68,7 +68,8 @@ function isNumber(c)
 
 function isJsonObject(variable) 
 {
-	return variable !== null 
+	return variable !== null
+		&& variable !== undefined 
 		&& typeof variable === 'object' 
 		&& !Array.isArray(variable) 
 		&& Object.prototype.toString.call(variable) === '[object Object]';

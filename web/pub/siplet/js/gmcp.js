@@ -171,6 +171,62 @@ window.gmcpPackages.push({
 	}
 });
 
+window.gmcpPackages.push({
+	name: "WebView",
+	lname: "webview.",
+	version: "1",
+	open: function(sipwin, msg) {
+		if(!isJsonObject(msg))
+			return;
+		if(!msg["url"])
+			return;
+		var url = msg["url"];
+		var id = msg["id"];
+		if(!id)
+			id="WEBVIEW";
+		var dock = msg["dock"];
+		if(!dock)
+			dock = "";
+		if(["","top","bottom","left","right"].indexOf(dock.toLowerCase())<0)
+			dock="";
+		var headerObj = msg["http-request-headers"]
+		if(!isJsonObject(headerObj))
+			headerObj = {};
+		var framechoices = sipwin.mxp.getFrameMap();
+		if(!(id in framechoices))
+		{
+			var rest="width=25%";
+			if(["top","bottom"].indexOf(dock)>=0)
+				rest="height=25%";
+			if(dock != "")
+				sipwin.process('<FRAME ACTION=OPEN INTERNAL NAME="'+id+'"  TITLE="WebView" ALIGN='+dock+' '+rest+'>');
+			else
+				sipwin.process('<FRAME ACTION=OPEN FLOATING NAME="'+id+'" TITLE="WebView" LEFT=25% TOP=25% HEIGHT=50% WIDTH=50%>');
+			framechoices = sipwin.mxp.getFrameMap();
+		}
+		if(!(id in framechoices))
+			return;
+		var frame = framechoices[id];
+		if(frame.sprops && frame.firstChild)
+			frame = frame.firstChild;
+		sipwin.cleanDiv(frame);
+		var iframeId = "webview_iframe_"+id.replace(' ','_');
+		frame.innerHTML = '<iframe id="'+iframeId+'"style="width: 100%; height: 100%; border: none;"></iframe>';
+		fetch(url, {
+			method: 'GET',
+			headers: headerObj
+		}).then(function(response) {
+			if (!response.ok) throw new Error('Fetch failed');
+			return response.text();
+		}).then(function(html) {
+			const iframe = document.getElementById(iframeId);
+			iframe.srcdoc = html;
+		}).catch(function(error) {
+			console.error('Error loading iframe:', error);
+		});
+	}
+});
+
 function ParseGMCPPkg(pkg)
 {
 	if(!pkg)
