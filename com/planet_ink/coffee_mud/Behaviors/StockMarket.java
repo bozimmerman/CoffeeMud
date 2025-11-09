@@ -110,6 +110,7 @@ public class StockMarket extends StdBehavior
 				xml.append(" />");
 			else
 			{
+				xml.append(">");
 				for(final String cat : def.influences.keySet())
 				{
 					final int[] vals = def.influences.get(cat);
