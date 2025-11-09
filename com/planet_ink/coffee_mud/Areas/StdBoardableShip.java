@@ -1861,6 +1861,19 @@ public class StdBoardableShip implements Area, Boardable, PrivateProperty
 	}
 
 	@Override
+	public List<Area> getChildrenRecurse()
+	{
+		final LinkedList<Area> V=new LinkedList<Area>();
+		for(final Enumeration<Area> a=this.getChildren();a.hasMoreElements();)
+		{
+			final Area A=a.nextElement();
+			V.add(A);
+			V.addAll(A.getChildrenRecurse());
+		}
+		return V;
+	}
+
+	@Override
 	public Area getChild(final String named)
 	{
 		return null;

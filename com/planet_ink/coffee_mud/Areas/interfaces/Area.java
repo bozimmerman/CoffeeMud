@@ -580,6 +580,12 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public Area getChild(String named);
 
 	/**
+	 * Returns the children of this area, and their children, etc.
+	 * @return all the children
+	 */
+	public List<Area> getChildrenRecurse();
+
+	/**
 	 * Returns whether the Area is a child of this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
 	 * @param area an Area object

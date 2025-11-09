@@ -2466,6 +2466,19 @@ public class StdArea implements Area
 	}
 
 	@Override
+	public List<Area> getChildrenRecurse()
+	{
+		final LinkedList<Area> V = new LinkedList<Area>();
+		for (final Iterator<Area> a = getChildrenIterator(); a.hasNext();)
+		{
+			final Area A = a.next();
+			V.add(A);
+			V.addAll(A.getChildrenRecurse());
+		}
+		return V;
+	}
+
+	@Override
 	public Area getChild(final String named)
 	{
 		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
