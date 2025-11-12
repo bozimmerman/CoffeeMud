@@ -8177,6 +8177,34 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
+	protected void sendAchievementMsg(final MOB mob, final String apc, final Event E, final Achievement A, final int bumpNum)
+	{
+		final Room R = mob.location();
+		if(R != null)
+		{
+			final String bumpStr=bumpNum>0?("+"+bumpNum):(""+bumpNum);
+			final CMMsg msg=CMClass.getMsg(mob, R, null, CMMsg.NO_EFFECT,null,
+					CMMsg.MASK_ALWAYS|CMMsg.TYP_ACHIEVE,apc+":"+E.name()+":"+bumpStr+":"+A.getTattoo(),
+					CMMsg.NO_EFFECT, null);
+			msg.setValue(bumpNum);
+			R.send(mob, msg);
+		}
+	}
+
+	protected void sendAchievementEventMsg(final MOB mob, final Event E, final int bumpNum)
+	{
+		final Room R = mob.location();
+		if(R != null)
+		{
+			final String bumpStr=bumpNum>0?("+"+bumpNum):(""+bumpNum);
+			final CMMsg msg=CMClass.getMsg(mob, R, null, CMMsg.NO_EFFECT,null,
+					CMMsg.MASK_ALWAYS|CMMsg.TYP_ACHIEVE,"E:"+E.name()+":"+bumpStr,
+					CMMsg.NO_EFFECT, null);
+			msg.setValue(bumpNum);
+			R.send(mob, msg);
+		}
+	}
+
 	protected void possiblyBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, final int bumpNum, final Object... parms)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
@@ -8186,8 +8214,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				if(T.isAchieved(mob))
 				{
+					sendAchievementMsg(mob,"P",E,A,bumpNum);
 					giveAwards(A,pStats,mob,mob,AchievementLoadFlag.NORMAL);
 				}
+				else
+					sendAchievementMsg(mob,"p",E,A,bumpNum);
 			}
 		}
 	}
@@ -8203,8 +8234,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(T.isAchieved(mob))
 					{
+						sendAchievementMsg(mob,"A",E,A,bumpNum);
 						giveAwards(A,account,account,mob,AchievementLoadFlag.NORMAL);
 					}
+					else
+						sendAchievementMsg(mob,"a",E,A,bumpNum);
 				}
 			}
 		}
@@ -8225,8 +8259,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						if(T.isAchieved(C))
 						{
+							sendAchievementMsg(mob,"C",E,A,bumpNum);
 							giveAwards(A,C,C,mob,AchievementLoadFlag.NORMAL);
 						}
+						else
+							sendAchievementMsg(mob,"c",E,A,bumpNum);
 					}
 				}
 			}
@@ -8241,8 +8278,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						if(T.isAchieved(C))
 						{
+							sendAchievementMsg(mob,"C",E,A,bumpNum);
 							giveAwards(A,C,C,mob,AchievementLoadFlag.NORMAL);
 						}
+						else
+							sendAchievementMsg(mob,"c",E,A,bumpNum);
 					}
 				}
 			}
@@ -8314,6 +8354,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final PlayerStats pStats = mob.playerStats();
 			if(pStats != null)
 			{
+				sendAchievementEventMsg(mob,E,bumpNum);
 				if(eventMap.containsKey(E))
 				{
 					final PlayerAccount account = pStats.getAccount();
@@ -9693,6 +9734,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final Tracker T=pStats.getAchievementTracker(A, mob, mob);
 			if(T.isAchieved(mob)||autoGrant)
 			{
+				this.sendAchievementMsg(mob, "P", A.getEvent(), A, 0);
 				return giveAwards(A, pStats, mob, mob,AchievementLoadFlag.NORMAL);
 			}
 		}
@@ -9708,6 +9750,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Tracker T=account.getAchievementTracker(A, mob, mob);
 				if(T.isAchieved(mob)||autoGrant)
 				{
+					this.sendAchievementMsg(mob, "A", A.getEvent(), A, 0);
 					return giveAwards(A, account, account, mob,AchievementLoadFlag.NORMAL);
 				}
 			}
@@ -9726,6 +9769,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					if(mob == null)
 						mob = CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+					this.sendAchievementMsg(mob, "C", A.getEvent(), A, 0);
 					return giveAwards(A, C, C, mob, AchievementLoadFlag.NORMAL);
 				}
 			}

@@ -62,14 +62,26 @@ public class StockMarket extends StdBehavior
 	}
 
 	/**
-	 * Categories of influence scores
+	 * Direction of influence scores
 	 */
-	public static enum InfluType
+	private static enum InfluDir
 	{
 		POSITIVE,
 		NEGATIVE,
 		VARIABLE
 	}
+
+	/**
+	 * Category of influence scores
+	 */
+	private static enum InfluCat
+	{
+		WEATH,
+		LVL,
+		ACH,
+		SHOP
+	}
+
 	/**
 	 * A single stock definition, which is tracked
 	 * and based on db records.
@@ -81,7 +93,7 @@ public class StockMarket extends StdBehavior
 		public final String area;
 		public volatile double price = 100.0;
 		public volatile double manipulation = 0;
-		public STreeMap<String,int[]> influences = new STreeMap<String,int[]>();
+		public STreeMap<InfluCat,int[]> influences = new STreeMap<InfluCat,int[]>();
 
 		public StockDef(final Area hostA, final String id, final String name)
 		{
@@ -90,11 +102,11 @@ public class StockMarket extends StdBehavior
 			this.area = hostA.Name();
 		}
 
-		public synchronized void addInfluence(final String type, final InfluType which, final int amt)
+		public synchronized void addInfluence(final InfluCat cat, final InfluDir which, final int amt)
 		{
-			if(!influences.containsKey(type.toUpperCase()))
-				influences.put(type.toUpperCase(), new int[InfluType.values().length]);
-			influences.get(type.toUpperCase())[which.ordinal()] += amt;
+			if(!influences.containsKey(cat))
+				influences.put(cat, new int[InfluDir.values().length]);
+			influences.get(cat)[which.ordinal()] += amt;
 		}
 	}
 
@@ -111,12 +123,12 @@ public class StockMarket extends StdBehavior
 			else
 			{
 				xml.append(">");
-				for(final String cat : def.influences.keySet())
+				for(final InfluCat cat : def.influences.keySet())
 				{
 					final int[] vals = def.influences.get(cat);
-					for(final InfluType typ : InfluType.values())
+					for(final InfluDir typ : InfluDir.values())
 						if(vals[typ.ordinal()]!=0)
-							xml.append("<I TYP="+typ.ordinal()+" AMT="+vals[typ.ordinal()]+" />");
+							xml.append("<I CAT=\""+cat.name()+"\" TYP="+typ.ordinal()+" AMT="+vals[typ.ordinal()]+" />");
 				}
 				xml.append("</S>");
 			}
@@ -154,8 +166,9 @@ public class StockMarket extends StdBehavior
 							for(final XMLTag itag : tag.contents())
 								if(itag.tag().equals("I"))
 								{
-									final InfluType typ = InfluType.values()[CMath.s_int(tag.getParmValue("TYP"))];
-									d.addInfluence(areaName, typ, CMath.s_int(tag.getParmValue("AMT")));
+									final InfluDir typ = InfluDir.values()[CMath.s_int(itag.getParmValue("TYP"))];
+									final InfluCat cat = (InfluCat)CMath.s_valueOf(InfluCat.class,itag.getParmValue("CAT"));
+									d.addInfluence(cat, typ, CMath.s_int(tag.getParmValue("AMT")));
 								}
 							stocks.add(d);
 						}
@@ -597,6 +610,7 @@ public class StockMarket extends StdBehavior
 		configure();
 		if((configs.size()==0) || (!hostReady()))
 			return true;
+		//TODO: random civic event from external file
 		if(--weatherDown <=0)
 		{
 			weatherDown=Climate.WEATHER_TICK_DOWN;
@@ -628,7 +642,7 @@ public class StockMarket extends StdBehavior
 					for(final StockDef def : stocks)
 					{
 						if(weatherAreas.contains(def.area))
-							def.addInfluence("W", InfluType.NEGATIVE, 1);
+							def.addInfluence(InfluCat.WEATH, InfluDir.NEGATIVE, 1);
 					}
 				}
 			}
@@ -664,6 +678,57 @@ public class StockMarket extends StdBehavior
 				}
 			}
 			break;
+		case CMMsg.TYP_LEVEL:
+		{
+			final boolean unlevel = msg.value() == msg.source().basePhyStats().level()-1;
+			final Area A = CMLib.map().areaLocation(msg.source());
+			if((A==null)||(!(host instanceof Area)))
+				break;
+			final String areaName = A.Name();
+			for(final MarketConf conf : configs)
+			{
+				final Set<StockDef> stocks = getHostStocks();
+				synchronized(stocks)
+				{
+					for(final StockDef def : stocks)
+					{
+						if(areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+							def.addInfluence(InfluCat.LVL, unlevel?InfluDir.NEGATIVE:InfluDir.POSITIVE, 1);
+					}
+				}
+			}
+			break;
+		}
+		case CMMsg.TYP_ACHIEVE:
+		{
+			final Area A = CMLib.map().areaLocation(msg.source());
+			if((A==null)||(!(host instanceof Area)))
+				break;
+			final String areaName = A.Name();
+			if((msg.target() instanceof Room)
+			&&(msg.targetMessage()!=null)
+			&&(msg.targetMessage().startsWith("E:")))
+			{
+				final boolean births = msg.targetMessage().startsWith("E:"+AchievementLibrary.Event.BIRTHS.name());
+				final boolean questwins = msg.targetMessage().startsWith("E:"+AchievementLibrary.Event.QUESTOR.name());
+				if(births || questwins)
+				{
+					for(final MarketConf conf : configs)
+					{
+						final Set<StockDef> stocks = getHostStocks();
+						synchronized(stocks)
+						{
+							for(final StockDef def : stocks)
+							{
+								if(areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+									def.addInfluence(InfluCat.ACH, questwins?InfluDir.VARIABLE:InfluDir.POSITIVE, 1);
+							}
+						}
+					}
+				}
+			}
+			break;
+		}
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_BUY:
 		{
@@ -678,7 +743,7 @@ public class StockMarket extends StdBehavior
 						if(stocks != null)
 						{
 							for(final StockDef def : stocks)
-								def.addInfluence("S", InfluType.POSITIVE, 1);
+								def.addInfluence(InfluCat.SHOP, InfluDir.POSITIVE, 1);
 						}
 					}
 				}

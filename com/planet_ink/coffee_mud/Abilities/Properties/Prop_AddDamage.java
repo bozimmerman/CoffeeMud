@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -52,11 +53,15 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
 
-	protected int weaponDamageType=Weapon.TYPE_NATURAL;
-	protected int typeOfEffect=CMMsg.TYP_WEAPONATTACK;
-	protected double pctDamage=0.0;
-	protected int bonusDamage=0;
-	protected volatile boolean norecurse=false;
+	protected int				weaponDamageType	= Weapon.TYPE_NATURAL;
+	protected int				typeOfEffect		= CMMsg.TYP_WEAPONATTACK;
+	protected double			pctDamage			= 0.0;
+	protected int				bonusDamage			= 0;
+	protected String			sourceMaskStr		= "";
+	protected CompiledZMask		sourceMask			= null;
+	protected String			targetMaskStr		= "";
+	protected CompiledZMask		targetMask			= null;
+	protected volatile boolean	norecurse			= false;
 
 	@Override
 	public int triggerMask()
@@ -82,6 +87,14 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			str.append("\"").append(Weapon.TYPE_DESCS[weaponDamageType]).append("\" ");
 		if((typeOfEffect >= 0)&&(typeOfEffect!=CMMsg.TYP_WEAPONATTACK))
 			str.append("\"").append(CMMsg.TYPE_DESCS[typeOfEffect]).append("\" ");
+		if((sourceMaskStr.length()>0)||(targetMaskStr.length()>0))
+		{
+			str.append(";");
+			if(sourceMaskStr.length()>0)
+				str.append("SMASK=\"").append(CMStrings.escape(sourceMaskStr)).append("\" ");
+			if(targetMaskStr.length()>0)
+				str.append("TMASK=\"").append(CMStrings.escape(targetMaskStr)).append("\" ");
+		}
 		return str.toString().trim();
 	}
 
@@ -92,8 +105,25 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		bonusDamage=0;
 		weaponDamageType=Weapon.TYPE_NATURAL;
 		typeOfEffect=CMMsg.TYP_WEAPONATTACK;
+		sourceMaskStr = "";
+		sourceMask = null;
+		targetMaskStr = "";
+		targetMask = null;
 		super.setMiscText(newMiscText);
-		final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
+		String upperMiscText = newMiscText.toUpperCase();
+		final int x = upperMiscText.indexOf(';');
+		if(x>0)
+		{
+			final String flagStr = newMiscText.substring(x+1).trim();
+			upperMiscText = upperMiscText.substring(0,x);
+			sourceMaskStr = CMStrings.deEscape(CMParms.getParmStr(flagStr, "SMASK", "")).trim();
+			if(sourceMaskStr.length()>0)
+				sourceMask = CMLib.masking().maskCompile(sourceMaskStr);
+			targetMaskStr = CMStrings.deEscape(CMParms.getParmStr(flagStr, "TMASK", "")).trim();
+			if(targetMaskStr.length()>0)
+				targetMask = CMLib.masking().maskCompile(targetMaskStr);
+		}
+		final List<String> parms=CMParms.parse(upperMiscText);
 		for(String s : parms)
 		{
 			if(s.startsWith("+"))
@@ -194,8 +224,10 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			return;
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.value()>0)
+		&&((sourceMask==null)||(CMLib.masking().maskCheck(sourceMask, mob, true)))
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())
+		&&((targetMask==null)||(CMLib.masking().maskCheck(targetMask, msg.target(), true)))
 		&&(msg.tool()!=this)
 		&&(msg.source().location()!=null))
 		{
