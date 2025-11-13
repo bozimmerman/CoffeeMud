@@ -530,6 +530,10 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
+	/**
+	 * Type flags that stock market builders can use to 'shortcut' various other flags into existence,
+	 * instead of composing them all in parameters.
+	 */
 	private enum ShortcutMarketTypes
 	{
 		STOCK("GROUPBY=SHOPTYPE AREAGROUP=FALSE NAME=\"Stock in @x1 of @x2\" PLAYINFLU=FALSE "),
@@ -546,6 +550,10 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
+	/**
+	 * As a StockMarket behavior covers an area or group of areas, it may include a lot of different types
+	 * of markets composed of different stocks.  Each one of these markets  is a MarketConf (config).
+	 */
 	private final List<MarketConf> configs = Collections.synchronizedList(new LinkedList<MarketConf>());
 
 	@Override
@@ -693,6 +701,7 @@ public class StockMarket extends StdBehavior
 		configure();
 		if((configs.size()==0) || (!hostReady()))
 			return;
+		// msg events can lead to influences which must be remembered when stock tally-time occurs
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LIFE:
