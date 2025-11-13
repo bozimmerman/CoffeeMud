@@ -71,6 +71,29 @@ public class StockMarket extends StdBehavior
 		VARIABLE
 	}
 
+	private static double[][] THE_TABLE = new double[][]
+	{
+		/*-95*/ {  -8,  8,  8},
+		/*-90*/ {  -7, -7,  7},		/*-85*/ {  -7, -7,  7},		/*-80*/ {  -7, -7,  7},		/*-75*/ {  -7, -7,  7},
+		/*-70*/ {  -6,  6,  6},		/*-65*/ {  -6,  6,  6},		/*-60*/ {  -6,  6,  6},		/*-55*/ {  -6,  6,  6},		/*-50*/ {  -6,  6,  6},
+		/*-45*/ {  -5, -5,  5},		/*-40*/ {  -5, -5,  5},		/*-35*/ {  -5, -5,  5},		/*-30*/ {  -5, -5,  5},		/*-25*/ {  -5, -5,  5},
+		/*-20*/ {  -4,  4,  4},		/*-15*/ {  -4,  4,  4},		/*-10*/ {  -4,  4,  4},		/*-05*/ {  -4,  4,  4},		/*-00*/ {  -4,  4,  4},
+		/*  5*/ {  -3, -3,  3},
+		/* 10*/ {  -2,  2,  2},		/* 15*/ {  -2,  2,  2},
+		/* 20*/ {  -1, -1,  1},		/* 25*/ {  -1, -1,  1},
+		/* 30*/ {  -0,  0,-.1},		/* 35*/ {  -0,  0,-.1},		/* 40*/ {  -0,  0,-.1},		/* 45*/ {  -0,  0,-.1},
+		/* 50*/ {  .2, .1,-.2},		/* 55*/ {  .2, .1,-.2},
+		/* 60*/ {   1,  0, -1},		/* 65*/ {   1,  0, -1},		/* 70*/ {   1,  0, -1},		/* 75*/  {   1,  0, -1},
+		/* 80*/ {   2,  1, -2},		/* 85*/ {   2,  1, -2},
+		/* 90*/ {   3, -2, -3},		/* 95*/ {   3, -2, -3},
+		/*100*/ {   5,  3, -5},
+		/*105*/ {   6, -4, -6},		/*110*/ {   6, -4, -6},		/*115*/ {   6, -4, -6},		/*120*/ {   6, -4, -6},		/*125*/ {   6, -4, -6},
+		/*130*/ {   7,  5, -7},		/*135*/ {   7,  5, -7},		/*140*/ {   7,  5, -7},		/*145*/ {   7,  5, -7},		/*150*/ {   7,  5, -7},
+		/*155*/ {   8, -6, -8},		/*160*/ {   8, -6, -8},		/*165*/ {   8, -6, -8},		/*170*/ {   8, -6, -8},		/*175*/ {   8, -6, -8},
+		/*180*/ {   9,  7, -9},		/*185*/ {   9,  7, -9},		/*190*/ {   9,  7, -9},		/*195*/ {   9,  7, -9},
+		/*200*/ {  10, -8,-10},
+	};
+
 	/**
 	 * Category of influence scores
 	 */
@@ -78,8 +101,11 @@ public class StockMarket extends StdBehavior
 	{
 		WEATH,
 		LVL,
-		ACH,
-		SHOP
+		BRTH,
+		SHOP,
+		ROBB,
+		VCTM,
+		QUES
 	}
 
 	/**
@@ -263,6 +289,7 @@ public class StockMarket extends StdBehavior
 		public String			areaMaskStr				= "";
 		public CompiledZMask	areaMask				= null;
 		public Integer			hash					= null;
+		public boolean			playerInfluence			= false;
 
 		public final Set<ShopKeeper>					nonShops		= new SHashSet<ShopKeeper>();
 		public final Map<ShopKeeper, List<StockDef>>	shopStocksMap	= new SHashtable<ShopKeeper, List<StockDef>>();
@@ -298,6 +325,7 @@ public class StockMarket extends StdBehavior
 			nameMask = props.getOrDefault("NAME", ""+defaults.nameMask);
 			allowsClans = CMath.s_bool(props.getOrDefault("ALLOWCLANS", ""+defaults.allowsClans));
 			groupAreas = CMath.s_bool(props.getOrDefault("AREAGROUP", ""+defaults.groupAreas));
+			playerInfluence = CMath.s_bool(props.getOrDefault("PLAYINFLU", ""+defaults.playerInfluence));
 			shopkeeperMaskStr = props.getOrDefault("SHOPMASK", ""+defaults.shopkeeperMaskStr);
 			shopkeeperMask = (shopkeeperMaskStr.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(shopkeeperMaskStr);
 			areaMaskStr = props.getOrDefault("AREAMASK", ""+defaults.areaMaskStr);
@@ -504,12 +532,12 @@ public class StockMarket extends StdBehavior
 
 	private enum ShortcutMarketTypes
 	{
-		STOCK("GROUPBY=SHOPTYPE AREAGROUP=FALSE NAME=\"Stock in @x1 of @x2\" "),
-		REGIONAL("GROUPBY=ALL AREAGROUP=FALSE NAME=\"Regional Stock in @x1 of @x2\" "),
-		BOND("AREAMASK=\"-EFFECTS +Arrest +EFFECTS -Conquerable\"  AREAGROUP=FALSE GROUPBY=ALL NAME=\"@x1 of @x2 Bond\" "),
-		COMMODITY("GROUPBY=SHOPTYPE AREAGROUP=TRUE NAME=\"Commodity: @x1 of @x2\" "),
-		RACIAL("GROUPBY=RACE AREAGROUP=TRUE NAME=\"@x1 of @x2 Racial Stock\" "),
-		PLAYER("ALLOWCLANS=TRUE SHOPMASK=\"-NPC\" GROUPBY=NOTHING NAME=\"Clan Stock: @x1 of @x2\" ")
+		STOCK("GROUPBY=SHOPTYPE AREAGROUP=FALSE NAME=\"Stock in @x1 of @x2\" PLAYINFLU=FALSE "),
+		REGIONAL("GROUPBY=ALL AREAGROUP=FALSE NAME=\"Regional Stock in @x1 of @x2\" PLAYINFLU=TRUE "),
+		BOND("AREAMASK=\"-EFFECTS +Arrest +EFFECTS -Conquerable\"  AREAGROUP=FALSE GROUPBY=ALL NAME=\"@x1 of @x2 Bond\"  PLAYINFLU=TRUE "),
+		COMMODITY("GROUPBY=SHOPTYPE AREAGROUP=TRUE NAME=\"Commodity: @x1 of @x2\" PLAYINFLU=FALSE "),
+		RACIAL("GROUPBY=RACE AREAGROUP=TRUE NAME=\"@x1 of @x2 Racial Stock\" PLAYINFLU=FALSE "),
+		PLAYER("ALLOWCLANS=TRUE SHOPMASK=\"-NPC\" GROUPBY=NOTHING NAME=\"Clan Stock: @x1 of @x2\" PLAYINFLU=FALSE ")
 		;
 		public String parms = "";
 		private ShortcutMarketTypes(final String pms)
@@ -678,6 +706,47 @@ public class StockMarket extends StdBehavior
 				}
 			}
 			break;
+		case CMMsg.TYP_JUSTICE:
+			if((msg.target() instanceof MOB)
+			&&(msg.tool() instanceof Ability)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL)
+			&&((((Ability)msg.tool())).abstractQuality()==Ability.QUALITY_MALICIOUS))
+			{
+				final MOB targM = (MOB)msg.target();
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(targM);
+				if(SK != null)
+				{
+					for(final MarketConf conf : configs)
+					{
+						final List<StockDef> stock = conf.getShopStock(SK, msg.source());
+						if(stock!=null)
+						{
+							for(final StockDef def : stock)
+								def.addInfluence(InfluCat.ROBB, InfluDir.NEGATIVE, 1);
+						}
+					}
+				}
+			}
+			break;
+		case CMMsg.TYP_LEGALWARRANT:
+			if(msg.tool() instanceof MOB)
+			{
+				final MOB targM = (MOB)msg.target();
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(targM);
+				if(SK != null)
+				{
+					for(final MarketConf conf : configs)
+					{
+						final List<StockDef> stock = conf.getShopStock(SK, msg.source());
+						if(stock!=null)
+						{
+							for(final StockDef def : stock)
+								def.addInfluence(InfluCat.VCTM, InfluDir.NEGATIVE, 1);
+						}
+					}
+				}
+			}
+			break;
 		case CMMsg.TYP_LEVEL:
 		{
 			final boolean unlevel = msg.value() == msg.source().basePhyStats().level()-1;
@@ -687,6 +756,8 @@ public class StockMarket extends StdBehavior
 			final String areaName = A.Name();
 			for(final MarketConf conf : configs)
 			{
+				if(!conf.playerInfluence)
+					continue;
 				final Set<StockDef> stocks = getHostStocks();
 				synchronized(stocks)
 				{
@@ -715,13 +786,20 @@ public class StockMarket extends StdBehavior
 				{
 					for(final MarketConf conf : configs)
 					{
+						if(!conf.playerInfluence)
+							continue;
 						final Set<StockDef> stocks = getHostStocks();
 						synchronized(stocks)
 						{
 							for(final StockDef def : stocks)
 							{
 								if(areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
-									def.addInfluence(InfluCat.ACH, questwins?InfluDir.VARIABLE:InfluDir.POSITIVE, 1);
+								{
+									if(questwins)
+										def.addInfluence(InfluCat.QUES, InfluDir.VARIABLE, 1);
+									else
+										def.addInfluence(InfluCat.BRTH, InfluDir.POSITIVE, 1);
+								}
 							}
 						}
 					}
