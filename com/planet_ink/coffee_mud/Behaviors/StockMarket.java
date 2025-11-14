@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -94,6 +95,10 @@ public class StockMarket extends StdBehavior
 		/*200*/ {  10, -8,-10},
 	};
 
+	final static Set<Event> EVENTS_LISTEN = new XHashSet<Event>(new Event[] {
+		Event.BIRTHS, Event.QUESTOR, Event.CONQUEREDAREAS
+	});
+
 	/**
 	 * Category of influence scores
 	 */
@@ -105,7 +110,9 @@ public class StockMarket extends StdBehavior
 		SHOP,
 		ROBB,
 		VCTM,
-		QUES
+		QUES,
+		CONQ,
+		BUILD
 	}
 
 	/**
@@ -789,9 +796,8 @@ public class StockMarket extends StdBehavior
 			&&(msg.targetMessage()!=null)
 			&&(msg.targetMessage().startsWith("E:")))
 			{
-				final boolean births = msg.targetMessage().startsWith("E:"+AchievementLibrary.Event.BIRTHS.name());
-				final boolean questwins = msg.targetMessage().startsWith("E:"+AchievementLibrary.Event.QUESTOR.name());
-				if(births || questwins)
+				final Event ev = (Event)CMath.s_valueOf(Event.class,msg.targetMessage().substring(2));
+				if((ev != null) && EVENTS_LISTEN.contains(ev))
 				{
 					for(final MarketConf conf : configs)
 					{
@@ -804,12 +810,50 @@ public class StockMarket extends StdBehavior
 							{
 								if(areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
 								{
-									if(questwins)
+									switch(ev)
+									{
+									case QUESTOR:
 										def.addInfluence(InfluCat.QUES, InfluDir.VARIABLE, 1);
-									else
+										break;
+									case BIRTHS:
 										def.addInfluence(InfluCat.BRTH, InfluDir.POSITIVE, 1);
+										break;
+									case CONQUEREDAREAS:
+										def.addInfluence(InfluCat.CONQ, InfluDir.NEGATIVE, 1);
+										break;
+									default:
+										break;
+									}
 								}
 							}
+						}
+					}
+				}
+			}
+			break;
+		}
+		case CMMsg.TYP_ITEMGENERATED:
+		{
+			if((msg.tool() instanceof Ability)
+			&&(msg.target() instanceof Room)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL))
+			{
+				final Area A = CMLib.map().areaLocation(msg.source());
+				if((A==null)||(!(host instanceof Area)))
+					break;
+				final String areaName = A.Name();
+				for(final MarketConf conf : configs)
+				{
+					if(!conf.playerInfluence)
+						continue;
+					final Set<StockDef> stocks = getHostStocks();
+					synchronized(stocks)
+					{
+						for(final StockDef def : stocks)
+						{
+							if(areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+								def.addInfluence(InfluCat.BUILD, InfluDir.POSITIVE, 1);
 						}
 					}
 				}
@@ -819,14 +863,15 @@ public class StockMarket extends StdBehavior
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_BUY:
 		{
-			if(msg.source().isMonster())
+			if(msg.target() instanceof MOB)
 			{
-				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.source());
+				final MOB mob=(MOB)msg.target();
+				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(mob);
 				if(SK != null)
 				{
 					for(final MarketConf conf : configs)
 					{
-						final List<StockDef> stocks = conf.getShopStock(SK, msg.source());
+						final List<StockDef> stocks = conf.getShopStock(SK, mob);
 						if(stocks != null)
 						{
 							for(final StockDef def : stocks)
