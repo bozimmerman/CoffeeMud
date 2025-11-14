@@ -1176,7 +1176,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		Map<String,Object> groupDefined = groupDefinitions.get(magicGroup);
 		final Room magicRoom = processRoom(A,direction,piece,magicRoomNode,groupDefined);
 		if(!magicRoom.roomID().endsWith("#0"))
-			Log.errOut("MudPercolator","Magic room id "+magicRoom.roomID()+" is not #0");
+			Log.errOut("MudPercolator","Magic room id "+magicRoom.roomID()+" is not #0, LM="+layoutManager.name());
 		if(produceExternalExits)
 			mostRooms.put(Integer.valueOf(opDirection), magicRoomNode);
 		for(final Map<String,Object> otherDefineds : groupDefinitions.values())
