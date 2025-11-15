@@ -1283,7 +1283,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						&&(buf.substring(loop+1,loop+3).equals("//"))
 						&&(loop>6)
 						&&(buf.substring(loop-4,loop).equals("http")||buf.substring(loop-5,loop).equals("https"))
-						&&S.isInlineAllowed(InProto.MXP,"<A>",0))
+						&&(S!=null) && S.isInlineAllowed(InProto.MXP,"<A>",0))
 							anchorIndex=(buf.charAt(loop-1)=='s')?loop-5:loop-4;
 					}
 					break;
@@ -1444,7 +1444,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							if(P==null)
 							{
 								if(mxpEnabled
-								&&(S.isInlineAllowed(InProto.MXP,buf.substring(loop,loop+1),0)))
+								&&(S!=null) && (S.isInlineAllowed(InProto.MXP,buf.substring(loop,loop+1),0)))
 								{
 									buf.delete(loop,loop+1);
 									buf.insert(loop,"&lt;".toCharArray());
