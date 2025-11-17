@@ -74,7 +74,7 @@ public class TaxCollector extends StdBehavior
 		super.setParms(newParms);
 		demanded=null;
 		paid=null;
-		waitTime=CMParms.getParmInt(newParms,"WAIT",1000*60*2);
+		waitTime=CMParms.getParmInt(newParms,"WAIT",1000*60*5);
 		graceTime=CMParms.getParmInt(newParms,"GRACE",1000*60*60);
 	}
 
