@@ -1469,6 +1469,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
 						throw new CMException("Unable to build room layout of size "+size);
 					defined.put("ROOM_SIZE",size);
+					final int magicDir = Directions.getOpDirectionCode(directions);
+					rDefined.put("ROOMTAG_NODEGATEEXIT", CMLib.directions().getDirectionName(magicDir));
+					rDefined.put("ROOMTAG_NODEGATEEXIT"+magicDir, CMLib.directions().getDirectionName(magicDir));
 					R=layOutRooms(A, layoutManager, CMath.s_int(size), directions, valPiece, rDefined);
 				}
 				else
