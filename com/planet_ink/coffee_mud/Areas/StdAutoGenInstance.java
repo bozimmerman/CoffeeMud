@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
    Copyright 2011-2025 Bo Zimmerman
@@ -56,7 +57,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	protected CList<AreaInstanceChild>	instanceChildren= new SVector<AreaInstanceChild>();
-	protected volatile int				instanceCounter	= 0;
+	protected AtomicInteger				instanceCounter	= new AtomicInteger(0);
 	protected long						childCheckDown	= CMProps.getMillisPerMudHour() / CMProps.getTickMillis();
 	protected WeakReference<Area>		parentArea		= null;
 	protected String					filePath		= "randareas/example.xml";
@@ -504,7 +505,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				newA.properRoomIDSet = null;
 				newA.metroRoomIDSet = null;
 				newA.blurbFlags=new STreeMap<String,String>();
-				newA.setName((++instanceCounter)+"_"+Name());
+				newA.setName((instanceCounter.incrementAndGet())+"_"+Name());
 				newA.flags |= Area.FLAG_INSTANCE_CHILD;
 				newA.flags = newA.flags & ~Area.FLAG_INSTANCE_PARENT;
 				final Set<MOB> myGroup=msg.source().getGroupMembers(new HashSet<MOB>());
