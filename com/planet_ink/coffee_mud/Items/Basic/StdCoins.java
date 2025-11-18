@@ -58,6 +58,7 @@ public class StdCoins extends StdItem implements Coins
 		myWornCode=0;
 		basePhyStats.setWeight(0);
 		recoverPhyStats();
+		_name = "some coins";
 	}
 
 	@Override

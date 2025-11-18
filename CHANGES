@@ -2,6 +2,7 @@
  * Database Changed! CMADAT table added 
  1. New Scriptable function: ISGROUP
  2. Prop_AddDamage supports source and target masks now 
+ 3. New command: PAY
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

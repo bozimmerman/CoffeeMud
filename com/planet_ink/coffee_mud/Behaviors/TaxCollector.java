@@ -251,12 +251,14 @@ public class TaxCollector extends StdBehavior
 							final Area A2=CMLib.law().getLegalObject(mob.location().getArea());
 							B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
 						}
-						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
+						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,
+								L("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
 					}
 					else
 					{
 						final String amountDesc = CMLib.beanCounter().abbreviatedPrice(mob, totalOwed);
-						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good, but you still owe @x1.' to <T-NAMESELF>.",amountDesc)));
+						msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,
+								L("<S-NAME> says 'Very good, but you still owe @x1.' to <T-NAMESELF>.",amountDesc)));
 					}
 				}
 			}
@@ -379,11 +381,13 @@ public class TaxCollector extends StdBehavior
 					if(B!=null)
 					{
 						B.accuse(CMLib.law().getLegalObject(R),M,mob,new String[]{"TAXEVASION"});
-						CMLib.commands().postSay(mob,M,L("Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!"),false,false);
+						CMLib.commands().postSay(mob,M,
+								L("Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!"),false,false);
 					}
 					else
 					{
-						CMLib.commands().postSay(mob,M,L("You know what they say about death and taxes, so if you won't pay ... DIE!!!!"),false,false);
+						CMLib.commands().postSay(mob,M,
+								L("You know what they say about death and taxes, so if you won't pay ... DIE!!!!"),false,false);
 						CMLib.combat().postAttack(mob,M,mob.fetchWieldedItem());
 						demanded.removeElementAt(demandDex);
 					}
@@ -396,8 +400,10 @@ public class TaxCollector extends StdBehavior
 					final double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 					if(owe[OWE_CITIZENTAX]>1.0)
 					{
+						final TimeClock C = R.getArea().getTimeObj();
+						final String periodStr = C.deriveEllapsedTimeString(this.graceTime);
 						final String moneyStr = CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)));
-						say.append(L("You owe @x1 in local taxes. ",moneyStr));
+						say.append(L("You owe @x1 in local taxes for this period (@x2). ",moneyStr,periodStr));
 					}
 					if(owe[OWE_BACKTAXES]>1.0)
 					{
@@ -411,7 +417,7 @@ public class TaxCollector extends StdBehavior
 					}
 					if(say.length()>0)
 					{
-						CMLib.commands().postSay(mob,M,L("@x1.  You must GIVE this amount to me immediately or face the consequences.",say.toString()),false,false);
+						CMLib.commands().postSay(mob,M,say.toString(),false,false);
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
@@ -420,6 +426,21 @@ public class TaxCollector extends StdBehavior
 							V.add(""+Math.round(owe[OWE_TOTAL]));
 							V.add(mob.name());
 							M.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
+						}
+						else
+						{
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									if(R.isInhabitant(mob) && R.isInhabitant(M))
+									{
+										CMLib.commands().postSay(mob,M,
+											L("You must GIVE this amount to me immediately or face the consequences."),false,false);
+									}
+								}
+							}, CMProps.getTickMillis());
 						}
 					}
 				}

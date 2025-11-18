@@ -1,0 +1,169 @@
+package com.planet_ink.coffee_mud.Commands;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.*;
+
+/*
+   Copyright 2025-2025 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+public class Pay extends StdCommand
+{
+	public Pay()
+	{
+	}
+
+	private final String[]	access	= I(new String[] { "PAY"});
+
+	@Override
+	public String[] getAccessWords()
+	{
+		return access;
+	}
+
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
+		{
+			MOB.class,Coins.class,Boolean.class
+		}
+	};
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
+		throws java.io.IOException
+	{
+		final Vector<String> origCmds=new XVector<String>(commands);
+		if(commands.size()<2)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("Pay whom how much?"));
+			return false;
+		}
+		commands.remove(0);
+		if(commands.size()<2)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("Pay whom how much?"));
+			return false;
+		}
+
+		final String whom=commands.remove(0);
+		final MOB recipient=getVisibleRoomTarget(mob,whom);
+		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
+			return false;
+		}
+		final List<Item> itemsV = new ArrayList<Item>();
+		String thingToGive = CMParms.combine(commands);
+		if((commands.size()==1)&&(CMath.isNumber(commands.get(0).trim())))
+			thingToGive = CMLib.beanCounter().abbreviatedPrice(recipient, CMath.s_double(commands.get(0).trim()));
+		if (thingToGive.toUpperCase().startsWith("ALL."))
+			thingToGive = "ALL " + thingToGive.substring(4);
+		if (thingToGive.toUpperCase().endsWith(".ALL"))
+			thingToGive = "ALL " + thingToGive.substring(0, thingToGive.length() - 4);
+		Item giveThis=CMLib.english().parseBestPossibleGold(mob,null,thingToGive);
+		if(giveThis!=null)
+		{
+			if((CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)||CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
+			&&(CMLib.law().getPropertyRecord(giveThis)!=null)
+			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ORDER)))
+			{
+				mob.tell(L("Yea, you don't want to do that."));
+				return false;
+			}
+			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToGive))
+				return false;
+			if(CMLib.flags().canBeSeenBy(giveThis,mob))
+				itemsV.add(giveThis);
+		}
+		else
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can't pay someone '@x1'?",thingToGive));
+			return false;
+		}
+
+		if(itemsV.size()==0)
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+		else
+		for(int i=0;i<itemsV.size();i++)
+		{
+			giveThis=itemsV.get(i);
+			pay(mob, recipient, giveThis, false);
+		}
+		return false;
+	}
+
+	protected boolean pay(final MOB mob, final MOB recipient, final Item giveThis, final boolean quiet)
+	{
+		final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,quiet?"":L("<S-NAME> pay(s) <T-NAMESELF> <O-NAME>."));
+		boolean success=false;
+		if(mob.location().okMessage(mob,newMsg))
+		{
+			mob.location().send(mob,newMsg);
+			success=true;
+		}
+		if(giveThis instanceof Coins)
+			((Coins)giveThis).putCoinsBack();
+		if(giveThis instanceof RawMaterial)
+			((RawMaterial)giveThis).rebundle();
+		return success;
+	}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		if(args[0] instanceof MOB)
+		{
+			final MOB targetMOB=(MOB)args[0];
+			final Coins C=(Coins)args[1];
+			final boolean quiet = ((Boolean)args[2]).booleanValue();
+			pay(mob,targetMOB,C,quiet);
+		}
+		return Boolean.FALSE;
+	}
+}
