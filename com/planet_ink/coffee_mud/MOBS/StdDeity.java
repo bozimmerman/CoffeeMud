@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -731,7 +732,8 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					{
 						xpwrath=-CMLib.leveler().postExperience(msg.source(),"MISC:"+name(),null,null,-xpwrath, false);
-						msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
+						if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+							msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),CMLib.leveler().getXPAmountTerm(xpwrath)));
 					}
 					final Ability doubtA=CMClass.getAbility("Prayer_ReligiousDoubt");
 					if((doubtA!=null)&&(msg.source().fetchEffect(doubtA.ID())==null))

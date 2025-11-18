@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary.ModXP;
@@ -562,7 +563,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				if((sireShare=-postExperience(sire,"LIEGE:"+mob.name(),null,"",-sireShare, true))>0)
-					sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
+				{
+					if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+						sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",CMLib.leveler().getXPAmountTerm(sireShare),mob.Name()));
+				}
 				return amount - sireShare;
 			}
 		}
@@ -609,8 +613,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return amount;
 	}
 
-	protected int gainLeigeExperience(final MOB mob, final int amount, final boolean quiet)
+	protected int gainLeigeExperience(final MOB mob, final int amount, boolean quiet)
 	{
+		quiet = quiet || CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXPGAINS);
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
 			final MOB sire=CMLib.players().getLoadPlayer(mob.getLiegeID());
@@ -865,10 +870,43 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return newMods.toArray(new ModXP[newMods.size()]);
 	}
 
-	protected void gainExperience(final MOB mob, final String sourceId, final MOB victim, String homageMessage, int amount, final boolean quiet)
+	@Override
+	public String getXPAmountTerm(int amount)
+	{
+		amount = Math.abs(amount);
+		if(CMProps.Int.Prowesses.EXP_WORDS.is(CMProps.getIntVar(CMProps.Int.COMBATPROWESS)))
+		{
+			@SuppressWarnings("unchecked")
+			PairList<Integer,String> xpChart=(PairList<Integer,String>)Resources.getResource("LISTS_EXPERIENCE_AMOUNTS");
+			if(xpChart == null)
+			{
+				xpChart = new PairVector<Integer,String>();
+				for (final Pair<String,String> element : CMProps.getListFileStringPairsList(CMProps.ListFile.EXPERIENCE_AMOUNTS))
+					xpChart.add(Integer.valueOf(CMath.s_int(element.first)), element.second);
+				xpChart.sort(new Comparator<Pair<Integer,String>>()
+				{
+					@Override
+					public int compare(final Pair<Integer, String> o1, final Pair<Integer, String> o2)
+					{
+						return o1.first.compareTo(o2.first);
+					}
+				});
+				Resources.submitResource("LISTS_EXPERIENCE_AMOUNTS", xpChart);
+			}
+			for(final Pair<Integer,String> p : xpChart)
+			{
+				if(amount < p.first.intValue())
+					return p.second;
+			}
+		}
+		return ""+amount;
+	}
+
+	protected void gainExperience(final MOB mob, final String sourceId, final MOB victim, String homageMessage, int amount, boolean quiet)
 	{
 		if(mob==null)
 			return;
+		quiet = quiet || CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXPGAINS);
 		if((Log.combatChannelOn())
 		&&((mob.location()!=null)
 			||((victim!=null)&&(victim.location()!=null))))
@@ -927,13 +965,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					if(!quiet)
 					{
 						if(amount>1)
-							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience points@x2.^N",""+amount,homageMessage));
+							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience points@x2.^N",getXPAmountTerm(amount),homageMessage));
 						else
 						if(amount>0)
-							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
+							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",getXPAmountTerm(amount),homageMessage));
 						if(((mob.getExperience()+pStats.getDeferredXP() + pStats.getRolePlayXP())>=mob.getExpNextLevel())
 						&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-							mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
+							mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
 					}
 				}
 				//else
@@ -952,19 +990,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if(!quiet)
 			{
 				if(amount>1)
-					mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",getXPAmountTerm(amount),homageMessage));
 				else
 				if(amount>0)
-					mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",getXPAmountTerm(amount),homageMessage));
 			}
 		}
 		checkedLevelGains(mob);
 	}
 
-	protected void gainRPExperience(final MOB mob, final String sourceId, final MOB target, final String homageMessage, int amount, final boolean quiet)
+	protected void gainRPExperience(final MOB mob, final String sourceId, final MOB target, final String homageMessage, int amount, boolean quiet)
 	{
 		if(mob==null)
 			return;
+		quiet = quiet || CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXPGAINS);
 
 		amount=modGlobalExperience(mob,target,sourceId,amount);
 		//amount=gainLeigeExperience(mob, amount, quiet);
@@ -1035,8 +1074,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public int postExperience(final MOB mob,final String sourceID,final MOB victim,final String homage,final int amount, final boolean quiet)
+	public int postExperience(final MOB mob,final String sourceID,final MOB victim,final String homage,final int amount, boolean quiet)
 	{
+		quiet = quiet || CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXPGAINS);
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||mob.charStats().getCurrentClass().expless()
@@ -1066,8 +1106,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postRPExperience(final MOB mob, final String sourceID, final MOB target, final String homage, final int amount, final boolean quiet)
+	public boolean postRPExperience(final MOB mob, final String sourceID, final MOB target, final String homage, final int amount, boolean quiet)
 	{
+		quiet = quiet || CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXPGAINS);
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||mob.charStats().getCurrentClass().expless()

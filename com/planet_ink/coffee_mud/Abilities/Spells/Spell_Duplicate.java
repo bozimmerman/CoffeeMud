@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -137,7 +138,8 @@ public class Spell_Duplicate extends Spell
 
 		expLoss=getXPCOSTAdjustment(mob,-expLoss);
 		expLoss=CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,expLoss, false);
-		mob.tell(L("You lose @x1 experience points.",""+(-expLoss)));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("You lose @x1 experience points.",CMLib.leveler().getXPAmountTerm(-expLoss)));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
@@ -156,10 +158,10 @@ public class Spell_Duplicate extends Spell
 				{
 					newTarget.recoverPhyStats();
 					if(target.owner() instanceof MOB)
-						((MOB)target.owner()).addItem(newTarget);
+						target.owner().addItem(newTarget);
 					else
 					if(target.owner() instanceof Room)
-						((Room)target.owner()).addItem(newTarget,ItemPossessor.Expire.Player_Drop);
+						target.owner().addItem(newTarget,ItemPossessor.Expire.Player_Drop);
 					else
 						mob.addItem(newTarget);
 					if(newTarget instanceof Coins)

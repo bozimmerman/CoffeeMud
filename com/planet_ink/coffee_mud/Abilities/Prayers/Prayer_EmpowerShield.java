@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -124,7 +125,8 @@ public class Prayer_EmpowerShield extends Prayer
 
 		int experienceToLose=getXPCOSTAdjustment(mob,50);
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("The effort causes you to lose @x1 experience.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

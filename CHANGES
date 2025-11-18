@@ -3,6 +3,8 @@
  1. New Scriptable function: ISGROUP
  2. Prop_AddDamage supports source and target masks now 
  3. New command: PAY
+ 4. New disable flag: SHOWXPGAINS
+ 5. New prowess option: EXP-WORDS (for showing rp xp)
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

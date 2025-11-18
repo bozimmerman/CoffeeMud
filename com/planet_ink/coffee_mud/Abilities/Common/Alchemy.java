@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
@@ -17,6 +18,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef;
+import com.planet_ink.coffee_web.util.CWConfig.DisableFlag;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -561,7 +563,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			playSound=null;
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				commonTelL(mob,"You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			if(powder)

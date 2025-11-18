@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -69,11 +70,14 @@ public class DeferCmd extends StdCommand
 			else
 				homageMessage = L(", ^H@x1^N^! points came from roleplaying",""+rp);
 
-			if(amount>1)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
-			else
-			if(amount>0)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			{
+				if(amount>1)
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",CMLib.leveler().getXPAmountTerm(amount),homageMessage));
+				else
+				if(amount>0)
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",CMLib.leveler().getXPAmountTerm(amount),homageMessage));
+			}
 
 			if((mob.getExperience()>=mob.getExpNextLevel())
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))

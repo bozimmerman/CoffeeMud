@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -175,7 +176,8 @@ public class Chant_EndowJewelry extends Chant
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 			setMiscText(endowChantA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
@@ -211,7 +213,8 @@ public class Chant_EndowJewelry extends Chant
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 			beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, looking very frustrated."));
 		}
 		// return whether it worked

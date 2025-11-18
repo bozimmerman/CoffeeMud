@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -125,8 +126,8 @@ public class Thief_PromoteUrchin extends ThiefSkill
 
 		final int experienceToLose=getXPCOSTAdjustment(mob,100);
 		final int amt = -CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-		if(amt > 0)
-			mob.tell(L("You lose @x1 xp in the attempt.",""+amt));
+		if((amt > 0) && (!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS)))
+			mob.tell(L("You lose @x1 xp in the attempt.",CMLib.leveler().getXPAmountTerm(amt)));
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{

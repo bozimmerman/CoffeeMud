@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -324,7 +325,11 @@ public class Sailor extends StdCharClass
 								xp=50;
 							if((xp>0)
 							&&((xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true))>0))
-								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							{
+								if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+									msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,
+											CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),CMLib.leveler().getXPAmountTerm(xp)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							}
 						}
 						else
 						if((pctBefore<90)&&(pctAfter>=90))
@@ -336,7 +341,11 @@ public class Sailor extends StdCharClass
 								xp=125;
 							if((xp>0)
 							&&((xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true))>0))
-								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							{
+								if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+									msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,
+											CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),CMLib.leveler().getXPAmountTerm(xp)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							}
 						}
 					}
 				}

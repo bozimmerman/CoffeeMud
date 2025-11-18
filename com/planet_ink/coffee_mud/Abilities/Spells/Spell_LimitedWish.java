@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -66,7 +67,10 @@ public class Spell_LimitedWish extends Spell_Wish
 		{
 			int baseLoss=getXPCOSTAdjustment(mob,10);
 			baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-			mob.tell(L("Your attempted wish has cost you @x1 experience points, but is beyond the power of limited wish.",""+baseLoss));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("Your attempted wish has cost you @x1 experience points, but is beyond the power of limited wish.",CMLib.leveler().getXPAmountTerm(baseLoss)));
+			else
+				mob.tell(L("Your attempted wish is beyond the power of limited wish."));
 			return false;
 		}
 		return true;

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -208,7 +209,11 @@ public class Trapper extends Thief
 				int xp=125;
 				if((xp>0)
 				&&((xp=CMLib.leveler().postExperience(myChar,"CLASS:"+ID(),null,null,xp, true))>0))
-					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,L("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				{
+					if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+						msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,
+								L("You gain @x1 experience for selling @x2.",CMLib.leveler().getXPAmountTerm(xp),((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				}
 			}
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(CMLib.flags().isACityRoom(myChar.location())))

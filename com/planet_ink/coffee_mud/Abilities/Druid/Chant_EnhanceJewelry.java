@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -91,14 +92,14 @@ public class Chant_EnhanceJewelry extends Chant
 			mob.tell(mob,target,null,L("You can't enhance <T-NAME> with this magic!"));
 			return false;
 		}
-		final long goodCheck = ((Armor)target).rawProperLocationBitmap()
+		final long goodCheck = target.rawProperLocationBitmap()
 				& ( Wearable.WORN_EARS | Wearable.WORN_RIGHT_FINGER | Wearable.WORN_LEFT_FINGER | Wearable.WORN_NECK | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST);
 		if(goodCheck == 0)
 		{
 			mob.tell(L("@x1 can not be enhanced with this magic, as it is not worn on the ears, fingers, neck, or wrist."));
 			return false;
 		}
-		final long badCheck = ((Armor)target).rawProperLocationBitmap()
+		final long badCheck = target.rawProperLocationBitmap()
 				& ( Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_FEET | Wearable.WORN_ABOUT_BODY | Wearable.WORN_HANDS | Wearable.WORN_HEAD);
 		if(badCheck != 0)
 		{
@@ -117,7 +118,8 @@ public class Chant_EnhanceJewelry extends Chant
 
 		int experienceToLose=getXPCOSTAdjustment(mob,50);
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("The effort causes you to lose @x1 experience.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

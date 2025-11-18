@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -178,7 +179,8 @@ public class Prayer_EnchantRelic extends Prayer
 
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-		mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

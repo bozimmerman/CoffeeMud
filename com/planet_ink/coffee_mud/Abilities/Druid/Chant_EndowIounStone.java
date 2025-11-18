@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -309,7 +310,8 @@ public class Chant_EndowIounStone extends Chant implements ItemCraftor
 			R.moveItemTo(targetI);
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 			return getCraftingSkill().invoke(mob, commands, givenTarget, auto, asLevel);
 		}
 		finally

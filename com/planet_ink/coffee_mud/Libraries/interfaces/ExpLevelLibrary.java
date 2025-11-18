@@ -342,6 +342,17 @@ public interface ExpLevelLibrary extends CMLibrary
 	public ModXP[] parseXPMods(final String modStr);
 
 	/**
+	 * When displaying an amount of experience points gained
+	 * or lost, before the word 'experience points', this
+	 * method is called to return the number as a string,
+	 * or an RP term.
+	 *
+	 * @param amount the amount of xp gained or lost
+	 * @return the string of the amount, or an adjective
+	 */
+	public String getXPAmountTerm(int amount);
+
+	/**
 	 * Modifies the given amount of experience and returns
 	 * the modification, according to the global rules
 	 * defined by XPMOD in the ini file.

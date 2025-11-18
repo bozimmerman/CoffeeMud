@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
@@ -532,7 +533,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				commonTelL(mob,"You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose));
 			oldName=buildingI.name();
 			buildingI.destroy();
 			buildingI=buildItem(theSpell, theLevel);

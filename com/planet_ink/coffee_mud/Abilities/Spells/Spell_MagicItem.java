@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -162,7 +163,8 @@ public class Spell_MagicItem extends Spell
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 			setMiscText(enchantSpellA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))
@@ -214,7 +216,8 @@ public class Spell_MagicItem extends Spell
 		{
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-			mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
 		}
 		// return whether it worked

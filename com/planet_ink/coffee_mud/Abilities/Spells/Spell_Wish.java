@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -221,7 +222,8 @@ public class Spell_Wish extends Spell
 		expLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-expLoss, false);
 		if(conLoss)
 		{
-			mob.tell(L("Your wish drains you of @x1 experience points and a point of constitution.",""+(expLoss)));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("Your wish drains you of @x1 experience points and a point of constitution.",CMLib.leveler().getXPAmountTerm(expLoss)));
 			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)-1);
 			mob.baseCharStats().setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 			mob.recoverCharStats();
@@ -229,7 +231,8 @@ public class Spell_Wish extends Spell
 				CMLib.combat().postDeath(mob,mob,null);
 		}
 		else
-			mob.tell(L("Your wish drains @x1 experience points.",""+(expLoss)));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("Your wish drains @x1 experience points.",CMLib.leveler().getXPAmountTerm(expLoss)));
 	}
 
 	public void age(final MOB mob)
@@ -1158,9 +1161,11 @@ public class Spell_Wish extends Spell
 					amount=mob.getExperience()/4;
 				int loss=amount*4;
 				loss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-loss, false);
-				mob.tell(L("Your wish has drained you of @x1 experience points.",""+loss));
+				if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+					mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(loss)));
 				CMLib.leveler().postExperience((MOB)target,"ABILITY:"+ID(),null,null,amount, false);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 gains experience!",target.name()));
+				if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 gains experience!",target.name()));
 				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
@@ -1522,7 +1527,8 @@ public class Spell_Wish extends Spell
 					}
 					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 					baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+					if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+						mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(baseLoss)));
 					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
@@ -1582,7 +1588,10 @@ public class Spell_Wish extends Spell
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-							mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",""+baseLoss));
+							if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+								mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",CMLib.leveler().getXPAmountTerm(baseLoss)));
+							else
+								mob.tell(L("Your wish is beyond your wishing ability."));
 							return false;
 						}
 						if(tm.fetchAbility(A.ID())!=null)
@@ -1590,7 +1599,8 @@ public class Spell_Wish extends Spell
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							A=tm.fetchAbility(A.ID());
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-							mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+							if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+								mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(baseLoss)));
 						}
 						else
 						{
@@ -1708,7 +1718,8 @@ public class Spell_Wish extends Spell
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-							mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+							if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+								mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(baseLoss)));
 							A=tm.fetchEffect(A.ID());
 							if(A!=null)
 							{
@@ -1751,14 +1762,18 @@ public class Spell_Wish extends Spell
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 							baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-							mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",""+baseLoss));
+							if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+								mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",CMLib.leveler().getXPAmountTerm(baseLoss)));
+							else
+								mob.tell(L("Your wish is beyond your wishing ability."));
 							return false;
 						}
 						if(tm.fetchEffect(A.ID())==null)
 							A.invoke(mob, target, true, 1);
 						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 						baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-						mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+						if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+							mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(baseLoss)));
 						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
@@ -1795,14 +1810,18 @@ public class Spell_Wish extends Spell
 					{
 						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 						baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-						mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",""+baseLoss));
+						if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+							mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",CMLib.leveler().getXPAmountTerm(baseLoss)));
+						else
+							mob.tell(L("Your wish is beyond your wishing ability."));
 						return false;
 					}
 					if(tm.fetchEffect(A.ID())==null)
 						A.invoke(mob, target, true, 1);
 					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 					baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
-					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+					if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+						mob.tell(L("Your wish has drained you of @x1 experience points.",CMLib.leveler().getXPAmountTerm(baseLoss)));
 					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
@@ -2165,7 +2184,10 @@ public class Spell_Wish extends Spell
 			baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 			baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
 			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+CMParms.combine(commands,0)+"'");
-			mob.tell(L("Your attempted wish has cost you @x1 experience points, but it did not come true.  You might try rewording your wish next time.",""+baseLoss));
+			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+				mob.tell(L("Your attempted wish has cost you @x1 experience points, but it did not come true.  You might try rewording your wish next time.",CMLib.leveler().getXPAmountTerm(baseLoss)));
+			else
+				mob.tell(L("Your attempted wish has not come true.  You might try rewording your wish next time."));
 			return false;
 		}
 		return success;

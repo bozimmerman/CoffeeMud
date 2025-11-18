@@ -137,7 +137,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							@Override
 							public String getDescription()
 							{
-								return L("@x1 Experience Points",""+getAmount());
+								return L("@x1 Experience Points",CMLib.leveler().getXPAmountTerm(getAmount()));
 							}
 						});
 					}

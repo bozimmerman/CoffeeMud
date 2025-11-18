@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -306,8 +307,12 @@ public class Scholar extends StdCharClass
 				{
 					int xpGain=50;
 					final CharClass C = msg.source().charStats().getCurrentClass();
-					if((xpGain=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xpGain, true))>0)
-						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					if(((xpGain=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xpGain, true))>0)
+					&&(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS)))
+					{
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,
+								CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",CMLib.leveler().getXPAmountTerm(xpGain)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -153,7 +154,8 @@ public class Skill_SongWrite extends BardSkill
 		int experienceToLose=20*CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-		mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
+		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+			mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

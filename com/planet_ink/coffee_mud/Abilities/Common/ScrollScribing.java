@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -492,7 +493,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 
 			if(buildingI!=null)
 			{
-				if(((Scroll)buildingI).usesRemaining()>0)
+				if(buildingI.usesRemaining()>0)
 				{
 					final int theSpellType = theSpell.classificationCode()&Ability.ALL_ACODES;
 					for(final Ability spell: ((Scroll)buildingI).getSpells())
@@ -552,7 +553,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			{
 				experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 				experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
-				commonTelL(mob,"You lose @x1 experience points for the effort.",""+experienceToLose);
+				if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+					commonTelL(mob,"You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose));
 			}
 
 			final int duration=calculateDuration(mob,theSpell);

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -486,7 +487,12 @@ public class Gaoler extends StdCharClass
 						if(done[1]<((90+xLevel)+((50+xLevel)*mob.phyStats().level())))
 						{
 							xp=CMLib.leveler().postExperience(mob,"CLASS:"+ID(),null,null,xp, true);
-							msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
+							{
+								msg2.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,
+										L("The sweet screams of your victim earns you @x1 experience points.",CMLib.leveler().getXPAmountTerm(xp)),
+										CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							}
 							done[1]+=xp;
 						}
 						else
