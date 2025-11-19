@@ -747,7 +747,14 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 									bodyVec.addElement(O);
 									whichInjury=bodyVec.size()-1;
 								}
-								O=bodyVec.get(whichInjury);
+								try
+								{
+									O=bodyVec.get(whichInjury);
+								}
+								catch(final ArrayIndexOutOfBoundsException e)
+								{
+									return super.okMessage(host, msg);
+								}
 								O.second=Integer.valueOf(O.second.intValue()+LimbPct);
 								if(O.second.intValue()>100)
 									O.second=Integer.valueOf(100);
