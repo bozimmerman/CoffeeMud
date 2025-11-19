@@ -2782,6 +2782,8 @@ public class CMMap extends StdLibrary implements WorldMap
 								if((!ticked)
 								&&(!isDead)
 								&&(!mob.isMonster())
+								&&(mob.session()!=null)
+								&&(!mob.session().isStopped())
 								&&(CMLib.flags().isInTheGame(mob, true)))
 								{
 									mob.bringToLife(mob.location(), true);
