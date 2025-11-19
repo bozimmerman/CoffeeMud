@@ -39,7 +39,7 @@ import java.util.Set;
  * for sale, or implemented as Items representing the sellable title.
  * @author Bo Zimmerman
  */
-public interface LandTitle extends PrivateProperty
+public interface LandTitle extends PrivateProperty, Environmental
 {
 	/**
 	 * Get the roomID or the Area name of the property for sale

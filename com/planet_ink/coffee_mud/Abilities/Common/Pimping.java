@@ -139,8 +139,11 @@ public class Pimping extends CommonSkill
 					{
 						final long expires = System.currentTimeMillis()
 								+ ((CMProps.getTicksPerMudHour()-super.getXLEVELLevel(mob)) * CMProps.getTickMillis());
-						P.setStat("PIMP", johnM.Name());
-						P.setStat("PIMPEXPIRE", ""+expires);
+						if(P instanceof Modifiable)
+						{
+							((Modifiable)P).setStat("PIMP", johnM.Name());
+							((Modifiable)P).setStat("PIMPEXPIRE", ""+expires);
+						}
 						if(slaveM.amFollowing()!=null)
 							CMLib.commands().postFollow(slaveM, null, true);
 						CMLib.commands().postFollow(slaveM, johnM , false);

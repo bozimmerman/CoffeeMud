@@ -38,7 +38,7 @@ import java.util.List;
  * for sale, or implemented as Items representing the sellable title.
  * @author Bo Zimmerman
  */
-public interface PrivateProperty extends Environmental
+public interface PrivateProperty extends CMObject
 {
 	/**
 	 * The value of the property in base currency values
