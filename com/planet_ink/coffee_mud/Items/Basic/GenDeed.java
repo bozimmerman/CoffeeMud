@@ -38,7 +38,7 @@ public class GenDeed extends StdItem implements PrivateProperty
 	@Override
 	public String ID()
 	{
-		return "StdDeed";
+		return "GenDeed";
 	}
 
 	@Override
