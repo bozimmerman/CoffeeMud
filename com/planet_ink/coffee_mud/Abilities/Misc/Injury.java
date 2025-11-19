@@ -753,6 +753,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 								}
 								catch(final ArrayIndexOutOfBoundsException e)
 								{
+									// probably due to race condition, so just pretend this didn't happen.
 									return super.okMessage(host, msg);
 								}
 								O.second=Integer.valueOf(O.second.intValue()+LimbPct);
