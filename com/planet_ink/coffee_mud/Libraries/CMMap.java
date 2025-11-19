@@ -2757,6 +2757,7 @@ public class CMMap extends StdLibrary implements WorldMap
 									else
 										Log.errOut(serviceClient.getName(),"Follower "+mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob is being ignored."));
+									R.delInhabitant(mob);//keeps it from happening again.
 								}
 								else
 								if(startR==null)
@@ -2764,6 +2765,7 @@ public class CMMap extends StdLibrary implements WorldMap
 									Log.errOut(serviceClient.getName(),mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
 									+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
 									mob.destroy();
+									R.delInhabitant(mob);//keeps it from happening again.
 								}
 								else
 								{
@@ -2775,10 +2777,21 @@ public class CMMap extends StdLibrary implements WorldMap
 							}
 							else
 							{
+								R.delInhabitant(mob);//keeps it from happening again.
+								String resolution="This mob has been put aside";
+								if((!ticked)
+								&&(!isDead)
+								&&(!mob.isMonster())
+								&&(CMLib.flags().isInTheGame(mob, true)))
+								{
+									mob.bringToLife(mob.location(), true);
+									resolution="This mob has been re-lifed.";
+								}
 								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+getDescriptiveExtendedRoomID(R)
-										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+										+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") "
+										+ "since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  "+resolution+"."));
+
 							}
-							R.delInhabitant(mob);//keeps it from happening again.
 						}
 					}
 				}
