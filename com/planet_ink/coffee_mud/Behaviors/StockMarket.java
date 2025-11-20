@@ -841,6 +841,16 @@ public class StockMarket extends StdBehavior
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.targetMinor()==CMMsg.TYP_LIST)
+		{
+
+		}
+		return super.okMessage(myHost, msg);
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.Vector;
 
@@ -253,4 +254,20 @@ public interface ShopKeeper extends Environmental, Economics
 	 * @return the item zappermask
 	 */
 	public String getWhatIsSoldZappermask();
+
+	/**
+	 * Interface that provides items to a shop
+	 * for just-in-time availability, meaning they
+	 * aren't a part of the permanent stock.
+	 */
+	public static interface ShopProvider
+	{
+		/**
+		 * Returns the stock that this provider
+		 * provides.
+		 *
+		 * @return the stock
+		 */
+		public Collection<Environmental> getStock();
+	}
 }
