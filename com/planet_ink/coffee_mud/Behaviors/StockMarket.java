@@ -131,6 +131,7 @@ public class StockMarket extends StdBehavior
 		public final String area;
 		public volatile double price = 100.0;
 		public volatile double manipulation = 0;
+		public volatile TimeClock bankruptUntil = null;
 		public STreeMap<InfluCat,int[]> influences = new STreeMap<InfluCat,int[]>();
 
 		public StockDef(final String area, final String id, final String name)
@@ -232,8 +233,10 @@ public class StockMarket extends StdBehavior
 		final StringBuilder xml = new StringBuilder("");
 		for(final StockDef def : stocks)
 		{
+			final String bankruptUntil=(def.bankruptUntil==null)?"":def.bankruptUntil.toTimePeriodCodeString();
 			xml.append("<S ID=\""+def.ID+"\" NAME=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.name)+"\" "
-					+ "M="+def.manipulation+" A=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.area)+"\" ");
+					+ "M="+def.manipulation+" A=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.area)+"\" "
+					+ "U=\""+bankruptUntil+"\" ");
 			if(def.influences.size()==0)
 				xml.append(" />");
 			else
@@ -286,6 +289,7 @@ public class StockMarket extends StdBehavior
 						final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
 						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 						final int manipulation  = CMath.s_int(tag.getParmValue("M"));
+						final String bankruptUntil = tag.getParmValue("U");
 						final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
 						if(hostA != null)
 						{
@@ -299,6 +303,11 @@ public class StockMarket extends StdBehavior
 									final InfluCat cat = (InfluCat)CMath.s_valueOf(InfluCat.class,itag.getParmValue("CAT"));
 									d.addInfluence(cat, typ, CMath.s_int(tag.getParmValue("AMT")));
 								}
+							if((bankruptUntil != null)&&(bankruptUntil.trim().length()>0))
+							{
+								d.bankruptUntil = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+								d.bankruptUntil = d.bankruptUntil.fromTimePeriodCodeString(bankruptUntil);
+							}
 							stocks.put(d.getTitleID(),d);
 						}
 					}
@@ -773,7 +782,7 @@ public class StockMarket extends StdBehavior
 		configure();
 		if((configs.size()==0) || (!hostReady()))
 			return true;
-		//TODO: random civic event from external file
+		//TODO: random civic event from external file?
 		if(--weatherDown <=0)
 		{
 			weatherDown=Climate.WEATHER_TICK_DOWN;
@@ -809,20 +818,25 @@ public class StockMarket extends StdBehavior
 					}
 				}
 			}
-			//TODO: 14) RACIAL Astrological events impacting stock race provide 1 VARIABLE INFLUENCE.
-			//TODO: 15) STOCK Astrological events impacting shopkeeper provide 1 VARIABLE INFLUENCE.
 		}
 		final TimeClock now = ((Area)host).getTimeObj();
+		boolean resave=false;
 		for(final MarketConf conf : configs)
 		{
 			if(conf.nextUpdate.isAfter(now))
 				continue;  // we have not arrived at the time yet
+			resave=true;
 			//TODO: 12) This stock having no Archon holdings this period (max 1 NEGATIVE INFLUENCE per period).
 			//TODO: 13) This stock having no Player holdings this period (max 1 POSITIVE INFLUENCE per period).
+			//TODO: 14) RACIAL Astrological events impacting stock race provide 1 VARIABLE INFLUENCE.
+			//TODO: 15) STOCK Astrological events impacting shopkeeper provide 1 VARIABLE INFLUENCE.
+			//TODO: check for bankruptcy expiration, and for price drop bankruptcy
 			//TODO: PROCESS CHANGES HERE!!!!!
 			conf.nextUpdate=(TimeClock)now.copyOf();
 			conf.nextUpdate.bump(TimePeriod.DAY, conf.updateDays);
 		}
+		if(resave)
+			this.savetHostStockXML(this.getHostStocks());
 		return true;
 	}
 
@@ -842,6 +856,7 @@ public class StockMarket extends StdBehavior
 				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.source());
 				if(SK != null)
 				{
+					CMLib.awards().giveAutoProperties(msg.source(), false);
 					for(final MarketConf conf : configs)
 						conf.getShopStock(SK, msg.source());
 				}

@@ -256,6 +256,8 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public PrivateProperty fetchAPropertyRecord()
 	{
+		if(landPropertyID().length()==0)
+			return null;
 		final Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{

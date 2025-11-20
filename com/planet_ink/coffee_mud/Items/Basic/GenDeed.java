@@ -50,7 +50,6 @@ public class GenDeed extends StdItem implements PrivateProperty
 	protected String readableText="";
 	protected String owner = "";
 	protected int price = 0;
-	protected String deedId = "";
 
 	@Override
 	public String genericName()
@@ -128,7 +127,7 @@ public class GenDeed extends StdItem implements PrivateProperty
 	@Override
 	public String getTitleID()
 	{
-		return deedId;
+		return readableText;
 	}
 
 	@Override
@@ -250,19 +249,13 @@ public class GenDeed extends StdItem implements PrivateProperty
 	@Override
 	public String readableText()
 	{
-		final Map<String,Object> m = new TreeMap<String,Object>();
-		m.put("PRICE",Integer.valueOf(price));
-		m.put("OWNER",owner);
-		m.put("ID",deedId);
-		return CMParms.toEqListString(m);
+		return readableText;
 	}
 
 	@Override
 	public void setReadableText(final String text)
 	{
-		setPrice(CMParms.getParmInt(text, "PRICE", price));
-		this.setOwnerName(CMParms.getParmStr(text, "OWNER", owner));
-		this.deedId=CMStrings.deEscape(CMParms.getParmStr(text, "ID", deedId));
+		this.readableText = text;
 	}
 
 	@Override
