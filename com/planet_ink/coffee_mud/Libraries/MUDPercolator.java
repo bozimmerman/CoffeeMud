@@ -7089,6 +7089,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		case LIKE:
 			if(!(rhso instanceof String))
 				throw new MQLException("Nothing can ever be LIKE '"+rhstr+"'");
+			if(lhso instanceof String)
+			{
+				final String str=(String)lhso;
+				final String mask=(String)rhso;
+				if(mask.startsWith("%"))
+				{
+					if(mask.endsWith("%"))
+						return str.toLowerCase().indexOf(mask.toLowerCase().substring(1,mask.length()-1))>=0;
+					else
+						return (str.toLowerCase().endsWith(mask.toLowerCase().substring(1)));
+				}
+				else
+				if(mask.endsWith("%"))
+					return (str.toLowerCase().startsWith(mask.toLowerCase().substring(0,mask.length()-1)));
+			}
 			if(lhso instanceof Environmental)
 			{
 				return CMLib.masking().maskCheck(rhstr, (Environmental)lhso, true)

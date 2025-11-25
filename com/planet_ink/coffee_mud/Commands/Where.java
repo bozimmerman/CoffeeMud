@@ -259,36 +259,70 @@ public class Where extends StdCommand
 								{
 									for(final UpdateSet o : todo)
 									{
-										o.first.setStat(o.second, o.third);
+										final boolean destroy = (o.second.equalsIgnoreCase("class") && o.third.equalsIgnoreCase("null"));
+										if(!destroy)
+											o.first.setStat(o.second, o.third);
 										if(o.first instanceof Environmental)
 										{
 											Environmental E=(Environmental)o.first;
 											final Room R=CMLib.map().roomLocation(E);
 											if((R!=null) && R.isSavable() && (R.roomID().length()>0))
 											{
-												Log.infoOut(mob.name()+" modified "+E.name()+" at "+R.roomID());
-												if(E instanceof Ability)
-													E=((Ability)E).affecting();
+												if(destroy)
+													Log.infoOut(mob.name()+" destroyed "+E.name()+" at "+R.roomID());
+												else
+												{
+													Log.infoOut(mob.name()+" modified "+E.name()+" at "+R.roomID());
+													if(E instanceof Ability)
+														E=((Ability)E).affecting();
+												}
 												if(E instanceof Room)
-													CMLib.database().DBUpdateRoom(R);
+												{
+													if(destroy)
+														CMLib.map().obliterateMapRoom((Room)E);
+													else
+														CMLib.database().DBUpdateRoom(R);
+												}
 												else
 												if(E instanceof Item)
 												{
 													final Item I=(Item)E;
 													if((I.owner() instanceof Room)
 													&&(I.databaseID().length()>0))
-														CMLib.database().DBUpdateItem(R.roomID(), I);
+													{
+														if(destroy)
+														{
+															I.destroy();
+															CMLib.database().DBDeleteItem(R.roomID(), I);
+														}
+														else
+															CMLib.database().DBUpdateItem(R.roomID(), I);
+													}
 													else
 													if((I.owner() instanceof MOB)
 													&&(((MOB)I.owner()).databaseID().length()>0)
 													&&(((MOB)I.owner()).getStartRoom()!=null)
 													&&(((MOB)I.owner()).getStartRoom().roomID().length()>0))
-														CMLib.database().DBUpdateMOB(((MOB)I.owner()).getStartRoom().roomID(), (MOB)I.owner());
+													{
+														final MOB M = (MOB)I.owner();
+														final Room oR = M.getStartRoom();
+														if(destroy)
+															I.destroy();
+														CMLib.database().DBUpdateMOB(oR.roomID(), M);
+													}
 												}
 												else
 												if((E instanceof MOB)
 												&&(((MOB)E).databaseID().length()>0))
-													CMLib.database().DBUpdateMOB(R.roomID(), (MOB)E);
+												{
+													if(destroy)
+													{
+														E.destroy();
+														CMLib.database().DBDeleteMOB(R.roomID(), (MOB)E);
+													}
+													else
+														CMLib.database().DBUpdateMOB(R.roomID(), (MOB)E);
+												}
 											}
 										}
 									}

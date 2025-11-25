@@ -255,7 +255,11 @@ public class ItemGenerator extends ActiveTicker
 				allItems.clear();
 				skills=new Vector<ItemCraftor>();
 				for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
-					skills.add((ItemCraftor)e.nextElement().copyOf());
+				{
+					final Ability A = e.nextElement();
+					if(!A.ID().equals("ClanCrafting")) // I hate this, but its necessary
+						skills.add((ItemCraftor)A.copyOf());
+				}
 				return true;
 			}
 			final ItemCraftor skill;
@@ -275,7 +279,8 @@ public class ItemGenerator extends ActiveTicker
 			if(skillSet!=null)
 			{
 				for(final ItemCraftor.CraftedItem materialSet: skillSet)
-					allItems.add(materialSet.item);
+					if(!(materialSet.item instanceof ClanItem))
+						allItems.add(materialSet.item);
 			}
 			return true;
 		}
@@ -428,10 +433,10 @@ public class ItemGenerator extends ActiveTicker
 				if(ticking instanceof Container)
 				{
 					if(((Container)ticking).owner() instanceof Room)
-						((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+						((Container)ticking).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
 					if(((Container)ticking).owner() instanceof MOB)
-						((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+						((Container)ticking).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
 						return true;
 					maintained.addElement(I);
