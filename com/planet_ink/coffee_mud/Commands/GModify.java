@@ -51,6 +51,7 @@ public class GModify extends StdCommand
 	private static final int	FLAG_SUBSTRING		= 2;
 	private static final int	FLAG_OR				= 4;
 	private static final int	FLAG_AND			= 8;
+	private static final int	FLAG_INSIDE			= 16;
 
 	private enum GComp
 	{
@@ -488,6 +489,12 @@ public class GModify extends StdCommand
 				{
 					matchStart=stat.indexOf(value);
 					matchEnd=matchStart+value.length();
+				}
+				else
+				if(CMath.bset(gm.flag,FLAG_INSIDE))
+				{
+					matchStart=value.indexOf(stat);
+					matchEnd=matchStart+stat.length();
 				}
 				else
 				if(stat.equals(value))
@@ -1045,6 +1052,11 @@ public class GModify extends StdCommand
 					P=Pattern.compile(val,patCodes);
 				}
 				key=key.toUpperCase().trim();
+				if(key.startsWith("[SS]"))
+				{
+					key = key.substring(4);
+					code=code|FLAG_INSIDE;
+				}
 				if(allKnownFields.contains(key))
 					use.add(new GMod(key,equator,val,code,P));
 				else
