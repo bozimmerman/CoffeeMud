@@ -84,23 +84,23 @@ public class Formation extends StdCommand
 				row="0";
 			commands.remove(commands.size()-1);
 			final String name=CMParms.combine(commands,0);
+			final String lname = name.toLowerCase();
 			MOB who=null;
-			if(CMLib.english().containsString(mob.name(),name)
-			   ||CMLib.english().containsString(mob.Name(),name))
+			if(name.equalsIgnoreCase(mob.name())
+			||name.equalsIgnoreCase(mob.Name())
+			||(mob.name().toLowerCase().startsWith(lname))
+			||(mob.Name().toLowerCase().startsWith(lname)))
 				who=mob;
 			else
 			{
-				for(int f=0;f<mob.numFollowers();f++)
+				final Converter<Pair<MOB,Short>,MOB> conv =new Pair.FirstConverter<MOB,Short>();
+				ConvertingEnumeration<Pair<MOB,Short>,MOB> enu;
+				enu = new ConvertingEnumeration<Pair<MOB,Short>,MOB>(mob.followers(), conv);
+				who = (MOB)CMLib.english().fetchEnvironmental(enu, name, true);
+				if(who == null)
 				{
-					final MOB M=mob.fetchFollower(f);
-					if(M==null)
-						continue;
-					if(CMLib.english().containsString(M.name(),name)
-					   ||CMLib.english().containsString(M.Name(),name))
-					{
-						who=M;
-						break;
-					}
+					enu = new ConvertingEnumeration<Pair<MOB,Short>,MOB>(mob.followers(), conv);
+					who = (MOB)CMLib.english().fetchEnvironmental(enu, name, false);
 				}
 			}
 			if(who==null)

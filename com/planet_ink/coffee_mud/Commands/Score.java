@@ -222,7 +222,7 @@ public class Score extends Affect
 							else
 								classList.append(", ");
 						}
-						classList.append(C.name(mob.charStats().getClassLevel(C))+" ("+mob.charStats().getClassLevel(C)+") ");
+						classList.append(C.name(mob.charStats().getClassLevel(C))+" ("+mob.charStats().getClassLevel(C)+")");
 					}
 				}
 				msg.append(classList.toString()+".\n\r");
