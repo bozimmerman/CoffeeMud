@@ -996,7 +996,7 @@ public class GModify extends StdCommand
 						}
 						break;
 					case '|':
-						if((eq<(val.length()-1))&&(val.charAt(eq+1)=='&'))
+						if((eq<(val.length()-1))&&(val.charAt(eq+1)=='|'))
 						{
 							divBackLen=2;
 							break;
