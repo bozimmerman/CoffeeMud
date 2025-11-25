@@ -59,7 +59,11 @@ public class Assist extends StdCommand
 		final MOB recipientM=getVisibleRoomTarget(mob,CMParms.combine(commands,0));
 		if((recipientM==null)||(!CMLib.flags().canBeSeenBy(recipientM,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
+			final Item I = getVisibleRoomITarget(mob,CMParms.combine(commands,0));
+			if(I != null)
+				CMLib.commands().postCommandFail(mob,origCmds,L("'@x1' does not need assistance.",I.name(mob)));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final MOB vicM = recipientM.getVictim();

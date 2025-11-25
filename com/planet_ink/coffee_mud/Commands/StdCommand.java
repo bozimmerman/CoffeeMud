@@ -189,6 +189,22 @@ public class StdCommand implements Command
 		return target;
 	}
 
+	protected Item getVisibleRoomITarget(final MOB mob, final String whom)
+	{
+		if(mob == null)
+			return null;
+		final Room R=mob.location();
+		if(R==null)
+			return null;
+		Item target = R.findItem(null,whom);
+		int ctr=1;
+		while ((target != null)
+		&& (!CMLib.flags().canBeSeenBy(target, mob))
+		&&(whom.indexOf('.')<0))
+			target = R.findItem(null,whom+"."+(++ctr));
+		return target;
+	}
+
 	protected boolean isOccupiedWithOtherWork(final MOB mob)
 	{
 		if(mob==null)

@@ -67,7 +67,11 @@ public class Dress extends StdCommand
 		final MOB target=getVisibleRoomTarget(mob,whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
+			final Item I = getVisibleRoomITarget(mob,CMParms.combine(commands,0));
+			if(I != null)
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to dress '@x1'.",I.name(mob)));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		final List<Item> items = new ArrayList<Item>();

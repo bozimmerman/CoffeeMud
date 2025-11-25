@@ -77,7 +77,11 @@ public class Serve extends StdCommand
 		}
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
+			final Item I = getVisibleRoomITarget(mob,CMParms.combine(commands,0));
+			if(I != null)
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to serve '@x1'.",I.name(mob)));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		if((recipient.phyStats().level()<mob.phyStats().level())

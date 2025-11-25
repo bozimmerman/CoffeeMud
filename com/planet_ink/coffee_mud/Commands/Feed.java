@@ -62,7 +62,11 @@ public class Feed extends StdCommand
 		final MOB target=getVisibleRoomTarget(mob,whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
+			final Item I = getVisibleRoomITarget(mob,whom);
+			if(I != null)
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to feed '@x1'.",I.name(mob)));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(mob.isInCombat())

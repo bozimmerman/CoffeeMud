@@ -50,6 +50,7 @@ public class Duel extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final Vector<String> origCmds=new XVector<String>(commands);
 		MOB target=null;
 		boolean unfair=false;
 		for(int i=commands.size()-1;i>=1;i--)
@@ -94,7 +95,11 @@ public class Duel extends StdCommand
 			}
 			if(target == null)
 			{
-				mob.tell(L("I don't see '@x1' here.",whomToKill));
+				final Item I = getVisibleRoomITarget(mob,whomToKill);
+				if(I != null)
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to duel '@x1'.",I.name(mob)));
+				else
+					CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
 		}

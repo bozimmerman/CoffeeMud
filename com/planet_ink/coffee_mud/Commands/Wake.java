@@ -79,7 +79,11 @@ public class Wake extends StdCommand
 			final MOB M=getVisibleRoomTarget(mob,whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));
+				final Item I = getVisibleRoomITarget(mob,whom);
+				if(I != null)
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't know how to wake '@x1'.",I.name(mob)));
+				else
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(M))

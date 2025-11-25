@@ -116,7 +116,11 @@ public class Kill extends StdCommand
 			target=getVisibleRoomTarget(mob,whomToKill);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
+				final Item I = getVisibleRoomITarget(mob,whomToKill);
+				if(I != null)
+					CMLib.commands().postCommandFail(mob,origCmds,L("'@x1' is not alive.",I.name(mob)));
+				else
+					CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
 			// preference to not kill your followers
