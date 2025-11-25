@@ -657,7 +657,17 @@ public class Conquerable extends Arrest
 											((Boardable)newItem).dockHere(R);
 									}
 									if(newItem instanceof ClanItem)
-										registerClanItem((ClanItem)newItem);
+									{
+										final ClanItem C = (ClanItem)newItem;
+										if((C.clanID().length()>0)
+										&&(CMLib.clans().getClan(C.clanID())!=null))
+											registerClanItem((ClanItem)newItem);
+										else
+										{
+											Log.debugOut("Deleting unclanned conquest item "+newItem.name()+" in "+myArea.Name()+".");
+											newItem.destroy();
+										}
+									}
 								}
 							}
 						}

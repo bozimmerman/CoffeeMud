@@ -1052,9 +1052,9 @@ public class GModify extends StdCommand
 					P=Pattern.compile(val,patCodes);
 				}
 				key=key.toUpperCase().trim();
-				if(key.startsWith("[SS]"))
+				if(key.endsWith("[SS]"))
 				{
-					key = key.substring(4);
+					key = key.substring(0,key.length()-4);
 					code=code|FLAG_INSIDE;
 				}
 				if(allKnownFields.contains(key))
