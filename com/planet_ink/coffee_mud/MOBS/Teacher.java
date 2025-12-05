@@ -92,4 +92,20 @@ public class Teacher extends StdMOB
 		recoverCharStats();
 	}
 
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source()!=this)
+		&&(msg.target() == location()))
+		{
+			final CharClass C = msg.source().charStats().getCurrentClass();
+			if((baseCharStats().getClassLevel(C) > 0) && (baseCharStats().getCurrentClass() != C))
+			{
+				baseCharStats().setCurrentClass(C);
+				this.recoverCharStats();
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
 }
