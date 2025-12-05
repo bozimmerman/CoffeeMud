@@ -175,7 +175,7 @@ public class Spell_DetectWater extends Spell
 				final StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
-					return L("@x1 is carrying some liquids.",E.name());
+					return L("@x1 is carrying some liquids.  ",E.name());
 			}
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 			if(SK!=null)
@@ -187,7 +187,7 @@ public class Spell_DetectWater extends Spell
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
-						return L("@x1 has some liquids in stock.",E.name());
+						return L("@x1 has some liquids in stock.  ",E.name());
 				}
 			}
 		}
