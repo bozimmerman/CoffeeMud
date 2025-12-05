@@ -129,13 +129,13 @@ public class Thief_Lore extends ThiefSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":L("<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,auto?"":L("^.^N<S-NAME> stud(ys) <T-NAMESELF>^.^N and consider(s) for a moment."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String identity=target.secretIdentity();
 				if(report)
-					CMLib.commands().postSay(mob, L("@x1 idenfies as @x2",target.name(),identity));
+					CMLib.commands().postSay(mob, L("@x1^N^. idenfies as @x2",target.name(),identity));
 				else
 					mob.tell(identity);
 
