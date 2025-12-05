@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2025 Bo Zimmerman
+   Copyright 2025-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Yell extends Say
+public class Shout extends Say
 {
-	public Yell()
+	public Shout()
 	{
 	}
 
-	private final String[] access=I(new String[]{"YELL","YELLTO","YELLAT","Y"});
+	private final String[] access=I(new String[]{"SHOUT","SHOUTTO","SHOUTAT"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -50,9 +50,9 @@ public class Yell extends Say
 		throws java.io.IOException
 	{
 		boolean toFlag=false;
-		String verb=L("Yell");
-		String averb=L("yell(s)");
-		String tverb=L("yell(s) to");
+		String verb=L("Shout");
+		String averb=L("shout(s)");
+		String tverb=L("shout(s) to");
 		if(commands.size()>0)
 		{
 			for(int i=0;i<commands.size();i++)
@@ -63,7 +63,7 @@ public class Yell extends Say
 			else
 			if(theCommand.endsWith("AT"))
 			{
-				tverb=averb + L("yell(s) at");
+				tverb=averb + L("shout(s) at");
 				toFlag=true;
 			}
 		}

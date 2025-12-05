@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2025 Bo Zimmerman
+   Copyright 2025-2025 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Yell extends Say
+public class Ask extends Say
 {
-	public Yell()
+	public Ask()
 	{
 	}
 
-	private final String[] access=I(new String[]{"YELL","YELLTO","YELLAT","Y"});
+	private final String[] access=I(new String[]{"ASK"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -49,25 +49,10 @@ public class Yell extends Say
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		boolean toFlag=false;
-		String verb=L("Yell");
-		String averb=L("yell(s)");
-		String tverb=L("yell(s) to");
-		if(commands.size()>0)
-		{
-			for(int i=0;i<commands.size();i++)
-				commands.set(i, commands.get(i).toUpperCase().trim());
-			final String theCommand = commands.get(0);
-			if(theCommand.endsWith("TO"))
-				toFlag=true;
-			else
-			if(theCommand.endsWith("AT"))
-			{
-				tverb=averb + L("yell(s) at");
-				toFlag=true;
-			}
-		}
-		return exec(mob, toFlag, true, commands, verb, averb, tverb, metaFlags);
+		String verb=L("Ask");
+		String averb=L("ask(s)");
+		String tverb=averb;
+		return exec(mob, true, false, commands, verb, averb, tverb, metaFlags);
 	}
 
 	@Override

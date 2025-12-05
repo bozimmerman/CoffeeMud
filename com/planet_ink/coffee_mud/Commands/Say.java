@@ -40,7 +40,6 @@ public class Say extends StdCommand
 	}
 
 	private final String[] access=I(new String[]{"SAY",
-												 "ASK",
 												 "`",
 												 "SA",
 												 "SAYTO"});
@@ -114,42 +113,11 @@ public class Say extends StdCommand
 			}
 		}
 	}
-
-	@Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
-		throws java.io.IOException
+	
+	public boolean exec(final MOB mob, final boolean toFlag, final boolean multiRoom, final List<String> commands,
+						final String verb, final String averb, final String tverb, final int metaFlags)
 	{
 		final Vector<String> origCmds=new XVector<String>(commands);
-		String verb=L("Say");
-		String averb=L("say(s)");
-		String tverb=L("say(s) to");
-		boolean toFlag=false;
-		final String theCommand=commands.get(0).toUpperCase();
-		if(theCommand.equals("ASK"))
-		{
-			verb=L("Ask");
-			averb=L("ask(s)");
-			tverb=averb;
-		}
-		else
-		if(theCommand.equals("SAYTO")
-		||theCommand.equals("SAYT"))
-			toFlag=true;
-		else
-		if(theCommand.startsWith("YELL"))
-		{
-			verb=L("Yell");
-			averb=L("yell(s)");
-			tverb=L("yell(s) to");
-			if(theCommand.equals("YELLTO"))
-				toFlag=true;
-			else
-			if(theCommand.equals("YELLAT"))
-			{
-				tverb=L("yell(s) at");
-				toFlag=true;
-			}
-		}
 
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
@@ -159,7 +127,7 @@ public class Say extends StdCommand
 		}
 
 		List<Room> yellRooms=new ArrayList<Room>();
-		if(theCommand.equals("YELL"))
+		if(multiRoom)
 		{
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -257,40 +225,36 @@ public class Say extends StdCommand
 						langTarget=(Physical)target;
 				}
 				else
+				if(multiRoom)
 				{
-					if(theCommand.equals("YELL"))
+					final int dir=CMLib.directions().getGoodCompassDirectionCode(whom);
+					if(dir >=0)
 					{
-						final int dir=CMLib.directions().getGoodCompassDirectionCode(whom);
-						if(dir >=0)
+						commands.remove(1);
+						yellRooms=new ArrayList<Room>();
+						final Room R2=R.getRoomInDir(dir);
+						final Exit E2=R.getExitInDir(dir);
+						if(R2!=null)
 						{
-							commands.remove(1);
-							yellRooms=new ArrayList<Room>();
-							if(theCommand.equals("YELL"))
+							dirSuffix=" "+CMLib.directions().getDirectionName(dir);
+							yellRooms.add(R2);
+							if((E2!=null)
+							&&(E2.isOpen()))
 							{
-								final Room R2=R.getRoomInDir(dir);
-								final Exit E2=R.getExitInDir(dir);
-								if(R2!=null)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
-									dirSuffix=" "+CMLib.directions().getDirectionName(dir);
-									yellRooms.add(R2);
-									if((E2!=null)
-									&&(E2.isOpen()))
-									{
-										for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-										{
-											final Room R3=R2.getRoomInDir(d);
-											final Exit E3=R2.getExitInDir(d);
-											if((R3!=null)
-											&&(E3!=null)
-											&&(E3.isOpen()))
-												yellRooms.add(R3);
-										}
-									}
+									final Room R3=R2.getRoomInDir(d);
+									final Exit E3=R2.getExitInDir(d);
+									if((R3!=null)
+									&&(E3!=null)
+									&&(E3.isOpen()))
+										yellRooms.add(R3);
 								}
 							}
 						}
 					}
 				}
+
 				if(toFlag
 				&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 				{
@@ -390,7 +354,7 @@ public class Say extends StdCommand
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
-			if(theCommand.equals("YELL"))
+			if(multiRoom)
 			{
 				int dirCode=-1;
 				Room R3=R;
@@ -412,7 +376,7 @@ public class Say extends StdCommand
 							opDirCode=Directions.getOpDirectionCode(dirCode);
 					}
 					final String inDirName=(dirCode<0)?"":(CMLib.directions().getInDirectionName(opDirCode, dirType));
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+".^?");
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone @x1 ",verb.toLowerCase())+"'"+combinedCommands+"' "+inDirName+".^?");
 					if((R2.okMessage(mob,msg))
 					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{
@@ -431,6 +395,22 @@ public class Say extends StdCommand
 				langSwap[1].setBeingSpoken(langSwap[1].ID(), true);
 		}
 		return false;
+
+	}
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
+		throws java.io.IOException
+	{
+		String verb=L("Say");
+		String averb=L("say(s)");
+		String tverb=L("say(s) to");
+		boolean toFlag=false;
+		final String theCommand=commands.get(0).toUpperCase();
+		if(theCommand.equals("SAYTO")
+		||theCommand.equals("SAYT"))
+			toFlag=true;
+		return this.exec(mob, toFlag, false, commands, verb, averb, tverb, metaFlags);
 	}
 
 	@Override
