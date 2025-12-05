@@ -241,10 +241,22 @@ public class Skill_Buck extends StdSkill implements Behavior
 			mob.tell(L("There is no one on you to buck!"));
 			return false;
 		}
+		int numElligibleRiders = 0;
+		final Rideable R=(Rideable)mob;
+		for(int i=0;i<R.numRiders();i++)
+		{
+			final Rider r=R.fetchRider(i);
+			if(r instanceof MOB)
+				numElligibleRiders++;
+		}
+		if(numElligibleRiders == 0)
+		{
+			mob.tell(L("There is no one on you to buck!"));
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Rideable R=(Rideable)mob;
 		int avgDex=0;
 		for(int i=0;i<R.numRiders();i++)
 		{
@@ -288,12 +300,6 @@ public class Skill_Buck extends StdSkill implements Behavior
 							}
 						}
 					}
-				}
-				else
-				{
-					roomR.show(mob, target, CMMsg.MSG_OK_ACTION,
-							auto?L("<T-NAME> is bucked!"):L("<S-NAME> buck(s) <T-NAME> off <S-NAMESELF>!"));
-					target.setRiding(null);
 				}
 			}
 		}
