@@ -67,7 +67,18 @@ public class Teacher extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		basePhyStats().setAbility(50);
-		basePhyStats().setLevel(25);
+		int level = 1;
+		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+		{
+			final CharClass C=c.nextElement();
+			if(CMLib.login().isAvailableCharClass(C))
+			{
+				baseCharStats().setCurrentClass(C);
+				baseCharStats().setClassLevel(C,31);
+				level += 31;
+			}
+		}
+		basePhyStats().setLevel(level);
 		basePhyStats().setArmor(-500);
 		setAttribute(MOB.Attrib.NOTEACH,false);
 
