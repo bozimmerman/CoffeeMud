@@ -266,7 +266,7 @@ public class GenDeed extends StdItem implements PrivateProperty
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"OWNER","PRICE"};
+	private final static String[] MYCODES={"OWNERNAME","PRICE"};
 
 	private int getInternalCodeNum(final String code)
 	{

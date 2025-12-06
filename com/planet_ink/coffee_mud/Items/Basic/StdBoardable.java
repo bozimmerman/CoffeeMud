@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -373,11 +374,22 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
+	public void finalize() throws Throwable
+	{
+		final String ownerName=getOwnerName();
+		if((ownerName!=null) && (ownerName.length()>0))
+			Log.debugOut("Finalizing "+name()+" that belongs to "+ownerName); //TODO:BZ:DELME
+		super.finalize();
+	}
+	
+	@Override
 	public void destroy()
 	{
 		final String ownerName=getOwnerName();
 		if((ownerName!=null) && (ownerName.length()>0))
 		{
+			Log.debugOut("Destroying "+name()+" that belongs to "+ownerName); //TODO:BZ:DELME
+			Log.debugOut(new Exception()); //TODO:BZ:DELME
 			final Clan clan = CMLib.clans().fetchClanAnyHost(ownerName);
 			if(clan != null)
 				clan.getExtItems().delItem(this);
