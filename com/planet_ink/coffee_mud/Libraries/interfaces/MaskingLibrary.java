@@ -300,6 +300,15 @@ public interface MaskingLibrary extends CMLibrary
 	public CompiledZMask parseSpecialItemMask(final List<String> parsed);
 
 	/**
+	 * Given a compiled mask that might contain racial requirements, this will return
+	 * the set of required races that will pass the mask.   A returned empty set
+	 * will mean that the mask had no racial requirements per se.
+	 * @param mask the mask to inspect
+	 * @return empty set or the set of all races acceptable to the mask
+	 */
+	public Set<Race> getRequiredRaces(final CompiledZMask mask);
+
+	/**
 	 * Enum for special item mask item types
 	 *
 	 * @author Bo Zimmerman

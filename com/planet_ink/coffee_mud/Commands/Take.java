@@ -164,10 +164,8 @@ public class Take extends StdCommand
 					victim.location().send(victim,newMsg);
 				if(!mob.isMine(giveThis))
 					mob.moveItemTo(giveThis);
-				if(giveThis instanceof Coins)
-					((Coins)giveThis).putCoinsBack();
-				if(giveThis instanceof RawMaterial)
-					((RawMaterial)giveThis).rebundle();
+				if(giveThis instanceof AutoBundler)
+					((AutoBundler)giveThis).autoBundle();
 			}
 		}
 		else

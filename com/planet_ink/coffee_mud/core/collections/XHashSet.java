@@ -66,7 +66,7 @@ public class XHashSet<T> extends HashSet<T>
 				add(o);
 		}
 	}
-
+	
 	public XHashSet(final Enumeration<T> E)
 	{
 		super();
@@ -139,5 +139,13 @@ public class XHashSet<T> extends HashSet<T>
 			for(final T o : E)
 				remove(o);
 		}
+	}
+	
+	public synchronized void invert(final Set<T> completeSet)
+	{
+		XHashSet<T> old = new XHashSet<T>(this);
+		clear();
+		addAll(completeSet);
+		removeAll(old);
 	}
 }

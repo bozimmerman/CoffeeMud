@@ -914,6 +914,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERS
 	 * Reads the item dbid, class and misc text of each item in the given
 	 * players inventory, along with all 9 fields a growing item needs.
+	 * Returned fields are: dbID, itemID, text, locID, worn, uses, level, ability, height
 	 * @param name the name of the player
 	 * @param classLocFilter null, or a filter for the itemid and/or location string
 	 * @param textFilter null, or a filter for the misctext

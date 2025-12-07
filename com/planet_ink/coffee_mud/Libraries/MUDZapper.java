@@ -3689,6 +3689,110 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		errorSink.add("No valid zapper codes found.");
 		return false;
 	}
+	
+	private XHashSet<String> populateRequiredRaces(final CompiledZMaskEntry[] eset, final Set<String> allRaces, final Map<String,List<String>> catMap)
+	{
+		XHashSet<String> subResult = new XHashSet<String>();
+		for(int i=0;i<eset.length;i++)
+		{
+			switch(eset[i].maskType())
+			{
+			case RACE: // allow all races except...
+				subResult.addAll(allRaces);
+				for(final Object o : eset[i].parms())
+					subResult.remove(o.toString());
+				break;
+			case _RACE: // only allow the following races...
+				for(final Object o : eset[i].parms())
+					subResult.add(o.toString());
+				break;
+			case RACECAT: // allow all races of all categories except ...
+				subResult.addAll(allRaces);
+				for(final Object o : eset[i].parms())
+				{
+					final String racialCat = o.toString().toLowerCase();
+					final List<String> subRaces = catMap.get(racialCat);
+					if(subRaces != null)
+						subResult.removeAll(subRaces);
+				}
+				break;
+			case _RACECAT: // only allow races of the following categories
+				for(final Object o : eset[i].parms())
+				{
+					final String racialCat = o.toString().toLowerCase();
+					final List<String> subRaces = catMap.get(racialCat);
+					if(subRaces != null)
+						subResult.addAll(subRaces);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return subResult;
+	}
+	
+	final Set<ZapperKey> RACE_RELEVANT_KEYS =new XHashSet<ZapperKey>(new ZapperKey[] {ZapperKey.RACE,ZapperKey._RACE,ZapperKey.RACECAT,ZapperKey._RACECAT}); 
+	
+	@Override
+	public Set<Race> getRequiredRaces(final CompiledZMask mask)
+	{
+		boolean foundEntry=false;
+		for(int i=0;i<mask.entries().length && !foundEntry;i++)
+		{
+			final CompiledZMaskEntry[] set = mask.entries()[i];
+			for(int i2=0;i2<set.length;i2++)
+			{
+				if(RACE_RELEVANT_KEYS.contains(set[i2].maskType()))
+				{
+					foundEntry=true;
+					break;
+				}
+			}
+		}
+		if(!foundEntry)
+			return new HashSet<Race>(); 
+		final Map<String, Race> allRaces = new HashMap<String,Race>();
+		final TreeMap<String,List<String>> catMap = new TreeMap<String, List<String>>(); 
+		for(final Enumeration<Race> r = CMClass.races(); r.hasMoreElements(); )
+		{
+			final Race R = r.nextElement();
+			allRaces.put(R.name(), R);
+			final String lowerCatName = R.racialCategory().toLowerCase();
+			if(!catMap.containsKey(lowerCatName))
+				catMap.put(lowerCatName, new ArrayList<String>());
+			catMap.get(lowerCatName).add(R.name());
+		}
+		final XHashSet<String> races;
+		if(mask.entries().length<3)
+			races = populateRequiredRaces(mask.entries()[0], allRaces.keySet(), catMap);
+		else
+		{
+			races = new XHashSet<String>();
+			boolean lastConnectorNot = false;
+			for(int i=0;i<mask.entries().length;i+=2)
+			{
+				XHashSet<String> subResult = populateRequiredRaces(mask.entries()[i], allRaces.keySet(), catMap);
+				if(lastConnectorNot)
+					subResult.invert(allRaces.keySet());
+				races.addAll(subResult);
+				if(i==mask.entries().length-1)
+					break;
+				final CompiledZMaskEntry entry = mask.entries()[i+1][0];
+				if(entry.maskType()==MaskingLibrary.ZapperKey._OR)
+					lastConnectorNot=true;
+				else
+				if(entry.maskType()==MaskingLibrary.ZapperKey.OR)
+					lastConnectorNot=false;
+				else
+					Log.errOut("Badly compiled zappermask");
+			}
+		}
+		final Set<Race> finalSet = new HashSet<Race>();
+		for(final String name : races)
+			finalSet.add(allRaces.get(name));
+		return finalSet;
+	}
 
 	@Override
 	public List<String> getAbilityEduReqs(final String text)

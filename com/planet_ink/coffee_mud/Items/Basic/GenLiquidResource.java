@@ -131,7 +131,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	@Override
-	public boolean rebundle()
+	public boolean autoBundle()
 	{
 		return false;
 	}// CMLib.materials().rebundle(this);}

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -199,16 +200,13 @@ public interface ShoppingLibrary extends CMLibrary
 
 
 	/**
-	 * Adjusts the given inventory of a shopkeepers shop by adding external inventory, which might include
+	 * Provider that return external inventory, which might include
 	 * new real estate titles, or existing titles to real estate, ships, and the like.
-	 *
-	 * @param productsV the existing inventory
-	 * @param buyer the buyer who wants to see the inventory
-	 * @param shop the shop inventory object
-	 * @param myRoom the room where the shopkeeper is
-	 * @return the filled inventory
+	 * Might also return nothing at all, because that's life.
+	 * 
+	 * @see ShopProvider#getStock(MOB, CoffeeShop, Room);
 	 */
-	public List<Environmental> addRealEstateTitles(List<Environmental> productsV, MOB buyer, CoffeeShop shop, Room myRoom);
+	public ShopProvider createRealEstateProvider();
 
 	/**
 	 * Gives the value of an item that might be sold to a shopkeeper by a player/mob.
@@ -268,7 +266,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * Checks a BUY message for an english embedded 'FOR' message, which
 	 * can affect the assignment of purchased private property.
 	 *
-	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#composeFormattedListInventory(MOB, MOB, List, int, ShopKeeper, String)
 	 * @see ShoppingLibrary#getListForMask(String)
 	 *
 	 * @param targetMessage the target message string
@@ -279,7 +277,7 @@ public interface ShoppingLibrary extends CMLibrary
 	/**
 	 * Formats and returns a displayable inventory for a shopkeeper.
 	 *
-	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#composeFormattedListInventory(MOB, MOB, List, int, ShopKeeper, String)
 	 * @see ShoppingLibrary#getListForMask(String)
 	 *
 	 * @param seller the seller mob who speaks
@@ -290,13 +288,13 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param mask null, or a name substring mask for items to show
 	 * @return the formatted displayable inventory
 	 */
-	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
+	public String composeFormattedListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
 								   int limit, ShopKeeper shop, String mask);
 
 	/**
 	 * Formats and returns a displayable inventory for a shopkeeper.
 	 *
-	 * @see ShoppingLibrary#getListInventory(MOB, MOB, List, int, ShopKeeper, String)
+	 * @see ShoppingLibrary#composeFormattedListInventory(MOB, MOB, List, int, ShopKeeper, String)
 	 * @see ShoppingLibrary#getListForMask(String)
 	 *
 	 * @param seller the seller mob who speaks
@@ -308,7 +306,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param mask null, or a name substring mask for items to show
 	 * @return the formatted displayable inventory
 	 */
-	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
+	public String composeFormattedListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory,
 								   int limit, ShopKeeper shop, CoffeeShop shopItems, String mask);
 
 	/**

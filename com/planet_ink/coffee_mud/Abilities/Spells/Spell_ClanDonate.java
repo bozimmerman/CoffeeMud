@@ -183,11 +183,8 @@ public class Spell_ClanDonate extends Spell
 							clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
 						if(!(target.amDestroyed()))
 						{
-							if(target instanceof Coins)
-								((Coins)target).putCoinsBack();
-							else
-							if(target instanceof RawMaterial)
-								((RawMaterial)target).rebundle();
+							if(target instanceof AutoBundler)
+								((AutoBundler)target).autoBundle();
 						}
 						clanDonateRoom.recoverRoomStats();
 						clanDonateRoom.sendOthers(mob,msg);

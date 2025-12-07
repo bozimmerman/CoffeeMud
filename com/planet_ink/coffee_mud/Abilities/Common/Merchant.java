@@ -674,7 +674,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				{
 					final Vector<Environmental> inventory=new XVector<Environmental>(getShop().getStoreInventory());
 					final String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
-					final String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this,forMask);
+					final String s=CMLib.coffeeShops().composeFormattedListInventory(merchantM,mob,inventory,0,this,forMask);
 					if(s.length()>0)
 						mob.tell(s);
 				}

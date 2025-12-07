@@ -471,10 +471,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final String forMask = CMLib.coffeeShops().getListForMask(msg.targetMessage());
-					List<Environmental> inventory = new XVector<Environmental>(getShop().getStoreInventory());
-					inventory = CMLib.coffeeShops().addRealEstateTitles(inventory, mob, getShop(), getStartRoom());
 					final int limit = CMParms.getParmInt(getFinalPrejudiceFactors(), "LIMIT", 0);
-					final String s = CMLib.coffeeShops().getListInventory(this, mob, inventory, limit, this, forMask);
+					final List<Environmental> listInventory = getShop().createListInventory(mob, getStartRoom());
+					final String s = CMLib.coffeeShops().composeFormattedListInventory(this, mob, listInventory, limit, this, forMask);
 					if (s.length() > 0)
 						mob.tell(s);
 				}

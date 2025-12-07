@@ -210,7 +210,7 @@ public class Empty extends Drop
 				{
 					final Item I=V2.get(v2);
 					if(I instanceof Coins)
-						((Coins)I).setContainer(null);
+						I.setContainer(null);
 
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))
 					&&(I.container()==null))
@@ -224,10 +224,8 @@ public class Empty extends Drop
 							if(R.okMessage(mob,putMsg))
 								R.send(mob,putMsg);
 						}
-						if(I instanceof Coins)
-							((Coins)I).putCoinsBack();
-						if(I instanceof RawMaterial)
-							((RawMaterial)I).rebundle();
+						if(I instanceof AutoBundler)
+							((AutoBundler)I).autoBundle();
 					}
 				}
 			}

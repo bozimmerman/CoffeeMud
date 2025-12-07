@@ -127,10 +127,8 @@ public class Pay extends StdCommand
 			mob.location().send(mob,newMsg);
 			success=true;
 		}
-		if(giveThis instanceof Coins)
-			((Coins)giveThis).putCoinsBack();
-		if(giveThis instanceof RawMaterial)
-			((RawMaterial)giveThis).rebundle();
+		if(giveThis instanceof AutoBundler)
+			((AutoBundler)giveThis).autoBundle();
 		return success;
 	}
 

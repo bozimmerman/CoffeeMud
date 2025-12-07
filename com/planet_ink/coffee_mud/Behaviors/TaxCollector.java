@@ -151,7 +151,7 @@ public class TaxCollector extends StdBehavior
 					{
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),paidAmount,treasuryR,treasuryContainer);
 						if(COIN!=null)
-							COIN.putCoinsBack();
+							COIN.autoBundle();
 					}
 				}
 

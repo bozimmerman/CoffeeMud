@@ -2609,7 +2609,7 @@ public class Create extends StdCommand
 							final Item I=CMLib.materials().makeItemResource(matCode);
 							mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
 							if((i%10 == 9)||(i==num-1))
-								((RawMaterial)I).rebundle();
+								((RawMaterial)I).autoBundle();
 						}
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
 					}

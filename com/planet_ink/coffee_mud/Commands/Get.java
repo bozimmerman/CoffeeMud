@@ -197,10 +197,8 @@ public class Get extends StdCommand
 				if(!getThis.amDestroyed())
 				{
 					get(mob,container,getThis,quiet,"get",optimize);
-					if(getThis instanceof Coins)
-						((Coins)getThis).putCoinsBack();
-					if(getThis instanceof RawMaterial)
-						((RawMaterial)getThis).rebundle();
+					if(getThis instanceof AutoBundler)
+						((AutoBundler)getThis).autoBundle();
 					doneSomething=true;
 				}
 			}
@@ -277,10 +275,8 @@ public class Get extends StdCommand
 					quiet=((Boolean)args[i]).booleanValue();
 			}
 			final boolean success=get(mob,container,item,quiet);
-			if(item instanceof Coins)
-				((Coins)item).putCoinsBack();
-			if(item instanceof RawMaterial)
-				((RawMaterial)item).rebundle();
+			if(item instanceof AutoBundler)
+				((AutoBundler)item).autoBundle();
 			return Boolean.valueOf(success);
 		}
 		return Boolean.FALSE;

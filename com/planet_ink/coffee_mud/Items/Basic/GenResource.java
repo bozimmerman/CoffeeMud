@@ -89,7 +89,7 @@ public class GenResource extends GenItem implements RawMaterial
 	}
 
 	@Override
-	public boolean rebundle()
+	public boolean autoBundle()
 	{
 		return CMLib.materials().rebundle(this);
 	}

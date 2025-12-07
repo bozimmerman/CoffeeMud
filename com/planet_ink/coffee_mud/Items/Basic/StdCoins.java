@@ -230,7 +230,7 @@ public class StdCoins extends StdItem implements Coins
 	}
 
 	@Override
-	public boolean putCoinsBack()
+	public boolean autoBundle()
 	{
 		if(amDestroyed())
 			return false;

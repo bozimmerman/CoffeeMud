@@ -164,11 +164,8 @@ public class Spell_Duplicate extends Spell
 						target.owner().addItem(newTarget,ItemPossessor.Expire.Player_Drop);
 					else
 						mob.addItem(newTarget);
-					if(newTarget instanceof Coins)
-						((Coins)newTarget).putCoinsBack();
-					else
-					if(newTarget instanceof RawMaterial)
-						((RawMaterial)newTarget).rebundle();
+					if(newTarget instanceof AutoBundler)
+						((AutoBundler)newTarget).autoBundle();
 					target.recoverPhyStats();
 					mob.recoverPhyStats();
 				}

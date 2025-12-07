@@ -113,6 +113,8 @@ public interface ShopKeeper extends Environmental, Economics
 	public final static int DEAL_CLOTHSPINNER=34;
 	/** shopkeeper type constant, means they buy and sell any children*/
 	public final static int DEAL_CHILDREN=35;
+	/** shopkeeper type constant, means they buy and sell stocks*/
+	public final static int DEAL_STOCKBROKER=36;
 
 	/** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
 	public final static int[][] DEAL_CONFLICTS=
@@ -134,7 +136,7 @@ public interface ShopKeeper extends Environmental, Economics
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER",
 		"CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
 		"AUCTIONEER","INSTRUMENTS","BOOKS","READABLES","CLOTHS",
-		"CHILDREN"
+		"CHILDREN","STOCKBROKER"
 	};
 
 	/**
@@ -254,20 +256,4 @@ public interface ShopKeeper extends Environmental, Economics
 	 * @return the item zappermask
 	 */
 	public String getWhatIsSoldZappermask();
-
-	/**
-	 * Interface that provides items to a shop
-	 * for just-in-time availability, meaning they
-	 * aren't a part of the permanent stock.
-	 */
-	public static interface ShopProvider
-	{
-		/**
-		 * Returns the stock that this provider
-		 * provides.
-		 *
-		 * @return the stock
-		 */
-		public Collection<Environmental> getStock();
-	}
 }

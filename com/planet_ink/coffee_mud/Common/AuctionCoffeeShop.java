@@ -248,6 +248,12 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
+	public List<Environmental> createListInventory(final MOB buyer, final Room shopHomeRoom)
+	{
+		return new XArrayList<Environmental>(this.getStoreInventory());
+	}
+
+	@Override
 	public void destroyStoreInventory()
 	{
 	}
@@ -288,6 +294,17 @@ public class AuctionCoffeeShop implements CoffeeShop
 
 	@Override
 	public void deleteShelfProduct(final ShelfProduct P)
+	{
+	}
+
+	@Override
+	public boolean hasShopProvider(String ID)
+	{
+		return false;
+	}
+
+	@Override
+	public void addShopProvider(ShopProvider provider)
 	{
 	}
 }

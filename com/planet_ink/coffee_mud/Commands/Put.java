@@ -98,10 +98,8 @@ public class Put extends StdCommand
 		}
 		else
 			success = false;
-		if(putThis instanceof Coins)
-			((Coins)putThis).putCoinsBack();
-		if(putThis instanceof RawMaterial)
-			((RawMaterial)putThis).rebundle();
+		if(putThis instanceof AutoBundler)
+			((AutoBundler)putThis).autoBundle();
 		return success;
 	}
 

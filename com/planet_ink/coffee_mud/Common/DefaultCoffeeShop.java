@@ -54,8 +54,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 	WeakReference<ShopKeeper>		shopKeeper			= null;
 	public SVector<Environmental>	enumerableInventory	= new SVector<Environmental>(); // for Only Inventory situations
 	public List<ShelfProduct>		storeInventory		= new SVector<ShelfProduct>();
+	public Map<String,ShopProvider>	shopProviders		= new STreeMap<String, ShopProvider>();
 	protected volatile Integer		contentHash			= null;
 
+	
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
 		@Override
@@ -370,7 +372,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			}
 		}
 		if(originalUncopiedThang instanceof Item)
-			((Item)originalUncopiedThang).destroy();
+			originalUncopiedThang.destroy();
 		return thisThang;
 	}
 
@@ -406,6 +408,16 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
+	public List<Environmental> createListInventory(final MOB buyer, final Room shopHomeRoom)
+	{
+		List<Environmental> inventory = new XArrayList<Environmental>(getStoreInventory());
+		this.checkInternalProviders();
+		for(final ShopProvider provider : shopProviders.values())
+			inventory.addAll(provider.getStock(buyer, this, shopHomeRoom));
+		return inventory;
+	}
+	
+	@Override
 	public void delAllStoreInventory(final Environmental thisThang)
 	{
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(inEnumerableInventory(thisThang)))
@@ -430,7 +442,35 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		this.contentHash = null;
 	}
+	
+	@Override
+	public boolean hasShopProvider(final String ID)
+	{
+		return shopProviders.containsKey(ID);
+	}
+	
+	@Override
+	public void addShopProvider(final ShopProvider provider)
+	{
+		if(hasShopProvider(provider.ID()))
+			return;
+		shopProviders.put(provider.ID(), CMLib.coffeeShops().createRealEstateProvider());
+	}
 
+	private synchronized void checkInternalProviders()
+	{
+		if(isSold(ShopKeeper.DEAL_LANDSELLER)
+		||isSold(ShopKeeper.DEAL_CLANDSELLER)
+		||isSold(ShopKeeper.DEAL_SHIPSELLER)
+		||isSold(ShopKeeper.DEAL_CSHIPSELLER))
+		{
+			final String realEstateID = "RealEstateShopProvider"; //TODO: yuck!
+			if(hasShopProvider(realEstateID))
+				return;
+			addShopProvider(CMLib.coffeeShops().createRealEstateProvider());
+		}
+	}
+	
 	@Override
 	public boolean doIHaveThisInStock(final String name, final MOB mob)
 	{
@@ -439,14 +479,16 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(item==null)
 			item=CMLib.english().fetchEnvironmental(storeInv,name,false);
 		if((item==null)
-		&&(mob!=null)
-		&&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
-			||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
+		&&(mob!=null))
 		{
-			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new ArrayList<Environmental>(0),mob,this,startRoom());
-			item=CMLib.english().fetchEnvironmental(titles,name,true);
-			if(item==null)
-				item=CMLib.english().fetchEnvironmental(titles,name,false);
+			checkInternalProviders();
+			for(final ShopProvider provider : shopProviders.values())
+			{
+				final Collection<Environmental> titles=provider.getStock(mob,this,startRoom());
+				item=CMLib.english().fetchEnvironmental(titles,name,true);
+				if(item==null)
+					item=CMLib.english().fetchEnvironmental(titles,name,false);
+			}
 		}
 		if(item!=null)
 			return true;
@@ -488,14 +530,18 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if(item==null)
 			item=CMLib.english().fetchEnvironmental(storeInv,name,false);
 		if((item==null)
-		&&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
-		   ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
-		&&(mob!=null))
+		&&(mob != null))
 		{
-			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new ArrayList<Environmental>(0),mob,this,startRoom());
-			item=CMLib.english().fetchEnvironmental(titles,name,true);
-			if(item==null)
-				item=CMLib.english().fetchEnvironmental(titles,name,false);
+			checkInternalProviders();
+			for(final ShopProvider provider : shopProviders.values())
+			{
+				final Collection<Environmental> titles=provider.getStock(mob,this,startRoom());
+				item=CMLib.english().fetchEnvironmental(titles,name,true);
+				if(item==null)
+					item=CMLib.english().fetchEnvironmental(titles,name,false);
+				if(item != null)
+					break;
+			}
 		}
 		return item;
 	}

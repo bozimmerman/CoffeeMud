@@ -10970,7 +10970,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						if(addHere instanceof Room)
 							((Room)addHere).addItem(C, Expire.Monster_EQ);
-						C.putCoinsBack();
+						C.autoBundle();
 					}
 					else
 					if(lastKnownLocation!=null)
@@ -11107,10 +11107,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
 								I.setContainer(container);
-								if(I instanceof Coins)
-									((Coins)I).putCoinsBack();
-								if(I instanceof RawMaterial)
-									((RawMaterial)I).rebundle();
+								if(I instanceof AutoBundler)
+									((AutoBundler)I).autoBundle();
 								if(!putRoom.isContent(I))
 									putRoom.addItem(I,ItemPossessor.Expire.Monster_EQ);
 								I.setOwner(putRoom);

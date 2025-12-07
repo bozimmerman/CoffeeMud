@@ -59,12 +59,7 @@ public class WizList extends StdCommand
 			head.append(CMStrings.padRight(L("Last"),18)+" ");
 		head.append("] Character Name^.^?\n\r");
 		mob.tell("^x["+CMStrings.centerPreserve(L("The Administrators of @x1",CMProps.getVar(CMProps.Str.MUD_NAME)),head.length()-10)+"]^.^?");
-		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
-		if(mask.length()==0)
-			mask=CMProps.instance().getProperty("SYSOPMASK");
-		final MaskingLibrary.CompiledZMask compiledMask=CMLib.masking().maskCompile(mask);
-		for(final PlayerLibrary.ThinPlayer U : allUsers)
+		for(final PlayerLibrary.ThinPlayer U : CMLib.players().getWizUserList())
 		{
 			CharClass C;
 			final MOB player = CMLib.players().getPlayer(U.name()); // only called from this t-groups database anyway, so keep it local
@@ -74,24 +69,20 @@ public class WizList extends StdCommand
 				C=CMClass.getCharClass(U.charClass());
 			if(C==null)
 				C=CMClass.findCharClass(U.charClass());
-			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
-			||(CMLib.masking().maskCheck(compiledMask, U)))
-			{
-				head.append("[");
-				if(C!=null)
-					head.append(CMStrings.padRight(C.name(),16)+" ");
-				else
-					head.append(CMStrings.padRight(L("Unknown"),16)+" ");
-				head.append(CMStrings.padRight(U.race(),8)+" ");
-				if((C==null)||(!C.leveless()))
-					head.append(CMStrings.padRight(""+U.level(),4)+" ");
-				else
-					head.append(CMStrings.padRight("    ",4)+" ");
-				if(isArchonLooker)
-					head.append(CMStrings.padRight(CMLib.time().date2String(U.last()),18)+" ");
-				head.append("] "+U.name());
-				head.append("\n\r");
-			}
+			head.append("[");
+			if(C!=null)
+				head.append(CMStrings.padRight(C.name(),16)+" ");
+			else
+				head.append(CMStrings.padRight(L("Unknown"),16)+" ");
+			head.append(CMStrings.padRight(U.race(),8)+" ");
+			if((C==null)||(!C.leveless()))
+				head.append(CMStrings.padRight(""+U.level(),4)+" ");
+			else
+				head.append(CMStrings.padRight("    ",4)+" ");
+			if(isArchonLooker)
+				head.append(CMStrings.padRight(CMLib.time().date2String(U.last()),18)+" ");
+			head.append("] "+U.name());
+			head.append("\n\r");
 		}
 		mob.tell(head.toString());
 		return false;

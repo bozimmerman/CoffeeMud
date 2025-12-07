@@ -659,7 +659,7 @@ public class DefaultLawSet implements Law
 								final Coins coinI=V.get(v);
 								coinI.setContainer(container);
 								treasuryR.addItem(coinI);
-								coinI.putCoinsBack();
+								coinI.autoBundle();
 							}
 						}
 						if((evasionBits!=null)

@@ -147,7 +147,7 @@ public class Song_Thanks extends Song
 				mob.addItem(C);
 				mob.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 				if(!C.amDestroyed())
-					C.putCoinsBack();
+					C.autoBundle();
 			}
 		}
 		return true;

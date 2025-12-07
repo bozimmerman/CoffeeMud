@@ -1388,10 +1388,8 @@ public class Destroy extends StdCommand
 			}
 			return true;
 		}
-		if(dropThis instanceof Coins)
-			((Coins)dropThis).putCoinsBack();
-		if(dropThis instanceof RawMaterial)
-			((RawMaterial)dropThis).rebundle();
+		if(dropThis instanceof AutoBundler)
+			((AutoBundler)dropThis).autoBundle();
 		return false;
 	}
 
@@ -1540,11 +1538,8 @@ public class Destroy extends StdCommand
 				if(destroyItem(mob,I,false,true))
 					didAnything=true;
 				else
-				if(I instanceof Coins)
-					((Coins)I).putCoinsBack();
-				else
-				if(I instanceof RawMaterial)
-					((RawMaterial)I).rebundle();
+				if(I instanceof AutoBundler)
+					((AutoBundler)I).autoBundle();
 			}
 			if(!didAnything)
 			{

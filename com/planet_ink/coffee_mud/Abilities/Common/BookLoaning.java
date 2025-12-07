@@ -1415,7 +1415,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 					shopApply=true;
 					final List<Environmental> inventory=new XVector<Environmental>(getShop().getStoreInventory());
 					final String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
-					final String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this,forMask);
+					final String s=CMLib.coffeeShops().composeFormattedListInventory(merchantM,mob,inventory,0,this,forMask);
 					if(s.length()>0)
 						msg.source().tell(s);
 					if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))

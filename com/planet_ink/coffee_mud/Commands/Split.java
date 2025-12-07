@@ -102,7 +102,7 @@ public class Split extends StdCommand
 					final CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
-					C.putCoinsBack();
+					C.autoBundle();
 				}
 			}
 		}

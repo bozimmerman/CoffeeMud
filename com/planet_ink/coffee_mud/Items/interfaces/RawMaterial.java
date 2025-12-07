@@ -61,7 +61,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface RawMaterial extends Item
+public interface RawMaterial extends Item, AutoBundler
 {
 	/**
 	 * Gets the specific origin of this resource. If a resource has a specific
@@ -82,15 +82,6 @@ public interface RawMaterial extends Item
 	 * @param src the specific origin of this resource
 	 */
 	public void setDomainSource(String src);
-
-	/**
-	 * Scans the owner of this item (room, mob, whatever) for other rawmaterial
-	 * resources of the exact same kind and, if found, combines with them. May
-	 * result in this item being destroyed.
-	 *
-	 * @return true if this item was rebundled, false otherwise.
-	 */
-	public boolean rebundle();
 
 	/**
 	 * A slightly faster version of {@link Item#destroy()} that eliminates the

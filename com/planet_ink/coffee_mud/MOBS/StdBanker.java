@@ -774,7 +774,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 						}
 						CMLib.commands().postSay(this,mob,L("Thank you, @x1 is safe with us.",items.get(0).name()),true,false);
-						((Item)msg.tool()).destroy();
+						msg.tool().destroy();
 					}
 				}
 				if ((CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.ORDER)
@@ -798,7 +798,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(location().okMessage(this,newMsg))
 						{
 							location().send(this,newMsg);
-							((Coins)old).putCoinsBack();
+							((Coins)old).autoBundle();
 						}
 						else
 							CMLib.commands().postDrop(this,old,true,false,false);
@@ -847,7 +847,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(location().okMessage(this,newMsg))
 							{
 								location().send(this,newMsg);
-								((Coins)old).putCoinsBack();
+								((Coins)old).autoBundle();
 							}
 							else
 								CMLib.commands().postDrop(this,old,true,false,false);

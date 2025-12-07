@@ -539,7 +539,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					{
 						final CoffeeShop reqshop = this.loadRequestShop();
 						final List<Environmental> inventory = new XVector<Environmental>(reqshop.getStoreInventory());
-						final String s = CMLib.coffeeShops().getListInventory(this, null, inventory, limit, this, reqshop, forMask);
+						final String s = CMLib.coffeeShops().composeFormattedListInventory(this, null, inventory, limit, this, reqshop, forMask);
 						listedSomething = listedSomething || s.length()>0;
 						if (s.length() > 0)
 							mob.tell(L("\n\r^HItem Requests:^?\n\r")+s);
@@ -547,7 +547,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					{
 						final CoffeeShop resshop = getShop(mob);
 						final List<Environmental> inventory = new XVector<Environmental>(resshop.getStoreInventory());
-						final String s = CMLib.coffeeShops().getListInventory(this, null, inventory, limit, this, resshop, forMask);
+						final String s = CMLib.coffeeShops().composeFormattedListInventory(this, null, inventory, limit, this, resshop, forMask);
 						listedSomething = listedSomething || s.length()>0;
 						if (s.length() > 0)
 							mob.tell(L("\n\r^HItem Pickups:^?\n\r")+s);

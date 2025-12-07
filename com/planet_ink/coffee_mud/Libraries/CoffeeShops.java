@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -1309,24 +1310,24 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String getListInventory(final MOB seller,
-								   final MOB buyer,
-								   final List<? extends Environmental> rawInventory,
-								   final int limit,
-								   final ShopKeeper shop,
-								   final String mask)
+	public String composeFormattedListInventory(final MOB seller,
+												final MOB buyer,
+												final List<? extends Environmental> rawInventory,
+												final int limit,
+												final ShopKeeper shop,
+												final String mask)
 	{
-		return getListInventory(seller,buyer,rawInventory,limit,shop,shop.getShop(buyer),mask);
+		return composeFormattedListInventory(seller,buyer,rawInventory,limit,shop,shop.getShop(buyer),mask);
 	}
 
 	@Override
-	public String getListInventory(final MOB seller,
-								   final MOB buyer,
-								   final List<? extends Environmental> rawInventory,
-								   final int limit,
-								   final ShopKeeper shop,
-								   final CoffeeShop shopItems,
-								   final String mask)
+	public String composeFormattedListInventory(final MOB seller,
+												final MOB buyer,
+												final List<? extends Environmental> rawInventory,
+												final int limit,
+												final ShopKeeper shop,
+												final CoffeeShop shopItems,
+												final String mask)
 	{
 		final StringBuilder str=new StringBuilder("");
 		int csize=0;
@@ -1661,7 +1662,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						totalFunds-=taxAmount;
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(sellerM),taxAmount,treasuryR,treasuryContainer);
 						if(COIN!=null)
-							COIN.putCoinsBack();
+							COIN.autoBundle();
 					}
 				}
 			}
@@ -1857,153 +1858,196 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 		}
 	}
-
+	
 	@Override
-	public List<Environmental> addRealEstateTitles(final List<Environmental> productsV, final MOB buyer, final CoffeeShop shop, final Room myRoom)
+	public ShopProvider createRealEstateProvider()
 	{
-		if((myRoom==null)||(buyer==null))
-			return productsV;
-		final Area myArea=myRoom.getArea();
-		String name=buyer.Name();
-		Pair<Clan,Integer> buyerClanPair=null;
-		final TreeSet<String> foundNames = new TreeSet<String>();
-		if(shop.isSold(ShopKeeper.DEAL_CLANDSELLER)
-		&&((buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER))!=null))
-			name=buyerClanPair.first.clanID();
-		if((shop.isSold(ShopKeeper.DEAL_LANDSELLER)||(buyerClanPair!=null))
-		&&(myArea!=null))
+		return new ShopProvider()
 		{
-			final Set<LandTitle> titles=new HashSet<LandTitle>();
-			final Map<Room,LandTitle> roomTitleMap = new HashMap<Room, LandTitle>();
-			final LegalLibrary law = CMLib.law();
-			for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
+			@Override
+			public String ID()
 			{
-				final Room R=r.nextElement();
-				final LandTitle T=law.getLandTitle(R);
-				if(T!=null)
-				{
-					if((!titles.contains(T))
-					&&(!foundNames.contains(T.getTitleID())))
-					{
-						foundNames.add(T.getTitleID());
-						titles.add(T);
-					}
-					roomTitleMap.put(R, T);
-				}
+				return "RealEstateShopProvider";
 			}
 
-			for(final LandTitle T : titles)
+			@Override
+			public String name()
 			{
-				final String towner=T.getOwnerName();
-				if((towner.length()>0) // someone elses title, so never ever list it
-				&&(!towner.equals(name))
-				&&((!towner.equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
-					continue;
-
-				boolean skipThisOne=false;
-				final WorldMap map=CMLib.map();
-				// it is OK if this is in a thin area, since is part is only checking
-				// if this cached titled room is adjacent to one owned by someone else,
-				// and therefore should not be shown.  In this case, it will force-cache
-				// the adjacent rooms for this purpose.
-				for(final Room R : T.getTitledRooms())
-				{
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					{
-						final Room R2=R.getRoomInDir(d);
-						if((R2 == null)||(map.getExtendedRoomID(R2).length()==0))
-							continue;
-						final LandTitle r2T=roomTitleMap.get(R2);
-						if(r2T==null)
-						{
-							skipThisOne = false; // we are connected to unowned room (or another area) -- WIN!
-							break;
-						}
-						if((r2T.getOwnerName().equals(name))
-						||(r2T.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
-						{
-							skipThisOne = false; // we are connected to one of OUR rooms -- WIN!
-							break;
-						}
-						if(r2T.getOwnerName().length()>0) // we are connected to someone else .. possibly boo
-							skipThisOne=true;
-					}
-				}
-				if(!skipThisOne)
-				{
-					final Item I=CMClass.getItem("GenTitle");
-					((LandTitle)I).setLandPropertyID(T.landPropertyID());
-					if((((LandTitle)I).getOwnerName().length()>0)
-					&&(!I.Name().endsWith(" (Copy)")))
-						I.setName(L("@x1 (Copy)",I.Name()));
-					else
-					if((T.getOwnerName().length()==0)
-					&&(I.Name().endsWith(" (Copy)")))
-						I.setName(I.Name().substring(0,I.Name().length()-7));
-					I.text();
-					I.recoverPhyStats();
-					productsV.add(I);
-				}
+				return ID();
 			}
-		}
 
-		if(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
-		{
-			final PlayerStats pStats = buyer.playerStats();
-			if((pStats != null)&&(pStats.getExtItems()!=null))
-				this.addShipProperty(buyer, productsV, pStats.getExtItems());
-		}
-		if(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
-		{
-			buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
-			if((buyerClanPair != null)&&(buyerClanPair.first!=null)&&(buyerClanPair.first.getExtItems()!=null))
-				this.addShipProperty(buyer, productsV, buyerClanPair.first.getExtItems());
-		}
-
-		if(productsV.size()<2)
-			return productsV;
-		// this is actually returned
-		final List<Environmental> finalTitleList=new Vector<Environmental>(productsV.size());
-		LandTitle L=null;
-		LandTitle L2=null;
-		int x=-1;
-		int x2=-1;
-		while(productsV.size()>0)
-		{
-			if(((!(productsV.get(0) instanceof LandTitle)))
-			||((x=(L=(LandTitle)productsV.get(0)).landPropertyID().lastIndexOf('#'))<0))
+			@Override
+			public CMObject newInstance()
 			{
-				if(finalTitleList.size()==0)
-					finalTitleList.add(productsV.remove(0));
-				else
-					finalTitleList.add(0,productsV.remove(0));
+				return this;
 			}
-			else
+
+			@Override
+			public CMObject copyOf()
 			{
-				int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
-				int chk=0;
-				for(int v=1;v<productsV.size();v++)
+				return this;
+			}
+
+			@Override
+			public void initializeClass()
+			{
+			}
+
+			@Override
+			public int compareTo(CMObject o)
+			{
+				return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
+			}
+
+			@Override
+			public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
+			{
+				final List<Environmental> productsV = new ArrayList<Environmental>(); // don't cache me, im not thread safe!
+				if((myRoom==null)||(buyer==null))
+					return productsV;
+				final Area myArea=myRoom.getArea();
+				String name=buyer.Name();
+				Pair<Clan,Integer> buyerClanPair=null;
+				final TreeSet<String> foundNames = new TreeSet<String>();
+				if(shop.isSold(ShopKeeper.DEAL_CLANDSELLER)
+				&&((buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER))!=null))
+					name=buyerClanPair.first.clanID();
+				if((shop.isSold(ShopKeeper.DEAL_LANDSELLER)||(buyerClanPair!=null))
+				&&(myArea!=null))
 				{
-					if(productsV.get(v) instanceof LandTitle)
+					final Set<LandTitle> titles=new HashSet<LandTitle>();
+					final Map<Room,LandTitle> roomTitleMap = new HashMap<Room, LandTitle>();
+					final LegalLibrary law = CMLib.law();
+					for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
 					{
-						L2=(LandTitle)productsV.get(v);
-						x2=L2.landPropertyID().lastIndexOf('#');
-						if(x2>0)
+						final Room R=r.nextElement();
+						final LandTitle T=law.getLandTitle(R);
+						if(T!=null)
 						{
-							chk=CMath.s_int(L2.landPropertyID().substring(x2+1).trim());
-							if(chk<lowest)
+							if((!titles.contains(T))
+							&&(!foundNames.contains(T.getTitleID())))
 							{
-								lowest=chk;
-								L=L2;
+								foundNames.add(T.getTitleID());
+								titles.add(T);
+							}
+							roomTitleMap.put(R, T);
+						}
+					}
+
+					for(final LandTitle T : titles)
+					{
+						final String towner=T.getOwnerName();
+						if((towner.length()>0) // someone elses title, so never ever list it
+						&&(!towner.equals(name))
+						&&((!towner.equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
+							continue;
+
+						boolean skipThisOne=false;
+						final WorldMap map=CMLib.map();
+						// it is OK if this is in a thin area, since is part is only checking
+						// if this cached titled room is adjacent to one owned by someone else,
+						// and therefore should not be shown.  In this case, it will force-cache
+						// the adjacent rooms for this purpose.
+						for(final Room R : T.getTitledRooms())
+						{
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=R.getRoomInDir(d);
+								if((R2 == null)||(map.getExtendedRoomID(R2).length()==0))
+									continue;
+								final LandTitle r2T=roomTitleMap.get(R2);
+								if(r2T==null)
+								{
+									skipThisOne = false; // we are connected to unowned room (or another area) -- WIN!
+									break;
+								}
+								if((r2T.getOwnerName().equals(name))
+								||(r2T.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
+								{
+									skipThisOne = false; // we are connected to one of OUR rooms -- WIN!
+									break;
+								}
+								if(r2T.getOwnerName().length()>0) // we are connected to someone else .. possibly boo
+									skipThisOne=true;
 							}
 						}
+						if(!skipThisOne)
+						{
+							final Item I=CMClass.getItem("GenTitle");
+							((LandTitle)I).setLandPropertyID(T.landPropertyID());
+							if((((LandTitle)I).getOwnerName().length()>0)
+							&&(!I.Name().endsWith(" (Copy)")))
+								I.setName(L("@x1 (Copy)",I.Name()));
+							else
+							if((T.getOwnerName().length()==0)
+							&&(I.Name().endsWith(" (Copy)")))
+								I.setName(I.Name().substring(0,I.Name().length()-7));
+							I.text();
+							I.recoverPhyStats();
+							productsV.add(I);
+						}
 					}
 				}
-				productsV.remove(L);
-				finalTitleList.add(L);
+
+				if(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
+				{
+					final PlayerStats pStats = buyer.playerStats();
+					if((pStats != null)&&(pStats.getExtItems()!=null))
+						addShipProperty(buyer, productsV, pStats.getExtItems());
+				}
+				if(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
+				{
+					buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+					if((buyerClanPair != null)&&(buyerClanPair.first!=null)&&(buyerClanPair.first.getExtItems()!=null))
+						addShipProperty(buyer, productsV, buyerClanPair.first.getExtItems());
+				}
+
+				if(productsV.size()<2)
+					return productsV;
+				// this is actually returned
+				final List<Environmental> finalTitleList=new ArrayList<Environmental>(productsV.size()); // don't cache me, im not thread safe!
+				LandTitle L=null;
+				LandTitle L2=null;
+				int x=-1;
+				int x2=-1;
+				while(productsV.size()>0)
+				{
+					if(((!(productsV.get(0) instanceof LandTitle)))
+					||((x=(L=(LandTitle)productsV.get(0)).landPropertyID().lastIndexOf('#'))<0))
+					{
+						if(finalTitleList.size()==0)
+							finalTitleList.add(productsV.remove(0));
+						else
+							finalTitleList.add(0,productsV.remove(0));
+					}
+					else
+					{
+						int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
+						int chk=0;
+						for(int v=1;v<productsV.size();v++)
+						{
+							if(productsV.get(v) instanceof LandTitle)
+							{
+								L2=(LandTitle)productsV.get(v);
+								x2=L2.landPropertyID().lastIndexOf('#');
+								if(x2>0)
+								{
+									chk=CMath.s_int(L2.landPropertyID().substring(x2+1).trim());
+									if(chk<lowest)
+									{
+										lowest=chk;
+										L=L2;
+									}
+								}
+							}
+						}
+						productsV.remove(L);
+						finalTitleList.add(L);
+					}
+				}
+				return finalTitleList;
 			}
-		}
-		return finalTitleList;
+		};
 	}
 
 	@Override
@@ -2105,6 +2149,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return L("Readables");
 		case ShopKeeper.DEAL_CLOTHSPINNER:
 			return L("Cloths");
+		case ShopKeeper.DEAL_STOCKBROKER:
+			return L("Stocks and Bonds");
 		default:
 			return L("... I have no idea WHAT I sell");
 		}
@@ -2203,6 +2249,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			break;
 		case ShopKeeper.DEAL_CHILDREN:
 			chk = CMLib.flags().isAgedChild(E);
+			break;
+		case ShopKeeper.DEAL_STOCKBROKER:
+			chk = (E instanceof PrivateProperty)
+					&& E.ID().equals("GenDeed"); //TODO:UGH!
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
 		{

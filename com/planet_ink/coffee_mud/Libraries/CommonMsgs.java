@@ -2682,10 +2682,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			item.unWear();
 			if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))&&(R!=null))
 				R.recoverRoomStats();
-			if(item instanceof Coins)
-				((Coins)item).putCoinsBack();
-			if(item instanceof RawMaterial)
-				((RawMaterial)item).rebundle();
+			if(item instanceof AutoBundler)
+				((AutoBundler)item).autoBundle();
 		}
 		if(CMLib.flags().isCataloged(item))
 			CMLib.catalog().bumpDeathPickup(item);
@@ -2718,10 +2716,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		item.setContainer(null);
 		if(!msg.targetMajor(CMMsg.MASK_INTERMSG))
 		{
-			if(item instanceof Coins)
-				((Coins)item).putCoinsBack();
-			if(item instanceof RawMaterial)
-				((RawMaterial)item).rebundle();
+			if(item instanceof AutoBundler)
+				((AutoBundler)item).autoBundle();
 		}
 	}
 

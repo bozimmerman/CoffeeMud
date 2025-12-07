@@ -193,7 +193,7 @@ public class Thief_Panhandling extends ThiefSkill
 								mob2.addItem(C);
 								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),MUDCmdProcessor.METAFLAG_FORCED);
 								if(!C.amDestroyed())
-									C.putCoinsBack();
+									C.autoBundle();
 							}
 						}
 					}

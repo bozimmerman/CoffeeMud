@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -174,6 +175,16 @@ public interface CoffeeShop extends CMCommon
 	public void delAllStoreInventory(Environmental thisThang);
 
 	/**
+	 * Composes the inventory as players will see it when they list it, which may
+	 * include temporary or ephemeral items not part of the base inventory.
+	 * 
+	 * @param buyer the buyer whose view matters
+	 * @param shopHomeRoom the home room of the shopkeeper
+	 * @return the final list to show
+	 */
+	public List<Environmental> createListInventory(final MOB buyer, final Room shopHomeRoom);
+
+	/**
 	 * Returns whether an item with the given name is presently in this stores
 	 * stock inventory, and available for sale.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
@@ -281,6 +292,20 @@ public interface CoffeeShop extends CMCommon
 	 * @return the shopKeeper that is hosting this shop
 	 */
 	public ShopKeeper shopKeeper();
+	
+	/**
+	 * Returns whether this shop has the built-in shop
+	 * provider of the given ID.
+	 * 
+	 * @see CoffeeShop#addShopProvider(ShopProvider)
+	 * @see ShoppingLibrary.ShopProvider#
+	 * 
+	 * @param ID
+	 * @return
+	 */
+	public boolean hasShopProvider(final String ID);
+	
+	public void addShopProvider(final ShopProvider provider);
 
 	/**
 	 * Returns a thin copy with independent lists, but the
@@ -318,6 +343,25 @@ public interface CoffeeShop extends CMCommon
 		{
 			return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(price));
 		}
+	}
+	
+	/**
+	 * Interface that provides items to a shop
+	 * for just-in-time availability, meaning they
+	 * aren't a part of the permanent stock.
+	 */
+	public static interface ShopProvider extends CMObject
+	{
+		/**
+		 * Returns the stock that this provider
+		 * provides.
+		 * 
+		 * @param buyer the buyer interested
+		 * @param shop the shop contents of the shopkeeper selling
+		 * @param myRoom the room this all takes place in
+		 * @return the collection of new things to put on the temporary list
+		 */
+		public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom);
 	}
 
 	/**

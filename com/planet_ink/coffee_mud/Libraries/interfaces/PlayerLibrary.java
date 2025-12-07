@@ -353,6 +353,22 @@ public interface PlayerLibrary extends CMLibrary
 	 * @return list of all player names
 	 */
 	public List<String> getPlayerLists();
+	
+	/**
+	 * Returns the list of users for the WIZLIST, which
+	 * are a combination of Archons and Immortals, the
+	 * later of which are typically marked in the INI file.
+	 * @return the list of wiz users
+	 */
+	public List<ThinPlayer> getWizUserList();
+	
+	/**
+	 * Returns the list of users that match the SYSOPMASK,
+	 * thus being Archons.
+	 * 
+	 * @return the list of archons.
+	 */
+	public List<ThinPlayer> getArchonUserList();
 
 	/**
 	 * Returns a list of all player char names from all

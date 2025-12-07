@@ -1621,6 +1621,39 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		deadMOB.destroy();
 	}
 
+	private List<ThinPlayer> getMaskedUserList(final String mask)
+	{
+		if(mask.length()==0)
+			return new Vector<ThinPlayer>();
+		final java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
+		final List<ThinPlayer> wizList = new Vector<ThinPlayer>();
+		final MaskingLibrary.CompiledZMask compiledMask=CMLib.masking().maskCompile(mask);
+		for(final PlayerLibrary.ThinPlayer U : allUsers)
+		{
+			final MOB player = getPlayer(U.name()); // only called from this t-groups database anyway, so keep it local
+			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
+			||(CMLib.masking().maskCheck(compiledMask, U)))
+				wizList.add(U);
+		}
+		return wizList;
+	}
+	
+	@Override
+	public List<ThinPlayer> getWizUserList()
+	{
+		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
+		if(mask.length()==0)
+			mask=CMProps.instance().getProperty("SYSOPMASK");
+		return getMaskedUserList(mask); 
+	}
+	
+	@Override
+	public List<ThinPlayer> getArchonUserList()
+	{
+		final String mask=CMProps.instance().getProperty("SYSOPMASK");
+		return getMaskedUserList(mask); 
+	}
+	
 	@Override
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{

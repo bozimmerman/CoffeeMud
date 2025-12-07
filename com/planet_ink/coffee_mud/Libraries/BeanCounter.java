@@ -603,9 +603,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(C!=null)
 		{
 			if(owner instanceof Room)
-				((Room)owner).addItem(C);
+				owner.addItem(C);
 			if(owner instanceof MOB)
-				((MOB)owner).addItem(C);
+				owner.addItem(C);
 			C.setContainer(container);
 			C.recoverPhyStats();
 		}
@@ -1032,7 +1032,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if(banker.location().okMessage(banker,newMsg))
 			{
 				banker.location().send(banker,newMsg);
-				C.putCoinsBack();
+				C.autoBundle();
 			}
 			else
 				CMLib.commands().postDrop(banker,C,true,false,false);
@@ -1049,7 +1049,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			I.setContainer(container);
 			R.addItem(I,ItemPossessor.Expire.Monster_EQ);
-			I.putCoinsBack();
+			I.autoBundle();
 		}
 	}
 
@@ -1347,7 +1347,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			I=mob.getItem(i);
 			if((I instanceof Coins)
-			&&(((Coins)I).container()==null))
+			&&(I.container()==null))
 			{
 				if(clear==null)
 					clear=new ArrayList<Item>();

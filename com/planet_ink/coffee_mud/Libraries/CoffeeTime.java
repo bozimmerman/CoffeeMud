@@ -44,6 +44,12 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return "CoffeeTime";
 	}
 
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
+	static 
+	{
+		FORMAT.setLenient(false);
+	}
+	
 	protected TimeClock	globalClock	= null;
 
 	public static enum TimeDelta
@@ -288,9 +294,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
 			try
 			{
-				final SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
-				fmt.setLenient(false);
-				final Date parsedDate = fmt.parse(dateTimeStr);
+				final Date parsedDate = FORMAT.parse(dateTimeStr);
 				D.setTime(parsedDate);
 				D.set(Calendar.SECOND,0);
 				D.set(Calendar.MILLISECOND,0);

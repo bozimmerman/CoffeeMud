@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * in the Base Value system.
  * @author Bo Zimmerman
  */
-public interface Coins extends Item
+public interface Coins extends Item, AutoBundler
 {
 	/**
 	 * Returns the number of units of currency in the stack
@@ -51,16 +51,6 @@ public interface Coins extends Item
 	 * @param number the number of units of currency in the stack
 	 */
 	public void setNumberOfCoins(long number);
-
-	/**
-	 * This method will inspect the current owner of this item for other
-	 * items of identical currency and denomination.  If any are found, it
-	 * will add its numberOfCoins to THAT stack, and destroy itself.
-	 * Otherwise it will do nothing
-	 * @see Coins#getNumberOfCoins()
-	 * @return true if this item was destroyed due to a combining, false otherwise
-	 */
-	public boolean putCoinsBack();
 
 	/**
 	 * Returns the denomination value of this currency, in base values.  A penny,

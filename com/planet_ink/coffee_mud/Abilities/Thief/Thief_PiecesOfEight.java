@@ -197,7 +197,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 				mob.location().send(mob,msg);
 				final Coins C=CMLib.beanCounter().makeCurrency(triad.first, triad.second.doubleValue(), triad.third.intValue());
 				mob.addItem(C);
-				C.putCoinsBack();
+				C.autoBundle();
 			}
 		}
 		else

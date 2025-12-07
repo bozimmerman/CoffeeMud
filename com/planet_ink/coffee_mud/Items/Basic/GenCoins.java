@@ -220,7 +220,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
-	public boolean putCoinsBack()
+	public boolean autoBundle()
 	{
 		if(amDestroyed())
 			return false;
