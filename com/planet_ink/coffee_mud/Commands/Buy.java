@@ -137,7 +137,11 @@ public class Buy extends StdCommand
 			final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,
 					L("<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>@x1.",forName));
 			if(mob.location().okMessage(mob,newMsg))
+			{
 				mob.location().send(mob,newMsg);
+				if(newMsg.tool() instanceof AutoBundler)
+					((AutoBundler)newMsg.tool()).autoBundle();
+			}
 			else
 			if(buyItemsV.size()==0)
 				CMLib.commands().postCommandRejection(mob,shopkeeper, thisThang,origCmds);
