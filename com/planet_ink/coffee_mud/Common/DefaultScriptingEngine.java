@@ -15084,9 +15084,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final Item product=makeCheapItem(msg.tool());
 							if((product instanceof Coins)
 							&&(product.owner() instanceof Room))
-								execute(new MPContext(affecting,monster,msg.source(),monster,product,(Item)product.copyOf(),null, null).push(script));
+								execute(new MPContext(affecting,monster,msg.source(),msg.target(),product,(Item)product.copyOf(),null, null).push(script));
 							else
-								enqueResponse(triggerCode,affecting,monster,msg.source(),monster,product,product,check,script,1, t);
+								enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),product,product,check,script,1, t);
 							if(!multiTriggers)
 								return;
 						}

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
@@ -298,14 +299,31 @@ public interface CoffeeShop extends CMCommon
 	 * provider of the given ID.
 	 * 
 	 * @see CoffeeShop#addShopProvider(ShopProvider)
-	 * @see ShoppingLibrary.ShopProvider#
+	 * @see CoffeeShop#delShopProvider(ShopProvider)
+	 * @see ShopProvider#ID()
 	 * 
-	 * @param ID
+	 * @param ID the unique if of the provider
 	 * @return
 	 */
 	public boolean hasShopProvider(final String ID);
 	
+	/**
+	 * Adds a new provider of temporary stock to this shop.
+	 * @see CoffeeShop#hasShopProvider(String)
+	 * @see CoffeeShop#delShopProvider(ShopProvider)
+	 * 
+	 * @param provider the provider of stock
+	 */
 	public void addShopProvider(final ShopProvider provider);
+
+	/**
+	 * Removes an old provider of temporary stock from this shop.
+	 * @see CoffeeShop#hasShopProvider(String)
+	 * @see CoffeeShop#addShopProvider(ShopProvider)
+	 * 
+	 * @param provider the provider of stock
+	 */
+	public void delShopProvider(final ShopProvider provider);
 
 	/**
 	 * Returns a thin copy with independent lists, but the

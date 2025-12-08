@@ -388,6 +388,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if((SE!=null)&&(SE.isSavable()))
 			{
 				scriptstr.append("<SCRPT>");
+				scriptstr.append(CMLib.xml().convertXMLtoTag("ENG",""+SE.ID()));
 				scriptstr.append(CMLib.xml().convertXMLtoTag("SCRIPT",CMLib.xml().parseOutAngleBrackets(SE.getScript())));
 				scriptstr.append(CMLib.xml().convertXMLtoTag("SQN",""+SE.defaultQuestName()));
 				scriptstr.append(CMLib.xml().convertXMLtoTag("SSCOP",SE.getVarScope()));
@@ -2941,7 +2942,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				Log.errOut("CoffeeMaker","Error parsing 'SCRPT' of "+identifier(E,null)+".  Load aborted");
 				return;
 			}
-			final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+			String eng = sblk.getValFromPieces("ENG");
+			if((eng==null)||(eng.length()==0))
+				eng = "DefaultScriptingEngine";
+			final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon(eng);
 			S.setSavable(true);
 			final String script=sblk.getValFromPieces("SCRIPT");
 			if(script==null)

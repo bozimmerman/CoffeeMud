@@ -456,6 +456,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return;
 		shopProviders.put(provider.ID(), CMLib.coffeeShops().createRealEstateProvider());
 	}
+	
+	@Override
+	public void delShopProvider(final ShopProvider provider)
+	{
+		shopProviders.remove(provider.ID());
+	}
 
 	private synchronized void checkInternalProviders()
 	{

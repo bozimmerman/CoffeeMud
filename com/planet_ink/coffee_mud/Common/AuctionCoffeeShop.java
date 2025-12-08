@@ -307,4 +307,9 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public void addShopProvider(ShopProvider provider)
 	{
 	}
+
+	@Override
+	public void delShopProvider(ShopProvider provider)
+	{
+	}
 }
