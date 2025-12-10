@@ -103,171 +103,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public void addDepositInventory(final String depositorName, final Item item, final Item container)
 	{
-		final String classID;
-		if((item instanceof Coins)&&(container == null))
-		{
-			((Coins)item).setCurrency(CMLib.beanCounter().getCurrency(this));
-			classID="COINS";
-		}
-		else
-			classID=item.ID();
-		CMLib.catalog().updateCatalogIntegrity(item);
-		final String key=""+item+item.hashCode();
-		if(container != null)
-		{
-			final String containerKey=""+container+container.hashCode();
-			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true));
-		}
-		else
-			CMLib.database().DBCreatePlayerData(depositorName,bankChain(),key,classID+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true));
-	}
-
-	protected Pair<Item,String> makeItemContainer(final String data)
-	{
-		int x=data.indexOf(';');
-		if(x<0)
-			return null;
-		Item I=null;
-		if(data.substring(0,x).equals("COINS"))
-			I=CMClass.getItem("StdCoins");
-		else
-			I=CMClass.getItem(data.substring(0,x));
-		if(I!=null)
-		{
-			String container="";
-			String xml = data.substring(x+1);
-			if(xml.startsWith("CONTAINER="))
-			{
-				x=xml.indexOf(';');
-				if(x>0)
-				{
-					container=xml.substring(10,x);
-					xml=xml.substring(x+1);
-				}
-			}
-			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(I,xml,true);
-			if((I instanceof Coins)
-			&&(((Coins)I).getDenomination()==0.0)
-			&&(((Coins)I).getNumberOfCoins()>0))
-				((Coins)I).setDenomination(1.0);
-			I.recoverPhyStats();
-			I.text();
-			return new Pair<Item,String>(I,container);
-		}
-		return null;
-	}
-
-	protected List<Item> findDeleteRecursiveDepositInventoryByContainerKey(final Container C, final List<PAData> rawInventoryV, final String key)
-	{
-		final List<Item> inventory=new LinkedList<Item>();
-		for(int v=rawInventoryV.size()-1;v>=0;v--)
-		{
-			final DatabaseEngine.PAData PD=rawInventoryV.get(v);
-			final int IDx=PD.xml().indexOf(';');
-			if(IDx>0)
-			{
-				if(PD.xml().substring(IDx+1).startsWith("CONTAINER="+key+";"))
-				{
-					final Item I=makeItemContainer(PD.xml()).first;
-					I.setContainer(C);
-					inventory.add(I);
-					rawInventoryV.remove(v);
-					if(I instanceof Container)
-						inventory.addAll(findDeleteRecursiveDepositInventoryByContainerKey((Container)I,rawInventoryV,PD.key()));
-					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
-				}
-			}
-		}
-		return inventory;
+		CMLib.beanCounter().addBankDepositInventory(depositorName, bankChain(), item, container);
 	}
 
 	@Override
 	public List<Item> delDepositInventory(final String depositorName, final Item likeItem)
 	{
-		final List<PAData> rawInventoryV=getRawPDDepositInventory(depositorName);
-		final List<Item> items = new ArrayList<Item>();
-		if(likeItem.container()==null)
-		{
-			if(likeItem instanceof Coins)
-			{
-				for(int v=rawInventoryV.size()-1;v>=0;v--)
-				{
-					final DatabaseEngine.PAData PD=rawInventoryV.get(v);
-					if(PD.xml().startsWith("COINS;"))
-					{
-						CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
-						items.add(makeItemContainer(PD.xml()).first);
-					}
-				}
-			}
-			else
-			{
-				for(int v=rawInventoryV.size()-1;v>=0;v--)
-				{
-					final DatabaseEngine.PAData PD=rawInventoryV.get(v);
-					if(PD.xml().startsWith(likeItem.ID()+";") && (!PD.xml().startsWith(likeItem.ID()+";CONTAINER=")))
-					{
-						final Pair<Item,String> pI=makeItemContainer(PD.xml());
-						if((pI!=null) && likeItem.sameAs(pI.first))
-						{
-							pI.first.setContainer(null);
-							if(pI.first instanceof Container)
-							{
-								items.add(pI.first);
-								final Hashtable<String,List<DatabaseEngine.PAData>> pairings=new Hashtable<String,List<DatabaseEngine.PAData>>();
-								for(final PAData PDp : rawInventoryV)
-								{
-									final int IDx=PDp.xml().indexOf(';');
-									if(IDx>0)
-									{
-										final String subXML=PDp.xml().substring(IDx+1);
-										if(subXML.startsWith("CONTAINER="))
-										{
-											final int x=subXML.indexOf(';');
-											if(x>0)
-											{
-												final String contKey=subXML.substring(10,x);
-												if(!pairings.containsKey(contKey))
-													pairings.put(contKey, new LinkedList<DatabaseEngine.PAData>());
-												pairings.get(contKey).add(PDp);
-											}
-										}
-									}
-								}
-								CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
-								final Map<String,Container> containerMap=new Hashtable<String,Container>();
-								containerMap.put(PD.key(), (Container)pI.first);
-								while(containerMap.size()>0)
-								{
-									final String contKey=containerMap.keySet().iterator().next();
-									final Container container=containerMap.remove(contKey);
-									final List<DatabaseEngine.PAData> contents=pairings.get(contKey);
-									if(contents != null)
-									{
-										for(final DatabaseEngine.PAData PDi : contents)
-										{
-											final Pair<Item,String> pairI=makeItemContainer(PDi.xml());
-											CMLib.database().DBDeletePlayerData(PDi.who(),PDi.section(),PDi.key());
-											pairI.first.setContainer(container);
-											items.add(pairI.first);
-											if(pairI.first instanceof Container)
-												containerMap.put(PDi.key(), (Container)pairI.first);
-										}
-									}
-								}
-							}
-							else
-							{
-								items.add(pI.first);
-								CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
-							}
-							break;
-						}
-					}
-				}
-			}
-		}
-		return items;
+		return CMLib.beanCounter().delBankDepositInventory(bankChain(), depositorName, likeItem);
 	}
 
 	@Override
@@ -285,27 +127,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public List<Item> getDepositedItems(final String depositorName)
 	{
-		if((depositorName==null)||(depositorName.length()==0))
-			return new ArrayList<Item>();
-		final List<Item> items=new Vector<Item>();
-		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>();
-		for(final PAData PD : getRawPDDepositInventory(depositorName))
-		{
-			final Pair<Item,String> pair=makeItemContainer(PD.xml());
-			if(pair!=null)
-				pairings.put(PD.key(), pair);
-		}
-		for(final Pair<Item,String> pair : pairings.values())
-		{
-			if(pair.second.length()>0)
-			{
-				final Pair<Item,String> otherPair = pairings.get(pair.second);
-				if((otherPair != null)&&(otherPair.first instanceof Container))
-					pair.first.setContainer((Container)otherPair.first);
-			}
-			items.add(pair.first);
-		}
-		return items;
+		return CMLib.beanCounter().getBankDepositedItems(bankChain(), depositorName);
 	}
 
 	protected List<PAData> getRawPDDepositInventory(final String depositorName)
@@ -346,32 +168,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public Item findDepositInventory(final String depositorName, final String itemName)
 	{
-		final List<PAData> V=getRawPDDepositInventory(depositorName);
-		if(CMath.s_int(itemName)>0)
-		{
-			for(int v=0;v<V.size();v++)
-			{
-				final DatabaseEngine.PAData PD=V.get(v);
-				if(PD.xml().startsWith("COINS;"))
-					return makeItemContainer(PD.xml()).first;
-			}
-		}
-		else
-		for(int v=0;v<V.size();v++)
-		{
-			final DatabaseEngine.PAData PD=V.get(v);
-			if(PD.xml().lastIndexOf(";CONTAINER=",81)<0)
-			{
-				final Pair<Item,String> pair=makeItemContainer(PD.xml());
-				if(pair!=null)
-				{
-					if(CMLib.english().containsString(pair.first.Name(),itemName))
-						return pair.first;
-					pair.first.destroy();
-				}
-			}
-		}
-		return null;
+		return CMLib.beanCounter().findBankDepositInventory(bankChain(), depositorName, itemName);
 	}
 
 	public long timeInterval()

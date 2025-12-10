@@ -1138,42 +1138,270 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return null;
 	}
 
-	@Override
-	public boolean modifyBankGold(final String bankName, final String owner, final String explanation, final String currency, final double deltaAmount)
+	private List<PAData> queryBankPAData(final String bankName, final String owner, final String prefixMask)
 	{
 		final List<PAData> V;
-		if((bankName==null)||(bankName.length()==0))
+		boolean noBankChain = ((bankName==null)||(bankName.length()==0));
+		//boolean noOwner = ((owner==null)||(owner.length()==0));
+		if(noBankChain)
+		{
 			V=CMLib.database().DBReadAllPlayerData(owner);
+		}
 		else
 			V=CMLib.database().DBReadPlayerData(owner, bankName);
+		List<PAData> data = new Vector<PAData>();
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PAData D=V.get(v);
-			final String last=D.xml();
-			if(last.startsWith("COINS;"))
+			if(noBankChain||(D.section().equals(bankName)))
 			{
-				if((bankName==null)||(bankName.length()==0)||(bankName.equals(D.section())))
+				final String last=D.xml();
+				if((prefixMask==null)||(prefixMask.length()==0)||(last.startsWith(prefixMask)))
+					data.add(D);
+			}
+		}
+		return data;
+	}
+	
+	private String packBankItemData(final Item item, final Item container)
+	{
+		final String classID;
+		if((item instanceof Coins)&&(container == null))
+		{
+			((Coins)item).setCurrency(CMLib.beanCounter().getCurrency(this));
+			classID="COINS";
+		}
+		else
+			classID=item.ID();
+		CMLib.catalog().updateCatalogIntegrity(item);
+		if(container != null)
+		{
+			final String containerKey=""+container+container.hashCode();
+			return classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
+		}
+		else
+			return classID+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
+	}
+	
+	@Override
+	public void addBankDepositInventory(final String depositorName, final String bankChain, final Item item, final Item container)
+	{
+		final String key=""+item+item.hashCode();
+		CMLib.database().DBCreatePlayerData(depositorName,bankChain,key,packBankItemData(item,container));
+	}
+
+	private Pair<Item,String> unpackBankItemContainer(final PAData data)
+	{
+		if(data == null)
+			return null;
+		String xml = data.xml();
+		if(xml.startsWith("COINS;"))
+		{
+			Coins C=(Coins)CMClass.getItem("StdCoins");
+			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,xml.substring(6),true);
+			if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
+				C.setDenomination(1.0);
+			C.recoverPhyStats();
+			return new Pair<Item,String>(C,"");
+		}
+		else
+		{
+			int x=xml.indexOf(';');
+			if(x<0)
+				return null;
+			Item I=null;
+			if(xml.substring(0,x).equals("COINS"))
+				I=CMClass.getItem("StdCoins");
+			else
+				I=CMClass.getItem(xml.substring(0,x));
+			if(I!=null)
+			{
+				String container="";
+				xml = xml.substring(x+1);
+				if(xml.startsWith("CONTAINER="))
 				{
-					Coins C=(Coins)CMClass.getItem("StdCoins");
-					CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,last.substring(6),true);
-					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
-						C.setDenomination(1.0);
-					C.recoverPhyStats();
-					final double value=C.getTotalValue();
-					if((deltaAmount>0.0)||(value>=(-deltaAmount)))
+					x=xml.indexOf(';');
+					if(x>0)
 					{
-						C=makeBestCurrency(currency,value+deltaAmount);
-						if(C!=null)
-							CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),"COINS;"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(C,true));
+						container=xml.substring(10,x);
+						xml=xml.substring(x+1);
+					}
+				}
+				CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(I,xml,true);
+				if((I instanceof Coins)
+				&&(((Coins)I).getDenomination()==0.0)
+				&&(((Coins)I).getNumberOfCoins()>0))
+					((Coins)I).setDenomination(1.0);
+				I.recoverPhyStats();
+				I.text();
+				return new Pair<Item,String>(I,container);
+			}
+			return null;
+		}
+	}
+	
+	@Override
+	public Item findBankDepositInventory(final String bankChain, final String depositorName, final String itemName)
+	{
+		final List<PAData> V=queryBankPAData(bankChain, depositorName, null);
+		if(CMath.s_int(itemName)>0)
+		{
+			for(int v=0;v<V.size();v++)
+			{
+				final DatabaseEngine.PAData PD=V.get(v);
+				if(PD.xml().startsWith("COINS;"))
+					return unpackBankItemContainer(PD).first;
+			}
+		}
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			final DatabaseEngine.PAData PD=V.get(v);
+			if(PD.xml().lastIndexOf(";CONTAINER=",81)<0)
+			{
+				final Pair<Item,String> pair=unpackBankItemContainer(PD);
+				if(pair!=null)
+				{
+					if(CMLib.english().containsString(pair.first.Name(),itemName))
+						return pair.first;
+					pair.first.destroy();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Item> delBankDepositInventory(final String bankChain, final String depositorName, final Item likeItem)
+	{
+		final List<Item> items = new ArrayList<Item>();
+		if((likeItem==null)||(likeItem.container()!=null))
+			return items; // really? why?
+		final String id = (likeItem instanceof Coins)?"COINS;":(likeItem.ID()+";");
+		final List<PAData> rawInventoryV=queryBankPAData(bankChain, depositorName, id);
+		if(likeItem instanceof Coins)
+		{
+			for(int v=rawInventoryV.size()-1;v>=0;v--)
+			{
+				final DatabaseEngine.PAData PD=rawInventoryV.get(v);
+				CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
+				items.add(unpackBankItemContainer(PD).first);
+			}
+		}
+		else
+		{
+			for(int v=rawInventoryV.size()-1;v>=0;v--)
+			{
+				final DatabaseEngine.PAData PD=rawInventoryV.get(v);
+				if(!PD.xml().startsWith(likeItem.ID()+";CONTAINER="))
+				{
+					final Pair<Item,String> pI=unpackBankItemContainer(PD);
+					if((pI!=null) && likeItem.sameAs(pI.first))
+					{
+						pI.first.setContainer(null);
+						if(pI.first instanceof Container)
+						{
+							items.add(pI.first);
+							final Hashtable<String,List<DatabaseEngine.PAData>> pairings=new Hashtable<String,List<DatabaseEngine.PAData>>();
+							for(final PAData PDp : rawInventoryV)
+							{
+								final int IDx=PDp.xml().indexOf(';');
+								if(IDx>0)
+								{
+									final String subXML=PDp.xml().substring(IDx+1);
+									if(subXML.startsWith("CONTAINER="))
+									{
+										final int x=subXML.indexOf(';');
+										if(x>0)
+										{
+											final String contKey=subXML.substring(10,x);
+											if(!pairings.containsKey(contKey))
+												pairings.put(contKey, new LinkedList<DatabaseEngine.PAData>());
+											pairings.get(contKey).add(PDp);
+										}
+									}
+								}
+							}
+							CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
+							final Map<String,Container> containerMap=new Hashtable<String,Container>();
+							containerMap.put(PD.key(), (Container)pI.first);
+							while(containerMap.size()>0)
+							{
+								final String contKey=containerMap.keySet().iterator().next();
+								final Container container=containerMap.remove(contKey);
+								final List<DatabaseEngine.PAData> contents=pairings.get(contKey);
+								if(contents != null)
+								{
+									for(final DatabaseEngine.PAData PDi : contents)
+									{
+										final Pair<Item,String> pairI=unpackBankItemContainer(PDi);
+										CMLib.database().DBDeletePlayerData(PDi.who(),PDi.section(),PDi.key());
+										pairI.first.setContainer(container);
+										items.add(pairI.first);
+										if(pairI.first instanceof Container)
+											containerMap.put(PDi.key(), (Container)pairI.first);
+									}
+								}
+							}
+						}
 						else
-							CMLib.database().DBDeletePlayerData(owner,D.section(),D.key());
-						addToBankLedger(bankName,owner,explanation);
-						return true;
+						{
+							items.add(pI.first);
+							CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
+						}
+						break;
 					}
 				}
 			}
 		}
+		return items;
+	}
+
+	@Override
+	public boolean modifyBankGold(final String bankName, final String owner, final String explanation, final String currency, final double deltaAmount)
+	{
+		for(final PAData D : queryBankPAData(bankName,owner,"COINS;"))
+		{
+			Coins C=(Coins)unpackBankItemContainer(D).first;
+			final double value=C.getTotalValue();
+			if((deltaAmount>0.0)||(value>=(-deltaAmount)))
+			{
+				C=makeBestCurrency(currency,value+deltaAmount);
+				if(C!=null)
+					CMLib.database().DBReCreatePlayerData(owner,D.section(),D.key(),packBankItemData(C,null));
+				else
+					CMLib.database().DBDeletePlayerData(owner,D.section(),D.key());
+				addToBankLedger(bankName,owner,explanation);
+				return true;
+			}
+		}
 		return false;
+	}
+
+	@Override
+	public List<Item> getBankDepositedItems(final String bankChain, final String depositorName)
+	{
+		if((depositorName==null)||(depositorName.length()==0))
+			return new ArrayList<Item>();
+		final List<Item> items=new Vector<Item>();
+		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>();
+		for(final PAData PD : queryBankPAData(bankChain,depositorName,null))
+		{
+			final Pair<Item,String> pair=unpackBankItemContainer(PD);
+			if(pair!=null)
+				pairings.put(PD.key(), pair);
+		}
+		for(final Pair<Item,String> pair : pairings.values())
+		{
+			if(pair.second.length()>0)
+			{
+				final Pair<Item,String> otherPair = pairings.get(pair.second);
+				if((otherPair != null)&&(otherPair.first instanceof Container))
+					pair.first.setContainer((Container)otherPair.first);
+			}
+			items.add(pair.first);
+		}
+		return items;
 	}
 
 	@Override

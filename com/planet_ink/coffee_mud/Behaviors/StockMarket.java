@@ -142,7 +142,7 @@ public class StockMarket extends StdBehavior
 								if(remain <= 0)
 									continue;
 							}
-							final int amtOwned = me.getStocksOwned(buyer, def);
+							//final int amtOwned = me.getStocksOwned(buyer, def);
 
 							final Item deed = (Item)def.deed.copyOf();
 							((PrivateProperty)deed).setPrice(def.getPrice());
