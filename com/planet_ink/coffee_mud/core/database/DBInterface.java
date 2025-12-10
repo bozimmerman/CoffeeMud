@@ -1023,6 +1023,18 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public TriadList<String, Item, String> DBReadPlayerItems(final String name, final String classID, final String textMask)
+	{
+		return mobLoader.DBReadPlayerItems(name, classID, textMask);
+	}
+
+	@Override
+	public void DBUpdatePlayerItem(final String mobName, final Item thisItem, final Object location)
+	{
+		mobLoader.DBUpdatePlayerItem(mobName, thisItem, location);
+	}
+
+	@Override
 	public PairList<String,Integer> DBReadPlayerClans(final String name)
 	{
 		return mobLoader.DBReadPlayerClans(name);
@@ -1320,6 +1332,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeletePlayerData(final String playerID, final String section, final String key)
 	{
 		pDataLoader.DBDelete(playerID, section, key);
+	}
+
+	@Override
+	public void DBDeletePlayerSectionKeyData(final String section, final String key)
+	{
+		pDataLoader.DBDeleteSectionKeyData(section, key);
 	}
 
 	@Override

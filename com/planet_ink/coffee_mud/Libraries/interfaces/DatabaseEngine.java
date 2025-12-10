@@ -915,12 +915,35 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reads the item dbid, class and misc text of each item in the given
 	 * players inventory, along with all 9 fields a growing item needs.
 	 * Returned fields are: dbID, itemID, text, locID, worn, uses, level, ability, height
+	 *
 	 * @param name the name of the player
 	 * @param classLocFilter null, or a filter for the itemid and/or location string
 	 * @param textFilter null, or a filter for the misctext
 	 * @return the list of matching items
 	 */
 	public List<String[]> DBReadPlayerItemData(final String name, final Filterer<Pair<String,String>> classLocFilter, final Filterer<String> textFilter);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Reads and parses in items from the player item tables.
+	 *
+	 * @param name null, or the name of the player
+	 * @param classID null, or the item class to query for
+	 * @param textMask null, or a sub-string of the misctext to query
+	 * @return a list of the player name, the item, and the item location
+	 */
+	public TriadList<String, Item, String> DBReadPlayerItems(String name, final String classID, final String textMask);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Updates a specific player item in the player item tables.
+	 *
+	 * @param mobName the player name
+	 * @param thisItem the item to update, which must have a database id
+	 * @param location the location string for the item, or the location environmental, or null
+	 */
+	public void DBUpdatePlayerItem(final String mobName, final Item thisItem, final Object location);
+
 
 	/**
 	 * Table category: DBPLAYERS
@@ -1999,9 +2022,21 @@ public interface DatabaseEngine extends CMLibrary
 	 * Deletes all player data of the given section/type.
 	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
 	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionKeyData(String, String)
 	 * @param section the section, type of data to delete
 	 */
 	public void DBDeletePlayerSectionData(String section);
+
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Deletes all player data of the given section/type and key.
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section, type of data to delete
+	 */
+	public void DBDeletePlayerSectionKeyData(String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA

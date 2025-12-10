@@ -75,9 +75,10 @@ public interface Item extends Rider, DBIdentifiable, Wearable, Readable
 	public void removeFromOwnerContainer();
 
 	/**
-	 * How many items this Item object represents.  When an item is Packaged, this
-	 * method will return a number greater than 1, otherwise it always returns 1.
-	 * @return the number of items represented by this object.
+	 * How many items this Item object represents.  When an item is a container, this
+	 * method might return a number greater than 1, otherwise it always returns 1.
+	 * This is relevant in GETing, and in item counting.
+	 * @return the number of items represented by this object (e.g. getting).
 	 */
 	public int numberOfItems();
 

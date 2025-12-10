@@ -149,6 +149,18 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		domainSource=src;
 	}
 
+	@Override
+	public int getBundleSize()
+	{
+		return basePhyStats().weight();
+	}
+
+	@Override
+	public void setBundleSize(final int size)
+	{
+		basePhyStats().setWeight(size);
+		recoverPhyStats();
+	}
 
 	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
 

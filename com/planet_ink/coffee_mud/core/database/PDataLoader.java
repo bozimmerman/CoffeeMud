@@ -617,6 +617,32 @@ public class PDataLoader
 		}
 	}
 
+	public void DBDeleteSectionKeyData(String section, String key)
+	{
+
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			section = DB.injectionClean(section);
+			key = DB.injectionClean(key);
+			D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMSECT='"+section+"'",0);
+			DB.DBDone(D);
+			CMLib.s_sleep(500);
+			D=DB.DBFetch();
+			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMSECT='"+section+"'")>0)
+				Log.errOut("Failed to delete data for section "+section+".");
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("PDataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
 	public void DBDelete(String section)
 	{
 		section = DB.injectionClean(section);

@@ -125,6 +125,18 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
+	public int getBundleSize()
+	{
+		return (int)getNumberOfCoins();
+	}
+
+	@Override
+	public void setBundleSize(final int size)
+	{
+		setNumberOfCoins(size);
+	}
+
+	@Override
 	public double getDenomination()
 	{
 		return denomination;

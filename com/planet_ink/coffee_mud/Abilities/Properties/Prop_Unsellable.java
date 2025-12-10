@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.Races.interfaces.Race;
@@ -45,9 +46,11 @@ public class Prop_Unsellable extends Property
 		return "Unsellable stuff";
 	}
 
-	protected String	ambiance	= null;
-	protected boolean	dropOff		= false;
-	protected String	message		= "You can't sell that.";
+	protected String		ambiance	= null;
+	protected boolean		dropOff		= false;
+	protected String		message		= "You can't sell that.";
+	protected CompiledZMask	sxceptMask	= null;
+	protected CompiledZMask	pxceptMask	= null;
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -57,6 +60,11 @@ public class Prop_Unsellable extends Property
 		if((message != null)&&(affected != null))
 			message=CMStrings.replaceVariables(message,affected.name());
 		dropOff = CMParms.getParmBool(newMiscText, "DROPOFF", false);
+		sxceptMask = null;
+		pxceptMask = null;
+		final String exceptMaskStr = CMParms.getParmStr(newMiscText,"SEXCEPTMASK", "");
+		if(exceptMaskStr.trim().length()>0)
+			sxceptMask=CMLib.masking().maskCompile(exceptMaskStr);
 		super.setMiscText(newMiscText);
 	}
 
@@ -81,8 +89,16 @@ public class Prop_Unsellable extends Property
 				&&(msg.tool() instanceof Item)
 				&&(((Item)msg.tool()).ultimateContainer(affected)==affected)))
 			{
-				msg.source().tell(message);
-				return false;
+				final boolean shopkeeperException =(msg.target() != null)
+												&& (sxceptMask != null)
+												&& (CMLib.masking().maskCheck(sxceptMask, msg.target(), true));
+				final boolean playerException = (pxceptMask != null)
+												&& (CMLib.masking().maskCheck(pxceptMask, msg.target(), false));
+				if((!shopkeeperException) && (!playerException))
+				{
+					msg.source().tell(message);
+					return false;
+				}
 			}
 			break;
 		case CMMsg.TYP_DROP:

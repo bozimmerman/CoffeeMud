@@ -100,6 +100,19 @@ public class GenResource extends GenItem implements RawMaterial
 		CMLib.materials().quickDestroy(this);
 	}
 
+	@Override
+	public int getBundleSize()
+	{
+		return basePhyStats().weight();
+	}
+
+	@Override
+	public void setBundleSize(final int size)
+	{
+		basePhyStats().setWeight(size);
+		recoverPhyStats();
+	}
+
 	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
 
 	@Override

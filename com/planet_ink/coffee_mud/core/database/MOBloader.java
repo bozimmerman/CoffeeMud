@@ -1194,29 +1194,113 @@ public class MOBloader
 		return items;
 	}
 
-	public MOB DBRead(final String name)
+	public TriadList<String, Item, String> DBReadPlayerItems(String name, final String classID, final String textMask)
 	{
-		if((name==null)||(name.length()==0))
-			return null;
-		if(emptyRoom==null)
-			emptyRoom=CMClass.getLocale("StdRoom");
-		final String[] oldLocID=new String[1];
-		if(CMLib.players().getPlayer(name)!=null) // super important to stay this t-group
-			return CMLib.players().getPlayer(name);
-		final MOB mob=DBReadUserOnly(name,oldLocID);
-		if(mob == null)
-			return null;
-		final int oldDisposition=mob.basePhyStats().disposition();
-		mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
-		mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
-		CMLib.players().addPlayer(mob);
-		mob.recoverPhyStats();
-		mob.recoverCharStats();
-		Room prevRoom=mob.location();
-		boolean inhab=false;
-		if(prevRoom!=null)
-			inhab=prevRoom.isInhabitant(mob);
-		mob.setLocation(mob.getStartRoom());
+		final TriadList<String,Item,String> items=new TriadVector<String,Item,String>();
+		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final StringBuilder sql = new StringBuilder("SELECT * FROM CMCHIT");
+			final List<String> wheres = new ArrayList<String>(3);
+			if((name != null)&&(name.length()>0))
+				wheres.add("CMITID='"+name+"'");
+			if((classID != null)&&(classID.length()>0))
+				wheres.add("CMUSERID='"+classID+"'");
+			if((textMask != null)&&(textMask.length()>0))
+				wheres.add("CMITTX LIKE '%"+textMask+"%'");
+			if(wheres.size()>0)
+			{
+				final StringBuilder clauses = new StringBuilder("");
+				for(int i=0;i<wheres.size();i++)
+				{
+					if(clauses.length()>0)
+						clauses.append(" AND ");
+					clauses.append(wheres.get(i));
+				}
+				sql.append(" WHERE ").append(clauses.toString());
+			}
+			final ResultSet R=D.query(sql.toString());
+			while(R.next())
+			{
+				final String user=DBConnections.getRes(R,"CMUSERID");
+				final String loID=DBConnections.getRes(R,"CMITLO");
+				final String itemID=DBConnections.getRes(R,"CMITID");
+				final String dbID=DBConnections.getRes(R,"CMITNM");
+				final String text=DBConnections.getResQuietly(R,"CMITTX");
+				items.add(user,DBBuildItemFromData(new String[]
+					{dbID, itemID, text, loID,
+					""+DBConnections.getLongRes(R, "CMITWO"),
+					""+DBConnections.getLongRes(R, "CMITUR"),
+					""+DBConnections.getLongRes(R, "CMITLV"),
+					""+DBConnections.getLongRes(R, "CMITAB"),
+					""+DBConnections.getLongRes(R, "CMHEIT")}),loID);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		for(int i=0;i<items.size();i++)
+			CMLib.threads().unTickAll(items.getSecond(i));
+		return items;
+	}
+
+	public void DBUpdatePlayerItem(final String mobName, final Item thisItem, final Object location)
+	{
+		if((mobName==null)
+		||(thisItem==null)
+		||(thisItem.databaseID()==null)
+		||(thisItem.databaseID().trim().length()==0))
+			return;
+		CMLib.catalog().updateCatalogIntegrity(thisItem);
+		final String container;
+		if(location == null)
+			container="";
+		else
+		if(location instanceof Environmental)
+			container=""+getShortID(thisItem.container());
+		else
+			container=location.toString();
+		final String name=DB.injectionClean(mobName);
+		final String itemID=thisItem.databaseID();
+		thisItem.setDatabaseID(itemID);
+		final String sql = "UPDATE CMCHIT "
+				+ "SET CMUSERID='"+name+"', "
+				+ "CMITNM='"+(itemID)+"', "
+				+ "CMITID='"+thisItem.ID()+"', "
+				+ "CMITTX=?, "
+				+ "CMITLO='"+container+"', "
+				+ "CMITWO="+thisItem.rawWornCode()+", "
+				+ "CMITUR="+thisItem.usesRemaining()+", "
+				+ "CMITLV="+thisItem.basePhyStats().level()+", "
+				+ "CMITAB="+thisItem.basePhyStats().ability()+", "
+				+ "CMHEIT="+thisItem.basePhyStats().height()+"";
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			DB.updateWithClobs(sql,thisItem.text());
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		D=null;
+	}
+
+	private Room DBReadItemsToPlayerMOB(final MOB mob, Room prevRoom, final String[] oldLocID)
+	{
 		DBConnection D=null;
 		// now grab the items
 		try
@@ -1278,7 +1362,7 @@ public class MOBloader
 								else
 								if(newItem instanceof Boardable)
 								{
-									Log.errOut("Destroying "+newItem.name()+" on "+name+" because it has an invalid location '"+roomID+"'.");
+									Log.errOut("Destroying "+newItem.name()+" on "+mob.Name()+" because it has an invalid location '"+roomID+"'.");
 									newItem.destroy();
 									continue;
 								}
@@ -1379,17 +1463,12 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		D=null;
-		if(prevRoom!=null)
-		{
-			mob.setLocation(prevRoom);
-			if(inhab&&(!prevRoom.isInhabitant(mob)))
-				prevRoom.addInhabitant(mob);
-		}
-		else
-		if((mob.location()!=null)
-		&&((inhab&&(!mob.location().isInhabitant(mob)))))
-			mob.location().addInhabitant(mob);
-		// now grab the abilities
+		return prevRoom;
+	}
+
+	private void DBReadAbilities(final MOB mob)
+	{
+		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
@@ -1467,7 +1546,46 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
-		D=null;
+	}
+
+	public MOB DBRead(final String name)
+	{
+		if((name==null)||(name.length()==0))
+			return null;
+		if(emptyRoom==null)
+			emptyRoom=CMClass.getLocale("StdRoom");
+		final String[] oldLocID=new String[1];
+		if(CMLib.players().getPlayer(name)!=null) // super important to stay this t-group
+			return CMLib.players().getPlayer(name);
+		final MOB mob=DBReadUserOnly(name,oldLocID);
+		if(mob == null)
+			return null;
+		final int oldDisposition=mob.basePhyStats().disposition();
+		mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+		mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+		CMLib.players().addPlayer(mob);
+		mob.recoverPhyStats();
+		mob.recoverCharStats();
+		Room prevRoom=mob.location();
+		boolean inhab=false;
+		if(prevRoom!=null)
+			inhab=prevRoom.isInhabitant(mob);
+		mob.setLocation(mob.getStartRoom());
+		// grab the player items
+		prevRoom = this.DBReadItemsToPlayerMOB(mob, prevRoom, oldLocID);
+		if(prevRoom!=null)
+		{
+			mob.setLocation(prevRoom);
+			if(inhab&&(!prevRoom.isInhabitant(mob)))
+				prevRoom.addInhabitant(mob);
+		}
+		else
+		if((mob.location()!=null)
+		&&((inhab&&(!mob.location().isInhabitant(mob)))))
+			mob.location().addInhabitant(mob);
+		// now grab the abilities
+		DBReadAbilities(mob);
+		// finalize
 		mob.basePhyStats().setDisposition(oldDisposition);
 		mob.recoverPhyStats();
 		if(mob.baseCharStats()!=null)
@@ -2322,7 +2440,7 @@ public class MOBloader
 			return E.ID()+classID.substring(0, x).hashCode()+classID.substring(x);
 	}
 
-	protected String getDBItemUpdateString(final MOB mob, final Item thisItem)
+	protected String getDBItemInsertString(final MOB mob, final Item thisItem)
 	{
 		CMLib.catalog().updateCatalogIntegrity(thisItem);
 		final String container=((thisItem.container()!=null)?(""+getShortID(thisItem.container())):"");
@@ -2374,7 +2492,7 @@ public class MOBloader
 			&&(thisItem.isSavable()))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
-				final String sql=getDBItemUpdateString(mob,thisItem);
+				final String sql=getDBItemInsertString(mob,thisItem);
 				if(!useBulkInserts)
 					strings.add(new DBPreparedBatchEntry(sql,thisItem.text()+" "));
 				else
@@ -2439,7 +2557,7 @@ public class MOBloader
 				{
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
-					final String sql=getDBItemUpdateString(mob,thisItem);
+					final String sql=getDBItemInsertString(mob,thisItem);
 					final String roomID;
 					if((cont.owner()==null)
 					&&(thisItem instanceof SpaceObject)

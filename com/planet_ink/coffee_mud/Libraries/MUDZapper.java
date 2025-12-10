@@ -1010,6 +1010,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return v;
 	}
 
+	protected boolean ifStatCheck(final String val1, final char c, final String val2)
+	{
+		switch(c)
+		{
+		case '=':
+			return (val1.equalsIgnoreCase(val2));
+		case '!':
+			return !(val1.equalsIgnoreCase(val2));
+		case '>':
+			if(CMath.isNumber(val1))
+				return CMath.s_double(val1) >= CMath.s_double(val2);
+			else
+				return val1.compareTo(val2)>=0;
+		case '<':
+			if(CMath.isNumber(val1))
+				return CMath.s_double(val1) <= CMath.s_double(val2);
+			else
+				return val1.compareTo(val2)<=0;
+		case '&':
+			if(CMath.isNumber(val1))
+				return (CMath.s_long(val1) & CMath.s_long(val2)) == CMath.s_long(val2);
+			else
+				return false;
+		case '|':
+			if(CMath.isNumber(val1))
+				return (CMath.s_long(val1) & CMath.s_long(val2)) > 0;
+			else
+				return false;
+		}
+		return false;
+	}
+
 	protected int appendCommaList(final StringBuilder buf, final List<String> V, int v)
 	{
 		for(int v2=v+1;v2<V.size();v2++)
@@ -3689,10 +3721,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		errorSink.add("No valid zapper codes found.");
 		return false;
 	}
-	
+
 	private XHashSet<String> populateRequiredRaces(final CompiledZMaskEntry[] eset, final Set<String> allRaces, final Map<String,List<String>> catMap)
 	{
-		XHashSet<String> subResult = new XHashSet<String>();
+		final XHashSet<String> subResult = new XHashSet<String>();
 		for(int i=0;i<eset.length;i++)
 		{
 			switch(eset[i].maskType())
@@ -3731,9 +3763,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return subResult;
 	}
-	
-	final Set<ZapperKey> RACE_RELEVANT_KEYS =new XHashSet<ZapperKey>(new ZapperKey[] {ZapperKey.RACE,ZapperKey._RACE,ZapperKey.RACECAT,ZapperKey._RACECAT}); 
-	
+
+	final Set<ZapperKey> RACE_RELEVANT_KEYS =new XHashSet<ZapperKey>(new ZapperKey[] {ZapperKey.RACE,ZapperKey._RACE,ZapperKey.RACECAT,ZapperKey._RACECAT});
+
 	@Override
 	public Set<Race> getRequiredRaces(final CompiledZMask mask)
 	{
@@ -3751,9 +3783,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 		}
 		if(!foundEntry)
-			return new HashSet<Race>(); 
+			return new HashSet<Race>();
 		final Map<String, Race> allRaces = new HashMap<String,Race>();
-		final TreeMap<String,List<String>> catMap = new TreeMap<String, List<String>>(); 
+		final TreeMap<String,List<String>> catMap = new TreeMap<String, List<String>>();
 		for(final Enumeration<Race> r = CMClass.races(); r.hasMoreElements(); )
 		{
 			final Race R = r.nextElement();
@@ -3772,7 +3804,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			boolean lastConnectorNot = false;
 			for(int i=0;i<mask.entries().length;i+=2)
 			{
-				XHashSet<String> subResult = populateRequiredRaces(mask.entries()[i], allRaces.keySet(), catMap);
+				final XHashSet<String> subResult = populateRequiredRaces(mask.entries()[i], allRaces.keySet(), catMap);
 				if(lastConnectorNot)
 					subResult.invert(allRaces.keySet());
 				races.addAll(subResult);
@@ -5373,10 +5405,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							else
 							if((str2.startsWith("-"))||(str2.startsWith("+")))
 							{
-								final int x=str2.indexOf('=');
+								int x=str2.indexOf('=');
 								if(x>0)
 								{
-									parms.add(str2.toUpperCase().substring(1, x));
+									if((x>2)&&("!&|<>".indexOf(str2.charAt(x-1))>=0))
+									{
+										parms.add(str2.toUpperCase().substring(1, x-1));
+										parms.add(Character.valueOf(str2.charAt(x-1)));
+									}
+									else
+									{
+										parms.add(str2.toUpperCase().substring(1, x));
+										parms.add(Character.valueOf('='));
+										if((x<str2.length()-1)&&(str2.charAt(x+1)=='='))
+											x++;
+									}
 									parms.add(str2.substring(x+1));
 								}
 							}
@@ -8625,9 +8668,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(E instanceof Physical)
 						{
-							for(int i=0;i<entry.parms().length;i+=2)
+							for(int i=0;i<entry.parms().length;i+=3)
 							{
-								if(CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								final char c = ((Character)entry.parms()[i+1]).charValue();
+								final String statVal = CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]);
+								final String compVal = (String)entry.parms()[i+2];
+								if(ifStatCheck(statVal,c,compVal))
 								{
 									found=true;
 									break;
@@ -8636,9 +8682,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 						else
 						{
-							for(int i=0;i<entry.parms().length;i+=2)
+							for(int i=0;i<entry.parms().length;i+=3)
 							{
-								if(E.getStat((String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								final char c = ((Character)entry.parms()[i+1]).charValue();
+								final String statVal = E.getStat((String)entry.parms()[i]);
+								final String compVal = (String)entry.parms()[i+2];
+								if(ifStatCheck(statVal,c,compVal))
 								{
 									found=true;
 									break;
@@ -8653,17 +8702,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(E instanceof Physical)
 						{
-							for(int i=0;i<entry.parms().length;i+=2)
+							for(int i=0;i<entry.parms().length;i+=3)
 							{
-								if(CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								final char c = ((Character)entry.parms()[i+1]).charValue();
+								final String statVal = CMLib.coffeeMaker().getAnyGenStat((Physical)E,(String)entry.parms()[i]);
+								final String compVal = (String)entry.parms()[i+2];
+								if(ifStatCheck(statVal,c,compVal))
 									return false;
 							}
 						}
 						else
 						{
-							for(int i=0;i<entry.parms().length;i+=2)
+							for(int i=0;i<entry.parms().length;i+=3)
 							{
-								if(E.getStat((String)entry.parms()[i]).equalsIgnoreCase((String)entry.parms()[i+1]))
+								final char c = ((Character)entry.parms()[i+1]).charValue();
+								final String statVal = E.getStat((String)entry.parms()[i]);
+								final String compVal = (String)entry.parms()[i+2];
+								if(ifStatCheck(statVal,c,compVal))
 									return false;
 							}
 						}

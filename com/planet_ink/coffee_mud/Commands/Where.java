@@ -488,7 +488,9 @@ public class Where extends StdCommand
 							if((sess != null)&&(sess.isStopped()))
 								break;
 							R=r.nextElement();
-							if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
+							if((R!=null)
+							&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))
+							&&(CMLib.flags().canAccess(mob,R.getArea())))
 							{
 								if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
 								{
@@ -569,8 +571,11 @@ public class Where extends StdCommand
 								for(int m=0;m<R.numInhabitants();m++)
 								{
 									final MOB M=R.fetchInhabitant(m);
-									if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
+									if((M!=null)
+									&&((M.isMonster())||(canShowTo(mob,M))))
 									{
+if(R.roomID().length()>0)Log.errOut(R.roomID()+"/"+M.name());
+
 										if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
 										{
 											if((zapperMask)&&(mobOnly))

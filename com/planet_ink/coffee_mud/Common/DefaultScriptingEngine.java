@@ -4664,8 +4664,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(E instanceof Armor)
 							num=((Item)E).numberOfItems();
 						else
-						if(E instanceof RawMaterial)
-							num=((Item)E).phyStats().weight();
+						if(E instanceof AutoBundler)
+							num=((AutoBundler)E).getBundleSize();
 						else
 						if(E instanceof Container)
 						{
@@ -7892,8 +7892,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(E instanceof Armor)
 						num=((Item)E).numberOfItems();
 					else
-					if(E instanceof RawMaterial)
-						num=((Item)E).phyStats().weight();
+					if(E instanceof AutoBundler)
+						num=((AutoBundler)E).getBundleSize();
 					else
 					if(E instanceof Container)
 					{

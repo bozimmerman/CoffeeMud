@@ -30,4 +30,18 @@ public interface AutoBundler extends Contingent
 	 * @return
 	 */
 	public boolean autoBundle();
+
+	/**
+	 * Returns the size of the bundle.
+	 *
+	 * @return the size of the bundle.
+	 */
+	public int getBundleSize();
+
+	/**
+	 * Sets a new size for the bundle.  A value less than
+	 * or equal to 0 may delete it.
+	 * @param size the new size
+	 */
+	public void setBundleSize(int size);
 }

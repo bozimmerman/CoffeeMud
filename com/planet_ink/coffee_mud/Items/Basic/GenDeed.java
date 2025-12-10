@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class GenDeed extends StdItem implements PrivateProperty
+public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
 {
 	@Override
 	public String ID()
@@ -128,6 +128,25 @@ public class GenDeed extends StdItem implements PrivateProperty
 	public String getTitleID()
 	{
 		return readableText;
+	}
+
+	@Override
+	public String name(final MOB viewerMob)
+	{
+		if(this.getBundleSize()<=1)
+			return name();
+		else
+			return name()+" ("+getBundleSize()+")";
+	}
+
+
+	@Override
+	public String displayText(final MOB viewerMob)
+	{
+		if(this.getBundleSize()<=1)
+			return displayText();
+		else
+			return displayText()+" ("+getBundleSize()+")";
 	}
 
 	@Override
@@ -342,5 +361,48 @@ public class GenDeed extends StdItem implements PrivateProperty
 				return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean autoBundle()
+	{
+		final ItemCollection coll = owner();
+		if(coll == null)
+			return false;
+		AutoBundler alternative=null;
+		for(int i=0;i<coll.numItems();i++)
+		{
+			final Item I=coll.getItem(i);
+			if((I instanceof PrivateProperty)
+			&&(I!=this)
+			&&(I.ID().equals(ID()))
+			&&(!I.amDestroyed())
+			&&(((PrivateProperty)I).getTitleID().equals(getTitleID()))
+			&&(I.container()==container())
+			&&(I instanceof AutoBundler))
+			{
+				alternative=(AutoBundler)I;
+				break;
+			}
+		}
+		if((alternative!=null)&&(alternative!=this))
+		{
+			alternative.setBundleSize(getBundleSize());
+			destroy();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int getBundleSize()
+	{
+		return basePhyStats().ability()+1;
+	}
+
+	@Override
+	public void setBundleSize(final int size)
+	{
+		basePhyStats().setAbility(size-1);
 	}
 }
