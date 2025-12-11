@@ -45,11 +45,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("M/d/yyyy h:mm a", Locale.US);
-	static 
+	static
 	{
 		FORMAT.setLenient(false);
 	}
-	
+
 	protected TimeClock	globalClock	= null;
 
 	public static enum TimeDelta
@@ -137,7 +137,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 				C.set(Calendar.MINUTE,0);
 				C.set(Calendar.SECOND,0);
 				C.set(Calendar.MILLISECOND,0);
-				Log.sysOut(CMLib.time().date2String(C.getTimeInMillis()));
 				break;
 			case MUDDAY:
 				return CMProps.getMillisPerMudHour()*clock.getHoursInDay();
