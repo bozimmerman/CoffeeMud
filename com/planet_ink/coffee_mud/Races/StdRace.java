@@ -1021,7 +1021,8 @@ public class StdRace implements Race
 			for(int i=0;i<mob.numItems();i++)
 			{
 				final Item thisItem=mob.getItem(i);
-				if((thisItem != null)&&(!CMLib.flags().isKeptOverDeath(thisItem)))
+				if((thisItem != null)
+				&&(!CMLib.flags().isKeptOverDeath(thisItem)))
 					itemsToGo.add(thisItem);
 			}
 			for(Item thisItem : itemsToGo)
@@ -1052,6 +1053,13 @@ public class StdRace implements Race
 					}
 					else
 						mob.delItem(thisItem); // why don't mobs get their items deleted also?
+					if(CMath.bset(thisItem.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP))
+					{
+						thisItem.basePhyStats().setSensesMask(thisItem.basePhyStats().sensesMask() & (~PhyStats.SENSE_CORPSEDROP));
+						thisItem.phyStats().setSensesMask(thisItem.phyStats().sensesMask() & (~PhyStats.SENSE_CORPSEDROP));
+						thisItem.basePhyStats().setDisposition(thisItem.basePhyStats().disposition() & (~PhyStats.IS_NOT_SEEN));
+						thisItem.phyStats().setDisposition(thisItem.phyStats().disposition() & (~PhyStats.IS_NOT_SEEN));
+					}
 					thisItem.unWear();
 					if(thisItem.container()==null)
 						thisItem.setContainer(bodyI);
@@ -1704,9 +1712,9 @@ public class StdRace implements Race
 		final List<RawMaterial> rscs=nonHuman.myResources();
 		GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
-			GR.setStat("GETRSCID"+i,((Item)rscs.get(i)).ID());
+			GR.setStat("GETRSCID"+i,rscs.get(i).ID());
 		for(int i=0;i<rscs.size();i++)
-			GR.setStat("GETRSCPARM"+i,((Item)rscs.get(i)).text());
+			GR.setStat("GETRSCPARM"+i,rscs.get(i).text());
 
 		GR.setStat("NUMOFT","");
 		final Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;

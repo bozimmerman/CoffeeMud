@@ -78,7 +78,8 @@ public class GrinderItems
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
 		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON,ISSHIPDIRCOMP,
-		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER,POWLEVEL,TAGS
+		ISSOFT,SOFTPARENT,SOFTNAME,ISLIQUIDHOLDER,POWLEVEL,TAGS,
+		CORPSEDROP
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -427,6 +428,13 @@ public class GrinderItems
 				else
 				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_ALWAYSCOMPRESSED)>0)
 					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_ALWAYSCOMPRESSED);
+				break;
+			case CORPSEDROP:
+				if(old.equals("on"))
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_CORPSEDROP);
+				else
+				if((I.basePhyStats().sensesMask()&PhyStats.SENSE_CORPSEDROP)>0)
+					I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_CORPSEDROP);
 				break;
 			case ISKEY: // is key
 				break;

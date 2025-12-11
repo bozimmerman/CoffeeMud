@@ -187,12 +187,14 @@ public class Thief_Steal extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
+		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
 			mob.tell(L("You'll need to try and SWIPE that."));
 			return false;
 		}
+		if(CMath.bset(stolen.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP))
+			stolen=null;
 
 		// higher is good for the player, lower is good for the npc
 		// leveldiff is + when npc has advantage, and - when player does.

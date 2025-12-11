@@ -2580,7 +2580,7 @@ item list, such as when the player is viewing compressed room data.</td>
 <td>whether the item requires a Long Look to be seen (or a
 See Hidden effect)</td>
 </tr>
-<tr>
+<tr><td><span style="font-style: italic;">Corpse Drop</span></td><td>whether the item is unseeable until their corpse drops with this item. &nbsp;See also variable equipment.</td></tr><tr>
 <td><em>Is
 This Item Readable</em></td>
 <td>whether there are any
@@ -2629,7 +2629,9 @@ not be seen, except by magic. An unseen item cannot be seen at all.</td>
 </tr>
 <tr>
 <td><span style="font-style: italic;">Tags</span></td>
-<td>List of tags assigned to this item. &nbsp;Tags are for categorizing, and enhance searching, querying, masking, and scripting similarly tagged objects.</td>
+<td>List of tags assigned to this item. &nbsp;Tags are for
+categorizing, and enhance searching, querying, masking, and scripting
+similarly tagged objects.</td>
 </tr>
 <tr>
 <td><em>Behaviors</em></td>
@@ -4809,7 +4811,9 @@ height/size.</td>
 </tr>
 <tr>
 <td><span style="font-style: italic;">Tags</span></td>
-<td>List of tags assigned to this mob.&nbsp; &nbsp;Tags are for categorizing, and enhance searching, querying, masking, and scripting similarly tagged objects.</td>
+<td>List of tags assigned to this mob.&nbsp; &nbsp;Tags are for
+categorizing, and enhance searching, querying, masking, and scripting
+similarly tagged objects.</td>
 </tr>
 <tr>
 <td><em>Abilities</em> </td>
@@ -6041,7 +6045,9 @@ and
 the inventory. A special case is created when more than one variable
 item is actually being worn in the same wear location on a mob. In this
 special case, CoffeeMud will ensure that exactly one of the variable
-items will remain.</p>
+items will remain. &nbsp;If the item is also marked "Corpse Drop", then
+the item will become un-seeable until the MOB is killed and their
+corpse generated with the item in it.</p>
 <p>Dealing with variable equipment
 can be very tricky when not using
 the MUDGrinder. It requires that the Archon remain in the room with the

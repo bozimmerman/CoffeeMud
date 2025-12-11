@@ -476,7 +476,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	/** a bit setting, as from sensesMask(), flagging that this item is always ruined */
 	public final static int SENSE_ALWAYSRUIN=2;
 	/** a bit setting, as from sensesMask(), unused  */
-	//public final static int SENSE_ITEMNOMAXRANGE=4;
+	public final static int SENSE_CORPSEDROP=4;
 	/** a bit setting, as from sensesMask(), flagging this item/room as readable */
 	public final static int SENSE_ITEMREADABLE=8;
 	/** a bit setting, as from sensesMask(), flagging this item/room as ungettable */
@@ -522,7 +522,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public static final String[] SENSE_CODES={
 		"UNLOCATABLE",
 		"ALWAYSRUIN",
-		"UNUSED",
+		"CORPSEDROP",
 		"ITEMREADABLE",
 		"ITEMNOTGET",
 		"ITEMNODROP",

@@ -190,13 +190,16 @@ public class Account extends StdCommand
 			}
 		});
 
+		long totMins = 0;
 		for (final ThinPlayer player : players)
 		{
 			str.append("^N");
+			totMins += player.age();
 			str.append(showCharLong("",fieldLengths,sess,player));
 			toggle = !toggle;
 		}
 		str.append("^N");
+		str.append(L("\n\r^HTotal hours played: ^w@x1^N\n\r",""+(totMins/60)));
 		return str.toString();
 	}
 

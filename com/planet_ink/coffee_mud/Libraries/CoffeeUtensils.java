@@ -842,6 +842,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(newLastTickedDateTime==0)
 				{
 					final List<List<Item>> rivals=new ArrayList<List<Item>>(mob.numItems());
+					final List<List<Item>> corpserivals=new ArrayList<List<Item>>(mob.numItems());
+					@SuppressWarnings("unchecked")
+					final List<List<Item>>[] sets = new List[]{ rivals, corpserivals };
 					for(int i=0;i<mob.numItems();i++)
 					{
 						final Item I=mob.getItem(i);
@@ -849,13 +852,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						{
 							this.fixElectronicalItem(I);
 							final int rejuv = I.basePhyStats().rejuv();
+							final boolean corpseDrop = CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP);
 							if(((rejuv>0)&&(rejuv!=PhyStats.NO_REJUV))
-							||(rejuv == PhyStats.ONE_JUV))
+							||(rejuv == PhyStats.ONE_JUV)
+							||(corpseDrop))
 							{
+								final List<List<Item>> set = corpseDrop?corpserivals:rivals;
 								List<Item> V=null;
-								for(int r=0;r<rivals.size();r++)
+								for(int r=0;r<set.size();r++)
 								{
-									final List<Item> V2=rivals.get(r);
+									final List<Item> V2=set.get(r);
 									final Item I2=V2.get(0);
 									if(I2.rawWornCode()==I.rawWornCode())
 									{
@@ -866,73 +872,87 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								if(V==null)
 								{
 									V=new ArrayList<Item>(1);
-									rivals.add(V);
+									set.add(V);
 								}
 								V.add(I);
 							}
 						}
 					}
-					for(int i=0;i<rivals.size();i++)
+					for(int s=0;s<sets.length;s++)
 					{
-						final List<Item> V=rivals.get(i);
-						if((V.size()==1)||(V.get(0).rawWornCode()==0))
+						final List<List<Item>> set = sets[s];
+						for(int i=0;i<set.size();i++)
 						{
-							for(int r=0;r<V.size();r++)
+							final List<Item> V=set.get(i);
+							if((V.size()==1)||(V.get(0).rawWornCode()==0))
 							{
-								final Item I=V.get(r);
-								final int rejuv=I.basePhyStats().rejuv();
-								if((CMLib.dice().rollPercentage()<rejuv)
-								||((rejuv<0)&&(isRejuv)))
+								for(int r=0;r<V.size();r++)
 								{
-									mob.delItem(I);
-									I.destroy();
-								}
-								else
-								{
-									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-									I.phyStats().setRejuv(PhyStats.NO_REJUV);
-								}
-							}
-						}
-						else
-						{
-							int totalChance=0;
-							for(int r=0;r<V.size();r++)
-							{
-								final Item I=V.get(r);
-								if(I.basePhyStats().rejuv()>0)
-									totalChance+=I.basePhyStats().rejuv();
-							}
-							final int chosenChance=CMLib.dice().roll(1,totalChance,0);
-							totalChance=0;
-							Item chosenI=null;
-							for(int r=0;r<V.size();r++)
-							{
-								final Item I=V.get(r);
-								final int rejuv=I.basePhyStats().rejuv();
-								if(rejuv>0)
-								{
-									if(chosenChance<=(totalChance+rejuv))
+									final Item I=V.get(r);
+									final int rejuv=I.basePhyStats().rejuv();
+									if((CMLib.dice().rollPercentage()<rejuv)
+									||((rejuv<0)&&(isRejuv)))
 									{
-										chosenI=I;
-										break;
+										mob.delItem(I);
+										I.destroy();
 									}
-									totalChance+=rejuv;
+									else
+									{
+										I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+										I.phyStats().setRejuv(PhyStats.NO_REJUV);
+										if(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP))
+										{
+											I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+											I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
+										}
+									}
 								}
 							}
-							for(int r=0;r<V.size();r++)
+							else
 							{
-								final Item I=V.get(r);
-								if((chosenI!=I)
-								||((I.basePhyStats().rejuv()==PhyStats.ONE_JUV)&&(isRejuv)))
+								int totalChance=0;
+								for(int r=0;r<V.size();r++)
 								{
-									mob.delItem(I);
-									I.destroy();
+									final Item I=V.get(r);
+									if(I.basePhyStats().rejuv()>0)
+										totalChance+=I.basePhyStats().rejuv();
 								}
-								else
+								final int chosenChance=CMLib.dice().roll(1,totalChance,0);
+								totalChance=0;
+								Item chosenI=null;
+								for(int r=0;r<V.size();r++)
 								{
-									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-									I.phyStats().setRejuv(PhyStats.NO_REJUV);
+									final Item I=V.get(r);
+									final int rejuv=I.basePhyStats().rejuv();
+									if(rejuv>0)
+									{
+										if(chosenChance<=(totalChance+rejuv))
+										{
+											chosenI=I;
+											break;
+										}
+										totalChance+=rejuv;
+									}
+								}
+								for(int r=0;r<V.size();r++)
+								{
+									final Item I=V.get(r);
+									if((chosenI!=I)
+									||((I.basePhyStats().rejuv()==PhyStats.ONE_JUV)&&(isRejuv)))
+									{
+										mob.delItem(I);
+										I.destroy();
+									}
+									else
+									{
+										I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+										I.phyStats().setRejuv(PhyStats.NO_REJUV);
+										if(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP))
+										{
+											I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+											I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
+										}
+									}
 								}
 							}
 						}
