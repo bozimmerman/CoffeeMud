@@ -53,7 +53,7 @@ public class AbilityGainReport extends StdWebMacro
 		final Hashtable<String,long[]> profSpent=new Hashtable<String,long[]>();
 		for(final String playerName : players)
 		{
-			final MOB player=CMLib.players().getLoadPlayer(playerName);
+			final MOB player=CMLib.players().getLoadPlayer(playerName); //TODO: seems wasteful for a report, at least clean up
 			for(int a=0;a<player.numAbilities();a++)
 			{
 				final Ability A=player.fetchAbility(a);

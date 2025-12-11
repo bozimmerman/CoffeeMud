@@ -1637,23 +1637,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return wizList;
 	}
-	
+
 	@Override
 	public List<ThinPlayer> getWizUserList()
 	{
 		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0)
 			mask=CMProps.instance().getProperty("SYSOPMASK");
-		return getMaskedUserList(mask); 
+		return getMaskedUserList(mask);
 	}
-	
+
 	@Override
 	public List<ThinPlayer> getArchonUserList()
 	{
 		final String mask=CMProps.instance().getProperty("SYSOPMASK");
-		return getMaskedUserList(mask); 
+		return getMaskedUserList(mask);
 	}
-	
+
 	@Override
 	public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
 	{
@@ -1711,7 +1711,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					sess.doPing(SessionPing.PLAYERSAVE, null);
 			}
 			else
-			if(pStats.isSavable())
+			if(pStats.isSavable()) // player is NOT online atm.
 			{
 				if((pStats.getLastUpdated()==0)
 				||(pStats.getLastUpdated()<pStats.getLastDateTime())
@@ -1719,7 +1719,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				||(forceSave))
 				{
 					if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
-						mob.delAllEffects(true);
+						mob.delAllEffects(true); // shapeshift and such save their stuff in the Ability
+					pStats.setLastUpdated(System.currentTimeMillis());
 					//setThreadStatus(serviceClient,"just saving "+mob.Name());
 					lib._database().DBUpdatePlayerMOBOnly(mob);
 					if(mob.Name().length()==0)
@@ -1728,7 +1729,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					lib._database().DBUpdatePlayerItems(mob);
 					//setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 					lib._database().DBUpdatePlayerAbilities(mob);
-					pStats.setLastUpdated(System.currentTimeMillis());
 					if (pStats.getAccount() != null)
 					{
 						lib._database().DBUpdateAccount(pStats.getAccount());
