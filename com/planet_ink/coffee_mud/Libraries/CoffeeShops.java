@@ -1858,7 +1858,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 		}
 	}
-	
+
 	@Override
 	public ShopProvider createRealEstateProvider()
 	{
@@ -1894,7 +1894,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 
 			@Override
-			public int compareTo(CMObject o)
+			public int compareTo(final CMObject o)
 			{
 				return Integer.compare(System.identityHashCode(this), System.identityHashCode(o));
 			}
@@ -2252,7 +2252,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			break;
 		case ShopKeeper.DEAL_STOCKBROKER:
 			chk = (E instanceof PrivateProperty)
-					&& E.ID().equals("GenDeed"); //TODO:UGH!
+					&& E.ID().equals("GenCertificate"); //TODO:UGH!
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
 		{

@@ -1718,8 +1718,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				||(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
 				||(forceSave))
 				{
-					if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
-						mob.delAllEffects(true); // shapeshift and such save their stuff in the Ability
 					pStats.setLastUpdated(System.currentTimeMillis());
 					//setThreadStatus(serviceClient,"just saving "+mob.Name());
 					lib._database().DBUpdatePlayerMOBOnly(mob);
@@ -1737,6 +1735,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				}
 				if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
 				{
+					mob.delAllEffects(true); // shapeshift and such save their stuff in the Ability
 					if(pStats != null)
 						pStats.getExtItems().delAllItems(true);
 					delPlayer(mob);

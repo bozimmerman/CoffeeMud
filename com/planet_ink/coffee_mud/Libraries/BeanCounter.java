@@ -1138,31 +1138,66 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return null;
 	}
 
-	private List<PAData> queryBankPAData(final String bankName, final String owner, final String prefixMask)
+	private List<PAData> queryBankPAData(final String bankName, final String owner, final String prefixMask, final String instrMask)
 	{
 		final List<PAData> V;
-		boolean noBankChain = ((bankName==null)||(bankName.length()==0));
-		//boolean noOwner = ((owner==null)||(owner.length()==0));
+		final boolean noBankChain = ((bankName==null)||(bankName.length()==0));
+		final boolean noOwner = ((owner==null)||(owner.length()==0));
+		final boolean noPrefix = ((prefixMask==null)||(prefixMask.length()==0));
+		final boolean noInstr = ((instrMask==null)||(instrMask.length()==0));
 		if(noBankChain)
 		{
-			V=CMLib.database().DBReadAllPlayerData(owner);
+			if(noPrefix)
+			{
+				if(noOwner)
+					V=CMLib.database().DBReadPlayerData(null, new XArrayList<String>(CMLib.city().bankChains(null))); // makes no sense at all
+				else
+					V=CMLib.database().DBReadAllPlayerData(owner);
+			}
+			else
+			if(noOwner)
+				V=CMLib.database().DBReadPlayerDataByXMLStartLikeAndXMLInstr(null, prefixMask, instrMask);
+			else
+				V=CMLib.database().DBReadAllPlayerData(owner);
 		}
-		else
-			V=CMLib.database().DBReadPlayerData(owner, bankName);
-		List<PAData> data = new Vector<PAData>();
+		else // yes to bank chain!
+		{
+			if(noPrefix)
+			{
+				if(noOwner)
+					V=CMLib.database().DBReadPlayerSectionData(bankName);
+				else
+					V=CMLib.database().DBReadPlayerData(owner, bankName);
+			}
+			else
+			if(noOwner)
+				V=CMLib.database().DBReadPlayerDataByXMLStartLikeAndXMLInstr(bankName, prefixMask, instrMask);
+			else
+				V=CMLib.database().DBReadPlayerData(owner, bankName);
+		}
+		final List<PAData> data = new Vector<PAData>();
 		for(int v=0;v<V.size();v++)
 		{
 			final DatabaseEngine.PAData D=V.get(v);
-			if(noBankChain||(D.section().equals(bankName)))
-			{
-				final String last=D.xml();
-				if((prefixMask==null)||(prefixMask.length()==0)||(last.startsWith(prefixMask)))
-					data.add(D);
-			}
+			final String last=D.xml();
+			if((noBankChain||(D.section().equals(bankName)))
+			&&(noPrefix||(last.startsWith(prefixMask)))
+			&&(noInstr||(last.indexOf(instrMask)>=0))
+			&&(noOwner||D.who().equals(owner)))
+				data.add(D);
 		}
 		return data;
 	}
-	
+
+	private String packBankItemData(final String classID, final Item item, final String containerKey)
+	{
+		CMLib.catalog().updateCatalogIntegrity(item);
+		if((containerKey != null)&&(containerKey.length()>0))
+			return classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
+		else
+			return classID+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
+	}
+
 	private String packBankItemData(final Item item, final Item container)
 	{
 		final String classID;
@@ -1174,15 +1209,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		else
 			classID=item.ID();
 		CMLib.catalog().updateCatalogIntegrity(item);
+		final String containerKey;
 		if(container != null)
-		{
-			final String containerKey=""+container+container.hashCode();
-			return classID+";CONTAINER="+containerKey+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
-		}
+			containerKey = ""+container+container.hashCode();
 		else
-			return classID+";"+CMLib.coffeeMaker().getEnvironmentalMiscTextXML(item,true);
+			containerKey = null;
+		return packBankItemData(classID,item,containerKey);
 	}
-	
+
 	@Override
 	public void addBankDepositInventory(final String depositorName, final String bankChain, final Item item, final Item container)
 	{
@@ -1197,7 +1231,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		String xml = data.xml();
 		if(xml.startsWith("COINS;"))
 		{
-			Coins C=(Coins)CMClass.getItem("StdCoins");
+			final Coins C=(Coins)CMClass.getItem("StdCoins");
 			CMLib.coffeeMaker().unpackEnvironmentalMiscTextXML(C,xml.substring(6),true);
 			if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 				C.setDenomination(1.0);
@@ -1239,11 +1273,75 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			return null;
 		}
 	}
-	
+
+	@Override
+	public List<BankDepositEntry> findBankDepositedItems(final String bankChain, final String depositorName, final String itemID, final String itemInstr)
+	{
+		final List<PAData> data = queryBankPAData(bankChain, depositorName, itemID, itemInstr);
+		final List<BankDepositEntry> list = new Vector<BankDepositEntry>();
+		for(int v=0;v<data.size();v++)
+		{
+			final DatabaseEngine.PAData PD=data.get(v);
+			final Pair<Item,String> pair=unpackBankItemContainer(PD);
+			if((pair!=null)&&(pair.first!=null))
+			{
+				pair.first.stopTicking();
+				list.add(new BankDepositEntry()
+				{
+					final Pair<Item,String> p = pair;
+					final String bankStr = PD.section();
+					final String owner = PD.who();
+					final String key = PD.key();
+					@Override
+					public void finalize() throws Throwable
+					{
+						try
+						{
+							p.first.destroy();
+						}
+						catch(final Throwable e) {}
+						super.finalize();
+					}
+
+					@Override
+					public String bankName()
+					{
+						return bankStr;
+					}
+
+					@Override
+					public String owner()
+					{
+						return owner;
+					}
+
+					@Override
+					public String locationID()
+					{
+						return p.second;
+					}
+
+					@Override
+					public Item item()
+					{
+						return p.first;
+					}
+
+					@Override
+					public String key()
+					{
+						return key;
+					}
+				});
+			}
+		}
+		return list;
+	}
+
 	@Override
 	public Item findBankDepositInventory(final String bankChain, final String depositorName, final String itemName)
 	{
-		final List<PAData> V=queryBankPAData(bankChain, depositorName, null);
+		final List<PAData> V=queryBankPAData(bankChain, depositorName, null, null);
 		if(CMath.s_int(itemName)>0)
 		{
 			for(int v=0;v<V.size();v++)
@@ -1270,7 +1368,36 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 		return null;
 	}
-	
+
+	@Override
+	public boolean updateBankDepositInventory(final String bankChain, final String depositorName, final Item oldItem, final Item newItem)
+	{
+		if(oldItem==null)
+			return false;
+		final String id = (oldItem instanceof Coins)?"COINS;":(oldItem.ID()+";");
+		final List<PAData> rawInventoryV=queryBankPAData(bankChain, depositorName, id, null);
+		for(int v=rawInventoryV.size()-1;v>=0;v--)
+		{
+			final DatabaseEngine.PAData PD=rawInventoryV.get(v);
+			final Pair<Item,String> pI=unpackBankItemContainer(PD);
+			if((pI!=null) && oldItem.sameAs(pI.first))
+			{
+				final String classID = (oldItem instanceof Coins)?"COINS":oldItem.ID();
+				CMLib.database().DBUpdatePlayerData(PD.who(), PD.section(), PD.key(), this.packBankItemData(classID, newItem, pI.second));
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateBankDepositInventory(final BankDepositEntry entry)
+	{
+		final String classID = (entry.item() instanceof Coins)?"COINS":entry.item().ID();
+		CMLib.database().DBUpdatePlayerData(entry.owner(), entry.bankName(), entry.key(), this.packBankItemData(classID, entry.item(), entry.locationID()));
+		return true;
+	}
+
 	@Override
 	public List<Item> delBankDepositInventory(final String bankChain, final String depositorName, final Item likeItem)
 	{
@@ -1278,7 +1405,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if((likeItem==null)||(likeItem.container()!=null))
 			return items; // really? why?
 		final String id = (likeItem instanceof Coins)?"COINS;":(likeItem.ID()+";");
-		final List<PAData> rawInventoryV=queryBankPAData(bankChain, depositorName, id);
+		final List<PAData> rawInventoryV=queryBankPAData(bankChain, depositorName, id, null);
 		if(likeItem instanceof Coins)
 		{
 			for(int v=rawInventoryV.size()-1;v>=0;v--)
@@ -1360,7 +1487,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	@Override
 	public boolean modifyBankGold(final String bankName, final String owner, final String explanation, final String currency, final double deltaAmount)
 	{
-		for(final PAData D : queryBankPAData(bankName,owner,"COINS;"))
+		for(final PAData D : queryBankPAData(bankName,owner,"COINS;", null))
 		{
 			Coins C=(Coins)unpackBankItemContainer(D).first;
 			final double value=C.getTotalValue();
@@ -1385,7 +1512,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			return new ArrayList<Item>();
 		final List<Item> items=new Vector<Item>();
 		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>();
-		for(final PAData PD : queryBankPAData(bankChain,depositorName,null))
+		for(final PAData PD : queryBankPAData(bankChain,depositorName,null, null))
 		{
 			final Pair<Item,String> pair=unpackBankItemContainer(PD);
 			if(pair!=null)

@@ -690,9 +690,11 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#getBankAccountChains(String)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankDepositedItems(String, String)
 	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
@@ -709,11 +711,13 @@ public interface MoneyLibrary extends CMLibrary
 	 * given bank account owner.
 	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankDepositedItems(String, String)
 	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
@@ -729,7 +733,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * currency, this will return the found currency and bank balance.
 	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
@@ -748,13 +754,15 @@ public interface MoneyLibrary extends CMLibrary
 
 	/**
 	 * Adds the given item, in the given container, to the given depositors account in the given bank chain.
-	 * 
+	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#getBankDepositedItems(String, String)
 	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
@@ -770,10 +778,12 @@ public interface MoneyLibrary extends CMLibrary
 	/**
 	 * Returns absolutely all items for the given depositor with the given bank chain.
 	 * Items are placed in their containers if necessary.
-	 * 
+	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankAccountChains(String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
@@ -789,11 +799,39 @@ public interface MoneyLibrary extends CMLibrary
 	public List<Item> getBankDepositedItems(final String bankChain, final String depositorName);
 
 	/**
-	 * Searches for a match in the depositor account items for the given bank chain to the given
-	 * item name.  Pure numbers just return money, and this will skip containers.
-	 * 
+	 * Returns absolutely all items for the given depositor with the given bank chain that
+	 * match the given itemid and/or item text instring search.  All of these fields are
+	 * optional.
+	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
+	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
+	 * @see MoneyLibrary#delBankDepositInventory(String, String, Item)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
+	 *
+	 * @param bankChain null, or the bank chain
+	 * @param depositorName null, or the owner of the bank account
+	 * @param itemID null, or the itemID (e.g. "COINS") to search for
+	 * @param itemInstr null, or some other string in the text to find
+	 * @return empty list, or the list of all found items
+	 */
+	public List<BankDepositEntry> findBankDepositedItems(final String bankChain, final String depositorName, final String itemID, final String itemInstr);
+
+	/**
+	 * Searches for a match in the depositor account items for the given bank chain to the given
+	 * item name.  Pure numbers just return money, and this will skip containers.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
@@ -817,8 +855,10 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
 	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankDepositedItems(String, String)
@@ -840,7 +880,9 @@ public interface MoneyLibrary extends CMLibrary
 	 * amount of money in the bank account.
 	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
@@ -868,6 +910,8 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
@@ -892,8 +936,10 @@ public interface MoneyLibrary extends CMLibrary
 	 *
 	 * @see MoneyLibrary#addToBankLedger(String, String, String)
 	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#getBankBalance(String, String, String)
 	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
@@ -919,15 +965,62 @@ public interface MoneyLibrary extends CMLibrary
 	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
 	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
 	 * @see MoneyLibrary#getBankDepositedItems(String, String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
 	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
 	 * @see MoneyLibrary#getBankChainCurrency(String)
-	 * 
+	 * @see MoneyLibrary#updateBankDepositInventory(String, String, Item, Item)
+	 *
 	 * @param bankChain the bank chain to remove from
 	 * @param depositorName the account holders name
 	 * @param likeItem the item to remove
 	 * @return the list of items removed, or empty list
 	 */
 	public List<Item> delBankDepositInventory(final String bankChain, final String depositorName, final Item likeItem);
+
+
+	/**
+	 * Given the bank chain, and depositor account name, and the item to update, this will
+	 * alter the given item int the depositors bank account.
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
+	 * @see MoneyLibrary#getBankDepositedItems(String, String)
+	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
+	 *
+	 * @param bankChain the bank chain to remove from
+	 * @param depositorName the account holders name
+	 * @param oldItem the previous item to update
+	 * @param newItem the new item
+	 * @return the list of items removed, or empty list
+	 */
+	public boolean updateBankDepositInventory(final String bankChain, final String depositorName, final Item oldItem, Item newItem);
+
+	/**
+	 * Updates the given Bank Deposit Entry
+	 *
+	 * @see MoneyLibrary#addToBankLedger(String, String, String)
+	 * @see MoneyLibrary#getBankAccountChains(String)
+	 * @see MoneyLibrary#getBankBalance(String, String, String)
+	 * @see MoneyLibrary#modifyBankGold(String, String, String, String, double)
+	 * @see MoneyLibrary#modifyThisAreaBankGold(Area, Set, String, String, double)
+	 * @see MoneyLibrary#modifyLocalBankGold(Area, String, String, double)
+	 * @see MoneyLibrary#addBankDepositInventory(String, String, Item, Item)
+	 * @see MoneyLibrary#getBankDepositedItems(String, String)
+	 * @see MoneyLibrary#findBankDepositInventory(String, String, String)
+	 * @see MoneyLibrary#getBankChainCurrency(String)
+	 * @see MoneyLibrary#findBankDepositedItems(String, String, String, String)
+	 *
+	 * @param entry the entry to update
+	 * @return true, usually
+	 */
+	public boolean updateBankDepositInventory(final BankDepositEntry entry);
 
 	/**
 	 * This strange method takes away all the money from the given mob, of the bankers
@@ -1474,6 +1567,44 @@ public interface MoneyLibrary extends CMLibrary
 		 * @return short display abbreviation of the denomination
 		 */
 		public String abbr();
+	}
+
+	/**
+	 * Interface for an entry in a bank deposit box,
+	 * which could represent currency or a valuable
+	 * item.
+	 */
+	public static interface BankDepositEntry
+	{
+		/**
+		 * The bank chain the item is presently deposited with.
+		 * @return the bank chain the item is presently deposited with.
+		 */
+		public String bankName();
+
+		/**
+		 * The owner of the account/item.
+		 * @return the owner of the account/item.
+		 */
+		public String owner();
+
+		/**
+		 * Coded container location String for the item, or ""
+		 * @return coded container location String for the item, or ""
+		 */
+		public String locationID();
+
+		/**
+		 * The actual item in question
+		 * @return the item
+		 */
+		public Item item();
+
+		/**
+		 * The bank entry key, or "" if unknown
+		 * @return the key
+		 */
+		public String key();
 	}
 
 	/**

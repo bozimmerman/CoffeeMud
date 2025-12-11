@@ -221,6 +221,59 @@ public class PDataLoader
 		return authors;
 	}
 
+	public List<PAData> DBReadByXMLStartLikeAndXMLInstr(String section, final String xmlStart, final String xmlInstr)
+	{
+		DBConnection D=null;
+		final Vector<PAData> rows=new Vector<PAData>();
+		try
+		{
+			D=DB.DBFetch();
+			section = DB.injectionClean(section);
+			final StringBuilder sql = new StringBuilder("SELECT * FROM CMPDAT ");
+			final List<String> clauses = new ArrayList<String>(3);
+			if((section!=null)&&(section.length()>0))
+				clauses.add("CMSECT='"+section+"' ");
+			if((xmlStart!=null)&&(xmlStart.length()>0))
+				clauses.add("CMPDAT LIKE '"+DB.injectionClean(xmlStart)+"%' ");
+			if((xmlInstr!=null)&&(xmlInstr.length()>0))
+				clauses.add("CMPDAT LIKE '%"+DB.injectionClean(xmlInstr)+"%' ");
+			if(clauses.size()>0)
+			{
+				sql.append("WHERE ");
+				for(int i=0;i<clauses.size();i++)
+				{
+					if(i>0)
+						sql.append("AND ");
+					sql.append(clauses.get(i));
+				}
+			}
+			final ResultSet R=D.query(sql.toString());
+			while(R.next())
+			{
+				final String plid=DBConnections.getRes(R,"CMPLID");
+				final String sect=DBConnections.getRes(R,"CMSECT");
+				final String key=DBConnections.getRes(R,"CMPKEY");
+				final String xml=DBConnections.getRes(R,"CMPDAT");
+				final PAData d = createPlayerData();
+				d.who(plid);
+				d.section(sect);
+				d.key(key);
+				d.xml(xml);
+				rows.addElement(d);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("PDataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+
 	public List<PAData> DBReadByKeyMask(String section, final String keyMask)
 	{
 		DBConnection D=null;
@@ -260,7 +313,7 @@ public class PDataLoader
 		return rows;
 	}
 
-	public List<PAData> DBReadKey(String key)
+	public List<PAData> DBReadKey(final String section, String key)
 	{
 		DBConnection D=null;
 		final Vector<PAData> rows=new Vector<PAData>();
@@ -268,7 +321,11 @@ public class PDataLoader
 		{
 			D=DB.DBFetch();
 			key = DB.injectionClean(key);
-			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			final ResultSet R;
+			if((section == null)||(section.length()==0))
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			else
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMSECT='"+DB.injectionClean(key)+"'");
 			while(R.next())
 			{
 				final String plid=DBConnections.getRes(R,"CMPLID");
@@ -463,7 +520,11 @@ public class PDataLoader
 			}
 			final String clause=orClause.toString().substring(0,orClause.length()-4);
 			playerID = DB.injectionClean(playerID);
-			final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
+			final ResultSet R;
+			if((playerID != null)&&(playerID.length()>0))
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
+			else
+				R=D.query("SELECT * FROM CMPDAT WHERE "+clause+"");
 			while(R.next())
 			{
 				final PAData d = createPlayerData();

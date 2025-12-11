@@ -33,12 +33,12 @@ import java.util.*;
    limitations under the License.
 */
 
-public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
+public class GenCertificate extends StdItem implements PrivateProperty, AutoBundler
 {
 	@Override
 	public String ID()
 	{
-		return "GenDeed";
+		return "GenCertificate";
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
 		return baseGoldValue;
 	}
 
-	public GenDeed()
+	public GenCertificate()
 	{
 		super();
 		setName("a standard deed");
@@ -285,7 +285,7 @@ public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"OWNERNAME","PRICE"};
+	private final static String[] MYCODES={"OWNERNAME","PRICE"}; // titleid is readable text
 
 	private int getInternalCodeNum(final String code)
 	{
@@ -339,7 +339,7 @@ public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenDeed.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenCertificate.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -353,7 +353,7 @@ public class GenDeed extends StdItem implements PrivateProperty, AutoBundler
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenDeed))
+		if(!(E instanceof GenCertificate))
 			return false;
 		for(int i=0;i<getStatCodes().length;i++)
 		{

@@ -350,9 +350,9 @@ public class Unload extends StdCommand
 					}
 					if(saveFirst)
 					{
-						// important! shutdown their affects!
-						M.delAllEffects(true); // shapeshift and such save their stuff in the Ability
 						CMLib.database().DBUpdatePlayer(M);
+						// important! shutdown their affects!
+						M.delAllEffects(true); // shapeshift and such save their stuff in the Ability, but permanencied effects matter!
 						CMLib.database().DBUpdateFollowers(M);
 					}
 				}

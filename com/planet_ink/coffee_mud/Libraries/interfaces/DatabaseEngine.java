@@ -28,6 +28,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -620,6 +621,19 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param item the item to save
 	 */
 	public void DBUpdateItem(String roomID, Item item);
+
+	/**
+	 * Table category: DBMAP
+	 * Searches all room items to find rooms containing an item that matches
+	 * the given optional classid, and partially matches the given xml text.
+	 * A roomMask may also be given to help filter by areas.
+	 *
+	 * @param roomMask null or start to roomid field
+	 * @param classID null, or exact classid
+	 * @param textLike null, or anywhere LIKE match on the text/xml
+	 * @return empty list, or list of room ids where the items were found
+	 */
+	public List<String> DBFindRoomItemLocs(final String roomMask, final String classID, final String textLike);
 
 	/**
 	 * Table category: DBMAP
@@ -1940,6 +1954,18 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Queries player data by the xml entry, doing both a start LIKE check
+	 * and a LIKE instring check (or both, or neither).
+	 *
+	 * @param section the section to query, not optional
+	 * @param xmlStart null, or the beginning of the xml
+	 * @param xmlInstr null, or a string inside the xml
+	 * @return list of matching data rows
+	 */
+	public List<PAData> DBReadPlayerDataByXMLStartLikeAndXMLInstr(String section, final String xmlStart, final String xmlInstr);
+
+	/**
+	 * Table category: DBPLAYERDATA
 	 * Deletes all of the data for the given player of the
 	 * given section/type.
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
@@ -2071,10 +2097,11 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine.PAData
 	 * @see DatabaseEngine#DBReadPlayerDataByKeyMask(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, String, String)
+	 * @param section NULL, or the section of player data to limit to
 	 * @param key the key of the specific entry(s) to return
 	 * @return the player data entry to return
 	 */
-	public List<PAData> DBReadPlayerDataEntry(String key);
+	public List<PAData> DBReadPlayerDataEntries(String section, String key);
 
 	/**
 	 * Table category: DBPLAYERDATA

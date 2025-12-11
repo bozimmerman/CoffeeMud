@@ -939,6 +939,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<String> DBFindRoomItemLocs(final String roomMask, final String classID, final String textLike)
+	{
+		return roomLoader.DBFindRoomItemLocs(roomMask, classID, textLike);
+	}
+
+	@Override
 	public void DBDeleteMOB(final String roomID, final MOB mob)
 	{
 		roomLoader.DBDeleteRoomMOB(roomID, mob);
@@ -1257,9 +1263,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<PAData> DBReadPlayerDataEntry(final String key)
+	public List<PAData> DBReadPlayerDataEntries(final String section, final String key)
 	{
-		return pDataLoader.DBReadKey(key);
+		return pDataLoader.DBReadKey(section, key);
 	}
 
 	@Override
@@ -1284,6 +1290,12 @@ public class DBInterface implements DatabaseEngine
 	public List<String> DBReadPlayerDataAuthorsBySection(final String section)
 	{
 		return pDataLoader.DBReadAuthorsBySection(section);
+	}
+
+	@Override
+	public List<PAData> DBReadPlayerDataByXMLStartLikeAndXMLInstr(final String section, final String xmlStart, final String xmlInstr)
+	{
+		return pDataLoader.DBReadByXMLStartLikeAndXMLInstr(section, xmlStart, xmlInstr);
 	}
 
 	@Override

@@ -1103,8 +1103,8 @@ public class GModify extends StdCommand
 						{
 							if(changed)
 							{
-								M.delAllEffects(true);
-								CMLib.database().DBUpdatePlayer(M);
+								CMLib.database().DBUpdatePlayer(M); //
+								M.delAllEffects(true); // preserve perm effects by saving first
 							}
 							final PlayerStats pStats = M.playerStats();
 							if(pStats != null)

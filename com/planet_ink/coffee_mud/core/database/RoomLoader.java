@@ -103,7 +103,7 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -135,7 +135,7 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -243,11 +243,11 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -306,11 +306,11 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		catch(final Exception sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -1736,7 +1736,7 @@ public class RoomLoader
 		}
 		catch (final SQLException sqle)
 		{
-			Log.errOut("Area", sqle);
+			Log.errOut( sqle);
 		}
 		finally
 		{
@@ -1762,7 +1762,7 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -1839,7 +1839,7 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -1918,7 +1918,7 @@ public class RoomLoader
 		}
 		catch(final SQLException sqle)
 		{
-			Log.errOut("Area",sqle);
+			Log.errOut(sqle);
 		}
 		finally
 		{
@@ -2421,6 +2421,46 @@ public class RoomLoader
 		"DELETE FROM CMROIT "
 		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMITNM='"+keyName+"'");
+	}
+
+	public List<String> DBFindRoomItemLocs(final String roomMask, final String classID, final String textLike)
+	{
+		final StringBuilder sql = new StringBuilder("SELECT CMROID FROM CMROIT ");
+		final List<String> clauses = new ArrayList<String>(3);
+		if((roomMask != null) && (roomMask.length()>0))
+			clauses.add("CMROID LIKE '"+DB.injectionClean(roomMask)+"%' ");
+		if((classID != null)&&(classID.length()>0))
+			clauses.add("CMITID = '"+DB.injectionClean(classID)+"' ");
+		if((textLike != null)&&(textLike.length()>0))
+			clauses.add("CMITTX LIKE '%"+DB.injectionClean(textLike)+"%' ");
+		if(clauses.size()>0)
+		{
+			sql.append("WHERE ");
+			for(int i=0;i<clauses.size();i++)
+			{
+				if(i>0)
+					sql.append("AND ");
+				sql.append(clauses.get(i));
+			}
+		}
+		final List<String> rooms = new Vector<String>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query(sql.toString());
+			while(R.next())
+				rooms.add(R.getString("CMROID"));
+		}
+		catch(final SQLException e)
+		{
+
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return rooms;
 	}
 
 	public void DBUpdateRoomItem(final String roomID, final Item item)

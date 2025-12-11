@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProp
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.BankDepositEntry;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -28,6 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2025-2025 Bo Zimmerman
@@ -56,6 +58,7 @@ public class StockMarket extends StdBehavior
 	public StockMarket				me				= this;
 	public String					journalName		= "";
 	private volatile int			weatherDown		= Climate.WEATHER_TICK_DOWN;
+	private final AtomicBoolean			processing		= new AtomicBoolean(false);
 	private final Set<ShopKeeper>	stockbrokers	= Collections.synchronizedSet(new WeakSHashSet<ShopKeeper>());
 
 	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
@@ -121,7 +124,7 @@ public class StockMarket extends StdBehavior
 							// Players who keep their stocks where the adjuster can't find them depend on it.  But HOW?!
 							if(def.deed == null)
 							{
-								def.deed = CMClass.getItem("GenDeed");
+								def.deed = CMClass.getItem("GenCertificate");
 								((PrivateProperty)def.deed).setOwnerName("");
 								def.deed.setName(def.name());
 								def.deed.setReadableText(def.getTitleID());
@@ -368,7 +371,7 @@ public class StockMarket extends StdBehavior
 			return stock.outstandingShares;
 		}
 		int amt=0;
-		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataByKeyMask("STOCKMARKET_STOCKS", stock.getTitleID());
+		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntries("STOCKMARKET_STOCKS", stock.getTitleID());
 		for(final PAData stockData : stocksOwned)
 		{
 			final String xml = stockData.xml().trim();
@@ -398,11 +401,10 @@ public class StockMarket extends StdBehavior
 	{
 		final Set<String> owners = new TreeSet<String>();
 		final PairList<String,Integer> owned = new PairArrayList<String,Integer>();
-		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntry(stock.getTitleID()); // titleid for ownership records!
+		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntries("STOCKMARKET_STOCKS",stock.getTitleID()); // titleid for ownership records!
 		for(final PAData stockData : stocksOwned)
 		{
-			if(stockData.section().equals("STOCKMARKET_STOCKS")
-			&&(!owners.contains(stockData.who())))
+			if(!owners.contains(stockData.who()))
 			{
 				owners.add(stockData.who());
 				if(stockData.xml().startsWith("<AMT>") && stockData.xml().endsWith("</AMT>"))
@@ -521,10 +523,47 @@ public class StockMarket extends StdBehavior
 	private void processDeeds(final StockDef stock, final DeedProcessor processor)
 	{
 		for(final Pair<String,Integer> owner : this.getStockOwners(stock))
-			processDeeds(owner.first, stock, processor);
+			processDeedsByOwner(owner.first, stock, processor);
+		final List<String> roomItemRooms = CMLib.database().DBFindRoomItemLocs(null, "GenCertificate", stock.getTitleID());
+		for(final String roomID : roomItemRooms)
+			processDeedsByRoom(CMLib.map().getRoom(roomID), stock, processor);
+		final List<BankDepositEntry> entries = CMLib.beanCounter().findBankDepositedItems(null, null, "GenCertificate", stock.getTitleID());
+		for(final BankDepositEntry entry : entries)
+		{
+			final Item I = entry.item();
+			if(I == null)
+				continue;
+			if((I instanceof PrivateProperty) && (I.ID().equals("GenCertificate")))
+			{
+				if(processor.process(I))
+					CMLib.beanCounter().updateBankDepositInventory(entry);
+			}
+			I.destroy();
+
+		}
 	}
 
-	private void processDeeds(final String owner, final StockDef stock, final DeedProcessor processor)
+	private void processDeedsByRoom(final Room R, final StockDef stock, final DeedProcessor processor)
+	{
+		if(R==null)
+			return;
+		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I instanceof PrivateProperty) && (I.ID().equals("GenCertificate")))
+				processor.process(I);
+			else
+			if(I instanceof Boardable)
+			{
+				final Area A = ((Boardable)I).getArea();
+				if(A != null)
+					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+						processDeedsByRoom(r.nextElement(), stock, processor);
+			}
+		}
+	}
+
+	private void processDeedsByOwner(final String owner, final StockDef stock, final DeedProcessor processor)
 	{
 		final MOB M = CMLib.players().getPlayer(owner);
 		if(M != null)
@@ -532,23 +571,37 @@ public class StockMarket extends StdBehavior
 			for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 			{
 				final Item I = i.nextElement();
-				if((I instanceof PrivateProperty) && (I.ID().equals("GenDeed")))
+				if((I instanceof PrivateProperty) && (I.ID().equals("GenCertificate")))
 					processor.process(I);
+				else
+				if(I instanceof Boardable)
+				{
+					final Area A = ((Boardable)I).getArea();
+					if(A != null)
+						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+							processDeedsByRoom(r.nextElement(), stock, processor);
+				}
 			}
 		}
 		else
 		{
-			for(final Triad<String, Item, String> i : CMLib.database().DBReadPlayerItems(owner, "GenDeed", stock.getTitleID()))
+			for(final Triad<String, Item, String> i : CMLib.database().DBReadPlayerItems(owner, "GenCertificate", stock.getTitleID()))
 			{
 				final Item I = i.second;
 				if((I instanceof PrivateProperty)
-				&& (I.ID().equals("GenDeed"))
+				&& (I.ID().equals("GenCertificate"))
 				&& processor.process(I))
 					CMLib.database().DBUpdatePlayerItem(i.first, I, i.third);
+				else
+				if(I instanceof Boardable)
+				{
+					final Area A = ((Boardable)I).getArea();
+					if(A != null)
+						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+							processDeedsByRoom(r.nextElement(), stock, processor);
+				}
 			}
 		}
-		//TODO: process items in ships in their playerobjects?
-		//TODO: process their bank accounts?
 	}
 
 	private synchronized String getCode(final String areaName, String name)
@@ -1062,246 +1115,265 @@ public class StockMarket extends StdBehavior
 				}
 			}
 		}
-		final TimeClock now = ((Area)host).getTimeObj();
-		boolean resave=false;
-		final List<StockDef> stocks = new ArrayList<StockDef>(this.getHostStocks());
-		final List<String> allTitleIds = new ArrayList<String>(this.getHostStocksMap().size());
-		for(final StockDef stock : stocks)
-			allTitleIds.add(stock.getTitleID());
-		final Set<String> archonNames = new TreeSet<String>();
-		for(final ThinPlayer archonPlayer : CMLib.players().getArchonUserList())
-			archonNames.add(archonPlayer.name());
-		final Set<StockDef> done = new HashSet<StockDef>();
-		for(final MarketConf conf : configs)
+		if(!processing.getAndSet(true))
 		{
-			if(conf.nextUpdate.isAfter(now))
-				continue;  // we have not arrived at the time yet
-			resave=true;
-			// calculate final
-			final Map<ShopKeeper,List<StockDef>> shopStocks;
-			synchronized(conf.shopStocksMap)
+			CMLib.threads().executeRunnable(processStockMarket); // will reset processing when done
+		}
+		return true;
+	}
+
+	public Runnable processStockMarket = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			try
 			{
-				shopStocks = new HashMap<ShopKeeper,List<StockDef>>();
-				for(final ShopKeeper SK : conf.shopStocksMap.keySet())
+				final TimeClock now = ((Area)host).getTimeObj();
+				boolean resave=false;
+				final List<StockDef> stocks = new ArrayList<StockDef>(getHostStocks());
+				final List<String> allTitleIds = new ArrayList<String>(getHostStocksMap().size());
+				for(final StockDef stock : stocks)
+					allTitleIds.add(stock.getTitleID());
+				final Set<String> archonNames = new TreeSet<String>();
+				for(final ThinPlayer archonPlayer : CMLib.players().getArchonUserList())
+					archonNames.add(archonPlayer.name());
+				final Set<StockDef> done = new HashSet<StockDef>();
+				for(final MarketConf conf : configs)
 				{
-					final List<StockDef> stockSnapshot=new XArrayList<StockDef>(conf.shopStocksMap.get(SK));
-					shopStocks.put(SK, stockSnapshot);
-				}
-			}
-			boolean racialAstrological = false;
-			if(conf.shopkeeperMask != null)
-			{
-				final Set<Race> requiredRaces = CMLib.masking().getRequiredRaces(conf.shopkeeperMask);
-				if(requiredRaces.size()>0)
-				{
-					final MOB M = CMClass.getFactoryMOB("testmob", 1, ((Area)host).getRandomProperRoom());
-					try
+					if(conf.nextUpdate.isAfter(now))
+						continue;  // we have not arrived at the time yet
+					resave=true;
+					// calculate final
+					final Map<ShopKeeper,List<StockDef>> shopStocks;
+					synchronized(conf.shopStocksMap)
 					{
-						M.setStartRoom(M.location());
-						M.baseCharStats().setMyRace(requiredRaces.iterator().next());
-						M.charStats().setMyRace(M.baseCharStats().getMyRace());
-						CMLib.awards().giveAutoProperties(M, false);
-						final Ability awardA = M.fetchEffect("AutoAwards");
-						final String awardList = (awardA==null)?"":awardA.getStat("AUTOAWARDS");
-						if(awardList.length()>0)
+						shopStocks = new HashMap<ShopKeeper,List<StockDef>>();
+						for(final ShopKeeper SK : conf.shopStocksMap.keySet())
 						{
-							final Set<Integer> currentSet = new TreeSet<Integer>();
-							for(final String s : awardList.split(";"))
-								currentSet.add(Integer.valueOf(CMath.s_int(s)));
-							for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties();p.hasMoreElements();)
+							final List<StockDef> stockSnapshot=new XArrayList<StockDef>(conf.shopStocksMap.get(SK));
+							shopStocks.put(SK, stockSnapshot);
+						}
+					}
+					boolean racialAstrological = false;
+					if(conf.shopkeeperMask != null)
+					{
+						final Set<Race> requiredRaces = CMLib.masking().getRequiredRaces(conf.shopkeeperMask);
+						if(requiredRaces.size()>0)
+						{
+							final MOB M = CMClass.getFactoryMOB("testmob", 1, ((Area)host).getRandomProperRoom());
+							try
 							{
-								final AutoProperties P = p.nextElement();
-								if((P.getProps() != null)
-								&&(P.getProps().length>0)
-								&&(currentSet.contains(Integer.valueOf(P.hashCode())))
-								&&(P.getPlayerMask()!=null)
-								&&(P.getPlayerMask().length()>0))
+								M.setStartRoom(M.location());
+								M.baseCharStats().setMyRace(requiredRaces.iterator().next());
+								M.charStats().setMyRace(M.baseCharStats().getMyRace());
+								CMLib.awards().giveAutoProperties(M, false);
+								final Ability awardA = M.fetchEffect("AutoAwards");
+								final String awardList = (awardA==null)?"":awardA.getStat("AUTOAWARDS");
+								if(awardList.length()>0)
 								{
-									final Set<Race> awardReqRaces = CMLib.masking().getRequiredRaces(P.getPlayerCMask());
-									if((awardReqRaces.size()>0) && (awardReqRaces.retainAll(requiredRaces)))
+									final Set<Integer> currentSet = new TreeSet<Integer>();
+									for(final String s : awardList.split(";"))
+										currentSet.add(Integer.valueOf(CMath.s_int(s)));
+									for(final Enumeration<AutoProperties> p = CMLib.awards().getAutoProperties();p.hasMoreElements();)
 									{
-										racialAstrological=true;
-										break;
+										final AutoProperties P = p.nextElement();
+										if((P.getProps() != null)
+										&&(P.getProps().length>0)
+										&&(currentSet.contains(Integer.valueOf(P.hashCode())))
+										&&(P.getPlayerMask()!=null)
+										&&(P.getPlayerMask().length()>0))
+										{
+											final Set<Race> awardReqRaces = CMLib.masking().getRequiredRaces(P.getPlayerCMask());
+											if((awardReqRaces.size()>0) && (awardReqRaces.retainAll(requiredRaces)))
+											{
+												racialAstrological=true;
+												break;
+											}
+										}
 									}
 								}
 							}
+							finally
+							{
+								M.destroy();
+							}
 						}
 					}
-					finally
+					for(final ShopKeeper SK : shopStocks.keySet())
 					{
-						M.destroy();
-					}
-				}
-			}
-			for(final ShopKeeper SK : shopStocks.keySet())
-			{
-				final String currency;
-				boolean astrological = false;
-				if(SK instanceof MOB)
-				{
-					currency = CMLib.beanCounter().getCurrency(SK);
-					CMLib.awards().giveAutoProperties((MOB)SK, false);
-					final Ability awardA = ((MOB)SK).fetchEffect("AutoAwards");
-					if((awardA != null) && (awardA.getStat("AUTOAWARDS").length()>0))
-						astrological=true;
-				}
-				else
-					currency = CMLib.beanCounter().getCurrency(host);
-				for(final StockDef def : shopStocks.get(SK))
-				{
-					if(done.contains(def))
-						continue;
-					done.add(def);
-					if(def.bankruptUntil != null)
-					{
-						if(now.isAfter(def.bankruptUntil))
+						final String currency;
+						boolean astrological = false;
+						if(SK instanceof MOB)
 						{
-							def.bankruptUntil = null;
-							def.price=100.0;
-							def.version++;
+							currency = CMLib.beanCounter().getCurrency(SK);
+							CMLib.awards().giveAutoProperties((MOB)SK, false);
+							final Ability awardA = ((MOB)SK).fetchEffect("AutoAwards");
+							if((awardA != null) && (awardA.getStat("AUTOAWARDS").length()>0))
+								astrological=true;
 						}
 						else
-							continue; // ignore bankrupt stocks
-					}
-					if(astrological)
-						def.addInfluence(InfluCat.ASTROLOGICAL_INFLUENCES, InfluDir.VARIABLE, 1);
-					if(racialAstrological)
-						def.addInfluence(InfluCat.RACIAL_BOONS, InfluDir.VARIABLE, 1);
-					final PairList<String,Integer> owners = getStockOwners(def);
-					int numArchons = 0;
-					for(final Pair<String,Integer> p : owners)
-					{
-						if(archonNames.contains(p.first))
-							numArchons++;
-					}
-					if(numArchons == 0)
-						def.addInfluence(InfluCat.HOLDINGS_, InfluDir.NEGATIVE, 1);
-					if(owners.size() - numArchons > 0)
-						def.addInfluence(InfluCat.HOLDINGS, InfluDir.POSITIVE, 1);
-					double price = def.getPrice();
-					double dividendMultiplier = 0.0;
-					final DiceLibrary dice = CMLib.dice();
-					final Set<String> influenceList = new TreeSet<String>();
-					for(final InfluCat cat : def.influences.keySet())
-					{
-						for(final InfluDir dir : InfluDir.values())
+							currency = CMLib.beanCounter().getCurrency(host);
+						for(final StockDef def : shopStocks.get(SK))
 						{
-							final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
-							if((rolls > 0)&&(journalName.length()>0))
-								influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
-							for(int r=0;r<rolls;r++)
+							if(done.contains(def))
+								continue;
+							done.add(def);
+							if(def.bankruptUntil != null)
 							{
-								final double roll = dice.rollPercentage();
-								int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
-								index = CMath.minMax(0, index, THE_TABLE.length-1);
-								final double[] dirChart = StockMarket.THE_TABLE[index];
-								final double value = dirChart[dir.ordinal()];
-								if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
-									dividendMultiplier += price/100.0;
-								else
-								if(value < 0) // must be negative whole price
-									price -= dice.roll(1, -(int)Math.round(value), 0);
-								else
-									price += dice.roll(1, (int)Math.round(value), 0);
-							}
-						}
-					}
-					def.influences.clear();
-					if((journalName.length()>0)&&(influenceList.size()>0))
-						CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 influences: @x2",def.name(),CMParms.toListString(influenceList)),L("See the subject line."));
-					if(price < 0.0) // GO BANKRUPT!
-					{
-						def.price = 0.0;
-						final TimeClock untilTime=(TimeClock)now.copyOf();
-						untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
-						def.bankruptUntil = untilTime;
-						if(journalName.length()>0)
-							CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 goes bankrupt!",def.name()),L("See the subject line."));
-						CMLib.database().DBDeletePlayerSectionKeyData("STOCKMARKET_STOCKS", def.getTitleID());
-						this.processDeeds(def, new DeedProcessor()
-						{
-							final String titleID = def.getTitleID();
-							@Override
-							public boolean process(final Item I)
-							{
-								if((I instanceof PrivateProperty)
-								&&(((PrivateProperty)I).getTitleID().equals(titleID)))
+								if(now.isAfter(def.bankruptUntil))
 								{
-									((PrivateProperty)I).setPrice(0);
-									return true;
+									def.bankruptUntil = null;
+									def.price=100.0;
+									def.version++;
 								}
-								return false;
-							}
-
-						});
-					}
-					else
-					{
-						//final boolean changed = def.price != price;
-						def.price = price; // normal price change
-						if(journalName.length()>0)
-						{
-							final double priceDelta = price - def.price;
-							if(priceDelta != 0.0)
-							{
-								final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
-								final String deltaStr = CMLib.beanCounter().abbreviatedPrice(currency, Math.abs(priceDelta));
-								if(priceDelta > 0)
-									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
 								else
-									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
+									continue; // ignore bankrupt stocks
 							}
-						}
-						if(dividendMultiplier > 0.0)
-						{
-							final double dividend = CMath.mul(dividendMultiplier, def.price);
-							if(journalName.length()>0)
+							if(astrological)
+								def.addInfluence(InfluCat.ASTROLOGICAL_INFLUENCES, InfluDir.VARIABLE, 1);
+							if(racialAstrological)
+								def.addInfluence(InfluCat.RACIAL_BOONS, InfluDir.VARIABLE, 1);
+							final PairList<String,Integer> owners = getStockOwners(def);
+							int numArchons = 0;
+							for(final Pair<String,Integer> p : owners)
 							{
-								final String dividendAmt = (dividendMultiplier * 100.0)+"%";
-								CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 divided.",def.name(),dividendAmt),L("See the subject line."));
+								if(archonNames.contains(p.first))
+									numArchons++;
 							}
-							for(final Pair<String,Integer> p : getStockOwners(def))
-								CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, dividend);
-						}
-						if((def.price > 200.0)
-						&& (CMLib.dice().rollPercentage() <= 20)
-						&& (conf.maxSharesPerStock < Integer.MAX_VALUE/2))
-						{
-							conf.maxSharesPerStock *= 2.0;
-							def.price = def.price / 2.0;
-							for(final Pair<String,Integer> p : getStockOwners(def))
+							if(numArchons == 0)
+								def.addInfluence(InfluCat.HOLDINGS_, InfluDir.NEGATIVE, 1);
+							if(owners.size() - numArchons > 0)
+								def.addInfluence(InfluCat.HOLDINGS, InfluDir.POSITIVE, 1);
+							double price = def.getPrice();
+							double dividendMultiplier = 0.0;
+							final DiceLibrary dice = CMLib.dice();
+							final Set<String> influenceList = new TreeSet<String>();
+							for(final InfluCat cat : def.influences.keySet())
 							{
-								this.updatePlayerStockXML(p.first, def, p.second.intValue());
-								this.processDeeds(def, new DeedProcessor()
+								for(final InfluDir dir : InfluDir.values())
+								{
+									final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
+									if((rolls > 0)&&(journalName.length()>0))
+										influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
+									for(int r=0;r<rolls;r++)
+									{
+										final double roll = dice.rollPercentage();
+										int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
+										index = CMath.minMax(0, index, THE_TABLE.length-1);
+										final double[] dirChart = StockMarket.THE_TABLE[index];
+										final double value = dirChart[dir.ordinal()];
+										if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
+											dividendMultiplier += price/100.0;
+										else
+										if(value < 0) // must be negative whole price
+											price -= dice.roll(1, -(int)Math.round(value), 0);
+										else
+											price += dice.roll(1, (int)Math.round(value), 0);
+									}
+								}
+							}
+							def.influences.clear();
+							if((journalName.length()>0)&&(influenceList.size()>0))
+								CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 influences: @x2",def.name(),CMParms.toListString(influenceList)),L("See the subject line."));
+							if(price < 0.0) // GO BANKRUPT!
+							{
+								def.price = 0.0;
+								final TimeClock untilTime=(TimeClock)now.copyOf();
+								untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
+								def.bankruptUntil = untilTime;
+								if(journalName.length()>0)
+									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 goes bankrupt!",def.name()),L("See the subject line."));
+								CMLib.database().DBDeletePlayerSectionKeyData("STOCKMARKET_STOCKS", def.getTitleID());
+								processDeeds(def, new DeedProcessor()
 								{
 									final String titleID = def.getTitleID();
-									final int newPrice = (int)Math.round(def.price);
 									@Override
 									public boolean process(final Item I)
 									{
 										if((I instanceof PrivateProperty)
-										&&(I instanceof AutoBundler)
 										&&(((PrivateProperty)I).getTitleID().equals(titleID)))
 										{
-											((PrivateProperty)I).setPrice(newPrice);
-											((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
+											((PrivateProperty)I).setPrice(0);
 											return true;
 										}
 										return false;
 									}
+
 								});
+							}
+							else
+							{
+								//final boolean changed = def.price != price;
+								def.price = price; // normal price change
+								if(journalName.length()>0)
+								{
+									final double priceDelta = price - def.price;
+									if(priceDelta != 0.0)
+									{
+										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
+										final String deltaStr = CMLib.beanCounter().abbreviatedPrice(currency, Math.abs(priceDelta));
+										if(priceDelta > 0)
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
+										else
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
+									}
+								}
+								if(dividendMultiplier > 0.0)
+								{
+									final double dividend = CMath.mul(dividendMultiplier, def.price);
+									if(journalName.length()>0)
+									{
+										final String dividendAmt = (dividendMultiplier * 100.0)+"%";
+										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 divided.",def.name(),dividendAmt),L("See the subject line."));
+									}
+									for(final Pair<String,Integer> p : getStockOwners(def))
+										CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, dividend);
+								}
+								if((def.price > 200.0)
+								&& (CMLib.dice().rollPercentage() <= 20)
+								&& (conf.maxSharesPerStock < Integer.MAX_VALUE/2))
+								{
+									conf.maxSharesPerStock *= 2.0;
+									def.price = def.price / 2.0;
+									for(final Pair<String,Integer> p : getStockOwners(def))
+									{
+										updatePlayerStockXML(p.first, def, p.second.intValue());
+										processDeeds(def, new DeedProcessor()
+										{
+											final String titleID = def.getTitleID();
+											final int newPrice = (int)Math.round(def.price);
+											@Override
+											public boolean process(final Item I)
+											{
+												if((I instanceof PrivateProperty)
+												&&(I instanceof AutoBundler)
+												&&(((PrivateProperty)I).getTitleID().equals(titleID)))
+												{
+													((PrivateProperty)I).setPrice(newPrice);
+													((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
+													return true;
+												}
+												return false;
+											}
+										});
+									}
+								}
 							}
 						}
 					}
+					conf.nextUpdate=(TimeClock)now.copyOf();
+					conf.nextUpdate.bump(TimePeriod.DAY, conf.updateDays);
 				}
+				if(resave)
+					savetHostStockXML(getHostStocks());
 			}
-			conf.nextUpdate=(TimeClock)now.copyOf();
-			conf.nextUpdate.bump(TimePeriod.DAY, conf.updateDays);
+			finally
+			{
+				processing.set(false);
+			}
 		}
-		if(resave)
-			this.savetHostStockXML(this.getHostStocks());
-		return true;
-	}
+	};
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -1321,7 +1393,7 @@ public class StockMarket extends StdBehavior
 		if(((msg.targetMinor()==CMMsg.TYP_SELL)||(msg.targetMinor()==CMMsg.TYP_VALUE))
 		&&(msg.target() instanceof ShopKeeper)
 		&&(msg.tool() instanceof PrivateProperty)
-		&&(msg.tool().ID().equals("GenDeed")))
+		&&(msg.tool().ID().equals("GenCertificate")))
 		{
 			StockDef foundDef=null;
 			boolean worthless = false;
