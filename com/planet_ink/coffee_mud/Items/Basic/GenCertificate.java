@@ -70,11 +70,7 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 	@Override
 	public int value()
 	{
-		if(name().indexOf("(Copy)")>=0)
-			baseGoldValue=10;
-		else
-			baseGoldValue=getPrice();
-		return baseGoldValue;
+		return getPrice() * this.getBundleSize();
 	}
 
 	public GenCertificate()

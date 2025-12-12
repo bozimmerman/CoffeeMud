@@ -363,7 +363,7 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
-	private int getOutstandingShares(final StockDef stock, final int adj)
+	private synchronized int getOutstandingShares(final StockDef stock, final int adj)
 	{
 		if(stock.outstandingShares>=0)
 		{
@@ -543,24 +543,30 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
-	private void processDeedsByRoom(final Room R, final StockDef stock, final DeedProcessor processor)
+	private boolean processDeedsByRoom(final Room R, final StockDef stock, final DeedProcessor processor)
 	{
 		if(R==null)
-			return;
+			return false;
+		boolean didSomething=false;
 		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I instanceof PrivateProperty) && (I.ID().equals("GenCertificate")))
-				processor.process(I);
+			{
+				if(processor.process(I))
+					didSomething=true;
+			}
 			else
 			if(I instanceof Boardable)
 			{
 				final Area A = ((Boardable)I).getArea();
 				if(A != null)
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-						processDeedsByRoom(r.nextElement(), stock, processor);
+						if(processDeedsByRoom(r.nextElement(), stock, processor))
+							didSomething=true;
 			}
 		}
+		return didSomething;
 	}
 
 	private void processDeedsByOwner(final String owner, final StockDef stock, final DeedProcessor processor)
@@ -596,9 +602,13 @@ public class StockMarket extends StdBehavior
 				if(I instanceof Boardable)
 				{
 					final Area A = ((Boardable)I).getArea();
+					boolean updated=false;
 					if(A != null)
 						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-							processDeedsByRoom(r.nextElement(), stock, processor);
+							if(processDeedsByRoom(r.nextElement(), stock, processor))
+								updated=true;
+					if(updated)
+						CMLib.database().DBUpdatePlayerItem(i.first, I, i.third);
 				}
 			}
 		}
@@ -820,6 +830,8 @@ public class StockMarket extends StdBehavior
 						}
 						if(def == null)
 						{
+							if(stocks.size() >= maxStocks)
+								return null;
 							def = new StockDef(hostA.Name(),id,name);
 							stocks.add(def);
 							addHostStock(def);
@@ -840,6 +852,8 @@ public class StockMarket extends StdBehavior
 						}
 						if(def == null)
 						{
+							if(stocks.size() >= maxStocks)
+								return null;
 							final String id = "R"+getCode(hostA.Name(), race)+getCode("CMKT_AREA_CODES", hostA.Name());
 							def = new StockDef(hostA.Name(), id, name);
 							stocks.add(def);
@@ -872,6 +886,8 @@ public class StockMarket extends StdBehavior
 							}
 							if(def == null)
 							{
+								if(stocks.size() >= maxStocks)
+									return null;
 								final String id = "C"+getCode(hostA.Name(), type)+getCode("CMKT_AREA_CODES", hostA.Name());
 								def = new StockDef(hostA.Name(),id,name);
 								stocks.add(def);
@@ -893,6 +909,8 @@ public class StockMarket extends StdBehavior
 							}
 							if(def == null)
 							{
+								if(stocks.size() >= maxStocks)
+									return null;
 								final String id = "G"+getCode("CMKT_AREA_CODES", hostA.Name());
 								def = new StockDef(hostA.Name(),id,name);
 								stocks.add(def);
@@ -1279,6 +1297,8 @@ public class StockMarket extends StdBehavior
 							if(price < 0.0) // GO BANKRUPT!
 							{
 								def.price = 0.0;
+								getOutstandingShares(def, 0); // cache them
+								getOutstandingShares(def, -def.outstandingShares);//effectively negates them
 								final TimeClock untilTime=(TimeClock)now.copyOf();
 								untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
 								def.bankruptUntil = untilTime;
@@ -1336,6 +1356,8 @@ public class StockMarket extends StdBehavior
 								{
 									conf.maxSharesPerStock *= 2.0;
 									def.price = def.price / 2.0;
+									getOutstandingShares(def, 0);
+									getOutstandingShares(def, def.outstandingShares);//effectively doubles them
 									for(final Pair<String,Integer> p : getStockOwners(def))
 									{
 										updatePlayerStockXML(p.first, def, p.second.intValue());
