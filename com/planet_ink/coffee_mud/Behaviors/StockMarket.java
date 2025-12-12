@@ -1531,8 +1531,6 @@ public class StockMarket extends StdBehavior
 		if((configs.size()==0) || (!hostReady()))
 			return;
 
-		//TODO: handle random civic event from external generator? special area emoter of some sort?
-		//  msg events can lead to influences which must be remembered when stock tally-time occurs
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_GIVE:
