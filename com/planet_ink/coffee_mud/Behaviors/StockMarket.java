@@ -1650,7 +1650,7 @@ public class StockMarket extends StdBehavior
 			}
 			break;
 		}
-		case CMMsg.TYP_QUESTSTART:
+		case CMMsg.TYP_QUESTSTART: // influences from area events come from holidays, e.g. Quests.
 		{
 			final Area A = CMLib.map().areaLocation(msg.source());
 			if((A==null)||(!(host instanceof Area))||(msg.sourceMessage()==null))
