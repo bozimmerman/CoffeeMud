@@ -574,8 +574,6 @@ public class Where extends StdCommand
 									if((M!=null)
 									&&((M.isMonster())||(canShowTo(mob,M))))
 									{
-if(R.roomID().length()>0)Log.errOut(R.roomID()+"/"+M.name());
-
 										if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
 										{
 											if((zapperMask)&&(mobOnly))
