@@ -1345,10 +1345,10 @@ public class StockMarket extends StdBehavior
 									if(journalName.length()>0)
 									{
 										final String dividendAmt = (dividendMultiplier * 100.0)+"%";
-										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 divided.",def.name(),dividendAmt),L("See the subject line."));
+										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 divided per share.",def.name(),dividendAmt),L("See the subject line."));
 									}
 									for(final Pair<String,Integer> p : getStockOwners(def))
-										CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, dividend);
+										CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, CMath.mul(dividend, p.second.intValue()));
 								}
 								if((def.price > 200.0)
 								&& (CMLib.dice().rollPercentage() <= 20)
