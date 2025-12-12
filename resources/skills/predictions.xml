@@ -1836,6 +1836,263 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</script>
+<!-- New Prediction Entries -->
+
+<script id="good_heal_potion">
+	FUNCTION_PROG Prediction
+		RETURN A mysterious vial will restore your vitality when you need it most.
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPECHOAT \$i You spot a mysterious vial on the ground.
+		MPOLOADROOM GenPotion
+		MPGSET \$b REJUV 0
+		MPGSET \$b NAME a mysterious vial
+		MPGSET \$b DISPLAY a mysterious vial lies here
+		MPGSET \$b DESCRIPTION The liquid inside glows faintly.
+		MPGSET \$b READABLETEXT Prayer_CureSerious;Prayer_RemovePoison
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="bad_cursed_weapon">
+	FUNCTION_PROG Prediction
+		IF RAND(50)
+			RETURN A powerful weapon calls to you, but its hunger may consume you.
+		ELSE
+			RETURN Beware the blade that whispers your name-- it seeks a new master.
+		ENDIF
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPECHOAT \$i You spot a magnificent sword lying on the ground, calling to you.
+		MPOLOADROOM GenWeapon
+		MPGSET \$b REJUV 0
+		MPGSET \$b NAME a magnificent sword
+		MPGSET \$b DISPLAY a magnificent sword lies here
+		MPGSET \$b DESCRIPTION The blade seems to whisper to you in an unknown language.
+		MPGSET \$b LEVEL '\$%GSTAT(\$i LEVEL)%'
+		MPGSET \$b WEAPONCLASS sword
+		MPGSET \$b WEAPONTYPE slashing
+		MPGSET \$b DAMAGE 20
+		MPGSET \$b ISREMOVABLE false
+		MPGSET \$b ISDROPPABLE false
+		MPAFFECT Prop_WearAdjuster \$b CHARISMA-5 WISDOM-5
+		MPSCRIPT \$b SAVABLE GLOBAL STATIC FIGHT_PROG 25\;MPECHOAT \\\$n The cursed blade feeds on your life force!\;MPDAMAGE \\\$n 5 10\;\~
+		MPFORCE \$i get \$b
+		MPFORCE \$i wield \$b
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="meh_mysterious_trader">
+	FUNCTION_PROG Prediction
+		IF RAND(50)
+			RETURN A wandering merchant will offer you goods from distant lands.
+		ELSE
+			RETURN An exotic trader will cross your path with rare wares.
+		ENDIF
+	~
+
+	RAND_PROG 50
+		IF INROOM('a mysterious trader') OR ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
+			RETURN
+		ENDIF
+		MPECHOAT \$i A mysterious trader approaches you.
+		MPMLOAD GenShopkeeper
+		MPGSET \$b NAME a mysterious trader
+		MPGSET \$b DISPLAY a mysterious trader stands here
+		MPGSET \$b DESCRIPTION His cloak is covered with exotic trinkets and goods.
+		MPGSET \$b RACE Human
+		MPGSET \$b LEVEL \$%LEVEL(\$i)%
+		MPGSET \$b REJUV 0
+		MPBEHAVE Decay \$b remain=199 notrigger
+		MPOLOADSHOP GenPotion PRICE=100
+		MPOLOADSHOP GenScroll PRICE=150
+		MPOLOADSHOP GenWand PRICE=200
+		MPFORCE \$b sayto \$i Greetings traveler! Care to browse my wares?
+		MPALARM 30 MPECHO The mysterious trader vanishes as quickly as he appeared.
+		MPALARM 30 MPPURGE \$b
+		MPALARM 31 MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="good_lucky_coin">
+	FUNCTION_PROG Prediction
+		RETURN Fortune smiles upon you-- a token of luck will find its way to you.
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPECHOAT \$i You spot a strange golden coin glinting in the dirt.
+		MPOLOADROOM GenItem
+		MPGSET \$b REJUV 0
+		MPGSET \$b NAME a lucky coin
+		MPGSET \$b DISPLAY a golden coin sits here
+		MPGSET \$b DESCRIPTION One side shows a smiling face, the other a frowning one.
+		MPGSET \$b MATERIAL GOLD
+		MPAFFECT Prop_WearAdjuster \$b SAVE_MAGIC+15 SAVE_JUSTICE+15
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="bad_phantom_thief">
+	FUNCTION_PROG Prediction
+		RETURN A phantom thief stalks you from the shadows, coveting your possessions.
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INROOM(ANYSPECIAL)
+			RETURN
+		ENDIF
+		MPSETVAR \%i NUMITEMS \$%NUMITEMSMOB(\$i)%
+		MPSETVAR \%i RANDITEM \$%RANDNUM(\$<\$i NUMITEMS>)%
+		MPSETVAR \$i STOLENITEM \$%MOBITEM(\$i \$<\$i RANDITEM>)%
+		IF VAR(\$i STOLENITEM != '')
+			MPECHOAT \$i A phantom materializes, snatches something from you, and vanishes!
+			MPAT \$i MPJUNK '\$<\$i STOLENITEM>'
+		ENDIF
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="good_guardian_spirit">
+	FUNCTION_PROG Prediction
+		IF RAND(50)
+			RETURN A guardian spirit will watch over you in times of peril.
+		ELSE
+			RETURN An ancestral spirit will offer its protection when death draws near.
+		ENDIF
+	~
+
+	HITPRCNT_PROG 25
+		IF NOT ISFIGHT(\$i)
+			RETURN
+		ENDIF
+		MPECHOAT \$i A shimmering guardian spirit materializes to protect you!
+		MPMLOAD GenMob
+		MPGSET \$b NAME a guardian spirit
+		MPGSET \$b DISPLAY a guardian spirit hovers here protectively
+		MPGSET \$b DESCRIPTION The translucent form radiates protective energy.
+		MPGSET \$b RACE Ghost
+		MPGSET \$b LEVEL \$%LEVEL(\$i)%
+		MPGSET \$b REJUV 0
+		MPBEHAVE Decay \$b remain=99 notrigger
+		MPBEHAVE Clericness \$b Cleric
+		MPFORCE \$b FOLLOW \$i
+		MPCAST Prayer_Sanctuary \$i
+		MPHEAL \$i 50 100
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="meh_riddle_stone">
+	FUNCTION_PROG Prediction
+		RETURN An ancient stone will pose you a riddle-- answer wisely for a reward.
+	~
+
+	RAND_PROG 50
+		IF INROOM('an ancient stone') OR ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL)
+			RETURN
+		ENDIF
+		MPECHOAT \$i An ancient stone monument rises from the ground before you.
+		MPMLOAD GenMob
+		MPGSET \$b NAME an ancient stone
+		MPGSET \$b DISPLAY an ancient stone monument stands here
+		MPGSET \$b DESCRIPTION Runes cover its surface, glowing faintly.
+		MPGSET \$b RACE StoneGolem
+		MPGSET \$b LEVEL \$%LEVEL(\$i)%
+		MPGSET \$b REJUV 0
+		MPBEHAVE Decay \$b remain=199 notrigger
+		MPBEHAVE MudChat \$b
+		MPFORCE \$b emote speaks in a deep, rumbling voice
+		MPFORCE \$b sayto \$i I am the Guardian of Riddles. Answer correctly and be rewarded. What has roots that nobody sees, is taller than trees, up up up it goes, yet never grows?
+		MPSCRIPT \$b STATIC GLOBAL SPEECH_PROG mountain\;say Correct! You have wisdom.\;MPOLOAD TrainingPoint\;give \\\$b \\\$n\;MPPURGE \\\$i\;\~\;SPEECH_PROG ALL\;say Wrong! Begone!\;MPPURGE \\\$i\;\~
+		MPALARM 20 MPECHO The ancient stone sinks back into the earth.
+		MPALARM 20 MPPURGE \$b
+		MPALARM 21 MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="good_time_bottle">
+	FUNCTION_PROG Prediction
+		RETURN You will find a vessel containing a fragment of stolen time.
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPECHOAT \$i You spot an ornate bottle filled with swirling mist.
+		MPOLOADROOM GenPotion
+		MPGSET \$b REJUV 0
+		MPGSET \$b NAME a bottle of time
+		MPGSET \$b DISPLAY an ornate bottle sits here
+		MPGSET \$b DESCRIPTION Swirling mist within seems to move independent of the bottle.
+		MPGSET \$b READABLETEXT Spell_TimeStop;Spell_Slow
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="bad_doppelganger">
+	FUNCTION_PROG Prediction
+		RETURN Your reflection will challenge you-- face yourself to grow stronger.
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPECHOAT \$i Your shadow suddenly takes form and attacks!
+		MPMLOAD GenMob
+		MPGSET \$b NAME your doppelganger
+		MPGSET \$b DISPLAY \$i's doppelganger stands here
+		MPGSET \$b DESCRIPTION It looks exactly like you, but with malevolent eyes.
+		MPGSET \$b RACE \$%RACE(\$i)%
+		MPGSET \$b LEVEL \$%LEVEL(\$i)%
+		MPGSET \$b REJUV 0
+		MPBEHAVE Decay \$b remain=199 notrigger
+		MPBEHAVE Aggressive \$b MISBEHAVE -NAME "+\$i"
+		MPBEHAVE Fighterness \$b \$%CLASS(\$i)%
+		MPSCRIPT \$b STATIC GLOBAL DEATH_PROG\;say You have... bested yourself.\;MPOLOAD PracticePoint\;give \\\$b \\\$n\;\~
+		MPFORCE \$b KILL \$i
+		MPSCRIPT \$i DELETE *
+	~
+</script>
+
+<script id="meh_mystic_garden">
+	FUNCTION_PROG Prediction
+		IF RAND(50)
+			RETURN A garden of mystic flowers will bloom before you, offering rest and healing.
+		ELSE
+			RETURN You will discover an enchanted garden where time moves differently.
+		ENDIF
+	~
+
+	RAND_PROG 50
+		IF ISFIGHT(\$i) OR GSTAT(\$i IDLETICKS .in. '2 3 4') OR INLOCALE(\$i INDOORS) OR INROOM(ANYSPECIAL) OR INLOCALE(\$i CITY)
+			RETURN
+		ENDIF
+		MPOLOADROOM GenPortal
+		MPGSET \$b NAME a flowering archway
+		MPGSET \$b REJUV 0
+		MPGSET \$b DISPLAY a flowering archway appears here
+		MPGSET \$b DESCRIPTION Beautiful flowers of every color cover the archway.
+		MPBEHAVE Decay \$b remain=60 notrigger
+		MPAFFECT property:Spell_Teleport \$b theme=woods areasize=25 aggrochance=0 nofantasy=true
+		MPAFFECT Prop_EnterAdjuster \$b ;Prayer_Restoration
+		MPECHOAT \$i A beautiful flowering archway materializes before you!
+		MPSCRIPT \$i DELETE *
+	~
+</script>
 	<!--
 *******  Possibilities Below******
 A hidden cave will reveal a trove of magical artifacts.
