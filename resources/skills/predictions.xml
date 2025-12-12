@@ -1954,11 +1954,11 @@ See guides/RandomAreas.html for information about documents of this type.
 			RETURN
 		ENDIF
 		MPSETVAR \%i NUMITEMS \$%NUMITEMSMOB(\$i)%
-		MPSETVAR \%i RANDITEM \$%RANDNUM(\$<\$i NUMITEMS>)%
-		MPSETVAR \$i STOLENITEM \$%MOBITEM(\$i \$<\$i RANDITEM>)%
+		MPSETVAR \%i RANDITEM \$%RANDNUM(\$&lt;\$i NUMITEMS&gt;)%
+		MPSETVAR \$i STOLENITEM \$%MOBITEM(\$i \$&lt;\$i RANDITEM&gt;)%
 		IF VAR(\$i STOLENITEM != '')
 			MPECHOAT \$i A phantom materializes, snatches something from you, and vanishes!
-			MPAT \$i MPJUNK '\$<\$i STOLENITEM>'
+			MPAT \$i MPJUNK '\$&lt;\$i STOLENITEM&gt;'
 		ENDIF
 		MPSCRIPT \$i DELETE *
 	~
