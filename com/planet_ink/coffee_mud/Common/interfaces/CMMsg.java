@@ -1270,8 +1270,12 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_SKILLFAIL=149;
 	/** MINOR_MASK minor action code type, denoting a polymorph attack */
 	public static final int TYP_POLYMORPH=150;
-	/** MINOR_MASK minor action code type, denoting a polymorph attack */
+	/** MINOR_MASK minor action code type, denoting an achievement event */
 	public static final int TYP_ACHIEVE=151;
+	/** MINOR_MASK minor action code type, denoting a quest start */
+	public static final int TYP_QUESTSTART=152;
+	/** MINOR_MASK minor action code type, denoting a quest stop */
+	public static final int TYP_QUESTSTOP=153;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)

@@ -233,6 +233,7 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 			setOwnerName(msg.target().Name());
 			msg.source().tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 			recoverPhyStats();
+			CMLib.map().sendGlobalMessage(msg.source(), CMMsg.TYP_GIVE, msg);
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GET)

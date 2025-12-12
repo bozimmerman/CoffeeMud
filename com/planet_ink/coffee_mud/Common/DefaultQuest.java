@@ -4494,7 +4494,29 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 				if((!questState.error)&&(questState.done))
 				{
-					enterRunningState();
+					//TODO: send some global notice?  but receivers will want details....
+					boolean delmob=false;
+					MOB M=questState.getStateMob();
+					if(M == null)
+					{
+						delmob=true;
+						final Room R = questState.getStateRoom();
+						if(R != null)
+							M=CMLib.map().getFactoryMOB(R);
+						else
+							M=CMLib.map().getFactoryMOBInAnyRoom();
+						delmob=true;
+					}
+					try
+					{
+						CMLib.map().sendGlobalMessage(M, CMMsg.TYP_QUESTSTART, CMClass.getMsg(M, CMMsg.TYP_QUESTSTART, this.name()));
+						enterRunningState();
+					}
+					finally
+					{
+						if(delmob)
+							M.destroy();
+					}
 					return true;
 				}
 				stopQuestInternal();
@@ -5069,10 +5091,31 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		cleanQuestStep(0);
 		stoppingQuest=true;
-		if(!isCopy())
-			setScript(script(),true); // causes wait times/name to reload
-		enterDormantState();
-		stoppingQuest=false;
+		boolean delmob=false;
+		MOB M=questState.getStateMob();
+		if(M == null)
+		{
+			delmob=true;
+			final Room R = questState.getStateRoom();
+			if(R != null)
+				M=CMLib.map().getFactoryMOB(R);
+			else
+				M=CMLib.map().getFactoryMOBInAnyRoom();
+			delmob=true;
+		}
+		try
+		{
+			if(!isCopy())
+				setScript(script(),true); // causes wait times/name to reload
+			CMLib.map().sendGlobalMessage(M, CMMsg.TYP_QUESTSTOP, CMClass.getMsg(M, CMMsg.TYP_QUESTSTOP, this.name()));
+			enterDormantState();
+		}
+		finally
+		{
+			if(delmob)
+				M.destroy();
+			stoppingQuest=false;
+		}
 	}
 
 	@Override
@@ -6844,6 +6887,75 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 			}
 			return O;
+		}
+
+		public MOB getStateMob()
+		{
+			for(final PreservedQuestObject o : worldObjects)
+				if((o.obj instanceof MOB)&&(CMLib.flags().isInTheGame(o.obj, true)))
+					return (MOB)o.obj;
+			if((mob!=null)&&(CMLib.flags().isInTheGame(mob, true)))
+				return mob;
+			else
+			{
+				for(final MOB M2 : mobGroup)
+					if((M2!=null)&&(CMLib.flags().isInTheGame(M2, true)))
+						return M2;
+			}
+			if((envObject instanceof MOB)&&(CMLib.flags().isInTheGame((MOB)envObject, true)))
+				return (MOB)envObject;
+			else
+			for(final MOB M2 : this.loadedMobs)
+				if((M2!=null)&&(CMLib.flags().isInTheGame(M2, true)))
+					return M2;
+			return null;
+		}
+
+		public Room getStateRoom()
+		{
+			final MOB M = getStateMob();
+			if((M!=null)&&(M.location()!=null)&&(CMLib.flags().isInTheGame(M, true)))
+				return M.location();
+			for(final PreservedQuestObject o : worldObjects)
+				if((o.obj instanceof Room)&&(CMLib.flags().isInTheGame(o.obj, true)))
+					return (Room)o.obj;
+			if((room!=null)&&(CMLib.flags().isInTheGame(room, true)))
+				return room;
+			else
+			{
+				for(final Room R2 : roomGroup)
+					if((R2!=null)&&(CMLib.flags().isInTheGame(R2, true)))
+						return R2;
+			}
+			if((envObject instanceof Room)&&(CMLib.flags().isInTheGame((Room)envObject, true)))
+				return (Room)envObject;
+			for(final Item I2 : itemGroup)
+				if((I2!=null)&&(CMLib.flags().isInTheGame(I2, true)))
+				{
+					final Room R2 = CMLib.map().roomLocation(I2);
+					if(R2 != null)
+						return R2;
+				}
+			for(final PreservedQuestObject o : worldObjects)
+				if((o.obj instanceof Area)&&(CMLib.flags().isInTheGame(o.obj, true)))
+				{
+					final Room R = ((Area)o.obj).getRandomProperRoom();
+					if(R != null)
+						return R;
+				}
+			if((area!=null)&&(CMLib.flags().isInTheGame(area, true)))
+			{
+				final Room R = area.getRandomProperRoom();
+				if(R != null)
+					return R;
+			}
+			if((envObject instanceof Area)&&(CMLib.flags().isInTheGame((Area)envObject, true)))
+			{
+				final Room R = ((Area)envObject).getRandomProperRoom();
+				if(R != null)
+					return R;
+			}
+			return null;
 		}
 	}
 

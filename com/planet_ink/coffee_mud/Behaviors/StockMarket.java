@@ -60,6 +60,7 @@ public class StockMarket extends StdBehavior
 	private volatile int			weatherDown		= Climate.WEATHER_TICK_DOWN;
 	private final AtomicBoolean		processing		= new AtomicBoolean(false);
 	private final Set<ShopKeeper>	stockbrokers	= Collections.synchronizedSet(new WeakSHashSet<ShopKeeper>());
+	private final Set<CMMsg> 		lastGives 		= Collections.synchronizedSet(new ExpireHashSet<CMMsg>(1000));
 
 	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
 
@@ -228,6 +229,7 @@ public class StockMarket extends StdBehavior
 		HOLDINGS,
 		ASTROLOGICAL_INFLUENCES,
 		RACIAL_BOONS,
+		AREA_EVENTS
 		;
 		public int rolls(final int num)
 		{
@@ -241,16 +243,16 @@ public class StockMarket extends StdBehavior
 	 */
 	private class StockDef implements PrivateProperty
 	{
-		private final String ID;
-		private final String name;
-		public final String area;
-		public int version = 0;
-		public Item deed = null;
-		public volatile double price = 100.0;
-		public volatile double manipulation = 0;
-		public volatile TimeClock bankruptUntil = null;
-		public int outstandingShares = -1;
-		public STreeMap<InfluCat,int[]> influences = new STreeMap<InfluCat,int[]>();
+		private final String				ID;
+		private final String				name;
+		public final String					area;
+		public int							version				= 0;
+		public Item							deed				= null;
+		public volatile double				price				= 100.0;
+		public volatile double				manipulation		= 0;
+		public volatile TimeClock			bankruptUntil		= null;
+		public int							outstandingShares	= -1;
+		public STreeMap<InfluCat, int[]>	influences			= new STreeMap<InfluCat, int[]>();
 
 		public StockDef(final String area, final String id, final String name)
 		{
@@ -702,6 +704,7 @@ public class StockMarket extends StdBehavior
 		public boolean			playerInfluence			= false;
 		public int				maxSharesPerStock		= Integer.MAX_VALUE;
 
+		public final Map<String, InfluDir>				questMoves		= new STreeMap<String, InfluDir>();
 		public final Set<ShopKeeper>					nonShops		= new SHashSet<ShopKeeper>();
 		public final Map<ShopKeeper, List<StockDef>>	shopStocksMap	= new SHashtable<ShopKeeper, List<StockDef>>();
 		public volatile TimeClock						nextUpdate;
@@ -716,6 +719,11 @@ public class StockMarket extends StdBehavior
 			groupAreas = false;
 			shopkeeperMaskStr = "";
 			shopkeeperMask = null;
+			questMoves.clear();
+			for(final String posiQuest : new String[] { "newyear", "celebration", "party", "leadership"})
+				questMoves.put(posiQuest, InfluDir.POSITIVE);
+			for(final String negaQuest : new String[] { "revolt", "crimewave", "swindler", "brutality", "harsh winter", "famine", "drought"})
+				questMoves.put(negaQuest, InfluDir.NEGATIVE);
 			maxSharesPerStock = Integer.MAX_VALUE;
 			areaMaskStr = "";
 			this.areaMask = null;
@@ -740,6 +748,18 @@ public class StockMarket extends StdBehavior
 			playerInfluence = CMath.s_bool(props.getOrDefault("PLAYINFLU", ""+defaults.playerInfluence));
 			shopkeeperMaskStr = props.getOrDefault("SHOPMASK", ""+defaults.shopkeeperMaskStr);
 			maxSharesPerStock = CMath.s_int(props.getOrDefault("MAXSHARES", ""+defaults.maxSharesPerStock));
+			questMoves.clear();
+			final String commas = props.getOrDefault("AREAEVENTS", defaults.flattenQuestMoves());
+			for(final String entry : CMParms.parseCommas(commas, true))
+			{
+				if(entry.startsWith("+"))
+					questMoves.put(entry.substring(1).toLowerCase(), InfluDir.POSITIVE);
+				else
+				if(entry.startsWith("-"))
+					questMoves.put(entry.substring(1).toLowerCase(), InfluDir.NEGATIVE);
+				else
+					questMoves.put(entry.toLowerCase(), InfluDir.POSITIVE);
+			}
 			shopkeeperMask = (shopkeeperMaskStr.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(shopkeeperMaskStr);
 			areaMaskStr = props.getOrDefault("AREAMASK", ""+defaults.areaMaskStr);
 			areaMask = (areaMaskStr.trim().length() == 0) ? null : CMLib.masking().getPreCompiledMask(areaMaskStr);
@@ -752,6 +772,30 @@ public class StockMarket extends StdBehavior
 				nextUpdate=(TimeClock)((Area)host).getTimeObj().copyOf();
 				nextUpdate.bump(TimePeriod.DAY, updateDays);
 			}
+		}
+
+		private String flattenQuestMoves()
+		{
+			final StringBuilder str = new StringBuilder("");
+			for(final String q : questMoves.keySet())
+			{
+				if(str.length()>0)
+					str.append(",");
+				final InfluDir dir = questMoves.get(q);
+				switch(dir)
+				{
+				case NEGATIVE:
+					str.append("-"+q);
+					break;
+				case POSITIVE:
+					str.append("+"+q);
+					break;
+				case VARIABLE:
+					str.append(q);
+					break;
+				}
+			}
+			return str.toString();
 		}
 
 		public boolean isApplicableArea(final Area A)
@@ -1012,6 +1056,8 @@ public class StockMarket extends StdBehavior
 	{
 		if (forMe != null)
 			host = forMe;
+		CMLib.map().addGlobalHandler(this, CMMsg.TYP_GIVE);
+		CMLib.map().addGlobalHandler(this, CMMsg.TYP_QUESTSTART);
 	}
 
 	@Override
@@ -1021,6 +1067,8 @@ public class StockMarket extends StdBehavior
 		this.stockbrokers.clear();
 		for(final ShopKeeper SK : removeFroms)
 			SK.getShop().delShopProvider(shopProvider);
+		CMLib.map().delGlobalHandler(this, CMMsg.TYP_GIVE);
+		CMLib.map().delGlobalHandler(this, CMMsg.TYP_QUESTSTART);
 		super.endBehavior(forMe);
 	}
 
@@ -1151,10 +1199,6 @@ public class StockMarket extends StdBehavior
 			{
 				final TimeClock now = ((Area)host).getTimeObj();
 				boolean resave=false;
-				final List<StockDef> stocks = new ArrayList<StockDef>(getHostStocks());
-				final List<String> allTitleIds = new ArrayList<String>(getHostStocksMap().size());
-				for(final StockDef stock : stocks)
-					allTitleIds.add(stock.getTitleID());
 				final Set<String> archonNames = new TreeSet<String>();
 				for(final ThinPlayer archonPlayer : CMLib.players().getArchonUserList())
 					archonNames.add(archonPlayer.name());
@@ -1491,6 +1535,42 @@ public class StockMarket extends StdBehavior
 		//  msg events can lead to influences which must be remembered when stock tally-time occurs
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_GIVE:
+			if((msg.tool() instanceof PrivateProperty)
+			&&(msg.tool() instanceof AutoBundler)
+			&&(msg.target() instanceof MOB)
+			&&(msg.tool().ID().equals("GenCertificate")))
+			{
+				final PrivateProperty cert = (PrivateProperty)msg.tool();
+				final Map<String,StockDef> stocksMap = this.getHostStocksMap();
+				StockDef def = null;
+				synchronized(stocksMap)
+				{
+					final String itemTitleID = cert.getTitleID();
+					def = stocksMap.get(itemTitleID);
+					if(def == null)
+						def = stocksMap.get(cert.name());
+					if(def == null)
+					{
+						for(final String key : stocksMap.keySet())
+							if(itemTitleID.equals(key))
+							{
+								def=stocksMap.get(key);
+								break;
+							}
+					}
+				}
+				if((def != null) && (!lastGives.contains(msg)))
+				{
+					lastGives.add(msg);
+					final int amt = ((AutoBundler)msg.tool()).getBundleSize();
+					final String oldOwner = msg.source().name();
+					final String newOwner = msg.target().name();
+					this.updatePlayerStockXML(oldOwner, def, -amt);
+					this.updatePlayerStockXML(newOwner, def, amt);
+				}
+			}
+			break;
 		case CMMsg.TYP_LIFE:
 			if (msg.source().isMonster())
 			{
@@ -1565,6 +1645,34 @@ public class StockMarket extends StdBehavior
 						&&(!done.contains(def)))
 						{
 							def.addInfluence(InfluCat.LEVELING, unlevel?InfluDir.NEGATIVE:InfluDir.POSITIVE, 1);
+							done.add(def);
+						}
+					}
+				}
+			}
+			break;
+		}
+		case CMMsg.TYP_QUESTSTART:
+		{
+			final Area A = CMLib.map().areaLocation(msg.source());
+			if((A==null)||(!(host instanceof Area))||(msg.sourceMessage()==null))
+				break;
+			final String areaName = A.Name();
+			final Set<StockDef> done = new HashSet<StockDef>();
+			for(final MarketConf conf : configs)
+			{
+				final InfluDir dir = conf.questMoves.get(msg.sourceMessage().toLowerCase().trim());
+				if(dir == null)
+					continue;
+				final Collection<StockDef> stocks = getHostStocks();
+				synchronized(stocks)
+				{
+					for(final StockDef def : stocks)
+					{
+						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+						&&(!done.contains(def)))
+						{
+							def.addInfluence(InfluCat.AREA_EVENTS, dir, 1);
 							done.add(def);
 						}
 					}
