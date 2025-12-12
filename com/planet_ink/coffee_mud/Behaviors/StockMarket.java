@@ -103,7 +103,6 @@ public class StockMarket extends StdBehavior
 		@Override
 		public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
 		{
-			//TODO: needs to return the NUMBER of each in stock!
 			final List<Environmental> stockList = new ArrayList<Environmental>();
 			final Area A = myRoom!=null?myRoom.getArea():null;
 			if((A==null)||(!(host instanceof Area)))
@@ -120,7 +119,7 @@ public class StockMarket extends StdBehavior
 						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
 						&&(!done.contains(def)))
 						{
-							//TODO: stockbrokers sell replacement certs when you aren't carrying enough of them?
+							//TODO: should stockbrokers sell replacement certs when you aren't carrying enough of them?
 							// Players who keep their stocks where the adjuster can't find them depend on it.  But HOW?!
 							if(def.deed == null)
 							{
@@ -410,7 +409,10 @@ public class StockMarket extends StdBehavior
 				if(stockData.xml().startsWith("<AMT>") && stockData.xml().endsWith("</AMT>"))
 				{
 					final int amt = CMath.s_int(stockData.xml().substring(5,stockData.xml().length()-6));
-					owned.add(stockData.who(), Integer.valueOf(amt));
+					if(amt <=0)
+						CMLib.database().DBDeletePlayerData(stockData.who(), "STOCKMARKET_STOCKS", stock.getTitleID());
+					else
+						owned.add(stockData.who(), Integer.valueOf(amt));
 				}
 			}
 		}

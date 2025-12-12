@@ -56,7 +56,7 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 	{
 		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
-		return L("a deed");
+		return L("a certificate");
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 	public GenCertificate()
 	{
 		super();
-		setName("a standard deed");
-		setDescription("Give or Sell this deed to transfer ownership. **DON`T LOSE THIS!**");
+		setName("a standard certificate");
+		setDescription("Give or Sell this certificate to transfer ownership. **DON`T LOSE THIS!**");
 		baseGoldValue=10000;
 		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
 		setMaterial(RawMaterial.RESOURCE_PAPER);
@@ -195,7 +195,7 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 				if((getOwnerName()==null)||(getOwnerName().length()==0))
 					msg.source().tell(L("It states that the property herein known as '@x1' is available for ownership.",name()));
 				else
-					msg.source().tell(L("It states that the property herein known as '@x1' is deeded to @x2.",name(),getOwnerName()));
+					msg.source().tell(L("It states that the property herein known as '@x1' is owned by @x2.",name(),getOwnerName()));
 			}
 			else
 				msg.source().tell(L("You can't see that!"));
@@ -237,14 +237,16 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.amITarget(this))
-		&&(msg.tool() instanceof ShopKeeper))
+		&&(msg.tool() instanceof ShopKeeper)
+		&&(getOwnerName().length()==0)
+		&&(!(msg.tool() instanceof Banker))
+		&&(!(msg.tool() instanceof Auctioneer))
+		&&(!(msg.tool() instanceof Librarian))
+		&&(!(msg.tool() instanceof PostOffice)))
 		{
-			if(getOwnerName().length()==0)
-			{
-				final String newOwnerName=msg.source().Name();
-				setOwnerName(newOwnerName);
-				msg.source().tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
-			}
+			final String newOwnerName=msg.source().Name();
+			setOwnerName(newOwnerName);
+			msg.source().tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
 			recoverPhyStats();
 		}
 	}
@@ -381,7 +383,8 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 				break;
 			}
 		}
-		if((alternative!=null)&&(alternative!=this))
+		if((alternative!=null)
+		&&(alternative!=this))
 		{
 			alternative.setBundleSize(getBundleSize());
 			destroy();
