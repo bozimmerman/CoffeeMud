@@ -1836,7 +1836,6 @@ See guides/RandomAreas.html for information about documents of this type.
 			MPSCRIPT \$i DELETE *
 		~
 	</script>
-<!-- New Prediction Entries -->
 
 <script id="good_heal_potion">
 	FUNCTION_PROG Prediction
@@ -2093,6 +2092,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		MPSCRIPT \$i DELETE *
 	~
 </script>
+<!-- New Prediction Entries -->
 	<!--
 *******  Possibilities Below******
 A hidden cave will reveal a trove of magical artifacts.
