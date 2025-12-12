@@ -45,6 +45,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	protected double					coinInterest	= -0.000;
 	protected double					itemInterest	= -0.0001;
 	protected double					loanInterest	= 0.01;
+	protected StdBanker					me				= this;
 	protected static Map<String, Long>	bankTimes		= new Hashtable<String, Long>();
 
 	public StdBanker()
@@ -228,136 +229,154 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return null;
 	}
 
-	protected void processAccounts()
+	protected class ProcessAccounts implements Runnable
 	{
-		boolean proceed=false;
-		Long L=bankTimes.get(bankChain());
-		long timeInterval=1;
-		if(((L==null)||(L.longValue()<System.currentTimeMillis()))
-		&&(location!=null)
-		&&(location.getArea()!=null)
-		&&(location.getArea().getTimeObj()!=null)
-		&&(CMLib.flags().isInTheGame(this,true)))
+		AtomicBoolean flag;
+		public ProcessAccounts(final AtomicBoolean flag)
 		{
-			timeInterval=timeInterval();
-			L=Long.valueOf(System.currentTimeMillis()+timeInterval);
-			proceed=true;
-			bankTimes.remove(bankChain());
-			bankTimes.put(bankChain(),L);
+			this.flag=flag;
 		}
-		if(proceed)
+
+		@Override
+		public void run()
 		{
-			final List<String> bankDataV=CMLib.database().DBReadPlayerDataPlayersBySection(bankChain());
-			final Set<String> userNames=new HashSet<String>();
-			for(int v=0;v<bankDataV.size();v++)
+			try
 			{
-				final String name=bankDataV.get(v);
-				if(!userNames.contains(name))
+				boolean proceed=false;
+				Long L=bankTimes.get(bankChain());
+				long timeInterval=1;
+				if(((L==null)||(L.longValue()<System.currentTimeMillis()))
+				&&(location!=null)
+				&&(location.getArea()!=null)
+				&&(location.getArea().getTimeObj()!=null)
+				&&(CMLib.flags().isInTheGame(me,true)))
 				{
-					if(!CMLib.players().playerExistsAllHosts(name))
-					{
-						if((CMLib.clans().getClanAnyHost(name))==null)
-							delAllDeposits(name);
-						else
-							userNames.add(name);
-					}
-					else
-						userNames.add(name);
+					timeInterval=timeInterval();
+					L=Long.valueOf(System.currentTimeMillis()+timeInterval);
+					proceed=true;
+					bankTimes.remove(bankChain());
+					bankTimes.put(bankChain(),L);
 				}
-			}
-			final List<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
-			for(final Iterator<String> i=userNames.iterator();i.hasNext();)
-			{
-				final String name=i.next();
-				Coins coinItem=null;
-				int totalValue=0;
-				final List<Item> items=getDepositedItems(name);
-				for(int v=0;v<items.size();v++)
+				if(proceed)
 				{
-					final Item I=items.get(v);
-					if(I instanceof Coins)
-						coinItem=(Coins)I;
-					else
-					if(itemInterest!=0.0)
-						totalValue+=I.value();
-				}
-				double newBalance=0.0;
-				if(coinItem!=null)
-					newBalance=coinItem.getTotalValue();
-				newBalance+=CMath.mul(newBalance,coinInterest);
-				if(totalValue>0)
-					newBalance+=CMath.mul(totalValue,itemInterest);
-				for(int d=debts.size()-1;d>=0;d--)
-				{
-					final MoneyLibrary.DebtItem debtItem=debts.get(d);
-					final String debtor=debtItem.debtor();
-					if(debtor.equalsIgnoreCase(name))
+					final List<String> bankDataV=CMLib.database().DBReadPlayerDataPlayersBySection(bankChain());
+					final Set<String> userNames=new HashSet<String>();
+					for(int v=0;v<bankDataV.size();v++)
 					{
-						final long debtDueAt = debtItem.due();
-						final double intRate = debtItem.interest();
-						final double dueAmount = debtItem.amt();
-						final String reason = debtItem.reason();
-						final double intDue = CMath.mul(intRate, dueAmount);
-						final long timeRemaining = debtDueAt - System.currentTimeMillis();
-						if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
-							newBalance=-1.0;
-						else
+						final String name=bankDataV.get(v);
+						if(!userNames.contains(name))
 						{
-							final double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
-							if(newBalance>=amtDueNow)
+							if(!CMLib.players().playerExistsAllHosts(name))
 							{
-								CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(this,amtDueNow)+": Loan payment made.");
-								CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
-								newBalance-=amtDueNow;
+								if((CMLib.clans().getClanAnyHost(name))==null)
+									delAllDeposits(name);
+								else
+									userNames.add(name);
 							}
 							else
-								CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
+								userNames.add(name);
 						}
-						debts.remove(d);
 					}
-				}
-				if(newBalance<0)
-				{
-					for(int v=0;v<items.size();v++)
+					final List<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
+					for(final Iterator<String> i=userNames.iterator();i.hasNext();)
 					{
-						final Item I=items.get(v);
-						if((I instanceof LandTitle)&&(((LandTitle)I).getOwnerName().length()>0))
+						final String name=i.next();
+						Coins coinItem=null;
+						int totalValue=0;
+						final List<Item> items=getDepositedItems(name);
+						for(int v=0;v<items.size();v++)
 						{
-							((LandTitle)I).setOwnerName("");
-							((LandTitle)I).updateTitle();
-							((LandTitle)I).updateLot(null);
+							final Item I=items.get(v);
+							if(I instanceof Coins)
+								coinItem=(Coins)I;
+							else
+							if(itemInterest!=0.0)
+								totalValue+=I.value();
 						}
-						if(!(I instanceof Coins))
-							getShop().addStoreInventory(I);
-					}
-					delAllDeposits(name);
-					CMLib.beanCounter().delAllDebt(name,bankChain());
-				}
-				else
-				if((coinItem==null)||(newBalance!=coinItem.getTotalValue()))
-				{
-					if(coinItem!=null)
-					{
-						if(newBalance>coinItem.getTotalValue())
-							CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
+						double newBalance=0.0;
+						if(coinItem!=null)
+							newBalance=coinItem.getTotalValue();
+						newBalance+=CMath.mul(newBalance,coinInterest);
+						if(totalValue>0)
+							newBalance+=CMath.mul(totalValue,itemInterest);
+						for(int d=debts.size()-1;d>=0;d--)
+						{
+							final MoneyLibrary.DebtItem debtItem=debts.get(d);
+							final String debtor=debtItem.debtor();
+							if(debtor.equalsIgnoreCase(name))
+							{
+								final long debtDueAt = debtItem.due();
+								final double intRate = debtItem.interest();
+								final double dueAmount = debtItem.amt();
+								final String reason = debtItem.reason();
+								final double intDue = CMath.mul(intRate, dueAmount);
+								final long timeRemaining = debtDueAt - System.currentTimeMillis();
+								if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
+									newBalance=-1.0;
+								else
+								{
+									final double amtDueNow=(timeRemaining<0)?(dueAmount+intDue):CMath.div((dueAmount+intDue),(timeRemaining/timeInterval));
+									if(newBalance>=amtDueNow)
+									{
+										CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(me)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(me,amtDueNow)+": Loan payment made.");
+										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue-amtDueNow,reason,intRate,debtDueAt);
+										newBalance-=amtDueNow;
+									}
+									else
+										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
+								}
+								debts.remove(d);
+							}
+						}
+						if(newBalance<0)
+						{
+							for(int v=0;v<items.size();v++)
+							{
+								final Item I=items.get(v);
+								if((I instanceof LandTitle)&&(((LandTitle)I).getOwnerName().length()>0))
+								{
+									((LandTitle)I).setOwnerName("");
+									((LandTitle)I).updateTitle();
+									((LandTitle)I).updateLot(null);
+								}
+								if(!(I instanceof Coins))
+									getShop().addStoreInventory(I);
+							}
+							delAllDeposits(name);
+							CMLib.beanCounter().delAllDebt(name,bankChain());
+						}
 						else
-							CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(this)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
-						delDepositInventory(name,coinItem);
+						if((coinItem==null)||(newBalance!=coinItem.getTotalValue()))
+						{
+							if(coinItem!=null)
+							{
+								if(newBalance>coinItem.getTotalValue())
+									CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(me)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(me,newBalance-coinItem.getTotalValue())+": Interest paid.");
+								else
+									CMLib.beanCounter().addToBankLedger(bankChain(),name,CMLib.utensils().getFormattedDate(me)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(me,coinItem.getTotalValue()-newBalance)+": Interest charged.");
+								delDepositInventory(name,coinItem);
+							}
+							final String currency=CMLib.beanCounter().getCurrency(me);
+							coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
+							if(coinItem!=null)
+								addDepositInventory(name,coinItem,null);
+						}
+						for(int v=0;v<items.size();v++)
+						{
+							final Item I=items.get(v);
+							if(I!=null)
+								I.destroy();
+						}
 					}
-					final String currency=CMLib.beanCounter().getCurrency(this);
-					coinItem=CMLib.beanCounter().makeBestCurrency(currency,newBalance);
-					if(coinItem!=null)
-						addDepositInventory(name,coinItem,null);
-				}
-				for(int v=0;v<items.size();v++)
-				{
-					final Item I=items.get(v);
-					if(I!=null)
-						I.destroy();
+					for(int d=debts.size()-1;d>=0;d--)
+						CMLib.beanCounter().delAllDebt(debts.get(d).debtor(),bankChain());
 				}
 			}
-			for(int d=debts.size()-1;d>=0;d--)
-				CMLib.beanCounter().delAllDebt(debts.get(d).debtor(),bankChain());
+			finally
+			{
+				if(flag != null)
+					flag.set(false);
+			}
 		}
 	}
 
@@ -391,23 +410,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						processingMap.put(bankChain(), flag);
 					}
 				}
-				boolean isProcessing=true;
 				synchronized(flag)
 				{
-					isProcessing = flag.get();
-					if(!isProcessing)
-						flag.set(true);
-				}
-				if(!isProcessing)
-				{
-					try
-					{
-						processAccounts();
-					}
-					finally
-					{
-						flag.set(false);
-					}
+					if(!flag.getAndSet(true))
+						CMLib.threads().executeRunnable(new ProcessAccounts(flag));
 				}
 			}
 		}

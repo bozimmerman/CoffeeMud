@@ -58,7 +58,7 @@ public class StockMarket extends StdBehavior
 	public StockMarket				me				= this;
 	public String					journalName		= "";
 	private volatile int			weatherDown		= Climate.WEATHER_TICK_DOWN;
-	private final AtomicBoolean			processing		= new AtomicBoolean(false);
+	private final AtomicBoolean		processing		= new AtomicBoolean(false);
 	private final Set<ShopKeeper>	stockbrokers	= Collections.synchronizedSet(new WeakSHashSet<ShopKeeper>());
 
 	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
@@ -1464,11 +1464,11 @@ public class StockMarket extends StdBehavior
 			return;
 
 		//TODO: handle random civic event from external generator? special area emoter of some sort?
-		// msg events can lead to influences which must be remembered when stock tally-time occurs
+		//  msg events can lead to influences which must be remembered when stock tally-time occurs
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_LIFE:
-			if(msg.source().isMonster())
+			if (msg.source().isMonster())
 			{
 				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.source());
 				if(SK != null)
