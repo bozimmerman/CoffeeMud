@@ -187,6 +187,15 @@ function finishCreateCharacter()
 }
 
 /*
+Priorities:
+	Exploration:  fill out your map and where everything is.
+	Experience: grinding for xp and levels
+	Health: being topped off and no debuffs
+	Skilled: topping off existing skill proficiency, and getting updated skills
+	Long Term Equipped: having the best gear for my level, from grinding or crafting
+	Short Term Equipped: have enough food, water, torches, bag space etc for exploring.
+	Imminent Survival: life is in retreat!  Should be high for EVERYONE.
+	
 Base Priorities & Risks
 1. Health
 	1.1 Declining Health
