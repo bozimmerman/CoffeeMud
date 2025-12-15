@@ -727,6 +727,7 @@ public class Play extends StdAbility
 										}
 										else
 											inpersistentAffect(follower);
+										gmcpAddNotify(follower);
 									}
 								}
 							}

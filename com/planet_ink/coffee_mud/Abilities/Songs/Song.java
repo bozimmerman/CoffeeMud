@@ -632,6 +632,7 @@ public class Song extends StdAbility
 											follower.addEffect((Ability)newOne.copyOf());
 										else
 											follower.addEffect(newOne);
+										gmcpAddNotify(follower);
 									}
 								}
 							}
