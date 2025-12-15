@@ -511,7 +511,7 @@ public class StockMarket extends StdBehavior
 					}
 				}
 			}
-			Resources.submitResource("CMKT_AREA_DATA/"+areaName,stocks);
+			Resources.submitResource("CMKT_AREA_STOCKS/"+areaName,stocks);
 		}
 		return stocks;
 	}
@@ -879,7 +879,6 @@ public class StockMarket extends StdBehavior
 							if(stocks.size() >= maxStocks)
 								return null;
 							def = new StockDef(hostA.Name(),id,name);
-							stocks.add(def);
 							addHostStock(def);
 						}
 						list.add(def);
@@ -902,7 +901,6 @@ public class StockMarket extends StdBehavior
 								return null;
 							final String id = "R"+getCode(hostA.Name(), race)+getCode("CMKT_AREA_CODES", hostA.Name());
 							def = new StockDef(hostA.Name(), id, name);
-							stocks.add(def);
 							addHostStock(def);
 						}
 						list.add(def);
@@ -936,7 +934,6 @@ public class StockMarket extends StdBehavior
 									return null;
 								final String id = "C"+getCode(hostA.Name(), type)+getCode("CMKT_AREA_CODES", hostA.Name());
 								def = new StockDef(hostA.Name(),id,name);
-								stocks.add(def);
 								addHostStock(def);
 							}
 							list.add(def);
@@ -959,7 +956,6 @@ public class StockMarket extends StdBehavior
 									return null;
 								final String id = "G"+getCode("CMKT_AREA_CODES", hostA.Name());
 								def = new StockDef(hostA.Name(),id,name);
-								stocks.add(def);
 								addHostStock(def);
 							}
 							list.add(def);
@@ -1106,8 +1102,16 @@ public class StockMarket extends StdBehavior
 
 	private synchronized void configure()
 	{
-		if((configs.size()>0) || (getParms().length()==0) || (!hostReady()))
+		if((configs.size()>0) || (!hostReady()))
 			return;
+		if(getParms().length()==0)
+		{
+			final TreeMap<String,String> parms = new TreeMap<String,String>();
+			parms.put("MARKETTYPE","STOCK");
+			final MarketConf base = new MarketConf(parms,new MarketConf());
+			configs.add(base);
+			return;
+		}
 		final Map<String,String> mapped = CMParms.parseEQParms(getParms());
 		journalName = "";
 		if(mapped.containsKey("JOURNAL"))
@@ -1451,7 +1455,7 @@ public class StockMarket extends StdBehavior
 			final ShopKeeper SK = CMLib.coffeeShops().getShopKeeper(msg.target());
 			if((SK != null)
 			&&(SK.isSold(ShopKeeper.DEAL_STOCKBROKER))
-			&&(!SK.getShop().hasShopProvider("StockMarket_"+hashCode())))
+			&&(!SK.getShop().hasShopProvider(shopProvider.ID())))
 			{
 				SK.getShop().addShopProvider(shopProvider);
 				stockbrokers.add(SK);

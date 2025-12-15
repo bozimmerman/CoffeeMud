@@ -57,7 +57,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public Map<String,ShopProvider>	shopProviders		= new STreeMap<String, ShopProvider>();
 	protected volatile Integer		contentHash			= null;
 
-	
+
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
 		@Override
@@ -410,13 +410,13 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public List<Environmental> createListInventory(final MOB buyer, final Room shopHomeRoom)
 	{
-		List<Environmental> inventory = new XArrayList<Environmental>(getStoreInventory());
+		final List<Environmental> inventory = new XArrayList<Environmental>(getStoreInventory());
 		this.checkInternalProviders();
 		for(final ShopProvider provider : shopProviders.values())
 			inventory.addAll(provider.getStock(buyer, this, shopHomeRoom));
 		return inventory;
 	}
-	
+
 	@Override
 	public void delAllStoreInventory(final Environmental thisThang)
 	{
@@ -442,21 +442,21 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		this.contentHash = null;
 	}
-	
+
 	@Override
 	public boolean hasShopProvider(final String ID)
 	{
 		return shopProviders.containsKey(ID);
 	}
-	
+
 	@Override
 	public void addShopProvider(final ShopProvider provider)
 	{
 		if(hasShopProvider(provider.ID()))
 			return;
-		shopProviders.put(provider.ID(), CMLib.coffeeShops().createRealEstateProvider());
+		shopProviders.put(provider.ID(), provider);
 	}
-	
+
 	@Override
 	public void delShopProvider(final ShopProvider provider)
 	{
@@ -476,7 +476,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			addShopProvider(CMLib.coffeeShops().createRealEstateProvider());
 		}
 	}
-	
+
 	@Override
 	public boolean doIHaveThisInStock(final String name, final MOB mob)
 	{
