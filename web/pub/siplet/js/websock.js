@@ -1,7 +1,9 @@
 if (isElectron) 
 {
-	window.WebSocket = function(url) {
-		var net = require('net'); // Use Electron's net module
+	window.WebSocket = function(url) 
+	{
+		var net = require('net');
+		var tls = require('tls');
 		this.socket = null;
 		this.onopen = null;
 		this.onmessage = null;
@@ -18,13 +20,26 @@ if (isElectron)
 		this.port = parseInt(url.substr(x+6));
 		// Initialize TCP socket
 		var self = this;
-		this.socket = net.createConnection({ host: this.host, port: this.port }, function() 
+		if(this.ssl)
 		{
-			self.socket.readyState = WebSocket.OPEN;
-			if (self.onopen) {
-				self.onopen(new Event('open'));
-			}
-		});
+			this.socker = tls.connect({ host: this.host, port: this.port, rejectUnauthorized: false }, function()
+			{
+				self.socket.readyState = WebSocket.OPEN;
+				if (self.onopen) {
+					self.onopen(new Event('open'));
+				}
+			})
+		}
+		else
+		{
+			this.socket = net.createConnection({ host: this.host, port: this.port }, function() 
+			{
+				self.socket.readyState = WebSocket.OPEN;
+				if (self.onopen) {
+					self.onopen(new Event('open'));
+				}
+			});
+		}
 	
 		this.socket.on('data', function(data) 
 		{
