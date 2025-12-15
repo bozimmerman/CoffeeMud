@@ -4652,6 +4652,7 @@ public class ListCmd extends StdCommand
 		int start = 0;
 		final int logSize = Log.instance().numLines();
 		int end = logSize;
+		String mask="";
 		final Log.LogReader log = Log.instance().getLogReader();
 
 		for(int i=1;i<commands.size();i++)
@@ -4704,6 +4705,8 @@ public class ListCmd extends StdCommand
 					return;
 				}
 			}
+			else
+				mask=(mask+" "+s).trim();
 		}
 		if(end>=logSize)
 			end=logSize;
@@ -4714,7 +4717,9 @@ public class ListCmd extends StdCommand
 		int shownLineNum=0;
 		while((line!=null)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			if((lineNum>start)&&(lineNum<=end))
+			if((lineNum>start)
+			&&(lineNum<=end)
+			&&((mask.length()==0)||(line.indexOf(mask)>=0)))
 			{
 				mob.session().safeRawPrintln(line);
 				if((pageBreak>0)&&(shownLineNum>=pageBreak))

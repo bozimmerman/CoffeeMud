@@ -337,7 +337,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			@Override
 			public int age()
 			{
-				return CMath.s_int(M.getStat("AGE"));
+				return CMath.s_int(M.getStat("AGE")); //? doesn't exist?
 			}
 
 			@Override
@@ -433,7 +433,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			@Override
 			public int age()
 			{
-				return (M.playerStats()!=null)?(int)(M.getAgeMinutes()/60):0;
+				return (M.playerStats()!=null)?(int)M.getAgeMinutes():0;
 			}
 
 			@Override
