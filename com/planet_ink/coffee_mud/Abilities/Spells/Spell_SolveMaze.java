@@ -142,7 +142,7 @@ public class Spell_SolveMaze extends Spell
 				final int radius = (grid.xGridSize()*grid.yGridSize())+2;
 				commonTelL(mob,"The directions are taking shape in your mind: \n\r@x1",
 						CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(),
-								CMLib.map().getExtendedRoomID(outRoom), null, radius, null,", ",1));
+								CMLib.map().getExtendedRoomID(outRoom), null, null, radius,null,", ", 1));
 			}
 		}
 		else

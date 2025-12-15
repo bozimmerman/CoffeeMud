@@ -131,7 +131,7 @@ public class Spell_FindDirections extends Spell
 			{
 				mob.location().send(mob,msg);
 				commonTelL(mob,"The directions are taking shape in your mind: \n\r@x1",
-						CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), null, 100, null,", ",1));
+						CMLib.tracking().getTrailToDescription(targetR, new Vector<Room>(), A.Name(), null, null, 100,null,", ", 1));
 			}
 		}
 		else

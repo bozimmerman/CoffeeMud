@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -660,7 +661,7 @@ public class Concierge extends StdBehavior
 					else
 						CMLib.commands().postSay(conciergeM,source,L("Gee, thanks. :)"),true,false);
 				}
-				((Coins)possibleCoins).destroy();
+				possibleCoins.destroy();
 				giveMerchandise(source, destR, conciergeM, source.location(), destT.fourth);
 				destinations.removeElementFirst(source);
 			}
@@ -732,15 +733,15 @@ public class Concierge extends StdBehavior
 			final List<Room> set=new ArrayList<Room>();
 			CMLib.tracking().getRadiantRooms(fromM.location(),set,trackingFlags,null,maxRange,null);
 			String trailStr;
-			if(CMLib.tracking().canValidTrail(fromM.location(), set, name, maxRange, null, 1))
-				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,null,maxRange,null,", ",1);
+			if(CMLib.tracking().canValidTrail(fromM.location(), set, name, maxRange, null, 1, trackingFlags))
+				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,null,trackingFlags,maxRange,null,", ", 1);
 			else
 			{
 				//set.clear();
 				final TrackingFlags noAirFlags = trackingFlags.copyOf();
 				noAirFlags.add(TrackingFlag.NOAIR);
 				CMLib.tracking().getRadiantRooms(fromM.location(),set,noAirFlags,null,maxRange,null);
-				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,null,maxRange,null,", ",1);
+				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,null,trackingFlags,maxRange,null,", ", 1);
 			}
 			thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(whoM,destination),trailStr));
 		}
@@ -784,7 +785,7 @@ public class Concierge extends StdBehavior
 				if((msg.source()==getTalker(observer,room))
 				&&(msg.target() instanceof MOB)
 				&&(msg.tool() instanceof Coins)
-				&&(((Coins)msg.tool()).amDestroyed())
+				&&(msg.tool().amDestroyed())
 				&&(!msg.source().isMine(msg.tool()))
 				&&(!((MOB)msg.target()).isMine(msg.tool())))
 					CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());

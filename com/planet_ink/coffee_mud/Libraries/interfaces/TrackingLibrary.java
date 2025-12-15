@@ -63,8 +63,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToAnyRoom(Room, RFilter, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 *
 	 * @param location the starting room for the trail
@@ -89,8 +89,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param location the starting room for the trail
 	 * @param destRoom the target room for the trail
@@ -123,8 +123,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToAnyRoom(Room, RFilter, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 *
 	 * @param location the starting room for the trail
@@ -149,8 +149,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param location the starting room for the trail
 	 * @param destRooms a list of rooms, any of which may be the destination
@@ -173,8 +173,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param location the starting room for the trail
 	 * @param destFilter a filter to identify the destination, by filtering OUT
@@ -197,8 +197,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param from the starting room
 	 * @param to the target room
@@ -220,8 +220,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param from the starting room
 	 * @param tos the target rooms
@@ -240,8 +240,8 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToAnyRoom(Room, RFilter, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param finalSets the shorted list &gt; 0
 	 * @return the shortest list.
@@ -262,21 +262,22 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int)
+	 * @see TrackingLibrary#canValidTrail(Room, List, String, int, Set, int, TrackingFlags)
 	 *
 	 * @param startR the starting room
 	 * @param radiantV the complete radiant rooms
 	 * @param where the target to search for
 	 * @param trailFlags the flags for rooms to travel through
+	 * @param trackingFlags null, or flags to check exits with
 	 * @param radius the maximum radius to travel
 	 * @param ignoreRooms optional set of rooms to ignore in the trail
-	 * @param delimeter null, or a string delimeter between directions
+	 * @param delimeter null, or a string delimiter between directions
 	 * @param maxSecs maximum seconds to keep looking for trail
 	 * @return the description of the way to get there
 	 */
 	public String getTrailToDescription(Room startR, List<Room> radiantV, String where,
-										Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms,
-										final String delimeter, int maxSecs);
+										Set<TrailFlag> trailFlags, TrackingFlags trackingFlags, int radius,
+										Set<Room> ignoreRooms, final String delimeter, int maxSecs);
 
 	/**
 	 * Searches for a room fitting to the given search string, within the given
@@ -292,7 +293,7 @@ public interface TrackingLibrary extends CMLibrary
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int)
 	 * @see TrackingLibrary#findTrailToRoom(Room, Room, TrackingFlags, int, List)
 	 * @see TrackingLibrary#getShortestTrail(List)
-	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, int, Set, String, int)
+	 * @see TrackingLibrary#getTrailToDescription(Room, List, String, Set, TrackingFlags, int, Set, String, int)
 	 *
 	 * @param startR the starting room
 	 * @param radiantV the complete radiant rooms
@@ -300,9 +301,10 @@ public interface TrackingLibrary extends CMLibrary
 	 * @param radius the maximum radius to travel
 	 * @param ignoreRooms optional set of rooms to ignore in the trail
 	 * @param maxSecs maximum seconds to keep looking for trail
+	 * @param trackingFlags null, or flags to check exits with
 	 * @return true if you can get from here to there
 	 */
-	public boolean canValidTrail(Room startR, List<Room> radiantV, String where, int radius, Set<Room> ignoreRooms, int maxSecs);
+	public boolean canValidTrail(Room startR, List<Room> radiantV, String where, int radius, Set<Room> ignoreRooms, int maxSecs, TrackingFlags trackingFlags);
 
 	/**
 	 * Given a room trail, with the destination room first, and the location last, this

@@ -1368,7 +1368,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return;
 		if(M==null)
 			return;
-		int dir=this.getRoomDirection(fromHere, toHere, null);
+		int dir=this.getRoomDirection(fromHere, toHere, null, null);
 		Exit enterExit=null;
 		Exit leaveExit=null;
 		if(dir < 0)
@@ -2148,13 +2148,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return finalSets;
 	}
 
-	protected int getRoomDirection(final Room R, final Room toRoom, final List<Room> ignore)
+	protected int getRoomDirection(final Room R, final Room toRoom, final List<Room> ignore, final RFilters filters)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if((R.getRoomInDir(d)==toRoom)
 			&&(R!=toRoom)
-			&&((ignore==null)||(!ignore.contains(R))))
+			&&((ignore==null)||(!ignore.contains(R)))
+			&&((filters==null)||(!filters.isFilteredOut(R, toRoom, R.getExitInDir(d), d))))
 				return d;
 		}
 		return -1;
@@ -2235,7 +2236,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	@Override
 	public boolean canValidTrail(final Room startR, final List<Room> radiantV, final String where, final int radius,
-								 final Set<Room> ignoreRooms, final int maxSecs)
+								 final Set<Room> ignoreRooms, final int maxSecs, final TrackingFlags trackingFlags)
 	{
 		final Room R2=getWhere(where,radiantV);
 		if(R2==null)
@@ -2243,6 +2244,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int foundAt=getIndexEnsureSet(startR,R2,radiantV,radius,ignoreRooms);
 		if(foundAt<0)
 			return false;
+		final RFilters rFilters = (trackingFlags==null)?null:this.convertTrackingFlagsToFilters(trackingFlags);
 		Room checkR=R2;
 		final List<Room> trailV=new ArrayList<Room>();
 		trailV.add(R2);
@@ -2258,7 +2260,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			for(int r=foundAt-1;r>=0;r--)
 			{
 				final Room R=radiantV.get(r);
-				if(getRoomDirection(R,checkR,trailV)>=0)
+				if(getRoomDirection(R,checkR,trailV,rFilters)>=0)
 				{
 					trailV.add(R);
 					if(!areasDone.contains(R.getArea()))
@@ -2277,11 +2279,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	@Override
 	public String getTrailToDescription(final Room startR, final List<Room> radiantV, final String where,
-										final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms,
-										String delimeter, final int maxSecs)
+										final Set<TrailFlag> trailFlags, final TrackingFlags trackingFlags, final int radius,
+										final Set<Room> ignoreRooms, String delimeter, final int maxSecs)
 	{
 		if(delimeter==null)
 			delimeter=" ";
+		final RFilters rFilters = (trackingFlags==null)?null:this.convertTrackingFlagsToFilters(trackingFlags);
 		final Room R2=getWhere(where,radiantV);
 		if(R2==null)
 			return L("Unable to determine '@x1'.",where);
@@ -2305,7 +2308,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			for(int r=foundAt-1;r>=0;r--)
 			{
 				final Room R=radiantV.get(r);
-				if(getRoomDirection(R,checkR,trailV)>=0)
+				if(getRoomDirection(R,checkR,trailV, rFilters)>=0)
 				{
 					trailV.add(R);
 					if(!areasDone.contains(R.getArea()))
@@ -2325,7 +2328,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final Room R=trailV.get(s);
 			final Room RA=trailV.get(s-1);
-			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty)));
+			theDirTrail.add(CMLib.directions().getDirectionChar(getRoomDirection(R,RA,empty,null)));
 		}
 		final StringBuffer theTrail=new StringBuffer("");
 		if(confirm)
@@ -2374,7 +2377,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			final Room R=trailV.get(1);
-			theTrail.append("\n\r"+CMStrings.padRight(L("From"),30)+": "+CMLib.directions().getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
+			theTrail.append("\n\r"+CMStrings.padRight(L("From"),30)+": "+CMLib.directions().getDirectionName(getRoomDirection(R,R2,empty,null))+" <- "+R.roomID());
 			theTrail.append("\n\r"+CMStrings.padRight(L("Room"),30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
 		}
@@ -4094,7 +4097,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					@Override
 					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
-						return (R.domainType() == Room.DOMAIN_INDOORS_AIR) || (R.domainType() == Room.DOMAIN_OUTDOORS_AIR);
+						return (R.domainType() == Room.DOMAIN_INDOORS_AIR)
+								|| (R.domainType() == Room.DOMAIN_OUTDOORS_AIR)
+								|| ((E!=null)&&CMath.bset(E.phyStats().disposition(),PhyStats.IS_FLYING));
 					}
 				};
 				break;
@@ -4114,7 +4119,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					@Override
 					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
-						return CMLib.flags().isWateryRoom(R);
+						return CMLib.flags().isWateryRoom(R)
+								||((E!=null)&&(CMath.bset(E.phyStats().disposition(),PhyStats.IS_SWIMMING)));
 					}
 				};
 				break;
@@ -4132,7 +4138,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					@Override
 					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
-						return !CMLib.flags().isDrivableRoom(R);
+						return !CMLib.flags().isDrivableRoom(R)
+								||((E!=null)
+									&&((!E.isOpen())
+										||CMath.bset(E.phyStats().disposition(),PhyStats.IS_FLYING)
+										||CMath.bset(E.phyStats().disposition(),PhyStats.IS_SWIMMING)));
 					}
 				};
 				break;
