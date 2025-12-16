@@ -1282,7 +1282,7 @@ function SipletWindow(windowName)
 
 	this.getChar = function(x, y)
 	{
-		if(!this.window || x < 0 || y < 0 || x >= this.width || y >= this.height)
+		if(!this.window || (x < 0) || (y < 0) || (x >= this.width) || (y >= this.height))
 			return null;
 
 		var result = FindModifyCharPosition(this.window, x, y, false);
@@ -1291,9 +1291,9 @@ function SipletWindow(windowName)
 
 	this.setChar = function(x, y, char, attrs)
 	{
-		if(!this.window || x < 0 || y < 0 || x >= this.width || y >= this.height)
+		if(!this.window || (x < 0) || (y < 0) || (x >= this.width) || (y >= this.height))
 			return false;
-		if(!char || char.length !== 1)
+		if(!char || (char.length !== 1))
 			return false;
 
 		return FindModifyCharPosition(this.window, x, y, true, char, attrs);
