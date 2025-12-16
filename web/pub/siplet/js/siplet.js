@@ -1280,6 +1280,25 @@ function SipletWindow(windowName)
 		frame.innerHTML = '';
 	}
 
+	this.getChar = function(x, y)
+	{
+		if(!this.window || x < 0 || y < 0 || x >= this.width || y >= this.height)
+			return null;
+
+		var result = FindModifyCharPosition(this.window, x, y, false);
+		return result ? result.char : null;
+	};
+
+	this.setChar = function(x, y, char, attrs)
+	{
+		if(!this.window || x < 0 || y < 0 || x >= this.width || y >= this.height)
+			return false;
+		if(!char || char.length !== 1)
+			return false;
+
+		return FindModifyCharPosition(this.window, x, y, true, char, attrs);
+	};
+
 	this.displayAt = function(value, frame)
 	{
 		var framechoices = this.mxp.getFrameMap();
