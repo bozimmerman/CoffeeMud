@@ -175,7 +175,8 @@ window.gmcpPackages.push({
 	name: "WebView",
 	lname: "webview.",
 	version: "1",
-	open: function(sipwin, msg) {
+	open: function(sipwin, msg) 
+	{
 		if(!isJsonObject(msg))
 			return;
 		if(!msg["url"])
@@ -226,6 +227,226 @@ window.gmcpPackages.push({
 		});
 	}
 });
+
+window.gmcpPackages.push({
+	name: "beip.tilemap",
+	lname: "beip.tilemap.",
+	version: "1",
+	info: function(sipwin, msg) 
+	{
+		if(!isJsonObject(msg))
+			return;
+
+		if(!sipwin.tilemaps)
+			sipwin.tilemaps = {};
+
+		for(var mapName in msg) 
+		{
+			var mapInfo = msg[mapName];
+			if(!isJsonObject(mapInfo))
+				continue;
+
+			var tileSize = mapInfo["tile-size"] || "16,16";
+			var tileSizeParts = tileSize.split(',');
+			var tileWidth = parseInt(tileSizeParts[0]) || 16;
+			var tileHeight = parseInt(tileSizeParts[1]) || 16;
+
+			var mapSize = mapInfo["map-size"] || "10,10";
+			var mapSizeParts = mapSize.split(',');
+			var mapWidth = parseInt(mapSizeParts[0]) || 10;
+			var mapHeight = parseInt(mapSizeParts[1]) || 10;
+
+			var tileUrl = mapInfo["tile-url"] || "";
+			var encoding = mapInfo["encoding"] || "Hex_4";
+
+			var mapExists = mapName in sipwin.tilemaps;
+			var sizeChanged = false;
+			if(mapExists) 
+			{
+				var oldMap = sipwin.tilemaps[mapName];
+				sizeChanged = (oldMap.mapWidth !== mapWidth || oldMap.mapHeight !== mapHeight);
+			}
+
+			sipwin.tilemaps[mapName] = 
+			{
+				tileUrl: tileUrl,
+				tileWidth: tileWidth,
+				tileHeight: tileHeight,
+				mapWidth: mapWidth,
+				mapHeight: mapHeight,
+				encoding: encoding,
+				tileImage: null,
+				data: sizeChanged ? null : (sipwin.tilemaps[mapName] ? sipwin.tilemaps[mapName].data : null)
+			};
+
+			if(sizeChanged || !sipwin.tilemaps[mapName].data) 
+			{
+				var dataSize = mapWidth * mapHeight;
+				sipwin.tilemaps[mapName].data = new Array(dataSize).fill(0);
+			}
+
+			if(tileUrl) 
+			{
+				var img = new Image();
+				img.crossOrigin = "anonymous";
+				var self = this;
+				img.onload = function(mapName) 
+				{
+					return function() {
+						sipwin.tilemaps[mapName].tileImage = this;
+						self._RenderTilemap(sipwin, mapName);
+					};
+				}(mapName);
+				img.src = tileUrl;
+			}
+
+			this._CreateTilemapFrame(sipwin, mapName);
+		}
+	},
+	data: function(sipwin, msg) 
+	{
+		if(!isJsonObject(msg))
+			return;
+		if(!sipwin.tilemaps)
+			sipwin.tilemaps = {};
+
+		// Process each map in the message
+		for(var mapName in msg) 
+		{
+			if(!(mapName in sipwin.tilemaps))
+				continue;
+
+			var mapData = msg[mapName];
+			var tilemap = sipwin.tilemaps[mapName];
+
+			// Decode the data based on encoding
+			var decodedData = this._DecodeTilemapData(mapData, tilemap.encoding, tilemap.mapWidth * tilemap.mapHeight);
+			if(decodedData) 
+			{
+				tilemap.data = decodedData;
+				this._RenderTilemap(sipwin, mapName);
+			}
+		}
+	},
+	_DecodeTilemapData: function	(dataStr, encoding, expectedSize) 
+	{
+		if(!dataStr)
+			return null;
+
+		var result = [];
+
+		if(encoding === "Hex_4") 
+		{
+			for(var i = 0; i < dataStr.length; i++) 
+			{
+				var char = dataStr[i];
+				var value = parseInt(char, 16);
+				if(!isNaN(value))
+					result.push(value);
+			}
+		} 
+		else
+		if(encoding === "Hex_8") 
+		{
+			for(var i = 0; i < dataStr.length; i += 2)
+			{
+				var byte = dataStr.substr(i, 2);
+				var value = parseInt(byte, 16);
+				if(!isNaN(value))
+					result.push(value);
+			}
+		}
+		else
+		if(encoding === "Decimal") 
+		{
+			var parts = dataStr.split(',');
+			for(var i = 0; i < parts.length; i++)
+			{
+				var value = parseInt(parts[i]);
+				if(!isNaN(value))
+					result.push(value);
+			}
+		}
+
+		if(result.length !== expectedSize)
+		{
+			console.error('Tilemap data size mismatch: expected ' + expectedSize + ', got ' + result.length);
+			return null;
+		}
+
+		return result;
+	},
+	_CreateTilemapFrame: function(sipwin, mapName) 
+	{
+		var frameId = "TILEMAP_" + mapName.replace(/[^a-zA-Z0-9]/g, '_');
+		var framechoices = sipwin.mxp.getFrameMap();
+
+		if(!(frameId in framechoices))
+		{
+			// Create a floating frame for the tilemap
+			sipwin.process('<FRAME ACTION=OPEN FLOATING NAME="'+frameId+'" TITLE="Map: '+mapName+'" LEFT=10% TOP=10% HEIGHT=40% WIDTH=40%>');
+			framechoices = sipwin.mxp.getFrameMap();
+		}
+
+		if(!(frameId in framechoices))
+			return;
+
+		var frame = framechoices[frameId];
+		if(frame.sprops && frame.firstChild)
+			frame = frame.firstChild;
+
+		var canvasId = "tilemap_canvas_" + frameId;
+		sipwin.cleanDiv(frame);
+		frame.innerHTML = '<canvas id="'+canvasId+'" style="width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges;"></canvas>';
+
+		if(sipwin.tilemaps[mapName])
+			sipwin.tilemaps[mapName].canvasId = canvasId;
+	},
+	_RenderTilemap: function(sipwin, mapName) 
+	{
+		if(!sipwin.tilemaps || !(mapName in sipwin.tilemaps))
+			return;
+
+		var tilemap = sipwin.tilemaps[mapName];
+		if(!tilemap.data || !tilemap.tileImage)
+			return;
+
+		var canvas = document.getElementById(tilemap.canvasId);
+		if(!canvas)
+			return;
+
+		canvas.width = tilemap.mapWidth * tilemap.tileWidth;
+		canvas.height = tilemap.mapHeight * tilemap.tileHeight;
+
+		var ctx = canvas.getContext('2d');
+		ctx.imageSmoothingEnabled = false;
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		var tilesPerRow = Math.floor(tilemap.tileImage.width / tilemap.tileWidth);
+
+		for(var y = 0; y < tilemap.mapHeight; y++) 
+		{
+			for(var x = 0; x < tilemap.mapWidth; x++) 
+			{
+				var index = y * tilemap.mapWidth + x;
+				var tileIndex = tilemap.data[index];
+				var srcX = (tileIndex % tilesPerRow) * tilemap.tileWidth;
+				var srcY = Math.floor(tileIndex / tilesPerRow) * tilemap.tileHeight;
+				var destX = x * tilemap.tileWidth;
+				var destY = y * tilemap.tileHeight;
+
+				ctx.drawImage(
+					tilemap.tileImage,
+					srcX, srcY, tilemap.tileWidth, tilemap.tileHeight,
+					destX, destY, tilemap.tileWidth, tilemap.tileHeight
+				);
+			}
+		}
+	}
+});
+
+
 
 function ParseGMCPPkg(pkg)
 {
