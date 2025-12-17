@@ -767,11 +767,7 @@ public class StockMarket extends StdBehavior
 			final GroupBy gb = (GroupBy)CMath.s_valueOf(GroupBy.class, groupByStr);
 			if(gb != null)
 				groupBy=gb;
-			if(host instanceof Area)
-			{
-				nextUpdate=(TimeClock)((Area)host).getTimeObj().copyOf();
-				nextUpdate.bump(TimePeriod.DAY, updateDays);
-			}
+			nextUpdate=null;
 		}
 
 		private String flattenQuestMoves()
@@ -1187,9 +1183,28 @@ public class StockMarket extends StdBehavior
 				}
 			}
 		}
-		if(!processing.getAndSet(true))
+		boolean tryProcessPlease=false;
+		if(host instanceof Area)
 		{
-			CMLib.threads().executeRunnable(processStockMarket); // will reset processing when done
+			final TimeClock now = ((Area)host).getTimeObj();
+			for(final MarketConf conf : configs)
+			{
+				if(conf.nextUpdate == null)
+				{
+					conf.nextUpdate=(TimeClock)((Area)host).getTimeObj().copyOf();
+					conf.nextUpdate.bump(TimePeriod.DAY, conf.updateDays);
+				}
+				if(conf.nextUpdate.isAfter(now))
+					continue;  // we have not arrived at the time yet
+				tryProcessPlease=true;
+			}
+		}
+		if(tryProcessPlease)
+		{
+			if(!processing.getAndSet(true))
+			{
+				CMLib.threads().executeRunnable(processStockMarket); // will reset processing when done
+			}
 		}
 		return true;
 	}
@@ -1395,7 +1410,7 @@ public class StockMarket extends StdBehavior
 									if(journalName.length()>0)
 									{
 										final String dividendAmt = (dividendMultiplier * 100.0)+"%";
-										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 divided per share.",def.name(),dividendAmt),L("See the subject line."));
+										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 dividend per share.",def.name(),dividendAmt),L("See the subject line."));
 									}
 									for(final Pair<String,Integer> p : getStockOwners(def))
 										CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, CMath.mul(dividend, p.second.intValue()));
