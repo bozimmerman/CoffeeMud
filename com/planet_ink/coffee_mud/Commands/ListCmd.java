@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ShopPrice;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
@@ -489,17 +490,17 @@ public class ListCmd extends StdCommand
 				seller=CMClass.getFactoryMOB("the shop", 1, R);
 				destroySeller=true;
 			}
-			final ShopPrice p = CMLib.coffeeShops().sellingPrice(seller, buyer, E, SK, SK.getShop(), false);
+			final Cost p = CMLib.coffeeShops().sellingPrice(seller, buyer, E, SK, SK.getShop(), false);
 			if(p!=null)
 			{
-				if(p.experiencePrice>0)
-					return p.experiencePrice+"xp";
+				if(p.type()==CostType.XP)
+					return p.amounti()+"xp";
 				else
-				if(p.questPointPrice>0)
-					return p.questPointPrice+"qp";
+				if(p.type()==CostType.QP)
+					return p.amounti()+"qp";
 				else
-				if(p.absoluteGoldPrice>0)
-					return CMLib.beanCounter().abbreviatedPrice(seller, p.absoluteGoldPrice);
+				if(p.amount()>0)
+					return CMLib.beanCounter().abbreviatedPrice(seller, p.amount());
 			}
 		}
 		finally

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -131,13 +132,15 @@ public class Prayer_Tithe extends Prayer
 			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(affected);
 			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
-				final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,SK.getShop(), true);
-				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
+				final Cost price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,SK.getShop(), true);
+				final double goldPrice = (price.type()==CostType.GOLD)?price.amount():0.0;
+				if((goldPrice>0.0)
+				&&(goldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 				{
 					if(invoker()!=msg.target())
 					{
 						invoker().tell(msg.source(),null,null,L("<S-NAME> tithes."));
-						CMLib.beanCounter().addMoney(invoker(),CMath.div(price.absoluteGoldPrice,10.0));
+						CMLib.beanCounter().addMoney(invoker(),CMath.div(goldPrice,10.0));
 					}
 				}
 			}

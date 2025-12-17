@@ -145,7 +145,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param includeSalesTax true to include sales tax in the price, false otherwise
 	 * @return the selling price that this shopkeeper will put on the item
 	 */
-	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product,
+	public Cost sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product,
 											 ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
 
 	/**
@@ -221,7 +221,7 @@ public interface ShoppingLibrary extends CMLibrary
 	 * @param shopKeeper the shop itself
 	 * @return the valuation that this shopkeeper will put on the item
 	 */
-	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product,
+	public Cost pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product,
 											 ShopKeeper shopKeeper);
 
 	/**

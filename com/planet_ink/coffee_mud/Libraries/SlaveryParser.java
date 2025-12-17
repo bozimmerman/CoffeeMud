@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -963,7 +964,8 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 							final Environmental E=sk.getShop().getStock(item,me);
 							if((E!=null)&&(E instanceof Item))
 							{
-								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true).absoluteGoldPrice;
+								final Cost C=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true);
+								double price = ((C!=null)&&(C.type()==CostType.GOLD))?C.amount():0.0;
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
 									final String ename = CMStrings.replaceAll(E.name(), "\"", "\\\"");

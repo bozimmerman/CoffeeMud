@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -456,7 +457,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 		{
 			final Item I=V.get(v);
 			if(!(I instanceof Coins))
-				min+=CMLib.coffeeShops().pawningPrice(this, buyer, I, this).absoluteGoldPrice;
+			{
+				final Cost C = CMLib.coffeeShops().pawningPrice(this, buyer, I, this);
+				if((C!=null)&&(C.type()==CostType.GOLD))
+					min+=C.amount();
+			}
 			I.destroy();
 		}
 		return min;

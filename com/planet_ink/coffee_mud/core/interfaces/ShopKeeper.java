@@ -150,20 +150,6 @@ public interface ShopKeeper extends Environmental, Economics
 	}
 
 	/**
-	 * This class represents a given price for a given item in the shopkeepers inventory. It is usually
-	 * calculated for a given buyer.
-	 */
-	public static class ShopPrice
-	{
-		/** the price of the item in base currency gold */
-		public double absoluteGoldPrice=0.0;
-		/** the number of experience points required to purchase the item */
-		public int experiencePrice=0;
-		/** the number of quest points required to purchase the item */
-		public int questPointPrice=0;
-	}
-
-	/**
 	 * The Main CoffeeShop method to access the shopkeepers store of goods
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop
 	 * @return the CoffeeShop object

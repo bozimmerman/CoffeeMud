@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -203,12 +204,12 @@ public class Thief_Robbery extends ThiefSkill
 		Physical stolen=(stock instanceof Physical)?(Physical)stock:null;
 		if(stolen!=null)
 		{
-			final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,shop.getShop(), false);
+			final Cost price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,shop.getShop(), false);
 			if((stolen instanceof Ability)
 			||(stolen instanceof MOB)
 			||(stolen instanceof Room)
 			||(stolen instanceof LandTitle)
-			||((price.experiencePrice>0)||(price.questPointPrice>0)))
+			||(price.type()!=CostType.GOLD))
 			{
 				mob.tell(mob,target,stolen,L("You cannot rob '<O-NAME>' from <T-NAME>."));
 				return false;

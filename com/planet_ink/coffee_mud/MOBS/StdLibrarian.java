@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -478,8 +479,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
-				final double value = (P!=null)? P.absoluteGoldPrice : 0;
+				final Cost P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.amount():0.0;
 				double newCharges = this.getOverdueCharge();
 				if (value > 0)
 					newCharges += CMath.mul(value, this.getOverdueChargePct());
@@ -504,8 +505,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
-				final double value = (P!=null)? P.absoluteGoldPrice : 0;
+				final Cost P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.amount():0.0;
 				if(rec.charges < value)
 					rec.charges = value;
 				rec.itemName = ""; // the item is now

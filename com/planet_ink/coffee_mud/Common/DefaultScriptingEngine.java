@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -7053,14 +7054,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(shopHere instanceof MOB)
 		{
-			final ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
-			if(price.experiencePrice>0)
-				tmp[SPECIAL_9SHOPHASPRICE] = price.experiencePrice+"xp";
+			final Cost price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
+			if(price.type()==CostType.XP)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.amounti()+"xp";
 			else
-			if(price.questPointPrice>0)
-				tmp[SPECIAL_9SHOPHASPRICE] = price.questPointPrice+"qp";
+			if(price.type()==CostType.QP)
+				tmp[SPECIAL_9SHOPHASPRICE] = price.amounti()+"qp";
 			else
-				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.absoluteGoldPrice);
+				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.amount());
 		}
 	}
 

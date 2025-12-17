@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -43,6 +44,44 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public String ID()
 	{
 		return "CoffeeShops";
+	}
+
+	/**
+	 * This class represents a given price for a given item in the shopkeepers inventory. It is usually
+	 * calculated for a given buyer.
+	 */
+	public static class ShopPrice
+	{
+		/** the price of the item in base currency gold */
+		public double absoluteGoldPrice=0.0;
+		/** the number of experience points required to purchase the item */
+		public int experiencePrice=0;
+		/** the number of quest points required to purchase the item */
+		public int questPointPrice=0;
+		/** the type of currency to use */
+		public String currency = "";
+
+		public ShopPrice(final Cost cost)
+		{
+			if(cost != null)
+			{
+				switch(cost.type())
+				{
+				case GOLD:
+					absoluteGoldPrice=cost.amount();
+					currency=cost.currency();
+					break;
+				case QP:
+					questPointPrice = cost.amounti();
+					break;
+				case XP:
+					experiencePrice=cost.amounti();
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -661,41 +700,41 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public ShopKeeper.ShopPrice sellingPrice(final MOB sellerShopM,
-											 final MOB buyerCustM,
-											 final Environmental product,
-											 final ShopKeeper shopKeeper,
-											 final CoffeeShop shop,
-											 final boolean includeSalesTax)
+	public Cost sellingPrice(final MOB sellerShopM,
+							 final MOB buyerCustM,
+							 final Environmental product,
+							 final ShopKeeper shopKeeper,
+							 final CoffeeShop shop,
+							 final boolean includeSalesTax)
 	{
-		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		if(product==null)
-			return val;
+			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
 		final int stockPrice=shop.stockPrice(product);
 		if(stockPrice<=-100)
 		{
 			if(stockPrice<=-1000)
-				val.experiencePrice=(stockPrice*-1)-1000;
+				return CMLib.utensils().createCost(CostType.XP, (stockPrice*-1)-1000, null);
 			else
-				val.questPointPrice=(stockPrice*-1)-100;
-			return val;
+				return CMLib.utensils().createCost(CostType.QP, (stockPrice*-1)-100, null);
 		}
+		// gold from here on out
+		double goldPrice = 0.0;
 		if(stockPrice>=0)
-			val.absoluteGoldPrice=stockPrice;
+			goldPrice=stockPrice;
 		else
-			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop);
+			goldPrice=rawSpecificGoldPrice(product,shop);
 
 		if(buyerCustM==null)
 		{
-			if(val.absoluteGoldPrice>0.0)
-				val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(sellerShopM,val.absoluteGoldPrice);
-			return val;
+			if(goldPrice>0.0)
+				goldPrice=CMLib.beanCounter().abbreviatedRePrice(sellerShopM,goldPrice);
+			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(sellerShopM));
 		}
 
 		double prejudiceFactor=prejudiceFactor(buyerCustM,shopKeeper.getFinalPrejudiceFactors(),false);
 		final Room loc=CMLib.map().roomLocation(shopKeeper);
 		prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),false);
-		val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
+		goldPrice=CMath.mul(prejudiceFactor,goldPrice);
 
 		// the price is 200% at 0 charisma, and 100% at 35
 		if(sellerShopM.isMonster() && (!CMLib.flags().isGolem(sellerShopM)))
@@ -705,26 +744,26 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final double sellerWis=sellerShopM.charStats().getStat(CharStats.STAT_WISDOM);
 			final double sellerMinWis = (sellerWis < 3) ? 3 : sellerWis;
 			final double denom = (buyerMinCha + sellerMinWis) * 0.8;
-			val.absoluteGoldPrice=(val.absoluteGoldPrice*2)-(val.absoluteGoldPrice*((buyerMinCha-sellerMinWis)/denom));
+			goldPrice=(goldPrice*2)-(goldPrice*((buyerMinCha-sellerMinWis)/denom));
 		}
 
 		if(includeSalesTax)
 		{
 			final double salesTax=getSalesTax(sellerShopM.getStartRoom(),sellerShopM);
-			val.absoluteGoldPrice+=((salesTax>0.0)?(CMath.mul(val.absoluteGoldPrice,CMath.div(salesTax,100.0))):0.0);
+			goldPrice+=((salesTax>0.0)?(CMath.mul(goldPrice,CMath.div(salesTax,100.0))):0.0);
 		}
-		if(val.absoluteGoldPrice<=0.0)
-			val.absoluteGoldPrice=1.0;
+		if(goldPrice<=0.0)
+			goldPrice=1.0;
 		else
-			val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(sellerShopM,val.absoluteGoldPrice);
+			goldPrice=CMLib.beanCounter().abbreviatedRePrice(sellerShopM,goldPrice);
 
 		// the magical aura discount for miscmagic (potions, anything else.. MUST be basePhyStats tho!
 		if((CMath.bset(buyerCustM.basePhyStats().disposition(),PhyStats.IS_BONUS))
 		&&(product instanceof MiscMagic)
-		&&(val.absoluteGoldPrice>2.0))
-			val.absoluteGoldPrice/=2;
+		&&(goldPrice>2.0))
+			goldPrice/=2;
 
-		return val;
+		return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(sellerShopM));
 	}
 
 	private final static String[] emptyStringArray = new String[0];
@@ -932,23 +971,22 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public ShopKeeper.ShopPrice pawningPrice(final MOB buyerShopM,
-											 final MOB sellerCustM,
-											 final Environmental product,
-											 final ShopKeeper shopKeeper)
+	public Cost pawningPrice(final MOB buyerShopM,
+							 final MOB sellerCustM,
+							 final Environmental product,
+							 final ShopKeeper shopKeeper)
 	{
 		final CoffeeShop shop = shopKeeper.getShop(sellerCustM);
 		return pawningPrice(buyerShopM,sellerCustM,product,shopKeeper,shop);
 	}
 
-	protected ShopKeeper.ShopPrice pawningPrice(final MOB buyerShopM,
-												final MOB sellerCustM,
-												Environmental product,
-												final ShopKeeper shopKeeper,
-												final CoffeeShop shop)
+	protected Cost pawningPrice(final MOB buyerShopM,
+								final MOB sellerCustM,
+								Environmental product,
+								final ShopKeeper shopKeeper,
+								final CoffeeShop shop)
 	{
 		final double number=getProductCount(product);
-		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		try
 		{
 			if(product instanceof PackagedItems)
@@ -967,30 +1005,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					((RawMaterial) product).setBaseValue( 1);
 			}
 			if(product==null)
-				return val;
+				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
 			final int stockPrice=shop.stockPrice(product);
 			if(stockPrice<=-100)
-			{
-				return val;
-			}
+				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
 
+			double goldPrice = 0.0;
 			if(stockPrice>=0.0)
-				val.absoluteGoldPrice=stockPrice;
+				goldPrice=stockPrice;
 			else
-				val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop);
+				goldPrice=rawSpecificGoldPrice(product,shop);
 
 			if(sellerCustM==null)
 			{
-				val.absoluteGoldPrice *= number;
-				return val;
+				goldPrice *= number;
+				return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(buyerShopM));
 			}
 
 			double prejudiceFactor=prejudiceFactor(sellerCustM,shopKeeper.getFinalPrejudiceFactors(),true);
 			final Room loc=CMLib.map().roomLocation(shopKeeper);
 			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),true);
-			val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
+			goldPrice=CMath.mul(prejudiceFactor,goldPrice);
 
-			double buyPrice=val.absoluteGoldPrice;
+			double buyPrice=goldPrice;
 			if(buyerShopM.isMonster() && (!CMLib.flags().isGolem(buyerShopM)))
 			{
 				final double sellerCha=sellerCustM.charStats().getStat(CharStats.STAT_CHARISMA);
@@ -1003,25 +1040,26 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if(!(product instanceof Ability))
 				buyPrice=CMath.mul(buyPrice,1.0-getStockSizeDevaluation(shopKeeper,product,number));
-
-			final double sellPrice=sellingPrice(buyerShopM,sellerCustM,product,shopKeeper,shop, false).absoluteGoldPrice;
+			final Cost sellCost=sellingPrice(buyerShopM,sellerCustM,product,shopKeeper,shop, false);
+			final ShopPrice shopSellPrice = new ShopPrice(sellCost);
+			final double sellPrice = shopSellPrice.absoluteGoldPrice;
 
 			if(buyPrice>sellPrice)
-				val.absoluteGoldPrice=sellPrice;
+				goldPrice=sellPrice;
 			else
-				val.absoluteGoldPrice=buyPrice;
+				goldPrice=buyPrice;
 
-			val.absoluteGoldPrice *= number;
+			goldPrice *= number;
 
-			if(val.absoluteGoldPrice<=0.0)
-				val.absoluteGoldPrice=1.0;
+			if(goldPrice<=0.0)
+				goldPrice=1.0;
+			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(buyerShopM));
 		}
 		finally
 		{
 			if((number > 1.0)&&(product!=null))
 				product.destroy();
 		}
-		return val;
 	}
 
 	@Override
@@ -1092,7 +1130,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return false;
 		}
 		final MOB priceMOB = (buyFlag == BuySellFlag.WHOLESALE)?null:sellerCustM;
-		final double yourValue=pawningPrice(buyerShopM,priceMOB,product,shop).absoluteGoldPrice;
+		final double yourValue=new ShopPrice(pawningPrice(buyerShopM,priceMOB,product,shop)).absoluteGoldPrice;
 		if(yourValue<2)
 		{
 			if(!isLotTooLarge(shop, product))
@@ -1172,7 +1210,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(buyFlag != BuySellFlag.INFO)
 			{
 				final MOB priceM = (buyFlag==BuySellFlag.WHOLESALE)?null:buyerCustM;
-				final ShopKeeper.ShopPrice price=sellingPrice(sellerShopM,priceM,product,shop,shopItems, true);
+				final ShopPrice price=new ShopPrice(sellingPrice(sellerShopM,priceM,product,shop,shopItems, true));
 				if((price.experiencePrice>0)&&(price.experiencePrice>buyerCustM.getExperience()))
 				{
 					CMLib.commands().postSay(sellerShopM,buyerCustM,L("You aren't experienced enough to buy @x1.",product.name()),false,false);
@@ -1349,11 +1387,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							   ||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))?1:2;
 			final int totalWidth=CMLib.lister().fixColWidth(60.0/totalCols,buyer);
 			String showPrice=null;
-			ShopKeeper.ShopPrice price=null;
+			ShopPrice price=null;
 			for(int i=0;i<inventory.size();i++)
 			{
 				E=inventory.get(i);
-				price=sellingPrice(seller,buyer,E,shop,shopItems, true);
+				price=new ShopPrice(sellingPrice(seller,buyer,E,shop,shopItems, true));
 				if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
 					csize=(""+price.experiencePrice).length()-2;
 				else
@@ -1393,7 +1431,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			for(int i=0;i<inventory.size();i++)
 			{
 				E=inventory.get(i);
-				price=sellingPrice(seller,buyer,E,shop,shopItems, true);
+				price = new ShopPrice(sellingPrice(seller,buyer,E,shop,shopItems, true));
 				col=null;
 				if(csize >= 0)
 				{
@@ -1561,7 +1599,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
 		{
 			final MOB priceM = (flag == BuySellFlag.WHOLESALE)?null:pawner;
-			final double val=pawningPrice(shopkeeper,priceM,rawSoldItem,shop,shopItems).absoluteGoldPrice;
+			final ShopPrice price = new ShopPrice(pawningPrice(shopkeeper,priceM,rawSoldItem,shop,shopItems));
+			final double val=price.absoluteGoldPrice;
 			final String currency=CMLib.beanCounter().getCurrency(shopkeeper);
 			if(!(shopkeeper instanceof ShopKeeper))
 				CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
@@ -1642,7 +1681,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return;
 		final Room room=sellerM.location();
 		final MOB priceM = (flag == BuySellFlag.WHOLESALE)?null:buyerM;
-		final ShopKeeper.ShopPrice price=sellingPrice(sellerM,priceM,product,shop,shop.getShop(buyerM), true);
+		final ShopPrice price=new ShopPrice(sellingPrice(sellerM,priceM,product,shop,shop.getShop(buyerM), true));
 		if(price.absoluteGoldPrice>0.0)
 		{
 			CMLib.beanCounter().subtractMoney(buyerM,CMLib.beanCounter().getCurrency(sellerM),price.absoluteGoldPrice);
@@ -1658,7 +1697,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					final Container treasuryContainer=treas.container;
 					if(treasuryR!=null)
 					{
-						final double taxAmount=totalFunds-sellingPrice(sellerM,buyerM,product,shop,shop.getShop(buyerM), false).absoluteGoldPrice;
+						final double taxAmount=totalFunds-
+								new ShopPrice(sellingPrice(sellerM,buyerM,product,shop,shop.getShop(buyerM), false)).absoluteGoldPrice;
 						totalFunds-=taxAmount;
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(sellerM),taxAmount,treasuryR,treasuryContainer);
 						if(COIN!=null)

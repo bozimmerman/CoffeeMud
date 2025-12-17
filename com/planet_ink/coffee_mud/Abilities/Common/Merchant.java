@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -603,9 +604,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(isActive(merchantM) && merchantM.isMonster())
 				{
-					final double pawnPrice = CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice;
-					final String currencyPriceStr = CMLib.beanCounter().nameCurrencyShort(merchantM,pawnPrice);
-					CMLib.commands().postSay(merchantM,mob,L("I'll give you @x1 for @x2.", currencyPriceStr,msg.tool().name()),true,false);
+					final Cost pawnPrice = CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this);
+					if(pawnPrice.type()==CostType.GOLD)
+					{
+						final String currencyPriceStr = CMLib.beanCounter().nameCurrencyShort(merchantM,pawnPrice.amount());
+						CMLib.commands().postSay(merchantM,mob,L("I'll give you @x1 for @x2.", currencyPriceStr,msg.tool().name()),true,false);
+					}
 				}
 				break;
 			case CMMsg.TYP_VIEW:
@@ -713,7 +717,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		if(E instanceof Item)
 		{
-			if(!CMLib.law().mayOwnThisItem(mob, (Item)E))
+			if(!CMLib.law().mayOwnThisItem(mob, E))
 			{
 				commonTelL(mob,"@x1 is a stolen item!",((Item)E).name(mob));
 				return false;

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -122,16 +123,16 @@ public class Thief_PubContacts extends ThiefSkill
 							if((E instanceof Item)&&(CMLib.flags().isAlcoholic((Item)E)))
 							{
 								double moneyPrice=0;
-								final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,shop, true);
-								if(price.experiencePrice>0)
-									moneyPrice=(100 * price.experiencePrice);
+								final Cost C=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,shop, true);
+								if(C == null)
+									continue;
+								if(C.type()==CostType.XP)
+									moneyPrice=(100 * C.amounti());
 								else
-								if(price.questPointPrice>0)
-									moneyPrice=(100 * price.questPointPrice);
+								if(C.type()==CostType.QP)
+									moneyPrice=(100 * C.amounti());
 								else
-								{
-									moneyPrice=price.absoluteGoldPrice;
-								}
+									moneyPrice=C.amount();
 								if(moneyPrice < lowestPrice)
 								{
 									lowestPrice=moneyPrice;

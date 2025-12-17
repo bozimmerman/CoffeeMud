@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -700,8 +701,8 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
-				final double value = (P!=null)? P.absoluteGoldPrice : 10;
+				final Cost P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.amount() : 10;
 				if(rec.mudReclaimDateMs < rec.mudDueDateMs)
 					rec.mudReclaimDateMs = rec.mudDueDateMs + TimeManager.MILI_DAY;
 				final long dueOverdueMilliDiff = (rec.mudReclaimDateMs - rec.mudDueDateMs);
@@ -719,8 +720,8 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
-				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
-				final double value = (P!=null)? P.absoluteGoldPrice : 0;
+				final Cost P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.amount() : 0;
 				if(rec.charges < value)
 					rec.charges = value;
 				// the item is now reclaimed!
