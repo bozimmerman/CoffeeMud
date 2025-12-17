@@ -196,13 +196,17 @@ window.gmcpPackages.push({
 		var framechoices = sipwin.mxp.getFrameMap();
 		if(!(id in framechoices))
 		{
-			var rest="width=25%";
-			if(["top","bottom"].indexOf(dock.toLowerCase())>=0)
-				rest="height=25%";
+			var width = msg["width"] || "25%";
+			var width = msg["width"] || "25%";
+			var top = msg["top"] || "25%";
+			var left = msg["left"] || "25%";
 			if(dock != "")
+			{
+				var rest=(["top","bottom"].indexOf(dock.toLowerCase())>=0)?("height="+height):("width="+width);
 				sipwin.process('<FRAME ACTION=OPEN INTERNAL NAME="'+id+'"  TITLE="WebView" ALIGN='+dock+' '+rest+'>');
+			}
 			else
-				sipwin.process('<FRAME ACTION=OPEN FLOATING NAME="'+id+'" TITLE="WebView" LEFT=25% TOP=25% HEIGHT=50% WIDTH=50%>');
+				sipwin.process('<FRAME ACTION=OPEN FLOATING NAME="'+id+'" TITLE="WebView" LEFT='+left+' TOP='+top+' HEIGHT='+height+' WIDTH='+width+'>');
 			framechoices = sipwin.mxp.getFrameMap();
 		}
 		if(!(id in framechoices))

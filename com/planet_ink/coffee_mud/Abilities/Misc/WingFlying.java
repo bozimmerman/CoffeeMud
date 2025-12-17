@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class WingFlying extends StdAbility implements HealthCondition
+public class WingFlying extends StdAbility
 {
 	@Override
 	public String ID()
@@ -97,12 +97,6 @@ public class WingFlying extends StdAbility implements HealthCondition
 	public int usageType()
 	{
 		return USAGE_MOVEMENT;
-	}
-
-	@Override
-	public String getHealthConditionDesc()
-	{
-		return "Weak Paralysis";
 	}
 
 	private volatile boolean isFlying = true;

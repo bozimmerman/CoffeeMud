@@ -1107,7 +1107,7 @@ public class StockMarket extends StdBehavior
 		if(getParms().length()==0)
 		{
 			final TreeMap<String,String> parms = new TreeMap<String,String>();
-			parms.put("MARKETTYPE","STOCK");
+			parms.put("MARKETTYPE",StockMarket.ShortcutMarketTypes.STOCK.name());
 			final MarketConf base = new MarketConf(parms,new MarketConf());
 			configs.add(base);
 			return;
