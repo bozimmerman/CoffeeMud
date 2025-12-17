@@ -177,7 +177,7 @@ public class DBConnector
 	 */
 	public boolean useBulkInserts()
 	{
-		return this.dbTransact && ((dbConnections==null)||(dbConnections.getDBType().indexOf("oracle")<0));
+		return this.dbTransact && ((dbConnections==null)||(!dbConnections.getDBType().toLowerCase().contains("oracle")));
 	}
 
 	/**
