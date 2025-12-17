@@ -565,7 +565,7 @@ public class DBConnections
 
 	public boolean isFakeDB()
 	{
-		return dbLType.contains("fakedb");
+		return dbLType.toLowerCase().indexOf("fakedb")==0;
 	}
 
 	public String getDBType()
