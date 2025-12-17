@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -508,16 +508,28 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param value the amount of the type
 	 * @return the CostManager object
 	 */
-	public CostManager createCostManager(final CostType costType, final Double value);
+	public CostManager createCostManager(final CostType costType, final double value);
 
 	/**
-	 * Creates a new CostManager object reflecting the given cost object.
-	 * @see CMMiscUtils#createCostManager(Cost)
+	 * Creates a new CostManager object reflecting the given type and value and currency.
+	 * @see CMMiscUtils#createCost(CostType, double, String)
 	 *
-	 * @param cost the cost
-	 * @return the CostManager object
+	 * @param costType the type of code
+	 * @param value the amount of the type
+	 * @param curr the currency to use, if the costType is gold
+	 * @return the cost manager
 	 */
-	public CostManager createCostManager(final Cost cost);
+	public CostManager createCostManager(final CostType costType, final double value, final String curr);
+
+	/**
+	 * Creates a new Cost object reflecting the given type and value and currency.
+	 *
+	 * @param costType the type of code
+	 * @param value the amount of the type
+	 * @param curr the currency to use, if the costType is gold
+	 * @return the cost
+	 */
+	public Cost createCost(final CostType costType, final double value, final String curr);
 
 	/**
 	 * A enum for item state flags

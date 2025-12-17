@@ -67,7 +67,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * @see ExpertiseLibrary#numStages(String)
 	 * @see ExpertiseLibrary#getDefinition(String)
 	 * @see ExpertiseLibrary#definitions()
-	 * @see CMMiscUtils#createCostManager(CostType, Double)
+	 * @see CMMiscUtils#createCostManager(CostType, double)
 	 * @see ExpertiseLibrary#confirmExpertiseLine(String, String, boolean)
 	 *
 	 * @param codedLine the coded expertise line
@@ -207,7 +207,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	 * Validate the syntax of a coded expertise definition line,
 	 * returning a readable error if found.
 	 * @see ExpertiseLibrary#addModifyDefinition(String, boolean)
-	 * @see CMMiscUtils#createCostManager(CostType, Double)
+	 * @see CMMiscUtils#createCostManager(CostType, double)
 	 *
 	 * @param row the coded definition
 	 * @param ID the expertise definition id code
@@ -566,7 +566,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		 * @param type the type of cost
 		 * @param value the amount of the resource required
 		 */
-		public void addCost(CostType type, Double value);
+		public void addCost(CostType type, double value);
 
 		/**
 		 * Returns a friendly description of this expertise cost

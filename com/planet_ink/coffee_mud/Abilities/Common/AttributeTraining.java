@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -161,7 +161,7 @@ public class AttributeTraining extends CommonSkill
 							final Cost c = CMLib.login().getTrainingCost(follower, attribute, false);
 							int trainsRequired = costMultiplier;
 							if(c != null)
-								trainsRequired=c.first.intValue()*costMultiplier;
+								trainsRequired=c.amounti()*costMultiplier;
 							if(trainsRequired>=0)
 								trainsRequired+=costAdder;
 							commonTelL(mob,"The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired);
@@ -265,7 +265,7 @@ public class AttributeTraining extends CommonSkill
 			final Cost c = CMLib.login().getTrainingCost(M, attribute, true);
 			if(c == null)
 				return false;
-			int trainsRequired  = costMultiplier * c.first.intValue();
+			int trainsRequired  = costMultiplier * c.amounti();
 			if(trainsRequired>=0)
 				trainsRequired+=costAdder;
 			final int teachStat=mob.charStats().getStat(attribute);

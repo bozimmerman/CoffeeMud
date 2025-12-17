@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
@@ -1930,8 +1930,8 @@ public class CMProps extends Properties
 			final Cost costPoss=CMLib.utensils().compileCost(1, type);
 			if(costPoss != null)
 			{
-				costType = costPoss.second;
-				curr = costPoss.third;
+				costType = costPoss.type();
+				curr = costPoss.currency();
 			}
 			else
 			{

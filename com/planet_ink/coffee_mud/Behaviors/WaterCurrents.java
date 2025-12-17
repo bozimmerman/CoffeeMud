@@ -395,7 +395,7 @@ public class WaterCurrents extends ActiveTicker
 		@Override
 		public CostManager getTrainingCost(final MOB mob)
 		{
-			return CMLib.utensils().createCostManager(CostType.TRAIN, Double.valueOf(1.0));
+			return CMLib.utensils().createCostManager(CostType.TRAIN, 1.0);
 		}
 
 		@Override

@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -177,6 +177,7 @@ public class Apprentice extends StdCharClass
 			return super.okMessage(myHost,msg);
 		if(!super.okMessage(myHost, msg))
 			return false;
+		final Cost costMaker = CMLib.utensils().createCost(null, 0.0, null);
 		if((msg.target()==myHost)
 		&&(msg.targetMinor()==CMMsg.TYP_TRAIN)
 		&&(((MOB)msg.target()).charStats().getCurrentClass().ID().equals("Apprentice"))
@@ -189,7 +190,7 @@ public class Apprentice extends StdCharClass
 			&&(typStr!=null)
 			&&(typStr.length()>0))
 			{
-				final Cost C = Cost.valueOf(costStr);
+				final Cost C = costMaker.valueOf(costStr);
 				if((C != null)
 				&&(CMClass.getCharClass(typStr)==null))
 				{

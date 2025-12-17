@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
@@ -345,14 +346,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(gained<50)
 			gained=50;
 
-		costGains[CostDef.CostType.XP.ordinal()] = gained;
+		costGains[CostType.XP.ordinal()] = gained;
 		final StringBuilder theNews=new StringBuilder("");
 
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
-		final int oldHpCost = costGains[CostDef.CostType.HITPOINT.ordinal()];
+		final int oldHpCost = costGains[CostType.HITPOINT.ordinal()];
 		final int newHitPointGain = (gain||oldHpCost==0)?getPlayerHPBonusNextLevel(mob) : -oldHpCost;
 		if(mob.getWimpHitPoint() > 0)
 		{
@@ -363,29 +364,29 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.baseState().getHitPoints()<CMProps.getIntVar(CMProps.Int.STARTHP))
 			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		costGains[CostDef.CostType.HITPOINT.ordinal()] = newHitPointGain;
+		costGains[CostType.HITPOINT.ordinal()] = newHitPointGain;
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		final int oldMvCost = costGains[CostDef.CostType.MOVEMENT.ordinal()];
+		final int oldMvCost = costGains[CostType.MOVEMENT.ordinal()];
 		final int mvGain = (gain||oldMvCost==0)?getMoveBonusNextLevel(mob) : -oldMvCost;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
-		costGains[CostDef.CostType.MOVEMENT.ordinal()] = mvGain;
+		costGains[CostType.MOVEMENT.ordinal()] = mvGain;
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		final int oldAttCost = costGains[CostDef.CostType.QP.ordinal()];
+		final int oldAttCost = costGains[CostType.QP.ordinal()];
 		final int attGain=(gain||oldAttCost==0)?getAttackBonusNextLevel(mob) : -oldAttCost;
 		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+attGain);
 		mob.phyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+attGain);
-		costGains[CostDef.CostType.QP.ordinal()] = attGain;
+		costGains[CostType.QP.ordinal()] = attGain;
 		if(attGain>0)
 			theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		final int oldManaCost = costGains[CostDef.CostType.MANA.ordinal()];
+		final int oldManaCost = costGains[CostType.MANA.ordinal()];
 		final int manaGain = (gain||oldManaCost==0)?getManaBonusNextLevel(mob) : -oldManaCost;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
-		costGains[CostDef.CostType.MANA.ordinal()] = manaGain;
+		costGains[CostType.MANA.ordinal()] = manaGain;
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 
 		if(curClass.getLevelsPerBonusDamage()!=0)
@@ -428,7 +429,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final int level = mob.basePhyStats().level();
 		if(adjustXP && (mob.getExperience() >= getLevelExperience(mob, level-2)))
 			mob.setExperience(mob.getExperience() - mob.getExpNeededDelevel());
-		int[] costGains = new int[CostDef.CostType.values().length];
+		int[] costGains = new int[CostType.values().length];
 		if(mob.playerStats() != null)
 			costGains = Arrays.copyOf(mob.playerStats().leveledCostGains(level), costGains.length);
 		final CharClass prevClass=mob.baseCharStats().getCurrentClass();
@@ -442,14 +443,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(prac2Stat>maxPrac2Stat)
 			prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
-		if(costGains[CostDef.CostType.PRACTICE.ordinal()]!=0)
-			practiceGain = costGains[CostDef.CostType.PRACTICE.ordinal()];
+		if(costGains[CostType.PRACTICE.ordinal()]!=0)
+			practiceGain = costGains[CostType.PRACTICE.ordinal()];
 		if(practiceGain<=0)
 			practiceGain=1;
 		mob.setPractices(mob.getPractices()-practiceGain);
 		int trainGain=0;
-		if(costGains[CostDef.CostType.TRAIN.ordinal()]!=0)
-			trainGain = costGains[CostDef.CostType.TRAIN.ordinal()];
+		if(costGains[CostType.TRAIN.ordinal()]!=0)
+			trainGain = costGains[CostType.TRAIN.ordinal()];
 		if(trainGain<=0)
 			trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
@@ -1210,7 +1211,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		final int[] costGains = new int[CostDef.CostType.values().length];
+		final int[] costGains = new int[CostType.values().length];
 		final String levelAdjustmentMsg = doBaseLevelAdjustment(mob,costGains,true);
 
 		final StringBuilder theNews=new StringBuilder("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
@@ -1226,7 +1227,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(practiceGain<=0)
 			practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
-		costGains[CostDef.CostType.PRACTICE.ordinal()] = practiceGain;
+		costGains[CostType.PRACTICE.ordinal()] = practiceGain;
 		theNews.append(" ^H" + practiceGain+"^N practice " +
 			( practiceGain != 1? "points" : "point" ) + ", ");
 
@@ -1234,7 +1235,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(trainGain<=0)
 			trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		costGains[CostDef.CostType.TRAIN.ordinal()] = trainGain;
+		costGains[CostType.TRAIN.ordinal()] = trainGain;
 		theNews.append("and ^H"+trainGain+"^N training "+ (trainGain != 1? "sessions" : "session" )+".\n\r^N");
 
 		if(mob.playerStats()!=null)

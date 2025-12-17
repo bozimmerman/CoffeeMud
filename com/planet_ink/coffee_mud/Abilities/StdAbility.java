@@ -234,10 +234,10 @@ public class StdAbility implements Ability
 			{
 				Integer val=O[AbilityMapper.AbilCostType.TRAIN.ordinal()];
 				if(val!=null)
-					return CMLib.utensils().createCostManager(CostType.TRAIN,Double.valueOf(val.intValue()));
+					return CMLib.utensils().createCostManager(CostType.TRAIN,val.intValue());
 				val=O[AbilityMapper.AbilCostType.PRAC.ordinal()];
 				if(val!=null)
-					return CMLib.utensils().createCostManager(CostType.PRACTICE,Double.valueOf(val.intValue()));
+					return CMLib.utensils().createCostManager(CostType.PRACTICE,val.intValue());
 			}
 			qualifyingLevel=CMLib.ableMapper().qualifyingLevel(mob, this);
 			playerLevel=mob.basePhyStats().level();
@@ -251,10 +251,10 @@ public class StdAbility implements Ability
 			qualifyingLevel=1;
 		final CostDef rawCost=getRawTrainingCost();
 		if(rawCost==null)
-			return CMLib.utensils().createCostManager(CostType.TRAIN,Double.valueOf(1.0));
+			return CMLib.utensils().createCostManager(CostType.TRAIN,1.0);
 		final double[] vars=new double[]{ qualifyingLevel,playerLevel};
 		final double value=CMath.parseMathExpression(rawCost.costDefinition(),vars);
-		return CMLib.utensils().createCostManager(new CostDef.Cost(value, rawCost.type(), rawCost.typeCurrency()));
+		return CMLib.utensils().createCostManager(rawCost.type(), value, rawCost.typeCurrency());
 	}
 
 	protected int practicesToPractice(final MOB mob)

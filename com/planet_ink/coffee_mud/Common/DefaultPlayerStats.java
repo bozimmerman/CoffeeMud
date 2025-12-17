@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
@@ -160,7 +161,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		public long		time;
 		public String	roomID;
 		public long		mins;
-		public int[]	costGains	= new int[CostDef.CostType.values().length];
+		public int[]	costGains	= new int[CostType.values().length];
 	}
 
 	public DefaultPlayerStats()
@@ -1200,7 +1201,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		info.time = System.currentTimeMillis();
 		info.roomID = "";
 		info.mins = 0;
-		info.costGains = new int[CostDef.CostType.values().length];
+		info.costGains = new int[CostType.values().length];
 		levelInfo.add(info);
 	}
 
@@ -1380,7 +1381,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 					info.time = CMath.s_long(twin.get(1));
 					info.roomID = (twin.size()>2)?twin.get(2):"";
 					info.mins = (twin.size()>3)?CMath.s_long(twin.get(3)):0;
-					info.costGains = new int[CostDef.CostType.values().length];
+					info.costGains = new int[CostType.values().length];
 					for(int i=4;i<4+info.costGains.length;i++)
 					{
 						if(twin.size()>i)

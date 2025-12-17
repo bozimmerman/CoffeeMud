@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Int;
@@ -3319,16 +3319,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 
-	protected CostDef.Cost[][] getStatCosts()
+	protected Cost[][] getStatCosts()
 	{
 		final String list = CMProps.getVar(CMProps.Str.STATCOSTS);
 		int maxStat = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*3;
 		if(maxStat < 101)
 			maxStat = 101;
 		if(!Resources.isResource("SYSTEM_STATCOST_CACHE"))
-			Resources.submitResource("SYSTEM_STATCOST_CACHE", new TreeMap<String,CostDef.Cost[][]>());
+			Resources.submitResource("SYSTEM_STATCOST_CACHE", new TreeMap<String,Cost[][]>());
 		@SuppressWarnings("unchecked")
-		final Map<String,CostDef.Cost[][]> costMap = (Map<String,CostDef.Cost[][]>)Resources.getResource("SYSTEM_STATCOST_CACHE");
+		final Map<String,Cost[][]> costMap = (Map<String,Cost[][]>)Resources.getResource("SYSTEM_STATCOST_CACHE");
 		if(!costMap.containsKey(list))
 			costMap.put(list, CMLib.utensils().compileConditionalCosts(CMParms.parseCommas(list.trim(),true), 1, 0, maxStat));
 		return costMap.get(list);
@@ -3438,7 +3438,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.CHARCR_STATSTART;
 				return null;
 			}
-			final CostDef.Cost[][] costs=getStatCosts();
+			final Cost[][] costs=getStatCosts();
 			int pointsCost=0;
 			int curStatValue=CT.getStat(statCode);
 			for(int i=0;i<statPointsChange;i++)
@@ -3449,8 +3449,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				&&(statPoint<costs.length)
 				&&(costs[statPoint]!=null)
 				&&(costs[statPoint].length>0)
-				&&(costs[statPoint][0].first.intValue()!=0))
-					statCost=costs[statPoint][0].first.intValue();
+				&&(costs[statPoint][0].amounti()!=0))
+					statCost=costs[statPoint][0].amounti();
 				pointsCost += remove ? -statCost : statCost;
 				curStatValue += remove ? -1 : 1;
 			}
@@ -4800,12 +4800,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final int curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
 		final int maxStat = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 							+ mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
-		final CostDef.Cost[][] costs=getStatCosts();
+		final Cost[][] costs=getStatCosts();
 		int curStatIndex=curStat;
 		while((curStatIndex>0)
 		&&((curStatIndex>=costs.length)||(costs[curStatIndex]==null)||(costs[curStatIndex].length==0)))
 			curStatIndex--;
-		CostDef.Cost val=new CostDef.Cost(1,CostType.TRAIN);
+		Cost val=CMLib.utensils().createCost(CostType.TRAIN, 1.0, null);
 		if(curStatIndex>0)
 			val=costs[curStatIndex][0];
 		if(((curStat>=maxStat)&&(!quiet))

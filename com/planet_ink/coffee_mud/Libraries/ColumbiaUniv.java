@@ -78,13 +78,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final int expCost=CMath.s_int(costs[3]);
 		//int timeCost=CMath.s_int(costs[0]);
 		if(practices>0)
-			def.addCost(CostType.PRACTICE, Double.valueOf(practices));
+			def.addCost(CostType.PRACTICE, practices);
 		if(trains>0)
-			def.addCost(CostType.TRAIN, Double.valueOf(trains));
+			def.addCost(CostType.TRAIN, trains);
 		if(qpCost>0)
-			def.addCost(CostType.QP, Double.valueOf(qpCost));
+			def.addCost(CostType.QP, qpCost);
 		if(expCost>0)
-			def.addCost(CostType.XP, Double.valueOf(expCost));
+			def.addCost(CostType.XP, expCost);
 		//if(timeCost>0) def.addCost(CostType.PRACTICE, Double.valueOf(practices));
 		completeEduMap.put(def.ID(),def);
 		baseEduSetLists.clear();
@@ -1107,7 +1107,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			name=((Ability)teachableO).Name();
 		else
 		if(teachableO instanceof ExpertiseLibrary.ExpertiseDefinition)
-			name=((ExpertiseLibrary.ExpertiseDefinition)teachableO).name();
+			name=teachableO.name();
 		else
 			name=L("Something");
 
@@ -1361,7 +1361,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 
 			@Override
-			public void addCost(final CostType type, final Double value)
+			public void addCost(final CostType type, final double value)
 			{
 				costs.add(CMLib.utensils().createCostManager(type,value));
 			}

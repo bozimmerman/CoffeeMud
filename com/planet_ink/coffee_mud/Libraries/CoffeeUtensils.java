@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils.ItemState;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
-import com.planet_ink.coffee_mud.core.interfaces.CostDef.Cost;
+import com.planet_ink.coffee_mud.core.interfaces.Cost;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1823,7 +1823,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 		if(found)
-			return new CostDef.Cost(amt, typ, curr);
+			return CMLib.utensils().createCost(typ, amt, curr);
 		return null;
 	}
 
@@ -1853,14 +1853,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						if(possCost != null)
 						{
 							i++;
-							amt = possCost.first.doubleValue();
-							typ = possCost.second;
-							curr = possCost.third;
+							amt = possCost.amount();
+							typ = possCost.type();
+							curr = possCost.currency();
 						}
 					}
 					if(vdex>=vals.length)
 						vals = Arrays.copyOf(vals, vdex+1);
-					vals[vdex++]=new Cost(amt,typ,curr);
+					vals[vdex++]=CMLib.utensils().createCost(typ,amt,curr);
 				}
 			}
 			int start=startOfRange;
@@ -3536,11 +3536,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
-	protected CostManager createCostManager(final CostType costType, final Double value, final String curr)
+	@Override
+	public CostManager createCostManager(final CostType costType, final double value, final String curr)
 	{
 		return new CostManager()
 		{
 			final String currency = curr;
+			final int valuei = (int)Math.round(value);
 			/**
 			 * Returns a simple description of the Type of
 			 * this cost.  A MOB and sample value is required for
@@ -3559,9 +3561,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 				case GOLD:
 					if(currency != null)
-						ofWhat = CMLib.beanCounter().getDenominationName(currency, value.doubleValue());
+						ofWhat = CMLib.beanCounter().getDenominationName(currency, value);
 					else
-						ofWhat = CMLib.beanCounter().getDenominationName(mob, value.doubleValue());
+						ofWhat = CMLib.beanCounter().getDenominationName(mob, value);
 					break;
 				case PRACTICE:
 					ofWhat = "practice points";
@@ -3596,25 +3598,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				switch(costType)
 				{
 				case XP:
-					return value.intValue() + " XP";
+					return valuei + " XP";
 				case QP:
-					return value.intValue() + " quest pts";
+					return valuei + " quest pts";
 				case MANA:
-					return value.intValue() + " mana";
+					return valuei + " mana";
 				case HITPOINT:
-					return value.intValue() + " " + ((value.intValue() == 1) ? "hit point" : "hit points");
+					return valuei + " " + ((valuei == 1) ? "hit point" : "hit points");
 				case GOLD:
 				{
 					if(currency != null)
-						return CMLib.beanCounter().abbreviatedPrice(currency, value.doubleValue());
+						return CMLib.beanCounter().abbreviatedPrice(currency, value);
 					else
 					if (mob == null)
-						return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
+						return CMLib.beanCounter().abbreviatedPrice("", value);
 					else
-						return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
+						return CMLib.beanCounter().abbreviatedPrice(mob, value);
 				}
 				default:
-					return value.intValue() + " " + ((value.intValue() == 1) ? costType.name().toLowerCase() : CMLib.english().makePlural(costType.name().toLowerCase()));
+					return valuei + " " + ((valuei == 1) ? costType.name().toLowerCase() : CMLib.english().makePlural(costType.name().toLowerCase()));
 				}
 			}
 
@@ -3629,24 +3631,24 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				switch(costType)
 				{
 				case XP:
-					return student.getExperience() >= value.intValue();
+					return student.getExperience() >= valuei;
 				case GOLD:
 					if(currency != null)
-						return CMLib.beanCounter().getTotalAbsoluteValue(student,currency) >= value.doubleValue();
+						return CMLib.beanCounter().getTotalAbsoluteValue(student,currency) >= value;
 					else
-						return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value.doubleValue();
+						return CMLib.beanCounter().getTotalAbsoluteNativeValue(student) >= value;
 				case TRAIN:
-					return student.getTrains() >= value.intValue();
+					return student.getTrains() >= valuei;
 				case PRACTICE:
-					return student.getPractices() >= value.intValue();
+					return student.getPractices() >= valuei;
 				case QP:
-					return student.getQuestPoint() >= value.intValue();
+					return student.getQuestPoint() >= valuei;
 				case MANA:
-					return student.curState().getMana() >= value.intValue();
+					return student.curState().getMana() >= valuei;
 				case MOVEMENT:
-					return student.curState().getMovement() >= value.intValue();
+					return student.curState().getMovement() >= valuei;
 				case HITPOINT:
-					return student.curState().getHitPoints() >= value.intValue();
+					return student.curState().getHitPoints() >= valuei;
 				}
 				return false;
 			}
@@ -3661,31 +3663,31 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				switch(costType)
 				{
 				case XP:
-					CMLib.leveler().postExperience(student, "COST:", null, "", -value.intValue(), true);
+					CMLib.leveler().postExperience(student, "COST:", null, "", -valuei, true);
 					break;
 				case GOLD:
 					if(currency != null)
-						CMLib.beanCounter().subtractMoney(student, currency, value.doubleValue());
+						CMLib.beanCounter().subtractMoney(student, currency, value);
 					else
-						CMLib.beanCounter().subtractMoney(student, value.doubleValue());
+						CMLib.beanCounter().subtractMoney(student, value);
 					break;
 				case TRAIN:
-					student.setTrains(student.getTrains() - value.intValue());
+					student.setTrains(student.getTrains() - valuei);
 					break;
 				case PRACTICE:
-					student.setPractices(student.getPractices() - value.intValue());
+					student.setPractices(student.getPractices() - valuei);
 					break;
 				case QP:
-					student.setQuestPoint(student.getQuestPoint() - value.intValue());
+					student.setQuestPoint(student.getQuestPoint() - valuei);
 					break;
 				case MANA:
-					student.curState().adjMana(-value.intValue(), student.maxState());
+					student.curState().adjMana(-valuei, student.maxState());
 					break;
 				case MOVEMENT:
-					student.curState().adjMovement(-value.intValue(), student.maxState());
+					student.curState().adjMovement(-valuei, student.maxState());
 					break;
 				case HITPOINT:
-					student.curState().adjHitPoints(-value.intValue(), student.maxState());
+					student.curState().adjHitPoints(-valuei, student.maxState());
 					break;
 				}
 			}
@@ -3693,15 +3695,132 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public CostManager createCostManager(final CostType costType, final Double value)
+	public CostManager createCostManager(final CostType costType, final double value)
 	{
 		return createCostManager(costType, value, null);
 	}
 
-	@Override
-	public CostManager createCostManager(final Cost cost)
+	/**
+	 * A final cost is an integer, and the type, and possibly
+	 * a currency.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class CostImpl implements Cost
 	{
-		return createCostManager(cost.second, cost.first, cost.third);
+		/**
+		 * The amount of the cost type as double
+		 */
+		private final double amount;
+		/**
+		 * The amount of the cost type as int
+		 */
+		private final int iamount;
+		/**
+		 * The type of the cost
+		 */
+		private final CostType type;
+		/**
+		 * If the type is gold, in what currency
+		 */
+		private final String currency;
+
+		/**
+		 * Construct a Cost object
+		 * @param amt the amount
+		 * @param type the cost type
+		 * @param currency the currency type
+		 */
+		public CostImpl(final double amt, final CostType type, final String currency)
+		{
+			this.amount=amt;
+			this.type=type;
+			this.currency=currency;
+			this.iamount=(int)Math.round(amount);
+		}
+
+		/**
+		 * Construct a Cost object
+		 * @param amt the amount
+		 * @param type the cost type
+		 */
+		public CostImpl(final double amt, final CostType type)
+		{
+			this(amt,type,"");
+		}
+
+		/**
+		 * Produce a string representation of this cost.
+		 * @return a string representation of this cost.
+		 */
+		@Override
+		public String value()
+		{
+			return amount+" "+type.name()+" "+currency;
+		}
+
+		/**
+		 * Returns the amount;
+		 * @return the amount
+		 */
+		@Override
+		public double amount()
+		{
+			return amount;
+		}
+
+		/**
+		 * Returns the amount;
+		 * @return the amount
+		 */
+		@Override
+		public int amounti()
+		{
+			return iamount;
+		}
+
+		/**
+		 * Returns the cost type
+		 * @return the cost type
+		 */
+		@Override
+		public CostType type()
+		{
+			return this.type;
+		}
+
+		/**
+		 * Returns the currency
+		 * @return the currency
+		 */
+		@Override
+		public String currency()
+		{
+			return this.currency;
+		}
+
+		/**
+		 * Derive cost from a string representation of this cost.
+		 * @param str a string representation of this cost.
+		 * @return a cost object
+		 */
+		@Override
+		public Cost valueOf(final String str)
+		{
+			final String[] parts = str.split(" ");
+			if(parts.length<3)
+				return null;
+			final double first = CMath.s_double(parts[0]);
+			final CostType typ = (CostType)CMath.s_valueOf(CostType.class, parts[1]);
+			return new CostImpl(first, typ, parts[2]);
+		}
+	}
+
+	@Override
+	public Cost createCost(final CostType costType, final double value, final String curr)
+	{
+		return new CostImpl(value, costType, curr);
 	}
 
 	@Override

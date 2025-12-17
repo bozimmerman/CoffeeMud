@@ -651,7 +651,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public void addCost(final CostType type, final Double value)
+								public void addCost(final CostType type, final double value)
 								{
 								}
 
