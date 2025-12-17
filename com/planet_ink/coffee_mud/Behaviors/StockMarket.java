@@ -190,8 +190,8 @@ public class StockMarket extends StdBehavior
 		/*  5*/ {  -3, -3,  3},
 		/* 10*/ {  -2,  2,  2},		/* 15*/ {  -2,  2,  2},
 		/* 20*/ {  -1, -1,  1},		/* 25*/ {  -1, -1,  1},
-		/* 30*/ {  -0,  0,-.1},		/* 35*/ {  -0,  0,-.1},		/* 40*/ {  -0,  0,-.1},		/* 45*/ {  -0,  0,-.1},
-		/* 50*/ {  .2, .1,-.2},		/* 55*/ {  .2, .1,-.2},
+		/* 30*/ {  -0,  0,-.1},		/* 35*/ {  -0,  0, .1},		/* 40*/ {  -0,  0,-.1},		/* 45*/ {  -0,  0,-.1},
+		/* 50*/ {  .2, .1,-.2},		/* 55*/ {  .2, .1, .2},
 		/* 60*/ {   1,  0, -1},		/* 65*/ {   1,  0, -1},		/* 70*/ {   1,  0, -1},		/* 75*/  {   1,  0, -1},
 		/* 80*/ {   2,  1, -2},		/* 85*/ {   2,  1, -2},
 		/* 90*/ {   3, -2, -3},		/* 95*/ {   3, -2, -3},
@@ -1332,7 +1332,7 @@ public class StockMarket extends StdBehavior
 										final double[] dirChart = StockMarket.THE_TABLE[index];
 										final double value = dirChart[dir.ordinal()];
 										if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
-											dividendMultiplier += price/100.0;
+											dividendMultiplier += (value/100.0);
 										else
 										if(value < 0) // must be negative whole price
 											price -= dice.roll(1, -(int)Math.round(value), 0);
@@ -1375,10 +1375,10 @@ public class StockMarket extends StdBehavior
 							else
 							{
 								//final boolean changed = def.price != price;
+								final double priceDelta = price - def.price;
 								def.price = price; // normal price change
 								if(journalName.length()>0)
 								{
-									final double priceDelta = price - def.price;
 									if(priceDelta != 0.0)
 									{
 										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
