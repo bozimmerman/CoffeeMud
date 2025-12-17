@@ -247,11 +247,13 @@ function SipletWindow(windowName)
 			var oldResume = this.text.resume;
 			var oldFlush = this.flushWindow;
 			var oldMXP = this.MXPsupport;
+			var oldMode = this.mxp.mode;
 			var oldMSP = this.MSPsupport;
 			this.flushWindow = function(){};
 			this.text.resume = null;
 			this.MXPsupport = true;
 			this.MSPsupport = true;
+			this.mxp.mode = MXPMODE.LINE_OPEN;
 			s=this.text.process(s)
 			var startTime = Date.now();
 			while(this.text.resume && ((Date.now() - startTime)<500))
@@ -268,6 +270,7 @@ function SipletWindow(windowName)
 		this.text.resume = oldResume;
 		this.MSPsupport = oldMSP;
 		this.MXPsupport = oldMXP;
+		this.mxp.mode = oldMode;
 		return s;
 	};
 	
