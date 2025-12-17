@@ -62,7 +62,7 @@
 	MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT?LOCAL@</b>: <b>@MUDSERVERSTATUS@</B><br>
 @endif@
 <a href="http://@MudInfo?DOMAIN@:@WebServerPort?SERVER&PUB@/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
-@if?!DBInfo?ISFAKEDB@
+@if?DBInfo?ISFAKEDB@
 <br>
 <FONT SIZE=-1><FONT COLOR=YELLOW>Note:</FONT> You are using fakeDB, the default embedded database.  Please consider 
 switching to an external database system if you plan on a large world with high activity.</FONT>
