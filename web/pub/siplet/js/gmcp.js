@@ -197,7 +197,7 @@ window.gmcpPackages.push({
 		if(!(id in framechoices))
 		{
 			var width = msg["width"] || "25%";
-			var width = msg["width"] || "25%";
+			var height = msg["height"] || "25%";
 			var top = msg["top"] || "25%";
 			var left = msg["left"] || "25%";
 			if(dock != "")
