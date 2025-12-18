@@ -409,6 +409,9 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 						else
 						if(msg.tool() instanceof RawMaterial)
 							numberSold=((RawMaterial)msg.tool()).phyStats().weight();
+						else
+						if(msg.tool() instanceof AutoBundler)
+							numberSold=((AutoBundler)msg.tool()).getBundleSize();
 						shop.addStoreInventory(msg.tool(), shop.numberInStock(msg.source(), A), price);
 						final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool(), shop, BuySellFlag.WHOLESALE);
 						if (paid > Double.MIN_VALUE)

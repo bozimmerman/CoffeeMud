@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -323,9 +324,14 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		if(number<0)
 			number=1;
-		if((thisThang instanceof LandTitle)
-		&&(isSold(ShopKeeper.DEAL_LANDSELLER)||isSold(ShopKeeper.DEAL_CLANDSELLER)))
-			return null; // prevent duplicates, since landsellers auto-generate titles in their inventory
+
+		this.checkInternalProviders();
+		for(final ShopProvider provider : shopProviders.values())
+		{
+			// if the item is already provided by the provider, don't put it on the shelf
+			if(provider.claim(thisThang, null, this, startRoom())!=null)
+				return null;
+		}
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
 		{
 			final Environmental E=preSaleCopyFix(thisThang);

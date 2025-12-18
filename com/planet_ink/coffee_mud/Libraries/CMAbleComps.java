@@ -182,6 +182,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		{
 			if(I instanceof PackagedItems)
 				I=CMLib.materials().unbundle(I,amt[0],null);
+			else
+			if(I instanceof AutoBundler)
+				I=CMLib.materials().unbundle(I,amt[0],null);
 			amt[0]-=I.numberOfItems();
 		}
 		else

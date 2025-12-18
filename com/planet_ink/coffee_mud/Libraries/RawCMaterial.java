@@ -466,6 +466,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					((MOB)owner).addItem(I);
 				I.setContainer(C);
 				bundle.add(I);
+				// now move it to the end!
+				if(owner instanceof Room)
+				{
+					((Room)owner).delItem((Item)pkg);
+					((Room)owner).addItem((Item)pkg,ItemPossessor.Expire.Player_Drop);
+				}
+				else
+				if(owner instanceof MOB)
+				{
+					((MOB)owner).delItem((Item)pkg);
+					((MOB)owner).addItem((Item)pkg);
+				}
 			}
 			return bundle;
 		}

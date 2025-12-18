@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -120,20 +121,19 @@ public class StockMarket extends StdBehavior
 			&&shop.isSold(ShopKeeper.DEAL_STOCKBROKER))
 			{
 				final String sellingTitleID = ((PrivateProperty)product).getTitleID();
-				final Collection<StockDef> stocks = getHostStocks();
-				synchronized(stocks)
+				final int mark = sellingTitleID.lastIndexOf('#');
+				if(mark < 0)
+					return null;
+				final String subsellingTitleID = sellingTitleID.substring(0,mark);
+				final StockDef def = getHostStocksMap().get(subsellingTitleID);
+				if((def !=null)
+				&&(def.getTitleID().equals(sellingTitleID)))
 				{
-					for(final StockDef def : stocks)
-					{
-						if(def.getTitleID().equals(sellingTitleID))
-						{
-							final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
-							((PrivateProperty)product).setPrice(def.getPrice());
-							final ShelfProduct shelfProduct = CMLib.coffeeShops().createShelfProduct(product, 1, def.getPrice(), currency);
-							shelfProduct.shelfFlags().addAll(certFlags);
-							return shelfProduct;
-						}
-					}
+					final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
+					((PrivateProperty)product).setPrice(def.getPrice());
+					final ShelfProduct shelfProduct = CMLib.coffeeShops().createShelfProduct(product, 1, def.getPrice(), currency);
+					shelfProduct.shelfFlags().addAll(certFlags);
+					return shelfProduct;
 				}
 			}
 			return null;
@@ -393,6 +393,12 @@ public class StockMarket extends StdBehavior
 	private void updatePlayerStockXML(final String mobName, final StockDef stock, final int delta)
 	{
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID());
+		if((stocksOwned==null)||(stocksOwned.size()==0))
+		{
+			if(delta > 0)
+				CMLib.database().DBCreatePlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID(), "<AMT>"+delta+"</AMT>");
+			return;
+		}
 		for(final PAData stockData : stocksOwned)
 		{
 			final String xml = stockData.xml().trim();
@@ -1443,9 +1449,9 @@ public class StockMarket extends StdBehavior
 										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
 										final String deltaStr = CMLib.beanCounter().abbreviatedPrice(currency, Math.abs(priceDelta));
 										if(priceDelta > 0)
-											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
 										else
-											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3!",def.name(),deltaStr,priceStr),L("See the subject line."));
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
 									}
 								}
 								if(dividendMultiplier > 0.0)
@@ -1467,6 +1473,8 @@ public class StockMarket extends StdBehavior
 									def.price = def.price / 2.0;
 									getOutstandingShares(def, 0);
 									getOutstandingShares(def, def.outstandingShares);//effectively doubles them
+									final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, def.price);
+									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 splits to @x2 per share.",def.name(),priceStr),L("See the subject line."));
 									for(final Pair<String,Integer> p : getStockOwners(def))
 									{
 										updatePlayerStockXML(p.first, def, p.second.intValue());
@@ -1524,6 +1532,7 @@ public class StockMarket extends StdBehavior
 		if(((msg.targetMinor()==CMMsg.TYP_SELL)||(msg.targetMinor()==CMMsg.TYP_VALUE))
 		&&(msg.target() instanceof ShopKeeper)
 		&&(msg.tool() instanceof PrivateProperty)
+		&&(msg.tool() instanceof AutoBundler)
 		&&(msg.tool().ID().equals("GenCertificate")))
 		{
 			StockDef foundDef=null;
@@ -1533,32 +1542,33 @@ public class StockMarket extends StdBehavior
 				final String sellingTitleID = ((PrivateProperty)msg.tool()).getTitleID();
 				final String subsellingTitleID;
 				if(sellingTitleID.indexOf('#')>0)
-					subsellingTitleID = sellingTitleID.substring(0,sellingTitleID.lastIndexOf('#')+1);
+					subsellingTitleID = sellingTitleID.substring(0,sellingTitleID.lastIndexOf('#'));
 				else
 					subsellingTitleID = sellingTitleID;
-				final Collection<StockDef> stocks = getHostStocks();
-				synchronized(stocks)
+				foundDef = getHostStocksMap().get(subsellingTitleID);
+				if((foundDef != null)
+				&&(foundDef.getTitleID().equals(sellingTitleID)))
+					((PrivateProperty)msg.tool()).setPrice(foundDef.getPrice() );
+				else
 				{
-					for(final StockDef def : stocks)
+					foundDef=null;
+					final Collection<StockDef> stocks = getHostStocks();
+					synchronized(stocks)
 					{
-						if(def.getTitleID().equals(sellingTitleID))
+						for(final StockDef def : stocks)
 						{
-							((PrivateProperty)msg.tool()).setPrice(def.getPrice() );
-							foundDef=def;
-							break;
+							if(def.getTitleID().startsWith(subsellingTitleID))
+								worthless=true;
 						}
-						else
-						if(def.getTitleID().startsWith(subsellingTitleID))
-							worthless=true;
 					}
 				}
 			}
 			if(worthless)
 			{
 				if(msg.target() instanceof MOB)
-					CMLib.commands().postSay((MOB)msg.target(), L("Sorry, but those are worthless now."));
+					CMLib.commands().postSay((MOB)msg.target(), L("Sorry, but those are worthless now, due to a bankruptcy."));
 				else
-					msg.source().tell(L("Those are worthless now."));
+					msg.source().tell(L("Those are worthless now, due to a bankruptcy."));
 				return false;
 			}
 			if(foundDef==null)
@@ -1578,10 +1588,10 @@ public class StockMarket extends StdBehavior
 					msg.source().tell(L("Those are worthless now."));
 				return false;
 			}
-			if((msg.target() instanceof Item)
-			&&(msg.target() instanceof AutoBundler)
-			&&(((AutoBundler)msg.target()).getBundleSize()>amtOwned))
-				((AutoBundler)msg.target()).setBundleSize(amtOwned);
+			if((msg.tool() instanceof Item)
+			&&(msg.tool() instanceof AutoBundler)
+			&&(((AutoBundler)msg.tool()).getBundleSize()>amtOwned))
+				((AutoBundler)msg.tool()).setBundleSize(amtOwned);
 		}
 		return super.okMessage(myHost, msg);
 	}
@@ -1636,7 +1646,8 @@ public class StockMarket extends StdBehavior
 			if (msg.source().isMonster())
 			{
 				final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.source());
-				if(SK != null)
+				if((SK != null)
+				&&(!SK.isSold(ShopKeeper.DEAL_STOCKBROKER)))
 				{
 					CMLib.awards().giveAutoProperties(msg.source(), false);
 					for(final MarketConf conf : configs)
@@ -1692,12 +1703,12 @@ public class StockMarket extends StdBehavior
 			if((A==null)||(!(host instanceof Area)))
 				break;
 			final String areaName = A.Name();
+			final Collection<StockDef> stocks = getHostStocks();
 			final Set<StockDef> done = new HashSet<StockDef>();
 			for(final MarketConf conf : configs)
 			{
 				if(!conf.playerInfluence)
 					continue;
-				final Collection<StockDef> stocks = getHostStocks();
 				synchronized(stocks)
 				{
 					for(final StockDef def : stocks)
@@ -1719,13 +1730,13 @@ public class StockMarket extends StdBehavior
 			if((A==null)||(!(host instanceof Area))||(msg.sourceMessage()==null))
 				break;
 			final String areaName = A.Name();
+			final Collection<StockDef> stocks = getHostStocks();
 			final Set<StockDef> done = new HashSet<StockDef>();
 			for(final MarketConf conf : configs)
 			{
 				final InfluDir dir = conf.questMoves.get(msg.sourceMessage().toLowerCase().trim());
 				if(dir == null)
 					continue;
-				final Collection<StockDef> stocks = getHostStocks();
 				synchronized(stocks)
 				{
 					for(final StockDef def : stocks)
@@ -1754,12 +1765,12 @@ public class StockMarket extends StdBehavior
 				final Event ev = (Event)CMath.s_valueOf(Event.class,msg.targetMessage().substring(2));
 				if((ev != null) && EVENTS_LISTEN.contains(ev))
 				{
+					final Collection<StockDef> stocks = getHostStocks();
 					final Set<StockDef> done = new HashSet<StockDef>();
 					for(final MarketConf conf : configs)
 					{
 						if(!conf.playerInfluence)
 							continue;
-						final Collection<StockDef> stocks = getHostStocks();
 						synchronized(stocks)
 						{
 							for(final StockDef def : stocks)
@@ -1802,11 +1813,11 @@ public class StockMarket extends StdBehavior
 					break;
 				final String areaName = A.Name();
 				final Set<StockDef> done = new HashSet<StockDef>();
+				final Collection<StockDef> stocks = getHostStocks();
 				for(final MarketConf conf : configs)
 				{
 					if(!conf.playerInfluence)
 						continue;
-					final Collection<StockDef> stocks = getHostStocks();
 					synchronized(stocks)
 					{
 						for(final StockDef def : stocks)
@@ -1879,35 +1890,45 @@ public class StockMarket extends StdBehavior
 				&&(msg.source().isPlayer()))
 				{
 					final String id;
-					if(msg.tool() instanceof PrivateProperty)
+					if((msg.tool() instanceof PrivateProperty)
+					&&(msg.tool() instanceof AutoBundler)
+					&&(msg.tool() instanceof Readable))
 						id = ((PrivateProperty)msg.tool()).getTitleID();
 					else
 						id=null;
 					for(final MarketConf conf : configs)
 					{
-						final List<StockDef> stocks = conf.getShopStock(SK, mob);
+						final Collection<StockDef> stocks = conf.getShopStock(SK, mob);
 						if(stocks != null)
 						{
-							for(final StockDef def : stocks)
+							synchronized(stocks)
 							{
-								if((id != null)
-								&& (def.getTitleID().equals(id)))
-								{
-									if(msg.tool() instanceof AutoBundler)
-									{
-										final int num = ((AutoBundler)msg.tool()).getBundleSize();
-										updatePlayerStockXML(msg.source().Name(),def,(msg.targetMinor()==CMMsg.TYP_BUY)?num:-num);
-										getOutstandingShares(def,(msg.targetMinor()==CMMsg.TYP_BUY)?num:-num);
-									}
-									else
-									{
-										updatePlayerStockXML(msg.source().Name(),def,(msg.targetMinor()==CMMsg.TYP_BUY)?1:-1);
-										getOutstandingShares(def,(msg.targetMinor()==CMMsg.TYP_BUY)?1:-1);
-									}
-									def.addInfluence(InfluCat.SHOPPING, InfluDir.VARIABLE, 1);
-								}
-								def.addInfluence(InfluCat.SHOPPING, InfluDir.POSITIVE, 1); //doing non-stock deed busines is positive
+								for(final StockDef def : stocks)
+									def.addInfluence(InfluCat.SHOPPING, InfluDir.POSITIVE, 1); //doing non-stock deed business is positive
 							}
+						}
+					}
+
+					if((id!=null)
+					&&(SK.isSold(ShopKeeper.DEAL_STOCKBROKER))
+					&&(id.lastIndexOf('#')>0))
+					{
+						final String subId = id.substring(0,id.lastIndexOf('#'));
+						final StockDef def = this.getHostStocksMap().get(subId);
+						if(def.getTitleID().equals(id))
+						{
+							if(msg.tool() instanceof AutoBundler)
+							{
+								final int num = ((AutoBundler)msg.tool()).getBundleSize();
+								updatePlayerStockXML(msg.source().Name(),def,(msg.targetMinor()==CMMsg.TYP_BUY)?num:-num);
+								getOutstandingShares(def,(msg.targetMinor()==CMMsg.TYP_BUY)?num:-num);
+							}
+							else
+							{
+								updatePlayerStockXML(msg.source().Name(),def,(msg.targetMinor()==CMMsg.TYP_BUY)?1:-1);
+								getOutstandingShares(def,(msg.targetMinor()==CMMsg.TYP_BUY)?1:-1);
+							}
+							def.addInfluence(InfluCat.SHOPPING, InfluDir.VARIABLE, 1);
 						}
 					}
 				}

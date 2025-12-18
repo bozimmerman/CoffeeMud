@@ -973,6 +973,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		else
 		if(product instanceof RawMaterial)
 			number = ((RawMaterial)product).basePhyStats().weight();
+		else
+		if(product instanceof AutoBundler)
+			number = ((AutoBundler)product).getBundleSize();
 		return number;
 	}
 
@@ -1619,14 +1622,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			pawner.tell(L("@x1 pays you @x2 for @x3.",shopkeeper.name(),CMLib.beanCounter().nameCurrencyShort(shopkeeper,val),rawSoldItem.name()));
 			if(rawSoldItem instanceof Item)
 			{
-				List<Item> V=null;
+				List<Item> contentsOfSoldItem=null;
 				if(rawSoldItem instanceof Container)
-					V=((Container)rawSoldItem).getDeepContents();
+					contentsOfSoldItem=((Container)rawSoldItem).getDeepContents();
 				((Item)rawSoldItem).unWear();
 				((Item)rawSoldItem).removeFromOwnerContainer();
-				if(V!=null)
-				for(int v=0;v<V.size();v++)
-					V.get(v).removeFromOwnerContainer();
+				if(contentsOfSoldItem!=null)
+				{
+					for(int v=0;v<contentsOfSoldItem.size();v++)
+						contentsOfSoldItem.get(v).removeFromOwnerContainer();
+				}
 				if(coreSoldItem instanceof Physical)
 				{
 					final Ability privateEffect=((Physical)coreSoldItem).fetchEffect("Prop_PrivateProperty");
@@ -1634,11 +1639,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						((Physical)coreSoldItem).delEffect(privateEffect);
 				}
 				shopItems.addStoreInventory(coreSoldItem,number,-1);
-				if(V!=null)
+				if(contentsOfSoldItem!=null)
 				{
-					for(int v=0;v<V.size();v++)
+					for(int v=0;v<contentsOfSoldItem.size();v++)
 					{
-						final Item item2=V.get(v);
+						final Item item2=contentsOfSoldItem.get(v);
 						if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
 							item2.destroy();
 						else

@@ -3306,6 +3306,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(P instanceof Electronics)
 			genAbility(mob,P,showNumber,showFlag,"Technical Level");
 		else
+		if(P instanceof AutoBundler)
+			genAbility(mob,P,showNumber,showFlag,"Bundle Size (-1)");
+		else
 			genAbility(mob,P,showNumber,showFlag,"Magical Ability");
 	}
 
