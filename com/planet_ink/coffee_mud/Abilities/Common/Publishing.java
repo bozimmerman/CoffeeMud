@@ -463,7 +463,7 @@ public class Publishing extends CommonSkill
 							if(SK != null)
 							{
 								royalties = 1;
-								final int price=SK.getShop().stockPrice(msg.tool());
+								final int price=SK.getShop().stockPriceCode(msg.tool());
 								if(price>10)
 									royalties = (int)Math.round(CMath.div(price, 10.0));
 								CMLib.beanCounter().giveSomeoneMoney(M, CMLib.beanCounter().getCurrency(M), royalties);

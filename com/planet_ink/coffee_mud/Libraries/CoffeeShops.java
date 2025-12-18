@@ -709,7 +709,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(product==null)
 			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-		final int stockPrice=shop.stockPrice(product);
+		final int stockPrice=shop.stockPriceCode(product);
 		if(stockPrice<=-100)
 		{
 			if(stockPrice<=-1000)
@@ -1006,7 +1006,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if(product==null)
 				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-			final int stockPrice=shop.stockPrice(product);
+			final int stockPrice=shop.stockPriceCode(product);
 			if(stockPrice<=-100)
 				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
 

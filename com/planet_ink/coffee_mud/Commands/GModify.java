@@ -1276,7 +1276,7 @@ public class GModify extends StdCommand
 								for(final Iterator<CoffeeShop.ShelfProduct> i=shop.getStoreShelves();i.hasNext();)
 								{
 									final CoffeeShop.ShelfProduct P=i.next();
-									final Environmental E2=P.product;
+									final Environmental E2=P.product();
 									if((E2 instanceof Item)||(E2 instanceof MOB))
 									{
 										final Environmental E3=tryModfy(mob,sess,R,E2,changes,onfields,noisy, tag);
@@ -1287,7 +1287,7 @@ public class GModify extends StdCommand
 												removeThese.add(P);
 											else
 											if(E2!=E3)
-												P.product=E3;
+												P.replaceProduct(E3);
 										}
 									}
 								}

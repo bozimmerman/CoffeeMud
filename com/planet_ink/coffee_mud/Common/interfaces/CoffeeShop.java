@@ -146,12 +146,17 @@ public interface CoffeeShop extends CMCommon
 	 * base inventory for historical reasons.  The method is called when multiple items
 	 * need to be added, or if the price is available.  This method is usually used to
 	 * build an original shop inventory.
+	 * Price Code is encoded as follows:
+	 *      -1 means to use the products native value
+	 *      just less than -100 is a quest point price
+	 *      just less than -1000 is an experience point price
+	 *
 	 * @param thisThang the item/mob/ability to sell
 	 * @param number the number of items to sell
-	 * @param price the price of the item (in base currency) or -1 to have it determined
+	 * @param priceCode the price code of the item or -1 to have it determined
 	 * @return the actual object stored in the inventory
 	 */
-	public Environmental addStoreInventory(Environmental thisThang, int number, int price);
+	public Environmental addStoreInventory(Environmental thisThang, int number, int priceCode);
 
 	/**
 	 * Total weight, in pounds, of all items in the store inventory, taking number in
@@ -178,7 +183,7 @@ public interface CoffeeShop extends CMCommon
 	/**
 	 * Composes the inventory as players will see it when they list it, which may
 	 * include temporary or ephemeral items not part of the base inventory.
-	 * 
+	 *
 	 * @param buyer the buyer whose view matters
 	 * @param shopHomeRoom the home room of the shopkeeper
 	 * @return the final list to show
@@ -201,10 +206,15 @@ public interface CoffeeShop extends CMCommon
 	 * that the shopkeeper uses the valuation of the item as a basis, whereas another
 	 * value is in base gold.  Best to get likeThis item from the getStoreInventory()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
+	 *
+	 *  -1 means to use the products native value
+	 *  just less than -100 is a quest point price
+	 *  just less than -1000 is an experience point price
+	 *
 	 * @param likeThis the item like which to compare
-	 * @return the stock price of the item given.
+	 * @return the stock price code of the item given.
 	 */
-	public int stockPrice(Environmental likeThis);
+	public int stockPriceCode(Environmental likeThis);
 
 	/**
 	 * Returns the number of items like the one given that the shopkeeper presently
@@ -293,25 +303,25 @@ public interface CoffeeShop extends CMCommon
 	 * @return the shopKeeper that is hosting this shop
 	 */
 	public ShopKeeper shopKeeper();
-	
+
 	/**
 	 * Returns whether this shop has the built-in shop
 	 * provider of the given ID.
-	 * 
+	 *
 	 * @see CoffeeShop#addShopProvider(ShopProvider)
 	 * @see CoffeeShop#delShopProvider(ShopProvider)
 	 * @see ShopProvider#ID()
-	 * 
+	 *
 	 * @param ID the unique if of the provider
 	 * @return
 	 */
 	public boolean hasShopProvider(final String ID);
-	
+
 	/**
 	 * Adds a new provider of temporary stock to this shop.
 	 * @see CoffeeShop#hasShopProvider(String)
 	 * @see CoffeeShop#delShopProvider(ShopProvider)
-	 * 
+	 *
 	 * @param provider the provider of stock
 	 */
 	public void addShopProvider(final ShopProvider provider);
@@ -320,7 +330,7 @@ public interface CoffeeShop extends CMCommon
 	 * Removes an old provider of temporary stock from this shop.
 	 * @see CoffeeShop#hasShopProvider(String)
 	 * @see CoffeeShop#addShopProvider(ShopProvider)
-	 * 
+	 *
 	 * @param provider the provider of stock
 	 */
 	public void delShopProvider(final ShopProvider provider);
@@ -347,22 +357,50 @@ public interface CoffeeShop extends CMCommon
 	 * calculated value (common).
 	 * @author Bo Zimmerman
 	 */
-	public static class ShelfProduct
+	public static interface ShelfProduct extends Cost
 	{
-		public Environmental product;
-		public int number;
-		public int price;
-		public ShelfProduct(final Environmental E, final int number, final int price)
-		{
-			this.product=E;this.number=number;this.price=price;
-		}
-		@Override
-		public int hashCode()
-		{
-			return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(price));
-		}
+		/**
+		 * The product on the shelf
+		 * @return the product on the shelf
+		 */
+		public Environmental product();
+
+		/**
+		 * The number of items on the shelf
+		 * @return the number of items on the shelf
+		 */
+		public int number();
+
+		/**
+		 * Encoded price integer, where:
+		 *  greater than or equal to 0 is a money price in shop currency
+		 *  -1 means to use the products native value
+		 *  just less than -100 is a quest point price
+		 *  just less than -1000 is an experience point price
+		 * @return the price code
+		 */
+		public int priceCode();
+
+		/**
+		 * Adjusts the number of items.
+		 *
+		 * @param adj the adjustment up or down or 0
+		 */
+		public void adjNumber(int adj);
+
+		/**
+		 * Sets a new price code.
+		 * @param priceCode the new price code (see {@link #priceCode()})
+		 */
+		public void setPriceCode(final int priceCode);
+
+		/**
+		 * Replaces the existing product with this new one.
+		 * @param product the new product
+		 */
+		public void replaceProduct(final Environmental product);
 	}
-	
+
 	/**
 	 * Interface that provides items to a shop
 	 * for just-in-time availability, meaning they
@@ -373,7 +411,7 @@ public interface CoffeeShop extends CMCommon
 		/**
 		 * Returns the stock that this provider
 		 * provides.
-		 * 
+		 *
 		 * @param buyer the buyer interested
 		 * @param shop the shop contents of the shopkeeper selling
 		 * @param myRoom the room this all takes place in

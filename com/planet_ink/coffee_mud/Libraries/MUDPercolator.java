@@ -7984,7 +7984,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						for(final Iterator<CoffeeShop.ShelfProduct> i=SK.getShop().getStoreShelves();i.hasNext();)
 						{
 							final CoffeeShop.ShelfProduct P=i.next();
-							final Environmental E2=P.product;
+							final Environmental E2=P.product();
 							if((E2 instanceof Item)||(E2 instanceof MOB))
 							{
 								final Physical P2=(Physical)E2;

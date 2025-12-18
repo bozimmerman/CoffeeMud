@@ -181,7 +181,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public StringBuilder listHosts(final Session viewerS, final List<String> cmds)
+	protected StringBuilder listHosts(final Session viewerS, final List<String> cmds)
 	{
 		final StringBuilder str=new StringBuilder("");
 		final int[] colWidths = new int[] {
@@ -205,7 +205,7 @@ public class ListCmd extends StdCommand
 		return str;
 	}
 
-	public StringBuilder listAllQualifies(final Session viewerS, final List<String> cmds)
+	protected StringBuilder listAllQualifies(final Session viewerS, final List<String> cmds)
 	{
 		final StringBuilder str=new StringBuilder("");
 		final Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
@@ -254,12 +254,12 @@ public class ListCmd extends StdCommand
 		return str;
 	}
 
-	public StringBuilder roomDetails(final Session viewerS, final List<Room> these, final Room likeRoom, final String rest)
+	protected StringBuilder roomDetails(final Session viewerS, final List<Room> these, final Room likeRoom, final String rest)
 	{
 		return roomDetails(viewerS, new IteratorEnumeration<Room>(these.iterator()), likeRoom, rest);
 	}
 
-	public StringBuilder roomDetails(final Session viewerS, final Enumeration<Room> these, final Room likeRoom, final String rest)
+	protected StringBuilder roomDetails(final Session viewerS, final Enumeration<Room> these, final Room likeRoom, final String rest)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -284,7 +284,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomExpires(final Session viewerS, final Enumeration<Room> these, final Room likeRoom)
+	protected StringBuilder roomExpires(final Session viewerS, final Enumeration<Room> these, final Room likeRoom)
 	{
 		final StringBuilder lines=new StringBuilder("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
 		if(!these.hasMoreElements())
@@ -311,7 +311,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomPropertyDetails(final Session viewerS, final Enumeration<Room> these, final String owner, final boolean taxes)
+	protected StringBuilder roomPropertyDetails(final Session viewerS, final Enumeration<Room> these, final String owner, final boolean taxes)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -412,7 +412,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomPropertyDetails(final Session viewerS, final Area A, String rest)
+	protected StringBuilder roomPropertyDetails(final Session viewerS, final Area A, String rest)
 	{
 		rest = rest.trim();
 		final int x = rest.lastIndexOf(' ');
@@ -450,7 +450,7 @@ public class ListCmd extends StdCommand
 		return roomPropertyDetails(viewerS, e, who, taxes);
 	}
 
-	public String cataMark(final Environmental E)
+	protected String cataMark(final Environmental E)
 	{
 		if(E==null)
 			return "";
@@ -459,7 +459,7 @@ public class ListCmd extends StdCommand
 		return "";
 	}
 
-	public boolean canShowTo(final MOB showTo, final MOB show)
+	protected boolean canShowTo(final MOB showTo, final MOB show)
 	{
 		if((show!=null)
 		&&(show.session()!=null)
@@ -471,7 +471,7 @@ public class ListCmd extends StdCommand
 		return false;
 	}
 
-	private String getShopPrice(final Room R, final MOB buyer, final ShopKeeper SK, final Environmental E)
+	protected String getShopPrice(final Room R, final MOB buyer, final ShopKeeper SK, final Environmental E)
 	{
 		MOB seller = null;
 		boolean destroySeller = false;
@@ -583,7 +583,7 @@ public class ListCmd extends StdCommand
 		return xml.toString();
 	}
 
-	public String wikiFix(String s, final char[] newChars, final boolean noSpaces)
+	protected String wikiFix(String s, final char[] newChars, final boolean noSpaces)
 	{
 		if(s!=null)
 		{
@@ -596,9 +596,9 @@ public class ListCmd extends StdCommand
 		return s;
 	}
 
-	public String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
-								   final WikiFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
-								   final ShopKeeper SK, final boolean shopOnly)
+	protected String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
+									  final WikiFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
+									  final ShopKeeper SK, final boolean shopOnly)
 	{
 		final StringBuilder line = new StringBuilder("");
 		if(uniq != null)
@@ -671,7 +671,7 @@ public class ListCmd extends StdCommand
 		return line.toString();
 	}
 
-	public StringBuffer getAreaStuff(final MOB mob, final List<String> commands, final int start, final Enumeration<Room> r)
+	protected StringBuffer getAreaStuff(final MOB mob, final List<String> commands, final int start, final Enumeration<Room> r)
 	{
 		boolean mobOnly = false;
 		boolean itemOnly = false;
@@ -956,7 +956,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder taggedObjects(final Session viewerS, final Enumeration<Taggable> t)
+	protected StringBuilder taggedObjects(final Session viewerS, final Enumeration<Taggable> t)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(10.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(25.0,viewerS);
@@ -975,7 +975,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomTypes(final MOB mob, final Enumeration<Room> these, final Room likeRoom, final List<String> commands)
+	protected StringBuilder roomTypes(final MOB mob, final Enumeration<Room> these, final Room likeRoom, final List<String> commands)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -1004,12 +1004,12 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder roomResources(final Session viewerS, final Vector<Room> these, final Room likeRoom)
+	protected StringBuilder roomResources(final Session viewerS, final Vector<Room> these, final Room likeRoom)
 	{
 		return roomResources(viewerS, these.elements(),likeRoom);
 	}
 
-	public StringBuilder roomResources(final Session viewerS, final Enumeration<Room> these, final Room likeRoom)
+	protected StringBuilder roomResources(final Session viewerS, final Enumeration<Room> these, final Room likeRoom)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(30.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(15.0,viewerS);
@@ -1040,7 +1040,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder areaConquests(final Session viewerS, final Enumeration<Area> these)
+	protected StringBuilder areaConquests(final Session viewerS, final Enumeration<Area> these)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(26.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(36.0,viewerS);
@@ -1203,7 +1203,7 @@ public class ListCmd extends StdCommand
 		return null;
 	}
 
-	public StringBuilder listThreads(final Session viewerS, final MOB mob, final boolean ignoreZeroTickThreads, final boolean extend)
+	protected StringBuilder listThreads(final Session viewerS, final MOB mob, final boolean ignoreZeroTickThreads, final boolean extend)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
 		try
@@ -1222,7 +1222,7 @@ public class ListCmd extends StdCommand
 
 	}
 
-	public String listDB(final MOB mob, final List<String> cmds)
+	protected String listDB(final MOB mob, final List<String> cmds)
 	{
 		final StringBuilder str = new StringBuilder("");
 		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -1232,7 +1232,7 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public StringBuilder listThread(final Session viewerS, final MOB mob, final String threadname)
+	protected StringBuilder listThread(final Session viewerS, final MOB mob, final String threadname)
 	{
 		final StringBuilder lines=new StringBuilder("^xStatus|Name                 ^.^?\n\r");
 		try
@@ -1262,7 +1262,7 @@ public class ListCmd extends StdCommand
 
 	}
 
-	public void addScripts(final DVector DV, final Room R, final ShopKeeper SK, final MOB M, final Item I, final PhysicalAgent E)
+	protected void addScripts(final DVector DV, final Room R, final ShopKeeper SK, final MOB M, final Item I, final PhysicalAgent E)
 	{
 		if(E==null)
 			return;
@@ -1297,7 +1297,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void addShopScripts(final DVector DV, final Room R, final MOB M, final Item I, final Environmental E)
+	protected void addShopScripts(final DVector DV, final Room R, final MOB M, final Item I, final Environmental E)
 	{
 		if(E==null)
 			return;
@@ -1314,7 +1314,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public StringBuilder listScripts(final Session viewerS, final MOB mob, final List<String> cmds)
+	protected StringBuilder listScripts(final Session viewerS, final MOB mob, final List<String> cmds)
 	{
 		if(cmds.size()==0)
 			return new StringBuilder("");
@@ -1496,7 +1496,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listLinkages(final Session viewerS, final MOB mob, final String rest)
+	protected StringBuilder listLinkages(final Session viewerS, final MOB mob, final String rest)
 	{
 		final StringBuilder buf=new StringBuilder("Links: \n\r");
 		final List<List<Area>> areaLinkGroups=new ArrayList<List<Area>>();
@@ -1677,7 +1677,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder journalList(final MOB mob, final Session viewerS, final String partialjournal, final String rest)
+	protected StringBuilder journalList(final MOB mob, final Session viewerS, final String partialjournal, final String rest)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		String journal=null;
@@ -1744,7 +1744,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listReports(final Session viewerS, final MOB mob)
+	protected StringBuilder listReports(final Session viewerS, final MOB mob)
 	{
 		mob.tell(L("\n\r^xCoffeeMud System Report:^.^N"));
 		try
@@ -1816,7 +1816,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public void listUsers(final Session viewerS, final MOB mob, final List<String> commands)
+	protected void listUsers(final Session viewerS, final MOB mob, final List<String> commands)
 	{
 		if(commands.size()==0)
 			return;
@@ -1931,7 +1931,7 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public void listLoadedUsers(final Session viewerS, final MOB mob, final List<String> commands)
+	protected void listLoadedUsers(final Session viewerS, final MOB mob, final List<String> commands)
 	{
 		if(commands.size()==0)
 			return;
@@ -2049,7 +2049,7 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public void listAccounts(final Session viewerS, final MOB mob, final List<String> commands)
+	protected void listAccounts(final Session viewerS, final MOB mob, final List<String> commands)
 	{
 		if(commands.size()==0)
 			return;
@@ -2259,7 +2259,7 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuilder listRaces(final Session viewerS, final Enumeration<Race> these, final String rest)
+	protected StringBuilder listRaces(final Session viewerS, final Enumeration<Race> these, final String rest)
 	{
 		final List<String> parms=CMParms.parse(rest.toUpperCase());
 		final boolean shortList=parms.contains("SHORT");
@@ -2436,7 +2436,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listCharClasses(final Session viewerS, Enumeration<CharClass> these, final List<String> commands)
+	protected StringBuilder listCharClasses(final Session viewerS, Enumeration<CharClass> these, final List<String> commands)
 	{
 		boolean shortList=false;
 		final WikiFlag wiki=this.getWikiFlagRemoved(commands);
@@ -2591,7 +2591,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listRaceCats(final Session viewerS, final Enumeration<Race> these, final List<String> commands)
+	protected StringBuilder listRaceCats(final Session viewerS, final Enumeration<Race> these, final List<String> commands)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -2647,7 +2647,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listPostOffices(final MOB mob, final Session viewerS, final List<String> commands)
+	protected StringBuilder listPostOffices(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(!CMLib.city().postOffices().hasMoreElements())
@@ -2670,7 +2670,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listBanks(final MOB mob, final Session viewerS, final List<String> commands)
+	protected StringBuilder listBanks(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(!CMLib.city().banks().hasMoreElements())
@@ -2694,7 +2694,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listLibraries(final MOB mob, final Session viewerS, final List<String> commands)
+	protected StringBuilder listLibraries(final MOB mob, final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(!CMLib.city().libraries().hasMoreElements())
@@ -2718,7 +2718,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listQuests(final Session viewerS, String rest)
+	protected StringBuilder listQuests(final Session viewerS, String rest)
 	{
 		rest = (rest == null) ? null : rest.toLowerCase().trim();
 		final StringBuilder buf=new StringBuilder("");
@@ -2781,7 +2781,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listQuestNames(final Session viewerS, String rest)
+	protected StringBuilder listQuestNames(final Session viewerS, String rest)
 	{
 		rest = (rest == null) ? null : rest.toLowerCase().trim();
 		final StringBuilder buf=new StringBuilder("");
@@ -2810,7 +2810,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listQuestWinners(final Session viewerS, final String rest)
+	protected StringBuilder listQuestWinners(final Session viewerS, final String rest)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
@@ -2855,7 +2855,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listJournals(final Session viewerS)
+	protected StringBuilder listJournals(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		final List<String> journals=CMLib.database().DBReadJournals();
@@ -2879,7 +2879,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listCommandJournals(final Session viewerS)
+	protected StringBuilder listCommandJournals(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		final Enumeration<JournalsLibrary.CommandJournal> enumJ=CMLib.journals().commandJournals();
@@ -2952,7 +2952,7 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	public StringBuilder listTicks(final Session viewerS, String whichGroupStr)
+	protected StringBuilder listTicks(final Session viewerS, String whichGroupStr)
 	{
 		final StringBuilder msg=new StringBuilder("\n\r");
 		boolean activeOnly=false;
@@ -3088,7 +3088,7 @@ public class ListCmd extends StdCommand
 		return msg;
 	}
 
-	public StringBuilder listSubOps(final Session viewerS)
+	protected StringBuilder listSubOps(final Session viewerS)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
@@ -3306,7 +3306,7 @@ public class ListCmd extends StdCommand
 		return str.toString()+"\n\r";
 	}
 
-	public String listResources(final MOB mob, final String parm)
+	protected String listResources(final MOB mob, final String parm)
 	{
 		final Iterator<String> keyIter=Resources.findResourceKeys(parm);
 		if(!keyIter.hasNext())
@@ -3321,7 +3321,7 @@ public class ListCmd extends StdCommand
 		return CMLib.lister().build2ColTable(mob,keys).toString();
 	}
 
-	public String listHelpFileRequests(final MOB mob, final String rest)
+	protected String listHelpFileRequests(final MOB mob, final String rest)
 	{
 		final String fileName=Log.instance().getLogFilename(Log.Type.help);
 		if(fileName==null)
@@ -3372,7 +3372,7 @@ public class ListCmd extends StdCommand
 		return str.toString()+"^N";
 	}
 
-	public String listRecipes(final MOB mob, final String rest)
+	protected String listRecipes(final MOB mob, final String rest)
 	{
 		final StringBuilder str = new StringBuilder("");
 		if(rest.trim().length()==0)
@@ -3418,14 +3418,14 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public String listMaterials()
+	protected String listMaterials()
 	{
 		return CMParms.toListString(RawMaterial.Material.values());
 	}
 
 	private enum SpaceFilterCode {SPACE, BODIES, MOONS, STARS, SHIPS}
 
-	public String getSpaceObjectType(final SpaceObject obj)
+	protected String getSpaceObjectType(final SpaceObject obj)
 	{
 		final String type;
 		if((obj instanceof Physical) && (!(obj instanceof SpaceShip)) && CMLib.flags().isLightSource(((Physical)obj)))
@@ -3474,7 +3474,7 @@ public class ListCmd extends StdCommand
 		return s;
 	}
 
-	public String listSpace(final MOB mob, final List<String> commands)
+	protected String listSpace(final MOB mob, final List<String> commands)
 	{
 		final Session viewerS=mob.session();
 		if(viewerS==null)
@@ -3786,7 +3786,7 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public String listExpired(final MOB mob)
+	protected String listExpired(final MOB mob)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
@@ -3807,7 +3807,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listEnvResources(final Session viewerS, final String rest)
+	protected String listEnvResources(final Session viewerS, final String rest)
 	{
 		final List<String> parms=CMParms.parse(rest.toUpperCase());
 		final boolean shortList=parms.contains("SHORT");
@@ -3862,7 +3862,7 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public String listMQL(final MOB mob, final boolean areaFlag, final List<String> commands)
+	protected String listMQL(final MOB mob, final boolean areaFlag, final List<String> commands)
 	{
 		final StringBuilder lines = new StringBuilder("");
 		try
@@ -3917,7 +3917,7 @@ public class ListCmd extends StdCommand
 		return lines.toString();
 	}
 
-	public String listCron(final Session viewerS, final String rest)
+	protected String listCron(final Session viewerS, final String rest)
 	{
 		final StringBuilder str=new StringBuilder("");
 		final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
@@ -4038,7 +4038,7 @@ public class ListCmd extends StdCommand
 		return null;
 	}
 
-	public String listComponents(final Session viewerS)
+	protected String listComponents(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAbility IDs and their required components: ^N\n\r");
 		for(final String ID : CMLib.ableComponents().getAbilityComponentMap().keySet())
@@ -4076,7 +4076,7 @@ public class ListCmd extends StdCommand
 		return mask;
 	}
 
-	public String listExpertises(final Session viewerS, final List<String> commands)
+	protected String listExpertises(final Session viewerS, final List<String> commands)
 	{
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
@@ -4185,7 +4185,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listSocials(final Session viewerS, final List<String> commands)
+	protected String listSocials(final Session viewerS, final List<String> commands)
 	{
 		final WikiFlag wiki = getWikiFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
@@ -4275,7 +4275,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listTitles(final Session viewerS)
+	protected String listTitles(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Defined Auto-Titles: ^N\n\r");
 		for(final Enumeration<String> e=CMLib.awards().autoTitles();e.hasMoreElements();)
@@ -4289,7 +4289,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listAutoAwards(final Session viewerS)
+	protected String listAutoAwards(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Auto-Award Rules: ^N\n\r");
 		int i=1;
@@ -4322,7 +4322,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listAchievements(final Session viewerS)
+	protected String listAchievements(final Session viewerS)
 	{
 		final StringBuilder str=new StringBuilder();
 		final int COL_LEN1=CMLib.lister().fixColWidth(17.0,viewerS);
@@ -4443,7 +4443,7 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public String listClanGovernments(final Session viewerS, final List<String> commands)
+	protected String listClanGovernments(final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Clan Governments: ^N\n\r");
 		int glen=0;
@@ -4458,7 +4458,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public String listClans(final Session viewerS, final List<String> commands)
+	protected String listClans(final Session viewerS, final List<String> commands)
 	{
 		final StringBuilder buf=new StringBuilder("^xAll Clans: ^N\n\r");
 		int clen=0;
@@ -4480,7 +4480,7 @@ public class ListCmd extends StdCommand
 		return buf.toString();
 	}
 
-	public StringBuilder listContent(final MOB mob, final List<String> commands)
+	protected StringBuilder listContent(final MOB mob, final List<String> commands)
 	{
 		commands.remove(0);
 		Enumeration<Room> roomsToDo=null;
@@ -4572,7 +4572,7 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public void listPolls(final MOB mob, final List<String> commands)
+	protected void listPolls(final MOB mob, final List<String> commands)
 	{
 		final Iterator<Poll> i=CMLib.polls().getPollList();
 		if(!i.hasNext())
@@ -4596,7 +4596,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listFileUse(final MOB mob, final Session S, String fileName)
+	protected void listFileUse(final MOB mob, final Session S, String fileName)
 	{
 		if(S!=null)
 			S.safeRawPrintln(L("Searching..."));
@@ -4625,7 +4625,7 @@ public class ListCmd extends StdCommand
 			S.safeRawPrintln(L("Done."));
 	}
 
-	public void listLog(final MOB mob, final List<String> commands)
+	protected void listLog(final MOB mob, final List<String> commands)
 	{
 		final int pageBreak=((mob.playerStats()!=null)?mob.playerStats().getPageBreak():0);
 		int lineNum=0;
@@ -4897,7 +4897,7 @@ public class ListCmd extends StdCommand
 		return !sess.isStopped();
 	}
 
-	public void listNews(final MOB mob, final List<String> commands)
+	protected void listNews(final MOB mob, final List<String> commands)
 	{
 		final String theRest=CMParms.combine(commands,1);
 		final Item I=CMClass.getItem("StdJournal");
@@ -4911,7 +4911,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listSql(final MOB mob, final String rest)
+	protected void listSql(final MOB mob, final String rest)
 	{
 		mob.tell(L("SQL Query: @x1",rest));
 		try
@@ -5028,7 +5028,7 @@ public class ListCmd extends StdCommand
 			return null;
 	}
 
-	public void listCommands(final MOB mob, final List<String> commands)
+	protected void listCommands(final MOB mob, final List<String> commands)
 	{
 		String rest="";
 		MOB whoM=mob;
@@ -5167,7 +5167,7 @@ public class ListCmd extends StdCommand
 			mob.session().colorOnlyPrint(commandList.toString());
 	}
 
-	public void listManufacturers(final MOB mob, final List<String> commands)
+	protected void listManufacturers(final MOB mob, final List<String> commands)
 	{
 		final StringBuffer str=new StringBuffer("");
 		str.append(CMStrings.padRight(L("Name"), 20)).append(" ");
@@ -5213,7 +5213,7 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
-	public void addEnumeratedStatCodes(final Enumeration<? extends Modifiable> e, final Set<String> allKnownFields, final StringBuffer allFieldsMsg)
+	protected void addEnumeratedStatCodes(final Enumeration<? extends Modifiable> e, final Set<String> allKnownFields, final StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
@@ -5230,7 +5230,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listStats(final MOB mob, final List<String> commands)
+	protected void listStats(final MOB mob, final List<String> commands)
 	{
 		final String wd=CMParms.combine(commands,1);
 		if(wd.length()==0)
@@ -5302,7 +5302,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listCurrents(final MOB mob, final List<String> commands)
+	protected void listCurrents(final MOB mob, final List<String> commands)
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(final String key : CMLib.tech().getMakeRegisteredKeys())
@@ -5326,7 +5326,7 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
-	public void listShips(final MOB mob, final List<String> commands)
+	protected void listShips(final MOB mob, final List<String> commands)
 	{
 		final Session viewerS = mob.session();
 		final StringBuffer str=new StringBuffer("");
@@ -5356,7 +5356,7 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
-	public void listAbilities(final MOB mob, final Session s, final List<String> commands, String title, int ofType)
+	protected void listAbilities(final MOB mob, final Session s, final List<String> commands, String title, int ofType)
 	{
 		int domain=0;
 		Enumeration<Ability> enumA = CMClass.abilities();
@@ -5614,7 +5614,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listBehaviors(final MOB mob, final Session s, final List<String> commands, String title)
+	protected void listBehaviors(final MOB mob, final Session s, final List<String> commands, String title)
 	{
 		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
 		if(wiki == WikiFlag.WIKILIST)
@@ -5706,7 +5706,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	public void listTimeZones(final MOB mob, final List<String> commands, final Filterer<Area> filter)
+	protected void listTimeZones(final MOB mob, final List<String> commands, final Filterer<Area> filter)
 	{
 		if(mob==null)
 			return;
@@ -5779,7 +5779,7 @@ public class ListCmd extends StdCommand
 			S.colorOnlyPrint(str.toString(), true);
 	}
 
-	public void listAreas(final MOB mob, final List<String> commands, final Filterer<Area> filter)
+	protected void listAreas(final MOB mob, final List<String> commands, final Filterer<Area> filter)
 	{
 		if(mob==null)
 			return;
@@ -5998,7 +5998,7 @@ public class ListCmd extends StdCommand
 			s.colorOnlyPrint(str.toString(), true);
 	}
 
-	public void listSessions(final MOB mob, final List<String> commands)
+	protected void listSessions(final MOB mob, final List<String> commands)
 	{
 		String sort="";
 		if((commands!=null)&&(commands.size()>1))
@@ -6113,7 +6113,7 @@ public class ListCmd extends StdCommand
 			mob.session().colorOnlyPrintln(lines.toString());
 	}
 
-	public void archonlist(final MOB mob, final List<String> commands)
+	protected void archonlist(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()==0)
 		{

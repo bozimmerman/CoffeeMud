@@ -61,7 +61,7 @@ public class DoubleCoffeeShop extends DefaultCoffeeShop
 		for(final Environmental E : enumerableInventory)
 			E.destroy();
 		for(final ShelfProduct SP : storeInventory)
-			SP.product.destroy();
+			SP.product().destroy();
 		enumerableInventory.clear();
 		storeInventory.clear();
 		this.contentHash=null;
@@ -153,11 +153,11 @@ public class DoubleCoffeeShop extends DefaultCoffeeShop
 	}
 
 	@Override
-	public int stockPrice(final Environmental likeThis)
+	public int stockPriceCode(final Environmental likeThis)
 	{
-		int price = super.stockPrice(likeThis);
+		int price = super.stockPriceCode(likeThis);
 		if(price < 0)
-			price = secondShop.stockPrice(likeThis);
+			price = secondShop.stockPriceCode(likeThis);
 		return price;
 	}
 

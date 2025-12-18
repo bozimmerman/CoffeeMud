@@ -214,7 +214,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		final String author = A.text().substring(0,x);
 		final String key = A.text().substring(x+1);
 		final int num = shop.numberInStock(A);
-		final int price = shop.stockPrice(A);
+		final int price = shop.stockPriceCode(A);
 		final StringBuilder xml = new StringBuilder("");
 		xml.append("<REQUEST NAME=\""+author+"\" NUM="+num+" PRICE="+price);
 		xml.append(getExpirationString()).append(">");
@@ -402,7 +402,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 					if(A != null)
 					{
 						final String forName = getShelfName(A);
-						final int price = shop.stockPrice(A);
+						final int price = shop.stockPriceCode(A);
 						int numberSold = 1;
 						if(msg.tool() instanceof PackagedItems)
 							numberSold=((PackagedItems)msg.tool()).numberOfItemsInPackage();

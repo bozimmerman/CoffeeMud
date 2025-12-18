@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -57,13 +58,117 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public Map<String,ShopProvider>	shopProviders		= new STreeMap<String, ShopProvider>();
 	protected volatile Integer		contentHash			= null;
 
+	private static class ShelfProductImpl implements ShelfProduct, Cost
+	{
+		private Environmental product;
+		private int number;
+		private int priceCode;
+		private Cost cost;
+
+		public ShelfProductImpl(final Environmental E, final int number, final int priceCode, final String currency)
+		{
+			this.product=E;
+			this.number=number;
+			this.priceCode=priceCode;
+			if((product==null)||(priceCode==-1))
+				cost = CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
+			else
+			if(priceCode <=-100)
+			{
+				if(priceCode <=-1000)
+					cost = CMLib.utensils().createCost(CostType.XP, (priceCode*-1)-1000, null);
+				else
+					cost = CMLib.utensils().createCost(CostType.QP, (priceCode*-1)-100, null);
+			}
+			else
+				cost = CMLib.utensils().createCost(CostType.GOLD, priceCode, currency);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(priceCode));
+		}
+
+		@Override
+		public Environmental product()
+		{
+			return product;
+		}
+
+		@Override
+		public int number()
+		{
+			return number;
+		}
+
+		@Override
+		public int priceCode()
+		{
+			return priceCode;
+		}
+
+		@Override
+		public void adjNumber(final int adj)
+		{
+			number += adj;
+		}
+
+		@Override
+		public void setPriceCode(final int priceCode)
+		{
+			this.priceCode = priceCode;
+		}
+
+		@Override
+		public void replaceProduct(final Environmental product)
+		{
+			this.product = product;
+		}
+
+		@Override
+		public String value()
+		{
+			return cost.value();
+		}
+
+		@Override
+		public double amount()
+		{
+			return cost.amount();
+		}
+
+		@Override
+		public int amounti()
+		{
+			return cost.amounti();
+		}
+
+		@Override
+		public CostType type()
+		{
+			return cost.type();
+		}
+
+		@Override
+		public String currency()
+		{
+			return cost.currency();
+		}
+
+		@Override
+		public Cost valueOf(final String str)
+		{
+			return cost.valueOf(str);
+		}
+	}
 
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
 		@Override
 		public Environmental convert(final ShelfProduct obj)
 		{
-			return obj.product;
+			return obj.product();
 		}
 	};
 
@@ -156,12 +261,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
 		for(final ShelfProduct SP: E.storeInventory)
 		{
-			if(SP.product!=null)
+			if(SP.product()!=null)
 			{
-				final Environmental I3=(Environmental)SP.product.copyOf();
-				copyFix.put(SP.product,I3);
+				final Environmental I3=(Environmental)SP.product().copyOf();
+				copyFix.put(SP.product(),I3);
 				stopTicking(I3);
-				storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
+				storeInventory.add(new ShelfProductImpl(I3,SP.number(),SP.priceCode(),SP.currency()));
 				this.contentHash = null;
 			}
 		}
@@ -197,7 +302,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		for(final Environmental E : enumerableInventory)
 			E.destroy();
 		for(final ShelfProduct SP : storeInventory)
-			SP.product.destroy();
+			SP.product().destroy();
 		enumerableInventory.clear();
 		storeInventory.clear();
 		this.contentHash=null;
@@ -318,7 +423,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public Environmental addStoreInventory(Environmental thisThang, int number, final int price)
+	public Environmental addStoreInventory(Environmental thisThang, int number, final int priceCode)
 	{
 		if(number<0)
 			number=1;
@@ -344,7 +449,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				if(!copy.amDestroyed())
 				{
 					((InnKey)copy).hangOnRack(shopKeeper());
-					storeInventory.add(new ShelfProduct(copy,1,-1));
+					storeInventory.add(new ShelfProductImpl(copy,1,-1,CMLib.beanCounter().getCurrency(shopKeeper())));
 					this.contentHash = null;
 				}
 			}
@@ -357,17 +462,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				for(final ShelfProduct SP : storeInventory)
 				{
-					copy=SP.product;
+					copy=SP.product();
 					if(copy.Name().equals(thisThang.Name()))
 					{
-						SP.number+=number;
-						if(price>0)
-							SP.price=price;
+						SP.adjNumber(number);
+						if(priceCode>0)
+							SP.setPriceCode(priceCode);
 						this.contentHash = null;
 						return copy;
 					}
 				}
-				storeInventory.add(new ShelfProduct(thisThang,number,price));
+				storeInventory.add(new ShelfProductImpl(thisThang,number,priceCode,CMLib.beanCounter().getCurrency(shopKeeper())));
 				this.contentHash = null;
 			}
 		}
@@ -382,12 +487,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		int weight=0;
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(SP.product instanceof Physical)
+			if(SP.product() instanceof Physical)
 			{
-				if(SP.number<=1)
-					weight+=((Physical)SP.product).phyStats().weight();
+				if(SP.number()<=1)
+					weight+=((Physical)SP.product()).phyStats().weight();
 				else
-					weight+=(((Physical)SP.product).phyStats().weight()*SP.number);
+					weight+=(((Physical)SP.product()).phyStats().weight()*SP.number());
 			}
 		}
 		return weight;
@@ -399,10 +504,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 		int num=0;
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(SP.number<=1)
+			if(SP.number()<=1)
 				num++;
 			else
-				num+=SP.number;
+				num+=SP.number();
 		}
 		return num;
 	}
@@ -434,10 +539,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(shopCompare(SP.product,thisThang))
+			if(shopCompare(SP.product(),thisThang))
 			{
 				storeInventory.remove(SP);
-				SP.product.destroy();
+				SP.product().destroy();
 			}
 		}
 		this.contentHash = null;
@@ -502,14 +607,14 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public int stockPrice(final Environmental likeThis)
+	public int stockPriceCode(final Environmental likeThis)
 	{
 		if(likeThis==null)
 			return -1;
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(shopCompare(SP.product,likeThis))
-				return SP.price;
+			if(shopCompare(SP.product(),likeThis))
+				return SP.priceCode();
 		}
 		return -1;
 	}
@@ -522,8 +627,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		int num=0;
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(shopCompare(SP.product,likeThis))
-				num+=SP.number;
+			if(shopCompare(SP.product(),likeThis))
+				num+=SP.number();
 		}
 		return num;
 	}
@@ -558,11 +663,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 		Environmental item=getStock(name,mob);
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(SP.product==item)
+			if(SP.product()==item)
 			{
 				final Environmental copyItem=(Environmental)item.copyOf();
-				if(SP.number>1)
-					SP.number--;
+				if(SP.number()>1)
+					SP.adjNumber(-1);
 				else
 				{
 					storeInventory.remove(SP);
@@ -585,10 +690,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 		final Environmental item=getStock(name,null);
 		for(final ShelfProduct SP : storeInventory)
 		{
-			if(SP.product==item)
+			if(SP.product()==item)
 			{
-				if(SP.number>1)
-					SP.number--;
+				if(SP.number()>1)
+					SP.adjNumber(-1);
 				else
 				{
 					storeInventory.remove(SP);
@@ -607,7 +712,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		for(final Environmental shopItem : shopItems)
 		{
 			final int num=numberInStock(shopItem);
-			final int price=stockPrice(shopItem);
+			final int price=stockPriceCode(shopItem);
 			addBacks.add(shopItem,Integer.valueOf(num),Integer.valueOf(price));
 		}
 		emptyAllShelves();
@@ -646,7 +751,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			final Container C=((Container)product);
 			for(final ShelfProduct SP : storeInventory)
 			{
-				final Environmental I=SP.product;
+				final Environmental I=SP.product();
 				if((I instanceof Item)&&(((Item)I).container()==product))
 				{
 					if((I instanceof DoorKey)&&(((DoorKey)I).getKey().equals(C.keyName())))
@@ -694,7 +799,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			itemstr.append("<INV>");
 			itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(E)));
-			itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPrice(E)));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPriceCode(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getEnvironmentalMiscTextXML(E,true)));
 			itemstr.append("</INV>");
 		}

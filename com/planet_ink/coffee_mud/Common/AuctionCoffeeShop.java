@@ -180,7 +180,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override
 	public Environmental addStoreInventory(final Environmental thisThang,
 										   final int number,
-										   final int price)
+										   final int priceCode)
 	{
 		if(shopKeeper() instanceof Auctioneer)
 			auctionShop=((Auctioneer)shopKeeper()).auctionHouse();
@@ -211,7 +211,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public int stockPrice(final Environmental likeThis)
+	public int stockPriceCode(final Environmental likeThis)
 	{
 		return -1;
 	}
