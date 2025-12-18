@@ -7056,12 +7056,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final Cost price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
 			if(price.type()==CostType.XP)
-				tmp[SPECIAL_9SHOPHASPRICE] = price.amounti()+"xp";
+				tmp[SPECIAL_9SHOPHASPRICE] = price.priceI()+"xp";
 			else
 			if(price.type()==CostType.QP)
-				tmp[SPECIAL_9SHOPHASPRICE] = price.amounti()+"qp";
+				tmp[SPECIAL_9SHOPHASPRICE] = price.priceI()+"qp";
 			else
-				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.amount());
+				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.priceD());
 		}
 	}
 

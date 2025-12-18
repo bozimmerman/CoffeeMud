@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -68,14 +70,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				switch(cost.type())
 				{
 				case GOLD:
-					absoluteGoldPrice=cost.amount();
+					absoluteGoldPrice=cost.priceD();
 					currency=cost.currency();
 					break;
 				case QP:
-					questPointPrice = cost.amounti();
+					questPointPrice = cost.priceI();
 					break;
 				case XP:
-					experiencePrice=cost.amounti();
+					experiencePrice=cost.priceI();
 					break;
 				default:
 					break;
@@ -1940,11 +1942,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 
 			@Override
-			public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
+			public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
 			{
-				final List<Environmental> productsV = new ArrayList<Environmental>(); // don't cache me, im not thread safe!
+				List<Environmental> productsV = new ArrayList<Environmental>();
 				if((myRoom==null)||(buyer==null))
-					return productsV;
+					return new ArrayList<ShelfProduct>(1);
 				final Area myArea=myRoom.getArea();
 				String name=buyer.Name();
 				Pair<Clan,Integer> buyerClanPair=null;
@@ -2042,50 +2044,159 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						addShipProperty(buyer, productsV, buyerClanPair.first.getExtItems());
 				}
 
-				if(productsV.size()<2)
-					return productsV;
-				// this is actually returned
-				final List<Environmental> finalTitleList=new ArrayList<Environmental>(productsV.size()); // don't cache me, im not thread safe!
-				LandTitle L=null;
-				LandTitle L2=null;
-				int x=-1;
-				int x2=-1;
-				while(productsV.size()>0)
+				if(productsV.size()>2)
 				{
-					if(((!(productsV.get(0) instanceof LandTitle)))
-					||((x=(L=(LandTitle)productsV.get(0)).landPropertyID().lastIndexOf('#'))<0))
+					final List<Environmental> finalTitleList=new ArrayList<Environmental>(productsV.size());
+					LandTitle L=null;
+					LandTitle L2=null;
+					int x=-1;
+					int x2=-1;
+					while(productsV.size()>0)
 					{
-						if(finalTitleList.size()==0)
-							finalTitleList.add(productsV.remove(0));
-						else
-							finalTitleList.add(0,productsV.remove(0));
-					}
-					else
-					{
-						int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
-						int chk=0;
-						for(int v=1;v<productsV.size();v++)
+						if(((!(productsV.get(0) instanceof LandTitle)))
+						||((x=(L=(LandTitle)productsV.get(0)).landPropertyID().lastIndexOf('#'))<0))
 						{
-							if(productsV.get(v) instanceof LandTitle)
+							if(finalTitleList.size()==0)
+								finalTitleList.add(productsV.remove(0));
+							else
+								finalTitleList.add(0,productsV.remove(0));
+						}
+						else
+						{
+							int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
+							int chk=0;
+							for(int v=1;v<productsV.size();v++)
 							{
-								L2=(LandTitle)productsV.get(v);
-								x2=L2.landPropertyID().lastIndexOf('#');
-								if(x2>0)
+								if(productsV.get(v) instanceof LandTitle)
 								{
-									chk=CMath.s_int(L2.landPropertyID().substring(x2+1).trim());
-									if(chk<lowest)
+									L2=(LandTitle)productsV.get(v);
+									x2=L2.landPropertyID().lastIndexOf('#');
+									if(x2>0)
 									{
-										lowest=chk;
-										L=L2;
+										chk=CMath.s_int(L2.landPropertyID().substring(x2+1).trim());
+										if(chk<lowest)
+										{
+											lowest=chk;
+											L=L2;
+										}
 									}
 								}
 							}
+							productsV.remove(L);
+							finalTitleList.add(L);
 						}
-						productsV.remove(L);
-						finalTitleList.add(L);
 					}
+					productsV=finalTitleList;
 				}
-				return finalTitleList;
+				final ShoppingLibrary shops = CMLib.coffeeShops();
+				final List<ShelfProduct> finalProducts = new ArrayList<ShelfProduct>(productsV.size()); // don't cache me, im not thread safe!
+				final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
+				for(final Environmental E : productsV)
+					finalProducts.add(shops.createShelfProduct(E, 1, -1, currency));
+				return finalProducts;
+			}
+		};
+	}
+
+	@Override
+	public ShelfProduct createShelfProduct(final Environmental E, final int numEs, final int priceCd, final String currency)
+	{
+		final Cost C;
+		if((E==null)||(priceCd==-1))
+			C = CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
+		else
+		if(priceCd <=-100)
+		{
+			if(priceCd <=-1000)
+				C = CMLib.utensils().createCost(CostType.XP, (priceCd*-1)-1000, null);
+			else
+				C = CMLib.utensils().createCost(CostType.QP, (priceCd*-1)-100, null);
+		}
+		else
+			C = CMLib.utensils().createCost(CostType.GOLD, priceCd, currency);
+		return new ShelfProduct()
+		{
+			private Environmental product = E;
+			private int number = numEs;
+			private int priceCode = priceCd;
+			private final Cost cost = C;
+
+			@Override
+			public int hashCode()
+			{
+				return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(priceCode));
+			}
+
+			@Override
+			public Environmental product()
+			{
+				return product;
+			}
+
+			@Override
+			public int number()
+			{
+				return number;
+			}
+
+			@Override
+			public int priceCode()
+			{
+				return priceCode;
+			}
+
+			@Override
+			public void adjNumber(final int adj)
+			{
+				number += adj;
+			}
+
+			@Override
+			public void setPriceCode(final int priceCode)
+			{
+				this.priceCode = priceCode;
+			}
+
+			@Override
+			public void replaceProduct(final Environmental product)
+			{
+				this.product = product;
+			}
+
+			@Override
+			public String value()
+			{
+				return cost.value();
+			}
+
+			@Override
+			public double priceD()
+			{
+				return cost.priceD();
+			}
+
+			@Override
+			public int priceI()
+			{
+				return cost.priceI();
+			}
+
+			@Override
+			public CostType type()
+			{
+				return cost.type();
+			}
+
+			@Override
+			public String currency()
+			{
+				return cost.currency();
+			}
+
+			@Override
+			public Cost valueOf(final String str)
+			{
+				return cost.valueOf(str);
 			}
 		};
 	}
@@ -2292,7 +2403,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			break;
 		case ShopKeeper.DEAL_STOCKBROKER:
 			chk = (E instanceof PrivateProperty)
-					&& E.ID().equals("GenCertificate"); //TODO:UGH!
+					&& (E instanceof Readable)
+					&& (E instanceof AutoBundler)
+					&& (!(E instanceof LandTitle));
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
 		{

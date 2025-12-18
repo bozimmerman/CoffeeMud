@@ -1926,14 +1926,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		{
 			switch(C.type())
 			{
-			case GOLD:		return CMLib.beanCounter().nameCurrencyLong(C.currency(), C.amount());
-			case HITPOINT:	return L("@x1 hit points",""+C.amounti());
-			case MANA:		return L("@x1 mana",""+C.amounti());
-			case MOVEMENT:	return L("@x1 movement",""+C.amounti());
-			case PRACTICE:	return L("@x1 practice point(s)",""+C.amounti());
-			case QP:		return L("@x1 quest point(s)",""+C.amounti());
-			case TRAIN:		return L("@x1 training point(s)",""+C.amounti());
-			case XP:		return L("@x1 experience",""+C.amounti());
+			case GOLD:		return CMLib.beanCounter().nameCurrencyLong(C.currency(), C.priceD());
+			case HITPOINT:	return L("@x1 hit points",""+C.priceI());
+			case MANA:		return L("@x1 mana",""+C.priceI());
+			case MOVEMENT:	return L("@x1 movement",""+C.priceI());
+			case PRACTICE:	return L("@x1 practice point(s)",""+C.priceI());
+			case QP:		return L("@x1 quest point(s)",""+C.priceI());
+			case TRAIN:		return L("@x1 training point(s)",""+C.priceI());
+			case XP:		return L("@x1 experience",""+C.priceI());
 			}
 		}
 		return "";

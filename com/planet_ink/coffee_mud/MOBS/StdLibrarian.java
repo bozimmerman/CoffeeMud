@@ -480,7 +480,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
 				final Cost P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
-				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.amount():0.0;
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.priceD():0.0;
 				double newCharges = this.getOverdueCharge();
 				if (value > 0)
 					newCharges += CMath.mul(value, this.getOverdueChargePct());
@@ -506,7 +506,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
 				final Cost P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this);
-				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.amount():0.0;
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))?P.priceD():0.0;
 				if(rec.charges < value)
 					rec.charges = value;
 				rec.itemName = ""; // the item is now

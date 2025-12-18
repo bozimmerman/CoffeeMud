@@ -186,7 +186,7 @@ public class Train extends StdCommand
 				final Cost costAmount=CMLib.login().getTrainingCost(mob, i, true);
 				if(costAmount != null)
 				{
-					final CostManager man = CMLib.utensils().createCostManager(costAmount.type(), costAmount.amount(), costAmount.currency());
+					final CostManager man = CMLib.utensils().createCostManager(costAmount.type(), costAmount.priceD(), costAmount.currency());
 					cols.add("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),14)+"^N"
 							+CMStrings.limit(man.requirements(mob).toUpperCase(),10));
 				}
@@ -194,7 +194,7 @@ public class Train extends StdCommand
 			for(final Trainable t : getTrainCosts().keySet())
 			{
 				final Pair<Integer,Cost> cost = getTrainCosts().get(t);
-				final CostManager man = CMLib.utensils().createCostManager(cost.second.type(), cost.second.amount(), cost.second.currency());
+				final CostManager man = CMLib.utensils().createCostManager(cost.second.type(), cost.second.priceD(), cost.second.currency());
 				final int num = cost.first.intValue();
 				cols.add("^H"+CMStrings.padRight(num+" "+CMStrings.capitalizeAndLower(t.word),14)+"^N"
 						+CMStrings.limit(man.requirements(mob).toUpperCase(),10));
@@ -317,7 +317,7 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
-		final CostManager finalCost = CMLib.utensils().createCostManager(cost.type(),cost.amount(),cost.currency());
+		final CostManager finalCost = CMLib.utensils().createCostManager(cost.type(),cost.priceD(),cost.currency());
 		if(!finalCost.doesMeetCostRequirements(mob))
 		{
 			final String ofWhat=finalCost.costType(mob);
@@ -554,7 +554,7 @@ public class Train extends StdCommand
 				{
 					cost = costMaker.valueOf(costStr);
 					if(cost != null)
-						finalCost=CMLib.utensils().createCostManager(cost.type(), cost.amount(), cost.currency());
+						finalCost=CMLib.utensils().createCostManager(cost.type(), cost.priceD(), cost.currency());
 				}
 				finalCost.doSpend(mob);
 				switch(trainType)

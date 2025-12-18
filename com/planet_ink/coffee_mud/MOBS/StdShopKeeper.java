@@ -379,7 +379,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final Cost C = CMLib.coffeeShops().pawningPrice(this, mob, msg.tool(), this);
-					final double pawningPrice = ((C!=null)&&(C.type()==CostType.GOLD))?C.amount():0.0;
+					final double pawningPrice = ((C!=null)&&(C.type()==CostType.GOLD))?C.priceD():0.0;
 					final String currencyShort = CMLib.beanCounter().nameCurrencyShort(this, pawningPrice);
 					CMLib.commands().postSay(this, mob, L("I'll give you @x1 for @x2.", currencyShort, msg.tool().name()), true, false);
 				}

@@ -217,6 +217,12 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
+	public Cost getStockPrice(final MOB forMob, final Environmental likeThis)
+	{
+		return null;
+	}
+
+	@Override
 	public int numberInStock(final Environmental likeThis)
 	{
 		return 1;
@@ -298,18 +304,18 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public boolean hasShopProvider(String ID)
+	public boolean hasShopProvider(final String ID)
 	{
 		return false;
 	}
 
 	@Override
-	public void addShopProvider(ShopProvider provider)
+	public void addShopProvider(final ShopProvider provider)
 	{
 	}
 
 	@Override
-	public void delShopProvider(ShopProvider provider)
+	public void delShopProvider(final ShopProvider provider)
 	{
 	}
 }

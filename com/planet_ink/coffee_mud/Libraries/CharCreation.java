@@ -3449,8 +3449,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				&&(statPoint<costs.length)
 				&&(costs[statPoint]!=null)
 				&&(costs[statPoint].length>0)
-				&&(costs[statPoint][0].amounti()!=0))
-					statCost=costs[statPoint][0].amounti();
+				&&(costs[statPoint][0].priceI()!=0))
+					statCost=costs[statPoint][0].priceI();
 				pointsCost += remove ? -statCost : statCost;
 				curStatValue += remove ? -1 : 1;
 			}

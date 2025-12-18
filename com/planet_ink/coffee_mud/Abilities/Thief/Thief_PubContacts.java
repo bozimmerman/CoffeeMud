@@ -127,12 +127,12 @@ public class Thief_PubContacts extends ThiefSkill
 								if(C == null)
 									continue;
 								if(C.type()==CostType.XP)
-									moneyPrice=(100 * C.amounti());
+									moneyPrice=(100 * C.priceI());
 								else
 								if(C.type()==CostType.QP)
-									moneyPrice=(100 * C.amounti());
+									moneyPrice=(100 * C.priceI());
 								else
-									moneyPrice=C.amount();
+									moneyPrice=C.priceD();
 								if(moneyPrice < lowestPrice)
 								{
 									lowestPrice=moneyPrice;

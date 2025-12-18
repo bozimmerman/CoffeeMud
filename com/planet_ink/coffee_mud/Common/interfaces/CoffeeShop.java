@@ -204,7 +204,8 @@ public interface CoffeeShop extends CMCommon
 	 * Returns the base stock price (not the final price by any means) that the shop
 	 * will use as a foundation for determining the given items price.  -1 would mean
 	 * that the shopkeeper uses the valuation of the item as a basis, whereas another
-	 * value is in base gold.  Best to get likeThis item from the getStoreInventory()
+	 * value is in base gold.  Best to get likeThis item from the getStoreInventory(),
+	 * as this only includes price codes for native stock.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
 	 *
 	 *  -1 means to use the products native value
@@ -215,6 +216,19 @@ public interface CoffeeShop extends CMCommon
 	 * @return the stock price code of the item given.
 	 */
 	public int stockPriceCode(Environmental likeThis);
+
+	/**
+	 * Returns the stock price (not the final price by any means) that the shop
+	 * will use as a foundation for determining the given items price.  null would mean
+	 * that the shopkeeper uses the valuation of the item as a basis, whereas another
+	 * value is in the given currency.  Best to get likeThis item from the getStoreInventory()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
+	 *
+	 * @param forMob the buyer or viewer of the item
+	 * @param likeThis the item like which to compare
+	 * @return the stock price code of the item given.
+	 */
+	public Cost getStockPrice(final MOB forMob, final Environmental likeThis);
 
 	/**
 	 * Returns the number of items like the one given that the shopkeeper presently
@@ -417,7 +431,7 @@ public interface CoffeeShop extends CMCommon
 		 * @param myRoom the room this all takes place in
 		 * @return the collection of new things to put on the temporary list
 		 */
-		public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom);
+		public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom);
 	}
 
 	/**

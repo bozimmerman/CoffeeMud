@@ -460,7 +460,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				final Cost C = CMLib.coffeeShops().pawningPrice(this, buyer, I, this);
 				if((C!=null)&&(C.type()==CostType.GOLD))
-					min+=C.amount();
+					min+=C.priceD();
 			}
 			I.destroy();
 		}

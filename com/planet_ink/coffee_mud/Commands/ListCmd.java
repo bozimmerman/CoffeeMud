@@ -494,13 +494,13 @@ public class ListCmd extends StdCommand
 			if(p!=null)
 			{
 				if(p.type()==CostType.XP)
-					return p.amounti()+"xp";
+					return p.priceI()+"xp";
 				else
 				if(p.type()==CostType.QP)
-					return p.amounti()+"qp";
+					return p.priceI()+"qp";
 				else
-				if(p.amount()>0)
-					return CMLib.beanCounter().abbreviatedPrice(seller, p.amount());
+				if(p.priceD()>0)
+					return CMLib.beanCounter().abbreviatedPrice(seller, p.priceD());
 			}
 		}
 		finally

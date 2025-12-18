@@ -965,7 +965,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 							if((E!=null)&&(E instanceof Item))
 							{
 								final Cost C=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true);
-								double price = ((C!=null)&&(C.type()==CostType.GOLD))?C.amount():0.0;
+								double price = ((C!=null)&&(C.type()==CostType.GOLD))?C.priceD():0.0;
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
 									final String ename = CMStrings.replaceAll(E.name(), "\"", "\\\"");

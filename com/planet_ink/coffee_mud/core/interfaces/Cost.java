@@ -17,13 +17,13 @@ public interface Cost
 	 * Returns the amount as double;
 	 * @return the amount as double
 	 */
-	public double amount();
+	public double priceD();
 
 	/**
 	 * Returns the amount as integer;
 	 * @return the amount as integer
 	 */
-	public int amounti();
+	public int priceI();
 
 	/**
 	 * Returns the cost type

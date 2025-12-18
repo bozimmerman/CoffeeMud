@@ -607,7 +607,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					final Cost pawnPrice = CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this);
 					if(pawnPrice.type()==CostType.GOLD)
 					{
-						final String currencyPriceStr = CMLib.beanCounter().nameCurrencyShort(merchantM,pawnPrice.amount());
+						final String currencyPriceStr = CMLib.beanCounter().nameCurrencyShort(merchantM,pawnPrice.priceD());
 						CMLib.commands().postSay(merchantM,mob,L("I'll give you @x1 for @x2.", currencyPriceStr,msg.tool().name()),true,false);
 					}
 				}

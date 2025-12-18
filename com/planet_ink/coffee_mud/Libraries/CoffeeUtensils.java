@@ -1853,7 +1853,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						if(possCost != null)
 						{
 							i++;
-							amt = possCost.amount();
+							amt = possCost.priceD();
 							typ = possCost.type();
 							curr = possCost.currency();
 						}
@@ -3765,7 +3765,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		 * @return the amount
 		 */
 		@Override
-		public double amount()
+		public double priceD()
 		{
 			return amount;
 		}
@@ -3775,7 +3775,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		 * @return the amount
 		 */
 		@Override
-		public int amounti()
+		public int priceI()
 		{
 			return iamount;
 		}

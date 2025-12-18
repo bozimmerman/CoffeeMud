@@ -702,7 +702,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
 				final Cost P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
-				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.amount() : 10;
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.priceD() : 10;
 				if(rec.mudReclaimDateMs < rec.mudDueDateMs)
 					rec.mudReclaimDateMs = rec.mudDueDateMs + TimeManager.MILI_DAY;
 				final long dueOverdueMilliDiff = (rec.mudReclaimDateMs - rec.mudDueDateMs);
@@ -721,7 +721,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
 				final Cost P = CMLib.coffeeShops().pawningPrice(deriveLibrarian(null), null, stockItem, this);
-				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.amount() : 0;
+				final double value = ((P!=null)&&(P.type()==CostType.GOLD))? P.priceD() : 0;
 				if(rec.charges < value)
 					rec.charges = value;
 				// the item is now reclaimed!

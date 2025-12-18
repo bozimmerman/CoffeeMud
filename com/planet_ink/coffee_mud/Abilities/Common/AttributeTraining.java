@@ -161,7 +161,7 @@ public class AttributeTraining extends CommonSkill
 							final Cost c = CMLib.login().getTrainingCost(follower, attribute, false);
 							int trainsRequired = costMultiplier;
 							if(c != null)
-								trainsRequired=c.amounti()*costMultiplier;
+								trainsRequired=c.priceI()*costMultiplier;
 							if(trainsRequired>=0)
 								trainsRequired+=costAdder;
 							commonTelL(mob,"The training cost @x1 @x2 training sessions.",follower.name(),""+trainsRequired);
@@ -265,7 +265,7 @@ public class AttributeTraining extends CommonSkill
 			final Cost c = CMLib.login().getTrainingCost(M, attribute, true);
 			if(c == null)
 				return false;
-			int trainsRequired  = costMultiplier * c.amounti();
+			int trainsRequired  = costMultiplier * c.priceI();
 			if(trainsRequired>=0)
 				trainsRequired+=costAdder;
 			final int teachStat=mob.charStats().getStat(attribute);

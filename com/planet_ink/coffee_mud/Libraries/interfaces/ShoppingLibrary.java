@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -198,12 +199,26 @@ public interface ShoppingLibrary extends CMLibrary
 	 */
 	public void transactMoneyOnly(MOB sellerM, MOB buyerM, ShopKeeper shop, Environmental product, BuySellFlag flag);
 
+	/**
+	 * Creates a new shelf product to hold information about a sellable item, the number on the shelf,
+	 * the price code, and the currency.
+	 *
+	 * Price codes are -1 to use native value, -100 to -999 for quest points, -1000 to -9999999 for exp points,
+	 * and a positive value for gold.
+	 *
+	 * @param E the product
+	 * @param number the number on the shelf
+	 * @param priceCode the price code
+	 * @param currency the currency if applicable
+	 * @return the shelf product
+	 */
+	public ShelfProduct createShelfProduct(final Environmental E, final int number, final int priceCode, final String currency);
 
 	/**
 	 * Provider that return external inventory, which might include
 	 * new real estate titles, or existing titles to real estate, ships, and the like.
 	 * Might also return nothing at all, because that's life.
-	 * 
+	 *
 	 * @see ShopProvider#getStock(MOB, CoffeeShop, Room);
 	 */
 	public ShopProvider createRealEstateProvider();

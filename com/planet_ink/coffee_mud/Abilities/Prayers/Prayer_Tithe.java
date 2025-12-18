@@ -133,7 +133,7 @@ public class Prayer_Tithe extends Prayer
 			if(SK.getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",msg.source()))
 			{
 				final Cost price=CMLib.coffeeShops().sellingPrice((MOB)affected,msg.source(),msg.tool(),SK,SK.getShop(), true);
-				final double goldPrice = (price.type()==CostType.GOLD)?price.amount():0.0;
+				final double goldPrice = (price.type()==CostType.GOLD)?price.priceD():0.0;
 				if((goldPrice>0.0)
 				&&(goldPrice<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 				{

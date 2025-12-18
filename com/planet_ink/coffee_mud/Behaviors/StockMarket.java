@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -102,14 +103,16 @@ public class StockMarket extends StdBehavior
 		}
 
 		@Override
-		public Collection<Environmental> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
+		public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
 		{
-			final List<Environmental> stockList = new ArrayList<Environmental>();
+			final List<ShelfProduct> stockList = new ArrayList<ShelfProduct>();
 			final Area A = myRoom!=null?myRoom.getArea():null;
 			if((A==null)||(!(host instanceof Area)))
 				return stockList;
+			final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
 			final String areaName = A.Name();
 			final Set<StockDef> done = new HashSet<StockDef>();
+			final ShoppingLibrary shops = CMLib.coffeeShops();
 			for(final MarketConf conf : configs)
 			{
 				final Collection<StockDef> stocks = getHostStocks();
@@ -139,17 +142,18 @@ public class StockMarket extends StdBehavior
 									def.deed.addNonUninvokableEffect(nosellA);
 								}
 							}
+							int remain = Integer.MAX_VALUE/2;
 							if(conf.maxSharesPerStock<Integer.MAX_VALUE)
 							{
-								final int remain = conf.maxSharesPerStock - getOutstandingShares(def,0);
+								remain = conf.maxSharesPerStock - getOutstandingShares(def,0);
 								if(remain <= 0)
 									continue;
 							}
 							//final int amtOwned = me.getStocksOwned(buyer, def);
-
 							final Item deed = (Item)def.deed.copyOf();
 							((PrivateProperty)deed).setPrice(def.getPrice());
-							stockList.add(deed);
+							final ShelfProduct product = shops.createShelfProduct(deed, 1, remain, currency);
+							stockList.add(product);
 							done.add(def);
 						}
 					}
@@ -555,7 +559,8 @@ public class StockMarket extends StdBehavior
 		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
-			if((I instanceof PrivateProperty) && (I.ID().equals("GenCertificate")))
+			if((I instanceof PrivateProperty)
+			&& (I.ID().equals("GenCertificate")))
 			{
 				if(processor.process(I))
 					didSomething=true;

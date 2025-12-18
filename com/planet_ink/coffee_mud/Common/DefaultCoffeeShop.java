@@ -58,111 +58,6 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public Map<String,ShopProvider>	shopProviders		= new STreeMap<String, ShopProvider>();
 	protected volatile Integer		contentHash			= null;
 
-	private static class ShelfProductImpl implements ShelfProduct, Cost
-	{
-		private Environmental product;
-		private int number;
-		private int priceCode;
-		private Cost cost;
-
-		public ShelfProductImpl(final Environmental E, final int number, final int priceCode, final String currency)
-		{
-			this.product=E;
-			this.number=number;
-			this.priceCode=priceCode;
-			if((product==null)||(priceCode==-1))
-				cost = CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-			else
-			if(priceCode <=-100)
-			{
-				if(priceCode <=-1000)
-					cost = CMLib.utensils().createCost(CostType.XP, (priceCode*-1)-1000, null);
-				else
-					cost = CMLib.utensils().createCost(CostType.QP, (priceCode*-1)-100, null);
-			}
-			else
-				cost = CMLib.utensils().createCost(CostType.GOLD, priceCode, currency);
-		}
-
-		@Override
-		public int hashCode()
-		{
-			return Objects.hash(product, Integer.valueOf(number), Integer.valueOf(priceCode));
-		}
-
-		@Override
-		public Environmental product()
-		{
-			return product;
-		}
-
-		@Override
-		public int number()
-		{
-			return number;
-		}
-
-		@Override
-		public int priceCode()
-		{
-			return priceCode;
-		}
-
-		@Override
-		public void adjNumber(final int adj)
-		{
-			number += adj;
-		}
-
-		@Override
-		public void setPriceCode(final int priceCode)
-		{
-			this.priceCode = priceCode;
-		}
-
-		@Override
-		public void replaceProduct(final Environmental product)
-		{
-			this.product = product;
-		}
-
-		@Override
-		public String value()
-		{
-			return cost.value();
-		}
-
-		@Override
-		public double amount()
-		{
-			return cost.amount();
-		}
-
-		@Override
-		public int amounti()
-		{
-			return cost.amounti();
-		}
-
-		@Override
-		public CostType type()
-		{
-			return cost.type();
-		}
-
-		@Override
-		public String currency()
-		{
-			return cost.currency();
-		}
-
-		@Override
-		public Cost valueOf(final String str)
-		{
-			return cost.valueOf(str);
-		}
-	}
-
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
 		@Override
@@ -259,6 +154,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		enumerableInventory=new SVector<Environmental>();
 		this.contentHash = null;
 		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
+		final ShoppingLibrary shops = CMLib.coffeeShops();
 		for(final ShelfProduct SP: E.storeInventory)
 		{
 			if(SP.product()!=null)
@@ -266,7 +162,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				final Environmental I3=(Environmental)SP.product().copyOf();
 				copyFix.put(SP.product(),I3);
 				stopTicking(I3);
-				storeInventory.add(new ShelfProductImpl(I3,SP.number(),SP.priceCode(),SP.currency()));
+				storeInventory.add(shops.createShelfProduct(I3,SP.number(),SP.priceCode(),SP.currency()));
 				this.contentHash = null;
 			}
 		}
@@ -439,6 +335,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 				this.contentHash = null;
 			}
 		}
+		final ShoppingLibrary shops = CMLib.coffeeShops();
+		final String currency = CMLib.beanCounter().getCurrency(shopKeeper());
 		final Environmental originalUncopiedThang=thisThang;
 		if(thisThang instanceof InnKey)
 		{
@@ -449,7 +347,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				if(!copy.amDestroyed())
 				{
 					((InnKey)copy).hangOnRack(shopKeeper());
-					storeInventory.add(new ShelfProductImpl(copy,1,-1,CMLib.beanCounter().getCurrency(shopKeeper())));
+					storeInventory.add(shops.createShelfProduct(copy,1,-1,currency));
 					this.contentHash = null;
 				}
 			}
@@ -472,7 +370,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 						return copy;
 					}
 				}
-				storeInventory.add(new ShelfProductImpl(thisThang,number,priceCode,CMLib.beanCounter().getCurrency(shopKeeper())));
+				storeInventory.add(shops.createShelfProduct(thisThang,number,priceCode,currency));
 				this.contentHash = null;
 			}
 		}
@@ -518,7 +416,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		final List<Environmental> inventory = new XArrayList<Environmental>(getStoreInventory());
 		this.checkInternalProviders();
 		for(final ShopProvider provider : shopProviders.values())
-			inventory.addAll(provider.getStock(buyer, this, shopHomeRoom));
+			for(final ShelfProduct P : provider.getStock(buyer, this, shopHomeRoom))
+				inventory.add(P.product());
 		return inventory;
 	}
 
@@ -595,10 +494,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 			checkInternalProviders();
 			for(final ShopProvider provider : shopProviders.values())
 			{
-				final Collection<Environmental> titles=provider.getStock(mob,this,startRoom());
-				item=CMLib.english().fetchEnvironmental(titles,name,true);
+				final Collection<ShelfProduct> provideds=provider.getStock(mob,this,startRoom());
+				final Collection<Environmental> provInv=new ConvertingCollection<ShelfProduct,Environmental>(provideds,converter);
+				item=CMLib.english().fetchEnvironmental(provInv,name,true);
 				if(item==null)
-					item=CMLib.english().fetchEnvironmental(titles,name,false);
+					item=CMLib.english().fetchEnvironmental(provInv,name,false);
 			}
 		}
 		if(item!=null)
@@ -617,6 +517,29 @@ public class DefaultCoffeeShop implements CoffeeShop
 				return SP.priceCode();
 		}
 		return -1;
+	}
+
+	@Override
+	public Cost getStockPrice(final MOB forMob, final Environmental likeThis)
+	{
+		if(likeThis==null)
+			return null;
+		for(final ShelfProduct SP : storeInventory)
+		{
+			if(shopCompare(SP.product(),likeThis))
+				return SP;
+		}
+		checkInternalProviders();
+		for(final ShopProvider provider : shopProviders.values())
+		{
+			final Collection<ShelfProduct> provideds=provider.getStock(forMob,this,startRoom());
+			for(final ShelfProduct E : provideds)
+			{
+				if(shopCompare(E.product(),likeThis))
+					return E;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -646,10 +569,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 			checkInternalProviders();
 			for(final ShopProvider provider : shopProviders.values())
 			{
-				final Collection<Environmental> titles=provider.getStock(mob,this,startRoom());
-				item=CMLib.english().fetchEnvironmental(titles,name,true);
+				final Collection<ShelfProduct> provideds=provider.getStock(mob,this,startRoom());
+				final Collection<Environmental> provInv=new ConvertingCollection<ShelfProduct,Environmental>(provideds,converter);
+				item=CMLib.english().fetchEnvironmental(provInv,name,true);
 				if(item==null)
-					item=CMLib.english().fetchEnvironmental(titles,name,false);
+					item=CMLib.english().fetchEnvironmental(provInv,name,false);
 				if(item != null)
 					break;
 			}
