@@ -387,7 +387,7 @@ public class GenCertificate extends StdItem implements PrivateProperty, AutoBund
 		if((alternative!=null)
 		&&(alternative!=this))
 		{
-			alternative.setBundleSize(getBundleSize());
+			alternative.setBundleSize(alternative.getBundleSize()+getBundleSize());
 			destroy();
 			return true;
 		}

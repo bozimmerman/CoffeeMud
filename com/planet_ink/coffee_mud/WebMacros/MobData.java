@@ -867,7 +867,7 @@ public class MobData extends StdWebMacro
 						CMLib.catalog().updateCatalogIntegrity((Physical)O);
 					CMLib.threads().unTickAll(O);
 					theclasses.add(O);
-					theparms.add(""+shop.numberInStock(O));
+					theparms.add(""+shop.numberInStock(null, O));
 					theprices.add(""+shop.stockPriceCode(O));
 				}
 				CMLib.webMacroFilter().contributeItemsToWebCache(itemClasses);

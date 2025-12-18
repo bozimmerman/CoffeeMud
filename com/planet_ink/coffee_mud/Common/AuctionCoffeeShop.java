@@ -217,13 +217,13 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public Cost getStockPrice(final MOB forMob, final Environmental likeThis)
+	public ShelfProduct getShelfStock(final MOB forMob, final Environmental likeThis)
 	{
 		return null;
 	}
 
 	@Override
-	public int numberInStock(final Environmental likeThis)
+	public int numberInStock(MOB buyerM, final Environmental likeThis)
 	{
 		return 1;
 	}

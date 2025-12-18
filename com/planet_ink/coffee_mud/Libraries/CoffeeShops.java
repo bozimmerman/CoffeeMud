@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfPriceFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
@@ -711,19 +712,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(product==null)
 			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-		final int stockPrice=shop.stockPriceCode(product);
-		if(stockPrice<=-100)
-		{
-			if(stockPrice<=-1000)
-				return CMLib.utensils().createCost(CostType.XP, (stockPrice*-1)-1000, null);
-			else
-				return CMLib.utensils().createCost(CostType.QP, (stockPrice*-1)-100, null);
-		}
+		final ShelfProduct C = shop.getShelfStock(buyerCustM, product);
+		if(C==null)
+			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
+		if(C.type() != CostType.GOLD)
+			return C;
 		// gold from here on out
-		double goldPrice = 0.0;
-		if(stockPrice>=0)
-			goldPrice=stockPrice;
-		else
+		double goldPrice = C.priceD();
+		if(C.priceCode()<0)
 			goldPrice=rawSpecificGoldPrice(product,shop);
 
 		if(buyerCustM==null)
@@ -733,23 +729,31 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(sellerShopM));
 		}
 
-		double prejudiceFactor=prejudiceFactor(buyerCustM,shopKeeper.getFinalPrejudiceFactors(),false);
-		final Room loc=CMLib.map().roomLocation(shopKeeper);
-		prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),false);
-		goldPrice=CMath.mul(prejudiceFactor,goldPrice);
-
-		// the price is 200% at 0 charisma, and 100% at 35
-		if(sellerShopM.isMonster() && (!CMLib.flags().isGolem(sellerShopM)))
+		if(!C.shelfFlags().contains(ShelfPriceFlag.NO_PREJUDICE))
 		{
-			final double buyerCha=buyerCustM.charStats().getStat(CharStats.STAT_CHARISMA);
-			final double buyerMinCha = (buyerCha < 1) ? 1 : buyerCha;
-			final double sellerWis=sellerShopM.charStats().getStat(CharStats.STAT_WISDOM);
-			final double sellerMinWis = (sellerWis < 3) ? 3 : sellerWis;
-			final double denom = (buyerMinCha + sellerMinWis) * 0.8;
-			goldPrice=(goldPrice*2)-(goldPrice*((buyerMinCha-sellerMinWis)/denom));
+			double prejudiceFactor=prejudiceFactor(buyerCustM,shopKeeper.getFinalPrejudiceFactors(),false);
+			final Room loc=CMLib.map().roomLocation(shopKeeper);
+			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),false);
+			goldPrice=CMath.mul(prejudiceFactor,goldPrice);
 		}
 
-		if(includeSalesTax)
+		if(!C.shelfFlags().contains(ShelfPriceFlag.NO_CHARISMA))
+		{
+			// the price is 200% at 0 charisma, and 100% at 35
+			if(sellerShopM.isMonster()
+			&& (!CMLib.flags().isGolem(sellerShopM)))
+			{
+				final double buyerCha=buyerCustM.charStats().getStat(CharStats.STAT_CHARISMA);
+				final double buyerMinCha = (buyerCha < 1) ? 1 : buyerCha;
+				final double sellerWis=sellerShopM.charStats().getStat(CharStats.STAT_WISDOM);
+				final double sellerMinWis = (sellerWis < 3) ? 3 : sellerWis;
+				final double denom = (buyerMinCha + sellerMinWis) * 0.8;
+				goldPrice=(goldPrice*2)-(goldPrice*((buyerMinCha-sellerMinWis)/denom));
+			}
+		}
+
+		if((!C.shelfFlags().contains(ShelfPriceFlag.NO_TAXES))
+		&&(includeSalesTax))
 		{
 			final double salesTax=getSalesTax(sellerShopM.getStartRoom(),sellerShopM);
 			goldPrice+=((salesTax>0.0)?(CMath.mul(goldPrice,CMath.div(salesTax,100.0))):0.0);
@@ -919,7 +923,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	protected double getStockSizeDevaluation(final ShopKeeper shop, final Environmental product, final double number)
 	{
-		int num=shop.getShop().numberInStock(product);
+		int num=shop.getShop().numberInStock(null, product);
 		num += (int)Math.round(Math.floor(number/2.0));
 		if(num<=0)
 			return 0.0;
@@ -948,7 +952,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
 		if(rate<=0.0)
 			return false;
-		final int baseNum=shop.getShop().numberInStock(product);
+		final int baseNum=shop.getShop().numberInStock(null, product);
 		final int num = baseNum + (int)Math.round(Math.floor(number/2.0));
 		if(num<=0)
 			return false;
@@ -1007,30 +1011,33 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					((RawMaterial) product).setBaseValue( 1);
 			}
 			if(product==null)
-				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-			final int stockPrice=shop.stockPriceCode(product);
-			if(stockPrice<=-100)
-				return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
+				return CMLib.utensils().createCost(CostType.GOLD, 0.0, CMLib.beanCounter().getCurrency(buyerShopM));
+			final ShelfProduct C =shop.getShelfStock(sellerCustM, product);
+			if(C == null)
+				return CMLib.utensils().createCost(CostType.GOLD, -1, CMLib.beanCounter().getCurrency(buyerShopM));
+			if(C.type() != CostType.GOLD)
+				return CMLib.utensils().createCost(CostType.GOLD, 0.0, ""); // just not interested
 
-			double goldPrice = 0.0;
-			if(stockPrice>=0.0)
-				goldPrice=stockPrice;
-			else
+			double goldPrice = C.priceD();
+			if(C.priceCode()<0)
 				goldPrice=rawSpecificGoldPrice(product,shop);
-
 			if(sellerCustM==null)
 			{
 				goldPrice *= number;
 				return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(buyerShopM));
 			}
-
-			double prejudiceFactor=prejudiceFactor(sellerCustM,shopKeeper.getFinalPrejudiceFactors(),true);
-			final Room loc=CMLib.map().roomLocation(shopKeeper);
-			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),true);
-			goldPrice=CMath.mul(prejudiceFactor,goldPrice);
+			if(!C.shelfFlags().contains(ShelfPriceFlag.NO_PREJUDICE))
+			{
+				double prejudiceFactor=prejudiceFactor(sellerCustM,shopKeeper.getFinalPrejudiceFactors(),true);
+				final Room loc=CMLib.map().roomLocation(shopKeeper);
+				prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.getFinalItemPricingAdjustments(),true);
+				goldPrice=CMath.mul(prejudiceFactor,goldPrice);
+			}
 
 			double buyPrice=goldPrice;
-			if(buyerShopM.isMonster() && (!CMLib.flags().isGolem(buyerShopM)))
+			if(buyerShopM.isMonster()
+			&& (!CMLib.flags().isGolem(buyerShopM))
+			&&(!C.shelfFlags().contains(ShelfPriceFlag.NO_CHARISMA)))
 			{
 				final double sellerCha=sellerCustM.charStats().getStat(CharStats.STAT_CHARISMA);
 				final double sellerMinCha = (sellerCha < 1) ? 1 : sellerCha;
@@ -1040,7 +1047,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				buyPrice=(buyPrice/2)+((buyPrice/2)*((sellerMinCha-buyerMinWis)/denom));
 
 			}
-			if(!(product instanceof Ability))
+			if((!(product instanceof Ability))
+			&&(!C.shelfFlags().contains(ShelfPriceFlag.NO_DEPRECIATION)))
 				buyPrice=CMath.mul(buyPrice,1.0-getStockSizeDevaluation(shopKeeper,product,number));
 			final Cost sellCost=sellingPrice(buyerShopM,sellerCustM,product,shopKeeper,shop, false);
 			final ShopPrice shopSellPrice = new ShopPrice(sellCost);
@@ -1449,7 +1457,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					col="";
 				if(seller == buyer)
 				{
-					int num = shopItems.numberInStock(E);
+					int num = shopItems.numberInStock(buyer, E);
 					if(num > 9999)
 						num = 9999;
 					else
@@ -1942,6 +1950,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 
 			@Override
+			public ShelfProduct claim(final Environmental product, final MOB buyer, final CoffeeShop shop, final Room myRoom)
+			{
+				if((!(product instanceof LandTitle))||(myRoom==null)||(myRoom.getArea()==null))
+					return null;
+				final Area myArea=myRoom.getArea();
+				final LandTitle T = (LandTitle)product;
+				final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
+				if(myArea.isRoom(T.getATitledRoom()))
+					return CMLib.coffeeShops().createShelfProduct(product, 1, -1, currency);
+				return null;
+			}
+
+			@Override
 			public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
 			{
 				List<Environmental> productsV = new ArrayList<Environmental>();
@@ -2120,6 +2141,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			private int number = numEs;
 			private int priceCode = priceCd;
 			private final Cost cost = C;
+			private final Set<ShelfPriceFlag> flags = new HashSet<ShelfPriceFlag>();
 
 			@Override
 			public int hashCode()
@@ -2197,6 +2219,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			public Cost valueOf(final String str)
 			{
 				return cost.valueOf(str);
+			}
+
+			@Override
+			public Set<ShelfPriceFlag> shelfFlags()
+			{
+				return flags;
 			}
 		};
 	}

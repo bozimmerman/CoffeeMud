@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /*
    Copyright 2005-2025 Bo Zimmerman
@@ -218,26 +219,26 @@ public interface CoffeeShop extends CMCommon
 	public int stockPriceCode(Environmental likeThis);
 
 	/**
-	 * Returns the stock price (not the final price by any means) that the shop
-	 * will use as a foundation for determining the given items price.  null would mean
-	 * that the shopkeeper uses the valuation of the item as a basis, whereas another
-	 * value is in the given currency.  Best to get likeThis item from the getStoreInventory()
+	 * Returns the shelf product  that the shop
+	 * will use as a foundation for determining the given items price.
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
 	 *
 	 * @param forMob the buyer or viewer of the item
 	 * @param likeThis the item like which to compare
-	 * @return the stock price code of the item given.
+	 * @return the stock shelf object for the item given.
 	 */
-	public Cost getStockPrice(final MOB forMob, final Environmental likeThis);
+	public ShelfProduct getShelfStock(final MOB forMob, final Environmental likeThis);
 
 	/**
 	 * Returns the number of items like the one given that the shopkeeper presently
 	 * has in stock and available for sale.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
+	 * @param buyerM null, or the person interested in the stock
 	 * @param likeThis the item like which to compare
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
 	 * @return the number currently in stock.
 	 */
-	public int numberInStock(Environmental likeThis);
+	public int numberInStock(MOB buyerM, Environmental likeThis);
 
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
@@ -365,6 +366,35 @@ public interface CoffeeShop extends CMCommon
 	public boolean isSold(int code);
 
 	/**
+	 * Some products, by their nature, are exempt from various influences
+	 * on the price of goods.  These flags exist to signal which products
+	 * are of that sort.
+	 */
+	public static enum ShelfPriceFlag
+	{
+		/**
+		 * Exempt from Charisma lowering a price.
+		 */
+		NO_CHARISMA,
+		/**
+		 * Exempt from property taxes.
+		 */
+		NO_TAXES,
+		/**
+		 * Exempt from ShopKeepr or area prejudices.
+		 */
+		NO_PREJUDICE,
+		/**
+		 * Discount for magic aura buying magic items
+		 */
+		NO_MAGIC_DISCOUNT,
+		/**
+		 * No depreciation due to stock
+		 */
+		NO_DEPRECIATION
+	}
+
+	/**
 	 * Class for representing a shelf product, holding
 	 * an item prototype, the number in stock, and the
 	 * price.  A price of -1 means to use the items
@@ -413,6 +443,15 @@ public interface CoffeeShop extends CMCommon
 		 * @param product the new product
 		 */
 		public void replaceProduct(final Environmental product);
+
+		/**
+		 * Returns a writeable set of shelf flags that may be set
+		 * on a product-by-product basis to remove influences.
+		 * @see ShelfPriceFlag
+		 *
+		 * @return the set of shelf flags
+		 */
+		public Set<ShelfPriceFlag> shelfFlags();
 	}
 
 	/**
@@ -432,6 +471,18 @@ public interface CoffeeShop extends CMCommon
 		 * @return the collection of new things to put on the temporary list
 		 */
 		public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom);
+
+		/**
+		 * If the given item can be claimed as having been provided by this provider, it should
+		 * return a shelfProduct for that item, or null otherwise.
+		 *
+		 * @param product the product to inspect
+		 * @param buyer the buyer mob
+		 * @param shop the shop thats curious
+		 * @param myRoom the room all this takes place in
+		 * @return null if unrelated, or a new shelfProduct for the given item
+		 */
+		public ShelfProduct claim(final Environmental product, final MOB buyer, final CoffeeShop shop, final Room myRoom);
 	}
 
 	/**

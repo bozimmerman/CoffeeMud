@@ -1899,7 +1899,7 @@ public class Reset extends StdCommand
 												changedMOBS=changedMOBS||didSomething;
 												if(didSomething)
 												{
-													final int numInStock=SK.getShop().numberInStock(I);
+													final int numInStock=SK.getShop().numberInStock(null, I);
 													final int stockPrice=SK.getShop().stockPriceCode(I);
 													SK.getShop().delAllStoreInventory(I);
 													SK.getShop().addStoreInventory(I,numInStock,stockPrice);
@@ -2193,7 +2193,7 @@ public class Reset extends StdCommand
 										changedMOBS=changedMOBS||didSomething;
 										if(didSomething)
 										{
-											final int numInStock=SK.getShop().numberInStock(I);
+											final int numInStock=SK.getShop().numberInStock(null, I);
 											final int stockPrice=SK.getShop().stockPriceCode(I);
 											SK.getShop().delAllStoreInventory(I);
 											SK.getShop().addStoreInventory(I,numInStock,stockPrice);
@@ -2437,7 +2437,7 @@ public class Reset extends StdCommand
 											if(returned>0)
 											{
 												somethingDone=true;
-												final int numInStock=SK.getShop().numberInStock(I);
+												final int numInStock=SK.getShop().numberInStock(null, I);
 												final int stockPrice=SK.getShop().stockPriceCode(I);
 												SK.getShop().delAllStoreInventory(I);
 												SK.getShop().addStoreInventory(I,numInStock,stockPrice);

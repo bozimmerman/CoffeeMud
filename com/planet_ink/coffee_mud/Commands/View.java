@@ -98,7 +98,7 @@ public class View extends StdCommand
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.add(itemToDo);
-			if(addendum>=shop.numberInStock(itemToDo))
+			if(addendum>=shop.numberInStock(mob, itemToDo))
 				break;
 			addendum++;
 		}

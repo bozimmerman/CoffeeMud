@@ -1714,7 +1714,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			return false;
 		}
 
-		if((getShop().numberInStock(target)<=0)&&(val<=0))
+		if((getShop().numberInStock(mob, target)<=0)&&(val<=0))
 		{
 			commonFaiL(mob,commands,"You failed to specify a value for '@x1'.",itemName);
 			return false;

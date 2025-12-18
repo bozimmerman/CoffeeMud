@@ -434,6 +434,41 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			else
 				return new XVector<Item>(I);
 		}
+		else
+		if((I instanceof AutoBundler)
+		&&(I.container()==C)
+		&&(!CMLib.flags().isOnFire(I)))
+		{
+			final AutoBundler pkg=(AutoBundler)I;
+			if(number<=0)
+				number=pkg.getBundleSize();
+			if(number<=0)
+				number=1;
+			if(number>pkg.getBundleSize())
+				number=pkg.getBundleSize();
+			final Environmental owner=I.owner();
+			final List<Item> bundle = new Vector<Item>();
+			for(int n=0;n<number;n++)
+			{
+				if(pkg.getBundleSize()<=bundleSize)
+				{
+					bundle.add((Item)pkg);
+					break;
+				}
+				final AutoBundler newBundle = (AutoBundler)pkg.copyOf();
+				newBundle.setBundleSize(bundleSize);
+				pkg.setBundleSize(pkg.getBundleSize()-bundleSize);
+				I = (Item)newBundle;
+				if(owner instanceof Room)
+					((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
+				else
+				if(owner instanceof MOB)
+					((MOB)owner).addItem(I);
+				I.setContainer(C);
+				bundle.add(I);
+			}
+			return bundle;
+		}
 		return null;
 	}
 

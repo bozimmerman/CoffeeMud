@@ -112,7 +112,7 @@ public class Buy extends StdCommand
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				buyItemsV.add(itemToDo);
-			if(addendum>=shop.numberInStock(itemToDo))
+			if(addendum>=shop.numberInStock(mob, itemToDo))
 				break;
 			++addendum;
 		}

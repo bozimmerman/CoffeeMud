@@ -213,7 +213,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 		final String shopKey = "BROKER_REQ_"+brokerChain().toUpperCase().replace(' ', '_');
 		final String author = A.text().substring(0,x);
 		final String key = A.text().substring(x+1);
-		final int num = shop.numberInStock(A);
+		final int num = shop.numberInStock(null, A);
 		final int price = shop.stockPriceCode(A);
 		final StringBuilder xml = new StringBuilder("");
 		xml.append("<REQUEST NAME=\""+author+"\" NUM="+num+" PRICE="+price);
@@ -409,7 +409,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 						else
 						if(msg.tool() instanceof RawMaterial)
 							numberSold=((RawMaterial)msg.tool()).phyStats().weight();
-						shop.addStoreInventory(msg.tool(), shop.numberInStock(A), price);
+						shop.addStoreInventory(msg.tool(), shop.numberInStock(msg.source(), A), price);
 						final double paid = CMLib.coffeeShops().transactPawn(this, msg.source(), this, msg.tool(), shop, BuySellFlag.WHOLESALE);
 						if (paid > Double.MIN_VALUE)
 						{
@@ -423,7 +423,7 @@ public class StdCraftBroker extends StdShopKeeper implements CraftBroker
 						final CoffeeShop itemShop = this.loadResults(forName);
 						final double sellPrice = price + ((commissionPct()>0)?CMath.mul(paid, commissionPct()):0);
 						itemShop.addStoreInventory(msg.tool(), 1, (int)Math.round(sellPrice));
-						final int num = shop.numberInStock(A);
+						final int num = shop.numberInStock(mob, A);
 						if(num <= 0)
 							this.removeRequestShop(A);
 						else

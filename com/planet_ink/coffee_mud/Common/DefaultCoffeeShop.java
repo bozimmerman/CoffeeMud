@@ -516,11 +516,21 @@ public class DefaultCoffeeShop implements CoffeeShop
 			if(shopCompare(SP.product(),likeThis))
 				return SP.priceCode();
 		}
+		checkInternalProviders();
+		for(final ShopProvider provider : shopProviders.values())
+		{
+			final Collection<ShelfProduct> provideds=provider.getStock(null,this,startRoom());
+			for(final ShelfProduct E : provideds)
+			{
+				if(shopCompare(E.product(),likeThis))
+					return E.priceCode();
+			}
+		}
 		return -1;
 	}
 
 	@Override
-	public Cost getStockPrice(final MOB forMob, final Environmental likeThis)
+	public ShelfProduct getShelfStock(final MOB forMob, final Environmental likeThis)
 	{
 		if(likeThis==null)
 			return null;
@@ -539,11 +549,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 					return E;
 			}
 		}
+		for(final ShopProvider provider : shopProviders.values())
+		{
+			final ShelfProduct SP = provider.claim(likeThis, forMob, this, startRoom());
+			if(SP != null)
+				return SP;
+		}
 		return null;
 	}
 
 	@Override
-	public int numberInStock(final Environmental likeThis)
+	public int numberInStock(final MOB buyerM, final Environmental likeThis)
 	{
 		if(likeThis==null)
 			return -1;
@@ -552,6 +568,18 @@ public class DefaultCoffeeShop implements CoffeeShop
 		{
 			if(shopCompare(SP.product(),likeThis))
 				num+=SP.number();
+		}
+		if(buyerM != null)
+		{
+			checkInternalProviders();
+			for(final ShopProvider provider : shopProviders.values())
+			{
+				for(final ShelfProduct SP : provider.getStock(buyerM,this,startRoom()))
+				{
+					if(shopCompare(SP.product(),likeThis))
+						num+=SP.number();
+				}
+			}
 		}
 		return num;
 	}
@@ -635,7 +663,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		final TriadList<Environmental,Integer,Integer> addBacks=new TriadArrayList<Environmental,Integer,Integer>();
 		for(final Environmental shopItem : shopItems)
 		{
-			final int num=numberInStock(shopItem);
+			final int num=numberInStock(null, shopItem);
 			final int price=stockPriceCode(shopItem);
 			addBacks.add(shopItem,Integer.valueOf(num),Integer.valueOf(price));
 		}
@@ -722,7 +750,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			final Environmental E=i.next();
 			itemstr.append("<INV>");
 			itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(E)));
-			itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(E)));
+			itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(null, E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPriceCode(E)));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getEnvironmentalMiscTextXML(E,true)));
 			itemstr.append("</INV>");

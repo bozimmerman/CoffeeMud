@@ -107,7 +107,7 @@ public class Bid extends StdCommand
 				break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				bidItemsV.add(itemToDo);
-			if(addendum>=shop.numberInStock(itemToDo))
+			if(addendum>=shop.numberInStock(mob, itemToDo))
 				break;
 			++addendum;
 		}

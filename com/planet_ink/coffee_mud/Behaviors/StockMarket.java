@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfPriceFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
 import com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod;
@@ -65,6 +66,15 @@ public class StockMarket extends StdBehavior
 
 	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
 
+	private static final Set<ShelfPriceFlag> certFlags 	= new HashSet<ShelfPriceFlag>();
+	static
+	{
+		certFlags.add(ShelfPriceFlag.NO_CHARISMA);
+		certFlags.add(ShelfPriceFlag.NO_PREJUDICE);
+		certFlags.add(ShelfPriceFlag.NO_TAXES);
+		certFlags.add(ShelfPriceFlag.NO_DEPRECIATION);
+	}
+
 	private final ShopProvider shopProvider = new ShopProvider()
 	{
 		final String ID = "StockMarker_"+hashCode();
@@ -103,12 +113,40 @@ public class StockMarket extends StdBehavior
 		}
 
 		@Override
+		public ShelfProduct claim(final Environmental product, final MOB buyer, final CoffeeShop shop, final Room myRoom)
+		{
+			if((product instanceof PrivateProperty)
+			&&(product.ID().equals("GenCertificate"))
+			&&shop.isSold(ShopKeeper.DEAL_STOCKBROKER))
+			{
+				final String sellingTitleID = ((PrivateProperty)product).getTitleID();
+				final Collection<StockDef> stocks = getHostStocks();
+				synchronized(stocks)
+				{
+					for(final StockDef def : stocks)
+					{
+						if(def.getTitleID().equals(sellingTitleID))
+						{
+							final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
+							((PrivateProperty)product).setPrice(def.getPrice());
+							final ShelfProduct shelfProduct = CMLib.coffeeShops().createShelfProduct(product, 1, def.getPrice(), currency);
+							shelfProduct.shelfFlags().addAll(certFlags);
+							return shelfProduct;
+						}
+					}
+				}
+			}
+			return null;
+		}
+
+		@Override
 		public Collection<ShelfProduct> getStock(final MOB buyer, final CoffeeShop shop, final Room myRoom)
 		{
 			final List<ShelfProduct> stockList = new ArrayList<ShelfProduct>();
 			final Area A = myRoom!=null?myRoom.getArea():null;
 			if((A==null)||(!(host instanceof Area)))
 				return stockList;
+
 			final String currency = CMLib.beanCounter().getCurrency(shop.shopKeeper());
 			final String areaName = A.Name();
 			final Set<StockDef> done = new HashSet<StockDef>();
@@ -123,7 +161,7 @@ public class StockMarket extends StdBehavior
 						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
 						&&(!done.contains(def)))
 						{
-							//TODO: should stockbrokers sell replacement certs when you aren't carrying enough of them?
+							// should stockbrokers sell replacement certs when you aren't carrying enough of them?
 							// Players who keep their stocks where the adjuster can't find them depend on it.  But HOW?!
 							if(def.deed == null)
 							{
@@ -152,7 +190,8 @@ public class StockMarket extends StdBehavior
 							//final int amtOwned = me.getStocksOwned(buyer, def);
 							final Item deed = (Item)def.deed.copyOf();
 							((PrivateProperty)deed).setPrice(def.getPrice());
-							final ShelfProduct product = shops.createShelfProduct(deed, 1, remain, currency);
+							final ShelfProduct product = shops.createShelfProduct(deed, remain, def.getPrice(), currency);
+							product.shelfFlags().addAll(certFlags);
 							stockList.add(product);
 							done.add(def);
 						}

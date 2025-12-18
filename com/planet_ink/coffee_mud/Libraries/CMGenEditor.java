@@ -5062,9 +5062,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				final Environmental E2=i.next();
 				if(E2.isGeneric())
-					inventorystr+=E2.name()+" ("+shop.numberInStock(E2)+"), ";
+					inventorystr+=E2.name()+" ("+shop.numberInStock(mob, E2)+"), ";
 				else
-					inventorystr+=CMClass.classID(E2)+" ("+shop.numberInStock(E2)+"), ";
+					inventorystr+=CMClass.classID(E2)+" ("+shop.numberInStock(mob, E2)+"), ";
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);

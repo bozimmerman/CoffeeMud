@@ -162,11 +162,11 @@ public class DoubleCoffeeShop extends DefaultCoffeeShop
 	}
 
 	@Override
-	public int numberInStock(final Environmental likeThis)
+	public int numberInStock(final MOB buyerM, final Environmental likeThis)
 	{
-		int price = super.numberInStock(likeThis);
+		int price = super.numberInStock(buyerM, likeThis);
 		if(price < 0)
-			price = secondShop.numberInStock(likeThis);
+			price = secondShop.numberInStock(buyerM, likeThis);
 		return price;
 	}
 

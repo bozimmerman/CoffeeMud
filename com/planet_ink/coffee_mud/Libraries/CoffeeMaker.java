@@ -959,7 +959,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					itemstr.append("<SHITEM>");
 					itemstr.append(xmlLib.convertXMLtoTag("SICLASS",CMClass.classID(E2)));
 					itemstr.append(xmlLib.convertXMLtoTag("SITYPE",CMClass.getType(E2).toString()));
-					itemstr.append(xmlLib.convertXMLtoTag("SISTOCK",shop.numberInStock(E2)));
+					itemstr.append(xmlLib.convertXMLtoTag("SISTOCK",shop.numberInStock(null, E2)));
 					itemstr.append(xmlLib.convertXMLtoTag("SIPRICE",shop.stockPriceCode(E2)));
 					itemstr.append(xmlLib.convertXMLtoTag("SIDATA",getEnvironmentalMiscTextXML(E2,true)));
 					itemstr.append("</SHITEM>");
