@@ -216,19 +216,14 @@ window.gmcpPackages.push({
 			frame = frame.firstChild;
 		sipwin.cleanDiv(frame);
 		var iframeId = "webview_iframe_"+id.replace(' ','_');
-		frame.innerHTML = '<iframe id="'+iframeId+'"style="width: 100%; height: 100%; border: none; background-color: white;"></iframe>';
-		fetch(url, {
-			method: 'GET',
-			headers: headerObj
-		}).then(function(response) {
-			if (!response.ok) throw new Error('Fetch failed');
-			return response.text();
-		}).then(function(html) {
-			const iframe = document.getElementById(iframeId);
-			iframe.srcdoc = html;
-		}).catch(function(error) {
-			console.error('Error loading iframe:', error);
-		});
+		frame.innerHTML = '<iframe id="'+iframeId+'" sandbox="allow-scripts" style="width: 100%; height: 100%; border: none; background-color: white;"></iframe>';
+		const iframe = document.getElementById(iframeId);
+		if(!window.isElectron)
+		{
+			sipwin.displayText("<P><FONT COLOR=RED>WebView is only available in the desktop client.</FONT></P>");
+			return;
+		}
+		iframe.src = url;
 	}
 });
 

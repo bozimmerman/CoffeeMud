@@ -11,6 +11,7 @@ TODO: parse out triggers, alias, etc from siplet.
 <HTML>
 <HEAD>
  <meta charset="utf-8">
+ <link rel="preload" href="images/icon.png" as="image">
  <style>
     body { 
         margin: 0; padding: 0;
@@ -40,9 +41,9 @@ TODO: parse out triggers, alias, etc from siplet.
 </HEAD>
 <BODY>
 <FONT COLOR=WHITE>
-<div id="loadingmsg" style="background-color:darkgreen;color:yellow;height:100%;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
-<div style="font-size:72px;font-weight:bold;color:white;text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"><BR>LOADING...</div>
- <IMG SRC="images/icon.png" WIDTH=800 HEIGHT=600>
+<div id="loadingmsg" style="background-color:darkgreen;color:yellow;position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+    <img src="images/icon.png" width="800" height="600">
+    <div style="position:absolute;top:calc(50% - 270px);left:50%;transform:translateX(-50%);font-size:72px;font-weight:bold;color:white;text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">LOADING...</div>
 </div>
 <div id="menuarea"></div>
 <div id="tabarea"></div>
@@ -88,14 +89,18 @@ var loadableScripts = [
 function LoadJavaScript()
 {
     if(loadableScripts.length == 0)
+    {
         ConfigureSiplet();
+    }
     else
     {
         var url = loadableScripts[0];
         loadableScripts.splice(0,1);
         var scriptElement = document.createElement("script");
         scriptElement.src = url;
-        scriptElement.onload = LoadJavaScript;
+        scriptElement.onload = function() {
+            setTimeout(LoadJavaScript, 10);
+        };
         scriptElement.onerror=function() { 
             window.alert('Unable to load.  Click OK to refresh.');
             location.reload();
@@ -103,7 +108,9 @@ function LoadJavaScript()
         document.head.appendChild(scriptElement);
     }
 }
-setTimeout(LoadJavaScript,1);
+window.addEventListener('load', function() {
+    setTimeout(LoadJavaScript, 100);
+});
 </SCRIPT>
 </FONT>
 </BODY>
