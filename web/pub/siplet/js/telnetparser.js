@@ -601,10 +601,8 @@ var TELNET = function(sipwin)
 	
 	this.gmcpReceive = function(buffer)
 	{
-		var s = '';
-		for (var i=0; i <buffer.length; i++)
-			s += String.fromCharCode( buffer[i]);
-		return s;
+		var decoder = new TextDecoder("utf-8");
+		return decoder.decode(new Uint8Array(buffer));
 	};
 	
 	this.msdpReceive = function(buffer)

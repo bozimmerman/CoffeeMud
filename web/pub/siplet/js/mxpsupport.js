@@ -1511,6 +1511,7 @@ var MXP = function(sipwin)
 					var container = frame;
 					if(!container.sprops) 
 						return; // Not a valid frame
+					sipwin.dispatchEvent({type:'closeframe',data: name});
 					
 					var isTabContent = false;
 					var tabbedContainer = null;
@@ -1678,8 +1679,6 @@ var MXP = function(sipwin)
 			if((("OPEN" == action.toUpperCase())||("REDIRECT" == action.toUpperCase()))
 			&&(name != null))
 			{
-				if(name in this.frames)
-					return;
 				var fixSize = function(s)
 				{
 					if(s==null || (s==undefined))
@@ -1725,6 +1724,9 @@ var MXP = function(sipwin)
 					};
 					throw error;
 				}
+				else
+				if(name in this.frames)
+					return;
 				else
 				if((dock != null) && (dock.trim().length>0))
 				{
@@ -2217,6 +2219,7 @@ var MXP = function(sipwin)
 					sipwin.topWindow.appendChild(newTopWindow);
 					this.frames[name] = newTopWindow;
 				}
+				sipwin.dispatchEvent({type:'openframe',data: name});
 			}
 		}
 		else

@@ -1,7 +1,7 @@
 var SipletActions = 
 {
-	"win.submitInput": { text:"Send Command", args: 1},
-	"win.displayText": { text:"Display Text", args: 1},
+	"win.submitInput": { text:"Send Command", args: 1, beip: "Send"},
+	"win.displayText": { text:"Display Text", args: 1, beip: "Display"},
 	"win.playSound": { text:"Play Sound", args: 1},
 	"win.setEntity": { text:"Set Entity", args: 2},
 	"win.runScript": { text:"Run Script", args: 1},
@@ -18,11 +18,12 @@ var SipletActions =
 var PluginActions = 
 {
 	...SipletActions,
-	"win.sendGMCP": {text: "Send GMCP", args: 2},
+	"win.isConnected": {text: "Returns whether connected", args: 0, beip: "IsConnected"},
+	"win.sendGMCP": {text: "Send GMCP", args: 2, beip: "SendGMCP"},
 	"win.sendMSDP": {text: "Send MSDP", args: 2},
 	"win.process": {text: "Process MXP", args: 1},
 	"win.getEntity": {text: "Get Entity", args: 1},
-	"win.onGMCP": {text: "Register GMCP Listener", args: 2, callback: true},
+	"win.onGMCP": {text: "Register GMCP Listener", args: 2, callback: true, beip: "SetOnGMCP"},
 	"win.onMSDP": {text: "Register MSDP Listener", args: 1, callback: true},
 	"win.addTempTimer": {text: "Submit temp timer object", args: 1},
 	"win.removeTempTimer": {text: "Remove temp timer by name", args: 1},
@@ -32,7 +33,16 @@ var PluginActions =
 	"win.removeTempAlias": {text: "Remove temp timer by name", args: 1},
 	"win.addTempMenu": {text: "Submit menu entries under str", args: 1},
 	"win.removeTempMenu": {text: "Remove temp menu entries under str", args: 1},
-	"win.dispatchEvent": {text: "Post an event string or json obj (w/'type')", args: 1}
+	"win.dispatchEvent": {text: "Post an event string or json obj (w/'type')", args: 1},
+	"win.onConnect": {text: "Connection made listener", args: 1, callback: true, beip: "SetOnConnect"},
+	"win.onDisconnect": {text: "Connection lost listener", args: 1, callback: true, beip: "SetOnDisconnect"},
+	"win.onReceive": {text: "Bytes received listener", args: 1, callback: true, beip: "SetOnReceive"},
+	"win.onDisplay": {text: "Bytes received listener", args: 1, callback: true},
+	"win.onText": {text: "Bytes received listener", args: 1, callback: true, beip: "SetOnDisplay"},
+	"win.onSend": {text: "Text sent listener", args: 1, callback: true, beip: "SetOnSend"},
+	"win.closeWindow": {text: "Close named or active window", args: 1, beip: "CloseWindow"},
+	"win.onWindowClose": {text: "Frame close listener", args: 1, callback: true, beip: "SetOnClose"},
+	"win.onWindowOpen": {text: "Frame create listener", args: 1, callback: true, beip: "SetOnOpen"}
 };
 
 var PLUGINS = function(sipwin)

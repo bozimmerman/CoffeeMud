@@ -66,6 +66,7 @@ in scripts in the form '&amp;varname;'.</LI>
 <tr><td style="font-family:monospace;">win.isConnected()</td><td>Whether connection is active</td></tr>
 <tr><td style="font-family:monospace;">win.displayAt(str,str)</td><td>Display string in MXP frame str(2)</td></tr>
 <tr><td style="font-family:monospace;">win.clearWindow(str)</td><td>Clear window or MXP frame str</td></tr>
+<tr><td style="font-family:monospace;">win.closeWindow(str)</td><td>Close window or MXP frame str</td></tr>
 <tr><td style="font-family:monospace;">win.sendPlugin(str,str)</td><td>Send to plugin str, json doc str(2)</td></tr>
 <tr><td style="font-family:monospace;">win.sendGMCP(str,str)</td><td>Send <a href="javascript:menuHelp('Gmcp')">GMCP</a> command str + json doc str(2)</td></tr>
 <tr><td style="font-family:monospace;">win.sendMSDP(str,str)</td><td>Send msdp json doc str</td></tr>
@@ -79,8 +80,14 @@ in scripts in the form '&amp;varname;'.</LI>
 <tr><td style="font-family:monospace;">win.addTempMenu(str,obj)</td><td>Submit menu entries under str (see <a href="javascript:menuHelp('Plugin')">#menus</a>)</td></tr>
 <tr><td style="font-family:monospace;">win.removeTempMenu(str)</td><td>Remove temp menu entries under str</td></tr>
 <tr><td style="font-family:monospace;">win.dispatchEvent(str)</td><td>Post an event string or json obj (w/'type')</td></tr>
-<tr><td style="font-family:monospace;">win.onGMCP(str, callback)</td><td>Register GMCP Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onGMCP(str, callback)</td><td>Register GMCP Listener for str prefix</td></tr>
 <tr><td style="font-family:monospace;">win.onMSDP(callback)</td><td>Register MSDP Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onConnect(callback)</td><td>Register Connection Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onDisconnect(callback)</td><td>Register Disconnect Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onReceive(callback)</td><td>Register bytes received Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onDisplay(callback)</td><td>Register html displayed Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onText(callback)</td><td>Register text displayed Listener</td></tr>
+<tr><td style="font-family:monospace;">win.onSend(callback)</td><td>Register bytes array or string sent Listener</td></tr>
 <tr><td style="font-family:monospace;">win.mapper.*</td><td>The visual <a href="javascript:menuHelp('Mapper')">Mapper</a> interface.</td></tr>
 </tbody>
 </table>
