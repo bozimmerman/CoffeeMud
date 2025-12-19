@@ -1364,27 +1364,21 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 	
 	var getRowForPixelY = function(pixelY, elementHeight)
 	{
-		// Skip if not visible
 		if(!isVisible(pixelY))
-		{
-			return -1; // Signal to skip this element
-		}
+			return -1;
 		
-		// First visible element - initialize
 		if(lastBottomPixel === null)
 		{
 			lastBottomPixel = pixelY + elementHeight;
 			return currentRow;
 		}
 		
-		// Check if this element starts within the current row
 		if(pixelY < lastBottomPixel)
 		{
 			lastBottomPixel = Math.max(lastBottomPixel, pixelY + elementHeight);
 			return currentRow;
 		}
 		
-		// New row
 		currentRow++;
 		lastBottomPixel = pixelY + elementHeight;
 		return currentRow;
@@ -1404,7 +1398,6 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 			var pixelY = getPixelYFromNode(node);
 			var nodeRow = getRowForPixelY(pixelY, lineHeight);
 			
-			// Skip invisible content
 			if(nodeRow === -1)
 				return null;
 
@@ -1446,7 +1439,8 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 			}
 			return null;
 		}
-		else if(node.nodeType === Node.ELEMENT_NODE)
+		else 
+		if(node.nodeType === Node.ELEMENT_NODE)
 		{
 			var tagName = node.tagName.toUpperCase();
 
@@ -1456,7 +1450,6 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 				var elemHeight = lineHeight;
 				var brRow = getRowForPixelY(pixelY, elemHeight);
 				
-				// Skip invisible content
 				if(brRow === -1)
 					return null;
 
@@ -1495,7 +1488,8 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 				if(brRow > targetY)
 					return null;
 			}
-			else if(tagName === 'P' && node.childNodes.length === 0)
+			else 
+			if((tagName === 'P')&&(node.childNodes.length === 0))
 			{
 				var pixelY = getPixelYFromNode(node);
 				var elemHeight = getElementHeight(node);
@@ -1510,7 +1504,7 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 					currentRow += (rowsSpanned - 1);
 					lastBottomPixel = pixelY + elemHeight;
 				}
-				if(targetY >= pRow && targetY < pRow + rowsSpanned && modify && col < targetX)
+				if((targetY >= pRow)&&(targetY < pRow + rowsSpanned)&& modify &&(col < targetX))
 				{
 					var spacesNeeded = targetX - col;
 					var padding = '';
@@ -1561,17 +1555,12 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 	for(var i = 0; i < me.childNodes.length; i++)
 	{
 		var container = me.childNodes[i];
-
 		if(container.innerHTML === '' && container.style.height)
 			continue;
-
 		var containerRect = container.getBoundingClientRect();
-		
 		if(containerRect.bottom < viewportTop)
 			continue;
-
 		col = 0;
-
 		var result = traverse(container);
 		if(result !== null)
 			return result;
@@ -1579,3 +1568,4 @@ function FindModifyCharPosition(me, targetX, targetY, modify, newChar, attrs)
 
 	return modify ? false : null;
 }
+

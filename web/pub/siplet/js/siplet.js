@@ -732,6 +732,25 @@ function SipletWindow(windowName)
 		return false;
 	}
 
+	this.onGMCP = function(cmd, func)
+	{
+		if(cmd === null || cmd === undefined)
+			this.removeEventListener('gmcp', func);
+		else
+		if(func)
+		{
+			this.addEventListener('gmcp', function(e){
+				if(e.command && (''+e.command).toLowerCase() == cmd.toLowerCase())
+					func(e);
+			});
+		}
+	};
+	
+	this.onMSDP = function(func)
+	{
+		this.addEventListener('msdp', func);
+	};
+
 	this.addEventListener = function(type, func)
 	{
 		if(type && func)
@@ -1787,6 +1806,22 @@ function CloseAllSiplets()
 		var siplet = window.siplets[i];
 		siplet.closeSocket();
 	}
+}
+
+function FindSipletByChild(child)
+{
+	for(var i=0;i<window.siplets.length;i++)
+	{
+		var siplet = window.siplets[i];
+		var me = child;
+		while(me && (me != window))
+		{
+			if((siplet.window === me) || (siplet.topWindow === me))
+				return siplet
+			me = me.parentElement;
+		}
+	}
+	return null;
 }
 
 function ResizeAllSiplets()

@@ -171,16 +171,24 @@ window.gmcpPackages.push({
 	}
 });
 
+
 window.gmcpPackages.push({
 	name: "WebView",
 	lname: "webview.",
 	version: "1",
+	webViewInitialized: false,
 	open: function(sipwin, msg) 
 	{
 		if(!isJsonObject(msg))
 			return;
 		if(!msg["url"])
 			return;
+		if(!window.isElectron)
+		{
+			sipwin.displayText("<P><FONT COLOR=RED>WebView is only available in the desktop client.</FONT></P>");
+			return;
+		}
+		this._WebViewOnMessageInit();
 		var url = msg["url"];
 		var id = msg["id"];
 		if(!id)
@@ -216,14 +224,200 @@ window.gmcpPackages.push({
 			frame = frame.firstChild;
 		sipwin.cleanDiv(frame);
 		var iframeId = "webview_iframe_"+id.replace(' ','_');
-		frame.innerHTML = '<iframe id="'+iframeId+'" sandbox="allow-scripts" style="width: 100%; height: 100%; border: none; background-color: white;"></iframe>';
-		const iframe = document.getElementById(iframeId);
-		if(!window.isElectron)
+		var iframe = document.createElement("iframe");
+		iframe.setAttribute('id', iframeId);
+		iframe.setAttribute('sandbox', 'allow-scripts');
+		iframe.style.width = "100%";
+		iframe.style.height = "100%";
+		iframe.style.border = "none";
+		iframe.style.backgroundColor = "white";
+		frame.appendChild(iframe);
+		var injectedCode = this._GenerateWebViewInjectionCode(iframeId, 'webview.' + id);
+		const { ipcRenderer } = require('electron')
+		ipcRenderer.send('webview-inject-request', 
 		{
-			sipwin.displayText("<P><FONT COLOR=RED>WebView is only available in the desktop client.</FONT></P>");
-			return;
-		}
+			iframeId: iframeId,
+			url: url,
+			code: injectedCode
+		});
 		iframe.src = url;
+	},
+	_WebViewOnMessageInit: function()
+	{
+		if(!this.webViewInitialized)
+		{
+			this.webViewInitialized=true;
+			window.addEventListener('message', this._WebViewOnMessage);
+		}
+	},
+	_WebViewOnMessage: function(e) 
+	{
+		if(!e || !e.data)
+			return;
+		if (e.data.type === 'sip' && e.data.webviewId) 
+		{
+			var iframe = document.getElementById(e.data.webviewId);
+			if (!iframe) 
+				return;
+			var sipwin = FindSipletByChild(iframe);
+			var method = e.data.method;
+			if (sipwin[method]) 
+			{
+				var result = sipwin[method].apply(sipwin, e.data.args);
+				if (e.data.callbackId !== null && e.data.callbackId !== undefined) 
+				{
+					iframe.contentWindow.postMessage({
+						type: 'callback',
+						callbackId: e.data.callbackId,
+						result: result
+					}, '*');
+				}
+			}
+		}
+		else 
+		if (e.data.type === 'register-listener') 
+		{
+			var iframe = document.getElementById(e.data.webviewId);
+			if (!iframe) 
+				return;
+			var sipwin = FindSipletByChild(iframe);
+			if (e.data.method === 'onGMCP') 
+			{
+				var command = e.data.args[0];
+				var sipwinCallback = function(event) 
+				{
+					if ((event.command === command) || (command == '*') || (command == ''))
+					{
+						iframe.contentWindow.postMessage({
+							type: 'listener-event',
+							listenerId: e.data.listenerId,
+							event: JSON.parse(JSON.stringify(event))
+						}, '*');
+					}
+				};
+				
+				sipwin.addEventListener('gmcp', sipwinCallback);
+				
+				if (!sipwin.webviewListeners) 
+					sipwin.webviewListeners = new Map();
+				if (!sipwin.webviewListeners.has(e.data.webviewId))
+					sipwin.webviewListeners.set(e.data.webviewId, new Map());
+				sipwin.webviewListeners.get(e.data.webviewId).set(e.data.listenerId, {
+					sipwin: sipwin,
+					type: 'gmcp',
+					callback: sipwinCallback
+				});
+			}
+			else 
+			if (e.data.method === 'onMSDP') 
+			{
+				var sipwinCallback = function(event) 
+				{
+					iframe.contentWindow.postMessage({
+						type: 'listener-event',
+						listenerId: e.data.listenerId,
+						event: JSON.parse(JSON.stringify(event))
+					}, '*');
+				};
+				
+				sipwin.addEventListener('msdp', sipwinCallback);
+				
+				if (!sipwin.webviewListeners) 
+					sipwin.webviewListeners = new Map();
+				if (!sipwin.webviewListeners.has(e.data.webviewId))
+					sipwin.webviewListeners.set(e.data.webviewId, new Map());
+				sipwin.webviewListeners.get(e.data.webviewId).set(e.data.listenerId, {
+					sipwin: sipwin,
+					type: 'msdp',
+					callback: sipwinCallback
+				});
+			}
+		}
+	},
+	_GenerateWebViewInjectionCode: function(webviewId, storagePrefix) 
+	{
+		var methods = [];
+		for (var key in PluginActions) {
+			var methodName = key.replace('win.', '');
+			methods.push(methodName);
+		}
+		
+		var code = `
+		(function() {
+			var callbackId = 0;
+			var callbacks = {};
+			
+			window.win = {};
+			${methods.map(function(m)
+			{
+				var actionKey = 'win.' + m;
+				var action = PluginActions[actionKey];
+				
+				if (action && action.callback) 
+				{
+					// Callback registration method (OnGMCP, OnMSDP)
+					return `
+						window.win.${m} = function(...args) 
+						{
+							var listenerId = callbackId++;
+							var callback = args[args.length - 1];
+							var otherArgs = args.slice(0, -1);
+							callbacks[listenerId] = {callback: callback, method: '${m}'};
+							parent.postMessage({
+								type: 'register-listener',
+								webviewId: '${webviewId}',
+								method: '${m}',
+								args: otherArgs,
+								listenerId: listenerId
+							}, '*');
+							return listenerId;
+						};`;
+				} 
+				else 
+				{
+					return `
+						window.win.${m} = function(...args) {
+							var cbId = null;
+							var finalArgs = [];
+							for (var i = 0; i < args.length; i++) 
+							{
+								if (typeof args[i] === 'function') 
+								{
+									cbId = callbackId++;
+									callbacks[cbId] = args[i];
+								} 
+								else
+									finalArgs.push(args[i]);
+							}
+							parent.postMessage({
+								type: 'sip',
+								webviewId: '${webviewId}',
+								method: '${m}',
+								args: finalArgs,
+								callbackId: cbId
+							}, '*');
+						};`;
+				}
+			}).join('\n')}
+			window.client = window.win;
+			
+			window.addEventListener('message', function(e) 
+			{
+				if (e.data.type === 'callback' && e.data.callbackId in callbacks) 
+				{
+					callbacks[e.data.callbackId](e.data.result);
+					delete callbacks[e.data.callbackId];
+				}
+				else 
+				if (e.data.type === 'listener-event' && e.data.listenerId in callbacks) 
+				{
+					var listener = callbacks[e.data.listenerId];
+					listener.callback(e.data.event);
+				}
+			});
+		})();
+		`;
+		return code;
 	}
 });
 

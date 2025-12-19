@@ -15,6 +15,26 @@ var SipletActions =
 	"win.submitHidden": { text:"Send Hidden", args: 1}
 };
 
+var PluginActions = 
+{
+	...SipletActions,
+	"win.sendGMCP": {text: "Send GMCP", args: 2},
+	"win.sendMSDP": {text: "Send MSDP", args: 2},
+	"win.process": {text: "Process MXP", args: 1},
+	"win.getEntity": {text: "Get Entity", args: 1},
+	"win.onGMCP": {text: "Register GMCP Listener", args: 2, callback: true},
+	"win.onMSDP": {text: "Register MSDP Listener", args: 1, callback: true},
+	"win.addTempTimer": {text: "Submit temp timer object", args: 1},
+	"win.removeTempTimer": {text: "Remove temp timer by name", args: 1},
+	"win.addTempTrigger": {text: "Submit temp trigger object", args: 1},
+	"win.removeTempTrigger": {text: "Remove temp timer by name", args: 1},
+	"win.addTempAlias": {text: "Submit temp alias object", args: 1},
+	"win.removeTempAlias": {text: "Remove temp timer by name", args: 1},
+	"win.addTempMenu": {text: "Submit menu entries under str", args: 1},
+	"win.removeTempMenu": {text: "Remove temp menu entries under str", args: 1},
+	"win.dispatchEvent": {text: "Post an event string or json obj (w/'type')", args: 1}
+};
+
 var PLUGINS = function(sipwin)
 {
 	this.plugins = [];
@@ -34,7 +54,8 @@ var PLUGINS = function(sipwin)
 		sipwin.topWindow.appendChild(iframe);
 		//iframe.srcdoc = '<SCRIPT>' + pluginCode + '</SCRIPT>';
 		iframe.srcdoc = '<SCRIPT>window.addEventListener(\'message\', function(event) {if (event.data.type === \'execute\') {' + pluginCode + '}});</SCRIPT>';
-		iframe.onload = function() { // necessary for contentWindow to even exist
+		iframe.onload = function() 
+		{ // necessary for contentWindow to even exist
 			iframe.contentWindow.onmessage=function(event){ 
 				if(iframe.contentWindow.onevent && event.data.payload)
 					iframe.contentWindow.onevent(event.data.payload);
@@ -71,19 +92,24 @@ var PLUGINS = function(sipwin)
 			mapper['addMapEvent'] = function(...args){ return sipwin.mapper['restricted_addMapEvent'](...args);};
 			Object.freeze(mapper);
 			var win = Object.create(null);
-			var sipwinMethods = ['submitInput', 'submitHidden', 'displayText', 'playSound',
-			    'setEntity', 'runScript', 'enableTrigger', 'sendGMCP', 'sendMSDP', 'disableTrigger',
-			    'startTimer', 'clearTimer', 'displayAt', 'getEntity', 'process', 'clearWindow'];
-			for(var k =0;k<sipwinMethods.length;k++)
+			var client = Object.create(null);
+			for(var k in PluginActions)
 			{
-				var method = sipwinMethods[k];
-				win[method] = (function(method) { return function(...args){ 
-					return sipwin[method](...args); 
-				}})(method);
+				if (!k.startsWith('win.'))
+					continue;
+				var method = k.substring(4);
+				win[method] = (function(method) { 
+					return function(...args) { return sipwin[method](...args); }
+				})(method);
+				client[method] = (function(method) {
+					return function(...args) { return sipwin[method](...args); }
+				})(method);
 			}
 			win.mapper = mapper;
 			Object.freeze(win);
 			iframe.contentWindow.win = win;
+			Object.freeze(client);
+			iframe.contentWindow.client = client;
 			iframe.setAttribute("sandbox", "allow-scripts");
 			iframe.contentWindow.postMessage({ type: 'execute' }, '*');
 		};
@@ -425,3 +451,4 @@ var PLUGINS = function(sipwin)
 		return menuList;
 	};
 }
+
