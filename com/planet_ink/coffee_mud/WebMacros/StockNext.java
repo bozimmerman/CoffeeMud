@@ -45,13 +45,33 @@ public class StockNext extends StdWebMacro
 
 	public static Map<String,List<Map<String,String>>> getStockInfo(final HTTPRequest httpReq)
 	{
+		final String player = httpReq.getUrlParameter("PLAYER");
 		@SuppressWarnings("unchecked")
-		Map<String,List<Map<String,String>>> stockList=(Map<String,List<Map<String,String>>>)httpReq.getRequestObjects().get("COFFEE_STOCKLIST");
+		Map<String,List<Map<String,String>>> stockList=(Map<String,List<Map<String,String>>>)httpReq.getRequestObjects().get("COFFEE_STOCKLIST_"+player);
 		if(stockList == null)
 		{
 			stockList = new TreeMap<String,List<Map<String,String>>>();
 			final List<Map<String,String>> globalList = new ArrayList<Map<String,String>>();
 			stockList.put("", globalList);
+			Map<String,Integer> filteredStocks = null;
+			if((player!=null)&&(player.length()>0))
+			{
+				final List<PAData> playerStockList = CMLib.database().DBReadPlayerData(player, "STOCKMARKET_STOCKS");
+				if((playerStockList!=null)&&(playerStockList.size()>0))
+				{
+					filteredStocks = new TreeMap<String,Integer>();
+					for(final PAData pdat : playerStockList)
+					{
+						final String xml = pdat.xml().trim();
+						if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
+						{
+							final int newAmt = CMath.s_int(xml.substring(5,xml.length()-6));
+							filteredStocks.put(pdat.key(), Integer.valueOf(newAmt));
+						}
+					}
+				}
+			}
+
 			final List<PAData> dat = CMLib.database().DBReadAreaSectionData("CMKTSTOCKS");
 			if((dat != null)&&(dat.size()>0))
 			{
@@ -66,6 +86,8 @@ public class StockNext extends StdWebMacro
 							if((bankruptUntil != null)&&(bankruptUntil.trim().length()>0))
 								continue;
 							final String ID = tag.getParmValue("ID");
+							if((filteredStocks != null)&&(!filteredStocks.containsKey(ID)))
+								continue;
 							final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
 							final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 							final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
@@ -82,6 +104,8 @@ public class StockNext extends StdWebMacro
 								stock.put("ID", ID);
 								stock.put("NAME", name);
 								stock.put("PRICE", CMLib.beanCounter().abbreviatedPrice(currency, price));
+								if(filteredStocks != null)
+									stock.put("AMT", filteredStocks.get(ID).toString());
 								areaStocks.add(stock);
 								globalList.add(stock);
 							}
@@ -101,7 +125,7 @@ public class StockNext extends StdWebMacro
 					}
 				});
 			}
-			httpReq.getRequestObjects().put("COFFEE_STOCKLIST", stockList);
+			httpReq.getRequestObjects().put("COFFEE_STOCKLIST_"+player, stockList);
 		}
 		return stockList;
 	}
