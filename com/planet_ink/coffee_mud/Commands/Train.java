@@ -317,6 +317,11 @@ public class Train extends StdCommand
 				return false;
 			}
 		}
+		if(cost == null)
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("Something is wrong with that train attempt."));
+			return false;
+		}
 		final CostManager finalCost = CMLib.utensils().createCostManager(cost.type(),cost.priceD(),cost.currency());
 		if(!finalCost.doesMeetCostRequirements(mob))
 		{
@@ -442,13 +447,6 @@ public class Train extends StdCommand
 		}
 
 		final Environmental details = (Environmental)CMClass.getCommon("DefaultEnvironmental");
-		/*
-		if(cost == null)
-		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("Something is wrong with that train attempt."));
-			return false;
-		}
-		*/
 		details.setStat("COST", cost.value());
 		switch(trainType)
 		{
