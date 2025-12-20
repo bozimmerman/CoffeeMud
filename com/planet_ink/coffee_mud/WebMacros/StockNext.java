@@ -53,20 +53,20 @@ public class StockNext extends StdWebMacro
 			stockList = new TreeMap<String,List<Map<String,String>>>();
 			final List<Map<String,String>> globalList = new ArrayList<Map<String,String>>();
 			stockList.put("", globalList);
-			Map<String,Integer> filteredStocks = null;
+			Map<String,Integer> playerAmounts = null;
 			if((player!=null)&&(player.length()>0))
 			{
 				final List<PAData> playerStockList = CMLib.database().DBReadPlayerData(player, "STOCKMARKET_STOCKS");
 				if((playerStockList!=null)&&(playerStockList.size()>0))
 				{
-					filteredStocks = new TreeMap<String,Integer>();
+					playerAmounts = new TreeMap<String,Integer>();
 					for(final PAData pdat : playerStockList)
 					{
 						final String xml = pdat.xml().trim();
 						if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
 						{
 							final int newAmt = CMath.s_int(xml.substring(5,xml.length()-6));
-							filteredStocks.put(pdat.key(), Integer.valueOf(newAmt));
+							playerAmounts.put(pdat.key(), Integer.valueOf(newAmt));
 						}
 					}
 				}
@@ -86,8 +86,6 @@ public class StockNext extends StdWebMacro
 							if((bankruptUntil != null)&&(bankruptUntil.trim().length()>0))
 								continue;
 							final String ID = tag.getParmValue("ID");
-							if((filteredStocks != null)&&(!filteredStocks.containsKey(ID)))
-								continue;
 							final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
 							final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 							final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
@@ -104,8 +102,11 @@ public class StockNext extends StdWebMacro
 								stock.put("ID", ID);
 								stock.put("NAME", name);
 								stock.put("PRICE", CMLib.beanCounter().abbreviatedPrice(currency, price));
-								if(filteredStocks != null)
-									stock.put("AMT", filteredStocks.get(ID).toString());
+								if((playerAmounts != null)&&(playerAmounts.containsKey(ID)))
+								{
+									stock.put("AMT", playerAmounts.get(ID).toString());
+									stock.put("OWNED", "true");
+								}
 								areaStocks.add(stock);
 								globalList.add(stock);
 							}
