@@ -100,6 +100,8 @@
 			<A href="javascript:Clicked('picture.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Character Portrait</B></FONT></a>
 			<BR>
 			<A href="javascript:Clicked('forums.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Forums</B></FONT></a>
+			<BR>
+			<A href="javascript:Clicked('stocks.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Stocks</B></FONT></a>
 			@PlayerData?PLAYERCLANRESET@
 			@loop@
 				@PlayerData?PLAYERCLANNEXT@

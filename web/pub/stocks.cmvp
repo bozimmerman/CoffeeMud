@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<META CHARSET="utf-8"/>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMud Stock Listings</title>
+	<script language="JavaScript">
+	<!--
+	//-->
+	</script>
+</head>
+
+<body>
+<CENTER>
+	<h2>CoffeeMud Stock Listings</H2>
+	<br>
+	<a href="/access.cmvp?@RequestParametersEncoded@"><FONT COLOR=BLUE>Back to the access menu</FONT></A><br>
+	<br>
+</CENTER>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD BGCOLOR=#FFCCFF><B>Name</B></TD>
+	<TD WIDTH=15%>Price</TD>
+	<TD>Area</TD>
+	<TD WIDTH=10%>Owned</TD>
+</TR>
+@StockNext?reset@
+@loop@
+@StockNext@
+<TR><TD BGCOLOR=#FFCCFF><B>@StockData?NAME@</B></TD>
+	<TD>@StockData?PRICE@</TD>
+	<TD>@StockData?AREA@</TD>
+	<TD>@if?StockData?OWNED@ @StockData?AMT@ @endif@</TD>
+</TR>
+@back@
+</TD>
+</TR>
+</TABLE>
+<P>
+</BODY>
+</HTML>
+
