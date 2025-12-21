@@ -101,6 +101,7 @@ public class StockNext extends StdWebMacro
 								Map<String,String> stock = new TreeMap<String,String>();
 								stock.put("ID", ID);
 								stock.put("NAME", name);
+								stock.put("AREA", hostA.Name());
 								stock.put("PRICE", CMLib.beanCounter().abbreviatedPrice(currency, price));
 								if((playerAmounts != null)&&(playerAmounts.containsKey(ID)))
 								{

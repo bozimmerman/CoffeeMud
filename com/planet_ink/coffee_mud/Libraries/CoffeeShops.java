@@ -2336,7 +2336,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		case ShopKeeper.DEAL_STOCKBROKER:
 			return L("Stocks and Bonds");
 		default:
-			return L("... I have no idea WHAT I sell");
+			return L("Anything");
 		}
 	}
 
