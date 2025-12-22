@@ -18,7 +18,7 @@
 </head>
 
 <body BGCOLOR=#000066>
-<h3><FONT COLOR=WHITE>CoffeeMud @MudServerVersion@ MOB Skills and Abilities</FONT></h3><P>
+<h3><FONT COLOR=WHITE>@MudName@ MOB Skills and Abilities</FONT></h3><P>
 
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Thief Skills</FONT></H2></TD></TR>

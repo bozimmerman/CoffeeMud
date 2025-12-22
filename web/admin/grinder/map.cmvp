@@ -8,7 +8,7 @@
 	<!--map.cmvp-->
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<title>CoffeeMud MUDGrinder</title>
+	<title>@MudName@ MUDGrinder</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--

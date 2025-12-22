@@ -19,7 +19,7 @@
 
 <body>
 <FONT COLOR=#FFFFFF>
-<h3>CoffeeMud @MudServerVersion@ Affects Information</h3><P>
+<h3>@MudName@ Affects Information</h3><P>
 
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Property Affects</FONT></H2></TD></TR>

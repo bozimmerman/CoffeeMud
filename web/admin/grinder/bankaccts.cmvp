@@ -56,7 +56,7 @@
 <INPUT TYPE=HIDDEN NAME=BANKCHAIN VALUE="@RequestParameter?BANKCHAIN@">
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@RequestParameter?PLAYER@">
 <TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Bank Account Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Bank Account Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDCHAIN=@@RequestParameter?BANKCHAIN@@ @
 		@AddRequestParameter?OLDPLAYER=@@RequestParameter?PLAYER@@ @
 		@AddRequestParameter?PLAYER=@
@@ -71,7 +71,7 @@
 				@loop@
 					@PlayerNext@
 					@if?BankAccountInfo?HASACCT@
-						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')"><U>@PlayerID@</U></a> <FONT SIZE=-1 COLOR=WHITE>(@BankAccountInfo?BALANCE@)</FONT></LI>
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?PLAYER@')"><U><FONT COLOR=CYAN>@PlayerID@</FONT></U></a> <FONT SIZE=-1 COLOR=WHITE>(@BankAccountInfo?BALANCE@)</FONT></LI>
 					@endif@
 				@back@
 				@ClanNext?RESET@
@@ -80,7 +80,7 @@
 				@loop@
 					@ClanNext@
 					@if?BankAccountInfo?HASACCT@
-						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?CLAN@')"><U>@ClanID@</U></a></LI>
+						<LI><a href="javascript:Clicked2('@BankChainName@','@RequestParameter?CLAN@')"><U><FONT COLOR=CYAN>@ClanID@</FONT></U></a></LI>
 					@endif@
 				@back@
 				</UL>

@@ -19,10 +19,10 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Expertises Information</h3><P>
+<h3>@MudName@ Expertises Information</h3><P>
 
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#90ee90 ALIGN=CENTER><H2>CoffeeMud @MudServerVersion@ Expertises</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#90ee90 ALIGN=CENTER><H2>@MudName@ Expertises</H2></TD></TR>
 	@ExpertiseNext?reset@
 	@loop@
 	<TR>

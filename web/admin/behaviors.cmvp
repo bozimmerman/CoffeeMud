@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<h3><FONT COLOR=WHITE>CoffeeMud @MudServerVersion@ Behaviors Information</FONT></h3><P>
+<h3><FONT COLOR=WHITE>@MudName@ Behaviors Information</FONT></h3><P>
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>Behaviors</FONT></H2></TD></TR>
 	@BehaviorNext?reset@

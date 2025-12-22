@@ -42,39 +42,45 @@
 	</SCRIPT>
 </head>
 
-<body BGCOLOR=WHITE>
+<body BGCOLOR="#F5F5F5">
 	@if?!Authenticate@ 
 		<CENTER>
-		<h2>Player Access Login</H2>
-		<br>
-		<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+		<TABLE WIDTH=400 BORDER=0 CELLPADDING=15>
+		<TR><TD BGCOLOR=WHITE>
+		
+		<h2><FONT COLOR="#333333">Player Access Login</FONT></H2>
+		<hr SIZE=1 COLOR="#CCCCCC">
+		<a href="/"><FONT COLOR="#0066CC"><u>← Back to public pages</u></FONT></A><br>
 		<br><INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
 		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
 		@if?IsAccountSystem@
-			Please enter one of your CoffeeMud characters and your Account password to gain access.<BR>
-			If you do not have an account or any characters, click the Back link above and select Play NOW!<P>
+			<FONT COLOR="#666666">Please enter one of your characters and your Account password to gain access.<BR>
+			If you do not have an account or any characters, click the Back link above and select Play NOW!</FONT><P>
 	    @else@
-			Please login as your CoffeeMud player to gain access.<BR>
-			If you do not have a player account, click the Back link above and select Play NOW!<P>
+			<FONT COLOR="#666666">Please login as your player to gain access.<BR>
+			If you do not have a player account, click the Back link above and select Play NOW!</FONT><P>
 	    @endif@
-		<TABLE WIDTH=200 BORDER=1>
-		<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Player Login</B></FONT></TD></TR>
-		<TR><TD WIDTH=50><FONT COLOR=BLACK>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
-		<TR><TD WIDTH=50><FONT COLOR=BLACK>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
-		<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER>
+		<TABLE WIDTH=100% BORDER=0 CELLPADDING=6 CELLSPACING=0>
+		<TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR="#4A4A4A"><FONT COLOR=WHITE><B>Player Login</B></FONT></TD></TR>
+		<TR><TD WIDTH=35% BGCOLOR="#F9F9F9"><FONT COLOR="#333333"><B>Login:</B></FONT></TD><TD WIDTH=65% BGCOLOR=WHITE><INPUT TYPE=TEXT SIZE=20 NAME=LOGIN></TD></TR>
+		<TR><TD BGCOLOR="#F9F9F9"><FONT COLOR="#333333"><B>Password:</B></FONT></TD><TD BGCOLOR=WHITE><INPUT TYPE=PASSWORD SIZE=20 NAME=PASSWORD></TD></TR>
+		<TR><TD COLSPAN=2 ALIGN=CENTER BGCOLOR="#F0F0F0">
 			<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
-			<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Login>
+			<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE="  Login  ">
 			@if?IsAccountSystem@
 				<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
-				<INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
+				<INPUT TYPE=BUTTON VALUE=" Register " ONCLICK="Register()">
 			@endif@
 			</FORM>
 		</TD></TR>
 		</TABLE>
 		@if?MudInfo?REALEMAILOK@
-		<BR><BR>
-		<a href="javascript:Forgot()"><FONT SIZE=-1 COLOR=BLUE>I forgot my account name or password.</FONT></A>
+		<BR>
+		<a href="javascript:Forgot()"><FONT SIZE=-1 COLOR="#0066CC"><u>I forgot my account name or password.</u></FONT></A>
 		@endif@
+		
+		</TD></TR>
+		</TABLE>
 		</CENTER>
 		</FORM>
 	@else@
@@ -82,37 +88,48 @@
 		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
 		<INPUT TYPE=HIDDEN NAME=CLAN VALUE="">
-<IMG ALIGN=LEFT src="images/logo.gif">
-		<BR>
-		<TABLE WIDTH=300 BORDER=0><TR><TD ALIGN=CENTER><H1>Welcome @PlayerData?NAME@!</H1></TD></TR></TABLE>
-		<TABLE WIDTH=300 BORDER=1>
-		<TR><TD BGCOLOR=WHITE ALIGN=CENTER COLSPAN=2><FONT COLOR=BLACK SIZE=6><B>Menu:</B></FONT></TD></TR>
-		<TR><TD WIDTH=50>&nbsp;</TD><TD>
-			<A href="javascript:Clicked('stats.cmvp')"><FONT  SIZE=5 COLOR=BLACK><B>Player Statistics</B></FONT></a>
-			<BR>
-			<A href="javascript:Clicked('channels.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Channel Backlogs</B></FONT></a>
+		
+		<CENTER>
+		<TABLE WIDTH=600 BORDER=0 CELLPADDING=15>
+		<TR><TD BGCOLOR=WHITE>
+		
+		<TABLE WIDTH=100% BORDER=0>
+		<TR>
+		<TD WIDTH=120 VALIGN=TOP><IMG src="images/logo.gif"></TD>
+		<TD VALIGN=TOP>
+		<H2><FONT COLOR="#333333">Welcome @PlayerData?NAME@!</FONT></H2>
+		<hr SIZE=1 COLOR="#CCCCCC">
+		
+		<TABLE WIDTH=100% BORDER=0 CELLPADDING=8 CELLSPACING=0>
+		<TR><TD BGCOLOR="#4A4A4A" ALIGN=CENTER><FONT COLOR=WHITE SIZE=4><B>Menu</B></FONT></TD></TR>
+		<TR><TD BGCOLOR="#F9F9F9">
+			<UL>
+			<LI><A href="javascript:Clicked('stats.cmvp')"><FONT COLOR="#0066CC"><B>Player Statistics</B></FONT></a>
+			<LI><A href="javascript:Clicked('channels.cmvp')"><FONT COLOR="#0066CC"><B>Channel Backlogs</B></FONT></a>
 			@if?MudInfo?EMAILOK@
-			<BR>
-			<A href="javascript:Clicked('email.cmvp')">
-			<FONT SIZE=5 COLOR=BLACK><B>Player Email</B></FONT></a>
+			<LI><A href="javascript:Clicked('email.cmvp')"><FONT COLOR="#0066CC"><B>Player Email</B></FONT></a>
 			@endif@
-			<BR>
-			<A href="javascript:Clicked('picture.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Character Portrait</B></FONT></a>
-			<BR>
-			<A href="javascript:Clicked('forums.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Forums</B></FONT></a>
-			<BR>
-			<A href="javascript:Clicked('stocks.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Stocks</B></FONT></a>
+			<LI><A href="javascript:Clicked('picture.cmvp')"><FONT COLOR="#0066CC"><B>Character Portrait</B></FONT></a>
+			<LI><A href="javascript:Clicked('forums.cmvp')"><FONT COLOR="#0066CC"><B>Forums</B></FONT></a>
+			<LI><A href="javascript:Clicked('bankaccts.cmvp')"><FONT COLOR="#0066CC"><B>Bank Accounts</B></FONT></a>
+			<LI><A href="javascript:Clicked('stocks.cmvp')"><FONT COLOR="#0066CC"><B>Stocks</B></FONT></a>
 			@PlayerData?PLAYERCLANRESET@
 			@loop@
 				@PlayerData?PLAYERCLANNEXT@
-				<BR>@AddRequestParameter?CLANENC=@@ClanID@@ @
-				<A href="javascript:Clicked('/clan/@RequestParameterEncoded?CLANENC@/index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>@ClanID@</B></FONT></a>
+				@AddRequestParameter?CLANENC=@@ClanID@@ @
+				<LI><A href="javascript:Clicked('/clan/@RequestParameterEncoded?CLANENC@/index.cmvp')"><FONT COLOR="#0066CC"><B>@ClanID@</B></FONT></a>
 			@back@
-			<BR>
-			<A href="javascript:Clicked('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Public Pages</B></FONT></a>
-			<BR>
-			<A href="javascript:Logout('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Logout</B></FONT></a>
-			<BR>
+			<LI><A href="javascript:Clicked('index.cmvp')"><FONT COLOR="#0066CC"><B>Public Pages</B></FONT></a>
+			<LI><A href="javascript:Logout('index.cmvp')"><FONT COLOR="#0066CC"><B>Logout</B></FONT></a>
+			</UL>
+		</TD></TR>
+		</TABLE>
+		
+		
+		</TD>
+		</TR>
+		</TABLE>
+		
 		</TD></TR>
 		</TABLE>
 		</CENTER>

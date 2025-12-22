@@ -7,7 +7,7 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMud Channel Backlogs</title>
+	<title>@MudName@ Channel Backlogs</title>
 	<script language="JavaScript">
 	<!--
 		function Trash(ch,tm)
@@ -24,7 +24,7 @@
 
 <body>
 <CENTER>
-	<h2>CoffeeMud Channel Backlogs</H2>
+	<h2>@MudName@ Channel Backlogs</H2>
 	<br>
 	<a href="/access.cmvp?@RequestParametersEncoded@"><FONT COLOR=BLUE>Back to the access menu</FONT></A><br>
 	<br>

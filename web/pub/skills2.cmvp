@@ -19,7 +19,7 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Player Skill Information</h3><P>
+<h3>@MudName@ Player Skill Information</h3><P>
 (<a href="skills2.cmvp">View the skills by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
 (<a href="skills.cmvp">View the skills by level</a>)<P>
 <BR>

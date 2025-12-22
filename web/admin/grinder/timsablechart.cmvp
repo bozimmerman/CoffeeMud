@@ -20,7 +20,7 @@
 </head>
 
 <body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud @MudServerVersion@ Player Skills and Abilities</h3><P>
+<h3>@MudName@ Player Skills and Abilities</h3><P>
 	<TABLE WIDTH=100% BORDER=1>
 	<TR>
 		<TD WIDTH=5%><FONT COLOR=BLACK><B>ID</B></FONT></TD>

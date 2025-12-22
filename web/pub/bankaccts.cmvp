@@ -6,7 +6,7 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>@MudName@ Stock Listings</title>
+	<title>Bank Accounts</title>
 	<script language="JavaScript">
 	<!--
 	//-->

@@ -19,7 +19,7 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Player Spell Information</h3><P>
+<h3>@MudName@ Player Spell Information</h3><P>
 (<a href="spells2.cmvp">View the spells by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
 (<a href="spells.cmvp">View the spells by level</a>)<P>
 <BR>

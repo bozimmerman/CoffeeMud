@@ -7,7 +7,7 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
  	<link rel="grinder icon" href="/images/grinder.ico" >
-	<title>CoffeeMud MUDGrinder</title>
+	<title>@MudName@ MUDGrinder</title>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=NEWAREA METHOD=POST ACTION="/index.cmvp" TARGET=_top>
 
 <B><FONT COLOR=RED>Your login or password was not matched in the 
-CoffeeMud database.  Please go back and try again.</FONT><P>
+@MudName@ database.  Please go back and try again.</FONT><P>
 <INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Continue">
 </FORM>
 </body>

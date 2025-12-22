@@ -57,7 +57,7 @@
 <INPUT TYPE=HIDDEN NAME=POSTCHAIN VALUE="@RequestParameter?POSTCHAIN@">
 <INPUT TYPE=HIDDEN NAME=POSTBOX VALUE="@RequestParameter?POSTBOX@">
 <TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Postal Box Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Postal Box Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDCHAIN=@@RequestParameter?POSTCHAIN@@ @
 		@AddRequestParameter?OLDPOSTBOX=@@RequestParameter?POSTBOX@@ @
 		@AddRequestParameter?POSTBOX=@

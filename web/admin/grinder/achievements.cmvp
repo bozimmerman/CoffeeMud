@@ -137,7 +137,7 @@
 	    @endif@
     @endif@
     <TABLE WIDTH=100% BORDER=1>
-    <TR><TD WIDTH=100% COLSPAN=@RequestParameter?COLS@ BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Achievements/Titles/Awards Manager</H2></FONT></TD></TR>
+    <TR><TD WIDTH=100% COLSPAN=@RequestParameter?COLS@ BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Achievements/Titles/Awards Manager</H2></FONT></TD></TR>
     @if?CheckReqParm?MODE=@
         <TR>
         <TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Achievements</FONT></TD>
@@ -153,7 +153,7 @@
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
-            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Player Achievements Manager</H2></FONT></TD></TR>
+            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Player Achievements Manager</H2></FONT></TD></TR>
             <TR>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
@@ -182,7 +182,7 @@
 	            </TD>
 	            </TR>
             @if?IsAccountSystem@
-	            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Achievements Manager</H2></FONT></TD></TR>
+	            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Account Achievements Manager</H2></FONT></TD></TR>
 	            <TR>
 	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
 	            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
@@ -211,7 +211,7 @@
 	            </TD>
 	            </TR>
             @endif@
-            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Achievements Manager</H2></FONT></TD></TR>
+            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Clan Achievements Manager</H2></FONT></TD></TR>
             <TR>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
@@ -258,7 +258,7 @@
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
-            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Title Manager</H2></FONT></TD></TR>
+            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Title Manager</H2></FONT></TD></TR>
             <TR>
             <TD WIDTH=35%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>Max</FONT></b></TD>
@@ -298,7 +298,7 @@
             <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autoawards.cmvp">
             <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
             <TABLE WIDTH=100% BORDER=1>
-            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Awards Manager</H2></FONT></TD></TR>
+            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>@MudName@ Awards Manager</H2></FONT></TD></TR>
             <TR>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Player Mask</FONT></b></TD>

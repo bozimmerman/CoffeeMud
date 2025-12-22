@@ -19,7 +19,7 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud @MudServerVersion@ Player Ability Information</h3><P>
+<h3>@MudName@ Player Ability Information</h3><P>
 (<a href="ables2.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities by school/domain</a>)&nbsp;&nbsp;&nbsp;&nbsp;
 (<a href="ables3.cmvp?ABILITYTYPE=@RequestParameterEncoded?ABILITYTYPE@">View the abilities alphabetically</a>)<P>
 

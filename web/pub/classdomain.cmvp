@@ -19,7 +19,7 @@
 </head>
 
 <body BGCOLOR=#CCFFFF>
-<h3>CoffeeMud @MudServerVersion@ Class-Domain Information</h3><P>
+<h3>@MudName@ Class-Domain Information</h3><P>
 @BaseCharClassNext?RESET@
 <UL>
 @loop@

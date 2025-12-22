@@ -8,7 +8,7 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<meta HTTP-EQUIV="Refresh" CONTENT="180">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMud Status</title>
+	<title>@MudName@ Status</title>
 </head>
 
 <body>
