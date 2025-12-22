@@ -712,9 +712,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if(product==null)
 			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
-		final ShelfProduct C = shop.getShelfStock(buyerCustM, product);
+		final String currency = CMLib.beanCounter().getCurrency(sellerShopM);
+		ShelfProduct C = shop.getShelfStock(buyerCustM, product);
 		if(C==null)
-			return CMLib.utensils().createCost(CostType.GOLD, 0.0, "");
+			C=CMLib.coffeeShops().createShelfProduct(product, 1, -1, currency);
 		if(C.type() != CostType.GOLD)
 			return C;
 		// gold from here on out
@@ -726,7 +727,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if(goldPrice>0.0)
 				goldPrice=CMLib.beanCounter().abbreviatedRePrice(sellerShopM,goldPrice);
-			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(sellerShopM));
+			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, currency);
 		}
 
 		if(!C.shelfFlags().contains(ShelfPriceFlag.NO_PREJUDICE))
@@ -769,7 +770,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		&&(goldPrice>2.0))
 			goldPrice/=2;
 
-		return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(sellerShopM));
+		return CMLib.utensils().createCost(CostType.GOLD, goldPrice, currency);
 	}
 
 	private final static String[] emptyStringArray = new String[0];
@@ -1015,9 +1016,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if(product==null)
 				return CMLib.utensils().createCost(CostType.GOLD, 0.0, CMLib.beanCounter().getCurrency(buyerShopM));
-			final ShelfProduct C =shop.getShelfStock(sellerCustM, product);
+			ShelfProduct C =shop.getShelfStock(sellerCustM, product);
 			if(C == null)
-				return CMLib.utensils().createCost(CostType.GOLD, -1, CMLib.beanCounter().getCurrency(buyerShopM));
+				C=CMLib.coffeeShops().createShelfProduct(product, 1, -1, CMLib.beanCounter().getCurrency(buyerShopM));
 			if(C.type() != CostType.GOLD)
 				return CMLib.utensils().createCost(CostType.GOLD, 0.0, ""); // just not interested
 
@@ -2547,7 +2548,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		boolean yesISell=false;
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
 		{
-			yesISell = (!(thisThang instanceof LandTitle)) && (!CMLib.flags().isAgedChild(thisThang));
+			if((thisThang instanceof LandTitle) || CMLib.flags().isAgedChild(thisThang))
+				yesISell=false;
+			else
+			if((thisThang instanceof PrivateProperty)
+			&&(thisThang instanceof Readable)
+			&&(thisThang instanceof AutoBundler))
+				yesISell=false;
+			else
+				yesISell=true;
 		}
 		else
 		{
