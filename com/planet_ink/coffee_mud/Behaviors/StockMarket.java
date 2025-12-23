@@ -154,11 +154,12 @@ public class StockMarket extends StdBehavior
 			for(final MarketConf conf : configs)
 			{
 				final Collection<StockDef> stocks = getHostStocks();
+				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 				synchronized(stocks)
 				{
 					for(final StockDef def : stocks)
 					{
-						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+						if((areaName.equals(def.area)||isGroupArea)
 						&&(!done.contains(def)))
 						{
 							// should stockbrokers sell replacement certs when you aren't carrying enough of them?
@@ -181,9 +182,9 @@ public class StockMarket extends StdBehavior
 								}
 							}
 							int remain = Integer.MAX_VALUE/2;
-							if(conf.maxSharesPerStock<Integer.MAX_VALUE)
+							if(def.totalShares<Integer.MAX_VALUE)
 							{
-								remain = conf.maxSharesPerStock - getOutstandingShares(def,0);
+								remain = def.totalShares - getOutstandingShares(def,0);
 								if(remain <= 0)
 									continue;
 							}
@@ -290,18 +291,21 @@ public class StockMarket extends StdBehavior
 		private final String				name;
 		public final String					area;
 		public int							version				= 0;
+		public int							totalShares			= Integer.MAX_VALUE;
 		public Item							deed				= null;
 		public volatile double				price				= 100.0;
 		public volatile double				manipulation		= 0;
 		public volatile TimeClock			bankruptUntil		= null;
 		public int							outstandingShares	= -1;
 		public STreeMap<InfluCat, int[]>	influences			= new STreeMap<InfluCat, int[]>();
+		public volatile Pair<String,Integer>topOwner			= null;
 
-		public StockDef(final String area, final String id, final String name)
+		public StockDef(final String area, final String id, final String name, final int total)
 		{
 			this.ID = id;
 			this.name = name;
 			this.area = area;
+			this.totalShares = total;
 		}
 
 		public synchronized void addInfluence(final InfluCat cat, final InfluDir which, final int amt)
@@ -326,7 +330,7 @@ public class StockMarket extends StdBehavior
 		@Override
 		public CMObject newInstance()
 		{
-			final StockDef def = new StockDef(area,ID,name);
+			final StockDef def = new StockDef(area,ID,name,totalShares);
 			def.price=price;
 			def.manipulation=manipulation;
 			return def;
@@ -389,7 +393,36 @@ public class StockMarket extends StdBehavior
 			return name()+"#"+version;
 		}
 	}
+	
+	private int getStockAmountFromRecord(final PAData dat)
+	{
+		final String xml = dat.xml().trim();
+		if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
+			return CMath.s_int(xml.substring(5,xml.length()-6));
+		return -1;
+	}
 
+	private Pair<String,Integer> getTopOwner(final StockDef def)
+	{
+		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntries("STOCKMARKET_STOCKS", def.getTitleID());
+		if((stocksOwned == null)||(stocksOwned.size()==0))
+			return null;
+		Pair<String,Integer> topOwner = null;
+		for(final PAData dat : stocksOwned)
+		{
+			final int amt = this.getStockAmountFromRecord(dat);
+			if(topOwner == null)
+				topOwner = new Pair<String,Integer>(dat.who(),Integer.valueOf(amt));
+			else
+			if(topOwner.second.intValue()<amt)
+			{
+				topOwner.first = dat.who();
+				topOwner.second = Integer.valueOf(amt);
+			}
+		}
+		return topOwner;
+	}
+	
 	private void updatePlayerStockXML(final String mobName, final StockDef stock, final int delta)
 	{
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID());
@@ -401,14 +434,40 @@ public class StockMarket extends StdBehavior
 		}
 		for(final PAData stockData : stocksOwned)
 		{
-			final String xml = stockData.xml().trim();
-			if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
+			final int newAmt = getStockAmountFromRecord(stockData) + delta;
+			if(newAmt <= 0)
 			{
-				final int newAmt = CMath.s_int(xml.substring(5,xml.length()-6))+delta;
-				if(newAmt <= 0)
-					CMLib.database().DBDeletePlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID());
+				CMLib.database().DBDeletePlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID());
+				if((stock.topOwner != null)&&(stock.topOwner.first.equalsIgnoreCase(mobName)))
+					stock.topOwner = getTopOwner(stock);
+			}
+			else
+			{
+				CMLib.database().DBUpdatePlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID(), "<AMT>"+newAmt+"</AMT>");
+				if(stock.topOwner == null)
+					stock.topOwner = new Pair<String,Integer>(mobName,Integer.valueOf(newAmt));
 				else
-					CMLib.database().DBUpdatePlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID(), "<AMT>"+newAmt+"</AMT>");
+				{
+					if(newAmt >= stock.topOwner.second.intValue())
+					{
+						if(stock.topOwner.first.equalsIgnoreCase(mobName))
+							stock.topOwner.second = Integer.valueOf(newAmt);
+						else
+							stock.topOwner = new Pair<String,Integer>(mobName,Integer.valueOf(newAmt)); // new top owner!!
+					}
+					else
+					if(stock.topOwner.first.equalsIgnoreCase(mobName) && (delta < 0))
+					{
+						if(newAmt > stock.totalShares/2)
+							stock.topOwner.second = Integer.valueOf(newAmt); // definitely still on top
+						else
+							stock.topOwner = getTopOwner(stock);
+					}
+					else
+					{
+						// stock was purchased, but not enough to go above the top, so noting to do
+					}
+				}
 			}
 		}
 	}
@@ -423,11 +482,7 @@ public class StockMarket extends StdBehavior
 		int amt=0;
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntries("STOCKMARKET_STOCKS", stock.getTitleID());
 		for(final PAData stockData : stocksOwned)
-		{
-			final String xml = stockData.xml().trim();
-			if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
-				amt += CMath.s_int(xml.substring(5,xml.length()-6));
-		}
+			amt += getStockAmountFromRecord(stockData);
 		stock.outstandingShares = Math.max(0,amt+adj);
 		return stock.outstandingShares;
 	}
@@ -437,13 +492,7 @@ public class StockMarket extends StdBehavior
 		int amt=0;
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerData(mob.Name(), "STOCKMARKET_STOCKS", stock.getTitleID());
 		for(final PAData stockData : stocksOwned)
-		{
-			final String xml = stockData.xml().trim();
-			if(xml.startsWith("<AMT>") && xml.endsWith("</AMT>"))
-			{
-				amt += CMath.s_int(xml.substring(5,xml.length()-6));
-			}
-		}
+			amt += getStockAmountFromRecord(stockData);
 		return amt;
 	}
 
@@ -457,14 +506,11 @@ public class StockMarket extends StdBehavior
 			if(!owners.contains(stockData.who()))
 			{
 				owners.add(stockData.who());
-				if(stockData.xml().startsWith("<AMT>") && stockData.xml().endsWith("</AMT>"))
-				{
-					final int amt = CMath.s_int(stockData.xml().substring(5,stockData.xml().length()-6));
-					if(amt <=0)
-						CMLib.database().DBDeletePlayerData(stockData.who(), "STOCKMARKET_STOCKS", stock.getTitleID());
-					else
-						owned.add(stockData.who(), Integer.valueOf(amt));
-				}
+				final int amt = getStockAmountFromRecord(stockData);
+				if(amt <=0)
+					CMLib.database().DBDeletePlayerData(stockData.who(), "STOCKMARKET_STOCKS", stock.getTitleID());
+				else
+					owned.add(stockData.who(), Integer.valueOf(amt));
 			}
 		}
 		return owned;
@@ -480,7 +526,7 @@ public class StockMarket extends StdBehavior
 			xml.append("<S ID=\""+def.ID+"\" NAME=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.name)+"\" "
 					+ "M="+def.manipulation+" A=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.area)+"\" "
 					+" PRICE="+def.price+" V="+def.version+" "
-					+ "U=\""+bankruptUntil+"\" ");
+					+ "U=\""+bankruptUntil+"\" T="+def.totalShares+"");
 			if(def.influences.size()==0)
 				xml.append(" />");
 			else
@@ -523,6 +569,7 @@ public class StockMarket extends StdBehavior
 		if(stocks == null)
 		{
 			stocks = new STreeMap<String,StockDef>();
+			final Map<String,StockDef> idstocks = new HashMap<String,StockDef>(); // temporary for this method
 			final List<PAData> dat = CMLib.database().DBReadAreaData(areaName, "CMKTSTOCKS", "CMKTSTOCKS/"+areaName);
 			if((dat != null)&&(dat.size()>0))
 			{
@@ -535,11 +582,14 @@ public class StockMarket extends StdBehavior
 						final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
 						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 						final int manipulation  = CMath.s_int(tag.getParmValue("M"));
+						int total  = CMath.s_int(tag.getParmValue("T"));
+						if(total == 0) 
+							total = Integer.MAX_VALUE;
 						final String bankruptUntil = tag.getParmValue("U");
 						final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
 						if(hostA != null)
 						{
-							final StockDef d = new StockDef(hostA.Name(), ID, name);
+							final StockDef d = new StockDef(hostA.Name(), ID, name, total);
 							d.version = CMath.s_int(tag.getParmValue("V"));
 							d.price=price;
 							d.manipulation=manipulation;
@@ -556,6 +606,27 @@ public class StockMarket extends StdBehavior
 								d.bankruptUntil = d.bankruptUntil.fromTimePeriodCodeString(bankruptUntil);
 							}
 							stocks.put(d.name(),d); // name doesn't include version, which is needed for lookups
+							idstocks.put(d.getTitleID(), d);
+						}
+					}
+				}
+			}
+			final List<PAData> stocksOwned = CMLib.database().DBReadPlayerSectionData("STOCKMARKET_STOCKS");
+			if((stocksOwned!=null)&&(stocksOwned.size()>0))
+			{
+				for(final PAData paDat : stocksOwned)
+				{
+					if(idstocks.containsKey(paDat.key()))
+					{
+						final StockDef def = idstocks.get(paDat.key());
+						int amt = this.getStockAmountFromRecord(paDat);
+						if((def != null)&&(amt>0)&&(def.bankruptUntil==null))
+						{
+							if(def.topOwner==null)
+								def.topOwner = new Pair<String,Integer>(paDat.who(),Integer.valueOf(amt));
+							else
+							if(def.topOwner.second.intValue()<amt)
+								def.topOwner = new Pair<String,Integer>(paDat.who(),Integer.valueOf(amt));
 						}
 					}
 				}
@@ -924,7 +995,7 @@ public class StockMarket extends StdBehavior
 						{
 							if(stocks.size() >= maxStocks)
 								return null;
-							def = new StockDef(hostA.Name(),id,name);
+							def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
 							addHostStock(def);
 						}
 						list.add(def);
@@ -946,7 +1017,7 @@ public class StockMarket extends StdBehavior
 							if(stocks.size() >= maxStocks)
 								return null;
 							final String id = "R"+getCode(hostA.Name(), race)+getCode("CMKT_AREA_CODES", hostA.Name());
-							def = new StockDef(hostA.Name(), id, name);
+							def = new StockDef(hostA.Name(), id, name,this.maxSharesPerStock);
 							addHostStock(def);
 						}
 						list.add(def);
@@ -979,7 +1050,7 @@ public class StockMarket extends StdBehavior
 								if(stocks.size() >= maxStocks)
 									return null;
 								final String id = "C"+getCode(hostA.Name(), type)+getCode("CMKT_AREA_CODES", hostA.Name());
-								def = new StockDef(hostA.Name(),id,name);
+								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
 								addHostStock(def);
 							}
 							list.add(def);
@@ -1001,7 +1072,7 @@ public class StockMarket extends StdBehavior
 								if(stocks.size() >= maxStocks)
 									return null;
 								final String id = "G"+getCode("CMKT_AREA_CODES", hostA.Name());
-								def = new StockDef(hostA.Name(),id,name);
+								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
 								addHostStock(def);
 							}
 							list.add(def);
@@ -1467,9 +1538,9 @@ public class StockMarket extends StdBehavior
 								}
 								if((def.price > 200.0)
 								&& (CMLib.dice().rollPercentage() <= 20)
-								&& (conf.maxSharesPerStock < Integer.MAX_VALUE/2))
+								&& (def.totalShares < Integer.MAX_VALUE/2))
 								{
-									conf.maxSharesPerStock *= 2.0;
+									def.totalShares *= 2.0;
 									def.price = def.price / 2.0;
 									getOutstandingShares(def, 0);
 									getOutstandingShares(def, def.outstandingShares);//effectively doubles them
@@ -1514,6 +1585,9 @@ public class StockMarket extends StdBehavior
 		}
 	};
 
+	//TODO: a stock with max shares can be taken near private, but what's the benefit?
+	//TODO: deal with bad missnamed stocks plz
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1533,33 +1607,32 @@ public class StockMarket extends StdBehavior
 		&&(msg.target() instanceof ShopKeeper)
 		&&(msg.tool() instanceof PrivateProperty)
 		&&(msg.tool() instanceof AutoBundler)
-		&&(msg.tool().ID().equals("GenCertificate")))
+		&&(msg.tool().ID().equals("GenCertificate"))
+		&&(((ShopKeeper)msg.target()).isSold(ShopKeeper.DEAL_STOCKBROKER)))
 		{
 			StockDef foundDef=null;
 			boolean worthless = false;
-			if(((ShopKeeper)msg.target()).isSold(ShopKeeper.DEAL_STOCKBROKER))
+			final PrivateProperty privI = (PrivateProperty)msg.tool();
+			final String sellingTitleID = ((PrivateProperty)msg.tool()).getTitleID();
+			final String subsellingTitleID;
+			if(sellingTitleID.indexOf('#')>0)
+				subsellingTitleID = sellingTitleID.substring(0,sellingTitleID.lastIndexOf('#'));
+			else
+				subsellingTitleID = sellingTitleID;
+			foundDef = getHostStocksMap().get(subsellingTitleID);
+			if((foundDef != null)
+			&&(foundDef.getTitleID().equals(sellingTitleID)))
+				privI.setPrice(foundDef.getPrice() );
+			else
 			{
-				final String sellingTitleID = ((PrivateProperty)msg.tool()).getTitleID();
-				final String subsellingTitleID;
-				if(sellingTitleID.indexOf('#')>0)
-					subsellingTitleID = sellingTitleID.substring(0,sellingTitleID.lastIndexOf('#'));
-				else
-					subsellingTitleID = sellingTitleID;
-				foundDef = getHostStocksMap().get(subsellingTitleID);
-				if((foundDef != null)
-				&&(foundDef.getTitleID().equals(sellingTitleID)))
-					((PrivateProperty)msg.tool()).setPrice(foundDef.getPrice() );
-				else
+				foundDef=null;
+				final Collection<StockDef> stocks = getHostStocks();
+				synchronized(stocks)
 				{
-					foundDef=null;
-					final Collection<StockDef> stocks = getHostStocks();
-					synchronized(stocks)
+					for(final StockDef def : stocks)
 					{
-						for(final StockDef def : stocks)
-						{
-							if(def.getTitleID().startsWith(subsellingTitleID))
-								worthless=true;
-						}
+						if(def.getTitleID().startsWith(subsellingTitleID))
+							worthless=true;
 					}
 				}
 			}
@@ -1577,6 +1650,12 @@ public class StockMarket extends StdBehavior
 					CMLib.commands().postSay((MOB)msg.target(), L("Sorry, but I don't deal in those."));
 				else
 					msg.source().tell(L("You can't sell that here."));
+				return false;
+			}
+			if((!(privI.getOwnerName().equals(msg.source().Name())))
+			&&(!(msg.source().isMarriedToLiege() && privI.getOwnerName().equals(msg.source().getLiegeID()))))
+			{
+				msg.source().tell(L("You aren't allowed to sell that."));
 				return false;
 			}
 			final int amtOwned = this.getStocksOwned(msg.source(), foundDef);
@@ -1709,11 +1788,12 @@ public class StockMarket extends StdBehavior
 			{
 				if(!conf.playerInfluence)
 					continue;
+				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 				synchronized(stocks)
 				{
 					for(final StockDef def : stocks)
 					{
-						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+						if((areaName.equals(def.area)||(isGroupArea))
 						&&(!done.contains(def)))
 						{
 							def.addInfluence(InfluCat.LEVELING, unlevel?InfluDir.NEGATIVE:InfluDir.POSITIVE, 1);
@@ -1737,11 +1817,12 @@ public class StockMarket extends StdBehavior
 				final InfluDir dir = conf.questMoves.get(msg.sourceMessage().toLowerCase().trim());
 				if(dir == null)
 					continue;
+				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 				synchronized(stocks)
 				{
 					for(final StockDef def : stocks)
 					{
-						if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+						if((areaName.equals(def.area)||isGroupArea)
 						&&(!done.contains(def)))
 						{
 							def.addInfluence(InfluCat.AREA_EVENTS, dir, 1);
@@ -1771,11 +1852,12 @@ public class StockMarket extends StdBehavior
 					{
 						if(!conf.playerInfluence)
 							continue;
+						final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 						synchronized(stocks)
 						{
 							for(final StockDef def : stocks)
 							{
-								if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+								if((areaName.equals(def.area)||isGroupArea)
 								&&(!done.contains(def)))
 								{
 									done.add(def);
@@ -1818,11 +1900,12 @@ public class StockMarket extends StdBehavior
 				{
 					if(!conf.playerInfluence)
 						continue;
+					final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 					synchronized(stocks)
 					{
 						for(final StockDef def : stocks)
 						{
-							if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+							if((areaName.equals(def.area)||isGroupArea)
 							&&(!done.contains(def)))
 							{
 								def.addInfluence(InfluCat.BUILDING, InfluDir.POSITIVE, 1);
@@ -1953,11 +2036,12 @@ public class StockMarket extends StdBehavior
 					for(final MarketConf conf : configs)
 					{
 						final Collection<StockDef> stocks = getHostStocks();
+						final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
 						synchronized(stocks)
 						{
 							for(final StockDef def : stocks)
 							{
-								if((areaName.equals(def.area)||(conf.groupAreas && (conf.isApplicableArea(A))))
+								if((areaName.equals(def.area)||isGroupArea)
 								&&(!done.contains(def)))
 								{
 									def.addInfluence(cat, InfluDir.NEGATIVE, amt);

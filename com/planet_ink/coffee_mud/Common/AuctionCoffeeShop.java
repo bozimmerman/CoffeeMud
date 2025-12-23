@@ -318,4 +318,20 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public void delShopProvider(final ShopProvider provider)
 	{
 	}
+
+	@Override
+	public boolean hasShelfAdjuster(String ID)
+	{
+		return false;
+	}
+
+	@Override
+	public void addShelfAdjuster(ShelfAdjuster adjuster)
+	{
+	}
+
+	@Override
+	public void delShelfAdjuster(ShelfAdjuster adjuster)
+	{
+	}
 }

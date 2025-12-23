@@ -325,10 +325,10 @@ public interface CoffeeShop extends CMCommon
 	 *
 	 * @see CoffeeShop#addShopProvider(ShopProvider)
 	 * @see CoffeeShop#delShopProvider(ShopProvider)
-	 * @see ShopProvider#ID()
+	 * @see ShopProvider#claim(Environmental, MOB, CoffeeShop, Room)
 	 *
 	 * @param ID the unique if of the provider
-	 * @return
+	 * @return true if the ID exists in this shop
 	 */
 	public boolean hasShopProvider(final String ID);
 
@@ -349,6 +349,37 @@ public interface CoffeeShop extends CMCommon
 	 * @param provider the provider of stock
 	 */
 	public void delShopProvider(final ShopProvider provider);
+
+	/**
+	 * Returns whether this shop has the built-in shelf
+	 * adjuster of the given ID.
+	 *
+	 * @see CoffeeShop#addShelfAdjuster(ShelfAdjuster)
+	 * @see CoffeeShop#delShelfAdjuster(ShelfAdjuster)
+	 * @see ShelfAdjuster#adjustShelf(ShelfProduct, MOB, CoffeeShop, Room, boolean)
+	 *
+	 * @param ID the unique if of the adjuster
+	 * @return true if the ID exists in this shop
+	 */
+	public boolean hasShelfAdjuster(final String ID);
+
+	/**
+	 * Adds a new provider of temporary stock to this shop.
+	 * @see CoffeeShop#hasShelfAdjuster(String)
+	 * @see CoffeeShop#delShelfAdjuster(ShelfAdjuster)
+	 *
+	 * @param adjuster the adjuster of items
+	 */
+	public void addShelfAdjuster(final ShelfAdjuster adjuster);
+
+	/**
+	 * Removes an old provider of temporary stock from this shop.
+	 * @see CoffeeShop#hasShelfAdjuster(String)
+	 * @see CoffeeShop#addShelfAdjuster(ShelfAdjuster)
+	 *
+	 * @param adjuster the adjuster of items
+	 */
+	public void delShelfAdjuster(final ShelfAdjuster adjuster);
 
 	/**
 	 * Returns a thin copy with independent lists, but the
@@ -483,6 +514,26 @@ public interface CoffeeShop extends CMCommon
 		 * @return null if unrelated, or a new shelfProduct for the given item
 		 */
 		public ShelfProduct claim(final Environmental product, final MOB buyer, final CoffeeShop shop, final Room myRoom);
+	}
+
+	/**
+	 * Interface that can alter or flag prices or items on particular
+	 * items at particular times by altering it's ShelfProduct.  
+	 * Such adjusters are generally very temporary.
+	 */
+	public static interface ShelfAdjuster extends CMObject
+	{
+		/**
+		 * Returns a new shelf item for the given item, or null to do nothing.
+		 * @param old the previous shelf item
+		 * @param buyer the buyer mob
+		 * @param shop the shop thats curious
+		 * @param myRoom the room all this takes place in
+		 * @param buy true if the player is buying the item, false for selling to the shop.
+		 *
+		 * @return null if no modification, or a new ShelfProduct, or just a slightly altered one.
+		 */
+		public ShelfProduct adjustShelf(final ShelfProduct old, final MOB buyer, final CoffeeShop shop, final Room myRoom, boolean buy);
 	}
 
 	/**

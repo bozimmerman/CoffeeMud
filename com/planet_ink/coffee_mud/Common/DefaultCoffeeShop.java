@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfAdjuster;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -57,6 +58,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public SVector<Environmental>	enumerableInventory	= new SVector<Environmental>(); // for Only Inventory situations
 	public List<ShelfProduct>		storeInventory		= new SVector<ShelfProduct>();
 	public Map<String,ShopProvider>	shopProviders		= new STreeMap<String, ShopProvider>();
+	public Map<String,ShelfAdjuster>shelfAdjusters		= new STreeMap<String, ShelfAdjuster>();
 	protected volatile Integer		contentHash			= null;
 
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
@@ -473,6 +475,26 @@ public class DefaultCoffeeShop implements CoffeeShop
 		shopProviders.remove(provider.ID());
 	}
 
+	@Override
+	public boolean hasShelfAdjuster(String ID)
+	{
+		return shelfAdjusters.containsKey(ID);
+	}
+
+	@Override
+	public void addShelfAdjuster(ShelfAdjuster adjuster)
+	{
+		if(hasShopProvider(adjuster.ID()))
+			return;
+		shelfAdjusters.put(adjuster.ID(), adjuster);
+	}
+
+	@Override
+	public void delShelfAdjuster(ShelfAdjuster adjuster)
+	{
+		shopProviders.remove(adjuster.ID());
+	}
+
 	private synchronized void checkInternalProviders()
 	{
 		if(isSold(ShopKeeper.DEAL_LANDSELLER)
@@ -505,6 +527,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 				item=CMLib.english().fetchEnvironmental(provInv,name,true);
 				if(item==null)
 					item=CMLib.english().fetchEnvironmental(provInv,name,false);
+				if(item != null)
+					break;
 			}
 		}
 		if(item!=null)
@@ -535,8 +559,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		return -1;
 	}
 
-	@Override
-	public ShelfProduct getShelfStock(final MOB forMob, final Environmental likeThis)
+	private ShelfProduct getBasicShelfStock(final MOB forMob, final Environmental likeThis)
 	{
 		if(likeThis==null)
 			return null;
@@ -562,6 +585,21 @@ public class DefaultCoffeeShop implements CoffeeShop
 				return SP;
 		}
 		return null;
+	}
+	
+	@Override
+	public ShelfProduct getShelfStock(final MOB forMob, final Environmental likeThis)
+	{
+		ShelfProduct P = getBasicShelfStock(forMob, likeThis);
+		if(P == null)
+			return null;
+		for(final ShelfAdjuster adjuster : shelfAdjusters.values())
+		{
+			ShelfProduct p = adjuster.adjustShelf(P, forMob, this, startRoom(), false);
+			if(p != null)
+				P = p;
+		}
+		return P;
 	}
 
 	@Override
