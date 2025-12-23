@@ -47,6 +47,8 @@ public class BankChainName extends StdWebMacro
 		final String last=httpReq.getUrlParameter("BANKCHAIN");
 		if(last==null)
 			return " @break@";
+		if(last.trim().length()==0)
+			return "Default";
 		return clearWebMacros(last);
 	}
 }

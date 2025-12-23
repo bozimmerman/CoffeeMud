@@ -15,29 +15,46 @@
 
 <body>
 <CENTER>
-	<h2>@MudName@ Stock Listings</H2>
+	<h2>@RequestParameter?PLAYER@ Bank Accounts</H2>
 	<br>
 	<a href="/access.cmvp?@RequestParametersEncoded@"><FONT COLOR=BLUE>Back to the access menu</FONT></A><br>
 	<br>
 </CENTER>
-<TABLE WIDTH=100% BORDER=1>
-<TR><TD BGCOLOR=#FFCCFF><B>Name</B></TD>
-	<TD WIDTH=15%>Price</TD>
-	<TD>Area</TD>
-	<TD WIDTH=10%>Owned</TD>
-</TR>
-@StockNext?reset@
+@BankChainNext?RESET@
 @loop@
-@StockNext@
-<TR><TD BGCOLOR=#FFCCFF><B>@StockData?NAME@</B></TD>
-	<TD>@StockData?PRICE@</TD>
-	<TD>@StockData?AREA@</TD>
-	<TD>@if?StockData?OWNED@ @StockData?AMT@ @endif@</TD>
-</TR>
+	@BankChainNext@
+	@if?BankAccountInfo?HASACCT@
+	<FONT COLOR="DARKGREEN"><U>@BankChainName@</U></FONT><BR>
+	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+		<TD><FONT COLOR=BLUE>Balance: </FONT>
+		</TD>
+		<TD WIDTH=80%><FONT COLOR=BLACK>@BankAccountInfo?BALANCE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR=BLUE>Deposited Items: </FONT></TD>
+		<TD><FONT COLOR=BLACK>@BankAccountInfo?ITEMSLIST@</FONT></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR=BLUE>Deposited Worth: </FONT></TD>
+		<TD><FONT COLOR=BLACK>@BankAccountInfo?ITEMSWORTH@</FONT></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR=BLUE>Debt: </FONT></TD>
+		<TD><FONT COLOR=BLACK>@BankAccountInfo?DEBTAMT@ (@BankAccountInfo?DEBTINT@)</FONT></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR=BLUE>Debt due: </FONT></TD>
+		<TD><FONT COLOR=BLACK>@BankAccountInfo?DEBTDUE@</FONT></TD>
+	</TR>
+	<TR>
+		<TD><FONT COLOR=BLUE>Debt info: </FONT></TD>
+		<TD><FONT COLOR=BLACK>@BankAccountInfo?DEBTRSN@</FONT></TD>
+	</TR>
+	</TABLE>
+	@endif@
+	<P>
 @back@
-</TD>
-</TR>
-</TABLE>
 <P>
 </BODY>
 </HTML>
