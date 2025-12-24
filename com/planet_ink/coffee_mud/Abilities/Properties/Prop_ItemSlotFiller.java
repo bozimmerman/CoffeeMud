@@ -186,7 +186,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			str.append("TYPE=\""+slotType+"\" ");
 		final StringBuilder skips = new StringBuilder("");
 		for(final String s : this.skips)
-			skips.append(","+CMStrings.escape(s));
+			skips.append(","+CMStrings.escapeDQuotes(s));
 		if(skips.toString().trim().length()>0)
 			str.append("SKIPS=\""+skips.toString().substring(1).trim()+"\" ");
 		final StringBuilder adds = new StringBuilder("");

@@ -117,7 +117,10 @@ public class Fighter_AtemiStrike extends MonkSkill
 		{
 			if((!mob.amDead())
 			&&((tickTarget<=0)||(tickUp==0)||(tickUp>=tickTarget)))
+			{
+				mob.tell(L("You feel your heart give out."));
 				CMLib.combat().postDeath(invoker,mob,null);
+			}
 		}
 	}
 

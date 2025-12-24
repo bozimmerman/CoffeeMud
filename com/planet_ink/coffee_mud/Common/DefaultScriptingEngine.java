@@ -7446,7 +7446,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB)&&(lastKnownLocation!=null))
 				{
 					for(final MOB M : ((MOB)E).getGroupMembers(new HashSet<MOB>()))
-						results.append("'"+M.name()+"' ");
+						results.append("'"+CMStrings.escapeSQuotes(M.name())+"' ");
 				}
 				break;
 			}
@@ -9098,6 +9098,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final HashSet<MOB> seen=new HashSet<MOB>();
 						while((M.amFollowing()!=null)
 						&&(!M.amFollowing().isMonster())
+						&&(M.amFollowing().location()==room)
 						&&(!seen.contains(M)))
 						{
 							seen.add(M);
@@ -11730,7 +11731,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((ctx.monster != ctx.scripted)
 						&&(ctx.monster!=null))
 							ctx.monster.resetToMaxState();
-						A.invoke(ctx.monster,CMParms.parse(m2),newTarget,true,0);
+						MOB casterM = ctx.monster;
+						MOB factoryM = null; // maybe needed in the future
+						try
+						{
+							A.invoke(casterM,CMParms.parse(m2),newTarget,true,0);
+						}
+						finally
+						{
+							if(factoryM != null)
+								factoryM.destroy();
+						}
 						if(ticks > 0)
 						{
 							final Ability afA = newTarget.fetchEffect(A.ID());

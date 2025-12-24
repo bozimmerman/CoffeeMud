@@ -9327,7 +9327,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				if(CMath.isMathExpression(value))
 					str.append(value).append(" ");
 				else
-					str.append("\"").append(CMStrings.escape(value)).append("\" ");
+					str.append("\"").append(CMStrings.escapeDQuotes(value)).append("\" ");
 			}
 		}
 		return str.toString();
@@ -9349,11 +9349,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				if(!map.autoGain())
 					parms.append(" AUTOGAIN=FALSE");
 				if((map.extraMask().length()>0)&&(map.extraMask().length()>0))
-					parms.append(" MASK="+CMStrings.escape("\""+CMStrings.escape(map.extraMask()))+"\"");
+					parms.append(" MASK="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(map.extraMask()))+"\"");
 				if((map.defaultParm().length()>0)&&(map.defaultParm().length()>0))
-					parms.append(" PARMS="+CMStrings.escape("\""+CMStrings.escape(map.defaultParm()))+"\"");
+					parms.append(" PARMS="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(map.defaultParm()))+"\"");
 				if((map.originalSkillPreReqList()!=null)&&(map.originalSkillPreReqList().length()>0))
-					parms.append(" PREREQS="+CMStrings.escape("\""+CMStrings.escape(map.originalSkillPreReqList()))+"\"");
+					parms.append(" PREREQS="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(map.originalSkillPreReqList()))+"\"");
 				if(parms.toString().trim().length()>0)
 				{
 					awardStr.append(" \"")
@@ -9401,15 +9401,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TATTOO:
 				awardStr.append("1 TATTOO(ID="+((TattooAward)award).getTattoo())
 						.append(((TattooAward)award).isForAccount()?" ACCOUNT=TRUE":"")
-						.append(" ").append("DESC="+CMStrings.escape("\""+CMStrings.escape(award.getDescription())+"\")"));
+						.append(" ").append("DESC="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(award.getDescription())+"\")"));
 				break;
 			case MOB:
 				awardStr.append(" ").append(((CatalogAward)award).getAmount())
-						.append(" ").append("MOB(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
+						.append(" ").append("MOB(ID="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(((CatalogAward)award).getItemName())+"\")"));
 				break;
 			case ITEM:
 				awardStr.append(" ").append(((CatalogAward)award).getAmount())
-						.append(" ").append("ITEM(ID="+CMStrings.escape("\""+CMStrings.escape(((CatalogAward)award).getItemName())+"\")"));
+						.append(" ").append("ITEM(ID="+CMStrings.escapeDQuotes("\""+CMStrings.escapeDQuotes(((CatalogAward)award).getItemName())+"\")"));
 				break;
 			default:
 				break;

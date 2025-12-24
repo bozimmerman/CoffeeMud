@@ -287,7 +287,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 				{
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
-						super.miscText = text()+" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
+						super.miscText = text()+" BOUND=\""+CMStrings.escapeDQuotes(this.boundToName)+"\"";
 				}
 				break;
 			case CMMsg.TYP_GET:
@@ -299,7 +299,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
 					{
-						final String boundStr=" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
+						final String boundStr=" BOUND=\""+CMStrings.escapeDQuotes(this.boundToName)+"\"";
 						if(text().indexOf(boundStr)<0)
 							super.miscText = text()+boundStr;
 					}

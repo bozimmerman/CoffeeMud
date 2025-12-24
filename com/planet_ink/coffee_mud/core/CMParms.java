@@ -4165,7 +4165,7 @@ public class CMParms
 		{
 			String val = V.get(KEY).toString();
 			if(val.indexOf(' ')>0)
-				val="\""+CMStrings.escape(val)+"\"";
+				val="\""+CMStrings.escapeDQuotes(val)+"\"";
 			s.append(KEY.toString()+"="+val+delimiter);
 		}
 		return s.toString().trim();

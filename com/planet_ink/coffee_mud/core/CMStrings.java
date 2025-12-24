@@ -1056,7 +1056,20 @@ public class CMStrings
 	 * @param str the string to escape
 	 * @return the string, escaped
 	 */
-	public final static String escape(final String str)
+	public final static String escapeDQuotes(final String str)
+	{
+		if(str==null)
+			return str;
+		return replaceAll(replaceAll(str,"\\","\\\\"),"\"","\\\"");
+	}
+
+	/**
+	 * This methods replaces any escapes to double-escape characters, and any
+	 *  single-quotes to escaped single-quotes
+	 * @param str the string to escape
+	 * @return the string, escaped
+	 */
+	public final static String escapeSQuotes(final String str)
 	{
 		if(str==null)
 			return str;

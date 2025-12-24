@@ -118,15 +118,15 @@ public class AchievementData extends StdWebMacro
 			final String newDisplay=httpReq.getUrlParameter("DISPLAY");
 			if(newDisplay==null)
 				return "[missing DISPLAY error]";
-			row+="DISPLAY=\""+CMStrings.escape(newDisplay)+"\" ";
+			row+="DISPLAY=\""+CMStrings.escapeDQuotes(newDisplay)+"\" ";
 
 			final String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle != null)&&(newTitle.length()>0))
-				row+="TITLE=\""+CMStrings.escape(newTitle)+"\" ";
+				row+="TITLE=\""+CMStrings.escapeDQuotes(newTitle)+"\" ";
 
 			final String newRewards=httpReq.getUrlParameter("REWARDS");
 			if((newRewards != null)&&(newRewards.length()>0))
-				row+="REWARDS=\""+CMStrings.escape(newRewards)+"\" ";
+				row+="REWARDS=\""+CMStrings.escapeDQuotes(newRewards)+"\" ";
 
 			final String newDuration=httpReq.getUrlParameter("DURATION");
 			if((newDuration != null)&&(newDuration.length()>0)&&(CMath.s_int(newDuration)>0))
@@ -134,11 +134,11 @@ public class AchievementData extends StdWebMacro
 
 			final String newVisiMask=httpReq.getUrlParameter("VISIBLEMASK");
 			if((newVisiMask != null)&&(newVisiMask.length()>0))
-				row+="VISIBLEMASK=\""+CMStrings.escape(newVisiMask)+"\" ";
+				row+="VISIBLEMASK=\""+CMStrings.escapeDQuotes(newVisiMask)+"\" ";
 
 			final String newPlayMask=httpReq.getUrlParameter("PLAYERMASK");
 			if((newPlayMask != null)&&(newPlayMask.length()>0))
-				row+="PLAYERMASK=\""+CMStrings.escape(newPlayMask)+"\" ";
+				row+="PLAYERMASK=\""+CMStrings.escapeDQuotes(newPlayMask)+"\" ";
 
 			if(httpReq.isUrlParameter("FLAGS"))
 			{
@@ -158,7 +158,7 @@ public class AchievementData extends StdWebMacro
 					final String newValue=httpReq.getUrlParameter(s);
 					if((newValue != null)&&(newValue.length()>0))
 					{
-						row+=s+"=\""+CMStrings.escape(newValue)+"\" ";
+						row+=s+"=\""+CMStrings.escapeDQuotes(newValue)+"\" ";
 					}
 				}
 			}

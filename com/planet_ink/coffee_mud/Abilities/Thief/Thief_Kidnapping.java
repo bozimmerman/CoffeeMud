@@ -134,11 +134,11 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 	public String text()
 	{
 		final StringBuilder txt = new StringBuilder("NOASSIST="+reAssist);
-		txt.append(" ROOM=\""+CMStrings.escape(roomID)+"\"");
+		txt.append(" ROOM=\""+CMStrings.escapeDQuotes(roomID)+"\"");
 		if(invoker() != null)
 			txt.append(" INVOKER=\""+invoker().Name()+"\"");
 		if(followName != null)
-			txt.append(" FOLLOW=\""+CMStrings.escape(followName)+"\"");
+			txt.append(" FOLLOW=\""+CMStrings.escapeDQuotes(followName)+"\"");
 		return txt.toString();
 	}
 

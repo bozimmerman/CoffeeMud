@@ -91,9 +91,9 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 		{
 			str.append(";");
 			if(sourceMaskStr.length()>0)
-				str.append("SMASK=\"").append(CMStrings.escape(sourceMaskStr)).append("\" ");
+				str.append("SMASK=\"").append(CMStrings.escapeDQuotes(sourceMaskStr)).append("\" ");
 			if(targetMaskStr.length()>0)
-				str.append("TMASK=\"").append(CMStrings.escape(targetMaskStr)).append("\" ");
+				str.append("TMASK=\"").append(CMStrings.escapeDQuotes(targetMaskStr)).append("\" ");
 		}
 		return str.toString().trim();
 	}
