@@ -595,7 +595,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			return null;
 		for(final ShelfAdjuster adjuster : shelfAdjusters.values())
 		{
-			ShelfProduct p = adjuster.adjustShelf(P, forMob, this, startRoom(), false);
+			ShelfProduct p = adjuster.adjustShelf(P, forMob, this, startRoom());
 			if(p != null)
 				P = p;
 		}

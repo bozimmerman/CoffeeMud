@@ -722,6 +722,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		double goldPrice = C.priceD();
 		if(C.priceCode()<0)
 			goldPrice=rawSpecificGoldPrice(product,shop);
+		final double basePrice = goldPrice;
 
 		if(buyerCustM==null)
 		{
@@ -769,7 +770,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		&&(product instanceof MiscMagic)
 		&&(goldPrice>2.0))
 			goldPrice/=2;
-
+		if((C.shelfFlags().contains(ShelfPriceFlag.BEST_PRICE))&&(goldPrice > basePrice))
+			goldPrice = basePrice;
 		return CMLib.utensils().createCost(CostType.GOLD, goldPrice, currency);
 	}
 
@@ -1025,6 +1027,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			double goldPrice = C.priceD();
 			if(C.priceCode()<0)
 				goldPrice=rawSpecificGoldPrice(product,shop);
+			final double basePrice = goldPrice;
 			if(sellerCustM==null)
 			{
 				goldPrice *= number;
@@ -1067,6 +1070,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 			if(goldPrice<=0.0)
 				goldPrice=1.0;
+			if((C.shelfFlags().contains(ShelfPriceFlag.BEST_PRICE))&&(goldPrice < basePrice))
+				goldPrice = basePrice;
 			return CMLib.utensils().createCost(CostType.GOLD, goldPrice, CMLib.beanCounter().getCurrency(buyerShopM));
 		}
 		finally

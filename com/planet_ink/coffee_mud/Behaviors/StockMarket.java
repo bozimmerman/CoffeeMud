@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfAdjuster;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfPriceFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShelfProduct;
 import com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop.ShopProvider;
@@ -66,6 +68,12 @@ public class StockMarket extends StdBehavior
 	private final Set<CMMsg> 		lastGives 		= Collections.synchronizedSet(new ExpireHashSet<CMMsg>(1000));
 
 	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
+
+	/**
+	 * As a StockMarket behavior covers an area or group of areas, it may include a lot of different types
+	 * of markets composed of different stocks.  Each one of these markets  is a MarketConf (config).
+	 */
+	private final List<MarketConf> configs = Collections.synchronizedList(new LinkedList<MarketConf>());
 
 	private static final Set<ShelfPriceFlag> certFlags 	= new HashSet<ShelfPriceFlag>();
 	static
@@ -273,7 +281,8 @@ public class StockMarket extends StdBehavior
 		HOLDINGS,
 		ASTROLOGICAL_INFLUENCES,
 		RACIAL_BOONS,
-		AREA_EVENTS
+		AREA_EVENTS,
+		OWNER_DISCOUNT
 		;
 		public int rolls(final int num)
 		{
@@ -804,6 +813,96 @@ public class StockMarket extends StdBehavior
 		CMLib.database().DBReCreateAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName,data.toString());
 		return cd;
 	}
+	
+	private void giveShopKeeperMonopolyRespect(final ShopKeeper SK, final CoffeeShop shop)
+	{
+		final String ID = "StockMarket_Adjuster_"+this;
+		if(!shop.hasShelfAdjuster(ID))
+		{
+			shop.addShelfAdjuster(new ShelfAdjuster() 
+			{
+				private volatile long lastUpdate = 0;
+				private final TreeMap<String, List<StockDef>> nameList = new TreeMap<String, List<StockDef>>(); 
+				@Override
+				public String ID()
+				{
+					return ID;
+				}
+
+				@Override
+				public String name()
+				{
+					return ID;
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return this;
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return this;
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(CMObject o)
+				{
+					return o.ID().compareTo(ID());
+				}
+
+				@Override
+				public ShelfProduct adjustShelf(ShelfProduct old, MOB buyer, CoffeeShop shop, Room myRoom)
+				{
+					if((buyer != null)
+					&&(old!=null)
+					&&(old.type()==CostType.GOLD))
+					{
+						synchronized(this)
+						{
+							if((System.currentTimeMillis()-lastUpdate)>60000*10)
+							{
+								nameList.clear();
+								lastUpdate=System.currentTimeMillis();
+								for(final MarketConf conf : configs)
+								{
+									List<StockDef> stocks = conf.getShopStock(SK, buyer);
+									for(final StockDef def : stocks)
+									{
+										if((def.topOwner != null)
+										&&(def.totalShares < Integer.MAX_VALUE)
+										&&(CMath.div(def.topOwner.second.intValue(),def.totalShares)>=0.85))
+										{
+											if(!nameList.containsKey(def.topOwner.first))
+												nameList.put(def.topOwner.first, new ArrayList<StockDef>());
+											nameList.get(def.topOwner.first).add(def);
+										}
+									}
+								}
+							}
+						}
+						final List<StockDef> defs = nameList.get(buyer.Name());
+						if(defs != null)
+						{
+							ShelfProduct newProd = CMLib.coffeeShops().createShelfProduct(old.product(), old.number(), old.priceCode(), old.currency());
+							newProd.shelfFlags().add(ShelfPriceFlag.NO_TAXES);
+							newProd.shelfFlags().add(ShelfPriceFlag.NO_DEPRECIATION);
+							for(final StockDef def : defs)
+								def.addInfluence(InfluCat.OWNER_DISCOUNT, InfluDir.NEGATIVE, 1);
+						}
+					}
+					return null;
+				}
+			});
+		}
+	}
 
 	/**
 	 * Configuration for a stock or set of stocks
@@ -973,6 +1072,7 @@ public class StockMarket extends StdBehavior
 				{
 					if(shopStocksMap.containsKey(SK))
 						return shopStocksMap.get(SK);
+					giveShopKeeperMonopolyRespect(SK, SK.getShop());
 					final ArrayList<StockDef> list = new ArrayList<StockDef>();
 					switch(groupBy)
 					{
@@ -1151,12 +1251,6 @@ public class StockMarket extends StdBehavior
 			parms=pms;
 		}
 	}
-
-	/**
-	 * As a StockMarket behavior covers an area or group of areas, it may include a lot of different types
-	 * of markets composed of different stocks.  Each one of these markets  is a MarketConf (config).
-	 */
-	private final List<MarketConf> configs = Collections.synchronizedList(new LinkedList<MarketConf>());
 
 	@Override
 	protected int canImproveCode()
@@ -1585,9 +1679,7 @@ public class StockMarket extends StdBehavior
 		}
 	};
 
-	//TODO: a stock with max shares can be taken near private, but what's the benefit?
 	//TODO: deal with bad missnamed stocks plz
-	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

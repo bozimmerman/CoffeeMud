@@ -356,7 +356,7 @@ public interface CoffeeShop extends CMCommon
 	 *
 	 * @see CoffeeShop#addShelfAdjuster(ShelfAdjuster)
 	 * @see CoffeeShop#delShelfAdjuster(ShelfAdjuster)
-	 * @see ShelfAdjuster#adjustShelf(ShelfProduct, MOB, CoffeeShop, Room, boolean)
+	 * @see ShelfAdjuster#adjustShelf(ShelfProduct, MOB, CoffeeShop, Room)
 	 *
 	 * @param ID the unique if of the adjuster
 	 * @return true if the ID exists in this shop
@@ -422,7 +422,11 @@ public interface CoffeeShop extends CMCommon
 		/**
 		 * No depreciation due to stock
 		 */
-		NO_DEPRECIATION
+		NO_DEPRECIATION,
+		/**
+		 * Best price
+		 */
+		BEST_PRICE
 	}
 
 	/**
@@ -529,11 +533,9 @@ public interface CoffeeShop extends CMCommon
 		 * @param buyer the buyer mob
 		 * @param shop the shop thats curious
 		 * @param myRoom the room all this takes place in
-		 * @param buy true if the player is buying the item, false for selling to the shop.
-		 *
 		 * @return null if no modification, or a new ShelfProduct, or just a slightly altered one.
 		 */
-		public ShelfProduct adjustShelf(final ShelfProduct old, final MOB buyer, final CoffeeShop shop, final Room myRoom, boolean buy);
+		public ShelfProduct adjustShelf(final ShelfProduct old, final MOB buyer, final CoffeeShop shop, final Room myRoom);
 	}
 
 	/**
