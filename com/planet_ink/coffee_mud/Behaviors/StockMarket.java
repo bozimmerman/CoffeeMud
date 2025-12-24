@@ -306,15 +306,17 @@ public class StockMarket extends StdBehavior
 		public volatile double				manipulation		= 0;
 		public volatile TimeClock			bankruptUntil		= null;
 		public int							outstandingShares	= -1;
+		public String						roomID				= "";
 		public STreeMap<InfluCat, int[]>	influences			= new STreeMap<InfluCat, int[]>();
 		public volatile Pair<String,Integer>topOwner			= null;
 
-		public StockDef(final String area, final String id, final String name, final int total)
+		public StockDef(final String area, final String id, final String name, final int total, final String roomID)
 		{
 			this.ID = id;
 			this.name = name;
 			this.area = area;
 			this.totalShares = total;
+			this.roomID = roomID;
 		}
 
 		public synchronized void addInfluence(final InfluCat cat, final InfluDir which, final int amt)
@@ -339,7 +341,7 @@ public class StockMarket extends StdBehavior
 		@Override
 		public CMObject newInstance()
 		{
-			final StockDef def = new StockDef(area,ID,name,totalShares);
+			final StockDef def = new StockDef(area,ID,name,totalShares,roomID);
 			def.price=price;
 			def.manipulation=manipulation;
 			return def;
@@ -535,7 +537,8 @@ public class StockMarket extends StdBehavior
 			xml.append("<S ID=\""+def.ID+"\" NAME=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.name)+"\" "
 					+ "M="+def.manipulation+" A=\""+xmlLib.parseOutAngleBracketsAndQuotes(def.area)+"\" "
 					+" PRICE="+def.price+" V="+def.version+" "
-					+ "U=\""+bankruptUntil+"\" T="+def.totalShares+"");
+					+ "U=\""+bankruptUntil+"\" T="+def.totalShares
+					+" ROOMID=\""+xmlLib.parseOutAngleBrackets(def.roomID)+"\"");
 			if(def.influences.size()==0)
 				xml.append(" />");
 			else
@@ -589,6 +592,7 @@ public class StockMarket extends StdBehavior
 					{
 						final String ID = tag.getParmValue("ID");
 						final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
+						final String roomID = tag.getParmValue("ROOMID");
 						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 						final int manipulation  = CMath.s_int(tag.getParmValue("M"));
 						int total  = CMath.s_int(tag.getParmValue("T"));
@@ -598,7 +602,7 @@ public class StockMarket extends StdBehavior
 						final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
 						if(hostA != null)
 						{
-							final StockDef d = new StockDef(hostA.Name(), ID, name, total);
+							final StockDef d = new StockDef(hostA.Name(), ID, name, total, roomID);
 							d.version = CMath.s_int(tag.getParmValue("V"));
 							d.price=price;
 							d.manipulation=manipulation;
@@ -641,6 +645,12 @@ public class StockMarket extends StdBehavior
 				}
 			}
 			Resources.submitResource("CMKT_AREA_STOCKS/"+areaName,stocks);
+			
+			// this *might* cause this method to be recursively called, but since the resource
+			//  is in place, it will exit early and be happy.
+			for(final StockDef def : stocks.values())
+				if((def.roomID!=null)&&(def.roomID.length()>0))
+					CMLib.map().getRoom(def.roomID);
 		}
 		return stocks;
 	}
@@ -926,7 +936,7 @@ public class StockMarket extends StdBehavior
 
 		public final Map<String, InfluDir>				questMoves		= new STreeMap<String, InfluDir>();
 		public final Set<ShopKeeper>					nonShops		= new SHashSet<ShopKeeper>();
-		public final Map<ShopKeeper, List<StockDef>>	shopStocksMap	= new SHashtable<ShopKeeper, List<StockDef>>();
+		public final Map<ShopKeeper, List<StockDef>>	shopStocksMap	= new SWeakHashtable<ShopKeeper, List<StockDef>>();
 		public volatile TimeClock						nextUpdate;
 
 		public MarketConf()
@@ -1095,7 +1105,7 @@ public class StockMarket extends StdBehavior
 						{
 							if(stocks.size() >= maxStocks)
 								return null;
-							def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
+							def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock,CMLib.map().getExtendedRoomID(R));
 							addHostStock(def);
 						}
 						list.add(def);
@@ -1117,7 +1127,7 @@ public class StockMarket extends StdBehavior
 							if(stocks.size() >= maxStocks)
 								return null;
 							final String id = "R"+getCode(hostA.Name(), race)+getCode("CMKT_AREA_CODES", hostA.Name());
-							def = new StockDef(hostA.Name(), id, name,this.maxSharesPerStock);
+							def = new StockDef(hostA.Name(), id, name,this.maxSharesPerStock,CMLib.map().getExtendedRoomID(R));
 							addHostStock(def);
 						}
 						list.add(def);
@@ -1150,7 +1160,7 @@ public class StockMarket extends StdBehavior
 								if(stocks.size() >= maxStocks)
 									return null;
 								final String id = "C"+getCode(hostA.Name(), type)+getCode("CMKT_AREA_CODES", hostA.Name());
-								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
+								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock,CMLib.map().getExtendedRoomID(R));
 								addHostStock(def);
 							}
 							list.add(def);
@@ -1172,7 +1182,7 @@ public class StockMarket extends StdBehavior
 								if(stocks.size() >= maxStocks)
 									return null;
 								final String id = "G"+getCode("CMKT_AREA_CODES", hostA.Name());
-								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock);
+								def = new StockDef(hostA.Name(),id,name,this.maxSharesPerStock,CMLib.map().getExtendedRoomID(R));
 								addHostStock(def);
 							}
 							list.add(def);
