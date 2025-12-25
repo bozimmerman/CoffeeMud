@@ -8,6 +8,7 @@
  6. SHOUT (+SHOUTAT) (+SHOUTTO) now commands like Yell.
  7. Items on mobs can now be marked as variable corpse drops (like variable eq, but only in corpse)
  8. Account command now shows total hours played across all characters.
+ 9. New behavior: StockMarket - buy and sell stocks in your shopkeepers!
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
