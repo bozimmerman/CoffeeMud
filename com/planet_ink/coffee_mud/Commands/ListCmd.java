@@ -5792,7 +5792,7 @@ public class ListCmd extends StdCommand
 		final StringBuilder str = new StringBuilder("");
 		final int[] colWidths = new int[] {50, 8, 15};
 		CMLib.lister().fixColWidths(colWidths, S);
-		str.append(L("Stocks (@x)\n\r",""));
+		str.append(L("Stocks (@x1)\n\r",""));
 		str.append("^H!^w")
 			.append(CMStrings.padRight(L("Stock ID"),colWidths[0])).append("^H!^w")
 			.append(CMStrings.padRight(L("Price"),colWidths[1])).append("^H!^w")
