@@ -30,10 +30,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAwa
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TattooAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AutoAwardsLibrary.AutoProperties;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PAData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.PlayerSortCode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Tests.interfaces.CMTest;
@@ -4859,6 +4861,7 @@ public class ListCmd extends StdCommand
 		HELP("HELP", new SecFlag[] {SecFlag.LISTADMIN}),
 		LIST("LIST", new SecFlag[] {SecFlag.LISTADMIN}),
 		TAGS("TAGS", new SecFlag[] {SecFlag.LISTADMIN}),
+		STOCKS("STOCKS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -5779,6 +5782,55 @@ public class ListCmd extends StdCommand
 			S.colorOnlyPrint(str.toString(), true);
 	}
 
+	protected void listStocks(final MOB mob, final List<String> commands)
+	{
+		if(mob==null)
+			return;
+		final Session S = mob.session();
+		if(S==null)
+			return;
+		final StringBuilder str = new StringBuilder("");
+		final int[] colWidths = new int[] {50, 8, 15};
+		CMLib.lister().fixColWidths(colWidths, S);
+		str.append(L("Stocks (@x)\n\r",""));
+		str.append("^H!^w")
+			.append(CMStrings.padRight(L("Stock ID"),colWidths[0])).append("^H!^w")
+			.append(CMStrings.padRight(L("Price"),colWidths[1])).append("^H!^w")
+			.append(CMStrings.padRight(L("Area"),colWidths[2])).append("^H!^w")
+			.append("\n\r");
+		str.append("^H!")
+			.append(CMStrings.repeat('-',colWidths[0])).append("!")
+			.append(CMStrings.repeat('-',colWidths[1])).append("!")
+			.append(CMStrings.repeat('-',colWidths[2])).append("!").append("\n\r");
+		final List<PAData> dat = CMLib.database().DBReadAreaSectionData("CMKTSTOCKS");
+		if((dat != null)&&(dat.size()>0))
+		{
+			for(final PAData pdat : dat)
+			{
+				final List<XMLTag> tags = CMLib.xml().parseAllXML(pdat.xml());
+				for(final XMLTag tag : tags)
+				{
+					if(tag.tag().equals("S"))
+					{
+						final String bankruptUntil = tag.getParmValue("U");
+						if((bankruptUntil != null)&&(bankruptUntil.trim().length()>0))
+							continue;
+						//final String ID = tag.getParmValue("ID");
+						final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
+						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
+						final String area = CMLib.xml().restoreAngleBrackets(tag.getParmValue("A"));
+						str.append("^H!^w")
+						.append(CMStrings.padRight(name,colWidths[0])).append("^H!^W")
+						.append(CMStrings.padRight(""+price,colWidths[1])).append("^H!^W")
+						.append(CMStrings.padRight(area,colWidths[2])).append("^H!^W")
+						.append("\n\r");
+					}
+				}
+			}
+		}
+		S.wraplessPrintln(str.toString());
+	}
+
 	protected void listAreas(final MOB mob, final List<String> commands, final Filterer<Area> filter)
 	{
 		if(mob==null)
@@ -6561,6 +6613,9 @@ public class ListCmd extends StdCommand
 			break;
 		case WORLD:
 			listAreas(mob, commands, new WorldFilter(mob.location()));
+			break;
+		case STOCKS:
+			listStocks(mob, commands);
 			break;
 		case PLANETS:
 			listAreas(mob, commands, planetsAreaFilter);
