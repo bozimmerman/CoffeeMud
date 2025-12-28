@@ -907,7 +907,7 @@ public class InstanceArea extends StdAbility
 				statsA=instArea;
 			else
 				statsA=CMLib.map().getRandomArea();
-			room.toggleMobility(false);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMSYNC);
 			room.clearSky();
 			room.giveASky(0);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
@@ -1366,7 +1366,7 @@ public class InstanceArea extends StdAbility
 		{
 			room.recoverRoomStats();
 			CMLib.threads().suspendResumeRecurse(room, false, false);
-			room.toggleMobility(true);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()&~PhyStats.SENSE_ROOMSYNC);
 			room.recoverRoomStats();
 		}
 	}

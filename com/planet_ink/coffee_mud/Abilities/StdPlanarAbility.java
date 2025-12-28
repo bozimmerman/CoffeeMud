@@ -945,7 +945,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	{
 		try
 		{
-			room.toggleMobility(false);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMSYNC);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
 			{
@@ -1324,7 +1324,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		{
 			room.recoverRoomStats();
 			CMLib.threads().suspendResumeRecurse(room, false, false);
-			room.toggleMobility(true);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()&~PhyStats.SENSE_ROOMSYNC);
 			room.recoverRoomStats();
 		}
 	}

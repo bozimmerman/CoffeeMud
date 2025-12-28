@@ -1939,10 +1939,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				room.destroy();
 				return;
 			}
-			final boolean mobile=room.getMobility();
 			try
 			{
-				room.toggleMobility(false);
+				room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMSYNC);
 				if(resetMsg==null)
 					resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
 				resetMsg.setTarget(room);
@@ -1965,7 +1964,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			finally
 			{
-				room.toggleMobility(mobile);
+				room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()&~PhyStats.SENSE_ROOMSYNC);
 			}
 		}
 	}

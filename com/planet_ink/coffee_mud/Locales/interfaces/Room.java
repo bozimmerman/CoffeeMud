@@ -230,20 +230,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 	public List<Integer> resourceChoices();
 
 	/**
-	 * Sets or clears whether any mobs in this room may, in fact, leave it.  This applies
-	 * to player and npc mobs equally.
-	 * @param onoff true to allow mobility, false to disallow mobility
-	 */
-	public void toggleMobility(boolean onoff);
-
-	/**
-	 * Gets whether any mobs in this room may, in fact, leave it.  This applies
-	 * to player and npc mobs equally.
-	 * @return true if anyone can leave this room, false otherwise
-	 */
-	public boolean getMobility();
-
-	/**
 	 * Room titles and descriptions can be coded with xml/html-like tags that denote
 	 * different parts that are shown or hidden depending on the weather, the season,
 	 * the time of day, or even whether the player has been to the room before.

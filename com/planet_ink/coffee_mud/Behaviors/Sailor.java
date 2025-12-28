@@ -388,7 +388,7 @@ public class Sailor extends StdBehavior
 		return ((loyalShipItem!=null)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
 		&&(loyalShipItem.owner() instanceof Room)
-		&&(((Room)loyalShipItem.owner()).getMobility())
+		&&((loyalShipItem.owner().basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)==0)
 		&&(!CMLib.hunt().isAnAdminHere((Room)loyalShipItem.owner(), true)));
 	}
 
@@ -603,8 +603,8 @@ public class Sailor extends StdBehavior
 								if((I instanceof AmmunitionWeapon)
 								&&(!aimings.containsFirst((Weapon)I))
 								&&(((AmmunitionWeapon)I).ammunitionRemaining() >= ((AmmunitionWeapon)I).ammunitionCapacity())
-								&&(distanceToTarget >= ((AmmunitionWeapon)I).minRange())
-								&&(distanceToTarget <= ((AmmunitionWeapon)I).maxRange()))
+								&&(distanceToTarget >= I.minRange())
+								&&(distanceToTarget <= I.maxRange()))
 								{
 									final int aimPt = CMLib.dice().roll(1, targetSpeed, -1);
 									mob.enqueCommand(new XVector<String>(SiegableItem.SiegeCommand.AIM.name(),mobRoom.getContextName(I),""+aimPt), 0, 0);

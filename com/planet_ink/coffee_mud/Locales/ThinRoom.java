@@ -203,17 +203,6 @@ public class ThinRoom implements Room
 		return empty;
 	}
 
-	@Override
-	public void toggleMobility(final boolean onoff)
-	{
-	}
-
-	@Override
-	public boolean getMobility()
-	{
-		return true;
-	}
-
 	protected volatile boolean	recurse	= false;
 
 	@Override

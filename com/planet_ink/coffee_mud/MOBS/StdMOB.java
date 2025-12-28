@@ -4032,7 +4032,7 @@ public class StdMOB implements MOB
 								{
 									final Area A = room.getArea();
 									if((lastTickedTime < 0)
-									&& room.getMobility()
+									&& ((room.basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)==0)
 									&& (A.getAreaState() != Area.State.FROZEN)
 									&& (A.getAreaState() != Area.State.STOPPED))
 										lastTickedTime = CMLib.utensils().processVariableEquipment(this, true);
@@ -4093,7 +4093,7 @@ public class StdMOB implements MOB
 					// handle variable equipment!
 					if((lastTickedTime < 0)
 					&& isMonster
-					&& R.getMobility()
+					&& ((R.basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)==0)
 					&& (A.getAreaState() != Area.State.FROZEN)
 					&& (A.getAreaState() != Area.State.STOPPED))
 					{

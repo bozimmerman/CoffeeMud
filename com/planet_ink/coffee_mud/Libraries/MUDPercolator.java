@@ -7899,7 +7899,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		boolean changeMade=false;
 		try
 		{
-			room.toggleMobility(false);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMSYNC);
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			if(CMLib.law().getLandTitle(room)!=null)
 				return false;
@@ -8035,7 +8035,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			room.recoverRoomStats();
 			CMLib.threads().suspendResumeRecurse(room, false, false);
-			room.toggleMobility(true);
+			room.basePhyStats().setSensesMask(room.basePhyStats().sensesMask()&~PhyStats.SENSE_ROOMSYNC);
 			room.recoverRoomStats();
 		}
 		return changeMade;

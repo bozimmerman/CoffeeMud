@@ -252,7 +252,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	{
 		int tries=30;
 		if((room == null)
-		||(!room.getMobility()))
+		||((room.basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)>0))
 		{
 			firstRun=true;
 			return false;

@@ -59,7 +59,6 @@ public class StdRoom implements Room
 	protected Exit[]			exits				= new Exit[Directions.NUM_DIRECTIONS()];
 	protected Room[]			doors				= new Room[Directions.NUM_DIRECTIONS()];
 	protected String[]			xtraValues			= null;
-	protected boolean			mobility			= true;
 	protected GridLocale		gridParent			= null;
 	protected int				tickStatus			= Tickable.STATUS_NOT;
 	protected long				expirationDate		= 0;
@@ -743,18 +742,6 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public void toggleMobility(final boolean onoff)
-	{
-		mobility=onoff;
-	}
-
-	@Override
-	public boolean getMobility()
-	{
-		return mobility;
-	}
-
-	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!getArea().okMessage(this,msg))
@@ -780,12 +767,14 @@ public class StdRoom implements Room
 				break;
 			}
 			case CMMsg.TYP_LEAVE:
-				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
+				if((!CMLib.flags().allowsMovement(this))
+				||((basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)>0))
 					return false;
 				break;
 			case CMMsg.TYP_FLEE:
 			case CMMsg.TYP_ENTER:
-				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
+				if((!CMLib.flags().allowsMovement(this))
+				||((basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)>0))
 					return false;
 				if(!mob.isMonster())
 				{
