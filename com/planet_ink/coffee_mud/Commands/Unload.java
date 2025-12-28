@@ -60,10 +60,10 @@ public class Unload extends StdCommand
 	{
 		if(mob==null)
 			return true;
-		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
+		boolean secUnloadFlag=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
 		if(commands.size()<2)
 		{
-			if(tryArchon)
+			if(secUnloadFlag)
 				mob.tell(L("UNLOAD what? Try @x1",CMParms.toListString(ARCHON_LIST)));
 			else
 				mob.tell(L("Unload what?"));
@@ -71,34 +71,38 @@ public class Unload extends StdCommand
 		}
 		final String str=CMParms.combine(commands,1);
 		String what=commands.get(1);
-		if(tryArchon)
+		boolean archonCmd = false;
+		if(secUnloadFlag)
+		{
+			for(final String aList : ARCHON_LIST)
+			{
+				if(what.equalsIgnoreCase(aList))
+					archonCmd=true;
+			}
+		}
+		if(archonCmd)
 		{
 			Item I=mob.fetchWieldedItem();
 			if((I instanceof AmmunitionWeapon)
 			&&((AmmunitionWeapon)I).requiresAmmunition())
-				tryArchon=false;
+				archonCmd=false;
 			else
 			{
 				I=mob.findItem(null, str);
 				if((I instanceof AmmunitionWeapon)
 				&&(((AmmunitionWeapon)I).requiresAmmunition()))
-					tryArchon=false;
+					archonCmd=false;
 				else
 				{
 					I=mob.location().findItem(null, str);
 					if((I instanceof AmmunitionWeapon)
 					&&(((AmmunitionWeapon)I).requiresAmmunition())
 					&&((AmmunitionWeapon)I).isFreeStanding())
-						tryArchon=false;
+						archonCmd=false;
 				}
 			}
 		}
-		for(final String aList : ARCHON_LIST)
-		{
-			if(what.equalsIgnoreCase(aList))
-				tryArchon=true;
-		}
-		if(!tryArchon)
+		if(!archonCmd)
 		{
 			commands.remove(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
@@ -130,6 +134,7 @@ public class Unload extends StdCommand
 			}
 		}
 		else
+		if(secUnloadFlag && archonCmd)
 		{
 			// Area Unloading
 			if((commands.get(1).equalsIgnoreCase("AREA"))
