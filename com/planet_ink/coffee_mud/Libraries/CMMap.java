@@ -1939,6 +1939,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				room.destroy();
 				return;
 			}
+			final boolean mobile=room.getMobility();
 			try
 			{
 				room.toggleMobility(false);
