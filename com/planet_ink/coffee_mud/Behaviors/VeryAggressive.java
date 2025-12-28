@@ -109,8 +109,7 @@ public class VeryAggressive extends Aggressive
 			return;
 
 		final Room R=mob.location();
-		if((R.getArea()!=null)
-		&&(R.getArea().getAreaState()!=Area.State.ACTIVE))
+		if(!CMLib.flags().isActivityAllowedHere(mob,R))
 			return;
 		for(int m=0;m<R.numInhabitants();m++)
 		{

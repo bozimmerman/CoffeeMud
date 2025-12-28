@@ -473,11 +473,11 @@ public interface PhyStats extends CMCommon, Modifiable
 	// sensemask stuff not applicable to mobs
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unlocatable */
 	public final static int SENSE_UNLOCATABLE=1;
-	/** a bit setting, as from sensesMask(), flagging that this item is always ruined */
+	/** a bit setting, as from sensesMask(), flagging this item is always ruined */
 	public final static int SENSE_ALWAYSRUIN=2;
-	/** a bit setting, as from sensesMask(), unused  */
+	/** a bit setting, as from sensesMask(), flagging this item dropped from a corpse  */
 	public final static int SENSE_CORPSEDROP=4;
-	/** a bit setting, as from sensesMask(), flagging this item/room as readable */
+	/** a bit setting, as from sensesMask(), flagging this item as readable */
 	public final static int SENSE_ITEMREADABLE=8;
 	/** a bit setting, as from sensesMask(), flagging this item as ungettable */
 	public final static int SENSE_ITEMNOTGET=16;
@@ -501,8 +501,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ITEMDEATHKEEPER=1024;
 	/** a bit setting, as from sensesMask(), flagging this room as being unmappable */
 	public final static int SENSE_ROOMUNMAPPABLE=2048;
-	/** a bit setting, as from sensesMask(), flagging this room as being flagged for grid synchronization */
-	public final static int SENSE_ROOMGRIDSYNC=4096;
+	/** a bit setting, as from sensesMask(), flagging this room as being flagged for synchronization */
+	public final static int SENSE_ROOMSYNC=4096;
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unruinable */
 	public final static int SENSE_ITEMNORUIN=8192;
 	/** a bit setting, as from sensesMask(), flagging this item being unwishable for */

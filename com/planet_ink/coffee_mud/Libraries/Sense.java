@@ -1660,7 +1660,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			final Rider rider=(Rider)P;
 			final Rideable ride=rider.riding();
 			if((ride instanceof Boardable)
-			&&(((Boardable)ride).Name().equals(rider.Name())))
+			&&(ride.Name().equals(rider.Name())))
 				return getDirType(ride);
 		}
 		if(P instanceof Room)
@@ -1795,7 +1795,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(P!=null)
 		{
-			if((P instanceof Boardable)&&(!((Boardable)P).amDestroyed()))
+			if((P instanceof Boardable)&&(!P.amDestroyed()))
 				return true;
 			for(final Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
@@ -2214,7 +2214,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(iP instanceof Room)
 		{
 			return ((!I.amDestroyed())
-					&&((!reqInhabitation)||(((Room)iP).isContent(I))));
+					&&((!reqInhabitation)||(iP.isContent(I))));
 		}
 		return false;
 	}
@@ -2229,6 +2229,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isInTheGame(final Area E, final boolean reqInhabitation)
 	{
 		return CMLib.map().getArea(E.Name())==E;
+	}
+
+	@Override
+	public boolean isActivityAllowedHere(final CMObject E, Room R)
+	{
+		if((R == null)&&(E instanceof Environmental))
+			R = CMLib.map().roomLocation((Environmental)E);
+		if((R != null) && ((R.basePhyStats().sensesMask()&PhyStats.SENSE_ROOMSYNC)>0))
+			return false;
+		final Area A = (R!=null)?R.getArea():CMLib.map().areaLocation(E);
+		if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
+			return false;
+		return true;
 	}
 
 	@Override

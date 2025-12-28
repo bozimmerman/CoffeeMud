@@ -15655,15 +15655,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 		final List<SubScript> scripts=getScripts(affecting);
 
-		if(!runInPassiveAreas)
+		if((!runInPassiveAreas)
+		&&(!CMLib.flags().isActivityAllowedHere(ticking,lastKnownLocation)))
 		{
-			final Area A=CMLib.map().areaLocation(ticking);
-			if((A!=null)&&(A.getAreaState() != Area.State.ACTIVE))
-			{
-				if(this.que.size()>0)
-					this.que.clear();
-				return true;
-			}
+			if(this.que.size()>0)
+				this.que.clear();
+			return true;
 		}
 		if(!runWithoutPCs)
 		{
@@ -15824,7 +15821,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 6: // once_prog
-				if(!oncesDone.contains(Integer.valueOf(thisScriptIndex))&&canTrigger(6))
+				if((!oncesDone.contains(Integer.valueOf(thisScriptIndex)))
+				&&canTrigger(6))
 				{
 					if(t==null)
 						t=parseBits(script,0,"C");

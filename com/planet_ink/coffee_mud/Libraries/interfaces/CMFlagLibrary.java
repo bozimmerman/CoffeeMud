@@ -1206,6 +1206,17 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isInTheGame(Room E, boolean reqInhabitation);
 
 	/**
+	 * Returns whether the given object, in the given room, is allowed
+	 * to engage in activities that are not suppressed by passive 
+	 * areas or rooms.
+	 * 
+	 * @param E the object who wants to be active
+	 * @param R the room that the object is in, or null to search for it
+	 * @return true if activity is allowed, false otherwise
+	 */
+	public boolean isActivityAllowedHere(final CMObject E, final Room R);
+	
+	/**
 	 * Returns whether the given Item is actually in the game, and in
 	 * a room, or is just temporary or cached.
 	 * @param I the Item to check

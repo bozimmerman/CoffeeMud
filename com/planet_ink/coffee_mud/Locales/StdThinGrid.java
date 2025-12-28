@@ -412,157 +412,162 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		synchronized(R.basePhyStats())
 		{
 			final int mask=R.basePhyStats().sensesMask();
-			if(CMath.bset(mask,PhyStats.SENSE_ROOMGRIDSYNC))
+			if(CMath.bset(mask,PhyStats.SENSE_ROOMSYNC))
 				return;
-			R.basePhyStats().setSensesMask(mask|PhyStats.SENSE_ROOMGRIDSYNC);
+			R.basePhyStats().setSensesMask(mask|PhyStats.SENSE_ROOMSYNC);
 		}
-
-		// the adjacent rooms created by this method should also take
-		// into account the possibility that they are on the edge.
-		// it does NOT
-		if(ox==null)
-			ox=CMClass.getExit("Open");
-		Room R2=null;
-		if(y>0)
+		try
 		{
-			R2=getMakeSingleGridRoom(x,y-1);
-			if(R2!=null)
-				linkRoom(R,R2,Directions.NORTH,ox,ox);
-		}
-		else
-		if((doors[Directions.NORTH]!=null)&&(exits[Directions.NORTH]!=null))
-			linkRoom(R,doors[Directions.NORTH],Directions.NORTH,exits[Directions.NORTH],exits[Directions.NORTH]);
-
-		if(x>0)
-		{
-			R2=getMakeSingleGridRoom(x-1,y);
-			if(R2!=null)
-				linkRoom(R,R2,Directions.WEST,ox,ox);
-		}
-		else
-		if((doors[Directions.WEST]!=null)&&(exits[Directions.WEST]!=null))
-			linkRoom(R,doors[Directions.WEST],Directions.WEST,exits[Directions.WEST],exits[Directions.WEST]);
-		if(y<(yGridSize()-1))
-		{
-			R2=getMakeSingleGridRoom(x,y+1);
-			if(R2!=null)
-				linkRoom(R,R2,Directions.SOUTH,ox,ox);
-		}
-		else
-		if((doors[Directions.SOUTH]!=null)&&(exits[Directions.SOUTH]!=null))
-			linkRoom(R,doors[Directions.SOUTH],Directions.SOUTH,exits[Directions.SOUTH],exits[Directions.SOUTH]);
-
-		if(x<(xGridSize()-1))
-		{
-			R2=getMakeSingleGridRoom(x+1,y);
-			if(R2!=null)
-				linkRoom(R,R2,Directions.EAST,ox,ox);
-		}
-		else
-		if((doors[Directions.EAST]!=null)&&(exits[Directions.EAST]!=null))
-			linkRoom(R,doors[Directions.EAST],Directions.EAST,exits[Directions.EAST],exits[Directions.EAST]);
-
-		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
-		{
-			if((y>0)&&(x>0))
+			// the adjacent rooms created by this method should also take
+			// into account the possibility that they are on the edge.
+			// it does NOT
+			if(ox==null)
+				ox=CMClass.getExit("Open");
+			Room R2=null;
+			if(y>0)
 			{
-				R2=getMakeSingleGridRoom(x-1,y-1);
+				R2=getMakeSingleGridRoom(x,y-1);
 				if(R2!=null)
-					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+					linkRoom(R,R2,Directions.NORTH,ox,ox);
 			}
 			else
-			if((Directions.NORTHWEST<doors.length)
-			&&(doors[Directions.NORTHWEST]!=null)
-			&&(exits[Directions.NORTHWEST]!=null))
-				linkRoom(R,doors[Directions.NORTHWEST],Directions.NORTHWEST,exits[Directions.NORTHWEST],exits[Directions.NORTHWEST]);
-
-			if((x>0)&&(y<(yGridSize()-1)))
+			if((doors[Directions.NORTH]!=null)&&(exits[Directions.NORTH]!=null))
+				linkRoom(R,doors[Directions.NORTH],Directions.NORTH,exits[Directions.NORTH],exits[Directions.NORTH]);
+	
+			if(x>0)
 			{
-				R2=getMakeSingleGridRoom(x-1,y+1);
+				R2=getMakeSingleGridRoom(x-1,y);
 				if(R2!=null)
-					linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+					linkRoom(R,R2,Directions.WEST,ox,ox);
 			}
 			else
-			if((Directions.SOUTHWEST<doors.length)
-			&&(doors[Directions.SOUTHWEST]!=null)
-			&&(exits[Directions.SOUTHWEST]!=null))
-				linkRoom(R,doors[Directions.SOUTHWEST],Directions.SOUTHWEST,exits[Directions.SOUTHWEST],exits[Directions.SOUTHWEST]);
-
-			if((x<(xGridSize()-1))&&(y>0))
+			if((doors[Directions.WEST]!=null)&&(exits[Directions.WEST]!=null))
+				linkRoom(R,doors[Directions.WEST],Directions.WEST,exits[Directions.WEST],exits[Directions.WEST]);
+			if(y<(yGridSize()-1))
 			{
-				R2=getMakeSingleGridRoom(x+1,y-1);
+				R2=getMakeSingleGridRoom(x,y+1);
 				if(R2!=null)
-					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+					linkRoom(R,R2,Directions.SOUTH,ox,ox);
 			}
 			else
-			if((Directions.NORTHEAST<doors.length)
-			&&(doors[Directions.NORTHEAST]!=null)
-			&&(exits[Directions.NORTHEAST]!=null))
-				linkRoom(R,doors[Directions.NORTHEAST],Directions.NORTHEAST,exits[Directions.NORTHEAST],exits[Directions.NORTHEAST]);
-			if((x<(xGridSize()-1))&&(y<(yGridSize()-1)))
+			if((doors[Directions.SOUTH]!=null)&&(exits[Directions.SOUTH]!=null))
+				linkRoom(R,doors[Directions.SOUTH],Directions.SOUTH,exits[Directions.SOUTH],exits[Directions.SOUTH]);
+	
+			if(x<(xGridSize()-1))
 			{
-				R2=getMakeSingleGridRoom(x+1,y+1);
+				R2=getMakeSingleGridRoom(x+1,y);
 				if(R2!=null)
-					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+					linkRoom(R,R2,Directions.EAST,ox,ox);
 			}
 			else
-			if((Directions.SOUTHEAST<doors.length)
-			&&(doors[Directions.SOUTHEAST]!=null)
-			&&(exits[Directions.SOUTHEAST]!=null))
-				linkRoom(R,doors[Directions.SOUTHEAST],Directions.SOUTHEAST,exits[Directions.SOUTHEAST],exits[Directions.SOUTHEAST]);
-		}
-
-		for(int d=0;d<gridexits.size();d++)
-		{
-			final CrossExit EX=gridexits.elementAt(d);
-			try
+			if((doors[Directions.EAST]!=null)&&(exits[Directions.EAST]!=null))
+				linkRoom(R,doors[Directions.EAST],Directions.EAST,exits[Directions.EAST],exits[Directions.EAST]);
+	
+			if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 			{
-				if((EX.out)&&(EX.x==x)&&(EX.y==y))
+				if((y>0)&&(x>0))
 				{
-					switch(EX.dir)
+					R2=getMakeSingleGridRoom(x-1,y-1);
+					if(R2!=null)
+						linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
+				}
+				else
+				if((Directions.NORTHWEST<doors.length)
+				&&(doors[Directions.NORTHWEST]!=null)
+				&&(exits[Directions.NORTHWEST]!=null))
+					linkRoom(R,doors[Directions.NORTHWEST],Directions.NORTHWEST,exits[Directions.NORTHWEST],exits[Directions.NORTHWEST]);
+	
+				if((x>0)&&(y<(yGridSize()-1)))
+				{
+					R2=getMakeSingleGridRoom(x-1,y+1);
+					if(R2!=null)
+						linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
+				}
+				else
+				if((Directions.SOUTHWEST<doors.length)
+				&&(doors[Directions.SOUTHWEST]!=null)
+				&&(exits[Directions.SOUTHWEST]!=null))
+					linkRoom(R,doors[Directions.SOUTHWEST],Directions.SOUTHWEST,exits[Directions.SOUTHWEST],exits[Directions.SOUTHWEST]);
+	
+				if((x<(xGridSize()-1))&&(y>0))
+				{
+					R2=getMakeSingleGridRoom(x+1,y-1);
+					if(R2!=null)
+						linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
+				}
+				else
+				if((Directions.NORTHEAST<doors.length)
+				&&(doors[Directions.NORTHEAST]!=null)
+				&&(exits[Directions.NORTHEAST]!=null))
+					linkRoom(R,doors[Directions.NORTHEAST],Directions.NORTHEAST,exits[Directions.NORTHEAST],exits[Directions.NORTHEAST]);
+				if((x<(xGridSize()-1))&&(y<(yGridSize()-1)))
+				{
+					R2=getMakeSingleGridRoom(x+1,y+1);
+					if(R2!=null)
+						linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
+				}
+				else
+				if((Directions.SOUTHEAST<doors.length)
+				&&(doors[Directions.SOUTHEAST]!=null)
+				&&(exits[Directions.SOUTHEAST]!=null))
+					linkRoom(R,doors[Directions.SOUTHEAST],Directions.SOUTHEAST,exits[Directions.SOUTHEAST],exits[Directions.SOUTHEAST]);
+			}
+	
+			for(int d=0;d<gridexits.size();d++)
+			{
+				final CrossExit EX=gridexits.elementAt(d);
+				try
+				{
+					if((EX.out)&&(EX.x==x)&&(EX.y==y))
 					{
-					case Directions.NORTH:
-						if(EX.y==0)
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.SOUTH:
-						if(EX.y==yGridSize()-1)
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.EAST:
-						if(EX.x==xGridSize()-1)
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.WEST:
-						if(EX.x==0)
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.NORTHEAST:
-						if((EX.y==0)&&(EX.x==xGridSize()-1))
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.SOUTHWEST:
-						if((EX.y==yGridSize()-1)&&(EX.x==0))
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.NORTHWEST:
-						if((EX.y==0)&&(EX.x==0))
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
-					case Directions.SOUTHEAST:
-						if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
-							tryFillInExtraneousExternal(EX,ox,R);
-						break;
+						switch(EX.dir)
+						{
+						case Directions.NORTH:
+							if(EX.y==0)
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.SOUTH:
+							if(EX.y==yGridSize()-1)
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.EAST:
+							if(EX.x==xGridSize()-1)
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.WEST:
+							if(EX.x==0)
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.NORTHEAST:
+							if((EX.y==0)&&(EX.x==xGridSize()-1))
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.SOUTHWEST:
+							if((EX.y==yGridSize()-1)&&(EX.x==0))
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.NORTHWEST:
+							if((EX.y==0)&&(EX.x==0))
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						case Directions.SOUTHEAST:
+							if((EX.y==yGridSize()-1)&&(EX.x==xGridSize()-1))
+								tryFillInExtraneousExternal(EX,ox,R);
+							break;
+						}
 					}
 				}
-			}
-			catch(final Exception e)
-			{
+				catch(final Exception e)
+				{
+				}
 			}
 		}
-		synchronized(R.basePhyStats())
+		finally
 		{
-			R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMGRIDSYNC));
+			synchronized(R.basePhyStats())
+			{
+				R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMSYNC));
+			}
 		}
 	}
 

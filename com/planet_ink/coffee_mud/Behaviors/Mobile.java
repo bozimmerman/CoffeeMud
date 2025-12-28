@@ -345,8 +345,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				if(room==null)
 					return true;
 
-				if((room.getArea()!=null)
-				&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
+				if(!CMLib.flags().isActivityAllowedHere(mob,room))
 					return true;
 
 				if((!CMLib.flags().canTrack(mob)) && (CMLib.dice().roll(1,100,0)>1))
