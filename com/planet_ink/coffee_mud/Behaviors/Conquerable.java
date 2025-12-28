@@ -1577,7 +1577,8 @@ public class Conquerable extends Arrest
 				waitToReload=0;
 			else
 				waitToReload=System.currentTimeMillis()+60000;
-			if(totalControlPoints>=0)
+			if((totalControlPoints>=0)
+			&& (this.resaveClanItemsFlag || (holdingClan.length()>0)))
 			{
 				totalControlPoints=-1;
 				final StringBuffer data=new StringBuffer("");
