@@ -53,7 +53,7 @@ public class MUDProxy
 	private static Selector			selector		= null;
 	private static LBStrategy		strategy		= LBStrategy.ROUNDROBIN;
 	private static Random			rand			= new Random(System.nanoTime());
-	private static String			ctlPassword		= "" + (rand.nextInt(90000) + 10000);
+	private static String			ctlPassword		= ""+(rand.nextInt(90000)+10000);
 	private static boolean			packetDebug		= false;
 
 	private static final Map<String,Pair<String, Integer>>
@@ -197,7 +197,7 @@ public class MUDProxy
 			}
 			catch (final Exception e)
 			{
-				Log.debugOut("readThread:" + myCtx.toString());
+				Log.debugOut("readThread:"+myCtx.toString());
 				Log.errOut(e);
 				closeKey(k);
 			}
@@ -218,19 +218,19 @@ public class MUDProxy
 		final int port = CMath.s_int(a[1]);
 		if((port <= 0)||(port > 65535))
 		{
-			System.err.println("PROXY/ERROR: Invalid port: " + a[1]);
+			System.err.println("PROXY/ERROR: Invalid port: "+a[1]);
 			System.exit(-1);
 		}
 		final String keypassword = a[2];
 		if (keypassword.length()==0)
 		{
-			System.err.println("PROXY/ERROR: Invalid key password: " + keypassword);
+			System.err.println("PROXY/ERROR: Invalid key password: "+keypassword);
 			System.exit(-1);
 		}
 		final String ctlpassword = a[3];
 		if (CMath.s_int(ctlpassword) < 10000)
 		{
-			System.err.println("PROXY/ERROR: Invalid control password: " + ctlpassword);
+			System.err.println("PROXY/ERROR: Invalid control password: "+ctlpassword);
 			System.exit(-1);
 		}
 		mpcpKey = keypassword;
@@ -240,15 +240,15 @@ public class MUDProxy
 		final String command = cmd.toString().trim();
 		try (Socket sock = new Socket("localhost", port))
 		{
-			final String payload = command.toUpperCase().trim()+" {\"message\":\"" + MiniJSON.toJSONString(command) + "\""
-					+ ",\"password\":\"" + MiniJSON.toJSONString(ctlpassword) + "\""
-					+ ",\"timestamp\":" + System.currentTimeMillis() + "}";
+			final String payload = command.toUpperCase().trim()+" {\"message\":\""+MiniJSON.toJSONString(command)+"\""
+					+",\"password\":\""+MiniJSON.toJSONString(ctlpassword)+"\""
+					+",\"timestamp\":"+System.currentTimeMillis()+"}";
 			final byte[] packet = makeMPCPPacket(payload);
 			sock.getOutputStream().write(packet);
-			sock.getOutputStream().write(makeMPCPPacket("DISCONNECT {\"password\":\"" + MiniJSON.toJSONString(ctlpassword) + "\""
-											+ ",\"timestamp\":" + System.currentTimeMillis() + "}"));
+			sock.getOutputStream().write(makeMPCPPacket("DISCONNECT {\"password\":\""+MiniJSON.toJSONString(ctlpassword)+"\""
+											+",\"timestamp\":"+System.currentTimeMillis()+"}"));
 			sock.getOutputStream().flush();
-			System.out.println("Control command sent: " + command);
+			System.out.println("Control command sent: "+command);
 			final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 			final InputStream in = sock.getInputStream();
 			final long startTime = System.currentTimeMillis();
@@ -294,14 +294,14 @@ public class MUDProxy
 				}
 			}
 			if (str.length() > 0)
-				System.out.println("Response: " + str.toString().trim());
+				System.out.println("Response: "+str.toString().trim());
 			else
 				System.out.println("No response received.");
 		}
 		catch (final Exception e)
 		{
 			e.printStackTrace();
-			System.err.println("PROXY/ERROR: Failed to send command: " + e.getMessage());
+			System.err.println("PROXY/ERROR: Failed to send command: "+e.getMessage());
 			System.exit(-1);
 		}
 	}
@@ -316,7 +316,7 @@ public class MUDProxy
 	 */
 	public synchronized static Pair<String, Integer> getPort(final String host, final Integer port)
 	{
-		final String key = ((host==null)?"":host.toLowerCase()) + ":" + port.toString();
+		final String key = ((host==null)?"":host.toLowerCase())+":"+port.toString();
 		if (allPorts.containsKey(key))
 			return allPorts.get(key);
 		final Pair<String,Integer> p = new Pair<String,Integer>(host,port);
@@ -457,7 +457,7 @@ public class MUDProxy
 			System.exit(-1);
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v" + MUD.HOST_VERSION);
+		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v"+MUD.HOST_VERSION);
 		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2025 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);
@@ -472,7 +472,7 @@ public class MUDProxy
 				final PairList<String,Integer> fws = portMap.get(proxyPort);
 				serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 				for(final Pair<String,Integer> fw : fws)
-					Log.sysOut("Listening on port " + proxyPort + " -> " + fw.first + ":" + fw.second);
+					Log.sysOut("Listening on port "+proxyPort+" -> "+fw.first+":"+fw.second);
 			}
 			distressThread.start();
 			while(true) //main proxy server loop
@@ -612,9 +612,9 @@ public class MUDProxy
 										if((clientContext!=null)&&(clientContext.distressedTime != 0))
 										{
 											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-													+ "\"client_address\":\""+clientAddr+"\","
+													+"\"client_address\":\""+clientAddr+"\","
 													+"\"reconnect\": true,"
-													+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
+													+"\"timestamp\":"+System.currentTimeMillis()+"}")));
 											clientContext.connectTime=System.currentTimeMillis();
 											clientContext.distressedTime=0;
 											final JSONObject obj = new MiniJSON.JSONObject();
@@ -633,8 +633,8 @@ public class MUDProxy
 										else
 										{
 											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-													+ "\"client_address\":\""+clientAddr+"\","
-													+ "\"timestamp\":"+System.currentTimeMillis()+"}")));
+													+"\"client_address\":\""+clientAddr+"\","
+													+"\"timestamp\":"+System.currentTimeMillis()+"}")));
 										}
 										key.interestOps(SelectionKey.OP_READ);
 									}
@@ -901,7 +901,7 @@ public class MUDProxy
 	private static void sendMPCPMsg(final SelectionKey key, final MUDProxy context, final String message) throws IOException
 	{
 		final byte[] bytes = MUDProxy.makeMPCPPacket("MESSAGE {\"message\":"
-				+ "\""+MiniJSON.toJSONString(message)+"\",\"timestamp\":"+System.currentTimeMillis()+"}");
+				+"\""+MiniJSON.toJSONString(message)+"\",\"timestamp\":"+System.currentTimeMillis()+"}");
 		synchronized (context.output)
 		{
 			context.output.add(ByteBuffer.wrap(bytes));
@@ -1647,8 +1647,34 @@ public class MUDProxy
 		}
 		catch (final IOException e) {}
 		key.cancel();
-		Log.sysOut(context.outsidePortNum+"","Connection lost "+context.ipAddress
-				+"->"+context.port.first+":"+context.port.second);
+		if (context.isClient)
+		{
+			if (pairedContext != null)
+			{
+				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress 
+					+" <-> Proxy:"+context.outsidePortNum 
+					+" <-> "+pairedContext.port.first+":"+pairedContext.port.second);
+			}
+			else
+			{
+				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress 
+					+" <-> Proxy:"+context.outsidePortNum+" <-> (unknown server)");
+			}
+		}
+		else
+		{
+			if (pairedContext != null)
+			{
+				Log.sysOut(context.outsidePortNum+"", "Server connection lost: "+pairedContext.ipAddress 
+					+" <-> Proxy:"+context.outsidePortNum 
+					+" <-> "+context.port.first+":"+context.port.second);
+			}
+			else
+			{
+				Log.sysOut(context.outsidePortNum+"", "Server connection lost: (unknown client) <-> Proxy:" 
+					+context.outsidePortNum+" <-> "+context.port.first+":"+context.port.second);
+			}
+		}
 	}
 
 	public static void reconnectClient(final SelectionKey key, final MUDProxy context, final MUDProxy server)
@@ -1829,7 +1855,7 @@ public class MUDProxy
 	{
 		final int numRead = chan.read(bytes);
 		if (packetDebug && (numRead > 0))
-			Log.debugOut("PROXY", "RCVD:\n" + bytesToHexAscii(Arrays.copyOfRange(bytes.array(), 0, numRead)));
+			Log.debugOut("PROXY", "RCVD:\n"+bytesToHexAscii(Arrays.copyOfRange(bytes.array(), 0, numRead)));
 		return numRead;
 	}
 
@@ -1866,15 +1892,15 @@ public class MUDProxy
 		{
 			final StringBuilder hex = new StringBuilder();
 			final StringBuilder ascii = new StringBuilder();
-			for (int j = 0; j < bytesPerLine && i + j < bytes.length; j++)
+			for (int j = 0; j < bytesPerLine && i+j < bytes.length; j++)
 			{
-				final byte b = bytes[i + j];
+				final byte b = bytes[i+j];
 				hex.append(String.format("%02X ", Byte.valueOf(b)));
 				ascii.append(((b >= 32)&&(b <= 126))?(char)b:'.');
 			}
 			String hexStr = hex.toString();
 			if (hexStr.length() < bytesPerLine * 3)
-				hexStr = String.format("%-" + (bytesPerLine * 3) + "s", hexStr);
+				hexStr = String.format("%-"+(bytesPerLine * 3)+"s", hexStr);
 			result.append(hexStr).append("  ").append(ascii).append("\n");
 		}
 		return result.toString();
