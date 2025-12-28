@@ -7446,7 +7446,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB)&&(lastKnownLocation!=null))
 				{
 					for(final MOB M : ((MOB)E).getGroupMembers(new HashSet<MOB>()))
-						results.append("'"+CMStrings.escapeSQuotes(M.name())+"' ");
+						results.append(CMParms.quoteIfNecessary(M.name())+" ");
 				}
 				break;
 			}

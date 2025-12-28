@@ -193,7 +193,9 @@ public class CMParms
 
 	/**
 	 * Returns the given string, unless it contains a space, in which case
-	 * it returns the string with double-quotes around it.
+	 * it returns the string with double-quotes around it.  It will escape
+	 * any embedded double-quotes.
+	 * 
 	 * @param str the string to check and return
 	 * @return the string, quoted it necessary
 	 */
@@ -201,9 +203,27 @@ public class CMParms
 	{
 		if(str==null)
 			return str;
-		if(str.indexOf(' ')>=0)
-			return "\""+str+"\"";
-		return str;
+		boolean quote = false;
+		for(int i=0;i<str.length();i++)
+		{
+			final char c = str.charAt(i);
+			if((c==' ')||(c=='\"')||(c=='\\'))
+			{
+				quote=true;
+				break;
+			}
+		}
+		if(!quote)
+			return str;
+		final StringBuilder s = new StringBuilder("\"");
+		for(int i=0;i<str.length();i++)
+		{
+			char c = str.charAt(i);
+			if((c=='"')||(c=='\\'))
+				s.append('\\');
+			s.append(c);
+		}
+		return s.append("\"").toString();
 	}
 
 	/**

@@ -1073,7 +1073,7 @@ public class CMStrings
 	{
 		if(str==null)
 			return str;
-		return replaceAll(replaceAll(str,"\\","\\\\"),"\"","\\\"");
+		return replaceAll(replaceAll(str,"\\","\\\\"),"'","\\'");
 	}
 
 	/**

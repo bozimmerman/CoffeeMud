@@ -631,11 +631,11 @@ public class ADataLoader
 		areaID = DB.injectionClean(areaID);
 		section = DB.injectionClean(section);
 		key = DB.injectionClean(key);
-		final PAData pData = createAreaData();
-		pData.who(areaID);
-		pData.section(section);
-		pData.key(key);
-		pData.xml(data);
+		final PAData aData = createAreaData();
+		aData.who(areaID);
+		aData.section(section);
+		aData.key(key);
+		aData.xml(data);
 		DB.updateWithClobs(
 		 "INSERT INTO CMADAT ("
 		 +"CMAREA, "
@@ -649,7 +649,7 @@ public class ADataLoader
 		 +"?"
 		 +")",
 		 data+" ");
-		return pData;
+		return aData;
 	}
 
 	public void DBReadArtifacts()
