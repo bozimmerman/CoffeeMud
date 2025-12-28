@@ -479,11 +479,11 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_CORPSEDROP=4;
 	/** a bit setting, as from sensesMask(), flagging this item/room as readable */
 	public final static int SENSE_ITEMREADABLE=8;
-	/** a bit setting, as from sensesMask(), flagging this item/room as ungettable */
+	/** a bit setting, as from sensesMask(), flagging this item as ungettable */
 	public final static int SENSE_ITEMNOTGET=16;
-	/** a bit setting, as from sensesMask(), flagging this item/room as undroppable */
+	/** a bit setting, as from sensesMask(), flagging this item as undroppable */
 	public final static int SENSE_ITEMNODROP=32;
-	/** a bit setting, as from sensesMask(), flagging this item/room as unremovable */
+	/** a bit setting, as from sensesMask(), flagging this item as unremovable */
 	public final static int SENSE_ITEMNOREMOVE=64;
 	/** a bit setting, as from sensesMask(), flagging this item/room as having unseeable contents */
 	public final static int SENSE_CONTENTSUNSEEN=128;
@@ -491,29 +491,31 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ROOMCRUNCHEDIN=256;
 	/** a bit setting, as from sensesMask(), flagging this item as not being auto-wearable in percolator */
 	public final static int SENSE_ITEMNOAUTOWEAR=256;
-	/** a bit setting, as from sensesMask(), flagging this item/room as being unexplorable */
+	/** a bit setting, as from sensesMask(), flagging this room as being unexplorable */
 	public final static int SENSE_ROOMUNEXPLORABLE=512;
+	/** a bit setting, as from sensesMask(), flagging this item as being unlearnable by crafting skills */
 	public final static int SENSE_ITEMUNLEARNABLE=512;
-	/** a bit setting, as from sensesMask(), flagging this item/room as not allowing movement */
+	/** a bit setting, as from sensesMask(), flagging this room as not allowing movement */
 	public final static int SENSE_ROOMNOMOVEMENT=1024;
+	/** a bit setting, as from sensesMask(), flagging this item as kept over death */
 	public final static int SENSE_ITEMDEATHKEEPER=1024;
-	/** a bit setting, as from sensesMask(), flagging this item/room as being unmappable */
+	/** a bit setting, as from sensesMask(), flagging this room as being unmappable */
 	public final static int SENSE_ROOMUNMAPPABLE=2048;
-	/** a bit setting, as from sensesMask(), flagging this item/room as being flagged for synchronization */
+	/** a bit setting, as from sensesMask(), flagging this room as being flagged for grid synchronization */
 	public final static int SENSE_ROOMGRIDSYNC=4096;
 	/** a bit setting, as from sensesMask(), flagging this item/room as being unruinable */
 	public final static int SENSE_ITEMNORUIN=8192;
-	/** a bit setting, as from sensesMask(), flagging this item/room being unwishable for */
+	/** a bit setting, as from sensesMask(), flagging this item being unwishable for */
 	public final static int SENSE_ITEMNOWISH=16384;
 	/** a bit setting, as from sensesMask(), flagging this item/room is always viewed compressed  */
 	public final static int SENSE_ALWAYSCOMPRESSED=32768;
 	/** a bit setting, as from sensesMask(), flagging this item/room and unable to be destroyed */
 	public final static int SENSE_UNDESTROYABLE=65536;
-	/** a bit setting, as from sensesMask(), flagging this ...  */
+	/** a bit setting, as from sensesMask(), flagging this container as having accessible contents  */
 	public final static int SENSE_INSIDEACCESSIBLE=131072;
 	/** a bit setting, as from sensesMask(), flagging this as being unscrappable ...  */
 	public final static int SENSE_ITEMNOSCRAP=262144;
-	/** a bit setting, as from sensesMask(), flagging this ...  */
+	/** a bit setting, as from sensesMask(), flagging this as an unlisted item unless longlook */
 	public final static int SENSE_HIDDENINPLAINSIGHT=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
 	public final static int SENSE_UNCAMPABLE=1048576; // must match the normal mob version also
