@@ -52,7 +52,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	protected String			savedHoldingClan	= "";
+	protected boolean			resaveClanItemsFlag	= false;
 	protected String			prevHoldingClan		= "";
 	protected String			holdingClan			= "";
 	protected Map<String,int[]>	clanControlPoints	= new STreeMap<String,int[]>();
@@ -562,7 +562,8 @@ public class Conquerable extends Arrest
 				final List<XMLTag> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
-					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
+					final String savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
+					this.resaveClanItemsFlag = savedHoldingClan.trim().length()>0;
 					prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
 					conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
@@ -899,7 +900,7 @@ public class Conquerable extends Arrest
 		&&(myArea!=null)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST))
 		&&(totalControlPoints>=0)
-		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+		&&( resaveClanItemsFlag ||(!holdingClan.equals(""))))
 		{
 			synchronized(clanItems)
 			{
@@ -1127,7 +1128,10 @@ public class Conquerable extends Arrest
 		synchronized(clanItems)
 		{
 			if(!clanItems.containsFirst(I))
+			{
+				resaveClanItemsFlag = true;
 				clanItems.add(I,I.owner());
+			}
 			if((I.owner() instanceof Room)
 			&&(I.container()!=null))
 				I.setContainer(null);
@@ -1143,6 +1147,7 @@ public class Conquerable extends Arrest
 	{
 		synchronized(clanItems)
 		{
+			resaveClanItemsFlag = true;
 			try
 			{
 				final int x = clanItems.indexOfFirst(I);
@@ -1572,59 +1577,65 @@ public class Conquerable extends Arrest
 				waitToReload=0;
 			else
 				waitToReload=System.currentTimeMillis()+60000;
-			if((totalControlPoints>=0)
-			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+			if(totalControlPoints>=0)
 			{
 				totalControlPoints=-1;
 				final StringBuffer data=new StringBuffer("");
-				data.append(CMLib.xml().convertXMLtoTag("CLANID",holdingClan));
-				data.append(CMLib.xml().convertXMLtoTag("OLDCLANID",prevHoldingClan));
-				data.append(CMLib.xml().convertXMLtoTag("CLANDATE",conquestDate));
-				data.append("<ACITEMS>");
+				final XMLLibrary xmlLib = CMLib.xml();
 				synchronized(clanItems)
 				{
-					for(int i=0;i<clanItems.size();i++)
+					if(clanItems.size()>0)
 					{
-						final ClanItem I=clanItems.getFirst(i);
-						final Room R=CMLib.map().roomLocation(I);
-						if((R!=null)
-						&&(((Area)myHost).inMyMetroArea(R.getArea()))
-						&&(!I.amDestroyed())
-						&&((!(I.owner() instanceof MOB))||(((MOB)I.owner()).isMonster()))
-						&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
+						data.append(xmlLib.convertXMLtoTag("CLANID",holdingClan));
+						data.append(xmlLib.convertXMLtoTag("OLDCLANID",prevHoldingClan));
+						data.append(xmlLib.convertXMLtoTag("CLANDATE",conquestDate));
+						data.append("<ACITEMS>");
+						for(int i=0;i<clanItems.size();i++)
 						{
-							data.append("<ACITEM>");
-							if(I.owner() instanceof Room)
-								data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
-							else
-							if(I.owner() instanceof MOB)
+							final ClanItem I=clanItems.getFirst(i);
+							final Room R=CMLib.map().roomLocation(I);
+							if((R!=null)
+							&&(((Area)myHost).inMyMetroArea(R.getArea()))
+							&&(!I.amDestroyed())
+							&&((!(I.owner() instanceof MOB))||(((MOB)I.owner()).isMonster()))
+							&&((I.getClanItemType()!=ClanItem.ClanItemType.FLAG)||(R.isContent(I))))
 							{
-								final MOB M=(MOB)I.owner();
-								if((M.getStartRoom()!=null)
-								&&(myArea.inMyMetroArea(M.getStartRoom().getArea())))
+								data.append("<ACITEM>");
+								if(I.owner() instanceof Room)
+									data.append(xmlLib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
+								else
+								if(I.owner() instanceof MOB)
 								{
-									data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
-									data.append(CMLib.xml().convertXMLtoTag("MOB",M.Name()));
+									final MOB M=(MOB)I.owner();
+									if((M.getStartRoom()!=null)
+									&&(myArea.inMyMetroArea(M.getStartRoom().getArea())))
+									{
+										data.append(xmlLib.convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
+										data.append(xmlLib.convertXMLtoTag("MOB",M.Name()));
+									}
 								}
+								data.append(xmlLib.convertXMLtoTag("ICLAS",CMClass.classID(I)));
+								data.append(xmlLib.convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
+								data.append(xmlLib.convertXMLtoTag("IUSES",I.usesRemaining()));
+								data.append(xmlLib.convertXMLtoTag("ILEVL",I.basePhyStats().level()));
+								data.append(xmlLib.convertXMLtoTag("IABLE",I.basePhyStats().ability()));
+								data.append(xmlLib.convertXMLtoTag("ITEXT",xmlLib.parseOutAngleBrackets(I.text())));
+								data.append("</ACITEM>");
+								I.destroy();
 							}
-							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
-							data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
-							data.append(CMLib.xml().convertXMLtoTag("IUSES",I.usesRemaining()));
-							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
-							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
-							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
-							data.append("</ACITEM>");
-							I.destroy();
 						}
+						data.append("</ACITEMS>");
 					}
-					clanItems.clear();
 				}
-				savedHoldingClan="";
+				clanItems.clear();
+				resaveClanItemsFlag=false;
 				holdingClan="";
 				prevHoldingClan="";
 				clanControlPoints=new STreeMap<String,int[]>();
-				data.append("</ACITEMS>");
-				CMLib.database().DBReCreateAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
+				if(data.length()==0)
+					CMLib.database().DBDeleteAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+				else
+					CMLib.database().DBReCreateAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
 		}
 	}
