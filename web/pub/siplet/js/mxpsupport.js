@@ -1690,7 +1690,7 @@ var MXP = function(sipwin)
 				{
 					if("REDIRECT" == action.toUpperCase())
 					{
-						var error = new SipError('');
+						var error = new SipSkip('');
 						var newFrame = framechoices[name];
 						error.call = function() {
 							sipwin.flushWindow();
@@ -2336,7 +2336,7 @@ var MXP = function(sipwin)
 			{
 				if(isEndTag)
 				{
-					var error = new SipError('');
+					var error = new SipSkip('');
 					var newFrame = framechoices[name];
 					var dests = this.dests;
 					error.call = function() 
@@ -2360,7 +2360,7 @@ var MXP = function(sipwin)
 					if(frame.sprops && frame.firstChild)
 						frame = frame.firstChild;
 					this.dests.push(sipwin.window);
-					var error = new SipError('');
+					var error = new SipSkip('');
 					if(eof != null)
 					{
 						sipwin.cleanDiv(frame);

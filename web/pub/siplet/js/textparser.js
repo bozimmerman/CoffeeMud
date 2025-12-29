@@ -85,7 +85,7 @@ function TEXT(sipwin, textParsers)
 				s = e.message;
 				if(e.call !== undefined)
 					excep = e.call;
-				if(!(e instanceof SipError))
+				if(!(e instanceof SipSkip))
 					console.error(e);
 			} 
 			if(s != null) // should this be before the parser trig checks?
