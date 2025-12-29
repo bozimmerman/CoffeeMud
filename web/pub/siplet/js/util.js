@@ -134,6 +134,20 @@ function subDim(a, b)
 	return `calc(${a} - ${b})`;
 }
 
+var fixDivSizeSpec = function(s)
+{
+	if(s==null || (s==undefined))
+		return null;
+	if(typeof s === 'number')
+		return s + 'px'; // Changed: Append 'px' if plain number
+	s = s.trim();
+	if((s.length>1)&&(s.endsWith("c"))&&(isDigit(s[0])))
+		return (Number(s.substr(0,s.length-1))*16)+'px';
+	if (!s.endsWith('%') && !s.endsWith('px') && !isNaN(parseFloat(s)))
+		return s + 'px';
+	return s;
+};
+
 function isValidAction(s)
 {
 	if(!s) 

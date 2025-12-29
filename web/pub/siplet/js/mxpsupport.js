@@ -1665,79 +1665,57 @@ var MXP = function(sipwin)
 				return;
 			}
 			else
-			if((("OPEN" == action.toUpperCase())||("REDIRECT" == action.toUpperCase()))
+			if((("OPEN" == action.toUpperCase())
+				||("REDIRECT" == action.toUpperCase())
+				||("REOPEN" == action.toUpperCase()))
 			&&(name != null))
 			{
-				var title = E.getAttributeValue("TITLE");
-				var internal = E.getAttributeValue("INTERNAL");
-				var align = E.getAttributeValue("ALIGN"); // internal only: left,right,bottom,top 
-				var left = E.getAttributeValue("LEFT"); // ignored if internal is specified 
-				var top = E.getAttributeValue("TOP"); // ignored if internal is specified 
-				var width = E.getAttributeValue("WIDTH");
-				var height = E.getAttributeValue("HEIGHT");
-				var scrolling = E.getAttributeValue("SCROLLING");
-				var dock = E.getAttributeValue("DOCK");
-				var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
-				var image = E.getAttributeValue("IMAGE") || '';
-				var imgop = E.getAttributeValue("IMGOP") || '';
-				var fixSize = function(s)
-				{
-					if(s==null || (s==undefined))
-						return null;
-					if(typeof s === 'number')
-						return s + 'px'; // Changed: Append 'px' if plain number
-					s = s.trim();
-					if((s.length>1)&&(s.endsWith("c"))&&(isDigit(s[0])))
-						return (Number(s.substr(0,s.length-1))*16)+'px';
-					if (!s.endsWith('%') && !s.endsWith('px') && !isNaN(parseFloat(s)))
-						return s + 'px';
-					return s;
-				};
-				if(width == null)
-					width = "50%";
-				if(height == null)
-					height = "50%";
-				top=fixSize(top);
-				left=fixSize(left);
-				width=fixSize(width);
-				height=fixSize(height);
 				var sprops = {
 					"name": name,
 					"action": action,
-					"title": title,
-					"dock": dock,
-					"internal": internal,
-					"align": align, 
-					"left": left, 
-					"top": top, 
-					"width": width,
-					"height": height,
-					"scrolling": scrolling,
-					"floating": floating
+					"title": E.getAttributeValue("TITLE"),
+					"dock": E.getAttributeValue("DOCK"),
+					"internal": E.getAttributeValue("INTERNAL"),
+					"align": E.getAttributeValue("ALIGN"), // internal only: left,right,bottom,top
+					"left": fixDivSizeSpec(E.getAttributeValue("LEFT")), // ignored if internal is specified
+					"top": fixDivSizeSpec(E.getAttributeValue("TOP")), // ignored if internal is specified 
+					"width": fixDivSizeSpec(E.getAttributeValue("WIDTH")) || '50%',
+					"height": fixDivSizeSpec(E.getAttributeValue("HEIGHT")) || '50%',
+					"scrolling": E.getAttributeValue("SCROLLING"),
+					"floating": E.getAttributeValue("FLOATING"), // otherwise, close on click-away
+					"image": E.getAttributeValue("IMAGE") || '',
+					"imgop": E.getAttributeValue("IMGOP") || ''
 				};
-				if((name in framechoices) && ("REDIRECT" == action.toUpperCase()))
+				if(name in framechoices)
 				{
-					var error = new Error('');
-					var newFrame = framechoices[name];
-					error.call = function() {
-						sipwin.flushWindow();
-						sipwin.window = newFrame;
-					};
-					throw error;
+					if("REDIRECT" == action.toUpperCase())
+					{
+						var error = new SipError('');
+						var newFrame = framechoices[name];
+						error.call = function() {
+							sipwin.flushWindow();
+							sipwin.window = newFrame;
+						};
+						throw error;
+					}
+					if("OPEN" == action.toUpperCase())
+						return; // can't open an existing frame
 				}
 				else
-				if(name in this.frames)
-					return;
-				else
-				if((dock != null) && (dock.trim().length>0))
+				if("REOPEN" == action.toUpperCase())
+					return; // can't re-open a non-existant frame, so silently fail
+
+				// start the opening process!
+
+				if((sprops.dock != null) && (sprops.dock.trim().length>0))
 				{
 					var tabPos = 'above';
-					var tabFrame = dock;
-					var d = dock.indexOf(' ');
+					var tabFrame = sprops.dock;
+					var d = sprops.dock.indexOf(' ');
 					if(d > 0) 
 					{
-						tabPos = dock.substr(0, d).trim().toLowerCase();
-						tabFrame = dock.substr(d + 1).trim();
+						tabPos = sprops.dock.substr(0, d).trim().toLowerCase();
+						tabFrame = sprops.dock.substr(d + 1).trim();
 					}
 					if(!(tabFrame in framechoices)) 
 						return; // Invalid target
@@ -1872,24 +1850,24 @@ var MXP = function(sipwin)
 					newContent.setAttribute('aria-atomic', 'false');
 					newContent.setAttribute('aria-busy', 'false');
 					newContent.style.border = '1px solid white';
-					newContent.style.overflowY = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'y') ? 'auto' : 'hidden';
-					newContent.style.overflowX = (scrolling && scrolling.toLowerCase() === 'yes' || scrolling === 'x') ? 'auto' : 'hidden';
-					if(!scrolling || scrolling.toLowerCase() !== 'yes')
+					newContent.style.overflowY = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'y') ? 'auto' : 'hidden';
+					newContent.style.overflowX = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'x') ? 'auto' : 'hidden';
+					if(!sprops.scrolling || sprops.scrolling.toLowerCase() !== 'yes')
 					{
 						newContent.style.overflowWrap = 'break-word';
 						newContent.style.wordWrap = 'break-word';
 						newContent.style.whiteSpace = 'pre-wrap';
 					}
-					if (image) 
+					if (sprops.image) 
 					{
-						newContent.style.backgroundImage = `url("${image}")`;
+						newContent.style.backgroundImage = 'url("' + sprops.image+'")';
 						newContent.style.backgroundSize = 'cover';
 						newContent.style.backgroundPosition = 'center';
 						newContent.style.backgroundRepeat = 'no-repeat';
-						if (imgop && imgop.trim())
+						if (sprops.imgop && sprops.imgop.trim())
 						{
-							let opacity = imgop.trim();
-							if (!opacity.startsWith('.')) 
+							var opacity = sprops.imgop.trim();
+							if((!opacity.startsWith('.'))&&(!opacity.startsWith('0.')))
 								opacity = parseFloat(opacity) / 100;
 							newContent.style.opacity = opacity;
 						}
@@ -1900,9 +1878,9 @@ var MXP = function(sipwin)
 					var newTab = 
 					{
 						name: name,
-						title: title || name,
+						title: sprops.title || name,
 						content: newContent,
-						button: createTabButton(title || name, () => switchTab(newTab, peerContainer), name)
+						button: createTabButton(sprops.title || name, () => switchTab(newTab, peerContainer), name)
 					};
 					tabBar.appendChild(newTab.button);
 					peerContainer.sprops.tabs.push(newTab);
@@ -1914,9 +1892,9 @@ var MXP = function(sipwin)
 						sipwin.resizeTermWindow();
 				}
 				else
-				if(internal != null)
+				if(sprops.internal != null)
 				{
-					var alignx = (!align)?-1:aligns.indexOf(align.toUpperCase().trim());
+					var alignx = (!sprops.align)?-1:aligns.indexOf(sprops.align.toUpperCase().trim());
 					if(alignx >= 0)
 					{
 						var siblingDiv = sipwin.window;
@@ -1956,23 +1934,23 @@ var MXP = function(sipwin)
 						newContentWindow.setAttribute('aria-live', 'polite');
 						newContentWindow.setAttribute('aria-atomic', 'false');
 						newContentWindow.setAttribute('aria-busy', 'false');
-						if(image)
+						if(sprops.image)
 						{
-							newContentWindow.style.backgroundImage = 'url("'+image+'")';
+							newContentWindow.style.backgroundImage = 'url("'+sprops.image+'")';
 							newContentWindow.style.backgroundSize = 'cover';
 							newContentWindow.style.backgroundPosition = 'center';
 							newContentWindow.style.backgroundRepeat = 'no-repeat';
-							if(imgop.trim())
+							if(sprops.imgop && sprops.imgop.trim())
 							{
-								imgop = imgop.trim();
-								if(!imgop.startsWith('.'))
-									imgop=parseFloat(imgop)/100.0;
-								newContentWindow.style.opacity = ''+imgop;
+								var opacity = sprops.imgop.trim();
+								if((!opacity.startsWith('.'))&&(!opacity.startsWith('0.'))) 
+									opacity = parseFloat(opacity) / 100;
+								newContentWindow.style.opacity = ''+opacity;
 							}
 							updateMediaImagesInSpan(sipwin.sipfs, newContentWindow);
 						}
-						var isFullWidth = width.endsWith('%') && parseFloat(width) === 100;
-						var isFullHeight = height.endsWith('%') && parseFloat(height) === 100;
+						var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
+						var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
 						if ((alignx === 0 || alignx === 1) && isFullWidth) 
 						{
 							newContainerDiv.style.left = siblingDiv.style.left;
@@ -1994,7 +1972,7 @@ var MXP = function(sipwin)
 						switch(alignx)
 						{
 						case 0: // left
-							if (width === '100%') 
+							if (sprops.width === '100%') 
 							{
 								var occupied = '0px';
 								var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
@@ -2012,13 +1990,13 @@ var MXP = function(sipwin)
 								newContainerDiv.style.left = siblingDiv.style.left;
 								newContainerDiv.style.top = siblingDiv.style.top;
 								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = width;
-								siblingDiv.style.left = addDim(siblingDiv.style.left, width);
-								siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+								newContainerDiv.style.width = sprops.width;
+								siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
+								siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
 							}
 							break;
 						case 1: // right
-							if (width === '100%') 
+							if (sprops.width === '100%') 
 							{
 								var occupied = '0px';
 								var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
@@ -2033,15 +2011,15 @@ var MXP = function(sipwin)
 							}
 							else 
 							{
-								newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), width);
+								newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
 								newContainerDiv.style.top = siblingDiv.style.top;
 								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = width;
-								siblingDiv.style.width = subDim(siblingDiv.style.width, width);
+								newContainerDiv.style.width = sprops.width;
+								siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
 							}
 							break;
 						case 2: // top
-							if (height === '100%') 
+							if (sprops.height === '100%') 
 							{
 								var occupied = '0px';
 								var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
@@ -2059,13 +2037,13 @@ var MXP = function(sipwin)
 								newContainerDiv.style.top = siblingDiv.style.top;
 								newContainerDiv.style.left = siblingDiv.style.left;
 								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = height;
-								siblingDiv.style.top = addDim(siblingDiv.style.top, height);
-								siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+								newContainerDiv.style.height = sprops.height;
+								siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
+								siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
 							}
 							break;
 						case 3: // bottom
-							if (height === '100%') 
+							if (sprops.height === '100%') 
 							{
 								var occupied = '0px';
 								var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
@@ -2080,11 +2058,11 @@ var MXP = function(sipwin)
 							}
 							else 
 							{
-								newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), height);
+								newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
 								newContainerDiv.style.left = siblingDiv.style.left;
 								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = height;
-								siblingDiv.style.height = subDim(siblingDiv.style.height, height);
+								newContainerDiv.style.height = sprops.height;
+								siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
 							}
 							break;
 						}
@@ -2096,24 +2074,24 @@ var MXP = function(sipwin)
 							ww.style.overflowX = 'hidden';
 							ww.style.overflowY = 'hidden';
 						}
-						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
 						{
 							newContentWindow.style.overflowY = 'auto';
 							newContentWindow.style.overflowX = 'auto';
 						}
 						else
-						if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
+						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'x'))
 							newContentWindow.style.overflowX = 'auto';
 						else
 						{
-							if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
+							if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'y'))
 								newContentWindow.style.overflowY = 'auto';
 							newContentWindow.style.overflowWrap = 'break-word';
 							newContentWindow.style.wordWrap = 'break-word';
 							newContentWindow.style.whiteSpace = 'pre-wrap';
 						}
 						var titleBar;
-						if((title != null) && (title.trim().length>0))
+						if((sprops.title != null) && (sprops.title.trim().length>0))
 						{
 							titleBar = document.createElement('div');
 							titleBar.style.cssText = "position:absolute;left:0%;height:20px;width:100%;";
@@ -2122,7 +2100,7 @@ var MXP = function(sipwin)
 							titleBar.style.color = 'black';
 							newContentWindow.style.top = '20px';
 							newContentWindow.style.height = 'calc(100% - 20px)';
-							titleBar.innerHTML = '&nbsp;'+title;
+							titleBar.innerHTML = '&nbsp;'+sprops.title;
 						}
 						else
 						{
@@ -2130,7 +2108,7 @@ var MXP = function(sipwin)
 							titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 						}
 						newContainerDiv.append(titleBar);
-						if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
 						{
 							newContentWindow.style.overflowY = 'auto';
 							newContentWindow.style.overflowX = 'auto';
@@ -2144,30 +2122,30 @@ var MXP = function(sipwin)
 					}
 				}
 				else
-				if((top != null)
-				&&(left != null)
-				&&(width != null)
-				&&(height != null))
+				if((sprops.top != null)
+				&&(sprops.left != null)
+				&&(sprops.width != null)
+				&&(sprops.height != null))
 				{
 					var newTopWindow = document.createElement('div');
 					if(window.sipcounter === undefined) 
 						window.sipcounter=1;
 					newTopWindow.id = "WIN" + (window.sipcounter++);
-					newTopWindow.style.cssText = "position:absolute;top:"+top+";left:"+left+";height:"+height+";width:"+width+";";
+					newTopWindow.style.cssText = "position:absolute;top:"+sprops.top+";left:"+sprops.left+";height:"+sprops.height+";width:"+sprops.width+";";
 					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 					newTopWindow.style.backgroundColor = 'darkgray';
 					newTopWindow.style.color = 'black';
 					var titleBar;
 					var contentTop = "0px";
-					if((title != null) && (title.trim().length>0))
+					if((sprops.title != null) && (sprops.title.trim().length>0))
 					{
 						titleBar = document.createElement('div');
 						titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
 						titleBar.style.backgroundColor = 'white';
 						titleBar.style.color = 'black';
 						contentTop = "20px";
-						titleBar.innerHTML = '&nbsp;'+title;
-						if((floating != null) && (floating.toLowerCase() == 'close'))
+						titleBar.innerHTML = '&nbsp;'+sprops.title;
+						if((sprops.floating != null) && (sprops.floating.toLowerCase() == 'close'))
 						{
 							titleBar.innerHTML += '<IMG alt="Close" style="float: right; width: 16px; height: 16px;" '
 								+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
@@ -2190,23 +2168,23 @@ var MXP = function(sipwin)
 					newTopWindow.sprops = sprops;
 					contentWindow.style.overflowY = 'hidden';
 					contentWindow.style.overflowX = 'hidden';
-					if((scrolling!=null) && (scrolling.toLowerCase() == 'yes'))
+					if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
 					{
 						contentWindow.style.overflowY = 'auto';
 						contentWindow.style.overflowX = 'auto';
 					}
 					else
-					if((scrolling!=null) && (scrolling.toLowerCase() == 'x'))
+					if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'x'))
 						contentWindow.style.overflowX = 'auto';
 					else
 					{
-						if((scrolling!=null) && (scrolling.toLowerCase() == 'y'))
+						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'y'))
 							contentWindow.style.overflowY = 'auto';
 						contentWindow.style.overflowWrap = 'break-word';
 						contentWindow.style.wordWrap = 'break-word';
 						contentWindow.style.whiteSpace = 'pre-wrap';
 					}
-					if(floating == null)
+					if(sprops.floating == null)
 					{
 						contentWindow.onclick=function() {
 							sipwin.topWindow.removeChild(newTopWindow);
@@ -2358,7 +2336,7 @@ var MXP = function(sipwin)
 			{
 				if(isEndTag)
 				{
-					var error = new Error('');
+					var error = new SipError('');
 					var newFrame = framechoices[name];
 					var dests = this.dests;
 					error.call = function() 
@@ -2382,7 +2360,7 @@ var MXP = function(sipwin)
 					if(frame.sprops && frame.firstChild)
 						frame = frame.firstChild;
 					this.dests.push(sipwin.window);
-					var error = new Error('');
+					var error = new SipError('');
 					if(eof != null)
 					{
 						sipwin.cleanDiv(frame);

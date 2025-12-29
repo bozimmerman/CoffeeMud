@@ -130,11 +130,13 @@ var TELNET = function(sipwin)
 						{
 							var decoder = new TextDecoder("utf-8");
 							var ds = '';
-							try {
+							try
+							{
 								ds=decoder.decode(d);
-							} catch(e) {
-							}
-							if(this.debug && ds) console.log('TTYPE SEND: ' + ds);
+							} 
+							catch(e) {}
+							if(this.debug && ds)
+								console.log('TTYPE SEND: ' + ds);
 						}
 					}
 				}
