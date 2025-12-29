@@ -116,6 +116,24 @@ function setSelectByValue(select, value)
 	}
 }
 
+function addDim(a, b) 
+{
+	if (a === '0' || a === '0px' || a === '0%') 
+		return b;
+	if (b === '0' || b === '0px' || b === '0%') 
+		return a;
+	return `calc(${a} + ${b})`;
+}
+
+function subDim(a, b) 
+{
+	if (b === '0' || b === '0px' || b === '0%') 
+		return a;
+	if (a === '0' || a === '0px' || a === '0%') 
+		return `calc(0 - ${b})`;
+	return `calc(${a} - ${b})`;
+}
+
 function isValidAction(s)
 {
 	if(!s) 

@@ -1170,7 +1170,192 @@ var MXP = function(sipwin)
 			framechoices['_top'] = sipwin.topContainer.firstChild;
 		return framechoices;
 	};
-	
+
+	this.closeFrame = function(name)
+	{
+		var framechoices = this.getFrameMap();
+		var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
+		if((name != null) && (name in framechoices))
+		{
+			var frame = framechoices[name];
+			var container = frame;
+			var isTabContent = false;
+			var tabbedContainer = null;
+			var contentArea = null;
+			var tabBar = null;
+			if (frame.parentNode 
+			&& frame.parentNode.parentNode 
+			&& frame.parentNode.parentNode.sprops 
+			&& frame.parentNode.parentNode.sprops.tabbed) 
+			{
+				isTabContent = true;
+				tabbedContainer = frame.parentNode.parentNode;
+				contentArea = frame.parentNode;
+				tabBar = tabbedContainer.children[1];
+				if(!tabbedContainer.sprops) 
+					return false; // Not a valid tabbed frame
+			}
+			else
+			if(!container.sprops) 
+				return; // Not a valid frame
+			sipwin.dispatchEvent({type:'closeframe',data: name});
+			if(isTabContent) 
+			{
+				var tabs = tabbedContainer.sprops.tabs;
+				var tabIndex = tabs.findIndex(t => t.content === frame);
+				if (tabIndex < 0) 
+					return;
+				var tab = tabs[tabIndex];
+				var wasActive = tabbedContainer.sprops.activeTab === tab;
+				sipwin.cleanDiv(frame);
+				contentArea.removeChild(frame);
+				tabBar.removeChild(tab.button);
+				tabs.splice(tabIndex, 1);
+				if(wasActive && (tabs.length > 0))
+					switchTab(tabs[0], tabbedContainer);
+				if(tabs.length === 1) 
+				{
+					var remaining = tabs[0];
+					tabbedContainer.removeChild(tabBar);
+					tabbedContainer.removeChild(contentArea);
+					var restoredTop = remaining.title ? '20px' : '0px';
+					remaining.content.style.position = 'absolute';
+					remaining.content.style.top = restoredTop;
+					remaining.content.style.left = '0px';
+					remaining.content.style.width = '100%';
+					remaining.content.style.height = `calc(100% - ${restoredTop})`;
+					tabbedContainer.appendChild(remaining.content);
+					if (remaining.title) 
+					{
+						var titleBar = document.createElement('div');
+						titleBar.style.position = 'absolute';
+						titleBar.style.top = '0px';
+						titleBar.style.left = '0px';
+						titleBar.style.width = '100%';
+						titleBar.style.height = '20px';
+						titleBar.style.backgroundColor = 'white';
+						titleBar.style.color = 'black';
+						titleBar.innerHTML = `&nbsp;${remaining.title}`;
+						tabbedContainer.appendChild(titleBar);
+					}
+					delete tabbedContainer.sprops.tabbed;
+					delete tabbedContainer.sprops.tabs;
+					delete tabbedContainer.sprops.activeTab;
+					delete tabbedContainer.sprops.tabPos;
+					delete tabbedContainer.sprops.tabDirection;
+					delete this.frames[name]; 
+					if(remaining.name)
+						this.frames[remaining.name] = tabbedContainer;
+					if(tabbedContainer.parentNode === sipwin.topWindow)
+						sipwin.resizeTermWindow();
+					return;
+				}
+				delete this.frames[name];
+				if(tabbedContainer.parentNode === sipwin.topWindow) 
+					sipwin.resizeTermWindow();
+			}
+			else
+			if(frame.sprops && frame.sprops.tabbed) 
+			{
+				// Close entire tabbed container: Clean all tabs
+				var tabsCopy = [...frame.sprops.tabs];
+				contentArea = frame.children[0];
+				tabBar = frame.children[1];
+				tabsCopy.forEach(tab => 
+				{
+					sipwin.cleanDiv(tab.content);
+					contentArea.removeChild(tab.content);
+					tabBar.removeChild(tab.button);
+					if (tab.name) 
+						delete this.frames[tab.name];
+				});
+				frame.removeChild(contentArea);
+				frame.removeChild(tabBar);
+				delete frame.sprops.tabbed;
+				delete frame.sprops.tabs;
+				delete frame.sprops.activeTab;
+				delete frame.sprops.tabPos;
+				delete frame.sprops.tabDirection;
+			}
+			
+			var sprops = frame.sprops;
+			if(sprops.internal != null)
+			{
+				var parentFrame = frame.parentNode;
+				var privilegedFrame = parentFrame.childNodes[0];
+				var peerFrames = [];
+				for(var i=2;i<parentFrame.childNodes.length;i++)
+				{
+					var otherFrame = parentFrame.childNodes[i];
+					if(otherFrame.sprops)
+					{
+						if(sprops.align == otherFrame.sprops.align)
+							peerFrames.push(otherFrame);
+					}
+				}
+				peerFrames.push(privilegedFrame);
+				var peerDex = peerFrames.indexOf(frame);
+				var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
+				var shiftw = sprops.width;
+				var shifth = sprops.height;
+				switch(alignx)
+				{
+				case 0: // scooch all left
+					for(var i=peerDex+1;i<peerFrames.length;i++)
+					{
+						var tmp = peerFrames[i].style.left; 
+						peerFrames[i].style.left = subDim(tmp, shiftw);
+					}
+					privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
+					break;
+				case 1: //right
+					for(var i=peerDex+1;i<peerFrames.length-1;i++)
+					{
+						var tmp = peerFrames[i].style.left; 
+						peerFrames[i].style.left = addDim(tmp, shiftw);
+					}
+					privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
+					break;
+				case 2: // top
+					for(var i=peerDex+1;i<peerFrames.length;i++)
+					{
+						var tmp = peerFrames[i].style.top; 
+						peerFrames[i].style.top = subDim(tmp, shifth);
+					}
+					privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
+					break;
+				case 3: //bottom
+					for(var i=peerDex+1;i<peerFrames.length-1;i++)
+					{
+						var tmp = peerFrames[i].style.top; 
+						peerFrames[i].style.top = addDim(tmp, shifth);
+					}
+					privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
+					break;
+				}
+				for(var k in this.frames)
+				{
+					if((this.frames[k] != frame)
+					&&(frame.contains(this.frames[k])))
+						delete this.frames[k];
+				}
+				sipwin.cleanDiv(frame);
+				parentFrame.removeChild(frame);
+				delete this.frames[name];
+				if(parentFrame.parentNode == sipwin.topWindow)
+					sipwin.resizeTermWindow();
+			}
+			else
+			{
+				sipwin.cleanDiv(frame);
+				delete this.frames[name];
+				sipwin.topWindow.removeChild(frame);
+			}
+			return true;
+		}
+		return false;
+	};
+		
 	this.doSpecialProcessing = function(E, isEndTag)
 	{
 		var tagName = E.name.toUpperCase();
@@ -1468,225 +1653,33 @@ var MXP = function(sipwin)
 		else
 		if (tagName=="FRAME")
 		{
-			var addDim = function(a, b) 
-			{
-				if (a === '0' || a === '0px' || a === '0%') 
-					return b;
-				if (b === '0' || b === '0px' || b === '0%') 
-					return a;
-				return `calc(${a} + ${b})`;
-			};
-			var subDim = function(a, b) 
-			{
-				if (b === '0' || b === '0px' || b === '0%') 
-					return a;
-				if (a === '0' || a === '0px' || a === '0%') 
-					return `calc(0 - ${b})`;
-				return `calc(${a} - ${b})`;
-			};
-			
 			var name = E.getAttributeValue("NAME");
 			var action = E.getAttributeValue("ACTION"); // open,close,redirect
 			if(action == null)
 				action = '';
-			var title = E.getAttributeValue("TITLE");
-			var internal = E.getAttributeValue("INTERNAL");
-			var align = E.getAttributeValue("ALIGN"); // internal only: left,right,bottom,top 
-			var left = E.getAttributeValue("LEFT"); // ignored if internal is specified 
-			var top = E.getAttributeValue("TOP"); // ignored if internal is specified 
-			var width = E.getAttributeValue("WIDTH");
-			var height = E.getAttributeValue("HEIGHT");
-			var scrolling = E.getAttributeValue("SCROLLING");
-			var dock = E.getAttributeValue("DOCK");
-			var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
-			var image = E.getAttributeValue("IMAGE") || '';
-			var imgop = E.getAttributeValue("IMGOP") || '';
 			var framechoices = this.getFrameMap();
 			var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
 			if("CLOSE" == action.toUpperCase())
 			{
-				if((name != null) && (name in framechoices))
-				{
-					var frame = framechoices[name];
-					var container = frame;
-					var isTabContent = false;
-					var tabbedContainer = null;
-					var contentArea = null;
-					var tabBar = null;
-					if (frame.parentNode 
-					&& frame.parentNode.parentNode 
-					&& frame.parentNode.parentNode.sprops 
-					&& frame.parentNode.parentNode.sprops.tabbed) 
-					{
-						isTabContent = true;
-						tabbedContainer = frame.parentNode.parentNode;
-						contentArea = frame.parentNode;
-						tabBar = tabbedContainer.children[1];
-						if(!tabbedContainer.sprops) 
-							return; // Not a valid tabbed frame
-					}
-					else
-					if(!container.sprops) 
-						return; // Not a valid frame
-					sipwin.dispatchEvent({type:'closeframe',data: name});
-					if(isTabContent) 
-					{
-						var tabs = tabbedContainer.sprops.tabs;
-						var tabIndex = tabs.findIndex(t => t.content === frame);
-						if (tabIndex < 0) 
-							return;
-						var tab = tabs[tabIndex];
-						var wasActive = tabbedContainer.sprops.activeTab === tab;
-						sipwin.cleanDiv(frame);
-						contentArea.removeChild(frame);
-						tabBar.removeChild(tab.button);
-						tabs.splice(tabIndex, 1);
-						if(wasActive && (tabs.length > 0))
-							switchTab(tabs[0], tabbedContainer);
-						if(tabs.length === 1) 
-						{
-							var remaining = tabs[0];
-							tabbedContainer.removeChild(tabBar);
-							tabbedContainer.removeChild(contentArea);
-							var restoredTop = remaining.title ? '20px' : '0px';
-							remaining.content.style.position = 'absolute';
-							remaining.content.style.top = restoredTop;
-							remaining.content.style.left = '0px';
-							remaining.content.style.width = '100%';
-							remaining.content.style.height = `calc(100% - ${restoredTop})`;
-							tabbedContainer.appendChild(remaining.content);
-							if (remaining.title) 
-							{
-								var titleBar = document.createElement('div');
-								titleBar.style.position = 'absolute';
-								titleBar.style.top = '0px';
-								titleBar.style.left = '0px';
-								titleBar.style.width = '100%';
-								titleBar.style.height = '20px';
-								titleBar.style.backgroundColor = 'white';
-								titleBar.style.color = 'black';
-								titleBar.innerHTML = `&nbsp;${remaining.title}`;
-								tabbedContainer.appendChild(titleBar);
-							}
-							delete tabbedContainer.sprops.tabbed;
-							delete tabbedContainer.sprops.tabs;
-							delete tabbedContainer.sprops.activeTab;
-							delete tabbedContainer.sprops.tabPos;
-							delete tabbedContainer.sprops.tabDirection;
-							delete this.frames[name]; 
-							if(remaining.name)
-								this.frames[remaining.name] = tabbedContainer;
-							if(tabbedContainer.parentNode === sipwin.topWindow)
-								sipwin.resizeTermWindow();
-							return;
-						}
-						delete this.frames[name];
-						if(tabbedContainer.parentNode === sipwin.topWindow) 
-							sipwin.resizeTermWindow();
-					}
-					else
-					if(frame.sprops && frame.sprops.tabbed) 
-					{
-						// Close entire tabbed container: Clean all tabs
-						var tabsCopy = [...frame.sprops.tabs];
-						contentArea = frame.children[0];
-						tabBar = frame.children[1];
-						tabsCopy.forEach(tab => 
-						{
-							sipwin.cleanDiv(tab.content);
-							contentArea.removeChild(tab.content);
-							tabBar.removeChild(tab.button);
-							if (tab.name) 
-								delete this.frames[tab.name];
-						});
-						frame.removeChild(contentArea);
-						frame.removeChild(tabBar);
-						delete frame.sprops.tabbed;
-						delete frame.sprops.tabs;
-						delete frame.sprops.activeTab;
-						delete frame.sprops.tabPos;
-						delete frame.sprops.tabDirection;
-					}
-					
-					var sprops = frame.sprops;
-					if(sprops.internal != null)
-					{
-						var parentFrame = frame.parentNode;
-						var privilegedFrame = parentFrame.childNodes[0];
-						var peerFrames = [];
-						for(var i=2;i<parentFrame.childNodes.length;i++)
-						{
-							var otherFrame = parentFrame.childNodes[i];
-							if(otherFrame.sprops)
-							{
-								if(sprops.align == otherFrame.sprops.align)
-									peerFrames.push(otherFrame);
-							}
-						}
-						peerFrames.push(privilegedFrame);
-						var peerDex = peerFrames.indexOf(frame);
-						var alignx = (sprops.align)?aligns.indexOf(sprops.align.toUpperCase().trim()):-1;
-						var shiftw = sprops.width;
-						var shifth = sprops.height;
-						switch(alignx)
-						{
-						case 0: // scooch all left
-							for(var i=peerDex+1;i<peerFrames.length;i++)
-							{
-								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = subDim(tmp, shiftw);
-							}
-							privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
-							break;
-						case 1: //right
-							for(var i=peerDex+1;i<peerFrames.length-1;i++)
-							{
-								var tmp = peerFrames[i].style.left; 
-								peerFrames[i].style.left = addDim(tmp, shiftw);
-							}
-							privilegedFrame.style.width = addDim(privilegedFrame.style.width, shiftw);
-							break;
-						case 2: // top
-							for(var i=peerDex+1;i<peerFrames.length;i++)
-							{
-								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = subDim(tmp, shifth);
-							}
-							privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
-							break;
-						case 3: //bottom
-							for(var i=peerDex+1;i<peerFrames.length-1;i++)
-							{
-								var tmp = peerFrames[i].style.top; 
-								peerFrames[i].style.top = addDim(tmp, shifth);
-							}
-							privilegedFrame.style.height = addDim(privilegedFrame.style.height, shifth);
-							break;
-						}
-						for(var k in this.frames)
-						{
-							if((this.frames[k] != frame)
-							&&(frame.contains(this.frames[k])))
-								delete this.frames[k];
-						}
-						sipwin.cleanDiv(frame);
-						parentFrame.removeChild(frame);
-						delete this.frames[name];
-						if(parentFrame.parentNode == sipwin.topWindow)
-							sipwin.resizeTermWindow();
-					}
-					else
-					{
-						sipwin.cleanDiv(frame);
-						delete this.frames[name];
-						sipwin.topWindow.removeChild(frame);
-					}
-				}
+				this.closeFrame(name);
+				return;
 			}
 			else
 			if((("OPEN" == action.toUpperCase())||("REDIRECT" == action.toUpperCase()))
 			&&(name != null))
 			{
+				var title = E.getAttributeValue("TITLE");
+				var internal = E.getAttributeValue("INTERNAL");
+				var align = E.getAttributeValue("ALIGN"); // internal only: left,right,bottom,top 
+				var left = E.getAttributeValue("LEFT"); // ignored if internal is specified 
+				var top = E.getAttributeValue("TOP"); // ignored if internal is specified 
+				var width = E.getAttributeValue("WIDTH");
+				var height = E.getAttributeValue("HEIGHT");
+				var scrolling = E.getAttributeValue("SCROLLING");
+				var dock = E.getAttributeValue("DOCK");
+				var floating = E.getAttributeValue("FLOATING"); // otherwise, close on click-away
+				var image = E.getAttributeValue("IMAGE") || '';
+				var imgop = E.getAttributeValue("IMGOP") || '';
 				var fixSize = function(s)
 				{
 					if(s==null || (s==undefined))
@@ -1717,8 +1710,8 @@ var MXP = function(sipwin)
 					"align": align, 
 					"left": left, 
 					"top": top, 
-					"width": width, // Changed: Store string with unit (renamed from pctwidth)
-					"height": height, // Changed: Store string with unit (renamed from pctheight)
+					"width": width,
+					"height": height,
 					"scrolling": scrolling,
 					"floating": floating
 				};
