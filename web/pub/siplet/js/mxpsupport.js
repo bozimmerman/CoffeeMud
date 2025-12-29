@@ -1699,11 +1699,17 @@ var MXP = function(sipwin)
 						throw error;
 					}
 					if("OPEN" == action.toUpperCase())
+					{
+						console.error('Duplicate frame name.');
 						return; // can't open an existing frame
+					}
 				}
 				else
 				if("REOPEN" == action.toUpperCase())
-					return; // can't re-open a non-existant frame, so silently fail
+				{
+					console.error('Cant re-open a non-existant frame.');
+					return; // can't re-open a non-existant frame
+				}
 
 				// start the opening process!
 
@@ -1717,8 +1723,11 @@ var MXP = function(sipwin)
 						tabPos = sprops.dock.substr(0, d).trim().toLowerCase();
 						tabFrame = sprops.dock.substr(d + 1).trim();
 					}
-					if(!(tabFrame in framechoices)) 
-						return; // Invalid target
+					if(!(tabFrame in framechoices))
+					{
+						console.error('Invalid dock target.');
+						return; // Invalid dock target, so nowhere to dock to
+					}
 					var peerContainer = framechoices[tabFrame];
 					if(peerContainer.parentNode 
 					&& peerContainer.parentNode.parentNode 
@@ -1726,8 +1735,10 @@ var MXP = function(sipwin)
 					&& peerContainer.parentNode.parentNode.sprops.tabbed)
 						peerContainer = peerContainer.parentNode.parentNode;
 					if(!peerContainer.sprops) 
+					{
+						console.error('Malformed dock target.');
 						return; // Invalid sprops
-
+					}
 					var isTabbed = !!peerContainer.sprops.tabbed;
 					var tabBar, contentArea;
 					var tabDirection = (tabPos === 'left' || tabPos === 'right') ? 'vertical' : 'horizontal';
