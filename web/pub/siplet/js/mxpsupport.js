@@ -1509,10 +1509,6 @@ var MXP = function(sipwin)
 				{
 					var frame = framechoices[name];
 					var container = frame;
-					if(!container.sprops) 
-						return; // Not a valid frame
-					sipwin.dispatchEvent({type:'closeframe',data: name});
-					
 					var isTabContent = false;
 					var tabbedContainer = null;
 					var contentArea = null;
@@ -1526,7 +1522,13 @@ var MXP = function(sipwin)
 						tabbedContainer = frame.parentNode.parentNode;
 						contentArea = frame.parentNode;
 						tabBar = tabbedContainer.children[1];
+						if(!tabbedContainer.sprops) 
+							return; // Not a valid tabbed frame
 					}
+					else
+					if(!container.sprops) 
+						return; // Not a valid frame
+					sipwin.dispatchEvent({type:'closeframe',data: name});
 					if(isTabContent) 
 					{
 						var tabs = tabbedContainer.sprops.tabs;
@@ -1571,6 +1573,14 @@ var MXP = function(sipwin)
 							delete tabbedContainer.sprops.activeTab;
 							delete tabbedContainer.sprops.tabPos;
 							delete tabbedContainer.sprops.tabDirection;
+							//TODO:BZ: added
+							delete this.frames[name]; 
+							if(remaining.name)
+								this.frames[remaining.name] = tabbedContainer;
+							if(tabbedContainer.parentNode === sipwin.topWindow)
+								sipwin.resizeTermWindow();
+							return;
+							//TODO:BZ: end added
 						}
 						delete this.frames[name];
 						if(tabbedContainer.parentNode === sipwin.topWindow) 

@@ -254,6 +254,15 @@ var MSP = function(sipwin)
 				this.StopSounder(choices[i], sounder);
 		}
 	};
+	
+	this.StopAllSounds = function()
+	{
+		for(var k in this.sounders)
+		{
+			var sounder = this.sounders[k];
+			this.StopSounder(k, sounder);
+		}
+	};
 
 	this.processParms = function(tag, parms)
 	{

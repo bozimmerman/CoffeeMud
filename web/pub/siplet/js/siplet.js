@@ -312,6 +312,8 @@ function SipletWindow(windowName)
 	
 	this.reset = function()
 	{
+		if(this.msp)
+			this.msp.StopAllSounds();
 		this.closeLog();
 		this.cleanDiv(this.topWindow);
 		while (this.topWindow.children.length > 1)
