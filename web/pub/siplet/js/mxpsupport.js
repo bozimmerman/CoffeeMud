@@ -1171,6 +1171,18 @@ var MXP = function(sipwin)
 		return framechoices;
 	};
 
+	this.switchFrameTab = function(tab, container) 
+	{
+		container.sprops.tabs.forEach(function(t) 
+		{
+			t.content.style.display = 'none';
+			t.button.style.backgroundColor = '';
+		});
+		tab.content.style.display = 'block';
+		tab.button.style.backgroundColor = 'lightgray';
+		container.sprops.activeTab = tab;
+	};
+	
 	this.closeFrame = function(name)
 	{
 		var framechoices = this.getFrameMap();
@@ -1183,6 +1195,7 @@ var MXP = function(sipwin)
 			var tabbedContainer = null;
 			var contentArea = null;
 			var tabBar = null;
+			var sprops = container.sprops;
 			if (frame.parentNode 
 			&& frame.parentNode.parentNode 
 			&& frame.parentNode.parentNode.sprops 
@@ -1192,8 +1205,10 @@ var MXP = function(sipwin)
 				tabbedContainer = frame.parentNode.parentNode;
 				contentArea = frame.parentNode;
 				tabBar = tabbedContainer.children[1];
-				if(!tabbedContainer.sprops) 
+				sprops = tabbedContainer.sprops;
+				if(!sprops) 
 					return false; // Not a valid tabbed frame
+				
 			}
 			else
 			if(!container.sprops) 
@@ -1201,18 +1216,18 @@ var MXP = function(sipwin)
 			sipwin.dispatchEvent({type:'closeframe',data: name});
 			if(isTabContent) 
 			{
-				var tabs = tabbedContainer.sprops.tabs;
+				var tabs = sprops.tabs;
 				var tabIndex = tabs.findIndex(t => t.content === frame);
 				if (tabIndex < 0) 
 					return;
 				var tab = tabs[tabIndex];
-				var wasActive = tabbedContainer.sprops.activeTab === tab;
+				var wasActive = sprops.activeTab === tab;
 				sipwin.cleanDiv(frame);
 				contentArea.removeChild(frame);
 				tabBar.removeChild(tab.button);
 				tabs.splice(tabIndex, 1);
 				if(wasActive && (tabs.length > 0))
-					switchTab(tabs[0], tabbedContainer);
+					this.switchFrameTab(tabs[0], tabbedContainer);
 				if(tabs.length === 1) 
 				{
 					var remaining = tabs[0];
@@ -1238,11 +1253,11 @@ var MXP = function(sipwin)
 						titleBar.innerHTML = `&nbsp;${remaining.title}`;
 						tabbedContainer.appendChild(titleBar);
 					}
-					delete tabbedContainer.sprops.tabbed;
-					delete tabbedContainer.sprops.tabs;
-					delete tabbedContainer.sprops.activeTab;
-					delete tabbedContainer.sprops.tabPos;
-					delete tabbedContainer.sprops.tabDirection;
+					delete sprops.tabbed;
+					delete sprops.tabs;
+					delete sprops.activeTab;
+					delete sprops.tabPos;
+					delete sprops.tabDirection;
 					delete this.frames[name]; 
 					if(remaining.name)
 						this.frames[remaining.name] = tabbedContainer;
@@ -1255,10 +1270,10 @@ var MXP = function(sipwin)
 					sipwin.resizeTermWindow();
 			}
 			else
-			if(frame.sprops && frame.sprops.tabbed) 
+			if(sprops && sprops.tabbed) 
 			{
 				// Close entire tabbed container: Clean all tabs
-				var tabsCopy = [...frame.sprops.tabs];
+				var tabsCopy = [...sprops.tabs];
 				contentArea = frame.children[0];
 				tabBar = frame.children[1];
 				tabsCopy.forEach(tab => 
@@ -1271,14 +1286,13 @@ var MXP = function(sipwin)
 				});
 				frame.removeChild(contentArea);
 				frame.removeChild(tabBar);
-				delete frame.sprops.tabbed;
-				delete frame.sprops.tabs;
-				delete frame.sprops.activeTab;
-				delete frame.sprops.tabPos;
-				delete frame.sprops.tabDirection;
+				delete sprops.tabbed;
+				delete sprops.tabs;
+				delete sprops.activeTab;
+				delete sprops.tabPos;
+				delete sprops.tabDirection;
 			}
 			
-			var sprops = frame.sprops;
 			if(sprops.internal != null)
 			{
 				var parentFrame = frame.parentNode;
@@ -1356,6 +1370,71 @@ var MXP = function(sipwin)
 		return false;
 	};
 		
+	this.applyFrameScrollingBehavior = function(element, scrolling)
+	{
+		element.style.overflowX = 'hidden';
+		element.style.overflowY = 'hidden';
+		if (scrolling && scrolling.toLowerCase() === 'yes') 
+		{
+			element.style.overflowY = 'auto';
+			element.style.overflowX = 'auto';
+		} 
+		else
+		if (scrolling && scrolling.toLowerCase() === 'x')
+			element.style.overflowX = 'auto';
+		else
+		{
+			if (scrolling && scrolling.toLowerCase() === 'y')
+				element.style.overflowY = 'auto';
+			element.style.overflowWrap = 'break-word';
+			element.style.wordWrap = 'break-word';
+			element.style.whiteSpace = 'pre-wrap';
+		}
+	};
+
+	this.applyImageBackground = function(element, image, imgop)
+	{
+		if (!image) 
+			return;
+		element.style.backgroundImage = 'url("' + image + '")';
+		element.style.backgroundSize = 'cover';
+		element.style.backgroundPosition = 'center';
+		element.style.backgroundRepeat = 'no-repeat';
+		if (imgop && imgop.trim()) 
+		{
+			var opacity = imgop.trim();
+			if (!opacity.startsWith('.') && !opacity.startsWith('0.'))
+				opacity = parseFloat(opacity) / 100;
+			element.style.opacity = opacity;
+		}
+		updateMediaImagesInSpan(sipwin.sipfs, element);
+	}
+
+	this.createFrameTitleBar = function(sprops, name, isFloating)
+	{
+		var titleBar = document.createElement('div');
+		if (sprops.title && sprops.title.trim().length > 0) 
+		{
+			titleBar.style.cssText = "position:absolute;left:0%;height:20px;width:100%;";
+			titleBar.style.backgroundColor = 'white';
+			titleBar.style.color = 'black';
+			titleBar.innerHTML = '&nbsp;' + sprops.title;
+			if (isFloating && sprops.floating && sprops.floating.toLowerCase() === 'close') 
+			{
+				titleBar.innerHTML += '<IMG alt="Close" style="float: right; width: 16px; height: 16px;" '
+					+ 'onkeydown="if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }" '
+					+ 'ONCLICK="window.currWin.displayText(\'<FRAME NAME=' + name + ' ACTION=CLOSE>\');" '
+					+ ' tabindex="0" SRC="images/close.gif">';
+			}
+			return { titleBar: titleBar, hasTitle: true, titleHeight: '20px' };
+		}
+		else
+		{
+			titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
+			return { titleBar: titleBar, hasTitle: false, titleHeight: '0px' };
+		}
+	}
+
 	this.doSpecialProcessing = function(E, isEndTag)
 	{
 		var tagName = E.name.toUpperCase();
@@ -1762,17 +1841,6 @@ var MXP = function(sipwin)
 						btn.onclick = clickFunc;
 						return btn;
 					};
-					var switchTab = function(tab, container) 
-					{
-						container.sprops.tabs.forEach(function(t) 
-						{
-							t.content.style.display = 'none';
-							t.button.style.backgroundColor = '';
-						});
-						tab.content.style.display = 'block';
-						tab.button.style.backgroundColor = 'lightgray';
-						container.sprops.activeTab = tab;
-					};
 
 					if (!isTabbed) 
 					{
@@ -1830,7 +1898,7 @@ var MXP = function(sipwin)
 							name: originalName,
 							title: originalTitle,
 							content: originalContent,
-							button: createTabButton(originalTitle, () => switchTab(originalTab, peerContainer), originalName)
+							button: createTabButton(originalTitle, () => this.switchFrameTab(originalTab, peerContainer), originalName)
 						};
 						tabBar.appendChild(originalTab.button);
 						peerContainer.sprops.tabbed = true;
@@ -1839,7 +1907,7 @@ var MXP = function(sipwin)
 						peerContainer.sprops.tabDirection = tabDirection;
 						if(originalName)
 							this.frames[originalName] = originalContent;
-						switchTab(originalTab, peerContainer);
+						this.switchFrameTab(originalTab, peerContainer);
 					}
 					else
 					{
@@ -1869,21 +1937,7 @@ var MXP = function(sipwin)
 						newContent.style.wordWrap = 'break-word';
 						newContent.style.whiteSpace = 'pre-wrap';
 					}
-					if (sprops.image) 
-					{
-						newContent.style.backgroundImage = 'url("' + sprops.image+'")';
-						newContent.style.backgroundSize = 'cover';
-						newContent.style.backgroundPosition = 'center';
-						newContent.style.backgroundRepeat = 'no-repeat';
-						if (sprops.imgop && sprops.imgop.trim())
-						{
-							var opacity = sprops.imgop.trim();
-							if((!opacity.startsWith('.'))&&(!opacity.startsWith('0.')))
-								opacity = parseFloat(opacity) / 100;
-							newContent.style.opacity = opacity;
-						}
-						updateMediaImagesInSpan(sipwin.sipfs, newContent);
-					}
+					this.applyImageBackground(newContent, sprops.image, sprops.imgop);
 					contentArea.appendChild(newContent);
 					newContent.style.display = 'none';
 					var newTab = 
@@ -1891,14 +1945,14 @@ var MXP = function(sipwin)
 						name: name,
 						title: sprops.title || name,
 						content: newContent,
-						button: createTabButton(sprops.title || name, () => switchTab(newTab, peerContainer), name)
+						button: createTabButton(sprops.title || name, () => this.switchFrameTab(newTab, peerContainer), name)
 					};
 					tabBar.appendChild(newTab.button);
 					peerContainer.sprops.tabs.push(newTab);
 					this.frames[name] = newContent;
 					if (action.toUpperCase() === 'REDIRECT') 
 						sipwin.window = newContent;
-					switchTab(newTab, peerContainer);
+					this.switchFrameTab(newTab, peerContainer);
 					if (peerContainer.parentNode === sipwin.topWindow) 
 						sipwin.resizeTermWindow();
 				}
@@ -1945,21 +1999,7 @@ var MXP = function(sipwin)
 						newContentWindow.setAttribute('aria-live', 'polite');
 						newContentWindow.setAttribute('aria-atomic', 'false');
 						newContentWindow.setAttribute('aria-busy', 'false');
-						if(sprops.image)
-						{
-							newContentWindow.style.backgroundImage = 'url("'+sprops.image+'")';
-							newContentWindow.style.backgroundSize = 'cover';
-							newContentWindow.style.backgroundPosition = 'center';
-							newContentWindow.style.backgroundRepeat = 'no-repeat';
-							if(sprops.imgop && sprops.imgop.trim())
-							{
-								var opacity = sprops.imgop.trim();
-								if((!opacity.startsWith('.'))&&(!opacity.startsWith('0.'))) 
-									opacity = parseFloat(opacity) / 100;
-								newContentWindow.style.opacity = ''+opacity;
-							}
-							updateMediaImagesInSpan(sipwin.sipfs, newContentWindow);
-						}
+						this.applyImageBackground(newContentWindow, sprops.image, sprops.imgop);
 						var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
 						var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
 						if ((alignx === 0 || alignx === 1) && isFullWidth) 
@@ -2085,45 +2125,16 @@ var MXP = function(sipwin)
 							ww.style.overflowX = 'hidden';
 							ww.style.overflowY = 'hidden';
 						}
-						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
+						this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
+						var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
+						var titleBar = titleBarInfo.titleBar;
+						if(titleBarInfo.hasTitle)
 						{
-							newContentWindow.style.overflowY = 'auto';
-							newContentWindow.style.overflowX = 'auto';
-						}
-						else
-						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'x'))
-							newContentWindow.style.overflowX = 'auto';
-						else
-						{
-							if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'y'))
-								newContentWindow.style.overflowY = 'auto';
-							newContentWindow.style.overflowWrap = 'break-word';
-							newContentWindow.style.wordWrap = 'break-word';
-							newContentWindow.style.whiteSpace = 'pre-wrap';
-						}
-						var titleBar;
-						if((sprops.title != null) && (sprops.title.trim().length>0))
-						{
-							titleBar = document.createElement('div');
-							titleBar.style.cssText = "position:absolute;left:0%;height:20px;width:100%;";
 							titleBar.style.top = newContentWindow.style.top;
-							titleBar.style.backgroundColor = 'white';
-							titleBar.style.color = 'black';
-							newContentWindow.style.top = '20px';
+							newContentWindow.style.top = titleBarInfo.titleHeight;
 							newContentWindow.style.height = 'calc(100% - 20px)';
-							titleBar.innerHTML = '&nbsp;'+sprops.title;
-						}
-						else
-						{
-							titleBar = document.createElement('div');
-							titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 						}
 						newContainerDiv.append(titleBar);
-						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
-						{
-							newContentWindow.style.overflowY = 'auto';
-							newContentWindow.style.overflowX = 'auto';
-						}
 						if(action.toUpperCase() =='REDIRECT')
 							sipwin.window = newContentWindow;
 						newContainerDiv.sprops = sprops;
@@ -2146,31 +2157,16 @@ var MXP = function(sipwin)
 					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
 					newTopWindow.style.backgroundColor = 'darkgray';
 					newTopWindow.style.color = 'black';
-					var titleBar;
-					var contentTop = "0px";
-					if((sprops.title != null) && (sprops.title.trim().length>0))
+					var contentTop = '0px';
+					var titleBarInfo = this.createFrameTitleBar(sprops, name, true);
+					var titleBar = titleBarInfo.titleBar;
+					if(titleBarInfo.hasTitle)
 					{
-						titleBar = document.createElement('div');
-						titleBar.style.cssText = "position:absolute;top:0%;left:0%;height:20px;width:100%;";
-						titleBar.style.backgroundColor = 'white';
-						titleBar.style.color = 'black';
-						contentTop = "20px";
-						titleBar.innerHTML = '&nbsp;'+sprops.title;
-						if((sprops.floating != null) && (sprops.floating.toLowerCase() == 'close'))
-						{
-							titleBar.innerHTML += '<IMG alt="Close" style="float: right; width: 16px; height: 16px;" '
-								+'onkeydown=\"if(event.key === \'Enter\' || event.key === \' \') { event.preventDefault(); this.click(); }\" '
-								+'ONCLICK="window.currWin.displayText(\'<FRAME NAME='+name+' ACTION=CLOSE>\');" '
-								+' tabindex="0" SRC="images/close.gif">';
-						}
-						MakeDraggable(newTopWindow,titleBar);
+						contentTop = titleBarInfo.titleHeight;
+						MakeDraggable(newTopWindow, titleBar);
 					}
 					else
-					{
-						titleBar = document.createElement('div');
-						titleBar.style.cssText = "position:absolute;top:0px;left:0px;height:0px;width:0px;";
 						MakeDraggable(newTopWindow);
-					}
 					var contentWindow = document.createElement('div');
 					contentWindow.style.cssText = "position:absolute;top:"+contentTop+";left:0%;height:calc(100% - "+contentTop+");width:100%;";
 					contentWindow.style.backgroundColor = 'black';
@@ -2179,22 +2175,7 @@ var MXP = function(sipwin)
 					newTopWindow.sprops = sprops;
 					contentWindow.style.overflowY = 'hidden';
 					contentWindow.style.overflowX = 'hidden';
-					if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'yes'))
-					{
-						contentWindow.style.overflowY = 'auto';
-						contentWindow.style.overflowX = 'auto';
-					}
-					else
-					if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'x'))
-						contentWindow.style.overflowX = 'auto';
-					else
-					{
-						if((sprops.scrolling!=null) && (sprops.scrolling.toLowerCase() == 'y'))
-							contentWindow.style.overflowY = 'auto';
-						contentWindow.style.overflowWrap = 'break-word';
-						contentWindow.style.wordWrap = 'break-word';
-						contentWindow.style.whiteSpace = 'pre-wrap';
-					}
+					this.applyFrameScrollingBehavior(contentWindow, sprops.scrolling);
 					if(sprops.floating == null)
 					{
 						contentWindow.onclick=function() {
