@@ -264,8 +264,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				str.append(xmlLib.convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore().toDoubles())));
 			}
-			str.append(getExtraEnvironmentalXML(E));
-			str.append(getGenScriptsXML((Room)E,false));
+			final int senses = ((Room)E).basePhyStats().sensesMask();
+			final int tempFlags = (PhyStats.SENSE_ROOMSYNC|PhyStats.SENSE_ROOMNOMOVEMENT);
+			((Room)E).basePhyStats().setSensesMask(senses&~tempFlags);
+			try
+			{
+				str.append(getExtraEnvironmentalXML(E));
+				str.append(getGenScriptsXML((Room)E,false));
+			}
+			finally
+			{
+				((Room)E).basePhyStats().setSensesMask(senses);
+			}
 		}
 		else
 		if(E instanceof Area)
