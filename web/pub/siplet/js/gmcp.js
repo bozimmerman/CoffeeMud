@@ -199,10 +199,10 @@ window.gmcpPackages.push({
 			sipwin.displayText("<P><FONT COLOR=RED>WebView is only available in the desktop client.</FONT></P>");
 			return;
 		}
-		this._WebViewOnMessageInit();
 		var url = msg["url"];
 		if(!url) //TODO: we may want to support moving existing windows, so this may change
 			return;
+		this._WebViewOnMessageInit();
 		var id = msg["id"];
 		if(!id)
 			id="WEBVIEW";
