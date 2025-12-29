@@ -1573,14 +1573,12 @@ var MXP = function(sipwin)
 							delete tabbedContainer.sprops.activeTab;
 							delete tabbedContainer.sprops.tabPos;
 							delete tabbedContainer.sprops.tabDirection;
-							//TODO:BZ: added
 							delete this.frames[name]; 
 							if(remaining.name)
 								this.frames[remaining.name] = tabbedContainer;
 							if(tabbedContainer.parentNode === sipwin.topWindow)
 								sipwin.resizeTermWindow();
 							return;
-							//TODO:BZ: end added
 						}
 						delete this.frames[name];
 						if(tabbedContainer.parentNode === sipwin.topWindow) 
