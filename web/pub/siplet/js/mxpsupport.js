@@ -1809,6 +1809,9 @@ var MXP = function(sipwin)
 				"image": E.getAttributeValue("IMAGE"),
 				"imgop": E.getAttributeValue("IMGOP")
 			};
+			if((sprops.floating !== null)&&(sprops.internal === null))
+				sprops.internal="NO";
+		
 			// Handle MODIFY action: detect if structural properties changed
 			var preservedContent = '';
 			if(modifyFrame != null)
