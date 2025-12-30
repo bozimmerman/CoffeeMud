@@ -74,7 +74,7 @@ public class Protocol extends StdTest
 		if(P == null)
 			return "'"+protoName+"' is not a valid protocol.";
 		final String data=commands.get(1);
-		final String dataData = CMParms.combine(commands, 2);
+		final String dataData = CMStrings.replaceAll(CMParms.combine(commands, 2),"`","'");
 		S.sendInlineCommand(P, data, dataData);
 		return null;
 	}
