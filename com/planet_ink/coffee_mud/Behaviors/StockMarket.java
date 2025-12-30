@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.HostState;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -404,7 +405,7 @@ public class StockMarket extends StdBehavior
 			return name()+"#"+version;
 		}
 	}
-	
+
 	private int getStockAmountFromRecord(final PAData dat)
 	{
 		final String xml = dat.xml().trim();
@@ -433,7 +434,7 @@ public class StockMarket extends StdBehavior
 		}
 		return topOwner;
 	}
-	
+
 	private void updatePlayerStockXML(final String mobName, final StockDef stock, final int delta)
 	{
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerData(mobName, "STOCKMARKET_STOCKS", stock.getTitleID());
@@ -596,7 +597,7 @@ public class StockMarket extends StdBehavior
 						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
 						final int manipulation  = CMath.s_int(tag.getParmValue("M"));
 						int total  = CMath.s_int(tag.getParmValue("T"));
-						if(total == 0) 
+						if(total == 0)
 							total = Integer.MAX_VALUE;
 						final String bankruptUntil = tag.getParmValue("U");
 						final Area hostA = CMLib.map().getArea(CMLib.xml().restoreAngleBrackets(tag.getParmValue("A")));
@@ -632,7 +633,7 @@ public class StockMarket extends StdBehavior
 					if(idstocks.containsKey(paDat.key()))
 					{
 						final StockDef def = idstocks.get(paDat.key());
-						int amt = this.getStockAmountFromRecord(paDat);
+						final int amt = this.getStockAmountFromRecord(paDat);
 						if((def != null)&&(amt>0)&&(def.bankruptUntil==null))
 						{
 							if(def.topOwner==null)
@@ -645,7 +646,7 @@ public class StockMarket extends StdBehavior
 				}
 			}
 			Resources.submitResource("CMKT_AREA_STOCKS/"+areaName,stocks);
-			
+
 			// this WILL cause this method to be recursively called, but since the resource
 			//  is in place, it will exit early and be happy.
 			for(final StockDef def : stocks.values())
@@ -654,7 +655,7 @@ public class StockMarket extends StdBehavior
 					CMLib.map().getRoom(def.roomID);
 			}
 			final Set<StockDef> realStocks = new HashSet<StockDef>();
-			for(MarketConf conf : configs)
+			for(final MarketConf conf : configs)
 			{
 				synchronized(conf.shopStocksMap)
 				{
@@ -668,7 +669,7 @@ public class StockMarket extends StdBehavior
 				if(!realStocks.contains(def))
 					deadStocks.add(def);
 			}
-			for(StockDef def : deadStocks)
+			for(final StockDef def : deadStocks)
 			{
 				Log.debugOut("Deleting dead stock '"+def.getTitleID()+". from "+def.roomID+" on next save.");
 				stocks.remove(def.getTitleID());
@@ -845,16 +846,16 @@ public class StockMarket extends StdBehavior
 		CMLib.database().DBReCreateAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName,data.toString());
 		return cd;
 	}
-	
+
 	private void giveShopKeeperMonopolyRespect(final ShopKeeper SK, final CoffeeShop shop)
 	{
 		final String ID = "StockMarket_Adjuster_"+this;
 		if(!shop.hasShelfAdjuster(ID))
 		{
-			shop.addShelfAdjuster(new ShelfAdjuster() 
+			shop.addShelfAdjuster(new ShelfAdjuster()
 			{
 				private volatile long lastUpdate = 0;
-				private final TreeMap<String, List<StockDef>> nameList = new TreeMap<String, List<StockDef>>(); 
+				private final TreeMap<String, List<StockDef>> nameList = new TreeMap<String, List<StockDef>>();
 				@Override
 				public String ID()
 				{
@@ -885,13 +886,13 @@ public class StockMarket extends StdBehavior
 				}
 
 				@Override
-				public int compareTo(CMObject o)
+				public int compareTo(final CMObject o)
 				{
 					return o.ID().compareTo(ID());
 				}
 
 				@Override
-				public ShelfProduct adjustShelf(ShelfProduct old, MOB buyer, CoffeeShop shop, Room myRoom)
+				public ShelfProduct adjustShelf(final ShelfProduct old, final MOB buyer, final CoffeeShop shop, final Room myRoom)
 				{
 					if((buyer != null)
 					&&(old!=null)
@@ -905,7 +906,7 @@ public class StockMarket extends StdBehavior
 								lastUpdate=System.currentTimeMillis();
 								for(final MarketConf conf : configs)
 								{
-									List<StockDef> stocks = conf.getShopStock(SK, buyer);
+									final List<StockDef> stocks = conf.getShopStock(SK, buyer);
 									for(final StockDef def : stocks)
 									{
 										if((def.topOwner != null)
@@ -923,7 +924,7 @@ public class StockMarket extends StdBehavior
 						final List<StockDef> defs = nameList.get(buyer.Name());
 						if(defs != null)
 						{
-							ShelfProduct newProd = CMLib.coffeeShops().createShelfProduct(old.product(), old.number(), old.priceCode(), old.currency());
+							final ShelfProduct newProd = CMLib.coffeeShops().createShelfProduct(old.product(), old.number(), old.priceCode(), old.currency());
 							newProd.shelfFlags().add(ShelfPriceFlag.NO_TAXES);
 							newProd.shelfFlags().add(ShelfPriceFlag.NO_DEPRECIATION);
 							for(final StockDef def : defs)
@@ -1322,7 +1323,7 @@ public class StockMarket extends StdBehavior
 
 	private boolean hostReady()
 	{
-		if(!(host instanceof Area))
+		if((!(host instanceof Area))||(!CMProps.isState(HostState.RUNNING)))
 			return false;
 		return true;
 	}
