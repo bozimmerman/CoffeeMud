@@ -1791,8 +1791,6 @@ var MXP = function(sipwin)
 				console.error('Cant re-open a non-existant frame \''+name+'\'.');
 				return; // can't re-open a non-existant frame
 			}
-			else
-				sipwin.dispatchEvent({type:'openframe',data: name});
 			var sprops = {
 				"name": name,
 				"action": action,
@@ -1972,195 +1970,203 @@ var MXP = function(sipwin)
 				this.switchFrameTab(newTab, peerContainer);
 				if (peerContainer.parentNode === sipwin.topWindow) 
 					sipwin.resizeTermWindow();
+				if("OPEN" == action.toUpperCase())
+					sipwin.dispatchEvent({type:'openframe',data: name});
+				return;
 			}
-			else
+			
 			/**
 			 * Open internal frame:
 			 */
 			if(sprops.internal != null)
 			{
 				var alignx = (!sprops.align)?-1:aligns.indexOf(sprops.align.toUpperCase().trim());
-				if(alignx >= 0)
+				if(alignx < 0)
 				{
-					var siblingDiv = sipwin.window;
-					var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
-					var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
-					if(isInTabbed) 
-					{
-						var tabContent = sipwin.window;
-						tabContent.style.position = 'relative';
-						var wrapper = document.createElement('div');
-						wrapper.style.position = 'absolute';
-						wrapper.style.top = '0px';
-						wrapper.style.left = '0px';
-						wrapper.style.width = '100%';
-						wrapper.style.height = '100%';
-						while (tabContent.firstChild)
-							wrapper.appendChild(tabContent.firstChild);
-						tabContent.appendChild(wrapper);
-						siblingDiv = wrapper;
-						sipwin.window = wrapper;
-						containerDiv = tabContent;
-					}
-					var newContainerDiv = document.createElement('div');
-					newContainerDiv.style.cssText = containerDiv.style.cssText;
-					newContainerDiv.style.display = 'block';
-					containerDiv.appendChild(newContainerDiv);
-					var newContentWindow = document.createElement('div');
-					newContentWindow.style.cssText = sipwin.window.style.cssText;
-					newContentWindow.style.display = '';
-					newContentWindow.style.left = '0%';
-					newContentWindow.style.top = '0%';
-					newContentWindow.style.width = '100%';
-					newContentWindow.style.height = '100%';
-					newContentWindow.style.border = "1px solid white";
-					newContentWindow.style.boxSizing = "border-box";
-					this.setFrameAriaAttributes(newContentWindow);
-					this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
-					var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
-					var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
-					if ((alignx === 0 || alignx === 1) && isFullWidth) 
-					{
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-						siblingDiv.style.width = '0px';
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-					}
-					else
-					if ((alignx === 2 || alignx === 3) && isFullHeight) 
-					{
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-						siblingDiv.style.height = '0px';
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-					}
-					else
-					switch(alignx)
-					{
-					case 0: // left
-						if (sprops.width === '100%') 
-						{
-							var occupied = '0px';
-							var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
-							if (priorLeft) 
-								occupied = priorLeft.style.width || '0px';
-							containerDiv.style.setProperty('--occupied-left', occupied);
-							newContainerDiv.style.left = 'var(--occupied-left)';
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
-							siblingDiv.style.width = 'var(--occupied-left)';
-						}
-						else 
-						{
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = sprops.width;
-							siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
-							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-						}
-						break;
-					case 1: // right
-						if (sprops.width === '100%') 
-						{
-							var occupied = '0px';
-							var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
-							if (priorRight) 
-								occupied = priorRight.style.width || '0px';
-							containerDiv.style.setProperty('--occupied-right', occupied);
-							newContainerDiv.style.right = 'var(--occupied-right)';
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
-							siblingDiv.style.width = 'var(--occupied-right)';
-						}
-						else 
-						{
-							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							newContainerDiv.style.width = sprops.width;
-							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-						}
-						break;
-					case 2: // top
-						if (sprops.height === '100%') 
-						{
-							var occupied = '0px';
-							var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
-							if (priorTop) 
-								occupied = priorTop.style.height || '0px';
-							containerDiv.style.setProperty('--occupied-bottom', occupied);
-							newContainerDiv.style.bottom = 'var(--occupied-bottom)';
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
-							siblingDiv.style.height = 'var(--occupied-bottom)';
-						}
-						else 
-						{
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = sprops.height;
-							siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
-							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-						}
-						break;
-					case 3: // bottom
-						if (sprops.height === '100%') 
-						{
-							var occupied = '0px';
-							var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
-							if (priorBottom) 
-								occupied = priorBottom.style.height || '0px';
-							containerDiv.style.setProperty('--occupied-top', occupied);
-							newContainerDiv.style.top = 'var(--occupied-top)';
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
-							siblingDiv.style.height = 'var(--occupied-top)';
-						}
-						else 
-						{
-							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							newContainerDiv.style.height = sprops.height;
-							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-						}
-						break;
-					}
-					newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
-					var ents = [newContainerDiv,newContentWindow];
-					for(var w =0; w<ents.length;w++)
-					{
-						var ww = ents[w];
-						ww.style.overflowX = 'hidden';
-						ww.style.overflowY = 'hidden';
-					}
-					this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
-					var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
-					var titleBar = titleBarInfo.titleBar;
-					if(titleBarInfo.hasTitle)
-					{
-						titleBar.style.top = newContentWindow.style.top;
-						newContentWindow.style.top = titleBarInfo.titleHeight;
-						newContentWindow.style.height = 'calc(100% - 20px)';
-					}
-					newContainerDiv.append(titleBar);
-					if(action.toUpperCase() =='REDIRECT')
-						sipwin.window = newContentWindow;
-					newContainerDiv.sprops = sprops;
-					this.frames[name] = newContainerDiv;
-					if(containerDiv == sipwin.topWindow.firstChild)
-						sipwin.resizeTermWindow();
+					console.error('Bad internal alignment \''+sprops.align+'\' dock target.');
+					return; // Invalid align
 				}
+				var siblingDiv = sipwin.window;
+				var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
+				var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
+				if(isInTabbed) 
+				{
+					var tabContent = sipwin.window;
+					tabContent.style.position = 'relative';
+					var wrapper = document.createElement('div');
+					wrapper.style.position = 'absolute';
+					wrapper.style.top = '0px';
+					wrapper.style.left = '0px';
+					wrapper.style.width = '100%';
+					wrapper.style.height = '100%';
+					while (tabContent.firstChild)
+						wrapper.appendChild(tabContent.firstChild);
+					tabContent.appendChild(wrapper);
+					siblingDiv = wrapper;
+					sipwin.window = wrapper;
+					containerDiv = tabContent;
+				}
+				var newContainerDiv = document.createElement('div');
+				newContainerDiv.style.cssText = containerDiv.style.cssText;
+				newContainerDiv.style.display = 'block';
+				containerDiv.appendChild(newContainerDiv);
+				var newContentWindow = document.createElement('div');
+				newContentWindow.style.cssText = sipwin.window.style.cssText;
+				newContentWindow.style.display = '';
+				newContentWindow.style.left = '0%';
+				newContentWindow.style.top = '0%';
+				newContentWindow.style.width = '100%';
+				newContentWindow.style.height = '100%';
+				newContentWindow.style.border = "1px solid white";
+				newContentWindow.style.boxSizing = "border-box";
+				this.setFrameAriaAttributes(newContentWindow);
+				this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
+				var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
+				var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
+				if ((alignx === 0 || alignx === 1) && isFullWidth) 
+				{
+					newContainerDiv.style.left = siblingDiv.style.left;
+					newContainerDiv.style.width = siblingDiv.style.width;
+					siblingDiv.style.width = '0px';
+					newContainerDiv.style.top = siblingDiv.style.top;
+					newContainerDiv.style.height = siblingDiv.style.height;
+				}
+				else
+				if ((alignx === 2 || alignx === 3) && isFullHeight) 
+				{
+					newContainerDiv.style.top = siblingDiv.style.top;
+					newContainerDiv.style.height = siblingDiv.style.height;
+					siblingDiv.style.height = '0px';
+					newContainerDiv.style.left = siblingDiv.style.left;
+					newContainerDiv.style.width = siblingDiv.style.width;
+				}
+				else
+				switch(alignx)
+				{
+				case 0: // left
+					if (sprops.width === '100%') 
+					{
+						var occupied = '0px';
+						var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
+						if (priorLeft) 
+							occupied = priorLeft.style.width || '0px';
+						containerDiv.style.setProperty('--occupied-left', occupied);
+						newContainerDiv.style.left = 'var(--occupied-left)';
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
+						siblingDiv.style.width = 'var(--occupied-left)';
+					}
+					else 
+					{
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						newContainerDiv.style.width = sprops.width;
+						siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
+						siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+					}
+					break;
+				case 1: // right
+					if (sprops.width === '100%') 
+					{
+						var occupied = '0px';
+						var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
+						if (priorRight) 
+							occupied = priorRight.style.width || '0px';
+						containerDiv.style.setProperty('--occupied-right', occupied);
+						newContainerDiv.style.right = 'var(--occupied-right)';
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
+						siblingDiv.style.width = 'var(--occupied-right)';
+					}
+					else 
+					{
+						newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						newContainerDiv.style.width = sprops.width;
+						siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+					}
+					break;
+				case 2: // top
+					if (sprops.height === '100%') 
+					{
+						var occupied = '0px';
+						var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
+						if (priorTop) 
+							occupied = priorTop.style.height || '0px';
+						containerDiv.style.setProperty('--occupied-bottom', occupied);
+						newContainerDiv.style.bottom = 'var(--occupied-bottom)';
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
+						siblingDiv.style.height = 'var(--occupied-bottom)';
+					}
+					else 
+					{
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						newContainerDiv.style.height = sprops.height;
+						siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
+						siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+					}
+					break;
+				case 3: // bottom
+					if (sprops.height === '100%') 
+					{
+						var occupied = '0px';
+						var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
+						if (priorBottom) 
+							occupied = priorBottom.style.height || '0px';
+						containerDiv.style.setProperty('--occupied-top', occupied);
+						newContainerDiv.style.top = 'var(--occupied-top)';
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
+						siblingDiv.style.height = 'var(--occupied-top)';
+					}
+					else 
+					{
+						newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						newContainerDiv.style.height = sprops.height;
+						siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+					}
+					break;
+				}
+				newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
+				var ents = [newContainerDiv,newContentWindow];
+				for(var w =0; w<ents.length;w++)
+				{
+					var ww = ents[w];
+					ww.style.overflowX = 'hidden';
+					ww.style.overflowY = 'hidden';
+				}
+				this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
+				var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
+				var titleBar = titleBarInfo.titleBar;
+				if(titleBarInfo.hasTitle)
+				{
+					titleBar.style.top = newContentWindow.style.top;
+					newContentWindow.style.top = titleBarInfo.titleHeight;
+					newContentWindow.style.height = 'calc(100% - 20px)';
+				}
+				newContainerDiv.append(titleBar);
+				if(action.toUpperCase() =='REDIRECT')
+					sipwin.window = newContentWindow;
+				newContainerDiv.sprops = sprops;
+				this.frames[name] = newContainerDiv;
+				if(containerDiv == sipwin.topWindow.firstChild)
+					sipwin.resizeTermWindow();
+				if("OPEN" == action.toUpperCase())
+					sipwin.dispatchEvent({type:'openframe',data: name});
+				return;
 			}
-			else
+
 			/**
 			 * Open floating frame:
 			 */
@@ -2209,6 +2215,9 @@ var MXP = function(sipwin)
 					sipwin.window = contentWindow;
 				sipwin.topWindow.appendChild(newTopWindow);
 				this.frames[name] = newTopWindow;
+				if("OPEN" == action.toUpperCase())
+					sipwin.dispatchEvent({type:'openframe',data: name});
+				return;
 			}
 		}
 		else
