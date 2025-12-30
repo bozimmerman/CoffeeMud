@@ -1807,6 +1807,55 @@ var MXP = function(sipwin)
 				"image": E.getAttributeValue("IMAGE") || '',
 				"imgop": E.getAttributeValue("IMGOP") || ''
 			};
+			// Handle MODIFY action: detect if structural properties changed
+			var preservedContent = '';
+			if(modifyFrame != null)
+			{
+				var oldSprops = null;
+				if (modifyFrame.parentNode
+				&& modifyFrame.parentNode.parentNode
+				&& modifyFrame.parentNode.parentNode.sprops
+				&& modifyFrame.parentNode.parentNode.sprops.tabbed)
+				{
+					var tabbedContainer = modifyFrame.parentNode.parentNode;
+					var tabs = tabbedContainer.sprops.tabs;
+					var tab = tabs.find(t => t.content === modifyFrame);
+					if(tab)
+					{
+						oldSprops = {
+							dock: "tabbed",
+							internal: null,
+							align: null
+						};
+						preservedContent = modifyFrame.innerHTML;
+					}
+				}
+				else
+				if(modifyFrame.sprops)
+				{
+					oldSprops = modifyFrame.sprops;
+					var contentWindow = modifyFrame.querySelector('div[role="log"]');
+					if(contentWindow)
+						preservedContent = contentWindow.innerHTML;
+				}
+				if(oldSprops != null)
+				{
+					if((oldSprops.internal != sprops.internal)
+					|| (oldSprops.dock != sprops.dock)
+					|| (oldSprops.align != sprops.align))
+					{
+						this.closeFrame(name);
+						sprops.action = "OPEN";
+						action = "OPEN";
+						modifyFrame = null;
+					}
+					for(var key in oldSprops)
+					{
+						if(sprops[key] === null || sprops[key] === undefined)
+							sprops[key] = oldSprops[key];
+					}
+				}
+			}
 
 			// start the opening process!
 
@@ -1815,6 +1864,29 @@ var MXP = function(sipwin)
 			 */
 			if((sprops.dock != null) && (sprops.dock.trim().length>0))
 			{
+				var isModify = (modifyFrame != null);
+				if(isModify)
+				{
+					// MODIFY: Update existing docked frame
+					var tabbedContainer = modifyFrame.parentNode.parentNode;
+					var tabs = tabbedContainer.sprops.tabs;
+					var tab = tabs.find(t => t.content === modifyFrame);
+					if(tab)
+					{
+						if(oldSprops && sprops.title !== oldSprops.title)
+						{
+							tab.title = sprops.title || name;
+							tab.button.innerHTML = sprops.title || name;
+						}
+						this.applyFrameScrollingBehavior(modifyFrame, sprops.scrolling);
+						this.applyFrameImageBackground(modifyFrame, sprops.image, sprops.imgop);
+						if(preservedContent)
+							modifyFrame.innerHTML = preservedContent;
+					}
+					
+					return;
+				}
+
 				var tabPos = 'above';
 				var tabFrame = sprops.dock;
 				var d = sprops.dock.indexOf(' ');
@@ -1970,13 +2042,15 @@ var MXP = function(sipwin)
 				this.switchFrameTab(newTab, peerContainer);
 				if (peerContainer.parentNode === sipwin.topWindow) 
 					sipwin.resizeTermWindow();
+				if(preservedContent)
+					newContent.innerHTML = preservedContent;
 				if("OPEN" == action.toUpperCase())
 					sipwin.dispatchEvent({type:'openframe',data: name});
 				return;
 			}
 			
 			/**
-			 * Open internal frame:
+			 * Open/Modify internal frame:
 			 */
 			if(sprops.internal != null)
 			{
@@ -1986,159 +2060,216 @@ var MXP = function(sipwin)
 					console.error('Bad internal alignment \''+sprops.align+'\' dock target.');
 					return; // Invalid align
 				}
-				var siblingDiv = sipwin.window;
-				var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
-				var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
-				if(isInTabbed) 
+				
+				var newContainerDiv, newContentWindow, titleBar;
+				var isModify = (modifyFrame != null);
+				var siblingDiv, containerDiv;
+				if(isModify)
 				{
-					var tabContent = sipwin.window;
-					tabContent.style.position = 'relative';
-					var wrapper = document.createElement('div');
-					wrapper.style.position = 'absolute';
-					wrapper.style.top = '0px';
-					wrapper.style.left = '0px';
-					wrapper.style.width = '100%';
-					wrapper.style.height = '100%';
-					while (tabContent.firstChild)
-						wrapper.appendChild(tabContent.firstChild);
-					tabContent.appendChild(wrapper);
-					siblingDiv = wrapper;
-					sipwin.window = wrapper;
-					containerDiv = tabContent;
+					newContainerDiv = modifyFrame;
+					for(var i = 0; i < newContainerDiv.children.length; i++)
+					{
+						var child = newContainerDiv.children[i];
+						if(child.getAttribute('role') === 'log')
+							newContentWindow = child;
+						else if(child.style.height === '20px' || child.style.height === '0px')
+							titleBar = child;
+					}
+					containerDiv = newContainerDiv.parentNode;
+					for(var i = 0; i < containerDiv.children.length; i++)
+					{
+						if(containerDiv.children[i] !== newContainerDiv)
+						{
+							siblingDiv = containerDiv.children[i];
+							break;
+						}
+					}
+					if(oldSprops && (sprops.width !== oldSprops.width || sprops.height !== oldSprops.height))
+					{
+						switch(alignx)
+						{
+						case 0:
+							newContainerDiv.style.width = sprops.width;
+							siblingDiv.style.left = sprops.width;
+							siblingDiv.style.width = 'calc(100% - ' + sprops.width + ')';
+							break;
+						case 1:
+							newContainerDiv.style.width = sprops.width;
+							newContainerDiv.style.left = 'calc(100% - ' + sprops.width + ')';
+							siblingDiv.style.width = 'calc(100% - ' + sprops.width + ')';
+							break;
+						case 2:
+							newContainerDiv.style.height = sprops.height;
+							siblingDiv.style.top = sprops.height;
+							siblingDiv.style.height = 'calc(100% - ' + sprops.height + ')';
+							break;
+						case 3:
+							newContainerDiv.style.height = sprops.height;
+							newContainerDiv.style.top = 'calc(100% - ' + sprops.height + ')';
+							siblingDiv.style.height = 'calc(100% - ' + sprops.height + ')';
+							break;
+						}
+					}
 				}
-				var newContainerDiv = document.createElement('div');
-				newContainerDiv.style.cssText = containerDiv.style.cssText;
-				newContainerDiv.style.display = 'block';
-				containerDiv.appendChild(newContainerDiv);
-				var newContentWindow = document.createElement('div');
-				newContentWindow.style.cssText = sipwin.window.style.cssText;
-				newContentWindow.style.display = '';
-				newContentWindow.style.left = '0%';
-				newContentWindow.style.top = '0%';
-				newContentWindow.style.width = '100%';
-				newContentWindow.style.height = '100%';
-				newContentWindow.style.border = "1px solid white";
-				newContentWindow.style.boxSizing = "border-box";
-				this.setFrameAriaAttributes(newContentWindow);
+				else
+				{
+					siblingDiv = sipwin.window;
+					containerDiv = sipwin.window.parentNode;
+					var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
+					if(isInTabbed) 
+					{
+						var tabContent = sipwin.window;
+						tabContent.style.position = 'relative';
+						var wrapper = document.createElement('div');
+						wrapper.style.position = 'absolute';
+						wrapper.style.top = '0px';
+						wrapper.style.left = '0px';
+						wrapper.style.width = '100%';
+						wrapper.style.height = '100%';
+						while (tabContent.firstChild)
+							wrapper.appendChild(tabContent.firstChild);
+						tabContent.appendChild(wrapper);
+						siblingDiv = wrapper;
+						sipwin.window = wrapper;
+						containerDiv = tabContent;
+					}
+					
+					newContainerDiv = document.createElement('div');
+					newContainerDiv.style.cssText = containerDiv.style.cssText;
+					newContainerDiv.style.display = 'block';
+					containerDiv.appendChild(newContainerDiv);
+					
+					newContentWindow = document.createElement('div');
+					newContentWindow.style.cssText = sipwin.window.style.cssText;
+					newContentWindow.style.display = '';
+					newContentWindow.style.left = '0%';
+					newContentWindow.style.top = '0%';
+					newContentWindow.style.width = '100%';
+					newContentWindow.style.height = '100%';
+					newContentWindow.style.border = "1px solid white";
+					newContentWindow.style.boxSizing = "border-box";
+					this.setFrameAriaAttributes(newContentWindow);
+					var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
+					var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
+					if ((alignx === 0 || alignx === 1) && isFullWidth) 
+					{
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						siblingDiv.style.width = '0px';
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+					}
+					else
+					if ((alignx === 2 || alignx === 3) && isFullHeight) 
+					{
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						siblingDiv.style.height = '0px';
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+					}
+					else
+					switch(alignx)
+					{
+					case 0: // left
+						if (sprops.width === '100%') 
+						{
+							var occupied = '0px';
+							var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
+							if (priorLeft) 
+								occupied = priorLeft.style.width || '0px';
+							containerDiv.style.setProperty('--occupied-left', occupied);
+							newContainerDiv.style.left = 'var(--occupied-left)';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
+							siblingDiv.style.width = 'var(--occupied-left)';
+						}
+						else 
+						{
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = sprops.width;
+							siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
+							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+						}
+						break;
+					case 1: // right
+						if (sprops.width === '100%') 
+						{
+							var occupied = '0px';
+							var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
+							if (priorRight) 
+								occupied = priorRight.style.width || '0px';
+							containerDiv.style.setProperty('--occupied-right', occupied);
+							newContainerDiv.style.right = 'var(--occupied-right)';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
+							siblingDiv.style.width = 'var(--occupied-right)';
+						}
+						else 
+						{
+							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = sprops.width;
+							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+						}
+						break;
+					case 2: // top
+						if (sprops.height === '100%') 
+						{
+							var occupied = '0px';
+							var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
+							if (priorTop) 
+								occupied = priorTop.style.height || '0px';
+							containerDiv.style.setProperty('--occupied-bottom', occupied);
+							newContainerDiv.style.bottom = 'var(--occupied-bottom)';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
+							siblingDiv.style.height = 'var(--occupied-bottom)';
+						}
+						else 
+						{
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = sprops.height;
+							siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
+							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+						}
+						break;
+					case 3: // bottom
+						if (sprops.height === '100%') 
+						{
+							var occupied = '0px';
+							var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
+							if (priorBottom) 
+								occupied = priorBottom.style.height || '0px';
+							containerDiv.style.setProperty('--occupied-top', occupied);
+							newContainerDiv.style.top = 'var(--occupied-top)';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
+							siblingDiv.style.height = 'var(--occupied-top)';
+						}
+						else 
+						{
+							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = sprops.height;
+							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+						}
+						break;
+					}
+				}
+				if(!isModify)
+					newContainerDiv.appendChild(newContentWindow);
 				this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
-				var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
-				var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
-				if ((alignx === 0 || alignx === 1) && isFullWidth) 
-				{
-					newContainerDiv.style.left = siblingDiv.style.left;
-					newContainerDiv.style.width = siblingDiv.style.width;
-					siblingDiv.style.width = '0px';
-					newContainerDiv.style.top = siblingDiv.style.top;
-					newContainerDiv.style.height = siblingDiv.style.height;
-				}
-				else
-				if ((alignx === 2 || alignx === 3) && isFullHeight) 
-				{
-					newContainerDiv.style.top = siblingDiv.style.top;
-					newContainerDiv.style.height = siblingDiv.style.height;
-					siblingDiv.style.height = '0px';
-					newContainerDiv.style.left = siblingDiv.style.left;
-					newContainerDiv.style.width = siblingDiv.style.width;
-				}
-				else
-				switch(alignx)
-				{
-				case 0: // left
-					if (sprops.width === '100%') 
-					{
-						var occupied = '0px';
-						var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
-						if (priorLeft) 
-							occupied = priorLeft.style.width || '0px';
-						containerDiv.style.setProperty('--occupied-left', occupied);
-						newContainerDiv.style.left = 'var(--occupied-left)';
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-						newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
-						siblingDiv.style.width = 'var(--occupied-left)';
-					}
-					else 
-					{
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-						newContainerDiv.style.width = sprops.width;
-						siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
-						siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-					}
-					break;
-				case 1: // right
-					if (sprops.width === '100%') 
-					{
-						var occupied = '0px';
-						var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
-						if (priorRight) 
-							occupied = priorRight.style.width || '0px';
-						containerDiv.style.setProperty('--occupied-right', occupied);
-						newContainerDiv.style.right = 'var(--occupied-right)';
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-						newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
-						siblingDiv.style.width = 'var(--occupied-right)';
-					}
-					else 
-					{
-						newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.height = siblingDiv.style.height;
-						newContainerDiv.style.width = sprops.width;
-						siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-					}
-					break;
-				case 2: // top
-					if (sprops.height === '100%') 
-					{
-						var occupied = '0px';
-						var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
-						if (priorTop) 
-							occupied = priorTop.style.height || '0px';
-						containerDiv.style.setProperty('--occupied-bottom', occupied);
-						newContainerDiv.style.bottom = 'var(--occupied-bottom)';
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-						newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
-						siblingDiv.style.height = 'var(--occupied-bottom)';
-					}
-					else 
-					{
-						newContainerDiv.style.top = siblingDiv.style.top;
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-						newContainerDiv.style.height = sprops.height;
-						siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
-						siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-					}
-					break;
-				case 3: // bottom
-					if (sprops.height === '100%') 
-					{
-						var occupied = '0px';
-						var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
-						if (priorBottom) 
-							occupied = priorBottom.style.height || '0px';
-						containerDiv.style.setProperty('--occupied-top', occupied);
-						newContainerDiv.style.top = 'var(--occupied-top)';
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-						newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
-						siblingDiv.style.height = 'var(--occupied-top)';
-					}
-					else 
-					{
-						newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
-						newContainerDiv.style.left = siblingDiv.style.left;
-						newContainerDiv.style.width = siblingDiv.style.width;
-						newContainerDiv.style.height = sprops.height;
-						siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-					}
-					break;
-				}
-				newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
 				var ents = [newContainerDiv,newContentWindow];
 				for(var w =0; w<ents.length;w++)
 				{
@@ -2148,22 +2279,29 @@ var MXP = function(sipwin)
 				}
 				this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
 				var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
-				var titleBar = titleBarInfo.titleBar;
+				var newTitleBar = titleBarInfo.titleBar;
 				if(titleBarInfo.hasTitle)
 				{
-					titleBar.style.top = newContentWindow.style.top;
+					newTitleBar.style.top = newContentWindow.style.top;
 					newContentWindow.style.top = titleBarInfo.titleHeight;
 					newContentWindow.style.height = 'calc(100% - 20px)';
 				}
-				newContainerDiv.append(titleBar);
-				if(action.toUpperCase() =='REDIRECT')
-					sipwin.window = newContentWindow;
+				if(isModify && titleBar)
+					newContainerDiv.removeChild(titleBar);
+				newContainerDiv.append(newTitleBar);
 				newContainerDiv.sprops = sprops;
-				this.frames[name] = newContainerDiv;
-				if(containerDiv == sipwin.topWindow.firstChild)
-					sipwin.resizeTermWindow();
-				if("OPEN" == action.toUpperCase())
-					sipwin.dispatchEvent({type:'openframe',data: name});
+				if(!isModify)
+				{
+					if(action.toUpperCase() =='REDIRECT')
+						sipwin.window = newContentWindow;
+					this.frames[name] = newContainerDiv;
+					if(containerDiv == sipwin.topWindow.firstChild)
+						sipwin.resizeTermWindow();
+					if(preservedContent)
+						newContentWindow.innerHTML = preservedContent;
+					if("OPEN" == action.toUpperCase())
+						sipwin.dispatchEvent({type:'openframe',data: name});
+				}
 				return;
 			}
 
@@ -2175,25 +2313,40 @@ var MXP = function(sipwin)
 			&&(sprops.width != null)
 			&&(sprops.height != null))
 			{
-				var newTopWindow = document.createElement('div');
-				if(window.sipcounter === undefined) 
-					window.sipcounter=1;
-				newTopWindow.id = "WIN" + (window.sipcounter++);
+				var newTopWindow, contentWindow, titleBar;
+				var isModify = (modifyFrame != null);
+				if(isModify)
+				{
+					newTopWindow = modifyFrame;
+					contentWindow = newTopWindow.children[0];
+					titleBar = newTopWindow.children[1];
+				}
+				else
+				{
+					newTopWindow = document.createElement('div');
+					if(window.sipcounter === undefined) 
+						window.sipcounter=1;
+					newTopWindow.id = "WIN" + (window.sipcounter++);
+					newTopWindow.style.backgroundColor = 'darkgray';
+					newTopWindow.style.color = 'black';
+					contentWindow = document.createElement('div');
+					contentWindow.style.backgroundColor = 'black';
+					contentWindow.style.color = 'white';
+				}
 				newTopWindow.style.cssText = "position:absolute;top:"+sprops.top+";left:"+sprops.left+";height:"+sprops.height+";width:"+sprops.width+";";
 				newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
-				newTopWindow.style.backgroundColor = 'darkgray';
-				newTopWindow.style.color = 'black';
 				var contentTop = '0px';
 				var titleBarInfo = this.createFrameTitleBar(sprops, name, true);
-				var titleBar = titleBarInfo.titleBar;
+				var newTitleBar = titleBarInfo.titleBar;
 				if(titleBarInfo.hasTitle)
 				{
 					contentTop = titleBarInfo.titleHeight;
-					MakeDraggable(newTopWindow, titleBar);
+					MakeDraggable(newTopWindow, newTitleBar);
 				}
 				else
 					MakeDraggable(newTopWindow);
-				var contentWindow = document.createElement('div');
+				if(isModify && titleBar)
+					newTopWindow.removeChild(titleBar);
 				contentWindow.style.cssText = "position:absolute;top:"+contentTop+";left:0%;height:calc(100% - "+contentTop+");width:100%;";
 				contentWindow.style.backgroundColor = 'black';
 				contentWindow.style.color = 'white';
@@ -2202,21 +2355,31 @@ var MXP = function(sipwin)
 				contentWindow.style.overflowY = 'hidden';
 				contentWindow.style.overflowX = 'hidden';
 				this.applyFrameScrollingBehavior(contentWindow, sprops.scrolling);
+				this.applyFrameImageBackground(contentWindow, sprops.image, sprops.imgop);
 				if(sprops.floating == null)
 				{
-					contentWindow.onclick=function() {
+					contentWindow.onclick = function() {
 						sipwin.topWindow.removeChild(newTopWindow);
 						delete this.frames[name];
-					}
+					};
 				}
-				newTopWindow.appendChild(contentWindow);
-				newTopWindow.appendChild(titleBar);
-				if(action.toUpperCase() =='REDIRECT')
-					sipwin.window = contentWindow;
-				sipwin.topWindow.appendChild(newTopWindow);
-				this.frames[name] = newTopWindow;
-				if("OPEN" == action.toUpperCase())
-					sipwin.dispatchEvent({type:'openframe',data: name});
+				else
+					contentWindow.onclick = null;
+				if(!isModify)
+				{
+					newTopWindow.appendChild(contentWindow);
+					newTopWindow.appendChild(newTitleBar);
+					if(action.toUpperCase() =='REDIRECT')
+						sipwin.window = contentWindow;
+					sipwin.topWindow.appendChild(newTopWindow);
+					this.frames[name] = newTopWindow;
+					if(preservedContent)
+						contentWindow.innerHTML = preservedContent;
+					if("OPEN" == action.toUpperCase())
+						sipwin.dispatchEvent({type:'openframe',data: name});
+				}
+				else
+					newTopWindow.appendChild(newTitleBar);
 				return;
 			}
 		}

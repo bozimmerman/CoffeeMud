@@ -255,12 +255,38 @@ function SipletWindow(windowName)
 			var oldMXP = this.MXPsupport;
 			var oldMode = this.mxp.mode;
 			var oldMSP = this.MSPsupport;
-			this.flushWindow = function(){};
+			var me = this;
+			this.flushWindow = function() 
+			{
+				if(me.htmlBuffer.length > 0)
+				{
+					var reprocess = '';
+					if(me.mxp.openElements.length)
+					{
+						for(var i=0;i<me.mxp.openElements.length;i++)
+						{
+							var elem = me.mxp.openElements[i];
+							if((elem.bitmap & MXPBIT.HTML)>0)
+								reprocess += elem.rawText;
+						}
+					}
+					me.htmlBuffer = reprocess + me.htmlBuffer;
+					me.flushBit(me.htmlBuffer);
+					me.htmlBuffer='';
+				}
+			};
 			this.text.resume = null;
 			this.MXPsupport = true;
 			this.MSPsupport = true;
 			this.mxp.mode = MXPMODE.LINE_OPEN;
-			s=this.text.process(s)
+			s=this.text.process(s);
+			var startTime = Date.now();
+			while(this.text.resume && ((Date.now() - startTime)<500))
+			{
+				this.htmlBuffer += s;
+				s = this.text.process('');
+			}
+			this.htmlBuffer += s;
 			var startTime = Date.now();
 			while(this.text.resume && ((Date.now() - startTime)<500))
 				s+=this.text.process('')
