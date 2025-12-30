@@ -5271,6 +5271,14 @@ public class ListCmd extends StdCommand
 					allFieldsMsg.append(stat.toString()+" ");
 				}
 			}
+			for(final Area.Stats stat : Area.Stats.values() )
+			{
+				if(!allKnownFields.contains(stat.toString()))
+				{
+					allKnownFields.add(stat.toString());
+					allFieldsMsg.append(stat.toString()+" ");
+				}
+			}
 			mob.tell(L("All Generic Stats: @x1",allFieldsMsg.toString()));
 			return;
 		}
@@ -5282,6 +5290,8 @@ public class ListCmd extends StdCommand
 				mob.tell(L("Stats for '@x1': @x2",((CMObject)o).ID(),CMParms.toListString(((Modifiable)o).getStatCodes())));
 			else
 				mob.tell(L("Stats for '@x1': @x2",o.toString(),CMParms.toListString(((Modifiable)o).getStatCodes())));
+			if(o instanceof Area)
+				mob.tell(L("Also': @x1",CMParms.toListString(Area.Stats.values())));
 		}
 		else
 		{

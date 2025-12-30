@@ -790,7 +790,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 		BOSS_MOBS,
 		MODE_LEVEL,
 		MODE_ALIGNMENT,
-		AGGRO_MOBS
+		AGGRO_MOBS,
+		SHOPKEEPER_MOBS
 	}
 
 	/**

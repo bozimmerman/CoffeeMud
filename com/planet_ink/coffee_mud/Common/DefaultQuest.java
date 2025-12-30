@@ -547,14 +547,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					if(var.equalsIgnoreCase("AREA"))
 					{
-						final List<Area> areas = parseSetAreaLine(parsedLine);
+						final List<Area> areas = parseSetAreaLine(parsedLine,true);
 						if(areas.size()>0)
 							areaGuessA=areas.get(CMLib.dice().roll(1,areas.size(),-1));
 					}
 					else
 					if(var.equalsIgnoreCase("AREAGROUP"))
 					{
-						final List<Area> areas = parseSetAreaGroupLine(parsedLine);
+						final List<Area> areas = parseSetAreaLine(parsedLine,false);
 						if(areas.size()>0)
 							areaGuessA=areas.get(CMLib.dice().roll(1,areas.size(),-1));
 					}
@@ -890,12 +890,72 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return finalScript;
 	}
 
-	private List<Area> parseSetAreaGroupLine(final List<String> p)
+	private List<Area> parseSetAreaLine(final List<String> p, final boolean assumeOne)
 	{
 		final List<String> names=new ArrayList<String>();
 		final List<Area> areas=new ArrayList<Area>();
-		for(int ip=2;ip<p.size();ip++)
-			names.add(p.get(ip));
+		if((p.size()>3)&&(p.get(2).equalsIgnoreCase("any")))
+		{
+			for(int ip=3;ip<p.size();ip++)
+				names.add(p.get(ip));
+		}
+		else
+		if((p.size()==3)&&(p.get(2).equalsIgnoreCase("all")))
+		{
+			for(final Enumeration<Area> a = CMLib.map().areas();a.hasMoreElements();)
+			{
+				final Area A = a.nextElement();
+				if((A!=null)&&(!CMLib.flags().isHidden(A)))
+					areas.add(A);
+			}
+		}
+		else
+		if((p.size()>3)&&(p.get(2).equalsIgnoreCase("mask")))
+		{
+			names.clear();
+			final String combined = CMParms.combine(p,3);
+			final MaskingLibrary.CompiledZMask zMask = CMLib.masking().getPreCompiledMask(combined);
+			for(final Enumeration<Area> a = CMLib.map().areas();a.hasMoreElements();)
+			{
+				final Area A = a.nextElement();
+				if((A!=null)
+				&&(!CMLib.flags().isHidden(A))
+				&&(CMLib.masking().maskCheck(zMask, A, true)))
+					areas.add(A);
+			}
+		}
+		else
+		if((p.size()>3)&&(p.get(2).equalsIgnoreCase("select:")))
+		{
+			names.clear();
+			final Set<Area> set = new HashSet<Area>();
+			final String combined = CMParms.combine(p,2);
+			try
+			{
+				for(final Map<String,Object> m : CMLib.percolator().doMQLSelectObjects(null, combined))
+				{
+					for(final String key : m.keySet())
+					{
+						final Object A = m.get(key);
+						if(A instanceof Area)
+							set.add((Area)A);
+					}
+				}
+				areas.addAll(set);
+			}
+			catch (final MQLException e)
+			{
+				Log.errOut(e);
+			}
+		}
+		else
+		if(assumeOne)
+			names.add(CMParms.combine(p,2));
+		else
+		{
+			for(int ip=2;ip<p.size();ip++)
+				names.add(p.get(ip));
+		}
 		for(int n=0;n<names.size();n++)
 		{
 			final String areaName=names.get(n);
@@ -912,52 +972,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						areas.add((Area)T);
 				}
 			}
-			final boolean addAll=areaName.equalsIgnoreCase("all");
-			if(oldSize==areas.size())
-			{
-				if(addAll)
-				{
-					for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
-					{
-						final Area A2=e.nextElement();
-						if(!areas.contains(A2))
-							areas.add(A2);
-					}
-				}
-				else
-				{
-					Area A2=CMLib.map().findArea(areaName);
-					if(A2 == null)
-					{
-						final Boardable ship=CMLib.map().findShip(areaName, true);
-						if(ship != null)
-							A2=ship.getArea();
-					}
-					if((A2!=null)&&(!areas.contains(A2)))
-						areas.add(A2);
-				}
-			}
-		}
-		return areas;
-	}
-
-	private List<Area> parseSetAreaLine(final List<String> p)
-	{
-		final List<String> names=new ArrayList<String>();
-		final List<Area> areas=new ArrayList<Area>();
-		if((p.size()>3)&&(p.get(2).equalsIgnoreCase("any")))
-		{
-			for(int ip=3;ip<p.size();ip++)
-				names.add(p.get(ip));
-		}
-		else
-			names.add(CMParms.combine(p,2));
-		for(int n=0;n<names.size();n++)
-		{
-			final String areaName=names.get(n);
-			final int oldSize=areas.size();
-			if(areaName.equalsIgnoreCase("any"))
-				areas.add(CMLib.map().getRandomArea());
 			if(oldSize==areas.size())
 			{
 				for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
@@ -1212,7 +1226,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							q.area=null;
 						}
-						final List<Area> areas = parseSetAreaLine(p);
+						final List<Area> areas = parseSetAreaLine(p,true);
 						if(areas.size()>0)
 							q.area=areas.get(CMLib.dice().roll(1,areas.size(),-1));
 						if(q.area==null)
@@ -1232,7 +1246,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						q.roomGroup=null;
 						if(p.size()<3)
 							continue;
-						final List<Area> areas = parseSetAreaGroupLine(p);
+						final List<Area> areas = parseSetAreaLine(p,false);
 						if(areas.size()>0)
 						{
 							q.roomGroup=Collections.synchronizedList(new ArrayList<Room>());

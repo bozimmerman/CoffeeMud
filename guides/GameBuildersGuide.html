@@ -3479,7 +3479,7 @@ mentioned above. This list can then be accessed with the LOAD ITEM or
 LOAD ITEMGROUP command.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 AREA</span> <span style="color: rgb(102, 51, 102);">([AREA
-NAME OR NAMES])</span>
+NAME, NAMES</span><span style="color: rgb(102, 51, 102);">, ALL, #TAG</span><span style="color: rgb(102, 51, 102);">])</span>
 - will set the current designated area to the area specified. Although
 this does nothing in itself, it is important for the several commands
 which load mobs and items. The area name ANY may be given to choose a
@@ -3495,8 +3495,15 @@ the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
+AREA</span> <span style="color: rgb(102, 51, 102);">SELECT: [QUERY]</span>
+- serves the same purpose as the above command of the same name, but
+the argument is an MQL query. &nbsp;See the MQL section of this document for more information on querying areas..</p>
+<span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">SET
+AREA</span> <span style="color: rgb(102, 51, 102);">MASK [ZAPPERMASK]</span>
+- serves the same purpose as the above command of the same name, but
+the argument is an ZapperMask. &nbsp;See AHELP ZAPPERMASK for more information on using this feature.</p><p><span style="color: rgb(51, 102, 102);">SET
 AREAGROUP</span> <span style="color: rgb(102, 51, 102);">([AREA
-NAME,&nbsp; NAMES, #TAG])</span>
+NAME,&nbsp; NAMES, ALL, #TAG])</span>
 - essentially the same as set ROOMGROUP below, this will set the
 current designated roomgroup to the rooms in the area(s) specified.
 Although this does nothing in itself, it is important for the several
@@ -3510,6 +3517,13 @@ This can have a profound impact on how subsequent mob or item loading,
 or room setting commands work. This command will automatically clear
 the AREA setting.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
+AREAGROUP</span> <span style="color: rgb(102, 51, 102);">SELECT: [QUERY]</span>
+- serves the same purpose as the above command of the same name, but
+the argument is an MQL query. &nbsp;See the MQL section of this document for more information on querying areas..</p><p><span style="color: rgb(51, 102, 102);">SET
+AREAGROUP</span> <span style="color: rgb(102, 51, 102);">MASK [ZAPPERMASK]</span>
+- serves the same purpose as the above command of the same name, but
+the argument is an ZapperMask. &nbsp;See AHELP ZAPPERMASK for more information on using this feature.</p>
+<span style="color: rgb(51, 102, 102);"></span><span style="color: rgb(51, 102, 102);"></span><p><span style="color: rgb(51, 102, 102);">SET
 ROOMGROUP</span> <span style="color: rgb(102, 51, 102);">([ROOM
 NAME, #TAG])</span>
 - will set the ROOMGROUP to the set specified. If an area has been

@@ -190,6 +190,8 @@ public class DefaultAreaIStats implements AreaIStats
 					statData[Area.Stats.BOSS_MOBS.ordinal()]++;
 				if(CMLib.flags().isAggressiveTo(mob, null))
 					statData[Area.Stats.AGGRO_MOBS.ordinal()]++;
+				if(mob instanceof ShopKeeper)
+					statData[Area.Stats.SHOPKEEPER_MOBS.ordinal()]++;
 				if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+R.racialCategory()+" ")>=0)
 					statData[Area.Stats.HUMANOIDS.ordinal()]++;
 			}
