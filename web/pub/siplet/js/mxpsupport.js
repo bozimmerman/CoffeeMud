@@ -1740,12 +1740,10 @@ var MXP = function(sipwin)
 		else
 		if (tagName=="FRAME")
 		{
-			var name = E.getAttributeValue("NAME");
-			var action = E.getAttributeValue("ACTION"); // open,close,redirect
-			if(action == null)
-				action = '';
-			var framechoices = this.getFrameMap();
 			var aligns = ["LEFT","RIGHT","TOP","BOTTOM"];
+			var name = E.getAttributeValue("NAME");
+			var action = E.getAttributeValue("ACTION") || ''; // open,close,redirect
+			var framechoices = this.getFrameMap();
 			if("CLOSE" == action.toUpperCase())
 			{
 				this.closeFrame(name);
