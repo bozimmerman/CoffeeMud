@@ -1770,8 +1770,7 @@ var MXP = function(sipwin)
 				return; // can't re-open a non-existant frame
 			}
 			
-			if(("OPEN" != action.toUpperCase())
-			&&("MODIFY" != action.toUpperCase()))
+			if(("OPEN" != action.toUpperCase()) && ("MODIFY" != action.toUpperCase()))
 			{
 				console.error('Unknown action \''+action+'\'.');
 				return; // can't do random things
@@ -1792,6 +1791,8 @@ var MXP = function(sipwin)
 				console.error('Cant re-open a non-existant frame \''+name+'\'.');
 				return; // can't re-open a non-existant frame
 			}
+			else
+				sipwin.dispatchEvent({type:'openframe',data: name});
 			var sprops = {
 				"name": name,
 				"action": action,
@@ -2209,8 +2210,6 @@ var MXP = function(sipwin)
 				sipwin.topWindow.appendChild(newTopWindow);
 				this.frames[name] = newTopWindow;
 			}
-			if("OPEN" === action.toUpperCase())
-				sipwin.dispatchEvent({type:'openframe',data: name});
 		}
 		else
 		if ((tagName == "SOUND") || (tagName == "MUSIC"))
