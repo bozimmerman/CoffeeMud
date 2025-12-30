@@ -1268,8 +1268,9 @@ var MXP = function(sipwin)
 				delete this.frames[name];
 				if(tabbedContainer.parentNode === sipwin.topWindow) 
 					sipwin.resizeTermWindow();
+				return;
 			}
-			else
+
 			if(sprops && sprops.tabbed) 
 			{
 				// Close entire tabbed container: Clean all tabs
@@ -1293,7 +1294,8 @@ var MXP = function(sipwin)
 				delete sprops.tabDirection;
 			}
 			
-			if(sprops.internal != null)
+			if((sprops.internal != null)
+			&&(!sprops.internal.toUpperCase().startsWith("N")))
 			{
 				var parentFrame = frame.parentNode;
 				var privilegedFrame = parentFrame.childNodes[0];
@@ -1800,12 +1802,12 @@ var MXP = function(sipwin)
 				"align": E.getAttributeValue("ALIGN"), // internal only: left,right,bottom,top
 				"left": fixDivSizeSpec(E.getAttributeValue("LEFT")), // ignored if internal is specified
 				"top": fixDivSizeSpec(E.getAttributeValue("TOP")), // ignored if internal is specified 
-				"width": fixDivSizeSpec(E.getAttributeValue("WIDTH")) || '50%',
-				"height": fixDivSizeSpec(E.getAttributeValue("HEIGHT")) || '50%',
+				"width": fixDivSizeSpec(E.getAttributeValue("WIDTH")),
+				"height": fixDivSizeSpec(E.getAttributeValue("HEIGHT")),
 				"scrolling": E.getAttributeValue("SCROLLING"),
 				"floating": E.getAttributeValue("FLOATING"), // otherwise, close on click-away
-				"image": E.getAttributeValue("IMAGE") || '',
-				"imgop": E.getAttributeValue("IMGOP") || ''
+				"image": E.getAttributeValue("IMAGE"),
+				"imgop": E.getAttributeValue("IMGOP")
 			};
 			// Handle MODIFY action: detect if structural properties changed
 			var preservedContent = '';
@@ -1825,7 +1827,10 @@ var MXP = function(sipwin)
 						oldSprops = {
 							dock: "tabbed",
 							internal: null,
-							align: null
+							align: null,
+							title: tab.title,
+							image: tab.image,
+							imgop: tab.imgop
 						};
 						preservedContent = modifyFrame.innerHTML;
 					}
@@ -1840,9 +1845,9 @@ var MXP = function(sipwin)
 				}
 				if(oldSprops != null)
 				{
-					if((oldSprops.internal != sprops.internal)
-					|| (oldSprops.dock != sprops.dock)
-					|| (oldSprops.align != sprops.align))
+					if(((sprops.internal!=null)&&(oldSprops.internal != sprops.internal))
+					||((sprops.dock!=null)&&(oldSprops.dock != sprops.dock))
+					||((sprops.align!=null)&&(oldSprops.align != sprops.align)))
 					{
 						this.closeFrame(name);
 						sprops.action = "OPEN";
@@ -1856,7 +1861,10 @@ var MXP = function(sipwin)
 					}
 				}
 			}
-
+			if(!sprops.width) sprops.width = '50%';
+			if(!sprops.height) sprops.height = '50%';
+			if(!sprops.image) sprops.image = '';
+			if(!sprops.imgop) sprops.imgop = '';
 			// start the opening process!
 
 			/**
@@ -2052,7 +2060,8 @@ var MXP = function(sipwin)
 			/**
 			 * Open/Modify internal frame:
 			 */
-			if(sprops.internal != null)
+			if((sprops.internal != null)
+			&&(!sprops.internal.toUpperCase().startsWith("N")))
 			{
 				var alignx = (!sprops.align)?-1:aligns.indexOf(sprops.align.toUpperCase().trim());
 				if(alignx < 0)
