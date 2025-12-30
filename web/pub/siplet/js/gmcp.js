@@ -200,63 +200,118 @@ window.gmcpPackages.push({
 			return;
 		}
 		var url = msg["url"];
-		if(!url) //TODO: we may want to support moving existing windows, so this may change
-			return;
 		this._WebViewOnMessageInit();
 		var id = msg["id"];
 		if(!id)
 			id="WEBVIEW";
-		var titleBar = msg["title"];
+		var title = msg["title"];
 		var dock = msg["dock"];
-		if(!dock)
-			dock = "";
-		if(["","top","bottom","left","right"].indexOf(dock.toLowerCase())<0)
+		if((!dock)||(["top","bottom","left","right"].indexOf(dock.toLowerCase())<0))
 			dock="";
 		var headerObj = msg["http-request-headers"]
+		if(headerObj !== undefined)
+			msg['headerObj'] = headerObj; // see below for why
+		var width = msg["width"] || "25%";
+		var height = msg["height"] || "25%";
+		var top = msg["top"] || "25%";
+		var left = msg["left"] || "25%";
 		if(!isJsonObject(headerObj))
 			headerObj = {};
+		var wvparms = {
+			"url": url,
+			"title": title,
+			"dock": dock,
+			"headerObj": headerObj,
+			"width": width,
+			"height": height,
+			"top": top,
+			"left": left
+		};
 		var framechoices = sipwin.mxp.getFrameMap();
+		var frame;
+		var action = null;
+		var fetchNewUrl = true;
 		if(!(id in framechoices))
 		{
-			var titleStr = titleBar ? ' TITLE="'+titleBar+'"' : '';
-			var width = msg["width"] || "25%";
-			var height = msg["height"] || "25%";
-			var top = msg["top"] || "25%";
-			var left = msg["left"] || "25%";
-			if(dock != "")
+			action="OPEN";
+			if(!url)
+				return;
+		}
+		else
+		if(framechoices[id].wvprops)
+		{
+			var oldprops = framechoices[id].wvprops;
+			if((!url || (oldprops.url == url)) // is url unchanged?
+			&&((!msg["http-request-headers"]) || (JSON.stringify(oldprops.headerObj) == JSON.stringify(wvparms.headerObj))))
+				fetchNewUrl=false;
+			frame = framechoices[id];
+			if((oldprops.dock !== wvparms.dock)
+			||(oldprops.title !== wvparms.title)
+			||(oldprops.left !== wvparms.left)
+			||(oldprops.top !== wvparms.top)
+			||(oldprops.height !== wvparms.height)
+			||(oldprops.width !== wvparms.width))
 			{
-				var rest=(["top","bottom"].indexOf(dock.toLowerCase())>=0)?("height="+height):("width="+width);
-				sipwin.process('<FRAME ACTION=OPEN INTERNAL NAME="'+id+'" '+titleStr+' ALIGN='+dock+' '+rest+'>');
+				action="MODIFY";
 			}
 			else
-				sipwin.process('<FRAME ACTION=OPEN FLOATING NAME="'+id+'" '+titleStr+' LEFT='+left+' TOP='+top+' HEIGHT='+height+' WIDTH='+width+'>');
-			framechoices = sipwin.mxp.getFrameMap();
+			if(!fetchNewUrl)
+			{
+				// literally nothing to do
+				return;
+			}
+			for(var k in wvparms)
+				if(k in msg)
+					oldprops[k] = wvparms[k];
+			wvparms = oldprops;
 		}
-		if(!(id in framechoices))
-			return;
-		var frame = framechoices[id];
+		else
+		{
+			frame = framechoices[id];
+			frame.wvprops = wvparms;
+		}
+		
+		if(action)
+		{
+			var titleStr = title ? ' TITLE="'+title+'"' : '';
+			if(dock)
+			{
+				var rest=(["top","bottom"].indexOf(dock.toLowerCase())>=0)?("height="+height):("width="+width);
+				sipwin.process('<FRAME ACTION='+action+' INTERNAL NAME="'+id+'" '+titleStr+' ALIGN='+dock+' '+rest+'>');
+			}
+			else
+				sipwin.process('<FRAME ACTION='+action+' FLOATING NAME="'+id+'" '+titleStr+' LEFT='+left+' TOP='+top+' HEIGHT='+height+' WIDTH='+width+'>');
+			framechoices = sipwin.mxp.getFrameMap(); // refresh!
+			if(!(id in framechoices))
+				return;
+			frame = framechoices[id];
+			frame.wvprops = wvparms;
+		}
 		if(frame.sprops && frame.firstChild)
 			frame = frame.firstChild;
-		sipwin.cleanDiv(frame);
-		var iframeId = "webview_iframe_"+id.replace(' ','_');
-		var iframe = document.createElement("iframe");
-		iframe.mxpId= id;
-		iframe.setAttribute('id', iframeId);
-		iframe.setAttribute('sandbox', 'allow-scripts');
-		iframe.style.width = "100%";
-		iframe.style.height = "100%";
-		iframe.style.border = "none";
-		iframe.style.backgroundColor = "white";
-		frame.appendChild(iframe);
-		var injectedCode = this._GenerateWebViewInjectionCode(iframeId, 'webview.' + id);
-		const { ipcRenderer } = require('electron')
-		ipcRenderer.send('webview-inject-request', 
+		if(fetchNewUrl)
 		{
-			iframeId: iframeId,
-			url: url,
-			code: injectedCode
-		});
-		iframe.src = url;
+			sipwin.cleanDiv(frame);
+			var iframeId = "webview_iframe_"+id.replace(' ','_');
+			var iframe = document.createElement("iframe");
+			iframe.mxpId= id;
+			iframe.setAttribute('id', iframeId);
+			iframe.setAttribute('sandbox', 'allow-scripts');
+			iframe.style.width = "100%";
+			iframe.style.height = "100%";
+			iframe.style.border = "none";
+			iframe.style.backgroundColor = "white";
+			frame.appendChild(iframe);
+			var injectedCode = this._GenerateWebViewInjectionCode(iframeId, 'webview.' + id);
+			const { ipcRenderer } = require('electron')
+			ipcRenderer.send('webview-inject-request', 
+			{
+				iframeId: iframeId,
+				url: url,
+				code: injectedCode
+			});
+			iframe.src = url;
+		}
 	},
 	close: function(sipwin, msg)
 	{
