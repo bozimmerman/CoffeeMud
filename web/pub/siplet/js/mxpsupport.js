@@ -1370,6 +1370,14 @@ var MXP = function(sipwin)
 		return false;
 	};
 		
+	this.setFrameAriaAttributes = function(element)
+	{
+		element.setAttribute('role', 'log');
+		element.setAttribute('aria-live', 'polite');
+		element.setAttribute('aria-atomic', 'false');
+		element.setAttribute('aria-busy', 'false');
+	};
+
 	this.applyFrameScrollingBehavior = function(element, scrolling)
 	{
 		element.style.overflowX = 'hidden';
@@ -1392,7 +1400,7 @@ var MXP = function(sipwin)
 		}
 	};
 
-	this.applyImageBackground = function(element, image, imgop)
+	this.applyFrameImageBackground = function(element, image, imgop)
 	{
 		if (!image) 
 			return;
@@ -1877,10 +1885,7 @@ var MXP = function(sipwin)
 						contentArea.style.width = contentWidth;
 						contentArea.style.height = contentHeight;
 						contentArea.style.overflow = 'hidden';
-						contentArea.setAttribute('role', 'log');
-						contentArea.setAttribute('aria-live', 'polite');
-						contentArea.setAttribute('aria-atomic', 'false');
-						contentArea.setAttribute('aria-busy', 'false');
+						this.setFrameAriaAttributes(contentArea);
 
 						peerContainer.removeChild(originalContent);
 						contentArea.appendChild(originalContent);
@@ -1924,10 +1929,7 @@ var MXP = function(sipwin)
 					newContent.style.height = '100%';
 					newContent.style.backgroundColor = 'black';
 					newContent.style.color = 'white';
-					newContent.setAttribute('role', 'log');
-					newContent.setAttribute('aria-live', 'polite');
-					newContent.setAttribute('aria-atomic', 'false');
-					newContent.setAttribute('aria-busy', 'false');
+					this.setFrameAriaAttributes(newContent);
 					newContent.style.border = '1px solid white';
 					newContent.style.overflowY = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'y') ? 'auto' : 'hidden';
 					newContent.style.overflowX = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'x') ? 'auto' : 'hidden';
@@ -1937,7 +1939,7 @@ var MXP = function(sipwin)
 						newContent.style.wordWrap = 'break-word';
 						newContent.style.whiteSpace = 'pre-wrap';
 					}
-					this.applyImageBackground(newContent, sprops.image, sprops.imgop);
+					this.applyFrameImageBackground(newContent, sprops.image, sprops.imgop);
 					contentArea.appendChild(newContent);
 					newContent.style.display = 'none';
 					var newTab = 
@@ -1995,11 +1997,8 @@ var MXP = function(sipwin)
 						newContentWindow.style.height = '100%';
 						newContentWindow.style.border = "1px solid white";
 						newContentWindow.style.boxSizing = "border-box";
-						newContentWindow.setAttribute('role', 'log');
-						newContentWindow.setAttribute('aria-live', 'polite');
-						newContentWindow.setAttribute('aria-atomic', 'false');
-						newContentWindow.setAttribute('aria-busy', 'false');
-						this.applyImageBackground(newContentWindow, sprops.image, sprops.imgop);
+						this.setFrameAriaAttributes(newContentWindow);
+						this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
 						var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
 						var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
 						if ((alignx === 0 || alignx === 1) && isFullWidth) 
