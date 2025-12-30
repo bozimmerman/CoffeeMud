@@ -1744,451 +1744,473 @@ var MXP = function(sipwin)
 			var name = E.getAttributeValue("NAME");
 			var action = E.getAttributeValue("ACTION") || ''; // open,close,redirect
 			var framechoices = this.getFrameMap();
+			if(!name)
+			{
+				console.error('No frame name.');
+				return; // can't open an anonymous frame
+			}
 			if("CLOSE" == action.toUpperCase())
 			{
 				this.closeFrame(name);
 				return;
 			}
-			else
-			if((("OPEN" == action.toUpperCase())
-				||("REDIRECT" == action.toUpperCase())
-				||("REOPEN" == action.toUpperCase()))
-			&&(name != null))
+			if("REDIRECT" == action.toUpperCase())
 			{
-				var sprops = {
-					"name": name,
-					"action": action,
-					"title": E.getAttributeValue("TITLE"),
-					"dock": E.getAttributeValue("DOCK"),
-					"internal": E.getAttributeValue("INTERNAL"),
-					"align": E.getAttributeValue("ALIGN"), // internal only: left,right,bottom,top
-					"left": fixDivSizeSpec(E.getAttributeValue("LEFT")), // ignored if internal is specified
-					"top": fixDivSizeSpec(E.getAttributeValue("TOP")), // ignored if internal is specified 
-					"width": fixDivSizeSpec(E.getAttributeValue("WIDTH")) || '50%',
-					"height": fixDivSizeSpec(E.getAttributeValue("HEIGHT")) || '50%',
-					"scrolling": E.getAttributeValue("SCROLLING"),
-					"floating": E.getAttributeValue("FLOATING"), // otherwise, close on click-away
-					"image": E.getAttributeValue("IMAGE") || '',
-					"imgop": E.getAttributeValue("IMGOP") || ''
-				};
 				if(name in framechoices)
 				{
-					if("REDIRECT" == action.toUpperCase())
-					{
-						var error = new SipSkip('');
-						var newFrame = framechoices[name];
-						error.call = function() {
-							sipwin.flushWindow();
-							sipwin.window = newFrame;
-						};
-						throw error;
-					}
-					if("OPEN" == action.toUpperCase())
-					{
-						console.error('Duplicate frame name.');
-						return; // can't open an existing frame
-					}
-				}
-				else
-				if("REOPEN" == action.toUpperCase())
-				{
-					console.error('Cant re-open a non-existant frame.');
-					return; // can't re-open a non-existant frame
-				}
-
-				// start the opening process!
-
-				if((sprops.dock != null) && (sprops.dock.trim().length>0))
-				{
-					var tabPos = 'above';
-					var tabFrame = sprops.dock;
-					var d = sprops.dock.indexOf(' ');
-					if(d > 0) 
-					{
-						tabPos = sprops.dock.substr(0, d).trim().toLowerCase();
-						tabFrame = sprops.dock.substr(d + 1).trim();
-					}
-					if(!(tabFrame in framechoices))
-					{
-						console.error('Invalid dock target.');
-						return; // Invalid dock target, so nowhere to dock to
-					}
-					var peerContainer = framechoices[tabFrame];
-					if(peerContainer.parentNode 
-					&& peerContainer.parentNode.parentNode 
-					&& peerContainer.parentNode.parentNode.sprops 
-					&& peerContainer.parentNode.parentNode.sprops.tabbed)
-						peerContainer = peerContainer.parentNode.parentNode;
-					if(!peerContainer.sprops) 
-					{
-						console.error('Malformed dock target.');
-						return; // Invalid sprops
-					}
-					var isTabbed = !!peerContainer.sprops.tabbed;
-					var tabBar, contentArea;
-					var tabDirection = (tabPos === 'left' || tabPos === 'right') ? 'vertical' : 'horizontal';
-					var tabBarWidth = (tabDirection === 'vertical') ? '150px' : '100%'; // Adjustable for vertical
-					var tabBarHeight = (tabDirection === 'vertical') ? '100%' : '20px';
-					var tabBarTop = (tabPos === 'below') ? 'calc(100% - 20px)' : '0px';
-					var tabBarLeft = (tabPos === 'right') ? 'calc(100% - 150px)' : '0px';
-					var contentTop = (tabPos === 'below') ? '0px' : ((tabDirection === 'horizontal') ? '20px' : '0px');
-					var contentLeft = (tabPos === 'right') ? '0px' : ((tabDirection === 'vertical') ? '150px' : '0px');
-					var contentWidth = (tabDirection === 'vertical') ? 'calc(100% - 150px)' : '100%';
-					var contentHeight = (tabPos === 'below') ? 'calc(100% - 20px)' : ((tabDirection === 'horizontal') ? 'calc(100% - 20px)' : '100%');
-					var createTabButton = function(label, clickFunc, tabName) 
-					{
-						var btn = document.createElement('span');
-						btn.style.padding = '2px 10px';
-						btn.style.border = '1px solid black';
-						btn.style.margin = '2px';
-						btn.style.cursor = 'pointer';
-						btn.style.display = (tabDirection === 'vertical') ? 'block' : 'inline-block';
-						btn.innerHTML = label;
-						btn.onclick = clickFunc;
-						return btn;
+					var error = new SipSkip('');
+					var newFrame = framechoices[name];
+					error.call = function() {
+						sipwin.flushWindow();
+						sipwin.window = newFrame;
 					};
+					throw error;
+				}
+				console.error('Cant re-direct to non-existant frame \''+name+'\'.');
+				return; // can't re-open a non-existant frame
+			}
+			
+			if(("OPEN" != action.toUpperCase())
+			&&("MODIFY" != action.toUpperCase()))
+			{
+				console.error('Unknown action \''+action+'\'.');
+				return; // can't do random things
+			}
+			var modifyFrame = null;
+			if(name in framechoices)
+			{
+				if("OPEN" == action.toUpperCase())
+				{
+					console.error('Duplicate frame name \''+name+'\'.');
+					return; // can't open an existing frame
+				}
+				modifyFrame = framechoices[name];
+			}
+			else
+			if("MODIFY" == action.toUpperCase())
+			{
+				console.error('Cant re-open a non-existant frame \''+name+'\'.');
+				return; // can't re-open a non-existant frame
+			}
+			var sprops = {
+				"name": name,
+				"action": action,
+				"title": E.getAttributeValue("TITLE"),
+				"dock": E.getAttributeValue("DOCK"),
+				"internal": E.getAttributeValue("INTERNAL"),
+				"align": E.getAttributeValue("ALIGN"), // internal only: left,right,bottom,top
+				"left": fixDivSizeSpec(E.getAttributeValue("LEFT")), // ignored if internal is specified
+				"top": fixDivSizeSpec(E.getAttributeValue("TOP")), // ignored if internal is specified 
+				"width": fixDivSizeSpec(E.getAttributeValue("WIDTH")) || '50%',
+				"height": fixDivSizeSpec(E.getAttributeValue("HEIGHT")) || '50%',
+				"scrolling": E.getAttributeValue("SCROLLING"),
+				"floating": E.getAttributeValue("FLOATING"), // otherwise, close on click-away
+				"image": E.getAttributeValue("IMAGE") || '',
+				"imgop": E.getAttributeValue("IMGOP") || ''
+			};
 
-					if (!isTabbed) 
+			// start the opening process!
+
+			/**
+			 * Open tabbed frame:
+			 */
+			if((sprops.dock != null) && (sprops.dock.trim().length>0))
+			{
+				var tabPos = 'above';
+				var tabFrame = sprops.dock;
+				var d = sprops.dock.indexOf(' ');
+				if(d > 0) 
+				{
+					tabPos = sprops.dock.substr(0, d).trim().toLowerCase();
+					tabFrame = sprops.dock.substr(d + 1).trim();
+				}
+				if(!(tabFrame in framechoices))
+				{
+					console.error('Invalid dock target.');
+					return; // Invalid dock target, so nowhere to dock to
+				}
+				var peerContainer = framechoices[tabFrame];
+				if(peerContainer.parentNode 
+				&& peerContainer.parentNode.parentNode 
+				&& peerContainer.parentNode.parentNode.sprops 
+				&& peerContainer.parentNode.parentNode.sprops.tabbed)
+					peerContainer = peerContainer.parentNode.parentNode;
+				if(!peerContainer.sprops) 
+				{
+					console.error('Malformed dock target.');
+					return; // Invalid sprops
+				}
+				var isTabbed = !!peerContainer.sprops.tabbed;
+				var tabBar, contentArea;
+				var tabDirection = (tabPos === 'left' || tabPos === 'right') ? 'vertical' : 'horizontal';
+				var tabBarWidth = (tabDirection === 'vertical') ? '150px' : '100%'; // Adjustable for vertical
+				var tabBarHeight = (tabDirection === 'vertical') ? '100%' : '20px';
+				var tabBarTop = (tabPos === 'below') ? 'calc(100% - 20px)' : '0px';
+				var tabBarLeft = (tabPos === 'right') ? 'calc(100% - 150px)' : '0px';
+				var contentTop = (tabPos === 'below') ? '0px' : ((tabDirection === 'horizontal') ? '20px' : '0px');
+				var contentLeft = (tabPos === 'right') ? '0px' : ((tabDirection === 'vertical') ? '150px' : '0px');
+				var contentWidth = (tabDirection === 'vertical') ? 'calc(100% - 150px)' : '100%';
+				var contentHeight = (tabPos === 'below') ? 'calc(100% - 20px)' : ((tabDirection === 'horizontal') ? 'calc(100% - 20px)' : '100%');
+				var createTabButton = function(label, clickFunc, tabName) 
+				{
+					var btn = document.createElement('span');
+					btn.style.padding = '2px 10px';
+					btn.style.border = '1px solid black';
+					btn.style.margin = '2px';
+					btn.style.cursor = 'pointer';
+					btn.style.display = (tabDirection === 'vertical') ? 'block' : 'inline-block';
+					btn.innerHTML = label;
+					btn.onclick = clickFunc;
+					return btn;
+				};
+
+				if (!isTabbed) 
+				{
+					var originalContent = peerContainer.children[0];
+					var originalTitleBar = (peerContainer.children.length > 1) ? peerContainer.children[1] : null;
+					var titleFromBar = originalTitleBar ? originalTitleBar.innerHTML.replace(/&nbsp;/, '').trim() : '';
+					var originalTitle = titleFromBar || peerContainer.sprops.title || peerContainer.sprops.name || 'Main';
+					var originalName = peerContainer.sprops.name;
+
+					if (originalTitleBar)
+						peerContainer.removeChild(originalTitleBar);
+
+					tabBar = document.createElement('div');
+					tabBar.style.position = 'absolute';
+					tabBar.style.top = tabBarTop;
+					tabBar.style.left = tabBarLeft;
+					tabBar.style.width = tabBarWidth;
+					tabBar.style.height = tabBarHeight;
+					tabBar.style.backgroundColor = 'white';
+					tabBar.style.color = 'black';
+					tabBar.style.overflow = 'auto';
+					if (tabDirection === 'horizontal')
 					{
-						var originalContent = peerContainer.children[0];
-						var originalTitleBar = (peerContainer.children.length > 1) ? peerContainer.children[1] : null;
-						var titleFromBar = originalTitleBar ? originalTitleBar.innerHTML.replace(/&nbsp;/, '').trim() : '';
-						var originalTitle = titleFromBar || peerContainer.sprops.title || peerContainer.sprops.name || 'Main';
-						var originalName = peerContainer.sprops.name;
-
-						if (originalTitleBar)
-							peerContainer.removeChild(originalTitleBar);
-
-						tabBar = document.createElement('div');
-						tabBar.style.position = 'absolute';
-						tabBar.style.top = tabBarTop;
-						tabBar.style.left = tabBarLeft;
-						tabBar.style.width = tabBarWidth;
-						tabBar.style.height = tabBarHeight;
-						tabBar.style.backgroundColor = 'white';
-						tabBar.style.color = 'black';
-						tabBar.style.overflow = 'auto';
-						if (tabDirection === 'horizontal')
-						{
-							tabBar.style.overflowX = 'auto';
-							tabBar.style.overflowY = 'hidden';
-							tabBar.style.whiteSpace = 'nowrap';
-						}
-						else
-							tabBar.style.overflow = 'auto';
-						contentArea = document.createElement('div');
-						contentArea.style.position = 'absolute';
-						contentArea.style.top = contentTop;
-						contentArea.style.left = contentLeft;
-						contentArea.style.width = contentWidth;
-						contentArea.style.height = contentHeight;
-						contentArea.style.overflow = 'hidden';
-						this.setFrameAriaAttributes(contentArea);
-
-						peerContainer.removeChild(originalContent);
-						contentArea.appendChild(originalContent);
-						originalContent.style.position = 'absolute';
-						originalContent.style.top = '0px';
-						originalContent.style.left = '0px';
-						originalContent.style.width = '100%';
-						originalContent.style.height = '100%';
-
-						peerContainer.appendChild(contentArea);
-						peerContainer.appendChild(tabBar);
-
-						var originalTab =
-						{
-							name: originalName,
-							title: originalTitle,
-							content: originalContent,
-							button: createTabButton(originalTitle, () => this.switchFrameTab(originalTab, peerContainer), originalName)
-						};
-						tabBar.appendChild(originalTab.button);
-						peerContainer.sprops.tabbed = true;
-						peerContainer.sprops.tabs = [originalTab];
-						peerContainer.sprops.tabPos = tabPos;
-						peerContainer.sprops.tabDirection = tabDirection;
-						if(originalName)
-							this.frames[originalName] = originalContent;
-						this.switchFrameTab(originalTab, peerContainer);
+						tabBar.style.overflowX = 'auto';
+						tabBar.style.overflowY = 'hidden';
+						tabBar.style.whiteSpace = 'nowrap';
 					}
 					else
+						tabBar.style.overflow = 'auto';
+					contentArea = document.createElement('div');
+					contentArea.style.position = 'absolute';
+					contentArea.style.top = contentTop;
+					contentArea.style.left = contentLeft;
+					contentArea.style.width = contentWidth;
+					contentArea.style.height = contentHeight;
+					contentArea.style.overflow = 'hidden';
+					this.setFrameAriaAttributes(contentArea);
+
+					peerContainer.removeChild(originalContent);
+					contentArea.appendChild(originalContent);
+					originalContent.style.position = 'absolute';
+					originalContent.style.top = '0px';
+					originalContent.style.left = '0px';
+					originalContent.style.width = '100%';
+					originalContent.style.height = '100%';
+
+					peerContainer.appendChild(contentArea);
+					peerContainer.appendChild(tabBar);
+
+					var originalTab =
 					{
-						contentArea = peerContainer.children[0];
-						tabBar = peerContainer.children[1];
-						tabPos = peerContainer.sprops.tabPos;
-						tabDirection = peerContainer.sprops.tabDirection;
-					}
-					var newContent = document.createElement('div');
-					newContent.style.position = 'absolute';
-					newContent.style.top = '0px';
-					newContent.style.left = '0px';
-					newContent.style.width = '100%';
-					newContent.style.height = '100%';
-					newContent.style.backgroundColor = 'black';
-					newContent.style.color = 'white';
-					this.setFrameAriaAttributes(newContent);
-					newContent.style.border = '1px solid white';
-					newContent.style.overflowY = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'y') ? 'auto' : 'hidden';
-					newContent.style.overflowX = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'x') ? 'auto' : 'hidden';
-					if(!sprops.scrolling || sprops.scrolling.toLowerCase() !== 'yes')
-					{
-						newContent.style.overflowWrap = 'break-word';
-						newContent.style.wordWrap = 'break-word';
-						newContent.style.whiteSpace = 'pre-wrap';
-					}
-					this.applyFrameImageBackground(newContent, sprops.image, sprops.imgop);
-					contentArea.appendChild(newContent);
-					newContent.style.display = 'none';
-					var newTab = 
-					{
-						name: name,
-						title: sprops.title || name,
-						content: newContent,
-						button: createTabButton(sprops.title || name, () => this.switchFrameTab(newTab, peerContainer), name)
+						name: originalName,
+						title: originalTitle,
+						content: originalContent,
+						button: createTabButton(originalTitle, () => this.switchFrameTab(originalTab, peerContainer), originalName)
 					};
-					tabBar.appendChild(newTab.button);
-					peerContainer.sprops.tabs.push(newTab);
-					this.frames[name] = newContent;
-					if (action.toUpperCase() === 'REDIRECT') 
-						sipwin.window = newContent;
-					this.switchFrameTab(newTab, peerContainer);
-					if (peerContainer.parentNode === sipwin.topWindow) 
-						sipwin.resizeTermWindow();
+					tabBar.appendChild(originalTab.button);
+					peerContainer.sprops.tabbed = true;
+					peerContainer.sprops.tabs = [originalTab];
+					peerContainer.sprops.tabPos = tabPos;
+					peerContainer.sprops.tabDirection = tabDirection;
+					if(originalName)
+						this.frames[originalName] = originalContent;
+					this.switchFrameTab(originalTab, peerContainer);
 				}
 				else
-				if(sprops.internal != null)
 				{
-					var alignx = (!sprops.align)?-1:aligns.indexOf(sprops.align.toUpperCase().trim());
-					if(alignx >= 0)
+					contentArea = peerContainer.children[0];
+					tabBar = peerContainer.children[1];
+					tabPos = peerContainer.sprops.tabPos;
+					tabDirection = peerContainer.sprops.tabDirection;
+				}
+				var newContent = document.createElement('div');
+				newContent.style.position = 'absolute';
+				newContent.style.top = '0px';
+				newContent.style.left = '0px';
+				newContent.style.width = '100%';
+				newContent.style.height = '100%';
+				newContent.style.backgroundColor = 'black';
+				newContent.style.color = 'white';
+				this.setFrameAriaAttributes(newContent);
+				newContent.style.border = '1px solid white';
+				newContent.style.overflowY = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'y') ? 'auto' : 'hidden';
+				newContent.style.overflowX = (sprops.scrolling && sprops.scrolling.toLowerCase() === 'yes' || sprops.scrolling === 'x') ? 'auto' : 'hidden';
+				if(!sprops.scrolling || sprops.scrolling.toLowerCase() !== 'yes')
+				{
+					newContent.style.overflowWrap = 'break-word';
+					newContent.style.wordWrap = 'break-word';
+					newContent.style.whiteSpace = 'pre-wrap';
+				}
+				this.applyFrameImageBackground(newContent, sprops.image, sprops.imgop);
+				contentArea.appendChild(newContent);
+				newContent.style.display = 'none';
+				var newTab = 
+				{
+					name: name,
+					title: sprops.title || name,
+					content: newContent,
+					button: createTabButton(sprops.title || name, () => this.switchFrameTab(newTab, peerContainer), name)
+				};
+				tabBar.appendChild(newTab.button);
+				peerContainer.sprops.tabs.push(newTab);
+				this.frames[name] = newContent;
+				if (action.toUpperCase() === 'REDIRECT') 
+					sipwin.window = newContent;
+				this.switchFrameTab(newTab, peerContainer);
+				if (peerContainer.parentNode === sipwin.topWindow) 
+					sipwin.resizeTermWindow();
+			}
+			else
+			/**
+			 * Open internal frame:
+			 */
+			if(sprops.internal != null)
+			{
+				var alignx = (!sprops.align)?-1:aligns.indexOf(sprops.align.toUpperCase().trim());
+				if(alignx >= 0)
+				{
+					var siblingDiv = sipwin.window;
+					var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
+					var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
+					if(isInTabbed) 
 					{
-						var siblingDiv = sipwin.window;
-						var containerDiv = sipwin.window.parentNode; // has the titlebar in it and window and so forth
-						var isInTabbed = (containerDiv.parentNode && containerDiv.parentNode.sprops && containerDiv.parentNode.sprops.tabbed);
-						if(isInTabbed) 
-						{
-							var tabContent = sipwin.window;
-							tabContent.style.position = 'relative';
-							var wrapper = document.createElement('div');
-							wrapper.style.position = 'absolute';
-							wrapper.style.top = '0px';
-							wrapper.style.left = '0px';
-							wrapper.style.width = '100%';
-							wrapper.style.height = '100%';
-							while (tabContent.firstChild)
-								wrapper.appendChild(tabContent.firstChild);
-							tabContent.appendChild(wrapper);
-							siblingDiv = wrapper;
-							sipwin.window = wrapper;
-							containerDiv = tabContent;
-						}
-						var newContainerDiv = document.createElement('div');
-						newContainerDiv.style.cssText = containerDiv.style.cssText;
-						newContainerDiv.style.display = 'block';
-						containerDiv.appendChild(newContainerDiv);
-						var newContentWindow = document.createElement('div');
-						newContentWindow.style.cssText = sipwin.window.style.cssText;
-						newContentWindow.style.display = '';
-						newContentWindow.style.left = '0%';
-						newContentWindow.style.top = '0%';
-						newContentWindow.style.width = '100%';
-						newContentWindow.style.height = '100%';
-						newContentWindow.style.border = "1px solid white";
-						newContentWindow.style.boxSizing = "border-box";
-						this.setFrameAriaAttributes(newContentWindow);
-						this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
-						var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
-						var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
-						if ((alignx === 0 || alignx === 1) && isFullWidth) 
-						{
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-							siblingDiv.style.width = '0px';
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-						}
-						else
-						if ((alignx === 2 || alignx === 3) && isFullHeight) 
-						{
-							newContainerDiv.style.top = siblingDiv.style.top;
-							newContainerDiv.style.height = siblingDiv.style.height;
-							siblingDiv.style.height = '0px';
-							newContainerDiv.style.left = siblingDiv.style.left;
-							newContainerDiv.style.width = siblingDiv.style.width;
-						}
-						else
-						switch(alignx)
-						{
-						case 0: // left
-							if (sprops.width === '100%') 
-							{
-								var occupied = '0px';
-								var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
-								if (priorLeft) 
-									occupied = priorLeft.style.width || '0px';
-								containerDiv.style.setProperty('--occupied-left', occupied);
-								newContainerDiv.style.left = 'var(--occupied-left)';
-								newContainerDiv.style.top = siblingDiv.style.top;
-								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
-								siblingDiv.style.width = 'var(--occupied-left)';
-							}
-							else 
-							{
-								newContainerDiv.style.left = siblingDiv.style.left;
-								newContainerDiv.style.top = siblingDiv.style.top;
-								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = sprops.width;
-								siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
-								siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-							}
-							break;
-						case 1: // right
-							if (sprops.width === '100%') 
-							{
-								var occupied = '0px';
-								var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
-								if (priorRight) 
-									occupied = priorRight.style.width || '0px';
-								containerDiv.style.setProperty('--occupied-right', occupied);
-								newContainerDiv.style.right = 'var(--occupied-right)';
-								newContainerDiv.style.top = siblingDiv.style.top;
-								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
-								siblingDiv.style.width = 'var(--occupied-right)';
-							}
-							else 
-							{
-								newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
-								newContainerDiv.style.top = siblingDiv.style.top;
-								newContainerDiv.style.height = siblingDiv.style.height;
-								newContainerDiv.style.width = sprops.width;
-								siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
-							}
-							break;
-						case 2: // top
-							if (sprops.height === '100%') 
-							{
-								var occupied = '0px';
-								var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
-								if (priorTop) 
-									occupied = priorTop.style.height || '0px';
-								containerDiv.style.setProperty('--occupied-bottom', occupied);
-								newContainerDiv.style.bottom = 'var(--occupied-bottom)';
-								newContainerDiv.style.left = siblingDiv.style.left;
-								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
-								siblingDiv.style.height = 'var(--occupied-bottom)';
-							}
-							else 
-							{
-								newContainerDiv.style.top = siblingDiv.style.top;
-								newContainerDiv.style.left = siblingDiv.style.left;
-								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = sprops.height;
-								siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
-								siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-							}
-							break;
-						case 3: // bottom
-							if (sprops.height === '100%') 
-							{
-								var occupied = '0px';
-								var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
-								if (priorBottom) 
-									occupied = priorBottom.style.height || '0px';
-								containerDiv.style.setProperty('--occupied-top', occupied);
-								newContainerDiv.style.top = 'var(--occupied-top)';
-								newContainerDiv.style.left = siblingDiv.style.left;
-								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
-								siblingDiv.style.height = 'var(--occupied-top)';
-							}
-							else 
-							{
-								newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
-								newContainerDiv.style.left = siblingDiv.style.left;
-								newContainerDiv.style.width = siblingDiv.style.width;
-								newContainerDiv.style.height = sprops.height;
-								siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
-							}
-							break;
-						}
-						newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
-						var ents = [newContainerDiv,newContentWindow];
-						for(var w =0; w<ents.length;w++)
-						{
-							var ww = ents[w];
-							ww.style.overflowX = 'hidden';
-							ww.style.overflowY = 'hidden';
-						}
-						this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
-						var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
-						var titleBar = titleBarInfo.titleBar;
-						if(titleBarInfo.hasTitle)
-						{
-							titleBar.style.top = newContentWindow.style.top;
-							newContentWindow.style.top = titleBarInfo.titleHeight;
-							newContentWindow.style.height = 'calc(100% - 20px)';
-						}
-						newContainerDiv.append(titleBar);
-						if(action.toUpperCase() =='REDIRECT')
-							sipwin.window = newContentWindow;
-						newContainerDiv.sprops = sprops;
-						this.frames[name] = newContainerDiv;
-						if(containerDiv == sipwin.topWindow.firstChild)
-							sipwin.resizeTermWindow();
+						var tabContent = sipwin.window;
+						tabContent.style.position = 'relative';
+						var wrapper = document.createElement('div');
+						wrapper.style.position = 'absolute';
+						wrapper.style.top = '0px';
+						wrapper.style.left = '0px';
+						wrapper.style.width = '100%';
+						wrapper.style.height = '100%';
+						while (tabContent.firstChild)
+							wrapper.appendChild(tabContent.firstChild);
+						tabContent.appendChild(wrapper);
+						siblingDiv = wrapper;
+						sipwin.window = wrapper;
+						containerDiv = tabContent;
 					}
-				}
-				else
-				if((sprops.top != null)
-				&&(sprops.left != null)
-				&&(sprops.width != null)
-				&&(sprops.height != null))
-				{
-					var newTopWindow = document.createElement('div');
-					if(window.sipcounter === undefined) 
-						window.sipcounter=1;
-					newTopWindow.id = "WIN" + (window.sipcounter++);
-					newTopWindow.style.cssText = "position:absolute;top:"+sprops.top+";left:"+sprops.left+";height:"+sprops.height+";width:"+sprops.width+";";
-					newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
-					newTopWindow.style.backgroundColor = 'darkgray';
-					newTopWindow.style.color = 'black';
-					var contentTop = '0px';
-					var titleBarInfo = this.createFrameTitleBar(sprops, name, true);
+					var newContainerDiv = document.createElement('div');
+					newContainerDiv.style.cssText = containerDiv.style.cssText;
+					newContainerDiv.style.display = 'block';
+					containerDiv.appendChild(newContainerDiv);
+					var newContentWindow = document.createElement('div');
+					newContentWindow.style.cssText = sipwin.window.style.cssText;
+					newContentWindow.style.display = '';
+					newContentWindow.style.left = '0%';
+					newContentWindow.style.top = '0%';
+					newContentWindow.style.width = '100%';
+					newContentWindow.style.height = '100%';
+					newContentWindow.style.border = "1px solid white";
+					newContentWindow.style.boxSizing = "border-box";
+					this.setFrameAriaAttributes(newContentWindow);
+					this.applyFrameImageBackground(newContentWindow, sprops.image, sprops.imgop);
+					var isFullWidth = sprops.width.endsWith('%') && parseFloat(sprops.width) === 100;
+					var isFullHeight = sprops.height.endsWith('%') && parseFloat(sprops.height) === 100;
+					if ((alignx === 0 || alignx === 1) && isFullWidth) 
+					{
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+						siblingDiv.style.width = '0px';
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+					}
+					else
+					if ((alignx === 2 || alignx === 3) && isFullHeight) 
+					{
+						newContainerDiv.style.top = siblingDiv.style.top;
+						newContainerDiv.style.height = siblingDiv.style.height;
+						siblingDiv.style.height = '0px';
+						newContainerDiv.style.left = siblingDiv.style.left;
+						newContainerDiv.style.width = siblingDiv.style.width;
+					}
+					else
+					switch(alignx)
+					{
+					case 0: // left
+						if (sprops.width === '100%') 
+						{
+							var occupied = '0px';
+							var priorLeft = containerDiv.querySelector('[sprops][style*="align: left"], [sprops][style*="align: LEFT"]');
+							if (priorLeft) 
+								occupied = priorLeft.style.width || '0px';
+							containerDiv.style.setProperty('--occupied-left', occupied);
+							newContainerDiv.style.left = 'var(--occupied-left)';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = 'calc(100% - var(--occupied-left))';
+							siblingDiv.style.width = 'var(--occupied-left)';
+						}
+						else 
+						{
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = sprops.width;
+							siblingDiv.style.left = addDim(siblingDiv.style.left, sprops.width);
+							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+						}
+						break;
+					case 1: // right
+						if (sprops.width === '100%') 
+						{
+							var occupied = '0px';
+							var priorRight = containerDiv.querySelector('[sprops][style*="align: right"], [sprops][style*="align: RIGHT"]');
+							if (priorRight) 
+								occupied = priorRight.style.width || '0px';
+							containerDiv.style.setProperty('--occupied-right', occupied);
+							newContainerDiv.style.right = 'var(--occupied-right)';
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = 'calc(100% - var(--occupied-right))';
+							siblingDiv.style.width = 'var(--occupied-right)';
+						}
+						else 
+						{
+							newContainerDiv.style.left = subDim(addDim(siblingDiv.style.left, siblingDiv.style.width), sprops.width);
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.height = siblingDiv.style.height;
+							newContainerDiv.style.width = sprops.width;
+							siblingDiv.style.width = subDim(siblingDiv.style.width, sprops.width);
+						}
+						break;
+					case 2: // top
+						if (sprops.height === '100%') 
+						{
+							var occupied = '0px';
+							var priorTop = containerDiv.querySelector('[sprops][style*="align: top"], [sprops][style*="align: TOP"]');
+							if (priorTop) 
+								occupied = priorTop.style.height || '0px';
+							containerDiv.style.setProperty('--occupied-bottom', occupied);
+							newContainerDiv.style.bottom = 'var(--occupied-bottom)';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = 'calc(100% - var(--occupied-bottom))';
+							siblingDiv.style.height = 'var(--occupied-bottom)';
+						}
+						else 
+						{
+							newContainerDiv.style.top = siblingDiv.style.top;
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = sprops.height;
+							siblingDiv.style.top = addDim(siblingDiv.style.top, sprops.height);
+							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+						}
+						break;
+					case 3: // bottom
+						if (sprops.height === '100%') 
+						{
+							var occupied = '0px';
+							var priorBottom = containerDiv.querySelector('[sprops][style*="align: bottom"], [sprops][style*="align: BOTTOM"]');
+							if (priorBottom) 
+								occupied = priorBottom.style.height || '0px';
+							containerDiv.style.setProperty('--occupied-top', occupied);
+							newContainerDiv.style.top = 'var(--occupied-top)';
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = 'calc(100% - var(--occupied-top))';
+							siblingDiv.style.height = 'var(--occupied-top)';
+						}
+						else 
+						{
+							newContainerDiv.style.top = subDim(addDim(siblingDiv.style.top, siblingDiv.style.height), sprops.height);
+							newContainerDiv.style.left = siblingDiv.style.left;
+							newContainerDiv.style.width = siblingDiv.style.width;
+							newContainerDiv.style.height = sprops.height;
+							siblingDiv.style.height = subDim(siblingDiv.style.height, sprops.height);
+						}
+						break;
+					}
+					newContainerDiv.appendChild(newContentWindow); // dont do until left/width/top/heigh
+					var ents = [newContainerDiv,newContentWindow];
+					for(var w =0; w<ents.length;w++)
+					{
+						var ww = ents[w];
+						ww.style.overflowX = 'hidden';
+						ww.style.overflowY = 'hidden';
+					}
+					this.applyFrameScrollingBehavior(newContentWindow, sprops.scrolling);
+					var titleBarInfo = this.createFrameTitleBar(sprops, name, false);
 					var titleBar = titleBarInfo.titleBar;
 					if(titleBarInfo.hasTitle)
 					{
-						contentTop = titleBarInfo.titleHeight;
-						MakeDraggable(newTopWindow, titleBar);
+						titleBar.style.top = newContentWindow.style.top;
+						newContentWindow.style.top = titleBarInfo.titleHeight;
+						newContentWindow.style.height = 'calc(100% - 20px)';
 					}
-					else
-						MakeDraggable(newTopWindow);
-					var contentWindow = document.createElement('div');
-					contentWindow.style.cssText = "position:absolute;top:"+contentTop+";left:0%;height:calc(100% - "+contentTop+");width:100%;";
-					contentWindow.style.backgroundColor = 'black';
-					contentWindow.style.color = 'white';
-					contentWindow.style.top = contentTop;
-					newTopWindow.sprops = sprops;
-					contentWindow.style.overflowY = 'hidden';
-					contentWindow.style.overflowX = 'hidden';
-					this.applyFrameScrollingBehavior(contentWindow, sprops.scrolling);
-					if(sprops.floating == null)
-					{
-						contentWindow.onclick=function() {
-							sipwin.topWindow.removeChild(newTopWindow);
-							delete this.frames[name];
-						}
-					}
-					newTopWindow.appendChild(contentWindow);
-					newTopWindow.appendChild(titleBar);
+					newContainerDiv.append(titleBar);
 					if(action.toUpperCase() =='REDIRECT')
-						sipwin.window = contentWindow;
-					sipwin.topWindow.appendChild(newTopWindow);
-					this.frames[name] = newTopWindow;
+						sipwin.window = newContentWindow;
+					newContainerDiv.sprops = sprops;
+					this.frames[name] = newContainerDiv;
+					if(containerDiv == sipwin.topWindow.firstChild)
+						sipwin.resizeTermWindow();
 				}
-				sipwin.dispatchEvent({type:'openframe',data: name});
 			}
+			else
+			/**
+			 * Open floating frame:
+			 */
+			if((sprops.top != null)
+			&&(sprops.left != null)
+			&&(sprops.width != null)
+			&&(sprops.height != null))
+			{
+				var newTopWindow = document.createElement('div');
+				if(window.sipcounter === undefined) 
+					window.sipcounter=1;
+				newTopWindow.id = "WIN" + (window.sipcounter++);
+				newTopWindow.style.cssText = "position:absolute;top:"+sprops.top+";left:"+sprops.left+";height:"+sprops.height+";width:"+sprops.width+";";
+				newTopWindow.style.cssText += "border-style:solid;border-width:5px;border-color:white;";
+				newTopWindow.style.backgroundColor = 'darkgray';
+				newTopWindow.style.color = 'black';
+				var contentTop = '0px';
+				var titleBarInfo = this.createFrameTitleBar(sprops, name, true);
+				var titleBar = titleBarInfo.titleBar;
+				if(titleBarInfo.hasTitle)
+				{
+					contentTop = titleBarInfo.titleHeight;
+					MakeDraggable(newTopWindow, titleBar);
+				}
+				else
+					MakeDraggable(newTopWindow);
+				var contentWindow = document.createElement('div');
+				contentWindow.style.cssText = "position:absolute;top:"+contentTop+";left:0%;height:calc(100% - "+contentTop+");width:100%;";
+				contentWindow.style.backgroundColor = 'black';
+				contentWindow.style.color = 'white';
+				contentWindow.style.top = contentTop;
+				newTopWindow.sprops = sprops;
+				contentWindow.style.overflowY = 'hidden';
+				contentWindow.style.overflowX = 'hidden';
+				this.applyFrameScrollingBehavior(contentWindow, sprops.scrolling);
+				if(sprops.floating == null)
+				{
+					contentWindow.onclick=function() {
+						sipwin.topWindow.removeChild(newTopWindow);
+						delete this.frames[name];
+					}
+				}
+				newTopWindow.appendChild(contentWindow);
+				newTopWindow.appendChild(titleBar);
+				if(action.toUpperCase() =='REDIRECT')
+					sipwin.window = contentWindow;
+				sipwin.topWindow.appendChild(newTopWindow);
+				this.frames[name] = newTopWindow;
+			}
+			if("OPEN" === action.toUpperCase())
+				sipwin.dispatchEvent({type:'openframe',data: name});
 		}
 		else
 		if ((tagName == "SOUND") || (tagName == "MUSIC"))
