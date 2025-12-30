@@ -1323,7 +1323,7 @@ public class StockMarket extends StdBehavior
 
 	private boolean hostReady()
 	{
-		if((!(host instanceof Area))||(!CMProps.isState(HostState.RUNNING)))
+		if(!(host instanceof Area))
 			return false;
 		return true;
 	}
