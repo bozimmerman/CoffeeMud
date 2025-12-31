@@ -126,7 +126,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((A==null)
 		||(A.getIStat(Area.Stats.COUNTABLE_ROOMS)==0))
 			return false;
-		return CMath.div(A.getIStat(Area.Stats.CITY_ROOMS),A.getIStat(Area.Stats.COUNTABLE_ROOMS)) > .60;
+		return CMath.div(A.getIStat(Area.Stats.CITY_ROOMS),A.getIStat(Area.Stats.COUNTABLE_ROOMS)) > .60
+				&&CMath.div(A.getIStat(Area.Stats.SHOPKEEPER_MOBS),A.getIStat(Area.Stats.INTELLIGENT_MOBS)) > .05
+				&&(A.getIStat(Area.Stats.SHOPKEEPER_MOBS)>0);
 	}
 
 	protected List<Room> getAllMetroTitledRooms(final Area A)
