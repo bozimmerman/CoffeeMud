@@ -646,34 +646,55 @@ public class StockMarket extends StdBehavior
 				}
 			}
 			Resources.submitResource("CMKT_AREA_STOCKS/"+areaName,stocks);
-
-			// this WILL cause this method to be recursively called, but since the resource
-			//  is in place, it will exit early and be happy.
-			for(final StockDef def : stocks.values())
+			final Runnable[] cleanStocksRunnable = new Runnable[1];
+			cleanStocksRunnable[0] = new Runnable()
 			{
-				if((def.roomID!=null)&&(def.roomID.length()>0))
-					CMLib.map().getRoom(def.roomID);
-			}
-			final Set<StockDef> realStocks = new HashSet<StockDef>();
-			for(final MarketConf conf : configs)
-			{
-				synchronized(conf.shopStocksMap)
+				@Override
+				public void run()
 				{
-					for(final ShopKeeper key : conf.shopStocksMap.keySet())
-						realStocks.addAll(conf.shopStocksMap.get(key));
+					if(CMProps.isState(HostState.BOOTING)||CMProps.isState(HostState.LOADINGMAP))
+						CMLib.threads().scheduleRunnable(cleanStocksRunnable[0], 10000);
+					else
+					if(!CMProps.isState(HostState.RUNNING))
+						return;
+					final Map<String,StockDef> stocks = getHostStocksMap();
+					synchronized(stocks)
+					{
+						// this WILL cause this method to be recursively called, but since the resource
+						//  is in place, it will exit early and be happy.
+						for(final StockDef def : stocks.values())
+						{
+							if((def.roomID!=null)&&(def.roomID.length()>0))
+								CMLib.map().getRoom(def.roomID);
+						}
+						final Set<StockDef> realStocks = new HashSet<StockDef>();
+						for(final MarketConf conf : configs)
+						{
+							synchronized(conf.shopStocksMap)
+							{
+								for(final ShopKeeper key : conf.shopStocksMap.keySet())
+									realStocks.addAll(conf.shopStocksMap.get(key));
+							}
+						}
+						final Set<StockDef> deadStocks = new HashSet<StockDef>();
+						for(final StockDef def : stocks.values())
+						{
+							if(!realStocks.contains(def))
+								deadStocks.add(def);
+						}
+						for(final StockDef def : deadStocks)
+						{
+							Log.debugOut("Deleting dead stock '"+def.getTitleID()+". from "+def.roomID+" on next save.");
+							stocks.remove(def.getTitleID());
+						}
+					}
 				}
-			}
-			final Set<StockDef> deadStocks = new HashSet<StockDef>();
-			for(final StockDef def : stocks.values())
-			{
-				if(!realStocks.contains(def))
-					deadStocks.add(def);
-			}
-			for(final StockDef def : deadStocks)
-			{
-				Log.debugOut("Deleting dead stock '"+def.getTitleID()+". from "+def.roomID+" on next save.");
-				stocks.remove(def.getTitleID());
-			}
+			};
+			if(CMProps.isState(HostState.BOOTING)||CMProps.isState(HostState.LOADINGMAP))
+				CMLib.threads().scheduleRunnable(cleanStocksRunnable[0], 10000);
+			else
+			if(CMProps.isState(HostState.RUNNING))
+				cleanStocksRunnable[0].run();
 		}
 		return stocks;
 	}
