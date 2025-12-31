@@ -1100,13 +1100,12 @@ public class StockMarket extends StdBehavior
 					nonShops.add(SK);
 					return null;
 				}
-				if(((MOB)E).isPlayer())
+				if((((MOB)E).isPlayer())
+				||(CMLib.law().getLandTitle(R)!=null))
 				{
-					if(!this.allowsClans)
-					{
-						nonShops.add(SK);
-						return null;
-					}
+					//if(!this.allowsClans) // must be done manually?
+					nonShops.add(SK);
+					return null;
 				}
 			}
 			if(shopkeeperMask != null && (!CMLib.masking().maskCheck(shopkeeperMask, E, true)))
@@ -1260,7 +1259,8 @@ public class StockMarket extends StdBehavior
 			if (o == null || getClass() != o.getClass())
 				return false;
 			final MarketConf m = (MarketConf)o;
-			return (m.updateDays==updateDays) && (m.waitDaysAfterBankruptcy==waitDaysAfterBankruptcy) && (m.maxStocks==maxStocks)
+			return (m.updateDays==updateDays) && (m.waitDaysAfterBankruptcy==waitDaysAfterBankruptcy)
+				&& (m.maxStocks==maxStocks) && (m.maxSharesPerStock==maxSharesPerStock)
 				&& (m.allowsClans == allowsClans) && (m.groupAreas == groupAreas) && (m.groupBy==groupBy) && Objects.equals(m.nameMask,nameMask)
 				&& Objects.equals(m.shopkeeperMaskStr,shopkeeperMaskStr)&& Objects.equals(m.areaMaskStr,areaMaskStr);
 		}
