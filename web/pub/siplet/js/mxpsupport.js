@@ -721,7 +721,11 @@ var MXP = function(sipwin)
 		var oldString = this.partial;
 		var abort = this.cancelProcessing();
 		if(this.parts.length == 0)
+		{
+			if(this.mode == MXPMODE.TEMP_SECURE)
+				this.mode = this.defaultMode;
 			return ''; // this is an error of some sort
+		}
 		if(this.debug)
 			console.log('mxpp:' + oldString);
 		var tag = this.parts[0].toUpperCase().trim();
@@ -741,6 +745,8 @@ var MXP = function(sipwin)
 		{
 			if(this.debug)
 				console.log('mxpr:' + abort);
+			if(this.mode == MXPMODE.TEMP_SECURE)
+				this.mode = this.defaultMode;
 			return abort;
 		}
 		var E = this.elements[tag];
@@ -752,6 +758,8 @@ var MXP = function(sipwin)
 			{
 				if(this.debug)
 					console.log('mxpr:' + oldString);
+				if(this.mode == MXPMODE.TEMP_SECURE)
+					this.mode = this.defaultMode;
 				return oldString; // closed an unopened tag!
 			}
 			else
@@ -865,6 +873,8 @@ var MXP = function(sipwin)
 		{
 			if(this.debug)
 				console.log('mxpr:' + definition);
+			if(this.mode == MXPMODE.TEMP_SECURE)
+				this.mode = this.defaultMode;
 			return definition;
 		}
 		sipwin.ansi.setColors(E.lastForeground, E.lastBackground);
@@ -2755,9 +2765,14 @@ var MXP = function(sipwin)
 			ret += this.executeMode();
 			return ret + '<BR>';
 		}
-		case MXPMODE.LINE_SECURE:
-		case MXPMODE.LINE_LOCKED:
 		case MXPMODE.TEMP_SECURE:
+		{
+			this.mode = this.defaultMode; // if we got here, something is wrong.
+			return this.closeAllTags() + '<BR>';
+		}
+		case MXPMODE.LINE_SECURE:
+			this.mode = this.defaultMode;
+		case MXPMODE.LINE_LOCKED:
 		{
 			var ret = this.closeAllTags();
 			ret += this.executeMode();
