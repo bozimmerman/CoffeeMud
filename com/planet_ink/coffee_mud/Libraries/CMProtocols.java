@@ -1633,7 +1633,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
 					final Room R2=R.getRoomInDir(d);
-					if((R2!=null)&&(R.getExitInDir(d)!=null))
+					final Exit E2=R.getExitInDir(d);
+					if((R2!=null)
+					&&(E2!=null)
+					&&(CMLib.flags().canBeSeenBy(E2, M)||M.lastLocation()==R2))
 					{
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
@@ -1685,7 +1688,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
 					final Room R2=R.getRoomInDir(d);
-					if((R2!=null)&&(R.getExitInDir(d)!=null))
+					final Exit E2=R.getExitInDir(d);
+					if((R2!=null)
+					&&(E2!=null)
+					&&(CMLib.flags().canBeSeenBy(E2, M)||(M.lastLocation()==R2)))
 					{
 						final String roomID=CMLib.map().getExtendedRoomID(R2);
 						if(roomID.length()>0)
