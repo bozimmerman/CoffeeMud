@@ -155,6 +155,9 @@ public class StdMOB implements MOB
 
 	protected OrderedMap<String, Pair<Clan, Integer>>	clans	= new OrderedMap<String, Pair<Clan, Integer>>();
 
+	protected static Hashtable<Long, byte[]> 			miscTextCache= new Hashtable<Long,byte[]>();
+	
+
 	public StdMOB()
 	{
 		super();
@@ -2029,6 +2032,24 @@ public class StdMOB implements MOB
 			description = newDescription;
 	}
 
+	protected byte[] compressMiscText(final String newText)
+	{
+		final Long hash = Long.valueOf((newText.hashCode()<<32)|newText.length());
+		byte[] compressed = miscTextCache.get(hash);
+		if (compressed != null) 
+		{
+			String cached = CMLib.encoder().decompressString(compressed);
+			if(!cached.equals(newText))
+				return CMLib.encoder().compressString(newText);
+		}
+		else
+		{
+			compressed = CMLib.encoder().compressString(newText);
+			miscTextCache.put(hash, compressed);
+		}
+		return compressed;
+	}
+	
 	@Override
 	public void setMiscText(final String newText)
 	{
@@ -2036,7 +2057,7 @@ public class StdMOB implements MOB
 			miscText = null;
 		else
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
-			miscText = CMLib.encoder().compressString(newText);
+			miscText = compressMiscText(newText);
 		else
 			miscText = newText;
 	}

@@ -66,7 +66,7 @@ public class GenMob extends StdMOB
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
-			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,false));
+			miscText=super.compressMiscText(CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,false));
 		else
 			miscText=CMLib.coffeeMaker().getEnvironmentalMiscTextXML(this,false);
 		return super.text();

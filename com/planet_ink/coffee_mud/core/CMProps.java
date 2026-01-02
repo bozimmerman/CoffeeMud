@@ -514,7 +514,7 @@ public class CMProps extends Properties
 		HASHPASSWORDS,
 		ACCOUNTSNOCACHE,
 		PLAYERSNOCACHE,
-		EXPDEFER_PASSTHRU
+		EXPDEFER_PASSTHRU,
 	}
 
 	/**

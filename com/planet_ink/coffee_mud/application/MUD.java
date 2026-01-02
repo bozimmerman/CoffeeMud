@@ -1414,8 +1414,8 @@ public class MUD extends Thread implements MudHost
 			final boolean checkPrivate=(tCode!=MAIN_HOST);
 
 			final List<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
-			CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.MOBCOMPRESS,compress.contains("GENMOBS"));
+			CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.ROOMDCOMPRESS,compress.contains("ROOMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.MOBDCOMPRESS,compress.contains("MOBDESC"));
 			Resources.setCompression(compress.contains("RESOURCES"));

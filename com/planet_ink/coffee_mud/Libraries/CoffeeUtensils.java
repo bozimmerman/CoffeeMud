@@ -2737,12 +2737,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							break;
 						case 'r':
 						{
-							final String domType;
-							if((R.domainType()&Room.INDOORS)==0)
-								domType=Room.DOMAIN_OUTDOOR_DESCS[R.domainType()].toLowerCase();
-							else
-								domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(R.domainType(),Room.INDOORS)].toLowerCase();
-							buf.append(domType);
+							if(R!=null)
+							{
+								final String domType;
+								if((R.domainType()&Room.INDOORS)==0)
+									domType=Room.DOMAIN_OUTDOOR_DESCS[R.domainType()].toLowerCase();
+								else
+									domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(R.domainType(),Room.INDOORS)].toLowerCase();
+								buf.append(domType);
+							}
 							c+=2;
 							break;
 						}
