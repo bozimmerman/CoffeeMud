@@ -9363,6 +9363,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					// when casting here fails, its because IF is NOW at this line, but something else used to be? like MPCALLFUNC...
 					// could this be a threadding issue? nah, contexts are always new, right?
 					logError(ctx,"IF","RUNTIME","Non-Triad!");
+					script.get(ctx.line).second=null;
+					script.get(ctx.line).third=null;
 					throw new IllegalArgumentException("Non-Triad (see above)");
 				}
 				else
