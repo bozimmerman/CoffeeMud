@@ -2117,7 +2117,7 @@ var MXP=function(sipwin)
 
 					if(oldSprops && (sprops.width !== oldSprops.width || sprops.height !== oldSprops.height))
 					{
-						var processAlignment=function(alignName, dimProp, posProp, crossAligns, sortDesc, fromEnd)
+						var processAlignment=function(alignName, dimProp, posProp, crossAligns, sortDesc, fromEnd, oppositeAlignName)
 						{
 							var frames=[];
 							for(var i=0; i<containerDiv.children.length; i++)
@@ -2150,9 +2150,20 @@ var MXP=function(sipwin)
 							var totalDim='0px';
 							for(var i=0; i<frames.length; i++)
 								totalDim=addDim(totalDim, frames[i].style[dimProp]);
+							var oppositeTotalDim='0px';
+							if(oppositeAlignName)
+							{
+								for(var i=0; i<containerDiv.children.length; i++)
+								{
+									var child=containerDiv.children[i];
+									if(child.sprops && child.sprops.align && child.sprops.align.toUpperCase() === oppositeAlignName)
+										oppositeTotalDim=addDim(oppositeTotalDim, child.style[dimProp]);
+								}
+							}
+							var combinedTotalDim=addDim(totalDim, oppositeTotalDim);
 							if(!fromEnd)
 								privilegedFrame.style[posProp]=totalDim;
-							privilegedFrame.style[dimProp]=subDim('100%', totalDim);
+							privilegedFrame.style[dimProp]=subDim('100%', combinedTotalDim);
 							for(var i=0; i<containerDiv.children.length; i++)
 							{
 								var child=containerDiv.children[i];
@@ -2163,7 +2174,7 @@ var MXP=function(sipwin)
 									{
 										if(!fromEnd)
 											child.style[posProp]=totalDim;
-										child.style[dimProp]=subDim('100%', totalDim);
+										child.style[dimProp]=subDim('100%', combinedTotalDim);
 									}
 								}
 							}
@@ -2172,16 +2183,16 @@ var MXP=function(sipwin)
 						switch(alignx)
 						{
 						case 0: // left
-							processAlignment('LEFT', 'width', 'left', ['TOP','BOTTOM'], false, false);
+							processAlignment('LEFT', 'width', 'left', ['TOP','BOTTOM'], false, false, 'RIGHT');
 							break;
 						case 1: // right
-							processAlignment('RIGHT', 'width', 'left', ['TOP','BOTTOM'], true, true);
+							processAlignment('RIGHT', 'width', 'left', ['TOP','BOTTOM'], true, true, 'LEFT');
 							break;
 						case 2: // top
-							processAlignment('TOP', 'height', 'top', ['LEFT','RIGHT'], false, false);
+							processAlignment('TOP', 'height', 'top', ['LEFT','RIGHT'], false, false, 'BOTTOM');
 							break;
 						case 3: // bottom
-							processAlignment('BOTTOM', 'height', 'top', ['LEFT','RIGHT'], true, true);
+							processAlignment('BOTTOM', 'height', 'top', ['LEFT','RIGHT'], true, true, 'TOP');
 							break;
 						}
 					}
