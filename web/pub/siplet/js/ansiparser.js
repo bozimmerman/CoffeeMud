@@ -101,6 +101,8 @@ var ANSISTACK = function(sipwin)
 		this.sentCharsDims = false;
 		this.sentPixelsDims = false;
 		this.sentTermPos = false;
+		this.background = ANSITABLES.defaultBackground;
+		this.foreground = ANSITABLES.defaultForeground;
 	};
 	this.reset();
 		
@@ -256,6 +258,8 @@ var ANSISTACK = function(sipwin)
 					html += this.underlineOff();
 					html += this.fontOff();
 					html += this.italicsOff();
+					this.background = ANSITABLES.defaultBackground;
+					this.foreground = ANSITABLES.defaultForeground;
 					this.boldOn = false;
 					var reset = "</FONT><FONT COLOR=\""+this.foreground+"\" BACK=\""+this.background+"\">";
 					if ((i == (bits.length - 1))&&(html != reset))
@@ -344,7 +348,7 @@ var ANSISTACK = function(sipwin)
 					background = ANSITABLES.colorCodes1[code - 40];
 					break;
 				case 49:
-					background = ANSITABLES.defaultForeground;
+					background = ANSITABLES.defaultBackground;
 					break;
 				case 38: // foreground ansi-256
 					if((i<bits.length-2)

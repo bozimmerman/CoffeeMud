@@ -512,6 +512,7 @@ function SipletWindow(windowName)
 			if(this.mxp.partial == null)
 				this.process(reprocess);
 			this.htmlBuffer='';
+			this.ansi.reset(); //BZ: every close span closes fonts and such
 			if(window.currWin != this)
 			{
 				this.tab.style.backgroundColor = "lightgreen";
