@@ -139,6 +139,7 @@ public class Age extends StdAbility
 	protected long			lastFollowCheck		= 0;
 	protected long			ageCode				= 0;
 	protected volatile long	nextAgeCheckTimeMs	= System.currentTimeMillis();
+	protected volatile int	prevAgeYears		= -1;
 	protected volatile int	ageYears			= -1;
 	protected volatile int	ageCat				= -1;
 
@@ -156,13 +157,13 @@ public class Age extends StdAbility
 			final long start=getAgeCode();
 			if(start<Short.MAX_VALUE)
 			{
-				ageYears = (int)start;
+				setAgeYears((int)start);
 				return ageYears;
 			}
 			final TimeClock C=CMLib.time().localClock(affected);
 			final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
 			final long months=days/C.getDaysInMonth();
-			ageYears=(int)(months/C.getMonthsInYear());
+			setAgeYears((int)(months/C.getMonthsInYear()));
 			ageCat=-1;
 		}
 		return ageYears;
@@ -265,9 +266,26 @@ public class Age extends StdAbility
 		if(this.ageYears!=ageYears)
 		{
 			if(affected instanceof MOB)
-				setAgeRace((MOB)affected,ageYears);
+			{
+				if((this.ageYears != this.prevAgeYears)
+				&&(this.prevAgeYears >= 0)
+				&&(affected instanceof MOB))
+				{
+					final Room R = CMLib.map().roomLocation(affected);
+					if(R!=null)
+					{
+						final CMMsg msg = CMClass.getMsg((MOB)affected, null, this, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+						if(R.okMessage(affected, msg))
+							R.send((MOB)affected, msg);
+						else
+							return;
+					}
+					setAgeRace((MOB)affected,ageYears);
+				}
+			}
 			if(affected != null)
 				this.ageYears = ageYears;
+			this.prevAgeYears = this.ageYears;
 			this.ageCat=-1;
 		}
 	}
@@ -344,7 +362,7 @@ public class Age extends StdAbility
 					final Room R=CMLib.map().roomLocation(affected);
 					if(R!=null)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 died.",affected.name()));
-					((Item)affected).destroy();
+					affected.destroy();
 				}
 			}
 			else
@@ -545,6 +563,7 @@ public class Age extends StdAbility
 			ageYears=1;
 			miscText=""+(1L+System.currentTimeMillis()-(CMProps.getTickMillis()*divisor));
 			this.ageYears=-1;
+			this.prevAgeYears=-1;
 			this.ageCat=-1;
 		}
 		setAgeYears(ageYears);
@@ -552,7 +571,7 @@ public class Age extends StdAbility
 		&&(affected instanceof CagedAnimal)
 		&&(!(affected instanceof DeadBody)))
 		{
-			((Item)affected).setExpirationDate(0);
+			affected.setExpirationDate(0);
 			if(getMyRace()==null)
 				return;
 			if(ageYears>=myRace.getAgingChart()[1])
@@ -570,7 +589,7 @@ public class Age extends StdAbility
 					if((babe==null)||(babe.baseCharStats()==null))
 					{
 						R.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 JUST DIED OF DEFORMITIES!!",affected.name()));
-						((Item)affected).destroy();
+						affected.destroy();
 					}
 					else
 					{
@@ -1273,7 +1292,7 @@ public class Age extends StdAbility
 			&&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			{
 				if((((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
-					||((affected instanceof MOB)&&(!((MOB)affected).isSavable())))
+					||((affected instanceof MOB)&&(!affected.isSavable())))
 				&&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
 				{
 					if(divisor==0.0)

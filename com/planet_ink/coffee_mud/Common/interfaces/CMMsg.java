@@ -1276,6 +1276,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_QUESTSTART=152;
 	/** MINOR_MASK minor action code type, denoting a quest stop */
 	public static final int TYP_QUESTSTOP=153;
+	/** MINOR_MASK minor action code type, denoting an advancement in age */
+	public static final int TYP_AGE=154;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)

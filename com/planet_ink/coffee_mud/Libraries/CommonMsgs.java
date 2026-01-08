@@ -965,6 +965,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					&&(mob.getAgeMinutes() > 10))
 						mob.tell(L("Happy Birthday!"));
 					mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getStat(CharStats.STAT_AGE)+1);
+					final Room R = mob.location();
+					final CMMsg msg2 = CMClass.getMsg(mob, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+					if((R!=null)&&R.okMessage(mob, msg2))
+						R.send(mob, msg2);
 					mob.recoverCharStats();
 					mob.recoverPhyStats();
 					mob.recoverMaxState();

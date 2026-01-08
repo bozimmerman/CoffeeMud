@@ -176,6 +176,8 @@ public interface GenericBuilder extends CMLibrary
 		BIRTHDATE,
 		AGEMINS,
 		AGENAME,
+		AGEYEARS,
+		AGECAT,
 		GENDERNAME,
 		MAXHUNGER,
 		MAXTHIRST,

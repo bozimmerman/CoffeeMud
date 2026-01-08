@@ -11733,8 +11733,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((ctx.monster != ctx.scripted)
 						&&(ctx.monster!=null))
 							ctx.monster.resetToMaxState();
-						MOB casterM = ctx.monster;
-						MOB factoryM = null; // maybe needed in the future
+						final MOB casterM = ctx.monster;
+						final MOB factoryM = null; // maybe needed in the future
 						try
 						{
 							A.invoke(casterM,CMParms.parse(m2),newTarget,true,0);
@@ -14581,6 +14581,58 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,monster,msg.source(),msg.target(),null,defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 59: // follow_prog
+					if((msg.sourceMinor()==CMMsg.TYP_FOLLOW)
+					&&canTrigger(59)
+					&&(msg.target() instanceof MOB)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.source(), affecting,monster,msg.source(),msg.target(),defaultItem,null,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 60: // unfollow_prog
+					if((msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
+					&&canTrigger(60)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.source(), affecting,monster,msg.source(),msg.target(),defaultItem,null,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(triggerCode,affecting,monster,msg.source(),msg.target(),defaultItem,null,check,script,1, t);
+							if(!multiTriggers)
+								return;
+						}
+					}
+					break;
+				case 61: // age_prog
+					CMLib.flags().getAgeYears(affecting); // this might be your only way to trigger
+					if((msg.sourceMinor()==CMMsg.TYP_AGE)
+					&&canTrigger(61))
+					{
+						final String check=standardTriggerCheck(script,t,msg.source(), affecting,monster,msg.source(),msg.target(),defaultItem,null,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)

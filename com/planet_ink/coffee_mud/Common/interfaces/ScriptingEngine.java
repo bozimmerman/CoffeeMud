@@ -487,6 +487,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"RIDING_PROG", // 56
 		"WEARING_PROG", // 57
 		XMLLibrary.FILE_XML_BOUNDARY.toUpperCase().substring(0,XMLLibrary.FILE_XML_BOUNDARY.indexOf(' ')), // 58
+		"FOLLOW_PROG", // 59
+		"UNFOLLOW_PROG", // 60
+		"AGE_PROG", // 61
 	};
 
 	/** String list of all valid mobprog functions for logical expressions or string functions */

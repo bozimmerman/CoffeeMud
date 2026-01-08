@@ -36,11 +36,11 @@
         <li><a href="#structure">Script Structure</a></li>
 
         <li> <a href="#events">Scripting Events</a>
-          <ul>
+          <br /><ul>
 
-            <li><a href="#all_greet_prog">all_greet_prog</a></li>
+            
 
-            <li><a href="#act_prog">act_prog</a></li>
+            <li><a href="#act_prog">act_prog</a></li><li><a href="#age_prog">age_prog</a></li><li><a href="Scriptable.html#all_greet_prog">all_greet_prog</a></li>
 
             <li><a href="#arrive_prog">arrive_prog</a></li>
 
@@ -77,7 +77,7 @@
 
             <li><a href="#exit_prog">exit_prog</a></li>
 
-            <li><a href="#fight_prog">fight_prog</a></li>
+            <li><a href="#fight_prog">fight_prog</a></li><li><a href="#follow_prog">follow_prog</a></li>
 
             <li><a href="#function_prog">function_prog</a></li>
 
@@ -116,7 +116,7 @@
 
             <li><a href="#put_prog">put_prog</a></li>
 
-            <li><a href="#putting_prog">putting_prog</a></li><li>ride_prog</li><li>riding_prog</li>
+            <li><a href="#putting_prog">putting_prog</a></li><li><a href="#ride_prog">ride_prog</a></li><li><a href="#riding_prog">riding_prog</a></li>
 
             <li><a href="#rand_prog">rand_prog</a></li>
 
@@ -131,7 +131,7 @@
 
             <li><a href="#speech_prog">speech_prog</a></li>
 
-            <li><a href="#time_prog">time_prog</a></li>
+            <li><a href="#time_prog">time_prog</a></li><li><a href="#unfollow_prog">unfollow_prog</a></li>
 
             <li><a href="#unlock_prog">unlock_prog</a></li>
 
@@ -793,7 +793,27 @@ message.</p>
 colors on objects don't seem to work well
 with act_progs, so avoid using ANSI colors in anything that may be part
 of your act_prog trigger. Variables and Codes are not used in
-act_progs, so do not try to use them; it won't work.</p>
+act_progs, so do not try to use them; it won't work.</p><h3><a name="age_prog">age_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>age_prog [keyword list]<br />age_prog p [keyword list]<br />age_prog all<br /></pre>
+
+      <p>This
+type of mobprog is
+triggered by witnessing someone's age in years changing. If the ager source matches the keywords of
+the age_prog, the prog is triggered. If there is a 'p' placed
+before
+the keyword list, the keywords of the ager must exactly match that of
+the age_prog. If there is not, then any ager with any of the
+keywords in the list in it will trigger it. If an age_prog all is used,
+then the age_prog will trigger from anyone's age in years changing..&nbsp;</p>
+
+      <p>EXAMPLES:</p>
+
+      <pre>age_prog horse<br /></pre><pre>age_prog all<br /></pre>
+
+      <p>This will trigger if anyone's age changes..</p>
 
       <h3><a name="arrive_prog">arrive_prog</a></h3>
 
@@ -826,10 +846,12 @@ triggered 25% of the time when the mob enters a room.</p>
 triggered 100% of the time when the mob enters a room. This means every
 time.</p>
 
-      <p>SPECIAL NOTES: You'll
+      <p>SPECIAL
+NOTES: You'll
 probably want to make sure you understand the difference between the
 arrive_prog and greet_prog/all_greet_prog. &nbsp;Scripted Exits and
-Rooms will never trigger this event.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+Rooms will never trigger this event.&nbsp;* The triggered object must
+be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="bribe_prog">bribe_prog</a></h3>
 
@@ -866,12 +888,15 @@ mob at all.</p>
 trigger if someone gives the mob an
 amount of money equal to or greater than 500 coins.)</p>
 
-      <p>MULTIPLE PROGS: You can
+      <p>MULTIPLE
+PROGS: You can
 have multiple bribe_progs on the same
 mob. However, these must be listed in order from largest gold amount to
 smallest gold amount. So if you have a bribe_prog 250 and a bribe_prog
 100, the 250 must be listed first, and then the 100. If you don't do
-this your larger sum bribe_progs will never be triggered.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+this your larger sum bribe_progs will never be triggered.&nbsp;* The
+triggered object must be able to act (move, not near death, not a
+follower, etc).</p>
 
       <h3><a name="buy_prog">buy_prog</a></h3>
 
@@ -1410,7 +1435,9 @@ or every time, the mob enters a room.</p>
 
       <p>SPECIAL
 NOTES: This program is triggered on a normal delay unless it is
-multiply triggered, in which case it will occur once, but immediately.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+multiply triggered, in which case it will occur once, but
+immediately.&nbsp;* The triggered object must be able to act (move, not
+near death, not a follower, etc).</p>
 
       <h3><a name="execmsg_prog">execmsg_prog</a></h3>
 
@@ -1537,7 +1564,27 @@ every 10 rounds or so, although it is not guaranteed to do so.</p>
       <p>This will trigger 75% of
 the time each combat round. That
 means it's a safe bet that the trigger will go off 3 out of every 4
-rounds.</p>
+rounds.</p><h3><a name="follow_prog">follow_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>follow_prog [keyword list]<br />follow_prog p [keyword list]<br />follow_prog all<br /></pre>
+
+      <p>This
+type of mobprog is
+triggered by witnessing someone following someone else. If the follower source matches the keywords of
+the follow_prog, the prog is triggered. If there is a 'p' placed
+before
+the keyword list, the keywords of the&nbsp;follower must exactly match that of
+the&nbsp;follow_prog. If there is not, then any follower with any of the
+keywords in the list in it will trigger it. If a&nbsp;follow_prog all is used,
+then the&nbsp;follow_prog will trigger from anyone following anyone else..&nbsp;</p>
+
+      <p>EXAMPLES:</p>
+
+      <pre>follow_prog horse<br /></pre><pre>follow_prog all<br /></pre>
+
+      <p>This will trigger if anyone follows anyone.</p>
 
       <h3><a name="function_prog">function_prog</a></h3>
 
@@ -1669,13 +1716,16 @@ some of the same keywords &#8211; for example a give_prog p apple
 red
 juicy and a give_prog p apple red poisoned.</p>
 
-      <p>SPECIAL NOTES: More often
+      <p>SPECIAL
+NOTES: More often
 than not, you'll want to remember to
 have the mob use the mpjunk command to get rid of the object given so
 people cannot steal the item back and use it again. It does depend on
 what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a give_prog all to have the mob drop
-items other than the ones it will accept in other give_progs.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+items other than the ones it will accept in other give_progs.&nbsp;*
+The triggered object must be able to act (move, not near death, not a
+follower, etc).</p>
       <h3><a name="giving_prog">giving_prog</a></h3>
 
       <p>Usage:</p>
@@ -1728,13 +1778,16 @@ some of the same keywords &#8211; for example a giving_prog p apple
 red
 juicy and a giving_prog p apple red poisoned.</p>
 
-      <p>SPECIAL NOTES: More often
+      <p>SPECIAL
+NOTES: More often
 than not, you'll want to remember to
 have the mob use the mpjunk command to get rid of the object given so
 people cannot steal the item back and use it again. It does depend on
 what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a giving_prog all to have the mob drop
-items other than the ones it will accept in other giving_progs.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+items other than the ones it will accept in other giving_progs.&nbsp;*
+The triggered object must be able to act (move, not near death, not a
+follower, etc).</p>
 
       <h3><a name="greet_prog">greet_prog</a></h3>
 
@@ -1771,7 +1824,8 @@ enters the room where the mob currently is. This means every time.
       <pre>greet_prog -race +elf<br /></pre>
 
 This prog will be triggered whenever an elf enters the room.
-      <p>SPECIAL NOTES: You'll
+      <p>SPECIAL
+NOTES: You'll
 probably want to do a large number of if
 checks in greet_progs, specifically in the difference between mobs and
 player characters. Note that greet_progs will trigger except if a
@@ -1779,7 +1833,8 @@ person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
 see people if blinded. Lastly, make sure you check out arrive_prog,
 which
-is a useful counterpart to greet_prog.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+is a useful counterpart to greet_prog.&nbsp;* The triggered object must
+be able to act (move, not near death, not a follower, etc).</p>
       <h3><a name="group_greet_prog">group_greet_prog</a></h3>
 
       <p>Usage:</p>
@@ -1818,12 +1873,14 @@ enters the room where the mob currently is. This means every time.
       <pre>group_greet_prog -race +elf<br /></pre>
 
 This prog will be triggered whenever an elf enters the room.
-      <p>SPECIAL NOTES: Group_greet_progs will trigger except if a
+      <p>SPECIAL
+NOTES: Group_greet_progs will trigger except if a
 person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
 see people if blinded. Lastly, make sure you check out arrive_prog,
 which
-is a useful counterpart to greet_prog.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+is a useful counterpart to greet_prog.&nbsp;* The triggered object must
+be able to act (move, not near death, not a follower, etc).</p>
 
       <h3><a name="hitprcnt_prog">hitprcnt_prog</a></h3>
 
@@ -1944,11 +2001,14 @@ levels.</p>
 triggered 100% of the time when someone
 levels. This means every time.</p>
 
-      <p>SPECIAL NOTES: This
+      <p>SPECIAL
+NOTES: This
 program will trigger every time a player
 levels, regardless of whether they are in the same room, or even
 whether the scripted monster can see or detect the player. The
-exception to this is cloaked admins, which will not trigger.&nbsp;* The triggered object must be able to act (move, not near death, not a follower, etc).</p>
+exception to this is cloaked admins, which will not trigger.&nbsp;* The
+triggered object must be able to act (move, not near death, not a
+follower, etc).</p>
 
       <h3><a name="lock_prog">lock_prog</a></h3>
 
@@ -2670,7 +2730,27 @@ of the day is 10, 1, or 2.</p>
       <pre>time_prog 3<br /></pre>
 
       <p>This will trigger on the
-3rd hour of every day.</p>
+3rd hour of every day.</p><h3><a name="unfollow_prog">unfollow_prog</a></h3>
+
+      <p>Usage:</p>
+
+      <pre>unfollow_prog [keyword list]<br />unfollow_prog p [keyword list]<br />unfollow_prog all<br /></pre>
+
+      <p>This
+type of mobprog is
+triggered by witnessing someone unfollowing someone else. If the un-follower source matches the keywords of
+the unfollow_prog, the prog is triggered. If there is a 'p' placed
+before
+the keyword list, the keywords of the unfollower must exactly match that of
+the unfollow_prog. If there is not, then any follower with any of the
+keywords in the list in it will trigger it. If a unfollow_prog all is used,
+then the unfollow_prog will trigger from anyone un-following anyone else..&nbsp;</p>
+
+      <p>EXAMPLES:</p>
+
+      <pre>unfollow_prog horse<br /></pre><pre>unfollow_prog all<br /></pre>
+
+      <p>This will trigger if anyone un-follows anyone.</p>
 
       <h3><a name="unlock_prog">unlock_prog</a></h3>
 

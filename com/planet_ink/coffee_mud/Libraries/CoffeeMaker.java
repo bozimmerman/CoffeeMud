@@ -3437,6 +3437,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return current?((MOB)M).charStats().genderName():((MOB)M).baseCharStats().genderName();
 				case AGEMINS:
 					return ""+((MOB)M).getAgeMinutes();
+				case AGEYEARS:
+					return ""+CMLib.flags().getAgeYears((MOB)M);
+				case AGECAT:
+					return ""+((MOB)M).charStats().ageCategory();
 				case QUESTPOINTS:
 					return ""+((MOB)M).getQuestPoint();
 				case FOLLOWERS:
@@ -3925,6 +3929,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return;
 				case QUESTPOINTS:
 					((MOB)M).setQuestPoint(CMath.parseIntExpression(value));
+					return;
+				case AGEYEARS:
+					return;
+				case AGECAT:
 					return;
 				case FOLLOWERS:
 					return;

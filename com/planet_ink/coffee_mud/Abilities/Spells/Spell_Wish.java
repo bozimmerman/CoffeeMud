@@ -961,6 +961,10 @@ public class Spell_Wish extends Spell
 							M.baseCharStats().setStat(CharStats.STAT_AGE, M.baseCharStats().getStat(CharStats.STAT_AGE)+1);
 							if(M.playerStats()!=null)
 								M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_YEAR]--;
+							final Room R = M.location();
+							final CMMsg msg2 = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+							if((R!=null)&&R.okMessage(M, msg2))
+								R.send(M, msg2);
 							CMLib.commands().tickAging(M,60000);
 							M.recoverCharStats();
 						}

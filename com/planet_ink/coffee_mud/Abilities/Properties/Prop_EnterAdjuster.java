@@ -298,7 +298,13 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 					mob.baseCharStats().setMyRace((Race)t.third);
 					mob.baseCharStats().getMyRace().startRacing(mob,false);
 					if(mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
+					{
 						mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getMyRace().getAgingChart()[oldCat]);
+						final Room R = mob.location();
+						final CMMsg msg2 = CMClass.getMsg(mob, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+						if((R!=null)&&R.okMessage(mob, msg2))
+							R.send(mob, msg2);
+					}
 					break;
 				}
 				case EXPE:

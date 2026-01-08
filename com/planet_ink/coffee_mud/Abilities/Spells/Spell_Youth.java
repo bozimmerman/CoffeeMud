@@ -123,6 +123,10 @@ public class Spell_Youth extends Spell
 					}
 					else
 						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
+					final Room R = target.location();
+					final CMMsg msg2 = CMClass.getMsg(target, null, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+					if((R!=null)&&R.okMessage(target, msg2))
+						R.send(target, msg2);
 					target.recoverCharStats();
 					target.recoverPhyStats();
 				}

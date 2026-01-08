@@ -144,7 +144,7 @@ public class Chant_SpeedAging extends Chant
 					if(target instanceof Food)
 					{
 						mob.tell(L("@x1 rots away!",target.name(mob)));
-						((Item)target).destroy();
+						target.destroy();
 					}
 					else
 					if(target instanceof Item)
@@ -161,7 +161,7 @@ public class Chant_SpeedAging extends Chant
 								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 rots away!",target.name()));
 								if(target instanceof Container)
 									((Container)target).emptyPlease(false);
-								((Item)target).destroy();
+								target.destroy();
 								break;
 							}
 						default:
@@ -199,7 +199,13 @@ public class Chant_SpeedAging extends Chant
 							years++;
 							M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH]=monthsInYear+M.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
 						}
-						M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
+						final Room R = M.location();
+						final CMMsg msg2 = CMClass.getMsg(M, null, this, CMMsg.MASK_ALWAYS|CMMsg.TYP_AGE, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, null);
+						if((R!=null)&&R.okMessage(M, msg2))
+						{
+							R.send(M, msg2);
+							M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
+						}
 					}
 					M.recoverPhyStats();
 					M.recoverCharStats();
