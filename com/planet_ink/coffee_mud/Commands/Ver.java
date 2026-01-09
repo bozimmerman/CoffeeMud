@@ -51,7 +51,7 @@ public class Ver extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(L("CoffeeMud v@x1",CMProps.getVar(CMProps.Str.MUDVER)));
-		mob.tell(L("(C) 2000-2025 Bo Zimmerman"));
+		mob.tell(L("(C) 2000-2026 Bo Zimmerman"));
 		mob.tell(L("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>"));
 		mob.tell(L("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>"));
 		mob.tell(L("System up time: @x1",CMLib.time().date2EllapsedTime(CMLib.host().getUptimeSecs()*1000, TimeUnit.SECONDS, false)));

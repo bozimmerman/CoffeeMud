@@ -458,7 +458,7 @@ public class MUDProxy
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v"+MUD.HOST_VERSION);
-		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2025 Bo Zimmerman");
+		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2026 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);
 		try(Selector selector = Selector.open())
@@ -1651,13 +1651,13 @@ public class MUDProxy
 		{
 			if (pairedContext != null)
 			{
-				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress 
-					+" <-> Proxy:"+context.outsidePortNum 
+				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress
+					+" <-> Proxy:"+context.outsidePortNum
 					+" <-> "+pairedContext.port.first+":"+pairedContext.port.second);
 			}
 			else
 			{
-				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress 
+				Log.sysOut(context.outsidePortNum+"", "Client connection lost: "+context.ipAddress
 					+" <-> Proxy:"+context.outsidePortNum+" <-> (unknown server)");
 			}
 		}
@@ -1665,13 +1665,13 @@ public class MUDProxy
 		{
 			if (pairedContext != null)
 			{
-				Log.sysOut(context.outsidePortNum+"", "Server connection lost: "+pairedContext.ipAddress 
-					+" <-> Proxy:"+context.outsidePortNum 
+				Log.sysOut(context.outsidePortNum+"", "Server connection lost: "+pairedContext.ipAddress
+					+" <-> Proxy:"+context.outsidePortNum
 					+" <-> "+context.port.first+":"+context.port.second);
 			}
 			else
 			{
-				Log.sysOut(context.outsidePortNum+"", "Server connection lost: (unknown client) <-> Proxy:" 
+				Log.sysOut(context.outsidePortNum+"", "Server connection lost: (unknown client) <-> Proxy:"
 					+context.outsidePortNum+" <-> "+context.port.first+":"+context.port.second);
 			}
 		}

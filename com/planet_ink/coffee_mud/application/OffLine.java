@@ -526,7 +526,7 @@ public class OffLine extends Thread implements MudHost
 
 				logStream.println();
 				logStream.println("CoffeeMud Off-Line");
-				logStream.println("(C) 2000-2025 Bo Zimmerman");
+				logStream.println("(C) 2000-2026 Bo Zimmerman");
 				logStream.println("http://www.coffeemud.org");
 
 				if(OffLine.isOK)

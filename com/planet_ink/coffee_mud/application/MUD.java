@@ -2137,7 +2137,7 @@ public class MUD extends Thread implements MudHost
 			eolStream.println();
 			grpid=0;
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION);
-			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2025 Bo Zimmerman");
+			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2026 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			CMLib.hosts().clear();
 			final LinkedList<HostGroup> myGroups=new LinkedList<HostGroup>();

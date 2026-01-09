@@ -108,7 +108,7 @@ public class DBCopy
 	public static void main(final String a[]) throws IOException
 	{
 		pl("Welcome to the FakeDB Database Upgrade Tool!");
-		pl("(C) 2003-2025 Bo Zimmerman");
+		pl("(C) 2003-2026 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");
