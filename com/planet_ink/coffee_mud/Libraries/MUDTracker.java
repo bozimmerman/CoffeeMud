@@ -4263,6 +4263,33 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					}
 				};
 				break;
+			case WILDERNESSONLY:  tf.myFilter=new RFilter()
+				{
+					@Override
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+					{
+						if(R==null)
+							return true;
+						switch(R.domainType())
+						{
+						case Room.DOMAIN_INDOORS_METAL:
+						case Room.DOMAIN_INDOORS_WOOD:
+						case Room.DOMAIN_INDOORS_STONE:
+						case Room.DOMAIN_INDOORS_MAGIC:
+						case Room.DOMAIN_INDOORS_SEAPORT:
+						case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+						case Room.DOMAIN_INDOORS_AIR:
+						case Room.DOMAIN_OUTDOORS_CITY:
+						case Room.DOMAIN_OUTDOORS_AIR:
+						case Room.DOMAIN_OUTDOORS_SEAPORT:
+						case Room.DOMAIN_OUTDOORS_SPACEPORT:
+							return true;
+						default:
+							return false;
+						}
+					}
+				};
+				break;
 			}
 		}
 	}

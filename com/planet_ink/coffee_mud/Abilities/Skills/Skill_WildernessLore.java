@@ -11,6 +11,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -84,6 +87,68 @@ public class Skill_WildernessLore extends StdSkill
 	public int usageType()
 	{
 		return USAGE_MANA;
+	}
+
+	public boolean compatibleRoom(final Room curR, final Room homeR)
+	{
+		if(curR == null || homeR == null)
+			return false;
+		if(CMLib.flags().isWateryRoom(curR)!=CMLib.flags().isWateryRoom(homeR))
+			return false;
+		return true;
+	}
+
+	private static final List<String> groundSign = new ArrayList<String>();
+	private static final List<String> waterSign = new ArrayList<String>();
+
+	public String findScat(final MOB mob, final Room curR)
+	{
+		if(CMLib.dice().rollPercentage()>10+super.getX1Level(mob))
+			return null;
+		if(!CMLib.flags().canBeSeenBy(curR,mob))
+			return null;
+		if(groundSign.size()==0)
+		{
+			synchronized(groundSign)
+			{
+				if(groundSign.size()==0)
+				{
+					groundSign.add(L("You spot some @x1 scat."));
+					groundSign.add(L("You spot some @x1 sign."));
+					groundSign.add(L("You spot some @x1 tracks."));
+					waterSign.add(L("You spot some @x1 scat."));
+					waterSign.add(L("You spot some @x1 sign."));
+				}
+			}
+		}
+		final TrackingFlags flags = CMLib.tracking().newFlags();
+		flags.add(TrackingFlag.OPENONLY);
+		flags.add(TrackingFlag.WILDERNESSONLY);
+		final List<Room> radiantRooms = CMLib.tracking().getRadiantRooms(curR, flags, 5+(super.getXLEVELLevel(mob)/2));
+		if(radiantRooms.size()==0)
+			return null;
+		final CMFlagLibrary flagLib = CMLib.flags();
+		final Set<Race> races = new HashSet<Race>();
+		for(final Room R : radiantRooms)
+		{
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				final MOB M = R.fetchInhabitant(m);
+				if((M != null)
+				&&(M.isMonster())
+				&&(flagLib.isAnimalIntelligence(M))
+				&&(M.getStartRoom()!=null)
+				&&(radiantRooms.contains(M.getStartRoom()))
+				&&(this.compatibleRoom(curR, M.getStartRoom())))
+					races.add(M.charStats().getMyRace());
+			}
+		}
+		if(races.size()==0)
+			return null;
+		final List<Race> racesList = new ArrayList<Race>(races);
+		final Race R = racesList.get(CMLib.dice().roll(1,racesList.size(),-1));
+		final List<String> scatList = flagLib.isWateryRoom(curR)?waterSign:groundSign;
+		return CMStrings.replaceVariables(scatList.get(CMLib.dice().roll(1,scatList.size(),-1)), R.name().toLowerCase());
 	}
 
 	@Override
@@ -320,10 +385,19 @@ public class Skill_WildernessLore extends StdSkill
 						rscNames.add(resourceName);
 				}
 				final String list=CMLib.english().toEnglishStringList(rscNames);
+				final String scatStr = findScat(mob,mob.location());
 				if(report || mob.isMonster())
+				{
 					CMLib.commands().postSay(mob, L("This is the sort of place that one might find @x1.",list));
+					if(scatStr != null)
+						CMLib.commands().postSay(mob, scatStr);
+				}
 				else
+				{
 					mob.tell(L("This is the sort of place that one might find @x1.",list));
+					if(scatStr != null)
+						mob.tell(scatStr);
+				}
 			}
 		}
 		else

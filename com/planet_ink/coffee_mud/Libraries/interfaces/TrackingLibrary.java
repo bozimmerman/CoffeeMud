@@ -1134,7 +1134,8 @@ public interface TrackingLibrary extends CMLibrary
 		NOCRAWL,
 		OUTDOORONLY,
 		INDOORONLY,
-		DRIVEABLEONLY
+		DRIVEABLEONLY,
+		WILDERNESSONLY
 		;
 		public RFilter myFilter=null;
 
