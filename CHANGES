@@ -1,4 +1,4 @@
-# Build 5.11.1 Release ??/??/202?
+# Build 5.11.1 Release ??/??/2026
  * Database Changed! CMADAT table added 
  1. New Scriptable function: ISGROUP
  2. Prop_AddDamage supports source and target masks now 
@@ -12,6 +12,7 @@
 10. Prompt now supports showing room domain type.
 11. Hidden exits are now also hidden from gmcp and other mapping protocols unless the player can see them.
 12. New Scriptable triggers: AGE_PROG, FOLLOW_PROG, UNFOLLOW_PROG
+13. New skills: Thrown Weapon Specialization
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

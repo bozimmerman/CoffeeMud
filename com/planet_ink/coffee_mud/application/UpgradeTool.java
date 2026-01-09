@@ -25,7 +25,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
 
 /*
-Copyright 2025-2025 Bo Zimmerman
+Copyright 2025-2026 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

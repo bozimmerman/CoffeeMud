@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 
 /*
- Copyright 2000-2025 Bo Zimmerman
+ Copyright 2000-2026 Bo Zimmerman
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.

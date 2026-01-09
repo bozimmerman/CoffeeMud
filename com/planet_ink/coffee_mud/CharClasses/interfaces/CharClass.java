@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 /*
-   Copyright 2001-2025 Bo Zimmerman
+   Copyright 2001-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -717,6 +717,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public static final int WEAPONS_GYPSY=14;
 	/** constant returned by allowedWeaponLevel() to designate reliquist weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
 	public static final int WEAPONS_RELIQUIST=15;
+	/** constant returned by allowedWeaponLevel() to designate monger weapons only. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedWeaponLevel() */
+	public static final int WEAPONS_MONGER=16;
 	/** constant set of integer arrays defining the Weapon.CLASS_* constants for the CharClass.WEAPONS_* constants, ordered by CharClass.WEAPONS_* values. */
 	public static final int[][] WEAPONS_SETS={
 /*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,
@@ -741,6 +743,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*14*/{Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF, Weapon.CLASS_SWORD, Weapon.CLASS_DAGGER, Weapon.CLASS_BLUNT, Weapon.CLASS_AXE},
 /*15*/{Weapon.CLASS_NATURAL,Weapon.CLASS_EDGED,Weapon.CLASS_DAGGER, Weapon.CLASS_BLUNT, Weapon.CLASS_HAMMER, Weapon.CLASS_POLEARM,
 			Weapon.CLASS_STAFF, Weapon.CLASS_FLAILED},
+/*16*/{Weapon.CLASS_NATURAL,Weapon.CLASS_HAMMER, Weapon.CLASS_BLUNT, Weapon.CLASS_POLEARM},
 	};
 	/** list of string descriptions for the CharClass.WEAPONS_* constants, ordered by their value.  @see CharClass */
 	public static final String[] WEAPONS_LONGDESC=new String[]{
@@ -759,7 +762,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*12*/CMLib.lang().L("May use polearms of any kind or other weapons made from wood, plant-based materials, or leather."),
 /*13*/CMLib.lang().L("Must use staffs or natural weapons."),
 /*14*/CMLib.lang().L("Must use staves, swords, daggers, axes, or blunt weapons."),
-/*15*/CMLib.lang().L("Must use edged, dagger, blunt, hamer, polearm, staff, or flailed weapons.")
+/*15*/CMLib.lang().L("Must use edged, dagger, blunt, hamer, polearm, staff, or flailed weapons."),
+/*16*/CMLib.lang().L("Must use blunt, hammer, or polearm weapons.")
 	};
 
 	/** for character classes that define themselves using getParms, this can designate racelessness bitmaps */
