@@ -273,7 +273,7 @@ public class MiniTSONTest extends StdTest
 				return "Error#19.3: ArrayList serialization failed: " + serialized;
 
 			// Test 20: Vector parsing and serialization
-			result = tson.parse("v[10,20,30]");
+			result = tson.parse("vc[10,20,30]");
 			if(!(result instanceof Vector))
 				return "Error#20.1: Vector parsing failed";
 			@SuppressWarnings("unchecked")
@@ -288,16 +288,15 @@ public class MiniTSONTest extends StdTest
 			testVec.add("b");
 			obj.put("vector", testVec);
 			serialized = obj.toString();
-			if(!serialized.contains("v["))
+			if(!serialized.contains("vc["))
 				return "Error#20.3: Vector serialization failed: " + serialized;
 
 			// Test 21: Pair parsing and serialization
-			result = tson.parse("p[\"first\",\"second\"]");
+			result = tson.parse("pa[\"first\",\"second\"]");
 			if(!(result instanceof Pair))
 				return "Error#21.1: Pair parsing failed";
 			@SuppressWarnings("unchecked")
-			final
-			Pair<Object,Object> pair = (Pair<Object,Object>)result;
+			final Pair<Object,Object> pair = (Pair<Object,Object>)result;
 			if(!pair.first.equals("first") || !pair.second.equals("second"))
 				return "Error#21.2: Pair values incorrect";
 
@@ -305,11 +304,11 @@ public class MiniTSONTest extends StdTest
 			final Pair<String,Integer> testPair = new Pair<String,Integer>("key", Integer.valueOf(123));
 			obj.put("pair", testPair);
 			serialized = obj.toString();
-			if(!serialized.contains("p["))
+			if(!serialized.contains("pa["))
 				return "Error#21.3: Pair serialization failed: " + serialized;
 
 			// Test 22: Complex nested structure
-			final String complexTson = "{\"name\":\"test\",\"numbers\":I[1,2,3],\"primitives\":i[10,20,30],\"map\":hm{\"nested\":\"value\"},\"pair\":p[\"a\",\"b\"]}";
+			final String complexTson = "{\"name\":\"test\",\"numbers\":I[1,2,3],\"primitives\":i[10,20,30],\"map\":hm{\"nested\":\"value\"},\"pair\":pa[\"a\",\"b\"]}";
 			result = tson.parseObject(complexTson);
 			if(!(result instanceof TSONObject))
 				return "Error#22.1: Complex object parsing failed";

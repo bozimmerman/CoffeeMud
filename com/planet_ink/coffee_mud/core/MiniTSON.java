@@ -482,151 +482,6 @@ public final class MiniTSON extends MiniJSON
 			}
 		);
 
-		// Hashtable handler - converts to JSONObject for serialization
-		TSONTypeHandler.create("ht",
-			new Class<?>[] {Hashtable.class},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof JSONObject))
-						throw new IllegalArgumentException("Expected JSONObject for Hashtable conversion");
-					final JSONObject json = (JSONObject)obj;
-					final Hashtable<String,Object> result = new Hashtable<String,Object>();
-					result.putAll(json);
-					return result;
-				}
-			},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof Hashtable))
-						throw new IllegalArgumentException("Expected Hashtable for serialization");
-					@SuppressWarnings("unchecked")
-					final Hashtable<String,Object> ht = (Hashtable<String,Object>)obj;
-					final TSONObject result = new TSONObject();
-					result.putAll(ht);
-					return result;
-				}
-			}
-		);
-
-		// HashMap handler - converts to JSONObject for serialization
-		TSONTypeHandler.create("hm",
-			new Class<?>[] {java.util.HashMap.class},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof JSONObject))
-						throw new IllegalArgumentException("Expected JSONObject for HashMap conversion");
-					final JSONObject json = (JSONObject)obj;
-					final Map<String,Object> result = new HashMap<String,Object>();
-					result.putAll(json);
-					return result;
-				}
-			},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof Map))
-						throw new IllegalArgumentException("Expected Map for serialization");
-					@SuppressWarnings("unchecked")
-					final Map<String,Object> map = (Map<String,Object>)obj;
-					final TSONObject result = new TSONObject();
-					result.putAll(map);
-					return result;
-				}
-			}
-		);
-
-		// TreeMap converter
-		TSONTypeHandler.create("tm",
-			new Class<?>[] {java.util.TreeMap.class},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof JSONObject))
-						throw new IllegalArgumentException("Expected JSONObject for HashMap conversion");
-					final JSONObject json = (JSONObject)obj;
-					final Map<String,Object> result = new TreeMap<String,Object>();
-					result.putAll(json);
-					return result;
-				}
-			},
-			prefixToHandler.get("hm").serializeConverter
-		);
-
-		// ArrayList handler - converts to Object[] for serialization
-		TSONTypeHandler.create("al",
-			new Class<?>[] {ArrayList.class},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof Object[]))
-						throw new IllegalArgumentException("Expected array for ArrayList conversion");
-					final Object[] arr = (Object[])obj;
-					final ArrayList<Object> result = new ArrayList<Object>(arr.length);
-					for(final Object o : arr)
-						result.add(o);
-					return result;
-				}
-			},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof ArrayList))
-						throw new IllegalArgumentException("Expected ArrayList for serialization");
-					@SuppressWarnings("unchecked")
-					final ArrayList<Object> list = (ArrayList<Object>)obj;
-					return list.toArray(new Object[list.size()]);
-				}
-			}
-		);
-
-		// Vector handler - converts to Object[] for serialization
-		TSONTypeHandler.create("v",
-			new Class<?>[] {Vector.class},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof Object[]))
-						throw new IllegalArgumentException("Expected array for Vector conversion");
-					final Object[] arr = (Object[])obj;
-					final java.util.Vector<Object> result = new java.util.Vector<Object>(arr.length);
-					for(final Object o : arr)
-						result.add(o);
-					return result;
-				}
-			},
-			new Converter<Object,Object>()
-			{
-				@Override
-				public Object convert(final Object obj)
-				{
-					if(!(obj instanceof java.util.Vector))
-						throw new IllegalArgumentException("Expected Vector for serialization");
-					@SuppressWarnings("unchecked")
-					final java.util.Vector<Object> vec = (java.util.Vector<Object>)obj;
-					return vec.toArray(new Object[vec.size()]);
-				}
-			}
-		);
-
 		// int[] handler
 		TSONTypeHandler.create("i",
 			new Class<?>[] {int[].class},
@@ -884,7 +739,7 @@ public final class MiniTSON extends MiniJSON
 		);
 
 		// Pair handler - converts to Object[] with 2 elements for serialization
-		TSONTypeHandler.create("p",
+		TSONTypeHandler.create("pa",
 			new Class<?>[] {Pair.class},
 			new Converter<Object,Object>() // parse: Object[] -> Pair
 			{
@@ -969,8 +824,171 @@ public final class MiniTSON extends MiniJSON
 				}
 			}
 		);
+
+		registerMapType("ht",java.util.Hashtable.class);
+		registerMapType("hm",java.util.HashMap.class);
+		registerMapType("tm",java.util.TreeMap.class);
+		registerListType("al",java.util.ArrayList.class);
+		registerListType("vc",java.util.Vector.class);
+
+		registerCollectionTypes();
 	}
 
+	// Add this method to MiniTSON
+	private static void registerCollectionTypes()
+	{
+		// Get all classes in the collections package
+		final String packageName = "com.planet_ink.coffee_mud.core.collections";
+		final Class<?>[] classes = CMClass.getClassesInPackage(packageName);
+		for(final Class<?> clazz : classes)
+		{
+			if(clazz.isInterface() || java.lang.reflect.Modifier.isAbstract(clazz.getModifiers()))
+				continue;
+
+			final String className = clazz.getSimpleName();
+			try
+			{
+				if(Map.class.isAssignableFrom(clazz))
+					registerMapType(className, clazz);
+				else
+				if(List.class.isAssignableFrom(clazz))
+					registerListType(className, clazz);
+				else
+				if(Set.class.isAssignableFrom(clazz))
+					registerSetType(className, clazz);
+				else
+					continue;
+			}
+			catch(final Exception e)
+			{
+				// Log or handle error - collections won't be auto-registered
+			}
+		}
+	}
+
+	private static void registerMapType(final String typeName, final Class<?> mapClass)
+	{
+		TSONTypeHandler.create(typeName,
+			new Class<?>[] {mapClass},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof JSONObject))
+						throw new IllegalArgumentException("Expected JSONObject for " + typeName + " conversion");
+					final JSONObject json = (JSONObject)obj;
+					try
+					{
+						@SuppressWarnings("unchecked")
+						final Map<String,Object> result = (Map<String,Object>)mapClass.newInstance();
+						result.putAll(json);
+						return result;
+					}
+					catch(final Exception e)
+					{
+						throw new IllegalArgumentException("Cannot instantiate " + typeName + ": " + e.getMessage());
+					}
+				}
+			},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof Map))
+						throw new IllegalArgumentException("Expected Map for serialization");
+					@SuppressWarnings("unchecked")
+					final Map<String,Object> map = (Map<String,Object>)obj;
+					final TSONObject result = new TSONObject();
+					result.putAll(map);
+					return result;
+				}
+			}
+		);
+	}
+
+	private static void registerListType(final String typeName, final Class<?> listClass)
+	{
+		TSONTypeHandler.create(typeName,
+			new Class<?>[] {listClass},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof Object[]))
+						throw new IllegalArgumentException("Expected array for " + typeName + " conversion");
+					final Object[] arr = (Object[])obj;
+					try
+					{
+						@SuppressWarnings("unchecked")
+						final List<Object> result = (List<Object>)listClass.newInstance();
+						for(final Object o : arr)
+							result.add(o);
+						return result;
+					}
+					catch(final Exception e)
+					{
+						throw new IllegalArgumentException("Cannot instantiate " + typeName + ": " + e.getMessage());
+					}
+				}
+			},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof List))
+						throw new IllegalArgumentException("Expected List for serialization");
+					@SuppressWarnings("unchecked")
+					final List<Object> list = (List<Object>)obj;
+					return list.toArray(new Object[list.size()]);
+				}
+			}
+		);
+	}
+
+	private static void registerSetType(final String typeName, final Class<?> setClass)
+	{
+		TSONTypeHandler.create(typeName,
+			new Class<?>[] {setClass},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof Object[]))
+						throw new IllegalArgumentException("Expected array for " + typeName + " conversion");
+					final Object[] arr = (Object[])obj;
+					try
+					{
+						@SuppressWarnings("unchecked")
+						final Set<Object> result = (Set<Object>)setClass.newInstance();
+						for(final Object o : arr)
+							result.add(o);
+						return result;
+					}
+					catch(final Exception e)
+					{
+						throw new IllegalArgumentException("Cannot instantiate " + typeName + ": " + e.getMessage());
+					}
+				}
+			},
+			new Converter<Object,Object>()
+			{
+				@Override
+				public Object convert(final Object obj)
+				{
+					if(!(obj instanceof Set))
+						throw new IllegalArgumentException("Expected Set for serialization");
+					@SuppressWarnings("unchecked")
+					final Set<Object> set = (Set<Object>)obj;
+					return set.toArray(new Object[set.size()]);
+				}
+			}
+		);
+	}
 
 	/**
 	 * An official JSON object. Implemented as a Map, this class has numerous

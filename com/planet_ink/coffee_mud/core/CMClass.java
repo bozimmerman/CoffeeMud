@@ -537,6 +537,55 @@ public class CMClass extends ClassLoader
 		return getClassSet(findObjectType(type));
 	}
 
+	/**
+	 * Read all the classes in the given package, for whatever reason.
+	 *
+	 * @param packageName
+	 * @return
+	 * @throws Exception
+	 */
+	public static Class<?>[] getClassesInPackage(final String packageName)
+	{
+		final String path = packageName.replace('.', '/');
+		ClassLoader c = c();
+		if(c == null)
+			c = Thread.currentThread().getContextClassLoader();
+		final List<Class<?>> classes = new ArrayList<Class<?>>();
+		try
+		{
+			final Enumeration<URL> resources = c().getResources(path);
+			while(resources.hasMoreElements())
+			{
+				final URL resource = resources.nextElement();
+				final File directory = new File(resource.getFile());
+
+				if(directory.exists())
+				{
+					final String[] files = directory.list();
+					for(final String file : files)
+					{
+						if(file.endsWith(".class"))
+						{
+							final String className = packageName + '.' + file.substring(0, file.length() - 6);
+							try
+							{
+								classes.add(Class.forName(className));
+							}
+							catch(final ClassNotFoundException e)
+							{
+								// Skip classes that can't be loaded
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(final Exception e)
+		{
+		}
+		return classes.toArray(new Class<?>[classes.size()]);
+	}
+
 	protected static final Object getClassSet(final CMObjectType code)
 	{
 		switch(code)
@@ -2415,7 +2464,7 @@ public class CMClass extends ClassLoader
 	private final void initializeClassGroup(final List<? extends CMObject> V)
 	{
 		for(int v=0;v<V.size();v++)
-			((CMObject)V.get(v)).initializeClass();
+			V.get(v).initializeClass();
 	}
 
 	/**
@@ -2425,7 +2474,7 @@ public class CMClass extends ClassLoader
 	private final void initializeClassGroup(final Map<String,? extends CMObject> H)
 	{
 		for(final Object o : H.keySet())
-			((CMObject)H.get(o)).initializeClass();
+			H.get(o).initializeClass();
 	}
 
 	/**
