@@ -1658,7 +1658,7 @@ public interface RawMaterial extends Item, AutoBundler
 				fishes[fishes.length - 1] = newResourceCode;
 			}
 			descs = Arrays.copyOf(descs, descs.length + 1);
-			descs[descs.length - 1] = name;
+			descs[descs.length - 1] = name.replace('_', ' ');
 			descLookup.put(name, Integer.valueOf(newResourceCode));
 
 			smells = Arrays.copyOf(smells, smells.length + 1);
