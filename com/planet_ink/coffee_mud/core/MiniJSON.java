@@ -35,7 +35,7 @@ import java.util.Map.Entry;
  * @author Bo Zimmerman
  *
  */
-public final class MiniJSON
+public class MiniJSON
 {
 	/**
 	 * Maximum depth of parsing arrays and objects, to prevent stack overflows.
@@ -113,15 +113,15 @@ public final class MiniJSON
 	/**
 	 * Literal definition for NULL.
 	 */
-	private static final String NULL_STR = "null";
+	protected static final String NULL_STR = "null";
 	/**
 	 * Literal definition for TRUE.
 	 */
-	private static final String TRUE_STR = "true";
+	protected static final String TRUE_STR = "true";
 	/**
 	 * Literal definition for FALSE.
 	 */
-	private static final String FALSE_STR = "false";
+	protected static final String FALSE_STR = "false";
 	/**
 	 * Literal definition for four zeroes.
 	 */
@@ -432,7 +432,7 @@ public final class MiniJSON
 		 * @param value the StringBuffer to append a value to
 		 * @param obj the value to append -- a string, null, array, or number
 		 */
-		public static void appendJSONValue(final StringBuilder value, final Object obj)
+		public void appendJSONValue(final StringBuilder value, final Object obj)
 		{
 			if(obj instanceof String)
 			{
@@ -502,15 +502,28 @@ public final class MiniJSON
 		 */
 		public Object jsonDeepCopy(final Object obj)
 		{
+			if(obj == null)
+				return null;
 			if(obj instanceof JSONObject)
 				return ((JSONObject)obj).copyOf();
 			else
 			if(obj.getClass().isArray())
 			{
-				final Object[] newArray = Arrays.copyOf((Object[])obj, ((Object[])obj).length);
-				for(int i=0;i<newArray.length;i++)
-					newArray[i] = jsonDeepCopy(newArray[i]);
-				return newArray;
+				if(obj.getClass().getComponentType().isPrimitive())
+				{
+					final Class<?> componentType = obj.getClass().getComponentType();
+					final int length = Array.getLength(obj);
+					final Object newArray = Array.newInstance(componentType, length);
+					System.arraycopy(obj, 0, newArray, 0, length);
+					return newArray;
+				}
+				else
+				{
+					final Object[] newArray = Arrays.copyOf((Object[])obj, ((Object[])obj).length);
+					for(int i=0;i<newArray.length;i++)
+						newArray[i] = jsonDeepCopy(newArray[i]);
+					return newArray;
+				}
 			}
 			else
 				return obj;
@@ -527,6 +540,15 @@ public final class MiniJSON
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
+	}
+
+	/**
+	 * Generates a new JSON Object for your jsoning pleasure.
+	 * @return a new JSON Object
+	 */
+	public JSONObject createJSONObject()
+	{
+		return new JSONObject();
 	}
 
 	/**
@@ -645,7 +667,7 @@ public final class MiniJSON
 					index[0]--;
 					final String numStr = new String(doc, numStart, index[0] - numStart + 1);
 					try {
-						return Double.valueOf(new BigDecimal(numStr).doubleValue());
+						return Double.valueOf(numStr);
 					} catch (final NumberFormatException nxe) {
 						throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
 					}
@@ -730,7 +752,7 @@ public final class MiniJSON
 					break;
 				case 'u':
 				{
-					if(index[0] >= doc.length-5)
+					if(index[0] >= doc.length-4)
 						throw new MJSONException("Unfinished unicode escape at "+index[0]);
 					final byte[] hexBuf=new byte[] {
 						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0])),
@@ -818,7 +840,7 @@ public final class MiniJSON
 	 * @return the value object of the found value
 	 * @throws MJSONException a parse exception, meaning no recognized value was there
 	 */
-	private Object parseElement(final char[] doc, final int[] index, final int depth) throws MJSONException
+	protected Object parseElement(final char[] doc, final int[] index, final int depth) throws MJSONException
 	{
 		while (index[0] < doc.length && Character.isWhitespace(doc[index[0]])) {
 			index[0]++ ;
@@ -851,21 +873,21 @@ public final class MiniJSON
 		case '9':
 			return parseNumber(doc,index);
 		case 't':
-			if((index[0] < doc.length-5) && (new String(doc,index[0],4).equals(TRUE_STR)))
+			if((index[0] < doc.length-3) && (new String(doc,index[0],4).equals(TRUE_STR)))
 			{
 				index[0]+=3;
 				return Boolean.TRUE;
 			}
 			throw new MJSONException("Invalid true at "+index[0]);
 		case 'f':
-			if((index[0] < doc.length-6) && (new String(doc,index[0],5).equals(FALSE_STR)))
+			if((index[0] < doc.length-4) && (new String(doc,index[0],5).equals(FALSE_STR)))
 			{
 				index[0]+=4;
 				return Boolean.FALSE;
 			}
 			throw new MJSONException("Invalid false at "+index[0]);
 		case 'n':
-			if((index[0] < doc.length-5) && (new String(doc,index[0],4).equals(NULL_STR)))
+			if((index[0] < doc.length-3) && (new String(doc,index[0],4).equals(NULL_STR)))
 			{
 				index[0]+=3;
 				return NULL;
@@ -912,7 +934,7 @@ public final class MiniJSON
 	 */
 	private JSONObject parseObject(final char[] doc, final int[] index, final int depth) throws MJSONException
 	{
-		final JSONObject map = new JSONObject();
+		final JSONObject map = createJSONObject();
 		String key = null;
 		ObjectParseState state = ObjectParseState.INITIAL;
 		while(index[0] < doc.length)
@@ -1155,25 +1177,25 @@ public final class MiniJSON
 							if(cType.isPrimitive())
 							{
 								if(cType == boolean.class)
-									Array.setBoolean(tgt, i, Boolean.valueOf(objs[i].toString()).booleanValue());
+									Array.setBoolean(tgt, i, Boolean.parseBoolean(objs[i].toString()));
 								else
 								if(cType == int.class)
-									Array.setInt(tgt, i, Long.valueOf(objs[i].toString()).intValue());
+									Array.setInt(tgt, i, Integer.parseInt(objs[i].toString()));
 								else
 								if(cType == short.class)
-									Array.setShort(tgt, i, Long.valueOf(objs[i].toString()).shortValue());
+									Array.setShort(tgt, i, Short.parseShort(objs[i].toString()));
 								else
 								if(cType == byte.class)
 									Array.setByte(tgt, i, Long.valueOf(objs[i].toString()).byteValue());
 								else
 								if(cType == long.class)
-									Array.setLong(tgt, i, Long.valueOf(objs[i].toString()).longValue());
+									Array.setLong(tgt, i, Long.parseLong(objs[i].toString()));
 								else
 								if(cType == float.class)
-									Array.setFloat(tgt, i, Double.valueOf(objs[i].toString()).floatValue());
+									Array.setFloat(tgt, i, Float.parseFloat(objs[i].toString()));
 								else
 								if(cType == double.class)
-									Array.setDouble(tgt, i, Double.valueOf(objs[i].toString()).doubleValue());
+									Array.setDouble(tgt, i, Double.parseDouble(objs[i].toString()));
 							}
 							else
 							if(objs[i] instanceof JSONObject)
@@ -1201,25 +1223,25 @@ public final class MiniJSON
 					{
 						final Class<?> cType=field.getType();
 						if(cType == boolean.class)
-							field.setBoolean(o, Boolean.valueOf(jo.toString()).booleanValue());
+							field.setBoolean(o, Boolean.parseBoolean(jo.toString()));
 						else
 						if(cType == int.class)
-							field.setInt(o, Long.valueOf(jo.toString()).intValue());
+							field.setInt(o, Integer.parseInt(jo.toString()));
 						else
 						if(cType == short.class)
-							field.setShort(o, Long.valueOf(jo.toString()).shortValue());
+							field.setShort(o, Short.parseShort(jo.toString()));
 						else
 						if(cType == byte.class)
 							field.setByte(o, Long.valueOf(jo.toString()).byteValue());
 						else
 						if(cType == long.class)
-							field.setLong(o, Long.valueOf(jo.toString()).longValue());
+							field.setLong(o, Long.parseLong(jo.toString()));
 						else
 						if(cType == float.class)
-							field.setFloat(o, Double.valueOf(jo.toString()).floatValue());
+							field.setFloat(o, Float.parseFloat(jo.toString()));
 						else
 						if(cType == double.class)
-							field.setDouble(o, Double.valueOf(jo.toString()).doubleValue());
+							field.setDouble(o, Double.parseDouble(jo.toString()));
 						else
 							field.set(o, jo);
 					}

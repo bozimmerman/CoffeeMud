@@ -162,13 +162,28 @@ public class Save extends StdCommand
 				mob.tell(L("You are not allowed to save players."));
 				return false;
 			}
-			for(final Session S : CMLib.sessions().allIterable())
+			if(firstCommand.equals("ALL"))
 			{
-				final MOB M=S.mob();
-				if(M!=null)
+				for(final Enumeration<MOB> m = CMLib.players().players(); m.hasMoreElements();)
 				{
-					CMLib.database().DBUpdatePlayer(M);
-					CMLib.database().DBUpdateFollowers(M);
+					final MOB M = m.nextElement();
+					if(M != null)
+					{
+						CMLib.database().DBUpdatePlayer(M);
+						CMLib.database().DBUpdateFollowers(M);
+					}
+				}
+			}
+			else
+			{
+				for(final Session S : CMLib.sessions().allIterable())
+				{
+					final MOB M=S.mob();
+					if(M!=null)
+					{
+						CMLib.database().DBUpdatePlayer(M);
+						CMLib.database().DBUpdateFollowers(M);
+					}
 				}
 			}
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes everyone.\n\r"));

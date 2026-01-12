@@ -2066,7 +2066,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final Map<String,Object> newMap = buildMsdpMap(msdpData, msdpData.length);
 		final Object jsonConversion = convertMsdpObjectToJSONObject(newMap);
 		final StringBuilder str = new StringBuilder("");
-		MiniJSON.JSONObject.appendJSONValue(str, jsonConversion);
+		new MiniJSON.JSONObject().appendJSONValue(str, jsonConversion);
 		return str.toString();
 	}
 

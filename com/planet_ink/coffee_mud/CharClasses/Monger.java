@@ -136,29 +136,6 @@ public class Monger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 	}
 
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
-		{
-		}
-		return super.tick(ticking,tickID);
-	}
-
-	@Override
-	public boolean okMessage(final Environmental host, final CMMsg msg)
-	{
-		if(!super.okMessage(host, msg))
-			return false;
-		return true;
-	}
-
-	@Override
-	public void executeMsg(final Environmental host, final CMMsg msg)
-	{
-		super.executeMsg(host, msg);
-	}
-
 	private final String[] raceRequiredList = new String[] { "All" };
 
 	@Override
@@ -198,6 +175,71 @@ public class Monger extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L(""); //TODO:
+		return L("Bonus XP for discovering shops and stores.  "
+				+""); //TODO:
+	}
+
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
+		{
+		}
+		return super.tick(ticking,tickID);
+	}
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(!super.okMessage(host, msg))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		super.executeMsg(host, msg);
+	}
+
+	public static void visitationBonusMessage(final Environmental host, final CMMsg msg)
+	{
+		if((msg.target() instanceof Room)
+		&&(msg.source()==host)
+		&&(!msg.source().isMonster())
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().playerStats()!=null))
+		{
+			final Room R=(Room)msg.target();
+			if(((R.roomID().length()>0)
+				||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+			&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(!msg.source().playerStats().hasVisited(R))
+			)
+			{
+				MOB M=null;
+				boolean shop=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M instanceof ShopKeeper)
+					&&(M.getStartRoom()==R))
+						shop=true;
+				}
+				final CharClass C=((MOB)host).charStats().getCurrentClass();
+				if(shop)
+				{
+					int xpGain=25;
+					if(((xpGain=CMLib.leveler().postExperience((MOB)host,"CLASS:"+C.ID(),null,null,xpGain, true))>0)
+					&&(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS)))
+					{
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,
+								CMLib.lang().L("^HYou have discovered a new shop, you gain @x1 experience.^?",
+										CMLib.leveler().getXPAmountTerm(xpGain)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
+				}
+			}
+		}
 	}
 }

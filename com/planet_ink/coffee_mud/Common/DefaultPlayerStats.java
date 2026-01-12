@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CostDef.CostType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -210,6 +211,9 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			O.gtellStack=new SVector<TellMsg>(gtellStack);
 			O.titles=new SVector<Title>(titles);
 			O.alias=new SHashtable<String,String>(alias);
+			O.classMap=new STreeMap<CharClass,Map<String,Object>>();
+			for(final CharClass C : classMap.keySet())
+				O.classMap.put(C, new STreeMap<String,Object>(classMap.get(C)));
 			O.legacy=new SHashtable<String,Integer>(legacy);
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.extItems=(ItemCollection)extItems.copyOf();
@@ -483,7 +487,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			introductions.add(name.toUpperCase().trim());
 	}
 
-	public SHashSet<String> getHashFrom(String str, final boolean trim)
+	private SHashSet<String> getHashFrom(String str, final boolean trim)
 	{
 		final SHashSet<String> h=new SHashSet<String>();
 		if((str==null)||(str.length()==0))
@@ -726,7 +730,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		alias.put(named.toUpperCase().trim(),value);
 	}
 
-	public String getAliasXML()
+	private String getAliasXML()
 	{
 		if(alias.size()==0)
 			return "";
@@ -737,13 +741,37 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		return str.toString();
 	}
 
-	public String getLegacyXML()
+	private String getLegacyXML()
 	{
 		if(legacy.size()==0)
 			return "";
 		final StringBuilder str=new StringBuilder("");
 		for(final String key : legacy.keySet())
 			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\" />");
+		return str.toString();
+	}
+
+	private String getClassMapXML()
+	{
+		if(classMap.size()==0)
+			return "";
+		final StringBuilder str=new StringBuilder("");
+		str.append("<CLASSMAPS>");
+		final StringBuilder mapJson=new StringBuilder("");
+		final MiniTSON.TSONObject obj = new MiniTSON.TSONObject();
+		for(final CharClass C : classMap.keySet())
+		{
+			final Map<String,Object> map=this.classMap.get(C);
+			if(map.containsKey("SAVE"))
+			{
+				str.append("<CLASSMAP ID=\"").append(C.ID()).append("\">");
+				mapJson.setLength(0);
+				obj.appendJSONValue(mapJson, map);
+				str.append(CMLib.xml().parseOutAngleBrackets(mapJson.toString()));
+				str.append("</CLASSMAP>");
+			}
+		}
+		str.append("</CLASSMAPS>");
 		return str.toString();
 	}
 
@@ -1071,6 +1099,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			+getTitleXML()
 			+getAliasXML()
 			+getLegacyXML()
+			+getClassMapXML()
 			+"<ACCTEXP>"+accountExpires+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toListString(birthday)+"</BIRTHDAY>":"")
 			+((deathPoof.length()>0)?"<DEATHPOOF>"+CMLib.xml().parseOutAngleBrackets(deathPoof)+"</DEATHPOOF>":"")
@@ -1106,6 +1135,45 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			{
 				final TimeClock C=CMLib.time().globalClock();
 				birthday[3]=C.getYear();
+			}
+		}
+	}
+
+	private void setClassMapXML(final List<XMLTag> xml)
+	{
+		final XMLLibrary xmlLib = CMLib.xml();
+		this.classMap.clear();
+		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "CLASSMAPS");
+		if((achievePiece==null)||(achievePiece.contents().size()==0))
+			return;
+		final MiniTSON tsoner = new MiniTSON();
+		for(final XMLTag tag : achievePiece.contents())
+		{
+			if(tag.tag().equals("CLASSMAP"))
+			{
+				final String ID = tag.getParmValue("ID");
+				if((ID!=null)&&(ID.length()>0))
+				{
+					final CharClass C = CMClass.getCharClass(ID);
+					if(C == null)
+						continue;
+					final String json = xmlLib.restoreAngleBrackets(tag.value());
+					Object o;
+					try
+					{
+						o = tsoner.parse(json);
+						if(o instanceof Map)
+						{
+							@SuppressWarnings("unchecked")
+							final Map<String,Object> pmap = (Map<String,Object>)o;
+							this.getClassVariableMap(C).putAll(pmap);
+						}
+					}
+					catch (final MJSONException e)
+					{
+						Log.errOut(e);
+					}
+				}
 			}
 		}
 	}
@@ -1451,6 +1519,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		}
 		this.lastXPDateTime=CMath.s_long(xmlLib.getValFromPieces(xml, "LASTXPMILLIS"));
 		this.deathCounter=CMath.s_int(xmlLib.getValFromPieces(xml, "NUMDEATHS"));
+		setClassMapXML(xml);
 	}
 
 	private String getLevelDateTimesStr()
@@ -2413,6 +2482,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 		alias.clear();
 		legacy.clear();
 		combatSpams.clear();
+		classMap.clear();
 		ableMap.clear();
 		experMap.clear();
 		levelInfo.clear();
