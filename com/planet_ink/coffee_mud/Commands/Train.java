@@ -41,8 +41,6 @@ public class Train extends StdCommand
 	{
 	}
 
-	protected Pair<String,Map<Trainable,Pair<Integer,Cost>>> trainCosts = null;
-
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
 	@Override
 	public String[] getAccessWords()
@@ -73,9 +71,12 @@ public class Train extends StdCommand
 		return cost.get(t);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected synchronized Map<Trainable,Pair<Integer,Cost>> getTrainCosts()
 	{
 		final String trainCostStr = CMProps.getVar(CMProps.Str.TRAINCOSTS);
+		Pair<String,Map<Trainable,Pair<Integer,Cost>>> trainCosts = (Pair<String,Map<Trainable,Pair<Integer,Cost>>>)
+				Resources.getResource("SYSTEM_TRAIN_COSTS");
 		if((trainCosts == null)||(!trainCostStr.equals(trainCosts.first)))
 		{
 			final Map<Trainable,Pair<Integer,Cost>> costs = new Hashtable<Trainable,Pair<Integer,Cost>>();
@@ -111,6 +112,7 @@ public class Train extends StdCommand
 				}
 			}
 			trainCosts = new Pair<String,Map<Trainable,Pair<Integer,Cost>>>(trainCostStr,costs);
+			Resources.submitResource("SYSTEM_TRAIN_COSTS", trainCosts);
 		}
 		return trainCosts.second;
 	}
