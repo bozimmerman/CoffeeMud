@@ -88,26 +88,31 @@ public class Spell_FakeFood extends Spell
 					F.setName(L("a shiny apple"));
 					F.setDisplayText(L("A shiny red apple sits here."));
 					F.setDescription(L("It looks tasty and crisp!"));
+					F.setMaterial(RawMaterial.RESOURCE_APPLES);
 					break;
 				case 2:
 					F.setName(L("a nice peach"));
 					F.setDisplayText(L("A nice peach sits here."));
 					F.setDescription(L("It looks tasty!"));
+					F.setMaterial(RawMaterial.RESOURCE_PEACHES);
 					break;
 				case 3:
 					F.setName(L("a big pot pie"));
 					F.setDisplayText(L("A big pot pie has been left here."));
 					F.setDescription(L("It sure looks good!"));
+					F.setMaterial(RawMaterial.RESOURCE_MEAT);
 					break;
 				case 4:
 					F.setName(L("a juicy steak"));
 					F.setDisplayText(L("A juicy steak has been left here."));
 					F.setDescription(L("It sure looks good!"));
+					F.setMaterial(RawMaterial.RESOURCE_BEEF);
 					break;
 				case 5:
 					F.setName(L("a bit of food"));
 					F.setDisplayText(L("A bit of food has been left here."));
 					F.setDescription(L("It sure looks good!"));
+					F.setMaterial(RawMaterial.RESOURCE_MEAT);
 					break;
 				}
 				F.setNourishment(0);
