@@ -134,6 +134,10 @@ public class Monger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Merchant",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SelfInvesting",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SnakeOilSelling",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Barking",true);
 	}
 
 	private final String[] raceRequiredList = new String[] { "All" };
@@ -185,6 +189,13 @@ public class Monger extends StdCharClass
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
+			final MOB mob=(MOB)ticking;
+			if(mob.isPlayer() && mob.charStats().getCurrentClass()==this)
+			{
+				final Map<String,Object> map = mob.playerStats().getClassVariableMap(this);
+				if(!map.containsKey("SAVE"))
+					map.put("SAVE", Boolean.TRUE);
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
