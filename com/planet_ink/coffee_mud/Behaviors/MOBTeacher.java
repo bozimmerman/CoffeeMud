@@ -468,32 +468,38 @@ public class MOBTeacher extends CombatAbilities
 				if(teachA==null)
 				{
 					ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
-					if(trainableExpertises==null)
+					List<ExpertiseLibrary.ExpertiseDefinition> expertises;
+					synchronized(this)
 					{
-						trainableExpertises=new LinkedList<ExpertiseLibrary.ExpertiseDefinition>();
-						trainableExpertises.addAll(CMLib.expertises().myListableExpertises(monster));
-						for(final Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
+						expertises = this.trainableExpertises;
+						if(expertises==null)
 						{
-							final Pair<String,Integer> EXI=monster.fetchExpertise(exi.nextElement());
-							if(EXI.getValue()==null)
+							expertises=new LinkedList<ExpertiseLibrary.ExpertiseDefinition>();
+							expertises.addAll(CMLib.expertises().myListableExpertises(monster));
+							for(final Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
 							{
-								final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
-								if((def != null) && (!trainableExpertises.contains(def)))
-									trainableExpertises.add(def);
-							}
-							else
-							{
-								final List<String> childrenIDs=CMLib.expertises().getStageCodes(EXI.getKey());
-								for(final String experID : childrenIDs)
+								final Pair<String,Integer> EXI=monster.fetchExpertise(exi.nextElement());
+								if(EXI.getValue()==null)
 								{
-									final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
-									if((def != null) && (!trainableExpertises.contains(def)))
-										trainableExpertises.add(def);
+									final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
+									if((def != null) && (!expertises.contains(def)))
+										expertises.add(def);
+								}
+								else
+								{
+									final List<String> childrenIDs=CMLib.expertises().getStageCodes(EXI.getKey());
+									for(final String experID : childrenIDs)
+									{
+										final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+										if((def != null) && (!expertises.contains(def)))
+											expertises.add(def);
+									}
 								}
 							}
+							this.trainableExpertises = expertises;
 						}
 					}
-					for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+					for(final ExpertiseLibrary.ExpertiseDefinition def : expertises)
 					{
 						if((def.name().equalsIgnoreCase(s))
 						&&(theExpertise==null))
@@ -501,7 +507,7 @@ public class MOBTeacher extends CombatAbilities
 					}
 					if(theExpertise==null)
 					{
-						for(final ExpertiseLibrary.ExpertiseDefinition def : trainableExpertises)
+						for(final ExpertiseLibrary.ExpertiseDefinition def : expertises)
 						{
 							if((CMLib.english().containsString(def.name(),s)
 							&&(theExpertise==null)))
