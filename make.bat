@@ -5,9 +5,18 @@ SET JAVACPATH="%Java_Home%\bin\javac" -g -nowarn -deprecation
 
 IF "%1" == "docs" GOTO :DOCS
 
-dir /s /b com\*.java > sources.txt
+@del /f sources.txt 2>nul
+@del /s /f *.class 1>nul 2>nul
+@setlocal EnableDelayedExpansion
+@set "root=%CD%\"
+@echo Gathering source files from %root%com...
+@(for /f "delims=" %%a in ('dir /s /b com\*.java') do @(
+   @set "file=%%a"
+   @echo !file:%root%=!
+) >> sources.txt)
 %JAVACPATH% @sources.txt
-del sources.txt
+@del sources.txt
+
 
 GOTO :FINISH
 
