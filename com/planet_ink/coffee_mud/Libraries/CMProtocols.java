@@ -2108,7 +2108,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				catch(final Exception e)
 				{
-					Log.errOut("Unknown GMCP Pkg"+pkg.toLowerCase());
+					if(CMSecurity.isDebugging(DbgFlag.GMCP))
+						Log.debugOut("Unknown GMCP Pkg "+pkg.toLowerCase());
 					return null;
 				}
 				switch(cmd)
