@@ -40,7 +40,7 @@ echo "Alright, we're good to go, compiling will begin in 5 seconds."
 sleep 5
 #Next we will set up some needed variables for compiling.... and then run an if statement
 
-JAVACPATH="$Java_Home/bin/javac -nowarn -Xlint:-removal -Xlint:-deprecation -g -encoding UTF8 -classpath .:./lib/js.jar:./lib/jzlib.jar" 
+JAVACPATH="$Java_Home/bin/javac -nowarn -Xlint:-none -g -encoding UTF8 -classpath .:./lib/js.jar:./lib/jzlib.jar" 
 
 if [ $yesnodocs = y ] ; then
 
@@ -60,7 +60,7 @@ fi
 
 if [ $yesnofullcompile = y ] ; then
 
-find com -name "*.java" | xargs $JAVACPATH -nowarn -Xlint:-removal -Xlint:-deprecation -Xlint:none -g -classpath ".:lib/jzlib.jar:lib/js.jar"
+find com -name "*.java" | xargs $JAVACPATH -nowarn -Xlint:none -g -classpath ".:lib/jzlib.jar:lib/js.jar"
 
 else
 
