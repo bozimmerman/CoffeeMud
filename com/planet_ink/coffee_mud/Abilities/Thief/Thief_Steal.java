@@ -188,12 +188,13 @@ public class Thief_Steal extends ThiefSkill
 			return false;
 
 		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
+		if(stolen == null)
 		if(stolen instanceof Coins)
 		{
 			mob.tell(L("You'll need to try and SWIPE that."));
 			return false;
 		}
-		if(CMath.bset(stolen.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP))
+		if((stolen != null) && (CMath.bset(stolen.basePhyStats().sensesMask(),PhyStats.SENSE_CORPSEDROP)))
 			stolen=null;
 
 		// higher is good for the player, lower is good for the npc
