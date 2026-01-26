@@ -10,10 +10,10 @@ IF "%1" == "docs" GOTO :DOCS
 @setlocal EnableDelayedExpansion
 @set "root=%CD%\"
 @echo Gathering source files from %root%com...
-@(for /f "delims=" %%a in ('dir /s /b com\*.java') do @(
-   @set "file=%%a"
-   @echo !file:%root%=!
-) >> sources.txt)
+@(for /r "com" %%a in (*.java) do @(
+   set "file=%%a"
+   echo !file:%root%=!
+)) >> sources.txt
 %JAVACPATH% @sources.txt
 @del sources.txt
 
