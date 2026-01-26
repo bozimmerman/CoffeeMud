@@ -27,7 +27,7 @@ MODE_DIRS	   = 2755
 # Build programs
 JAVAC		 = javac
 # MODIFIED: Adjust flags to match your suggested compilation style (can tweak as needed)
-JAVAC_FLAGS	 = -nowarn -Xlint:none -g -classpath ".:./lib/js.jar:./lib/jzlib.jar"
+JAVAC_FLAGS	 = -nowarn -Xlint:-deprecation -Xlint:none -g -classpath ".:./lib/js.jar:./lib/jzlib.jar"
 JAVADOC		 = javadoc
 JAR			 = jar
 
