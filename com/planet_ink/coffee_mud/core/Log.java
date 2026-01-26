@@ -1395,7 +1395,9 @@ public class Log extends java.util.logging.Logger
 			synchronized(outWriter)
 			{
 
-				final String errStr = ((e!=null)?e.getMessage():"Null/Unknown error occurred.");
+				final String errStr = ((e!=null)&&(e.getMessage()!=null)&&(!e.getMessage().equals("null")))?
+						e.getMessage():
+						"Null/Unknown error occurred.";
 				final String msg;
 				if(prePend != null)
 					msg=prePend + ": " + errStr;
