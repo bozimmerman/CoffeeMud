@@ -257,6 +257,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			firstRun=true;
 			return false;
 		}
+		int radius = 1;
 		while((--tries>0)&&(!CMLib.flags().canBreatheHere(mob, room))) // the fish exception
 		{
 			if((room instanceof GridLocale)&&(room.getGridParent()==null))
@@ -270,7 +271,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 															.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 															.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				final List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, 5);
+				final List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, radius++);
 				final Room oldRoom=room;
 				for(int i=0;i<choices.size();i++)
 				{
