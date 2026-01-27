@@ -571,6 +571,9 @@ public class Transfer extends At
 		if(CMLib.sessions().findCharacterOnline(cmd.toString(), true) != null)
 			targetRoom=CMLib.sessions().findCharacterOnline(cmd.toString(), true).location();
 		else
+		if(CMLib.map().getArea(cmd.toString())!=null)
+			targetRoom=CMLib.map().getArea(cmd.toString()).getRandomProperRoom();
+		else
 		if(CMLib.map().getRoom(cmd.toString())!=null)
 			targetRoom=CMLib.map().getRoom(cmd.toString());
 		else
