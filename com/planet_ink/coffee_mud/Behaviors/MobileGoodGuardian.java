@@ -93,6 +93,8 @@ public class MobileGoodGuardian extends Mobile
 		tickStatus=Tickable.STATUS_MISC+4;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
+			if(!thisRoom.isRoomInDirCached(d)) // skip uncached rooms
+				continue;
 			tickStatus=Tickable.STATUS_MISC+5+d;
 			final Room room=thisRoom.getRoomInDir(d);
 			final Exit exit=thisRoom.getExitInDir(d);

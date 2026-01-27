@@ -166,6 +166,8 @@ public class Spell_CauseStink extends Spell
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
+					if(!room.isRoomInDirCached(d))
+						continue;
 					final Room R=room.getRoomInDir(d);
 					if((R!=null)
 					&&(R.numPCInhabitants()>0))

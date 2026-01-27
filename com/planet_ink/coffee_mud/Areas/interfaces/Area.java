@@ -819,10 +819,13 @@ public interface Area extends Economics, PhysicalAgent, Places
 		private Enumeration<String> roomIDEnumerator=null;
 		private Area area=null;
 
-		public RoomIDEnumerator(final Area myArea)
+		public RoomIDEnumerator(final Area myArea, final boolean cached)
 		{
 			area=myArea;
-			roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
+			if(cached)
+				roomIDEnumerator=area.getCachedRoomnumbers().getRoomIDs();
+			else
+				roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
 		}
 
 		@Override

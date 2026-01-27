@@ -123,6 +123,8 @@ public class VeryAggressive extends Aggressive
 		int dirCode=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
+			if(!R.isRoomInDirCached(d)) // skip uncached rooms
+				continue;
 			final Room room=R.getRoomInDir(d);
 			final Exit exit=R.getExitInDir(d);
 			if((room!=null)

@@ -98,6 +98,15 @@ public class StdThinArea extends StdArea
 						dbe.DBReadContent(roomID,R,true);
 						fillInAreaRoom(R);
 						R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+						final MOB mob=CMClass.getFactoryMOB("the wind",1,R);
+						try
+						{
+							R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
+ 						}
+						finally
+						{
+							mob.destroy();
+						}
 					}
 				}
 			}
@@ -164,19 +173,20 @@ public class StdThinArea extends StdArea
 	@Override
 	public Enumeration<Room> getCompleteMap()
 	{
-		return new CompleteRoomEnumerator(new RoomIDEnumerator(this));
+		return new CompleteRoomEnumerator(new RoomIDEnumerator(this, false));
 	}
 
 	@Override
-	public Enumeration<Room> getMetroMap()
+	public Enumeration<Room> getMetroMap() // cached rooms only
 	{
 		final int minimum=getProperRoomnumbers().roomCountAllAreas()/10;
-		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
+		final int numCached = getCachedRoomnumbers().roomCountAllAreas();
+		if(numCached<minimum)
 		{
-			for(int r=0;r<minimum;r++)
+			for(int r=0;r<minimum-numCached;r++)
 				getRandomProperRoom();
 		}
-		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
+		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this, true)); // cached rooms
 		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
 			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);

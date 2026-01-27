@@ -120,6 +120,8 @@ public class Skill_Stonecunning extends StdSkill
 			msg.append(trapCheck(R));
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
+			if(!R.isRoomInDirCached(d))
+				continue;
 			final Exit E=R.getExitInDir(d);
 			final Room R2=R.getRoomInDir(d);
 			if((R2!=null)

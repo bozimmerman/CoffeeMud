@@ -371,6 +371,19 @@ public class ThinRoom implements Room
 		return null;
 	}
 
+
+	@Override
+	public boolean isRoomInDirCached(final int direction)
+	{
+		if(direction<rooms.length)
+		{
+			if(rooms[direction]==null)
+				return false;
+			return !(rooms[direction] instanceof ThinRoom);
+		}
+		return false;
+	}
+
 	@Override
 	public void setRawDoor(final int direction, final Room R)
 	{

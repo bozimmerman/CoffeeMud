@@ -122,7 +122,7 @@ public class StdThinGridArea extends StdGridArea
 			for(int r=0;r<minimum;r++)
 				getRandomProperRoom();
 		}
-		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
+		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this, true));
 		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
 			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
@@ -131,6 +131,6 @@ public class StdThinGridArea extends StdGridArea
 	@Override
 	public Enumeration<Room> getCompleteMap()
 	{
-		return new CompleteRoomEnumerator(new RoomIDEnumerator(this));
+		return new CompleteRoomEnumerator(new RoomIDEnumerator(this, false));
 	}
 }

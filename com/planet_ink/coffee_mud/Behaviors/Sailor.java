@@ -909,10 +909,15 @@ public class Sailor extends StdBehavior
 							}
 							if(nextDir != null)
 							{
-								final Room nextRoom=curRoom.getRoomInDir(nextDir.intValue());
-								if((nextRoom == null)
-								||((areaOnly)&&(nextRoom.getArea()!=curRoom.getArea())))
-									nextDir = null;
+								if(!curRoom.isRoomInDirCached(nextDir.intValue()))
+									nextDir=null;
+								else
+								{
+									final Room nextRoom=curRoom.getRoomInDir(nextDir.intValue());
+									if((nextRoom == null)
+									||((areaOnly)&&(nextRoom.getArea()!=curRoom.getArea())))
+										nextDir = null;
+								}
 							}
 							if(nextDir != null)
 							{

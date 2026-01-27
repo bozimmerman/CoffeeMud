@@ -970,6 +970,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		while(((tries++)<10)&&(direction<0))
 		{
 			direction=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
+			if(!oldRoom.isRoomInDirCached(direction)) // skip uncached rooms
+			{
+				direction=-1;
+				continue;
+			}
 			final Room nextRoom=oldRoom.getRoomInDir(direction);
 			final Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))

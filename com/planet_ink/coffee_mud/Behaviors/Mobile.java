@@ -355,6 +355,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				}
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
+					if(!room.isRoomInDirCached(d)) // skip uncached rooms
+						continue;
 					final Room R=room.getRoomInDir(d);
 					if((R!=null)&&(!okRoomForMe(mob,room,R,false)))
 					{

@@ -478,6 +478,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 	 * Room link in the given direction.  This method returns null if
 	 * there is no link in the given direction.
 	 * @see Room#setRawDoor(int, Room)
+	 * @see Room#isRoomInDirCached(int)
 	 * @see Room#setRawExit(int, Exit)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#getReverseExit(int)
@@ -489,6 +490,17 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places, MOBPossessor
 	 * @return the raw Exit object in that direction, or null
 	 */
 	public Room getRawDoor(int direction);
+
+	/**
+	 * Returns whether there exists a room in the given direction which is
+	 * not yet cached, due to being in a thin area, or planar, or other
+	 * unloaded state.  If there is no room at all in the direction, it will
+	 * also return false.
+	 *
+	 * @param direction the direction to check
+	 * @return true if the room exists and is loaded/uncached, false otherwise
+	 */
+	public boolean isRoomInDirCached(int direction);
 
 	/**
 	 * Sets the Room link from in this room to the other

@@ -76,6 +76,8 @@ public class Conquerable extends Arrest
 	protected int				fightDown			= 0;
 	protected static final int	FIGHTFREQ			= 2;
 	protected int				conqPtLvlDiff		= Integer.MAX_VALUE;
+	protected volatile long		nextFlagScan 		= System.currentTimeMillis();
+
 
 	protected PairList<ClanItem,ItemPossessor>		clanItems = new PairSVector<ClanItem,ItemPossessor>();
 
@@ -848,6 +850,42 @@ public class Conquerable extends Arrest
 		return null;
 	}
 
+	protected int fixConquereableRoom(final Area parentA, final Room R, final String worship, final Clan C)
+	{
+		int points = 0;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			final MOB M=R.fetchInhabitant(i);
+			if((M!=null)
+			&&(M.isMonster())
+			&&(M.getStartRoom()!=null)
+			&&(parentA.inMyMetroArea(M.getStartRoom().getArea()))
+			&&(!CMLib.flags().isAnimalIntelligence(M)))
+			{
+				if((C!=null)&&(M.getClanRole(C.clanID())==null))
+				{
+					M.setClan(C.clanID(),C.getAutoPosition());
+					if((worship!=null)
+					&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
+					{
+						M.baseCharStats().setWorshipCharID(worship);
+						M.charStats().setWorshipCharID(worship);
+					}
+				}
+				points+=M.phyStats().level();
+			}
+		}
+		for(int i=0;i<R.numItems();i++)
+		{
+			final Item I=R.getItem(i);
+			if((I instanceof ClanItem)
+			&&(I instanceof SiegableItem)
+			&&(I instanceof Boardable))
+				points += ((SiegableItem)I).getMaxHullPoints();
+		}
+		return points;
+	}
+
 	public void recalculateControlPoints(final Area A)
 	{
 		totalControlPoints=0;
@@ -856,36 +894,8 @@ public class Conquerable extends Arrest
 		for(final Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
 			final Room R=e.nextElement();
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				final MOB M=R.fetchInhabitant(i);
-				if((M!=null)
-				&&(M.isMonster())
-				&&(M.getStartRoom()!=null)
-				&&(A.inMyMetroArea(M.getStartRoom().getArea()))
-				&&(!CMLib.flags().isAnimalIntelligence(M)))
-				{
-					if((C!=null)&&(M.getClanRole(C.clanID())==null))
-					{
-						M.setClan(C.clanID(),C.getAutoPosition());
-						if((worship!=null)
-						&&(!M.baseCharStats().getWorshipCharID().equals(worship)))
-						{
-							M.baseCharStats().setWorshipCharID(worship);
-							M.charStats().setWorshipCharID(worship);
-						}
-					}
-					totalControlPoints+=M.phyStats().level();
-				}
-			}
-			for(int i=0;i<R.numItems();i++)
-			{
-				final Item I=R.getItem(i);
-				if((I instanceof ClanItem)
-				&&(I instanceof SiegableItem)
-				&&(I instanceof Boardable))
-					totalControlPoints += ((SiegableItem)I).getMaxHullPoints();
-			}
+			if(R != null)
+				totalControlPoints += fixConquereableRoom(A, R, worship, C);
 		}
 	}
 
@@ -1171,8 +1181,6 @@ public class Conquerable extends Arrest
 		return flagFound(A,C);
 	}
 
-	protected volatile long	nextFlagScan = System.currentTimeMillis();
-
 	protected boolean flagFound(final Area A, final Clan C)
 	{
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
@@ -1318,10 +1326,14 @@ public class Conquerable extends Arrest
 	{
 		switch(CMLib.dice().roll(1, 4, -1))
 		{
-		case 0: return CMLib.lang().L("INVADERS! Attack!");
-		case 1: return CMLib.lang().L("We are under attack! To arms!");
-		case 2: return CMLib.lang().L("Destroy the enemy!");
-		case 3: return CMLib.lang().L("War!!!!!");
+		case 0:
+			return CMLib.lang().L("INVADERS! Attack!");
+		case 1:
+			return CMLib.lang().L("We are under attack! To arms!");
+		case 2:
+			return CMLib.lang().L("Destroy the enemy!");
+		case 3:
+			return CMLib.lang().L("War!!!!!");
 		}
 		return "";
 	}
@@ -1359,6 +1371,15 @@ public class Conquerable extends Arrest
 			// first look for kills and follows and register the points
 			// from those events.  Protect against multi-follows using
 			// a queue.
+			if((msg.targetMinor()==CMMsg.TYP_NEWROOM)
+			&&(msg.target() instanceof Room))
+			{
+				final Room R = (Room)msg.target();
+				final String worship=getManadatoryWorshipID();
+				final Clan C=(holdingClan!=null)?CMLib.clans().getClanAnyHost(holdingClan):null;
+				totalControlPoints += fixConquereableRoom((Area)myHost, R, worship, C);
+			}
+			else
 			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool() instanceof MOB))
 				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)
 					&&(msg.target() instanceof MOB)

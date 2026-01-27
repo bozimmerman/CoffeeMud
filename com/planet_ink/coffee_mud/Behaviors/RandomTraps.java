@@ -324,8 +324,8 @@ public class RandomTraps extends ActiveTicker
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						tickStatus=Tickable.STATUS_MISC+8;
-						if(((R.rawDoors()[d]!=null) // important optimization
-						&&(R.rawDoors()[d].roomID().length()>0)))
+						if((R.isRoomInDirCached(d)) // important optimization
+						&&(R.rawDoors()[d].roomID().length()>0))
 						{
 							final Exit E=R.getExitInDir(d);
 							if((R.getRoomInDir(d)!=null)

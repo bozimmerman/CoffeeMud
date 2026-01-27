@@ -1909,6 +1909,19 @@ public class StdRoom implements Room
 	}
 
 	@Override
+	public boolean isRoomInDirCached(final int direction)
+	{
+		if(direction<doors.length)
+		{
+			if(doors[direction]==null)
+				return false;
+			return !(doors[direction] instanceof ThinRoom);
+		}
+		return false;
+	}
+
+
+	@Override
 	public Room getRawDoor(final int direction)
 	{
 		if(direction<doors.length)
