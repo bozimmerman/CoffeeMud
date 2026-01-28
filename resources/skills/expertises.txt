@@ -66,6 +66,9 @@ HELP_=<EXPERTISE>The ability to better avoid, identify, handle, and disable trap
 TRAPPING@x1=Trapping @x2,10,LEVEL,-SKILLFLAG +TRAPPING,-MAXCLASSLEVEL +>={16+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to build and deploy traps that are better made, and more lethal.
 
+NUMISMATIC@x1=Numismatically @x2,10,LEVEL,-SKILLFLAG +ECONOMIC,-MAXCLASSLEVEL +>={27+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to enhance economic skills for better returns on investment.
+
 WANDUSE@x1=Arcane Lore @x2,10,LEVEL,-SKILLFLAG +ARCANE_LORE,-MAXCLASSLEVEL +>={16+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>Knowledge of arcane symbology and custom for better arcane identification and wand usage.
 

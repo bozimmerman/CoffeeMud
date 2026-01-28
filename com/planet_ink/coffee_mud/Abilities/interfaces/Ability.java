@@ -880,6 +880,8 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_ROPEUSE=80<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a land travel skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_TRAVEL=81<<5;
+	/** constant used to mask classificationCode() designating this ability as being economical skill. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_ECONOMIC=82<<5;
 	/** Number of base ability domains defined by the codebase */
 	public static final int NUM_BASE_DOMAINS = 82;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
@@ -909,7 +911,7 @@ public interface Ability extends Environmental
 			"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
 			"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL",
 			"EDUCATION_LORE","EPICUREAN","COSMOLOGY","ROPE_USE",
-			"TRAVEL"
+			"TRAVEL", "ECONOMIC"
 		}));
 		/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 		public static final List<String> VERBS=new MinSizedList<String>(new XVector<String>(new String[]{
@@ -933,7 +935,7 @@ public interface Ability extends Environmental
 			"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
 			"Building","Water Lore","Water Control","Sea Travel",
 			"Educating","Indulging","Cosmologing","Roping",
-			"Travelling"
+			"Travelling", "Economizing"
 		}));
 	}
 
