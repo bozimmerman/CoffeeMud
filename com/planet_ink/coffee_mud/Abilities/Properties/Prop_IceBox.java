@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2006 Robert Little
+   Copyright 2010-2006 Robert Little
    http://www.tttgames.divineright.org
    The Looking Glass RPG
    www.tttgames.divineright.org  host: divineright.org port: 7000

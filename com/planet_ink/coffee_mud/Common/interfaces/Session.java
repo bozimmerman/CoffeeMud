@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 /*
-   Copyright 2001-2026 Bo Zimmerman
+   Copyright 2005-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

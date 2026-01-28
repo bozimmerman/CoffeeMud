@@ -38,7 +38,7 @@ import com.planet_ink.fakedb.backend.structure.ComparableValue;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 
 /*
-   Copyright 2009-2026 Bo Zimmerman
+   Copyright 2010-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
