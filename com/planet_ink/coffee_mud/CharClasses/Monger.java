@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2026 Bo Zimmerman
+   Copyright 2023-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -135,9 +135,63 @@ public class Monger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Merchant",false);
-//		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SelfInvesting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SelfInvesting",100,true);
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SnakeOilSelling",false);
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Barking",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Moneychanging",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Gossip Mongering",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Mongering",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Swindling",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Watching",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Appraise",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"MakeTradeContacts",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Wainwrighting",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Advertising",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"FindCaravan",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"FoodMarketeering",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Mongership2",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Wholesaling",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Orphanaging",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"MakeTradeMaps",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Door2Door",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Triage",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"InnKeeping",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"TradeCharting",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Wholebuying",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Mongership3",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Auctioneering",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Lore",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"CargoLoading",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"CaravanTravel",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"InsiderTrading",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Dealing",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"FencingLoot",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Rentaling",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"WordOfMouth",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Siegecrafting",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Mongership4",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Exporting",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Incorporating",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"FreeMarketing",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Dealership2",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"TradeDisrupting",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"MailCarrying",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"TradeEmbargo",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Mongership5",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"CaravanBuilding",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Bankrupting",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Branding",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Dealership3",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"CaravanTactics",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"LandLording",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Monopolizing",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Mongership6",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"IllicitTrading",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Sellout",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Importing",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Financiering",true);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Dealership4",false);
+//		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"SalesClerkHiring",true);
 	}
 
 	private final String[] raceRequiredList = new String[] { "All" };
@@ -180,7 +234,7 @@ public class Monger extends StdCharClass
 	public String getOtherBonusDesc()
 	{
 		return L("Bonus XP for discovering shops and stores.  "
-				+""); //TODO:
+				+"Investments pay monthly XP per share."); //TODO:BZ:NOT DONE YET!
 	}
 
 
