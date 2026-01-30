@@ -29,7 +29,7 @@ import com.planet_ink.fakedb.backend.structure.RecordInfo;
 
 /*
    Copyright 2001 Thomas Neumann
-   Copyright 2004-2026 Bo Zimmerman
+   Copyright 2002-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
