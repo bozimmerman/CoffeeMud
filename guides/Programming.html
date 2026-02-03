@@ -170,12 +170,9 @@ compile the mud, making all the .class files.</p>
       <h3><a name="buildunix" id="buildunix">In Unix</a></h3>
       <ul>
         <li>
-          <p>Go to your coffeemud
-directory and edit the makeUNIX.sh,
-the first line will be something like: <code>Java_Home=/home/knoppix/jdk1.8.0_22</code>
-This might be different for you depending on what version of the Java
-JDK you installed, and where your java
-development package is installed.</p>
+          <p>Make sure javac is in your $PATH, and go to your coffeemud
+directory and run make, which will use the existing Makefile to compile
+the .class files.</p>
         </li>
         <li>
           <p>Save the shell script.</p>
