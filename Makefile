@@ -148,7 +148,7 @@ XJAVA_OBJS	:= $(XJAVA_SRC:.xjava=.java)
 PACKAGE_DIR	= $(subst .,/,$(1))
 
 # All the (x)java files in a package
-PACKAGE_SRC	=  $(shell $(FIND) $(PACKAGE_DIR) \( -name '*.java' -or -name '*.xjava' \) )
+PACKAGE_SRC	= $(wildcard $(call PACKAGE_DIR,$(1))/*.java $(call PACKAGE_DIR,$(1))/*.xjava)
 
 # All the classes to build in a package
 PACKAGE_OBJS	= $(patsubst %.java,%.class,$(PACKAGE_SRC: %.xjava=%.java))
@@ -402,5 +402,6 @@ ifneq ($(DEPEND),)
 	include $(MAKEFILE_DEPEND)
 endif
 
+.SECONDEXPANSION:
 # MODIFIED: Use static pattern rule for dynamic per-package targets instead of explicit list
-$(PACKAGES): % : $(call PACKAGE_OBJS,%)
+$(PACKAGES): % : $$(call PACKAGE_OBJS,$$*)
