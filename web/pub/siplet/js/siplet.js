@@ -385,6 +385,7 @@ function SipletWindow(windowName)
 		this.resetTimers();
 		this.mxpFix();
 		this.fixOverflow();
+		this.resizeTermWindow();
 	};
 	
 	this.htmlBuffer = '';
