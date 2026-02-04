@@ -20,13 +20,13 @@ medium maze	17	185	2500		OUTDOOR	ROOM	WoodRoomMaze	5		maze frame and roof		Turns
 light gate	18	35	35		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 wide roof	19	135	1000		OUTDOOR	ROOM	WoodRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
 simple door	20	45	60		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
-upstairs	21	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+upstairs	21	195	2550		INDOOR ABOVEGROUNDONLY	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
 tab drape	23	45	50	CLOTH	INDOOR DIR	DOOR	GenCurtain	tab drape|draw open|draw close|A closed tab drape.|A passage offstage.		curtain @x1		Openable cloth exit between a stage and offstage.
 light door	25	45	70		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 window	26	45	50	GLASS	INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
 big maze	27	210	3500		OUTDOOR	ROOM	WoodRoomMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
 standard gate	28	45	40		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
-hole	29	165	2550		INDOOR DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new indoor room below it.
+hole	29	165	2550		INDOOR UPPERFLOORONLY DOWNONLY	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to a new indoor room below it.
 standard door	30	55	80		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 obscured door	30	100	100		DIR INDOOR	DOOR	GenDoor	secret door	Prop_Hidden()	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
 trap door	33	55	120		DIRUPDOWN INDOOR	DOOR	GenDoor	trapdoor|open(s)|close(s)|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.

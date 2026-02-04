@@ -134,7 +134,10 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		UNDERWATERONLY,
 		SALTWATER,
 		FRESHWATER,
-		UPONLY
+		UPONLY,
+		ABOVEGROUNDONLY,
+		UPPERFLOORONLY,
+		FIRSTFLOORONLY
 	}
 
 	protected Room		room				= null;
@@ -1624,6 +1627,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 
 		if(doingCode == Building.STAIRS)
 		{
+			if(dir < 0)
+			{
+				if(flags.contains(Flag.UPONLY))
+					dir = Directions.UP;
+				else
+				if(flags.contains(Flag.DOWNONLY))
+					dir = Directions.DOWN;
+			}
 			if((dir!=Directions.UP)&&(dir!=Directions.DOWN))
 			{
 				commonFaiL(mob,commands,"A valid direction in which to build must also be specified.  Try UP or DOWN.");
@@ -1752,6 +1763,39 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 			dir=Directions.UP;
+		}
+
+		if(flags.contains(Flag.ABOVEGROUNDONLY))
+		{
+			final int floor=findFloorNumber(room, new HashSet<Room>(), 1);
+			if(floor < 1)
+			{
+				if((dir != Directions.UP)||(room.getRoomInDir(Directions.UP)==null))
+				{
+					commonFaiL(mob,commands,"This can only be built from or to a surface room.");
+					return false;
+				}
+			}
+		}
+
+		if(flags.contains(Flag.UPPERFLOORONLY))
+		{
+			final int floor=findFloorNumber(room, new HashSet<Room>(), 1);
+			if(floor <= 1)
+			{
+				commonFaiL(mob,commands,"This can only be built from an upper floor.");
+				return false;
+			}
+		}
+
+		if(flags.contains(Flag.FIRSTFLOORONLY))
+		{
+			final int floor=findFloorNumber(room, new HashSet<Room>(), 1);
+			if(floor != 1)
+			{
+				commonFaiL(mob,commands,"This can only be built from the surface floor.");
+				return false;
+			}
 		}
 
 		if(flags.contains(Flag.CAVEONLY))
