@@ -2823,13 +2823,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(room2ID.length()>0)
 									{
 										String move="normal";
-										if(CMLib.flags().isCrawlable(R2))
+										if(CMLib.flags().isCrawlable(R2)||CMLib.flags().isCrawlable(E2))
 											move="crawl";
 										else
-										if(CMLib.flags().isWateryRoom(R2))
+										if(CMLib.flags().isWateryRoom(R2)||CMLib.flags().isSwimming(E2))
 											move="swim";
 										else
-										if(CMLib.flags().isAiryRoom(R2))
+										if(CMLib.flags().isAiryRoom(R2)||CMLib.flags().isFlying(E2))
 											move="fly";
 										if(comma)
 											doc.append(",");
@@ -2858,13 +2858,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(room2ID.length()>0)
 									{
 										String move="normal";
-										if(CMLib.flags().isCrawlable(R2))
+										if(CMLib.flags().isCrawlable(R2)||CMLib.flags().isCrawlable(E2))
 											move="crawl";
 										else
-										if(CMLib.flags().isWateryRoom(R2))
+										if(CMLib.flags().isWateryRoom(R2)||CMLib.flags().isSwimming(E2))
 											move="swim";
 										else
-										if(CMLib.flags().isAiryRoom(R2))
+										if(CMLib.flags().isAiryRoom(R2)||CMLib.flags().isFlying(E2))
 											move="fly";
 										if(comma)
 											doc.append(",");
