@@ -1755,21 +1755,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private static boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex)
+	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex)
 	{
 		outIndex[0] = index;
 
 		if(token.token instanceof String)
 		{
 			final String str = (String)token.token;
-			if((!matchMTLiteral(str, token.isPlaceholder, proposition, index, outIndex))&&(!token.optional))
+			if((!matchMTLiteral(str, token.placeholderArgs, proposition, index, outIndex))&&(!token.optional))
 				return false;
 			if(token.repeats)
 			{
 				while(true)
 				{
 					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(str, token.isPlaceholder, proposition, outIndex[0], outIndex))
+					if(!matchMTLiteral(str, token.placeholderArgs, proposition, outIndex[0], outIndex))
 					{
 						outIndex[0] = saveIndex;
 						break;
@@ -1839,8 +1839,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private static boolean matchMTLiteral(final String literal, final boolean isPlaceholder,
-										  final String proposition, int index, final int[] outIndex)
+	private boolean matchMTLiteral(final String literal, final String[] placeholderArgs,
+								   final String proposition, int index, final int[] outIndex)
 	{
 		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
 			index++;
@@ -1849,16 +1849,29 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			outIndex[0] = index;
 			return false;
 		}
-		if(isPlaceholder)
+		if(placeholderArgs != null) // is a placeholder
 		{
-			// Match word characters (letters, digits, underscore)
+			final int start = index;
+			//TODO: way way way too restrictive
 			if(!Character.isLetterOrDigit(proposition.charAt(index)) && (proposition.charAt(index) != '_'))
 				return false;
 			while((index < proposition.length())
 			&&(Character.isLetterOrDigit(proposition.charAt(index)) || (proposition.charAt(index) == '_')))
 				index++;
-			//TODO:
 			outIndex[0] = index;
+			final String value = proposition.substring(start,index);
+			final String editorKey = literal.toUpperCase().trim();
+			final Map<String, AbilityParmEditor> editors = getEditors();
+			if(editors.containsKey(editorKey))
+			{
+				final AbilityParmEditor editor = editors.get(editorKey);
+				return editor.confirmValue(value);
+			}
+			else
+			if(CMath.s_valueOf(ParmType.class,editorKey)!=null)
+			{
+				//TODO: finish
+			}
 			return true;
 		}
 		else
@@ -1879,7 +1892,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public boolean repeats = false;
 		public boolean optional = false;
 		public boolean isAlternative = false; // TRUE if this MTToken[] represents alternatives, FALSE if sequence
-		public boolean isPlaceholder = false;
+		public String[] placeholderArgs = null;
 
 		public MTToken(final Object token, final boolean optional)
 		{
@@ -1952,10 +1965,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
-				final String placeholder = format.substring(index, closeIndex);
-				final MTToken token = new MTToken(placeholder, false);
+				final String placeholder = format.substring(index, closeIndex).trim();
+				String placeholderToken = placeholder;
+				String[] placeholderArgs = new String[0];
+				final int x = placeholderToken.indexOf('(');
+				if(x>0 && placeholderToken.endsWith(")"))
+				{
+					final String argGroup = placeholderToken.substring(x+1,placeholderToken.length()-1);
+					placeholderArgs = CMParms.parseAny(argGroup, '/', false).toArray(new String[0]);
+					placeholderToken = placeholderToken.substring(0,x);
+				}
+				final MTToken token = new MTToken(placeholderToken, false);
 				tokens.add(token);
-				token.isPlaceholder=true;
+				token.placeholderArgs=placeholderArgs;
 				index = closeIndex + 1;
 			}
 			else
