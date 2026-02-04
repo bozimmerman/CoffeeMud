@@ -400,6 +400,15 @@ public interface AbilityParameters extends CMLibrary
 	public String createCraftingBrand(final MOB mob);
 
 	/**
+	 * Given a grammar from {@link Ability#miscTextFormat()}, this will
+	 * return whether the given proposition is formatted in a conforming way.
+	 * @param format the misc text format
+	 * @param proposition the potential misc text
+	 * @return true if they are a match
+	 */
+	public boolean isValidMiscText(final String format, final String proposition);
+
+	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility
 	 * (Common Skill) recipe list, ready for manipulation by users.
 	 *

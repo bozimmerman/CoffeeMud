@@ -133,7 +133,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final StringBuilder str = new StringBuilder("");
 			for (final String[] wset : lists)
 			{
-				if (str.length() > 0)
+				if(str.length() > 0)
 					str.append("/");
 				str.append(CMParms.toListString(wset));
 			}
@@ -208,7 +208,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				Resources.submitResource("SYSTEM_CRAFTING_BRAND_STR",P);
 			}
 			final Matcher matcher = P.matcher(buildingI.rawSecretIdentity());
-			if (matcher.find())
+			if(matcher.find())
 				return matcher.group(1).trim();
 		}
 		return "";
@@ -405,7 +405,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				for(int c=0;c<colV.size();c++)
 				{
 					final Object o = colV.get(c);
-					if (o instanceof List)
+					if(o instanceof List)
 						continue;
 					final String ID = (o instanceof String) ? (String)o : ((AbilityParmEditor)o).ID();
 					final AbilityParmEditor A = editors.get(ID);
@@ -1735,6 +1735,117 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public int appliesToClass(final Object o)
 		{
 			return 0;
+		}
+	}
+
+	@Override
+	public boolean isValidMiscText(final String format, final String proposition)
+	{
+		return new CMMiscTextFormatValidator(format, proposition).validate();
+	}
+
+	private static class CMMiscTextFormatValidator
+	{
+		private final String	format;
+		private final String	proposition;
+		private int				formatIndex;
+		private int				propositionIndex;
+
+		CMMiscTextFormatValidator(final String grammar, final String proposition)
+		{
+			this.format = grammar;
+			this.proposition = proposition;
+		}
+
+		public boolean validate()
+		{
+			parseAlts();
+			return propositionIndex == proposition.length();
+		}
+
+		private void parseAlts()
+		{
+			final int startPi = propositionIndex;
+			while((formatIndex < format.length())
+			&&(format.charAt(formatIndex) != ')'))
+			{
+				if(format.charAt(formatIndex) == '/')
+				{
+					formatIndex++;
+					propositionIndex = startPi;
+				}
+				else
+				{
+					parseOne();
+				}
+			}
+		}
+
+		private void parseOne()
+		{
+			final char c = format.charAt(formatIndex++);
+
+			if(c == '(')
+			{
+				final int save = propositionIndex;
+				parseAlts();
+				formatIndex++; // skip ')'
+				if(propositionIndex == save)
+					propositionIndex = save; // optional succeeded by not matching
+			}
+			else if(c == '[')
+			{
+				while(format.charAt(formatIndex) != ']')
+					formatIndex++;
+				formatIndex++;
+				matchToken();
+				checkRepeat();
+			}
+			else if(c == '\\')
+			{
+				matchChar(format.charAt(formatIndex++));
+				checkRepeat();
+			}
+			else
+			{
+				matchChar(c);
+				checkRepeat();
+			}
+		}
+
+		private void checkRepeat()
+		{
+			if((formatIndex + 2 < format.length())
+			&&(format.substring(formatIndex, formatIndex + 3).equals("...")))
+			{
+				formatIndex += 3;
+				final int savedGi = formatIndex - 3;
+				while(true)
+				{
+					final int save = propositionIndex;
+					formatIndex = savedGi;
+					parseOne();
+					if(propositionIndex == save)
+						break;
+				}
+			}
+		}
+
+		private void matchChar(final char c)
+		{
+			if((propositionIndex < proposition.length())
+			&&(proposition.charAt(propositionIndex) == c))
+				propositionIndex++;
+		}
+
+		private void matchToken()
+		{
+			while((propositionIndex < proposition.length())
+			&&(!Character.isWhitespace(proposition.charAt(propositionIndex))))
+				propositionIndex++;
+			while((propositionIndex < proposition.length())
+			&&(Character.isWhitespace(proposition.charAt(propositionIndex))))
+				propositionIndex++;
 		}
 	}
 }
