@@ -1741,111 +1741,311 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	@Override
 	public boolean isValidMiscText(final String format, final String proposition)
 	{
-		return new CMMiscTextFormatValidator(format, proposition).validate();
+		try
+		{
+			if(format.trim().length()==0)
+				return true; // empty format doesn't care
+			final MTToken root = parseMiscTextFormat(format);
+			return matchMiscTextToken(root, proposition, 0, new int[1]);
+		}
+		catch(final CMException e)
+		{
+			Log.errOut(e);
+			return false;
+		}
 	}
 
-	private static class CMMiscTextFormatValidator
+	private static boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex)
 	{
-		private final String	format;
-		private final String	proposition;
-		private int				formatIndex;
-		private int				propositionIndex;
+		outIndex[0] = index;
 
-		CMMiscTextFormatValidator(final String grammar, final String proposition)
+		if(token.token instanceof String)
 		{
-			this.format = grammar;
-			this.proposition = proposition;
-		}
-
-		public boolean validate()
-		{
-			parseAlts();
-			return propositionIndex == proposition.length();
-		}
-
-		private void parseAlts()
-		{
-			final int startPi = propositionIndex;
-			while((formatIndex < format.length())
-			&&(format.charAt(formatIndex) != ')'))
+			final String str = (String)token.token;
+			if((!matchMTLiteral(str, token.isPlaceholder, proposition, index, outIndex))&&(!token.optional))
+				return false;
+			if(token.repeats)
 			{
-				if(format.charAt(formatIndex) == '/')
+				while(true)
 				{
-					formatIndex++;
-					propositionIndex = startPi;
-				}
-				else
-				{
-					parseOne();
+					final int saveIndex = outIndex[0];
+					if(!matchMTLiteral(str, token.isPlaceholder, proposition, outIndex[0], outIndex))
+					{
+						outIndex[0] = saveIndex;
+						break;
+					}
 				}
 			}
+			return true;
 		}
-
-		private void parseOne()
+		else
+		if(token.token instanceof MTToken[])
 		{
-			final char c = format.charAt(formatIndex++);
-
-			if(c == '(')
+			final MTToken[] children = (MTToken[])token.token;
+			if(token.isAlternative)
 			{
-				final int save = propositionIndex;
-				parseAlts();
-				formatIndex++; // skip ')'
-				if(propositionIndex == save)
-					propositionIndex = save; // optional succeeded by not matching
-			}
-			else if(c == '[')
-			{
-				while(format.charAt(formatIndex) != ']')
-					formatIndex++;
-				formatIndex++;
-				matchToken();
-				checkRepeat();
-			}
-			else if(c == '\\')
-			{
-				matchChar(format.charAt(formatIndex++));
-				checkRepeat();
+				for(final MTToken alt : children)
+				{
+					final int saveIndex = index;
+					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex))
+						return true;
+					outIndex[0] = saveIndex;
+				}
+				return false;
 			}
 			else
 			{
-				matchChar(c);
-				checkRepeat();
+				int currentIndex = index;
+				for(final MTToken child : children)
+				{
+					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex))
+					{
+						if(token.optional)
+						{
+							outIndex[0] = index;
+							return true;
+						}
+						return false;
+					}
+					currentIndex = outIndex[0];
+				}
+
+				if(token.repeats)
+				{
+					while(true)
+					{
+						final int saveIndex = outIndex[0];
+						boolean matched = true;
+						int tempIndex = saveIndex;
+						for(final MTToken child : children)
+						{
+							if(!matchMiscTextToken(child, proposition, tempIndex, outIndex))
+							{
+								matched = false;
+								break;
+							}
+							tempIndex = outIndex[0];
+						}
+						if(!matched)
+						{
+							outIndex[0] = saveIndex;
+							break;
+						}
+					}
+				}
+				return true;
 			}
 		}
+		return false;
+	}
 
-		private void checkRepeat()
+	private static boolean matchMTLiteral(final String literal, final boolean isPlaceholder,
+										  final String proposition, int index, final int[] outIndex)
+	{
+		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
+			index++;
+		if(index >= proposition.length())
 		{
-			if((formatIndex + 2 < format.length())
-			&&(format.substring(formatIndex, formatIndex + 3).equals("...")))
+			outIndex[0] = index;
+			return false;
+		}
+		if(isPlaceholder)
+		{
+			// Match word characters (letters, digits, underscore)
+			if(!Character.isLetterOrDigit(proposition.charAt(index)) && (proposition.charAt(index) != '_'))
+				return false;
+			while((index < proposition.length())
+			&&(Character.isLetterOrDigit(proposition.charAt(index)) || (proposition.charAt(index) == '_')))
+				index++;
+			//TODO:
+			outIndex[0] = index;
+			return true;
+		}
+		else
+		{
+			// Match literal string
+			if(proposition.substring(index).startsWith(literal))
 			{
-				formatIndex += 3;
-				final int savedGi = formatIndex - 3;
-				while(true)
+				outIndex[0] = index + literal.length();
+				return true;
+			}
+			return false;
+		}
+	}
+
+	private static class MTToken
+	{
+		public Object token; // String (for literals/placeholders) or MTToken[] (for sequences/alternatives)
+		public boolean repeats = false;
+		public boolean optional = false;
+		public boolean isAlternative = false; // TRUE if this MTToken[] represents alternatives, FALSE if sequence
+		public boolean isPlaceholder = false;
+
+		public MTToken(final Object token, final boolean optional)
+		{
+			this.optional = optional;
+			this.token = token;
+		}
+	}
+
+	private static MTToken parseMiscTextFormat(final String format) throws CMException
+	{
+		return parseMTSequence(format, 0, format.length());
+	}
+
+	private static MTToken parseMTSequence(final String format, final int start, final int end) throws CMException
+	{
+		final List<MTToken> tokens = new ArrayList<>();
+		int index = start;
+
+		while(index < end)
+		{
+			while(index < end && Character.isWhitespace(format.charAt(index)))
+				index++;
+			if(index >= end)
+				break;
+
+			char c = format.charAt(index);
+			if(c == ')')
+				break;
+			if(c == '/')
+			{
+				tokens.add(new MTToken("/", false));
+				index++;
+			}
+			else
+			if(c == '(')
+			{
+				int depth = 1;
+				int closeIndex = index + 1;
+				while(closeIndex < end && depth > 0)
 				{
-					final int save = propositionIndex;
-					formatIndex = savedGi;
-					parseOne();
-					if(propositionIndex == save)
-						break;
+					if(format.charAt(closeIndex) == '\\')
+					{
+						closeIndex += 2;
+						continue;
+					}
+					if(format.charAt(closeIndex) == '(')
+						depth++;
+					else
+					if(format.charAt(closeIndex) == ')')
+						depth--;
+					closeIndex++;
+				}
+				if(depth != 0)
+					throw new CMException("Unclosed ( at " + index);
+
+				final MTToken inner = parseMTSequence(format, index + 1, closeIndex - 1);
+				inner.optional = true;
+				tokens.add(inner);
+				index = closeIndex;
+			}
+			else
+			if(c == '[')
+			{
+				int closeIndex = index + 1;
+				while(closeIndex < end && format.charAt(closeIndex) != ']')
+				{
+					if(format.charAt(closeIndex) == '\\')
+						closeIndex++;
+					closeIndex++;
+				}
+				if(closeIndex >= end)
+					throw new CMException("Unclosed [ at " + index);
+				final String placeholder = format.substring(index, closeIndex);
+				final MTToken token = new MTToken(placeholder, false);
+				tokens.add(token);
+				token.isPlaceholder=true;
+				index = closeIndex + 1;
+			}
+			else
+			if(c == '.')
+			{
+				if(index + 2 < end && format.substring(index, index + 3).equals("..."))
+				{
+					if(tokens.isEmpty() || tokens.get(tokens.size() - 1).token.equals("/"))
+						throw new CMException("Nothing to repeat at " + index);
+					tokens.get(tokens.size() - 1).repeats = true;
+					index += 3;
+				}
+				else
+				{
+					tokens.add(new MTToken(".", false));
+					index++;
 				}
 			}
+			else
+			{
+				// Collect consecutive literal characters
+				final StringBuilder literal = new StringBuilder();
+				while(index < end)
+				{
+					c = format.charAt(index);
+					if(c == '\\')
+					{
+						if(index + 1 >= end)
+							throw new CMException("Trailing backslash at " + index);
+						literal.append(format.charAt(index + 1));
+						index += 2;
+					}
+					else
+					if(Character.isWhitespace(c) || c == '/' || c == '(' || c == '[' || c == '.' || c == ')')
+					{
+						break;
+					}
+					else
+					{
+						literal.append(c);
+						index++;
+					}
+				}
+				if(literal.length() > 0)
+					tokens.add(new MTToken(literal.toString(), false));
+			}
 		}
 
-		private void matchChar(final char c)
+		return collapseMTAlternatives(tokens);
+	}
+
+	private static MTToken collapseMTAlternatives(final List<MTToken> tokens) throws CMException
+	{
+		if(tokens.isEmpty())
+			throw new CMException("Empty sequence");
+
+		final List<MTToken> result = new ArrayList<>();
+		int i = 0;
+
+		while(i < tokens.size())
 		{
-			if((propositionIndex < proposition.length())
-			&&(proposition.charAt(propositionIndex) == c))
-				propositionIndex++;
+			if((i + 2 < tokens.size())
+			&&(tokens.get(i + 1).token.equals("/")))
+			{
+				// Found a slash - collect all alternatives
+				final List<MTToken> alternatives = new ArrayList<>();
+				alternatives.add(tokens.get(i));
+				i += 2; // skip the slash
+				alternatives.add(tokens.get(i));
+				while((i + 2 < tokens.size())
+				&&(tokens.get(i + 1).token.equals("/")))
+				{
+					i += 2;
+					alternatives.add(tokens.get(i));
+				}
+
+				final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
+				altToken.isAlternative = true;
+				result.add(altToken);
+			}
+			else
+				result.add(tokens.get(i));
+			i++;
 		}
 
-		private void matchToken()
-		{
-			while((propositionIndex < proposition.length())
-			&&(!Character.isWhitespace(proposition.charAt(propositionIndex))))
-				propositionIndex++;
-			while((propositionIndex < proposition.length())
-			&&(Character.isWhitespace(proposition.charAt(propositionIndex))))
-				propositionIndex++;
-		}
+		if (result.size() == 1)
+			return result.get(0);
+
+		final MTToken seq = new MTToken(result.toArray(new MTToken[0]), false);
+		seq.isAlternative = false;
+		return seq;
 	}
 }

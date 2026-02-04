@@ -202,49 +202,60 @@ public class Validmisctext extends StdTest
 		{
 			return ("Error#24: '([A])' should match empty (optional placeholder)");
 		}
+		// Test 25: Alternative - first option
 		if (!CMLib.ableParms().isValidMiscText("a b/c d", "a b d"))
 		{
-			return ("Error#25");
+			return ("Error#25: 'a b/c d' should match 'a b d' (first alternative)");
 		}
+		// Test 26: Alternative - second option
 		if (!CMLib.ableParms().isValidMiscText("a b/c d", "a c d"))
 		{
-			return ("Error#26");
+			return ("Error#26: 'a b/c d' should match 'a c d' (second alternative)");
 		}
+		// Test 27: Alternative - both options invalid
 		if (CMLib.ableParms().isValidMiscText("a b/c d", "a b c d"))
 		{
-			return ("Error#27");
+			return ("Error#27: 'a b/c d' should not match 'a b c d' (can't use both alternatives)");
 		}
+		// Test 28: Repeating placeholder - single match
 		if (!CMLib.ableParms().isValidMiscText("[file]...", "foo"))
 		{
-			return ("Error#26");
+			return ("Error#28: '[file]...' should match 'foo' (one repetition)");
 		}
+		// Test 29: Repeating placeholder - multiple matches
 		if (!CMLib.ableParms().isValidMiscText("[file]...", "foo bar"))
 		{
-			return ("Error#26");
+			return ("Error#29: '[file]...' should match 'foo bar' (multiple repetitions)");
 		}
+		// Test 30: Repeating placeholder - requires at least one
 		if (CMLib.ableParms().isValidMiscText("[file]...", ""))
 		{
-			return ("Error#30");
+			return ("Error#30: '[file]...' should not match empty (requires at least one)");
 		}
+		// Test 31: Optional repeating placeholder - empty allowed
 		if (!CMLib.ableParms().isValidMiscText("([file]...)", ""))
 		{
-			return ("Error#26");
+			return ("Error#31: '([file]...)' should match empty (optional repetition)");
 		}
+		// Test 32: Optional repeating placeholder - multiple matches
 		if (!CMLib.ableParms().isValidMiscText("([file]...)", "foo bar"))
 		{
-			return ("Error#26");
+			return ("Error#32: '([file]...)' should match 'foo bar' (optional with repetitions)");
 		}
+		// Test 33: Flag alternative - short form
 		if (!CMLib.ableParms().isValidMiscText("-v/--verbose", "-v"))
 		{
-			return ("Error#26");
+			return ("Error#33: '-v/--verbose' should match '-v' (short flag alternative)");
 		}
+		// Test 34: Flag alternative - long form
 		if (!CMLib.ableParms().isValidMiscText("-v/--verbose", "--verbose"))
 		{
-			return ("Error#26");
+			return ("Error#34: '-v/--verbose' should match '--verbose' (long flag alternative)");
 		}
+		// Test 35: Flag alternative - requires one option
 		if (CMLib.ableParms().isValidMiscText("-v/--verbose", ""))
 		{
-			return ("Error#35");
+			return ("Error#35: '-v/--verbose' should not match empty (requires a flag)");
 		}
 		return null;
 	}
