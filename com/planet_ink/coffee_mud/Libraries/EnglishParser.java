@@ -364,10 +364,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final int x=CMParms.indexOf(feewords1, lowerStr);
 		if(x >= 0)
 			return uppercase ? feewords2[x].toUpperCase() : feewords2[x];
-		if(lowerStr.endsWith("is"))
+		if(lowerStr.endsWith("is") && lowerStr.length() > 3)
 			return str.substring(0,str.length()-2)+(uppercase?"ES":"es");
 		if(lowerStr.endsWith("s")
 		&&(lowerStr.indexOf(" pair of ")>0))
+			return str;
+		if(lowerStr.endsWith("s")&&(!lowerStr.endsWith("ss"))&&(!lowerStr.endsWith("us"))&&(!lowerStr.endsWith("as")))
 			return str;
 		if(lowerStr.endsWith("ts"))
 			return str;
@@ -377,8 +379,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return str+(uppercase?"S":"s");
 		if(lowerStr.endsWith("y"))
 			return str.substring(0,str.length()-1)+(uppercase?"IES":"ies");
-		if(CMStrings.contains(fwords, lowerStr))
+		if(lowerStr.endsWith("fe"))
+			return str.substring(0,str.length()-2)+(uppercase?"VES":"ves");
+		if(CMStrings.contains(fwords, lowerStr) && lowerStr.endsWith("f"))
 			return str.substring(0,str.length()-1)+(uppercase?"VES":"ves");
+		if(lowerStr.endsWith("o") && lowerStr.length() > 2)
+			return str+(uppercase?"ES":"es");
 		return str+(uppercase?"S":"s");
 	}
 
