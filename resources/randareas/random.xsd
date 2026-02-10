@@ -2,48 +2,54 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:complexType name="PercolatorBaseType" mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:any processContents="lax" />
+    </xs:choice>
     <xs:attribute name="ID" type="xs:string" use="optional" />
     <xs:attribute name="CONDITION" type="xs:string" use="optional" />
+    <xs:attribute name="SELECT" type="xs:string" use="optional" />
     <xs:attribute name="VALIDATE" type="xs:string" use="optional" />
     <xs:attribute name="MERGE" type="xs:string" use="optional" />
     <xs:attribute name="LOAD" type="xs:string" use="optional" />
     <xs:attribute name="FROM" type="xs:string" use="optional" />
-    <xs:attribute name="SELECT" type="xs:string" use="optional" />
+    <xs:attribute name="INSERT" type="xs:string" use="optional" />
     <xs:attribute name="DEFINE" type="xs:string" use="optional" />
+    <xs:attribute name="PREDEFINE" type="xs:string" use="optional" />
     <xs:attribute name="CLASS" type="xs:string" use="optional" />
+    <xs:attribute name="REQUIRES" type="xs:string" use="optional" />
   </xs:complexType>
 
-  <xs:element name="AREA">
+  <xs:element name="STRING" type="PercolatorBaseType" />
+  <xs:element name="LAYOUT" type="PercolatorBaseType" />
+  <xs:element name="REWARD" type="PercolatorBaseType" />
+  
+  <xs:element name="ABILITY" type="PercolatorBaseType" />
+  <xs:element name="AFFECT" type="PercolatorBaseType" />
+  <xs:element name="BEHAVIOR" type="PercolatorBaseType" />
+
+  <xs:element name="QUEST">
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="PercolatorBaseType">
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element ref="ROOM" />
-            <xs:element name="LAYOUT" type="PercolatorBaseType" />
-            <xs:element name="REWARD" type="PercolatorBaseType" />
-            <xs:element name="NAME" type="xs:string" />
-            <xs:element name="AUTHOR" type="xs:string" />
-            <xs:element name="DESCRIPTION" type="xs:string" />
-          </xs:choice>
-          <xs:attribute name="NAME" type="xs:string" />
+          <xs:attribute name="QUEST_ID" type="xs:string" />
+          <xs:attribute name="QUEST_TEMPLATE_ID" type="xs:string" />
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="ROOM">
+  <xs:element name="RACE" type="PercolatorBaseType" />
+
+  <xs:element name="ITEM">
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="PercolatorBaseType">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element ref="MOB" />
-            <xs:element ref="ITEM" />
-            <xs:element ref="EXIT" />
-            <xs:element name="ABILITY" type="PercolatorBaseType" />
-            <xs:element name="AFFECTS" type="PercolatorBaseType" />
-            <xs:element name="BEHAVIOR" type="PercolatorBaseType" />
+            <xs:element ref="ITEM" /> <xs:element ref="ABILITY" />
+            <xs:element ref="AFFECT" />
+            <xs:element ref="BEHAVIOR" />
+            <xs:element ref="STRING" />
           </xs:choice>
-          <xs:attribute name="TITLE" type="xs:string" />
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
@@ -55,46 +61,67 @@
         <xs:extension base="PercolatorBaseType">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element ref="ITEM" />
-            <xs:element name="ABILITY" type="PercolatorBaseType" />
-            <xs:element name="BEHAVIOR" type="PercolatorBaseType" />
+            <xs:element ref="ABILITY" />
+            <xs:element ref="AFFECT" />
+            <xs:element ref="BEHAVIOR" />
+            <xs:element ref="RACE" />
+            <xs:element ref="STRING" />
           </xs:choice>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="ITEM">
+  <xs:element name="EXIT" type="PercolatorBaseType" />
+
+  <xs:element name="ROOM">
     <xs:complexType>
       <xs:complexContent>
         <xs:extension base="PercolatorBaseType">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="ABILITY" type="PercolatorBaseType" />
-            <xs:element name="BEHAVIOR" type="PercolatorBaseType" />
-            <xs:element ref="ITEM" /> </xs:choice>
+            <xs:element ref="MOB" />
+            <xs:element ref="ITEM" />
+            <xs:element ref="EXIT" />
+            <xs:element ref="ABILITY" />
+            <xs:element ref="AFFECT" />
+            <xs:element ref="BEHAVIOR" />
+            <xs:element ref="QUEST" />
+            <xs:element ref="STRING" />
+          </xs:choice>
         </xs:extension>
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="EXIT">
+  <xs:element name="AREA">
     <xs:complexType>
       <xs:complexContent>
-        <xs:extension base="PercolatorBaseType" />
+        <xs:extension base="PercolatorBaseType">
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="ROOM" />
+            <xs:element ref="LAYOUT" />
+            <xs:element ref="REWARD" />
+            <xs:element ref="QUEST" />
+            <xs:element ref="MOB" />
+            <xs:element ref="ITEM" />
+            <xs:element ref="STRING" />
+          </xs:choice>
+        </xs:extension>
       </xs:complexContent>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="STRING">
+  <xs:element name="PERCOLATOR">
     <xs:complexType>
-      <xs:simpleContent>
-        <xs:extension base="xs:string">
-          <xs:attribute name="ID" type="xs:string" use="optional" />
-          <xs:attribute name="MERGE" type="xs:string" use="optional" />
-          <xs:attribute name="CONDITION" type="xs:string" use="optional" />
-          <xs:attribute name="SELECT" type="xs:string" use="optional" />
-        </xs:extension>
-      </xs:simpleContent>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="AREA" />
+        <xs:element ref="ROOM" />
+        <xs:element ref="MOB" />
+        <xs:element ref="ITEM" />
+        <xs:element ref="STRING" />
+        <xs:element ref="QUEST" />
+        <xs:element ref="RACE" />
+      </xs:choice>
     </xs:complexType>
   </xs:element>
-
 </xs:schema>
