@@ -49,38 +49,34 @@ public class LLM extends StdCommand
 		return access;
 	}
 
-	private final Map<String,LLMSession> sessions = new Hashtable<String,LLMSession>();
-    @Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
-		throws java.io.IOException
+	private final Map<String, LLMSession> sessions = new Hashtable<String, LLMSession>();
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
-    	if(mob.isMonster())
-    		return false;
-    	String userText = CMParms.combineQuoted(commands,1);
-    	if(userText.trim().length()==0)
-    	{
-    		mob.tell(L("What would you send the LLM?"));
-    		return false;
-    	}
-    	final boolean reset = userText.equalsIgnoreCase("reset");
-    	final boolean archon = false;//userText.equalsIgnoreCase("admin");
-    	if(!sessions.containsKey(mob.Name()) || reset || archon)
-    	{
-    		final LLMSession sess;
-    		if(archon)
-    			sess = CMLib.protocol().createArchonLLMSession();
-    		else
-    			sess = CMLib.protocol().createLLMSession(null,Integer.valueOf(100));
-    		userText = "Greetings! My name is "+mob.Name()+"!";
-    		if(sess != null)
-    			sessions.put(mob.Name(), sess);
-    		else
-    		{
-    			mob.tell(L("Something went very wrong.  Check the mud.log file."));
-    			return false;
-    		}
-    	}
-    	mob.tell(sessions.get(mob.Name()).chat(userText));
+		if (mob.isMonster())
+			return false;
+		String userText = CMParms.combineQuoted(commands, 1);
+		if (userText.trim().length() == 0)
+		{
+			mob.tell(L("What would you send the LLM?"));
+			return false;
+		}
+		final boolean reset = userText.equalsIgnoreCase("reset");
+		if (!sessions.containsKey(mob.Name()) || reset)
+		{
+			final String[] categories = new String[] { ProtocolLibrary.LLMCat.ARCHON.name() };
+			final LLMSession sess = CMLib.protocol().createLLMSession(categories, null, Integer.valueOf(100));
+			userText = "Greetings! My name is " + mob.Name() + "!";
+			if (sess != null)
+				sessions.put(mob.Name(), sess);
+			else
+			{
+				mob.tell(L("Something went very wrong.  Check the mud.log file."));
+				return false;
+			}
+		}
+		mob.tell(sessions.get(mob.Name()).chat(userText));
 		return false;
 	}
 

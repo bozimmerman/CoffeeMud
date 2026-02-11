@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.MPContext;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -1059,7 +1060,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 			final String memstr = grp.varOverride.get("LLMMEM");
 			if(CMath.isInteger(memstr))
 				mem=Integer.valueOf(CMath.s_int(memstr));
-			this.llmSession = CMLib.protocol().createLLMSession(prompt,mem);
+			final String[] categories = new String[] { ProtocolLibrary.LLMCat.MUDCHAT.name() };
+			this.llmSession = CMLib.protocol().createLLMSession(categories,prompt,mem);
 		}
 		this.llmLastUse=System.currentTimeMillis();
 		return this.llmSession;

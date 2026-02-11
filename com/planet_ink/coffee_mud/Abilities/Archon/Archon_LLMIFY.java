@@ -327,7 +327,8 @@ public class Archon_LLMIFY extends ArchonSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final LLMSession llmSession = CMLib.protocol().createLLMSession(prompt, Integer.valueOf(128));
+				final String[] categories = new String[] { ProtocolLibrary.LLMCat.LLMIFY.name() };
+				final LLMSession llmSession = CMLib.protocol().createLLMSession(categories, prompt, Integer.valueOf(128));
 				if (llmSession == null)
 				{
 					mob.tell(L("The LLM service is not available."));

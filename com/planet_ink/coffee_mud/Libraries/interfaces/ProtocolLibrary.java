@@ -63,6 +63,18 @@ public interface ProtocolLibrary extends CMLibrary
 	}
 
 	/**
+	 * Standardized category names for categorized LLM settings.
+	 */
+	public static enum LLMCat
+	{
+		ARCHON,
+		MUDCHAT,
+		PERCOLATOR,
+		MOBPROG,
+		LLMIFY
+	}
+
+	/**
 	 * Generates an MSP sound tag
 	 *
 	 * @param soundName the name of the MSP sound
@@ -263,22 +275,12 @@ public interface ProtocolLibrary extends CMLibrary
 	 *
 	 * @see ProtocolLibrary#isLLMInstalled()
 	 *
+	 * @param llmCategories null or the categories to try first, comma delimited
 	 * @param personality null, or a personality to persist
 	 * @param maxMsgs null, or max msgs to override the default.
 	 * @return the new LLM session.
 	 */
-	public LLMSession createLLMSession(final String personality, Integer maxMsgs);
-
-	/**
-	 * Creates a new LLM session with a new phat memory
-	 * and so forth, just for Archons.  This one is MUCH
-	 * slower, as it includes information from the Guides.
-	 *
-	 * @see ProtocolLibrary#isLLMInstalled()
-	 *
-	 * @return a new archon LLM session
-	 */
-	public LLMSession createArchonLLMSession();
+	public LLMSession createLLMSession(final String[] llmCategories, final String personality, Integer maxMsgs);
 
 	/**
 	 * Returns whether the LLM libraries were found and loaded.

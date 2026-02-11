@@ -12769,7 +12769,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							prompt = this.miscArgVars.get("LLMPROMPT").toString();
 						else
 							arg3="";
-						this.llmSession = CMLib.protocol().createLLMSession(prompt, Integer.valueOf(maxMsgs));
+						final String[] categories = new String[] { ProtocolLibrary.LLMCat.MOBPROG.name() };
+						this.llmSession = CMLib.protocol().createLLMSession(categories, prompt, Integer.valueOf(maxMsgs));
 					}
 					if(this.llmSession == null)
 						logError(ctx,"MPLLM","RunTime","Could not create LLM Session.");

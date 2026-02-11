@@ -66,7 +66,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return "CMProtocols";
 	}
 
-	private Object llmModel = null;
+	private final Map<String,Object> llmModels = new Hashtable<String, Object>();
 	private URLClassLoader llmClassLoader = null;
 
 	// this is the sound support method.
@@ -3902,9 +3902,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 	}
 
-	private Object initializeLLMSession()
+	private Object initializeLLMSession(String cat)
 	{
-		Object llmModel = this.llmModel;
+		if(cat == null)
+			cat="";
+		else
+		if(cat.length()>0)
+			cat=cat.trim().toUpperCase()+"_";
+		Object llmModel = this.llmModels.get(cat);
 		if(llmModel instanceof Long)
 		{
 			final Long l = (Long)llmModel;
@@ -3917,36 +3922,44 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final String jarPath = CMProps.getVar(Str.LANGCHAIN4J_JAR_PATH);
 		if(jarPath.length()==0)
 		{
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
-			return this.llmModel;
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(cat,time);
+			return time;
 		}
 		System.setProperty("slf4j.internal.verbosity", "ERROR");
 		final CMFile F = new CMFile(jarPath, null);
 		if(!F.exists())
 		{
 			Log.errOut("LANGCHAIN4J jar file not found in "+jarPath);
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
-			return this.llmModel;
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(cat,time);
+			return time;
 		}
-		final URL jarUrl;
-		try
+		if(llmClassLoader == null)
 		{
-			jarUrl = new URI("vfs:" + jarPath).toURL();
+			final URL jarUrl;
+			try
+			{
+				jarUrl = new URI("vfs:" + jarPath).toURL();
+			}
+			catch (final Exception e)
+			{
+				Log.errOut(e);
+				final Long time = Long.valueOf(System.currentTimeMillis());
+				this.llmModels.put(cat,time);
+				return time;
+			}
+			llmClassLoader=new URLClassLoader(new URL[]{jarUrl});
 		}
-		catch (final Exception e)
-		{
-			Log.errOut(e);
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
-			return this.llmModel;
-		}
-		llmClassLoader=new URLClassLoader(new URL[]{jarUrl});
 		LLM llmType = null;
-		llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
+		llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getProp("LANGCHAIN4J_"+cat+"LLM_TYPE").toUpperCase().trim());
 		if(llmType == null)
 		{
-			Log.errOut("LANGCHAIN4J_LLM_TYPE not correctly set in INI file. ");
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
-			return this.llmModel;
+			if(cat.length()==0)
+				Log.errOut("LANGCHAIN4J_"+cat+"LLM_TYPE not correctly set in INI file. ");
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(cat,time);
+			return time;
 		}
 		try
 		{
@@ -3968,13 +3981,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			} catch(final Exception e){}
 			for(final String method : llmType.reqs)
 			{
-				final String key = "LANGCHAIN4J_"+method.toUpperCase().trim();
+				final String key = "LANGCHAIN4J_"+cat+method.toUpperCase().trim();
 				final String value = CMProps.getProp(key);
 				if(value == null)
 				{
-					Log.errOut(key+" not correctly set in INI file. ");
-					this.llmModel = Long.valueOf(System.currentTimeMillis());
-					return this.llmModel;
+					Log.errOut(cat+key+" not correctly set in INI file. ");
+					final Long time = Long.valueOf(System.currentTimeMillis());
+					this.llmModels.put(cat,time);
+					return time;
 				}
 				final Method baseUrlMethod = ollamaChatModelBuilderClass.getMethod(method, String.class);
 				baseUrlMethod.invoke(builder, value);
@@ -3985,7 +3999,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{
 				if(CMParms.contains(llmType.reqs, m.getName()))
 					continue;
-				final String key = "LANGCHAIN4J_"+m.getName().toUpperCase().trim();
+				final String key = "LANGCHAIN4J_"+cat+m.getName().toUpperCase().trim();
 				final String value = CMProps.getProp(key);
 				if((value != null)&&(value.length()>0))
 				{
@@ -4024,7 +4038,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(failedMethodsFound.size()>0)
 			{
 				for(final String failedKey : failedMethodsFound.keySet())
-					Log.errOut(failedKey+" not correctly set in INI file. Check argument count and type for casting.");
+					Log.errOut(cat+failedKey+" not correctly set in INI file. Check argument count and type for casting.");
 			}
 			else
 			for(final String key : methodsFound.keySet())
@@ -4053,25 +4067,25 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			Log.errOut(e);
 			llmModel = Long.valueOf(System.currentTimeMillis());
 		}
-		this.llmModel = llmModel;
+		this.llmModels.put(cat, llmModel);
 		return llmModel;
 	}
 
 	@Override
 	public boolean isLLMInstalled()
 	{
-		final Object llmModel = initializeLLMSession();
+		final Object llmModel = initializeLLMSession("");
 		return !(llmModel instanceof Long);
 	}
 
-	private Object buildCMRagRetreiver() throws Exception
+	protected Object buildCMRagRetreiver() throws Exception
 	{
 		try
 		{
 			Object retriever = Resources.getResource("LANGCHAIN4J_ARCHON_RETRIEVER");
 			if(retriever != null)
 				return retriever;
-			final String url = CMProps.getProp("LANGCHAIN4J_BASEURL");
+			final String url = CMProps.getProp("LANGCHAIN4J_BASEURL"); //TODO:
 			if(url == null)
 			{
 				Log.warnOut("LANGCHAIN4J_BASEURL not set in INI file. LLM Archon disabled.");
@@ -4156,20 +4170,20 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public LLMSession createArchonLLMSession()
+	public LLMSession createLLMSession(final String[] categories, final String personality, final Integer maxMsgs)
 	{
-		return createLLMSession("", Integer.valueOf(100), true);
+		for(final String cat : categories)
+		{
+			final LLMSession session = createLLMSession(cat, personality, maxMsgs);
+			if(session != null)
+				return session;
+		}
+		return createLLMSession("", personality, maxMsgs);
 	}
 
-	@Override
-	public LLMSession createLLMSession(final String personality, final Integer maxMsgs)
+	private LLMSession createLLMSession(final String llmCategory, final String personality, final Integer maxMsgs)
 	{
-		return createLLMSession(personality, maxMsgs, false);
-	}
-
-	private LLMSession createLLMSession(final String personality, final Integer maxMsgs, final boolean archon)
-	{
-		final Object llmModel = initializeLLMSession();
+		final Object llmModel = initializeLLMSession(llmCategory);
 		if(llmModel instanceof Long)
 			return null;
 		try
@@ -4196,21 +4210,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			aiBuildMethod.setAccessible(true);
 			chatModelMethod.invoke(aiBuilder, llmModel);
 			chatMemoryMethod.invoke(aiBuilder, memory);
-			if(archon)
-			{
-				final LLM llmType = (LLM)CMath.s_valueOf(LLM.class, CMProps.getVar(Str.LANGCHAIN4J_LLM_TYPE));
-				if(llmType == LLM.OLLAMA)
-				{
-					final Object retriever = this.buildCMRagRetreiver();
-					if(retriever != null)
-					{
-						final Class<?> retrieverClass = llmClassLoader.loadClass("dev.langchain4j.rag.content.retriever.ContentRetriever");
-						final Method retreiverMethod = aiBuilderClass.getMethod("contentRetriever", retrieverClass);
-						retreiverMethod.setAccessible(true);
-						retreiverMethod.invoke(aiBuilder, retriever);
-					}
-				}
-			}
 			final LLMSession ss = (LLMSession)aiBuildMethod.invoke(aiBuilder);
 			final Class<?> chatMessageClass = llmClassLoader.loadClass("dev.langchain4j.data.message.ChatMessage");
 			final Method messagesMethod = chatMemoryClass.getMethod("messages");
@@ -4246,6 +4245,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						}
 						catch(final Exception e)
 						{
+							Log.errOut(e);
 							respStr = "LLM Error: "+e.getMessage();
 						}
 						final StringBuffer resp = new StringBuffer(respStr);
@@ -4272,19 +4272,22 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		catch (final ClassNotFoundException e)
 		{
 			Log.errOut("LangChain4j classes not found: " + e.getMessage());
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(llmCategory,time);
 			return null;
 		}
 		catch (final NoSuchMethodException e)
 		{
 			Log.errOut("Method not found: " + e.getMessage());
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(llmCategory,time);
 			return null;
 		}
 		catch(final Exception e)
 		{
 			Log.errOut(e);
-			this.llmModel = Long.valueOf(System.currentTimeMillis());
+			final Long time = Long.valueOf(System.currentTimeMillis());
+			this.llmModels.put(llmCategory,time);
 			return null;
 		}
 	}
