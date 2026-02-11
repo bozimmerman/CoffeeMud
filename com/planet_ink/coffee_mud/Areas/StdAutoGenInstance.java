@@ -563,15 +563,6 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 				}
 
-				if(idChoices.size()>0)
-					idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
-
-				if((!(definedIDs.get(idName) instanceof XMLTag))
-				||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
-				{
-					msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
-					return false;
-				}
 				final ScriptingEngine scrptEng=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 				final List<Double> levels=new ArrayList<Double>();
 				final Set<MOB> followers=msg.source().getGroupMembers(new HashSet<MOB>());
@@ -612,6 +603,38 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					definedIDs.put("LEVEL_RANGE", (levelBase-4)+"?"+levelBase);
 				if(!definedIDs.containsKey("AGGROCHANCE"))
 					definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
+
+				if(idChoices.size() > 1)
+				{
+					final List<String> validChoices = new ArrayList<String>();
+					for(final String choiceId : idChoices)
+					{
+						final Object val = definedIDs.get(choiceId.toUpperCase().trim());
+						if((val instanceof XMLTag)
+						&&(((XMLTag)val).tag().equalsIgnoreCase("area")))
+						{
+							final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs, (XMLTag)val);
+							if(unfilled.isEmpty())
+								validChoices.add(choiceId);
+						}
+					}
+					if(validChoices.size() > 0)
+					{
+						idChoices.clear();
+						idChoices.addAll(validChoices);
+					}
+				}
+				if(idChoices.size()>0)
+					idName=idChoices.get(CMLib.dice().roll(1, idChoices.size(), -1)).toUpperCase().trim();
+
+				if((!(definedIDs.get(idName) instanceof XMLTag))
+				||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("area")))
+				{
+					msg.source().tell(L("The area id '@x1' has not been defined in the data file.",idName));
+					return false;
+				}
+
+
 				try
 				{
 					XMLTag piece=(XMLTag)definedIDs.get(idName);
