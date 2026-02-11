@@ -337,7 +337,7 @@ public class Concierge extends StdBehavior
 			basePrice=price;
 	}
 
-	protected double getPrice(final Room centerRoom, final Room  destR)
+	protected double getPrice(final Room centerRoom, final Room destR, final TrackingFlags flags)
 	{
 		if(destR==null)
 			return basePrice;
@@ -347,7 +347,7 @@ public class Concierge extends StdBehavior
 			double price=basePrice;
 			if(this.perRoomPrice > 0.0)
 			{
-				final List<Room> trail=CMLib.tracking().findTrailToRoom(centerRoom, destR, trackingFlags, maxRange);
+				final List<Room> trail = CMLib.tracking().findTrailToRoom(centerRoom, destR, flags, maxRange);
 				if(trail != null)
 					price = price + (perRoomPrice * trail.size());
 			}
@@ -864,15 +864,16 @@ public class Concierge extends StdBehavior
 								return;
 							}
 						}
-						final double rate=getPrice(room,roomR);
+						final TrackingFlags combinedFlags = trackingFlags.copyOf();
+						combinedFlags.addAll(myRoomRadiusFlags);
+						final double rate=getPrice(room, roomR, combinedFlags);
 						final Double owed=Double.valueOf(rate);
-						trackingFlags.addAll(myRoomRadiusFlags);
 						destinations.removeElementFirst(msg.source());
-						if(owed.doubleValue()<=0.0)
-							giveMerchandise(msg.source(), roomR, observer, room, trackingFlags);
+						if(owed.doubleValue() <= 0.0)
+							giveMerchandise(msg.source(), roomR, observer, room, combinedFlags);
 						else
 						{
-							destinations.addElement(msg.source(),roomR,owed, trackingFlags);
+							destinations.addElement(msg.source(), roomR, owed, combinedFlags);
 							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
 							thingsToSay.addElement(msg.source(),getGiveMoneyMessage(msg.source(),observer,roomR,moneyName));
 						}
