@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -170,7 +171,7 @@ public class Patroller extends ActiveTicker
 
 		if((startRoom.get()==null)&&(ticking instanceof Physical))
 			startRoom=new WeakReference<Room>(CMLib.map().roomLocation((Physical)ticking));
-		if(canAct(ticking,tickID))
+		if(canAct(ticking,tickID) && !CMSecurity.isDisabled(DisFlag.MOBILITY))
 		{
 			tickStatus=Tickable.STATUS_MISC+0;
 			if(!rideOk)
@@ -555,7 +556,7 @@ public class Patroller extends ActiveTicker
 										{
 											tickStatus=Tickable.STATUS_MISC+30;
 											thatRoom.bringMobHere((MOB)R,true);
-											((MOB)R).setRiding((Rideable)ticking);
+											R.setRiding((Rideable)ticking);
 											tickStatus=Tickable.STATUS_MISC+31;
 											CMLib.commands().postLook((MOB)R,true);
 											thatRoom.show((MOB)R,thatRoom,E,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,null);
