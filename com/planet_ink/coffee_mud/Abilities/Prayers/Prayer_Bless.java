@@ -65,7 +65,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 	@Override
 	protected int canTargetCode()
 	{
-		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		return Ability.CAN_MOBS;
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB)&&(super.canBeUninvoked()))
-				((MOB)((Item)affected).owner()).tell(L("The blessing on @x1 fades.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The blessing on @x1 fades.",affected.name()));
 			super.unInvoke();
 			return;
 		}

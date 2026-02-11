@@ -83,7 +83,7 @@ public class Prayer_Curse extends Prayer
 	@Override
 	protected int canTargetCode()
 	{
-		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		return Ability.CAN_MOBS;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Prayer_Curse extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB)&&(super.canBeUninvoked()))
-				((MOB)((Item)affected).owner()).tell(L("The curse on @x1 is lifted.",((Item)affected).name()));
+				((MOB)((Item)affected).owner()).tell(L("The curse on @x1 is lifted.",affected.name()));
 			super.unInvoke();
 			return;
 		}

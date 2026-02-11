@@ -770,6 +770,7 @@ public class Where extends StdCommand
 			{
 				final Area A=a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
+				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
 				&&(CMLib.flags().canBeLocated(A)))
 				{
 					int median=A.getPlayerLevel();
@@ -806,7 +807,8 @@ public class Where extends StdCommand
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				final Area A=a.nextElement();
-				if(CMLib.flags().canAccess(mob,A))
+				if(CMLib.flags().canAccess(mob,A)
+				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{
 					int index=levelsV.indexOfFirst(A);
 					if(index>=0)
