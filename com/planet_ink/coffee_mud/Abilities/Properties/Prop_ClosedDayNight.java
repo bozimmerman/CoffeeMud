@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -384,12 +385,15 @@ public class Prop_ClosedDayNight extends Property
 						final ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 						if(sk!=null)
 							CMLib.commands().postSay((MOB)affected,null,(shopMsg!=null)?shopMsg:L("Sorry, I'm off right now.  Try me tomorrow."),false,false);
-						final Ability A=CMClass.getAbility("Skill_Track");
-						if(A!=null)
+						if(!CMSecurity.isDisabled(DisFlag.MOBILITY))
 						{
-							A.setAbilityCode(1);
-							final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(R), "NPC");
-							A.invoke(mob,lst,R,true,0);
+							final Ability A=CMClass.getAbility("Skill_Track");
+							if(A!=null)
+							{
+								A.setAbilityCode(1);
+								final List<String> lst = new XVector<String>(CMLib.map().getExtendedRoomID(R), "NPC");
+								A.invoke(mob,lst,R,true,0);
+							}
 						}
 						return true;
 					}
