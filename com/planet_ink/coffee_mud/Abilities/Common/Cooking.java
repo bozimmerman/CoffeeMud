@@ -119,12 +119,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		+"RESOURCE_OR_KEYWORD\tOPTIONAL_AMOUNT_REQUIRED";
 	}
 
-	public static int	RCP_FINALFOOD	= 0;
-	public static int	RCP_FOODDRINK	= 1;
-	public static int	RCP_BONUSSPELL	= 2;
-	public static int	RCP_LEVEL		= 3;
-	public static int	RCP_MAININGR	= 4;
-	public static int	RCP_MAINAMNT	= 5;
+	public static final int	RCP_FINALFOOD	= 0;
+	public static final int	RCP_FOODDRINK	= 1;
+	public static final int	RCP_BONUSSPELL	= 2;
+	public static final int	RCP_LEVEL		= 3;
+	public static final int	RCP_MAININGR	= 4;
+	public static final int	RCP_MAINAMNT	= 5;
 
 	protected Container				cookingPot			= null;
 	protected String				finalDishName		= null;
@@ -168,7 +168,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		@Override
 		public int hashCode()
 		{
-			return super.hashCode();
+			return java.util.Objects.hash(rscName, rscCat, matName, subType, secretIdentity, itemName);
 		}
 	}
 
@@ -290,10 +290,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			||(!isMineForCooking(mob,cookingPot))
 			||(!meetsLidRequirements(mob,cookingPot))
 			||(!contentsSame(getPotIngredients(),potContents))
-			||(requireFire()
-				&&(!isInnerCookOven(cookingPot,true))
-				&&(getRequiredFire(mob,0)==null)
-				&&(mob.location()==activityRoom)))
+			||(mob.location()!=activityRoom)
+			||(requireFire()&&(!isInnerCookOven(cookingPot,true))&&(getRequiredFire(mob,0)==null)))
 			{
 				aborted=true;
 				unInvoke();
@@ -388,6 +386,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 							mob.location().send(mob,msg);
 							buildingI.basePhyStats().setLevel(1); // the newbie exception
 							buildingI.phyStats().setLevel(1); // the newbie exception
+							boolean liquidProduced = false;
 							for(int i=0;i<finalAmount*(baseYield()+abilityCode());i++)
 							{
 								final Item food=((Item)buildingI.copyOf());
@@ -400,10 +399,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 									cookingPot.owner().addItem(food);
 								CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this, buildingI);
 								food.setContainer(cookingPot);
-								if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-								&&(cookingPot instanceof Drink))
-									((Drink)cookingPot).setLiquidRemaining(0);
+								liquidProduced |= (((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+												&&(cookingPot instanceof Drink));
 							}
+							if(liquidProduced)
+								((Drink)cookingPot).setLiquidRemaining(0);
 						}
 					}
 				}
@@ -516,6 +516,17 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return potIngredients;
 	}
 
+	protected boolean containsIngredient(final List<String> Vr)
+	{
+		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
+		{
+			final String recipeIngredient=Vr.get(vr).toUpperCase().trim();
+			if(recipeIngredient.length()>0)
+				return true;
+		}
+		return false;
+	}
+
 	protected Ingredients countIngredients(final List<String> Vr)
 	{
 		final PairList<PotIngredient,int[]> contents=new PairArrayList<PotIngredient,int[]>(potContents.size());
@@ -525,6 +536,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		final Ingredients codedList;
 		final List<String> ranOutOfList=new ArrayList<String>();
 		final List<String> notEnoughList=new ArrayList<String>();
+		if(!containsIngredient(Vr))
+			return new Ingredients(0, new ArrayList<String>());
 		while((ranOutOfList.size()==0)&&(notEnoughList.size()==0))
 		{
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
@@ -766,24 +779,24 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return new ArrayList<Item>(0);
 	}
 
-	public Item buildItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	protected boolean containsRottenIngredients(final List<Item> contents)
+	{
+		for(int v=0;v<contents.size();v++)
+		{
+			final Item I=contents.get(v);
+			if((I instanceof RawMaterial)
+			&&(I instanceof Decayable)
+			&&(I.fetchEffect("Poison_Rotten")!=null))
+				return true;
+		}
+		return false;
+	}
+
+	protected String buildFinalName(final List<String> finalRecipe, final List<Item> contents)
 	{
 		String replaceName=(finalRecipe.get(RCP_MAININGR));
-		boolean rotten = false;
-		final Item buildingI;
-		if(contents!=null)
+		if(contents != null)
 		{
-			for(int v=0;v<contents.size();v++)
-			{
-				final Item I=contents.get(v);
-				if((I instanceof RawMaterial)
-				&&(I instanceof Decayable)
-				&&(I.fetchEffect("Poison_Rotten")!=null))
-				{
-					rotten=true;
-					break;
-				}
-			}
 			for(int v=0;v<contents.size();v++)
 			{
 				final Item I=contents.get(v);
@@ -816,9 +829,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				}
 			}
 		}
-		finalDishName=replacePercent(finalRecipe.get(RCP_FINALFOOD),
-									CMStrings.capitalizeAndLower(replaceName));
-		final String foodType=finalRecipe.get(RCP_FOODDRINK);
+		return replacePercent(finalRecipe.get(RCP_FINALFOOD), CMStrings.capitalizeAndLower(replaceName));
+	}
+
+	protected double buildIngredientsWeight(final List<String> finalRecipe, final List<Item> contents)
+	{
 		double ingredientsWeight = 0.0;
 		if(contents!=null)
 		{
@@ -829,309 +844,340 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					ingredientsWeight += I.basePhyStats().weight();
 			}
 		}
-		if(foodType.equalsIgnoreCase("FOOD"))
+		return ingredientsWeight;
+	}
+
+	protected Item buildFoodItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	{
+		final boolean rotten = (contents == null) ? false : containsRottenIngredients(contents);
+		double ingredientsWeight = buildIngredientsWeight(finalRecipe, contents);
+		finalDishName=buildFinalName(finalRecipe, contents);
+		final Item buildingI=CMClass.getItem("GenFood");
+		this.buildingI=buildingI;
+		final Food food=(Food)buildingI;
+		if(requireFire())
 		{
-			buildingI=CMClass.getItem("GenFood");
-			this.buildingI=buildingI;
-			final Food food=(Food)buildingI;
-			if(requireFire())
-			{
-				buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
-				buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
-				buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
-			}
-			else
-			{
-				buildingI.setName(((messedUp)?"ruined ":"")+finalDishName);
-				buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"ruined ":""),finalDishName));
-				buildingI.setDescription(L("It looks @x1",((messedUp)?"ruined!":rotten?"rotten!":"good!")));
-			}
-			buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
-			buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
-			food.setNourishment(0);
-			if(!messedUp)
-			{
-				boolean timesTwo=false;
-				if((contents!=null)&&(contents.size()>0))
-				{
-					for(int v=0;v<contents.size();v++)
-					{
-						final Item I=contents.get(v);
-						if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
-							timesTwo=true;
-						else
-						if(I instanceof Food)
-							food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment())+25);
-						else
-							food.setNourishment(food.nourishment()+25);
-					}
-				}
-				else
-				{
-					for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
-					{
-						final String ingredient=finalRecipe.get(vr).toUpperCase();
-						if(ingredient.length()>0)
-						{
-							int amount=1;
-							if(vr<finalRecipe.size()-1)
-								amount=CMath.s_int(finalRecipe.get(vr+1));
-							if(amount==0)
-								amount=1;
-							if(amount<0)
-								amount=amount*-1;
-							if(ingredient.equalsIgnoreCase("water")||ingredient.equalsIgnoreCase("milk"))
-								continue;
-							if(ingredient.equalsIgnoreCase("herbs"))
-							{
-								timesTwo=true;
-								continue;
-							}
-							final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
-							if((resourceCode >0)&&((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-								continue;
-							food.setNourishment(food.nourishment()+(100*amount));
-						}
-					}
-				}
-				if(timesTwo)
-					food.setNourishment(food.nourishment()*2);
-			}
-			int material=-1;
-			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
-			{
-				final String ingredient=finalRecipe.get(vr).toUpperCase();
-				if(ingredient.length()>0)
-				{
-					final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
-					if(resourceCode >0)
-					{
-						if(((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
-						||((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
-						{
-							material=resourceCode;
-							break;
-						}
-					}
-				}
-			}
-			if(contents!=null)
+			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
+			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
+		}
+		else
+		{
+			buildingI.setName(((messedUp)?"ruined ":"")+finalDishName);
+			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"ruined ":""),finalDishName));
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"ruined!":rotten?"rotten!":"good!")));
+		}
+		buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
+		buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
+		food.setNourishment(0);
+		if(!messedUp)
+		{
+			boolean timesTwo=false;
+			if((contents!=null)&&(contents.size()>0))
 			{
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
-					if((I instanceof Food)
-					&&(material<0))
+					if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
+						timesTwo=true;
+					else
+					if(I instanceof Food)
+						food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment())+25);
+					else
+						food.setNourishment(food.nourishment()+25);
+				}
+			}
+			else
+			{
+				for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+				{
+					final String ingredient=finalRecipe.get(vr).toUpperCase();
+					if(ingredient.length()>0)
 					{
-						switch(I.material()&RawMaterial.MATERIAL_MASK)
+						int amount=1;
+						if(vr<finalRecipe.size()-1)
+							amount=CMath.s_int(finalRecipe.get(vr+1));
+						if(amount==0)
+							amount=1;
+						if(amount<0)
+							amount=amount*-1;
+						if(ingredient.equalsIgnoreCase("water")||ingredient.equalsIgnoreCase("milk"))
+							continue;
+						if(ingredient.equalsIgnoreCase("herbs"))
 						{
-						case RawMaterial.MATERIAL_VEGETATION:
-						case RawMaterial.MATERIAL_FLESH:
-							material=I.material();
-							break;
+							timesTwo=true;
+							continue;
 						}
+						final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+						if((resourceCode >0)&&((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+							continue;
+						food.setNourishment(food.nourishment()+(100*amount));
 					}
 				}
-				if(ingredientsWeight < finalAmount)
-					ingredientsWeight = finalAmount;
-				food.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
 			}
-			if(material<0)
+			if(timesTwo)
+				food.setNourishment(food.nourishment()*2);
+		}
+		int material=-1;
+		for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+		{
+			final String ingredient=finalRecipe.get(vr).toUpperCase();
+			if(ingredient.length()>0)
 			{
-				final String materialFoodName=replacePercent(finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
-				for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
+				final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+				if(resourceCode >0)
 				{
-					if(materialFoodName.equals(RawMaterial.CODES.NAME(i)))
+					if(((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+					||((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
 					{
-						material=i;
+						material=resourceCode;
 						break;
 					}
 				}
-				if((contents!=null)&&(material<0))
-				{
-					for(int v=0;v<contents.size();v++)
-					{
-						final Item I=contents.get(v);
-						if(I instanceof Drink)
-						{
-							material=((Drink)I).liquidType();
-							break;
-						}
-					}
-				}
 			}
-			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
-			if((rotten)&&(food.nourishment()>1))
-				food.setNourishment(food.nourishment()/2/(finalAmount>0?finalAmount:1));
-			else
-			if(mob!=null)
-				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			if(rotten)
-			{
-				final Ability A=CMClass.getAbility("Poison_Rotten");
-				if(A!=null)
-					food.addNonUninvokableEffect(A);
-			}
-			else
-			if(!messedUp)
-				CMLib.materials().addEffectsToResource(food);
-			food.basePhyStats().setWeight((int)Math.round(CMath.div(food.basePhyStats().weight(),finalAmount)));
-			if(food.basePhyStats().weight()>0)
-				food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
-			else
-				food.setBite(food.nourishment());
-			playSound=defaultFoodSound;
 		}
-		else
-		if(foodType.equalsIgnoreCase("DRINK"))
+		if(contents!=null)
 		{
-			buildingI=CMClass.getItem("GenLiquidResource");
-			this.buildingI=buildingI;
-			//building.setMiscText(cooking.text());
-			//building.recoverPhyStats();
-			buildingI.setName((messedUp?"spoiled ":"")+finalDishName);
-			buildingI.setDisplayText(L("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
-			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":rotten?"rotten!":"good!")));
-			buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
-			buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
-			final Drink drink=(Drink)buildingI;
-			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
-			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+			for(int v=0;v<contents.size();v++)
 			{
-				final String ingredient=finalRecipe.get(vr).toUpperCase();
-				if(ingredient.length()>0)
+				final Item I=contents.get(v);
+				if((I instanceof Food)
+				&&(material<0))
 				{
-					final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
-					if(resourceCode >0)
+					switch(I.material()&RawMaterial.MATERIAL_MASK)
 					{
-						if((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-						{
-							liquidType=resourceCode;
-							break;
-						}
+					case RawMaterial.MATERIAL_VEGETATION:
+					case RawMaterial.MATERIAL_FLESH:
+						material=I.material();
+						break;
 					}
 				}
 			}
-			if(contents!=null)
+			if(ingredientsWeight < finalAmount)
+				ingredientsWeight = finalAmount;
+			food.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+		}
+		if(material<0)
+		{
+			final String materialFoodName=replacePercent(finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
+			for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
+			{
+				if(materialFoodName.equals(RawMaterial.CODES.NAME(i)))
+				{
+					material=i;
+					break;
+				}
+			}
+			if((contents!=null)&&(material<0))
 			{
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
-					buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
-					if(I instanceof Food)
-						drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment()+25);
-					if((I instanceof Drink)
-					&&(liquidType < 0)
-					&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-						liquidType=((Drink)I).liquidType();
+					if(I instanceof Drink)
+					{
+						material=((Drink)I).liquidType();
+						break;
+					}
 				}
 			}
-			if(ingredientsWeight >= finalAmount)
-				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
-			else
-			if(ingredientsWeight>0)
-				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+		}
+		food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
+		if((rotten)&&(food.nourishment()>1))
+			food.setNourishment(food.nourishment()/2/(finalAmount>0?finalAmount:1));
+		else
+		if(mob!=null)
+			food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
+		if(rotten)
+		{
+			final Ability A=CMClass.getAbility("Poison_Rotten");
+			if(A!=null)
+				food.addNonUninvokableEffect(A);
+		}
+		else
+		if(!messedUp)
+			CMLib.materials().addEffectsToResource(food);
+		food.basePhyStats().setWeight((int)Math.round(CMath.div(food.basePhyStats().weight(),finalAmount)));
+		if(food.basePhyStats().weight()>0)
+			food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
+		else
+			food.setBite(food.nourishment());
+		playSound=defaultFoodSound;
+		return buildingI;
+	}
 
-			if(drink.liquidRemaining()>0)
+	protected Item buildTypedItem(final String foodType, final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	{
+		final double ingredientsWeight = buildIngredientsWeight(finalRecipe, contents);
+		finalDishName=buildFinalName(finalRecipe, contents);
+		final Item buildingI=CMClass.getItem(foodType);
+		this.buildingI=buildingI;
+		final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
+		buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
+		buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
+		if(buildingI instanceof Drink)
+		{
+			final Drink drink=(Drink)buildingI;
+			final int rem=drink.liquidHeld();
+			drink.setLiquidRemaining(0);
+			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
+			if(contents!=null)
+			for(int v=0;v<contents.size();v++)
 			{
-				drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
-				drink.setLiquidHeld(drink.liquidRemaining()+homeCookValue(mob,10));
-				if(buildingI.basePhyStats().weight()>0)
-					drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
-				else
-					drink.setThirstQuenched(drink.liquidRemaining());
+				final Item I=contents.get(v);
+				buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+				drink.setLiquidRemaining(drink.liquidRemaining()+rem);
+				if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+					liquidType=((Drink)I).liquidType();
 			}
+			if((drink.liquidRemaining()>0)&&(!messedUp))
+				drink.setLiquidHeld(drink.liquidRemaining());
 			else
 			{
 				drink.setLiquidHeld(1);
 				drink.setLiquidRemaining(1);
 				drink.setThirstQuenched(1);
 			}
-			if(messedUp)
-				drink.setThirstQuenched(1);
-			else
-			if(rotten && (drink.thirstQuenched() > 1))
-				drink.setThirstQuenched(drink.thirstQuenched()/2);
-			playSound=defaultDrinkSound;
 			buildingI.setMaterial(liquidType);
 			drink.setLiquidType(liquidType);
-			if(rotten)
-			{
-				final Ability A=CMClass.getAbility("Poison_Rotten");
-				if(A!=null)
-					buildingI.addNonUninvokableEffect(A);
-			}
-			else
-			if(!messedUp)
-				CMLib.materials().addEffectsToResource((Item)drink);
 		}
+		if(ingredientsWeight >= finalAmount)
+			buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+		else
+		if(ingredientsWeight>0)
+			buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+		if(!messedUp)
+			CMLib.materials().addEffectsToResource(buildingI);
+		playSound=defaultFoodSound;
+		return buildingI;
+	}
+
+	protected Item buildDrinkItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	{
+		final boolean rotten = (contents == null) ? false : containsRottenIngredients(contents);
+		final double ingredientsWeight = buildIngredientsWeight(finalRecipe, contents);
+		finalDishName=buildFinalName(finalRecipe, contents);
+		final Item buildingI=CMClass.getItem("GenLiquidResource");
+		this.buildingI=buildingI;
+		buildingI.setName((messedUp?"spoiled ":"")+finalDishName);
+		buildingI.setDisplayText(L("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
+		buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":rotten?"rotten!":"good!")));
+		buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
+		buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
+		final Drink drink=(Drink)buildingI;
+		int liquidType=RawMaterial.RESOURCE_FRESHWATER;
+		for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+		{
+			final String ingredient=finalRecipe.get(vr).toUpperCase();
+			if(ingredient.length()>0)
+			{
+				final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+				if(resourceCode >0)
+				{
+					if((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+					{
+						liquidType=resourceCode;
+						break;
+					}
+				}
+			}
+		}
+		if(contents!=null)
+		{
+			for(int v=0;v<contents.size();v++)
+			{
+				final Item I=contents.get(v);
+				buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+				if(I instanceof Food)
+					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment()+25);
+				if((I instanceof Drink)
+				&&(liquidType < 0)
+				&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+					liquidType=((Drink)I).liquidType();
+			}
+		}
+		if(ingredientsWeight >= finalAmount)
+			buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+		else
+		if(ingredientsWeight>0)
+			buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+
+		if(drink.liquidRemaining()>0)
+		{
+			drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
+			drink.setLiquidHeld(drink.liquidRemaining()+homeCookValue(mob,10));
+			if(buildingI.basePhyStats().weight()>0)
+				drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
+			else
+				drink.setThirstQuenched(drink.liquidRemaining());
+		}
+		else
+		{
+			drink.setLiquidHeld(1);
+			drink.setLiquidRemaining(1);
+			drink.setThirstQuenched(1);
+		}
+		if(messedUp)
+			drink.setThirstQuenched(1);
+		else
+		if(rotten && (drink.thirstQuenched() > 1))
+			drink.setThirstQuenched(drink.thirstQuenched()/2);
+		playSound=defaultDrinkSound;
+		buildingI.setMaterial(liquidType);
+		drink.setLiquidType(liquidType);
+		if(rotten)
+		{
+			final Ability A=CMClass.getAbility("Poison_Rotten");
+			if(A!=null)
+				buildingI.addNonUninvokableEffect(A);
+		}
+		else
+		if(!messedUp)
+			CMLib.materials().addEffectsToResource((Item)drink);
+		return buildingI;
+	}
+
+	protected Item buildResourceItem(final String foodType, final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	{
+		final double ingredientsWeight = buildIngredientsWeight(finalRecipe, contents);
+		finalDishName=buildFinalName(finalRecipe, contents);
+		final Item buildingI=CMClass.getItem("GenResource");
+		this.buildingI=buildingI;
+		if(messedUp)
+			buildingI.setMaterial(RawMaterial.RESOURCE_DUST);
+		else
+		{
+			final int code = RawMaterial.CODES.FIND_IgnoreCase(foodType);
+			if(code>=0)
+				buildingI.setMaterial(code);
+		}
+		final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
+		buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
+		buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
+		if(ingredientsWeight >= finalAmount)
+			buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
+		else
+		if(ingredientsWeight>0)
+			buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
+		else
+			buildingI.basePhyStats().setWeight(1);
+		playSound=defaultFoodSound;
+		return buildingI;
+	}
+
+	protected Item buildItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
+	{
+		final String foodType=finalRecipe.get(RCP_FOODDRINK);
+		final Item buildingI;
+		if(foodType.equalsIgnoreCase("FOOD"))
+			buildingI = buildFoodItem(mob, finalRecipe, contents);
+		else
+		if(foodType.equalsIgnoreCase("DRINK"))
+			buildingI = buildDrinkItem(mob, finalRecipe, contents);
 		else
 		if(CMClass.getItem(foodType)!=null)
-		{
-			buildingI=CMClass.getItem(foodType);
-			this.buildingI=buildingI;
-			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
-			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
-			if(buildingI instanceof Drink)
-			{
-				final Drink drink=(Drink)buildingI;
-				final int rem=drink.liquidHeld();
-				drink.setLiquidRemaining(0);
-				int liquidType=RawMaterial.RESOURCE_FRESHWATER;
-				if(contents!=null)
-				for(int v=0;v<contents.size();v++)
-				{
-					final Item I=contents.get(v);
-					buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
-					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
-					if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-						liquidType=((Drink)I).liquidType();
-				}
-				if((drink.liquidRemaining()>0)&&(!messedUp))
-					drink.setLiquidHeld(drink.liquidRemaining());
-				else
-				{
-					drink.setLiquidHeld(1);
-					drink.setLiquidRemaining(1);
-					drink.setThirstQuenched(1);
-				}
-				buildingI.setMaterial(liquidType);
-				drink.setLiquidType(liquidType);
-			}
-			if(ingredientsWeight >= finalAmount)
-				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
-			else
-			if(ingredientsWeight>0)
-				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
-			if(!messedUp)
-				CMLib.materials().addEffectsToResource(buildingI);
-			playSound=defaultFoodSound;
-		}
+			buildingI = buildTypedItem(foodType, mob, finalRecipe, contents);
 		else
-		{
-			buildingI=CMClass.getItem("GenResource");
-			this.buildingI=buildingI;
-			if(messedUp)
-				buildingI.setMaterial(RawMaterial.RESOURCE_DUST);
-			else
-			{
-				final int code = RawMaterial.CODES.FIND_IgnoreCase(foodType);
-				if(code>=0)
-					buildingI.setMaterial(code);
-			}
-			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
-			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
-			if(ingredientsWeight >= finalAmount)
-				buildingI.basePhyStats().setWeight((int)Math.round(CMath.div(ingredientsWeight,finalAmount)));
-			else
-			if(ingredientsWeight>0)
-				buildingI.basePhyStats().setWeight((int)Math.round(ingredientsWeight));
-			else
-				buildingI.basePhyStats().setWeight(1);
-			playSound=defaultFoodSound;
-		}
+			buildingI = buildResourceItem(foodType, mob, finalRecipe, contents);
 
 		if(buildingI!=null)
 		{
