@@ -135,6 +135,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected PairList<PotIngredient, Integer>	potContents		= null;
 
+	protected static final int LIQUID_RATIO = 10;
+
 	public Cooking()
 	{
 		super();
@@ -456,7 +458,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			&&(((Drink)pot).liquidRemaining()>0))
 			{
 				final PotIngredient i = new PotIngredient();
-				final int amt = ((Drink)pot).liquidRemaining()/10;
+				final int amt = ((Drink)pot).liquidRemaining()/LIQUID_RATIO;
 				int material;
 				if(pot instanceof RawMaterial)
 				{
@@ -553,7 +555,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					if(recipeIngredientReqAmt<0)
 						recipeIngredientReqAmt=recipeIngredientReqAmt*-1;
 					if(recipeIngredient.equalsIgnoreCase("water"))
-						recipeIngredientReqAmt=recipeIngredientReqAmt*10;
+						recipeIngredientReqAmt=recipeIngredientReqAmt*LIQUID_RATIO;
 					for(final Pair<PotIngredient,int[]> i : contents)
 					{
 						final int amount2=i.second[0];
@@ -1338,7 +1340,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 									amount=amount*-1;
 								}
 								if(ingredient.equalsIgnoreCase("water"))
-									amount=amount*10;
+									amount=amount*LIQUID_RATIO;
 								final String next=ingredient.toLowerCase()+"("+amount+") ";
 								if(line.length()+next.length()-2>=lineWidth)
 								{
