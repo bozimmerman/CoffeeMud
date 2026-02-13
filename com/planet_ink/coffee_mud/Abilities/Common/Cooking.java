@@ -628,7 +628,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					if((rsc > 0)&&(recipeIng.equals(potIngr.rscName)))
 						return true;
 					final RawMaterial.Material mat = RawMaterial.Material.find(recipeIng);
-					if((mat != null)&&(recipeIng.equals(potIngr.rscName)))
+					if((mat != null)&&(recipeIng.equals(potIngr.matName)))
 						return true;
 				}
 				if(perfectOnly)
