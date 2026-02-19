@@ -408,6 +408,7 @@ var MXP=function(sipwin)
 		this.openElements=[];
 		this.tags={};
 		this.frames={};
+		this.frameOpenCounter=0;
 		this.partial=null;
 		this.partQuote='\0';
 		this.partialBit ='';
@@ -2170,7 +2171,9 @@ var MXP=function(sipwin)
 								if(child.sprops && child.sprops.align)
 								{
 									var align=child.sprops.align.toUpperCase();
-									if(crossAligns.indexOf(align)>=0 && child.style[posProp] === oldPrivilegedPos)
+									if((crossAligns.indexOf(align)>=0) 
+									&&(child.style[posProp] === oldPrivilegedPos)
+									&&(child.sprops.openOrder > newContainerDiv.sprops.openOrder))
 									{
 										if(!fromEnd)
 											child.style[posProp]=totalDim;
@@ -2319,6 +2322,10 @@ var MXP=function(sipwin)
 				if(isModify && titleBar)
 					newContainerDiv.removeChild(titleBar);
 				newContainerDiv.append(newTitleBar);
+				if(isModify && newContainerDiv.sprops)
+					sprops.openOrder=newContainerDiv.sprops.openOrder;
+				else
+					sprops.openOrder=this.frameOpenCounter++;
 				newContainerDiv.sprops=sprops;
 				if(!isModify)
 				{
