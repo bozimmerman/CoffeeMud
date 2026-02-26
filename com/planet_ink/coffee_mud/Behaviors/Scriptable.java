@@ -43,7 +43,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	@Override
 	protected int canImproveCode()
 	{
-		return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS;
+		return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
 	}
 
 	protected ScriptingEngine engine = null;
