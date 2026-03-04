@@ -13664,12 +13664,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(p2.trim().startsWith("--"))
 						p2=""+(A.proficiency()-CMath.s_int(p2.trim().substring(2)));
-					A.setProficiency(CMath.s_int(p2.trim()));
+					final int proficiency = CMath.s_int(p2.trim());
+					A.setProficiency(proficiency);
 					A.setMiscText(m2);
 					if(((MOB)newTarget).fetchAbility(A.ID())==null)
 					{
 						((MOB)newTarget).addAbility(A);
 						A.autoInvocation((MOB)newTarget, false);
+					}
+					if(A instanceof Language)
+					{
+						final Ability effA = ((MOB)newTarget).fetchEffect(A.ID());
+						if(effA != null)
+							effA.setProficiency(proficiency);
 					}
 				}
 				break;
