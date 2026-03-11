@@ -51,7 +51,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	@Override
 	public String displayText()
 	{
-		return hidden?"(Hidden)":"";
+		return (activated&&hidden)?"(Hidden)":"";
 	}
 
 	@Override
