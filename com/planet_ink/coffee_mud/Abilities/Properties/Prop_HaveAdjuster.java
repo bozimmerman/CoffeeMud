@@ -1484,11 +1484,16 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 							{
 								final String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
 								if(wd.startsWith("DIS")) {}
-								else if(wd.startsWith("SEN"))  {}
-								else if(wd.startsWith("ARM")&&(I instanceof Armor))  {}
-								else if(wd.startsWith("ATT")&&(I instanceof Weapon))  {}
-								else if(wd.startsWith("DAM")&&(I instanceof Weapon))  {}
-								else if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))  {}
+								else
+								if(wd.startsWith("SEN"))  {}
+								else
+								if(wd.startsWith("ARM")&&(I instanceof Armor))  {}
+								else
+								if(wd.startsWith("ATT")&&(I instanceof Weapon))  {}
+								else
+								if(wd.startsWith("DAM")&&(I instanceof Weapon))  {}
+								else
+								if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))  {}
 								else
 								if((!wd.startsWith("ARM"))&&(s.charAt(plusminus)=='-'))
 								{

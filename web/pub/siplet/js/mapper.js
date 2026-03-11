@@ -1083,7 +1083,9 @@ function Mapper(sipwin)
 				isDraggingRoom = false;
 				canvas.style.cursor = "grab";
 				// Optional: Add any post-drag logic, e.g., check for overlaps
-			} else if (potentialDrag) {
+			} 
+			else 
+			if (potentialDrag) {
 				potentialDrag = false;
 				if (self.mapWidget.tooltip)
 					self.mapWidget.tooltip.style.display = 'none';
@@ -1111,7 +1113,9 @@ function Mapper(sipwin)
 							self.mapWidget.selectedRooms.splice(index, 1);
 						else
 							self.mapWidget.selectedRooms.push(closestRoomId);
-					} else if (event.shiftKey) {
+					} 
+					else 
+					if (event.shiftKey) {
 						if (self.mapWidget.selectedRooms && self.mapWidget.selectedRooms.length) {
 							var lastRoom = self.rooms[self.mapWidget.selectedRooms[self.mapWidget.selectedRooms.length - 1]];
 							var currRoom = self.rooms[closestRoomId];
@@ -1419,7 +1423,8 @@ function Mapper(sipwin)
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,0); 
 												window.currWin.mapper.updateMap();}})(k)});
-						  else if (doorStatus == 0) {
+						  else 
+						  if (doorStatus == 0) {
 							subMenu.push({n:'Remove '+dirName+' door',
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,-1); 
@@ -1428,7 +1433,9 @@ function Mapper(sipwin)
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,1); 
 												window.currWin.mapper.updateMap();}})(k)});
-						  } else if (doorStatus == 1) {
+						  } 
+						  else 
+						  if (doorStatus == 1) {
 							subMenu.push({n:'Remove '+dirName+' door',
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,-1); 
@@ -1441,7 +1448,9 @@ function Mapper(sipwin)
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,2); 
 												window.currWin.mapper.updateMap();}})(k)});
-						  } else if (doorStatus == 2) {
+						  } 
+						  else 
+						  if (doorStatus == 2) {
 							subMenu.push({n:'Remove '+dirName+' door',
 											a:(function(dirCode){return function(event) {
 												self.setDoor(closestRoomId,dirCode,-1); 
@@ -3748,7 +3757,9 @@ function Mapper(sipwin)
 			if (room.envId in window.MapEnvs) {
 				var env = window.MapEnvs[room.envId];
 				color = `rgba(${env.r}, ${env.g}, ${env.b}, ${env.a / 255})`;
-			} else if (room.envId in self.envs) {
+			} 
+			else 
+			if (room.envId in self.envs) {
 				var env = self.envs[room.envId];
 				color = `rgba(${env.r}, ${env.g}, ${env.b}, ${env.alpha / 255})`;
 			}
@@ -3800,7 +3811,9 @@ function Mapper(sipwin)
 							var imgWidth = label.width * (label.zoom || 1) * scale;
 							var imgHeight = label.height * (label.zoom || 1) * scale;
 							ctx.drawImage(label.image,x - imgWidth / 2,y - imgHeight / 2,imgWidth,imgHeight);
-						} else if(!label._loading) {
+						} 
+						else 
+						if(!label._loading) {
 							label._loading = true;
 							sipwin.sipfs.load(label.filePath,function(err, dataUrl) {
 								if(!err)

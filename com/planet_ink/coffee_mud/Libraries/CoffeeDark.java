@@ -1089,7 +1089,8 @@ public class CoffeeDark extends StdLibrary implements GalacticMap
 		BigDecimal tt = apx.multiply(abx).add(apy.multiply(aby)).add(apz.multiply(abz)).divide(len2, 64, RoundingMode.HALF_UP);
 		if (tt.compareTo(BigDecimal.ZERO) < 0)
 			tt = BigDecimal.ZERO;
-		else if (tt.compareTo(BigDecimal.ONE) > 0)
+		else
+		if (tt.compareTo(BigDecimal.ONE) > 0)
 			tt = BigDecimal.ONE;
 
 		final BigDecimal cx = a.x().add(tt.multiply(abx));

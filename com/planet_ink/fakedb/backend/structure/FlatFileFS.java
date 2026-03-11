@@ -158,7 +158,8 @@ public class FlatFileFS implements Closeable
 			final int cmp = lowerSearchName.compareTo(nodeName);
 			if (cmp == 0)
 				return currentEntry;
-			else if (cmp < 0)
+			else
+			if (cmp < 0)
 				currentEntry = getLeft(currentEntry);
 			else
 				currentEntry = getRight(currentEntry);
@@ -326,13 +327,15 @@ public class FlatFileFS implements Closeable
 				rfile.seek(rootEntryOffset);
 				rfile.write(paddedLong(0).getBytes());
 			}
-			else if (isLeft)
+			else
+			if (isLeft)
 				setLeft(parentEntry, 0);
 			else
 				setRight(parentEntry, 0);
 			deleteDirEntry(currentEntry);
 		}
-		else if (left == 0)
+		else
+		if (left == 0)
 		{
 			if (parentEntry == 0)
 			{
@@ -340,13 +343,15 @@ public class FlatFileFS implements Closeable
 				rfile.seek(rootEntryOffset);
 				rfile.write(paddedLong(right).getBytes());
 			}
-			else if (isLeft)
+			else
+			if (isLeft)
 				setLeft(parentEntry, right);
 			else
 				setRight(parentEntry, right);
 			deleteDirEntry(currentEntry);
 		}
-		else if (right == 0)
+		else
+		if (right == 0)
 		{
 			if (parentEntry == 0)
 			{
@@ -354,7 +359,8 @@ public class FlatFileFS implements Closeable
 				rfile.seek(rootEntryOffset);
 				rfile.write(paddedLong(left).getBytes());
 			}
-			else if (isLeft)
+			else
+			if (isLeft)
 				setLeft(parentEntry, left);
 			else
 				setRight(parentEntry, left);

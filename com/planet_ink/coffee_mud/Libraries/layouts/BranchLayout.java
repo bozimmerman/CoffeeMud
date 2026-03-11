@@ -120,7 +120,8 @@ public class BranchLayout extends AbstractLayout
             addRoom(lSet, n, Directions.NORTH);
         if (dir == Directions.NORTH)
             firstNode = nsCorridor.get(0);
-        else if (dir == Directions.SOUTH)
+        else
+        if (dir == Directions.SOUTH)
             firstNode = n;
 
         n = new DefaultLayoutNode(new long[]{-(diameter / 2), -(diameter / 2)});

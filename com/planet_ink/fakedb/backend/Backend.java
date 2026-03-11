@@ -739,7 +739,8 @@ public class Backend
 					fakeTable.removeColumn(index-1);
 				}
 			}
-			else if (objType.equals("KEY"))
+			else
+			if (objType.equals("KEY"))
 			{
 				String colDef = findColumnDef(col.name, tableDef);
 				if (colDef == null)
@@ -750,7 +751,8 @@ public class Backend
 				colDef = colDef.replaceAll("(?i) KEY", "");
 				tableDef.set(index, colDef);
 			}
-			else if (objType.equals("INDEX"))
+			else
+			if (objType.equals("INDEX"))
 			{
 				String colDef = findColumnDef(col.name, tableDef);
 				if (colDef == null)

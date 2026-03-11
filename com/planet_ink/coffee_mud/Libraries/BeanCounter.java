@@ -1430,7 +1430,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 						{
 							items.add(pI.first);
 							final Hashtable<String,List<DatabaseEngine.PAData>> pairings=new Hashtable<String,List<DatabaseEngine.PAData>>();
-							for(final PAData PDp : rawInventoryV)
+							final List<PAData> allInventoryV=queryBankPAData(bankChain, depositorName, null, null);
+							for(final PAData PDp : allInventoryV)
 							{
 								final int IDx=PDp.xml().indexOf(';');
 								if(IDx>0)
@@ -1511,20 +1512,36 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if((depositorName==null)||(depositorName.length()==0))
 			return new ArrayList<Item>();
 		final List<Item> items=new Vector<Item>();
-		final Hashtable<String,Pair<Item,String>> pairings=new Hashtable<String,Pair<Item,String>>();
+		final Map<String,Pair<Item,String>> pairings=new HashMap<String,Pair<Item,String>>();
+		final Map<String,PAData> paDataMap=new HashMap<String,PAData>();
 		for(final PAData PD : queryBankPAData(bankChain,depositorName,null, null))
 		{
 			final Pair<Item,String> pair=unpackBankItemContainer(PD);
 			if(pair!=null)
+			{
 				pairings.put(PD.key(), pair);
+				paDataMap.put(PD.key(), PD);
+			}
 		}
-		for(final Pair<Item,String> pair : pairings.values())
+		for(final Map.Entry<String,Pair<Item,String>> entry : pairings.entrySet())
 		{
+			final Pair<Item,String> pair = entry.getValue();
 			if(pair.second.length()>0)
 			{
 				final Pair<Item,String> otherPair = pairings.get(pair.second);
 				if((otherPair != null)&&(otherPair.first instanceof Container))
 					pair.first.setContainer((Container)otherPair.first);
+				else
+				if(otherPair == null) // broken container record -- fix
+				{
+					final PAData PD = paDataMap.get(entry.getKey());
+					if(PD != null)
+					{
+						final String classID = (pair.first instanceof Coins) ? "COINS" : pair.first.ID();
+						CMLib.database().DBUpdatePlayerData(PD.who(), PD.section(), PD.key(),
+								packBankItemData(classID, pair.first, ""));
+					}
+				}
 			}
 			items.add(pair.first);
 		}

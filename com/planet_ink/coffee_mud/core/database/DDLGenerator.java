@@ -1233,7 +1233,8 @@ public class DDLGenerator
 		String copyExpr = quote + columnName + quote;
 		if((effectiveNewSize < oldSize) && effectivePortableType.contains("VARCHAR"))
 			copyExpr = "SUBSTR(" + copyExpr + ", 1, " + effectiveNewSize + ")";
-		else if(effectiveNewType.equals("CLOB") && oldType.contains("CHAR"))
+		else
+		if(effectiveNewType.equals("CLOB") && oldType.contains("CHAR"))
 			copyExpr = "TO_CLOB(" + copyExpr + ")";
 		final String copySql = "UPDATE " + quote + actualTable + quote + " SET " + quote + tempColumnName + quote + " = " + copyExpr;
 		sqls.add(copySql);

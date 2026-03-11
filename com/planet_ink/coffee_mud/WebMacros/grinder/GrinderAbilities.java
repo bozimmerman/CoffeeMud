@@ -85,7 +85,8 @@ public class GrinderAbilities
 			{
 				if (old.equalsIgnoreCase("on"))
 					A.setStat("AUTOINVOKE", "true");
-				else if (old.equalsIgnoreCase("off"))
+				else
+				if (old.equalsIgnoreCase("off"))
 					A.setStat("AUTOINVOKE", "false");
 				else
 					A.setStat("AUTOINVOKE", "");
@@ -95,7 +96,8 @@ public class GrinderAbilities
 			{
 				if (old.equalsIgnoreCase("on"))
 					A.setStat("MAYENCHANT", "true");
-				else if (old.equalsIgnoreCase("off"))
+				else
+				if (old.equalsIgnoreCase("off"))
 					A.setStat("MAYENCHANT", "false");
 				else
 					A.setStat("MAYENCHANT", "");

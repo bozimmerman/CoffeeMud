@@ -179,7 +179,8 @@ public class FilteredListIterator<K> implements ListIterator<K>
 			elem = iter.previous();
 			if (filterer.passesFilter(elem))
 				return elem;
-			else if (delete)
+			else
+			if (delete)
 				iter.remove();
 		}
 		throw new NoSuchElementException();

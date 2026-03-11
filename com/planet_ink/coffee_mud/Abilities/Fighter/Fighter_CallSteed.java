@@ -432,7 +432,8 @@ public class Fighter_CallSteed extends StdAbility
 				mob.tell(str.toString());
 				return false;
 			}
-			else if (commands.get(0).equalsIgnoreCase("dismiss"))
+			else
+			if (commands.get(0).equalsIgnoreCase("dismiss"))
 			{
 				if (!dismissLastSteed(mob, lastSteedM))
 					mob.tell(L("You have no called steeds to dismiss."));
@@ -453,7 +454,8 @@ public class Fighter_CallSteed extends StdAbility
 							raceR = p.second;
 							break;
 						}
-						else if (o instanceof MOB)
+						else
+						if (o instanceof MOB)
 						{
 							final MOB M = (MOB) o;
 							raceR = M.baseCharStats().getMyRace();

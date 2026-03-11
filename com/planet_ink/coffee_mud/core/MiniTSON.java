@@ -497,9 +497,11 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).intValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).intValue();
-						else if(arr[i] instanceof Double)
+						else
+						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).intValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to int");
@@ -533,9 +535,11 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).longValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).longValue();
-						else if(arr[i] instanceof Double)
+						else
+						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).longValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to long");
@@ -569,9 +573,11 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).shortValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).shortValue();
-						else if(arr[i] instanceof Double)
+						else
+						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).shortValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to short");
@@ -605,9 +611,11 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).byteValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).byteValue();
-						else if(arr[i] instanceof Double)
+						else
+						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).byteValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to byte");
@@ -641,11 +649,14 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).floatValue();
-						else if(arr[i] instanceof Float)
+						else
+						if(arr[i] instanceof Float)
 							result[i] = ((Float)arr[i]).floatValue();
-						else if(arr[i] instanceof Long)
+						else
+						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).floatValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).floatValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to float");
@@ -679,11 +690,14 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Double)
 							result[i] = ((Double)arr[i]).doubleValue();
-						else if(arr[i] instanceof Float)
+						else
+						if(arr[i] instanceof Float)
 							result[i] = ((Float)arr[i]).doubleValue();
-						else if(arr[i] instanceof Long)
+						else
+						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).doubleValue();
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).doubleValue();
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to double");
@@ -717,9 +731,11 @@ public final class MiniTSON extends MiniJSON
 					{
 						if(arr[i] instanceof Boolean)
 							result[i] = ((Boolean)arr[i]).booleanValue();
-						else if(arr[i] instanceof Long)
+						else
+						if(arr[i] instanceof Long)
 							result[i] = ((Long)arr[i]).longValue() != 0;
-						else if(arr[i] instanceof Integer)
+						else
+						if(arr[i] instanceof Integer)
 							result[i] = ((Integer)arr[i]).intValue() != 0;
 						else
 							throw new IllegalArgumentException("Cannot convert " + arr[i].getClass() + " to boolean");
@@ -1016,17 +1032,23 @@ public final class MiniTSON extends MiniJSON
 
 				if(componentType == int.class)
 					typePrefix = "i";
-				else if(componentType == long.class)
+				else
+				if(componentType == long.class)
 					typePrefix = "l";
-				else if(componentType == short.class)
+				else
+				if(componentType == short.class)
 					typePrefix = "h";
-				else if(componentType == byte.class)
+				else
+				if(componentType == byte.class)
 					typePrefix = "y";
-				else if(componentType == float.class)
+				else
+				if(componentType == float.class)
 					typePrefix = "f";
-				else if(componentType == double.class)
+				else
+				if(componentType == double.class)
 					typePrefix = "d";
-				else if(componentType == boolean.class)
+				else
+				if(componentType == boolean.class)
 					typePrefix = "b";
 
 				if(!typePrefix.equals("l") && !typePrefix.equals("d") && !typePrefix.equals("b"))
@@ -1061,11 +1083,14 @@ public final class MiniTSON extends MiniJSON
 
 				if(obj instanceof Integer || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Integer))
 					typePrefix = "I";
-				else if(obj instanceof Short || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Short))
+				else
+				if(obj instanceof Short || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Short))
 					typePrefix = "H";
-				else if(obj instanceof Byte || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Byte))
+				else
+				if(obj instanceof Byte || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Byte))
 					typePrefix = "Y";
-				else if(obj instanceof Float || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Float))
+				else
+				if(obj instanceof Float || (obj instanceof Object[] && ((Object[])obj).length > 0 && ((Object[])obj)[0] instanceof Float))
 					typePrefix = "F";
 				value.append(typePrefix);
 				super.appendJSONValue(value, obj);

@@ -1186,7 +1186,8 @@ function SafeEval(str, context)
 	{
 		if(operators[i] === '&&')
 			result = result && values[i + 1];
-		else if(operators[i] === '||')
+		else 
+		if(operators[i] === '||')
 			result = result || values[i + 1];
 	}
 	return !!result;
