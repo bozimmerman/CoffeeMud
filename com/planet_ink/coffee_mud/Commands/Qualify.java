@@ -180,9 +180,11 @@ public class Qualify  extends Skills
 		{
 			final Ability A=a.nextElement();
 			final int level=ableMapper.qualifyingLevel(ableM,A);
+			final boolean qualifiesByClass = ableMapper.qualifiesOnlyByACharClass(ableM, A);
 			if(ableCheck(ableMapper,ableM,A,checkUnMet,filter)
 			&&(level>highestLevel)
-			&&(level<(ableMapper.qualifyingClassLevel(ableM,A)+1)))
+			&&(((qualifiesByClass && (level<(ableMapper.qualifyingClassLevel(ableM,A)+1))))
+				||(!qualifiesByClass && (level<=ableM.phyStats().level()))))
 				highestLevel=level;
 		}
 		int col=1;

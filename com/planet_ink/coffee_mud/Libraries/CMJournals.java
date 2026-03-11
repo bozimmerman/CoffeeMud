@@ -1647,7 +1647,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					final String[] lines = this.input.split("\n\r");
 					for (final String line : lines)
 						vbuf.add(line);
-					back.callBack(mob, sess, MsgMkrResolution.SAVEFILE);
+					if(vbuf.toString().trim().length()>0)
+						back.callBack(mob, sess, MsgMkrResolution.SAVEFILE);
+					else
+						back.callBack(mob, sess, MsgMkrResolution.CANCELFILE);
 				}
 
 				@Override
