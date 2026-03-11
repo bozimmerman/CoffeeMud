@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -318,7 +319,9 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 			final MOB tastyMorselM = mob.getVictim();
 			if(tastyMorselM==null)
 				return true;
-			if (tastyMorselM.baseWeight()<(mob.phyStats().weight()/3))
+			if ((tastyMorselM.baseWeight()<(mob.phyStats().weight()/3))
+			&&(CMLib.dice().rollPercentage()<=chanceToEat)
+			&&(mob.phyStats().level() >= tastyMorselM.phyStats().level() - CMProps.getIntVar(Int.EXPRATE)))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
