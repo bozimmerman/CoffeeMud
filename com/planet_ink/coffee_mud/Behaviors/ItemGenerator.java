@@ -1,8 +1,10 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.CraftorType;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -11,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -49,7 +52,11 @@ public class ItemGenerator extends ActiveTicker
 
 	protected static volatile Tickable[] itemGeneratorTick=new Tickable[1];
 
+	protected static String RESOURCE_ALL_ITEMS_KEY = "ITEMGENERATOR-ALLITEMS";
+
 	protected SVector<Item>		maintained			= new SVector<Item>();
+	protected CompiledZMask		mask				= null;
+	protected String			maskKey				= "";
 	protected int				minItems			= 1;
 	protected int				maxItems			= 1;
 	protected int				avgItems			= 1;
@@ -74,12 +81,25 @@ public class ItemGenerator extends ActiveTicker
 	@Override
 	public void setParms(final String newParms)
 	{
+		super.setParms(newParms);
 		favorMobs=false;
 		maintained=new SVector<Item>();
 		restrictedLocales=null;
+		this.mask = null;
+		this.maskKey = "";
 		String parms=newParms;
-		if(parms.indexOf(';')>=0)
-			parms=parms.substring(0,parms.indexOf(';'));
+		final int x = parms.indexOf(';');
+		if(x>=0)
+		{
+			final String maskStr = parms.substring(x+1).trim();
+			parms=parms.substring(0,x);
+			if(maskStr.length()>0)
+			{
+				maskKey = maskStr.toUpperCase().trim();
+				this.mask=CMLib.masking().getPreCompiledMask(maskStr);
+			}
+		}
+
 		final Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
@@ -137,7 +157,6 @@ public class ItemGenerator extends ActiveTicker
 				}
 			}
 		}
-		super.setParms(newParms);
 		minItems=CMParms.getParmInt(parms,"minitems",1);
 		maxItems=CMParms.getParmInt(parms,"maxitems",1);
 		maxDups=CMParms.getParmInt(parms,"maxdups",Integer.MAX_VALUE);
@@ -194,6 +213,12 @@ public class ItemGenerator extends ActiveTicker
 
 	protected class ItemGenerationTicker implements Tickable
 	{
+		private final boolean filter;
+		public ItemGenerationTicker(final boolean filter)
+		{
+			this.filter = filter;
+		}
+
 		@Override
 		public String ID()
 		{
@@ -244,7 +269,7 @@ public class ItemGenerator extends ActiveTicker
 		@Override
 		public boolean tick(final Tickable ticking, final int tickID)
 		{
-			final List<Item> checkItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+			final List<Item> checkItems=(List<Item>)Resources.getResource(RESOURCE_ALL_ITEMS_KEY);
 			if(checkItems!=null)
 				return false;
 			if(CMProps.isState(CMProps.HostState.SHUTTINGDOWN))
@@ -256,8 +281,9 @@ public class ItemGenerator extends ActiveTicker
 				skills=new Vector<ItemCraftor>();
 				for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
 				{
-					final Ability A = e.nextElement();
-					if(!A.ID().equals("ClanCrafting")) // I hate this, but its necessary
+					final ItemCraftor A = e.nextElement();
+					if((A.getCraftorType() != CraftorType.ClanItems)
+					&&(A.getCraftorType() != CraftorType.LargeConstructions))
 						skills.add((ItemCraftor)A.copyOf());
 				}
 				return true;
@@ -268,7 +294,7 @@ public class ItemGenerator extends ActiveTicker
 				if(skills.size()==0)
 				{
 					Log.sysOut(ID(),"Finished master item generation");
-					Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
+					Resources.submitResource(RESOURCE_ALL_ITEMS_KEY,allItems);
 					return false;
 				}
 				skill = skills.remove(0);
@@ -278,110 +304,117 @@ public class ItemGenerator extends ActiveTicker
 			skillSet=skill.craftAllItemSets(false);
 			if(skillSet!=null)
 			{
+				final List<Item> skillItems = new ArrayList<Item>(skillSet.size());
 				for(final ItemCraftor.CraftedItem materialSet: skillSet)
 					if(!(materialSet.item instanceof ClanItem))
-						allItems.add(materialSet.item);
+						skillItems.add(materialSet.item);
+				if(filter)
+					filterItems(skillItems, true);
+				allItems.addAll(skillItems);
 			}
 			return true;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public synchronized GeneratedItemSet getItems(final Tickable thang, final String theseparms)
+	private GeneratedItemSet filterItems(final List<Item> allItems, final boolean cleanup)
 	{
-		String mask=parms;
-		if(mask.indexOf(';')>=0)
-			mask=mask.substring(parms.indexOf(';')+1);
-		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
+		final GeneratedItemSet items=new GeneratedItemSet();
+		Item I=null;
+		final MaskingLibrary.CompiledZMask compiled=this.mask;
+		double totalValue=0;
+		int maxValue=-1;
+		for(int a=0;a<allItems.size();a++)
+		{
+			I=allItems.get(a);
+			if((CMLib.masking().maskCheck(compiled,I,true))
+			&&(!(I instanceof ClanItem)))
+			{
+				if(I.value()>maxValue)
+					maxValue=I.value();
+				items.add(I);
+			}
+			else
+			if(cleanup)
+				I.destroy();
+		}
+		for(int a=0;a<items.size();a++)
+		{
+			I=items.get(a);
+			totalValue+=CMath.div(maxValue,I.value()+1);
+		}
+		if(items.size()>0)
+		{
+			items.maxValue=maxValue;
+			items.totalValue=totalValue;
+		}
+		return items;
+	}
+
+	private GeneratedItemSet getItems(final Tickable thang)
+	{
+		final boolean cachingForbidden = CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE)||CMProps.getBoolVar(Bool.GENERATEDITEMSNOCACHE);
+		if(!cachingForbidden)
+			return getCachedItems(thang);
+		else
+		{
+			final GeneratedItemSet items=new GeneratedItemSet();
+			final List<ItemCraftor> skills = new ArrayList<ItemCraftor>();
+			for(final Enumeration<ItemCraftor> e=CMClass.craftorAbilities();e.hasMoreElements();)
+			{
+				final ItemCraftor A = e.nextElement();
+				if((A.getCraftorType() != CraftorType.ClanItems)
+				&&(A.getCraftorType() != CraftorType.LargeConstructions))
+					skills.add((ItemCraftor)A.copyOf());
+			}
+			int attempts = 3;
+			while((items.size()<3)&&(--attempts>0)&&(skills.size()>0))
+			{
+				final ItemCraftor skill = skills.remove(CMLib.dice().roll(1, skills.size(), -1));
+				final List<Item> skillItems = new ArrayList<Item>();
+				final List<ItemCraftor.CraftedItem> skillSet=skill.craftAllItemSets(false);
+				for(final ItemCraftor.CraftedItem materialSet: skillSet)
+					if(!(materialSet.item instanceof ClanItem))
+						skillItems.add(materialSet.item);
+				items.addAll(filterItems(skillItems, true));
+			}
+			return items;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private synchronized GeneratedItemSet getCachedItems(final Tickable thang)
+	{
+		final String RESOURCE_MASK_ITEMS_KEY = "ITEMGENERATOR-"+maskKey;
+		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource(RESOURCE_MASK_ITEMS_KEY);
 		if(items==null)
 		{
-			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+			List<Item> allItems=(List<Item>)Resources.getResource(RESOURCE_ALL_ITEMS_KEY);
 			if(allItems==null)
 			{
 				synchronized(itemGeneratorTick)
 				{
-					allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+					allItems=(List<Item>)Resources.getResource(RESOURCE_ALL_ITEMS_KEY);
 					if(allItems==null)
 					{
 						if(itemGeneratorTick[0]==null)
 						{
-							itemGeneratorTick[0]=new ItemGenerationTicker();
+							itemGeneratorTick[0]=new ItemGenerationTicker(false);
 							CMLib.threads().startTickDown(itemGeneratorTick[0],Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
 						}
 						return null;
 					}
 				}
 			}
-			items=new GeneratedItemSet();
-  			Item I=null;
-  			final MaskingLibrary.CompiledZMask compiled=CMLib.masking().maskCompile(mask);
-			double totalValue=0;
-			int maxValue=-1;
-			for(int a=0;a<allItems.size();a++)
-			{
-				I=allItems.get(a);
-				if((CMLib.masking().maskCheck(compiled,I,true))
-				&&(!(I instanceof ClanItem)))
-				{
-					if(I.value()>maxValue)
-						maxValue=I.value();
-					items.add(I);
-				}
-			}
-			for(int a=0;a<items.size();a++)
-			{
-				I=items.get(a);
-				totalValue+=CMath.div(maxValue,I.value()+1);
-			}
-			if(items.size()>0)
-			{
-				items.maxValue=maxValue;
-				items.totalValue=totalValue;
-			}
-			Resources.submitResource("ITEMGENERATOR-"+mask.toUpperCase().trim(),items);
+			items = filterItems(allItems, false);
+			Resources.submitResource(RESOURCE_MASK_ITEMS_KEY,items);
 		}
 		return items;
 	}
 
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
+	private void selectRandomItem(final Environmental E, final ShopKeeper SK, final GeneratedItemSet items)
 	{
-		super.tick(ticking,tickID);
-		if((!CMProps.isState(CMProps.HostState.RUNNING))
-		||(!(ticking instanceof Environmental))
-		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
-			return true;
-		if(!canAct(ticking,tickID))
-		{
-			return true;
-		}
-		Item I=null;
-		final Environmental E=(Environmental)ticking;
-		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
-		for(int i=maintained.size()-1;i>=0;i--)
-		{
-			try
-			{
-				I=maintained.elementAt(i);
-				if(!isStillMaintained(E,SK,I))
-					maintained.removeElement(I);
-			}
-			catch (final Exception e)
-			{
-			}
-		}
-		if(maintained.size()>=avgItems)
-		{
-			tickDown = maxTicks;
-			return true;
-		}
+		final boolean cachingForbidden = CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE)||CMProps.getBoolVar(Bool.GENERATEDITEMSNOCACHE);
 		int attempts=avgItems*10;
-		final GeneratedItemSet items=getItems(ticking,getParms());
-		if((items==null)||(items.size()<2))
-			return true;
-		if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
-			return false;
-
 		while((maintained.size()<avgItems)
 		&&(((--attempts)>0))
 		&&(items.size()>1)
@@ -391,6 +424,7 @@ public class ItemGenerator extends ActiveTicker
 			final int maxValue=items.maxValue;
 			double pickedTotal=Math.random()*totalValue;
 			double value=-1;
+			Item I = null;
 			for(int i=2;i<items.size();i++)
 			{
 				I=items.elementAt(i);
@@ -413,7 +447,7 @@ public class ItemGenerator extends ActiveTicker
 							numDups++;
 					}
 					if((maxDups>0)&&(numDups>=maxDups))
-						return true;
+						return;
 				}
 
 				I=(Item)I.copyOf();
@@ -430,58 +464,55 @@ public class ItemGenerator extends ActiveTicker
 					}
 				}
 				else
-				if(ticking instanceof Container)
+				if(E instanceof Container)
 				{
-					if(((Container)ticking).owner() instanceof Room)
-						((Container)ticking).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+					if(((Container)E).owner() instanceof Room)
+						((Container)E).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
-					if(((Container)ticking).owner() instanceof MOB)
-						((Container)ticking).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+					if(((Container)E).owner() instanceof MOB)
+						((Container)E).owner().addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
-						return true;
+						return;
 					maintained.addElement(I);
-					I.setContainer((Container)ticking);
+					I.setContainer((Container)E);
 				}
 				else
-				if(ticking instanceof MOB)
+				if(E instanceof MOB)
 				{
-					((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-					I.wearIfPossible((MOB)ticking);
+					((MOB)E).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+					I.wearIfPossible((MOB)E);
 					maintained.addElement(I);
 				}
 				else
 				{
 					Room room=null;
-					if(ticking instanceof Room)
-						room=(Room)ticking;
+					if(E instanceof Room)
+						room=(Room)E;
 					else
-					if(ticking instanceof Area)
+					if(E instanceof Area)
 					{
-						if(((Area)ticking).metroSize()>0)
+						if(((Area)E).metroSize()>0)
 						{
-							Resources.removeResource("HELP_"+ticking.name().toUpperCase());
+							Resources.removeResource("HELP_"+E.name().toUpperCase());
 							if(restrictedLocales==null)
 							{
 								int tries=0;
 								while((room==null)&&((++tries)<100))
-									room=((Area)ticking).getRandomMetroRoom();
+									room=((Area)E).getRandomMetroRoom();
 							}
 							else
 							{
 								int tries=0;
 								while(((room==null)||(!okRoomForMe(room)))
 								&&((++tries)<100))
-									room=((Area)ticking).getRandomMetroRoom();
+									room=((Area)E).getRandomMetroRoom();
 							}
 						}
 						else
-							return true;
+							return;
 					}
 					else
-					if(ticking instanceof Environmental)
-						room=CMLib.map().roomLocation((Environmental)ticking);
-					else
-						return true;
+						room=CMLib.map().roomLocation(E);
 
 					if(room instanceof GridLocale)
 						room=((GridLocale)room).getRandomGridChild();
@@ -513,6 +544,54 @@ public class ItemGenerator extends ActiveTicker
 				}
 			}
 		}
+		if(cachingForbidden)
+		{
+			for(final Item gI : items)
+			{
+				if(!maintained.contains(gI))
+					gI.destroy();
+			}
+		}
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		super.tick(ticking,tickID);
+		if((!CMProps.isState(CMProps.HostState.RUNNING))
+		||(!(ticking instanceof Environmental))
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
+			return true;
+		if(!canAct(ticking,tickID))
+		{
+			return true;
+		}
+		Item I=null;
+		final Environmental E=(Environmental)ticking;
+		if(E.amDestroyed())
+			return false;
+		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+		for(int i=maintained.size()-1;i>=0;i--)
+		{
+			try
+			{
+				I=maintained.elementAt(i);
+				if(!isStillMaintained(E,SK,I))
+					maintained.removeElement(I);
+			}
+			catch (final Exception e)
+			{
+			}
+		}
+		if(maintained.size()>=avgItems)
+		{
+			tickDown = maxTicks;
+			return true;
+		}
+		final GeneratedItemSet items=getItems(ticking);
+		if((items==null)||(items.size()<2))
+			return true;
+		this.selectRandomItem(E,SK,items);
 		return true;
 	}
 }

@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -2416,7 +2417,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected List<ItemCraftor.CraftedItem> craftAllOfThisRecipe(final ItemCraftor skill, final int material, final Map<String,Object> defined)
 	{
 		List<ItemCraftor.CraftedItem> skillContents;
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE))
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE)||CMProps.getBoolVar(Bool.GENERATEDITEMSNOCACHE))
 			skillContents=(List<ItemCraftor.CraftedItem>)defined.get("____COFFEEMUD_"+skill.ID()+"_"+material+"_true");
 		else
 			skillContents=(List<ItemCraftor.CraftedItem>)Resources.getResource("SYSTEM_ITEMGEN_"+skill.ID()+"_"+material+"_true");
@@ -2428,7 +2429,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				skillContents=skill.craftAllItemSets(true);
 			if(skillContents==null)
 				return null;
-			if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE))
+			if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE)||CMProps.getBoolVar(Bool.GENERATEDITEMSNOCACHE))
 				defined.put("____COFFEEMUD_"+skill.ID()+"_"+material+"_true",skillContents);
 			else
 				Resources.submitResource("SYSTEM_ITEMGEN_"+skill.ID()+"_"+material+"_true", skillContents);

@@ -1427,6 +1427,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setBoolVar(CMProps.Bool.MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
 			CMProps.setBoolVar(CMProps.Bool.ACCOUNTSNOCACHE,nocache.contains("ACCOUNTS"));
 			CMProps.setBoolVar(CMProps.Bool.PLAYERSNOCACHE,nocache.contains("PLAYERS"));
+			CMProps.setBoolVar(CMProps.Bool.GENERATEDITEMSNOCACHE,nocache.contains("GENERATED_ITEMS"));
 			CMProps.setUpLowVar(CMProps.Str.MUD_NAME, name);
 
 			DBConnector currentDBconnector=null;

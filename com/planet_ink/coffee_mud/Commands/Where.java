@@ -468,10 +468,10 @@ public class Where extends StdCommand
 						who=who.substring(10).trim();
 					}
 
-					MultiEnumeration<Room> r=new MultiEnumeration<Room>((roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled());
+					MultiEnumeration<Room> r=new MultiEnumeration<Room>((roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().rooms());
 					if(who.toUpperCase().startsWith("AREA ")||areaFlag)
 					{
-						r=new MultiEnumeration<Room>((roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap());
+						r=new MultiEnumeration<Room>((roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getProperMap());
 						areaFlag=true;
 					}
 					if(who.toUpperCase().startsWith("AREA "))

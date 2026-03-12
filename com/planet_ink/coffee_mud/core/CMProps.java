@@ -515,6 +515,7 @@ public class CMProps extends Properties
 		ACCOUNTSNOCACHE,
 		PLAYERSNOCACHE,
 		EXPDEFER_PASSTHRU,
+		GENERATEDITEMSNOCACHE
 	}
 
 	/**
