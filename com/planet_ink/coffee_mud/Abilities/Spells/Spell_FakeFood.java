@@ -67,6 +67,71 @@ public class Spell_FakeFood extends Spell
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	private static final String[] skills = new String[] { "FoodPrep", "Cooking", "MasterCooking", "Baking" };
+
+	private static Set<String> matSet = null;
+
+	public Pair<String,Integer> getRandomCraftedFoodAndMat()
+	{
+		if(matSet == null)
+		{
+			final Set<String> matSet = new TreeSet<String>();
+			for(final String skill : skills)
+			{
+				final Ability A = CMClass.getAbility(skill);
+				if(A instanceof ItemCraftor)
+				{
+					for(final List<String> recipe : ((ItemCraftor)A).fetchRecipes())
+					{
+						for(int i=3;i<recipe.size();i++)
+						{
+							final String s = recipe.get(i).trim();
+							if(!CMath.isInteger(s))
+								matSet.add(s.toLowerCase());
+						}
+					}
+				}
+			}
+			Spell_FakeFood.matSet = matSet;
+		}
+		int attempts = 1000;
+		while(--attempts > 0)
+		{
+			final String skillID = skills[CMLib.dice().roll(1,  skills.length, -1)];
+			final Ability A = CMClass.getAbility(skillID);
+			if(A instanceof ItemCraftor)
+			{
+				final ItemCraftor iA = (ItemCraftor)A;
+				final List<List<String>> recipes = iA.fetchRecipes();
+				final List<String> recipe = recipes.get(CMLib.dice().roll(1, recipes.size(), -1));
+				if((recipe.size()>1)&&(recipe.get(1).equalsIgnoreCase("food")))
+				{
+					String name = recipe.get(0);
+					String pctName = "";
+					for(int i=3;i<recipe.size();i++)
+					{
+						final String s = recipe.get(i).trim();
+						if(!CMath.isInteger(s))
+						{
+							pctName = recipe.get(i);
+							break;
+						}
+					}
+					final int x=name.indexOf('%');
+					if(x>=0)
+						name =  new StringBuffer(name).replace(x,x+1,pctName).toString();
+					name = name.toLowerCase().trim();
+					if(!matSet.contains(name))
+					{
+						// determine mat?
+						return new Pair<String, Integer>(CMStrings.capitalizeAndLower(name), Integer.valueOf(0));
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -82,6 +147,14 @@ public class Spell_FakeFood extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Food F=(Food)CMClass.getItem("GenFood");
+				final Pair<String,Integer> randoFood = this.getRandomCraftedFoodAndMat();
+				if(randoFood != null)
+				{
+					F.setName(randoFood.first);
+					F.setDisplayText(L("@x1 sits here.",randoFood.first));
+					F.setMaterial(randoFood.second.intValue());
+				}
+				else
 				switch(CMLib.dice().roll(1,5,0))
 				{
 				case 1:
