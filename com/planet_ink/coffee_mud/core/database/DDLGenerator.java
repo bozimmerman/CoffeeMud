@@ -1418,8 +1418,6 @@ public class DDLGenerator
 	 */
 	private String mapPortableToLocalType(final String portableType)
 	{
-		if(!typeMappings.containsKey(portableType))
-			System.out.println("STOP!");
 		return this.typeMappings.getOrDefault(portableType.toUpperCase(), portableType);
 	}
 
