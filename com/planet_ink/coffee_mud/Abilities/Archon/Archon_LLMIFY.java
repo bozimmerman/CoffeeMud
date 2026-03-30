@@ -320,7 +320,7 @@ public class Archon_LLMIFY extends ArchonSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		if(success && CMLib.protocol().isLLMInstalled())
+		if(success && CMLib.protocol().isLLMInstalled(ProtocolLibrary.LLMCat.LLMIFY.name()))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("An AI cloud surrounds <T-NAME>!"):L("^F<S-NAME> infect(s) <T-NAMESELF> with an LLM.^?"));
 			CMLib.color().fixSourceFightColor(msg);

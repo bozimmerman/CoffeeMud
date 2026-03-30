@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Installing and Using CoffeeMud 5.11</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
-</head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head><body>
 <!--lynx -dump -width=80 http://coffeemud.net:27777/pub/guides/InstallationGuide.html > install.txt-->
 <center>
 <table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
@@ -96,7 +94,7 @@ doing:<br />
 <p style="font-family: monospace;">systemctl status
 coffeemud</p>
 <p>If all looks well, you are successfully installed.</p>
-<span style="font-weight: bold;"></span>
+<span style="font-weight: bold;" />
 <p><span style="font-weight: bold;">Installing
 from the CoffeeMud*.zip Package (All)</span></p>
 <p>The first and most critical step in installing
@@ -229,7 +227,7 @@ the
 old manual way.</p>
 <p><span style="font-weight: bold;">The
 Auto-Magic Way</span></p>
-<p><span style="font-weight: bold;"></span>First,
+<p><span style="font-weight: bold;" />First,
 shut down your mud and back up your existing
 installation. &nbsp;I usually zip up the
 CoffeeMud directory (or use tar -z). &nbsp;Put your backup file
@@ -719,7 +717,7 @@ client port number,MPCPKEY and the control password: <br />
 ".:./lib/js.jar:./lib/jzlib.jar"
 -Xmx85m com.planet_ink.coffee_mud.application.MUDProxy</code><code>
 CMD 5555 mympcpkey 10101 LIST</code></p>
-<p></p>
+<p />
 <p><img style="width: 73px; height: 73px;" src="images/integrations.jpg" alt="packages" /> </p>
 <h2><a name="integrations">Integrations</a></h2>
 CoffeeMud supports several different integrations with external
@@ -833,7 +831,7 @@ changes. &nbsp;Set your javacord lib path:<br />
 </p>
 <div style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);">
 <div style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Courier New&quot;; font-size: 10pt; white-space: nowrap;">
-<p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">LANGCHAIN4J_JAR_PATH=/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">lib</span><span style="color: rgb(63, 127, 95);">/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">langchain4j-uber-1.2.0-beta8-SNAPSHOT.jar</span><span style="color: rgb(63, 127, 95);"></span></p>
+<p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">LANGCHAIN4J_JAR_PATH=/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">lib</span><span style="color: rgb(63, 127, 95);">/</span><span style="color: rgb(63, 127, 95); text-decoration: underline;">langchain4j-uber-1.2.0-beta8-SNAPSHOT.jar</span><span style="color: rgb(63, 127, 95);" /></p>
 </div>
 </div>
 ... and set your llm type to the nickname of the provider from the
@@ -978,8 +976,34 @@ above. &nbsp;For example, to call the 'timeout' method, you would
 put
 LANGCHAIN4J_TIMEOUT=30 in the INI file, and the mud will just figure
 out what you are trying to do.<br />
-<br />
-For actually using the LLM, see the MudChat guide, the "LLM" command
+      <br />
+The above will get you configured to use a single model for all
+available features.&nbsp; However, you may wish to have slightly fner
+control, including using different types or models for particular
+features, or disabling the use of the LLM on particular features.&nbsp;
+To do these things, you need to understand how to use CoffeeMud's LLM
+feature "categories".&nbsp; At the time of writing, these categories
+include: ARCHON, MUDCHAT, PERCOLATOR, MOBPROG, and LLMIFY.&nbsp; To
+disable the use of an LLM for a particular feature category, create an
+empty LANGCHAIN4J_LLM_TYPE field in your coffeemud.ini file, except put
+the category name after "LANGCHAIN4J".&nbsp; For example, to disable
+the PERCOLATOR feature, add the following to your coffeemud.ini file:<br />
+
+
+      <div style="padding: 0px 0px 0px 2px; background-color: rgb(255, 255, 255);">
+<div style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); font-family: &quot;Courier New&quot;; font-size: 10pt; white-space: nowrap;">
+<p style="background-color: rgb(232, 242, 254);"><span style="color: rgb(63, 127, 95);">LANGCHAIN4J_PERCOLATOR_LLM_TYPE=</span><span style="color: rgb(63, 127, 95); text-decoration: underline;" /><span style="color: rgb(63, 127, 95);" /></p>
+</div>
+      </div>
+The above entry will effectively disable LLM use for the PERCOLATOR feature.&nbsp;&nbsp; <br />
+      <br />
+Similarly, to specify different settings for a feature, you would use
+the category name in the INI entries for that feature as was shown
+above for LLM_TYPE.&nbsp; <br />
+      <br />
+So, that's everything you need to know about configuring CoffeeMud for
+LLM usage.&nbsp; In the game, to the LLM, see the MudChat guide, the
+"LLM" command
 for Archons, and the RandomAreas guide.<br />
 <h3>X.COM/Twitter</h3>
 <p>CoffeeMud supports sending standard chat channel
@@ -1102,7 +1126,7 @@ without needing to log into the mud and use the SHELL command.
 </tr>
 </tbody>
 </table>
-<p></p>
+<p />
 <img src="images/dir-guides.jpg" alt="guides" />
 <p>The <code>guides</code> directory is where
 you'll find this
@@ -2601,7 +2625,7 @@ problems.</p>
 </li>
 <li>Copy the connector/jdbc driver jar file over into
 your <code>c:\coffeemud\lib</code>
-folder.<code></code></li>
+folder.<code /></li>
 <li>
 <p>Now, open a DOS, Command, or shell window and enter
 these two commands: <br />
@@ -2616,7 +2640,7 @@ and password, like: &nbsp;<span style="font-family: monospace;"><br />
 mysql -uroot -pmypassword</span></p>
 </li>
 <li>
-<p><span style="font-family: monospace;"></span>Now
+<p><span style="font-family: monospace;" />Now
 enter: <br />
 <span style="font-family: monospace;">create
 database coffeemud;</span><br />
@@ -2687,7 +2711,7 @@ latest generally available free production version.</p>
 boot time, and not by the root user.</p>
 </li>
 <li>
-<p>Download and install the mysql jdbc api fro<span style="text-decoration: underline;"></span>m
+<p>Download and install the mysql jdbc api fro<span style="text-decoration: underline;" />m
 the same web site. &nbsp;Copy the
 extracted driver JAR file into&nbsp;<br />
 your <span style="font-family: monospace;">/CoffeeMud/lib</span>
@@ -3084,7 +3108,7 @@ underneath it which says<span style="font-weight: bold;"><span>&nbsp;</span><spa
 </ul>
 <ul>
 <li>Open up the <span style="font-style: italic;">output.txt</span>
-and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/parser_??_??.properties</span>
+and copy the contents, and then past it in&nbsp;<span /><span style="font-style: italic;">resources/parser_??_??.properties</span>
 under [command-word-processor], before the autoignore line.</li>
 </ul>
 <ul>
@@ -3103,7 +3127,7 @@ it.</li>
 </ul>
 </ul>
 <li>Go back into your CoffeeMud directory from a shell
-and enter:<span style="font-family: monospace;"></span></li>
+and enter:<span style="font-family: monospace;" /></li>
 <ul>
 <li><span style="font-family: monospace;">java
 com.planet_ink.coffee_mud.application.LocalizationHelper T USE &gt;
@@ -3119,7 +3143,7 @@ it which says<span style="font-weight: bold; font-family: monospace;"><span>&nbs
 <li>Remove the hash mark # so that it says&nbsp;<span style="font-weight: bold; font-family: monospace;">autoignore
 9999</span>. &nbsp;</li>
 <li>Open up the <span style="font-style: italic;">output.txt</span>
-and copy the contents, and then past it in&nbsp;<span></span><span style="font-style: italic;">resources/translation_??_??.properties</span>
+and copy the contents, and then past it in&nbsp;<span /><span style="font-style: italic;">resources/translation_??_??.properties</span>
 under [session-translation], before the autoignore line.</li>
 <li>For all the pasted lines that say <span style="font-family: monospace;"># REPLACEEXACT "old" with
 "new"</span>, translate all the <span style="font-family: monospace;">"new"</span>/with
@@ -3154,7 +3178,7 @@ speaking @x1."</span><br style="font-family: monospace;" />
 <p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;">You
 want to change those lines to <span style="font-family: monospace;">REPLACEEXACT</span>
 commands, while being careful to maintain case sensitivity, like this:<br />
-<span style="font-family: monospace;"></span></p>
+<span style="font-family: monospace;" /></p>
 <p style="color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;; font-size: medium; font-style: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; white-space: normal;"><span style="font-family: monospace;">REPLACEEXACT "You are now
 speaking @x1." WITH "Que vous parlez @x1."</span><br style="font-family: monospace;" />
 <span style="font-family: monospace;">REPLACEEXACT
@@ -3213,7 +3237,7 @@ your results, send them to me, and I'll include them in the
 distribution!<br />
 </span></li>
 </ul>
-<span style="font-family: &quot;Times New Roman&quot;;"></span><br />
+<span style="font-family: &quot;Times New Roman&quot;;" /><br />
 <br />
 <img src="images/nuked.jpg" alt="offline and shutdown applications" />
 <h2><a name="shutdown">The OffLine And

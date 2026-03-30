@@ -90,7 +90,7 @@ public class LLM extends StdCommand
 	public boolean securityCheck(final MOB mob)
 	{
 		return (mob.playerStats()!=null)
-				&& CMLib.protocol().isLLMInstalled()
+				&& CMLib.protocol().isLLMInstalled(ProtocolLibrary.LLMCat.ARCHON.name())
 				&& (CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN));
 	}
 

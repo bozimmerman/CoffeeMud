@@ -310,7 +310,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	private boolean isLLMSupported()
 	{
 		if(this.llmSupported == null)
-			this.llmSupported = Boolean.valueOf(CMLib.protocol().isLLMInstalled());
+			this.llmSupported = Boolean.valueOf(CMLib.protocol().isLLMInstalled(ProtocolLibrary.LLMCat.MUDCHAT.name()));
 		return this.llmSupported.booleanValue();
 	}
 
@@ -835,7 +835,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		if(addedChatEntries != null)
 			newEntries.addAll(addedChatEntries);
 		final PairList<ChattyGroup, Long> currGroups = getChatGroups(forMe,chatGroups);
-		final boolean isLLMActive = CMLib.protocol().isLLMInstalled();
+		final boolean isLLMActive = CMLib.protocol().isLLMInstalled(ProtocolLibrary.LLMCat.MUDCHAT.name());
 		for(final Iterator<ChattyGroup> i=currGroups.firstIterator();i.hasNext();)
 		{
 			for(final ChattyEntry e : i.next().entries)

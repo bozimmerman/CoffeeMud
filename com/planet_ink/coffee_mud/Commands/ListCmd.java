@@ -85,31 +85,31 @@ public class ListCmd extends StdCommand
 	private static final char[] GOOD_WIKI_CHARS = "\"\"()()!".toCharArray();
 	private static final char[] UNDER_WIKI_CHARS = "______!".toCharArray();
 
-	private enum WikiFlag
+	private enum ListFmtFlag
 	{
 		NO,
 		WIKILIST,
 		WIKIHELP
 	}
 
-	private WikiFlag getWikiFlagRemoved(final List<String> commands)
+	private ListFmtFlag getListFmtFlagRemoved(final List<String> commands)
 	{
 		if(commands == null)
-			return WikiFlag.NO;
+			return ListFmtFlag.NO;
 		for(final String s : commands)
 		{
 			if(s.equalsIgnoreCase("wiki"))
 			{
 				commands.remove(s);
-				return WikiFlag.WIKILIST;
+				return ListFmtFlag.WIKILIST;
 			}
 			if(s.equalsIgnoreCase("wikihelp"))
 			{
 				commands.remove(s);
-				return WikiFlag.WIKIHELP;
+				return ListFmtFlag.WIKIHELP;
 			}
 		}
-		return WikiFlag.NO;
+		return ListFmtFlag.NO;
 	}
 
 	private static class WorldFilter implements Filterer<Area>
@@ -599,7 +599,7 @@ public class ListCmd extends StdCommand
 	}
 
 	protected String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
-									  final WikiFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
+									  final ListFmtFlag wiki, final int col1, final int roomNameCol, final Set<String> uniq,
 									  final ShopKeeper SK, final boolean shopOnly)
 	{
 		final StringBuilder line = new StringBuilder("");
@@ -614,7 +614,7 @@ public class ListCmd extends StdCommand
 				return "";
 			uniq.add(chkName);
 		}
-		if(wiki == WikiFlag.WIKILIST)
+		if(wiki == ListFmtFlag.WIKILIST)
 		{
 			final String anam=((R!=null)&&(R.getArea() != null))?R.getArea().name():"";
 			line.append("*[["+wikiFix(E.name(),UNDER_WIKI_CHARS,true));
@@ -624,7 +624,7 @@ public class ListCmd extends StdCommand
 			return line.toString();
 		}
 		else
-		if(wiki == WikiFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.WIKIHELP)
 		{
 			line.append("==="+CMStrings.removeColors(E.name())+"===\n\r");
 			line.append("{{"+E.ID()+"Template");
@@ -682,8 +682,8 @@ public class ListCmd extends StdCommand
 		boolean exitOnly = false;
 		boolean zapperMask = false;
 		boolean zapperMask2 = false;
-		final WikiFlag wiki = getWikiFlagRemoved(commands);
-		final Set<String> uniqNames = (wiki==WikiFlag.NO)?null:new HashSet<String>();
+		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
+		final Set<String> uniqNames = (wiki==ListFmtFlag.NO)?null:new HashSet<String>();
 		MaskingLibrary.CompiledZMask compiledZapperMask=null;
 		String who="";
 		if(commands.size()>start)
@@ -746,7 +746,7 @@ public class ListCmd extends StdCommand
 			mobOnly=true;
 			zapperMask=true;
 			commands.remove(start);
-			if(wiki == WikiFlag.NO)
+			if(wiki == ListFmtFlag.NO)
 				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
 			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
 			rest="";
@@ -758,7 +758,7 @@ public class ListCmd extends StdCommand
 			itemOnly=true;
 			zapperMask=true;
 			commands.remove(start);
-			if(wiki == WikiFlag.NO)
+			if(wiki == ListFmtFlag.NO)
 				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
 			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
 			rest="";
@@ -771,7 +771,7 @@ public class ListCmd extends StdCommand
 			zapperMask2=true;
 			commands.remove(start);
 			rest=CMParms.combine(commands,start);
-			if(wiki == WikiFlag.NO)
+			if(wiki == ListFmtFlag.NO)
 				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
 		}
 		else
@@ -782,7 +782,7 @@ public class ListCmd extends StdCommand
 			zapperMask2=true;
 			commands.remove(start);
 			rest=CMParms.combine(commands,start);
-			if(wiki == WikiFlag.NO)
+			if(wiki == ListFmtFlag.NO)
 				lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
 		}
 		Room R = null;
@@ -2267,7 +2267,7 @@ public class ListCmd extends StdCommand
 		final boolean shortList=parms.contains("SHORT");
 		if(shortList)
 			parms.remove("SHORT");
-		final WikiFlag wiki = getWikiFlagRemoved(parms);
+		final ListFmtFlag wiki = getListFmtFlagRemoved(parms);
 		final String restRest=CMParms.combine(parms).trim();
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -2297,10 +2297,10 @@ public class ListCmd extends StdCommand
 			||(CMLib.english().containsString(R.name(), restRest))
 			||(CMLib.english().containsString(R.racialCategory(), restRest)))
 			{
-				if(wiki == WikiFlag.WIKILIST)
+				if(wiki == ListFmtFlag.WIKILIST)
 					lines.append("*[["+R.name()+"|"+R.name()+"]]\n\r");
 				else
-				if(wiki == WikiFlag.WIKIHELP)
+				if(wiki == ListFmtFlag.WIKIHELP)
 				{
 					String statAdj=R.getStatAdjDesc();
 					if(R.getTrainAdjDesc().length()>0)
@@ -2441,7 +2441,7 @@ public class ListCmd extends StdCommand
 	protected StringBuilder listCharClasses(final Session viewerS, Enumeration<CharClass> these, final List<String> commands)
 	{
 		boolean shortList=false;
-		final WikiFlag wiki=this.getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki=this.getListFmtFlagRemoved(commands);
 		for(final String c : commands)
 		{
 			if(c.equalsIgnoreCase("SHORT"))
@@ -2464,12 +2464,12 @@ public class ListCmd extends StdCommand
 		for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
 		{
 			final CharClass C=e.nextElement();
-			if(wiki==WikiFlag.WIKILIST)
+			if(wiki==ListFmtFlag.WIKILIST)
 			{
 				lines.append("*[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]]\n\r");
 			}
 			else
-			if(wiki==WikiFlag.WIKIHELP)
+			if(wiki==ListFmtFlag.WIKIHELP)
 			{
 				final Set<Integer> types=new STreeSet<Integer>(new Integer[]{
 					Integer.valueOf(Ability.ACODE_CHANT),
@@ -2604,7 +2604,7 @@ public class ListCmd extends StdCommand
 			if(c.equalsIgnoreCase("SHORT"))
 				shortList=true;
 		}
-		final WikiFlag wiki=this.getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki=this.getListFmtFlagRemoved(commands);
 		int column=0;
 		final List<String> raceCats=new ArrayList<String>();
 		Race R=null;
@@ -2624,7 +2624,7 @@ public class ListCmd extends StdCommand
 			lines.append(CMParms.toListString(sortedC));
 		}
 		else
-		if((wiki==WikiFlag.WIKILIST)||(wiki==WikiFlag.WIKIHELP))
+		if((wiki==ListFmtFlag.WIKILIST)||(wiki==ListFmtFlag.WIKIHELP))
 		{
 			for (final Object element : sortedB)
 			{
@@ -4080,11 +4080,11 @@ public class ListCmd extends StdCommand
 
 	protected String listExpertises(final Session viewerS, final List<String> commands)
 	{
-		final WikiFlag wiki = getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final String rest=(commands.size()<2)?"":CMParms.combine(commands,1).toUpperCase();
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
-		if(wiki==WikiFlag.WIKILIST)
+		if(wiki==ListFmtFlag.WIKILIST)
 		{
 			final Set<String> doneBases=new TreeSet<String>();
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
@@ -4102,7 +4102,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 		else
-		if(wiki==WikiFlag.WIKIHELP)
+		if(wiki==ListFmtFlag.WIKIHELP)
 		{
 			final Set<String> doneBases=new TreeSet<String>();
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
@@ -4189,17 +4189,17 @@ public class ListCmd extends StdCommand
 
 	protected String listSocials(final Session viewerS, final List<String> commands)
 	{
-		final WikiFlag wiki = getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
 		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
 		int col=0;
 		for(final String social : CMLib.socials().getSocialsBaseList())
 		{
 			final Social soc=CMLib.socials().fetchSocial(social,false);
-			if(wiki == WikiFlag.WIKILIST)
+			if(wiki == ListFmtFlag.WIKILIST)
 				buf.append("*[["+social+"|"+social+"]]\n\r");
 			else
-			if(wiki == WikiFlag.WIKIHELP)
+			if(wiki == ListFmtFlag.WIKIHELP)
 			{
 				final String targetNoneYouSee;
 				final String targetNoneOthersSee;
@@ -5035,7 +5035,7 @@ public class ListCmd extends StdCommand
 	{
 		String rest="";
 		MOB whoM=mob;
-		final WikiFlag wiki = getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
 		boolean time=false;
 		if(commands.size()>1)
 		{
@@ -5080,12 +5080,12 @@ public class ListCmd extends StdCommand
 		for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 		{
 			final String s=i.next();
-			if(wiki == WikiFlag.WIKILIST)
+			if(wiki == ListFmtFlag.WIKILIST)
 			{
 				commandList.append("*[["+s+"|"+s+"]]\n\r");
 			}
 			else
-			if(wiki == WikiFlag.WIKIHELP)
+			if(wiki == ListFmtFlag.WIKIHELP)
 			{
 				String help=CMLib.help().getHelpText(s,null,false,true);
 				if(help==null)
@@ -5373,7 +5373,7 @@ public class ListCmd extends StdCommand
 	{
 		int domain=0;
 		Enumeration<Ability> enumA = CMClass.abilities();
-		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki = this.getListFmtFlagRemoved(commands);
 		for(int i=1;i<commands.size();i++)
 		{
 			final String str=commands.get(i);
@@ -5437,7 +5437,7 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
-		if(wiki == WikiFlag.WIKILIST)
+		if(wiki == ListFmtFlag.WIKILIST)
 		{
 			if(title.length()==0)
 				s.println("===Abilities===");
@@ -5451,7 +5451,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().buildWikiList(sortedAs.elements(), ofType|domain).toString());
 		}
 		else
-		if(wiki == WikiFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.WIKIHELP)
 		{
 			final StringBuilder str=new StringBuilder("");
 			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
@@ -5629,8 +5629,8 @@ public class ListCmd extends StdCommand
 
 	protected void listBehaviors(final MOB mob, final Session s, final List<String> commands, String title)
 	{
-		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
-		if(wiki == WikiFlag.WIKILIST)
+		final ListFmtFlag wiki = this.getListFmtFlagRemoved(commands);
+		if(wiki == ListFmtFlag.WIKILIST)
 		{
 			if(title.length()==0)
 				title="Behaviors";
@@ -5638,7 +5638,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().buildWikiList(CMClass.behaviors(), 0).toString());
 		}
 		else
-		if(wiki == WikiFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.WIKIHELP)
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
@@ -5850,7 +5850,7 @@ public class ListCmd extends StdCommand
 		commands.remove(0);
 		List<String> sortBys=null;
 		List<String> colNames=null;
-		final WikiFlag wiki=getWikiFlagRemoved(commands);
+		final ListFmtFlag wiki=getListFmtFlagRemoved(commands);
 		if(commands.size()>0)
 		{
 			List<String> addTos=null;
@@ -6009,12 +6009,12 @@ public class ListCmd extends StdCommand
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
 			A.getIStat(Area.Stats.AVG_LEVEL); // kick off stat creation
-			if(wiki==WikiFlag.WIKILIST)
+			if(wiki==ListFmtFlag.WIKILIST)
 			{
 				str.append("*[["+A.name()+"|"+A.name()+"]]");
 			}
 			else
-			if(wiki==WikiFlag.WIKIHELP)
+			if(wiki==ListFmtFlag.WIKIHELP)
 			{
 				String currency = CMLib.beanCounter().getCurrency(A);
 				if((currency==null)||(currency.trim().length()==0))
@@ -6670,8 +6670,8 @@ public class ListCmd extends StdCommand
 			break;
 		case ABILITYDOMAINS:
 		{
-			final WikiFlag wiki=getWikiFlagRemoved(commands);
-			if(wiki == WikiFlag.NO)
+			final ListFmtFlag wiki=getListFmtFlagRemoved(commands);
+			if(wiki == ListFmtFlag.NO)
 				s.wraplessPrintln(CMParms.toListString(Ability.DOMAIN.DESCS));
 			else
 			{

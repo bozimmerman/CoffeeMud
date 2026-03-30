@@ -4072,10 +4072,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	public boolean isLLMInstalled()
+	public boolean isLLMInstalled(final String cat)
 	{
-		final Object llmModel = initializeLLMSession("");
-		return !(llmModel instanceof Long);
+		Object llmModel = initializeLLMSession(cat);
+		if(!(llmModel instanceof Long))
+			return true;
+		llmModel = initializeLLMSession("");
+		return (!(llmModel instanceof Long));
 	}
 
 	protected Object buildCMRagRetreiver() throws Exception

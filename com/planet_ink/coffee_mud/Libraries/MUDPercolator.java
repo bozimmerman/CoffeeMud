@@ -3838,7 +3838,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected boolean testCondition(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String condition, final XMLTag piece, final Map<String,Object> defined) throws PostProcessException
 	{
-		if(CMath.s_bool(piece.getParmValue("LLM"))&&(!CMLib.protocol().isLLMInstalled()))
+		if(CMath.s_bool(piece.getParmValue("LLM"))&&(!CMLib.protocol().isLLMInstalled(ProtocolLibrary.LLMCat.PERCOLATOR.name())))
 			return false;
 		if((condition == null)||(condition.length()==0))
 			return true;

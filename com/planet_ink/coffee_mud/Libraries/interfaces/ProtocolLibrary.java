@@ -288,10 +288,13 @@ public interface ProtocolLibrary extends CMLibrary
 	 * an LLM session, but no guarantee.
 	 *
 	 * @see ProtocolLibrary#createLLMSession(String, Integer)
+	 * @see ProtocolLibrary.LLMCat#name()
+	 * 
+	 * @param cat The LLM category, or "" for baseline
 	 *
 	 * @return true for LLM possibility
 	 */
-	public boolean isLLMInstalled();
+	public boolean isLLMInstalled(final String cat);
 
 	/**
 	 * Interface for interacting in an LLM session
