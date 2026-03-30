@@ -229,6 +229,8 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_MetalMold",true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterMycology",false,CMParms.parseSemicolons("Mycology(75)",true));
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 	}
 
