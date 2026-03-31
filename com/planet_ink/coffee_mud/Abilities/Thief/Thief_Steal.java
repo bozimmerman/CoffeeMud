@@ -252,7 +252,7 @@ public class Thief_Steal extends ThiefSkill
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;
-					str=L("<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear @x1 has that in <T-HIS-HER> inventory!",target.charStats().heshe());
+					str=L("<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear <T-HE-SHE> has that in <T-HIS-HER> inventory!");
 				}
 			}
 
