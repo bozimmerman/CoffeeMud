@@ -41,6 +41,25 @@ public class Skill_Disguise extends BardSkill
 	}
 
 	private final static String localizedName = CMLib.lang().L("Disguise");
+	
+	private static enum What
+	{
+		WEIGHT(2),
+		LEVEL(10),
+		SEX(4),
+		RACE(14),
+		HEIGHT(6),
+		NAME(8),
+		CLASS(0),
+		ALIGNMENT(18),
+		AGE(12)
+		;
+		public int level;
+		private What(int lvl)
+		{
+			this.level = lvl;
+		}
+	}
 
 	@Override
 	public String name()
@@ -52,12 +71,9 @@ public class Skill_Disguise extends BardSkill
 	public String description()
 	{
 		final StringBuffer ret=new StringBuffer("");
-		for (final String what : whats)
-			if(what==null)
-				ret.append(". ");
-			else
-				ret.append(what+" ");
-		return ret.toString();
+		for (final What what : What.values())
+			ret.append(what.name()+" ");
+		return ret.toString()+".";
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(In Disguise)");
@@ -99,16 +115,12 @@ public class Skill_Disguise extends BardSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;
 	}
 
-	protected final static String[] whats={
-		//0!	 1! 	 2!    3!     4!	   5!     6!	  7!		  8!
-		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT","AGE"};
-	protected final static int[] levels={2,10,4,14,6,8,0,18,12};
-	protected String[] values=new String[whats.length];
+	protected String[] values=new String[What.values().length];
 
 	@Override
 	protected void cloneFix(final Ability E)
 	{
-		values=new String[whats.length];
+		values=new String[What.values().length];
 		for(int i=0;i<values.length;i++)
 			values[i]=null;
 	}
@@ -117,10 +129,10 @@ public class Skill_Disguise extends BardSkill
 	public String text()
 	{
 		final StringBuilder str=new StringBuilder("");
-		for(int i=0;i<whats.length;i++)
+		for(int i=0;i<What.values().length;i++)
 		{
 			if(values[i]!=null)
-				str.append(" ").append(whats[i]).append("=\"").append(values[i]).append("\"");
+				str.append(" ").append(What.values()[i].name()).append("=\"").append(values[i]).append("\"");
 		}
 		return str.toString();
 	}
@@ -128,9 +140,9 @@ public class Skill_Disguise extends BardSkill
 	@Override
 	public void setMiscText(final String txt)
 	{
-		values=new String[whats.length];
+		values=new String[What.values().length];
 		for(int i=0;i<values.length;i++)
-			values[i] = CMParms.getParmStr(txt, whats[i], null);
+			values[i] = CMParms.getParmStr(txt, What.values()[i].name(), null);
 	}
 
 	@Override
@@ -246,28 +258,28 @@ public class Skill_Disguise extends BardSkill
 			return true;
 		}
 		final String what=commands.get(0);
-		int which=-1;
-		for(int i=0;i<whats.length;i++)
+		What which=null;
+		for(int i=0;i<What.values().length;i++)
 		{
-			if(whats[i].startsWith(what.toUpperCase()))
-				which=i;
+			if(What.values()[i].name().startsWith(what.toUpperCase()))
+				which=What.values()[i];
 		}
-		if(which<0)
+		if(which==null)
 		{
 			mob.tell(L("Disguise what? '@x1' is not a valid choice.  Valid choices are: @x2.",what,validChoices));
 			return false;
 
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,this)>0)
-		   &&((CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob))<levels[which]))
+		   &&((CMLib.ableMapper().qualifyingClassLevel(mob,this)+getXLEVELLevel(mob))<which.level))
 		{
-			mob.tell(L("You must have @x1 levels in this skill to use that disguise.",""+levels[which]));
+			mob.tell(L("You must have @x1 levels in this skill to use that disguise.",""+which.level));
 			return false;
 		}
 		commands.remove(0);
 		if(commands.size()==0)
 		{
-			mob.tell(L("Disguise @x1 in what way?  Be more specific.",whats[which].toLowerCase()));
+			mob.tell(L("Disguise @x1 in what way?  Be more specific.",which.name().toLowerCase()));
 			return false;
 		}
 		String how=CMStrings.removeColors(CMParms.combine(commands,0));
@@ -275,7 +287,7 @@ public class Skill_Disguise extends BardSkill
 		int adjustment=0;
 		switch(which)
 		{
-		case 0: //weight
+		case WEIGHT:
 		{
 			if(CMath.s_int(how)<=0)
 			{
@@ -288,7 +300,7 @@ public class Skill_Disguise extends BardSkill
 			adjustment=-((int)Math.round(CMath.div(x,mob.basePhyStats().weight())*100.0));
 			break;
 		}
-		case 1: // level
+		case LEVEL:
 			if((CMath.s_int(how)<=0)||CMath.s_int(how)>100000)
 			{
 				mob.tell(L("You cannot disguise your level as @x1!",how));
@@ -296,7 +308,7 @@ public class Skill_Disguise extends BardSkill
 			}
 			how=Integer.toString(CMath.s_int(how));
 			break;
-		case 2: // sex
+		case SEX:
 			if(how.toUpperCase().startsWith("M"))
 				how="male";
 			else
@@ -317,7 +329,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			break;
-		case 3: // race
+		case RACE:
 			{
 				final Race R=CMClass.getRace(how);
 				if((R==null)
@@ -331,7 +343,7 @@ public class Skill_Disguise extends BardSkill
 				how=CMClass.getRace(how).name();
 				break;
 			}
-		case 4: // height
+		case HEIGHT:
 		{
 			if(CMath.s_int(how)<=0)
 			{
@@ -344,9 +356,14 @@ public class Skill_Disguise extends BardSkill
 			adjustment=-((int)Math.round(CMath.div(x,mob.phyStats().height())*100.0));
 			break;
 		}
-		case 5: // name
+		case NAME:
 		{
-			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0)||(how.indexOf('@')>=0)||(how.indexOf('%')>=0)||(how.indexOf('\\')>=0))
+			if((how.indexOf(' ')>=0)
+			||(how.indexOf('<')>=0)
+			||(how.indexOf('@')>=0)
+			||(how.indexOf('%')>=0)
+			||(how.indexOf('\\')>=0))
+				// TODO: also filter unicode?
 			{
 				mob.tell(L("Your disguise name may not have a space in it, or illegal characters."));
 				return false;
@@ -381,7 +398,7 @@ public class Skill_Disguise extends BardSkill
 			}
 			break;
 		}
-		case 6: // class
+		case CLASS:
 			{
 				final CharClass C=CMClass.findCharClass(how);
 				if((C==null)
@@ -394,7 +411,7 @@ public class Skill_Disguise extends BardSkill
 				how=CMStrings.capitalizeAndLower(how);
 				break;
 			}
-		case 7: // alignment
+		case ALIGNMENT:
 		{
 			if((!how.equalsIgnoreCase("good"))&&(!how.equalsIgnoreCase("evil")))
 			{
@@ -403,7 +420,7 @@ public class Skill_Disguise extends BardSkill
 			}
 			break;
 		}
-		case 8: // age
+		case AGE:
 		{
 			if((CMath.s_int(how)<=0)||(CMath.s_int(how)>100000))
 			{
@@ -435,7 +452,7 @@ public class Skill_Disguise extends BardSkill
 					A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 				if(A!=null)
 				{
-					A.values[which]=how;
+					A.values[which.ordinal()]=how;
 					A.makeLongLasting();
 				}
 				mob.recoverCharStats();
