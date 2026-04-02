@@ -82,6 +82,12 @@ public class SelfInvesting extends StdSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
 	public long flags()
 	{
 		return super.flags() | Ability.FLAG_NOORDERING;

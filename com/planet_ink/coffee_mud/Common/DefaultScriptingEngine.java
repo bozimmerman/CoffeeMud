@@ -14236,6 +14236,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return CMLib.masking().maskCheck(t1, P, false)?101:0;
 	}
 
+	protected int getBottomScriptOfType(final Environmental host, int triggerCode)
+	{
+		final List<SubScript> scripts=getScripts(host);
+		for(int v1=scripts.size()-1;v1>=0;v1--)
+		{
+			SubScript script1=scripts.get(v1);
+			if(script1.size()<1)
+				continue;
+			final int triggerCode1=script1.getTriggerCode();
+			if(triggerCode1 == triggerCode)
+				return v1;
+		}
+		return -1;
+	}
+	
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
