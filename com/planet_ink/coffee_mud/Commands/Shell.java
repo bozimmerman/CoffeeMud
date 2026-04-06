@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -62,8 +63,9 @@ public class Shell extends StdCommand
 		SEARCHTEXT('&',"SEARCHTEXT","GREP","ST"),
 		JRUN(':',"EXEC","JRUN"),
 		EDIT('/',"EDIT"),
+		COMMAND('_',"COMMAND","CMD"),
 		MOVE('~',"MOVE","MV"),
-		COMPAREFILES('?',"COMPAREFILES","DIFF","CF")
+		COMPAREFILES('=',"COMPAREFILES","DIFF","CF")
 		;
 		public String c;
 		public String[] rest;
@@ -242,17 +244,61 @@ public class Shell extends StdCommand
 		return null;
 	}
 
+	public boolean redirect(final MOB mob, final String pwd, 
+						    final List<String> fromCommands, final List<String> toFile, 
+						    final boolean append, final int metaFlags) throws IOException
+	{
+		final String filename=CMParms.combine(toFile,0);
+		CMFile file=new CMFile(incorporateBaseDir(pwd,filename),mob);
+		if((!file.canWrite())
+		||(file.isDirectory()))
+		{
+			mob.tell(L("^xError: You are not authorized to create that file.^N"));
+			return false;
+		}
+		if(!append)
+		{
+			file.delete();
+			file=new CMFile(incorporateBaseDir(pwd,filename),mob);
+		}
+		final Session sess = mob.session();
+		try
+		{
+			final Session sessF=(Session)CMClass.getCommon("FakeSession");
+			sessF.setMob(mob); // who to open the file as
+			sessF.initialize(null,filename);
+			sessF.setMob(mob);
+			sessF.setStat("FAKE", "false");
+			sessF.setFakeInput("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+			mob.setSession(sessF);
+			return execute(mob,fromCommands, metaFlags);
+		}
+		finally
+		{
+			mob.setSession(sess);
+			sess.setMob(mob);
+		}
+	}
+	
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String pwd=(pwds.containsFirst(mob))?(String)pwds.get(pwds.indexOfFirst(mob)).second:"";
+		int redirect = commands.indexOf(">");
+		if((redirect > 0)&&(redirect < commands.size()-1))
+			return redirect(mob, pwd, commands.subList(0, redirect), commands.subList(redirect+1, commands.size()),false,metaFlags);
+		redirect = commands.indexOf(">>");
+		if((redirect > 0)&&(redirect < commands.size()-1))
+			return redirect(mob, pwd, commands.subList(0, redirect), commands.subList(redirect+1, commands.size()),true,metaFlags);
+
 		commands.remove(0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("Current directory: /@x1",pwd));
 			return false;
 		}
+		
 		String first=commands.get(0).toUpperCase();
 		final StringBuffer allcmds=new StringBuffer("");
 		SubCmds cmd = null;
@@ -617,6 +663,45 @@ public class Shell extends StdCommand
 					return false;
 				}
 				mob.tell(L("@x1 deleted.",desc(CF)));
+			}
+			break;
+		}
+		case COMMAND: // command
+		{
+			if(commands.size()<2)
+			{
+				mob.tell(L("^xError  : command must be specified!^N"));
+				return false;
+			}
+			commands.remove(0);
+			List<String> parsedInput = new XVector<String>(commands);
+			final PlayerStats pStats = mob.playerStats();
+			if((parsedInput.size()>0)&&(mob!=null))
+			{
+				final String firstWord=parsedInput.get(0);
+				final String rawAliasDefinition=(pStats!=null)?pStats.getAlias(firstWord):"";
+				final List<List<String>> executableCommands=new LinkedList<List<String>>();
+				if(rawAliasDefinition.length()>0)
+				{
+					parsedInput.remove(0);
+					final boolean[] echo = new boolean[1];
+					CMLib.utensils().deAlias(rawAliasDefinition, parsedInput, executableCommands, echo);
+				}
+				else
+					executableCommands.add(parsedInput);
+				mob.setActions(0.0);
+				for(final Iterator<List<String>> x=executableCommands.iterator();x.hasNext();)
+				{
+					parsedInput=x.next();
+					final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(parsedInput);
+					for(int m=0;m<MORE_CMDS.size();m++)
+						mob.enqueCommand(MORE_CMDS.get(m),MUDCmdProcessor.METAFLAG_INORDER,0);
+				}
+				mob.setActions(99);
+				int tries=99;
+				while(mob.dequeCommand() && (--tries>0))
+					mob.setActions(99);
+				mob.setActions(0);
 			}
 			break;
 		}

@@ -14,6 +14,7 @@
 12. New Scriptable triggers: AGE_PROG, FOLLOW_PROG, UNFOLLOW_PROG
 13. New skills: Thrown Weapon Specialization
 14. LLM settings now support categories, to disable or alter LLM subsystems.
+15. SHELL now has redirection > >>, and ability to run normal commands (for redirection)
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

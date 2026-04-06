@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMStrings;
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.MiniJSON;
 import com.planet_ink.coffee_mud.core.collections.XLinkedList;
@@ -56,6 +57,7 @@ public class FakeSession implements Session
 	protected MOB					mob			= null;
 	protected boolean				stripSnoop	= false;
 	protected boolean				stripCRLF	= false;
+	protected boolean				isFake		= true;
 	protected Set<Integer>			telnet		= new HashSet<Integer>();
 
 	protected LinkedList<List<String>>inputV	= new XLinkedList<List<String>>(new Vector<String>());
@@ -123,7 +125,7 @@ public class FakeSession implements Session
 		if (groupName.equalsIgnoreCase("MEMORY"))
 			bout = new ByteArrayOutputStream();
 		else
-			theFile = new CMFile(groupName, null, CMFile.FLAG_LOGERRORS);
+			theFile = new CMFile(groupName, mob, CMFile.FLAG_LOGERRORS);
 		return true;
 	}
 
@@ -207,7 +209,7 @@ public class FakeSession implements Session
 	@Override
 	public boolean isFake()
 	{
-		return true;
+		return isFake;
 	}
 
 	@Override
@@ -793,10 +795,13 @@ public class FakeSession implements Session
 		if(code != null)
 		{
 			if(code.equalsIgnoreCase("STRIPSNOOP"))
-				this.stripSnoop=true;
+				this.stripSnoop=CMath.s_bool(val);
 			else
 			if(code.equalsIgnoreCase("STRIPCRLF"))
-				this.stripCRLF=true;
+				this.stripCRLF=CMath.s_bool(val);
+			else
+			if(code.equalsIgnoreCase("FAKE"))
+				this.isFake=CMath.s_bool(val);
 		}
 	}
 
