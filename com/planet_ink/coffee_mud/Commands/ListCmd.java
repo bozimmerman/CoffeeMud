@@ -89,7 +89,9 @@ public class ListCmd extends StdCommand
 	{
 		NO,
 		WIKILIST,
-		WIKIHELP
+		WIKIHELP,
+		JSONLIST,
+		JSONHELP
 	}
 
 	private ListFmtFlag getListFmtFlagRemoved(final List<String> commands)
@@ -107,6 +109,16 @@ public class ListCmd extends StdCommand
 			{
 				commands.remove(s);
 				return ListFmtFlag.WIKIHELP;
+			}
+			if(s.equalsIgnoreCase("json"))
+			{
+				commands.remove(s);
+				return ListFmtFlag.JSONLIST;
+			}
+			if(s.equalsIgnoreCase("jsonhelp"))
+			{
+				commands.remove(s);
+				return ListFmtFlag.JSONHELP;
 			}
 		}
 		return ListFmtFlag.NO;
@@ -585,6 +597,80 @@ public class ListCmd extends StdCommand
 		return xml.toString();
 	}
 
+	protected MiniJSON.JSONObject getSpecialItemTagsJSON(final Item I)
+	{
+		final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+		obj.put("Weight", Integer.valueOf(I.phyStats().weight()));
+		if((I instanceof RawMaterial)&&(((RawMaterial)I).getSubType().length()>0))
+			obj.put("Material", ((RawMaterial)I).getSubType().toLowerCase());
+		else
+			obj.put("Material", RawMaterial.CODES.NAME(I.material()).toLowerCase());
+		if(I instanceof Container)
+		{
+			if(((Container)I).capacity()>=I.phyStats().weight())
+				obj.put("Capacity", Integer.valueOf(((Container)I).capacity() - I.basePhyStats().weight()));
+			if(((Container)I).capacity()>=I.phyStats().weight())
+				obj.put("Contains", CMLib.commands().makeContainerTypes((Container)I));
+		}
+		if((I instanceof Drink)
+		&&(!CMath.bset(I.material(), RawMaterial.MATERIAL_LIQUID))
+		&&(!CMath.bset(I.material(), RawMaterial.MATERIAL_GAS)))
+		{
+			obj.put("LiquidRemaining", Integer.valueOf(((Drink)I).liquidRemaining()));
+			obj.put("Quench", Integer.valueOf(((Drink)I).thirstQuenched()));
+		}
+		if((I instanceof Food)
+		&&(((Food)I).nourishment()>0))
+		{
+			obj.put("Nourishment", Integer.valueOf(((Food)I).nourishment()));
+			obj.put("BiteSize", Integer.valueOf(((Food)I).bite()));
+		}
+		if(I instanceof Ammunition)
+			obj.put("AmmoType", ((Ammunition)I).ammunitionType());
+		if(I instanceof Weapon)
+		{
+			if((I.rawLogicalAnd())&&CMath.bset(I.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
+				obj.put("WeaponHands", "TWO");
+			else
+				obj.put("WeaponHands", "ONE");
+			obj.put("WeaponClass", CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]));
+			obj.put("DamageType", CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]));
+			if((I instanceof AmmunitionWeapon)
+			&&((AmmunitionWeapon)I).requiresAmmunition())
+				obj.put("AmmoType", ((AmmunitionWeapon)I).ammunitionType());
+		}
+		if(I instanceof Armor)
+		{
+			if(I.phyStats().height()>0)
+				obj.put("Size", Integer.valueOf(I.phyStats().height()));
+			if((I.rawProperLocationBitmap()!=Wearable.WORN_HELD)&&(I.rawProperLocationBitmap()!=(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
+			{
+				final StringBuilder wornOn = new StringBuilder("");
+				final Wearable.CODES codes = Wearable.CODES.instance();
+				for(final long wornCode : codes.all())
+				{
+					if((wornCode != Wearable.IN_INVENTORY)
+					&&(CMath.bset(I.rawProperLocationBitmap(),wornCode)))
+					{
+						if(wornOn.length() > 0)
+							wornOn.append(",");
+						wornOn.append(codes.name(wornCode));
+					}
+				}
+				obj.put("WornOn", wornOn.toString());
+				final short layer=((Armor)I).getClothingLayer();
+				if(layer < 0)
+					obj.put("Layer", "BELOW");
+				else
+				if(layer > 0)
+					obj.put("Layer", "OVER");
+				else
+					obj.put("Layer", "");
+			}
+		}
+		return obj;
+	}
+
 	protected String wikiFix(String s, final char[] newChars, final boolean noSpaces)
 	{
 		if(s!=null)
@@ -596,6 +682,54 @@ public class ListCmd extends StdCommand
 				s = s.replace(' ','_');
 		}
 		return s;
+	}
+
+	private String toWikiTemplate(final String templateName, final MiniJSON.JSONObject fields, final String... wikiFix)
+	{
+		final StringBuilder sb = new StringBuilder("{{").append(templateName);
+		int star = CMParms.indexOfStartsWith(wikiFix, "*");
+		for(final java.util.Map.Entry<String,Object> e : fields.entrySet())
+		{
+			sb.append("|").append(e.getKey()).append("=");
+			Object val = e.getValue();
+			if(val == null)
+				continue;
+			val = val.toString();
+			if(wikiFix == null)
+				sb.append(val);
+			else
+			{
+				int x = star >= 0 ? star : CMParms.indexOfStartsWith(wikiFix, e.getKey());
+				if(x<0)
+					sb.append(val);
+				else
+				{
+					int len = star >= 0 ? 1 : e.getKey().length();
+					String args = wikiFix[x].substring(len);
+					char[] set = GOOD_WIKI_CHARS;
+					if(args.startsWith("U"))
+						set = UNDER_WIKI_CHARS;
+					boolean nospace=args.endsWith("T");
+					sb.append(wikiFix((String)val, set, nospace));
+				}
+				
+			}
+		}
+		sb.append("}}");
+		return sb.toString();
+	}
+
+	private String buildJSONArray(final List<MiniJSON.JSONObject> items)
+	{
+		final StringBuilder sb = new StringBuilder("[");
+		for(int i = 0; i < items.size(); i++)
+		{
+			if(i > 0)
+				sb.append(",");
+			sb.append(items.get(i).toString());
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 
 	protected String getAreaStuffLine(final Room R, final MOB mob, final Environmental E, final Environmental cE,
@@ -624,21 +758,39 @@ public class ListCmd extends StdCommand
 			return line.toString();
 		}
 		else
-		if(wiki == ListFmtFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.JSONLIST)
 		{
-			line.append("==="+CMStrings.removeColors(E.name())+"===\n\r");
-			line.append("{{"+E.ID()+"Template");
-			line.append("|Name="+wikiFix(E.name(),GOOD_WIKI_CHARS,false));
-			line.append("|Display="+wikiFix(E.displayText(),GOOD_WIKI_CHARS,false));
-			line.append("|Description="+wikiFix(E.description(),GOOD_WIKI_CHARS,false));
+			final String anam=((R!=null)&&(R.getArea() != null))?R.getArea().name():"";
+			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+			obj.put("Name", E.name().replace(' ','_'));
+			obj.put("Context", anam);
+			obj.put("Display", E.name());
+			return obj.toString()+",";
+		}
+		else
+		if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
+		{
+			final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+			fields.put("Name", E.name());
+			fields.put("Display", E.displayText());
+			fields.put("Description", E.description());
 			if(E instanceof Physical)
-				line.append("|Level="+((Physical)E).phyStats().level());
+				fields.put("Level", Integer.valueOf(((Physical)E).phyStats().level()));
 			if(E instanceof Item)
-				line.append(this.getSpecialItemTags((Item)E));
-			//for(final String stat : E.getStatCodes())
-			//	line.append("|"+stat+"="+wikiFix(E.getStat(stat),GOOD_WIKI_CHARS,false));
-			line.append("}}\n\r");
-			return line.toString();
+			{
+				final MiniJSON.JSONObject itemFields = getSpecialItemTagsJSON((Item)E);
+				for(final java.util.Map.Entry<String,Object> entry : itemFields.entrySet())
+					fields.put(entry.getKey(), entry.getValue());
+			}
+			if(wiki == ListFmtFlag.WIKIHELP)
+			{
+				line.append("==="+E.name()+"===\n\r");
+				line.append(toWikiTemplate(E.ID()+"Template", fields,"*"));
+				line.append("\n\r");
+				return line.toString();
+			}
+			else
+				return fields.toString()+",";
 		}
 		final String name;
 		if(E instanceof Exit)
@@ -954,6 +1106,13 @@ public class ListCmd extends StdCommand
 		}
 		catch(final NoSuchElementException nse)
 		{
+		}
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+		{
+			String content = lines.toString().trim();
+			if(content.endsWith(","))
+				content = content.substring(0, content.length()-1);
+			return new StringBuffer("["+content+"]");
 		}
 		return lines;
 	}
@@ -2268,6 +2427,7 @@ public class ListCmd extends StdCommand
 		if(shortList)
 			parms.remove("SHORT");
 		final ListFmtFlag wiki = getListFmtFlagRemoved(parms);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		final String restRest=CMParms.combine(parms).trim();
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -2300,7 +2460,15 @@ public class ListCmd extends StdCommand
 				if(wiki == ListFmtFlag.WIKILIST)
 					lines.append("*[["+R.name()+"|"+R.name()+"]]\n\r");
 				else
-				if(wiki == ListFmtFlag.WIKIHELP)
+				if(wiki == ListFmtFlag.JSONLIST)
+				{
+					final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+					obj.put("Name", R.name());
+					obj.put("Display", R.name());
+					jsonItems.add(obj);
+				}
+				else
+				if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
 				{
 					String statAdj=R.getStatAdjDesc();
 					if(R.getTrainAdjDesc().length()>0)
@@ -2319,16 +2487,28 @@ public class ListCmd extends StdCommand
 						for(final Ability A : R.racialAbilities(null))
 						{
 							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							{
+								if(wiki==ListFmtFlag.WIKIHELP) langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+								else langStr+=((langStr.length()>0)?", ":"")+A.name();
+							}
 							else
-								rableStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							{
+								if(wiki==ListFmtFlag.WIKIHELP) rableStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+								else rableStr+=((rableStr.length()>0)?", ":"")+A.name();
+							}
 						}
 						for(final Ability A : R.racialEffects(null))
 						{
 							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							{
+								if(wiki==ListFmtFlag.WIKIHELP) langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+								else langStr+=((langStr.length()>0)?", ":"")+A.name();
+							}
 							else
-								effStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+							{
+								if(wiki==ListFmtFlag.WIKIHELP) effStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+								else effStr+=((effStr.length()>0)?", ":"")+A.name();
+							}
 						}
 						final QuintVector<String,Integer,Integer,Boolean,String> cables=R.culturalAbilities();
 						if(cables != null)
@@ -2339,9 +2519,15 @@ public class ListCmd extends StdCommand
 								if(A!=null)
 								{
 									if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-										langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+									{
+										if(wiki==ListFmtFlag.WIKIHELP) langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+										else langStr+=((langStr.length()>0)?", ":"")+A.name();
+									}
 									else
-										cultStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+									{
+										if(wiki==ListFmtFlag.WIKIHELP) cultStr+=("[["+A.ID()+"|"+A.name()+"]] ");
+										else cultStr+=((cultStr.length()>0)?", ":"")+A.name();
+									}
 								}
 							}
 						}
@@ -2386,7 +2572,10 @@ public class ListCmd extends StdCommand
 							if(((CMProps.isTheme(C.availabilityCode())))
 							&&(C.isAllowedRace(R)))
 							{
-								qualClassesStr+="[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]] ";
+								if(wiki==ListFmtFlag.WIKIHELP)
+									qualClassesStr+="[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]] ";
+								else
+									qualClassesStr+=((qualClassesStr.length()>0)?", ":"")+C.name();
 							}
 						}
 					}
@@ -2402,24 +2591,29 @@ public class ListCmd extends StdCommand
 						if((wearLoc!=0)&&((R.forbiddenWornBits()&wearLoc)==0))
 							wearLocs += " " + Wearable.CODES.NAME(wearLoc);
 					}
-					final String helpEOL=CMStrings.getEOL((help!=null)?help.toString():"","\n\r");
-					lines.append("\n\r=="+R.name()+"==\n\r");
-					lines.append("{{RaceTemplate"
-							+ "|Name="+R.name()
-							+ "|Description="+CMStrings.replaceAll((help!=null)?help.toString():"",helpEOL,helpEOL+helpEOL)
-							+ "|Statadj="+statAdj
-							+ "|RacialAbilities="+rableStr
-							+ "|CulturalAbilities="+cultStr
-							+ "|RacialEffects="+effStr
-							+ "|BonusAbilities="+ableStr
-							+ "|BonusLanguages="+langStr
-							+ "|Immunities="+immunoStr
-							+ "|LifeExpectancy="+lifeExpStr
-							+ "|Startingequipment="+eqStr
-							+ "|WearLocs="+wearLocs
-							+ "|ExpMod="+R.getXPAdjustment()+"%"
-							+ "|Qualifyingclasses="+qualClassesStr
-							+ "}}\n\r");
+					final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+					fields.put("Name", R.name());
+					fields.put("Description", CMStrings.replaceAll(help, CMStrings.getEOL(help,"\n\r"), "\n"));
+					fields.put("Statadj", statAdj);
+					fields.put("RacialAbilities", rableStr);
+					fields.put("CulturalAbilities", cultStr);
+					fields.put("RacialEffects", effStr);
+					fields.put("BonusAbilities", ableStr);
+					fields.put("BonusLanguages", langStr);
+					fields.put("Immunities", immunoStr);
+					fields.put("LifeExpectancy", lifeExpStr);
+					fields.put("Startingequipment", eqStr);
+					fields.put("WearLocs", wearLocs.trim());
+					fields.put("ExpMod", R.getXPAdjustment()+"%");
+					fields.put("Qualifyingclasses", qualClassesStr);
+					if(wiki == ListFmtFlag.WIKIHELP)
+					{
+						lines.append("\n\r=="+R.name()+"==\n\r");
+						lines.append(toWikiTemplate("RaceTemplate", fields));
+						lines.append("\n\r");
+					}
+					else
+						jsonItems.add(fields);
 				}
 				else
 				{
@@ -2434,6 +2628,8 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+			lines.append(buildJSONArray(jsonItems));
 		lines.append("\n\r");
 		return lines;
 	}
@@ -2449,6 +2645,7 @@ public class ListCmd extends StdCommand
 		}
 		these = new FilteredEnumeration<CharClass>(CMClass.charClasses(),new NameIdFilter<CharClass>(CMParms.combine(commands,1)));
 		final StringBuilder lines=new StringBuilder("");
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		if(!these.hasMoreElements())
 			return lines;
 		int column=0;
@@ -2469,7 +2666,16 @@ public class ListCmd extends StdCommand
 				lines.append("*[["+C.name()+"("+C.baseClass()+")|"+C.name()+"]]\n\r");
 			}
 			else
-			if(wiki==ListFmtFlag.WIKIHELP)
+			if(wiki==ListFmtFlag.JSONLIST)
+			{
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("Name", C.name());
+				obj.put("Context", C.baseClass());
+				obj.put("Display", C.name());
+				jsonItems.add(obj);
+			}
+			else
+			if(wiki==ListFmtFlag.WIKIHELP || wiki==ListFmtFlag.JSONHELP)
 			{
 				final Set<Integer> types=new STreeSet<Integer>(new Integer[]{
 					Integer.valueOf(Ability.ACODE_CHANT),
@@ -2513,7 +2719,12 @@ public class ListCmd extends StdCommand
 					final Race R=r.nextElement();
 					if(CMLib.login().isAvailableRace(R)
 					&&(C.isAllowedRace(R)))
-						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
+					{
+						if(wiki==ListFmtFlag.WIKIHELP)
+							raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
+						else
+							raceStr.append((raceStr.length()>0)?", ":"").append(R.name());
+					}
 				}
 				final StringBuilder langStr=new StringBuilder("");
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -2522,33 +2733,37 @@ public class ListCmd extends StdCommand
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
 					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())!=SecretFlag.PUBLIC))
-						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
+					{
+						if(wiki==ListFmtFlag.WIKIHELP)
+							langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
+						else
+							langStr.append((langStr.length()>0)?", ":"").append(A.name());
+					}
 				}
-				final String helpEOL=CMStrings.getEOL((help!=null)?help.toString():"","\n\r");
-				lines.append("\n\r=="+C.name()+"==\n\r");
-				lines.append("{{ClassTemplate"
-						+ "|Name="+C.name()
-						+ "|Description="+CMStrings.replaceAll((help!=null)?help.toString():"",helpEOL,helpEOL+helpEOL)
-						+ "|PrimeStat="+C.getPrimeStatDesc()
-						+ "|Qualifications="+C.getStatQualDesc()
-						+ "|Practices="+C.getPracticeDesc()
-						+ "|Trains="+C.getTrainDesc()
-						+ "|Hitpoints="+C.getHitPointDesc()
-						+ "|Mana="+C.getManaDesc()
-						+ "|Movement="+C.getMovementDesc()
-						+ "|Attack="+C.getAttackDesc()
-						+ "|Damage="+C.getDamageDesc()
-						+ "|MaxStat="+C.getMaxStatDesc()
-						+ "|Bonuses="+C.getOtherBonusDesc()
-						+ "|Weapons="+C.getWeaponLimitDesc()
-						+ "|Armor="+C.getArmorLimitDesc()
-						+ "|Limitations="+C.getOtherLimitsDesc()
-						+ "|StartingEq="+outfit.toString()
-						+ "|Races="+raceStr.toString()
-						+ "|Languages="+langStr.toString());
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("Name", C.name());
+				fields.put("Description", (help!=null)?help.toString():"");
+				fields.put("PrimeStat", C.getPrimeStatDesc());
+				fields.put("Qualifications", C.getStatQualDesc());
+				fields.put("Practices", C.getPracticeDesc());
+				fields.put("Trains", C.getTrainDesc());
+				fields.put("Hitpoints", C.getHitPointDesc());
+				fields.put("Mana", C.getManaDesc());
+				fields.put("Movement", C.getMovementDesc());
+				fields.put("Attack", C.getAttackDesc());
+				fields.put("Damage", C.getDamageDesc());
+				fields.put("MaxStat", C.getMaxStatDesc());
+				fields.put("Bonuses", C.getOtherBonusDesc());
+				fields.put("Weapons", C.getWeaponLimitDesc());
+				fields.put("Armor", C.getArmorLimitDesc());
+				fields.put("Limitations", C.getOtherLimitsDesc());
+				fields.put("StartingEq", outfit.toString());
+				fields.put("Races", raceStr.toString());
+				fields.put("Languages", langStr.toString());
 				for(int l=1;l<=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);l++)
 				{
-					final StringBuilder levelList=new StringBuilder("");
+					final StringBuilder levelListWiki=new StringBuilder("");
+					final StringBuilder levelListJSON=new StringBuilder("");
 					final List<Ability> autoGains=new ArrayList<Ability>(3);
 					final List<Ability> qualifies=new ArrayList<Ability>(3);
 					for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(C.ID(),true); a.hasMoreElements(); )
@@ -2569,13 +2784,28 @@ public class ListCmd extends StdCommand
 						}
 					}
 					for(final Ability A : autoGains)
-						levelList.append("[["+A.ID()+"|"+A.name()+"]]&nbsp;&nbsp;&nbsp;&nbsp;");
+					{
+						levelListWiki.append("[["+A.ID()+"|"+A.name()+"]]&nbsp;&nbsp;&nbsp;&nbsp;");
+						levelListJSON.append((levelListJSON.length()>0)?", ":"").append(A.name()).append("*");
+					}
 					for(final Ability A : qualifies)
-						levelList.append("([["+A.ID()+"|"+A.name()+"]])&nbsp;&nbsp;&nbsp;&nbsp;");
-
-					lines.append("|level"+l+"="+levelList.toString());
+					{
+						levelListWiki.append("([["+A.ID()+"|"+A.name()+"]])&nbsp;&nbsp;&nbsp;&nbsp;");
+						levelListJSON.append((levelListJSON.length()>0)?", ":"").append(A.name());
+					}
+					if(wiki==ListFmtFlag.WIKIHELP)
+						fields.put("level"+l, levelListWiki.toString());
+					else
+					if(levelListJSON.length()>0)
+						fields.put("level"+l, levelListJSON.toString());
 				}
-				lines.append("}}");
+				if(wiki == ListFmtFlag.WIKIHELP)
+				{
+					lines.append("\n\r=="+C.name()+"==\n\r");
+					lines.append(toWikiTemplate("ClassTemplate", fields));
+				}
+				else
+					jsonItems.add(fields);
 			}
 			else
 			{
@@ -2589,6 +2819,8 @@ public class ListCmd extends StdCommand
 							+" ("+C.baseClass()+")",COL_LEN));
 			}
 		}
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+			lines.append(buildJSONArray(jsonItems));
 		lines.append("\n\r");
 		return lines;
 	}
@@ -2624,26 +2856,44 @@ public class ListCmd extends StdCommand
 			lines.append(CMParms.toListString(sortedC));
 		}
 		else
-		if((wiki==ListFmtFlag.WIKILIST)||(wiki==ListFmtFlag.WIKIHELP))
 		{
-			for (final Object element : sortedB)
+			final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
+			if((wiki==ListFmtFlag.WIKILIST)||(wiki==ListFmtFlag.WIKIHELP))
 			{
-				final String raceCat=(String)element;
-				lines.append("*[["+raceCat+"(RacialCategory)|"+raceCat+"]]\n\r");
-			}
-		}
-		else
-		{
-			for (final Object element : sortedB)
-			{
-				final String raceCat=(String)element;
-				if(++column>3)
+				for (final Object element : sortedB)
 				{
-					lines.append("\n\r");
-					column=1;
+					final String raceCat=(String)element;
+					lines.append("*[["+raceCat+"(RacialCategory)|"+raceCat+"]]\n\r");
 				}
-				lines.append(CMStrings.padRight(raceCat,COL_LEN));
 			}
+			else
+			if(wiki==ListFmtFlag.JSONLIST || wiki==ListFmtFlag.JSONHELP)
+			{
+				for (final Object element : sortedB)
+				{
+					final String raceCat=(String)element;
+					final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+					obj.put("Name", raceCat);
+					obj.put("Context", "RacialCategory");
+					obj.put("Display", raceCat);
+					jsonItems.add(obj);
+				}
+			}
+			else
+			{
+				for (final Object element : sortedB)
+				{
+					final String raceCat=(String)element;
+					if(++column>3)
+					{
+						lines.append("\n\r");
+						column=1;
+					}
+					lines.append(CMStrings.padRight(raceCat,COL_LEN));
+				}
+			}
+			if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+				lines.append(buildJSONArray(jsonItems));
 		}
 		lines.append("\n\r");
 		return lines;
@@ -4081,6 +4331,7 @@ public class ListCmd extends StdCommand
 	protected String listExpertises(final Session viewerS, final List<String> commands)
 	{
 		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		final StringBuilder buf=new StringBuilder("^xAll Defined Expertise Codes: ^N\n\r");
 		final String rest=(commands.size()<2)?"":CMParms.combine(commands,1).toUpperCase();
 		final int COL_LEN=CMLib.lister().fixColWidth(20.0,viewerS);
@@ -4102,7 +4353,29 @@ public class ListCmd extends StdCommand
 			}
 		}
 		else
-		if(wiki==ListFmtFlag.WIKIHELP)
+		if(wiki==ListFmtFlag.JSONLIST)
+		{
+			final Set<String> doneBases=new TreeSet<String>();
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				if(!doneBases.contains(def.getBaseName()))
+				{
+					doneBases.add(def.getBaseName());
+					String name=def.name();
+					final int x=name.lastIndexOf(' ');
+					if(CMath.isRomanNumeral(name.substring(x+1).trim()))
+						name=name.substring(0, x).trim();
+					final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+					obj.put("Name", name);
+					obj.put("Context", "Expertise");
+					obj.put("Display", name);
+					jsonItems.add(obj);
+				}
+			}
+		}
+		else
+		if(wiki==ListFmtFlag.WIKIHELP || wiki==ListFmtFlag.JSONHELP)
 		{
 			final Set<String> doneBases=new TreeSet<String>();
 			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
@@ -4125,19 +4398,24 @@ public class ListCmd extends StdCommand
 						desc=desc.substring(11);
 					else
 						desc="";
-					final String helpEOL=CMStrings.getEOL(desc.toString(),"\n\r");
-					buf.append("\n\r=="+name+"==\n\r");
-					buf.append("{{ExpertiseTemplate"
-							+ "|Name="+name
-							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
-							+ "|Description="+CMStrings.replaceAll(desc,helpEOL,helpEOL+helpEOL)
-							+ "|Cost="+def.costDescription()
-							+ "|Level="+def.getMinimumLevel()
-							+ "|ListMask="+CMLib.masking().maskDesc(fixDisplayMask(def.rawListMask()),true)
-							+ "|FinalMask="+CMLib.masking().maskDesc(fixDisplayMask(def.rawFinalMask()),true)
-							+ "|Ranks="+CMLib.expertises().numStages(def.getBaseName())
-							+ "|Flags="+CMStrings.capitalizeAllFirstLettersAndLower(CMParms.toListString(def.getFlagTypes()))
-							+ "}}\n\r");
+					final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+					fields.put("Name", name);
+					fields.put("Requires", CMLib.masking().maskDesc(def.allRequirements(),true));
+					fields.put("Description", desc);
+					fields.put("Cost", def.costDescription());
+					fields.put("Level", Integer.valueOf(def.getMinimumLevel()));
+					fields.put("ListMask", CMLib.masking().maskDesc(fixDisplayMask(def.rawListMask()),true));
+					fields.put("FinalMask", CMLib.masking().maskDesc(fixDisplayMask(def.rawFinalMask()),true));
+					fields.put("Ranks", Integer.valueOf(CMLib.expertises().numStages(def.getBaseName())));
+					fields.put("Flags", CMStrings.capitalizeAllFirstLettersAndLower(CMParms.toListString(def.getFlagTypes())));
+					if(wiki == ListFmtFlag.WIKIHELP)
+					{
+						buf.append("\n\r=="+name+"==\n\r");
+						buf.append(toWikiTemplate("ExpertiseTemplate", fields));
+						buf.append("\n\r");
+					}
+					else
+						jsonItems.add(fields);
 				}
 			}
 		}
@@ -4182,6 +4460,8 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+			return buildJSONArray(jsonItems);
 		if(buf.length()==0)
 			return "None defined.";
 		return buf.toString();
@@ -4190,6 +4470,7 @@ public class ListCmd extends StdCommand
 	protected String listSocials(final Session viewerS, final List<String> commands)
 	{
 		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
 		int col=0;
@@ -4199,7 +4480,15 @@ public class ListCmd extends StdCommand
 			if(wiki == ListFmtFlag.WIKILIST)
 				buf.append("*[["+social+"|"+social+"]]\n\r");
 			else
-			if(wiki == ListFmtFlag.WIKIHELP)
+			if(wiki == ListFmtFlag.JSONLIST)
+			{
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("Name", social);
+				obj.put("Display", social);
+				jsonItems.add(obj);
+			}
+			else
+			if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
 			{
 				final String targetNoneYouSee;
 				final String targetNoneOthersSee;
@@ -4246,20 +4535,26 @@ public class ListCmd extends StdCommand
 					targetSelfYouSee = "";
 					targetSelfOthersSee = "";
 				}
-				buf.append("\n\r=="+CMStrings.capitalizeAndLower(soc.baseName())+"==\n\r");
-				buf.append("{{SocialTemplate"
-						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
-						+ "|Target="+soc.targetName()
-						+ "|OptArg="+soc.argumentName()
-						+ "|TargetNoneUSee="+targetNoneYouSee
-						+ "|TargetNoneTheySee="+targetNoneOthersSee
-						+ "|TargetSomeoneNoTarget="+targetSomeoneNoTarget
-						+ "|TargetSomeoneUSee="+targetSomeoneYouSee
-						+ "|TargetSomeoneTargetSees="+targetSomeoneTargetSees
-						+ "|TargetSomeoneOthersSee="+targetSomeoneOthersSee
-						+ "|TargetSelfUSee="+targetSelfYouSee
-						+ "|TargetSelfOthersSee="+targetSelfOthersSee
-						+ "}}\n\r");
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("Name", CMStrings.capitalizeAndLower(soc.baseName()));
+				fields.put("Target", soc.targetName());
+				fields.put("OptArg", soc.argumentName());
+				fields.put("TargetNoneUSee", targetNoneYouSee);
+				fields.put("TargetNoneTheySee", targetNoneOthersSee);
+				fields.put("TargetSomeoneNoTarget", targetSomeoneNoTarget);
+				fields.put("TargetSomeoneUSee", targetSomeoneYouSee);
+				fields.put("TargetSomeoneTargetSees", targetSomeoneTargetSees);
+				fields.put("TargetSomeoneOthersSee", targetSomeoneOthersSee);
+				fields.put("TargetSelfUSee", targetSelfYouSee);
+				fields.put("TargetSelfOthersSee", targetSelfOthersSee);
+				if(wiki == ListFmtFlag.WIKIHELP)
+				{
+					buf.append("\n\r=="+CMStrings.capitalizeAndLower(soc.baseName())+"==\n\r");
+					buf.append(toWikiTemplate("SocialTemplate", fields));
+					buf.append("\n\r");
+				}
+				else
+					jsonItems.add(fields);
 			}
 			else
 			{
@@ -4272,6 +4567,8 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+			return buildJSONArray(jsonItems);
 		if(buf.length()==0)
 			return "None defined.";
 		return buf.toString();
@@ -5036,6 +5333,7 @@ public class ListCmd extends StdCommand
 		String rest="";
 		MOB whoM=mob;
 		final ListFmtFlag wiki = getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		boolean time=false;
 		if(commands.size()>1)
 		{
@@ -5085,7 +5383,15 @@ public class ListCmd extends StdCommand
 				commandList.append("*[["+s+"|"+s+"]]\n\r");
 			}
 			else
-			if(wiki == ListFmtFlag.WIKIHELP)
+			if(wiki == ListFmtFlag.JSONLIST)
+			{
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("Name", s);
+				obj.put("Display", s);
+				jsonItems.add(obj);
+			}
+			else
+			if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
 			{
 				String help=CMLib.help().getHelpText(s,null,false,true);
 				if(help==null)
@@ -5139,16 +5445,20 @@ public class ListCmd extends StdCommand
 					helpStr=helpStr.substring(end+1).trim();
 				}
 
-				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
-				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
-				commandList.append("\n\r=="+s+"==\n\r");
-				commandList.append("{{CommandTemplate"
-								+ "|Name="+s
-								+ "|Usage="+wikiFix(usage,GOOD_WIKI_CHARS,false)
-								+ "|Examples="+wikiFix(example,GOOD_WIKI_CHARS,false)
-								+ "|Shorts="+wikiFix(shorts,GOOD_WIKI_CHARS,false)
-								+ "|Description="+wikiFix(helpStr,GOOD_WIKI_CHARS,false)
-								+ "}}\n\r");
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("Name", s);
+				fields.put("Usage", usage);
+				fields.put("Examples", example);
+				fields.put("Shorts", shorts);
+				fields.put("Description", helpStr);
+				if(wiki == ListFmtFlag.WIKIHELP)
+				{
+					commandList.append("\n\r=="+s+"==\n\r");
+					commandList.append(toWikiTemplate("CommandTemplate", fields,"*"));
+					commandList.append("\n\r");
+				}
+				else
+					jsonItems.add(fields);
 			}
 			else
 			{
@@ -5168,6 +5478,11 @@ public class ListCmd extends StdCommand
 		}
 		if(mob.session()!=null)
 			mob.session().colorOnlyPrint(commandList.toString());
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+		{
+			if(mob.session()!=null)
+				mob.session().wraplessPrint(buildJSONArray(jsonItems));
+		}
 	}
 
 	protected void listManufacturers(final MOB mob, final List<String> commands)
@@ -5374,6 +5689,7 @@ public class ListCmd extends StdCommand
 		int domain=0;
 		Enumeration<Ability> enumA = CMClass.abilities();
 		final ListFmtFlag wiki = this.getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		for(int i=1;i<commands.size();i++)
 		{
 			final String str=commands.get(i);
@@ -5451,7 +5767,33 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().buildWikiList(sortedAs.elements(), ofType|domain).toString());
 		}
 		else
-		if(wiki == ListFmtFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.JSONLIST)
+		{
+			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
+			CMClass.sortEnvironmentalsByName(sortedAs);
+			for(final Enumeration<Ability> e=sortedAs.elements();e.hasMoreElements();)
+			{
+				final Ability A=e.nextElement();
+				if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)!=ofType)
+						continue;
+				}
+				if(domain>0)
+				{
+					if((A.classificationCode()&Ability.ALL_DOMAINS)!=domain)
+						continue;
+				}
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("ID", A.ID());
+				obj.put("Name", A.name());
+				jsonItems.add(obj);
+			}
+			if(s!=null)
+				s.wraplessPrint(buildJSONArray(jsonItems));
+		}
+		else
+		if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
 		{
 			final StringBuilder str=new StringBuilder("");
 			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
@@ -5477,7 +5819,10 @@ public class ListCmd extends StdCommand
 				{
 					final CharClass C=CMClass.getCharClass(avail.getFirst(c));
 					final Integer I=avail.getSecond(c);
-					availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
+					if(wiki==ListFmtFlag.WIKIHELP)
+						availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
+					else
+						availStr.append((availStr.length()>0)?", ":"").append(C.name(I.intValue())).append("(").append(I.intValue()).append(")");
 				}
 				final StringBuilder allowsStr=new StringBuilder("");
 				for(final Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(A.ID()));i.hasNext();)
@@ -5490,15 +5835,23 @@ public class ListCmd extends StdCommand
 						final int x=name.lastIndexOf(' ');
 						if(CMath.isRomanNumeral(name.substring(x+1).trim()))
 							name=name.substring(0, x).trim();
-						allowsStr.append("[["+name+"(Expertise)|"+name+"]]").append(" ");
+						if(wiki==ListFmtFlag.WIKIHELP)
+							allowsStr.append("[["+name+"(Expertise)|"+name+"]]").append(" ");
+						else
+							allowsStr.append((allowsStr.length()>0)?", ":"").append(name);
 					}
 					else
 					{
 						final Ability A2=CMClass.getAbilityPrototype(ID);
 						if(A2!=null)
-							allowsStr.append("[["+A2.ID()+"|"+A2.name()+"]]").append(" ");
+						{
+							if(wiki==ListFmtFlag.WIKIHELP)
+								allowsStr.append("[["+A2.ID()+"|"+A2.name()+"]]").append(" ");
+							else
+								allowsStr.append((allowsStr.length()>0)?", ":"").append(A2.name());
+						}
 						else
-							allowsStr.append(ID).append(" ");
+							allowsStr.append((allowsStr.length()>0)?", ":"").append(ID);
 					}
 				}
 				final String cost=CMLib.help().getAbilityCostDesc(A, null);
@@ -5599,26 +5952,34 @@ public class ListCmd extends StdCommand
 					prereqs="";
 				else
 					prereqs=CMLib.ableMapper().formatPreRequisites(DV);
-				str.append("\n\r==="+A.name()+"===\n\r");
-				str.append("{{"+templateName
-						+ "|ID="+A.ID()
-						+ "|Name="+A.name()
-						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
-						+ "|Available="+availStr.toString()
-						+ "|Allows="+allowsStr.toString()
-						+ "|Requires="+prereqs
-						+ "|Align="+alignment
-						+ "|UseCost="+cost
-						+ "|Quality="+quality
-						+ "|Targets="+targets
-						+ "|Range="+range
-						+ "|Commands="+CMParms.toListString(A.triggerStrings())
-						+ "|Usage="+wikiFix(usage,GOOD_WIKI_CHARS,false)
-						+ "|Examples="+example
-						+ "|Description="+wikiFix(helpStr,GOOD_WIKI_CHARS,false)
-						+ "}}\n\r");
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("ID", A.ID());
+				fields.put("Name", A.name());
+				fields.put("Domain", wiki==ListFmtFlag.WIKIHELP ? "[["+domainID+"(Domain)|"+domainName+"]]" : domainName);
+				fields.put("Available", availStr.toString());
+				fields.put("Allows", allowsStr.toString());
+				fields.put("Requires", prereqs);
+				fields.put("Align", alignment);
+				fields.put("UseCost", cost);
+				fields.put("Quality", quality);
+				fields.put("Targets", targets);
+				fields.put("Range", range);
+				fields.put("Commands", CMParms.toListString(A.triggerStrings()));
+				fields.put("Usage", usage);
+				fields.put("Examples", example);
+				fields.put("Description", helpStr);
+				if(wiki == ListFmtFlag.WIKIHELP)
+				{
+					str.append("\n\r==="+A.name()+"===\n\r");
+					str.append(toWikiTemplate(templateName, fields,"Usage","Description"));
+					str.append("\n\r");
+				}
+				else
+					jsonItems.add(fields);
 			}
 			s.wraplessPrintln(str.toString());
+			if(wiki == ListFmtFlag.JSONHELP)
+				s.wraplessPrint(buildJSONArray(jsonItems));
 		}
 		else
 		{
@@ -5630,6 +5991,7 @@ public class ListCmd extends StdCommand
 	protected void listBehaviors(final MOB mob, final Session s, final List<String> commands, String title)
 	{
 		final ListFmtFlag wiki = this.getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		if(wiki == ListFmtFlag.WIKILIST)
 		{
 			if(title.length()==0)
@@ -5638,7 +6000,21 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().buildWikiList(CMClass.behaviors(), 0).toString());
 		}
 		else
-		if(wiki == ListFmtFlag.WIKIHELP)
+		if(wiki == ListFmtFlag.JSONLIST)
+		{
+			for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
+			{
+				final Behavior B=e.nextElement();
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("ID", B.ID());
+				obj.put("Name", B.name());
+				jsonItems.add(obj);
+			}
+			if(s!=null)
+				s.wraplessPrint(buildJSONArray(jsonItems));
+		}
+		else
+		if(wiki == ListFmtFlag.WIKIHELP || wiki == ListFmtFlag.JSONHELP)
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
@@ -5699,16 +6075,24 @@ public class ListCmd extends StdCommand
 				}
 				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
 				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
-				str.append("\n\r=="+B.name()+"==\n\r");
-				str.append("{{BehaviorTemplate"
-						+ "|Name="+B.name()
-						+ "|Targets="+wikiFix(targets,GOOD_WIKI_CHARS,false)
-						+ "|Usage="+wikiFix(usage,GOOD_WIKI_CHARS,false)
-						+ "|Examples="+wikiFix(example,GOOD_WIKI_CHARS,false)
-						+ "|Description="+wikiFix(helpStr,GOOD_WIKI_CHARS,false)
-						+ "}}\n\r");
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("Name", B.name());
+				fields.put("Targets", targets);
+				fields.put("Usage", usage);
+				fields.put("Examples", example);
+				fields.put("Description", helpStr);
+				if(wiki == ListFmtFlag.WIKIHELP)
+				{
+					str.append("\n\r=="+B.name()+"==\n\r");
+					str.append(toWikiTemplate("BehaviorTemplate", fields,"*"));
+					str.append("\n\r");
+				}
+				else
+					jsonItems.add(fields);
 			}
 			s.wraplessPrintln(str.toString());
+			if(wiki == ListFmtFlag.JSONHELP)
+				s.wraplessPrint(buildJSONArray(jsonItems));
 		}
 		else
 		{
@@ -5851,6 +6235,7 @@ public class ListCmd extends StdCommand
 		List<String> sortBys=null;
 		List<String> colNames=null;
 		final ListFmtFlag wiki=getListFmtFlagRemoved(commands);
+		final List<MiniJSON.JSONObject> jsonItems = new ArrayList<MiniJSON.JSONObject>();
 		if(commands.size()>0)
 		{
 			List<String> addTos=null;
@@ -6014,32 +6399,41 @@ public class ListCmd extends StdCommand
 				str.append("*[["+A.name()+"|"+A.name()+"]]");
 			}
 			else
-			if(wiki==ListFmtFlag.WIKIHELP)
+			if(wiki==ListFmtFlag.JSONLIST)
+			{
+				final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
+				obj.put("Name", A.name());
+				obj.put("Display", A.name());
+				jsonItems.add(obj);
+			}
+			else
+			if(wiki==ListFmtFlag.WIKIHELP || wiki==ListFmtFlag.JSONHELP)
 			{
 				String currency = CMLib.beanCounter().getCurrency(A);
 				if((currency==null)||(currency.trim().length()==0))
 					currency="Gold coins (default)";
 				else
 					currency=CMStrings.capitalizeAndLower(currency);
-				final String helpEOL=CMStrings.getEOL(A.description(),"\n\r");
-				final String desc = CMStrings.replaceAll(A.description(),helpEOL,helpEOL+helpEOL);
-				str.append("{{AreaTemplate"
-						+ "|Name="+A.name()
-						+ "|Description="+desc
-						+ "|Author="+A.getAuthorID()
-						+ "|Rooms="+A.getIStat(Area.Stats.VISITABLE_ROOMS)
-						+ "|Population="+A.getIStat(Area.Stats.POPULATION)
-						+ "|Currency="+currency
-						+ "|LevelRange="+A.getIStat(Area.Stats.MIN_LEVEL)+"-"+A.getIStat(Area.Stats.MAX_LEVEL)
-						+ "|MedianLevel="+A.getIStat(Area.Stats.MED_LEVEL)
-						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.AVG_ALIGNMENT)):"")
-						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.MED_ALIGNMENT)):""));
+				final MiniJSON.JSONObject fields = new MiniJSON.JSONObject();
+				fields.put("Name", A.name());
+				fields.put("Description", A.description());
+				fields.put("Author", A.getAuthorID());
+				fields.put("Rooms", Integer.valueOf(A.getIStat(Area.Stats.VISITABLE_ROOMS)));
+				fields.put("Population", Integer.valueOf(A.getIStat(Area.Stats.POPULATION)));
+				fields.put("Currency", currency);
+				fields.put("LevelRange", A.getIStat(Area.Stats.MIN_LEVEL)+"-"+A.getIStat(Area.Stats.MAX_LEVEL));
+				fields.put("MedianLevel", Integer.valueOf(A.getIStat(Area.Stats.MED_LEVEL)));
+				fields.put("AvgAlign", (theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.AVG_ALIGNMENT)):"");
+				fields.put("MedAlignment", (theFaction!=null)?theFaction.fetchRangeName(A.getIStat(Area.Stats.MED_ALIGNMENT)):"");
 				for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				{
 					final String flag=f.nextElement();
-					str.append("|"+flag+"="+A.getBlurbFlag(flag));
+					fields.put(flag, A.getBlurbFlag(flag));
 				}
-				str.append("}} ");
+				if(wiki == ListFmtFlag.WIKIHELP)
+					str.append(toWikiTemplate("AreaTemplate", fields)).append(" ");
+				else
+					jsonItems.add(fields);
 			}
 			else
 			{
@@ -6058,6 +6452,11 @@ public class ListCmd extends StdCommand
 		}
 		if(s!=null)
 			s.colorOnlyPrint(str.toString(), true);
+		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
+		{
+			if(s!=null)
+				s.wraplessPrint(buildJSONArray(jsonItems));
+		}
 	}
 
 	protected void listSessions(final MOB mob, final List<String> commands)
