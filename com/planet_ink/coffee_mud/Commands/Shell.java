@@ -698,9 +698,13 @@ public class Shell extends StdCommand
 						mob.enqueCommand(MORE_CMDS.get(m),MUDCmdProcessor.METAFLAG_INORDER,0);
 				}
 				mob.setActions(99);
+				CMLib.s_sleep(1000);
 				int tries=99;
 				while(mob.dequeCommand() && (--tries>0))
+				{
 					mob.setActions(99);
+					CMLib.s_sleep(1000);
+				}
 				mob.setActions(0);
 			}
 			break;
