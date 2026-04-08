@@ -3832,8 +3832,9 @@ public class ListCmd extends StdCommand
 			if(wiki==ListFmtFlag.JSONLIST)
 			{
 				final MiniJSON.JSONObject obj=new MiniJSON.JSONObject();
-				obj.put("Name",rawKey);
+				obj.put("Key",rawKey);
 				obj.put("Display",rawKey);
+				obj.put("Name",CMStrings.capitalizeAllFirstLettersAndLower(rawKey.replace('_',' ')));
 				jsonItems.add(obj);
 			}
 			else
@@ -3850,7 +3851,8 @@ public class ListCmd extends StdCommand
 				{
 				}
 				final MiniJSON.JSONObject fields=new MiniJSON.JSONObject();
-				fields.put("Name",rawKey);
+				fields.put("Key",rawKey);
+				fields.put("Name",CMStrings.capitalizeAllFirstLettersAndLower(rawKey.replace('_',' ')));
 				fields.put("Description",help);
 				if(wiki==ListFmtFlag.WIKIHELP)
 				{
