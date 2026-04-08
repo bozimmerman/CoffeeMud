@@ -752,58 +752,31 @@ public class ListCmd extends StdCommand
 		return sb.toString();
 	}
 
-	private static int jsonEncodedLength(final String s)
-	{
-		int len = 0;
-		for(int i = 0; i < s.length(); i++)
-		{
-			final char c = s.charAt(i);
-			if(c == '"' || c == '\\')
-				len += 2;
-			else if(c < 0x20)
-				len += 6; // unicode escape: 6 chars
-			else
-				len++;
-		}
-		return len;
-	}
-
 	private MiniJSON.JSONObject truncateLongestField(final MiniJSON.JSONObject obj, final int maxBytes)
 	{
 		String longestKey = null;
-		int longestLen = 0;
 		for(final java.util.Map.Entry<String,Object> e : obj.entrySet())
 		{
 			final Object val = e.getValue();
 			if(val == null)
 				continue;
-			final int len = jsonEncodedLength(val.toString());
-			if(len > longestLen)
-			{
-				longestLen = len;
+			final int len = MiniJSON.toJSONString(val.toString()).length();
+			if(len > maxBytes-3)
 				longestKey = e.getKey();
-			}
 		}
-		if((longestKey != null) && (longestLen > maxBytes))
+		if(longestKey != null)
 		{
-			final String rawStr = obj.get(longestKey).toString();
-			// Scan forward counting encoded bytes until maxBytes-3 is reached,
-			// leaving room for the 3-byte "..." suffix
-			int n = 0;
-			int encoded = 0;
-			final int limit = maxBytes - 3;
-			while(n < rawStr.length())
+			String rawStr = obj.get(longestKey).toString();
+			while(MiniJSON.toJSONString(rawStr).length() > maxBytes-3)
 			{
-				final char c = rawStr.charAt(n);
-				final int charLen = (c == '"' || c == '\\') ? 2 : (c < 0x20) ? 6 : 1;
-				if(encoded + charLen > limit)
-					break;
-				encoded += charLen;
-				n++;
+				if(rawStr.length()>maxBytes-3)
+					rawStr = rawStr.substring(0,maxBytes-3);
+				else
+					rawStr = rawStr.substring(0, (int)Math.round(rawStr.length() * 0.9));
 			}
 			final MiniJSON.JSONObject copy = new MiniJSON.JSONObject();
 			copy.putAll(obj);
-			copy.put(longestKey, rawStr.substring(0, n) + "...");
+			copy.put(longestKey, rawStr + "...");
 			return copy;
 		}
 		return obj;
@@ -1199,15 +1172,14 @@ public class ListCmd extends StdCommand
 				content = content.substring(0, content.length()-1);
 			return new StringBuffer("["+content+"]");
 		}
-		else if(wiki == ListFmtFlag.JSONHELPL || wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL || wiki == ListFmtFlag.JSONHELPL4000)
 		{
-			// items were accumulated as obj+","; convert to one object per line
 			String content = lines.toString().trim();
 			if(content.endsWith(","))
 				content = content.substring(0, content.length()-1);
 			if(wiki == ListFmtFlag.JSONHELPL4000)
 			{
-				// re-parse each object and truncate longest field
 				final String[] parts = content.split("(?<=\\}),");
 				final StringBuilder jsonl = new StringBuilder();
 				for(final String part : parts)
@@ -2745,9 +2717,11 @@ public class ListCmd extends StdCommand
 		}
 		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
 			lines.append(buildJSONArray(jsonItems));
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 			lines.append(buildJSONLines(jsonItems));
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 			lines.append(buildJSONLines(jsonItems, 4000));
 		lines.append("\n\r");
 		return lines;
@@ -2940,9 +2914,11 @@ public class ListCmd extends StdCommand
 		}
 		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
 			lines.append(buildJSONArray(jsonItems));
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 			lines.append(buildJSONLines(jsonItems));
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 			lines.append(buildJSONLines(jsonItems, 4000));
 		lines.append("\n\r");
 		return lines;
@@ -3763,9 +3739,13 @@ public class ListCmd extends StdCommand
 			final Command C=e.nextElement();
 			final String[] access=C.getAccessWords();
 			if(access!=null)
+			{
 				for(final String word : access)
+				{
 					if(word.length()>0)
 						covered.add(word.toUpperCase().trim());
+				}
+			}
 		}
 		for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			covered.add(e.nextElement().ID().toUpperCase().trim());
@@ -3787,9 +3767,6 @@ public class ListCmd extends StdCommand
 			if(CMLib.help().isPlayerSkill(rawKey))
 				continue;
 			String value=helpFile.getProperty(rawKey);
-			// For short values (potential aliases), check the target regardless of whether
-			// it exists as a help file key -- the containsKey check is case-sensitive and
-			// would miss mixed-case targets like "Thief_Shadowstrike"
 			if((value!=null)&&(value.length()>0)&&(value.length()<50))
 			{
 				if(covered.contains(value.toUpperCase().trim()))
@@ -3804,7 +3781,6 @@ public class ListCmd extends StdCommand
 					continue;
 				value=helpFile.getProperty(value);
 			}
-			// Skip abilities and expertises by inspecting the content tag directly
 			if((value!=null)&&(value.startsWith("<ABILITY>")
 			||value.startsWith("<EXPERTISE>")
 			||value.startsWith("<RACE>")
@@ -3818,8 +3794,10 @@ public class ListCmd extends StdCommand
 		if(misc.isEmpty())
 			return "No miscellaneous help entries found.\n\r";
 		if(wiki==ListFmtFlag.NO)
+		{
 			return "^HMiscellaneous Help Entries:^N\n\r"
 				+CMLib.lister().build3ColTable(mob,new IteratorEnumeration<String>(misc.iterator())).toString();
+		}
 		final List<MiniJSON.JSONObject> jsonItems=new ArrayList<MiniJSON.JSONObject>();
 		final StringBuilder str=new StringBuilder("");
 		for(final String rawKey : misc)
@@ -3868,7 +3846,8 @@ public class ListCmd extends StdCommand
 			return buildJSONArray(jsonItems);
 		if(wiki==ListFmtFlag.JSONHELPL)
 			return buildJSONLines(jsonItems);
-		else if(wiki==ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki==ListFmtFlag.JSONHELPL4000)
 			return buildJSONLines(jsonItems, 4000);
 		return str.toString();
 	}
@@ -4711,9 +4690,11 @@ public class ListCmd extends StdCommand
 		}
 		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
 			return buildJSONArray(jsonItems);
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 			return buildJSONLines(jsonItems);
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 			return buildJSONLines(jsonItems, 4000);
 		if(buf.length()==0)
 			return "None defined.";
@@ -4822,9 +4803,11 @@ public class ListCmd extends StdCommand
 		}
 		if(wiki == ListFmtFlag.JSONLIST || wiki == ListFmtFlag.JSONHELP)
 			return buildJSONArray(jsonItems);
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 			return buildJSONLines(jsonItems);
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 			return buildJSONLines(jsonItems, 4000);
 		if(buf.length()==0)
 			return "None defined.";
@@ -5742,12 +5725,14 @@ public class ListCmd extends StdCommand
 			if(mob.session()!=null)
 				mob.session().wraplessPrint(buildJSONArray(jsonItems));
 		}
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 		{
 			if(mob.session()!=null)
 				mob.session().wraplessPrint(buildJSONLines(jsonItems));
 		}
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 		{
 			if(mob.session()!=null)
 				mob.session().wraplessPrint(buildJSONLines(jsonItems, 4000));
@@ -6249,9 +6234,11 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			if(wiki == ListFmtFlag.JSONHELP)
 				s.wraplessPrint(buildJSONArray(jsonItems));
-			else if(wiki == ListFmtFlag.JSONHELPL)
+			else 
+			if(wiki == ListFmtFlag.JSONHELPL)
 				s.wraplessPrint(buildJSONLines(jsonItems));
-			else if(wiki == ListFmtFlag.JSONHELPL4000)
+			else 
+			if(wiki == ListFmtFlag.JSONHELPL4000)
 				s.wraplessPrint(buildJSONLines(jsonItems, 4000));
 		}
 		else
@@ -6366,9 +6353,11 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(str.toString());
 			if(wiki == ListFmtFlag.JSONHELP)
 				s.wraplessPrint(buildJSONArray(jsonItems));
-			else if(wiki == ListFmtFlag.JSONHELPL)
+			else 
+			if(wiki == ListFmtFlag.JSONHELPL)
 				s.wraplessPrint(buildJSONLines(jsonItems));
-			else if(wiki == ListFmtFlag.JSONHELPL4000)
+			else 
+			if(wiki == ListFmtFlag.JSONHELPL4000)
 				s.wraplessPrint(buildJSONLines(jsonItems, 4000));
 		}
 		else
@@ -6734,12 +6723,14 @@ public class ListCmd extends StdCommand
 			if(s!=null)
 				s.wraplessPrint(buildJSONArray(jsonItems));
 		}
-		else if(wiki == ListFmtFlag.JSONHELPL)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL)
 		{
 			if(s!=null)
 				s.wraplessPrint(buildJSONLines(jsonItems));
 		}
-		else if(wiki == ListFmtFlag.JSONHELPL4000)
+		else 
+		if(wiki == ListFmtFlag.JSONHELPL4000)
 		{
 			if(s!=null)
 				s.wraplessPrint(buildJSONLines(jsonItems, 4000));
