@@ -37,6 +37,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -4224,11 +4225,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				private volatile String p = personality;
 				private final Object chatMemory = memory;
 				private final int maxMsgs = MAX_MSGS.intValue();
+				private final AtomicBoolean busy = new AtomicBoolean(false);
 				@Override
 				public String chat(final String msg)
 				{
 					try
 					{
+						busy.set(true);
 						final List<?> currentMessages = (List<?>)messagesMethod.invoke(chatMemory);
 						if (!currentMessages.isEmpty()
 						&&(currentMessages.size() >= maxMsgs - 1))
@@ -4268,6 +4271,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						Log.errOut(e);
 						return L("Something went wrong. Ask the admins to check the log.");
 					}
+					finally
+					{
+						busy.set(false);
+					}
+				}
+				@Override
+				public boolean isChatting()
+				{
+					return busy.get();
 				}
 
 			};

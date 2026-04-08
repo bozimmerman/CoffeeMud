@@ -309,6 +309,13 @@ public interface ProtocolLibrary extends CMLibrary
 		 * @return the response received from the LLM
 		 */
 		public String chat(final String msg);
+		
+		/**
+		 * Returns whether this session is currently being
+		 * chatted with.
+		 * @return true if its busy
+		 */
+		public boolean isChatting();
 	}
 
 	/**
