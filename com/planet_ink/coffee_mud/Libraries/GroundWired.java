@@ -945,21 +945,31 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public void addManufacturer(final Manufacturer manufacturer)
 	{
+		_addManufacturer(manufacturer);
+		saveAllManufacturers();
+	}
+
+	private void _addManufacturer(final Manufacturer manufacturer)
+	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer))
 			return;
 		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
-		saveAllManufacturers();
 	}
 
 	@Override
 	public void delManufacturer(final Manufacturer manufacturer)
+	{
+		_delManufacturer(manufacturer);
+		saveAllManufacturers();
+	}
+
+	private void _delManufacturer(final Manufacturer manufacturer)
 	{
 		if((manufacturer==null)||(manufacturer==defaultManufacturer))
 			return;
 		final Manufacturer found=getManufacturer(manufacturer.name());
 		if(found==manufacturer)
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
-		saveAllManufacturers();
 	}
 
 	@Override
@@ -1074,7 +1084,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				final Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 				man.setXML(x.value());
-				addManufacturer(man);
+				_addManufacturer(man);
 			}
 		}
 	}
