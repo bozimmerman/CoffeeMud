@@ -305,6 +305,19 @@ public class Resources
 	}
 
 	/**
+	 * Returns the binary content for the given resource filename, from
+	 * the resources for the current calling thread group. This method returns
+	 * the raw binary.
+	 * @param filename the resource filename (/resources/[FILENAME])
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the byte array of the file at that resource filename, or null of not found
+	 */
+	public static final byte[] getBinFileResource(final String filename, final boolean reportErrors)
+	{
+		return r()._getBinFileResource(filename,reportErrors);
+	}
+
+	/**
 	 * Saves the given stringbuffer of data to the given resource filename, to
 	 * the filesystem on behalf of the given user/player, without touching the cache.
 	 * Returns false if the user was not permitted to save files at that location.
@@ -835,7 +848,7 @@ public class Resources
 	 * @param o the string, stringbuffer, or stringbuilder to convert to stringbuffer
 	 * @return the stringbuffer, or null if it could not be converted.
 	 */
-	public final StringBuffer _toStringBuffer(final Object o)
+	protected final StringBuffer _toStringBuffer(final Object o)
 	{
 		if(o!=null)
 		{
@@ -847,6 +860,29 @@ public class Resources
 			else
 			if(o instanceof StringBuilder)
 				return new StringBuffer((StringBuilder)o);
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the string-like object given as a StringBuffer.
+	 * @param o the string, stringbuffer, or stringbuilder to convert to stringbuffer
+	 * @return the stringbuffer, or null if it could not be converted.
+	 */
+	protected final byte[] _toBytes(final Object o)
+	{
+		if(o!=null)
+		{
+			if(o instanceof byte[])
+				return (byte[])o;
+			if(o instanceof StringBuffer)
+				return ((StringBuffer)o).toString().getBytes();
+			else
+			if(o instanceof String)
+				return ((String)o).getBytes();
+			else
+			if(o instanceof StringBuilder)
+				return ((StringBuilder)o).toString().getBytes();
 		}
 		return null;
 	}
@@ -939,6 +975,34 @@ public class Resources
 		return buf;
 	}
 
+
+	/**
+	 * Returns the binary content for the given resource filename.
+	 * @param filename the resource filename (/resources/[FILENAME])
+	 * @param reportErrors if true, file errors will be logged
+	 * @return the byte[]s of the file at that resource filename, or null of not found
+	 */
+	public final byte[] _getBinFileResource(String filename, final boolean reportErrors)
+	{
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=_getRawFileResourceName(filename,false);
+		final Object rsc=_getResource(filename);
+		if(rsc != null)
+			return _toBytes(rsc);
+		String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
+		if((charSet==null)||(charSet.length()==0))
+			charSet=Charset.defaultCharset().name();
+		byte[] buf;
+		final String filenameId = filename;
+		filename=(vfsFile?"::":localFile?"//":"")+filename;
+		buf = new CMFile(filename,null,reportErrors?CMFile.FLAG_LOGERRORS:0).raw();
+		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
+			_submitResource(filenameId,buf);
+		return buf;
+	}
+	
 	/**
 	 * Saves the given stringbuffer of data to the given resource filename, to
 	 * the filesystem while also updating the internal cache for the resources.
