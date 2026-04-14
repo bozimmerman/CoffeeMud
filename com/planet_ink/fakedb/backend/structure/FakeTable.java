@@ -41,6 +41,9 @@ public class FakeTable
 	protected int				dataStart = 0;
 	protected String			schemaHash = "";
 	protected byte[]			dataHeader = new byte[0];
+	
+	protected final TreeMap<Integer, ArrayDeque<Integer>>	
+								freeList	= new TreeMap<Integer, ArrayDeque<Integer>>();
 
 	public final String			name;
 	public int					version		= 1;
@@ -129,6 +132,7 @@ public class FakeTable
 		columnHash = null;
 		columnIndexesOfIndexed = null;
 		rowRecords = new IndexedRowMap();
+		freeList.clear();
 	}
 
 	private void insertFileData(final int position, final byte[] data) throws IOException
@@ -302,7 +306,10 @@ public class FakeTable
 				rowRecords.add(info);
 			}
 			else
+			{
+				addHole(fileSize, size);
 				skipped += size;
+			}
 			found += size;
 			// Fix pointers
 			ofs += size;
@@ -477,6 +484,7 @@ public class FakeTable
 		tempFileName2.delete();
 		file = new RandomAccessFile(fileName, "rw");
 		fileSize = newFileSize;
+		freeList.clear();
 	}
 
 	/**
@@ -631,6 +639,121 @@ public class FakeTable
 		fileBuffer = newBuffer;
 	}
 
+	private void addHole(final int offset, final int size)
+	{
+		final Integer sizeKey = Integer.valueOf(size);
+		ArrayDeque<Integer> holes = freeList.get(sizeKey);
+		if (holes == null)
+		{
+			holes = new ArrayDeque<Integer>();
+			freeList.put(sizeKey, holes);
+		}
+		holes.add(Integer.valueOf(offset));
+	}
+
+	private Integer takeHole(final int size)
+	{
+		final ArrayDeque<Integer> holes = freeList.get(Integer.valueOf(size));
+		if ((holes == null) || holes.isEmpty())
+			return null;
+		final Integer offset = holes.poll();
+		if (holes.isEmpty())
+			freeList.remove(Integer.valueOf(size));
+		return offset;
+	}
+	
+	/**
+	 * Compose a new row for the table
+	 * @param indexData index data for the records?
+	 * @param values values to insert, complete
+	 * @return true if all went well
+	 */
+	public int rebuildFileBuffer(final ComparableValue[] values)
+	{
+		int ofs = 2;
+		fileBuffer[0] = (byte) '-';
+		fileBuffer[1] = (byte) 0x0A;
+		for (final ComparableValue value : values)
+		{
+			if ((value == null) || (value.getValue() == null))
+			{
+				if (ofs + 3 > fileBuffer.length)
+					increaseBuffer(ofs + 3);
+				fileBuffer[ofs + 0] = (byte) '\\';
+				fileBuffer[ofs + 1] = (byte) '?';
+				fileBuffer[ofs + 2] = (byte) 0x0A;
+				ofs += 3;
+			}
+			else
+			{
+				int size = 0;
+				final String s = value.getValue().toString();
+				for (int sub = 0; sub < s.length(); sub++)
+				{
+					final char c = s.charAt(sub);
+					if (c == '\\')
+						size += 2;
+					else
+					if (c == '\n')
+						size += 2;
+					else
+					if (c > 255)
+						size += 5;
+					else
+						size++;
+				}
+				if (ofs + size + 1 > fileBuffer.length)
+					increaseBuffer(ofs + size + 1);
+				for (int sub = 0; sub < s.length(); sub++)
+				{
+					final char c = s.charAt(sub);
+					if (c == '\\')
+					{
+						fileBuffer[ofs] = (byte) '\\';
+						fileBuffer[ofs + 1] = (byte) '\\';
+						ofs += 2;
+					}
+					else
+					if (c == '\n')
+					{
+						fileBuffer[ofs] = (byte) '\\';
+						fileBuffer[ofs + 1] = (byte) 'n';
+						ofs += 2;
+					}
+					else
+					if (c > 255)
+					{
+						fileBuffer[ofs++] = (byte) '\\';
+						final String cs="" + c;
+						byte[] bytes;
+						try
+						{
+							bytes = cs.getBytes("UTF-8");
+						}
+						catch (UnsupportedEncodingException e)
+						{
+							bytes = cs.getBytes();
+						}
+						final StringBuilder s1=new StringBuilder("#"+bytes.length);
+						for(int ib=0;ib<bytes.length;ib++)
+						{
+							final String bs=Integer.toHexString(bytes[ib] & 0xff).toUpperCase();
+							if(bs.length()==1)
+								s1.append("0");
+							s1.append(bs);
+						}
+						for (int i = 0; i < s1.length(); i++)
+							fileBuffer[ofs++] = (byte)s1.charAt(i);
+					}
+					else
+						fileBuffer[ofs++] = (byte) c;
+				}
+				fileBuffer[ofs++] = (byte) 0x0A;
+			}
+		}
+		return ofs;
+	}
+
 	/**
 	 * Insert a new row into the table
 	 * @param prevRecord the record to put this one after
@@ -642,84 +765,23 @@ public class FakeTable
 	{
 		try
 		{
-			int ofs = 2;
-			fileBuffer[0] = (byte) '-';
-			fileBuffer[1] = (byte) 0x0A;
-			for (final ComparableValue value : values)
-			{
-				if ((value == null) || (value.getValue() == null))
-				{
-					if (ofs + 3 > fileBuffer.length)
-						increaseBuffer(ofs + 3);
-					fileBuffer[ofs + 0] = (byte) '\\';
-					fileBuffer[ofs + 1] = (byte) '?';
-					fileBuffer[ofs + 2] = (byte) 0x0A;
-					ofs += 3;
-				}
-				else
-				{
-					int size = 0;
-					final String s = value.getValue().toString();
-					for (int sub = 0; sub < s.length(); sub++)
-					{
-						final char c = s.charAt(sub);
-						if (c == '\\')
-							size += 2;
-						else
-						if (c == '\n')
-							size += 2;
-						else
-						if (c > 255)
-							size += 5;
-						else
-							size++;
-					}
-					if (ofs + size + 1 > fileBuffer.length)
-						increaseBuffer(ofs + size + 1);
-					for (int sub = 0; sub < s.length(); sub++)
-					{
-						final char c = s.charAt(sub);
-						if (c == '\\')
-						{
-							fileBuffer[ofs] = (byte) '\\';
-							fileBuffer[ofs + 1] = (byte) '\\';
-							ofs += 2;
-						}
-						else
-						if (c == '\n')
-						{
-							fileBuffer[ofs] = (byte) '\\';
-							fileBuffer[ofs + 1] = (byte) 'n';
-							ofs += 2;
-						}
-						else
-						if (c > 255)
-						{
-							fileBuffer[ofs++] = (byte) '\\';
-							final String cs="" + c;
-							final byte[] bytes=cs.getBytes("UTF-8");
-							final StringBuilder s1=new StringBuilder("#"+bytes.length);
-							for(int ib=0;ib<bytes.length;ib++)
-							{
-								final String bs=Integer.toHexString(bytes[ib] & 0xff).toUpperCase();
-								if(bs.length()==1)
-									s1.append("0");
-								s1.append(bs);
-							}
-							for (int i = 0; i < s1.length(); i++)
-								fileBuffer[ofs++] = (byte)s1.charAt(i);
-						}
-						else
-							fileBuffer[ofs++] = (byte) c;
-					}
-					fileBuffer[ofs++] = (byte) 0x0A;
-				}
-			}
-			int recordPos = fileSize;
+			int ofs = rebuildFileBuffer(values);
+			int recordPos;
 			if ((prevRecord != null) && (prevRecord.size == ofs))
 				recordPos = prevRecord.offset;
 			else
-				fileSize += ofs;
+			{
+				if (prevRecord != null)
+					addHole(prevRecord.offset, prevRecord.size);
+				final Integer holeOffset = takeHole(ofs);
+				if (holeOffset != null)
+					recordPos = holeOffset;
+				else
+				{
+					recordPos = fileSize;
+					fileSize += ofs;
+				}
+			}
 			file.seek(recordPos);
 			file.write(fileBuffer, 0, ofs);
 			file.getFD().sync();
@@ -760,6 +822,7 @@ public class FakeTable
 					file.seek(info.offset);
 					file.write(new byte[] { (byte) '*' });
 					rowRecords.remove(info);
+					addHole(info.offset, info.size);
 					count[0]++;
 				}
 			}.init(count);
@@ -861,6 +924,7 @@ public class FakeTable
 			tempFileName2.delete();
 			file = new RandomAccessFile(fileName, "rw");
 			fileSize = newFileSize;
+			freeList.clear();
 		}
 		catch (final Exception e)
 		{
@@ -916,6 +980,7 @@ public class FakeTable
 			tempFileName2.delete();
 			file = new RandomAccessFile(fileName, "rw");
 			fileSize = newFileSize;
+			freeList.clear();
 		}
 		catch (final IOException e)
 		{
@@ -1015,7 +1080,7 @@ public class FakeTable
 							somethingChanged = true;
 						}
 					}
-					if (somethingChanged)
+					if(somethingChanged)
 					{
 						if(dupDangerTable != null)
 						{
@@ -1041,10 +1106,22 @@ public class FakeTable
 								}
 							}
 						}
-						file.seek(info.offset);
-						file.write(new byte[] { (byte) '*' });
-						rowRecords.remove(info);
-						insertRecord(info, rowIndexData, values);
+						final int ofs = rebuildFileBuffer(values);
+						if(ofs == info.size)
+						{
+							file.seek(info.offset);
+							file.write(fileBuffer, 0, ofs);
+							file.getFD().sync();
+							rowRecords.remove(info);
+							rowRecords.add(info);
+						}
+						else
+						{
+							file.seek(info.offset);
+							file.write(new byte[] { (byte) '*' });
+							rowRecords.remove(info);
+							insertRecord(info, rowIndexData, values);
+						}
 					}
 					count[0]++;
 				}
