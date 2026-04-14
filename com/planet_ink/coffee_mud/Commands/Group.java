@@ -76,7 +76,7 @@ public class Group extends StdCommand
 			||who.charStats().getMyRace().leveless())
 				msg.append(CMStrings.padRight(" ",cols[2]));
 			else
-				msg.append(CMStrings.padRight(levelStr,cols[2]));
+				msg.append(CMStrings.padRightPreserve(levelStr,cols[2]));
 		}
 		final double hpPct = CMath.div(who.curState().getHitPoints(), who.maxState().getHitPoints());
 		final double mnPct = CMath.div(who.curState().getMana(), who.maxState().getMana());
