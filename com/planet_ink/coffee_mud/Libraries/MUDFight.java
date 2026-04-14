@@ -2952,7 +2952,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					else
 					if((msg.tool() == msg.source().fetchWieldedItem())
 					||(msg.tool() == msg.source().fetchHeldItem()))
-						weapon = (Item)CMParms.getFirstNonNull(attacker.fetchWieldedItem(), attacker.fetchHeldItem(), attacker.getNaturalWeapon());
+						weapon = (Item)CMParms.getFirstNonNull(attacker.fetchWieldedItem(), attacker.fetchHeldItem(), weapon);
 				}
 				if(weapon!=null)
 				{

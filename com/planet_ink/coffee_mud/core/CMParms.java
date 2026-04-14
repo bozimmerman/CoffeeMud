@@ -3120,6 +3120,21 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the first ordinal object in the arguments that is not null.
+	 * @param choices the choices to find a non-null object in
+	 * @return the first non-null
+	 */
+	public final static Object getFirstNonNull(final Object... choices)
+	{
+		for(int i=0;i<choices.length;i++)
+		{
+			if(choices[i] != null)
+				return choices[i];
+		}
+		return null;
+	}
+	
+	/**
 	 * Converts the given object list to a string array by calling
 	 * "toString()" on all the objects
 	 * @param V the list to turn into a string array
