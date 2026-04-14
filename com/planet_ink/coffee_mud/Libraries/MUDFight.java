@@ -2945,8 +2945,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				Item weapon=attacker.getNaturalWeapon();
-				if((msg.tool() instanceof Item))
-					weapon=(Item)msg.tool();
+				if(msg.tool() instanceof Item)
+				{
+					if(attacker == msg.source())
+						weapon=(Item)msg.tool();
+					else
+					if((msg.tool() == msg.source().fetchWieldedItem())
+					||(msg.tool() == msg.source().fetchHeldItem()))
+						weapon = (Item)CMParms.getFirstNonNull(attacker.fetchWieldedItem(), attacker.fetchHeldItem(), attacker.getNaturalWeapon());
+				}
 				if(weapon!=null)
 				{
 					final boolean isHit=rollToHit(attacker,target);
