@@ -775,7 +775,7 @@ public class FakeTable
 					addHole(prevRecord.offset, prevRecord.size);
 				final Integer holeOffset = takeHole(ofs);
 				if (holeOffset != null)
-					recordPos = holeOffset;
+					recordPos = holeOffset.intValue();
 				else
 				{
 					recordPos = fileSize;
