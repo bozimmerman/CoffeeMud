@@ -782,6 +782,7 @@ public class Age extends StdAbility
 				final List<MOB> parents=new ArrayList<MOB>(2);
 				PlayerLibrary players = CMLib.players();
 				DatabaseEngine database = CMLib.database();
+				MOB dbPlayerM = null;
 				ClanManager clans = CMLib.clans();
 				for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
 				{
@@ -808,6 +809,7 @@ public class Age extends StdAbility
 											final char threadId = CMLib.getLibraryThreadID(Library.PLAYERS, playerLib);
 											database=(DatabaseEngine)CMLib.library(threadId, Library.DATABASE);
 											clans=(ClanManager)CMLib.library(threadId, Library.CLANS);
+											dbPlayerM = M;
 											break;
 										}
 									}
@@ -963,7 +965,13 @@ public class Age extends StdAbility
 				newMan.baseCharStats().setWorshipCharID(babe.baseCharStats().getWorshipCharID());
 				PlayerAccount account = null;
 				final int maxAcctPlayers = (CMProps.isUsingAccountSystem()) ? CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM) : Integer.MAX_VALUE/2;
-				if((babe.amFollowing()!=null)
+				if((dbPlayerM != null)
+				&&(dbPlayerM.playerStats() != null)
+				&&(dbPlayerM.playerStats().getAccount()!=null)
+				&&(dbPlayerM.playerStats().getAccount().numPlayers() - dbPlayerM.playerStats().getAccount().getBonusCharsLimit()<maxAcctPlayers))
+					account = dbPlayerM.playerStats().getAccount();
+				if((account==null)
+				&&(babe.amFollowing()!=null)
 				&&(babe.amFollowing().isPlayer())
 				&&(parents.contains(babe.amFollowing())))
 				{
@@ -985,7 +993,7 @@ public class Age extends StdAbility
 							account=P.getAccount();
 					}
 				}
-				if(liege!=null)
+				if((liege!=null)&&(account==null))
 				{
 					final PlayerStats P = liege.playerStats();
 					if(P != null)
@@ -998,7 +1006,6 @@ public class Age extends StdAbility
 							account=P.getAccount();
 					}
 				}
-				else
 				if(account != null)
 					newMan.playerStats().setPassword(account.getPasswordStr());
 				else
