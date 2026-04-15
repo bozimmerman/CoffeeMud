@@ -555,6 +555,17 @@ public class Song extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> hit(s) a foul note on @x1 due to <S-HIS-HER> armor!",name()));
 			return false;
 		}
+		
+		if((mob.fetchAbility(ID())!=null)
+		&&(mob.fetchAbility("Song_Nothing")==null))
+		{
+			final Ability A = CMClass.getAbility("Song_Nothing");
+			A.setProficiency(100);
+			A.setSavable(false);
+			A.setProficiency(proficiency);
+			A.setMiscText("");
+			mob.addAbility(A);
+		}
 
 		if(skipStandardSongInvoke())
 			return true;

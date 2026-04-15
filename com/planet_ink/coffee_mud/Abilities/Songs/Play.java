@@ -638,6 +638,17 @@ public class Play extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		if((mob.fetchAbility(ID())!=null)
+		&&(mob.fetchAbility("Play_Break")==null))
+		{
+			final Ability A = CMClass.getAbility("Play_Break");
+			A.setProficiency(100);
+			A.setSavable(false);
+			A.setProficiency(proficiency);
+			A.setMiscText("");
+			mob.addAbility(A);
+		}
+
 		if(skipStandardSongInvoke())
 			return true;
 

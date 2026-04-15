@@ -477,6 +477,18 @@ public class Dance extends StdAbility
 			return false;
 		}
 
+
+		if((mob.fetchAbility(ID())!=null)
+		&&(mob.fetchAbility("Dance_Stop")==null))
+		{
+			final Ability A = CMClass.getAbility("Dance_Stop");
+			A.setProficiency(100);
+			A.setSavable(false);
+			A.setProficiency(proficiency);
+			A.setMiscText("");
+			mob.addAbility(A);
+		}
+
 		if(skipStandardDanceInvoke())
 			return true;
 
