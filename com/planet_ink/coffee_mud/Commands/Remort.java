@@ -157,6 +157,7 @@ public class Remort extends StdCommand
 		final int retainStats = allRetains.indexOf("STATS");
 		if(retainStats >=0)
 			allRetains.remove(retainStats);
+		final List<Ability> retainPEffectList = new ArrayList<Ability>();
 		for(String thing : allRetains)
 		{
 			thing=thing.toUpperCase().trim();
@@ -381,7 +382,23 @@ public class Remort extends StdCommand
 				}
 				case PERMAFFECTS:
 				{
-					// handled below
+					final List<Ability> permAffects = new ArrayList<Ability>();
+					for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+					{
+						final Ability A = a.nextElement();
+						if(A!=null)
+						{
+							if (!A.canBeUninvoked()&&(!A.isNowAnAutoEffect()))
+								permAffects.add(A);
+						}
+					}
+					int total = 0;
+					if(pctAmount != 0)
+						total += (int)Math.round(CMath.mul(pctAmount, permAffects.size()));
+					total += flatAmount;
+					while(permAffects.size()>total)
+						permAffects.remove(CMLib.dice().roll(1, permAffects.size(), -1));
+					retainPEffectList.addAll(permAffects);
 					break;
 				}
 				}
@@ -391,7 +408,7 @@ public class Remort extends StdCommand
 		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
-			private final boolean retainAffects = allRetains.contains(Remort.RemortRetain.PERMAFFECTS.name());
+			private final List<Ability> retainAffects = new XVector<Ability>(retainPEffectList);
 			
 			@Override
 			public void showPrompt()
@@ -547,11 +564,10 @@ public class Remort extends StdCommand
 												for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
 												{
 													final Ability A = a.nextElement();
-													if(A!=null)
+													if((A!=null)&&(!retainAffects.contains(A)))
 													{
 														if (A.canBeUninvoked()
-														||(A.isNowAnAutoEffect())
-														||(!retainAffects))
+														||(A.isNowAnAutoEffect()))
 														{
 															A.unInvoke();
 															mob.delEffect(A);
