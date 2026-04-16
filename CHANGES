@@ -16,6 +16,7 @@
 14. LLM settings now support categories, to disable or alter LLM subsystems.
 15. SHELL now has redirection > >>, and ability to run normal commands (for redirection)
 16. Can now LIST MISCHELP and LIST MISCAHELP to see your custom help entries not covered elsewhere.
+17. Remorting now removes permanent personal effects, unless remortretain is set to retain them. 
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

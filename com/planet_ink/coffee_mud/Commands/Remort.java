@@ -68,7 +68,8 @@ public class Remort extends StdCommand
 		FACTION,
 		EXPERTISE,
 		BONUSSTATPOINT,
-		QUESTPOINT
+		QUESTPOINT,
+		PERMAFFECTS
 	}
 
 	private static void recoverEverything(final MOB mob)
@@ -378,6 +379,11 @@ public class Remort extends StdCommand
 					bonusPointsPerStat[0] += total;
 					break;
 				}
+				case PERMAFFECTS:
+				{
+					// handled below
+					break;
+				}
 				}
 			}
 		}
@@ -385,6 +391,8 @@ public class Remort extends StdCommand
 		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
+			private final boolean retainAffects = allRetains.contains(Remort.RemortRetain.PERMAFFECTS.name());
+			
 			@Override
 			public void showPrompt()
 			{
@@ -542,7 +550,8 @@ public class Remort extends StdCommand
 													if(A!=null)
 													{
 														if (A.canBeUninvoked()
-														||(A.isNowAnAutoEffect()))
+														||(A.isNowAnAutoEffect())
+														||(!retainAffects))
 														{
 															A.unInvoke();
 															mob.delEffect(A);
@@ -664,6 +673,13 @@ public class Remort extends StdCommand
 											}
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
+											if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ALLERGIES))
+											&&(mob.fetchEffect("Allergies")==null))
+											{
+												final Ability A=CMClass.getAbility("Allergies");
+												if(A!=null)
+													A.invoke(mob,mob,true,0);
+											}
 											recoverEverything(mob);
 											recoverEverything(mob);
 											CMLib.achievements().reloadPlayerAwards(mob,AchievementLoadFlag.REMORT_POSTLOAD);

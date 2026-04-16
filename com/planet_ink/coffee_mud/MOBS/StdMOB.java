@@ -1960,6 +1960,8 @@ public class StdMOB implements MOB
 					for(int v = 0; v < whoseAhead.size(); v++)
 					{
 						final MOB ahead = whoseAhead.get(v);
+						if((ahead == null)||(ahead.location()!=location()))
+							continue;
 						if(v > 0)
 						{
 							sendBack.append(", ");
