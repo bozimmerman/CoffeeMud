@@ -551,8 +551,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		protected boolean firstRun=true;
 		public abstract String attempt() throws CMException,PostProcessException;
 	}
-
+	
 	@SuppressWarnings("unchecked")
+	protected final void addPostProcessAttempt(final Map<String,Object> defined, final PostProcessAttempt attempter)
+	{
+		List<PostProcessAttempt> posties=(List<PostProcessAttempt>)defined.get(MUDPercolator.POST_PROCESSING_STAT_SETS);
+		if(posties==null)
+		{
+			posties=new Vector<PostProcessAttempt>();
+			defined.put(MUDPercolator.POST_PROCESSING_STAT_SETS, posties);
+		}
+		attempter.firstRun=false;
+		final Map<String,Object> definedCopy;
+		if(defined instanceof Hashtable)
+			definedCopy=(Map<String,Object>)((Hashtable<String,Object>)defined).clone();
+		else
+			definedCopy=new Hashtable<String,Object>(defined);
+		attempter.defined=definedCopy;
+		posties.add(attempter);
+	}
+
 	protected final String PostProcessAttempter(final Map<String,Object> defined, final PostProcessAttempt attempter) throws CMException
 	{
 		try
@@ -563,20 +581,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		catch(final PostProcessException pe)
 		{
-			List<PostProcessAttempt> posties=(List<PostProcessAttempt>)defined.get(MUDPercolator.POST_PROCESSING_STAT_SETS);
-			if(posties==null)
-			{
-				posties=new Vector<PostProcessAttempt>();
-				defined.put(MUDPercolator.POST_PROCESSING_STAT_SETS, posties);
-			}
-			attempter.firstRun=false;
-			final Map<String,Object> definedCopy;
-			if(defined instanceof Hashtable)
-				definedCopy=(Map<String,Object>)((Hashtable<String,Object>)defined).clone();
-			else
-				definedCopy=new Hashtable<String,Object>(defined);
-			attempter.defined=definedCopy;
-			posties.add(attempter);
+			addPostProcessAttempt(defined, attempter);
 			return null;
 		}
 	}
