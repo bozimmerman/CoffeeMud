@@ -376,9 +376,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public void finalize() throws Throwable
 	{
-		final String ownerName=getOwnerName();
-		if((ownerName!=null) && (ownerName.length()>0))
-			Log.debugOut("Finalizing "+name()+" that belongs to "+ownerName); //TODO:BZ:DELME
 		super.finalize();
 	}
 	
@@ -388,8 +385,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final String ownerName=getOwnerName();
 		if((ownerName!=null) && (ownerName.length()>0))
 		{
-			Log.debugOut("DEBUG IN STDBOARDABLE: Destroying "+name()+" that belongs to "+ownerName); //TODO:BZ:DELME
-			Log.debugOut(new Exception()); //TODO:BZ:DELME
 			final Clan clan = CMLib.clans().fetchClanAnyHost(ownerName);
 			if(clan != null)
 				clan.getExtItems().delItem(this);
