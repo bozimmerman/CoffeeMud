@@ -50,20 +50,18 @@ public class WillQualify extends Skills
 		return access;
 	}
 
-	public StringBuffer getQualifiedAbilities(final MOB viewerM,
-											  final MOB ableM,
-											  final String classID,
-											  final String raceID,
-											  final int startLevel,
-											  final int maxLevel,
-											  final String prefix,
-											  final Set<Object> types,
-											  final Set<Object> noTypes,
-											  final boolean uniqueOnly)
+	private StringBuffer getQualifiedAbilities(
+			final MOB viewerM, final MOB ableM, 
+			final String classID, final String raceID,
+			final int startLevel, final int maxLevel,
+			final String prefix,
+			final Set<Object> types, final Set<Object> noTypes, final Set<String> ableIds, 
+			final boolean uniqueOnly)
 	{
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
 		int col = 0;
+		final boolean checkId = ableIds.size() > 0;
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
 		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,viewerM);
 		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,viewerM);
@@ -95,6 +93,7 @@ public class WillQualify extends Skills
 						||((!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
 						&&(!noTypes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))))
 					&&(CMLib.ableComponents().getSpecialSkillLimit(ableM, A).specificSkillLimit() > 0)
+					&&(!checkId || ableIds.contains(A.ID()))
 					&&((!uniqueOnly)||isUnique(A.ID(),classID,raceID)))
 					{
 						if ( (++col) > 2)
@@ -148,14 +147,13 @@ public class WillQualify extends Skills
 			if (thisLine.length() > 0)
 			{
 				if (msg.length() == 0)
-						msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
+					msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
 				msg.append(thisLine);
 			}
 		}
 		if (msg.length() == 0)
-				return msg;
+			return msg;
 		msg.insert(0, prefix);
-		msg.append(L("\n\r* This skill is automatically granted."));
 		return msg;
 	}
 
@@ -248,12 +246,14 @@ public class WillQualify extends Skills
 					throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
-		final String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY (NEXT)/([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
+		final String willQualErr = "Specify level, class, and or skill-name/type:  "
+				+ "WILLQUALIFY (NEXT)/([LEVEL]) ([CLASS NAME]) ([SKILL NAME/TYPE]).";
 		int minLevel=0;
 		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
 		final HashSet<Object> types=new HashSet<Object>();
 		final HashSet<Object> notypes=new HashSet<Object>();
+		final HashSet<String> ableIds=new HashSet<String>();
 		if(commands.size()>0)
 			commands.remove(0);
 		boolean uniqueOnly=pickUniqueFlag(commands,false);
@@ -270,7 +270,7 @@ public class WillQualify extends Skills
 				level=CMath.s_int(commands.get(0));
 				if(level<0)
 				{
-					mob.tell(willQualErr);
+					mob.tell(L(willQualErr));
 					return false;
 				}
 				if(level>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
@@ -282,11 +282,28 @@ public class WillQualify extends Skills
 			uniqueOnly=pickUniqueFlag(commands,uniqueOnly);
 			if(commands.size()>0)
 			{
-				final CharClass C2=CMClass.findCharClass(commands.get(0));
-				if (C2 != null)
+				if((commands.size()>1)
+				&&(commands.get(0).equalsIgnoreCase("ALL"))
+				&&(commands.get(1).toUpperCase().startsWith("CLASS")))
 				{
-					C = C2;
 					commands.remove(0);
+					commands.remove(0);
+					C=null;
+				}
+				else
+				if(commands.get(0).toUpperCase().startsWith("ALLCLASS"))
+				{
+					commands.remove(0);
+					C=null;
+				}
+				else
+				{
+					final CharClass C2=CMClass.findCharClass(commands.get(0));
+					if (C2 != null)
+					{
+						C = C2;
+						commands.remove(0);
+					}
 				}
 			}
 		}
@@ -308,6 +325,25 @@ public class WillQualify extends Skills
 				continue;
 			if(perfectMatch(Ability.DOMAIN.DESCS,str,bothStr,commands,useTypes,5))
 				continue;
+			Ability A;
+			if(bothStr != str)
+			{
+				A=CMClass.findAbility(bothStr,-1,-1,true);
+				if(A!=null)
+				{
+					commands.remove(0);
+					commands.remove(0);
+					ableIds.add(A.ID());
+					continue;
+				}
+			}
+			A=CMClass.findAbility(str,-1,-1,true);
+			if(A != null)
+			{
+				commands.remove(0);
+				ableIds.add(A.ID());
+				continue;
+			}
 			if((CMLib.expertises().findDefinition(str,false)!=null)
 			||str.equalsIgnoreCase("EXPERTISE")
 			||str.equalsIgnoreCase("EXPERTISES"))
@@ -321,24 +357,67 @@ public class WillQualify extends Skills
 			{
 				commands.remove(0);
 				commands.remove(0);
-				useTypes.add(bothStr.toUpperCase().trim());
+				ableIds.add(bothStr.toUpperCase().trim());
 				continue;
 			}
 			if(softMatch(Ability.ACODE.DESCS,str,bothStr,commands,useTypes,0))
 				continue;
 			if(softMatch(Ability.DOMAIN.DESCS,str,bothStr,commands,useTypes,5))
 				continue;
+			if(bothStr != str)
+			{
+				A=CMClass.findAbility(bothStr,-1,-1,false);
+				if(A!=null)
+				{
+					commands.remove(0);
+					commands.remove(0);
+					ableIds.add(A.ID());
+					continue;
+				}
+			}
+			A=CMClass.findAbility(str,-1,-1,false);
+			if(A != null)
+			{
+				commands.remove(0);
+				ableIds.add(A.ID());
+				continue;
+			}
 			final List<String> allOptions=new XVector<String>(Ability.ACODE.DESCS);
 			allOptions.addAll(Ability.DOMAIN.DESCS);
 			allOptions.add("EXPERTISES");
-			mob.tell(L("'@x1' is not a valid skill type, domain, expertise, or character class.  Try one of: @x2",str,CMParms.toListString(allOptions)));
-			mob.tell(willQualErr);
+			mob.tell(L("'@x1' is not a valid skill name or type, domain, expertise, or character class.  Try one of: @x2",str,CMParms.toListString(allOptions)));
+			mob.tell(L(willQualErr));
 			return false;
 		}
-
-		msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
+		
 		final String raceID = mob.baseCharStats().getMyRace().ID();
-		msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes, uniqueOnly));
+		if(C == null)
+		{
+			if(ableIds.size()>0)
+				notypes.add("EXPERTISES");
+			for(final Enumeration<CharClass> c = CMClass.charClasses();c.hasMoreElements();)
+			{
+				C = c.nextElement();
+				if(!CMProps.isTheme(C.availabilityCode()))
+					continue;
+				final StringBuffer ables = getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes, ableIds, uniqueOnly);
+				if(ables.toString().trim().length()>0)
+				{
+					msg.append(L("A level @x1 class '@x2' qualifies for:\n\r",""+level,C.name()));
+					msg.append(ables);
+					msg.append("\n\r\n\r");
+				}
+			}
+		}
+		else
+		{
+			msg.append(L("At level @x1 of class '@x2', you could qualify for:\n\r",""+level,C.name()));
+			msg.append(getQualifiedAbilities(mob,mob,C.ID(),raceID,minLevel,level,"", types, notypes, ableIds, uniqueOnly));
+		}
+		if(msg.length()>0)
+			msg.append(L("\n\r* This skill is automatically granted."));
+		else
+			msg.append(L("\n\rNo matches."));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
