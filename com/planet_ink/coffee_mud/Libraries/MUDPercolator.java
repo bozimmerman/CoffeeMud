@@ -3398,6 +3398,132 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return value;
 	}
 
+	protected String processLLMTag(final XMLTag valPiece, String value, final Modifiable E, final String tagName, final Map<String,Object> defined)
+		throws CMException, PostProcessException
+	{
+		final String llm = valPiece.getParmValue("LLM");
+		if((llm != null) && (llm.length()>1) 
+		&& ("tTcC".indexOf(llm.charAt(0))>=0) 
+		&& (value.trim().length()>0)
+		&& (CMLib.protocol().isLLMInstalled(LLM_CATEGORIES[0])))
+		{
+			final boolean concurrent = "cC".indexOf(llm.charAt(0))>=0;
+			if(concurrent)
+			{
+				String hexString = "FUTURE_" + String.format("%08X", Integer.valueOf(E.hashCode()^tagName.hashCode()));
+				if(defined.containsKey(hexString))
+				{
+					try
+					{
+						@SuppressWarnings("unchecked")
+						final Future<String> future = (Future<String>)defined.get(hexString);
+						value = future.get();
+					}
+					catch(final Exception e)
+					{
+						throw new CMException("Ended because of failed LLM access.",e);
+					}
+				}
+				else
+				{
+					final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
+					final String[] answer = new String[] {""};
+					final Future<String> chatFutureResponse = new Future<String>()
+					{
+						private final ProtocolLibrary.LLMSession chatSession = session;
+						private boolean cancelled = false; 
+						private final String[] result = answer;
+						private final long startTime = System.currentTimeMillis();
+
+						@Override
+						public boolean cancel(boolean mayInterruptIfRunning)
+						{
+							cancelled = true;
+							return true;
+						}
+
+						@Override
+						public boolean isCancelled()
+						{
+							return cancelled;
+						}
+
+						@Override
+						public boolean isDone()
+						{
+							return cancelled || !chatSession.isChatting();
+						}
+
+						@Override
+						public String get() throws InterruptedException, ExecutionException
+						{
+							try
+							{
+								return get(30, TimeUnit.SECONDS);
+							}
+							catch (TimeoutException e)
+							{
+								throw new InterruptedException(e.getMessage());
+							}
+						}
+
+						@Override
+						public String get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
+						{
+							long nanosTimeout = unit.toNanos(timeout);
+							while (!isDone()) 
+							{
+								if (Thread.interrupted())
+									throw new InterruptedException("Task interrupted");
+								long remainingNanos = nanosTimeout - TimeUnit.MILLISECONDS.toNanos(System.currentTimeMillis() - startTime);
+								if (remainingNanos <= 0)
+									throw new TimeoutException("Timed out waiting for result");
+								CMLib.s_sleep(10);
+								if (cancelled)
+									throw new InterruptedException("Task was cancelled");
+							}
+							return result[0];
+						}
+					};
+					final String finalPrompt = value;
+					CMLib.threads().executeRunnable(new Runnable() 
+					{
+						final LLMSession sess = session;
+						final String prompt = finalPrompt;
+						final String[] ans = answer;
+						@Override
+						public void run()
+						{
+							try
+							{
+								ans[0] = sess.chat(prompt);
+							}
+							catch(final Exception e)
+							{
+							}
+						}
+						
+					});
+					defined.put(hexString, chatFutureResponse);
+					throw new PostProcessException("Concurrent LLM processing for "+tagName+" on "+E+" scheduled.");
+				}
+			}
+			else
+			{
+				final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
+				try
+				{
+					value = session.chat(value);
+				}
+				catch(final Exception e)
+				{
+					throw new CMException("Ended because of failed LLM access.",e);
+				}
+			}
+		}
+		return value;
+	}
+	
 	protected PairList<XMLTag,String> findStrings(final boolean optional, final Modifiable E, final List<String> ignoreStats, final String defPrefix,
 												  String tagName, final XMLTag piece, final Map<String,Object> defined, final XMLTag processDefined) throws CMException,PostProcessException
 	{
@@ -3433,126 +3559,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new CMException("Ended because of a stack overflow.  See the log.");
 				}
 			}
-			final String llm = valPiece.getParmValue("LLM");
-			if((llm != null) && (llm.length()>1) 
-			&& ("tTcC".indexOf(llm.charAt(0))>=0) 
-			&& (value.trim().length()>0)
-			&& (CMLib.protocol().isLLMInstalled(LLM_CATEGORIES[0])))
-			{
-				final boolean concurrent = "cC".indexOf(llm.charAt(0))>=0;
-				if(concurrent)
-				{
-					String hexString = "FUTURE_" + String.format("%08X", Integer.valueOf(E.hashCode()^tagName.hashCode()));
-					if(defined.containsKey(hexString))
-					{
-						try
-						{
-							@SuppressWarnings("unchecked")
-							final Future<String> future = (Future<String>)defined.get(hexString);
-							value = future.get();
-						}
-						catch(final Exception e)
-						{
-							throw new CMException("Ended because of failed LLM access.",e);
-						}
-					}
-					else
-					{
-						final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
-						final String[] answer = new String[] {""};
-						final Future<String> chatFutureResponse = new Future<String>()
-						{
-							private final ProtocolLibrary.LLMSession chatSession = session;
-							private boolean cancelled = false; 
-							private final String[] result = answer;
-							private final long startTime = System.currentTimeMillis();
-	
-							@Override
-							public boolean cancel(boolean mayInterruptIfRunning)
-							{
-								cancelled = true;
-								return true;
-							}
-	
-							@Override
-							public boolean isCancelled()
-							{
-								return cancelled;
-							}
-	
-							@Override
-							public boolean isDone()
-							{
-								return cancelled || !chatSession.isChatting();
-							}
-	
-							@Override
-							public String get() throws InterruptedException, ExecutionException
-							{
-								try
-								{
-									return get(30, TimeUnit.SECONDS);
-								}
-								catch (TimeoutException e)
-								{
-									throw new InterruptedException(e.getMessage());
-								}
-							}
-	
-							@Override
-							public String get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
-							{
-								long nanosTimeout = unit.toNanos(timeout);
-								while (!isDone()) 
-								{
-									if (Thread.interrupted())
-										throw new InterruptedException("Task interrupted");
-									long remainingNanos = nanosTimeout - TimeUnit.MILLISECONDS.toNanos(System.currentTimeMillis() - startTime);
-									if (remainingNanos <= 0)
-										throw new TimeoutException("Timed out waiting for result");
-									CMLib.s_sleep(10);
-									if (cancelled)
-										throw new InterruptedException("Task was cancelled");
-								}
-								return result[0];
-							}
-						};
-						final String finalPrompt = value;
-						CMLib.threads().executeRunnable(new Runnable() 
-						{
-							final LLMSession sess = session;
-							final String prompt = finalPrompt;
-							final String[] ans = answer;
-							@Override
-							public void run()
-							{
-								try
-								{
-									ans[0] = sess.chat(prompt);
-								}
-								catch(final Exception e)
-								{
-								}
-							}
-							
-						});
-						defined.put(hexString, chatFutureResponse);
-						throw new PostProcessException("Concurrent LLM processing for "+tagName+" on "+E+" scheduled.");
-					}
-				}
-				else
-				{
-					final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
-					try
-					{
-						value = session.chat(value);
-					}
-					catch(final Exception e)
-					{
-						throw new CMException("Ended because of failed LLM access.",e);
-					}
-				}
-			}
+			value = this.processLLMTag(valPiece, value, E, tagName, defined); 
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 			found.add(valPiece, value);
