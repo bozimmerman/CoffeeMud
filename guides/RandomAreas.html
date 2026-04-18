@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+
+  <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Random Generation in CoffeeMud 5.11</title>
   
-  <title>Random Generation in CoffeeMud 5.11</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -76,7 +76,7 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;" /></p>
       <h2><a name="structure">Overview of
 XML Tags</a></h2>
 The random generator works by
@@ -216,10 +216,15 @@ in attribute values, which is why they must be written as &amp;lt;
 and&nbsp;&amp;gt; in your xml.</td>
           </tr>
           <tr><td>llm</td><td>if
-the value is 'true', then the tag is included in its parent only if
+the value is 'true' or 'concurrent', then the tag is included in its
+parent only if
 LLM/AI integration is included in your mud. &nbsp;It also signifies
 that the value of the tag should be sent to the LLM as a prompt,
-replacing its value with the AI response.</td></tr><tr>
+replacing its value with the AI response. A 'true' value means the
+prompt will be evaluated when encountered (sequentially in generation),
+while 'concurrent' means it will be queued in a thread and processed
+concurrently with generation.<br />
+</td></tr><tr>
             <td>define</td>
             <td>this attribute is only used if its "condition" is
 met, and it is "selected" by its parent tag, if applicable.&nbsp;
@@ -962,7 +967,8 @@ CoffeeMud's Quest Manager for execution, monitoring, and cleanup.
 &nbsp;I won't go into the complete details of what goes into a Quest
 Script here, however. &nbsp;Instead, you should check the Game
 Builder's Guide for a complete breakdown of a Quest Script.</dd>
-        <dd></dd>
+        <dd><br />
+</dd>
         <dd>Quest
 Scripts can be built from the ground up by assembling a String
 consisting of each line of the quest script, separated by %0D
@@ -993,7 +999,8 @@ file and scan down the top part of the file whose lines begin with #.
 &nbsp;When you see a line that begins with #$, you know you are looking
 at a variable definition whose variable name is a required detail for
 the QUEST tag using that template.</dd>
-        <dd></dd>
+        <dd><br />
+</dd>
         <dd>To save you some
 time, numerous existing quest templates have already had associated
 snippets of Random Generator XML written to demonstrate the above.
@@ -1263,8 +1270,10 @@ name="JOE" would expand the number of possible results by one name.
       </td>
     </tr>
     <tr>
-      <td align="left" valign="top" width="20%"></td>
-      <td style="text-align: left;"></td>
+      <td align="left" valign="top" width="20%"><br />
+</td>
+      <td style="text-align: left;"><br />
+</td>
     </tr>
   </tbody>
 </table>

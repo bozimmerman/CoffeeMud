@@ -66,7 +66,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING condition="$_plains_path_roomtype=0">The grassy plains surrounds you, $adj_sparse trees making some directions $adj_impassable. </STRING>
 				<STRING condition="$_plains_path_roomtype=0">You feel a $noun_plains_wind blow across the $plains_path_prefix plains. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a plains region, but don't mention any creatures or water.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a plains region, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_plains_path_roomtype=1">The $_plains_path_type continues $roomrun_desc_long.</STRING>
 				<STRING condition="$_plains_path_roomtype=1">Beneath the broad shadows of the grassy hills you can see the $_plains_path_type running $roomrun_desc_long.</STRING>
@@ -106,7 +106,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>The $plains_path_prefix plains surrounds you, ${adj_phys_size_tall} $adj_cramped hills making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_plains_wind blow over the $plains_path_prefix hills of the $noun_plains_wind_adj plains. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a plains region, but don't mention any creatures or water.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a plains region, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING>Openings in the $noun_plains_brush can be seen $roomexits_desc_long.</STRING>

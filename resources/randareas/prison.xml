@@ -60,7 +60,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>This $adj_any $_prison_tunnelword heads $roomexits_desc_long.</STRING>
 				<STRING>This $adj_any $_prison_tunnelword seems to head $roomexits_desc_long.</STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</STRING>
 			<STRING select="any-2" insert="prison_random_blurbs" action="APPEND" />
 			<STRING select="all" action="APPEND" insert="desc_exits" />
 		</STRING>
@@ -92,7 +92,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>This $adj_any $_prison_tunnelword heads $roomrun_desc_long.</STRING>
 				<STRING>This $adj_any $_prison_tunnelword seems to head $roomrun_desc_long.</STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</STRING>
 			<STRING select="all" action="APPEND" insert="desc_exits" />
 			<STRING select="any-1" insert="prison_random_blurbs" action="APPEND" />
 		</STRING>
@@ -115,7 +115,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
@@ -141,7 +141,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The $adj_nasty bars make this room like a cage.</DESCRIPTION>
 					<DESCRIPTION>A set of $adj_nasty bars surround you.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
@@ -169,7 +169,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This room is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
 					<DESCRIPTION>This $adj_scary_feeling is $adj_dark room.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$prison_exit_desc</DESCRIPTION>
 			</DESCRIPTION>
@@ -189,7 +189,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light cell for solitary refinement.</DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light solitary prisoner`s holding suite.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Everything here is totally $adj_light.</DESCRIPTION>
 					<DESCRIPTION>This room is completely $adj_light.</DESCRIPTION>
@@ -235,7 +235,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is (a(n)) $adj_nasty chamber of torture and pain.</DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_nasty room obviously meant for pain.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Just the sight of this $adj_scary_feeling room makes you talk.</DESCRIPTION>
 					<DESCRIPTION>All manner of $adj_scary_feeling instruments for human suffering abound here.</DESCRIPTION>
@@ -280,7 +280,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>You`re inside (a(n)) $adj_nasty pit.</DESCRIPTION>
 					<DESCRIPTION>This is (a(n)) $adj_nasty pit.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Its little more than a great hole surrounded by a metal cage.</DESCRIPTION>
 					<DESCRIPTION>It is a great caged hole for prisoners.</DESCRIPTION>
@@ -311,7 +311,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>The waste and filth of the prisoners and guards is all dumped here.</DESCRIPTION>
 					<DESCRIPTION>This must be where the waste from the prisoners is dumped.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You did not want to know about that, but now you do.</DESCRIPTION>
 					<DESCRIPTION>You realize now how offal that information is.</DESCRIPTION>
@@ -335,7 +335,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>You`re inside a guard station.</DESCRIPTION>
 					<DESCRIPTION>This is a guard station.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
@@ -356,7 +356,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>You aren`t sure if this place is the control center, or the controlled center.</DESCRIPTION>
 					<DESCRIPTION>Looking around, you still aren`t sure where the people in charge are.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The bad smells here are either from the garbage, or the cowardice.</DESCRIPTION>
 					<DESCRIPTION>The garbage strewn around in here reminds you that you`ve seen nicer cells than this.</DESCRIPTION>
@@ -457,7 +457,7 @@ See guides/RandomAreas.html for information about documents of this type.
 					<DESCRIPTION>This is probably the highlight of the whole place.</DESCRIPTION>
 					<DESCRIPTION>You realize it probably doesn`t get better than this room.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
+				<DESCRIPTION LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a medieval prison, but don't mention any creatures or portable items.</DESCRIPTION>
 				<DESCRIPTION>The exit is to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />

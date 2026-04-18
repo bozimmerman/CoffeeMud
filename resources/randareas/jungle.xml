@@ -66,7 +66,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING condition="$_jungle_path_roomtype=0">The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
 				<STRING condition="$_jungle_path_roomtype=0">You feel a $noun_jungle_wind blow through the $adj_dense foliage of the $adj_densedark_word jungle. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a jungle, but don't mention any creatures or water.</STRING>
+			<STRING llm="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a jungle, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING condition="$_jungle_path_roomtype=1">The $_jungle_path_type continues $roomrun_desc_long.</STRING>
 				<STRING condition="$_jungle_path_roomtype=1">Beneath the long shadows you can see the $_jungle_path_type running $roomrun_desc_long.</STRING>
@@ -107,7 +107,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>The jungle surrounds you, $adj_cramped ${any_tree}s making some directions $adj_impassable. </STRING>
 				<STRING>You feel a very slight $noun_jungle_wind waft through the $adj_phys_size_tall trees of the $adj_densedark_word jungle. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in a jungle, but don't mention any creatures or water.</STRING>
+			<STRING llm="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in a jungle, but don't mention any creatures or water.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING>Openings in the $adj_densedark_word $noun_jungle_brush can be seen $roomexits_desc_long.</STRING>

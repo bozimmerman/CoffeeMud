@@ -70,7 +70,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>The $areaname surrounds you, ${adj_phys_size_tall} $adj_cramped $noun_oceanfloor_rocks making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_oceanfloor_currents sweep over the $adj_phys_size_tall dunes of the ocean floor. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in an ocean, but don't mention any creatures.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in an ocean, but don't mention any creatures.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING>Openings in the $noun_oceanfloor_plants can be seen $roomexits_desc_long.</STRING>
@@ -111,7 +111,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>The ocean surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
 				<STRING>You feel a $noun_oceanfloor_currents blow over the $adj_phys_size_tall dunes of the $noun_oceanfloor_currents_adj ocean. </STRING>
 			</STRING>
-			<STRING llm="true" action="APPEND">Give me only a sentence that describes ${l:room_title} in an ocean, but don't mention any creatures.</STRING>
+			<STRING LLM="concurrent" action="APPEND">Give me only a present-tense sentence that describes ${l:room_title} in an ocean, but don't mention any creatures.</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
 				<STRING>Openings in the $noun_oceanfloor_plants can be seen $roomexits_desc_long.</STRING>

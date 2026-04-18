@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.LLMSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -31,6 +32,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.*;
@@ -64,8 +70,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static CMParms.DelimiterChecker REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 	protected final static List<String> ITEM_IGNORE_STATS = Arrays.asList(GenericBuilder.GenItemCode.getAllCodeNames());
 	protected final static List<String> MOB_IGNORE_STATS =new XVector<String>(Arrays.asList(GenericBuilder.GenMOBCode.getAllCodeNames())).append("GENDER");
+	protected final static String[] LLM_CATEGORIES = new String[] { ProtocolLibrary.LLMCat.PERCOLATOR.name() };
 
 	protected Map<Integer,List<Item>> farmablesCache = new Hashtable<Integer,List<Item>>();
+	protected AtomicInteger specialMarker = new AtomicInteger(0);
 
 	protected static enum MQLSpecialFromSet
 	{
@@ -549,6 +557,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		protected Map<String,Object> defined=null;
 		protected boolean firstRun=true;
+		protected boolean substitute=false;
 		public abstract String attempt() throws CMException,PostProcessException;
 	}
 	
@@ -3424,24 +3433,124 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new CMException("Ended because of a stack overflow.  See the log.");
 				}
 			}
-			if(CMath.s_bool(valPiece.getParmValue("LLM")))
+			final String llm = valPiece.getParmValue("LLM");
+			if((llm != null) && (llm.length()>1) 
+			&& ("tTcC".indexOf(llm.charAt(0))>=0) 
+			&& (value.trim().length()>0)
+			&& (CMLib.protocol().isLLMInstalled(LLM_CATEGORIES[0])))
 			{
-				try
+				final boolean concurrent = "cC".indexOf(llm.charAt(0))>=0;
+				if(concurrent)
 				{
-					if(value.trim().length()>0)
+					String hexString = "FUTURE_" + String.format("%08X", Integer.valueOf(E.hashCode()^tagName.hashCode()));
+					if(defined.containsKey(hexString))
 					{
-						if(!defined.containsKey("SYSTEM_LLM_Object"))
+						try
 						{
-							final String[] categories = new String[] { ProtocolLibrary.LLMCat.PERCOLATOR.name() };
-							defined.put("SYSTEM_LLM_Object", CMLib.protocol().createLLMSession(categories, null,Integer.valueOf(2)));
+							@SuppressWarnings("unchecked")
+							final Future<String> future = (Future<String>)defined.get(hexString);
+							value = future.get();
 						}
-						final ProtocolLibrary.LLMSession session = (ProtocolLibrary.LLMSession)defined.get("SYSTEM_LLM_Object"); 
-						value = session.chat(value);
+						catch(final Exception e)
+						{
+							throw new CMException("Ended because of failed LLM access.",e);
+						}
+					}
+					else
+					{
+						final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
+						final String[] answer = new String[] {""};
+						final Future<String> chatFutureResponse = new Future<String>()
+						{
+							private final ProtocolLibrary.LLMSession chatSession = session;
+							private boolean cancelled = false; 
+							private final String[] result = answer;
+							private final long startTime = System.currentTimeMillis();
+	
+							@Override
+							public boolean cancel(boolean mayInterruptIfRunning)
+							{
+								cancelled = true;
+								return true;
+							}
+	
+							@Override
+							public boolean isCancelled()
+							{
+								return cancelled;
+							}
+	
+							@Override
+							public boolean isDone()
+							{
+								return cancelled || !chatSession.isChatting();
+							}
+	
+							@Override
+							public String get() throws InterruptedException, ExecutionException
+							{
+								try
+								{
+									return get(30, TimeUnit.SECONDS);
+								}
+								catch (TimeoutException e)
+								{
+									throw new InterruptedException(e.getMessage());
+								}
+							}
+	
+							@Override
+							public String get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
+							{
+								long nanosTimeout = unit.toNanos(timeout);
+								while (!isDone()) 
+								{
+									if (Thread.interrupted())
+										throw new InterruptedException("Task interrupted");
+									long remainingNanos = nanosTimeout - TimeUnit.MILLISECONDS.toNanos(System.currentTimeMillis() - startTime);
+									if (remainingNanos <= 0)
+										throw new TimeoutException("Timed out waiting for result");
+									CMLib.s_sleep(10);
+									if (cancelled)
+										throw new InterruptedException("Task was cancelled");
+								}
+								return result[0];
+							}
+						};
+						final String finalPrompt = value;
+						CMLib.threads().executeRunnable(new Runnable() 
+						{
+							final LLMSession sess = session;
+							final String prompt = finalPrompt;
+							final String[] ans = answer;
+							@Override
+							public void run()
+							{
+								try
+								{
+									ans[0] = sess.chat(prompt);
+								}
+								catch(final Exception e)
+								{
+								}
+							}
+							
+						});
+						defined.put(hexString, chatFutureResponse);
+						throw new PostProcessException("Concurrent LLM processing for "+tagName+" on "+E+" scheduled.");
 					}
 				}
-				catch(final Exception e)
+				else
 				{
-					throw new CMException("Ended because of failed LLM access.",e);
+					final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
+					try
+					{
+						value = session.chat(value);
+					}
+					catch(final Exception e)
+					{
+						throw new CMException("Ended because of failed LLM access.",e);
+					}
 				}
 			}
 			if(processDefined!=valPiece)
