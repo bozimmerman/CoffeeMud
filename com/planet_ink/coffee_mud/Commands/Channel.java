@@ -155,13 +155,14 @@ public class Channel extends StdCommand
 			return false;
 		}
 
+		final int DEF_BACKLOG_COUNT = 5;
 		if(commands.size()==0)
 		{
-			int size = CMLib.channels().getChannelQue(channelInt, 0, 5, mob).size();
+			int size = CMLib.channels().getChannelQue(channelInt, 0, DEF_BACKLOG_COUNT, mob).size();
 			if((size>0)&&(!mob.isMonster()))
 			{
-				if(size>5)
-					size=5;
+				if(size>DEF_BACKLOG_COUNT)
+					size=DEF_BACKLOG_COUNT;
 				mob.tell(L("@x1 what?  Here's the last @x2 message(s):\n\r",channelName,""+size));
 				commands.add("LAST");
 				commands.add(Integer.toString(size));
