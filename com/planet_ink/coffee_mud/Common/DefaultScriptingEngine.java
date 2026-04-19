@@ -14165,7 +14165,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(t==null)
 		{
 			t=parseBits(script,0,"CT");
-			if((t.length>2)&&(t[1].equals("Z")))
+			if((t.length>2)&&(t[1].equals("Z")||t[1].equals("P")))
 				t=parseBits(script,0,"CCR");
 			dollarChecks=new boolean[t.length];
 			for(int i=1;i<t.length;i++)
@@ -14211,7 +14211,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				|| arg.equalsIgnoreCase(ID)
 				|| arg.equalsIgnoreCase("ALL"))
 					return word;
-				i++;
+				return null;
 			}
 			else
 			if(word.equals("Z") && (i < t.length-1))
