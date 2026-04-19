@@ -14177,14 +14177,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final String eNameUpp=E.Name().toUpperCase();
 		final String peNameUpp=" " + E.Name().toUpperCase() + " ";
 		final String ID=E.ID().toUpperCase();
-		if((t[1].length()==0)
-		||(t[1].equals("ALL"))
-		||(t[1].equals("P")
-			&&(t.length==3)
-			&&((t[2].equalsIgnoreCase(eNameUpp))
-				||(t[2].equalsIgnoreCase("ALL")))))
+		if((t[1].length()==0)||(t[1].equals("ALL")))
 			return t[1];
 		MPContext ctx = null;
+		if(t[1].equals("P")||t[1].equals("Z"))
+		{
+			if(t.length!=3)
+				return null;
+			final String arg;
+			if (dollarChecks[2])
+			{
+				if(ctx == null)
+					ctx = new MPContext(scripted, monster, source, target, primaryItem, secondaryItem, eNameUpp, tmp);
+				arg=this.varify(ctx, t[2]);
+			}
+			else
+				arg=t[2];
+			if(t[1].equals("P"))
+			{
+				if((t[2].equalsIgnoreCase(eNameUpp))||(t[2].equalsIgnoreCase("ALL")))
+					return t[1];
+				if( arg.equalsIgnoreCase(eNameUpp)
+				|| arg.equalsIgnoreCase(ID)
+				|| arg.equalsIgnoreCase("ALL"))
+					return t[1];
+			}
+			else // "Z"
+			{
+				if(CMLib.masking().maskCheck(arg, E, true))
+					return t[1];
+			}
+			return null;
+			
+		}
 		for(int i=1;i<t.length;i++)
 		{
 			final String word;
@@ -14196,43 +14221,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			else
 				word=t[i];
-			if(word.equals("P") && (i < t.length-1))
-			{
-				final String arg;
-				if (dollarChecks[i+1])
-				{
-					if(ctx == null)
-						ctx = new MPContext(scripted, monster, source, target, primaryItem, secondaryItem, eNameUpp, tmp);
-					arg=this.varify(ctx, t[i+1]);
-				}
-				else
-					arg=t[i+1];
-				if( arg.equalsIgnoreCase(eNameUpp)
-				|| arg.equalsIgnoreCase(ID)
-				|| arg.equalsIgnoreCase("ALL"))
-					return word;
-				return null;
-			}
-			else
-			if(word.equals("Z") && (i < t.length-1))
-			{
-				final String arg;
-				if (dollarChecks[i+1])
-				{
-					if(ctx == null)
-						ctx = new MPContext(scripted, monster, source, target, primaryItem, secondaryItem, eNameUpp, tmp);
-					arg=this.varify(ctx, t[i+1]);
-				}
-				else
-					arg=t[i+1];
-				if(CMLib.masking().maskCheck(arg, E, true))
-					return word;
-				return null;
-			}
-			else
-			if((peNameUpp.indexOf(" "+word+" ")>=0)
+			if((word.equalsIgnoreCase("ALL"))
 			||(ID.equalsIgnoreCase(word))
-			||(word.equalsIgnoreCase("ALL")))
+			||(peNameUpp.indexOf(" "+word+" ")>=0))
 				return word;
 		}
 		return null;
