@@ -14165,6 +14165,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(t==null)
 		{
 			t=parseBits(script,0,"CT");
+			if((t.length>2)
+			&&(t[1].equals("P")||t[1].equals("Z")))
+				t=parseBits(script,0,"CCR");
 			dollarChecks=new boolean[t.length];
 			for(int i=1;i<t.length;i++)
 				dollarChecks[i] = t[i].indexOf('$')>=0;
@@ -14208,7 +14211,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				|| arg.equalsIgnoreCase(ID)
 				|| arg.equalsIgnoreCase("ALL"))
 					return word;
-				i++;
+				return null;
+			}
+			else
+			if(word.equals("Z") && (i < t.length-1))
+			{
+				final String arg;
+				if (dollarChecks[i+1])
+				{
+					if(ctx == null)
+						ctx = new MPContext(scripted, monster, source, target, primaryItem, secondaryItem, eNameUpp, tmp);
+					arg=this.varify(ctx, t[i+1]);
+				}
+				else
+					arg=t[i+1];
+				if(CMLib.masking().maskCheck(arg, E, true))
+					return word;
+				return null;
 			}
 			else
 			if(((" "+eNameUpp+" ").indexOf(" "+word+" ")>=0)

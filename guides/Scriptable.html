@@ -5,12 +5,12 @@
 
 
 
+
   <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.11</title>
   
 
 
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -797,17 +797,21 @@ act_progs, so do not try to use them; it won't work.</p><h3><a name="age_prog">a
 
       <p>Usage:</p>
 
-      <pre>age_prog [keyword list]<br />age_prog p [keyword list]<br />age_prog all<br /></pre>
+      <pre>age_prog [keyword list]<br />age_prog p [keyword list]<br />age_prog z [zapper mask]<br />age_prog all<br /></pre>
 
       <p>This
 type of mobprog is
-triggered by witnessing someone's age in years changing. If the ager source matches the keywords of
+triggered by witnessing someone's age in years changing. If the ager
+source matches the keywords of
 the age_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the ager must exactly match that of
-the age_prog. If there is not, then any ager with any of the
+the age_prog. A 'z' prefix denotes a zapper mask to filter the aging
+one (see ahelp zappermask).&nbsp; If there is neither, then any ager
+with any of the
 keywords in the list in it will trigger it. If an age_prog all is used,
-then the age_prog will trigger from anyone's age in years changing..&nbsp;</p>
+then the age_prog will trigger from anyone's age in years
+changing..&nbsp;</p>
 
       <p>EXAMPLES:</p>
 
@@ -902,7 +906,7 @@ follower, etc).</p>
 
       <p>Usage:</p>
 
-      <pre>buy_prog [keyword list]<br />buy_prog p [keyword phrase]<br />buy_prog all<br /></pre>
+      <pre>buy_prog [keyword list]<br />buy_prog p [keyword phrase]<br />buy_prog z [zapper mask]<br />buy_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by buying an item from a
@@ -910,7 +914,7 @@ shopkeeper. If the item being bought has any of the keywords of the
 buy_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
-the buy_prog. If there is not, then any item with any of the keywords
+the buy_prog. A 'z' prefix denotes a zapper mask to filter the bought item (see ahelp zappermask).&nbsp; If there is neither, then any item with any of the keywords
 in the list in it will trigger it. If a buy_prog all is used, then the
 buy_prog will trigger for any item at all being bought. This type of
 prog is usually used for in-zone quests and special mob behavior, and
@@ -950,7 +954,7 @@ juicy and a buy_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The trigger
 
       <p>Usage:</p>
 
-      <pre>cast_prog [ability id list]<br />cast_prog p [keyword list]<br />cast_prog all<br /></pre>
+      <pre>cast_prog [ability id list]<br />cast_prog p [keyword list]<br />cast_prog z [zapper mask]<br />cast_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by the mob having a spell or skill used on them by someone
@@ -959,7 +963,7 @@ cast_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the name or id of the spell must exactly match that
 of
-the cast_prog. If a cast_prog all is used,
+the cast_prog. A 'z' prefix denotes a zapper mask to filter the spell (see ahelp zappermask).&nbsp; If a cast_prog all is used,
 then the cast_prog will trigger from any spell/skill at all being used
 on
 the mob. This type of prog is usually used for in-zone quests and
@@ -991,7 +995,7 @@ some of the same keywords &#8211; for example a cast_prog p Spell_Fireball and a
 
       <p>Usage:</p>
 
-      <pre>casting_prog [keyword list]<br />casting_prog p [keyword list]<br />casting_prog all<br /></pre>
+      <pre>casting_prog [keyword list]<br />casting_prog p [keyword list]<br />casting_prog z [zapper mask]<br />casting_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by the mob casting a spell or skill on someone. If the spell
@@ -1000,7 +1004,7 @@ triggered. If there is a 'p' placed
 before
 the keyword list, the name or id of the spell must exactly match that
 of
-the cast_prog. If there is not, then any spell with any of the
+the cast_prog. A 'z' prefix denotes a zapper mask to filter the spell (see ahelp zappermask).&nbsp; If there is neither, then any spell with any of the
 keywords in the list in it will trigger it. If a casting_prog all is
 used,
 then the casting_prog will trigger from any spell at all being cast on
@@ -1077,7 +1081,7 @@ channel_progs, so do not try to use them; it won't work.</p>
 
       <p>Usage:</p>
 
-      <pre>close_prog [keyword list]<br />close_prog p [keyword list]<br />close_prog all<br /></pre>
+      <pre>close_prog [keyword list]<br />close_prog p [keyword list]<br />close_prog z [zapper mask]<br />close_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by closing a container or
@@ -1086,7 +1090,7 @@ container item, it will trigger only if the object being closed is the
 scripted one. Otherwise, if the target matches the keywords of the
 close_prog, the prog is triggered. If there is a 'p' placed before the
 keyword list, the keywords of the object must exactly match that of the
-close_prog. If there is not, then any object with any of the keywords
+close_prog. A 'z' prefix denotes a zapper mask to filter the closed item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the keywords
 in the list in it will trigger it. If the scripted item is not a
 container or door, and a "close_prog all" is used, then the close_prog
 will trigger from any object at all being opened. This type of prog is
@@ -1170,7 +1174,7 @@ trigger is most useful as a means of testing and cancelling certain
 types of event messages; thus the name. To cause the triggered event to
 be cancelled, you need only add a RETURN CANCEL command to the body of
 this script.</p><p>See also <span style="font-weight: bold;">execmsg_prog</span>.
-Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;"></span>
+Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;" />
 
       <p>EXAMPLES:</p>
 
@@ -1213,14 +1217,14 @@ object can be found at index 0 of the context objects array.</p>
 
       <p>Usage:</p>
 
-      <pre>consume_prog [keyword list]<br />consume_prog p [keyword list]<br />consume_prog all<br /></pre>
+      <pre>consume_prog [keyword list]<br />consume_prog p [keyword list]<br />consume_prog z [zapper mask]<br />consume_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered eating or drinking from an
 object. If the object used matches the keywords of the consume_prog,
 the prog is triggered. If there is a 'p' placed before the
 keyword list, the keywords of the object must exactly match that of the
-consume_prog. If there is not, then any object with any of the keywords
+consume_prog. A 'z' prefix denotes a zapper mask to filter the consumed item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the keywords
 in the list in it will trigger it. If a consume_prog all is used, then
 the consume_prog will trigger from any object at all. This type of prog
 is usually used for in-zone quests and special mob behavior, and has a
@@ -1349,15 +1353,15 @@ elapsed.</p>
 
       <p>Usage:</p>
 
-      <pre>drop_prog [keyword list]<br />drop_prog p [keyword list]<br />drop_prog all<br /></pre>
+      <pre>drop_prog [keyword list]<br />drop_prog p [keyword list]<br />drop_prog z [zapper mask]<br />drop_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by dropping an object. If
 the object dropped matches the keywords of the drop_prog, the prog is
 triggered. If there is a 'p' placed before the keyword list,
 the
-keywords of the object must exactly match that of the drop_prog. If
-there is not, then any object with any of the keywords in the list in
+keywords of the object must exactly match that of the drop_prog. A 'z' prefix denotes a zapper mask to filter the dropped item (see ahelp zappermask).&nbsp; If
+there is neither, then any object with any of the keywords in the list in
 it will trigger it. If a drop_prog all is used, then the drop_prog will
 trigger from any object at all being dropped. This type of prog is
 usually used for in-zone quests and special mob behavior, and has a
@@ -1399,7 +1403,7 @@ juicy and a drop_prog p apple red poisoned..</p><p>SPECIAL NOTES:&nbsp;The trigg
 
       <p>Usage:</p>
 
-      <pre>dropping_prog [keyword list]<br />dropping_prog p [keyword list]<br />dropping_prog all<br /></pre>
+      <pre>dropping_prog [keyword list]<br />dropping_prog p [keyword list]<br />dropping_prog z [zapper mask]<br />dropping_prog all<br /></pre>
 
 This is the same as drop_prog except it triggers only when the scripted npc or player does the dropping. 
       <h3><a name="entry_prog">entry_prog</a></h3>
@@ -1479,7 +1483,7 @@ that
 stuff means.</p>
 
       <p>See also <span style="font-weight: bold;">cnclmsg_prog</span>.
-Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;"></span><p>EXAMPLES:</p>
+Valid message codes can be found by using <span style="font-weight: bold; font-family: monospace;">LIST MSGTYPES</span> from the command line. &nbsp;For general message mask types, use <span style="font-weight: bold; font-family: monospace;">LIST MSGMASKS</span> from the command line.</p><span style="font-family: monospace;" /><p>EXAMPLES:</p>
 
       <pre>execmsg_prog get all<br /> mpecho $n likes $p.<br />~<br /></pre>
 
@@ -1568,7 +1572,7 @@ rounds.</p><h3><a name="follow_prog">follow_prog</a></h3>
 
       <p>Usage:</p>
 
-      <pre>follow_prog [keyword list]<br />follow_prog p [keyword list]<br />follow_prog all<br /></pre>
+      <pre>follow_prog [keyword list]<br />follow_prog p [keyword list]<br />follow_prog z [zapper mask]<br />follow_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -1576,7 +1580,7 @@ triggered by witnessing someone following someone else. If the follower source m
 the follow_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the&nbsp;follower must exactly match that of
-the&nbsp;follow_prog. If there is not, then any follower with any of the
+the&nbsp;follow_prog. A 'z' prefix denotes a zapper mask to filter the follower (see ahelp zappermask).&nbsp; If there is neither, then any follower with any of the
 keywords in the list in it will trigger it. If a&nbsp;follow_prog all is used,
 then the&nbsp;follow_prog will trigger from anyone following anyone else..&nbsp;</p>
 
@@ -1610,7 +1614,7 @@ when called by MPCALLFUNC.</p>
 
       <p>Usage:</p>
 
-      <pre>get_prog [keyword list]<br />get_prog p [keyword list]<br />get_prog all<br /></pre>
+      <pre>get_prog [keyword list]<br />get_prog p [keyword list]<br />get_prog z [zapper mask]<br />get_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -1618,8 +1622,8 @@ triggered by someone getting an object. If the
 object picked up matches the keywords of the get_prog, the prog is
 triggered. If there is a 'p' placed before the keyword list,
 the
-keywords of the object must exactly match that of the get_prog. If
-there is not, then any object with any of the keywords in the list in
+keywords of the object must exactly match that of the get_prog.&nbsp; A 'z' prefix denotes a zapper mask to filter the gotten item (see ahelp zappermask).&nbsp; If
+there is neither, then any object with any of the keywords in the list in
 it will trigger it. If a get_prog all is used, then the get_prog will
 trigger from any object at all being picked up. &nbsp; When running
 on
@@ -1665,13 +1669,13 @@ juicy and a get_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The trigger
 
       <p>Usage:</p>
 
-      <pre>getting_prog [keyword list]<br />getting_prog p [keyword list]<br />getting_prog all</pre>
+      <pre>getting_prog [keyword list]<br />getting_prog p [keyword list]<br />getting_prog z [zapper mask]<br />getting_prog all</pre>
 As get_prog, but only triggers when the scripted mob or player does the getting.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).
       <h3><a name="give_prog">give_prog</a></h3>
 
       <p>Usage:</p>
 
-      <pre>give_prog [keyword list]<br />give_prog p [keyword list]<br />give_prog all<br /></pre>
+      <pre>give_prog [keyword list]<br />give_prog p [keyword list]<br />give_prog z [zapper mask]<br />give_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by the mob being given an
@@ -1679,7 +1683,7 @@ object. If the object given to the mob matches the keywords of the
 give_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the give_prog. If there is not, then any object with any of the
+the give_prog. A 'z' prefix denotes a zapper mask to filter the given item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the
 keywords in the list in it will trigger it. If a give_prog all is used,
 then the give_prog will trigger from any object at all being given to
 the mob. This type of prog is usually used for in-zone quests and
@@ -1730,7 +1734,7 @@ follower, etc).</p>
 
       <p>Usage:</p>
 
-      <pre>giving_prog [keyword list]<br />giving_prog p [keyword list]<br />giving_prog all<br /></pre>
+      <pre>giving_prog [keyword list]<br />giving_prog p [keyword list]<br />giving_prog z [zapper mask]<br />giving_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by the mob giving someone an
@@ -1738,7 +1742,7 @@ object. If the object given to the mob matches the keywords of the
 giving_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the giving_prog. If there is not, then any object with any of the
+the giving_prog. A 'z' prefix denotes a zapper mask to filter the given item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the
 keywords in the list in it will trigger it. If a giving_prog all is
 used,
 then the giving_prog will trigger from any object at all being given to
@@ -2014,7 +2018,7 @@ follower, etc).</p>
 
       <p>Usage:</p>
 
-      <pre>lock_prog [keyword list]<br />lock_prog p [keyword list]<br />lock_prog all<br /> <br /></pre>
+      <pre>lock_prog [keyword list]<br />lock_prog p [keyword list]<br />lock_prog z [zapper mask]<br />lock_prog all<br /> <br /></pre>
 
       <p>This type of mobprog is
 triggered by locking a container or
@@ -2022,8 +2026,8 @@ door. If the script is on a container-type object, such as a door or
 container item, it will trigger only if the object being locked is the
 scripted one. If the target matches the keywords of the lock_prog, the
 prog is triggered. If there is a 'p' placed before the keyword list,
-the keywords of the object must exactly match that of the lock_prog. If
-there is not, then any object with any of the keywords in the list in
+the keywords of the object must exactly match that of the lock_prog. A 'z' prefix denotes a zapper mask to filter the locked item (see ahelp zappermask).&nbsp; If
+there is neither, then any object with any of the keywords in the list in
 it will trigger it. If the scripted item is not a container or door,
 and a "lock_prog all" is used, then the lock_prog will trigger from any
 object at all being locked. This type of prog is usually used for
@@ -2140,14 +2144,14 @@ exception to this is cloaked admins, which will not trigger.</p>
 
       <p>Usage:</p>
 
-      <pre>look_prog [keyword list]<br />look_prog p [keyword list]<br />look_prog all<br />llook_prog [keyword list]<br />llook_prog p [keyword list]<br />llook_prog all<br /> <br /></pre>
+      <pre>look_prog [keyword list]<br />look_prog p [keyword list]<br />look_prog z [zapper mask]<br />look_prog all<br />llook_prog [keyword list]<br />llook_prog p [keyword list<br />llook_prog z [zapper mask]]<br />llook_prog all<br /> <br /></pre>
 
       <p>This type of mobprog is
 triggered by looking at the scripted
 item. The "llook" version triggers if the item is "examined". If the
 target matches the keywords of the lock_prog, the prog is triggered. If
 there is a 'p' placed before the keyword list, the keywords of the
-object must exactly match that of the look_prog. This type of prog is
+object must exactly match that of the look_prog. A 'z' prefix denotes a zapper mask to filter the looked-at item (see ahelp zappermask).&nbsp; This type of prog is
 usually used for in-zone quests and special mob behavior, and has a
 variety of uses. As is normal, if the scripted object is a mob, this
 event will not trigger if the scripted mob is the originator of the
@@ -2198,7 +2202,7 @@ have only one once_prog on a mob.</p>
 
       <p>Usage:</p>
 
-      <pre>open_prog [keyword list]<br />open_prog p [keyword list]<br />open_prog all<br /> <br /></pre>
+      <pre>open_prog [keyword list]<br />open_prog p [keyword list]<br />open_prog z [zapper mask]<br />open_prog all<br /> <br /></pre>
 
       <p>This type of mobprog is
 triggered by opening a container or
@@ -2207,7 +2211,7 @@ container item, it will trigger only if the object being opened is the
 scripted one. Otherwise, if the target matches the keywords of the
 open_prog, the prog is triggered. If there is a 'p' placed before the
 keyword list, the keywords of the object must exactly match that of the
-open_prog. If there is not, then any object with any of the keywords in
+open_prog. A 'z' prefix denotes a zapper mask to filter the opened item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the keywords in
 the list in it will trigger it. If the scripted item is not a container
 or door, and a "open_prog all" is used, then the open_prog will trigger
 from any object at all being opened. This type of prog is usually used
@@ -2281,7 +2285,7 @@ the quest 'that quest'.</p>
 
       <p>Usage:</p>
 
-      <pre>put_prog [keyword list]<br />put_prog p [keyword list]<br />put_prog all<br /></pre>
+      <pre>put_prog [keyword list]<br />put_prog p [keyword list]<br />put_prog z [zapper mask]<br />put_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -2295,7 +2299,7 @@ the
 put_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the put_prog. If there is not, then any container with any of the
+the put_prog. A 'z' prefix denotes a zapper mask to filter the item (see ahelp zappermask).&nbsp; If there is neither, then any container with any of the
 keywords in the list in it will trigger it. If a put_prog all is used,
 then the put_prog will trigger from any container at all being used.
 This type of prog is usually used for in-zone quests and special mob
@@ -2338,7 +2342,7 @@ juicy and a put_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The trigger
 
       <p>Usage:</p>
 
-      <pre>putting_prog [keyword list]<br />putting_prog p [keyword list]<br />putting_prog all<br /></pre>
+      <pre>putting_prog [keyword list]<br />putting_prog p [keyword list]<br />putting_prog z [zapper mask]<br />putting_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -2349,7 +2353,7 @@ matches the keywords of the
 put_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the putting_prog. If there is not, then any object with any of the
+the putting_prog. A 'z' prefix denotes a zapper mask to filter the item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the
 keywords in the list in it will trigger it. If a putting_prog all is
 used,
 then the putting_prog will trigger from any item being put in any
@@ -2476,15 +2480,15 @@ regmask_progs, so do not try to use them; it won't work.</p>
 
       <p>Usage:</p>
 
-      <pre>remove_prog [keyword list]<br />remove_prog p [keyword list]<br />remove_prog all<br /></pre>
+      <pre>remove_prog [keyword list]<br />remove_prog p [keyword list]<br />remove_prog z [zapper mask]<br />remove_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by removing an object. If
 the object removed matches the keywords of the remove_prog, the prog is
 triggered. If there is a 'p' placed before the keyword list,
 the
-keywords of the object must exactly match that of the remove_prog. If
-there is not, then any object with any of the keywords in the list in
+keywords of the object must exactly match that of the remove_prog. A 'z' prefix denotes a zapper mask to filter the removed item (see ahelp zappermask).&nbsp; If
+there is neither, then any object with any of the keywords in the list in
 it will trigger it. If a remove_prog all is used, then the remove_prog
 will trigger from any object at all being removed by the mob. This type
 of prog is usually used for in-zone quests and special mob behavior,
@@ -2521,7 +2525,7 @@ remove_prog p apple red juicy and a remove_prog p apple red poisoned.</p><p>SPEC
 
       <p>Usage:</p>
 
-      <pre>ride_prog [keyword list]<br />ride_prog p [keyword list]<br />ride_prog all<br /></pre>
+      <pre>ride_prog [keyword list]<br />ride_prog p [keyword list]<br />ride_prog z [zapper mask]<br />ride_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -2529,7 +2533,7 @@ triggered by witnessing someone mounting a rideable. If the target matches the k
 the ride_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the ride_prog. If there is not, then any rideable with any of the
+the ride_prog. A 'z' prefix denotes a zapper mask to filter the ridden item (see ahelp zappermask).&nbsp; If there is neither, then any rideable with any of the
 keywords in the list in it will trigger it. If a ride_prog all is used,
 then the ride_prog will trigger from any thing mounted.&nbsp;</p>
 
@@ -2541,14 +2545,16 @@ then the ride_prog will trigger from any thing mounted.&nbsp;</p>
 
       <p>Usage:</p>
 
-      <pre>riding_prog [keyword list]<br />riding_prog p [keyword list]<br />riding_prog all</pre>
+      <pre>riding_prog [keyword list]<br />riding_prog p [keyword list]<br />riding_prog z [zapper mask]<br />riding_prog all</pre>
 As ride_prog, but only triggers when the scripted mob or player does
 the mounting instead of witnessing someone else doing it.&nbsp; If the
 target matches the keywords of
 the riding_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the&nbsp;riding_prog. If there is not, then any rideable with any of
+the&nbsp;riding_prog. A 'z' prefix denotes a zapper mask to filter the
+ridden item (see ahelp zappermask).&nbsp; If there is neither, then any
+rideable with any of
 the
 keywords in the list in it will trigger it. If a&nbsp;riding_prog all
 is used,
@@ -2562,7 +2568,7 @@ then the ride_prog will trigger from any thing mounted. <br /><p>EXAMPLES:</p>
 
       <p>Usage:</p>
 
-      <pre>sell_prog [keyword list]<br />sell_prog p [keyword phrase]<br />sell_prog all<br /></pre>
+      <pre>sell_prog [keyword list]<br />sell_prog p [keyword phrase]<br />sell_prog z [zapper mask]<br />sell_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by selling an item to a
@@ -2570,7 +2576,7 @@ shopkeeper. If the item being sold has any of the keywords of the
 sell_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the item must exactly match that of
-the sell_prog. If there is not, then any item with any of the keywords
+the sell_prog. A 'z' prefix denotes a zapper mask to filter the sold item (see ahelp zappermask).&nbsp; If there is neither, then any item with any of the keywords
 in the list in it will trigger it. If a sell_prog all is used, then the
 sell_prog will trigger for any item at all being sold. This type of
 prog is usually used for in-zone quests and special mob behavior, and
@@ -2734,7 +2740,7 @@ of the day is 10, 1, or 2.</p>
 
       <p>Usage:</p>
 
-      <pre>unfollow_prog [keyword list]<br />unfollow_prog p [keyword list]<br />unfollow_prog all<br /></pre>
+      <pre>unfollow_prog [keyword list]<br />unfollow_prog p [keyword list]<br />unfollow_prog z [zapper mask]<br />unfollow_prog all<br /></pre>
 
       <p>This
 type of mobprog is
@@ -2742,7 +2748,7 @@ triggered by witnessing someone unfollowing someone else. If the un-follower sou
 the unfollow_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the unfollower must exactly match that of
-the unfollow_prog. If there is not, then any follower with any of the
+the unfollow_prog. A 'z' prefix denotes a zapper mask to filter the unfollower (see ahelp zappermask).&nbsp; If there is neither, then any follower with any of the
 keywords in the list in it will trigger it. If a unfollow_prog all is used,
 then the unfollow_prog will trigger from anyone un-following anyone else..&nbsp;</p>
 
@@ -2756,7 +2762,7 @@ then the unfollow_prog will trigger from anyone un-following anyone else..&nbsp;
 
       <p>Usage:</p>
 
-      <pre>unlock_prog [keyword list]<br />unlock_prog p [keyword list]<br />unlock_prog all<br /></pre>
+      <pre>unlock_prog [keyword list]<br />unlock_prog p [keyword list]<br />unlock_prog z [zapper mask]<br />unlock_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by unlocking a container or
@@ -2765,7 +2771,7 @@ container item, it will trigger only if the object being unlocked is
 the scripted one. If the target matches the keywords of the
 unlock_prog, the prog is triggered. If there is a 'p'; placed before
 the keyword list, the keywords of the object must exactly match that of
-the unlock_prog. If there is not, then any object with any of the
+the unlock_prog. A 'z' prefix denotes a zapper mask to filter the unlocked item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the
 keywords in the list in it will trigger it. If the scripted item is not
 a container or door, and a "unlock_prog all" is used, then the
 unlock_prog will trigger from any object at all being unlocked. This
@@ -2807,7 +2813,7 @@ unlock_prog p door gate and a unlock_prog p door to the gate.</p><p>SPECIAL NOTE
 
       <p>Usage:</p>
 
-      <pre>wear_prog [keyword list]<br />wear_prog p [keyword list]<br />wear_prog all<br /></pre>
+      <pre>wear_prog [keyword list]<br />wear_prog p [keyword list]<br />wear_prog z [zapper mask]<br />wear_prog all<br /></pre>
 
       <p>This type of mobprog is
 triggered by wearing, wielding, or
@@ -2815,7 +2821,7 @@ holding an item. If the object worn matches the keywords of the
 wear_prog, the prog is triggered. If there is a 'p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the wear_prog. If there is not, then any object with any of the
+the wear_prog. A 'z' prefix denotes a zapper mask to filter the worn item (see ahelp zappermask).&nbsp; If there is neither, then any object with any of the
 keywords in the list in it will trigger it. If a wear_prog all is used,
 then the wear_prog will trigger from any object at all worn. This type
 of prog is usually used for in-zone quests and special mob behavior,
@@ -2853,8 +2859,8 @@ juicy and a wear_prog p apple red poisoned.</p><p>SPECIAL NOTES:&nbsp;The trigge
 
       <p>Usage:</p>
 
-      <pre>wearing_prog [keyword list]<br />wearing_prog p [keyword list]<br />wearing_prog all</pre>
-As wear_prog, but only triggers when the scripted mob or player does the wearing, wielding, or holding.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).<p></p>
+      <pre>wearing_prog [keyword list]<br />wearing_prog p [keyword list]<br />wearing_prog z [zapper mask]<br />wearing_prog all</pre>
+As wear_prog, but only triggers when the scripted mob or player does the wearing, wielding, or holding.<br /><br />SPECIAL NOTES:&nbsp;The triggered object must be able to act (move, not near death, not a follower, etc).<p />
 
       <h2><a name="codes">Scripting Codes</a></h2>
 
