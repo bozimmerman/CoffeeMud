@@ -316,6 +316,13 @@ public interface ProtocolLibrary extends CMLibrary
 		 * @return true if its busy
 		 */
 		public boolean isChatting();
+		
+		/**
+		 * Returns the amount of time in seconds until
+		 * this chat will timeout.
+		 * @return the time in seconds.
+		 */
+		public int getTimeoutSeconds();
 	}
 
 	/**

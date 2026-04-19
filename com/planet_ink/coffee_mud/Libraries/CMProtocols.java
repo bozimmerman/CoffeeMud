@@ -69,6 +69,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	private final Map<String,Object> llmModels = new Hashtable<String, Object>();
 	private URLClassLoader llmClassLoader = null;
+	private static final Long DEFAULT_LLM_TIMEOUT_SECONDS = Long.valueOf(20);
 
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
@@ -3965,7 +3966,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		try
 		{
 			final Double TEMPERATURE = Double.valueOf(0.7);
-			final Long TIMEOUT_SECONDS = Long.valueOf(20);
 			// Load LangChain4j classes dynamically
 			final Class<?> ollamaChatModelBuilderClass = llmClassLoader.loadClass(llmType.builderClass);
 			final Class<?> ollamaChatModelClass = llmClassLoader.loadClass(llmType.modelClass);
@@ -3976,7 +3976,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				temperatureMethod.invoke(builder, TEMPERATURE);
 			} catch(final Exception e){}
 			try {
-				final Duration timeout = Duration.ofSeconds(TIMEOUT_SECONDS.longValue());
+				final Duration timeout = Duration.ofSeconds(DEFAULT_LLM_TIMEOUT_SECONDS.longValue());
 				final Method timeoutMethod = ollamaChatModelBuilderClass.getMethod("timeout", timeout.getClass());
 				timeoutMethod.invoke(builder, timeout);
 			} catch(final Exception e){}
@@ -4226,6 +4226,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				private final Object chatMemory = memory;
 				private final int maxMsgs = MAX_MSGS.intValue();
 				private final AtomicBoolean busy = new AtomicBoolean(false);
+				private final int timeoutSecs = DEFAULT_LLM_TIMEOUT_SECONDS.intValue();
+				
+				@Override
+				public int getTimeoutSeconds()
+				{
+					return timeoutSecs;
+				}
+				
 				@Override
 				public String chat(final String msg)
 				{

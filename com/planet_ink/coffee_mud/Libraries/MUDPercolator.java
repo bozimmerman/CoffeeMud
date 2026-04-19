@@ -66,6 +66,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static char[] splitters=new char[]{'<','>','=','{','}'};
 	protected final static CraftorFilter emptyMetacraftFilter = new CraftorFilter();
 	protected final static String POST_PROCESSING_STAT_SETS="___POST_PROCESSING_SETS___";
+	protected final static String POST_PROCESSING_FLAG="___IS_POST_PROCESSING___";
 	protected final static Set<String> UPPER_REQUIRES_KEYWORDS=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
 	protected final static CMParms.DelimiterChecker REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
 	protected final static List<String> ITEM_IGNORE_STATS = Arrays.asList(GenericBuilder.GenItemCode.getAllCodeNames());
@@ -740,6 +741,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				try
 				{
+					stat.defined.put(POST_PROCESSING_FLAG, "TRUE");
 					stat.attempt();
 				}
 				catch(final PostProcessException pe)
@@ -3418,6 +3420,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						@SuppressWarnings("unchecked")
 						final Future<String> future = (Future<String>)defined.get(hexString);
 						value = future.get();
+						return value;
 					}
 					catch(final Exception e)
 					{
@@ -3425,6 +3428,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 				else
+				if(!defined.containsKey(POST_PROCESSING_FLAG))
 				{
 					final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
 					final String[] answer = new String[] {""};
@@ -3433,7 +3437,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						private final ProtocolLibrary.LLMSession chatSession = session;
 						private boolean cancelled = false; 
 						private final String[] result = answer;
-						private final long startTime = System.currentTimeMillis();
+						private volatile long startTime = System.currentTimeMillis();
 
 						@Override
 						public boolean cancel(boolean mayInterruptIfRunning)
@@ -3459,17 +3463,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							try
 							{
-								return get(30, TimeUnit.SECONDS);
+								return get(chatSession.getTimeoutSeconds()+5, TimeUnit.SECONDS);
 							}
 							catch (TimeoutException e)
 							{
-								throw new InterruptedException(e.getMessage());
+								Log.debugOut(e.getMessage());
+								return "";
 							}
 						}
 
 						@Override
 						public String get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException
 						{
+							startTime = System.currentTimeMillis();
 							long nanosTimeout = unit.toNanos(timeout);
 							while (!isDone()) 
 							{
@@ -3508,17 +3514,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					throw new PostProcessException("Concurrent LLM processing for "+tagName+" on "+E+" scheduled.");
 				}
 			}
-			else
+			final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
+			try
 			{
-				final ProtocolLibrary.LLMSession session = CMLib.protocol().createLLMSession(LLM_CATEGORIES, null,Integer.valueOf(1));
-				try
-				{
-					value = session.chat(value);
-				}
-				catch(final Exception e)
-				{
-					throw new CMException("Ended because of failed LLM access.",e);
-				}
+				value = session.chat(value);
+			}
+			catch(final Exception e)
+			{
+				throw new CMException("Ended because of failed LLM access.",e);
 			}
 		}
 		return value;
