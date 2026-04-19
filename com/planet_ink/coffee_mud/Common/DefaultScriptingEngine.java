@@ -14175,6 +14175,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 			dollarChecks=(boolean[])script.get(0).third;
 		final String eNameUpp=E.Name().toUpperCase();
+		final String peNameUpp=" " + E.Name().toUpperCase() + " ";
 		final String ID=E.ID().toUpperCase();
 		if((t[1].length()==0)
 		||(t[1].equals("ALL"))
@@ -14229,7 +14230,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return null;
 			}
 			else
-			if(((" "+eNameUpp+" ").indexOf(" "+word+" ")>=0)
+			if((peNameUpp.indexOf(" "+word+" ")>=0)
 			||(ID.equalsIgnoreCase(word))
 			||(word.equalsIgnoreCase("ALL")))
 				return word;
