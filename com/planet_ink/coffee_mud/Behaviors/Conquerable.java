@@ -295,9 +295,11 @@ public class Conquerable extends Arrest
 		if((!CMProps.isState(CMProps.HostState.RUNNING))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))
 			return;
+		final String holdingClan = this.holdingClan; // prevent recursion
+		prevHoldingClan=holdingClan;
+		this.holdingClan = "";
 		final Clan C=CMLib.clans().getClanAnyHost(holdingClan);
 		final String worship=getManadatoryWorshipID();
-		prevHoldingClan=holdingClan;
 		for(int v=0;v<clanItems.size();v++)
 		{
 			final Item I=clanItems.getFirst(v);
@@ -359,22 +361,20 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
-			if(holdingClan.length()>0)
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
+				Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
+			if(C!=null)
 			{
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
-					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
-				if(C!=null)
-				{
-					final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
-					if(cM != null)
-						CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
-				}
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
-				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false,null);
-				if(journalName.length()>0)
-					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",L("@x1 loses control of @x2@x3.",holdingClan,myArea.name(),reason),L("See the subject line."));
+				final MOB cM=CMLib.players().getLoadPlayer(C.getResponsibleMemberName());
+				if(cM != null)
+					CMLib.achievements().possiblyBumpAchievement(cM, AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
+				
 			}
+			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
+			for(int i=0;i<channels.size();i++)
+				CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false,null);
+			if(journalName.length()>0)
+				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",L("@x1 loses control of @x2@x3.",holdingClan,myArea.name(),reason),L("See the subject line."));
 			final Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
 			{
@@ -408,7 +408,7 @@ public class Conquerable extends Arrest
 			if((C==null)&&(clanItems.size()==0)&&(myArea!=null))
 				CMLib.database().DBDeleteAreaData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 		}
-		holdingClan="";
+		this.holdingClan = "";
 		conquestDate=0;
 	}
 
