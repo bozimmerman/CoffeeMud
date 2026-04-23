@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
@@ -49,13 +50,36 @@ limitations under the License.
 public class MUDProxy
 {
 	private static final int		BUFFER_SIZE		= 65536;
-	private static String			mpcpKey			= "";
+	private static final int		MAX_BUFFERS		= 1024;
 	private static Selector			selector		= null;
 	private static LBStrategy		strategy		= LBStrategy.ROUNDROBIN;
 	private static Random			rand			= new Random(System.nanoTime());
 	private static String			ctlPassword		= ""+(rand.nextInt(90000)+10000);
 	private static boolean			packetDebug		= false;
-
+	
+	private static volatile String			mpcpKey			= "";
+	private static volatile SecretKeySpec	cachedKeySpec	= null;
+	private static volatile String			cachedKey		= null;
+	private static final Queue<ByteBuffer>	bufferPool		= new ConcurrentLinkedQueue<ByteBuffer>();
+	private static final AtomicInteger		poolSize		= new AtomicInteger(0);
+	private static final ThreadLocal<Mac> 	threadLocalMac 	= ThreadLocal.withInitial(new Supplier<Mac>() 
+	{
+		@Override
+		public Mac get()
+		{
+			try  { return Mac.getInstance("HmacSHA1"); }
+			catch (final NoSuchAlgorithmException e) { throw new RuntimeException(e); }
+		}
+	});
+	private static SecretKeySpec getKeySpec()
+	{
+		if(!mpcpKey.equals(cachedKey))
+		{
+			cachedKeySpec = new SecretKeySpec(mpcpKey.getBytes(StandardCharsets.UTF_8), "HmacSHA1");
+			cachedKey = mpcpKey;
+		}
+		return cachedKeySpec;
+	}	
 	private static final Map<String,Pair<String, Integer>>
 		allPorts		= new Hashtable<String,Pair<String, Integer>>();
 	private static final Map<SelectionKey, SelectionKey>
@@ -116,8 +140,9 @@ public class MUDProxy
 	private final ParseStatus				writeStatus		= new ParseStatus();
 	private final RefilByteArrayInputStream	inputPipe		= new RefilByteArrayInputStream(new byte[0]);
 	private InputStream						in				= null;
-	private final ByteArrayOutputStream		outputPipe		= new ByteArrayOutputStream();
+	private final DirByteArrayOutputStream	outputPipe		= new DirByteArrayOutputStream();
 	private OutputStream					out				= new FilterOutputStream(outputPipe);
+	private final DirByteArrayOutputStream	readPipe		= new DirByteArrayOutputStream();
 	private final Map<String, Object>		session			= new Hashtable<String, Object>();
 	private final AtomicBoolean				isProcessing	= new AtomicBoolean(false);
 	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<ByteBuffer>();
@@ -157,6 +182,27 @@ public class MUDProxy
 		}
 	}
 
+	private static ByteBuffer fetchNewBuffer()
+	{
+		final ByteBuffer buffer = bufferPool.poll();
+		if( buffer != null)
+		{
+			poolSize.decrementAndGet();
+			return buffer;
+		}
+		return ByteBuffer.allocate(BUFFER_SIZE);
+	}
+	
+	private static void returnBuffer(final ByteBuffer buf)
+	{
+		if(poolSize.get() < MAX_BUFFERS)
+		{
+			buf.clear();
+			if(bufferPool.offer(buf))
+				poolSize.incrementAndGet();
+		}
+	}
+	
 	private static class ReadProcessor implements Runnable
 	{
 		private final MUDProxy		myCtx;
@@ -752,11 +798,9 @@ public class MUDProxy
 	{
 		try
 		{
-			final byte[] keyBytes = mpcpKey.getBytes(StandardCharsets.UTF_8);
 			final byte[] payloadBytes = command.getBytes(StandardCharsets.UTF_8);
-			final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
-			final Mac mac = Mac.getInstance("HmacSHA1");
-			mac.init(keySpec);
+			final Mac mac = threadLocalMac.get();
+			mac.init(getKeySpec());
 			final ByteArrayOutputStream packetOut = new ByteArrayOutputStream();
 			packetOut.write(new byte[] { (byte)Session.TELNET_IAC, (byte)Session.TELNET_SB, (byte)Session.TELNET_MPCP});
 			for(final byte b : mac.doFinal(payloadBytes))
@@ -812,7 +856,7 @@ public class MUDProxy
 		catch (final IOException e)
 		{
 		}
-		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
+		return targetContext.outputPipe.toByteBuffer();
 	}
 
 	/**
@@ -854,7 +898,9 @@ public class MUDProxy
 						}
 					}
 					if(!buffer.hasRemaining())
+					{
 						context.output.poll();
+					}
 				}
 			}
 			key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
@@ -930,12 +976,10 @@ public class MUDProxy
 		rdr.get(digest);
 		final byte[] strBuf = new byte[rdr.remaining()];
 		rdr.get(strBuf);
-		final byte[] keyBytes = mpcpKey.getBytes(StandardCharsets.UTF_8);
-		final SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "HmacSHA1");
 		try
 		{
-			final Mac mac = Mac.getInstance("HmacSHA1");
-			mac.init(keySpec);
+			final Mac mac = threadLocalMac.get();
+			mac.init(getKeySpec());
 			final byte[] digestCheck = mac.doFinal(strBuf);
 			if(!Arrays.equals(digest, digestCheck))
 				return;
@@ -1119,6 +1163,25 @@ public class MUDProxy
 			this.count = newBuf.length;
 			this.pos = 0;
 			this.mark = 0;
+		}
+	}
+
+	/**
+	 * ByteArrayOutpuStream that provides direct access to internal buffer
+	 * 
+	 * @author BZ
+	 *
+	 */
+	public static class DirByteArrayOutputStream extends ByteArrayOutputStream
+	{
+		public DirByteArrayOutputStream()
+		{
+			super();
+		}
+		
+		public ByteBuffer toByteBuffer()
+		{
+			return ByteBuffer.wrap(buf, 0, count);
 		}
 	}
 
@@ -1382,13 +1445,13 @@ public class MUDProxy
 		}
 		final byte[] checkBuf = new byte[buffer.remaining()];
 		buffer.get(checkBuf);
-		buffer.clear();
+		returnBuffer(buffer);
 		sourceContext.inputPipe.refill(checkBuf);
 		if(in instanceof ZInputStream)
 			((ZInputStream)in).allowMoreInput();
-		final ByteArrayOutputStream output = new ByteArrayOutputStream();
-		filter(key,sourceContext,status,in,output);
-		return ByteBuffer.wrap(output.toByteArray());
+		sourceContext.readPipe.reset();
+		filter(key,sourceContext,status,in,sourceContext.readPipe);
+		return sourceContext.readPipe.toByteBuffer();
 	}
 
 	/**
@@ -1406,13 +1469,14 @@ public class MUDProxy
 		int bytesRead = 0;
 		try
 		{
-			ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
+			ByteBuffer buffer = fetchNewBuffer();
 			while((bytesRead = chanRead(channel,buffer))>0)
 			{
 				buffer.flip();
 				context.input.add(buffer);
-				buffer = ByteBuffer.allocate(BUFFER_SIZE);
+				buffer = fetchNewBuffer();
 			}
+			returnBuffer(buffer);
 		}
 		catch (final IOException e)
 		{
@@ -1480,19 +1544,20 @@ public class MUDProxy
 				eof=true;
 			else
 			{
-				ByteBuffer buffer = ByteBuffer.allocate(BUFFER_SIZE);
 				final LinkedList<ByteBuffer> inputList = new LinkedList<ByteBuffer>();
 				synchronized(context.input)
 				{
 					inputList.addAll(context.input);
 					context.input.clear();
 				}
+				ByteBuffer buffer = fetchNewBuffer();
 				while((bytesRead = chanRead(channel,buffer)) > 0)
 				{
 					buffer.flip();
 					inputList.add(buffer);
-					buffer = ByteBuffer.allocate(BUFFER_SIZE);
+					buffer = fetchNewBuffer();
 				}
+				returnBuffer(buffer);
 				if(bytesRead < 0)
 				{
 					eof = true;
