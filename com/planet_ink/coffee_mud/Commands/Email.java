@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -52,209 +53,102 @@ public class Email extends StdCommand
 		return access;
 	}
 
-	@Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
-		throws java.io.IOException
+	private boolean showEmailBox(final MOB mob, int pickedMsgNum, int max, int metaFlags) throws IOException
 	{
-		if(mob.session()==null)
-			return true;
-		final PlayerStats pstats=mob.playerStats();
-		if(pstats==null)
-			return true;
-
-		if((commands!=null)
-		&&(commands.size()>1))
+		final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
+		final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
+		// the reader returns a more immutable read-in-time list.
+		final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, false, max, queries);
+		for(int num=0;num<msgs.size();num++)
 		{
-			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
+			final JournalEntry thismsg=msgs.get(num);
+			final String to=thismsg.to();
+			if(to.equalsIgnoreCase("ALL")
+			||to.equalsIgnoreCase(mob.Name())
+			||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
 			{
-				mob.tell(L("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
+				// keep this one
+			}
+			else
+				msgs.remove(num);
+		}
+
+		final int[] cols={
+				CMLib.lister().fixColWidth(48,mob.session()),
+				CMLib.lister().fixColWidth(15,mob.session()),
+				CMLib.lister().fixColWidth(20,mob.session())
+			};
+		if((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			StringBuffer messages=new StringBuffer(CMStrings.padCenter(L("\n\r^X@x1's MailBox^?^.",mob.Name()),cols[0]));
+			if(msgs.size()==max)
+				messages.append(L(" (Newest @x1 messages)",""+max));
+			messages.append("\n\r");
+			messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+L(" Subject^?^.\n\r"));
+			for(int num=0;num<msgs.size();num++)
+			{
+				final JournalEntry thismsg=msgs.get(num);
+				if(thismsg != null)
+				{
+					messages.append(CMStrings.padRight(""+(num+1),4)
+							+CMStrings.padRight((thismsg.from()),cols[1])+" "
+							+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
+							+(thismsg.subj())
+							+"\n\r");
+				}
+				else
+					Log.errOut("Message "+num+" of "+msgs.size()+" not found.");
+			}
+			if((msgs.size()==0)
+			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
+			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
+			{
+				if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				&&(mob.playerStats()!=null)
+				&&(mob.playerStats().getEmail().length()>0)
+				&&(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
+				&&((mob.playerStats().getAccount()==null)
+					||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
+					mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
+				else
+					mob.tell(L("You have no email waiting."));
 				return false;
 			}
-			int max=10;
-			if((commands.get(1).equalsIgnoreCase("BOX") && (commands.size()>2)) && (CMath.isInteger(commands.get(commands.size()-1))))
+			Session S=mob.session();
+			try
 			{
-				max=CMath.s_int(commands.get(commands.size()-1));
-				commands.remove(commands.size()-1);
+				if(S!=null)
+					S.snoopSuspension(1);
+				mob.tell(messages.toString());
 			}
-			final String name=CMParms.combine(commands,1);
-			if(name.equalsIgnoreCase("BOX"))
+			finally
 			{
-				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
-				final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
-				// the reader returns a more immutable read-in-time list.
-				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, false, max, queries);
-				for(int num=0;num<msgs.size();num++)
-				{
-					final JournalEntry thismsg=msgs.get(num);
-					final String to=thismsg.to();
-					if(to.equalsIgnoreCase("ALL")
-					||to.equalsIgnoreCase(mob.Name())
-					||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
-					{
-						// keep this one
-					}
-					else
-						msgs.remove(num);
-				}
-
-				final int[] cols={
-						CMLib.lister().fixColWidth(48,mob.session()),
-						CMLib.lister().fixColWidth(15,mob.session()),
-						CMLib.lister().fixColWidth(20,mob.session())
-					};
-				while((mob.session()!=null)&&(!mob.session().isStopped()))
-				{
-					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.");
-					if(msgs.size()==max)
-						messages.append(L(" (Newest @x1 messages)",""+max));
-					messages.append("\n\r");
-					messages.append("^X### "+CMStrings.padRight(L("From"),cols[1])+" "+CMStrings.padRight(L("Date"),cols[2])+" Subject^?^.\n\r");
-					for(int num=0;num<msgs.size();num++)
-					{
-						final JournalEntry thismsg=msgs.get(num);
-						if(thismsg != null)
-						{
-							messages.append(CMStrings.padRight(""+(num+1),4)
-									+CMStrings.padRight((thismsg.from()),cols[1])+" "
-									+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
-									+(thismsg.subj())
-									+"\n\r");
-						}
-						else
-							Log.errOut("Message "+num+" of "+msgs.size()+" not found.");
-					}
-					if((msgs.size()==0)
-					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
-					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
-					{
-						if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
-						&&(mob.playerStats()!=null)
-						&&(mob.playerStats().getEmail().length()>0)
-						&&(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
-						&&((mob.playerStats().getAccount()==null)
-							||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
-							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
-						else
-							mob.tell(L("You have no email waiting."));
-						return false;
-					}
-					final Session S=mob.session();
-					try
-					{
-						if(S!=null)
-							S.snoopSuspension(1);
-						mob.tell(messages.toString());
-					}
-					finally
-					{
-						if(S!=null)
-							S.snoopSuspension(-1);
-					}
-					if(mob.session()==null)
-						continue;
-					String s=mob.session().prompt(L("Enter a message #"),"");
-					if((!CMath.isInteger(s))||(mob.session().isStopped()))
-						return false;
-					final int num=CMath.s_int(s);
-					if((num<=0)||(num>msgs.size()))
-						mob.tell(L("That is not a valid number."));
-					else
-					while((mob.session()!=null)&&(!mob.session().isStopped()))
-					{
-						final JournalEntry thismsg=msgs.get(num-1);
-						final String key=thismsg.key();
-						final String from=thismsg.from();
-						final String date=CMLib.time().date2String(thismsg.date());
-						final String subj=thismsg.subj();
-						final String message=thismsg.msg();
-						messages=new StringBuffer("");
-						messages.append("^XMessage :^?^."+num+"\n\r");
-						messages.append("^XFrom    :^?^."+from+"\n\r");
-						messages.append("^XDate    :^?^."+date+"\n\r");
-						messages.append("^XSubject :^?^."+subj+"\n\r");
-						messages.append("^X------------------------------------------------^?^.\n\r");
-						messages.append(message+"\n\r\n\r");
-						try
-						{
-							if(S!=null)
-								S.snoopSuspension(1);
-							mob.tell(messages.toString());
-						}
-						finally
-						{
-							if(S!=null)
-								S.snoopSuspension(-1);
-						}
-						if(mob.session()==null)
-							continue;
-						s=mob.session().choose(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "),"DHR","H");
-						if(s.equalsIgnoreCase("H"))
-							break;
-						if(s.equalsIgnoreCase("R"))
-						{
-							if((from.length()>0)
-							&&(!from.equals(mob.Name()))
-							&&(!from.equalsIgnoreCase("BOX"))
-							&&(CMLib.players().getLoadPlayer(from)!=null))
-								execute(mob,new XVector<String>(getAccessWords()[0],from),metaFlags);
-							else
-								mob.tell(L("You can not reply to this email."));
-						}
-						else
-						if(s.equalsIgnoreCase("D"))
-						{
-							CMLib.database().DBDeleteJournal(journalName,key);
-							msgs.remove(num-1);
-							mob.tell(L("Deleted."));
-							break;
-						}
-					}
-				}
+				if(S!=null)
+					S.snoopSuspension(-1);
+			}
+			S=mob.session();
+			if(S==null)
+				return true;
+			String s;
+			if((pickedMsgNum >0)&&(pickedMsgNum <= msgs.size()))
+			{
+				s=""+(pickedMsgNum);
+				pickedMsgNum=-1;
 			}
 			else
 			{
-				final MOB M=CMLib.players().getLoadPlayer(name);
-				if(M==null)
+				S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
-					mob.tell(L("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
-					return false;
-				}
-				if((!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
-				&&((M.playerStats()!=null)
-				&&(M.playerStats().getEmail().length()>0))
-				&&((M.playerStats().getAccount()==null)
-					||(!M.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
-				{
-					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),"Y"))
-						return false;
-				}
-				else
-				{
-					if(!mob.session().confirm(L("Send email to '@x1', even though their AUTOFORWARD is turned off (y/N)?",M.Name()),"N"))
-						return false;
-				}
-				if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
-				{
-					final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
-					if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
-					{
-						mob.tell(L("@x1's mailbox is full.",M.Name()));
-						return false;
-					}
-				}
-				if(mob.session()==null)
-					return false;
-				final Session session=mob.session();
-				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
-				{
+					final Session ses = mob.session();
+					final int oldMax = max;
+
 					@Override
 					public void showPrompt()
 					{
-						session.promptPrint(L("Subject: "));
+						mob.session().promptPrint(L("Enter a message #"));
 					}
 
 					@Override
-
 					public void timedOut()
 					{
 					}
@@ -262,52 +156,280 @@ public class Email extends StdCommand
 					@Override
 					public void callBack()
 					{
-						final String of=this.input;
-						if((of.trim().length()==0)||(of.indexOf('<')>=0))
+						if(ses != null)
+							ses.setPromptFlag(false);
+						if(CMath.isInteger(this.input))
 						{
-							mob.tell(L("Aborted"));
-							return;
-						}
-						final String subject = of.trim();
-						if(mob.session()==null)
-							return;
-						mob.session().println(L("Enter your message: "));
-						final List<String> message = new Vector<String>();
-						CMLib.journals().makeMessageASync(mob, subject, message, true, new MsgMkrCallback() {
-							List<String> msgV = message;
-							final MOB targM = M;
-							@Override
-							public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
+							try
 							{
-								if(res == MsgMkrResolution.SAVEFILE)
-								{
-									final StringBuilder msg=new StringBuilder("");
-									for (int v = 0; v < msgV.size(); v++)
-										msg.append(msgV.get(v)).append("\r\n");
-									final String message = msg.toString();
-									if(message.trim().length()==0)
-									{
-										mob.tell(L("Aborted"));
-										return;
-									}
-									if(sess==null)
-									{
-										mob.tell(L("Aborted."));
-										return;
-									}
-									CMLib.smtp().emailOrJournal(mob.Name(), mob.Name(), targM.Name(), subject, message);
-									mob.tell(L("Your email has been sent."));
-								}
-								else
-									mob.tell(L("Email Cancelled."));
+								execute(mob,new XVector<String>(getAccessWords()[0],"BOX",this.input+"-"+oldMax),metaFlags);
 							}
-						});
+							catch (IOException e)
+							{
+							}
+						}
 					}
 				});
 				return true;
 			}
+			if((!CMath.isInteger(s))||(mob.session().isStopped()))
+				return false;
+			final int num=CMath.s_int(s);
+			if((num<=0)||(num>msgs.size()))
+				mob.tell(L("That is not a valid number."));
+			else
+			if((mob.session()!=null)&&(!mob.session().isStopped()))
+			{
+				S=mob.session();
+				final JournalEntry thismsg=msgs.get(num-1);
+				final String key=thismsg.key();
+				final String from=thismsg.from();
+				final String date=CMLib.time().date2String(thismsg.date());
+				final String subj=thismsg.subj();
+				final String message=thismsg.msg();
+				messages=new StringBuffer("");
+				messages.append("^XMessage :^?^."+num+"\n\r");
+				messages.append("^XFrom    :^?^."+from+"\n\r");
+				messages.append("^XDate    :^?^."+date+"\n\r");
+				messages.append("^XSubject :^?^."+subj+"\n\r");
+				messages.append("^X------------------------------------------------^?^.\n\r");
+				messages.append(message+"\n\r\n\r");
+				try
+				{
+					if(S!=null)
+						S.snoopSuspension(1);
+					mob.tell(messages.toString());
+				}
+				finally
+				{
+					if(S!=null)
+						S.snoopSuspension(-1);
+				}
+				
+				if(S == null)
+					return true;
+				S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"H","DHR",0)
+				{
+					final Session ses = mob.session();
+					final String oldFrom = from;
+					final int oldMax = max;
+					final int oldNum = num;
+					final String oldJournalName = journalName;
+					final String oldKey = key;
+					final List<JournalEntry> oldMsgs = msgs;
+
+					@Override
+					public void showPrompt()
+					{
+						mob.session().promptPrint(L("Would you like to D)elete, H)old, or R)eply (D/H/R)? "));
+					}
+
+					@Override
+					public void timedOut()
+					{
+					}
+
+					@Override
+					public void callBack()
+					{
+						try
+						{
+							if(ses != null)
+								ses.setPromptFlag(false);
+							final String s = this.input;
+							if(s.equalsIgnoreCase("H"))
+								execute(mob,new XVector<String>(getAccessWords()[0],"BOX",""+oldMax),metaFlags);
+							else
+							if(s.equalsIgnoreCase("R"))
+							{
+								if((from.length()>0)
+								&&(!from.equals(mob.Name()))
+								&&(!from.equalsIgnoreCase("BOX"))
+								&&(CMLib.players().getLoadPlayer(oldFrom)!=null))
+								{
+									execute(mob,new XVector<String>(getAccessWords()[0],oldFrom,"CONFIRMED",""+oldNum+"-"+oldMax),metaFlags);
+								}
+								else
+								{
+									mob.tell(L("You can not reply to this email."));
+									execute(mob,new XVector<String>(getAccessWords()[0],"BOX",""+oldNum+"-"+oldMax),metaFlags);
+								}
+							}
+							else
+							if(s.equalsIgnoreCase("D"))
+							{
+								CMLib.database().DBDeleteJournal(oldJournalName,oldKey);
+								oldMsgs.remove(oldNum-1);
+								mob.tell(L("Deleted."));
+								execute(mob,new XVector<String>(getAccessWords()[0],"BOX",""+(oldNum-1)+"-"+oldMax),metaFlags);
+							}
+						}
+						catch(IOException e)
+						{
+						}
+					}
+				});
+			}
 		}
-		if((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
+		return true;
+	}
+	
+	private boolean sendEmail(final MOB mob, final String name, int pickedMsgNum, int max, boolean confirmed, int metaFlags) throws IOException
+	{
+		final MOB M=CMLib.players().getLoadPlayer(name);
+		if(M==null)
+		{
+			mob.tell(L("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
+			return false;
+		}
+		if(!confirmed)
+		{
+			final String confirmPrompt;
+			if((!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+			&&((M.playerStats()!=null)
+			&&(M.playerStats().getEmail().length()>0))
+			&&((M.playerStats().getAccount()==null)
+				||(!M.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
+				confirmPrompt = L("Send email to '@x1' (Y/n)?",M.Name());
+			else
+				confirmPrompt = L("Send email to '@x1', even though their AUTOFORWARD is turned off (Y/n)?",M.Name());
+			final String restartNums = ""+pickedMsgNum+"-"+max;
+			mob.session().prompt(new InputCallback(InputCallback.Type.CONFIRM,"Y",0)
+			{
+				final Session ses = mob.session();
+				final MOB toM = M;
+				final String myPrompt = confirmPrompt;
+				final String startStr = restartNums;
+				@Override
+				public void showPrompt()
+				{
+					mob.session().promptPrint(myPrompt);
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
+				{
+					if(this.input.equals("Y"))
+					{
+						try
+						{
+							if(ses != null)
+								ses.setPromptFlag(false);
+							execute(mob,new XVector<String>(getAccessWords()[0],toM.Name(),"CONFIRMED",startStr),metaFlags);
+						}
+						catch (IOException e)
+						{
+						}
+					}
+				}
+			});
+			return true;
+		}
+		if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
+		{
+			final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,M.Name());
+			if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
+			{
+				mob.tell(L("@x1's mailbox is full.",M.Name()));
+				return false;
+			}
+		}
+		if(mob.session()==null)
+			return false;
+		final Session session=mob.session();
+		final String replyNums = (pickedMsgNum >= 0) ? (""+pickedMsgNum+"-"+max) : null;
+		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+		{
+			final Session ses = session;
+			final String restartNums = replyNums;
+			@Override
+			public void showPrompt()
+			{
+				session.promptPrint(L("Subject: "));
+			}
+
+			@Override
+
+			public void timedOut()
+			{
+			}
+			
+			private void restartEmailBox()
+			{
+				try
+				{
+					if(restartNums != null)
+						execute(mob,new XVector<String>(getAccessWords()[0],"BOX",restartNums),metaFlags);
+					else
+					{
+						if(ses != null)
+							ses.setPromptFlag(true);
+					}
+				}
+				catch(Exception e)
+				{}
+			}
+
+			@Override
+			public void callBack()
+			{
+				if(ses != null)
+					ses.setPromptFlag(false);
+				final String of=this.input;
+				if((of.trim().length()==0)||(of.indexOf('<')>=0))
+				{
+					mob.tell(L("Aborted"));
+					restartEmailBox();
+					return;
+				}
+				final String subject = of.trim();
+				if(mob.session()==null)
+					return;
+				mob.session().println(L("Enter your message: "));
+				final List<String> message = new Vector<String>();
+				CMLib.journals().makeMessageASync(mob, subject, message, true, new MsgMkrCallback() 
+				{
+					List<String> msgV = message;
+					final MOB targM = M;
+					@Override
+					public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
+					{
+						if(res == MsgMkrResolution.SAVEFILE)
+						{
+							final StringBuilder msg=new StringBuilder("");
+							for (int v = 0; v < msgV.size(); v++)
+								msg.append(msgV.get(v)).append("\r\n");
+							final String message = msg.toString();
+							if((message.trim().length()==0)||(sess == null))
+							{
+								mob.tell(L("Aborted"));
+								restartEmailBox();
+								return;
+							}
+							CMLib.smtp().emailOrJournal(mob.Name(), mob.Name(), targM.Name(), subject, message);
+							mob.tell(L("Your email has been sent."));
+						}
+						else
+							mob.tell(L("Email Cancelled."));
+						restartEmailBox();
+					}
+				});
+			}
+		});
+		return true;
+	}
+	
+	private boolean changeEmail(final MOB mob, final List<String> commands) throws IOException
+	{
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats == null)
+			return false;
+		if((pStats.getEmail()==null)||(pStats.getEmail().length()==0))
 		{
 			if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLED"))
 			{
@@ -321,7 +443,7 @@ public class Email extends StdCommand
 		{
 			if(commands==null)
 				return true;
-			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pstats.getEmail()),"N");
+			final String change=mob.session().prompt(L("You currently have '@x1' set as the email address for this character.\n\rChange it (y/N)?",pStats.getEmail()),"N");
 			if(change.toUpperCase().startsWith("N"))
 				return false;
 		}
@@ -329,6 +451,7 @@ public class Email extends StdCommand
 		&&(commands!=null)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 			mob.session().println(L("\n\r** Changing your email address will cause you to be logged off, and a new password to be generated and emailed to the new address. **\n\r"));
+		// can't be async because of the damn charcreation call
 		String newEmail=mob.session().prompt(L("New E-mail Address:"));
 		if(newEmail==null)
 			return false;
@@ -348,17 +471,17 @@ public class Email extends StdCommand
 			if(!(newEmail.equalsIgnoreCase(confirmEmail)))
 				return false;
 		}
-		pstats.setEmail(newEmail);
+		pStats.setEmail(newEmail);
 		CMLib.database().DBUpdateEmail(mob);
-		if (pstats.getAccount() != null)
-			CMLib.database().DBUpdateAccount(pstats.getAccount());
+		if (pStats.getAccount() != null)
+			CMLib.database().DBUpdateAccount(pStats.getAccount());
 		if((commands!=null)
 		&&(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 		{
 			final String password=CMLib.encoder().generateRandomPassword();
-			pstats.setPassword(password);
-			CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
+			pStats.setPassword(password);
+			CMLib.database().DBUpdatePassword(mob.Name(),pStats.getPasswordStr());
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 					  mob.Name(),
 					  mob.Name(),
@@ -372,6 +495,60 @@ public class Email extends StdCommand
 			}
 		}
 		return true;
+
+	}
+	
+	
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
+		throws java.io.IOException
+	{
+		if(mob.session()==null)
+			return true;
+		final PlayerStats pstats=mob.playerStats();
+		if(pstats==null)
+			return true;
+
+		if((commands!=null)
+		&&(commands.size()>1))
+		{
+			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
+			{
+				mob.tell(L("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
+				return false;
+			}
+			int pickedMsgNum=-1;
+			int max=10; // default message count for listing
+			boolean confirmed = false;
+			if(commands.size()>2)
+			{
+				final String last = commands.get(commands.size()-1);
+				int x = last.lastIndexOf('-');
+				if(CMath.isInteger(last))
+				{
+					max = CMath.s_int(last);
+					commands.remove(commands.size()-1);
+				}
+				else
+				if(x>0 && CMath.isInteger(last.substring(0,x)) && CMath.isInteger(last.substring(x+1)))
+				{
+					max = CMath.s_int(last.substring(x+1));
+					pickedMsgNum = CMath.s_int(last.substring(0,x));
+					commands.remove(commands.size()-1);
+				}
+				if(commands.get(commands.size()-1).equalsIgnoreCase("CONFIRMED"))
+				{
+					confirmed = true;
+					commands.remove(commands.size()-1);
+				}
+			}
+			final String name=CMParms.combine(commands,1);
+			if(name.equalsIgnoreCase("BOX"))
+				return showEmailBox(mob,pickedMsgNum, max, metaFlags);
+			else
+				return sendEmail(mob, name, pickedMsgNum, max, confirmed, metaFlags);
+		}
+		return changeEmail(mob, commands);
 	}
 
 	@Override
