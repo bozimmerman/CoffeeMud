@@ -135,6 +135,11 @@ public class Spell_FindFamiliar extends Spell
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 			mob.tell(L("The effort causes you to lose @x1 experience.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
+		if(experienceToLose <= 0)
+		{
+			mob.tell(L("You are unable to complete this magic."));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

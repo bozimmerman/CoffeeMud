@@ -118,6 +118,11 @@ public class Chant_EnhanceShard extends Chant
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 			mob.tell(L("The effort causes you to lose @x1 experience.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
+		if(experienceToLose <= 0)
+		{
+			mob.tell(L("You are unable to complete this chant."));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

@@ -140,9 +140,9 @@ public class MUDProxy
 	private final ParseStatus				writeStatus		= new ParseStatus();
 	private final RefilByteArrayInputStream	inputPipe		= new RefilByteArrayInputStream(new byte[0]);
 	private InputStream						in				= null;
-	private final DirByteArrayOutputStream	outputPipe		= new DirByteArrayOutputStream();
+	private final ByteArrayOutputStream		outputPipe		= new ByteArrayOutputStream();
 	private OutputStream					out				= new FilterOutputStream(outputPipe);
-	private final DirByteArrayOutputStream	readPipe		= new DirByteArrayOutputStream();
+	private final ByteArrayOutputStream		readPipe		= new ByteArrayOutputStream();
 	private final Map<String, Object>		session			= new Hashtable<String, Object>();
 	private final AtomicBoolean				isProcessing	= new AtomicBoolean(false);
 	private final Queue<ByteBuffer>			pendingInputs	= new ConcurrentLinkedQueue<ByteBuffer>();
@@ -1167,25 +1167,6 @@ public class MUDProxy
 	}
 
 	/**
-	 * ByteArrayOutpuStream that provides direct access to internal buffer
-	 * 
-	 * @author BZ
-	 *
-	 */
-	public static class DirByteArrayOutputStream extends ByteArrayOutputStream
-	{
-		public DirByteArrayOutputStream()
-		{
-			super();
-		}
-		
-		public ByteBuffer toByteBuffer()
-		{
-			return ByteBuffer.wrap(buf, 0, count);
-		}
-	}
-
-	/**
 	 * Filter the given input stream through the telnet and ANSI filters,
 	 * writing the results to the given output stream.
 	 *
@@ -1451,7 +1432,7 @@ public class MUDProxy
 			((ZInputStream)in).allowMoreInput();
 		sourceContext.readPipe.reset();
 		filter(key,sourceContext,status,in,sourceContext.readPipe);
-		return sourceContext.readPipe.toByteBuffer();
+		return ByteBuffer.wrap(sourceContext.readPipe.toByteArray());
 	}
 
 	/**

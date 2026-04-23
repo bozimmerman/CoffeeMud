@@ -178,6 +178,11 @@ public class Chant_EndowJewelry extends Chant
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
+			if(experienceToLose <= 0)
+			{
+				mob.tell(L("You are unable to complete this chant."));
+				return false;
+			}
 			setMiscText(endowChantA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> chant(s) to <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))

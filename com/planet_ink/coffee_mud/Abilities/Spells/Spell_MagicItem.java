@@ -165,6 +165,11 @@ public class Spell_MagicItem extends Spell
 			experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 			if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 				mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
+			if(experienceToLose <= 0)
+			{
+				mob.tell(L("You are unable to complete this enchantment."));
+				return false;
+			}
 			setMiscText(enchantSpellA.ID());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
 			if(mob.location().okMessage(mob,msg))

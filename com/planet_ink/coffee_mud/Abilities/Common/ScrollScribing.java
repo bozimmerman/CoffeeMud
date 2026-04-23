@@ -555,6 +555,11 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 				if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 					commonTelL(mob,"You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose));
+				if(experienceToLose <= 0)
+				{
+					mob.tell(L("You are unable to complete this scroll."));
+					return false;
+				}
 			}
 
 			final int duration=calculateDuration(mob,theSpell);

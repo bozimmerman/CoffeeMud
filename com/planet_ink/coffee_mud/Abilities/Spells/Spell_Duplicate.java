@@ -140,6 +140,11 @@ public class Spell_Duplicate extends Spell
 		expLoss=CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,expLoss, false);
 		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 			mob.tell(L("You lose @x1 experience points.",CMLib.leveler().getXPAmountTerm(-expLoss)));
+		if(expLoss > 0)
+		{
+			mob.tell(L("You are unable to complete this spell."));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

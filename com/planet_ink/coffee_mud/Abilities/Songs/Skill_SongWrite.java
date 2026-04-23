@@ -156,6 +156,11 @@ public class Skill_SongWrite extends BardSkill
 		experienceToLose=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-experienceToLose, false);
 		if(!CMSecurity.isDisabled(DisFlag.SHOWXPGAINS))
 			mob.tell(L("You lose @x1 experience points for the effort.",CMLib.leveler().getXPAmountTerm(experienceToLose)));
+		if(experienceToLose <= 0)
+		{
+			mob.tell(L("You are unable to complete this song."));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
