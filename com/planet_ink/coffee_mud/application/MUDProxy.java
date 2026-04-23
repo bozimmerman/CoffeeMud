@@ -856,7 +856,7 @@ public class MUDProxy
 		catch (final IOException e)
 		{
 		}
-		return targetContext.outputPipe.toByteBuffer();
+		return ByteBuffer.wrap(targetContext.outputPipe.toByteArray());
 	}
 
 	/**
