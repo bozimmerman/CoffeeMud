@@ -1164,13 +1164,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			&&((mob==null)||(mobInt>3)))
 				response.append(L("It appears to be a bundle of `@x1`.  ",item.rawSecretIdentity()));
 
-			if((mob!=null)&&(mobInt<10))
-				response.append(L("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
-			else
-			if((item instanceof RawMaterial)&&(((RawMaterial)item).getSubType().length()>0))
-				response.append(L("It is mostly made of @x1.  ",((RawMaterial)item).getSubType().toLowerCase()));
-			else
-				response.append(L("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
+			if(item.material() != 0)
+			{
+				if((mob!=null)&&(mobInt<10))
+					response.append(L("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
+				else
+				if((item instanceof RawMaterial)&&(((RawMaterial)item).getSubType().length()>0))
+					response.append(L("It is mostly made of @x1.  ",((RawMaterial)item).getSubType().toLowerCase()));
+				else
+					response.append(L("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
+			}
 			if(item instanceof RecipesBook)
 			{
 				final String[] recipeCodeLines = ((RecipesBook)item).getRecipeCodeLines();
