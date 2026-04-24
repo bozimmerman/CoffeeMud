@@ -260,7 +260,7 @@ public class Transcribing extends CommonSkill
 		displayText=L("You are @x1",verb);
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			foundI = null;
-		final int duration=getDuration(30,mob,1,1);
+		final int duration=getDuration(30-(super.getXLEVELLevel(mob)/2),mob,1,1);
 		final CMMsg msg=CMClass.getMsg(mob,copyFromI,this,getActivityMessageType(),
 				L("<S-NAME> start(s) transcribing <T-NAME> into @x1.",targetI.name()),
 				pageNum,

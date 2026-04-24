@@ -108,7 +108,7 @@ public class Skill_ScrollCopy extends StdSkill
 			return false;
 		}
 
-		if(((Scroll)target).usesRemaining()<1)
+		if(target.usesRemaining()<1)
 		{
 			mob.tell(L("The scroll appears to be faded."));
 			return false;
@@ -156,7 +156,8 @@ public class Skill_ScrollCopy extends StdSkill
 				&&(CMLib.ableMapper().qualifyingClassLevel(mob,this)>=0)
 				&&(CMLib.ableMapper().qualifyingClassLevel(mob,thisSpell)>=0))
 				{
-					final int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)));
+					final int xp=(int)Math.round(100.0*CMath.div(CMLib.ableMapper().lowestQualifyingLevel(thisSpell.ID()),CMLib.ableMapper().qualifyingClassLevel(mob,this)))
+							+ super.getXLEVELLevel(mob);
 					if(xp>=0)
 						CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,xp, false);
 				}

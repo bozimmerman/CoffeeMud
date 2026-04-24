@@ -211,7 +211,7 @@ public class BookEditing extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			found = null;
-		final int duration=getDuration(30,mob,1,1);
+		final int duration=getDuration(30-(super.getXLEVELLevel(mob)/2),mob,1,1);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),
 				L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))

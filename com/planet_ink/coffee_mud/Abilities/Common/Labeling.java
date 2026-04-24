@@ -294,7 +294,7 @@ public class Labeling extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		final int duration=getDuration(20,mob,1,11)-super.getXLEVELLevel(mob);
+		final int duration=getDuration(20,mob,1,11-(super.getXLEVELLevel(mob)/2));
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),remove?L("<S-NAME> start(s) untagging <T-NAME>."):L("<S-NAME> start(s) labeling <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{

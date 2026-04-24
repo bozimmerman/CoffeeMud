@@ -1720,6 +1720,14 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			return false;
 		}
 
+		final int maxItems = 5 + (adjustedLevel(mob,asLevel) / 8) + super.getXLEVELLevel(mob);
+		if(itemsV.size() + loanA.shop.enumerableStockSize() > maxItems)
+		{
+			mob.tell(L("You can't add @x1 more items, as you are loaning @x2/@x3 currently.",
+					""+itemsV.size(),""+loanA.shop.enumerableStockSize(),""+maxItems));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -1728,7 +1736,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			commonFaiL(mob,commands,target,null,"You fail to make <T-NAME> available to borrow.");
 			return false;
 		}
-
+		
 		final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_SELL,L("<S-NAME> make(s) <T-NAME> available for borrowing."));
 		if(mob.location().okMessage(mob,msg))
 		{

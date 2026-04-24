@@ -270,7 +270,7 @@ public class BookNaming extends CommonSkill
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
-		final int duration=getDuration(30,mob,1,3);
+		final int duration=getDuration(30-(super.getXLEVELLevel(mob)/2),mob,1,3);
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) naming <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
