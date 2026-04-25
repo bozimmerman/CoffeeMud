@@ -212,7 +212,8 @@ public class Spell_BaseClanEq extends Spell
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-
+		mob.tell(L("@x1 is charged @x2 experience points.",
+				C.getGovernmentName()+" "+C.name(), ""+exp));
 		C.adjExp(mob,(int)-exp);
 		C.update();
 
@@ -228,9 +229,9 @@ public class Spell_BaseClanEq extends Spell
 				str.append(" ");
 				str.append(""+points);     // Power of Enchantment
 				str.append(" \"");
-				str.append(ClanName);   					   // Clan Name
+				str.append(ClanName);   	// Clan Name
 				str.append("\" \"");
-				str.append(ClanType);   					   // Clan Type
+				str.append(ClanType);   	// Clan Type
 				str.append("\"");
 				A.setMiscText(str.toString());
 				target.addEffect(A);
