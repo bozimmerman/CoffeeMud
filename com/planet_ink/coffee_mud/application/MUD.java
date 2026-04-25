@@ -343,6 +343,15 @@ public class MUD extends Thread implements MudHost
 							catch (final Exception ex)
 							{
 							}
+							if(initialized && sess[0].getClientTelnetMode(Session.TELNET_MPCP))
+							{
+								final long blockMillis = (proceed == ConnectState.BLOCKED)
+									? CMSecurity.CONN_LAST_DELAY_MS
+									: -1L; // -1 means permanent (BANNED)
+								sess[0].sendInlineCommand(ProtocolLibrary.InProto.MPCP,
+									"BlockIP","{\"ip\":\"" + MiniJSON.toJSONString(address)
+										+ "\",\"duration_ms\":" + blockMillis + "}");
+							}
 							out.print(introText.toString());
 							out.flush();
 							closeLater(sess[0],sock, out);
@@ -1133,7 +1142,7 @@ public class MUD extends Thread implements MudHost
 	 *
 	 * @param tGroup the thread group to check
 	 * @param nonDaemonsOnly true to count only non-daemon threads, false to
-	 *            count all
+	 *			count all
 	 * @return the number of active threads in the group
 	 */
 	public static int activeThreadCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
@@ -1159,7 +1168,7 @@ public class MUD extends Thread implements MudHost
 	 *
 	 * @param tGroup the thread group to check
 	 * @param nonDaemonsOnly true to kill only non-daemon threads, false to kill
-	 *            all
+	 *			all
 	 * @return the number of threads killed
 	 */
 	private static int killCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
@@ -1188,7 +1197,7 @@ public class MUD extends Thread implements MudHost
 	 *
 	 * @param tGroup the thread group to check
 	 * @param nonDaemonsOnly true to list only non-daemon threads, false to list
-	 *            all
+	 *			all
 	 */
 	private static void threadList(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{

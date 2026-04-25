@@ -51,6 +51,8 @@ public class MUDProxy
 {
 	private static final int		BUFFER_SIZE		= 65536;
 	private static final int		MAX_BUFFERS		= 1024;
+	private static final int		PORT_DISTRESSED = -1;
+	private static final int		PORT_FORWARD	= -2;
 	private static Selector			selector		= null;
 	private static LBStrategy		strategy		= LBStrategy.ROUNDROBIN;
 	private static Random			rand			= new Random(System.nanoTime());
@@ -60,6 +62,7 @@ public class MUDProxy
 	private static volatile String			mpcpKey			= "";
 	private static volatile SecretKeySpec	cachedKeySpec	= null;
 	private static volatile String			cachedKey		= null;
+	private static final Map<String, Long>	blockedIPs 		= new ConcurrentHashMap<String, Long>();
 	private static final Queue<ByteBuffer>	bufferPool		= new ConcurrentLinkedQueue<ByteBuffer>();
 	private static final AtomicInteger		poolSize		= new AtomicInteger(0);
 	private static final ThreadLocal<Mac> 	threadLocalMac 	= ThreadLocal.withInitial(new Supplier<Mac>() 
@@ -92,7 +95,8 @@ public class MUDProxy
 		runnables		= new Vector<Runnable>();
 	private static final Map<Integer, AtomicInteger>
 		strategyMap		= new Hashtable<Integer, AtomicInteger>();
-
+	private static final Map<Pair<String,Integer>, Queue<PendingForward>>
+		pendingForwards = new ConcurrentHashMap<Pair<String,Integer>, Queue<PendingForward>>();
 	/**
 	 * Strategies for incoming connections.
 	 */
@@ -564,146 +568,13 @@ public class MUDProxy
 							//*** Acceptable
 							if(key.isAcceptable())
 							{
-								final ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
-								final SocketChannel clientChannel = serverChannel.accept();
-								if (clientChannel == null)
-									return;
-								clientChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
-								//final MUDProxy serverContext = (MUDProxy)key.attachment();
-								final InetSocketAddress clientAddress = (InetSocketAddress) clientChannel.getRemoteAddress();
-								final String clientIp = clientAddress.getAddress().getHostAddress();
-								final InetSocketAddress localAddress = (InetSocketAddress) serverChannel.getLocalAddress();
-								final int listenPort = localAddress.getPort();
-								clientChannel.configureBlocking(false);
-								clientChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
-								final SocketChannel targetChannel = SocketChannel.open();
-								targetChannel.configureBlocking(false);
-								targetChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
-								final Integer serverPortI = Integer.valueOf(listenPort);
-								final PairList<String,Integer> targetPorts = portMap.get(serverPortI);
-								final Pair<String,Integer> targetPort;
-								switch(MUDProxy.strategy)
-								{
-								case LEASTCONN:
-								{
-									Pair<String,Integer> lowest=null;
-									int least = Integer.MAX_VALUE;
-									for(final Pair<String,Integer> p : targetPorts)
-									{
-										final int t=trackPort(false,p.second,0,Integer.MAX_VALUE);
-										if(t<least)
-										{
-											lowest=p;
-											least=t;
-										}
-									}
-									targetPort=lowest;
-									break;
-								}
-								case RANDOM:
-									targetPort = targetPorts.get(rand.nextInt(targetPorts.size()));
-									break;
-								case ROUNDROBIN:
-									targetPort = targetPorts.get(trackPort(false,serverPortI,1,targetPorts.size()-1));
-									break;
-								default:
-									targetPort = null;
-									break;
-								}
-								if(targetPort != null)
-								{
-									targetChannel.connect(new InetSocketAddress(targetPort.first, targetPort.second.intValue()));
-									final Pair<String,Integer> clientPort = getPort(clientIp,Integer.valueOf(listenPort));
-									final SelectionKey clientKey =
-											clientChannel.register(selector, SelectionKey.OP_READ, new MUDProxy(true,listenPort,clientPort,clientIp));
-									final SelectionKey targetKey =
-											targetChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,listenPort,targetPort,targetPort.first));
-									synchronized(channelPairs)
-									{
-										channelPairs.put(clientKey, targetKey);
-										channelPairs.put(targetKey, clientKey);
-									}
-									Log.sysOut(listenPort+"","Connection from "+clientIp+"->"+targetPort.first+":"+targetPort.second);
-								}
+								handleAccept(key);
 							}
 
 							//*** Connectable
 							if(key.isConnectable())
 							{
-								final SocketChannel serverChannel = (SocketChannel) key.channel();
-								final MUDProxy serverContext = (MUDProxy)key.attachment();
-								serverContext.connectTime=System.currentTimeMillis();
-								try
-								{
-									if (serverChannel.finishConnect())
-									{
-										final SelectionKey pairedKey = channelPairs.get(key);
-										final MUDProxy clientContext =(pairedKey!=null) ? ((MUDProxy)pairedKey.attachment()) : null;
-										serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
-										MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
-										chanWrite(serverChannel,ByteBuffer.wrap(new byte[] {
-											(byte)Session.TELNET_IAC,
-											(byte)Session.TELNET_WILL,
-											(byte)Session.TELNET_MPCP
-										}));
-										if(serverContext.in instanceof ZInputStream)
-										{
-											// reset the server input MCCP
-											serverContext.inputPipe.reset();
-											serverContext.in.close();
-											serverContext.in = new PassThroughInputStream(serverContext.inputPipe);
-										}
-										final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
-																				serverContext.ipAddress;
-										if((clientContext!=null)&&(clientContext.distressedTime != 0))
-										{
-											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-													+"\"client_address\":\""+clientAddr+"\","
-													+"\"reconnect\": true,"
-													+"\"timestamp\":"+System.currentTimeMillis()+"}")));
-											clientContext.connectTime=System.currentTimeMillis();
-											clientContext.distressedTime=0;
-											final JSONObject obj = new MiniJSON.JSONObject();
-											obj.putAll(serverContext.session);
-											obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
-											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
-											if((pairedKey!=null)&&(clientContext!=null))
-											{
-												clientContext.inter.add(ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
-														+"-- Connection restored --\n\r").getBytes()));
-												pairedKey.interestOps(pairedKey.interestOps() & ~SelectionKey.OP_WRITE);
-												Log.sysOut(clientContext.outsidePortNum+"","Connection restored "+clientContext.ipAddress
-														+"->"+serverContext.port.first+":"+serverContext.port.second);
-											}
-										}
-										else
-										{
-											chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
-													+"\"client_address\":\""+clientAddr+"\","
-													+"\"timestamp\":"+System.currentTimeMillis()+"}")));
-										}
-										key.interestOps(SelectionKey.OP_READ);
-									}
-									else
-									{
-										closeKey(key);
-									}
-								}
-								catch (final ConnectException e)
-								{
-									key.cancel();
-									closeKey(key);
-								}
-								catch (final NoConnectionPendingException e)
-								{
-									key.cancel();
-									closeKey(key);
-								}
-								catch (final IOException e)
-								{
-									key.cancel();
-									closeKey(key);
-								}
+								handleConnect(key);
 							}
 
 							//*** Readable
@@ -933,9 +804,49 @@ public class MUDProxy
 		CLIENTINFO,
 		LIST,
 		COMMANDS,
-		MESSAGE
+		MESSAGE,
+		FORWARD,
+		BLOCKIP
 	}
 
+	/**
+	 * Represents a pending server-to-server MPCP forward payload.
+	 * 
+	 * @author BZ
+	 */
+	private static class PendingForward
+	{
+		final Pair<String, Integer> targetPort;
+		final byte[]				smallPayload;
+		final File					largePayload;
+		
+		PendingForward(final Pair<String,Integer> targetPort, final byte[] small, final File large)
+		{
+			this.targetPort   = targetPort;
+			this.smallPayload = small;
+			this.largePayload = large;
+		}
+		
+		public byte[] readAndDiscard() throws IOException
+		{
+			if(smallPayload != null)
+				return smallPayload;
+			try(FileInputStream fis = new FileInputStream(largePayload))
+			{
+				final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				final byte[] chunk = new byte[4096];
+				int n;
+				while((n = fis.read(chunk)) != -1)
+					bos.write(chunk, 0, n);
+				return bos.toByteArray();
+			}
+			finally
+			{
+				largePayload.delete();
+			}
+		}
+	}
+	
 	/**
 	 * Sends an MPCP MESSAGE packet to the mud side.
 	 *
@@ -1115,8 +1026,90 @@ public class MUDProxy
 					sendMPCPMsg(key,context,cmds.toString());
 					break;
 				case MESSAGE:
+					//TODO: What's this even for?
 					Log.sysOut("MPCP",obj.getCheckedString("message"));
 					break;
+				case FORWARD:
+				{
+					final String targetHost = obj.getCheckedString("target_host");
+					final int	targetPort = CMath.s_int(obj.getCheckedString("target_port"));
+					if((targetHost == null) || targetHost.isEmpty() || (targetPort <= 0))
+					{
+						sendMPCPMsg(key, context, "FORWARD: missing or invalid target_host/target_port.");
+						break;
+					}
+					final Pair<String,Integer> target = getPort(targetHost, Integer.valueOf(targetPort));
+					boolean targetKnown = false;
+					for(final PairList<String,Integer> portList : portMap.values())
+					{
+						for(final Pair<String,Integer> p : portList)
+						{
+							if(p.equals(target))
+							{
+								targetKnown = true; 
+								break; 
+							}
+						}
+					}
+					if(!targetKnown)
+					{
+						sendMPCPMsg(key, context, "FORWARD: unknown target server "+targetHost+":"+targetPort);
+						break;
+					}
+
+					final String payloadB64 = obj.getCheckedString("payload");
+					if((payloadB64 == null) || payloadB64.isEmpty())
+					{
+						sendMPCPMsg(key, context, "FORWARD: missing payload.");
+						break;
+					}
+					final byte[] payloadBytes = java.util.Base64.getDecoder().decode(payloadB64);
+					final byte[] wrappedPacket = makeMPCPPacket("FORWARDED {"
+							+ "\"from_host\":\"" + MiniJSON.toJSONString(context.ipAddress) + "\","
+							+ "\"timestamp\":" + System.currentTimeMillis()
+							+ ",\"payload\":\"" + java.util.Base64.getEncoder().encodeToString(payloadBytes) + "\"}");
+
+					final PendingForward pf;
+					if(wrappedPacket.length > 65536)
+					{
+						final File tmp = File.createTempFile("mudproxy_fwd_", ".tmp");
+						try(FileOutputStream fos = new FileOutputStream(tmp))
+						{
+							fos.write(wrappedPacket);
+						}
+						pf = new PendingForward(target, null, tmp);
+						Log.sysOut("MPCP","FORWARD large packet ("+wrappedPacket.length+" bytes) spooled to "+tmp.getName());
+					}
+					else
+					{
+						pf = new PendingForward(target, wrappedPacket, null);
+					}
+
+					pendingForwards.computeIfAbsent(target, k2 -> new ConcurrentLinkedQueue<>()).add(pf);
+					deliverPendingForwards(target);
+					break;
+				}
+				case BLOCKIP:
+				{
+					final String ip = obj.getCheckedString("ip");
+					final Long durationMs = obj.getCheckedLong("duration_ms");
+					if((ip != null) && (!ip.isEmpty()))
+					{
+						if(durationMs.longValue() < 0)
+						{
+							blockedIPs.put(ip, Long.valueOf(Long.MAX_VALUE));
+							Log.sysOut("MPCP", "Permanently blocking IP: " + ip);
+						}
+						else
+						{
+							final long expiry = System.currentTimeMillis() + durationMs.longValue();
+							blockedIPs.put(ip, Long.valueOf(expiry));
+							Log.sysOut("MPCP", "Temporarily blocking IP: " + ip
+								+ " for " + (durationMs.longValue() / 60000L) + " min(s)");
+						}
+					}
+					break;
+				}
 				}
 			}
 		}
@@ -1435,6 +1428,181 @@ public class MUDProxy
 		return ByteBuffer.wrap(sourceContext.readPipe.toByteArray());
 	}
 
+	/**
+	 * Handle any incoming client connections.
+	 * @param key the client connection key
+	 * @throws IOException any errors
+	 */
+	private static void handleAccept(final SelectionKey key) throws IOException
+	{
+		final ServerSocketChannel serverChannel = (ServerSocketChannel) key.channel();
+		final SocketChannel clientChannel = serverChannel.accept();
+		if (clientChannel == null)
+			return;
+		clientChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
+		//final MUDProxy serverContext = (MUDProxy)key.attachment();
+		final InetSocketAddress clientAddress = (InetSocketAddress) clientChannel.getRemoteAddress();
+		final String clientIp = clientAddress.getAddress().getHostAddress();
+		final Long blockExpiry = blockedIPs.get(clientIp);
+		final InetSocketAddress localAddress = (InetSocketAddress) serverChannel.getLocalAddress();
+		final int listenPort = localAddress.getPort();
+		if(blockExpiry != null)
+		{
+			if(blockExpiry.longValue() == Long.MAX_VALUE
+			|| System.currentTimeMillis() < blockExpiry.longValue())
+			{
+				Log.sysOut(listenPort+"", "Blocked connection from " + clientIp);
+				clientChannel.close();
+				return;
+			}
+			else
+				blockedIPs.remove(clientIp);
+		}
+		clientChannel.configureBlocking(false);
+		clientChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
+		final SocketChannel targetChannel = SocketChannel.open();
+		targetChannel.configureBlocking(false);
+		targetChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
+		final Integer serverPortI = Integer.valueOf(listenPort);
+		final PairList<String,Integer> targetPorts = portMap.get(serverPortI);
+		final Pair<String,Integer> targetPort;
+		switch(MUDProxy.strategy)
+		{
+		case LEASTCONN:
+		{
+			Pair<String,Integer> lowest=null;
+			int least = Integer.MAX_VALUE;
+			for(final Pair<String,Integer> p : targetPorts)
+			{
+				final int t=trackPort(false,p.second,0,Integer.MAX_VALUE);
+				if(t<least)
+				{
+					lowest=p;
+					least=t;
+				}
+			}
+			targetPort=lowest;
+			break;
+		}
+		case RANDOM:
+			targetPort = targetPorts.get(rand.nextInt(targetPorts.size()));
+			break;
+		case ROUNDROBIN:
+			targetPort = targetPorts.get(trackPort(false,serverPortI,1,targetPorts.size()-1));
+			break;
+		default:
+			targetPort = null;
+			break;
+		}
+		if(targetPort != null)
+		{
+			targetChannel.connect(new InetSocketAddress(targetPort.first, targetPort.second.intValue()));
+			final Pair<String,Integer> clientPort = getPort(clientIp,Integer.valueOf(listenPort));
+			final SelectionKey clientKey =
+					clientChannel.register(selector, SelectionKey.OP_READ, new MUDProxy(true,listenPort,clientPort,clientIp));
+			final SelectionKey targetKey =
+					targetChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,listenPort,targetPort,targetPort.first));
+			synchronized(channelPairs)
+			{
+				channelPairs.put(clientKey, targetKey);
+				channelPairs.put(targetKey, clientKey);
+			}
+			Log.sysOut(listenPort+"","Connection from "+clientIp+"->"+targetPort.first+":"+targetPort.second);
+		}
+	}
+	
+	/**
+	 * Handle the completion of connections from the proxy server to the mud
+	 * server.
+	 * 
+	 * @param key the key completing connection
+	 * @throws IOException any errors that occur
+	 */
+	private static void handleConnect(final SelectionKey key) throws IOException
+	{
+		final SocketChannel serverChannel = (SocketChannel) key.channel();
+		final MUDProxy serverContext = (MUDProxy)key.attachment();
+		serverContext.connectTime=System.currentTimeMillis();
+		try
+		{
+			if (serverChannel.finishConnect())
+			{
+				final SelectionKey pairedKey = channelPairs.get(key);
+				final MUDProxy clientContext =(pairedKey!=null) ? ((MUDProxy)pairedKey.attachment()) : null;
+				serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
+				MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
+				chanWrite(serverChannel,ByteBuffer.wrap(new byte[] {
+					(byte)Session.TELNET_IAC,
+					(byte)Session.TELNET_WILL,
+					(byte)Session.TELNET_MPCP
+				}));
+				if(serverContext.outsidePortNum == PORT_FORWARD)
+				{
+					key.interestOps(SelectionKey.OP_READ);
+					deliverPendingForwards(serverContext.port);
+					return;
+				}
+				if(serverContext.in instanceof ZInputStream)
+				{
+					// reset the server input MCCP
+					serverContext.inputPipe.reset();
+					serverContext.in.close();
+					serverContext.in = new PassThroughInputStream(serverContext.inputPipe);
+				}
+				final String clientAddr = (pairedKey!=null)?((MUDProxy)pairedKey.attachment()).ipAddress:
+														serverContext.ipAddress;
+				if((clientContext!=null)&&(clientContext.distressedTime != 0))
+				{
+					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+							+"\"client_address\":\""+clientAddr+"\","
+							+"\"reconnect\": true,"
+							+"\"timestamp\":"+System.currentTimeMillis()+"}")));
+					clientContext.connectTime=System.currentTimeMillis();
+					clientContext.distressedTime=0;
+					final JSONObject obj = new MiniJSON.JSONObject();
+					obj.putAll(serverContext.session);
+					obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
+					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
+					if((pairedKey!=null)&&(clientContext!=null))
+					{
+						clientContext.inter.add(ByteBuffer.wrap(("\n\r\n\r\u001B[0m\u001B[37m"
+								+"-- Connection restored --\n\r").getBytes()));
+						pairedKey.interestOps(pairedKey.interestOps() & ~SelectionKey.OP_WRITE);
+						Log.sysOut(clientContext.outsidePortNum+"","Connection restored "+clientContext.ipAddress
+								+"->"+serverContext.port.first+":"+serverContext.port.second);
+					}
+				}
+				else
+				{
+					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
+							+"\"client_address\":\""+clientAddr+"\","
+							+"\"timestamp\":"+System.currentTimeMillis()+"}")));
+				}
+				key.interestOps(SelectionKey.OP_READ);
+			}
+			else
+			{
+				closeKey(key);
+			}
+		}
+		catch (final ConnectException e)
+		{
+			key.cancel();
+			closeKey(key);
+		}
+		catch (final NoConnectionPendingException e)
+		{
+			key.cancel();
+			closeKey(key);
+		}
+		catch (final IOException e)
+		{
+			key.cancel();
+			closeKey(key);
+		}
+
+	}
+	
 	/**
 	 * Handles a readable selection key, reading all available data from the
 	 * channel, filtering it first, and then queuing it for writing to the
@@ -1773,7 +1941,8 @@ public class MUDProxy
 						pingChannel.configureBlocking(false);
 						pingChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
 						pingChannel.connect(new InetSocketAddress(port.first, port.second.intValue()));
-						final SelectionKey key = pingChannel.register(selector, SelectionKey.OP_CONNECT, new MUDProxy(false,-1,port,"PROXY"));
+						final SelectionKey key = pingChannel.register(selector, SelectionKey.OP_CONNECT, 
+								new MUDProxy(false,PORT_DISTRESSED,port,"PROXY"));
 						key.interestOps(SelectionKey.OP_CONNECT);
 						final Triad<SelectionKey,Long,Boolean> pinger = new Triad<SelectionKey,Long,Boolean>(key,Long.valueOf(System.currentTimeMillis()), Boolean.FALSE);
 						distressPingers.put(port, pinger);
@@ -1950,6 +2119,104 @@ public class MUDProxy
 			result.append(hexStr).append("  ").append(ascii).append("\n");
 		}
 		return result.toString();
+	}
+
+	/**
+	 * Attempts to deliver any pending MPCP forwards queued for the given target
+	 * server. If an active connection to that server already exists, it is reused.
+	 * Otherwise a new dedicated (forward-only) connection is opened.
+	 *
+	 * @param target the host:port of the destination server
+	 */
+	private static void deliverPendingForwards(final Pair<String,Integer> target)
+	{
+		final Queue<PendingForward> queue = pendingForwards.get(target);
+		if((queue == null) || queue.isEmpty())
+			return;
+
+		//look for an existing active server-side key for this target
+		SelectionKey existingKey = null;
+		synchronized(channelPairs)
+		{
+			for(final SelectionKey k : channelPairs.keySet())
+			{
+				final Object att = k.attachment();
+				if(!(att instanceof MUDProxy))
+					continue;
+				final MUDProxy proxy = (MUDProxy) att;
+				if((!proxy.isClient) 
+				&& proxy.port.equals(target)
+				&& k.isValid())
+				{
+					existingKey = k;
+					break;
+				}
+			}
+		}
+
+		if(existingKey != null)
+		{
+			final SelectionKey fwdKey = existingKey;
+			final MUDProxy fwdCtx = (MUDProxy) fwdKey.attachment();
+			MUD.serviceEngine.executeRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					PendingForward pf;
+					while((pf = queue.poll()) != null)
+					{
+						try
+						{
+							final byte[] data = pf.readAndDiscard();
+							Log.sysOut("MPCP","Delivering forward to "+pf.targetPort.first+":"+pf.targetPort.second
+									+" ("+data.length+" bytes)");
+							synchronized(fwdCtx.output)
+							{
+								fwdCtx.output.add(ByteBuffer.wrap(data));
+							}
+						}
+						catch(final IOException e)
+						{
+							Log.errOut("MPCP/FORWARD",e);
+						}
+					}
+					try { handleWrite(fwdKey); }
+					catch(final IOException e) { Log.errOut("MPCP/FORWARD",e); }
+				}
+			});
+		}
+		else
+		{
+			// No existing connection — open a dedicated forward channel.
+			synchronized(runnables)
+			{
+				runnables.add(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						try
+						{
+							final SocketChannel fwdChannel = SocketChannel.open();
+							fwdChannel.configureBlocking(false);
+							fwdChannel.setOption(StandardSocketOptions.SO_KEEPALIVE, Boolean.TRUE);
+							final MUDProxy fwdProxy = new MUDProxy(false, PORT_FORWARD, target, "PROXY_FWD");
+							final SelectionKey fwdKey = fwdChannel.register(selector, SelectionKey.OP_CONNECT, fwdProxy);
+							fwdKey.interestOps(SelectionKey.OP_CONNECT);
+							fwdChannel.connect(new InetSocketAddress(target.first, target.second.intValue()));
+							Log.sysOut("MPCP","FORWARD: opening dedicated channel to "+target.first+":"+target.second);
+						}
+						catch(final Exception e)
+						{
+							Log.errOut("MPCP/FORWARD",e);
+						}
+					}
+				});
+				selector.wakeup();
+			}
+			// The OP_CONNECT handler will call deliverPendingForwards again.
+		}
 	}
 
 	@Override
