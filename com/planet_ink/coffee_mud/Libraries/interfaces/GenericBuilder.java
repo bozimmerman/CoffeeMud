@@ -784,6 +784,19 @@ public interface GenericBuilder extends CMLibrary
 	 * @return the xml document of the character
 	 */
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
+	
+
+	/**
+	 * Give a player/character mob, this will return an xml document of the mob object,
+	 * as well as any items, etc contained therein.  Dependency custom objects and
+	 * script file paths are also included in the xml.
+	 *
+	 * @see GenericBuilder#addPlayersAndAccountsFromXML(String, List, List, Session)
+	 *
+	 * @param mob the player/character mob to get the xml of
+	 * @return the xml document of the character
+	 */
+	public String getFullPlayerXML(final MOB mob);
 
 	/**
 	 * Given a player account, this will return an XML document of the account objects, as

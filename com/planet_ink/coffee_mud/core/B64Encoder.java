@@ -1,5 +1,15 @@
 package com.planet_ink.coffee_mud.core;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
+
 /**
  * Encodes and decodes to and from Base64 notation.
  *
@@ -251,6 +261,13 @@ public class B64Encoder
 		return B64encodeBytes( source, 0, source.length, NO_OPTIONS );
 	}   // end encodeBytes
 
+	public static String B64encodeAndCompressString( final String source )
+	{
+		final byte[] uncompressed = source.getBytes(StandardCharsets.UTF_8);
+		return B64encodeBytes( uncompressed, 0, uncompressed.length, GZIP );
+	}   // end encodeAndCompressBytes
+
+	
 	public static String B64encodeBytes( final byte[] source, final int options )
 	{
 		return B64encodeBytes( source, 0, source.length, options );
@@ -446,6 +463,12 @@ public class B64Encoder
 		return out;
 	}
 
+	public static String B64decodeAndDecompressString(final String s)
+	{
+		final byte[] decoded = B64decode(s);
+		return new String(decoded, StandardCharsets.UTF_8);
+	}
+	
 	public static byte[] B64decode( final String s )
 	{
 		byte[] bytes;

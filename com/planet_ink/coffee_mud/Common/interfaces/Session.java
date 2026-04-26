@@ -1026,7 +1026,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		GMCP_PING_ALL,
 		GMCP_PING_EFFECTS,
 		PLAYERSAVE,
-		DISCONNECT
+		DISCONNECT,
+		PLAYERTRANSFER
 	}
 
 	/** TELNET CODE: transmit binary */

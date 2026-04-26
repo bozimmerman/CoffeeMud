@@ -2002,6 +2002,19 @@ public class DefaultSession implements Session
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{
 								obj.remove("timestamp");
+								if(obj.containsKey("mob_xml"))
+								{
+									// this MUST be processed first, as one of the state codes
+									//   applied below is the mob which will be constructed by this xml.
+									String xml = B64Encoder.B64decodeAndDecompressString(obj.getCheckedString("mob_xml"));
+									xml = xml + ""; // prevent warning
+									//TODO: build mob from xml, persist him, flag him as
+									//  'foreign', and overwrite any other foreign mobs with
+									//  the same name.  
+									//TODO: on logout, transfer mob xml back to og host, 
+									//  delete the foreign mob, and switch user connection
+									//  back to og host via mudproxy, somehow.
+								}
 								final int wasMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
 										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
 										: -1;
@@ -4095,15 +4108,28 @@ public class DefaultSession implements Session
 				}
 			}
 			break;
+		case PLAYERTRANSFER:
 		case PLAYERSAVE:
-			if(getClientTelnetMode(TELNET_MPCP))
-			{
-				final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
-				for(final String stat : this.getStatCodes())
-					doc.put(stat.toLowerCase(), getStat(stat));
-				doc.remove("lastmsg");
-				sendInlineCommand(InProto.MPCP,"SessionInfo", doc.toString());
-			}
+			if(!getClientTelnetMode(TELNET_MPCP))
+				break;
+			final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+			for(final String stat : this.getStatCodes())
+				doc.put(stat.toLowerCase(), getStat(stat));
+			doc.remove("lastmsg");
+			sendInlineCommand(InProto.MPCP,"SessionInfo", doc.toString());
+			if(ping == SessionPing.PLAYERSAVE)
+				break;
+			if(mob==null)
+				break;
+			final Pair<?,?> target = (obj instanceof Pair<?,?>) ? (Pair<?,?>)obj : null;
+			if(target == null)
+				break;
+			final String xml = B64Encoder.B64encodeAndCompressString(CMLib.coffeeMaker().getFullPlayerXML(mob));
+			doc.clear();
+			doc.put("target_host", target.first.toString());
+			doc.put("target_port", target.second.toString());
+			doc.put("payload", xml);
+			sendInlineCommand(InProto.MPCP,"Transfer", doc.toString());
 			break;
 		}
 	}
@@ -4198,7 +4224,7 @@ public class DefaultSession implements Session
 				final ObjectOutputStream oout = new ObjectOutputStream(bout);
 				oout.writeObject(msdpReportables);
 				oout.flush();
-				return Base64.getEncoder().encodeToString(bout.toByteArray());
+				return B64Encoder.B64encodeBytes(bout.toByteArray());
 			}
 			catch (final IOException e)
 			{
@@ -4250,7 +4276,7 @@ public class DefaultSession implements Session
 		case TERMHEIGHT:
 			return ""+terminalHeight;
 		case PSUFFIX:
-			return (promptSuffix.length==0)?"":Base64.getEncoder().encodeToString(promptSuffix);
+			return (promptSuffix.length==0)?"":B64Encoder.B64encodeBytes(promptSuffix);
 		case LOGINTIME:
 			return ""+userLoginTime;
 		case ONLINETIME:
@@ -4357,7 +4383,7 @@ public class DefaultSession implements Session
 			{
 				try
 				{
-					final byte[] bs = Base64.getDecoder().decode(val);
+					final byte[] bs = B64Encoder.B64decode(val);
 					final ByteArrayInputStream bout = new ByteArrayInputStream(bs);
 					final ObjectInputStream ooin = new ObjectInputStream(bout);
 					@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -4568,7 +4594,7 @@ public class DefaultSession implements Session
 			if(val.trim().length()==0)
 				promptSuffix=new byte[0];
 			else
-				promptSuffix=Base64.getDecoder().decode(val);
+				promptSuffix=B64Encoder.B64decode(val);
 			break;
 		case LOGINTIME:
 			userLoginTime = CMath.s_long(val);

@@ -4664,6 +4664,54 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String getFullPlayerXML(final MOB mob)
+	{
+		final Set<CMObject> custom=new HashSet<CMObject>();
+		final Set<String> files=new HashSet<String>();
+		final StringBuilder xml = new StringBuilder("<PLAYER>");
+		xml.append(getPlayerXML(mob, custom, files));
+		xml.append("</PLAYER>");
+		if(custom.size()>0)
+		{
+			final StringBuffer str=new StringBuffer("<CUSTOM>");
+			for (final Object o : custom)
+			{
+				if(o instanceof Race)
+					str.append(((Race)o).racialParms());
+				else
+				if(o instanceof CharClass)
+					str.append(((CharClass)o).classParms());
+				else
+				if(o instanceof Ability)
+					str.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
+				else
+				if(o instanceof Manufacturer)
+					str.append("<MANUFACTURER>").append(((Manufacturer)o).getXML()).append("</MANUFACTURER>");
+			}
+			str.append("</CUSTOM>");
+			xml.append(str);
+		}
+		if(files.size()>0)
+		{
+			final StringBuffer str=new StringBuffer("<FILES>");
+			for (final Object O : files)
+			{
+				final String filename=(String)O;
+				final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
+				if((buf!=null)&&(buf.length()>0))
+				{
+					str.append("<FILE NAME=\""+filename+"\">");
+					str.append(buf);
+					str.append("</FILE>");
+				}
+			}
+			str.append("</FILES>");
+			xml.append(str);
+		}
+		return xml.toString();
+	}
+
+	@Override
 	public String getPlayerXML(final MOB mob, final Set<CMObject> custom, final Set<String> files)
 	{
 		if(mob==null)

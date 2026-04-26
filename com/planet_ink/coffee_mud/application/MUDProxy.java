@@ -108,6 +108,25 @@ public class MUDProxy
 	}
 
 	/**
+	 * Commands that can be sent via MPCP from the mud to the proxy server.
+	 */
+	private static enum MPCPCommand
+	{
+		SESSIONINFO,
+		DISCONNECT,
+		DEBUGON,
+		DEBUGOFF,
+		LISTSESSIONS,
+		CLIENTINFO,
+		LIST,
+		COMMANDS,
+		MESSAGE,
+		FORWARD,
+		BLOCKIP,
+		TRANSFER
+	}
+
+	/**
 	 * Parse states for traffic from the mud, allowing it to react to
 	 * messages from the mud, or maintain MCCP across reboots.
 	 */
@@ -792,24 +811,6 @@ public class MUDProxy
 	}
 
 	/**
-	 * Commands that can be sent via MPCP from the mud to the proxy server.
-	 */
-	private static enum MPCPCommand
-	{
-		SESSIONINFO,
-		DISCONNECT,
-		DEBUGON,
-		DEBUGOFF,
-		LISTSESSIONS,
-		CLIENTINFO,
-		LIST,
-		COMMANDS,
-		MESSAGE,
-		FORWARD,
-		BLOCKIP
-	}
-
-	/**
 	 * Represents a pending server-to-server MPCP forward payload.
 	 * 
 	 * @author BZ
@@ -866,6 +867,56 @@ public class MUDProxy
 		handleWrite(key);
 	}
 
+	/**
+	 * Given a json object from a key requesting a target server, return
+	 * the found host and port, if they are valid, and null otherwise.
+	 * 
+	 * @param obj the json object from the server
+	 * @param key the selection key from the server 
+	 * @param context the context from the server
+	 * @return the host/port of the requested target server, or null
+	 * @throws IOException - any errors
+	 * @throws MiniJSON.MJSONException - any errors
+	 */
+	private static Pair<String, Integer> getValidTargetHost(final JSONObject obj, final SelectionKey key, final MUDProxy context)
+			throws IOException, MiniJSON.MJSONException
+	{
+		final String targetHost;
+		if(obj.get("target_host") instanceof String)
+			targetHost = obj.getCheckedString("target_host");
+		else
+			targetHost = null;
+		final int	targetPort;
+		if(obj.get("target_port") instanceof Integer || obj.get("target_port") instanceof Long)
+			targetPort = CMath.s_int(obj.get("target_port").toString());
+		else
+			targetPort = -1;
+		if((targetHost == null) || targetHost.isEmpty() || (targetPort <= 0))
+		{
+			sendMPCPMsg(key, context, "FORWARD: missing or invalid target_host/target_port.");
+			return null;
+		}
+		final Pair<String,Integer> target = getPort(targetHost, Integer.valueOf(targetPort));
+		boolean targetKnown = false;
+		for(final PairList<String,Integer> portList : portMap.values())
+		{
+			for(final Pair<String,Integer> p : portList)
+			{
+				if(p.equals(target))
+				{
+					targetKnown = true; 
+					break; 
+				}
+			}
+		}
+		if(!targetKnown)
+		{
+			sendMPCPMsg(key, context, "FORWARD: unknown target server "+targetHost+":"+targetPort);
+			return null;
+		}
+		return new Pair<String,Integer>(targetHost, Integer.valueOf(targetPort));
+	}
+	
 	/**
 	 * Processes an MPCP packet received from the mud side.
 	 * Handles what few commands are defined for the Proxy server.
@@ -1029,34 +1080,15 @@ public class MUDProxy
 					//TODO: What's this even for?
 					Log.sysOut("MPCP",obj.getCheckedString("message"));
 					break;
+				case TRANSFER:
+					//TODO: 
+					break;
 				case FORWARD:
 				{
-					final String targetHost = obj.getCheckedString("target_host");
-					final int	targetPort = CMath.s_int(obj.getCheckedString("target_port"));
-					if((targetHost == null) || targetHost.isEmpty() || (targetPort <= 0))
-					{
-						sendMPCPMsg(key, context, "FORWARD: missing or invalid target_host/target_port.");
+					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
+					if(target == null)
 						break;
-					}
-					final Pair<String,Integer> target = getPort(targetHost, Integer.valueOf(targetPort));
-					boolean targetKnown = false;
-					for(final PairList<String,Integer> portList : portMap.values())
-					{
-						for(final Pair<String,Integer> p : portList)
-						{
-							if(p.equals(target))
-							{
-								targetKnown = true; 
-								break; 
-							}
-						}
-					}
-					if(!targetKnown)
-					{
-						sendMPCPMsg(key, context, "FORWARD: unknown target server "+targetHost+":"+targetPort);
-						break;
-					}
-
+					target = getPort(target.first, target.second);
 					final String payloadB64 = obj.getCheckedString("payload");
 					if((payloadB64 == null) || payloadB64.isEmpty())
 					{
@@ -1070,7 +1102,7 @@ public class MUDProxy
 							+ ",\"payload\":\"" + java.util.Base64.getEncoder().encodeToString(payloadBytes) + "\"}");
 
 					final PendingForward pf;
-					if(wrappedPacket.length > 65536)
+					if(wrappedPacket.length > BUFFER_SIZE)
 					{
 						final File tmp = File.createTempFile("mudproxy_fwd_", ".tmp");
 						try(FileOutputStream fos = new FileOutputStream(tmp))
@@ -1085,7 +1117,14 @@ public class MUDProxy
 						pf = new PendingForward(target, wrappedPacket, null);
 					}
 
-					pendingForwards.computeIfAbsent(target, k2 -> new ConcurrentLinkedQueue<>()).add(pf);
+					Queue<PendingForward> queue = pendingForwards.get(target);
+					if (queue == null) 
+					{
+						Queue<PendingForward> newQueue = new ConcurrentLinkedQueue<PendingForward>();
+						Queue<PendingForward> existing = pendingForwards.putIfAbsent(target, newQueue);
+						queue = (existing != null) ? existing : newQueue;
+					}
+					queue.add(pf);
 					deliverPendingForwards(target);
 					break;
 				}
@@ -1553,6 +1592,8 @@ public class MUDProxy
 														serverContext.ipAddress;
 				if((clientContext!=null)&&(clientContext.distressedTime != 0))
 				{
+					//TODO: this should be re-used for transfers
+					//   the only diff should be that the ClientInfo includes the complete player XML
 					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
 							+"\"client_address\":\""+clientAddr+"\","
 							+"\"reconnect\": true,"
