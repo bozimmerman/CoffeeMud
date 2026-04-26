@@ -1066,13 +1066,36 @@ public class MUDProxy
 					Log.sysOut("MPCP",obj.getCheckedString("message"));
 					break;
 				case TRANSFER:
-					//TODO: 
-					break;
-				case FORWARD:
 				{
+					String payloadB64 = obj.getCheckedString("mob_xml");
+					if((payloadB64 == null) || payloadB64.isEmpty())
+					{
+						sendMPCPMsg(key, context, "FORWARD: missing payload.");
+						break;
+					}
+					if(obj.containsKey("mob_xml") && obj.getCheckedBoolean("mob_xml").booleanValue())
+					{
+						context.partialPayload.append(payloadB64);
+						break;
+					}
+					else
+					if(context.partialPayload.length()>0)
+					{
+						obj.put("mob_xml", context.partialPayload.toString() + payloadB64);
+						context.partialPayload.setLength(0);
+					}
 					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
 					if(target == null)
 						break;
+					target = getPort(target.first, target.second);
+					//TODO: make the transfer connection
+					//  ensure the context for the new connection has the sessioninfo
+					//  ensure the context for the new connection has mob_xml from this obj
+					//context.session.put("mob_xml",obj.get("mob_xml"));
+					break;
+				}
+				case FORWARD:
+				{
 					String payloadB64 = obj.getCheckedString("payload");
 					if((payloadB64 == null) || payloadB64.isEmpty())
 					{
@@ -1090,6 +1113,9 @@ public class MUDProxy
 						obj.put("payload", context.partialPayload.toString() + payloadB64);
 						context.partialPayload.setLength(0);
 					}
+					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
+					if(target == null)
+						break;
 					target = getPort(target.first, target.second);
 					final byte[] wrappedPacket = makeMPCPPacket("FORWARD " + obj.toString());
 					final PendingForward pf = new PendingForward(target, wrappedPacket);
@@ -1578,6 +1604,7 @@ public class MUDProxy
 					clientContext.distressedTime=0;
 					final JSONObject obj = new MiniJSON.JSONObject();
 					obj.putAll(serverContext.session);
+					serverContext.session.remove("mob_xml");// too big to keep
 					obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
 					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("SessionInfo "+obj.toString())));
 					if((pairedKey!=null)&&(clientContext!=null))

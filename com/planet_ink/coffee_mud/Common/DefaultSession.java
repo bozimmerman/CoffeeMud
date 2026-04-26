@@ -4128,7 +4128,7 @@ public class DefaultSession implements Session
 			doc.clear();
 			doc.put("target_host", target.first.toString());
 			doc.put("target_port", target.second.toString());
-			doc.put("payload", xml);
+			doc.put("mob_xml", xml);
 			sendInlineCommand(InProto.MPCP,"Transfer", doc.toString());
 			break;
 		}
