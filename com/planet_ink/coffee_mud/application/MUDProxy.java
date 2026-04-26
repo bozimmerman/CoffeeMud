@@ -1073,7 +1073,7 @@ public class MUDProxy
 						sendMPCPMsg(key, context, "FORWARD: missing payload.");
 						break;
 					}
-					if(obj.containsKey("mob_xml") && obj.getCheckedBoolean("mob_xml").booleanValue())
+					if(obj.containsKey("partial") && obj.getCheckedBoolean("partial").booleanValue())
 					{
 						context.partialPayload.append(payloadB64);
 						break;
@@ -1088,10 +1088,38 @@ public class MUDProxy
 					if(target == null)
 						break;
 					target = getPort(target.first, target.second);
-					//TODO: make the transfer connection
-					//  ensure the context for the new connection has the sessioninfo
-					//  ensure the context for the new connection has mob_xml from this obj
-					//context.session.put("mob_xml",obj.get("mob_xml"));
+					final SelectionKey clientKey;
+					synchronized(channelPairs)
+					{
+						clientKey = channelPairs.get(key);
+					}
+					if(clientKey == null)
+					{
+						sendMPCPMsg(key, context, "TRANSFER: no paired client found.");
+						break;
+					}
+					final MUDProxy clientContext = (MUDProxy)clientKey.attachment();
+					// Build a new server-side context for the transfer target,
+					// seeded with the current session data so handleConnect sends SessionInfo.
+					final MUDProxy transferServerContext;
+					try
+					{
+						transferServerContext = new MUDProxy(false, context.outsidePortNum, target, target.first);
+					}
+					catch(final IOException e)
+					{
+						Log.errOut("MPCP/TRANSFER", e);
+						break;
+					}
+					// Copy the existing session into the new server context, then add mob_xml.
+					transferServerContext.session.putAll(context.session);
+					transferServerContext.session.put("mob_xml", obj.get("mob_xml"));
+					// Put the client into distress mode so reconnectClient triggers the
+					// SessionInfo-with-mob_xml path in handleConnect.
+					clientContext.distressedTime = System.currentTimeMillis() - 1000;
+					reconnectClient(clientKey, clientContext, transferServerContext);
+					Log.sysOut("MPCP", "TRANSFER: redirecting "+clientContext.ipAddress
+							+" to "+target.first+":"+target.second);
 					break;
 				}
 				case FORWARD:
@@ -1594,8 +1622,6 @@ public class MUDProxy
 														serverContext.ipAddress;
 				if((clientContext!=null)&&(clientContext.distressedTime != 0))
 				{
-					//TODO: this should be re-used for transfers
-					//   the only diff should be that the ClientInfo includes the complete player XML
 					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
 							+"\"client_address\":\""+clientAddr+"\","
 							+"\"reconnect\": true,"
