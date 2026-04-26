@@ -97,6 +97,7 @@ public class MUDProxy
 		strategyMap		= new Hashtable<Integer, AtomicInteger>();
 	private static final Map<Pair<String,Integer>, Queue<PendingForward>>
 		pendingForwards = new ConcurrentHashMap<Pair<String,Integer>, Queue<PendingForward>>();
+
 	/**
 	 * Strategies for incoming connections.
 	 */
@@ -159,6 +160,7 @@ public class MUDProxy
 	private final boolean					isClient;
 	private final int						outsidePortNum;
 	private volatile long					distressedTime	= 0;
+	private final StringBuilder				partialPayload	= new StringBuilder("");
 	private final ParseStatus				readStatus		= new ParseStatus();
 	private final ParseStatus				writeStatus		= new ParseStatus();
 	private final RefilByteArrayInputStream	inputPipe		= new RefilByteArrayInputStream(new byte[0]);
@@ -172,7 +174,6 @@ public class MUDProxy
 	private final Queue<ByteBuffer>			input			= new ConcurrentLinkedQueue<ByteBuffer>(); // raw, from source
 	private final Queue<ByteBuffer>			inter			= new ConcurrentLinkedQueue<ByteBuffer>(); // ready to convert for output
 	private final Queue<ByteBuffer>			output			= new ConcurrentLinkedQueue<ByteBuffer>(); // converted for output
-
 	/**
 	 * A MUDProxy class instance represents a connection between either a user or the mud and this proxy server.
 	 *
@@ -818,33 +819,17 @@ public class MUDProxy
 	private static class PendingForward
 	{
 		final Pair<String, Integer> targetPort;
-		final byte[]				smallPayload;
-		final File					largePayload;
+		final byte[]				payload;
 		
-		PendingForward(final Pair<String,Integer> targetPort, final byte[] small, final File large)
+		PendingForward(final Pair<String,Integer> targetPort, final byte[] payload)
 		{
-			this.targetPort   = targetPort;
-			this.smallPayload = small;
-			this.largePayload = large;
+			this.targetPort = targetPort;
+			this.payload = payload;
 		}
 		
-		public byte[] readAndDiscard() throws IOException
+		public byte[] payload() throws IOException
 		{
-			if(smallPayload != null)
-				return smallPayload;
-			try(FileInputStream fis = new FileInputStream(largePayload))
-			{
-				final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				final byte[] chunk = new byte[4096];
-				int n;
-				while((n = fis.read(chunk)) != -1)
-					bos.write(chunk, 0, n);
-				return bos.toByteArray();
-			}
-			finally
-			{
-				largePayload.delete();
-			}
+			return payload;
 		}
 	}
 	
@@ -1088,35 +1073,26 @@ public class MUDProxy
 					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
 					if(target == null)
 						break;
-					target = getPort(target.first, target.second);
-					final String payloadB64 = obj.getCheckedString("payload");
+					String payloadB64 = obj.getCheckedString("payload");
 					if((payloadB64 == null) || payloadB64.isEmpty())
 					{
 						sendMPCPMsg(key, context, "FORWARD: missing payload.");
 						break;
 					}
-					final byte[] payloadBytes = java.util.Base64.getDecoder().decode(payloadB64);
-					final byte[] wrappedPacket = makeMPCPPacket("FORWARDED {"
-							+ "\"from_host\":\"" + MiniJSON.toJSONString(context.ipAddress) + "\","
-							+ "\"timestamp\":" + System.currentTimeMillis()
-							+ ",\"payload\":\"" + java.util.Base64.getEncoder().encodeToString(payloadBytes) + "\"}");
-
-					final PendingForward pf;
-					if(wrappedPacket.length > BUFFER_SIZE)
+					if(obj.containsKey("partial") && obj.getCheckedBoolean("partial").booleanValue())
 					{
-						final File tmp = File.createTempFile("mudproxy_fwd_", ".tmp");
-						try(FileOutputStream fos = new FileOutputStream(tmp))
-						{
-							fos.write(wrappedPacket);
-						}
-						pf = new PendingForward(target, null, tmp);
-						Log.sysOut("MPCP","FORWARD large packet ("+wrappedPacket.length+" bytes) spooled to "+tmp.getName());
+						context.partialPayload.append(payloadB64);
+						break;
 					}
 					else
+					if(context.partialPayload.length()>0)
 					{
-						pf = new PendingForward(target, wrappedPacket, null);
+						obj.put("payload", context.partialPayload.toString() + payloadB64);
+						context.partialPayload.setLength(0);
 					}
-
+					target = getPort(target.first, target.second);
+					final byte[] wrappedPacket = makeMPCPPacket("FORWARD " + obj.toString());
+					final PendingForward pf = new PendingForward(target, wrappedPacket);
 					Queue<PendingForward> queue = pendingForwards.get(target);
 					if (queue == null) 
 					{
@@ -2209,7 +2185,7 @@ public class MUDProxy
 					{
 						try
 						{
-							final byte[] data = pf.readAndDiscard();
+							final byte[] data = pf.payload();
 							Log.sysOut("MPCP","Delivering forward to "+pf.targetPort.first+":"+pf.targetPort.second
 									+" ("+data.length+" bytes)");
 							synchronized(fwdCtx.output)
