@@ -1363,7 +1363,7 @@ public class MUDProxy
 						status.command = 0;
 					}
 					else
-					if(status.mpcpCommand.size()>65536)
+					if(status.mpcpCommand.size()>BUFFER_SIZE)
 					{
 						status.mpcpCommand.reset();
 						status.state = ParseState.NORMAL;
@@ -1478,7 +1478,7 @@ public class MUDProxy
 		final SocketChannel clientChannel = serverChannel.accept();
 		if (clientChannel == null)
 			return;
-		clientChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
+		clientChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(BUFFER_SIZE));
 		//final MUDProxy serverContext = (MUDProxy)key.attachment();
 		final InetSocketAddress clientAddress = (InetSocketAddress) clientChannel.getRemoteAddress();
 		final String clientIp = clientAddress.getAddress().getHostAddress();
@@ -1568,7 +1568,7 @@ public class MUDProxy
 			{
 				final SelectionKey pairedKey = channelPairs.get(key);
 				final MUDProxy clientContext =(pairedKey!=null) ? ((MUDProxy)pairedKey.attachment()) : null;
-				serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(65536));
+				serverChannel.setOption(StandardSocketOptions.SO_RCVBUF, Integer.valueOf(BUFFER_SIZE));
 				MUDProxy.trackPort(true,serverContext.port.second, 1,Integer.MAX_VALUE);
 				chanWrite(serverChannel,ByteBuffer.wrap(new byte[] {
 					(byte)Session.TELNET_IAC,
