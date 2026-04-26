@@ -113,17 +113,94 @@ public class MUDProxy
 	 */
 	private static enum MPCPCommand
 	{
+		/**
+		 * SESSIONINFO (both): Sent by the mud to store basic session state on
+		 * the proxy server in case of a lost connection.  Sent by the proxy
+		 * to the mud to restore such a connection, and to complete a TRANSFER
+		 * (see below).
+		 * Parameters are mud specific, and are simply whatever the mud wants
+		 * the proxy server to know and restore to it.  The only required
+		 * argument is "mob_xml", and only when TRANSFER initiates the
+		 * sessioninfo.
+		 */
 		SESSIONINFO,
+		/**
+		 * DISCONNECT (mud->proxy): close both sides of the client connection.
+		 */
 		DISCONNECT,
-		DEBUGON,
+		/**
+		 * DEBUGON (mud->proxy): turn on per-packet debug logging to proxy.log.
+		 * Requres the control password.
+		 */
+		DEBUGON,  
+		/**
+		 * DEBUGOFF (mud->proxy): turn off per-packet debug logging.
+		 * Requres the control password.
+		 */
 		DEBUGOFF,
+		/**
+		 * LISTSESSIONS (both directions): ask for json list of all client and
+		 * server sessions known to the proxy.  Requires the control password.
+		 * Sends the LISTSESSIONS command back with json list.
+		 * Response Parameters:
+			"sessions": [ {
+			  "type": "client" or "server"
+			  "source": string ip:port
+			  "target": string ip:port
+			  "distress": boolean
+			  },...]
+		*/
 		LISTSESSIONS,
+		/**
+		 * CLIENTINFO (proxy->mud): sends connection level info to the mud that 
+		 * only the proxy knows.
+		 * Parameters:
+		 * "client_address": string the client ip address
+		 * "reconnect": boolean for when to override spam blockers on mud server
+		 */
 		CLIENTINFO,
+		/**
+		 * LIST, COMMANDS (mud->proxy): returns a message listing available
+		 * commands (this list, basically).
+		 * Response is a MESSAGE with the list.
+		 */
 		LIST,
 		COMMANDS,
+		/**
+		 * MESSAGE (both): a displayable message from one to another.
+		 * Parameters:
+		 * "message" string
+		 */
 		MESSAGE,
+		/**
+		 * FORWARD (both): Forwards an opaque base64 payload to another mud server
+		 * known to this proxy.
+		 * Parameters:
+		 * "source_host": string ip of the source server
+		 * "source_port": long port number of the source server
+		 * "target_host": string ip of the target server
+		 * "target_port": long port number of the target server
+		 * "payload": payload to send to the target server
+		 */
 		FORWARD,
+		/**
+		 * BLOCKIP (mud->proxy): Blocks all incoming connections from the given IP
+		 * address for a specified duration, or permanently if duration_ms is negtive.
+		 * Parameters:
+		 * "ip": string ip address
+		 * "duration_ms": long duration (or -1)
+		 */
 		BLOCKIP,
+		/**
+		 * TRANSFER (both): Transfer a player and their connection to another mud server
+		 * known to this proxy.
+		 * Parameters:
+		 * "source_host": string ip of the source server
+		 * "source_port": long port number of the source server
+		 * "target_host": string ip of the target server
+		 * "target_port": long port number of the target server
+		 * "mob_xml": base64 compressed xml doc of the player definition
+		 */
 		TRANSFER
 	}
 
@@ -1113,6 +1190,8 @@ public class MUDProxy
 					}
 					// Copy the existing session into the new server context, then add mob_xml.
 					transferServerContext.session.putAll(context.session);
+					transferServerContext.session.put("source_ip", context.port.first);
+					transferServerContext.session.put("source_port", context.port.second);
 					transferServerContext.session.put("mob_xml", obj.get("mob_xml"));
 					// Put the client into distress mode so reconnectClient triggers the
 					// SessionInfo-with-mob_xml path in handleConnect.
@@ -1145,6 +1224,8 @@ public class MUDProxy
 					if(target == null)
 						break;
 					target = getPort(target.first, target.second);
+					obj.put("source_ip", context.port.first);
+					obj.put("source_port", context.port.second);
 					final byte[] wrappedPacket = makeMPCPPacket("FORWARD " + obj.toString());
 					final PendingForward pf = new PendingForward(target, wrappedPacket);
 					Queue<PendingForward> queue = pendingForwards.get(target);
