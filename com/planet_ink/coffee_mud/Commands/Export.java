@@ -843,43 +843,7 @@ public class Export extends StdCommand
 					S.rawPrintln("!");
 			}
 		}
-		if(custom.size()>0)
-		{
-			final StringBuffer str=new StringBuffer("<CUSTOM>");
-			for (final Object o : custom)
-			{
-				if(o instanceof Race)
-					str.append(((Race)o).racialParms());
-				else
-				if(o instanceof CharClass)
-					str.append(((CharClass)o).classParms());
-				else
-				if(o instanceof Ability)
-					str.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
-				else
-				if(o instanceof Manufacturer)
-					str.append("<MANUFACTURER>").append(((Manufacturer)o).getXML()).append("</MANUFACTURER>");
-			}
-			str.append("</CUSTOM>");
-			xml+=str.toString();
-		}
-		if(files.size()>0)
-		{
-			final StringBuffer str=new StringBuffer("<FILES>");
-			for (final Object O : files)
-			{
-				final String filename=(String)O;
-				final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
-				if((buf!=null)&&(buf.length()>0))
-				{
-					str.append("<FILE NAME=\""+filename+"\">");
-					str.append(buf);
-					str.append("</FILE>");
-				}
-			}
-			str.append("</FILES>");
-			xml+=str.toString();
-		}
+		xml += CMLib.coffeeMaker().getExtraCustomXML(custom, files);
 		if(fileNameCode==2)
 			fileName=fileName+"/extras";
 		if(fileNameCode==4)

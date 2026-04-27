@@ -241,7 +241,7 @@ public class Import extends StdCommand
 		{"target",""+RawMaterial.RESOURCE_LEATHER},
 		{"tatamite",""+RawMaterial.RESOURCE_ADAMANTITE},
 		{"tin",""+RawMaterial.RESOURCE_TIN},
-		{"titanium",""+RawMaterial.RESOURCE_STEEL},
+		{"titanium",""+RawMaterial.RESOURCE_TITANIUM},
 		{"tobacco",""+RawMaterial.RESOURCE_PIPEWEED},
 		{"turkey",""+RawMaterial.RESOURCE_POULTRY},
 		{"turnip",""+RawMaterial.RESOURCE_GREENS},
@@ -259,7 +259,7 @@ public class Import extends StdCommand
 		{"wooden",""+RawMaterial.RESOURCE_WOOD},
 		{"wool",""+RawMaterial.RESOURCE_WOOL},
 		{"yeast",""+RawMaterial.RESOURCE_BREAD},
-		{"yew",""+RawMaterial.RESOURCE_WOOD}
+		{"yew",""+RawMaterial.RESOURCE_YEW}
 	};
 
 	protected static String getAreaName(List<String> V)
@@ -834,10 +834,11 @@ public class Import extends StdCommand
 			boolean otherStyle=true;
 			long num=0;
 			for(int z=0;z<s.length();z++)
+			{
 				if(!Character.isLetter(s.charAt(z)))
 				{
-				   otherStyle=false;
-				   break;
+					otherStyle=false;
+					break;
 				}
 				else
 				if(Character.isUpperCase(s.charAt(z)))
@@ -845,7 +846,7 @@ public class Import extends StdCommand
 				else
 				if(Character.isLowerCase(s.charAt(z)))
 					num=num|(1L<<(26+((s.charAt(z))-('a'))));
-
+			}
 			if(otherStyle)
 				return num;
 		}
@@ -975,178 +976,15 @@ public class Import extends StdCommand
 	}
 
 	protected void importCustomFiles(final MOB mob, final Map<String,String> files, final Set<String> customBother, final boolean noPrompt, final boolean noDelete)
-	throws IOException
+			throws IOException
 	{
-		if(files.size()==0)
-			return;
-		if((!noPrompt)&&((mob==null)||(mob.session()==null)))
-			return;
-		for(final Iterator<String> e=files.keySet().iterator();e.hasNext();)
-		{
-			String filename=e.next();
-			final String data=files.get(filename);
-			if(customBother.contains(filename))
-				continue;
-
-			if((!filename.startsWith("//"))&&(!filename.startsWith("::")))
-			{
-				if(!filename.startsWith("/"))
-					filename="/"+filename;
-				filename="::"+filename;
-			}
-
-			if(new CMFile(filename,mob).exists())
-			{
-				if(noDelete)
-					continue;
-				else
-				if(!noPrompt)
-					if(!mob.session().confirm(L("\n\rExternal resource '@x1' found, import (Y/n)?",filename),"Y"))
-						continue;
-			}
-			Resources.saveFileResource(filename,mob,new StringBuffer(data));
-		}
+		CMLib.coffeeMaker().importCustomFiles(noPrompt?null:mob.session(), mob, files, customBother, noDelete);
 	}
 
 	protected void importCustomObjects(final MOB mob, final List<CMObject> custom, final Set<String> customBother, final boolean noPrompt, final boolean noDelete)
-	throws IOException
+			throws IOException
 	{
-		if(custom.size()==0)
-			return;
-		if((!noPrompt)&&((mob==null)||(mob.session()==null)))
-			return;
-		for(int c=0;c<custom.size();c++)
-		{
-			if(custom.get(c) instanceof Race)
-			{
-				final Race R=(Race)custom.get(c);
-				if(customBother.contains(R.ID()))
-					continue;
-
-				final Race R2=CMClass.getRace(R.ID());
-				if(R2==null)
-				{
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Race '@x1' found, import (Y/n)?",R.ID()),"Y"))
-							continue;
-					}
-					CMClass.addRace(R);
-					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-				}
-				else
-				if(!R2.isGeneric())
-				{
-					if(noDelete)
-						continue;
-					else
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Race '@x1' found which would override your standard race.  Import this custom race anyway (Y/n)?",R.ID()),"Y"))
-							continue;
-					}
-					CMClass.addRace(R);
-					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-				}
-			}
-			else
-			if(custom.get(c) instanceof CharClass)
-			{
-				final CharClass C=(CharClass)custom.get(c);
-				if(customBother.contains(C.ID()))
-					continue;
-
-				final CharClass C2=CMClass.getCharClass(C.ID());
-				if(C2==null)
-				{
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Char Class '@x1' found, import (Y/n)?",C.ID()),"Y"))
-							continue;
-					}
-					CMClass.addCharClass(C);
-					CMLib.database().DBCreateClass(C.ID(),C.classParms());
-				}
-				else
-				if(!C2.isGeneric())
-				{
-					if(noDelete)
-						continue;
-					else
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Char Class '@x1' found which would override your standard class.  Import this custom class anyway (Y/n)?",C.ID()),"Y"))
-							continue;
-					}
-					CMClass.addCharClass(C);
-					CMLib.database().DBCreateClass(C.ID(),C.classParms());
-				}
-			}
-			else
-			if(custom.get(c) instanceof Ability)
-			{
-				final Ability A=(Ability)custom.get(c);
-				if(customBother.contains(A.ID()))
-					continue;
-
-				final Ability A2=CMClass.getAbility(A.ID());
-				if(A2==null)
-				{
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Ability '@x1' found, import (Y/n)?",A.ID()),"Y"))
-							continue;
-					}
-					CMClass.addClass(CMObjectType.ABILITY, A);
-					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
-				}
-				else
-				if(!A2.isGeneric())
-				{
-					if(noDelete)
-						continue;
-					else
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Ability '@x1' found which would override your standard Ability.  Import custom ability anyway (Y/n)?",A.ID()),"Y"))
-							continue;
-					}
-					CMClass.delClass(CMObjectType.ABILITY, A2);
-					CMClass.addClass(CMObjectType.ABILITY, A);
-					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
-				}
-			}
-			else
-			if(custom.get(c) instanceof Manufacturer)
-			{
-				final Manufacturer M=(Manufacturer)custom.get(c);
-				if(customBother.contains(M.name()))
-					continue;
-
-				final Manufacturer eM=CMLib.tech().getManufacturer(M.name());
-				if(eM==null)
-				{
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found, import (Y/n)?",M.name()),"Y"))
-							continue;
-					}
-					CMLib.tech().addManufacturer(eM);
-				}
-				else
-				{
-					if(noDelete)
-						continue;
-					else
-					if(!noPrompt)
-					{
-						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import custom manufacturer anyway (Y/n)?",M.name()),"Y"))
-							continue;
-					}
-					eM.setXML(M.getXML());
-				}
-			}
-		}
+		CMLib.coffeeMaker().importCustomObjects(noPrompt?null:mob.session(), custom, customBother, noDelete);
 	}
 
 	protected static String getSpell(String word, int i)
@@ -5570,7 +5408,7 @@ public class Import extends StdCommand
 					if(session!=null)
 						session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
 					final List<XMLTag> areaD=new ArrayList<XMLTag>();
-					String error=CMLib.coffeeMaker().fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillAreaAndCustomObjectsFromXML(buf.toString(),areaD,custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
@@ -5625,7 +5463,7 @@ public class Import extends StdCommand
 					CMStrings.dikufyLineEndings(buf);
 					if(session!=null)
 						session.println(L("Unpacking room from file: '@x1'...",areaFileName));
-					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(),custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
@@ -5701,7 +5539,7 @@ public class Import extends StdCommand
 					buf = new StringBuffer(xmlFirst.get(0).value());
 					xmlFirst.clear();
 
-					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(),custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
@@ -5792,7 +5630,7 @@ public class Import extends StdCommand
 					if(session!=null)
 						session.rawPrint(L("Unpacking mobs from file: '@x1'...",areaFileName));
 					final List<MOB> mobs=new ArrayList<MOB>();
-					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(),custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
@@ -5824,7 +5662,7 @@ public class Import extends StdCommand
 				else
 				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<CUSTOM>")>=0))
 				{
-					final String error = CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(), custom, externalFiles);
+					final String error = CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(), custom, externalFiles);
 					if(error.length()==0)
 					{
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
@@ -5852,7 +5690,7 @@ public class Import extends StdCommand
 						session.rawPrint(L("Unpacking players from file: '@x1'...",areaFileName));
 					final List<MOB> mobs=new ArrayList<MOB>();
 					final List<PlayerAccount> accounts=new ArrayList<PlayerAccount>();
-					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(),custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
@@ -5994,7 +5832,7 @@ public class Import extends StdCommand
 					if(session!=null)
 						session.rawPrint(L("Unpacking items from file: '@x1'...",areaFileName));
 					final List<Item> items=new ArrayList<Item>();
-					String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+					String error=CMLib.coffeeMaker().fillCustomObjectsFromXML(buf.toString(),custom,externalFiles);
 					if(error.length()==0)
 						importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)

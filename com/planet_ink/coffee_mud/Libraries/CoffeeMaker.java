@@ -1404,7 +1404,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String fillAreaAndCustomVectorFromXML(final String buf, final List<XMLTag> area, final List<CMObject> custom, final Map<String,String> externalFiles)
+	public String fillAreaAndCustomObjectsFromXML(final String buf, final List<XMLTag> area, final List<CMObject> custom, final Map<String,String> externalFiles)
 	{
 		final List<XMLTag> xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null)
@@ -1421,7 +1421,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String fillCustomVectorFromXML(final String xml, final List<CMObject> custom, final Map<String,String> externalFiles)
+	public String fillCustomObjectsFromXML(final String xml, final List<CMObject> custom, final Map<String,String> externalFiles)
 	{
 		final List<XMLTag> xmlv=CMLib.xml().parseAllXML(xml);
 		if(xmlv==null)
@@ -4662,53 +4662,222 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		xml.append("</PLAYERS>");
 		return xml.toString();
 	}
-
+	
 	@Override
-	public String getFullPlayerXML(final MOB mob)
+	public String getExtraCustomXML(final Set<CMObject> custom, final Set<String> files)
 	{
-		final Set<CMObject> custom=new HashSet<CMObject>();
-		final Set<String> files=new HashSet<String>();
-		final StringBuilder xml = new StringBuilder("<PLAYER>");
-		xml.append(getPlayerXML(mob, custom, files));
-		xml.append("</PLAYER>");
-		if(custom.size()>0)
+		final StringBuilder xml = new StringBuilder();
+		if((custom!=null) && (custom.size()>0))
 		{
-			final StringBuffer str=new StringBuffer("<CUSTOM>");
+			xml.append("<CUSTOM>");
 			for (final Object o : custom)
 			{
 				if(o instanceof Race)
-					str.append(((Race)o).racialParms());
+					xml.append(((Race)o).racialParms());
 				else
 				if(o instanceof CharClass)
-					str.append(((CharClass)o).classParms());
+					xml.append(((CharClass)o).classParms());
 				else
 				if(o instanceof Ability)
-					str.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
+					xml.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
 				else
 				if(o instanceof Manufacturer)
-					str.append("<MANUFACTURER>").append(((Manufacturer)o).getXML()).append("</MANUFACTURER>");
+					xml.append("<MANUFACTURER>").append(((Manufacturer)o).getXML()).append("</MANUFACTURER>");
 			}
-			str.append("</CUSTOM>");
-			xml.append(str);
+			xml.append("</CUSTOM>");
 		}
-		if(files.size()>0)
+		if((files != null) && (files.size()>0))
 		{
-			final StringBuffer str=new StringBuffer("<FILES>");
+			xml.append("<FILES>");
 			for (final Object O : files)
 			{
 				final String filename=(String)O;
 				final StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 				if((buf!=null)&&(buf.length()>0))
 				{
-					str.append("<FILE NAME=\""+filename+"\">");
-					str.append(buf);
-					str.append("</FILE>");
+					xml.append("<FILE NAME=\""+filename+"\">");
+					xml.append(buf);
+					xml.append("</FILE>");
 				}
 			}
-			str.append("</FILES>");
-			xml.append(str);
+			xml.append("</FILES>");
 		}
 		return xml.toString();
+	}
+
+	@Override
+	public void importCustomFiles(final Session promptS, final MOB fileOwnerM, final Map<String,String> files, final Set<String> customBother, final boolean noDelete)
+		throws IOException
+	{
+		if(files.size()==0)
+			return;
+		for(final Iterator<String> e=files.keySet().iterator();e.hasNext();)
+		{
+			String filename=e.next();
+			final String data=files.get(filename);
+			if(customBother.contains(filename))
+				continue;
+
+			if((!filename.startsWith("//"))&&(!filename.startsWith("::")))
+			{
+				if(!filename.startsWith("/"))
+					filename="/"+filename;
+				filename="::"+filename;
+			}
+
+			if(new CMFile(filename,fileOwnerM).exists())
+			{
+				if(noDelete)
+					continue;
+				else
+				if(promptS != null)
+				{
+					if(!promptS.confirm(L("\n\rExternal resource '@x1' found, import (Y/n)?",filename),"Y"))
+						continue;
+				}
+			}
+			Resources.saveFileResource(filename,fileOwnerM,new StringBuffer(data));
+		}
+	}
+
+	@Override
+	public void importCustomObjects(final Session promptS, final List<CMObject> custom, final Set<String> customBother, final boolean noDelete)
+		throws IOException
+	{
+		if(custom.size()==0)
+			return;
+		for(int c=0;c<custom.size();c++)
+		{
+			if(custom.get(c) instanceof Race)
+			{
+				final Race R=(Race)custom.get(c);
+				if(customBother.contains(R.ID()))
+					continue;
+
+				final Race R2=CMClass.getRace(R.ID());
+				if(R2==null)
+				{
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Race '@x1' found, import (Y/n)?",R.ID()),"Y"))
+							continue;
+					}
+					CMClass.addRace(R);
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				}
+				else
+				if(!R2.isGeneric())
+				{
+					if(noDelete)
+						continue;
+					else
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Race '@x1' found which would override your standard race.  Import this custom race anyway (Y/n)?",R.ID()),"Y"))
+							continue;
+					}
+					CMClass.addRace(R);
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				}
+			}
+			else
+			if(custom.get(c) instanceof CharClass)
+			{
+				final CharClass C=(CharClass)custom.get(c);
+				if(customBother.contains(C.ID()))
+					continue;
+
+				final CharClass C2=CMClass.getCharClass(C.ID());
+				if(C2==null)
+				{
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Char Class '@x1' found, import (Y/n)?",C.ID()),"Y"))
+							continue;
+					}
+					CMClass.addCharClass(C);
+					CMLib.database().DBCreateClass(C.ID(),C.classParms());
+				}
+				else
+				if(!C2.isGeneric())
+				{
+					if(noDelete)
+						continue;
+					else
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Char Class '@x1' found which would override your standard class.  Import this custom class anyway (Y/n)?",C.ID()),"Y"))
+							continue;
+					}
+					CMClass.addCharClass(C);
+					CMLib.database().DBCreateClass(C.ID(),C.classParms());
+				}
+			}
+			else
+			if(custom.get(c) instanceof Ability)
+			{
+				final Ability A=(Ability)custom.get(c);
+				if(customBother.contains(A.ID()))
+					continue;
+
+				final Ability A2=CMClass.getAbility(A.ID());
+				if(A2==null)
+				{
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Ability '@x1' found, import (Y/n)?",A.ID()),"Y"))
+							continue;
+					}
+					CMClass.addClass(CMObjectType.ABILITY, A);
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
+				}
+				else
+				if(!A2.isGeneric())
+				{
+					if(noDelete)
+						continue;
+					else
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Ability '@x1' found which would override your standard Ability.  Import custom ability anyway (Y/n)?",A.ID()),"Y"))
+							continue;
+					}
+					CMClass.delClass(CMObjectType.ABILITY, A2);
+					CMClass.addClass(CMObjectType.ABILITY, A);
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
+				}
+			}
+			else
+			if(custom.get(c) instanceof Manufacturer)
+			{
+				final Manufacturer M=(Manufacturer)custom.get(c);
+				if(customBother.contains(M.name()))
+					continue;
+
+				final Manufacturer eM=CMLib.tech().getManufacturer(M.name());
+				if(eM==null)
+				{
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Manufacturer '@x1' found, import (Y/n)?",M.name()),"Y"))
+							continue;
+					}
+					CMLib.tech().addManufacturer(eM);
+				}
+				else
+				{
+					if(noDelete)
+						continue;
+					else
+					if(promptS != null)
+					{
+						if(!promptS.confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import custom manufacturer anyway (Y/n)?",M.name()),"Y"))
+							continue;
+					}
+					eM.setXML(M.getXML());
+				}
+			}
+		}
 	}
 
 	@Override

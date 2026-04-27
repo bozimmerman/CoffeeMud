@@ -353,7 +353,7 @@ public interface GenericBuilder extends CMLibrary
 	 * @param externalFiles the optional list to put a map of file paths to their contents
 	 * @return "" if all went well, or an error message
 	 */
-	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
+	public String fillAreaAndCustomObjectsFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
 
 	/**
 	 * An xml helper function that merely parses the given xml document containing an AREAS tag
@@ -361,7 +361,7 @@ public interface GenericBuilder extends CMLibrary
 	 * also parse out any custom objects and external files contained therein into the custom
 	 * and externalFiles object given.
 	 *
-	 * @see GenericBuilder#fillAreaAndCustomVectorFromXML(String, List, List, Map)
+	 * @see GenericBuilder#fillAreaAndCustomObjectsFromXML(String, List, List, Map)
 	 *
 	 * @param buf the xml document containing AREAS tag
 	 * @param areas the list to put AREA tag contents into
@@ -376,13 +376,16 @@ public interface GenericBuilder extends CMLibrary
 	 * external files and scripts, this method will recreate the appropriate objects to
 	 * populate into the custom list, and separate file paths from their string contents
 	 * into the externalFiles map.
+	 * 
+	 * @see GenericBuilder#getExtraCustomXML(Set, Set)
+	 * @see GenericBuilder#fillAreaAndCustomObjectsFromXML(String, List, List, Map)
 	 *
 	 * @param xml the xml document containing the CUSTOM tag
 	 * @param custom required list to put genraces and classes into
 	 * @param externalFiles null, or optional map to put filepaths, file contents into
 	 * @return "" or an error message
 	 */
-	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
+	public String fillCustomObjectsFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
 
 	/**
 	 * Given a string xml document, and an environmental to unpack the xml properties
@@ -784,19 +787,6 @@ public interface GenericBuilder extends CMLibrary
 	 * @return the xml document of the character
 	 */
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
-	
-
-	/**
-	 * Give a player/character mob, this will return an xml document of the mob object,
-	 * as well as any items, etc contained therein.  Dependency custom objects and
-	 * script file paths are also included in the xml.
-	 *
-	 * @see GenericBuilder#addPlayersAndAccountsFromXML(String, List, List, Session)
-	 *
-	 * @param mob the player/character mob to get the xml of
-	 * @return the xml document of the character
-	 */
-	public String getFullPlayerXML(final MOB mob);
 
 	/**
 	 * Given a player account, this will return an XML document of the account objects, as
@@ -812,6 +802,56 @@ public interface GenericBuilder extends CMLibrary
 	 */
 	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
 
+	/**
+	 * Given pre-generated custom objects and files, this will return xml suitable for
+	 * transmission.
+	 * 
+	 * @see GenericBuilder#fillCustomObjectsFromXML(String, List, Map)
+	 * @see GenericBuilder#importCustomFiles(Session, MOB, Map, Set, boolean)
+	 * @see GenericBuilder#importCustomObjects(Session, List, Set, boolean)
+	 * 
+	 * @param custom set in which to find custom classes, races
+	 * @param files set in which to find script paths
+	 * @return the xml document for the above
+	 */
+	public String getExtraCustomXML(final Set<CMObject> custom, final Set<String> files);
+
+	/**
+	 * Permanently imports a set of exported custom files, with support for user
+	 * prompting on duplicates.
+	 * 
+	 * @see GenericBuilder#getExtraCustomXML(Set, Set)
+	 * @see GenericBuilder#fillCustomObjectsFromXML(String, List, Map)
+	 * @see GenericBuilder#importCustomObjects(Session, List, Set, boolean)
+	 * 
+	 * @param promptS null for no prompting, or mob session for prompting
+	 * @param fileOwnerM null or owner of files created
+	 * @param files the set of files and their data
+	 * @param customBother set of files from the files list to SKIP
+	 * @param noDelete true to never overwrite, false to allow overwriting
+	 * @throws IOException any errors
+	 */
+	public void importCustomFiles(final Session promptS, final MOB fileOwnerM, final Map<String,String> files, final Set<String> customBother, final boolean noDelete)
+			throws IOException;
+	
+	
+	/**
+	 * Permanently imports a set of exported custom objects, with support for user
+	 * prompting on duplicates.  This includes classes, races, manufacturers, etc.
+	 * 
+	 * @see GenericBuilder#getExtraCustomXML(Set, Set)
+	 * @see GenericBuilder#fillCustomObjectsFromXML(String, List, Map)
+	 * @see GenericBuilder#importCustomFiles(Session, MOB, Map, Set, boolean)
+	 * 
+	 * @param promptS null for no prompting, or mob session for prompting
+	 * @param custom the set of classes, races, etc
+	 * @param customBother set of files from the files list to SKIP
+	 * @param noDelete true to never overwrite, false to allow overwriting
+	 * @throws IOException any errors
+	 */
+	public void importCustomObjects(final Session promptS, final List<CMObject> custom, final Set<String> customBother, final boolean noDelete)
+		throws IOException;
+		
 	/**
 	 * Creates player account objects and player character MOB objects from the
 	 * given XML document.  If a Session is sent, then any confirmations or

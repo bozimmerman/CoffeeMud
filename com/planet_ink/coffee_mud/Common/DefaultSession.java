@@ -4124,7 +4124,14 @@ public class DefaultSession implements Session
 			final Pair<?,?> target = (obj instanceof Pair<?,?>) ? (Pair<?,?>)obj : null;
 			if(target == null)
 				break;
-			final String xml = B64Encoder.B64encodeAndCompressString(CMLib.coffeeMaker().getFullPlayerXML(mob));
+			final Set<CMObject> custom=new HashSet<CMObject>();
+			final Set<String> files=new HashSet<String>();
+			StringBuilder rawXml = new StringBuilder("<PLAYER>");
+			rawXml.append(CMLib.coffeeMaker().getPlayerXML(mob, custom, files));
+			rawXml.append("</PLAYER>");
+			rawXml.append(CMLib.coffeeMaker().getExtraCustomXML(custom, files));
+			final String xml = B64Encoder.B64encodeAndCompressString(rawXml.toString());
+			rawXml = null;
 			for(int i=0;i<xml.length();i+=32768)
 			{
 				doc.clear();
