@@ -4125,11 +4125,20 @@ public class DefaultSession implements Session
 			if(target == null)
 				break;
 			final String xml = B64Encoder.B64encodeAndCompressString(CMLib.coffeeMaker().getFullPlayerXML(mob));
-			doc.clear();
-			doc.put("target_host", target.first.toString());
-			doc.put("target_port", target.second.toString());
-			doc.put("mob_xml", xml);
-			sendInlineCommand(InProto.MPCP,"Transfer", doc.toString());
+			for(int i=0;i<xml.length();i+=32768)
+			{
+				doc.clear();
+				doc.put("target_host", target.first.toString());
+				doc.put("target_port", target.second.toString());
+				if(i+32768<xml.length())
+				{
+					doc.put("mob_xml", xml.substring(i,i+32768));
+					doc.put("partial", Boolean.TRUE);
+				}
+				else
+					doc.put("mob_xml", xml.substring(i));
+				sendInlineCommand(InProto.MPCP,"Transfer", doc.toString());
+			}
 			break;
 		}
 	}
