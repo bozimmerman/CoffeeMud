@@ -579,7 +579,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 				}
 				final StdThinInstance parentA=(StdThinInstance)A;
 				final List<AreaInstanceChild> resetThese = new LinkedList<AreaInstanceChild>();
-				synchronized(instanceChildren)
+				synchronized(parentA.instanceChildren)
 				{
 					for(int i=0;i<parentA.instanceChildren.size();i++)
 					{
