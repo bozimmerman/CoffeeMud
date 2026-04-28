@@ -699,10 +699,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					parms = parms.substring(0,parms.length()-1);
 				build.setMask(parms);
 				if(depth != 0)
-					error = "Malformed component line (code 1/3 - message depth): " + parms;
+					error = "Malformed component line (code 1/3 - message depth): " + parms+", ID="+id;
 				else
 				if(parm.size()==0)
-					error = "Malformed component line (code 1/2 - premature message): " + parms;
+					error = "Malformed component line (code 1/2 - premature message): " + parms+", ID="+id;
 				else
 					parm.add(build);
 				break;
@@ -710,7 +710,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 			if (!parms.startsWith("("))
 			{
-				error = "Malformed component line (code 1): " + parms;
+				error = "Malformed component line (code 1): " + parms+", ID="+id;
 				break;
 			}
 
@@ -729,17 +729,18 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 			if (x == parms.length())
 			{
-				error = "Malformed component line (code 2): " + parms;
+				error = "Malformed component line (code 2): " + parms+", ID="+id;
 				break;
 			}
 			parmS=parms.substring(1,x).trim();
+			final String ogParmS = parmS;
 			parms=parms.substring(x+1).trim();
 
 			build.setLocation(CompLocation.INVENTORY);
 			x=parmS.indexOf(':');
 			if(x<0)
 			{
-				error="Malformed component line (code 0-1): "+parmS;
+				error="Malformed component line (code 0-1): "+parmS+" ("+ogParmS+"), ID="+id;
 				continue;
 			}
 			final String typeStr=parmS.substring(0,x).toUpperCase().trim();
@@ -749,7 +750,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				if(x>0)
 				{
-					error="Malformed component line (code 0-2): "+parmS;
+					error="Malformed component line (code 0-2): "+parmS+" ("+ogParmS+"), ID="+id;
 					continue;
 				}
 			}
@@ -760,7 +761,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			x=parmS.indexOf(':');
 			if (x < 0)
 			{
-				error = "Malformed component line (code 1-1): " + parmS;
+				error = "Malformed component line (code 1-1): " + parmS+" ("+ogParmS+"), ID="+id;
 				continue;
 			}
 			if(build.getLocation() != CompLocation.TRIGGER)
@@ -770,7 +771,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				else
 				if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
 				{
-					error="Malformed component line (code 1-2): "+parmS;
+					error="Malformed component line (code 1-2): "+parmS+" ("+ogParmS+"), ID="+id;
 					continue;
 				}
 				parmS=parmS.substring(x+1);
@@ -779,12 +780,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				x=parmS.indexOf(':');
 				if (x < 0)
 				{
-					error = "Malformed component line (code 2-1): " + parmS;
+					error = "Malformed component line (code 2-1): " + parmS+" ("+ogParmS+"), ID="+id;
 					continue;
 				}
 				if((x>0)&&(!CMath.isInteger(parmS.substring(0,x))))
 				{
-					error="Malformed component line (code 2-2): "+parmS;
+					error="Malformed component line (code 2-2): "+parmS+" ("+ogParmS+"), ID="+id;
 					continue;
 				}
 				if(x>0)
@@ -795,7 +796,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				x=parmS.indexOf(':');
 				if (x <= 0)
 				{
-					error = "Malformed component line (code 3-1): " + parmS;
+					error = "Malformed component line (code 3-1): " + parmS + " ("+ogParmS+"), ID="+id;
 					continue;
 				}
 				rsc=parmS.substring(0,x);
