@@ -213,6 +213,14 @@ public class Lecturing extends CommonSkill
 									studentsWhoImproved++;
 								A.setProficiency(A.proficiency() + amt);
 								studentM.tell(L("You learned @x1% more about @x2 from @x3!",""+amt,lectureName,mob.Name()));
+								if((A.proficiency() >= maxProficiency)
+								&&(studentM.isPlayer()))
+								{
+									final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PROFICIENT, mob);
+									for (int i = 0; i < channels.size(); i++)
+										CMLib.commands().postChannel(channels.get(i), studentM.clans(), L("@x1 is now proficient at @x2.", studentM.name(), A.Name()), true,studentM);
+									CMLib.achievements().possiblyBumpAchievement(studentM, AchievementLibrary.Event.SKILLPROF, 1, A);
+								}
 							}
 						}
 						else
