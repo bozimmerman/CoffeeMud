@@ -167,7 +167,9 @@ public class MUDProxy
 		LIST,
 		COMMANDS,
 		/**
-		 * MESSAGE (both): a displayable message from one to another.
+		 * MESSAGE (both): a displayable message from either the proxy to 
+		 * a server, or as a broadcast from a server to all clients on the 
+		 * proxy server.  This last requires authentication.
 		 * Parameters:
 		 * "message" string
 		 */
@@ -1138,11 +1140,47 @@ public class MUDProxy
 						cmds.setLength(cmds.length()-2);
 					sendMPCPMsg(key,context,cmds.toString());
 					break;
-				case MESSAGE:
-					//TODO: What's this even for?
-					Log.sysOut("MPCP",obj.getCheckedString("message"));
+			case MESSAGE:
+			{
+				if(!authorized)
+				{
+					sendMPCPMsg(key,context,"Not authorized.");
 					break;
-				case TRANSFER:
+				}
+				final String message = obj.getCheckedString("message");
+				Log.sysOut("MPCP", "Broadcasting message to all clients: " + message);
+				final byte[] messageBytes = (message + "\n\r").getBytes(StandardCharsets.UTF_8);
+				final List<SelectionKey> clientKeys = new ArrayList<SelectionKey>();
+				synchronized(channelPairs)
+				{
+					for(final SelectionKey k : channelPairs.keySet())
+					{
+						final MUDProxy proxy = (MUDProxy)k.attachment();
+						if((proxy != null)
+						&& proxy.isClient 
+						&&(proxy.outsidePortNum>0))
+							clientKeys.add(k);
+					}
+				}
+				for(final SelectionKey k : clientKeys)
+				{
+					final MUDProxy proxy = (MUDProxy)k.attachment();
+					synchronized(proxy.output)
+					{
+						proxy.inter.add(ByteBuffer.wrap(messageBytes));
+					}
+					try
+					{
+						handleWrite(k);
+					}
+					catch(final Exception e)
+					{
+						Log.errOut("Error broadcasting to client " + proxy.ipAddress, e);
+					}
+				}
+				break;
+			}
+			case TRANSFER:
 				{
 					String payloadB64 = obj.getCheckedString("mob_xml");
 					if((payloadB64 == null) || payloadB64.isEmpty())
