@@ -1805,7 +1805,7 @@ public class StdAbility implements Ability
 			overrideCache.put(ID(), usageCost);
 		return usageCost;
 	}
-
+	
 	@Override
 	public void helpProficiency(final MOB mob, final int adjustment)
 	{

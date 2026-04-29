@@ -114,6 +114,13 @@ public class ProxyCtl extends StdCommand
 			final String command = commands.get(1);
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("password", password);
+			obj.putAll(CMParms.parseEQParms(CMParms.combine(commands,2)));
+			for(final String key : obj.keySet())
+				if(CMStrings.isUpperCase(key))
+				{
+					obj.put(key.toLowerCase(),obj.get(key));
+					obj.remove(key);
+				}
 			mob.session().sendInlineCommand(InProto.MPCP,command, obj.toString());
 		}
 		return false;

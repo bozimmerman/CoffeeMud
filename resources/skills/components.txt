@@ -36,3 +36,15 @@ Thief_Runecasting=(have:kept:1:RUNE TILE:)||(have:kept:1:RUNE STONE:)||(have:kep
 THIEF_TAROTREADING=(have:kept:1:tarot cards:) "a deck of tarot cards"
 THIEF_TASSEOGRAPHY=(have:consumed:1:coffee:) "some coffee"
 THIEF_FORTUNETELLING=(have:kept:1:crystal ball:) "a crystal ball"
+
+
+SPELL_TIMEPORT=(held:consumed:1:SAND:)"a pound of sand held"
+SPELL_POLYMORPHOBJECT=(held:kept:0::)&&(onground:kept:0::)&&(held:consumed:1:A SMALL ROUND CUT OPAL:)"a small round cut opal held"
+SPELL_PASSDOOR=(held:consumed:1:a clay wand:)"a clay wand held"
+SPELL_MARKERSUMMONING=(held:consumed:1:a string of clay beads:)"a string of clay beads held"
+SPELL_SUMMON=(held:consumed:1::)&&(onground:consumed:1::)&&(held:consumed:1:A STRING OF CLAY BEADS:)&&(onground:consumed:1:A SMALL ROUND CUT SAPPHIRE:)"a string of clay beads held and a small round cut sapphire on the ground"
+SPELL_SUMMONENEMY=(onground:consumed:1:BLOOD:)&&(onground:consumed:1:NOTHING:)&&(inventory:consumed:1:A STRING OF CLAY BEADS:)"a string of clay beads held and some blood on the ground"
+SPELL_CONTINUALLIGHT=(held:consumed:1:a copper ornament:)"a copper ornament held"
+SPELL_POLYMORPH=(held:consumed:1:a small round cut moonstone:)&&(onground:consumed:1:BLOOD:)"a small round cut moonstone held and a pound of blood on the ground"
+SPELL_HOLD=(held:consumed:1:A ROPE:)"a rope held"
+
