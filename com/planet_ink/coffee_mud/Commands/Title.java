@@ -60,7 +60,7 @@ public class Title extends StdCommand
 			return false;
 		}
 		final PlayerStats ps = mob.playerStats();
-		final StringBuffer menu = new StringBuffer("^xTitles:^.^?\n\r");
+		final StringBuffer menu = new StringBuffer("^x###: Title                 ^.^?\n\r");
 		if(CMLib.awards().evaluateAutoTitles(mob))
 			CMLib.database().DBUpdatePlayerPlayerStats(mob);
 		if (!ps.getTitles().contains("*"))
@@ -81,7 +81,7 @@ public class Title extends StdCommand
 				menu.append("^H");
 			}
 			if(i==0)
-				menu.append("**: ");
+				menu.append("** : ");
 			else
 				menu.append(CMStrings.padRight("" + (i + 1), 3)).append(": ");
 			if(ps.getTitleRandom(ogTitle, null))
@@ -100,7 +100,7 @@ public class Title extends StdCommand
 			{
 				mob.tell(menu.toString());
 				if (mob.session() != null)
-					mob.session().promptPrint(L("Enter a selection, or toggle R)andom: "));
+					mob.session().promptPrint(L("^HEnter a selection #, or toggle R)andom^N: "));
 			}
 
 			@Override
