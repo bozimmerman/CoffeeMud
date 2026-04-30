@@ -20,6 +20,7 @@
 18. WILLQUALIFY can now list skills/expertises across all classes.  See HELP.
 19. Many Scriptable triggers now support Zappermasks for fine-tuned filtering.  See Scriptable guide. 
 20. MUDProxy will now take over connection-blocking duties at the request of a mud server.
+21. New CONFIG flag: LFG, which does nothing but flag the character in the WHO command ATM.
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
   2. New Save vs Polymorph saving throw, also applies to petrification

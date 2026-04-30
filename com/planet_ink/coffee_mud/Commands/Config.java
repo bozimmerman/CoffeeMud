@@ -423,6 +423,8 @@ public class Config extends StdCommand
 					break;
 				case SYSOPMSGS:
 					break;
+				case LFG:
+					break;
 				case TELNET_GA:
 					if(mob.session() != null)
 					{

@@ -1086,6 +1086,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		NOSPAM(false),//30
 		AUTOATTACK(true),//31
 		ANSI256ONLY(false,"256 COLOR ONLY"), //32
+		LFG(false), //33
 		;
 		private final long bitCode;
 		private final boolean autoReverse;

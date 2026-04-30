@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -131,6 +132,8 @@ public class Who extends StdCommand
 		msg.append("^x[").append(CMStrings.padRight(L("Name"),colWidths[headCol])).append("]^.^N ");
 		msg.append(CMStrings.limit(name,datWidth));
 		msg.append("\n\r");
+		if(who.isAttributeSet(Attrib.LFG))
+			msg.append(L("\n\r^g* Looking for Group^?\n\r"));
 		return msg;
 	}
 
@@ -165,7 +168,10 @@ public class Who extends StdCommand
 				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
 		final String name=getWhoName(who, viewerM);
-		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
+		final int namelen = who.isAttributeSet(Attrib.LFG)?colWidths[3]-5:colWidths[3];
+		msg.append("] "+CMStrings.padRight(name,namelen));
+		if(who.isAttributeSet(Attrib.LFG))
+			msg.append(L("^g[LFG]^?"));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -395,7 +401,10 @@ public class Who extends StdCommand
 					final String accountName = (pStats2 != null) && (pStats2.getAccount() != null) ? pStats2.getAccount().getAccountName() : "?!?";
 					msg.append("["+CMStrings.padRight(accountName,colWidths[0]));
 					final String name=getPlainWhoName(mob2);
-					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
+					final int namelen = mob2.isAttributeSet(Attrib.LFG)?colWidths[1]-5:colWidths[1];
+					msg.append("] "+CMStrings.padRight(name,namelen));
+					if(mob2.isAttributeSet(Attrib.LFG))
+						msg.append("^g[LFG]^?");
 					msg.append("\n\r");
 				}
 				//msg.append("^x["+CMStrings.padRight(L("Total Characters"),colWidths[0])+"]^.^N "+mobs.size()+"\n\r"));
