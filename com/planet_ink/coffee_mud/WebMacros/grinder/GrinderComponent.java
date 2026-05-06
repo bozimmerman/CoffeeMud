@@ -66,6 +66,8 @@ public class GrinderComponent
 				final String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
 				if(!conn.equalsIgnoreCase("DELETE"))
 				{
+					if((amt == null) || (amt.trim().length()==0))
+						return "Missing amount for "+fixedCompID;
 					final AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
 					if(posDex==1)
 						able.setConnector(CompConnector.AND);
@@ -81,7 +83,15 @@ public class GrinderComponent
 						able.setMask(mask);
 						able.setTriggererDef(CMStrings.deleteCRLFTAB(ritual==null?"":ritual));
 						if(CMath.s_valueOf(CompType.class, type)!=null)
-							able.setType(CompType.valueOf(type), str,stype);
+						{
+							final CompType typ = CompType.valueOf(type);
+							if((typ == CompType.STRING)
+							&&((str==null)||(str.trim().length()==0)))
+								return "Missing item string for "+fixedCompID;
+							able.setType(typ, str,stype);
+						}
+						else
+							return "Bad type: "+type;
 					}
 					set.add(able);
 				}
