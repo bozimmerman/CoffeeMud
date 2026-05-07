@@ -167,6 +167,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return "_data-tag";
 	}
 
+
+	@Override
+	public void propertiesLoaded()
+	{
+		this.llmModels.clear();
+		llmClassLoader = null;
+	}
+
 	protected boolean containsMcpStarTag(final Map<String,String> keyValuePairs)
 	{
 		for(final String k : keyValuePairs.keySet())
