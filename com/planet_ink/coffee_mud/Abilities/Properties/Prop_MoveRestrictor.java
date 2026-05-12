@@ -234,9 +234,9 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 				if(CMLib.dice().rollPercentage()<chance)
 				{
 					if(publicMsg)
-						R.show(msg.source(), msg.source().riding(), CMMsg.MSG_OK_ACTION, message);
+						R.show(msg.source(), msg.source().riding(), affected, CMMsg.MSG_OK_ACTION, message);
 					else
-						msg.source().tell(message);
+						msg.source().tell(msg.source(), msg.source().riding(), affected, message);
 					if(dismount)
 					{
 						if(affected instanceof Rideable)
