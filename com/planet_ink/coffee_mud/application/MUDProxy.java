@@ -353,6 +353,16 @@ public class MUDProxy
 			finally
 			{
 				myCtx.isProcessing.set(false);
+				k.interestOps(k.interestOps() | SelectionKey.OP_READ);
+				selector.wakeup();
+				if(!myCtx.pendingInputs.isEmpty() || eof)
+				{
+					if(!myCtx.isProcessing.getAndSet(true))
+					{
+						k.interestOps(k.interestOps() & ~SelectionKey.OP_READ);
+						MUD.serviceEngine.executeRunnable(new ReadProcessor(myCtx, k, destCtx, destK, eof));
+					}
+				}
 			}
 		}
 	}
@@ -1911,7 +1921,10 @@ public class MUDProxy
 			if((context.pendingInputs.size() > 0)|| eof)
 			{
 				if(!context.isProcessing.getAndSet(true))
+				{
+					key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
 					MUD.serviceEngine.executeRunnable(new ReadProcessor(context, key, destContext, destKey, eof));
+				}
 			}
 		}
 		catch(final IOException e)
