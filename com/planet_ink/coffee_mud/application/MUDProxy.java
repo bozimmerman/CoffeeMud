@@ -352,16 +352,23 @@ public class MUDProxy
 			}
 			finally
 			{
-				myCtx.isProcessing.set(false);
-				k.interestOps(k.interestOps() | SelectionKey.OP_READ);
-				selector.wakeup();
-				if(!myCtx.pendingInputs.isEmpty() || eof)
+				try
 				{
-					if(!myCtx.isProcessing.getAndSet(true))
+					myCtx.isProcessing.set(false);
+					k.interestOps(k.interestOps() | SelectionKey.OP_READ);
+					selector.wakeup();
+					if(!myCtx.pendingInputs.isEmpty() || eof)
 					{
-						k.interestOps(k.interestOps() & ~SelectionKey.OP_READ);
-						MUD.serviceEngine.executeRunnable(new ReadProcessor(myCtx, k, destCtx, destK, eof));
+						if(!myCtx.isProcessing.getAndSet(true))
+						{
+							k.interestOps(k.interestOps() & ~SelectionKey.OP_READ);
+							MUD.serviceEngine.executeRunnable(new ReadProcessor(myCtx, k, destCtx, destK, eof));
+						}
 					}
+				}
+				catch (final java.nio.channels.CancelledKeyException e)
+				{
+					closeKey(k);
 				}
 			}
 		}
