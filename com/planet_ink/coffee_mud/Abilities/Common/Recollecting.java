@@ -164,7 +164,7 @@ public class Recollecting extends CommonSkill
 										if(foundI.container()!=null)
 											founds.add(L("on page @x1 of @x2 in @x3",""+(i+1),foundI.name(mob),foundI.ultimateContainer(null).name(mob)));
 										else
-											founds.add(L("on page @x1 or @x2",""+(i+1),foundI.name(mob)));
+											founds.add(L("on page @x1 of @x2",""+(i+1),foundI.name(mob)));
 									}
 								}
 							}
