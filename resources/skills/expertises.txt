@@ -402,7 +402,7 @@ HELP_=<EXPERTISE>The ability to perform traveling skills at a higher power level
 EXTENDEDTRAVEL@x1=Extended Traveling @x2,10,TIME,-SKILLFLAG +TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use traveling skills that last even longer.
 
-SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Boatwright +Shipwright +Landscaping +Excavation +Irrigation +Welding +ShipBuilding,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,2,0,0,0
+SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Boatwright +Shipwright +ClanShipwrighting +Landscaping +Excavation +Irrigation +Welding +ShipBuilding,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
 FORTBAKE@x1=Fortified Baking @x2,10,X4,-SKILL +Baking +MasterBaking,-MAXCLASSLEVEL +>={10+(7*@x1)},+CON {8+@x1},0,1,0,0,0
