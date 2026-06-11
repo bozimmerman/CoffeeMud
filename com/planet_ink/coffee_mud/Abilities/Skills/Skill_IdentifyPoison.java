@@ -108,7 +108,8 @@ public class Skill_IdentifyPoison extends StdSkill
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),
+					auto?"":L("^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +118,13 @@ public class Skill_IdentifyPoison extends StdSkill
 					buf.append(L("weak impurities, "));
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
-					buf.append(offensiveAffects.get(i).name()+", ");
+				{
+					final Ability A = offensiveAffects.get(i);
+					buf.append(A.name());
+					if(A.abilityCode()>1)
+						buf.append(L(" (Rank @x1)",CMath.convertToRoman(A.abilityCode())));
+					buf.append(", ");
+				}
 				mob.tell(buf.toString().substring(0,buf.length()-2));
 			}
 		}

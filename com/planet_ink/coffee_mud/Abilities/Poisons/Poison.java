@@ -76,6 +76,12 @@ public class Poison extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public int abilityCode()
+	{
+		return (int)Math.round(rank);
+	}
+
+	@Override
 	public boolean putInCommandlist()
 	{
 		return false;
