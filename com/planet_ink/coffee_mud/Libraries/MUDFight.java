@@ -1362,13 +1362,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((form[i]!=null)
 			&&(form[i].contains(mob)))
 			{
-				i--;
-				while(i>=0)
+				int j=i-1;
+				while(j>=0)
 				{
-					if((form[i]!=null)
-					&&(form[i].size()>0))
-						return form[i];
-					i--;
+					if((form[j]!=null)
+					&&(form[j].size()>0))
+						return form[j];
+					j--;
 				}
 			}
 		}
