@@ -3196,7 +3196,7 @@ public class DefaultSession implements Session
 				logoutFinal();
 			}
 			else
-			if(callBack!=null)
+			if((callBack!=null)&&(status.ordinal()<SessionStatus.LOGOUT.ordinal()))
 			{
 				try
 				{
