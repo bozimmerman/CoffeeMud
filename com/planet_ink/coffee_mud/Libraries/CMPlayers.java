@@ -1536,6 +1536,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						else
 						{
 							addPlayer(deadMOB);
+							if(deadMOB.playerStats()!=null)
+							{
+								final PlayerAccount A=deadMOB.playerStats().getAccount();
+								if(A!=null)
+									A.addNewPlayer(deadMOB);
+							}
 							// your session is still gone, but at least you are not
 							return;
 						}
