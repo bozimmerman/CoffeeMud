@@ -642,7 +642,8 @@ public class StdItem implements Item
 			&&((((MOB)affected).charStats().getBodyPart(Race.BODY_MOUTH)<2)
 				||((MOB)affected).freeWearPositions(WORN_MOUTH, (short)0,(short)0)==0))
 			{
-				if(!(this instanceof Light))
+				if((!(this instanceof Light))
+				&&((!(this instanceof Armor))||(((Armor)this).getClothingLayer()>-10)))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 				if((this instanceof Armor)&&(!CMath.bset(((Armor)this).getClothingLayer(),Armor.LAYERMASK_SEETHROUGH)))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
