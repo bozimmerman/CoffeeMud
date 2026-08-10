@@ -241,7 +241,23 @@ public class Shell extends StdCommand
 		final String pwd=(pwds.containsFirst(mob))?(String)pwds.get(pwds.indexOfFirst(mob)).second:"";
 		if((args.length>0)&&(args[0].equals(".")))
 			return pwd;
-		return null;
+		else
+		{
+			final Session S = mob.session();
+			try
+			{
+				final Session fakeS=(Session)CMClass.getCommon("FakeSession");
+				fakeS.initialize(null,"MEMORY");
+				fakeS.setStat("FAKE", "false");
+				mob.setSession(fakeS);
+				this.execute(mob, new XVector<String>(CMParms.toStringArray(args)),metaFlags);
+				return fakeS.getAfkMessage();
+			}
+			finally
+			{
+				mob.setSession(S);
+			}
+		}
 	}
 
 	public boolean redirect(final MOB mob, final String pwd, 
