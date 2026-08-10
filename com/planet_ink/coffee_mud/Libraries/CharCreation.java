@@ -4811,7 +4811,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(((curStat>=maxStat)&&(!quiet))
 		||(val == null))
 		{
-			mob.tell(L("You cannot train that any further."));
+			final String statName=CMStrings.capitalizeAndLower(CharStats.CODES.DESC(abilityCode));
+			if(val == null)
+				mob.tell(L("You cannot train your @x1 any further.", statName));
+			else
+			{
+				mob.tell(L("You cannot train your @x1 any further (@x2/@x3).",
+						statName,""+curStat,""+maxStat));
+			}
 			return null;
 		}
 		return val;
