@@ -120,6 +120,36 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final RecipesBook R)
+	{
+		if((I==null)||(R==null))
+			return false;
+		if(!(this instanceof ItemCraftor))
+			return false;
+		final ItemCraftor C=(ItemCraftor)this;
+		if(!C.supportsDeconstruction())
+			return false;
+		final long oldWearMap = I.rawProperLocationBitmap();
+		if((oldWearMap & Wearable.WORN_FLOATING_NEARBY) == 0)
+			return super.deconstructRecipeInto(mob, I, R);
+		final String oldName = I.Name();
+		final String newName = CMLib.english().startWithAorAn(L(
+			"inert @x1",CMLib.english().removeArticleLead(oldName)
+		));
+		try
+		{
+			I.setName(newName);
+			I.setRawProperLocationBitmap(oldWearMap & ~Wearable.WORN_FLOATING_NEARBY);
+			return super.deconstructRecipeInto(mob, I, R);
+		}
+		finally
+		{
+			I.setRawProperLocationBitmap(oldWearMap);
+			I.setName(oldName);
+		}
+	}
+	
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
