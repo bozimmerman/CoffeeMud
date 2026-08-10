@@ -1298,7 +1298,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon, Sie
 	@Override
 	public int ammunitionCapacity()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MOAMMOFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MOAMMOFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MOAMMOFLAG)
 			return (phyStats().armor()&Weapon.MASK_MOAMMOBITS) >> Weapon.MASK_MOAMMOSHFT;
 		return ammoCapacity;
 	}

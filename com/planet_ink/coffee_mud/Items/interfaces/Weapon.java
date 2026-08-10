@@ -201,6 +201,8 @@ public interface Weapon extends Item
 	public final static int MASK_MOAMMOBITS = 0x007f0000;
 	/** One of the Weapon "armor" mask bits: zero-out more ammo */
 	public final static int MASK_MOAMMOZERO = 0xff00ffff;
+	/** One of the Weapon "armor" mask bits: is invalid mask */
+	public final static int MASK_NOMASK = 0x80000000;
 	/** One of the Weapon "armor" mask bits: more ammo left-shift */
 	public final static int MASK_MOAMMOSHFT = 16;
 

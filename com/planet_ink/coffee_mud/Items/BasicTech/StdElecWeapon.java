@@ -509,7 +509,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	@Override
 	public int minRange()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MINRANGEFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MINRANGEFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MINRANGEFLAG)
 			return (phyStats().armor()&Weapon.MASK_MINRANGEBITS)>>Weapon.MASK_MINRANGESHFT;
 		return minRange;
 	}
@@ -517,7 +517,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	@Override
 	public int maxRange()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MAXRANGEFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MAXRANGEFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MAXRANGEFLAG)
 			return (phyStats().armor()&Weapon.MASK_MAXRANGEBITS)>>Weapon.MASK_MAXRANGESHFT;
 		return maxRange;
 	}

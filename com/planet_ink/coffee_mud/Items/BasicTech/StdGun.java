@@ -344,7 +344,7 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 	@Override
 	public int minRange()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MINRANGEFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MINRANGEFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MINRANGEFLAG)
 			return (phyStats().armor()&Weapon.MASK_MINRANGEBITS)>>Weapon.MASK_MINRANGESHFT;
 		return minRange;
 	}
@@ -352,7 +352,7 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 	@Override
 	public int maxRange()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MAXRANGEFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MAXRANGEFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MAXRANGEFLAG)
 			return (phyStats().armor()&Weapon.MASK_MAXRANGEBITS)>>Weapon.MASK_MAXRANGESHFT;
 		return maxRange;
 	}
@@ -433,7 +433,7 @@ public class StdGun extends StdTechItem implements Weapon, AmmunitionWeapon
 	@Override
 	public int ammunitionCapacity()
 	{
-		if(CMath.bset(phyStats().armor(),Weapon.MASK_MOAMMOFLAG))
+		if((phyStats().armor()&(Weapon.MASK_MOAMMOFLAG|Weapon.MASK_NOMASK))==Weapon.MASK_MOAMMOFLAG)
 			return (phyStats().armor()&Weapon.MASK_MOAMMOBITS) >> Weapon.MASK_MOAMMOSHFT;
 		return ammoCapacity;
 	}
