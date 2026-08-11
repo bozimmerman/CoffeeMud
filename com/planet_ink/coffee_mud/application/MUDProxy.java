@@ -1876,6 +1876,11 @@ public class MUDProxy
 					}
 				});
 			}
+			else
+			{
+				key.cancel();
+				closeKey(key);
+			}
 			return;
 		}
 		// now handle normal server->client or client->server reads
@@ -1922,6 +1927,11 @@ public class MUDProxy
 						||((System.currentTimeMillis()-context.creationTime>15000)
 								&&(System.currentTimeMillis()-context.connectTime>7000))))
 						putKeyInDistress(key,channel,context,destKey,destChannel,destContext);
+				}
+				else
+				if(inputList.isEmpty())
+				{
+					eof = true;
 				}
 				context.pendingInputs.addAll(inputList);
 			}
