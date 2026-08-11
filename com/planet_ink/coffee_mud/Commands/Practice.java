@@ -131,10 +131,19 @@ public class Practice extends StdCommand
 			return false;
 		CMMsg msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
+		{
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 can't practice with you.",teacher.name(mob)));
 			return false;
+		}
 		msg=CMClass.getMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> practice(s) '@x1' with <T-NAMESELF>.",myAbility.name()));
 		if(!mob.location().okMessage(mob,msg))
+		{
+			if(!CMLib.flags().canBeSeenBy(mob, teacher))
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 can't see you.",teacher.name(mob)));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 can't practice with you.",teacher.name(mob)));
 			return false;
+		}
 		teacherAbility.practice(teacher,mob);
 		mob.location().send(mob,msg);
 		return false;
