@@ -159,7 +159,7 @@ public class Skill_Revoke extends StdSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,L("<S-NAME> revoke(s) @x1 from @x2",revokeThis.name(),target.name()));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,L("<S-NAME> revoke(s) @x1 from @x2.",revokeThis.name(),target.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
