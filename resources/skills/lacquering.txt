@@ -20,6 +20,7 @@ olive-green	25	11	^Yolive-green^?		0
 navy-blue	25	11	^Bnavy-blue ^?		0
 lime green	30	11	^glime green^?		0	
 very dark blue	32	41	^#002very dark blue^?		1	ANSI256=TRUE
+black	35	35	^#000black^?		0	
 cobalt-blue	42	42	^#002cobalt-blue ^?		1	ANSI256=TRUE
 deep green	32	41	^#010deep green^?		1	ANSI256=TRUE
 emerald-green	42	42	^#010emerald-green^?		1	ANSI256=TRUE
@@ -447,3 +448,4 @@ pale magenta	77	86	^#535pale magenta^?		10	ANSI256=TRUE
 cherub-pink	87	87	^#535cherub-pink^?		10	ANSI256=TRUE
 luminous vivid yellow	77	86	^#550luminous vivid yellow^?		10	ANSI256=TRUE
 zacarian-yellow	87	87	^#550zacarian-yellow^?		10	ANSI256=TRUE
+vader-black	91	86	^#000vader-black^?		10	ANSI256=TRUE
