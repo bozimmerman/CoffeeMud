@@ -86,7 +86,7 @@ public class Account extends StdCommand
 		if((who.email().length()>0)
 		&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 		&&(CMLib.database().DBCountJournalMsgsNewerThan(CMProps.getVar(CMProps.Str.MAILBOX), who.name(), 0)>0))
-			msg.append(" ^H(mail)^?");
+			msg.append(" ^H(email)^?");
 		final List<String> postalChains=new ArrayList<String>();
 		PostOffice P=null;
 		boolean postFound=false;
