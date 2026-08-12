@@ -1343,6 +1343,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 			}
 		}
+		// re-clear the item cache
+		final CMMsg clearMsg = CMClass.getMsg(mob, null, null,CMMsg.MSG_WIELD, null, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
+			mob.okMessage(mob, clearMsg);
 		// why wasn't that here before?
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
