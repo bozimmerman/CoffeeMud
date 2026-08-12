@@ -540,10 +540,11 @@ public class StdItem implements Item
 	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==0)
-			return (whereCantWear(mob)==0);
+			return whereCantWear(mob)==0;
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
-
+		if(rawLogicalAnd())
+			return whereCantWear(mob)==0;
 		return mob.freeWearPositions(where,(short)0,(short)0)>0;
 	}
 

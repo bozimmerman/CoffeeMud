@@ -103,6 +103,8 @@ public class StdArmor extends StdContainer implements Armor
 			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
+		if(rawLogicalAnd())
+			return whereCantWear(mob)==0;
 		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
 	}
 
@@ -595,7 +597,7 @@ public class StdArmor extends StdContainer implements Armor
 				setUsesRemaining(100);
 				msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,L("^I@x1 is destroyed!!^?",name()),CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,L("^I@x1 being worn by <S-NAME> is destroyed!^?",name())));
 				if(this instanceof Container)
-					((Container)this).emptyPlease(false);
+					this.emptyPlease(false);
 				unWear();
 				destroy();
 				owner.recoverPhyStats();
@@ -622,7 +624,7 @@ public class StdArmor extends StdContainer implements Armor
 		if((basePhyStats().height()==0)
 		&&(!amWearingAt(Wearable.IN_INVENTORY))
 		&&(owner() instanceof MOB))
-			basePhyStats().setHeight(((MOB)owner()).phyStats().height());
+			basePhyStats().setHeight(owner().phyStats().height());
 	}
 
 	@Override
