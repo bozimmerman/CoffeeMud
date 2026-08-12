@@ -213,7 +213,9 @@ public class Dragon extends StdMOB implements MOBPossessor
 			break;
 		}
 
-		CMLib.leveler().fillOutMOB(this,basePhyStats().level());
+		int level = basePhyStats().level();
+		CMLib.leveler().fillOutMOB(this,level*2); // make dragons double-difficult
+		basePhyStats().setLevel(level);
 		baseState.setHitPoints(baseState.getHitPoints() * PointMod);
 		setMoney(getMoney()*PointMod);
 		basePhyStats().setWeight(1500 * DragonAge());
