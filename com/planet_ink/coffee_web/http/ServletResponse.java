@@ -120,7 +120,7 @@ public class ServletResponse extends HTTPReqResponse implements SimpleServletRes
 		if(!normalizedHeaders.contains(HTTPHeader.Common.DATE.lowerCaseName()))
 			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 		for(final String key : cookies.keySet())
-			str.append(HTTPHeader.Common.SET_COOKIE.makeLine(key+"="+cookies.get(key)));
+			str.append(HTTPHeader.Common.SET_COOKIE.makeLine(cookies.get(key).toString()));
 		str.append(EOLN);
 		final CWDataBuffers bufs=new CWDataBuffers(str.toString().getBytes(), System.currentTimeMillis(),false);
 		if(bout.size()>0)
