@@ -158,7 +158,6 @@ public class Scrapping extends CommonSkill
 			commonFaiL(mob,commands,"You don't see anything called '@x1' here.",str);
 			return false;
 		}
-		boolean okMaterial=true;
 		oldItemName=I.Name();
 		switch(I.material()&RawMaterial.MATERIAL_MASK)
 		{
@@ -169,16 +168,11 @@ public class Scrapping extends CommonSkill
 		case RawMaterial.MATERIAL_GAS:
 		case RawMaterial.MATERIAL_VEGETATION:
 		case RawMaterial.MATERIAL_UNKNOWN:
-			okMaterial=false;
-			break;
-		default:
-			okMaterial=true;
-			break;
-		}
-		if(!okMaterial)
-		{
-			commonFaiL(mob,commands,"You don't know how to scrap @x1.",I.name(mob));
+			commonFaiL(mob,commands,"@x1 is made of @x2, and can't be scrapped for resources.",I.name(mob),
+					RawMaterial.CODES.MAT_DESC(I.material()).toLowerCase());
 			return false;
+		default:
+			break;
 		}
 
 		if(CMath.bset(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOSCRAP))
