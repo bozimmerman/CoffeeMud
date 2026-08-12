@@ -335,12 +335,13 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(L("Potions you know how to brew:\n\r"));
+			final StringBuffer buf=new StringBuffer(L("^HPotions you know how to brew:\n\r"));
 			final int[] cols={
 					CMLib.lister().fixColWidth(20,mob.session()),
 					CMLib.lister().fixColWidth(5,mob.session())
 				};
-			buf.append(L("@x1 @x2 Ingredients\n\r",CMStrings.padRight(L("Chant"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
+			buf.append(L("^w@x1 @x2 Ingredients^N\n\r",CMStrings.padRight(L("Chant"),cols[0]),CMStrings.padRight(L("Level"),cols[1])));
+			buf.append("^w"+CMStrings.repeat("-",cols[0]+cols[1]+3+20)+"\n\r^N");
 			final boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{

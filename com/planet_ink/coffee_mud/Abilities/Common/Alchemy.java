@@ -347,7 +347,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			allFlag=true;
 			mask="";
 		}
-		buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
+		buf.append("^w"+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
+		buf.append("\n\r"+CMStrings.repeat("-", (cols[0]*3)+3)+"^N\n\r");
 		int toggler=1;
 		final int toggleTop=3;
 		final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipes(recipes, mask, true);
@@ -427,12 +428,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			final StringBuilder buf=new StringBuilder();
 			if(hasPotion(recipes))
 			{
-				buf.append(L("Potions you know how to brew:\n\r"));
+				buf.append(L("\n\r^HPotions you know how to brew:^N\n\r"));
 				makeList(mob, "POTION", mask, recipes, buf);
 			}
 			if(hasPowder(recipes))
 			{
-				buf.append(L("Powders/Dusts you know how to make:\n\r"));
+				buf.append(L("\\n\\r^HPowders/Dusts you know how to make:^N\n\r"));
 				makeList(mob, "POWDER", mask, recipes, buf);
 			}
 			commonTell(mob,buf.toString());
