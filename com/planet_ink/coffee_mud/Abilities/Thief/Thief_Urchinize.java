@@ -313,6 +313,32 @@ public class Thief_Urchinize extends ThiefSkill
 				}
 			}
 		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+		&&(this.urchinizing == null)
+		&&(affected instanceof MOB)
+		&&(msg.source().location()!=null)
+		&&(msg.source().name().equals(((MOB)affected).getLiegeID()))
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0))
+		{
+			final List<String> parsed = CMParms.parse(msg.targetMessage());
+			if((parsed.size()>=3)
+			&&(parsed.get(0).equalsIgnoreCase("ORDER")))
+			{
+				final String targetName = parsed.get(1).toUpperCase();
+				final MOB urchin = (MOB)affected;
+				final boolean matchesMe = urchin.name().toUpperCase().startsWith(targetName) || targetName.equals("ALL");
+				if(matchesMe
+				&&(parsed.get(2).equalsIgnoreCase("FOLLOW"))
+				&&(parsed.size()<4)||parsed.get(3).equalsIgnoreCase("ME")||(parsed.get(3).equalsIgnoreCase(msg.source().name())))
+				{
+					CMLib.commands().postSay(urchin, L("Yessir"));
+					CMLib.commands().postFollow(urchin, msg.source(), false);
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
