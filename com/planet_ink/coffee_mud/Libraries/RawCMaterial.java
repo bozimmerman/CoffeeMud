@@ -213,6 +213,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			((MOB)owner).moveItemTo(bundle);
 			bundle.setContainer(C);
 		}
+		bundle.recoverPhyStats();
 		final Room R=CMLib.map().roomLocation(bundle);
 		if(R!=null)
 			R.recoverRoomStats();
