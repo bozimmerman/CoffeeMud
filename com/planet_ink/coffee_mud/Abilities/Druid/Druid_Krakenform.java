@@ -286,6 +286,7 @@ public class Druid_Krakenform extends StdAbility
 				}
 			}
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			CMLib.utensils().confirmWearability(mob);
 		}
 	}
 

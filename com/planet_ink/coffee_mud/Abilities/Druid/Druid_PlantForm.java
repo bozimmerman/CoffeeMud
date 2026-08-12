@@ -180,7 +180,10 @@ public class Druid_PlantForm extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
+		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			CMLib.utensils().confirmWearability(mob);
+		}
 	}
 
 	public void setRaceName(final MOB mob)

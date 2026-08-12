@@ -333,6 +333,7 @@ public class Disease_Lycanthropy extends Disease
 				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.location().recoverRoomStats();
+				CMLib.utensils().confirmWearability(mob);
 				return true;
 			}
 			tickLycanthropically(mob);
