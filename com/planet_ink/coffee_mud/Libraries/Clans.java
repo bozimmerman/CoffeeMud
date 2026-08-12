@@ -2218,7 +2218,7 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						winnerMostClansControlledC.setTrophies(winnerMostClansControlledC.getTrophies()|Trophy.Areas.flagNum());
 						clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",
-								winnerMostClansControlledC.getGovernmentName()+" "+winnerMostClansControlledC.name(),Trophy.Areas.description()));
+								winnerMostClansControlledC.getGovernmentName(), winnerMostClansControlledC.name(),Trophy.Areas.description()));
 						awardTrophyPrize(winnerMostClansControlledC, Trophy.Areas);
 					}
 				}
@@ -2240,7 +2240,7 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						winnerMostControlPointsC.setTrophies(winnerMostControlPointsC.getTrophies()|Trophy.Points.flagNum());
 						clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",
-								winnerMostControlPointsC.getGovernmentName()+" "+winnerMostControlPointsC.name(),Trophy.Points.description()));
+								winnerMostControlPointsC.getGovernmentName(),winnerMostControlPointsC.name(),Trophy.Points.description()));
 						awardTrophyPrize(winnerMostControlPointsC, Trophy.Areas);
 					}
 				}
