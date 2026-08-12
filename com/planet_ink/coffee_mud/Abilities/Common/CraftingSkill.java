@@ -449,6 +449,18 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 						CMLib.leveler().postExperience(mob, "ABILITY:"+ID(), null,null,50, false);
 					}
 					else
+					if(!CMLib.flags().canBeSeenBy(buildingI, mob))
+					{
+						if(CMLib.flags().canSee(mob))
+						{
+							if(CMLib.flags().isInvisible(buildingI))
+								commonTelL(mob,"@x1 fades from view!",buildingI.name());
+							else
+								commonTelL(mob,"@x1 visually blends into the background!",buildingI.name());
+						}
+						return true;
+					}
+					else
 						return true;
 				}
 			}

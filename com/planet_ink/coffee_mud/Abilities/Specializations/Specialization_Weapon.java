@@ -85,7 +85,7 @@ public class Specialization_Weapon extends StdAbility
 		return false;
 	}
 
-	protected boolean	activated			= false;
+	protected volatile boolean	activated	= false;
 	protected int		weaponClass			= -1;
 	protected int		secondWeaponClass	= -1;
 

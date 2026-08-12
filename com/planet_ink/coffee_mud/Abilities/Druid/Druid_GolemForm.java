@@ -219,6 +219,9 @@ public class Druid_GolemForm extends StdAbility
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 			CMLib.utensils().confirmWearability(mob);
+			mob.recoverCharStats();
+			mob.recoverMaxState();
+			mob.recoverPhyStats();
 		}
 	}
 
@@ -365,6 +368,9 @@ public class Druid_GolemForm extends StdAbility
 				raceLevel=getRaceLevel(classLevel);
 				beneficialAffect(mob,targetM,asLevel,Ability.TICKS_FOREVER);
 				CMLib.utensils().confirmWearability(targetM);
+				targetM.recoverCharStats();
+				targetM.recoverMaxState();
+				targetM.recoverPhyStats();
 			}
 		}
 		else
