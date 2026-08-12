@@ -301,6 +301,17 @@ public class Thief_Urchinize extends ThiefSkill
 					CMLib.commands().postSay((MOB)affected, L("You're not the boss of me!"));
 				return false;
 			}
+			else
+			if(say.indexOf("FOLLOW")==0)
+			{
+				final List<String> parsed = CMParms.parse(say);
+				if((parsed.size()<2)||parsed.get(1).equalsIgnoreCase("ME")||(parsed.get(1).equalsIgnoreCase(msg.source().name())))
+				{
+					CMLib.commands().postSay((MOB)affected, L("Yessir"));
+					CMLib.commands().postFollow((MOB)affected, msg.source(), false);
+					return false;
+				}
+			}
 		}
 		return true;
 	}
