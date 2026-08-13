@@ -16034,9 +16034,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				try
 				{
 					SB = que.get(q);
-					if((SB != null)
-					&&(hc == SB.hashCode()))
-						que.remove(SB);
+					if(SB != null)
+					{
+						if(hc == SB.hashCode())
+							que.remove(SB);
+						else
+						if(SB.triggerCode <0)
+							max++;
+					}
 				}
 				catch(final IndexOutOfBoundsException x)
 				{
@@ -16050,14 +16055,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 					this.logError(resp.ctx.scripted, "UNK", "SYS", "Attempt to enque more than "+max+" events (last was "+CMParms.toListString(triggerStr)+" ).");
 				final StringBuilder rpt=new StringBuilder("Queue Log:\n\r");
-				for(int q=que.size()-1; q >= 0; q--)
+				while(que.size()>max)
 				{
 					try
 					{
-						SB = que.get(q);
+						SB = que.remove(que.size()-1);
 						if(SB != null)
 						{
-							rpt.append(CMStrings.padRight(""+q,2)+") "+SB.triggerCode)
+							rpt.append(CMStrings.padRight(""+que.size(),2)+") "+SB.triggerCode)
 								.append(", src="+((SB.ctx.source==null)?"null":SB.ctx.source.name()))
 								.append(", when="+new SimpleDateFormat("yyyyMMdd.HHmm.ss").format(Long.valueOf(SB.queuedAt)))
 								.append("\n\r");
@@ -16069,7 +16074,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				//Log.debugOut(rpt.toString());
-				que.clear();
 			}
 		}
 	}
