@@ -72,7 +72,7 @@ public class Report extends Skills
 		}
 		else
 		{
-			final int[][] levels=new int[][] {parseOutLevelFromEndOfArgumentss(commands)};
+			final int[][] levels=new int[][] {parseOutLevelFromEndOfArguments(commands)};
 			final String s=CMParms.combine(commands,1).toUpperCase();
 			final StringBuffer say=new StringBuffer("");
 			if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))

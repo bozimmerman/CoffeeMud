@@ -156,7 +156,7 @@ public class Skills extends StdCommand
 		return false;
 	}
 
-	protected int[] parseOutLevelFromEndOfArgumentss(final List<String> commands)
+	protected int[] parseOutLevelFromEndOfArguments(final List<String> commands)
 	{
 		if(commands.size()>1)
 		{
@@ -184,14 +184,14 @@ public class Skills extends StdCommand
 		if(CMath.isNumber(parm))
 		{
 			final int x=CMath.s_int(parm);
-			return new int[] { x, x };
+			return new int[] { 0, x };
 		}
 		int dashX = parm.indexOf('-');
 		if(dashX<0)
 			return null;
 		if(dashX==0)
 		{
-			parm=1+parm;
+			parm="0"+parm;
 			dashX++;
 		}
 		else
@@ -258,7 +258,7 @@ public class Skills extends StdCommand
 	protected void parseDomainInfo(final MOB mob, final List<String> commands, final List<Integer> acodes, final int[][] levels, final int[] domain, final String[] domainName)
 	{
 		if(levels[0] == null)
-			levels[0]=parseOutLevelFromEndOfArgumentss(commands);
+			levels[0]=parseOutLevelFromEndOfArguments(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		domain[0]=-1;
 		if(qual.length()>0)
@@ -353,7 +353,7 @@ public class Skills extends StdCommand
 	protected void parseTypeInfo(final MOB mob, final List<String> commands, final int[][] levels, final int[] type, final String[] typeName)
 	{
 		if(levels[0] == null)
-			levels[0]=parseOutLevelFromEndOfArgumentss(commands);
+			levels[0]=parseOutLevelFromEndOfArguments(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		type[0]=-1;
 		if(qual.length()>0)
