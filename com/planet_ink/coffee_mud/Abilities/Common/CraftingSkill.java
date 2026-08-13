@@ -1395,6 +1395,16 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 	}
 
+	protected List<List<String>> selectMatches(final List<List<String>> matches, int selNum)
+	{
+		if(selNum <= 0)
+			return matches;
+		final List<List<String>> newMatches=new Vector<List<String>>();
+		if(selNum<=matches.size())
+			newMatches.add(matches.get(selNum-1));
+		return newMatches;
+	}
+	
 	// don't make protected?! Painting...
 	public List<List<String>> matchingRecipes(final List<List<String>> recipes, String recipeName, final boolean beLoose)
 	{
@@ -1601,7 +1611,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 		}
 
 		if(!beLoose)
-			return matches;
+			return selectMatches(matches,selNum);
 
 		if(matches.size()==0)
 		{
@@ -1742,15 +1752,7 @@ public class CraftingSkill extends GatheringSkill implements RecipeDriven
 				}
 			}
 		}
-
-		if(selNum>0)
-		{
-			final List<List<String>> newMatches=new Vector<List<String>>();
-			if(selNum<=matches.size())
-				newMatches.add(matches.get(selNum-1));
-			return newMatches;
-		}
-		return matches;
+		return selectMatches(matches,selNum);
 	}
 
 	protected int[] checkMaterialFrom(final MOB mob, final List<String> commands, final int[] pm)
