@@ -101,13 +101,22 @@ public class Spell_SummonMonster extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
-		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		if(affected instanceof MOB)
 		{
-			unInvoke();
-			if(msg.source().playerStats()!=null)
-				msg.source().playerStats().setLastUpdated(0);
+			if((msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
+				unInvoke();
+				if(msg.source().playerStats()!=null)
+					msg.source().playerStats().setLastUpdated(0);
+			}
+			else
+			if((msg.targetMinor()==CMMsg.TYP_BODYDROP)
+			&&(msg.amISource((MOB)affected))
+			&&(msg.target() instanceof Item))
+			{
+				msg.target().destroy();
+			}
 		}
 	}
 

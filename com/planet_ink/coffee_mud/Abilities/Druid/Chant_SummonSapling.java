@@ -147,8 +147,7 @@ public class Chant_SummonSapling extends Chant
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{

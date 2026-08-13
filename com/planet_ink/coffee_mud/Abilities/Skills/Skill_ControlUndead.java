@@ -112,8 +112,7 @@ public class Skill_ControlUndead extends StdSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(!((MOB)affected).isMonster())
 		&&(msg.amISource((MOB)affected)
 			||msg.amISource(((MOB)affected).amFollowing())

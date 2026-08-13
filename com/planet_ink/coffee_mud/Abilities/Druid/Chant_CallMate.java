@@ -149,14 +149,21 @@ public class Chant_CallMate extends Chant
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing())||(msg.source()==invoker()))
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
 			if(msg.source().playerStats()!=null)
 				msg.source().playerStats().setLastUpdated(0);
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_BODYDROP)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.target() instanceof Item))
+		{
+			msg.target().destroy();
 		}
 	}
 

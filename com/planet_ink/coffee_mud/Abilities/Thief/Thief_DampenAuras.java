@@ -112,8 +112,7 @@ public class Thief_DampenAuras extends ThiefSkill
 		super.executeMsg(host,msg);
 		if(super.canBeUninvoked())
 		{
-			if((affected!=null)
-			&&(affected instanceof MOB)
+			if((affected instanceof MOB)
 			&&(msg.amISource((MOB)affected))
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 				unInvoke();
