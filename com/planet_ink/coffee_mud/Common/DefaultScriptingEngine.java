@@ -16024,9 +16024,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(que.size()>5)
 		{
-			int max = 25;
+			double max = 25.0;
 			if(resp.ctx.scripted instanceof Area)
-				max = 150;
+				max = 150.0;
 			final int hc = resp.hashCode();
 			ScriptableResponse SB=null;
 			for(int q=que.size()-1; q >= 0; q--)
@@ -16040,7 +16040,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							que.remove(SB);
 						else
 						if(SB.triggerCode <0)
-							max++;
+							max+=0.75;
 					}
 				}
 				catch(final IndexOutOfBoundsException x)
