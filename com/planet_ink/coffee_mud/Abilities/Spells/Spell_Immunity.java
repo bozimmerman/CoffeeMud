@@ -181,10 +181,11 @@ public class Spell_Immunity extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				final int chosenCode=((immunityCode>=1)&&(immunityCode<=5)) ? immunityCode : CMLib.dice().roll(1,5,0);
 				immunityCode=-1;
 				final Spell_Immunity A=(Spell_Immunity)beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
-					A.setMiscText(""+CMLib.dice().roll(1,5,0));
+					A.setMiscText(""+chosenCode);
 			}
 		}
 		else
