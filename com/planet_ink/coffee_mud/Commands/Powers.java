@@ -53,14 +53,13 @@ public class Powers  extends Skills
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,Ability.ACODE_SUPERPOWER))
 			return true;
-		final int[] level=new int[1];
+		final int[][] levels=new int[][]{null};
 		final int[] domain=new int[1];
 		final String[] domainName=new String[1];
 		domainName[0]="";
-		level[0]=-1;
-		parseDomainInfo(mob,commands,new XVector<Integer>(Integer.valueOf(Ability.ACODE_SUPERPOWER)),level,domain,domainName);
+		parseDomainInfo(mob,commands,new XVector<Integer>(Integer.valueOf(Ability.ACODE_SUPERPOWER)),levels,domain,domainName);
 		final StringBuffer msg=new StringBuffer("");
-		msg.append(L("\n\r^HYour @x1powers:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,Ability.ACODE_SUPERPOWER,domain[0],true,level[0]).toString()));
+		msg.append(L("\n\r^HYour @x1powers:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,Ability.ACODE_SUPERPOWER,domain[0],true,levels[0]).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString()+"\n\r");
 		return false;

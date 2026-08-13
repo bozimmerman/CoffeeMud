@@ -1,8 +1,10 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -154,16 +156,68 @@ public class Skills extends StdCommand
 		return false;
 	}
 
-	protected int parseOutLevel(final List<String> commands)
+	protected int[] parseOutLevelFromEndOfArgumentss(final List<String> commands)
 	{
-		if((commands.size()>1)
-		&&(CMath.isNumber(commands.get(commands.size()-1))))
+		if(commands.size()>1)
 		{
-			final int x=CMath.s_int(commands.get(commands.size()-1));
-			commands.remove(commands.size()-1);
-			return x;
+			String parm = commands.get(commands.size()-1).trim();
+			try
+			{
+				int[] parsed = parseOutLevelRangeFromParm(parm);
+				if(parsed != null)
+				{
+					commands.remove(commands.size()-1);
+					return parsed;
+				}
+			}
+			catch(CMException e)
+			{
+			}
 		}
-		return -1;
+		return null;
+	}
+
+	protected int[] parseOutLevelRangeFromParm(String parm) throws CMException
+	{
+		if(parm.length()==0)
+			return null;
+		if(CMath.isNumber(parm))
+		{
+			final int x=CMath.s_int(parm);
+			return new int[] { x, x };
+		}
+		int dashX = parm.indexOf('-');
+		if(dashX<0)
+			return null;
+		if(dashX==0)
+		{
+			parm=1+parm;
+			dashX++;
+		}
+		else
+		if(dashX==parm.length()-1)
+			parm=parm+CMProps.getIntVar(Int.LASTPLAYERLEVEL);
+		if(!Character.isDigit(parm.charAt(0))||!Character.isDigit(parm.charAt(parm.length()-1)))
+			return null;
+		final String startStr=parm.substring(0,dashX).trim();
+		final String endStr=parm.substring(dashX+1).trim();
+		if(!CMath.isNumber(startStr))
+			throw new CMException(L("Not a valid level '@x1'",startStr));
+		if(!CMath.isNumber(endStr))
+			throw new CMException(L("Not a valid level '@x1'",endStr));
+		int start = CMath.s_int(startStr);
+		int end = CMath.s_int(endStr);
+		if(start>end)
+		{
+			int t=start;
+			start=end;
+			end=t;
+		}
+		if(start<0)
+			throw new CMException(L("Not a valid level '@x1'",startStr));
+		if(end>CMProps.getIntVar(Int.LASTPLAYERLEVEL))
+			throw new CMException(L("Not a valid level '@x1'",endStr));
+		return new int[] {start, end};
 	}
 
 	/**
@@ -201,9 +255,10 @@ public class Skills extends StdCommand
 		return V.contains(Integer.valueOf(acode));
 	}
 
-	protected void parseDomainInfo(final MOB mob, final List<String> commands, final List<Integer> acodes, final int[] level, final int[] domain, final String[] domainName)
+	protected void parseDomainInfo(final MOB mob, final List<String> commands, final List<Integer> acodes, final int[][] levels, final int[] domain, final String[] domainName)
 	{
-		level[0]=parseOutLevel(commands);
+		if(levels[0] == null)
+			levels[0]=parseOutLevelFromEndOfArgumentss(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		domain[0]=-1;
 		if(qual.length()>0)
@@ -229,7 +284,7 @@ public class Skills extends StdCommand
 		if((domain[0]<0)&&(qual.length()>0))
 		{
 			StringBuffer domains=new StringBuffer("");
-			domains.append("\n\rValid schools/domains are: ");
+			domains.append("\n\r^HValid schools/domains are: ^N");
 			for(int i=1;i<Ability.DOMAIN.DESCS.size();i++)
 			{
 				boolean found=acodes==null?true:false;
@@ -295,25 +350,28 @@ public class Skills extends StdCommand
 		return true;
 	}
 
-	protected void parseTypeInfo(final MOB mob, final List<String> commands, final int[] level, final int[] type, final String[] typeName)
+	protected void parseTypeInfo(final MOB mob, final List<String> commands, final int[][] levels, final int[] type, final String[] typeName)
 	{
-		level[0]=parseOutLevel(commands);
+		if(levels[0] == null)
+			levels[0]=parseOutLevelFromEndOfArgumentss(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		type[0]=-1;
 		if(qual.length()>0)
-		for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 		{
-			if(Ability.ACODE.DESCS.get(i).replace('_',' ').startsWith(qual))
+			for(int i=0;i<Ability.ACODE.DESCS.size();i++)
 			{
-				type[0] = i;
-				break;
-			}
-			else
-			if((Ability.ACODE.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
-			&&(Ability.ACODE.DESCS.get(i).replace('_',' ').substring(Ability.ACODE.DESCS.get(i).indexOf('/')+1).startsWith(qual)))
-			{
-				type[0] = i;
-				break;
+				if(Ability.ACODE.DESCS.get(i).replace('_',' ').startsWith(qual))
+				{
+					type[0] = i;
+					break;
+				}
+				else
+				if((Ability.ACODE.DESCS.get(i).replace('_',' ').indexOf('/')>=0)
+				&&(Ability.ACODE.DESCS.get(i).replace('_',' ').substring(Ability.ACODE.DESCS.get(i).indexOf('/')+1).startsWith(qual)))
+				{
+					type[0] = i;
+					break;
+				}
 			}
 		}
 		if(type[0]>0)
@@ -330,7 +388,7 @@ public class Skills extends StdCommand
 					return;
 			}
 			StringBuffer types=new StringBuffer("");
-			types.append("\n\rValid ability types are: ");
+			types.append("\n\r^HValid ability types are: ^N");
 			for(int i=0;i<playerAcodes.length;i++)
 			{
 				types.append(Ability.ACODE.DESCS.get(playerAcodes[i]).toLowerCase().replace('_',' ')+", ");
@@ -345,7 +403,7 @@ public class Skills extends StdCommand
 			typeName[0]+=" ";
 	}
 
-	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, int ofType, final int ofDomain, final boolean addQualLine, final int maxLevel)
+	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, int ofType, final int ofDomain, final boolean addQualLine, final int[] levelRange)
 	{
 		final ArrayList<Integer> V=new ArrayList<Integer>();
 		int mask=Ability.ALL_ACODES;
@@ -355,7 +413,7 @@ public class Skills extends StdCommand
 			ofType=ofType|ofDomain;
 		}
 		V.add(Integer.valueOf(ofType));
-		return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
+		return getAbilities(viewerM,ableM,V,mask,addQualLine,levelRange);
 	}
 
 	protected final static Comparator<Ability> nameComparator=new Comparator<Ability>()
@@ -371,7 +429,7 @@ public class Skills extends StdCommand
 		}
 	};
 
-	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, final List<Integer> ofTypes, final int mask, final boolean addQualLine, final int maxLevel)
+	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, final List<Integer> ofTypes, final int mask, final boolean addQualLine, final int[] levelRange)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
@@ -382,6 +440,9 @@ public class Skills extends StdCommand
 		//final int COL_LEN3=useWords? CMLib.lister().fixColWidth(17.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
+		int firstLevel=0;
+		if((levelRange != null)&&(levelRange[0]>firstLevel))
+			firstLevel=levelRange[0];
 		final StringBuilder msg=new StringBuilder("");
 		final Integer allAcodes = Integer.valueOf(Ability.ALL_ACODES);
 		final boolean isSysOp = CMSecurity.isAllowedEverywhere(ableM, SecFlag.ALLSKILLS);
@@ -394,16 +455,17 @@ public class Skills extends StdCommand
 			if((A!=null)
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
+			&&(level>=firstLevel)
 			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))
 				||ofTypes.contains(allAcodes)||ofTypes.contains(Integer.valueOf(Ability.ALL_ACODES|(A.classificationCode()&Ability.ALL_DOMAINS)))))
 				highestLevel=level;
 		}
-		if((maxLevel>=0)&&(maxLevel<highestLevel))
-			highestLevel=maxLevel;
+		if((levelRange != null)&&(levelRange[1]<highestLevel))
+			highestLevel=levelRange[1];
 		final int MAX_COLS=2;//useWords?2:3;
 		final List<Ability> sortedAllAbilities = new XVector<Ability>(ableM.allAbilities());
 		Collections.sort(sortedAllAbilities,nameComparator);
-		for(int l=0;l<=highestLevel;l++)
+		for(int l=firstLevel;l<=highestLevel;l++)
 		{
 			final StringBuilder thisLine=new StringBuilder("");
 			int col=0;
@@ -497,15 +559,13 @@ public class Skills extends StdCommand
 		V.add(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 		V.add(Integer.valueOf(Ability.ACODE_SKILL));
 		V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-		final String qual=CMParms.combine(commands,1).toUpperCase();
-		if(parsedOutIndividualSkill(mob,qual,V))
+		if(parsedOutIndividualSkill(mob,CMParms.combine(commands,1).toUpperCase(),V))
 			return true;
-		final int[] level=new int[1];
+		final int[][] levels=new int[][] {null};
 		final int[] domain=new int[1];
 		final String[] domainName=new String[1];
 		domainName[0]="";
-		level[0]=-1;
-		parseDomainInfo(mob,commands,V,level,domain,domainName);
+		parseDomainInfo(mob,commands,V,levels,domain,domainName);
 		int mask=Ability.ALL_ACODES;
 		if(domain[0]>=0)
 		{
@@ -513,8 +573,8 @@ public class Skills extends StdCommand
 			for(int v=0;v<V.size();v++)
 				V.setElementAt(Integer.valueOf(V.get(v).intValue()+domain[0]),v);
 		}
-		if((domain[0]>=0)||(qual.length()==0))
-			msg.append(L("\n\r^HYour @x1skills:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,V,mask,true,level[0]).toString()));
+		if((domain[0]>=0)||(commands.size()<2))
+			msg.append(L("\n\r^HYour @x1skills:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,V,mask,true,levels[0]).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

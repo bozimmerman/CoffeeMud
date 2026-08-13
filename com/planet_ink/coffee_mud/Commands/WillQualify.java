@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -147,7 +148,21 @@ public class WillQualify extends Skills
 			if (thisLine.length() > 0)
 			{
 				if (msg.length() == 0)
-					msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
+				{
+					msg.append("\n\r^N[^H")
+						.append(CMStrings.padRight(L("Lvl"),COL_LEN1))
+						.append("^?] ")
+						.append(CMStrings.padRight(L("Name"),COL_LEN2))
+						.append(" ")
+						.append(CMStrings.padRight("Requires",COL_LEN4))
+						.append("[^H")
+						.append(CMStrings.padRight(L("Lvl"),COL_LEN1))
+						.append("^?] ")
+						.append(CMStrings.padRight(L("Name"),COL_LEN2))
+						.append(" ")
+						.append(L("Requires"))
+						.append("\n\r");
+				}
 				msg.append(thisLine);
 			}
 		}
@@ -265,20 +280,25 @@ public class WillQualify extends Skills
 		}
 		else
 		{
-			if((commands.size()>0)&&(CMath.isNumber(commands.get(0))))
+			if(commands.size()>0)
 			{
-				level=CMath.s_int(commands.get(0));
-				if(level<0)
+				try
 				{
-					mob.tell(L(willQualErr));
+					int[] levelRange = new Skills().parseOutLevelRangeFromParm(commands.get(0));
+					if(levelRange != null)
+					{
+						commands.remove(0);
+						minLevel = levelRange[0];
+						level = levelRange[1];
+					}
+				}
+				catch(CMException e)
+				{
+					mob.tell(e.getMessage());
 					return false;
 				}
-				if(level>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-				{
-					mob.tell(L("'@x1' is not an available level.",commands.get(0)));
-				}
-				commands.remove(0);
 			}
+				
 			uniqueOnly=pickUniqueFlag(commands,uniqueOnly);
 			if(commands.size()>0)
 			{

@@ -930,7 +930,7 @@ public class Stat  extends Skills
 				final List<Integer> V=new ArrayList<Integer>();
 				final int mask=Ability.ALL_ACODES;
 				V.add(Integer.valueOf(ableTypes));
-				str=getAbilities(mob,target,V,mask,false,-1);
+				str=getAbilities(mob,target,V,mask,false,null);
 			}
 			else
 			if(ableTypes==ABLETYPE_EQUIPMENT)

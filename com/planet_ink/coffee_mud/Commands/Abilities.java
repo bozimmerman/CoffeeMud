@@ -53,14 +53,14 @@ public class Abilities extends Skills
 		final String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,null))
 			return true;
-		final int[] level=new int[]{-1};
+		final int[][] levels=new int[][]{null};
 		final int[] domain=new int[]{-1};
 		final int[] type=new int[]{Ability.ALL_ACODES};
 		final String[] typeName=new String[] {""};
 		final String[] domainName=new String[] {""};
-		parseTypeInfo(mob,commands,level,type,typeName);
+		parseTypeInfo(mob,commands,levels,type,typeName);
 		if(typeName[0].length()==0)
-			parseDomainInfo(mob,commands,null,level,domain,domainName);
+			parseDomainInfo(mob,commands,null,levels,domain,domainName);
 		if(qual.equalsIgnoreCase("?"))
 			return false;
 		if(type[0]<0)
@@ -69,18 +69,19 @@ public class Abilities extends Skills
 		{
 			final StringBuilder msg=new StringBuilder("");
 			msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE.DESCS.get(type[0]).toLowerCase())));
-			StringBuilder ableListStr = getAbilities(mob,mob,type[0],domain[0],true,level[0]);
+			StringBuilder ableListStr = getAbilities(mob,mob,type[0],domain[0],true,levels[0]);
 			if(!mob.isMonster())
 				mob.session().wraplessPrintln(msg.toString()+ableListStr.toString()+"\n\r");
 		}
 		else
+		if(commands.size()==1)
 		{
 			boolean anythingShown=false;
 			for(final int acode : playerAcodes)
 			{
 				final StringBuilder msg=new StringBuilder("");
 				msg.append(L("\n\r^HYour @x1@x2:^? ",domainName[0].replace('_',' '),CMLib.english().makePlural(Ability.ACODE.DESCS.get(acode).toLowerCase())));
-				StringBuilder ableListStr = getAbilities(mob,mob,acode,domain[0],acode==playerAcodes[playerAcodes.length-1],level[0]);
+				StringBuilder ableListStr = getAbilities(mob,mob,acode,domain[0],acode==playerAcodes[playerAcodes.length-1],levels[0]);
 				if(ableListStr.length()<10)
 					continue;
 				anythingShown=true;

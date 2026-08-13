@@ -72,7 +72,7 @@ public class Report extends Skills
 		}
 		else
 		{
-			final int level=parseOutLevel(commands);
+			final int[][] levels=new int[][] {parseOutLevelFromEndOfArgumentss(commands)};
 			final String s=CMParms.combine(commands,1).toUpperCase();
 			final StringBuffer say=new StringBuffer("");
 			if("AFFECTS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
@@ -120,7 +120,7 @@ public class Report extends Skills
 				V.add(Integer.valueOf(Ability.ACODE_TECH));
 				V.add(Integer.valueOf(Ability.ACODE_CHANT));
 				V.add(Integer.valueOf(Ability.ACODE_SONG));
-				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
+				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,levels[0]));
 			}
 			else
 			{
@@ -187,7 +187,7 @@ public class Report extends Skills
 					switch(acode)
 					{
 					case Ability.ACODE_SPELL:
-						say.append("\n\r^NMy spells:^? "+getAbilities(null,mob,Ability.ACODE_SPELL,-1,false,level));
+						say.append("\n\r^NMy spells:^? "+getAbilities(null,mob,Ability.ACODE_SPELL,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_SKILL:
 					{
@@ -196,29 +196,29 @@ public class Report extends Skills
 						V.add(Integer.valueOf(Ability.ACODE_SKILL));
 						V.add(Integer.valueOf(Ability.ACODE_TECH));
 						V.add(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
-						say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
+						say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,levels[0]));
 						break;
 					}
 					case Ability.ACODE_PRAYER:
-						say.append("\n\r^NMy prayers:^? "+getAbilities(null,mob,Ability.ACODE_PRAYER,-1,false,level));
+						say.append("\n\r^NMy prayers:^? "+getAbilities(null,mob,Ability.ACODE_PRAYER,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_SUPERPOWER:
-						say.append("\n\r^NMy super powers:^? "+getAbilities(null,mob,Ability.ACODE_SUPERPOWER,-1,false,level));
+						say.append("\n\r^NMy super powers:^? "+getAbilities(null,mob,Ability.ACODE_SUPERPOWER,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_CHANT:
-						say.append("\n\r^NMy chants:^? "+getAbilities(null,mob,Ability.ACODE_CHANT,-1,false,level));
+						say.append("\n\r^NMy chants:^? "+getAbilities(null,mob,Ability.ACODE_CHANT,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_SONG:
-						say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
+						say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_LANGUAGE:
-						say.append("\n\r^NMy languages:^? "+getAbilities(null,mob,Ability.ACODE_LANGUAGE,-1,false,level));
+						say.append("\n\r^NMy languages:^? "+getAbilities(null,mob,Ability.ACODE_LANGUAGE,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_TECH:
-						say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
+						say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,levels[0]));
 						break;
 					case Ability.ACODE_COMMON_SKILL:
-						say.append("\n\r^NMy common skills:^? "+getAbilities(null,mob,Ability.ACODE_COMMON_SKILL,-1,false,level));
+						say.append("\n\r^NMy common skills:^? "+getAbilities(null,mob,Ability.ACODE_COMMON_SKILL,-1,false,levels[0]));
 						break;
 					}
 				}
@@ -226,7 +226,7 @@ public class Report extends Skills
 				if(adom >= 1)
 				{
 					final String domainName = Ability.DOMAIN.DESCS.get(adom).toLowerCase();
-					say.append("\n\r^NMy "+domainName+" skills:^? "+getAbilities(null,mob,Ability.ALL_ACODES,adom<<5,false,level));
+					say.append("\n\r^NMy "+domainName+" skills:^? "+getAbilities(null,mob,Ability.ALL_ACODES,adom<<5,false,levels[0]));
 				}
 			}
 
