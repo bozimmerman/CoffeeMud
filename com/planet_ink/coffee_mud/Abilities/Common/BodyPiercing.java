@@ -216,8 +216,8 @@ public class BodyPiercing extends CommonSkill implements RecipeDriven
 				return false;
 			if((!auto)&&(CMLib.flags().isSleeping(target)))
 				CMLib.commands().postStand(target, true, true);
-			if((target.isMonster())
-			&&(CMLib.flags().isAliveAwakeMobile(target,true))
+			if((CMLib.flags().isAliveAwakeMobile(target,true))
+			&&(!CMLib.flags().isBoundOrHeld(target))
 			&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			{
 				commonFaiL(mob,commands,"@x1 doesn't want any piercings.",target.Name());

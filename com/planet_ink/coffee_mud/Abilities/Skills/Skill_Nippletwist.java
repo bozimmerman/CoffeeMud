@@ -155,7 +155,8 @@ public class Skill_Nippletwist extends StdSkill
 		// now see if it worked
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		final boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_DEXTERITY)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
-
+		final boolean targetInCombat = target.isInCombat();
+		final boolean sourceInCombat = mob.isInCombat();
 		if(success)
 		{
 			invoker=mob;
@@ -180,6 +181,10 @@ public class Skill_Nippletwist extends StdSkill
 					damage=target.curState().getHitPoints()-1;
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
 						L("^F^<FIGHT^>The nipple twist <DAMAGES> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
+				if(!targetInCombat && CMLib.flags().isBoundOrHeld(target))
+					target.makePeace(false);
+				if(!sourceInCombat && CMLib.flags().isBoundOrHeld(target))
+					mob.makePeace(false);
 			}
 		}
 		else
