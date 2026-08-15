@@ -49,12 +49,6 @@ public class Thief_Lore extends ThiefSkill
 	}
 
 	@Override
-	protected int canAffectCode()
-	{
-		return 0;
-	}
-
-	@Override
 	protected int canTargetCode()
 	{
 		return Ability.CAN_ITEMS;
@@ -83,6 +77,21 @@ public class Thief_Lore extends ThiefSkill
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		if((text().length()>0)
+		&&(affected instanceof Item)
+		&&(((Item)affected).owner()==invoker()))
+			affectableStats.setName(affected.Name()+" ("+text()+")");
 	}
 
 	@Override
@@ -138,6 +147,26 @@ public class Thief_Lore extends ThiefSkill
 					CMLib.commands().postSay(mob, L("@x1^N^. idenfies as @x2",target.name(),identity));
 				else
 					mob.tell(identity);
+				final String nname = target.Name().toLowerCase();
+				if(target instanceof SpellHolder)
+				{
+					boolean needsIdentity = false;
+					String id = "";
+					for(final Ability A : ((SpellHolder)target).getSpells())
+					{
+						if(nname.indexOf(A.Name().toLowerCase())<0)
+							needsIdentity=true;
+						if(id.length()>0)
+							id += ", ";
+						id += A.Name();
+					}
+					if(needsIdentity)
+					{
+						target.delEffect(target.fetchEffect(ID()));
+						setMiscText(id);
+						super.beneficialAffect(mob, target, asLevel, 5 + mob.charStats().getStat(CharStats.STAT_INTELLIGENCE));
+					}
+				}
 
 			}
 		}

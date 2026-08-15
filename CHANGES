@@ -23,6 +23,7 @@
 21. New CONFIG flag: LFG, which does nothing but flag the character in the WHO command ATM.
 22. WILLQUALIFY/SKILL commands now support level ranges.
 23. VFShell app can now issue commands from the CL to a live server.
+24. Identify Object spell and Lore skill alters apparent name temporarily 
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

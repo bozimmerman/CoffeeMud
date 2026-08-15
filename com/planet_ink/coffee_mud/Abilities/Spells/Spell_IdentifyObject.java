@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+import javax.xml.soap.Text;
+
 /*
    Copyright 2001-2026 Bo Zimmerman
 
@@ -55,6 +57,19 @@ public class Spell_IdentifyObject extends Spell
 		return CAN_ITEMS;
 	}
 
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ITEMS;
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		if(text().length()>0)
+			affectableStats.setName(affected.Name()+" ("+text()+")");
+	}
+	
 	@Override
 	public long flags()
 	{
@@ -95,7 +110,29 @@ public class Spell_IdentifyObject extends Spell
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,identity,false,false);
 				else
+				{
 					mob.tell(identity);
+					final String nname = target.Name().toLowerCase();
+					if(target instanceof SpellHolder)
+					{
+						boolean needsIdentity = false;
+						String id = "";
+						for(final Ability A : ((SpellHolder)target).getSpells())
+						{
+							if(nname.indexOf(A.Name().toLowerCase())<0)
+								needsIdentity=true;
+							if(id.length()>0)
+								id += ", ";
+							id += A.Name();
+						}
+						if(needsIdentity)
+						{
+							target.delEffect(target.fetchEffect(ID()));
+							setMiscText(id);
+							super.beneficialAffect(mob, target, asLevel, 0);
+						}
+					}
+				}
 			}
 
 		}
