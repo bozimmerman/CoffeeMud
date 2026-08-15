@@ -24,6 +24,7 @@
 22. WILLQUALIFY/SKILL commands now support level ranges.
 23. VFShell app can now issue commands from the CL to a live server.
 24. Identify Object spell and Lore skill alters apparent name temporarily 
+25. New optional CLASSSYSTEM rule: BASE-X, for base class requirements.  See INI file.
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks

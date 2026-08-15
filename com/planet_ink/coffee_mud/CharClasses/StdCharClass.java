@@ -390,6 +390,7 @@ public class StdCharClass implements CharClass
 			else
 			if((!multiClassFirstRule.equals("APP"))
 			&&(!multiClassSecondRule.equals("SUB"))
+			&&(!multiClassSecondRule.equals("BASE"))
 			&&(!multiClassSecondRule.equals("MULTI"))
 			&&(!multiClassSecondRule.equals("MULTIAPP"))
 			&&(!multiClassSecondRule.equals("SUBONLY"))
@@ -426,7 +427,9 @@ public class StdCharClass implements CharClass
 
 		if(mob == null)
 		{
-			if(multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("SUB"))
+			if(multiClassFirstRule.equals("SUB")
+			||multiClassFirstRule.equals("BASE")
+			||multiClassSecondRule.equals("SUB"))
 			{
 				if((changeToBaseClassID.equals(changeToClassID))||(changeToSubClassRule==SubClassRule.ANY))
 					return true;
@@ -439,6 +442,21 @@ public class StdCharClass implements CharClass
 		final CharClass curClass = mob.baseCharStats().getCurrentClass();
 		final String currentClassID=curClass.ID();
 		final String currentBaseClassID=curClass.baseClass();
+
+		// check the min class level rule
+		if(multiClassFirstRule.equals("BASE")
+		&&(CMath.isInteger(multiClassSecondRule)))
+		{
+			final int min=CMath.s_int(multiClassSecondRule);
+			final int classLevel = mob.baseCharStats().getClassLevel(curClass);
+			if(currentClassID.equals(currentBaseClassID)
+			&&(classLevel<min))
+			{
+				if(!quiet)
+					mob.tell(L("You need at least @x1 levels in @x2 first.",""+min,curClass.name(classLevel)));
+				return false;
+			}
+		}
 
 		for(final Pair<String,Integer> minReq : getMinimumStatRequirements())
 		{
@@ -492,8 +510,9 @@ public class StdCharClass implements CharClass
 				if((multiClassRule.equals("NO"))||(multiClassFirstRule.equals("MULTI")))
 					return true;
 				if((multiClassRule.equals("SUB")
-						||multiClassFirstRule.equals("SUB")
-						||multiClassSecondRule.equals("BASE"))
+					||multiClassFirstRule.equals("SUB")
+					||multiClassFirstRule.equals("BASE")
+					||multiClassSecondRule.equals("BASE"))
 				&&(changeToBaseClassID.equals(changeToClassID)||(changeToSubClassRule==SubClassRule.ANY)))
 					return true;
 				if((multiClassSecondRule.equals("SUBONLY"))
