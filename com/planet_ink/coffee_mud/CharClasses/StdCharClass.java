@@ -450,6 +450,7 @@ public class StdCharClass implements CharClass
 				final String uStat = minReq.first.toUpperCase().trim();
 				if((cStats.getStat(statCode) < minReq.second.intValue())
 					&& (!CMLib.login().isTattooedLike(mob, "CHARCLASS_"+ID()+"+"+uStat))
+					&& (!CMLib.login().isTattooedLike(mob, "CHARCLASS_"+ID()))
 					&& (!CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL"+"+"+uStat)))
 				{
 					if(!quiet)
@@ -462,6 +463,7 @@ public class StdCharClass implements CharClass
 		if(!(isAllowedRace(R)
 			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_"+R.ID()))
 			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()+"+RACE_ALL"))
+			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_"+ID()))
 			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_"+R.ID()))
 			|| (CMLib.login().isTattooedLike(mob,"CHARCLASS_ALL+RACE_ALL"))
 			)
