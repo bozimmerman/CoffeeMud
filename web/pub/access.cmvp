@@ -119,6 +119,7 @@
 				@AddRequestParameter?CLANENC=@@ClanID@@ @
 				<LI><A href="javascript:Clicked('/clan/@RequestParameterEncoded?CLANENC@/index.cmvp')"><FONT COLOR="#0066CC"><B>@ClanID@</B></FONT></a>
 			@back@
+			<LI><A href="javascript:Clicked('/PlayerExport')"><FONT COLOR="#0066CC"><B>Download CMARE</B></FONT></a>
 			<LI><A href="javascript:Clicked('index.cmvp')"><FONT COLOR="#0066CC"><B>Public Pages</B></FONT></a>
 			<LI><A href="javascript:Logout('index.cmvp')"><FONT COLOR="#0066CC"><B>Logout</B></FONT></a>
 			</UL>
