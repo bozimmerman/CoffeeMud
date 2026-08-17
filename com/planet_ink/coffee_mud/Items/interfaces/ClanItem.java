@@ -62,7 +62,8 @@ public interface ClanItem extends Item
 		SPECIALAPRON("Merchant tool"),
 		LEGALBADGE("Officer emblem"),
 		TABBARD("Tabbard"),
-		SAILORSCAP("Sailors cap")
+		SAILORSCAP("Sailors cap"),
+		SIGNPOST("Signpost")
 		;
 		private final String ID;
 		private String displayName = null;
@@ -111,6 +112,7 @@ public interface ClanItem extends Item
 				case LEGALBADGE: displayName = CMLib.lang().L("Officer emblem"); break;
 				case TABBARD: displayName = CMLib.lang().L("Tabbard"); break;
 				case SAILORSCAP: displayName = CMLib.lang().L("Sailors cap"); break;
+				case SIGNPOST: displayName = CMLib.lang().L("Signpost"); break;
 				}
 			}
 			return displayName;

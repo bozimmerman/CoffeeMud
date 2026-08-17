@@ -123,11 +123,7 @@ public class Skill_Write extends StdSkill
 		}
 
 		final Item item=target;
-		if(((item.material()!=RawMaterial.RESOURCE_PAPER)
-		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
-		   &&(item.material()!=RawMaterial.RESOURCE_HIDE)
-		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
-		||(!item.isReadable()))
+		if(!CMLib.flags().isWriteable(item))
 		{
 			mob.tell(L("You can't write on that."));
 			return false;

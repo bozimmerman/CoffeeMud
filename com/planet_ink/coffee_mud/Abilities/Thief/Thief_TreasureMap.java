@@ -482,11 +482,7 @@ public class Thief_TreasureMap extends ThiefSkill
 		}
 
 		final Item item=target;
-		if(((item.material()!=RawMaterial.RESOURCE_PAPER)
-		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
-		   &&(item.material()!=RawMaterial.RESOURCE_HIDE)
-		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
-		||(!item.isReadable()))
+		if(!CMLib.flags().isWriteable(target))
 		{
 			mob.tell(L("You can't draw a map on that."));
 			return false;

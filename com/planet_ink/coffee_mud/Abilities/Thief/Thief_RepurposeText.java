@@ -92,11 +92,7 @@ public class Thief_RepurposeText extends ThiefSkill
 			mob.tell(L("You don't see '@x1' here.",(commands.get(0))));
 			return false;
 		}
-		if(((target.material()!=RawMaterial.RESOURCE_PAPER)
-		   &&(target.material()!=RawMaterial.RESOURCE_SILK)
-		   &&(target.material()!=RawMaterial.RESOURCE_HIDE)
-		   &&(target.material()!=RawMaterial.RESOURCE_HEMP))
-		||(!target.isReadable()))
+		if(!CMLib.flags().isWriteable(target))
 		{
 			mob.tell(L("You can't repurpose @x1.",target.name(mob)));
 			return false;

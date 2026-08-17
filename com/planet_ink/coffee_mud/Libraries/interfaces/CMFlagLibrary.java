@@ -430,6 +430,13 @@ public interface CMFlagLibrary extends CMLibrary
 	public void setReadable(Item I, boolean truefalse);
 
 	/**
+	 * Returns whether the given item is marked as being writeable.
+	 * @param I the item to check
+	 * @return true if it is writeable, false otherwise
+	 */
+	public boolean isWriteable(Item I);
+
+	/**
 	 * Returns whether the given item, mob, whatever is marked as being
 	 * affected by an uninvokeable spell, chant, prayer, or whatever.
 	 * @param F the room, item, or mob to check

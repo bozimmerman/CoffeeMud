@@ -89,6 +89,8 @@ public class StdClanItem extends StdItem implements ClanItem
 			return L("a paper");
 		case SAILORSCAP:
 			return L("a cap");
+		case SIGNPOST:
+			return L("a signpost");
 		case SPECIALAPRON:
 			return L("an apron");
 		case SPECIALOTHER:

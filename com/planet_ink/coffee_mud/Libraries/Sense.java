@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -272,6 +273,22 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isReadable(final Item I)
 	{
 		return (I != null) && ((I.phyStats().sensesMask() & PhyStats.SENSE_ITEMREADABLE) == PhyStats.SENSE_ITEMREADABLE);
+	}
+
+	@Override
+	public boolean isWriteable(Item I)
+	{
+		if(!isReadable(I))
+			return false;
+		if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER))
+		||(I.material()==RawMaterial.RESOURCE_HIDE)
+		||(I.material()==RawMaterial.RESOURCE_HEMP)
+		||(I.material()==RawMaterial.RESOURCE_SILK))
+			return true;
+		if((I instanceof ClanItem)
+		&&(((ClanItem)I).getClanItemType()==ClanItemType.SIGNPOST))
+			return true;
+		return false;
 	}
 
 	@Override
