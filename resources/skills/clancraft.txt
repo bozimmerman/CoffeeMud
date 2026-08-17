@@ -43,3 +43,4 @@ Tax Collectors Clipboard %	5	30	IRONWOOD/20	GOLD/10	9	1000	0	GenClanSpecialItem
 Concierges Uniform %	15	20	WOOL/10	SILK/2	8	500	0	GenClanConcierge	TORSO&&ARMS&&LEGS	0	1	0		
 Concierges Cap %	3	10	WOOL/5		8	100	0	GenClanConcierge	HEAD	0	0	0		
 Ship Compass %	3	20	IRONWOOD/10	MITHRIL/1	0	50	0	GenClanItem					*Prop_UseSpellCast;Skill_FindClanShip	
+Signpost %	4	20	WOOD/24	NICKEL/1	16	150	20	GenClanSignpost						

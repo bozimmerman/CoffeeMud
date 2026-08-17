@@ -26,6 +26,7 @@
 24. Identify Object spell and Lore skill alters apparent name temporarily 
 25. New optional CLASSSYSTEM rule: BASE-X, for base class requirements.  See INI file.
 26. Player Access web page now has a button to download player cmare file.
+27. New clan item: StdClanSignpost/GenClanSignpost
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
