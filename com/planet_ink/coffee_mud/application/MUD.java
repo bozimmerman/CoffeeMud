@@ -1861,9 +1861,7 @@ public class MUD extends Thread implements MudHost
 				if(MUD.bringDown)
 					return;
 			}
-			CMProps page=CMProps.loadPropPage("//"+iniFile);
-			if ((page==null)||(!page.isLoaded()))
-				page = CMProps.loadPropPage(new File(iniFile));
+			CMProps page=CMProps.loadSystemPropPage(iniFile);
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
@@ -2095,9 +2093,7 @@ public class MUD extends Thread implements MudHost
 		if(iniFiles.size()==0)
 			iniFiles.addElement("coffeemud.ini");
 		String iniFile=iniFiles.firstElement();
-		CMProps page=CMProps.loadPropPage("//"+iniFile);
-		if ((page==null)||(!page.isLoaded()))
-			page = CMProps.loadPropPage(new File(iniFile));
+		CMProps page=CMProps.loadSystemPropPage(iniFile);
 		for(final String key: clArgs.keySet())
 		{
 			String skey = key;

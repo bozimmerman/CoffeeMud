@@ -784,12 +784,40 @@ public class CMProps extends Properties
 	 * as input for the properties.
 	 * @param filename a file from which to draw the properties.
 	 */
-	public CMProps(final String filename)
+	public CMProps(String filename)
+	{
+		this(filename,false);
+	}
+	
+	/**
+	 * Creates a properties object for the callers thread group using the given file path
+	 * as input for the properties.
+	 * @param filename a file from which to draw the properties.
+	 * @param forceLocal true to force local file reads and outside the sandbox
+	 */
+	private CMProps(String filename, boolean forceLocal)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(props[c]==null)
 			props[c]=this;
-		load(filename);
+		if(filename.startsWith("//")||filename.startsWith("::"))
+			filename=filename.substring(2);
+		load("//"+filename);
+		if(!loaded && forceLocal)
+		{
+			File F = new File(filename);
+			if((F == null)||(!F.exists())||(!F.canRead()))
+				return;
+			try(FileInputStream fin = new FileInputStream(F))
+			{
+				load(fin);
+				loaded=true;
+			}
+			catch (IOException e)
+			{
+				Log.errOut(e);
+			}
+		}
 	}
 
 	/**
@@ -814,13 +842,13 @@ public class CMProps extends Properties
 
 	/**
 	 * Creates a new properties object for the callers thread group
-	 * and loads the given ini file.
+	 * and loads the given ini file from vfs or local.  
 	 * @param iniFile the path and name of the ini file to load
 	 * @return the new properties object
 	 */
-	public static final CMProps loadPropPage(final String iniFile)
+	public static final CMProps loadSystemPropPage(final String iniFile)
 	{
-		final CMProps page=new CMProps(iniFile);
+		CMProps page=new CMProps(iniFile, true);
 		if(!page.loaded)
 			return null;
 		return page;
@@ -828,25 +856,16 @@ public class CMProps extends Properties
 
 	/**
 	 * Creates a new properties object for the callers thread group
-	 * and loads the given ini file as a local File.
-	 * @param iniFile the local File of the ini file to load
+	 * and loads the given ini file from cmfs.
+	 * @param iniFile the path and name of the ini file to load
 	 * @return the new properties object
 	 */
-	public static final CMProps loadPropPage(final File iniFile)
+	public static final CMProps loadPropPage(final String iniFile)
 	{
-		if((iniFile == null)||(!iniFile.exists())||(!iniFile.canRead()))
+		final CMProps page=new CMProps(iniFile, false);
+		if(!page.loaded)
 			return null;
-		try(FileInputStream fin = new FileInputStream(iniFile))
-		{
-			final CMProps page=new CMProps(fin);
-			if(!page.loaded)
-				return null;
-			return page;
-		}
-		catch (IOException e)
-		{
-			return null;
-		}
+		return page;
 	}
 
 	/**
