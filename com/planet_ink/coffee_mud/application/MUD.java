@@ -739,12 +739,12 @@ public class MUD extends Thread implements MudHost
 								Log.errOut(ex);
 							}
 						}
+					}
 				}
 			}
-		}
-		try
-		{
-			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
+			try
+			{
+				for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
 				{
 					try
 					{
