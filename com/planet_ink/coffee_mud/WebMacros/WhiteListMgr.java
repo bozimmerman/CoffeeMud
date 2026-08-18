@@ -47,8 +47,8 @@ public class WhiteListMgr extends StdWebMacro
 		return true;
 	}
 	
-	
-	protected String readINIFile(final HTTPRequest httpReq, final String key) {
+	protected String readINIFile(final HTTPRequest httpReq, final String key) 
+	{
 		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		final String upperKey = key.toUpperCase().trim();
 		for(int p=0;p<page.size();p++)
@@ -64,7 +64,8 @@ public class WhiteListMgr extends StdWebMacro
 		return "";
 	}
 	
-	protected synchronized String[] readINIList(final HTTPRequest httpReq, final String key) {
+	protected synchronized String[] readINIList(final HTTPRequest httpReq, final String key) 
+	{
 		if(httpReq.getRequestObjects().containsKey(ID()+"_"+key))
 			return (String[])httpReq.getRequestObjects().get(ID()+"_"+key);
 		final String[] list = CMParms.parseCommas(readINIFile(httpReq,key), true).toArray(new String[0]);
@@ -72,7 +73,8 @@ public class WhiteListMgr extends StdWebMacro
 		return list;
 	}
 
-	protected String updateINIFile(final String key, final String newVal) {
+	protected String updateINIFile(final String key, final String newVal) 
+	{
 		final StringBuffer buf=new StringBuffer("");
 		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		final String upperKey = key.toUpperCase().trim();
@@ -91,7 +93,8 @@ public class WhiteListMgr extends StdWebMacro
 		return "";
 	}
 
-	static final String[] WTYPES = new String[] {
+	static final String[] WTYPES = new String[]
+	{
 		"IPSCONN","LOGINS","IPSNEWPLAYERS"
 	};
 	
