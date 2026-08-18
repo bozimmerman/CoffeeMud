@@ -2095,7 +2095,9 @@ public class MUD extends Thread implements MudHost
 		if(iniFiles.size()==0)
 			iniFiles.addElement("coffeemud.ini");
 		String iniFile=iniFiles.firstElement();
-		final CMProps page=CMProps.loadPropPage("//"+iniFile);
+		CMProps page=CMProps.loadPropPage("//"+iniFile);
+		if ((page==null)||(!page.isLoaded()))
+			page = CMProps.loadPropPage(new File(iniFile));
 		for(final String key: clArgs.keySet())
 		{
 			String skey = key;
