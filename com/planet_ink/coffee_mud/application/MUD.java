@@ -1312,10 +1312,11 @@ public class MUD extends Thread implements MudHost
 	{
 		private String	name		= null;
 		private String	iniFile		= null;
-		private String	logName		= null;
 		private char	threadCode	= MAIN_HOST;
 		private boolean	hostStarted	= false;
 		private boolean	failedStart	= false;
+		
+		private final int groupId;
 		//protected ThreadGroup threadGroup;
 
 		/**
@@ -1329,10 +1330,10 @@ public class MUD extends Thread implements MudHost
 		public HostGroup(final ThreadGroup G, final String mudName, final String iniFileName)
 		{
 			super(G,"HOST"+grpid);
+			groupId = grpid;
 			//threadGroup=G;
 			synchronized(CMClass.getSync("HostGroupInit"))
 			{
-				logName="mud"+((grpid>0)?("."+grpid):"");
 				grpid++;
 				iniFile=iniFileName;
 				name=mudName;
@@ -1892,6 +1893,9 @@ public class MUD extends Thread implements MudHost
 				if(CMath.isInteger(page.getPrivateStr("NUMLOGS")))
 				{
 					Log.newInstance();
+					String logName = page.getStr("LOGNAME");
+					if(logName == null || logName.trim().length()==0)
+						logName="mud"+((groupId>0)?("."+groupId):"");
 					Log.instance().configureLogFile(logName,page.getInt("NUMLOGS"));
 					for(final Log.Type logType : Log.Type.values())
 						Log.instance().configureLog(logType, page.getStr(logType.getLogCode()));
@@ -2136,7 +2140,10 @@ public class MUD extends Thread implements MudHost
 			return;
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.instance().configureLogFile("mud",page.getInt("NUMLOGS"));
+		String logName = page.getStr("LOGNAME");
+		if(logName == null || logName.trim().length()==0)
+			logName="mud";
+		Log.instance().configureLogFile(logName,page.getInt("NUMLOGS"));
 		for(final Log.Type logType : Log.Type.values())
 			Log.instance().configureLog(logType, page.getStr(logType.getLogCode()));
 
