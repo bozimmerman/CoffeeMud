@@ -739,12 +739,12 @@ public class MUD extends Thread implements MudHost
 								Log.errOut(ex);
 							}
 						}
-					}
 				}
 			}
-			try
-			{
-				for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
+		}
+		try
+		{
+			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
 				{
 					try
 					{
@@ -1861,7 +1861,9 @@ public class MUD extends Thread implements MudHost
 				if(MUD.bringDown)
 					return;
 			}
-			final CMProps page=CMProps.loadPropPage("//"+iniFile);
+			CMProps page=CMProps.loadPropPage("//"+iniFile);
+			if ((page==null)||(!page.isLoaded()))
+				page = CMProps.loadPropPage(new File(iniFile));
 			if ((page==null)||(!page.isLoaded()))
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");

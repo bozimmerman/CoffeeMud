@@ -827,6 +827,29 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Creates a new properties object for the callers thread group
+	 * and loads the given ini file as a local File.
+	 * @param iniFile the local File of the ini file to load
+	 * @return the new properties object
+	 */
+	public static final CMProps loadPropPage(final File iniFile)
+	{
+		if((iniFile == null)||(!iniFile.exists())||(!iniFile.canRead()))
+			return null;
+		try(FileInputStream fin = new FileInputStream(iniFile))
+		{
+			final CMProps page=new CMProps(fin);
+			if(!page.loaded)
+				return null;
+			return page;
+		}
+		catch (IOException e)
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * Creates a new properties object detached from any thread group
 	 * and loads the given ini file.
 	 * @param iniFile the path and name of the ini file to load
