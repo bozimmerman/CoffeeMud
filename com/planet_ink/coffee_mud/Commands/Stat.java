@@ -1412,30 +1412,33 @@ public class Stat  extends Skills
 			}
 			else
 			{
+				final List<String> all = new ArrayList<String>();
+				all.addAll(Arrays.asList(mob.curState().getStatCodes()));
 				for(final String stat : mob.curState().getStatCodes())
-					msg.append(stat).append(", ");
-				for(final String stat : mob.curState().getStatCodes())
-					msg.append("MAX"+stat).append(", ");
+					all.add("MAX"+stat);
+				all.addAll(Arrays.asList(mob.charStats().getStatCodes()));
 				for(final String stat : mob.charStats().getStatCodes())
-					msg.append(stat).append(", ");
-				for(final String stat : mob.charStats().getStatCodes())
-					msg.append("BASE"+stat).append(", ");
-				for(final String stat : mob.phyStats().getStatCodes())
-					msg.append(stat).append(", ");
-				msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
+					all.add("BASE"+stat);
+				all.addAll(Arrays.asList(mob.phyStats().getStatCodes()));
+				all.addAll(Arrays.asList(new String[] {
+					"STINK", "XP", "XPTNL", "XPFNL", "QUESTPOINTS", "TRAINS", 
+					"PRACTICES", "HEALTH", "RESISTS", "ATTRIBUTES", "FOLLOWERS"
+				}));
 				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 				{
 					final Faction F=f.nextElement();
 					if((F!=null)&&(F.showInScore()))
-						msg.append(", "+F.name().toUpperCase().replace(' ','_'));
+						all.add(F.name().toUpperCase().replace(' ','_'));
 				}
 				if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 				{
-					msg.append(L(", [MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], "));
+					all.addAll(Arrays.asList(new String[] {"[MOB/PLAYER NAME]", "[NUMBER] [DAYS/WEEKS/MONTHS]"}));
 					for (final String[] element : ABLETYPE_DESCS)
-						msg.append(element[0]+", ");
-					msg.append(CMParms.toListString(Ability.ACODE.DESCS));
+						all.add(element[0]);
+					all.addAll(Ability.ACODE.DESCS);
 				}
+				for(final String stat : all)
+					msg.append(stat).append(", ");
 			}
 			final String msgStr = msg.toString().trim();
 			if(msgStr.endsWith(","))
