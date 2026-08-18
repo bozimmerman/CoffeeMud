@@ -2243,7 +2243,13 @@ public class MUD extends Thread implements MudHost
 					{
 						e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e);
 					}
-					Runtime.getRuntime().removeShutdownHook(shutdownHook);
+					try
+					{
+						Runtime.getRuntime().removeShutdownHook(shutdownHook);
+					}
+					catch(Throwable t)
+					{
+					}
 				}
 			}
 
