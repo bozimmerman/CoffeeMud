@@ -548,10 +548,23 @@ public class MUDProxy
 			}
 			else
 			{
-				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
-				System.err.println("PROXY/ERROR: Unable to read ini file: '"+iniFile+"'.");
-				System.exit(-1);
-				return;
+				File F1=new File(iniFile);
+				if((F1.exists() && F1.canRead()))
+				{
+					try(FileInputStream fin = new FileInputStream(F1))
+					{
+						sections.addAll(CMProps.splitSections(fin));
+					}
+					catch(IOException e)
+					{}
+				}
+				if(sections.size()==0)
+				{
+					Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
+					System.err.println("PROXY/ERROR: Unable to read ini file: '"+iniFile+"'.");
+					System.exit(-1);
+					return;
+				}
 			}
 			for(final Pair<String,InputStream> sec : sections)
 			{
@@ -627,6 +640,7 @@ public class MUDProxy
 		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2026 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);
+		
 		try(Selector selector = Selector.open())
 		{
 			MUDProxy.selector = selector;
@@ -1248,6 +1262,8 @@ public class MUDProxy
 					transferServerContext.session.put("source_ip", context.port.first);
 					transferServerContext.session.put("source_port", context.port.second);
 					transferServerContext.session.put("mob_xml", obj.get("mob_xml"));
+					if(obj.containsKey("return"))
+						transferServerContext.session.put("return", obj.get("return"));
 					// Put the client into distress mode so reconnectClient triggers the
 					// SessionInfo-with-mob_xml path in handleConnect.
 					clientContext.distressedTime = System.currentTimeMillis() - 1000;
