@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.io.File;
 
 /*
    Copyright 2005-2026 Bo Zimmerman
@@ -362,7 +363,7 @@ public class INIValue extends StdWebMacro
 		if(!parms.containsKey("MASK"))
 			return "'MASK' not found!";
 		final String mask=parms.get("MASK").toUpperCase();
-		final CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+		CMProps page=CMProps.loadSystemPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 		if((page==null)||(!page.isLoaded()))
 			return "";
 		if(mask.trim().endsWith("*"))
