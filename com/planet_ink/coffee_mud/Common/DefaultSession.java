@@ -2021,7 +2021,11 @@ public class DefaultSession implements Session
 								for(final String key : getStatCodes())
 								{
 									if(obj.containsKey(key.toLowerCase()))
-										setStat(key,obj.get(key.toLowerCase()).toString());
+									{
+										try { 
+											setStat(key,obj.get(key.toLowerCase()).toString()); 
+										} catch(final Exception e) { }
+									}
 								}
 								this.inputCallback=null;
 								final int isMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
@@ -2212,7 +2216,8 @@ public class DefaultSession implements Session
 			int last = 0;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				Log.debugOut("Reading sub-option "+subOptionCode);
-			final long expire=System.currentTimeMillis() + 100;
+			final long expire=System.currentTimeMillis() + ((subOptionCode == TELNET_MPCP) ? 5000 : 100);
+			final long maxStreamSize = ((subOptionCode == TELNET_MPCP) ? 1024*1024*10 : 1024*1024*5);
 			while((System.currentTimeMillis()<expire)
 			&&(!killFlag))
 			{
@@ -2221,7 +2226,7 @@ public class DefaultSession implements Session
 					last = readByte();
 					if(last != -1)
 					{
-						if(subOptionStream.size()>1024*1024*5)
+						if(subOptionStream.size()>maxStreamSize)
 						{
 							killFlag=true;
 							return;
