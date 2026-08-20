@@ -2543,7 +2543,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.setStatus(Session.SessionStatus.CHARCREATE);
 
 		loginObj.login=CMStrings.capitalizeAndLower(loginObj.login.trim());
-		Log.sysOut("Creating user: "+loginObj.login);
+		Log.sysOut("Creating character: "+loginObj.login);
 
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
