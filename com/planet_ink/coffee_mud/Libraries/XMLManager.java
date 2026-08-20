@@ -1624,7 +1624,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 * @param val the value
 	 * @return the xml value
 	 */
-	protected String fromPOJOFieldtoXML(final Class<?> type, final Object val)
+	@Override
+	public String fromPOJOFieldtoXML(final Class<?> type, final Object val)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(type.isArray())

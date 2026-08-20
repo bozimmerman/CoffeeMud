@@ -363,6 +363,14 @@ public interface XMLLibrary extends CMLibrary
 	public String fromPOJOtoXML(Object o);
 
 	/**
+	 * Converts a pojo field to a xml value.
+	 * @param type the class type
+	 * @param val the value
+	 * @return the xml value
+	 */
+	public String fromPOJOFieldtoXML(final Class<?> type, final Object val);
+
+	/**
 	 * Converts a xml document to a XML object.
 	 * @param XML the XML document
 	 * @param o the object to convert
