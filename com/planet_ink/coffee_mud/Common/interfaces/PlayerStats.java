@@ -838,6 +838,22 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public void setAccount(PlayerAccount account);
 
 	/**
+	 * Returns the transfer data for this player, or null if this
+	 * player is not currently transferred to or from another mud. 
+	 *
+	 * @return the transfer data, or null if native
+	 */
+	public IMudTransferData getIMudTransferData();
+
+	/**
+	 * Sets the transfer data for this player. Pass null to clear
+	 * (mark as native). See {@link #getIMudTransferData()}.
+	 *
+	 * @param data the transfer data (host, port, timestamp), or null
+	 */
+	public void setIMudTransferData(IMudTransferData data);
+
+	/**
 	 * Gets external items belonging to this player, which should be destroyed with the
 	 * player, but can still be transient.  These are items like player corpses, buried
 	 * items, perhaps artifacts, or ships, vehicles, children, etc.
@@ -1160,6 +1176,44 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 		}
 	}
 
+	/**
+	 * Reflects the return address of this player, if they are not local
+	 */
+	public static class IMudTransferData
+	{
+		/**
+		 * The foreign mud host for this player.
+		 */
+		public String host;
+		/**
+		 * The foreign mud port for this player.
+		 */
+		public int port;
+		/**
+		 * The timestamp of the original transfer.
+		 */
+		public long timestamp;
+		/**
+		 * The original room for this player.
+		 */
+		public String returnRoomID;
+		
+		/**
+		 * Simple constructor 
+		 * @param host foreign mud host for this player.
+		 * @param port foreign mud port for this player.
+		 * @param timestamp timestamp of the original transfer.
+		 * @param roomID original room if for this player.
+		 */
+		public IMudTransferData(String host, int port, long timestamp, String roomID)
+		{
+			this.host = host;
+			this.port = port;
+			this.timestamp=timestamp;
+			this.returnRoomID=roomID;
+		}
+	}
+	
 	/**
 	 * Various combat stats
 	 *

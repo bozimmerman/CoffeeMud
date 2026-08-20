@@ -130,6 +130,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	protected Set<PlayerFlag>		playFlags		= new SHashSet<PlayerFlag>();
 	protected List<LevelInfo>		levelInfo		= new SVector<LevelInfo>();
 	protected Map<String,Boolean>	autoApproves	= new Hashtable<String,Boolean>();
+	protected IMudTransferData		imudXferData	= null;
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
@@ -1912,6 +1913,18 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	public void setAccount(final PlayerAccount account)
 	{
 		this.account = account;
+	}
+
+	@Override
+	public IMudTransferData getIMudTransferData()
+	{
+		return imudXferData;
+	}
+
+	@Override
+	public void setIMudTransferData(final IMudTransferData data)
+	{
+		this.imudXferData = data;
 	}
 
 	@Override
