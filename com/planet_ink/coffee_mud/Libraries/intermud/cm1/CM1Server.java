@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -144,7 +145,7 @@ public class CM1Server extends Thread
 									channel.configureBlocking (false);
 									channel.register (servSelector, SelectionKey.OP_READ, handler);
 									handlers.put(channel,handler);
-									handler.sendMsg("CONNECTED TO "+name.toUpperCase());
+									handler.sendMsg(Status.MESSAGE,"CONNECTED TO "+name.toUpperCase());
 								}
 								//sayHello (channel);
 							}

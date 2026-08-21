@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.commands.Listen.ListenCriterium;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.commands.Listen.Listener;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -83,7 +84,7 @@ public class Monitor extends Listen
 				name=null;
 			if(name==null)
 			{
-				req.sendMsg("[FAIL No "+getCommandWord()+"ER name given]");
+				req.sendMsg(Status.FAIL,"No "+getCommandWord()+"ER name given");
 				return;
 			}
 			final List<ListenCriterium> crit=getCriterium(rest);
@@ -109,12 +110,12 @@ public class Monitor extends Listen
 					}
 				}
 				if(msgs.size()==0)
-					req.sendMsg("[FAIL NONE]");
+					req.sendMsg(Status.FAIL,"NONE");
 				else
 				{
-					req.sendMsg("[OK /MESSAGES:"+msgs.size()+"]");
+					req.sendMsg(Status.OK,"/MESSAGES:"+msgs.size()+"");
 					for(final String s : msgs)
-						req.sendMsg("[MESSAGE "+s+"]");
+						req.sendMsg(Status.MESSAGE,s);
 				}
 			}
 			else
@@ -123,7 +124,7 @@ public class Monitor extends Listen
 				CMLib.commands().addGlobalMonitor(newListener);
 				req.addDependent(newListener.channelName, newListener);
 				listeners.add(newListener);
-				req.sendMsg("[OK]");
+				req.sendMsg(Status.OK,"");
 			}
 		}
 		catch(final Exception ioe)

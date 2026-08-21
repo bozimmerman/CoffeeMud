@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.intermud.cm1.commands;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,7 +17,6 @@ import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import java.util.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -40,16 +40,16 @@ import java.util.concurrent.atomic.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
-public class Shell extends CM1Command
+ */
+public class CommandMode extends CM1Command
 {
 	@Override
 	public String getCommandWord()
 	{
-		return "SHELL";
+		return "COMMANDMODE";
 	}
 
-	public Shell(final RequestHandler req, final String parameters)
+	public CommandMode(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -59,14 +59,20 @@ public class Shell extends CM1Command
 	{
 		try
 		{
-			Command shellC = CMClass.getCommand("Shell");
-			String data = (String)shellC.executeInternal(req.getUser(), MUDCmdProcessor.METAFLAG_FORCED, CMParms.parse("SHELL "+parameters).toArray());
-			data = CMStrings.removeColors(data);
-			req.sendMsg(Status.BLOCK,data);
+			try
+			{
+				RequestHandler.CommandMode mode = RequestHandler.CommandMode.valueOf(parameters.toUpperCase().trim());
+				req.setCommandMode(mode);
+				req.sendMsg(Status.OK,"");
+			}
+			catch(Exception e)
+			{
+				req.sendMsg(Status.FAIL,"Illegal command mode given. Use STANDARD, JSON, or XML.");
+			}
 		}
-		catch(final java.io.IOException ioe)
+		catch (final Exception ioe)
 		{
-			Log.errOut(className,ioe);
+			Log.errOut(className, ioe);
 			req.close();
 		}
 	}
@@ -74,14 +80,12 @@ public class Shell extends CM1Command
 	@Override
 	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
-		if(user == null)
-			return false;
-		return CMSecurity.hasAccessibleDir(user,null);
+		return true;
 	}
 
 	@Override
 	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
-		return "USAGE: "+getCommandWord()+" -shell command-";
+		return "USAGE: COMMANDMODE: Changes the command entry mode to standard, json, or xml.";
 	}
 }

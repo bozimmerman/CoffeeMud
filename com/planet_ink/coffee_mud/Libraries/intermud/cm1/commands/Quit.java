@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -57,7 +58,7 @@ public class Quit extends CM1Command
 	{
 		try
 		{
-			req.sendMsg("[OK]");
+			req.sendMsg(Status.OK,"");
 			req.close();
 		}
 		catch(final java.io.IOException ioe)

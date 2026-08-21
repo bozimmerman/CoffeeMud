@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,45 +65,45 @@ public class GetSys extends CM1Command
 			{
 				type = type.substring(5).trim();
 				if(CMProps.isPropName(type))
-					req.sendMsg("[OK "+CMProps.getProp(type)+"]");
+					req.sendMsg(Status.OK,""+CMProps.getProp(type)+"");
 				else
-					req.sendMsg("[FAIL NO PROP "+type+"]");
+					req.sendMsg(Status.FAIL,"NO PROP "+type+"");
 			}
 			else
 			if(type.startsWith("DEBUG "))
 			{
 				type = type.substring(6).trim();
 				if(CMParms.indexOfIgnoreCase(CMSecurity.DbgFlag.values(), type)>=0)
-					req.sendMsg("[OK "+CMSecurity.isDebuggingSearch(type)+"]");
+					req.sendMsg(Status.OK,""+CMSecurity.isDebuggingSearch(type)+"");
 				else
-					req.sendMsg("[FAIL NO DEBUG "+type+"]");
+					req.sendMsg(Status.FAIL,"NO DEBUG "+type+"");
 			}
 			else
 			if(type.startsWith("DISABLE "))
 			{
 				type = type.substring(8).trim();
 				if(CMParms.indexOfIgnoreCase(CMSecurity.DisFlag.values(), type)>=0)
-					req.sendMsg("[OK "+CMSecurity.isAnyFlagDisabled(type)+"]");
+					req.sendMsg(Status.OK,""+CMSecurity.isAnyFlagDisabled(type)+"");
 				else
-					req.sendMsg("[FAIL NO DISABLE "+type+"]");
+					req.sendMsg(Status.FAIL,"NO DISABLE "+type+"");
 			}
 			else
 			if(type.startsWith("ENABLE "))
 			{
-				req.sendMsg("[FAIL NO ENABLE "+type+"]");
+				req.sendMsg(Status.FAIL,"NO ENABLE "+type+"");
 			}
 			else
 			{
 				if(CMProps.isPropName(type))
-					req.sendMsg("[OK "+CMProps.getProp(type)+"]");
+					req.sendMsg(Status.OK,""+CMProps.getProp(type)+"");
 				else
 				if(CMParms.indexOfIgnoreCase(CMSecurity.DbgFlag.values(), type)>=0)
-					req.sendMsg("[OK "+CMSecurity.isDebuggingSearch(type)+"]");
+					req.sendMsg(Status.OK,""+CMSecurity.isDebuggingSearch(type)+"");
 				else
 				if(CMParms.indexOfIgnoreCase(CMSecurity.DisFlag.values(), type)>=0)
-					req.sendMsg("[OK "+CMSecurity.isAnyFlagDisabled(type)+"]");
+					req.sendMsg(Status.OK,""+CMSecurity.isAnyFlagDisabled(type)+"");
 				else
-					req.sendMsg("[FAIL NO SYS "+type+"]");
+					req.sendMsg(Status.FAIL,"NO SYS "+type+"");
 			}
 		}
 		catch(final Exception ioe)

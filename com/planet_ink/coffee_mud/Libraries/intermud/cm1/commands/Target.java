@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -61,10 +62,10 @@ public class Target extends CM1Command
 			if(P!=null)
 			{
 				req.setTarget(P);
-				req.sendMsg("[OK]");
+				req.sendMsg(Status.OK,"");
 				return;
 			}
-			req.sendMsg("[FAIL]");
+			req.sendMsg(Status.FAIL,"");
 		}
 		catch(final Exception ioe)
 		{

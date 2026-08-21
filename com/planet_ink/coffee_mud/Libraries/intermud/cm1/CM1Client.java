@@ -135,7 +135,7 @@ public class CM1Client
 			final long timeout=System.currentTimeMillis() + (3 * 1000);
 			String s=br.readLine();
 			while((System.currentTimeMillis()<timeout)
-			&&(!s.startsWith("CONNECTED TO")))
+			&&(!s.startsWith("[MESSAGE CONNECTED TO")))
 				s=br.readLine();
 			if(System.currentTimeMillis()>timeout)
 				return true;

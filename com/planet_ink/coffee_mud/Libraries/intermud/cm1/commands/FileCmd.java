@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,9 +65,9 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
-					req.sendMsg("[OK "+f.length()+"]");
+					req.sendMsg(Status.OK,""+f.length());
 			}
 			else
 			if(firstWord.equals("AUTHOR"))
@@ -74,9 +75,9 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
-					req.sendMsg("[OK "+f.author()+"]");
+					req.sendMsg(Status.OK,f.author());
 			}
 			else
 			if(firstWord.equals("LASTMODIFIED"))
@@ -84,9 +85,9 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(13).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
-					req.sendMsg("[OK "+CMLib.time().date2String(f.lastModified())+"]");
+					req.sendMsg(Status.OK,CMLib.time().date2String(f.lastModified()));
 			}
 			else
 			if(firstWord.equals("DELETE"))
@@ -94,12 +95,12 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(7).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
 				if((!f.canWrite())||(!f.delete()))
-					req.sendMsg("[FAIL UNAUTHORIZED "+filename+"]");
+					req.sendMsg(Status.FAIL,"UNAUTHORIZED "+filename);
 				else
-					req.sendMsg("[OK "+CMLib.time().date2String(f.lastModified())+"]");
+					req.sendMsg(Status.OK,CMLib.time().date2String(f.lastModified()));
 			}
 			else
 			if(firstWord.equals("READ"))
@@ -107,27 +108,23 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
 				if(f.isDirectory() && f.canRead())
 				{
 					final StringBuilder str=new StringBuilder("");
 					for(final CMFile f2 : f.listFiles())
 						str.append(f2.getName()).append(f2.isDirectory()?"/ ":" ");
-					req.sendMsg("[OK "+str.toString().trim()+"]");
+					req.sendMsg(Status.OK,str.toString().trim());
 				}
 				else
 				if(f.canRead())
 				{
-					String eob="/BLOCK:"+Math.random();
 					final String data=f.textUnformatted().toString();
-					while(data.indexOf(eob)>=0)
-						eob="/BLOCK:"+Math.random();
-					req.sendMsg("[BLOCK "+eob+"]");
-					req.sendMsg(data+eob);
+					req.sendMsg(Status.BLOCK,data);
 				}
 				else
-					req.sendMsg("[FAIL UNAUTHORIZED "+filename+"]");
+					req.sendMsg(Status.FAIL,"UNAUTHORIZED "+filename);
 			}
 			else
 			if(firstWord.equals("READB64"))
@@ -135,27 +132,23 @@ public class FileCmd extends CM1Command
 				final String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
-					req.sendMsg("[FAIL FILE NOT FOUND "+filename+"]");
+					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
 				else
 				if(f.isDirectory() && f.canRead())
 				{
 					final StringBuilder str=new StringBuilder("");
 					for(final CMFile f2 : f.listFiles())
 						str.append(f2.getName()).append(f2.isDirectory()?"/ ":" ");
-					req.sendMsg("[OK "+str.toString().trim()+"]");
+					req.sendMsg(Status.OK,str.toString().trim());
 				}
 				else
 				if(f.canRead())
 				{
-					String eob="/BLOCK:"+Math.random();
 					final String data=B64Encoder.B64encodeBytes(f.raw());
-					while(data.indexOf(eob)>=0)
-						eob="/BLOCK:"+Math.random();
-					req.sendMsg("[BLOCK "+eob+"]");
-					req.sendMsg(data+eob);
+					req.sendMsg(Status.BLOCK,data);
 				}
 				else
-					req.sendMsg("[FAIL UNAUTHORIZED "+filename+"]");
+					req.sendMsg(Status.FAIL,"UNAUTHORIZED "+filename);
 			}
 			else
 			if(firstWord.equals("WRITE"))
@@ -187,13 +180,13 @@ public class FileCmd extends CM1Command
 					}
 				}
 				if((f==null)||((f.exists()&&f.isDirectory())||(!f.canWrite())))
-					req.sendMsg("[FAIL BAD FILENAME]");
+					req.sendMsg(Status.FAIL,"BAD FILENAME");
 				else
 				{
 					if(f.saveText(rest))
-						req.sendMsg("[OK]");
+						req.sendMsg(Status.OK,"");
 					else
-						req.sendMsg("[FAIL UNABLE TO WRITE]");
+						req.sendMsg(Status.FAIL,"UNABLE TO WRITE");
 				}
 			}
 			else
@@ -226,18 +219,18 @@ public class FileCmd extends CM1Command
 					}
 				}
 				if((f==null)||((f.exists()&&f.isDirectory())||(!f.canWrite())))
-					req.sendMsg("[FAIL BAD FILENAME]");
+					req.sendMsg(Status.FAIL,"BAD FILENAME");
 				else
 				{
 					final byte[] binData=B64Encoder.B64decode(rest);
 					if(f.saveRaw(binData))
-						req.sendMsg("[OK]");
+						req.sendMsg(Status.OK,"");
 					else
-						req.sendMsg("[FAIL UNABLE TO WRITE]");
+						req.sendMsg(Status.FAIL,"UNABLE TO WRITE");
 				}
 			}
 			else
-				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
+				req.sendMsg(Status.FAIL,getHelp(req.getUser(), null, null));
 		}
 		catch(final java.io.IOException ioe)
 		{

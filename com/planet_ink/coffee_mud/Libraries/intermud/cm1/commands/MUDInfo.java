@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,30 +59,30 @@ public class MUDInfo extends CM1Command
 		try
 		{
 			if((parameters.length()==0)||(parameters.equalsIgnoreCase("STATUS")))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDSTATUS)+"]");
+				req.sendMsg(Status.OK,""+CMProps.getVar(CMProps.Str.MUDSTATUS)+"");
 			else
 			if(parameters.equalsIgnoreCase("PORTS"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.ALLMUDPORTS)+"]");
+				req.sendMsg(Status.OK,""+CMProps.getVar(CMProps.Str.ALLMUDPORTS)+"");
 			else
 			if(parameters.equalsIgnoreCase("PORT"))
-				req.sendMsg("[OK "+CMLib.host().getPublicPort()+"]");
+				req.sendMsg(Status.OK,""+CMLib.host().getPublicPort()+"");
 			else
 			if(parameters.equalsIgnoreCase("VERSION"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDVER)+"]");
+				req.sendMsg(Status.OK,""+CMProps.getVar(CMProps.Str.MUDVER)+"");
 			else
 			if(parameters.equalsIgnoreCase("DOMAIN"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+"]");
+				req.sendMsg(Status.OK,""+CMProps.getVar(CMProps.Str.MUDDOMAIN)+"");
 			else
 			if(parameters.equalsIgnoreCase("NAME"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUD_NAME)+"]");
+				req.sendMsg(Status.OK,""+CMProps.getVar(CMProps.Str.MUD_NAME)+"");
 			else
 			if(parameters.equalsIgnoreCase("WHO"))
-				req.sendMsg("[OK "+getWhos()+"]");
+				req.sendMsg(Status.OK,""+getWhos()+"");
 			else
 			if(parameters.equalsIgnoreCase("HOSTS"))
-				req.sendMsg("[OK "+getHosts()+"]");
+				req.sendMsg(Status.OK,""+getHosts()+"");
 			else
-				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
+				req.sendMsg(Status.FAIL,""+getHelp(req.getUser(), null, null)+"");
 		}
 		catch(final java.io.IOException ioe)
 		{

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -61,12 +62,12 @@ public class SetStat extends GetStat
 			final PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
-				req.sendMsg("[FAIL NO TARGET]");
+				req.sendMsg(Status.FAIL,"NO TARGET");
 				return;
 			}
 			if(!isAuthorized(req.getUser(),P))
 			{
-				req.sendMsg("[FAIL UNAUTHORIZED]");
+				req.sendMsg(Status.FAIL,"UNAUTHORIZED");
 				return;
 			}
 			String rest = "";
@@ -80,7 +81,7 @@ public class SetStat extends GetStat
 			final Modifiable mod=getModifiable(type,P);
 			if(mod==null)
 			{
-				req.sendMsg("[FAIL "+getHelp(req.getUser(), P, "")+"]");
+				req.sendMsg(Status.FAIL,""+getHelp(req.getUser(), P, "")+"");
 				return;
 			}
 			String value="";
@@ -109,7 +110,7 @@ public class SetStat extends GetStat
 			}
 			if((stat.length()==0)||(!isAStat(P,mod,stat)))
 			{
-				req.sendMsg("[FAIL USAGE: SETSTAT "+type+" "+CMParms.toListString(getStatCodes(P,mod))+"]");
+				req.sendMsg(Status.FAIL,"USAGE: SETSTAT "+type+" "+CMParms.toListString(getStatCodes(P,mod))+"");
 				return;
 			}
 
@@ -127,16 +128,16 @@ public class SetStat extends GetStat
 							if(A!=null)
 							{
 								((Physical)mod).delEffect(A);
-								req.sendMsg("[OK -"+A.ID()+"]");
+								req.sendMsg(Status.OK,"-"+A.ID()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 						}
 						else
 						{
 							final Ability A=CMClass.findAbility(firstValue);
 							if(A==null)
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 							else
 							if(adjuster=='+')
 							{
@@ -150,13 +151,13 @@ public class SetStat extends GetStat
 								{
 								}
 								M.destroy();
-								req.sendMsg("[OK "+firstValue+"]");
+								req.sendMsg(Status.OK,""+firstValue+"");
 							}
 							else
 							{
 								A.setMiscText(restValue);
 								((Physical)mod).addNonUninvokableEffect(A);
-								req.sendMsg("[OK "+firstValue+"]");
+								req.sendMsg(Status.OK,""+firstValue+"");
 							}
 						}
 						return;
@@ -177,16 +178,16 @@ public class SetStat extends GetStat
 							if(A!=null)
 							{
 								((PhysicalAgent)mod).delBehavior(A);
-								req.sendMsg("[OK -"+A.ID()+"]");
+								req.sendMsg(Status.OK,"-"+A.ID()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 						}
 						else
 						{
 							final Behavior A=CMClass.findBehavior(firstValue);
 							if(A==null)
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 							else
 							{
 								A.setParms(restValue);
@@ -211,21 +212,21 @@ public class SetStat extends GetStat
 							if(A!=null)
 							{
 								((MOB)mod).delAbility(A);
-								req.sendMsg("[OK -"+A.ID()+"]");
+								req.sendMsg(Status.OK,"-"+A.ID()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 						}
 						else
 						{
 							final Ability A=CMClass.findAbility(firstValue);
 							if(A==null)
-								req.sendMsg("[FAIL "+firstValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
 							else
 							{
 								A.setMiscText(restValue);
 								((MOB)mod).addAbility(A);
-								req.sendMsg("[OK "+firstValue+"]");
+								req.sendMsg(Status.OK,""+firstValue+"");
 							}
 						}
 						return;
@@ -234,7 +235,7 @@ public class SetStat extends GetStat
 					{
 						final Faction F=CMLib.factions().getFaction(firstValue);
 						if(F==null)
-							req.sendMsg("[FAIL "+firstValue+" NOT EXIST]");
+							req.sendMsg(Status.FAIL,""+firstValue+" NOT EXIST");
 						else
 						if(adjuster=='-')
 						{
@@ -245,10 +246,10 @@ public class SetStat extends GetStat
 									((MOB)mod).addFaction(F.factionID(), f-CMath.s_int(restValue));
 								else
 									((MOB)mod).removeFaction(F.factionID());
-								req.sendMsg("[OK -"+F.factionID()+" "+restValue+"]");
+								req.sendMsg(Status.OK,"-"+F.factionID()+" "+restValue+"");
 							}
 							else
-								req.sendMsg("[FAIL "+F.factionID()+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+F.factionID()+" NOT FOUND");
 						}
 						else
 						{
@@ -256,7 +257,7 @@ public class SetStat extends GetStat
 							if(CMath.isInteger(restValue))
 								def+=CMath.s_int(restValue);
 							((MOB)mod).addFaction(F.factionID(), def);
-							req.sendMsg("[OK "+F.factionID()+" "+((MOB)mod).fetchFaction(F.factionID())+"]");
+							req.sendMsg(Status.OK,""+F.factionID()+" "+((MOB)mod).fetchFaction(F.factionID())+"");
 						}
 						return;
 					}
@@ -266,17 +267,17 @@ public class SetStat extends GetStat
 						if(def==null)
 							def=CMLib.expertises().findDefinition(firstValue, false);
 						if(def==null)
-							req.sendMsg("[FAIL "+firstValue+" NOT EXIST]");
+							req.sendMsg(Status.FAIL,""+firstValue+" NOT EXIST");
 						else
 						if(adjuster=='-')
 						{
 							((MOB)mod).delExpertise(def.ID());
-							req.sendMsg("[OK -"+def.ID()+"]");
+							req.sendMsg(Status.OK,"-"+def.ID()+"");
 						}
 						else
 						{
 							((MOB)mod).addExpertise(def.ID());
-							req.sendMsg("[OK "+def.ID()+"]");
+							req.sendMsg(Status.OK,""+def.ID()+"");
 						}
 						return;
 					}
@@ -286,11 +287,11 @@ public class SetStat extends GetStat
 						{
 							final MOB M=((MOB)mod).fetchFollower(restValue);
 							if(M==null)
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 							else
 							{
 								M.setFollowing(null);
-								req.sendMsg("[OK -"+M.Name()+"]");
+								req.sendMsg(Status.OK,"-"+M.Name()+"");
 							}
 						}
 						else
@@ -302,10 +303,10 @@ public class SetStat extends GetStat
 							if(M!=null)
 							{
 								M.setFollowing((MOB)mod);
-								req.sendMsg("[OK "+M.Name()+"]");
+								req.sendMsg(Status.OK,""+M.Name()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 						}
 						return;
 					}
@@ -323,11 +324,11 @@ public class SetStat extends GetStat
 						{
 							final Item M=((ItemPossessor)mod).findItem(firstValue);
 							if(M==null)
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 							else
 							{
 								M.destroy();
-								req.sendMsg("[OK -"+M.Name()+"]");
+								req.sendMsg(Status.OK,"-"+M.Name()+"");
 							}
 						}
 						else
@@ -343,10 +344,10 @@ public class SetStat extends GetStat
 							if(M!=null)
 							{
 								((ItemPossessor)mod).addItem(M);
-								req.sendMsg("[OK "+M.Name()+"]");
+								req.sendMsg(Status.OK,""+M.Name()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 						}
 						return;
 					}
@@ -364,14 +365,14 @@ public class SetStat extends GetStat
 						{
 							final MOB M=((Room)mod).fetchInhabitant(restValue);
 							if(M==null)
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 							else
 							if(!M.isMonster())
-								req.sendMsg("[FAIL "+M.Name()+" IS PLAYER]");
+								req.sendMsg(Status.FAIL,""+M.Name()+" IS PLAYER");
 							else
 							{
 								M.destroy();
-								req.sendMsg("[OK -"+M.Name()+"]");
+								req.sendMsg(Status.OK,"-"+M.Name()+"");
 							}
 						}
 						else
@@ -384,10 +385,10 @@ public class SetStat extends GetStat
 							if(M!=null)
 							{
 								((Room)mod).bringMobHere(M,true);
-								req.sendMsg("[OK "+M.Name()+"]");
+								req.sendMsg(Status.OK,""+M.Name()+"");
 							}
 							else
-								req.sendMsg("[FAIL "+restValue+" NOT FOUND]");
+								req.sendMsg(Status.FAIL,""+restValue+" NOT FOUND");
 						}
 						return;
 					}
@@ -411,7 +412,7 @@ public class SetStat extends GetStat
 					}
 				}
 			}
-			req.sendMsg("[OK]");
+			req.sendMsg(Status.OK,"");
 		}
 		catch(final Exception ioe)
 		{

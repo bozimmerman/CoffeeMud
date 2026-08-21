@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -195,12 +196,12 @@ public class GetStat extends CM1Command
 			final PhysicalAgent P = req.getTarget();
 			if (P == null)
 			{
-				req.sendMsg("[FAIL NO TARGET]");
+				req.sendMsg(Status.FAIL,"NO TARGET");
 				return;
 			}
 			if (!isAuthorized(req.getUser(), P))
 			{
-				req.sendMsg("[FAIL UNAUTHORIZED]");
+				req.sendMsg(Status.FAIL,"UNAUTHORIZED");
 				return;
 			}
 			String stat = "";
@@ -227,12 +228,12 @@ public class GetStat extends CM1Command
 			final Modifiable mod = getModifiable(type, P);
 			if (mod == null)
 			{
-				req.sendMsg("[FAIL " + getHelp(req.getUser(), P, "") + "]");
+				req.sendMsg(Status.FAIL,"" + getHelp(req.getUser(), P, "") + "");
 				return;
 			}
 			if ((stat.length() == 0) || (!isAStat(P, mod, stat)))
 			{
-				req.sendMsg("[FAIL USAGE: GETSTAT " + type + " " + CMParms.toListString(getStatCodes(P, mod)) + "]");
+				req.sendMsg(Status.FAIL,"USAGE: GETSTAT " + type + " " + CMParms.toListString(getStatCodes(P, mod)) + "");
 				return;
 			}
 			if (mod instanceof Physical)
@@ -244,14 +245,14 @@ public class GetStat extends CM1Command
 				case 0:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((Physical) mod).numEffects() + "]");
+						req.sendMsg(Status.OK,"" + ((Physical) mod).numEffects() + "");
 					else
 					{
 						final Ability A = ((Physical) mod).fetchEffect(CMath.s_int(rest));
 						if (A == null)
-							req.sendMsg("[FAIL NO EFFECT " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO EFFECT " + rest + "");
 						else
-							req.sendMsg("[OK " + A.ID() + " " + A.text() + "]");
+							req.sendMsg(Status.OK,"" + A.ID() + " " + A.text() + "");
 					}
 					return;
 				}
@@ -266,14 +267,14 @@ public class GetStat extends CM1Command
 				case 0:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((PhysicalAgent) mod).numBehaviors() + "]");
+						req.sendMsg(Status.OK,"" + ((PhysicalAgent) mod).numBehaviors() + "");
 					else
 					{
 						final Behavior A = ((PhysicalAgent) mod).fetchBehavior(CMath.s_int(rest));
 						if (A == null)
-							req.sendMsg("[FAIL NO BEHAVIOR " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO BEHAVIOR " + rest + "");
 						else
-							req.sendMsg("[OK " + A.ID() + " " + A.getParms() + "]");
+							req.sendMsg(Status.OK,"" + A.ID() + " " + A.getParms() + "");
 					}
 					return;
 				}
@@ -288,14 +289,14 @@ public class GetStat extends CM1Command
 				case 0:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((MOB) mod).numAllAbilities() + "]");
+						req.sendMsg(Status.OK,"" + ((MOB) mod).numAllAbilities() + "");
 					else
 					{
 						final Ability A = ((MOB) mod).fetchAbility(CMath.s_int(rest));
 						if (A == null)
-							req.sendMsg("[FAIL NO ABILITY " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO ABILITY " + rest + "");
 						else
-							req.sendMsg("[OK " + A.ID() + " " + A.proficiency() + " " + A.text() + "]");
+							req.sendMsg(Status.OK,"" + A.ID() + " " + A.proficiency() + " " + A.text() + "");
 					}
 					return;
 				}
@@ -306,20 +307,20 @@ public class GetStat extends CM1Command
 						final StringBuilder factions = new StringBuilder("");
 						for (final Enumeration<String> f = ((MOB) mod).factions(); f.hasMoreElements();)
 							factions.append(' ').append(f);
-						req.sendMsg("[OK" + factions.toString() + "]");
+						req.sendMsg(Status.OK,factions.toString());
 					}
 					else
 					{
 						final Faction F = CMLib.factions().getFaction(rest);
 						if (F == null)
-							req.sendMsg("[FAIL " + rest + " NOT EXIST]");
+							req.sendMsg(Status.FAIL,"" + rest + " NOT EXIST");
 						else
 						{
 							final int f = ((MOB) mod).fetchFaction(F.factionID());
 							if (f == Integer.MAX_VALUE)
-								req.sendMsg("[FAIL NO FACTION " + F.factionID() + "]");
+								req.sendMsg(Status.FAIL,"NO FACTION " + F.factionID() + "");
 							else
-								req.sendMsg("[OK " + f + "]");
+								req.sendMsg(Status.OK,"" + f + "");
 						}
 					}
 					return;
@@ -331,7 +332,7 @@ public class GetStat extends CM1Command
 						int numExpertises = 0;
 						for (final Enumeration<String> i = ((MOB) mod).expertises(); i.hasMoreElements(); numExpertises++)
 							i.nextElement();
-						req.sendMsg("[OK " + numExpertises + "]");
+						req.sendMsg(Status.OK,"" + numExpertises + "");
 					}
 					else
 					{
@@ -344,23 +345,23 @@ public class GetStat extends CM1Command
 							whichExpertise--;
 						}
 						if ((whichExpertise >= 0) || (EX == null))
-							req.sendMsg("[FAIL NO EXPERTISE " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO EXPERTISE " + rest + "");
 						else
-							req.sendMsg("[OK " + EX + "]");
+							req.sendMsg(Status.OK,"" + EX + "");
 					}
 					return;
 				}
 				case 3:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((MOB) mod).numFollowers() + "]");
+						req.sendMsg(Status.OK,"" + ((MOB) mod).numFollowers() + "");
 					else
 					{
 						final MOB M = ((MOB) mod).fetchFollower(CMath.s_int(rest));
 						if (M == null)
-							req.sendMsg("[FAIL NO FOLLOWER " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO FOLLOWER " + rest + "");
 						else
-							req.sendMsg("[OK " + M.Name() + "]");
+							req.sendMsg(Status.OK,"" + M.Name() + "");
 					}
 					return;
 				}
@@ -375,14 +376,14 @@ public class GetStat extends CM1Command
 				case 0:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((ItemPossessor) mod).numItems() + "]");
+						req.sendMsg(Status.OK,"" + ((ItemPossessor) mod).numItems() + "");
 					else
 					{
 						final Item I = ((ItemPossessor) mod).getItem(CMath.s_int(rest));
 						if (I == null)
-							req.sendMsg("[FAIL NO ITEM " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO ITEM " + rest + "");
 						else
-							req.sendMsg("[OK " + I.Name() + "]");
+							req.sendMsg(Status.OK,"" + I.Name() + "");
 					}
 					return;
 				}
@@ -397,14 +398,14 @@ public class GetStat extends CM1Command
 				case 0:
 				{
 					if (rest.trim().length() == 0)
-						req.sendMsg("[OK " + ((Room) mod).numInhabitants() + "]");
+						req.sendMsg(Status.OK,"" + ((Room) mod).numInhabitants() + "");
 					else
 					{
 						final MOB M = ((Room) mod).fetchInhabitant(CMath.s_int(rest));
 						if (M == null)
-							req.sendMsg("[FAIL NO MOB " + rest + "]");
+							req.sendMsg(Status.FAIL,"NO MOB " + rest + "");
 						else
-							req.sendMsg("[OK " + M.Name() + "]");
+							req.sendMsg(Status.OK,"" + M.Name() + "");
 					}
 					return;
 				}
@@ -412,7 +413,7 @@ public class GetStat extends CM1Command
 			}
 			if (!UseGenBuilder(P, mod))
 			{
-				req.sendMsg("[OK " + mod.getStat(stat) + "]");
+				req.sendMsg(Status.OK,"" + mod.getStat(stat) + "");
 			}
 			else
 			{
@@ -422,10 +423,10 @@ public class GetStat extends CM1Command
 					if (code.equalsIgnoreCase(stat))
 					{
 						if (P instanceof MOB)
-							req.sendMsg("[OK " + CMLib.coffeeMaker().getGenMobStat((MOB) P, stat) + "]");
+							req.sendMsg(Status.OK,"" + CMLib.coffeeMaker().getGenMobStat((MOB) P, stat) + "");
 						else
 						if (P instanceof Item)
-							req.sendMsg("[OK " + CMLib.coffeeMaker().getGenItemStat((Item) P, stat) + "]");
+							req.sendMsg(Status.OK,"" + CMLib.coffeeMaker().getGenItemStat((Item) P, stat) + "");
 					}
 				}
 			}

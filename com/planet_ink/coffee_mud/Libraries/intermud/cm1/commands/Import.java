@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -62,18 +63,18 @@ public class Import extends CM1Command
 			final PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
-				req.sendMsg("[FAIL NO TARGET]");
+				req.sendMsg(Status.FAIL,"NO TARGET");
 				return;
 			}
 			if(!isAuthorized(req.getUser(),P))
 			{
-				req.sendMsg("[FAIL UNAUTHORIZED]");
+				req.sendMsg(Status.FAIL,"UNAUTHORIZED");
 				return;
 			}
 			final String xml = parameters.trim();
 			if((xml.length()<10)||(xml.indexOf('<')<0))
 			{
-				req.sendMsg("[FAIL NO XML]");
+				req.sendMsg(Status.FAIL,"NO XML");
 				return;
 			}
 			Vector<Object> V=new Vector<Object>();
@@ -91,13 +92,13 @@ public class Import extends CM1Command
 						errors.append((String)O).append("---");
 				}
 				if(errors.length()>0)
-					req.sendMsg("[FAIL "+CMStrings.flatten(errors.toString().toUpperCase().replace('[', '.').replace(']', '.')+"]"));
+					req.sendMsg(Status.FAIL,""+CMStrings.flatten(errors.toString().toUpperCase().replace('[', '.').replace(']', '.')+""));
 				else
-					req.sendMsg("[OK]");
+					req.sendMsg(Status.OK,"");
 			}
 			catch (final Exception e)
 			{
-				req.sendMsg("[FAIL "+CMStrings.flatten(""+e.getMessage().toUpperCase().replace('[', '.').replace(']', '.')+"]"));
+				req.sendMsg(Status.FAIL,""+CMStrings.flatten(""+e.getMessage().toUpperCase().replace('[', '.').replace(']', '.')+""));
 			}
 		}
 		catch(final java.io.IOException ioe)

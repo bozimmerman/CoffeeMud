@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.commands.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -118,29 +119,28 @@ public class CommandHandler implements Runnable
 						final Class<? extends CM1Command> commandClass = commandList.get(rest.toUpperCase().trim());
 						final CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 						if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
-							req.sendMsg("[FAIL UNKNOWN: "+rest.toUpperCase().trim()+"]");
+							req.sendMsg(Status.FAIL,"UNKNOWN: "+rest.toUpperCase().trim());
 						else
-							req.sendMsg("[OK "+command.getCommandWord()+" "+command.getHelp(req.getUser(), req.getTarget(), rest)+"]");
+							req.sendMsg(Status.OK,command.getCommandWord()+" "+command.getHelp(req.getUser(), req.getTarget(), rest));
 					}
 					else
 					{
-						final StringBuilder str=new StringBuilder("[OK HELP");
+						ArrayList<String> list = new ArrayList<String>();
 						for(final String cmdWord : commandList.keySet())
 						{
 							final Class<? extends CM1Command> commandClass = commandList.get(cmdWord);
 							final CM1Command command = CM1Command.newInstance(commandClass, req, "");
 							if(command.passesSecurityCheck(req.getUser(), req.getTarget()))
-								str.append(" "+cmdWord);
+								list.add(cmdWord);
 						}
-						str.append("]");
-						req.sendMsg(str.toString());
+						req.sendMsg(Status.OK,list);
 					}
 					return;
 				}
 				final Class<? extends CM1Command> commandClass = commandList.get(cmd.toUpperCase().trim());
 				final CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 				if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
-					req.sendMsg("[FAIL UNKNOWN "+cmd.toUpperCase().trim()+"]");
+					req.sendMsg(Status.FAIL,"UNKNOWN "+cmd.toUpperCase().trim());
 				else
 					command.run();
 			}

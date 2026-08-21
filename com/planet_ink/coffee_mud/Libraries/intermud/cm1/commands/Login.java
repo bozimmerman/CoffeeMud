@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,7 +60,7 @@ public class Login extends CM1Command
 		{
 			final int x=parameters.indexOf(' ');
 			if(x<0)
-				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
+				req.sendMsg(Status.FAIL,getHelp(req.getUser(), null, null));
 			else
 			{
 				final String user=parameters.substring(0,x);
@@ -68,12 +69,12 @@ public class Login extends CM1Command
 				if((M==null) || (M.playerStats()==null) || (!M.playerStats().matchesPassword(pass)))
 				{
 					Thread.sleep(5000);
-					req.sendMsg("[FAIL]");
+					req.sendMsg(Status.FAIL,"");
 				}
 				else
 				{
 					req.login(M);
-					req.sendMsg("[OK]");
+					req.sendMsg(Status.OK,"");
 				}
 			}
 		}

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -60,19 +61,19 @@ public class WhoIs extends CM1Command
 		try
 		{
 			if(!CMLib.players().playerExists(parameters))
-				req.sendMsg("[FAIL UNKNOWN]");
+				req.sendMsg(Status.FAIL,"UNKNOWN");
 			else
 			{
 				final ThinPlayer P =CMLib.players().getThinPlayer(parameters);
 				if(P==null)
-					req.sendMsg("[FAIL BROKWN]");
+					req.sendMsg(Status.FAIL,"BROKEN");
 				else
 				{
 					final String response = P.level()+" "
 							+P.gender()+" "
 							+P.race()+" "
 							+P.charClass();
-					req.sendMsg("[OK " + response + "]");
+					req.sendMsg(Status.OK,"" + response + "");
 				}
 			}
 		}

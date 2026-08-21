@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -77,7 +78,7 @@ public class Listen extends CM1Command
 
 	protected void sendMsg(final Listener listener, final String msg) throws IOException
 	{
-		req.sendMsg("[MESSAGE "+listener.channelName+": "+msg+"]");
+		req.sendMsg(Status.MESSAGE,listener.channelName+": "+msg);
 	}
 
 	protected static class ListenCriterium
@@ -359,7 +360,7 @@ public class Listen extends CM1Command
 			}
 			catch(final Exception iox)
 			{
-				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toListString(STATTYPE.values())+"]");
+				req.sendMsg(Status.FAIL,""+codeStr+" NOT "+CMParms.toListString(STATTYPE.values())+"");
 				return null;
 			}
 			String parm=null;
@@ -399,12 +400,12 @@ public class Listen extends CM1Command
 			final ListenCriterium crit=new ListenCriterium(STATTYPE.valueOf(codeStr),req.getTarget(),parm);
 			if(!parameterCheck(req.getUser(),crit))
 			{
-				req.sendMsg("[FAIL "+codeStr+" PARAMETERS]");
+				req.sendMsg(Status.FAIL,""+codeStr+" PARAMETERS");
 				return null;
 			}
 			if(!securityCheck(req.getUser(),crit))
 			{
-				req.sendMsg("[FAIL "+codeStr+" UNAUTHORIZED]");
+				req.sendMsg(Status.FAIL,""+codeStr+" UNAUTHORIZED");
 				return null;
 			}
 			list.add(crit);
@@ -432,7 +433,7 @@ public class Listen extends CM1Command
 				name=null;
 			if(name==null)
 			{
-				req.sendMsg("[FAIL No "+getCommandWord()+"ER name given]");
+				req.sendMsg(Status.FAIL,"No "+getCommandWord()+"ER name given");
 				return;
 			}
 			final List<ListenCriterium> crit=getCriterium(rest);
@@ -440,14 +441,14 @@ public class Listen extends CM1Command
 				return;
 			else
 			if(crit.size()==0)
-				req.sendMsg("[FAIL NOT "+CMParms.toListString(STATTYPE.values())+"]");
+				req.sendMsg(Status.FAIL,"NOT "+CMParms.toListString(STATTYPE.values())+"");
 			else
 			{
 				final Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
 				CMLib.commands().addGlobalMonitor(newListener);
 				req.addDependent(newListener.channelName, newListener);
 				listeners.add(newListener);
-				req.sendMsg("[OK]");
+				req.sendMsg(Status.OK,"");
 			}
 		}
 		catch(final Exception ioe)

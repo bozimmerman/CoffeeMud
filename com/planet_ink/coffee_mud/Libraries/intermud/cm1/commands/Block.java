@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.Libraries.intermud.cm1.RequestHandler.Status;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,8 +59,8 @@ public class Block extends CM1Command
 	{
 		try
 		{
-			final String eob = "/BLOCK:" + Math.random();
-			req.sendMsg("[OK " + eob + "]");
+			final String eob = "/BLOCK:" + RequestHandler.blockSequence.addAndGet(1);
+			req.sendMsg(Status.OK,eob);
 			req.setEndOfLine(eob);
 		}
 		catch (final Exception ioe)
@@ -78,6 +79,6 @@ public class Block extends CM1Command
 	@Override
 	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
-		return "USAGE: BLOCK: Changes the end-of-line for user input, returning a new end-of-line string.";
+		return "USAGE: BLOCK: Changes the end-of-line for user input in standard command mode, returning a new end-of-line string.";
 	}
 }

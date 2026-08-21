@@ -24,6 +24,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.concurrent.atomic.*;
 
 /*
@@ -44,6 +45,7 @@ import java.util.concurrent.atomic.*;
 public class RequestHandler implements CMRunnable
 {
 	private static AtomicInteger		  counter			  = new AtomicInteger();
+	public  static final AtomicInteger	  blockSequence		  = new AtomicInteger();
 	private final String				  runnableName;
 	private final SocketChannel			  chan;
 	private boolean						  isRunning			  = false;
@@ -54,6 +56,7 @@ public class RequestHandler implements CMRunnable
 	private byte[][]					  markBlocks		  = DEFAULT_MARK_BLOCKS;
 	private long						  MAX_IDLE_MILLIS	  = 10 * 60 * 1000;
 	private long						  startTime			  = 0;
+	private volatile CommandMode		  commandMode			  = CommandMode.STANDARD;
 
 	private final SLinkedList<ByteBuffer> workingBuffers	  = new SLinkedList<ByteBuffer>();
 	private final Map<String, Object>	  dependents		  = new STreeMap<String, Object>();
@@ -62,6 +65,57 @@ public class RequestHandler implements CMRunnable
 	private static final long			  MAXIMUM_BYTES		  = 1024 * 1024 * 2;
 	private static final byte[][]		  DEFAULT_MARK_BLOCKS = { { '\n', '\r' }, { '\r', '\n' }, { '\n' }, { '\r' } };
 	private static final char[]			  DEFAULT_CRLF		  = { '\n', '\r' };
+	
+	/**
+	 * The settings for how commands are sent/received.
+	 * 
+	 * @author Cygnus
+	 *
+	 */
+	public static enum CommandMode
+	{
+		/**
+		 * Standard command mode uses single command words with space-delimited arguments and CR EOL, unless
+		 * the BLOCK command is used to set a new EOL.  Responses in []
+		 */
+		STANDARD,
+		/**
+		 * XML commands are sent with xml document where tag is command name and inner value(s) or VALUE tags
+		 * are arguments.  Responses are xml doc where tag is response type and inner values response message.
+		 */
+		XML,
+		/**
+		 * JSON commands are sent with json document where command name in 'command', and arguments is a 
+		 * string or string array.  Response are json doc with 'status' as response status and values in 
+		 * 'message' key.
+		 */
+		JSON
+	}
+	
+	/**
+	 * Valid server response statuses
+	 * @author Cygnus
+	 *
+	 */
+	public static enum Status
+	{
+		/**
+		 * Command successful, output forthcoming
+		 */
+		OK,
+		/**
+		 * Command failed, reasons forthcoming
+		 */
+		FAIL,
+		/**
+		 * Unprompted message forthcoming
+		 */
+		MESSAGE,
+		/**
+		 * Command successful, block output forthcoming
+		 */
+		BLOCK
+	}
 
 	@Override
 	public long activeTimeMillis()
@@ -78,11 +132,98 @@ public class RequestHandler implements CMRunnable
 		this.chan = chan;
 	}
 
-	public void sendMsg(String msg) throws IOException
+
+	/**
+	 * Converts a pojo field to a standard string response value.
+	 * @param type the class type
+	 * @param val the value
+	 * @param allowCR true to allow CRLF, false to strip them
+	 * @return the standard string response value
+	 */
+	public String fromPOJOFieldToStandardString(final Class<?> type, final Object val, final boolean allowCR)
 	{
-		if ((msg.startsWith("[OK") || msg.startsWith("[FAIL") || msg.startsWith("[MESSAGE")))
-			msg = CMStrings.replaceAllofAny(msg, DEFAULT_CRLF, ' ');
-		final byte[] bytes = (msg + "\r\n").getBytes();
+		final StringBuilder str=new StringBuilder("");
+		if(type.isArray())
+		{
+			final int length = Array.getLength(val);
+			for (int i=0; i<length; i++)
+			{
+				final Object e = Array.get(val, i);
+				if(e == null)
+					continue;
+				if(str.length()>0)
+					str.append(" ");
+				str.append(fromPOJOFieldToStandardString(e.getClass(),e,allowCR));
+			}
+		}
+		else
+		if(type == String.class)
+			str.append(allowCR?val.toString().trim():CMStrings.replaceAllofAny(val.toString(), DEFAULT_CRLF, ' ').trim());
+		else
+		if (Collection.class.isAssignableFrom(type)) 
+		{
+			@SuppressWarnings("rawtypes")
+			final Collection coll = (Collection)val;
+			final Object[] asArray = coll.toArray();
+			str.append(fromPOJOFieldToStandardString(asArray.getClass(),coll,allowCR));
+		}
+		else
+		if(type.isPrimitive())
+			str.append(val.toString());
+		else
+			str.append(val.toString());
+		return str.toString();
+	}
+	
+	public void sendMsg(Status status, Object arguments) throws IOException
+	{
+		final StringBuilder str = new StringBuilder("");
+		final boolean isBlock = (status == Status.BLOCK);
+		final String statusName = isBlock ? "OK" : Status.OK.name();
+		switch(commandMode)
+		{
+		case JSON:
+		{
+			str.append("{\"status\":\"").append(statusName).append("\"");
+			String argument = new MiniJSON().fromPOJOFieldtoJSON(arguments.getClass(),arguments);
+			if(argument.trim().length()>0)
+				str.append("{\"message\":\"").append(argument).append("\"");
+			str.append("}");
+			break;
+		}
+		case STANDARD:
+		{
+			str.append("[").append(status.name());
+			if(isBlock)
+			{
+				String argument = fromPOJOFieldToStandardString(arguments.getClass(), arguments, true);
+				String eob = "/BLOCK:"+blockSequence.addAndGet(1);
+				while(argument.indexOf(eob)>=0)
+					eob="/BLOCK:"+blockSequence.addAndGet(1);
+				str.append(" ").append(eob);
+				str.append("]").append(argument).append(eob);
+			}
+			else
+			{
+				String argument = fromPOJOFieldToStandardString(arguments.getClass(), arguments, false);
+				if(argument.trim().length()>0)
+					str.append(" ").append(argument);
+				str.append("]");
+			}
+			break;
+		}
+		case XML:
+		{
+			str.append("<").append(statusName).append(">");
+			String argument = CMLib.xml().fromPOJOFieldtoXML(arguments.getClass(), arguments).trim();
+			if(argument.trim().length()>0)
+				str.append(argument);
+			str.append("</").append(statusName).append(">");
+			break;
+		}
+		}
+		str.append("\r\n");
+		final byte[] bytes = str.toString().getBytes();
 		final ByteBuffer buf = ByteBuffer.wrap(bytes);
 		while (chan.isConnected() && chan.isOpen() && (chan.write(buf) > 0))
 		{
@@ -143,6 +284,12 @@ public class RequestHandler implements CMRunnable
 	{
 		target = null;
 		user = null;
+	}
+	
+	public void setCommandMode(final CommandMode newMode)
+	{
+		if(newMode != null)
+			this.commandMode = newMode;
 	}
 
 	public void addDependent(final String s, final Object O)
