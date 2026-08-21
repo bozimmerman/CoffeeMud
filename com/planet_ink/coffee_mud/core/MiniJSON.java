@@ -165,7 +165,7 @@ public class MiniJSON
 	 *
 	 * @author Bo Zimmerman
 	 */
-	public static final class MJSONException extends Exception
+	public static class MJSONException extends Exception
 	{
 		private static final long serialVersionUID = -2651922052891126260L;
 
@@ -187,6 +187,40 @@ public class MiniJSON
 		 * @param e an underlying cause of the parse error
 		 */
 		public MJSONException(final String string, final Exception e)
+		{
+			super(string, e);
+		}
+	}
+
+
+	/**
+	 * An official MiniJSON parsing exception. It means the document being
+	 * parsed was malformed due to being incomplete.
+	 *
+	 * @author Bo Zimmerman
+	 */
+	public static final class MJSONIncompleteException extends MJSONException
+	{
+		private static final long serialVersionUID = -2651922052891126260L;
+
+		/**
+		 * Constructs a new exception with the given parse error.
+		 *
+		 * @param string the parse error
+		 */
+		public MJSONIncompleteException(final String string)
+		{
+			super(string);
+		}
+
+		/**
+		 * Constructs a new exception with the given parse error, and underlying
+		 * cause.
+		 *
+		 * @param string the parse error
+		 * @param e an underlying cause of the parse error
+		 */
+		public MJSONIncompleteException(final String string, final Exception e)
 		{
 			super(string, e);
 		}
@@ -676,7 +710,7 @@ public class MiniJSON
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Unexpected end of number at"+index[0]);
+		throw new MJSONIncompleteException("Unexpected end of number at"+index[0]);
 	}
 
 	/**
@@ -769,7 +803,7 @@ public class MiniJSON
 				value.append(c);
 			index[0]++;
 		}
-		throw new MJSONException("Unfinished string at "+index[0]);
+		throw new MJSONIncompleteException("Unfinished string at "+index[0]);
 	}
 
 	/**
@@ -825,7 +859,7 @@ public class MiniJSON
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Expected ] at "+index[0]);
+		throw new MJSONIncompleteException("Expected ] at "+index[0]);
 	}
 
 	/**
@@ -846,7 +880,7 @@ public class MiniJSON
 			index[0]++ ;
 		}
 		if (index[0] >= doc.length) {
-			throw new MiniJSON.MJSONException("Unexpected end of document @"+index[0]);
+			throw new MiniJSON.MJSONIncompleteException("Unexpected end of document @"+index[0]);
 		}
 		switch(doc[index[0]])
 		{
@@ -951,7 +985,7 @@ public class MiniJSON
 						throw new MJSONException("Expected Key/String at "+index[0]);
 					break;
 				case NEEDKEY:
-					case NEEDNEWKEY:
+				case NEEDNEWKEY:
 					if(c=='\"')
 					{
 						key = parseString(doc,index);
@@ -986,7 +1020,7 @@ public class MiniJSON
 			}
 			index[0]++;
 		}
-		throw new MJSONException("Expected } at "+index[0]);
+		throw new MJSONIncompleteException("Expected } at "+index[0]);
 	}
 
 	/**
