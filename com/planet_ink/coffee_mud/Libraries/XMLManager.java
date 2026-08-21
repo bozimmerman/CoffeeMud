@@ -62,6 +62,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected StringBuffer	buf;
 	protected List<XMLTag>contents;
 	protected Set<String>	illegalTags;
+	protected int			outerPiecesCompleted = 0;
+	protected int			totalPiecesCompleted = 0;
 
 	public XMLManager()
 	{
@@ -71,9 +73,16 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	private XMLManager(final StringBuffer buf, final int startDex)
 	{
 		bufDex=startDex;
+		this.buf=buf;
+		reset();
+		bufDex=startDex;
+	}
+	
+	protected void reset()
+	{
+		bufDex=0;
 		piece=null;
 		state=State.START;
-		this.buf=buf;
 		beginDex = new int[State.values().length];
 		endDex = new int[State.values().length];
 		contents=new XVector<XMLTag>();
@@ -82,7 +91,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			beginDex[i]=-1;
 			endDex[i]=-1;
 		}
-
 		try
 		{
 			illegalTags=CMLib.coffeeFilter().getPronounSuffixes();
@@ -1102,6 +1110,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			closePiece=closePiece.parent();
 		if(closePiece!=null)
 		{
+			totalPiecesCompleted++;
+			if(closePiece.parent()==null)
+				outerPiecesCompleted++;
 			if(closePiece.innerStartIndex()>=0)
 				closePiece.value = buf.substring(closePiece.innerStartIndex(),beginDex[State.BEFORETAG.ordinal()]-1);
 			piece=closePiece;
@@ -1522,8 +1533,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				break;
 			}
 		}
-		while((piece!=null)&&(piece.parent()!=null))
-			piece=piece.parent();
 		return piece;
 	}
 
@@ -1538,7 +1547,39 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		final XMLManager manager=new XMLManager(buf, 0);
 		manager.parseXML();
+		while((manager.piece!=null)&&(manager.piece.parent()!=null))
+			manager.piece=manager.piece.parent();
 		return manager.contents;
+	}
+
+	@Override
+	public Runnable getXMLParser(final StringBuffer buf, final List<XMLTag> tags)
+	{
+		final XMLManager manager=new XMLManager(buf, 0);
+		return new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				tags.clear();
+				manager.parseXML();
+				if(manager.outerPiecesCompleted>0)
+				{
+					XMLTag lastTag = null;
+					while(manager.outerPiecesCompleted>0 && manager.contents.size()>=manager.outerPiecesCompleted)
+					{
+						lastTag = manager.contents.remove(0);
+						tags.add(lastTag);
+						manager.outerPiecesCompleted--;
+					}
+					if(lastTag != null)
+					{
+						manager.buf.delete(0, lastTag.outerEndIndex()+1);
+						manager.reset();
+					}
+				}
+			}
+		};
 	}
 
 	@Override

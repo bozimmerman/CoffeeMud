@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.collections.Converter;
 import com.planet_ink.coffee_mud.core.collections.TreeList;
 import com.planet_ink.coffee_mud.core.collections.XHashtable;
@@ -102,6 +103,16 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the parsed xml
 	 */
 	public List<XMLTag> parseAllXML(StringBuffer buf);
+
+	/**
+	 * Builds a streaming xml parser, returning a runnable that will continue
+	 * parsing the given stringbuffer where it last left off.
+	 * 
+	 * @param buf the buffer to always use and parse
+	 * @param tags the list of updated completed tags after parsing
+	 * @return the running to use; call run() on it to continue parsing.
+	 */
+	public Runnable getXMLParser(final StringBuffer buf, final List<XMLTag> tags);
 
 	/**
 	 * Parses a list of single-level xml tags, together in string.

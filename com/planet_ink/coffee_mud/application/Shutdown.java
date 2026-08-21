@@ -69,8 +69,10 @@ public class Shutdown
 			if(a.length>=5)
 				msg.append(" "+!(CMath.s_bool(a[4])));
 			if(a.length>=6)
+			{
 				for(int i=5;i<a.length;i++)
-				msg.append(" "+a[i]);
+					msg.append(" "+a[i]);
+			}
 			sock=new Socket(a[0],CMath.s_int(a[1]));
 			final OutputStream rawout=sock.getOutputStream();
 			rawout.write(CMStrings.strToBytes((msg.toString()+">\n")));
