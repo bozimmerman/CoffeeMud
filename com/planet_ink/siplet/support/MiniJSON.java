@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedHashMap;
@@ -1091,6 +1092,24 @@ public class MiniJSON
 			for (int i=0; i<length; i++)
 			{
 				final Object e = Array.get(val, i);
+				if(i>0)
+					str.append(",");
+				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
+			}
+			str.append("]");
+		}
+		else
+		if(Collection.class.isAssignableFrom(type))
+		{
+			str.append("[");
+			@SuppressWarnings("rawtypes")
+			final Collection coll = (Collection)val;
+			int i = 0;
+			@SuppressWarnings("unchecked")
+			final Iterator<Object> iter = coll.iterator();
+			for (;iter.hasNext();i++)
+			{
+				final Object e = iter.next();
 				if(i>0)
 					str.append(",");
 				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
