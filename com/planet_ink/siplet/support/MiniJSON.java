@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -1097,6 +1098,26 @@ public class MiniJSON
 				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
 			}
 			str.append("]");
+		}
+		else
+		if(Map.class.isAssignableFrom(type))
+		{
+			str.append("{");
+			@SuppressWarnings("rawtypes")
+			final Map map = (Map)val;
+			int i = 0;
+			@SuppressWarnings("unchecked")
+			final Iterator<Object> iter = map.keySet().iterator();
+			for (;iter.hasNext();i++)
+			{
+				final Object e = iter.next();
+				if(i>0)
+					str.append(",");
+				final Object mapVal = map.get(e);
+				str.append("\"").append(e.toString()).append("\":");
+				str.append(fromPOJOFieldtoJSON(mapVal.getClass().getComponentType(),mapVal));
+			}
+			str.append("}");
 		}
 		else
 		if(Collection.class.isAssignableFrom(type))
