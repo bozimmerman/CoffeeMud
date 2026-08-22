@@ -787,7 +787,7 @@ public class MiniJSON
 				case 'u':
 				{
 					if(index[0] >= doc.length-4)
-						throw new MJSONException("Unfinished unicode escape at "+index[0]);
+						throw new MJSONIncompleteException("Unfinished unicode escape at "+index[0]);
 					final byte[] hexBuf=new byte[] {
 						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0])),
 						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0]))
