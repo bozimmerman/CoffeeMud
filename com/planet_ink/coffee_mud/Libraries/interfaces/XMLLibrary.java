@@ -106,7 +106,9 @@ public interface XMLLibrary extends CMLibrary
 
 	/**
 	 * Builds a streaming xml parser, returning a runnable that will continue
-	 * parsing the given stringbuffer where it last left off.
+	 * parsing the given stringbuffer where it last left off.  As out-most
+	 * tags are parsed and added to the given list, it will trim the 
+	 * stringbuffer accordingly.
 	 * 
 	 * @param buf the buffer to always use and parse
 	 * @param tags the list of updated completed tags after parsing

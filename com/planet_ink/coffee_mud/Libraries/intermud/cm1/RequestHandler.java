@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -23,6 +24,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import java.nio.charset.StandardCharsets;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.concurrent.atomic.*;
@@ -58,11 +60,15 @@ public class RequestHandler implements CMRunnable
 	private long						  startTime			  = 0;
 	private volatile CommandMode		  commandMode			  = CommandMode.STANDARD;
 
+	private final List<String>			  execCommands		  = new SLinkedList<String>();
+	private final StringBuffer			  accumBuffer		  = new StringBuffer();
+	private final List<XMLTag>			  xmlTags			  = new SLinkedList<XMLTag>();
+	private volatile Runnable			  xmlRunner			  = null;
 	private final SLinkedList<ByteBuffer> workingBuffers	  = new SLinkedList<ByteBuffer>();
 	private final Map<String, Object>	  dependents		  = new STreeMap<String, Object>();
 
 	private static final int			  BUFFER_SIZE		  = 4096;
-	private static final long			  MAXIMUM_BYTES		  = 1024 * 1024 * 2;
+	private static final long			  MAXIMUM_BYTES		  = 1024 * 1024 * 10;
 	private static final byte[][]		  DEFAULT_MARK_BLOCKS = { { '\n', '\r' }, { '\r', '\n' }, { '\n' }, { '\r' } };
 	private static final char[]			  DEFAULT_CRLF		  = { '\n', '\r' };
 	
@@ -179,7 +185,7 @@ public class RequestHandler implements CMRunnable
 	{
 		final StringBuilder str = new StringBuilder("");
 		final boolean isBlock = (status == Status.BLOCK);
-		final String statusName = isBlock ? "OK" : Status.OK.name();
+		final String statusName = isBlock ? "OK" : status.name();
 		switch(commandMode)
 		{
 		case JSON:
@@ -187,13 +193,13 @@ public class RequestHandler implements CMRunnable
 			str.append("{\"status\":\"").append(statusName).append("\"");
 			String argument = new MiniJSON().fromPOJOFieldtoJSON(arguments.getClass(),arguments);
 			if(argument.trim().length()>0)
-				str.append("{\"message\":\"").append(argument).append("\"");
+				str.append(",\"message\":").append(argument);
 			str.append("}");
 			break;
 		}
 		case STANDARD:
 		{
-			str.append("[").append(status.name());
+			str.append("[").append(status.name()); // ignore statusName here, always use actual type
 			if(isBlock)
 			{
 				String argument = fromPOJOFieldToStandardString(arguments.getClass(), arguments, true);
@@ -288,8 +294,20 @@ public class RequestHandler implements CMRunnable
 	
 	public void setCommandMode(final CommandMode newMode)
 	{
-		if(newMode != null)
-			this.commandMode = newMode;
+		if((newMode != null) && (newMode != this.commandMode))
+		{
+			synchronized(this)
+			{
+				this.commandMode = newMode;
+				// the below allows commandmode to be used to reset parser manually by toggling modes
+				this.accumBuffer.setLength(0);
+				this.xmlRunner = null; // will be lazy-rebuilt later
+				this.workingBuffers.clear();
+				this.xmlTags.clear();
+				this.execCommands.clear();
+				this.markBlocks = DEFAULT_MARK_BLOCKS;
+			}
+		}
 	}
 
 	public void addDependent(final String s, final Object O)
@@ -335,9 +353,9 @@ public class RequestHandler implements CMRunnable
 	{
 		isRunning = true;
 		startTime = System.currentTimeMillis();
-		synchronized (this)
+		try
 		{
-			try
+			synchronized (this)
 			{
 				ByteBuffer buffer = null;
 				if (workingBuffers.size() > 0)
@@ -352,97 +370,182 @@ public class RequestHandler implements CMRunnable
 				while (chan.isConnected() && (chan.isOpen()) && (chan.read(buffer) > 0))
 				{
 					buffer.flip();
-					int containIndex = -1;
-					for (int i = 0; i < buffer.limit(); i++)
+					switch(commandMode)
 					{
-						if ((containIndex = CMParms.containIndex(buffer, markBlocks, i)) >= 0)
+					case STANDARD:
+					{
+						int containIndex = -1;
+						for (int i = 0; i < buffer.limit(); i++)
 						{
-							final int containIndexLength = markBlocks[containIndex].length;
-							workingBuffers.remove(buffer);
-							if (i > 0)
+							if ((containIndex = CMParms.containIndex(buffer, markBlocks, i)) >= 0)
 							{
-								final ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
-								prevBuf.put(buffer.array(), 0, i);
-								prevBuf.flip();
-								workingBuffers.add(prevBuf);
-							}
-							if (((i + containIndexLength) >= buffer.limit()) || ((i + containIndexLength) >= buffer.capacity()))
-								buffer.position(buffer.limit());
-							else
-								buffer.position(i + containIndexLength);
-							if (buffer.remaining() > 0)
-							{
-								final ByteBuffer newBuffer = ByteBuffer.allocate(BUFFER_SIZE);
-								newBuffer.put(buffer);
-								buffer = newBuffer;
-								i = -1;
-							}
-							else
-								buffer = ByteBuffer.allocate(BUFFER_SIZE);
-							buffer.flip();
+								final int containIndexLength = markBlocks[containIndex].length;
+								workingBuffers.remove(buffer);
+								if (i > 0)
+								{
+									final ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
+									prevBuf.put(buffer.array(), 0, i);
+									prevBuf.flip();
+									workingBuffers.add(prevBuf);
+								}
+								if (((i + containIndexLength) >= buffer.limit()) || ((i + containIndexLength) >= buffer.capacity()))
+									buffer.position(buffer.limit());
+								else
+									buffer.position(i + containIndexLength);
+								if (buffer.remaining() > 0)
+								{
+									final ByteBuffer newBuffer = ByteBuffer.allocate(BUFFER_SIZE);
+									newBuffer.put(buffer);
+									buffer = newBuffer;
+									i = -1;
+								}
+								else
+									buffer = ByteBuffer.allocate(BUFFER_SIZE);
+								buffer.flip();
 
-							int fullSize = 0;
-							for (final ByteBuffer buf : workingBuffers)
-								fullSize += buf.limit();
-							final ByteBuffer finalBuf = ByteBuffer.allocate(fullSize);
-							for (final ByteBuffer buf : workingBuffers)
-							{
-								buf.rewind();
-								finalBuf.put(buf);
-								workingBuffers.remove(buf);
+								int fullSize = 0;
+								for (final ByteBuffer buf : workingBuffers)
+									fullSize += buf.limit();
+								final ByteBuffer finalBuf = ByteBuffer.allocate(fullSize);
+								for (final ByteBuffer buf : workingBuffers)
+								{
+									buf.rewind();
+									finalBuf.put(buf);
+									workingBuffers.remove(buf);
+								}
+								finalBuf.flip();
+								markBlocks = DEFAULT_MARK_BLOCKS;
+								execCommands.add(new String(finalBuf.array(),0,finalBuf.limit(), StandardCharsets.UTF_8));
 							}
-							finalBuf.flip();
-							markBlocks = DEFAULT_MARK_BLOCKS;
-							execute(new String(finalBuf.array()));
 						}
+						if (!workingBuffers.contains(buffer) && (buffer.limit() > 0))
+							workingBuffers.add(buffer);
+						if (buffer.limit() == buffer.capacity())
+							buffer = ByteBuffer.allocate(BUFFER_SIZE);
+						else
+						{
+							buffer.position(buffer.limit());
+							buffer.limit(buffer.capacity());
+						}
+						break;
 					}
-					if (!workingBuffers.contains(buffer) && (buffer.limit() > 0))
-						workingBuffers.add(buffer);
-					if (buffer.limit() == buffer.capacity())
-						buffer = ByteBuffer.allocate(BUFFER_SIZE);
-					else
+					case XML:
 					{
-						buffer.position(buffer.limit());
-						buffer.limit(buffer.capacity());
+						CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer);
+						if(xmlRunner == null)
+							xmlRunner = CMLib.xml().getXMLParser(accumBuffer, xmlTags);
+						accumBuffer.append(charBuffer);
+						xmlRunner.run();
+						while(xmlTags.size()>0)
+						{
+							XMLTag tag = xmlTags.remove(0);
+							execCommands.add(tag.tag()+" "+tag.value());
+						}
+						buffer.clear(); // act like nothing was read
+						if (workingBuffers.size()==0)
+							workingBuffers.add(buffer); // re-use same buffer over and over
+						break;
 					}
-					if (((long) BUFFER_SIZE * (long) workingBuffers.size()) > MAXIMUM_BYTES)
+					case JSON:
 					{
+						CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer);
+						for(int i=0;i<charBuffer.length();i++)
+						{
+							final char c = charBuffer.get(i);
+							accumBuffer.append(c);
+							if(c == '}') // possible end of the doc
+							{
+								try
+								{
+									MiniJSON jsonParser = new MiniJSON();
+									MiniJSON.JSONObject obj = jsonParser.parseObject(accumBuffer.toString());
+									accumBuffer.setLength(0); // complete doc found! Yay!
+									if(!obj.containsKey("command"))
+										execCommands.add("*Error: no command found in document"); // No legal command may start with *
+									else
+									{
+										String command = obj.get("command").toString().toUpperCase().trim();
+										final StringBuilder fullCommand = new StringBuilder(command);
+										if(obj.containsKey("arguments"))
+										{
+											if(obj.get("arguments") instanceof Object[])
+											{
+												for(Object o : obj.getCheckedArray("arguments"))
+													fullCommand.append(" ").append(o.toString());
+											}
+											else
+												fullCommand.append(" ").append(obj.get("arguments").toString());
+										}
+										execCommands.add(fullCommand.toString());
+									}
+								}
+								catch(MiniJSON.MJSONIncompleteException e)
+								{} // this is fine, it just means more data is needed
+								catch(MiniJSON.MJSONException x)
+								{
+									Log.errOut("CM1Hndlr", runnableName + ": " + x.getMessage());
+									accumBuffer.setLength(0);
+									break; // get out of this loop and give up
+								}
+							}
+						}
+						buffer.clear(); // act like nothing was read
+						if (workingBuffers.size()==0)
+							workingBuffers.add(buffer); // re-use same buffer over and over
+						break;
+					}
+					}
+					if ((((long) BUFFER_SIZE * (long) workingBuffers.size())+accumBuffer.length()) > MAXIMUM_BYTES)
+					{
+						accumBuffer.setLength(0);
 						workingBuffers.clear();
 						shutdown();
 						return;
 					}
 				}
 				buffer.flip();
-				try
-				{
-					Thread.sleep(1);
-				}
-				catch (final Exception e)
-				{
-				}
 			}
-			catch (final IOException ioe)
+			while(execCommands.size()>0)
 			{
-				Log.errOut("CM1Hndlr", runnableName + ": " + ioe.getMessage());
-				try
+				String command = execCommands.remove(0);
+				if(command.startsWith("*")) // No legal command begins with *
+					sendMsg(Status.FAIL,command);
+				else
 				{
-					chan.close();
+					try
+					{
+						execute(command);
+					}
+					catch(Exception e)
+					{
+						Log.errOut("CM1Hndlr", runnableName + ": " + e.getMessage());
+						Log.errOut("CM1Hndlr", e);
+					}
 				}
-				catch (final IOException e)
-				{
-				}
 			}
-			catch (final Exception e)
+			Thread.sleep(1);
+		}
+		catch (final IOException ioe)
+		{
+			Log.errOut("CM1Hndlr", runnableName + ": " + ioe.getMessage());
+			try
 			{
-				Log.errOut("CM1Hndlr", runnableName + ": " + e.getMessage());
-				Log.errOut("CM1Hndlr", e);
+				chan.close();
 			}
-			finally
+			catch (final IOException e)
 			{
-				idleTime = System.currentTimeMillis();
-				isRunning = false;
-				startTime = 0;
 			}
+		}
+		catch (final Exception e)
+		{
+			Log.errOut("CM1Hndlr", runnableName + ": " + e.getMessage());
+			Log.errOut("CM1Hndlr", e);
+		}
+		finally
+		{
+			idleTime = System.currentTimeMillis();
+			isRunning = false;
+			startTime = 0;
 		}
 	}
 
