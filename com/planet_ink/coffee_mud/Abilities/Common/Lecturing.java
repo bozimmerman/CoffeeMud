@@ -235,9 +235,10 @@ public class Lecturing extends CommonSkill
 					final Area areA=(R!=null)?R.getArea():null;
 					if(areA!=null)
 					{
+						this.lastLecture=areA.getTimeObj().toHoursSinceEpoc();
 						final Lecturing lecA=(Lecturing)mob.fetchAbility("Lecturing");
 						if(lecA!=null)
-							lecA.lastLecture=areA.getTimeObj().toHoursSinceEpoc();
+							lecA.lastLecture=this.lastLecture;
 					}
 				}
 				else
