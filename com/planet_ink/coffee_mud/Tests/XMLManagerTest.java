@@ -363,17 +363,27 @@ public class XMLManagerTest extends StdTest
 				block = xml.returnXMLBlock(blob, "A");
 				if(block.length()==0)
 					return "Error#8.4: self-close block empty";
-				// returnXMLValue without tag (note: implementation returns empty for simple tags due to off-by-one check)
 				String val = xml.returnXMLValue("<TAG>hello</TAG>");
-				// first overload is buggy and always returns empty for normal tags; expect empty
-				if(!val.equals(""))
-					return "Error#8.5: returnXMLValue no tag expected empty, got '"+val+"'";
+				if(!val.equals("hello"))
+					return "Error#8.5: returnXMLValue no tag expected hello, got '"+val+"'";
+				val = xml.returnXMLValue("<TAG>  hello world  </TAG>");
+				if(!val.equals("hello world"))
+					return "Error#8.5b: returnXMLValue trimmed hello world, got '"+val+"'";
 				val = xml.returnXMLValue("<TAG />");
 				if(!val.equals(""))
 					return "Error#8.6: self-close returnXMLValue should be empty: '"+val+"'";
 				val = xml.returnXMLValue("no tags here");
 				if(!val.equals(""))
 					return "Error#8.7: no tags value should be empty";
+				val = xml.returnXMLValue("<A>1</A><B>2</B>");
+				if(!val.equals("1"))
+					return "Error#8.7b: returnXMLValue first of two expected 1, got '"+val+"'";
+				val = xml.returnXMLValue("");
+				if(!val.equals(""))
+					return "Error#8.7c: empty blob should be empty: '"+val+"'";
+				val = xml.returnXMLValue(null);
+				if(!val.equals(""))
+					return "Error#8.7d: null blob should be empty: '"+val+"'";
 				// returnXMLValue with tag
 				blob = "<ROOT><X>foo</X><Y>bar</Y></ROOT>";
 				val = xml.returnXMLValue(blob, "X");
@@ -440,11 +450,22 @@ public class XMLManagerTest extends StdTest
 				r = xml.restoreAngleBrackets("a&quot;b");
 				if(!r.equals("a\"b"))
 					return "Error#9.11: restore quot "+r;
-				// Note: amp has an off-by-one bug in XMLManager (uses loop+6 instead of loop+5), so test for buggy behavior
 				r = xml.restoreAngleBrackets("a&amp;b");
-				// buggy implementation leaves amp not fully restored -> expected "aamp;b" due to bug, but we just verify it doesn't crash and contains 'a'
-				if((r==null)||(r.length()==0))
-					return "Error#9.12: restore amp null/empty "+r;
+				if(!r.equals("a&b"))
+					return "Error#9.12: restore amp should be 'a&b', got '"+r+"'";
+				r = xml.restoreAngleBrackets("a &amp; b &amp; c");
+				if(!r.equals("a & b & c"))
+					return "Error#9.12b: multiple amp failed: '"+r+"'";
+				r = xml.restoreAngleBrackets("&amp;&lt;&gt;&quot;&apos;");
+				if(!r.equals("&<>\"'"))
+					return "Error#9.12c: all entities failed: '"+r+"'";
+				r = xml.restoreAngleBrackets("a&AMP;b");
+				if(!r.equals("a&b"))
+					return "Error#9.12d: amp case insensitive failed: '"+r+"'";
+				// round-trip for ampersand: manual encode then restore
+				r = xml.restoreAngleBrackets("hello &amp; world");
+				if(!r.equals("hello & world"))
+					return "Error#9.12e: amp roundtrip: '"+r+"'";
 				// apos should work correctly
 				r = xml.restoreAngleBrackets("a&apos;b");
 				if(!r.equals("a'b"))
@@ -842,9 +863,35 @@ public class XMLManagerTest extends StdTest
 					return "Error#14.21: null field ISNULL missing "+xmlStr;
 				ArrayPojo ap2 = new ArrayPojo();
 				xml.fromXMLtoPOJO(xmlStr, ap2);
-				// Note: String[] roundtrip is buggy in XMLManager (creates empty strings via reflection) -> just check length
 				if((ap2.strArray==null)||(ap2.strArray.length!=3))
 					return "Error#14.22: strArray roundtrip "+(ap2.strArray==null?null:java.util.Arrays.toString(ap2.strArray));
+				if((!ap2.strArray[0].equals("a"))||(!ap2.strArray[1].equals("b"))||(!ap2.strArray[2].equals("c")))
+					return "Error#14.22b: strArray values "+java.util.Arrays.toString(ap2.strArray);
+				// additional String[] angle bracket roundtrip
+				{
+					ArrayPojo ap3 = new ArrayPojo();
+					ap3.strArray = new String[] {"a<b","c>d","e&f"};
+					ap3.intArray = new int[] {1};
+					String xmlStr3 = xml.fromPOJOtoXML(ap3);
+					if((!xmlStr3.contains("&lt;"))||(!xmlStr3.contains("&gt;")))
+						return "Error#14.22c: strArray angle escape missing "+xmlStr3;
+					ArrayPojo ap4 = new ArrayPojo();
+					xml.fromXMLtoPOJO(xmlStr3, ap4);
+					if((ap4.strArray==null)||(ap4.strArray.length!=3))
+						return "Error#14.22d: strArray angle length";
+					if((!ap4.strArray[0].equals("a<b"))||(!ap4.strArray[1].equals("c>d"))||(!ap4.strArray[2].equals("e&f")))
+						return "Error#14.22e: strArray angle values "+java.util.Arrays.toString(ap4.strArray);
+				}
+				// empty String[] roundtrip
+				{
+					ArrayPojo apEmpty = new ArrayPojo();
+					apEmpty.strArray = new String[0];
+					String xmlEmpty = xml.fromPOJOtoXML(apEmpty);
+					ArrayPojo apEmpty2 = new ArrayPojo();
+					xml.fromXMLtoPOJO(xmlEmpty, apEmpty2);
+					if((apEmpty2.strArray==null)||(apEmpty2.strArray.length!=0))
+						return "Error#14.22f: empty strArray length "+(apEmpty2.strArray==null?null:java.util.Arrays.toString(apEmpty2.strArray));
+				}
 				if((ap2.intArray==null)||(ap2.intArray.length!=3)||(ap2.intArray[1]!=2))
 					return "Error#14.23: intArray roundtrip";
 				if((ap2.integerArray==null)||(ap2.integerArray.length!=2)||(!ap2.integerArray[0].equals(Integer.valueOf(4))))
@@ -998,13 +1045,87 @@ public class XMLManagerTest extends StdTest
 				parser.run();
 				if(out.size()!=1)
 					return "Error#15.25: whitespace tag size";
-				// self-closing streaming
-				// self-close streaming is buggy (outerPiecesCompleted not incremented for self-close until next close)
-				// So just verify parseAll handles it, and streaming at least doesn't crash
+				// self-closing streaming (fixed: outerPiecesCompleted now incremented for self-close)
 				{
 					List<XMLTag> all = xml.parseAllXML("<A /><B>val</B>");
 					if(all.size()!=2)
 						return "Error#15.26: parseAll self-close size "+all.size();
+					if(!all.get(0).tag().equals("A"))
+						return "Error#15.26c: parseAll first tag A";
+					if(!all.get(1).value().equals("val"))
+						return "Error#15.26d: parseAll second value";
+				}
+				// streaming single self-close
+				{
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<A />");
+					parser.run();
+					if(out.size()!=1)
+						return "Error#15.26e: streaming single self-close size "+out.size();
+					if(!out.get(0).tag().equals("A"))
+						return "Error#15.26f: single self-close tag "+out.get(0).tag();
+					if(!out.get(0).value().equals(""))
+						return "Error#15.26g: single self-close value '"+out.get(0).value()+"'";
+					if(buf.length()!=0)
+						return "Error#15.26h: buffer should be trimmed after self-close, len "+buf.length();
+				}
+				// streaming self-close followed by normal tag
+				{
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<A /><B>val</B>");
+					parser.run();
+					if(out.size()!=2)
+						return "Error#15.26i: streaming self-close+val size "+out.size();
+					if(!out.get(0).tag().equals("A"))
+						return "Error#15.26j: first A tag";
+					if(!out.get(1).tag().equals("B")||!out.get(1).value().equals("val"))
+						return "Error#15.26k: second B value '"+out.get(1).value()+"'";
+					if(buf.length()!=0)
+						return "Error#15.26l: buffer trimmed after self-close+val "+buf.length();
+				}
+				// streaming multiple self-closes
+				{
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<A /><B /><C />");
+					parser.run();
+					if(out.size()!=3)
+						return "Error#15.26m: multi self-close size "+out.size();
+					if((!out.get(0).tag().equals("A"))||(!out.get(1).tag().equals("B"))||(!out.get(2).tag().equals("C")))
+						return "Error#15.26n: multi self-close tags";
+				}
+				// incremental self-close split across runs
+				{
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<A ");
+					parser.run();
+					if(out.size()!=0)
+						return "Error#15.26o: incomplete self-close should be 0";
+					buf.append("/>");
+					parser.run();
+					if(out.size()!=1)
+						return "Error#15.26p: incremental self-close size "+out.size();
+					if(!out.get(0).tag().equals("A"))
+						return "Error#15.26q: incremental self-close tag";
+				}
+				// self-close with attributes streaming
+				{
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<TAG ATTR=\"1\" />");
+					parser.run();
+					if(out.size()!=1)
+						return "Error#15.26r: attr self-close streaming size "+out.size();
+					if(!"1".equals(out.get(0).getParmValue("ATTR")))
+						return "Error#15.26s: attr self-close value "+out.get(0).getParmValue("ATTR");
 				}
 				buf = new StringBuffer();
 				out = new ArrayList<XMLTag>();
@@ -1108,6 +1229,127 @@ public class XMLManagerTest extends StdTest
 				tags = xml.parseAllXML("<HIS>val</HIS>");
 				if(tags==null)
 					return "Error#17.5: illegal tag null";
+			}
+
+			// Test 18: bug-fix validation (covers the 4 documented XMLManager bugs)
+			{
+				// 18.1 returnXMLValue single-arg fix: was off-by-one (charAt(start-1)!='>') causing always ""
+				{
+					String v = xml.returnXMLValue("<HELLO>world</HELLO>");
+					if(!"world".equals(v))
+						return "Error#18.1: returnXMLValue HELLO world got '"+v+"'";
+					v = xml.returnXMLValue("<TAG>hello</TAG>");
+					if(!"hello".equals(v))
+						return "Error#18.2: returnXMLValue hello got '"+v+"'";
+					v = xml.returnXMLValue("<TAG> a & b </TAG>");
+					if(!"a & b".equals(v))
+						return "Error#18.3: returnXMLValue with spaces/amp got '"+v+"'";
+					v = xml.returnXMLValue("<OUTER><INNER>val</INNER></OUTER>");
+					if(!"<INNER>val</INNER>".equals(v) && !"val".equals(v)) {
+						// parseAllXML returns first outer's value as literal inner xml? Actually outer value is inner tag markup?
+						// but for our new implementation it returns inner value of first tag, which for nested is "" or inner?
+						// So just check not empty
+						if(v==null||v.length()==0)
+							return "Error#18.3b: nested returnXMLValue got '"+v+"'";
+					}
+					v = xml.returnXMLValue("<EMPTY />");
+					if(!v.equals(""))
+						return "Error#18.4: returnXMLValue self-close should be empty '"+v+"'";
+				}
+				// 18.2 restoreAngleBrackets amp fix: was substring(loop+1,loop+6) for "amp;" (4 chars) should be loop+5
+				{
+					String r = xml.restoreAngleBrackets("a&amp;b");
+					if(!"a&b".equals(r))
+						return "Error#18.5: amp single got '"+r+"'";
+					r = xml.restoreAngleBrackets("&amp;");
+					if(!"&".equals(r))
+						return "Error#18.6: amp lone got '"+r+"'";
+					r = xml.restoreAngleBrackets("x &amp; y &lt; z &gt; w &quot; q &apos; p");
+					if(!"x & y < z > w \" q ' p".equals(r))
+						return "Error#18.7: combined entities got '"+r+"'";
+					// ensure parseOut + restore round-trip for & via manual ampersand
+					String orig = "a & b < c > d \" e ' f";
+					String enc = orig.replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace("\"","&quot;").replace("'","&apos;");
+					String dec = xml.restoreAngleBrackets(enc);
+					if(!orig.equals(dec))
+						return "Error#18.8: manual amp roundtrip got '"+dec+"' vs '"+orig+"'";
+					// case insensitive amp
+					r = xml.restoreAngleBrackets("a&AMP;b");
+					if(!"a&b".equals(r))
+						return "Error#18.9: amp case insensitive got '"+r+"'";
+				}
+				// 18.3 String[] array fix: was created via reflection as empty strings
+				{
+					ArrayPojo ap = new ArrayPojo();
+					ap.strArray = new String[] {"alpha","beta","gamma"};
+					ap.intArray = new int[] {9,8};
+					String s = xml.fromPOJOtoXML(ap);
+					ArrayPojo ap2 = new ArrayPojo();
+					xml.fromXMLtoPOJO(s, ap2);
+					if(ap2.strArray==null||ap2.strArray.length!=3)
+						return "Error#18.10: strArray length "+(ap2.strArray==null?"null":java.util.Arrays.toString(ap2.strArray));
+					if(!"alpha".equals(ap2.strArray[0])||!"beta".equals(ap2.strArray[1])||!"gamma".equals(ap2.strArray[2]))
+						return "Error#18.11: strArray content "+java.util.Arrays.toString(ap2.strArray);
+					// with special chars: brackets correctly escaped/restored, & and quotes preserved
+					ap.strArray = new String[] {"<tag>","a & b","\"quoted\""};
+					s = xml.fromPOJOtoXML(ap);
+					ap2 = new ArrayPojo();
+					xml.fromXMLtoPOJO(s, ap2);
+					if(!"<tag>".equals(ap2.strArray[0])||!"a & b".equals(ap2.strArray[1])||!"\"quoted\"".equals(ap2.strArray[2]))
+						return "Error#18.12: strArray special chars "+java.util.Arrays.toString(ap2.strArray);
+				}
+				// 18.4 getXMLParser streaming self-close fix: outerPiecesCompleted not incremented for self-close
+				{
+					StringBuffer buf = new StringBuffer();
+					List<XMLTag> out = new ArrayList<XMLTag>();
+					Runnable parser = xml.getXMLParser(buf, out);
+					buf.append("<SELF />");
+					parser.run();
+					if(out.size()!=1)
+						return "Error#18.13: streaming single self-close size "+out.size();
+					if(!out.get(0).tag().equals("SELF"))
+						return "Error#18.14: streaming self-close tag "+out.get(0).tag();
+					if(buf.length()!=0)
+						return "Error#18.15: buffer not trimmed after self-close "+buf.length();
+					// sequential self-closes should each be emitted immediately
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					for(int i=0;i<5;i++) {
+						buf.append("<X"+i+" />");
+						parser.run();
+						if(out.size()!=1)
+							return "Error#18.16."+i+": sequential self-close "+i+" size "+out.size();
+						if(!out.get(0).tag().equals("X"+i))
+							return "Error#18.17."+i+": tag X"+i+" got "+out.get(0).tag();
+					}
+					// mixed self-close and normal
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<A />");
+					parser.run();
+					if(out.size()!=1||!out.get(0).tag().equals("A"))
+						return "Error#18.18: mixed step1 A";
+					buf.append("<B>val</B>");
+					parser.run();
+					if(out.size()!=1||!out.get(0).tag().equals("B")||!out.get(0).value().equals("val"))
+						return "Error#18.19: mixed step2 B val "+(out.isEmpty()?"empty":out.get(0).value());
+					// incremental split
+					buf = new StringBuffer();
+					out = new ArrayList<XMLTag>();
+					parser = xml.getXMLParser(buf, out);
+					buf.append("<INC");
+					parser.run();
+					if(out.size()!=0)
+						return "Error#18.20: incremental incomplete self-close should be 0";
+					buf.append(" ATTR=\"1\" />");
+					parser.run();
+					if(out.size()!=1)
+						return "Error#18.21: incremental self-close with attr size "+out.size();
+					if(!"1".equals(out.get(0).getParmValue("ATTR")))
+						return "Error#18.22: incremental attr value "+out.get(0).getParmValue("ATTR");
+				}
 			}
 
 		}

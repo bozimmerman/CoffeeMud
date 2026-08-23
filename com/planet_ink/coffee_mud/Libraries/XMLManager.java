@@ -569,7 +569,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						break;
 					case 'a':
 					case 'A':
-						if(s.substring(loop+1,loop+6).equalsIgnoreCase("amp;"))
+						if(s.substring(loop+1,loop+5).equalsIgnoreCase("amp;"))
 						{
 							buf.append('&');
 							loop+=4;
@@ -1177,6 +1177,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			abandonTagState(State.BEFORETAG);
 			return;
 		case '>':
+			if(piece != null)
+			{
+				totalPiecesCompleted++;
+				if(piece.parent()==null)
+					outerPiecesCompleted++;
+			}
 			doneWithPiece(bufDex);
 			changeTagState(State.START);
 			return;
@@ -1585,20 +1591,20 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String returnXMLValue(final String Blob)
 	{
-		int start=0;
-
+		if(Blob==null)
+			return "";
 		try
 		{
-			while((start<Blob.length())&&(Blob.charAt(start)!='>'))
-				start++;
-			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
+			final List<XMLTag> tags = parseAllXML(Blob);
+			if(tags.isEmpty())
 				return "";
+			final String val = tags.get(0).value();
+			return (val == null) ? "" : val.trim();
 		}
 		catch (final Throwable t)
 		{
 			return "";
 		}
-		return Blob.substring(start+1).trim();
 	}
 
 	@Override
@@ -1816,6 +1822,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 							else
 							if(cType == Boolean.class)
 								Array.set(tgt, i, Boolean.valueOf(vTag.value()));
+							else
+							if(cType == String.class)
+								Array.set(tgt, i, restoreAngleBrackets(vTag.value()));
 							else
 							if(cType.isPrimitive())
 							{
