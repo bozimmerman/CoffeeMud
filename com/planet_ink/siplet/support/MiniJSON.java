@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
+import java.util.Stack;
+import java.util.Vector;
+
 /*
    Copyright 2013-2026 Bo Zimmerman
 
@@ -113,28 +116,6 @@ public class MiniJSON
 	}
 
 	/**
-	 * Literal definition for NULL.
-	 */
-	protected static final String NULL_STR = "null";
-	/**
-	 * Literal definition for TRUE.
-	 */
-	protected static final String TRUE_STR = "true";
-	/**
-	 * Literal definition for FALSE.
-	 */
-	protected static final String FALSE_STR = "false";
-	/**
-	 * Literal definition for four zeroes.
-	 */
-	private static final String ZEROES = "0000";
-	/**
-	 * Length of literal definition for ZEROES.
-	 */
-	private static final int ZEROES_LEN = ZEROES.length();
-
-
-	/**
 	 * Array parsing state machine states.
 	 */
 	private enum ArrayParseState {
@@ -155,6 +136,107 @@ public class MiniJSON
 		 */
 		GOTOBJECT
 	}
+
+	/**
+	 * Parse state for an unknown document or element
+	 * 
+	 * @author BZ
+	 *
+	 */
+	private static enum ParseState
+	{
+		/**
+		 * Any element will do
+		 */
+		ELEMENT,
+		/**
+		 * Parsing an array
+		 */
+		ARRAY,
+		/**
+		 * Parsing a JSON object
+		 */
+		OBJECT,
+		/**
+		 * Parsing a JSON object key string
+		 */
+		KEY,
+		/**
+		 * Parsing a string element
+		 */
+		STRING,
+		/**
+		 * Parsing a number (int, long, double)
+		 */
+		NUMBER,
+		/**
+		 * Parsing a literal true
+		 */
+		LITERAL_TRUE,
+		/**
+		 * Parsing a literal false
+		 */
+		LITERAL_FALSE,
+		/**
+		 * Parsing a literal null
+		 */
+		LITERAL_NULL
+	}
+	
+	/**
+	 * String key or element parsing state
+	 * @author BZ
+	 *
+	 */
+	private static enum StringParseState
+	{
+		/**
+		 * At the first character after the opening quotation mark
+		 */
+		DEFAULT,
+		/**
+		 * At the first char after an escape char
+		 */
+		ESCAPE,
+		/**
+		 * Escape u hex parsing, at first digit
+		 */
+		HEX1,
+		/**
+		 * Escape u hex parsing, at second digit
+		 */
+		HEX2,
+		/**
+		 * Escape u hex parsing, at third digit
+		 */
+		HEX3,
+		/**
+		 * Escape u hex parsing, at last digit
+		 */
+		HEX4
+	}
+
+	/**
+	 * Literal definition for NULL.
+	 */
+	protected static final String NULL_STR = "null";
+	/**
+	 * Literal definition for TRUE.
+	 */
+	protected static final String TRUE_STR = "true";
+	/**
+	 * Literal definition for FALSE.
+	 */
+	protected static final String FALSE_STR = "false";
+	/**
+	 * Literal definition for four zeroes.
+	 */
+	private static final String ZEROES = "0000";
+	/**
+	 * Length of literal definition for ZEROES.
+	 */
+	private static final int ZEROES_LEN = ZEROES.length();
+
 
 	/**
 	 * The official definition of "null" for a JSON object.
@@ -588,6 +670,128 @@ public class MiniJSON
 	}
 
 	/**
+	 * Parses a character in a number stream, starting with the first digit. 
+	 * Returns either the Number object, the next State, or an exception.
+	 * @param c the next char from the stream
+	 * @param index the 1 byte array denoting the current buffer index, for debugging purposes
+	 * @param parseState the current parse state
+	 * @param str the stringbuilder for the temporary number string
+	 * @param subObj a 1 element object array for internal use by this parser
+	 * @return either the next state, or a Integer, Double, Long, etc
+	 * @throws MJSONException any parse errors that occur
+	 */
+	private Object parseNumberStream(final char c, final int[] index, final NumberParseState state, final StringBuilder str) throws MJSONException
+	{
+		str.append(c);
+		switch(state)
+		{
+		case INITIAL:
+			if (c == '0')
+				return NumberParseState.NEEDDOT;
+			else
+			if (c == '-')
+				return NumberParseState.NEEDNODASH;
+			else
+			if (Character.isDigit(c))
+				return NumberParseState.HAVEDIGIT;
+			else
+				throw new MJSONException("Expected digit at "+index[0]);
+		case NEEDNODASH:
+			if (c == '-')
+				throw new MJSONException("Expected digit at "+index[0]);
+			else
+			if (c == '0')
+				return NumberParseState.NEEDDOT;
+			else
+			if (Character.isDigit(c))
+				return NumberParseState.HAVEDIGIT;
+			else
+				throw new MJSONException("Expected digit at "+index[0]);
+		case HAVEDIGIT:
+			if (c == '.')
+				return NumberParseState.NEEDDOTDIGIT;
+			else
+			if ((c == 'E') || (c == 'e'))
+				return NumberParseState.HAVEE;
+			else
+			if(Character.isDigit(c))
+				return NumberParseState.HAVEDIGIT;
+			else
+			{
+				index[0]--;
+				str.deleteCharAt(str.length()-1);
+				final String numStr = str.toString();
+				try {
+					return Long.valueOf(numStr);
+				} catch (final NumberFormatException nxe) {
+					throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
+				}
+			}
+		case NEEDDOT:
+			if (c == '.')
+				return NumberParseState.NEEDDOTDIGIT;
+			else
+			if ((c == 'E') || (c == 'e'))
+				return NumberParseState.HAVEE;
+			else
+			{
+				index[0]--;
+				str.deleteCharAt(str.length()-1);
+				final String numStr = str.toString();
+				try {
+					return Long.valueOf(numStr);
+				} catch (final NumberFormatException nxe) {
+					throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
+				}
+			}
+		case NEEDDOTDIGIT:
+			if (Character.isDigit(c))
+				return NumberParseState.HAVEDOTDIGIT;
+			else
+				throw new MJSONException("Expected digit at "+index[0]);
+		case HAVEDOTDIGIT:
+			if (Character.isDigit(c))
+				return NumberParseState.HAVEDOTDIGIT;
+			else
+			if ((c == 'e') || (c == 'E'))
+				return NumberParseState.HAVEE;
+			else
+			{
+				index[0]--;
+				str.deleteCharAt(str.length()-1);
+				final String numStr = str.toString();
+				try {
+					return Double.valueOf(numStr);
+				} catch (final NumberFormatException nxe) {
+					throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
+				}
+			}
+		case HAVEE:
+			if(c == '0')
+				throw new MJSONException("Expected non-zero digit at "+index[0]);
+			else
+			if (Character.isDigit(c) || (c == '+') || (c == '-'))
+				return NumberParseState.HAVEEDIGIT;
+			else
+				throw new MJSONException("Expected +- or non-zero digit at "+index[0]);
+		case HAVEEDIGIT:
+			if(!Character.isDigit(c))
+			{
+				index[0]--;
+				str.deleteCharAt(str.length()-1);
+				final String numStr = str.toString();
+				try {
+					return Double.valueOf(numStr);
+				} catch (final NumberFormatException nxe) {
+					throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
+				}
+			}
+			break;
+		}
+		return state;
+	}
+
+	/**
 	 * Parse either an Long, or Double object from the doc buffer.
 	 *
  	 * @param doc the full JSON document
@@ -597,136 +801,31 @@ public class MiniJSON
 	 */
 	private Object parseNumber(final char[] doc, final int[] index) throws MJSONException
 	{
-		final int numStart = index[0];
 		NumberParseState state = NumberParseState.INITIAL;
+		StringBuilder str = new StringBuilder("");
 		while(index[0] <= doc.length)
 		{
 			final char c = (index[0] < doc.length) ? doc[index[0]] : '\0';
-			switch(state)
-			{
-			case INITIAL:
-				if (c == '0')
-					state=NumberParseState.NEEDDOT;
-				else
-				if (c == '-')
-					state=NumberParseState.NEEDNODASH;
-				else
-				if (Character.isDigit(c))
-					state=NumberParseState.HAVEDIGIT;
-				else
-					throw new MJSONException("Expected digit at "+index[0]);
-				break;
-			case NEEDNODASH:
-				if (c == '-')
-					throw new MJSONException("Expected digit at "+index[0]);
-				else
-				if (c == '0')
-					state=NumberParseState.NEEDDOT;
-				else
-				if (Character.isDigit(c))
-					state=NumberParseState.HAVEDIGIT;
-				else
-					throw new MJSONException("Expected digit at "+index[0]);
-				break;
-			case HAVEDIGIT:
-				if (c == '.')
-					state=NumberParseState.NEEDDOTDIGIT;
-				else
-				if ((c == 'E') || (c == 'e'))
-					state=NumberParseState.HAVEE;
-				else
-				if(Character.isDigit(c))
-					state=NumberParseState.HAVEDIGIT;
-				else
-				{
-					index[0]--;
-					final String numStr = new String(doc, numStart, index[0] - numStart + 1);
-					try {
-						return Long.valueOf(numStr);
-					} catch (final NumberFormatException nxe) {
-						throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
-					}
-				}
-				break;
-			case NEEDDOT:
-				if (c == '.')
-					state=NumberParseState.NEEDDOTDIGIT;
-				else
-				if ((c == 'E') || (c == 'e'))
-					state = NumberParseState.HAVEE;
-				else
-				{
-					index[0]--;
-					final String numStr = new String(doc, numStart, index[0] - numStart + 1);
-					try {
-						return Long.valueOf(numStr);
-					} catch (final NumberFormatException nxe) {
-						throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
-					}
-				}
-				break;
-			case NEEDDOTDIGIT:
-				if (Character.isDigit(c))
-					state=NumberParseState.HAVEDOTDIGIT;
-				else
-					throw new MJSONException("Expected digit at "+index[0]);
-				break;
-			case HAVEDOTDIGIT:
-				if (Character.isDigit(c))
-					state=NumberParseState.HAVEDOTDIGIT;
-				else
-				if ((c == 'e') || (c == 'E'))
-					state=NumberParseState.HAVEE;
-				else
-				{
-					index[0]--;
-					final String numStr = new String(doc, numStart, index[0] - numStart + 1);
-					try {
-						return Double.valueOf(numStr);
-					} catch (final NumberFormatException nxe) {
-						throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
-					}
-				}
-				break;
-			case HAVEE:
-				if(c == '0')
-					throw new MJSONException("Expected non-zero digit at "+index[0]);
-				else
-				if (Character.isDigit(c) || (c == '+') || (c == '-'))
-					state=NumberParseState.HAVEEDIGIT;
-				else
-					throw new MJSONException("Expected +- or non-zero digit at "+index[0]);
-				break;
-			case HAVEEDIGIT:
-				if(!Character.isDigit(c))
-				{
-					index[0]--;
-					final String numStr = new String(doc, numStart, index[0] - numStart + 1);
-					try {
-						return Double.valueOf(numStr);
-					} catch (final NumberFormatException nxe) {
-						throw new MJSONException("Number Format Exception (" + numStr + ")", nxe);
-					}
-				}
-				break;
-			}
+			final Object res = this.parseNumberStream(c, index, state, str);
+			if(res instanceof NumberParseState)
+				state = (NumberParseState)res;
+			else
+				return res;
 			index[0]++;
 		}
+		// technically unreachable, since you don't really know when digits end
 		throw new MJSONIncompleteException("Unexpected end of number at"+index[0]);
 	}
 
 	/**
-	 * Given a char array, and index into it, returns the nybble value of the 1
-	 * hex digits at the indexed point of the char array.
+	 * Given a char returns the nybble value of the hex digit.
 	 *
-	 * @param doc the json doc containing a hex number
-	 * @param index the index into that json doc where the hex number begins
+	 * @param c the char to evaluate
 	 * @return the byte value of the 1 digit hex nybble
 	 * @throws MJSONException a parse error meaning it wasn't a hex number at all
 	 */
-	private byte getHexNybble(final char[] doc, final int index) throws MJSONException
+	private byte getHexNybble(final char c, int index) throws MJSONException
 	{
-		final char c = doc[index];
 		if((c >= '0') && (c <= '9'))
 			return (byte)(c-'0');
 		if((c >= 'a') && (c <= 'f'))
@@ -734,6 +833,86 @@ public class MiniJSON
 		if((c >= 'A') && (c <= 'F'))
 			return (byte)(10 + (c-'A'));
 		throw new MJSONException("Illegal hex digit at "+index);
+	}
+
+	/**
+	 * Parses a character in a string stream, starting with the first character after the 
+	 * opening quote.  Returns either the completed String, the next State, or an exception.
+	 * @param c the next char from the stream
+	 * @param index the 1 byte array denoting the current buffer index, for debugging purposes
+	 * @param parseState the current parse state
+	 * @param str the stringbuilder for the temporary string
+	 * @param subObj a 1 element object array for internal use by this parser
+	 * @return either the next state, or a String
+	 * @throws MJSONException any parse errors that occur
+	 */
+	private Object parseStringStream(final char c, final int[] index, final StringParseState parseState, 
+			final StringBuilder str, final Object[]	subObj) throws MJSONException
+	{
+		switch(parseState)
+		{
+		case DEFAULT:
+			switch(c)
+			{
+			case '\"':
+				return str.toString();
+			case '\\':
+				return StringParseState.ESCAPE;
+			default:
+				str.append(c);
+				break;
+			}
+			break;
+		case ESCAPE:
+			switch(c)
+			{
+			case '\"':
+			case '\\':
+			case '/':
+				str.append(c);
+				return StringParseState.DEFAULT;
+			case 'b':
+				str.append('\b');
+				return StringParseState.DEFAULT;
+			case 'f':
+				str.append('\f');
+				return StringParseState.DEFAULT;
+			case 'n':
+				str.append('\n');
+				return StringParseState.DEFAULT;
+			case 'r':
+				str.append('\r');
+				return StringParseState.DEFAULT;
+			case 't':
+				str.append('\t');
+				return StringParseState.DEFAULT;
+			case 'u':
+				return StringParseState.HEX1;
+			default:
+				throw new MJSONException("Illegal escape character: "+c);
+			}
+		case HEX1:
+			subObj[0] = new byte[3];
+			((byte[])subObj[0])[0] = getHexNybble(c,index[0]);
+			return StringParseState.HEX2;
+		case HEX2:
+			((byte[])subObj[0])[1] = getHexNybble(c,index[0]);
+			return StringParseState.HEX3;
+		case HEX3:
+			((byte[])subObj[0])[2] = getHexNybble(c,index[0]);
+			return StringParseState.HEX4;
+		case HEX4:
+		{
+			byte b = getHexNybble(c,index[0]);
+			final byte[] hexBuf=new byte[] {
+				(byte)((((byte[])subObj[0])[0] << 4) | ((byte[])subObj[0])[1]),
+				(byte)((((byte[])subObj[0])[2] << 4) | b)
+			};
+			str.append(new String(hexBuf, StandardCharsets.UTF_16));
+			return StringParseState.DEFAULT;
+		}
+		}
+		return parseState;
 	}
 
 	/**
@@ -752,62 +931,62 @@ public class MiniJSON
 		{
 			throw new MJSONException("Expected quote at: "+doc[index[0]]);
 		}
-		index[0]++;
-		while(index[0] < doc.length)
+		StringParseState state = StringParseState.DEFAULT;
+		Object[] hexBits = new Object[1];
+		while(++index[0] < doc.length)
 		{
 			final char c=doc[index[0]];
-			if (c == '\"')
-				return value.toString();
+			Object res = parseStringStream(c,index,state,value,hexBits);
+			if(res instanceof StringParseState)
+				state = (StringParseState)res;
 			else
-			if (c == '\\')
-			{
-				if(index[0] == doc.length-1)
-					throw new MJSONException("Unfinished escape");
-				index[0]++;
-				switch(doc[index[0]])
-				{
-				case '\"':
-				case '\\':
-				case '/':
-					value.append(doc[index[0]]);
-					break;
-				case 'b':
-					value.append('\b');
-					break;
-				case 'f':
-					value.append('\f');
-					break;
-				case 'n':
-					value.append('\n');
-					break;
-				case 'r':
-					value.append('\r');
-					break;
-				case 't':
-					value.append('\t');
-					break;
-				case 'u':
-				{
-					if(index[0] >= doc.length-4)
-						throw new MJSONIncompleteException("Unfinished unicode escape at "+index[0]);
-					final byte[] hexBuf=new byte[] {
-						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0])),
-						(byte)((getHexNybble(doc,++index[0]) << 4) | getHexNybble(doc,++index[0]))
-					};
-					value.append(new String(hexBuf, StandardCharsets.UTF_16));
-					break;
-				}
-				default:
-					throw new MJSONException("Illegal escape character: "+doc[index[0]]);
-				}
-			}
-			else
-				value.append(c);
-			index[0]++;
+				return res.toString();
 		}
 		throw new MJSONIncompleteException("Unfinished string at "+index[0]);
 	}
 
+	/**
+	 * Parses the next character in a json array character stream.  Returns either the next state, or the final array.
+	 * If the next state is gotobject, you will need to immediately fill the given list with the next object.
+	 * 
+	 * @param c the next char in the stream
+	 * @param index the 1 dim int[] array holding the index into the doc, for debugging purposes
+	 * @param state the current parse state for the array
+	 * @param list the list build in-progress
+	 * @return the next state, or the object array
+	 * @throws MJSONException any parse errors that occur
+	 */
+	private Object parseArrayStream(final char c, final int[] index, final ArrayParseState state, final List<Object> list) throws MJSONException
+	{
+		if(!Character.isWhitespace(c))
+		{
+			switch(state)
+			{
+			case INITIAL:
+				if (c == '[')
+					return ArrayParseState.NEEDOBJECT;
+				else
+					throw new MJSONException("Expected String at "+index[0]);
+			case EXPECTOBJECT:
+				return ArrayParseState.GOTOBJECT;
+			case NEEDOBJECT:
+				if (c == ']')
+					return list.toArray(new Object[0]);
+				else
+					return ArrayParseState.GOTOBJECT;
+			case GOTOBJECT:
+				if (c == ']')
+					return list.toArray(new Object[0]);
+				else
+				if (c == ',')
+					return ArrayParseState.EXPECTOBJECT;
+				else
+					throw new MJSONException("Expected ] or , at "+index[0]);
+			}
+		}
+		return state;
+	}
+	
 	/**
 	 * Given a JSON document char array, and an index into it, parses an array
 	 * at the indexed point of the char array and returns its value object.
@@ -825,43 +1004,376 @@ public class MiniJSON
 		while(index[0] < doc.length)
 		{
 			final char c=doc[index[0]];
-			if(!Character.isWhitespace(c))
+			Object res = parseArrayStream(c,index,state,finalSet);
+			if(res instanceof ArrayParseState)
 			{
-				switch(state)
-				{
-				case INITIAL:
-					if (c == '[')
-						state = ArrayParseState.NEEDOBJECT;
-					else
-						throw new MJSONException("Expected String at "+index[0]);
-					break;
-				case EXPECTOBJECT:
+				if((res == ArrayParseState.GOTOBJECT) && (state != ArrayParseState.GOTOBJECT))
 					finalSet.add(parseElement(doc,index,depth));
-					state = ArrayParseState.GOTOBJECT;
-					break;
-				case NEEDOBJECT:
-					if (c == ']')
-						return finalSet.toArray(new Object[0]);
-					else
-					{
-						finalSet.add(parseElement(doc,index,depth));
-						state = ArrayParseState.GOTOBJECT;
-					}
-					break;
-				case GOTOBJECT:
-					if (c == ']')
-						return finalSet.toArray(new Object[0]);
-					else
-					if (c == ',')
-						state = ArrayParseState.EXPECTOBJECT;
-					else
-						throw new MJSONException("Expected ] or , at "+index[0]);
-					break;
-				}
+				state = (ArrayParseState)res;
 			}
+			else
+				return (Object[])res;
 			index[0]++;
 		}
 		throw new MJSONIncompleteException("Expected ] at "+index[0]);
+	}
+
+	/**
+	 * Represents a single element being parsed in a json document
+	 * @author BZ
+	 */
+	private static class ParseFrame
+	{
+		/**
+		 * This frames element type being parsed
+		 */
+		protected ParseState	state;
+		/**
+		 * The sub-state inside this element type.
+		 */
+		protected Enum<?>		subState	= null;
+		/**
+		 * The element construction object, typically a list, map, or stringbuilder
+		 */
+		protected Object		obj			= null;
+		/**
+		 * For maps, the previous key parsed
+		 */
+		protected String		lastKey		= null;
+		/**
+		 * Any extraneous sub-element state data required
+		 */
+		protected Object[]		subObj		= new Object[1];
+	}
+	
+	/**
+	 * Top level streaming parse object
+	 * @author BZ
+	 */
+	private static class ParseContext
+	{
+		/**
+		 * The initial top level parse state, typically ELEMENT
+		 */
+		protected ParseState		  state;
+		/**
+		 * The last top-level element parsed
+		 */
+		protected List<Object>		  parsedElements = new Vector<Object>();
+		/**
+		 * The document being parsed
+		 */
+		protected  final StringBuffer doc;
+		/**
+		 * The index into the given document
+		 */
+		protected  final int[]		  index;
+		/**
+		 * The stack of different element depths being parsed
+		 */
+		protected Stack<ParseFrame>	  frames	= new Stack<ParseFrame>();
+
+		/**
+		 * Simple constructor
+		 * @param doc the document to parse
+		 */
+		protected ParseContext(final StringBuffer doc)
+		{
+			this.doc = doc;
+			this.index=new int[] { 0 };
+			state = ParseState.ELEMENT;
+		}
+		
+		/**
+		 * When a new deep element needs parsing, this constructs it and pushes it onto the stack
+		 * 
+		 * @param newState the new high-level parse state
+		 * @param subState the initial element parse state
+		 * @param obj the main partial construction object
+		 */
+		protected void pushFrame(final ParseState newState, final Enum<?> subState, final Object obj)
+		{
+			ParseFrame frame = new ParseFrame();
+			frame.state = state; // remember the prior state
+			frame.subState = subState;
+			frame.obj = obj;
+			this.frames.push(frame);
+			this.state = newState;
+		}
+
+		/**
+		 * When an element is finished being constructed, this pops the frame off the stack and applies
+		 * the element to its parent.
+		 * 
+		 * @param answer the final element
+		 */
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		protected void popFrame(final Object answer)
+		{
+			if(frames.size()==0)
+			{
+				parsedElements.add(answer);
+				state = ParseState.ELEMENT;
+				return;
+			}
+			ParseFrame myFrame = frames.pop();
+			if(frames.size()==0)
+			{
+				parsedElements.add(answer);
+				state = myFrame.state;
+				return;
+			}
+			ParseFrame parent = frames.peek();
+			if(parent.obj == null)
+			{
+				if(frames.size()==1)
+				{
+					parent.obj=answer;
+					state = ParseState.ELEMENT;
+					return;
+				}
+				frames.pop();
+				if(frames.size()==0)
+				{
+					parsedElements.add(answer);
+					state = ParseState.ELEMENT;
+					return;
+				}
+				parent = frames.peek();
+			}
+			if(parent.obj instanceof List)
+				((List)parent.obj).add(answer);
+			else
+			if(parent.obj instanceof Map)
+			{
+				if(myFrame.state == ParseState.OBJECT)
+					parent.lastKey = answer.toString();
+				else
+					((Map)parent.obj).put(parent.lastKey,answer);
+			}
+			if(parent.obj instanceof List)
+				state = ParseState.ARRAY;
+			else
+			if(parent.obj instanceof Map)
+				state = ParseState.OBJECT;
+			else
+				state = parent.state;
+		}
+	}
+
+	/**
+	 * Constructs a runnable that is capable of partial JSON parsing.  The run() method
+	 * should be called after adding more bytes to the given StringBuffer, and any parsed
+	 * elements are added to the given results array.  The results array is cleared
+	 * on every run() call, and the buffer may be modified or trimmed by the parser.
+	 * 
+	 * The run() method will throw a java.lang.Error on any fatal parse errors.
+	 * 
+	 * @param buf the buffer to hold existing and future json document string chars
+	 * @param results after every run call, this will hold any completed parsed objects
+	 * @return the runnable to run()
+	 * 
+	 */
+	public Runnable getJSONParser(final StringBuffer buf, final List<Object> results)
+	{
+		final ParseContext context=new ParseContext(buf);
+		final MiniJSON jsoner = this;
+		return new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				results.clear();
+				try
+				{
+					jsoner.parseStream(context);
+					results.addAll(context.parsedElements);
+				}
+				catch(MJSONException e)
+				{
+					throw new java.lang.Error("Json parsing error", e);
+				}
+				finally
+				{
+					context.parsedElements.clear();
+					int trim = buf.length()-10;
+					if(context.index[0]>10 && buf.length()>20) // trim the buffer
+					{
+						context.index[0] -= trim;
+						buf.delete(0, trim);
+					}
+				}
+			}
+		};
+	}
+	
+	/**
+	 * Continues parsing a json document one character at a time.
+	 * The top level object parsed, as it is found, is in ctx.lastObj
+	 * 
+	 * @param ctx the parsing context with all state information
+	 * @throws MJSONException
+	 */
+	protected void parseStream(ParseContext ctx) throws MJSONException
+	{
+		while(ctx.index[0] < ctx.doc.length())
+		{
+			char c = ctx.doc.charAt(ctx.index[0]);
+			switch(ctx.state)
+			{
+			case NUMBER:
+			{
+				ParseFrame frame = ctx.frames.peek();
+				final Object res = parseNumberStream(c,ctx.index,(NumberParseState)frame.subState,(StringBuilder)frame.obj);
+				if(res instanceof NumberParseState)
+					frame.subState = (NumberParseState)res;
+				else
+					ctx.popFrame(res);
+				break;
+			}
+			case KEY:
+			case STRING:
+			{
+				ParseFrame frame = ctx.frames.peek();
+				final Object res = parseStringStream(c,ctx.index,(StringParseState)frame.subState,(StringBuilder)frame.obj,frame.subObj);
+				if(res instanceof StringParseState)
+					frame.subState = (StringParseState)res;
+				else
+					ctx.popFrame(res);
+				break;
+			}
+			case LITERAL_TRUE:
+			{
+				ParseFrame frame = ctx.frames.peek();
+				if(parseLiteral(c,ctx.index,(StringBuilder)frame.obj,TRUE_STR))
+					ctx.popFrame(Boolean.TRUE);
+				break;
+			}
+			case LITERAL_FALSE:
+			{
+				ParseFrame frame = ctx.frames.peek();
+				if(parseLiteral(c,ctx.index,(StringBuilder)frame.obj,FALSE_STR))
+					ctx.popFrame(Boolean.FALSE);
+				break;
+			}
+			case LITERAL_NULL:
+			{
+				ParseFrame frame = ctx.frames.peek();
+				if(parseLiteral(c,ctx.index,(StringBuilder)frame.obj,NULL_STR))
+					ctx.popFrame(NULL);
+				break;
+			}
+			case ELEMENT:
+				if(!Character.isWhitespace(c))
+				{
+					switch(c)
+					{
+					case '\"':
+						ctx.pushFrame(ParseState.STRING,StringParseState.DEFAULT,new StringBuilder());
+						break;
+					case '[':
+						if (ctx.frames.size() >= MAX_DEPTH)
+							throw new MiniJSON.MJSONException("Maximum depth reached @" + ctx.index[0]);
+						ctx.pushFrame(ParseState.ARRAY,ArrayParseState.INITIAL,new ArrayList<Object>());
+						ctx.index[0]--; // allow first char to be reparsed
+						break;
+					case '{':
+						if (ctx.frames.size() >= MAX_DEPTH)
+							throw new MiniJSON.MJSONException("Maximum depth reached @" + ctx.index[0]);
+						ctx.pushFrame(ParseState.OBJECT,ObjectParseState.NEEDKEY,new JSONObject());
+						break;
+					case '-':
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						ctx.index[0]--; // number parser needs first char
+						ctx.pushFrame(ParseState.NUMBER,NumberParseState.INITIAL,new StringBuilder());
+						break;
+					case 't':
+						ctx.pushFrame(ParseState.LITERAL_TRUE,null,new StringBuilder().append(c));
+						break;
+					case 'f':
+						ctx.pushFrame(ParseState.LITERAL_FALSE,null,new StringBuilder().append(c));
+						break;
+					case 'n':
+						ctx.pushFrame(ParseState.LITERAL_NULL,null,new StringBuilder().append(c));
+						break;
+					default:
+						throw new MJSONException("Unknown character at " + ctx.index[0]
+								+ "(" + Integer.toHexString(c) + ")");
+					}
+				}
+				break;
+			case OBJECT:
+			{
+				final ParseFrame frame = ctx.frames.peek();
+				@SuppressWarnings("unchecked")
+				final Map<String, Object> map = (Map<String, Object>)frame.obj;
+				Object res = parseObjectStream(c, ctx.index, (ObjectParseState)frame.subState, frame.lastKey, map);
+				if(res instanceof ObjectParseState)
+				{
+					ObjectParseState nextState = (ObjectParseState)res;
+					if((nextState == ObjectParseState.GOTKEY)&&(frame.subState != ObjectParseState.GOTKEY))
+						ctx.pushFrame(ParseState.KEY,StringParseState.DEFAULT,new StringBuilder());
+					else
+					if((nextState == ObjectParseState.GOTOBJECT)&&(frame.subState != ObjectParseState.GOTOBJECT))
+					{
+						ctx.index[0]--;
+						ctx.pushFrame(ParseState.ELEMENT,null,null);
+					}
+					frame.subState = nextState;
+				}
+				else
+					ctx.popFrame(map);
+				break;
+			}
+			case ARRAY:
+			{
+				final ParseFrame frame = ctx.frames.peek();
+				@SuppressWarnings("unchecked")
+				final List<Object> list = (List<Object>)frame.obj;
+				Object res = parseArrayStream(c,ctx.index,(ArrayParseState)frame.subState,list);
+				if(res instanceof ArrayParseState)
+				{
+					if((res == ArrayParseState.GOTOBJECT) && (frame.subState != ArrayParseState.GOTOBJECT))
+					{
+						ctx.index[0]--;
+						ctx.pushFrame(ParseState.ELEMENT,null,null);
+					}
+					frame.subState = (ArrayParseState)res;
+				}
+				else
+					ctx.popFrame(list.toArray(new Object[0]));
+				break;
+			}
+			}
+			ctx.index[0]++;
+		}
+	}
+	
+	/**
+	 * Handles stream parsing of literals by comparing the next char against what was received so far.
+	 * @param c the next character to evaluate
+	 * @param index the document index, for debugging purposes
+	 * @param str the partial string
+	 * @param target the completed string
+	 * @return true if the literal was parsed out completely, false if not, or throws an exception
+	 */
+	private boolean parseLiteral(final char c, final int[] index, final StringBuilder str, final String target) throws MJSONException
+	{
+		if(str.length()>=target.length())
+			throw new MJSONException("Unknown literal at "+index[0]);
+		if(c != target.charAt(str.length()))
+			throw new MJSONException("Unknown literal at "+index[0]);
+		str.append(c);
+		return (str.length()==target.length());
 	}
 
 	/**
@@ -958,6 +1470,59 @@ public class MiniJSON
 	}
 
 	/**
+	 * Parses the next character in a json object character stream.  Returns either the next state, or the final map.
+	 * If the next state is GOTOBJECT, you will need to immediately parse the next element.
+	 * If the next state is GOTKEY, you will need to immediately parse the next string as a key.
+	 * 
+	 * @param c the next char in the stream
+	 * @param index the 1 dim int[] array holding the index into the doc, for debugging purposes
+	 * @param state the current parse state for the object
+	 * @param key the last key encountered
+	 * @param map the object build in-progress
+	 * @return the next state, or the object
+	 * @throws MJSONException any parse errors that occur
+	 */
+	private Object parseObjectStream(final char c, final int[] index, final ObjectParseState state, final String key, final Map<String,Object> map) throws MJSONException
+	{
+		if(!Character.isWhitespace(c))
+		{
+			switch(state)
+			{
+			case INITIAL:
+				if (c == '{')
+					return ObjectParseState.NEEDKEY;
+				else
+					throw new MJSONException("Expected Key/String at "+index[0]);
+			case NEEDKEY:
+			case NEEDNEWKEY:
+				if(c=='\"')
+					return ObjectParseState.GOTKEY;
+				else
+				if ((c == '}') && (state == ObjectParseState.NEEDKEY))
+					return map;
+				else
+					throw new MJSONException("Expected Key/String at "+index[0]);
+			case GOTKEY:
+				if (c == ':')
+					return ObjectParseState.NEEDOBJECT;
+				else
+					throw new MJSONException("Expected Colon at "+index[0]);
+			case NEEDOBJECT:
+				return ObjectParseState.GOTOBJECT;
+			case GOTOBJECT:
+				if (c == ',')
+					return ObjectParseState.NEEDKEY;
+				else
+				if (c == '}')
+					return map;
+				else
+					throw new MJSONException("Expected } or , at "+index[0]);
+			}
+		}
+		return state;
+	}
+
+	/**
 	 * Given a JSON document char array, and an index into it, parses a JSON
 	 * object at the indexed point of the char array and returns it as a mapped
 	 * JSON object.
@@ -976,50 +1541,19 @@ public class MiniJSON
 		while(index[0] < doc.length)
 		{
 			final char c=doc[index[0]];
-			if(!Character.isWhitespace(c))
+			Object res = parseObjectStream(c, index, state, key, map);
+			if(res instanceof ObjectParseState)
 			{
-				switch(state)
-				{
-				case INITIAL:
-					if (c == '{')
-						state = ObjectParseState.NEEDKEY;
-					else
-						throw new MJSONException("Expected Key/String at "+index[0]);
-					break;
-				case NEEDKEY:
-				case NEEDNEWKEY:
-					if(c=='\"')
-					{
-						key = parseString(doc,index);
-						state = ObjectParseState.GOTKEY;
-					}
-					else
-					if ((c == '}') && (state == ObjectParseState.NEEDKEY))
-						return map;
-					else
-						throw new MJSONException("Expected Key/String at "+index[0]);
-					break;
-				case GOTKEY:
-					if (c == ':')
-						state = ObjectParseState.NEEDOBJECT;
-					else
-						throw new MJSONException("Expected Colon at "+index[0]);
-					break;
-				case NEEDOBJECT:
+				ObjectParseState nextState = (ObjectParseState)res;
+				if((nextState == ObjectParseState.GOTKEY)&&(state != ObjectParseState.GOTKEY))
+					key = parseString(doc,index);
+				else
+				if((nextState == ObjectParseState.GOTOBJECT)&&(state != ObjectParseState.GOTOBJECT))
 					map.put(key, parseElement(doc,index,depth));
-					state = ObjectParseState.GOTOBJECT;
-					break;
-				case GOTOBJECT:
-					if (c == ',')
-						state = ObjectParseState.NEEDKEY;
-					else
-					if (c == '}')
-						return map;
-					else
-						throw new MJSONException("Expected } or , at "+index[0]);
-					break;
-				}
+				state = nextState;
 			}
+			else
+				return map;
 			index[0]++;
 		}
 		throw new MJSONIncompleteException("Expected } at "+index[0]);
