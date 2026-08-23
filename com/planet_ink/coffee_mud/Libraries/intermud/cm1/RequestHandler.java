@@ -62,8 +62,8 @@ public class RequestHandler implements CMRunnable
 
 	private final List<String>			  execCommands		  = new SLinkedList<String>();
 	private final StringBuffer			  accumBuffer		  = new StringBuffer();
-	private final List<XMLTag>			  xmlTags			  = new SLinkedList<XMLTag>();
-	private volatile Runnable			  xmlRunner			  = null;
+	private final List<?>				  results			  = new SLinkedList<Object>();
+	private volatile Runnable			  runner			  = null;
 	private final SLinkedList<ByteBuffer> workingBuffers	  = new SLinkedList<ByteBuffer>();
 	private final Map<String, Object>	  dependents		  = new STreeMap<String, Object>();
 
@@ -301,9 +301,9 @@ public class RequestHandler implements CMRunnable
 				this.commandMode = newMode;
 				// the below allows commandmode to be used to reset parser manually by toggling modes
 				this.accumBuffer.setLength(0);
-				this.xmlRunner = null; // will be lazy-rebuilt later
+				this.runner = null; // will be lazy-rebuilt later
 				this.workingBuffers.clear();
-				this.xmlTags.clear();
+				this.results.clear();
 				this.execCommands.clear();
 				this.markBlocks = DEFAULT_MARK_BLOCKS;
 			}
@@ -432,13 +432,17 @@ public class RequestHandler implements CMRunnable
 					case XML:
 					{
 						CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer);
-						if(xmlRunner == null)
-							xmlRunner = CMLib.xml().getXMLParser(accumBuffer, xmlTags);
-						accumBuffer.append(charBuffer);
-						xmlRunner.run();
-						while(xmlTags.size()>0)
+						if(runner == null)
 						{
-							XMLTag tag = xmlTags.remove(0);
+							@SuppressWarnings("unchecked")
+							final List<XMLTag> tags = (List<XMLTag>)results;
+							runner = CMLib.xml().getXMLParser(accumBuffer, tags);
+						}
+						accumBuffer.append(charBuffer);
+						runner.run();
+						while(results.size()>0)
+						{
+							XMLTag tag = (XMLTag)results.remove(0);
 							execCommands.add(tag.tag()+" "+tag.value());
 						}
 						buffer.clear(); // act like nothing was read
@@ -449,43 +453,49 @@ public class RequestHandler implements CMRunnable
 					case JSON:
 					{
 						CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer);
-						for(int i=0;i<charBuffer.length();i++)
+						if(runner == null)
 						{
-							final char c = charBuffer.get(i);
-							accumBuffer.append(c);
-							if(c == '}') // possible end of the doc
+							@SuppressWarnings("unchecked")
+							final List<Object> objs = (List<Object>)results;
+							runner = new MiniJSON().getJSONParser(accumBuffer, objs);
+						}
+						accumBuffer.append(charBuffer);
+						try
+						{
+							runner.run();
+						}
+						catch(Error e)
+						{
+							Throwable t = e;
+							if(e.getCause() instanceof MiniJSON.MJSONException)
+								t = e.getCause();
+							Log.errOut("CM1Hndlr", runnableName + ": " + t.getMessage());
+							accumBuffer.setLength(0);
+							break; // get out of this loop and give up
+						}
+						while(results.size()>0)
+						{
+							Object ob = results.remove(0);
+							if(ob instanceof MiniJSON.JSONObject)
 							{
-								try
+								final MiniJSON.JSONObject obj = (MiniJSON.JSONObject)ob;
+								if(!obj.containsKey("command"))
+									execCommands.add("*Error: no command found in document"); // No legal command may start with *
+								else
 								{
-									MiniJSON jsonParser = new MiniJSON();
-									MiniJSON.JSONObject obj = jsonParser.parseObject(accumBuffer.toString());
-									accumBuffer.setLength(0); // complete doc found! Yay!
-									if(!obj.containsKey("command"))
-										execCommands.add("*Error: no command found in document"); // No legal command may start with *
-									else
+									String command = obj.get("command").toString().toUpperCase().trim();
+									final StringBuilder fullCommand = new StringBuilder(command);
+									if(obj.containsKey("arguments"))
 									{
-										String command = obj.get("command").toString().toUpperCase().trim();
-										final StringBuilder fullCommand = new StringBuilder(command);
-										if(obj.containsKey("arguments"))
+										if(obj.get("arguments") instanceof Object[])
 										{
-											if(obj.get("arguments") instanceof Object[])
-											{
-												for(Object o : obj.getCheckedArray("arguments"))
-													fullCommand.append(" ").append(o.toString());
-											}
-											else
-												fullCommand.append(" ").append(obj.get("arguments").toString());
+											for(Object o : obj.getCheckedArray("arguments"))
+												fullCommand.append(" ").append(o.toString());
 										}
-										execCommands.add(fullCommand.toString());
+										else
+											fullCommand.append(" ").append(obj.get("arguments").toString());
 									}
-								}
-								catch(MiniJSON.MJSONIncompleteException e)
-								{} // this is fine, it just means more data is needed
-								catch(MiniJSON.MJSONException x)
-								{
-									Log.errOut("CM1Hndlr", runnableName + ": " + x.getMessage());
-									accumBuffer.setLength(0);
-									break; // get out of this loop and give up
+									execCommands.add(fullCommand.toString());
 								}
 							}
 						}

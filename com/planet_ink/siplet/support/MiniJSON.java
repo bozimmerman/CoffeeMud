@@ -1184,6 +1184,8 @@ public class MiniJSON
 			public void run()
 			{
 				results.clear();
+				if(context.index[0] > buf.length())
+					context.index[0] = buf.length();
 				try
 				{
 					jsoner.parseStream(context);
