@@ -392,6 +392,7 @@ public class Spell_Spellbinding extends Spell
 						mob.tell(L(".. something went wrong."));
 						return false;
 					}
+					priorBinding.spellbindings.clear();
 					priorBinding.makeLongLasting();
 				}
 				if(thePriorKey==null)
