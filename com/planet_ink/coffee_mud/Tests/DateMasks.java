@@ -69,6 +69,70 @@ public class DateMasks extends StdTest
 		M.setStartRoom(R);
 		M.setLocation(R);
 		final TimeClock C = CMLib.time().homeClock(M);
+		// GYPSY/FORTUNETELLING bug reproduction (SYSTEM_BUGS17873124462900)
+		// Bug: dateMaskToNextTimeClock returns day 21 on a 20-day/month, 5-day/week calendar.
+		// Root cause: DefaultTimeClock.setDayOfMonth computes weekOfMonth=floor(day/daysInWeek)
+		//   using 1-indexed day, so day 20 -> weekOfMonth=4 (max valid is 3).
+		//   Then MUDZapper:9152 sets DAY=weekOfMonth*daysInWeek+1 = 4*5+1 = 21.
+		// Repro: set day=20 (last valid day), use a WEEK mask from awards.txt,
+		//   call dateMaskToNextTimeClock, check result day is in 1..daysInMonth.
+		{
+			final TimeClock prodC = (TimeClock)C.copyOf();
+			prodC.setDaysInMonth(20);
+			prodC.setMonthsInYear(new String[]{"Mendahlary (1)","Naturuary (2)","Kaizuzen (3)","Bruhtiusen (4)","Thalosinan (5)","Zathryan (6)","Suedoonry (7)","Shessairry (8)"});
+			prodC.setWeekNames(new String[]{"Dallmayrday","Mikoday","Bewleyday","Nestleday","Hillsbroday"});
+			prodC.setHoursInDay(6);
+			prodC.setDawnToDusk(0,1,4,5);
+			prodC.setYear(1251);
+			prodC.setMonth(4);
+			prodC.setHourOfDay(0);
+			A.setTimeObj(prodC);
+			// Test 1: exact award mask from awards.txt:1051 that triggered the bug report
+			prodC.setDayOfMonth(20);
+			{
+				final String prodMask = "-WEEK \"+1 of 4\" -MONTH \"+4 of 9\"";
+				final CompiledZMask cm = CMLib.masking().maskCompile(prodMask);
+				final TimeClock rc = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+				if(rc != null && rc.getDayOfMonth() > rc.getDaysInMonth())
+					return "Fail(gypsy-award): mask "+prodMask+" day=20 -> day "+rc.getDayOfMonth()+" (max "+rc.getDaysInMonth()+") : "+rc.getShortTimeDescription();
+			}
+			// Test 2: isolate with a WEEK-only mask
+			prodC.setDayOfMonth(20);
+			{
+				final String weekMask = "-WEEK \"+0 of 4\"";
+				final CompiledZMask cm = CMLib.masking().maskCompile(weekMask);
+				final TimeClock rc = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+				if(rc != null && rc.getDayOfMonth() > rc.getDaysInMonth())
+					return "Fail(gypsy-week): mask "+weekMask+" day=20 -> day "+rc.getDayOfMonth()+" (max "+rc.getDaysInMonth()+") : "+rc.getShortTimeDescription();
+			}
+			// Test 3: sweep all valid starting days with a WEEK mask
+			{
+				final String weekMask = "-WEEK \"+0 of 4\"";
+				final CompiledZMask cm = CMLib.masking().maskCompile(weekMask);
+				for(int day=1; day<=prodC.getDaysInMonth(); day++)
+				{
+					prodC.setDayOfMonth(day);
+					final TimeClock rc = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+					if(rc != null && rc.getDayOfMonth() > rc.getDaysInMonth())
+						return "Fail(gypsy-sweep): start day="+day+" mask "+weekMask+" -> day "+rc.getDayOfMonth()+" (max "+rc.getDaysInMonth()+") : "+rc.getShortTimeDescription();
+				}
+			}
+			// Test 4: sweep all valid starting days with the full award mask
+			{
+				final String prodMask = "-WEEK \"+1 of 4\" -MONTH \"+4 of 9\"";
+				final CompiledZMask cm = CMLib.masking().maskCompile(prodMask);
+				for(int day=1; day<=prodC.getDaysInMonth(); day++)
+				{
+					prodC.setDayOfMonth(day);
+					final TimeClock rc = CMLib.masking().dateMaskToNextTimeClock(M, cm);
+					if(rc != null && rc.getDayOfMonth() > rc.getDaysInMonth())
+						return "Fail(gypsy-sweep-award): start day="+day+" mask "+prodMask+" -> day "+rc.getDayOfMonth()+" (max "+rc.getDaysInMonth()+") : "+rc.getShortTimeDescription();
+					if(rc != null && rc.getMonth() >= rc.getMonthsInYear())
+						return "Fail(gypsy-sweep-award): start day="+day+" mask "+prodMask+" -> month "+rc.getMonth()+" (max "+(rc.getMonthsInYear()-1)+") : "+rc.getShortTimeDescription();
+				}
+			}
+			A.setTimeObj(C);
+		}
 		for(int i=0;i<10000;i++)
 		{
 			A.setTimeObj(C);
