@@ -76,6 +76,17 @@ public class Chant_Nectar extends Chant
 	protected int		lastNum	= -1;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_Nectar)
+		{
+			Chant_Nectar A=(Chant_Nectar)parentA;
+			drank = (A.drank == null) ? null : new XVector<MOB>(A.drank);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected==null)

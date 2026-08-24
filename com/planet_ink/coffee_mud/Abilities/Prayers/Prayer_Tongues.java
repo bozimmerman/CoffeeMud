@@ -90,6 +90,16 @@ public class Prayer_Tongues extends Prayer
 
 	protected static List<Language> allLangs = null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_Tongues)
+		{
+			Prayer_Tongues A=(Prayer_Tongues)parentA;
+			langs = (A.langs == null) ? null : new XHashtable<String,Language>(A.langs);
+		}
+	}
 
 	protected Language getLang(final Physical affected)
 	{

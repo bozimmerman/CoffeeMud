@@ -91,6 +91,17 @@ public class Thief_LocateAlcohol extends ThiefSkill
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Thief_LocateAlcohol)
+		{
+			Thief_LocateAlcohol A=(Thief_LocateAlcohol)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
 	public String alcoholCheck(final MOB mob, final Item I, final StringBuffer msg)
 	{
 		if(I==null)

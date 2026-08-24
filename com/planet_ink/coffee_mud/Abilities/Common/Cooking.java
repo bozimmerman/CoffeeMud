@@ -144,6 +144,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never re-cast; sharing collection with parent OK
+	}
+
 	private static class PotIngredient
 	{
 		public String rscName = null;

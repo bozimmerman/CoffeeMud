@@ -84,6 +84,13 @@ public class Play extends StdAbility
 
 	protected volatile Pair<Double,Integer> bonusCache		= null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
 	// needs to be area-only, because of the aggro-tracking rule
 	private static final TrackingLibrary.TrackingFlags scopeFlags = CMLib.tracking().newFlags()
 																	.plus(TrackingLibrary.TrackingFlag.OPENONLY)

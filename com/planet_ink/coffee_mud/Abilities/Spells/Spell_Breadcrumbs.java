@@ -76,6 +76,17 @@ public class Spell_Breadcrumbs extends Spell
 	public Vector<Room> trail=null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Spell_Breadcrumbs)
+		{
+			Spell_Breadcrumbs A=(Spell_Breadcrumbs)parentA;
+			trail = (A.trail == null) ? null : new XVector<Room>(A.trail);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

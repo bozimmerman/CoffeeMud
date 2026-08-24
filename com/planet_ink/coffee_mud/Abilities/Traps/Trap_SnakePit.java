@@ -74,6 +74,13 @@ public class Trap_SnakePit extends Trap_RoomPit
 
 	protected List<MOB> monsters=null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never copied
+	}
+
 	protected Item getCagedAnimal(final MOB mob)
 	{
 		if(mob==null)

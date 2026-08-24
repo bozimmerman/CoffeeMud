@@ -110,6 +110,13 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never copied to affects
+	}
+
 	/**
 	 * @return the oldRoom
 	 */

@@ -1416,7 +1416,7 @@ public class StdAbility implements Ability
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected void cloneFix(final Ability E)
+	protected void cloneFix(final Ability parentA)
 	{
 	}
 

@@ -121,6 +121,17 @@ public class Poison_Hallucinogen extends Poison
 
 	protected Map<Environmental, String> hallus = new Hashtable<Environmental, String>();
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Poison_Hallucinogen)
+		{
+			Poison_Hallucinogen A=(Poison_Hallucinogen)parentA;
+			hallus = new XHashtable<Environmental, String>(A.hallus);
+		}
+	}
+
 	protected String getHalluName(final Environmental E)
 	{
 		if(E == null)

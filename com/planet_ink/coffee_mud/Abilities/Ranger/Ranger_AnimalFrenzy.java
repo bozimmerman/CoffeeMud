@@ -88,6 +88,13 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	protected Vector<MOB> rangersGroup=null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+	
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;

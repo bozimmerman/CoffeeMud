@@ -108,6 +108,13 @@ public class Thief_Runecasting extends ThiefSkill
 	protected int				tickUp				= 0;
 	protected MOB				forM				= null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
 	protected long getExpirationTime()
 	{
 		return CMProps.getMillisPerMudHour();

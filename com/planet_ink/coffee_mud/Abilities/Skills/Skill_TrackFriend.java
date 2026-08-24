@@ -115,6 +115,17 @@ public class Skill_TrackFriend extends StdAbility
 	public int				nextDirection	= -2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Skill_TrackFriend)
+		{
+			Skill_TrackFriend A=(Skill_TrackFriend)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

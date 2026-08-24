@@ -99,6 +99,17 @@ public class Skill_FindShip extends StdAbility
 	public int				nextDirection	= -2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Skill_FindShip)
+		{
+			Skill_FindShip A=(Skill_FindShip)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

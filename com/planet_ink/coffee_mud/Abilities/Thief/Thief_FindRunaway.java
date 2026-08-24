@@ -116,6 +116,17 @@ public class Thief_FindRunaway extends StdAbility
 	protected long			lastCast		= -1;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Thief_FindRunaway)
+		{
+			Thief_FindRunaway A=(Thief_FindRunaway)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

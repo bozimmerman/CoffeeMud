@@ -79,6 +79,17 @@ public class Spell_WardArea extends Spell implements Trap
 	protected List<String>	parameters	= null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Spell_WardArea)
+		{
+			Spell_WardArea A=(Spell_WardArea)parentA;
+			parameters = (A.parameters == null) ? null : new XVector<String>(A.parameters);
+		}
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;

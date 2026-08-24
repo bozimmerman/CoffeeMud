@@ -115,6 +115,13 @@ public class Spell_PolymorphObject extends Spell
 	protected List<Item> previousItems=null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected = super.affected;

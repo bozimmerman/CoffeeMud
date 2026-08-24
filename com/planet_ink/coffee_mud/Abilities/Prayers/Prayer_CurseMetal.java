@@ -89,6 +89,17 @@ public class Prayer_CurseMetal extends Prayer
 	protected Vector<Item>	affectedItems	= new Vector<Item>();
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_CurseMetal)
+		{
+			Prayer_CurseMetal A=(Prayer_CurseMetal)parentA;
+			affectedItems = new XVector<Item>(A.affectedItems);
+		}
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

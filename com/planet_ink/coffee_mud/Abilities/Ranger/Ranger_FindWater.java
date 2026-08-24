@@ -99,6 +99,17 @@ public class Ranger_FindWater extends StdAbility
 	public int				nextDirection	= -2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Ranger_FindWater)
+		{
+			Ranger_FindWater A=(Ranger_FindWater)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

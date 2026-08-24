@@ -126,6 +126,18 @@ public class Disease_Migraines extends Disease
 	public HashSet<Ability> remember=new HashSet<Ability>();
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Disease_Migraines)
+		{
+			Disease_Migraines A=(Disease_Migraines)parentA;
+			forgotten = new XHashSet<Ability>(A.forgotten);
+			remember = new XHashSet<Ability>(A.remember);
+		}
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

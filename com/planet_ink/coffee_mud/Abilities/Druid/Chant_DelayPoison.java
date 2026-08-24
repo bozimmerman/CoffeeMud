@@ -74,6 +74,17 @@ public class Chant_DelayPoison extends Chant
 
 	protected List<Ability> poisonAffects=null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_DelayPoison)
+		{
+			Chant_DelayPoison A=(Chant_DelayPoison)parentA;
+			poisonAffects = (A.poisonAffects == null) ? null : new XVector<Ability>(A.poisonAffects);
+		}
+	}
+
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();

@@ -74,6 +74,17 @@ public class Chant_LocateAnimals extends Chant
 	public int nextDirection=-2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_LocateAnimals)
+		{
+			Chant_LocateAnimals A=(Chant_LocateAnimals)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public long flags()
 	{
 		return Ability.FLAG_TRACKING | Ability.FLAG_DIVINING;

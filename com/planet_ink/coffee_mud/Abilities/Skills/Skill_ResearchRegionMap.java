@@ -125,9 +125,21 @@ public class Skill_ResearchRegionMap extends StdSkill
 	protected String what = "";
 	protected int ticksToRemain = 0;
 	protected int numBooksInRoom = 1;
-	protected final Room[] targetRoom=new Room[1];
+	protected Room[] targetRoom=new Room[1];
 
 	protected final LimitedTreeSet<String> recent=new LimitedTreeSet<String>(TimeManager.MILI_HOUR,50,false);
+
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Skill_ResearchRegionMap)
+		{
+			Skill_ResearchRegionMap A=(Skill_ResearchRegionMap)parentA;
+			checkSet = (A.checkSet == null) ? null : new XVector<Room>(A.checkSet);
+			targetRoom = new Room[] {A.targetRoom[0]};
+		}
+	}
 
 	@Override
 	public void setMiscText(final String newMiscText)

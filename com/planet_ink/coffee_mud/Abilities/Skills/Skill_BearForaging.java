@@ -105,6 +105,17 @@ public class Skill_BearForaging extends StdAbility
 	public int				nextDirection	= -2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Skill_BearForaging)
+		{
+			Skill_BearForaging A=(Skill_BearForaging)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

@@ -104,6 +104,18 @@ public class Thief_UrchinSpy extends ThiefSkill
 	protected Area				homeArea		= null;
 	protected Room				homeRoom		= null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Thief_UrchinSpy)
+		{
+			Thief_UrchinSpy A=(Thief_UrchinSpy)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+			report = new StringBuilder(A.report);
+		}
+	}
+
 	protected boolean reTrackToTarget(final MOB mob, final MOB target)
 	{
 		final int range = 10 + (adjustedLevel(invoker(),0)) + (super.getXLEVELLevel(invoker())*2);

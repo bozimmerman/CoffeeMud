@@ -85,6 +85,17 @@ public class Prayer_CurseLuck extends Prayer
 	boolean notAgain=false;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_CurseLuck)
+		{
+			Prayer_CurseLuck A=(Prayer_CurseLuck)parentA;
+			permProts = new XHashSet<Environmental>(A.permProts);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

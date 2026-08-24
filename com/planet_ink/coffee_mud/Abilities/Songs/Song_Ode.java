@@ -62,6 +62,13 @@ public class Song_Ode extends Song
 	protected StringBuffer				trail		= null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
+	@Override
 	protected String songOf()
 	{
 		return (whom == null) ? L("Ode") : (L("Ode to ") + whom.name());

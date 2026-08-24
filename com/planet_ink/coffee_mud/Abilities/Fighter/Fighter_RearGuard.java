@@ -92,6 +92,17 @@ public class Fighter_RearGuard extends FighterSkill
 	protected volatile Room lastCaravanRoom = null;
 	protected volatile long lastAttack = 0;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Fighter_RearGuard)
+		{
+			Fighter_RearGuard A=(Fighter_RearGuard)parentA;
+			rearGuards = (A.rearGuards == null)? null :new SHashtable<MOB,Integer>(A.rearGuards);
+		}
+	}
+
 	protected final static TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.PASSABLE);
 

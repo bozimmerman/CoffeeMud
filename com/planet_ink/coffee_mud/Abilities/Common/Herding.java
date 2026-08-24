@@ -73,6 +73,13 @@ public class Herding extends CommonSkill
 	protected boolean	failed			= false;
 	protected String	foundShortName	= "";
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never re-cast; sharing collection with parent OK
+	}
+
 	protected void playerRides(final Rider M, final Set<Rider> rides)
 	{
 		if((M!=null)

@@ -100,6 +100,13 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	protected String		lastDesc	= null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((pathOut!=null)&&(tickID==Tickable.TICKID_MOB))

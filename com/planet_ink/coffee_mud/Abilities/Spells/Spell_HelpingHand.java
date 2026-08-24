@@ -87,6 +87,17 @@ public class Spell_HelpingHand extends Spell
 	protected List<Room> trail = null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Spell_HelpingHand)
+		{
+			Spell_HelpingHand A=(Spell_HelpingHand)parentA;
+			trail = (A.trail == null) ? null : new XVector<Room>(A.trail);
+		}
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

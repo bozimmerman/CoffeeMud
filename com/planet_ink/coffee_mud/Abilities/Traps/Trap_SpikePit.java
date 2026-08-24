@@ -74,6 +74,13 @@ public class Trap_SpikePit extends Trap_RoomPit
 
 	public List<Integer> daggerDamages=null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never copied
+	}
+
 	protected Item getDagger(final MOB mob)
 	{
 		if(mob==null)

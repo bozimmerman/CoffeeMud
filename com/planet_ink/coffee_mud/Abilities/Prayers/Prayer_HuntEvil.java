@@ -83,6 +83,17 @@ public class Prayer_HuntEvil extends Prayer
 	public int nextDirection=-2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_HuntEvil)
+		{
+			Prayer_HuntEvil A=(Prayer_HuntEvil)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

@@ -90,6 +90,17 @@ public class Prayer_DivineResistance extends Prayer
 	protected int prots=4;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_DivineResistance)
+		{
+			Prayer_DivineResistance A=(Prayer_DivineResistance)parentA;
+			permProts = new XHashSet<Environmental>(A.permProts);
+		}
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -130,6 +130,18 @@ public class Chant_FindPlant extends Chant
 	}
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_FindPlant)
+		{
+			Chant_FindPlant A=(Chant_FindPlant)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+			allResources = (A.allResources == null) ? null : new XVector<Integer>(A.allResources);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

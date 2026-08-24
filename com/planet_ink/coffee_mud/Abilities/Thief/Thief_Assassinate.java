@@ -108,6 +108,17 @@ public class Thief_Assassinate extends ThiefSkill
 	protected MOB			tracking		= null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Thief_Assassinate)
+		{
+			Thief_Assassinate A=(Thief_Assassinate)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

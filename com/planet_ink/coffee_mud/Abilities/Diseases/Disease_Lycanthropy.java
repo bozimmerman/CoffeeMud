@@ -147,6 +147,17 @@ public class Disease_Lycanthropy extends Disease
 	}
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Disease_Lycanthropy)
+		{
+			Disease_Lycanthropy A=(Disease_Lycanthropy)parentA;
+			deathTrail = (A.deathTrail == null) ? null : new XVector<Room>(A.deathTrail);
+		}
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

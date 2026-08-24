@@ -94,9 +94,21 @@ public class Chant_BloodyWater extends Chant
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	protected final List<MOB> bloodyMobs = new Vector<MOB>();
+	protected List<MOB> bloodyMobs = new Vector<MOB>();
 	protected Room theRoom = null;
 	protected List<Room> theTrail=null;
+
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_BloodyWater)
+		{
+			Chant_BloodyWater A=(Chant_BloodyWater)parentA;
+			bloodyMobs = new XVector<MOB>(A.bloodyMobs);
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
 
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.AREAONLY)

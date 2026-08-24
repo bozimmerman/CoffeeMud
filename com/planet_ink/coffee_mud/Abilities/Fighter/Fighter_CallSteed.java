@@ -223,6 +223,13 @@ public class Fighter_CallSteed extends StdAbility
 	protected volatile MOB	lastSteedM	= null;
 	protected List<MOB>		favored		= null;
 
+	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never re-cast; sharing collection with parent OK
+	}
+
 	protected MOB getLastSteed(final MOB mob)
 	{
 		getNames(mob);

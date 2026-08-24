@@ -73,6 +73,17 @@ public class Chant_CurseFortune extends Chant
 	boolean notAgain=false;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_CurseFortune)
+		{
+			Chant_CurseFortune A=(Chant_CurseFortune)parentA;
+			permProts = new XHashSet<Environmental>(A.permProts);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

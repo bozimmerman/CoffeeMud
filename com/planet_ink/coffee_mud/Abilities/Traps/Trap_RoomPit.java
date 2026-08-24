@@ -75,6 +75,13 @@ public class Trap_RoomPit extends StdTrap
 	protected List<Room> pit=null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because never copied
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if((pit!=null)

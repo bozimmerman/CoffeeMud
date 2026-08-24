@@ -79,6 +79,17 @@ public class Prayer_GreaterWardingGlyph extends Prayer implements Trap
 	protected List<String>	parameters	= null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Prayer_GreaterWardingGlyph)
+		{
+			Prayer_GreaterWardingGlyph A=(Prayer_GreaterWardingGlyph)parentA;
+			parameters = (A.parameters == null) ? null : new XVector<String>(A.parameters);
+		}
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_PRAYER | Ability.DOMAIN_WARDING;

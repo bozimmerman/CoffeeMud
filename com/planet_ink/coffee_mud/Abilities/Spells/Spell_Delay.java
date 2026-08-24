@@ -73,6 +73,17 @@ public class Spell_Delay extends Spell
 	protected List<String> parameters=null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Spell_Delay)
+		{
+			Spell_Delay A=(Spell_Delay)parentA;
+			parameters = (A.parameters == null) ? null : new XVector<String>(A.parameters);
+		}
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;

@@ -101,6 +101,13 @@ public class Dance extends StdAbility
 	protected volatile Pair<Double,Integer> bonusCache = null;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		// not needed because sharing collection with parent OK
+	}
+
+	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		bonusCache = null;

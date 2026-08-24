@@ -78,6 +78,17 @@ public class Chant_LocatePlants extends Chant
 	public int nextDirection=-2;
 
 	@Override
+	protected void cloneFix(final Ability parentA)
+	{
+		super.cloneFix(parentA);
+		if(parentA instanceof Chant_LocatePlants)
+		{
+			Chant_LocatePlants A=(Chant_LocatePlants)parentA;
+			theTrail = (A.theTrail == null) ? null : new XVector<Room>(A.theTrail);
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
