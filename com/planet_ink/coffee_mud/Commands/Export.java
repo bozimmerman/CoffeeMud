@@ -261,6 +261,13 @@ public class Export extends StdCommand
 				commands.remove(0);
 			}
 			else
+			if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("USER"))
+			{
+				if(S!=null)
+					mob.tell(L("Player '@x1' not found.",sub));
+				return false;
+			}
+			else
 			if((commandType.equalsIgnoreCase("CLASS"))
 			&&(CMClass.getCharClass(sub)!=null))
 			{
