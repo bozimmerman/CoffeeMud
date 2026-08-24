@@ -105,6 +105,14 @@ public class Spell_Spellbinding extends Spell
 	protected final static int COST_STATIC=50;
 
 	@Override
+	public CMObject copyOf()
+	{
+		Spell_Spellbinding A = (Spell_Spellbinding)super.copyOf();
+		A.spellbindings = new PairVector<String,PairList<String,Integer>>(spellbindings);
+		return A;
+	}
+	
+	@Override
 	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -374,10 +382,16 @@ public class Spell_Spellbinding extends Spell
 				mob.location().send(mob,msg);
 				if(priorBinding==null)
 				{
+					if(spellbindings.size()==0)
+						spellbindings.add(key,V); //temporary to prevent uninvoke
 					beneficialAffect(mob,target,asLevel,0);
 					priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
+					spellbindings.clear();
 					if(priorBinding==null)
+					{
+						mob.tell(L(".. something went wrong."));
 						return false;
+					}
 					priorBinding.makeLongLasting();
 				}
 				if(thePriorKey==null)
