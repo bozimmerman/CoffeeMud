@@ -76,9 +76,8 @@ public class SlaveTrading extends CommonSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		commands.add(0,"SELL");
 		Environmental shopM= null;
-		if(commands.size()>2)
+		if(commands.size()>1)
 		{
 			final String what=commands.get(commands.size()-1);
 			shopM=mob.location().fetchInhabitant(what);
@@ -90,7 +89,7 @@ public class SlaveTrading extends CommonSkill
 					commonTelL(mob,"You can't trade with yourself.");
 					return false;
 				}
-				if(!((MOB)shopM).isPlayer())
+				if(!((MOB)shopM).isPlayer() && (CMLib.coffeeShops().getShopKeeper(shopM)==null))
 				{
 					commonTelL(mob,"You can't trade with @x1.",shopM.Name());
 					return false;
@@ -98,10 +97,13 @@ public class SlaveTrading extends CommonSkill
 			}
 		}
 		if(shopM==null)
+		{
+			commands.add(0,"SELL");
 			shopM=CMLib.english().parseShopkeeper(mob,commands,"to", "Sell whom to whom?");
+		}
 		if(shopM==null)
 			return false;
-		if(commands.size()==0)
+		if(commands.size()<=0)
 		{
 			commonTelL(mob,"Sell whom?");
 			return false;
