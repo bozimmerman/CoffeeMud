@@ -3098,7 +3098,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	@Override
 	public boolean isASlave(final MOB slaveM)
 	{
-		return isASlave(slaveM);
+		return isASlave(slaveM,null);
 	}
 
 	@Override
