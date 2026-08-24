@@ -1158,7 +1158,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I'm not interested in the whole lot, but maybe a smaller count..."),true,false);
 			return false;
 		}
-		if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
+		if((product instanceof Physical)
+		&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
 		{
 			CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy that in it's present state."), true, false);
 			return false;
