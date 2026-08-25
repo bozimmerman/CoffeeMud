@@ -328,7 +328,9 @@ public class Thief_Urchinize extends ThiefSkill
 			{
 				final String targetName = parsed.get(1).toUpperCase();
 				final MOB urchin = (MOB)affected;
-				final boolean matchesMe = urchin.name().toUpperCase().startsWith(targetName) || targetName.equals("ALL");
+				final boolean matchesMe = urchin.name().toUpperCase().startsWith(targetName) 
+										|| CMLib.english().containsString(urchin.name(), targetName)
+										|| targetName.equals("ALL");
 				if(matchesMe
 				&&(parsed.get(2).equalsIgnoreCase("FOLLOW"))
 				&&((parsed.size()<4)||parsed.get(3).equalsIgnoreCase("ME")||parsed.get(3).equalsIgnoreCase(msg.source().name())))
