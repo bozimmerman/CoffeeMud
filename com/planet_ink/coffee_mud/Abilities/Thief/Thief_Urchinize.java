@@ -331,7 +331,7 @@ public class Thief_Urchinize extends ThiefSkill
 				final boolean matchesMe = urchin.name().toUpperCase().startsWith(targetName) || targetName.equals("ALL");
 				if(matchesMe
 				&&(parsed.get(2).equalsIgnoreCase("FOLLOW"))
-				&&(parsed.size()<4)||parsed.get(3).equalsIgnoreCase("ME")||(parsed.get(3).equalsIgnoreCase(msg.source().name())))
+				&&((parsed.size()<4)||parsed.get(3).equalsIgnoreCase("ME")||parsed.get(3).equalsIgnoreCase(msg.source().name())))
 				{
 					CMLib.commands().postSay(urchin, L("Yessir"));
 					CMLib.commands().postFollow(urchin, msg.source(), false);
