@@ -125,6 +125,8 @@ public class DBConnections
 		try
 		{
 			dbConnection=DBFetch();
+			if(dbConnection == null)
+				throw new SQLException("Unable to DBFetch connection.");
 			for (final String updateString2 : updateStrings)
 			{
 				updateString=updateString2;
@@ -147,7 +149,8 @@ public class DBConnections
 				}
 				if(result<0)
 				{
-					Log.errOut(""+dbConnection.getLastError()+"/"+updateString);
+					final String error = (dbConnection != null) ? dbConnection.getLastError() : "NULL DBCONNECTION";
+					Log.errOut(error+"/"+updateString);
 				}
 			}
 		}
@@ -177,6 +180,8 @@ public class DBConnections
 		try
 		{
 			dbConnection=DBFetchEmpty();
+			if(dbConnection == null)
+				throw new SQLException("Unable to DBFetch connection.");
 			for(final DBPreparedBatchEntry entry : entries)
 			{
 				try
@@ -211,7 +216,8 @@ public class DBConnections
 				}
 				if(result<0)
 				{
-					Log.errOut(""+dbConnection.getLastError()+"/"+entry.sql);
+					final String error = (dbConnection != null) ? dbConnection.getLastError() : "NULL DBCONNECTION";
+					Log.errOut(error+"/"+entry.sql);
 				}
 			}
 		}
