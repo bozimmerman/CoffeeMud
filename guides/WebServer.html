@@ -1,9 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-
-<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>The CoffeeMud Web Server</title>
-
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors --></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="generator" content="HTML Tidy, see www.w3.org"><title>The CoffeeMud Web Server</title>
+</head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -85,7 +83,7 @@ up,
 see the SSLPORT entry and the information under SSL CONFIGURATION in
 the common.ini configuration file. &nbsp;Lastly, the configuration
 files have a BIND entry that can be used to restrict connections to
-your administration server, but is not set by default.<br />
+your administration server, but is not set by default.<br>
 </p>
 <h2><a name="configuration">Configuration</a></h2>
 <p>The default installation of CoffeeMud has two inbuilt
@@ -106,8 +104,8 @@ options are in web/pub.ini for the "pub" server, web/admin.ini for the
 <ul>
 <li> <b>PORT</b>=xx : <b>[REQUIRED]</b>
 <i>(e.g. PORT=80)</i> <i>(e.g.
-PORT=80,27744)</i><b><br />
-SSLPORT</b>=xx <i>(e.g. SSLPORT=443)</i> <br />
+PORT=80,27744)</i><b><br>
+SSLPORT</b>=xx <i>(e.g. SSLPORT=443)</i> <br>
 <p>Sets the port number the web server will listen for
 HTTP
 and HTTPS requests on; this cannot be the same port as the main MUD
@@ -133,8 +131,8 @@ to localhost
 (or 127.0.0.1) in admin.ini unless you really know what you're doing...</p>
 </li>
 <li><span style="font-weight: bold;">ADMINEMAIL</span>=email
-address:&nbsp;<br />
-The administrators email address, for informational purposes only.<br />
+address:&nbsp;<br>
+The administrators email address, for informational purposes only.<br>
 </li>
 <li> <b>DEFAULTPAGE</b>=filename : <b>[REQUIRED]</b>
 <i>(e.g.
@@ -142,7 +140,7 @@ DEFAULTFILE=index.cmvp)</i>
 <p>Sets the default filename to be appended if none is
 specified in the request. &nbsp;This is in common.ini.</p>
 </li>
-<li><span style="font-weight: bold;">MOUNT*</span>=/web/path<br />
+<li><span style="font-weight: bold;">MOUNT*</span>=/web/path<br>
 This is where you specify how requested hosts and contexts will map to
 actual directories on your local hard drive.&nbsp; The way it works
 is that you specify the word MOUNT followed by a forward slash
@@ -150,22 +148,22 @@ character / and the optional host name and optional port, and the
 context, then set that equal to the coffeemud directory path that the
 given context should map to. &nbsp;Be sure to end your hard drive
 path with a path separator /. &nbsp;The example&nbsp;<span style="font-style: italic;">MOUNT/mydomain.com:80/remote=/web/pub</span>
-maps the context /remote on the host<br />
+maps the context /remote on the host<br>
 "mydomain.com" on port 80 to the CoffeeMud local path "/web/pub" The
 example&nbsp;<span style="font-style: italic;">MOUNT/=/web/admin</span>
 maps the root context / to the relative path "root\\" for all hosts and
-ports.<br />
+ports.<br>
 </li>
 <li> <b>SSLKEYSTOREPATH=</b>path/to/keystore.jks
 <span style="font-style: italic;">(e.g.
-SSLKEYSTOREPATH=keys/keystore.jks)</span><b><br />
+SSLKEYSTOREPATH=keys/keystore.jks)</span><b><br>
 SSLKEYSTOREPASSWORD=</b>keystore file password <span style="font-style: italic;">(e.g.
-SSLKEYSTOREPASSWORD=mypassphrase)</span><b><br />
+SSLKEYSTOREPASSWORD=mypassphrase)</span><b><br>
 SSLKEYSTORETYPE=</b>JKS <span style="font-style: italic;">(are
 there
-other useful values for this?)</span><b><br />
+other useful values for this?)</span><b><br>
 SSLKEYMANAGERENCODING=</b>SunX509 <span style="font-style: italic;">(are
-there other useful values for this?)</span><b><br />
+there other useful values for this?)</span><b><br>
 <span style="font-style: italic;"></span></b>
 <p>Allows you to turn on support for SSLv3 via a java
 keystore file (SSLKEYSTOREPATH), but you can&nbsp;specify any key
@@ -180,11 +178,11 @@ normally in common.ini</p>
 </li>
 <li> <span style="font-weight: bold;">FILECACHEEXPIREMS=</span>milliseconds
 <span style="font-style: italic;">(e.g.
-FILECACHEEXPIREMS=300000)</span><span style="font-weight: bold;"><br />
+FILECACHEEXPIREMS=300000)</span><span style="font-weight: bold;"><br>
 FILECACHEMAXBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
-FILECACHEMAXBYTES=65535)</span><span style="font-weight: bold;"><br />
+FILECACHEMAXBYTES=65535)</span><span style="font-weight: bold;"><br>
 FILECACHEMAXFILEBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
-FILECACHEMAXFILEBYTES=8192)</span><span style="font-weight: bold;"><br />
+FILECACHEMAXFILEBYTES=8192)</span><span style="font-weight: bold;"><br>
 FILECOMPMAXBYTES=</span><span style="font-weight: bold;">#bytes
 <span style="font-style: italic;">(e.g.&nbsp;FILECOMPMAXBYTES=16485760)</span>
 </span>
@@ -203,20 +201,20 @@ performance. &nbsp;These are also in common.ini.</p>
 </li>
 <li><span style="font-weight: bold;">REQUESTMAXBODYBYTES</span>=#bytes
 <span style="font-style: italic;">(e.g.
-REQUESTMAXBODYBYTES=2097152)</span><br />
+REQUESTMAXBODYBYTES=2097152)</span><br>
 <span style="font-weight: bold;">REQUESTMAXIDLEMS</span>=milliseconds
 <span style="font-style: italic;">(e.g.
-REQUESTMAXIDLEMS=30000)</span><br />
+REQUESTMAXIDLEMS=30000)</span><br>
 <span style="font-weight: bold;">REQUESTLINEBUFBYTES</span>=#bytes
 <span style="font-style: italic;">(e.g.
-REQUESTLINEBUFBYTES=65535)</span><br />
+REQUESTLINEBUFBYTES=65535)</span><br>
 <span style="font-weight: bold;">REQUESTMAXALIVESECS</span>=seconds
 <span style="font-style: italic;">(e.g.
-REQUESTMAXALIVESECS=15)</span><br />
+REQUESTMAXALIVESECS=15)</span><br>
 <span style="font-weight: bold;">REQUESTMAXPERCONN</span>=#requests
 <span style="font-style: italic;">(e.g.
-REQUESTMAXPERCONN=20)</span><br />
-<br />
+REQUESTMAXPERCONN=20)</span><br>
+<br>
 This is some fine tuning regarding constraints on http
 requests.&nbsp;
 You can specify the maximum size of any request body
@@ -226,59 +224,59 @@ line of request data, such individual headers, url length, etc
 (REQUESTLINEBUFBYTES), the longest amount of time a connection can hang
 around sending requests to the web server and receiving data
 (REQUESTMAXALIVESECS), and the maximum number of requests that can be
-made on a single connection (REQUESTMAXPERCONN).&nbsp; <br />
-<br />
+made on a single connection (REQUESTMAXPERCONN).&nbsp; <br>
+<br>
 All of these are normally defined in common.ini, except for
 REQUESTMAXALIVESECS, which is defined in pub.ini and admin.ini by
-default.<br />
-<br />
+default.<br>
+<br>
 </li>
 <li><span style="font-weight: bold;">CORETHREADPOOLSIZE</span>=#threads
 <span style="font-style: italic;">(e.g.
-CORETHREADPOOLSIZE=1)</span><br />
+CORETHREADPOOLSIZE=1)</span><br>
 <span style="font-weight: bold;">MAXTHREADS</span>=#threads
 <span style="font-style: italic;">(e.g.
-MAXTHREADS=10)</span><br />
+MAXTHREADS=10)</span><br>
 <span style="font-weight: bold;">MAXTHREADIDLEMILLIS</span>=milliseconds
 <span style="font-style: italic;">(e.g.
-MAXTHREADIDLEMILLIS=60000)</span><br />
+MAXTHREADIDLEMILLIS=60000)</span><br>
 <span style="font-weight: bold;">MAXTHREADQUEUESIZE</span>=#tasks
 <span style="font-style: italic;">(e.g.
-MAXTHREADQUEUESIZE=500)</span><br />
+MAXTHREADQUEUESIZE=500)</span><br>
 <span style="font-weight: bold;">MAXTHREADTIMEOUTSECS</span>=seconds
 <span style="font-style: italic;">(e.g.
-MAXTHREADTIMEOUTSECS=30)</span><br />
-<br />
+MAXTHREADTIMEOUTSECS=30)</span><br>
+<br>
 Now for the really geeky stuff.&nbsp; The web server will try to
 process as many requests at the same time as it can by spawning threads
 when it needs to.&nbsp; You can tweek this process right
 here.&nbsp;
 You can specify the minimum number of threads to keep hanging around
-waiting<br />
+waiting<br>
 to process requests (CORETHREADPOOLSIZE), as well as the absolute
 maximum number (MAXTHREADS). You can also specify the amount of time a
 thread goes unused before it is shut down (MAXTHREADIDLEMILLIS), the
 maximum number of tasks that can be queued up waiting for thread time
 (MAXTHREADQUEUESIZE), and the absolute maximum amount of time a thread
-is allowed to<br />
-work on any one task (MAXTHREADTIMEOUTSECS).<br />
-<br />
+is allowed to<br>
+work on any one task (MAXTHREADTIMEOUTSECS).<br>
+<br>
 All of these are normally defined in common.ini, except
 for&nbsp;MAXTHREADTIMEOUTSECS, which is defined in pub.ini and
 admin.ini by
-default.<br />
-<br />
+default.<br>
+<br>
 </li>
 <li> <b>ADMIN</b>=true/false
 <p>This allows admin macros to run on this server or
 not (see
 below). &nbsp;This is always in admin.ini, for obvious reasons.</p>
 </li>
-<li><span style="font-weight: bold;">MIME.*</span>=xx<br />
-Defines a new mime type. &nbsp;For example, MIME.php=application/php<br />
+<li><span style="font-weight: bold;">MIME.*</span>=xx<br>
+Defines a new mime type. &nbsp;For example, MIME.php=application/php<br>
 </li>
 <li><span style="font-weight: bold;">MIMECONVERT.*</span>=javaclass
-<br />
+<br>
 For the Java programmers, there is an interface available
 at&nbsp;com.planet_ink.coffee_web.interfaces.HTTPOutputConverter
 for creating classes that transform data from a specific mime type by
@@ -291,9 +289,9 @@ followed by a period, followed by the mime type name, and then setting
 that equal to the java class name where your HTTPOutputConverter can be
 found.&nbsp; Have as many as you like! Of course, using a mime
 converter will invalidate any eTag processing, since the whole point is
-to change the contents of pages from disk. :)<br />
-MIMECONVERT.cwhtml=com.planet_ink.coffee_web.converters.CWHTMLConverter<br />
-MIMECONVERT.cmvp=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer<br />
+to change the contents of pages from disk. :)<br>
+MIMECONVERT.cwhtml=com.planet_ink.coffee_web.converters.CWHTMLConverter<br>
+MIMECONVERT.cmvp=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer<br>
 </li>
 <li> <span style="font-weight: bold;">ERRORPAGE</span>=path/filename
 <span style="font-style: italic;">(e.g.
@@ -305,7 +303,7 @@ absolute. &nbsp;This is normally defined in the pub.ini and
 admin.ini
 files.</p>
 </li>
-<li><span style="font-weight: bold;">FORWARD*</span>=address<br />
+<li><span style="font-weight: bold;">FORWARD*</span>=address<br>
 This is where you specify how requested hosts, ports, or contexts will
 be forwarded to other web servers and ports and contexts. The way it
 works is that you specify the word FORWARD followed by a forward slash
@@ -314,13 +312,13 @@ context (or just /), and then set that equal to the host name of the
 remote web server, followed by a colon and the remote port number.
 &nbsp;You can specify as many mappings as you like ..
 coffeewebserver will be pretty smart about &nbsp;which is the
-proper one to use for any particular url.<br />
+proper one to use for any particular url.<br>
 Remember to escape your colons and backslashes (if you use them)!!
-&nbsp;Some examples:<br />
-FORWARD/mydomain.net\:80/contextname=www.google.com\:80<br />
-FORWARD/localhost\:8080/zimmers=www.zimmers.net\:80<br />
+&nbsp;Some examples:<br>
+FORWARD/mydomain.net\:80/contextname=www.google.com\:80<br>
+FORWARD/localhost\:8080/zimmers=www.zimmers.net\:80<br>
 </li>
-<li><span style="font-weight: bold;">CGIMOUNT*</span>=/web/path<br />
+<li><span style="font-weight: bold;">CGIMOUNT*</span>=/web/path<br>
 This is where you specify how requested hosts and contexts will map to
 CoffeeMud paths on your local hard drive containing CGI (Common Gateway
 Interface) programs that the server is permitted to execute.&nbsp;
@@ -335,11 +333,11 @@ will be executed against the referenced path.&nbsp; The URI context
 may also contain a "*" character for filtering purposes.&nbsp; Be
 sure to end your path with a path separator /. &nbsp;The
 example&nbsp;<span style="font-style: italic;">CGIMOUNT/mydomain.com:80/cgi-bin=root\\cgi-bin\\</span>
-maps the context /cgi-bin on the host<br />
+maps the context /cgi-bin on the host<br>
 "mydomain.com" on port 80 to the relative local path "root\\cgi-bin\\"
 &nbsp;The example&nbsp;<span style="font-style: italic;">CGIMOUNT/*.php=cgi-bin\\php-cgi.exe</span>
-executes the given cgi program against any .php files for<br />
-all hosts and ports.<br />
+executes the given cgi program against any .php files for<br>
+all hosts and ports.<br>
 </li>
 <li> <span style="font-weight: bold;">BROWSEPAGE</span>=path/filename
 <span style="font-style: italic;">(e.g.
@@ -350,7 +348,7 @@ absolute, of the page to display.&nbsp; If the page is kept
 at&nbsp;cwhtml or another Convertable type, then the page will
 correctly fill in directory entries.</p>
 </li>
-<li><span style="font-weight: bold;">BROWSE*</span>=xx<br />
+<li><span style="font-weight: bold;">BROWSE*</span>=xx<br>
 This is where you specify which virtual paths which, after going
 through mount processing, resolve to directories that you will permit
 browsing of. Specify the word BROWSE followed by a forward slash
@@ -359,7 +357,7 @@ context, then &nbsp;set that equal to anything you like (the value
 is reserved for future use at this point). The example&nbsp;<span style="font-style: italic;">BROWSE/mydomain.com:80/mysubdir=OK</span>
 allows the context /mysubdir on the host "mydomain.com" on port 80 to
 be browsed. &nbsp;The example <span style="font-style: italic;">BROWSE/=YES</span>
-allows all directories, all hosts, all ports, to be browseable<br />
+allows all directories, all hosts, all ports, to be browseable<br>
 </li>
 <li><span style="font-weight: bold;">ACCESSLOGS</span>=xx
 : <i>(e.g. ACCESSLOGS=off)</i>
@@ -368,7 +366,7 @@ messages in the
 web server. &nbsp;The more appropriate way is the DEBUG entry in
 coffeemud.ini.&nbsp;Values here include ON, OFF, FILE, or BOTH.</p>
 </li>
-<li><span style="font-weight: bold;">THROTTLEOUTPUT*</span>=xx<br />
+<li><span style="font-weight: bold;">THROTTLEOUTPUT*</span>=xx<br>
 This is where you specify how many bytes, per second, are allowed to be
 sent to the specified host.&nbsp; Specify THROTTLEOUTPUT followed
 by&nbsp;a forward slash character / and the optional host name and
@@ -380,21 +378,21 @@ ALL requests, in or out, that apply to a&nbsp;specified host
 mask.&nbsp; It will attempt to be fair about distributing load
 across&nbsp;numerous requests for a given host, and will treat each
 host mask as a separate pool from other hosts. Remember to escape your
-colons and backslashes (if you use them)!! Some examples:<br />
-THROTTLEOUTPUT/mydomain.net\:80/contextname=1024<br />
-THROTTLEOUTPUT/localhost\:8080/zimmers=10000000<br />
+colons and backslashes (if you use them)!! Some examples:<br>
+THROTTLEOUTPUT/mydomain.net\:80/contextname=1024<br>
+THROTTLEOUTPUT/localhost\:8080/zimmers=10000000<br>
 </li>
-<li><span style="font-weight: bold;">DUPPOLICY</span>=xx<br />
+<li><span style="font-weight: bold;">DUPPOLICY</span>=xx<br>
 How to deal with url parameters or multi-part fields that have the same
 names.&nbsp; For example:
-http://localhost?MYFIELD=bob&amp;MYFIELD=joe&amp;MYFIELD=tom<br />
+http://localhost?MYFIELD=bob&amp;MYFIELD=joe&amp;MYFIELD=tom<br>
 Set DUPPOLICY to OVERWRITE to end up only one field where the last
-value wins.<br />
+value wins.<br>
 Set DUPPOLICY to ENUMERATE to append a number; e.g. MYFIELD=bob
-MYFIELD1=joe MYFIELD2=tom<br />
+MYFIELD1=joe MYFIELD2=tom<br>
 </li>
-<li><span style="font-weight: bold;">CHUNKSIZE</span>=xx<br />
-<span style="font-weight: bold;">CHUNKALLOW*</span>=yy<br />
+<li><span style="font-weight: bold;">CHUNKSIZE</span>=xx<br>
+<span style="font-weight: bold;">CHUNKALLOW*</span>=yy<br>
 How to encourage or specify chunked encoding output from the server to
 clients.&nbsp; Will only provide chunked output according to the
 CHUNKHOST entries below. Set CHUNKSIZE to the default chunk size to use
@@ -406,13 +404,13 @@ port and the&nbsp; context (or just /), and then set that equal to
 either an asterisk * or a comma delimited list of mime types to apply
 chunking to, followed by a colon, followed&nbsp;by the minimum size
 of a file, in bytes, that may be chunk encoded. &nbsp;Specify as
-many entries as you like.&nbsp; Here are some examples:<br />
+many entries as you like.&nbsp; Here are some examples:<br>
 CHUNKALLOW/*\:*/=*:1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&lt;-- this will chunk everything, basically<br />
-CHUNKALLOW/mydomain.net\:80/contextname=*:1048576<br />
-CHUNKALLOW/texas.localhost\:*/=application/octet-stream,h323,doc:9999999<br />
+&lt;-- this will chunk everything, basically<br>
+CHUNKALLOW/mydomain.net\:80/contextname=*:1048576<br>
+CHUNKALLOW/texas.localhost\:*/=application/octet-stream,h323,doc:9999999<br>
 </li>
-<li><span style="font-weight: bold;">SERVLET*</span>=javaclass<br />
+<li><span style="font-weight: bold;">SERVLET*</span>=javaclass<br>
 For you Java programmers, there is an interface available
 at&nbsp;com.planet_ink.coffee_web.interfaces.SimpleServlet for
 creating simple servlet classes.&nbsp; There is also a
@@ -421,17 +419,17 @@ input and output.&nbsp; When you create such a servlet, you can map
 it to a top-level url context by using the word "SERVLET" followed by a
 slash, followed by the root url context, and then setting that equal to
 the java class name where your SimpleServlet can be found.&nbsp;
-Have as many as you like!<br />
+Have as many as you like!<br>
 # Check out the example servlets in
-com/planet_ink/coffee_web/servlets/*.java<br />
+com/planet_ink/coffee_web/servlets/*.java<br>
 </li>
-<li><span style="font-weight: bold;">DISABLE</span>=true/false<br />
+<li><span style="font-weight: bold;">DISABLE</span>=true/false<br>
 For developers and those who just don't like functional web servers,
 this is a comma-delimited list of integrated features you would like to
 have disabled. &nbsp;Available features to disable are:
 &nbsp;RANGED : the web server will ignore ranged headers and return
-200/full document<br />
-<br />
+200/full document<br>
+<br>
 </li>
 </ul>
 <h2><a name="virtualdir">Virtual Directories</a></h2>
@@ -689,11 +687,11 @@ names and values. For example
 @AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@. This is usually
 used
 to provide literal data for other macros which may require certain
-Request parameter data.<br />
-Special values for VALUE are:<br />
-++ to increment the variable numerically<br />
--- to decrement the variable numerically<br />
-** to multiply the variable by 2<br />
+Request parameter data.<br>
+Special values for VALUE are:<br>
+++ to increment the variable numerically<br>
+-- to decrement the variable numerically<br>
+** to multiply the variable by 2<br>
 ##( ... ) to apply the value to the variable as a math formula found
 between the ().</td>
 </tr>
@@ -712,7 +710,7 @@ all qualifying skill definition. The MacParm RESET will reset. Returns
 </td>
 </tr>
           <tr>
-            <td style="vertical-align: top;">AreaChildNext<br />
+            <td style="vertical-align: top;">AreaChildNext<br>
             </td>
             <td style="vertical-align: top;">Requires ReqParm PARENTAREA to be set to a valid area name.&nbsp; Sets the ReqParm AREA to the next child Area. Returns
 @break@
@@ -775,17 +773,17 @@ hidden areas.</td>
 </tr>
 <tr>
 <td>AreaScriptData</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AreaScriptKey</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AreaScriptNext</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
@@ -802,7 +800,7 @@ table containing a game-not-running message is returned.</td>
 </tr>
 <tr>
 <td>AreaXML</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
@@ -815,32 +813,32 @@ specified, will return the encrypted login data. Otherwise, returns
 </tr>
 <tr>
 <td>AutoAwardData</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AutoAwardID</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AutoAwardNext</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AutoTitleData</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AutoTitleID</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
 <td>AutoTitleNext</td>
-<td><br />
+<td><br>
 </td>
 </tr>
 <tr>
@@ -906,7 +904,7 @@ id. Returns that ID.</td>
 <tr>
 <td>BehaviorNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -915,7 +913,7 @@ id. Returns that ID.</td>
 be inserted elsewhere. &nbsp;This block may include its own web
 macros, to be evaluated when and where they are inserted. &nbsp;The
 MacParm defines the unique name of the block. The block is ended with
-@/block@.<br />
+@/block@.<br>
 For example @block?SILLY@ Some stuff @/block@.</td>
 </tr>
 <tr>
@@ -930,19 +928,19 @@ macros as a means of creating breaks in loops.</td>
 <tr>
 <td>CatalogCatNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CatalogItemNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CatalogMobNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -957,13 +955,13 @@ MacParm EMPTYOK is given.</td>
 <tr>
 <td>ChannelFunction</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ChannelInfo</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1006,13 +1004,13 @@ MacParm of RESET to restart listing.</td>
 <tr>
 <td>CheckAuthCode</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CheckFactionLoaded</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1047,19 +1045,19 @@ MEMBERSTART/MEMBERNEXT use)</td>
 <tr>
 <td>ClanGovernmentData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ClanGovernmentID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ClanGovernmentNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1085,67 +1083,67 @@ MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>CoffeeTableRows</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CommandJournalInfo</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CommandJournalNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentPieceData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentPieceID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ComponentPieceNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ControlPanel</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>CrossBaseClassAbilities</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1219,61 +1217,61 @@ Returns @break@ when the list has been completed, or "" if MacParm
 <tr>
 <td>FactionData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FactionID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FactionName</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FactionNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FileData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FileInfo</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FileMgr</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>FileNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ForumInfo</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>ForumJournalNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1312,20 +1310,20 @@ DATA returns the help text denoted by ReqParm HELPTOPIC.</td>
 <tr>
 <td>HolidayData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>HolidayID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
-<td><br />
+<td><br>
 </td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1359,8 +1357,8 @@ overall expression to be true, unless an expression macro name begins
 with ||, which will evaluate as "or". &nbsp;Starting the macro name
 with "&lt;" will evaluate as less than or starts with, "&gt;"
 as
-greater than or ends with, and "*" as substring match.<br />
-For example:&nbsp;<br />
+greater than or ends with, and "*" as substring match.<br>
+For example:&nbsp;<br>
 @if?!CheckReqParm?PARM=VALUE@ would return
 true and false (or vis-versa) depending whether the request parameter
 PARM was equal to VALUE.</td>
@@ -1368,25 +1366,25 @@ PARM was equal to VALUE.</td>
 <tr>
 <td>ImageVerificationImage</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>INIEntry</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>INIModify</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>INIValue</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1543,19 +1541,19 @@ return the number of accounts in the database. </td>
 <tr>
 <td>PlanarData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PlanarID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PlaneNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1615,61 +1613,61 @@ also ban the player.</td>
 <tr>
 <td>PlayerPortrait</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PollData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PollID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PollNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PostalBoxInfo</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PostOfficeBoxNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PostOfficeBranchNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PostOfficeName</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PostOfficeNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>PrideStat</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1683,7 +1681,7 @@ REMAINING, WAITLEFT, WINNERS, SCRIPT.</td>
 <tr>
 <td>QuestMaker</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1705,7 +1703,7 @@ found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>RaceCatNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1744,13 +1742,13 @@ found. Accepts MacParm of RESET to restart listing.</td>
 <tr>
 <td>RandomAreaTemplates</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>RebuildReferenceDocs</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1798,31 +1796,31 @@ ReqParm ROOM.</td>
 <tr>
 <td>RoomNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>SipletInterface</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>SocialData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>SocialID</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>SocialNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1833,7 +1831,7 @@ listing all the socials.</td>
 <tr>
 <td>StatRejuvCharts</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1845,7 +1843,7 @@ purpose.</td>
 <tr>
 <td>SystemConfig</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1872,31 +1870,31 @@ login data, or AUTH to be encrypted login data. Optional: TELLWHOM, TELLMESSAGEP
 MacParm EMPTYOK is given.</td></tr><tr>
 <td>ThinPlayerData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>TimsItemTable</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>TriggerData</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>TriggerNext</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>Unsubscribe</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
@@ -1915,13 +1913,13 @@ on.</td>
 <tr>
 <td>WebSock</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 <tr>
 <td>WhiteListMgr</td>
 <td>
-            <br />
+            <br>
 </td>
 </tr>
 </tbody>
@@ -1963,7 +1961,7 @@ will cause a @loop@-@back@ segment
 to terminate</b>.</p>
 <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b>
 macro (HTTPclientIP.java):</p>
-<pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.coffee_web.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br /> Copyright 2000-2026 Bo Zimmerman<br /><br /> Licensed under the Apache License, Version 2.0 (the "License");<br /> you may not use this file except in compliance with the License.<br /> You may obtain a copy of the License at<br /><br />	http://www.apache.org/licenses/LICENSE-2.0<br /><br /> Unless required by applicable law or agreed to in writing, software<br /> distributed under the License is distributed on an "AS IS" BASIS,<br /> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br /> See the License for the specific language governing permissions and<br /> limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name() {return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />	if(httpReq.getClientAddress()!=null)<br />	return httpReq.getClientAddress().getHostAddress();<br />	return "Unknown";<br />	}<br />}<br /></pre>
+<pre>package com.planet_ink.coffee_mud.WebMacros;<br><br>import com.planet_ink.coffee_web.interfaces.*;<br>import com.planet_ink.coffee_mud.core.interfaces.*;<br>import com.planet_ink.coffee_mud.core.*;<br>import com.planet_ink.coffee_mud.core.collections.*;<br>import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br>import com.planet_ink.coffee_mud.Areas.interfaces.*;<br>import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br>import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br>import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br>import com.planet_ink.coffee_mud.Common.interfaces.*;<br>import com.planet_ink.coffee_mud.Exits.interfaces.*;<br>import com.planet_ink.coffee_mud.Items.interfaces.*;<br>import com.planet_ink.coffee_mud.Locales.interfaces.*;<br>import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br>import com.planet_ink.coffee_mud.Races.interfaces.*;<br>import java.util.*;<br><br>/* <br> Copyright 2000-2026 Bo Zimmerman<br><br> Licensed under the Apache License, Version 2.0 (the "License");<br> you may not use this file except in compliance with the License.<br> You may obtain a copy of the License at<br><br>	http://www.apache.org/licenses/LICENSE-2.0<br><br> Unless required by applicable law or agreed to in writing, software<br> distributed under the License is distributed on an "AS IS" BASIS,<br> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br> See the License for the specific language governing permissions and<br> limitations under the License.<br>*/<br>public class HTTPclientIP extends StdWebMacro<br>{<br>	public String name() {return "HTTPclientIP";}<br><br>	public String runMacro(HTTPRequest httpReq, String parm)<br>	{<br>	if(httpReq.getClientAddress()!=null)<br>	return httpReq.getClientAddress().getHostAddress();<br>	return "Unknown";<br>	}<br>}<br></pre>
 <p>If your macro is intended to be for the admin server
 only, you
 can override the <code>.isAdminMacro()</code> member to
@@ -1985,84 +1983,84 @@ script, as well as the method <code>void write(String s)</code>
 for
 writing text into the page.</p>
 <p>Here is our first example:</p>
-<pre>&lt;HTML&gt;<br />&lt;BODY&gt;<br />@jscript@<br />var x=request().getClientAddress().getHostAddress();<br />write('&lt;P&gt;Your IP Address is &lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<br />@/jscript@<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /></pre>
+<pre>&lt;HTML&gt;<br>&lt;BODY&gt;<br>@jscript@<br>var x=request().getClientAddress().getHostAddress();<br>write('&lt;P&gt;Your IP Address is &lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<br>@/jscript@<br>&lt;/BODY&gt;<br>&lt;/HTML&gt;<br></pre>
 <p>Notice how we used the <code>write()</code>
 method to insert
 our HTML into the page. We also used the <code>request()</code>
 object
 to fetch the client ip address. Now here is a more involved example:</p>
-<pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult. We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room. We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br /> var room=lib.map().getRandomRoom();<br /> if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br /> {<br /> randomMob=room.fetchRandomInhabitant();<br /> }<br /> if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br /> {<br /> randomItem = room.getRandomItem();<br /> }<br />} //now we have all our random things. We could easily insert our HTML using<br /> // the write() method as we did in example 1. To be fancy, however, we'll use the<br /> // the request() object to assign the names of our selections to HTTP Request<br /> // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /><br /></pre><h2><a name="websock">Servlet interfaces</a></h2>
+<pre>&lt;HTML&gt;<br>&lt;HEAD&gt;<br>&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br>&lt;/HEAD&gt;<br>&lt;BODY&gt;<br>&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br><br>@jscript@<br>var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br>// define a shortcut to the CoffeeMud libraries.<br><br>var randomRoom=lib.map().getRandomRoom();<br>var randomArea=lib.map().getRandomArea();<br>// finding random rooms and areas is easy<br><br>var randomMob=null;<br>var randomItem=null;<br>// assign our random mobs and items to null until they are found<br><br>var attempts=1000;<br>// finding random items and mobs is more difficult. We will<br>// select a random room, and attempt to pick out a random mob<br>// and/or item from the room. We will do this a maximum of 1000<br>// times before giving up, until we find one of each.<br>while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br>{<br> var room=lib.map().getRandomRoom();<br> if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br> {<br> randomMob=room.fetchRandomInhabitant();<br> }<br> if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br> {<br> randomItem = room.getRandomItem();<br> }<br>} //now we have all our random things. We could easily insert our HTML using<br> // the write() method as we did in example 1. To be fancy, however, we'll use the<br> // the request() object to assign the names of our selections to HTTP Request<br> // strings.<br><br>request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br>request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br>if(randomMob!=null)<br> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br>if(randomItem!=null)<br> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br>// now we exit back and continue with our HTML, using standard CMVP web macros<br>// to fetch the random names we saved.<br>@/jscript@<br><br>&lt;FONT FACE="Courier New"&gt;<br>&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br>&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br>&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br>&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br><br>&lt;/FONT&gt;<br>&lt;P&gt;<br>&lt;/BODY&gt;<br>&lt;/HTML&gt;<br><br></pre><h2><a name="websock">Servlet interfaces</a></h2>
 The CoffeeMud web server supports Java Servlets, which are special Java
 classes that can handle HTTP requests and generate their own responses
-for the requesters browser to process. &nbsp;They must implement the <span style="font-family: monospace;">SimpleServlet</span> interface, which is part of the <span style="font-family: monospace;">com.planet_ink.coffee_web.interfaces</span> package. &nbsp;The web server does not yet support the official JavaX Servlet interface.<br /><br />Web
+for the requesters browser to process. &nbsp;They must implement the <span style="font-family: monospace;">SimpleServlet</span> interface, which is part of the <span style="font-family: monospace;">com.planet_ink.coffee_web.interfaces</span> package. &nbsp;The web server does not yet support the official JavaX Servlet interface.<br><br>Web
 Browsers gain access to servlets by configuring a particular URL path
 to a particular servlet class that is already defined and available in
 the web servers java path. &nbsp;This configuration is done in the INI
 file for your web server, as mentioned above under configuration.
-&nbsp;The configuration entry for servlets is as follows:<br /><span style="font-weight: bold;"><br />SERVLET*</span>=javaclass<br /><br />To assign a servlet to a SimpleServlet-based class, you can map
+&nbsp;The configuration entry for servlets is as follows:<br><span style="font-weight: bold;"><br>SERVLET*</span>=javaclass<br><br>To assign a servlet to a SimpleServlet-based class, you can map
 it to a top-level url context by using the word "SERVLET" followed by a
 slash, followed by the root url context, and then setting that equal to
-the java class name where your SimpleServlet can be found.&nbsp; Here are some default examples:<br /><br /><span style="font-family: monospace;">SERVLET/stats=com.planet_ink.coffee_web.servlets.ServletStatsServlet</span><br /><br />This
+the java class name where your SimpleServlet can be found.&nbsp; Here are some default examples:<br><br><span style="font-family: monospace;">SERVLET/stats=com.planet_ink.coffee_web.servlets.ServletStatsServlet</span><br><br>This
 example servlet provides some request counters for the various other
-servlets. &nbsp;As mentioned above, you would access it by the url <span style="font-family: monospace;">http://localhost:27744/stats</span> , though the 'localhost' and port 27744 might be different based on how your configured your web server.<br /><br /><span style="font-family: monospace;">SERVLET/info=com.planet_ink.coffee_web.servlets.ServerInfoServlet</span><br /><br />This example servlet provides some configuration information about the web server, such as found in the web server INI files.<br /><h3>WebMacroCreamer servlet:</h3>This
+servlets. &nbsp;As mentioned above, you would access it by the url <span style="font-family: monospace;">http://localhost:27744/stats</span> , though the 'localhost' and port 27744 might be different based on how your configured your web server.<br><br><span style="font-family: monospace;">SERVLET/info=com.planet_ink.coffee_web.servlets.ServerInfoServlet</span><br><br>This example servlet provides some configuration information about the web server, such as found in the web server INI files.<br><h3>WebMacroCreamer servlet:</h3>This
 servlet is special in that its only job is to execute special web
 server "Web Macros" as if they were servlets instead of web macros.
 &nbsp;(See the CoffeeMud Virtual Pages section above for more
 information on their normal use.) &nbsp; These special web macros
 proclaim that they are of the 'web path' type by returning true from
-the method <span style="font-family: monospace;">public boolean isAWebPath()</span>, which signals to the WebMacroCreamer servlet that it can execute it. <br /><br />In
+the method <span style="font-family: monospace;">public boolean isAWebPath()</span>, which signals to the WebMacroCreamer servlet that it can execute it. <br><br>In
 order for this to work, the final part of the servlet URL path must be
-the same as the name of the special WebMacro so declared.<br /><br />Most of the remaining servlet examples, therefore, are actually WebMacros being redirected to through WebMacroCreamer servlet. <br /><br />Here are examples of those webmacro-servlets:<br /><br /><span style="font-family: monospace;">SERVLET/images/mxp/PlayerPortrait=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Executes
+the same as the name of the special WebMacro so declared.<br><br>Most of the remaining servlet examples, therefore, are actually WebMacros being redirected to through WebMacroCreamer servlet. <br><br>Here are examples of those webmacro-servlets:<br><br><span style="font-family: monospace;">SERVLET/images/mxp/PlayerPortrait=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><br>Executes
 the PlayerPortrait Web Macro, which returns&nbsp;binary image data
 associated with a game character, for display in various pages.
-&nbsp;The players name is passed as a url parameter; for example: &nbsp;<span style="font-family: monospace;">http://localhost:27744/images/mxp/PlayerPortrait?PLAYER=Bob</span><br /><br /><span style="font-family: monospace;">SERVLET/AreaXML=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Exports
+&nbsp;The players name is passed as a url parameter; for example: &nbsp;<span style="font-family: monospace;">http://localhost:27744/images/mxp/PlayerPortrait?PLAYER=Bob</span><br><br><span style="font-family: monospace;">SERVLET/AreaXML=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><br>Exports
 the XML representing a game Area, named by URL parameter AREA.
 &nbsp;This also requires the AUTH url parameter, which ensures that
-areas can only be exported by authenticated administrators.<br /><br /><span style="font-family: monospace;">SERVLET/FileData=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Exports
+areas can only be exported by authenticated administrators.<br><br><span style="font-family: monospace;">SERVLET/FileData=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><br>Exports
 the contents of a VFS File denoted by the url parameter PATH or FILE.
 &nbsp;This also requires the AUTH url parameter, which ensures that
-files can only be read by authenticated administrators.<br /><br /><span style="font-family: monospace;">SERVLET/ImageVerificationImage=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />Generates a CAPTCHA-like image for human verification. &nbsp;<br /><br /><span style="font-family: monospace;">SERVLET/pub/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer<br /></span><span style="font-family: monospace;">SERVLET/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><br />These
+files can only be read by authenticated administrators.<br><br><span style="font-family: monospace;">SERVLET/ImageVerificationImage=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><br>Generates a CAPTCHA-like image for human verification. &nbsp;<br><br><span style="font-family: monospace;">SERVLET/pub/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer<br></span><span style="font-family: monospace;">SERVLET/Unsubscribe=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><br>These
 url paths execute the Unsubscribe Web Macro, which is typically
 followed by an automatically generated email from the mud. &nbsp;It
 unsubscribes the user who clicks on the link from a journal denoted by
 an UNSUBKEY passed into it, along with a USER parameter to confirm the
-appropriate account or user. <br /><span style="font-family: monospace;"></span><br />The remaining WebMacro servlets are covered below under WebSockets<br /><br /><span style="font-family: monospace;">SERVLET/pub/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSockASCII=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSockJSON=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;">SERVLET/WebSock=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br /><span style="font-family: monospace;"></span><h2><a name="websock">WebSockets in CoffeeMud</a></h2>WebSocket
+appropriate account or user. <br><span style="font-family: monospace;"></span><br>The remaining WebMacro servlets are covered below under WebSockets<br><br><span style="font-family: monospace;">SERVLET/pub/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><span style="font-family: monospace;">SERVLET/SipletInterface=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><span style="font-family: monospace;">SERVLET/WebSockASCII=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><span style="font-family: monospace;">SERVLET/WebSockJSON=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><span style="font-family: monospace;">SERVLET/WebSock=com.planet_ink.coffee_mud.Libraries.WebMacroCreamer</span><br><span style="font-family: monospace;"></span><h2><a name="websock">WebSockets in CoffeeMud</a></h2>WebSocket
 interface is a protocol that is initiated by HTTP, but which
 maintains&nbsp;persistent two-way communication between the web server
-and client over a single connection. &nbsp;<br /><br />The CoffeeMud
+and client over a single connection. &nbsp;<br><br>The CoffeeMud
 web server supports&nbsp;Web Sockets via a series of special Web Macros
 and the specific servlet called WebMacroCreamer. &nbsp; This means that
 each of the various flavors of WebSockets provided by CoffeeMud are
 actually configured in your web server INI file under the section on
 servlets. &nbsp;Please read the previous section on Servlets, and
 especially WebMacroCreamer, for a bit more information on how this is
-configured, and how it works.<br /><br />Each of the WebSock WebMacros
+configured, and how it works.<br><br>Each of the WebSock WebMacros
 is responsible for managing the connection between the MUD, itself, and
 the browser client, once the macro is executed to initiate a
 connection. &nbsp;In effect, this means that&nbsp;disconnecting from
 the mud will also end the websock session, and vis-a-versa. &nbsp;They
 also implement a short timer tied to the websock PING operation, which
 will cause the websock session to end of the browser client does not
-regularly and promptly respond to every ping from the server.<br /><br />There
+regularly and promptly respond to every ping from the server.<br><br>There
 are four special WebSock web macros provided for web developers to play
 around with, with the difference mostly being in the high-level
 protocol packaging, and the level of filtering or other services
-provided to the browser client.<br /><br /><big style="font-weight: bold;"><big><span style="font-family: monospace;">WebSock</span></big></big><br /><br />WebSock&nbsp;is
+provided to the browser client.<br><br><big style="font-weight: bold;"><big><span style="font-family: monospace;">WebSock</span></big></big><br><br>WebSock&nbsp;is
 the base, and most 'raw' of the websock interfaces to the mud.
 &nbsp;Connecting to the /WebSock path will initiate a new telnet
 session with the underlying MUD. &nbsp;All text and binary input sent
 to it by the browser is forwarded directly to the telnet port, and all
 new data received from the telnet port is returned to the browser
-client as a Binary packet.<br /><br /><big><big style="font-weight: bold;"><span style="font-family: monospace;">WebSockASCII</span></big></big><br /><br />WebSockASCII
+client as a Binary packet.<br><br><big><big style="font-weight: bold;"><span style="font-family: monospace;">WebSockASCII</span></big></big><br><br>WebSockASCII
 is the ascii-text version of the above WebSock, but instead of sending
 Binary packets back to the browser, it will send a Text packet, with
-all ANSI color, TELNET codes, and any other non-text data filtered out.<br /><br /><span style="font-family: monospace;"><big style="font-weight: bold;"><big>WebSockJSON</big></big><br /><br /></span>WebSockJSON
+all ANSI color, TELNET codes, and any other non-text data filtered out.<br><br><span style="font-family: monospace;"><big style="font-weight: bold;"><big>WebSockJSON</big></big><br><br></span>WebSockJSON
 is a more managed version of a raw interface to the MUD telnet
 sessions. &nbsp;All input and output is a Text packet that contains a
 JSON document. &nbsp;Every JSON packet consists of a "type" property,
 denoting the kind of data being sent or received, along with other
 properties specific to that type. &nbsp;For example, the "login" packet
-might look like this:<br /><br /><span style="font-family: monospace;">{<br />&nbsp; "type": "login",<br />&nbsp; "name": "elrond",<br />&nbsp; "password": "destroytheonering"<br />}<br /></span><br />The types are as folllows:<br /><br />"login"<br />This
+might look like this:<br><br><span style="font-family: monospace;">{<br>&nbsp; "type": "login",<br>&nbsp; "name": "elrond",<br>&nbsp; "password": "destroytheonering"<br>}<br></span><br>The types are as folllows:<br><br>"login"<br>This
 type of packet is sent from the client to the server to log a specific
 character into the game. &nbsp;It requires two other properties: "name"
 for the name of the character, and "password" for the character/account
@@ -2071,26 +2069,26 @@ logged in, or if the character given is already in the game, the
 character doesn't exist, or if the login information is invalid.
 &nbsp;Normal game spam protections are also enforced. &nbsp;If
 successful, a "connect" packet is returned by the server, otherwise an
-"error"&nbsp;is sent.<br /><br />"connect"<br />This type of packet is
+"error"&nbsp;is sent.<br><br>"connect"<br>This type of packet is
 sent from the server to the client to let it know that the websock
 session has been successfully initialized, or that the "login" packet
 was processed successfully. &nbsp;When sent in response to a "login",
 the packet will contain a "username" property with the name of the
-character logged in.<br /><br />"logout"<br />This packet will log the
+character logged in.<br><br>"logout"<br>This packet will log the
 current character out of the game, without disconnecting the websock.
 &nbsp;It will fail only if no character is currently logged in.
 &nbsp;After executing this command, the "login" command may be sent to
-change to a new character.<br /><br />"error"<br />This packet is only
+change to a new character.<br><br>"error"<br>This packet is only
 sent by the server in response to another packet, and delivers a
 failure message regarding it. &nbsp;It will contain a "text" property
-describing the failure.<br /><br />"input"<br />This packet is sent by
+describing the failure.<br><br>"input"<br>This packet is sent by
 the client to the server to forward to the mud as user input. &nbsp;It
 must contain the property "data", sent as either a string, or an array
-of strings.<br /><br />"text"<br />This packet is sent by the server to
+of strings.<br><br>"text"<br>This packet is sent by the server to
 the client to forward output from the mud to the user. &nbsp;It
 contains a "data" property containing the exact output from the mud,
 encoded as a JSON string, but often containing telnet, ansi, or other
-control codes.<br /><br />"config"<br />This packet is used to read
+control codes.<br><br>"config"<br>This packet is used to read
 WebSockJSON configuration and filtering information, or to change it.
 &nbsp;To read a configuration value, the client will send the packet
 with a "key" property of the appropriate configuration value to read.
@@ -2098,7 +2096,7 @@ with a "key" property of the appropriate configuration value to read.
 property with the new value to set the configuration entry to. &nbsp;In
 either case, the server will respond with its own "config" packet
 returning the current or new "key" and "value" for the requested data.
-&nbsp; &nbsp;<br /><br />Valid configuration keys and values include: &nbsp;<br /><ul><li>"asciionly" (true/false) to filter out all binary data from "text" packets</li><li>"gmcp" (true/false) to turn GMCP support on or off</li><li>"linefeeds" (true/false) to allow or filter out linefeeds in "text" packets</li><li>"msdp" (true/false) to turn MSDP support on or off</li><li>"msp" (true/false) to turn MSP support on or off</li><li>"mxp" (true/false) to turn MXP support on or off</li><li>"telnet" (true/false) to allow or filter out telnet codes from "text" packets</li></ul><span style="font-family: monospace;"></span><span style="font-family: monospace;"><br /><big style="font-weight: bold;"><big>SipletInterface</big></big></span><span style="font-weight: bold;"><br /><br /></span>A
+&nbsp; &nbsp;<br><br>Valid configuration keys and values include: &nbsp;<br><ul><li>"asciionly" (true/false) to filter out all binary data from "text" packets</li><li>"gmcp" (true/false) to turn GMCP support on or off</li><li>"linefeeds" (true/false) to allow or filter out linefeeds in "text" packets</li><li>"msdp" (true/false) to turn MSDP support on or off</li><li>"msp" (true/false) to turn MSP support on or off</li><li>"mxp" (true/false) to turn MXP support on or off</li><li>"telnet" (true/false) to allow or filter out telnet codes from "text" packets</li></ul><span style="font-family: monospace;"></span><span style="font-family: monospace;"><br><big style="font-weight: bold;"><big>SipletInterface</big></big></span><span style="font-weight: bold;"><br><br></span>A
 full web page game client web socket interface that converts all MUD
 output into HTML on the server side before sending it to the browser.
 &nbsp;This client can be found on
@@ -2114,52 +2112,52 @@ can
 be sent to the mud through Siplet by entering the command into the
 input box prefixed with \GMCP and a space. &nbsp;MSDP commands can
 also
-be sent to the mud with the \MSDP prefix.<br />
-<br />
+be sent to the mud with the \MSDP prefix.<br>
+<br>
 Siplet communicates with the mud through WebSockets by using a special
 &nbsp;URL-triggered WebMacro called SipletInterface, which is then
 used
 to send commands. &nbsp;The Url to connect to SipletInterface is <span style="font-family: monospace;">ws://localhost:27744/SipletInterface</span>
 &nbsp; where 'localhost' is your coffeemud web server domain name,
 and
-'27744' is the port of your public pages. &nbsp;<br />
-<br />
-SipletInterface supports the following commands from the browser:<br style="font-family: monospace;" />
-<span style="font-family: monospace;"><br />
+'27744' is the port of your public pages. &nbsp;<br>
+<br>
+SipletInterface supports the following commands from the browser:<br style="font-family: monospace;">
+<span style="font-family: monospace;"><br>
 </span><span style="font-weight: bold;">Connect
-Command:</span><br />
+Command:</span><br>
 <span style="font-family: monospace;">CONNECT&amp;URL=&lt;mud
-telnet host&gt;&amp;PORT=&lt;mud port&gt;<br />
+telnet host&gt;&amp;PORT=&lt;mud port&gt;<br>
 </span>&nbsp; &nbsp; This command establishes a
 connection
 through the SipletInterface to the target mud, which is hopefully
 yours. &nbsp;The host and port should be the same ones used in any
 normal web client, and should be url-encoded if there are any special
 characters that might interfere with the format of the command.
-&nbsp;<br />
-<br />
+&nbsp;<br>
+<br>
 After sending this command, the next data received on the web socket
 will be the formatted response to this command. The response is in the
-following format:<br />
+following format:<br>
 <span style="font-family: monospace;">&lt;success
 true/false&gt;;&lt;token&gt;;&lt;siplet info
-string&gt;&lt;token&gt;;</span><br />
+string&gt;&lt;token&gt;;</span><br>
 The success argument is the string 'true' or 'false', depending on
-whether the connection was successful.<br />
+whether the connection was successful.<br>
 The token argument is a delimiter token string that must be preserved
-throughout the web socket session.<br />
+throughout the web socket session.<br>
 The siplet info string is some information about the SipletInterface,
-such as 'Siplet V2.3.0 (C)2005-20XX Bo Zimmerman'<br />
+such as 'Siplet V2.3.0 (C)2005-20XX Bo Zimmerman'<br>
 The final token and semicolon are the same as above, and denote the end
-of the siplet info string, and the end of this response.<br />
-An example response for a successful connection might be:<br />
+of the siplet info string, and the end of this response.<br>
+An example response for a successful connection might be:<br>
 <span style="font-family: monospace;">true;318cae09;Siplet
 V2.2.0
-(C)2005-2026 Bo Zimmerman318cae09;</span><br />
-<br style="font-family: monospace;" />
-<span style="font-weight: bold;">Disconnect Command:</span><br />
+(C)2005-2026 Bo Zimmerman318cae09;</span><br>
+<br style="font-family: monospace;">
+<span style="font-weight: bold;">Disconnect Command:</span><br>
 <span style="font-family: monospace;">DISCONNECT&amp;TOKEN=&lt;connection
-token&gt;<br />
+token&gt;<br>
 </span>&nbsp; &nbsp; This command tells the socket
 that the
 connection to the mud should be closed. &nbsp;The connection can
@@ -2170,15 +2168,15 @@ from the Connect command above. &nbsp;After sending this command,
 the
 next data received on the web socket
 will be the formatted response to this command. The response is in the
-following format:<br />
+following format:<br>
 <span style="font-family: monospace;">&lt;success
-true/false&gt;;</span><br />
+true/false&gt;;</span><br>
 The success argument is the string 'true' or 'false', depending on
-whether the disconnection was successful.<br />
-<br />
-<span style="font-weight: bold;">Poll Command:</span><br />
+whether the disconnection was successful.<br>
+<br>
+<span style="font-weight: bold;">Poll Command:</span><br>
 <span style="font-family: monospace;">POLL</span><span style="font-family: monospace;">&amp;TOKEN=&lt;connection
-token&gt;</span><br />
+token&gt;</span><br>
 &nbsp; &nbsp; This command acts like a ping command to the
 siplet
 interface, and is used to let the interface know that the web client is
@@ -2188,53 +2186,53 @@ The token argument is the same delimiter token string that was received
 from the Connect command above. &nbsp;This command should be sent
 every
 20 seconds or so to prevent the SipletInterface from timing out your
-connection.<br />
-<br />
+connection.<br>
+<br>
 After sending this command, the next data received on the web socket
 will be the formatted response to this command. The response is in the
-following format:<br />
+following format:<br>
 <span style="font-family: monospace;">&lt;success
-true/false&gt;;&lt;html&gt;&lt;token&gt;;&lt;javascript&gt;&lt;token&gt;;</span><br />
+true/false&gt;;&lt;html&gt;&lt;token&gt;;&lt;javascript&gt;&lt;token&gt;;</span><br>
 The success argument is the string 'true' or 'false', depending on
 whether the connection to the underlying mud is still active.
 &nbsp;If
-false is returned, your connection is lost..<br />
+false is returned, your connection is lost..<br>
 The html string is a block of html that should be added to the browser
-window. &nbsp;<br />
+window. &nbsp;<br>
 The token argument is the same delimiter token string that was received
-from the Connect command above..<br />
+from the Connect command above..<br>
 The javascript string is a block of javascript that can be executed
-with the eval() command, or ignored.<br />
-An example response for a successful connection might be:<br />
+with the eval() command, or ignored.<br>
+An example response for a successful connection might be:<br>
 <span style="font-family: monospace;">true;You have
 connected to
-the mud!318cae09;window.alert('hi')</span><span style="font-family: monospace;">318cae09;<br />
-<br />
+the mud!318cae09;window.alert('hi')</span><span style="font-family: monospace;">318cae09;<br>
+<br>
 </span><span style="font-weight: bold;">Send
-Data Command:</span><br />
+Data Command:</span><br>
 <span style="font-family: monospace;">SENDATA</span><span style="font-family: monospace;">&amp;TOKEN=&lt;connection
-token&gt;&amp;DATA=&lt;string to send&gt;</span><br />
+token&gt;&amp;DATA=&lt;string to send&gt;</span><br>
 &nbsp; &nbsp; This command is used to send user input and
 commands to
 the mud through the web socket. The token argument is the same
 delimiter token string that was received from the Connect command
-above, and the &lt;string to send&gt; is the user input.<br />
-<br />
+above, and the &lt;string to send&gt; is the user input.<br>
+<br>
 After sending this command, the next data received on the web socket
 will be the formatted response to this command, which is identical to
-the Poll Command output above.<br />
-<span style="font-family: monospace;"><br />
-<span style="font-weight: bold;">* Note:<br />
+the Poll Command output above.<br>
+<span style="font-family: monospace;"><br>
+<span style="font-weight: bold;">* Note:<br>
 </span>After connection to a mud through the web socket,
 you will
 periodically receive spontaneous packets that are not in response to
 any particular command. &nbsp;These are incoming data from the mud,
 and
 will be formatted exactly the same as if you had sent a Poll Command
-above.<br />
-</span><br /><span style="font-family: monospace;">
-<br />
-<pre><br /></pre>
+above.<br>
+</span><br><span style="font-family: monospace;">
+<br>
+<pre><br></pre>
 </span></td>
 </tr>
 </tbody>

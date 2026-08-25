@@ -1,9 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>MUDChat Tutorial</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, add index, and fix spelling errors --></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="generator" content="HTML Tidy, see www.w3.org"><title>MUDChat Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -43,7 +42,7 @@ Chat.Dat Information</a></h2>
 <p>If you've ever popped open the resources/chat.dat file
 and
 tried to read the instructions, you'll be familiar with this:</p>
-<pre># pattern matching: Which work only in ( string | string &amp; (str ~ str))<br />#     |     or<br />#     &amp;     and<br />#     ~     and-not<br /># special pattern matching:<br />#     ^     match start This anchors the match to the beginning of the <br />#            input string.<br />#     =     exact match This must match the input string entirely.<br />#     /     beginning of a coffeemud specific zappermask<br /># pass 1 scan operators:<br />#     (     beginning of a 'say' expression<br />#     [     beginning of a non-say expression targeted<br />#     {     beginning of a non-say expression not targeted<br />#     &lt;     beginning of a set matched every mudchat tick, may contain<br />#            a number 1-100 representing percentage chance of triggering<br />#     *     combat expression, must precede (, [, or {<br />#     L     LLM/AI expression, must precede (, [, or {<br />#     .     Anti-LLM/AI expression, must precede (, [, or {<br />#     #     remark<br />#     "     output to stderr<br />#     '     output to stdout<br />#     &gt;     start of named database, there can be more than one name<br />#            to a database '&gt; dragon red_dragon' The _ here is treated<br />#            as a space in the name. You may also use the / operator.<br />#     %     include another file inline Ex: %talk.data<br />#     @     adds a continue jump to link to the database. Ex: @dog<br />#            will make a continue link to the dog database. Use @default<br />#            to link to the default database. Only 1 @ per database.<br />#            @ cannot do forward links!!!<br />#            @ is more memory efficient than % but less flexible.<br />#            You must avoid circularities with @.<br />#${VAR=VAL} define or override variable values. LLMPROMPT &amp; LLMMEM vars<br />#            are for LLM init.  Other STATS or special variables<br />#            mentioned below under ${...}.  Value can contain other<br />#            ${variables}!  Use ${VAR+VAL} to append.<br /># response operators:<br />#     1-9   weights are the numerals. First column only. Mandatory.<br />#     "     Issue response as "say". Muds and 2nd column only. Optional.<br />#     `     Response issued by LLM/AI as "say", text is prompt. Optional. <br />#     :     Issue repsonse as "emote". Muds and 2nd column only. Optional.<br />#     !     Issue response as command. Muds and 2nd column only. Optional.<br /># special response variables:<br />#     $r    Rest of sentence after the match.<br />#     $w    The entire message matched.<br />#     $n    The character npc/chatters name<br />#     $t    The targets name (the person who being replied to)<br />#     $$    Equal to $<br />#     ${...}Returns a variable value, or a generic stat value for the <br />#            speaker. See LIST STATS.<br />#     $&lt;...&gt;Returns a variable value, or a generic stat value for the <br />#            target. See LIST STATS.<br />#      Variables include: THEMEDESC, ROOMDESC, and PERSONALITY<br />#     $%...%Causes the part of the sentence to be evaluated by the MOBPROG<br />#            Scriptable system as a function.<br />#     ~    Separates one or more responses on a line. May be followed by<br />#           one of operators: ", :, `, or !.<br />#     $@   switches to another chat database temporarily until a different player. <br />#           Use #@default to link to the default database. Put this at the end of <br />#           the response. Use #@+ to append a new database instead of switching.<br />#<br />#Syntax of a simple pattern match:<br />#<br />#( A | B &amp; C ~ ( D | E | F)) 'say command targeted at the mob<br />#[ A | B &amp; C ~ ( D | E | F)] 'another action targeted at the mob<br />#{ A | B &amp; C ~ ( D | E | F)} 'another action not targeted at mob<br />#<br />#The above would mean if A or B and C and-not D or E or F was in the<br />#sentence then pick one of the responses.<br />#<br />#The responses take on the form:<br />#<br />#9this is most likely<br />#4somewhat likely<br />#1least likely<br />#<br />#Responses or pattern match strings may not span more than one line. #The guaranted line length is a magic 80 characters (letters) wide. #<br />#Please note the system will return the first match found. So<br />#please put more ambiguous matches last!!<br />#<br />#I suggest adding to this database.<br />#<br /></pre>
+<pre># pattern matching: Which work only in ( string | string &amp; (str ~ str))<br>#     |     or<br>#     &amp;     and<br>#     ~     and-not<br># special pattern matching:<br>#     ^     match start This anchors the match to the beginning of the <br>#            input string.<br>#     =     exact match This must match the input string entirely.<br>#     /     beginning of a coffeemud specific zappermask<br># pass 1 scan operators:<br>#     (     beginning of a 'say' expression<br>#     [     beginning of a non-say expression targeted<br>#     {     beginning of a non-say expression not targeted<br>#     &lt;     beginning of a set matched every mudchat tick, may contain<br>#            a number 1-100 representing percentage chance of triggering<br>#     *     combat expression, must precede (, [, or {<br>#     L     LLM/AI expression, must precede (, [, or {<br>#     .     Anti-LLM/AI expression, must precede (, [, or {<br>#     #     remark<br>#     "     output to stderr<br>#     '     output to stdout<br>#     &gt;     start of named database, there can be more than one name<br>#            to a database '&gt; dragon red_dragon' The _ here is treated<br>#            as a space in the name. You may also use the / operator.<br>#     %     include another file inline Ex: %talk.data<br>#     @     adds a continue jump to link to the database. Ex: @dog<br>#            will make a continue link to the dog database. Use @default<br>#            to link to the default database. Only 1 @ per database.<br>#            @ cannot do forward links!!!<br>#            @ is more memory efficient than % but less flexible.<br>#            You must avoid circularities with @.<br>#${VAR=VAL} define or override variable values. LLMPROMPT &amp; LLMMEM vars<br>#            are for LLM init.  Other STATS or special variables<br>#            mentioned below under ${...}.  Value can contain other<br>#            ${variables}!  Use ${VAR+VAL} to append.<br># response operators:<br>#     1-9   weights are the numerals. First column only. Mandatory.<br>#     "     Issue response as "say". Muds and 2nd column only. Optional.<br>#     `     Response issued by LLM/AI as "say", text is prompt. Optional. <br>#     :     Issue repsonse as "emote". Muds and 2nd column only. Optional.<br>#     !     Issue response as command. Muds and 2nd column only. Optional.<br># special response variables:<br>#     $r    Rest of sentence after the match.<br>#     $w    The entire message matched.<br>#     $n    The character npc/chatters name<br>#     $t    The targets name (the person who being replied to)<br>#     $$    Equal to $<br>#     ${...}Returns a variable value, or a generic stat value for the <br>#            speaker. See LIST STATS.<br>#     $&lt;...&gt;Returns a variable value, or a generic stat value for the <br>#            target. See LIST STATS.<br>#      Variables include: THEMEDESC, ROOMDESC, and PERSONALITY<br>#     $%...%Causes the part of the sentence to be evaluated by the MOBPROG<br>#            Scriptable system as a function.<br>#     ~    Separates one or more responses on a line. May be followed by<br>#           one of operators: ", :, `, or !.<br>#     $@   switches to another chat database temporarily until a different player. <br>#           Use #@default to link to the default database. Put this at the end of <br>#           the response. Use #@+ to append a new database instead of switching.<br>#<br>#Syntax of a simple pattern match:<br>#<br>#( A | B &amp; C ~ ( D | E | F)) 'say command targeted at the mob<br>#[ A | B &amp; C ~ ( D | E | F)] 'another action targeted at the mob<br>#{ A | B &amp; C ~ ( D | E | F)} 'another action not targeted at mob<br>#<br>#The above would mean if A or B and C and-not D or E or F was in the<br>#sentence then pick one of the responses.<br>#<br>#The responses take on the form:<br>#<br>#9this is most likely<br>#4somewhat likely<br>#1least likely<br>#<br>#Responses or pattern match strings may not span more than one line. #The guaranted line length is a magic 80 characters (letters) wide. #<br>#Please note the system will return the first match found. So<br>#please put more ambiguous matches last!!<br>#<br>#I suggest adding to this database.<br>#<br></pre>
 <p>Helpful and clear, eh? Here's a&nbsp;breakdown of the basics:</p>
 <p>The chat.dat file is basically a giant text file that is
 used
@@ -54,7 +53,7 @@ warranted:</p>
 <p>Bo decides he wants MOBs to praise CoffeeMud in a couple
 ways
 when it's mentioned. He opens up his chat.dat file. He would enter this:</p>
-<pre>(coffeemud)<br />9I've heard of CoffeeMud. Isn't that that slick Java MUD codebase?<br />6CoffeeMud? What the heck is that?<br />2:smiles warmly.<br /><br />(fish)<br />9Fish with Chips is the Best!<br />6I don't care for fish, $t.<br /></pre>
+<pre>(coffeemud)<br>9I've heard of CoffeeMud. Isn't that that slick Java MUD codebase?<br>6CoffeeMud? What the heck is that?<br>2:smiles warmly.<br><br>(fish)<br>9Fish with Chips is the Best!<br>6I don't care for fish, $t.<br></pre>
 <p>There's a few different things to understand there:</p>
 <ul>
 <li>
@@ -79,15 +78,15 @@ have as many possible responses as you'd like at whatever weight you'd
 like.</p>
 <p>The second column <b>optionally</b> can
 be either&nbsp;: "&nbsp; ` or&nbsp;!. If it'none of these, the MOB will
-simply say the line. <br /></p><ul><li>If it's&nbsp;<span style="font-weight: bold;">:</span>
+simply say the line. <br></p><ul><li>If it's&nbsp;<span style="font-weight: bold;">:</span>
 then the MOB will emote the line.</li><li>If it's <span style="font-weight: bold;">"</span> then the MOB will simply say the line.</li><li>If
 it's <span style="font-weight: bold;">`</span>
 then the&nbsp;line will be submitted to the AI/LLM you have installed,
 or be ignored if not. &nbsp;The MOB will then say whatever the LLM
 responds with. &nbsp; Use the $w variable to include the original
 triggering phrase.. </li><li>If it's <span style="font-weight: bold;">!</span>, the MOB will treat the
-line as a normal mud command.<br /><br />The other thing to note here is that you don't need a space
-after either the 1st or 2nd columns.<br /></li></ul></li><li>Trigger matches like <span style="font-family: monospace;">(coffeemud)</span> or <span style="font-family: monospace;">(fish)</span> can be prefixed with zero or more certain special characters that inform MudChat about how and when they apply. &nbsp;<br /><ul><li>If you prefix the trigger with an asterisk, like <span style="font-family: monospace;">*(fish)</span>, then the trigger will only apply if the MOB is in combat.</li><li>If you prefix the trigger with a capital-L, like <span style="font-family: monospace;">L(fish)</span>, then the trigger will only apply if an AI/LLM integration is installed (see Installation Guide)</li><li>If you prefix the trigger with a period, like <span style="font-family: monospace;">.(fish)</span>, then the trigger will only apply if an AI/LLM integration is NOT installed.</li></ul></li><li><p>So!
+line as a normal mud command.<br><br>The other thing to note here is that you don't need a space
+after either the 1st or 2nd columns.<br></li></ul></li><li>Trigger matches like <span style="font-family: monospace;">(coffeemud)</span> or <span style="font-family: monospace;">(fish)</span> can be prefixed with zero or more certain special characters that inform MudChat about how and when they apply. &nbsp;<br><ul><li>If you prefix the trigger with an asterisk, like <span style="font-family: monospace;">*(fish)</span>, then the trigger will only apply if the MOB is in combat.</li><li>If you prefix the trigger with a capital-L, like <span style="font-family: monospace;">L(fish)</span>, then the trigger will only apply if an AI/LLM integration is installed (see Installation Guide)</li><li>If you prefix the trigger with a period, like <span style="font-family: monospace;">.(fish)</span>, then the trigger will only apply if an AI/LLM integration is NOT installed.</li></ul></li><li><p>So!
 &nbsp;The MOB,
 upon
 hearing 'coffeemud', will say 'I've heard of CoffeeMud. Isn't that that
@@ -128,7 +127,7 @@ databases. This is a better explanation.</p>
 <p>There are several ChatGroups defined in the distribution
 copy
 of chat.dat. Some are pretty clear. Here's one (shortened a bit):</p>
-<pre>############################################################<br />&gt;healer cleric doctor<br /><br />(hi|hello)<br />9hello $t, how may I help you?<br />2I could heal you.<br /><br />(help &amp; (healer|cleric|doctor) | hurt | pain | sick)<br />7:prays for you<br />2Please undress, so I can see your injuries.<br />5You look great.<br /><br />(job|career)<br />7I cure the pitiful<br />1I am a healer<br /><br />@default<br /></pre>
+<pre>############################################################<br>&gt;healer cleric doctor<br><br>(hi|hello)<br>9hello $t, how may I help you?<br>2I could heal you.<br><br>(help &amp; (healer|cleric|doctor) | hurt | pain | sick)<br>7:prays for you<br>2Please undress, so I can see your injuries.<br>5You look great.<br><br>(job|career)<br>7I cure the pitiful<br>1I am a healer<br><br>@default<br></pre>
 <p>You'll find this pretty much at the end of the file.
 What this
 means, is the ChatGroup is named "healer", "cleric", and "doctor" (the
@@ -142,13 +141,13 @@ ChatGroup
 with the &gt; command is to include a CoffeeMud Zapper Mask. In
 that
 case the zapper masks would be included in your set of matching words
-by surrounding it with '/' characters like so:&nbsp;<br />
+by surrounding it with '/' characters like so:&nbsp;<br>
 </p>
-<pre>&gt;healer cleric doctor /-GENDER +female/<br /></pre>
+<pre>&gt;healer cleric doctor /-GENDER +female/<br></pre>
 <p>Adding the mask at the end will give the additional
 requirement that the healer be a female before the chat group is
 matched. &nbsp;Check the Archon help files on ZAPPERMASK for more
-information on the kinds of values you can put in there.<br />
+information on the kinds of values you can put in there.<br>
 </p>
 <p>At the bottom of our original ChatGroup is a linking
 character, @, pointing to default. That means that this group will
@@ -190,7 +189,7 @@ setting the MOB to use a particular ChatGroup is straight-forward as
 well.</p>
 <h3><a name="grinder">Methods</a></h3>
 <p>Edit/Create a MOB as usual. In the Behavior list, put
-MUDChat. &nbsp; The empty box next to it is the MudChat parameters.<br /><br />Edit/Create a MOB as usual. In the Behavior list, add
+MUDChat. &nbsp; The empty box next to it is the MudChat parameters.<br><br>Edit/Create a MOB as usual. In the Behavior list, add
 MUDChat.
 It will ask you for any parameters.</p><p>If any case you leave the options box empty, the MOB will only use patterns in
 the @default ChatGroup. If you want to specify which ChatGroup, type
@@ -199,19 +198,19 @@ would put 'cleric' in the options text.</p>
 <h3><a name="mob">MudChat Parameters</a></h3>
 <p>If you specifiy no parameters, the
 MOB will only use patterns in the @default ChatGroup, or attempt to find a chat group that shares its name or race.&nbsp;</p><p>If you want to
-specify which ChatGroup from chat.dat to use, type its name in as the parameter.</p><p>If you want to specify a different .dat file to use AND which chat group in that new file to select, use an equal sign, like:<br /><br /><span style="font-family: monospace;">mychat.dat=mychatgroup</span></p><p>The above will load the file <span style="font-weight: bold;">/resources/mychat.dat</span>
+specify which ChatGroup from chat.dat to use, type its name in as the parameter.</p><p>If you want to specify a different .dat file to use AND which chat group in that new file to select, use an equal sign, like:<br><br><span style="font-family: monospace;">mychat.dat=mychatgroup</span></p><p>The above will load the file <span style="font-weight: bold;">/resources/mychat.dat</span>
 file, which uses the same rules as the chat.dat above. &nbsp;In the
 example, "mychatgroup" would be the name of a chat group in that file
 that the npc will use.</p><p>If you want to include any additions or
 variable overrides to an existing .dat file, you would put those after
 a plus sign +, after an equal sign, and semicolon ; delimited&nbsp; for
-example:</p><p><span style="font-family: monospace;">chat.dat=mygroup+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><p>The above would select the chat group "mygroup" from the default chat.dat file, but add the following to it:<br /></p><p><span style="font-family: monospace;">(here there)<br />9neither</span><span style="font-family: monospace;"> </span><span style="font-family: monospace;">${hnt}</span><br /><span style="font-family: monospace;">5well, where?<br />1nowhere<br /><br /></span><span style="font-family: monospace;">${hnt=Here nor There!}</span></p><p>The
+example:</p><p><span style="font-family: monospace;">chat.dat=mygroup+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><p>The above would select the chat group "mygroup" from the default chat.dat file, but add the following to it:<br></p><p><span style="font-family: monospace;">(here there)<br>9neither</span><span style="font-family: monospace;"> </span><span style="font-family: monospace;">${hnt}</span><br><span style="font-family: monospace;">5well, where?<br>1nowhere<br><br></span><span style="font-family: monospace;">${hnt=Here nor There!}</span></p><p>The
 above defines a new pattern to match (here there), with a few
 responses, and then defines the variable "hnt" to be "Here nor There!",
 which can be used like ${hnt} in response strings.</p><p>If you want to
 keep the default chat.dat file AND the default chat group, but still
 add new stuff, you can still do that by leaving the first two fields
-blank:<br /></p><p><span style="font-family: monospace;">=+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><h3><a name="llm">LLM</a></h3>
+blank:<br></p><p><span style="font-family: monospace;">=+(here there);9neither </span><span style="font-family: monospace;">${hnt}</span><span style="font-family: monospace;">;5well, where?;1nowhere;${hnt=Here nor There!}</span></p><h3><a name="llm">LLM</a></h3>
 <p>If you have configured CoffeeMud to use an AI/LLM system (see <a href="InstallationGuide.html">Installation Guide</a>),
 then you can use MudChat to immediately take advantage of it, by
 overriding or supplementing its default behaviors with LLM activities.</p><p>To
@@ -236,14 +235,14 @@ Please only deliver dialog responses, never emote, and keep responses
 under 3 sentences. Begin now: ". &nbsp;You'll notice how many variables
 are referenced in building this string for the AI to consume, but also
 note the last sentence, that strives to keep the AI brief and well
-formatted as dialog.</p><p>When writing your matching trigger patterns, you can write them in 3 different ways to be LLM aware:</p><pre>L(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The
+formatted as dialog.</p><p>When writing your matching trigger patterns, you can write them in 3 different ways to be LLM aware:</p><pre>L(hi|hello)<br>9hello $t, I am capable of LLM speech!<br></pre><p>The
 first is to prefix it with a capital L, which denotes a trigger pattern
 that will ONLY be used if CoffeeMud has an LLM integrated and active.
-&nbsp;It otherwise works normally.</p><pre>.(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The second&nbsp;is to prefix it with a period, which denotes a trigger pattern
-that will ONLY be used if CoffeeMud does not have any active LLM integration, but is 'stock'.</p><pre>(hi|hello)<br />9hello $t, I am capable of LLM speech!<br /></pre><p>The
+&nbsp;It otherwise works normally.</p><pre>.(hi|hello)<br>9hello $t, I am capable of LLM speech!<br></pre><p>The second&nbsp;is to prefix it with a period, which denotes a trigger pattern
+that will ONLY be used if CoffeeMud does not have any active LLM integration, but is 'stock'.</p><pre>(hi|hello)<br>9hello $t, I am capable of LLM speech!<br></pre><p>The
 last is to not put a prefix at all, but use the normal matching
 character (, [, etc. &nbsp;These trigger patterns will be evaluated
-regardless of LLM integration.</p><p>The next special LLM feature is around the LLM response, which is prefixed with a single quote character ':</p><p><span style="font-family: monospace;">(here there)<br />9"Hello. &nbsp;This is a normal response.</span><span style="font-family: monospace;"></span><br /><span style="font-family: monospace;">5'Hello LLM, please respond to the prompt '$w'.<br /></span></p><p>The
+regardless of LLM integration.</p><p>The next special LLM feature is around the LLM response, which is prefixed with a single quote character ':</p><p><span style="font-family: monospace;">(here there)<br>9"Hello. &nbsp;This is a normal response.</span><span style="font-family: monospace;"></span><br><span style="font-family: monospace;">5'Hello LLM, please respond to the prompt '$w'.<br></span></p><p>The
 single quote character does not work like the double quote. &nbsp;
 Instead of the message after the quote being spoken by the NPC, it is
 instead sent to the LLM, and the NPC will then say whatever the LLM
@@ -257,13 +256,13 @@ each appropriate patterns and responses for their type.</p>
 <p>Then, you setup two more .DAT files, Yares and World.
 In
 Yares, you can put a bunch of patterns in relevant to getting around in the
-city (like 'weapons'<br />
+city (like 'weapons'<br>
 or 'inn' - both trigger directions to relevant shops). In World, you can put
 more global geography (IE, 'avalon' gets 'avalon is west of yares').</p>
 <p>Now, back in Chat.dat, you created more groups, called
 YaresGuard, YaresShopkeeper, etc... The only lines that went into each
 were:</p>
-<pre> %Yares.dat<br /> %World.dat<br /> @guard (or @banker or @default or whatever)<br /></pre>
+<pre> %Yares.dat<br> %World.dat<br> @guard (or @banker or @default or whatever)<br></pre>
 <p>%filename includes the filename's contents in-line (as
 if it
 were typed in)</p>

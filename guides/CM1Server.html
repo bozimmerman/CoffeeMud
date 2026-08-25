@@ -1,10 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
 <head>
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+  <meta name="generator" content="HTML Tidy, see www.w3.org">
   <title>The CoffeeMud CM1 Server</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation errors, add index, and fix spelling errors -->
 </head>
 <body>
 <center>
@@ -69,22 +67,22 @@ or if you wish to prevent public access to the pages. Identical to MUD
 server usage.</p>
         </li>
         <li><span style="font-weight: bold;">IDLETIMEOUTMINS</span>=xx
-: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 10)</span><br />
-          <br />
+: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 10)</span><br>
+          <br>
 The maximum amount of time the cm1 server will tolerate idleness before
-kicking a connection out. This is in minutes.<br />
+kicking a connection out. This is in minutes.<br>
         </li>
         <li><span style="font-weight: bold;">MAXTHREADS</span>=xx
-: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 10)</span><br />
-          <br />
+: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 10)</span><br>
+          <br>
 The maximum number of threads that your server will spawn to handle
-connections.<br />
+connections.<br>
         </li>
         <li><span style="font-weight: bold;">QUEUESIZE</span>=xx
-: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 512)</span><br />
-          <br />
+: <b>[REQUIRED]</b> <span style="font-style: italic;">(e.g. 512)</span><br>
+          <br>
 The maximum number of requests to queue up for processing, when all
-threads are active.<br />
+threads are active.<br>
         </li>
       </ul>
       <h2><a name="protocol">Protocol</a></h2>
@@ -92,61 +90,61 @@ By default, the CM1
 server listens on port port 27733. &nbsp;The interface is standard
 ascii, so
 you can test the service by telnetting to it. &nbsp;However, no formal
-telnet codes are supported.<br />
-      <br />
+telnet codes are supported.<br>
+      <br>
 After connecting to the server, the client will receive a single line
-greeting, the phrase:<br />
-      <br />
-      <span style="font-weight: bold;">CONNECTED TO CM1SERVER0@27733<br />
-      <br />
+greeting, the phrase:<br>
+      <br>
+      <span style="font-weight: bold;">CONNECTED TO CM1SERVER0@27733<br>
+      <br>
       </span>After this, all output from the server will be be
-according to the following rules:<br />
-1. Output will begin with a bracket [<br />
+according to the following rules:<br>
+1. Output will begin with a bracket [<br>
 2. The first bracket will be followed by the string OK, FAIL, MESSAGE,
-or BLOCK.<br />
+or BLOCK.<br>
 3. All output, except for BLOCK, will be terminated by a closing bracket
-] and a carriage-return followed by a linefeed: \r\n<br />
+] and a carriage-return followed by a linefeed: \r\n<br>
 4. All output, except for BLOCK, is guaranteed to not contain any
-carriage-return or linefeed characters.<br />
+carriage-return or linefeed characters.<br>
 5. All output, except for [MESSAGE, will only be generated in response
-to input.<br />
-      <br style="font-weight: bold;" />
-      <span style="font-weight: bold;">[OK...]</span><br />
+to input.<br>
+      <br style="font-weight: bold;">
+      <span style="font-weight: bold;">[OK...]</span><br>
 An output string beginning with OK may be followed by a space, and one
 or more parameters, space delimited. &nbsp;This denotes that the
-command executed successfully.<br />
-      <br />
-      <span style="font-weight: bold;">[FAIL...]</span><br />
+command executed successfully.<br>
+      <br>
+      <span style="font-weight: bold;">[FAIL...]</span><br>
 An output string beginning with FAIL will be followed by a space, and a
 string describing the nature of the failure. &nbsp;This denotes that
 the command failed to execute successfully, usually because of bad
-input, but for other reasons also.<br />
-      <br />
-      <span style="font-weight: bold;">[MESSAGE...]</span><br />
+input, but for other reasons also.<br>
+      <br>
+      <span style="font-weight: bold;">[MESSAGE...]</span><br>
 An output string beginning with MESSAGE will be followed by a space,
 and a one or more parameters, space delimited. &nbsp;This is the only
 string that need not be in direct response to a command, but according
-to a request for event notification.<br />
-      <br />
+to a request for event notification.<br>
+      <br>
       <span style="font-weight: bold;">[BLOCK &lt;end of block
-string&gt;]</span><br />
+string&gt;]</span><br>
 An output string beginning with BLOCK will be followed by a space, and
 a random string. &nbsp;All ouput from the end of this output line to
 the next occurrence of the given end of block string is the full
 intended output. &nbsp;This output may contain other end of line
-characters, which are part of the output string.<br />
-      <br />
+characters, which are part of the output string.<br>
+      <br>
 All input commands are terminated by some combination of
 carriage-return, linefeed, or both, except when the BLOCK command is
-used.<br />
-      <br />
-      <br />
-      <br />
+used.<br>
+      <br>
+      <br>
+      <br>
 &nbsp;</td>
     </tr>
   </tbody>
 </table>
-<br />
+<br>
 </center>
 </body>
 </html>
