@@ -111,6 +111,9 @@ public class Prop_RoomRedirect extends Property
 					if(CMath.isInteger(roomIdStr))
 						redirects.add(mask, "#"+roomIdStr);
 					else
+					if(roomIdStr.equalsIgnoreCase("beacon"))
+						redirects.add(mask, "BEACON");
+					else
 					{
 						Log.errOut("Prop_RoomRedirect '"+roomID+"' has invalid room id '"+roomIdStr+"'.");
 						rawRedirects.remove(p);
@@ -137,13 +140,28 @@ public class Prop_RoomRedirect extends Property
 				if(o instanceof Room)
 					return CMLib.map().getRoom((Room)o);
 				else
-				if((o instanceof String)
-				&&(((String)o).startsWith("#"))
-				&&(area!=null))
+				if(o instanceof String)
 				{
-					final Room R=area.getRoom(area.Name()+(String)o);
-					if(R!=null)
-						return R;
+					final String s = (String)o;
+					if(s.startsWith("#")&&(area!=null))
+					{
+						final Room R=area.getRoom(area.Name()+s);
+						if(R!=null)
+							return R;
+					}
+					else
+					if(s.equals("BEACON"))
+					{
+						// handle recall or dock
+						if(mob.riding() instanceof Boardable)
+						{
+							final Room R = CMLib.map().getRoom(((Boardable)mob.riding()).getHomePortID());
+							if(R != null)
+								return R;
+						}
+						else
+							return mob.getStartRoom();
+					}
 				}
 			}
 		}
