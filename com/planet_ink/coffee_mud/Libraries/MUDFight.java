@@ -3058,7 +3058,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool)
 	{
+		return calculateRangeToTarget(source, target, tool, new HashSet<MOB>());
+	}
+	
+	private int calculateRangeToTarget(final MOB source, final MOB target, final Environmental tool, final Set<MOB> visited)
+	{
 		// establish and enforce range for the target, who is being assaulted
+		if(visited.contains(source))
+			return source.rangeToTarget();
+		visited.add(source);
 
 		// if your victim already has a range, you inherit that
 		if((target.getVictim()==source)
@@ -3126,7 +3134,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(leader.isInCombat() && (leader.rangeToTarget()>=0))
 					leaderRange=leader.rangeToTarget();
 				else
-					leaderRange=calculateRangeToTarget(leader, target, leader.fetchWieldedItem());
+					leaderRange=calculateRangeToTarget(leader, target, leader.fetchWieldedItem(), visited);
 			}
 			if(newRange<0)
 			{
@@ -3163,7 +3171,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						break;
 				}
 				if((!found)&&(firstElligibleM!=null)&&(firstElligibleM!=source))
-					leaderRange+=calculateRangeToTarget(firstElligibleM, target, firstElligibleM.fetchWieldedItem());
+					leaderRange+=calculateRangeToTarget(firstElligibleM, target, firstElligibleM.fetchWieldedItem(), visited);
 				newRange=newRange+leaderRange;
 			}
 			return (R!=null)?Math.min(newRange,R.maxRange()):newRange;
