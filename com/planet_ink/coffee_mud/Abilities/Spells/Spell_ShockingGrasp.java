@@ -73,6 +73,9 @@ public class Spell_ShockingGrasp extends Spell
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
+		final Room R = target.location();
+		if(R == null)
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -85,12 +88,12 @@ public class Spell_ShockingGrasp extends Spell
 					(auto?"":L("^S<S-NAME> grab(s) at <T-NAMESELF>.^?"))
 					+CMLib.protocol().msp("shock.wav",40));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((target.location().okMessage(mob,msg))&&((target.location().okMessage(mob,msg2))))
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				target.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.location().send(mob,msg2);
+					R.send(mob,msg2);
 					if(msg2.value()<=0)
 					{
 						invoker=mob;
