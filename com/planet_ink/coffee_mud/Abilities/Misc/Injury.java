@@ -465,15 +465,15 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			final PairVector<String,Integer> pV = injuries[partNum];
 			if(pV!=null)
 			{
-				for(int i=0;i<pV.size();i++)
+				for(int i=pV.size()-1;i>=0;i--)
 				{
 					try
 					{
 						final Pair<String,Integer> part = pV.get(i);
 						if(part.first.equalsIgnoreCase(limbName))
 						{
-							injuries[partNum].remove(part);
-							if(injuries[partNum].size()==0)
+							pV.remove(i);
+							if(pV.size()==0)
 								injuries[partNum]=null;
 							if((affected != null)&&(affectedLimbNameSet().size()==0))
 								affected.delEffect(this);
