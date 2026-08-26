@@ -3065,7 +3065,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		// establish and enforce range for the target, who is being assaulted
 		if(visited.contains(source))
-			return source.rangeToTarget();
+			return 0;
 		visited.add(source);
 
 		// if your victim already has a range, you inherit that
