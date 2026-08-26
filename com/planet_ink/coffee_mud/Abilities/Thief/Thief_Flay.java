@@ -229,12 +229,45 @@ public class Thief_Flay extends ThiefSkill
 						mob.makePeace(true);
 						target.makePeace(true);
 					}
+					removeOneWarrant(target,mob);
 				}
 			}
 		}
 		else
 			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s)."));
 		return success;
+	}
+
+	protected void removeOneWarrant(final MOB target, final MOB invoker)
+	{
+		if(target==null)
+			return;
+		final Room R=target.location();
+		if(R==null)
+			return;
+		final LegalBehavior B=CMLib.law().getLegalBehavior(R);
+		final Area legalA=CMLib.law().getLegalObject(R);
+		if((B==null)||(legalA==null))
+			return;
+		final List<LegalWarrant> warrants=B.getWarrantsOf(legalA,target);
+		if((warrants==null)||(warrants.size()==0))
+			return;
+		final List<LegalWarrant> unpardoned=new Vector<LegalWarrant>();
+		for(final LegalWarrant W2 : warrants)
+		{
+			if(!W2.crime().equalsIgnoreCase("pardoned"))
+				unpardoned.add(W2);
+		}
+		if(unpardoned.size()==0)
+			return;
+		final LegalWarrant W=unpardoned.get(CMLib.dice().roll(1,unpardoned.size(),-1));
+		if(W!=null)
+		{
+			final String crimeDesc=W.crime();
+			W.setCrime("pardoned");
+			W.setOffenses(0);
+			R.show(invoker,target,null,CMMsg.MSG_OK_VISUAL,L("A warrant for '@x1' against <T-NAME> has been pardoned as justice has been served.",crimeDesc));
+		}
 	}
 }
 

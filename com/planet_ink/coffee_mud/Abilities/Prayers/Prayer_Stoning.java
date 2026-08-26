@@ -198,6 +198,8 @@ public class Prayer_Stoning extends Prayer
 					for(int i=0;i<warrants.size();i++)
 					{
 						final LegalWarrant W=warrants.get(i);
+						if(W.crime().equalsIgnoreCase("pardoned"))
+							continue;
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}
