@@ -674,7 +674,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	@Override
 	protected AreaIStats getAreaIStats()
 	{
-		if(!CMProps.isState(CMProps.HostState.RUNNING))
+		if(!CMProps.isState(CMProps.HostState.RUNNING)||CMath.bset(flags(),Area.FLAG_PLAYER_INSTANCE))
 			return emptyStats;
 		final Area parentArea=getSuperArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();

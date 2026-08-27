@@ -36,6 +36,8 @@ limitations under the License.
 public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 {
 	protected String playerOwner = "";
+	
+	protected Set<String> dirtyFlags = Collections.synchronizedSet(new HashSet<String>());
 
 	public PlayerInstanceArea()
 	{
@@ -73,25 +75,61 @@ public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
-		&&(msg.target() instanceof Room)
-		&&CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
-		{
-			final Room R = (Room)msg.target();
-			if((R.roomID().length() > 0)
-			&& (CMLib.flags().isSavable(R))
-			&&(this.isRoom(R)))
-				CMLib.database().DBUpdateRoom(R);
-		}
-		else
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		{
 			for(final Enumeration<Room> r=super.getProperMap();r.hasMoreElements();)
 			{
 				final Room R =r.nextElement();
-				if((R.roomID().length() > 0) && (CMLib.flags().isSavable(R)))
+				if((R.roomID().length() > 0) 
+				&& (CMLib.flags().isSavable(R))
+				&&(dirtyFlags.contains(R.roomID())))
 					CMLib.database().DBUpdateRoom(R);
 			}
+			dirtyFlags.clear();
+		}
+		else
+		switch(msg.targetMinor())
+		{
+		case CMMsg.TYP_EXPIRE:
+			if((msg.target() instanceof Room)
+			&&CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
+			{
+				final Room R = (Room)msg.target();
+				if((R.roomID().length() > 0)
+				&&(CMLib.flags().isSavable(R))
+				&&(this.isRoom(R))
+				&&(dirtyFlags.contains(R.roomID())))
+				{
+					CMLib.database().DBUpdateRoom(R);
+					dirtyFlags.remove(R.roomID());
+				}
+			}
+			break;
+		case CMMsg.TYP_GET:
+			if((msg.target() instanceof Item)
+			&&(((Item)msg.target()).owner() instanceof Room))
+			{
+				final Room R = (Room)((Item)msg.target()).owner();
+				if((R!=null)
+				&&(R.roomID().length() > 0)
+				&&(CMLib.flags().isSavable(R))
+				&&(this.isRoom(R)))
+					dirtyFlags.add(R.roomID());
+			}
+			break;
+		case CMMsg.TYP_DROP:
+		case CMMsg.TYP_PUSH:
+		case CMMsg.TYP_PULL:
+		case CMMsg.TYP_ITEMGENERATED:
+		{
+			final Room R = msg.source().location();
+			if((R!=null)
+			&&(R.roomID().length() > 0)
+			&&(CMLib.flags().isSavable(R))
+			&&(this.isRoom(R)))
+				dirtyFlags.add(R.roomID());
+			break;
+		}
 		}
 	}
 	@Override
