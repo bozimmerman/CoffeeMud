@@ -61,18 +61,6 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
-	private Area findExistingInstance(final String roomID)
-	{
-		for(final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements();)
-		{
-			final Area A = e.nextElement();
-			if(CMath.bset(A.flags(), Area.FLAG_PLAYER_INSTANCE)
-			&& A.Name().equals(roomID))
-				return A;
-		}
-		return null;
-	}
-
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -116,7 +104,7 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 				if(key.startsWith(areaName+"#"))
 					instA.addProperRoomnumber(key);
 			}
-			if(instA.numberOfProperIDedRooms() == 0)
+			if(instA.isProperlyEmpty())
 			{
 				final Room firstR = CMLib.database().DBReadRoomObject(hostRoomID, true, false);
 				firstR.delEffect(firstR.fetchEffect(ID()));
