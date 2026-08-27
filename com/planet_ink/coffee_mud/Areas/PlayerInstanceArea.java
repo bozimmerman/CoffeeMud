@@ -79,8 +79,19 @@ public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 		{
 			final Room R = (Room)msg.target();
 			if((R.roomID().length() > 0)
-			&&(this.isRoomCached(R.roomID())))
+			&& (CMLib.flags().isSavable(R))
+			&&(this.isRoom(R)))
 				CMLib.database().DBUpdateRoom(R);
+		}
+		else
+		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		{
+			for(final Enumeration<Room> r=super.getProperMap();r.hasMoreElements();)
+			{
+				final Room R =r.nextElement();
+				if((R.roomID().length() > 0) && (CMLib.flags().isSavable(R)))
+					CMLib.database().DBUpdateRoom(R);
+			}
 		}
 	}
 	@Override
