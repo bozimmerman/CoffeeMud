@@ -201,6 +201,8 @@ public class FakeTable
 			}
 			else
 			{
+				if((c != '-') && (c != '*'))
+					throw new IOException("Unrecognized fakedb data file for table "+name+" (expected V-header or record marker, got byte "+c+")");                                                             
 				final String header = "V1H"+schemaHash+"\n";
 				this.insertFileData(0, header.getBytes());
 				file.close();
