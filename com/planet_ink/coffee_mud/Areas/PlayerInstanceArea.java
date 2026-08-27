@@ -70,13 +70,27 @@ public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
+		&&(msg.target() instanceof Room)
+		&&CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
+		{
+			final Room R = (Room)msg.target();
+			if((R.roomID().length() > 0)
+			&&(this.isRoomCached(R.roomID())))
+				CMLib.database().DBUpdateRoom(R);
+		}
+	}
+	@Override
 	public Room getRoom(String roomID)
 	{
 		if(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
 			return super.getRoom(roomID);
 		if((roomID == null) || (!isRoom(roomID)))
 			return null;
-		final Room existingR = (Room) super.getRoomBase(roomID);
+		final Room existingR = super.getRoomBase(roomID);
 		if((existingR != null) && (!existingR.amDestroyed()))
 			return existingR;
 		if(roomID.toUpperCase().startsWith(Name().toUpperCase() + "#"))
