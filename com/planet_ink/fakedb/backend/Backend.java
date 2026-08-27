@@ -144,13 +144,13 @@ public class Backend
 	public void readSchema(final File basePath) throws IOException
 	{
 		final List<List<String>> schema = readRawSchema();
-		int version = 1;
 		for(final List<String> group : schema)
 		{
 			if((group.size()==0)||(group.get(0).startsWith("#")))
 				continue;
 			final String s = group.remove(0).toUpperCase().trim();
 			final int vx = s.lastIndexOf(' ');
+			int version = 1;
 			String tableName = s;
 			if(vx > 0)
 			{
@@ -171,12 +171,6 @@ public class Backend
 				version = fakeTable.version;
 			fakeTable.open();
 			fakeTables.put(tableName, fakeTable);
-		}
-		for(final FakeTable tab : fakeTables.values())
-		{
-			tab.version = version;
-			for(final FakeColumn col : tab.columns)
-				col.version = version;
 		}
 	}
 
