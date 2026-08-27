@@ -1941,7 +1941,8 @@ public class StdRoom implements Room
 	{
 		return ((roomID().length()>0)
 				&&((getArea()==null)
-					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
+					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+					|| (CMath.bset(getArea().flags(),Area.FLAG_PLAYER_INSTANCE)))
 				&&(CMLib.flags().isSavable(this)));
 	}
 
