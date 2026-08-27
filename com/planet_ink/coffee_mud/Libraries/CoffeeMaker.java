@@ -1214,6 +1214,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					if(forceArea.isRoomCached(roomID))
 						linkRoom=forceArea.getRoom(roomID);
+					else
+					{
+						linkRoom=CMClass.getLocale("ThinRoom");
+						linkRoom.setRoomID(roomID);
+						linkRoom.setArea(forceArea);
+					}
 				}
 			}
 			else
@@ -1229,8 +1235,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				else
 				{
 					final Area A = CMLib.map().getArea(roomID.substring(0,x));
-					if((A != null)&&(A.isRoomCached(roomID)))
-						linkRoom=CMLib.map().getRoom(roomID);
+					if(A != null)
+					{
+						if(A.isRoomCached(roomID))
+							linkRoom=CMLib.map().getRoom(roomID);
+						else
+						{
+							linkRoom=CMClass.getLocale("ThinRoom");
+							linkRoom.setRoomID(roomID);
+							linkRoom.setArea(A);
+						}
+					}
 				}
 			}
 			else
