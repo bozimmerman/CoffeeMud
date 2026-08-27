@@ -98,8 +98,7 @@ public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 		final String ownerName = getOwnerName();
 		if(ownerName.length() == 0)
 			return null;
-		final String cmpdatKey = roomID.substring(roomID.indexOf('_') + 1);
-		final List<PAData> pDataList = CMLib.database().DBReadPlayerData(ownerName, "PLAYERINSTANCE", cmpdatKey);
+		final List<PAData> pDataList = CMLib.database().DBReadPlayerData(ownerName, "PLAYERINSTANCE", roomID);
 		if(pDataList.size()==0)
 			return null;
 		final String xml = pDataList.get(0).xml();

@@ -591,12 +591,8 @@ public class DBInterface implements DatabaseEngine
 			return null;
 		if(!CMath.bset(area.flags(), Area.FLAG_PLAYER_INSTANCE))
 			return null;
-		int x = roomID.indexOf('_');
-		if(x<0)
-			return null;
-		final String rawRoomID = roomID.substring(x+1);
 		final String playerName = ((PlayerOwned)area).getOwnerName();
-		return new Pair<String,String>(playerName, rawRoomID);
+		return new Pair<String,String>(playerName, roomID);
 
 	}
 

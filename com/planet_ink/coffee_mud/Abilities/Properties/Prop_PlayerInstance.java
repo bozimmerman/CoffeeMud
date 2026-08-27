@@ -61,14 +61,13 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
-	private Area findExistingInstance(final String suffix)
+	private Area findExistingInstance(final String roomID)
 	{
-		final String subSuffix = "_" + suffix;
 		for(final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements();)
 		{
 			final Area A = e.nextElement();
 			if(CMath.bset(A.flags(), Area.FLAG_PLAYER_INSTANCE)
-			&& A.Name().endsWith(subSuffix))
+			&& A.Name().equals(roomID))
 				return A;
 		}
 		return null;
@@ -87,8 +86,8 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 			final MOB owner = mob.getGroupLeader();
 			final String hostRoomID = CMLib.map().getExtendedRoomID(targetR);
 
-			final String subAreaName = owner.Name() + "_" + CMStrings.replaceAll(hostRoomID, "#", "_");
-			final Area existingInstA = findExistingInstance(subAreaName);
+			final String areaName = owner.Name() + "_" + CMStrings.replaceAll(hostRoomID, "#", "_");
+			final Area existingInstA = CMLib.map().getArea(areaName);
 			if(existingInstA != null && !existingInstA.amDestroyed())
 			{
 				final String instanceRoomID = existingInstA.Name() + "#0";
@@ -99,8 +98,6 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 					return super.okMessage(myHost, msg);
 				}
 			}
-
-			final String areaName = instIDNum.incrementAndGet() + "_" + subAreaName;
 
 			final Area instA = CMClass.getAreaType("PlayerInstanceArea");
 			instA.setName(areaName);
@@ -116,12 +113,8 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 			final List<String> pKeyList = CMLib.database().DBReadPlayerDataKeys(owner.Name(), "PLAYERINSTANCE");
 			for(final String key : pKeyList)
 			{
-				if(key.startsWith(subAreaName))
-				{
-					int x = key.indexOf("#");
-					if(x > 0)
-						instA.addProperRoomnumber(areaName+key.substring(x));
-				}
+				if(key.startsWith(areaName+"#"))
+					instA.addProperRoomnumber(key);
 			}
 			if(instA.numberOfProperIDedRooms() == 0)
 			{
@@ -131,7 +124,7 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 				CMLib.database().DBReadRoomExits(hostRoomID, firstR, false);
 				firstR.setRoomID(areaName+"#0");
 				firstR.setArea(instA);
-				CMLib.database().DBCreatePlayerData(owner.Name(), "PLAYERINSTANCE", subAreaName+"#0", 
+				CMLib.database().DBCreatePlayerData(owner.Name(), "PLAYERINSTANCE", areaName+"#0", 
 						CMLib.coffeeMaker().getRoomXML(firstR, null, null, true,false,false));
 			}
 			CMLib.map().addArea(instA);
