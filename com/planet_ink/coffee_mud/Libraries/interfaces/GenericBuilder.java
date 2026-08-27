@@ -655,9 +655,10 @@ public interface GenericBuilder extends CMLibrary
 	 * @param xml the pre-parsed xml document containing room tags
 	 * @param andContent true to also build mobs/items, or false to ignore them
 	 * @param andSave true to save the room to the db, or false to not.
+	 * @param avoidForceLoad true to avoid caching uncached rooms during room loads
 	 * @return an error message, or ""
 	 */
-	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave);
+	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave, boolean avoidForceLoad);
 
 	/**
 	 * Given an xml document containing an AROOM tag, this method will extract the room,
@@ -677,7 +678,7 @@ public interface GenericBuilder extends CMLibrary
 	 * also split out any files, or local generic races and classes for optional inclusion.
 	 *
 	 * @see GenericBuilder#unpackRoomFromXML(String, boolean)
-	 * @see GenericBuilder#unpackRoomFromXML(Area, List, boolean, boolean)
+	 * @see GenericBuilder#unpackRoomFromXML(Area, List, boolean, boolean, boolean)
 	 *
 	 * @param room the room to generate an xml document for
 	 * @param custom optional set to put generic races/classes into

@@ -579,28 +579,62 @@ public class DBInterface implements DatabaseEngine
 		roomLoader.DBCreateThisMOB(roomID, thisMOB);
 	}
 
+	private Pair<String,String> getPlayerRoomOwnerRoomID(final Room room)
+	{
+		if((room == null)||(!room.isSavable()))
+			return null;
+		final String roomID = room.roomID();
+		if((roomID==null)||(roomID.length()==0))
+			return null;
+		final Area area = room.getArea();
+		if((area == null)||(!(area instanceof PlayerOwned)))
+			return null;
+		if(!CMath.bset(area.flags(), Area.FLAG_PLAYER_INSTANCE))
+			return null;
+		int x = roomID.indexOf('_');
+		if(x<0)
+			return null;
+		final String rawRoomID = roomID.substring(x+1);
+		final String playerName = ((PlayerOwned)area).getOwnerName();
+		return new Pair<String,String>(playerName, rawRoomID);
+
+	}
+
+	private boolean ifPlayerRoomCreated(final Room room)
+	{
+		final Pair<String,String> key = getPlayerRoomOwnerRoomID(room);
+		if(key == null)
+			return false;
+		this.DBCreatePlayerData(key.first, "PLAYERINSTANCE", key.second, 
+				CMLib.coffeeMaker().getRoomXML(room, null, null, true));
+		return true;
+	}
+	
+	private boolean ifPlayerRoomUpdated(final Room room)
+	{
+		final Pair<String,String> key = getPlayerRoomOwnerRoomID(room);
+		if(key == null)
+			return false;
+		this.DBUpdatePlayerData(key.first, "PLAYERINSTANCE", key.second, 
+				CMLib.coffeeMaker().getRoomXML(room, null, null, true));
+		return true;
+	}
+	
+	private boolean ifPlayerRoomDeleted(final Room room)
+	{
+		final Pair<String,String> key = getPlayerRoomOwnerRoomID(room);
+		if(key == null)
+			return false;
+		this.DBDeletePlayerData(key.first, "PLAYERINSTANCE", key.second);
+		return true;
+	}
+	
 	@Override
 	public void DBUpdateExits(final Room room)
 	{
+		if(ifPlayerRoomUpdated(room))
+			return;
 		roomLoader.DBUpdateExits(room);
-	}
-
-	@Override
-	public List<Quest> DBReadQuests()
-	{
-		return questLoader.DBRead();
-	}
-
-	@Override
-	public void DBUpdateQuest(final Quest Q)
-	{
-		questLoader.DBUpdateQuest(Q);
-	}
-
-	@Override
-	public void DBUpdateQuests(final List<Quest> quests)
-	{
-		questLoader.DBUpdateQuests(quests);
 	}
 
 	@Override
@@ -630,19 +664,79 @@ public class DBInterface implements DatabaseEngine
 	@Override
 	public void DBUpdateTheseMOBs(final Room room, final List<MOB> mobs)
 	{
+		if(ifPlayerRoomUpdated(room))
+			return;
 		roomLoader.DBUpdateTheseMOBs(room, mobs);
 	}
 
 	@Override
 	public void DBUpdateTheseItems(final Room room, final List<Item> items)
 	{
+		if(ifPlayerRoomUpdated(room))
+			return;
 		roomLoader.DBUpdateTheseItems(room, items);
 	}
 
 	@Override
 	public void DBUpdateMOBs(final Room room)
 	{
+		if(ifPlayerRoomUpdated(room))
+			return;
 		roomLoader.DBUpdateMOBs(room);
+	}
+
+	@Override
+	public void DBCreateRoom(final Room room)
+	{
+		if(ifPlayerRoomCreated(room))
+			return;
+		roomLoader.DBCreate(room);
+	}
+
+	@Override
+	public void DBUpdateRoom(final Room room)
+	{
+		if(ifPlayerRoomUpdated(room))
+			return;
+		roomLoader.DBUpdateRoom(room);
+	}
+
+	@Override
+	public List<Room> DBReadAreaNavStructure(final String areaName)
+	{
+		return roomLoader.DBReadAreaNavStructure(areaName);
+	}
+
+	@Override
+	public void DBCreateArea(final Area A)
+	{
+		roomLoader.DBCreate(A);
+	}
+
+	@Override
+	public void DBDeleteArea(final Area A)
+	{
+		roomLoader.DBDelete(A);
+	}
+
+	@Override
+	public void DBDeleteAreaAndRooms(final Area A)
+	{
+		roomLoader.DBDeleteAreaAndRooms(A);
+	}
+
+	@Override
+	public void DBUpdateArea(final String areaID, final Area A)
+	{
+		roomLoader.DBUpdate(areaID, A);
+	}
+
+	@Override
+	public void DBDeleteRoom(final Room room)
+	{
+		if(ifPlayerRoomDeleted(room))
+			return;
+		roomLoader.DBDelete(room);
 	}
 
 	@Override
@@ -879,24 +973,6 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBCreateRoom(final Room room)
-	{
-		roomLoader.DBCreate(room);
-	}
-
-	@Override
-	public void DBUpdateRoom(final Room room)
-	{
-		roomLoader.DBUpdateRoom(room);
-	}
-
-	@Override
-	public List<Room> DBReadAreaNavStructure(final String areaName)
-	{
-		return roomLoader.DBReadAreaNavStructure(areaName);
-	}
-
-	@Override
 	public void DBUpdatePlayer(final MOB mob)
 	{
 		mobLoader.DBUpdate(mob);
@@ -990,36 +1066,6 @@ public class DBInterface implements DatabaseEngine
 	public PairList<String, Long> DBSearchPFIL(final String match)
 	{
 		return mobLoader.DBSearchPFIL(match);
-	}
-
-	@Override
-	public void DBCreateArea(final Area A)
-	{
-		roomLoader.DBCreate(A);
-	}
-
-	@Override
-	public void DBDeleteArea(final Area A)
-	{
-		roomLoader.DBDelete(A);
-	}
-
-	@Override
-	public void DBDeleteAreaAndRooms(final Area A)
-	{
-		roomLoader.DBDeleteAreaAndRooms(A);
-	}
-
-	@Override
-	public void DBUpdateArea(final String areaID, final Area A)
-	{
-		roomLoader.DBUpdate(areaID, A);
-	}
-
-	@Override
-	public void DBDeleteRoom(final Room room)
-	{
-		roomLoader.DBDelete(room);
 	}
 
 	@Override
@@ -1672,6 +1718,24 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public List<Quest> DBReadQuests()
+	{
+		return questLoader.DBRead();
+	}
+
+	@Override
+	public void DBUpdateQuest(final Quest Q)
+	{
+		questLoader.DBUpdateQuest(Q);
+	}
+
+	@Override
+	public void DBUpdateQuests(final List<Quest> quests)
+	{
+		questLoader.DBUpdateQuests(quests);
+	}
+
+	@Override
 	public int DBRawExecute(final String sql) throws CMException
 	{
 		DBConnection DBToUse=null;
@@ -1758,4 +1822,5 @@ public class DBInterface implements DatabaseEngine
 	{
 		return CMLib.lang().fullSessionTranslation(clazz, str, xs);
 	}
+
 }

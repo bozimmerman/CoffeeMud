@@ -1054,7 +1054,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected String unpackRoomFromXML(final List<XMLTag> xml, final boolean andContent)
 	{
-		return unpackRoomFromXML(null, xml, andContent, true);
+		return unpackRoomFromXML(null, xml, andContent, true, false);
 	}
 
 	protected Room unpackRoomObjectFromXML(final String buf, final boolean andContent)
@@ -1201,8 +1201,46 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
+	private Room getLinkableRoom(final Area forceArea, final String roomID, final boolean avoidForceLoad)
+	{
+		if((roomID == null)||(roomID.length()==0))
+			return null;
+		Room linkRoom=null;
+		if(forceArea!=null)
+		{
+			if(avoidForceLoad)
+			{
+				if(forceArea.getProperRoomnumbers().contains(roomID))
+				{
+					if(forceArea.isRoomCached(roomID))
+						linkRoom=forceArea.getRoom(roomID);
+				}
+			}
+			else
+				linkRoom=forceArea.getRoom(roomID);
+		}
+		if(linkRoom==null)
+		{
+			if(avoidForceLoad)
+			{
+				int x = roomID.indexOf('#');
+				if(x<0)
+					linkRoom=CMLib.map().getRoom(roomID);
+				else
+				{
+					final Area A = CMLib.map().getArea(roomID.substring(0,x));
+					if((A != null)&&(A.isRoomCached(roomID)))
+						linkRoom=CMLib.map().getRoom(roomID);
+				}
+			}
+			else
+				linkRoom=CMLib.map().getRoom(roomID);
+		}
+		return linkRoom;
+	}
+	
 	@Override
-	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave)
+	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave, boolean avoidForceLoad)
 	{
 		final XMLLibrary xmlLib=CMLib.xml();
 		Area myArea;
@@ -1271,12 +1309,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						CE.out=(codeddir&256)==256;
 						CE.dir=codeddir&255;
 						((GridLocale)newRoom).addOuterExit(CE);
-						Room linkRoom=null;
-						if(forceArea!=null)
-							linkRoom=forceArea.getRoom(doorID);
-						if(linkRoom==null)
-							linkRoom=CMLib.map().getRoom(doorID);
-						if((!CE.out)&&(linkRoom!=null)&&(!(linkRoom instanceof GridLocale)))
+						Room linkRoom=getLinkableRoom(forceArea, doorID, avoidForceLoad);
+						if((!CE.out)
+						&&(linkRoom!=null)
+						&&(!(linkRoom instanceof GridLocale)))
 						{
 							linkRoom.rawDoors()[CE.dir]=newRoom;
 							linkRoom.setRawExit(CE.dir,CMClass.getExit("Open"));
@@ -1309,11 +1345,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				exit.recoverPhyStats();
 				if(doorID.length()>0)
 				{
-					Room linkRoom=null;
-					if(forceArea!=null)
-						linkRoom=forceArea.getRoom(doorID);
-					if(linkRoom==null)
-						linkRoom=CMLib.map().getRoom(doorID);
+					Room linkRoom=getLinkableRoom(forceArea, doorID, avoidForceLoad);
 					if(linkRoom!=null)
 						newRoom.rawDoors()[dir]=linkRoom;
 					else
@@ -1667,7 +1699,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(savable)
 					err=unpackRoomFromXML(ablk.contents(),true);
 				else
-					err=unpackRoomFromXML(newArea, ablk.contents(), true, false);
+					err=unpackRoomFromXML(newArea, ablk.contents(), true, false, false);
 				if(err.length()>0)
 					return err;
 			}
@@ -1718,7 +1750,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if((!ablk.tag().equalsIgnoreCase("AROOM"))||(ablk.contents()==null))
 				throw new CMException(unpackErr("Area","??"+ablk.tag()));
 			//if(S!=null) S.rawPrint(".");
-			final String err=unpackRoomFromXML(newArea, ablk.contents(),true,false);
+			final String err=unpackRoomFromXML(newArea, ablk.contents(),true,false, false);
 			if(err.length()>0)
 				throw new CMException(err);
 		}

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.List;
 
 /*
-   Copyright 2013-2026 Bo Zimmerman
+   Copyright 2026-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,29 +33,25 @@ import java.util.List;
    limitations under the License.
 */
 /**
- * Interface for objects which represents property purchasable by players.  May
- * be found implemented by Abilities which are placed as effects on the room  objects
- * for sale, or implemented as Items representing the sellable title.
+ * Interface for objects which represents something owned by a  single player.
  * @author Bo Zimmerman
  */
-public interface PrivateProperty extends PlayerOwned
+public interface PlayerOwned extends CMObject
 {
 	/**
-	 * The value of the property in base currency values
-	 * @return the price of the property
+	 * Get the owner of the property, usually a clan name or a player name.
+	 * @return the name of the owner of the property
 	 */
-	public int getPrice();
+	public String getOwnerName();
 	/**
-	 * set the value of the property in base currency values
-	 * @param price the price of the property
+	 * Set the owner of the property, usually a clan name or a player name.
+	 * @param owner the name of the owner of the property
 	 */
-	public void setPrice(int price);
+	public void setOwnerName(String owner);
 
 	/**
-	 * Returns a unique id for this particular title and the purchase-able lot
-	 * it represents.  Could be a single item when items are purchased separately,
-	 * or represent a group or items in other cases.
-	 * @return a unique id
+	 * Returns whether the owner actually exists.
+	 * @return true if this property is owned.
 	 */
-	public String getTitleID();
+	public boolean isProperlyOwned();
 }

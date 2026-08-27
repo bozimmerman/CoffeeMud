@@ -757,6 +757,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public final static int FLAG_INSTANCE_PARENT=2;
 	/**	State flag meaning this area is a INSTANCE child type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_INSTANCE_CHILD=4;
+	/**	State flag meaning this area is a player-owned instance loaded from player data.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
+	public final static int FLAG_PLAYER_INSTANCE=8;
 
 	/** Various area IStat constants.. see @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
 	public static enum Stats

@@ -5507,7 +5507,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Area dumbArea=CMClass.getAreaType("StdArea");
 			CMLib.flags().setSavable(dumbArea, false);
 			final List<XMLTag> tags=CMLib.xml().parseAllXML(str);
-			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false);
+			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false, false);
 			if((err!=null)&&(err.length()>0)||(!dumbArea.getProperMap().hasMoreElements()))
 				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+mql);
 			roomList.add(dumbArea.getProperMap().nextElement());
