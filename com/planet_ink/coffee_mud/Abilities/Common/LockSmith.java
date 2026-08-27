@@ -159,16 +159,17 @@ public class LockSmith extends CraftingSkill
 							}
 							else
 							{
+								final Exit exit = (Exit)workingOn;
 								final Exit exit2=mob.location().getPairedExit(dir);
 								final Room room2=mob.location().getRoomInDir(dir);
-								((Exit)workingOn).basePhyStats().setLevel(xlevel(mob));
-								((Exit)workingOn).recoverPhyStats();
-								((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
+								exit.basePhyStats().setLevel(xlevel(mob));
+								exit.recoverPhyStats();
+								exit.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
 								if(buildingI instanceof DoorKey)
 								{
 									if(((DoorKey)buildingI).getKey().length()==0)
 										((DoorKey)buildingI).setKey(keyCode);
-									((Exit)workingOn).setKeyName(((DoorKey)buildingI).getKey());
+									exit.setKeyName(((DoorKey)buildingI).getKey());
 								}
 								if(CMLib.map().getRoom(mob.location().roomID())==mob.location()) // ensures not an instance or ship
 									CMLib.database().DBUpdateExits(mob.location());
@@ -279,6 +280,16 @@ public class LockSmith extends CraftingSkill
 		}
 		if(workingOn instanceof Exit)
 		{
+			final Room targetR = mob.location().getRoomInDir(dir);
+			final Area targetA = (targetR == null) ? null : targetR.getArea();
+			final Area workA=mob.location().getArea();
+			if((workA != null)
+			&&(targetA != null)
+			&&(CMath.bset(workA.flags(), Area.FLAG_PLAYER_INSTANCE)!=CMath.bset(targetA.flags(), Area.FLAG_PLAYER_INSTANCE)))
+			{
+				commonFaiL(mob,commands,"That door isn't yours to modify.");
+				return false;
+			}
 			if(!((Exit)workingOn).hasADoor())
 			{
 				commonFaiL(mob,commands,"There is no door in that direction.");
