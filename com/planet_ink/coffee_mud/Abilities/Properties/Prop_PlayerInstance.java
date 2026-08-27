@@ -128,6 +128,7 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 				final Room firstR = CMLib.database().DBReadRoomObject(hostRoomID, true, false);
 				firstR.delEffect(firstR.fetchEffect(ID()));
 				CMLib.database().DBReadContent(hostRoomID, firstR, true);
+				CMLib.database().DBReadRoomExits(hostRoomID, firstR, false);
 				firstR.setRoomID(areaName+"#0");
 				firstR.setArea(instA);
 				CMLib.database().DBCreatePlayerData(owner.Name(), "PLAYERINSTANCE", subAreaName+"#0", 
