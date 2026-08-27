@@ -97,7 +97,7 @@ public class FakeTable
 	 */
 	public String getColumnName(final int index)
 	{
-		if ((index < 0) || (index > columns.length))
+		if ((index < 0) || (index >= columns.length))
 			return null;
 		return columns[index].name;
 	}
@@ -109,7 +109,7 @@ public class FakeTable
 	 */
 	public FakeColumn getColumnInfo(final int index)
 	{
-		if ((index < 0) || (index > columns.length))
+		if ((index < 0) || (index >= columns.length))
 			return null;
 		return columns[index];
 	}
@@ -526,7 +526,8 @@ public class FakeTable
 	 */
 	public ComparableValue getNextLine(final FakeColType colType, final byte[] fileBuffer, final int[] dex)
 	{
-		if ((fileBuffer[dex[0]] == '\\') && (fileBuffer[dex[0] + 1] == '?'))
+		if ((fileBuffer[dex[0]] == '\\') 
+		&& ((dex[0] == fileBuffer.length-1) || (fileBuffer[dex[0] + 1] == '?')))
 			return new ComparableValue(null);
 		else
 		{
@@ -536,7 +537,7 @@ public class FakeTable
 				char c = (char) (fileBuffer[dex[0]] & 0xFF);
 				if (c == 0x0A)
 					break;
-				if (c == '\\')
+				if((c == '\\') && (dex[0] < fileBuffer.length-1))
 				{
 					switch(fileBuffer[dex[0] + 1])
 					{
@@ -555,12 +556,14 @@ public class FakeTable
 					case '#':
 					{
 						dex[0]++;
+						if(dex[0]+1 >=fileBuffer.length)
+							break;
 						final int count= (fileBuffer[++dex[0]] & 0xFF)-'0';
 						final byte[] bt=new byte[count];
 						for (int i = 0; i < count; i++)
 						{
 							int val=0;
-							for (int bi = 0; bi < 2; bi++)
+							for (int bi = 0; bi < 2 && (dex[0] < fileBuffer.length-1); bi++)
 							{
 								c = (char) (fileBuffer[++dex[0]] & 0xFF);
 								if (c >= 'A')
@@ -585,7 +588,7 @@ public class FakeTable
 						for (int i = 0; i < 2; i++)
 						{
 							int val=0;
-							for (int bi = 0; bi < 2; bi++)
+							for (int bi = 0; bi < 2 && (dex[0] < fileBuffer.length-1); bi++)
 							{
 								c = (char) (fileBuffer[++dex[0]] & 0xFF);
 								if (c >= 'A')
@@ -863,16 +866,9 @@ public class FakeTable
 				{
 					if (!dataLoaded[0])
 						dataLoaded[0] = getRecord(values, info);
+
 					if (dataLoaded[0])
-					{
-						if (values[cond.conditionIndex] == null)
-							thisOne = false;
-						else
-						if (cond.not)
-							thisOne = !cond.compareValue(values[cond.conditionIndex]);
-						else
-							thisOne = cond.compareValue(values[cond.conditionIndex]);
-					}
+						thisOne = cond.compareValue(values[cond.conditionIndex]); // handles cond.not and null
 				}
 			}
 			if (connector == ConnectorType.OR)
@@ -1086,12 +1082,18 @@ public class FakeTable
 						{
 							final String[] strVals = new String[values.length];
 							for(int x=0;x<values.length;x++)
-								strVals[x]=values[x].getValue().toString();
+							{
+								@SuppressWarnings("rawtypes")
+								final Comparable val = values[x].getValue();
+								strVals[x]=(val == null) ? null : val.toString();
+							}
 							if(keyChanges != null)
 							{
 								for(int i=0;i<keyChanges.length;i++)
+								{
 									if(keyChanges[i]!= null)
 										strVals[i] = keyChanges[i].getValue().toString();
+								}
 								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
 								for(int i=0;i<keyChanges.length;i++)
 								{

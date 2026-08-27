@@ -737,7 +737,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isSearchable(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
@@ -753,7 +753,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int isNullable(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return columnNoNulls;
@@ -763,7 +763,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isSigned(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
@@ -840,7 +840,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getPrecision(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return 9;
@@ -870,7 +870,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getTableName(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "FAKEDB";
@@ -886,7 +886,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public int getColumnType(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return java.sql.Types.INTEGER;
@@ -913,7 +913,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnTypeName(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return "integer";
@@ -946,7 +946,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public boolean isWritable(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return false;
@@ -962,7 +962,7 @@ public class ResultSet implements java.sql.ResultSet
 			@Override
 			public String getColumnClassName(final int column) throws SQLException
 			{
-				if((column < 1) || (column >= showCols.length))
+				if((column < 1) || (column > showCols.length))
 					throw new SQLException("Value out of range.");
 				if(showCols[column - 1] == FakeColumn.INDEX_COUNT)
 					return Integer.class.getName();
