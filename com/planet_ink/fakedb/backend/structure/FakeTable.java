@@ -459,8 +459,8 @@ public class FakeTable
 	 */
 	private void vacuum() throws IOException
 	{
-		final File tempFileName = new File(fileName.getName() + ".tmp");
-		final File tempFileName2 = new File(fileName.getName() + ".cpy");
+		final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
+		final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 		final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 		file.seek(0);
 		for(int i=0;i<dataStart;i++)
@@ -890,8 +890,8 @@ public class FakeTable
 			return;
 		try
 		{
-			final File tempFileName = new File(fileName.getName() + ".tmp");
-			final File tempFileName2 = new File(fileName.getName() + ".cpy");
+			final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
+			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 			file.seek(0);
 			for(int i=0;i<dataStart;i++)
@@ -934,8 +934,8 @@ public class FakeTable
 			return;
 		try
 		{
-			final File tempFileName = new File(fileName.getName() + ".tmp");
-			final File tempFileName2 = new File(fileName.getName() + ".cpy");
+			final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
+			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 			file.seek(0);
 			for(int i=0;i<dataStart;i++)
