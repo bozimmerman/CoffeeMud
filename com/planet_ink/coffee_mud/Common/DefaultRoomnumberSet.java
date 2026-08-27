@@ -448,7 +448,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			}
 			else
 			if(CMath.isInteger(theRest))
-				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
+				roomNum=Integer.parseInt(theRest);
 		}
 		else
 		if(!str.equals("START"))

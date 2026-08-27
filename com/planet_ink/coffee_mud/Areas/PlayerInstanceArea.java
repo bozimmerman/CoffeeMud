@@ -40,7 +40,7 @@ public class PlayerInstanceArea extends StdThinInstance implements PlayerOwned
 	public PlayerInstanceArea()
 	{
 		super();
-		this.flags |= Area.FLAG_PLAYER_INSTANCE;
+		this.flags |= Area.FLAG_PLAYER_INSTANCE | Area.FLAG_INSTANCE_CHILD;
 	}
 
 	@Override
