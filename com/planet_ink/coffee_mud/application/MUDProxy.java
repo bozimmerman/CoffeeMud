@@ -636,7 +636,7 @@ public class MUDProxy
 			System.exit(-1);
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Proxy v"+MUD.HOST_VERSION);
+		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud(R) Proxy v"+MUD.HOST_VERSION);
 		Log.sysOut(Thread.currentThread().getName(),"(C) 2025-2026 Bo Zimmerman");
 		Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 		Log.sysOut(Thread.currentThread().getName(),"Control password: "+ctlPassword);

@@ -1526,7 +1526,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
-			L("\n\r^HCoffeeMud Message Maker Options:^N\n\r"+
+			L("\n\r^HCoffeeMud(R) Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
 			"^XD)^.^Welete one or more lines\n\r"+
 			"^XL)^.^Wist the entire text file\n\r"+
@@ -1661,7 +1661,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return;
 		}
 		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter an empty line to exit.^.^N");
-		sess.println(L("^HCoffeeMud Message Maker^N"));
+		sess.println(L("^HCoffeeMud(R) Message Maker^N"));
 		if(autoAdd)
 			sess.println(addModeMessage);
 		sess.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
@@ -2101,7 +2101,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return MsgMkrResolution.CANCELFILE;
 
 		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
-		mob.tell(L("^HCoffeeMud Message Maker^N"));
+		mob.tell(L("^HCoffeeMud(R) Message Maker^N"));
 		boolean menuMode=!autoAdd;
 		if(autoAdd)
 			sess.println(addModeMessage);

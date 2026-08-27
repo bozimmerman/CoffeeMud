@@ -1268,7 +1268,7 @@ public class VFShell
 				final Shell shell = new Shell();
 				String command="";
 				String pwd="";
-				outStream.println("CoffeeMud VFShell started. Use 'exit' to quit.");
+				outStream.println("CoffeeMud(R) VFShell started. Use 'exit' to quit.");
 				outStream.println("");
 				while((command!=null)&&(!command.equalsIgnoreCase("exit")))
 				{
