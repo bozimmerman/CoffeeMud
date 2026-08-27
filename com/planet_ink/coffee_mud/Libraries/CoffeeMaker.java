@@ -2475,7 +2475,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return getRoomXML(room, custom, files, andContent, true, false);
 	}
 
-	protected String getRoomXML(final Room room, final Set<CMObject> custom, final Set<String> files, final boolean andContent, final boolean andIsInDB, final boolean skipDoors)
+	@Override
+	public String getRoomXML(final Room room, final Set<CMObject> custom, final Set<String> files, final boolean andContent, final boolean andIsInDB, final boolean skipDoors)
 	{
 		if(room==null)
 			return "";

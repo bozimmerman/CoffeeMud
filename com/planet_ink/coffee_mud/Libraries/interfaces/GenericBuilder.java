@@ -689,6 +689,23 @@ public interface GenericBuilder extends CMLibrary
 	public String getRoomXML(Room room,  Set<CMObject> custom, Set<String> files, boolean andContent);
 
 	/**
+	 * Generates an xml document of the given room, and optionally all of its contents.  It will
+	 * also split out any files, or local generic races and classes for optional inclusion.
+	 *
+	 * @see GenericBuilder#unpackRoomFromXML(String, boolean)
+	 * @see GenericBuilder#unpackRoomFromXML(Area, List, boolean, boolean, boolean)
+	 *
+	 * @param room the room to generate an xml document for
+	 * @param custom optional set to put generic races/classes into
+	 * @param files optional set to put the paths to scripts used in the room
+	 * @param andContent true to include mobs/items, false otherwise
+	 * @param andIsInDB true to get content from db, false to use given room
+	 * @param skipDoors true to leave room links out, false otherwise
+	 * @return the xml document for the room
+	 */
+	public String getRoomXML(final Room room, final Set<CMObject> custom, final Set<String> files, final boolean andContent, final boolean andIsInDB, final boolean skipDoors);
+
+	/**
 	 * Unpack an XML document containing an AREA tag into an actual area object,
 	 * including any rooms, mobs, items, etc.  Saves nothing to the db, or to
 	 * the world map.  Just returns the populated object.

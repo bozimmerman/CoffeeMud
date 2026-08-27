@@ -606,7 +606,7 @@ public class DBInterface implements DatabaseEngine
 		if(key == null)
 			return false;
 		this.DBCreatePlayerData(key.first, "PLAYERINSTANCE", key.second, 
-				CMLib.coffeeMaker().getRoomXML(room, null, null, true));
+				CMLib.coffeeMaker().getRoomXML(room, null, null, true, false, false));
 		return true;
 	}
 	
@@ -616,7 +616,7 @@ public class DBInterface implements DatabaseEngine
 		if(key == null)
 			return false;
 		this.DBUpdatePlayerData(key.first, "PLAYERINSTANCE", key.second, 
-				CMLib.coffeeMaker().getRoomXML(room, null, null, true));
+				CMLib.coffeeMaker().getRoomXML(room, null, null, true, false, false));
 		return true;
 	}
 	

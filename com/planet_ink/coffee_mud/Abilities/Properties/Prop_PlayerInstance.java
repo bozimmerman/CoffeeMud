@@ -131,7 +131,7 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 				firstR.setRoomID(areaName+"#0");
 				firstR.setArea(instA);
 				CMLib.database().DBCreatePlayerData(owner.Name(), "PLAYERINSTANCE", subAreaName+"#0", 
-						CMLib.coffeeMaker().getRoomXML(firstR, null, null, true));
+						CMLib.coffeeMaker().getRoomXML(firstR, null, null, true,false,false));
 			}
 			CMLib.map().addArea(instA);
 			instA.setAreaState(Area.State.ACTIVE);
