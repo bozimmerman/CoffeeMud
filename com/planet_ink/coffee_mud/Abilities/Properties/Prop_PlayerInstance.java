@@ -87,7 +87,7 @@ public class Prop_PlayerInstance extends Property implements TriggeredAffect
 			final MOB owner = mob.getGroupLeader();
 			final String hostRoomID = CMLib.map().getExtendedRoomID(targetR);
 
-			final String subAreaName = owner.Name() + "_" + hostRoomID;
+			final String subAreaName = owner.Name() + "_" + CMStrings.replaceAll(hostRoomID, "#", "_");
 			final Area existingInstA = findExistingInstance(subAreaName);
 			if(existingInstA != null && !existingInstA.amDestroyed())
 			{
