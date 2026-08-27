@@ -35,8 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 */
 public class Prop_PlayerInstance extends Property implements TriggeredAffect
 {
-	private static final AtomicInteger instIDNum = new AtomicInteger(0);
-
 	@Override
 	public String ID()
 	{
