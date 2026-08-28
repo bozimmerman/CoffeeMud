@@ -67,11 +67,11 @@ public class FakeCondition
 					if (lowStr.charAt(lowStr.length() - 1) == '%')
 						chk = (s.indexOf(lowStr.substring(1, lowStr.length() - 1)) >= 0);
 					else
-						chk = s.startsWith(lowStr.substring(1));
+						chk = s.endsWith(lowStr.substring(1));
 				}
 				else
 				if (x==lowStr.length() - 1)
-					chk = s.endsWith(lowStr.substring(0, lowStr.length() - 1));
+					chk = s.startsWith(lowStr.substring(0, lowStr.length() - 1));
 				else
 					chk = s.startsWith(lowStr.substring(0, x)) && s.endsWith(lowStr.substring(x + 1));
 			}
