@@ -141,7 +141,7 @@ public class Backend
 	 * @param basePath The base path
 	 * @throws IOException if it fails
 	 */
-	public void readSchema(final File basePath) throws IOException
+	public void readSchema(final File basePath) throws SQLException
 	{
 		final List<List<String>> schema = readRawSchema();
 		for(final List<String> group : schema)
@@ -162,14 +162,19 @@ public class Backend
 				}
 			}
 			if (fakeTables.get(tableName) != null)
-				throw new IOException("Can not read schema: tableName is duplicate: " + tableName);
+				throw new SQLException("Can not read schema: tableName is duplicate: " + tableName);
 
 			final FakeTable fakeTable = new FakeTable(tableName, new File(basePath, "fakedb.data." + tableName));
 			fakeTable.version = version;
 			fakeTable.initializeColumns(group);
-			if(fakeTable.version > version)
-				version = fakeTable.version;
-			fakeTable.open();
+			try
+			{
+				fakeTable.open();
+			}
+			catch(IOException x)
+			{
+				throw new SQLException("Unable to open table "+tableName, x);
+			}
 			fakeTables.put(tableName, fakeTable);
 		}
 	}
@@ -183,7 +188,16 @@ public class Backend
 		for(final FakeTable tab : fakeTables.values())
 			tab.close();
 		fakeTables.clear();
-		readSchema(basePath);
+		try
+		{
+			readSchema(basePath);
+		}
+		catch(SQLException e)
+		{
+			if(e.getCause() instanceof IOException)
+				throw (IOException)e.getCause();
+			throw new IOException(e.getMessage(),e);
+		}
 		return true;
 	}
 
@@ -512,7 +526,7 @@ public class Backend
 		return fake;
 	}
 
-	public List<List<String>> readRawSchema()
+	public List<List<String>> readRawSchema() throws SQLException
 	{
 		final File schema = new File(basePath, "fakedb.schema");
 		final List<List<String>> groups = new ArrayList<List<String>>();
@@ -556,8 +570,10 @@ public class Backend
 			if(group.size()==0)
 				groups.remove(group);
 		}
-		catch(final IOException e)
-		{}
+		catch(IOException e)
+		{
+			throw new SQLException("Error reading schema file.", e);
+		}
 		return groups;
 	}
 
@@ -654,7 +670,7 @@ public class Backend
 	 * @param stmt The alter statement
 	 * @throws SQLException if it fails
 	 */
-	public synchronized void  alterTable(final ImplAlterStatement stmt) throws SQLException
+	public synchronized void alterTable(final ImplAlterStatement stmt) throws SQLException
 	{
 		final StatementType action = stmt.getSubStatementType();
 		final String objType = stmt.objType;
@@ -671,7 +687,7 @@ public class Backend
 			{
 				if (findColumnDef(col.name, tableDef) != null)
 					throw new java.sql.SQLException("column " + col.name + " already exists");
-				tableDef.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : col.canNull ? "NULL " : ""));
+				tableDef.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber >= 0 ? "KEY " : col.canNull ? "NULL " : ""));
 				fakeTable.addColumn();
 			}
 			else
@@ -772,7 +788,7 @@ public class Backend
 				newColDef.append(" NULL");
 			else
 				newColDef.append(" NOT NULL");
-			if (col.keyNumber > 0)
+			if (col.keyNumber >= 0)
 				newColDef.append(" KEY");
 			tableDef.set(index, newColDef.toString());
 		}
@@ -820,7 +836,7 @@ public class Backend
 		for (final FakeColumn col : columns)
 		{
 			col.tableName = tableName;
-			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber > 0 ? "KEY " : col.canNull ? "NULL " : ""));
+			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber >= 0 ? "KEY " : col.canNull ? "NULL " : ""));
 		}
 		if(insert<0)
 			schema.add(newTable);

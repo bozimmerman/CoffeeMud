@@ -89,7 +89,7 @@ public class FakeTable2 extends FakeTable
 	 * @throws IOException
 	 */
 	@Override
-	public void open() throws IOException
+	public synchronized void open() throws IOException
 	{
 		super.open();
 		if(version < 2)
@@ -100,7 +100,7 @@ public class FakeTable2 extends FakeTable
 
 		for(final FakeColumn col : columns)
 		{
-			if((col.keyNumber > 0)||(col.indexNumber > 0))
+			if((col.keyNumber >= 0)||(col.indexNumber > 0))
 				rowWidth += (longSize * 2) + 2; // for left-right indexes, and \ns
 			switch(col.type)
 			{

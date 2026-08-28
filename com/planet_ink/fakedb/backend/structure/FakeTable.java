@@ -161,7 +161,7 @@ public class FakeTable
 	 * Open the data file, validate it, and index it if necc
 	 * @throws IOException
 	 */
-	public void open() throws IOException
+	public synchronized void open() throws IOException
 	{
 		file = new RandomAccessFile(fileName, "rw");
 		fileSize = 0;  // actual offset index during initial reading
@@ -323,7 +323,7 @@ public class FakeTable
 			vacuum();
 	}
 
-	public void rewriteDataFileHash(final List<String> schema)
+	public synchronized void rewriteDataFileHash(final List<String> schema)
 	{
 		close();
 		if((!fileName.exists())||(fileName.length()<10)||(dataStart<10))
@@ -347,7 +347,7 @@ public class FakeTable
 		}
 	}
 
-	public void initializeColumns(final List<String> in) throws IOException
+	public void initializeColumns(final List<String> in) throws SQLException
 	{
 		final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
 		crc.update((this.name + " " + this.version).getBytes());
@@ -360,7 +360,7 @@ public class FakeTable
 			crc.update(line.getBytes());
 			int split = line.indexOf(' ');
 			if (split < 0)
-				throw new IOException("Can not read schema: expected space in line '" + line + "'");
+				throw new SQLException("Can not read schema: expected space in line '" + line + "'");
 			final String columnName = line.substring(0, split);
 			line = line.substring(split + 1);
 			split = line.indexOf(' ');
@@ -396,7 +396,7 @@ public class FakeTable
 			}
 			catch(final Exception e)
 			{
-				throw new IOException("Can not read schema: attributeType '" + columnType + "' is unknown");
+				throw new SQLException("Can not read schema: attributeType '" + columnType + "' is unknown",e);
 			}
 			for (final String modifier : columnModifiers)
 			{
@@ -429,11 +429,11 @@ public class FakeTable
 					}
 					catch(final NumberFormatException e)
 					{
-						throw new IOException("Can not read schema: column size '" + modifier + "' is malformed");
+						throw new SQLException("Can not read schema: column size '" + modifier + "' is malformed",e);
 					}
 				}
 				else
-					throw new IOException("Can not read schema: attributeSpecial '" + modifier + "' is unknown");
+					throw new SQLException("Can not read schema: attributeSpecial '" + modifier + "' is unknown");
 			}
 			columns.add(info);
 		}
@@ -464,9 +464,7 @@ public class FakeTable
 		final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
 		final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 		final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
-		file.seek(0);
-		for(int i=0;i<dataStart;i++)
-			tempOut.write(file.read());
+		copyFileRange(tempOut,0,dataStart);
 		int newFileSize = dataStart;
 		for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 		{
@@ -621,10 +619,10 @@ public class FakeTable
 				switch (colType)
 				{
 				case INTEGER:
-					return new ComparableValue(Integer.valueOf(buffer.toString()));
+					return new ComparableValue(Integer.valueOf((int)toLong(buffer.toString())));
 				case LONG:
 				case DATETIME:
-					return new ComparableValue(Long.valueOf(buffer.toString()));
+					return new ComparableValue(Long.valueOf(toLong(buffer.toString())));
 				default:
 					return new ComparableValue(buffer.toString());
 				}
@@ -632,6 +630,18 @@ public class FakeTable
 		}
 	}
 
+	private static final long toLong(final String str)
+	{
+		try
+		{
+			return Long.valueOf(str).longValue();
+		}
+		catch(Exception e)
+		{
+			return 0;
+		}
+	}
+	
 	/**
 	 *
 	 * @param required
@@ -882,11 +892,25 @@ public class FakeTable
 		return lastOne;
 	}
 
-	/**
+	private void copyFileRange(final RandomAccessFile out, final long start, final int len) throws IOException
+	{
+		final byte[] buf = new byte[Math.min(len, 8192)];
+		file.seek(start);
+		int remaining = len;
+		while (remaining > 0)
+		{
+			final int chunk = Math.min(buf.length, remaining);
+			file.readFully(buf, 0, chunk);
+			out.write(buf, 0, chunk);
+			remaining -= chunk;
+		}
+	}
+	 
+	 /**
 	 * Insert a new column into the table by inserting empty
 	 * values for the new column at the appropriate spots.
 	 */
-	public void addColumn()
+	public synchronized void addColumn() throws SQLException
 	{
 		if(file == null)
 			return;
@@ -895,9 +919,7 @@ public class FakeTable
 			final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
 			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
-			file.seek(0);
-			for(int i=0;i<dataStart;i++)
-				tempOut.write(file.read());
+			copyFileRange(tempOut,0,dataStart);
 			int newFileSize = dataStart;
 			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 			{
@@ -927,10 +949,11 @@ public class FakeTable
 		catch (final Exception e)
 		{
 			Log.errOut("FakeTable", e);
+			throw new SQLException("Unable to add column",e);
 		}
 	}
 
-	public void removeColumn(final int index0)
+	public synchronized void removeColumn(final int index0) throws SQLException
 	{
 		if(file == null)
 			return;
@@ -939,9 +962,7 @@ public class FakeTable
 			final File tempFileName = new File(fileName.getParentFile(),fileName.getName() + ".tmp");
 			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
-			file.seek(0);
-			for(int i=0;i<dataStart;i++)
-				tempOut.write(file.read());
+			copyFileRange(tempOut,0,dataStart);
 			int newFileSize = dataStart;
 			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 			{
@@ -982,6 +1003,8 @@ public class FakeTable
 		}
 		catch (final IOException e)
 		{
+			Log.errOut("FakeTable", e);
+			throw new SQLException("Unable to remove column",e);
 		}
 	}
 

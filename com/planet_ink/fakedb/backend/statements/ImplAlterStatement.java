@@ -276,7 +276,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 				String parm = r[1].toUpperCase().trim();
 				sql = skipWS(r[0]);
 				if(parm.equals("PRIMARY")||parm.equals("KEY"))
-					col.keyNumber=1;
+					col.keyNumber=0;
 				else
 				if(parm.equals("NOT"))
 					not=true;

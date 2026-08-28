@@ -114,7 +114,7 @@ public class ImplCreateStatement extends ImplAbstractStatement
 					{
 						if(col.name.equalsIgnoreCase(potKey))
 						{
-							col.keyNumber=1;
+							col.keyNumber=0;
 							found=true;
 						}
 					}
@@ -199,7 +199,7 @@ public class ImplCreateStatement extends ImplAbstractStatement
 					String parm = r[1].toUpperCase().trim();
 					sql = skipWS(r[0]);
 					if(parm.equals("PRIMARY")||parm.equals("KEY"))
-						col.keyNumber=1;
+						col.keyNumber=0;
 					if(parm.equals("NOT"))
 						not=true;
 					if(parm.equals("NULL"))
