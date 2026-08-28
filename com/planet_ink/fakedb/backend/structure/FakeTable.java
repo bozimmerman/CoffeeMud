@@ -114,7 +114,7 @@ public class FakeTable
 		return columns[index];
 	}
 
-	public void close()
+	public synchronized void close()
 	{
 		if (file != null)
 		{
