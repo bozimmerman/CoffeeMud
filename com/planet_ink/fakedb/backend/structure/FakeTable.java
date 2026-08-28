@@ -721,7 +721,19 @@ public class FakeTable
 						size += 2;
 					else
 					if (c > 255)
-						size += 5;
+					{
+						final String cs = "" + c;
+						byte[] bytes;
+						try
+						{
+							bytes = cs.getBytes("UTF-8");
+						}
+						catch (UnsupportedEncodingException e)
+						{
+							bytes = cs.getBytes();
+						}
+						size += 3 + (2 * bytes.length);
+					}
 					else
 						size++;
 				}
