@@ -130,9 +130,13 @@ public class Backend
 		{
 			fakeTable.recordIterator(conditions, responder);
 		}
+		catch (final SQLException e)
+		{
+			throw e;
+		}
 		catch (final Exception e)
 		{
-			throw new java.sql.SQLException(e.getMessage());
+			throw new java.sql.SQLException(e.getMessage(),e);
 		}
 	}
 
@@ -347,6 +351,14 @@ public class Backend
 			else
 				keys[index] = new ComparableValue(values[id]);
 		}
+		final String[] strVals = new String[values.length];
+		for (int x = 0; x < values.length; x++)
+		{
+			@SuppressWarnings("rawtypes")
+			final Comparable val = values[x].getValue();
+			strVals[x] = (val == null) ? null : val.toString();
+		}
+		dupKeyCheck(tableName, fakeTable.columnNames, strVals);
 		if (!fakeTable.insertRecord(null, keys, values))
 			throw new java.sql.SQLException("unable to insert record");
 	}

@@ -323,7 +323,7 @@ public class FakeTable
 			vacuum();
 	}
 
-	public synchronized void rewriteDataFileHash(final List<String> schema)
+	public synchronized void rewriteDataFileHash(final List<String> schema) throws SQLException
 	{
 		close();
 		if((!fileName.exists())||(fileName.length()<10)||(dataStart<10))
@@ -344,6 +344,7 @@ public class FakeTable
 		}
 		catch (final IOException e)
 		{
+			throw new SQLException("Unable to rehash schema", e);
 		}
 	}
 
@@ -847,7 +848,7 @@ public class FakeTable
 		}
 		catch (final Exception e)
 		{
-			e.printStackTrace();
+			Log.errOut(e);
 			return -1;
 		}
 		return count[0];
@@ -1119,7 +1120,11 @@ public class FakeTable
 								for(int i=0;i<keyChanges.length;i++)
 								{
 									if(keyChanges[i]!= null)
-										strVals[i] = keyChanges[i].getValue().toString();
+									{
+										@SuppressWarnings("rawtypes")
+										final Comparable val = keyChanges[i].getValue();
+										strVals[i] = (val == null) ? null : val.toString();
+									}
 								}
 								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
 								for(int i=0;i<keyChanges.length;i++)
