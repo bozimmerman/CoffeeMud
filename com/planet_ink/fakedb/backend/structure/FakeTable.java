@@ -497,6 +497,8 @@ public class FakeTable
 	{
 		try
 		{
+			if(file == null)
+				return false;
 			file.seek(info.offset);
 			file.readFully(fileBuffer, 0, info.size);
 			final int[] ofs = new int[] { 0 };
