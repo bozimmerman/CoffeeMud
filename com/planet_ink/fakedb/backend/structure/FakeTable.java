@@ -926,10 +926,15 @@ public class FakeTable
 		}
 	}
 	 
-	 /**
-	 * Insert a new column into the table by inserting empty
-	 * values for the new column at the appropriate spots.
-	 */
+ /**
+ * Insert a new column into the table by inserting empty
+ * values for the new column at the appropriate spots.
+ * NOTE: only the on-disk file is updated here; the in-memory
+ * columns/columnHash/columnIndexesOfIndexed metadata is NOT
+ * refreshed. The caller (Backend.alterTable) must rebuild it
+ * by re-reading the schema via Backend.open() before any
+ * further use of this table, or getRecord() will misparse rows.
+ */
 	public synchronized void addColumn() throws SQLException
 	{
 		if(file == null)
@@ -973,6 +978,14 @@ public class FakeTable
 		}
 	}
 
+	/**
+	 * Remove a column from the table, deleting the corresponding
+	 * value from every record in the on-disk file.
+	 * NOTE: like addColumn(), only the on-disk file is updated
+	 * here; the in-memory columns/columnHash/columnIndexesOfIndexed
+	 * metadata is NOT refreshed. The caller (Backend.alterTable)
+	 * must rebuild it via Backend.open() before further use.
+	 */
 	public synchronized void removeColumn(final int index0) throws SQLException
 	{
 		if(file == null)

@@ -810,6 +810,7 @@ public class Backend
 		this.rewriteRawSchema(schema);
 		try
 		{
+			// Rebuild all in-memory table state (columns/columnHash/metadata)
 			this.open();
 		}
 		catch (final IOException e)
