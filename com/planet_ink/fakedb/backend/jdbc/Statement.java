@@ -241,6 +241,7 @@ public class Statement implements java.sql.Statement
 					while ((e < sql.length())
 					&& (sql.charAt(e) != ' ')
 					&& (sql.charAt(e) != '\t')
+					&& (sql.charAt(e) != ')')
 					&& (sql.charAt(e) != ';'||(s==e)))
 						e++;
 					value = sql.substring(s, e);

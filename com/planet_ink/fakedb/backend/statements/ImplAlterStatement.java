@@ -97,9 +97,9 @@ public class ImplAlterStatement extends ImplAbstractStatement
 		&&(!action.equals("DROP")))
 			throw new java.sql.SQLException("no add/alter/modify/drop token");
 		String what="";
-		if(sql.length()>10)
+		if(sql.length()>=6)
 		{
-			final String next = sql.substring(0,11).toUpperCase();
+			final String next = sql.substring(0, Math.min(11, sql.length())).toUpperCase();
 			if(next.startsWith("PRIMARY "))
 			{
 				sql=sql.substring(8);
@@ -244,7 +244,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 		while(true)
 		{
 			if(sql.length()==0)
-				throw new java.sql.SQLException("Unexpected end of list.");
+				break;
 			if(sql.startsWith(",")||sql.startsWith(";"))
 				break;
 			if(openingParen && sql.startsWith(")"))

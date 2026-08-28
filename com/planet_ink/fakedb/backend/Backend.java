@@ -764,24 +764,26 @@ public class Backend
 			else
 			if (objType.equals("KEY"))
 			{
-				String colDef = findColumnDef(col.name, tableDef);
+				final String keyName = stmt.changes[0];
+				String colDef = findColumnDef(keyName, tableDef);
 				if (colDef == null)
-					throw new java.sql.SQLException("column " + col.name + " does not exist");
+					throw new java.sql.SQLException("column " + keyName + " does not exist");
 				final int index = tableDef.indexOf(colDef);
 				if (colDef.toUpperCase().indexOf(" KEY") < 0)
-					throw new java.sql.SQLException("column " + col.name + " is not a key");
+					throw new java.sql.SQLException("column " + keyName + " is not a key");
 				colDef = colDef.replaceAll("(?i) KEY", "");
 				tableDef.set(index, colDef);
 			}
 			else
 			if (objType.equals("INDEX"))
 			{
-				String colDef = findColumnDef(col.name, tableDef);
+				final String idxName = stmt.changes[0];
+				String colDef = findColumnDef(idxName, tableDef);
 				if (colDef == null)
-					throw new java.sql.SQLException("column " + col.name + " does not exist");
+					throw new java.sql.SQLException("column " + idxName + " does not exist");
 				final int index = tableDef.indexOf(colDef);
 				if (colDef.toUpperCase().indexOf(" INDEX") < 0)
-					throw new java.sql.SQLException("column " + col.name + " is not an index");
+					throw new java.sql.SQLException("column " + idxName + " is not an index");
 				colDef = colDef.replaceAll("(?i) INDEX", "");
 				tableDef.set(index, colDef);
 			}
