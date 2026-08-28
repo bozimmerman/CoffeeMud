@@ -1046,7 +1046,7 @@ public class FakeTable
 	 * @param columns the columns to change
 	 * @param values the new values
 	 * @param backend the backend processor
-	 * @param dupDangerTable no idea
+	 * @param dupDangerTable table to check for dup key violations
 	 * @return number of records updated
 	 */
 	public synchronized int updateRecord(final List<FakeCondition> conditions,
