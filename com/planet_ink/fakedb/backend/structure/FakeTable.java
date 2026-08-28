@@ -232,12 +232,12 @@ public class FakeTable
 					break;
 			}
 			boolean skip;
-			if (fileBuffer[ofs] == '-') // deleted
+			if (fileBuffer[ofs] == '-') // active
 			{
 				skip = false;
 			}
 			else
-			if (fileBuffer[ofs] == '*') // active
+			if (fileBuffer[ofs] == '*') // deleted
 			{
 				skip = true;
 			}
