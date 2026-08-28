@@ -21,7 +21,6 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.fakedb.backend.Backend;
 import com.planet_ink.fakedb.backend.Backend.ConnectorType;
