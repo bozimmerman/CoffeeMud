@@ -300,7 +300,7 @@ public class FakeTable
 						current++;
 					}
 					col = columns[columnIndexesOfIndexed[index]];
-					indexData[index] = getNextLine(col.type, fileBuffer, sub);
+					indexData[index] = getNextLine(col.type, fileBuffer, sub, ofs + size);
 				}
 				final RecordInfo info = new RecordInfo(fileSize, size);
 				info.indexedData = indexData;
@@ -500,16 +500,20 @@ public class FakeTable
 			if(file == null)
 				return false;
 			file.seek(info.offset);
+			if(info.size >= fileBuffer.length)
+				increaseBuffer(info.size + 1);
 			file.readFully(fileBuffer, 0, info.size);
 			final int[] ofs = new int[] { 0 };
 			FakeColumn col = null;
 			for (int index = 0; index < columns.length; index++)
 			{
 				col = columns[index];
-				while (fileBuffer[ofs[0]] != 0x0A)
+				while ((ofs[0] < info.size) && (fileBuffer[ofs[0]] != 0x0A))
 					ofs[0]++;
+				if (ofs[0] >= info.size)
+					return false;
 				ofs[0]++;
-				values[index] = getNextLine(col.type, fileBuffer, ofs);
+				values[index] = getNextLine(col.type, fileBuffer, ofs, info.size);
 			}
 			return true;
 		}
@@ -526,20 +530,22 @@ public class FakeTable
 	 * @param dex
 	 * @return
 	 */
-	public ComparableValue getNextLine(final FakeColType colType, final byte[] fileBuffer, final int[] dex)
+	public ComparableValue getNextLine(final FakeColType colType, final byte[] fileBuffer, final int[] dex, final int maxDex)
 	{
 		if ((fileBuffer[dex[0]] == '\\') 
-		&& ((dex[0] == fileBuffer.length-1) || (fileBuffer[dex[0] + 1] == '?')))
+		&& ((dex[0] == maxDex-1) || (fileBuffer[dex[0] + 1] == '?')))
 			return new ComparableValue(null);
 		else
 		{
 			final StringBuilder buffer = new StringBuilder("");
 			for (;; dex[0]++)
 			{
+				if (dex[0] >= maxDex)
+					return new ComparableValue(null);
 				char c = (char) (fileBuffer[dex[0]] & 0xFF);
 				if (c == 0x0A)
 					break;
-				if((c == '\\') && (dex[0] < fileBuffer.length-1))
+				if((c == '\\') && (dex[0] < maxDex-1))
 				{
 					switch(fileBuffer[dex[0] + 1])
 					{
@@ -558,14 +564,14 @@ public class FakeTable
 					case '#':
 					{
 						dex[0]++;
-						if(dex[0]+1 >=fileBuffer.length)
-							break;
+						if(dex[0]+1 >= maxDex)
+							return new ComparableValue(null);
 						final int count= (fileBuffer[++dex[0]] & 0xFF)-'0';
 						final byte[] bt=new byte[count];
 						for (int i = 0; i < count; i++)
 						{
 							int val=0;
-							for (int bi = 0; bi < 2 && (dex[0] < fileBuffer.length-1); bi++)
+							for (int bi = 0; bi < 2 && (dex[0] < maxDex-1); bi++)
 							{
 								c = (char) (fileBuffer[++dex[0]] & 0xFF);
 								if (c >= 'A')
@@ -590,7 +596,7 @@ public class FakeTable
 						for (int i = 0; i < 2; i++)
 						{
 							int val=0;
-							for (int bi = 0; bi < 2 && (dex[0] < fileBuffer.length-1); bi++)
+							for (int bi = 0; bi < 2 && (dex[0] < maxDex-1); bi++)
 							{
 								c = (char) (fileBuffer[++dex[0]] & 0xFF);
 								if (c >= 'A')

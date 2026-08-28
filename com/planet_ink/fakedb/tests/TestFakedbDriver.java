@@ -993,6 +993,54 @@ public class TestFakedbDriver
 		ps.close();
 	}
 
+	private static void testCorruptionResilience() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final String tbl = nextTableName();
+
+		{
+			final java.sql.Connection c = connect(dir);
+			final java.sql.Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE " + tbl + " (K STRING KEY, V STRING NULL, I INTEGER NULL)");
+			st.executeUpdate("INSERT INTO " + tbl + " VALUES ('k1', 'hello', 42)");
+			st.executeUpdate("INSERT INTO " + tbl + " VALUES ('k2', 'world', 43)");
+			st.close();
+			c.close();
+		}
+
+		final java.sql.Connection c = connect(dir);
+		try
+		{
+			final java.sql.ResultSet warmup = c.createStatement().executeQuery("SELECT * FROM " + tbl);
+			while (warmup.next())
+			{
+			}
+			warmup.close();
+
+			final File dataFile = new File(dir, "fakedb.data." + tbl);
+			final RandomAccessFile raf = new RandomAccessFile(dataFile, "rw");
+			final byte[] garbage = new byte[(int) raf.length()];
+			Arrays.fill(garbage, (byte) 'A');
+			raf.seek(0);
+			raf.write(garbage);
+			raf.close();
+
+			final java.sql.ResultSet rs = c.createStatement().executeQuery("SELECT * FROM " + tbl);
+			int rows = 0;
+			while (rs.next())
+				rows++;
+			rs.close();
+			check("corruption-resilience-no-aioobe", true,
+					"getRecord should not crash on corrupt data");
+			check("corruption-resilience-no-rows", rows == 0,
+					"corrupt records should be skipped, got " + rows + " rows back (not a crash)");
+		}
+		finally
+		{
+			c.close();
+		}
+	}
+
 	private static void testConcurrency() throws SQLException, IOException, InterruptedException
 	{
 		{
@@ -1297,6 +1345,7 @@ public class TestFakedbDriver
 			runPhase("Alter", TestFakedbDriver::testAlter);
 			runPhase("Drop", TestFakedbDriver::testDrop);
 			runPhase("Types", TestFakedbDriver::testTypes);
+			runPhase("CorruptionResilience", TestFakedbDriver::testCorruptionResilience);
 			runPhase("Concurrency", TestFakedbDriver::testConcurrency);
 		}
 		finally
