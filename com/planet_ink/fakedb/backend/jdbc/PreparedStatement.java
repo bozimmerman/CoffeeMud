@@ -303,7 +303,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public void setBoolean(final int parameterIndex, final boolean x) throws SQLException
 	{
-		setObject(parameterIndex, Integer.valueOf(x ? 0 : 1));
+		setObject(parameterIndex, Integer.valueOf(x ? 1 : 0));
 	}
 
 	@Override

@@ -1327,7 +1327,7 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public boolean isFirst()
 	{
-		return false;
+		return currentRow == 1;
 	}
 
 	private boolean	afterLast	= false;
