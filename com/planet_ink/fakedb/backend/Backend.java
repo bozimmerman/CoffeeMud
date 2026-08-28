@@ -168,7 +168,7 @@ public class Backend
 			if (fakeTables.get(tableName) != null)
 				throw new SQLException("Can not read schema: tableName is duplicate: " + tableName);
 
-			final FakeTable fakeTable = new FakeTable(tableName, new File(basePath, "fakedb.data." + tableName));
+			final FakeTable fakeTable = new FakeTable2(tableName, new File(basePath, "fakedb.data." + tableName));
 			fakeTable.version = version;
 			fakeTable.initializeColumns(group);
 			try

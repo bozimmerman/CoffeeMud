@@ -54,8 +54,31 @@ public class FakeColumn
 	public int			keyNumber	= -1;
 	public int			indexNumber	= -1;
 	public int			version		= 1;
+	public int			valueOffset	= 0;
 	public String		defaultValue= null;
 	public String		tableName;
+
+	public int getStoreValueWidth()
+	{
+		switch(type)
+		{
+		case BLOB:
+		case CLOB:
+			return 38; // 1 for type marker, 36 for uuid, +1 \n
+		case INTEGER:
+			return 12; // 11 for int, +1 \n
+		case DATETIME:
+		case LONG:
+			return 20; // 19 for long, +1 \n
+		case STRING:
+			if(size == Integer.MAX_VALUE)
+				throw new IllegalArgumentException("Column " + name + " of table " + tableName + " has no size.");
+			return size + 4; // +3 len, +str, +1 \n
+		case UNKNOWN:
+		default:
+			return 20; // 19 for long, +1 \n
+		}
+	}
 
 	public static final int	INDEX_COUNT		= Integer.MAX_VALUE;
 }
