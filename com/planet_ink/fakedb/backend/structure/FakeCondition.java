@@ -1,6 +1,7 @@
 package com.planet_ink.fakedb.backend.structure;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.planet_ink.fakedb.backend.Backend;
 import com.planet_ink.fakedb.backend.Backend.ConnectorType;
@@ -50,30 +51,10 @@ public class FakeCondition
 			if (lowStr == null)
 				lowStr = ((String) conditionValue.getValue()).toLowerCase();
 			boolean chk = false;
-			if (lowStr.length() == 0)
-				chk = conditionValue.equals(subKey);
-			else
-			if (subKey.equals(null) || (!(subKey.getValue() instanceof String)))
-				chk = false;
-			else
+			if (subKey.getValue() instanceof String)
 			{
 				final String s = ((String) subKey.getValue()).toLowerCase();
-				final int x = lowStr.indexOf('%');
-				if ((x < 0) || (lowStr.length() == 1))
-					chk = lowStr.equals(s);
-				else
-				if (x == 0)
-				{
-					if (lowStr.charAt(lowStr.length() - 1) == '%')
-						chk = (s.indexOf(lowStr.substring(1, lowStr.length() - 1)) >= 0);
-					else
-						chk = s.endsWith(lowStr.substring(1));
-				}
-				else
-				if (x==lowStr.length() - 1)
-					chk = s.startsWith(lowStr.substring(0, lowStr.length() - 1));
-				else
-					chk = s.startsWith(lowStr.substring(0, x)) && s.endsWith(lowStr.substring(x + 1));
+				chk = likeMatches(lowStr, s);
 			}
 			return not ? !chk : chk;
 		}
@@ -81,5 +62,26 @@ public class FakeCondition
 		if (!(((eq) && (subKey.equals(conditionValue))) || ((lt) && (sc < 0)) || ((gt) && (sc > 0))))
 			return not;
 		return !not;
+	}
+
+	/**
+	 * SQL LIKE matching on a lower-cased pattern and value.  '%' matches any
+	 * sequence (including empty) and '_' matches any single character.
+	 */
+	private static boolean likeMatches(final String pattern, final String s)
+	{
+		final StringBuilder re = new StringBuilder(pattern.length() + 8);
+		for (int i = 0; i < pattern.length(); i++)
+		{
+			final char c = pattern.charAt(i);
+			if (c == '%')
+				re.append(".*");
+			else
+			if (c == '_')
+				re.append('.');
+			else
+				re.append(Pattern.quote(String.valueOf(c)));
+		}
+		return Pattern.compile(re.toString()).matcher(s).matches();
 	}
 }

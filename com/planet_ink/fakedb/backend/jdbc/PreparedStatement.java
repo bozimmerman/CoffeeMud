@@ -138,7 +138,6 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case INSERT:
 		{
 			final ImplInsertStatement istmt = (ImplInsertStatement) stmt;
-			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
 			return true;
 		}
@@ -162,26 +161,25 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		case SELECT:
 			throw new SQLException("Not a update.");
 		case UPDATE:
-			connection.getBackend().updateRecord((ImplUpdateStatement) stmt);
-			return 0;
+			updateCount = connection.getBackend().updateRecord((ImplUpdateStatement) stmt);
+			return updateCount;
 		case DELETE:
-			connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
-			return 0;
+			updateCount = connection.getBackend().deleteRecord((ImplDeleteStatement) stmt);
+			return updateCount;
 		case CREATE:
 			connection.getBackend().createTable((ImplCreateStatement) stmt);
-			return 0;
+			return updateCount = 0;
 		case DROP:
 			connection.getBackend().dropTable((ImplDropStatement) stmt);
-			return 0;
+			return updateCount = 0;
 		case ALTER:
 			connection.getBackend().alterTable((ImplAlterStatement) stmt);
-			return 0;
+			return updateCount = 0;
 		case INSERT:
 		{
 			final ImplInsertStatement istmt = (ImplInsertStatement) stmt;
-			connection.getBackend().dupKeyCheck(istmt.tableName, istmt.columns, istmt.sqlValues);
 			connection.getBackend().insertValues(istmt);
-			return 0;
+			return updateCount = 1;
 		}
 		}
 		return -1;
@@ -242,6 +240,8 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		try
 		{
 			len = x.read(b, 0, length);
+			if (len < 0)
+				len = 0;
 		}
 		catch (final Exception e)
 		{
@@ -360,7 +360,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public void setCharacterStream(final int parameterIndex, final Reader reader) throws SQLException
 	{
-		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		final StringBuilder sb = new StringBuilder();
 		int c = 0;
 		while (c >= 0)
 		{
@@ -368,16 +368,14 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 			{
 				c = reader.read();
 				if (c >= 0)
-				{
-					bout.write(c);
-				}
+					sb.append((char) c);
 			}
 			catch (final IOException ioe)
 			{
 				throw new SQLException(ioe.getMessage());
 			}
 		}
-		setObject(parameterIndex, new String(bout.toByteArray()));
+		setObject(parameterIndex, sb.toString());
 	}
 
 	@Override
@@ -388,6 +386,8 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		try
 		{
 			len = reader.read(b, 0, length);
+			if (len < 0)
+				len = 0;
 		}
 		catch (final Exception e)
 		{
@@ -408,7 +408,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		if (x == null)
 			setObject(parameterIndex, null);
 		else
-			setObject(parameterIndex, x.getSubString(0, (int) x.length()));
+			setObject(parameterIndex, x.getSubString(1, (int) x.length()));
 	}
 
 	@Override

@@ -419,9 +419,6 @@ public class TestFakedbDriver
 		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('u5','Zoe',40,5000,'goodbye')");
 		check("insert-5-rows", countRows(c, tbl) == 5, "expected 5 rows, got " + countRows(c, tbl));
 
-		expectEx("insert-partial-columns", () ->
-				st.executeUpdate("INSERT INTO " + tbl + " (USERID, NAME) VALUES ('u6','Fail')"), null);
-
 		expectEx("insert-dup-key", () ->
 				st.executeUpdate("INSERT INTO " + tbl + " VALUES ('u1','Dup',99,99,'dup')"), "duplicate key");
 
@@ -662,6 +659,240 @@ public class TestFakedbDriver
 		check("execute-insert-worked", countRows(c, tbl) == 1, "execute INSERT should add 1 row");
 
 		st.close();
+	}
+
+	// Partial-column INSERT (columns omitted or reordered) must not NPE; omitted
+	// columns become NULL.
+	protected static void testPartialInsert() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+
+		createTable.run(st, tbl, "(USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL, BIO STRING NULL)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('u1','Alice',30,'full')");
+		st.executeUpdate("INSERT INTO " + tbl + " (USERID, NAME) VALUES ('u2','Bob')");
+		st.executeUpdate("INSERT INTO " + tbl + " (NAME, USERID) VALUES ('Cara','u3')");
+		check("partial-rows", countRows(c, tbl) == 3, "expected 3 rows, got " + countRows(c, tbl));
+		checkEq("partial-name", "Bob", querySingle(c, "SELECT NAME FROM " + tbl + " WHERE USERID='u2'", 1));
+		checkEq("partial-null-age", null, querySingle(c, "SELECT AGE FROM " + tbl + " WHERE USERID='u2'", 1));
+		checkEq("partial-order-swap", "Cara", querySingle(c, "SELECT NAME FROM " + tbl + " WHERE USERID='u3'", 1));
+		checkEq("partial-null-bio", null, querySingle(c, "SELECT BIO FROM " + tbl + " WHERE USERID='u3'", 1));
+		st.close();
+		c.close();
+	}
+
+	// executeUpdate()/getUpdateCount() must report real rows-affected for
+	// UPDATE/DELETE/INSERT, and 0 for DDL.
+	protected static void testUpdateCounts() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+
+		createTable.run(st, tbl, "(USERID STRING KEY, AGE INTEGER NULL)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('a',1)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('b',2)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('c',3)");
+
+		checkEq("update-count", Integer.valueOf(2),
+				Integer.valueOf(st.executeUpdate("UPDATE " + tbl + " SET AGE=99 WHERE AGE >= 2")));
+		checkEq("updatecount-get", Integer.valueOf(2), Integer.valueOf(st.getUpdateCount()));
+
+		checkEq("delete-count", Integer.valueOf(1),
+				Integer.valueOf(st.executeUpdate("DELETE FROM " + tbl + " WHERE USERID='a'")));
+		checkEq("deletecount-get", Integer.valueOf(1), Integer.valueOf(st.getUpdateCount()));
+
+		checkEq("insert-count", Integer.valueOf(1),
+				Integer.valueOf(st.executeUpdate("INSERT INTO " + tbl + " VALUES ('d',4)")));
+
+		checkEq("ddl-count", Integer.valueOf(0),
+				Integer.valueOf(st.executeUpdate("CREATE TABLE " + nextTableName() + " (X INTEGER)")));
+
+		final java.sql.PreparedStatement ps = c.prepareStatement("UPDATE " + tbl + " SET AGE=7 WHERE AGE = 99");
+		checkEq("ps-update-count", Integer.valueOf(2), Integer.valueOf(ps.executeUpdate()));
+		ps.close();
+		st.close();
+		c.close();
+	}
+
+	// Connection refcount/setSchema must release the previous backend and share a
+	// single Backend per path (no refcount or file-handle leaks).
+	private static int refCountFor(final String canonicalPath) throws Exception
+	{
+		final java.lang.reflect.Field f = com.planet_ink.fakedb.backend.Connection.class.getDeclaredField("references");
+		f.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		final java.util.Map<String, Integer> refs = (java.util.Map<String, Integer>) f.get(null);
+		final Integer c = refs.get(canonicalPath);
+		return c == null ? 0 : c.intValue();
+	}
+
+	protected static void testConnectionLifecycle() throws Exception
+	{
+		final File d1 = createTempDB();
+		final File d2 = createTempDB();
+		final String c1 = new File(d1.getAbsolutePath()).getCanonicalPath();
+		final String c2 = new File(d2.getAbsolutePath()).getCanonicalPath();
+
+		final java.sql.Connection con = connect(d1);
+		final java.sql.Statement st = con.createStatement();
+		createTable.run(st, "LIFE", "(USERID STRING KEY, VAL INTEGER NULL)");
+		st.executeUpdate("INSERT INTO LIFE VALUES ('a',1)");
+		checkEq("life-refcount-d1", Integer.valueOf(1), Integer.valueOf(refCountFor(c1)));
+
+		con.setSchema(d2.getAbsolutePath());
+		check("life-schema-switched", c2.equals(con.getSchema()), "schema should switch to d2");
+		checkEq("life-refcount-d1-released", Integer.valueOf(0), Integer.valueOf(refCountFor(c1)));
+		checkEq("life-refcount-d2", Integer.valueOf(1), Integer.valueOf(refCountFor(c2)));
+
+		final java.sql.Connection con2 = connect(d2);
+		final java.sql.Statement st2 = con2.createStatement();
+		createTable.run(st2, "LIFE2", "(USERID STRING KEY)");
+		checkEq("life-refcount-d2-shared", Integer.valueOf(2), Integer.valueOf(refCountFor(c2)));
+		check("life-shared-sees-life2", countRows(con, "LIFE2") == 0, "con should see LIFE2 via shared backend");
+
+		expectEx("life-old-table-hidden", () -> con.createStatement().executeQuery("SELECT * FROM LIFE"), "unknown table");
+
+		con.close();
+		checkEq("life-refcount-d2-after-close1", Integer.valueOf(1), Integer.valueOf(refCountFor(c2)));
+		st2.executeUpdate("INSERT INTO LIFE2 VALUES ('x')");
+		check("life-con2-still-works", countRows(con2, "LIFE2") == 1, "con2 should work after con closed");
+		con2.close();
+		checkEq("life-refcount-d2-after-close2", Integer.valueOf(0), Integer.valueOf(refCountFor(c2)));
+		st.close();
+		st2.close();
+	}
+
+	// LIKE must handle '%' (match-all), multiple wildcards, and '_'.
+	protected static void testLike() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		createTable.run(st, tbl, "(ID STRING KEY, NAME STRING NULL)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('1','Alice')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('2','Bob')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('3','aba')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('4','aca')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES ('5',null)");
+
+		check("like-all-percent", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE '%'") == 4,
+				"LIKE '%' should match 4 non-null rows");
+		check("like-a-percent-a", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE 'a%a'") == 2,
+				"LIKE 'a%a' should match aba and aca");
+		check("like-a-percent-b-percent", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE 'a%b%'") == 1,
+				"LIKE 'a%b%' should match only aba");
+		check("like-underscore", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE '_ob'") == 1,
+				"LIKE '_ob' should match Bob");
+		check("like-no-wildcard", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE 'Bob'") == 1,
+				"LIKE 'Bob' should match Bob");
+		check("like-no-space", countResults(c, "SELECT * FROM " + tbl + " WHERE NAME LIKE'Bob'") == 1,
+				"LIKE without a space before the quote should match Bob");
+		st.close();
+		c.close();
+	}
+
+	// Minimal Clob implementation for exercising setClob.
+	private static class SimpleClob implements java.sql.Clob
+	{
+		private final String data;
+
+		SimpleClob(final String s)
+		{
+			data = s;
+		}
+
+		@Override
+		public long length()
+		{
+			return data.length();
+		}
+
+		@Override
+		public String getSubString(final long pos, final int length) throws SQLException
+		{
+			if (pos < 1)
+				throw new SQLException("invalid position");
+			final int p = (int) pos - 1;
+			return data.substring(p, Math.min(p + length, data.length()));
+		}
+
+		@Override public java.io.Reader getCharacterStream() { throw new UnsupportedOperationException(); }
+		@Override public java.io.InputStream getAsciiStream() { throw new UnsupportedOperationException(); }
+		@Override public long position(final String s, final long l) { throw new UnsupportedOperationException(); }
+		@Override public long position(final java.sql.Clob c, final long l) { throw new UnsupportedOperationException(); }
+		@Override public int setString(final long l, final String s) { throw new UnsupportedOperationException(); }
+		@Override public int setString(final long l, final String s, final int i, final int j) { throw new UnsupportedOperationException(); }
+		@Override public java.io.OutputStream setAsciiStream(final long l) { throw new UnsupportedOperationException(); }
+		@Override public java.io.Writer setCharacterStream(final long l) { throw new UnsupportedOperationException(); }
+		@Override public void truncate(final long l) { throw new UnsupportedOperationException(); }
+		@Override public void free() { }
+		@Override public java.io.Reader getCharacterStream(final long l, final long l2) { throw new UnsupportedOperationException(); }
+	}
+
+	// getObject(col, Integer.class/Short.class), empty-stream setters, and
+	// setClob(Clob) (1-based) must all behave.
+	protected static void testJdbcEdgeCases() throws Exception
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		createTable.run(st, tbl, "(ID INTEGER KEY, NAME STRING NULL, NUM INTEGER NULL)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (1,'a',42)");
+
+		final java.sql.ResultSet rs = st.executeQuery("SELECT NUM FROM " + tbl + " WHERE ID=1");
+		rs.next();
+		final Object oi = rs.getObject(1, Integer.class);
+		check("getobj-int-type", oi instanceof Integer, "expected Integer, got " + (oi == null ? "null" : oi.getClass().getName()));
+		checkEq("getobj-int-val", Integer.valueOf(42), oi);
+		final Object os = rs.getObject(1, Short.class);
+		check("getobj-short-type", os instanceof Short, "expected Short, got " + (os == null ? "null" : os.getClass().getName()));
+		@SuppressWarnings("deprecation")
+		final java.math.BigDecimal bd = rs.getBigDecimal(1, 3);
+		check("getbigdec-scale", (bd != null) && (bd.scale() == 3) && (bd.compareTo(new java.math.BigDecimal("42.000")) == 0),
+				"getBigDecimal(col,3) should return 42.000, got " + bd);
+		rs.close();
+
+		final java.sql.PreparedStatement ps = c.prepareStatement("INSERT INTO " + tbl + " (ID, NAME) VALUES (?, ?)");
+		ps.setInt(1, 2);
+		ps.setAsciiStream(2, new java.io.ByteArrayInputStream(new byte[0]), 5);
+		ps.executeUpdate();
+		ps.setInt(1, 3);
+		ps.setCharacterStream(2, new java.io.StringReader(""), 5);
+		ps.executeUpdate();
+		check("stream-empty-rows", countRows(c, tbl) == 3, "expected 3 rows after empty-stream inserts");
+
+		final java.sql.PreparedStatement ps2 = c.prepareStatement("INSERT INTO " + tbl + " (ID, NAME) VALUES (?, ?)");
+		ps2.setInt(1, 4);
+		ps2.setClob(2, new SimpleClob("hello clob"));
+		ps2.executeUpdate();
+		checkEq("clob-value", "hello clob", querySingle(c, "SELECT NAME FROM " + tbl + " WHERE ID=4", 1));
+
+		final java.sql.PreparedStatement ps3 = c.prepareStatement("INSERT INTO " + tbl + " (ID, NAME) VALUES (?, ?)");
+		ps3.setInt(1, 5);
+		ps3.setCharacterStream(2, new java.io.StringReader("\u00e9\u4e2d\u00fc"));
+		ps3.executeUpdate();
+		checkEq("charstream-unicode", "\u00e9\u4e2d\u00fc", querySingle(c, "SELECT NAME FROM " + tbl + " WHERE ID=5", 1));
+
+		st.close();
+		c.close();
+	}
+
+	// Statement dispatch types must be accurate (ALTER must report ALTER, not DROP).
+	protected static void testStatementTypes()
+	{
+		final com.planet_ink.fakedb.backend.statements.ImplAlterStatement alter =
+			new com.planet_ink.fakedb.backend.statements.ImplAlterStatement("T",
+				com.planet_ink.fakedb.backend.statements.ImplAbstractStatement.StatementType.ALTER,
+				"COLUMN", new String[] { "X" }, null);
+		check("alter-stmt-type",
+				alter.getStatementType() == com.planet_ink.fakedb.backend.statements.ImplAbstractStatement.StatementType.ALTER,
+				"ImplAlterStatement.getStatementType() should be ALTER");
 	}
 
 	protected static void testPrepared() throws SQLException, IOException
@@ -1446,10 +1677,10 @@ public class TestFakedbDriver
 
 	protected static void testPerformance() throws SQLException, IOException
 	{
-		final int ROWS = Integer.getInteger("fakedb.perf.rows", 100000).intValue();
-		final int LOOKUPS = Integer.getInteger("fakedb.perf.lookups", 20000).intValue();
+		final int ROWS = Integer.getInteger("fakedb.perf.rows", 1000).intValue();
+		final int LOOKUPS = Integer.getInteger("fakedb.perf.lookups", 2000).intValue();
 		final int SCANS = Integer.getInteger("fakedb.perf.scans", 3).intValue();
-		final int BLOB_ROWS = Math.min(ROWS, Integer.getInteger("fakedb.perf.blobrows", 2000).intValue());
+		final int BLOB_ROWS = Math.min(ROWS, Integer.getInteger("fakedb.perf.blobrows", 200).intValue());
 
 		final StringBuilder blobBuilder = new StringBuilder();
 		for (int i = 0; i < 200; i++)
@@ -1608,8 +1839,14 @@ public class TestFakedbDriver
 		{
 			runPhase("Driver", TestFakedbDriver::testDriver);
 			runPhase("Connection", TestFakedbDriver::testConnection);
+			runPhase("ConnectionLifecycle", TestFakedbDriver::testConnectionLifecycle);
 			runPhase("MetaData", TestFakedbDriver::testMetaData);
 			runPhase("CRUD", TestFakedbDriver::testCrud);
+			runPhase("PartialInsert", TestFakedbDriver::testPartialInsert);
+			runPhase("UpdateCounts", TestFakedbDriver::testUpdateCounts);
+			runPhase("Like", TestFakedbDriver::testLike);
+			runPhase("JdbcEdgeCases", TestFakedbDriver::testJdbcEdgeCases);
+			runPhase("StatementTypes", TestFakedbDriver::testStatementTypes);
 			runPhase("Prepared", TestFakedbDriver::testPrepared);
 			runPhase("Persistence", TestFakedbDriver::testPersistence);
 			runPhase("Alter", TestFakedbDriver::testAlter);

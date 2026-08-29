@@ -594,6 +594,52 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		}
 	}
 
+	// Phase H2: a no-op blob update must not re-store (reference unchanged); ALTER
+	// DROP COLUMN on a blob column must free the blob.
+	private static void testBlobNoopAndDropV2() throws Exception
+	{
+		{
+			final String table = "T41";
+			final File dir = writeV2SchemaOnly(table, COL_LINES);
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,'same-content')");
+			final String refBefore;
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			{
+				refBefore = fs.listAllFiles().get(0).getKey();
+			}
+			st.executeUpdate("UPDATE " + table + " SET BIO='same-content' WHERE USERID='u1'");
+			final String refAfter;
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			{
+				refAfter = fs.listAllFiles().get(0).getKey();
+			}
+			checkEq("blobnoop-content", "same-content", querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1));
+			check("blobnoop-ref-unchanged", refBefore.equals(refAfter),
+					"no-op blob update should not re-store (ref changed " + refBefore + " -> " + refAfter + ")");
+			st.close();
+			c.close();
+		}
+
+		{
+			final String table = "T42";
+			final File dir = writeEmptySchema();
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), BIO CLOB NULL (200))");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice','dropped-blob')");
+			st.executeUpdate("ALTER TABLE " + table + " DROP COLUMN BIO");
+			check("dropblob-count", countRows(c, table) == 1, "row count should be 1 after drop");
+			st.close();
+			c.close();
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			{
+				check("dropblob-freed", fs.listAllFiles().size() == 0, "blob store should be empty after dropping blob column");
+			}
+		}
+	}
+
 	// Phase I: CREATE TABLE ... V2 — SQL DDL creates a v2 table (with sizes); CRUD works.
 	private static void testCreateTableV2() throws Exception
 	{
@@ -857,6 +903,36 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 	}
 
 	// Phase R: a freed slot (reused with a lower key) is correctly re-inserted into the BST.
+	// Phase R4: index-less v2 tables must reclaim deleted row slots via the free
+	// list (previously gated on the presence of an indexed column).
+	private static void testNonIndexedFreeListV2() throws Exception
+	{
+		final String table = "T39";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (VAL INTEGER NULL, NAME STRING NULL (50))");
+		st.executeUpdate("INSERT INTO " + table + " VALUES (1,'one')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES (2,'two')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES (3,'three')");
+		final File dataFile = new File(dir, "fakedb.data." + table);
+		final long sizeAfterInsert = dataFile.length();
+
+		st.executeUpdate("DELETE FROM " + table + " WHERE VAL=1");
+		st.executeUpdate("DELETE FROM " + table + " WHERE VAL=2");
+		st.executeUpdate("DELETE FROM " + table + " WHERE VAL=3");
+
+		st.executeUpdate("INSERT INTO " + table + " VALUES (4,'four')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES (5,'five')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES (6,'six')");
+		check("nonidx-reuse-size", dataFile.length() == sizeAfterInsert,
+				"data file should not grow after delete+reinsert, was " + sizeAfterInsert + " now " + dataFile.length());
+		check("nonidx-reuse-count", countRows(c, table) == 3, "expected 3 rows after reinsert");
+		checkEq("nonidx-reuse-read", "four", querySingle(c, "SELECT NAME FROM " + table + " WHERE VAL=4", 1));
+		st.close();
+		c.close();
+	}
+
 	private static void testFreeListReuseIndexV2() throws Exception
 	{
 		final String table = "T16";
@@ -1117,6 +1193,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			runPhase("Blobs", TestFakedbDriver2::testBlobs);
 			runPhase("UpdateRecord", TestFakedbDriver2::testUpdateRecord);
 			runPhase("UpdateBlob", TestFakedbDriver2::testUpdateBlob);
+			runPhase("BlobNoopAndDropV2", TestFakedbDriver2::testBlobNoopAndDropV2);
 			runPhase("CreateTableV2", TestFakedbDriver2::testCreateTableV2);
 			runPhase("AlterTableV2", TestFakedbDriver2::testAlterTableV2);
 			runPhase("AlterStringResize", TestFakedbDriver2::testAlterStringResize);
@@ -1127,6 +1204,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			runPhase("UpdateRelinkV2", TestFakedbDriver2::testUpdateRelinkV2);
 			runPhase("NonUniqueIndexV2", TestFakedbDriver2::testNonUniqueIndexV2);
 			runPhase("FreeListReuseIndexV2", TestFakedbDriver2::testFreeListReuseIndexV2);
+			runPhase("NonIndexedFreeListV2", TestFakedbDriver2::testNonIndexedFreeListV2);
 			runPhase("DeleteTwoChildrenV2", TestFakedbDriver2::testDeleteTwoChildrenV2);
 			runPhase("AddIndexStringV2", TestFakedbDriver2::testAddIndexStringV2);
 			runPhase("SchemaVersionFlag", TestFakedbDriver2::testSchemaVersionFlag);
@@ -1135,7 +1213,13 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 
 			// v1 phases that also exercise the (shared) v2 SQL/DDL paths.
 			runPhase("MetaDataV2", TestFakedbDriver2::testMetaData);
+			runPhase("ConnectionLifecycleV2", TestFakedbDriver2::testConnectionLifecycle);
 			runPhase("CrudV2", TestFakedbDriver2::testCrud);
+			runPhase("PartialInsertV2", TestFakedbDriver2::testPartialInsert);
+			runPhase("UpdateCountsV2", TestFakedbDriver2::testUpdateCounts);
+			runPhase("LikeV2", TestFakedbDriver2::testLike);
+			runPhase("JdbcEdgeCasesV2", TestFakedbDriver2::testJdbcEdgeCases);
+			runPhase("StatementTypesV2", TestFakedbDriver2::testStatementTypes);
 			runPhase("PreparedV2", TestFakedbDriver2::testPrepared);
 			runPhase("PersistenceV2", TestFakedbDriver2::testPersistence);
 			runPhase("TypesV2", TestFakedbDriver2::testTypes);

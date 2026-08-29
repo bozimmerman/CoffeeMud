@@ -34,15 +34,15 @@ public class FakeTable
 {
 	protected File				fileName;
 	protected RandomAccessFile	file;
-	protected int				fileSize;
+	protected long				fileSize;
 	protected byte[]			fileBuffer;
 	protected IndexedRowMap		rowRecords	= new IndexedRowMap();
-	protected int				dataStart = 0;
+	protected long				dataStart = 0;
 	protected String			schemaHash = "";
 	protected byte[]			dataHeader = new byte[0];
 	
-	protected final TreeMap<Integer, ArrayDeque<Integer>>	
-								freeList	= new TreeMap<Integer, ArrayDeque<Integer>>();
+	protected final TreeMap<Integer, ArrayDeque<Long>>	
+								freeList	= new TreeMap<Integer, ArrayDeque<Long>>();
 
 	public final String			name;
 	public int					version		= 1;
@@ -208,7 +208,7 @@ public class FakeTable
 						i += 8;
 					}
 				}
-				dataStart = (int)file.getFilePointer();
+				dataStart = file.getFilePointer();
 				if ((dataFormatHash == null) || (!dataFormatHash.equals(this.schemaHash)))
 					throw new IOException("Incompatible fakedb data file for table "+name+".  Use DBCopy to convert.");
 				if(version == 2)
@@ -440,7 +440,6 @@ public class FakeTable
 				{
 					try
 					{
-						version = 2;
 						info.size = Integer.valueOf(modifier.trim()).intValue();
 					}
 					catch(final NumberFormatException e)
@@ -481,7 +480,7 @@ public class FakeTable
 		final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 		final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 		copyFileRange(tempOut,0,dataStart);
-		int newFileSize = dataStart;
+		long newFileSize = dataStart;
 		for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 		{
 			final RecordInfo info = iter.next();
@@ -678,24 +677,24 @@ public class FakeTable
 		fileBuffer = newBuffer;
 	}
 
-	private void addHole(final int offset, final int size)
+	private void addHole(final long offset, final int size)
 	{
 		final Integer sizeKey = Integer.valueOf(size);
-		ArrayDeque<Integer> holes = freeList.get(sizeKey);
+		ArrayDeque<Long> holes = freeList.get(sizeKey);
 		if (holes == null)
 		{
-			holes = new ArrayDeque<Integer>();
+			holes = new ArrayDeque<Long>();
 			freeList.put(sizeKey, holes);
 		}
-		holes.add(Integer.valueOf(offset));
+		holes.add(Long.valueOf(offset));
 	}
 
-	private Integer takeHole(final int size)
+	private Long takeHole(final int size)
 	{
-		final ArrayDeque<Integer> holes = freeList.get(Integer.valueOf(size));
+		final ArrayDeque<Long> holes = freeList.get(Integer.valueOf(size));
 		if ((holes == null) || holes.isEmpty())
 			return null;
-		final Integer offset = holes.poll();
+		final Long offset = holes.poll();
 		if (holes.isEmpty())
 			freeList.remove(Integer.valueOf(size));
 		return offset;
@@ -817,16 +816,16 @@ public class FakeTable
 		try
 		{
 			int ofs = rebuildFileBuffer(values);
-			int recordPos;
+			long recordPos;
 			if ((prevRecord != null) && (prevRecord.size == ofs))
 				recordPos = prevRecord.offset;
 			else
 			{
 				if (prevRecord != null)
 					addHole(prevRecord.offset, prevRecord.size);
-				final Integer holeOffset = takeHole(ofs);
+				final Long holeOffset = takeHole(ofs);
 				if (holeOffset != null)
-					recordPos = holeOffset.intValue();
+					recordPos = holeOffset.longValue();
 				else
 				{
 					recordPos = fileSize;
@@ -928,14 +927,14 @@ public class FakeTable
 		return lastOne;
 	}
 
-	private void copyFileRange(final RandomAccessFile out, final long start, final int len) throws IOException
+	private void copyFileRange(final RandomAccessFile out, final long start, final long len) throws IOException
 	{
-		final byte[] buf = new byte[Math.min(len, 8192)];
+		final byte[] buf = new byte[(int) Math.min(len, 8192L)];
 		file.seek(start);
-		int remaining = len;
+		long remaining = len;
 		while (remaining > 0)
 		{
-			final int chunk = Math.min(buf.length, remaining);
+			final int chunk = (int) Math.min((long) buf.length, remaining);
 			file.readFully(buf, 0, chunk);
 			out.write(buf, 0, chunk);
 			remaining -= chunk;
@@ -961,7 +960,7 @@ public class FakeTable
 			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 			copyFileRange(tempOut,0,dataStart);
-			int newFileSize = dataStart;
+			long newFileSize = dataStart;
 			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 			{
 				final RecordInfo info = iter.next();
@@ -1012,7 +1011,7 @@ public class FakeTable
 			final File tempFileName2 = new File(fileName.getParentFile(),fileName.getName() + ".cpy");
 			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
 			copyFileRange(tempOut,0,dataStart);
-			int newFileSize = dataStart;
+			long newFileSize = dataStart;
 			for (final Iterator<RecordInfo> iter = rowRecords.iterator(-1, false); iter.hasNext();)
 			{
 				final RecordInfo info = iter.next();

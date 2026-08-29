@@ -77,7 +77,7 @@ public class ImplAlterStatement extends ImplAbstractStatement
 	@Override
 	public final StatementType getStatementType()
 	{
-		return StatementType.DROP;
+		return StatementType.ALTER;
 	}
 
 	public static ImplAlterStatement parse(String sql, final String[] token) throws java.sql.SQLException

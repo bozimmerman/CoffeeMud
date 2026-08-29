@@ -39,6 +39,7 @@ public class Statement implements java.sql.Statement
 	protected boolean		closeStatementOnResultSetClose	= false;
 	protected Connection	connection;
 	public String			lastSQL							= "null";
+	protected int			updateCount						= -1;
 
 	static protected void log(final String x)
 	{
@@ -191,15 +192,15 @@ public class Statement implements java.sql.Statement
 					s++;
 				e = s;
 				String comparitor;
-				if ((e < sql.length() - 5)
+				if ((e + 4 <= sql.length())
 				&& (Character.toLowerCase(sql.charAt(e)) == 'l')
 				&& (Character.toLowerCase(sql.charAt(e + 1)) == 'i')
 				&& (Character.toLowerCase(sql.charAt(e + 2)) == 'k')
 				&& (Character.toLowerCase(sql.charAt(e + 3)) == 'e')
-				&& (Character.toLowerCase(sql.charAt(e + 4)) == ' '))
+				&& ((e + 4 == sql.length()) || !Character.isLetterOrDigit(sql.charAt(e + 4))))
 				{
 					comparitor = "like";
-					e += 5;
+					e += 4;
 				}
 				else
 				if ((e < sql.length()) && (eow1.indexOf(sql.charAt(e)) > 0))
@@ -328,42 +329,45 @@ public class Statement implements java.sql.Statement
 			if (token[0].equalsIgnoreCase("insert"))
 			{
 				final ImplInsertStatement stmt = ImplInsertStatement.parse(sql, token);
-				connection.getBackend().dupKeyCheck(stmt.tableName, stmt.columns, stmt.sqlValues);
 				connection.getBackend().insertValues(stmt);
+				updateCount = 1;
 			}
 			else
 			if (token[0].equalsIgnoreCase("update"))
 			{
 				final ImplUpdateStatement stmt = ImplUpdateStatement.parse(this,sql, token);
-				connection.getBackend().updateRecord(stmt);
+				updateCount = connection.getBackend().updateRecord(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("delete"))
 			{
 				final ImplDeleteStatement stmt = ImplDeleteStatement.parse(this,sql, token);
-				connection.getBackend().deleteRecord(stmt);
+				updateCount = connection.getBackend().deleteRecord(stmt);
 			}
 			else
 			if (token[0].equalsIgnoreCase("create"))
 			{
 				final ImplCreateStatement stmt = ImplCreateStatement.parse(sql, token);
 				connection.getBackend().createTable(stmt);
+				updateCount = 0;
 			}
 			else
 			if (token[0].equalsIgnoreCase("drop"))
 			{
 				final ImplDropStatement stmt = ImplDropStatement.parse(sql, token);
 				connection.getBackend().dropTable(stmt);
+				updateCount = 0;
 			}
 			else
 			if (token[0].equalsIgnoreCase("alter"))
 			{
 				final ImplAlterStatement stmt = ImplAlterStatement.parse(sql, token);
 				connection.getBackend().alterTable(stmt);
+				updateCount = 0;
 			}
 			else
 				throw new java.sql.SQLException("unimplemented command: " + token[0]);
-			return 1;
+			return updateCount;
 		}
 		catch (final java.sql.SQLException e)
 		{
@@ -505,14 +509,12 @@ public class Statement implements java.sql.Statement
 	@Override
 	public int getUpdateCount() throws java.sql.SQLException
 	{
-		log("getUpdateCount");
-		return -1;
+		return updateCount;
 	}
 
 	public long getLongUpdateCount()
 	{
-		log("getLongUpdateCount");
-		return -1;
+		return updateCount;
 	}
 
 	@Override

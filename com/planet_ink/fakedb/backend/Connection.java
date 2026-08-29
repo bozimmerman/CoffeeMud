@@ -10,7 +10,6 @@ import com.planet_ink.fakedb.backend.jdbc.Statement;
 import com.planet_ink.fakedb.backend.structure.FakeMetaData;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 /*
    Copyright 2001 Thomas Neumann
@@ -30,8 +29,8 @@ import java.lang.ref.WeakReference;
  */
 public class Connection implements java.sql.Connection
 {
-	static private java.util.Map<String, WeakReference<Backend>>	databases	= new java.util.HashMap<String, WeakReference<Backend>>();
-	static private java.util.Map<String, Integer>					references	= new java.util.HashMap<String, Integer>();
+	static private java.util.Map<String, Backend>	databases	= new java.util.HashMap<String, Backend>();
+	static private java.util.Map<String, Integer>	references	= new java.util.HashMap<String, Integer>();
 
 	private Backend	backend;
 	private boolean	closed	= false;
@@ -62,46 +61,72 @@ public class Connection implements java.sql.Connection
 		return oldPath;
 	}
 
-	private void connect(final String path, final String version) throws java.sql.SQLException
+	private static String canonicalize(final String path)
 	{
-		String canonicalPath = path;
 		try
 		{
-			canonicalPath = (new java.io.File(path)).getCanonicalPath();
+			return (new java.io.File(path)).getCanonicalPath();
 		}
 		catch (final java.io.IOException e)
 		{
+			return path;
 		}
+	}
 
-		oldPath = canonicalPath;
-		if (!closed)
+	/**
+	 * Release this connection's reference to its current backend, closing the
+	 * shared Backend when it is the last open connection for that path.
+	 */
+	private void release()
+	{
+		final String path = oldPath;
+		if ((path == null) || (path.length() == 0))
+			return;
+		synchronized (references)
 		{
-			synchronized (references)
+			final Integer c = references.get(path);
+			if (c == null)
+				return;
+			if (c.intValue() <= 1)
 			{
-				Integer conCount = references.get(canonicalPath);
-				if (conCount == null)
-					conCount = Integer.valueOf(0);
-				references.remove(canonicalPath);
-				references.put(canonicalPath, Integer.valueOf(conCount.intValue() + 1));
+				references.remove(path);
+				synchronized (databases)
+				{
+					final Backend b = databases.remove(path);
+					if (b != null)
+						b.clearFakeTables();
+				}
 			}
+			else
+				references.put(path, Integer.valueOf(c.intValue() - 1));
+		}
+	}
+
+	private void connect(final String path, final String version) throws java.sql.SQLException
+	{
+		final String canonicalPath = canonicalize(path);
+
+		release();
+		oldPath = canonicalPath;
+		synchronized (references)
+		{
+			final Integer conCount = references.get(canonicalPath);
+			references.put(canonicalPath, Integer.valueOf(conCount == null ? 1 : conCount.intValue() + 1));
 		}
 
 		synchronized (databases)
 		{
-			final WeakReference<Backend> ref = databases.get(canonicalPath);
-			Backend backend = null;
-			if (ref != null)
-				backend = ref.get();
-			if (backend == null)
+			Backend b = databases.get(canonicalPath);
+			if (b == null)
 			{
-				backend = new Backend(new java.io.File(canonicalPath));
+				b = new Backend(new java.io.File(canonicalPath));
 				try
 				{
 					if (version != null)
-						backend.setDefaultTableVersion(Integer.parseInt(version.trim()));
-					if (!backend.open())
+						b.setDefaultTableVersion(Integer.parseInt(version.trim()));
+					if (!b.open())
 						throw new java.sql.SQLException("unable to open database");
-					databases.put(canonicalPath, new WeakReference<Backend>(backend));
+					databases.put(canonicalPath, b);
 				}
 				catch(final NumberFormatException e)
 				{
@@ -112,7 +137,7 @@ public class Connection implements java.sql.Connection
 					throw new java.sql.SQLException("Unable to open database: "+e.getMessage());
 				}
 			}
-			this.backend = backend;
+			this.backend = b;
 		}
 	}
 
@@ -264,26 +289,22 @@ public class Connection implements java.sql.Connection
 		if (!closed)
 		{
 			closed = true;
-			synchronized (references)
-			{
-				final Integer conCount = references.get(oldPath);
-				if (conCount != null)
-				{
-					if (conCount.intValue() == 1)
-					{
-						if (backend != null)
-							backend.clearFakeTables();
-						backend = null;
-						references.remove(oldPath);
-						databases.remove(oldPath);
-					}
-					else
-					{
-						references.remove(oldPath);
-						references.put(oldPath, Integer.valueOf(conCount.intValue() - 1));
-					}
-				}
-			}
+			release();
+			backend = null;
+		}
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	protected void finalize() throws Throwable
+	{
+		try
+		{
+			close();
+		}
+		finally
+		{
+			super.finalize();
 		}
 	}
 

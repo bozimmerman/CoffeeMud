@@ -527,7 +527,7 @@ public class FakeTable2 extends FakeTable
 					if ((k == null) || (k.compareTo(highKey) > 0))
 						continue;
 				}
-				next = new RecordInfo((int) node, rowWidth);
+				next = new RecordInfo(node, rowWidth);
 				if (descending)
 					pushRightSpine(readChildSafe(node, col.indexOffset));
 				else
@@ -617,7 +617,7 @@ public class FakeTable2 extends FakeTable
 					advance();
 				if (nextOff < 0)
 					throw new NoSuchElementException();
-				final RecordInfo info = new RecordInfo((int) nextOff, rowWidth);
+				final RecordInfo info = new RecordInfo(nextOff, rowWidth);
 				nextOff = -1;
 				return info;
 			}
@@ -794,6 +794,15 @@ public class FakeTable2 extends FakeTable
 			throw new SQLException("Unable to compute new layout for table " + name, e);
 		}
 
+		final Set<String> newColNames = new HashSet<String>();
+		for (final FakeColumn col : this.columns)
+			newColNames.add(col.name);
+		final List<Integer> droppedBlobCols = new ArrayList<Integer>();
+		for (int i = 0; i < oldColumns.length; i++)
+			if (oldColumns[i].isBlobColumn() && !newColNames.contains(oldColumns[i].name))
+				droppedBlobCols.add(Integer.valueOf(i));
+
+		final List<String> blobRefsToFree = new ArrayList<String>();
 		final List<ComparableValue[]> oldRows = new ArrayList<ComparableValue[]>();
 		try
 		{
@@ -807,6 +816,13 @@ public class FakeTable2 extends FakeTable
 				final ComparableValue[] values = new ComparableValue[oldColumns.length];
 				for (int i = 0; i < oldColumns.length; i++)
 					values[i] = parseValue(oldColumns[i], row, oldColumns[i].valueOffset, oldColumns[i].getStoreValueWidth());
+				for (final Integer di : droppedBlobCols)
+				{
+					final ComparableValue v = values[di.intValue()];
+					final Object o = (v == null) ? null : v.getValue();
+					if (o != null)
+						blobRefsToFree.add(o.toString());
+				}
 				oldRows.add(values);
 			}
 		}
@@ -860,6 +876,17 @@ public class FakeTable2 extends FakeTable
 		catch (final Exception e)
 		{
 			throw new SQLException("Unable to rebuild data file for table " + name, e);
+		}
+
+		for (final String ref : blobRefsToFree)
+		{
+			try
+			{
+				freeBlob(ref);
+			}
+			catch (final SQLException e)
+			{
+			}
 		}
 	}
 
@@ -956,13 +983,13 @@ public class FakeTable2 extends FakeTable
 			for (int i = 0; i < columns.length; i++)
 				encodeValue(columns[i], values[i], row);
 
-			final int recordPos;
+			final long recordPos;
 			if (prevRecord != null)
 				recordPos = prevRecord.offset;
 			else
 			if (firstFreeRow != 0)
 			{
-				recordPos = (int) firstFreeRow;
+				recordPos = firstFreeRow;
 				file.seek(recordPos + 1);
 				final long nextFree = readCheckedLong().longValue();
 				firstFreeRow = nextFree;
@@ -970,7 +997,7 @@ public class FakeTable2 extends FakeTable
 				file.write(paddedLong(firstFreeRow).getBytes(StandardCharsets.US_ASCII));
 			}
 			else
-				recordPos = (int) file.length();
+				recordPos = file.length();
 
 			file.seek(recordPos);
 			file.write(row, 0, rowWidth);
@@ -1012,7 +1039,7 @@ public class FakeTable2 extends FakeTable
 							unlink(col, info.offset);
 					file.seek(info.offset);
 					file.write(new byte[] { (byte) '*' });
-					if(columnIndexesOfIndexed.length > 0)
+					if(rowWidth >= longSize + 1)
 					{
 						file.seek(info.offset + 1);
 						file.write(paddedLong(firstFreeRow).getBytes());
@@ -1076,12 +1103,26 @@ public class FakeTable2 extends FakeTable
 						{
 							final Object oldO = (oldVal == null) ? null : oldVal.getValue();
 							final Object newO = (newVal == null) ? null : newVal.getValue();
-							if (oldO != null)
-								freeBlob(oldO.toString());
-							if (newO == null)
-								newVal = new ComparableValue(null);
+							final String oldRef = (oldO == null) ? null : oldO.toString();
+							final String newContent = (newO == null) ? null : newO.toString();
+							boolean unchanged;
+							if ((oldRef == null) && (newContent == null))
+								unchanged = true;
+							else if ((oldRef == null) || (newContent == null))
+								unchanged = false;
 							else
-								newVal = new ComparableValue(storeBlob(newO.toString()));
+								unchanged = newContent.equals(loadBlob(oldRef));
+							if (unchanged)
+								newVal = oldVal;
+							else
+							{
+								if (newContent == null)
+									newVal = new ComparableValue(null);
+								else
+									newVal = new ComparableValue(storeBlob(newContent));
+								if (oldRef != null)
+									freeBlob(oldRef);
+							}
 						}
 						if (!oldVal.equals(newVal))
 						{

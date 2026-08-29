@@ -20,11 +20,11 @@ limitations under the License.
 */
 public class RecordInfo
 {
-	public int					offset;
+	public long					offset;
 	public int					size;
 	public ComparableValue[]	indexedData	= null;
 
-	public RecordInfo(final int o, final int s)
+	public RecordInfo(final long o, final int s)
 	{
 		offset = o;
 		size = s;

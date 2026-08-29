@@ -448,9 +448,14 @@ public class Backend
 		final String[] strVals = new String[values.length];
 		for (int x = 0; x < values.length; x++)
 		{
-			@SuppressWarnings("rawtypes")
-			final Comparable val = values[x].getValue();
-			strVals[x] = (val == null) ? null : val.toString();
+			if (values[x] == null)
+				strVals[x] = null;
+			else
+			{
+				@SuppressWarnings("rawtypes")
+				final Comparable val = values[x].getValue();
+				strVals[x] = (val == null) ? null : val.toString();
+			}
 		}
 		dupKeyCheck(tableName, fakeTable.columnNames, strVals);
 		if (!fakeTable.insertRecord(null, keys, values))
@@ -463,7 +468,7 @@ public class Backend
 	 * @param stmt The delete statement
 	 * @throws java.sql.SQLException
 	 */
-	public void deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
+	public int deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
 	{
 		final FakeTable fakeTable = fakeTables.get(stmt.tableName);
 		if (fakeTable == null)
@@ -512,12 +517,13 @@ public class Backend
 			{
 				throw new java.sql.SQLException(e.getMessage(), e);
 			}
-			fakeTable.deleteRecord(stmt.conditions);
+			final int deleted = fakeTable.deleteRecord(stmt.conditions);
 			for (final String ref : blobRefs)
 				table2.freeBlob(ref);
+			return deleted;
 		}
 		else
-			fakeTable.deleteRecord(stmt.conditions);
+			return fakeTable.deleteRecord(stmt.conditions);
 	}
 
 	/**
@@ -525,7 +531,7 @@ public class Backend
 	 * @param stmt The update statement
 	 * @throws java.sql.SQLException
 	 */
-	public void updateRecord(final ImplUpdateStatement stmt) throws java.sql.SQLException
+	public int updateRecord(final ImplUpdateStatement stmt) throws java.sql.SQLException
 	{
 		final String tableName = stmt.tableName;
 		final List<FakeCondition> conditions = stmt.conditions;
@@ -576,7 +582,7 @@ public class Backend
 				throw new java.sql.SQLException("illegal value '" + sqlValues[index] + "' for column " + col.name);
 			}
 		}
-		fakeTable.updateRecord(conditions, vars, values,this,doDupCheck?this.fakeTables.get(stmt.tableName):null);
+		return fakeTable.updateRecord(conditions, vars, values,this,doDupCheck?this.fakeTables.get(stmt.tableName):null);
 	}
 
 	/**
@@ -627,6 +633,7 @@ public class Backend
 			}
 			case DATETIME:
 			case LONG:
+			case UNKNOWN:
 			{
 				try
 				{

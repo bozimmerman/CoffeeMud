@@ -368,8 +368,7 @@ public class ResultSet implements java.sql.ResultSet
 	public java.math.BigDecimal getBigDecimal(final int columnIndex, final int scale) throws java.sql.SQLException
 	{
 		final java.math.BigDecimal decimal = getBigDecimal(columnIndex);
-		decimal.setScale(scale);
-		return decimal;
+		return decimal.setScale(scale);
 	}
 
 	@Override
@@ -1566,13 +1565,11 @@ public class ResultSet implements java.sql.ResultSet
 		if(type == Long.class)
 			return (T) Long.valueOf(this.getLong(columnIndex));
 		if(type == Integer.class)
-			return (T) Long.valueOf(this.getInt(columnIndex));
+			return (T) Integer.valueOf(this.getInt(columnIndex));
 		if(type == Short.class)
 			return (T) Short.valueOf(this.getShort(columnIndex));
 		if(type == String.class)
 			return (T) String.valueOf(this.getString(columnIndex));
-		if(type == Short.class)
-			return (T) Short.valueOf(this.getShort(columnIndex));
 		if(type == Double.class)
 			return (T) Double.valueOf(this.getDouble(columnIndex));
 		if(type == Float.class)
