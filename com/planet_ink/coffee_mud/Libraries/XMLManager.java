@@ -1687,18 +1687,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			}
 		}
 		else
-		if(Collection.class.isAssignableFrom(type))
-		{
-			@SuppressWarnings("rawtypes")
-			final Collection coll = (Collection)val;
-			for(final Object e : coll)
-			{
-				str.append("<VALUE>");
-				str.append(fromPOJOFieldtoXML(e.getClass(),e));
-				str.append("</VALUE>");
-			}
-		}
-		else
 		if(type == String.class)
 			str.append(parseOutAngleBrackets(val.toString()));
 		else

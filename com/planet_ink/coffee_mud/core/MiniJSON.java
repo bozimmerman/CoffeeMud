@@ -1669,7 +1669,7 @@ public class MiniJSON
 				final Object e = iter.next();
 				if(i>0)
 					str.append(",");
-				str.append(fromPOJOFieldtoJSON(e.getClass(),e));
+				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
 			}
 			str.append("]");
 		}
