@@ -128,6 +128,7 @@ public class IndexedRowMap
 	 * Return the ascending-sorted list for the given indexed column, building and
 	 * caching it on first use.
 	 */
+	@SuppressWarnings("unchecked")
 	private List<RecordInfo> forwardList(final int sortIndex)
 	{
 		if ((forwardSorted == null) || (sortIndex < 0) || (sortIndex >= forwardSorted.length))
