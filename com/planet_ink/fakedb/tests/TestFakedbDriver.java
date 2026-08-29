@@ -804,7 +804,6 @@ public class TestFakedbDriver
 				st.executeUpdate("ALTER TABLE NOTABLE ADD COLUMN X INTEGER"), "unknown table");
 
 		st.executeUpdate("ALTER TABLE " + tbl + " ADD PRIMARY KEY (NAME)");
-		rs_orderby:
 		{
 			final java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl + " ORDER BY NAME");
 			check("alter-add-pk-orderby", rs != null, "ORDER BY NAME should work after ADD PRIMARY KEY");

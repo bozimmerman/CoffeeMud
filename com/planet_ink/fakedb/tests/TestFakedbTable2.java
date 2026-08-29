@@ -53,6 +53,7 @@ public class TestFakedbTable2
 
 	private static class Col
 	{
+		@SuppressWarnings("unused")
 		final String	name;
 		final String	type;
 		final int		size;
@@ -113,7 +114,7 @@ public class TestFakedbTable2
 				if (c.type.equals("STRING"))
 				{
 					final byte[] cb = v.getBytes(StandardCharsets.US_ASCII);
-					System.arraycopy(String.format("%03d", cb.length).getBytes(StandardCharsets.US_ASCII), 0, row, pos, 3);
+					System.arraycopy(String.format("%03d", Integer.valueOf(cb.length)).getBytes(StandardCharsets.US_ASCII), 0, row, pos, 3);
 					System.arraycopy(cb, 0, row, pos + 3, cb.length);
 				}
 				else if (c.type.equals("INTEGER") || c.type.equals("LONG") || c.type.equals("DATETIME"))
@@ -365,7 +366,7 @@ public class TestFakedbTable2
 		final long u2off = HEADER_SIZE + (long) rw;
 		check("del-indexed-marker", readMarker(dir, table, u2off) == '*', "u2 row must be '*' on disk");
 		checkEq("del-indexed-head", Long.valueOf(u2off), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE)));
-		checkEq("del-indexed-next0", 0L, readPaddedLong(dir, table, u2off + 1));
+		checkEq("del-indexed-next0", Long.valueOf(0L), Long.valueOf(readPaddedLong(dir, table, u2off + 1)));
 
 		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u3'");
 		check("del-indexed-count2", countRows(c, table) == 2, "after DELETE u3 expected 2, got " + countRows(c, table));
@@ -429,7 +430,7 @@ public class TestFakedbTable2
 		{
 			final java.sql.Connection c = connect(dir); // open initializes the V2 header + free-list head
 			check("empty-count", countRows(c, table) == 0, "expected 0 rows in fresh table " + table + ", got " + countRows(c, table));
-			checkEq("empty-head", 0L, readPaddedLong(dir, table, LONG_SIZE));
+			checkEq("empty-head", Long.valueOf(0L), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE)));
 			final File dataFile = new File(dir, "fakedb.data." + table);
 			check("header-len", dataFile.length() == HEADER_SIZE,
 					"fresh data file must be padded to " + HEADER_SIZE + " bytes (" + initHeader + "), got " + dataFile.length());
