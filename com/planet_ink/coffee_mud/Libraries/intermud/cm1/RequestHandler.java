@@ -171,7 +171,7 @@ public class RequestHandler implements CMRunnable
 			@SuppressWarnings("rawtypes")
 			final Collection coll = (Collection)val;
 			final Object[] asArray = coll.toArray();
-			str.append(fromPOJOFieldToStandardString(asArray.getClass(),coll,allowCR));
+			str.append(fromPOJOFieldToStandardString(asArray.getClass(),asArray,allowCR));
 		}
 		else
 		if(type.isPrimitive())
