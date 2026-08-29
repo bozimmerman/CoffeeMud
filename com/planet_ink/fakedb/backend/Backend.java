@@ -613,6 +613,9 @@ public class Backend
 		if (col == null)
 			throw new java.sql.SQLException("bad column " + tableName + "." + columnName);
 		fake.colType = col.type;
+		final boolean isLike = comparitor.equalsIgnoreCase("like");
+		if (isLike && (col.type != FakeColType.STRING))
+			throw new java.sql.SQLException("can't do like comparison on " + tableName + "." + columnName);
 		if ((value == null) || value.equals("null") || unPrepared)
 			fake.conditionValue = new ComparableValue(null);
 		else
@@ -650,12 +653,8 @@ public class Backend
 				break;
 			}
 		}
-		if (comparitor.equalsIgnoreCase("like"))
-		{
-			if ((col.type != FakeColType.STRING) && (col.type != FakeColType.UNKNOWN))
-				throw new java.sql.SQLException("can't do like comparison on " + tableName + "." + columnName);
+		if (isLike)
 			fake.like = true;
-		}
 		else
 		{
 			for (final char c : comparitor.toCharArray())

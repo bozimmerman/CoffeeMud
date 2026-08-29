@@ -658,7 +658,120 @@ public class TestFakedbDriver
 		check("execute-insert-returns-false", !isUpdate, "execute(INSERT) should return false");
 		check("execute-insert-worked", countRows(c, tbl) == 1, "execute INSERT should add 1 row");
 
+		final String ddlTbl = nextTableName();
+		check("execute-create-returns-false", !st.execute("CREATE TABLE " + ddlTbl + " (ID INTEGER KEY, VAL STRING NULL (20))"),
+				"execute(CREATE) should return false (update-count result, not a ResultSet)");
+		st.executeUpdate("INSERT INTO " + ddlTbl + " VALUES (1,'a')");
+		check("execute-drop-returns-false", !st.execute("DROP TABLE " + ddlTbl),
+				"execute(DROP) should return false");
+
 		st.close();
+	}
+
+	// COUNT(*) must return the row count; multiple COUNT columns must each return
+	// the count (the second was previously 1 due to a re-drained fake list); mixing
+	// COUNT with a real column must throw instead of NPEing on unloaded values.
+	protected static void testCountShapes() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		st.executeUpdate("CREATE TABLE " + tbl + " (ID INTEGER KEY, NAME STRING NULL (20))");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (1,'Alice')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (2,'Bob')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (3,'Carol')");
+
+		java.sql.ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + tbl);
+		check("count-star-next", rs.next(), "COUNT(*) should return a row");
+		check("count-star-val", rs.getInt(1) == 3, "COUNT(*) should be 3, got " + rs.getInt(1));
+		check("count-star-one-row", !rs.next(), "COUNT(*) should return exactly one row");
+		rs.close();
+
+		rs = st.executeQuery("SELECT COUNT(*), COUNT(ID) FROM " + tbl);
+		rs.next();
+		check("count-multi-1", rs.getInt(1) == 3, "first COUNT should be 3, got " + rs.getInt(1));
+		check("count-multi-2", rs.getInt(2) == 3, "second COUNT should be 3 (was 1 before fix), got " + rs.getInt(2));
+		rs.close();
+
+		expectEx("count-mixed-leading", () ->
+				st.executeQuery("SELECT COUNT(*), NAME FROM " + tbl), "aggregate");
+		expectEx("count-mixed-trailing", () ->
+				st.executeQuery("SELECT NAME, COUNT(*) FROM " + tbl), "aggregate");
+
+		st.close();
+		c.close();
+	}
+
+	// LIKE on an UNKNOWN (numeric) column must throw like other non-string types,
+	// instead of being permitted but silently never matching.
+	protected static void testUnknownLike() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		st.executeUpdate("CREATE TABLE " + tbl + " (NUM INTEGER KEY, UNK UNKNOWN NULL (20))");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (1, 42)");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (2, 99)");
+
+		expectEx("unknown-like-string", () ->
+				st.executeQuery("SELECT * FROM " + tbl + " WHERE UNK LIKE '4%'"), "like comparison");
+		expectEx("unknown-like-numeric", () ->
+				st.executeQuery("SELECT * FROM " + tbl + " WHERE UNK LIKE 42"), "like comparison");
+
+		final java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl + " WHERE NUM = 1");
+		check("unknown-table-works", rs.next() && rs.getInt(1) == 1, "NUM = 1 should match row 1 (sanity check, not UNKNOWN equality)");
+		rs.close();
+
+		st.close();
+		c.close();
+	}
+
+	// ResultSet positioning: isLast() must be accurate, last() must return false on
+	// an empty set, and absolute()/previous() must throw on this forward-only cursor.
+	protected static void testPositioning() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		st.executeUpdate("CREATE TABLE " + tbl + " (ID INTEGER KEY, NAME STRING NULL (20))");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (1,'Alice')");
+		st.executeUpdate("INSERT INTO " + tbl + " VALUES (2,'Bob')");
+
+		java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl);
+		check("type-forward-only", rs.getType() == java.sql.ResultSet.TYPE_FORWARD_ONLY,
+				"getType() should be TYPE_FORWARD_ONLY, got " + rs.getType());
+		check("concur-read-only", rs.getConcurrency() == java.sql.ResultSet.CONCUR_READ_ONLY,
+				"getConcurrency() should be CONCUR_READ_ONLY, got " + rs.getConcurrency());
+		check("islast-before-next", !rs.isLast(), "isLast() should be false before next()");
+		rs.next();
+		check("islast-not-last", !rs.isLast(), "isLast() should be false on first of two rows");
+		rs.next();
+		check("islast-on-last", rs.isLast(), "isLast() should be true on the final row");
+		rs.close();
+
+		rs = st.executeQuery("SELECT * FROM " + tbl);
+		check("last-nonempty", rs.last(), "last() should return true for a non-empty set");
+		check("islast-after-last-call", !rs.isLast(), "isLast() should be false after last() positions after the last row");
+		check("isafterlast-after-last", rs.isAfterLast(), "isAfterLast() should be true after last()");
+		rs.close();
+
+		rs = st.executeQuery("SELECT * FROM " + tbl + " WHERE ID = 999");
+		check("last-empty", !rs.last(), "last() should return false for an empty set");
+		check("isafterlast-empty", rs.isAfterLast(), "isAfterLast() should be true after last() on empty set");
+		rs.close();
+
+		rs = st.executeQuery("SELECT * FROM " + tbl);
+		rs.next();
+		final java.sql.ResultSet rsAbs = rs;
+		expectEx("absolute-throws", () -> rsAbs.absolute(1), "TYPE_FORWARD_ONLY");
+		expectEx("previous-throws", () -> rsAbs.previous(), "TYPE_FORWARD_ONLY");
+		rs.close();
+
+		st.close();
+		c.close();
 	}
 
 	// Partial-column INSERT (columns omitted or reordered) must not NPE; omitted
@@ -1847,6 +1960,9 @@ public class TestFakedbDriver
 			runPhase("Like", TestFakedbDriver::testLike);
 			runPhase("JdbcEdgeCases", TestFakedbDriver::testJdbcEdgeCases);
 			runPhase("StatementTypes", TestFakedbDriver::testStatementTypes);
+			runPhase("CountShapes", TestFakedbDriver::testCountShapes);
+			runPhase("UnknownLike", TestFakedbDriver::testUnknownLike);
+			runPhase("Positioning", TestFakedbDriver::testPositioning);
 			runPhase("Prepared", TestFakedbDriver::testPrepared);
 			runPhase("Persistence", TestFakedbDriver::testPersistence);
 			runPhase("Alter", TestFakedbDriver::testAlter);

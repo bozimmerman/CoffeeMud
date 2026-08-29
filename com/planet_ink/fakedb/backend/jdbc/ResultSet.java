@@ -68,12 +68,12 @@ public class ResultSet implements java.sql.ResultSet
 		fakeList.add(info);
 	}
 
-	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions)
+	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions) throws SQLException
 	{
 		this(stmt, table, showCols, conditions, orderByKeyDexCols, orderByConditions, null);
 	}
 
-	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions, final java.util.Iterator<RecordInfo> lookupIter)
+	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions, final java.util.Iterator<RecordInfo> lookupIter) throws SQLException
 	{
 		this.statement = stmt;
 		this.fakeTable = table;
@@ -92,21 +92,33 @@ public class ResultSet implements java.sql.ResultSet
 		{
 			this.closeStatementOnClose = false;
 		}
+		boolean hasCount = false;
+		boolean hasReal = false;
 		for (int s = 0; s < showCols.length; s++)
 		{
-			if(showCols[s] == FakeColumn.INDEX_COUNT)
-			{
-				showColMap.put("COUNT", Integer.valueOf(FakeColumn.INDEX_COUNT));
-				int ct = 0;
-				while (iter.hasNext())
-				{
-					iter.next();
-					ct++;
-				}
-				countValue = Integer.valueOf(ct);
-				iter = fakeList.iterator();
-			}
+			if (showCols[s] == FakeColumn.INDEX_COUNT)
+				hasCount = true;
 			else
+				hasReal = true;
+		}
+		if (hasCount && hasReal)
+			throw new SQLException("aggregate (COUNT) columns cannot be mixed with non-aggregate columns (no GROUP BY support)");
+		if (hasCount)
+		{
+			int ct = 0;
+			while (iter.hasNext())
+			{
+				iter.next();
+				ct++;
+			}
+			countValue = Integer.valueOf(ct);
+			iter = fakeList.iterator();
+			for (int s = 0; s < showCols.length; s++)
+				showColMap.put("COUNT", Integer.valueOf(FakeColumn.INDEX_COUNT));
+		}
+		else
+		{
+			for (int s = 0; s < showCols.length; s++)
 				showColMap.put(table.getColumnName(showCols[s]), Integer.valueOf(s));
 		}
 	}
@@ -1337,9 +1349,9 @@ public class ResultSet implements java.sql.ResultSet
 	}
 
 	@Override
-	public boolean previous()
+	public boolean previous() throws java.sql.SQLException
 	{
-		return false;
+		throw new SQLFeatureNotSupportedException("previous() not supported on a TYPE_FORWARD_ONLY ResultSet");
 	}
 
 	@Override
@@ -1364,13 +1376,13 @@ public class ResultSet implements java.sql.ResultSet
 			sqle.printStackTrace();
 		}
 		afterLast = true;
-		return true;
+		return currentRow > 0;
 	}
 
 	@Override
 	public boolean isLast()
 	{
-		return false;
+		return (currentRow > 0) && !afterLast && !iter.hasNext();
 	}
 
 	@Override
@@ -1380,6 +1392,7 @@ public class ResultSet implements java.sql.ResultSet
 			throw new java.sql.SQLException();
 		iter = fakeTable.indexIterator(this.orderByKeyDexCols, this.orderByConditions);
 		currentRow = 0;
+		afterLast = false;
 	}
 
 	@Override
@@ -1401,15 +1414,15 @@ public class ResultSet implements java.sql.ResultSet
 	}
 
 	@Override
-	public boolean absolute(final int i)
+	public boolean absolute(final int i) throws java.sql.SQLException
 	{
-		return true;
+		throw new SQLFeatureNotSupportedException("absolute() not supported on a TYPE_FORWARD_ONLY ResultSet");
 	}
 
 	@Override
-	public boolean relative(final int i)
+	public boolean relative(final int i) throws java.sql.SQLException
 	{
-		return false;
+		throw new SQLFeatureNotSupportedException("relative() not supported on a TYPE_FORWARD_ONLY ResultSet");
 	}
 
 	@Override
@@ -1433,13 +1446,13 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public int getConcurrency()
 	{
-		return 0;
+		return java.sql.ResultSet.CONCUR_READ_ONLY;
 	}
 
 	@Override
 	public int getType()
 	{
-		return 0;
+		return java.sql.ResultSet.TYPE_FORWARD_ONLY;
 	}
 
 	@Override

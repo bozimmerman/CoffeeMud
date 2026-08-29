@@ -1019,15 +1019,18 @@ public class FakeTable2 extends FakeTable
 		if(version < 2)
 			return super.deleteRecord(conditions);
 		final int[] count = { 0 };
+		final List<String> blobRefsToFree = new ArrayList<String>();
 		try
 		{
 			final FakeConditionResponder responder = new FakeConditionResponder()
 			{
 				public int[]	count;
+				public List<String>	blobRefs;
 
-				public FakeConditionResponder init(final int[] c)
+				public FakeConditionResponder init(final int[] c, final List<String> b)
 				{
 					count = c;
+					blobRefs = b;
 					return this;
 				}
 
@@ -1047,15 +1050,35 @@ public class FakeTable2 extends FakeTable
 						file.seek(longSize);
 						file.write(paddedLong(firstFreeRow).getBytes());
 					}
+					for (int i = 0; i < columns.length; i++)
+					{
+						if (columns[i].isBlobColumn())
+						{
+							final ComparableValue v = values[i];
+							final Object o = (v == null) ? null : v.getValue();
+							if (o != null)
+								blobRefs.add(o.toString());
+						}
+					}
 					count[0]++;
 				}
-			}.init(count);
+			}.init(count, blobRefsToFree);
 			recordIterator(conditions, responder);
 		}
 		catch (final Exception e)
 		{
 			e.printStackTrace();
 			return -1;
+		}
+		for (final String ref : blobRefsToFree)
+		{
+			try
+			{
+				freeBlob(ref);
+			}
+			catch (final SQLException e)
+			{
+			}
 		}
 		return count[0];
 	}

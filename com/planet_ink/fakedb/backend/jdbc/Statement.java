@@ -465,11 +465,12 @@ public class Statement implements java.sql.Statement
 		lastSQL = sql;
 		try
 		{
-			final String[] token = new String[1];
+		final String[] token = new String[1];
 			sql = split(sql, token);
 			if (!token[0].equalsIgnoreCase("select"))
 			{
-				return executeUpdate(lastSQL) == 0;
+				executeUpdate(lastSQL);
+				return false;
 			}
 			final ImplSelectStatement stmt = ImplSelectStatement.parse(this,sql, token);
 			myResultSet = (ResultSet) connection.getBackend().constructScan(stmt);

@@ -640,6 +640,36 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		}
 	}
 
+	// Phase H3: DELETE of blob rows must free the blob content (the .flatfs store
+	// must not grow with orphaned blobs).
+	private static void testDeleteBlobFreesV2() throws Exception
+	{
+		final String table = "T43";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), BIO CLOB NULL (200))");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice','blob-one')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob','blob-two')");
+		checkEq("delblob-content-u1", "blob-one", querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1));
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		{
+			check("delblob-store-2", fs.listAllFiles().size() == 2, "blob store should hold 2 entries after inserts, got " + fs.listAllFiles().size());
+		}
+		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u1'");
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		{
+			check("delblob-store-1", fs.listAllFiles().size() == 1, "blob store should hold 1 entry after deleting one blob row, got " + fs.listAllFiles().size());
+		}
+		st.executeUpdate("DELETE FROM " + table);
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		{
+			check("delblob-store-0", fs.listAllFiles().size() == 0, "blob store should be empty after deleting all rows, got " + fs.listAllFiles().size());
+		}
+		st.close();
+		c.close();
+	}
+
 	// Phase I: CREATE TABLE ... V2 — SQL DDL creates a v2 table (with sizes); CRUD works.
 	private static void testCreateTableV2() throws Exception
 	{
@@ -1194,6 +1224,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			runPhase("UpdateRecord", TestFakedbDriver2::testUpdateRecord);
 			runPhase("UpdateBlob", TestFakedbDriver2::testUpdateBlob);
 			runPhase("BlobNoopAndDropV2", TestFakedbDriver2::testBlobNoopAndDropV2);
+			runPhase("DeleteBlobFreesV2", TestFakedbDriver2::testDeleteBlobFreesV2);
 			runPhase("CreateTableV2", TestFakedbDriver2::testCreateTableV2);
 			runPhase("AlterTableV2", TestFakedbDriver2::testAlterTableV2);
 			runPhase("AlterStringResize", TestFakedbDriver2::testAlterStringResize);
