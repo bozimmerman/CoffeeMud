@@ -30,13 +30,15 @@ public class ImplCreateStatement extends ImplAbstractStatement
 {
 	final FakeColumn[] columns;
 
-	public ImplCreateStatement(final String tableName, final FakeColumn[] columns)
+	public ImplCreateStatement(final String tableName, final int version, final FakeColumn[] columns)
 	{
 		this.tableName = tableName;
+		this.version = version;
 		this.columns = columns;
 	}
 
 	public final String					tableName;
+	public final int					version;
 	private final Boolean[]				unPreparedValues	= new Boolean[0];
 
 	@Override
@@ -81,6 +83,17 @@ public class ImplCreateStatement extends ImplAbstractStatement
 		String[] r = parseVal(sql);
 		sql = skipWS(r[0]);
 		final String tableName = r[1].trim().toUpperCase();
+		sql = skipWS(sql);
+		int version = 1;
+		if ((sql.length() >= 3) && ((sql.charAt(0) == 'V') || (sql.charAt(0) == 'v')) && Character.isDigit(sql.charAt(1)))
+		{
+			final String after = skipWS(sql.substring(2));
+			if ((after.length() > 0) && (after.charAt(0) == '('))
+			{
+				version = sql.charAt(1) - '0';
+				sql = after;
+			}
+		}
 		sql = skipWS(sql);
 		if ((sql.length() <= 0) || (sql.charAt(0) != '('))
 			throw new java.sql.SQLException("no open paren");
@@ -224,6 +237,6 @@ public class ImplCreateStatement extends ImplAbstractStatement
 		sql = skipWS(sql);
 		if (sql.length() > 0)
 			throw new java.sql.SQLException("no more sql or missing comma/paren");
-		return new ImplCreateStatement(tableName, columnList.toArray(new FakeColumn[0]));
+		return new ImplCreateStatement(tableName, version, columnList.toArray(new FakeColumn[0]));
 	}
 }

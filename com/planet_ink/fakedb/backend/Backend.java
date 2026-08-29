@@ -887,9 +887,16 @@ public class Backend
 	public void createTable(final ImplCreateStatement stmt) throws SQLException
 	{
 		final String tableName = stmt.tableName;
+		final int version = stmt.version;
 		final FakeColumn[] columns = (FakeColumn[])stmt.extValues();
 		if (fakeTables.get(tableName) != null)
 			throw new java.sql.SQLException("table " + tableName + " already exists");
+		if (version >= 2)
+		{
+			for (final FakeColumn col : columns)
+				if ((col.type == FakeColType.STRING) && (col.size == Integer.MAX_VALUE))
+					throw new java.sql.SQLException("V2 column '" + col.name + "' requires a size, e.g. " + col.name + " STRING (50)");
+		}
 		final List<List<String>> schema = readRawSchema();
 		int insert=-1;
 		if((schema.size()>1)
@@ -906,11 +913,21 @@ public class Backend
 			}
 		}
 		final List<String> newTable = new ArrayList<String>();
-		newTable.add(tableName+" V1");
+		newTable.add(tableName+" V"+version);
 		for (final FakeColumn col : columns)
 		{
 			col.tableName = tableName;
-			newTable.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber >= 0 ? "KEY " : col.canNull ? "NULL " : ""));
+			final StringBuilder colDef = new StringBuilder(col.name + " " + col.type.name().toLowerCase());
+			if (col.keyNumber >= 0)
+				colDef.append(" KEY");
+			else
+			if (col.canNull)
+				colDef.append(" NULL");
+			if ((version >= 2)
+			&& ((col.type == FakeColType.STRING) || (col.type == FakeColType.BLOB) || (col.type == FakeColType.CLOB))
+			&& (col.size != Integer.MAX_VALUE))
+				colDef.append(" ").append(col.size);
+			newTable.add(colDef.toString());
 		}
 		if(insert<0)
 			schema.add(newTable);

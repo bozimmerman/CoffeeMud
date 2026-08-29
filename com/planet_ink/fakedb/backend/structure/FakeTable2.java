@@ -511,6 +511,139 @@ public class FakeTable2 extends FakeTable
 	{
 		if(version < 2)
 			return super.updateRecord(conditions, columns, values, backend, dupDangerTable);
-		return 0;
+		final int[] count = { 0 };
+		final FakeColumn[] allCols = this.columns;
+		try
+		{
+			final FakeConditionResponder responder = new FakeConditionResponder()
+			{
+				private int[]				count;
+				private int[]				newCols;
+				private ComparableValue[]	updatedValues	= null;
+
+				public FakeConditionResponder init(final int[] c, final int[] a, final ComparableValue[] n)
+				{
+					count = c;
+					newCols = a;
+					updatedValues = n;
+					return this;
+				}
+
+				@Override
+				public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
+				{
+					final ComparableValue[] rowIndexData = info.indexedData;
+					boolean somethingChanged = false;
+					ComparableValue[] keyChanges = null;
+					for (int sub = 0; sub < newCols.length; sub++)
+					{
+						final int colDex = newCols[sub];
+						final FakeColumn col = allCols[colDex];
+						final ComparableValue oldVal = values[colDex];
+						ComparableValue newVal = updatedValues[sub];
+						if (col.isBlobColumn())
+						{
+							final Object oldO = (oldVal == null) ? null : oldVal.getValue();
+							final Object newO = (newVal == null) ? null : newVal.getValue();
+							if (oldO != null)
+								freeBlob(oldO.toString());
+							if (newO == null)
+								newVal = new ComparableValue(null);
+							else
+								newVal = new ComparableValue(storeBlob(newO.toString()));
+						}
+						if (!oldVal.equals(newVal))
+						{
+							if((dupDangerTable != null)
+							&&(colDex < dupDangerTable.columns.length)
+							&&(dupDangerTable.columns[colDex].keyNumber >=0))
+							{
+								if(keyChanges == null)
+									keyChanges = new ComparableValue[colDex+1];
+								else
+								if(keyChanges.length<=colDex)
+									keyChanges=Arrays.copyOf(keyChanges, colDex+1);
+								keyChanges[colDex] = newVal;
+							}
+							else
+							{
+								for (int k = 0; k < rowIndexData.length; k++)
+									if (columnIndexesOfIndexed[k] == colDex)
+										rowIndexData[k] = newVal;
+							}
+							values[colDex] = newVal;
+							somethingChanged = true;
+						}
+					}
+					if(somethingChanged)
+					{
+						if(dupDangerTable != null)
+						{
+							final String[] strVals = new String[values.length];
+							for(int x=0;x<values.length;x++)
+							{
+								@SuppressWarnings("rawtypes")
+								final Comparable val = values[x].getValue();
+								strVals[x]=(val == null) ? null : val.toString();
+							}
+							if(keyChanges != null)
+							{
+								for(int i=0;i<keyChanges.length;i++)
+								{
+									if(keyChanges[i]!= null)
+									{
+										@SuppressWarnings("rawtypes")
+										final Comparable val = keyChanges[i].getValue();
+										strVals[i] = (val == null) ? null : val.toString();
+									}
+								}
+								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
+								for(int i=0;i<keyChanges.length;i++)
+								{
+									if(keyChanges[i] != null)
+									{
+										for (int k = 0; k < rowIndexData.length; k++)
+										{
+											if (columnIndexesOfIndexed[k] == i)
+												rowIndexData[k] = keyChanges[i];
+										}
+									}
+								}
+							}
+						}
+						final byte[] row = new byte[rowWidth];
+						Arrays.fill(row, (byte) ' ');
+						row[0] = (byte) '-';
+						int idxPos = 1;
+						for (final FakeColumn col : allCols)
+						{
+							if ((col.keyNumber >= 0) || (col.indexNumber > 0))
+							{
+								writeLongSlot(row, idxPos, 0);
+								writeLongSlot(row, idxPos + longSize, 0);
+								idxPos += longSize * 2;
+							}
+						}
+						for (int i = 0; i < allCols.length; i++)
+							encodeValue(allCols[i], values[i], row);
+						file.seek(info.offset);
+						file.write(row, 0, rowWidth);
+						file.getFD().sync();
+						rowRecords.remove(info);
+						rowRecords.add(info);
+					}
+					count[0]++;
+				}
+			}.init(count, columns, values);
+			recordIterator(conditions, responder);
+		}
+		catch (final Exception e)
+		{
+			if((e instanceof SQLException)
+			&&((""+e.getMessage()).indexOf("dup")>=0))
+				throw (SQLException)e;
+			return -1;
+		}
+		return count[0];
 	}
 }

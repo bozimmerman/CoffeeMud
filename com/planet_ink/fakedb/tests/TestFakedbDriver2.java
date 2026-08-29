@@ -18,7 +18,7 @@ import java.util.List;
 import com.planet_ink.fakedb.backend.structure.FakeColumn;
 import com.planet_ink.fakedb.backend.structure.FlatFileFS;
 
-public class TestFakedbTable2
+public class TestFakedbDriver2
 {
 	private static int								passed			= 0;
 	private static int								failed			= 0;
@@ -188,6 +188,18 @@ public class TestFakedbTable2
 			schemaOut.println(line);
 		schemaOut.println();
 		schemaOut.close();
+		return dir;
+	}
+
+	private static File writeEmptySchema() throws IOException
+	{
+		final File dir = new File(System.getProperty("java.io.tmpdir"),
+				"fakedb2test-" + System.nanoTime() + "-" + (int) (Math.random() * 100000));
+		if (!dir.mkdirs())
+			throw new IOException("Could not create temp dir " + dir);
+		allTempDirs.add(dir);
+		if (!new File(dir, "fakedb.schema").createNewFile())
+			throw new IOException("Could not create schema file");
 		return dir;
 	}
 
@@ -542,6 +554,110 @@ public class TestFakedbTable2
 		}
 	}
 
+	// Phase G: updateRecord — in-place update, key change + dup check, persistence.
+	private static void testUpdateRecord() throws Exception
+	{
+		final String table = "T5";
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+
+		{
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+
+			st.executeUpdate("UPDATE " + table + " SET NAME='Alicia' WHERE USERID='u1'");
+			checkEq("upd-name", "Alicia", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			check("upd-marker-inplace", readMarker(dir, table, HEADER_SIZE) == '-', "updated row must remain '-' on disk");
+			check("upd-count", countRows(c, table) == 3, "expected 3 rows after update, got " + countRows(c, table));
+
+			st.executeUpdate("UPDATE " + table + " SET USERID='u1x' WHERE USERID='u1'");
+			checkEq("upd-key-new", "Alicia", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1x'", 1));
+			check("upd-key-old-gone", countResults(c, "SELECT * FROM " + table + " WHERE USERID='u1'") == 0,
+					"old key must be gone after key update");
+
+			boolean dupThrew = false;
+			try
+			{
+				st.executeUpdate("UPDATE " + table + " SET USERID='u2' WHERE USERID='u3'");
+			}
+			catch (final SQLException e)
+			{
+				dupThrew = (e.getMessage() != null) && (e.getMessage().indexOf("dup") >= 0);
+			}
+			check("upd-key-dup", dupThrew, "duplicate key update must throw");
+			st.close();
+			c.close();
+		}
+
+		{
+			final java.sql.Connection c = connect(dir);
+			checkEq("upd-reopen-name", "Alicia", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1x'", 1));
+			checkEq("upd-reopen-u2", "Bob", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u2'", 1));
+			check("upd-reopen-count", countRows(c, table) == 3, "expected 3 rows after reopen, got " + countRows(c, table));
+			c.close();
+		}
+	}
+
+	// Phase H: updateRecord on a CLOB column — new content round-trips and the old
+	// FlatFileFS entry is freed, leaving exactly one entry behind.
+	private static void testUpdateBlob() throws Exception
+	{
+		final String table = "T6";
+		final StringBuilder bio = new StringBuilder("");
+		for (int i = 0; i < 20; i++)
+			bio.append("ABCDEFGHIJ");
+		final String bio1 = bio.toString();
+		final String bio2 = bio.toString().replace('A', 'Z');
+
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,'" + bio1 + "')");
+
+		st.executeUpdate("UPDATE " + table + " SET BIO='" + bio2 + "' WHERE USERID='u1'");
+		final String readBack = querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1);
+		checkEq("updblob-roundtrip", bio2, readBack);
+		check("updblob-not-truncated", (readBack != null) && (readBack.length() == 200),
+				"updated blob content was truncated");
+		st.close();
+		c.close();
+
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		{
+			check("updblob-one-entry", fs.listAllFiles().size() == 1, "blob store must hold exactly 1 entry after update");
+		}
+	}
+
+	// Phase I: CREATE TABLE ... V2 — SQL DDL creates a v2 table (with sizes); CRUD works.
+	private static void testCreateTableV2() throws Exception
+	{
+		final String table = "T7";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), AGE INTEGER NULL, TS LONG NULL, BIO CLOB NULL (200))");
+
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,'hello-blob')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+
+		check("createv2-count", countRows(c, table) == 2, "expected 2 rows, got " + countRows(c, table));
+		checkEq("createv2-name", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+		checkEq("createv2-blob", "hello-blob", querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1));
+
+		st.executeUpdate("UPDATE " + table + " SET AGE=31 WHERE USERID='u1'");
+		checkEq("createv2-update", "31", querySingle(c, "SELECT AGE FROM " + table + " WHERE USERID='u1'", 1));
+		st.close();
+		c.close();
+
+		{
+			final java.sql.Connection c2 = connect(dir);
+			checkEq("createv2-reopen", "Alice", querySingle(c2, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			c2.close();
+		}
+	}
+
 	private static void testStoreValueWidths() throws Exception
 	{
 		check("width-integer", columnOf("INTEGER", 0).getStoreValueWidth() == 12, "expected 12");
@@ -583,6 +699,9 @@ public class TestFakedbTable2
 			runPhase("FreshInitHeader", TestFakedbTable2::testFreshInitHeader);
 			runPhase("InsertRecord", TestFakedbTable2::testInsertRecord);
 			runPhase("Blobs", TestFakedbTable2::testBlobs);
+			runPhase("UpdateRecord", TestFakedbTable2::testUpdateRecord);
+			runPhase("UpdateBlob", TestFakedbTable2::testUpdateBlob);
+			runPhase("CreateTableV2", TestFakedbTable2::testCreateTableV2);
 			runPhase("StoreValueWidths", TestFakedbTable2::testStoreValueWidths);
 		}
 		finally

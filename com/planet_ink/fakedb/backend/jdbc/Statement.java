@@ -367,7 +367,6 @@ public class Statement implements java.sql.Statement
 		}
 		catch (final java.sql.SQLException e)
 		{
-			e.printStackTrace();
 			log("unsupported SQL in executeUpdate: " + originalSql);
 			throw e;
 		}
