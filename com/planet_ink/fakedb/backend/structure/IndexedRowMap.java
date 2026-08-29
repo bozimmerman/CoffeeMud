@@ -123,4 +123,65 @@ public class IndexedRowMap
 		}
 		return iter;
 	}
+
+	/**
+	 * Return the ascending-sorted list for the given indexed column, building and
+	 * caching it on first use.
+	 */
+	private List<RecordInfo> forwardList(final int sortIndex)
+	{
+		if ((forwardSorted == null) || (sortIndex < 0) || (sortIndex >= forwardSorted.length))
+			return null;
+		synchronized (forwardSorted)
+		{
+			if (forwardSorted[sortIndex] == null)
+			{
+				final List<RecordInfo> newList = (List<RecordInfo>) unsortedRecords.clone();
+				Collections.sort(newList, forwardComparators[sortIndex]);
+				forwardSorted[sortIndex] = newList;
+			}
+			return forwardSorted[sortIndex];
+		}
+	}
+
+	/**
+	 * Return an iterator over records whose indexed column (sortIndex) equals the
+	 * given value, locating the match by binary search over the sorted cache
+	 * (O(log n) + number of matches) instead of a linear scan from the start.
+	 * @param sortIndex the indexed column position within indexedData
+	 * @param value the value to match
+	 * @return an iterator of matching RecordInfo (possibly empty)
+	 */
+	public synchronized Iterator<RecordInfo> lookupIterator(final int sortIndex, final ComparableValue value)
+	{
+		final List<RecordInfo> list = forwardList(sortIndex);
+		if (list == null)
+			return empty.iterator();
+		int lo = 0;
+		int hi = list.size() - 1;
+		int found = -1;
+		while (lo <= hi)
+		{
+			final int mid = (lo + hi) >>> 1;
+			final int c = list.get(mid).indexedData[sortIndex].compareTo(value);
+			if (c == 0)
+			{
+				found = mid;
+				break;
+			}
+			if (c < 0)
+				lo = mid + 1;
+			else
+				hi = mid - 1;
+		}
+		if (found < 0)
+			return empty.iterator();
+		int first = found;
+		while ((first > 0) && (list.get(first - 1).indexedData[sortIndex].compareTo(value) == 0))
+			first--;
+		int last = found;
+		while (((last + 1) < list.size()) && (list.get(last + 1).indexedData[sortIndex].compareTo(value) == 0))
+			last++;
+		return list.subList(first, last + 1).iterator();
+	}
 }

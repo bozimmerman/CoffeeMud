@@ -102,17 +102,7 @@ public class FakeTable
 		final FakeColumn col = columns[columnIndex];
 		if (col.indexNumber < 0)
 			return Collections.<RecordInfo>emptyList().iterator();
-		final List<RecordInfo> matches = new ArrayList<RecordInfo>();
-		for (final Iterator<RecordInfo> it = rowRecords.iterator(col.indexNumber, false); it.hasNext();)
-		{
-			final RecordInfo r = it.next();
-			final int c = r.indexedData[col.indexNumber].compareTo(value);
-			if (c > 0)
-				break;
-			if (c == 0)
-				matches.add(r);
-		}
-		return matches.iterator();
+		return rowRecords.lookupIterator(col.indexNumber, value);
 	}
 
 	/**
