@@ -295,7 +295,6 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected void finalize() throws Throwable
 	{
 		try
