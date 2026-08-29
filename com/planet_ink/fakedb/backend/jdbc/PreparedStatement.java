@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
@@ -285,19 +286,57 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 	@Override
 	public void setBlob(final int parameterIndex, final Blob x) throws SQLException
 	{
-		throw new SQLFeatureNotSupportedException();
+		if (x == null)
+			setObject(parameterIndex, null);
+		else
+			setObject(parameterIndex, new String(x.getBytes(1, (int) x.length()), StandardCharsets.UTF_8));
 	}
 
 	@Override
 	public void setBlob(final int parameterIndex, final InputStream inputStream) throws SQLException
 	{
-		throw new SQLFeatureNotSupportedException();
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		int c = 0;
+		while (c >= 0)
+		{
+			try
+			{
+				c = inputStream.read();
+				if (c >= 0)
+					bout.write(c);
+			}
+			catch (final IOException ioe)
+			{
+				throw new SQLException(ioe.getMessage());
+			}
+		}
+		setObject(parameterIndex, new String(bout.toByteArray(), StandardCharsets.UTF_8));
 	}
 
 	@Override
 	public void setBlob(final int parameterIndex, final InputStream inputStream, final long length) throws SQLException
 	{
-		throw new SQLFeatureNotSupportedException();
+		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		final byte[] buf = new byte[8192];
+		long remaining = length;
+		while (remaining > 0)
+		{
+			final int toRead = (int) Math.min(buf.length, remaining);
+			final int read;
+			try
+			{
+				read = inputStream.read(buf, 0, toRead);
+			}
+			catch (final IOException ioe)
+			{
+				throw new SQLException(ioe.getMessage());
+			}
+			if (read < 0)
+				break;
+			bout.write(buf, 0, read);
+			remaining -= read;
+		}
+		setObject(parameterIndex, new String(bout.toByteArray(), StandardCharsets.UTF_8));
 	}
 
 	@Override

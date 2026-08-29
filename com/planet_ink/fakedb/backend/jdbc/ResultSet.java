@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.sql.NClob;
 import java.sql.RowId;
 import java.sql.SQLException;
@@ -25,6 +26,7 @@ import com.planet_ink.fakedb.backend.structure.ComparableValue;
 import com.planet_ink.fakedb.backend.structure.FakeColumn;
 import com.planet_ink.fakedb.backend.structure.FakeCondition;
 import com.planet_ink.fakedb.backend.structure.FakeTable;
+import com.planet_ink.fakedb.backend.structure.FakeTable2;
 import com.planet_ink.fakedb.backend.structure.RecordInfo;
 
 /*
@@ -177,6 +179,18 @@ public class ResultSet implements java.sql.ResultSet
 		final Object o = getProperValue(columnIndex);
 		if(o == null)
 			return null;
+		final int colDex = showCols[columnIndex - 1];
+		final FakeColumn col = fakeTable.getColumnInfo(colDex);
+		if ((fakeTable instanceof FakeTable2) && (col != null) && col.isBlobColumn())
+		{
+			final String content = ((FakeTable2) fakeTable).loadBlob(o.toString());
+			if (content == null)
+			{
+				wasNullFlag = true;
+				return null;
+			}
+			return content;
+		}
 		return o.toString();
 	}
 
@@ -192,19 +206,19 @@ public class ResultSet implements java.sql.ResultSet
 	@Override
 	public java.sql.Blob getBlob(final int columnIndex) throws java.sql.SQLException
 	{
-		final Object o = getProperValue(columnIndex);
-		if(o == null)
+		final String content = getString(columnIndex);
+		if(content == null)
 			return null;
-		throw new java.sql.SQLException();
+		return new FakeBlob(content.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Override
 	public java.sql.Clob getClob(final int columnIndex) throws java.sql.SQLException
 	{
-		final Object o = getProperValue(columnIndex);
-		if(o == null)
+		final String content = getString(columnIndex);
+		if(content == null)
 			return null;
-		throw new java.sql.SQLException();
+		return new FakeClob(content);
 	}
 
 	@Override

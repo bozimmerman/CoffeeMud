@@ -342,6 +342,17 @@ public class Backend
 				throw new java.sql.SQLException("illegal value '" + sqlValues[index] + "' for column " + col.name);
 			}
 		}
+		final FakeTable2 table2 = (fakeTable instanceof FakeTable2) ? (FakeTable2) fakeTable : null;
+		for (int id = 0; id < fakeTable.columns.length; id++)
+		{
+			if ((table2 != null) && fakeTable.columns[id].isBlobColumn())
+			{
+				final ComparableValue val = values[id];
+				final Object o = (val == null) ? null : val.getValue();
+				if (o != null)
+					values[id] = new ComparableValue(table2.storeBlob(o.toString()));
+			}
+		}
 		final ComparableValue[] keys = new ComparableValue[fakeTable.columnIndexesOfIndexed.length];
 		for (int index = 0; index < fakeTable.columnIndexesOfIndexed.length; index++)
 		{
@@ -375,7 +386,55 @@ public class Backend
 		if (fakeTable == null)
 			throw new java.sql.SQLException("unknown table " + stmt.tableName);
 
-		fakeTable.deleteRecord(stmt.conditions);
+		final FakeTable2 table2 = (fakeTable instanceof FakeTable2) ? (FakeTable2) fakeTable : null;
+		boolean hasBlob = false;
+		if (table2 != null)
+		{
+			for (final FakeColumn col : fakeTable.columns)
+				if (col.isBlobColumn())
+				{
+					hasBlob = true;
+					break;
+				}
+		}
+		if (hasBlob)
+		{
+			final List<String> blobRefs = new ArrayList<String>();
+			try
+			{
+				final FakeConditionResponder responder = new FakeConditionResponder()
+				{
+					@Override
+					public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
+					{
+						for (int i = 0; i < fakeTable.columns.length; i++)
+						{
+							if (fakeTable.columns[i].isBlobColumn())
+							{
+								final ComparableValue val = values[i];
+								final Object o = (val == null) ? null : val.getValue();
+								if (o != null)
+									blobRefs.add(o.toString());
+							}
+						}
+					}
+				};
+				fakeTable.recordIterator(stmt.conditions, responder);
+			}
+			catch (final SQLException e)
+			{
+				throw e;
+			}
+			catch (final Exception e)
+			{
+				throw new java.sql.SQLException(e.getMessage(), e);
+			}
+			fakeTable.deleteRecord(stmt.conditions);
+			for (final String ref : blobRefs)
+				table2.freeBlob(ref);
+		}
+		else
+			fakeTable.deleteRecord(stmt.conditions);
 	}
 
 	/**

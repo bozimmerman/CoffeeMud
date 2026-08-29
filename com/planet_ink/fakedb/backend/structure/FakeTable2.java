@@ -43,9 +43,82 @@ public class FakeTable2 extends FakeTable
 
 	protected Map<FakeColumn, Long>	indexRoots	= new Hashtable<FakeColumn, Long>();
 
+	private FlatFileFS				blobStore	= null;
+
 	public FakeTable2(final String tableName, final File name)
 	{
 		super(tableName, name);
+	}
+
+	private FlatFileFS getBlobStore() throws SQLException
+	{
+		if (blobStore == null)
+		{
+			try
+			{
+				blobStore = new FlatFileFS(new File(fileName.getParentFile(), name + ".flatfs").getAbsolutePath());
+			}
+			catch (final IOException e)
+			{
+				throw new SQLException("Unable to open blob store for table " + name, e);
+			}
+		}
+		return blobStore;
+	}
+
+	public String storeBlob(final String content) throws SQLException
+	{
+		final String uuid = java.util.UUID.randomUUID().toString();
+		try
+		{
+			getBlobStore().writeFile(uuid, content);
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to store blob for table " + name, e);
+		}
+		return uuid;
+	}
+
+	public String loadBlob(final String ref) throws SQLException
+	{
+		try
+		{
+			return getBlobStore().readFile(ref);
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to read blob for table " + name, e);
+		}
+	}
+
+	public void freeBlob(final String ref) throws SQLException
+	{
+		try
+		{
+			getBlobStore().deleteFile(ref);
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to free blob for table " + name, e);
+		}
+	}
+
+	@Override
+	public synchronized void close()
+	{
+		if (blobStore != null)
+		{
+			try
+			{
+				blobStore.close();
+			}
+			catch (final IOException e)
+			{
+			}
+			blobStore = null;
+		}
+		super.close();
 	}
 
 	private String makePad(final int size)
@@ -282,12 +355,106 @@ public class FakeTable2 extends FakeTable
 		}
 	}
 
+	private void writeLongSlot(final byte[] row, final int offset, final long value)
+	{
+		final byte[] bytes = paddedLong(value).getBytes(StandardCharsets.US_ASCII);
+		System.arraycopy(bytes, 0, row, offset, longSize);
+	}
+
+	private void encodeValue(final FakeColumn col, final ComparableValue value, final byte[] row)
+	{
+		final int valueOffset = col.valueOffset;
+		final int valueWidth = col.getStoreValueWidth();
+		Arrays.fill(row, valueOffset, valueOffset + valueWidth, (byte) ' ');
+		row[valueOffset + valueWidth - 1] = (byte) '\n';
+		final Object o = (value == null) ? null : value.getValue();
+		if (o == null)
+			return;
+		switch (col.type)
+		{
+		case INTEGER:
+		case LONG:
+		case DATETIME:
+		case UNKNOWN:
+		{
+			final byte[] bytes = o.toString().getBytes(StandardCharsets.US_ASCII);
+			System.arraycopy(bytes, 0, row, valueOffset + valueWidth - 1 - bytes.length, bytes.length);
+			break;
+		}
+		case STRING:
+		{
+			final byte[] bytes = o.toString().getBytes(StandardCharsets.UTF_8);
+			final int len = Math.min(bytes.length, Math.min(col.size, 999));
+			final byte[] lenBytes = String.format("%03d", Integer.valueOf(len)).getBytes(StandardCharsets.US_ASCII);
+			System.arraycopy(lenBytes, 0, row, valueOffset, 3);
+			System.arraycopy(bytes, 0, row, valueOffset + 3, len);
+			break;
+		}
+		case BLOB:
+		case CLOB:
+		{
+			final byte[] bytes = o.toString().getBytes(StandardCharsets.US_ASCII);
+			row[valueOffset] = (byte) col.type.name().charAt(0);
+			System.arraycopy(bytes, 0, row, valueOffset + 1, Math.min(bytes.length, 36));
+			break;
+		}
+		}
+	}
+
 	@Override
 	public synchronized boolean insertRecord(final RecordInfo prevRecord, final ComparableValue[] indexData, final ComparableValue[] values)
 	{
 		if(version < 2)
 			return super.insertRecord(prevRecord, indexData, values);
-		return false;
+		try
+		{
+			if(file == null)
+				return false;
+			final byte[] row = new byte[rowWidth];
+			Arrays.fill(row, (byte) ' ');
+			row[0] = (byte) '-';
+			int idxPos = 1;
+			for (final FakeColumn col : columns)
+			{
+				if ((col.keyNumber >= 0) || (col.indexNumber > 0))
+				{
+					writeLongSlot(row, idxPos, 0);
+					writeLongSlot(row, idxPos + longSize, 0);
+					idxPos += longSize * 2;
+				}
+			}
+			for (int i = 0; i < columns.length; i++)
+				encodeValue(columns[i], values[i], row);
+
+			final int recordPos;
+			if (prevRecord != null)
+				recordPos = prevRecord.offset;
+			else
+			if (firstFreeRow != 0)
+			{
+				recordPos = (int) firstFreeRow;
+				file.seek(recordPos + 1);
+				final long nextFree = readCheckedLong().longValue();
+				firstFreeRow = nextFree;
+				file.seek(longSize);
+				file.write(paddedLong(firstFreeRow).getBytes(StandardCharsets.US_ASCII));
+			}
+			else
+				recordPos = (int) file.length();
+
+			file.seek(recordPos);
+			file.write(row, 0, rowWidth);
+			file.getFD().sync();
+
+			final RecordInfo info = new RecordInfo(recordPos, rowWidth);
+			info.indexedData = (indexData != null) ? indexData : parseIndexData(row);
+			rowRecords.add(info);
+			return true;
+		}
+		catch (final IOException e)
+		{
+			return false;
+		}
 	}
 
 	@Override

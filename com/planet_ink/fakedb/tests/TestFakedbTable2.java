@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
+import java.sql.Clob;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.planet_ink.fakedb.backend.structure.FakeColumn;
+import com.planet_ink.fakedb.backend.structure.FlatFileFS;
 
 public class TestFakedbTable2
 {
@@ -445,6 +447,101 @@ public class TestFakedbTable2
 		}
 	}
 
+	// Phase E: insertRecord — fresh schema, insert via JDBC, verify rows,
+	// on-disk markers, free-list reuse, and persistence across reopen.
+	private static void testInsertRecord() throws Exception
+	{
+		final String table = "T3";
+		final int rw = rowWidth();
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+
+		{
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+
+			check("ins-count-3", countRows(c, table) == 3, "expected 3 rows after insert, got " + countRows(c, table));
+			checkEq("ins-read-name", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			checkEq("ins-read-ts", "3000", querySingle(c, "SELECT TS FROM " + table + " WHERE USERID='u3'", 1));
+
+			check("ins-marker0", readMarker(dir, table, HEADER_SIZE) == '-', "first row must be '-' on disk");
+			check("ins-marker1", readMarker(dir, table, HEADER_SIZE + rw) == '-', "second row must be '-' on disk");
+			checkEq("ins-head0", Long.valueOf(0L), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE)));
+
+			// delete u2 (2nd row), then insert u4 — the freed slot must be reused.
+			st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u2'");
+			st.executeUpdate("INSERT INTO " + table + " VALUES ('u4','Dana',42,4000,null)");
+			check("ins-count-after-reuse", countRows(c, table) == 3, "expected 3 after delete+insert, got " + countRows(c, table));
+			checkEq("ins-reuse-head", Long.valueOf(0L), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE)));
+			check("ins-reuse-marker", readMarker(dir, table, HEADER_SIZE + rw) == '-', "u4 must reuse the freed 2nd-row slot");
+			checkEq("ins-reuse-read", "Dana", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u4'", 1));
+			st.close();
+			c.close();
+		}
+
+		{
+			final java.sql.Connection c = connect(dir); // reopen: rows + free-list head persist
+			check("ins-reopen-count", countRows(c, table) == 3, "expected 3 after reopen, got " + countRows(c, table));
+			checkEq("ins-reopen-u1", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			checkEq("ins-reopen-u4", "Dana", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u4'", 1));
+			checkEq("ins-reopen-head", Long.valueOf(0L), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE)));
+			c.close();
+		}
+	}
+
+	// Phase F: BLOB/CLOB content stored in the table's own FlatFileFS and
+	// referenced from the row; full-content round-trip and persistence.
+	private static void testBlobs() throws Exception
+	{
+		final String table = "T4";
+		final StringBuilder bio = new StringBuilder("");
+		for (int i = 0; i < 20; i++)
+			bio.append("ABCDEFGHIJ");
+		final String bioContent = bio.toString(); // 200 chars, > 36
+
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,'" + bioContent + "')");
+
+		check("blob-count", countRows(c, table) == 1, "expected 1 row with blob, got " + countRows(c, table));
+		final String readBack = querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1);
+		checkEq("blob-roundtrip", bioContent, readBack);
+		check("blob-not-truncated", (readBack != null) && (readBack.length() == 200),
+				"blob content was truncated to " + ((readBack == null) ? "null" : Integer.valueOf(readBack.length())));
+
+		final java.sql.ResultSet rs = st.executeQuery("SELECT BIO FROM " + table + " WHERE USERID='u1'");
+		check("blob-clob-next", rs.next(), "expected a row for getClob");
+		final Clob clob = rs.getClob(1);
+		checkEq("blob-clob-length", Long.valueOf(200L), Long.valueOf(clob.length()));
+		checkEq("blob-clob-substring", bioContent, clob.getSubString(1, 200));
+		rs.close();
+
+		st.close();
+		c.close();
+
+		{
+			final java.sql.Connection c2 = connect(dir); // reopen: content persists
+			checkEq("blob-reopen", bioContent, querySingle(c2, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1));
+			c2.close();
+		}
+
+		{
+			final java.sql.Connection c2 = connect(dir); // delete frees the FlatFileFS entry
+			final Statement st2 = c2.createStatement();
+			st2.executeUpdate("DELETE FROM " + table + " WHERE USERID='u1'");
+			check("blob-del-count", countRows(c2, table) == 0, "expected 0 rows after delete, got " + countRows(c2, table));
+			st2.close();
+			c2.close();
+		}
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		{
+			check("blob-freed", fs.listAllFiles().size() == 0, "blob store should be empty after delete");
+		}
+	}
+
 	private static void testStoreValueWidths() throws Exception
 	{
 		check("width-integer", columnOf("INTEGER", 0).getStoreValueWidth() == 12, "expected 12");
@@ -484,6 +581,8 @@ public class TestFakedbTable2
 			runPhase("ScanAndDelete", TestFakedbTable2::testScanAndDelete);
 			runPhase("ReopenAndNonIndexedDelete", TestFakedbTable2::testReopenAndNonIndexedDelete);
 			runPhase("FreshInitHeader", TestFakedbTable2::testFreshInitHeader);
+			runPhase("InsertRecord", TestFakedbTable2::testInsertRecord);
+			runPhase("Blobs", TestFakedbTable2::testBlobs);
 			runPhase("StoreValueWidths", TestFakedbTable2::testStoreValueWidths);
 		}
 		finally

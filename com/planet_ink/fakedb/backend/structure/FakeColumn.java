@@ -80,5 +80,10 @@ public class FakeColumn
 		}
 	}
 
+	public boolean isBlobColumn()
+	{
+		return (type == FakeColType.BLOB) || (type == FakeColType.CLOB);
+	}
+
 	public static final int	INDEX_COUNT		= Integer.MAX_VALUE;
 }
