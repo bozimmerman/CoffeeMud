@@ -46,7 +46,7 @@ public class Driver implements java.sql.Driver
 		final Properties p = parseUrl(url, info);
 		if (p == null)
 			return null;
-		return new Connection(p.getProperty("PATH"));
+		return new Connection(p.getProperty("PATH"), p.getProperty("version"));
 	}
 
 	@Override
@@ -85,10 +85,29 @@ public class Driver implements java.sql.Driver
 			return null;
 
 		String path = url.substring(12);
+
+		final Properties result = new Properties(defaults);
+
+		final int q = path.indexOf('?');
+		if (q >= 0)
+		{
+			final String query = path.substring(q + 1);
+			path = path.substring(0, q);
+			for (final String pair : query.split("&"))
+			{
+				if (pair.length() == 0)
+					continue;
+				final int eq = pair.indexOf('=');
+				if (eq > 0)
+					result.put(pair.substring(0, eq).trim(), pair.substring(eq + 1).trim());
+				else
+					result.put(pair.trim(), "");
+			}
+		}
+
 		if ((path.length() > 0) && (!path.endsWith(java.io.File.separator)))
 			path = path + java.io.File.separator;
 
-		final Properties result = new Properties(defaults);
 		result.put("PATH", path.replace('/', java.io.File.separatorChar));
 
 		return result;

@@ -49,7 +49,12 @@ public class Connection implements java.sql.Connection
 
 	public Connection(final String path) throws java.sql.SQLException
 	{
-		connect(path);
+		connect(path, null);
+	}
+
+	public Connection(final String path, final String version) throws java.sql.SQLException
+	{
+		connect(path, version);
 	}
 
 	public String getOldPath()
@@ -57,43 +62,50 @@ public class Connection implements java.sql.Connection
 		return oldPath;
 	}
 
-	private void connect(String path) throws java.sql.SQLException
+	private void connect(final String path, final String version) throws java.sql.SQLException
 	{
+		String canonicalPath = path;
 		try
 		{
-			path = (new java.io.File(path)).getCanonicalPath();
+			canonicalPath = (new java.io.File(path)).getCanonicalPath();
 		}
 		catch (final java.io.IOException e)
 		{
 		}
 
-		oldPath = path;
+		oldPath = canonicalPath;
 		if (!closed)
 		{
 			synchronized (references)
 			{
-				Integer conCount = references.get(path);
+				Integer conCount = references.get(canonicalPath);
 				if (conCount == null)
 					conCount = Integer.valueOf(0);
-				references.remove(path);
-				references.put(path, Integer.valueOf(conCount.intValue() + 1));
+				references.remove(canonicalPath);
+				references.put(canonicalPath, Integer.valueOf(conCount.intValue() + 1));
 			}
 		}
 
 		synchronized (databases)
 		{
-			final WeakReference<Backend> ref = databases.get(path);
+			final WeakReference<Backend> ref = databases.get(canonicalPath);
 			Backend backend = null;
 			if (ref != null)
 				backend = ref.get();
 			if (backend == null)
 			{
-				backend = new Backend(new java.io.File(path));
+				backend = new Backend(new java.io.File(canonicalPath));
 				try
 				{
+					if (version != null)
+						backend.setDefaultTableVersion(Integer.parseInt(version.trim()));
 					if (!backend.open())
 						throw new java.sql.SQLException("unable to open database");
-					databases.put(path, new WeakReference<Backend>(backend));
+					databases.put(canonicalPath, new WeakReference<Backend>(backend));
+				}
+				catch(final NumberFormatException e)
+				{
+					throw new java.sql.SQLException("Invalid fakedb version property: "+version);
 				}
 				catch(final IOException e)
 				{
@@ -433,7 +445,7 @@ public class Connection implements java.sql.Connection
 	@Override
 	public void setSchema(final String schema) throws SQLException
 	{
-		connect(schema);
+		connect(schema, null);
 	}
 
 	@Override

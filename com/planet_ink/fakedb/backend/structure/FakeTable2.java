@@ -389,24 +389,60 @@ public class FakeTable2 extends FakeTable
 
 	/**
 	 * Build the on-disk indexes by linking every active row into each indexed
-	 * column's tree, then mark the header as indexed.
+	 * column's tree, then mark the header as indexed.  Rows are linked in a
+	 * balanced (median-first) order so the resulting tree is height-balanced,
+	 * regardless of the physical row order in the file.
 	 */
 	private void buildIndexes() throws IOException
 	{
 		final byte[] row = new byte[rowWidth];
-		for (long off = headerSize; off < file.length(); off += rowWidth)
+		for (final FakeColumn col : columns)
 		{
-			file.seek(off);
-			file.readFully(row);
-			if (row[0] != '-')
+			if (col.indexNumber < 0)
 				continue;
-			for (final FakeColumn col : columns)
-				if (col.indexNumber >= 0)
-					link(col, off);
+			final List<Object[]> pairs = new ArrayList<Object[]>();
+			for (long off = headerSize; off < file.length(); off += rowWidth)
+			{
+				file.seek(off);
+				file.readFully(row);
+				if (row[0] == '-')
+					pairs.add(new Object[] { parseValue(col, row, col.valueOffset, col.getStoreValueWidth()), Long.valueOf(off) });
+			}
+			Collections.sort(pairs, new Comparator<Object[]>()
+			{
+				@Override
+				public int compare(final Object[] a, final Object[] b)
+				{
+					final ComparableValue ka = (ComparableValue) a[0];
+					final ComparableValue kb = (ComparableValue) b[0];
+					final int cmp = ka.compareTo(kb);
+					if (cmp != 0)
+						return cmp;
+					return Long.compare(((Long) a[1]).longValue(), ((Long) b[1]).longValue());
+				}
+			});
+			final List<Long> offsets = new ArrayList<Long>(pairs.size());
+			for (final Object[] p : pairs)
+				offsets.add((Long) p[1]);
+			linkBalanced(col, offsets, 0, offsets.size() - 1);
 		}
 		file.seek(11);
 		file.write((byte) 'I');
 		file.getFD().sync();
+	}
+
+	/**
+	 * Link the given (sorted by key) row offsets into col's tree in median-first
+	 * order, producing a balanced binary search tree.
+	 */
+	private void linkBalanced(final FakeColumn col, final List<Long> offsets, final int lo, final int hi) throws IOException
+	{
+		if (lo > hi)
+			return;
+		final int mid = (lo + hi) >>> 1;
+		link(col, offsets.get(mid).longValue());
+		linkBalanced(col, offsets, lo, mid - 1);
+		linkBalanced(col, offsets, mid + 1, hi);
 	}
 
 	private final class InOrderIterator implements Iterator<RecordInfo>

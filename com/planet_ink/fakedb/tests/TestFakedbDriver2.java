@@ -759,9 +759,10 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		final long u3off = HEADER_SIZE;
 		final long u1off = HEADER_SIZE + rw;
 		final long u2off = HEADER_SIZE + 2L * rw;
-		checkEq("idx-root", Long.valueOf(u3off), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE * 2)));
-		checkEq("idx-u3-left", Long.valueOf(u1off), Long.valueOf(readPaddedLong(dir, table, u3off + 1)));
-		checkEq("idx-u1-right", Long.valueOf(u2off), Long.valueOf(readPaddedLong(dir, table, u1off + 1 + LONG_SIZE)));
+		// balanced build links the median key (u2) as root, u1 left, u3 right
+		checkEq("idx-root", Long.valueOf(u2off), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE * 2)));
+		checkEq("idx-u2-left", Long.valueOf(u1off), Long.valueOf(readPaddedLong(dir, table, u2off + 1)));
+		checkEq("idx-u2-right", Long.valueOf(u3off), Long.valueOf(readPaddedLong(dir, table, u2off + 1 + LONG_SIZE)));
 		check("idx-memory-free", rowRecordsEmpty(c, table), "rowRecords must be empty for disk-backed v2");
 
 		checkEq("idx-orderby", "u1,u2,u3", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
@@ -896,6 +897,126 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		c.close();
 	}
 
+	// Phase R2: ALTER TABLE ADD INDEX on a STRING column must preserve the column's
+	// size (regression for the "Unable to compute new layout" bug that dropped the
+	// size token from the schema line).
+	private static void testAddIndexStringV2() throws Exception
+	{
+		final String table = "T20";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), AGE INTEGER NULL)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Charlie',35)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Bob',25)");
+
+		st.executeUpdate("ALTER TABLE " + table + " ADD INDEX (NAME)");
+		check("addidxstr-count", countRows(c, table) == 3, "expected 3 rows after ADD INDEX, got " + countRows(c, table));
+		checkEq("addidxstr-orderby", "u1,u3,u2", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY NAME"));
+		checkEq("addidxstr-lookup", "Charlie", querySingle(c, "SELECT NAME FROM " + table + " WHERE NAME='Charlie'", 1));
+
+		st.executeUpdate("ALTER TABLE " + table + " DROP INDEX NAME");
+		boolean threw = false;
+		try
+		{
+			st.executeQuery("SELECT * FROM " + table + " ORDER BY NAME");
+		}
+		catch (final SQLException e)
+		{
+			threw = true;
+		}
+		check("addidxstr-drop", threw, "ORDER BY NAME should fail after DROP INDEX");
+
+		st.close();
+		c.close();
+
+		{
+			final java.sql.Connection c2 = connect(dir);
+			checkEq("addidxstr-reopen", "Alice", querySingle(c2, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			c2.close();
+		}
+	}
+
+	// Phase R3: a "#VERSION 2" directive in fakedb.schema (settable via the JDBC
+	// "version" property or URL query) makes CREATE TABLE default to v2, with no
+	// non-standard "V2" keyword needed in the SQL.
+	private static String readSchemaFile(final File dir) throws IOException
+	{
+		final StringBuilder sb = new StringBuilder();
+		final java.io.BufferedReader in = new java.io.BufferedReader(new java.io.FileReader(new File(dir, "fakedb.schema")));
+		try
+		{
+			String line;
+			while ((line = in.readLine()) != null)
+				sb.append(line).append('\n');
+		}
+		finally
+		{
+			in.close();
+		}
+		return sb.toString();
+	}
+
+	private static void testSchemaVersionFlag() throws Exception
+	{
+		{
+			final File dir = createTempDB();
+			final java.util.Properties props = new java.util.Properties();
+			props.setProperty("version", "2");
+			final java.sql.Connection c = DriverManager.getConnection("jdbc:fakedb:" + dir.getAbsolutePath(), props);
+			final Statement st = c.createStatement();
+
+			final String schema1 = readSchemaFile(dir);
+			check("flag-written", schema1.contains("#VERSION 2"), "schema should contain #VERSION 2, got:\n" + schema1);
+
+			st.executeUpdate("CREATE TABLE T30 (USERID STRING KEY (50), NAME STRING NULL (50), AGE INTEGER NULL)");
+			st.executeUpdate("INSERT INTO T30 VALUES ('u1','Alice',30)");
+			checkEq("flag-read", "Alice", querySingle(c, "SELECT NAME FROM T30 WHERE USERID='u1'", 1));
+
+			final String schema2 = readSchemaFile(dir);
+			check("flag-table-v2", schema2.contains("T30 V2"), "T30 should be V2 in schema, got:\n" + schema2);
+
+			boolean sizeThrew = false;
+			try
+			{
+				st.executeUpdate("CREATE TABLE T30BAD (NAME STRING NULL)");
+			}
+			catch (final SQLException e)
+			{
+				sizeThrew = true;
+			}
+			check("flag-v2-requires-size", sizeThrew, "un-sized STRING should fail under v2 default");
+
+			st.close();
+			c.close();
+		}
+
+		{
+			// URL query form: jdbc:fakedb:<path>?version=2
+			final File dir = createTempDB();
+			final java.sql.Connection c = DriverManager.getConnection("jdbc:fakedb:" + dir.getAbsolutePath() + "?version=2");
+			final Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE T31 (USERID STRING KEY (50), VAL INTEGER NULL)");
+			st.executeUpdate("INSERT INTO T31 VALUES ('k1', 7)");
+			checkEq("flag-url-read", "7", querySingle(c, "SELECT VAL FROM T31 WHERE USERID='k1'", 1));
+			check("flag-url-v2", readSchemaFile(dir).contains("T31 V2"), "T31 should be V2 via URL ?version=2");
+			st.close();
+			c.close();
+		}
+
+		{
+			// No flag: default stays v1 and un-sized STRING is allowed.
+			final File dir = createTempDB();
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE T32 (NAME STRING NULL)");
+			check("flag-absent-v1", readSchemaFile(dir).contains("T32 V1"), "T32 should default to V1 without a flag");
+			st.close();
+			c.close();
+		}
+	}
+
 	private static void testStoreValueWidths() throws Exception
 	{
 		check("width-integer", columnOf("INTEGER", 0).getStoreValueWidth() == 12, "expected 12");
@@ -1007,6 +1128,8 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			runPhase("NonUniqueIndexV2", TestFakedbDriver2::testNonUniqueIndexV2);
 			runPhase("FreeListReuseIndexV2", TestFakedbDriver2::testFreeListReuseIndexV2);
 			runPhase("DeleteTwoChildrenV2", TestFakedbDriver2::testDeleteTwoChildrenV2);
+			runPhase("AddIndexStringV2", TestFakedbDriver2::testAddIndexStringV2);
+			runPhase("SchemaVersionFlag", TestFakedbDriver2::testSchemaVersionFlag);
 			runPhase("StoreValueWidths", TestFakedbDriver2::testStoreValueWidths);
 			runPhase("BigIndexV2", TestFakedbDriver2::testBigIndexV2);
 
@@ -1017,6 +1140,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			runPhase("PersistenceV2", TestFakedbDriver2::testPersistence);
 			runPhase("TypesV2", TestFakedbDriver2::testTypes);
 			runPhase("ConcurrencyV2", TestFakedbDriver2::testConcurrency);
+			runPhase("PerformanceV2", TestFakedbDriver2::testPerformance);
 		}
 		finally
 		{

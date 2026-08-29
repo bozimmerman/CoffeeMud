@@ -30,15 +30,17 @@ public class ImplCreateStatement extends ImplAbstractStatement
 {
 	final FakeColumn[] columns;
 
-	public ImplCreateStatement(final String tableName, final int version, final FakeColumn[] columns)
+	public ImplCreateStatement(final String tableName, final int version, final boolean versionSpecified, final FakeColumn[] columns)
 	{
 		this.tableName = tableName;
 		this.version = version;
+		this.versionSpecified = versionSpecified;
 		this.columns = columns;
 	}
 
 	public final String					tableName;
 	public final int					version;
+	public final boolean				versionSpecified;
 	private final Boolean[]				unPreparedValues	= new Boolean[0];
 
 	@Override
@@ -85,12 +87,14 @@ public class ImplCreateStatement extends ImplAbstractStatement
 		final String tableName = r[1].trim().toUpperCase();
 		sql = skipWS(sql);
 		int version = 1;
+		boolean versionSpecified = false;
 		if ((sql.length() >= 3) && ((sql.charAt(0) == 'V') || (sql.charAt(0) == 'v')) && Character.isDigit(sql.charAt(1)))
 		{
 			final String after = skipWS(sql.substring(2));
 			if ((after.length() > 0) && (after.charAt(0) == '('))
 			{
 				version = sql.charAt(1) - '0';
+				versionSpecified = true;
 				sql = after;
 			}
 		}
@@ -237,6 +241,6 @@ public class ImplCreateStatement extends ImplAbstractStatement
 		sql = skipWS(sql);
 		if (sql.length() > 0)
 			throw new java.sql.SQLException("no more sql or missing comma/paren");
-		return new ImplCreateStatement(tableName, version, columnList.toArray(new FakeColumn[0]));
+		return new ImplCreateStatement(tableName, version, versionSpecified, columnList.toArray(new FakeColumn[0]));
 	}
 }

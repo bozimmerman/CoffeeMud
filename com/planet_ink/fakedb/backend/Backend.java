@@ -43,6 +43,7 @@ public class Backend
 {
 	File							basePath;
 	private Map<String, FakeTable>	fakeTables	= new HashMap<String, FakeTable>();
+	private int						defaultTableVersion	= 1;
 
 
 	public Backend(final File basePath)
@@ -148,6 +149,7 @@ public class Backend
 	public void readSchema(final File basePath) throws SQLException
 	{
 		final List<List<String>> schema = readRawSchema();
+		defaultTableVersion = readSchemaVersionFlag(schema);
 		for(final List<String> group : schema)
 		{
 			if((group.size()==0)||(group.get(0).startsWith("#")))
@@ -181,6 +183,73 @@ public class Backend
 			}
 			fakeTables.put(tableName, fakeTable);
 		}
+	}
+
+	/**
+	 * Scan the raw schema groups for a "#VERSION n" directive line and return the
+	 * requested default table version, or 1 if no directive is present.
+	 * @param schema the raw schema groups
+	 * @return the default table version (1 unless overridden)
+	 */
+	private int readSchemaVersionFlag(final List<List<String>> schema)
+	{
+		for (final List<String> group : schema)
+		{
+			for (final String line : group)
+			{
+				final String s = line.trim();
+				if (s.toUpperCase().startsWith("#VERSION"))
+				{
+					final String[] parts = s.split("\\s+");
+					if (parts.length > 1)
+					{
+						try
+						{
+							final int v = Integer.parseInt(parts[1]);
+							if (v > 0)
+								return v;
+						}
+						catch (final NumberFormatException e)
+						{
+						}
+					}
+				}
+			}
+		}
+		return 1;
+	}
+
+	/**
+	 * Persist the default table version into the schema file as a "#VERSION n"
+	 * directive, and apply it to the in-memory backend.
+	 * @param version the default table version to use for new tables
+	 * @throws SQLException if the schema file cannot be read or written
+	 */
+	public synchronized void setDefaultTableVersion(final int version) throws SQLException
+	{
+		defaultTableVersion = version;
+		final File schemaFile = new File(basePath, "fakedb.schema");
+		final List<List<String>> schema;
+		if (schemaFile.exists())
+			schema = readRawSchema();
+		else
+			schema = new ArrayList<List<String>>();
+		for (final List<String> group : schema)
+		{
+			final Iterator<String> it = group.iterator();
+			while (it.hasNext())
+			{
+				if (it.next().trim().toUpperCase().startsWith("#VERSION"))
+					it.remove();
+			}
+		}
+		for (final Iterator<List<String>> it = schema.iterator(); it.hasNext();)
+			if (it.next().isEmpty())
+				it.remove();
+		final List<String> flagGroup = new ArrayList<String>();
+		flagGroup.add("#VERSION " + version);
+		schema.add(0, flagGroup);
+		rewriteRawSchema(schema);
 	}
 
 	/**
@@ -773,6 +842,24 @@ public class Backend
 	}
 
 	/**
+	 * Return the trailing numeric size token of a schema column-definition line,
+	 * e.g. " 50" for "SVAL STRING NULL 50", or "" if the column has no size.
+	 * @param colDef the column-definition line
+	 * @return the size token (with leading space), or empty string
+	 */
+	private static String columnSizeToken(final String colDef)
+	{
+		final String[] parts = colDef.trim().split("\\s+");
+		if (parts.length > 2)
+		{
+			final String last = parts[parts.length - 1];
+			if ((last.length() > 0) && Character.isDigit(last.charAt(0)))
+				return " " + last;
+		}
+		return "";
+	}
+
+	/**
 	 * Alter a table
 	 * @param stmt The alter statement
 	 * @throws SQLException if it fails
@@ -815,9 +902,9 @@ public class Backend
 						throw new java.sql.SQLException("column " + colName + " is already a key");
 					final int secondSpaceIndex = colDef.indexOf(' ', colDef.indexOf(' ') + 1);
 					if (secondSpaceIndex < 0)
-						colDef = colDef + " KEY";
+						colDef = colDef + " KEY" + columnSizeToken(colDef);
 					else
-						colDef = colDef.substring(0, secondSpaceIndex) + " KEY";
+						colDef = colDef.substring(0, secondSpaceIndex) + " KEY" + columnSizeToken(colDef);
 					tableDef.set(index, colDef);
 				}
 			}
@@ -835,12 +922,11 @@ public class Backend
 						throw new java.sql.SQLException("column " + colName + " is already a key");
 					if (colDef.toUpperCase().indexOf(" INDEX") > 0)
 						throw new java.sql.SQLException("column " + colName + " is already a index");
-					final boolean nullable = colDef.toUpperCase().indexOf(" NULL") > 0;
 					final int secondSpaceIndex = colDef.indexOf(' ', colDef.indexOf(' ') + 1);
 					if (secondSpaceIndex < 0)
 						colDef = colDef + " INDEX";
 					else
-						colDef = colDef.substring(0, secondSpaceIndex) + " INDEX" + (nullable ? " NULL" : "");
+						colDef = colDef.substring(0, secondSpaceIndex) + " INDEX" + colDef.substring(secondSpaceIndex);
 					tableDef.set(index, colDef);
 				}
 			}
@@ -960,7 +1046,7 @@ public class Backend
 	public void createTable(final ImplCreateStatement stmt) throws SQLException
 	{
 		final String tableName = stmt.tableName;
-		final int version = stmt.version;
+		final int version = stmt.versionSpecified ? stmt.version : defaultTableVersion;
 		final FakeColumn[] columns = (FakeColumn[])stmt.extValues();
 		if (fakeTables.get(tableName) != null)
 			throw new java.sql.SQLException("table " + tableName + " already exists");

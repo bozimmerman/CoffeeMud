@@ -1427,6 +1427,162 @@ public class TestFakedbDriver
 		}
 	}
 
+	protected static void reportPerf(final String label, final int ops, final long startNanos)
+	{
+		final long ms = (System.nanoTime() - startNanos) / 1_000_000L;
+		final double rate = (ms == 0) ? (ops * 1000.0) : (ops * 1000.0 / ms);
+		System.out.println(String.format("[perf] %-26s %9d ops  %9d ms  %14.1f ops/sec",
+				label, Integer.valueOf(ops), Long.valueOf(ms), Double.valueOf(rate)));
+	}
+
+	protected static void reportPerfBytes(final String label, final int ops, final long bytes, final long startNanos)
+	{
+		final long ms = (System.nanoTime() - startNanos) / 1_000_000L;
+		final double rate = (ms == 0) ? (ops * 1000.0) : (ops * 1000.0 / ms);
+		final double mbs = (ms == 0) ? (bytes / 1048576.0 * 1000.0) : (bytes / 1048576.0 * 1000.0 / ms);
+		System.out.println(String.format("[perf] %-26s %9d ops  %9d ms  %14.1f ops/sec  %10.1f MB/sec",
+				label, Integer.valueOf(ops), Long.valueOf(ms), Double.valueOf(rate), Double.valueOf(mbs)));
+	}
+
+	protected static void testPerformance() throws SQLException, IOException
+	{
+		final int ROWS = Integer.getInteger("fakedb.perf.rows", 100000).intValue();
+		final int LOOKUPS = Integer.getInteger("fakedb.perf.lookups", 20000).intValue();
+		final int SCANS = Integer.getInteger("fakedb.perf.scans", 3).intValue();
+		final int BLOB_ROWS = Math.min(ROWS, Integer.getInteger("fakedb.perf.blobrows", 2000).intValue());
+
+		final StringBuilder blobBuilder = new StringBuilder();
+		for (int i = 0; i < 200; i++)
+			blobBuilder.append((char) ('A' + (i % 26)));
+		final String blobContent = blobBuilder.toString();
+
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+
+		createTable.run(st, tbl, "(PKEY STRING KEY, IVAL INTEGER NULL, SVAL STRING NULL)");
+
+		System.out.println("[perf] table=" + tbl + " rows=" + ROWS + " lookups=" + LOOKUPS + " scans=" + SCANS + " blobrows=" + BLOB_ROWS);
+
+		final java.sql.PreparedStatement ins = c.prepareStatement("INSERT INTO " + tbl + " VALUES (?, ?, ?)");
+		long t0 = System.nanoTime();
+		for (int i = 0; i < ROWS; i++)
+		{
+			ins.setString(1, "k" + i);
+			ins.setInt(2, i);
+			ins.setString(3, "sv" + (i % 100));
+			ins.executeUpdate();
+		}
+		reportPerf("insert (writes)", ROWS, t0);
+		check("perf-write-count", countRows(c, tbl) == ROWS, "expected " + ROWS + " rows, got " + countRows(c, tbl));
+		ins.close();
+
+		final java.sql.PreparedStatement keySel = c.prepareStatement("SELECT * FROM " + tbl + " WHERE PKEY = ?");
+		int hits = 0;
+		t0 = System.nanoTime();
+		for (int i = 0; i < LOOKUPS; i++)
+		{
+			keySel.setString(1, "k" + (i * 7919 % ROWS));
+			final java.sql.ResultSet rs = keySel.executeQuery();
+			if (rs.next())
+				hits++;
+			rs.close();
+		}
+		reportPerf("key lookup", LOOKUPS, t0);
+		check("perf-key-lookup-hits", hits == LOOKUPS, "expected " + LOOKUPS + " hits, got " + hits);
+		keySel.close();
+
+		st.executeUpdate("ALTER TABLE " + tbl + " ADD INDEX (IVAL)");
+		final java.sql.PreparedStatement idxSel = c.prepareStatement("SELECT * FROM " + tbl + " WHERE IVAL = ?");
+		int idxHits = 0;
+		t0 = System.nanoTime();
+		for (int i = 0; i < LOOKUPS; i++)
+		{
+			idxSel.setInt(1, (i * 7919) % ROWS);
+			final java.sql.ResultSet rs = idxSel.executeQuery();
+			if (rs.next())
+				idxHits++;
+			rs.close();
+		}
+		reportPerf("index lookup", LOOKUPS, t0);
+		check("perf-index-lookup-hits", idxHits == LOOKUPS, "expected " + LOOKUPS + " hits, got " + idxHits);
+		idxSel.close();
+
+		long scanned = 0;
+		t0 = System.nanoTime();
+		for (int s = 0; s < SCANS; s++)
+		{
+			final java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl);
+			while (rs.next())
+				scanned++;
+			rs.close();
+		}
+		reportPerf("scan (full table)", (int) scanned, t0);
+
+		long ordered = 0;
+		t0 = System.nanoTime();
+		for (int s = 0; s < SCANS; s++)
+		{
+			final java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl + " ORDER BY PKEY");
+			while (rs.next())
+				ordered++;
+			rs.close();
+		}
+		reportPerf("order-by scan (key)", (int) ordered, t0);
+
+		long orderedIdx = 0;
+		t0 = System.nanoTime();
+		for (int s = 0; s < SCANS; s++)
+		{
+			final java.sql.ResultSet rs = st.executeQuery("SELECT * FROM " + tbl + " ORDER BY IVAL");
+			while (rs.next())
+				orderedIdx++;
+			rs.close();
+		}
+		reportPerf("order-by scan (index)", (int) orderedIdx, t0);
+
+		final String btbl = nextTableName();
+		createTable.run(st, btbl, "(BKEY STRING KEY, BLOBVAL CLOB NULL)");
+		final java.sql.PreparedStatement bins = c.prepareStatement("INSERT INTO " + btbl + " VALUES (?, ?)");
+		for (int i = 0; i < BLOB_ROWS; i++)
+		{
+			bins.setString(1, "b" + i);
+			bins.setString(2, blobContent);
+			bins.executeUpdate();
+		}
+		bins.close();
+
+		final java.sql.PreparedStatement blobSel = c.prepareStatement("SELECT BLOBVAL FROM " + btbl + " WHERE BKEY = ?");
+		long blobBytes = 0;
+		int blobHits = 0;
+		t0 = System.nanoTime();
+		for (int i = 0; i < LOOKUPS; i++)
+		{
+			blobSel.setString(1, "b" + (i % BLOB_ROWS));
+			final java.sql.ResultSet rs = blobSel.executeQuery();
+			if (rs.next())
+			{
+				final String b = rs.getString(1);
+				if (b != null)
+				{
+					blobBytes += b.length();
+					blobHits++;
+				}
+			}
+			rs.close();
+		}
+		reportPerfBytes("blob/clob read", LOOKUPS, blobBytes, t0);
+		check("perf-blob-read-hits", blobHits == LOOKUPS, "expected " + LOOKUPS + " blob reads, got " + blobHits);
+		blobSel.close();
+
+		final String checkBlob = querySingle(c, "SELECT BLOBVAL FROM " + btbl + " WHERE BKEY = 'b0'", 1);
+		check("perf-blob-roundtrip", blobContent.equals(checkBlob),
+				"blob round-trip mismatch (got " + (checkBlob == null ? "null" : checkBlob.length() + " chars") + ")");
+
+		st.close();
+	}
+
 	public static void main(final String[] args)
 	{
 		realErr = System.err;
@@ -1461,6 +1617,7 @@ public class TestFakedbDriver
 			runPhase("Types", TestFakedbDriver::testTypes);
 			runPhase("CorruptionResilience", TestFakedbDriver::testCorruptionResilience);
 			runPhase("Concurrency", TestFakedbDriver::testConcurrency);
+			runPhase("Performance", TestFakedbDriver::testPerformance);
 		}
 		finally
 		{
