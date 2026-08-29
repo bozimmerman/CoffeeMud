@@ -71,7 +71,7 @@ public class Spell_FakeFood extends Spell
 
 	private static Set<String> matSet = null;
 
-	public Pair<String,Integer> getRandomCraftedFoodAndMat()
+	public Pair<String,Integer> getRandomCraftedFoodAndMat(final int maxLevel)
 	{
 		if(matSet == null)
 		{
@@ -104,7 +104,7 @@ public class Spell_FakeFood extends Spell
 				final ItemCraftor iA = (ItemCraftor)A;
 				final List<List<String>> recipes = iA.fetchRecipes();
 				final List<String> recipe = recipes.get(CMLib.dice().roll(1, recipes.size(), -1));
-				if((recipe.size()>1)&&(recipe.get(1).equalsIgnoreCase("food")))
+				if((recipe.size()>3)&&(recipe.get(1).equalsIgnoreCase("food"))&&(CMath.s_int(recipe.get(3))<=maxLevel))
 				{
 					String name = recipe.get(0);
 					String pctName = "";
@@ -147,7 +147,7 @@ public class Spell_FakeFood extends Spell
 			{
 				mob.location().send(mob,msg);
 				final Food F=(Food)CMClass.getItem("GenFood");
-				final Pair<String,Integer> randoFood = this.getRandomCraftedFoodAndMat();
+				final Pair<String,Integer> randoFood = this.getRandomCraftedFoodAndMat(super.adjustedLevel(mob,asLevel));
 				if(randoFood != null)
 				{
 					F.setName(randoFood.first);
