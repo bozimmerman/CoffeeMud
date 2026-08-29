@@ -105,7 +105,17 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		final String targetName=CMParms.combine(commands,0);
+		Physical target=null;
+		if(givenTarget != null)
+			target=givenTarget;
+		else
+		if(targetName.equalsIgnoreCase("self")
+		||targetName.equalsIgnoreCase("me")
+		||(targetName.length()==0))
+			target=mob;
+		else
+			target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
 
