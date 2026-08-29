@@ -518,8 +518,11 @@ public class Backend
 				throw new java.sql.SQLException(e.getMessage(), e);
 			}
 			final int deleted = fakeTable.deleteRecord(stmt.conditions);
-			for (final String ref : blobRefs)
-				table2.freeBlob(ref);
+			if(table2 != null)
+			{
+				for (final String ref : blobRefs)
+					table2.freeBlob(ref);
+			}
 			return deleted;
 		}
 		else

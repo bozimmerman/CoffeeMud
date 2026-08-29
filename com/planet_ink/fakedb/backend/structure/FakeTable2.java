@@ -1147,7 +1147,8 @@ public class FakeTable2 extends FakeTable
 									freeBlob(oldRef);
 							}
 						}
-						if (!oldVal.equals(newVal))
+						if (((oldVal == null) && (newVal != null))
+						|| ((oldVal != null) && (!oldVal.equals(newVal))))
 						{
 							if((dupDangerTable != null)
 							&&(colDex < dupDangerTable.columns.length)
