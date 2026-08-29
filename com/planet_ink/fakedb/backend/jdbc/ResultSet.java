@@ -70,6 +70,11 @@ public class ResultSet implements java.sql.ResultSet
 
 	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions)
 	{
+		this(stmt, table, showCols, conditions, orderByKeyDexCols, orderByConditions, null);
+	}
+
+	public ResultSet(final Statement stmt, final FakeTable table, final int[] showCols, final List<FakeCondition> conditions, final int[] orderByKeyDexCols, final String[] orderByConditions, final java.util.Iterator<RecordInfo> lookupIter)
+	{
 		this.statement = stmt;
 		this.fakeTable = table;
 		this.conditions = conditions;
@@ -78,7 +83,7 @@ public class ResultSet implements java.sql.ResultSet
 		this.showCols = showCols;
 		this.orderByKeyDexCols = orderByKeyDexCols;
 		this.orderByConditions = orderByConditions;
-		this.iter = table.indexIterator(this.orderByKeyDexCols, this.orderByConditions);
+		this.iter = (lookupIter != null) ? lookupIter : table.indexIterator(this.orderByKeyDexCols, this.orderByConditions);
 		try
 		{
 			this.closeStatementOnClose = stmt.isCloseOnCompletion();

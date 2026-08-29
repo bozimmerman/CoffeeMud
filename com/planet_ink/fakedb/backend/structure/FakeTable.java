@@ -90,6 +90,32 @@ public class FakeTable
 	}
 
 	/**
+	 * Return an iterator over rows whose indexed column (columnIndex) equals value.
+	 * @param columnIndex the column index of the indexed column
+	 * @param value the value to match
+	 * @return an iterator of matching RecordInfo (possibly empty)
+	 */
+	public Iterator<RecordInfo> indexLookupIterator(final int columnIndex, final ComparableValue value)
+	{
+		if ((columnIndex < 0) || (columnIndex >= columns.length))
+			return Collections.<RecordInfo>emptyList().iterator();
+		final FakeColumn col = columns[columnIndex];
+		if (col.indexNumber < 0)
+			return Collections.<RecordInfo>emptyList().iterator();
+		final List<RecordInfo> matches = new ArrayList<RecordInfo>();
+		for (final Iterator<RecordInfo> it = rowRecords.iterator(col.indexNumber, false); it.hasNext();)
+		{
+			final RecordInfo r = it.next();
+			final int c = r.indexedData[col.indexNumber].compareTo(value);
+			if (c > 0)
+				break;
+			if (c == 0)
+				matches.add(r);
+		}
+		return matches.iterator();
+	}
+
+	/**
 	 *
 	 * @param index
 	 * @return

@@ -3,6 +3,8 @@ package com.planet_ink.fakedb.tests;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -18,13 +20,8 @@ import java.util.List;
 import com.planet_ink.fakedb.backend.structure.FakeColumn;
 import com.planet_ink.fakedb.backend.structure.FlatFileFS;
 
-public class TestFakedbDriver2
+public class TestFakedbDriver2 extends TestFakedbDriver
 {
-	private static int								passed			= 0;
-	private static int								failed			= 0;
-	private static final List<java.sql.Connection>	allConnections	= new ArrayList<java.sql.Connection>();
-	private static final List<File>					allTempDirs		= new ArrayList<File>();
-
 	// ---- independent restatement of the v2 fixed-width row contract ----
 	private static final int	LONG_SIZE	= 20;
 	private static final int	HEADER_SIZE	= 1024;
@@ -203,83 +200,6 @@ public class TestFakedbDriver2
 		return dir;
 	}
 
-	private static java.sql.Connection connect(final File dir) throws SQLException
-	{
-		final java.sql.Connection c = DriverManager.getConnection("jdbc:fakedb:" + dir.getAbsolutePath());
-		allConnections.add(c);
-		return c;
-	}
-
-	private static void check(final String name, final boolean cond, final String failMsg)
-	{
-		if (cond)
-			passed++;
-		else
-		{
-			System.out.println("[FAIL] " + name + ": " + failMsg);
-			failed++;
-		}
-	}
-
-	private static void checkEq(final String name, final Object expected, final Object actual)
-	{
-		final boolean eq = (expected == null) ? (actual == null) : expected.equals(actual);
-		check(name, eq, "expected [" + expected + "] but got [" + actual + "]");
-	}
-
-	private static void runPhase(final String name, final ThrowingRunnable phase)
-	{
-		try
-		{
-			phase.run();
-		}
-		catch (final Throwable t)
-		{
-			System.out.println("[FAIL] " + name + ": " + t.getClass().getSimpleName() + ": " + t.getMessage());
-			failed++;
-		}
-	}
-
-	private interface ThrowingRunnable
-	{
-		void run() throws Exception;
-	}
-
-	private static int countRows(final java.sql.Connection c, final String table) throws SQLException
-	{
-		final Statement st = c.createStatement();
-		final ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + table);
-		rs.next();
-		final int n = rs.getInt(1);
-		rs.close();
-		st.close();
-		return n;
-	}
-
-	private static int countResults(final java.sql.Connection c, final String sql) throws SQLException
-	{
-		final Statement st = c.createStatement();
-		final ResultSet rs = st.executeQuery(sql);
-		int n = 0;
-		while (rs.next())
-			n++;
-		rs.close();
-		st.close();
-		return n;
-	}
-
-	private static String querySingle(final java.sql.Connection c, final String sql, final int colIndex) throws SQLException
-	{
-		final Statement st = c.createStatement();
-		final ResultSet rs = st.executeQuery(sql);
-		String result = null;
-		if (rs.next())
-			result = rs.getString(colIndex);
-		rs.close();
-		st.close();
-		return result;
-	}
-
 	private static char readMarker(final File dir, final String table, final long off) throws IOException
 	{
 		final RandomAccessFile raf = new RandomAccessFile(new File(dir, "fakedb.data." + table), "r");
@@ -313,37 +233,51 @@ public class TestFakedbDriver2
 		}
 	}
 
-	private static void deleteRecursively(final File f)
+	private static int readByte(final File dir, final String table, final long off) throws IOException
 	{
-		if (f == null || !f.exists())
-			return;
-		if (f.isDirectory())
+		final RandomAccessFile raf = new RandomAccessFile(new File(dir, "fakedb.data." + table), "r");
+		try
 		{
-			final File[] children = f.listFiles();
-			if (children != null)
-				for (final File child : children)
-					deleteRecursively(child);
+			raf.seek(off);
+			return raf.read();
 		}
-		f.delete();
+		finally
+		{
+			raf.close();
+		}
 	}
 
-	private static void cleanup()
+	private static String orderedIds(final java.sql.Connection c, final String sql) throws SQLException
 	{
-		for (final java.sql.Connection c : allConnections)
+		final Statement st = c.createStatement();
+		final ResultSet rs = st.executeQuery(sql);
+		final StringBuilder sb = new StringBuilder();
+		while (rs.next())
 		{
-			try
-			{
-				if (!c.isClosed())
-					c.close();
-			}
-			catch (final SQLException e)
-			{
-			}
+			if (sb.length() > 0)
+				sb.append(',');
+			sb.append(rs.getString(1));
 		}
-		allConnections.clear();
-		for (final File dir : allTempDirs)
-			deleteRecursively(dir);
-		allTempDirs.clear();
+		rs.close();
+		st.close();
+		return sb.toString();
+	}
+
+	private static boolean rowRecordsEmpty(final java.sql.Connection c, final String table)
+	{
+		try
+		{
+			final com.planet_ink.fakedb.backend.Backend backend = ((com.planet_ink.fakedb.backend.Connection) c).getBackend();
+			final com.planet_ink.fakedb.backend.structure.FakeTable t = backend.getFakeTables().get(table);
+			final java.lang.reflect.Field f = com.planet_ink.fakedb.backend.structure.FakeTable.class.getDeclaredField("rowRecords");
+			f.setAccessible(true);
+			final com.planet_ink.fakedb.backend.structure.IndexedRowMap map = (com.planet_ink.fakedb.backend.structure.IndexedRowMap) f.get(t);
+			return !map.iterator(-1, false).hasNext();
+		}
+		catch (final Throwable t)
+		{
+			return false;
+		}
 	}
 
 	private static final List<Col> COLS = Arrays.asList(new Col("USERID", "STRING", 50, true),
@@ -356,6 +290,36 @@ public class TestFakedbDriver2
 	{
 		return 1 + LONG_SIZE * 2 + valueWidth("STRING", 50) + valueWidth("STRING", 50)
 				+ valueWidth("INTEGER", 0) + valueWidth("LONG", 0) + valueWidth("CLOB", 200);
+	}
+
+	// Rewrites a v1-style column list into a v2 one by giving every STRING/CLOB/BLOB
+	// column a default size, so the inherited v1 phases can run against v2 tables.
+	private static String toV2ColumnDefs(final String columnDefs)
+	{
+		final String body = columnDefs.trim();
+		final String inner = (body.startsWith("(") && body.endsWith(")"))
+				? body.substring(1, body.length() - 1).trim() : body;
+		final String[] cols = inner.split(",");
+		final StringBuilder sb = new StringBuilder("(");
+		for (int i = 0; i < cols.length; i++)
+		{
+			if (i > 0)
+				sb.append(", ");
+			final String[] parts = cols[i].trim().split("\\s+");
+			if (parts.length < 2)
+			{
+				sb.append(cols[i].trim());
+				continue;
+			}
+			sb.append(parts[0]).append(' ').append(parts[1]);
+			final String typeUpper = parts[1].toUpperCase();
+			if (typeUpper.equals("STRING") || typeUpper.equals("CLOB") || typeUpper.equals("BLOB"))
+				sb.append(" (50)");
+			for (int j = 2; j < parts.length; j++)
+				sb.append(' ').append(parts[j]);
+		}
+		sb.append(')');
+		return sb.toString();
 	}
 
 	// Phase A: open-scan populates rowRecords, indexed + on-disk delete correctness.
@@ -658,6 +622,280 @@ public class TestFakedbDriver2
 		}
 	}
 
+	// Phase J: ALTER TABLE on a v2 table — ADD/DROP COLUMN, ADD/DROP INDEX, and
+	// MODIFY COLUMN rewrite the fixed-width data file with the new layout.
+	private static void testAlterTableV2() throws Exception
+	{
+		final String table = "T8";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), AGE INTEGER NULL)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25)");
+
+		st.executeUpdate("ALTER TABLE " + table + " ADD COLUMN EMAIL STRING NULL (100)");
+		check("alter2-count-after-add", countRows(c, table) == 2, "expected 2 rows after ADD COLUMN, got " + countRows(c, table));
+		final String email = querySingle(c, "SELECT EMAIL FROM " + table + " WHERE USERID='u1'", 1);
+		check("alter2-add-null", (email == null) || (email.length() == 0), "new EMAIL column should be null, got [" + email + "]");
+		checkEq("alter2-add-preserved", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+
+		st.executeUpdate("UPDATE " + table + " SET EMAIL='alice@test.com' WHERE USERID='u1'");
+		checkEq("alter2-add-update", "alice@test.com", querySingle(c, "SELECT EMAIL FROM " + table + " WHERE USERID='u1'", 1));
+
+		st.executeUpdate("ALTER TABLE " + table + " DROP COLUMN EMAIL");
+		checkEq("alter2-drop-preserved", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+		check("alter2-drop-count", countRows(c, table) == 2, "expected 2 rows after DROP COLUMN, got " + countRows(c, table));
+
+		st.executeUpdate("ALTER TABLE " + table + " ADD INDEX (AGE)");
+		{
+			final ResultSet rs = st.executeQuery("SELECT * FROM " + table + " ORDER BY AGE");
+			check("alter2-add-index", rs != null, "ORDER BY AGE should work after ADD INDEX");
+			if (rs != null)
+				rs.close();
+		}
+
+		st.executeUpdate("ALTER TABLE " + table + " DROP INDEX AGE");
+		boolean orderByThrew = false;
+		try
+		{
+			st.executeQuery("SELECT * FROM " + table + " ORDER BY AGE");
+		}
+		catch (final SQLException e)
+		{
+			orderByThrew = true;
+		}
+		check("alter2-drop-index", orderByThrew, "ORDER BY AGE should fail after DROP INDEX");
+
+		st.executeUpdate("ALTER TABLE " + table + " MODIFY COLUMN AGE LONG NULL");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',9999999999)");
+		checkEq("alter2-modify-type", "9999999999", querySingle(c, "SELECT AGE FROM " + table + " WHERE USERID='u3'", 1));
+		checkEq("alter2-modify-old", "30", querySingle(c, "SELECT AGE FROM " + table + " WHERE USERID='u1'", 1));
+
+		st.close();
+		c.close();
+
+		{
+			final java.sql.Connection c2 = connect(dir);
+			checkEq("alter2-reopen-name", "Alice", querySingle(c2, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			checkEq("alter2-reopen-age", "9999999999", querySingle(c2, "SELECT AGE FROM " + table + " WHERE USERID='u3'", 1));
+			c2.close();
+		}
+	}
+
+	// Phase K: MODIFY COLUMN that changes a STRING column's size — the full-file
+	// rewrite must widen/shrink the fixed-width rows while preserving values.
+	private static void testAlterStringResize() throws Exception
+	{
+		final String table = "T9";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), AGE INTEGER NULL)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30)");
+
+		st.executeUpdate("ALTER TABLE " + table + " MODIFY COLUMN NAME STRING NULL (100)");
+		checkEq("resize-widen-preserved", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+
+		final StringBuilder longName = new StringBuilder("");
+		for (int i = 0; i < 80; i++)
+			longName.append('X');
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','" + longName + "',40)");
+		checkEq("resize-widen-long", longName.toString(), querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u2'", 1));
+
+		st.executeUpdate("ALTER TABLE " + table + " MODIFY COLUMN NAME STRING NULL (20)");
+		checkEq("resize-shrink-preserved", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+		final String shrunkLong = querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u2'", 1);
+		check("resize-shrink-truncated", (shrunkLong != null) && (shrunkLong.length() <= 20),
+				"long name should truncate to 20, got length " + ((shrunkLong == null) ? "null" : Integer.valueOf(shrunkLong.length())));
+
+		st.close();
+		c.close();
+
+		{
+			final java.sql.Connection c2 = connect(dir);
+			checkEq("resize-reopen", "Alice", querySingle(c2, "SELECT NAME FROM " + table + " WHERE USERID='u1'", 1));
+			c2.close();
+		}
+	}
+
+	// Phase L: DROP TABLE must delete the blob store (.flatfs) along with the
+	// data file, so no blob data leaks after the table is gone.
+	private static void testDropTableV2() throws Exception
+	{
+		final String table = "T10";
+		final File dir = writeEmptySchema();
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), BIO CLOB NULL (200))");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice','some-blob-content')");
+
+		final File blobFile = new File(dir, table + ".flatfs");
+		check("drop2-blob-exists-before", blobFile.exists(), "blob store should exist before DROP TABLE");
+
+		st.executeUpdate("DROP TABLE " + table);
+		check("drop2-blob-gone", !blobFile.exists(), "blob store (.flatfs) must be deleted on DROP TABLE");
+		check("drop2-data-gone", !new File(dir, "fakedb.data." + table).exists(),
+				"data file must be deleted on DROP TABLE");
+
+		st.close();
+		c.close();
+	}
+
+	// Phase M: open() builds the on-disk BST and flags the header 'I'; ORDER BY
+	// walks the tree; no per-row in-memory map is populated.
+	private static void testOnDiskIndex() throws Exception
+	{
+		final String table = "T11";
+		final int rw = rowWidth();
+		final File dir = writeV2Database(table, COL_LINES, COLS, rw, new String[][] {
+				{ "u3", "Charlie", "35", "3000", null },
+				{ "u1", "Alice", "30", "1000", null },
+				{ "u2", "Bob", "25", "2000", null } });
+
+		final java.sql.Connection c = connect(dir);
+		check("idx-count-3", countRows(c, table) == 3, "expected 3 rows, got " + countRows(c, table));
+		checkEq("idx-flag", Integer.valueOf((int) 'I'), Integer.valueOf(readByte(dir, table, 11)));
+		final long u3off = HEADER_SIZE;
+		final long u1off = HEADER_SIZE + rw;
+		final long u2off = HEADER_SIZE + 2L * rw;
+		checkEq("idx-root", Long.valueOf(u3off), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE * 2)));
+		checkEq("idx-u3-left", Long.valueOf(u1off), Long.valueOf(readPaddedLong(dir, table, u3off + 1)));
+		checkEq("idx-u1-right", Long.valueOf(u2off), Long.valueOf(readPaddedLong(dir, table, u1off + 1 + LONG_SIZE)));
+		check("idx-memory-free", rowRecordsEmpty(c, table), "rowRecords must be empty for disk-backed v2");
+
+		checkEq("idx-orderby", "u1,u2,u3", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		checkEq("idx-orderby-desc", "u3,u2,u1", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID DESC"));
+		c.close();
+	}
+
+	// Phase N: equality WHERE on the key column uses the on-disk index (point lookup);
+	// single- and multi-condition WHERE both stay correct.
+	private static void testPointLookupV2() throws Exception
+	{
+		final String table = "T12";
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+
+		checkEq("lookup-name", "Bob", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u2'", 1));
+		check("lookup-missing", countResults(c, "SELECT * FROM " + table + " WHERE USERID='u9'") == 0,
+				"missing key must return 0 rows");
+		checkEq("lookup-multi", "Bob", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u2' AND AGE=25", 1));
+		st.close();
+		c.close();
+	}
+
+	// Phase O: deleting an internal BST node re-links the tree; ORDER BY + lookups stay correct.
+	private static void testDeleteRelinkV2() throws Exception
+	{
+		final String table = "T13";
+		final int rw = rowWidth();
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u4','Dana',42,4000,null)");
+
+		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u2'"); // internal node in a right chain
+		checkEq("delrelink-orderby", "u1,u3,u4", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		check("delrelink-gone", countResults(c, "SELECT * FROM " + table + " WHERE USERID='u2'") == 0, "u2 must be gone");
+		checkEq("delrelink-u3", "Charlie", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u3'", 1));
+
+		final long u1off = HEADER_SIZE;
+		final long u3off = HEADER_SIZE + 2L * rw;
+		checkEq("delrelink-root", Long.valueOf(u1off), Long.valueOf(readPaddedLong(dir, table, LONG_SIZE * 2)));
+		checkEq("delrelink-u1-right", Long.valueOf(u3off), Long.valueOf(readPaddedLong(dir, table, u1off + 1 + LONG_SIZE)));
+		st.close();
+		c.close();
+	}
+
+	// Phase P: updating an indexed (key) value unlinks and re-links the node.
+	private static void testUpdateRelinkV2() throws Exception
+	{
+		final String table = "T14";
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+
+		st.executeUpdate("UPDATE " + table + " SET USERID='u1x' WHERE USERID='u1'");
+		checkEq("updrelink-new", "Alice", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u1x'", 1));
+		check("updrelink-old-gone", countResults(c, "SELECT * FROM " + table + " WHERE USERID='u1'") == 0, "old key must be gone");
+		checkEq("updrelink-orderby", "u1x,u2,u3", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		st.close();
+		c.close();
+	}
+
+	// Phase Q: a non-key INDEX column supports duplicates; ORDER BY and equality lookups
+	// must return all matching rows.
+	private static void testNonUniqueIndexV2() throws Exception
+	{
+		final String table = "T15";
+		final List<String> colLines = Arrays.asList("ID STRING KEY 50", "GRP STRING INDEX 50");
+		final File dir = writeV2SchemaOnly(table, colLines);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('a','g2')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('b','g1')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('c','g2')");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('d','g1')");
+
+		checkEq("nu-orderby-grp", "b,d,a,c", orderedIds(c, "SELECT ID FROM " + table + " ORDER BY GRP"));
+		checkEq("nu-lookup-g2", "a,c", orderedIds(c, "SELECT ID FROM " + table + " WHERE GRP='g2'"));
+		checkEq("nu-lookup-g1", "b,d", orderedIds(c, "SELECT ID FROM " + table + " WHERE GRP='g1'"));
+		st.close();
+		c.close();
+	}
+
+	// Phase R: a freed slot (reused with a lower key) is correctly re-inserted into the BST.
+	private static void testFreeListReuseIndexV2() throws Exception
+	{
+		final String table = "T16";
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob',25,2000,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u3','Charlie',35,3000,null)");
+		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u2'");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('u0','Zero',1,0,null)");
+
+		checkEq("reuse-orderby", "u0,u1,u3", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		checkEq("reuse-lookup", "Zero", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='u0'", 1));
+		st.close();
+		c.close();
+	}
+
+	// Phase S: deleting a node with two children exercises successor replacement in
+	// the on-disk BST delete.
+	private static void testDeleteTwoChildrenV2() throws Exception
+	{
+		final String table = "T17";
+		final File dir = writeV2SchemaOnly(table, COL_LINES);
+		final java.sql.Connection c = connect(dir);
+		final Statement st = c.createStatement();
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('b','Bee',2,200,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('a','Aye',1,100,null)");
+		st.executeUpdate("INSERT INTO " + table + " VALUES ('c','Sea',3,300,null)");
+
+		checkEq("twochild-pre-order", "a,b,c", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='b'"); // root with two children
+		checkEq("twochild-post-order", "a,c", orderedIds(c, "SELECT USERID FROM " + table + " ORDER BY USERID"));
+		checkEq("twochild-a", "Aye", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='a'", 1));
+		checkEq("twochild-c", "Sea", querySingle(c, "SELECT NAME FROM " + table + " WHERE USERID='c'", 1));
+		check("twochild-b-gone", countResults(c, "SELECT * FROM " + table + " WHERE USERID='b'") == 0, "b must be gone");
+		st.close();
+		c.close();
+	}
+
 	private static void testStoreValueWidths() throws Exception
 	{
 		check("width-integer", columnOf("INTEGER", 0).getStoreValueWidth() == 12, "expected 12");
@@ -679,34 +917,111 @@ public class TestFakedbDriver2
 		check("width-string-nosize-throws", threw, "expected IllegalArgumentException");
 	}
 
+	// Phase S: a larger dataset (500 rows) survives close/reopen with the on-disk
+	// index intact, and lexicographic key ordering is consistent (numeric strings,
+	// prefix keys, and case all sort by string order).
+	private static void testBigIndexV2() throws Exception
+	{
+		final String table = "T18";
+		final File dir = writeEmptySchema();
+		{
+			final java.sql.Connection c = connect(dir);
+			final Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), VAL INTEGER NULL)");
+			for (int i = 0; i < 500; i++)
+				st.executeUpdate("INSERT INTO " + table + " VALUES ('u" + String.format("%03d", Integer.valueOf(i)) + "', " + i + ")");
+			check("big-count", countRows(c, table) == 500, "expected 500 rows, got " + countRows(c, table));
+			st.close();
+			c.close();
+		}
+		{
+			final java.sql.Connection c = connect(dir);
+			check("big-reopen-count", countRows(c, table) == 500,
+					"reopen expected 500 rows, got " + countRows(c, table));
+			checkEq("big-reopen-lookup", "250", querySingle(c, "SELECT VAL FROM " + table + " WHERE USERID='u250'", 1));
+			checkEq("big-reopen-first", "u000", querySingle(c, "SELECT USERID FROM " + table + " ORDER BY USERID", 1));
+			checkEq("big-reopen-last", "u499", querySingle(c, "SELECT USERID FROM " + table + " ORDER BY USERID DESC", 1));
+			check("big-reopen-order-count", countResults(c, "SELECT * FROM " + table + " ORDER BY USERID") == 500,
+					"ORDER BY should return all 500 rows");
+			c.close();
+		}
+
+		final String t2 = "T19";
+		final File dir2 = writeEmptySchema();
+		{
+			final java.sql.Connection c = connect(dir2);
+			final Statement st = c.createStatement();
+			st.executeUpdate("CREATE TABLE " + t2 + " V2 (USERID STRING KEY (50), VAL INTEGER NULL)");
+			for (final String k : new String[] { "10", "9", "2", "1", "a", "ab", "abc", "Alice", "alice", "ALICE" })
+				st.executeUpdate("INSERT INTO " + t2 + " VALUES ('" + k + "', 0)");
+			checkEq("order-lex", "1,10,2,9,ALICE,Alice,a,ab,abc,alice",
+					orderedIds(c, "SELECT USERID FROM " + t2 + " ORDER BY USERID"));
+			st.close();
+			c.close();
+		}
+	}
+
 	public static void main(final String[] args)
 	{
-
+		realErr = System.err;
+		System.setErr(new PrintStream(new OutputStream()
+		{
+			@Override
+			public void write(final int b)
+			{
+			}
+		}));
 		try
 		{
 			Class.forName("com.planet_ink.fakedb.Driver");
 		}
 		catch (final ClassNotFoundException e)
 		{
+			System.setErr(realErr);
 			System.out.println("[FAIL] Driver class not found: " + e.getMessage());
 			System.out.println("Tests passed: 0");
 			return;
 		}
 		try
 		{
-			runPhase("ScanAndDelete", TestFakedbTable2::testScanAndDelete);
-			runPhase("ReopenAndNonIndexedDelete", TestFakedbTable2::testReopenAndNonIndexedDelete);
-			runPhase("FreshInitHeader", TestFakedbTable2::testFreshInitHeader);
-			runPhase("InsertRecord", TestFakedbTable2::testInsertRecord);
-			runPhase("Blobs", TestFakedbTable2::testBlobs);
-			runPhase("UpdateRecord", TestFakedbTable2::testUpdateRecord);
-			runPhase("UpdateBlob", TestFakedbTable2::testUpdateBlob);
-			runPhase("CreateTableV2", TestFakedbTable2::testCreateTableV2);
-			runPhase("StoreValueWidths", TestFakedbTable2::testStoreValueWidths);
+			// The inherited v1 phases create tables through createTable; redirect
+			// their DDL to v2 (with sizes) so they exercise the on-disk backend.
+			createTable = (st, tbl, columnDefs) ->
+				st.executeUpdate("CREATE TABLE " + tbl + " V2 " + toV2ColumnDefs(columnDefs));
+
+			runPhase("ScanAndDelete", TestFakedbDriver2::testScanAndDelete);
+			runPhase("ReopenAndNonIndexedDelete", TestFakedbDriver2::testReopenAndNonIndexedDelete);
+			runPhase("FreshInitHeader", TestFakedbDriver2::testFreshInitHeader);
+			runPhase("InsertRecord", TestFakedbDriver2::testInsertRecord);
+			runPhase("Blobs", TestFakedbDriver2::testBlobs);
+			runPhase("UpdateRecord", TestFakedbDriver2::testUpdateRecord);
+			runPhase("UpdateBlob", TestFakedbDriver2::testUpdateBlob);
+			runPhase("CreateTableV2", TestFakedbDriver2::testCreateTableV2);
+			runPhase("AlterTableV2", TestFakedbDriver2::testAlterTableV2);
+			runPhase("AlterStringResize", TestFakedbDriver2::testAlterStringResize);
+			runPhase("DropTableV2", TestFakedbDriver2::testDropTableV2);
+			runPhase("OnDiskIndex", TestFakedbDriver2::testOnDiskIndex);
+			runPhase("PointLookupV2", TestFakedbDriver2::testPointLookupV2);
+			runPhase("DeleteRelinkV2", TestFakedbDriver2::testDeleteRelinkV2);
+			runPhase("UpdateRelinkV2", TestFakedbDriver2::testUpdateRelinkV2);
+			runPhase("NonUniqueIndexV2", TestFakedbDriver2::testNonUniqueIndexV2);
+			runPhase("FreeListReuseIndexV2", TestFakedbDriver2::testFreeListReuseIndexV2);
+			runPhase("DeleteTwoChildrenV2", TestFakedbDriver2::testDeleteTwoChildrenV2);
+			runPhase("StoreValueWidths", TestFakedbDriver2::testStoreValueWidths);
+			runPhase("BigIndexV2", TestFakedbDriver2::testBigIndexV2);
+
+			// v1 phases that also exercise the (shared) v2 SQL/DDL paths.
+			runPhase("MetaDataV2", TestFakedbDriver2::testMetaData);
+			runPhase("CrudV2", TestFakedbDriver2::testCrud);
+			runPhase("PreparedV2", TestFakedbDriver2::testPrepared);
+			runPhase("PersistenceV2", TestFakedbDriver2::testPersistence);
+			runPhase("TypesV2", TestFakedbDriver2::testTypes);
+			runPhase("ConcurrencyV2", TestFakedbDriver2::testConcurrency);
 		}
 		finally
 		{
 			cleanup();
+			System.setErr(realErr);
 		}
 		System.out.println("Tests passed: " + passed);
 		if (failed > 0)

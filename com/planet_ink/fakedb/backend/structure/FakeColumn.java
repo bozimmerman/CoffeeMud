@@ -55,6 +55,7 @@ public class FakeColumn
 	public int			indexNumber	= -1;
 	public int			version		= 1;
 	public int			valueOffset	= 0;
+	public int			indexOffset	= -1;
 	public String		defaultValue= null;
 	public String		tableName;
 

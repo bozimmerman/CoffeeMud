@@ -23,20 +23,28 @@ import java.util.concurrent.atomic.*;
  */
 public class TestFakedbDriver
 {
-	private static int						passed		= 0;
-	private static int						failed		= 0;
-	private static PrintStream				realErr;
-	private static int						tableCounter= 0;
+	protected static int					passed		= 0;
+	protected static int					failed		= 0;
+	protected static PrintStream			realErr;
+	protected static int					tableCounter= 0;
 
-	private static final List<java.sql.Connection>	allConnections	= new ArrayList<java.sql.Connection>();
-	private static final List<File>					allTempDirs		= new ArrayList<File>();
+	protected static final List<java.sql.Connection>	allConnections	= new ArrayList<java.sql.Connection>();
+	protected static final List<File>				allTempDirs		= new ArrayList<File>();
 
-	private interface SQLAction
+	protected interface SQLAction
 	{
 		void run() throws Exception;
 	}
 
-	private static void check(final String name, final boolean cond, final String failMsg)
+	protected interface TableDefOp
+	{
+		void run(java.sql.Statement st, String tbl, String columnDefs) throws SQLException;
+	}
+
+	protected static TableDefOp	createTable	= (st, tbl, columnDefs) ->
+		st.executeUpdate("CREATE TABLE " + tbl + " " + columnDefs);
+
+	protected static void check(final String name, final boolean cond, final String failMsg)
 	{
 		if (cond)
 			passed++;
@@ -47,13 +55,13 @@ public class TestFakedbDriver
 		}
 	}
 
-	private static void checkEq(final String name, final Object expected, final Object actual)
+	protected static void checkEq(final String name, final Object expected, final Object actual)
 	{
 		final boolean eq = (expected == null) ? (actual == null) : expected.equals(actual);
 		check(name, eq, "expected [" + expected + "] but got [" + actual + "]");
 	}
 
-	private static void expectEx(final String name, final SQLAction action, final String expectFragment)
+	protected static void expectEx(final String name, final SQLAction action, final String expectFragment)
 	{
 		try
 		{
@@ -83,7 +91,7 @@ public class TestFakedbDriver
 		}
 	}
 
-	private static void runPhase(final String name, final SQLAction phase)
+	protected static void runPhase(final String name, final SQLAction phase)
 	{
 		try
 		{
@@ -96,7 +104,7 @@ public class TestFakedbDriver
 		}
 	}
 
-	private static File createTempDB() throws IOException
+	protected static File createTempDB() throws IOException
 	{
 		final File dir = new File(System.getProperty("java.io.tmpdir"),
 				"fakedbtest-" + System.nanoTime() + "-" + (int) (Math.random() * 100000));
@@ -108,19 +116,19 @@ public class TestFakedbDriver
 		return dir;
 	}
 
-	private static java.sql.Connection connect(final File dir) throws SQLException
+	protected static java.sql.Connection connect(final File dir) throws SQLException
 	{
 		final java.sql.Connection c = DriverManager.getConnection("jdbc:fakedb:" + dir.getAbsolutePath());
 		allConnections.add(c);
 		return c;
 	}
 
-	private static String nextTableName()
+	protected static String nextTableName()
 	{
 		return "T" + (++tableCounter);
 	}
 
-	private static int countRows(final java.sql.Connection c, final String table) throws SQLException
+	protected static int countRows(final java.sql.Connection c, final String table) throws SQLException
 	{
 		final java.sql.Statement st = c.createStatement();
 		final java.sql.ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + table);
@@ -131,7 +139,7 @@ public class TestFakedbDriver
 		return n;
 	}
 
-	private static int countResults(final java.sql.Connection c, final String sql) throws SQLException
+	protected static int countResults(final java.sql.Connection c, final String sql) throws SQLException
 	{
 		final java.sql.Statement st = c.createStatement();
 		final java.sql.ResultSet rs = st.executeQuery(sql);
@@ -143,7 +151,7 @@ public class TestFakedbDriver
 		return n;
 	}
 
-	private static String querySingle(final java.sql.Connection c, final String sql, final int colIndex) throws SQLException
+	protected static String querySingle(final java.sql.Connection c, final String sql, final int colIndex) throws SQLException
 	{
 		final java.sql.Statement st = c.createStatement();
 		final java.sql.ResultSet rs = st.executeQuery(sql);
@@ -155,7 +163,7 @@ public class TestFakedbDriver
 		return result;
 	}
 
-	private static void deleteRecursively(final File f)
+	protected static void deleteRecursively(final File f)
 	{
 		if (f == null || !f.exists())
 			return;
@@ -169,7 +177,7 @@ public class TestFakedbDriver
 		f.delete();
 	}
 
-	private static void cleanup()
+	protected static void cleanup()
 	{
 		for (final java.sql.Connection c : allConnections)
 		{
@@ -318,14 +326,86 @@ public class TestFakedbDriver
 		c2.close();
 	}
 
-	private static void testCrud() throws SQLException, IOException
+	protected static void testMetaData() throws SQLException, IOException
+	{
+		final File dir = createTempDB();
+		final java.sql.Connection c = connect(dir);
+		final java.sql.Statement st = c.createStatement();
+		final String tbl = nextTableName();
+		createTable.run(st, tbl, "(USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL)");
+		st.close();
+
+		final java.sql.DatabaseMetaData md = c.getMetaData();
+		check("md-url", "jdbc:fakedb".equals(md.getURL()), "getURL returned " + md.getURL());
+		check("md-product", "fakedb".equals(md.getDatabaseProductName()),
+				"getDatabaseProductName returned " + md.getDatabaseProductName());
+		check("md-driver", "FakeDB JDBC Driver".equals(md.getDriverName()),
+				"getDriverName returned " + md.getDriverName());
+		check("md-notx", !md.supportsTransactions(), "supportsTransactions should be false");
+
+		java.sql.ResultSet rs = md.getTables(null, null, tbl, null);
+		boolean found = false;
+		while (rs.next())
+			if (tbl.equals(rs.getString("TABLE_NAME")))
+			{
+				found = true;
+				check("md-table-type", "TABLE".equals(rs.getString("TABLE_TYPE")),
+						"TABLE_TYPE got " + rs.getString("TABLE_TYPE"));
+			}
+		rs.close();
+		check("md-tables-has", found, "getTables did not list " + tbl);
+
+		rs = md.getColumns(null, null, tbl, null);
+		int colCount = 0;
+		boolean sawUserid = false;
+		boolean sawAge = false;
+		while (rs.next())
+		{
+			colCount++;
+			final String cn = rs.getString("COLUMN_NAME");
+			if ("USERID".equals(cn))
+			{
+				sawUserid = true;
+				check("md-col-userid-type", "STRING".equals(rs.getString("TYPE_NAME")),
+						"USERID TYPE_NAME got " + rs.getString("TYPE_NAME"));
+				check("md-col-userid-null", "NO".equals(rs.getString("IS_NULLABLE")),
+						"USERID IS_NULLABLE got " + rs.getString("IS_NULLABLE"));
+			}
+			if ("AGE".equals(cn))
+			{
+				sawAge = true;
+				check("md-col-age-type", "INTEGER".equals(rs.getString("TYPE_NAME")),
+						"AGE TYPE_NAME got " + rs.getString("TYPE_NAME"));
+			}
+		}
+		rs.close();
+		check("md-cols-3", colCount == 3, "getColumns returned " + colCount + " columns, expected 3");
+		check("md-col-userid", sawUserid, "getColumns missing USERID");
+		check("md-col-age", sawAge, "getColumns missing AGE");
+
+		rs = md.getPrimaryKeys(null, null, tbl);
+		boolean pkFound = false;
+		while (rs.next())
+			if ("USERID".equals(rs.getString("COLUMN_NAME")))
+				pkFound = true;
+		rs.close();
+		check("md-pk", pkFound, "getPrimaryKeys missing USERID");
+
+		rs = md.getCatalogs();
+		check("md-catalogs-empty", !rs.next(), "getCatalogs should be empty");
+		rs.close();
+
+		c.close();
+	}
+
+	protected static void testCrud() throws SQLException, IOException
 	{
 		final File dir = createTempDB();
 		final java.sql.Connection c = connect(dir);
 		final java.sql.Statement st = c.createStatement();
 		final String tbl = nextTableName();
 
-		st.executeUpdate("CREATE TABLE " + tbl + " (USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL, TS LONG NULL, BIO STRING NULL)");
+		createTable.run(st, tbl, "(USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL, TS LONG NULL, BIO STRING NULL)");
 		check("create-success", true, "CREATE TABLE should not throw");
 
 		expectEx("create-duplicate", () -> st.executeUpdate("CREATE TABLE " + tbl + " (X INTEGER)"), "already exists");
@@ -535,6 +615,14 @@ public class TestFakedbDriver
 		check("update-all-rows", countResults(c, "SELECT * FROM " + tbl + " WHERE BIO = 'updated'") == 5,
 				"UPDATE all rows should set BIO='updated' for all 5 rows");
 
+		st.executeUpdate("UPDATE " + tbl + " SET AGE = 10 WHERE AGE > 30");
+		check("update-bulk", countResults(c, "SELECT * FROM " + tbl + " WHERE AGE = 10") == 3,
+				"UPDATE WHERE AGE > 30 should affect 3 rows");
+
+		st.executeUpdate("UPDATE " + tbl + " SET AGE = 99, NAME = 'Renamed' WHERE USERID = 'u4'");
+		checkEq("update-multicol-age", "99", querySingle(c, "SELECT AGE FROM " + tbl + " WHERE USERID = 'u4'", 1));
+		checkEq("update-multicol-name", "Renamed", querySingle(c, "SELECT NAME FROM " + tbl + " WHERE USERID = 'u4'", 1));
+
 		st.executeUpdate("UPDATE " + tbl + " SET USERID = 'u1new' WHERE USERID = 'u1'");
 		check("update-key-new", countResults(c, "SELECT * FROM " + tbl + " WHERE USERID = 'u1new'") == 1,
 				"UPDATE key to new value should work");
@@ -553,6 +641,9 @@ public class TestFakedbDriver
 
 		st.executeUpdate("DELETE FROM " + tbl + " WHERE USERID = 'u2'");
 		check("delete-1-row", countRows(c, tbl) == 4, "after deleting u2, expected 4 rows, got " + countRows(c, tbl));
+
+		st.executeUpdate("DELETE FROM " + tbl + " WHERE AGE = 10");
+		check("delete-bulk", countRows(c, tbl) == 1, "after bulk DELETE AGE=10, expected 1 row, got " + countRows(c, tbl));
 
 		st.executeUpdate("DELETE FROM " + tbl);
 		check("delete-all", countRows(c, tbl) == 0, "after DELETE all, expected 0 rows, got " + countRows(c, tbl));
@@ -573,14 +664,14 @@ public class TestFakedbDriver
 		st.close();
 	}
 
-	private static void testPrepared() throws SQLException, IOException
+	protected static void testPrepared() throws SQLException, IOException
 	{
 		final File dir = createTempDB();
 		final java.sql.Connection c = connect(dir);
 		final java.sql.Statement st = c.createStatement();
 		final String tbl = nextTableName();
 
-		st.executeUpdate("CREATE TABLE " + tbl + " (USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL, TS LONG NULL)");
+		createTable.run(st, tbl, "(USERID STRING KEY, NAME STRING NULL, AGE INTEGER NULL, TS LONG NULL)");
 		st.close();
 
 		final java.sql.PreparedStatement insStmt = c.prepareStatement("INSERT INTO " + tbl + " VALUES (?, ?, ?, ?)");
@@ -698,7 +789,7 @@ public class TestFakedbDriver
 		delStmt.close();
 	}
 
-	private static void testPersistence() throws SQLException, IOException
+	protected static void testPersistence() throws SQLException, IOException
 	{
 		final File dir = createTempDB();
 		final String tbl = nextTableName();
@@ -706,7 +797,7 @@ public class TestFakedbDriver
 		{
 			final java.sql.Connection c = connect(dir);
 			final java.sql.Statement st = c.createStatement();
-			st.executeUpdate("CREATE TABLE " + tbl + " (USERID STRING KEY, VAL INTEGER NULL, TS LONG NULL)");
+			createTable.run(st, tbl, "(USERID STRING KEY, VAL INTEGER NULL, TS LONG NULL)");
 			st.executeUpdate("INSERT INTO " + tbl + " VALUES ('persist1', 111, 1001)");
 			st.executeUpdate("INSERT INTO " + tbl + " VALUES ('persist2', 222, 1002)");
 			st.executeUpdate("INSERT INTO " + tbl + " VALUES ('persist3', 333, 1003)");
@@ -753,7 +844,7 @@ public class TestFakedbDriver
 		{
 			final java.sql.Connection c = connect(dir);
 			final java.sql.Statement st = c.createStatement();
-			st.executeUpdate("CREATE TABLE " + vtbl + " (USERID STRING KEY, VAL INTEGER NULL)");
+			createTable.run(st, vtbl, "(USERID STRING KEY, VAL INTEGER NULL)");
 			for (int i = 0; i < 100; i++)
 				st.executeUpdate("INSERT INTO " + vtbl + " VALUES ('v" + i + "', " + i + ")");
 			for (int i = 0; i < 20; i++)
@@ -861,14 +952,14 @@ public class TestFakedbDriver
 		st.close();
 	}
 
-	private static void testTypes() throws SQLException, IOException
+	protected static void testTypes() throws SQLException, IOException
 	{
 		final File dir = createTempDB();
 		final java.sql.Connection c = connect(dir);
 		final java.sql.Statement st = c.createStatement();
 		final String tbl = nextTableName();
 
-		st.executeUpdate("CREATE TABLE " + tbl + " (K STRING KEY, V STRING NULL, I INTEGER NULL, L LONG NULL, D DATETIME NULL)");
+		createTable.run(st, tbl, "(K STRING KEY, V STRING NULL, I INTEGER NULL, L LONG NULL, D DATETIME NULL)");
 		st.close();
 
 		final java.sql.PreparedStatement ps = c.prepareStatement("INSERT INTO " + tbl + " VALUES (?, ?, ?, ?, ?)");
@@ -989,6 +1080,29 @@ public class TestFakedbDriver
 		ps.execute();
 		checkEq("type-mixed-encoding", "a\\b\nc\\d", querySingle(c, "SELECT V FROM " + tbl + " WHERE K = 'mixed'", 1));
 
+		ps.setString(1, "apostrophe");
+		ps.setString(2, "O'Brien");
+		ps.setInt(3, 0);
+		ps.setLong(4, 0L);
+		ps.setLong(5, 0L);
+		ps.execute();
+		checkEq("type-apostrophe", "O'Brien", querySingle(c, "SELECT V FROM " + tbl + " WHERE K = 'apostrophe'", 1));
+
+		ps.setString(1, "comma");
+		ps.setString(2, "3, Main St.");
+		ps.setInt(3, 0);
+		ps.setLong(4, 0L);
+		ps.setLong(5, 0L);
+		ps.execute();
+		checkEq("type-comma", "3, Main St.", querySingle(c, "SELECT V FROM " + tbl + " WHERE K = 'comma'", 1));
+
+		{
+			final java.sql.Statement st2 = c.createStatement();
+			st2.executeUpdate("INSERT INTO " + tbl + " VALUES ('litquote', 'it\\'s', 1, 2, 3)");
+			checkEq("type-literal-quote", "it's", querySingle(c, "SELECT V FROM " + tbl + " WHERE K = 'litquote'", 1));
+			st2.close();
+		}
+
 		ps.close();
 	}
 
@@ -1040,14 +1154,14 @@ public class TestFakedbDriver
 		}
 	}
 
-	private static void testConcurrency() throws SQLException, IOException, InterruptedException
+	protected static void testConcurrency() throws SQLException, IOException, InterruptedException
 	{
 		{
 			final File dir = createTempDB();
 			final java.sql.Connection setupC = connect(dir);
 			final java.sql.Statement setupSt = setupC.createStatement();
 			final String tbl = nextTableName();
-			setupSt.executeUpdate("CREATE TABLE " + tbl + " (K STRING KEY, V INTEGER NULL)");
+			createTable.run(setupSt, tbl, "(K STRING KEY, V INTEGER NULL)");
 			setupSt.close();
 			setupC.close();
 
@@ -1124,7 +1238,7 @@ public class TestFakedbDriver
 			final java.sql.Connection setupC = connect(dir);
 			final java.sql.Statement setupSt = setupC.createStatement();
 			final String tbl = nextTableName();
-			setupSt.executeUpdate("CREATE TABLE " + tbl + " (K STRING KEY, V INTEGER NULL)");
+			createTable.run(setupSt, tbl, "(K STRING KEY, V INTEGER NULL)");
 			setupSt.close();
 			setupC.close();
 
@@ -1242,7 +1356,7 @@ public class TestFakedbDriver
 				tbls.add(t);
 				final java.sql.Connection sc = connect(d);
 				final java.sql.Statement ss = sc.createStatement();
-				ss.executeUpdate("CREATE TABLE " + t + " (K STRING KEY, V INTEGER NULL)");
+				createTable.run(ss, t, "(K STRING KEY, V INTEGER NULL)");
 				ss.close();
 				sc.close();
 			}
@@ -1338,6 +1452,7 @@ public class TestFakedbDriver
 		{
 			runPhase("Driver", TestFakedbDriver::testDriver);
 			runPhase("Connection", TestFakedbDriver::testConnection);
+			runPhase("MetaData", TestFakedbDriver::testMetaData);
 			runPhase("CRUD", TestFakedbDriver::testCrud);
 			runPhase("Prepared", TestFakedbDriver::testPrepared);
 			runPhase("Persistence", TestFakedbDriver::testPersistence);

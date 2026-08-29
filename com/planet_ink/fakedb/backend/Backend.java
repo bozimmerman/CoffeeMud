@@ -223,6 +223,7 @@ public class Backend
 		if (table == null)
 			throw new java.sql.SQLException("unknown table for scan " + tableName);
 		int[] showCols;
+		boolean hasCountColumn = false;
 		if ((cols.size() == 0) || (cols.contains("*")))
 		{
 			showCols = new int[table.numColumns()];
@@ -236,7 +237,10 @@ public class Backend
 			for (final String col : cols)
 			{
 				if (col.toLowerCase().startsWith("count("))
+				{
 					showCols[index] = FakeColumn.INDEX_COUNT;
+					hasCountColumn = true;
+				}
 				else
 				{
 					showCols[index] = table.findColumn(col);
@@ -246,6 +250,7 @@ public class Backend
 						{
 							Integer.parseInt(col);
 							showCols[index] = FakeColumn.INDEX_COUNT;
+							hasCountColumn = true;
 						}
 						catch (final Exception e)
 						{
@@ -277,7 +282,16 @@ public class Backend
 				d++;
 			}
 		}
-		return new ResultSet(s, table, showCols, conditions, orderDexIndexes, orderModifiers);
+
+		java.util.Iterator<RecordInfo> lookupIter = null;
+		if ((orderDexIndexes == null) && (!hasCountColumn) && (conditions.size() == 1))
+		{
+			final FakeCondition c0 = conditions.get(0);
+			if ((c0.contains == null) && (c0.eq) && (!c0.not) && (!c0.like) && (!c0.lt) && (!c0.gt)
+			&& (table.columns[c0.conditionIndex].indexNumber >= 0))
+				lookupIter = table.indexLookupIterator(c0.conditionIndex, c0.conditionValue);
+		}
+		return new ResultSet(s, table, showCols, conditions, orderDexIndexes, orderModifiers, lookupIter);
 	}
 
 	/**
@@ -737,6 +751,28 @@ public class Backend
 	}
 
 	/**
+	 * Build a schema column-definition line for a column, version-aware:
+	 * v2 tables append a bare numeric size for sized column types.
+	 * @param col the column
+	 * @param version the table storage version
+	 * @return the schema line (no trailing newline)
+	 */
+	private static String columnDefLine(final FakeColumn col, final int version)
+	{
+		final StringBuilder colDef = new StringBuilder(col.name + " " + col.type.name().toLowerCase());
+		if (col.keyNumber >= 0)
+			colDef.append(" KEY");
+		else
+		if (col.canNull)
+			colDef.append(" NULL");
+		if ((version >= 2)
+		&& ((col.type == FakeColType.STRING) || (col.type == FakeColType.BLOB) || (col.type == FakeColType.CLOB))
+		&& (col.size != Integer.MAX_VALUE))
+			colDef.append(" ").append(col.size);
+		return colDef.toString();
+	}
+
+	/**
 	 * Alter a table
 	 * @param stmt The alter statement
 	 * @throws SQLException if it fails
@@ -750,6 +786,7 @@ public class Backend
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)
 			throw new java.sql.SQLException("unknown table for altering " + tableName);
+		final boolean v2 = fakeTable.version >= 2;
 		final List<List<String>> schema = readRawSchema();
 		final List<String> tableDef = findTableDef(tableName,schema);
 		if(action == StatementType.CREATE)
@@ -758,8 +795,11 @@ public class Backend
 			{
 				if (findColumnDef(col.name, tableDef) != null)
 					throw new java.sql.SQLException("column " + col.name + " already exists");
-				tableDef.add(col.name + " " + col.type.name().toLowerCase() + " " + (col.keyNumber >= 0 ? "KEY " : col.canNull ? "NULL " : ""));
-				fakeTable.addColumn();
+				if (v2 && (col.type == FakeColType.STRING) && (col.size == Integer.MAX_VALUE))
+					throw new java.sql.SQLException("V2 column '" + col.name + "' requires a size, e.g. " + col.name + " STRING (50)");
+				tableDef.add(columnDefLine(col, fakeTable.version));
+				if (!v2)
+					fakeTable.addColumn();
 			}
 			else
 			if(objType.equals("PRIMARY"))
@@ -817,7 +857,8 @@ public class Backend
 						throw new java.sql.SQLException("column " + name + " does not exist");
 					final int index = tableDef.indexOf(colDef);
 					tableDef.remove(index);
-					fakeTable.removeColumn(index-1);
+					if (!v2)
+						fakeTable.removeColumn(index-1);
 				}
 			}
 			else
@@ -863,8 +904,40 @@ public class Backend
 				newColDef.append(" NOT NULL");
 			if (col.keyNumber >= 0)
 				newColDef.append(" KEY");
+			if(v2)
+			{
+				int newSize = col.size;
+				if (newSize == Integer.MAX_VALUE)
+				{
+					final String[] parts = colDef.trim().split(" ");
+					for (int i = parts.length - 1; i >= 0; i--)
+					{
+						if ((parts[i].length() > 0) && Character.isDigit(parts[i].charAt(0)))
+						{
+							try
+							{
+								newSize = Integer.parseInt(parts[i]);
+								break;
+							}
+							catch (final NumberFormatException e)
+							{
+							}
+						}
+					}
+				}
+				if ((col.type == FakeColType.STRING) 
+				&& (newSize == Integer.MAX_VALUE))
+					throw new java.sql.SQLException("V2 column '" + col.name + "' requires a size, e.g. " + col.name + " STRING (50)");
+				if (((col.type == FakeColType.STRING) 
+					|| (col.type == FakeColType.BLOB) 
+					|| (col.type == FakeColType.CLOB))
+				&& (newSize != Integer.MAX_VALUE))
+					newColDef.append(" ").append(newSize);
+			}
 			tableDef.set(index, newColDef.toString());
 		}
+		if (v2)
+			((FakeTable2)fakeTable).rebuildDataFile(tableDef);
 		fakeTable.rewriteDataFileHash(tableDef);
 		this.rewriteRawSchema(schema);
 		try

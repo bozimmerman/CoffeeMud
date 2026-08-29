@@ -12,7 +12,6 @@ import com.planet_ink.fakedb.backend.Backend.FakeConditionResponder;
 import com.planet_ink.fakedb.backend.structure.FakeColumn.FakeColType;
 
 /*
-   Copyright 2001 Thomas Neumann
    Copyright 2004-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +55,7 @@ public class FakeTable2 extends FakeTable
 		{
 			try
 			{
-				blobStore = new FlatFileFS(new File(fileName.getParentFile(), name + ".flatfs").getAbsolutePath());
+				blobStore = new FlatFileFS(blobStoreFile().getAbsolutePath());
 			}
 			catch (final IOException e)
 			{
@@ -64,6 +63,11 @@ public class FakeTable2 extends FakeTable
 			}
 		}
 		return blobStore;
+	}
+
+	private File blobStoreFile()
+	{
+		return new File(fileName.getParentFile(), name + ".flatfs");
 	}
 
 	public String storeBlob(final String content) throws SQLException
@@ -121,6 +125,17 @@ public class FakeTable2 extends FakeTable
 		super.close();
 	}
 
+	@Override
+	public void eraseDataFile()
+	{
+		close();
+		if (fileName.exists())
+			fileName.delete();
+		final File blobFile = blobStoreFile();
+		if (blobFile.exists())
+			blobFile.delete();
+	}
+
 	private String makePad(final int size)
 	{
 		final StringBuilder str = new StringBuilder("");
@@ -165,8 +180,12 @@ public class FakeTable2 extends FakeTable
 		for (int i = 0; i < columns.length; i++)
 		{
 			final FakeColumn col = columns[i];
-			if ((col.keyNumber >= 0) || (col.indexNumber > 0))
+			col.indexOffset = -1;
+			if (col.indexNumber >= 0)
+			{
+				col.indexOffset = width;
 				width += (longSize * 2);
+			}
 		}
 		for (int i = 0; i < columns.length; i++)
 		{
@@ -211,8 +230,6 @@ public class FakeTable2 extends FakeTable
 			try
 			{
 				final int len = Integer.parseInt(lenStr);
-				if (len <= 0)
-					return new ComparableValue(null);
 				return new ComparableValue(new String(row, valueOffset + 3, len, StandardCharsets.UTF_8));
 			}
 			catch (final NumberFormatException e) { return new ComparableValue(null); }
@@ -228,57 +245,347 @@ public class FakeTable2 extends FakeTable
 		return new ComparableValue(null);
 	}
 
-	private ComparableValue[] parseIndexData(final byte[] row)
+	private synchronized ComparableValue readIndexValue(final FakeColumn col, final long rowOffset) throws IOException
 	{
-		final ComparableValue[] indexData = new ComparableValue[columnIndexesOfIndexed.length];
-		for (int i = 0; i < columnIndexesOfIndexed.length; i++)
-		{
-			final int colDex = columnIndexesOfIndexed[i];
-			indexData[i] = parseValue(columns[colDex], row, columns[colDex].valueOffset, columns[colDex].getStoreValueWidth());
-		}
-		return indexData;
+		final int valueWidth = col.getStoreValueWidth();
+		final byte[] field = new byte[valueWidth];
+		file.seek(rowOffset + col.valueOffset);
+		file.readFully(field);
+		return parseValue(col, field, 0, valueWidth);
 	}
 
-	private void rethreadFreeChain(final Vector<Long> freeChain) throws IOException
+	private synchronized long readChild(final long rowOffset, final int slotOffset) throws IOException
 	{
-		if ((freeChain.size() > 0) && (columnIndexesOfIndexed.length > 0))
+		file.seek(rowOffset + slotOffset);
+		return readCheckedLong().longValue();
+	}
+
+	private synchronized void writeChild(final long rowOffset, final int slotOffset, final long child) throws IOException
+	{
+		file.seek(rowOffset + slotOffset);
+		file.write(paddedLong(child).getBytes(StandardCharsets.US_ASCII));
+	}
+
+	private long getRoot(final FakeColumn col)
+	{
+		final Long r = indexRoots.get(col);
+		return (r == null) ? 0 : r.longValue();
+	}
+
+	private int columnIndexOf(final FakeColumn col)
+	{
+		for (int i = 0; i < columns.length; i++)
+			if (columns[i] == col)
+				return i;
+		return -1;
+	}
+
+	private long headerRootOffset(final FakeColumn col)
+	{
+		return (longSize * 2L) + ((long) columnIndexOf(col) * longSize);
+	}
+
+	private synchronized void setRoot(final FakeColumn col, final long root) throws IOException
+	{
+		indexRoots.put(col, Long.valueOf(root));
+		file.seek(headerRootOffset(col));
+		file.write(paddedLong(root).getBytes(StandardCharsets.US_ASCII));
+	}
+
+	/**
+	 * Insert a row into column col's on-disk binary search tree.
+	 * Ordering is (key, offset): equal keys are ordered by row offset.
+	 */
+	private void link(final FakeColumn col, final long rowOffset) throws IOException
+	{
+		final ComparableValue key = readIndexValue(col, rowOffset);
+		final long root = getRoot(col);
+		if (root == 0)
 		{
-			for (int i = 0; i < freeChain.size(); i++)
+			setRoot(col, rowOffset);
+			writeChild(rowOffset, col.indexOffset, 0);
+			writeChild(rowOffset, col.indexOffset + longSize, 0);
+			return;
+		}
+		long cur = root;
+		while (true)
+		{
+			final ComparableValue curKey = readIndexValue(col, cur);
+			final int cmp = key.compareTo(curKey);
+			final boolean goLeft = (cmp != 0) ? (cmp < 0) : (rowOffset < cur);
+			final int slot = goLeft ? col.indexOffset : (col.indexOffset + longSize);
+			final long child = readChild(cur, slot);
+			if (child == 0)
 			{
-				final long off = freeChain.get(i).longValue();
-				final long next = (i + 1 < freeChain.size()) ? freeChain.get(i + 1).longValue() : 0;
-				file.seek(off + 1);
-				file.write(paddedLong(next).getBytes());
+				writeChild(cur, slot, rowOffset);
+				writeChild(rowOffset, col.indexOffset, 0);
+				writeChild(rowOffset, col.indexOffset + longSize, 0);
+				return;
 			}
-			firstFreeRow = freeChain.get(0).longValue();
-			file.seek(longSize);
-			file.write(paddedLong(firstFreeRow).getBytes());
+			cur = child;
+		}
+	}
+
+	/**
+	 * Remove a row from column col's on-disk binary search tree.
+	 */
+	private void unlink(final FakeColumn col, final long rowOffset) throws IOException
+	{
+		final ComparableValue key = readIndexValue(col, rowOffset);
+		final long root = getRoot(col);
+		if (root == 0)
+			return;
+		long parent = 0;
+		int parentSlot = -1;
+		long cur = root;
+		while ((cur != 0) && (cur != rowOffset))
+		{
+			final ComparableValue curKey = readIndexValue(col, cur);
+			final int cmp = key.compareTo(curKey);
+			final boolean goLeft = (cmp != 0) ? (cmp < 0) : (rowOffset < cur);
+			final int slot = goLeft ? col.indexOffset : (col.indexOffset + longSize);
+			parent = cur;
+			parentSlot = slot;
+			cur = readChild(cur, slot);
+		}
+		if (cur == 0)
+			return; // not found
+		final long left = readChild(rowOffset, col.indexOffset);
+		final long right = readChild(rowOffset, col.indexOffset + longSize);
+		if ((left != 0) && (right != 0))
+		{
+			// two children: replace with in-order successor (leftmost of right subtree)
+			long succ = right;
+			long succParent = rowOffset;
+			int succParentSlot = col.indexOffset + longSize;
+			long succLeft = readChild(succ, col.indexOffset);
+			while (succLeft != 0)
+			{
+				succParent = succ;
+				succParentSlot = col.indexOffset;
+				succ = succLeft;
+				succLeft = readChild(succ, col.indexOffset);
+			}
+			final long succRight = readChild(succ, col.indexOffset + longSize);
+			if (succ != right)
+				writeChild(succParent, succParentSlot, succRight);
+			writeChild(succ, col.indexOffset, left);
+			if (succ != right)
+				writeChild(succ, col.indexOffset + longSize, right);
+			if (parent == 0)
+				setRoot(col, succ);
+			else
+				writeChild(parent, parentSlot, succ);
 		}
 		else
-			firstFreeRow = 0;
+		{
+			final long child = (left != 0) ? left : right;
+			if (parent == 0)
+				setRoot(col, child);
+			else
+				writeChild(parent, parentSlot, child);
+		}
 	}
 
-	private void scanRows() throws IOException
+	/**
+	 * Build the on-disk indexes by linking every active row into each indexed
+	 * column's tree, then mark the header as indexed.
+	 */
+	private void buildIndexes() throws IOException
 	{
-		rowRecords = new IndexedRowMap();
-		final Vector<Long> freeChain = new Vector<Long>();
 		final byte[] row = new byte[rowWidth];
 		for (long off = headerSize; off < file.length(); off += rowWidth)
 		{
 			file.seek(off);
 			file.readFully(row);
-			if (row[0] == (byte) '-')
-			{
-				final RecordInfo info = new RecordInfo((int) off, rowWidth);
-				info.indexedData = parseIndexData(row);
-				rowRecords.add(info);
-			}
-			else if (row[0] == (byte) '*')
-				freeChain.add(Long.valueOf(off));
-			else
-				throw new IOException("Table data file for "+name+" has an unrecognized row marker at offset "+off);
+			if (row[0] != '-')
+				continue;
+			for (final FakeColumn col : columns)
+				if (col.indexNumber >= 0)
+					link(col, off);
 		}
-		rethreadFreeChain(freeChain);
+		file.seek(11);
+		file.write((byte) 'I');
+		file.getFD().sync();
+	}
+
+	private final class InOrderIterator implements Iterator<RecordInfo>
+	{
+		private final FakeColumn		col;
+		private final boolean			descending;
+		private final ComparableValue	lowKey;
+		private final ComparableValue	highKey;
+		private final Deque<Long>		stack	= new ArrayDeque<Long>();
+		private RecordInfo				next	= null;
+
+		InOrderIterator(final FakeColumn col, final boolean descending, final ComparableValue lowKey, final ComparableValue highKey)
+		{
+			this.col = col;
+			this.descending = descending;
+			this.lowKey = lowKey;
+			this.highKey = highKey;
+			if (descending)
+				pushRightSpine(getRoot(col));
+			else
+				pushLeftSpine(getRoot(col));
+			advance();
+		}
+
+		private ComparableValue key(final long off)
+		{
+			try
+			{
+				return readIndexValue(col, off);
+			}
+			catch (final IOException e)
+			{
+				return null;
+			}
+		}
+
+		private long readChildSafe(final long node, final int slot)
+		{
+			try
+			{
+				return readChild(node, slot);
+			}
+			catch (final IOException e)
+			{
+				return 0;
+			}
+		}
+
+		private void pushLeftSpine(long node)
+		{
+			while (node != 0)
+			{
+				final ComparableValue k = key(node);
+				final int c = (lowKey == null) ? 1 : ((k == null) ? -1 : k.compareTo(lowKey));
+				if (c >= 0)
+				{
+					stack.push(Long.valueOf(node));
+					node = readChildSafe(node, col.indexOffset);
+				}
+				else
+					node = readChildSafe(node, col.indexOffset + longSize);
+			}
+		}
+
+		private void pushRightSpine(long node)
+		{
+			while (node != 0)
+			{
+				stack.push(Long.valueOf(node));
+				node = readChildSafe(node, col.indexOffset + longSize);
+			}
+		}
+
+		private void advance()
+		{
+			while (!stack.isEmpty())
+			{
+				final long node = stack.pop().longValue();
+				if (highKey != null)
+				{
+					final ComparableValue k = key(node);
+					if ((k == null) || (k.compareTo(highKey) > 0))
+						continue;
+				}
+				next = new RecordInfo((int) node, rowWidth);
+				if (descending)
+					pushRightSpine(readChildSafe(node, col.indexOffset));
+				else
+					pushLeftSpine(readChildSafe(node, col.indexOffset + longSize));
+				return;
+			}
+			next = null;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return next != null;
+		}
+
+		@Override
+		public RecordInfo next()
+		{
+			if (next == null)
+				throw new NoSuchElementException();
+			final RecordInfo info = next;
+			advance();
+			return info;
+		}
+	}
+
+	private Iterator<RecordInfo> fullScanIterator()
+	{
+		return new Iterator<RecordInfo>()
+		{
+			private long	off		= headerSize;
+			private final long	end		= length();
+			private long	nextOff	= -1;
+
+			private long length()
+			{
+				try
+				{
+					return file.length();
+				}
+				catch (final IOException e)
+				{
+					return headerSize;
+				}
+			}
+
+			private void advance()
+			{
+				while (off < end)
+				{
+					try
+					{
+						final int m;
+						synchronized (FakeTable2.this)
+						{
+							file.seek(off);
+							m = file.read();
+						}
+						off += rowWidth;
+						if (m == '-')
+						{
+							nextOff = off - rowWidth;
+							return;
+						}
+					}
+					catch (final IOException e)
+					{
+						nextOff = -1;
+						return;
+					}
+				}
+				nextOff = -1;
+			}
+
+			@Override
+			public boolean hasNext()
+			{
+				if (nextOff < 0)
+					advance();
+				return nextOff >= 0;
+			}
+
+			@Override
+			public RecordInfo next()
+			{
+				if (nextOff < 0)
+					advance();
+				if (nextOff < 0)
+					throw new NoSuchElementException();
+				final RecordInfo info = new RecordInfo((int) nextOff, rowWidth);
+				nextOff = -1;
+				return info;
+			}
+		};
 	}
 
 	/**
@@ -298,39 +605,226 @@ public class FakeTable2 extends FakeTable
 		rowPad = makePad(rowWidth);
 		if(file.length()<headerSize)
 		{
-			int position = 0;
-			file.seek(0);
-			final String header = "V"+version+"H"+schemaHash;
-			file.write(paddedString(header,longSize).getBytes());
-			position += longSize;
-			file.seek(position);
-			file.write(paddedLong(0).getBytes()); // first free block num
-			for(int i=0;i<columns.length;i++)
-			{
-				position += longSize;
-				file.seek(position);
-				file.write(paddedLong(0).getBytes());
-			}
-			file.write(hdrPad.substring((int)file.getFilePointer()).getBytes());
+			writeHeader(file, columns.length);
 			file.getFD().sync();
 		}
 		else
+		if(((file.length() - headerSize) % rowWidth) != 0)
+			throw new IOException("Table data file for "+name+" has an incorrect width, and must be assumed corrupt");
+
+		file.seek(longSize);
+		this.firstFreeRow = readCheckedLong().longValue();
+
+		// index flag (byte 11) + index roots
+		file.seek(11);
+		final int flagByte = file.read();
+		final boolean indexesBuilt = (flagByte == 'I');
+		if(indexesBuilt)
 		{
-			if(((file.length() - headerSize) % rowWidth) != 0)
-				throw new IOException("Table data file for "+name+" has an incorrect width, and must be assumed corrupt");
-			int position = longSize;
-			file.seek(position);
-			this.firstFreeRow = readCheckedLong().longValue();
+			int position = longSize * 2;
 			for(final FakeColumn col : columns)
 			{
-				position += longSize;
 				file.seek(position);
-				indexRoots.put(col,  readCheckedLong());
+				indexRoots.put(col, readCheckedLong());
+				position += longSize;
 			}
+		}
+		else
+		{
+			for(final FakeColumn col : columns)
+				indexRoots.put(col, Long.valueOf(0));
 		}
 		if(((file.length() - headerSize) % rowWidth) != 0)
 			throw new IOException("Table data file for "+name+" has an incorrect width, and must be assumed corrupt");
-		scanRows();
+		if(!indexesBuilt)
+			buildIndexes();
+	}
+
+	@Override
+	public void recordIterator(final List<FakeCondition> conditions, final FakeConditionResponder callBack) throws Exception
+	{
+		if(version < 2)
+		{
+			super.recordIterator(conditions, callBack);
+			return;
+		}
+		final boolean[] dataLoaded = new boolean[1];
+		final ComparableValue[] values = new ComparableValue[columns.length];
+		for (final Iterator<RecordInfo> iter = fullScanIterator(); iter.hasNext();)
+		{
+			final RecordInfo info = iter.next();
+			dataLoaded[0] = false;
+			if (recordCompare(info, conditions, dataLoaded, values))
+			{
+				if (!dataLoaded[0])
+					dataLoaded[0] = getRecord(values, info);
+				if (dataLoaded[0])
+					callBack.callBack(values, info);
+			}
+		}
+	}
+
+	@Override
+	public boolean recordCompare(final RecordInfo info, final List<FakeCondition> conditions, final boolean[] dataLoaded, final ComparableValue[] values)
+	{
+		if(version < 2)
+			return super.recordCompare(info, conditions, dataLoaded, values);
+		dataLoaded[0] = getRecord(values, info);
+		if(!dataLoaded[0])
+			return false;
+		boolean lastOne = true;
+		ConnectorType connector = ConnectorType.AND;
+		for (final FakeCondition cond : conditions)
+		{
+			boolean thisOne = false;
+			if (cond.contains != null)
+				thisOne = recordCompare(info, cond.contains, dataLoaded, values);
+			else
+				thisOne = cond.compareValue(values[cond.conditionIndex]);
+			if (connector == ConnectorType.OR)
+				lastOne = lastOne || thisOne;
+			else
+				lastOne = lastOne && thisOne;
+			connector = cond.connector;
+		}
+		return lastOne;
+	}
+
+	@Override
+	public Iterator<RecordInfo> indexIterator(final int[] orderByIndexDex, final String[] orderByConditions)
+	{
+		if(version < 2)
+			return super.indexIterator(orderByIndexDex, orderByConditions);
+		if ((orderByIndexDex == null) || (orderByIndexDex.length == 0))
+			return fullScanIterator();
+		final boolean descending = (orderByConditions != null) && "DESC".equals(orderByConditions[0]);
+		final FakeColumn col = columns[orderByIndexDex[0]];
+		return new InOrderIterator(col, descending, null, null);
+	}
+
+	@Override
+	public Iterator<RecordInfo> indexLookupIterator(final int columnIndex, final ComparableValue value)
+	{
+		if(version < 2)
+			return super.indexLookupIterator(columnIndex, value);
+		if ((columnIndex < 0) || (columnIndex >= columns.length))
+			return Collections.<RecordInfo>emptyList().iterator();
+		final FakeColumn col = columns[columnIndex];
+		if (col.indexNumber < 0)
+			return Collections.<RecordInfo>emptyList().iterator();
+		return new InOrderIterator(col, false, value, value);
+	}
+
+	private synchronized void writeHeader(final RandomAccessFile out, final int numColumns) throws IOException
+	{
+		int position = 0;
+		out.seek(0);
+		final String header = "V"+version+"H"+schemaHash;
+		out.write(paddedString(header,longSize).getBytes(StandardCharsets.US_ASCII));
+		position += longSize;
+		out.seek(position);
+		out.write(paddedLong(0).getBytes(StandardCharsets.US_ASCII));
+		for(int i=0;i<numColumns;i++)
+		{
+			position += longSize;
+			out.seek(position);
+			out.write(paddedLong(0).getBytes(StandardCharsets.US_ASCII));
+		}
+		out.write(hdrPad.substring((int)out.getFilePointer()).getBytes(StandardCharsets.US_ASCII));
+	}
+
+	/**
+	 * Rebuild the on-disk data file to match a new column layout (ALTER TABLE).
+	 * Rows are streamed by offset; the header is written without the 'I' flag so
+	 * the caller's re-open (Backend.alterTable -> open()) rebuilds the indexes.
+	 * @param tableDef the full new table definition, first line is "NAME V2"
+	 * @throws SQLException if the rebuild fails
+	 */
+	public synchronized void rebuildDataFile(final List<String> tableDef) throws SQLException
+	{
+		final FakeColumn[] oldColumns = this.columns;
+		final int oldRowWidth = this.rowWidth;
+
+		final List<String> colLines = new ArrayList<String>(tableDef);
+		colLines.remove(0);
+		this.initializeColumns(colLines);
+
+		try
+		{
+			computeLayout();
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to compute new layout for table " + name, e);
+		}
+
+		final List<ComparableValue[]> oldRows = new ArrayList<ComparableValue[]>();
+		try
+		{
+			final byte[] row = new byte[oldRowWidth];
+			for (long off = headerSize; off < file.length(); off += oldRowWidth)
+			{
+				file.seek(off);
+				file.readFully(row);
+				if (row[0] != '-')
+					continue;
+				final ComparableValue[] values = new ComparableValue[oldColumns.length];
+				for (int i = 0; i < oldColumns.length; i++)
+					values[i] = parseValue(oldColumns[i], row, oldColumns[i].valueOffset, oldColumns[i].getStoreValueWidth());
+				oldRows.add(values);
+			}
+		}
+		catch (final IOException e)
+		{
+			throw new SQLException("Unable to read rows for table " + name, e);
+		}
+
+		final Map<String, Integer> oldIndex = new HashMap<String, Integer>();
+		for (int i = 0; i < oldColumns.length; i++)
+			oldIndex.put(oldColumns[i].name, Integer.valueOf(i));
+
+		try
+		{
+			final File tempFileName = new File(fileName.getParentFile(), fileName.getName() + ".tmp");
+			final File tempFileName2 = new File(fileName.getParentFile(), fileName.getName() + ".cpy");
+			final RandomAccessFile tempOut = new RandomAccessFile(tempFileName, "rw");
+			writeHeader(tempOut, this.columns.length);
+			for (final ComparableValue[] oldValues : oldRows)
+			{
+				final byte[] newRow = new byte[rowWidth];
+				Arrays.fill(newRow, (byte) ' ');
+				newRow[0] = (byte) '-';
+				int idxPos = 1;
+				for (final FakeColumn col : this.columns)
+				{
+					if (col.indexNumber >= 0)
+					{
+						writeLongSlot(newRow, idxPos, 0);
+						writeLongSlot(newRow, idxPos + longSize, 0);
+						idxPos += longSize * 2;
+					}
+				}
+				for (int i = 0; i < this.columns.length; i++)
+				{
+					final Integer oi = oldIndex.get(this.columns[i].name);
+					final ComparableValue val = (oi != null) ? oldValues[oi.intValue()] : new ComparableValue(null);
+					encodeValue(this.columns[i], val, newRow);
+				}
+				tempOut.write(newRow, 0, rowWidth);
+			}
+			tempOut.getFD().sync();
+			tempOut.close();
+			file.close();
+			tempFileName2.delete();
+			fileName.renameTo(tempFileName2);
+			tempFileName.renameTo(fileName);
+			tempFileName2.delete();
+			file = new RandomAccessFile(fileName, "rw");
+		}
+		catch (final Exception e)
+		{
+			throw new SQLException("Unable to rebuild data file for table " + name, e);
+		}
 	}
 
 	@Override
@@ -416,7 +910,7 @@ public class FakeTable2 extends FakeTable
 			int idxPos = 1;
 			for (final FakeColumn col : columns)
 			{
-				if ((col.keyNumber >= 0) || (col.indexNumber > 0))
+				if (col.indexNumber >= 0)
 				{
 					writeLongSlot(row, idxPos, 0);
 					writeLongSlot(row, idxPos + longSize, 0);
@@ -444,11 +938,10 @@ public class FakeTable2 extends FakeTable
 
 			file.seek(recordPos);
 			file.write(row, 0, rowWidth);
+			for (final FakeColumn col : columns)
+				if (col.indexNumber >= 0)
+					link(col, recordPos);
 			file.getFD().sync();
-
-			final RecordInfo info = new RecordInfo(recordPos, rowWidth);
-			info.indexedData = (indexData != null) ? indexData : parseIndexData(row);
-			rowRecords.add(info);
 			return true;
 		}
 		catch (final IOException e)
@@ -478,9 +971,11 @@ public class FakeTable2 extends FakeTable
 				@Override
 				public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
 				{
+					for (final FakeColumn col : columns)
+						if (col.indexNumber >= 0)
+							unlink(col, info.offset);
 					file.seek(info.offset);
 					file.write(new byte[] { (byte) '*' });
-					rowRecords.remove(info);
 					if(columnIndexesOfIndexed.length > 0)
 					{
 						file.seek(info.offset + 1);
@@ -532,9 +1027,9 @@ public class FakeTable2 extends FakeTable
 				@Override
 				public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
 				{
-					final ComparableValue[] rowIndexData = info.indexedData;
 					boolean somethingChanged = false;
 					ComparableValue[] keyChanges = null;
+					final List<Integer> changedIndexCols = new ArrayList<Integer>();
 					for (int sub = 0; sub < newCols.length; sub++)
 					{
 						final int colDex = newCols[sub];
@@ -565,12 +1060,8 @@ public class FakeTable2 extends FakeTable
 									keyChanges=Arrays.copyOf(keyChanges, colDex+1);
 								keyChanges[colDex] = newVal;
 							}
-							else
-							{
-								for (int k = 0; k < rowIndexData.length; k++)
-									if (columnIndexesOfIndexed[k] == colDex)
-										rowIndexData[k] = newVal;
-							}
+							if (col.indexNumber >= 0)
+								changedIndexCols.add(Integer.valueOf(colDex));
 							values[colDex] = newVal;
 							somethingChanged = true;
 						}
@@ -598,39 +1089,22 @@ public class FakeTable2 extends FakeTable
 									}
 								}
 								backend.dupKeyCheck(dupDangerTable.name, dupDangerTable.columnNames, strVals);
-								for(int i=0;i<keyChanges.length;i++)
-								{
-									if(keyChanges[i] != null)
-									{
-										for (int k = 0; k < rowIndexData.length; k++)
-										{
-											if (columnIndexesOfIndexed[k] == i)
-												rowIndexData[k] = keyChanges[i];
-										}
-									}
-								}
 							}
 						}
+						for (final Integer cIdx : changedIndexCols)
+							unlink(allCols[cIdx.intValue()], info.offset);
+
+						// re-read the current row so unchanged index slots are preserved
 						final byte[] row = new byte[rowWidth];
-						Arrays.fill(row, (byte) ' ');
-						row[0] = (byte) '-';
-						int idxPos = 1;
-						for (final FakeColumn col : allCols)
-						{
-							if ((col.keyNumber >= 0) || (col.indexNumber > 0))
-							{
-								writeLongSlot(row, idxPos, 0);
-								writeLongSlot(row, idxPos + longSize, 0);
-								idxPos += longSize * 2;
-							}
-						}
+						file.seek(info.offset);
+						file.readFully(row);
 						for (int i = 0; i < allCols.length; i++)
 							encodeValue(allCols[i], values[i], row);
 						file.seek(info.offset);
 						file.write(row, 0, rowWidth);
+						for (final Integer cIdx : changedIndexCols)
+							link(allCols[cIdx.intValue()], info.offset);
 						file.getFD().sync();
-						rowRecords.remove(info);
-						rowRecords.add(info);
 					}
 					count[0]++;
 				}
