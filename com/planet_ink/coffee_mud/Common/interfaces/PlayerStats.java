@@ -1194,23 +1194,23 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 		 */
 		public long timestamp;
 		/**
-		 * The original room for this player.
+		 * The flag as to whether this player is local.
 		 */
-		public String returnRoomID;
+		public boolean isLocal;
 		
 		/**
 		 * Simple constructor 
 		 * @param host foreign mud host for this player.
 		 * @param port foreign mud port for this player.
 		 * @param timestamp timestamp of the original transfer.
-		 * @param roomID original room if for this player.
+		 * @param isLocal true if this player is transferred OUT, false if IN.
 		 */
-		public IMudTransferData(String host, int port, long timestamp, String roomID)
+		public IMudTransferData(String host, int port, long timestamp, boolean isLocal)
 		{
 			this.host = host;
 			this.port = port;
 			this.timestamp=timestamp;
-			this.returnRoomID=roomID;
+			this.isLocal=isLocal;
 		}
 	}
 	

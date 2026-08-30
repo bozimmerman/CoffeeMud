@@ -2505,7 +2505,8 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	@Override
 	public boolean isSavable()
 	{
-		return isSavable;
+		return isSavable
+				&& ((this.imudXferData == null)||(this.imudXferData.isLocal));
 	}
 
 	@Override

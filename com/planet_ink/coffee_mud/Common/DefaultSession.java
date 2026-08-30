@@ -2008,12 +2008,22 @@ public class DefaultSession implements Session
 									//   applied below is the mob which will be constructed by this xml.
 									String xml = B64Encoder.B64decodeAndDecompressString(obj.getCheckedString("mob_xml"));
 									xml = xml + ""; // prevent warning
+									final List<MOB> mobs = new ArrayList<MOB>(1);
+									String err = CMLib.coffeeMaker().addPlayersAndAccountsFromXML(xml, null, mobs, null);
+									if((mobs.size()==0)||(err.length()>0))
+									{
+										if(err.length()==0)
+											err = "Unable to receive mob transfer";
+										
+										// send error back to origin mud
+									}
+									//TODO: clear password on xfer out/initial mob_xml construction, and set roomid for foreign mud
 									//TODO: build mob from xml, persist him, flag him as
 									//  'foreign', and overwrite any other foreign mobs with
 									//  the same name.  
 									//TODO: on logout, transfer mob xml back to og host, 
 									//  delete the foreign mob, and switch user connection
-									//  back to og host via mudproxy, somehow.
+									//  back to og host via mudproxy.
 								}
 								final int wasMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
 										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
