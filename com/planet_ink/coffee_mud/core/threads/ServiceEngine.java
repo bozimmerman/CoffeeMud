@@ -1593,7 +1593,7 @@ public class ServiceEngine implements ThreadEngine
 							final String codeWord=getTickStatusSummary(ticker);
 							String log=null;
 							if(ticker instanceof Environmental)
-								logError=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+((Environmental)ticker).ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
+								logError=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+ticker.ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
 							else
 								logError=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+", status ("+code+"/"+codeWord+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID());
 
@@ -1604,7 +1604,7 @@ public class ServiceEngine implements ThreadEngine
 								log=logError.toString()+" in "+((Room)((Item)ticker).owner()).roomID();
 							else
 							if((ticker instanceof Item)&&(((Item)ticker).owner()!=null)&&(((Item)ticker).owner() instanceof MOB))
-								log=logError.toString()+" owned by "+((MOB)((Item)ticker).owner()).name();
+								log=logError.toString()+" owned by "+((Item)ticker).owner().name();
 							else
 							if(ticker instanceof Room)
 								log=logError.toString()+" is "+((Room)ticker).roomID();

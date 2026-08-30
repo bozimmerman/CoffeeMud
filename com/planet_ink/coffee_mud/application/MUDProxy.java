@@ -26,6 +26,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 /*
 Copyright 2025-2026 Bo Zimmerman
 
@@ -59,6 +60,7 @@ public class MUDProxy
 	private static String			ctlPassword		= ""+(rand.nextInt(90000)+10000);
 	private static boolean			packetDebug		= false;
 	
+	private static final ServiceEngine 		serviceEngine	= MUD.serviceEngine;
 	private static volatile String			mpcpKey			= "";
 	private static volatile SecretKeySpec	cachedKeySpec	= null;
 	private static volatile String			cachedKey		= null;
@@ -95,8 +97,8 @@ public class MUDProxy
 		runnables		= new Vector<Runnable>();
 	private static final Map<Integer, AtomicInteger>
 		strategyMap		= new Hashtable<Integer, AtomicInteger>();
-	private static final Map<Pair<String,Integer>, Queue<PendingForward>>
-		pendingForwards = new ConcurrentHashMap<Pair<String,Integer>, Queue<PendingForward>>();
+	private static final Map<Pair<String,Integer>, Queue<Triad<String,Integer,byte[]>>>
+		pendingForwards = new ConcurrentHashMap<Pair<String,Integer>, Queue<Triad<String,Integer,byte[]>>>();
 
 	/**
 	 * Strategies for incoming connections.
@@ -362,7 +364,7 @@ public class MUDProxy
 						if(!myCtx.isProcessing.getAndSet(true))
 						{
 							k.interestOps(k.interestOps() & ~SelectionKey.OP_READ);
-							MUD.serviceEngine.executeRunnable(new ReadProcessor(myCtx, k, destCtx, destK, eof));
+							serviceEngine.executeRunnable(new ReadProcessor(myCtx, k, destCtx, destK, eof));
 						}
 					}
 				}
@@ -715,7 +717,7 @@ public class MUDProxy
 							if(key.isWritable())
 							{
 								final SelectionKey k = key;
-								MUD.serviceEngine.executeRunnable(new Runnable()
+								serviceEngine.executeRunnable(new Runnable()
 								{
 									final SelectionKey key = k;
 									@Override
@@ -921,28 +923,6 @@ public class MUDProxy
 		}
 	}
 
-	/**
-	 * Represents a pending server-to-server MPCP forward payload.
-	 * 
-	 * @author BZ
-	 */
-	private static class PendingForward
-	{
-		final Pair<String, Integer> targetPort;
-		final byte[]				payload;
-		
-		PendingForward(final Pair<String,Integer> targetPort, final byte[] payload)
-		{
-			this.targetPort = targetPort;
-			this.payload = payload;
-		}
-		
-		public byte[] payload() throws IOException
-		{
-			return payload;
-		}
-	}
-	
 	/**
 	 * Sends an MPCP MESSAGE packet to the mud side.
 	 *
@@ -1298,12 +1278,12 @@ public class MUDProxy
 					obj.put("source_ip", context.port.first);
 					obj.put("source_port", context.port.second);
 					final byte[] wrappedPacket = makeMPCPPacket("FORWARD " + obj.toString());
-					final PendingForward pf = new PendingForward(target, wrappedPacket);
-					Queue<PendingForward> queue = pendingForwards.get(target);
+					final Triad<String,Integer,byte[]> pf = new Triad<String,Integer,byte[]>(target.first, target.second, wrappedPacket);
+					Queue<Triad<String,Integer,byte[]>> queue = pendingForwards.get(target);
 					if (queue == null) 
 					{
-						Queue<PendingForward> newQueue = new ConcurrentLinkedQueue<PendingForward>();
-						Queue<PendingForward> existing = pendingForwards.putIfAbsent(target, newQueue);
+						Queue<Triad<String,Integer,byte[]>> newQueue = new ConcurrentLinkedQueue<Triad<String,Integer,byte[]>>();
+						Queue<Triad<String,Integer,byte[]>> existing = pendingForwards.putIfAbsent(target, newQueue);
 						queue = (existing != null) ? existing : newQueue;
 					}
 					queue.add(pf);
@@ -1862,7 +1842,7 @@ public class MUDProxy
 			if(context.input.size()>0)
 			{
 				final int br = bytesRead;
-				MUD.serviceEngine.executeRunnable(new Runnable()
+				serviceEngine.executeRunnable(new Runnable()
 				{
 					final int bytesRead = br;
 					final SelectionKey k = key;
@@ -1956,7 +1936,7 @@ public class MUDProxy
 				if(!context.isProcessing.getAndSet(true))
 				{
 					key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
-					MUD.serviceEngine.executeRunnable(new ReadProcessor(context, key, destContext, destKey, eof));
+					serviceEngine.executeRunnable(new ReadProcessor(context, key, destContext, destKey, eof));
 				}
 			}
 		}
@@ -2365,7 +2345,7 @@ public class MUDProxy
 	 */
 	private static void deliverPendingForwards(final Pair<String,Integer> target)
 	{
-		final Queue<PendingForward> queue = pendingForwards.get(target);
+		final Queue<Triad<String,Integer,byte[]>> queue = pendingForwards.get(target);
 		if((queue == null) || queue.isEmpty())
 			return;
 
@@ -2393,27 +2373,18 @@ public class MUDProxy
 		{
 			final SelectionKey fwdKey = existingKey;
 			final MUDProxy fwdCtx = (MUDProxy) fwdKey.attachment();
-			MUD.serviceEngine.executeRunnable(new Runnable()
+			serviceEngine.executeRunnable(new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					PendingForward pf;
+					Triad<String,Integer,byte[]> pf;
 					while((pf = queue.poll()) != null)
 					{
-						try
+						Log.sysOut("MPCP","Delivering forward to "+pf.first+":"+pf.second+" ("+pf.third.length+" bytes)");
+						synchronized(fwdCtx.output)
 						{
-							final byte[] data = pf.payload();
-							Log.sysOut("MPCP","Delivering forward to "+pf.targetPort.first+":"+pf.targetPort.second
-									+" ("+data.length+" bytes)");
-							synchronized(fwdCtx.output)
-							{
-								fwdCtx.output.add(ByteBuffer.wrap(data));
-							}
-						}
-						catch(final IOException e)
-						{
-							Log.errOut("MPCP/FORWARD",e);
+							fwdCtx.output.add(ByteBuffer.wrap(pf.third));
 						}
 					}
 					try { handleWrite(fwdKey); }
