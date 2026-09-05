@@ -107,6 +107,7 @@ public class Fighter_MonkeyGrip extends FighterSkill
 
 	protected volatile int monkeyItemLevels=-1;
 	protected volatile int monkeyExpertise=-1;
+	protected volatile boolean deferredRemovePending=false;
 
 	protected final void cleanItemOfMonkeytude(final Item I)
 	{
@@ -127,6 +128,18 @@ public class Fighter_MonkeyGrip extends FighterSkill
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
+		if(affected instanceof Weapon)
+		{
+			if(msg.target()==affected)
+			{
+				if((msg.targetMinor()==CMMsg.TYP_WIELD)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+					deferredRemovePending=false;
+				else
+				if(msg.targetMinor()==CMMsg.TYP_REMOVE)
+					deferredRemovePending=true;
+			}
+		}
+		else
 		if(msg.source()==affected)
 		{
 			if((msg.targetMinor()==CMMsg.TYP_WIELD)||(msg.targetMinor()==CMMsg.TYP_HOLD))
@@ -152,10 +165,11 @@ public class Fighter_MonkeyGrip extends FighterSkill
 		{
 			final Weapon W=(Weapon)affected;
 			final MOB M=invoker();
-			if(W.amWearingAt(Item.IN_INVENTORY)
-			||W.amDestroyed()
+			if(W.amDestroyed()
 			||(M==null)
-			||(!(W.owner() instanceof MOB)))
+			||(!(W.owner() instanceof MOB))
+			||(W.owner()!=M)
+			||((deferredRemovePending)&&(W.amWearingAt(Item.IN_INVENTORY))))
 				cleanItemOfMonkeytude(W);
 			else
 			{
