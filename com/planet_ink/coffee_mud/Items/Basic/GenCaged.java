@@ -89,6 +89,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		basePhyStats().setLevel(M.basePhyStats().level());
 		basePhyStats().setWeight(M.basePhyStats().weight());
 		basePhyStats().setHeight(M.basePhyStats().height());
+		if(CMath.bset(M.basePhyStats().sensesMask(), PhyStats.CAN_NOT_MOVE)
+		&& CMath.bset(M.basePhyStats().sensesMask(), PhyStats.CAN_SEE_GOOD))
+			basePhyStats().setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);
 		final StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
 		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.classID(M)));
