@@ -107,6 +107,7 @@ public class CombatDummy extends StdMOB
 				R.addItem(cI, Expire.Player_Drop);
 				CMLib.commands().postGet(msg.source(), null, cI, false);
 				cI.setCageFlagsBitmap(0);
+				killMeDead(false);
 				return false;
 			}
 		}
