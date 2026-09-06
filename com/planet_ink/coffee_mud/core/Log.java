@@ -93,21 +93,23 @@ public class Log extends java.util.logging.Logger
 	 */
 	public static enum Type
 	{
-		error("ERRMSGS"),
-		help("HLPMSGS"),
-		debug("DBGMSGS"),
-		info("SYSMSGS"),
-		warning("WRNMSGS"),
-		kills("KILLMSGS"),
-		combat("CBTMSGS"),
-		access("ACCMSGS");
+		error("ERRMSGS",true),
+		help("HLPMSGS",false),
+		debug("DBGMSGS",false),
+		info("SYSMSGS",true),
+		warning("WRNMSGS",false),
+		kills("KILLMSGS",false),
+		combat("CBTMSGS",false),
+		access("ACCMSGS",false);
 		final String sixChars;
 		final String logCode;
+		final boolean isCoreLogging;
 
-		private Type(final String code)
+		private Type(final String code, final boolean core)
 		{
 			logCode = code;
 			sixChars=(this.toString()+SPACES).substring(0,5)+" ";
+			isCoreLogging = core;
 		}
 
 		public final String getLogCode()
@@ -118,6 +120,11 @@ public class Log extends java.util.logging.Logger
 		public final String getSixChars()
 		{
 			return sixChars;
+		}
+		
+		public final boolean isCoreLogType()
+		{
+			return isCoreLogging;
 		}
 	}
 
@@ -620,8 +627,10 @@ public class Log extends java.util.logging.Logger
 	*/
 	public final void configureLogFile(final String logFilePath, final int numberOfLogs)
 	{
-		if(logFilePath == null)
+		if((logFilePath == null)||(logFilePath.length()==0))
 		{
+			if((fileOutWriter != null)&&(fileOutWriter.length>0)&&(fileOutWriter[0]!=null))
+				close();
 			fileOutWriter=new PrintWriter[]{null};
 			return;
 		}
@@ -644,6 +653,15 @@ public class Log extends java.util.logging.Logger
 		}
 	}
 
+	/**
+	 * Returns whether configureLogFile has been called and the log file successfully opened
+	 * @return true if the log file is writeable
+	 */
+	public final boolean isFileWriterOpen()
+	{
+		return (fileOutWriter != null) && (fileOutWriter.length>0) && (fileOutWriter[0] != null);
+	}
+	
 	/**
 	 * A rolling log reader interface for streaming in a log a line at a time.
 	 * @author Bo Zimmerman

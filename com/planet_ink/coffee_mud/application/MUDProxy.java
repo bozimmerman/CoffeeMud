@@ -492,6 +492,55 @@ public class MUDProxy
 		return p;
 	}
 
+	private static String normalizeConfigString(final Object o)
+	{
+		if(o instanceof String)
+			return (String)o;
+		if((o instanceof String[])&&(((String[])o).length>0)&&(((String[])o)[0]!=null))
+			return ((String[])o)[0].toString();
+		return null;
+	}
+	
+	private static void gatherLoggingConfig(final Map<?, ?> map, final Map<String, String> foundConfig)
+	{
+		for(final String key : new String[] {"LOGNAME", "NUMLOGS"})
+		{
+			if(foundConfig.containsKey(key)) continue;
+			final String s = normalizeConfigString(map.get(key));
+			if(s != null)
+				foundConfig.put(key, s);
+		}
+		for(final Log.Type logType : Log.Type.values())
+		{
+			final String key = logType.getLogCode();
+			if(foundConfig.containsKey(key)) continue;
+			final String s = normalizeConfigString(map.get(key));
+			if(s != null)
+				foundConfig.put(key,s);
+		}
+	}
+	
+	private static void applyLoggingConfig(final Map<String,String> config)
+	{
+		if(config.containsKey("LOGNAME")||config.containsKey("NUMLOGS"))
+		{
+			final String logName = config.containsKey("LOGNAME") ? config.get("LOGNAME") : "proxy";
+			final String numMsgsStr = config.containsKey("NUMLOGS") ? config.get("NUMLOGS") : "1";
+			final int numMsgs = CMath.isInteger(numMsgsStr) ? CMath.s_int(numMsgsStr) : 1;
+			Log.instance().configureLogFile(logName, numMsgs);
+		}
+		else
+			Log.instance().configureLogFile("proxy",1);
+		for(final Log.Type logType : Log.Type.values())
+		{
+			if(config.containsKey(logType.getLogCode()) && config.get(logType.getLogCode())!=null)
+				Log.instance().configureLog(logType, config.get(logType.getLogCode()));
+			else
+				Log.instance().configureLog(logType, logType.isCoreLogType()?(Log.instance().isFileWriterOpen()?"BOTH":"ON"):"OFF");
+		}
+		
+	}
+
 	/**
 	 * Main entry point for the proxy server.
 	 *
@@ -503,16 +552,20 @@ public class MUDProxy
 	 */
 	public static void main(final String a[])
 	{
-		if((a.length>0)&&(a[0].length()>0)&&(Character.toUpperCase(a[0].charAt(0))=='C'))
+		if((a.length>0)
+		&&(a[0].length()>0)
+		&&(a[0].equalsIgnoreCase("CMD")))
 		{
 			sendControlCommand(a);
 			return;
 		}
 		Thread.currentThread().setName("PROXY");
+		final Map<String,String> loggingConfig = new HashMap<String,String>();
 		final Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{
 			final Map<String,String[]> hargs=CMParms.parseCommandLineArgs(a);
+			gatherLoggingConfig(hargs,loggingConfig);
 			final String[] boots = hargs.remove("BOOT");
 			if(boots != null)
 			{
@@ -536,9 +589,10 @@ public class MUDProxy
 		CMLib.initialize(); // initialize this threads libs
 		if(iniFiles.size()==0)
 			iniFiles.addElement("coffeemud.ini");
-		Log.instance().configureLogFile("proxy",1);
+		//Log.instance().configureLogFile("proxy",1);
+		// allow stdio logging until configuration resolved
 		for(final Log.Type logType : Log.Type.values())
-			Log.instance().configureLog(logType, "BOTH");
+			Log.instance().configureLog(logType, logType.isCoreLogType()?"ON":"OFF");
 		for(final String iniFile : iniFiles)
 		{
 			final PairList<String,InputStream> sections = new PairArrayList<String, InputStream>();
@@ -571,6 +625,7 @@ public class MUDProxy
 			for(final Pair<String,InputStream> sec : sections)
 			{
 				final CMProps page = new CMProps(sec.second);
+				gatherLoggingConfig(page,loggingConfig);
 				final String key = page.getPrivateStr("MPCPKEY");
 				if((key != null)&&(key.length()>0))
 					mpcpKey = key;
@@ -625,6 +680,7 @@ public class MUDProxy
 				}
 			}
 		}
+		MUDProxy.applyLoggingConfig(loggingConfig);
 		if(portMap.size()==0)
 		{
 			Log.errOut(Thread.currentThread().getName(),"ERROR: No proxy ports defined in ini file.");
