@@ -60,7 +60,7 @@ public class Spell_Friends extends Spell
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	@Override
