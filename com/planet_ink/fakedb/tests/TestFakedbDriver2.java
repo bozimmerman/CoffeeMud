@@ -512,7 +512,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			st2.close();
 			c2.close();
 		}
-		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 		{
 			check("blob-freed", fs.listAllFiles().size() == 0, "blob store should be empty after delete");
 		}
@@ -588,7 +588,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		st.close();
 		c.close();
 
-		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 		{
 			check("updblob-one-entry", fs.listAllFiles().size() == 1, "blob store must hold exactly 1 entry after update");
 		}
@@ -605,13 +605,13 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			final Statement st = c.createStatement();
 			st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice',30,1000,'same-content')");
 			final String refBefore;
-			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 			{
 				refBefore = fs.listAllFiles().get(0).getKey();
 			}
 			st.executeUpdate("UPDATE " + table + " SET BIO='same-content' WHERE USERID='u1'");
 			final String refAfter;
-			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 			{
 				refAfter = fs.listAllFiles().get(0).getKey();
 			}
@@ -633,7 +633,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 			check("dropblob-count", countRows(c, table) == 1, "row count should be 1 after drop");
 			st.close();
 			c.close();
-			try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+			try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 			{
 				check("dropblob-freed", fs.listAllFiles().size() == 0, "blob store should be empty after dropping blob column");
 			}
@@ -652,17 +652,17 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice','blob-one')");
 		st.executeUpdate("INSERT INTO " + table + " VALUES ('u2','Bob','blob-two')");
 		checkEq("delblob-content-u1", "blob-one", querySingle(c, "SELECT BIO FROM " + table + " WHERE USERID='u1'", 1));
-		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 		{
 			check("delblob-store-2", fs.listAllFiles().size() == 2, "blob store should hold 2 entries after inserts, got " + fs.listAllFiles().size());
 		}
 		st.executeUpdate("DELETE FROM " + table + " WHERE USERID='u1'");
-		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 		{
 			check("delblob-store-1", fs.listAllFiles().size() == 1, "blob store should hold 1 entry after deleting one blob row, got " + fs.listAllFiles().size());
 		}
 		st.executeUpdate("DELETE FROM " + table);
-		try (final FlatFileFS fs = new FlatFileFS(new File(dir, table + ".flatfs").getAbsolutePath()))
+		try (final FlatFileFS fs = new FlatFileFS(new File(dir, "fakedb.data." + table + ".flatfs").getAbsolutePath()))
 		{
 			check("delblob-store-0", fs.listAllFiles().size() == 0, "blob store should be empty after deleting all rows, got " + fs.listAllFiles().size());
 		}
@@ -806,7 +806,7 @@ public class TestFakedbDriver2 extends TestFakedbDriver
 		st.executeUpdate("CREATE TABLE " + table + " V2 (USERID STRING KEY (50), NAME STRING NULL (50), BIO CLOB NULL (200))");
 		st.executeUpdate("INSERT INTO " + table + " VALUES ('u1','Alice','some-blob-content')");
 
-		final File blobFile = new File(dir, table + ".flatfs");
+		final File blobFile = new File(dir, "fakedb.data." + table + ".flatfs");
 		check("drop2-blob-exists-before", blobFile.exists(), "blob store should exist before DROP TABLE");
 
 		st.executeUpdate("DROP TABLE " + table);

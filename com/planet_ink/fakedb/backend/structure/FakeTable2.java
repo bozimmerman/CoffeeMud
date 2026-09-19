@@ -67,7 +67,7 @@ public class FakeTable2 extends FakeTable
 
 	private File blobStoreFile()
 	{
-		return new File(fileName.getParentFile(), name + ".flatfs");
+		return new File(fileName.getParentFile(), "fakedb.data." + name + ".flatfs");
 	}
 
 	public String storeBlob(final String content) throws SQLException
