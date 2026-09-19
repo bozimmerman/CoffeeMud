@@ -170,7 +170,8 @@ public class Chant_AnimalCompanion extends Chant
 						oldR.delInhabitant(target);
 						target.setLocation(null);
 						A.unInvoke();
-						oldR.addInhabitant(target);
+						if(!oldR.isInhabitant(target))
+							oldR.addInhabitant(target);
 						target.setLocation(oldR);
 						mob.makePeace(true);
 						target.makePeace(true);
@@ -221,6 +222,12 @@ public class Chant_AnimalCompanion extends Chant
 					target.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					target.phyStats().setRejuv(PhyStats.NO_REJUV);
 					target.text();
+					if(oldTarget.location()!=null)
+					{
+						while(oldTarget.location().isInhabitant(oldTarget))
+							oldTarget.location().delInhabitant(oldTarget);
+					}
+					oldTarget.setLocation(null);
 					oldTarget.killMeDead(false);
 					target.bringToLife(mob.location(), false);
 				}
