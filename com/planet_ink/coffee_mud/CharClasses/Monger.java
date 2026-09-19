@@ -129,6 +129,7 @@ public class Monger extends StdCharClass
 	public void initializeClass()
 	{
 		super.initializeClass();
+		// spec @ /arc/_COFEHAS/Design_Docs/Future/Monger.txt
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_ThrownWeapon",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
