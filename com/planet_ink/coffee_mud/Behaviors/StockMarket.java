@@ -60,6 +60,8 @@ public class StockMarket extends StdBehavior
 		return "StockMarket";
 	}
 
+	private static final int OWNER_DISCOUNT_INFL_CAP= 25;
+	
 	public PhysicalAgent			host			= null;
 	public StockMarket				me				= this;
 	public String					journalName		= "";
@@ -164,7 +166,7 @@ public class StockMarket extends StdBehavior
 			{
 				final Collection<StockDef> stocks = getHostStocks();
 				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-				synchronized(stocks)
+				synchronized(getHostStocksMap())
 				{
 					for(final StockDef def : stocks)
 					{
@@ -318,6 +320,12 @@ public class StockMarket extends StdBehavior
 			this.area = area;
 			this.totalShares = total;
 			this.roomID = roomID;
+		}
+
+		public synchronized int getInfluence(final InfluCat cat, final InfluDir which)
+		{
+			final int[] vals = influences.get(cat);
+			return (vals == null) ? 0 : vals[which.ordinal()];
 		}
 
 		public synchronized void addInfluence(final InfluCat cat, final InfluDir which, final int amt)
@@ -595,7 +603,7 @@ public class StockMarket extends StdBehavior
 						final String name  = CMLib.xml().restoreAngleBrackets(tag.getParmValue("NAME"));
 						final String roomID = tag.getParmValue("ROOMID");
 						final double price  = CMath.s_double(tag.getParmValue("PRICE"));
-						final int manipulation  = CMath.s_int(tag.getParmValue("M"));
+						final double manipulation  = CMath.s_double(tag.getParmValue("M"));
 						int total  = CMath.s_int(tag.getParmValue("T"));
 						if(total == 0)
 							total = Integer.MAX_VALUE;
@@ -612,7 +620,7 @@ public class StockMarket extends StdBehavior
 								{
 									final InfluDir typ = InfluDir.values()[CMath.s_int(itag.getParmValue("TYP"))];
 									final InfluCat cat = (InfluCat)CMath.s_valueOf(InfluCat.class,itag.getParmValue("CAT"));
-									d.addInfluence(cat, typ, CMath.s_int(tag.getParmValue("AMT")));
+									d.addInfluence(cat, typ, CMath.s_int(itag.getParmValue("AMT")));
 								}
 							if((bankruptUntil != null)&&(bankruptUntil.trim().length()>0))
 							{
@@ -685,7 +693,7 @@ public class StockMarket extends StdBehavior
 						for(final StockDef def : deadStocks)
 						{
 							Log.debugOut("Deleting dead stock '"+def.getTitleID()+". from "+def.roomID+" on next save.");
-							stocks.remove(def.getTitleID());
+							stocks.remove(def.name());
 						}
 					}
 				}
@@ -712,8 +720,9 @@ public class StockMarket extends StdBehavior
 		for(final Pair<String,Integer> owner : this.getStockOwners(stock))
 			processDeedsByOwner(owner.first, stock, processor);
 		final List<String> roomItemRooms = CMLib.database().DBFindRoomItemLocs(null, "GenCertificate", stock.getTitleID());
+		final Set<Room> visited = new HashSet<Room>();
 		for(final String roomID : roomItemRooms)
-			processDeedsByRoom(CMLib.map().getRoom(roomID), stock, processor);
+			processDeedsByRoom(CMLib.map().getRoom(roomID), stock, processor, visited);
 		final List<BankDepositEntry> entries = CMLib.beanCounter().findBankDepositedItems(null, null, "GenCertificate", stock.getTitleID());
 		for(final BankDepositEntry entry : entries)
 		{
@@ -730,10 +739,11 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
-	private boolean processDeedsByRoom(final Room R, final StockDef stock, final DeedProcessor processor)
+	private boolean processDeedsByRoom(final Room R, final StockDef stock, final DeedProcessor processor, final Set<Room> visited)
 	{
-		if(R==null)
+		if((R==null)||(visited.contains(R)))
 			return false;
+		visited.add(R);
 		boolean didSomething=false;
 		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
@@ -749,9 +759,13 @@ public class StockMarket extends StdBehavior
 			{
 				final Area A = ((Boardable)I).getArea();
 				if(A != null)
+				{
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-						if(processDeedsByRoom(r.nextElement(), stock, processor))
+					{
+						if(processDeedsByRoom(r.nextElement(), stock, processor, visited))
 							didSomething=true;
+					}
+				}
 			}
 		}
 		return didSomething;
@@ -759,6 +773,7 @@ public class StockMarket extends StdBehavior
 
 	private void processDeedsByOwner(final String owner, final StockDef stock, final DeedProcessor processor)
 	{
+		final Set<Room> visited = new HashSet<Room>();
 		final MOB M = CMLib.players().getPlayer(owner);
 		if(M != null)
 		{
@@ -772,8 +787,10 @@ public class StockMarket extends StdBehavior
 				{
 					final Area A = ((Boardable)I).getArea();
 					if(A != null)
+					{
 						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-							processDeedsByRoom(r.nextElement(), stock, processor);
+							processDeedsByRoom(r.nextElement(), stock, processor, visited);
+					}
 				}
 			}
 		}
@@ -792,9 +809,13 @@ public class StockMarket extends StdBehavior
 					final Area A = ((Boardable)I).getArea();
 					boolean updated=false;
 					if(A != null)
+					{
 						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-							if(processDeedsByRoom(r.nextElement(), stock, processor))
+						{
+							if(processDeedsByRoom(r.nextElement(), stock, processor, visited))
 								updated=true;
+						}
+					}
 					if(updated)
 						CMLib.database().DBUpdatePlayerItem(i.first, I, i.third);
 				}
@@ -949,7 +970,11 @@ public class StockMarket extends StdBehavior
 							newProd.shelfFlags().add(ShelfPriceFlag.NO_TAXES);
 							newProd.shelfFlags().add(ShelfPriceFlag.NO_DEPRECIATION);
 							for(final StockDef def : defs)
-								def.addInfluence(InfluCat.OWNER_DISCOUNT, InfluDir.NEGATIVE, 1);
+							{
+								if(def.getInfluence(InfluCat.OWNER_DISCOUNT, InfluDir.NEGATIVE) < OWNER_DISCOUNT_INFL_CAP)
+									def.addInfluence(InfluCat.OWNER_DISCOUNT, InfluDir.NEGATIVE, 1);
+							}
+							return newProd;
 						}
 					}
 					return null;
@@ -1118,9 +1143,9 @@ public class StockMarket extends StdBehavior
 				nonShops.add(SK);
 				return null;
 			}
-			final Collection<StockDef> stocks = getHostStocks();
-			synchronized(stocks)
+			synchronized(getHostStocksMap())
 			{
+				final Collection<StockDef> stocks = getHostStocks();
 				synchronized(shopStocksMap)
 				{
 					if(shopStocksMap.containsKey(SK))
@@ -1246,6 +1271,7 @@ public class StockMarket extends StdBehavior
 				this.hash = Integer.valueOf(Objects.hash(
 						Integer.valueOf(updateDays),Integer.valueOf(waitDaysAfterBankruptcy),Integer.valueOf(maxStocks),
 						Boolean.valueOf(allowsClans), Boolean.valueOf(groupAreas), groupBy, nameMask, shopkeeperMaskStr,
+						Integer.valueOf(maxSharesPerStock), Boolean.valueOf(playerInfluence), flattenQuestMoves(),
 						areaMaskStr));
 			}
 			return this.hash.intValue();
@@ -1262,7 +1288,9 @@ public class StockMarket extends StdBehavior
 			return (m.updateDays==updateDays) && (m.waitDaysAfterBankruptcy==waitDaysAfterBankruptcy)
 				&& (m.maxStocks==maxStocks) && (m.maxSharesPerStock==maxSharesPerStock)
 				&& (m.allowsClans == allowsClans) && (m.groupAreas == groupAreas) && (m.groupBy==groupBy) && Objects.equals(m.nameMask,nameMask)
-				&& Objects.equals(m.shopkeeperMaskStr,shopkeeperMaskStr)&& Objects.equals(m.areaMaskStr,areaMaskStr);
+				&& Objects.equals(m.shopkeeperMaskStr,shopkeeperMaskStr)&& Objects.equals(m.areaMaskStr,areaMaskStr)
+				&& (m.playerInfluence == playerInfluence)
+				&& Objects.equals(m.flattenQuestMoves(), flattenQuestMoves());
 		}
 	}
 
@@ -1390,7 +1418,10 @@ public class StockMarket extends StdBehavior
 			try
 			{
 				props.load(in);
-				configs.add(new MarketConf(mapped, base));
+				final Map<String, String> merged = new Hashtable<String, String>(mapped);
+				for(final String key : props.stringPropertyNames())
+					merged.put(key, props.getProperty(key));
+				configs.add(new MarketConf(merged, base));
 			}
 			catch (final IOException e)
 			{
@@ -1441,10 +1472,9 @@ public class StockMarket extends StdBehavior
 						break;
 					}
 				}
-				final Collection<StockDef> stocks = getHostStocks();
-				synchronized(stocks)
+				synchronized(getHostStocksMap())
 				{
-					for(final StockDef def : stocks)
+					for(final StockDef def : getHostStocks())
 					{
 						if(weatherAreas.contains(def.area))
 							def.addInfluence(InfluCat.WEATHER, InfluDir.NEGATIVE, 1);
@@ -1692,30 +1722,32 @@ public class StockMarket extends StdBehavior
 									def.price = def.price / 2.0;
 									getOutstandingShares(def, 0);
 									getOutstandingShares(def, def.outstandingShares);//effectively doubles them
-									final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, def.price);
-									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 splits to @x2 per share.",def.name(),priceStr),L("See the subject line."));
-									for(final Pair<String,Integer> p : getStockOwners(def))
+									if(journalName.length()>0)
 									{
-										updatePlayerStockXML(p.first, def, p.second.intValue());
-										processDeeds(def, new DeedProcessor()
-										{
-											final String titleID = def.getTitleID();
-											final int newPrice = (int)Math.round(def.price);
-											@Override
-											public boolean process(final Item I)
-											{
-												if((I instanceof PrivateProperty)
-												&&(I instanceof AutoBundler)
-												&&(((PrivateProperty)I).getTitleID().equals(titleID)))
-												{
-													((PrivateProperty)I).setPrice(newPrice);
-													((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
-													return true;
-												}
-												return false;
-											}
-										});
+										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, def.price);
+										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 splits to @x2 per share.",
+												def.name(),priceStr),L("See the subject line."));
 									}
+									for(final Pair<String,Integer> p : getStockOwners(def))
+										updatePlayerStockXML(p.first, def, p.second.intValue());
+									processDeeds(def, new DeedProcessor()
+									{
+										final String titleID = def.getTitleID();
+										final int newPrice = (int)Math.round(def.price);
+										@Override
+										public boolean process(final Item I)
+										{
+											if((I instanceof PrivateProperty)
+											&&(I instanceof AutoBundler)
+											&&(((PrivateProperty)I).getTitleID().equals(titleID)))
+											{
+												((PrivateProperty)I).setPrice(newPrice);
+												((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
+												return true;
+											}
+											return false;
+										}
+									});
 								}
 							}
 						}
@@ -1771,10 +1803,9 @@ public class StockMarket extends StdBehavior
 			else
 			{
 				foundDef=null;
-				final Collection<StockDef> stocks = getHostStocks();
-				synchronized(stocks)
+				synchronized(getHostStocksMap())
 				{
-					for(final StockDef def : stocks)
+					for(final StockDef def : getHostStocks())
 					{
 						if(def.getTitleID().startsWith(subsellingTitleID))
 							worthless=true;
@@ -1934,7 +1965,7 @@ public class StockMarket extends StdBehavior
 				if(!conf.playerInfluence)
 					continue;
 				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-				synchronized(stocks)
+				synchronized(getHostStocksMap())
 				{
 					for(final StockDef def : stocks)
 					{
@@ -1963,7 +1994,7 @@ public class StockMarket extends StdBehavior
 				if(dir == null)
 					continue;
 				final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-				synchronized(stocks)
+				synchronized(getHostStocksMap())
 				{
 					for(final StockDef def : stocks)
 					{
@@ -1998,7 +2029,7 @@ public class StockMarket extends StdBehavior
 						if(!conf.playerInfluence)
 							continue;
 						final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-						synchronized(stocks)
+						synchronized(getHostStocksMap())
 						{
 							for(final StockDef def : stocks)
 							{
@@ -2046,7 +2077,7 @@ public class StockMarket extends StdBehavior
 					if(!conf.playerInfluence)
 						continue;
 					final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-					synchronized(stocks)
+					synchronized(getHostStocksMap())
 					{
 						for(final StockDef def : stocks)
 						{
@@ -2143,7 +2174,7 @@ public class StockMarket extends StdBehavior
 					{
 						final String subId = id.substring(0,id.lastIndexOf('#'));
 						final StockDef def = this.getHostStocksMap().get(subId);
-						if(def.getTitleID().equals(id))
+						if((def != null) && def.getTitleID().equals(id))
 						{
 							if(msg.tool() instanceof AutoBundler)
 							{
@@ -2182,7 +2213,7 @@ public class StockMarket extends StdBehavior
 					{
 						final Collection<StockDef> stocks = getHostStocks();
 						final boolean isGroupArea = conf.groupAreas && (conf.isApplicableArea(A));
-						synchronized(stocks)
+						synchronized(getHostStocksMap())
 						{
 							for(final StockDef def : stocks)
 							{
