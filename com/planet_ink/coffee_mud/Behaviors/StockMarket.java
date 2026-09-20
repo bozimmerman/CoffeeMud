@@ -62,11 +62,11 @@ public class StockMarket extends StdBehavior
 
 	private static final int OWNER_DISCOUNT_INFL_CAP= 25;
 	
-	public PhysicalAgent			host			= null;
-	public StockMarket				me				= this;
+	private PhysicalAgent			host			= null;
 	public String					journalName		= "";
 	private volatile int			weatherDown		= Climate.WEATHER_TICK_DOWN;
 	private final AtomicBoolean		processing		= new AtomicBoolean(false);
+	private volatile boolean		behaviorEnded	= false;
 	private final Set<ShopKeeper>	stockbrokers	= Collections.synchronizedSet(new WeakSHashSet<ShopKeeper>());
 	private final Set<CMMsg> 		lastGives 		= Collections.synchronizedSet(new ExpireHashSet<CMMsg>(1000));
 
@@ -87,7 +87,7 @@ public class StockMarket extends StdBehavior
 
 	private final ShopProvider shopProvider = new ShopProvider()
 	{
-		final String ID = "StockMarker_"+hashCode();
+		final String ID = "StockMarket_"+hashCode();
 		@Override
 		public String ID()
 		{
@@ -171,6 +171,8 @@ public class StockMarket extends StdBehavior
 						if((areaName.equals(def.area)||isGroupArea)
 						&&(!done.contains(def)))
 						{
+							if(def.bankruptUntil != null)
+								continue;
 							// should stockbrokers sell replacement certs when you aren't carrying enough of them?
 							// Players who keep their stocks where the adjuster can't find them depend on it.  But HOW?!
 							if(def.deed == null)
@@ -197,7 +199,6 @@ public class StockMarket extends StdBehavior
 								if(remain <= 0)
 									continue;
 							}
-							//final int amtOwned = me.getStocksOwned(buyer, def);
 							final Item deed = (Item)def.deed.copyOf();
 							((PrivateProperty)deed).setPrice(def.getPrice());
 							final ShelfProduct product = shops.createShelfProduct(deed, remain, def.getPrice(), currency);
@@ -233,7 +234,7 @@ public class StockMarket extends StdBehavior
 		VARIABLE
 	}
 
-	private static double[][] THE_TABLE = new double[][]
+	private static final double[][] THE_TABLE = new double[][]
 	{
 		/*-95*/ {  -8,  8,  8},
 		/*-90*/ {  -7, -7,  7},		/*-85*/ {  -7, -7,  7},		/*-80*/ {  -7, -7,  7},		/*-75*/ {  -7, -7,  7},
@@ -429,6 +430,8 @@ public class StockMarket extends StdBehavior
 		for(final PAData dat : stocksOwned)
 		{
 			final int amt = this.getStockAmountFromRecord(dat);
+			if(amt <= 0)
+				continue;
 			if(topOwner == null)
 				topOwner = new Pair<String,Integer>(dat.who(),Integer.valueOf(amt));
 			else
@@ -500,7 +503,11 @@ public class StockMarket extends StdBehavior
 		int amt=0;
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerDataEntries("STOCKMARKET_STOCKS", stock.getTitleID());
 		for(final PAData stockData : stocksOwned)
-			amt += getStockAmountFromRecord(stockData);
+		{
+			final int recAmt = getStockAmountFromRecord(stockData);
+			if(recAmt > 0)
+				amt += recAmt;
+		}
 		stock.outstandingShares = Math.max(0,amt+adj);
 		return stock.outstandingShares;
 	}
@@ -510,7 +517,11 @@ public class StockMarket extends StdBehavior
 		int amt=0;
 		final List<PAData> stocksOwned = CMLib.database().DBReadPlayerData(mob.Name(), "STOCKMARKET_STOCKS", stock.getTitleID());
 		for(final PAData stockData : stocksOwned)
-			amt += getStockAmountFromRecord(stockData);
+		{
+			final int recAmt = getStockAmountFromRecord(stockData);
+			if(recAmt > 0)
+				amt += recAmt;
+		}
 		return amt;
 	}
 
@@ -534,7 +545,7 @@ public class StockMarket extends StdBehavior
 		return owned;
 	}
 
-	private void savetHostStockXML(final Collection<StockDef> stocks)
+	private void saveHostStockXML(final Collection<StockDef> stocks)
 	{
 		final XMLLibrary xmlLib = CMLib.xml();
 		final StringBuilder xml = new StringBuilder("");
@@ -656,14 +667,19 @@ public class StockMarket extends StdBehavior
 			}
 			Resources.submitResource("CMKT_AREA_STOCKS/"+areaName,stocks);
 			final Runnable[] cleanStocksRunnable = new Runnable[1];
+			final int[] cleanStocksTries = new int[1];
 			cleanStocksRunnable[0] = new Runnable()
 			{
 				@Override
 				public void run()
 				{
+					if(behaviorEnded)
+						return;
 					if(CMProps.isState(HostState.BOOTING)||CMProps.isState(HostState.LOADINGMAP))
+					{
 						CMLib.threads().scheduleRunnable(cleanStocksRunnable[0], 10000);
-					else
+						return;
+					}
 					if(!CMProps.isState(HostState.RUNNING))
 						return;
 					final Map<String,StockDef> stocks = getHostStocksMap();
@@ -685,6 +701,12 @@ public class StockMarket extends StdBehavior
 									realStocks.addAll(conf.shopStocksMap.get(key));
 							}
 						}
+						if(realStocks.isEmpty())
+						{
+							if((++cleanStocksTries[0]) < 60)
+								CMLib.threads().scheduleRunnable(cleanStocksRunnable[0], 10000);
+							return;
+						}
 						final Set<StockDef> deadStocks = new HashSet<StockDef>();
 						for(final StockDef def : stocks.values())
 						{
@@ -693,7 +715,7 @@ public class StockMarket extends StdBehavior
 						}
 						for(final StockDef def : deadStocks)
 						{
-							Log.debugOut("Deleting dead stock '"+def.getTitleID()+". from "+def.roomID+" on next save.");
+							Log.debugOut("Deleting dead stock '"+def.getTitleID()+"' from "+def.roomID+" on next save.");
 							stocks.remove(def.name());
 						}
 					}
@@ -865,7 +887,7 @@ public class StockMarket extends StdBehavior
 			}
 		if(cd.length()==0)
 		{
-			final String word = words.get(0);
+			final String word = (words.size()>0) ? words.get(0) : letters;
 			for(int x=0;x<word.length()-1 && (cd.length()<2);x++)
 				for(int y=x+1;y<word.length();y++)
 				{
@@ -877,11 +899,24 @@ public class StockMarket extends StdBehavior
 					}
 				}
 			if(cd.length()==0)
-				cd=word.substring(0,2).toUpperCase();
+			{
+				if(word.length()>=2)
+					cd=word.substring(0,2).toUpperCase();
+				else
+				if(word.length()==1)
+					cd=word.toUpperCase();
+				else
+					cd=""+letters.charAt(0)+letters.charAt(1);
+			}
 		}
 		int x=0;
 		while(ids.contains(cd))
-			cd = ""+cd.charAt(0)+letters.charAt(x++);
+		{
+			if(x < letters.length())
+				cd = ""+cd.charAt(0)+letters.charAt(x++);
+			else
+				cd = ""+cd.charAt(0)+x++;
+		}
 		names.put(name, cd);
 		final StringBuilder data = new StringBuilder("");
 		for(final String key : names.keySet())
@@ -992,7 +1027,7 @@ public class StockMarket extends StdBehavior
 		public int				updateDays				= 24;
 		public int				waitDaysAfterBankruptcy	= 10;
 		public int				maxStocks				= 10;
-		public boolean			allowsClans				= true;
+		public boolean			allowsClans				= false;
 		public boolean			groupAreas				= false;
 		public GroupBy			groupBy					= GroupBy.NOTHING;
 		public String			nameMask				= "Stock in @x1 of @x2";
@@ -1011,23 +1046,11 @@ public class StockMarket extends StdBehavior
 
 		public MarketConf()
 		{
-			updateDays = 24;
-			waitDaysAfterBankruptcy = 10;
-			maxStocks = 10;
-			nameMask = "Stock in @x1 of @x2";
-			allowsClans = false;
-			groupAreas = false;
-			shopkeeperMaskStr = "";
-			shopkeeperMask = null;
 			questMoves.clear();
 			for(final String posiQuest : new String[] { "newyear", "celebration", "party", "leadership"})
 				questMoves.put(posiQuest, InfluDir.POSITIVE);
 			for(final String negaQuest : new String[] { "revolt", "crimewave", "swindler", "brutality", "harsh winter", "famine", "drought"})
 				questMoves.put(negaQuest, InfluDir.NEGATIVE);
-			maxSharesPerStock = Integer.MAX_VALUE;
-			areaMaskStr = "";
-			this.areaMask = null;
-			groupBy = GroupBy.NOTHING;
 		}
 
 		public MarketConf(final Map<String,String> props, MarketConf defaults)
@@ -1129,7 +1152,6 @@ public class StockMarket extends StdBehavior
 				if((((MOB)E).isPlayer())
 				||(CMLib.law().getLandTitle(R)!=null))
 				{
-					//if(!this.allowsClans) // must be done manually?
 					nonShops.add(SK);
 					return null;
 				}
@@ -1349,12 +1371,22 @@ public class StockMarket extends StdBehavior
 	@Override
 	public void endBehavior(final PhysicalAgent forMe)
 	{
+		behaviorEnded = true;
 		final Set<ShopKeeper> removeFroms = new XHashSet<ShopKeeper>(this.stockbrokers);
 		this.stockbrokers.clear();
 		for(final ShopKeeper SK : removeFroms)
 			SK.getShop().delShopProvider(shopProvider);
 		CMLib.map().delGlobalHandler(this, CMMsg.TYP_GIVE);
 		CMLib.map().delGlobalHandler(this, CMMsg.TYP_QUESTSTART);
+		if(host instanceof Area)
+		{
+			if(Resources.getResource("CMKT_AREA_STOCKS/"+host.Name()) != null)
+			{
+				saveHostStockXML(getHostStocks());
+				Resources.removeResource("CMKT_AREA_STOCKS/"+host.Name());
+			}
+			Resources.removeResource("CMKT_AREA_DATA/"+host.Name());
+		}
 		super.endBehavior(forMe);
 	}
 
@@ -1422,6 +1454,7 @@ public class StockMarket extends StdBehavior
 			}
 			catch (final IOException e)
 			{
+				Log.errOut("StockMarket", e);
 			}
 		}
 		if(configs.size()==0)
@@ -1505,7 +1538,7 @@ public class StockMarket extends StdBehavior
 		return true;
 	}
 
-	public Runnable processStockMarket = new Runnable()
+	private Runnable processStockMarket = new Runnable()
 	{
 		@Override
 		public void run()
@@ -1689,7 +1722,6 @@ public class StockMarket extends StdBehavior
 							}
 							else
 							{
-								//final boolean changed = def.price != price;
 								final double priceDelta = price - def.price;
 								def.price = price; // normal price change
 								if(journalName.length()>0)
@@ -1757,7 +1789,7 @@ public class StockMarket extends StdBehavior
 					conf.nextUpdate.bump(TimePeriod.DAY, conf.updateDays);
 				}
 				if(resave)
-					savetHostStockXML(getHostStocks());
+					saveHostStockXML(getHostStocks());
 			}
 			finally
 			{
@@ -1891,8 +1923,8 @@ public class StockMarket extends StdBehavior
 				{
 					lastGives.add(msg);
 					final int amt = ((AutoBundler)msg.tool()).getBundleSize();
-					final String oldOwner = msg.source().name();
-					final String newOwner = msg.target().name();
+					final String oldOwner = msg.source().Name();
+					final String newOwner = msg.target().Name();
 					this.updatePlayerStockXML(oldOwner, def, -amt);
 					this.updatePlayerStockXML(newOwner, def, amt);
 				}
@@ -2175,7 +2207,7 @@ public class StockMarket extends StdBehavior
 					{
 						final String subId = id.substring(0,id.lastIndexOf('#'));
 						final StockDef def = this.getHostStocksMap().get(subId);
-						if((def != null) && def.getTitleID().equals(id))
+						if((def != null) && (def.bankruptUntil == null) && def.getTitleID().equals(id))
 						{
 							if(msg.tool() instanceof AutoBundler)
 							{
@@ -2196,7 +2228,7 @@ public class StockMarket extends StdBehavior
 			break;
 		}
 		case CMMsg.TYP_SHUTDOWN:
-			savetHostStockXML(this.getHostStocks());
+			saveHostStockXML(this.getHostStocks());
 			break;
 		case CMMsg.TYP_DEATH:
 			if(msg.source().isMonster())
