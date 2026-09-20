@@ -70,8 +70,6 @@ public class StockMarket extends StdBehavior
 	private final Set<ShopKeeper>	stockbrokers	= Collections.synchronizedSet(new WeakSHashSet<ShopKeeper>());
 	private final Set<CMMsg> 		lastGives 		= Collections.synchronizedSet(new ExpireHashSet<CMMsg>(1000));
 
-	private final Map<String,Pair<LegalBehavior,Area>>	legalCache = new Hashtable<String,Pair<LegalBehavior,Area>>();
-
 	/**
 	 * As a StockMarket behavior covers an area or group of areas, it may include a lot of different types
 	 * of markets composed of different stocks.  Each one of these markets  is a MarketConf (config).
@@ -1299,21 +1297,17 @@ public class StockMarket extends StdBehavior
 
 	public int whichLegalDude(final String areaName, final MOB mob)
 	{
-		if(!legalCache.containsKey(areaName))
-		{
-			legalCache.put(areaName,new Pair<LegalBehavior,Area>(
-				CMLib.law().getLegalBehavior(mob.location().getArea()),
-				CMLib.law().getLegalObject(mob.location().getArea())
-			));
-		}
-		final Pair<LegalBehavior,Area> chk = legalCache.get(areaName);
-		if((chk !=null) && (chk.first != null))
-		{
-			if(chk.first.isAnyOfficer(chk.second, mob))
-				return 1;
-			if(chk.first.isJudge(chk.second, mob))
-				return 2;
-		}
+		final Area A=CMLib.map().getArea(areaName);
+		if(A==null)
+			return 0;
+		final LegalBehavior B=CMLib.law().getLegalBehavior(A);
+		if(B==null)
+			return 0;
+		final Area legalA=CMLib.law().getLegalObject(A);
+		if(B.isAnyOfficer(legalA, mob))
+			return 1;
+		if(B.isJudge(legalA, mob))
+			return 2;
 		return 0;
 	}
 
