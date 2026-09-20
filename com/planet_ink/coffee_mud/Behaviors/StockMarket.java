@@ -76,7 +76,7 @@ public class StockMarket extends StdBehavior
 	 * As a StockMarket behavior covers an area or group of areas, it may include a lot of different types
 	 * of markets composed of different stocks.  Each one of these markets  is a MarketConf (config).
 	 */
-	private final List<MarketConf> configs = Collections.synchronizedList(new LinkedList<MarketConf>());
+	private final List<MarketConf> configs = new SLinkedList<MarketConf>();
 
 	private static final Set<ShelfPriceFlag> certFlags 	= new HashSet<ShelfPriceFlag>();
 	static
@@ -553,13 +553,16 @@ public class StockMarket extends StdBehavior
 			else
 			{
 				xml.append(">");
-				for(final InfluCat cat : def.influences.keySet())
+				synchronized(def)
 				{
-					final int[] vals = def.influences.get(cat);
-					for(final InfluDir typ : InfluDir.values())
+					for(final InfluCat cat : def.influences.keySet())
 					{
-						if(vals[typ.ordinal()]!=0)
-							xml.append("<I CAT=\""+cat.name()+"\" TYP="+typ.ordinal()+" AMT="+vals[typ.ordinal()]+" />");
+						final int[] vals = def.influences.get(cat);
+						for(final InfluDir typ : InfluDir.values())
+						{
+							if(vals[typ.ordinal()]!=0)
+								xml.append("<I CAT=\""+cat.name()+"\" TYP="+typ.ordinal()+" AMT="+vals[typ.ordinal()]+" />");
+						}
 					}
 				}
 				xml.append("</S>");
@@ -1523,7 +1526,8 @@ public class StockMarket extends StdBehavior
 				final Set<StockDef> done = new HashSet<StockDef>();
 				for(final MarketConf conf : configs)
 				{
-					if(conf.nextUpdate.isAfter(now))
+					final TimeClock nextUp = conf.nextUpdate;
+					if((nextUp == null) || (nextUp.isAfter(now)))
 						continue;  // we have not arrived at the time yet
 					resave=true;
 					// calculate final
@@ -1631,31 +1635,34 @@ public class StockMarket extends StdBehavior
 							double dividendMultiplier = 0.0;
 							final DiceLibrary dice = CMLib.dice();
 							final Set<String> influenceList = new TreeSet<String>();
-							for(final InfluCat cat : def.influences.keySet())
+							synchronized(def)
 							{
-								for(final InfluDir dir : InfluDir.values())
+								for(final InfluCat cat : def.influences.keySet())
 								{
-									final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
-									if((rolls > 0)&&(journalName.length()>0))
-										influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
-									for(int r=0;r<rolls;r++)
+									for(final InfluDir dir : InfluDir.values())
 									{
-										final double roll = dice.rollPercentage();
-										int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
-										index = CMath.minMax(0, index, THE_TABLE.length-1);
-										final double[] dirChart = StockMarket.THE_TABLE[index];
-										final double value = dirChart[dir.ordinal()];
-										if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
-											dividendMultiplier += (value/100.0);
-										else
-										if(value < 0) // must be negative whole price
-											price -= dice.roll(1, -(int)Math.round(value), 0);
-										else
-											price += dice.roll(1, (int)Math.round(value), 0);
+										final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
+										if((rolls > 0)&&(journalName.length()>0))
+											influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
+										for(int r=0;r<rolls;r++)
+										{
+											final double roll = dice.rollPercentage();
+											int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
+											index = CMath.minMax(0, index, THE_TABLE.length-1);
+											final double[] dirChart = StockMarket.THE_TABLE[index];
+											final double value = dirChart[dir.ordinal()];
+											if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
+												dividendMultiplier += (value/100.0);
+											else
+											if(value < 0) // must be negative whole price
+												price -= dice.roll(1, -(int)Math.round(value), 0);
+											else
+												price += dice.roll(1, (int)Math.round(value), 0);
+										}
 									}
 								}
+								def.influences.clear();
 							}
-							def.influences.clear();
 							if((journalName.length()>0)&&(influenceList.size()>0))
 								CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 influences: @x2",def.name(),CMParms.toListString(influenceList)),L("See the subject line."));
 							if(price < 0.0) // GO BANKRUPT!
