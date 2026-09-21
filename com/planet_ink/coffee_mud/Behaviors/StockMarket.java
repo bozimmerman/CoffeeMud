@@ -757,8 +757,6 @@ public class StockMarket extends StdBehavior
 				if(processor.process(I))
 					CMLib.beanCounter().updateBankDepositInventory(entry);
 			}
-			I.destroy();
-
 		}
 	}
 
@@ -1632,156 +1630,163 @@ public class StockMarket extends StdBehavior
 							if(done.contains(def))
 								continue;
 							done.add(def);
-							if(def.bankruptUntil != null)
+							try
 							{
-								if(now.isAfter(def.bankruptUntil))
+								if(def.bankruptUntil != null)
 								{
-									def.bankruptUntil = null;
-									def.price=100.0;
-									def.version++;
-								}
-								else
-									continue; // ignore bankrupt stocks
-							}
-							if(astrological)
-								def.addInfluence(InfluCat.ASTROLOGICAL_INFLUENCES, InfluDir.VARIABLE, 1);
-							if(racialAstrological)
-								def.addInfluence(InfluCat.RACIAL_BOONS, InfluDir.VARIABLE, 1);
-							final PairList<String,Integer> owners = getStockOwners(def);
-							int numArchons = 0;
-							for(final Pair<String,Integer> p : owners)
-							{
-								if(archonNames.contains(p.first))
-									numArchons++;
-							}
-							if(numArchons == 0)
-								def.addInfluence(InfluCat.HOLDINGS_, InfluDir.NEGATIVE, 1);
-							if(owners.size() - numArchons > 0)
-								def.addInfluence(InfluCat.HOLDINGS, InfluDir.POSITIVE, 1);
-							double price = def.getPrice();
-							double dividendMultiplier = 0.0;
-							final DiceLibrary dice = CMLib.dice();
-							final Set<String> influenceList = new TreeSet<String>();
-							synchronized(def)
-							{
-								for(final InfluCat cat : def.influences.keySet())
-								{
-									for(final InfluDir dir : InfluDir.values())
+									if(now.isAfter(def.bankruptUntil))
 									{
-										final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
-										if((rolls > 0)&&(journalName.length()>0))
-											influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
-										for(int r=0;r<rolls;r++)
+										def.bankruptUntil = null;
+										def.price=100.0;
+										def.version++;
+									}
+									else
+										continue; // ignore bankrupt stocks
+								}
+								if(astrological)
+									def.addInfluence(InfluCat.ASTROLOGICAL_INFLUENCES, InfluDir.VARIABLE, 1);
+								if(racialAstrological)
+									def.addInfluence(InfluCat.RACIAL_BOONS, InfluDir.VARIABLE, 1);
+								final PairList<String,Integer> owners = getStockOwners(def);
+								int numArchons = 0;
+								for(final Pair<String,Integer> p : owners)
+								{
+									if(archonNames.contains(p.first))
+										numArchons++;
+								}
+								if(numArchons == 0)
+									def.addInfluence(InfluCat.HOLDINGS_, InfluDir.NEGATIVE, 1);
+								if(owners.size() - numArchons > 0)
+									def.addInfluence(InfluCat.HOLDINGS, InfluDir.POSITIVE, 1);
+								double price = def.getPrice();
+								double dividendMultiplier = 0.0;
+								final DiceLibrary dice = CMLib.dice();
+								final Set<String> influenceList = new TreeSet<String>();
+								synchronized(def)
+								{
+									for(final InfluCat cat : def.influences.keySet())
+									{
+										for(final InfluDir dir : InfluDir.values())
 										{
-											final double roll = dice.rollPercentage();
-											int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
-											index = CMath.minMax(0, index, THE_TABLE.length-1);
-											final double[] dirChart = StockMarket.THE_TABLE[index];
-											final double value = dirChart[dir.ordinal()];
-											if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
-												dividendMultiplier += (value/100.0);
-											else
-											if(value < 0) // must be negative whole price
-												price -= dice.roll(1, -(int)Math.round(value), 0);
-											else
-												price += dice.roll(1, (int)Math.round(value), 0);
+											final int rolls = cat.rolls(def.influences.get(cat)[dir.ordinal()]);
+											if((rolls > 0)&&(journalName.length()>0))
+												influenceList.add(cat.name().toLowerCase().replace('_', ' ').trim());
+											for(int r=0;r<rolls;r++)
+											{
+												final double roll = dice.rollPercentage();
+												int index = (int)Math.round((roll + def.manipulation + 95.0) / 5.0);
+												index = CMath.minMax(0, index, THE_TABLE.length-1);
+												final double[] dirChart = StockMarket.THE_TABLE[index];
+												final double value = dirChart[dir.ordinal()];
+												if((value>0.0)&&(value<1.0)) // is percentage for dividends, no negative dividends
+													dividendMultiplier += (value/100.0);
+												else
+												if(value < 0) // must be negative whole price
+													price -= dice.roll(1, -(int)Math.round(value), 0);
+												else
+													price += dice.roll(1, (int)Math.round(value), 0);
+											}
 										}
 									}
+									def.influences.clear();
 								}
-								def.influences.clear();
-							}
-							if((journalName.length()>0)&&(influenceList.size()>0))
-								CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 influences: @x2",def.name(),CMParms.toListString(influenceList)),L("See the subject line."));
-							if(price < 0.0) // GO BANKRUPT!
-							{
-								def.price = 0.0;
-								getOutstandingShares(def, 0); // cache them
-								getOutstandingShares(def, -def.outstandingShares);//effectively negates them
-								final TimeClock untilTime=(TimeClock)now.copyOf();
-								untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
-								def.bankruptUntil = untilTime;
-								if(journalName.length()>0)
-									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 goes bankrupt!",def.name()),L("See the subject line."));
-								CMLib.database().DBDeletePlayerSectionKeyData("STOCKMARKET_STOCKS", def.getTitleID());
-								processDeeds(def, new DeedProcessor()
+								if((journalName.length()>0)&&(influenceList.size()>0))
+									CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 influences: @x2",def.name(),CMParms.toListString(influenceList)),L("See the subject line."));
+								if(price < 0.0) // GO BANKRUPT!
 								{
-									final String titleID = def.getTitleID();
-									@Override
-									public boolean process(final Item I)
-									{
-										if((I instanceof PrivateProperty)
-										&&(((PrivateProperty)I).getTitleID().equals(titleID)))
-										{
-											((PrivateProperty)I).setPrice(0);
-											return true;
-										}
-										return false;
-									}
-
-								});
-							}
-							else
-							{
-								final double priceDelta = price - def.price;
-								def.price = price; // normal price change
-								if(journalName.length()>0)
-								{
-									if(priceDelta != 0.0)
-									{
-										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
-										final String deltaStr = CMLib.beanCounter().abbreviatedPrice(currency, Math.abs(priceDelta));
-										if(priceDelta > 0)
-											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
-										else
-											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
-									}
-								}
-								if(dividendMultiplier > 0.0)
-								{
-									final double dividend = CMath.mul(dividendMultiplier, def.price);
+									def.price = 0.0;
+									getOutstandingShares(def, 0); // cache them
+									getOutstandingShares(def, -def.outstandingShares);//effectively negates them
+									final TimeClock untilTime=(TimeClock)now.copyOf();
+									untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
+									def.bankruptUntil = untilTime;
 									if(journalName.length()>0)
-									{
-										final String dividendAmt = (dividendMultiplier * 100.0)+"%";
-										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 dividend per share.",def.name(),dividendAmt),L("See the subject line."));
-									}
-									for(final Pair<String,Integer> p : getStockOwners(def))
-										CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, CMath.mul(dividend, p.second.intValue()));
-								}
-								if((def.price > 200.0)
-								&& (CMLib.dice().rollPercentage() <= 20)
-								&& (def.totalShares < Integer.MAX_VALUE/2))
-								{
-									def.totalShares *= 2.0;
-									def.price = def.price / 2.0;
-									getOutstandingShares(def, 0);
-									getOutstandingShares(def, def.outstandingShares);//effectively doubles them
-									if(journalName.length()>0)
-									{
-										final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, def.price);
-										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 splits to @x2 per share.",
-												def.name(),priceStr),L("See the subject line."));
-									}
-									for(final Pair<String,Integer> p : getStockOwners(def))
-										updatePlayerStockXML(p.first, def, p.second.intValue());
+										CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 goes bankrupt!",def.name()),L("See the subject line."));
+									CMLib.database().DBDeletePlayerSectionKeyData("STOCKMARKET_STOCKS", def.getTitleID());
 									processDeeds(def, new DeedProcessor()
 									{
 										final String titleID = def.getTitleID();
-										final int newPrice = (int)Math.round(def.price);
 										@Override
 										public boolean process(final Item I)
 										{
 											if((I instanceof PrivateProperty)
-											&&(I instanceof AutoBundler)
 											&&(((PrivateProperty)I).getTitleID().equals(titleID)))
 											{
-												((PrivateProperty)I).setPrice(newPrice);
-												((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
+												((PrivateProperty)I).setPrice(0);
 												return true;
 											}
 											return false;
 										}
+
 									});
 								}
+								else
+								{
+									final double priceDelta = price - def.price;
+									def.price = price; // normal price change
+									if(journalName.length()>0)
+									{
+										if(priceDelta != 0.0)
+										{
+											final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, price);
+											final String deltaStr = CMLib.beanCounter().abbreviatedPrice(currency, Math.abs(priceDelta));
+											if(priceDelta > 0)
+												CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 up @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
+											else
+												CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 down @x2 to @x3.",def.name(),deltaStr,priceStr),L("See the subject line."));
+										}
+									}
+									if(dividendMultiplier > 0.0)
+									{
+										final double dividend = CMath.mul(dividendMultiplier, def.price);
+										if(journalName.length()>0)
+										{
+											final String dividendAmt = (dividendMultiplier * 100.0)+"%";
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 pays a @x2 dividend per share.",def.name(),dividendAmt),L("See the subject line."));
+										}
+										for(final Pair<String,Integer> p : getStockOwners(def))
+											CMLib.beanCounter().modifyLocalBankGold((Area)host, p.first, currency, CMath.mul(dividend, p.second.intValue()));
+									}
+									if((def.price > 200.0)
+									&& (CMLib.dice().rollPercentage() <= 20)
+									&& (def.totalShares < Integer.MAX_VALUE/2))
+									{
+										def.totalShares *= 2.0;
+										def.price = def.price / 2.0;
+										getOutstandingShares(def, 0);
+										getOutstandingShares(def, def.outstandingShares);//effectively doubles them
+										if(journalName.length()>0)
+										{
+											final String priceStr = CMLib.beanCounter().abbreviatedPrice(currency, def.price);
+											CMLib.database().DBWriteJournal(journalName,"StockMarket","ALL",L("@x1 splits to @x2 per share.",
+													def.name(),priceStr),L("See the subject line."));
+										}
+										for(final Pair<String,Integer> p : getStockOwners(def))
+											updatePlayerStockXML(p.first, def, p.second.intValue());
+										processDeeds(def, new DeedProcessor()
+										{
+											final String titleID = def.getTitleID();
+											final int newPrice = (int)Math.round(def.price);
+											@Override
+											public boolean process(final Item I)
+											{
+												if((I instanceof PrivateProperty)
+												&&(I instanceof AutoBundler)
+												&&(((PrivateProperty)I).getTitleID().equals(titleID)))
+												{
+													((PrivateProperty)I).setPrice(newPrice);
+													((AutoBundler)I).setBundleSize(((AutoBundler)I).getBundleSize()*2);
+													return true;
+												}
+												return false;
+											}
+										});
+									}
+								}
+							}
+							catch(final Throwable t)
+							{
+								Log.errOut("StockMarket", t);
 							}
 						}
 					}
@@ -1790,6 +1795,10 @@ public class StockMarket extends StdBehavior
 				}
 				if(resave)
 					saveHostStockXML(getHostStocks());
+			}
+			catch(final Throwable t)
+			{
+				Log.errOut("StockMarket", t);
 			}
 			finally
 			{
