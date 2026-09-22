@@ -1326,7 +1326,7 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
-	public int whichLegalDude(final String areaName, final MOB mob)
+	private static int whichLegalDude(final String areaName, final MOB mob)
 	{
 		final Area A=CMLib.map().getArea(areaName);
 		if(A==null)
@@ -1650,6 +1650,8 @@ public class StockMarket extends StdBehavior
 										def.bankruptUntil = null;
 										def.price=100.0;
 										def.version++;
+										def.topOwner = null;
+										def.outstandingShares = -1;
 									}
 									else
 										continue; // ignore bankrupt stocks
@@ -1708,6 +1710,7 @@ public class StockMarket extends StdBehavior
 									def.price = 0.0;
 									getOutstandingShares(def, 0); // cache them
 									getOutstandingShares(def, -def.outstandingShares);//effectively negates them
+									def.topOwner = null;
 									final TimeClock untilTime=(TimeClock)now.copyOf();
 									untilTime.bump(TimeClock.TimePeriod.DAY, conf.waitDaysAfterBankruptcy);
 									def.bankruptUntil = untilTime;
@@ -2259,7 +2262,7 @@ public class StockMarket extends StdBehavior
 				if((A==null)||(!(host instanceof Area)))
 					break;
 				final String areaName = A.Name();
-				final int amt = this.whichLegalDude(areaName, msg.source());
+				final int amt = whichLegalDude(areaName, msg.source());
 				if(amt != 0)
 				{
 					final InfluCat cat = (amt == 2) ? InfluCat.JUDGE_DEATHS : InfluCat.OFFICER_DEATHS;
