@@ -844,25 +844,32 @@ public class StockMarket extends StdBehavior
 		}
 	}
 
-	private synchronized String getCode(final String areaName, String name)
+	@SuppressWarnings("unchecked")
+	private String getCode(final String areaName, String name)
 	{
 		final String letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-		@SuppressWarnings("unchecked")
 		Map<String,String> names = (Map<String,String>)Resources.getResource("CMKT_AREA_DATA/"+areaName);
 		if(names == null)
 		{
-			names = new TreeMap<String,String>();
-			final List<PAData> dat = CMLib.database().DBReadAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName);
-			if((dat != null)&&(dat.size()>0))
+			synchronized(areaName.intern())
 			{
-				final List<XMLTag> tags = CMLib.xml().parseAllXML(dat.get(0).xml());
-				for(final XMLTag tag : tags)
+				names = (Map<String,String>)Resources.getResource("CMKT_AREA_DATA/"+areaName);
+				if(names == null)
 				{
-					if(tag.tag().equals("N"))
-						names.put(tag.getParmValue("ID"),tag.value());
+					names = new TreeMap<String,String>();
+					final List<PAData> dat = CMLib.database().DBReadAreaData(areaName, "CMKTDATA", "CMKTDATA/"+areaName);
+					if((dat != null)&&(dat.size()>0))
+					{
+						final List<XMLTag> tags = CMLib.xml().parseAllXML(dat.get(0).xml());
+						for(final XMLTag tag : tags)
+						{
+							if(tag.tag().equals("N"))
+								names.put(tag.getParmValue("ID"),tag.value());
+						}
+					}
+					Resources.submitResource("CMKT_AREA_DATA/"+areaName,names);
 				}
 			}
-			Resources.submitResource("CMKT_AREA_DATA/"+areaName,names);
 		}
 		name = CMLib.english().removeArticleLead(name);
 		name = CMStrings.removePunctuation(name).toLowerCase();
@@ -874,6 +881,7 @@ public class StockMarket extends StdBehavior
 		String cd = "";
 		final List<String> words = CMParms.parseSpaces(name,true);
 		for(int x=0;x<words.size()-1 && (cd.length()<2);x++)
+		{
 			for(int y=x+1;y<words.size();y++)
 			{
 				final String c = (""+words.get(x).charAt(0)+words.get(y).charAt(0)).toUpperCase();
@@ -883,10 +891,12 @@ public class StockMarket extends StdBehavior
 					break;
 				}
 			}
+		}
 		if(cd.length()==0)
 		{
 			final String word = (words.size()>0) ? words.get(0) : letters;
 			for(int x=0;x<word.length()-1 && (cd.length()<2);x++)
+			{
 				for(int y=x+1;y<word.length();y++)
 				{
 					final String c = (""+word.charAt(x)+word.charAt(y)).toUpperCase();
@@ -896,6 +906,7 @@ public class StockMarket extends StdBehavior
 						break;
 					}
 				}
+			}
 			if(cd.length()==0)
 			{
 				if(word.length()>=2)
@@ -1921,14 +1932,16 @@ public class StockMarket extends StdBehavior
 					if(def == null)
 					{
 						for(final String key : stocksMap.keySet())
+						{
 							if(itemTitleID.equals(key))
 							{
 								def=stocksMap.get(key);
 								break;
 							}
+						}
 					}
 				}
-				if((def != null) && (!lastGives.contains(msg)))
+				if((def != null) && (!lastGives.contains(msg)) && def.getTitleID().equals(cert.getTitleID()))
 				{
 					lastGives.add(msg);
 					final int amt = ((AutoBundler)msg.tool()).getBundleSize();
