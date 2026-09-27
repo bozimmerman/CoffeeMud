@@ -284,6 +284,53 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		return craftItem(recipe,0,false, false);
 	}
 
+	@Override
+	public CraftedItem craftAnyItemNearLevel(final int minlevel, final int maxlevel)
+	{
+		// Alchemy recipe rows are [SPELL_ID, RESOURCE, POTION|POWDER] with no level
+		// column, so select by the spells qualifying level instead of RCP_LEVEL.
+		int bestDiff=Integer.MAX_VALUE;
+		final List<List<String>> choices=new ArrayList<List<String>>();
+		final List<List<String>> recipes=fetchRecipes();
+		for(int r=0;r<recipes.size();r++)
+		{
+			final List<String> row=recipes.get(r);
+			if((row==null)||(row.size()<1))
+				continue;
+			final int ilevel=CMLib.ableMapper().lowestQualifyingLevel(row.get(0));
+			if(ilevel>0)
+			{
+				final int diff=(ilevel>maxlevel)?CMath.abs(ilevel-maxlevel):(ilevel<minlevel)?CMath.abs(ilevel-minlevel):0;
+				if(diff < bestDiff)
+					bestDiff = diff;
+			}
+		}
+		for(int r=0;r<recipes.size();r++)
+		{
+			final List<String> row=recipes.get(r);
+			if((row==null)||(row.size()<1))
+				continue;
+			final int ilevel=CMLib.ableMapper().lowestQualifyingLevel(row.get(0));
+			if(ilevel>0)
+			{
+				final int diff=(ilevel>maxlevel)?CMath.abs(ilevel-maxlevel):(ilevel<minlevel)?CMath.abs(ilevel-minlevel):0;
+				if(diff == bestDiff)
+					choices.add(row);
+			}
+		}
+		if(choices.size()==0)
+			return null;
+		final List<String> recipe=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+		final Ability theSpell=CMClass.getAbility(recipe.get(0));
+		if(theSpell==null)
+			return null;
+		final int level=CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());
+		final int duration=Math.max(10,level*5);
+		final boolean powder=(recipe.size()>2)&&(recipe.get(2).equalsIgnoreCase("POWDER"));
+		final Item buildingI=powder?buildPowder(theSpell,level):buildPotion(theSpell,level);
+		return new CraftedItem(buildingI,null,duration);
+	}
+
 	protected Item buildPotion(final Ability theSpell, final int level)
 	{
 		buildingI=CMClass.getItem("GenPotion");
@@ -577,6 +624,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				buildingI=buildPowder(theSpell, theSpellLevel);
 			else
 				buildingI=buildPotion(theSpell, theSpellLevel);
+			if(buildingI instanceof SpellHolder)
+				((SpellHolder)buildingI).getSpells(); // force value generation
 			setBrand(mob, buildingI);
 
 			final int duration = getAlchemyDuration(mob, theSpell, asLevel);
