@@ -172,6 +172,8 @@ public class StdPotion extends StdDrink implements Potion
 	@Override
 	public void setSpells(final List<Ability> spells)
 	{
+		if(spells==null)
+			return;
 		this.spells=spells;
 		miscText = buildSpellsList(spells);
 		calculateValue(this);
