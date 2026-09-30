@@ -98,7 +98,7 @@ public class GenDrink extends StdDrink
 	@Override
 	public void setKeyName(final String newKeyName)
 	{
-		readableText=newKeyName;
+		setReadableText(newKeyName);
 	}
 
 	@Override
