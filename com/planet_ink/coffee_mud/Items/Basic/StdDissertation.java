@@ -330,6 +330,8 @@ public class StdDissertation extends StdItem implements Scroll
 	@Override
 	public void setSpells(final List<Ability> spells)
 	{
+		if(spells==null)
+			return;
 		this.spells=spells;
 		miscText = buildSpellsList(spells);
 		calculateValue(this);
