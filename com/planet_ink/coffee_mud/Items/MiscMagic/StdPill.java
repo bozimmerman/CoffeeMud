@@ -123,6 +123,8 @@ public class StdPill extends StdFood implements Pill
 	@Override
 	public void setSpells(final List<Ability> spells)
 	{
+		if(spells==null)
+			return;
 		this.spells=spells;
 		miscText = buildSpellsList(spells);
 		recoverPhyStats();
