@@ -42,8 +42,6 @@ public class StdPill extends StdFood implements Pill
 		return "StdPill";
 	}
 
-	protected Ability	theSpell;
-
 	public StdPill()
 	{
 		super();
@@ -59,6 +57,8 @@ public class StdPill extends StdFood implements Pill
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
+	private List<Ability> spells = new ArrayList<Ability>(0);
+
 	@Override
 	public String genericName()
 	{
@@ -70,7 +70,7 @@ public class StdPill extends StdFood implements Pill
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
+		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells());
 	}
 
 	@Override
@@ -101,6 +101,14 @@ public class StdPill extends StdFood implements Pill
 	}
 
 	@Override
+	public void setMiscText(final String text)
+	{
+		super.setMiscText(text);
+		spells = buildSpellsList(text);
+		recoverPhyStats();
+	}
+	
+	@Override
 	public String getSpellList()
 	{
 		return miscText;
@@ -109,14 +117,35 @@ public class StdPill extends StdFood implements Pill
 	@Override
 	public void setSpellList(final String list)
 	{
-		miscText = list;
+		setMiscText(list);
 	}
 
-	public static Vector<Ability> getSpells(final SpellHolder me)
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		this.spells=spells;
+		miscText = buildSpellsList(spells);
+		recoverPhyStats();
+	}
+
+	protected static String buildSpellsList(final List<Ability> spells)
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final Ability A : spells)
+		{
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.text().length()>0)
+				str.append("(").append(A.text()).append(")");
+		}
+		return str.toString();
+	}
+	
+	protected static List<Ability> buildSpellsList(final String spellNames)
 	{
 		final Vector<Ability> theSpells=new Vector<Ability>();
-		final String names=me.getSpellList();
-		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		final List<String> parsedSpells=CMParms.parseSemicolons(spellNames, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
@@ -135,15 +164,13 @@ public class StdPill extends StdFood implements Pill
 				theSpells.addElement(A);
 			}
 		}
-		if(me instanceof Physical)
-			((Physical)me).recoverPhyStats();
 		return theSpells;
 	}
 
 	@Override
 	public List<Ability> getSpells()
 	{
-		return getSpells(this);
+		return spells;
 	}
 
 	@Override

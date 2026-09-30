@@ -46,6 +46,8 @@ public class StdPowder extends StdItem implements MagicDust
 		return "StdPowder";
 	}
 
+	private List<Ability> spells = new ArrayList<Ability>(0);
+
 	public StdPowder()
 	{
 		super();
@@ -75,12 +77,13 @@ public class StdPowder extends StdItem implements MagicDust
 		final List<Ability> spells = getSpells();
 		if (spells.size() > 0)
 		{
+			final boolean malicious = malicious(this);
 			for (int i = 0; i < spells.size(); i++)
 			{
 				final Ability thisOne = (Ability) spells.get(i).copyOf();
 				if(thisOne.canTarget(target))
 				{
-					if((malicious(this))||(!(target instanceof MOB)))
+					if(malicious||(!(target instanceof MOB)))
 						thisOne.invoke(mob, target, true, phyStats().level());
 					else
 						thisOne.invoke((MOB)target,(MOB)target, true, phyStats().level());
@@ -90,7 +93,8 @@ public class StdPowder extends StdItem implements MagicDust
 		destroy();
 	}
 
-// That which makes Powders work.  They're an item that when successfully dusted on a target, are 'cast' on the target
+	//That which makes Powders work.  They're an item that when successfully dusted on a target, 
+	// are 'cast' on the target
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -110,19 +114,6 @@ public class StdPowder extends StdItem implements MagicDust
 		else
 			super.executeMsg(myHost,msg);
 	}
-
-	@Override
-	public String getSpellList()
-	{
-		return miscText;
-	}
-
-	@Override
-	public void setSpellList(final String list)
-	{
-		miscText = list;
-	}
-
 	public boolean malicious(final SpellHolder me)
 	{
 		final List<Ability> spells=getSpells();
@@ -135,12 +126,51 @@ public class StdPowder extends StdItem implements MagicDust
 	}
 
 	@Override
-	public List<Ability> getSpells()
+	public void setMiscText(final String text)
 	{
-		final String names=getSpellList();
+		super.setMiscText(text);
+		spells = buildSpellsList(text);
+		recoverPhyStats();
+	}
+	
+	@Override
+	public String getSpellList()
+	{
+		return miscText;
+	}
 
-		final List<Ability> theSpells=new Vector<Ability>();
-		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+	@Override
+	public void setSpellList(final String list)
+	{
+		setMiscText(list);
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		this.spells=spells;
+		miscText = buildSpellsList(spells);
+		recoverPhyStats();
+	}
+
+	protected static String buildSpellsList(final List<Ability> spells)
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final Ability A : spells)
+		{
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.text().length()>0)
+				str.append("(").append(A.text()).append(")");
+		}
+		return str.toString();
+	}
+	
+	protected static List<Ability> buildSpellsList(final String spellNames)
+	{
+		final Vector<Ability> theSpells=new Vector<Ability>();
+		final List<String> parsedSpells=CMParms.parseSemicolons(spellNames, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
@@ -156,16 +186,21 @@ public class StdPowder extends StdItem implements MagicDust
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parms);
-				theSpells.add(A);
+				theSpells.addElement(A);
 			}
 		}
-		recoverPhyStats();
 		return theSpells;
+	}
+
+	@Override
+	public List<Ability> getSpells()
+	{
+		return spells;
 	}
 
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("powder",super.secretIdentity(),"",StdPotion.getSpells(this));
+		return StdScroll.makeSecretIdentity("powder",super.secretIdentity(),"",getSpells());
 	}
 }

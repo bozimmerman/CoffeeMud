@@ -58,6 +58,8 @@ public class StdPotion extends StdDrink implements Potion
 		recoverPhyStats();
 	}
 
+	private List<Ability> spells = new ArrayList<Ability>(0);
+
 	@Override
 	public String genericName()
 	{
@@ -148,6 +150,14 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	@Override
+	public void setMiscText(final String text)
+	{
+		super.setMiscText(text);
+		spells = buildSpellsList(text);
+		calculateValue(this);
+	}
+	
+	@Override
 	public String getSpellList()
 	{
 		return miscText;
@@ -156,15 +166,35 @@ public class StdPotion extends StdDrink implements Potion
 	@Override
 	public void setSpellList(final String list)
 	{
-		miscText = list;
+		setMiscText(list);
 	}
 
-	public static List<Ability> getSpells(final SpellHolder me)
+	@Override
+	public void setSpells(final List<Ability> spells)
 	{
-		int baseValue=200;
+		this.spells=spells;
+		miscText = buildSpellsList(spells);
+		calculateValue(this);
+	}
+
+	protected static String buildSpellsList(final List<Ability> spells)
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final Ability A : spells)
+		{
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.text().length()>0)
+				str.append("(").append(A.text()).append(")");
+		}
+		return str.toString();
+	}
+	
+	protected static List<Ability> buildSpellsList(final String spellNames)
+	{
 		final Vector<Ability> theSpells=new Vector<Ability>();
-		final String names=me.getSpellList();
-		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		final List<String> parsedSpells=CMParms.parseSemicolons(spellNames, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
@@ -180,27 +210,33 @@ public class StdPotion extends StdDrink implements Potion
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parms);
-				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
+		return theSpells;
+	}
+	
+	protected static void calculateValue(final SpellHolder me)
+	{
+		int baseValue=200;
+		for(final Ability A : me.getSpells())
+			baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 		if(me instanceof Item)
 			((Item)me).setBaseValue(baseValue);
 		if(me instanceof Physical)
 			((Physical)me).recoverPhyStats();
-		return theSpells;
 	}
 
 	@Override
 	public List<Ability> getSpells()
 	{
-		return getSpells(this);
+		return spells;
 	}
 
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
+		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",spells);
 	}
 
 	@Override

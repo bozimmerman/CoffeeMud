@@ -48,6 +48,14 @@ public interface SpellHolder
 	public List<Ability> getSpells();
 
 	/**
+	 * Sets the list of ability objects that this item contains.
+	 * @see SpellHolder#getSpellList()
+	 * @see SpellHolder#setSpellList(String)
+	 * @param spells the list of ability objects that this item contains
+	 */
+	public void setSpells(final List<Ability> spells);
+
+	/**
 	 * Gets the list of abilities that this item contains as
 	 * a semicolon-delimited list, with any spell arguments
 	 * in parenthesis after the spell ID.

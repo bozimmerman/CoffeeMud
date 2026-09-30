@@ -40,6 +40,8 @@ public class GenMultiPotion extends GenDrink implements Potion
 	{
 		return "GenMultiPotion";
 	}
+	
+	private List<Ability> spells = new ArrayList<Ability>();
 
 	public GenMultiPotion()
 	{
@@ -117,20 +119,29 @@ public class GenMultiPotion extends GenDrink implements Potion
 	@Override
 	public void setSpellList(final String list)
 	{
-		readableText = list;
+		setReadableText(list);
 	}
 
 	@Override
 	public List<Ability> getSpells()
 	{
-		return StdPotion.getSpells(this);
+		return spells;
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		this.spells=spells;
+		readableText = StdPotion.buildSpellsList(spells);
+		StdPotion.calculateValue(this);
 	}
 
 	@Override
 	public void setReadableText(final String text)
 	{
 		readableText=text;
-		setSpellList(readableText);
+		spells = StdPotion.buildSpellsList(text);
+		StdPotion.calculateValue(this);
 	}
 
 	@Override

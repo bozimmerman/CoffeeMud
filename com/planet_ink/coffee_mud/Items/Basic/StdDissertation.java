@@ -45,6 +45,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	protected String readableScrollBy=null;
+	private List<Ability> spells = new ArrayList<Ability>(0);
 
 	public StdDissertation()
 	{
@@ -67,18 +68,6 @@ public class StdDissertation extends StdItem implements Scroll
 		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))
 			return CMStrings.removeColors(name());
 		return L("a dissertation");
-	}
-
-	@Override
-	public String getSpellList()
-	{
-		return miscText;
-	}
-
-	@Override
-	public void setSpellList(final String list)
-	{
-		miscText = list;
 	}
 
 	@Override
@@ -319,12 +308,51 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public List<Ability> getSpells()
+	public void setMiscText(final String text)
 	{
-		int baseValue=200;
-		final List<Ability> theSpells=new Vector<Ability>();
-		final String names=getSpellList();
-		final List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		super.setMiscText(text);
+		spells = buildSpellsList(text);
+		calculateValue(this);
+	}
+	
+	@Override
+	public String getSpellList()
+	{
+		return miscText;
+	}
+
+	@Override
+	public void setSpellList(final String list)
+	{
+		setMiscText(list);
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		this.spells=spells;
+		miscText = buildSpellsList(spells);
+		calculateValue(this);
+	}
+
+	protected static String buildSpellsList(final List<Ability> spells)
+	{
+		final StringBuilder str = new StringBuilder("");
+		for(final Ability A : spells)
+		{
+			if(str.length()>0)
+				str.append(";");
+			str.append(A.ID());
+			if(A.text().length()>0)
+				str.append("(").append(A.text()).append(")");
+		}
+		return str.toString();
+	}
+	
+	protected static List<Ability> buildSpellsList(final String spellNames)
+	{
+		final Vector<Ability> theSpells=new Vector<Ability>();
+		final List<String> parsedSpells=CMParms.parseSemicolons(spellNames, true);
 		for(String thisOne : parsedSpells)
 		{
 			thisOne=thisOne.trim();
@@ -340,13 +368,27 @@ public class StdDissertation extends StdItem implements Scroll
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parms);
-				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				theSpells.add(A);
+				theSpells.addElement(A);
 			}
 		}
-		setBaseValue(baseValue);
-		recoverPhyStats();
 		return theSpells;
+	}
+	
+	protected static void calculateValue(final SpellHolder me)
+	{
+		int baseValue=200;
+		for(final Ability A : me.getSpells())
+			baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+		if(me instanceof Item)
+			((Item)me).setBaseValue(baseValue);
+		if(me instanceof Physical)
+			((Physical)me).recoverPhyStats();
+	}
+
+	@Override
+	public List<Ability> getSpells()
+	{
+		return spells;
 	}
 
 	@Override
@@ -368,13 +410,6 @@ public class StdDissertation extends StdItem implements Scroll
 			}
 		}
 		super.executeMsg(myHost,msg);
-	}
-
-	@Override
-	public void setMiscText(final String newText)
-	{
-		miscText=newText;
-		setSpellList(newText);
 	}
 
 	@Override

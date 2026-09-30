@@ -185,9 +185,9 @@ public class GenPoison extends Poison implements SpellHolder
 		return new Pair<String,List<Ability>>(effects, aV);
 	}
 
-	protected Ability adjusterA = null;
-	protected List<Ability> effects = null;
-	protected Ability mood = null;
+	protected Ability		adjusterA	= null;
+	protected List<Ability>	effects		= null;
+	protected Ability		mood		= null;
 
 	protected Ability getAdjusterA()
 	{
@@ -479,6 +479,17 @@ public class GenPoison extends Poison implements SpellHolder
 		if(this.effects != null)
 			spells.addAll(this.effects);
 		return spells;
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		if(spells != null)
+			spells.remove(this);
+		if((spells==null)||(spells.size()==0))
+			this.effects = null;
+		else
+			this.effects = spells;
 	}
 
 	@Override
