@@ -148,6 +148,8 @@ public class StdPowder extends StdItem implements MagicDust
 	@Override
 	public void setSpells(final List<Ability> spells)
 	{
+		if(spells==null)
+			return;
 		this.spells=spells;
 		miscText = buildSpellsList(spells);
 		recoverPhyStats();
