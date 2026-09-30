@@ -131,6 +131,8 @@ public class GenMultiPotion extends GenDrink implements Potion
 	@Override
 	public void setSpells(final List<Ability> spells)
 	{
+		if(spells==null)
+			return;
 		this.spells=spells;
 		readableText = StdPotion.buildSpellsList(spells);
 		StdPotion.calculateValue(this);
