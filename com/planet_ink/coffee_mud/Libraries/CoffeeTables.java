@@ -49,9 +49,12 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 			return;
 		if(todays!=null)
 		{
-			final String data=todays.data();
-			if(data.length()>0)
-				CMLib.database().DBUpdateStat(todays.startTime(),data);
+			synchronized(this)
+			{
+				final String data=todays.data();
+				if(data.length()>0)
+					CMLib.database().DBUpdateStat(todays.startTime(),data);
+			}
 		}
 	}
 

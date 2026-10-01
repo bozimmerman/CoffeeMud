@@ -257,7 +257,11 @@ public class SnakeOilSelling extends BlackMarketeering
 					doomed.add(SP);
 				}
 				for(final CoffeeShop.ShelfProduct SP : doomed)
+				{
 					shop.delAllStoreInventory(SP.product());
+					if(SP.product()!=null)
+						SP.product().destroy();
+				}
 				mob.tell(L("^HYou stop selling your snake oil."));
 			}
 			final Ability A=mob.fetchEffect(ID());
