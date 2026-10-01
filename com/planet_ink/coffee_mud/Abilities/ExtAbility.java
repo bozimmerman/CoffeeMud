@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -45,9 +46,12 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	}
 
 	private String			name			= null;
+	private String			displayText		= "";
 	private StatsAffecting	statsAffector	= null;
 	private MsgListener		msgListener		= null;
 	private Tickable		tickable		= null;
+	
+	private List<CMCallback<Quint<MOB, List<String>, Physical, Boolean, Integer>>>	invokeRunners	= null;
 
 	@Override
 	public void setName(final String newName)
@@ -58,7 +62,13 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	@Override
 	public String displayText()
 	{
-		return "";
+		return displayText;
+	}
+
+	@Override
+	public void setDisplayText(final String newDisplayText)
+	{
+		this.displayText = (newDisplayText == null) ? "" : newDisplayText;
 	}
 
 	@Override
@@ -87,6 +97,41 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	{
 		this.tickable = code;
 		return this;
+	}
+
+	@Override
+	public void addInvoke(final CMCallback<Quint<MOB, List<String>, Physical, Boolean, Integer>> C)
+	{
+		if(C == null)
+			return;
+		if(invokeRunners == null)
+			invokeRunners = new ArrayList<CMCallback<Quint<MOB, List<String>, Physical, Boolean, Integer>>>(2);
+		invokeRunners.add(C);
+	}
+
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
+	{
+		if(invokeRunners != null)
+		{
+			final Quint<MOB, List<String>, Physical, Boolean, Integer> args
+				= new Quint<MOB, List<String>, Physical, Boolean, Integer>(mob, commands, target, 
+						Boolean.valueOf(auto), Integer.valueOf(asLevel));
+			for(final Iterator<CMCallback<Quint<MOB, List<String>, Physical, Boolean, Integer>>> r=invokeRunners.iterator();r.hasNext();)
+			{
+				try
+				{
+					r.next().callback(args);
+				}
+				catch(final Exception e)
+				{
+					if(!(e instanceof CMException))
+						Log.errOut(ID(),e);
+					return false;
+				}
+			}
+		}
+		return super.invoke(mob, commands, target, auto, asLevel);
 	}
 
 	@Override

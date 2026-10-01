@@ -137,7 +137,7 @@ public class Monger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Merchant",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SelfInvesting",100,true);
-//		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SnakeOilSelling",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SnakeOilSelling",false);
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Barking",true);
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Moneychanging",true);
 //		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Gossip Mongering",false);

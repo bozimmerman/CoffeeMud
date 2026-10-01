@@ -71,4 +71,14 @@ public interface ExtendableAbility extends Ability
 	 * @return this
 	 */
 	public ExtendableAbility setTickable(Tickable code);
+	
+	/**
+	 * Registers a callback to be executed whenever this ability is invoked.
+	 * Callbacks execute in registration order, before the normal invocation
+	 * takes place.  If a callback throws, invoke().
+	 *
+	 * @param C the callback to run on invocation, receiving the same five
+	 *          arguments as invoke(), or null for no-op
+	 */
+	public void addInvoke(final CMCallback<Quint<MOB, List<String>, Physical, Boolean, Integer>> C);
 }

@@ -99,7 +99,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ECONOMIC;
 	}
 
 	protected CoffeeShop			shop				= ((CoffeeShop) CMClass.getCommon("DefaultCoffeeShop")).build(this);
