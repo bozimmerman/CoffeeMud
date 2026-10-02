@@ -790,6 +790,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			Resources.submitResource("SYSTEM_HASHED_PRICINGADJUSTMENTS", hashedPriceAdjustments);
 		}
 
+		// yes, this is a race condition, but a profoundly unimportant one, as its a caching optimization.
 		String[] pricingAdjustments = hashedPriceAdjustments.get(factors);
 		if(pricingAdjustments != null)
 			return pricingAdjustments;
@@ -810,6 +811,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			Resources.submitResource("SYSTEM_HASHED_PREJUDICEFACTORS", hashedPrejudiceFactors);
 		}
 
+		// yes, this is a race condition, but a profoundly unimportant one, as its a caching optimization.
 		String[] prejudiceFactors = hashedPrejudiceFactors.get(factors);
 		if(prejudiceFactors != null)
 			return prejudiceFactors;
@@ -830,6 +832,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			Resources.submitResource("SYSTEM_HASHED_PRICINGADJUSTMENTS", hashedPriceAdjustments);
 		}
 
+		// yes, this is a race condition, but a profoundly unimportant one, as its a caching optimization.
 		Pair<Double,String>[] pricingAdjustments = hashedPriceAdjustments.get(factors);
 		if(pricingAdjustments != null)
 			return pricingAdjustments;
@@ -861,6 +864,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				hashedBudgets = new Hashtable<String,Pair<Long,TimeClock.TimePeriod>>();
 				Resources.submitResource("SYSTEM_PARSED_BUDGETS", hashedBudgets);
 			}
+			// yes, this is a race condition, but a profoundly unimportant one, as its a caching optimization.
 			Pair<Long,TimeClock.TimePeriod> budgetVals = hashedBudgets.get(budget);
 			if(budgetVals != null)
 				return budgetVals;
@@ -905,6 +909,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				hashedValueRates = new Hashtable<String,double[]>();
 				Resources.submitResource("SYSTEM_PARSED_DEVALUE_RATES", hashedValueRates);
 			}
+			// yes, this is a race condition, but a profoundly unimportant one, as its a caching optimization.
 			double[] devalueRate = hashedValueRates.get(factors);
 			if(devalueRate != null)
 				return devalueRate;
@@ -1159,7 +1164,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return false;
 		}
 		if((product instanceof Physical)
-		&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
+		&&(CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product)))
 		{
 			CMLib.commands().postSay(buyerShopM, sellerCustM, L("I won't buy that in it's present state."), true, false);
 			return false;

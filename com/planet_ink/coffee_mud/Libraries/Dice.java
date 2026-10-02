@@ -359,8 +359,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 			plus=plus*-1;
 			mul=-1;
 		}
-		if(plus>32768)
-			plus=32768;
+		if(plus>32767)
+			plus=32767;
 		return 	(plus+(dice<<15)+(roll<<(23)))*mul;
 	}
 

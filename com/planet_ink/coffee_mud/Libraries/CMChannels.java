@@ -1181,10 +1181,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 							if(ss[1].equals("WEEKS")||ss[1].equals("WEEK"))
 								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_WEEK));
 							else
-							if(ss[1].equals("MONTHS")||ss[1].equals("MONTHS"))
+							if(ss[1].equals("MONTHS")||ss[1].equals("MONTH"))
 								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_MONTH));
 							else
-							if(ss[1].equals("YEARSS")||ss[1].equals("YEAR"))
+							if(ss[1].equals("YEARS")||ss[1].equals("YEAR"))
 								CMLib.database().trimBackLogEntries(getChannelNames(), Integer.MAX_VALUE, System.currentTimeMillis() - (CMath.s_int(ss[0]) * TimeManager.MILI_YEAR));
 							else
 								Log.errOut("CMChannels","Malformed CHANNELBACKLOG entry in coffeemud.ini file: "+propStr);
