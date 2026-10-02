@@ -19,8 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
-import org.mozilla.javascript.*;
-
 /*
    Copyright 2005-2026 Bo Zimmerman
 
@@ -80,6 +78,7 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		catch (final Exception e)
 		{
+			// intentional
 		}
 		return null;
 	}
@@ -132,7 +131,7 @@ public class Quests extends StdLibrary implements QuestManager
 	@Override
 	public boolean shutdown()
 	{
-		for(int i=numQuests();i>=0;i--)
+		for(int i=numQuests()-1;i>=0;i--)
 		{
 			final Quest Q=fetchQuest(i);
 			delQuest(Q);
@@ -418,6 +417,41 @@ public class Quests extends StdLibrary implements QuestManager
 			break;
 		}
 	}
+	
+	protected List<String> findHolidayNames(final List<String> steps, boolean normalize)
+	{
+		List<String> names = new Vector<String>(1);
+		Vector<String> lineV=null;
+		String line=null;
+		String var=null;
+		String cmd=null;
+		String step=null;
+		for(int v=0;v<steps.size();v++)
+		{
+			step=steps.get(v);
+			final List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
+			names.add("");
+			for(int v1=0;v1<stepV.size();v1++)
+			{
+				line=stepV.get(v1);
+				lineV=CMParms.parse(line);
+				if(lineV.size()>1)
+				{
+					cmd=lineV.elementAt(0).toUpperCase();
+					var=lineV.elementAt(1).toUpperCase();
+					if(cmd.equals("SET")&&(var.equalsIgnoreCase("NAME")))
+					{
+						if(normalize)
+							names.set(v,CMParms.combine(lineV,2).toLowerCase().trim());
+						else
+							names.set(v,CMParms.combine(lineV,2));
+						break;
+					}
+				}
+			}
+		}
+		return names;
+	}
 
 	@Override
 	public String createHoliday(final String named, final String areaName, final boolean save)
@@ -433,32 +467,9 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		if(fetchQuest(named)!=null)
 			return "A quest called '"+named+"' already exists.  Better to pick a new name.";
-		Vector<String> lineV=null;
-		String line=null;
-		String var=null;
-		String cmd=null;
-		String step=null;
-		for(int v=0;v<steps.size();v++)
-		{
-			step=steps.get(v);
-			final List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
-			for(int v1=0;v1<stepV.size();v1++)
-			{
-				line=stepV.get(v1);
-				lineV=CMParms.parse(line);
-				if(lineV.size()>1)
-				{
-					cmd=lineV.elementAt(0).toUpperCase();
-					var=lineV.elementAt(1).toUpperCase();
-					if(cmd.equals("SET")&&(var.equalsIgnoreCase("NAME")))
-					{
-						final String str=CMParms.combine(lineV,2);
-						if(str.equalsIgnoreCase(named))
-							return "A quest called '"+named+"' already exists.  Better to pick a new name or modify the existing one.";
-					}
-				}
-			}
-		}
+		List<String> names = findHolidayNames(steps, true);
+		if(names.contains(named.toLowerCase().trim()))
+			return "A quest called '"+named+"' already exists.  Better to pick a new name or modify the existing one.";
 		if(save)
 		{
 			final CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
@@ -539,31 +550,18 @@ public class Quests extends StdLibrary implements QuestManager
 		if((index<0)||(index>=steps.size()))
 			return "";
 
-		Vector<String> lineV=null;
-		String line=null;
-		String var=null;
-		String cmd=null;
-		String step=null;
-		step=steps.get(index);
-		final List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
-		for(int v1=0;v1<stepV.size();v1++)
-		{
-			line=stepV.get(v1);
-			lineV=CMParms.parse(line);
-			if(lineV.size()>1)
-			{
-				cmd=lineV.elementAt(0).toUpperCase();
-				var=lineV.elementAt(1).toUpperCase();
-				if(cmd.equals("SET")&&(var.equalsIgnoreCase("NAME")))
-					return CMParms.combine(lineV,2);
-			}
-		}
+		String step=steps.get(index);
+		final List<String> names = this.findHolidayNames(new XArrayList<String>(step),false);
+		if(names.size()>0)
+			return names.get(0);
 		return "";
 	}
 
 	@Override
 	public int getHolidayIndex(final String named)
 	{
+		if((named == null)||(named.trim().length()==0))
+			return -1;
 		final List<String> steps;
 		try
 		{
@@ -574,33 +572,8 @@ public class Quests extends StdLibrary implements QuestManager
 			return -1;
 		}
 
-		Vector<String> lineV=null;
-		String line=null;
-		String var=null;
-		String cmd=null;
-		String step=null;
-		for(int v=1;v<steps.size();v++)
-		{
-			step=steps.get(v);
-			final List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
-			for(int v1=0;v1<stepV.size();v1++)
-			{
-				line=stepV.get(v1);
-				lineV=CMParms.parse(line);
-				if(lineV.size()>1)
-				{
-					cmd=lineV.elementAt(0).toUpperCase();
-					var=lineV.elementAt(1).toUpperCase();
-					if(cmd.equals("SET")&&(var.equalsIgnoreCase("NAME")))
-					{
-						final String str=CMParms.combine(lineV,2);
-						if(str.equalsIgnoreCase(named))
-							return v;
-					}
-				}
-			}
-		}
-		return -1;
+		List<String> names = this.findHolidayNames(steps, true);
+		return names.indexOf(named.toLowerCase().trim());
 	}
 
 	public int startLineIndex(final List<String> V, String start)
