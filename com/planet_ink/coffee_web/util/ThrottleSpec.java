@@ -51,24 +51,25 @@ public class ThrottleSpec
 	 */
 	public synchronized long request(final long bytesRequested)
 	{
-		trimBucket(System.currentTimeMillis());
-		if(bytesRemaining > bytesRequested)
-			return bytesRequested;
-		if(bytesRemaining > 0)
-			return bytesRemaining;
-		if((rollingBucket.size()>0) && (bytesRemaining <= 0))
+		try
 		{
-			try
+			while(true)
 			{
-				final long remainingTime = (rollingBucket.getFirst().first.longValue() - System.currentTimeMillis());
-				Thread.sleep( remainingTime < 2 ? 1 : remainingTime );
+				trimBucket(System.currentTimeMillis());
+				if(bytesRemaining > bytesRequested)
+					return bytesRequested;
+				if(bytesRemaining > 0)
+					return bytesRemaining;
+				if(rollingBucket.size() == 0)
+					return 1;
+				final long remainingTime = rollingBucket.getFirst().first.longValue() - System.currentTimeMillis();
+				wait(remainingTime < 2 ? 1 : remainingTime);
 			}
-			catch (final Exception e)
-			{
-			}
-			return request(bytesRequested);
 		}
-		return 1;
+		catch(InterruptedException e)
+		{
+			return 1;
+		}
 	}
 
 	private void trimBucket(final long now)
