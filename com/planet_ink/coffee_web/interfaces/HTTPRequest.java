@@ -1,10 +1,12 @@
 package com.planet_ink.coffee_web.interfaces;
 
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 
@@ -99,6 +101,13 @@ public interface HTTPRequest
 	public String getHeader(String name);
 
 	/**
+	 * Gets the request header names as supplied by the client
+	 *
+	 * @return The header names
+	 */
+	public Enumeration<String> getHeaders();
+
+	/**
 	 * Gets the client's network address
 	 *
 	 * @return The clients network address
@@ -136,6 +145,13 @@ public interface HTTPRequest
 	 * @return The cookie names
 	 */
 	public Set<String> getCookieNames();
+
+	/**
+	 * Gets the cookies
+	 *
+	 * @return the cookies
+	 */
+	public Enumeration<Cookie> getCookies();
 
 	/**
 	 * Returns a list of multi-part sections from this request, or NULL

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_web.interfaces;
 
 import java.util.Date;
+import java.util.Enumeration;
 
 /*
    Copyright 2012-2026 Bo Zimmerman
@@ -31,29 +32,34 @@ public interface SimpleServletSession
 	 * @return a session string called "user"
 	 */
 	public String getUser();
+
 	/**
 	 * Sets the special defined string "user"
 	 * @param user the string called "user"
 	 */
 	public void setUser(String user);
+
 	/**
 	 * Returns the session id as defined by the
 	 * session manager managing this object
 	 * @return the session id
 	 */
 	public String getSessionId();
+
 	/**
 	 * Returns the date object corresponding to when
 	 * this session was created.
 	 * @return date object
 	 */
 	public Date getSessionStart();
+
 	/**
 	 * Returns the time, in milliseconds, when this session
 	 * was last "touched" by the client
 	 * @return time in millis when last touched
 	 */
 	public long getSessionLastTouchTime();
+
 	/**
 	 * Returns an arbitrary, session-defined object stored in this
 	 * session.
@@ -61,6 +67,7 @@ public interface SimpleServletSession
 	 * @return the object stored, or null if not found
 	 */
 	public Object getSessionObject(String name);
+
 	/**
 	 * Sets  an arbitrary, session-defined object stored in this
 	 * session.  Sending a value of null will delete the object.
@@ -68,8 +75,41 @@ public interface SimpleServletSession
 	 * @param obj the object to store under this name, or null to delete
 	 */
 	public void setSessionObject(String name, Object obj);
+
 	/**
 	 * Marks this session as having been access by the client at this time
 	 */
 	public void touch();
+
+	/**
+	 * Returns the 'natural' idle expiration time, which is updated by
+	 * accessing it.
+	 * @return the expiration time in milliseconds
+	 */
+	public long getIdleExpirationInterval();
+
+	/**
+	 * Sets a new idle expiration time, overriding the natural one.  This
+	 * is an absolute time.
+	 * @param date
+	 */
+	public void setIdleExpirationInterval(final long date);
+
+	/**
+	 * Returns whether the session is expired
+	 * @return whether the session is expired
+	 */
+	public boolean isExpired();
+
+	/**
+	 * Returns the names of the session objects stored here.
+	 * @return the names of the session objects stored here.
+	 */
+	public Enumeration<String> getSessionObjects();
+
+	/**
+	 * Returns the manager for this session
+	 * @return the manager for this session
+	 */
+	public ServletSessionManager getManager();
 }

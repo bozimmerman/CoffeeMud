@@ -80,6 +80,30 @@ public class HTTPException extends Exception
 	}
 
 	/**
+	 * Construct new exception w/o a body but with a wrapped exception
+	 * @param e the exception to wrap
+	 */
+	public HTTPException(final Exception e)
+	{
+		super(e);
+		this.status = HTTPStatus.S500_INTERNAL_ERROR;
+		this.body="";
+		if(Thread.currentThread() instanceof CWThread)
+		{
+			this.config=((CWThread)Thread.currentThread()).getConfig();
+			this.isDebugging = config.isDebugging();
+			this.debugLogger=(isDebugging)?config.getLogger():null;
+		}
+		else
+		{
+			this.config=null;
+			this.isDebugging=false;
+			this.debugLogger=null;
+		}
+	}
+
+
+	/**
 	 * Construct new exception w/o a body
 	 * @param status the HTTPStatus to return
 	 */

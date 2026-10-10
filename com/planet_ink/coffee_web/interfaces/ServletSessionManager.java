@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_web.interfaces;
 
+import java.util.Enumeration;
+
 /*
    Copyright 2012-2026 Bo Zimmerman
 
@@ -50,4 +52,10 @@ public interface ServletSessionManager
 	 * for any that have timed out and remove them, if so.
 	 */
 	public void cleanUpSessions();
+
+	/**
+	 * Returns the list of active session ids
+	 * @return the list of active session ids
+	 */
+	public Enumeration<String> getSessionIds();
 }

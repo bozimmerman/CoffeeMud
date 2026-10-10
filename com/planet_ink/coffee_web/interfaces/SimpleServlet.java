@@ -26,9 +26,34 @@ import com.planet_ink.coffee_web.http.HTTPMethod;
  */
 public interface SimpleServlet
 {
+	/**
+	 * Initialize the servlet on first creation
+	 */
 	public void init();
+
+	/**
+	 * Handle a GET request
+	 * @param request the request
+	 * @param response the response
+	 * @throws HTTPException any errors
+	 */
 	public void doGet(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
+
+	/**
+	 * Handle a POST request
+	 * @param request the request
+	 * @param response the response
+	 * @throws HTTPException any errors
+	 */
 	public void doPost(SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
+
+	/**
+	 * Handle a request
+	 * @param method the request type
+	 * @param request the request
+	 * @param response the response
+	 * @throws HTTPException any errors
+	 */
 	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) throws HTTPException;
 }
 

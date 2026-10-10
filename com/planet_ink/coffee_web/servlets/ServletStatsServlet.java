@@ -50,10 +50,10 @@ public class ServletStatsServlet implements SimpleServlet
 			str.append("<html><body>");
 
 			RequestStats stats;
-			for(final Class<? extends SimpleServlet> servletClass : request.getServletManager().getServlets())
+			for(final SimpleServlet servlet : request.getServletManager().getServlets())
 			{
-				stats = request.getServletManager().getServletStats(servletClass);
-				str.append("<P><h2>"+servletClass.getSimpleName()+"</h2></p><br>");
+				stats = request.getServletManager().getServletStats(servlet);
+				str.append("<P><h2>"+servlet.getClass().getSimpleName()+"</h2></p><br>");
 				appendStats(stats, str);
 			}
 			str.append("</body></html>");

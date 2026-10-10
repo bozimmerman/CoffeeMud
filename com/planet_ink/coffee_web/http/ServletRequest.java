@@ -2,6 +2,7 @@ package com.planet_ink.coffee_web.http;
 
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +43,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
 public class ServletRequest implements SimpleServletRequest
 {
 	private final HTTPRequest 			request;
-	private final CWConfig			config;
+	private final CWConfig				config;
 	private final SimpleServletSession  session;
 
 	/**
@@ -162,6 +163,12 @@ public class ServletRequest implements SimpleServletRequest
 		return request.getCookieNames();
 	}
 
+	@Override
+	public Enumeration<Cookie> getCookies()
+	{
+		return request.getCookies();
+	}
+
 	/**
 	 * Returns the session object associated with this servlet request
 	 * @return the session object
@@ -218,5 +225,11 @@ public class ServletRequest implements SimpleServletRequest
 	public float getHttpVer()
 	{
 		return request.getHttpVer();
+	}
+
+	@Override
+	public Enumeration<String> getHeaders()
+	{
+		return request.getHeaders();
 	}
 }

@@ -1,10 +1,14 @@
 package com.planet_ink.coffee_web.http;
 
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 
+import com.planet_ink.coffee_mud.core.collections.IteratorEnumeration;
+import com.planet_ink.coffee_web.interfaces.ServletSessionManager;
 import com.planet_ink.coffee_web.interfaces.SimpleServletSession;
+import com.planet_ink.coffee_web.util.CWConfig;
 
 /*
    Copyright 2012-2026 Bo Zimmerman
@@ -31,17 +35,21 @@ import com.planet_ink.coffee_web.interfaces.SimpleServletSession;
  */
 public class ServletSession implements SimpleServletSession
 {
-	private final String			sessionID;
-	private volatile String 		user			= "";
-	private final Date				startTime;
-	private final Map<String,Object>objects			= new Hashtable<String,Object>();
-	private volatile long			lastTouchTime;
+	private final String				sessionID;
+	private volatile String				user	= "";
+	private final Date					startTime;
+	private final Map<String, Object>	objects	= new Hashtable<String, Object>();
+	private volatile long				lastTouchTime;
+	private long						idleExpiration;
+	private final ServletSessionManager	mgr;
 
-	public ServletSession(final String sessionID)
+	public ServletSession(final String sessionID, final ServletSessionManager mgr, final CWConfig config)
 	{
+		this.mgr = mgr;
 		this.sessionID=sessionID;
 		this.startTime=new Date(System.currentTimeMillis());
 		lastTouchTime=System.currentTimeMillis();
+		idleExpiration = config.getSessionMaxIdleMs();
 	}
 
 	/**
@@ -76,6 +84,7 @@ public class ServletSession implements SimpleServletSession
 	{
 		return sessionID;
 	}
+
 	/**
 	 * Returns the date object corresponding to when
 	 * this session was created.
@@ -86,6 +95,7 @@ public class ServletSession implements SimpleServletSession
 	{
 		return startTime;
 	}
+
 	/**
 	 * Returns the time, in milliseconds, when this session
 	 * was last "touched" by the client
@@ -96,6 +106,7 @@ public class ServletSession implements SimpleServletSession
 	{
 		return lastTouchTime;
 	}
+
 	/**
 	 * Returns an arbitrary, session-defined object stored in this
 	 * session.
@@ -111,6 +122,7 @@ public class ServletSession implements SimpleServletSession
 		}
 		return objects.get(name);
 	}
+
 	/**
 	 * Sets  an arbitrary, session-defined object stored in this
 	 * session.  Sending a value of null will delete the object.
@@ -129,6 +141,7 @@ public class ServletSession implements SimpleServletSession
 		else
 			objects.put(name,  obj);
 	}
+
 	/**
 	 * Marks this session as having been access by the client at this time
 	 */
@@ -136,5 +149,56 @@ public class ServletSession implements SimpleServletSession
 	public void touch()
 	{
 		lastTouchTime=System.currentTimeMillis();
+	}
+
+	/**
+	 * Returns the 'natural' idle expiration time, which is updated by
+	 * accessing it.
+	 * @return the expiration time in milliseconds
+	 */
+	@Override
+	public long getIdleExpirationInterval()
+	{
+		return this.idleExpiration;
+	}
+
+	/**
+	 * Sets a new idle expiration time, overriding the natural one.  This
+	 * is an absolute time.
+	 * @param date
+	 */
+	@Override
+	public void setIdleExpirationInterval(final long date)
+	{
+		this.idleExpiration = date;
+	}
+
+	/**
+	 * Returns the names of the session objects stored here.
+	 * @return the names of the session objects stored here.
+	 */
+	@Override
+	public Enumeration<String> getSessionObjects()
+	{
+		return new IteratorEnumeration<String>(this.objects.keySet().iterator());
+	}
+
+	/**
+	 * Returns whether the session is expired
+	 * @return whether the session is expired
+	 */
+	@Override
+	public boolean isExpired()
+	{
+		return System.currentTimeMillis() >= this.lastTouchTime + this.idleExpiration;
+	}
+
+	/**
+	 * Returns the manager for this session
+	 * @return the manager for this session
+	 */
+	public ServletSessionManager getManager()
+	{
+		return this.mgr;
 	}
 }

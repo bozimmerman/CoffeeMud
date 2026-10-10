@@ -405,7 +405,7 @@ public class WebServer extends Thread
 						registerOp.run();
 					}
 				}
-				if (n == 0)
+				if ((n == 0) && servSelector.selectedKeys().isEmpty())
 				{
 					continue;
 				}
@@ -417,6 +417,9 @@ public class WebServer extends Thread
 					try
 					{
 						handleSelectionKey(key);
+					}
+					catch(final CancelledKeyException t)
+					{
 					}
 					finally
 					{
@@ -554,7 +557,13 @@ public class WebServer extends Thread
 					final SelectionKey key = channel.keyFor(servSelector);
 					if(key != null)
 					{
-						key.interestOps(newOp);
+						try
+						{
+							key.interestOps(newOp);
+						}
+						catch(final CancelledKeyException e)
+						{
+						}
 					}
 				}
 			});

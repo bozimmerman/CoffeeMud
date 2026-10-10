@@ -1,10 +1,13 @@
 package com.planet_ink.coffee_web.http;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.planet_ink.coffee_mud.core.collections.IteratorEnumeration;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
 import com.planet_ink.coffee_web.interfaces.ServletSessionManager;
 import com.planet_ink.coffee_web.interfaces.SimpleServletSession;
@@ -55,7 +58,13 @@ public class SessionManager implements ServletSessionManager
 	@Override
 	public SimpleServletSession findSession(final String sessionID)
 	{
-		return sessions.get(sessionID);
+		final SimpleServletSession session = sessions.get(sessionID);
+		if(session != null)
+		{
+			if(!isSessionExpired(session))
+				return session;
+		}
+		return null;
 	}
 
 	/**
@@ -67,13 +76,32 @@ public class SessionManager implements ServletSessionManager
 	public SimpleServletSession findOrCreateSession(final String sessionID)
 	{
 		SimpleServletSession session = sessions.get(sessionID);
-		if(session != null) return session;
-		session = new ServletSession(sessionID);
+		if(session != null)
+		{
+			if(!isSessionExpired(session))
+				return session;
+		}
+		session = new ServletSession(sessionID, this, config);
 		synchronized(sessions)
 		{
 			sessions.put(sessionID, session);
 			return session;
 		}
+	}
+
+	private boolean isSessionExpired(final SimpleServletSession session)
+	{
+		final long currentTime=System.currentTimeMillis();
+		final Date ageExpireTime;
+		if(config.getSessionMaxAgeMs() > 0)
+			ageExpireTime=new Date(currentTime - config.getSessionMaxAgeMs());
+		else
+			ageExpireTime = null;
+		final long idleExpireTime=currentTime - session.getIdleExpirationInterval();
+		if((session.getSessionLastTouchTime() < idleExpireTime)
+		||((ageExpireTime!=null)&&(session.getSessionStart().before(ageExpireTime))))
+			return true;
+		return false;
 	}
 
 	/**
@@ -85,18 +113,12 @@ public class SessionManager implements ServletSessionManager
 	{
 		synchronized(sessions)
 		{
-			final long currentTime=System.currentTimeMillis();
-			final long idleExpireTime=currentTime - config.getSessionMaxIdleMs();
-			final Date ageExpireTime=new Date(currentTime - config.getSessionMaxAgeMs());
 			for(final Iterator<String> s=sessions.keySet().iterator();s.hasNext();)
 			{
 				final String sessionID=s.next();
 				final SimpleServletSession session=sessions.get(sessionID);
-				if((session.getSessionLastTouchTime() < idleExpireTime)
-				||(session.getSessionStart().before(ageExpireTime)))
-				{
+				if(isSessionExpired(session))
 					s.remove();
-				}
 			}
 		}
 	}
@@ -117,15 +139,33 @@ public class SessionManager implements ServletSessionManager
 				Thread.sleep(1);
 				sessionID = request.getClientAddress().hashCode()+""+System.currentTimeMillis() + "" + System.nanoTime();
 			}
-		}catch(final Exception e)
+		}
+		catch(final Exception e)
 		{
 			config.getLogger().throwing("", "", e);
 		}
-		final SimpleServletSession newSession = new ServletSession(sessionID);
+		final SimpleServletSession newSession = new ServletSession(sessionID, this, config);
 		synchronized(sessions)
 		{
 			sessions.put(sessionID, newSession);
 			return newSession;
 		}
+	}
+
+
+	/**
+	 * Returns the list of active session ids
+	 * @return the list of active session ids
+	 */
+	@Override
+	public Enumeration<String> getSessionIds()
+	{
+		this.cleanUpSessions();
+		final ArrayList<String> ids = new ArrayList<String>(sessions.size());
+		synchronized(sessions)
+		{
+			ids.addAll(sessions.keySet());
+		}
+		return new IteratorEnumeration<String>(ids.iterator());
 	}
 }

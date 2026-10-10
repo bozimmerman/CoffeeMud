@@ -25,8 +25,8 @@ import com.planet_ink.coffee_web.util.ChunkSpec;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.CWConfig;
 import com.planet_ink.coffee_web.util.RequestStats;
-import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.collections.Pair;
+import com.planet_ink.coffee_mud.core.Log;
 
 /*
    Copyright 2012-2026 Bo Zimmerman
@@ -93,9 +93,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			return null;
 
 		if((buffers.getLength() > config.getFileCompMaxFileBytes()) || (buffers.getLength() < 256))
-		{
 			return buffers;
-		}
 
 		double deflatePreference = request.getSpecialEncodingAcceptability("deflate");
 		if(deflatePreference==0.0)
@@ -113,9 +111,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			return buffers;
 		}
 		if((nonzipPreference > deflatePreference) && (nonzipPreference > gzipPreference))
-		{
 			return buffers;
-		}
 
 		String compressorName;
 		DataBuffers compressedBytes;
@@ -436,9 +432,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			servletResponse.setCookie(new Cookie("cwsessid", session.getSessionId()));
 		}
 		else
-		{
 			session = config.getSessions().findOrCreateSession(oldSessionID);
-		}
 		return session;
 	}
 
@@ -452,7 +446,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 * @return the output from the servlet
 	 * @throws HTTPException
 	 */
-	private DataBuffers executeServlet(final HTTPRequest request, final Class<? extends SimpleServlet> servletClass) throws HTTPException
+	private DataBuffers executeServlet(final HTTPRequest request, final SimpleServlet servlet) throws HTTPException
 	{
 		// servlet found -- full stream ahead </pun>
 		final ServletResponse servletResponse = new ServletResponse(); // generate a response object
@@ -460,18 +454,17 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		final SimpleServletRequest servletRequest = new ServletRequest(session, request);
 		try
 		{
-			final RequestStats stats = config.getServletMan().getServletStats(servletClass);
+			final RequestStats stats = config.getServletMan().getServletStats(servlet);
 			final long startTime = System.nanoTime(); // for stat keeping
 			try
 			{
 				stats.startProcessing(); // synchronization is not required, so long as endProcessing is always called
-				final SimpleServlet servletInstance = servletClass.getDeclaredConstructor().newInstance(); // instantiate a new servlet instance!
 				if(request.getMethod() == HTTPMethod.GET)
-					servletInstance.doGet(servletRequest, servletResponse);
+					servlet.doGet(servletRequest, servletResponse);
 				else
 				if(request.getMethod() == HTTPMethod.POST)
-					servletInstance.doPost(servletRequest, servletResponse);
-				servletInstance.service(request.getMethod(), servletRequest, servletResponse);
+					servlet.doPost(servletRequest, servletResponse);
+				servlet.service(request.getMethod(), servletRequest, servletResponse);
 				return servletResponse.generateOutput(request); // the generated output, yea!
 			}
 			finally
@@ -606,11 +599,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		// first thing is to check for servlets
 		if(url.length > 1)
 		{
-			final Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(url[1]);
-			if(servletClass != null)
-			{
-				return executeServlet(request,servletClass);
-			}
+			final SimpleServlet servletInstance = config.getServletMan().findServlet(url[1]);
+			if(servletInstance != null)
+				return executeServlet(request,servletInstance);
 		}
 
 		// not a servlet, so it must be a file path
@@ -627,9 +618,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			//TODO: check this: throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
 		}
 		else
-		{
 			pageFile = pathFile;
-		}
 
 		final MIMEType mimeType = MIMEType.All.getMIMETypeByExtension(pageFile.getName());
 		try
@@ -653,9 +642,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				return buffers;
 			}
 			else
-			{
 				return config.getFileCache().getFileData(pageFile, null);
-			}
 		}
 		catch(final HTTPException e)
 		{
@@ -684,11 +671,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		{
 			if(request.getUrlPath().length()>1)
 			{
-				final Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(request.getUrlPath().substring(1));
-				if(servletClass != null)
-				{
-					return executeServlet(request,servletClass);
-				}
+				final SimpleServlet servletInstance = config.getServletMan().findServlet(request.getUrlPath().substring(1));
+				if(servletInstance != null)
+					return executeServlet(request,servletInstance);
 			}
 
 			final Map<HTTPHeader,String> extraHeaders=new HashMap<HTTPHeader, String>();
@@ -712,9 +697,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					pageFile=config.getFileManager().createFileFromPath(config.getBrowsePage());
 				}
 				else
-				{
 					pageFile = pathFile;
-				}
 				buffers = new CWDataBuffers(); // before forming output, process range request
 				switch(request.getMethod())
 				{
@@ -770,9 +753,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 					}
 					if(buffers == null)
-					{
 						throw HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR);
-					}
 					final long fullSize = buffers.getLength();
 					final long[] fullRange = setRangeRequests(request, buffers);
 					if(fullRange != null)

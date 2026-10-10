@@ -141,6 +141,8 @@ public class CWConfig implements Cloneable
 
 	private String  accessLogFlag		 = DEFAULT_ACCESSLOG_FLAG;
 
+	private final Properties iniFile			 = new Properties();
+
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		mounts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>outs	= new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
@@ -161,6 +163,7 @@ public class CWConfig implements Cloneable
 	{
 		return debugFlag;
 	}
+
 	/**
 	 * @param debugFlag the defaultDebugFlag to set
 	 */
@@ -169,6 +172,7 @@ public class CWConfig implements Cloneable
 		this.debugFlag = debugFlag;
 		isDebugging=!debugFlag.equalsIgnoreCase("OFF");
 	}
+
 	/**
 	 * @return the isDebugging
 	 */
@@ -184,6 +188,7 @@ public class CWConfig implements Cloneable
 	{
 		return dupPolicy;
 	}
+
 	/**
 	 * @param dupPolicy the dupPolicy to set
 	 */
@@ -191,6 +196,7 @@ public class CWConfig implements Cloneable
 	{
 		this.dupPolicy = dupPolicy;
 	}
+
 	/**
 	 * @param dupPolicy the dupPolicy to set
 	 */
@@ -418,6 +424,11 @@ public class CWConfig implements Cloneable
 	public final String getBindAddress()
 	{
 		return bindAddress;
+	}
+
+	public Properties getINIFile()
+	{
+		return iniFile;
 	}
 
 	/**
@@ -963,7 +974,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @return the servlets
 	 */
-	public final Map<String, String> getServlets()
+	public final Map<String, String> getServletClasses()
 	{
 		return servlets;
 	}
@@ -1361,6 +1372,8 @@ public class CWConfig implements Cloneable
 	 */
 	public void load(final Properties props)
 	{
+		this.iniFile.clear();
+		this.iniFile.putAll(props);
 		miscFlags.clear();
 		for(final Object propName : props.keySet())
 			miscFlags.put(propName.toString().toUpperCase(), getString(props,propName.toString(),""));

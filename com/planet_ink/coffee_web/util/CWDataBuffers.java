@@ -382,7 +382,7 @@ public class CWDataBuffers implements DataBuffers
 			final ByteBuffer buf=next();
 			if(buf.hasRemaining())
 			{
-				bout.write(buf.array(),buf.position(),buf.limit());
+				bout.write(buf.array(),buf.position(),buf.remaining());
 				buf.position(buf.limit());
 			}
 		}
