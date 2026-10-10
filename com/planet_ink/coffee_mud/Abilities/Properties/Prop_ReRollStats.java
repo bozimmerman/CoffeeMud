@@ -54,9 +54,9 @@ public class Prop_ReRollStats extends Property
 		return Ability.CAN_MOBS;
 	}
 
-	protected int		bonusPointsPerStat	= 0;
-	protected boolean	reRollFlag			= true;
-	protected boolean	rePickClass			= false;
+	protected int				bonusPointsPerStat	= 0;
+	protected volatile boolean	reRollFlag			= true;
+	protected boolean			rePickClass			= false;
 
 	@Override
 	public String accountForYourself()
@@ -76,8 +76,7 @@ public class Prop_ReRollStats extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((reRollFlag)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
 		&&(msg.source()==affected))
 		{
@@ -85,6 +84,12 @@ public class Prop_ReRollStats extends Property
 			if((M.session()!=null)
 			&&(M.playerStats()!=null))
 			{
+				synchronized(this)
+				{
+					if(!reRollFlag)
+						return;
+					reRollFlag=false;
+				}
 				final Ability me=this;
 				CMLib.threads().executeRunnable(new Runnable()
 				{
@@ -115,6 +120,11 @@ public class Prop_ReRollStats extends Property
 						}
 						catch (final IOException e)
 						{
+						}
+						finally
+						{
+							if(M.fetchEffect(me.ID())!=null)
+								reRollFlag=true;
 						}
 					}
 				});
