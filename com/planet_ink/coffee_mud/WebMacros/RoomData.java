@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.*;
@@ -602,6 +603,18 @@ public class RoomData extends StdWebMacro
 			public Set<String> getCookieNames()
 			{
 				return httpReq.getCookieNames();
+			}
+
+			@Override
+			public Enumeration<String> getHeaders()
+			{
+				return httpReq.getHeaders();
+			}
+
+			@Override
+			public Enumeration<Cookie> getCookies()
+			{
+				return httpReq.getCookies();
 			}
 
 			@Override

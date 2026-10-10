@@ -197,6 +197,7 @@ public class ServletSession implements SimpleServletSession
 	 * Returns the manager for this session
 	 * @return the manager for this session
 	 */
+	@Override
 	public ServletSessionManager getManager()
 	{
 		return this.mgr;

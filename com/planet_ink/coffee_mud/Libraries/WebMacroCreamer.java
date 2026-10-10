@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPHeader;
 import com.planet_ink.coffee_web.http.HTTPMethod;
@@ -264,6 +265,18 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			public String getQueryString()
 			{
 				return "";
+			}
+
+			@Override
+			public Enumeration<String> getHeaders()
+			{
+				return new EmptyEnumeration<String>();
+			}
+
+			@Override
+			public Enumeration<Cookie> getCookies()
+			{
+				return new EmptyEnumeration<Cookie>();
 			}
 		};
 	}

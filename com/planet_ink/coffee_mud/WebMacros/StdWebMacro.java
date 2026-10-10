@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.coffee_web.http.Cookie;
 import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MIMEType;
@@ -795,6 +796,18 @@ public class StdWebMacro implements WebMacro
 				{
 					return httpReq.getQueryString();
 				}
+
+				@Override
+				public Enumeration<String> getHeaders()
+				{
+					return httpReq.getHeaders();
+				}
+
+				@Override
+				public Enumeration<Cookie> getCookies()
+				{
+					return httpReq.getCookies();
+				}
 			};
 
 			final DataBuffers data=config.getFileGetter().getFileData(newReq);
@@ -951,6 +964,18 @@ public class StdWebMacro implements WebMacro
 				public String getQueryString()
 				{
 					return httpReq.getQueryString();
+				}
+
+				@Override
+				public Enumeration<String> getHeaders()
+				{
+					return httpReq.getHeaders();
+				}
+
+				@Override
+				public Enumeration<Cookie> getCookies()
+				{
+					return httpReq.getCookies();
 				}
 			};
 
