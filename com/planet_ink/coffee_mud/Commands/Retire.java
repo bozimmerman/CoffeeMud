@@ -60,6 +60,14 @@ public class Retire extends StdCommand
 		if(pstats==null)
 			return false;
 
+		if((commands==null)
+		||(commands.size()==0)
+		||(!commands.get(0).equalsIgnoreCase(access[0])))
+		{
+			mob.tell(L("You must type the full command '@x1' to retire your character.",access[0]));
+			return false;
+		}
+
 		mob.tell(L("^HThis will delete your player from the system FOREVER!"));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
