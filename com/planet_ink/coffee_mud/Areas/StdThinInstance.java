@@ -57,6 +57,7 @@ public class StdThinInstance extends StdThinArea implements SubArea
 	protected long							childCheckDown		= CMProps.getMillisPerMudHour() / CMProps.getTickMillis();
 	protected volatile int					childTimeout		= 0;
 	protected WeakReference<Area>			parentArea			= null;
+	protected final Map<String,Room>		loadingRooms		= Collections.synchronizedMap(new HashMap<String,Room>());
 
 	protected String getStrippedRoomID(final String roomID)
 	{
@@ -109,6 +110,9 @@ public class StdThinInstance extends StdThinArea implements SubArea
 		final Room existingR=super.getRoomBase(roomID);
 		if(((existingR==null)||(existingR.amDestroyed()))&&(roomID!=null))
 		{
+			final Room loadingR=loadingRooms.get(roomID.toUpperCase());
+			if(loadingR!=null)
+				return loadingR;
 			final Area parentA=getSuperArea();
 			if(parentA==null)
 				return null;
@@ -127,16 +131,24 @@ public class StdThinInstance extends StdThinArea implements SubArea
 			newR.setArea(this); // done here, then deleted, so loaded mobs know where they are
 			this.delProperRoom(newR);
 			this.delProperRoomnumber(newR.roomID());
-			CMLib.database().DBReadRoomExits(newR.roomID(), newR, false);
-			CMLib.database().DBReadContent(newR.roomID(), newR, true);
-			newR.clearSky();
-			if(newR instanceof GridLocale)
-				((GridLocale)newR).clearGrid(null);
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				newR.rawDoors()[d]=null;
-			newR.setRoomID(roomID);
-			newR.setArea(this); // must be done after the roomid is corrected for adds
-			addProperRoom(newR);
+			loadingRooms.put(roomID.toUpperCase(),newR);
+			try
+			{
+				CMLib.database().DBReadRoomExits(newR.roomID(), newR, false);
+				CMLib.database().DBReadContent(newR.roomID(), newR, true);
+				newR.clearSky();
+				if(newR instanceof GridLocale)
+					((GridLocale)newR).clearGrid(null);
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					newR.rawDoors()[d]=null;
+				newR.setRoomID(roomID);
+				newR.setArea(this); // must be done after the roomid is corrected for adds
+				addProperRoom(newR);
+			}
+			finally
+			{
+				loadingRooms.remove(roomID.toUpperCase());
+			}
 
 			synchronized(CMClass.getSync(("SYNC"+roomID)))
 			{
