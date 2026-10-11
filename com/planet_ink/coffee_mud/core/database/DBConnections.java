@@ -456,14 +456,11 @@ public class DBConnections
 			{
 				if((consecutiveFailures++)>=50)
 				{
-					if(consecutiveFailures>50)
-					{
-						if(connections.size()==0)
-							disconnected=true;
-						else
-							lockedUp=true;
-						consecutiveFailures=0;
-					}
+					if(connections.size()==0)
+						disconnected=true;
+					else
+						lockedUp=true;
+					consecutiveFailures=0;
 				}
 				if(connections.size()>=maxConnections)
 				{
@@ -487,7 +484,7 @@ public class DBConnections
 							resetConnections();
 					}
 					else
-					if((System.currentTimeMillis()-failureStart)>2L*60L*1000L)
+					if((System.currentTimeMillis()-failureStart)>1L*60L*1000L)
 						Log.errOut("Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 					else
 					if(consecutiveFailures==30)
