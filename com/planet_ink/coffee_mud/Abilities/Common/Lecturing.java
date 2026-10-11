@@ -185,19 +185,29 @@ public class Lecturing extends CommonSkill
 					final Ability protoA=mob.fetchAbility(lectureID);
 					final int prof = protoA!=null ? protoA.proficiency() : 0;
 					int studentsWhoImproved=0;
+					final Set<String> reasons=new LinkedHashSet<String>();
 					for(final MOB studentM : students)
 					{
 						final Ability A=studentM.fetchAbility(lectureID);
 						if(A!=null)
 						{
 							if(!A.appropriateToMyFactions(mob))
+							{
+								reasons.add(L("You lack the moral or factional disposition for @x1.",lectureName));
 								continue;
+							}
 
 							final int maxProficiency = CMLib.ableMapper().getMaxProficiency(studentM,true,A.ID());
 							if((A.proficiency() > prof)
 							||(A.proficiency()==100)
 							||(A.proficiency() >= maxProficiency))
+							{
+								if(A.proficiency() > prof)
+									reasons.add(L("At least one of your students already knows more about @x1 than you do.",lectureName));
+								else
+									reasons.add(L("At least one of your students is already fully proficient in @x1.",lectureName));
 								studentM.tell(L("Since you knew more about @x1 than @x2 did, you didn't learn anything.",lectureName,mob.Name()));
+							}
 							else
 							{
 								int amt=prof-A.proficiency();
@@ -230,6 +240,8 @@ public class Lecturing extends CommonSkill
 					if(studentsWhoImproved == 0)
 					{
 						commonTelL(mob,"You did your best, but none of your students learned a damn thing.\n\r");
+						for(final String reason : reasons)
+							commonTelL(mob,reason);
 					}
 					final Room R=mob.location();
 					final Area areA=(R!=null)?R.getArea():null;
