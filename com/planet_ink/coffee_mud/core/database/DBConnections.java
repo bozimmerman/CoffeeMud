@@ -56,6 +56,8 @@ public class DBConnections
 	protected boolean			lockedUp			= false;
 	/** the number of times the system has failed to get a db */
 	protected int				consecutiveFailures	= 0;
+	/** the first time the system has failed to get a db */
+	protected long				failureStart		= 0;
 	/** the number of times the system has failed a request */
 	protected int				consecutiveErrors	= 0;
 	/** Object to synchronize around on error handling */
@@ -471,7 +473,9 @@ public class DBConnections
 						if(conn.inUse())
 							inuse++;
 					}
-					if(consecutiveFailures==180)
+					if(failureStart == 0)
+						failureStart = System.currentTimeMillis();
+					if((System.currentTimeMillis()-failureStart)>5L*60L*1000L)
 					{
 						Log.errOut("Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 						for(final DBConnection conn : connections)
@@ -483,7 +487,7 @@ public class DBConnections
 							resetConnections();
 					}
 					else
-					if(consecutiveFailures==90)
+					if((System.currentTimeMillis()-failureStart)>2L*60L*1000L)
 						Log.errOut("Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 					else
 					if(consecutiveFailures==30)
@@ -499,6 +503,10 @@ public class DBConnections
 			}
 			else
 			{
+				failureStart = 0;
+				consecutiveFailures=0;
+				disconnected=false;
+				lockedUp=false;
 				switch(type)
 				{
 				case PREPAREDSTATEMENT:
@@ -515,9 +523,6 @@ public class DBConnections
 			}
 		}
 
-		consecutiveFailures=0;
-		disconnected=false;
-		lockedUp=false;
 		if(newConn != null)
 		{
 			if((dbLType==null)||(dbLType.length()==0))
