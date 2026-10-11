@@ -46,7 +46,7 @@ public class StdPowder extends StdItem implements MagicDust
 		return "StdPowder";
 	}
 
-	private List<Ability> spells = new ArrayList<Ability>(0);
+	protected List<Ability> spells = new ArrayList<Ability>(0);
 
 	public StdPowder()
 	{
@@ -114,6 +114,7 @@ public class StdPowder extends StdItem implements MagicDust
 		else
 			super.executeMsg(myHost,msg);
 	}
+
 	public boolean malicious(final SpellHolder me)
 	{
 		final List<Ability> spells=getSpells();

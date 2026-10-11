@@ -58,7 +58,7 @@ public class StdPotion extends StdDrink implements Potion
 		recoverPhyStats();
 	}
 
-	private List<Ability> spells = new ArrayList<Ability>(0);
+	protected List<Ability> spells = new ArrayList<Ability>(0);
 
 	@Override
 	public String genericName()

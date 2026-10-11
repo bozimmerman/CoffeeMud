@@ -72,7 +72,7 @@ public class GenPotion extends StdPotion
 	@Override
 	public void setSpellList(final String list)
 	{
-		readableText = list;
+		setReadableText(list);
 	}
 
 	@Override
@@ -85,7 +85,18 @@ public class GenPotion extends StdPotion
 	public void setReadableText(final String text)
 	{
 		readableText=text;
-		setSpellList(readableText);
+		spells = buildSpellsList(text);
+		calculateValue(this);
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		if(spells==null)
+			return;
+		this.spells=spells;
+		readableText = buildSpellsList(spells);
+		calculateValue(this);
 	}
 
 	@Override

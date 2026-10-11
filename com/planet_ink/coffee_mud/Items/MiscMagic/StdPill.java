@@ -57,7 +57,7 @@ public class StdPill extends StdFood implements Pill
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
-	private List<Ability> spells = new ArrayList<Ability>(0);
+	protected List<Ability> spells = new ArrayList<Ability>(0);
 
 	@Override
 	public String genericName()

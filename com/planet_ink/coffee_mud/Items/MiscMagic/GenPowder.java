@@ -45,6 +45,8 @@ public class GenPowder extends StdPowder
 		return "GenPowder";
 	}
 
+	protected String	readableText	= "";
+
 	public GenPowder()
 	{
 		super();
@@ -62,6 +64,42 @@ public class GenPowder extends StdPowder
 	public boolean isGeneric()
 	{
 		return true;
+	}
+
+	@Override
+	public String getSpellList()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setSpellList(final String list)
+	{
+		setReadableText(list);
+	}
+
+	@Override
+	public String readableText()
+	{
+		return readableText;
+	}
+
+	@Override
+	public void setReadableText(final String text)
+	{
+		readableText=text;
+		spells = buildSpellsList(text);
+		StdPotion.calculateValue(this);
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		if(spells==null)
+			return;
+		this.spells=spells;
+		readableText = buildSpellsList(spells);
+		StdPotion.calculateValue(this);
 	}
 
 	@Override

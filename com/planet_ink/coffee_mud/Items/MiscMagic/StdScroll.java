@@ -43,7 +43,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	protected String readableScrollBy=null;
-	private List<Ability> spells = new ArrayList<Ability>(0);
+	protected List<Ability> spells = new ArrayList<Ability>(0);
 
 	public StdScroll()
 	{

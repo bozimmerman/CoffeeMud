@@ -71,7 +71,7 @@ public class GenScroll extends StdScroll
 	@Override
 	public void setSpellList(final String list)
 	{
-		readableText = list;
+		setReadableText(list);
 	}
 
 	@Override
@@ -83,8 +83,19 @@ public class GenScroll extends StdScroll
 	@Override
 	public void setReadableText(final String text)
 	{
-		readableText = text;
-		setSpellList(readableText);
+		readableText=text;
+		spells = buildSpellsList(text);
+		calculateValue(this);
+	}
+
+	@Override
+	public void setSpells(final List<Ability> spells)
+	{
+		if(spells==null)
+			return;
+		this.spells=spells;
+		readableText = buildSpellsList(spells);
+		calculateValue(this);
 	}
 
 	@Override

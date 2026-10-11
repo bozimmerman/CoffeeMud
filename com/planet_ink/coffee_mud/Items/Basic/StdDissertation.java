@@ -45,7 +45,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	protected String readableScrollBy=null;
-	private List<Ability> spells = new ArrayList<Ability>(0);
+	protected List<Ability> spells = new ArrayList<Ability>(0);
 
 	public StdDissertation()
 	{
