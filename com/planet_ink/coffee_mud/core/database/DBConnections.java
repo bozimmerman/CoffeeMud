@@ -472,23 +472,25 @@ public class DBConnections
 					}
 					if(failureStart == 0)
 						failureStart = System.currentTimeMillis();
-					if((System.currentTimeMillis()-failureStart)>5L*60L*1000L)
-					{
-						Log.errOut("Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
-						for(final DBConnection conn : connections)
-						{
-							if(conn.inUse())
-								Log.errOut("Last SQL was: "+conn.lastSQL);
-						}
-						if(inuse==0)
-							resetConnections();
-					}
-					else
-					if((System.currentTimeMillis()-failureStart)>1L*60L*1000L)
-						Log.errOut("Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
-					else
 					if(consecutiveFailures==30)
-						Log.errOut("Minor failure obtaining DBConnection("+inuse+"/"+connections.size()+" in use).");
+					{
+						if((System.currentTimeMillis()-failureStart)>5L*60L*1000L)
+						{
+							Log.errOut("Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
+							for(final DBConnection conn : connections)
+							{
+								if(conn.inUse())
+									Log.errOut("Last SQL was: "+conn.lastSQL);
+							}
+							if(inuse==0)
+								resetConnections();
+						}
+						else
+						if((System.currentTimeMillis()-failureStart)>1L*60L*1000L)
+							Log.errOut("Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
+						else
+							Log.errOut("Minor failure obtaining DBConnection("+inuse+"/"+connections.size()+" in use).");
+					}
 					try
 					{
 						Thread.sleep(Math.round(Math.random()*500));
