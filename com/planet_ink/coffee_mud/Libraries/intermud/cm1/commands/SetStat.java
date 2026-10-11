@@ -310,6 +310,21 @@ public class SetStat extends GetStat
 						}
 						return;
 					}
+					case 4:
+					{
+						final Ability A=((MOB)mod).fetchAbility(firstValue);
+						if(A==null)
+							req.sendMsg(Status.FAIL,""+firstValue+" NOT FOUND");
+						else
+						if(!CMath.isInteger(restValue))
+							req.sendMsg(Status.FAIL,"USAGE: SETSTAT MOB ABILITYPROF <ID> <PROF>");
+						else
+						{
+							A.setProficiency(CMath.s_int(restValue));
+							req.sendMsg(Status.OK,""+firstValue+" "+A.proficiency()+"");
+						}
+						return;
+					}
 				}
 			}
 			if(mod instanceof ItemPossessor)

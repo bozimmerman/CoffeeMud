@@ -61,7 +61,7 @@ public class GetStat extends CM1Command
 
 	protected static final String[]	PHYSSTATS	= { "EFFECT" };
 	protected static final String[]	PHYASTATS	= { "BEHAVIOR" };
-	protected static final String[]	MOBASTATS	= { "ABILITY", "FACTION", "EXPERTISE", "FOLLOWER" };
+	protected static final String[]	MOBASTATS	= { "ABILITY", "FACTION", "EXPERTISE", "FOLLOWER", "ABILITYPROF" };
 	protected static final String[]	ITEMSTATS	= { "ITEM" };
 	protected static final String[]	ROOMSTATS	= { "MOB" };
 
@@ -362,6 +362,20 @@ public class GetStat extends CM1Command
 							req.sendMsg(Status.FAIL,"NO FOLLOWER " + rest + "");
 						else
 							req.sendMsg(Status.OK,"" + M.Name() + "");
+					}
+					return;
+				}
+				case 4:
+				{
+					if (rest.trim().length() == 0)
+						req.sendMsg(Status.FAIL,"USAGE: GETSTAT MOB ABILITYPROF <ID>");
+					else
+					{
+						final Ability A = ((MOB) mod).fetchAbility(rest.trim());
+						if (A == null)
+							req.sendMsg(Status.FAIL,"NO ABILITY " + rest + "");
+						else
+							req.sendMsg(Status.OK,"" + A.proficiency() + "");
 					}
 					return;
 				}
