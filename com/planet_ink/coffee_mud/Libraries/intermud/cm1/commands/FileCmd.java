@@ -129,7 +129,7 @@ public class FileCmd extends CM1Command
 			else
 			if(firstWord.equals("READB64"))
 			{
-				final String filename= CMStrings.trimQuotes(parameters.substring(5).trim());
+				final String filename= CMStrings.trimQuotes(parameters.substring(8).trim());
 				final CMFile f = new CMFile(filename,req.getUser());
 				if(!f.exists())
 					req.sendMsg(Status.FAIL,"FILE NOT FOUND "+filename);
