@@ -100,7 +100,7 @@ public class CommandHandler implements Runnable
 		else
 		{
 			cmd=command.substring(0,x).trim();
-			rest=command.substring(x+1).trim();
+			rest=command.substring(x+1);
 		}
 	}
 

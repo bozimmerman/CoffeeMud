@@ -414,8 +414,10 @@ public class RequestHandler implements CMRunnable
 									workingBuffers.remove(buf);
 								}
 								finalBuf.flip();
+								final boolean trimDelimiters = (markBlocks == DEFAULT_MARK_BLOCKS);
 								markBlocks = DEFAULT_MARK_BLOCKS;
-								execCommands.add(new String(finalBuf.array(),0,finalBuf.limit(), StandardCharsets.UTF_8));
+								final String cmdLine = new String(finalBuf.array(),0,finalBuf.limit(), StandardCharsets.UTF_8);
+								execCommands.add(trimDelimiters ? cmdLine.trim() : cmdLine);
 							}
 						}
 						if (!workingBuffers.contains(buffer) && (buffer.limit() > 0))
