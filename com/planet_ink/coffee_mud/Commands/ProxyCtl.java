@@ -112,6 +112,56 @@ public class ProxyCtl extends StdCommand
 			else
 				password = "1";
 			final String command = commands.get(1);
+			if(command.equalsIgnoreCase("transfer"))
+			{
+				final Map<String,String> eq = CMParms.parseEQParms(CMParms.combine(commands, 2));
+				final String playerName = eq.get("PLAYER");
+				final String targetStr = eq.get("TARGET");
+				if((playerName == null) 
+				|| (targetStr == null) 
+				|| (targetStr.lastIndexOf(':') < 0))
+				{
+					mob.tell(L("Usage: PROXYCTL [password] TRANSFER PLAYER=<name> TARGET=<host>:<port>"));
+					return false;
+				}
+				final String host = targetStr.substring(0, targetStr.lastIndexOf(':'));
+				final int port = CMath.s_int(targetStr.substring(targetStr.lastIndexOf(':') + 1));
+				MOB targetM = null;
+				for(final Session S : CMLib.sessions().allIterable())
+				{
+					if((S.mob() != null)
+					&& (S.mob().Name().equalsIgnoreCase(playerName))
+					&& (CMLib.flags().isInTheGame(S.mob(), true)))
+					{
+						targetM = S.mob();
+						break;
+					}
+				}
+				if((targetM == null) || (targetM.playerStats() == null))
+				{
+					mob.tell(L("Player '@x1' is not online here.", playerName));
+					return false;
+				}
+				final PlayerStats.IMudTransferData priorXfer = targetM.playerStats().getIMudTransferData();
+				if((priorXfer != null) && (!priorXfer.isLocal))
+				{
+					mob.tell(L("Player '@x1' is foreign; return them home first.", playerName));
+					return false;
+				}
+				if((targetM.session() == null) || (!targetM.session().getClientTelnetMode(Session.TELNET_MPCP)))
+				{
+					mob.tell(L("Player '@x1' is not connected through the proxy.", playerName));
+					return false;
+				}
+				targetM.playerStats().setIMudTransferData(
+					new PlayerStats.IMudTransferData(host, port, System.currentTimeMillis(), true));
+				targetM.session().doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(host, Integer.valueOf(port)));
+				final Session tSess = targetM.session();
+				if(tSess != null)
+					tSess.stopSession(false, true, true, false);
+				mob.tell(L("Transfer of '@x1' to @x2:@x3 initiated.", playerName, host, "" + port));
+				return false;
+			}
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();
 			obj.put("password", password);
 			obj.putAll(CMParms.parseEQParms(CMParms.combine(commands,2)));
