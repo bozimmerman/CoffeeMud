@@ -204,6 +204,8 @@ public class MUDProxy
 		 * "target_host": string ip of the target server
 		 * "target_port": long port number of the target server
 		 * "mob_xml": base64 compressed xml doc of the player definition
+		 * "return": boolean, true if the player is returning to their home mud
+		 * "origin_room": string room id on the source mud the player left from
 		 */
 		TRANSFER
 	}
@@ -1300,10 +1302,26 @@ public class MUDProxy
 					transferServerContext.session.put("mob_xml", obj.get("mob_xml"));
 					if(obj.containsKey("return"))
 						transferServerContext.session.put("return", obj.get("return"));
+					if(obj.containsKey("origin_room"))
+						transferServerContext.session.put("origin_room", obj.get("origin_room"));
 					// Put the client into distress mode so reconnectClient triggers the
 					// SessionInfo-with-mob_xml path in handleConnect.
 					clientContext.distressedTime = System.currentTimeMillis() - 1000;
 					reconnectClient(clientKey, clientContext, transferServerContext);
+					try
+					{
+						synchronized(channelPairs)
+						{
+							channelPairs.remove(key);
+						}
+						final SocketChannel oldSourceChannel = (SocketChannel)key.channel();
+						key.cancel();
+						oldSourceChannel.close();
+					}
+					catch(final Exception e)
+					{
+						Log.debugOut("MPCP/TRANSFER close source", e);
+					}
 					Log.sysOut("MPCP", "TRANSFER: redirecting "+clientContext.ipAddress
 							+" to "+target.first+":"+target.second);
 					break;
@@ -1333,6 +1351,7 @@ public class MUDProxy
 					target = getPort(target.first, target.second);
 					obj.put("source_ip", context.port.first);
 					obj.put("source_port", context.port.second);
+					obj.put("timestamp", Long.valueOf(System.currentTimeMillis()));
 					final byte[] wrappedPacket = makeMPCPPacket("FORWARD " + obj.toString());
 					final Triad<String,Integer,byte[]> pf = new Triad<String,Integer,byte[]>(target.first, target.second, wrappedPacket);
 					Queue<Triad<String,Integer,byte[]>> queue = pendingForwards.get(target);
