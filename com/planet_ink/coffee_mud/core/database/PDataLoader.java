@@ -549,6 +549,11 @@ public class PDataLoader
 
 	public PAData DBReCreate(String name, String section, String key, final String xml)
 	{
+		final MOB M=(name != null)?CMLib.players().getPlayer(name):null;
+		if((M != null)
+		&&(M.playerStats() != null)
+		&&(!M.playerStats().isSavable()))
+			return null;
 		synchronized(CMClass.getSync(("RECREATE"+key)))
 		{
 			DBConnection D=null;
@@ -589,6 +594,11 @@ public class PDataLoader
 
 	public void DBUpdate(String name, String sect, String key, final String xml)
 	{
+		final MOB M=(name != null)?CMLib.players().getPlayer(name):null;
+		if((M != null)
+		&&(M.playerStats() != null)
+		&&(!M.playerStats().isSavable()))
+			return;
 		name = DB.injectionClean(name);
 		sect = DB.injectionClean(sect);
 		key = DB.injectionClean(key);
@@ -715,6 +725,11 @@ public class PDataLoader
 
 	public PAData DBCreate(String playerID, String section, String key, final String data)
 	{
+		final MOB M=(name != null)?CMLib.players().getPlayer(playerID):null;
+		if((M != null)
+		&&(M.playerStats() != null)
+		&&(!M.playerStats().isSavable()))
+			return;
 		playerID = DB.injectionClean(playerID);
 		section = DB.injectionClean(section);
 		key = DB.injectionClean(key);

@@ -1954,6 +1954,8 @@ public class MOBloader
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return;
+		if(!pstats.isSavable())
+			return;
 		final String name=DB.injectionClean(mob.Name());
 		final String email=DB.injectionClean(pstats.getEmail());
 		DB.update("UPDATE CMCHAR SET CMEMAL='"+email+"' WHERE CMUSERID='"+name+"'");
@@ -2247,6 +2249,9 @@ public class MOBloader
 
 	public void DBUpdatePassword(String name, String password)
 	{
+		final MOB M = (name != null) ? CMLib.players().getPlayer(name) : null;
+		if((M != null) && (M.playerStats() != null) && (!M.playerStats().isSavable()))
+			return;
 		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
 		password=DB.injectionClean(password);
 		DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
@@ -2628,6 +2633,8 @@ public class MOBloader
 	{
 		if(mob.Name().length()==0)
 			return;
+		if((mob.playerStats() == null) || (!mob.playerStats().isSavable()))
+			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+name+"'"));
@@ -2923,6 +2930,8 @@ public class MOBloader
 	{
 		if((mob==null)||(mob.Name().length()==0))
 			return;
+		if((mob.playerStats() == null) || (!mob.playerStats().isSavable()))
+			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+name+"'"));
@@ -3042,6 +3051,8 @@ public class MOBloader
 	public void DBUpdateAbilities(final MOB mob)
 	{
 		if(mob.Name().length()==0)
+			return;
+		if((mob.playerStats() == null) || (!mob.playerStats().isSavable()))
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'"));
@@ -3163,6 +3174,8 @@ public class MOBloader
 			return;
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
+			return;
+		if(!pstats.isSavable())
 			return;
 		final Pair<String, String> classInfo = mob.baseCharStats().getAllClassInfo();
 		DB.update("INSERT INTO CMCHAR (CMCHID, CMUSERID, CMPASS, CMCLAS, CMRACE, CMGEND "
