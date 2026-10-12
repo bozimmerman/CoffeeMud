@@ -5146,25 +5146,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			unpackFactionFromXML(mob,mblk.contents());
 
 			final List<XMLTag> iV=mblk.getContentsFromPieces("FOLLOWERS");
-			if(iV==null)
-				return unpackErr("PFols","null 'iV'",mblk);
-			for(int i=0;i<iV.size();i++)
+			if(iV!=null)
 			{
-				final XMLTag fblk=iV.get(i);
-				if((!fblk.tag().equalsIgnoreCase("FOLLOWER"))||(fblk.contents()==null))
-					return unpackErr("PFols","??"+fblk.tag());
-				final String mobClass=fblk.getValFromPieces("FCLAS");
-				final MOB newFollower=CMClass.getMOB(mobClass);
-				if(newFollower==null)
-					return unpackErr("PFols","null 'iClass': "+mobClass);
-				newFollower.basePhyStats().setLevel(fblk.getIntFromPieces("FLEVL"));
-				newFollower.basePhyStats().setAbility(fblk.getIntFromPieces("FABLE"));
-				newFollower.setMiscText(fblk.getValFromPieces("FTEXT"));
-				newFollower.recoverCharStats();
-				newFollower.recoverPhyStats();
-				newFollower.recoverMaxState();
-				newFollower.resetToMaxState();
-				mob.addFollower(newFollower,-1);
+				for(int i=0;i<iV.size();i++)
+				{
+					final XMLTag fblk=iV.get(i);
+					if((!fblk.tag().equalsIgnoreCase("FOLLOWER"))||(fblk.contents()==null))
+						return unpackErr("PFols","??"+fblk.tag());
+					final String mobClass=fblk.getValFromPieces("FCLAS");
+					final MOB newFollower=CMClass.getMOB(mobClass);
+					if(newFollower==null)
+						return unpackErr("PFols","null 'iClass': "+mobClass);
+					newFollower.basePhyStats().setLevel(fblk.getIntFromPieces("FLEVL"));
+					newFollower.basePhyStats().setAbility(fblk.getIntFromPieces("FABLE"));
+					newFollower.setMiscText(fblk.getValFromPieces("FTEXT"));
+					newFollower.recoverCharStats();
+					newFollower.recoverPhyStats();
+					newFollower.recoverMaxState();
+					newFollower.resetToMaxState();
+					mob.addFollower(newFollower,-1);
+				}
 			}
 
 			mob.recoverCharStats();
