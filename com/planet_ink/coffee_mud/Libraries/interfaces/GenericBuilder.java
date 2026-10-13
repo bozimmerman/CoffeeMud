@@ -807,6 +807,15 @@ public interface GenericBuilder extends CMLibrary
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
 
 	/**
+	 * Generates PLAYER xml document for transfer to a
+	 * foreign mud, with the password removed.
+	 * @param mob the player to generate the transfer xml for
+	 * @return the base-64 compressed xml string, or "" on error
+	 */
+	public String getPlayerTransferXML(final MOB mob);
+	
+	
+	/**
 	 * Given a player account, this will return an XML document of the account objects, as
 	 * well as all characters contained in the account.  Dependency custom objects and
 	 * script file paths can optionally be captured during this process.

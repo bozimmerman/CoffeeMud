@@ -133,6 +133,7 @@ public class DefaultSession implements Session
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
 	protected boolean[]		 loggingOutObj		 = new boolean[]{false};
+	protected boolean		 foreignDeparted	 = false;
 	protected boolean		 reverseEcho		 = false;
 
 	protected byte[]		 promptSuffix		 = new byte[0];
@@ -2002,28 +2003,12 @@ public class DefaultSession implements Session
 							if(command.equalsIgnoreCase("sessioninfo"))
 							{
 								obj.remove("timestamp");
-								if(obj.containsKey("mob_xml"))
+								if(obj.containsKey("mob_xml")
+								&& (obj.getCheckedString("mob_xml").length() > 0))
 								{
-									// this MUST be processed first, as one of the state codes
-									//   applied below is the mob which will be constructed by this xml.
-									String xml = B64Encoder.B64decodeAndDecompressString(obj.getCheckedString("mob_xml"));
-									xml = xml + ""; // prevent warning
-									final List<MOB> mobs = new ArrayList<MOB>(1);
-									String err = CMLib.coffeeMaker().addPlayersAndAccountsFromXML(xml, null, mobs, null);
-									if((mobs.size()==0)||(err.length()>0))
-									{
-										if(err.length()==0)
-											err = "Unable to receive mob transfer";
-										
-										// send error back to origin mud
-									}
-									//TODO: clear password on xfer out/initial mob_xml construction, and set roomid for foreign mud
-									//TODO: build mob from xml, persist him, flag him as
-									//  'foreign', and overwrite any other foreign mobs with
-									//  the same name.  
-									//TODO: on logout, transfer mob xml back to og host, 
-									//  delete the foreign mob, and switch user connection
-									//  back to og host via mudproxy.
+									final MOB foreignM = CMLib.protocol().processMPCPTransfer(this, command, obj);
+									if(foreignM != null)
+										loginForeignPlayer(foreignM);
 								}
 								final int wasMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
 										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
@@ -2050,6 +2035,13 @@ public class DefaultSession implements Session
 								this.lastKeystroke = System.currentTimeMillis();
 								this.afkTime = 0;
 								this.needPrompt=true;
+							}
+							else
+							if(command.equalsIgnoreCase("forward"))
+							{
+								final MOB foreignM = CMLib.protocol().processMPCPTransfer(this, command, obj);
+								if(foreignM != null)
+									loginForeignPlayer(foreignM);
 							}
 							else
 							if((mob!=null)
@@ -2872,7 +2864,15 @@ public class DefaultSession implements Session
 	{
 		if(disconnect)
 		{
-			doPing(SessionPing.DISCONNECT, null);
+			final PlayerStats.IMudTransferData fxfer = ((mob != null) && (mob.playerStats() != null))
+				? mob.playerStats().getIMudTransferData() : null;
+			if((fxfer != null) && (!fxfer.isLocal) && getClientTelnetMode(Session.TELNET_MPCP))
+			{
+				doPing(SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(fxfer.host, Integer.valueOf(fxfer.port)));
+				foreignDeparted = true;
+			}
+			else
+				doPing(SessionPing.DISCONNECT, null);
 			if(mob != null)
 				CMLib.intermud().registerPlayerOffline(mob);
 		}
@@ -2890,7 +2890,15 @@ public class DefaultSession implements Session
 			&&(!CMSecurity.isASysOp(mob())))
 			{ /* do nothing right now */ }
 			else
+			{
 				M.removeFromGame(true, dropSession);
+				final PlayerStats.IMudTransferData fxfer3 = (M.playerStats() != null) ? M.playerStats().getIMudTransferData() : null;
+				if((fxfer3 != null) && (!fxfer3.isLocal))
+				{
+					CMLib.players().delPlayer(M);
+					M.destroy();
+				}
+			}
 		}
 		if(dropSession)
 			logoutFinal();
@@ -3018,6 +3026,9 @@ public class DefaultSession implements Session
 		}
 		try
 		{
+			final PlayerStats.IMudTransferData fxfer = (M.playerStats() != null) ? M.playerStats().getIMudTransferData() : null;
+			if((fxfer != null) && (!fxfer.isLocal) && (!foreignDeparted) && getClientTelnetMode(Session.TELNET_MPCP))
+				doPing(SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(fxfer.host, Integer.valueOf(fxfer.port)));
 			final MOB mob=this.mob;
 			final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
 			if(inTheGame
@@ -3111,6 +3122,12 @@ public class DefaultSession implements Session
 				M.removeFromGame(true, false);
 			M.setSession(null);
 			this.mob=null;
+			final PlayerStats.IMudTransferData fxfer2 = (M.playerStats() != null) ? M.playerStats().getIMudTransferData() : null;
+			if((fxfer2 != null) && (!fxfer2.isLocal))
+			{
+				CMLib.players().delPlayer(M);
+				M.destroy();
+			}
 		}
 	}
 
@@ -3346,6 +3363,27 @@ public class DefaultSession implements Session
 		{
 		}
 		return setLoggedInState(LoginResult.NORMAL_LOGIN);
+	}
+
+	private boolean loginForeignPlayer(final MOB mob)
+	{
+		setMob(mob);
+		try
+		{
+			if(CMLib.login().completePlayerLogin(this, false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
+			{
+				setLoggedInState(CharCreationLibrary.LoginResult.NORMAL_LOGIN);
+				println(L("Welcome to @x1, @x2, from afar!", CMProps.getVar(CMProps.Str.MUDDOMAIN), mob.Name()));
+				return true;
+			}
+		}
+		catch(final IOException e)
+		{
+		}
+		setMob(null);
+		println(L("Your transfer could not be completed."));
+		logout(false);
+		return false;
 	}
 
 	protected boolean setLoggedInState(final LoginResult loginResult)
@@ -4139,19 +4177,20 @@ public class DefaultSession implements Session
 			final Pair<?,?> target = (obj instanceof Pair<?,?>) ? (Pair<?,?>)obj : null;
 			if(target == null)
 				break;
-			final Set<CMObject> custom=new HashSet<CMObject>();
-			final Set<String> files=new HashSet<String>();
-			StringBuilder rawXml = new StringBuilder("<PLAYER>");
-			rawXml.append(CMLib.coffeeMaker().getPlayerXML(mob, custom, files));
-			rawXml.append("</PLAYER>");
-			rawXml.append(CMLib.coffeeMaker().getExtraCustomXML(custom, files));
-			final String xml = B64Encoder.B64encodeAndCompressString(rawXml.toString());
-			rawXml = null;
+			final boolean isReturn = ((mob.playerStats() != null)
+				&& (mob.playerStats().getIMudTransferData() != null)
+				&& (!mob.playerStats().getIMudTransferData().isLocal));
+			final String xml = B64Encoder.B64encodeAndCompressString( 
+					CMLib.coffeeMaker().getPlayerTransferXML(mob));
+			final Room originR = mob.location();
+			final String originRoomID = (originR != null) ? originR.roomID() : "";
 			for(int i=0;i<xml.length();i+=32768)
 			{
 				doc.clear();
 				doc.put("target_host", target.first.toString());
-				doc.put("target_port", target.second.toString());
+				doc.put("target_port", target.second);
+				doc.put("return", Boolean.valueOf(isReturn));
+				doc.put("origin_room", originRoomID);
 				if(i+32768<xml.length())
 				{
 					doc.put("mob_xml", xml.substring(i,i+32768));

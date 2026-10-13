@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.IMudTransferData;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -70,6 +71,170 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	private final Map<String,Object> llmModels = new Hashtable<String, Object>();
 	private URLClassLoader llmClassLoader = null;
 	private static final Long DEFAULT_LLM_TIMEOUT_SECONDS = Long.valueOf(20);
+
+	@Override
+	public boolean sendMPCPPlayerUpdate(final MOB mob, final Session sess)
+	{
+		final IMudTransferData xfer = (mob != null) && (mob.playerStats() != null) ? 
+				mob.playerStats().getIMudTransferData() : null;
+		if(xfer == null)
+			return false;
+		final String xml = B64Encoder.B64encodeAndCompressString( 
+				CMLib.coffeeMaker().getPlayerTransferXML(mob));
+		for(int i = 0; i < xml.length(); i += 32768)
+		{
+			final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+			doc.put("target_host", xfer.host);
+			doc.put("target_port", Long.valueOf(xfer.port));
+			if(i + 32768 < xml.length())
+			{
+				doc.put("payload", xml.substring(i, i + 32768));
+				doc.put("partial", Boolean.TRUE);
+			}
+			else
+				doc.put("payload", xml.substring(i));
+			sess.sendInlineCommand(InProto.MPCP, "Forward", doc.toString());
+		}
+		return true;
+	}
+
+	private String mergeForeignPlayerXML(final String xmlB64, final String host, final int port, final boolean returned)
+	{
+		final List<MOB> mobs = new ArrayList<MOB>(1);
+		final String err = CMLib.coffeeMaker().addPlayersAndAccountsFromXML(
+			B64Encoder.B64decodeAndDecompressString(xmlB64), null, mobs, null);
+		if((err.length() > 0) || (mobs.size() == 0))
+			return "bad player xml: " + err;
+		final MOB incoming = mobs.get(0);
+		final MOB local = CMLib.players().getLoadPlayer(incoming.Name());
+		if((local == null) || (local.playerStats() == null))
+		{
+			incoming.destroy();
+			return "unknown player: " + incoming.Name();
+		}
+		if(CMLib.flags().isInTheGame(local, true))
+		{
+			incoming.destroy();
+			return "player logged in locally: " + incoming.Name();
+		}
+		if(incoming.playerStats().getLastDateTime() < local.playerStats().getLastDateTime())
+		{
+			incoming.destroy();
+			return "";
+		}
+		incoming.playerStats().setPassword(local.playerStats().getPasswordStr());
+		incoming.playerStats().setEmail(local.playerStats().getEmail());
+		incoming.playerStats().setAccount(local.playerStats().getAccount());
+		incoming.setStartRoom(local.getStartRoom());
+		if(returned)
+			incoming.playerStats().setIMudTransferData(null);
+		else
+			incoming.playerStats().setIMudTransferData(
+				new PlayerStats.IMudTransferData(host, port, System.currentTimeMillis(), true));
+		CMLib.players().delPlayer(local);
+		local.destroy();
+		CMLib.players().addPlayer(incoming);
+		CMLib.players().savePlayer(incoming);
+		return "";
+	}
+
+	@Override
+	public MOB processMPCPTransfer(final Session S, final String command, final MiniJSON.JSONObject obj)
+	{
+		try
+		{
+			final String srcHost = obj.getCheckedString("source_ip");
+			final int srcPort = (obj.containsKey("source_port")) ? (int)obj.getCheckedLong("source_port").longValue() : -1;
+			if(command.equalsIgnoreCase("forward"))
+			{
+				final String payload = obj.getCheckedString("payload");
+				if((payload != null) && (payload.length() > 0))
+				{
+					final String mErr = mergeForeignPlayerXML(payload, srcHost, srcPort, false);
+					if(mErr.length() > 0)
+						Log.errOut("MPCP/Forward", mErr);
+				}
+				return null;
+			}
+			final boolean returned = obj.containsKey("return") && obj.getCheckedBoolean("return").booleanValue();
+			final String originRoom = obj.containsKey("origin_room") ? obj.getCheckedString("origin_room") : "";
+			final List<MOB> mobs = new ArrayList<MOB>(1);
+			try
+			{
+				CMLib.coffeeMaker().addPlayersAndAccountsFromXML(
+					B64Encoder.B64decodeAndDecompressString(obj.getCheckedString("mob_xml")), null, mobs, null);
+			}
+			catch(final Exception e)
+			{
+				S.println(L("Your transfer could not be completed."));
+				S.logout(false);
+				return null;
+			}
+			if(mobs.size() == 0)
+			{
+				S.println(L("Your transfer could not be completed."));
+				S.logout(false);
+				return null;
+			}
+			if(returned)
+			{
+				final String mErr = mergeForeignPlayerXML(obj.getCheckedString("mob_xml"), srcHost, srcPort, true);
+				S.println((mErr.length() == 0)
+					? L("You have returned home.  Goodbye!")
+					: L("Your return could not be completed: @x1", mErr));
+				S.logout(false);
+				return null;
+			}
+			final MOB incomingM = mobs.get(0);
+			if(CMLib.players().playerExists(name))
+			{
+				MOB existing = CMLib.players().getPlayer(name);
+				final PlayerStats.IMudTransferData ex =
+					(existing.playerStats() != null) ? existing.playerStats().getIMudTransferData() : null;
+				if((ex != null) && (!ex.isLocal)
+				&& (ex.host != null) && (ex.host.equalsIgnoreCase(srcHost))
+				&& (ex.port == srcPort))
+				{
+					CMLib.players().delPlayer(existing);
+					final Session existS = existing.session();
+					if(existS != null)
+					{
+						existS.setMob(null);
+						existing.setSession(null);
+						existS.stopSession(true,false,false, false);
+					}
+					existing.destroy(); //TODO: almost certainly insufficient
+				}
+				else
+				{
+					S.println(L("A player named '@x1' already exists here.  Transfer rejected.", incomingM.Name()));
+					S.logout(false);
+					return null;
+				}
+			}
+			incomingM.playerStats().setIMudTransferData(
+				new PlayerStats.IMudTransferData(srcHost, srcPort, System.currentTimeMillis(), false));
+			CMLib.players().addPlayer(incomingM);
+			final Room R = CMLib.map().getArrivalRoom(srcHost, srcPort, originRoom);
+			if(R != null)
+			{
+				incomingM.setStartRoom(R);
+				incomingM.setLocation(R);
+			}
+			final PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+			acct.setAccountName("foreign@" + srcHost + ":" + srcPort + "/" + incomingM.Name());
+			incomingM.playerStats().setAccount(acct);
+
+			return incomingM;
+		}
+		catch(final MiniJSON.MJSONException e)
+		{
+			S.println(L("Your transfer could not be completed."));
+			S.logout(false);
+			return null;
+		}
+
+	}
 
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server

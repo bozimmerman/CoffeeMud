@@ -4929,6 +4929,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+
+	public String getPlayerTransferXML(final MOB mob)
+	{
+		if(mob == null)
+			return "";
+		final Set<CMObject> custom = new HashSet<CMObject>();
+		final Set<String> files = new HashSet<String>();
+		final StringBuilder rawXml = new StringBuilder("<PLAYERS>");
+		rawXml.append("<PLAYER>");
+		rawXml.append(getPlayerXML(mob, custom, files));
+		rawXml.append("</PLAYER>");
+		rawXml.append("</PLAYERS>");
+		rawXml.append(getExtraCustomXML(custom, files));
+		return rawXml.toString().replaceAll("(?s)<PASS>.*?</PASS>", "<PASS></PASS>"); 
+	}
+	
+	@Override
 	public String getPlayerXML(final MOB mob, final Set<CMObject> custom, final Set<String> files)
 	{
 		if(mob==null)

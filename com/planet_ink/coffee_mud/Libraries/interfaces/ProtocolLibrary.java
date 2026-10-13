@@ -226,6 +226,25 @@ public interface ProtocolLibrary extends CMLibrary
 	 * @return null, or bytes to send to the user
 	 */
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables);
+	
+	/**
+	 * Sends a chunked MPCP Forward update for a foreign mob to its home mud,
+	 * through the given session.
+	 * @param mob the foreign player whose state is being sent home
+	 * @param sess the MPCP-capable session to send through
+	 * @return true if the update was sent
+	 */
+	public boolean sendMPCPPlayerUpdate(MOB mob, Session sess);
+
+	/**
+	 * Handles an MPCP Forward packet, or the mob_xml portion of a SessionInfo
+	 * packet: the name decision, arrival prep, return merge, or foreign arrival.
+	 * @param S the receiving session
+	 * @param command the MPCP command name ("forward" or "sessioninfo")
+	 * @param obj the parsed JSON packet body
+	 * @return the foreign mob the session must log in, or null
+	 */
+	public MOB processMPCPTransfer(Session S, String command, MiniJSON.JSONObject obj);
 
 	/**
 	 * Returns all the MSSP variables for crawlers.

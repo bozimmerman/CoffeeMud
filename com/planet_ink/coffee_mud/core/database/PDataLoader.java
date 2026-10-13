@@ -725,11 +725,9 @@ public class PDataLoader
 
 	public PAData DBCreate(String playerID, String section, String key, final String data)
 	{
-		final MOB M=(name != null)?CMLib.players().getPlayer(playerID):null;
-		if((M != null)
-		&&(M.playerStats() != null)
-		&&(!M.playerStats().isSavable()))
-			return;
+		final MOB M = (playerID != null) ? CMLib.players().getPlayer(playerID) : null;
+		if((M != null) && (M.playerStats() != null) && (!M.playerStats().isSavable()))
+			return null;
 		playerID = DB.injectionClean(playerID);
 		section = DB.injectionClean(section);
 		key = DB.injectionClean(key);
