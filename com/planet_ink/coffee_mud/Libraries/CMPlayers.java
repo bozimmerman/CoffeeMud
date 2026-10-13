@@ -1691,6 +1691,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final PlayerStats pStats=mob.playerStats();
 			if(pStats == null)
 				return 0;
+			final PlayerStats.IMudTransferData fxfer = pStats.getIMudTransferData();
+			if((fxfer != null) && (!fxfer.isLocal))
+			{
+				final Session fsess = mob.session();
+				if((fsess != null) && (fsess.getClientTelnetMode(Session.TELNET_MPCP)))
+					CMLib.protocol().sendMPCPPlayerUpdate(mob, fsess);
+				pStats.setLastUpdated(System.currentTimeMillis());
+				return 1;
+			}
 			final Session sess = mob.session();
 			if((!mob.isMonster()) && (pStats.isSavable())) // if they are presently online, because session
 			{
