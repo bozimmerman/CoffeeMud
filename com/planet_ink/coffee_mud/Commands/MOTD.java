@@ -384,7 +384,7 @@ public class MOTD extends StdCommand
 								sub=sub.substring(4).trim();
 								final int chanIdx = CMLib.channels().getChannelIndex(sub);
 								final int lowestIndex = CMLib.channels().getChannelQueIndex(chanIdx, mob, pStats.getLastDateTime());
-								if(lowestIndex >= 0)
+								if((lowestIndex >= 0)&&(CMLib.channels().mayReadThisChannel(mob, chanIdx, false)))
 								{
 									final String channelName = CMLib.channels().getChannel(chanIdx).name();
 									final int lastIndex = CMLib.channels().getChannelQuePageEnd(chanIdx, mob);
