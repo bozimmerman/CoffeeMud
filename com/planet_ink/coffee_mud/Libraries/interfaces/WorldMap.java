@@ -476,6 +476,18 @@ public interface WorldMap extends CMLibrary
 	public Room getRandomRoom();
 
 	/**
+	 * Returns the room where a player arriving from another mud should land.
+	 * The destination is reverse-mapped, and cached at this library level,
+	 * from the origin mud and the origin room id.
+	 *
+	 * @param originHost the host of the origin (home) mud
+	 * @param originPort the port of the origin (home) mud
+	 * @param originRoom the room id on the origin mud the player left from
+	 * @return the room to land the arriving player in, or null
+	 */
+	public Room getArrivalRoom(String originHost, int originPort, String originRoom);
+
+	/**
 	 * This will take an area that was recently renamed, and an optional list of
 	 * all its existing rooms, and rename the rooms to reflect the new name,
 	 * updating the database along the way.

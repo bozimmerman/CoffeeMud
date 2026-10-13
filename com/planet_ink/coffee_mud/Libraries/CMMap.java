@@ -940,6 +940,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		return R;
 	}
 
+	@Override
+	public Room getArrivalRoom(final String originHost, final int originPort, final String originRoom)
+	{
+		//TODO: eventually a Property (placeable on rooms, exits, or portals) will redirect a
+		//      player to another mud, and that destination mud will carry a matching property
+		//      pointing back at the origin mud. Cache those cross-mud mappings here, keyed by
+		//      the origin mud (originHost/originPort) plus the originRoom id, so arriving
+		//      foreign players land in the mapped room. Until then, ask for a random room.
+		return getRandomRoom();
+	}
+
 	public int numDeities()
 	{
 		return deitiesList.size();
