@@ -2498,7 +2498,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final PlayerStats.IMudTransferData outXfer = realMOB.playerStats().getIMudTransferData();
 		if((outXfer != null) && (outXfer.isLocal))
 		{
-			session.println(L("That player is currently visiting another mud."));
+			//TODO: confirm?  re-transfer this connection like session swaps?
+			session.println(L("Login is currently impossible for this player."));
 			return null;
 		}
 		final PlayerAccount acct = realMOB.playerStats().getAccount();
