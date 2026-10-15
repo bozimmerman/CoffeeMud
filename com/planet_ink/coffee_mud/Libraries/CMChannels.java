@@ -100,7 +100,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			channelCode = msg.targetMinor() - CMMsg.TYP_CHANNEL;
 		else
 		if(CMath.bset(msg.sourceMajor(), CMMsg.MASK_CHANNEL))
-			channelCode = msg.sourceMajor() - CMMsg.TYP_CHANNEL;
+			channelCode = msg.sourceMinor() - CMMsg.TYP_CHANNEL;
 		else
 			return null;
 		return getChannel(channelCode);
@@ -433,7 +433,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(M==null)
 			return false;
 
-		if(channelNumber>=getNumChannels())
+		if((channelNumber<0)||(channelNumber>=getNumChannels()))
+			return false;
+
+		final PlayerStats pstats=M.playerStats();
+		if(pstats==null)
 			return false;
 
 		final CMChannel chan=getChannel(channelNumber);
@@ -445,7 +449,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
 		&&(CMLib.masking().maskCheck(chan.mask(),M,true))
-		&&(!CMath.isSet(M.playerStats().getChannelMask(),channelNumber)))
+		&&(!CMath.isSet(pstats.getChannelMask(),channelNumber)))
 			return true;
 		return false;
 	}
@@ -841,18 +845,29 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final CMChannel chan = this.createNewChannel(nameStr,imudChans, maskStr, flags, colorOverride[0], colorOverride[1]);
 			channelList.add(chan);
 		}
-		baseChannelNames=new String[channelList.size()];
-		for(int i=0;i<channelList.size();i++)
-			baseChannelNames[i]=channelList.get(i).name();
 		final Map<InterProto,String> imudChans = new HashMap<InterProto,String>();
+		final boolean auctionAdded;
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
 		&&(this.getChannel("AUCTION")==null))
+		{
 			channelList.add(createNewChannel("AUCTION", imudChans, "", new HashSet<ChannelFlag>(), "", ""));
+			auctionAdded=true;
+		}
+		else
+			auctionAdded=false;
 		while(channelList.size()>31)
 		{
 			Log.errOut("CMChannels", "Too many channels defined: "+channelList.size()+".");
 			channelList.remove(channelList.size()-1);
 		}
+		final List<String> nameList = new ArrayList<String>();
+		for(int i=0;i<channelList.size();i++)
+		{
+			final String name=channelList.get(i).name();
+			if((!auctionAdded)||(!name.equalsIgnoreCase("AUCTION")))
+				nameList.add(name);
+		}
+		baseChannelNames=nameList.toArray(new String[0]);
 		return channelList.size();
 	}
 
@@ -1172,7 +1187,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						else
 						{
 							final String[] ss=propStr.split(" ");
-							if((ss.length!=2)&&(!CMath.isInteger(ss[0])))
+							if((ss.length!=2)||(!CMath.isInteger(ss[0])))
 								Log.errOut("CMChannels","Malformed CHANNELBACKLOG entry in coffeemud.ini file: "+propStr);
 							else
 							if(ss[1].equals("DAYS")||ss[1].equals("DAY"))
