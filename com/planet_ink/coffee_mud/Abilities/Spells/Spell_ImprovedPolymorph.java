@@ -299,7 +299,13 @@ public class Spell_ImprovedPolymorph extends Spell
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(L("@x1 is a player, so you must be group members, or your playerkill flags must be on for this to work.",target.name(mob)));
+			if(!target.isMonster())
+				mob.tell(L("@x1 will not hold still for you.",target.name(mob)));
+			else
+			if(target.amFollowing()!=null)
+				mob.tell(L("@x1 already answers to another.",target.name(mob)));
+			else
+				mob.tell(L("@x1 will not be changed.",target.name(mob)));
 			success=false;
 		}
 
