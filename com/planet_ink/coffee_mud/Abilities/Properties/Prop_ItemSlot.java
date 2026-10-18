@@ -84,10 +84,34 @@ public class Prop_ItemSlot extends Property
 			pA.slotProps = new Ability[slotProps.length];
 			for(int i=0;i<slotProps.length;i++)
 			{
-				if(slotProps[i]!=null)
-					pA.slotProps[i] = (Ability)slotProps[i].copyOf();
+				final Ability A=slotProps[i];
+				if(A==null)
+					continue;
+				int slottedIndex=-1;
+				if(slots != null)
+				{
+					for(int s=0;s<slots.length;s++)
+					{
+						if((slots[s]!=null)&&(slots[s].fetchEffect("Prop_ItemSlotFiller")==A))
+						{
+							slottedIndex=s;
+							break;
+						}
+					}
+				}
+				if((slottedIndex>=0)&&(pA.slots!=null)&&(pA.slots[slottedIndex]!=null))
+				{
+					final Ability linked=pA.slots[slottedIndex].fetchEffect("Prop_ItemSlotFiller");
+					if(linked!=null)
+					{
+						pA.slotProps[i]=linked;
+						continue;
+					}
+				}
+				pA.slotProps[i] = (Ability)A.copyOf();
 			}
 		}
+		pA.setAffected = true;
 		return pA;
 	}
 
