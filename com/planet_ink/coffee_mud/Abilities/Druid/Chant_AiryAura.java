@@ -73,6 +73,20 @@ public class Chant_AiryAura extends Chant
 		return 0;
 	}
 
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
+		{
+			final MOB M=(MOB)msg.source();
+			if((M!=null)&&(affected==M)&&(M.fetchEffect(ID())==this))
+				unInvoke();
+		}
+		return true;
+	}
+
 	protected Set<MOB>			druidsGroup		= null;
 
 	@Override
