@@ -67,6 +67,7 @@ public class MUDProxy
 	private static final Map<String, Long>	blockedIPs 		= new ConcurrentHashMap<String, Long>();
 	private static final Queue<ByteBuffer>	bufferPool		= new ConcurrentLinkedQueue<ByteBuffer>();
 	private static final AtomicInteger		poolSize		= new AtomicInteger(0);
+	private static final AtomicInteger		forwardRotation	= new AtomicInteger(0);
 	private static final ThreadLocal<Mac> 	threadLocalMac 	= ThreadLocal.withInitial(new Supplier<Mac>() 
 	{
 		@Override
@@ -196,16 +197,9 @@ public class MUDProxy
 		 */
 		BLOCKIP,
 		/**
-		 * TRANSFER (both): Transfer a player and their connection to another mud server
-		 * known to this proxy.
-		 * Parameters:
-		 * "source_host": string ip of the source server
-		 * "source_port": long port number of the source server
-		 * "target_host": string ip of the target server
-		 * "target_port": long port number of the target server
-		 * "mob_xml": base64 compressed xml doc of the player definition
-		 * "return": boolean, true if the player is returning to their home mud
-		 * "origin_room": string room id on the source mud the player left from
+		 * TRANSFER (mud->proxy): Move the sender's player connection to
+		 * another mud server known to this proxy.  Routing fields are
+		 * "target_host" and "target_port".
 		 */
 		TRANSFER
 	}
@@ -1049,7 +1043,38 @@ public class MUDProxy
 		}
 		return new Pair<String,Integer>(targetHost, Integer.valueOf(targetPort));
 	}
-	
+
+	/**
+	 * Handles a "partial" chunk for the given payload field in the given
+	 * packet.  If this packet is a partial, its payload is appended to the
+	 * connection context buffer.
+	 */
+	private static boolean stitchPartial(final MUDProxy context, final JSONObject obj, final String field)
+	{
+		final String payloadB64;
+		try
+		{
+			payloadB64 = obj.getCheckedString(field);
+			if((payloadB64 == null) || (payloadB64.length() == 0))
+				return false;
+			if(obj.containsKey("partial") && obj.getCheckedBoolean("partial").booleanValue())
+			{
+				context.partialPayload.append(payloadB64);
+				return true;
+			}
+			if(context.partialPayload.length() > 0)
+			{
+				obj.put(field, context.partialPayload.toString() + payloadB64);
+				context.partialPayload.setLength(0);
+			}
+			return false;
+		}
+		catch(final MiniJSON.MJSONException e)
+		{
+			return false;
+		}
+	}
+
 	/**
 	 * Processes an MPCP packet received from the mud side.
 	 * Handles what few commands are defined for the Proxy server.
@@ -1251,23 +1276,8 @@ public class MUDProxy
 			}
 			case TRANSFER:
 				{
-					String payloadB64 = obj.getCheckedString("mob_xml");
-					if((payloadB64 == null) || payloadB64.isEmpty())
-					{
-						sendMPCPMsg(key, context, "FORWARD: missing payload.");
+					if(obj.containsKey("mob_xml") && stitchPartial(context, obj, "mob_xml")) // partial chunks gather here
 						break;
-					}
-					if(obj.containsKey("partial") && obj.getCheckedBoolean("partial").booleanValue())
-					{
-						context.partialPayload.append(payloadB64);
-						break;
-					}
-					else
-					if(context.partialPayload.length()>0)
-					{
-						obj.put("mob_xml", context.partialPayload.toString() + payloadB64);
-						context.partialPayload.setLength(0);
-					}
 					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
 					if(target == null)
 						break;
@@ -1283,8 +1293,7 @@ public class MUDProxy
 						break;
 					}
 					final MUDProxy clientContext = (MUDProxy)clientKey.attachment();
-					// Build a new server-side context for the transfer target,
-					// seeded with the current session data so handleConnect sends SessionInfo.
+					// Build a new server-side context for the target.
 					final MUDProxy transferServerContext;
 					try
 					{
@@ -1295,17 +1304,12 @@ public class MUDProxy
 						Log.errOut("MPCP/TRANSFER", e);
 						break;
 					}
-					// Copy the existing session into the new server context, then add mob_xml.
 					transferServerContext.session.putAll(context.session);
+					transferServerContext.session.putAll(obj);
 					transferServerContext.session.put("source_ip", context.port.first);
 					transferServerContext.session.put("source_port", context.port.second);
-					transferServerContext.session.put("mob_xml", obj.get("mob_xml"));
-					if(obj.containsKey("return"))
-						transferServerContext.session.put("return", obj.get("return"));
-					if(obj.containsKey("origin_room"))
-						transferServerContext.session.put("origin_room", obj.get("origin_room"));
 					// Put the client into distress mode so reconnectClient triggers the
-					// SessionInfo-with-mob_xml path in handleConnect.
+					// SessionInfo path in handleConnect.
 					clientContext.distressedTime = System.currentTimeMillis() - 1000;
 					reconnectClient(clientKey, clientContext, transferServerContext);
 					try
@@ -1328,22 +1332,13 @@ public class MUDProxy
 				}
 				case FORWARD:
 				{
-					String payloadB64 = obj.getCheckedString("payload");
-					if((payloadB64 == null) || payloadB64.isEmpty())
+					if(stitchPartial(context, obj, "payload"))
+						break;
+					final String payloadB64 = obj.getCheckedString("payload");
+					if((payloadB64 == null) || (payloadB64.length() == 0))
 					{
 						sendMPCPMsg(key, context, "FORWARD: missing payload.");
 						break;
-					}
-					if(obj.containsKey("partial") && obj.getCheckedBoolean("partial").booleanValue())
-					{
-						context.partialPayload.append(payloadB64);
-						break;
-					}
-					else
-					if(context.partialPayload.length()>0)
-					{
-						obj.put("payload", context.partialPayload.toString() + payloadB64);
-						context.partialPayload.setLength(0);
 					}
 					Pair<String,Integer> target = getValidTargetHost(obj, key, context);
 					if(target == null)
@@ -1815,7 +1810,17 @@ public class MUDProxy
 				if(serverContext.outsidePortNum == PORT_FORWARD)
 				{
 					key.interestOps(SelectionKey.OP_READ);
-					deliverPendingForwards(serverContext.port);
+					// drain any queued forwards directly over this dedicated channel
+					final Queue<Triad<String,Integer,byte[]>> fwdQueue = pendingForwards.get(serverContext.port);
+					if(fwdQueue != null)
+					{
+						Triad<String,Integer,byte[]> pf;
+						while((pf = fwdQueue.poll()) != null)
+						{
+							Log.sysOut("MPCP","FORWARD: delivering "+pf.third.length+" bytes to "+pf.first+":"+pf.second);
+							chanWrite(serverChannel, ByteBuffer.wrap(pf.third));
+						}
+					}
 					return;
 				}
 				if(serverContext.in instanceof ZInputStream)
@@ -1832,6 +1837,9 @@ public class MUDProxy
 					chanWrite(serverChannel,ByteBuffer.wrap(makeMPCPPacket("ClientInfo {"
 							+"\"client_address\":\""+clientAddr+"\","
 							+"\"reconnect\": true,"
+							+((serverContext.session.get("task") != null)
+								? ("\"task\":\""+String.valueOf(serverContext.session.get("task"))+"\",")
+								: "")
 							+"\"timestamp\":"+System.currentTimeMillis()+"}")));
 					clientContext.connectTime=System.currentTimeMillis();
 					clientContext.distressedTime=0;
@@ -2428,6 +2436,7 @@ public class MUDProxy
 		SelectionKey existingKey = null;
 		synchronized(channelPairs)
 		{
+			final List<SelectionKey> candidates = new ArrayList<SelectionKey>();
 			for(final SelectionKey k : channelPairs.keySet())
 			{
 				final Object att = k.attachment();
@@ -2437,11 +2446,11 @@ public class MUDProxy
 				if((!proxy.isClient) 
 				&& proxy.port.equals(target)
 				&& k.isValid())
-				{
-					existingKey = k;
-					break;
-				}
+					candidates.add(k);
 			}
+			if(candidates.size() > 0)
+				existingKey = candidates.get((forwardRotation.getAndIncrement() & Integer.MAX_VALUE)
+						% candidates.size());
 		}
 
 		if(existingKey != null)
