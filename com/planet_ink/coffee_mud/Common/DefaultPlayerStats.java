@@ -1119,6 +1119,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 			+"<LASTXPMILLIS>"+this.lastXPDateTime+"</LASTXPMILLIS>"
 			+"<NUMDEATHS>"+this.deathCounter+"</NUMDEATHS>"
 			+((playFlags.size()>0)?"<FLAGS>"+getStat("FLAGS")+"</FLAGS>":"")
+			+((imudXferData!=null)?"<XFERDATA host=\""+CMLib.xml().parseOutAngleBrackets(imudXferData.host)+"\" port=\""+imudXferData.port+"\" tm=\""+imudXferData.timestamp+"\" local=\""+Boolean.valueOf(imudXferData.isLocal).toString()+"\" />":"")
 			+((appListStr.length()>0)?"<APPROVES>"+appListStr+"</APPROVES>":"")
 			+roomSet().xml()
 			+rest.toString();
@@ -1278,6 +1279,7 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 	public void setXML(final String xmlStr)
 	{
 		account = null;
+		imudXferData = null;
 		if(xmlStr==null)
 			return;
 		final XMLLibrary xmlLib=CMLib.xml();
@@ -1497,6 +1499,18 @@ public class DefaultPlayerStats extends DefaultPrideStats implements PlayerStats
 				account = CMLib.players().getLoadAccount(str);
 		}
 		this.setApprovalList(xmlLib.getValFromPieces(xml, "APPROVES"));
+
+		final XMLTag xferDataPiece = xmlLib.getPieceFromPieces(xml, "XFERDATA");
+		if(xferDataPiece != null)
+		{
+			final String hostStr = xmlLib.restoreAngleBrackets(xferDataPiece.getParmValue("host"));
+			if((hostStr != null) && (hostStr.length() > 0))
+				imudXferData = new IMudTransferData(
+					hostStr,
+					CMath.s_int(xferDataPiece.getParmValue("port")),
+					CMath.s_long(xferDataPiece.getParmValue("tm")),
+					CMath.s_bool(xferDataPiece.getParmValue("local")));
+		}
 
 		final String[] allAccStats=xmlLib.getValFromPieces(xml, "PCCSTATS").split(";");
 		if(allAccStats.length>=5)
