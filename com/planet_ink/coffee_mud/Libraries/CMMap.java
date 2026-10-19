@@ -2441,6 +2441,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
+	protected void saveTimeClocks()
+	{
+		final Set<TimeClock> clocks = new HashSet<TimeClock>();
+		for(final Enumeration<Area> e=areas();e.hasMoreElements();)
+		{
+			final Area A=e.nextElement();
+			if((A==null)||CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
+				continue;
+			final TimeClock C=A.getTimeObj();
+			if((C!=null)&&(clocks.add(C)))
+				C.save();
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -2454,7 +2468,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
 				if(checkDatabase())
+				{
 					roomMaintSweep();
+					setThreadStatus(serviceClient,"saving time clocks");
+					saveTimeClocks();
+				}
 				setThreadStatus(serviceClient,"saving props");
 				Resources.savePropResources();
 			}
