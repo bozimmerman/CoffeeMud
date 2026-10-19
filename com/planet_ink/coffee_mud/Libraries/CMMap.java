@@ -2447,11 +2447,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(final Enumeration<Area> e=areas();e.hasMoreElements();)
 		{
 			final Area A=e.nextElement();
-			if((A==null)||CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
+			if((A==null)||(!A.isSavable())||(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				continue;
 			final TimeClock C=A.getTimeObj();
-			if((C!=null)&&(clocks.add(C)))
+			if((C!=null)&&(!clocks.contains(C)))
+			{
+				clocks.add(C);
 				C.save();
+			}
 		}
 	}
 
