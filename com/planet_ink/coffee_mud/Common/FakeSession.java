@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionFilter;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
@@ -193,6 +194,12 @@ public class FakeSession implements Session
 	@Override
 	public void logout(final boolean b1)
 	{
+	}
+
+	@Override
+	public boolean setLoggedInState(final CharCreationLibrary.LoginResult loginResult)
+	{
+		return true;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionPing;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.Sense;
@@ -228,8 +229,21 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final Map<Object,Object> reportables);
 	
 	/**
+	 * Handles an outgoing MPCP control ping. PLAYERSAVE sends the current
+	 * session info; PLAYERTRANSFER offers the playing mob to the target
+	 * host:port pair; SESSIONSWAP moves only the connection to the target
+	 * host:port pair without exporting the player.
+	 *
+	 * @param session the MPCP-capable session
+	 * @param ping the ping being sent
+	 * @param obj a Pair&lt;String,Integer&gt; target when one is required
+	 */
+	public void doMPCPCommand(final Session session, final SessionPing ping, final Object obj);
+
+	/**
 	 * Sends a chunked MPCP Forward update for a foreign mob to its home mud,
 	 * through the given session.
+	 *
 	 * @param mob the foreign player whose state is being sent home
 	 * @param sess the MPCP-capable session to send through
 	 * @return true if the update was sent
@@ -237,14 +251,26 @@ public interface ProtocolLibrary extends CMLibrary
 	public boolean sendMPCPPlayerUpdate(MOB mob, Session sess);
 
 	/**
-	 * Handles an MPCP Forward packet, or the mob_xml portion of a SessionInfo
-	 * packet: the name decision, arrival prep, return merge, or foreign arrival.
+	 * Handles any incoming MPCP packet: ClientInfo connection info,
+	 * SessionInfo reconnects and transfers, Forward payloads, session
+	 * swaps, and admin proxy commands.
+	 *
 	 * @param S the receiving session
-	 * @param command the MPCP command name ("forward" or "sessioninfo")
+	 * @param command the MPCP command name
 	 * @param obj the parsed JSON packet body
 	 * @return the foreign mob the session must log in, or null
 	 */
 	public MOB processMPCPTransfer(Session S, String command, MiniJSON.JSONObject obj);
+
+	/**
+	 * Reports the result of a session swap from the target mud back to the
+	 * source mud through the proxy, using an ordinary Forward packet.
+	 *
+	 * @param S the target mud's session that processed the swap
+	 * @param ok true if the player was accepted and logged in
+	 * @param reason optional failure reason, empty on success
+	 */
+	public void sendMPCPSwapResult(Session S, boolean ok, String reason);
 
 	/**
 	 * Returns all the MSSP variables for crawlers.

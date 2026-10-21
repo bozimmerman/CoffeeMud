@@ -445,6 +445,17 @@ public interface CharCreationLibrary extends CMLibrary
 	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException;
 
 	/**
+	 * Completes a non-interactive, already-selected login of the given mob.
+	 *
+	 * @param session the session that will run the mob
+	 * @param mob the already-selected mob to log in on the session
+	 * @param fromAfar true if the connection is remote to the mob's home, false
+	 *            if the mob has returned home
+	 * @return true if the login was completed successfully, false if it was refused
+	 */
+	public boolean finishDirectLogin(final Session session, final MOB mob, final boolean fromAfar);
+
+	/**
 	 * Creates a new Login Session for the given Session, which will start the login state machine process
 	 * that will end eventually with either a disconnect or a character logged in.
 	 * @param session the telnet session trying to login

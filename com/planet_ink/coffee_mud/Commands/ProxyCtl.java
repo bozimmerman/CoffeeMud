@@ -153,13 +153,9 @@ public class ProxyCtl extends StdCommand
 					mob.tell(L("Player '@x1' is not connected through the proxy.", playerName));
 					return false;
 				}
-				targetM.playerStats().setIMudTransferData(
-					new PlayerStats.IMudTransferData(host, port, System.currentTimeMillis(), true));
-				targetM.session().doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(host, Integer.valueOf(port)));
-				final Session tSess = targetM.session();
-				if(tSess != null)
-					tSess.stopSession(false, true, true, false);
-				mob.tell(L("Transfer of '@x1' to @x2:@x3 initiated.", playerName, host, "" + port));
+				targetM.session().doPing(Session.SessionPing.PLAYERTRANSFER,
+					new Pair<String,Integer>(host, Integer.valueOf(port)));
+				mob.tell(L("Offering '@x1' to @x2:@x3.", playerName, host, "" + port));
 				return false;
 			}
 			final MiniJSON.JSONObject obj = new MiniJSON.JSONObject();

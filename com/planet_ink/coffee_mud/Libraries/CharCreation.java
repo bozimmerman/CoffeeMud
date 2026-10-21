@@ -78,6 +78,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected CMath.CompiledFormula					maxFollowersFormula		= null;
 	protected final Map<String,List<String>>		charCrScripts			= new Hashtable<String,List<String>>();
 
+	protected static final long						REDIRECT_TIMEOUT_MS		= 20000;
+
 	public final static String[] DEFAULT_BADNAMES = new String[]
 	{
 		"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT",
@@ -98,6 +100,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		LOGIN_NEWACCOUNT_CONFIRM,
 		LOGIN_NEWCHAR_CONFIRM,
 		LOGIN_PASS_RECEIVED,
+		LOGIN_REDIRECT,
 		LOGIN_EMAIL_PASSWORD,
 		LOGIN_ACCTCONV_CONFIRM,
 		ACCTMENU_COMMAND,
@@ -173,7 +176,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		public int			 statPoints= 0;
 		public CharStats	 baseStats = null;
 		public int			 index	   = 0;
-		public ThinnerPlayer player = null;
+		public ThinnerPlayer player	   = null;
+		public long			 redirStart= 0;
+		public boolean		 redirALogn= false;
+		public MOB			 redirM    = null;
 
 		@Override
 		public String login()
@@ -1032,6 +1038,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return loginNewcharConfirm(loginObj, session);
 		case LOGIN_PASS_RECEIVED:
 			return loginPassReceived(loginObj, session);
+		case LOGIN_REDIRECT:
+			return loginRedirect(loginObj, session);
 		case LOGIN_EMAIL_PASSWORD:
 			return loginEmailPassword(loginObj, session);
 		case ACCTMENU_START:
@@ -1299,9 +1307,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				session.println(L("\n\rThis mud uses an account system.  Your account name is `^H@x1^N`.\n\r"
 								+ "Please use this account name when logging in.",loginObj.player.accountName()));
-				final LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
+				final LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi, loginObj);
 				if(completeResult == LoginResult.NO_LOGIN)
 				{
+					if(loginObj.redirM != null)
+					{
+						loginObj.state=LoginState.LOGIN_REDIRECT;
+						loginObj.redirStart=System.currentTimeMillis();
+						loginObj.skipInput=true;
+						return null;
+					}
 					loginObj.state=LoginState.LOGIN_START;
 					return null;
 				}
@@ -1610,6 +1625,40 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return result;
 	}
 
+	protected LoginResult loginRedirect(final LoginSessionImpl loginObj, final Session session) throws IOException
+	{
+		final PlayerStats.IMudTransferData xfer=(loginObj.redirM!=null)&&(loginObj.redirM.playerStats()!=null)
+				? loginObj.redirM.playerStats().getIMudTransferData() : null;
+		if((xfer!=null)
+		&&(xfer.isLocal)
+		&&((System.currentTimeMillis()-loginObj.redirStart)<REDIRECT_TIMEOUT_MS))
+		{
+			loginObj.skipInput=true;
+			return LoginResult.INPUT_REQUIRED;
+		}
+		loginObj.redirM=null;
+		MOB mob=CMLib.players().getPlayer(loginObj.login);
+		if((mob==null)||(mob.playerStats()==null))
+			mob=CMLib.players().getLoadPlayer(loginObj.login);
+		if((mob!=null)&&(mob.playerStats()!=null))
+			clearRedirectedTransfer(mob);
+		Log.errOut("Session","Redirect of "+loginObj.login+" failed; completing local login.");
+		final boolean accountLogin=loginObj.redirALogn;
+		loginObj.redirALogn=false;
+		loginObj.state=LoginState.LOGIN_START;
+		final LoginResult result;
+		if(accountLogin)
+		{
+			session.setMob(mob);
+			result=completePlayerLogin(session, loginObj.wizi);
+		}
+		else
+			result=completeCharacterLogin(session, loginObj.login, loginObj.wizi, loginObj);
+		if(result!=LoginResult.NORMAL_LOGIN)
+			loginObj.reset=true;
+		return result;
+	}
+
 	protected LoginResult loginPassReceived(final LoginSessionImpl loginObj, final Session session) throws IOException
 	{
 		loginObj.password=loginObj.lastInput;
@@ -1678,9 +1727,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			else
 			{
-				final LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
+				final LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi, loginObj);
 				if(completeResult == LoginResult.NO_LOGIN)
 				{
+					if(loginObj.redirM != null)
+					{
+						loginObj.state=LoginState.LOGIN_REDIRECT;
+						loginObj.redirStart=System.currentTimeMillis();
+						loginObj.skipInput=true;
+						return null;
+					}
 					loginObj.state=LoginState.LOGIN_START;
 					return null;
 				}
@@ -2477,11 +2533,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			session.setMob(realMOB);
 			playMe.loadedMOB(realMOB);
-			if(this.completePlayerLogin(session, wizi)!=LoginResult.NORMAL_LOGIN)
+			if(this.completePlayerLogin(session, wizi, loginObj)!=LoginResult.NORMAL_LOGIN)
 			{
 				session.setMob(null);
 				playMe.loadedMOB(null);
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				if(loginObj.redirM == null)
+					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
 			session.doPing(SessionPing.PLAYERSAVE, null);
@@ -2492,14 +2549,48 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public LoginResult completePlayerLogin(final Session session, final boolean wizi) throws IOException
 	{
+		return completePlayerLogin(session, wizi, null);
+	}
+
+	@Override
+	public boolean finishDirectLogin(final Session session, final MOB mob, final boolean fromAfar)
+	{
+		session.setMob(mob);
+		try
+		{
+			if(CMLib.login().completePlayerLogin(session, false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
+			{
+				session.setLoggedInState(CharCreationLibrary.LoginResult.NORMAL_LOGIN);
+				CMLib.protocol().sendMPCPSwapResult(session, true, "");
+				return true;
+			}
+		}
+		catch(final IOException e)
+		{
+		}
+		CMLib.protocol().sendMPCPSwapResult(session, false, "login failed");
+		session.setMob(null);
+		session.println(L("Your transfer could not be completed."));
+		session.logout(false);
+		return false;
+	}
+
+	protected LoginResult completePlayerLogin(final Session session, final boolean wizi, final LoginSessionImpl loginObj) throws IOException
+	{
 		final MOB realMOB = session.mob();
 		if(realMOB==null || (realMOB.playerStats()==null))
 			return null;
-		final PlayerStats.IMudTransferData outXfer = realMOB.playerStats().getIMudTransferData();
-		if((outXfer != null) && (outXfer.isLocal))
+		if(transferRedirect(session,realMOB,loginObj))
 		{
-			//TODO: confirm?  re-transfer this connection like session swaps?
-			session.println(L("Login is currently impossible for this player."));
+			if(loginObj!=null)
+			{
+				loginObj.state=LoginState.LOGIN_REDIRECT;
+				loginObj.redirStart=System.currentTimeMillis();
+				loginObj.skipInput=true;
+				loginObj.login=realMOB.Name();
+				loginObj.wizi=wizi;
+				loginObj.redirALogn=true;
+			}
 			return null;
 		}
 		final PlayerAccount acct = realMOB.playerStats().getAccount();
@@ -2539,7 +2630,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return prelimResults;
 		if(isExpired(acct,session,realMOB))
 			return null;
-		final LoginResult completeResult=completeCharacterLogin(session,realMOB.Name(), wizi);
+		final LoginResult completeResult=completeCharacterLogin(session,realMOB.Name(), wizi, loginObj);
 		if(completeResult == LoginResult.NO_LOGIN)
 			return null;
 		return LoginResult.NORMAL_LOGIN;
@@ -4100,17 +4191,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.setSession(session);
 		try
 		{
-			if((loginObj.acct!=null)&&(completePlayerLogin(session, false)!=LoginResult.NORMAL_LOGIN))
+			if((loginObj.acct!=null)&&(completePlayerLogin(session, false, loginObj)!=LoginResult.NORMAL_LOGIN))
 			{
 				session.setMob(null);
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				if(loginObj.redirM == null)
+					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
 		}
 		catch (final IOException e)
 		{
 			Log.errOut(e);
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			if(loginObj.redirM == null)
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 			return null;
 		}
 		return LoginResult.NORMAL_LOGIN;
@@ -4194,25 +4287,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 					}
 				}
-				@SuppressWarnings("unchecked")
-				Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
-				if(autoblocked == null)
+				final Set<String> autoblocked= CMSecurity.getIPAutoblockSet();
+				synchronized(autoblocked)
 				{
-					autoblocked= new TreeSet<String>();
-					Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
-				}
-				if(autoblocked.contains(address.toUpperCase()))
-				{
-					if(!anyAtThisAddress)
-						autoblocked.remove(address.toUpperCase());
+					if(autoblocked.contains(address.toUpperCase()))
+					{
+						if(!anyAtThisAddress)
+							autoblocked.remove(address.toUpperCase());
+						else
+							proceed=2;
+					}
 					else
+					if(numAtThisAddress>=maxAtThisAddress)
+					{
+						autoblocked.add(address.toUpperCase());
 						proceed=2;
-				}
-				else
-				if(numAtThisAddress>=maxAtThisAddress)
-				{
-					autoblocked.add(address.toUpperCase());
-					proceed=2;
+					}
 				}
 			}
 		}
@@ -4463,7 +4553,44 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.NORMAL_LOGIN;
 	}
 
+	protected boolean transferRedirect(final Session session, final MOB mob, final LoginSessionImpl loginObj)
+	{
+		final PlayerStats.IMudTransferData outXfer=(mob.playerStats()!=null)?mob.playerStats().getIMudTransferData():null;
+		if((outXfer == null)||(!outXfer.isLocal))
+			return false;
+		if(session.getClientTelnetMode(Session.TELNET_MPCP))
+		{
+			session.println(L("..."));
+			Log.debugOut("Session","Redirecting login of "+mob.Name()+" to "+outXfer.host+":"+outXfer.port);
+			if(loginObj != null)
+				loginObj.redirM=mob;
+			session.setMob(mob);
+			session.doPing(Session.SessionPing.SESSIONSWAP, new Pair<String,Integer>(outXfer.host, Integer.valueOf(outXfer.port)));
+			if(mob.session()==session)
+				mob.setSession(null);
+			session.setMob(null);
+			session.setInputLoopTime();
+			return true;
+		}
+		clearRedirectedTransfer(mob);
+		return false;
+	}
+
+	protected void clearRedirectedTransfer(final MOB mob)
+	{
+		if((mob==null)||(mob.playerStats()==null))
+			return;
+		if(mob.playerStats().getIMudTransferData()==null)
+			return;
+		mob.playerStats().setIMudTransferData(null);
+	}
+
 	public LoginResult completeCharacterLogin(final Session session, final String login, final boolean wiziFlag) throws IOException
+	{
+		return completeCharacterLogin(session, login, wiziFlag, null);
+	}
+
+	protected LoginResult completeCharacterLogin(final Session session, final String login, final boolean wiziFlag, final LoginSessionImpl loginObj) throws IOException
 	{
 		// count number of multiplays
 		int numAtAddress=0;
@@ -4492,8 +4619,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final boolean resetStats;
 		MOB mob=CMLib.players().getPlayer(login);
 		if((mob != null)
-		&&(mob.playerStats()!=null))
+		&&(mob.playerStats()!=null)
+		&&(mob.session()==null))
 		{
+			if(transferRedirect(session,mob,loginObj))
+				return LoginResult.NO_LOGIN;
 			final LoginResult prelimResults = prelimChecks(session,mob,mob.Name(),mob.playerStats().getEmail());
 			if(prelimResults!=null)
 				return prelimResults;
@@ -4535,6 +4665,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.println(L("Error occurred trying to login as this player. Please contact your technical support."));
 				return LoginResult.NO_LOGIN;
 			}
+			if(transferRedirect(session,mob,loginObj))
+				return LoginResult.NO_LOGIN;
 			mob.setSession(session);
 			session.setMob(mob);
 			if(isExpired(mob.playerStats().getAccount(),session,mob))

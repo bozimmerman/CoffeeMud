@@ -242,6 +242,20 @@ public interface PlayerLibrary extends CMLibrary
 	public void delPlayer(MOB oneToDel);
 
 	/**
+	 * Merges the first player character mob into the second one,
+	 * destroying the first player mob in the process.  If the second
+	 * player mob is null, the first is only destroyed.
+	 *
+	 * @see PlayerLibrary#delPlayer(MOB)
+	 * @see PlayerLibrary#addPlayer(MOB)
+	 *
+	 * @param mergeM the player char mob to merge out of existence
+	 * @param keepM the player char mob to keep, or null
+	 * @return the player char mob that was kept, or null
+	 */
+	public MOB mergePlayer(MOB mergeM, MOB keepM);
+
+	/**
 	 * Returns an enumeration of all cached players in this
 	 * manager.
 	 *

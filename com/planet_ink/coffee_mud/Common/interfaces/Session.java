@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -610,6 +611,17 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void logout(boolean removeMOB);
 
 	/**
+	 * Marks this session as having completed a login, whether interactive
+	 * or automatic (such as a mud-to-mud swap or return), transitions the
+	 * session into its main run loop with the logged-in mob.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setMob(MOB)
+	 * @param loginResult the result of the login that just completed
+	 * @return true if the session is ready to run its mob, false otherwise
+	 */
+	public boolean setLoggedInState(CharCreationLibrary.LoginResult loginResult);
+
+	/**
 	 * Returns whether this mob/session is currently Away From Keyboard
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAFKMessage(String)
@@ -1027,7 +1039,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		GMCP_PING_EFFECTS,
 		PLAYERSAVE,
 		DISCONNECT,
-		PLAYERTRANSFER
+		PLAYERTRANSFER,
+		SESSIONSWAP
 	}
 
 	/** TELNET CODE: transmit binary */

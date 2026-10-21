@@ -179,6 +179,67 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public synchronized MOB mergePlayer(final MOB mergeM, final MOB keepM)
+	{
+		//TODO: merge more stuff from mergeM into keepM here
+		if(mergeM == null)
+			return keepM;
+		if(mergeM == keepM)
+			return keepM;
+		if((keepM == null)||(mergeM.playerStats() == null)||(keepM.playerStats() == null))
+		{
+			final PlayerStats P=mergeM.playerStats();
+			if(P != null)
+				P.getExtItems().delAllItems(true);
+			delPlayer(mergeM);
+			mergeM.destroy();
+			return keepM;
+		}
+		keepM.setPlayerStats(mergeM.playerStats());
+		mergeM.baseCharStats().copyInto(keepM.baseCharStats());
+		mergeM.basePhyStats().copyInto(keepM.basePhyStats());
+		mergeM.baseState().copyInto(keepM.baseState());
+		keepM.setExperience(mergeM.getExperience());
+		keepM.setPractices(mergeM.getPractices());
+		keepM.setTrains(mergeM.getTrains());
+		keepM.setQuestPoint(mergeM.getQuestPoint());
+		keepM.setAgeMinutes(mergeM.getAgeMinutes());
+		keepM.setWimpHitPoint(mergeM.getWimpHitPoint());
+		keepM.setAttributesBitmap(mergeM.getAttributesBitmap());
+		keepM.delAllAbilities();
+		for(final Enumeration<Ability> a=mergeM.abilities();a.hasMoreElements();)
+			keepM.addAbility(a.nextElement());
+		keepM.delAllExpertises();
+		for(final Enumeration<String> e=mergeM.expertises();e.hasMoreElements();)
+			keepM.addExpertise(e.nextElement());
+		final List<Tattoo> tattoos=new ArrayList<Tattoo>();
+		for(final Enumeration<Tattoo> t=mergeM.tattoos();t.hasMoreElements();)
+			tattoos.add(t.nextElement());
+		final List<Tattoo> oldTattoos=new ArrayList<Tattoo>();
+		for(final Enumeration<Tattoo> t=keepM.tattoos();t.hasMoreElements();)
+			oldTattoos.add(t.nextElement());
+		for(final Tattoo t : oldTattoos)
+			keepM.delTattoo(t);
+		for(final Tattoo t : tattoos)
+			keepM.addTattoo(t);
+		keepM.delAllItems(true);
+		final List<Item> items=new ArrayList<Item>();
+		for(int i=0;i<mergeM.numItems();i++)
+			items.add(mergeM.getItem(i));
+		for(final Item I : items)
+		{
+			mergeM.delItem(I);
+			keepM.addItem(I);
+		}
+		keepM.recoverCharStats();
+		keepM.recoverPhyStats();
+		keepM.resetToMaxState();
+		delPlayer(mergeM);
+		mergeM.destroy();
+		return keepM;
+	}
+
+	@Override
 	public Set<MOB> getPlayersHere(final Room room)
 	{
 		return playerLocations.getSecond(room);

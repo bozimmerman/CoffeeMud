@@ -360,6 +360,12 @@ public class VFShell
 			}
 
 			@Override
+			public boolean setLoggedInState(final CharCreationLibrary.LoginResult loginResult)
+			{
+				return true;
+			}
+
+			@Override
 			public String getTerminalType()
 			{
 				return "Fake";

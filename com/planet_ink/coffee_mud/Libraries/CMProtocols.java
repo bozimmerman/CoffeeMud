@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.IntermudInterface.InterProto;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary.InProto;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.GridZones.XYVector;
@@ -72,6 +73,24 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	private URLClassLoader llmClassLoader = null;
 	private static final Long DEFAULT_LLM_TIMEOUT_SECONDS = Long.valueOf(20);
 
+	private static enum MPCPSessionTask
+	{
+		TRANSFER,
+		RETURN,
+		SWAP
+	}
+
+	private static final long	MPCP_SWAP_TIMEOUT_MS		= 15000;
+	private static final long	MPCP_OFFER_TIMEOUT_MS	= 30000;
+	
+	private final Map<Session, MiniJSON.JSONObject> mpcpSwapInfos = 
+			Collections.synchronizedMap(new WeakHashMap<Session, MiniJSON.JSONObject>());
+	private final Map<Session, Triad<String,MOB,Long>> mpcpSessionSwaps = 
+			Collections.synchronizedMap(new WeakHashMap<Session, Triad<String,MOB,Long>>());
+	/** mobname -> playing session, offered target, and offer id, until verdict/timeout */
+	private final Map<String, Triad<Session, Pair<String, Integer>, String>> mpcpOffers =
+			new Hashtable<String, Triad<Session, Pair<String, Integer>, String>>();
+
 	@Override
 	public boolean sendMPCPPlayerUpdate(final MOB mob, final Session sess)
 	{
@@ -81,24 +100,58 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return false;
 		final String xml = B64Encoder.B64encodeAndCompressString( 
 				CMLib.coffeeMaker().getPlayerTransferXML(mob));
-		for(int i = 0; i < xml.length(); i += 32768)
-		{
-			final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
-			doc.put("target_host", xfer.host);
-			doc.put("target_port", Long.valueOf(xfer.port));
-			if(i + 32768 < xml.length())
-			{
-				doc.put("payload", xml.substring(i, i + 32768));
-				doc.put("partial", Boolean.TRUE);
-			}
-			else
-				doc.put("payload", xml.substring(i));
-			sess.sendInlineCommand(InProto.MPCP, "Forward", doc.toString());
-		}
+		final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+		doc.put("target_host", xfer.host);
+		doc.put("target_port", Long.valueOf(xfer.port));
+		sendMPCPChunks(sess, "Forward", "payload", xml, doc);
 		return true;
 	}
 
-	private String mergeForeignPlayerXML(final String xmlB64, final String host, final int port, final boolean returned)
+	/** Breaks data into <=32768-char MPCP doc chunks, optionally seeded with base fields */
+	private void sendMPCPChunks(final Session sess, final String command, final String chunkVar,
+			final String data, final MiniJSON.JSONObject base)
+	{
+		if((sess == null) || (data == null))
+			return;
+		for(int i=0;i<data.length();i+=32768)
+		{
+			final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+			if(base != null)
+				doc.putAll(base);
+			if(i+32768 < data.length())
+			{
+				doc.put(chunkVar, data.substring(i, i+32768));
+				doc.put("partial", Boolean.TRUE);
+			}
+			else
+				doc.put(chunkVar, data.substring(i));
+			sess.sendInlineCommand(InProto.MPCP, command, doc.toString());
+		}
+	}
+
+	private void scheduleMPCPReturnedMerge(final String name, final String host, final int port, final String xmlB64, final int tries)
+	{
+		final MOB local = CMLib.players().getLoadPlayer(name);
+		if((local == null) || (local.playerStats() == null) || (tries >= 36))
+			return;
+		if(CMLib.flags().isInTheGame(local, true))
+		{
+			// ghost session still hanging around; try again shortly
+			final String nm = name;
+			CMLib.threads().scheduleRunnable(new Runnable()
+			{
+				@Override 
+				public void run() 
+				{
+					scheduleMPCPReturnedMerge(nm, host, port, xmlB64, tries+1);
+				}
+			}, 2500);
+			return;
+		}
+		mergeForeignMPCPPlayerXML(xmlB64, host, port, true);
+	}
+
+	private String mergeForeignMPCPPlayerXML(final String xmlB64, final String host, final int port, final boolean returned)
 	{
 		final List<MOB> mobs = new ArrayList<MOB>(1);
 		final String err = CMLib.coffeeMaker().addPlayersAndAccountsFromXML(
@@ -109,17 +162,36 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		final MOB local = CMLib.players().getLoadPlayer(incoming.Name());
 		if((local == null) || (local.playerStats() == null))
 		{
-			incoming.destroy();
+			CMLib.players().mergePlayer(incoming, null);
 			return "unknown player: " + incoming.Name();
 		}
 		if(CMLib.flags().isInTheGame(local, true))
 		{
-			incoming.destroy();
+			if(returned)
+			{
+				if(local.playerStats().getIMudTransferData() != null)
+				{
+					local.playerStats().setIMudTransferData(null);
+					CMLib.players().savePlayer(local);
+				}
+				final String nm = incoming.Name();
+				CMLib.threads().scheduleRunnable(new Runnable() 
+				{
+					@Override 
+					public void run() 
+					{
+						scheduleMPCPReturnedMerge(nm, host, port, xmlB64, 0);
+					}
+				}, 2500);
+				CMLib.players().mergePlayer(incoming, null);
+				return "";
+			}
+			CMLib.players().mergePlayer(incoming, null);
 			return "player logged in locally: " + incoming.Name();
 		}
-		if(incoming.playerStats().getLastDateTime() < local.playerStats().getLastDateTime())
+		if((!returned) && (incoming.playerStats().getLastDateTime() < local.playerStats().getLastDateTime()))
 		{
-			incoming.destroy();
+			CMLib.players().mergePlayer(incoming, null);
 			return "";
 		}
 		incoming.playerStats().setPassword(local.playerStats().getPasswordStr());
@@ -131,32 +203,187 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 			incoming.playerStats().setIMudTransferData(
 				new PlayerStats.IMudTransferData(host, port, System.currentTimeMillis(), true));
-		CMLib.players().delPlayer(local);
-		local.destroy();
-		CMLib.players().addPlayer(incoming);
-		CMLib.players().savePlayer(incoming);
+		CMLib.players().mergePlayer(incoming, local);
+		CMLib.players().addPlayer(local);
+		CMLib.players().savePlayer(local);
 		return "";
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public void doMPCPCommand(final Session session, final SessionPing ping, final Object obj)
+	{
+		if(session == null)
+			return;
+		final MOB mob = session.mob();
+		if(ping == SessionPing.SESSIONSWAP)
+		{
+			if((!(obj instanceof Pair<?,?>))||(mob == null))
+				return;
+			sendMPCPSessionInfo(session);
+			final MiniJSON.JSONObject swapDoc = new MiniJSON.JSONObject();
+			swapDoc.put("task", MPCPSessionTask.SWAP.name().toLowerCase());
+			swapDoc.put("mobname", mob.Name());
+			final String redirectId=UUID.randomUUID().toString();
+			final Triad<String,MOB,Long> swapState=new Triad<String,MOB,Long>(redirectId,mob,Long.valueOf(System.currentTimeMillis()));
+			mpcpSessionSwaps.put(session, swapState);
+			final Pair<?,?> tgtP=(Pair<?,?>)obj;
+			CMLib.threads().scheduleRunnable(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(!mpcpSessionSwaps.remove(session, swapState))
+						return; // swap result arrived in time
+					Log.errOut("MPCP/Swap","Swap for '"+mob.Name()+"' ("+redirectId+") timed out with no result from "
+							+ tgtP.first+":"+tgtP.second);
+					if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getIMudTransferData()!=null))
+						mob.playerStats().setIMudTransferData(null);
+				}
+			}, MPCP_SWAP_TIMEOUT_MS);
+			swapDoc.put("redirect_id", redirectId);
+			swapDoc.put("target_host", ((Pair<?,?>)obj).first.toString());
+			swapDoc.put("target_port", ((Pair<?,?>)obj).second);
+			session.sendInlineCommand(InProto.MPCP,"Transfer", swapDoc.toString());
+		}
+		else
+		if(ping == SessionPing.PLAYERTRANSFER)
+		{
+			if((mob != null) && (obj instanceof Pair<?,?>))
+			{
+				final IMudTransferData fxfer = (mob.playerStats() != null)
+						? mob.playerStats().getIMudTransferData() : null;
+				if((fxfer != null) && (!fxfer.isLocal))
+					sendMPCPTransfer(session, mob, (Pair<String,Integer>)obj, MPCPSessionTask.RETURN.name().toLowerCase());
+				else
+					sendMPCPOffer(session, mob, (Pair<String,Integer>)obj);
+			}
+		}
+		else
+		if(ping == SessionPing.PLAYERSAVE)
+			sendMPCPSessionInfo(session);
+	}
+
+	private void sendMPCPSessionInfo(final Session session)
+	{
+		final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+		for(final String stat : session.getStatCodes())
+			doc.put(stat.toLowerCase(), session.getStat(stat));
+		doc.remove("lastmsg");
+		session.sendInlineCommand(InProto.MPCP,"SessionInfo", doc.toString());
 	}
 
 	@Override
 	public MOB processMPCPTransfer(final Session S, final String command, final MiniJSON.JSONObject obj)
 	{
+		if((S == null) || (command == null) || (obj == null))
+			return null;
 		try
 		{
-			final String srcHost = obj.getCheckedString("source_ip");
-			final int srcPort = (obj.containsKey("source_port")) ? (int)obj.getCheckedLong("source_port").longValue() : -1;
+			final String srcHost = obj.containsKey("source_ip")
+					? obj.getCheckedString("source_ip")
+					: ((obj.containsKey("target_host")) ? obj.getCheckedString("target_host") : "");
+			final int srcPort = obj.containsKey("source_port") ? (int)obj.getCheckedLong("source_port").longValue()
+					: ((obj.containsKey("target_port")) ? (int)obj.getCheckedLong("target_port").longValue() : -1);
 			if(command.equalsIgnoreCase("forward"))
 			{
 				final String payload = obj.getCheckedString("payload");
 				if((payload != null) && (payload.length() > 0))
 				{
-					final String mErr = mergeForeignPlayerXML(payload, srcHost, srcPort, false);
+					if(payload.startsWith("{"))
+					{
+						final MiniJSON.JSONObject payloadObj;
+						try
+						{
+							payloadObj = new MiniJSON().parseObject(payload);
+						}
+						catch(final MiniJSON.MJSONException e)
+						{
+							Log.errOut("MPCP/Forward", "Malformed forward payload: "+e.getMessage());
+							return null;
+						}
+						if(payloadObj.containsKey("mpcp_offer"))
+						{
+							processMPCPOffer(S, payloadObj, srcHost, srcPort);
+							return null;
+						}
+						if(payloadObj.containsKey("mpcp_offer_response"))
+						{
+							processMPCPOfferResponse(S, payloadObj);
+							return null;
+						}
+						if(payloadObj.containsKey("swap_result"))
+						{
+							processMPCPSwapResult(payloadObj);
+							return null;
+						}
+						if(payloadObj.containsKey("clear_transfer"))
+						{
+							try
+							{
+								final String name = CMStrings.capitalizeAndLower(
+									payloadObj.getCheckedString("clear_transfer"));
+								final MOB mob = CMLib.players().getLoadPlayer(name);
+								if((mob != null) && (mob.playerStats() != null))
+								{
+									final PlayerStats.IMudTransferData X = mob.playerStats().getIMudTransferData();
+									if((X != null) 
+									&&(X.isLocal)
+									&&(X.host != null) 
+									&&(X.host.equalsIgnoreCase(srcHost))
+									&&(X.port == srcPort))
+									{
+										mob.playerStats().setIMudTransferData(null);
+										CMLib.database().DBUpdatePlayer(mob);
+									}
+								}
+							}
+							catch(final Exception e)
+							{
+								Log.errOut("MPCP/Swap",e);
+							}
+						}
+						return null;
+					}
+					final String mErr = mergeForeignMPCPPlayerXML(payload, srcHost, srcPort, false);
 					if(mErr.length() > 0)
 						Log.errOut("MPCP/Forward", mErr);
 				}
 				return null;
 			}
-			final boolean returned = obj.containsKey("return") && obj.getCheckedBoolean("return").booleanValue();
+			if(!command.equalsIgnoreCase("sessioninfo"))
+			{
+				final MOB mob=S.mob();
+				if((mob!=null) && CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.SHUTDOWN))
+				{
+					final Command C = CMClass.getCommand("ProxyCtl");
+					if(C!=null)
+					{
+						try
+						{
+							C.execute(mob, new XVector<String>("PROXYCTL",command,obj.toString()),
+									MUDCmdProcessor.METAFLAG_ASMESSAGE);
+						}
+						catch(final IOException e)
+						{
+							Log.errOut("MPCP", e);
+						}
+					}
+				}
+				return null;
+			}
+			final String task = obj.containsKey("task") ? obj.getCheckedString("task") : "";
+			if((!obj.containsKey("mob_xml")) || (obj.getCheckedString("mob_xml").length() == 0))
+			{
+				if(MPCPSessionTask.SWAP.name().equalsIgnoreCase(task) && (S.mob() == null))
+				{
+					final MOB swapM = processMPCPSessionSwap(S, obj);
+					restoreMPCPSessionStats(S, obj);
+					return swapM;
+				}
+				restoreMPCPSessionStats(S, obj);
+				return null;
+			}
 			final String originRoom = obj.containsKey("origin_room") ? obj.getCheckedString("origin_room") : "";
 			final List<MOB> mobs = new ArrayList<MOB>(1);
 			try
@@ -166,47 +393,80 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			catch(final Exception e)
 			{
+				Log.errOut("MPCP/Transfer", "XML parse failure: "+e.getMessage());
 				S.println(L("Your transfer could not be completed."));
 				S.logout(false);
 				return null;
 			}
 			if(mobs.size() == 0)
 			{
+				Log.errOut("MPCP/Transfer", "XML parse produced no players.");
 				S.println(L("Your transfer could not be completed."));
 				S.logout(false);
 				return null;
 			}
-			if(returned)
+			restoreMPCPSessionStats(S, obj);
+			if(MPCPSessionTask.RETURN.name().equalsIgnoreCase(task))
 			{
-				final String mErr = mergeForeignPlayerXML(obj.getCheckedString("mob_xml"), srcHost, srcPort, true);
-				S.println((mErr.length() == 0)
-					? L("You have returned home.  Goodbye!")
-					: L("Your return could not be completed: @x1", mErr));
+				final String name = CMStrings.capitalizeAndLower(mobs.get(0).Name());
+				final String mErr = mergeForeignMPCPPlayerXML(obj.getCheckedString("mob_xml"), srcHost, srcPort, true);
+				if(mErr.length() > 0)
+				{
+					S.println(L("Your return could not be completed: @x1", mErr));
+					S.logout(false);
+					return null;
+				}
+				final MOB homeM = CMLib.players().getPlayer(name);
+				if((homeM != null) && (!CMLib.flags().isInTheGame(homeM, true)))
+				{
+					final Room R = CMLib.map().getRoom(originRoom);
+					if(R != null)
+					{
+						homeM.setStartRoom(R);
+						homeM.setLocation(R);
+					}
+					return homeM;
+				}
+				S.println(L("You have returned home.  @x1 is already active here.  Goodbye!",
+						(homeM != null) ? homeM.Name() : name));
 				S.logout(false);
 				return null;
 			}
 			final MOB incomingM = mobs.get(0);
-			if(CMLib.players().playerExists(name))
+			if(CMLib.players().playerExists(incomingM.Name()))
 			{
-				MOB existing = CMLib.players().getPlayer(name);
-				final PlayerStats.IMudTransferData ex =
-					(existing.playerStats() != null) ? existing.playerStats().getIMudTransferData() : null;
-				if((ex != null) && (!ex.isLocal)
-				&& (ex.host != null) && (ex.host.equalsIgnoreCase(srcHost))
-				&& (ex.port == srcPort))
+				MOB existM = CMLib.players().getPlayer(incomingM.Name());
+				if(existM == null)
+					existM = CMLib.players().getLoadPlayer(incomingM.Name());
+				if(existM != null)
 				{
-					CMLib.players().delPlayer(existing);
-					final Session existS = existing.session();
-					if(existS != null)
+					final PlayerStats.IMudTransferData ex =
+						(existM.playerStats() != null) ? existM.playerStats().getIMudTransferData() : null;
+					if((ex != null) 
+					&& (!ex.isLocal)
+					&& (ex.host != null) 
+					&& (ex.host.equalsIgnoreCase(srcHost))
+					&& (ex.port == srcPort))
 					{
-						existS.setMob(null);
-						existing.setSession(null);
-						existS.stopSession(true,false,false, false);
+						final Session existS = existM.session();
+						if(existS != null)
+						{
+							existS.setMob(null);
+							existM.setSession(null);
+							existS.stopSession(true,false,false, false);
+						}
+						CMLib.players().mergePlayer(existM, null);
 					}
-					existing.destroy(); //TODO: almost certainly insufficient
+					else
+					{
+						S.println(L("A player named '@x1' already exists here.  Transfer rejected.", incomingM.Name()));
+						S.logout(false);
+						return null;
+					}
 				}
 				else
 				{
+					// record exists in the DB but nothing loadable; treat as a collision
 					S.println(L("A player named '@x1' already exists here.  Transfer rejected.", incomingM.Name()));
 					S.logout(false);
 					return null;
@@ -234,6 +494,403 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return null;
 		}
 
+	}
+
+	private void restoreMPCPSessionStats(final Session S, final MiniJSON.JSONObject obj)
+	{
+		final int wasMccpCode = S.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
+				: S.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
+				: -1;
+		for(final String key : S.getStatCodes())
+		{
+			if(obj.containsKey(key.toLowerCase()))
+			{
+				try
+				{
+					S.setStat(key, obj.get(key.toLowerCase()).toString());
+				}
+				catch(final Exception e)
+				{
+					Log.debugOut("MPCP","Unable to restore session stat '"+key+"': "+e.getMessage());
+				}
+			}
+		}
+		final int isMccpCode = S.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
+				: S.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
+				: -1;
+		if((isMccpCode>0) && (wasMccpCode<0))
+			S.setClientTelnetMode(isMccpCode, false);
+	}
+
+	private MOB processMPCPSessionSwap(final Session S, final MiniJSON.JSONObject obj)
+	{
+		if(S != null)
+			mpcpSwapInfos.put(S, obj);
+		try
+		{
+			final String name = CMStrings.capitalizeAndLower(obj.getCheckedString("mobname"));
+			final String srcHost = obj.getCheckedString("source_ip");
+			final int srcPort = (obj.containsKey("source_port")) ? (int)obj.getCheckedLong("source_port").longValue() : -1;
+			MOB xferM = null;
+			for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.SESSIONS);e.hasMoreElements();)
+			{
+				final SessionsList sessList=(SessionsList)e.nextElement();
+				for(final Session S2 : sessList.allIterable())
+				{
+					final MOB M=S2.mob();
+					if((M!=null)
+					&&(S2!=S)
+					&&(M.playerStats()!=null)
+					&&(M.Name().equalsIgnoreCase(name))
+					&&(CMLib.flags().isInTheGame(M,true)))
+					{
+						final PlayerStats.IMudTransferData fx=M.playerStats().getIMudTransferData();
+						if((fx!=null)&&(!fx.isLocal)
+						&&(fx.host!=null)&&(fx.host.equalsIgnoreCase(srcHost))
+						&&(fx.port==srcPort))
+						{
+							xferM=M;
+							break;
+						}
+					}
+				}
+				if(xferM != null)
+					break;
+			}
+			if(xferM == null)
+			{
+				S.println(L("Your home mud redirected you here, but your character is no longer active on that mud."));
+				sendMPCPSwapResult(S, false, "character is no longer active on this mud");
+				S.logout(false);
+				return null;
+			}
+			Log.sysOut("MPCP/Swap","Adopting live mob for "+name+" swapped from "+srcHost+":"+srcPort);
+			return xferM;
+		}
+		catch(final MiniJSON.MJSONException e)
+		{
+			S.println(L("Your session swap could not be completed."));
+			try
+			{
+				sendMPCPSwapResult(S, false, "swap packet was malformed");
+			}
+			catch(final Exception e2)
+			{
+			}
+			S.logout(false);
+			return null;
+		}
+	}
+
+	@Override
+	public void sendMPCPSwapResult(final Session S, final boolean ok, final String reason)
+	{
+		if(S==null)
+			return;
+		final MiniJSON.JSONObject obj=mpcpSwapInfos.remove(S);
+		if((obj==null)||(!S.getClientTelnetMode(Session.TELNET_MPCP)))
+			return;
+		try
+		{
+			final String mobname=obj.containsKey("mobname") ? obj.getCheckedString("mobname") : "";
+			final String sourceHost=obj.containsKey("source_ip") ? obj.getCheckedString("source_ip") : "";
+			final int sourcePort=obj.containsKey("source_port") ? (int)obj.getCheckedLong("source_port").longValue() : -1;
+			if((mobname.length()==0)||(sourceHost.length()==0)||(sourcePort<=0))
+			{
+				Log.errOut("MPCP/Swap","Unable to report swap result for '"+mobname+"'; source address missing.");
+				return;
+			}
+			final MiniJSON.JSONObject payload=new MiniJSON.JSONObject();
+			payload.put("swap_result", mobname);
+			if(obj.containsKey("redirect_id"))
+				payload.put("redirect_id", obj.getCheckedString("redirect_id"));
+			payload.put("ok", Boolean.valueOf(ok));
+			if((reason!=null)&&(reason.length()>0))
+				payload.put("reason", reason);
+			final String payloadStr=payload.toString();
+			final MiniJSON.JSONObject doc=new MiniJSON.JSONObject();
+			doc.put("target_host", sourceHost);
+			doc.put("target_port", Long.valueOf(sourcePort));
+			doc.put("payload", payloadStr);
+			S.sendInlineCommand(InProto.MPCP, "Forward", doc.toString());
+			Log.sysOut("MPCP/Swap","Reported "+(ok?"success":"failure")+" for '"+mobname+"' to "+sourceHost+":"+sourcePort);
+		}
+		catch(final MiniJSON.MJSONException e)
+		{
+			Log.errOut("MPCP/Swap","Unable to report swap result: "+e.getMessage());
+		}
+	}
+
+	private boolean sendMPCPTransfer(final Session sess, final MOB mob, final Pair<String, Integer> target, final String task)
+	{
+		if((sess == null) || (mob == null) || (target == null)
+		|| (!sess.getClientTelnetMode(Session.TELNET_MPCP)))
+			return false;
+		sendMPCPSessionInfo(sess);
+		final String xml = B64Encoder.B64encodeAndCompressString(
+				CMLib.coffeeMaker().getPlayerTransferXML(mob));
+		final Room originR = mob.location();
+		final String originRoomID = (originR != null) ? originR.roomID() : "";
+		final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+		doc.put("task", task);
+		doc.put("mobname", mob.Name());
+		doc.put("target_host", target.first.toString());
+		doc.put("target_port", Long.valueOf(target.second.intValue()));
+		doc.put("origin_room", originRoomID);
+		sendMPCPChunks(sess, "Transfer", "mob_xml", xml, doc);
+		return true;
+	}
+
+	private void sendMPCPOffer(final Session sess, final MOB mob, final Pair<String, Integer> target)
+	{
+		if((sess == null) || (mob == null) || (target == null)
+		|| (!sess.getClientTelnetMode(Session.TELNET_MPCP)))
+			return;
+		final String name = mob.Name();
+		final String offerKey = CMStrings.capitalizeAndLower(name);
+		final String offerId = UUID.randomUUID().toString();
+		final Triad<Session, Pair<String, Integer>, String> state =
+				new Triad<Session, Pair<String, Integer>, String>(sess, target, offerId);
+		if(mpcpOffers.putIfAbsent(offerKey, state) != null)
+		{
+			Log.warnOut("MPCP/Offer", "Offer for '"+name+"' is already in progress; ignoring duplicate offer.");
+			if(sess != null)
+				sess.println(L("\n\rA transfer request for @x1 is already in progress.  Please wait.", name));
+			return;
+		}
+		CMLib.threads().scheduleRunnable(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				final Triad<Session, Pair<String, Integer>, String> stale = mpcpOffers.get(offerKey);
+				if((stale == null) || (!offerId.equals(stale.third)))
+					return; // verdict already arrived, or state was replaced
+				if(!mpcpOffers.remove(offerKey, stale))
+					return;
+				Log.errOut("MPCP/Offer", "Offer for '"+name+"' ("+offerId+") timed out waiting for "
+						+ target.first+":"+target.second);
+			}
+		}, MPCP_OFFER_TIMEOUT_MS);
+		final MiniJSON.JSONObject offerDoc = new MiniJSON.JSONObject();
+		offerDoc.put("mpcp_offer", Boolean.TRUE);
+		offerDoc.put("offer_id", offerId);
+		offerDoc.put("mobname", name);
+		final Room originR = mob.location();
+		offerDoc.put("origin_room", (originR != null) ? originR.roomID() : "");
+		offerDoc.put("mob_xml", B64Encoder.B64encodeAndCompressString(
+				CMLib.coffeeMaker().getPlayerTransferXML(mob)));
+		final String offerJson = offerDoc.toString();
+		final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+		doc.put("target_host", target.first.toString());
+		doc.put("target_port", Long.valueOf(target.second.intValue()));
+		sendMPCPChunks(sess, "Forward", "payload", offerJson, doc);
+	}
+
+	/**
+	 * Handles an offer forwarded from another mud: validates whether the
+	 * player could be accepted here, and replies with a verdict over the
+	 * same forwarded channel.  The player is not added here; the follow-up
+	 * transfer carries them in.
+	 */
+	private void processMPCPOffer(final Session S, final MiniJSON.JSONObject offer, final String srcHost, final int srcPort)
+	{
+		try
+		{
+			String offerId = "";
+			String name = "";
+			boolean ok = false;
+			String reason = "";
+			try
+			{
+				offerId = offer.containsKey("offer_id") ? offer.getCheckedString("offer_id") : "";
+				name = offer.containsKey("mobname") ? offer.getCheckedString("mobname") : "";
+				final String xml = offer.getCheckedString("mob_xml");
+				if((xml == null) || (xml.length() == 0))
+					reason = "missing player data";
+				else
+				{
+					final List<MOB> mobs = new ArrayList<MOB>(1);
+					CMLib.coffeeMaker().addPlayersAndAccountsFromXML(
+						B64Encoder.B64decodeAndDecompressString(xml), null, mobs, null);
+					if(mobs.size() == 0)
+						reason = "player data produced no player";
+					else
+					{
+						final MOB incomM = mobs.get(0);
+						if(CMLib.players().playerExists(incomM.Name()))
+						{
+							MOB existM = CMLib.players().getPlayer(incomM.Name());
+							if(existM == null)
+								existM = CMLib.players().getLoadPlayer(incomM.Name());
+							final PlayerStats.IMudTransferData ex =
+								((existM != null) && (existM.playerStats() != null))
+									? existM.playerStats().getIMudTransferData() : null;
+							if((existM == null)
+							|| (ex == null)
+							|| ex.isLocal
+							|| (ex.host == null) 
+							|| (!ex.host.equalsIgnoreCase(srcHost))
+							|| (ex.port != srcPort))
+								reason = "a player named '"+incomM.Name()+"' already exists here";
+							else
+								ok = true;
+						}
+						else
+							ok = true;
+						CMLib.players().mergePlayer(incomM, null);
+					}
+				}
+			}
+			catch(final Exception e)
+			{
+				Log.errOut("MPCP/Offer", "Offer parse failure: "+e.getMessage());
+				reason = "bad player data";
+			}
+			sendMPCPOfferResponse(S, srcHost, srcPort, offerId, name, ok, reason);
+			if(!ok)
+				Log.errOut("MPCP/Offer", "Offer for '"+name+"' from "+srcHost+":"+srcPort+" REJECTED: "+reason);
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("MPCP/Offer", e);
+		}
+	}
+
+	/**
+	 * Sends an offer verdict back to the offering mud over the forwarded
+	 * channel the offer arrived on.
+	 */
+	private void sendMPCPOfferResponse(final Session S, final String targetHost, final int targetPort,
+			final String offerId, final String mobname, final boolean ok, final String reason)
+	{
+		if(S == null)
+			return;
+		final MiniJSON.JSONObject response = new MiniJSON.JSONObject();
+		response.put("mpcp_offer_response", Boolean.TRUE);
+		response.put("offer_id", offerId);
+		response.put("mobname", mobname);
+		response.put("ok", Boolean.valueOf(ok));
+		if((reason != null) && (reason.length() > 0))
+			response.put("reason", reason);
+		final String responseJson = response.toString();
+		final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
+		doc.put("target_host", targetHost);
+		doc.put("target_port", Long.valueOf(targetPort));
+		sendMPCPChunks(S, "Forward", "payload", responseJson, doc);
+	}
+
+	/**
+	 * Handles an offer verdict that arrived from another mud: on success,
+	 * records the transfer and asks the proxy to move the connection; on
+	 * failure, tells the player and leaves them where they are.
+	 */
+	private void processMPCPOfferResponse(final Session S, final MiniJSON.JSONObject obj)
+	{
+		try
+		{
+			String name = "";
+			String offerId = "";
+			boolean ok = false;
+			String reason = "";
+			try
+			{
+				name = obj.containsKey("mobname") ? obj.getCheckedString("mobname") : "";
+				offerId = obj.containsKey("offer_id") ? obj.getCheckedString("offer_id") : "";
+				ok = obj.containsKey("ok") && obj.getCheckedBoolean("ok").booleanValue();
+				reason = obj.containsKey("reason") ? obj.getCheckedString("reason") : "";
+			}
+			catch(final MiniJSON.MJSONException e)
+			{
+				Log.errOut("MPCP/Status", "Malformed offer response: "+e.getMessage());
+				return;
+			}
+			final String offerKey = CMStrings.capitalizeAndLower(name);
+			final Triad<Session, Pair<String, Integer>, String> state = mpcpOffers.get(offerKey);
+			if(state == null)
+			{
+				Log.errOut("MPCP/Status", "Unexpected offer response for '"+name+"' (no in-home offer).");
+				return;
+			}
+			if((offerId.length() > 0) && (state.third != null) && (!offerId.equals(state.third)))
+			{
+				Log.errOut("MPCP/Status", "Offer response id mismatch for '"+name+"'.");
+				return;
+			}
+			if(!mpcpOffers.remove(offerKey, state))
+				return;
+			final Pair<String, Integer> tP = state.second;
+			final Session sess = state.first;
+			if(ok)
+			{
+				if(sess==null)
+					return;
+				final MOB mob = sess.mob();
+				if((mob == null) || (mob.playerStats() == null))
+					return;
+				mob.playerStats().setIMudTransferData(
+					new PlayerStats.IMudTransferData(tP.first, tP.second.intValue(), System.currentTimeMillis(), true));
+				CMLib.database().DBUpdatePlayer(mob);
+				sendMPCPTransfer(sess, mob, tP, MPCPSessionTask.TRANSFER.name().toLowerCase());
+			}
+			else
+			{
+				final String r = reason.length() == 0 ? "target did not accept the transfer" : reason;
+				Log.errOut("MPCP/Status", "Transfer of '"+name+"' to "+tP.first+":"+tP.second+" failed: "+r);
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("MPCP/Status", e);
+		}
+	}
+
+	private void processMPCPSwapResult(final MiniJSON.JSONObject obj)
+	{
+		try
+		{
+			final String name=obj.containsKey("swap_result") ? obj.getCheckedString("swap_result") : "";
+			final String redirectId=obj.containsKey("redirect_id") ? obj.getCheckedString("redirect_id") : "";
+			final boolean ok=obj.containsKey("ok") && obj.getCheckedBoolean("ok").booleanValue();
+			final String reason=obj.containsKey("reason") ? obj.getCheckedString("reason") : "";
+			if(redirectId.length()==0)
+			{
+				Log.errOut("MPCP/Swap","Swap result for '"+name+"' had no redirect id.");
+				return;
+			}
+			Session tgtS=null;
+			Triad<String,MOB,Long> wait=null;
+			synchronized(mpcpSessionSwaps)
+			{
+				final Iterator<Entry<Session, Triad<String,MOB,Long>>> i=mpcpSessionSwaps.entrySet().iterator();
+				while(i.hasNext())
+				{
+					final Entry<Session, Triad<String,MOB,Long>> e=i.next();
+					if(redirectId.equals(e.getValue().first))
+					{
+						tgtS=e.getKey();
+						wait=e.getValue();
+						i.remove();
+						break;
+					}
+				}
+			}
+			if((tgtS == null)||(wait == null))
+				return;
+			if(!ok)
+				Log.errOut("MPCP/Swap","Target reported failure for '"+name+((reason.length()>0)?(": "+reason):""));
+			if((System.currentTimeMillis()-wait.third.longValue())>MPCP_SWAP_TIMEOUT_MS)
+				Log.errOut("MPCP/Swap","Swap result for '"+name+"' arrived late; resolving as reported: "+ok);
+			final MOB mob = wait.second;
+			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getIMudTransferData()!=null))
+				mob.playerStats().setIMudTransferData(null);
+			if(ok && (tgtS!=null) && (tgtS.mob()==null))
+				tgtS.stopSession(false, true, true, false);
+		}
+		catch(final MiniJSON.MJSONException e)
+		{
+			Log.errOut("MPCP/Swap","Malformed swap result: "+e.getMessage());
+		}
 	}
 
 	// this is the sound support method.
@@ -653,7 +1310,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				{
 					mcpPackages = new Hashtable<String,MCPPackage>();
 					final List<MCPPackage> pkgs = new ArrayList<MCPPackage>();
-					if(CMClass.loadObjectListToObj(pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", CMProps.instance().getStr("MCPPACKAGES"), "com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary$MCPPackage"))
+					if(CMClass.loadObjectListToObj(pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", 
+							CMProps.instance().getStr("MCPPACKAGES"), 
+							"com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary$MCPPackage"))
 					{
 						for(final MCPPackage pkg : pkgs )
 						{

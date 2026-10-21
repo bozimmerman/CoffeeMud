@@ -2206,6 +2206,31 @@ public class CMSecurity
 	}
 
 	/**
+	 * Returns the Resource-global set of automatically blocked ip addresses.
+	 *
+	 * @return the Resource-global set of automatically blocked ip addresses.
+	 */
+	@SuppressWarnings("unchecked")
+	public static final Set<String> getIPAutoblockSet()
+	{
+		final String ID="SYSTEM_IPACCESS_AUTOBLOCK";
+		Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource(ID);
+		if(autoblocked == null)
+		{
+			synchronized(CMClass.getSync(ID))
+			{
+				autoblocked= (Set<String>)Resources.staticInstance()._getResource(ID);
+				if(autoblocked == null)
+				{
+					autoblocked= new TreeSet<String>();
+					Resources.staticInstance()._submitResource(ID,autoblocked);
+				}
+			}
+		}
+		return autoblocked;
+	}
+
+	/**
 	 * If the given socket appears on the temporary ip block list,
 	 * then this will remove the entry.
 	 * @param address the socket to prevent blockage for
@@ -2280,25 +2305,22 @@ public class CMSecurity
 							accessed.add(new Triad<String,Long,Integer>(address.trim(),Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 					}
 				}
-				@SuppressWarnings("unchecked")
-				Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
-				if(autoblocked == null)
+				final Set<String> autoblocked= getIPAutoblockSet();
+				synchronized(autoblocked)
 				{
-					autoblocked= new TreeSet<String>();
-					Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
-				}
-				if(autoblocked.contains(address.toUpperCase()))
-				{
-					if(!anyAtThisAddress)
-						autoblocked.remove(address.toUpperCase());
+					if(autoblocked.contains(address.toUpperCase()))
+					{
+						if(!anyAtThisAddress)
+							autoblocked.remove(address.toUpperCase());
+						else
+							proceed=ConnectState.BLOCKED;
+					}
 					else
+					if(numAtThisAddress>=CONN_MAX_PER_ADDR)
+					{
+						autoblocked.add(address.toUpperCase());
 						proceed=ConnectState.BLOCKED;
-				}
-				else
-				if(numAtThisAddress>=CONN_MAX_PER_ADDR)
-				{
-					autoblocked.add(address.toUpperCase());
-					proceed=ConnectState.BLOCKED;
+					}
 				}
 			}
 		}

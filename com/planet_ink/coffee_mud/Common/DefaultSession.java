@@ -1293,7 +1293,8 @@ public class DefaultSession implements Session
 				else
 					Log.errOut("Killing Unknown session: "+errMsg);
 			}
-			stopSession(false,true,true, false);
+			if(!killFlag)
+				stopSession(false,true,true,false);
 			setKillFlag(true);
 		}
 	}
@@ -1995,62 +1996,29 @@ public class DefaultSession implements Session
 								break;
 							if(command.equalsIgnoreCase("clientinfo"))
 							{
-								this.ipAddress = obj.getCheckedString("client_address");
+								if(obj.containsKey("client_address"))
+									this.ipAddress = obj.getCheckedString("client_address");
 								if(obj.containsKey("reconnect"))
 									this.isReconnect = obj.getCheckedBoolean("reconnect").booleanValue();
 							}
 							else
-							if(command.equalsIgnoreCase("sessioninfo"))
 							{
-								obj.remove("timestamp");
-								if(obj.containsKey("mob_xml")
-								&& (obj.getCheckedString("mob_xml").length() > 0))
-								{
-									final MOB foreignM = CMLib.protocol().processMPCPTransfer(this, command, obj);
-									if(foreignM != null)
-										loginForeignPlayer(foreignM);
-								}
-								final int wasMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
-										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
-										: -1;
-								for(final String key : getStatCodes())
-								{
-									if(obj.containsKey(key.toLowerCase()))
-									{
-										try { 
-											setStat(key,obj.get(key.toLowerCase()).toString()); 
-										} catch(final Exception e) { }
-									}
-								}
-								this.inputCallback=null;
-								final int isMccpCode = this.getClientTelnetMode(Session.TELNET_COMPRESS2) ? Session.TELNET_COMPRESS2
-										: this.getClientTelnetMode(Session.TELNET_COMPRESS) ? Session.TELNET_COMPRESS
-										: -1;
-								if((isMccpCode>0) && (wasMccpCode<0)) // if the restored connection wants mccp, kill it with fire.
-								{
-									this.setClientTelnetMode(isMccpCode, false);
-									//if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MCCP))
-									//	changeTelnetMode(rawout,isMccpCode,true);
-								}
-								this.lastKeystroke = System.currentTimeMillis();
-								this.afkTime = 0;
-								this.needPrompt=true;
-							}
-							else
-							if(command.equalsIgnoreCase("forward"))
-							{
+								if(command.equalsIgnoreCase("sessioninfo"))
+									obj.remove("timestamp");
 								final MOB foreignM = CMLib.protocol().processMPCPTransfer(this, command, obj);
 								if(foreignM != null)
-									loginForeignPlayer(foreignM);
-							}
-							else
-							if((mob!=null)
-							&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.SHUTDOWN)))
-							{
-								final Command C = CMClass.getCommand("ProxyCtl");
-								if(C!=null)
-									C.execute(mob, new XVector<String>("PROXYCTL",command,jsonStr),
-											MUDCmdProcessor.METAFLAG_ASMESSAGE);
+								{
+									final boolean fromAfar = !obj.containsKey("task")
+										|| !obj.getCheckedString("task").equalsIgnoreCase("return");
+									CMLib.login().finishDirectLogin(this, foreignM, fromAfar);
+								}
+								if(command.equalsIgnoreCase("sessioninfo"))
+								{
+									this.inputCallback=null;
+									this.lastKeystroke=System.currentTimeMillis();
+									this.afkTime=0;
+									this.needPrompt=true;
+								}
 							}
 						}
 					}
@@ -3365,28 +3333,8 @@ public class DefaultSession implements Session
 		return setLoggedInState(LoginResult.NORMAL_LOGIN);
 	}
 
-	private boolean loginForeignPlayer(final MOB mob)
-	{
-		setMob(mob);
-		try
-		{
-			if(CMLib.login().completePlayerLogin(this, false) == CharCreationLibrary.LoginResult.NORMAL_LOGIN)
-			{
-				setLoggedInState(CharCreationLibrary.LoginResult.NORMAL_LOGIN);
-				println(L("Welcome to @x1, @x2, from afar!", CMProps.getVar(CMProps.Str.MUDDOMAIN), mob.Name()));
-				return true;
-			}
-		}
-		catch(final IOException e)
-		{
-		}
-		setMob(null);
-		println(L("Your transfer could not be completed."));
-		logout(false);
-		return false;
-	}
-
-	protected boolean setLoggedInState(final LoginResult loginResult)
+	@Override
+	public boolean setLoggedInState(final LoginResult loginResult)
 	{
 		setStatus(SessionStatus.LOGIN2);
 		final MOB mob=this.mob;
@@ -4149,57 +4097,22 @@ public class DefaultSession implements Session
 			if(getClientTelnetMode(TELNET_GMCP))
 			{
 				final byte[] gmcpPingBuf=CMLib.protocol().invokeRoomChangeGmcp(this, gmcpPings, gmcpSupports, msdpReportables);
-				if(gmcpPingBuf!=null)
+				if(gmcpPingBuf==null)
+					break;
+				try
 				{
-					try
-					{
-						rawBytesOut(rawout, gmcpPingBuf);
-					}
-					catch (final IOException e)
-					{
-					}
+					rawBytesOut(rawout, gmcpPingBuf);
 				}
+				catch (final IOException e)
+				{}
 			}
 			break;
 		case PLAYERTRANSFER:
 		case PLAYERSAVE:
+		case SESSIONSWAP:
 			if(!getClientTelnetMode(TELNET_MPCP))
 				break;
-			final MiniJSON.JSONObject doc = new MiniJSON.JSONObject();
-			for(final String stat : this.getStatCodes())
-				doc.put(stat.toLowerCase(), getStat(stat));
-			doc.remove("lastmsg");
-			sendInlineCommand(InProto.MPCP,"SessionInfo", doc.toString());
-			if(ping == SessionPing.PLAYERSAVE)
-				break;
-			if(mob==null)
-				break;
-			final Pair<?,?> target = (obj instanceof Pair<?,?>) ? (Pair<?,?>)obj : null;
-			if(target == null)
-				break;
-			final boolean isReturn = ((mob.playerStats() != null)
-				&& (mob.playerStats().getIMudTransferData() != null)
-				&& (!mob.playerStats().getIMudTransferData().isLocal));
-			final String xml = B64Encoder.B64encodeAndCompressString( 
-					CMLib.coffeeMaker().getPlayerTransferXML(mob));
-			final Room originR = mob.location();
-			final String originRoomID = (originR != null) ? originR.roomID() : "";
-			for(int i=0;i<xml.length();i+=32768)
-			{
-				doc.clear();
-				doc.put("target_host", target.first.toString());
-				doc.put("target_port", target.second);
-				doc.put("return", Boolean.valueOf(isReturn));
-				doc.put("origin_room", originRoomID);
-				if(i+32768<xml.length())
-				{
-					doc.put("mob_xml", xml.substring(i,i+32768));
-					doc.put("partial", Boolean.TRUE);
-				}
-				else
-					doc.put("mob_xml", xml.substring(i));
-				sendInlineCommand(InProto.MPCP,"Transfer", doc.toString());
-			}
+			CMLib.protocol().doMPCPCommand(this, ping, obj);
 			break;
 		}
 	}

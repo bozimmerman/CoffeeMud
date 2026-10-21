@@ -912,7 +912,10 @@ json-", "msdpreports":"-base64-", "gmcpsupports":"-embedded
 json-",&nbsp;"strcache":"{}", "mcpkey":"", "mcpkeypairs":"{}",
 "mcpsupports":"{}", "mttsbits":"269", "termheight":"44", "psuffix":"",
 "logintime":"1752782990306", "onlinetime":"1752782984016",
-"activetime":"1752783052211"}</td></tr></tbody></table><br><h2><a name="grapevine">Grapevine</a></h2>
+"activetime":"1752783052211"}</td></tr>
+<tr><td>Forward (mud-&gt;mud via proxy)</td><td>{"target_host":"host", "target_port":"port", "source_ip":"origin host", "source_port":"origin port", "payload":"-base64- or json-", "timestamp": epoctime}</td></tr>
+<tr><td>Transfer (both)</td><td>{"target_host":"host", "target_port":"port", "task":"transfer|return|swap", "mobname":"player name", "origin_room":"room id", "mob_xml":"-base64 chunk-", "partial":"boolean", "timestamp": epoctime} -- with "task":"transfer" or "task":"return", sends the connected player to the target mud, exporting the player data in mob_xml chunks. &nbsp;With "task":"swap", and no "mob_xml", retransfers only the connection: the target mud adopts the player's existing live session, and sends the home mud a Forward swap result (see below).</td></tr></tbody></table><br>
+<p>The Transfer and Forward commands may also be used for transfer offers and to sync player data or clean up after a session swap: a Forward whose "payload" is {"clear_transfer":"&lt;player name&gt;"} instructs the receiving (home) mud to clear the player's remote-transfer record, so the player may log back in at home. &nbsp;A Forward whose payload is {"mpcp_offer":true,"offer_id":"id","mobname":"name","origin_room":"room id","mob_xml":"-base64 player data-"} asks the target mud whether it will accept the player; the target mud replies with a Forward payload {"mpcp_offer_response":true,"offer_id":"id","mobname":"name","ok":true-or-false,"reason":"-only if rejected-"}. &nbsp;After a session swap, the target mud sends a Forward payload {"swap_result":"&lt;player name&gt;","redirect_id":"id","ok":true-or-false,"reason":"-optional-"}.</p><br><h2><a name="grapevine">Grapevine</a></h2>
 <p>The Grapevine Protocol
 allows&nbsp;mud information and status, channel and tell messages, and
 achievements to be shared between muds on its network. &nbsp;A detailed
