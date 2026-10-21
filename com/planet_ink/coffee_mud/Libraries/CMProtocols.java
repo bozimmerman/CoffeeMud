@@ -129,28 +129,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 	}
 
-	private void scheduleMPCPReturnedMerge(final String name, final String host, final int port, final String xmlB64, final int tries)
-	{
-		final MOB local = CMLib.players().getLoadPlayer(name);
-		if((local == null) || (local.playerStats() == null) || (tries >= 36))
-			return;
-		if(CMLib.flags().isInTheGame(local, true))
-		{
-			// ghost session still hanging around; try again shortly
-			final String nm = name;
-			CMLib.threads().scheduleRunnable(new Runnable()
-			{
-				@Override 
-				public void run() 
-				{
-					scheduleMPCPReturnedMerge(nm, host, port, xmlB64, tries+1);
-				}
-			}, 2500);
-			return;
-		}
-		mergeForeignMPCPPlayerXML(xmlB64, host, port, true);
-	}
-
 	private String mergeForeignMPCPPlayerXML(final String xmlB64, final String host, final int port, final boolean returned)
 	{
 		final List<MOB> mobs = new ArrayList<MOB>(1);
@@ -165,27 +143,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			CMLib.players().mergePlayer(incoming, null);
 			return "unknown player: " + incoming.Name();
 		}
-		if(CMLib.flags().isInTheGame(local, true))
+		if(CMLib.flags().isInTheGame(local, true) && (!returned))
 		{
-			if(returned)
-			{
-				if(local.playerStats().getIMudTransferData() != null)
-				{
-					local.playerStats().setIMudTransferData(null);
-					CMLib.players().savePlayer(local);
-				}
-				final String nm = incoming.Name();
-				CMLib.threads().scheduleRunnable(new Runnable() 
-				{
-					@Override 
-					public void run() 
-					{
-						scheduleMPCPReturnedMerge(nm, host, port, xmlB64, 0);
-					}
-				}, 2500);
-				CMLib.players().mergePlayer(incoming, null);
-				return "";
-			}
 			CMLib.players().mergePlayer(incoming, null);
 			return "player logged in locally: " + incoming.Name();
 		}
@@ -427,6 +386,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					}
 					return homeM;
 				}
+				if((homeM != null) && (homeM.session() == S))
+					return null;
 				S.println(L("You have returned home.  @x1 is already active here.  Goodbye!",
 						(homeM != null) ? homeM.Name() : name));
 				S.logout(false);
@@ -832,6 +793,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					new PlayerStats.IMudTransferData(tP.first, tP.second.intValue(), System.currentTimeMillis(), true));
 				CMLib.database().DBUpdatePlayer(mob);
 				sendMPCPTransfer(sess, mob, tP, MPCPSessionTask.TRANSFER.name().toLowerCase());
+				sess.stopSession(false, true, true, false);
 			}
 			else
 			{
