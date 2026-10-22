@@ -1965,7 +1965,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
-				final String placeholder = format.substring(index, closeIndex).trim();
+				final String placeholder = format.substring(index + 1, closeIndex).trim();
 				String placeholderToken = placeholder;
 				String[] placeholderArgs = new String[0];
 				final int x = placeholderToken.indexOf('(');
@@ -1973,7 +1973,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final String argGroup = placeholderToken.substring(x+1,placeholderToken.length()-1);
 					placeholderArgs = CMParms.parseAny(argGroup, '/', false).toArray(new String[0]);
-					placeholderToken = placeholderToken.substring(0,x);
+					placeholderToken = placeholderToken.substring(0,x).trim();
 				}
 				final MTToken token = new MTToken(placeholderToken, false);
 				tokens.add(token);

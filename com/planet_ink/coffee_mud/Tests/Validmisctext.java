@@ -257,6 +257,16 @@ public class Validmisctext extends StdTest
 		{
 			return ("Error#35: '-v/--verbose' should not match empty (requires a flag)");
 		}
+		// Test 36: Typed placeholder - editor accepts valid value
+		if (!CMLib.ableParms().isValidMiscText("[FREQUENCY]", "15"))
+		{
+			return ("Error#36: '[FREQUENCY]' should match '15' (typed placeholder)");
+		}
+		// Test 37: Typed placeholder - editor rejects invalid value
+		if (CMLib.ableParms().isValidMiscText("[FREQUENCY]", "notanumber"))
+		{
+			return ("Error#37: '[FREQUENCY]' should not match 'notanumber' (typed placeholder)");
+		}
 		return null;
 	}
 }
