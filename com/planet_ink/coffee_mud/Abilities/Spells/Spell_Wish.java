@@ -119,6 +119,11 @@ public class Spell_Wish extends Spell
 		return true;
 	}
 
+	protected boolean supportsItemTargets()
+	{
+		return true;
+	}
+
 	@SuppressWarnings("unchecked")
 	protected static synchronized Map<String,Object> getWishParms()
 	{
@@ -625,19 +630,30 @@ public class Spell_Wish extends Spell
 			// anything else may refer to another person or item
 			Physical target=null;
 			String possName=wishV.get(0).trim();
-			if(wishV.size()>2)
+			int possConsumed=0;
+			int startWord=0;
+			while((startWord<wishV.size()-1)
+			&&((wishV.get(startWord).equalsIgnoreCase("A"))
+				||(wishV.get(startWord).equalsIgnoreCase("AN"))
+				||(wishV.get(startWord).equalsIgnoreCase("THE"))))
+				startWord++;
+			for(int endWord=wishV.size();endWord>startWord;endWord--)
 			{
-				possName=CMParms.combine(wishV,0,2);
+				possName=CMParms.combine(wishV,startWord,endWord);
 				target=mob.location().fetchFromRoomFavorMOBs(null,possName);
 				if(target==null)
 					target=mob.findItem(possName);
-				if(target==null)
-					possName=wishV.get(0).trim();
+				if(target!=null)
+				{
+					possConsumed=endWord;
+					break;
+				}
 			}
 			if(target==null)
-				target=mob.location().fetchFromRoomFavorMOBs(null,possName);
-			if(target==null)
-				target=mob.findItem(possName);
+			{
+				possName=wishV.get(0).trim();
+				possConsumed=0;
+			}
 			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))
@@ -672,12 +688,47 @@ public class Spell_Wish extends Spell
 						myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 					}
 				}
+				if((target==null)&&(wishV.size()>3))
+				{
+					int onDex=-1;
+					for(int v=wishV.size()-2;v>=1;v--)
+						if(wishV.get(v).equalsIgnoreCase("ON"))
+						{
+							onDex=v;
+							break;
+						}
+					if(onDex>=1)
+					{
+						String onName=CMParms.combine(wishV,onDex+1).trim();
+						if(onName.toUpperCase().startsWith("THE "))
+							onName=onName.substring(4);
+						else
+						if(onName.toUpperCase().startsWith("AN "))
+							onName=onName.substring(3);
+						else
+						if(onName.toUpperCase().startsWith("A "))
+							onName=onName.substring(2);
+						target=mob.location().fetchFromRoomFavorMOBs(null,onName);
+						if(target==null)
+							target=mob.findItem(onName);
+						if(target!=null)
+						{
+							while(wishV.size()>onDex)
+								wishV.remove(wishV.size()-1);
+							onFlag=true;
+							myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
+						}
+					}
+				}
 				if(target==null)
 					target=mob;
 			}
 			else
 			{
-				wishV.remove(0);
+				if(possConsumed<1)
+					possConsumed=1;
+				for(int v=0;v<possConsumed;v++)
+					wishV.remove(0);
 				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
 
@@ -1799,9 +1850,8 @@ public class Spell_Wish extends Spell
 					break;
 				}
 			if((target!=null)
-			&&(castOn>=0))
+			&&(castOn>=0)&&((target instanceof MOB)||((target instanceof Item)&&supportsItemTargets())))
 			{
-				final MOB tm=(MOB)target;
 				final String spellName=myWish.substring(0,myWish.length()-castOnMes[castOn].length()).trim();
 				final Ability A=CMClass.findAbility(spellName);
 				if((A!=null)
@@ -1820,7 +1870,7 @@ public class Spell_Wish extends Spell
 							mob.tell(L("Your wish is beyond your wishing ability."));
 						return false;
 					}
-					if(tm.fetchEffect(A.ID())==null)
+					if(target.fetchEffect(A.ID())==null)
 						A.invoke(mob, target, true, 1);
 					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 					baseLoss=-CMLib.leveler().postExperience(mob,"ABILITY:"+ID(),null,null,-baseLoss, false);
