@@ -316,7 +316,7 @@ public class Connection implements java.sql.Connection
 	@Override
 	public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
 	{
-		return new FakeMetaData(this.backend);
+		return new FakeMetaData(this, this.backend);
 	}
 
 	@Override

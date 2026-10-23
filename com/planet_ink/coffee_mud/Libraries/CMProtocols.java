@@ -518,7 +518,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(xferM != null)
 					break;
 			}
-			if(xferM == null)
+			if((xferM == null)&&(S!=null))
 			{
 				S.println(L("Your home mud redirected you here, but your character is no longer active on that mud."));
 				sendMPCPSwapResult(S, false, "character is no longer active on this mud");
@@ -530,15 +530,18 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		catch(final MiniJSON.MJSONException e)
 		{
-			S.println(L("Your session swap could not be completed."));
-			try
+			if(S!=null)
 			{
-				sendMPCPSwapResult(S, false, "swap packet was malformed");
+				S.println(L("Your session swap could not be completed."));
+				try
+				{
+					sendMPCPSwapResult(S, false, "swap packet was malformed");
+				}
+				catch(final Exception e2)
+				{
+				}
+				S.logout(false);
 			}
-			catch(final Exception e2)
-			{
-			}
-			S.logout(false);
 			return null;
 		}
 	}

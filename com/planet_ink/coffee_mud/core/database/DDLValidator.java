@@ -171,7 +171,7 @@ public class DDLValidator
 			final DatabaseMetaData meta=conn.getMetaData();
 			if(meta==null)
 				return Integer.MIN_VALUE;
-			final String catalog = meta.getConnection().getCatalog();
+			final String catalog = (meta.getConnection()==null)?null:meta.getConnection().getCatalog();
 			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle") || productName.contains("db2")) ? conn.getSchema() : null;
 			final ResultSet rs=meta.getTables(catalog, schema, "%", new String[]{"TABLE"});
@@ -553,7 +553,7 @@ public class DDLValidator
 		{
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
-			final String catalog = meta.getConnection().getCatalog();
+			final String catalog = (meta.getConnection()==null)?null:meta.getConnection().getCatalog();
 			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
 			final ResultSet rs=meta.getTables(catalog, schema, "%", new String[] { "TABLE" });

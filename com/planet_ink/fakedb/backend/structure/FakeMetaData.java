@@ -38,11 +38,13 @@ limitations under the License.
 public class FakeMetaData implements DatabaseMetaData
 {
 	private final Backend backend;
+	private final Connection conn;
 
-	public FakeMetaData(final Backend backend)
+	public FakeMetaData(final Connection conn, final Backend backend)
 	{
 		super();
 		this.backend = backend;
+		this.conn = conn;
 	}
 
 	@Override
@@ -1116,7 +1118,7 @@ public class FakeMetaData implements DatabaseMetaData
 	@Override
 	public Connection getConnection() throws SQLException
 	{
-		return null;
+		return conn;
 	}
 
 	@Override

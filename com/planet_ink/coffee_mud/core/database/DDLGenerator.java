@@ -51,7 +51,7 @@ public class DDLGenerator
 	{
 		this.metaData=metaData;
 		this.schema=schema;
-		this.catalog = metaData.getConnection().getCatalog();
+		this.catalog = (metaData.getConnection()==null)?null:metaData.getConnection().getCatalog();
 		this.productName=metaData.getDatabaseProductName().toLowerCase();
 		if (this.productName.contains("oracle"))
 			typeMappings.put("TEXT", "CLOB");
