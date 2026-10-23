@@ -34,6 +34,7 @@ import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
 public class DDLGenerator
 {
 	private final DatabaseMetaData		metaData;
+	private final String				catalog;
 	private final String				productName;
 	private final String				schema;
 	private final Map<String, String>	typeMappings		= new HashMap<String, String>();
@@ -50,6 +51,7 @@ public class DDLGenerator
 	{
 		this.metaData=metaData;
 		this.schema=schema;
+		this.catalog = metaData.getConnection().getCatalog();
 		this.productName=metaData.getDatabaseProductName().toLowerCase();
 		if (this.productName.contains("oracle"))
 			typeMappings.put("TEXT", "CLOB");
@@ -135,7 +137,7 @@ public class DDLGenerator
 	 */
 	public String getDropPrimaryKeySQL(final String tableName) throws SQLException
 	{
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, tableName);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, tableName);
 		String pkName = null;
 		while (pkRs.next())
 		{
@@ -263,7 +265,7 @@ public class DDLGenerator
 		String oldPortableType = "";
 		int oldSize = -1;
 		boolean oldNullable = true;
-		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+		final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
@@ -282,7 +284,7 @@ public class DDLGenerator
 		final boolean effectiveNewNullable = effectiveNewNullableBool.booleanValue();
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -291,7 +293,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, false, false);
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -397,7 +399,7 @@ public class DDLGenerator
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
 				else
 				{
-					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet pkColRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
@@ -439,7 +441,7 @@ public class DDLGenerator
 		String oldType = "";
 		int oldSize = -1;
 		boolean oldNullable = true;
-		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+		final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
@@ -458,7 +460,7 @@ public class DDLGenerator
 		final boolean effectiveNewNullable = effectiveNewNullableBool.booleanValue();
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -467,7 +469,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, false, false);
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -573,7 +575,7 @@ public class DDLGenerator
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
 				else
 				{
-					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet pkColRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
@@ -615,7 +617,7 @@ public class DDLGenerator
 		int oldSize = -1;
 		String oldPortableType = "";
 		boolean oldNullable = true;
-		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+		final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
@@ -633,7 +635,7 @@ public class DDLGenerator
 		final boolean effectiveNewNullable = effectiveNewNullableBool.booleanValue();
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -642,7 +644,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, false, false);
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -749,7 +751,7 @@ public class DDLGenerator
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
 				else
 				{
-					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet pkColRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
@@ -793,7 +795,7 @@ public class DDLGenerator
 		String oldPortableType = "";
 		int oldSize = -1;
 		boolean oldNullable = Boolean.TRUE.booleanValue();
-		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+		final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
@@ -811,7 +813,7 @@ public class DDLGenerator
 		final boolean effectiveNewNullable = effectiveNewNullableBool.booleanValue();
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -821,7 +823,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, Boolean.FALSE.booleanValue(), Boolean.FALSE.booleanValue());
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, Boolean.FALSE.booleanValue(), Boolean.FALSE.booleanValue());
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -927,7 +929,7 @@ public class DDLGenerator
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
 				else
 				{
-					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet pkColRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
@@ -965,7 +967,7 @@ public class DDLGenerator
 		final String quote = metaData.getIdentifierQuoteString();
 		final List<String> pkCols = new ArrayList<>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -975,7 +977,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, false, false);
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -1050,7 +1052,7 @@ public class DDLGenerator
 		Boolean effectiveNewNullable = newNullable;
 		if(effectiveNewNullable == null)
 		{
-			final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+			final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 			final String isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
 			colRs.close();
 			effectiveNewNullable = Boolean.valueOf("YES".equals(isNullableStr));  // true if nullable, false if NOT NULL
@@ -1076,14 +1078,14 @@ public class DDLGenerator
 						isNullableStr = newNullable.booleanValue() ? "YES" : "NO";
 					else
 					{
-						final ResultSet colRs = metaData.getColumns(null, null, actualTable, pkCol);
+						final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 						isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
 						colRs.close();
 					}
 				}
 				else
 				{
-					final ResultSet colRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = colRs.next() ? colRs.getString("IS_NULLABLE") : "YES";
 					colRs.close();
 				}
@@ -1128,7 +1130,7 @@ public class DDLGenerator
 		String oldPortableType = "";
 		int oldSize = -1;
 		boolean oldNullable = true;
-		final ResultSet colRs = metaData.getColumns(null, null, actualTable, columnName);
+		final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, columnName);
 		if(colRs.next())
 		{
 			oldType = colRs.getString("TYPE_NAME").toUpperCase();
@@ -1147,7 +1149,7 @@ public class DDLGenerator
 		final boolean effectiveNewNullable = effectiveNewNullableBool.booleanValue();
 		final List<String> pkCols = new ArrayList<String>();
 		String pkName = null;
-		final ResultSet pkRs = metaData.getPrimaryKeys(null, null, actualTable);
+		final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, actualTable);
 		while (pkRs.next())
 		{
 			pkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
@@ -1156,7 +1158,7 @@ public class DDLGenerator
 		pkRs.close();
 		final boolean isPkColumn = pkCols.contains(columnName.toUpperCase());
 		final Map<String, Map<String, Object>> indexes = new LinkedHashMap<String, Map<String, Object>>();
-		final ResultSet idxRs = metaData.getIndexInfo(null, null, actualTable, false, false);
+		final ResultSet idxRs = metaData.getIndexInfo(catalog, null, actualTable, false, false);
 		while (idxRs.next())
 		{
 			final short type = idxRs.getShort("TYPE");
@@ -1265,7 +1267,7 @@ public class DDLGenerator
 					isNullableStr = effectiveNewNullable ? "YES" : "NO";
 				else
 				{
-					final ResultSet pkColRs = metaData.getColumns(null, null, actualTable, pkCol);
+					final ResultSet pkColRs = metaData.getColumns(catalog, null, actualTable, pkCol);
 					isNullableStr = pkColRs.next() ? pkColRs.getString("IS_NULLABLE") : "YES";
 					pkColRs.close();
 				}
@@ -1480,7 +1482,7 @@ public class DDLGenerator
 		final List<String> sqls = new ArrayList<>();
 		final Set<JSONObject> processed = new HashSet<>();
 		final Map<String, String> tableCaseMap = new HashMap<>();
-		final ResultSet tablesRs = metaData.getTables(null, schema, "%", new String[]{"TABLE"});
+		final ResultSet tablesRs = metaData.getTables(catalog, schema, "%", new String[]{"TABLE"});
 		while(tablesRs.next())
 		{
 			final String actualTableName = tablesRs.getString("TABLE_NAME");
@@ -1580,7 +1582,7 @@ public class DDLGenerator
 						if(!m.getCheckedString("from_table").toUpperCase().equals(fromTable))
 							throw new Exception("Multiple from_tables for moves to new table "+tableName);
 					}
-					final ResultSet pkRs = metaData.getPrimaryKeys(null, null, fromTable);
+					final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, fromTable);
 					final List<String> fromPkCols = new ArrayList<>();
 					while(pkRs.next())
 					{
@@ -1589,7 +1591,7 @@ public class DDLGenerator
 					pkRs.close();
 					if(fromPkCols.isEmpty())
 					{
-						final ResultSet idxs = metaData.getIndexInfo(null, null, fromTable, true, true);
+						final ResultSet idxs = metaData.getIndexInfo(catalog, null, fromTable, true, true);
 						while(idxs.next())
 						{
 							fromPkCols.add(idxs.getString("COLUMN_NAME").toUpperCase());
@@ -1645,7 +1647,7 @@ public class DDLGenerator
 				final Integer desSize = change.containsKey("size") ? Integer.valueOf(change.getCheckedLong("size").intValue()) : null;
 				final Boolean desNullable = change.containsKey("nullable") ? change.getCheckedBoolean("nullable") : Boolean.TRUE;
 				final String actualTable = tableCaseMap.getOrDefault(table, table);
-				final ResultSet colRs = metaData.getColumns(null, null, actualTable, colName);
+				final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, colName);
 				if(!colRs.next())
 				{
 					final Map<String, Object> colDef = new HashMap<>();
@@ -1810,14 +1812,14 @@ public class DDLGenerator
 					colDef.put("size", size);
 				colDef.put("nullable", Boolean.TRUE);
 				sqls.add(getAddColumnSQL(toTable, colDef));
-				final ResultSet pkRs = metaData.getPrimaryKeys(null, null, fromTable);
+				final ResultSet pkRs = metaData.getPrimaryKeys(catalog, null, fromTable);
 				final List<String> fromPkCols = new ArrayList<>();
 				while(pkRs.next())
 					fromPkCols.add(pkRs.getString("COLUMN_NAME").toUpperCase());
 				pkRs.close();
 				if(fromPkCols.isEmpty())
 				{
-					final ResultSet idxs = metaData.getIndexInfo(null, null, fromTable, true, true);
+					final ResultSet idxs = metaData.getIndexInfo(catalog, null, fromTable, true, true);
 					while(idxs.next())
 					{
 						fromPkCols.add(idxs.getString("COLUMN_NAME").toUpperCase());
@@ -1851,7 +1853,7 @@ public class DDLGenerator
 			boolean allNotNull = true;
 			for(final String col : cols)
 			{
-				final ResultSet colRs = metaData.getColumns(null, null, actualTable, col);
+				final ResultSet colRs = metaData.getColumns(catalog, null, actualTable, col);
 				if(colRs.next())
 				{
 					if("YES".equals(colRs.getString("IS_NULLABLE")))

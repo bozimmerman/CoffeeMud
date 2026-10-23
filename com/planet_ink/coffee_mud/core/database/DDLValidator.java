@@ -171,9 +171,10 @@ public class DDLValidator
 			final DatabaseMetaData meta=conn.getMetaData();
 			if(meta==null)
 				return Integer.MIN_VALUE;
+			final String catalog = meta.getConnection().getCatalog();
 			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle") || productName.contains("db2")) ? conn.getSchema() : null;
-			final ResultSet rs=meta.getTables(null, schema, "%", new String[]{"TABLE"});
+			final ResultSet rs=meta.getTables(catalog, schema, "%", new String[]{"TABLE"});
 			final Set<String> dbTables=new HashSet<>();
 			final Map<String, String> tableCaseMap=new HashMap<>();
 			while(rs.next())
@@ -193,7 +194,7 @@ public class DDLValidator
 			for(final String upperT : dbTables)
 			{
 				final String actualT=tableCaseMap.getOrDefault(upperT, upperT);
-				final ResultSet colsRs=meta.getColumns(null, null, actualT, "%");
+				final ResultSet colsRs=meta.getColumns(catalog, null, actualT, "%");
 				final Map<String, JSONObject> dbCols=new HashMap<>();
 				while(colsRs.next())
 				{
@@ -216,7 +217,7 @@ public class DDLValidator
 				dbColumnsByTable.put(upperT, dbCols);
 
 				// primary keys
-				final ResultSet pkRs=meta.getPrimaryKeys(null, null, actualT);
+				final ResultSet pkRs=meta.getPrimaryKeys(catalog, null, actualT);
 				final List<String> dbKeys=new ArrayList<>();
 				while(pkRs.next())
 				{
@@ -228,7 +229,7 @@ public class DDLValidator
 				dbPrimaryKeysByTable.put(upperT, dbKeys);
 
 				// indexes
-				final ResultSet idxRs=meta.getIndexInfo(null, null, actualT, false, false);
+				final ResultSet idxRs=meta.getIndexInfo(catalog, null, actualT, false, false);
 				final Set<String> dbIndexSets=new HashSet<>();
 				while(idxRs.next())
 				{
@@ -552,9 +553,10 @@ public class DDLValidator
 		{
 			conn=DB.DBFetch();
 			final DatabaseMetaData meta=conn.getMetaData();
+			final String catalog = meta.getConnection().getCatalog();
 			final String productName=meta.getDatabaseProductName().toLowerCase();
 			final String schema = (productName.contains("oracle"))?conn.getSchema():null;
-			final ResultSet rs=meta.getTables(null, schema, "%", new String[] { "TABLE" });
+			final ResultSet rs=meta.getTables(catalog, schema, "%", new String[] { "TABLE" });
 			final Set<String> dbTables=new HashSet<>();
 			final Map<String, String> tableCaseMap=new HashMap<>();
 			while(rs.next())
@@ -573,7 +575,7 @@ public class DDLValidator
 			for(final String upperT : dbTables)
 			{
 				final String actualT=tableCaseMap.getOrDefault(upperT, upperT);
-				final ResultSet colsRs=meta.getColumns(null, null, actualT, "%");
+				final ResultSet colsRs=meta.getColumns(catalog, null, actualT, "%");
 				final Map<String, JSONObject> dbCols=new HashMap<>();
 				while(colsRs.next())
 				{
@@ -595,7 +597,7 @@ public class DDLValidator
 				colsRs.close();
 				dbColumnsByTable.put(upperT, dbCols);
 
-				final ResultSet pkRs=meta.getPrimaryKeys(null, null, actualT);
+				final ResultSet pkRs=meta.getPrimaryKeys(catalog, null, actualT);
 				final List<String> dbKeys=new ArrayList<>();
 				while(pkRs.next())
 				{
@@ -605,7 +607,7 @@ public class DDLValidator
 				pkRs.close();
 				Collections.sort(dbKeys);
 				dbPrimaryKeysByTable.put(upperT, dbKeys);
-				final ResultSet idxRs=meta.getIndexInfo(null, null, actualT, false, false);
+				final ResultSet idxRs=meta.getIndexInfo(catalog, null, actualT, false, false);
 				final Set<String> dbIndexSets=new HashSet<>();
 				while(idxRs.next())
 				{
