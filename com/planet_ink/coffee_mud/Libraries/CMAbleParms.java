@@ -1761,15 +1761,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 		if(token.token instanceof String)
 		{
-			final String str = (String)token.token;
-			if((!matchMTLiteral(str, token.placeholderArgs, proposition, index, outIndex))&&(!token.optional))
+			if((!matchMTLiteral(token, proposition, index, outIndex))&&(!token.optional))
 				return false;
 			if(token.repeats)
 			{
 				while(true)
 				{
 					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(str, token.placeholderArgs, proposition, outIndex[0], outIndex))
+					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex))
 					{
 						outIndex[0] = saveIndex;
 						break;
@@ -1839,8 +1838,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private boolean matchMTLiteral(final String literal, final String[] placeholderArgs,
-								   final String proposition, int index, final int[] outIndex)
+	private boolean confirmParmValue(final String parmName, final String value)
+	{
+		final String key = parmName.toUpperCase().trim();
+		final Map<String, AbilityParmEditor> editors = getEditors();
+		if(editors.containsKey(key))
+			return editors.get(key).confirmValue(value);
+		else
+		if(CMath.s_valueOf(ParmType.class,key)!=null)
+		{
+			//TODO: finish
+		}
+		return true;
+	}
+
+	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex)
 	{
 		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
 			index++;
@@ -1849,7 +1861,35 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			outIndex[0] = index;
 			return false;
 		}
-		if(placeholderArgs != null) // is a placeholder
+		final String literal = (String)token.token;
+		if(token.greedyLiteral != null)
+		{
+			// Consume at least one character, then stop at the first occurrence
+			// of the literal immediately following the greedy placeholder.
+			final int end = proposition.length();
+			int i = index + 1;
+			while(i < end)
+			{
+				if(proposition.startsWith(token.greedyLiteral, i))
+				{
+					if(!confirmParmValue(literal, proposition.substring(index, i).trim()))
+						return false;
+					outIndex[0] = i;
+					return true;
+				}
+				i++;
+			}
+			return false;
+		}
+		else
+		if(token.greedy) // greedy placeholder at end of format, matches to end
+		{
+			if(!confirmParmValue(literal, proposition.substring(index).trim()))
+				return false;
+			outIndex[0] = proposition.length();
+			return true;
+		}
+		if(token.placeholderArgs != null) // is a placeholder
 		{
 			final int start = index;
 			//TODO: way way way too restrictive
@@ -1858,20 +1898,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			while((index < proposition.length())
 			&&(Character.isLetterOrDigit(proposition.charAt(index)) || (proposition.charAt(index) == '_')))
 				index++;
+			if(!confirmParmValue(literal, proposition.substring(start,index)))
+				return false;
 			outIndex[0] = index;
-			final String value = proposition.substring(start,index);
-			final String editorKey = literal.toUpperCase().trim();
-			final Map<String, AbilityParmEditor> editors = getEditors();
-			if(editors.containsKey(editorKey))
-			{
-				final AbilityParmEditor editor = editors.get(editorKey);
-				return editor.confirmValue(value);
-			}
-			else
-			if(CMath.s_valueOf(ParmType.class,editorKey)!=null)
-			{
-				//TODO: finish
-			}
 			return true;
 		}
 		else
@@ -1893,6 +1922,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public boolean optional = false;
 		public boolean isAlternative = false; // TRUE if this MTToken[] represents alternatives, FALSE if sequence
 		public String[] placeholderArgs = null;
+		public String greedyLiteral = null;
+		public boolean greedy = false;
 
 		public MTToken(final Object token, final boolean optional)
 		{
@@ -1901,6 +1932,41 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	private static boolean endsWithOpenGreedy(final MTToken token)
+	{
+		if(token == null)
+			return false;
+		if(token.token instanceof String)
+			return token.greedy && (token.greedyLiteral == null);
+		if(token.token instanceof MTToken[])
+		{
+			final MTToken[] children = (MTToken[])token.token;
+			if(children.length == 0)
+				return false;
+			if(token.isAlternative)
+			{
+				for(final MTToken child : children)
+				{
+					if(endsWithOpenGreedy(child))
+						return true;
+				}
+				return false;
+			}
+			return endsWithOpenGreedy(children[children.length - 1]);
+		}
+		return false;
+	}
+
+	/**
+	 * Parses a misc text format.  The format supports literals, [PLACEHOLDER]
+	 * (optionally with (args)), (optional) groups, '/' alternatives, '...'
+	 * repetition, and '\' escapes.  A placeholder whose name ends with "..."
+	 * (for example [NAME...]) is greedy.
+	 *
+	 * @param format the misc text format
+	 * @return the parsed token tree
+	 * @throws CMException if the format is malformed
+	 */
 	private static MTToken parseMiscTextFormat(final String format) throws CMException
 	{
 		return parseMTSequence(format, 0, format.length());
@@ -1952,6 +2018,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				inner.optional = true;
 				tokens.add(inner);
 				index = closeIndex;
+				if(endsWithOpenGreedy(inner))
+				{
+					int la = closeIndex;
+					while((la < end) && Character.isWhitespace(format.charAt(la)))
+						la++;
+					if(la < end)
+						throw new CMException("Greedy placeholder at end of group requires end-of-string at " + index);
+				}
 			}
 			else
 			if(c == '[')
@@ -1966,7 +2040,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
 				final String placeholder = format.substring(index + 1, closeIndex).trim();
+				final boolean greedy = placeholder.endsWith("...");
 				String placeholderToken = placeholder;
+				if(greedy)
+					placeholderToken = placeholderToken.substring(0, placeholderToken.length() - 3).trim();
+				if(placeholderToken.length() == 0)
+					throw new CMException("Empty placeholder name at " + index);
 				String[] placeholderArgs = new String[0];
 				final int x = placeholderToken.indexOf('(');
 				if(x>0 && placeholderToken.endsWith(")"))
@@ -1979,6 +2058,51 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				tokens.add(token);
 				token.placeholderArgs=placeholderArgs;
 				index = closeIndex + 1;
+				if(greedy)
+				{
+					if(index >= end)
+					{
+						// Greedy placeholder at the end of the format consumes the rest.
+						token.greedy = true;
+					}
+					else
+					if(Character.isWhitespace(format.charAt(index)))
+					{
+						// A space immediately after the ] terminates the greedy
+						// part, so the placeholder behaves like a normal one.
+					}
+					else
+					{
+						final char nc = format.charAt(index);
+						if((nc == '[') || (nc == '(') || (nc == '/') || (nc == ']') || (nc == '.'))
+							throw new CMException("Greedy placeholder requires an immediately following literal or end-of-string at " + index);
+						final StringBuilder lb = new StringBuilder();
+						int la = index;
+						while(la < end)
+						{
+							final char lc = format.charAt(la);
+							if(Character.isWhitespace(lc)
+							|| (lc == '/') || (lc == '(') || (lc == '[') || (lc == '.') || (lc == ')'))
+								break;
+							if(lc == '\\')
+							{
+								if(la + 1 >= end)
+									throw new CMException("Trailing backslash at " + la);
+								lb.append(format.charAt(la + 1));
+								la += 2;
+							}
+							else
+							{
+								lb.append(lc);
+								la++;
+							}
+						}
+						if(lb.length() == 0)
+							throw new CMException("Greedy placeholder requires an immediately following literal or end-of-string at " + index);
+						token.greedy = true;
+						token.greedyLiteral = lb.toString();
+					}
+				}
 			}
 			else
 			if(c == '.')

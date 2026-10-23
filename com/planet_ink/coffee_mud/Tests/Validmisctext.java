@@ -267,6 +267,81 @@ public class Validmisctext extends StdTest
 		{
 			return ("Error#37: '[FREQUENCY]' should not match 'notanumber' (typed placeholder)");
 		}
+		// Test 38: Greedy placeholder at end of format captures the rest
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]", "foo bar"))
+		{
+			return ("Error#38: '[NAME...]' should match 'foo bar'");
+		}
+		// Test 39: Greedy placeholder at end of format requires input
+		if (CMLib.ableParms().isValidMiscText("[NAME...]", ""))
+		{
+			return ("Error#39: '[NAME...]' should not match an empty input");
+		}
+		// Test 40: Greedy placeholder with an immediately following literal
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]tail", "foo bartail"))
+		{
+			return ("Error#40: '[NAME...]tail' should match 'foo bartail'");
+		}
+		// Test 41: Greedy value may include spaces before the following literal
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]tail", "foo bar tail"))
+		{
+			return ("Error#41: '[NAME...]tail' should match 'foo bar tail'");
+		}
+		// Test 42: Greedy placeholder requires at least one character
+		if (CMLib.ableParms().isValidMiscText("[NAME...]tail", "tail"))
+		{
+			return ("Error#42: '[NAME...]tail' should not match an empty value");
+		}
+		// Test 43: A space after the ] terminates the greedy part
+		if (CMLib.ableParms().isValidMiscText("[NAME...] tail", "foo bar tail"))
+		{
+			return ("Error#43: '[NAME...] tail' should not be greedy across the space");
+		}
+		// Test 44: A space after the ] makes it behave like [NAME]
+		if (!CMLib.ableParms().isValidMiscText("[NAME...] tail", "foo tail"))
+		{
+			return ("Error#44: '[NAME...] tail' should behave like '[NAME] tail'");
+		}
+		// Test 45: Escaped literal after a space
+		if (!CMLib.ableParms().isValidMiscText("[NAME...] \\[x\\]", "foo [x]"))
+		{
+			return ("Error#45: '[NAME...] \\[x\\]' should match 'foo [x]'");
+		}
+		// Test 46: Escaped literal immediately following the greedy placeholder
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]\\[x\\]", "foo [x]"))
+		{
+			return ("Error#46: '[NAME...]\\[x\\]' should match 'foo [x]'");
+		}
+		// Test 47: Greedy values may contain non-ASCII characters
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]tail", "caf\u00e9tail"))
+		{
+			return ("Error#47: '[NAME...]tail' should match 'caf\u00e9tail'");
+		}
+		// Test 48: Greedy values may contain backslashes
+		if (!CMLib.ableParms().isValidMiscText("[NAME...]b", "a\\b"))
+		{
+			return ("Error#48: '[NAME...]b' should match 'a\\b'");
+		}
+		// Test 49: Greedy typed placeholder - editor accepts valid value
+		if (!CMLib.ableParms().isValidMiscText("[FREQUENCY...]x", "15x"))
+		{
+			return ("Error#49: '[FREQUENCY...]x' should match '15x'");
+		}
+		// Test 50: Greedy typed placeholder - editor rejects invalid value
+		if (CMLib.ableParms().isValidMiscText("[FREQUENCY...]x", "notanumberx"))
+		{
+			return ("Error#50: '[FREQUENCY...]x' should not match 'notanumberx'");
+		}
+		// Test 51: Repeating a greedy placeholder is rejected (not a hang)
+		if (CMLib.ableParms().isValidMiscText("[NAME...]...", "foo"))
+		{
+			return ("Error#51: '[NAME...]...' should be rejected");
+		}
+		// Test 52: A greedy placeholder at the end of a group must end the format
+		if (CMLib.ableParms().isValidMiscText("([NAME...]) tail", "foo tail"))
+		{
+			return ("Error#52: '([NAME...]) tail' should be rejected");
+		}
 		return null;
 	}
 }

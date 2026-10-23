@@ -66,6 +66,7 @@ public class Spell_LimitedWish extends Spell_Wish
 		return false;
 	}
 
+	@Override
 	protected boolean isLegalTarget(final MOB mob, final Physical target, final boolean isTargetChanger, final String myWish)
 	{
 		if((isTargetChanger) && (target instanceof MOB) && (target != mob))
