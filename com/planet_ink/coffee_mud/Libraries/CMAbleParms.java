@@ -1845,9 +1845,44 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(editors.containsKey(key))
 			return editors.get(key).confirmValue(value);
 		else
-		if(CMath.s_valueOf(ParmType.class,key)!=null)
 		{
-			//TODO: finish
+			final ParmType fieldType = (ParmType)CMath.s_valueOf(ParmType.class,key);
+			if(fieldType != null)
+			{
+				final boolean spaceOK = fieldType != ParmType.ONEWORD;
+				boolean emptyOK = false;
+				switch(fieldType)
+				{
+				case STRINGORNULL:
+					emptyOK = true;
+				//$FALL-THROUGH$
+				case ONEWORD:
+				case STRING:
+				{
+					if((!spaceOK) && (value.indexOf(' ') >= 0))
+						return false;
+					return (emptyOK)||(value.trim().length()>0);
+				}
+				case NUMBERORNULL:
+					if(value.length()==0)
+						return true;
+					//$FALL-THROUGH$
+				case NUMBER:
+					return CMath.isInteger(value);
+				case NUMBER_PAIR:
+				{
+					if(value==null)
+						return emptyOK;
+					final int x=value.indexOf(',');
+					return CMath.isInteger(value)
+						||((x>0)&&(CMath.isInteger(value.substring(0,x).trim()))&&(CMath.isInteger(value.substring(x+1).trim())));
+				}
+				case CHOICES:
+				case MULTICHOICES:
+				case SPECIAL:
+					break;
+				}
+			}
 		}
 		return true;
 	}
