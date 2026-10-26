@@ -361,6 +361,20 @@ public class Mood extends StdAbility
 	};
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder choices = new StringBuilder();
+		for(final MoodType mood : MoodType.values())
+		{
+			if(choices.length() > 0)
+				choices.append(",");
+			choices.append(mood.name());
+		}
+		choices.append(",random");
+		return "([CHOICES(choices=" + choices.toString() + "/prompt=Mood/colh=Mood)]/[NUMBER(prompt=Mood index/colh=Mood)])";
+	}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		// this checks the input, and allows us to get mood

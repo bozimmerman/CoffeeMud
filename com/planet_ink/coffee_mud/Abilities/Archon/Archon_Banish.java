@@ -148,6 +148,12 @@ public class Archon_Banish extends ArchonSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "<P>/([ROOM_ID(prompt=Room/colh=Room)...]<P>)[NUMBER(prompt=Release time/colh=Release)]";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
