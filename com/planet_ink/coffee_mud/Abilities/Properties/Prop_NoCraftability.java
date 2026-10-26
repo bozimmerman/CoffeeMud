@@ -86,6 +86,12 @@ public class Prop_NoCraftability extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ZAPPERMASK(prompt=Mask/colh=Mask)...])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

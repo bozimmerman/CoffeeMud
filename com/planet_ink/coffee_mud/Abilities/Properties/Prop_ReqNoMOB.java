@@ -68,6 +68,12 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=NOFOLLOW/prompt=No follow/colh=No follow)]) ([CHECK(name=NOSNEAK/prompt=No sneak/colh=No sneak)])";
+	}
+
+	@Override
 	public void setMiscText(final String txt)
 	{
 		noFollow=false;

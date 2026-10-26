@@ -71,6 +71,12 @@ public class AmbianceAdder extends StdAbility
 	protected final List<String> ambiances = new ArrayList<String>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Ambiance/colh=Ambiance)...])";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
