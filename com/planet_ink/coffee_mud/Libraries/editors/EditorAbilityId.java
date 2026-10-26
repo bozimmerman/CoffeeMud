@@ -44,9 +44,14 @@ import java.util.regex.Pattern;
  */
 public class EditorAbilityId extends AbilityParmEditorImpl
 {
+	public EditorAbilityId(final String ID, final String header, final ParmType type)
+	{
+		super(ID, header, type);
+	}
+
 	public EditorAbilityId()
 	{
-		super("ABILITY_ID",CMLib.lang().L("Ability ID"),ParmType.CHOICES);
+		this("ABILITY_ID",CMLib.lang().L("Ability ID"),ParmType.CHOICES);
 	}
 
 	@Override

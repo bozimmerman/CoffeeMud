@@ -148,6 +148,12 @@ public class Prayer_StorePrayer extends Prayer implements AbilityContainer, Disc
 	@Override
 	public void setMaxCharges(final int num) {  }
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[PRAYER_ID(prompt=Stored prayer/colh=Prayer)]/[NUMBER(prompt=Charges/colh=Charges)]";
+	}
+
 	protected String getDeity()
 	{
 		final String deityName=CMLib.law().getClericInfused(affected);
