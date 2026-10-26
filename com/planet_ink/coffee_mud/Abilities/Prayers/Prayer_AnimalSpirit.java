@@ -209,6 +209,19 @@ public class Prayer_AnimalSpirit extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder choices = new StringBuilder();
+		for(final AnimalSpirit spirit : AnimalSpirit.values())
+		{
+			if(choices.length() > 0)
+				choices.append(',');
+			choices.append(spirit.name());
+		}
+		return "[CHOICES(choices="+choices.toString()+"/prompt=Animal spirit/colh=Spirit)...]";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final boolean success = super.proficiencyCheck(mob, 0, auto);
