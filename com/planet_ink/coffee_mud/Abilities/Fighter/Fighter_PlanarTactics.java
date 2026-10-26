@@ -54,6 +54,12 @@ public class Fighter_PlanarTactics extends Fighter_FieldTactics
 		return Ability.ACODE_SKILL|Ability.DOMAIN_COSMOLOGY;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane name/colh=Plane)])";
+	}
+
 	protected volatile Area lastArea = null;
 	protected volatile boolean inPlane = false;
 

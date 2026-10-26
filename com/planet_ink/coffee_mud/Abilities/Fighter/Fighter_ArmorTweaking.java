@@ -114,6 +114,12 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Armor bonus/colh=Bonus)])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if((affected instanceof Item)

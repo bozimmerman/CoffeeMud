@@ -114,6 +114,12 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Damage bonus/colh=Bonus)])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof MOB)

@@ -91,6 +91,12 @@ public class Fighter_CosmicAdaptation extends FighterSkill
 		return false;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane name/colh=Plane)...])";
+	}
+
 	protected volatile boolean	activated	= false;
 	protected volatile boolean	inPlane		= false;
 	protected volatile Area		lastArea	= null;

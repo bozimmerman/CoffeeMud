@@ -197,6 +197,12 @@ public class Fighter_Stance extends FighterSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(None/Defensive/Offensive/Wild)";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		if((affectedEnv instanceof MOB)

@@ -139,6 +139,12 @@ public class Disease_PlanarInstability extends Disease
 		super.setMiscText(newText);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Instability level/colh=Level)])";
+	}
+
 	protected final static int[] MISC_SAVES=new int[]
 	{
 		CharStats.STAT_SAVE_BLUNT,
