@@ -379,9 +379,10 @@ public interface GenericEditor extends CMLibrary
 	 * @param showNumber the item number of this menu entry, possibly ignored
 	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
 	 * @param inParms true to allow parms to be edited, false otherwise
+	 * @param fieldDisplayStr the summary label to display
 	 * @throws IOException any i/o errors that occur (socket reset errors usually)
 	 */
-	public void spellsOrBehavs(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms) throws IOException;
+	public void spellsOrBehavs(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms, final String fieldDisplayStr) throws IOException;
 
 	/**
 	 * Prompts the given user using the mud's standard menu interface.
@@ -395,9 +396,10 @@ public interface GenericEditor extends CMLibrary
 	 * @param showNumber the item number of this menu entry, possibly ignored
 	 * @param showFlag 0 to only show prompt and value, -999 to always edit, or the showNumber to edit
 	 * @param inParms true to allow parms to be edited, false otherwise
+	 * @param fieldDisplayStr the summary label to display
 	 * @throws IOException any i/o errors that occur (socket reset errors usually)
 	 */
-	public void spellsOrBehaviors(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms) throws IOException;
+	public void spellsOrBehaviors(MOB mob, List<CMObject> V, int showNumber, int showFlag, boolean inParms, final String fieldDisplayStr) throws IOException;
 
 	/**
 	 * Prompts the given user using the mud's standard menu interface.

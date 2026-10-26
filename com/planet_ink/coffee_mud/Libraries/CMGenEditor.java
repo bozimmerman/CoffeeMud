@@ -5518,7 +5518,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void spellsOrBehavs(final MOB mob, final List<CMObject> V, final int showNumber, final int showFlag, final boolean inParms) throws IOException
+	public void spellsOrBehavs(final MOB mob, final List<CMObject> V, final int showNumber, final int showFlag, final boolean inParms, final String fieldDisplayStr) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -5544,7 +5544,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
-			mob.tell(L("@x1. Effects: '@x2'.",""+showNumber,affectstr));
+			mob.tell(L("@x1. @x2: '@x3'.",""+showNumber,fieldDisplayStr,affectstr));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			behave=mob.session().prompt(L("Enter a spell/behavior to add/remove (?)\n\r:"),"");
@@ -5623,7 +5623,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public void spellsOrBehaviors(final MOB mob, final List<CMObject> V, final int showNumber, final int showFlag, final boolean inParms) throws IOException
+	public void spellsOrBehaviors(final MOB mob, final List<CMObject> V, final int showNumber, final int showFlag, final boolean inParms, final String fieldDisplayStr) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
@@ -5661,7 +5661,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
-			mob.tell(L("@x1. Effects/Behavs: '@x2'.",""+showNumber,affectstr));
+			mob.tell(L("@x1. @x2: '@x3'.",""+showNumber,fieldDisplayStr,affectstr));
 			if((showFlag!=showNumber)&&(showFlag>-999))
 				return;
 			behave=mob.session().prompt(L("Enter a spell/behavior to add/remove (?)\n\r:"),"");
@@ -6971,7 +6971,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(okToProceed)
 		{
 			okToProceed = false;
-			spellsOrBehavs(mob,spells,showNumber[0],showFlag,true);
+			spellsOrBehavs(mob,spells,showNumber[0],showFlag,true,L("Effects"));
 			final StringBuffer sameCheck = new StringBuffer("");
 			for(int s=0;s<spells.size();s++)
 			{

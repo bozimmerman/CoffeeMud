@@ -47,7 +47,7 @@ import java.util.regex.Pattern;
    limitations under the License.
  */
 
-public abstract class AbilityParmEditorImpl implements AbilityParmEditor
+public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Cloneable
 {
 	private final String	ID;
 	private final ParmType	fieldType;
@@ -81,6 +81,31 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor
 	public String prompt()
 	{
 		return prompt;
+	}
+
+	@Override
+	public AbilityParmEditor copyOf()
+	{
+		try
+		{
+			return (AbilityParmEditor)super.clone();
+		}
+		catch(final CloneNotSupportedException e)
+		{
+			throw new IllegalStateException(e);
+		}
+	}
+
+	@Override
+	public void setPrompt(final String prompt)
+	{
+		this.prompt = prompt;
+	}
+
+	@Override
+	public void setColHeader(final String colHeader)
+	{
+		header = colHeader;
 	}
 
 	@Override

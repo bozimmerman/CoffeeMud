@@ -47,6 +47,7 @@ public class EditorPcodedSpellList extends AbilityParmEditorImpl
 	public EditorPcodedSpellList()
 	{
 		super("PCODED_SPELL_LIST",CMLib.lang().L("Spell Affects"),ParmType.SPECIAL);
+		setPrompt(CMLib.lang().L("Effects/Behavs"));
 	}
 
 	@Override
@@ -298,7 +299,7 @@ public class EditorPcodedSpellList extends AbilityParmEditorImpl
 		while(okToProceed)
 		{
 			okToProceed = false;
-			CMLib.genEd().spellsOrBehaviors(mob,spells,showNumber[0],showFlag,true);
+			CMLib.genEd().spellsOrBehaviors(mob,spells,showNumber[0],showFlag,true,prompt());
 			final StringBuffer sameCheck = new StringBuffer("");
 			for(int s=0;s<spells.size();s++)
 			{

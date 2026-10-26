@@ -185,6 +185,24 @@ public interface AbilityParameters extends CMLibrary
 		public String prompt();
 
 		/**
+		 * Returns a copy of this editor, retaining its concrete editor type.
+		 * @return a per-use copy of this editor
+		 */
+		public AbilityParmEditor copyOf();
+
+		/**
+		 * Sets the prompt on this editor instance.
+		 * @param prompt the new prompt
+		 */
+		public void setPrompt(String prompt);
+
+		/**
+		 * Sets the column header on this editor instance.
+		 * @param colHeader the new column header
+		 */
+		public void setColHeader(String colHeader);
+
+		/**
 		 * The default value to use when no previous value is available.
 		 * @return default value to use when no previous value is available
 		 */

@@ -47,6 +47,7 @@ public class EditorWearLoc extends AbilityParmEditorImpl
 	public EditorWearLoc()
 	{
 		super("WEAR_LOC",CMLib.lang().L("Wear Loc"),ParmType.SPECIAL);
+		setPrompt(CMLib.lang().L("Wear Location"));
 	}
 
 	@Override
@@ -116,6 +117,6 @@ public class EditorWearLoc extends AbilityParmEditorImpl
 	@Override
 	public String commandLinePrompt(final MOB mob, final String oldVal, final int[] showNumber, final int showFlag) throws java.io.IOException
 	{
-		return CMLib.genEd().promptChoice(mob, oldVal, ++showNumber[0], showFlag, L("Wear Location"), choices);
+		return CMLib.genEd().promptChoice(mob, oldVal, ++showNumber[0], showFlag, prompt(), choices);
 	}
 }

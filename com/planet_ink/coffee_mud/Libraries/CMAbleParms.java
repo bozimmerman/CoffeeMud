@@ -1147,16 +1147,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	protected class AbilityRecipeDataImpl implements AbilityRecipeData
 	{
-		private String recipeFilename;
-		private String recipeFormat;
-		private Vector<Object> columns;
-		private Vector<AbilityRecipeRow> dataRows;
-		private int numberOfDataColumns;
-		public String[] columnHeaders;
-		public int[] columnLengths;
-		public int classFieldIndex;
-		private String parseError = null;
-		private boolean wasVFS = false;
+		private String						recipeFilename;
+		private String						recipeFormat;
+		private Vector<Object>				columns;
+		private Vector<AbilityRecipeRow>	dataRows;
+		private int							numberOfDataColumns;
+		public String[]						columnHeaders;
+		public int[]						columnLengths;
+		public int							classFieldIndex;
+		private String						parseError	= null;
+		private boolean						wasVFS		= false;
 
 		public AbilityRecipeDataImpl(final String recipeFilename, final String recipeFormat)
 		{
@@ -1838,7 +1838,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private boolean confirmParmValue(final String parmName, final String value)
+	private boolean confirmParmValue(final String parmName, final String value, final Map<String,String> parameterArgs)
 	{
 		final String key = parmName.toUpperCase().trim();
 		final Map<String, AbilityParmEditor> editors = getEditors();
@@ -1846,41 +1846,46 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return editors.get(key).confirmValue(value);
 		else
 		{
-			final ParmType fieldType = (ParmType)CMath.s_valueOf(ParmType.class,key);
-			if(fieldType != null)
+			final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class,key);
+			if(parmType != null)
 			{
-				final boolean spaceOK = fieldType != ParmType.ONEWORD;
-				boolean emptyOK = false;
-				switch(fieldType)
+				switch(parmType)
 				{
 				case STRINGORNULL:
-					emptyOK = true;
-				//$FALL-THROUGH$
+					return true;
 				case ONEWORD:
+					return (value.trim().length() > 0) && (value.indexOf(' ') < 0);
 				case STRING:
-				{
-					if((!spaceOK) && (value.indexOf(' ') >= 0))
-						return false;
-					return (emptyOK)||(value.trim().length()>0);
-				}
+					return value.trim().length() > 0;
 				case NUMBERORNULL:
-					if(value.length()==0)
+					if(value.length() == 0)
 						return true;
 					//$FALL-THROUGH$
 				case NUMBER:
 					return CMath.isInteger(value);
 				case NUMBER_PAIR:
 				{
-					if(value==null)
-						return emptyOK;
-					final int x=value.indexOf(',');
+					final int x = value.indexOf(',');
 					return CMath.isInteger(value)
-						||((x>0)&&(CMath.isInteger(value.substring(0,x).trim()))&&(CMath.isInteger(value.substring(x+1).trim())));
+						||((x > 0)&&(CMath.isInteger(value.substring(0,x).trim()))&&(CMath.isInteger(value.substring(x+1).trim())));
 				}
 				case CHOICES:
 				case MULTICHOICES:
+				{
+					if((parmType == ParmType.MULTICHOICES)&&(CMath.isInteger(value)))
+						return true;
+					final String choicesValue = (parameterArgs == null)?null:parameterArgs.get("CHOICES");
+					if(choicesValue == null)
+						return false;
+					for(final String choice : CMParms.parseCommas(choicesValue,true))
+					{
+						if(choice.equalsIgnoreCase(value.trim()))
+							return true;
+					}
+					return false;
+				}
 				case SPECIAL:
-					break;
+					return false;
 				}
 			}
 		}
@@ -1907,7 +1912,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				if(proposition.startsWith(token.greedyLiteral, i))
 				{
-					if(!confirmParmValue(literal, proposition.substring(index, i).trim()))
+					if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
 						return false;
 					outIndex[0] = i;
 					return true;
@@ -1919,7 +1924,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		else
 		if(token.greedy) // greedy placeholder at end of format, matches to end
 		{
-			if(!confirmParmValue(literal, proposition.substring(index).trim()))
+			if(!confirmParmValue(literal, proposition.substring(index).trim(), token.parameterArgs))
 				return false;
 			outIndex[0] = proposition.length();
 			return true;
@@ -1933,7 +1938,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			while((index < proposition.length())
 			&&(Character.isLetterOrDigit(proposition.charAt(index)) || (proposition.charAt(index) == '_')))
 				index++;
-			if(!confirmParmValue(literal, proposition.substring(start,index)))
+			if(!confirmParmValue(literal, proposition.substring(start,index), token.parameterArgs))
 				return false;
 			outIndex[0] = index;
 			return true;
@@ -1952,13 +1957,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	private static class MTToken
 	{
-		public Object token; // String (for literals/placeholders) or MTToken[] (for sequences/alternatives)
-		public boolean repeats = false;
-		public boolean optional = false;
-		public boolean isAlternative = false; // TRUE if this MTToken[] represents alternatives, FALSE if sequence
-		public String[] placeholderArgs = null;
-		public String greedyLiteral = null;
-		public boolean greedy = false;
+		public Object				token;						// String (for literals/placeholders) or MTToken[] (for sequences/alternatives)
+		public boolean				repeats			= false;
+		public boolean				optional		= false;
+		public boolean				isAlternative	= false;	// TRUE if this MTToken[] represents alternatives, FALSE if sequence
+		public String[]				placeholderArgs	= null;
+		public Map<String, String>	parameterArgs	= null;
+		public String				greedyLiteral	= null;
+		public boolean				greedy			= false;
 
 		public MTToken(final Object token, final boolean optional)
 		{
@@ -2082,16 +2088,59 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(placeholderToken.length() == 0)
 					throw new CMException("Empty placeholder name at " + index);
 				String[] placeholderArgs = new String[0];
+				final Map<String,String> parameterArgs = new HashMap<String,String>();
 				final int x = placeholderToken.indexOf('(');
-				if(x>0 && placeholderToken.endsWith(")"))
+				final int firstCloseParen = placeholderToken.indexOf(')');
+				if((x >= 0)||(firstCloseParen >= 0))
 				{
-					final String argGroup = placeholderToken.substring(x+1,placeholderToken.length()-1);
+					if((x <= 0)||(firstCloseParen >= 0 && firstCloseParen < x))
+						throw new CMException("Malformed placeholder arguments at " + index);
+					int depth = 0;
+					int closeParen = -1;
+					for(int i=x;i<placeholderToken.length();i++)
+					{
+						if(placeholderToken.charAt(i) == '\\')
+						{
+							i++;
+							continue;
+						}
+						if(placeholderToken.charAt(i) == '(')
+							depth++;
+						else
+						if(placeholderToken.charAt(i) == ')')
+						{
+							depth--;
+							if(depth == 0)
+							{
+								closeParen = i;
+								break;
+							}
+						}
+					}
+					if((depth != 0)||(closeParen != placeholderToken.length()-1))
+						throw new CMException("Malformed placeholder arguments at " + index);
+					final String argGroup = placeholderToken.substring(x+1,closeParen);
 					placeholderArgs = CMParms.parseAny(argGroup, '/', false).toArray(new String[0]);
+					for(final String arg : placeholderArgs)
+					{
+						final int equals = arg.indexOf('=');
+						if(equals <= 0)
+							throw new CMException("Malformed placeholder argument at " + index);
+						final String argName = arg.substring(0,equals).trim();
+						final String argValue = arg.substring(equals+1).trim();
+						if((argName.length() == 0)||(argValue.length() == 0))
+							throw new CMException("Malformed placeholder argument at " + index);
+						final String argKey = argName.toUpperCase(Locale.ROOT);
+						if(parameterArgs.containsKey(argKey))
+							throw new CMException("Duplicate placeholder argument " + argName + " at " + index);
+						parameterArgs.put(argKey,argValue);
+					}
 					placeholderToken = placeholderToken.substring(0,x).trim();
 				}
 				final MTToken token = new MTToken(placeholderToken, false);
 				tokens.add(token);
 				token.placeholderArgs=placeholderArgs;
+				token.parameterArgs=parameterArgs;
 				index = closeIndex + 1;
 				if(greedy)
 				{

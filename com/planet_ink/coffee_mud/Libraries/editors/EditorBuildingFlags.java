@@ -134,7 +134,7 @@ public class EditorBuildingFlags extends AbilityParmEditorImpl
 	{
 		final Pair<String[],String[]> codesFlags = getBuildingCodesNFlags();
 		final String help=CMParms.combineWith(Arrays.asList(codesFlags.second), ',');
-		final String newVal = CMLib.genEd().prompt(mob, oldVal, ++showNumber[0], showFlag, L("Flags"), true, help);
+		final String newVal = CMLib.genEd().prompt(mob, oldVal, ++showNumber[0], showFlag, prompt(), true, help);
 		String[] newVals;
 		if(newVal.indexOf(',')>0)
 			newVals = CMParms.parseCommas(newVal.toUpperCase().trim(), true).toArray(new String[0]);

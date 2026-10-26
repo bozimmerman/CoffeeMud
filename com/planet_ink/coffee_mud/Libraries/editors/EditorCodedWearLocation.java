@@ -221,8 +221,10 @@ public class EditorCodedWearLocation extends AbilityParmEditorImpl
 		final boolean[] logicalAnd = new boolean[1];
 		final double[] hardBonus=new double[1];
 		CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-		CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
-		CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
+		final int layerShowNumber = ++showNumber[0];
+		final int locationShowNumber = ++showNumber[0];
+		CMLib.genEd().wornLayer(mob,layerAtt,layers,layerShowNumber,showFlag);
+		CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,locationShowNumber,showFlag);
 		return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 	}
 }

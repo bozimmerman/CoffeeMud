@@ -48,6 +48,7 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 	public EditorItemCmare()
 	{
 		super("ITEM_CMARE",CMLib.lang().L("Items"),ParmType.SPECIAL);
+		setPrompt("Item");
 	}
 
 	@Override
@@ -85,12 +86,6 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 		if(I==null)
 			return defaultValue();
 		return CMLib.coffeeMaker().getItemXML(I);
-	}
-
-	@Override
-	public String prompt()
-	{
-		return "Item";
 	}
 
 	@Override
