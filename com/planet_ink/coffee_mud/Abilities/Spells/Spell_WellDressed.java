@@ -108,6 +108,12 @@ public class Spell_WellDressed extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[NUMBER(prompt=Dress code/colh=Code)]";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

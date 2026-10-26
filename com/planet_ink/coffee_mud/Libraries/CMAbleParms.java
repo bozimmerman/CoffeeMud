@@ -1902,6 +1902,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return false;
 		}
 		final String literal = (String)token.token;
+		final String lowerProposition = proposition.toLowerCase();
 		if(token.greedyLiteral != null)
 		{
 			// Consume at least one character, then stop at the first occurrence
@@ -1910,7 +1911,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			int i = index + 1;
 			while(i < end)
 			{
-				if(proposition.startsWith(token.greedyLiteral, i))
+				if(lowerProposition.startsWith(token.greedyLiteral.toLowerCase(), i))
 				{
 					if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
 						return false;
@@ -1945,8 +1946,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		else
 		{
-			// Match literal string
-			if(proposition.substring(index).startsWith(literal))
+			// Match literal string, ignoring case
+			if(lowerProposition.startsWith(literal.toLowerCase(), index))
 			{
 				outIndex[0] = index + literal.length();
 				return true;

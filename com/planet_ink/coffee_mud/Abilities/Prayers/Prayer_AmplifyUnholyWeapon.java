@@ -96,12 +96,19 @@ public class Prayer_AmplifyUnholyWeapon extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(LEVEL=(+/-)[NUMBER(prompt=Amplification level/colh=Level)])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof Item)
 		{
 			int bonus = level;
-			if(bonus<0) bonus=1;
+			if(bonus<0) 
+				bonus=1;
 			affectableStats.setDamage(affectableStats.damage()+bonus);
 		}
 	}
