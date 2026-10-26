@@ -28,7 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2026 Bo Zimmerman
+   Copyright 2026-2026 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class EditorResourceOrRace extends AbilityParmEditorImpl
 {
 	public EditorResourceOrRace()
 	{
-		super("RESOURCE_OR_RACE",CMLib.lang().L("Rsc/ Race"),ParmType.CHOICES);
+		super("RESOURCE_OR_RACE",CMLib.lang().L("Rsc/Race"),ParmType.CHOICES);
 	}
 
 	@Override
