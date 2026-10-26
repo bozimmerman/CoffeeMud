@@ -112,6 +112,12 @@ public class Prop_LimitedItems extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Max items/colh=Max)](;ID=[STRING(prompt=Group/colh=Group)...]))";
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		final Physical affP = affected;

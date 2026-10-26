@@ -149,6 +149,8 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 			//$FALL-THROUGH$
 		case NUMBER:
 			return CMath.isInteger(oldVal);
+		case DECIMAL:
+			return CMath.isInteger(oldVal)||CMath.isDouble(oldVal);
 		case NUMBER_PAIR:
 		{
 			if(oldVal==null)
@@ -193,6 +195,7 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 				return new String[]{"NULL"};
 			//$FALL-THROUGH$
 		case NUMBER:
+		case DECIMAL:
 		case NUMBER_PAIR:
 			return new String[]{oldVal};
 		case CHOICES:
@@ -282,6 +285,15 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 				str = Integer.toString(CMath.s_int(newStr));
 			break;
 		}
+		case DECIMAL:
+		{
+			final String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
+			if(newStr.trim().length()==0)
+				str="";
+			else
+				str = newStr.trim();
+			break;
+		}
 		case NUMBER_PAIR:
 		{
 			final String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
@@ -335,6 +347,7 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 		case STRINGORNULL:
 		case STRING:
 		case NUMBER:
+		case DECIMAL:
 		case NUMBERORNULL:
 		case NUMBER_PAIR:
 		case CONFIRM:
@@ -392,6 +405,7 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 		case STRING:
 			return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
 		case NUMBER:
+		case DECIMAL:
 		case NUMBERORNULL:
 		case NUMBER_PAIR:
 			return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";

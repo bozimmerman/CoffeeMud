@@ -55,6 +55,12 @@ public class Prop_NoPurge extends Property
 	protected long expirationDate = 0;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[NUMBER(prompt=Timestamp/colh=Expiry)]/[DATE_TIME(prompt=Date/colh=Expiry)...]";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		expirationDate = 0;

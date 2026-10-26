@@ -402,6 +402,12 @@ public class Prop_Familiar extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[NUMBER(prompt=Familiar/colh=Familiar)]/[CHOICES(choices=dog,turtle,cat,bat,rat,snake,owl,rabbit,raven,parrot,spidermonkey,boa constrictor,iguana,sea turtle/prompt=Familiar/colh=Familiar)...]";
+	}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);

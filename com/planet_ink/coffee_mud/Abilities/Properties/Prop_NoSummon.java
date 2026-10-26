@@ -57,6 +57,12 @@ public class Prop_NoSummon extends Property
 	protected boolean magicOnly=false;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=ALLOWNONAGGR/prompt=Allow non-aggressive/colh=Allow non-aggro)]) ([CHECK(name=MAGICONLY/prompt=Magic only/colh=Magic only)])";
+	}
+
+	@Override
 	public long flags()
 	{
 		return Ability.FLAG_IMMUNER;

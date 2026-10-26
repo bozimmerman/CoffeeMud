@@ -96,6 +96,12 @@ public class Prayer_EternalItem extends Prayer
 	private String newName = null;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[DEITY(prompt=Deity/colh=Deity)...]";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText.trim());

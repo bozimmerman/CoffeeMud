@@ -107,6 +107,12 @@ public class Chant_SummonPlants extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[STRING(prompt=Owner/colh=Owner)...]";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(littlePlantsI))

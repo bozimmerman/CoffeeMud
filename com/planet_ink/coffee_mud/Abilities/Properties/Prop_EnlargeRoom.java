@@ -69,6 +69,12 @@ public class Prop_EnlargeRoom extends Property
 	protected char		operator	= '+';
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "+/-/*/\\/[DECIMAL(prompt=Amount/colh=Amount)...]";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

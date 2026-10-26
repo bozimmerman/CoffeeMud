@@ -55,6 +55,12 @@ public class Prop_RoomUnmappable extends Property
 	private int bitStream=PhyStats.SENSE_ROOMUNMAPPABLE;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=MAPOK/prompt=Map OK/colh=Map OK)]) ([CHECK(name=NOEXPLORE/prompt=No explore/colh=No explore)])";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

@@ -73,6 +73,12 @@ public class Prop_Crawlspace extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(HEIGHT=[NUMBER(prompt=Height/colh=Height)])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);

@@ -57,6 +57,7 @@ public interface AbilityParameters extends CMLibrary
 		CHOICES,
 		STRING,
 		NUMBER,
+		DECIMAL,
 		STRINGORNULL,
 		ONEWORD,
 		MULTICHOICES,

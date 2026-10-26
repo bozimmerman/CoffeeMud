@@ -57,6 +57,12 @@ public class Prop_PracticeDummy extends Property
 	protected boolean unkillable=true;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=KILL/prompt=Killable/colh=Killable)])";
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "Undefeatable";
