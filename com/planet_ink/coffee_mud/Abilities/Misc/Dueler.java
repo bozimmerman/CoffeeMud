@@ -142,6 +142,12 @@ public class Dueler extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(UNFAIR=[CONFIRM(prompt=Unfair/colh=Unfair)])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

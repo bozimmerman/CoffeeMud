@@ -135,6 +135,12 @@ public class Phobias extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([RACE_OR_RACECAT_OR_KEYWORD(prompt=Phobia/colh=Phobia)](,[RACE_OR_RACECAT_OR_KEYWORD(prompt=Phobia/colh=Phobia)])...)";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

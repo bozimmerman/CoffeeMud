@@ -94,6 +94,12 @@ public class SlowLearner extends StdAbility
 	double changePct = 0.20;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Slow-learning percent/colh=Rate)]%)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

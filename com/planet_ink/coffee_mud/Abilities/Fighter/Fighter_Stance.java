@@ -199,7 +199,7 @@ public class Fighter_Stance extends FighterSkill
 	@Override
 	public String miscTextFormat()
 	{
-		return "(None/Defensive/Offensive/Wild)";
+		return "([CHOICES(choices=None,Defensive,Offensive,Wild/prompt=Stance/colh=Stance)])";
 	}
 
 	@Override

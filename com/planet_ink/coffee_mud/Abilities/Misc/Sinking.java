@@ -105,6 +105,12 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=REVERSED,NORMAL/prompt=Direction/colh=Direction)])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

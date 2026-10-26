@@ -119,6 +119,12 @@ public class WingFlying extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(FLYING=[CONFIRM(prompt=Flying/colh=Flying)])";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

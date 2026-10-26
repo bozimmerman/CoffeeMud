@@ -97,6 +97,12 @@ public class Truce extends StdAbility
 	public CMList<Pair<String, Long>>	truces			= new CMList<Pair<String, Long>>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Truce target/colh=Target)])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(CMStrings.capitalizeAndLower(newMiscText));

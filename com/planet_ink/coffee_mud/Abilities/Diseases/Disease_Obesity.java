@@ -148,6 +148,12 @@ public class Disease_Obesity extends Disease
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Fat amount 0-100/colh=Fat)])";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

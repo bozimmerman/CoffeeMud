@@ -143,7 +143,7 @@ public class ArtisanalFocus extends StdAbility
 	@Override
 	public String miscTextFormat()
 	{
-		return "(DISABLED)";
+		return "([CHECK(name=DISABLED/prompt=Disabled/colh=Disabled)])";
 	}
 
 	@Override

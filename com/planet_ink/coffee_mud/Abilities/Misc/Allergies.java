@@ -109,6 +109,12 @@ public class Allergies extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([RESOURCE_OR_RACE(prompt=Allergen/colh=Allergen)]...)";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

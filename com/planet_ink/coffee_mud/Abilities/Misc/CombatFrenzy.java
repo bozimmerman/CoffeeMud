@@ -116,6 +116,12 @@ public class CombatFrenzy extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=HP adjustment/colh=HP)])";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

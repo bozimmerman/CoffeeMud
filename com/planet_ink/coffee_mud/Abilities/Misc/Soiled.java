@@ -230,6 +230,12 @@ public class Soiled extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(DIRTY=[CONFIRM(prompt=Dirty/colh=Dirty)])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

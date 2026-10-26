@@ -1397,6 +1397,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return true;
 			case MULTICHOICES:
 				return CMath.isInteger(oldVal)||choices().containsFirst(oldVal);
+			case CONFIRM:
+			case CHECK:
+				return CMath.isBool(oldVal);
 			case SPECIAL:
 				break;
 			}
@@ -1467,6 +1470,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 				}
 				return new String[]{"NULL"};
+			case CONFIRM:
+			case CHECK:
+				return new String[]{CMath.s_bool(oldVal)?"true":"false"};
 			case SPECIAL:
 				break;
 			}
@@ -1537,6 +1543,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(CMath.isInteger(str))
 					str = Integer.toString(CMath.s_int(str));
 				break;
+			case CONFIRM:
+			case CHECK:
+			{
+				final String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
+				if(newStr.trim().length()==0)
+					str="";
+				else
+					str = CMath.s_bool(newStr)?"true":"false";
+				break;
+			}
 			case SPECIAL:
 				break;
 			}
@@ -1555,6 +1571,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case NUMBER:
 			case NUMBERORNULL:
 			case NUMBER_PAIR:
+			case CONFIRM:
+			case CHECK:
 				return (webValue == null)?oldVal:webValue;
 			case MULTICHOICES:
 			{
@@ -1611,6 +1629,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			case NUMBERORNULL:
 			case NUMBER_PAIR:
 				return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
+			case CONFIRM:
+			{
+				final boolean b = CMath.s_bool(webValue);
+				final StringBuffer str=new StringBuffer("");
+				str.append("\n\r<SELECT NAME="+fieldName+">");
+				str.append("<OPTION VALUE=\"true\""+(b?" SELECTED":"")+">True</OPTION>");
+				str.append("<OPTION VALUE=\"false\""+(!b?" SELECTED":"")+">False</OPTION>");
+				return str.toString()+"</SELECT>";
+			}
+			case CHECK:
+			{
+				final boolean b = CMath.s_bool(webValue);
+				return "\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+" VALUE=\"true\""+(b?" CHECKED":"")+">";
+			}
 			case MULTICHOICES:
 			{
 				onChange = " MULTIPLE ";
@@ -1886,6 +1918,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				case SPECIAL:
 					return false;
+				case CONFIRM:
+					return CMath.isBool(value);
+				case CHECK:
+				{
+					if(value.trim().length()==0)
+						return true;
+					if(CMath.isBool(value))
+						return true;
+					final String checkName = (parameterArgs == null)?null:parameterArgs.get("NAME");
+					return (checkName != null) && checkName.equalsIgnoreCase(value.trim());
+				}
 				}
 			}
 		}

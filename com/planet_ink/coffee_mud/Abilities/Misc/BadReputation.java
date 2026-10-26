@@ -94,6 +94,12 @@ public class BadReputation extends StdAbility
 	double changePct = 0.45;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Change percent/colh=Change)]%)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
