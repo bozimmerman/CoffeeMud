@@ -103,6 +103,12 @@ public class Fighter_UnwaveringMark extends FighterSkill
 		code=newCode;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Target name/colh=Target)...]\\/[NUMBER(prompt=Counter/colh=Counter)])";
+	}
+
 	protected int code=0;
 
 	public MOB mark=null;

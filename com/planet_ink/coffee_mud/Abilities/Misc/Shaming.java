@@ -78,6 +78,12 @@ public class Shaming extends StdAbility
 	protected boolean	global		= false;
 	protected Area		shameArea	= null;
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[CHECK(name=GLOBAL/prompt=Global/colh=Global)]/[AREA_NAME(prompt=Area/colh=Area)...]";
+	}
+
 	public boolean isShamedRightNow(final MOB mob)
 	{
 		if(mob == null)

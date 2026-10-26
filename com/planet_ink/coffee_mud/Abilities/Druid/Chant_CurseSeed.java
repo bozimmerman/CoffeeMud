@@ -87,6 +87,12 @@ public class Chant_CurseSeed extends Chant implements DiseaseAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[CHOICES(choices=M,N,F/prompt=Gender/colh=Gender)](/[NUMBER(prompt=Inheritance count/colh=Count)])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

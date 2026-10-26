@@ -90,6 +90,12 @@ public class Chant_FavorableWinds extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[NUMBER(prompt=Ability code/colh=Ability)]";
+	}
+
+	@Override
 	public String text()
 	{
 		return ""+abilityCode;
