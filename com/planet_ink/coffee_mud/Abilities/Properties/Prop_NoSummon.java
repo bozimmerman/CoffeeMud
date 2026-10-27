@@ -59,7 +59,8 @@ public class Prop_NoSummon extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHECK(name=ALLOWNONAGGR/prompt=Allow non-aggressive/colh=Allow non-aggro)]) ([CHECK(name=MAGICONLY/prompt=Magic only/colh=Magic only)])";
+		return "([CHECK(name=ALLOWNONAGGR/prompt=Allow non-aggressive/colh=Allow non-aggro)]) "
+				+ "([CHECK(name=MAGICONLY/prompt=Magic only/colh=Magic only)])";
 	}
 
 	@Override

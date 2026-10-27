@@ -404,7 +404,16 @@ public class Prop_Familiar extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "[NUMBER(prompt=Familiar/colh=Familiar)]/[CHOICES(choices=dog,turtle,cat,bat,rat,snake,owl,rabbit,raven,parrot,spidermonkey,boa constrictor,iguana,sea turtle/prompt=Familiar/colh=Familiar)...]";
+		final StringBuilder str = new StringBuilder("[NUMBER(prompt=Familiar/colh=Familiar)]/");
+		str.append("[CHOICES(choices=");
+		for(int i=0;i<Familiar.values().length;i++)
+		{
+			if(i>0)
+				str.append(",");
+			str.append(Familiar.values()[i].name());
+		}
+		str.append("/prompt=Familiar/colh=Familiar)...]\"");
+		return str.toString();
 	}
 
 	@Override

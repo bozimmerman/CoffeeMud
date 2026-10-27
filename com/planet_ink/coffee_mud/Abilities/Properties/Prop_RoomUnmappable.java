@@ -57,7 +57,8 @@ public class Prop_RoomUnmappable extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHECK(name=MAPOK/prompt=Map OK/colh=Map OK)]) ([CHECK(name=NOEXPLORE/prompt=No explore/colh=No explore)])";
+		return "([CHECK(name=MAPOK/prompt=Map OK/colh=Map OK)]) "
+				+ "([CHECK(name=NOEXPLORE/prompt=No explore/colh=No explore)])";
 	}
 
 	@Override
