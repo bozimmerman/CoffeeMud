@@ -133,6 +133,12 @@ public class Disease_Vampirism extends Disease
 	protected boolean		drinkMobs		= true;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((CHABONUS=[NUMBER(prompt=Charisma bonus/colh=CHA bonus)])/(BLOODHEAL=[CONFIRM(prompt=Blood heals wounds/colh=Blood heal)])/(BLOODTHIRST=[CONFIRM(prompt=Blood thirsty/colh=Blood thirst)])/(LOWLIGHT=[CONFIRM(prompt=Light sensitive/colh=Low light)])/(NOSWIM=[CONFIRM(prompt=Unable to swim/colh=No swim)])/(DRINKMOBS=[CONFIRM(prompt=Drinks mobs/colh=Drink mobs)]))...";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

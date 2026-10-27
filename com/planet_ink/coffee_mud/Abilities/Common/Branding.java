@@ -87,6 +87,12 @@ public class Branding extends CommonSkill implements PrivateProperty
 	protected String	owner		= "";
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(PRICE=[NUMBER(prompt=Price/colh=Price)])(OWNER=\"[STRING(prompt=Owner/colh=Owner)...]\")";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

@@ -115,6 +115,12 @@ public class SelfInvesting extends StdSkill
 	private volatile double bankedValue = 0.0;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(LASTUSE=[NUMBER(prompt=Last use/colh=Last use)]) (BANKED=[DECIMAL(prompt=Banked value/colh=Banked)...])";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		lastInvestment = CMParms.getParmLong(newMiscText, "LASTUSE", 0);

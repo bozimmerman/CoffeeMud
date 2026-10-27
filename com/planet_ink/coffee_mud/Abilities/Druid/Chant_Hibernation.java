@@ -95,6 +95,12 @@ public class Chant_Hibernation extends Chant
 	protected boolean fullManaUninvoke=false;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((DEEP=[CONFIRM(prompt=Deep hibernation/colh=Deep)])/(FULLMANAREVOKE=[CONFIRM(prompt=Restore mana on end/colh=Full mana revoke)]))...";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

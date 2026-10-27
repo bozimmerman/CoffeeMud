@@ -119,6 +119,12 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 	protected Map<String,int[]> proficiencies = new Hashtable<String,int[]>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([INSTRUMENT_TYPE(prompt=Instrument type/colh=Instrument)]=[NUMBER(prompt=Proficiency/colh=Proficiency)])...";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		proficiencies.clear();

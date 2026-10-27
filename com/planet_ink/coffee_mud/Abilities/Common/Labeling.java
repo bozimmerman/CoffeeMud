@@ -102,6 +102,12 @@ public class Labeling extends CommonSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ITEM_OBJECT_TYPE(prompt=Item type/colh=Type)]\\/[ALLITEM_CLASS_ID(prompt=Item ID/colh=Item)]=[NUMBER(prompt=Tag counter/colh=Tag)])...";
+	}
+
+	@Override
 	public String text()
 	{
 		return CMParms.combineEQParms(nextTagNumbers, ' ');

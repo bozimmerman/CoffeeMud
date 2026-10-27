@@ -312,6 +312,12 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[STRING(prompt=Shop and records XML/colh=XML)...]";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		synchronized(this)

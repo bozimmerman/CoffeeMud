@@ -338,6 +338,12 @@ public class Fighter_CallSteed extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Steed XML data/colh=Steed)...])";
+	}
+
+	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);

@@ -141,6 +141,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 	protected List<Ability>		skillList			= new LinkedList<Ability>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability/colh=Ability)],[NUMBER(prompt=Proficiency/colh=Proficiency)](;[ABILITY_ID(prompt=Ability/colh=Ability)],[NUMBER(prompt=Proficiency/colh=Proficiency)])...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
