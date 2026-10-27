@@ -121,7 +121,8 @@ public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 	@Override
 	public String miscTextFormat()
 	{
-		return "([INSTRUMENT_TYPE(prompt=Instrument type/colh=Instrument)]=[NUMBER(prompt=Proficiency/colh=Proficiency)])...";
+		return "([INSTRUMENT_TYPE(prompt=Instrument type/colh=Instrument)]="
+				+ "[NUMBER(prompt=Proficiency/colh=Proficiency)])...";
 	}
 
 	@Override

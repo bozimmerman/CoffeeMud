@@ -159,7 +159,12 @@ public class Archon_CRecord extends ArchonSkill
 	@Override
 	public String miscTextFormat()
 	{
-		return "FILENAME=\"[STRING(prompt=Filename/colh=File)...]\" ISRECORDER=[CONFIRM(prompt=Is recorder/colh=Recorder)] TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)] MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)] (BY=[STRING(prompt=By/colh=By)])/(PLAYERS=\"[STRING(prompt=Players/colh=Players)...]\")";
+		return "FILENAME=\"[STRING(prompt=Filename/colh=File)...]\" "
+				+ "ISRECORDER=[CONFIRM(prompt=Is recorder/colh=Recorder)] "
+				+ "TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)] "
+				+ "MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)] "
+				+ "(BY=[STRING(prompt=By/colh=By)])/"
+				+ "(PLAYERS=\"[STRING(prompt=Players/colh=Players)...]\")";
 	}
 
 	@Override

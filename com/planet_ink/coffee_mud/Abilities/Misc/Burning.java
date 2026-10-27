@@ -99,7 +99,14 @@ public class Burning extends StdAbility
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHECK(name=PERMANENT/prompt=Permanent/colh=Permanent)]) ([CHECK(name=UNEXTINGUISHABLE/prompt=Unextinguishable/colh=Unextinguishable)]) ([CHECK(name=PERSISTFLAGS/prompt=Persist flags/colh=Persist flags)]) ([CHECK(name=DESTROY/prompt=Destroy/colh=Destroy)]) ([CHECK(name=DESTROYHOST/prompt=Destroy host/colh=Destroy host)]) ([CHECK(name=NODESTROY/prompt=No destroy/colh=No destroy)]) ([CHECK(name=NODESTROYHOST/prompt=No destroy host/colh=No destroy host)]) ([CHECK(name=NOSPREAD/prompt=No spread/colh=No spread)])";
+		return "([CHECK(name=PERMANENT/prompt=Permanent/colh=Permanent)]) "
+				+ "([CHECK(name=UNEXTINGUISHABLE/prompt=Unextinguishable/colh=Unextinguishable)]) "
+				+ "([CHECK(name=PERSISTFLAGS/prompt=Persist flags/colh=Persist flags)]) "
+				+ "([CHECK(name=DESTROY/prompt=Destroy/colh=Destroy)]) "
+				+ "([CHECK(name=DESTROYHOST/prompt=Destroy host/colh=Destroy host)]) "
+				+ "([CHECK(name=NODESTROY/prompt=No destroy/colh=No destroy)]) "
+				+ "([CHECK(name=NODESTROYHOST/prompt=No destroy host/colh=No destroy host)]) "
+				+ "([CHECK(name=NOSPREAD/prompt=No spread/colh=No spread)])";
 	}
 
 	@Override

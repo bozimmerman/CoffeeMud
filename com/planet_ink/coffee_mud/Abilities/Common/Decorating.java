@@ -272,7 +272,9 @@ public class Decorating extends CommonSkill implements RecipeDriven
 	@Override
 	public String miscTextFormat()
 	{
-		return "; BLENDED=[CONFIRM(prompt=Blended/colh=Blended)] HIPS=[CONFIRM(prompt=Hips/colh=Hips)] ; [STRING(prompt=Display text/colh=Display)...]";
+		return "; BLENDED=[CONFIRM(prompt=Blended/colh=Blended)] "
+				+ "HIPS=[CONFIRM(prompt=Hips/colh=Hips)] ; "
+				+ "[STRING(prompt=Display text/colh=Display)...]";
 	}
 
 	@Override

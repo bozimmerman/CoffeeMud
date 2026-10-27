@@ -116,7 +116,10 @@ public class Addictions extends StdAbility
 	@Override
 	public String miscTextFormat()
 	{
-		return "((effect:[ABILITY_ID(prompt=Ability/colh=Addiction)])/[RESOURCE_OR_KEYWORD(prompt=Substance/colh=Addiction)](;(effect:[ABILITY_ID(prompt=Ability/colh=Addiction)])/[RESOURCE_OR_KEYWORD(prompt=Substance/colh=Addiction)]))...";
+		return "((effect:[ABILITY_ID(prompt=Ability/colh=Addiction)])/"
+				+ "[RESOURCE_OR_KEYWORD(prompt=Substance/colh=Addiction)]"
+				+ "(;(effect:[ABILITY_ID(prompt=Ability/colh=Addiction)])/"
+				+ "[RESOURCE_OR_KEYWORD(prompt=Substance/colh=Addiction)]))...";
 	}
 
 	@Override
