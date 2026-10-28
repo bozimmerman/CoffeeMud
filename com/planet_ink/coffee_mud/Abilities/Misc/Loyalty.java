@@ -52,6 +52,13 @@ public class Loyalty extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(NAME=(\")[STRING(prompt=Loyal player name/colh=Player)...](\"))"
+		+"(TELEPORT=[CONFIRM(prompt=Teleport to player/colh=Teleport)])";
+	}
+
+	@Override
 	public String displayText()
 	{
 		return CMLib.lang().L("(Loyal to @x1)", loyaltyName);

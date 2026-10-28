@@ -94,7 +94,7 @@ public class Disease_Hatred extends Disease
 	@Override
 	public String miscTextFormat()
 	{
-		return "([STRING(prompt=Hated group/colh=Group)]=\"[ZAPPERMASK(prompt=Mask/colh=Mask)...]\")...";
+		return "([STRING(prompt=Hated group/colh=Group)]=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))...";
 	}
 
 	@Override

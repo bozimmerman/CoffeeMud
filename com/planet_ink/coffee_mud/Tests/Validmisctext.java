@@ -580,6 +580,51 @@ public class Validmisctext extends StdTest
 		{
 			return ("Error#75: composite prompt labels could not be verified");
 		}
+		// Test 76: The (") marker keeps normal space-delimited rules for unquoted values
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")", "NM=Bob"))
+			return ("Error#76: an unquoted value should follow normal space-delimited rules");
+		// Test 77: A quoted value is greedy up to the closing quotation mark
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")", "NM=\"Bob The Builder\""))
+			return ("Error#77: a quoted multi-word value should match greedily to the closing quote");
+		// Test 78: An unterminated quoted value is invalid
+		if(CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")", "NM=\"Bob The Builder"))
+			return ("Error#78: an unterminated quoted value should not match");
+		// Test 79: Escape sequences inside a quoted value are de-escaped
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")", "NM=\"Bob \\\"The\\\" Builder\""))
+			return ("Error#79: escaped quotes inside a quoted value should be de-escaped");
+		// Test 80: The quote-delimited value stops at the closing quote
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")z", "NM=\"Bob The\"z"))
+			return ("Error#80: a quoted value should stop at the closing quote and allow a trailing literal");
+		// Test 81: A quoted typed value that fails the editor is invalid
+		if(CMLib.ableParms().isValidMiscText("N=(\")[NUMBER(prompt=N/colh=N)...](\")", "N=\"notanumber\""))
+			return ("Error#81: a quoted typed value should validate through its editor");
+		// Test 82: A valid quoted typed value matches
+		if(!CMLib.ableParms().isValidMiscText("N=(\")[NUMBER(prompt=N/colh=N)...](\")", "N=\"15\""))
+			return ("Error#82: a valid quoted typed value should match");
+		// Test 83: An unquoted typed value still matches the (") format
+		if(!CMLib.ableParms().isValidMiscText("N=(\")[NUMBER(prompt=N/colh=N)...](\")", "N=15"))
+			return ("Error#83: an unquoted typed value should still match");
+		// Test 84: Quoted values with spaces do not break following fields
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\") ;TELEPORT=[CONFIRM(prompt=Teleport/colh=Teleport)]", "NM=\"Bob The Builder\" ;TELEPORT=true"))
+			return ("Error#84: a quoted value with spaces should not break following fields");
+		// Test 85: Without a matched quotation mark, the greedy is disregarded
+		if(!CMLib.ableParms().isValidMiscText("NM=(\")[STRING(prompt=Name/colh=Player)...](\")z", "NM=Bob z"))
+			return ("Error#85: without a matched quotation mark, the greedy should be disregarded");
+		// Test 86: Disease_Hatred format with quoted multi-word mask
+		if(!CMLib.ableParms().isValidMiscText("([STRING(prompt=Hated group/colh=Group)]=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))...", "HATED=\"race -human dwarf\""))
+			return ("Error#86: a quoted multi-word zapper mask should match");
+		// Test 87: Disease_Hatred format with an unquoted single-word mask
+		if(!CMLib.ableParms().isValidMiscText("([STRING(prompt=Hated group/colh=Group)]=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))...", "HATED=RACE+Dwarf"))
+			return ("Error#87: an unquoted single-word zapper mask should still match");
+		// Test 88: Disease_Hatred format with multiple quoted and unquoted groups
+		if(!CMLib.ableParms().isValidMiscText("([STRING(prompt=Hated group/colh=Group)]=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))...", "KEY1=\"mask one\" KEY2=mask2"))
+			return ("Error#88: repeated groups should mix quoted and unquoted masks");
+		// Test 89: Branding format with quoted owner and price
+		if(!CMLib.ableParms().isValidMiscText("(PRICE=[NUMBER(prompt=Price/colh=Price)])(OWNER=(\")[STRING(prompt=Owner/colh=Owner)...](\"))", "PRICE=10 OWNER=\"Bob The Builder\""))
+			return ("Error#89: a quoted owner name with spaces should match");
+		// Test 90: Archon_CRecord format with quoted filename and players
+		if(!CMLib.ableParms().isValidMiscText("FILENAME=(\")[STRING(prompt=Filename/colh=File)...](\") ISRECORDER=[CONFIRM(prompt=Is recorder/colh=Recorder)] TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)] MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)] (BY=[STRING(prompt=By/colh=By)])/(PLAYERS=(\")[STRING(prompt=Players/colh=Players)...](\"))", "FILENAME=\"::/resources/crecordings/\" ISRECORDER=true TRIGGERTIME=0 MINLEVEL=10 PLAYERS=\"bob smith\""))
+			return ("Error#90: quoted filename and players should match the CRecord format");
 		return null;
 	}
 }

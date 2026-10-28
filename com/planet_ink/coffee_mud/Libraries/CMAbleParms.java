@@ -1792,7 +1792,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(format.trim().length()==0)
 				return true; // empty format doesn't care
 			final MTToken root = parseMiscTextFormat(format);
-			return matchMiscTextToken(root, proposition, 0, new int[1]);
+			return matchMiscTextToken(root, proposition, 0, new int[1], new boolean[1]);
 		}
 		catch(final CMException e)
 		{
@@ -1801,20 +1801,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex)
+	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode)
 	{
 		outIndex[0] = index;
 
 		if(token.token instanceof String)
 		{
-			if((!matchMTLiteral(token, proposition, index, outIndex))&&(!token.optional))
+			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode))&&(!token.optional))
 				return false;
 			if(token.repeats)
 			{
 				while(true)
 				{
 					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex))
+					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode))
 					{
 						outIndex[0] = saveIndex;
 						break;
@@ -1832,8 +1832,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				for(final MTToken alt : children)
 				{
 					final int saveIndex = index;
-					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex))
+					final boolean saveQuoteMode = quoteMode[0];
+					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode))
 						return true;
+					quoteMode[0] = saveQuoteMode;
 					outIndex[0] = saveIndex;
 				}
 				return false;
@@ -1841,13 +1843,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			else
 			{
 				int currentIndex = index;
+				final boolean saveQuoteMode = quoteMode[0];
 				for(final MTToken child : children)
 				{
-					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex))
+					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode))
 					{
 						if(token.optional)
 						{
 							outIndex[0] = index;
+							quoteMode[0] = saveQuoteMode;
 							return true;
 						}
 						return false;
@@ -1860,11 +1864,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					while(true)
 					{
 						final int saveIndex = outIndex[0];
+						final boolean saveRepeatQuoteMode = quoteMode[0];
 						boolean matched = true;
 						int tempIndex = saveIndex;
 						for(final MTToken child : children)
 						{
-							if(!matchMiscTextToken(child, proposition, tempIndex, outIndex))
+							if(!matchMiscTextToken(child, proposition, tempIndex, outIndex, quoteMode))
 							{
 								matched = false;
 								break;
@@ -1873,6 +1878,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						if(!matched)
 						{
+							quoteMode[0] = saveRepeatQuoteMode;
 							outIndex[0] = saveIndex;
 							break;
 						}
@@ -1951,7 +1957,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return true;
 	}
 
-	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex)
+	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode)
 	{
 		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
 			index++;
@@ -1962,6 +1968,43 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		final String literal = (String)token.token;
 		final String lowerProposition = proposition.toLowerCase();
+		if(token.isQuoteMarker)
+		{
+			if(proposition.charAt(index) == '\"')
+			{
+				quoteMode[0] = true;
+				outIndex[0] = index + 1;
+			}
+			return true;
+		}
+		else
+		if(token.quoteNext && quoteMode[0])
+		{
+			final int end = proposition.length();
+			int i = index;
+			while(i < end)
+			{
+				final char c = proposition.charAt(i);
+				if(c == '\\')
+				{
+					if(i + 1 >= end)
+						return false;
+					i += 2;
+				}
+				else
+				if(c == '\"')
+					break;
+				else
+					i++;
+			}
+			if(i >= end)
+				return false;
+			if(!confirmParmValue(literal, CMStrings.deEscape(proposition.substring(index, i)), token.parameterArgs))
+				return false;
+			quoteMode[0] = false;
+			outIndex[0] = i + 1;
+			return true;
+		}
 		if(token.greedyLiteral != null)
 		{
 			// Consume at least one character, then stop at the first occurrence
@@ -2021,6 +2064,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public boolean				repeats			= false;
 		public boolean				optional		= false;
 		public boolean				isAlternative	= false;	// TRUE if this MTToken[] represents alternatives, FALSE if sequence
+		public boolean				isQuoteMarker	= false;	// TRUE if this is the optional quote marker group: (")
+		public boolean				quoteNext		= false;	// TRUE if this greedy placeholder is terminated by a (") marker
 		public String[]				placeholderArgs	= null;
 		public Map<String, String>	parameterArgs	= null;
 		public String				greedyLiteral	= null;
@@ -2062,7 +2107,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * Parses a misc text format.  The format supports literals, [PLACEHOLDER]
 	 * (optionally with (args)), (optional) groups, '/' alternatives, '...'
 	 * repetition, and '\' escapes.  A placeholder whose name ends with "..."
-	 * (for example [NAME...]) is greedy.
+	 * (for example [NAME...]) is greedy.  The special (") marker denotes an
+	 * optional quotation mark.
 	 *
 	 * @param format the misc text format
 	 * @return the parsed token tree
@@ -2096,6 +2142,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			else
 			if(c == '(')
 			{
+				if((index + 2 < end)
+				&&(format.charAt(index + 1) == '\"')
+				&&(format.charAt(index + 2) == ')'))
+				{
+					final MTToken quoteToken = new MTToken("\"", false);
+					quoteToken.isQuoteMarker = true;
+					quoteToken.optional = true;
+					tokens.add(quoteToken);
+					index += 3;
+					continue;
+				}
 				int depth = 1;
 				int closeIndex = index + 1;
 				while(closeIndex < end && depth > 0)
@@ -2214,6 +2271,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						// A space immediately after the ] terminates the greedy
 						// part, so the placeholder behaves like a normal one.
+					}
+					else
+					if((index + 2 < end)
+					&&(format.charAt(index) == '(')
+					&&(format.charAt(index + 1) == '\"')
+					&&(format.charAt(index + 2) == ')'))
+					{
+						token.quoteNext = true;
+						index += 3;
 					}
 					else
 					{
