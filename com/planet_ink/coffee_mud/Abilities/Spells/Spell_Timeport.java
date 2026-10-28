@@ -85,7 +85,8 @@ public class Spell_Timeport extends Spell
 			PhyStats.CAN_NOT_TASTE
 			|PhyStats.CAN_NOT_SMELL
 			|PhyStats.CAN_NOT_SEE
-			|PhyStats.CAN_NOT_HEAR;
+			|PhyStats.CAN_NOT_HEAR
+			|PhyStats.CAN_NOT_MOVE;
 	protected final static int mask2=Integer.MAX_VALUE
 			-PhyStats.CAN_SEE_BONUS
 			-PhyStats.CAN_SEE_DARK
@@ -104,10 +105,12 @@ public class Spell_Timeport extends Spell
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(mask&mask2);
-		affectableStats.setDisposition(PhyStats.IS_NOT_SEEN);
-		affectableStats.setDisposition(PhyStats.IS_CLOAKED);
-		affectableStats.setDisposition(PhyStats.IS_INVISIBLE);
-		affectableStats.setDisposition(PhyStats.IS_HIDDEN);
+		int disp=affectableStats.disposition();
+		disp|=PhyStats.IS_NOT_SEEN;
+		disp|=PhyStats.IS_CLOAKED;
+		disp|=PhyStats.IS_INVISIBLE;
+		disp|=PhyStats.IS_HIDDEN;
+		affectableStats.setDisposition(disp);
 	}
 
 	@Override
