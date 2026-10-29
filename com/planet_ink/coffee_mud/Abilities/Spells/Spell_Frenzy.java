@@ -109,6 +109,12 @@ public class Spell_Frenzy extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Hit point adjustment/colh=HP)])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

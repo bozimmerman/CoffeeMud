@@ -114,6 +114,12 @@ public class Skill_LongReach extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Reach bonus/colh=Reach)])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

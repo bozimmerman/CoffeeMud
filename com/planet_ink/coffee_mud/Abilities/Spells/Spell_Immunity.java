@@ -101,6 +101,12 @@ public class Spell_Immunity extends Spell
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Immunity code/colh=Code)])";
+	}
+
 	public void setImmunityVars(final int code)
 	{
 		immunityCode=code;
