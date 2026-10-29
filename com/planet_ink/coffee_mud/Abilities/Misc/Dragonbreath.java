@@ -161,6 +161,12 @@ public class Dragonbreath extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=f,l,c,a,o,s,g,u,p,d,prompt=Breath colour code/colh=Colour)]) ([CHECK(name=LESSER,prompt=Lesser damage/colh=Lesser)])";
+	}
+
+	@Override
 	public String[] triggerStrings()
 	{
 		return triggerStrings;
