@@ -89,6 +89,12 @@ public class Prop_Trashcan extends Property
 		tickDelay=CMParms.getParmInt(newMiscText, "DELAY", 0);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(DELAY=[NUMBER(prompt=Delay in ticks/colh=Delay)])";
+	}
+
 	protected void process(final MOB mob, final Item I)
 	{
 		if(!CMLib.utensils().canBePlayerDestroyed(mob, I, true, false))

@@ -110,6 +110,12 @@ public class Spell_WallOfAir extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(SHOOTBACK=[CONFIRM(prompt=Shoot back/colh=Shoot back)])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof Item)))

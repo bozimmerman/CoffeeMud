@@ -101,6 +101,12 @@ public class Spell_CauseStink extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(PCT=[NUMBER(prompt=Stink percentage/colh=Percent)])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

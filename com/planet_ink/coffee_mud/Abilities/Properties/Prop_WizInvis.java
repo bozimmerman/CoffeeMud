@@ -115,6 +115,12 @@ public class Prop_WizInvis extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

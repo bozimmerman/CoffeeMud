@@ -95,6 +95,12 @@ public class Spell_AchillesArmor extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(VULNERABILITY=[NUMBER(prompt=Vulnerable weapon type/colh=Vulnerability)])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

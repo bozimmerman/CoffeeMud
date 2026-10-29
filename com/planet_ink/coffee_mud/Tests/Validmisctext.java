@@ -404,6 +404,17 @@ public class Validmisctext extends StdTest
 		// Test 66: Quote mode is restored across alternation branches
 		if(!CMLib.ableParms().isValidMiscText("FILENAME=(\")[STRING(prompt=Filename/colh=File)...](\") ISRECORDER=[CONFIRM(prompt=Is recorder/colh=Recorder)] TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)] MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)] (BY=[STRING(prompt=By/colh=By)])/(PLAYERS=(\")[STRING(prompt=Players/colh=Players)...](\"))", "FILENAME=\"::/resources/crecordings/\" ISRECORDER=true TRIGGERTIME=0 MINLEVEL=10 PLAYERS=\"bob smith\""))
 			return ("Error#66: quoted filename and players should match the CRecord format");
+		// Test 67: A CHECK flag accepts its configured name token
+		if(!CMLib.ableParms().isValidMiscText("([CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)])", "UNINVOKABLE"))
+			return ("Error#67: a CHECK flag should accept its configured name token");
+		// Test 68: An optional CHECK flag accepts an empty value
+		if(!CMLib.ableParms().isValidMiscText("([CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)])", ""))
+			return ("Error#68: an optional CHECK flag should accept an empty value");
+		// Test 69: A required CHECK flag rejects values the ability does not read
+		if(CMLib.ableParms().isValidMiscText("[CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)]", "true")
+		||CMLib.ableParms().isValidMiscText("[CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)]", "false")
+		||CMLib.ableParms().isValidMiscText("[CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)]", "SOMETHINGELSE"))
+			return ("Error#69: a CHECK flag should reject values other than its name token");
 		return null;
 	}
 }

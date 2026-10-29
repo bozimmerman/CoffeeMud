@@ -1946,8 +1946,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					if(value.trim().length()==0)
 						return true;
-					if(CMath.isBool(value))
-						return true;
 					final String checkName = (parameterArgs == null)?null:parameterArgs.get("NAME");
 					return (checkName != null) && checkName.equalsIgnoreCase(value.trim());
 				}
