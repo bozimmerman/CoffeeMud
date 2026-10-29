@@ -144,9 +144,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	public String miscTextFormat()
 	{
 		return "([ABILITY_ID(prompt=Ability/colh=Ability)],"
-				+ "[NUMBER(prompt=Proficiency/colh=Proficiency)]"
-				+ "(;[ABILITY_ID(prompt=Ability/colh=Ability)],"
-				+ "[NUMBER(prompt=Proficiency/colh=Proficiency)])...)";
+				+ "[NUMBER(prompt=Proficiency/colh=Proficiency)])..;";
 	}
 
 	@Override

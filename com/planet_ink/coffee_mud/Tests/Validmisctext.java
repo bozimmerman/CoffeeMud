@@ -442,6 +442,15 @@ public class Validmisctext extends StdTest
 		// Test 78: Delimiter repetition - long typed placeholder written once
 		if(!CMLib.ableParms().isValidMiscText("[STRING(prompt=Hated group/colh=Group)]..,", "elf,dwarf,orc"))
 			return ("Error#78: long placeholder '..,' should match 'elf,dwarf,orc'");
+		// Test 79: Delimiter repetition - repeated element is required even when the leading element is optional
+		if(CMLib.ableParms().isValidMiscText("([NAME])..;", "foo;"))
+			return ("Error#79: '([NAME])..;' should reject a trailing semicolon with no element");
+		// Test 80: Delimiter repetition - optional leading element still accepts a value list
+		if(!CMLib.ableParms().isValidMiscText("([NAME])..;", "foo;bar"))
+			return ("Error#80: '([NAME])..;' should match 'foo;bar'");
+		// Test 81: Delimiter repetition - optional leading element accepts empty input
+		if(!CMLib.ableParms().isValidMiscText("([NAME])..;", ""))
+			return ("Error#81: '([NAME])..;' should match empty");
 		return null;
 	}
 }

@@ -2083,6 +2083,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			this.optional = optional;
 			this.token = token;
 		}
+
+		public MTToken(final MTToken other)
+		{
+			this.token = other.token;
+			this.repeats = other.repeats;
+			this.optional = other.optional;
+			this.isAlternative = other.isAlternative;
+			this.isQuoteMarker = other.isQuoteMarker;
+			this.quoteNext = other.quoteNext;
+			this.placeholderArgs = other.placeholderArgs;
+			this.parameterArgs = other.parameterArgs;
+			this.greedyLiteral = other.greedyLiteral;
+			this.greedy = other.greedy;
+		}
 	}
 
 	private static boolean endsWithOpenGreedy(final MTToken token)
@@ -2356,8 +2370,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(isDelimiterChar(d))
 					{
 						final MTToken x = tokens.get(tokens.size() - 1);
+						final MTToken xReq = new MTToken(x);
+						xReq.optional = false;
+						xReq.repeats = false;
 						final MTToken delim = new MTToken(String.valueOf(d), false);
-						final MTToken group = new MTToken(new MTToken[]{delim, x}, false);
+						final MTToken group = new MTToken(new MTToken[]{delim, xReq}, false);
 						group.optional = true;
 						group.repeats = true;
 						tokens.add(group);
