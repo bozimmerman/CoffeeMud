@@ -146,9 +146,9 @@ public class Validmisctext extends StdTest
 		// Test 12: Repetition with literal
 		if(!CMLib.ableParms().isValidMiscText("a...", "aaa"))
 			return ("Error#12: repetition 'a...' should match 'aaa'");
-		// Test 13: Repetition with placeholder and delimiter
-		if(!CMLib.ableParms().isValidMiscText("[NAME];...", "foo;bar;baz;"))
-			return ("Error#13: '[NAME];...' should match 'foo;bar;baz;'");
+		// Test 13: Repetition of a literal delimiter after a placeholder
+		if(!CMLib.ableParms().isValidMiscText("[NAME];...", "foo;;;"))
+			return ("Error#13: '[NAME];...' should match 'foo;;;'");
 		// Test 14: Escape - literal bracket
 		if(!CMLib.ableParms().isValidMiscText("\\[test\\]", "[test]"))
 			return ("Error#14: escaped '\\[test\\]' should match '[test]'");
@@ -156,11 +156,11 @@ public class Validmisctext extends StdTest
 		if(!CMLib.ableParms().isValidMiscText("KEY=[VALUE]", "KEY=something "))
 			return ("Error#15: 'KEY=[VALUE]' should match 'KEY=something '");
 		// Test 16: Complex format with optional - single value
-		if(!CMLib.ableParms().isValidMiscText("[NAME](;[NAME]...)", "foo"))
-			return ("Error#16: '[NAME](;[NAME]...)' should match 'foo'");
+		if(!CMLib.ableParms().isValidMiscText("[NAME](;[NAME])...", "foo"))
+			return ("Error#16: '[NAME](;[NAME])...' should match 'foo'");
 		// Test 17: Complex format with optional - multiple values
-		if(!CMLib.ableParms().isValidMiscText("[NAME](;[NAME]...)", "foo;bar;baz"))
-			return ("Error#17: '[NAME](;[NAME]...)' should match 'foo;bar;baz'");
+		if(!CMLib.ableParms().isValidMiscText("[NAME](;[NAME])...", "foo;bar;baz"))
+			return ("Error#17: '[NAME](;[NAME])...' should match 'foo;bar;baz'");
 		// Test 18: Multiple optional groups
 		if(!CMLib.ableParms().isValidMiscText("(A)(B)(C)", "AC"))
 			return ("Error#18: '(A)(B)(C)' should match 'AC'");
@@ -415,6 +415,33 @@ public class Validmisctext extends StdTest
 		||CMLib.ableParms().isValidMiscText("[CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)]", "false")
 		||CMLib.ableParms().isValidMiscText("[CHECK(name=UNINVOKABLE/prompt=Uninvokable/colh=Uninvokable)]", "SOMETHINGELSE"))
 			return ("Error#69: a CHECK flag should reject values other than its name token");
+		// Test 70: Delimiter repetition - comma-delimited single value
+		if(!CMLib.ableParms().isValidMiscText("[NAME]..,", "foo"))
+			return ("Error#70: '[NAME]..,' should match 'foo'");
+		// Test 71: Delimiter repetition - comma-delimited multiple values
+		if(!CMLib.ableParms().isValidMiscText("[NAME]..,", "foo,bar,baz"))
+			return ("Error#71: '[NAME]..,' should match 'foo,bar,baz'");
+		// Test 72: Delimiter repetition - rejects trailing delimiter
+		if(CMLib.ableParms().isValidMiscText("[NAME]..,", "foo,"))
+			return ("Error#72: '[NAME]..,' should reject a trailing comma");
+		// Test 73: Delimiter repetition - rejects leading delimiter
+		if(CMLib.ableParms().isValidMiscText("[NAME]..,", ",foo"))
+			return ("Error#73: '[NAME]..,' should reject a leading comma");
+		// Test 74: Delimiter repetition - rejects empty input
+		if(CMLib.ableParms().isValidMiscText("[NAME]..,", ""))
+			return ("Error#74: '[NAME]..,' should reject empty input");
+		// Test 75: Delimiter repetition - semicolon-delimited
+		if(!CMLib.ableParms().isValidMiscText("[NAME]..;", "foo;bar"))
+			return ("Error#75: '[NAME]..;' should match 'foo;bar'");
+		// Test 76: Delimiter repetition - other punctuation delimiter
+		if(!CMLib.ableParms().isValidMiscText("[NAME]..|", "foo|bar"))
+			return ("Error#76: '[NAME]..|' should match 'foo|bar'");
+		// Test 77: Delimiter repetition - grammar character is an invalid delimiter
+		if(CMLib.ableParms().isValidMiscText("[NAME]../", "foo/bar"))
+			return ("Error#77: '[NAME]../' should be rejected as an invalid delimiter");
+		// Test 78: Delimiter repetition - long typed placeholder written once
+		if(!CMLib.ableParms().isValidMiscText("[STRING(prompt=Hated group/colh=Group)]..,", "elf,dwarf,orc"))
+			return ("Error#78: long placeholder '..,' should match 'elf,dwarf,orc'");
 		return null;
 	}
 }

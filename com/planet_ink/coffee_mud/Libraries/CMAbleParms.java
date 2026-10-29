@@ -1792,7 +1792,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(format.trim().length()==0)
 				return true; // empty format doesn't care
 			final MTToken root = parseMiscTextFormat(format);
-			return matchMiscTextToken(root, proposition, 0, new int[1], new boolean[1]);
+			final int[] endIndex = new int[1];
+			final boolean[] quoteMode = new boolean[1];
+			if(!matchMiscTextToken(root, proposition, 0, endIndex, quoteMode))
+				return false;
+			return proposition.substring(endIndex[0]).trim().length() == 0;
 		}
 		catch(final CMException e)
 		{
@@ -1829,16 +1833,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final MTToken[] children = (MTToken[])token.token;
 			if(token.isAlternative)
 			{
+				boolean emptyMatch = false;
 				for(final MTToken alt : children)
 				{
 					final int saveIndex = index;
 					final boolean saveQuoteMode = quoteMode[0];
 					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode))
-						return true;
+					{
+						if(outIndex[0] > index)
+							return true;
+						emptyMatch = true;
+					}
 					quoteMode[0] = saveQuoteMode;
 					outIndex[0] = saveIndex;
 				}
-				return false;
+				return emptyMatch;
 			}
 			else
 			{
@@ -2101,12 +2110,30 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
+	private static boolean isDelimiterChar(final char c)
+	{
+		switch(c)
+		{
+		case '/':
+		case '(':
+		case '[':
+		case ')':
+		case '\\':
+		case '.':
+			return false;
+		default:
+			return !Character.isWhitespace(c);
+		}
+	}
+
 	/**
 	 * Parses a misc text format.  The format supports literals, [PLACEHOLDER]
 	 * (optionally with (args)), (optional) groups, '/' alternatives, '...'
 	 * repetition, and '\' escapes.  A placeholder whose name ends with "..."
 	 * (for example [NAME...]) is greedy.  The special (") marker denotes an
-	 * optional quotation mark.
+	 * optional quotation mark.  A '..' followed by a single delimiter character
+	 * (for example '..,' or '..;') repeats the preceding token with that literal
+	 * delimiter between repetitions, equivalent to writing [X](,[X])... by hand.
 	 *
 	 * @param format the misc text format
 	 * @return the parsed token tree
@@ -2315,12 +2342,29 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			else
 			if(c == '.')
 			{
-				if(index + 2 < end && format.substring(index, index + 3).equals("..."))
+				if((index + 2 < end) && (format.charAt(index + 1) == '.'))
 				{
 					if(tokens.isEmpty() || tokens.get(tokens.size() - 1).token.equals("/"))
 						throw new CMException("Nothing to repeat at " + index);
-					tokens.get(tokens.size() - 1).repeats = true;
-					index += 3;
+					final char d = format.charAt(index + 2);
+					if(d == '.')
+					{
+						tokens.get(tokens.size() - 1).repeats = true;
+						index += 3;
+					}
+					else
+					if(isDelimiterChar(d))
+					{
+						final MTToken x = tokens.get(tokens.size() - 1);
+						final MTToken delim = new MTToken(String.valueOf(d), false);
+						final MTToken group = new MTToken(new MTToken[]{delim, x}, false);
+						group.optional = true;
+						group.repeats = true;
+						tokens.add(group);
+						index += 3;
+					}
+					else
+						throw new CMException("Invalid delimiter after '..' at " + index);
 				}
 				else
 				{
