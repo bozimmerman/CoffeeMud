@@ -82,6 +82,12 @@ public class Fighter_PlanarVeteran extends FighterSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane name/colh=Plane)]=[NUMBER(prompt=Expiration epoch ms/colh=Expires)])..,";
+	}
+
+	@Override
 	public boolean isAutoInvoked()
 	{
 		return true;
