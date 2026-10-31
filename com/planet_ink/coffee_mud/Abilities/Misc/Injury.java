@@ -217,6 +217,12 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		return buf.toString();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHOICES(choices=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15/prompt=Body part index/colh=Part)]:[BODY_PART(prompt=Injured body part/colh=Limb)..:]:[NUMBER(prompt=Injury percent/colh=Hurt)])..;(;))";
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setMiscText(String txt)

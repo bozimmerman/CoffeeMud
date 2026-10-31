@@ -93,6 +93,14 @@ public class Dusty extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((TIME=[NUMBER(prompt=Dust start time in millis/colh=Time)])"
+			+ "/(LEVEL=[NUMBER(prompt=Dust accumulation level/colh=Level)])"
+			+ "/(INTERVAL=[NUMBER(prompt=Hours between dust increases/colh=Interval)]))...";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		dustLevel = CMParms.getParmInt(newMiscText, "LEVEL", 0);

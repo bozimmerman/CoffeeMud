@@ -120,6 +120,14 @@ public class Gait extends StdAbility
 			stateWord=null;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((ARRIVE=(\")[STRING(prompt=Arrival message/colh=Arrive)...](\"))"
+			+ "/(LEAVE=(\")[STRING(prompt=Departure message/colh=Leave)...](\"))"
+			+ "/(STATE=(\")[STRING(prompt=Present-tense gait verb/colh=State)...](\")))...";
+	}
+
 	public String[][] getGaits()
 	{
 		final Object[][][] set = CMProps.getListFileGrid(CMProps.ListFile.GAIT_LIST);

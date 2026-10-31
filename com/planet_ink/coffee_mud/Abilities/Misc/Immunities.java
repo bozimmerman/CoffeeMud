@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Misc;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
@@ -121,6 +122,17 @@ public class Immunities extends StdAbility
 		{"LASER",Integer.valueOf(CMMsg.TYP_LASER)},
 		{"SONIC",Integer.valueOf(CMMsg.TYP_SONIC)},
 	});
+
+	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder str = new StringBuilder("((ALL)");
+		for(final String key : new TreeSet<String>(immunityTypes.keySet()))
+			str.append("/(").append(key).append(')');
+		str.append("/([ABILITY_ID(prompt=Ability ID/colh=Ability)])");
+		str.append("/([BEHAVIOR_ID(prompt=Behavior ID/colh=Behavior)]))...");
+		return str.toString();
+	}
 
 	@Override
 	public void setMiscText(final String text)

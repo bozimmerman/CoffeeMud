@@ -2276,7 +2276,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * (for example [NAME...]) is greedy.  A placeholder whose name ends with
 	 * '..' plus a delimiter character (for example [NAME..;]) is greedy up to
 	 * that delimiter without consuming it.  The special (") marker denotes an
-	 * optional quotation mark.  A '..' followed by a single delimiter character
+	 * optional quotation mark.  (")[NAME...](") accepts a quoted-or-bare
+	 * value.  A '..' followed by a single delimiter character
 	 * (for example '..,' or '..;') repeats the preceding token with that literal
 	 * delimiter between repetitions, equivalent to writing [X](,[X])... by hand.
 	 *

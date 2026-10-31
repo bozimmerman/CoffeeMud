@@ -657,6 +657,51 @@ public class Validmisctext extends StdTest
 		||CMLib.ableParms().isValidMiscText("(a//b)", "a")
 		||CMLib.ableParms().isValidMiscText("(a/)", "a"))
 			return ("Error#140: malformed formats should be rejected");
+		// Test 141: dots outside an alternation of groups repeats the alternation.
+		if(!CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER]))...", "TIME=1 LEVEL=2")
+		||!CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER]))...", "LEVEL=2 TIME=1")
+		||!CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER]))...", "TIME=1 TIME=2"))
+			return ("Error#141: '((TIME=[NUMBER])/(LEVEL=[NUMBER]))...' should match multi-key, reordered, and repeated input");
+		// Test 142: dots outside an alternation of bare placeholders repeats the alternation.
+		if(!CMLib.ableParms().isValidMiscText("(([NUMBER])/([ONEWORD]))...", "5 hello 6"))
+			return ("Error#142: '(([NUMBER])/([ONEWORD]))...' should match '5 hello 6'");
+		// Test 143: dots outside an alternation with a nested alternation branch repeats the alternation.
+		if(!CMLib.ableParms().isValidMiscText("(((a/b)/c)/(d))...", "a d b"))
+			return ("Error#143: '(((a/b)/c)/(d))...' should match 'a d b'");
+		// Test 144: dots outside an alternation with a multi-token branch repeats the alternation.
+		if(!CMLib.ableParms().isValidMiscText("((TIME=[NUMBER] LEVEL=[NUMBER])/(INTERVAL=[NUMBER]))...", "TIME=1 LEVEL=2 INTERVAL=3 TIME=4 LEVEL=5"))
+			return ("Error#144: multi-token branches should repeat with dots outside the alternation");
+		// Test 145: dots inside an alternation of groups repeats only the last branch.
+		if(!CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER])...)", "LEVEL=2 LEVEL=3")
+		||CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER])...)", "TIME=1 LEVEL=2"))
+			return ("Error#145: dots inside the alternation should repeat only the last branch");
+		// Test 146: a dynamically built literal alternation validates fixed keys and rejects garbage.
+		final String immFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Immunities().miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(immFmt, "FIRE ALL COLD")
+		||!CMLib.ableParms().isValidMiscText(immFmt, "")
+		||CMLib.ableParms().isValidMiscText(immFmt, "FIRE BOGUSXYZ"))
+			return ("Error#146: the Immunities format should accept type keys, ALL, and empty, and reject garbage");
+		// Test 148: the Immunities format accepts ability IDs.
+		if(!CMLib.ableParms().isValidMiscText(immFmt, "COLD Spell_Fireball"))
+			return ("Error#148: the Immunities format should accept ability IDs");
+		// Test 149: the Immunities format accepts behavior IDs.
+		if(!CMLib.ableParms().isValidMiscText(immFmt, "FIRE Aggressive"))
+			return ("Error#149: the Immunities format should accept behavior IDs");
+		// Test 147: quoted-or-bare greedy values validate their own class text.
+		final String gaitFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Gait().miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=\"waddles in\" LEAVE=\"waddles\" STATE=\"waddling\"")
+		||!CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=waddling LEAVE=waddles STATE=waddling")
+		||CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=\"waddles in\" FOO=1"))
+			return ("Error#147: the Gait format should accept quoted, bare, and mixed triples, and reject unknown keys");
+		// Test 150: the Injury format accepts stored triple lists, including multiword messages and a trailing semicolon.
+		final String injFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Injury().miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(injFmt, "7:torso:10;5:left arm:20;")
+		||!CMLib.ableParms().isValidMiscText(injFmt, "3:left arm:10")
+		||!CMLib.ableParms().isValidMiscText(injFmt, "")
+		||CMLib.ableParms().isValidMiscText(injFmt, "99:torso:10")
+		||CMLib.ableParms().isValidMiscText(injFmt, "3:torso")
+		||CMLib.ableParms().isValidMiscText(injFmt, "3:klsjdfkasjhdf:10"))
+			return ("Error#150: the Injury format should accept part:limb:hurt lists and empty, and reject bad parts, short triples, and non-limb messages");
 		return null;
 	}
 }
