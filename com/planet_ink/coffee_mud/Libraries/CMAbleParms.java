@@ -1794,7 +1794,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final MTToken root = parseMiscTextFormat(format);
 			final int[] endIndex = new int[1];
 			final boolean[] quoteMode = new boolean[1];
-			if(!matchMiscTextToken(root, proposition, 0, endIndex, quoteMode))
+			if(!matchMiscTextToken(root, proposition, 0, endIndex, quoteMode, null))
 				return false;
 			return proposition.substring(endIndex[0]).trim().length() == 0;
 		}
@@ -1805,20 +1805,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode)
+	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
 	{
 		outIndex[0] = index;
 
 		if(token.token instanceof String)
 		{
-			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode))&&(!token.optional))
+			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode, terminators))&&(!token.optional))
 				return false;
 			if(token.repeats)
 			{
 				while(true)
 				{
 					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode))
+					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode, terminators))
 					{
 						outIndex[0] = saveIndex;
 						break;
@@ -1838,7 +1838,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final int saveIndex = index;
 					final boolean saveQuoteMode = quoteMode[0];
-					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode))
+					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode, terminators))
 					{
 						if(outIndex[0] > index)
 							return true;
@@ -1853,9 +1853,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				int currentIndex = index;
 				final boolean saveQuoteMode = quoteMode[0];
-				for(final MTToken child : children)
+				for(int c = 0; c < children.length; c++)
 				{
-					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode))
+					final MTToken child = children[c];
+					final Set<Character> childTerminators = terminatorsAfter(children, c, token.repeats, terminators);
+					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode, childTerminators))
 					{
 						if(token.optional)
 						{
@@ -1876,9 +1878,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final boolean saveRepeatQuoteMode = quoteMode[0];
 						boolean matched = true;
 						int tempIndex = saveIndex;
-						for(final MTToken child : children)
+						for(int c = 0; c < children.length; c++)
 						{
-							if(!matchMiscTextToken(child, proposition, tempIndex, outIndex, quoteMode))
+							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, terminatorsAfter(children, c, token.repeats, terminators)))
 							{
 								matched = false;
 								break;
@@ -1964,7 +1966,90 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return true;
 	}
 
-	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode)
+	private static void collectFirstChars(final MTToken token, final Set<Character> out)
+	{
+		if(token == null)
+			return;
+		if(token.token instanceof String)
+		{
+			if(token.placeholderArgs == null)
+			{
+				final String lit = (String)token.token;
+				if((lit != null) && (lit.length() > 0))
+				{
+					final char ch = Character.toLowerCase(lit.charAt(0));
+					if(!Character.isLetterOrDigit(ch) && (ch != '_'))
+						out.add(Character.valueOf(ch));
+				}
+			}
+		}
+		else
+		if(token.token instanceof MTToken[])
+		{
+			final MTToken[] children = (MTToken[])token.token;
+			if(token.isAlternative)
+			{
+				for(final MTToken child : children)
+					collectFirstChars(child, out);
+			}
+			else
+			if(children.length > 0)
+				collectFirstChars(children[0], out);
+		}
+	}
+
+	private static boolean isNullable(final MTToken token)
+	{
+		if(token == null)
+			return true;
+		if(token.token instanceof String)
+		{
+			if(token.isQuoteMarker || token.optional)
+				return true; // (") matches empty with no quote; an optional literal may match empty
+			return false; // literals and placeholders otherwise require >=1 char
+		}
+		final MTToken[] children = (MTToken[])token.token;
+		if(token.optional)
+			return true; // groups are optional
+		if(token.isAlternative)
+		{
+			for(final MTToken child : children)
+				if(isNullable(child))
+					return true;
+			return false;
+		}
+		for(final MTToken child : children)
+			if(!isNullable(child))
+				return false;
+		return true;
+	}
+
+	private static Set<Character> terminatorsAfter(final MTToken[] children, final int c, final boolean repeats, final Set<Character> inherited)
+	{
+		final Set<Character> first = new HashSet<Character>();
+		for(int i = c + 1; i < children.length; i++)
+		{
+			collectFirstChars(children[i], first);
+			if(!isNullable(children[i]))
+				return first; // a required sibling is a hard stop
+		}
+		if(repeats)
+		{
+			// the last child is followed by the next iteration, which restarts
+			// at children[0] (e.g. the delimiter in a (delim X)* group).
+			for(int i = 0; i < children.length; i++)
+			{
+				collectFirstChars(children[i], first);
+				if(!isNullable(children[i]))
+					return first;
+			}
+		}
+		if(inherited != null)
+			first.addAll(inherited); // every following sibling is nullable
+		return first;
+	}
+
+	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
 	{
 		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
 			index++;
@@ -2012,6 +2097,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			outIndex[0] = i + 1;
 			return true;
 		}
+		if(token.greedyTo != '\0')
+		{
+			// Greedy up to the delimiter character, without consuming it.
+			final int end = proposition.length();
+			int i = index;
+			while((i < end) && (proposition.charAt(i) != token.greedyTo))
+				i++;
+			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
+				return false;
+			outIndex[0] = i;
+			return true;
+		}
 		if(token.greedyLiteral != null)
 		{
 			// Consume at least one character, then stop at the first occurrence
@@ -2042,12 +2139,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(token.placeholderArgs != null) // is a placeholder
 		{
 			final int start = index;
-			//TODO: way way way too restrictive
-			if(!Character.isLetterOrDigit(proposition.charAt(index)) && (proposition.charAt(index) != '_'))
-				return false;
 			while((index < proposition.length())
-			&&(Character.isLetterOrDigit(proposition.charAt(index)) || (proposition.charAt(index) == '_')))
+			&&(!Character.isWhitespace(proposition.charAt(index)))
+			&&((terminators == null) || (!terminators.contains(Character.valueOf(Character.toLowerCase(proposition.charAt(index)))))))
 				index++;
+			if(index == start)
+				return false; // a placeholder must capture at least one character
 			if(!confirmParmValue(literal, proposition.substring(start,index), token.parameterArgs))
 				return false;
 			outIndex[0] = index;
@@ -2077,6 +2174,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public Map<String, String>	parameterArgs	= null;
 		public String				greedyLiteral	= null;
 		public boolean				greedy			= false;
+		public char					greedyTo		= '\0';		// non-zero: greedy up to this delimiter char, without consuming it
 
 		public MTToken(final Object token, final boolean optional)
 		{
@@ -2096,6 +2194,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			this.parameterArgs = other.parameterArgs;
 			this.greedyLiteral = other.greedyLiteral;
 			this.greedy = other.greedy;
+			this.greedyTo = other.greedyTo;
 		}
 	}
 
@@ -2144,7 +2243,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * Parses a misc text format.  The format supports literals, [PLACEHOLDER]
 	 * (optionally with (args)), (optional) groups, '/' alternatives, '...'
 	 * repetition, and '\' escapes.  A placeholder whose name ends with "..."
-	 * (for example [NAME...]) is greedy.  The special (") marker denotes an
+	 * (for example [NAME...]) is greedy.  A placeholder whose name ends with
+	 * '..' plus a delimiter character (for example [NAME..;]) is greedy up to
+	 * that delimiter without consuming it.  The special (") marker denotes an
 	 * optional quotation mark.  A '..' followed by a single delimiter character
 	 * (for example '..,' or '..;') repeats the preceding token with that literal
 	 * delimiter between repetitions, equivalent to writing [X](,[X])... by hand.
@@ -2238,9 +2339,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					throw new CMException("Unclosed [ at " + index);
 				final String placeholder = format.substring(index + 1, closeIndex).trim();
 				final boolean greedy = placeholder.endsWith("...");
+				char greedyTo = '\0';
 				String placeholderToken = placeholder;
 				if(greedy)
 					placeholderToken = placeholderToken.substring(0, placeholderToken.length() - 3).trim();
+				else
+				if((placeholder.length() > 2)
+				&&(placeholder.charAt(placeholder.length() - 2) == '.')
+				&&(placeholder.charAt(placeholder.length() - 3) == '.')
+				&&(isDelimiterChar(placeholder.charAt(placeholder.length() - 1))))
+				{
+					greedyTo = placeholder.charAt(placeholder.length() - 1);
+					placeholderToken = placeholder.substring(0, placeholder.length() - 3).trim();
+				}
 				if(placeholderToken.length() == 0)
 					throw new CMException("Empty placeholder name at " + index);
 				String[] placeholderArgs = new String[0];
@@ -2297,6 +2408,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				tokens.add(token);
 				token.placeholderArgs=placeholderArgs;
 				token.parameterArgs=parameterArgs;
+				token.greedyTo=greedyTo;
 				index = closeIndex + 1;
 				if(greedy)
 				{
@@ -2427,6 +2539,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(tokens.isEmpty())
 			throw new CMException("Empty sequence");
 
+		if((tokens.size() > 1) && (tokens.get(1).token.equals("/")))
+			return collapseFullAlternation(tokens);
+
 		final List<MTToken> result = new ArrayList<>();
 		int i = 0;
 
@@ -2460,6 +2575,40 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return result.get(0);
 
 		final MTToken seq = new MTToken(result.toArray(new MTToken[0]), false);
+		seq.isAlternative = false;
+		return seq;
+	}
+
+	private static MTToken collapseFullAlternation(final List<MTToken> tokens) throws CMException
+	{
+		final List<MTToken> alternatives = new ArrayList<>();
+		final List<MTToken> current = new ArrayList<>();
+		for(final MTToken t : tokens)
+		{
+			if(t.token.equals("/"))
+			{
+				if(current.isEmpty())
+					throw new CMException("Empty alternative in alternation");
+				alternatives.add(asSequence(current));
+				current.clear();
+			}
+			else
+				current.add(t);
+		}
+		if(current.isEmpty())
+			throw new CMException("Empty alternative in alternation");
+		alternatives.add(asSequence(current));
+
+		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
+		altToken.isAlternative = true;
+		return altToken;
+	}
+
+	private static MTToken asSequence(final List<MTToken> tokens)
+	{
+		if(tokens.size() == 1)
+			return tokens.get(0);
+		final MTToken seq = new MTToken(tokens.toArray(new MTToken[0]), false);
 		seq.isAlternative = false;
 		return seq;
 	}
