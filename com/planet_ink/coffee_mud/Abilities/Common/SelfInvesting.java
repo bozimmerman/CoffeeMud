@@ -117,8 +117,8 @@ public class SelfInvesting extends StdSkill
 	@Override
 	public String miscTextFormat()
 	{
-		return "(LASTUSE=[NUMBER(prompt=Last use/colh=Last use)]) "
-				+ "(BANKED=[DECIMAL(prompt=Banked value/colh=Banked)...])";
+		return "(((LASTUSE=[NUMBER(prompt=Last use/colh=Last use)])"
+			+"/(BANKED=[DECIMAL(prompt=Banked value/colh=Banked)]))...)";
 	}
 
 	@Override

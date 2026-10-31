@@ -114,7 +114,7 @@ public class Prop_LimitedItems extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([NUMBER(prompt=Max items/colh=Max)](;ID=[STRING(prompt=Group/colh=Group)...]))";
+		return "([NUMBER(prompt=Max items/colh=Max)](;ID=(\")[STRING(prompt=Group/colh=Group)...](\")))";
 	}
 
 	@Override

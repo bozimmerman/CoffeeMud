@@ -47,25 +47,111 @@ limitations under the License.
 */
 public class Validmisctext extends StdTest
 {
-	private static class PromptCaptureSession extends com.planet_ink.coffee_mud.Common.FakeSession
+	private static class PromptCaptureHandler implements java.lang.reflect.InvocationHandler
 	{
 		private final StringBuilder output = new StringBuilder();
-
-		@Override
-		public boolean isFake()
-		{
-			return false;
-		}
-
-		@Override
-		public void onlyPrint(final String msg, final boolean noCache)
-		{
-			output.append(msg);
-		}
+		private MOB mob = null;
 
 		public String output()
 		{
 			return output.toString();
+		}
+
+		private void printArg(final Object[] args)
+		{
+			if(args != null)
+			{
+				for(int i = args.length - 1; i >= 0; i--)
+				{
+					if(args[i] instanceof String)
+					{
+						output.append((String)args[i]);
+						break;
+					}
+					if(args[i] instanceof char[])
+					{
+						output.append(new String((char[])args[i]));
+						break;
+					}
+				}
+			}
+		}
+
+		@Override
+		public Object invoke(final Object proxy, final Method method, final Object[] args)
+		{
+			final String name = method.getName();
+			if(name.equals("toString"))
+				return "";
+			if(name.equals("hashCode"))
+				return Integer.valueOf(System.identityHashCode(proxy));
+			if(name.equals("equals"))
+				return Boolean.valueOf(proxy == args[0]);
+			if(name.equals("mob"))
+				return mob;
+			if(name.equals("setMob"))
+			{
+				if((args != null)&&(args.length > 0)&&(args[0] instanceof MOB))
+					mob = (MOB)args[0];
+				return null;
+			}
+			if(name.equals("isStopped")||name.equals("isFake"))
+				return Boolean.FALSE;
+			if(name.equals("blockingIn")||name.equals("readlineContinue"))
+				return "";
+			if(name.equals("prompt"))
+			{
+				if((args != null)&&(args.length == 1)&&(args[0] instanceof Session.InputCallback))
+				{
+					final Session.InputCallback cb = (Session.InputCallback)args[0];
+					cb.showPrompt();
+					cb.setInput("");
+					cb.callBack();
+					return null;
+				}
+				printArg(new Object[]{args[0]});
+				if((args != null)&&(args.length >= 2)&&(args[1] instanceof String))
+					return args[1];
+				return "";
+			}
+			if(name.equals("choose"))
+			{
+				printArg(new Object[]{args[0]});
+				if((args != null)&&(args.length >= 3)&&(args[2] instanceof String))
+					return args[2];
+				return "";
+			}
+			if(name.equals("confirm"))
+			{
+				if((args != null)&&(args.length >= 2)&&(args[1] instanceof String))
+				{
+					final String def = (String)args[1];
+					final String mapped = def.toUpperCase().startsWith("T") ? "Y" : def;
+					return Boolean.valueOf("Y".equals(mapped));
+				}
+				return Boolean.FALSE;
+			}
+			if(method.getReturnType() == void.class)
+			{
+				printArg(args);
+				return null;
+			}
+			final Class<?> rt = method.getReturnType();
+			if(rt == boolean.class)
+				return Boolean.FALSE;
+			if(rt == char.class)
+				return Character.valueOf(' ');
+			if((rt == byte.class)||(rt == short.class)||(rt == int.class))
+				return Integer.valueOf(0);
+			if(rt == long.class)
+				return Long.valueOf(0L);
+			if(rt == float.class)
+				return Float.valueOf(0f);
+			if(rt == double.class)
+				return Double.valueOf(0.0);
+			if(rt == String.class)
+				return "";
+			return null;
 		}
 	}
 
@@ -81,13 +167,15 @@ public class Validmisctext extends StdTest
 			editor.setPrompt(promptOverride);
 		}
 		final MOB promptMob = CMClass.getFactoryMOB();
-		final PromptCaptureSession session = new PromptCaptureSession();
+		final PromptCaptureHandler handler = new PromptCaptureHandler();
+		final Session session = (Session)java.lang.reflect.Proxy.newProxyInstance(Session.class.getClassLoader(),
+			new Class<?>[]{Session.class}, handler);
 		session.setMob(promptMob);
 		promptMob.setSession(session);
 		try
 		{
 			editor.commandLinePrompt(promptMob,"",new int[]{0},0);
-			return session.output();
+			return handler.output();
 		}
 		finally
 		{
@@ -676,7 +764,7 @@ public class Validmisctext extends StdTest
 		||CMLib.ableParms().isValidMiscText("((TIME=[NUMBER])/(LEVEL=[NUMBER])...)", "TIME=1 LEVEL=2"))
 			return ("Error#145: dots inside the alternation should repeat only the last branch");
 		// Test 146: a dynamically built literal alternation validates fixed keys and rejects garbage.
-		final String immFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Immunities().miscTextFormat();
+		final String immFmt = CMClass.getAbility("Immunities").miscTextFormat();
 		if(!CMLib.ableParms().isValidMiscText(immFmt, "FIRE ALL COLD")
 		||!CMLib.ableParms().isValidMiscText(immFmt, "")
 		||CMLib.ableParms().isValidMiscText(immFmt, "FIRE BOGUSXYZ"))
@@ -688,13 +776,13 @@ public class Validmisctext extends StdTest
 		if(!CMLib.ableParms().isValidMiscText(immFmt, "FIRE Aggressive"))
 			return ("Error#149: the Immunities format should accept behavior IDs");
 		// Test 147: quoted-or-bare greedy values validate their own class text.
-		final String gaitFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Gait().miscTextFormat();
+		final String gaitFmt = CMClass.getAbility("Gait").miscTextFormat();
 		if(!CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=\"waddles in\" LEAVE=\"waddles\" STATE=\"waddling\"")
 		||!CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=waddling LEAVE=waddles STATE=waddling")
 		||CMLib.ableParms().isValidMiscText(gaitFmt, "ARRIVE=\"waddles in\" FOO=1"))
 			return ("Error#147: the Gait format should accept quoted, bare, and mixed triples, and reject unknown keys");
 		// Test 150: the Injury format accepts stored triple lists, including multiword messages and a trailing semicolon.
-		final String injFmt = new com.planet_ink.coffee_mud.Abilities.Misc.Injury().miscTextFormat();
+		final String injFmt = CMClass.getAbility("Injury").miscTextFormat();
 		if(!CMLib.ableParms().isValidMiscText(injFmt, "7:torso:10;5:left arm:20;")
 		||!CMLib.ableParms().isValidMiscText(injFmt, "3:left arm:10")
 		||!CMLib.ableParms().isValidMiscText(injFmt, "")
@@ -702,6 +790,164 @@ public class Validmisctext extends StdTest
 		||CMLib.ableParms().isValidMiscText(injFmt, "3:torso")
 		||CMLib.ableParms().isValidMiscText(injFmt, "3:klsjdfkasjhdf:10"))
 			return ("Error#150: the Injury format should accept part:limb:hurt lists and empty, and reject bad parts, short triples, and non-limb messages");
+		// Test 151: the InstanceArea format accepts key=value pairs, faction keys, bare type IDs, and empty.
+		final String instFmt = CMClass.getAbility("InstanceArea").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(instFmt, "ID=MyArea DURATION=10")
+		||!CMLib.ableParms().isValidMiscText(instFmt, "DESCRIPTION=\"a dark cave\" DURATION=10")
+		||!CMLib.ableParms().isValidMiscText(instFmt, "PLANE_ABYSS=5")
+		||!CMLib.ableParms().isValidMiscText(instFmt, "DEFAULT_NEW")
+		||!CMLib.ableParms().isValidMiscText(instFmt, "")
+		||CMLib.ableParms().isValidMiscText(instFmt, "BOGUSKEY=x")
+		||CMLib.ableParms().isValidMiscText(instFmt, "DURATION")
+		||CMLib.ableParms().isValidMiscText(instFmt, "NOSUCHTYPE"))
+			return ("Error#151: the InstanceArea format should accept pairs, faction keys, type IDs, and empty, and reject bad keys, keyless pairs, and unknown types");
+		// Test 152: the Milkable format accepts any subset/order of DRINK/ON/PERDAY/TYPE pairs, and empty.
+		final String milkFmt = CMClass.getAbility("Milkable").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(milkFmt, "DRINK=true ON=true PERDAY=500 TYPE=MILK")
+		||!CMLib.ableParms().isValidMiscText(milkFmt, "TYPE=MILK DRINK=true")
+		||!CMLib.ableParms().isValidMiscText(milkFmt, "PERDAY=500")
+		||!CMLib.ableParms().isValidMiscText(milkFmt, "")
+		||CMLib.ableParms().isValidMiscText(milkFmt, "BOGUSKEY=x")
+		||CMLib.ableParms().isValidMiscText(milkFmt, "DRINK=yes")
+		||CMLib.ableParms().isValidMiscText(milkFmt, "TYPE=BOGUSXYZ")
+		||CMLib.ableParms().isValidMiscText(milkFmt, "PERDAY"))
+			return ("Error#152: the Milkable format should accept DRINK/ON/PERDAY/TYPE pairs in any order or subset, and reject unknown keys, non-boolean booleans, unknown resources, and keyless pairs");
+		// Test 153: the PresenceReaction format accepts single, ~~-separated, and +-prefixed name=parms entries, and empty.
+		final String presFmt = CMClass.getAbility("PresenceReaction").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(presFmt, "Spell_Fireball=damage")
+		||!CMLib.ableParms().isValidMiscText(presFmt, "Aggressive=zone~~Spell_Fireball=damage")
+		||!CMLib.ableParms().isValidMiscText(presFmt, "Spell_Fireball=damage~~Aggressive=zone")
+		||!CMLib.ableParms().isValidMiscText(presFmt, "Mood=aggressive posture")
+		||!CMLib.ableParms().isValidMiscText(presFmt, "+Aggressive=zone")
+		||!CMLib.ableParms().isValidMiscText(presFmt, "")
+		||CMLib.ableParms().isValidMiscText(presFmt, "BOGUSNAME=x")
+		||CMLib.ableParms().isValidMiscText(presFmt, "NOEQUALS")
+		||CMLib.ableParms().isValidMiscText(presFmt, "Aggressive"))
+			return ("Error#153: the PresenceReaction format should accept name=parms entries joined by ~~, the + form, and empty, and reject unknown names and =-less entries");
+		// Test 154: the QuestBound format accepts real quest IDs and the * wildcard, ;-separated, and empty.
+		final String questFmt = CMClass.getAbility("QuestBound").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(questFmt, "*")
+		||!CMLib.ableParms().isValidMiscText(questFmt, "*;*")
+		||!CMLib.ableParms().isValidMiscText(questFmt, "*;")
+		||!CMLib.ableParms().isValidMiscText(questFmt, "")
+		||CMLib.ableParms().isValidMiscText(questFmt, "BOGUSXYZ")
+		||CMLib.ableParms().isValidMiscText(questFmt, ";")
+		||CMLib.ableParms().isValidMiscText(questFmt, "Q1;;Q2"))
+			return ("Error#154: the QuestBound format should accept quest IDs and *, ;-separated, trailing delimiters, and empty, and reject unknown quests and vacuous or consecutive delimiters");
+		// Test 155: the Regeneration format accepts RecType rates and + exceptions in any order, and empty.
+		final String regenFmt = CMClass.getAbility("Regeneration").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "HITS=5/3"))
+			return ("Error#155b1");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "MANA=4"))
+			return ("Error#155b2");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "MANA=4 HITS=5/3"))
+			return ("Error#155b3");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "HITS=5/3 MANA=4"))
+			return ("Error#155b4");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "HITS=+5"))
+			return ("Error#155b5");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "HITS=-5"))
+			return ("Error#155b6");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "+MAGIC HITS=5"))
+			return ("Error#155b7");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "HITS=5 +MAGIC"))
+			return ("Error#155b8");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "+LEVEL10 MANA=4 HITS=5"))
+			return ("Error#155b9");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "+LEVEL10 MANA=4"))
+			return ("Error#155b10");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, "+SLASHING HITS=5/3"))
+			return ("Error#155b11");
+		if(!CMLib.ableParms().isValidMiscText(regenFmt, ""))
+			return ("Error#155b12");
+		if(CMLib.ableParms().isValidMiscText(regenFmt, "BOGUS=5"))
+			return ("Error#155b13");
+		if(CMLib.ableParms().isValidMiscText(regenFmt, "HITS"))
+			return ("Error#155b14");
+		if(CMLib.ableParms().isValidMiscText(regenFmt, "HITS=x"))
+			return ("Error#155b15");
+		if(CMLib.ableParms().isValidMiscText(regenFmt, "+BOGUS"))
+			return ("Error#155b16");
+		if(CMLib.ableParms().isValidMiscText(regenFmt, "+LEVEL"))
+			return ("Error#155b17");
+		// Test 156: the Branding format accepts PRICE and OWNER in any order.
+		final String brandFmt = CMClass.getAbility("Branding").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(brandFmt, "PRICE=5 OWNER=\"Bob\"")
+		||!CMLib.ableParms().isValidMiscText(brandFmt, "OWNER=\"Bob\" PRICE=5")
+		||CMLib.ableParms().isValidMiscText(brandFmt, "PRICE"))
+			return ("Error#156: the Branding format should accept PRICE and OWNER in any order, and reject keyless pairs");
+		// Test 157: the Loyalty format accepts NAME and TELEPORT in any order.
+		final String loyalFmt = CMClass.getAbility("Loyalty").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(loyalFmt, "NAME=\"Bob\" TELEPORT=true")
+		||!CMLib.ableParms().isValidMiscText(loyalFmt, "TELEPORT=true NAME=\"Bob\"")
+		||CMLib.ableParms().isValidMiscText(loyalFmt, "BOGUS=1"))
+			return ("Error#157: the Loyalty format should accept NAME and TELEPORT in any order, and reject unknown keys");
+		// Test 158: the Encrypto format accepts its pairs in any order.
+		final String encrFmt = CMClass.getAbility("Encrypto").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(encrFmt, "LROT=1 WROT=2 LVL=3")
+		||!CMLib.ableParms().isValidMiscText(encrFmt, "LVL=3 WROT=2 LROT=1")
+		||CMLib.ableParms().isValidMiscText(encrFmt, "BOGUS=1"))
+			return ("Error#158: the Encrypto format should accept its pairs in any order, and reject unknown keys");
+		// Test 159: the SelfInvesting format accepts LASTUSE and BANKED in any order.
+		final String investFmt = CMClass.getAbility("SelfInvesting").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(investFmt, "LASTUSE=100 BANKED=1.5")
+		||!CMLib.ableParms().isValidMiscText(investFmt, "BANKED=1.5 LASTUSE=100")
+		||CMLib.ableParms().isValidMiscText(investFmt, "BOGUS=1"))
+			return ("Error#159: the SelfInvesting format should accept LASTUSE and BANKED in any order, and reject unknown keys");
+		// Test 160: the Archon_CRecord format accepts its pairs in any order.
+		final String crecFmt = CMClass.getAbility("Archon_CRecord").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(crecFmt, "FILENAME=rec ISRECORDER=true")
+		||!CMLib.ableParms().isValidMiscText(crecFmt, "ISRECORDER=true FILENAME=rec")
+		||CMLib.ableParms().isValidMiscText(crecFmt, "BOGUS=1"))
+			return ("Error#160: the Archon_CRecord format should accept its pairs in any order, and reject unknown keys");
+		// Test 161: the Burning format accepts flags in any order.
+		final String burnFmt = CMClass.getAbility("Burning").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(burnFmt, "PERMANENT NOSPREAD")
+		||!CMLib.ableParms().isValidMiscText(burnFmt, "NOSPREAD PERMANENT")
+		||CMLib.ableParms().isValidMiscText(burnFmt, "BOGUS"))
+			return ("Error#161: the Burning format should accept flags in any order, and reject unknown flags");
+		// Test 162: the Dragonbreath format accepts a colour code with optional LESSER after it.
+		final String breathFmt = CMClass.getAbility("Dragonbreath").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(breathFmt, "f LESSER")
+		||!CMLib.ableParms().isValidMiscText(breathFmt, "f")
+		||CMLib.ableParms().isValidMiscText(breathFmt, "x"))
+			return ("Error#162: the Dragonbreath format should accept a colour code with optional LESSER, and reject unknown codes");
+		// Test 163: the Prop_Hidden format accepts flags in any order.
+		final String hiddenFmt = CMClass.getAbility("Prop_Hidden").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(hiddenFmt, "UNLOCATABLE BUBBLES")
+		||!CMLib.ableParms().isValidMiscText(hiddenFmt, "BUBBLES UNLOCATABLE")
+		||CMLib.ableParms().isValidMiscText(hiddenFmt, "BOGUS"))
+			return ("Error#163: the Prop_Hidden format should accept flags in any order, and reject unknown flags");
+		// Test 164: the Prop_ReqNoMOB format accepts flags in any order.
+		final String reqnoFmt = CMClass.getAbility("Prop_ReqNoMOB").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(reqnoFmt, "NOFOLLOW NOSNEAK")
+		||!CMLib.ableParms().isValidMiscText(reqnoFmt, "NOSNEAK NOFOLLOW")
+		||CMLib.ableParms().isValidMiscText(reqnoFmt, "BOGUS"))
+			return ("Error#164: the Prop_ReqNoMOB format should accept flags in any order, and reject unknown flags");
+		// Test 165: the Prop_RoomUnmappable format accepts flags in any order.
+		final String unmapFmt = CMClass.getAbility("Prop_RoomUnmappable").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(unmapFmt, "MAPOK NOEXPLORE")
+		||!CMLib.ableParms().isValidMiscText(unmapFmt, "NOEXPLORE MAPOK")
+		||CMLib.ableParms().isValidMiscText(unmapFmt, "BOGUS"))
+			return ("Error#165: the Prop_RoomUnmappable format should accept flags in any order, and reject unknown flags");
+		// Test 166: the Prop_NoSummon format accepts flags in any order.
+		final String nosumFmt = CMClass.getAbility("Prop_NoSummon").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(nosumFmt, "ALLOWNONAGGR MAGICONLY")
+		||!CMLib.ableParms().isValidMiscText(nosumFmt, "MAGICONLY ALLOWNONAGGR")
+		||CMLib.ableParms().isValidMiscText(nosumFmt, "BOGUS"))
+			return ("Error#166: the Prop_NoSummon format should accept flags in any order, and reject unknown flags");
+		// Test 167: the Prop_NoChannel format accepts channels and flags in any ;-separated order.
+		final String nochanFmt = CMClass.getAbility("Prop_NoChannel").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(nochanFmt, "GOSSIP;SENDOK")
+		||!CMLib.ableParms().isValidMiscText(nochanFmt, "SENDOK;GOSSIP")
+		||CMLib.ableParms().isValidMiscText(nochanFmt, "BOGUSXYZ;SENDOK"))
+			return ("Error#167: the Prop_NoChannel format should accept channels and flags in any order, and reject unknown channels");
+		// Test 168: the Prop_LimitedItems format accepts a max with optional group.
+		final String limFmt = CMClass.getAbility("Prop_LimitedItems").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(limFmt, "5")
+		||!CMLib.ableParms().isValidMiscText(limFmt, "5;ID=grp")
+		||CMLib.ableParms().isValidMiscText(limFmt, "x"))
+			return ("Error#168: the Prop_LimitedItems format should accept a max with optional group, and reject non-numeric maxes");
 		return null;
 	}
 }

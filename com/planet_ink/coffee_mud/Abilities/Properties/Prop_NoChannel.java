@@ -65,9 +65,9 @@ public class Prop_NoChannel extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHANNEL(prompt=Channel/colh=Channel)]..;)"
-				+ "(;[CHECK(name=SENDOK/prompt=Send OK/colh=Send OK)])"
-				+ "(;[CHECK(name=QUIET/prompt=Quiet/colh=Quiet)])";
+		return "((([CHANNEL(prompt=Channel/colh=Channel)..;](;)"
+			+")/(([CHECK(name=SENDOK/prompt=Send OK/colh=Send OK)])(;))"
+			+"/(([CHECK(name=QUIET/prompt=Quiet/colh=Quiet)])(;)))...)";
 	}
 
 	@Override

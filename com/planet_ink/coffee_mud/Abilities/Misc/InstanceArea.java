@@ -366,6 +366,28 @@ public class InstanceArea extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder keys=new StringBuilder("");
+		for(final InstVar v : InstVar.values())
+			keys.append(',').append(v.toString());
+		final StringBuilder types=new StringBuilder(",DEFAULT_NEW");
+		try
+		{
+			for(final String typeId : getAllInstanceTypesMap().keySet())
+				types.append(',').append(typeId);
+		}
+		catch(final Exception e)
+		{
+		}
+		return "(((([CHOICES(choices="+keys.substring(1)
+			+"/prompt=Instance variable/colh=Variable)]/([FACTION_ID(prompt=Faction ID/colh=Faction)]))"
+			+"=(\")[STRING(prompt=Instance value/colh=Value)...](\"))...)"
+			+"/([CHOICES(choices="+types.substring(1)
+			+"/prompt=Instance type/colh=Type)]))";
+	}
+
+	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);

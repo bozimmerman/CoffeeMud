@@ -54,11 +54,11 @@ public class Encrypto extends StdLanguage
 	@Override
 	public String miscTextFormat()
 	{
-		return "(LROT=[NUMBER(prompt=Letter rotation/colh=LROT)]) "
-				+ "(WROT=[NUMBER(prompt=Word rotation/colh=WROT)]) "
-				+ "(LVL=[NUMBER(prompt=Level/colh=LVL)]) "
-				+ "(ALWAYS=[CONFIRM(prompt=Always spoken/colh=Always)]) "
-				+ "(SPOKEN=[CONFIRM(prompt=Spoken/colh=Spoken)])";
+		return "(((LROT=[NUMBER(prompt=Letter rotation/colh=LROT)])"
+			+"/(WROT=[NUMBER(prompt=Word rotation/colh=WROT)])"
+			+"/(LVL=[NUMBER(prompt=Level/colh=LVL)])"
+			+"/(ALWAYS=[CONFIRM(prompt=Always spoken/colh=Always)])"
+			+"/(SPOKEN=[CONFIRM(prompt=Spoken/colh=Spoken)]))...)";
 	}
 
 	@Override

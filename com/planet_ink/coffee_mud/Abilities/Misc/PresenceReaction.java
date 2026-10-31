@@ -119,6 +119,14 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~])"
+			+"((\\~\\~([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~])...))"
+			+"/(+([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~]))";
+	}
+
+	@Override
 	public void setMiscText(final String parms)
 	{
 		if(parms.startsWith("+"))

@@ -117,8 +117,8 @@ public class Prop_Hidden extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHECK(name=UNLOCATABLE/prompt=Unlocatable/colh=Unlocatable)]) "
-				+ "([CHECK(name=BUBBLES/prompt=Bubbles/colh=Bubbles)])";
+		return "((([CHECK(name=UNLOCATABLE/prompt=Unlocatable/colh=Unlocatable)])"
+			+"/([CHECK(name=BUBBLES/prompt=Bubbles/colh=Bubbles)]))...)";
 	}
 
 	@Override

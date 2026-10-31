@@ -98,6 +98,15 @@ public class Milkable extends StdAbility implements Drink
 	protected volatile double refill			= 0;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((DRINK=[CONFIRM(prompt=Drinkable milk/colh=Drink)])"
+			+"/(ON=[CONFIRM(prompt=Milking allowed/colh=On)])"
+			+"/(PERDAY=[NUMBER(prompt=Milk per day/colh=PerDay)])"
+			+"/(TYPE=[RESOURCE_OR_MATERIAL(prompt=Liquid resource/colh=Type)]))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

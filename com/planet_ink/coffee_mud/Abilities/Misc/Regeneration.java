@@ -265,6 +265,22 @@ public class Regeneration extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder keys=new StringBuilder("");
+		for(final RecType r : RecType.values())
+			keys.append(',').append(r.toString());
+		return "((([CHOICES(choices="+keys.substring(1)
+			+"/prompt=Recovery type/colh=Type)]=(([NUMBER(prompt=Recovery amount/colh=Amount)]"
+			+"(\\/[NUMBER(prompt=Recovery ticks/colh=Ticks)]))/(\\+[NUMBER(prompt=Recovery amount/colh=Amount)]"
+			+"(\\/[NUMBER(prompt=Recovery ticks/colh=Ticks)]))))"
+			+"/(+LEVEL[NUMBER(prompt=Minimum weapon level/colh=MinLevel)])"
+			+"/(+[WEAPON_TYPE(prompt=Weapon exception/colh=Exception)])"
+			+"/(+[CHECK(name=MAGIC/prompt=Magic exception/colh=Exception)])"
+			+"/(+[RESOURCE_OR_MATERIAL(prompt=Material exception/colh=Material)]))...)";
+	}
+
+	@Override
 	public void setMiscText(final String parameters)
 	{
 		super.setMiscText(parameters);
