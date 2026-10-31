@@ -1841,7 +1841,37 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode, terminators))
 					{
 						if(outIndex[0] > index)
+						{
+							if(token.repeats)
+							{
+								while(true)
+								{
+									final int saveRepeatIndex = outIndex[0];
+									final boolean saveRepeatQuoteMode = quoteMode[0];
+									boolean matched = false;
+									for(final MTToken alt2 : children)
+									{
+										if(matchMiscTextToken(alt2, proposition, saveRepeatIndex, outIndex, quoteMode, terminators))
+										{
+											if(outIndex[0] > saveRepeatIndex)
+											{
+												matched = true;
+												break;
+											}
+										}
+										outIndex[0] = saveRepeatIndex;
+										quoteMode[0] = saveRepeatQuoteMode;
+									}
+									if(!matched)
+									{
+										quoteMode[0] = saveRepeatQuoteMode;
+										outIndex[0] = saveRepeatIndex;
+										break;
+									}
+								}
+							}
 							return true;
+						}
 						emptyMatch = true;
 					}
 					quoteMode[0] = saveQuoteMode;

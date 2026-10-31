@@ -545,6 +545,118 @@ public class Validmisctext extends StdTest
 		// Test 106: the (") quote marker is nullable in the suffix walk.
 		if(!CMLib.ableParms().isValidMiscText("[STRING](\");", "ab;"))
 			return ("Error#106: '[STRING](\");' should match 'ab;'");
+		// Test 107: '...' outside an alternation still matches a single first branch.
+		if(!CMLib.ableParms().isValidMiscText("(a/b/c)...", "a"))
+			return ("Error#107: '(a/b/c)...' should match 'a'");
+		// Test 108: '...' outside an alternation still matches a single middle branch.
+		if(!CMLib.ableParms().isValidMiscText("(a/b/c)...", "b"))
+			return ("Error#108: '(a/b/c)...' should match 'b'");
+		// Test 109: '...' inside an alternation repeats only the last branch.
+		if(!CMLib.ableParms().isValidMiscText("(a/b/c...)", "c c"))
+			return ("Error#109: '(a/b/c...)' should match 'c c'");
+		// Test 110: '...' outside an alternation repeats the alternation itself.
+		if(!CMLib.ableParms().isValidMiscText("(a/b/c)...", "a b"))
+			return ("Error#110: '(a/b/c)...' should match 'a b'");
+		// Test 111: '...' on a group around an alternation repeats the alternation.
+		if(!CMLib.ableParms().isValidMiscText("((a/b/c))...", "a b"))
+			return ("Error#111: '((a/b/c))...' should match 'a b'");
+		// Test 112: literals match case-insensitively.
+		if(!CMLib.ableParms().isValidMiscText("abc", "ABC"))
+			return ("Error#112: literal 'abc' should match 'ABC'");
+		// Test 113: leading whitespace in the value is skipped.
+		if(!CMLib.ableParms().isValidMiscText("abc", "  abc  "))
+			return ("Error#113: literal 'abc' should match '  abc  '");
+		// Test 114: multiple spaces separate placeholder words.
+		if(!CMLib.ableParms().isValidMiscText("[A] [B]", "foo  bar"))
+			return ("Error#114: '[A] [B]' should match 'foo  bar'");
+		// Test 115: '?' is a literal character, not a quantifier.
+		if(!CMLib.ableParms().isValidMiscText("[NAME]?", "foo?"))
+			return ("Error#115: '[NAME]?' should match 'foo?'");
+		// Test 116: '?' does not make the preceding token optional.
+		if(CMLib.ableParms().isValidMiscText("[NAME]?", "foo"))
+			return ("Error#116: '[NAME]?' should reject 'foo'");
+		// Test 117: a middle alternation matches its first branch in context.
+		if(!CMLib.ableParms().isValidMiscText("aa bb/cc dd", "aa bb dd"))
+			return ("Error#117: 'aa bb/cc dd' should match 'aa bb dd'");
+		// Test 118: a middle alternation matches its second branch in context.
+		if(!CMLib.ableParms().isValidMiscText("aa bb/cc dd", "aa cc dd"))
+			return ("Error#118: 'aa bb/cc dd' should match 'aa cc dd'");
+		// Test 119: a full multi-token alternation matches a middle branch.
+		if(!CMLib.ableParms().isValidMiscText("aa/bb cc/dd", "bb cc"))
+			return ("Error#119: 'aa/bb cc/dd' should match 'bb cc'");
+		// Test 120: a full multi-token alternation matches its first branch.
+		if(!CMLib.ableParms().isValidMiscText("aa/bb cc/dd", "aa"))
+			return ("Error#120: 'aa/bb cc/dd' should match 'aa'");
+		// Test 121: a middle alternation still requires its leading literal.
+		if(CMLib.ableParms().isValidMiscText("aa bb/cc dd", "cc dd"))
+			return ("Error#121: 'aa bb/cc dd' should reject 'cc dd'");
+		// Test 122: a full alternation rejects values mixed across branches.
+		if(CMLib.ableParms().isValidMiscText("aa/bb cc/dd", "aa dd"))
+			return ("Error#122: 'aa/bb cc/dd' should reject 'aa dd'");
+		// Test 123: a repeating group matches repeated content.
+		if(!CMLib.ableParms().isValidMiscText("(ab)...", "abab"))
+			return ("Error#123: '(ab)...' should match 'abab'");
+		// Test 124: an optional repeating group matches empty input.
+		if(!CMLib.ableParms().isValidMiscText("(ab)...", ""))
+			return ("Error#124: '(ab)...' should match empty input");
+		// Test 125: nested optional groups match full, partial, and empty input.
+		if(!CMLib.ableParms().isValidMiscText("((a)bc)", "abc")
+		||!CMLib.ableParms().isValidMiscText("((a)bc)", "bc")
+		||!CMLib.ableParms().isValidMiscText("((a)bc)", ""))
+			return ("Error#125: '((a)bc)' should match 'abc', 'bc', and empty input");
+		// Test 126: a plain placeholder captures punctuation up to whitespace.
+		if(!CMLib.ableParms().isValidMiscText("[NAME]", "foo;bar"))
+			return ("Error#126: '[NAME]' should match 'foo;bar'");
+		// Test 127: a whitespace-only format accepts any value.
+		if(!CMLib.ableParms().isValidMiscText("   ", "anything"))
+			return ("Error#127: a whitespace-only format should accept any value");
+		// Test 128: a greedy-to placeholder plus a consumed delimiter matches.
+		if(!CMLib.ableParms().isValidMiscText("[NUMBER..;];", "123;"))
+			return ("Error#128: '[NUMBER..;];' should match '123;'");
+		// Test 129: NUMBERORNULL accepts an integer.
+		if(!CMLib.ableParms().isValidMiscText("[NUMBERORNULL]", "5"))
+			return ("Error#129: '[NUMBERORNULL]' should match '5'");
+		// Test 130: a plain placeholder requires at least one character.
+		if(CMLib.ableParms().isValidMiscText("[NAME]", ""))
+			return ("Error#130: '[NAME]' should reject empty input");
+		// Test 131: a repeating group rejects a partial repetition.
+		if(CMLib.ableParms().isValidMiscText("(ab)...", "aba"))
+			return ("Error#131: '(ab)...' should reject 'aba'");
+		// Test 132: NUMBER accepts only a leading '-', never '+'.
+		if(CMLib.ableParms().isValidMiscText("[NUMBER]", "+5"))
+			return ("Error#132: '[NUMBER]' should reject '+5'");
+		// Test 133: NUMBER rejects decimals.
+		if(CMLib.ableParms().isValidMiscText("[NUMBER]", "5.5"))
+			return ("Error#133: '[NUMBER]' should reject '5.5'");
+		// Test 134: NUMBER requires at least one character.
+		if(CMLib.ableParms().isValidMiscText("[NUMBER]", ""))
+			return ("Error#134: '[NUMBER]' should reject empty input");
+		// Test 135: ONEWORD rejects multi-word input.
+		if(CMLib.ableParms().isValidMiscText("[ONEWORD]", "hello world"))
+			return ("Error#135: '[ONEWORD]' should reject 'hello world'");
+		// Test 136: CONFIRM rejects non-boolean input.
+		if(CMLib.ableParms().isValidMiscText("[CONFIRM]", "frog"))
+			return ("Error#136: '[CONFIRM]' should reject 'frog'");
+		// Test 137: NUMBERORNULL still requires a captured character and a number.
+		if(CMLib.ableParms().isValidMiscText("[NUMBERORNULL]", "")
+		||CMLib.ableParms().isValidMiscText("[NUMBERORNULL]", "x"))
+			return ("Error#137: '[NUMBERORNULL]' should reject empty and non-numeric input");
+		// Test 138: CHECK without a configured name rejects everything.
+		if(CMLib.ableParms().isValidMiscText("[CHECK]", "x")
+		||CMLib.ableParms().isValidMiscText("[CHECK]", ""))
+			return ("Error#138: '[CHECK]' without a name should reject any input");
+		// Test 139: a greedy-to placeholder validates without backtracking.
+		if(CMLib.ableParms().isValidMiscText("[NUMBER..;]", "abc;def"))
+			return ("Error#139: '[NUMBER..;]' should reject 'abc;def'");
+		// Test 140: malformed formats are rejected, not hung or matched.
+		if(CMLib.ableParms().isValidMiscText("[NAME", "foo")
+		||CMLib.ableParms().isValidMiscText("(abc", "abc")
+		||CMLib.ableParms().isValidMiscText("[]", "foo")
+		||CMLib.ableParms().isValidMiscText("()", "")
+		||CMLib.ableParms().isValidMiscText("...", "foo")
+		||CMLib.ableParms().isValidMiscText("(a//b)", "a")
+		||CMLib.ableParms().isValidMiscText("(a/)", "a"))
+			return ("Error#140: malformed formats should be rejected");
 		return null;
 	}
 }

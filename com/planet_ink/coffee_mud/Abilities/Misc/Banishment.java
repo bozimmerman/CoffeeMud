@@ -96,6 +96,12 @@ public class Banishment extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([AREA_NAME(prompt=Banished area/colh=Area)..;]..;(;))";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		//super.setMiscText(newMiscText);

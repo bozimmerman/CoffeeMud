@@ -385,6 +385,12 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([BODY_PART(prompt=Broken limb/colh=Limb)..;]..;(;))";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		if(text.toUpperCase().startsWith("+"))

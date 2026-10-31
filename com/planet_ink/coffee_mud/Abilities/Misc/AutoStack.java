@@ -84,6 +84,14 @@ public class AutoStack extends StdAbility
 	protected int				numberInGroupToTrigger	= 10;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((TRIGGERCOUNT=[NUMBER(prompt=Items in room to trigger stacking/colh=Trigger Count)])"
+			+"/(GROUPCOUNT=[NUMBER(prompt=Same-named items in one stack/colh=Group Count)])"
+			+"/(CHECKTICKS=[NUMBER(prompt=Ticks between stacking checks/colh=Check Ticks)])...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

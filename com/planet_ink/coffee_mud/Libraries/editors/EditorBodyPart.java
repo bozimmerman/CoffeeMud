@@ -58,13 +58,17 @@ public class EditorBodyPart extends AbilityParmEditorImpl
 	@Override
 	public void createChoices()
 	{
-		final String[] list=new String[Race.BODYPARTSTR.length*3];
-		for(int v=0,dex=0;v<Race.BODYPARTSTR.length;v++)
+		final String[] list=new String[(Race.BODYPARTSTR.length*3)+3];
+		int dex=0;
+		for(int v=0;v<Race.BODYPARTSTR.length;v++)
 		{
 			list[dex++]=Race.BODYPARTSTR[v];
 			list[dex++]="LEFT "+Race.BODYPARTSTR[v];
 			list[dex++]="RIGHT "+Race.BODYPARTSTR[v];
 		}
+		list[dex++]="FINGER";
+		list[dex++]="LEFT FINGER";
+		list[dex++]="RIGHT FINGER";
 		createChoices(list);
 	}
 
