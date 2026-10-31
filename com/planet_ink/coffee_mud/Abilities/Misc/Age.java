@@ -444,6 +444,13 @@ public class Age extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([NUMBER(prompt=Years or birth timestamp/colh=Age)]"
+			+"/+[NUMBER(prompt=Hours offset/colh=Hours)]))";
+	}
+
+	@Override
 	public void setMiscText(String miscText)
 	{
 		miscText = miscText.trim();

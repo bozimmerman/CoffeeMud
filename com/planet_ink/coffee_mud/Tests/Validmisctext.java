@@ -451,6 +451,100 @@ public class Validmisctext extends StdTest
 		// Test 81: Delimiter repetition - optional leading element accepts empty input
 		if(!CMLib.ableParms().isValidMiscText("([NAME])..;", ""))
 			return ("Error#81: '([NAME])..;' should match empty");
+		// Test 82: A self-delimiting repeated sequence of greedy placeholders
+		//          (Druid_ShapeShift.miscTextFormat) matches a complete writer output.
+		final Ability druidA = CMClass.getAbility("Druid_ShapeShift");
+		if(druidA == null)
+			return ("Error#82: Druid_ShapeShift ability not loaded");
+		final String druidFormat = druidA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "3"))
+			return ("DBG1: bare '3' fails ["+druidFormat+"]");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "[FILE=skills/shapeshift.txt]3"))
+			return ("DBG2: file form fails");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "[Cat];NAME=cat;3"))
+			return ("DBG3: simple form fails");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "ATTADJ=0.7;3"))
+			return ("DBG4: ATTADJ fails");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "SHAPES=Rat,Beaver;3"))
+			return ("DBG5: SHAPES fails");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "RACES=Rat,Beaver;3"))
+			return ("DBG6: RACES fails");
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "[RODENT FORM];NAME=Rodent form;ATTADJ=0.7;DMGADJ=0.4;ARMADJ=1.0;SPEEDADJ=0.2;SHAPES=Rat,Beaver,Dire Rat;RACES=Rat,Beaver;3"))
+			return ("Error#82: a complete self-delimiting form list should match");
+		// Test 83: The same format matches several forms plus a trailing race code.
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "[Cat];NAME=cat;[Wolf];NAME=wolf;3"))
+			return ("Error#83: multiple self-delimiting forms should match");
+		// Test 84: The same format matches the file-reference form.
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "[FILE=skills/shapeshift.txt]3"))
+			return ("Error#84: a file-reference form should match");
+		// Test 85: The same format matches a bare race code.
+		if(!CMLib.ableParms().isValidMiscText(druidFormat, "3"))
+			return ("Error#85: a bare race code should match");
+		// Test 86: A greedy placeholder followed by '/' is rejected.
+		if(CMLib.ableParms().isValidMiscText("[NAME...]/tail", "foo/tail"))
+			return ("Error#86: a greedy placeholder before '/' should be rejected");
+		// Test 87: A group ending in an open greedy placeholder cannot be
+		//          followed by more format (e.g. a delimiter repeat).
+		if(CMLib.ableParms().isValidMiscText("(NAME=[STRING(prompt=X/colh=X)...])..;", "NAME=foo bar;"))
+			return ("Error#87: an open greedy placeholder at the end of a group should reject trailing format");
+		// Test 88: '..;' inside a placeholder is greedy to the ';' and captures spaces.
+		if(!CMLib.ableParms().isValidMiscText("[STRING..;]", "foo bar"))
+			return ("Error#88: '[STRING..;]' should match 'foo bar'");
+		// Test 89: '..;' stops before the delimiter and does not consume it.
+		if(CMLib.ableParms().isValidMiscText("[STRING..;]", "foo bar;"))
+			return ("Error#89: '[STRING..;]' should not consume the ';'");
+		// Test 90: greedy-to-';' placeholders work inside a '..;' list.
+		if(!CMLib.ableParms().isValidMiscText("(NAME=[STRING..;])..;", "NAME=foo bar;NAME=baz"))
+			return ("Error#90: greedy-to-';' placeholders should work inside a '..;' list");
+		// Test 91: greedy-to-';' captures a decimal point.
+		if(!CMLib.ableParms().isValidMiscText("[DECIMAL..;]", "0.7"))
+			return ("Error#91: '[DECIMAL..;]' should match '0.7'");
+		// Test 92: '..,' inside a placeholder is greedy to the ',' without consuming it.
+		if(!CMLib.ableParms().isValidMiscText("([STRING..,])..,", "foo,bar"))
+			return ("Error#92: '([STRING..,])..,' should match 'foo,bar'");
+		// Test 93: bare [NUMBER] accepts a leading negative sign.
+		if(!CMLib.ableParms().isValidMiscText("[NUMBER]", "-5"))
+			return ("Error#93: '[NUMBER]' should match '-5'");
+		// Test 94: a sign must be followed by digits.
+		if(CMLib.ableParms().isValidMiscText("[NUMBER]", "-x"))
+			return ("Error#94: '[NUMBER]' should reject '-x'");
+		// Test 95: bare [DECIMAL] accepts a decimal point.
+		if(!CMLib.ableParms().isValidMiscText("[DECIMAL]", "0.7"))
+			return ("Error#95: '[DECIMAL]' should match '0.7'");
+		// Test 96: bare [DECIMAL] accepts a negative decimal.
+		if(!CMLib.ableParms().isValidMiscText("[DECIMAL]", "-2.5"))
+			return ("Error#96: '[DECIMAL]' should match '-2.5'");
+		// Test 97: malformed decimals are still rejected.
+		if(CMLib.ableParms().isValidMiscText("[DECIMAL]", "1.2.3"))
+			return ("Error#97: '[DECIMAL]' should reject '1.2.3'");
+		// Test 98: an interior '-' still terminates (range).
+		if(!CMLib.ableParms().isValidMiscText("[NUMBER]-[NUMBER]", "5-10"))
+			return ("Error#98: '[NUMBER]-[NUMBER]' should match '5-10'");
+		// Test 99: a sign-as-literal alternative still consumes the sign.
+		if(!CMLib.ableParms().isValidMiscText("(LEVEL=(+/-)[NUMBER])", "LEVEL=-5"))
+			return ("Error#99: '(LEVEL=(+/-)[NUMBER])' should match 'LEVEL=-5'");
+		// Test 100: a bare placeholder captures punctuation up to whitespace.
+		if(!CMLib.ableParms().isValidMiscText("[STRING]", "a.b"))
+			return ("Error#100: '[STRING]' should match 'a.b'");
+		// Test 101: terminators propagate into an alternative branch.
+		if(!CMLib.ableParms().isValidMiscText("([STRING]/[NUMBER])%", "50%"))
+			return ("Error#101: '([STRING]/[NUMBER])%' should match '50%'");
+		// Test 102: terminators propagate to the last child of a group.
+		if(!CMLib.ableParms().isValidMiscText("(A [STRING]);", "A foo;"))
+			return ("Error#102: '(A [STRING]);' should match 'A foo;'");
+		// Test 103: a nullable placeholder must not empty-match before a literal.
+		if(CMLib.ableParms().isValidMiscText("X=[STRINGORNULL]y", "X=y"))
+			return ("Error#103: 'X=[STRINGORNULL]y' should reject 'X=y'");
+		// Test 104: nullable-sibling union stops at a following punctuation terminator.
+		if(!CMLib.ableParms().isValidMiscText("[STRING](X);", "ab;"))
+			return ("Error#104: '[STRING](X);' should match 'ab;'");
+		// Test 105: a trailing delimiter after multiple elements is still rejected
+		//           (repeating group's last child sees the next iteration's delimiter).
+		if(CMLib.ableParms().isValidMiscText("[NAME]..,", "foo,bar,"))
+			return ("Error#105: '[NAME]..,' should reject 'foo,bar,'");
+		// Test 106: the (") quote marker is nullable in the suffix walk.
+		if(!CMLib.ableParms().isValidMiscText("[STRING](\");", "ab;"))
+			return ("Error#106: '[STRING](\");' should match 'ab;'");
 		return null;
 	}
 }

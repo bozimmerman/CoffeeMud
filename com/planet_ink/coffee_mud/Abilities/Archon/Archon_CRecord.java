@@ -164,7 +164,7 @@ public class Archon_CRecord extends ArchonSkill
 				+ "TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)] "
 				+ "MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)] "
 				+ "(BY=[STRING(prompt=By/colh=By)])/"
-				+ "(PLAYERS=(\")[STRING(prompt=Players/colh=Players)...](\"))";
+				+ "(PLAYERS=(\")[STRINGORNULL(prompt=Players/colh=Players)...](\"))";
 	}
 
 	@Override

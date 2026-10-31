@@ -85,7 +85,7 @@ public class ExtraData extends ThinAbility
 	@Override
 	public String miscTextFormat()
 	{
-		return "([STRING(prompt=Extra key/value data (XML)/colh=XML)...])";
+		return "([STRING(prompt=Extra key-value data (XML)/colh=XML)...])";
 	}
 
 	@Override

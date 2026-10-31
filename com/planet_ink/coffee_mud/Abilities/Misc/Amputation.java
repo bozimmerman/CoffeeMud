@@ -315,6 +315,12 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([BODY_PART(prompt=Missing body part/colh=Limb)..;]..;))";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

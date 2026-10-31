@@ -61,6 +61,22 @@ public class Druid_ShapeShift extends StdAbility
 		return Ability.QUALITY_OK_SELF;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		//Accept // as valid
+		return "(([NUMBER(prompt=Race code/colh=RACE)])"
+	+ "/\\[FILE=[STRING(prompt=Unique form file/colh=FILE)...]\\]([NUMBER(prompt=Race code/colh=RACE)])"
+	+ "/\\[[STRING(prompt=Shape ID/colh=ID)...]\\]"
+	+ "/NAME=[STRING(prompt=Form name/colh=NAME)..;]"
+	+ "/ATTADJ=[DECIMAL(prompt=Attack adj/colh=ATTADJ)]"
+	+ "/DMGADJ=[DECIMAL(prompt=Damage adj/colh=DMGADJ)]"
+	+ "/ARMADJ=[DECIMAL(prompt=Armor adj/colh=ARMADJ)]"
+	+ "/SPEEDADJ=[DECIMAL(prompt=Speed adj/colh=SPEEDADJ)]"
+	+ "/SHAPES=[STRING(prompt=Shapes/colh=SHAPES)..;]"
+	+ "/(RACES=[STRING(prompt=Races/colh=RACES)]..,))..;";
+	}
+
 	private static final String[]	triggerStrings	= I(new String[] { "SHAPESHIFT" });
 
 	@Override

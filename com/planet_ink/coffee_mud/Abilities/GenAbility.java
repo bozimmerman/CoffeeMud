@@ -278,6 +278,12 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Ability definition XML/colh=XML)...])";
+	}
+
+	@Override
 	public int getTicksBetweenCasts()
 	{
 		return ((Integer) V(ID, V_TKBC)).intValue();

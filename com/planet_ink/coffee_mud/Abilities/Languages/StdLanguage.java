@@ -148,6 +148,14 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((ALWAYS=[CONFIRM(prompt=Speak this language at all times/colh=ALWAYS)])"
+			+"/(SPOKEN=[CONFIRM(prompt=Speak this language now/colh=SPOKEN)]))"
+			+"...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		if(newMiscText.length()>0)
