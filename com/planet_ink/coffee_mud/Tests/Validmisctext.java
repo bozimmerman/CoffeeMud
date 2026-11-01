@@ -948,6 +948,221 @@ public class Validmisctext extends StdTest
 		||!CMLib.ableParms().isValidMiscText(limFmt, "5;ID=grp")
 		||CMLib.ableParms().isValidMiscText(limFmt, "x"))
 			return ("Error#168: the Prop_LimitedItems format should accept a max with optional group, and reject non-numeric maxes");
+		// Test 169: the Scarring format accepts ;-separated limb names with left/right prefixes and proper names, in any order, trailing delimiter, and empty.
+		final String scarFmt = CMClass.getAbility("Scarring").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "TORSO;ARM"))
+			return ("Error#169a");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "ARM;TORSO"))
+			return ("Error#169b");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "left arm;RIGHT LEG;HEAD"))
+			return ("Error#169c");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "HEAD;RIGHT LEG;left arm"))
+			return ("Error#169d");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "LEFT EYEBROW;HEAD;face"))
+			return ("Error#169e");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "face;HEAD;LEFT EYEBROW"))
+			return ("Error#169f");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "HEAD;TORSO;"))
+			return ("Error#169g");
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, ""))
+			return ("Error#169h");
+		if(CMLib.ableParms().isValidMiscText(scarFmt, "BOGUS"))
+			return ("Error#169i: the Scarring format should reject unknown limb names");
+		if(CMLib.ableParms().isValidMiscText(scarFmt, ";"))
+			return ("Error#169j: the Scarring format should reject vacuous delimiters");
+		if(CMLib.ableParms().isValidMiscText(scarFmt, "TORSO;;ARM"))
+			return ("Error#169k: the Scarring format should reject consecutive delimiters");
+		// BODY_PART includes FINGER though the setter ignores it; accepted as a known editor divergence.
+		if(!CMLib.ableParms().isValidMiscText(scarFmt, "FINGER"))
+			return ("Error#169l: the Scarring format should accept FINGER per the BODY_PART editor");
+		if(CMLib.ableParms().isValidMiscText(scarFmt, "+TORSO"))
+			return ("Error#169m: the Scarring format should reject the transient +-prefixed form");
+		// Test 170: the ScriptLater format accepts <SCRIPTS> docs with CLOCK/TICKS/TIME entries in any order, and an empty wrapper.
+		final String laterFmt = CMClass.getAbility("ScriptLater").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT INVOKER=\"Zac\" CLOCK=\"2026/10/31/14 Example Area\">wave</SCRIPT><SCRIPT TICKS=\"5\">say hi</SCRIPT></SCRIPTS>"))
+			return ("Error#170a");
+		if(!CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT TICKS=\"5\">say hi</SCRIPT><SCRIPT INVOKER=\"Zac\" CLOCK=\"2026/10/31/14 Example Area\">wave</SCRIPT></SCRIPTS>"))
+			return ("Error#170b");
+		if(!CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT TIME=\"1234567890123\">bow</SCRIPT></SCRIPTS>"))
+			return ("Error#170c");
+		if(!CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT CLOCK=\"10/31/2026 14h\">nod</SCRIPT></SCRIPTS>"))
+			return ("Error#170d");
+		if(!CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS></SCRIPTS>"))
+			return ("Error#170e");
+		if(CMLib.ableParms().isValidMiscText(laterFmt, "BOGUS"))
+			return ("Error#170f: the ScriptLater format should reject non-XML text");
+		if(CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT>wave</SCRIPT></SCRIPTS>"))
+			return ("Error#170g: the ScriptLater format should reject entries without a time attribute");
+		if(CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT CLOCK=\"DAY 1\">wave</SCRIPT></SCRIPTS>"))
+			return ("Error#170h: the ScriptLater format should reject non-code CLOCK values");
+		if(CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT TICKS=\"abc\">wave</SCRIPT></SCRIPTS>"))
+			return ("Error#170i: the ScriptLater format should reject non-numeric TICKS values");
+		if(CMLib.ableParms().isValidMiscText(laterFmt, "<SCRIPTS><SCRIPT TIME=\"abc\">wave</SCRIPT></SCRIPTS>"))
+			return ("Error#170j: the ScriptLater format should reject non-numeric TIME values");
+		// Test 171: the SoundEcho format accepts a bare range or order-free RANGE=/ACCURACY= pairs, and empty.
+		final String echoFmt = CMClass.getAbility("SoundEcho").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(echoFmt, "10"))
+			return ("Error#171a");
+		if(!CMLib.ableParms().isValidMiscText(echoFmt, "RANGE=10 ACCURACY=50"))
+			return ("Error#171b");
+		if(!CMLib.ableParms().isValidMiscText(echoFmt, "ACCURACY=50 RANGE=10"))
+			return ("Error#171c");
+		if(!CMLib.ableParms().isValidMiscText(echoFmt, "RANGE=7"))
+			return ("Error#171d");
+		if(!CMLib.ableParms().isValidMiscText(echoFmt, ""))
+			return ("Error#171e");
+		if(CMLib.ableParms().isValidMiscText(echoFmt, "BOGUS"))
+			return ("Error#171f: the SoundEcho format should reject non-numeric text");
+		if(CMLib.ableParms().isValidMiscText(echoFmt, "RANGE=abc"))
+			return ("Error#171g: the SoundEcho format should reject non-numeric values");
+		if(CMLib.ableParms().isValidMiscText(echoFmt, "10 20"))
+			return ("Error#171h: the SoundEcho format should reject doubled bare values");
+		// Test 172: the TemporaryAffects format accepts the command shapes the setter parses.
+		final String tempFmt = CMClass.getAbility("TemporaryAffects").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, ""))
+			return ("Error#172a");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "-Spell_Fly"))
+			return ("Error#172b");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "Spell_Fly 10"))
+			return ("Error#172c");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "Spell_Fireball 20 glow bright"))
+			return ("Error#172d");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "+Spell_Fly 10"))
+			return ("Error#172e");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "++Spell_Fly 10"))
+			return ("Error#172f");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "+#Spell_Fly 10"))
+			return ("Error#172g");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "#Spell_Fly 10"))
+			return ("Error#172h");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "AMBIANCE 10 glows"))
+			return ("Error#172i");
+		if(!CMLib.ableParms().isValidMiscText(tempFmt, "+BINDTO fred the fighter"))
+			return ("Error#172j");
+		if(CMLib.ableParms().isValidMiscText(tempFmt, "Spell_Fly"))
+			return ("Error#172k: the TemporaryAffects format should reject IDs without ticks");
+		if(CMLib.ableParms().isValidMiscText(tempFmt, "BOGUS"))
+			return ("Error#172l: the TemporaryAffects format should reject unknown single words");
+		if(CMLib.ableParms().isValidMiscText(tempFmt, "+BINDTO"))
+			return ("Error#172m: the TemporaryAffects format should reject bare BINDTO");
+		if(CMLib.ableParms().isValidMiscText(tempFmt, "BINDTO fred"))
+			return ("Error#172n: the TemporaryAffects format should reject prefix-less BINDTO");
+		if(CMLib.ableParms().isValidMiscText(tempFmt, "-Spell_Fly 10"))
+			return ("Error#172o: the TemporaryAffects format should reject ticked removals");
+		// Test 173: the TemporaryImmunity format accepts +adds and ;-separated name/timestamp entries.
+		final String immunFmt = CMClass.getAbility("TemporaryImmunity").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(immunFmt, "+Spell_Fireball"))
+			return ("Error#173a");
+		if(!CMLib.ableParms().isValidMiscText(immunFmt, "Spell_Fireball/1000;Spell_Shield/2000"))
+			return ("Error#173b");
+		if(!CMLib.ableParms().isValidMiscText(immunFmt, "Spell_Shield/2000;Spell_Fireball/1000"))
+			return ("Error#173c");
+		if(!CMLib.ableParms().isValidMiscText(immunFmt, "Spell_Fireball/1000;"))
+			return ("Error#173d");
+		if(!CMLib.ableParms().isValidMiscText(immunFmt, ""))
+			return ("Error#173e");
+		if(CMLib.ableParms().isValidMiscText(immunFmt, "BOGUS"))
+			return ("Error#173f: the TemporaryImmunity format should reject unknown names");
+		if(CMLib.ableParms().isValidMiscText(immunFmt, "Spell_Fireball/abc"))
+			return ("Error#173g: the TemporaryImmunity format should reject non-numeric timestamps");
+		if(CMLib.ableParms().isValidMiscText(immunFmt, "Spell_Fireball"))
+			return ("Error#173h: the TemporaryImmunity format should reject slash-less entries");
+		if(CMLib.ableParms().isValidMiscText(immunFmt, "+"))
+			return ("Error#173i: the TemporaryImmunity format should reject a bare plus");
+		if(CMLib.ableParms().isValidMiscText(immunFmt, "+Spell_Fireball/1000"))
+			return ("Error#173j: the TemporaryImmunity format should reject slashed plus-adds");
+		// Test 174: the TriggeredAffects format accepts bare and parenthesized key=value entries.
+		final String trigFmt = CMClass.getAbility("TriggeredAffects").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, ""))
+			return ("Error#174a");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "-Spell_Fly"))
+			return ("Error#174b");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD"))
+			return ("Error#174c");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "ONTRIGGER=ADD TRIGGER=SITTING TICKS=10 ID=Spell_Fly"))
+			return ("Error#174d");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD PARMS=\"glow bright\" MESSAGE=\"shimmers\""))
+			return ("Error#174e");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "+ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD"))
+			return ("Error#174f");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "(ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD)(ID=Spell_Shield TICKS=5 TRIGGER=SITTING ONTRIGGER=REMOVE)"))
+			return ("Error#174g");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD IMEANIT=true INVOKE=false"))
+			return ("Error#174h");
+		if(!CMLib.ableParms().isValidMiscText(trigFmt, "ID=AMBIANCE TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD PARMS=glows"))
+			return ("Error#174i");
+		if(CMLib.ableParms().isValidMiscText(trigFmt, "BOGUS"))
+			return ("Error#174j: the TriggeredAffects format should reject unknown words");
+		if(CMLib.ableParms().isValidMiscText(trigFmt, "ID=Spell_Fly TICKS=abc TRIGGER=SITTING ONTRIGGER=ADD"))
+			return ("Error#174k: the TriggeredAffects format should reject non-numeric ticks");
+		if(CMLib.ableParms().isValidMiscText(trigFmt, "ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=MAYBE"))
+			return ("Error#174l: the TriggeredAffects format should reject bad ONTRIGGER");
+		if(CMLib.ableParms().isValidMiscText(trigFmt, "++ID=Spell_Fly TICKS=10 TRIGGER=SITTING ONTRIGGER=ADD"))
+			return ("Error#174m: the TriggeredAffects format should reject double-plus");
+		// Test 175: the WanderHomeLater format accepts order-free boolean/integer option pairs.
+		final String wanderFmt = CMClass.getAbility("WanderHomeLater").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(wanderFmt, ""))
+			return ("Error#175a");
+		if(!CMLib.ableParms().isValidMiscText(wanderFmt, "areaok=true once=true minticks=10"))
+			return ("Error#175b");
+		if(!CMLib.ableParms().isValidMiscText(wanderFmt, "minticks=10 once=true areaok=true"))
+			return ("Error#175c");
+		if(!CMLib.ableParms().isValidMiscText(wanderFmt, "destroy=false"))
+			return ("Error#175d");
+		if(CMLib.ableParms().isValidMiscText(wanderFmt, "BOGUS"))
+			return ("Error#175e: the WanderHomeLater format should reject unknown words");
+		if(CMLib.ableParms().isValidMiscText(wanderFmt, "areaok"))
+			return ("Error#175f: the WanderHomeLater format should reject bare flags");
+		if(CMLib.ableParms().isValidMiscText(wanderFmt, "minticks=abc"))
+			return ("Error#175g: the WanderHomeLater format should reject non-numeric values");
+		// Test 176: the Poison format accepts RANK/ITEMAMBIANCE/MOBAMBIANCE in any order, and empty.
+		final String poisonFmt = CMClass.getAbility("Poison").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, "RANK=1.5 ITEMAMBIANCE=\"foul stench\" MOBAMBIANCE=\"sickly glow\""))
+			return ("Error#176a");
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, "MOBAMBIANCE=\"sickly glow\" RANK=1.5 ITEMAMBIANCE=\"foul stench\""))
+			return ("Error#176b");
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, "ITEMAMBIANCE=stench RANK=2"))
+			return ("Error#176c");
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, "RANK=2 ITEMAMBIANCE=stench"))
+			return ("Error#176d");
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, "RANK=1.5"))
+			return ("Error#176e");
+		if(!CMLib.ableParms().isValidMiscText(poisonFmt, ""))
+			return ("Error#176f");
+		if(CMLib.ableParms().isValidMiscText(poisonFmt, "BOGUS=1"))
+			return ("Error#176g: the Poison format should reject unknown keys");
+		if(CMLib.ableParms().isValidMiscText(poisonFmt, "RANK=abc"))
+			return ("Error#176h: the Poison format should reject non-numeric RANK values");
+		if(CMLib.ableParms().isValidMiscText(poisonFmt, "RANK="))
+			return ("Error#176i: the Poison format should reject empty RANK values");
+		// Test 177: the UniPoison format accepts RANK plus GenPoison stat codes in any order, and empty.
+		final String unipoisonFmt = CMClass.getAbility("UniPoison").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, "RANK=1.5 NAME=\"Deadly Venom\" DAMAGE=5"))
+			return ("Error#177a");
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, "DAMAGE=5 RANK=1.5 NAME=\"Deadly Venom\""))
+			return ("Error#177b");
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, "AFFECTTARG MOOD=angry"))
+			return ("Error#177c");
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, "MOOD=angry AFFECTTARG"))
+			return ("Error#177d");
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, "RANK"))
+			return ("Error#177e");
+		if(!CMLib.ableParms().isValidMiscText(unipoisonFmt, ""))
+			return ("Error#177f");
+		if(CMLib.ableParms().isValidMiscText(unipoisonFmt, "BOGUS=1"))
+			return ("Error#177g: the UniPoison format should reject unknown stat codes");
+		if(CMLib.ableParms().isValidMiscText(unipoisonFmt, "RANK=abc"))
+			return ("Error#177h: the UniPoison format should reject non-numeric RANK values");
+		if(CMLib.ableParms().isValidMiscText(unipoisonFmt, "123=abc"))
+			return ("Error#177i: the UniPoison format should reject digit-led keys the parser skips");
+		// Test 178: the Prayer_MassGrave format accepts a room ID or empty.
+		final String graveFmt = CMClass.getAbility("Prayer_MassGrave").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(graveFmt, "New Area#0"))
+			return ("Error#178a");
+		if(!CMLib.ableParms().isValidMiscText(graveFmt, ""))
+			return ("Error#178b");
+		if(CMLib.ableParms().isValidMiscText(graveFmt, "No Such Area#9999"))
+			return ("Error#178c: the Prayer_MassGrave format should reject unresolvable room IDs");
 		return null;
 	}
 }

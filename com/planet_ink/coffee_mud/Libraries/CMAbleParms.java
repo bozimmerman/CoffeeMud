@@ -1874,10 +1874,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						emptyMatch = true;
 					}
-					quoteMode[0] = saveQuoteMode;
-					outIndex[0] = saveIndex;
-				}
-				return emptyMatch;
+				quoteMode[0] = saveQuoteMode;
+				outIndex[0] = saveIndex;
+			}
+			return emptyMatch;
 			}
 			else
 			{
@@ -1917,12 +1917,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 							tempIndex = outIndex[0];
 						}
-						if(!matched)
-						{
-							quoteMode[0] = saveRepeatQuoteMode;
-							outIndex[0] = saveIndex;
-							break;
-						}
+					if((!matched)||(outIndex[0] == saveIndex))
+					{
+						quoteMode[0] = saveRepeatQuoteMode;
+						outIndex[0] = saveIndex;
+						break;
+					}
 					}
 				}
 				return true;
@@ -2044,8 +2044,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(token.isAlternative)
 		{
 			for(final MTToken child : children)
+			{
 				if(isNullable(child))
 					return true;
+			}
 			return false;
 		}
 		for(final MTToken child : children)
@@ -2086,7 +2088,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(index >= proposition.length())
 		{
 			outIndex[0] = index;
-			return false;
+			return (token.greedyRest)&&(token.placeholderArgs != null);
 		}
 		final String literal = (String)token.token;
 		final String lowerProposition = proposition.toLowerCase();
@@ -2166,6 +2168,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			outIndex[0] = proposition.length();
 			return true;
 		}
+		if((token.greedyRest)&&(token.placeholderArgs != null)) // [X].. rest-or-empty placeholder
+		{
+			final String val = proposition.substring(index).trim();
+			if(val.length()==0)
+			{
+				outIndex[0] = index;
+				return true;
+			}
+			if(!confirmParmValue(literal, val, token.parameterArgs))
+				return false;
+			outIndex[0] = proposition.length();
+			return true;
+		}
 		if(token.placeholderArgs != null) // is a placeholder
 		{
 			final int start = index;
@@ -2205,6 +2220,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public String				greedyLiteral	= null;
 		public boolean				greedy			= false;
 		public char					greedyTo		= '\0';		// non-zero: greedy up to this delimiter char, without consuming it
+		public boolean				greedyRest		= false;	// TRUE if this is an [X].. rest-or-empty placeholder
+		public boolean				escapedSlash	= false;	// TRUE if this "/" literal came from a \/ escape and must not split alternatives
 
 		public MTToken(final Object token, final boolean optional)
 		{
@@ -2225,6 +2242,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			this.greedyLiteral = other.greedyLiteral;
 			this.greedy = other.greedy;
 			this.greedyTo = other.greedyTo;
+			this.greedyRest = other.greedyRest;
+			this.escapedSlash = other.escapedSlash;
 		}
 	}
 
@@ -2272,10 +2291,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	/**
 	 * Parses a misc text format.  The format supports literals, [PLACEHOLDER]
 	 * (optionally with (args)), (optional) groups, '/' alternatives, '...'
-	 * repetition, and '\' escapes.  A placeholder whose name ends with "..."
+	 * repetition, and '\' escapes.  An escaped syntax character never acts as
+	 * syntax, even when it forms a token alone: a \/ between placeholders is
+	 * a literal slash, not an alternative separator.  A placeholder whose name ends with "..."
 	 * (for example [NAME...]) is greedy.  A placeholder whose name ends with
 	 * '..' plus a delimiter character (for example [NAME..;]) is greedy up to
-	 * that delimiter without consuming it.  The special (") marker denotes an
+	 * that delimiter without consuming it.  A placeholder followed by '.. '
+	 * (dot-dot-space, for example ([NAME].. )) is greedy to end-of-string,
+	 * or empty when nothing remains, and may appear inside groups.  The special (") marker denotes an
 	 * optional quotation mark.  (")[NAME...](") accepts a quoted-or-bare
 	 * value.  A '..' followed by a single delimiter character
 	 * (for example '..,' or '..;') repeats the preceding token with that literal
@@ -2297,7 +2320,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 		while(index < end)
 		{
-			while(index < end && Character.isWhitespace(format.charAt(index)))
+			while((index < end)
+			&& Character.isWhitespace(format.charAt(index)))
 				index++;
 			if(index >= end)
 				break;
@@ -2510,6 +2534,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						index += 3;
 					}
 					else
+					if(d == ' ')
+					{
+						final MTToken x = tokens.get(tokens.size() - 1);
+						if(x.placeholderArgs == null)
+							throw new CMException("'.. ' requires a preceding placeholder at " + index);
+						x.greedyRest = true;
+						index += 3;
+					}
+					else
 					if(isDelimiterChar(d))
 					{
 						final MTToken x = tokens.get(tokens.size() - 1);
@@ -2534,18 +2567,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			else
 			{
-				// Collect consecutive literal characters
-				final StringBuilder literal = new StringBuilder();
-				while(index < end)
+			// Collect consecutive literal characters
+			final StringBuilder literal = new StringBuilder();
+			boolean hadEscape = false;
+			while(index < end)
+			{
+				c = format.charAt(index);
+				if(c == '\\')
 				{
-					c = format.charAt(index);
-					if(c == '\\')
-					{
-						if(index + 1 >= end)
-							throw new CMException("Trailing backslash at " + index);
-						literal.append(format.charAt(index + 1));
-						index += 2;
-					}
+					if(index + 1 >= end)
+						throw new CMException("Trailing backslash at " + index);
+					literal.append(format.charAt(index + 1));
+					hadEscape = true;
+					index += 2;
+				}
 					else
 					if(Character.isWhitespace(c) || c == '/' || c == '(' || c == '[' || c == '.' || c == ')')
 					{
@@ -2557,8 +2592,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						index++;
 					}
 				}
-				if(literal.length() > 0)
-					tokens.add(new MTToken(literal.toString(), false));
+			if(literal.length() > 0)
+			{
+				final MTToken litToken = new MTToken(literal.toString(), false);
+				litToken.escapedSlash = hadEscape && "/".equals(literal.toString());
+				tokens.add(litToken);
+			}
 			}
 		}
 
@@ -2570,7 +2609,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(tokens.isEmpty())
 			throw new CMException("Empty sequence");
 
-		if((tokens.size() > 1) && (tokens.get(1).token.equals("/")))
+		if((tokens.size() > 1) 
+		&&("/".equals(tokens.get(1).token))
+		&&(!tokens.get(1).escapedSlash))
 			return collapseFullAlternation(tokens);
 
 		final List<MTToken> result = new ArrayList<>();
@@ -2578,8 +2619,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 		while(i < tokens.size())
 		{
-			if((i + 2 < tokens.size())
-			&&(tokens.get(i + 1).token.equals("/")))
+			if((i+2<tokens.size())
+			&&("/".equals(tokens.get(i+1).token))
+			&&(!tokens.get(i+1).escapedSlash))
 			{
 				// Found a slash - collect all alternatives
 				final List<MTToken> alternatives = new ArrayList<>();
@@ -2587,7 +2629,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				i += 2; // skip the slash
 				alternatives.add(tokens.get(i));
 				while((i + 2 < tokens.size())
-				&&(tokens.get(i + 1).token.equals("/")))
+				&&("/".equals(tokens.get(i+1).token))
+				&&(!tokens.get(i+1).escapedSlash))
 				{
 					i += 2;
 					alternatives.add(tokens.get(i));
@@ -2616,7 +2659,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final List<MTToken> current = new ArrayList<>();
 		for(final MTToken t : tokens)
 		{
-			if(t.token.equals("/"))
+			if("/".equals(t.token) && !t.escapedSlash)
 			{
 				if(current.isEmpty())
 					throw new CMException("Empty alternative in alternation");

@@ -392,6 +392,14 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((+BINDTO/++BINDTO/+#BINDTO) [STRING(prompt=Bind name/colh=Bind)]... )"
+			+ "/(-([ABILITY_ID(prompt=Affect ID/colh=Affect)]/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)]))"
+			+ "/((+)(+)(#)(([ABILITY_ID(prompt=Affect ID/colh=Affect)]/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)]/[CHECK(name=AMBIANCE/prompt=Affect ID/colh=Affect)]) [NUMBER(prompt=Ticks/colh=Ticks)] ([STRING(prompt=Parameters/colh=Parms)].. ))))";
+	}
+
+	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);

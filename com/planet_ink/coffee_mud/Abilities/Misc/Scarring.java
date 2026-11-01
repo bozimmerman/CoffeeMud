@@ -262,6 +262,13 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHOICES(choices=FACE,LEFT FACE,RIGHT FACE,EYEBROW,LEFT EYEBROW,RIGHT EYEBROW"
+			+"/prompt=Scarred limb/colh=Limb)..;]/[BODY_PART(prompt=Scarred limb/colh=Limb)..;])(;))...)";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		if(text.toUpperCase().startsWith("+"))

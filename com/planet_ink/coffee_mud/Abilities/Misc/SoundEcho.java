@@ -112,6 +112,14 @@ public class SoundEcho extends StdAbility
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([NUMBER(prompt=Range/colh=Range)]"
+			+ "/((RANGE=[NUMBER(prompt=Range/colh=Range)])"
+			+ "/(ACCURACY=[NUMBER(prompt=Accuracy/colh=Accuracy)]))...))";
+	}
+
 	public synchronized MOB blindMOB()
 	{
 		if(bmob!=null)

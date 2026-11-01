@@ -114,6 +114,12 @@ public class Prayer_MassGrave extends Prayer
 		return previousLocation;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[ROOM_ID(prompt=Previous room/colh=PreviousRoom)].. ";
+	}
+
 	protected Room getShelter(final MOB mob)
 	{
 		if(this.shelter != null)

@@ -167,6 +167,19 @@ public class ScriptLater extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "<SCRIPTS>"
+			+ "((<SCRIPT (INVOKER=\"[STRING(prompt=Invoker/colh=Invoker)..\"]\" )"
+			+ "[CHOICES(choices=CLOCK,TICKS,TIME/prompt=Time attribute/colh=TimeAttr)]=\""
+			+ "(([TIME_PERIOD(prompt=Clock/colh=Clock)..\"])"
+			+ "/[NUMBER(prompt=Tick count/colh=TickCount)]"
+			+ "/[NUMBER(prompt=Timestamp/colh=Timestamp)])\">"
+			+ "[STRING(prompt=Script/colh=Script)..<]<\\/SCRIPT>)...)"
+			+ "<\\/SCRIPTS>";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(super.tick(ticking, tickID))

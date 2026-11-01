@@ -190,6 +190,21 @@ public class UniPoison extends GenPoison implements SpellHolder
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder codes=new StringBuilder("");
+		for(final String code : getStatCodes())
+		{
+			if(codes.length()>0)
+				codes.append(",");
+			codes.append(code);
+		}
+		return "(((RANK(=[DECIMAL(prompt=Rank/colh=Rank)]))"
+			+ "/([CHOICES(choices="+codes.toString()+"/prompt=Stat code/colh=StatCode)]"
+			+ "(=(\")[STRING(prompt=Stat value/colh=StatValue)...](\"))))...)";
+	}
+
+	@Override
 	public String getHealthConditionDesc()
 	{
 		if(siblings.size()==0)

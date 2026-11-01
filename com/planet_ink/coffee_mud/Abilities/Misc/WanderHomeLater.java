@@ -95,6 +95,19 @@ public class WanderHomeLater extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((AREAOK=[CONFIRM(prompt=Area ok/colh=AreaOk)])"
+			+ "/(DESTROY=[CONFIRM(prompt=Destroy/colh=Destroy)])"
+			+ "/(IGNOREPCS=[CONFIRM(prompt=Ignore PCs/colh=IgnorePCs)])"
+			+ "/(IGNOREFOLLOW=[CONFIRM(prompt=Ignore follow/colh=IgnoreFollow)])"
+			+ "/(RESPECTFOLLOW=[CONFIRM(prompt=Respect follow/colh=RespectFollow)])"
+			+ "/(ONCE=[CONFIRM(prompt=Once/colh=Once)])"
+			+ "/(MINTICKS=[NUMBER(prompt=Min ticks/colh=MinTicks)])"
+			+ "/(MAXTICKS=[NUMBER(prompt=Max ticks/colh=MaxTicks)]))...)";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical P=affected;

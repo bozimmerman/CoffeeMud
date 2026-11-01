@@ -185,6 +185,14 @@ public class Poison extends StdAbility implements HealthCondition
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((RANK=[DECIMAL(prompt=Rank/colh=Rank)])"
+			+ "/((ITEMAMBIANCE=(\")[STRING(prompt=Item ambiance/colh=ItemAmbiance)...](\")))"
+			+ "/((MOBAMBIANCE=(\")[STRING(prompt=Mob ambiance/colh=MobAmbiance)...](\"))))...)";
+	}
+
+	@Override
 	public String getHealthConditionDesc()
 	{
 		if(name().toUpperCase().endsWith("S"))

@@ -566,9 +566,35 @@ public class TriggeredAffects extends StdAbility implements TriggeredAffect
 				if(depth>0)
 					addTriggeredAffect(txt.substring(start,txt.length()));
 			}
-			else
-				addTriggeredAffect(txt);
+		else
+			addTriggeredAffect(txt);
 		}
+	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "((+)((-[ONEWORD(prompt=Removed name/colh=Remove)])"
+			+ "/(((\\(((ID=([CHECK(name=AMBIANCE/prompt=Affect ID/colh=Affect)])"
+			+ "/([ABILITY_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])"
+			+ "/(TRIGGER=(\")[STRING(prompt=Trigger/colh=Trigger)...](\"))"
+			+ "/(ONTRIGGER=[CHOICES(choices=ADD,REMOVE,prompt=On trigger/colh=OnTrigger)])"
+			+ "/(PARMS=(\")[STRING(prompt=Parameters/colh=Parms)...](\"))"
+			+ "/(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))"
+			+ "/(IMEANIT=[CONFIRM(prompt=I mean it/colh=ImeanIt)])"
+			+ "/(INVOKE=[CONFIRM(prompt=Invoke/colh=Invoke)]))...)\\))...)......"
+			+ "/((((ID=([CHECK(name=AMBIANCE/prompt=Affect ID/colh=Affect)])"
+			+ "/([ABILITY_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])"
+			+ "/(TRIGGER=(\")[STRING(prompt=Trigger/colh=Trigger)...](\"))"
+			+ "/(ONTRIGGER=[CHOICES(choices=ADD,REMOVE,prompt=On trigger/colh=OnTrigger)])"
+			+ "/(PARMS=(\")[STRING(prompt=Parameters/colh=Parms)...](\"))"
+			+ "/(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))"
+			+ "/(IMEANIT=[CONFIRM(prompt=I mean it/colh=ImeanIt)])"
+			+ "/(INVOKE=[CONFIRM(prompt=Invoke/colh=Invoke)]))...)))))";
 	}
 
 

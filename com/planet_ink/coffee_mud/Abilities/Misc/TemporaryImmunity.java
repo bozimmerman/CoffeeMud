@@ -205,6 +205,17 @@ public class TemporaryImmunity extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((+[ABILITY_ID(prompt=Immunity/colh=Immunity)])"
+			+ "/([ABILITY_ID(prompt=Immunity/colh=Immunity)]"
+			+ "\\/[NUMBER(prompt=Granted at/colh=Granted)]"
+			+ "(;[ABILITY_ID(prompt=Immunity/colh=Immunity)]"
+			+ "\\/[NUMBER(prompt=Granted at/colh=Granted)])..."
+			+ "(;)))";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(affected))
