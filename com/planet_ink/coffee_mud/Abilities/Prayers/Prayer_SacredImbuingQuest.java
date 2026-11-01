@@ -276,6 +276,12 @@ public class Prayer_SacredImbuingQuest extends Prayer
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[JSON(prompt=Quest data/colh=Quest data)...]";
+	}
+
 	public Quest deviseAndStartQuest(final MOB mob, final MOB targetM, final Map<String,Object> definedIDs)
 	{
 		final Map<String,Object> origDefined=new XHashtable<String,Object>(definedIDs);

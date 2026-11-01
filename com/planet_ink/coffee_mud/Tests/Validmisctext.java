@@ -1163,6 +1163,49 @@ public class Validmisctext extends StdTest
 			return ("Error#178b");
 		if(CMLib.ableParms().isValidMiscText(graveFmt, "No Such Area#9999"))
 			return ("Error#178c: the Prayer_MassGrave format should reject unresolvable room IDs");
+		// Test 179: a JSON editor validates JSON documents.
+		final AbilityParmEditor jsonEditor = CMLib.ableParms().getEditors().get("JSON");
+		if(jsonEditor == null)
+			return ("Error#179a: the JSON editor is not registered");
+		if(!jsonEditor.confirmValue("{\"a\":1,\"b\":[true,null,\"x\"]}"))
+			return ("Error#179b: the JSON editor rejected a valid object");
+		if(!jsonEditor.confirmValue("[1,2,3]"))
+			return ("Error#179c: the JSON editor rejected a valid array");
+		if(jsonEditor.confirmValue("{\"a\":"))
+			return ("Error#179d: the JSON editor accepted malformed JSON");
+		if(!CMLib.ableParms().isValidMiscText("[JSON]", "{\"a\":1}"))
+			return ("Error#179e: '[JSON]' should accept compact JSON");
+		if(!CMLib.ableParms().isValidMiscText("[JSON...]", "{\"a\": 1, \"b\": [true, null]}"))
+			return ("Error#179f: '[JSON...]' should accept spaced JSON");
+		if(CMLib.ableParms().isValidMiscText("[JSON...]", "{\"a\": 1"))
+			return ("Error#179g: '[JSON...]' should reject malformed JSON");
+		// Test 180: an XML editor validates XML documents.
+		final AbilityParmEditor xmlEditor = CMLib.ableParms().getEditors().get("XML");
+		if(xmlEditor == null)
+			return ("Error#180a: the XML editor is not registered");
+		if(!xmlEditor.confirmValue("<FOO bar=\"1\">text</FOO>"))
+			return ("Error#180b: the XML editor rejected a valid document");
+		if(!xmlEditor.confirmValue("<FOO/>"))
+			return ("Error#180c: the XML editor rejected a self-closed tag");
+		if(xmlEditor.confirmValue("<FOO>"))
+			return ("Error#180d: the XML editor accepted malformed XML");
+		if(!CMLib.ableParms().isValidMiscText("[XML]", "<FOO/>"))
+			return ("Error#180e: '[XML]' should accept compact XML");
+		if(!CMLib.ableParms().isValidMiscText("[XML...]", "<FOO bar=\"1\">some text</FOO>"))
+			return ("Error#180f: '[XML...]' should accept spaced XML");
+		if(CMLib.ableParms().isValidMiscText("[XML...]", "<FOO>"))
+			return ("Error#180g: '[XML...]' should reject malformed XML");
+		// Test 181: Prayer_SacredImbuingQuest stores its state as JSON.
+		final Ability sacredA = CMClass.getAbility("Prayer_SacredImbuingQuest");
+		if(sacredA == null)
+			return ("Error#181a: Prayer_SacredImbuingQuest is not loaded");
+		final String sacredFmt = sacredA.miscTextFormat();
+		if(!sacredFmt.equals("[JSON(prompt=Quest data/colh=Quest data)...]"))
+			return ("Error#181b: Prayer_SacredImbuingQuest should use '[JSON(prompt=Quest data/colh=Quest data)...]', got '"+sacredFmt+"'");
+		if(!CMLib.ableParms().isValidMiscText(sacredFmt, "{\"ability\": \"Spell_Foo\", \"quest1\": \"Q1\", \"itemname\": \"sword\", \"itemid\": \"item1\"}"))
+			return ("Error#181c: Prayer_SacredImbuingQuest should accept a spaced JSON state object");
+		if(CMLib.ableParms().isValidMiscText(sacredFmt, "{\"ability\": \"Spell_Foo\""))
+			return ("Error#181d: Prayer_SacredImbuingQuest should reject malformed JSON");
 		return null;
 	}
 }

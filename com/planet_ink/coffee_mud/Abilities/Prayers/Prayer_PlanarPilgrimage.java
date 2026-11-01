@@ -272,6 +272,21 @@ public class Prayer_PlanarPilgrimage extends Prayer
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder codes=new StringBuilder("");
+		for(final QuestTemplate T : QuestTemplate.values())
+		{
+			if(codes.length()>0)
+				codes.append(",");
+			codes.append(T.name());
+		}
+		return "((PLANE=(\")[PLANE_NAME(prompt=Plane of existence/colh=Plane)...](\"))"
+			+"/(DEITY=(\")[DEITY(prompt=Worshipped deity/colh=Deity)...](\"))"
+			+"/(TEMPLATECODE=(\")[CHOICES(choices="+codes.toString()+"/prompt=Quest template/colh=Template)](\")))...";
+	}
+
 	protected Integer findMaxMat(final Area parentArea)
 	{
 		final int[] acceptableMaterials = new int[] {
