@@ -85,6 +85,14 @@ public class Prop_CommonTwister extends Property
 
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((SKILL=(\")(*/[ABILITY_ID(prompt=Skill/colh=Skill)...](\")))"
+			+ "(MASK=(\")[STRING(prompt=Mask/colh=Mask)...](\"))"
+			+ "(;))...";
+	}
+
 	protected boolean commonTwist(final Ability skill, final Map<String,String> itemParms, final boolean overrideId)
 	{
 		final List<String> poss=new ArrayList<String>();

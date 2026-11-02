@@ -1206,6 +1206,86 @@ public class Validmisctext extends StdTest
 			return ("Error#181c: Prayer_SacredImbuingQuest should accept a spaced JSON state object");
 		if(CMLib.ableParms().isValidMiscText(sacredFmt, "{\"ability\": \"Spell_Foo\""))
 			return ("Error#181d: Prayer_SacredImbuingQuest should reject malformed JSON");
+		// Test 182: the Prop_AbsorbDamage format accepts amounts and signed absorb types.
+		final String absFmt = CMClass.getAbility("Prop_AbsorbDamage").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(absFmt, "50% +ALL -SILVER -CLOTH -LEATHER"))
+			return ("Error#182a");
+		if(!CMLib.ableParms().isValidMiscText(absFmt, "5 +ALL -MAGIC -SLASHING"))
+			return ("Error#182b");
+		if(!CMLib.ableParms().isValidMiscText(absFmt, "25% +ALL -LEVEL15"))
+			return ("Error#182c");
+		if(!CMLib.ableParms().isValidMiscText(absFmt, "15% +BASHING 1 +IRON 3 +STEEL 15% +MAGIC"))
+			return ("Error#182d");
+		if(!CMLib.ableParms().isValidMiscText(absFmt, "ENHANCED"))
+			return ("Error#182e");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "BOGUS"))
+			return ("Error#182f: the Prop_AbsorbDamage format should reject unknown words");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "+BOGUS"))
+			return ("Error#182g: the Prop_AbsorbDamage format should reject unknown signed words");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "ALL"))
+			return ("Error#182h: the Prop_AbsorbDamage format should reject an unsigned ALL");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "+"))
+			return ("Error#182i: the Prop_AbsorbDamage format should reject a bare sign");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "+50"))
+			return ("Error#182j: the Prop_AbsorbDamage format should reject signed amounts");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "50.5"))
+			return ("Error#182k: the Prop_AbsorbDamage format should reject percent values without a percent sign");
+		if(CMLib.ableParms().isValidMiscText(absFmt, "50 %"))
+			return ("Error#182l: the Prop_AbsorbDamage format should reject spaced percent signs");
+		// Test 183: the Prop_CombatAdjuster format accepts signed and equals numeric pairs in any order.
+		final String combatFmt = CMClass.getAbility("Prop_CombatAdjuster").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, ""))
+			return ("Error#183a");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK+10"))
+			return ("Error#183b");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK-20"))
+			return ("Error#183c");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK=5"))
+			return ("Error#183d");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "DAMAGE=5 ATTACK+10"))
+			return ("Error#183e");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "SPEED-3 DAMAGE=2 ATTACK=1"))
+			return ("Error#183f");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "HP+100 MANA-50 MOVE+10 ARMOR=25"))
+			return ("Error#183g");
+		if(!CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK=-5"))
+			return ("Error#183h");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK"))
+			return ("Error#183i: the Prop_CombatAdjuster format should reject bare keys");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK 10"))
+			return ("Error#183j: the Prop_CombatAdjuster format should reject spaced values");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK+abc"))
+			return ("Error#183k: the Prop_CombatAdjuster format should reject non-numeric values");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "BOGUS+5"))
+			return ("Error#183l: the Prop_CombatAdjuster format should reject unknown keys");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK=5.5"))
+			return ("Error#183m: the Prop_CombatAdjuster format should reject decimal values");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK=+5"))
+			return ("Error#183n: the Prop_CombatAdjuster format should reject signed equals values");
+		if(CMLib.ableParms().isValidMiscText(combatFmt, "ATTACK+"))
+			return ("Error#183o: the Prop_CombatAdjuster format should reject valueless operators");
+		// Test 184: the Prop_CommonTwister format validates SKILL/MASK records in either key order.
+		final String twisterFmt = CMClass.getAbility("Prop_CommonTwister").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, ""))
+			return ("Error#184a");
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=* MASK=iron"))
+			return ("Error#184b");
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, "MASK=iron SKILL=*"))
+			return ("Error#184c");
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=Spell_Fireball MASK=steel"))
+			return ("Error#184d");
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, "MASK=steel SKILL=Spell_Fireball"))
+			return ("Error#184e");
+		if(!CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=* MASK=iron;MASK=steel SKILL=Spell_Fireball"))
+			return ("Error#184f");
+		if(CMLib.ableParms().isValidMiscText(twisterFmt, "BOGUS"))
+			return ("Error#184g: the Prop_CommonTwister format should reject unknown keys");
+		if(CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=NotARealAbility MASK=iron"))
+			return ("Error#184h: the Prop_CommonTwister format should reject unknown abilities");
+		if(CMLib.ableParms().isValidMiscText(twisterFmt, "MASK="))
+			return ("Error#184i: the Prop_CommonTwister format should reject valueless masks");
+		if(CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=* MASK=iron BOGUS"))
+			return ("Error#184j: the Prop_CommonTwister format should reject trailing garbage");
 		return null;
 	}
 }

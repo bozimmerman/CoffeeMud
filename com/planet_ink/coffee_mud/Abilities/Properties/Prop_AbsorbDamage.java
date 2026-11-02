@@ -232,6 +232,49 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder types = new StringBuilder("");
+		for(int i=0;i<CharStats.CODES.TOTAL();i++)
+		{
+			if(CharStats.CODES.CMMSGMAP(i)>0)
+			{
+				final String s = CharStats.CODES.NAME(i);
+				if(s.indexOf('/')<0)
+					types.append(',').append(s);
+			}
+		}
+		for(final String s : Ability.ACODE.DESCS_)
+		{
+			if(s.indexOf('/')<0)
+				types.append(',').append(s);
+		}
+		for(final String s : Ability.DOMAIN.DESCS)
+		{
+			if(s.indexOf('/')<0)
+				types.append(',').append(s);
+		}
+		for(final String s : Ability.FLAG_DESCS)
+		{
+			if(s.indexOf('/')<0)
+				types.append(',').append(s);
+		}
+		types.append(",MAGIC");
+		return "(([NUMBER(prompt=Absorb amount/colh=Amount)]"
+			+ "/[DECIMAL(prompt=Absorb percent/colh=Percent)]%"
+			+ "/[CHECK(name=ENHANCED/prompt=Enhanced/colh=Enhanced)]"
+			+ "/(+[CHECK(name=ALL/prompt=Absorb all/colh=All)])"
+			+ "/((+)/(-))([CHOICES(choices=" + types.substring(1)
+			+ "/prompt=Absorb type/colh=Type)]"
+			+ "/[WEAPON_TYPE(prompt=Absorb weapon type/colh=WeaponType)]"
+			+ "/[WEAPON_CLASS(prompt=Absorb weapon class/colh=WeaponClass)]"
+			+ "/[RESOURCE_OR_MATERIAL(prompt=Absorb material/colh=Material)]"
+			+ "/[ABILITY_ID(prompt=Absorb ability/colh=Ability)]"
+			+ "/LEVEL[NUMBER(prompt=Minimum level/colh=MinLevel)])"
+			+ ")...)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

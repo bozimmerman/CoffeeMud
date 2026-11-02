@@ -121,6 +121,13 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHOICES(choices=owner,wearer/prompt=Flag/colh=Flag)]/[ABILITY_ID(prompt=Ability/colh=Ability)])"
+			+ "(=[STRINGORNULL(prompt=Message/colh=Message)..;]))..;";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if ((msg.target() != null)

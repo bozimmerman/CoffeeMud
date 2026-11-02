@@ -163,7 +163,7 @@ public class Archon_CRecord extends ArchonSkill
 			+"/(ISRECORDER=[CONFIRM(prompt=Is recorder/colh=Recorder)])"
 			+"/(TRIGGERTIME=[NUMBER(prompt=Trigger time/colh=Trigger)])"
 			+"/(MINLEVEL=[NUMBER(prompt=Min level/colh=Min level)])"
-			+"/(BY=[STRING(prompt=By/colh=By)])"
+			+"/(BY=(\")[STRING(prompt=By/colh=By)...](\"))"
 			+"/(PLAYERS=(\")[STRINGORNULL(prompt=Players/colh=Players)...](\")))...)";
 	}
 

@@ -146,6 +146,19 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((ATTACK(+/-/=)[NUMBER(prompt=Attack adjustment/colh=Attack)])"
+			+ "/(DAMAGE(+/-/=)[NUMBER(prompt=Damage adjustment/colh=Damage)])"
+			+ "/(ARMOR(+/-/=)[NUMBER(prompt=Armor adjustment/colh=Armor)])"
+			+ "/(HP(+/-/=)[NUMBER(prompt=Hit point adjustment/colh=HP)])"
+			+ "/(MANA(+/-/=)[NUMBER(prompt=Mana adjustment/colh=Mana)])"
+			+ "/(MOVE(+/-/=)[NUMBER(prompt=Movement adjustment/colh=Move)])"
+			+ "/(SPEED(+/-/=)[NUMBER(prompt=Speed adjustment/colh=Speed)])"
+			+ ")...)";
+	}
+
+	@Override
 	public String getStat(final String code)
 	{
 		if((code!=null)

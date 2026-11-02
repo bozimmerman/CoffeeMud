@@ -73,6 +73,14 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(PRICE=[NUMBER(prompt=Price/colh=Price)]"
+			+ "/OWNER=(\")[STRING(prompt=Owner/colh=Owner)](\")"
+			+ "/EXPIRESEC=[NUMBER(prompt=Expires/colh=Expires)])...";
+	}
+
+	@Override
 	public int getPrice()
 	{
 		if((affected instanceof Item)&&(price<0))
