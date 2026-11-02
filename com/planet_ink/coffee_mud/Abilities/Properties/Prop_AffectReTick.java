@@ -454,4 +454,13 @@ public class Prop_AffectReTick extends Property
 			}
 		}
 	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "(((SCAN=(\")[CAN_DESCS(add=OWNER,OWNERS/plural=true/prompt=Scan types/colh=Scan)...](\"))"
+			+ "/(SCANMASK=(\")[ZAPPERMASK(prompt=Scan mask/colh=Mask)...](\"))"
+			+ "/([ABILITY_ID(prompt=Ability ID/colh=Ability)]=(\")[CMATH_FORMULA(prompt=Tick formula/colh=Formula)...](\"))"
+			+ ")...)";
+	}
 }

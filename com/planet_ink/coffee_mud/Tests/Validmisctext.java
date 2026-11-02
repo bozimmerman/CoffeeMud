@@ -1348,6 +1348,30 @@ public class Validmisctext extends StdTest
 			return ("Error#186k: '[CMATH_FORMULA]' should accept @x1*2");
 		if(CMLib.ableParms().isValidMiscText(formulaFmt, "@x2*2"))
 			return ("Error#186l: '[CMATH_FORMULA]' should reject formulas that do not use @x1");
+		// Test 187: the Prop_AffectReTick format accepts scan rules and ability formulas.
+		final String reTickFmt = CMClass.getAbility("Prop_AffectReTick").miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, ""))
+			return ("Error#187a");
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, "SCAN=MOBS,ITEMS Spell_Fireball=@x1*2"))
+			return ("Error#187b");
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, "Spell_MagicMissile=@x1/3 SCAN=MOBS"))
+			return ("Error#187c");
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, "SCAN=MOB,ITEM,OWNER,OWNERS Spell_Fireball=@x1+1"))
+			return ("Error#187d");
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, "SCANMASK=\"-LEVEL +>=10\" Spell_Fireball=\"@x1 * 2\""))
+			return ("Error#187e");
+		if(!CMLib.ableParms().isValidMiscText(reTickFmt, "SCANMASK=GUEST Spell_MagicMissile=@x1"))
+			return ("Error#187f");
+		if(CMLib.ableParms().isValidMiscText(reTickFmt, "SCAN=BOGUS Spell_Fireball=@x1*2"))
+			return ("Error#187g: the Prop_AffectReTick format should reject unknown scan codes");
+		if(CMLib.ableParms().isValidMiscText(reTickFmt, "Spell_NotARealAbility=@x1*2"))
+			return ("Error#187h: the Prop_AffectReTick format should reject unknown abilities");
+		if(CMLib.ableParms().isValidMiscText(reTickFmt, "Spell_Fireball=2"))
+			return ("Error#187i: the Prop_AffectReTick format should reject formulas without @x1");
+		if(CMLib.ableParms().isValidMiscText(reTickFmt, "Spell_Fireball=@x1)"))
+			return ("Error#187j: the Prop_AffectReTick format should reject malformed formulas");
+		if(CMLib.ableParms().isValidMiscText(reTickFmt, "Fireball=@x1*2"))
+			return ("Error#187k: the Prop_AffectReTick format should reject ability names in place of IDs");
 		return null;
 	}
 }
