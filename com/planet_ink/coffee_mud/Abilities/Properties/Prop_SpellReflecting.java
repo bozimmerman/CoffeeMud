@@ -97,6 +97,16 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((MIN=[NUMBER(prompt=Min level/colh=MinLevel)])"
+			+ "/(MAX=[NUMBER(prompt=Max level/colh=MaxLevel)])"
+			+ "/(CHANCE=[NUMBER(prompt=Chance/colh=Chance)])"
+			+ "/(FADE=[NUMBER(prompt=Fade/colh=Fade)])"
+			+ "/(REMAIN=[NUMBER(prompt=Remaining/colh=Remain)]))...";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)

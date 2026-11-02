@@ -72,6 +72,13 @@ public class Prop_NoTeleportOut extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((EXCEPTIONS=[ROOM_ID](,[ROOM_ID])...)"
+			+ "/(INTERAREAOK=[CONFIRM(prompt=Inter area ok/colh=InterAreaOk)]))...";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

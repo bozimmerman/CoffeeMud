@@ -93,6 +93,13 @@ public class Prop_SafePet extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((MSG=(\")[STRING(prompt=Display message/colh=DisplayMessage)...](\"))"
+			+ "/(LIEGEFOLLOW=(\")[STRING(prompt=Liege follower/colh=LiegeFollower)...](\")))...";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((liegeFollower!=null)

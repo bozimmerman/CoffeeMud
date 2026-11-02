@@ -73,6 +73,13 @@ public class Prop_ReRollStats extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((BONUSPOINTS=[NUMBER(prompt=Bonus points per stat/colh=BonusPointsPerStat)])"
+			+ "/(PICKCLASS=[CONFIRM(prompt=Pick class/colh=PickClass)]))...";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);

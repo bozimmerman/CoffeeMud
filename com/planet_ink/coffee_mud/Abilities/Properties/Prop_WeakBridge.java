@@ -81,6 +81,14 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((MAX=[NUMBER(prompt=Max weight/colh=MaxWeight)])"
+			+ "/(CHANCE=[NUMBER(prompt=Chance/colh=Chance)])"
+			+ "/(DOWN=[NUMBER(prompt=Down ticks/colh=Down)]))...";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)

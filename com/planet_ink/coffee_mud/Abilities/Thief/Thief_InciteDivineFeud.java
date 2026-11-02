@@ -436,11 +436,17 @@ public class Thief_InciteDivineFeud extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "[JSON(prompt=Deity feud state/colh=Deity feud state)...]";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText.length()>0)
-		&&(newMiscText.startsWith("{")))
+			&&(newMiscText.startsWith("{")))
 		{
 			try
 			{

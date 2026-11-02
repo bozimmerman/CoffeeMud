@@ -109,6 +109,12 @@ public class Publishing extends CommonSkill
 			doStorePublish();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[JSON(prompt=Publishing data/colh=Publishing data)...]";
+	}
+
 	protected volatile boolean alreadyStored = false;
 
 	protected void doStorePublish()
