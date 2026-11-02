@@ -744,7 +744,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			else
 			if((rowShow>=0)
-			&&(!A.confirmValue(dataRow.get(d).second)))
+			&&(!A.confirmValue(dataRow.get(d).second, null)))
 			{
 				final String data = dataRow.get(d).second.replace('@', ' ');
 				if(classModelI instanceof CMObject)
@@ -999,7 +999,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(A!=null)
 					{
 						classFieldData = A.commandLinePrompt(mob,editRow.get(keyIndex).second,new int[]{0},-999);
-						if(!A.confirmValue(classFieldData))
+						if(!A.confirmValue(classFieldData, null))
 						{
 							mob.tell(L("Invalid value.  Aborted."));
 							continue;
@@ -1361,7 +1361,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 
 		@Override
-		public boolean confirmValue(final String oldVal)
+		public boolean confirmValue(final String oldVal, Map<String, String> args)
 		{
 			final boolean spaceOK = fieldType != ParmType.ONEWORD;
 			boolean emptyOK = false;
@@ -1936,7 +1936,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final String key = parmName.toUpperCase().trim();
 		final Map<String, AbilityParmEditor> editors = getEditors();
 		if(editors.containsKey(key))
-			return editors.get(key).confirmValue(value);
+			return editors.get(key).confirmValue(value, parameterArgs);
 		else
 		{
 			final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class,key);

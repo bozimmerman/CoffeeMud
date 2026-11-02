@@ -62,13 +62,13 @@ public class EditorWandType extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		if(oldVal==null)
 			return false;
 		if(oldVal.length()==0)
 			return true;
-		return super.confirmValue(oldVal);
+		return super.confirmValue(oldVal, args);
 	}
 
 	@Override

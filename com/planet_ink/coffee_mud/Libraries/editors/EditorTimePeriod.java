@@ -55,7 +55,7 @@ public class EditorTimePeriod extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		final String val = (oldVal==null)?"":oldVal.trim();
 		if(val.length()==0)

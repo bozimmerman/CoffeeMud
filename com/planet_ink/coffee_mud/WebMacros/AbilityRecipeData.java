@@ -192,7 +192,7 @@ public class AbilityRecipeData extends StdWebMacro
 						String newVal = editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c);
 						if(newVal != null)
 							newVal = newVal.replace('\'', '`');
-						if(!editor.confirmValue(newVal))
+						if(!editor.confirmValue(newVal, null))
 							return L("The value for field @x is invalid.",editor.colHeader());
 						dataRow.get(c).second=newVal;
 					}

@@ -1167,11 +1167,11 @@ public class Validmisctext extends StdTest
 		final AbilityParmEditor jsonEditor = CMLib.ableParms().getEditors().get("JSON");
 		if(jsonEditor == null)
 			return ("Error#179a: the JSON editor is not registered");
-		if(!jsonEditor.confirmValue("{\"a\":1,\"b\":[true,null,\"x\"]}"))
+		if(!jsonEditor.confirmValue("{\"a\":1,\"b\":[true,null,\"x\"]}", null))
 			return ("Error#179b: the JSON editor rejected a valid object");
-		if(!jsonEditor.confirmValue("[1,2,3]"))
+		if(!jsonEditor.confirmValue("[1,2,3]", null))
 			return ("Error#179c: the JSON editor rejected a valid array");
-		if(jsonEditor.confirmValue("{\"a\":"))
+		if(jsonEditor.confirmValue("{\"a\":", null))
 			return ("Error#179d: the JSON editor accepted malformed JSON");
 		if(!CMLib.ableParms().isValidMiscText("[JSON]", "{\"a\":1}"))
 			return ("Error#179e: '[JSON]' should accept compact JSON");
@@ -1183,11 +1183,11 @@ public class Validmisctext extends StdTest
 		final AbilityParmEditor xmlEditor = CMLib.ableParms().getEditors().get("XML");
 		if(xmlEditor == null)
 			return ("Error#180a: the XML editor is not registered");
-		if(!xmlEditor.confirmValue("<FOO bar=\"1\">text</FOO>"))
+		if(!xmlEditor.confirmValue("<FOO bar=\"1\">text</FOO>", null))
 			return ("Error#180b: the XML editor rejected a valid document");
-		if(!xmlEditor.confirmValue("<FOO/>"))
+		if(!xmlEditor.confirmValue("<FOO/>", null))
 			return ("Error#180c: the XML editor rejected a self-closed tag");
-		if(xmlEditor.confirmValue("<FOO>"))
+		if(xmlEditor.confirmValue("<FOO>", null))
 			return ("Error#180d: the XML editor accepted malformed XML");
 		if(!CMLib.ableParms().isValidMiscText("[XML]", "<FOO/>"))
 			return ("Error#180e: '[XML]' should accept compact XML");
@@ -1286,6 +1286,68 @@ public class Validmisctext extends StdTest
 			return ("Error#184i: the Prop_CommonTwister format should reject valueless masks");
 		if(CMLib.ableParms().isValidMiscText(twisterFmt, "SKILL=* MASK=iron BOGUS"))
 			return ("Error#184j: the Prop_CommonTwister format should reject trailing garbage");
+		// Test 185: the CAN_DESCS editor validates comma lists of Ability.CAN_DESCS codes.
+		final AbilityParmEditor canDescsEditor = CMLib.ableParms().getEditors().get("CAN_DESCS");
+		if(canDescsEditor == null)
+			return ("Error#185a: the CAN_DESCS editor is not registered");
+		if(!canDescsEditor.confirmValue("MOBS", null))
+			return ("Error#185b: CAN_DESCS should accept a single code");
+		if(!canDescsEditor.confirmValue("MOBS,ITEMS", null))
+			return ("Error#185c: CAN_DESCS should accept a comma list of codes");
+		if(!canDescsEditor.confirmValue("mobs, items", null))
+			return ("Error#185d: CAN_DESCS should accept mixed case and surrounding spaces");
+		if(!canDescsEditor.confirmValue("", null))
+			return ("Error#185e: CAN_DESCS should accept an empty list");
+		if(canDescsEditor.confirmValue("BOGUS", null))
+			return ("Error#185f: CAN_DESCS should reject unknown codes");
+		if(canDescsEditor.confirmValue("MOBS,BOGUS", null))
+			return ("Error#185g: CAN_DESCS should reject a list containing an unknown code");
+		if(canDescsEditor.confirmValue("MOB", null))
+			return ("Error#185h: CAN_DESCS without PLURAL should reject singular codes");
+		if(canDescsEditor.confirmValue("OWNER", null))
+			return ("Error#185i: CAN_DESCS should reject OWNER unless it is added");
+		final String canDescsFmt = "[CAN_DESCS(prompt=Scan types/colh=Scan)]";
+		if(!CMLib.ableParms().isValidMiscText(canDescsFmt, "MOBS,ITEMS"))
+			return ("Error#185j: '[CAN_DESCS]' should accept MOBS,ITEMS");
+		if(CMLib.ableParms().isValidMiscText(canDescsFmt, "MOB"))
+			return ("Error#185k: '[CAN_DESCS]' should reject a singular code without PLURAL");
+		final String canDescsPlusFmt = "[CAN_DESCS(plural=true/prompt=Scan types/colh=Scan)]";
+		if(!CMLib.ableParms().isValidMiscText(canDescsPlusFmt, "MOB,ITEM"))
+			return ("Error#185l: '[CAN_DESCS(plural=true)]' should accept singular codes");
+		if(CMLib.ableParms().isValidMiscText(canDescsPlusFmt, "ROOMZ"))
+			return ("Error#185m: '[CAN_DESCS(plural=true)]' should reject unknown codes");
+		final String canDescsAddFmt = "[CAN_DESCS(add=OWNER,OWNERS/prompt=Scan types/colh=Scan)]";
+		if(!CMLib.ableParms().isValidMiscText(canDescsAddFmt, "MOBS,OWNER,OWNERS"))
+			return ("Error#185n: '[CAN_DESCS(add=OWNER,OWNERS)]' should accept the added codes");
+		if(CMLib.ableParms().isValidMiscText(canDescsAddFmt, "OWNERZ"))
+			return ("Error#185o: '[CAN_DESCS(add=OWNER,OWNERS)]' should reject unknown codes");
+		// Test 186: the CMATH_FORMULA editor validates CMath formulas over @x1.
+		final AbilityParmEditor formulaEditor = CMLib.ableParms().getEditors().get("CMATH_FORMULA");
+		if(formulaEditor == null)
+			return ("Error#186a: the CMATH_FORMULA editor is not registered");
+		if(!formulaEditor.confirmValue("@x1", null))
+			return ("Error#186b: CMATH_FORMULA should accept a bare @x1");
+		if(!formulaEditor.confirmValue("@x1*2", null))
+			return ("Error#186c: CMATH_FORMULA should accept @x1*2");
+		if(!formulaEditor.confirmValue("@x1/3+1", null))
+			return ("Error#186d: CMATH_FORMULA should accept @x1/3+1");
+		if(formulaEditor.confirmValue("", null))
+			return ("Error#186e: CMATH_FORMULA should reject an empty formula");
+		if(formulaEditor.confirmValue("*2", null))
+			return ("Error#186f: CMATH_FORMULA should reject formulas without @x1");
+		if(formulaEditor.confirmValue("@x2*2", null))
+			return ("Error#186g: CMATH_FORMULA should reject formulas that do not use @x1");
+		if(formulaEditor.confirmValue("@x1)", null))
+			return ("Error#186h: CMATH_FORMULA should reject a stray close parenthesis");
+		if(formulaEditor.confirmValue("(@x1", null))
+			return ("Error#186i: CMATH_FORMULA should reject a missing close parenthesis");
+		if(formulaEditor.confirmValue("@x12", null))
+			return ("Error#186j: CMATH_FORMULA should reject an illegal variable reference");
+		final String formulaFmt = "[CMATH_FORMULA(prompt=Tick formula/colh=Formula)]";
+		if(!CMLib.ableParms().isValidMiscText(formulaFmt, "@x1*2"))
+			return ("Error#186k: '[CMATH_FORMULA]' should accept @x1*2");
+		if(CMLib.ableParms().isValidMiscText(formulaFmt, "@x2*2"))
+			return ("Error#186l: '[CMATH_FORMULA]' should reject formulas that do not use @x1");
 		return null;
 	}
 }

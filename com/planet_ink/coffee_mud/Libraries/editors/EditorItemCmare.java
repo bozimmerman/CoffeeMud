@@ -89,7 +89,7 @@ public class EditorItemCmare extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		return ((oldVal != null)
 				&&(oldVal.length()>0)

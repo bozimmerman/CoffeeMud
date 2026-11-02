@@ -61,7 +61,7 @@ public class EditorExpertisenum extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		return true;
 	}

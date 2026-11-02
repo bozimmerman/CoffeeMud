@@ -73,7 +73,7 @@ public class EditorNA extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		return oldVal.trim().length() == 0 || oldVal.equals("0") || oldVal.equals("NA") || oldVal.equals("-");
 	}

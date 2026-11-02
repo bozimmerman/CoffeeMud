@@ -157,7 +157,7 @@ public class EditorContainerTypeOrLidlockOrRidebasis extends AbilityParmEditorIm
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		final List<String> webVals=CMParms.parseAny(oldVal.toUpperCase().trim(), "|", true);
 		for(final String s : webVals)

@@ -67,7 +67,7 @@ public class EditorExitNames extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		if(oldVal.trim().length()==0)
 			return true;

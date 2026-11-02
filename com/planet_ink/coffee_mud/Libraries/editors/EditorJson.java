@@ -17,6 +17,9 @@ package com.planet_ink.coffee_mud.Libraries.editors;
  */
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.ParmType;
+
+import java.util.Map;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.core.CMLib;
@@ -35,7 +38,7 @@ public class EditorJson extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		if((oldVal == null)||(oldVal.trim().length()==0))
 			return false;

@@ -120,7 +120,7 @@ public class EditorResourceNameAmountMaterialRequired extends AbilityParmEditorI
 	}
 
 	@Override
-	public boolean confirmValue(String oldVal)
+	public boolean confirmValue(String oldVal, Map<String, String> args)
 	{
 		if(oldVal.trim().length()==0)
 			return true;

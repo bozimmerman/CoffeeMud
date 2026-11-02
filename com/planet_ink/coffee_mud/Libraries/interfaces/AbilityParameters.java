@@ -140,10 +140,12 @@ public interface AbilityParameters extends CMLibrary
 
 		/**
 		 * Returns whether the given value constitutes a valid value for this editor.
+		 *
 		 * @param oldVal the data to check
+		 * @param args the placeholder arguments, may be null
 		 * @return true if the value is acceptable, false otherwise
 		 */
-		public boolean confirmValue(String oldVal);
+		public boolean confirmValue(String oldVal, Map<String, String> args);
 
 		/**
 		 * Presents fake user input for testing.  The String array is the pre-parsed

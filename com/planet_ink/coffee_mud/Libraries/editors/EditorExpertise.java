@@ -63,7 +63,7 @@ public class EditorExpertise extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		if((oldVal==null)||(oldVal.trim().length()==0))
 			return true;

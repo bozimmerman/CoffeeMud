@@ -62,7 +62,7 @@ public class EditorCodedSpellList extends AbilityParmEditorImpl
 	}
 
 	@Override
-	public boolean confirmValue(String oldVal)
+	public boolean confirmValue(String oldVal, Map<String, String> args)
 	{
 		if(oldVal.length()==0)
 			return true;

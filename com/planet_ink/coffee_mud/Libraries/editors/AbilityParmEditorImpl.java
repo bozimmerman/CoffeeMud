@@ -127,7 +127,7 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 	}
 
 	@Override
-	public boolean confirmValue(final String oldVal)
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
 	{
 		final boolean spaceOK = fieldType != ParmType.ONEWORD;
 		boolean emptyOK = false;
