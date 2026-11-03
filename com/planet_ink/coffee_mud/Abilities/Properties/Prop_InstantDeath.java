@@ -86,6 +86,15 @@ public class Prop_InstantDeath extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((MASK=(\")[ZAPPERMASK(prompt=Zapper mask/colh=Mask)...](\"))/"
+			+ "(MSG=(\")[STRING(prompt=Death message/colh=Message)...](\"))/"
+			+ "(DAMAGE=[NUMBER(prompt=Flat damage amount/colh=Amount)])/"
+			+ "(DMGPCT=[FREQUENCY(prompt=Damage percent of target/colh=Percent)]))...";
+	}
+	
+	@Override
 	public String accountForYourself()
 	{
 		return "instant killing";
