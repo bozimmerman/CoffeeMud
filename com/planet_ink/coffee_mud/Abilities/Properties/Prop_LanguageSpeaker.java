@@ -81,6 +81,16 @@ public class Prop_LanguageSpeaker extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((PLAYERS=[CONFIRM(prompt=Do Players/colh=Players)])/"
+				+ "(NOMOBS=[CONFIRM(prompt=No Mobs/colh=NoMobs)])/"
+				+ "(HOMEONLY=[CONFIRM(prompt=Home Only/colh=Home)])/"
+				+ "(LANGSTR=(\")[ABILITY_ID(prompt=Language/colh=Lang)...](\")))..."
+				+ "(;[ZAPPERMASK(prompt=Zapper mask/colh=Mask)...])";
+	}
+	
+	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		affectedType = CMClass.getType(P);
