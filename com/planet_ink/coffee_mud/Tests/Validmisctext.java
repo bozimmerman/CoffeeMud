@@ -1372,6 +1372,35 @@ public class Validmisctext extends StdTest
 			return ("Error#187j: the Prop_AffectReTick format should reject malformed formulas");
 		if(CMLib.ableParms().isValidMiscText(reTickFmt, "Fireball=@x1*2"))
 			return ("Error#187k: the Prop_AffectReTick format should reject ability names in place of IDs");
+		// Test 188: the Prop_AddDamage format accepts amounts, weapon types, attack styles, and masks.
+		final Ability addA = CMClass.getAbility("Prop_AddDamage");
+		if(addA == null)
+			return ("Error#188a: Prop_AddDamage ability not loaded");
+		final String addFmt = addA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "50%"))
+			return ("Error#188b: a bare percent should match");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "-3"))
+			return ("Error#188c: a negative flat bonus should match");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "70% 5"))
+			return ("Error#188d: percent then flat bonus should match");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "\"SLASHING\""))
+			return ("Error#188e: a quoted weapon type should match");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "\"CAST_SPELL\""))
+			return ("Error#188f: a quoted attack style should match");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "50% \"SLASHING\" \"CAST_SPELL\""))
+			return ("Error#188g: the full amount/weapon/style combo should match in writer order");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "-3 \"PIERCING\" \"CAST_SPELL\";SMASK=\"-LEVEL +5\""))
+			return ("Error#188h: negative bonus plus weapon and style plus a quoted source mask with spaces should match");
+		if(CMLib.ableParms().isValidMiscText(addFmt, "BOGUS"))
+			return ("Error#188i: the Prop_AddDamage format should reject an unknown bare word");
+		if(CMLib.ableParms().isValidMiscText(addFmt, "\"WRONGTYPE\""))
+			return ("Error#188j: the Prop_AddDamage format should reject a quoted unknown weapon type");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "SLASHING"))
+			return ("Error#188k: a bare (unquoted) weapon type should match alongside the quoted form");
+		if(!CMLib.ableParms().isValidMiscText(addFmt, "CAST_SPELL"))
+			return ("Error#188l: a bare (unquoted) attack style should match alongside the quoted form");
+		if(CMLib.ableParms().isValidMiscText(addFmt, "WRONGTYPE"))
+			return ("Error#188m: the Prop_AddDamage format should reject an unknown untyped word");
 		return null;
 	}
 }
