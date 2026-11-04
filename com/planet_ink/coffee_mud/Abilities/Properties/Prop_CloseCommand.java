@@ -81,8 +81,8 @@ public class Prop_CloseCommand extends Property
 	public String miscTextFormat()
 	{
 		return "([CHECK(name=noclose/prompt=No Close/colh=NoClose)])/"
-			+ "message=[STRING(prompt=Message/colh=Msg)..;]/"
-			+ "[STRING(prompt=Command/colh=Cmd)..;])..;";
+			+ "(message=[STRING(prompt=Message/colh=Msg)..;])/"
+			+ "([STRING(prompt=Command/colh=Cmd)..;]))..;";
 	}
 
 	@Override
