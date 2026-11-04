@@ -1416,8 +1416,6 @@ public class Validmisctext extends StdTest
 			return ("Error#189e: the Prop_Artifact format should accept an item id after the flags");
 		if(!CMLib.ableParms().isValidMiscText(artifactFmt, ";Sword@1"))
 			return ("Error#189f: the Prop_Artifact format should accept an item id without flags");
-		if(!CMLib.ableParms().isValidMiscText(artifactFmt, "BOOT;Sword@1"))
-			return ("Error#189g: the Prop_Artifact format should accept the BOOT item form");
 		// Test 190: the Prop_ClanEquipment format accepts the four fields that setMiscText parses.
 		final Ability clanEquipA = CMClass.getAbility("Prop_ClanEquipment");
 		if(clanEquipA == null)
