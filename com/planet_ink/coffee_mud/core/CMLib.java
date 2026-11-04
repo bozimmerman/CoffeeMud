@@ -149,7 +149,8 @@ public class CMLib
 		ABLECOMP(AbilityComponents.class),
 		GALACTIC(GalacticMap.class),
 		CITY(CityMap.class),
-		WORLDHUNT(WorldHuntLibrary.class)
+		WORLDHUNT(WorldHuntLibrary.class),
+		PARTIES(PartyLibrary.class)
 		;
 
 		public final Class<?> ancestor;
@@ -851,6 +852,12 @@ public class CMLib
 	public static final PlayerLibrary players()
 	{
 		return (PlayerLibrary)l().libraries[Library.PLAYERS.ordinal()];
+	}
+
+	/** Returns the player party membership service for this host. */
+	public static final PartyLibrary parties()
+	{
+		return (PartyLibrary)l().libraries[Library.PARTIES.ordinal()];
 	}
 
 	/**
