@@ -53,8 +53,8 @@ public class Prop_ClosedSeason extends Property
 		return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
 	}
 
-	protected Vector<String>	closedV		= null;
-	boolean						doneToday	= false;
+	protected Set<String>		closedV		= null;
+	protected boolean			doneToday	= false;
 	private Area				exitArea	= null;
 	protected CompiledZMask		mask		= null;
 
@@ -87,7 +87,18 @@ public class Prop_ClosedSeason extends Property
 		}
 		else
 			this.mask = null;
-		closedV=CMParms.parse(text.toUpperCase());
+		closedV=new HashSet<String>(CMParms.parse(text.toUpperCase()));
+	}
+
+
+	@Override
+	public String miscTextFormat()
+	{
+		StringBuilder vcodes = new StringBuilder("");
+		for(final Room.VariationCode code : Room.VariationCode.values())
+			vcodes.append((vcodes.length()==0?"":",")).append(code.name());
+		return "([CHOICES(choices="+vcodes.toString()+"/prompt=VarCode/colh=VCd)])..."
+			+"((\")MASK=[ZAPPERMASK(prompt=Mask/colh=mask).. ](\"))";
 	}
 
 	@Override

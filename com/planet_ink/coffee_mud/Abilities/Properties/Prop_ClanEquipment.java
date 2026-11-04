@@ -120,6 +120,15 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(\")[CHOICES(choices=PARALYSIS,FIRE,COLD,WATER,GAS,MIND,ACID,ELECTRIC,POISON,DISEASE,HEALTH,MAGIC,SPEED/prompt=Type/colh=Type)](\") "
+			+ "[NUMBER(prompt=Power Level/colh=PLvl)] "
+			+ "(\")[STRING(prompt=Clan Name/colh=Clan)...](\") "
+			+ "(\")[STRING(prompt=Clan Type/colh=CTyp)...](\")";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
@@ -132,8 +141,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		powerLevel=Integer.valueOf(V.elementAt(1)).intValue();
 		clanName=V.elementAt(2);
 		clanType=V.elementAt(3);
-		secretWord=getWandWord(text); // try to randomize the spell word a
-										// little
+		secretWord=getWandWord(text); // try to randomize the spell word a little
 		// Armor
 		this.eqAdjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 		initAdjustments(eqAdjCharStats);

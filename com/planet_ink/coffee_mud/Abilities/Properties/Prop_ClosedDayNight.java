@@ -180,6 +180,16 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((\")(([CHOOSE(choices=DAY,SLEEP,LOCKUP,SIT/prompt=Flags/colh=Flags)])/"
+			+ "(hours=[NUMBER(prompt=Open Hr/colh=Open)]-[NUMBER(prompt=Close Hr/colh=Close)])/"
+			+ "(HOME=[STRING(prompt=Mask/colh=Mask)..\"])/"
+			+ "(SHOPMSG=[STRING(prompt=Shop Msg/colh=ShpMsg)..\"])/"
+			+ "(WARNMSG=[NUMBER(prompt=Percentage 0-100/colh=Pct)]=[STRING(prompt=Warn Msg/colh=WMsg)..\"]))(\"))...";
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

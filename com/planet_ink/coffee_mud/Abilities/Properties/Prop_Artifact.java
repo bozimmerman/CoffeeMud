@@ -104,6 +104,18 @@ public class Prop_Artifact extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((AUTODROP=[CONFIRM(prompt=Autodrop/colh=Autodrop)])/"
+			+ "(NOCAST=[CONFIRM(prompt=No Cast/colh=NoCast)])/"
+			+ "(NOLOCATE=[CONFIRM(prompt=No Locate/colh=NoLocate)])/"
+			+ "(NOMOBS=[CONFIRM(prompt=No Mobs/colh=NoMobs)])/"
+			+ "(AUTORESET=[CONFIRM(prompt=Autoreset/colh=Autoreset)])/"
+			+ "(NODB=[CONFIRM(prompt=No DB/colh=NoDB)]))...)"
+			+ "(;[STRING(prompt=Item ID@hash/colh=ItemID)])";
+	}
+
+	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);

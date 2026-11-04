@@ -1401,6 +1401,97 @@ public class Validmisctext extends StdTest
 			return ("Error#188l: a bare (unquoted) attack style should match alongside the quoted form");
 		if(CMLib.ableParms().isValidMiscText(addFmt, "WRONGTYPE"))
 			return ("Error#188m: the Prop_AddDamage format should reject an unknown untyped word");
+		// Test 189: the Prop_Artifact format accepts the flags and item id that setMiscText parses.
+		final Ability artifactA = CMClass.getAbility("Prop_Artifact");
+		if(artifactA == null)
+			return ("Error#189a: Prop_Artifact ability not loaded");
+		final String artifactFmt = artifactA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, ""))
+			return ("Error#189b: the Prop_Artifact format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, "AUTODROP=true NOCAST=false"))
+			return ("Error#189c: the Prop_Artifact format should accept its flags");
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, "NOCAST=false AUTODROP=true NODB=true"))
+			return ("Error#189d: the Prop_Artifact format should accept its flags in any order");
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, "AUTODROP=true;Sword@1"))
+			return ("Error#189e: the Prop_Artifact format should accept an item id after the flags");
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, ";Sword@1"))
+			return ("Error#189f: the Prop_Artifact format should accept an item id without flags");
+		if(!CMLib.ableParms().isValidMiscText(artifactFmt, "BOOT;Sword@1"))
+			return ("Error#189g: the Prop_Artifact format should accept the BOOT item form");
+		// Test 190: the Prop_ClanEquipment format accepts the four fields that setMiscText parses.
+		final Ability clanEquipA = CMClass.getAbility("Prop_ClanEquipment");
+		if(clanEquipA == null)
+			return ("Error#190a: Prop_ClanEquipment ability not loaded");
+		final String clanEquipFmt = clanEquipA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(clanEquipFmt, "FIRE 5 Clan Type"))
+			return ("Error#190b: the Prop_ClanEquipment format should accept four bare fields");
+		if(!CMLib.ableParms().isValidMiscText(clanEquipFmt, "FIRE 5 \"Clan Name\" \"Some Type\""))
+			return ("Error#190c: the Prop_ClanEquipment format should accept quoted clan fields");
+		if(!CMLib.ableParms().isValidMiscText(clanEquipFmt, "\"COLD\" 3 \"Big Clan\" \"Other Type\""))
+			return ("Error#190d: the Prop_ClanEquipment format should accept a quoted type");
+		if(!CMLib.ableParms().isValidMiscText(clanEquipFmt, "ACID 2 \"Clan\" Type"))
+			return ("Error#190e: the Prop_ClanEquipment format should accept a bare final clan type");
+		if(CMLib.ableParms().isValidMiscText(clanEquipFmt, "FIRE nope \"Clan\" \"Type\""))
+			return ("Error#190f: the Prop_ClanEquipment format should reject a non-numeric power level");
+		if(CMLib.ableParms().isValidMiscText(clanEquipFmt, "FIRE 5 \"Clan\""))
+			return ("Error#190g: the Prop_ClanEquipment format should reject missing fields");
+		// Test 191: the Prop_CloseCommand format accepts the semicolon-delimited values that setMiscText parses.
+		final Ability closeCmdA = CMClass.getAbility("Prop_CloseCommand");
+		if(closeCmdA == null)
+			return ("Error#191a: Prop_CloseCommand ability not loaded");
+		final String closeCmdFmt = closeCmdA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, ""))
+			return ("Error#191b: the Prop_CloseCommand format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "noclose"))
+			return ("Error#191c: the Prop_CloseCommand format should accept noclose");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "close door"))
+			return ("Error#191d: the Prop_CloseCommand format should accept a multiword command");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "message=You can't close that"))
+			return ("Error#191e: the Prop_CloseCommand format should accept a multiword message");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "noclose;close door"))
+			return ("Error#191f: the Prop_CloseCommand format should accept semicolon-separated values");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "message=You can't;close door;noclose"))
+			return ("Error#191g: the Prop_CloseCommand format should accept values in any order");
+		if(!CMLib.ableParms().isValidMiscText(closeCmdFmt, "close door;"))
+			return ("Error#191h: the Prop_CloseCommand format should accept a trailing semicolon");
+		// Test 192: the Prop_ClosedDayNight format accepts the flag, hour, message, and mask text setMiscText parses.
+		final Ability dayNightA = CMClass.getAbility("Prop_ClosedDayNight");
+		if(dayNightA == null)
+			return ("Error#192a: Prop_ClosedDayNight ability not loaded");
+		final String dayNightFmt = dayNightA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, ""))
+			return ("Error#192b: the Prop_ClosedDayNight format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "DAY HOURS=8-17"))
+			return ("Error#192c: the Prop_ClosedDayNight format should accept flags and hours");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "HOURS=8-17 DAY"))
+			return ("Error#192d: the Prop_ClosedDayNight format should accept flags and hours in any order");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "SLEEP \"WARNMSG5=Closing soon\""))
+			return ("Error#192e: the Prop_ClosedDayNight format should accept warning messages");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "\"HOME=The Tavern\" DAY"))
+			return ("Error#192f: the Prop_ClosedDayNight format should accept a quoted home");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "\"SHOPMSG=We are closed\" DAY"))
+			return ("Error#192g: the Prop_ClosedDayNight format should accept a quoted shop message");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "LOCKUP SIT HOURS=20-6 MASK=\"-RACE +ELF\""))
+			return ("Error#192h: the Prop_ClosedDayNight format should accept a trailing quoted mask");
+		if(!CMLib.ableParms().isValidMiscText(dayNightFmt, "DAY MASK=-RACE +ELF"))
+			return ("Error#192i: the Prop_ClosedDayNight format should accept a trailing bare mask");
+		// Test 193: the Prop_ClosedSeason format accepts the variation codes and mask text setMiscText parses.
+		final Ability seasonA = CMClass.getAbility("Prop_ClosedSeason");
+		if(seasonA == null)
+			return ("Error#193a: Prop_ClosedSeason ability not loaded");
+		final String seasonFmt = seasonA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, ""))
+			return ("Error#193b: the Prop_ClosedSeason format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "WINTER NIGHT"))
+			return ("Error#193c: the Prop_ClosedSeason format should accept variation codes");
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "NIGHT WINTER"))
+			return ("Error#193d: the Prop_ClosedSeason format should accept variation codes in any order");
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "SUMMER RAIN MASK=-RACE +ELF"))
+			return ("Error#193e: the Prop_ClosedSeason format should accept a trailing bare mask");
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "WINTER MASK=GUEST"))
+			return ("Error#193f: the Prop_ClosedSeason format should accept a mask after codes");
+		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "WINTER MASK = GUEST"))
+			return ("Error#193g: the Prop_ClosedSeason format should accept a spaced mask after codes");
 		return null;
 	}
 }
