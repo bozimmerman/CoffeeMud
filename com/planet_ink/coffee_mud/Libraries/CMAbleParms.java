@@ -1910,7 +1910,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						int tempIndex = saveIndex;
 						for(int c = 0; c < children.length; c++)
 						{
-							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, terminatorsAfter(children, c, token.repeats, terminators)))
+							final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
+							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, repTers))
 							{
 								matched = false;
 								break;
@@ -2073,7 +2074,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				collectFirstChars(children[i], first);
 				if(!isNullable(children[i]))
+				{
+					if(inherited != null)
+						first.addAll(inherited); // values inside a repeated group can also end at terminators in the enclosing context
 					return first;
+				}
 			}
 		}
 		if(inherited != null)

@@ -140,6 +140,19 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			   + "((\")[NUMBER(prompt=Chance Pct/colh=Pct)](%)(\"))/"
+			   + "((\")`[STRINGORNULL(prompt=Word/colh=Word)](\"))/"
+			   + "((\")'[STRINGORNULL(prompt=Word/colh=Word)](\"))/"
+			   + "((\")#[STRINGORNULL(prompt=Trusted/colh=Trusted)](\"))/"
+			   + "((\")[CHECK(name=notranslate/prompt=No Translate/colh=NoTrans)](\"))/"
+			   + "((\")([ABILITY_ID(prompt=Skill ID/colh=Skill)])(\"))"
+			   + ")...)";
+	}
+
+	@Override
 	public Set<String> languagesSupported()
 	{
 		return ints;

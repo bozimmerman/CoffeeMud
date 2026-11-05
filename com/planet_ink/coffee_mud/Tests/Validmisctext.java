@@ -1490,6 +1490,181 @@ public class Validmisctext extends StdTest
 			return ("Error#193f: the Prop_ClosedSeason format should accept a mask after codes");
 		if(!CMLib.ableParms().isValidMiscText(seasonFmt, "WINTER MASK = GUEST"))
 			return ("Error#193g: the Prop_ClosedSeason format should accept a spaced mask after codes");
+		// Test 194: the Prop_Doppleganger format accepts its key=value fields in any order and empty.
+		final Ability dopFmtA = CMClass.getAbility("Prop_Doppleganger");
+		if(dopFmtA == null)
+			return ("Error#194a1: Prop_Doppleganger ability not loaded");
+		final String dopFmt = dopFmtA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, ""))
+			return ("Error#194a2: the Prop_Doppleganger format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "MAX=27 MIN=27"))
+			return ("Error#194a3: the Prop_Doppleganger format should accept MAX and MIN together");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "MIN=27 MAX=27"))
+			return ("Error#194a4: the Prop_Doppleganger format should accept MIN and MAX in any order");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "ASMATERIAL=\"METAL\" MIN=27 MAX=27"))
+			return ("Error#194a5: the Prop_Doppleganger format should accept ASMATERIAL alongside MAX and MIN in any order");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "LEVELPCT=75 LEVELADD=5 DIFFGRP=true"))
+			return ("Error#194a6: the Prop_Doppleganger format should accept unquoted pct and boolean key=value fields");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "SAVEPCT=\"30\" DIFFPCT=80 MIN=20 MAX=40"))
+			return ("Error#194a7: the Prop_Doppleganger format should accept a quoted SAVEPCT alongside an unquoted DIFFPCT");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "LEVELPCT=25 SAVEPCT=0 DIFFPCT=100"))
+			return ("Error#194a8: the Prop_Doppleganger format should accept fully unquoted pct fields");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "LEVELPCT=\"75\" SAVEPCT=\"0\" DIFFPCT=\"100\""))
+			return ("Error#194a9: the Prop_Doppleganger format should accept fully quoted pct fields");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "LEVELPCT=75"))
+			return ("Error#194ad: the Prop_Doppleganger format should accept a lone unquoted LEVELPCT");
+		if(CMLib.ableParms().isValidMiscText(dopFmt, "DIFFPCT=\"abc\""))
+			return ("Error#194ae: the Prop_Doppleganger format should reject an invalid quoted DIFFPCT value");
+		if(CMLib.ableParms().isValidMiscText(dopFmt, "LEVELPCT=bad"))
+			return ("Error#194af: the Prop_Doppleganger format should reject an invalid unquoted LEVELPCT value");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "10"))
+			return ("Error#194b1: the Prop_Doppleganger format should accept a bare number level add");
+		if(!CMLib.ableParms().isValidMiscText(dopFmt, "50%"))
+			return ("Error#194b2: the Prop_Doppleganger format should accept a percentage level pct");
+		if(CMLib.ableParms().isValidMiscText(dopFmt, "BOGUSKEY=x"))
+			return ("Error#194c1: the Prop_Doppleganger format should reject an unknown key");
+		if(CMLib.ableParms().isValidMiscText(dopFmt, "MATERIALS_METALLER"))
+			return ("Error#194c2: the Prop_Doppleganger format should reject a bare flag without a value");
+		// Test 195: the Prop_ImproveGather format accepts AMT/MASK/SKILLS in any order and rejects garbage.
+		final Ability igA = CMClass.getAbility("Prop_ImproveGather");
+		if(igA == null)
+			return ("Error#195a1: Prop_ImproveGather ability not loaded");
+		final String igFmt = igA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "AMT=7"))
+			return ("Error#195a2: the Prop_ImproveGather format should accept a bare AMT number");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "SKILLS=\"Spell_Fireball,Spell_MagicMissile\""))
+			return ("Error#195a3: the Prop_ImproveGather format should accept quoted SKILLS with ability ids");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "SKILLS=\"ALL\""))
+			return ("Error#195a4: the Prop_ImproveGather format should accept a quoted SKILLS ALL literal");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "MASK=\"ROCK\""))
+			return ("Error#195a5: the Prop_ImproveGather format should accept a quoted MASK");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "AMT=3 SKILLS=\"Spell_Fireball,Spell_MagicMissile\""))
+			return ("Error#195a6: the Prop_ImproveGather format should accept AMT and SKILLS in any order");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "MASK=\"ROCK\" AMT=5 SKILLS=\"ALL\""))
+			return ("Error#195a7: the Prop_ImproveGather format should accept MASK, AMT and SKILLS in any order");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, "AMT=4 SKILLS=\"Spell_Fireball,Spell_MagicMissile\" MASK=\"ROCK\""))
+			return ("Error#195a8: the Prop_ImproveGather format should accept all three fields in any order");
+		if(CMLib.ableParms().isValidMiscText(igFmt, "BOGUS=x"))
+			return ("Error#195b1: the Prop_ImproveGather format should reject an unknown key");
+		if(CMLib.ableParms().isValidMiscText(igFmt, "SKILLS=\"Fireball\" XTRA=5"))
+			return ("Error#195b2: the Prop_ImproveGather format should reject a trailing unknown key after valid fields");
+		if(!CMLib.ableParms().isValidMiscText(igFmt, ""))
+			return ("Error#195b3: the Prop_ImproveGather format should accept empty text (all fields have defaults)");
+		// Test 196: the Prop_ItemBinder format accepts the TO/ON/BOUND/DEATHKEEP/MESSAGE fields setMiscText parses.
+		final Ability itemBindA = CMClass.getAbility("Prop_ItemBinder");
+		if(itemBindA == null)
+			return ("Error#196a: Prop_ItemBinder ability not loaded");
+		final String itemBindFmt = itemBindA.miscTextFormat();
+		if(itemBindFmt == null)
+			return ("Error#196b: Prop_ItemBinder could not produce a format");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, ""))
+			return ("Error#196c: the Prop_ItemBinder format should accept empty text (all fields have defaults)");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=CHARACTER"))
+			return ("Error#196d: the Prop_ItemBinder format should accept TO=CHARACTER");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=CLAN"))
+			return ("Error#196e: the Prop_ItemBinder format should accept TO=CLAN");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=PLAYER"))
+			return ("Error#196f: the Prop_ItemBinder format should accept TO=PLAYER");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=NPC"))
+			return ("Error#196g: the Prop_ItemBinder format should accept TO=NPC");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=NOONE"))
+			return ("Error#196h: the Prop_ItemBinder format should accept TO=NOONE");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "ON=EQUIP"))
+			return ("Error#196i: the Prop_ItemBinder format should accept ON=EQUIP");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "ON=PICKUP"))
+			return ("Error#196j: the Prop_ItemBinder format should accept ON=PICKUP");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "BOUND=\"Bob The Builder\""))
+			return ("Error#196k: the Prop_ItemBinder format should accept a quoted multiword BOUND name");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "DEATHKEEP=true"))
+			return ("Error#196l: the Prop_ItemBinder format should accept DEATHKEEP=true");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "MESSAGE=\"the item binds to you!\""))
+			return ("Error#196m: the Prop_ItemBinder format should accept a quoted multiword MESSAGE");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=PLAYER ON=PICKUP BOUND=\"Bob The Builder\" DEATHKEEP=true MESSAGE=\"the item binds to you!\""))
+			return ("Error#196n: the Prop_ItemBinder format should accept all of its fields together");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=NOONE ON=PICKUP BOUND=\"the graveyard\" DEATHKEEP=false"))
+			return ("Error#196o: the Prop_ItemBinder format should accept a noone-bound pickup item");
+		if(!CMLib.ableParms().isValidMiscText(itemBindFmt, "TO=CLAN ON=PICKUP BOUND=\"the clan vault\""))
+			return ("Error#196p: the Prop_ItemBinder format should accept a clan-bound pickup item");
+		// Test 197: the Prop_LangTranslator format accepts the percentage, word, trusted, and
+		//           notranslate tokens that setMiscText parses.
+		final Ability langTransA = CMClass.getAbility("Prop_LangTranslator");
+		if(langTransA == null)
+			return ("Error#197a: Prop_LangTranslator ability not loaded");
+		final String langTransFmt = langTransA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, ""))
+			return ("Error#197b: the Prop_LangTranslator format should accept empty text (common knowledge by default)");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "Elvish"))
+			return ("Error#197c: the Prop_LangTranslator format should accept a bare language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "50 Elvish"))
+			return ("Error#197d: the Prop_LangTranslator format should accept a percentage before a language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "50% Draconic"))
+			return ("Error#197e: the Prop_LangTranslator format should accept a percent-suffixed percentage before a language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "Elvish 'hello"))
+			return ("Error#197f: the Prop_LangTranslator format should accept a quoted word after a language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "'greetings Draconic"))
+			return ("Error#197g: the Prop_LangTranslator format should accept a quoted word before a language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "`bonjour` Draconic"))
+			return ("Error#197h: the Prop_LangTranslator format should accept back-tick-quoted word lists");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "#Zac Elvish"))
+			return ("Error#197i: the Prop_LangTranslator format should accept a # trusted name before a language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "NOTRANSLATE"))
+			return ("Error#197j: the Prop_LangTranslator format should accept the NOTRANSLATE flag");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "Elvish NOTRANSLATE Goblinese 50"))
+			return ("Error#197k: the Prop_LangTranslator format should accept a language id followed by NOTRANSLATE and another language id");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "25% Draconic 'hail 50% Goblinese #Zac NOTRANSLATE"))
+			return ("Error#197l: the Prop_LangTranslator format should accept percentages, quoted words, trusted names, and NOTRANSLATE together");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "Elvish 50% 25 Draconic"))
+			return ("Error#197m: the Prop_LangTranslator format should accept back-to-back percentages before a language id");
+		if(CMLib.ableParms().isValidMiscText(langTransFmt, "BOGUSLANG"))
+			return ("Error#197n: the Prop_LangTranslator format should reject an unknown non-language token");
+		if(!CMLib.ableParms().isValidMiscText(langTransFmt, "#Zac"))
+			return ("Error#197o: the Prop_LangTranslator format should accept a trusted name without a language id");
+		// Test 198: the Prop_LimitedContents format accepts the ;-separated integer limits
+		//           with masks and MSG/ACTUAL parm parts that setMiscText parses.
+		final Ability limitedA = CMClass.getAbility("Prop_LimitedContents");
+		if(limitedA == null)
+			return ("Error#198a: Prop_LimitedContents ability not loaded");
+		final String limitedFmt = limitedA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, ""))
+			return ("Error#198b: the Prop_LimitedContents format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "5"))
+			return ("Error#198c: the Prop_LimitedContents format should accept a bare integer limit");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "5 -RACE +ELF"))
+			return ("Error#198d: the Prop_LimitedContents format should accept an integer limit with a mask");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "5;10"))
+			return ("Error#198e: the Prop_LimitedContents format should accept multiple ;-separated integer limits");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "5 -RACE +ELF;10 -CLASS +Fighter"))
+			return ("Error#198f: the Prop_LimitedContents format should accept multiple limits with masks");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "MSG=\"only five\""))
+			return ("Error#198g: the Prop_LimitedContents format should accept a quoted MSG parm part");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "ACTUAL=false"))
+			return ("Error#198h: the Prop_LimitedContents format should accept an ACTUAL parm part");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "ACTUAL=true MSG=\"do not add more\""))
+			return ("Error#198i: the Prop_LimitedContents format should accept ACTUAL and MSG in any order");
+		if(!CMLib.ableParms().isValidMiscText(limitedFmt, "5 -RACE +ELF;10;MSG=\"only five\" ACTUAL=false"))
+			return ("Error#198j: the Prop_LimitedContents format should accept limits and parm parts together");
+		// Test 199: the Prop_ItemTransReceiver and Prop_ItemTransporter formats accept any string,
+		//          as they do not parse their misc text at all.
+		final Ability transRecvA = CMClass.getAbility("Prop_ItemTransReceiver");
+		if(transRecvA == null)
+			return ("Error#199a: Prop_ItemTransReceiver ability not loaded");
+		final String transRecvFmt = transRecvA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(transRecvFmt, ""))
+			return ("Error#199b: the Prop_ItemTransReceiver format should accept an empty string");
+		if(!CMLib.ableParms().isValidMiscText(transRecvFmt, "any string at all"))
+			return ("Error#199c: the Prop_ItemTransReceiver format should accept any string");
+		if(!CMLib.ableParms().isValidMiscText(transRecvFmt, "KEY=value junk;&^%$ 42"))
+			return ("Error#199d: the Prop_ItemTransReceiver format should accept arbitrary text of any shape");
+		final Ability transSendA = CMClass.getAbility("Prop_ItemTransporter");
+		if(transSendA == null)
+			return ("Error#199e: Prop_ItemTransporter ability not loaded");
+		final String transSendFmt = transSendA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(transSendFmt, ""))
+			return ("Error#199f: the Prop_ItemTransporter format should accept an empty string");
+		if(!CMLib.ableParms().isValidMiscText(transSendFmt, "any string at all"))
+			return ("Error#199g: the Prop_ItemTransporter format should accept any string");
+		if(!CMLib.ableParms().isValidMiscText(transSendFmt, "KEY=value junk;&^%$ 42"))
+			return ("Error#199h: the Prop_ItemTransporter format should accept arbitrary text of any shape");
 		return null;
 	}
 }

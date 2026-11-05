@@ -79,6 +79,17 @@ public class Prop_ImproveGather extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			   + "(AMT=[NUMBER(prompt=Amount/colh=Amt)])/"
+			   + "(MASK=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))/"
+			   + "(SKILLS=(\")ALL(\"))/"
+			   + "(SKILLS=(\")([ABILITY_ID(prompt=Skill ID/colh=Skill)]..,)(\"))"
+			   + ")...)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))

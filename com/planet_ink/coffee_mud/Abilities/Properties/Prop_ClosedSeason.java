@@ -96,9 +96,10 @@ public class Prop_ClosedSeason extends Property
 	{
 		StringBuilder vcodes = new StringBuilder("");
 		for(final Room.VariationCode code : Room.VariationCode.values())
-			vcodes.append((vcodes.length()==0?"":",")).append(code.name());
-		return "([CHOICES(choices="+vcodes.toString()+"/prompt=VarCode/colh=VCd)])..."
-			+"((\")MASK=[ZAPPERMASK(prompt=Mask/colh=mask).. ](\"))";
+			if(code != Room.VariationCode.MASK)
+				vcodes.append((vcodes.length()==0?"":",")).append(code.name());
+		return "(([CHOICES(choices="+vcodes.toString()+"/prompt=VarCode/colh=VCd)])...)"
+			+"((\")MASK =[ZAPPERMASK(prompt=Mask/colh=mask)]...(\"))";
 	}
 
 	@Override

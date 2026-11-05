@@ -108,6 +108,24 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		super.setMiscText(text);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		StringBuilder boundTos = new StringBuilder();
+		for(final BoundTo b : BoundTo.values())
+			boundTos.append((boundTos.length()==0)?"":",").append(b.name());
+		StringBuilder boundOns = new StringBuilder();
+		for(final BoundOn b : BoundOn.values())
+			boundOns.append((boundOns.length()==0)?"":",").append(b.name());
+		return "(("
+			   + "(TO=(\")[CHOOSE(choices="+boundTos.toString()+"/prompt=To/colh=To)](\"))/"
+			   + "(ON=(\")[CHOOSE(choices="+boundOns.toString()+"/prompt=On/colh=On)](\"))/"
+			   + "(BOUND=(\")[STRINGORNULL(prompt=Bound Name/colh=Name)...](\"))/"
+			   + "(DEATHKEEP=[CONFIRM(prompt=Keep on Death/colh=Keep)])/"
+			   + "(MESSAGE=(\")[STRINGORNULL(prompt=Message/colh=Msg)...](\"))"
+			   + ")...)";
+	}
+
 	protected String defaultMessage()
 	{
 		return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";

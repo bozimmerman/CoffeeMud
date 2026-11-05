@@ -105,6 +105,16 @@ public class Prop_LimitedContents extends Property
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			   + "([NUMBER(prompt=Amount/colh=Amt)]([ZAPPERMASK(prompt=Mask/colh=Mask)..;]))/"
+			   + "(((MSG=\"[STRINGORNULL(prompt=Message/colh=Msg)..\"]\")/"
+			   + "(MSG=[STRINGORNULL(prompt=Message/colh=Msg)..;])/"
+			   + "(ACTUAL=[CONFIRM(prompt=Actual/colh=Actl)]))...))..;)";
+	}
+
 	protected int itemCount(final Item item)
 	{
 		if(item instanceof RawMaterial)

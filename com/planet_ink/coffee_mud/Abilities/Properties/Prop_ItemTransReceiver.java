@@ -57,4 +57,10 @@ public class Prop_ItemTransReceiver extends Property
 	{
 		return "Item Transporter Receiver";
 	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRINGORNULL(prompt=Transport Code/colh=Code)].. )";
+	}
 }

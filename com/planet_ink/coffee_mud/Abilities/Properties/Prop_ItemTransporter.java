@@ -77,6 +77,12 @@ public class Prop_ItemTransporter extends Property
 		return ultimateParent(item.container());
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRINGORNULL(prompt=Transport Code/colh=Code)].. )";
+	}
+
 	private synchronized boolean setDestination()
 	{
 		List<PhysicalAgent> possibilities=possiblePossibilities.get(text());
