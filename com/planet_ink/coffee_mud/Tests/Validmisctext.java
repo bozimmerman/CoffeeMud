@@ -1665,6 +1665,31 @@ public class Validmisctext extends StdTest
 			return ("Error#199g: the Prop_ItemTransporter format should accept any string");
 		if(!CMLib.ableParms().isValidMiscText(transSendFmt, "KEY=value junk;&^%$ 42"))
 			return ("Error#199h: the Prop_ItemTransporter format should accept arbitrary text of any shape");
+
+		// Test 200: the Prop_LanguageSpeaker format accepts the flag, language, and mask fields that setMiscText parses.
+		final Ability langSpkA = CMClass.getAbility("Prop_LanguageSpeaker");
+		if(langSpkA == null)
+			return ("Error#200a: Prop_LanguageSpeaker ability not loaded");
+		final String langSpkFmt = langSpkA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, ""))
+			return ("Error#200b: the Prop_LanguageSpeaker format should accept empty text");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "PLAYERS=true"))
+			return ("Error#200c: the Prop_LanguageSpeaker format should accept a single player flag");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "NOMOBS=true"))
+			return ("Error#200d: the Prop_LanguageSpeaker format should accept a single no-mobs flag");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "HOMEONLY=true"))
+			return ("Error#200e: the Prop_LanguageSpeaker format should accept a single home-only flag");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "PLAYERS=true NOMOBS=true HOMEONLY=true LANGSTR=\"Common\""))
+			return ("Error#200f: the Prop_LanguageSpeaker format should accept all flag fields with a quoted language id");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "LANGSTR=\"Common\""))
+			return ("Error#200g: the Prop_LanguageSpeaker format should accept just a quoted language id");
+		if(!CMLib.ableParms().isValidMiscText(langSpkFmt, "PLAYERS=true LANGSTR=\"Draconic\";RACE -ELF"))
+			return ("Error#200h: the Prop_LanguageSpeaker format should accept flags plus a quoted language id with a zapper mask");
+		if(CMLib.ableParms().isValidMiscText(langSpkFmt, "PLAYERS=yes NOMOBS=true HOMEONLY=true LANGSTR=\"Common\""))
+			return ("Error#200i: the Prop_LanguageSpeaker format should reject a non-boolean flag value");
+		if(CMLib.ableParms().isValidMiscText(langSpkFmt, "LANGSTR=\"NotARealAbility\""))
+			return ("Error#200j: the Prop_LanguageSpeaker format should reject an unknown ability id for the language");
+
 		return null;
 	}
 }
