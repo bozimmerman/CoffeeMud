@@ -146,6 +146,19 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((([STRINGORNULL(prompt=Owner/colh=owner)..\\/]\\/)/(\\/))"
+			  +"(("
+			  +"([CHECK(name=RENTAL/prompt=Rental/colh=rent)])/"
+			  +"([CHECK(name=GRID/prompt=Grid/colh=grid)])/"
+			  +"([CHECK(name=ALLOWTHEFT/prompt=TheftOK/colh=theft)])/"
+			  +"(TAX[NUMBER(prompt=Back Taxes/colh=tax)..X]X)/"
+			  +"([NUMBER(prompt=Price/colh=price)])"
+			  +")...))";
+	}
+
+	@Override
 	public int backTaxes()
 	{
 		if(text().indexOf('/')<0)

@@ -141,6 +141,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((([STRINGORNULL(prompt=Owner/colh=owner)..\\/]\\/)/(\\/))"
+			  +"(("
+			  +"([CHECK(name=RENTAL/prompt=Rental/colh=rent)])/"
+			  +"([CHECK(name=GRID/prompt=Grid/colh=grid)])/"
+			  +"([CHECK(name=ALLOWTHEFT/prompt=TheftOK/colh=theft)])/"
+			  +"(TAX[NUMBER(prompt=Back Taxes/colh=tax)..X]X)/"
+			  +"([NUMBER(prompt=Price/colh=price)])"
+			  +")...))";
+	}
+
+	@Override
 	public void setPrice(final int price)
 	{
 		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout(), allowTheft());

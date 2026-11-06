@@ -1690,6 +1690,77 @@ public class Validmisctext extends StdTest
 		if(CMLib.ableParms().isValidMiscText(langSpkFmt, "LANGSTR=\"NotARealAbility\""))
 			return ("Error#200j: the Prop_LanguageSpeaker format should reject an unknown ability id for the language");
 
+		// Test 201: the Prop_RoomForSale format accepts the owner/slash prefix, flag
+		//           tokens, the back-tax TAX num X group, and the price that its
+		//           saveData() writer produces, in writer and permuted orders.
+		final Ability roomSaleA = CMClass.getAbility("Prop_RoomForSale");
+		if(roomSaleA == null)
+			return ("Error#201a: Prop_RoomForSale ability not loaded");
+		final String roomSaleFmt = roomSaleA.miscTextFormat();
+		if(roomSaleFmt == null)
+			return ("Error#201b: Prop_RoomForSale could not produce a format");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/100000"))
+			return ("Error#201d: the Prop_RoomForSale format should accept an owner and price");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/RENTAL 1000"))
+			return ("Error#201e: the Prop_RoomForSale format should accept a rental token");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/GRID 1500"))
+			return ("Error#201f: the Prop_RoomForSale format should accept a grid token");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/ALLOWTHEFT 1200"))
+			return ("Error#201g: the Prop_RoomForSale format should accept an allow-theft token");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/TAX500X 13000"))
+			return ("Error#201h: the Prop_RoomForSale format should accept a back-tax group");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/RENTAL GRID ALLOWTHEFT TAX720X 2500"))
+			return ("Error#201i: the Prop_RoomForSale format should accept all fields in writer order");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/GRID RENTAL TAX720X ALLOWTHEFT 2500"))
+			return ("Error#201j: the Prop_RoomForSale format should accept all fields in a permuted order");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/GRID ALLOWTHEFT RENTAL 1750"))
+			return ("Error#201k: the Prop_RoomForSale format should accept a partial three-field permutation");
+		if(CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/BOGUS 1000"))
+			return ("Error#201m: the Prop_RoomForSale format should reject an unknown bare token");
+		if(CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/TAXBADX 1000"))
+			return ("Error#201n: the Prop_RoomForSale format should reject a non-numeric back-tax group");
+		if(CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob/RENTAL=1 1000"))
+			return ("Error#201o: the Prop_RoomForSale format should reject a token with a value suffix");
+		if(!CMLib.ableParms().isValidMiscText(roomSaleFmt, "/RENTAL GRID 1800"))
+			return ("Error#201l: the Prop_RoomForSale format should accept empty-owner text written by setOwnerName(\"\")");
+		if(CMLib.ableParms().isValidMiscText(roomSaleFmt, "Bob//RENTAL GRID 1800"))
+			return ("Error#201p: the Prop_RoomForSale format should reject a double slash after an owner");
+		if(CMLib.ableParms().isValidMiscText(roomSaleFmt, "//RENTAL GRID 1800"))
+			return ("Error#201q: the Prop_RoomForSale format should reject a double leading slash");
+		// Test 202: the Prop_AreaForSale format accepts the owner/slash prefix, rental
+		//           and theft flag tokens, the back-tax group, and price entries its
+		//           writers produce, in writer and permuted orders.
+		final Ability areaSaleA = CMClass.getAbility("Prop_AreaForSale");
+		if(areaSaleA == null)
+			return ("Error#202a: Prop_AreaForSale ability not loaded");
+		final String areaSaleFmt = areaSaleA.miscTextFormat();
+		if(areaSaleFmt == null)
+			return ("Error#202b: Prop_AreaForSale could not produce a format");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/100000"))
+			return ("Error#202d: the Prop_AreaForSale format should accept an owner and price");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/RENTAL 1000"))
+			return ("Error#202e: the Prop_AreaForSale format should accept a rental token");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/ALLOWTHEFT 1200"))
+			return ("Error#202f: the Prop_AreaForSale format should accept an allow-theft token");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/TAX500X 13000"))
+			return ("Error#202g: the Prop_AreaForSale format should accept a back-tax group");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/RENTAL ALLOWTHEFT TAX720X 2500"))
+			return ("Error#202h: the Prop_AreaForSale format should accept all fields in writer order");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/TAX720X ALLOWTHEFT RENTAL 2500"))
+			return ("Error#202i: the Prop_AreaForSale format should accept all fields in a permuted order");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/ALLOWTHEFT RENTAL 1750"))
+			return ("Error#202j: the Prop_AreaForSale format should accept a partial three-field permutation");
+		if(!CMLib.ableParms().isValidMiscText(areaSaleFmt, "/RENTAL 5000"))
+			return ("Error#202k: the Prop_AreaForSale format should accept empty-owner text written by setOwnerName(\"\")");
+		if(CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/BOGUS 1000"))
+			return ("Error#202l: the Prop_AreaForSale format should reject an unknown bare token");
+		if(CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob/TAXBADX 1000"))
+			return ("Error#202m: the Prop_AreaForSale format should reject a non-numeric back-tax group");
+		if(CMLib.ableParms().isValidMiscText(areaSaleFmt, "Bob//RENTAL ALLOWTHEFT 5000"))
+			return ("Error#202n: the Prop_AreaForSale format should reject a double slash after an owner");
+		if(CMLib.ableParms().isValidMiscText(areaSaleFmt, "//RENTAL 5000"))
+			return ("Error#202o: the Prop_AreaForSale format should reject a double leading slash");
+
 		return null;
 	}
 }
