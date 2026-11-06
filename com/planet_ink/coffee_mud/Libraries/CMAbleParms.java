@@ -2300,7 +2300,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * syntax, even when it forms a token alone: a \/ between placeholders is
 	 * a literal slash, not an alternative separator.  A placeholder whose name ends with "..."
 	 * (for example [NAME...]) is greedy.  A placeholder whose name ends with
-	 * '..' plus a delimiter character (for example [NAME..;]) is greedy up to
+	 * '..' plus a delimiter character (for example [NAME..;]), or '..' plus an
+	 * escaped character (for example [NAME..\/]), is greedy up to
 	 * that delimiter without consuming it.  A placeholder followed by '.. '
 	 * (dot-dot-space, for example ([NAME].. )) is greedy to end-of-string,
 	 * or empty when nothing remains, and may appear inside groups.  The special (") marker denotes an
@@ -2403,6 +2404,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				String placeholderToken = placeholder;
 				if(greedy)
 					placeholderToken = placeholderToken.substring(0, placeholderToken.length() - 3).trim();
+				else
+				if((placeholder.length() > 3)
+				&&(placeholder.charAt(placeholder.length() - 2) == '\\')
+				&&(placeholder.charAt(placeholder.length() - 3) == '.')
+				&&(placeholder.charAt(placeholder.length() - 4) == '.'))
+				{
+					// an escaped character is always a valid greedy-to delimiter
+					greedyTo = placeholder.charAt(placeholder.length() - 1);
+					placeholderToken = placeholder.substring(0, placeholder.length() - 4).trim();
+				}
 				else
 				if((placeholder.length() > 2)
 				&&(placeholder.charAt(placeholder.length() - 2) == '.')
