@@ -2397,7 +2397,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
-				final String placeholder = format.substring(index + 1, closeIndex).trim();
+				final String placeholder = format.substring(index + 1, closeIndex);
 				final boolean greedy = placeholder.endsWith("...");
 				char greedyTo = '\0';
 				String placeholderToken = placeholder;
@@ -2406,11 +2406,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				else
 				if((placeholder.length() > 2)
 				&&(placeholder.charAt(placeholder.length() - 2) == '.')
-				&&(placeholder.charAt(placeholder.length() - 3) == '.')
-				&&(isDelimiterChar(placeholder.charAt(placeholder.length() - 1))))
+				&&(placeholder.charAt(placeholder.length() - 3) == '.'))
 				{
-					greedyTo = placeholder.charAt(placeholder.length() - 1);
-					placeholderToken = placeholder.substring(0, placeholder.length() - 3).trim();
+					if(isDelimiterChar(placeholder.charAt(placeholder.length() - 1)))
+					{
+						greedyTo = placeholder.charAt(placeholder.length() - 1);
+						placeholderToken = placeholder.substring(0, placeholder.length() - 3).trim();
+					}
+					else
+					if(placeholder.charAt(placeholder.length() - 1)==' ')
+					{
+						greedyTo='\0';
+						if((tokens.size()>0) 
+						&&tokens.get(tokens.size()-1).token.equals("\"")
+						&&tokens.get(tokens.size()-1).optional)
+							greedyTo='\"';
+						placeholderToken = placeholder.substring(0, placeholder.length() - 3).trim();
+					}
 				}
 				if(placeholderToken.length() == 0)
 					throw new CMException("Empty placeholder name at " + index);
@@ -2544,7 +2556,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						final MTToken x = tokens.get(tokens.size() - 1);
 						if(x.placeholderArgs == null)
 							throw new CMException("'.. ' requires a preceding placeholder at " + index);
-						x.greedyRest = true;
+						if(x.quoteNext)
+						{
+							x.greedy=true;
+							x.greedyTo='\"';
+						}
+						else
+							x.greedyRest = true;
 						index += 3;
 					}
 					else

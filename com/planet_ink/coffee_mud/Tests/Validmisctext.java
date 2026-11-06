@@ -794,7 +794,7 @@ public class Validmisctext extends StdTest
 		final String instFmt = CMClass.getAbility("InstanceArea").miscTextFormat();
 		if(!CMLib.ableParms().isValidMiscText(instFmt, "ID=MyArea DURATION=10")
 		||!CMLib.ableParms().isValidMiscText(instFmt, "DESCRIPTION=\"a dark cave\" DURATION=10")
-		||!CMLib.ableParms().isValidMiscText(instFmt, "PLANE_ABYSS=5")
+		||!CMLib.ableParms().isValidMiscText(instFmt, "ALIGNMENT=5")
 		||!CMLib.ableParms().isValidMiscText(instFmt, "DEFAULT_NEW")
 		||!CMLib.ableParms().isValidMiscText(instFmt, "")
 		||CMLib.ableParms().isValidMiscText(instFmt, "BOGUSKEY=x")
@@ -1157,7 +1157,7 @@ public class Validmisctext extends StdTest
 			return ("Error#177i: the UniPoison format should reject digit-led keys the parser skips");
 		// Test 178: the Prayer_MassGrave format accepts a room ID or empty.
 		final String graveFmt = CMClass.getAbility("Prayer_MassGrave").miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(graveFmt, "New Area#0"))
+		if(!CMLib.ableParms().isValidMiscText(graveFmt, CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom())))
 			return ("Error#178a");
 		if(!CMLib.ableParms().isValidMiscText(graveFmt, ""))
 			return ("Error#178b");
