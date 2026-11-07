@@ -582,7 +582,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		public void move(final boolean wander)
 		{
 			final Room locR=slaveM.location();
-			if(locR==null)
+			if((locR==null)||(!CMLib.flags().canMove(slaveM)))
 				return;
 			if(startR == null)
 			{
