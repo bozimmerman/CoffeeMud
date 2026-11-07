@@ -51,6 +51,12 @@ public class Skill_CaravanTravel extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=FULL/prompt=Full navigation/colh=Full)])";
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return 0;

@@ -49,6 +49,12 @@ public class Apothecary extends Cooking
 		return localizedName;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=ANTIDOTE/prompt=Antidote mode/colh=Antidote)])";
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"APOTHECARY","MIX"});
 	@Override
 	public String[] triggerStrings()

@@ -40,6 +40,12 @@ public class SmokeRings extends CommonSkill implements RecipeDriven
 		return "SmokeRings";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((STOP)/([STRING(prompt=Ring style/colh=Style).. ]))";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Smoke Rings");
 
 	@Override

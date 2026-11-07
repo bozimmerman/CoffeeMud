@@ -42,6 +42,12 @@ public class Spell_Torture extends Spell
 		return "Spell_Torture";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHECK(name=HITONLY/prompt=Torture option/colh=Option)])/([STRING(prompt=Cry message/colh=Cry).. ]))";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Torture");
 
 	@Override

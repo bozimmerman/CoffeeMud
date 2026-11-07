@@ -40,6 +40,12 @@ public class Spell_Brainwash extends Spell
 		return "Spell_Brainwash";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Brainwash message/colh=Message).. ])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Brainwash");
 
 	@Override

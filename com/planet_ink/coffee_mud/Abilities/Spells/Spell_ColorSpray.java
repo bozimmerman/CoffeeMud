@@ -50,6 +50,12 @@ public class Spell_ColorSpray extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=UNCONSCIOUS,STUNNED/prompt=Effect state/colh=State)])";
+	}
+
+	@Override
 	public String displayText()
 	{
 		if(text().equalsIgnoreCase("UNCONSCIOUS"))

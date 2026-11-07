@@ -41,6 +41,12 @@ public class Prop_NewDeathMsg extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Death message/colh=Death).. ])";
+	}
+
+	@Override
 	public String name()
 	{
 		return "NewDeathMsg";

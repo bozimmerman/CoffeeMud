@@ -49,6 +49,12 @@ public class Spell_LimbRack extends Spell
 		return localizedName;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=ARMSONLY/prompt=Arms only/colh=ArmsOnly)])";
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Being pulled apart)");
 
 	@Override

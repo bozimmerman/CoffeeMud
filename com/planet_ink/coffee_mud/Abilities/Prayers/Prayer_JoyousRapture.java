@@ -48,6 +48,14 @@ public class Prayer_JoyousRapture extends Prayer
 		return localizedName;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "[CHOICES(choices=NORMAL,"
+				+ com.planet_ink.coffee_mud.Abilities.Misc.Mood.getMoodChoiceList()
+				+ "/prompt=Mood name/colh=Mood)]";
+	}
+
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Joyous Rapture)");
 
 	@Override

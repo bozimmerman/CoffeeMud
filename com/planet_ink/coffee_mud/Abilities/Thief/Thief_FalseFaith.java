@@ -35,12 +35,18 @@ import java.util.*;
 */
 public class Thief_FalseFaith extends ThiefSkill
 {
+
 	@Override
 	public String ID()
 	{
 		return "Thief_FalseFaith";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHECK(name=NONE/prompt=False faith/colh=Faith)])/([DEITY(prompt=Deity name/colh=Deity)]))";
+	}
 	private final static String localizedName = CMLib.lang().L("False Faith");
 
 	@Override

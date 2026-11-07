@@ -40,6 +40,12 @@ public class Skill_CulturalAdaptation extends StdSkill
 		return "Skill_CulturalAdaptation";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([DECIMAL(prompt=Base adjustment/colh=Adjustment)](%))";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Cultural Adaptation");
 
 	@Override
@@ -103,7 +109,7 @@ public class Skill_CulturalAdaptation extends StdSkill
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		if(newMiscText.length()==0)
+		if(newMiscText.length()>0)
 		{
 			if(CMath.isPct(newMiscText))
 			{

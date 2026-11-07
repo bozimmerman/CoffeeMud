@@ -1760,6 +1760,107 @@ public class Validmisctext extends StdTest
 			return ("Error#202n: the Prop_AreaForSale format should reject a double slash after an owner");
 		if(CMLib.ableParms().isValidMiscText(areaSaleFmt, "//RENTAL 5000"))
 			return ("Error#202o: the Prop_AreaForSale format should reject a double leading slash");
+		// Test 203: Apothecary accepts the optional ANTIDOTE mode flag.
+		final Ability apoA = CMClass.getAbility("Apothecary");
+		if(apoA == null)
+			return ("Error#203a: Apothecary ability not loaded");
+		final String apoFmt = apoA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(apoFmt, "ANTIDOTE"))
+			return ("Error#203b: the Apothecary format should accept ANTIDOTE");
+		if(!CMLib.ableParms().isValidMiscText(apoFmt, ""))
+			return ("Error#203c: the Apothecary format should accept an empty mode");
+		if(CMLib.ableParms().isValidMiscText(apoFmt, "BOGUS"))
+			return ("Error#203d: the Apothecary format should reject an unknown mode");
+		// Test 204: Paladin_PlanarDefiance accepts the optional plane name editor.
+		final Ability planarA = CMClass.getAbility("Paladin_PlanarDefiance");
+		if(planarA == null)
+			return ("Error#204a: Paladin_PlanarDefiance ability not loaded");
+		final String planarFmt = planarA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(planarFmt, ""))
+			return ("Error#204b: the Paladin_PlanarDefiance format should accept a blank plane");
+		if(CMLib.ableParms().isValidMiscText(planarFmt, "NOTAPLANE"))
+			return ("Error#204c: the Paladin_PlanarDefiance format should reject an unknown plane");
+		final Ability planeProto = CMClass.getAbilityPrototype("StdPlanarAbility");
+		if(planeProto instanceof PlanarAbility)
+		{
+			final List<String> planeKeys = ((PlanarAbility)planeProto).getAllPlaneKeys();
+			if(planeKeys.size() > 0)
+			{
+				if(!CMLib.ableParms().isValidMiscText(planarFmt, planeKeys.get(0)))
+					return ("Error#204d: the Paladin_PlanarDefiance format should accept a known plane");
+			}
+		}
+		// Test 205: Prayer_JoyousRapture accepts NORMAL and the runtime mood choices.
+		final Ability raptureA = CMClass.getAbility("Prayer_JoyousRapture");
+		if(raptureA == null)
+			return ("Error#205a: Prayer_JoyousRapture ability not loaded");
+		final String raptureFmt = raptureA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(raptureFmt, "NORMAL"))
+			return ("Error#205b: the Prayer_JoyousRapture format should accept NORMAL");
+		final String[] moodChoices = com.planet_ink.coffee_mud.Abilities.Misc.Mood.getMoodChoiceList().split(",");
+		if(moodChoices.length == 0)
+			return ("Error#205c: no mood choices were generated");
+		if(!CMLib.ableParms().isValidMiscText(raptureFmt, moodChoices[0]))
+			return ("Error#205d: the Prayer_JoyousRapture format should accept a generated mood choice");
+		if(CMLib.ableParms().isValidMiscText(raptureFmt, "NOTAMOOD"))
+			return ("Error#205e: the Prayer_JoyousRapture format should reject an unknown mood");
+		// Test 206: Skill_CaravanTravel accepts the optional FULL navigation flag.
+		final Ability caravanA = CMClass.getAbility("Skill_CaravanTravel");
+		if(caravanA == null)
+			return ("Error#206a: Skill_CaravanTravel ability not loaded");
+		final String caravanFmt = caravanA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(caravanFmt, "FULL"))
+			return ("Error#206b: the Skill_CaravanTravel format should accept FULL");
+		if(!CMLib.ableParms().isValidMiscText(caravanFmt, ""))
+			return ("Error#206c: the Skill_CaravanTravel format should accept an empty flag");
+		if(CMLib.ableParms().isValidMiscText(caravanFmt, "BOGUS"))
+			return ("Error#206d: the Skill_CaravanTravel format should reject an unknown flag");
+		// Test 207: Skill_SeaNavigation accepts the optional FULL navigation flag.
+		final Ability seaNavA = CMClass.getAbility("Skill_SeaNavigation");
+		if(seaNavA == null)
+			return ("Error#207a: Skill_SeaNavigation ability not loaded");
+		final String seaNavFmt = seaNavA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(seaNavFmt, "FULL"))
+			return ("Error#207b: the Skill_SeaNavigation format should accept FULL");
+		if(!CMLib.ableParms().isValidMiscText(seaNavFmt, ""))
+			return ("Error#207c: the Skill_SeaNavigation format should accept an empty flag");
+		if(CMLib.ableParms().isValidMiscText(seaNavFmt, "BOGUS"))
+			return ("Error#207d: the Skill_SeaNavigation format should reject an unknown flag");
+		// Test 208: Spell_ColorSpray accepts its optional coded effect states.
+		final Ability sprayA = CMClass.getAbility("Spell_ColorSpray");
+		if(sprayA == null)
+			return ("Error#208a: Spell_ColorSpray ability not loaded");
+		final String sprayFmt = sprayA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(sprayFmt, "UNCONSCIOUS"))
+			return ("Error#208b: the Spell_ColorSpray format should accept UNCONSCIOUS");
+		if(!CMLib.ableParms().isValidMiscText(sprayFmt, "STUNNED"))
+			return ("Error#208c: the Spell_ColorSpray format should accept STUNNED");
+		if(!CMLib.ableParms().isValidMiscText(sprayFmt, ""))
+			return ("Error#208d: the Spell_ColorSpray format should accept an empty state");
+		if(CMLib.ableParms().isValidMiscText(sprayFmt, "BOGUS"))
+			return ("Error#208e: the Spell_ColorSpray format should reject an unknown state");
+		// Test 209: Spell_Fear accepts the optional WEAK target flag.
+		final Ability fearA = CMClass.getAbility("Spell_Fear");
+		if(fearA == null)
+			return ("Error#209a: Spell_Fear ability not loaded");
+		final String fearFmt = fearA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(fearFmt, "WEAK"))
+			return ("Error#209b: the Spell_Fear format should accept WEAK");
+		if(!CMLib.ableParms().isValidMiscText(fearFmt, ""))
+			return ("Error#209c: the Spell_Fear format should accept an empty flag");
+		if(CMLib.ableParms().isValidMiscText(fearFmt, "BOGUS"))
+			return ("Error#209d: the Spell_Fear format should reject an unknown flag");
+		// Test 210: Spell_LimbRack accepts the optional ARMSONLY target flag.
+		final Ability limbA = CMClass.getAbility("Spell_LimbRack");
+		if(limbA == null)
+			return ("Error#210a: Spell_LimbRack ability not loaded");
+		final String limbFmt = limbA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(limbFmt, "ARMSONLY"))
+			return ("Error#210b: the Spell_LimbRack format should accept ARMSONLY");
+		if(!CMLib.ableParms().isValidMiscText(limbFmt, ""))
+			return ("Error#210c: the Spell_LimbRack format should accept an empty flag");
+		if(CMLib.ableParms().isValidMiscText(limbFmt, "BOGUS"))
+			return ("Error#210d: the Spell_LimbRack format should reject an unknown flag");
 
 		return null;
 	}

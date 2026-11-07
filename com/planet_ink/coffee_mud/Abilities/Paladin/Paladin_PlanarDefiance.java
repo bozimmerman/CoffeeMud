@@ -49,6 +49,12 @@ public class Paladin_PlanarDefiance extends PaladinSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane name/colh=Plane)])";
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL|Ability.DOMAIN_COSMOLOGY;

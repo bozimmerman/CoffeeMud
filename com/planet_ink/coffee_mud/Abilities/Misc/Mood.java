@@ -360,8 +360,7 @@ public class Mood extends StdAbility
 		{ CMLib.lang().L("would"),CMLib.lang().L("wouldst") }
 	};
 
-	@Override
-	public String miscTextFormat()
+	public static String getMoodChoiceList()
 	{
 		final StringBuilder choices = new StringBuilder();
 		for(final MoodType mood : MoodType.values())
@@ -370,8 +369,13 @@ public class Mood extends StdAbility
 				choices.append(",");
 			choices.append(mood.name());
 		}
-		choices.append(",random");
-		return "([CHOICES(choices=" + choices.toString() + "/prompt=Mood/colh=Mood)]/[NUMBER(prompt=Mood index/colh=Mood)])";
+		return choices.toString();
+	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=" + getMoodChoiceList() + ",random/prompt=Mood/colh=Mood)]/[NUMBER(prompt=Mood index/colh=Mood)])";
 	}
 
 	@Override
