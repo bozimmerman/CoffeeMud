@@ -100,7 +100,8 @@ public class Spell_Geas extends Spell
 			if((mob.isMonster())
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
-			&&(mob.location()!=mob.getStartRoom()))
+			&&(mob.location()!=mob.getStartRoom())
+			&&(CMLib.flags().canMove(mob)))
 				CMLib.tracking().wanderAway(mob,true,true);
 		}
 	}
