@@ -1,0 +1,39 @@
+name: Test CoffeeMud
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  party-tests:
+    runs-on: windows-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Check launcher isolation and reporting
+        run: python -m unittest discover -s tests -p test_launcher.py -v
+      - name: Run party fixtures and registered host tests
+        run: python tests/run_tests.py --verify-harness
+      - name: Save logs and test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coffeemud-test-results
+          path: |
+            test-output/run-*/*.log
+            test-output/run-*/results.xml
+          if-no-files-found: warn
+          retention-days: 7
