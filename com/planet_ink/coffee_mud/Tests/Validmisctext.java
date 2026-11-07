@@ -1861,6 +1861,18 @@ public class Validmisctext extends StdTest
 			return ("Error#210c: the Spell_LimbRack format should accept an empty flag");
 		if(CMLib.ableParms().isValidMiscText(limbFmt, "BOGUS"))
 			return ("Error#210d: the Spell_LimbRack format should reject an unknown flag");
+		final Ability enlA = CMClass.getAbility("Prop_EnlargeRoom");
+		if(enlA == null)
+			return ("Error#211a: Prop_AddDamage ability not loaded");
+		final String enlFmt = enlA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(enlFmt, ""))
+			return ("Error#211b: empty should match");
+		if(!CMLib.ableParms().isValidMiscText(enlFmt, "10"))
+			return ("Error#211c: number should match");
+		if(!CMLib.ableParms().isValidMiscText(enlFmt, "+10"))
+			return ("Error#211d: +formula should match");
+		if(!CMLib.ableParms().isValidMiscText(enlFmt, "/10"))
+			return ("Error#211e: /formula should match");
 
 		return null;
 	}
