@@ -85,19 +85,26 @@ public class AbilityFormats extends StdTest
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
 		final Set<String> formatAbilities = new HashSet<String>();
+		Set<String> allowed = new HashSet<String>();
+		for(final String id : commands)
+			allowed.add(id.toUpperCase().trim());
 		for(final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
 		{
 			final Ability A = e.nextElement();
 			final String fmt = A.miscTextFormat();
-			if((fmt != null) && (fmt.trim().length() > 0) && (!CMParms.FORMAT_UNDEFINED.equalsIgnoreCase(fmt.trim())))
+			if((fmt != null) 
+			&& (fmt.trim().length() > 0) 
+			&& (!CMParms.FORMAT_UNDEFINED.equalsIgnoreCase(fmt.trim()))
+			&& ((allowed.size()==0)||(allowed.contains(A.ID().toUpperCase()))))
 				formatAbilities.add(A.ID());
 		}
+		StringBuilder errors = new StringBuilder("");
 		for(final Enumeration<Room> r = CMLib.map().rooms(); r.hasMoreElements();)
 		{
 			final Room R = r.nextElement();
 			final String roomErr = checkEffects(R, formatAbilities);
 			if(roomErr != null)
-				return ("Error#1: "+roomErr);
+				errors.append("Error#1: "+roomErr).append("\n\r");
 			for(int m = 0; m < R.numInhabitants(); m++)
 			{
 				final MOB M = R.fetchInhabitant(m);
@@ -105,7 +112,7 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String mobErr = checkEffects(M, formatAbilities);
 				if(mobErr != null)
-					return ("Error#2: "+mobErr);
+					errors.append("Error#2: "+mobErr).append("\n\r");
 				for(int i = 0; i < M.numItems(); i++)
 				{
 					final Item I = M.getItem(i);
@@ -113,7 +120,7 @@ public class AbilityFormats extends StdTest
 						continue;
 					final String itemErr = checkEffects(I, formatAbilities);
 					if(itemErr != null)
-						return ("Error#3: "+itemErr);
+						errors.append("Error#3: "+itemErr).append("\n\r");
 				}
 			}
 			for(int i = 0; i < R.numItems(); i++)
@@ -123,7 +130,7 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String itemErr = checkEffects(I, formatAbilities);
 				if(itemErr != null)
-					return ("Error#4: "+itemErr);
+					errors.append("Error#4: "+itemErr).append("\n\r");
 			}
 			for(int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 			{
@@ -132,9 +139,11 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String exitErr = checkEffects(X, formatAbilities);
 				if(exitErr != null)
-					return ("Error#5: "+exitErr);
+					errors.append("Error#5: "+exitErr).append("\n\r");
 			}
 		}
+		if(errors.length()>0)
+			return errors.toString().trim();
 		return null;
 	}
 }

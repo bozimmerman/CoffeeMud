@@ -71,7 +71,7 @@ public class Prop_EnlargeRoom extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "+/-/*/\\/[DECIMAL(prompt=Amount/colh=Amount)...]";
+		return "((+/-/*/\\/)[DECIMAL(prompt=Amount/colh=Amount)])";
 	}
 
 	@Override

@@ -148,14 +148,25 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		return "(((ATTACK(+/-/=)[NUMBER(prompt=Attack adjustment/colh=Attack)])"
-			+ "/(DAMAGE(+/-/=)[NUMBER(prompt=Damage adjustment/colh=Damage)])"
-			+ "/(ARMOR(+/-/=)[NUMBER(prompt=Armor adjustment/colh=Armor)])"
-			+ "/(HP(+/-/=)[NUMBER(prompt=Hit point adjustment/colh=HP)])"
-			+ "/(MANA(+/-/=)[NUMBER(prompt=Mana adjustment/colh=Mana)])"
-			+ "/(MOVE(+/-/=)[NUMBER(prompt=Movement adjustment/colh=Move)])"
-			+ "/(SPEED(+/-/=)[NUMBER(prompt=Speed adjustment/colh=Speed)])"
-			+ ")...)";
+		final String[] stats = { "ATTACK", "DAMAGE", "ARMOR", "HP", "MANA", "MOVE", "SPEED" };
+		final String[] prompts = { "Attack adjustment", "Damage adjustment", "Armor adjustment", "Hit point adjustment", "Mana adjustment", "Movement adjustment", "Speed adjustment" };
+		final String[] colhs = { "Attack", "Damage", "Armor", "HP", "Mana", "Move", "Speed" };
+		final String[] ops = { "+", "-", "=" };
+		final StringBuilder fmt = new StringBuilder("((");
+		boolean first = true;
+		for(int i = 0; i < stats.length; i++)
+		{
+			for(final String op : ops)
+			{
+				if(!first)
+					fmt.append('/');
+				first = false;
+				fmt.append('(').append(stats[i]).append(op)
+					.append("[NUMBER(prompt=").append(prompts[i]).append("/colh=").append(colhs[i]).append(")])");
+			}
+		}
+		fmt.append(")...)");
+		return fmt.toString();
 	}
 
 	@Override

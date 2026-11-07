@@ -1807,6 +1807,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
 	{
+		final int saveIndex = index;
+		final boolean saveQuoteMode = quoteMode[0];
+		if(matchMiscTextTokenInternal(token, proposition, index, outIndex, quoteMode, terminators))
+			return true;
+		if(token.optional)
+		{
+			outIndex[0] = saveIndex;
+			quoteMode[0] = saveQuoteMode;
+			return true;
+		}
+		return false;
+	}
+
+	private boolean matchMiscTextTokenInternal(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
+	{
 		outIndex[0] = index;
 
 		if(token.token instanceof String)
@@ -1874,10 +1889,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						emptyMatch = true;
 					}
-				quoteMode[0] = saveQuoteMode;
-				outIndex[0] = saveIndex;
-			}
-			return emptyMatch;
+					quoteMode[0] = saveQuoteMode;
+					outIndex[0] = saveIndex;
+				}
+				return emptyMatch;
 			}
 			else
 			{

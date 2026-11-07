@@ -264,8 +264,15 @@ public class Scarring extends StdAbility implements LimbDamage, HealthCondition
 	@Override
 	public String miscTextFormat()
 	{
-		return "(([CHOICES(choices=FACE,LEFT FACE,RIGHT FACE,EYEBROW,LEFT EYEBROW,RIGHT EYEBROW"
-			+"/prompt=Scarred limb/colh=Limb)..;]/[BODY_PART(prompt=Scarred limb/colh=Limb)..;])(;))...)";
+		final StringBuilder choices = new StringBuilder("FACE,LEFT FACE,RIGHT FACE,EYEBROW,LEFT EYEBROW,RIGHT EYEBROW");
+		final AbilityParameters.AbilityParmEditor bodyEditor = CMLib.ableParms().getEditors().get("BODY_PART");
+		if(bodyEditor != null)
+		{
+			final PairList<String,String> bodyChoices = bodyEditor.choices();
+			for(int i = 0; i < bodyChoices.size(); i++)
+				choices.append(',').append(bodyChoices.get(i).first);
+		}
+		return "([CHOICES(choices="+choices.toString()+"/prompt=Scarred limb/colh=Limb)..;](;))...";
 	}
 
 	@Override

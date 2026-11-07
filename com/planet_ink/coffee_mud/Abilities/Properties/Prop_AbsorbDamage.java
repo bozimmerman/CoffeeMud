@@ -260,18 +260,26 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 				types.append(',').append(s);
 		}
 		types.append(",MAGIC");
-		return "(([NUMBER(prompt=Absorb amount/colh=Amount)]"
-			+ "/[DECIMAL(prompt=Absorb percent/colh=Percent)]%"
-			+ "/[CHECK(name=ENHANCED/prompt=Enhanced/colh=Enhanced)]"
-			+ "/(+[CHECK(name=ALL/prompt=Absorb all/colh=All)])"
-			+ "/((+)/(-))([CHOICES(choices=" + types.substring(1)
-			+ "/prompt=Absorb type/colh=Type)]"
-			+ "/[WEAPON_TYPE(prompt=Absorb weapon type/colh=WeaponType)]"
-			+ "/[WEAPON_CLASS(prompt=Absorb weapon class/colh=WeaponClass)]"
-			+ "/[RESOURCE_OR_MATERIAL(prompt=Absorb material/colh=Material)]"
-			+ "/[ABILITY_ID(prompt=Absorb ability/colh=Ability)]"
-			+ "/LEVEL[NUMBER(prompt=Minimum level/colh=MinLevel)])"
-			+ ")...)";
+		final String[] typeList = new String[] {
+			"[CHOICES(choices=" + types.substring(1) + "/prompt=Absorb type/colh=Type)]",
+			"[WEAPON_TYPE(prompt=Absorb weapon type/colh=WeaponType)]",
+			"[WEAPON_CLASS(prompt=Absorb weapon class/colh=WeaponClass)]",
+			"[RESOURCE_OR_MATERIAL(prompt=Absorb material/colh=Material)]",
+			"[ABILITY_ID(prompt=Absorb ability/colh=Ability)]",
+			"LEVEL[NUMBER(prompt=Minimum level/colh=MinLevel)]"
+		};
+		final StringBuilder fmt = new StringBuilder("");
+		fmt.append("(([NUMBER(prompt=Absorb amount/colh=Amount)]");
+		fmt.append("/[DECIMAL(prompt=Absorb percent/colh=Percent)]%");
+		fmt.append("/[CHECK(name=ENHANCED/prompt=Enhanced/colh=Enhanced)]");
+		fmt.append("/(+[CHECK(name=ALL/prompt=Absorb all/colh=All)])");
+		for(final String type : typeList)
+		{
+			fmt.append("/(+").append(type).append(")");
+			fmt.append("/(-").append(type).append(")");
+		}
+		fmt.append(")...)");
+		return fmt.toString();
 	}
 
 	@Override
