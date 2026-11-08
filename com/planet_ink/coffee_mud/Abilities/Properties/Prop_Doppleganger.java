@@ -128,8 +128,8 @@ public class Prop_Doppleganger extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([NUMBER(prompt=Level Pct,colh=pct)]%)/"
-		       + "([NUMBER(prompt=Level Add,colh=add)])/"
+		return "((+)[NUMBER(prompt=Level Pct,colh=pct)]%)/"
+		       + "((+)[NUMBER(prompt=Level Add,colh=add)])/"
 		       + "(("
 			   + "(MAX=[NUMBER(prompt=Max Lvl/colh=MaxLvl)])/"
 			   + "(MIN=[NUMBER(prompt=Min Lvl/colh=MinLvl)])/"
