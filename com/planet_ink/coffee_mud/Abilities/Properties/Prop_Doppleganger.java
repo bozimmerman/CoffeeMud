@@ -101,6 +101,12 @@ public class Prop_Doppleganger extends Property
 		if(CMath.isPct(text))
 			levelPct=CMath.s_pct(text);
 		else
+		if(text.startsWith("+")&&CMath.isInteger(text.substring(1)))
+			levelAdd=CMath.s_int(text);
+		else
+		if(text.startsWith("+")&&CMath.isPct(text.substring(1)))
+			levelPct=CMath.s_pct(text);
+		else
 		{
 			maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
 			minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
