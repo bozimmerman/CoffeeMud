@@ -133,6 +133,12 @@ public class Prayer_GuardianHearth extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=mob.location();

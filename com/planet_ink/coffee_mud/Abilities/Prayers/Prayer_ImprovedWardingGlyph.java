@@ -103,6 +103,12 @@ public class Prayer_ImprovedWardingGlyph extends Prayer implements Trap
 		return Ability.FLAG_NEUTRAL;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Player/colh=Player).. ])";
+	}
+
 	public MOB theInvoker()
 	{
 		if(invoker()!=null)

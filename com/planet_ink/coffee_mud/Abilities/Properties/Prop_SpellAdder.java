@@ -106,6 +106,21 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"[CHECK(name=NOUNINVOKE/prompt=No-Uninvoke/colh=NoUnv)]/"
+				+"[CHECK(name=ONCLOSED/prompt=On Closed/colh=OnClose)]/"
+				+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
+				+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
+				+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
+				+"(([NUMBER(prompt=Chance%/colh=Chance%)]%) [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..;]\\)   ))"
+				+")..;)"
+				+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
+				;
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

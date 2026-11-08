@@ -124,6 +124,13 @@ public class Skill_Enslave extends StdSkill implements PrivateProperty
 		super.setMiscText(txt);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((((MASTER=(\")[STRING(prompt=Player/colh=Player)...](\"))/(PRICE=[NUMBER(prompt=Price/colh=Price)]))...)"
+				+"/([STRING(prompt=Player/colh=Player)]))";
+	}
+
 	protected String getObeyName()
 	{
 		final Pair<MOB,Long> pimp = this.pimpedInfo;

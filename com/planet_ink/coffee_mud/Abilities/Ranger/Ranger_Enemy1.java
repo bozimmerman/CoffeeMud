@@ -122,6 +122,12 @@ public class Ranger_Enemy1 extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([RACE_CAT(prompt=Race Cat/colh=RaceCat).. ])";
+	}
+	
+	@Override
 	public String text()
 	{
 		if(miscText.length()==0)

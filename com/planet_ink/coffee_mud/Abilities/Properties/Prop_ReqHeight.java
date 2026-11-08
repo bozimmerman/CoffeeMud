@@ -71,6 +71,12 @@ public class Prop_ReqHeight extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Height Min/colh=height)])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

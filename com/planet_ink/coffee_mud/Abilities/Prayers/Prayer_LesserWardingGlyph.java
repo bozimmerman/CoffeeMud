@@ -240,6 +240,12 @@ public class Prayer_LesserWardingGlyph extends Prayer implements Trap
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NAME(prompt=Player Name/colh=Player).. ])";
+	}
+
+	@Override
 	public void spring(final MOB mob)
 	{
 		if(affected==null)

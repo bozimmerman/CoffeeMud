@@ -53,6 +53,12 @@ public class Prop_NoPKill extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Level Diff/colh=lvldiff)])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))

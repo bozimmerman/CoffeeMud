@@ -69,6 +69,12 @@ public class Prop_MOBEmoter extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([BEHAVIOR_ID(prompt=Behavior/colh=Behavior)])[STRING(prompt=Emoter Args/colh=EmoArgs).. ])";
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		if(emoter != null)

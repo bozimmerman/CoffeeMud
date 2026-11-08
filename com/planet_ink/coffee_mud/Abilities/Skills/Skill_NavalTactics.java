@@ -331,6 +331,15 @@ public class Skill_NavalTactics extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		StringBuilder list = new StringBuilder();
+		for(final Tactic t : Tactic.values())
+			list.append(list.length()>0?",":"").append(t.name());
+		return "([CHOICES(choices="+list.toString()+"/prompt=Tactic/colh=Tactic)])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();

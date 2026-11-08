@@ -127,6 +127,11 @@ public class Skill_Convert extends StdSkill
 		super.unInvoke();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([DEITY(prompt=Deity/colh=Deity).. ])";
+	}
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)

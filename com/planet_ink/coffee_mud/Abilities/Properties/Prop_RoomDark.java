@@ -108,6 +108,12 @@ public class Prop_RoomDark extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(HOURS=(\")([NUMBER(prompt=Hour/colh=Hr)]..,)(\"))";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(isItDark())

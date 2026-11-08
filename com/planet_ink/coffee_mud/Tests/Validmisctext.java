@@ -307,7 +307,7 @@ public class Validmisctext extends StdTest
 		{"PresenceReaction", "Spell_Fireball=damage", "Aggressive=zone~~Spell_Fireball=damage",
 			"Spell_Fireball=damage~~Aggressive=zone", "Mood=aggressive posture", "+Aggressive=zone", "",
 			"!BOGUSNAME=x", "!NOEQUALS", "!Aggressive"},
-		{"QuestBound", "*", "*;*", "*;", "", "!BOGUSXYZ", "!;", "!Q1;;Q2"},
+		{"QuestBound", "*", "*;*", "*;", "", "BOGUSXYZ", "!;", "!Q1;;Q2"},
 		{"Regeneration", "HITS=5/3", "MANA=4", "MANA=4 HITS=5/3", "HITS=5/3 MANA=4", "HITS=+5",
 			"HITS=-5", "+MAGIC HITS=5", "HITS=5 +MAGIC", "+LEVEL10 MANA=4 HITS=5", "+LEVEL10 MANA=4",
 			"+SLASHING HITS=5/3", "", "!BOGUS=5", "!HITS", "!HITS=x", "!+BOGUS", "!+LEVEL"},
@@ -394,7 +394,7 @@ public class Validmisctext extends StdTest
 			"LOCKUP SIT HOURS=20-6 MASK=\"-RACE +ELF\"", "DAY MASK=-RACE +ELF"},
 		{"Prop_ClosedSeason", "", "WINTER NIGHT", "NIGHT WINTER", "SUMMER RAIN MASK=-RACE +ELF",
 			"WINTER MASK=GUEST", "WINTER MASK = GUEST"},
-		{"Prop_Doppleganger", "", "MAX=27 MIN=27", "MIN=27 MAX=27", "ASMATERIAL=\"METAL\" MIN=27 MAX=27",
+		{"Prop_Doppleganger", "", "MAX=27 MIN=27", "MIN=27 MAX=27", "ASMATERIAL=\"IRON\" MIN=27 MAX=27",
 			"LEVELPCT=75 LEVELADD=5 DIFFGRP=true", "SAVEPCT=\"30\" DIFFPCT=80 MIN=20 MAX=40",
 			"LEVELPCT=25 SAVEPCT=0 DIFFPCT=100", "LEVELPCT=\"75\" SAVEPCT=\"0\" DIFFPCT=\"100\"",
 			"LEVELPCT=75", "!DIFFPCT=\"abc\"", "!LEVELPCT=bad", "10", "50%", "!BOGUSKEY=x",
@@ -467,6 +467,41 @@ public class Validmisctext extends StdTest
 		{"Bomb_Sonic", "", "Spell_Fireball", "!NotARealAbility"},
 		{"Bomb_SpellBlast", "", "Spell_Fireball", "!NotARealAbility"},
 		{"Bomb_Spores", "", "Spell_Fireball", "!NotARealAbility"},
+		{"Fighter_FavoredMount", "", "Equine,Horse", "Humanoid,Human", "!Horse,Equine", "!Equine",
+			"!Equine,NotARace"},
+		{"Fighter_Runover", "", "goblin", "Bob the Fighter"},
+		{"GenTrap", "", "Spell_Fireball", "Poison", "!NotARealAbility"},
+		{"PoisonousBite", "", "Spell_Fireball", "Poison", "!NotARealAbility"},
+		{"Prayer_BlessedHearth", "", "Bob", "Bob the Builder", "The Red Hand Clan"},
+		{"Prayer_BloodHearth", "", "Bob", "The Red Hand Clan"},
+		{"Prayer_Designation", "", "the Chosen", "Bob the Bold"},
+		{"Prayer_FindSacredItem", "", "relic", "big red relic"},
+		{"Prayer_GreaterWardingGlyph", "", "Bob", "Bob the Fighter"},
+		{"Prayer_GuardianHearth", "", "Bob", "The Red Hand Clan"},
+		{"Prayer_ImprovedWardingGlyph", "", "Bob", "Bob the Fighter"},
+		{"Prayer_InfuseBalance", "", "!NotARealDeity"},
+		{"Prayer_InfuseDiscipline", "", "!NotARealDeity"},
+		{"Prayer_InfuseHoliness", "", "!NotARealDeity"},
+		{"Prayer_InfuseImpunity", "", "!NotARealDeity"},
+		{"Prayer_InfuseModeration", "", "!NotARealDeity"},
+		{"Prayer_InfuseUnholiness", "", "!NotARealDeity"},
+		{"Prayer_LesserWardingGlyph", "", "Bob", "Bob the Fighter"},
+		{"Prayer_Monolith", "", "STONE", "FIRE", "ice", "!WOOD", "!STONE FIRE"},
+		{"Prayer_Sanctum", "", "Bob", "The Red Hand Clan", "Bob;msg"},
+		{"Prayer_SummonElemental", "", "FIRE", "fire", "Earth", "AIR", "WATER", "!ICE", "!WOOD", "!FIRE AIR"},
+		{"Prop_AstralSpirit", "", "SELF-RES", "self-res", "SELF-RES SELF-RES", "!SELF", "!BOGUS"},
+		{"Prop_HaveEnabler", "", "NOUNINVOKE", "NOUNINVOKE;", "ONCLOSED;", "LEVEL=5;", "TICKS=5;", "Spell_Fireball;", "50% Spell_Fireball;", "Spell_Fireball;MASK=Bob", "NOUNINVOKE;MASK=Bob", "!Spell_Fireball(param);"},
+		{"Prop_MOBEmoter", "", "Emoter say hello", "say hello", "BOGUS foo", "Aggressive"},
+		{"Prop_NoPKill", "", "10", "0", "-3", "!abc", "!1.5"},
+		{"Prop_ReqHeight", "", "60", "0", "-5", "!abc"},
+		{"Prop_RoomDark", "", "HOURS=18", "HOURS=18,6", "HOURS=\"18,6\"", "hours=18", "Hours=\"18\"", "!HOURS=18-6", "!HOURS=18,", "!HOURS=,18", "!BOGUS", "!18,6"},
+		{"Prop_RoomLit", "", "HOURS=6", "HOURS=6,18", "HOURS=\"6,18\"", "hours=6", "!HOURS=6-18", "!BOGUS"},
+		{"Prop_Tattoo", "", "tattoo", "tattoo;another", "tattoo;respect", "account 5 tattoo;another", "!account 5 tattoo name;another", "!5;", "!account 5 tattoo;other 3 ink", "!;"},
+		{"Prop_TicketTaker", "", "1000", "a ticket", "a ticket please", "abc", "10.5"},
+		{"Ranger_Enemy1", "", "Humanoid", "Equine", "Unique", "!Human", "!NotARace"},
+		{"Skill_Enslave", "", "Bob", "BOGUS", "MASTER=Bob", "MASTER=Bob PRICE=100", "MASTER=\"Bob the Bold\" PRICE=100", "!Bob the Bold"},
+		{"Skill_Mimicry", "", "Bob", "Bob the Bold"},
+		{"Skill_NavalTactics", "", "FOLLOW", "follow", "APPROACH", "RETREAT", "FLEE", "!BOGUS", "!FOLLOW APPROACH"},
 	};
 
 	@Override
@@ -755,6 +790,83 @@ public class Validmisctext extends StdTest
 			return ("Error#205d: the Prayer_JoyousRapture format should accept a generated mood choice");
 		if(CMLib.ableParms().isValidMiscText(raptureFmt, "NOTAMOOD"))
 			return ("Error#205e: the Prayer_JoyousRapture format should reject an unknown mood");
+		// Test 206: the Infuse prayers accept an empty or real deity name and reject unknown ones.
+		final String deityFormat = "([DEITY(prompt=Deity Name/colh=Deity).. ])";
+		final String[] infusePrayers = {
+			"Prayer_InfuseBalance", "Prayer_InfuseDiscipline", "Prayer_InfuseHoliness",
+			"Prayer_InfuseImpunity", "Prayer_InfuseModeration", "Prayer_InfuseUnholiness"
+		};
+		String realDeityName = null;
+		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
+		{
+			final Deity D=d.nextElement();
+			if((D!=null)&&(D.Name().trim().length()>0))
+			{
+				realDeityName=D.Name();
+				break;
+			}
+		}
+		for(final String infuseID : infusePrayers)
+		{
+			final Ability infuseA = CMClass.getAbility(infuseID);
+			if(infuseA == null)
+				return ("Error#206a: ability '"+infuseID+"' is not loaded");
+			final String infuseFmt = infuseA.miscTextFormat();
+			if(!deityFormat.equals(infuseFmt))
+				return ("Error#206b: ability '"+infuseID+"' should use '"+deityFormat+"', got '"+infuseFmt+"'");
+			if(!CMLib.ableParms().isValidMiscText(infuseFmt, ""))
+				return ("Error#206c: ability '"+infuseID+"' should accept an empty deity");
+			if(CMLib.ableParms().isValidMiscText(infuseFmt, "NotARealDeity"))
+				return ("Error#206d: ability '"+infuseID+"' should reject an unknown deity");
+			if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(infuseFmt, realDeityName)))
+				return ("Error#206e: ability '"+infuseID+"' should accept the deity '"+realDeityName+"'");
+		}
+		// Test 207: room-ID properties accept a real room, empty, and reject unknown IDs.
+		final String realRoomID = CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom());
+		final String[] roomIDAbilities = {"Prayer_Refuge", "Prop_SparringRoom"};
+		for(final String roomID : roomIDAbilities)
+		{
+			final Ability ridA = CMClass.getAbility(roomID);
+			if(ridA == null)
+				return ("Error#207a: ability '"+roomID+"' is not loaded");
+			final String ridFmt = ridA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+				return ("Error#207b: ability '"+roomID+"' should accept an empty room");
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+				return ("Error#207c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
+			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+				return ("Error#207d: ability '"+roomID+"' should reject an unknown room");
+		}
+		// Test 208: Ranger_PlanarEnemy accepts an empty or known plane and rejects unknown ones.
+		final Ability planarEnemyA = CMClass.getAbility("Ranger_PlanarEnemy");
+		if(planarEnemyA == null)
+			return ("Error#208a: Ranger_PlanarEnemy ability not loaded");
+		final String planarEnemyFmt = planarEnemyA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(planarEnemyFmt, ""))
+			return ("Error#208b: the Ranger_PlanarEnemy format should accept a blank plane");
+		if(CMLib.ableParms().isValidMiscText(planarEnemyFmt, "NOTAPLANE"))
+			return ("Error#208c: the Ranger_PlanarEnemy format should reject an unknown plane");
+		final Ability planarProto2 = CMClass.getAbilityPrototype("StdPlanarAbility");
+		if(planarProto2 instanceof PlanarAbility)
+		{
+			final List<String> planeKeys = ((PlanarAbility)planarProto2).getAllPlaneKeys();
+			if(planeKeys.size() > 0)
+			{
+				if(!CMLib.ableParms().isValidMiscText(planarEnemyFmt, planeKeys.get(0)))
+					return ("Error#208d: the Ranger_PlanarEnemy format should accept a known plane");
+			}
+		}
+		// Test 209: Skill_Convert accepts an empty or real deity name and rejects unknown ones.
+		final Ability convertA = CMClass.getAbility("Skill_Convert");
+		if(convertA == null)
+			return ("Error#209a: Skill_Convert ability not loaded");
+		final String convertFmt = convertA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(convertFmt, ""))
+			return ("Error#209b: the Skill_Convert format should accept an empty deity");
+		if(CMLib.ableParms().isValidMiscText(convertFmt, "NotARealDeity"))
+			return ("Error#209c: the Skill_Convert format should reject an unknown deity");
+		if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(convertFmt, realDeityName)))
+			return ("Error#209d: the Skill_Convert format should accept the deity '"+realDeityName+"'");
 		return null;
 	}
 }

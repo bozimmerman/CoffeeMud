@@ -104,6 +104,12 @@ public class Skill_Mimicry extends BardSkill
 			lastMsg=msg;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name/colh=Name).. ])";
+	}
+
 	public void fixSNameTo(final CMMsg msg, final MOB sMOB, final Environmental ticking)
 	{
 		//String src=msg.sourceMessage();

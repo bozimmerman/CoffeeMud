@@ -298,6 +298,12 @@ public class Prayer_Monolith extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=STONE,EARTH,ICE,WATER,AIR,FIRE/prompt=Type/colh=Typ).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))

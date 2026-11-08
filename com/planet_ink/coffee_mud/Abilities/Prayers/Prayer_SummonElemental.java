@@ -179,6 +179,13 @@ public class Prayer_SummonElemental extends Prayer
 
 	protected final static String types[]={"EARTH","FIRE","AIR","WATER"};
 
+	@Override
+	public String miscTextFormat()
+	{
+		String list = CMParms.toListString(types);
+		return "([CHOICES(choices="+list+"/prompt=Type/colh=Type)])";
+	}
+
 	public MOB determineMonster(final MOB caster, final int asLevel)
 	{
 		final MOB newMOB=CMClass.getMOB("GenRideable");

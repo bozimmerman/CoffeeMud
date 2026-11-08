@@ -53,6 +53,12 @@ public class Prop_SparringRoom extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=Room).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

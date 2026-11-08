@@ -109,6 +109,12 @@ public class PoisonousBite extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Poison ID/colh=Poison).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))

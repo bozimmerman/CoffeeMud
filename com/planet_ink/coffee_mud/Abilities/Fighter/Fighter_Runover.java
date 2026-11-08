@@ -96,6 +96,12 @@ public class Fighter_Runover extends FighterSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name/colh=name).. ])";
+	}
+	
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target instanceof MOB))

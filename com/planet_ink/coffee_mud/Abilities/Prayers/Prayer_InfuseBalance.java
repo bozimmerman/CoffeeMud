@@ -152,6 +152,12 @@ public class Prayer_InfuseBalance extends Prayer implements Deity.DeityWorshippe
 		super.finalize();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([DEITY(prompt=Deity Name/colh=Deity).. ])";
+	}
+
 	protected void alterHolyPlaceRegistration(final Physical affected)
 	{
 		if(text().length()>0)

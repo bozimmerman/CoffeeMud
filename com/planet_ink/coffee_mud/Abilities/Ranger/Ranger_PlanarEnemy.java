@@ -162,4 +162,11 @@ public class Ranger_PlanarEnemy extends Ranger_Enemy1
 		}
 		return false;
 	}
+	
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane/colh=Plane).. ])";
+	}
 }

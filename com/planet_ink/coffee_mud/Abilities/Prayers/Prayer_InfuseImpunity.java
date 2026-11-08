@@ -121,6 +121,12 @@ public class Prayer_InfuseImpunity extends Prayer implements Deity.DeityWorshipp
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([DEITY(prompt=Deity Name/colh=Deity).. ])";
+	}
+
+	@Override
 	public void setDeityName(final String newDeityName)
 	{
 		deityName=newDeityName;

@@ -151,9 +151,14 @@ public class Prayer_FindSacredItem extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name of item/colh=Item Name).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-
 		if((commands.size()==0)&&(text().length()>0))
 			commands.add(text());
 

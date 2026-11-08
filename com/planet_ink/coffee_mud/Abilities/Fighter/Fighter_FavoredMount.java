@@ -158,6 +158,12 @@ public class Fighter_FavoredMount extends StdAbility
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([RACE_CAT(prompt=Racial Cat/colh=cat)..,],[RACE_ID(prompt=Race/colh=race)])";
+	}
+	
 	protected Pair<String, String> getMountInfo(final MOB mob)
 	{
 		if(pair != null)

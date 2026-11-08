@@ -120,6 +120,12 @@ public class Prayer_BloodHearth extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target instanceof Room))

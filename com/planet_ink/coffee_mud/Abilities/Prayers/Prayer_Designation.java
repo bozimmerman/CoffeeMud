@@ -85,6 +85,12 @@ public class Prayer_Designation extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name/colh=Name).. ])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);

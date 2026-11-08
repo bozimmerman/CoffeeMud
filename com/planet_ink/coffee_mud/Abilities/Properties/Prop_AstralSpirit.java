@@ -106,6 +106,12 @@ public class Prop_AstralSpirit extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=SELF-RES/prompt=Self Res/colh=Res)]...)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

@@ -91,6 +91,12 @@ public class Prayer_Sanctum extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)

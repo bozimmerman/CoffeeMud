@@ -115,6 +115,12 @@ public class Prayer_InfuseHoliness extends Prayer implements Deity.DeityWorshipp
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([DEITY(prompt=Deity Name/colh=Deity).. ])";
+	}
+
+	@Override
 	public void setWorshipCharID(final String newVal)
 	{
 		setMiscText((newVal == null)?"":newVal);

@@ -82,6 +82,12 @@ public class Prop_TicketTaker extends Property
 			ticketName = text.trim();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Cost/colh=cost)]/[STRING(prompt=Ticket Name/colh=Name).. ])";
+	}
+
 	protected boolean isTicketTakingScenario(final MOB mob2, final Rideable rideableR)
 	{
 		final Physical host = affected;

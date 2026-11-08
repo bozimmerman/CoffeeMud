@@ -114,6 +114,12 @@ public class Prayer_Refuge extends Prayer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room/colh=Room).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

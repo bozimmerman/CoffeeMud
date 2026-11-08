@@ -68,6 +68,12 @@ public class Prop_Tattoo extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((([CHECK(name=ACCOUNT/prompt=Account/colh=Acct)])([NUMBER(prompt=Ticks/colh=ticks)])[STRING(prompt=Tattoo/colh=Tatt)])..;)";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		if(affected instanceof MOB)
