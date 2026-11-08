@@ -2416,6 +2416,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final String placeholder = format.substring(index + 1, closeIndex);
 				final boolean greedy = placeholder.endsWith("...");
 				char greedyTo = '\0';
+				boolean greedyRest = false;
+				boolean greedyQuote = false;
 				String placeholderToken = placeholder;
 				if(greedy)
 					placeholderToken = placeholderToken.substring(0, placeholderToken.length() - 3).trim();
@@ -2442,11 +2444,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					else
 					if(placeholder.charAt(placeholder.length() - 1)==' ')
 					{
-						greedyTo='\0';
 						if((tokens.size()>0) 
 						&&tokens.get(tokens.size()-1).token.equals("\"")
 						&&tokens.get(tokens.size()-1).optional)
+						{
+							greedyQuote = true;
 							greedyTo='\"';
+						}
+						else
+							greedyRest = true;
 						placeholderToken = placeholder.substring(0, placeholder.length() - 3).trim();
 					}
 				}
@@ -2507,6 +2513,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				token.placeholderArgs=placeholderArgs;
 				token.parameterArgs=parameterArgs;
 				token.greedyTo=greedyTo;
+				if(greedyRest)
+					token.greedyRest=true;
+				if(greedyQuote)
+					token.quoteNext=true;
 				index = closeIndex + 1;
 				if(greedy)
 				{
