@@ -96,6 +96,12 @@ public class Bomb_Smoke extends StdBomb
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
+	}
+
+	@Override
 	public void spring(final MOB target)
 	{
 		if(target.location()!=null)

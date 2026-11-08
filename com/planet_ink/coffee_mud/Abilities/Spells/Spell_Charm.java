@@ -101,6 +101,12 @@ public class Spell_Charm extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Charmer Name/colh=Charmer).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -106,6 +106,13 @@ public class Chant_CharmAnimal extends Chant
 		return charmer;
 	}
 
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Charmer/colh=Charmer).. ])";
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

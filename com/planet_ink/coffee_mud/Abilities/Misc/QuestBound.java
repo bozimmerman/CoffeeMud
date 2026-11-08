@@ -577,7 +577,7 @@ public class QuestBound implements Ability
 	@Override
 	public String miscTextFormat()
 	{
-		return "(([QUEST_ID(prompt=Quest ID/colh=Quest)..;](;))...)";
+		return "(([STRING(prompt=Quest ID/colh=Quest)..;](;))...)";
 	}
 
 	@Override

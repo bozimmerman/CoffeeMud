@@ -92,6 +92,12 @@ public class DiligentStudying extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Multiplier/colh=Mult)])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.sourceMinor()==CMMsg.TYP_LEVEL)

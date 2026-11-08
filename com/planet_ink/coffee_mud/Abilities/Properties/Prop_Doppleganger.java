@@ -136,7 +136,7 @@ public class Prop_Doppleganger extends Property
 			   + "(DIFFPCT=(\")[NUMBER(prompt=Diff Pct/colh=Diff%)](%)(\"))/"
 			   + "(PLAYERSNFOLS=[CONFIRM(prompt=Players+Followers/colh=PnF)])/"
 			   + "(PLAYERSONLY=[CONFIRM(prompt=Players Only/colh=POnly)])/"
-			   + "(ASMATERIAL=(\")[MATERIAL(prompt=As Material/colh=AsMatt)](\"))"
+			   + "(ASMATERIAL=(\")[RESOURCE_NAME(prompt=As Material/colh=AsMatt)](\"))"
 			   + ")...)";
 	}
 	protected void doppleGangItem(final Item I, final ItemPossessor owner)

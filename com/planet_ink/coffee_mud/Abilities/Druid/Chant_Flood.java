@@ -108,6 +108,12 @@ public class Chant_Flood extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(ATMOSPHERE=[NUMBER(prompt=Atmo Rsc #/colh=Atmo#)])";
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)

@@ -149,6 +149,12 @@ public class Bomb_Sonic extends StdBomb
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
+	}
+
+	@Override
 	public void spring(final MOB target)
 	{
 		final Room R=target.location();

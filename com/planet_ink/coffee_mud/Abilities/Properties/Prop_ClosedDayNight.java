@@ -134,6 +134,9 @@ public class Prop_ClosedDayNight extends Property
 			if(s.equals("SLEEP"))
 				sleepFlag=true;
 			else
+			if(s.equals("NIGHT"))
+				dayFlag=false;
+			else
 			if(s.equals("LOCKUP"))
 				lockupFlag=true;
 			else
@@ -182,7 +185,7 @@ public class Prop_ClosedDayNight extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "((\")(([CHOICES(choices=DAY,SLEEP,LOCKUP,SIT/prompt=Flags/colh=Flags)])/"
+		return "((\")(([CHOICES(choices=DAY,NIGHT,SLEEP,LOCKUP,SIT/prompt=Flags/colh=Flags)])/"
 			+ "(HOURS=[NUMBER(prompt=Open Hr/colh=Open)]-[NUMBER(prompt=Close Hr/colh=Close)])/"
 			+ "(HOME=[STRING(prompt=Home/colh=Home)..\"])/"
 			+ "(SHOPMSG=[STRING(prompt=Shop Msg/colh=ShpMsg)..\"])/"

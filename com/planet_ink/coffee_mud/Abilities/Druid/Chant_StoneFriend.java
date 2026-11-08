@@ -106,6 +106,12 @@ public class Chant_StoneFriend extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Charmer Name/colh=Charmer).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

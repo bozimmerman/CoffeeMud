@@ -81,6 +81,12 @@ public class Antidote extends StdAbility
 
 	protected boolean	processing	= false;
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([ABILITY_ID(prompt=Poison ID/colh=Poison).. ])/([ABILITY_NAME(prompt=Poison Name/colh=Poison).. ]))";
+	}
+	
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final List<Ability> offenders=new Vector<Ability>();

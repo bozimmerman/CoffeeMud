@@ -85,6 +85,12 @@ public class Chant_AlterTime extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHOICES(choices=1,-1/prompt=Time Direction/colh=Time)])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

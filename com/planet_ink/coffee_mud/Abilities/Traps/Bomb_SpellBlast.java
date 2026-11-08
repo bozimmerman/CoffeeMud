@@ -92,6 +92,12 @@ public class Bomb_SpellBlast extends StdBomb
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Spell ID/colh=Spell).. ])";
+	}
+
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		final List<Item> V=new Vector<Item>();

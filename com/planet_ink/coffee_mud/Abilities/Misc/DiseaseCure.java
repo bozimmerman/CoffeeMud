@@ -90,10 +90,18 @@ public class DiseaseCure extends StdAbility
 			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
 			&&(A instanceof DiseaseAffect)
-			&&((text().length()==0)||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
+			&&((text().length()==0)
+				||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)
+				||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
 				offenders.addElement(A);
 		}
 		return offenders;
+	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ]/[ABILITY_NAME(prompt=Ability Name/colh=Ability).. ])";
 	}
 
 	@Override

@@ -240,6 +240,12 @@ public class Chant_SummonAnimal extends Chant
 		"Tarantula", "Walrus", "Worm"
 	};
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([MOB_ID(prompt=MOB ID/colh=MOB)])/([RACE_ID(prompt=Race/colh=Race)]))";
+	}
+
 	protected static MOB determineMonster(final MOB caster, int level, String text)
 	{
 		MOB newMOB=null;

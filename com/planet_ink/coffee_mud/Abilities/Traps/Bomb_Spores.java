@@ -73,6 +73,12 @@ public class Bomb_Spores extends StdBomb
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
+	}
+
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		final List<Item> V=new Vector<Item>();

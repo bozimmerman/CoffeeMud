@@ -135,6 +135,12 @@ public class AnimalBonding extends CommonSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Name/colh=Player).. ])";
+	}
+	
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((!super.canBeUninvoked) && (affected != null))
