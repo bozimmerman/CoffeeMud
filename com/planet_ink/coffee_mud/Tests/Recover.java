@@ -52,7 +52,7 @@ public class Recover extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"info_all"};
+		return new String[] {"info_all", "exec_manual"};
 	}
 
 	private int[] recoverMath(final int level, final int con, final int inte, final int wis, final int str, final boolean isHungry, final boolean isThirsty, final boolean isFatigued, final boolean isSleeping, final boolean isSittingOrRiding,final boolean isFlying,final boolean isSwimming)

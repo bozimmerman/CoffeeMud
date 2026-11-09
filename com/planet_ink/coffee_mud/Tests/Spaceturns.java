@@ -52,7 +52,7 @@ public class Spaceturns extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "spaceall"};
+		return new String[] {"all", "spaceall", "exec_integration"};
 	}
 
 	@Override

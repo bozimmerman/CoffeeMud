@@ -53,7 +53,7 @@ public class Protocol extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {};
+		return new String[] {"exec_manual"};
 	}
 
 	@Override

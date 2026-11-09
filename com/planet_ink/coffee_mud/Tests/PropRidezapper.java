@@ -52,7 +52,7 @@ public class PropRidezapper extends PropTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "all_properties", "all_zappers"};
+		return new String[] {"all", "all_properties", "all_zappers", "exec_integration"};
 	}
 
 	@Override

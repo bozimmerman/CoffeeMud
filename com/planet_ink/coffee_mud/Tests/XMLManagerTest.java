@@ -53,7 +53,7 @@ public class XMLManagerTest extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "core"};
+		return new String[] {"all", "core", "exec_core"};
 	}
 
 	// POJO helpers for fromPOJO tests

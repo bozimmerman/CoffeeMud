@@ -54,7 +54,7 @@ public class DateMasks extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all"};
+		return new String[] {"all", "exec_randomized"};
 	}
 
 	@Override

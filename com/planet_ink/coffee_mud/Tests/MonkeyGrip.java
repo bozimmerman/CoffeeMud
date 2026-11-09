@@ -52,7 +52,7 @@ public class MonkeyGrip extends PropTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all"};
+		return new String[] {"all", "exec_integration"};
 	}
 
 	protected boolean monkeyGrip(final MOB M, final Item weapon)

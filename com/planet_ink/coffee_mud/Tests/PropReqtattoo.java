@@ -52,7 +52,7 @@ public class PropReqtattoo extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "all_properties"};
+		return new String[] {"all", "all_properties", "exec_placeholder"};
 	}
 
 	@Override

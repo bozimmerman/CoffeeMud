@@ -52,7 +52,7 @@ public class Levelcharts extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"info_all"};
+		return new String[] {"info_all", "exec_manual"};
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class ClockConversion extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all"};
+		return new String[] {"all", "exec_integration"};
 	}
 
 	@Override

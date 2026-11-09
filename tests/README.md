@@ -33,6 +33,8 @@ python tests/run_tests.py --test FormationTest --keep-runtime
 
 Group names and test IDs are matched exactly, ignoring case. An unknown or empty selection fails. The two fast party fixtures run before any selected host suite.
 
+Tests also have `exec_` groups describing their execution requirements, alongside the existing feature groups. See [execution classifications and the complete inventory](CLASSIFICATION.md) for the categories, limitations, and selection examples. These labels do not change the default CI selection.
+
 Use `--skip-standalone` to run only the registered host selection. This lets another epic reuse the host harness without depending on the standalone party fixtures.
 
 ## Failure handling

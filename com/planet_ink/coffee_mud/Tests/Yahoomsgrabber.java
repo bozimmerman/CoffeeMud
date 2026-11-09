@@ -49,6 +49,12 @@ public class Yahoomsgrabber extends StdTest
 		return "Yahoomsgrabber";
 	}
 
+	@Override
+	public String[] getTestGroups()
+	{
+		return new String[] {"exec_manual"};
+	}
+
 	private Map<String,List<String>> parseHeaders(final String header)
 	{
 		final Map<String,List<String>> headers = new HashMap<String,List<String>>();

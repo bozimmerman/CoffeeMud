@@ -52,7 +52,7 @@ public class ZapperAnyclasslevel extends PropTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "all_masks"};
+		return new String[] {"all", "all_masks", "exec_integration"};
 	}
 
 	@Override

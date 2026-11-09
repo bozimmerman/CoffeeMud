@@ -52,7 +52,7 @@ public class MiniJSONTest extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "core"};
+		return new String[] {"all", "core", "exec_core"};
 	}
 
 	@Override

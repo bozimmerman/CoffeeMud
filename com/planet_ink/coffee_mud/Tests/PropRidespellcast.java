@@ -52,7 +52,7 @@ public class PropRidespellcast extends PropTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "all_properties"};
+		return new String[] {"all", "all_properties", "exec_integration"};
 	}
 
 	@Override

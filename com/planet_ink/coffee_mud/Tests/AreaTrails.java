@@ -54,7 +54,7 @@ public class AreaTrails extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all"};
+		return new String[] {"all", "exec_world"};
 	}
 
 	final PairList<Room,Room> failPairs = new PairVector<Room,Room>();

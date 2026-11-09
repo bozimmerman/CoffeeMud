@@ -52,7 +52,7 @@ public class Wearing extends PropTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all"};
+		return new String[] {"all", "exec_integration"};
 	}
 
 	@Override
