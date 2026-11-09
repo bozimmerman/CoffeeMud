@@ -117,6 +117,12 @@ public class Spell_ArcanePossession extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Owner/colh=Owner).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);

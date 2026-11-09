@@ -114,6 +114,12 @@ public class Spell_HelpingHand extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Target Name/colh=Target).. ])";
+	}
+
+	@Override
 	public void setAffectedOne(final Physical P)
 	{
 		if(!(P instanceof MOB))

@@ -162,6 +162,12 @@ public class Spell_Cogniportive extends Spell
 		return "";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Home Room/colh=Home).. ])";
+	}
+
 	public void waveIfAble(final MOB mob, final Environmental afftarget, final Item me)
 	{
 		if((mob!=null) && (mob.isMine(me)) && (mob.location()!=null) && (me!=null))

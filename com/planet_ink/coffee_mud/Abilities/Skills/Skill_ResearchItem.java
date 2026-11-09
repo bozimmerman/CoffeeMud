@@ -142,6 +142,12 @@ public class Skill_ResearchItem extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Research Topic/colh=Topic).. ])";
+	}
+	
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))

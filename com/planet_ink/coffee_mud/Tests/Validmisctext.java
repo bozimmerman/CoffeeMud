@@ -502,6 +502,23 @@ public class Validmisctext extends StdTest
 		{"Skill_Enslave", "", "Bob", "BOGUS", "MASTER=Bob", "MASTER=Bob PRICE=100", "MASTER=\"Bob the Bold\" PRICE=100", "!Bob the Bold"},
 		{"Skill_Mimicry", "", "Bob", "Bob the Bold"},
 		{"Skill_NavalTactics", "", "FOLLOW", "follow", "APPROACH", "RETREAT", "FLEE", "!BOGUS", "!FOLLOW APPROACH"},
+		{"Skill_ResearchItem", "", "ancient swords", "Bob the Bold", "x;y"},
+		{"Skill_ResearchRegionMap", "", "northern regions", "old maps"},
+		{"Skill_Resistance", "", "FIRE", "fire", "SAVE VS FIRE", "SAVE VS POLYMORPH/PETRIFY", "POLYMORPH", "SAVEBLUNT", "GENERAL", "!FIRE COLD", "!BOGUS", "!SAVE VS", "!Resistance"},
+		{"Skill_LightPlacebo", "", "+25", "+0", "+-25", "!25", "!-25", "!+", "!++25", "!+25 25", "!+abc", "!+1.5"},
+		{"Spell_ArcanePossession", "", "Bob", "Bob the Bold"},
+		{"Spell_AweOther", "", "Bob", "Bob the Bold"},
+		{"Spell_Boomerang", "", "Bob", "Bob the Bold"},
+		{"Spell_DetectWeaknesses", "", "Bob", "Bob the Bold"},
+		{"Spell_DisguiseUndead", "", "zombie", "undead warrior"},
+		{"Spell_EnchantArrows", "", "2", "0", "-3", "!abc", "!1.5"},
+		{"Spell_FlamingArrows", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Spell_GroupStatus", "", "Leader", "Bob the Bold"},
+		{"Spell_Grow", "", "100", "0", "-3", "!abc", "!1.5"},
+		{"Spell_HardenBullets", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Spell_HelpingHand", "", "Bob", "Bob the Bold"},
+		{"Spell_IdentifyObject", "", "glowing", "blue and shiny"},
+		{"Spell_ImprovedClanWard", "", "RANK=5", "CLAN=MyClan", "CLAN=\"MyClan\"", "NOSNEAK=true", "NOSNEAK=false", "NOFOLLOW=true", "RANK=5 CLAN=\"MyClan\"", "CLAN=\"MyClan\" RANK=5", "RANK=5 RANK=6", "rank=5 clan=myclan", "RANK=5 CLAN=MyClan NOSNEAK=true NOFOLLOW=true", "!NOSNEAK", "!NOSNEAK=on", "!NOSNEAK=", "!NOFOLLOW", "!BOGUS=5", "!RANK=abc", "!RANK=5 NOSNEAK NOFOLLOW", "!RANK=5;CLAN=MyClan", "!CLAN="},
 	};
 
 	@Override
@@ -867,6 +884,21 @@ public class Validmisctext extends StdTest
 			return ("Error#209c: the Skill_Convert format should reject an unknown deity");
 		if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(convertFmt, realDeityName)))
 			return ("Error#209d: the Skill_Convert format should accept the deity '"+realDeityName+"'");
+		// Test 210: more room-ID abilities accept a real room, empty, and reject unknown IDs.
+		final String[] roomIDAbilities2 = {"Skill_PrisonAssignment", "Spell_Cogniportive", "Spell_Gate"};
+		for(final String roomID : roomIDAbilities2)
+		{
+			final Ability ridA = CMClass.getAbility(roomID);
+			if(ridA == null)
+				return ("Error#210a: ability '"+roomID+"' is not loaded");
+			final String ridFmt = ridA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+				return ("Error#210b: ability '"+roomID+"' should accept an empty room");
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+				return ("Error#210c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
+			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+				return ("Error#210d: ability '"+roomID+"' should reject an unknown room");
+		}
 		return null;
 	}
 }

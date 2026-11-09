@@ -157,6 +157,12 @@ public class Skill_ResearchRegionMap extends StdSkill
 			numBooksInLibrary((MOB)affected); // sets the appropriate variables
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Region Topic/colh=Region).. ])";
+	}
+
 	protected TrackingLibrary.TrackingFlags getTrackingFlags()
 	{
 		TrackingLibrary.TrackingFlags flags;

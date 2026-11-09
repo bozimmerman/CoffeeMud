@@ -2491,7 +2491,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if((depth != 0)||(closeParen != placeholderToken.length()-1))
 						throw new CMException("Malformed placeholder arguments at " + index);
 					final String argGroup = placeholderToken.substring(x+1,closeParen);
-					placeholderArgs = CMParms.parseAny(argGroup, '/', false).toArray(new String[0]);
+					placeholderArgs = CMParms.parseAny(argGroup, '/', false, true).toArray(new String[0]);
 					for(final String arg : placeholderArgs)
 					{
 						final int equals = arg.indexOf('=');

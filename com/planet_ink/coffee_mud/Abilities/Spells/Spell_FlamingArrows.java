@@ -85,6 +85,12 @@ public class Spell_FlamingArrows extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Bonus/colh=Bonus)])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

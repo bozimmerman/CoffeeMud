@@ -158,6 +158,12 @@ public class Skill_PrisonAssignment extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Jail Room/colh=Jail).. ])";
+	}
+	
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();

@@ -105,6 +105,12 @@ public class Spell_Boomerang extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Owner/colh=Owner).. ])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof Item)

@@ -100,6 +100,15 @@ public class Spell_ClanWard extends Spell
 		noFollow=CMParms.getParmBool(txt, "NOFOLLOW",false);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((RANK=[NUMBER(prompt=Rank/colh=Rank)])/"
+			+"(CLAN=(\")[STRING(prompt=Clan ID/colh=Clan)...](\"))/"
+			+"(NOSNEAK=[CONFIRM(prompt=NoSneak/colh=NoSneak)])/"
+			+"(NOFOLLOW=[CONFIRM(prompt=NoFollow/colh=NoFollow)]))...";
+	}
+
 	public boolean passesMuster(final MOB mob)
 	{
 		if(mob==null)

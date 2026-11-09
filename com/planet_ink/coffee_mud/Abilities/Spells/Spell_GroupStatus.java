@@ -87,6 +87,12 @@ public class Spell_GroupStatus extends Spell
 	protected HashSet<String> affects=new HashSet<String>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Status/colh=Status).. ])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))

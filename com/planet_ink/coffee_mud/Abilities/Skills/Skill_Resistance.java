@@ -107,6 +107,18 @@ public class Skill_Resistance extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		StringBuilder codes = new StringBuilder("");
+		for(final int i : CharStats.CODES.SAVING_THROWS())
+			codes.append(codes.length()==0?"":",").append(CharStats.CODES.NAME(i).replace("/","\\/"));
+		StringBuilder names = new StringBuilder("");
+		for(final int i : CharStats.CODES.SAVING_THROWS())
+			names.append(names.length()==0?"":",").append(CharStats.CODES.DESC(i).replace("/","\\/"));
+		return "(([CHOICES(choices="+codes+"/prompt=Save Code/colh=Code).. ])/([CHOICES(choices="+names+"/prompt=Save Desc/colh=Desc).. ]))";
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

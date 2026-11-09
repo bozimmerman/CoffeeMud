@@ -104,6 +104,12 @@ public class Spell_AweOther extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Caster/colh=Caster).. ])";
+	}
+
+	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)

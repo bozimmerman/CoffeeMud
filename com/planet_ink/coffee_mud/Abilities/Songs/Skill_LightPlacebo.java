@@ -191,6 +191,12 @@ public class Skill_LightPlacebo extends BardSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(+[NUMBER(prompt=Heal Amt/colh=Heal)])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental affecting, final CMMsg msg)
 	{
 		if(!super.okMessage(affecting, msg))

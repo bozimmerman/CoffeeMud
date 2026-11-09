@@ -67,6 +67,12 @@ public class Spell_IdentifyObject extends Spell
 		if(text().length()>0)
 			affectableStats.setName(affected.Name()+" ("+text()+")");
 	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Identify name/colh=Identity).. ])";
+	}
 	
 	@Override
 	public long flags()
