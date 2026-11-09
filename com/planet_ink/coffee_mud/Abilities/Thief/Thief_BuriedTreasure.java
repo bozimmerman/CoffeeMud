@@ -118,6 +118,12 @@ public class Thief_BuriedTreasure extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Owner Name/colh=Owner).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof Item)

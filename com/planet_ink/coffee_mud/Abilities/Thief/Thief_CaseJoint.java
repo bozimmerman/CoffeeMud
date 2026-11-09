@@ -123,6 +123,13 @@ public class Thief_CaseJoint extends ThiefSkill
 				mark=R;
 		}
 	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=Room).. ])";
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

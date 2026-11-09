@@ -88,6 +88,12 @@ public class Thief_Informant extends ThiefSkill
 
 	protected Set<MOB> alreadyNames = new HashSet<MOB>();
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=WARRANT/prompt=Is Warrant/colh=Warrant)]/[DECIMAL(prompt=Money Amount/colh=Money)]/[STRING(prompt=Target Name/colh=Target).. ])";
+	}
+
 	protected synchronized String matches(final MOB M)
 	{
 		if(alreadyNames.contains(M))

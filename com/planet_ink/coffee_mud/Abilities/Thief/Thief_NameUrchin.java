@@ -99,6 +99,12 @@ public class Thief_NameUrchin extends ThiefSkill
 			affectedStats.setName(text());
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Urchin Name/colh=Name).. ])";
+	}
+
 	public volatile int nameCheckCtr = 0;
 
 	@Override

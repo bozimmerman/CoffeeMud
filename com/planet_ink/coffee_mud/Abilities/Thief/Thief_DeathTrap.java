@@ -264,6 +264,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Invoker Name/colh=Invoker).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)

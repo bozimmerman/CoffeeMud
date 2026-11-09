@@ -95,6 +95,12 @@ public class Thief_Lore extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Lore Suffix/colh=Suffix).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((givenTarget instanceof Item)&&(auto)&&(asLevel==-1))

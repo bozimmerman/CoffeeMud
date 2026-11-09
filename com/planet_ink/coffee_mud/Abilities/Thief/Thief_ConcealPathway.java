@@ -103,6 +103,12 @@ public class Thief_ConcealPathway extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Bonus Level/colh=Level)])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);

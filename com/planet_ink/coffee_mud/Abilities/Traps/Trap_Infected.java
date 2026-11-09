@@ -106,6 +106,12 @@ public class Trap_Infected extends StdTrap
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+	}
+
+	@Override
 	public List<Item> getTrapComponents()
 	{
 		final List<Item> V=new Vector<Item>();

@@ -101,6 +101,12 @@ public class WildTagTurf extends StdAbility
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Tagging Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))

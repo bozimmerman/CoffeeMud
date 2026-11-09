@@ -111,6 +111,12 @@ public class Thief_MaskFaith extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([CHECK(name=NONE/prompt=None/colh=none)]/[DEITY(prompt=Deity Name/colh=Deity).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

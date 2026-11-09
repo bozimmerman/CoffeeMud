@@ -72,6 +72,12 @@ public class Trap_SporeTrap extends StdTrap
 		return "some diseased food";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+	}
+
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final List<Ability> offenders=new Vector<Ability>();

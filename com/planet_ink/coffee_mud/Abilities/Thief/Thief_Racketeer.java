@@ -95,6 +95,12 @@ public class Thief_Racketeer extends ThiefSkill
 	public Vector<MOB> mobs=new Vector<MOB>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Extorted Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

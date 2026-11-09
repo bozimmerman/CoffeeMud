@@ -160,6 +160,12 @@ public class Thief_ConcealDoor extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Bonus Level/colh=Level)])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))

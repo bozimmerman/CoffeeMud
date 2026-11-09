@@ -73,6 +73,12 @@ public class Trap_Snare extends StdTrap
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+	}
+
+	@Override
 	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)

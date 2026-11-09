@@ -72,6 +72,12 @@ public class Trap_SpellBlast extends StdTrap
 		return "a spell scroll";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+	}
+
 	protected Item getSpellItem(final MOB mob)
 	{
 		if(mob==null)

@@ -72,6 +72,12 @@ public class Trap_SleepGas extends StdTrap
 		return "some slumberall poison";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+	}
+
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();

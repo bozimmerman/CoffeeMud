@@ -207,6 +207,12 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		setMiscText(planeName);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane Name/colh=Plane).. ])";
+	}
+
 	/**
 	 * @return the promotions
 	 */

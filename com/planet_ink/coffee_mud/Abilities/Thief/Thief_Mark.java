@@ -157,6 +157,12 @@ public class Thief_Mark extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Mark Name/colh=Mask)..\\/](\\/[NUMBER(prompt=Ticks/colh=Ticks)]))";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((text().length()==0)

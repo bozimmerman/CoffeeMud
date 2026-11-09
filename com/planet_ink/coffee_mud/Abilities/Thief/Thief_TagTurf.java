@@ -113,6 +113,12 @@ public class Thief_TagTurf extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Tagging Name or Clan/colh=Name).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

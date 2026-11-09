@@ -535,9 +535,32 @@ public class Validmisctext extends StdTest
 		{"Spell_WardArea", "", "Bob", "Bob the Bold"},
 		{"Spell_WizardLock", "", "5", "5 MALICIOUS", "5 malicious", "!MALICIOUS", "!MALICIOUS 5", "!5 BOGUS", "!5 5", "!abc", "!5 MALICIOUS MALICIOUS", "!5MALICIOUS"},
 		{"Spell_WizardsChest", "", "Bob", "Bob the Bold"},
+		{"Thief_BuriedTreasure", "", "Bob", "Bob the Bold"},
+		{"Thief_ConcealDoor", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Thief_ConcealPathway", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Thief_ConcealWalkway", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Thief_DeathTrap", "", "Bob", "Bob the Bold"},
+		{"Thief_Informant", "", "Warrant", "warrant", "5", "5.25", "Bob the Bold"},
+		{"Thief_Lore", "", "Bob", "Bob the Bold"},
+		{"Thief_Mark", "", "Bob", "Bob/10", "Bob/0", "Bob/-3", "!Bob/abc", "!Bob/", "!Bob/1.5", "!Bob/5/6", "!/5"},
+		{"Thief_MaskFaith", "", "NONE", "none", "!NotADeity"},
+		{"Thief_NameUrchin", "", "Bob", "Bob the Bold"},
+		{"Thief_PetSteal", "", "Bob", "Bob the Bold"},
+		{"Thief_Racketeer", "", "Bob", "Bob the Bold"},
+		{"Thief_TagTurf", "", "Bob", "Bob the Bold"},
+		{"Trap_Ignition", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_Infected", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_Needle", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_NeedlePrick", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_PoisonGas", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_SleepGas", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_Snare", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_SpellBlast", "", "Spell_Fireball", "!NotAnAbility"},
+		{"Trap_SporeTrap", "", "Spell_Fireball", "!NotAnAbility"},
+		{"WildTagTurf", "", "Bob", "Bob the Bold"},
 	};
 
-	@Override
+		@Override
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
 		int testNum = 0;
@@ -931,7 +954,7 @@ public class Validmisctext extends StdTest
 				return ("Error#211d: ability '"+roomID+"' should reject an unknown room");
 		}
 		// Test 212: plane-name abilities accept an empty or known plane and reject unknown ones.
-		final String[] planeAbilities = {"Spell_PlanarBubble", "Spell_PlanarDistortion", "Spell_Planarmorph"};
+		final String[] planeAbilities = {"Spell_PlanarBubble", "Spell_PlanarDistortion", "Spell_Planarmorph", "StdPlanarAbility"};
 		for(final String planeID : planeAbilities)
 		{
 			final Ability planeA = CMClass.getAbility(planeID);
@@ -951,6 +974,41 @@ public class Validmisctext extends StdTest
 					if(!CMLib.ableParms().isValidMiscText(planeFmt, planeKeys3.get(0)))
 						return ("Error#212d: ability '"+planeID+"' should accept a known plane");
 				}
+			}
+		}
+		// Test 213: thief room-ID abilities accept a real room, empty, and reject unknown IDs.
+		final String[] roomIDAbilities4 = {"Thief_CaseJoint", "Thief_Hideout"};
+		for(final String roomID : roomIDAbilities4)
+		{
+			final Ability ridA = CMClass.getAbility(roomID);
+			if(ridA == null)
+				return ("Error#213a: ability '"+roomID+"' is not loaded");
+			final String ridFmt = ridA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+				return ("Error#213b: ability '"+roomID+"' should accept an empty room");
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+				return ("Error#213c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
+			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+				return ("Error#213d: ability '"+roomID+"' should reject an unknown room");
+		}
+		// Test 214: deity-name abilities accept a real deity and reject unknown ones.
+		final String[] deityAbilities = {"Thief_HereticalFaith", "Thief_MaskFaith"};
+		for(final String deityID : deityAbilities)
+		{
+			final Ability deityA = CMClass.getAbility(deityID);
+			if(deityA == null)
+				return ("Error#214a: ability '"+deityID+"' is not loaded");
+			final String deityFmt = deityA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(deityFmt, ""))
+				return ("Error#214b: ability '"+deityID+"' should accept an empty deity");
+			if(CMLib.ableParms().isValidMiscText(deityFmt, "NotADeity"))
+				return ("Error#214c: ability '"+deityID+"' should reject an unknown deity");
+			for(final Enumeration<Deity> e=CMLib.map().deities();e.hasMoreElements();)
+			{
+				final Deity D=e.nextElement();
+				if(!CMLib.ableParms().isValidMiscText(deityFmt, D.Name()))
+					return ("Error#214d: ability '"+deityID+"' should accept the deity '"+D.Name()+"'");
+				break;
 			}
 		}
 		return null;

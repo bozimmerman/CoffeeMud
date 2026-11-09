@@ -105,6 +105,12 @@ public class Thief_HereticalFaith extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([DEITY(prompt=Deity Name/colh=Deity).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
