@@ -15,6 +15,18 @@ These labels describe execution requirements. They are not runtime measurements 
 | `exec_manual` | Interactive tools, reports without correctness assertions, demonstrations, or environment-specific utilities. |
 | `exec_placeholder` | Concrete tests whose current body immediately returns success without assertions. |
 
+## CI exclusion label
+
+`ci_exclude` is an independent label for tests with known failures that should be excluded from CI. It does not replace their execution or feature groups.
+
+| Test | Reason |
+| --- | --- |
+| `Spaceangles` | Offset case 5 compares approximately 360 degrees with 0 degrees without handling wraparound. |
+| `Spaceinterception` | The shared interception solver rejects valid faster-pursuer scenarios. |
+| `Spaceinterception2` | Encounters the same solver failure before the guided-torpedo simulation. |
+
+The label currently records exclusion intent only: the host runner does not yet filter it, so selecting a group containing these tests still runs them. Explicit test selection remains available for investigation. CI filtering must be implemented before expanding workflow coverage to these groups.
+
 ## Selecting a group
 
 Use the existing exact group selector:

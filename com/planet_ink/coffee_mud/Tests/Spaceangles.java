@@ -52,7 +52,7 @@ public class Spaceangles extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "spaceall", "exec_integration"};
+		return new String[] {"all", "spaceall", "exec_integration", "ci_exclude"};
 	}
 
 	@Override

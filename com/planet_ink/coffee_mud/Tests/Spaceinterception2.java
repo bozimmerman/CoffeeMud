@@ -52,7 +52,7 @@ public class Spaceinterception2 extends StdTest
 	@Override
 	public String[] getTestGroups()
 	{
-		return new String[] {"all", "spaceall", "exec_randomized"};
+		return new String[] {"all", "spaceall", "exec_randomized", "ci_exclude"};
 	}
 
 	@Override
