@@ -55,7 +55,7 @@ python -m unittest discover -s tests -p test_launcher.py -v
 
 ## GitHub Actions
 
-### Local checks for a proposed job split
+### Local equivalents of the CI jobs
 
 With JDK 17 selected, run these as independent jobs. Each host invocation compiles fresh classes and creates its own disposable runtime and result directory. Core also runs the harness contracts and standalone party fixtures.
 
@@ -67,8 +67,8 @@ python tests/run_tests.py --group exec_randomized --skip-standalone --test-timeo
 python tests/run_tests.py --group exec_stress --skip-standalone --test-timeout 180 --timeout 300
 ```
 
-The stress test needs more than the default 30-second per-test deadline. Group runs filter `ci_exclude`; this local job selection does not include world, benchmark, manual, or placeholder groups. The commands above describe the proposed split; the workflow below still uses its existing party job.
+The stress test needs more than the default 30-second per-test deadline. Group runs filter `ci_exclude`; this job selection does not include world, benchmark, manual, or placeholder groups.
 
-`test-coffeemud.yaml` currently runs the launcher regression checks and `python tests/run_tests.py --verify-harness` on pushes, pull requests, and manual runs, using Windows, JDK 17, and Python 3.13. Logs and XML results are uploaded even after a failed test step. It is separate from the existing distribution/release workflow.
+`test-coffeemud.yaml` runs a launcher-check job and four independent matrix jobs for core, integration, randomized, and stress checks on pushes, pull requests, and manual runs. All jobs use Windows and Python 3.13; the Java suites use JDK 17. Core also verifies the Java harness contracts and standalone party fixtures. Matrix fail-fast is disabled so a failure in one suite does not cancel the others. Each suite uploads its own logs and XML results even after a failed test step, retained for seven days. This workflow is separate from the existing distribution/release workflow.
 
 To add coverage, write a `StdTest` with a `getTestGroups()` category and add your assertions to `doTest`. Existing tests remain available through `TEST <group>` in-game. Keep socket login, reconnect, and client rendering checks separate from this programmatic test context.

@@ -9,9 +9,40 @@ permissions:
   contents: read
 
 jobs:
-  party-tests:
+  harness:
+    name: Launcher checks
     runs-on: windows-latest
-    timeout-minutes: 12
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+      - name: Check launcher isolation and reporting
+        run: python -m unittest discover -s tests -p test_launcher.py -v
+
+  tests:
+    name: Tests (${{ matrix.suite }})
+    runs-on: windows-latest
+    timeout-minutes: ${{ matrix.job_timeout }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: core
+            args: --group exec_core --verify-harness
+            job_timeout: 12
+          - suite: integration
+            args: --group exec_integration --skip-standalone
+            job_timeout: 12
+          - suite: randomized
+            args: --group exec_randomized --skip-standalone --test-timeout 180 --timeout 900
+            job_timeout: 20
+          - suite: stress
+            args: --group exec_stress --skip-standalone --test-timeout 180 --timeout 300
+            job_timeout: 12
     steps:
       - uses: actions/checkout@v7
         with:
@@ -23,15 +54,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.13'
-      - name: Check launcher isolation and reporting
-        run: python -m unittest discover -s tests -p test_launcher.py -v
-      - name: Run party fixtures and registered host tests
-        run: python tests/run_tests.py --verify-harness
+      - name: Run ${{ matrix.suite }} checks
+        run: python tests/run_tests.py ${{ matrix.args }}
       - name: Save logs and test results
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: coffeemud-test-results
+          name: coffeemud-test-results-${{ matrix.suite }}
           path: |
             test-output/run-*/*.log
             test-output/run-*/results.xml

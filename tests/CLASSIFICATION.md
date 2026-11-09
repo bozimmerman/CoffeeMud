@@ -2,7 +2,7 @@
 
 Each concrete registered Java test has one `exec_` group in addition to its existing groups. Existing group membership and test bodies are preserved. `StdTest` and `PropTest` are support classes and remain unclassified.
 
-These labels describe execution requirements. They are not runtime measurements or a guarantee that a group is ready to gate pull requests. The default workflow continues to run the `party` group.
+These labels describe execution requirements. They are not runtime measurements or a guarantee that every group is ready to gate pull requests. The test workflow runs `exec_core`, `exec_integration`, `exec_randomized`, and `exec_stress` as separate jobs, applying the `ci_exclude` filter. The launcher's default selection remains `party`.
 
 | Group | Purpose |
 | --- | --- |
