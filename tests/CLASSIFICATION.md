@@ -25,7 +25,7 @@ These labels describe execution requirements. They are not runtime measurements 
 | `Spaceinterception` | The shared interception solver rejects valid faster-pursuer scenarios. |
 | `Spaceinterception2` | Encounters the same solver failure before the guided-torpedo simulation. |
 
-The label currently records exclusion intent only: the host runner does not yet filter it, so selecting a group containing these tests still runs them. Explicit test selection remains available for investigation. CI filtering must be implemented before expanding workflow coverage to these groups.
+The host runner filters `ci_exclude` tests from every group selection, ignoring case, and logs each matching excluded test as `CI EXCLUDE`. A group with no remaining tests fails rather than passing without coverage. Explicit `--test` selection still runs an excluded test for investigation. The in-game `TEST` command retains its existing behavior and does not apply this CI filter.
 
 ## Selecting a group
 

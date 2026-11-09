@@ -111,11 +111,20 @@ public final class HostTestRunner
 			}
 			else
 			{
+				boolean excluded = false;
+				for(final String group : test.getTestGroups())
+				{
+					if(group.equalsIgnoreCase("ci_exclude"))
+						excluded = true;
+				}
 				for(final String group : test.getTestGroups())
 				{
 					if(group.equalsIgnoreCase(selector))
 					{
-						selected.add(test);
+						if(excluded)
+							System.out.println("CI EXCLUDE " + test.ID() + ": ci_exclude");
+						else
+							selected.add(test);
 						break;
 					}
 				}

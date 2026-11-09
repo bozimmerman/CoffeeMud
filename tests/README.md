@@ -33,6 +33,8 @@ python tests/run_tests.py --test FormationTest --keep-runtime
 
 Group names and test IDs are matched exactly, ignoring case. An unknown or empty selection fails. The two fast party fixtures run before any selected host suite.
 
+Host group selections omit tests tagged `ci_exclude` and log the exclusions. A selection with no remaining tests fails. Use `--test <ID>` to investigate an excluded test explicitly; the in-game `TEST` command is unaffected.
+
 Tests also have `exec_` groups describing their execution requirements, alongside the existing feature groups. See [execution classifications and the complete inventory](CLASSIFICATION.md) for the categories, limitations, and selection examples. These labels do not change the default CI selection.
 
 Use `--skip-standalone` to run only the registered host selection. This lets another epic reuse the host harness without depending on the standalone party fixtures.
@@ -53,6 +55,20 @@ python -m unittest discover -s tests -p test_launcher.py -v
 
 ## GitHub Actions
 
-`test-coffeemud.yaml` runs the same commands on pushes, pull requests, and manual runs, using Windows, JDK 17, and Python 3.13. Logs and XML results are uploaded even after a failed test step. It is separate from the existing distribution/release workflow.
+### Local checks for a proposed job split
+
+With JDK 17 selected, run these as independent jobs. Each host invocation compiles fresh classes and creates its own disposable runtime and result directory. Core also runs the harness contracts and standalone party fixtures.
+
+```text
+python -m unittest discover -s tests -p test_launcher.py -v
+python tests/run_tests.py --group exec_core --verify-harness
+python tests/run_tests.py --group exec_integration --skip-standalone
+python tests/run_tests.py --group exec_randomized --skip-standalone --test-timeout 180 --timeout 900
+python tests/run_tests.py --group exec_stress --skip-standalone --test-timeout 180 --timeout 300
+```
+
+The stress test needs more than the default 30-second per-test deadline. Group runs filter `ci_exclude`; this local job selection does not include world, benchmark, manual, or placeholder groups. The commands above describe the proposed split; the workflow below still uses its existing party job.
+
+`test-coffeemud.yaml` currently runs the launcher regression checks and `python tests/run_tests.py --verify-harness` on pushes, pull requests, and manual runs, using Windows, JDK 17, and Python 3.13. Logs and XML results are uploaded even after a failed test step. It is separate from the existing distribution/release workflow.
 
 To add coverage, write a `StdTest` with a `getTestGroups()` category and add your assertions to `doTest`. Existing tests remain available through `TEST <group>` in-game. Keep socket login, reconnect, and client rendering checks separate from this programmatic test context.
