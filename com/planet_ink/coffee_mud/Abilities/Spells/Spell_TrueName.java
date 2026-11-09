@@ -135,6 +135,12 @@ public class Spell_TrueName extends Spell
 		return trueName;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=True Name/colh=Name)..;](;[XML(prompt=MOB XML/colh=XML).. ]))";
+	}
+
 	protected MOB getMonster()
 	{
 		if(monster!=null)

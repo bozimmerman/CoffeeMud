@@ -107,6 +107,12 @@ public class Spell_WardArea extends Spell implements Trap
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Player Name/colh=Player).. ])";
+	}
+
+	@Override
 	public boolean isABomb()
 	{
 		return false;

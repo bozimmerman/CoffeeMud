@@ -162,6 +162,12 @@ public class Spell_Planarmorph extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane Name/colh=Plane).. ])";
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

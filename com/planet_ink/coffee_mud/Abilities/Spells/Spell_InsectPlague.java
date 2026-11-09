@@ -97,6 +97,12 @@ public class Spell_InsectPlague extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Bonus Chance (0-80)/colh=Bonus)])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))

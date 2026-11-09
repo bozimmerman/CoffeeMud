@@ -128,6 +128,12 @@ public class Spell_StoreSpell extends Spell implements AbilityContainer
 		return 0;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Spell ID/colh=Spell)](/[NUMBER(prompt=Charges/colh=Chgs)](/)))";
+	}
+
 	protected void setCharges(final int newCharges)
 	{
 		final String abilityID=getSpellID();

@@ -109,6 +109,12 @@ public class Spell_PlanarDistortion extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane Name/colh=Plane).. ])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

@@ -96,6 +96,12 @@ public class Spell_MinorImage extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Player Name/colh=Player).. ])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;

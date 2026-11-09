@@ -74,6 +74,12 @@ public class Spell_ShapeObject extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Shape Name/colh=Shape).. ])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected = super.affected;

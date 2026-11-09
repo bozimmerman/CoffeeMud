@@ -162,6 +162,12 @@ public class Spell_PolymorphSelf extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([RACE_ID(prompt=Race ID/colh=Race).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))

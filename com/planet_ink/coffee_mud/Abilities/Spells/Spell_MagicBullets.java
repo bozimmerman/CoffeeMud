@@ -83,6 +83,12 @@ public class Spell_MagicBullets extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Bonus Damage/colh=Dmg)])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

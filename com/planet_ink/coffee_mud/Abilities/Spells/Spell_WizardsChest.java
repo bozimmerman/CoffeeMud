@@ -82,6 +82,12 @@ public class Spell_WizardsChest extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Caster Name/colh=Caster).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)

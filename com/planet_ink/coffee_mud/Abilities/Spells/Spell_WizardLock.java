@@ -145,6 +145,12 @@ public class Spell_WizardLock extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Level/colh=Lvl)]([CHECK(name=MALICIOUS/prompt=is Malicious/colh=Malicious)]))";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))

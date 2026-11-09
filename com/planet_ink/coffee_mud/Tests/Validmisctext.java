@@ -519,6 +519,22 @@ public class Validmisctext extends StdTest
 		{"Spell_HelpingHand", "", "Bob", "Bob the Bold"},
 		{"Spell_IdentifyObject", "", "glowing", "blue and shiny"},
 		{"Spell_ImprovedClanWard", "", "RANK=5", "CLAN=MyClan", "CLAN=\"MyClan\"", "NOSNEAK=true", "NOSNEAK=false", "NOFOLLOW=true", "RANK=5 CLAN=\"MyClan\"", "CLAN=\"MyClan\" RANK=5", "RANK=5 RANK=6", "rank=5 clan=myclan", "RANK=5 CLAN=MyClan NOSNEAK=true NOFOLLOW=true", "!NOSNEAK", "!NOSNEAK=on", "!NOSNEAK=", "!NOFOLLOW", "!BOGUS=5", "!RANK=abc", "!RANK=5 NOSNEAK NOFOLLOW", "!RANK=5;CLAN=MyClan", "!CLAN="},
+		{"Spell_Gate", "", "Midgaard", "Midgaard#100"},
+		{"Spell_InsectPlague", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Spell_KeenEdge", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Spell_MagicBullets", "", "5", "0", "-3", "!abc", "!1.5"},
+		{"Spell_MinorImage", "", "Bob", "Bob the Bold"},
+		{"Spell_Polymorph", "", "Human", "human", "Elf", "!NotARace"},
+		{"Spell_PolymorphSelf", "", "Human", "human", "Elf", "!NotARace"},
+		{"Spell_Portal", "", "Midgaard", "Midgaard#100"},
+		{"Spell_PortalOther", "", "Midgaard", "Midgaard#100"},
+		{"Spell_ShapeObject", "", "hammer", "long sword"},
+		{"Spell_SpottersOrders", "", "Bob", "Bob the Bold"},
+		{"Spell_StoreSpell", "", "Spell_Fireball", "Spell_Fireball/5", "Spell_Fireball/5/", "!Spell_Fireball/", "!NotAnAbility/5", "!Spell_Fireball/abc", "!/5", "!5", "!Spell_Fireball/5/extra"},
+		{"Spell_TrueName", "", "Bob", "Bob;", "Bob;<MOB></MOB>", "Bob;<MOB/>", "!Bob;badxml", "!Bob;<MOB>", "!;<MOB></MOB>", "!Bob;Bob;Bob"},
+		{"Spell_WardArea", "", "Bob", "Bob the Bold"},
+		{"Spell_WizardLock", "", "5", "5 MALICIOUS", "5 malicious", "!MALICIOUS", "!MALICIOUS 5", "!5 BOGUS", "!5 5", "!abc", "!5 MALICIOUS MALICIOUS", "!5MALICIOUS"},
+		{"Spell_WizardsChest", "", "Bob", "Bob the Bold"},
 	};
 
 	@Override
@@ -885,7 +901,7 @@ public class Validmisctext extends StdTest
 		if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(convertFmt, realDeityName)))
 			return ("Error#209d: the Skill_Convert format should accept the deity '"+realDeityName+"'");
 		// Test 210: more room-ID abilities accept a real room, empty, and reject unknown IDs.
-		final String[] roomIDAbilities2 = {"Skill_PrisonAssignment", "Spell_Cogniportive", "Spell_Gate"};
+		final String[] roomIDAbilities2 = {"Skill_PrisonAssignment", "Spell_Cogniportive"};
 		for(final String roomID : roomIDAbilities2)
 		{
 			final Ability ridA = CMClass.getAbility(roomID);
@@ -898,6 +914,44 @@ public class Validmisctext extends StdTest
 				return ("Error#210c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
 			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
 				return ("Error#210d: ability '"+roomID+"' should reject an unknown room");
+		}
+		// Test 211: more room-ID abilities accept a real room, empty, and reject unknown IDs.
+		final String[] roomIDAbilities3 = {"Spell_Mirage", "Spell_Shelter"};
+		for(final String roomID : roomIDAbilities3)
+		{
+			final Ability ridA = CMClass.getAbility(roomID);
+			if(ridA == null)
+				return ("Error#211a: ability '"+roomID+"' is not loaded");
+			final String ridFmt = ridA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+				return ("Error#211b: ability '"+roomID+"' should accept an empty room");
+			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+				return ("Error#211c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
+			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+				return ("Error#211d: ability '"+roomID+"' should reject an unknown room");
+		}
+		// Test 212: plane-name abilities accept an empty or known plane and reject unknown ones.
+		final String[] planeAbilities = {"Spell_PlanarBubble", "Spell_PlanarDistortion", "Spell_Planarmorph"};
+		for(final String planeID : planeAbilities)
+		{
+			final Ability planeA = CMClass.getAbility(planeID);
+			if(planeA == null)
+				return ("Error#212a: ability '"+planeID+"' is not loaded");
+			final String planeFmt = planeA.miscTextFormat();
+			if(!CMLib.ableParms().isValidMiscText(planeFmt, ""))
+				return ("Error#212b: ability '"+planeID+"' should accept a blank plane");
+			if(CMLib.ableParms().isValidMiscText(planeFmt, "NOTAPLANE"))
+				return ("Error#212c: ability '"+planeID+"' should reject an unknown plane");
+			final Ability planarProto3 = CMClass.getAbilityPrototype("StdPlanarAbility");
+			if(planarProto3 instanceof PlanarAbility)
+			{
+				final List<String> planeKeys3 = ((PlanarAbility)planarProto3).getAllPlaneKeys();
+				if(planeKeys3.size() > 0)
+				{
+					if(!CMLib.ableParms().isValidMiscText(planeFmt, planeKeys3.get(0)))
+						return ("Error#212d: ability '"+planeID+"' should accept a known plane");
+				}
+			}
 		}
 		return null;
 	}

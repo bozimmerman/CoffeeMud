@@ -105,6 +105,12 @@ public class Spell_Shelter extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=Room).. ])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(!(affected instanceof MOB))

@@ -136,6 +136,12 @@ public class Spell_PlanarBubble extends Spell
 			this.planeName=newMiscText;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PLANE_NAME(prompt=Plane Name/colh=Plane).. ])";
+	}
+
 	protected Room room()
 	{
 		if(newRoom==null)

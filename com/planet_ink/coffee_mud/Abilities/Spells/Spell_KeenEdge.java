@@ -84,6 +84,12 @@ public class Spell_KeenEdge extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Caster XLevel/colh=XLvl)])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected = super.affected;

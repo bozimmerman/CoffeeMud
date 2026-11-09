@@ -160,6 +160,12 @@ public class Spell_Polymorph extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([RACE_ID(prompt=Race ID/colh=Race).. ])";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);

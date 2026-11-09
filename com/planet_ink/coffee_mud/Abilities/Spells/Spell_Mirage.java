@@ -113,6 +113,12 @@ public class Spell_Mirage extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=Room).. ])";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)

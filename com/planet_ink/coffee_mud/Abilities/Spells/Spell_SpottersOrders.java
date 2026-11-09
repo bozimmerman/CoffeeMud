@@ -100,6 +100,12 @@ public class Spell_SpottersOrders extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Victim Name/colh=Victim).. ])";
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

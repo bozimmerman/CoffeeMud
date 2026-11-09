@@ -91,7 +91,7 @@ public class Spell_Gate extends Spell
 	@Override
 	public String miscTextFormat()
 	{
-		return "([ROOM_ID(prompt=Room ID/colh=Room).. ])";
+		return "([STRING(prompt=Destination/colh=Dest).. ])";
 	}
 
 	@Override
