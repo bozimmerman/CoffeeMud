@@ -49,6 +49,28 @@ public class Prop_Fumble extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((CHANCE=[NUMBER(prompt=Chance%/colh=Chance)]%)"
+			+ "/(CHANCE=[DECIMAL(prompt=Chance/colh=Chance)])"
+			+ "/(ITEM=[CHOICES(choices=WORN,WEAR,HAVE,HAS,HERE,ROOM,PRESENT,INVENTORY,prompt=Item State/colh=State)])"
+			+ "/(MSG=(\")[STRING(prompt=Message/colh=Msg).. ](\"))"
+			+ "/(PRIVATE=[CONFIRM(prompt=Private Message/colh=Priv)])"
+			+ "/(WEAPON=[CONFIRM(prompt=Weapons Only/colh=Weap)])"
+			+ "/(AID=[ABILITY_ID(prompt=Ability IDs/colh=Able)]..,)"
+			+ "/(ATYPE=(([ABILITY_TYPE(prompt=Ability Types/colh=AType)])"
+			+ "/([CHECK(name=ALL/prompt=All Types/colh=All)]))..,)"
+			+ "/(ADOMAIN=[ABILITY_DOMAIN(prompt=Ability Domains/colh=ADom)]..,)"
+			+ "/(AFLAG=[ABILITY_FLAG(prompt=Ability Flags/colh=AFlag)]..,)"
+			+ "/(CAST=((NOUNINVOKE)"
+			+ "/(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])"
+			+ "/(([NUMBER(prompt=Chance%/colh=Chance%)]%) [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))"
+			+ ")..,)"
+			+ "/(MASK=(\")[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ](\"))"
+			+ ")...)";
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;

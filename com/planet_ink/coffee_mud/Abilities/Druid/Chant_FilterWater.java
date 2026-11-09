@@ -49,6 +49,14 @@ public class Chant_FilterWater extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Old Material/colh=Mat)]\\/[NUMBER(prompt=Old Liquid/colh=Liq)]"
+			+ ";(([STRINGORNULL(prompt=New Name/colh=Name)..~]~[STRING(prompt=Old Item Text/colh=Old).. ])"
+			+ "/([STRING(prompt=New Name/colh=Name).. ])))";
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_CHANT | Ability.DOMAIN_WATERCONTROL;
@@ -86,7 +94,7 @@ public class Chant_FilterWater extends Chant
 				affectableStats.setName(super.miscText.substring(x+1));
 		}
 	}
-
+	
 	@Override
 	public void unInvoke()
 	{

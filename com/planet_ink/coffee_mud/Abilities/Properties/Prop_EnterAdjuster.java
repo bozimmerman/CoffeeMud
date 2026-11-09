@@ -51,6 +51,31 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final String[] plusCodes = { "abi", "arm", "att", "dam", "dis", "lev", "rej", "sen",
+			"spe", "wei", "hei", "cha", "con", "dex", "int", "str", "wis", "clev",
+			"hit", "hun", "man", "mov", "thi", "prac", "trai", "ques", "coin", "expe" };
+		final StringBuilder parmTokens = new StringBuilder("");
+		for(final String code : plusCodes)
+		{
+			if(parmTokens.length()>0)
+				parmTokens.append('/');
+			parmTokens.append('(').append(code).append("+[NUMBER(prompt=Amount/colh=Amt)])")
+				.append("/(").append(code).append("-[NUMBER(prompt=Amount/colh=Amt)])");
+		}
+		return "((([ABILITY_ID(prompt=Ability/colh=Able)])"
+			+ "/((" + parmTokens
+			+ "/(gen=[GENDER_PREFIX(prompt=Gender/colh=Gen)])"
+			+ "/(cla=[ONEWORD(prompt=Char Class/colh=Class)])"
+			+ "/(rac=[RACE_ID(prompt=Race/colh=Race)])"
+			+ "))..."
+			+ ")..;)"
+			+ "(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
+			;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_EXITS | Ability.CAN_ROOMS;

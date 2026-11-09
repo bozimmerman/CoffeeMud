@@ -47,6 +47,26 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"[CHECK(name=NOUNINVOKE/prompt=No-Uninvoke/colh=NoUnv)]/"
+			+"[CHECK(name=ONCLOSED/prompt=On Closed/colh=OnClose)]/"
+			+"[CHECK(name=ALLMOBS/prompt=Affect All Mobs/colh=AllMobs)]/"
+			+"[CHECK(name=ALLITEMS/prompt=Affect All Items/colh=AllItems)]/"
+			+"[CHECK(name=ONLYMOBS/prompt=Only Affect Mobs/colh=OnlyMobs)]/"
+			+"[CHECK(name=ONLYITEMS/prompt=Only Affect Items/colh=OnlyItems)]/"
+			+"[CHECK(name=NOOWN/prompt=No Owner Needed/colh=NoOwn)]/"
+			+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
+			+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
+			+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
+			+"(([NUMBER(prompt=Chance%/colh=Chance%)]%) [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))"
+			+")..;)"
+			+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
+			;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;

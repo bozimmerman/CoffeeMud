@@ -48,6 +48,17 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect, Deity.
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([CHOICES(choices=ACTUAL,CONTENT,ACTUAL CONTENT,CONTENT ACTUAL/prompt=Prefix/colh=Prefix)])"
+			+ "([NUMBER(prompt=Percent/colh=Pct)]%)"
+			+ "((MESSAGE=(\")[STRING(prompt=Message/colh=Msg).. ](\"))"
+			+ "/(EVENT=[STRING(prompt=Events/colh=Event)]..,))...)"
+			+ "([ZAPPERMASK(prompt=Restriction Mask/colh=Mask).. ])"
+			;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;

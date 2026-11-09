@@ -49,6 +49,13 @@ public class Chant_SummonAnimals extends Chant
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([MATH_EXPRESSION(prompt=Count Formula/colh=Formula)]\\/)"
+			+ "(([MOB_ID(prompt=MOB ID/colh=MOB)])/([RACE_ID(prompt=Race/colh=Race)]))";
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;

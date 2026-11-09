@@ -52,6 +52,17 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return localizedName;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Conception Time/colh=Start)]\\/[NUMBER(prompt=Due Time/colh=End)]"
+			+ "\\/[STRINGORNULL(prompt=Fathers Name/colh=Father)..\\/]"
+			+ "\\/(([NUMBER(prompt=Babies/colh=Kids)..X]X[RACE_ID(prompt=Fathers Race/colh=FRace)])"
+			+ "/[RACE_ID(prompt=Fathers Race/colh=FRace)])"
+			+ "(\\/[RACE_ID(prompt=Baby Race/colh=BRace)])"
+			+ "(\\/[CHOICES(choices=M,F,N,prompt=Baby Gender/colh=Gender)]))";
+	}
+
 	protected long	monthsRemaining	= -1;
 	protected long	daysRemaining	= -1;
 	protected Ability addictions	= null;

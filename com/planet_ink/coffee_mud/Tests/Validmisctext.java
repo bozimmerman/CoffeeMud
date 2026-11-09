@@ -366,7 +366,8 @@ public class Validmisctext extends StdTest
 			"RANK", "", "!BOGUS=1", "!RANK=abc", "!123=abc"},
 		{"Prop_AbsorbDamage", "50% +ALL -SILVER -CLOTH -LEATHER", "5 +ALL -MAGIC -SLASHING",
 			"25% +ALL -LEVEL15", "15% +BASHING 1 +IRON 3 +STEEL 15% +MAGIC", "ENHANCED", "!BOGUS",
-			"!+BOGUS", "!ALL", "!+", "!+50", "!50.5", "!50 %"},
+			"!+BOGUS", "!ALL", "!+", "!+50", "!50.5", "!50 %",
+			"+INVOCATION/EVOCATION", "-FIND/REMOVE_TRAPS", "+THIEF_SKILL", "+BINDING"},
 		{"Prop_CombatAdjuster", "", "ATTACK+10", "ATTACK-20", "ATTACK=5", "DAMAGE=5 ATTACK+10",
 			"SPEED-3 DAMAGE=2 ATTACK=1", "HP+100 MANA-50 MOVE+10 ARMOR=25", "ATTACK=-5", "!ATTACK",
 			"!ATTACK 10", "!ATTACK+abc", "!BOGUS+5", "!ATTACK=5.5", "!ATTACK=+5", "!ATTACK+"},
@@ -435,6 +436,54 @@ public class Validmisctext extends StdTest
 		{"Apothecary", "ANTIDOTE", "", "!BOGUS"},
 		{"Skill_CaravanTravel", "FULL", "", "!BOGUS"},
 		{"Skill_SeaNavigation", "FULL", "", "!BOGUS"},
+		{"Chant_FilterWater", "", "!9", "!9/9", "9/9;~", "9/9;~old drink text",
+			"9/9;a flask of fresh water~old text", "9/9;name", "9/9;name~"},
+		{"Chant_SummonAnimals", "", "GenMob", "Human", "3/GenMob", "3+2/Human", "2*3/GenMob",
+			"!abc/Human", "!3d4/Human", "!3/NotAMob", "!3/2+2"},
+		{"Pregnancy", "", "1000/2000/Bob/1XHuman", "1000/2000/Bob/Human",
+			"1000/2000/Bob the Bold/3XHuman/Human/M", "1000/2000/Bob/2XHuman/Elf/F",
+			"1000/2000/Bob/1XHuman/Human", "!1000/2000/Bob", "!1000/2000/Bob/1XNotARace",
+			"!1000/2000/Bob/1XHuman/NotARace", "!1000/2000/Bob/1XHuman/Human/Q",
+			"1000/2000//Human/Human/M", "1000/2000//1XHuman/Elf/F"},
+		{"Prop_EnterAdjuster", "", "cha+5", "cha-5 str+2", "Spell_Fireball",
+			"Spell_Fireball;cha+5", "Spell_Fireball;Spell_Sleep;arm-25;gen=M", "gen=M",
+			"!gen=Q", "gen=MALE", "gen=FEMALE", "rac=Elf", "!rac=NotARace", "cha+5 MASK=-RACE +Dog",
+			"!cha", "!cha+abc", "!bogus+5"},
+		{"Prop_FightSpellCast", "", "ALLMOBS", "NOOWN;Spell_Fireball", "LEVEL=5;Spell_Fireball",
+			"25% Spell_Fireball(whatever)", "ALLMOBS;50% Spell_Sleep", "MASK=-ALIGN +GOOD",
+			"!ALLMOB", "!LEVEL=abc", "!NotAnAbility"},
+		{"Prop_Fumble", "", "CHANCE=50%", "CHANCE=0.25", "ITEM=WORN", "!ITEM=HELD",
+			"PRIVATE=TRUE", "WEAPON=FALSE", "AID=Spell_Fireball", "AID=Spell_Fireball,Spell_Sleep",
+			"!AID=NotAnAbility", "ATYPE=SPELL", "ATYPE=ALL", "ATYPE=SPELL,SONG",
+			"ADOMAIN=DIVINATION", "ADOMAIN=DIVINATION,ALTERATION", "AFLAG=BINDING",
+			"AFLAG=BINDING,HOLY", "!ATYPE=NotAType", "!ADOMAIN=NotADomain", "!AFLAG=NotAFlag",
+			"CAST=NOUNINVOKE", "CAST=TICKS=5", "CAST=50% Spell_Fireball",
+			"CAST=50% Spell_Fireball(LIGHT)", "CAST=NOUNINVOKE,50% Spell_Fireball(LIGHT;MAGIC)",
+			"MSG=\"You fumble it!\"", "MASK=-RACE +Dog", "!CHANCE=abc"},
+		{"Prop_HaveAdjuster", "", "cha+5", "cha-5", "cha=18", "maxstr+2", "abi+3 arm-25",
+			"savefir+10", "gen=M", "!gen=Q", "rac=Elf", "!rac=NotARace", "MULTIPLYPH=TRUE",
+			"RONDEATH=FALSE", "ALLSET=thorset", "spe+1.5", "hit+50 hun-10",
+			"AMBIANCE=\"soft glow\"", "cha+5 MASK=-RACE +Dog", "!cha", "!cha+abc",
+			"!bogus+5", "!DEITY=NotADeity", "ABLEPROFS=Spell_Fireball(+5)",
+			"ABLEPROFS=Spell_Fireball(+5),Fighter_Kick(+2)", "ABLETICKS=Spell_Fireball(+1)",
+			"!ABLEPROFS=NotARealAbility(+5)", "!ABLEPROFS=Spell_Fireball(abc)",
+			"!ABLEPROFS=5", "gen=MALE", "gen=FEMALE", "dis=EVIL", "sen=SEE"},
+		{"Prop_HaveResister", "", "FIRE", "FIRE 50%", "FIRE COLD 25%", "ALWAYS", "FIRE ALWAYS",
+			"DEBUF-DURATION 50%", "MAGIC", "FIRE COLD 50", "FIRE 50% MASK=-RACE +Dog", "!FIR",
+			"SLASH 25%", "PIERCE 10% BLUNT 5%", "WEAPONS 50%",
+			"NON-MAGICAL-WEAPONS 25%", "NON-SILVER-WEAPONS 25%", "POISON -10%", "HOLY 50%",
+			"TELEPORT ALWAYS", "Spell_Fireball 50%", "!BOGUSKEY", "!Spell_NotARealAbility 50%"},
+		{"Prop_HaveZapper", "", "-RACE +Dog", "CONTENT -RACE +Dog", "ACTUAL -CLASS +Fighter",
+			"CONTENT ACTUAL -RACE +Elf", "25% -RACE +Dog",
+			"MESSAGE=\"You cannot hold that!\" -RACE +Dog", "EVENT=GOT -RACE +Dog",
+			"ACTUAL 50% EVENT=GOT -CLASS +Mage"},
+		{"Prop_ItemSlot", "", "NUM=2", "TYPE=gem", "TYPE=\"magic gem\"", "LEVEL=NONE",
+			"LEVEL=\"ADD\"", "!LEVEL=BAD", "REMOVABLE=TRUE", "!REMOVABLE=MAYBE", "!NUM=abc",
+			"NUM=2 ; <ITEMS></ITEMS>", "; <ITEMS></ITEMS>",
+			"NUM=2 REMOVABLE=FALSE TYPE=\"gem slots\" LEVEL=ADD ; <ITEMS></ITEMS>", "!abc"},
+		{"Prop_SpellAdder", "", "NOUNINVOKE", "LEVEL=5", 			"MAXTICKS=10;TICKS=5",
+			"50% Spell_Fireball", "50% Spell_Fireball(LIGHT)", "50% Spell_Fireball(LIGHT;MAGIC)",
+			"Spell_Fireball;Spell_Sleep;50% Spell_MagicMissile(LIGHT)", "!BOGUS"},
 		{"Spell_ColorSpray", "UNCONSCIOUS", "STUNNED", "", "!BOGUS"},
 		{"Spell_Fear", "WEAK", "", "!BOGUS"},
 		{"Spell_LimbRack", "ARMSONLY", "", "!BOGUS"},
@@ -564,6 +613,7 @@ public class Validmisctext extends StdTest
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
 		int testNum = 0;
+		final StringBuilder miscFails = new StringBuilder("");
 		for(final String[] row : MISC_TESTS)
 		{
 			testNum++;
@@ -585,10 +635,12 @@ public class Validmisctext extends StdTest
 					val = val.substring(1);
 				final boolean isValid = CMLib.ableParms().isValidMiscText(format, val);
 				if(isValid != shouldPass)
-					return ("Error#" + testNum + ": " + (miscAbility != null ? "ability '" + row[0] + "' " : "")
-						+ "format '" + format + "' with value '" + val + "' should " + (shouldPass ? "match" : "not match"));
+					miscFails.append("Error#" + testNum + ": " + (miscAbility != null ? "ability '" + row[0] + "' " : "")
+						+ "with value '" + val + "' should " + (shouldPass ? "match" : "not match")).append("\n");
 			}
 		}
+		if(miscFails.length() > 0)
+			return miscFails.toString();
 		// Test 44: A format-local prompt override is returned without changing the editor
 		final AbilityParmEditor editor = CMLib.ableParms().getEditors().get("FREQUENCY");
 		final String originalPrompt = editor.prompt();

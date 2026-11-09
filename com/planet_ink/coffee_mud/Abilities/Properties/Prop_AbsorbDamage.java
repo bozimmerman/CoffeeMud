@@ -234,38 +234,16 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		final StringBuilder types = new StringBuilder("");
-		for(int i=0;i<CharStats.CODES.TOTAL();i++)
-		{
-			if(CharStats.CODES.CMMSGMAP(i)>0)
-			{
-				final String s = CharStats.CODES.NAME(i);
-				if(s.indexOf('/')<0)
-					types.append(',').append(s);
-			}
-		}
-		for(final String s : Ability.ACODE.DESCS_)
-		{
-			if(s.indexOf('/')<0)
-				types.append(',').append(s);
-		}
-		for(final String s : Ability.DOMAIN.DESCS)
-		{
-			if(s.indexOf('/')<0)
-				types.append(',').append(s);
-		}
-		for(final String s : Ability.FLAG_DESCS)
-		{
-			if(s.indexOf('/')<0)
-				types.append(',').append(s);
-		}
-		types.append(",MAGIC");
 		final String[] typeList = new String[] {
-			"[CHOICES(choices=" + types.substring(1) + "/prompt=Absorb type/colh=Type)]",
+			"[DAMAGE_TYPE(prompt=Absorb damage type/colh=DamageType)]",
 			"[WEAPON_TYPE(prompt=Absorb weapon type/colh=WeaponType)]",
 			"[WEAPON_CLASS(prompt=Absorb weapon class/colh=WeaponClass)]",
+			"[ABILITY_TYPE(prompt=Absorb ability type/colh=AbilityType)]",
+			"[ABILITY_DOMAIN(prompt=Absorb ability domain/colh=AbilityDomain)]",
+			"[ABILITY_FLAG(prompt=Absorb ability flag/colh=AbilityFlag)]",
 			"[RESOURCE_OR_MATERIAL(prompt=Absorb material/colh=Material)]",
 			"[ABILITY_ID(prompt=Absorb ability/colh=Ability)]",
+			"[CHECK(name=MAGIC/prompt=Absorb magic/colh=Magic)]",
 			"LEVEL[NUMBER(prompt=Minimum level/colh=MinLevel)]"
 		};
 		final StringBuilder fmt = new StringBuilder("");

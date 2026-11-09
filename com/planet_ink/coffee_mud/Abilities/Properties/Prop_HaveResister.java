@@ -47,6 +47,22 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([SAVING_THROW(prompt=Resistance/colh=Resist)]"
+			+ "/([ABILITY_TYPE(prompt=Resistance/colh=Resist)])"
+			+ "/([ABILITY_DOMAIN(prompt=Resistance/colh=Resist)])"
+			+ "/([ABILITY_ID(prompt=Resistance/colh=Resist)])"
+			+ "/(WEAPONS)/(NON-MAGICAL-WEAPONS)/(NON-SILVER-WEAPONS)"
+			+ "/(BLUNT)/(PIERCE)/(SLASH)"
+			+ "/(TELEPORT)/(HOLY)/(UNHOLY)/(DISEASE)/(POISON)/(DEBUF-DURATION)"
+			+ "/(ALWAYS)"
+			+ "/([NUMBER(prompt=Resist %/colh=Pct)]%)"
+			+ "/([DECIMAL(prompt=Resist %/colh=Pct)]))...)"
+			+ "(MASK=[ZAPPERMASK(prompt=Wearer Mask/colh=Mask).. ])";
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;

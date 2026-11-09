@@ -45,6 +45,18 @@ public class Prop_ItemSlot extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((NUM=[NUMBER(prompt=Number of slots/colh=Num)])"
+			+ "/(REMOVABLE=[CONFIRM(prompt=Removable/colh=Rem)])"
+			+ "/(TYPE=(\")[STRING(prompt=Slot type/colh=Type).. ](\"))"
+			+ "/(LEVEL=(\")[CHOICES(choices=NONE,ADD,HIGH,prompt=Level Rule/colh=Level)](\"))"
+			+ ")...)"
+			+ "(;[XML(prompt=Slot items/colh=Items).. ])"
+			;
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return Ability.CAN_ITEMS;
