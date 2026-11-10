@@ -197,6 +197,16 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		return str.toString().trim();
 	}
 
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "((NUM=[NUMBER(prompt=Slot Count/colh=Slots)])/"
+				+"(TYPE=(\")[STRING(prompt=Type/colh=Type)...](\"))/"
+				+"(SKIPS=(\")([ABILITY_ID(prompt=Skip/colh=Skip)]..,)(\"))/"
+				+"(ADDS=(\")(([ABILITY_ID(prompt=Ability ID/colh=Ability ID)](\\([STRINGORNULL(prompt=Args/colh=Arg)..\\)]\\)))..,)(\"))"
+				+")...)";
+	}
 	@Override
 	public void setMiscText(final String text)
 	{

@@ -67,6 +67,19 @@ public class Prop_LocationBound extends Property
 	protected long			failsAt				= 0;
 	protected long			timesOutAfterMillis	= 0;
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((([CHECK(name=ROOM/prompt=Room/colh=Room)])/"
+				+"([CHECK(name=PLAYEROK/prompt=PlayerOK/colh=PlayerOK)])/"
+				+"([CHECK(name=ABSOLUTE/prompt=Absolute/colh=Absolute)])/"
+				+"(TIMEOUT=[NUMBER(prompt=Timeout Secs/colh=Secs)])/"
+				+"([CHECK(name=AREA/prompt=Area Flag/colh=Area Flag)])/"
+				+"([ROOM_ID(prompt=Room ID/colh=Room)..;])/"
+				+"([AREA_NAME(prompt=Area Name/colh=Area Name)..;])"
+				+")..;)";
+	}
+				
 	protected BoundToType getBoundToType()
 	{
 		if(type != null)

@@ -83,6 +83,17 @@ public class Prop_LimitedEquip extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Max Equips/colh=Max)])"
+				+"(;((GET=[CONFIRM(prompt=Get/colh=get)])/"
+				+"(ID=(\")[STRING(prompt=ID/colh=id)...](\"))/"
+				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+				+"(MASK=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))"
+				+")...)";
+	}
+	
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

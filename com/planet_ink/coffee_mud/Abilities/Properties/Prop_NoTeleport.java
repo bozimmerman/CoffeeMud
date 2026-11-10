@@ -77,6 +77,18 @@ public class Prop_NoTeleport extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"(NOSUMMON=[CONFIRM(prompt=NoSummon/colh=NoSummon)])/"
+				+"(INTERAREAOK=[CONFIRM(prompt=Inter-Area OK/colh=Interarea)])/"
+				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))/"
+				+"(REDIRECT=(\")[ROOM_ID(prompt=Redirect Room ID/colh=Redirect)...](\"))/"
+				+"(EXCEPTIONS=(\")[STRING(prompt=Room Exceptions/colh=Exceptions)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

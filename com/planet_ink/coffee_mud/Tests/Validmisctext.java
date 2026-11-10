@@ -607,6 +607,16 @@ public class Validmisctext extends StdTest
 		{"Trap_SpellBlast", "", "Spell_Fireball", "!NotAnAbility"},
 		{"Trap_SporeTrap", "", "Spell_Fireball", "!NotAnAbility"},
 		{"WildTagTurf", "", "Bob", "Bob the Bold"},
+		{"Prop_ItemSlotFiller", "NUM=1 TYPE=\"wandcore\" SKIPS=\"PROP_WEARADJUSTER,SPELL_FIREBALL\" ADDS=\"Prop_WearAdjuster(mana+100),Spell_Fireball()\"", "!NUM=abc TYPE=\"x\"", "NUM=1 TYPE=\"x\" SKIPS=\"\" ADDS=\"\"", "!NUM=1 TYPE=\"x\" BOGUS=y"},
+		{"Prop_LimitedEquip", "5", "3;ID=\"my unique id\" MESSAGE=\"Can't do it!\" MASK=\"[ZAPPERMASK]\"", "!abc"},
+		{"Prop_LocationBound", "ROOM ;PLAYEROK ;TIMEOUT=44", "AREA ;ABSOLUTE", "!ROOM;BAD"},
+		{"Prop_ModExperience", "+20% SELF RIDEOK", "500", "=10%", "[+20% SELF RIDEOK;-race +horse],[=10%;-race +elf]", "!BAD"},
+		{"Prop_ModFaction", "alignment.ini: 500", "=10%", "+20%", "+alignment.ini:*2", "!BOGUS"},
+		{"Prop_MoveRestrictor", "MESSAGE=\"<S-NAME> will not enter!\" CHANGE=50 PUBLIC=TRUE DISMOUNT=TRUE NODOMAINS=\"WOODS,SWAMP\" ONLYDOMAINS=\"STONE\" SEARCH=\"bad room\" MSEARCH=\"goblin\" ISEARCH=\"sword\" NOLOCALES=\"CaveRoom,TreeSurface\" CAST=\"Spell_Fireball(1)\"", "!CHANGE=abc"},
+		{"Prop_MultiEffects", "Prop_WearAdjuster(INT+2),Prop_WearAdjuster(STR-2 MASK=-RACE +ELF)", "<PROP ID=\"Prop_WearAdjuster\">INT+2</PROP><PROP ID=\"Prop_WearAdjuster\">STR-2</PROP>", "!BAD"},
+		{"Prop_NarrowLedge", "CHECK=16 NAME=\"the narrow ledge\"", "CHECK=25 NAME=\"a tightrope\"", "!CHECK=abc"},
+		{"Prop_NoTeleport", "NOSUMMON=TRUE INTERAREAOK=FALSE MESSAGE=\"No!\"", "EXCEPTIONS=\"area name#12,other area name\" NOSUMMON=TRUE", "!BAD"},
+		{"Prop_OpenCommand", "NOOPEN;MESSAGE=Doorknob!!;twist knob;twi knob;smack botto*", "twist knob;NOOPEN;MESSAGE=\"Doorknob!!\";tw knob;twi knob", ""},
 	};
 
 		@Override
@@ -1063,6 +1073,35 @@ public class Validmisctext extends StdTest
 				break;
 			}
 		}
+		// Test 215: narrow-ledge and location-bound formats accept real map targets.
+		final Ability ledgeA = CMClass.getAbility("Prop_NarrowLedge");
+		if(ledgeA == null)
+			return ("Error#215a: ability 'Prop_NarrowLedge' is not loaded");
+		final String ledgeFmt = ledgeA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\""+realRoomID+"\""))
+			return ("Error#215b: Prop_NarrowLedge should accept the room '"+realRoomID+"'");
+		if(CMLib.ableParms().isValidMiscText(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\"No Such Area#9999\""))
+			return ("Error#215c: Prop_NarrowLedge should reject an unknown room");
+		final Ability boundA = CMClass.getAbility("Prop_LocationBound");
+		if(boundA == null)
+			return ("Error#215d: ability 'Prop_LocationBound' is not loaded");
+		final String boundFmt = boundA.miscTextFormat();
+		final String realAreaName = CMLib.map().getRandomRoom().getArea().Name();
+		if(!CMLib.ableParms().isValidMiscText(boundFmt, realRoomID))
+			return ("Error#215e: Prop_LocationBound should accept the room '"+realRoomID+"'");
+		if(!CMLib.ableParms().isValidMiscText(boundFmt, realAreaName+" ;PLAYEROK"))
+			return ("Error#215f: Prop_LocationBound should accept the area '"+realAreaName+"'");
+		if(CMLib.ableParms().isValidMiscText(boundFmt, "No Such Area#9999"))
+			return ("Error#215g: Prop_LocationBound should reject an unknown area");
+		// Test 216: NoTeleport redirection accepts a real room and rejects an unknown one.
+		final Ability noTeleA = CMClass.getAbility("Prop_NoTeleport");
+		if(noTeleA == null)
+			return ("Error#216a: ability 'Prop_NoTeleport' is not loaded");
+		final String noTeleFmt = noTeleA.miscTextFormat();
+		if(!CMLib.ableParms().isValidMiscText(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\""+realRoomID+"\""))
+			return ("Error#216b: Prop_NoTeleport should accept the room '"+realRoomID+"'");
+		if(CMLib.ableParms().isValidMiscText(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\"No Such Area#9999\""))
+			return ("Error#216c: Prop_NoTeleport should reject an unknown room");
 		return null;
 	}
 }

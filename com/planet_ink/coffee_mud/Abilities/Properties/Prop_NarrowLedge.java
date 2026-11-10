@@ -75,6 +75,16 @@ public class Prop_NarrowLedge extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"(CHECK=[NUMBER(prompt=Check/colh=Check)])/"
+				+"(NAME=(\")[STRING(prompt=Name/colh=Name)...](\"))/"
+				+"(ROOM=(\")[ROOM_ID(prompt=Room ID/colh=Room)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_SPELL_AFFECT)

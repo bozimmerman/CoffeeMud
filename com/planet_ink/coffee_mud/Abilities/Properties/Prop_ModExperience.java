@@ -77,6 +77,18 @@ public class Prop_ModExperience extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		final String prefix = "(=/+/-/*/\\/)[NUMBER(prompt=Amount/colh=Amt)](%)([CHOICES(choices=SELF,RIDEOK,TARGET/prompt=Flags/colh=Flags)]...)";
+		final String mask = "(;[ZAPPERMASK(prompt=Mask/colh=Mask)..;])";
+		final String type = "(;;[STRING(prompt=Type/colh=Type).. ])";
+		final String unbracketed = prefix + mask + type;
+		final String bracketed = "\\[" + prefix + "(;[ZAPPERMASK(prompt=Mask/colh=Mask)..\\]])\\]";
+		return "(" + unbracketed + ")/((" + bracketed + ")..,)";
+		
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(mods.length == 0)

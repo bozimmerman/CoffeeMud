@@ -96,6 +96,15 @@ public class Prop_ModFaction extends Property
 		return Integer.toString(CMath.s_int(val));
 	}
 
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "((+/-)[FACTION_ID(prompt=Faction/colh=Faction)..:]/[CHECK(name=REACTION/prompt=Reaction Faction/colh=Reaction)]:)"
+				+"((=/+/-/*/\\/)[MATH_EXPRESSION(prompt=Expression or Number/colh=Expr)..;]))"
+				+"(;[ZAPPERMASK(prompt=Mask/colh=Mask)])"
+				+"";
+	}
 	@Override
 	public void setMiscText(final String newText)
 	{

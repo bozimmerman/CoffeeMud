@@ -68,6 +68,13 @@ public class Prop_MultiEffects extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((<PROP ID=\"[ABILITY_ID(prompt=Property ID/colh=Prop)..\"]\">[STRINGORNULL(prompt=Arguments/colh=Arguments)..<]<\\/PROP>)...)/"
+				+"(([ABILITY_ID(prompt=Property ID/colh=Prop)](\\([STRINGORNULL(prompt=Arguments/colh=Arguments)..\\)]\\)))..,)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		props=new Ability[0];
