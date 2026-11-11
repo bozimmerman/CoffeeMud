@@ -62,6 +62,12 @@ public class Prop_RestrictSpells extends Property
 	};
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([ABILITY_ID(prompt=Spell ID/colh=Spell)](\\([STRINGORNULL(prompt=Args/colh=Args)..\\)]\\)))..;)(;)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

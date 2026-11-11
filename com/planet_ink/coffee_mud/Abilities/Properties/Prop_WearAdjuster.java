@@ -121,6 +121,13 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return CMStrings.replaceAll(super.miscTextFormat(),"/(ALLSAVES",
+				"/([CHECK(name=LAYERED/prompt=Layered/colh=Layered)])/(ALLSAVES");
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof Armor)

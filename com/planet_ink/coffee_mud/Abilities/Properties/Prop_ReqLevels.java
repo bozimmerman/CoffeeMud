@@ -72,6 +72,23 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHECK(name=NOFOLLOW/prompt=NoFollow/colh=NoFol)])/"
+			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
+			+"([CHECK(name=ALL/prompt=ALL/colh=ALL)])/"
+			+"([CHECK(name=SYSOP/prompt=SYSOP/colh=SYSOP)])/"
+			+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+			+"(>[NUMBER(prompt=Minimum Level/colh=MinLvl)])/"
+			+"(<[NUMBER(prompt=Maximum Level/colh=MaxLvl)])/"
+			+"(=[NUMBER(prompt=Equal Level/colh=Level)])/"
+			+"(>=[NUMBER(prompt=Minimum or Equal/colh=MinEq)])/"
+			+"(<=[NUMBER(prompt=Maximum or Equal/colh=MaxEq)])"
+			+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String txt)
 	{
 		noFollow=false;

@@ -71,7 +71,7 @@ public class Prop_MultiEffects extends Property
 	public String miscTextFormat()
 	{
 		return "((<PROP ID=\"[ABILITY_ID(prompt=Property ID/colh=Prop)..\"]\">[STRINGORNULL(prompt=Arguments/colh=Arguments)..<]<\\/PROP>)...)/"
-				+"(([ABILITY_ID(prompt=Property ID/colh=Prop)](\\([STRINGORNULL(prompt=Arguments/colh=Arguments)..\\)]\\)))..,)";
+				+"((,)[ABILITY_ID(prompt=Property ID/colh=Prop)](\\([STRINGORNULL(prompt=Arguments/colh=Arguments)..\\)]\\)))...";
 	}
 
 	@Override

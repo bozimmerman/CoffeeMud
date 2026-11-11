@@ -94,16 +94,17 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	public String miscTextFormat()
 	{
 		return "((MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
-				+"(CHANGE=[NUMBER(prompt=Chance 0-100/colh=Chance)])/"
+				+"(CHANCE=[NUMBER(prompt=Chance 0-100/colh=Chance)])/"
 				+"(PUBLIC=[CONFIRM(prompt=Public Msg/colh=Pub)])/"
 				+"(DISMOUNT=[CONFIRM(prompt=Dismount/colh=Dismount)])/"
-				+"(NODOMAINS=(\")([LOCALE_DOMAIN(prompt=Domain/colh=Domain)]..,)(\"))/"
-				+"(ONLYDOMAINS=(\")([LOCALE_DOMAIN(prompt=Domain/colh=Domain)]..,)(\"))/"
+				+"(NODOMAINS=(\")([LOCALE_DOMAIN(prompt=No Domain/colh=!Domain)]..,)(\"))/"
+				+"(ONLYDOMAINS=(\")([LOCALE_DOMAIN(prompt=Only Domain/colh=+Domain)]..,)(\"))/"
 				+"(SEARCH=(\")[STRING(prompt=Room Search/colh=Room Search)...](\"))/"
 				+"(MSEARCH=(\")[STRING(prompt=MOB Search/colh=MOB Search)...](\"))/"
 				+"(ISEARCH=(\")[STRING(prompt=Item Search/colh=Item Search)...](\"))/"
 				+"(NOLOCALES=(\")([LOCALE_ID(prompt=No Locale/colh=No Locale)]..,)(\"))/"
-				+"(CAST=(\")([ABILITY_ID(prompt=Spell ID/colh=Spell)]\\([STRING(prompt=Args/colh=Args)..\\)]\\))...(\"))"
+				+"(ONLYLOCALES=(\")([LOCALE_ID(prompt=Only Locale/colh=Only Locale)]..,)(\"))/"
+				+"(CAST=(\")([ABILITY_ID(prompt=Spell ID/colh=Spell)](\\([STRINGORNULL(prompt=Args/colh=Args)..\\)]\\)))...(\"))"
 				+")...)";
 	}
 

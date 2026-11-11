@@ -59,6 +59,12 @@ public class Prop_PeaceMaker extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([STRING(prompt=Message/colh=Msg)..;])..;)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))

@@ -51,6 +51,16 @@ public class Prop_OpenPassword extends Property
 	private String message = "<T-NAME> opens.";
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "("
+				+"([ABILITY_ID(prompt=Language/colh=Lang)];[STRING(prompt=Password/colh=Pass)..;];[STRING(prompt=Message/colh=Msg).. ])/"
+				+"([ABILITY_ID(prompt=Language/colh=Lang)];[STRING(prompt=Password/colh=Pass).. ])/"
+				+"([STRING(prompt=Password/colh=Pass).. ])"
+				+")";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		languageID="";

@@ -79,7 +79,7 @@ public class Prop_ModExperience extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		final String prefix = "(=/+/-/*/\\/)[NUMBER(prompt=Amount/colh=Amt)](%)([CHOICES(choices=SELF,RIDEOK,TARGET/prompt=Flags/colh=Flags)]...)";
+		final String prefix = "(=/+/-/*/\\/)[NUMBER(prompt=Amount/colh=Amt)](%)([CHOICES(choices=SELF,RIDEOK,TARGET,POSITIVE,NEGATIVE,POSINEGA/prompt=Flags/colh=Flags)]...)";
 		final String mask = "(;[ZAPPERMASK(prompt=Mask/colh=Mask)..;])";
 		final String type = "(;;[STRING(prompt=Type/colh=Type).. ])";
 		final String unbracketed = prefix + mask + type;

@@ -79,6 +79,16 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHECK(name=NOFOLLOW/prompt=NoFollow/colh=NoFol)])/"
+			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
+			+"((\")(-)[STRING(prompt=Tattoo/colh=Tattoo)...](\"))"
+			+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		themsg="";
@@ -198,9 +208,12 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 				}
 			}
 		}
-		if(allFlag<0) return false; // if not returned, does not have any of them
-		if(allFlag==0) return true; // none were missing, so its all good.
-		if(allFlag>0) return true; // all were missing, so its all good.
+		if(allFlag<0) 
+			return false; // if not returned, does not have any of them
+		if(allFlag==0) 
+			return true; // none were missing, so its all good.
+		if(allFlag>0) 
+			return true; // all were missing, so its all good.
 		return true;
 	}
 

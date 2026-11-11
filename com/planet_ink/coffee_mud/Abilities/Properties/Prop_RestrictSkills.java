@@ -59,6 +59,17 @@ public class Prop_RestrictSkills extends Property
 	protected boolean		wearOnly		= false;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "((MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+				+"(WEARONLY=[CONFIRM(prompt=Wear Only/colh=Wear)])/"
+				+"(ONLYROOMS=(\")([LOCALE_DOMAIN(prompt=Only Rooms/colh=Only)]..,)(\"))/"
+				+"(NEVERROOMS=(\")([LOCALE_DOMAIN(prompt=Never Rooms/colh=Never)]..,)(\"))/"
+				+"(SKILLS=(\")([ABILITY_ID(prompt=Spell ID/colh=Spell)])..,(\"))"
+				+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		onlyRoomDomains.clear();

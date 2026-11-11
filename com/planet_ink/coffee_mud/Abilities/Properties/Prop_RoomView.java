@@ -60,6 +60,15 @@ public class Prop_RoomView extends Property
 	//protected Integer[] dirAdj = new Integer[0];
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "("
+				+"((([CHECK(name=LONGLOOK/prompt=LongLook/colh=LL)])/([CHECK(name=ATTACK/prompt=Attack/colh=Att)]))...;)"
+				+"((OUT)/(DOWNINOUT)/([DIRECTION(prompt=Direction/colh=Dir)])/([ROOM_ID(prompt=Room ID/colh=RID).. ]))"
+				+")";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

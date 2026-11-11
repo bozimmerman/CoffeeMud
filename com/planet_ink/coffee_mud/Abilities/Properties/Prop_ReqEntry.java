@@ -75,6 +75,19 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHECK(name=NOFOLLOW/prompt=NoFollow/colh=NoFol)])/"
+			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
+			+"([CHECK(name=ACTUAL/prompt=Actual/colh=Actual)])/"
+			+"((\")MESSAGE=[STRING(prompt=Message/colh=Msg)...](\"))/"
+			+"((\")EVENT=[CHOICES(choices=BLOCK,ACCUSE/name=Event/colh=Envt)]((,[STRING(prompt=Args/colh=arg)..,])...)(\"))/"
+			+"((\")(+/-)[STRING(prompt=Mask Bit/colh=Mask)...](\"))"
+			+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String txt)
 	{
 		noFollow=false;

@@ -110,6 +110,22 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"[CHECK(name=NOUNINVOKE/prompt=No-Uninvoke/colh=NoUnv)]/"
+				+"[CHECK(name=ONCLOSED/prompt=On Closed/colh=OnClose)]/"
+				+"[CHECK(name=LAYERED/prompt=Layered/colh=Layered)]/"
+				+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
+				+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
+				+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
+				+"([ABILITY_ID(prompt=Ability/colh=Able)])/[NUMBER(prompt=Chance%/colh=Chance%)]% [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   )"
+				+")..;)"
+				+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
+				;
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof Armor)

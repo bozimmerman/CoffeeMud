@@ -69,6 +69,12 @@ public class Prop_OutfitContainer extends Property
 		this.outfitContents.clear();
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(;(<I>[STRING(prompt=Item Name/colh=Item)]<\\/I>)...)";
+	}
+
 	protected void fixContentsFromText()
 	{
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;

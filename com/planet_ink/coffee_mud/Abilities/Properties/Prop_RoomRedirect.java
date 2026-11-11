@@ -63,6 +63,19 @@ public class Prop_RoomRedirect extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"((#[NUMBER(prompt=Room #/colh=Rm#)])/"
+				+"([CHECK(name=BEACON/prompt=Beacon/colh=Beacon)])/"
+				+"([NUMBER(prompt=Room #/colh=Rm#)])/"
+				+"([ROOM_ID(prompt=Room ID/colh=RID)..=]))"
+				+"="
+				+"[ZAPPERMASK(prompt=Mask/colh=Mask)..;]"
+				+")..;)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText((newMiscText==null) ? "" : newMiscText.trim());

@@ -68,6 +68,13 @@ public class Prop_PropSetter extends Property implements TriggeredAffect
 		return 0;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(([ONEWORD(prompt=Stat/colh=Stat)]=(\")[STRING(prompt=Value/colh=Value)...](\"))..."
+				+"([XML(prompt=Previous/colh=Previous).. ]))";
+	}
+
 	protected LinkedList<Quad<Integer,Modifiable,String,String>> previous =
 			new LinkedList<Quad<Integer,Modifiable,String,String>>();
 

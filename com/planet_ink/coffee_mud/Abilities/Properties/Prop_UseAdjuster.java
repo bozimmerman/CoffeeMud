@@ -112,6 +112,14 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return CMStrings.replaceAll(super.miscTextFormat(),"/(ALLSAVES",
+				"/([CHOICES(choices=REVERSED,REVERSE/prompt=Reversed/colh=Reversed)])"
+				+"/(ALLSAVES");
+	}
+
+	@Override
 	public void adjCharState(final MOB mob, final Object[] changes, final CharState charState)
 	{
 		if(changes==null)

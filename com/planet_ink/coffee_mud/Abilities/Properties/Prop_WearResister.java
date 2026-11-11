@@ -103,7 +103,14 @@ public class Prop_WearResister extends Prop_HaveResister
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
+		layered=CMParms.parse(newText.toUpperCase()).indexOf("LAYERED")>=0;
+	}
+
+	@Override
+	public String miscTextFormat()
+	{
+		return CMStrings.replaceAll(super.miscTextFormat(),"/(WEAPONS)",
+				"/([CHECK(name=LAYERED/prompt=Layered/colh=Layered)])/(WEAPONS)");
 	}
 
 	@Override

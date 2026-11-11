@@ -82,6 +82,23 @@ public class Prop_QuestGiver extends Property
 		trigger = -1;
 	}
 
+	private final static String[] TRIGGERS = new String[] {
+		"GET","DEATH", "SPEAK", "LEAVE", "ENTER", "PUTIN", "WEAR", "WIELD", "READ", "LOOK"
+	};
+
+	@Override
+	public String miscTextFormat()
+	{
+		String triggers = CMParms.combineWith(Arrays.asList(TRIGGERS),',');
+		return "(("
+			+"(QUEST=(\")[STRING(prompt=Quest/colh=Quest)...](\"))/"
+			+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+			+"(DETAILS=(\")[CONFIRM(prompt=Details/colh=Det)](\"))/"
+			+"(OPTIONAL=(\")[CONFIRM(prompt=Optional/colh=Opt)](\"))/"
+			+"(TRIGGER=(\")[CHOICES(choices="+triggers+"/prompt=Trigger/colh=Trigger)](\"))"
+			+")...)";
+	}
+
 	protected int getTrigger()
 	{
 		if((trigger < 0)&&(affected != null))

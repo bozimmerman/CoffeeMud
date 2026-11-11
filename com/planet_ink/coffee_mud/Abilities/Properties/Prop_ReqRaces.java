@@ -86,6 +86,16 @@ public class Prop_ReqRaces extends Property implements TriggeredAffect
 		super.setMiscText(txt);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHECK(name=NOFOLLOW/prompt=NoFollow/colh=NoFol)])/"
+			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
+			+"((\")((+)/(-))(([CHOICES(choices=ALL/prompt=All/colh=All)])/([RACE_NAME(prompt=Race Name/colh=Race)]))(\"))"
+			+")...)";
+	}
+
 	public boolean passesMuster(final MOB mob)
 	{
 		if(mob==null)

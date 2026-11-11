@@ -92,6 +92,23 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			   +"(PEOPLE=[NUMBER(prompt=Num People/colh=People)])/"
+			   +"(players=[NUMBER(prompt=Num Players/colh=Players)])/"
+			   +"(mobs=[NUMBER(prompt=Num Mobs/colh=Mobs)])/"
+			   +"(items=[NUMBER(prompt=Num Items/colh=Items)])/"
+			   +"(siegeweapons=[NUMBER(prompt=Siege Cap/colh=Seige)])/"
+			   +"(rooms=[NUMBER(prompt=Room Limit/colh=Rooms)])/"
+			   +"(weight=[NUMBER(prompt=Weight/colh=Weight)])/"
+			   +"(indoor=[CONFIRM(prompt=Indoor OK/colh=Indoor)])/"
+			   +"(droponly=[CONFIRM(prompt=Drop Only/colh=DropOnly)])/"
+			   +"(containersok=[CONFIRM(prompt=Containers OK/colh=ContOK)])"
+			   +")...)";
+	}
+
+	@Override
 	public void setMiscText(final String txt)
 	{
 		super.setMiscText(txt);
