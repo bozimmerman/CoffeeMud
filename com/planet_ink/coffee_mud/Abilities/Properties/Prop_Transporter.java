@@ -57,6 +57,12 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 	protected boolean sendEnter = false;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Target ROom ID/colh=Target)..;](;(SENDENTER=[CONFIRM(prompt=Enter Notify/colh=Notify)])))";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		roomID = "START";

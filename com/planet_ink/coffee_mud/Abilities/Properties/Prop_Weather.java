@@ -56,6 +56,17 @@ public class Prop_Weather extends Property
 	int climask=-1;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"([WEATHER_DESC(prompt=Weather/colh=Weather)])/"
+				+"(CLIMATE_[CLIMATE_MASK(prompt=Climate/colh=Clim)])/"
+				+"(CLIMASK_[CLIMATE_MASK(prompt=Climate/colh=Clim)])"
+				+")...)";
+
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

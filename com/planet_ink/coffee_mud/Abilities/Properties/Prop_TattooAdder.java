@@ -88,6 +88,12 @@ public class Prop_TattooAdder extends Property
 		return tattooCode;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((+/-/+-/-+)([CHECK(name=ACCOUNT/colh=account/prompt=Account)])[STRING(prompt=Tattoo/colh=Tatt).. ])";
+	}
+
 	public void applyTattooCodes(final MOB mob, final boolean addOnly, final boolean subOnly)
 	{
 		String tattooName=text();

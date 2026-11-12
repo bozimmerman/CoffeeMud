@@ -53,6 +53,17 @@ public class Prop_Unsellable extends Property
 	protected CompiledZMask	pxceptMask	= null;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+				+"(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Ambi)...](\"))/"
+				+"(DROPOFF=[CONFIRM(prompt=DropOff/colh=DOff)])/"
+				+"(SEXCEPTMASK=(\")[ZAPPERMASK(prompt=Src Mask/colh=Mask)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You can't sell that."));

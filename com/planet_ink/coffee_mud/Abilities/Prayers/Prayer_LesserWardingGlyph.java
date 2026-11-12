@@ -242,7 +242,7 @@ public class Prayer_LesserWardingGlyph extends Prayer implements Trap
 	@Override
 	public String miscTextFormat()
 	{
-		return "([NAME(prompt=Player Name/colh=Player).. ])";
+		return "([STRING(prompt=Player Name/colh=Player).. ])";
 	}
 
 	@Override

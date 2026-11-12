@@ -88,6 +88,23 @@ public class Prop_Retainable extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "("
+				+"("
+				+"([NUMBER(prompt=Pay Amt/colh=Amt)])/"
+				+"(PERSIST=[CONFIRM(prompt=Persist/colh=Persist)])"
+				+")..."
+				+"(;("
+				+"([NUMBER(prompt=Period MudDays/colh=PerMD)])/"
+				+"(PERSIST=[CONFIRM(prompt=Persist/colh=Persist)])"
+				+")...(;("
+				+"([NUMBER(prompt=Last PaydayMS/colh=Last)])/"
+				+"(PERSIST=[CONFIRM(prompt=Persist/colh=Persist)])"
+				+")...)))";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

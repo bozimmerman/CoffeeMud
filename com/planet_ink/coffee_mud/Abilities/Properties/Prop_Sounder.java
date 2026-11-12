@@ -326,6 +326,16 @@ public class Prop_Sounder extends Property
 		}
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"[CHOICES(choices=GET,GET_ROOM,EAT,EAT_ROOM,PUSH,PUSH_ROOM,PULL,PULL_ROOM,SIT,SIT_ROOM,SLEEP,SLEEP_ROOM,DROP,DROP_ROOM,WEAR,WEAR_ROOM,OPEN,OPEN_ROOM,CLOSE,CLOSE_ROOM,HOLD,HOLD_ROOM,WIELD,WIELD_ROOM,DRINK,DRINK_ROOM,MOUNT,MOUNT_ROOM,REMOVE,REMOVE_ROOM,PORTAL_ENTER,PORTAL_ENTER_ROOM,PORTAL_EXIT,PORTAL_EXIT_ROOM,DAMAGE,DAMAGE_ROOM,FIGHT,FIGHT_ROOM/prompt=Trigger/colh=Trigger)]"
+			+"[STRING(prompt=Emote/colh=Emote)..(;/MASK=)]"
+			+"((MASK=)[ZAPPERMASK(prompt=Mask/colh=Mask).. ])"
+			+")..;)";
+	}
+
 	protected void emoteHere(final Room room, final MOB emoter, final String emote)
 	{
 		if(room==null)

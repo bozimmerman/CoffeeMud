@@ -101,6 +101,16 @@ public class Skill_Befriend extends BardSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"([STRING(prompt=Name/colh=Name)]=[NUMBER(prompt=Amt/colh=Amt)])/"
+				+"(RACE=[RACE_ID(prompt=Race/colh=Race)])/"
+				+"(RACECAT=[RACE_CAT(prompt=Race Category/colh=RaceCat)])"
+				+")...)";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if (msg.amITarget(affected))

@@ -324,6 +324,21 @@ public class Prop_UseEmoter extends Property
 		mask=null;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "("
+				+"("
+				+"(INROOM=[STRING(prompt=Rooms/colh=Rooms)..;])/"
+				+"(CHANCE=[NUMBER(prompt=Chance/colh=Chance)])/"
+				+"(MASK=[ZAPPERMASK(prompt=Mask/colh=Mask)])/"
+				+"(BROADCAST)/(PRIVATE)/(NOPRIVATE)/(NOBROADCAST)/"
+				+"(VISUAL)/(SIGHT)/(AROMA)/(SMELL)/(SOUND)/(NOISE)/(SOCIAL)/(PUFF)"
+				+")..."
+				+"(;[STRING(prompt=Emote/colh=Emote)...])"
+				+")";
+	}
+
 	protected boolean setEmoteType(final String str)
 	{
 		switch(str.toUpperCase().trim())

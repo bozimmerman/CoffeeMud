@@ -79,6 +79,17 @@ public class Prop_RoomWatch extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"((#[NUMBER(prompt=Room #/colh=Rm#)])/"
+				+"([NUMBER(prompt=Room #/colh=Rm#)])/"
+				+"(prefix=(\")[STRING(prompt=Prefix/colh=Prefix)]...)(\")/"
+				+"([ROOM_ID(prompt=Room ID/colh=RID)..;]))"
+				+")..;)";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -77,6 +77,18 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
+			+"([CHECK(name=NOFOL/prompt=NoFollow/colh=NoFol)])/"
+			+"([CHAR_STAT_CODE(prompt=Stat/colh=Stat)..(</=/>/!)]"
+			+"[CHOICES(choices=>,<,=,!,>=,<=,==,!=/prompt=Comparison/colh=Cmp)..(0/1/2/3/4/5/6/7/8/9)]"
+			+"[NUMBER(prompt=Value/colh=Val)])"
+			+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String txt)
 	{
 		noSneak=false;
@@ -183,6 +195,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 			{
 				final Item myItem=(Item)affected;
 				if(msg.amISource((MOB)myItem.owner()))
+				{
 					switch(msg.sourceMinor())
 					{
 					case CMMsg.TYP_FILL:
@@ -227,6 +240,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 						}
 						break;
 					}
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);

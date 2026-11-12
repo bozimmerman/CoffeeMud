@@ -80,6 +80,19 @@ public class Prop_Trainer extends Prop_StatTrainer
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"([CHAR_STAT_CODE(prompt=Stat Name/colh=stat)]=[NUMBER(prompt=Value/colh=Val)])/"
+				+"([CHECK(name=NOTEACH/prompt=NoTeach/colh=NoTeach)])/"
+				+"(BASEVALUE=[NUMBER(prompt=Base Value/colh=Base)])/"
+				+"([CHAR_CLASS(prompt=Char Class ID/colh=class)])/"
+				+"([EXPERTISE(prompt=Expertise ID/colh=exper)])/"
+				+"([CHOICES(choices=ALL,SKILL,SKILLS,NOEXPER,NOEXPERTISE/prompt=ALL/colh=all)])"
+				+")...)";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!built)&&(affected instanceof MOB))

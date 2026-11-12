@@ -101,6 +101,16 @@ public class Prop_ShortEffects extends Property
 			mask=CMLib.masking().getPreCompiledMask(newMiscText);
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((("
+				+"([CHOICES(choices=OWNER,WEARER,REMOTEOK,LONGTIMEOK/prompt=Flag/colh=Flag)])/"
+				+"([NUMBER(prompt=Max Ticks/colh=Ticks)])/"
+				+"((\")[ROOM_ID(prompt=Room ID/colh=RID)...](\")))..."
+				+";)([ZAPPERMASK(prompt=Mask/colh=Mask).. ]))";
+	}
+
 	protected Set<MOB> getBadInvokers()
 	{
 		final Set<MOB> badInvokers = new HashSet<MOB>();

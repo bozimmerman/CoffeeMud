@@ -52,6 +52,16 @@ public class Prop_Undroppable extends Property
 	protected String	message		= "You don't want to drop that.";
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
+				+"(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Ambi)...](\"))/"
+				+"(LOSTOFF=[CONFIRM(prompt=LostOff/colh=LOff)])"
+				+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You don't want to drop that."));

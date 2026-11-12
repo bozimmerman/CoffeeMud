@@ -134,6 +134,15 @@ public class Skill_HireCrewmember extends StdSkill
 	protected Behavior	sailor		= null;
 
 	@Override
+	public String miscTextFormat()
+	{
+		StringBuilder choices = new StringBuilder("");
+		for(CrewType T : CrewType.values())
+			choices.append(choices.length()==0?"":",").append(T.name());
+		return "([STRING(prompt=Name/colh=Name)..;](;[CHOICES(choices="+choices.toString()+"/prompt=Type/colh=Type)]))";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

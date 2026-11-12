@@ -144,6 +144,15 @@ public class Prop_StatAdjuster extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"([CHAR_STAT_CODE(prompt=Stat/colh=Stat)]=[NUMBER(prompt=Adjustment/colh=Adj)])/"
+			+"(ADJMAX=[CONFIRM(prompt=Adjust Max/colh=AdjMax)])"
+			+")...)";
+	}
+
+	@Override
 	public String getStat(final String code)
 	{
 		if((code!=null)

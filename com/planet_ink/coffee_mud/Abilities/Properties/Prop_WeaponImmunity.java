@@ -77,6 +77,20 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	private static final Set<String> validFlags = new HashSet<String>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"(\")(+/-)("
+			+"([WEAPON_TYPE(prompt=weapon type/colh=WeaponType)])/"
+			+"([WEAPON_CLASS(prompt=weapon class/colh=WeaponClass)])/"
+			+"([CHAR_STAT_CODE(prompt=Char Stat/colh=ChStat)])/"
+			+"([RESOURCE_OR_MATERIAL(prompt=Resource or Mat/colh=RscMat)])/"
+			+"(LEVEL[NUMBER(prompt=Number/colh=Num)])/"
+			+"([CHOICES(choices=ALL,MAGIC,NONMAGIC,MAGICSKILLS,MAGICSPELLS/prompt=Misc Flag/colh=Flag)])"
+			+")(\"))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newValue)
 	{
 		super.setMiscText(newValue);
@@ -116,7 +130,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 			if((s!=null)&&(s.startsWith("LEVEL")))
 			{
 				c=((Character)c).charValue()+" "+s.substring(5).trim();
-				s=s.substring(5).trim();
+				s="LEVEL";
 			}
 			if(!validFlags.contains(s))
 			{

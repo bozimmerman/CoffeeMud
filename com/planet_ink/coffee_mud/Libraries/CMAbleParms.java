@@ -2008,6 +2008,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				}
 			}
+			else
+			{
+				Log.debugOut("CMAbleParms", "Invalid/unknown miscText parm editor or type '"+parmName+"' for value '"+value+"'");
+			}
 		}
 		return true;
 	}
@@ -2161,6 +2165,32 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			outIndex[0] = i;
 			return true;
 		}
+		if(token.greedyToTokens != null)
+		{
+			// Greedy up to any of the delimiter strings, without consuming them.
+			final int end = proposition.length();
+			int i = index;
+			while(i < end)
+			{
+				boolean delimiterFound = false;
+				for(final String delimiter : token.greedyToTokens)
+				{
+					if((delimiter.length() > 0)
+					&&(proposition.regionMatches(true, i, delimiter, 0, delimiter.length())))
+					{
+						delimiterFound = true;
+						break;
+					}
+				}
+				if(delimiterFound)
+					break;
+				i++;
+			}
+			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
+				return false;
+			outIndex[0] = i;
+			return true;
+		}
 		if(token.greedyLiteral != null)
 		{
 			// Consume at least one character, then stop at the first occurrence
@@ -2240,6 +2270,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public String				greedyLiteral	= null;
 		public boolean				greedy			= false;
 		public char					greedyTo		= '\0';		// non-zero: greedy up to this delimiter char, without consuming it
+		public List<String>			greedyToTokens	= null;		// non-null: greedy up to any of these delimiters, without consuming them
 		public boolean				greedyRest		= false;	// TRUE if this is an [X].. rest-or-empty placeholder
 		public boolean				escapedSlash	= false;	// TRUE if this "/" literal came from a \/ escape and must not split alternatives
 
@@ -2262,6 +2293,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			this.greedyLiteral = other.greedyLiteral;
 			this.greedy = other.greedy;
 			this.greedyTo = other.greedyTo;
+			this.greedyToTokens = other.greedyToTokens;
 			this.greedyRest = other.greedyRest;
 			this.escapedSlash = other.escapedSlash;
 		}
@@ -2317,7 +2349,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * (for example [NAME...]) is greedy.  A placeholder whose name ends with
 	 * '..' plus a delimiter character (for example [NAME..;]), or '..' plus an
 	 * escaped character (for example [NAME..\/]), is greedy up to
-	 * that delimiter without consuming it.  A placeholder followed by '.. '
+	 * that delimiter without consuming it.  A placeholder whose name ends with
+	 * '..' plus a parenthesized, '/'-separated set of delimiters (for example
+	 * [NAME..(</=/>/!)], or [NAME..(;|MASK=)] for multi-character delimiters)
+	 * is greedy up to any of those delimiters, without consuming them.  A placeholder followed by '.. '
 	 * (dot-dot-space, for example ([NAME].. )) is greedy to end-of-string,
 	 * or empty when nothing remains, and may appear inside groups.  The special (") marker denotes an
 	 * optional quotation mark.  (")[NAME...](") accepts a quoted-or-bare
@@ -2413,8 +2448,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
-				final String placeholder = format.substring(index + 1, closeIndex);
-				final boolean greedy = placeholder.endsWith("...");
+				String placeholder = format.substring(index + 1, closeIndex);
+				List<String> greedyToTokens = null;
+				final int setSuffix = placeholder.lastIndexOf("..(");
+				if((setSuffix >= 0) && placeholder.endsWith(")"))
+				{
+					final String setStr = placeholder.substring(setSuffix + 3, placeholder.length() - 1);
+					placeholder = placeholder.substring(0, setSuffix).trim();
+					greedyToTokens = new ArrayList<String>();
+					for(final String setTok : CMParms.parseAny(setStr, '/', false, false))
+						if(setTok.length() > 0)
+							greedyToTokens.add(setTok);
+				}
+				final boolean greedy = (greedyToTokens == null) && placeholder.endsWith("...");
 				char greedyTo = '\0';
 				boolean greedyRest = false;
 				boolean greedyQuote = false;
@@ -2513,6 +2559,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				token.placeholderArgs=placeholderArgs;
 				token.parameterArgs=parameterArgs;
 				token.greedyTo=greedyTo;
+				token.greedyToTokens=greedyToTokens;
 				if(greedyRest)
 					token.greedyRest=true;
 				if(greedyQuote)

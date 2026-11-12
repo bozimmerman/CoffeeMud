@@ -109,6 +109,16 @@ public class Prop_StatTrainer extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"([CHAR_STAT_CODE(prompt=Stat Name/colh=stat)]=[NUMBER(prompt=Value/colh=Val)])/"
+				+"([CHECK(name=NOTEACH/prompt=NoTeach/colh=NoTeach)])/"
+				+"(BASEVALUE=[NUMBER(prompt=Base Value/colh=Base)])"
+				+")...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

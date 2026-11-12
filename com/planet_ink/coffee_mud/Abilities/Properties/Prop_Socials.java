@@ -146,6 +146,18 @@ public class Prop_Socials extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "("
+			+"("
+			+"(MASK=[ZAPPERMASK(prompt=Mask/colh=Mask)..;])"
+			+"/"
+			+"([CHOICES(choices=NAME,SRCCODE,SOURCECODE,TARGET,TGTCODE,OTHCODE,OTHERCODE,TARGETCODE,YOUSEE,OTHSEE,OTHERSEE,OTHERSSEE,TARGSEE,TARGETSEE,TGTSEE,NOTARGSEE,NOTARGETSEE,NOTGTSEE,MSPFILE,ZAPMASK,FLAGSTR,WORNONLY,LOAD/prompt=Parameter/colh=Parm)]=[STRING(prompt=Value/colh=Val)..;])"
+			+")..;"
+			+")";
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)

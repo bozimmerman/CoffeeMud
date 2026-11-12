@@ -71,6 +71,13 @@ public class Prop_WearOverride extends Property
 			return "Allows an item to be worn by "+maskDesc;
 	}
 
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "((([CHOICES(choices=DRESS,CONTENTS/prompt=Flag/colh=Flag)])/((\")[ZAPPERMASK(prompt=Mask/colh=Mask)](\")))...)";
+	}
+
 	@Override
 	public void setMiscText(final String newText)
 	{

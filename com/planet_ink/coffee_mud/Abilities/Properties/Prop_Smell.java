@@ -64,6 +64,22 @@ public class Prop_Smell extends Property
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			+"((TICKS=[NUMBER(prompt=Ticks/colh=Tk)])"
+			+"(CHANCE=[NUMBER(prompt=Chance %/colh=Ch%)])"
+			+"([CHECK(name=EMOTE/prompt=Emote/colh=Em)])"
+			+"([CHECK(name=BROADCAST/prompt=Broadcast/colh=Bc)])"
+			+"[STRING(prompt=Smell Text/colh=Smell)..;])/"
+			+"(TICKS=[NUMBER(prompt=Ticks/colh=Tk)])/"
+			+"(CHANCE=[NUMBER(prompt=Chance %/colh=Ch%)])/"
+			+"[CHECK(name=EMOTE/prompt=Emote/colh=Em)]/"
+			+"[CHECK(name=BROADCAST/prompt=Broadcast/colh=Bc)]"
+			+")..;)";
+	}
+
+	@Override
 	public void setMiscText(final String newStr)
 	{
 		if(newStr.startsWith("+"))
