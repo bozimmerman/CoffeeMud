@@ -59,7 +59,7 @@ public class Prop_PracticeDummy extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "([CHECK(name=KILL/prompt=Killable/colh=Killable)])";
+		return "([CHOICES(choices=KILL,KILLABLE/prompt=Killable/colh=Killable)])";
 	}
 
 	@Override

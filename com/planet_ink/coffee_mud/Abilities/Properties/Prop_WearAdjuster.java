@@ -117,7 +117,8 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
+		layered=(CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0)
+			||(CMParms.parse(newText.toUpperCase()).indexOf("LAYERED")>=0);
 	}
 
 	@Override

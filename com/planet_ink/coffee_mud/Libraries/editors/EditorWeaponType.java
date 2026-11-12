@@ -50,6 +50,22 @@ public class EditorWeaponType extends AbilityParmEditorImpl
 	}
 
 	@Override
+	public boolean confirmValue(final String oldVal, final Map<String, String> args)
+	{
+		if(oldVal == null)
+			return false;
+		final String val = oldVal.trim().toUpperCase();
+		if(val.length() == 0)
+			return false;
+		for(final String type : Weapon.TYPE_DESCS)
+		{
+			if(type.startsWith(val))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
 	public int appliesToClass(final Object o)
 	{
 		return (o instanceof Weapon) ? 2 : -1;

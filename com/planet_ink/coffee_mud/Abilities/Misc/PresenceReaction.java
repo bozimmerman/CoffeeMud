@@ -121,9 +121,10 @@ public class PresenceReaction extends StdAbility
 	@Override
 	public String miscTextFormat()
 	{
-		return "(((([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~])"
-			+"((\\~\\~([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~])...))"
-			+"/(+([ABILITY_ID]/[BEHAVIOR_ID])=[STRING(prompt=Entry parameters/colh=Parms)..~]))";
+		return "(((([ABILITY_ID]/[BEHAVIOR_ID])=[STRINGORNULL(prompt=Entry parameters/colh=Parms)..~])"
+			+"((\\~\\~([ABILITY_ID]/[BEHAVIOR_ID])=[STRINGORNULL(prompt=Entry parameters/colh=Parms)..~])...))"
+			+"/(+([ABILITY_ID]/[BEHAVIOR_ID])=[STRINGORNULL(prompt=Entry parameters/colh=Parms)..~]))"
+			+"(\\~)(\\~)";
 	}
 
 	@Override

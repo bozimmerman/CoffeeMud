@@ -119,7 +119,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 				+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
 				+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
 				+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
-				+"([ABILITY_ID(prompt=Ability/colh=Able)])/[NUMBER(prompt=Chance%/colh=Chance%)]% [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   )"
+				+"([ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))/[NUMBER(prompt=Chance%/colh=Chance%)]% [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   )/([NUMBER(prompt=Chance%/colh=Chance%)]%)"
 				+")..;)"
 				+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
 				;

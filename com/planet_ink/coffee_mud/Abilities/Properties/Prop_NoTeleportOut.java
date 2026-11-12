@@ -74,7 +74,7 @@ public class Prop_NoTeleportOut extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "((EXCEPTIONS=(\")([ROOM_ID(prompt=Exception RoomID/colh=XRoom)]..,)(\"))"
+		return "((EXCEPTIONS=(\")([ROOM_ID(prompt=Exception RoomID/colh=XRoom)..(,/\")]..,)(\"))"
 			+ "/(INTERAREAOK=[CONFIRM(prompt=Inter area ok/colh=InterAreaOk)]))...";
 	}
 

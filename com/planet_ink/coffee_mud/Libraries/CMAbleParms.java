@@ -2120,7 +2120,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			if(proposition.charAt(index) == '\"')
 			{
-				quoteMode[0] = true;
+				quoteMode[0] = !quoteMode[0];
 				outIndex[0] = index + 1;
 			}
 			return true;

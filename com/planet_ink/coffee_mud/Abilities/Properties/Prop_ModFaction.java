@@ -101,7 +101,7 @@ public class Prop_ModFaction extends Property
 	public String miscTextFormat()
 	{
 		return "((+/-)[FACTION_ID(prompt=Faction/colh=Faction)..:]/[CHECK(name=REACTION/prompt=Reaction Faction/colh=Reaction)]:)"
-				+"((=/+/-/*/\\/)[MATH_EXPRESSION(prompt=Expression or Number/colh=Expr)..;]))"
+				+"((=/+/-/*/\\/)[MATH_EXPRESSION(prompt=Expression or Number/colh=Expr)..;])"
 				+"(;[ZAPPERMASK(prompt=Mask/colh=Mask).. ])"
 				+"";
 	}

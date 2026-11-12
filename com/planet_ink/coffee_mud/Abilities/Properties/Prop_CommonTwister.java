@@ -90,6 +90,10 @@ public class Prop_CommonTwister extends Property
 	{
 		return "((SKILL=(\")(*/[ABILITY_ID(prompt=Skill/colh=Skill)...](\")))"
 			+ "(MASK=(\")[STRING(prompt=Mask/colh=Mask)...](\"))"
+			+ "((NAME=(\")[STRING(prompt=Name/colh=Name)...](\"))"
+			+ "/(DISPLAY=(\")[STRING(prompt=Display/colh=Display)...](\"))"
+			+ "/(MATERIAL=(\")[STRING(prompt=Material/colh=Material)...](\"))"
+			+ "/(SUBTYPE=(\")[STRING(prompt=Subtype/colh=Subtype)...](\")))..."
 			+ "(;))...";
 	}
 

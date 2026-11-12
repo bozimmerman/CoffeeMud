@@ -412,7 +412,7 @@ public class Prop_Familiar extends Property
 				str.append(",");
 			str.append(Familiar.values()[i].name());
 		}
-		str.append("/prompt=Familiar/colh=Familiar)...]\"");
+		str.append("/prompt=Familiar/colh=Familiar)]");
 		return str.toString();
 	}
 

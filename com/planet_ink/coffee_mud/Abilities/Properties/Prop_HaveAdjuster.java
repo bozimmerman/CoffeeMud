@@ -62,6 +62,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			fmt.append("/([CHAR_STATE_PREFIX(prompt=Char State/colh=CStat)]").append(op)
 				.append("[NUMBER(prompt=Amount/colh=Amt)])");
 		}
+		fmt.append("/(move+[NUMBER(prompt=Amount/colh=Amt)])");
+		fmt.append("/(move-[NUMBER(prompt=Amount/colh=Amt)])");
 		fmt.append("/(ALLSAVES+[NUMBER(prompt=All Saves/colh=Saves)])");
 		for(final String op : new String[] { "=", "+", "-" })
 		{
@@ -69,9 +71,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			fmt.append("/(sen").append(op).append("[SENSE_INSTR(prompt=Sense/colh=Sense)])");
 		}
 		fmt.append("/(gen=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
+		fmt.append("/(gender=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
 		fmt.append("/(cla=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
+		fmt.append("/(class=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
 		fmt.append("/(cls=[NUMBER(prompt=Class Level/colh=Level)])");
 		fmt.append("/(rac=[RACE_ID(prompt=Race/colh=Race)])");
+		fmt.append("/(race=[RACE_ID(prompt=Race/colh=Race)])");
 		fmt.append("/(DEITY=[DEITY(prompt=Deity Name/colh=Deity)])");
 		fmt.append("/(MULTIPLYPH=[CONFIRM(prompt=Multiply Phys Stats/colh=MulPh)])");
 		fmt.append("/(MULTIPLYCH=[CONFIRM(prompt=Multiply Char State/colh=MulCh)])");
@@ -81,7 +86,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			"ABLEMNCOSTS", "ABLEMVCOSTS", "ABLELVLS" })
 		{
 			fmt.append("/(").append(key)
-				.append("=([ABILITY_ID(prompt=Ability/colh=Able)]\\((\\+)[NUMBER(prompt=Amount/colh=Amt)]\\))..,)");
+				.append("=(\")(([ABILITY_ID(prompt=Ability/colh=Able)]\\((\\+)[NUMBER(prompt=Amount/colh=Amt)]\\))..,)(\"))");
 		}
 		fmt.append("/(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Amb).. ](\"))");
 		if((fmt.length() > 0) && (fmt.charAt(0) == '/'))

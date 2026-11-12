@@ -60,7 +60,8 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
 			+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
 			+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
-			+"(([NUMBER(prompt=Chance%/colh=Chance%)]%) [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))"
+			+"(([NUMBER(prompt=Chance%/colh=Chance%)]%) [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))/"
+			+"([NUMBER(prompt=Chance%/colh=Chance%)]%)"
 			+")..;)"
 			+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
 			;
