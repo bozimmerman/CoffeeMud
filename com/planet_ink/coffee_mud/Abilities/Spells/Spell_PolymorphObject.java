@@ -122,6 +122,12 @@ public class Spell_PolymorphObject extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Polymorphed items XML/colh=Items).. ])";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected = super.affected;

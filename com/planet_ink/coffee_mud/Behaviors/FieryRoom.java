@@ -47,7 +47,7 @@ public class FieryRoom extends ActiveTicker
 	private boolean		noNpc			= false;
 	private boolean		noFireText		= false;
 
-	private String[] FireTexts = {"The fire here crackles and burns."};
+	private String[] fireTexts = {"The fire here crackles and burns."};
 
 	public FieryRoom()
 	{
@@ -78,6 +78,20 @@ public class FieryRoom extends ActiveTicker
 		setFireTexts();
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+super.activeParmsFormat()+"/"
+				+"(TITLE=(\")[STRING(prompt=Title/col=Title)...](\"))/"
+				+"(DESCRIPTION=(\")[STRING(prompt=Description/col=Description)...](\"))/"
+				+"(DAMAGE=[NUMBER(prompt=Damage/colh=Dmg)])/"
+				+"(EQCHANCE=[NUMBER(prompt=EqChance (0-100)/colh=Chance)])/"
+				+"(BURNTICKS=[NUMBER(prompt=Burn Ticks/colh=Ticks)])/"
+				+"([CHOICES(choices=NOSTOP,NONPC,NOFIRETEXT/prompt=Flags/colh=Flags)])"
+				+")...)";
+	}
+
 	private void setFireTexts()
 	{
 		final String[] newFireTexts = {"The fire here crackles and burns.",
@@ -86,7 +100,7 @@ public class FieryRoom extends ActiveTicker
 								  "The fire is burning out of control. You fear for your safety"+(noStop?".":" as it looks like this place is being completely consumed."),
 								  "You hear popping and sizzling as something burns.",
 								  "The smoke here is very thick and you worry about whether you will be able to breathe."};
-		FireTexts = newFireTexts;
+		fireTexts = newFireTexts;
 	}
 
 	@Override
@@ -152,7 +166,7 @@ public class FieryRoom extends ActiveTicker
 			// The tick happened.  If NOT NoFireText, Do flame emotes
 			if(!noFireText)
 			{
-				final String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
+				final String pickedText=fireTexts[CMLib.dice().roll(1,fireTexts.length,0)-1];
 				room.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
 			}
 		}

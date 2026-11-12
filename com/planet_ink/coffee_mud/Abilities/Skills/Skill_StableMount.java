@@ -97,6 +97,12 @@ public class Skill_StableMount extends StdAbility
 		return 0;
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Stable XML/colh=XML).. ])";
+	}
+
 	protected Map<String, List<MOB>>	stables		= null;
 
 	protected List<MOB> getLocalStable(final MOB mob, final Area A)

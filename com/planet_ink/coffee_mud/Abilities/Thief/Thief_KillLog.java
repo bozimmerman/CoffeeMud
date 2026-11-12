@@ -125,6 +125,12 @@ public class Thief_KillLog extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Kill log XML/colh=XML).. ])";
+	}
+
+	@Override
 	public String text()
 	{
 		final StringBuffer str=new StringBuffer("<MOBS>");

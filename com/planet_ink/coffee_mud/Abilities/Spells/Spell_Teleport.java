@@ -102,6 +102,21 @@ public class Spell_Teleport extends Spell
 	private String leaveMsgStr = "<S-NAME> disappear(s) in a puff of smoke.";
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "("
+				+ "("
+				+ "(CASTMSG=(\")[STRING(prompt=Cast message/colh=Cast)...](\"))"
+				+ "/(APPEARMSG=(\")[STRING(prompt=Appear message/colh=Appear)...](\"))"
+				+ "/(LEAVEMSG=(\")[STRING(prompt=Leave message/colh=Leave)...](\"))"
+				+ "/(THEME=(\")[STRING(prompt=AutoGen theme/colh=Theme)...](\"))"
+				+ "/([STRING(prompt=AutoGen variable/colh=Variable)]=(\")[STRING(prompt=AutoGen value/colh=Value)...](\"))"
+				+ ")..."
+				+ "/([AREA_NAME(prompt=Teleport area/colh=Area).. ])"
+				+ ")";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

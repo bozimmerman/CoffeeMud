@@ -60,6 +60,12 @@ public class Spell_PlanarBlock extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([PLANE_NAME(prompt=Forbidden plane/colh=Plane)..,]..,))";
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;

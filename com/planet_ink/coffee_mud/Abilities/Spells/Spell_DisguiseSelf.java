@@ -97,6 +97,17 @@ public class Spell_DisguiseSelf extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+				+"(RACE=(\")[STRING(prompt=Race Name/colh=Race)...](\"))/"
+				+"(NAME=(\")[STRING(prompt=Name/colh=Name)...](\"))/"
+				+"(CLASS=(\")[STRING(prompt=Class Name/colh=Class)...](\"))/"
+				+"(GENDER=(\")[STRING(prompt=Gender Name/colh=Gender)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

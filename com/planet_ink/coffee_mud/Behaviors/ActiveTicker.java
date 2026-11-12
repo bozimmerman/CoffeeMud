@@ -81,6 +81,20 @@ public class ActiveTicker extends StdBehavior
 		tickReset();
 	}
 	
+	protected String activeParmsFormat()
+	{
+		return 	"(MIN=[NUMBER(prompt=Min Ticks/colh=Min)])/"
+				+"(MAX=[NUMBER(prompt=Max Ticks/colh=Max)])/"
+				+"(CHANCE=[NUMBER(prompt=Chance (0-100)/colh=Ch%)])/"
+				+"(MINGRP=[NUMBER(prompt=Min Group/colh=MinG)])";
+	}
+	
+	@Override
+	public String parmsFormat()
+	{
+		return "((" + activeParmsFormat()+")...)";
+	}
+
 	protected Map<String,String> getCleanedParms()
 	{
 		final Map<String,String> ps = CMParms.parseEQParms(parms);

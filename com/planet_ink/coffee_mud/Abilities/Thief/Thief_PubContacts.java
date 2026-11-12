@@ -151,6 +151,12 @@ public class Thief_PubContacts extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(([ROOM_ID(prompt=Contact room/colh=Room)..;]..;))";
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected=this.affected;

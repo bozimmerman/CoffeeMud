@@ -70,6 +70,16 @@ public class BrotherHelper extends StdBehavior
 		}
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+"([CHECK(name=NAMEONLY/prompt=Name Only/colh=NO)])/"
+				+"([NUMBER(prompt=Num/colh=Num)])/"
+				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
+				+")...)";
+	}
+
 	public static boolean isBrother(final MOB target, final MOB observer, final boolean nameOnly)
 	{
 		if((observer==null)||(target==null))

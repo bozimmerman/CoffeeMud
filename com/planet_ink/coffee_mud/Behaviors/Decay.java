@@ -84,6 +84,19 @@ public class Decay extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+super.activeParmsFormat()+"/"
+				+"(REMAIN=[NUMBER(prompt=Remain/colh=Rem)])/"
+				+"(USE2=[CONFIRM(prompt=Use2/colh=Use2)])/"
+				+"([CHECK(name=NOTRIGGER/prompt=NoTrigger/colh=NoTrigger)])/"
+				+"(ANSWER=(\")[STRING(prompt=Answer/col=Answer)...](\"))/"
+				+"((\")[ZAPPERMASK(prompt=Mask/col=Mask)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public String getParms()
 	{
 		final String s=parms;

@@ -72,6 +72,15 @@ public class AntiVagrant extends ActiveTicker
 		super.setParms(parms);
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+ activeParmsFormat()+"/"
+				+"(CHOICES(choices=KICK,ANYWHERE/prompt=Flags/colh=Flag)"
+				+")...)";
+	}
+	
 	public void wakeVagrants(final MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))

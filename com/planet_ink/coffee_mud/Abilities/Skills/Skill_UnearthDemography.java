@@ -121,6 +121,12 @@ public class Skill_UnearthDemography extends StdAbility
 	protected final Map<String,Map<String,Map<DemogField,String>>> knownAreaInfo = new TreeMap<String,Map<String,Map<DemogField,String>>>();
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Demography XML/colh=XML).. ])";
+	}
+
+	@Override
 	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);

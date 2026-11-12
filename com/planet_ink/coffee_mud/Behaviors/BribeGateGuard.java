@@ -93,6 +93,17 @@ public class BribeGateGuard extends StdBehavior
 		maskStr = CMLib.masking().separateZapperMask(newParms);
 		this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
+
+	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+"(PRICE=[DECIMAL(prompt=Price/colh=Price)])/"
+				+"(GATES=(\")[STRING(prompt=Gates/colh=Gates)...](\"))/"
+				+"(MASK=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))"
+				+")...)";
+	}
+	
 	protected int findGate(final MOB mob)
 	{
 		if (!CMLib.flags().isInTheGame(mob,false))

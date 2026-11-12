@@ -35,6 +35,11 @@ import java.util.*;
 public class Skill_QuickChange extends BardSkill
 {
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Packed items/colh=Items).. ])";
+	}
+	@Override
 	public String ID()
 	{
 		return "Skill_QuickChange";

@@ -67,6 +67,14 @@ public class InstantDeath extends ActiveTicker
 			mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"(MASK=(\")[ZAPPERMASK(prompt=Zappermask/colh=Mask)...](\"))"
+				+")...)";
+	}
+
 	boolean activated=false;
 
 	@Override

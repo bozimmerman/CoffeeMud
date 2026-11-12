@@ -131,6 +131,12 @@ public class Spell_Spellbinding extends Spell
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Spellbinding data/colh=Data).. ])";
+	}
+
+	@Override
 	public String text()
 	{
 		if(spellbindings.size()==0)

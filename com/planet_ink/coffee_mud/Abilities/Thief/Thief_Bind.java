@@ -197,6 +197,15 @@ public class Thief_Bind extends ThiefSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((ROPENAME=(\")[STRING(prompt=Rope name/colh=Rope)...](\"))"
+				+ "/(AMOUNT=[NUMBER(prompt=Amount remaining/colh=Amount)])"
+				+ "/(FORCESIT=[CONFIRM(prompt=Force sitting/colh=ForceSit)])"
+				+ "/(ALLOWBREAK=[CONFIRM(prompt=Allow breaking/colh=AllowBreak)]))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);

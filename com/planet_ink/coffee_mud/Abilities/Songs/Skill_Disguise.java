@@ -118,6 +118,22 @@ public class Skill_Disguise extends BardSkill
 	protected String[] values=new String[What.values().length];
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(("
+			   + "(WEIGHT=(\")[NUMBER(prompt=Weight/colh=Weight)...](\"))/"
+			   + "(LEVEL=(\")[NUMBER(prompt=Level/colh=Level)...](\"))/"
+			   + "(SEX=(\")[STRING(prompt=Sex/colh=Sex)...](\"))/"
+			   + "(RACE=(\")[STRING(prompt=Race/colh=Race)...](\"))/"
+			   + "(HEIGHT=(\")[NUMBER(prompt=Height/colh=Height)...](\"))/"
+			   + "(NAME=(\")[STRING(prompt=Name/colh=Name)...](\"))/"
+			   + "(CLASS=(\")[STRING(prompt=Class/colh=Class)...](\"))/"
+			   + "(ALIGNMENT=(\")[STRING(prompt=Alignment/colh=Alignment)...](\"))/"
+			   + "(AGE=(\")[NUMBER(prompt=Age/colh=Age)...](\"))"
+			   + ")...)";
+	}
+
+	@Override
 	protected void cloneFix(final Ability E)
 	{
 		values=new String[What.values().length];

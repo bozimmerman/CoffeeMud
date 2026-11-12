@@ -87,6 +87,17 @@ public class Follower extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+super.activeParmsFormat()+"/"
+				+"(NAME=(\")[STRING(prompt=Name/col=Name)...](\"))/"
+				+"((\")[ZAPPERMASK(prompt=Zappermask/col=Mask)...](\"))/"
+				+"([CHOICES(choices=GROUP,WANDER,NOFOLLOWERS,INVENTORY,INV/prompt=Flags/colh=Flags)])"
+				+")...)";
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "natural friendly following";

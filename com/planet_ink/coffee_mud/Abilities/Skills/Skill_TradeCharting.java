@@ -89,6 +89,12 @@ public class Skill_TradeCharting extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=RID)..;]..;)";
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();

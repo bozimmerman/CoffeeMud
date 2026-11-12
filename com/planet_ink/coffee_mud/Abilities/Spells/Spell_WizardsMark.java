@@ -85,6 +85,13 @@ public class Spell_WizardsMark extends Spell
 	protected String wizardName = null;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((EXPIRE=[NUMBER(prompt=Expiration in ms/colh=Expire)])"
+				+ "/(WIZARD=(\")[STRING(prompt=Wizard name/colh=Wizard)...](\")))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		expirationDate = System.currentTimeMillis() + 16000;

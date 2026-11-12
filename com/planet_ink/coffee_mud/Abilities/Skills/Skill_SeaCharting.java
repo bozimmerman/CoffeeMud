@@ -88,6 +88,13 @@ public class Skill_SeaCharting extends StdSkill
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
+
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ROOM_ID(prompt=Room ID/colh=RID)..;]..;)";
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{

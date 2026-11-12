@@ -83,6 +83,15 @@ public class GateGuard extends StdBehavior
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"((\")[ZAPPERMASK(prompt=Zappermask/col=Mask)...](\"))/"
+				+"([CHOICES(choices=KEEPLOCKED,ALLNIGHT/prompt=Flags/colh=Flags)])"
+				+")...)";
+	}
+
 	protected int findGate(final MOB mob)
 	{
 		if(!CMLib.flags().isInTheGame(mob,false))

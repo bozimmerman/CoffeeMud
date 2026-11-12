@@ -68,6 +68,14 @@ public class GoodExecutioner  extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"([CHOICES(choices=PLAYERS,PLAYER/prompt=Player/colh=Player)])"
+				+")...)";
+	}
+
+	@Override
 	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		if(norecurse)

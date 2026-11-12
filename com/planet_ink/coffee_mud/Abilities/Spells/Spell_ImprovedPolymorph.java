@@ -84,6 +84,13 @@ public class Spell_ImprovedPolymorph extends Spell
 	protected boolean	noxp	= false;
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((RACE=[RACE_ID(prompt=Race/colh=Race)])"
+				+ "/(NOXP=[CONFIRM(prompt=No XP gain/colh=NoXP)]))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);

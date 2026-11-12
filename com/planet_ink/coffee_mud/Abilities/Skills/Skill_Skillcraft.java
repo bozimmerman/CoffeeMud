@@ -100,6 +100,12 @@ public class Skill_Skillcraft extends StdSkill
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Ability ID/colh=AID)..,]..,)";
+	}
+
+	@Override
 	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		if(!super.autoInvocation(mob, force))

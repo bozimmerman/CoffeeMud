@@ -112,6 +112,15 @@ public class Thief_Kidnapping extends ThiefSkill implements PrivateProperty
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "(((NOASSIST=[CONFIRM(prompt=No auto-assist/colh=NoAssist)])"
+				+ "/(ROOM=(\")[ROOM_ID(prompt=Return room/colh=Room)...](\"))"
+				+ "/(INVOKER=(\")[STRING(prompt=Invoker name/colh=Invoker)...](\"))"
+				+ "/(FOLLOW=(\")[STRING(prompt=Follower name/colh=Follower)...](\")))...)";
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		//super.setMiscText(newMiscText);

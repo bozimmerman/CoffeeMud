@@ -60,6 +60,14 @@ public class EvilExecutioner  extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"([CHOICES(choices=PLAYERS,PLAYER/prompt=Player/colh=Player)])"
+				+")...)";
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "aggression to goodness and paladins";

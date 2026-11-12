@@ -122,6 +122,17 @@ public class Thief_Articles extends ThiefSkill
 		BOARDER
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		final StringBuilder types = new StringBuilder();
+		for(final CrewType t : CrewType.values())
+			types.append(types.length()==0?"":",").append(t.name());
+		return "(([STRING(prompt=Ship name/colh=Ship)..;];"
+				+ "[CHOICES(choices=" + types
+				+ "/prompt=Crew type/colh=Type)]))";
+	}
+
 	protected String	shipName	= "";
 	protected CrewType	type		= CrewType.GUNNER;
 	protected Behavior	sailor		= null;

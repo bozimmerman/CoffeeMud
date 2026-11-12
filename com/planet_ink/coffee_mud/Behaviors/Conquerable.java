@@ -235,6 +235,18 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+"(LAW=(\")[CONFIRM(prompt=Allow Law/colh=Law)...](\"))/"
+				+"(OWNERSHIP=(\")[CONFIRM(prompt=Ownership/colh=Own)...](\"))/"
+				+"(JOURNAL=(\")[STRING(prompt=Journal/colh=Journal)...](\"))/"
+				+"(LOYALTY=[NUMBER(prompt=Loyalty/colh=Loyalty)])/"
+				+"(LEVELDIFF=[NUMBER(prompt=Level Diff/colh=LvlDiff)])"
+				+")...)";
+	}
+
+	@Override
 	public void startBehavior(final PhysicalAgent E)
 	{
 		super.startBehavior(E);

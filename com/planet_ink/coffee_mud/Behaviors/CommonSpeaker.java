@@ -81,6 +81,12 @@ public class CommonSpeaker extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "([ABILITY_ID(prompt=Langage/colh=Lang)])";
+	}
+
+	@Override
 	public void endBehavior(final PhysicalAgent forMe)
 	{
 		if(lang != null)
