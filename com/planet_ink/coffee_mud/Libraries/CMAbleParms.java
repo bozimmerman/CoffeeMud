@@ -1846,7 +1846,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(token.token instanceof MTToken[])
 		{
 			final MTToken[] children = (MTToken[])token.token;
-			if(token.isAlternative)
+			if(token.alternation != MTAlt.NONE)
 			{
 				boolean emptyMatch = false;
 				for(final MTToken alt : children)
@@ -1887,7 +1887,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 							return true;
 						}
-						emptyMatch = true;
+						if(token.alternation == MTAlt.ANY)
+							emptyMatch = true;
 					}
 					quoteMode[0] = saveQuoteMode;
 					outIndex[0] = saveIndex;
@@ -2037,7 +2038,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(token.token instanceof MTToken[])
 		{
 			final MTToken[] children = (MTToken[])token.token;
-			if(token.isAlternative)
+			if(token.alternation != MTAlt.NONE)
 			{
 				for(final MTToken child : children)
 					collectFirstChars(child, out);
@@ -2061,8 +2062,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final MTToken[] children = (MTToken[])token.token;
 		if(token.optional)
 			return true; // groups are optional
-		if(token.isAlternative)
+		if(token.alternation != MTAlt.NONE)
 		{
+			if(token.alternation == MTAlt.REQUIRED)
+				return false;
 			for(final MTToken child : children)
 			{
 				if(isNullable(child))
@@ -2257,12 +2260,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	private static enum MTAlt
+	{
+		NONE,		// not an alternation: a plain sequence
+		ANY,		// alternation that may match an empty branch (existing behavior)
+		REQUIRED	// alternation that must match a branch consuming at least one character
+	}
+
 	private static class MTToken
 	{
 		public Object				token;						// String (for literals/placeholders) or MTToken[] (for sequences/alternatives)
 		public boolean				repeats			= false;
 		public boolean				optional		= false;
-		public boolean				isAlternative	= false;	// TRUE if this MTToken[] represents alternatives, FALSE if sequence
+		public MTAlt				alternation		= MTAlt.NONE;	// NONE: sequence, ANY: alternatives, REQUIRED: must match one
 		public boolean				isQuoteMarker	= false;	// TRUE if this is the optional quote marker group: (")
 		public boolean				quoteNext		= false;	// TRUE if this greedy placeholder is terminated by a (") marker
 		public String[]				placeholderArgs	= null;
@@ -2285,7 +2295,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			this.token = other.token;
 			this.repeats = other.repeats;
 			this.optional = other.optional;
-			this.isAlternative = other.isAlternative;
+			this.alternation = other.alternation;
 			this.isQuoteMarker = other.isQuoteMarker;
 			this.quoteNext = other.quoteNext;
 			this.placeholderArgs = other.placeholderArgs;
@@ -2310,7 +2320,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final MTToken[] children = (MTToken[])token.token;
 			if(children.length == 0)
 				return false;
-			if(token.isAlternative)
+			if(token.alternation != MTAlt.NONE)
 			{
 				for(final MTToken child : children)
 				{
@@ -2322,6 +2332,64 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return endsWithOpenGreedy(children[children.length - 1]);
 		}
 		return false;
+	}
+
+	private static boolean hasTopLevelSlash(final String s)
+	{
+		int depth = 0;
+		for(int i = 0; i < s.length(); i++)
+		{
+			final char c = s.charAt(i);
+			if(c == '\\')
+			{
+				i++;
+				continue;
+			}
+			if(c == '(')
+				depth++;
+			else
+			if(c == ')')
+				depth--;
+			else
+			if((c == '/') && (depth == 0))
+				return true;
+		}
+		return false;
+	}
+
+	private static MTToken parseMTAlternationBlock(final String format, final int start, final int end) throws CMException
+	{
+		final List<MTToken> alternatives = new ArrayList<MTToken>();
+		int depth = 0;
+		int branchStart = start;
+		for(int i = start; i < end; i++)
+		{
+			final char c = format.charAt(i);
+			if(c == '\\')
+			{
+				i++;
+				continue;
+			}
+			if(c == '(')
+				depth++;
+			else
+			if(c == ')')
+				depth--;
+			else
+			if((c == '/') && (depth == 0))
+			{
+				if(i == branchStart)
+					throw new CMException("Empty alternative in [...] at " + i);
+				alternatives.add(parseMTSequence(format, branchStart, i));
+				branchStart = i + 1;
+			}
+		}
+		if(branchStart >= end)
+			throw new CMException("Empty alternative in [...] at " + end);
+		alternatives.add(parseMTSequence(format, branchStart, end));
+		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
+		altToken.alternation = MTAlt.REQUIRED;
+		return altToken;
 	}
 
 	private static boolean isDelimiterChar(final char c)
@@ -2359,6 +2427,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * value.  A '..' followed by a single delimiter character
 	 * (for example '..,' or '..;') repeats the preceding token with that literal
 	 * delimiter between repetitions, equivalent to writing [X](,[X])... by hand.
+	 * A bracketed block containing an unescaped '/' outside of any
+	 * parentheses, for example [A/B] or [mana+10/hits+10], is a required
+	 * alternation: exactly one of its '/'-separated branches must match, and
+	 * the block may not match empty.
 	 *
 	 * @param format the misc text format
 	 * @return the parsed token tree
@@ -2440,15 +2512,35 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(c == '[')
 			{
 				int closeIndex = index + 1;
-				while(closeIndex < end && format.charAt(closeIndex) != ']')
+				int bracketDepth = 0;
+				while(closeIndex < end)
 				{
-					if(format.charAt(closeIndex) == '\\')
-						closeIndex++;
+					final char bc = format.charAt(closeIndex);
+					if(bc == '\\')
+					{
+						closeIndex += 2;
+						continue;
+					}
+					if(bc == '[')
+						bracketDepth++;
+					else
+					if(bc == ']')
+					{
+						if(bracketDepth == 0)
+							break;
+						bracketDepth--;
+					}
 					closeIndex++;
 				}
 				if(closeIndex >= end)
 					throw new CMException("Unclosed [ at " + index);
 				String placeholder = format.substring(index + 1, closeIndex);
+				if(hasTopLevelSlash(placeholder))
+				{
+					tokens.add(parseMTAlternationBlock(format, index + 1, closeIndex));
+					index = closeIndex + 1;
+					continue;
+				}
 				List<String> greedyToTokens = null;
 				final int setSuffix = placeholder.lastIndexOf("..(");
 				if((setSuffix >= 0) && placeholder.endsWith(")"))
@@ -2743,7 +2835,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 
 				final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
-				altToken.isAlternative = true;
+				altToken.alternation = MTAlt.ANY;
 				result.add(altToken);
 			}
 			else
@@ -2755,7 +2847,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return result.get(0);
 
 		final MTToken seq = new MTToken(result.toArray(new MTToken[0]), false);
-		seq.isAlternative = false;
+		seq.alternation = MTAlt.NONE;
 		return seq;
 	}
 
@@ -2780,7 +2872,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		alternatives.add(asSequence(current));
 
 		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
-		altToken.isAlternative = true;
+		altToken.alternation = MTAlt.ANY;
 		return altToken;
 	}
 
@@ -2789,7 +2881,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if(tokens.size() == 1)
 			return tokens.get(0);
 		final MTToken seq = new MTToken(tokens.toArray(new MTToken[0]), false);
-		seq.isAlternative = false;
+		seq.alternation = MTAlt.NONE;
 		return seq;
 	}
 }
