@@ -123,6 +123,16 @@ public class ClanHelper extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+"([CHECK(name=NAMEONLY/prompt=Name Only/colh=NO)])/"
+				+"([NUMBER(prompt=Num/colh=Num)])/"
+				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
