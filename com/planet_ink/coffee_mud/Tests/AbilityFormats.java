@@ -76,7 +76,7 @@ public class AbilityFormats extends StdTest
 			if((text == null) || (text.trim().length() == 0))
 				continue;
 			if(!CMLib.ableParms().isValidMiscText(A.miscTextFormat(), text))
-				return ("'"+A.ID()+"' on "+host.Name()+" ("+host.ID()+") has non-conforming misc text: "+text);
+				return ("Ability ID: '"+A.ID()+"' on `"+host.Name()+"` in `"+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(host))+"` has non-conforming misc text: "+text);
 		}
 		return null;
 	}
@@ -104,7 +104,7 @@ public class AbilityFormats extends StdTest
 			final Room R = r.nextElement();
 			final String roomErr = checkEffects(R, formatAbilities);
 			if(roomErr != null)
-				errors.append("Error#1: "+roomErr).append("\n\r");
+				errors.append("Error#R: "+roomErr).append("\n\r");
 			for(int m = 0; m < R.numInhabitants(); m++)
 			{
 				final MOB M = R.fetchInhabitant(m);
@@ -112,7 +112,7 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String mobErr = checkEffects(M, formatAbilities);
 				if(mobErr != null)
-					errors.append("Error#2: "+mobErr).append("\n\r");
+					errors.append("Error#M: "+mobErr).append("\n\r");
 				for(int i = 0; i < M.numItems(); i++)
 				{
 					final Item I = M.getItem(i);
@@ -120,7 +120,7 @@ public class AbilityFormats extends StdTest
 						continue;
 					final String itemErr = checkEffects(I, formatAbilities);
 					if(itemErr != null)
-						errors.append("Error#3: "+itemErr).append("\n\r");
+						errors.append("Error#MI: "+itemErr).append("\n\r");
 				}
 			}
 			for(int i = 0; i < R.numItems(); i++)
@@ -130,7 +130,7 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String itemErr = checkEffects(I, formatAbilities);
 				if(itemErr != null)
-					errors.append("Error#4: "+itemErr).append("\n\r");
+					errors.append("Error#I: "+itemErr).append("\n\r");
 			}
 			for(int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 			{
@@ -139,7 +139,7 @@ public class AbilityFormats extends StdTest
 					continue;
 				final String exitErr = checkEffects(X, formatAbilities);
 				if(exitErr != null)
-					errors.append("Error#5: "+exitErr).append("\n\r");
+					errors.append("Error#E: "+exitErr).append("\n\r");
 			}
 		}
 		if(errors.length()>0)
