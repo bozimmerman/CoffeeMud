@@ -60,9 +60,7 @@ public class Aggressive extends StdBehavior
 	protected String	maskStr				= "";
 	protected CompiledZMask mask 			= null;
 
-	protected Quint<String,Double,Integer,Integer,
-				Map<String,Pair<Double,Long>>>
-					bribe 				= null;
+	protected Quint<String,Double,Integer,Integer, Map<String,Pair<Double,Long>>> bribe = null;
 
 	@Override
 	public boolean okMessage(final Environmental affecting, final CMMsg msg)

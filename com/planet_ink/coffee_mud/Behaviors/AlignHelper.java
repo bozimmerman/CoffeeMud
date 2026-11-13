@@ -72,6 +72,15 @@ public class AlignHelper extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"([NUMBER(prompt=Num/colh=Num)])/"
+				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

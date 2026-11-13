@@ -34,7 +34,7 @@ public class Sailor extends StdBehavior
 	protected volatile int	tickDown		= -1;
 	protected int			tickWait		= -1;
 	protected int			tickBonus		= 0;
-	protected Boardable	loyalShipArea	= null;
+	protected Boardable		loyalShipArea	= null;
 	protected Item			loyalShipItem	= null;
 	protected Rideable		targetShipItem	= null;
 	protected boolean		combatIsOver	= false;
