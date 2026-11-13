@@ -56,6 +56,26 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 
 	protected PairList<String, String>	choices	= null;
 
+	/**
+	 * True if the given value names one of the given keys, matched loosely
+	 *
+	 * @param keys the acceptable names
+	 * @param val the name as it was written
+	 * @return true if it is acceptable
+	 */
+	protected static boolean isLooseKeyMatch(final Collection<String> keys, final String val)
+	{
+		if((val == null)||(val.trim().length()==0))
+			return false;
+		final String v=val.trim().toLowerCase();
+		for(final String key : keys)
+		{
+			if((key.equals(v))||(v.startsWith(key))||(v.endsWith(key)))
+				return true;
+		}
+		return false;
+	}
+
 	public AbilityParmEditorImpl(final String fieldName, final String shortHeader, final ParmType type)
 	{
 		ID=fieldName;

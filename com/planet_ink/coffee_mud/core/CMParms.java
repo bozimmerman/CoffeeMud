@@ -1960,7 +1960,7 @@ public class CMParms
 			for(final char c : "\"'`".toCharArray())
 			{
 				if((val.charAt(0)==c)&&(val.charAt(val.length()-1)==c))
-					return val.substring(0,val.length()-1).trim();
+					return val.substring(1,val.length()-1).trim();
 			}
 		}
 		return val;

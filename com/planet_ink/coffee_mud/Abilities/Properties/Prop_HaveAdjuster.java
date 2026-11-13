@@ -52,43 +52,54 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		final StringBuilder fmt = new StringBuilder();
+		final String amt = "[ADJUSTER_AMOUNT(prompt=Amount/colh=Amt)]";
+		final List<String> alts = new ArrayList<String>();
 		for(final String op : new String[] { "+", "-", "=" })
 		{
-			fmt.append("/([CHAR_STAT(prompt=Char Stat/colh=Stat)]").append(op)
-				.append("[NUMBER(prompt=Amount/colh=Amt)])");
-			fmt.append("/([PHY_STAT_PREFIX(prompt=Phys Stat/colh=PStat)]").append(op)
-				.append("[DECIMAL(prompt=Amount/colh=Amt)])");
-			fmt.append("/([CHAR_STATE_PREFIX(prompt=Char State/colh=CStat)]").append(op)
-				.append("[NUMBER(prompt=Amount/colh=Amt)])");
+			alts.add("([CHAR_STAT_ANY(prompt=Char Stat/colh=Stat)]" + op + amt + ")");
+			alts.add("([PHY_STAT_ANY(prompt=Phys Stat/colh=PStat)]" + op + amt + ")");
+			alts.add("([CHAR_STATE_ANY(prompt=Char State/colh=CStat)]" + op + amt + ")");
 		}
-		fmt.append("/(move+[NUMBER(prompt=Amount/colh=Amt)])");
-		fmt.append("/(move-[NUMBER(prompt=Amount/colh=Amt)])");
-		fmt.append("/(ALLSAVES+[NUMBER(prompt=All Saves/colh=Saves)])");
+		alts.add("(move+" + amt + ")");
+		alts.add("(move-" + amt + ")");
+		alts.add("(ALLSAVES+[ADJUSTER_AMOUNT(prompt=All Saves/colh=Saves)])");
 		for(final String op : new String[] { "=", "+", "-" })
 		{
-			fmt.append("/(dis").append(op).append("[DISPOSITION_INSTR(prompt=Disposition/colh=Dis)])");
-			fmt.append("/(sen").append(op).append("[SENSE_INSTR(prompt=Sense/colh=Sense)])");
+			for(final String dis : new String[] { "dis", "disposition" })
+				alts.add("(" + dis + op + "[DISPOSITION_INSTR(prompt=Disposition/colh=Dis)])");
+			for(final String sen : new String[] { "sen", "senses" })
+				alts.add("(" + sen + op + "[SENSE_INSTR(prompt=Sense/colh=Sense)])");
 		}
-		fmt.append("/(gen=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
-		fmt.append("/(gender=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
-		fmt.append("/(cla=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
-		fmt.append("/(class=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
-		fmt.append("/(cls=[NUMBER(prompt=Class Level/colh=Level)])");
-		fmt.append("/(rac=[RACE_ID(prompt=Race/colh=Race)])");
-		fmt.append("/(race=[RACE_ID(prompt=Race/colh=Race)])");
-		fmt.append("/(DEITY=[DEITY(prompt=Deity Name/colh=Deity)])");
-		fmt.append("/(MULTIPLYPH=[CONFIRM(prompt=Multiply Phys Stats/colh=MulPh)])");
-		fmt.append("/(MULTIPLYCH=[CONFIRM(prompt=Multiply Char State/colh=MulCh)])");
-		fmt.append("/(RONDEATH=[CONFIRM(prompt=Remove On Death/colh=RemDie)])");
-		fmt.append("/(ALLSET=[STRING(prompt=Item Set Name/colh=Set)])");
-		for(final String key : new String[] { "ABLETICKS", "ABLEPROFS", "ABLEHPCOSTS",
-			"ABLEMNCOSTS", "ABLEMVCOSTS", "ABLELVLS" })
+		alts.add("(gen=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
+		alts.add("(gender=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
+		alts.add("(cla=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
+		alts.add("(class=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
+		alts.add("(cls=[NUMBER(prompt=Class Level/colh=Level)])");
+		alts.add("(clstart=[NUMBER(prompt=Class Level/colh=Level)])");
+		alts.add("(rac=[RACE_ID(prompt=Race/colh=Race)])");
+		alts.add("(race=[RACE_ID(prompt=Race/colh=Race)])");
+		alts.add("(DEITY=[DEITY(prompt=Deity Name/colh=Deity)])");
+		alts.add("(MULTIPLYPH=[CONFIRM(prompt=Multiply Phys Stats/colh=MulPh)])");
+		alts.add("(MULTIPLYCH=[CONFIRM(prompt=Multiply Char State/colh=MulCh)])");
+		alts.add("(RONDEATH=[CONFIRM(prompt=Remove On Death/colh=RemDie)])");
+		alts.add("(ALLSET=[STRING(prompt=Item Set Name/colh=Set)])");
+		alts.add("([CHOICES(choices=ABLETICKS,ABLEPROFS,ABLEHPCOSTS,ABLEMNCOSTS,ABLEMVCOSTS,ABLELVLS/prompt=Adjuster Parm/colh=Field)]"
+			+ "=(\")(([ABILITY_ID(prompt=Ability/colh=Able)]\\(((+)[NUMBER(prompt=Amount/colh=Amt)]"
+			+ "/[NUMBER(prompt=Amount/colh=Amt)])\\))..,)(\"))");
+		alts.add("(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Amb).. ](\"))");
+		alts.add("(AMBIANCE+[STRING(prompt=Ambiance/colh=Amb)])");
+		alts.add("(AMBIANCE-[STRING(prompt=Ambiance/colh=Amb)])");
+		final StringBuilder fmt = new StringBuilder();
+		for(final String alt : alts)
 		{
-			fmt.append("/(").append(key)
-				.append("=(\")(([ABILITY_ID(prompt=Ability/colh=Able)]\\((\\+)[NUMBER(prompt=Amount/colh=Amt)]\\))..,)(\"))");
+			// Prop_WearAdjuster and Prop_UseAdjuster splice their own LAYERED /
+			// REVERSED alternatives in by replacing the literal "/(ALLSAVES",
+			// so that one alternative has to keep its prefix-free shape.
+			if(alt.startsWith("(ALLSAVES"))
+				fmt.append("/").append(alt);
+			else
+				fmt.append("/(;)").append(alt);
 		}
-		fmt.append("/(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Amb).. ](\"))");
 		if((fmt.length() > 0) && (fmt.charAt(0) == '/'))
 			fmt.deleteCharAt(0);
 		return "((" + fmt + ")...)(MASK=[ZAPPERMASK(prompt=Wearer Mask/colh=Mask).. ])";

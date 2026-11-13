@@ -60,6 +60,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 
 	protected int 			slotCount	= 1;
 	protected String		slotType	= "";
+	protected boolean		removable	= true;
 	protected Ability[] 	affects		= new Ability[0];
 	protected Physical		affected2	= null;
 	protected List<String>	skips		= new Vector<String>(0);
@@ -184,6 +185,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			str.append("NUM="+slotCount+" ");
 		if(slotType.length()>0)
 			str.append("TYPE=\""+slotType+"\" ");
+		str.append("REMOVABLE="+(""+removable).toUpperCase()+" ");
 		final StringBuilder skips = new StringBuilder("");
 		for(final String s : this.skips)
 			skips.append(","+CMStrings.escapeDQuotes(s));
@@ -202,6 +204,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	public String miscTextFormat()
 	{
 		return "((NUM=[NUMBER(prompt=Slot Count/colh=Slots)])/"
+				+"(REMOVABLE=[CONFIRM(prompt=Removable/colh=Rem)])/"
 				+"(TYPE=(\")[STRING(prompt=Type/colh=Type)...](\"))/"
 				+"(SKIPS=(\")([ABILITY_ID(prompt=Skip/colh=Skip)]..,)(\"))/"
 				+"(ADDS=(\")(([ABILITY_ID(prompt=Ability ID/colh=Ability ID)](\\([STRINGORNULL(prompt=Args/colh=Arg)..\\)]\\)))..,)(\"))"
@@ -212,6 +215,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		slotCount = CMParms.getParmInt(text, "NUM", 1);
 		slotType= CMParms.getParmStr(text, "TYPE", "");
+		removable = CMParms.getParmBool(text, "REMOVABLE", true);
 		skips.clear();
 		skips.addAll(CMParms.parseCommas(CMParms.getParmStr(text, "SKIPS", "").toUpperCase(), true));
 		adds.clear();

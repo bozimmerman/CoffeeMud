@@ -55,7 +55,7 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 	{
 		final String[] plusCodes = { "abi", "arm", "att", "dam", "dis", "lev", "rej", "sen",
 			"spe", "wei", "hei", "cha", "con", "dex", "int", "str", "wis", "clev",
-			"hit", "hun", "man", "mov", "move", "thi", "prac", "trai", "ques", "coin", "expe" };
+			"hit", "hun", "man", "mov", "move", "thi", "prac", "trai", "trains", "ques", "coin", "expe" };
 		final StringBuilder parmTokens = new StringBuilder("");
 		for(final String code : plusCodes)
 		{
