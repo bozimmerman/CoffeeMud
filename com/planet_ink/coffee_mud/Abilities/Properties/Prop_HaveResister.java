@@ -49,12 +49,12 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		return "(([SAVING_THROW(prompt=Resistance/colh=Resist)]"
+		return "(([SAVING_THROW_ANY(prompt=Resistance/colh=Resist)]"
 			+ "/([ABILITY_TYPE(prompt=Resistance/colh=Resist)])"
 			+ "/([ABILITY_DOMAIN(prompt=Resistance/colh=Resist)])"
 			+ "/([ABILITY_ID(prompt=Resistance/colh=Resist)])"
 			+ "/(WEAPONS)/(NON-MAGICAL-WEAPONS)/(NON-SILVER-WEAPONS)"
-			+ "/(BLUNT)/(PIERCE)/(SLASH)"
+			+ "/([WEAPON_TYPE_ANY(prompt=Resistance/colh=Resist)])"
 			+ "/(TELEPORT)/(HOLY)/(UNHOLY)/(DISEASE)/(POISON)/(DEBUF-DURATION)"
 			+ "/(ALWAYS)"
 			+ "/([NUMBER(prompt=Resist %/colh=Pct)]%)"
@@ -97,6 +97,24 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
+	protected static final Map<String,String> aliases = new Hashtable<String,String>();
+	
+	protected static String getProtectionAlias(String match)
+	{
+		if(aliases.size()==0)
+		{
+			synchronized(aliases)
+			{
+				if(aliases.size()==0)
+				{
+					aliases.put("CORRUPTING", "EVIL");
+					aliases.put("ELECTRICAL", "STRIKING");
+				}
+			}
+		}
+		return aliases.getOrDefault(match, match);
+	}
+	
 	@Override
 	public void setMiscText(final String newText)
 	{
@@ -139,7 +157,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			if(newPct != null)
 			{
 				for(final String previousKey : previousSet)
-					this.prots.put(previousKey, newPct);
+					this.prots.put(getProtectionAlias(previousKey), newPct);
 				previousSet.clear();
 			}
 		}
@@ -244,18 +262,34 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			else
 			{
 				final Weapon W=(Weapon)msg.tool();
-				if((W.weaponDamageType()==Weapon.TYPE_BASHING)
-				&&(checkProtection("BLUNT"))
+				switch(W.weaponDamageType())
+				{
+				case Weapon.TYPE_BASHING:
+					if((checkProtection("BLUNT"))
+					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+						msg.setValue(weaponProtection("BLUNT",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+					break;
+				case Weapon.TYPE_PIERCING:
+					if((checkProtection("PIERCE"))
+					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+						msg.setValue(weaponProtection("PIERCE",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+					break;
+				case Weapon.TYPE_SLASHING:
+					if((checkProtection("SLASH"))
+					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+						msg.setValue(weaponProtection("SLASH",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+					break;
+				case Weapon.TYPE_CORRUPTING:
+					if((checkProtection("EVIL"))
+					&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
+						msg.setValue(weaponProtection("EVIL",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+					break;
+				}
+				if((W.weaponDamageType()>=0)
+				&&(W.weaponDamageType()<Weapon.TYPE_DESCS.length)
+				&&(checkProtection(Weapon.TYPE_DESCS[W.weaponDamageType()]))
 				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
-					msg.setValue(weaponProtection("BLUNT",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
-				if((W.weaponDamageType()==Weapon.TYPE_PIERCING)
-				&&(checkProtection("PIERCE"))
-				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
-					msg.setValue(weaponProtection("PIERCE",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
-				if((W.weaponDamageType()==Weapon.TYPE_SLASHING)
-				&&(checkProtection("SLASH"))
-				&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false))))
-					msg.setValue(weaponProtection("SLASH",msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
+					msg.setValue(weaponProtection(Weapon.TYPE_DESCS[W.weaponDamageType()],msg.value(),mob.phyStats().level(),msg.source().phyStats().level()));
 			}
 			return;
 		}

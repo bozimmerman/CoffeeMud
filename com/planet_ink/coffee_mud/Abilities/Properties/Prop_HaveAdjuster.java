@@ -52,32 +52,33 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		final String amt = "[ADJUSTER_AMOUNT(prompt=Amount/colh=Amt)]";
 		final List<String> alts = new ArrayList<String>();
-		for(final String op : new String[] { "+", "-", "=" })
+		addMiscTextAlternatives(alts);
+		final StringBuilder fmt = new StringBuilder();
+		for(final String alt : alts)
 		{
-			alts.add("([CHAR_STAT_ANY(prompt=Char Stat/colh=Stat)]" + op + amt + ")");
-			alts.add("([PHY_STAT_ANY(prompt=Phys Stat/colh=PStat)]" + op + amt + ")");
-			alts.add("([CHAR_STATE_ANY(prompt=Char State/colh=CStat)]" + op + amt + ")");
+			if(fmt.length() > 0)
+				fmt.append('/');
+			fmt.append(alt);
 		}
+		return "(((;)" + fmt + ")...)(MASK=[ZAPPERMASK(prompt=Wearer Mask/colh=Mask).. ])";
+	}
+
+	protected void addMiscTextAlternatives(final List<String> alts)
+	{
+		final String amt = "[ADJUSTER_AMOUNT(prompt=Amount/colh=Amt)]";
+		alts.add("([CHAR_STAT_ANY(prompt=Char Stat/colh=Stat)][+/-/=]" + amt + ")");
+		alts.add("([PHY_STAT_ANY(prompt=Phys Stat/colh=PStat)][+/-/=]" + amt + ")");
+		alts.add("([CHAR_STATE_ANY(prompt=Char State/colh=CStat)][+/-/=]" + amt + ")");
 		alts.add("(move+" + amt + ")");
 		alts.add("(move-" + amt + ")");
 		alts.add("(ALLSAVES+[ADJUSTER_AMOUNT(prompt=All Saves/colh=Saves)])");
-		for(final String op : new String[] { "=", "+", "-" })
-		{
-			for(final String dis : new String[] { "dis", "disposition" })
-				alts.add("(" + dis + op + "[DISPOSITION_INSTR(prompt=Disposition/colh=Dis)])");
-			for(final String sen : new String[] { "sen", "senses" })
-				alts.add("(" + sen + op + "[SENSE_INSTR(prompt=Sense/colh=Sense)])");
-		}
-		alts.add("(gen=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
-		alts.add("(gender=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
-		alts.add("(cla=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
-		alts.add("(class=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
-		alts.add("(cls=[NUMBER(prompt=Class Level/colh=Level)])");
-		alts.add("(clstart=[NUMBER(prompt=Class Level/colh=Level)])");
-		alts.add("(rac=[RACE_ID(prompt=Race/colh=Race)])");
-		alts.add("(race=[RACE_ID(prompt=Race/colh=Race)])");
+		alts.add("([disposition/dis][=/-/+][DISPOSITION_INSTR(prompt=Disposition/colh=Dis)])");
+		alts.add("([senses/sen][=/-/+][SENSE_INSTR(prompt=Sense/colh=Sense)])");
+		alts.add("([gender/gen]=[GENDER_PREFIX(prompt=Gender/colh=Gen)])");
+		alts.add("([class/cla]=[CHAR_CLASS(prompt=Char Class/colh=Class)])");
+		alts.add("([clstart/cls]=[NUMBER(prompt=Class Level/colh=Level)])");
+		alts.add("([race/rac]=[RACE_ID(prompt=Race/colh=Race)])");
 		alts.add("(DEITY=[DEITY(prompt=Deity Name/colh=Deity)])");
 		alts.add("(MULTIPLYPH=[CONFIRM(prompt=Multiply Phys Stats/colh=MulPh)])");
 		alts.add("(MULTIPLYCH=[CONFIRM(prompt=Multiply Char State/colh=MulCh)])");
@@ -89,20 +90,6 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		alts.add("(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Amb).. ](\"))");
 		alts.add("(AMBIANCE+[STRING(prompt=Ambiance/colh=Amb)])");
 		alts.add("(AMBIANCE-[STRING(prompt=Ambiance/colh=Amb)])");
-		final StringBuilder fmt = new StringBuilder();
-		for(final String alt : alts)
-		{
-			// Prop_WearAdjuster and Prop_UseAdjuster splice their own LAYERED /
-			// REVERSED alternatives in by replacing the literal "/(ALLSAVES",
-			// so that one alternative has to keep its prefix-free shape.
-			if(alt.startsWith("(ALLSAVES"))
-				fmt.append("/").append(alt);
-			else
-				fmt.append("/(;)").append(alt);
-		}
-		if((fmt.length() > 0) && (fmt.charAt(0) == '/'))
-			fmt.deleteCharAt(0);
-		return "((" + fmt + ")...)(MASK=[ZAPPERMASK(prompt=Wearer Mask/colh=Mask).. ])";
 	}
 
 	@Override

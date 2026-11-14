@@ -122,10 +122,10 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public String miscTextFormat()
+	protected void addMiscTextAlternatives(final List<String> alts)
 	{
-		return CMStrings.replaceAll(super.miscTextFormat(),"/(ALLSAVES",
-				"/([CHECK(name=LAYERED/prompt=Layered/colh=Layered)])/(ALLSAVES");
+		super.addMiscTextAlternatives(alts);
+		alts.add("([CHECK(name=Layered/prompt=Layered/colh=Layered)])");
 	}
 
 	@Override
