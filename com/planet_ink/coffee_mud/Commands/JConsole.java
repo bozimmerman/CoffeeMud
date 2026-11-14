@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+import org.mozilla.javascript.ClassShutter;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -82,6 +83,25 @@ public class JConsole extends StdCommand
 					cx.initStandardObjects(scope);
 					final String[] names = { "mob" ,"getVar", "setVar", "toJavaString", "getCMType"};
 					scope.defineFunctionProperties(names, JScriptEvent.class, ScriptableObject.DONTENUM);
+					cx.setClassShutter(new ClassShutter()
+					{
+						@Override
+						public boolean visibleToScripts(final String fullClassName)
+						{
+							if(fullClassName.startsWith("java.io.")
+							||fullClassName.startsWith("java.nio.")
+							||fullClassName.startsWith("java.lang.Runtime")
+							||fullClassName.startsWith("java.lang.ProcessBuilder")
+							||fullClassName.startsWith("java.lang.reflect")
+							||fullClassName.startsWith("java.security")
+							||fullClassName.startsWith("sun.")
+							||fullClassName.startsWith("com.sun.")
+							||fullClassName.startsWith("org.mozilla.javascript")
+							||fullClassName.startsWith("java.rmi."))
+								return false;
+							return true;
+						}
+					});
 					Resources.submitResource("JCONSOLE_"+mob.Name(), scope);
 				}
 				catch(final Exception e)

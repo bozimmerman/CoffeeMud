@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.mozilla.javascript.ClassShutter;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -1032,6 +1033,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return areas;
 	}
 
+
 	@SuppressWarnings("unchecked")
 	public void parseQuestScript(List<?> script, final List<Object> args, final int startLine)
 	{
@@ -1089,6 +1091,25 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					{
 						final JScriptQuest scope = new JScriptQuest(this,q);
 						cx.initStandardObjects(scope);
+						cx.setClassShutter(new ClassShutter()
+						{
+							@Override
+							public boolean visibleToScripts(final String fullClassName)
+							{
+								if(fullClassName.startsWith("java.io.")
+								||fullClassName.startsWith("java.nio.")
+								||fullClassName.startsWith("java.lang.Runtime")
+								||fullClassName.startsWith("java.lang.ProcessBuilder")
+								||fullClassName.startsWith("java.lang.reflect")
+								||fullClassName.startsWith("java.security")
+								||fullClassName.startsWith("sun.")
+								||fullClassName.startsWith("com.sun.")
+								||fullClassName.startsWith("org.mozilla.javascript")
+								||fullClassName.startsWith("java.rmi."))
+									return false;
+								return true;
+							}
+						});
 						scope.defineFunctionProperties(JScriptQuest.functions,
 													   JScriptQuest.class,
 													   ScriptableObject.DONTENUM);

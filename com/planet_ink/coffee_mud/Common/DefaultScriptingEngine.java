@@ -9295,6 +9295,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							"toJavaString",
 							"getCMType"
 						};
+						cx.setClassShutter(new ClassShutter()
+						{
+							@Override
+							public boolean visibleToScripts(final String fullClassName)
+							{
+								if(fullClassName.startsWith("java.io.")
+								||fullClassName.startsWith("java.nio.")
+								||fullClassName.startsWith("java.lang.Runtime")
+								||fullClassName.startsWith("java.lang.ProcessBuilder")
+								||fullClassName.startsWith("java.lang.reflect")
+								||fullClassName.startsWith("java.security")
+								||fullClassName.startsWith("sun.")
+								||fullClassName.startsWith("com.sun.")
+								||fullClassName.startsWith("org.mozilla.javascript")
+								||fullClassName.startsWith("java.rmi."))
+									return false;
+								return true;
+							}
+						});
 						scope.defineFunctionProperties(names, JScriptEvent.class,
 													   ScriptableObject.DONTENUM);
 						cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);

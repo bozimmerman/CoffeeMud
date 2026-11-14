@@ -28,6 +28,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 
+import org.mozilla.javascript.ClassShutter;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -862,6 +863,25 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							Log.debugOut("CRON: "+E.subj()+": "+str.toString());
 						final JScriptWindow scope = new JScriptWindow(mob);
 						cx.initStandardObjects(scope);
+						cx.setClassShutter(new ClassShutter()
+						{
+							@Override
+							public boolean visibleToScripts(final String fullClassName)
+							{
+								if(fullClassName.startsWith("java.io.")
+								||fullClassName.startsWith("java.nio.")
+								||fullClassName.startsWith("java.lang.Runtime")
+								||fullClassName.startsWith("java.lang.ProcessBuilder")
+								||fullClassName.startsWith("java.lang.reflect")
+								||fullClassName.startsWith("java.security")
+								||fullClassName.startsWith("sun.")
+								||fullClassName.startsWith("com.sun.")
+								||fullClassName.startsWith("org.mozilla.javascript")
+								||fullClassName.startsWith("java.rmi."))
+									return false;
+								return true;
+							}
+						});
 						scope.defineFunctionProperties(JScriptWindow.functions,
 													   JScriptWindow.class,
 													   ScriptableObject.DONTENUM);
