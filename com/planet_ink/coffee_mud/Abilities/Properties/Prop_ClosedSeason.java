@@ -99,7 +99,7 @@ public class Prop_ClosedSeason extends Property
 			if(code != Room.VariationCode.MASK)
 				vcodes.append((vcodes.length()==0?"":",")).append(code.name());
 		return "(([CHOICES(choices="+vcodes.toString()+"/prompt=VarCode/colh=VCd)])...)"
-			+"((\")MASK =[ZAPPERMASK(prompt=Mask/colh=mask)]...(\"))";
+			+"((\")MASK =[ZAPPERMASK(prompt=Mask/colh=mask)...](\"))";
 	}
 
 	@Override

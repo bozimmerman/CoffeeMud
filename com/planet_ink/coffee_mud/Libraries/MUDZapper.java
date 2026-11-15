@@ -418,6 +418,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		savedClassUpdateTime=CMClass.getLastClassUpdatedTime();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public final Set<String> getZapperKeys()
+	{
+		return new MultiSet<String>(getMaskCodes().keySet(), getLooseCodes().keySet());
+	}
+	
 	protected final TreeMap<String,CompiledZapperMaskEntryImpl> getLooseCodes()
 	{
 		synchronized(compiledCache)

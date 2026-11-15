@@ -246,7 +246,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					final int x=s.indexOf('(');
 					if(x>0)
 					{
-						final String ableID = s.substring(0,x);
+						final String ableID = s.substring(0,x).trim();
 						String amts=s.substring(x+1, s.length()-1).trim();
 						if(amts.startsWith("+"))
 							amts=amts.substring(1);

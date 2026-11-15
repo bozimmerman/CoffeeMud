@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,9 +72,12 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 	public String miscTextFormat()
 	{
 		return "((([CHECK(name=NOFOLLOW/prompt=No follow/colh=No follow)])"
+			+"/((\")[ZAPPERMASK(prompt=ZapperMask/colh=Mask)...](\"))"
 			+"/([CHECK(name=NOSNEAK/prompt=No sneak/colh=No sneak)]))...)";
 	}
 
+	private CompiledZMask mask = null;
+	
 	@Override
 	public void setMiscText(final String txt)
 	{
@@ -85,11 +89,18 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		{
 			s=p.nextElement();
 			if("NOFOLLOW".startsWith(s))
+			{
 				noFollow=true;
+				parms.remove(s);
+			}
 			else
 			if(s.startsWith("NOSNEAK"))
+			{
+				parms.remove(s);
 				noSneak=true;
+			}
 		}
+		mask = CMLib.masking().maskCompile(CMParms.combine(parms));
 		super.setMiscText(txt);
 	}
 
@@ -100,6 +111,8 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
+			return true;
+		if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, false)))
 			return true;
 		return !mob.isMonster();
 	}

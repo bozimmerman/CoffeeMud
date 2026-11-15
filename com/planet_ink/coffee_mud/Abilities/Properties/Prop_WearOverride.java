@@ -75,7 +75,9 @@ public class Prop_WearOverride extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "((([CHOICES(choices=DRESS,CONTENTS/prompt=Flag/colh=Flag)])/((\")[ZAPPERMASK(prompt=Mask/colh=Mask)](\")))...)";
+		return "((([CHOICES(choices=DRESS,CONTENTS/prompt=Flag/colh=Flag)])"
+				+"/((\")[ZAPPERMASK(prompt=Mask/colh=Mask)..\"](\")))...)"
+				+"(([ZAPPERMASK(prompt=Mask/colh=Mask)...]))";
 	}
 
 	@Override

@@ -78,8 +78,10 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 				+"(LEVEL=[NUMBER(prompt=Level/colh=Lvl)])/"
 				+"(MAXTICKS=[NUMBER(prompt=MaxTicks/colh=MxTk)])/"
 				+"(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])/"
-				+"([ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))/[NUMBER(prompt=Chance%/colh=Chance%)]% [ABILITY_ID(prompt=Ability/colh=Able)](\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   )/([NUMBER(prompt=Chance%/colh=Chance%)]%)"
-				+")..;)"
+				+"([NUMBER(prompt=Chance%/colh=Chance%)]% )"
+				+"([ABILITY_ID(prompt=Ability/colh=Able)]"
+				+"(\\([STRING(prompt=Parameters/colh=Parms)..\\)]\\)   ))"
+				+")..;)(;)"
 				+"(MASK=[ZAPPERMASK(prompt=Player Mask/colh=Mask).. ])"
 				;
 	}

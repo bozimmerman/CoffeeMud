@@ -2161,8 +2161,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			// Greedy up to the delimiter character, without consuming it.
 			final int end = proposition.length();
 			int i = index;
-			while((i < end) && (proposition.charAt(i) != token.greedyTo))
+			int depth = 0;
+			while(i < end)
+			{
+				final char c = proposition.charAt(i);
+				if((token.greedyTo == ')') && (c == '('))
+					depth++;
+				else
+				if((token.greedyTo == ')') && (c == ')') && (depth > 0))
+					depth--;
+				else
+				if(c == token.greedyTo)
+					break;
 				i++;
+			}
 			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
 				return false;
 			outIndex[0] = i;

@@ -300,6 +300,13 @@ public interface MaskingLibrary extends CMLibrary
 	public CompiledZMask parseSpecialItemMask(final List<String> parsed);
 
 	/**
+	 * Returns the near-complete set of available zapper keywords.
+	 * 
+	 * @return the near-complete set of available zapper keywords.
+	 */
+	public Set<String> getZapperKeys();
+
+	/**
 	 * Given a compiled mask that might contain racial requirements, this will return
 	 * the set of required races that will pass the mask.   A returned empty set
 	 * will mean that the mask had no racial requirements per se.

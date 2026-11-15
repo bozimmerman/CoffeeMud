@@ -53,7 +53,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			+ "/([ABILITY_TYPE(prompt=Resistance/colh=Resist)])"
 			+ "/([ABILITY_DOMAIN(prompt=Resistance/colh=Resist)])"
 			+ "/([ABILITY_ID(prompt=Resistance/colh=Resist)])"
-			+ "/(WEAPONS)/(NON-MAGICAL-WEAPONS)/(NON-SILVER-WEAPONS)"
+			+ "/(WEAPONS)/(WEAPON)/(NON-MAGICAL-WEAPONS)/(NON-SILVER-WEAPONS)"
 			+ "/([WEAPON_TYPE_ANY(prompt=Resistance/colh=Resist)])"
 			+ "/(TELEPORT)/(HOLY)/(UNHOLY)/(DISEASE)/(POISON)/(DEBUF-DURATION)"
 			+ "/(ALWAYS)"
@@ -109,6 +109,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 				{
 					aliases.put("CORRUPTING", "EVIL");
 					aliases.put("ELECTRICAL", "STRIKING");
+					aliases.put("WEAPON", "WEAPONS");
 				}
 			}
 		}

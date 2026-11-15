@@ -72,7 +72,7 @@ public class Prop_OutfitContainer extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "(;(<I>[STRING(prompt=Item Name/colh=Item)]<\\/I>)...)";
+		return "(;(<I>[STRING(prompt=Item Name/colh=Item)..<]<\\/I>)...)";
 	}
 
 	protected void fixContentsFromText()

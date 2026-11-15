@@ -3,6 +3,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.ZapperKey;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -70,5 +71,23 @@ public class EditorZappermask extends AbilityParmEditorImpl
 	public String convertFromItem(final ItemCraftor A, final Item I)
 	{
 		return "";
+	}
+	
+	@Override
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
+	{
+		if(!super.confirmValue(oldVal, args))
+			return false;
+		if(oldVal.trim().length()==0)
+			return true;
+		if((oldVal.indexOf("+")<0)&&(oldVal.indexOf("-")<0))
+			return false;
+		String upVal = oldVal.toUpperCase();
+		for(String key : CMLib.masking().getZapperKeys())
+		{
+			if(upVal.indexOf(key)>=0)
+				return true;
+		}
+		return false;
 	}
 }

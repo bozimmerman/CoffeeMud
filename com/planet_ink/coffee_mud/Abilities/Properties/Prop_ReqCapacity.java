@@ -95,16 +95,10 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	public String miscTextFormat()
 	{
 		return "(("
-			   +"(PEOPLE=[NUMBER(prompt=Num People/colh=People)])/"
-			   +"(players=[NUMBER(prompt=Num Players/colh=Players)])/"
-			   +"(mobs=[NUMBER(prompt=Num Mobs/colh=Mobs)])/"
-			   +"(items=[NUMBER(prompt=Num Items/colh=Items)])/"
-			   +"(siegeweapons=[NUMBER(prompt=Siege Cap/colh=Seige)])/"
-			   +"(rooms=[NUMBER(prompt=Room Limit/colh=Rooms)])/"
-			   +"(weight=[NUMBER(prompt=Weight/colh=Weight)])/"
-			   +"(indoor=[CONFIRM(prompt=Indoor OK/colh=Indoor)])/"
-			   +"(droponly=[CONFIRM(prompt=Drop Only/colh=DropOnly)])/"
-			   +"(containersok=[CONFIRM(prompt=Containers OK/colh=ContOK)])"
+			   +"[NUMBER(prompt=Num People/colh=People)])"
+			   +"/(([PEOPLE/players/mobs/items/siegeweapons/rooms/room/weight]"
+			   +"=[NUMBER(prompt=Count/colh=Count)](, ))"
+			   +"/([indoor/droponly/containersok]=[CONFIRM(prompt=Boolean/colh=Bool)](, )))"
 			   +")...)";
 	}
 
@@ -132,7 +126,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
 			siegeCap=CMParms.getParmInt(txt,"siegeweapons",itemCap);
-			roomLimit=CMParms.getParmInt(txt,"rooms",roomLimit);
+			roomLimit=CMParms.getParmInt(txt,"room",roomLimit);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
 			containersOk=CMParms.getParmBool(txt,"droponly",containersOk)||CMParms.getParmBool(txt,"containersok",containersOk);
