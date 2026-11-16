@@ -83,10 +83,10 @@ public class Prop_OpenCommand extends Property
 	@Override
 	public String miscTextFormat()
 	{
-		return "((([CHECK(name=NOOPEN/prompt=NoOpen/colh=NoOpen)])/"
-				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
-				+"([STRING(prompt=Command Phrase/colh=Command)..;])"
-				+")..;)";
+		return "((([CHECK(name=NOOPEN/prompt=NoOpen/colh=NoOpen)])"
+				+"/([STRING(prompt=Command Phrase/colh=Command)..;])"
+				+"/(MESSAGE=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
+				+")..;)(;)";
 	}
 
 	@Override

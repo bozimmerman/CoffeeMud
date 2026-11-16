@@ -98,7 +98,8 @@ public class Bomb_Noxious extends StdBomb
 	@Override
 	public String miscTextFormat()
 	{
-		return "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
+		return "((:[NUMBER(prompt=Trap level/colh=Level)]\\/[NUMBER(prompt=Ability code/colh=Code)]:))"
+			+ "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
 	}
 
 	@Override

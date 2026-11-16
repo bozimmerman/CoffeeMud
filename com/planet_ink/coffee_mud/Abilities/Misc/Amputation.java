@@ -317,7 +317,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	@Override
 	public String miscTextFormat()
 	{
-		return "(([BODY_PART(prompt=Missing body part/colh=Limb)..;]..;))";
+		return "(([BODY_PART(prompt=Missing body part/colh=Limb)..;]..;)(;))";
 	}
 
 	@Override

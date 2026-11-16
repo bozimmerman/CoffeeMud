@@ -72,8 +72,9 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 	public String miscTextFormat()
 	{
 		return "((([CHECK(name=NOFOLLOW/prompt=No follow/colh=No follow)])"
-			+"/((\")[ZAPPERMASK(prompt=ZapperMask/colh=Mask)...](\"))"
-			+"/([CHECK(name=NOSNEAK/prompt=No sneak/colh=No sneak)]))...)";
+			+"/([CHECK(name=NOSNEAK/prompt=No sneak/colh=No sneak)])"
+			+")...)"
+			+"([ZAPPERMASK(prompt=ZapperMask/colh=Mask).. ])";
 	}
 
 	private CompiledZMask mask = null;

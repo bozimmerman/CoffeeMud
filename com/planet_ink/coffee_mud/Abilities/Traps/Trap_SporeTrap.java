@@ -75,7 +75,8 @@ public class Trap_SporeTrap extends StdTrap
 	@Override
 	public String miscTextFormat()
 	{
-		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
+		return "((:[NUMBER(prompt=Trap level/colh=Level)]\\/[NUMBER(prompt=Ability code/colh=Code)]:))"
+			+ "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])";
 	}
 
 	public List<Ability> returnOffensiveAffects(final Physical fromMe)

@@ -82,9 +82,9 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 			+"([CHECK(name=NOSNEAK/prompt=NoSneak/colh=NoSnek)])/"
 			+"([CHECK(name=ACTUAL/prompt=Actual/colh=Actual)])/"
 			+"((\")MESSAGE=[STRING(prompt=Message/colh=Msg)...](\"))/"
-			+"((\")EVENT=[CHOICES(choices=BLOCK,ACCUSE/name=Event/colh=Envt)]((,[STRING(prompt=Args/colh=arg)..,])...)(\"))/"
-			+"((\")(+/-)[STRING(prompt=Mask Bit/colh=Mask)...](\"))"
-			+")...)";
+			+"((\")EVENT=[CHOICES(choices=BLOCK,ACCUSE/name=Event/colh=Envt)]((,[STRING(prompt=Args/colh=arg)..,])...)(\"))"
+			+")...)"
+			+"([ZAPPERMASK(prompt=Mask Bit/colh=Mask).. ])";
 	}
 
 	@Override
@@ -98,35 +98,24 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 		event=new String[0];
 		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		final List<String> maskV = new ArrayList<String>();
-		boolean lastWasMask=false;
-		for(int i=0;i<parms.size();i++)
+		int i=0;
+		for(i=0;i<parms.size();i++)
 		{
 			s=parms.get(i);
 			if("NOFOLLOW".startsWith(s))
-			{
 				noFollow=true;
-				lastWasMask=false;
-			}
 			else
 			if(s.startsWith("NOSNEAK"))
-			{
 				noSneak=true;
-				lastWasMask=false;
-			}
 			else
 			if(s.startsWith("ACTUAL"))
-			{
 				actual=true;
-				lastWasMask=false;
-			}
 			else
 			if((s.startsWith("MESSAGE"))
 			&&(s.substring(7).trim().startsWith("=")))
 			{
 				final Vector<String> ulparms=CMParms.parse(txt);
 				message=ulparms.get(i).substring(7).trim().substring(1);
-				lastWasMask=false;
 			}
 			else
 			if((s.startsWith("EVENT"))
@@ -142,16 +131,10 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect, Deity.De
 				}
 			}
 			else
-			if(s.startsWith("+")||s.startsWith("-"))
-			{
-				maskV.add(s);
-				lastWasMask=true;
-			}
-			else
-			if(lastWasMask)
-				maskV.add(s);
+				break;
 		}
-		maskS=CMParms.combineQuoted(maskV,0).trim();
+		
+		maskS=CMParms.combineQuoted(parms,i).trim();
 		if(maskS.length()>0)
 			mask=CMLib.masking().getPreCompiledMask(maskS);
 		super.setMiscText(txt);
