@@ -84,7 +84,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		alts.add("(MULTIPLYCH=[CONFIRM(prompt=Multiply Char State/colh=MulCh)])");
 		alts.add("(RONDEATH=[CONFIRM(prompt=Remove On Death/colh=RemDie)])");
 		alts.add("(ALLSET=[STRING(prompt=Item Set Name/colh=Set)])");
-		alts.add("([CHOICES(choices=ABLETICKS,ABLEPROFS,ABLEHPCOSTS,ABLEMNCOSTS,ABLEMVCOSTS,ABLELVLS/prompt=Adjuster Parm/colh=Field)]"
+		alts.add("([CHOICES_PREFIX(choices=ABLETICKS,ABLEPROFS,ABLEHPCOSTS,ABLEMNCOSTS,ABLEMVCOSTS,ABLELVLS/prompt=Adjuster Parm/colh=Field)]"
 			+ "=(\")(([ABILITY_ID(prompt=Ability/colh=Able)]\\(((+)[NUMBER(prompt=Amount/colh=Amt)]"
 			+ "/[NUMBER(prompt=Amount/colh=Amt)])\\))..,)(\"))");
 		alts.add("(AMBIANCE=(\")[STRING(prompt=Ambiance/colh=Amb).. ](\"))");

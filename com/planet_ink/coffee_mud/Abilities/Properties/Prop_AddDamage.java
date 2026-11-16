@@ -198,13 +198,11 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		final StringBuilder choices = new StringBuilder();
-		for(final String t : CMMsg.TYPE_DESCS)
-			choices.append(choices.length()==0?"":",").append(t);
 		return "((+)(([FREQUENCY(prompt=Pct damage/colh=Pct)]%)"
 			+ "/([NUMBER(prompt=Flat bonus damage/colh=Bonus)]) "
 			+ "/((\")[WEAPON_TYPE(prompt=Weapon type/colh=Type)](\"))"
-			+ "/((\")[CHOICES(choices=" + choices + ",prompt=Attack style/colh=Style)](\"))))..."
+			+ "/((\")[DAMAGE_MSG_TYPE(prompt=Attack style/colh=Style)](\"))"
+			+ "/(+) [MATERIAL_CODE(prompt=Material/colh=Mat)]))..."
 			+ "(;(SMASK=(\")[ZAPPERMASK(prompt=Source mask/colh=Source)...](\"))"
 			+ "(TMASK=(\")[ZAPPERMASK(prompt=Target mask/colh=Target)...](\")))";
 	}

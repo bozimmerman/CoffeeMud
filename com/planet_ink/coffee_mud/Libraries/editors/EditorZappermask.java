@@ -3,7 +3,6 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.ZapperKey;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -74,20 +73,13 @@ public class EditorZappermask extends AbilityParmEditorImpl
 	}
 	
 	@Override
-	public boolean confirmValue(final String oldVal, Map<String, String> args)
+	public boolean confirmValue(final String oldVal, final Map<String, String> args)
 	{
 		if(!super.confirmValue(oldVal, args))
 			return false;
-		if(oldVal.trim().length()==0)
-			return true;
-		if((oldVal.indexOf("+")<0)&&(oldVal.indexOf("-")<0))
-			return false;
-		String upVal = oldVal.toUpperCase();
-		for(String key : CMLib.masking().getZapperKeys())
-		{
-			if(upVal.indexOf(key)>=0)
-				return true;
-		}
-		return false;
+		String mask = oldVal.trim();
+		if((mask.length()>1)&&(mask.startsWith("\""))&&(mask.endsWith("\"")))
+			mask = mask.substring(1,mask.length()-1).trim();
+		return CMLib.masking().syntaxCheck(mask, new XVector<String>());
 	}
 }

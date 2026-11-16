@@ -42,17 +42,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-/**
- * The amount half of an adjuster parm, e.g. the "2" in "hit+2".
- *
- * Prop_HaveAdjuster.apply the amount through
- * Prop_HaveAdjuster.addIfPlussed, which accepts anything
- * CMath.isNumber or CMath.isMathExpression accepts -- so
- * "hit+2", "hit+2+2" and "hit+2-" are all applied, but
- * "hit+'2'" and "hit+abc" are rejected with an error.
- * This editor matches that behavior exactly.  Use it
- * instead of NUMBER/DECIMAL in adjuster misc text formats.
- */
 public class EditorAdjusterAmount extends AbilityParmEditorImpl
 {
 	public EditorAdjusterAmount()
@@ -71,7 +60,11 @@ public class EditorAdjusterAmount extends AbilityParmEditorImpl
 	{
 		if((oldVal == null) || (oldVal.trim().length() == 0))
 			return false;
-		final String s = oldVal.trim();
+		String s = oldVal.trim();
+		if((s.length() > 1)
+		&&(s.startsWith("'"))
+		&&(s.endsWith("'")))
+			s = s.substring(1, s.length() - 1).trim();
 		return CMath.isNumber(s) || CMath.isMathExpression(s);
 	}
 
