@@ -4815,7 +4815,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						break;
 					lastErr = s; // only loop on same text once
 					s = "?"; // force re-loop
-					S.println("^RInvalid parameters format.^?  ^NUse ^H?^? for more information, or submit again to force.^N");
+					S.println("^RInvalid parameters format.^?  ^NUse ^H?^? for more information, or enter again to force.^N");
 				}
 			}
 		}
