@@ -43,6 +43,12 @@ public class Prayer_ImbueShield extends Prayer
 		return "Prayer_ImbueShield";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PRAYER_ID(prompt=Imbued prayer/colh=Prayer)])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Imbue Shield");
 
 	@Override

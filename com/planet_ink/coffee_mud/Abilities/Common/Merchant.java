@@ -44,6 +44,25 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return "Merchant";
 	}
 
+	/**
+	 * The stored text is the shop definition written by
+	 * DefaultCoffeeShop.makeXML(), but buildShopFromXML() also still
+	 * accepts the older ISELL=/IIMSK=/IBUDJ= style parm string (see
+	 * resources/help/arc_properties.ini:200-205), so both shapes have to
+	 * be legal.  An [XML] branch would validate the first shape far more
+	 * strictly, but a format cannot offer it as an alternative here: the
+	 * matcher gives up on the whole format as soon as one branch matches a
+	 * prefix of the text, so a single free-form field is the only shape
+	 * that accepts both.
+	 *
+	 * @return the miscText format
+	 */
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRINGORNULL(prompt=Shop XML or parms/colh=Shop).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Marketeering");
 
 	@Override

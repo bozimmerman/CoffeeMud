@@ -40,6 +40,19 @@ public class Trap_SnakePit extends Trap_RoomPit
 		return "Trap_SnakePit";
 	}
 
+	/**
+	 * The stored text is a SNAKES element holding up to five caged
+	 * snake XML blocks (see GenCaged.cageText() and setTrap()).  It
+	 * is opaque here, so it is documented as free-form XML.
+	 *
+	 * @return the miscText format
+	 */
+	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Caged snakes XML/colh=XML).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("snake pit");
 
 	@Override

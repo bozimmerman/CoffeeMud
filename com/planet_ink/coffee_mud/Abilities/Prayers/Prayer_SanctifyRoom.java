@@ -40,6 +40,12 @@ public class Prayer_SanctifyRoom extends Prayer
 		return "Prayer_SanctifyRoom";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Property owner/colh=Owner).. ])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Sanctify Room");
 
 	@Override

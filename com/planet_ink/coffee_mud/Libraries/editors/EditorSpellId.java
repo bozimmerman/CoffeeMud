@@ -52,7 +52,25 @@ public class EditorSpellId extends AbilityParmEditorImpl
 	@Override
 	public void createChoices()
 	{
-		createChoices(CMClass.abilities());
+		createChoices(CMClass.abilities(new Filterer<Ability>() {
+
+			@Override
+			public boolean passesFilter(final Ability obj)
+			{
+				return ((obj.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL);
+			}
+		}));
+	}
+
+	@Override
+	public boolean confirmValue(final String oldVal, Map<String, String> args)
+	{
+		if(oldVal.trim().length()==0)
+			return true;
+		final Ability A=CMClass.getAbility(oldVal);
+		if(A==null)
+			return false;
+		return ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL);
 	}
 
 	@Override

@@ -42,6 +42,12 @@ public class Thief_TrophyCount extends ThiefSkill
 		return "Thief_TrophyCount";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Trophy XML/colh=TrophyXML).. ])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Trophy Count");
 
 	@Override

@@ -43,6 +43,12 @@ public class Spell_MagicItem extends Spell
 		return "Spell_MagicItem";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([SPELL_ID(prompt=Enchantment spell/colh=Spell)])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Magic Item");
 
 	@Override

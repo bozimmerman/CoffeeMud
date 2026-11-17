@@ -40,6 +40,16 @@ public class Thief_TapRoom extends ThiefSkill
 		return "Thief_TapRoom";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((SRC/DST);"
+				+ "[ROOM_ID(prompt=Cabled room/colh=Room)..;];"
+				+ "[STRING(prompt=Layer name/colh=Name)..;];"
+				+ "[NUMBER(prompt=Levels left/colh=Levels)..;];"
+				+ "[DECIMAL(prompt=Line code/colh=Code)])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Tap Room");
 
 	@Override

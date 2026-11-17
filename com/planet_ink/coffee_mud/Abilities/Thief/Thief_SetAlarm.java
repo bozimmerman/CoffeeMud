@@ -40,6 +40,15 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return "Thief_SetAlarm";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "(((LEVELS=[NUMBER(prompt=Alarms remaining/colh=Levels)])"
+				+ "/(TRACKLVL=[NUMBER(prompt=Tracking level/colh=TrackLvl)])"
+				+ "/(ROOM=(\")[ROOM_ID(prompt=Alarm room/colh=Room)..\\\"](\"))"
+				+ "/(DIR=[NUMBER(prompt=Direction code/colh=Dir)]))...)";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Set Alarm");
 
 	@Override

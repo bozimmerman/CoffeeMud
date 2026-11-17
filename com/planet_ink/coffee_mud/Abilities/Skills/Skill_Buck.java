@@ -40,6 +40,12 @@ public class Skill_Buck extends StdSkill implements Behavior
 		return "Skill_Buck";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Buck behavior parms/colh=Parms).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Buck");
 
 	@Override

@@ -679,6 +679,12 @@ public class GenWrightSkill extends CraftingSkill implements ItemCraftor, Mendin
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Skill text/colh=Text).. ])";
+	}
+
+	@Override
 	public void setStat(String code, final String val)
 	{
 		int num=0;

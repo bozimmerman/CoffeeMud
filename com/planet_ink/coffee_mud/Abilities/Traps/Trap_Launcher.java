@@ -40,6 +40,21 @@ public class Trap_Launcher extends StdTrap
 		return "Trap_Launcher";
 	}
 
+	/**
+	 * The stored text is just "damage/item name", which is what
+	 * spring() parses.  The StdTrap invoker/message/level prefix is
+	 * deliberately not advertised, since a prefix would corrupt that
+	 * parse (spring() takes the first '/' in the whole text).
+	 *
+	 * @return the miscText format
+	 */
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Launcher damage/colh=Damage)]\\/"
+				+ "[STRING(prompt=Launched item name/colh=Item).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("launcher trap");
 
 	@Override

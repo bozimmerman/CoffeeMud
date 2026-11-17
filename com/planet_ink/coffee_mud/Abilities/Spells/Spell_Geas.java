@@ -42,6 +42,12 @@ public class Spell_Geas extends Spell
 		return "Spell_Geas";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Geas instructions/colh=Instructions).. ])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Geas");
 
 	@Override

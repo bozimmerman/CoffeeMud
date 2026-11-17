@@ -43,6 +43,12 @@ public class Chant_EnchantShards extends Chant
 		return "Chant_EnchantShards";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Enchanted chant/colh=Chant)])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enchant Shards");
 
 	@Override

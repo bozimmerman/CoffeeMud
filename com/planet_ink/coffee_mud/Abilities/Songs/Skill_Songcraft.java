@@ -40,6 +40,13 @@ public class Skill_Songcraft extends BardSkill
 		return "Skill_Songcraft";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Copied ability/colh=Ability)]"
+				+ "((, [ABILITY_ID(prompt=Learned ability/colh=Ability)])...))";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Songcraft");
 
 	@Override

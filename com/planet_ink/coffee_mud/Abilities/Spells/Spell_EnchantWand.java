@@ -43,6 +43,12 @@ public class Spell_EnchantWand extends Spell
 		return "Spell_EnchantWand";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([SPELL_ID(prompt=Wand spell/colh=Spell)])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enchant Wand");
 
 	@Override

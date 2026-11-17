@@ -953,6 +953,60 @@ public class Validmisctext extends StdTest
 		{"Prop_WeakBridge", "max=400 chance=75 down=300"},
 		{"SlowLearner", "20%"},
 		{"StdPlanarAbility", "Olympus"},
+		// Operation miscTextFormat candidates (2026-11-17).  Values that are
+		// documented in resources/help cite the entry beside them.
+		{"Merchant", "<ISELL>1</ISELL>",
+			"<IBUDJ>100000 DAY</IBUDJ>",
+			"<ISELL>1</ISELL><IIMSK/>",
+			"<ISELL>1</ISELL><IIMSK />",
+			"<ISELL>1</ISELL><IIMSK/><IVTYP>BASIC</IVTYP><INVS></INVS>",
+			"<ISELL>1</ISELL><IIMSK /><IVTYP>BASIC</IVTYP><IPREJ /><IBUDJ>100000 DAY</IBUDJ><IDVAL /><IGNOR /><PRICM /><INVS></INVS>",
+			"<SHOP><IPREJ>0</IPREJ><IDVAL>1</IDVAL></SHOP>", "",
+			// resources/help/arc_properties.ini:204 (legacy shop parms)
+			"ISELL=WEAPONS IBUDJ=1000 IGNOR=-Race +Elf"},
+		{"StdTrap", "`Bobby` \"Trap sprung!\" \"Take 5 damage\" :3/12:Spell_Fireball", "`Bobby` :3/12:Spell_Fireball", ":3/12:Spell_Fireball", "`Bobby`",
+			// resources/help/traps.ini:73 (TRAP_CAVEIN parameters line)
+			"`Bobby` \"The rocks fall!\" :3/12:"},
+		{"Trap_Trap", "Spell_Fireball", "Spell_Fireball;Bob;5",
+			// resources/help/traps.ini:155-157 (TRAP_ENTERSPELL examples)
+			"Spell_FakeWeapon; sword"},
+		{"Thief_SetAlarm", "LEVELS=5 TRACKLVL=12 ROOM=\"*ROOMID*\" DIR=4", "DIR=2 LEVELS=1"},
+		{"Thief_Superstition", "<SAY>hi</SAY><WEAR>hat</WEAR><LANG>Common</LANG>",
+			// resources/help/skill_help.ini (SUPERSTITION example phrase)
+			"<SAY>i am the most awesome pirate in the whole wide world!</SAY><WEAR>hat</WEAR><LANG>Common</LANG>"},
+		{"Thief_TapRoom", "SRC;*ROOMID*;layer1;5;17234567890123.714", "DST;*ROOMID*;my layer;2;12", "!SRC;*ROOMID*;layer1"},
+		{"Thief_TrophyCount", "<MOBS><MOB><RACE>Orc</RACE><KILLS>2</KILLS></MOB></MOBS>"},
+		{"Spell_Geas", "go kill the orc chief"},
+		{"Paladin_SummonMount", "Bobby", "the lost boys"},
+		{"Prayer_SanctifyRoom", "Bobby"},
+		{"Copyright", "Bob"},
+		{"Thief_SmugglersHold", "a small dog"},
+		{"Prayer_ImbueShield", "Prayer_Bless", "!Spell_Fireball"},
+		{"Skill_Songcraft", "Spell_Fireball", "Prayer_Bless, Prayer_CureLight"},
+		{"Skill_Buck", "anything at all"},
+		{"GenCraftSkill", "some text here"},
+		{"GenGatheringSkill", "some text here"},
+		{"GenWrightSkill", "some text here"},
+		{"Spell_Scribe", "Spell_Fireball", "!NoSuchAbility", "!Prayer_Bless"},
+		{"Spell_EnchantWand", "Spell_Fireball", "!NoSuchAbility", "!Prayer_Bless",
+			// resources/help/spell_help.ini:943 ("resist cold")
+			"Spell_ResistCold"},
+		{"Spell_MagicItem", "Spell_Fireball", "!NoSuchAbility", "!Prayer_Bless",
+			// resources/help/spell_help.ini:1952 ("Giant Strength")
+			"Spell_GiantStrength"},
+		{"Prayer_EnchantRelic", "Prayer_Bless", "!Spell_Fireball",
+			// resources/help/prayer_help.ini:1101 ("cure light wounds")
+			"Prayer_CureLight"},
+		{"Chant_EnchantShards", "Chant_AcidRain", "!NoSuchAbility",
+			// resources/help/chant_help.ini:612 ("moonbeam")
+			"Chant_Moonbeam"},
+		// Trap_EnterSpell extends Trap_Enter extends Trap_Trap, so this also proves
+		// the Trap_Trap format is inherited; values from traps.ini:155-157.
+		{"Trap_EnterSpell", "Spell_Fireball", "Spell_FakeWeapon; sword"},
+		{"Trap_Launcher", "3/a projectile", "12/a throwing dagger"},
+		{"Trap_WeaponSwing", "3/a club", "8/a rusty sword"},
+		{"Trap_MonsterCage", "<MOBITEM><MOBNAME>a goblin</MOBNAME></MOBITEM>"},
+		{"Trap_SnakePit", "<SNAKES><MOBITEM><MOBNAME>a snake</MOBNAME></MOBITEM><MOBITEM><MOBNAME>a snake</MOBNAME></MOBITEM></SNAKES>"},
 	};
 
 		@Override

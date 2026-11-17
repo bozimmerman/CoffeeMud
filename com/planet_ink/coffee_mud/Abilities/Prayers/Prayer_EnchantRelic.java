@@ -43,6 +43,12 @@ public class Prayer_EnchantRelic extends Prayer
 		return "Prayer_EnchantRelic";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([PRAYER_ID(prompt=Enchanted prayer/colh=Prayer)])";
+	}
+
 	private final static String localizedName = CMLib.lang().L("Enchant Relic");
 
 	@Override

@@ -40,6 +40,21 @@ public class Trap_WeaponSwing extends StdTrap
 		return "Trap_WeaponSwing";
 	}
 
+	/**
+	 * The stored text is just "damage/weapon name", which is what
+	 * spring() parses.  The StdTrap invoker/message/level prefix is
+	 * deliberately not advertised, since a prefix would corrupt that
+	 * parse (spring() takes the first '/' in the whole text).
+	 *
+	 * @return the miscText format
+	 */
+	@Override
+	public String miscTextFormat()
+	{
+		return "([NUMBER(prompt=Weapon damage/colh=Damage)]\\/"
+				+ "[STRING(prompt=Swung weapon name/colh=Weapon).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("weapon swing");
 
 	@Override

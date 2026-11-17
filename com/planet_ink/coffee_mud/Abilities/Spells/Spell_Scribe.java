@@ -43,6 +43,12 @@ public class Spell_Scribe extends Spell
 		return "Spell_Scribe";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([SPELL_ID(prompt=Scribed spell/colh=Spell)])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Scribe");
 
 	@Override

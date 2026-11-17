@@ -40,6 +40,12 @@ public class Thief_SmugglersHold extends ThiefSkill
 		return "Thief_SmugglersHold";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Hidden mob name/colh=Mob).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Smugglers Hold");
 
 	@Override

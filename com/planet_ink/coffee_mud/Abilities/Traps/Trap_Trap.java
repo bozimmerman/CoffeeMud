@@ -41,6 +41,13 @@ public class Trap_Trap extends StdAbility implements Trap
 		return "Trap_Trap";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([ABILITY_ID(prompt=Effect Ability ID/colh=Effect)])"
+				+ "(;[STRING(prompt=Spell arguments/colh=Arguments).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("a Trap!");
 
 	@Override

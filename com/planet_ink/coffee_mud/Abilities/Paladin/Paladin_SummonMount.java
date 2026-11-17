@@ -42,6 +42,12 @@ public class Paladin_SummonMount extends StdAbility implements PrivateProperty
 		return "Paladin_SummonMount";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Owner name/colh=Owner).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Call Mount");
 
 	@Override

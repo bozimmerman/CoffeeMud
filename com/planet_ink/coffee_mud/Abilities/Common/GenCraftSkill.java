@@ -315,6 +315,12 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Skill text/colh=Text).. ])";
+	}
+
+	@Override
 	public void setStat(String code, final String val)
 	{
 		int num=0;

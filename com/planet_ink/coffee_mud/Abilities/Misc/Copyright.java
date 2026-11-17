@@ -41,6 +41,12 @@ public class Copyright extends StdAbility
 		return "Copyright";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Copyright holder/colh=Holder).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Copyright");
 
 	@Override

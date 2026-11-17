@@ -40,6 +40,20 @@ public class Trap_MonsterCage extends StdTrap
 		return "Trap_MonsterCage";
 	}
 
+	/**
+	 * The stored text is the caged animal's XML (see
+	 * GenCaged.cageText()), which spring() hands back to a new
+	 * caged animal item.  It is opaque here, so it is documented
+	 * as free-form XML.
+	 *
+	 * @return the miscText format
+	 */
+	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Caged monster XML/colh=XML).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("monster cage");
 
 	@Override

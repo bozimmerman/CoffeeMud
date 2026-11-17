@@ -42,6 +42,15 @@ public class StdTrap extends StdAbility implements Trap
 		return "StdTrap";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "((`[STRING(prompt=Invoker name/colh=Invoker)..\\`]` )"
+				+ "((\")[STRING(prompt=Trigger message/colh=Message)..\\\"](\")) ...)"
+				+ "(:[NUMBER(prompt=Trap level/colh=Level)]\\/[NUMBER(prompt=Ability code/colh=Code)]:)"
+				+ "([STRING(prompt=Trap settings/colh=Settings).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("standard trap");
 
 	@Override

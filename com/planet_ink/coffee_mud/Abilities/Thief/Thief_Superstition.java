@@ -41,6 +41,12 @@ public class Thief_Superstition extends ThiefSkill
 		return "Thief_Superstition";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([XML(prompt=Superstition XML/colh=XML).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Superstition");
 
 	@Override
