@@ -4674,19 +4674,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									chosenOne=B;
 								}
 							}
-							String parms="?";
-							while(parms.equals("?"))
-							{
-								parms=chosenOne.getParms();
-								parms=mob.session().prompt(L("Enter any behavior parameters (?)\n\r:@x1",parms));
-								if(parms.equals("?"))
-								{
-									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
-									if(s2!=null)
-										mob.tell(s2.toString());
-									else mob.tell(L("no help!"));
-								}
-							}
+							final String parms=this.genBehaviorParms(mob.session(), chosenOne, null);
 							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
 							{
@@ -4774,27 +4762,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							chosenOne=null;
 						if(chosenOne!=null)
 						{
-							String parms="";
-							String s="?";
-							while(s.equals("?"))
-							{
-								parms=chosenOne.text();
-								s=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
-								if(s.equals("?"))
-								{
-									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
-									if(s2!=null)
-										mob.tell(s2.toString());
-									else
-										mob.tell(L("no help!"));
-								}
-								else
-								if(s.equalsIgnoreCase("null"))
-									parms="";
-								else
-								if(s.length()>0)
-									parms=s;
-							}
+							String parms=this.genAbilityParms(mob.session(), chosenOne, null);
 							mob.tell(L("@x1 added.",chosenOne.ID()));
 							ables.add(new Pair<String,String>(chosenOne.ID(),parms.trim()));
 						}
@@ -4809,7 +4777,70 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(L("(no change)"));
 		}
 	}
+	
+	
+	protected String genABParms(final Session S, final String aname, final String aid, final String format, 
+								String defaultText) throws IOException
+	{
+		if(S==null)
+			return defaultText;
+		if((format.length()==0) || (format == CMParms.FORMAT_UNDEFINED))
+			return defaultText;
+		String parms = defaultText;
+		String s = "?";
+		String lastErr = "";
+		while(!S.isStopped() && s.equals("?") && (format.length()>0) && (format != CMParms.FORMAT_UNDEFINED))
+		{
+			s=S.prompt(L("@x1 parameters (?)\n\r:@x2",aname,parms));
+			if(s.equals("?"))
+			{
+				final String s2=CMLib.help().getHelpText(aid,S.mob(),true);
+				if(s2!=null)
+					S.println(s2.toString());
+					
+				else
+					S.println(L("No help entry"));
+				S.println(L("Format: @x1", format));
+			}
+			else
+			if(s.equalsIgnoreCase("null"))
+				parms="";
+			else
+			if(s.length()>0)
+			{
+				parms=s;
+				if(!CMLib.ableParms().isValidMiscText(format, s))
+				{
+					if(lastErr.equals(s))
+						break;
+					lastErr = s; // only loop on same text once
+					s = "?"; // force re-loop
+					S.println("^RInvalid parameters format.^?  ^NUse ^H?^? for more information, or submit again to force.^N");
+				}
+			}
+		}
+		return parms;
+	}
 
+	protected String genAbilityParms(final Session S, final Ability A, String defaultText) throws IOException
+	{
+		if(A==null)
+			return "";
+		if(defaultText == null)
+			defaultText = A.text();
+		return this.genABParms(S,A.Name(),A.ID(),A.miscTextFormat(),defaultText);
+	}
+
+	protected String genBehaviorParms(final Session S, final Behavior B, String defaultText) throws IOException
+	{
+		if(B==null)
+			return "";
+		if(defaultText == null)
+			defaultText = B.getParms();
+		//TODO: when B.parmsFormat() is implemented in all behaviors, replace the below with B.parmsFormat()
+		return this.genABParms(S,B.name(),B.ID(),"([STRING.. ])",defaultText);
+	}
+	
 	@Override
 	public void genAffects(final MOB mob, final Physical P, final int showNumber, final int showFlag)
 		throws IOException
@@ -4883,28 +4914,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						&&(mob.fetchAbility(chosenOne.ID())==null))
 							chosenOne=null;
 						if(chosenOne!=null)
-						{
-							String parms="";
-							String s="?";
-							while(s.equals("?"))
-							{
-								parms=chosenOne.text();
-								s=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",parms));
-								if(s.equals("?"))
-								{
-									final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
-									if(s2!=null)
-										mob.tell(s2.toString());
-									else
-										mob.tell(L("no help!"));
-								}
-								else
-								if(s.equalsIgnoreCase("null"))
-									parms="";
-								else
-								if(s.length()>0)
-									parms=s;
-							}
+						{ 
+							final String parms=genAbilityParms(mob.session(),chosenOne,chosenOne.text());
 							chosenOne.setMiscText(parms.trim());
 							mob.tell(L("@x1 added.",chosenOne.ID()));
 							P.addNonUninvokableEffect(chosenOne);
@@ -5488,8 +5499,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							chosenOne=null;
 						if(chosenOne!=null)
 						{
-							if(parms == null)
-								parms = mob.session().prompt(L("Enter any arguments: "),"");
+							parms = genAbilityParms(mob.session(),chosenOne,parms);
 							final boolean alreadyHasIt=(M.fetchAbility(chosenOne.ID())!=null);
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
@@ -5499,7 +5509,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							{
 								chosenOne=(Ability)chosenOne.copyOf();
 								M.addAbility(chosenOne);
-								if((parms != null)&&(parms.length()>0))
+								if(parms != null)
 									chosenOne.setMiscText(parms);
 								chosenOne.setProficiency(75);
 								chosenOne.autoInvocation(M, false);
@@ -5582,30 +5592,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							if(inParms)
 							{
-								String parms="?";
-								while(parms.equals("?"))
-								{
-									parms=(chosenOne instanceof Ability)?(((Ability)chosenOne).text()):((Behavior)chosenOne).getParms();
-									final String s=mob.session().prompt(L("Enter any parameters (?)\n\r:@x1",parms));
-									if(s.equals("?"))
-									{
-										final String s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true);
-										if(s2!=null)
-											mob.tell(s2.toString());
-										else
-											mob.tell(L("no help!"));
-									}
-									else
-									if(s.equalsIgnoreCase("null"))
-										parms="";
-									else
-									if(s.length()>0)
-										parms=s;
-								}
 								if(chosenOne instanceof Ability)
+								{
+									final String parms = genAbilityParms(mob.session(),(Ability)chosenOne,null);
 									((Ability)chosenOne).setMiscText(parms.trim());
+								}
 								else
+								if(chosenOne instanceof Behavior)
+								{
+									final String parms = genBehaviorParms(mob.session(),(Behavior)chosenOne,null);
 									((Behavior)chosenOne).setParms(parms.trim());
+								}
 							}
 							mob.tell(L("@x1 added.",chosenOne.ID()));
 							V.add(chosenOne);
@@ -5697,43 +5694,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						{
 							if(inParms)
 							{
-								String parms="?";
-								while(parms.equals("?"))
-								{
-									String oldParm;
-									if(chosenOne instanceof Ability)
-									{
-										oldParm=((Ability)chosenOne).text();
-										parms=mob.session().prompt(L("Enter any effect parameters (?)\n\r:@x1",oldParm));
-									}
-									else
-									if(chosenOne instanceof Behavior)
-									{
-										oldParm=((Behavior)chosenOne).getParms();
-										parms=mob.session().prompt(L("Enter any behavior parameters (?)\n\r:@x1",oldParm));
-									}
-									else
-										oldParm="";
-									if (parms.equals("?"))
-									{
-										final String s2 = CMLib.help().getHelpText(chosenOne.ID(), mob, true);
-										if (s2 != null)
-											mob.tell(s2.toString());
-										else
-											mob.tell(L("no help!"));
-									}
-									else
-									if(parms.equalsIgnoreCase("null"))
-										parms="";
-									else
-									if(parms.length()==0)
-										parms=oldParm;
-								}
 								if(chosenOne instanceof Ability)
+								{
+									final String parms = genAbilityParms(mob.session(),(Ability)chosenOne,null);
 									((Ability)chosenOne).setMiscText(parms.trim());
+								}
 								else
 								if(chosenOne instanceof Behavior)
+								{
+									final String parms = genBehaviorParms(mob.session(),(Behavior)chosenOne,null);
 									((Behavior)chosenOne).setParms(parms.trim());
+								}
 							}
 							mob.tell(L("@x1 added.",chosenOne.ID()));
 							V.add(chosenOne);
@@ -5992,7 +5963,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
-							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
+							final String arg=genAbilityParms(mob.session(),(Ability)chosenOne,null);
 							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
@@ -6074,7 +6045,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
-							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
+							final String arg=genAbilityParms(mob.session(),(Ability)chosenOne,null);
 							final boolean clericOnly=mob.session().confirm(L("Is this for clerics only (y/N)?"),"N");
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
@@ -6156,7 +6127,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								if((A!=null)&&(A.ID().equals(chosenOne.ID())))
 									alreadyHasIt=true;
 							}
-							final String arg=mob.session().prompt(L("Enter any arguments: "),"");
+							final String arg=genAbilityParms(mob.session(),(Ability)chosenOne,null);
 							if(!alreadyHasIt)
 								mob.tell(L("@x1 added.",chosenOne.ID()));
 							else
@@ -8295,7 +8266,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							str.append("true;");
 						final String prof=mob.session().prompt(L("Enter the (perm) proficiency level (100): "),"100");
 						str.append((""+CMath.s_int(prof))+";");
-						final String parm=mob.session().prompt(L("Enter any default parameters: "),"");
+						final String parm=genAbilityParms(mob.session(),A,null);
 						str.append(""+parm+";");
 						String roles="";
 						if((CMParms.contains(E.getStatCodes(),"GETRABLEROLE"))&&(E instanceof ClanGovernment))
@@ -8449,7 +8420,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						final StringBuilder str=new StringBuilder(A.ID()+"~");
 						final String level=mob.session().prompt(L("Enter the @x1 level to gain this effect (1): ",levelName),"1");
 						str.append((""+CMath.s_int(level))+"~");
-						final String prof=mob.session().prompt(L("Enter any parameters: "),"");
+						final String prof=this.genAbilityParms(mob.session(), A, null);
 						str.append(""+prof+"~");
 						String roles="";
 						if((CMParms.contains(E.getStatCodes(),"GETREFFROLE"))&&(E instanceof ClanGovernment))
