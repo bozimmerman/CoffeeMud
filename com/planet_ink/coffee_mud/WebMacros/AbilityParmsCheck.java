@@ -5,6 +5,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -26,14 +27,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  * A web-path macro for validating misc-text parameters for an ability.
  * Post (or get) two fields: ABILITY (the ability ID) and PARMS (the
  * parameter text to be validated).  The response body is either "Failed"
- * or an empty string, so a client can do:
- *
- * <pre>
- *   (await (await fetch("AbilityParmsCheck", {method:"POST",
- *       body:new URLSearchParams({ABILITY:"Prop_LimitedEquip",PARMS:"2"})})).text()) == ""
- * </pre>
- *
- * No authentication is required, and no game state is changed.
+ * or an empty string.
  *
  * @author Bo Zimmerman
  */
@@ -54,22 +48,39 @@ public class AbilityParmsCheck extends StdWebMacro
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
-		httpResp.setMimeType(MIMEType.All.txt.getType());
+		final boolean helpMode = httpReq.getUrlParameter("HELP") != null;
+		httpResp.setMimeType((helpMode ? MIMEType.All.html : MIMEType.All.txt).getType());
 		final String abilityID = httpReq.getUrlParameter("ABILITY");
 		if((abilityID == null) || (abilityID.trim().length() == 0))
 			return "Failed";
-		final Ability A = CMClass.getAbility(abilityID.trim());
-		if(A == null)
-			return "Failed";
+		final String id = abilityID.trim();
+		String name = null;
 		String format = null;
 		try
 		{
-			format = A.miscTextFormat();
+			Ability A = CMClass.getAbility(id);
+			if(A != null)
+			{
+				name = A.Name();
+				format = A.miscTextFormat();
+			}
+			else
+			{
+				final Behavior B = CMClass.getBehavior(id);
+				if(B == null)
+					return "Failed";
+				name = B.name();
+				format = B.parmsFormat();
+			}
 			if(format == null)
 				format = "";
 			format = format.trim();
+			if(format.equalsIgnoreCase(CMParms.FORMAT_UNDEFINED))
+				format = "";
+			if(helpMode)
+				return this.helpEntry(id, name, format);
 			// nothing was declared to check against, so anything passes
-			if((format.length() == 0) || (format.equalsIgnoreCase(CMParms.FORMAT_UNDEFINED)))
+			if(format.length() == 0)
 				return "";
 			String text = httpReq.getUrlParameter("PARMS");
 			if(text == null)
@@ -80,8 +91,25 @@ public class AbilityParmsCheck extends StdWebMacro
 		}
 		catch(final Exception e)
 		{
-			Log.errOut("AbilityParmsCheck", "Error checking parms for '"+abilityID+"': "+e.getMessage());
+			Log.errOut("AbilityParmsCheck", "Error checking parms for '"+id+"': "+e.getMessage());
 			return "Failed";
 		}
+	}
+	protected String helpEntry(final String id, final String name, final String format)
+	{
+		final StringBuilder str = new StringBuilder("");
+		str.append("<B>").append(name).append("</B> (").append(id).append(")<BR>");
+		str.append("<B>Format:</B> ");
+		if(format.length() == 0)
+			str.append("none declared - there is nothing to check against");
+		else
+			str.append(CMStrings.replaceAll(CMStrings.replaceAll(format, "&", "&amp;"), "<", "&lt;"));
+		str.append("<BR><BR>");
+		final String help = CMLib.help().getHelpText(id, null, true);
+		if((help == null) || (help.length() == 0))
+			str.append("<I>No help text is available for ").append(id).append(".</I>");
+		else
+			str.append(this.helpHelp(help, 78));
+		return this.clearWebMacros(str.toString());
 	}
 }
