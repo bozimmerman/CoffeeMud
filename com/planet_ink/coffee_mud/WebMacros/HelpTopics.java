@@ -41,6 +41,23 @@ public class HelpTopics extends StdWebMacro
 		return "HelpTopics";
 	}
 
+	private String getParmFormat(final String id)
+	{
+		Ability A=CMClass.getAbility(id);
+		if(A==null)
+			A=CMClass.getAbilityPrototype(id);
+		String format=(A!=null)?A.miscTextFormat():null;
+		if((format==null)||(format.length()==0))
+		{
+			final Behavior B=CMClass.getBehavior(id);
+			if(B!=null)
+				format=B.parmsFormat();
+		}
+		if((format==null)||(format.length()==0)||(CMParms.FORMAT_UNDEFINED.equalsIgnoreCase(format)))
+			return "";
+		return format;
+	}
+
 	@Override @SuppressWarnings({ "unchecked", "rawtypes" })
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -63,7 +80,16 @@ public class HelpTopics extends StdWebMacro
 			{
 				final String s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
 				if(s!=null)
-					return clearWebMacros(helpHelp(s,limit).toString());
+				{
+					final String help=helpHelp(s,limit);
+					if(httpReq.getUrlParameter("ADDFORMAT")!=null)
+					{
+						final String format=getParmFormat(last);
+						if(format.length()>0)
+							return clearWebMacros("Format: "+CMStrings.replaceAll(format,"<","&lt;")+"\n\r\n\r"+help);
+					}
+					return clearWebMacros(help);
+				}
 			}
 			return "";
 		}

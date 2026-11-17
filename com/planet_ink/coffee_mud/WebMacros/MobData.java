@@ -168,7 +168,7 @@ public class MobData extends StdWebMacro
 					str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(i+1)+" VALUE=\""+theprofs.get(i)+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
 					str.append("</TD>");
 					str.append("<TD WIDTH=50%>");
-					str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(i+1)+" VALUE=\""+thetext.get(i)+"\" SIZE=40>");
+					str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(i+1)+" VALUE=\""+thetext.get(i)+"\" SIZE=40 ONKEYUP=\"EditABTdata(this);\" ONCHANGE=\"EditABTdata(this);\">");
 					str.append("</TD>");
 				}
 				else
@@ -195,7 +195,7 @@ public class MobData extends StdWebMacro
 				str.append("<INPUT TYPE=TEXT NAME=ABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40>");
+				str.append("<INPUT TYPE=TEXT NAME=ABTXT"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 ONKEYUP=\"EditABTdata(this);\" ONCHANGE=\"EditABTdata(this);\">");
 				str.append("</TD>");
 			}
 			else
@@ -359,7 +359,7 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
-				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=BLESSTEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=BLESSTEXT"+(i+1)+" VALUE=\""+arg+"\" ONKEYUP=\"EditBTdata(this);\" ONCHANGE=\"EditBTdata(this);\">&nbsp;");
 				str.append("<INPUT TYPE=CHECKBOX NAME=BLONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
@@ -423,7 +423,7 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
-				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=CURSETEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=CURSETEXT"+(i+1)+" VALUE=\""+arg+"\" ONKEYUP=\"EditCTdata(this);\" ONCHANGE=\"EditCTdata(this);\">&nbsp;");
 				str.append("<INPUT TYPE=CHECKBOX NAME=CUONLY"+(i+1)+" "+((clericOnly)?"CHECKED":"")+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
 				str.append("</TD></TR>");
 			}
@@ -683,7 +683,7 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
-				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=POWERTEXT"+(i+1)+" VALUE=\""+arg+"\">&nbsp;");
+				str.append("<FONT COLOR=WHITE SIZE=-2>Parms:</FONT><INPUT TYPE=TEXT NAME=POWERTEXT"+(i+1)+" VALUE=\""+arg+"\" ONKEYUP=\"EditPTdata(this);\" ONCHANGE=\"EditPTdata(this);\">&nbsp;");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=100%>");

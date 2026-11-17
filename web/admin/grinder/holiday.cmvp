@@ -10,6 +10,56 @@
 	<title>Holiday Manager</title>
 	<script language=JavaScript>
 	<!--
+		function EditAffectData(txtfield, ablefieldname)
+		{
+			if(!window.delays)
+				window.delays = {};
+			var txtfieldname = txtfield.name;
+			var i=txtfieldname.length;
+			var digits = '';
+			while ((i>0)&&(txtfieldname[i-1]>='0')&&(txtfieldname[i-1]<='9'))
+				digits=txtfieldname[--i]+digits;
+			var ableidfield=document.getElementsByName(ablefieldname+digits)[0];
+			if(!ableidfield)
+				return;
+			var abletxt=txtfield.value;
+			var ableid=ableidfield.value;
+			if(!ableid)
+				return;
+			if(window.delays[txtfieldname])
+				clearTimeout(window.delays[txtfieldname]);
+			window.delays[txtfieldname]=setTimeout(function()
+			{
+				var req=new XMLHttpRequest();
+				req.open("POST","/AbilityParmsCheck",true);
+				req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				req.onreadystatechange=function()
+				{
+					if(req.readyState==4)
+					{
+						if(!window.markers)
+							window.markers={};
+						if(window.markers[txtfieldname])
+						{
+							window.markers[txtfieldname].parentNode.removeChild(window.markers[txtfieldname]);
+							delete window.markers[txtfieldname];
+							txtfield.style.backgroundColor='#FFFFFF';
+						}
+						if(req.responseText=="Failed")
+						{
+							txtfield.style.backgroundColor='#FFC0CB';
+							var link = document.createElement("a");
+							link.href = "javascript:OpenUp('ahelp.cmvp','"+ableid+"');";
+							link.style.color='RED';
+							link.textContent = "*";
+							txtfield.parentNode.insertBefore(link, txtfield.nextSibling);
+							window.markers[txtfieldname]=link;
+						}
+					}
+				};
+				req.send("ABILITY="+escape(ableid)+"&PARMS="+escape(abletxt));
+			},1000);
+		}
 		function openUp2(named)
 		{
 			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
@@ -132,7 +182,7 @@
 		function OpenUp(file,named)
 		{
 			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("/"+file+"?HELPTOPIC="+named,
+			w=window.open("/"+file+"?HELPTOPIC="+named+"&ADDFORMAT",
 			            "Help",strFeatures, false);
 		}
         function Clicked(action)
@@ -140,6 +190,11 @@
             document.RESOURCES.action=action;
             document.RESOURCES.submit();
         }
+
+		function EditAdata(field)
+		{
+			EditAffectData(field,'AFFECT');
+		}
 	//-->
 	</script>
 </head>

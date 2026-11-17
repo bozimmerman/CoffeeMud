@@ -53,6 +53,9 @@ public class AbilityParmsCheck extends StdWebMacro
 		final String abilityID = httpReq.getUrlParameter("ABILITY");
 		if((abilityID == null) || (abilityID.trim().length() == 0))
 			return "Failed";
+		String text = httpReq.getUrlParameter("PARMS");
+		if(text == null)
+			text = "";
 		final String id = abilityID.trim();
 		String name = null;
 		String format = null;
@@ -82,9 +85,6 @@ public class AbilityParmsCheck extends StdWebMacro
 			// nothing was declared to check against, so anything passes
 			if(format.length() == 0)
 				return "";
-			String text = httpReq.getUrlParameter("PARMS");
-			if(text == null)
-				text = "";
 			if(!CMLib.ableParms().isValidMiscText(format, text.trim()))
 				return "Failed";
 			return "";

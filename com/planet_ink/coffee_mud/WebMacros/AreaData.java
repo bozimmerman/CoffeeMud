@@ -178,7 +178,7 @@ public class AreaData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
@@ -194,7 +194,7 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\"  ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

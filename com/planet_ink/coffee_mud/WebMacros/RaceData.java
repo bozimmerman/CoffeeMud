@@ -482,7 +482,7 @@ public class RaceData extends StdWebMacro
 			str.append("</TD>");
 			str.append("</TR>");
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100>");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
 			str.append("</TD></TR>");
 			if(supportsRoles)
 			{
@@ -516,7 +516,7 @@ public class RaceData extends StdWebMacro
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
 		str.append("</TD></TR>");
 		if(supportsRoles)
 		{
@@ -762,7 +762,7 @@ public class RaceData extends StdWebMacro
 			str.append("</TD>");
 			str.append("</TR>");
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+(theclasses.elementAt(i).fifth)+"\" SIZE=40 MAXLENGTH=100>");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+(theclasses.elementAt(i).fifth)+"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
 			str.append("</TD></TR>");
 		}
 		str.append("<TR><TD WIDTH=35%>");
@@ -788,7 +788,7 @@ public class RaceData extends StdWebMacro
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+i+" VALUE=\"\" SIZE=40 MAXLENGTH=100>");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+i+" VALUE=\"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
 		str.append("</TD></TR>");
 		str.append("</TABLE>");
 		return str;

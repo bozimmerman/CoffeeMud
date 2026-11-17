@@ -1301,7 +1301,7 @@ public class AbilityData extends StdWebMacro
 							tabStr.append("</TD><TD WIDTH=50%>");
 							final String parmstr=(oA instanceof Ability)?((Ability)oA).text():((Behavior)oA).getParms();
 							final String theparm=CMStrings.replaceAll(parmstr,"\"","&quot;");
-							tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(i+1)+"\" VALUE=\""+theparm+"\">");
+							tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(i+1)+"\" VALUE=\""+theparm+"\" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
 							tabStr.append("</TD></TR>");
 						}
 						tabStr.append("<TR><TD WIDTH=50%>");
@@ -1325,7 +1325,7 @@ public class AbilityData extends StdWebMacro
 						*/
 						tabStr.append("</SELECT>");
 						tabStr.append("</TD><TD WIDTH=50%>");
-						tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(spells.size()+1)+"\" VALUE=\"\">");
+						tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(spells.size()+1)+"\" VALUE=\"\" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
 						tabStr.append("</TD></TR>");
 						tabStr.append("</TABLE>");
 						return tabStr.toString();
