@@ -184,6 +184,8 @@ public class Wizard extends Mage
 		&&(myChar.isMine(msg.tool())))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(myChar.fetchAbility(msg.tool().ID())!=null)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,msg.tool().ID())))
 			{
 				if(CMLib.dice().rollPercentage()>
