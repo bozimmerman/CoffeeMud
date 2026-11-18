@@ -2972,6 +2972,16 @@ public class MOBloader
 		for(int f=0;f<followers.size();f++)
 		{
 			MOB followM = followers.get(f);
+			// a homed mob that becomes a follower no longer lives at home
+			final Room homeRoom = followM.getStartRoom();
+			if(homeRoom != null)
+			{
+				if(CMLib.law().getPropertyOwnerName(homeRoom).length() > 0)
+				{
+					CMLib.database().DBDeleteMOB(homeRoom.roomID(), followM);
+					followM.setStartRoom(null);
+				}
+			}
 			// prevent rejuving map mobs from getting text() called and wiping
 			// out their original specs
 			if((followM.basePhyStats().rejuv()>0)
