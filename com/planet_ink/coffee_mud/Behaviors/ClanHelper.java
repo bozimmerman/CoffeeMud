@@ -126,7 +126,7 @@ public class ClanHelper extends StdBehavior
 	public String parmsFormat()
 	{
 		return "((" 
-				+"([STRING(prompt=Clan name/colh=Clan)])/"
+				+"([CLAN(prompt=Clan name/colh=Clan)])/"
 				+"([NUMBER(prompt=Num/colh=Num)])/"
 				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
 				+")...)";

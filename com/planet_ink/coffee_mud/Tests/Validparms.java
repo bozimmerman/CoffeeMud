@@ -5,6 +5,9 @@ import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Deity;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Behaviors.StdBehavior;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -25,6 +28,16 @@ import java.util.*;
  */
 public class Validparms extends StdTest
 {
+	/**
+	 * Fixtures this test creates for itself, so that the JOURNAL, CLAN and
+	 * DEITY fields can be confirmed against real world data. A journal, a
+	 * clan and two deities (one single word, one multiword) are written
+	 * before the rows run and removed afterwards.
+	 */
+	private static final String TEST_JOURNAL = "VALIDPARMS_TEST_JOURNAL";
+	private static final String TEST_CLAN = "ValidparmsTestClan";
+	private static final String[] TEST_DEITIES = { "ValidparmsTestDeity", "Validparms Test Deity" };
+
 	/**
 	 * Behavior id, then parms values. A leading ! means the value must NOT
 	 * match the behavior's parmsFormat().
@@ -108,12 +121,13 @@ public class Validparms extends StdTest
 		// (Behaviors/ClanHelper.java:128; the clan name is read from the head
 		// of the parms at Behaviors/ClanHelper.java:95)
 		{"ClanHelper",
-			"McElvy",
-			"McElvy 5",
-			"McElvy 5 msg=\"OMG ATTACK!\"",
+			TEST_CLAN,
+			TEST_CLAN+" 5",
+			TEST_CLAN+" 5 msg=\"OMG ATTACK!\"",
 			"5",
 			"",
-			"!McElvy 5.5"},
+			"!McElvy 5.5",
+			"!NoSuchClan"},
 		// CommonSpeaker: LANGUAGE (Behaviors/CommonSpeaker.java:84)
 		{"CommonSpeaker",
 			"Common",
@@ -125,8 +139,9 @@ public class Validparms extends StdTest
 		// (Behaviors/Conquerable.java:103)
 		{"Conquerable",
 			"law=FALSE ownership=TRUE loyalty=5 leveldiff=3",
-			"journal=\"The Conquest Times\"",
-			"JOURNAL=\"The Conquest Times\" LAW=FALSE OWNERSHIP=FALSE",
+			"journal=\""+TEST_JOURNAL+"\"",
+			"JOURNAL=\""+TEST_JOURNAL+"\" LAW=FALSE OWNERSHIP=FALSE",
+			"!journal=\"NoSuchJournal\"",
 			"!law=sometimes"},
 		// CorpseEater: ActiveTicker keys, EATITEMS/+PLAYER/-NPC/-MOB,
 		// then a zappermask (Behaviors/CorpseEater.java:100). The mask in the
@@ -169,11 +184,13 @@ public class Validparms extends StdTest
 		// after it), so that spelling stays covered as a negative.
 		// FaithHelper: deity name words, max combatants, optional message (Behaviors/FaithHelper.java:115). Example arc_behaviors.ini:70. The deity branch repeats, so any single word is acceptable and only a format that fails to parse can be caught here.
 		{"FaithHelper",
-			"Odin 5 msg=\"OMG ATTACK!\"",
-			"Odin",
-			"Odin 5",
+			TEST_DEITIES[0]+" 5 msg=\"OMG ATTACK!\"",
+			TEST_DEITIES[0],
+			TEST_DEITIES[0]+" 5",
+			"\""+TEST_DEITIES[1]+"\" 5",
 			"5",
-			"the great Odin 5 msg=\"hi\""},
+			"!NoSuchDeity",
+			"!NoSuchDeity 5 msg=\"hi\""},
 		{"FieryRoom",
 			"damage=77",
 			"title=\"A Flaming Room\"",
@@ -423,6 +440,77 @@ public class Validparms extends StdTest
 			"!BRIBE=abc",
 			"!+",
 			"!min=10 max=20 chance=75 -air fee"},
+		// Sounder: Sounder.java:81-120. Every ;-separated field is one trigger; a field
+		// is either the min/max ticker keys (first field only, since the consumer
+		// drops field 0 once either key is found), a SOUND chance plus emote, or a
+		// trigger code plus emote. The emote is freeform up to the next ;, so an
+		// emote may not contain one, and an empty emote is rejected.
+		{"Sounder",
+			"",
+			"sound 80 wiggles his bottom.;sound 60 smiles evilly.;sound 20 burps!",
+			"min=20 max=20;wear $p looks good on you.;remove Now you don't look so good.;remove_room $n doesn't look so good.",
+			"sound 50 burps",
+			"get A ghostly hand takes it.",
+			"portal_enter_room $n arrives in a swirl of mist.",
+			"min=5",
+			"max=5",
+			"!sound eighty burps",
+			"!wibble wibble",
+			"!get",
+			"!sound 50",
+			"!min=abc max=20"},
+		// StockMarket: setParms:1474-1479 -> configure():1437-1468. Space-delimited KEY=value
+		// parms through CMParms.parseEQParms, so the order is free; empty parms means the
+		// STOCK preset.  CONFIGS= holds comma-separated property-file paths, and those files
+		// are a separate Properties surface which this format does not cover.
+		{"StockMarket",
+			"",
+			"JOURNAL=\""+TEST_JOURNAL+"\" MARKETTYPE=STOCK",
+			"CONFIGS=\"/resources/config1.txt,/resources/config2.txt\"",
+			"MARKETTYPE=BOND",
+			"NAME=\"Stock in @x1 of @x2\"",
+			"AREAEVENTS=\"+revolt,-celebration\"",
+			"GROUPBY=ALL AREAMASK=\"-EFFECTS +Arrest +EFFECTS -Conquerable\"",
+			"ALLOWCLANS=TRUE SHOPMASK=\"-NPC\" GROUPBY=NOTHING NAME=\"Clan Stock: @x1 of @x2\" PLAYINFLU=FALSE",
+			"UPDATEDAYS=24 WAITDAYAB=10 MAXSTOCKS=10 MAXSHARES=25",
+			"groupby=race",
+			"!MARKETTYPE=BOGUS",
+			"!GROUPBY=NOPE",
+			"!UPDATEDAYS=abc",
+			"!ALLOWCLANS=perhaps",
+			"!MAXSTOCKS=2.5",
+			"!NAME=Stock in @x1 of @x2"},
+		// MudChat: setParms:327-380. A leading + means the whole string is bonus chat data;
+		// otherwise the first = splits data file from the rest, and the first + in that rest
+		// splits the chat group from bonus data.  A bare string with no = is a chat group
+		// name (MudChat.java:352-353), which is why the final branch accepts anything and
+		// this row cannot carry a negative: every non-empty value is a legal group name.
+		{"MudChat",
+			"",
+			"smurf",
+			"chat.dat=smurf",
+			"chat.dat=smurf+(smurfy);9Smurfy!",
+			"mychat.dat=cityguard",
+			"mychat.dat=",
+			"+(here there);9neither;5well, where?;1nowhere",
+			"dog fido beastly fido_dog"},
+		// Nanny: setParms:810-845 reads RATE as a double, NAME as a string, and WATCHES as a
+		// comma list of the eight types it writes back itself at getParms:762-807 (Babies,
+		// Children, Mounts, Wagons, Cars, Boats, AirCars, Followers), matching each element
+		// by its first three letters (:826-841).  Everything after |~| is machine-written
+		// drop-off XML (:813, :860-863), so the tail is only checked as well-formed XML.
+		{"Nanny",
+			"",
+			"rate=2.5 name=\"The Stables\" watches=\"mounts,wagons\"",
+			"RATE=2 NAME=\"Nursery\" WATCHES=\"Babies,Children\"",
+			"WATCHES=\"Babies,Children,Mounts,Wagons,Cars,Boats,AirCars,Followers\"",
+			"WATCHES=\"Mounts,Wagons,\"",
+			"WATCHES=\"bab\"",
+			"NAME=\"The Stables\"",
+			"rate=2.5 name=\"The Stables\" watches=\"mounts,wagons,\" |~| <DROP><ENAM>Bob</ENAM><ONAM>Mary</ONAM><TIME>5</TIME></DROP>",
+			"!WATCHES=\"babies,chickens\"",
+			"!RATE=abc",
+			"!NAME=The Stables"},
 	};
 
 	/**
@@ -463,11 +551,15 @@ public class Validparms extends StdTest
 		"MOBHelper",
 		"Mobile",
 		"MobileAggressive",
+		"MudChat",
+		"Nanny",
 		"PlayerHelper",
 		"PuddleMaker",
 		"RaceHelper",
 		"ResetWhole",
 		"ROMGangMember",
+		"Sounder",
+		"StockMarket",
 		"VeryAggressive",
 		"WeatherAffects",
 		"Wimpy",
@@ -494,6 +586,78 @@ public class Validparms extends StdTest
 		return (B == null) ? null : B.parmsFormat();
 	}
 
+	private static String createFixtures(final List<Object> fixtures)
+	{
+		try
+		{
+			CMLib.database().DBWriteJournal(TEST_JOURNAL,"Validparms","Validparms","Fixture","Created by the Validparms test.");
+			fixtures.add(TEST_JOURNAL);
+		}
+		catch(final Exception e)
+		{
+			return "Error: could not write the test journal: " + e.getMessage();
+		}
+		final List<String> journals=CMLib.database().DBReadJournals();
+		if((journals==null)||(!journals.contains(TEST_JOURNAL)))
+			return "Error: the test journal '" + TEST_JOURNAL + "' was not readable after it was written";
+		try
+		{
+			final Clan C=(Clan)CMClass.getCommon("DefaultClan");
+			C.setName(TEST_CLAN);
+			C.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
+			C.setStatus(Clan.CLANSTATUS_PENDING);
+			C.create();
+			fixtures.add(C);
+		}
+		catch(final Exception e)
+		{
+			return "Error: could not create the test clan: " + e.getMessage();
+		}
+		if(CMLib.clans().getClan(TEST_CLAN)==null)
+			return "Error: the test clan '" + TEST_CLAN + "' was not readable after it was created";
+		for(final String deityName : TEST_DEITIES)
+		{
+			try
+			{
+				final Deity D=(Deity)CMClass.getMOB("StdDeity");
+				if(D==null)
+					return "Error: StdDeity could not be instantiated";
+				D.setName(deityName);
+				CMLib.map().registerWorldObjectLoaded(null,null,D);
+				fixtures.add(D);
+			}
+			catch(final Exception e)
+			{
+				return "Error: could not create the test deity '" + deityName + "': " + e.getMessage();
+			}
+			if(CMLib.map().getDeity(deityName)==null)
+				return "Error: the test deity '" + deityName + "' was not readable after it was created";
+		}
+		return null;
+	}
+
+	private static void destroyFixtures(final List<Object> fixtures)
+	{
+		for(int i=fixtures.size()-1;i>=0;i--)
+		{
+			final Object o=fixtures.get(i);
+			try
+			{
+				if(o instanceof Clan)
+					((Clan)o).destroyClan();
+				else
+				if(o instanceof Deity)
+					CMLib.map().registerWorldObjectDestroyed(null,null,(Deity)o);
+				else
+					CMLib.database().DBDeleteJournal(String.valueOf(o),null);
+			}
+			catch(final Exception e)
+			{
+				Log.errOut("Validparms","Could not remove the test fixture " + o + ": " + e.getMessage());
+			}
+		}
+	}
+
 	private static String checkParses(final String format)
 	{
 		try
@@ -509,6 +673,22 @@ public class Validparms extends StdTest
 
 	@Override
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
+	{
+		final List<Object> fixtures = new ArrayList<Object>();
+		try
+		{
+			final String fixtureError = createFixtures(fixtures);
+			if(fixtureError != null)
+				return fixtureError;
+			return runTests();
+		}
+		finally
+		{
+			destroyFixtures(fixtures);
+		}
+	}
+
+	private String runTests()
 	{
 		int testNum = 0;
 		final StringBuilder fails = new StringBuilder("");

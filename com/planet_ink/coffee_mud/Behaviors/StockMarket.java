@@ -60,6 +60,34 @@ public class StockMarket extends StdBehavior
 		return "StockMarket";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		final StringBuilder types=new StringBuilder();
+		for(final ShortcutMarketTypes t : ShortcutMarketTypes.values())
+			types.append(types.length()==0?"":",").append(t.name());
+		final StringBuilder groups=new StringBuilder();
+		for(final GroupBy g : GroupBy.values())
+			groups.append(groups.length()==0?"":",").append(g.name());
+		return "(("
+			+ "(JOURNAL=(\")[JOURNAL(prompt=Journal name/colh=Journal)...](\"))/"
+			+ "(CONFIGS=(\")[STRING(prompt=Config files/colh=Configs)...](\"))/"
+			+ "(MARKETTYPE=[CHOICES(choices=" + types + "/prompt=Market type/colh=MarketType)])/"
+			+ "(UPDATEDAYS=[NUMBER(prompt=Days between updates/colh=UpdateDays)])/"
+			+ "(WAITDAYAB=[NUMBER(prompt=Bankruptcy wait days/colh=WaitDayAB)])/"
+			+ "(MAXSTOCKS=[NUMBER(prompt=Max stocks/colh=MaxStocks)])/"
+			+ "(NAME=(\")[NAME_MASK(prompt=Stock name pattern/colh=Name)...](\"))/"
+			+ "(ALLOWCLANS=[CONFIRM(prompt=Allow clans/colh=AllowClans)])/"
+			+ "(AREAGROUP=[CONFIRM(prompt=Group areas/colh=AreaGroup)])/"
+			+ "(PLAYINFLU=[CONFIRM(prompt=Player influence/colh=PlayInflu)])/"
+			+ "(MAXSHARES=[NUMBER(prompt=Max shares per stock/colh=MaxShares)])/"
+			+ "(SHOPMASK=(\")[ZAPPERMASK(prompt=Shopkeeper mask/colh=ShopMask)...](\"))/"
+			+ "(AREAEVENTS=(\")[STRING(prompt=Area events/colh=AreaEvents)...](\"))/"
+			+ "(AREAMASK=(\")[ZAPPERMASK(prompt=Area mask/colh=AreaMask)...](\"))/"
+			+ "(GROUPBY=[CHOICES(choices=" + groups + "/prompt=Group by/colh=GroupBy)])"
+			+ ")...)";
+	}
+
 	private static final int OWNER_DISCOUNT_INFL_CAP= 25;
 	
 	private PhysicalAgent			host			= null;

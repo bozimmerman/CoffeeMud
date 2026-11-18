@@ -111,11 +111,23 @@ public class FaithHelper extends StdBehavior
 		}
 	}
 
+	/**
+	 * The deity is the free-form head of the parms: setParms strips any
+	 * integer and a MSG= parm and combines what is left, then sets it as
+	 * the worshipper's deity (FaithHelper.java:86-107). A bare word is
+	 * captured and confirmed as a deity, and a quoted name captures the
+	 * whole quoted run, so "The All Father" gets through. An unquoted
+	 * multiword name is legal to the consumer but cannot be captured
+	 * here: the matcher has no backtracking, so a placeholder in the
+	 * middle of a format can only stop at whitespace, a chosen character,
+	 * or the end of the string (Libraries/CMAbleParms.java:2578-2604).
+	 * The whole field is optional, since a behavior may name no deity.
+	 */
 	@Override
 	public String parmsFormat()
 	{
 		return "((" 
-				+"(([STRING(prompt=Deity name/colh=Deity)])...)/"
+				+"(((\")[DEITY(prompt=Deity name/colh=Deity)..\\\"](\")))/([DEITY(prompt=Deity name/colh=Deity)]))/"
 				+"([NUMBER(prompt=Num/colh=Num)])/"
 				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
 				+")...)";

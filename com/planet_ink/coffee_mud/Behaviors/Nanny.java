@@ -43,6 +43,17 @@ public class Nanny extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+			+ "(RATE=[DECIMAL(prompt=Hourly rate per item/colh=Rate)])/"
+			+ "(NAME=(\")[STRING(prompt=Place name/colh=Name)...](\"))/"
+			+ "(WATCHES=(\")([CHOICES_PREFIX(choices=BABIES,CHILDREN,MOUNTS,WAGONS,CARS,BOATS,AIRCARS,FOLLOWERS/prompt=Watch type/colh=Watch)..(,/\")]..,)(\"))"
+			+ ")...)"
+			+ "(|~|[XML(prompt=Drop-off data/colh=DropOff).. ])";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

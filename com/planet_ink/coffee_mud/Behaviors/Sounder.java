@@ -44,6 +44,32 @@ public class Sounder extends StdBehavior
 	protected int	maxTicks	= 23;
 	protected int	tickDown	= (int) Math.round(Math.random() * (maxTicks - minTicks)) + minTicks;
 
+	protected static final String[] EMOTE_CODES = {
+		"GET", "GET_ROOM", "EAT", "EAT_ROOM",
+		"PUSH", "PUSH_ROOM", "PULL", "PULL_ROOM",
+		"SIT", "SIT_ROOM", "DROP", "DROP_ROOM",
+		"WEAR", "WEAR_ROOM", "OPEN", "OPEN_ROOM",
+		"CLOSE", "CLOSE_ROOM", "HOLD", "HOLD_ROOM",
+		"WIELD", "WIELD_ROOM", "DRINK", "DRINK_ROOM",
+		"MOUNT", "MOUNT_ROOM", "REMOVE", "REMOVE_ROOM",
+		"PORTAL_ENTER", "PORTAL_ENTER_ROOM", "PORTAL_EXIT", "PORTAL_EXIT_ROOM",
+		"DAMAGE", "DAMAGE_ROOM", "FIGHT", "FIGHT_ROOM"
+	};
+
+	@Override
+	public String parmsFormat()
+	{
+		final StringBuilder codes=new StringBuilder();
+		for(final String code : EMOTE_CODES)
+			codes.append(codes.length()==0?"":",").append(code);
+		return "(("
+			+ "((((min=[NUMBER(prompt=Min Ticks/colh=Min)])/(max=[NUMBER(prompt=Max Ticks/colh=Max)]))...)/"
+			+ "(SOUND [DECIMAL(prompt=Tick Chance/colh=Chance)] [STRING(prompt=Emote/colh=Emote)..;])/"
+			+ "([CHOICES(choices=" + codes + "/prompt=Trigger code/colh=Trigger)] [STRING(prompt=Emote/colh=Emote)..;]))"
+			+ "(;)"
+			+ ")...)";
+	}
+
 	@Override
 	protected int canImproveCode()
 	{

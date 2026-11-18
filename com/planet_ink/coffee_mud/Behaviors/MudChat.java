@@ -49,6 +49,17 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		return "MudChat";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "("
+			+ "([STRING(prompt=Chat data file/colh=File)..=]=([STRING(prompt=Chat group/colh=Group)..+])+[STRING(prompt=Bonus chat data/colh=Data).. ])/"
+			+ "([STRING(prompt=Chat data file/colh=File)..=]=([STRING(prompt=Chat group/colh=Group).. ]))/"
+			+ "(+[STRING(prompt=Bonus chat data/colh=Data).. ])/"
+			+ "([STRING(prompt=Chat group/colh=Group).. ])"
+			+ ")";
+	}
+
 	//----------------------------------------------
 	// format: first group is general mob (no other
 	// fit found).  All groups are chat groups.

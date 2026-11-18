@@ -240,7 +240,7 @@ public class Conquerable extends Arrest
 		return "((" 
 				+"(LAW=(\")[CONFIRM(prompt=Allow Law/colh=Law)...](\"))/"
 				+"(OWNERSHIP=(\")[CONFIRM(prompt=Ownership/colh=Own)...](\"))/"
-				+"(JOURNAL=(\")[STRING(prompt=Journal/colh=Journal)...](\"))/"
+				+"(JOURNAL=(\")[JOURNAL(prompt=Journal/colh=Journal)...](\"))/"
 				+"(LOYALTY=[NUMBER(prompt=Loyalty/colh=Loyalty)])/"
 				+"(LEVELDIFF=[NUMBER(prompt=Level Diff/colh=LvlDiff)])"
 				+")...)";
