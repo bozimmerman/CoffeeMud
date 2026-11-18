@@ -65,6 +65,14 @@ public class ROMGangMember extends StdBehavior
 		}
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(([STRING(prompt=Gang Name/colh=Gang)..;])" 
+				+"(;([STRING(prompt=Message/colh=Msg)..;])...)"
+				+")";
+	}
+
 	public void pickAFight(final MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))

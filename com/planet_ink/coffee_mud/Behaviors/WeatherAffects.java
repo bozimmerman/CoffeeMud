@@ -176,6 +176,35 @@ public class WeatherAffects extends PuddleMaker
 		resetDustTicks();
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"(puddlepct=[NUMBER(prompt=Puddle Pct Chance 0-100/colh=Puddle)])/"
+				+"(windsheer=[NUMBER(prompt=Wind Sheer Pct Chance 0-100/colh=Wind)])/"
+				+"(rainSlipChance=[NUMBER(prompt=Rain Slip Pct Chance 0-100/colh=Rain)])/"
+				+"(snowSlipChance=[NUMBER(prompt=Snow Pct Chance 0-100/colh=Snow)])/"
+				+"(sleetSlipChance=[NUMBER(prompt=Sleet Pct Chance 0-100/colh=Sleet)])/"
+				+"(iceoverchance=[NUMBER(prompt=Freeze Pct Chance 0-100/colh=Freeze)])/"
+				+"(droughtFireChance=[NUMBER(prompt=Drought Fire Pct Chance 0-100/colh=Drought)])/"
+				+"(boatSlipChance=[NUMBER(prompt=Boat Slip Pct Chance 0-100/colh=Boat)])/"
+				+"(botherticks=[NUMBER(prompt=Bother Ticks/colh=Bother)])/"
+				+"(diseaseticks=[NUMBER(prompt=Disease Ticks/colh=Disease)])/"
+				+"(rustticks=[NUMBER(prompt=Rust Ticks/colh=Rust)])/"
+				+"(lightningticks=[NUMBER(prompt=Lightning Ticks/colh=Lightning)])/"
+				+"(rumbleticks=[NUMBER(prompt=Rumble Ticks/colh=Rumble)])/"
+				+"(gustticks=[NUMBER(prompt=Gust Ticks/colh=Gust)])/"
+				+"(tornadoticks=[NUMBER(prompt=Tornado Ticks/colh=Tornado)])/"
+				+"(hailticks=[NUMBER(prompt=Hail Ticks/colh=Hail)])/"
+				+"(dustticks=[NUMBER(prompt=Dust Ticks/colh=Dust)])/"
+				+"(shipdmgpct=(\")[CMATH_FORMULA(prompt=Ship Dmg Pct/colh=ShipDmg%)](\"))/"
+				+"(dmgship=(\")[CMATH_FORMULA(prompt=Ship Dmg/colh=ShipDmg)](\"))/"
+				+"(dmgname=(\")[STRING(prompt=Ship Dmg Name/colh=ShipDmgNm)](\"))/"
+				+"(weather=(\")[WEATHER_CODE_NUM(prompt=Weather Code/colh=Weather)](\"))/"
+				+"(skyweather=(\")[WEATHER_CODE_NUM(prompt=Sky Weather Code/colh=SkyWeather)](\"))"
+				+")...)";
+	}
+
 	private void resetBotherTicks()
 	{
 		botherDown = CMParms.getParmInt(parms, "botherticks", Climate.WEATHER_TICK_DOWN / 3);

@@ -112,6 +112,16 @@ public class FaithHelper extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "((" 
+				+"(([STRING(prompt=Deity name/colh=Deity)])...)/"
+				+"([NUMBER(prompt=Num/colh=Num)])/"
+				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

@@ -76,6 +76,16 @@ public class Wimpy extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"(delay=[NUMBER(prompt=Delay Ticks/colh=Delay)])/"
+				+"(very=[NUMBER(prompt=Very Flag 0-1/colh=Very)])"
+				+")...)"
+				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);

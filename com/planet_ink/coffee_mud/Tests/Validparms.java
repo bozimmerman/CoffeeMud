@@ -167,6 +167,13 @@ public class Validparms extends StdTest
 		// with a semicolon, which the format cannot accept (fields are space
 		// separated, though CMParms.getParmStr would have found the damage=
 		// after it), so that spelling stays covered as a negative.
+		// FaithHelper: deity name words, max combatants, optional message (Behaviors/FaithHelper.java:115). Example arc_behaviors.ini:70. The deity branch repeats, so any single word is acceptable and only a format that fails to parse can be caught here.
+		{"FaithHelper",
+			"Odin 5 msg=\"OMG ATTACK!\"",
+			"Odin",
+			"Odin 5",
+			"5",
+			"the great Odin 5 msg=\"hi\""},
 		{"FieryRoom",
 			"damage=77",
 			"title=\"A Flaming Room\"",
@@ -214,6 +221,24 @@ public class Validparms extends StdTest
 		// InstantDeath.java:37 extends ActiveTicker, and its setParms calls
 		// super.setParms at :63, which reads MIN/MAX/CHANCE/MINGRP), then
 		// MASK=.
+		// Guard: one free form mob name (Behaviors/Guard.java:56, compared with
+		// the target name at Behaviors/Guard.java:75). The placeholder sits in
+		// an optional group, so empty parms matches, as for every unconfigured
+		// behavior; any word is a name, so there is no rejectable value.
+		{"Guard",
+			"",
+			"Bob",
+			"a city guard",
+			"a guard named Bob"},
+		// Hireling: price;minutes;zappermask (Behaviors/Hireling.java:114, split on ; at Behaviors/Hireling.java:87-96). Example arc_behaviors.ini:10000;30.
+		{"Hireling",
+			"10000;30",
+			"10000",
+			"10000;30 -race +elf",
+			"10000;30 \"-race +elf\"",
+			"!abc",
+			"!10000;abc",
+			"!10000;30;x +elf"},
 		{"InstantDeath",
 			"mask=\"-race +orc\"",
 			"mask=\"-RACE +ORC\"",
@@ -221,6 +246,105 @@ public class Validparms extends StdTest
 			"min=10 max=20 chance=75",
 			"!-RACE +ORC",
 			"!mask=\"-foo +bar\""},
+		// ItemIdentifier: a single COST= formula (Behaviors/ItemIdentifier.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		{"ItemIdentifier",
+			"COST=\"100+@x1\"",
+			"COST=100+@x1",
+			"COST=\"(100-@x3)+@x1\"",
+			"!COST=100",
+			"!COST=junk"},
+		// ItemMender: a single COST= formula (Behaviors/ItemMender.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		{"ItemMender",
+			"COST=\"100+@x1\"",
+			"COST=100+@x1",
+			"COST=\"(100-@x3)+@x1\"",
+			"!COST=100",
+			"!COST=junk"},
+		// ItemRefitter: a single COST= formula (Behaviors/ItemRefitter.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		{"ItemRefitter",
+			"COST=\"100+@x1\"",
+			"COST=100+@x1",
+			"COST=\"(100-@x3)+@x1\"",
+			"!COST=100",
+			"!COST=junk"},
+		// MOBHelper: max combatants, optional MSG= (Behaviors/MOBHelper.java:58-66). Examples arc_behaviors.ini: 5 MSG=\"OMG ATTACK!\" / 5 msg=\"OMG ATTACK!\".
+		{"MOBHelper",
+			"5",
+			"5 MSG=\"OMG ATTACK!\"",
+			"5 msg=\"OMG ATTACK!\"",
+			"msg=\"OMG ATTACK!\"",
+			"!5.5",
+			"!MSG=\"x\" junk"},
+		// PlayerHelper: max combatants, optional MSG= (Behaviors/PlayerHelper.java:58-66). Examples arc_behaviors.ini: 5 MSG=\"OMG ATTACK!\" / 5 msg=\"OMG ATTACK!\".
+		{"PlayerHelper",
+			"5",
+			"5 MSG=\"OMG ATTACK!\"",
+			"5 msg=\"OMG ATTACK!\"",
+			"msg=\"OMG ATTACK!\"",
+			"!5.5",
+			"!MSG=\"x\" junk"},
+		// PuddleMaker: one percent chance (Behaviors/PuddleMaker.java:121, read with CMath.s_int(getParms()) at Behaviors/PuddleMaker.java:115-116). Example arc_behaviors.ini: 34.
+		{"PuddleMaker",
+			"34",
+			"0",
+			"100",
+			"!x",
+			"!5.5"},
+		// RaceHelper: max combatants, optional MSG= (Behaviors/RaceHelper.java:58-66). Examples arc_behaviors.ini: 5 MSG=\"OMG ATTACK!\" / 5 msg=\"OMG ATTACK!\".
+		{"RaceHelper",
+			"5",
+			"5 MSG=\"OMG ATTACK!\"",
+			"5 msg=\"OMG ATTACK!\"",
+			"msg=\"OMG ATTACK!\"",
+			"!5.5",
+			"!MSG=\"x\" junk"},
+		// ResetWhole: either a bare tick count or one of TICKS=/RLHOUR=/MUDHOUR= (Behaviors/ResetWhole.java:105, read at Behaviors/ResetWhole.java:72-95). Example arc_behaviors.ini: 4000.
+		{"ResetWhole",
+			"4000",
+			"TICKS=4000",
+			"RLHOUR=\"5\"",
+			"MUDHOUR=\"5\"",
+			"!RLHOUR=abc",
+			"!MUDHOUR=x"},
+		// ROMGangMember: gang name, then messages, all semicolon separated (Behaviors/ROMGangMember.java:69, parsed at Behaviors/ROMGangMember.java:57). Examples arc_behaviors.ini: Troll / Troll;I`m gonna kill you!;DIE!
+		{"ROMGangMember",
+			"Troll",
+			"Troll;I`m gonna kill you!;I`ve got you now!;DIE!",
+			"Troll;DIE!",
+			"!;"},
+		// VeryAggressive: inherits the Aggressive format, which owns delay= and the flags (Behaviors/VeryAggressive.java:75). Examples arc_behaviors.ini: -race +elf, mobkill misbehave -race +elf.
+		{"VeryAggressive",
+			"-race +elf",
+			"-race +elf message=\"die! You!\"",
+			"mobkill misbehave -race +elf",
+			"delay=5",
+			"!delay=abc",
+			"!-foo +bar"},
+		// WeatherAffects: key=value settings for weather effects (Behaviors/WeatherAffects.java:180, read at Behaviors/WeatherAffects.java:137-210). Note the consumer reads iceoverchance, while arc_behaviors.ini:2537 documents freezeOverChance; the format follows the consumer.
+		{"WeatherAffects",
+			"windsheer=10 puddlepct=20",
+			"iceoverchance=50",
+			"botherticks=100",
+			"dmgname=\"a big ship\"",
+			"shipdmgpct=\"2*@x1\"",
+			"weather=RAIN",
+			"!bogus=1",
+			"!freezeoverchance=50",
+			"!puddlepct=abc"},
+		// Wimpy: delay=, very=, then a zappermask (Behaviors/Wimpy.java:79, read at Behaviors/Wimpy.java:69-72). Example arc_behaviors.ini: -race +elf.
+		{"Wimpy",
+			"-race +elf",
+			"delay=5",
+			"very=1",
+			"delay=5 -race +elf",
+			"!delay=abc",
+			"!very=x"},
+		// WimpyAggressive: inherits the Aggressive format (Behaviors/WimpyAggressive.java:83). Examples arc_behaviors.ini: -race +elf, -race +elf misbehave mobkill.
+		{"WimpyAggressive",
+			"-race +elf",
+			"-race +elf misbehave mobkill",
+			"delay=5",
+			"!delay=abc"},
 	};
 
 	/**
@@ -247,7 +371,23 @@ public class Validparms extends StdTest
 		"Follower",
 		"GateGuard",
 		"GoodExecutioner",
-		"InstantDeath"
+		"InstantDeath",
+		"FaithHelper",
+		"Guard",
+		"Hireling",
+		"ItemIdentifier",
+		"ItemMender",
+		"ItemRefitter",
+		"MOBHelper",
+		"PlayerHelper",
+		"PuddleMaker",
+		"RaceHelper",
+		"ResetWhole",
+		"ROMGangMember",
+		"VeryAggressive",
+		"WeatherAffects",
+		"Wimpy",
+		"WimpyAggressive"
 	};
 
 	/** A behavior that neither stores nor reads parms. */

@@ -31,7 +31,6 @@
 29. New common skill: Snake Oil Selling
 30. Ability/Property parameters/arguments are now validated in CL and the MUDGrinder.
 
-
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
   2. New Save vs Polymorph saving throw, also applies to petrification

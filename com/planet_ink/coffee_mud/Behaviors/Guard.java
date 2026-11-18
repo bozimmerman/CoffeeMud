@@ -53,6 +53,12 @@ public class Guard extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "([STRING(prompt=Guarded Name/colh=guarded).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

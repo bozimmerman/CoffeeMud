@@ -117,6 +117,12 @@ public class PuddleMaker extends StdBehavior
 		return pct;
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "([NUMBER(prompt=Pct Chance 0-100/colh=Chance)])";
+	}
+
 	public void makePuddle(final Room R, final int oldWeather, final int newWeather)
 	{
 		for(int i=0;i<R.numItems();i++)

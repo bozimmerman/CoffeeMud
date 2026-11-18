@@ -72,6 +72,13 @@ public class VeryAggressive extends Aggressive
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		// does not need to handle 'delay' as superclass already does.
+		return super.parmsFormat();
+	}
+
+	@Override
 	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return CMLib.masking().maskCheck(this.mask,M,false);

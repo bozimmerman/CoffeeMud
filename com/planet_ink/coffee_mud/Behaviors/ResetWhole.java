@@ -102,6 +102,16 @@ public class ResetWhole extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(([NUMBER(prompt=Time Millis/colh=TimeMS)])/" 
+				+"(TICKS=[NUMBER(prompt=Inactivity Ticks/colh=Ticks)])/"
+				+"(RLHOUR=(\")[NUMBER(prompt=RL Hour/colh=RLHr)](\"))/"
+				+"(MUDHOUR=(\")[NUMBER(prompt=MUD Hour/colh=MUDHr)](\"))"
+				+")";
+	}
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);

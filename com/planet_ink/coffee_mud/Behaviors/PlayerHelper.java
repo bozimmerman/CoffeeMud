@@ -72,6 +72,15 @@ public class PlayerHelper extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+"([NUMBER(prompt=Num/colh=num)])"
+				+"(MSG=(\")[STRINGORNULL(prompt=Message/colh=msg)...](\"))"
+				+")...)";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

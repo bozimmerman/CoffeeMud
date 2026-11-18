@@ -79,6 +79,13 @@ public class WimpyAggressive extends Aggressive
 		tickDown=tickWait;
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		// does not need to handle 'delay' as superclass already does.
+		return super.parmsFormat();
+	}
+
 	public static void pickAWimpyFight(final MOB observer, final boolean mobKiller, final boolean misBehave, final String attackMsg, final CompiledZMask zapMask)
 	{
 		if(!canFreelyBehaveNormal(observer))

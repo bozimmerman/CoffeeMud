@@ -110,6 +110,15 @@ public class Hireling extends StdBehavior
 		}
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "([NUMBER(prompt=Price/colh=price)]"
+				+"(;[NUMBER(prompt=Minutes/colh=mins)]"
+				+"(;[ZAPPERMASK(prompt=Zappermask/colh=Mask).. ]))"
+				+")";
+	}
+
 	protected double price()
 	{
 		return price;
