@@ -77,7 +77,7 @@ public class AntiVagrant extends ActiveTicker
 	{
 		return "((" 
 				+ activeParmsFormat()+"/"
-				+"(CHOICES(choices=KICK,ANYWHERE/prompt=Flags/colh=Flag)"
+				+"([CHOICES(choices=KICK,KICKOUT,ANYWHERE/prompt=Flags/colh=Flag)])"
 				+")...)";
 	}
 	

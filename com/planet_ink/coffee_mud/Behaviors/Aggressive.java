@@ -189,9 +189,11 @@ public class Aggressive extends StdBehavior
 				+"(delay=[NUMBER(prompt=Delay Ticks/colh=Delay)])/"
 				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))/"
 				+"(BRIBE=(\")[DECIMAL(prompt=Amount$/colh=Amt$)](,[NUMBER(prompt=Ticks/colh=Ticks)](,[NUMBER(prompt=Wait/colh=Wait)]))(\"))/"
-				+"(CHOICES(choices=WANDER,CHECKLEVEL,MOBKILL,MOBKILLER,NOGANG,NOGANGUP,MISBEHAVE/prompt=Flags/colh=Flag)"
-				+"((\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))/"
-				+")...)";
+				+"(BRIBEPAYMSG=(\")[STRING(prompt=Bribe pay message/colh=BribePay)...](\"))/"
+				+"(BRIBEPAIDMSG=(\")[STRING(prompt=Bribe paid message/colh=BribePaid)...](\"))/"
+				+"([CHOICES(choices=WANDER,CHECKLEVEL,MOBKILL,MOBKILLER,NOGANG,NOGANGUP,MISBEHAVE/prompt=Flags/colh=Flag)])"
+				+")...)"
+				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
 	}
 
 	public static boolean startFight(final MOB monster, final MOB mob, final boolean fightMOBs, final boolean misBehave, final String attackMsg)

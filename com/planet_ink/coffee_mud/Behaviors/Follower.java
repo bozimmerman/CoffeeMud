@@ -91,10 +91,10 @@ public class Follower extends ActiveTicker
 	{
 		return "(("
 				+super.activeParmsFormat()+"/"
-				+"(NAME=(\")[STRING(prompt=Name/col=Name)...](\"))/"
-				+"((\")[ZAPPERMASK(prompt=Zappermask/col=Mask)...](\"))/"
+				+"(NAME=(\")[STRING(prompt=Name/colh=Name)...](\"))/"
 				+"([CHOICES(choices=GROUP,WANDER,NOFOLLOWERS,INVENTORY,INV/prompt=Flags/colh=Flags)])"
-				+")...)";
+				+")...)"
+				+"([ZAPPERMASK(prompt=Zappermask/colh=Mask).. ])";
 	}
 
 	@Override

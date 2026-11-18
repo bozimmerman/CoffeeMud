@@ -76,7 +76,7 @@ public class AlignHelper extends StdBehavior
 	{
 		return "(("
 				+"([NUMBER(prompt=Num/colh=Num)])/"
-				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))"
+				+"(MSG=(\")[STRING(prompt=Message/colh=Message)...](\"))"
 				+")...)";
 	}
 

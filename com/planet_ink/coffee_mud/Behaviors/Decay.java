@@ -91,9 +91,9 @@ public class Decay extends ActiveTicker
 				+"(REMAIN=[NUMBER(prompt=Remain/colh=Rem)])/"
 				+"(USE2=[CONFIRM(prompt=Use2/colh=Use2)])/"
 				+"([CHECK(name=NOTRIGGER/prompt=NoTrigger/colh=NoTrigger)])/"
-				+"(ANSWER=(\")[STRING(prompt=Answer/col=Answer)...](\"))/"
-				+"((\")[ZAPPERMASK(prompt=Mask/col=Mask)...](\"))"
-				+")...)";
+				+"(ANSWER=(\")[STRING(prompt=Answer/colh=Answer)...](\"))"
+				+")...)"
+				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
 	}
 
 	@Override

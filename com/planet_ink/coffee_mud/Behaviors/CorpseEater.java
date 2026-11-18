@@ -105,9 +105,9 @@ public class CorpseEater extends ActiveTicker
 	{
 		return "(("
 				+super.activeParmsFormat()+"/"
-				+"([CHOICES(choices=EATITEMS,+PLAYER,-NPC,-MOB/prompt=Flags/col=Flag)])/"
-				+"((\")[ZAPPERMASK(prompt=Mask/col=Mask)...](\"))/"
-				+")...)";
+				+"([CHOICES(choices=EATITEMS,+PLAYER,-NPC,-MOB/prompt=Flags/colh=Flag)])"
+				+")...)"
+				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
 	}
 
 	public static MOB makeMOBfromCorpse(final DeadBody corpse, String type)

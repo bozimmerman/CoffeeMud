@@ -101,7 +101,8 @@ public class BribeGateGuard extends StdBehavior
 				+"(PRICE=[DECIMAL(prompt=Price/colh=Price)])/"
 				+"(GATES=(\")[STRING(prompt=Gates/colh=Gates)...](\"))/"
 				+"(MASK=(\")[ZAPPERMASK(prompt=Mask/colh=Mask)...](\"))"
-				+")...)";
+				+")...)"
+				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
 	}
 	
 	protected int findGate(final MOB mob)

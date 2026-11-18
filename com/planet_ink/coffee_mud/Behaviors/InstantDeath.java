@@ -71,6 +71,7 @@ public class InstantDeath extends ActiveTicker
 	public String parmsFormat()
 	{
 		return "(("
+				+super.activeParmsFormat()+"/"
 				+"(MASK=(\")[ZAPPERMASK(prompt=Zappermask/colh=Mask)...](\"))"
 				+")...)";
 	}

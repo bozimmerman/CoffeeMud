@@ -83,8 +83,8 @@ public class FieryRoom extends ActiveTicker
 	{
 		return "(("
 				+super.activeParmsFormat()+"/"
-				+"(TITLE=(\")[STRING(prompt=Title/col=Title)...](\"))/"
-				+"(DESCRIPTION=(\")[STRING(prompt=Description/col=Description)...](\"))/"
+				+"(TITLE=(\")[STRING(prompt=Title/colh=Title)...](\"))/"
+				+"(DESCRIPTION=(\")[STRING(prompt=Description/colh=Description)...](\"))/"
 				+"(DAMAGE=[NUMBER(prompt=Damage/colh=Dmg)])/"
 				+"(EQCHANCE=[NUMBER(prompt=EqChance (0-100)/colh=Chance)])/"
 				+"(BURNTICKS=[NUMBER(prompt=Burn Ticks/colh=Ticks)])/"
