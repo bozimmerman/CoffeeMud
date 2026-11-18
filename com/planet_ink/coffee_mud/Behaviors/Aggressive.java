@@ -182,18 +182,40 @@ public class Aggressive extends StdBehavior
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
-	@Override
-	public String parmsFormat()
+	/**
+	 * The branches this class contributes, without the surrounding group or the
+	 * mask, so subclasses can assemble a format without copying them.
+	 *
+	 * @return the '/' separated parms format branches
+	 */
+	protected String aggressiveParmsFormat()
 	{
-		return "(("
-				+"(delay=[NUMBER(prompt=Delay Ticks/colh=Delay)])/"
+		return "(delay=[NUMBER(prompt=Delay Ticks/colh=Delay)])/"
 				+"(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))/"
 				+"(BRIBE=(\")[DECIMAL(prompt=Amount$/colh=Amt$)](,[NUMBER(prompt=Ticks/colh=Ticks)](,[NUMBER(prompt=Wait/colh=Wait)]))(\"))/"
 				+"(BRIBEPAYMSG=(\")[STRING(prompt=Bribe pay message/colh=BribePay)...](\"))/"
 				+"(BRIBEPAIDMSG=(\")[STRING(prompt=Bribe paid message/colh=BribePaid)...](\"))/"
-				+"([CHOICES(choices=WANDER,CHECKLEVEL,MOBKILL,MOBKILLER,NOGANG,NOGANGUP,MISBEHAVE/prompt=Flags/colh=Flag)])"
+				+"([CHOICES(choices=WANDER,CHECKLEVEL,MOBKILL,MOBKILLER,NOGANG,NOGANGUP,MISBEHAVE/prompt=Flags/colh=Flag)])";
+	}
+
+	/**
+	 * The mask branch, which must come last because the matcher takes this token
+	 * run through the end of the string.
+	 *
+	 * @return the parms format mask branch
+	 */
+	protected String aggressiveMaskFormat()
+	{
+		return "([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
+	}
+
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+				+ aggressiveParmsFormat()
 				+")...)"
-				+"([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";
+				+ aggressiveMaskFormat();
 	}
 
 	public static boolean startFight(final MOB monster, final MOB mob, final boolean fightMOBs, final boolean misBehave, final String attackMsg)

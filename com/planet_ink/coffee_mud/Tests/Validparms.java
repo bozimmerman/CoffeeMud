@@ -345,13 +345,93 @@ public class Validparms extends StdTest
 			"-race +elf misbehave mobkill",
 			"delay=5",
 			"!delay=abc"},
+		// CombatAbilities: order free word list. bsize read at Behaviors/CombatAbilities.java:99,
+		// combat mode at :159-175, char class names at :122-157, flags and the +-ability lists at
+		// :469-503. Covers the derived Clericness/Fighterness/Mageness/Thiefness/Druidness/Bardness.
+		{"CombatAbilities",
+			"",
+			"Cleric",
+			"Fighter",
+			"Cleric OFFENSIVE",
+			"Cleric MIXDEFENSIVE",
+			"Cleric PROFICIENT NOSTATS NOCOMBATSTAT",
+			"Cleric -Spell_Sleep +Prayer_Bless",
+			"Cleric MINTICKS=10 MAXTICKS=20 CHANCE=75",
+			"Cleric min=10 max=20 chance=75 mingrp=2",
+			"Cleric BSIZE=3",
+			"!Cleric NOCOMBATSTATX",
+			"!Cleric min=abc",
+			"!Cleric -NoSuchAbility",
+			"!Cleric BSIZE=x",
+			"!Cleric fee fie foe"},
+		// Clericness declares no format of its own: Behaviors/Clericness.java:35 extends
+		// CombatAbilities and its makeClass() call at :59 pins the class to Cleric, so these
+		// rows assert the inherited format is really reachable through a derived behavior.
+		// The values are the published examples in resources/help/arc_behaviors.ini
+		// (BEHAVIOR_CLERICNESS) wherever this distribution can satisfy them.
+		{"Clericness",
+			"",
+			"Templar",
+			"Templar OFFENSIVE",
+			"Templar MIXEDDEFENSIVE",
+			"Templar PROFICIENT NOSTATS NOCOMBATSTAT",
+			"Templar -Spell_Sleep +Prayer_Bless",
+			"Templar MINTICKS=10 MAXTICKS=20 CHANCE=75",
+			"Templar min=10 max=20 chance=75 mingrp=2",
+			"Templar BSIZE=3",
+			"!Doomsayer OFFENSIVE",
+			"!Templar NOCOMBATSTATX",
+			"!Templar min=abc",
+			"!Templar fee fie foe"},
+		// Mobile: ActiveTicker ticker keys (Behaviors/ActiveTicker.java:74-82), then LEASH= at
+		// Behaviors/Mobile.java:186, the WANDER/OPENDOORS flags at :191-195, and +- locale words
+		// at :197-241, where the domain name may be abbreviated because the reader matches with
+		// DOMAIN_*_DESCS[i].startsWith(s) -- hence LOCALE_DOMAIN_PREFIX, not LOCALE_DOMAIN.
+		{"Mobile",
+			"",
+			"min=10 max=20 chance=75 wander -air -underwater",
+			"min=10 max=20 chance=75 opendoors",
+			"min=10 max=20 chance=75 leash=3 opendoors",
+			"wander",
+			"leash=5",
+			"+all",
+			"-all +city",
+			"-under",
+			"!leash=x",
+			"!-nosuchlocale",
+			"!wandle",
+			"!+",
+			"!min=10 max=20 chance=75 -air fee"},
+		// MobileAggressive: one string read by four classes -- ActiveTicker via Mobile,
+		// Mobile.java, MobileAggressive.java:83-94, and Aggressive through the veryA
+		// delegate. The locale words are stripped before the mask run is taken
+		// (MobileAggressive.java:92-93), so -underwater/-air are locales, while
+		// -thief +elf and -elf stay in the mask.
+		{"MobileAggressive",
+			"",
+			"min=10 max=20 chance=75 -underwater -thief +elf",
+			"min=10 max=20 chance=75 wander -air -elf",
+			"min=10 max=20 chance=75 message=\"aha!\" -air -elf",
+			"min=10 max=20 chance=75 mobkill misbehave",
+			"leash=3 opendoors",
+			"min=10 max=20 chance=75 +city -under",
+			"BRIBE=\"5,100,2000\" BRIBEPAYMSG=\"take this\" BRIBEPAIDMSG=\"now go\"",
+			"min=10 max=20 chance=75 delay=5 message=\"die! You!\" mobkill misbehave -elf +fighter",
+			"!delay=abc",
+			"!min=10 max=20 chance=75 -nosuchlocale",
+			"!min=10 max=20 chance=75 mobkills",
+			"!BRIBE=abc",
+			"!+",
+			"!min=10 max=20 chance=75 -air fee"},
 	};
 
 	/**
 	 * Every behavior that implements parmsFormat(), as of this test. Each
 	 * one must return a format which parses, and which is not the undefined
 	 * default. This list must be updated in step with Behaviors/, so that a
-	 * new format owner cannot arrive without tests.
+	 * new format owner cannot arrive without tests. Behaviors which merely
+	 * inherit a format are listed too, so that the inheritance itself is
+	 * asserted rather than assumed (Clericness inherits CombatAbilities).
 	 */
 	private static final String[] FORMATTED_BEHAVIORS = {
 		"ActiveTicker",
@@ -362,6 +442,8 @@ public class Validparms extends StdTest
 		"BribeGateGuard",
 		"BrotherHelper",
 		"ClanHelper",
+		"Clericness",
+		"CombatAbilities",
 		"CommonSpeaker",
 		"Conquerable",
 		"CorpseEater",
@@ -379,6 +461,8 @@ public class Validparms extends StdTest
 		"ItemMender",
 		"ItemRefitter",
 		"MOBHelper",
+		"Mobile",
+		"MobileAggressive",
 		"PlayerHelper",
 		"PuddleMaker",
 		"RaceHelper",

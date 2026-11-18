@@ -41,6 +41,26 @@ public class CombatAbilities extends ActiveTicker
 		return "CombatAbilities";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+			+"([CHAR_CLASS(prompt=Class/colh=Class)])"
+			+"/(PROFICIENT)"
+			+"/(NOSTATS)"
+			+"/(NOSTAT)"
+			+"/(NOCOMBATSTATS)"
+			+"/(NOCOMBATSTAT)"
+			+"/([CHOICES_PREFIX(choices=RANDOM,DEFENSIVE,OFFENSIVE,MIXEDOFFENSIVE,MIXEDDEFENSIVE,ONLYALWAYS/prompt=Combat Mode/colh=Mode)])"
+			+"/(BSIZE=[NUMBER(prompt=Bucket size/colh=BSize)])"
+			+"/"+super.activeParmsFormat()
+			+"/(MINTICKS=[NUMBER(prompt=Min Ticks/colh=Min)])"
+			+"/(MAXTICKS=[NUMBER(prompt=Max Ticks/colh=Max)])"
+			+"/(+[ABILITY_ID(prompt=Skill to always use/colh=Always)])"
+			+"/(-[ABILITY_ID(prompt=Skill to never use/colh=Never)])"
+			+")...)";
+	}
+
 	public int					combatMode			= 0;
 	public Map<MOB, int[]>		aggro				= null;
 	public short				chkDown				= 0;

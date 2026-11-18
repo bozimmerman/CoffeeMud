@@ -41,6 +41,19 @@ public class MobileAggressive extends Mobile
 		return "MobileAggressive";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		// assembled from the fragments each parm-reading class contributes, through
+		// the same delegate those parms are handed to in setParms
+		return "(("
+			+ super.activeParmsFormat() + "/"
+			+ mobileParmsFormat() + "/"
+			+ veryA.aggressiveParmsFormat()
+			+ ")...)"
+			+ veryA.aggressiveMaskFormat();
+	}
+
 	protected int	tickWait	= 0;
 
 	@Override

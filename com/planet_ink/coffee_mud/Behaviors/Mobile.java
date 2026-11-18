@@ -41,6 +41,32 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		return "Mobile";
 	}
 
+	/**
+	 * The branches this class contributes, without the surrounding group or the
+	 * ticker keys, so subclasses can assemble a format without copying them.
+	 *
+	 * @return the '/' separated parms format branches
+	 */
+	protected String mobileParmsFormat()
+	{
+		return "(LEASH=[NUMBER(prompt=Leash rooms/colh=Leash)])/"
+			+ "(WANDER)/"
+			+ "(OPENDOORS)/"
+			+ "(+ALL)/"
+			+ "(-ALL)/"
+			+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+			+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])";
+	}
+
+	@Override
+	public String parmsFormat()
+	{
+		return "(("
+			+ super.activeParmsFormat() + "/"
+			+ mobileParmsFormat()
+			+ ")...)";
+	}
+
 	@Override
 	protected int canImproveCode()
 	{
