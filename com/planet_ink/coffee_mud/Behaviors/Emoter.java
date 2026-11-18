@@ -42,6 +42,20 @@ public class Emoter extends ActiveTicker
 		return "Emoter";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ super.activeParmsFormat()
+				+ "/(EXPIRES=[NUMBER(prompt=Ticks before expiring/colh=Expires)])"
+				+ "/(INROOM=(\")([ROOM_ID_SUFFIX(prompt=In room/colh=Room)]..,)(\"))"
+				+ "/(MASK=(\")[ZAPPERMASK(prompt=Zappermask/colh=Mask)...](\"))"
+				+ "/([CHOICES(choices=BROADCAST,NOBROADCAST,PUFF,PRIVATE,NOPRIVATE,EMOTEONLY,VISUAL,SIGHT,AROMA,SMELL,SOUND,NOISE,SOCIAL/prompt=Emote type/colh=Type)])"
+				+ ")..."
+				+ "((;)/(\\/))"
+				+ "([STRING(prompt=Emote message/colh=Emote)..;](;([STRING(prompt=Emote message/colh=Emote)..;])...))";
+	}
+
 	protected int				expires		= 0;
 	protected List<EmoteObj>	emotes		= null;
 	protected List<EmoteObj>	smells		= null;

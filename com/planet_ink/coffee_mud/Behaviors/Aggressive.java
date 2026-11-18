@@ -182,12 +182,6 @@ public class Aggressive extends StdBehavior
 			this.mask=CMLib.masking().getPreCompiledMask(maskStr);
 	}
 
-	/**
-	 * The branches this class contributes, without the surrounding group or the
-	 * mask, so subclasses can assemble a format without copying them.
-	 *
-	 * @return the '/' separated parms format branches
-	 */
 	protected String aggressiveParmsFormat()
 	{
 		return "(delay=[NUMBER(prompt=Delay Ticks/colh=Delay)])/"
@@ -198,12 +192,6 @@ public class Aggressive extends StdBehavior
 				+"([CHOICES(choices=WANDER,CHECKLEVEL,MOBKILL,MOBKILLER,NOGANG,NOGANGUP,MISBEHAVE/prompt=Flags/colh=Flag)])";
 	}
 
-	/**
-	 * The mask branch, which must come last because the matcher takes this token
-	 * run through the end of the string.
-	 *
-	 * @return the parms format mask branch
-	 */
 	protected String aggressiveMaskFormat()
 	{
 		return "([ZAPPERMASK(prompt=Mask/colh=Mask).. ])";

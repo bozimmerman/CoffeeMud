@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Tests;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
 import com.planet_ink.coffee_mud.core.CMClass;
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -37,6 +38,13 @@ public class Validparms extends StdTest
 	private static final String TEST_JOURNAL = "VALIDPARMS_TEST_JOURNAL";
 	private static final String TEST_CLAN = "ValidparmsTestClan";
 	private static final String[] TEST_DEITIES = { "ValidparmsTestDeity", "Validparms Test Deity" };
+
+	/**
+	 * A room id from the world the test runs in, substituted for *ROOMID* in
+	 * the rows, so that a room field can be confirmed without hard coding a
+	 * room that exists only in one world.
+	 */
+	private static String TEST_ROOM_ID = null;
 
 	/**
 	 * Behavior id, then parms values. A leading ! means the value must NOT
@@ -170,6 +178,33 @@ public class Validparms extends StdTest
 			"!use2=perhaps",
 			"!min=10 max=20 chance=75 -foo +bar"},
 		// EvilExecutioner: PLAYERS/PLAYER (Behaviors/EvilExecutioner.java:63)
+		// Emoter: a first field of ticker keys, expires, a quoted in-room list,
+		// a zappermask and the emote type words, then ';' and one message per
+		// field (Behaviors/Emoter.java:61-125). The six documented examples are
+		// here verbatim except that the room list uses *ROOMID*; inroom is
+		// captured as a quoted list rather than room by room, because a
+		// repeated group holding a greedy-to placeholder can loop forever in
+		// the matcher.
+		{"Emoter",
+			"",
+			"broadcast sound chance=25;grumbles!;eeeks!",
+			"chance=100 inroom=\"*ROOMID*\";looks horrible!;is bad!",
+			"chance=100 inroom=\"*ROOMID*,*ROOMID*\";looks horrible!",
+			";grumbles!;eeeks!",
+			"min=10 max=20 chance=25;wiggles his bottom.;smiles evilly.;burps!",
+			"min=1 max=2 chance=25;sound grumbles!;visual leers broadly.;social smile",
+			"smell chance=25 expires=10;smells horrible!;is really stinky!",
+			"noise private PUFF chance=25;x!",
+			"min=3 max=3 chance=100 mask=\"-race +elf\";grumbles!",
+			"chance=25/grumbles!",
+			"inroom=\"0\";x!",
+			"inroom=\"0,0\";x!",
+			"!foo",
+			"!chance=abc",
+			"!expires=x",
+			"!mask=\"+\";x!",
+			"!chance=25;;",
+			"!inroom=\"NoSuchRoom#99\";x!"},
 		{"EvilExecutioner",
 			"PLAYERS",
 			"PLAYER",
@@ -293,6 +328,28 @@ public class Validparms extends StdTest
 			"!5.5",
 			"!MSG=\"x\" junk"},
 		// PlayerHelper: max combatants, optional MSG= (Behaviors/PlayerHelper.java:58-66). Examples arc_behaviors.ini: 5 MSG=\"OMG ATTACK!\" / 5 msg=\"OMG ATTACK!\".
+		// MOBTeacher: percentages, char classes, abilities, expertises and
+		// flags in any order (Behaviors/MOBTeacher.java:246-301). All four
+		// documented examples are included, plus negatives for tokens the
+		// class silently ignores.
+		{"MOBTeacher",
+			"",
+			"mage",
+			"Spell_BurningHands",
+			"evoker illusionist transmuter",
+			"mage evoker illusionist transmuter",
+			"100% mage 10% Thief_Steal NOCOMMON",
+			"Spell_Sleep 5% Spell_Wish",
+			"NOTEACH NOEXPS NOHLEXP",
+			"50%",
+			"EXPCRAFT1",
+			"100% EXPCRAFT1",
+			"!Spell_NoSuchSpell",
+			"!50",
+			"!100% %",
+			"!NOCOMMONX",
+			"!garbage",
+			"!EXPCRAFT0"},
 		{"PlayerHelper",
 			"5",
 			"5 MSG=\"OMG ATTACK!\"",
@@ -485,6 +542,22 @@ public class Validparms extends StdTest
 		// splits the chat group from bonus data.  A bare string with no = is a chat group
 		// name (MudChat.java:352-353), which is why the final branch accepts anything and
 		// this row cannot carry a negative: every non-empty value is a legal group name.
+		// MovingRoom: an optional ticker group, ';' or '/', the section name in
+		// resources/movingroom.xml, then the two tick numbers the class writes
+		// but never reads (Behaviors/MovingRoom.java:96-122). The documented
+		// example is usable as written because movingroom.xml has a SUBWAY block.
+		{"MovingRoom",
+			"min=3 max=3 chance=100;SUBWAY;3;10",
+			"SUBWAY",
+			"SUBWAY;3",
+			"SUBWAY;;10",
+			"SUBWAY;3;10",
+			"min=10 max=20 chance=75 mingrp=2;SUBWAY;5;5",
+			"min=3/SUBWAY",
+			"!",
+			"!min=x;SUBWAY",
+			"!SUBWAY;x",
+			"!SUBWAY;1;2;3"},
 		{"MudChat",
 			"",
 			"smurf",
@@ -537,6 +610,7 @@ public class Validparms extends StdTest
 		"CorpseEater",
 		"Decay",
 		"EvilExecutioner",
+		"Emoter",
 		"FieryRoom",
 		"Follower",
 		"GateGuard",
@@ -548,9 +622,11 @@ public class Validparms extends StdTest
 		"ItemIdentifier",
 		"ItemMender",
 		"ItemRefitter",
+		"MOBTeacher",
 		"MOBHelper",
 		"Mobile",
 		"MobileAggressive",
+		"MovingRoom",
 		"MudChat",
 		"Nanny",
 		"PlayerHelper",
@@ -586,8 +662,27 @@ public class Validparms extends StdTest
 		return (B == null) ? null : B.parmsFormat();
 	}
 
+	private static Clan makeTestClan()
+	{
+		final Clan C=(Clan)CMClass.getCommon("DefaultClan");
+		C.setName(TEST_CLAN);
+		C.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
+		C.setStatus(Clan.CLANSTATUS_PENDING);
+		return C;
+	}
+
 	private static String createFixtures(final List<Object> fixtures)
 	{
+		// an interrupted earlier run can leave its fixtures behind, so clear
+		// them first; otherwise the next run dies on a duplicate key
+		try
+		{
+			CMLib.database().DBDeleteJournal(TEST_JOURNAL,null);
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("Validparms",e);
+		}
 		try
 		{
 			CMLib.database().DBWriteJournal(TEST_JOURNAL,"Validparms","Validparms","Fixture","Created by the Validparms test.");
@@ -600,13 +695,39 @@ public class Validparms extends StdTest
 		final List<String> journals=CMLib.database().DBReadJournals();
 		if((journals==null)||(!journals.contains(TEST_JOURNAL)))
 			return "Error: the test journal '" + TEST_JOURNAL + "' was not readable after it was written";
+		// destroyClan does not always clear the stored row, so a leftover from
+		// an interrupted run has to be removed explicitly before recreating
 		try
 		{
-			final Clan C=(Clan)CMClass.getCommon("DefaultClan");
-			C.setName(TEST_CLAN);
-			C.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
-			C.setStatus(Clan.CLANSTATUS_PENDING);
-			C.create();
+			Clan stale=CMLib.clans().getClan(TEST_CLAN);
+			if(stale==null)
+				stale=CMLib.clans().findClan(TEST_CLAN);
+			if(stale!=null)
+			{
+				stale.destroyClan();
+				CMLib.database().DBDeleteClan(stale);
+			}
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("Validparms",e);
+		}
+		try
+		{
+			Clan C=makeTestClan();
+			try
+			{
+				C.create();
+			}
+			catch(final Exception e)
+			{
+				final Clan stale=CMLib.clans().findClan(TEST_CLAN);
+				if(stale==null)
+					throw e;
+				CMLib.clans().removeClan(stale);
+				C=makeTestClan();
+				C.create();
+			}
 			fixtures.add(C);
 		}
 		catch(final Exception e)
@@ -619,6 +740,9 @@ public class Validparms extends StdTest
 		{
 			try
 			{
+				final Deity stale=CMLib.map().getDeity(deityName);
+				if(stale!=null)
+					CMLib.map().registerWorldObjectDestroyed(null,null,stale);
 				final Deity D=(Deity)CMClass.getMOB("StdDeity");
 				if(D==null)
 					return "Error: StdDeity could not be instantiated";
@@ -644,7 +768,10 @@ public class Validparms extends StdTest
 			try
 			{
 				if(o instanceof Clan)
+				{
 					((Clan)o).destroyClan();
+					CMLib.database().DBDeleteClan((Clan)o);
+				}
 				else
 				if(o instanceof Deity)
 					CMLib.map().registerWorldObjectDestroyed(null,null,(Deity)o);
@@ -674,6 +801,8 @@ public class Validparms extends StdTest
 	@Override
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
+		if((mob != null) && (mob.location() != null))
+			TEST_ROOM_ID = CMLib.map().getExtendedRoomID(mob.location());
 		final List<Object> fixtures = new ArrayList<Object>();
 		try
 		{
@@ -704,6 +833,8 @@ public class Validparms extends StdTest
 			for(int v = 1; v < row.length; v++)
 			{
 				String val = row[v];
+				if(TEST_ROOM_ID != null)
+					val = CMStrings.replaceAll(val, "*ROOMID*", TEST_ROOM_ID);
 				final boolean shouldPass = !val.startsWith("!");
 				if(!shouldPass)
 					val = val.substring(1);

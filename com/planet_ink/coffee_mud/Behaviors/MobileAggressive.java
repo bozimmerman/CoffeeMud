@@ -44,8 +44,6 @@ public class MobileAggressive extends Mobile
 	@Override
 	public String parmsFormat()
 	{
-		// assembled from the fragments each parm-reading class contributes, through
-		// the same delegate those parms are handed to in setParms
 		return "(("
 			+ super.activeParmsFormat() + "/"
 			+ mobileParmsFormat() + "/"

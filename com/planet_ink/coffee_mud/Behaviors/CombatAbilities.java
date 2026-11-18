@@ -46,11 +46,7 @@ public class CombatAbilities extends ActiveTicker
 	{
 		return "(("
 			+"([CHAR_CLASS(prompt=Class/colh=Class)])"
-			+"/(PROFICIENT)"
-			+"/(NOSTATS)"
-			+"/(NOSTAT)"
-			+"/(NOCOMBATSTATS)"
-			+"/(NOCOMBATSTAT)"
+			+"/([CHOICES(choices=PROFICIENT,NOSTATS,NOSTAT,NOCOMBATSTATS,NOCOMBATSTAT/prompt=Combat flag/colh=Flag)])"
 			+"/([CHOICES_PREFIX(choices=RANDOM,DEFENSIVE,OFFENSIVE,MIXEDOFFENSIVE,MIXEDDEFENSIVE,ONLYALWAYS/prompt=Combat Mode/colh=Mode)])"
 			+"/(BSIZE=[NUMBER(prompt=Bucket size/colh=BSize)])"
 			+"/"+super.activeParmsFormat()

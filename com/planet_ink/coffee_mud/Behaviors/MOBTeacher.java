@@ -45,6 +45,17 @@ public class MOBTeacher extends CombatAbilities
 		return "MOBTeacher";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "((([CHAR_CLASS(prompt=Teach char class/colh=Class)])"
+				+ "/([ABILITY_ID(prompt=Teach ability/colh=Ability)])"
+				+ "/([EXPERTISE_ID(prompt=Teach expertise/colh=Expertise)])"
+				+ "/([NUMBER(prompt=Teach percent/colh=Pct)]%)"
+				+ "/([CHOICES(choices=NOCOMMON,NOEXPS,NOEXP,NOHLEXPS,NOHLEXP,NOTEACHING,NOTEACH/prompt=Teach flag/colh=Flag)])"
+				+ ")...)";
+	}
+
 	protected MOB		myMOB				= null;
 	protected boolean	teachEverything		= true;
 	protected boolean	noTeaching			= false;

@@ -43,6 +43,17 @@ public class MovingRoom extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(((" + super.activeParmsFormat() + ")...)"
+				+ "(;)/(\\/)"
+				+ ")"
+				+ "([STRING(prompt=Moving XML section/colh=Section)]"
+				+ "(;[NUMBERORNULL(prompt=Ticks at stops/colh=StopTicks)])"
+				+ "(;[NUMBERORNULL(prompt=Ticks between stops/colh=MoveTicks)]))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ROOMS;
