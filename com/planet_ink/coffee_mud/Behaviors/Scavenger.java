@@ -43,6 +43,16 @@ public class Scavenger extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(TRASH=(\")(([CHECK(name=NO/prompt=Trash room id/colh=Trash)])/([ROOM_ID(prompt=Trash room id/colh=Trash)]))(\"))/"
+				+ "(ATNIGHT=[CONFIRM(prompt=Night only/colh=AtNight)])"
+				+ ")..."
+				+ "(;([ZAPPERMASK(prompt=Item mask/colh=Mask).. ]))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

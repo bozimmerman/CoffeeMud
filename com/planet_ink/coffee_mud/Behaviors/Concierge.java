@@ -44,6 +44,26 @@ public class Concierge extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(([DECIMAL(prompt=Base Price/colh=Price)])/(("
+				+ "([CHOICES(choices=PORTAL,MOBILE,AREAONLY,NOCLIMB,NOCRAWL,NOWATER,INDOOROK,NOAIR,NOLOCKS,NOHOMES,NOINDOOR/prompt=Tracking flag/colh=Flag)]=[CONFIRM(prompt=Flag value/colh=Value)])/"
+				+ "(MAXRANGE=[NUMBER(prompt=Max range/colh=MaxRange)])/"
+				+ "(PERROOM=[DECIMAL(prompt=Price per room/colh=PerRoom)])/"
+				+ "(CLAN=(\")[CLAN(prompt=Clan name/colh=Clan)...](\"))/"
+				+ "(GREETING=(\")[STRING(prompt=Greeting/colh=Greeting)...](\"))/"
+				+ "(ENTERMSG=(\")[STRING(prompt=Enter message/colh=EnterMsg)...](\"))/"
+				+ "(TALKERNAME=(\")[STRING(prompt=Talker name/colh=TalkerName)...](\"))/"
+				+ "((\")[ROOM_ID(prompt=Destination room/colh=Destination)..=](\")=[DECIMAL(prompt=Price/colh=Price)])/"
+				+ "((\")[AREA_NAME(prompt=Destination area/colh=Destination)..=](\")=[DECIMAL(prompt=Price/colh=Price)])/"
+				+ "(=[DECIMAL(prompt=Price for every destination/colh=Price)])/"
+				+ "([DECIMAL(prompt=Base Price/colh=Price)])/"
+				+ "([ROOM_ID(prompt=Destination room/colh=Destination)..\\;])/"
+				+ "([AREA_NAME(prompt=Destination area/colh=Destination)..\\;])"
+				+ ")(;))...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS | Behavior.CAN_ROOMS | Behavior.CAN_EXITS | Behavior.CAN_AREAS;

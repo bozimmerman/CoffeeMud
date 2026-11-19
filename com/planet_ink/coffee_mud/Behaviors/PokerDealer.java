@@ -49,6 +49,23 @@ public class PokerDealer extends StdBehavior
 		return "PokerDealer";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		final StringBuilder games=new StringBuilder();
+		for(int i=0;i<GAME_DESCS.length;i++)
+		{
+			if(games.length()>0)
+				games.append(',');
+			games.append(i).append(',').append(GAME_DESCS[i]);
+		}
+		return "("
+				+ "(GAME=(\")[CHOICES(choices=" + games.toString() + "/prompt=Poker game/colh=Game)](\"))/"
+				+ "(MINPLAYERS=[NUMBER(prompt=Min players/colh=MinPlayers)])/"
+				+ "(ANTI=[DECIMAL(prompt=Ante amount/colh=Anti)])"
+				+ ")...";
+	}
+
 	// the poker dealer operates as a state machine
 	// each state tells this behavior what to expect, and
 	// how to react to player actions.

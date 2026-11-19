@@ -43,6 +43,12 @@ public class TaxiBehavior extends Concierge
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return super.parmsFormat();
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ITEMS | Behavior.CAN_MOBS;

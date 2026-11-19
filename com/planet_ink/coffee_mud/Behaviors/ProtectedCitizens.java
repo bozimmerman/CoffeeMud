@@ -44,6 +44,19 @@ public class ProtectedCitizens extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(RADIUS=[NUMBER(prompt=Rooms radius/colh=Radius)])/"
+				+ "(MAXASSISTS=[NUMBER(prompt=Max assists/colh=MaxAssists)])"
+				+ ")..."
+				+ "(;([ZAPPERMASK(prompt=Citizen mask/colh=Citizen)..\\;])"
+				+ "(;([ZAPPERMASK(prompt=Cityguard mask/colh=Cityguard)..\\;])"
+				+ "(;([STRING(prompt=Distress yells/colh=Claims).. ]))"
+				+ "))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;

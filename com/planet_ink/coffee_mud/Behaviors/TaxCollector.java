@@ -42,6 +42,15 @@ public class TaxCollector extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ "(WAIT=[NUMBER(prompt=Wait milliseconds/colh=Wait)])/"
+				+ "(GRACE=[NUMBER(prompt=Grace milliseconds/colh=Grace)])"
+				+ ")...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;
