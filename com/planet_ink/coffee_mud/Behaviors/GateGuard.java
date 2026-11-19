@@ -87,7 +87,7 @@ public class GateGuard extends StdBehavior
 	public String parmsFormat()
 	{
 		return "(("
-				+"((\")[ZAPPERMASK(prompt=Zappermask/colh=Mask)...](\"))/"
+				+"((\")[ZAPPERMASK(prompt=Zappermask/colh=Mask)..\"](\"))/"
 				+"([CHOICES(choices=KEEPLOCKED,ALLNIGHT/prompt=Flags/colh=Flags)])"
 				+")...)";
 	}

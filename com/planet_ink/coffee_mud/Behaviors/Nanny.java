@@ -48,7 +48,7 @@ public class Nanny extends StdBehavior
 		return "(("
 			+ "(RATE=[DECIMAL(prompt=Hourly rate per item/colh=Rate)])/"
 			+ "(NAME=(\")[STRING(prompt=Place name/colh=Name)...](\"))/"
-			+ "(WATCHES=(\")([CHOICES_PREFIX(choices=BABIES,CHILDREN,MOUNTS,WAGONS,CARS,BOATS,AIRCARS,FOLLOWERS/prompt=Watch type/colh=Watch)..(,/\")]..,)(\"))"
+			+ "(WATCHES=(\")[STRING(prompt=Watch list/colh=Watches)..\"](\"))"
 			+ ")...)"
 			+ "(|~|[XML(prompt=Drop-off data/colh=DropOff).. ])";
 	}

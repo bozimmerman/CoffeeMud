@@ -58,6 +58,18 @@ public class DoorwayGuardian extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ "([CHECK(name=NOSNEAK/prompt=Guard against sneaking/colh=NoSneak)])/"
+				+ "([CHECK(name=ALWAYS/prompt=Guard when unable to act/colh=Always)])/"
+				+ "([DIRECTION(prompt=Doored direction/colh=Dir)])"
+				+ ")..."
+				+ "([ZAPPERMASK(prompt=Who is blocked/colh=Mask)..;])"
+				+ "(;[STRINGORNULL(prompt=Refusal message/colh=Msg).. ])";
+	}
+
+	@Override
 	public void setParms(String parms)
 	{
 		super.setParms(parms);

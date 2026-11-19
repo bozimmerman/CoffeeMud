@@ -66,8 +66,8 @@ public class RandomItems extends ActiveTicker
 				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
 				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])"
 				+ ")..."
-				+ "(;(([STRING(prompt=Item file or XML/colh=File)..;]))"
-				+ "(;([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(;([STRING(prompt=Item file or XML/colh=File)..;])"
+				+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
 				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
 				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)]))...)";
 	}

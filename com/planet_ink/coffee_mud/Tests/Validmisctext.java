@@ -210,6 +210,10 @@ public class Validmisctext extends StdTest
 		{"(A)(B)(C)", "AC"},
 		{"", ""},
 		{"[file]...", "!"},
+		{"[;]", ";", "!bob", "!bob;", "!;bob"},
+		{"[;/-]", ";", "-", "!bob", "!;;"},
+		{"[;/-]x", ";x", "-x", "!bx", "!x;"},
+		{"[BOB(prompt=x/colh=y)]", "!anything"},
 		{"[FREQUENCY]", "15", "!notanumber"},
 		{"[STRING...]", "foo bar", "!"},
 		{"[STRING...]tail", "foo bartail", "!tail"},
@@ -1077,7 +1081,7 @@ public class Validmisctext extends StdTest
 		{
 			final Method parseMethod = CMLib.ableParms().getClass().getDeclaredMethod("parseMiscTextFormat", String.class);
 			parseMethod.setAccessible(true);
-			final Object token = parseMethod.invoke(null, "[FREQUENCY(prompt=Recharge time/colh=Recharge)]");
+			final Object token = parseMethod.invoke(CMLib.ableParms(), "[FREQUENCY(prompt=Recharge time/colh=Recharge)]");
 			final Field argsField = token.getClass().getDeclaredField("parameterArgs");
 			argsField.setAccessible(true);
 			final Map<?,?> args = (Map<?,?>)argsField.get(token);

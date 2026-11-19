@@ -47,6 +47,17 @@ public class ResourceOverride extends ActiveTicker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS | CAN_MOBS;
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "((MIN=[NUMBER(prompt=Min Ticks/colh=Min)])"
+				+ "/(MAX=[NUMBER(prompt=Max Ticks/colh=Max)])"
+				+ "/(CHANCE=[NUMBER(prompt=Chance Percent/colh=Chance)])"
+				+ "/([RESOURCE_NAME(prompt=Resource/colh=Resource)])"
+				+ "/([LOCALE_DOMAIN(prompt=Room type/colh=RoomType)]))..."
+				+ "(MOBMASK=(\")[ZAPPERMASK(prompt=Mob mask/colh=Mask)..\"](\"))";
+	}
+
 	private final List<String>	aids		= new Vector<String>();
 	private final List<Integer>	rscs		= new Vector<Integer>();
 	private final List<Item>	crscs		= new Vector<Item>();

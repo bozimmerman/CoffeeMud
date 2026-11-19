@@ -85,7 +85,7 @@ public class ActiveTicker extends StdBehavior
 	{
 		return 	"(MIN=[NUMBER(prompt=Min Ticks/colh=Min)])/"
 				+"(MAX=[NUMBER(prompt=Max Ticks/colh=Max)])/"
-				+"(CHANCE=[NUMBER(prompt=Chance (0-100)/colh=Ch%)])/"
+				+"(CHANCE=[NUMBER(prompt=Chance Percent/colh=Chance)])/"
 				+"(MINGRP=[NUMBER(prompt=Min Group/colh=MinG)])";
 	}
 	

@@ -115,7 +115,7 @@ public class Hireling extends StdBehavior
 	{
 		return "([NUMBER(prompt=Price/colh=price)]"
 				+"(;[NUMBER(prompt=Minutes/colh=mins)]"
-				+"(;[ZAPPERMASK(prompt=Zappermask/colh=Mask).. ]))"
+				+"([ZAPPERMASK(prompt=Zappermask/colh=Mask).. ]))"
 				+")";
 	}
 

@@ -199,7 +199,7 @@ public class WeatherAffects extends PuddleMaker
 				+"(dustticks=[NUMBER(prompt=Dust Ticks/colh=Dust)])/"
 				+"(shipdmgpct=(\")[CMATH_FORMULA(prompt=Ship Dmg Pct/colh=ShipDmg%)](\"))/"
 				+"(dmgship=(\")[CMATH_FORMULA(prompt=Ship Dmg/colh=ShipDmg)](\"))/"
-				+"(dmgname=(\")[STRING(prompt=Ship Dmg Name/colh=ShipDmgNm)](\"))/"
+				+"(dmgname=(\")[STRING(prompt=Ship Dmg Name/colh=ShipDmgNm)..\"](\"))/"
 				+"(weather=(\")[WEATHER_CODE_NUM(prompt=Weather Code/colh=Weather)](\"))/"
 				+"(skyweather=(\")[WEATHER_CODE_NUM(prompt=Sky Weather Code/colh=SkyWeather)](\"))"
 				+")...)";

@@ -48,6 +48,12 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "([STRING(prompt=Script or LOAD=file/colh=Script).. ])";
+	}
+
 	private boolean started=false;
 	private Scriptable sampleB=null;
 

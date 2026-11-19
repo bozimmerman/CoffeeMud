@@ -46,6 +46,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return Behavior.CAN_MOBS|Behavior.CAN_ITEMS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "([STRING(prompt=Script or LOAD=file/colh=Script).. ])";
+	}
+
 	protected ScriptingEngine engine = null;
 	protected ScriptingEngine engine()
 	{

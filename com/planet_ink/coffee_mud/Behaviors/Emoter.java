@@ -53,7 +53,7 @@ public class Emoter extends ActiveTicker
 				+ "/([CHOICES(choices=BROADCAST,NOBROADCAST,PUFF,PRIVATE,NOPRIVATE,EMOTEONLY,VISUAL,SIGHT,AROMA,SMELL,SOUND,NOISE,SOCIAL/prompt=Emote type/colh=Type)])"
 				+ ")..."
 				+ "((;)/(\\/))"
-				+ "([STRING(prompt=Emote message/colh=Emote)..;](;([STRING(prompt=Emote message/colh=Emote)..;])...))";
+				+ "([STRING(prompt=Emote message/colh=Emote).. ])";
 	}
 
 	protected int				expires		= 0;

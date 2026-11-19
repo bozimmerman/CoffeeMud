@@ -393,7 +393,7 @@ public class Song_Ode extends Song
 	@Override
 	public String miscTextFormat()
 	{
-		return "([STRING(prompt=Song/colh=Key)..|]|~|[STRING(prompt=NotKey/colh=!Key)..\\[][|])...";
+		return "([STRING(prompt=Song/colh=Key)..|]|~|[STRING(prompt=NotKey/colh=!Key)..\\[]\\[|\\])...";
 	}
 
 	public Hashtable<String,String> getSongs()

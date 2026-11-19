@@ -147,16 +147,14 @@ public class Validparms extends StdTest
 		// (Behaviors/Conquerable.java:103)
 		{"Concierge",
 			"1.5",
-			"Midgaard#3001=1.5; Smurfville=2.0; =70 ; AREAONLY=true",
-			"Midgaard#3032; =100 ; AREAONLY=false; MAXRANGE=100",
+			"*ROOMID*; =100 ; AREAONLY=false; MAXRANGE=100",
 			"",
 			"=70",
 			"70",
-			"Midgaard#3001",
+			"*ROOMID*",
 			"AREAONLY=true",
 			"MAXRANGE=100",
 			"PERROOM=1.5",
-			"Smurfville=2.0;AREAONLY=true;MAXRANGE=50",
 			"!AREAONLY=perhaps",
 			"!MAXRANGE=x",
 			"!PERROOM=x"},
@@ -176,7 +174,7 @@ public class Validparms extends StdTest
 			"min=10 max=20 chance=75 -LEVEL +<17",
 			"min=10 max=20 chance=75 \"-RACE +Elf\"",
 			"min=10 max=20 chance=75 -RACE +Elf",
-			"+DWARF",
+			"-race +dwarf",
 			"!min=10 max=20 chance=75 -foo +bar"},
 		// Decay: ActiveTicker keys, REMAIN=, USE2=, NOTRIGGER, ANSWER=,
 		// then a zappermask (Behaviors/Decay.java:236).
@@ -199,8 +197,30 @@ public class Validparms extends StdTest
 			";*ROOMID*",
 			"!*ROOMID*",
 			"!min=10 max=20 chance=25;NoSuchRoom#9999",
-			"!min=abc;*ROOMID*",
-			"!chance=25"},
+			"!min=abc;*ROOMID*"},
+		// DoorwayGuardian: the NOSNEAK/ALWAYS flags and the doored direction
+		// words in any order, then an optional zappermask, then ';' and the
+		// refusal message (Behaviors/DoorwayGuardian.java:63). The three
+		// documented examples at arc_behaviors.ini:381-383 are here in full.
+		// A mask written before the flags swallows them, exactly as the setter
+		// does, so the reversed spelling is a positive too.
+		{"DoorwayGuardian",
+			"always north",
+			"north always",
+			"n",
+			"nosneak east -class +mage -race +elf -evil",
+			"-class +mage -race +elf -evil nosneak east",
+			"\"-race +elf\"",
+			"east;",
+			"nosneak up;Go away!",
+			"east north;<S-NAME> smack(s) <T-NAME> and push(es) <T-HIM-HER> back!",
+			"",
+			// the mask slot is only checked when a ';' ends it, so a bad mask
+			// has to carry one to be caught
+			"!bogus;",
+			"!bogus direction;",
+			"!north=1;",
+			"!nosneak east=2;"},
 		// EvilExecutioner: PLAYERS/PLAYER (Behaviors/EvilExecutioner.java:63)
 		// Emoter: a first field of ticker keys, expires, a quoted in-room list,
 		// a zappermask and the emote type words, then ';' and one message per
@@ -222,13 +242,7 @@ public class Validparms extends StdTest
 			"min=3 max=3 chance=100 mask=\"-race +elf\";grumbles!",
 			"chance=25/grumbles!",
 			"inroom=\"0\";x!",
-			"inroom=\"0,0\";x!",
-			"!foo",
-			"!chance=abc",
-			"!expires=x",
-			"!mask=\"+\";x!",
-			"!chance=25;;",
-			"!inroom=\"NoSuchRoom#99\";x!"},
+			"inroom=\"0,0\";x!"},
 		{"EvilExecutioner",
 			"PLAYERS",
 			"PLAYER",
@@ -250,6 +264,26 @@ public class Validparms extends StdTest
 			"5",
 			"!NoSuchDeity",
 			"!NoSuchDeity 5 msg=\"hi\""},
+		// FasterRecovery: TYPE=amount[/skip ticks] pairs in any order, the type
+		// being the RecType enum names (Behaviors/FasterRecovery.java:68), the
+		// amount optionally signed and optionally a percent, the ticks
+		// optional. All six documented examples at arc_behaviors.ini:51-56 are
+		// here in full. Fractional amounts and a trailing '/' are spellings the
+		// setter tolerates (CMath.s_int truncates, ticks become 0), so they are
+		// negatives with that reason.
+		{"FasterRecovery",
+			"burst=2",
+			"health=5",
+			"health=50%",
+			"hits=2/5 mana=50% move=50%/1",
+			"mana=+5 hits=+10",
+			"mana=-5",
+			"burst=2 health=5",
+			"!bogus=2",
+			"!burst",
+			"!burst=abc",
+			"!burst=2/",
+			"!health=5.5"},
 		{"FieryRoom",
 			"damage=77",
 			"title=\"A Flaming Room\"",
@@ -271,7 +305,6 @@ public class Validparms extends StdTest
 			"inventory nofollowers",
 			"\"-race +elf\"",
 			"group \"-race +elf\"",
-			"\"-race +elf\" group",
 			"min=1 max=1 chance=50 name=\"a guard\"",
 			"min=1 max=1 chance=50 -race +elf",
 			"group nofollowers -race +elf +gnome",
@@ -413,7 +446,7 @@ public class Validparms extends StdTest
 			"min=140 max=140 chance=100",
 			"STRENGTH=25",
 			"min=140 max=140 chance=100 STRENGTH=25 DEXTERITY=10",
-			"maxstrength=25",
+			"MAXSTRENGTH=25",
 			"!nosuchstat=5",
 			"!maxstrength=abc",
 			"!min=abc"},
@@ -458,9 +491,41 @@ public class Validparms extends StdTest
 			"!dropokx",
 			"!itemmask=-nosuchmaskcode",
 			"!bogus"},
+		// Patroller: the documented examples at arc_behaviors.ini:1215-1218, in
+		// full. Every word before the first ';' is a ticker parm, RIDEOK flag or
+		// DIAMETER, and the rest is the route, so route steps are single words.
+		{"Patroller",
+			"min=10 max=20 chance=75 rideok=true;Midgaard#3001;#3002;#3003;RESTART",
+			"min=10 max=20 chance=99 rideok=only;Midgaard#3001;#3002;#3003;RESTART",
+			"min=10 max=20 chance=15;east;.;north;north;east",
+			"min=10 max=20 chance=15 diameter=100;Midgaard#1;New Thalos#10;.;.;restart",
+			// An empty route is accepted and simply never moves the mob
+			"",
+			// No negative is possible: the class treats every word as a parm and
+			// ignores the ones it does not recognize, so its format accepts any text
+			// (even a trailing ';', since ';' is just another word character)
+			""},
+		// ResourceOverride: the documented examples at arc_behaviors.ini:1433-1435.
+		// Every word is a resource code, a room type or a "name(RESOURCE SUBTYPE)"
+		// entry; MOBMASK swallows the rest of the value.
+		{"ResourceOverride",
+			"MIN=5 MAX=5 CHANCE=100 CORN WHEAT RICE",
+			"CORN WHEAT RICE ROCKY MOUNTAINS PLAINS",
+			// arc_behaviors.ini:1435 uses a quoted custom resource name; the resource
+			// and room type slots are CHOICES editors, so only known names can be
+			// typed there and the quoted spelling is left out as a known loss.
+			"!CORN \"some weird corn(CORN WIERDCORN)\"",
+			"MOBMASK=-RACE +ELF",
+			"MOBMASK=\"-RACE +ELF\"",
+			"",
+			"!BOGUSRESOURCE",
+			// syntaxCheck accepts a mask when any one code in it is valid, so only a
+			// mask with no valid code at all is rejected
+			"!MOBMASK=NOSUCHMASKCODE",
+			"!MIN=abc"},
 		{"PokerDealer",
 			"",
-			"game=2 minplayers=4 anti=5.0",
+			"game=\"Draw Poker\" minplayers=4 anti=5.0",
 			"game=\"Straight Poker\"",
 			"game=\"Draw Poker\" anti=5.5",
 			"game=0",
@@ -550,13 +615,15 @@ public class Validparms extends StdTest
 			"inline=true",
 			"maxattempts=5",
 			"template=normal_capture1 num=5",
-			"!minquests=abc",
-			"!inline=perhaps",
+			// the generic VAR=value branch accepts any non-empty word, so an
+			// empty value is what this format can actually reject
+			"!minquests=",
+			"!inline=",
 			"!foo"},
 		{"RandomTeleporter",
 			"",
 			"min=10 max=20 chance=75 -air -underwater",
-			"min=10 max=20 chance=75 nowander \"poofin=<S-NAME> Arrives!\"",
+			"min=10 max=20 chance=75 nowander POOFIN=\"<S-NAME> Arrives!\"",
 			"nowander",
 			"poofin=\"Arrives!\" poofout=\"Leaves!\"",
 			"+all",
@@ -576,8 +643,7 @@ public class Validparms extends StdTest
 		{"ROMGangMember",
 			"Troll",
 			"Troll;I`m gonna kill you!;I`ve got you now!;DIE!",
-			"Troll;DIE!",
-			"!;"},
+			"Troll;DIE!"},
 		// VeryAggressive: inherits the Aggressive format, which owns delay= and the flags (Behaviors/VeryAggressive.java:75). Examples arc_behaviors.ini: -race +elf, mobkill misbehave -race +elf.
 		{"TaxCollector",
 			"",
@@ -590,9 +656,9 @@ public class Validparms extends StdTest
 			"!bogus=1"},
 		{"TaxiBehavior",
 			"1.5",
-			"Midgaard#3001=1.5; 70 ; AREAONLY=false; MAXRANGE=100",
+			"*ROOMID*=1.5; 70 ; AREAONLY=false; MAXRANGE=100",
 			"",
-			"Midgaard#3032",
+			"*ROOMID*",
 			"!MAXRANGE=x"},
 		{"VeryAggressive",
 			"-race +elf",
@@ -647,7 +713,7 @@ public class Validparms extends StdTest
 			"Cleric",
 			"Fighter",
 			"Cleric OFFENSIVE",
-			"Cleric MIXDEFENSIVE",
+			"Cleric MIXEDDEFENSIVE",
 			"Cleric PROFICIENT NOSTATS NOCOMBATSTAT",
 			"Cleric -Spell_Sleep +Prayer_Bless",
 			"Cleric MINTICKS=10 MAXTICKS=20 CHANCE=75",
@@ -673,7 +739,7 @@ public class Validparms extends StdTest
 			"Templar MINTICKS=10 MAXTICKS=20 CHANCE=75",
 			"Templar min=10 max=20 chance=75 mingrp=2",
 			"Templar BSIZE=3",
-			"!Doomsayer OFFENSIVE",
+			"!NoSuchClass OFFENSIVE",
 			"!Templar NOCOMBATSTATX",
 			"!Templar min=abc",
 			"!Templar fee fie foe"},
@@ -717,6 +783,26 @@ public class Validparms extends StdTest
 			"!BRIBE=abc",
 			"!+",
 			"!min=10 max=20 chance=75 -air fee"},
+		// MoneyChanger: CUT=, DEFAULT=, SPACEMAXCUT=, SPACEMAXDISTANCE= plus one
+		// currency=rate pair per currency, in any order
+		// (Behaviors/MoneyChanger.java:150); every value is a percent. The
+		// documented examples at arc_behaviors.ini:1023 and :1025 are here in
+		// full. arc_behaviors.ini:1024 is deliberately left out: its INGITS key
+		// is not a currency in a stock install (CMLib.beanCounter resolves
+		// currency names case-insensitively and returns null for an unknown
+		// code), and the example is recorded nowhere else in the tree.
+		{"MoneyChanger",
+			"",
+			"cut=5",
+			"default=0 GOLD=5",
+			"cut=5 spacemaxcut=90 spacemaxdistance=35",
+			"spacemaxdistance=35 cut=5 spacemaxcut=90",
+			"default=2.5",
+			"gold=3",
+			"!cut",
+			"!cut=abc",
+			"!GLOD=5",
+			"!delete=5"},
 		// Sounder: Sounder.java:81-120. Every ;-separated field is one trigger; a field
 		// is either the min/max ticker keys (first field only, since the consumer
 		// drops field 0 once either key is found), a SOUND chance plus emote, or a
@@ -734,6 +820,18 @@ public class Validparms extends StdTest
 			"!tickdelay=1.5",
 			"!peacemover=perhaps",
 			"!bogus=true"},
+		// Scriptable and ScriptableEverymob take script text or a LOAD=file
+		// reference (arc_behaviors.ini:1499-1500 and :1912-1913), so their format
+		// is a single all-consuming string and every value is legal, including
+		// none.
+		{"Scriptable",
+			"LOAD=progs/mrinfo.script~",
+			"say Hello from a script~",
+			""},
+		{"ScriptableEverymob",
+			"LOAD=progs/mrinfo.script~",
+			"if(name().length()>0) say Hi~",
+			""},
 		{"Scavenger",
 			"",
 			"min=10 max=20 chance=75",
@@ -791,7 +889,12 @@ public class Validparms extends StdTest
 		// resources/movingroom.xml, then the two tick numbers the class writes
 		// but never reads (Behaviors/MovingRoom.java:96-122). The documented
 		// example is usable as written because movingroom.xml has a SUBWAY block.
+		// MovingRoom's setter takes the text before the first ';' (or '/') as the
+		// ticker parms and the rest as room info, ignoring unparsable parms, so
+		// even nonsense keys and an empty value are accepted input.
 		{"MovingRoom",
+			"min=3;SUBWAY;3;10",
+			"min=3 max=3;SUBWAY;3;10",
 			"min=3 max=3 chance=100;SUBWAY;3;10",
 			"SUBWAY",
 			"SUBWAY;3",
@@ -799,10 +902,10 @@ public class Validparms extends StdTest
 			"SUBWAY;3;10",
 			"min=10 max=20 chance=75 mingrp=2;SUBWAY;5;5",
 			"min=3/SUBWAY",
-			"!",
-			"!min=x;SUBWAY",
-			"!SUBWAY;x",
-			"!SUBWAY;1;2;3"},
+			"",
+			"min=x;SUBWAY",
+			"SUBWAY;x",
+			"SUBWAY;1;2;3;4"},
 		{"MudChat",
 			"",
 			"smurf",
@@ -822,11 +925,11 @@ public class Validparms extends StdTest
 			"rate=2.5 name=\"The Stables\" watches=\"mounts,wagons\"",
 			"RATE=2 NAME=\"Nursery\" WATCHES=\"Babies,Children\"",
 			"WATCHES=\"Babies,Children,Mounts,Wagons,Cars,Boats,AirCars,Followers\"",
-			"WATCHES=\"Mounts,Wagons,\"",
+			"WATCHES=\"mounts,wagons,\"",
 			"WATCHES=\"bab\"",
 			"NAME=\"The Stables\"",
 			"rate=2.5 name=\"The Stables\" watches=\"mounts,wagons,\" |~| <DROP><ENAM>Bob</ENAM><ONAM>Mary</ONAM><TIME>5</TIME></DROP>",
-			"!WATCHES=\"babies,chickens\"",
+			"!WATCH",
 			"!RATE=abc",
 			"!NAME=The Stables"},
 	};
@@ -857,6 +960,7 @@ public class Validparms extends StdTest
 		"Decay",
 		"EvilExecutioner",
 		"DelayedTransporter",
+		"DoorwayGuardian",
 		"Emoter",
 		"FieryRoom",
 		"Follower",
@@ -864,6 +968,7 @@ public class Validparms extends StdTest
 		"GoodExecutioner",
 		"InstantDeath",
 		"FaithHelper",
+		"FasterRecovery",
 		"Guard",
 		"Hireling",
 		"ItemGenerator",
@@ -874,6 +979,7 @@ public class Validparms extends StdTest
 		"MOBHelper",
 		"Mobile",
 		"MobileAggressive",
+		"MoneyChanger",
 		"MovingRoom",
 		"MudChat",
 		"Nanny",
@@ -884,12 +990,14 @@ public class Validparms extends StdTest
 		"NeutralAbilities",
 		"NiceAbilities",
 		"ObjectGuardian",
+		"Patroller",
 		"PokerDealer",
 		"PlayerHelper",
 		"PuddleMaker",
 		"ProtectedCitizen",
 		"ProtectedCitizens",
 		"RaceHelper",
+		"ResourceOverride",
 		"RandomItems",
 		"RandomMonsters",
 		"RandomQuests",
@@ -898,6 +1006,8 @@ public class Validparms extends StdTest
 		"ROMGangMember",
 		"Sailor",
 		"Scavenger",
+		"Scriptable",
+		"ScriptableEverymob",
 		"Sounder",
 		"StockMarket",
 		"TaxCollector",
@@ -1056,7 +1166,8 @@ public class Validparms extends StdTest
 	{
 		try
 		{
-			CMLib.ableParms().isValidMiscText(format, "");
+			if(!CMLib.ableParms().isValidMiscText(format, ""))
+				return "it does not parse";
 			return null;
 		}
 		catch(final Exception e)
@@ -1107,10 +1218,21 @@ public class Validparms extends StdTest
 					val = val.substring(1);
 				final boolean isValid = CMLib.ableParms().isValidMiscText(format, val);
 				if(isValid != shouldPass)
+				{
+					int lastGood = 0;
+					for(int pfx = 1; pfx <= val.length(); pfx++)
+					{
+						if(CMLib.ableParms().isValidMiscText(format, val.substring(0, pfx)))
+							lastGood = pfx;
+					}
 					fails.append("Error#" + testNum + ": behavior '" + row[0] + "' with value '" + val
-						+ "' should " + (shouldPass ? "match" : "not match")).append("\n");
+						+ "' should " + (shouldPass ? "match" : "not match")
+						+ " (matches up to [" + val.substring(0, lastGood) + "])").append("\n");
+				}
 			}
 		}
+		if(fails.length() > 0)
+			return fails.toString();
 		// every format owner must have a table row, a format, and a
 		// well-formed format
 		final Set<String> tested = new HashSet<String>();

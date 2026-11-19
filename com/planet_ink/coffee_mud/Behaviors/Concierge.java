@@ -58,9 +58,9 @@ public class Concierge extends StdBehavior
 				+ "((\")[AREA_NAME(prompt=Destination area/colh=Destination)..=](\")=[DECIMAL(prompt=Price/colh=Price)])/"
 				+ "(=[DECIMAL(prompt=Price for every destination/colh=Price)])/"
 				+ "([DECIMAL(prompt=Base Price/colh=Price)])/"
-				+ "([ROOM_ID(prompt=Destination room/colh=Destination)..\\;])/"
-				+ "([AREA_NAME(prompt=Destination area/colh=Destination)..\\;])"
-				+ ")(;))...";
+				+ "([ROOM_ID(prompt=Destination room/colh=Destination)..;])/"
+				+ "([AREA_NAME(prompt=Destination area/colh=Destination)..;])"
+				+ ")(;)))...";
 	}
 
 	@Override

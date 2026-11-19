@@ -51,6 +51,13 @@ public class Patroller extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(([STRING(prompt=Patrol parm/colh=Parm)])...)"
+				+ "((([;])/([\\/]))(([STRING(prompt=Patrol step/colh=Step)])...))";
+	}
+
+	@Override
 	public long flags()
 	{
 		return Behavior.FLAG_MOBILITY;

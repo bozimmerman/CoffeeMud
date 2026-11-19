@@ -1800,7 +1800,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		catch(final CMException e)
 		{
-			Log.errOut(e);
 			return false;
 		}
 	}
@@ -2321,7 +2320,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private static boolean endsWithOpenGreedy(final MTToken token)
+	private boolean endsWithOpenGreedy(final MTToken token)
 	{
 		if(token == null)
 			return false;
@@ -2346,7 +2345,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private static boolean hasTopLevelSlash(final String s)
+	private boolean hasTopLevelSlash(final String s)
 	{
 		int depth = 0;
 		for(int i = 0; i < s.length(); i++)
@@ -2369,7 +2368,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private static MTToken parseMTAlternationBlock(final String format, final int start, final int end) throws CMException
+	private MTToken parseMTAlternationBlock(final String format, final int start, final int end) throws CMException
 	{
 		final List<MTToken> alternatives = new ArrayList<MTToken>();
 		int depth = 0;
@@ -2444,16 +2443,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * alternation: exactly one of its '/'-separated branches must match, and
 	 * the block may not match empty.
 	 *
+	 * A bracketed block that names neither a registered placeholder nor a
+	 * ParmType (for example [;] or [;/-]) is a literal: [;] matches a
+	 * semicolon and nothing else, and [;/-] matches a semicolon or a dash.
+	 * Such a block may not carry arguments or a greedy marker, and an
+	 * unknown placeholder name with arguments is an error, not a catch-all.
+
+	 *
 	 * @param format the misc text format
 	 * @return the parsed token tree
 	 * @throws CMException if the format is malformed
 	 */
-	private static MTToken parseMiscTextFormat(final String format) throws CMException
+	private MTToken parseMiscTextFormat(final String format) throws CMException
 	{
 		return parseMTSequence(format, 0, format.length());
 	}
 
-	private static MTToken parseMTSequence(final String format, final int start, final int end) throws CMException
+	private MTToken parseMTSequence(final String format, final int start, final int end) throws CMException
 	{
 		final List<MTToken> tokens = new ArrayList<>();
 		int index = start;
@@ -2658,6 +2664,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					placeholderToken = placeholderToken.substring(0,x).trim();
 				}
+				final String bareName = placeholderToken.toUpperCase(Locale.ROOT).trim();
+				if((!getEditors().containsKey(bareName))
+				&&(CMath.s_valueOf(ParmType.class,bareName)==null))
+				{
+					// A bracketed block that is not a known placeholder is never a
+					// catch-all: with no arguments it is a literal, so [;] matches
+					// ';' alone and [;/-] matches ';' or '-'.
+					if((placeholderArgs.length > 0)
+					||greedy||(greedyTo != '\0')||greedyRest||(greedyToTokens != null))
+						throw new CMException("Unknown placeholder '" + placeholderToken + "' at " + index);
+					tokens.add(parseMTAlternationBlock(format, index + 1, closeIndex));
+					index = closeIndex + 1;
+					continue;
+				}
 				final MTToken token = new MTToken(placeholderToken, false);
 				tokens.add(token);
 				token.placeholderArgs=placeholderArgs;
@@ -2814,7 +2834,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return collapseMTAlternatives(tokens);
 	}
 
-	private static MTToken collapseMTAlternatives(final List<MTToken> tokens) throws CMException
+	private MTToken collapseMTAlternatives(final List<MTToken> tokens) throws CMException
 	{
 		if(tokens.isEmpty())
 			throw new CMException("Empty sequence");

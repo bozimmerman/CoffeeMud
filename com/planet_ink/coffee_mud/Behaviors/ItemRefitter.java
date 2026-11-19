@@ -86,9 +86,7 @@ public class ItemRefitter extends StdBehavior
 	@Override
 	public String parmsFormat()
 	{
-		return "((" 
-				+"(COST=[CMATH_FORMULA(prompt=Cost Formula/colh=Cost).. ])"
-				+")...)";
+		return "((COST=(\")[CMATH_FORMULA(prompt=Cost Formula/colh=Cost)...](\")))...";
 	}
 
 	@Override

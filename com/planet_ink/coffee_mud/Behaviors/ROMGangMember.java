@@ -70,7 +70,8 @@ public class ROMGangMember extends StdBehavior
 	{
 		return "(([STRING(prompt=Gang Name/colh=Gang)..;])" 
 				+"(;([STRING(prompt=Message/colh=Msg)..;])...)"
-				+")";
+				+")"
+			+"([STRING(prompt=Message/colh=Msg).. ])";
 	}
 
 	public void pickAFight(final MOB observer)

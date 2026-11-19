@@ -53,6 +53,18 @@ public class MoneyChanger extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ "(CUT=[DECIMAL(prompt=Cut percent/colh=Cut)])/"
+				+ "(DEFAULT=[DECIMAL(prompt=Default percent/colh=Def)])/"
+				+ "(SPACEMAXCUT=[DECIMAL(prompt=Max cut percent/colh=MaxCut)])/"
+				+ "(SPACEMAXDISTANCE=[DECIMAL(prompt=Max distance percent/colh=Dist)])/"
+				+ "([CURRENCY(prompt=Currency/colh=Curr)]=[DECIMAL(prompt=Rate percent/colh=Rate)])"
+				+ ")...";
+	}
+
+	@Override
 	public void startBehavior(final PhysicalAgent forMe)
 	{
 		if(forMe==null)

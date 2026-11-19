@@ -65,6 +65,23 @@ public class FasterRecovery extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		final StringBuilder recTypes = new StringBuilder("");
+		for(final RecType r : RecType.values())
+		{
+			if(recTypes.length() > 0)
+				recTypes.append(',');
+			recTypes.append(r.name());
+		}
+		return "("
+				+ "[CHOICES(choices=" + recTypes.toString() + "/prompt=Recovery type/colh=Type)]="
+				+ "(+/-)[NUMBER(prompt=Amount or percent/colh=Amount)](%)"
+				+ "(/[NUMBER(prompt=Skip ticks/colh=Ticks)])"
+				+ ")...";
+	}
+
+	@Override
 	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
