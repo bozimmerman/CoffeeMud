@@ -506,23 +506,19 @@ public class Validparms extends StdTest
 			// (even a trailing ';', since ';' is just another word character)
 			""},
 		// ResourceOverride: the documented examples at arc_behaviors.ini:1433-1435.
-		// Every word is a resource code, a room type or a "name(RESOURCE SUBTYPE)"
-		// entry; MOBMASK swallows the rest of the value.
+		// setParms (ResourceOverride.java:113-215) accepts every whitespace-delimited
+		// word: a resource code, a material name, a room type, a quoted
+		// "name(RESOURCE SUBTYPE)" custom name, MIN/MAX/CHANCE, or MOBMASK= and a
+		// mask.  Unknown words are logged, never rejected, so there are no
+		// negatives for this behavior.
 		{"ResourceOverride",
 			"MIN=5 MAX=5 CHANCE=100 CORN WHEAT RICE",
 			"CORN WHEAT RICE ROCKY MOUNTAINS PLAINS",
-			// arc_behaviors.ini:1435 uses a quoted custom resource name; the resource
-			// and room type slots are CHOICES editors, so only known names can be
-			// typed there and the quoted spelling is left out as a known loss.
-			"!CORN \"some weird corn(CORN WIERDCORN)\"",
+			"CORN \"some weird corn(CORN WIERDCORN)\" \"CORN WIERDCORN\"",
+			"WOOD METAL COR CORNS none 5",
 			"MOBMASK=-RACE +ELF",
 			"MOBMASK=\"-RACE +ELF\"",
-			"",
-			"!BOGUSRESOURCE",
-			// syntaxCheck accepts a mask when any one code in it is valid, so only a
-			// mask with no valid code at all is rejected
-			"!MOBMASK=NOSUCHMASKCODE",
-			"!MIN=abc"},
+			""},
 		{"PokerDealer",
 			"",
 			"game=\"Draw Poker\" minplayers=4 anti=5.0",

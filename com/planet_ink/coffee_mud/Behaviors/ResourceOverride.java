@@ -53,9 +53,12 @@ public class ResourceOverride extends ActiveTicker
 		return "((MIN=[NUMBER(prompt=Min Ticks/colh=Min)])"
 				+ "/(MAX=[NUMBER(prompt=Max Ticks/colh=Max)])"
 				+ "/(CHANCE=[NUMBER(prompt=Chance Percent/colh=Chance)])"
-				+ "/([RESOURCE_NAME(prompt=Resource/colh=Resource)])"
-				+ "/([LOCALE_DOMAIN(prompt=Room type/colh=RoomType)]))..."
-				+ "(MOBMASK=(\")[ZAPPERMASK(prompt=Mob mask/colh=Mask)..\"](\"))";
+				+ "/(MOBMASK=(\")[ZAPPERMASK(prompt=Mob mask/colh=Mask)..\"](\"))"
+				+ "/([RESOURCE_OR_MATERIAL(prompt=Resource or material/colh=Resource)])"
+				+ "/([LOCALE_DOMAIN(prompt=Room type/colh=RoomType)])"
+				+ "/([NUMBER(prompt=Resource code/colh=Code)])"
+				+ "/((\")[STRING(prompt=Name/colh=Name)..\\(]\\([RESOURCE_NAME(prompt=Resource/colh=Resource)][RES_SUBTYPE(prompt=Sub-type/colh=SubType)]\\)(\"))"
+				+ ")...";
 	}
 
 	private final List<String>	aids		= new Vector<String>();
