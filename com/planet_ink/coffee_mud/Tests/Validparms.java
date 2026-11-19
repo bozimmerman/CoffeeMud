@@ -47,6 +47,13 @@ public class Validparms extends StdTest
 	private static String TEST_ROOM_ID = null;
 
 	/**
+	 * The name of the area the test runs in, substituted for *AREA* in the rows.
+	 * LinkedWeather confirms its area name against the live map, so its rows
+	 * need an area that actually exists in the world being tested.
+	 */
+	private static String TEST_AREA = null;
+
+	/**
 	 * Behavior id, then parms values. A leading ! means the value must NOT
 	 * match the behavior's parmsFormat().
 	 */
@@ -137,6 +144,18 @@ public class Validparms extends StdTest
 			"!McElvy 5.5",
 			"!NoSuchClan"},
 		// CommonSpeaker: LANGUAGE (Behaviors/CommonSpeaker.java:84)
+		// CombatAssister: the whole parms string is one zappermask naming the
+		// mobs this mob will defend (Behaviors/CombatAssister.java:47 describes
+		// it, :76 tests it). Empty parms means "defend anyone". Examples
+		// arc_behaviors.ini: -RACE +Elf / -NAME "+My Buddies" / -CLANS "+My Clan".
+		{"CombatAssister",
+			"",
+			"-RACE +Elf",
+			"+Elf -RACE",
+			"-NAME \"+My Buddies\"",
+			"-CLANS \"+My Clan\"",
+			"-race +elf -class +mage",
+			"!nosuchmaskcode"},
 		{"CommonSpeaker",
 			"Common",
 			"Orcish",
@@ -392,6 +411,19 @@ public class Validparms extends StdTest
 			"COST=\"(100-@x3)+@x1\"",
 			"!COST=100",
 			"!COST=junk"},
+		// LinkedWeather: an area name confirmed against the live map, then an
+		// optional ;ROLLING tail (Behaviors/LinkedWeather.java:75-91; the area
+		// lookup is EditorAreaName.java:69-74). The area always comes first, so
+		// the pair has only one order. *AREA* is the area of the room the test
+		// runs in. Examples arc_behaviors.ini: My Area / My Area;ROLLING.
+		{"LinkedWeather",
+			"",
+			"*AREA*",
+			"*AREA*;ROLLING",
+			"*AREA*;rolling",
+			"!*AREA*;NOSUCHFLAG",
+			"!NoSuchAreaForValidparms",
+			"!ROLLING"},
 		// MOBHelper: max combatants, optional MSG= (Behaviors/MOBHelper.java:58-66). Examples arc_behaviors.ini: 5 MSG=\"OMG ATTACK!\" / 5 msg=\"OMG ATTACK!\".
 		{"MOBHelper",
 			"5",
@@ -577,21 +609,35 @@ public class Validparms extends StdTest
 			"msg=\"OMG ATTACK!\"",
 			"!5.5",
 			"!MSG=\"x\" junk"},
-		// ResetWhole: either a bare tick count or one of TICKS=/RLHOUR=/MUDHOUR= (Behaviors/ResetWhole.java:105, read at Behaviors/ResetWhole.java:72-95). Example arc_behaviors.ini: 4000.
+		// RandomItems: setParms reads the MOBS and locale flags only from inside
+		// the if(x>=0) at Behaviors/RandomItems.java:111, so those words do nothing
+		// unless a semicolon is present, and everything after that semicolon is the
+		// item file or the pasted <ITEMS> xml (Behaviors/RandomItems.java:95-101).
+		// The format is therefore two branches, and the flag words are negatives
+		// without a semicolon. Examples arc_behaviors.ini: myitems.cmare after a
+		// semicolon, MOBS -ALL +CITY before one, and a bare <ITEMS> xml after one.
 		{"RandomItems",
 			"",
 			"min=10 max=20 chance=75 minitems=1 maxitems=10;myitems.cmare",
 			"minitems=10 maxitems=20 MOBS -ALL +CITY;stuff.cmare",
 			"minitems=10 maxitems=20 ;<ITEMS><ITEM>..etc..",
+			"minitems=10 maxitems=20 ;<ITEMS><ITEM NAME=\"gem slot\"></ITEM></ITEMS>",
 			";myitems.cmare",
-			"mobs",
+			"mobs;myitems.cmare",
 			"minitems=5",
 			"minitems=5;",
-			"+all -under",
+			"+all -under;myitems.cmare",
 			";myitems.cmare;-ALL +CITY",
+			"chance=50 mingrp=2 minitems=3 maxitems=4;",
 			"!minitems=abc",
 			"!maxitems=x",
-			"!-nosuchlocale"},
+			"!-nosuchlocale;myitems.cmare",
+			// without a semicolon the code reads none of these flags at all
+			"!mobs",
+			"!+all -under",
+			"!minitems=10 maxitems=20 MOBS -ALL +CITY"},
+		// RandomMonsters: the same gate (Behaviors/RandomMonsters.java:109) and the
+		// same <MOBS> xml tail, with the locale flags as its only flag words.
 		{"RandomMonsters",
 			"",
 			"min=10 max=20 chance=75 minmonsters=1 maxmonsters=10;monsters.cmare",
@@ -600,11 +646,14 @@ public class Validparms extends StdTest
 			";monsters.cmare",
 			"minmonsters=5",
 			"minmonsters=5;",
-			"+all -under",
+			"+all -under;monsters.cmare",
 			";monsters.cmare;-ALL +CITY",
 			"!minmonsters=abc",
 			"!maxmonsters=x",
-			"!-nosuchlocale"},
+			"!-nosuchlocale;monsters.cmare",
+			// without a semicolon the code reads none of these flags at all
+			"!+all -under",
+			"!minmonsters=10 maxmonsters=20 -ALL +CITY"},
 		{"RandomQuests",
 			"",
 			"minquests=3 maxquests=5 template=normal_capture1",
@@ -631,6 +680,51 @@ public class Validparms extends StdTest
 			"!min=abc",
 			"!poofin",
 			"!-nosuchlocale"},
+		// RandomTraps: the ticker keys, mintraps and maxtraps are read from the
+		// parms as a whole, but ROOMS=, ITEMS=, EXITS= and the +/- locale words are
+		// read only from the text BEFORE the first semicolon, because the split at
+		// RandomTraps.java:109 gates all of them (setParms :109-243). So the format
+		// has two branches: the keys up to a semicolon, which may be followed by
+		// anything at all because nothing after it is read, or just the ticker keys
+		// and the trap counts. Both arc_behaviors.ini examples end with the
+		// semicolon, as the help now says, and the same text without one is kept as
+		// a negative so that the silent-ignore trap cannot come back. The second
+		// example used to end +CityStreet, which is not a Room.DOMAIN_* desc prefix
+		// (Locales/interfaces/Room.java:110-167) and so was ignored by the code; it
+		// is now +CITY in the help, and the bogus word is a negative here.
+		{"RandomTraps",
+			"",
+			"min=10 max=20 chance=25 mintraps=1 maxtraps=10",
+			"min=10 max=20 chance=25 mintraps=1 maxtraps=10 EXITS=\"YES\" ITEMS=\"YES\" ROOMS=\"YES\";",
+			"min=10 max=20 chance=25 ROOMS=\"YES\" ITEMS=\"NO\" -ALL +CITY;",
+			"EXITS=NO ITEMS=CONT ROOMS=YES mintraps=2 maxtraps=5 min=10 max=20 chance=50;",
+			"maxtraps=3 mintraps=3",
+			"maxtraps=3 mintraps=3;",
+			"+JUNGLE +AIR;",
+			"+AIR +JUNGLE;",
+			"chance=50 mintraps=2 +AIR EXITS=DOORS maxtraps=4 -SWAMP min=5;",
+			"ITEMS=LOCK EXITS=LOCKED;",
+			"min=10;",
+			"min=10;anything at all here is ignored",
+			"ROOMS=Y ITEMS=NO EXITS=NO;",
+			"ITEMS=LID EXITS=DOORS -ALL +CIT;",
+			"+ALL;",
+			"-ALL;",
+			"MINTRAPS=2;",
+			"min=10;;",
+			"!ITEMS=NOSUCH;",
+			"!ROOMS=MAYBE;",
+			"!EXITS=NOSUCH;",
+			"!mintraps=x;",
+			"!min=abc",
+			"!-nosuchlocale;",
+			"!min=10 max=20 chance=25 ROOMS=\"YES\" ITEMS=\"NO\" -ALL +CityStreet;",
+			// without a semicolon the code reads none of these keys at all
+			"!min=10 max=20 ROOMS=YES",
+			"!ROOMS=\"YES\"",
+			"!+JUNGLE +AIR",
+			"!min=10 max=20 chance=25 mintraps=1 maxtraps=10 EXITS=\"YES\" ITEMS=\"YES\" ROOMS=\"YES\""},
+		// ResetWhole: either a bare tick count or one of TICKS=/RLHOUR=/MUDHOUR= (Behaviors/ResetWhole.java:105, read at Behaviors/ResetWhole.java:72-95). Example arc_behaviors.ini: 4000.
 		{"ResetWhole",
 			"4000",
 			"TICKS=4000",
@@ -952,6 +1046,7 @@ public class Validparms extends StdTest
 		"ClanHelper",
 		"Clericness",
 		"CombatAbilities",
+		"CombatAssister",
 		"CommonSpeaker",
 		"Concierge",
 		"Conquerable",
@@ -974,6 +1069,7 @@ public class Validparms extends StdTest
 		"ItemIdentifier",
 		"ItemMender",
 		"ItemRefitter",
+		"LinkedWeather",
 		"MOBTeacher",
 		"MOBHelper",
 		"Mobile",
@@ -1001,6 +1097,7 @@ public class Validparms extends StdTest
 		"RandomMonsters",
 		"RandomQuests",
 		"RandomTeleporter",
+		"RandomTraps",
 		"ResetWhole",
 		"ROMGangMember",
 		"Sailor",
@@ -1179,7 +1276,11 @@ public class Validparms extends StdTest
 	public String doTest(final MOB mob, final int metaFlags, final String what, final List<String> commands)
 	{
 		if((mob != null) && (mob.location() != null))
+		{
 			TEST_ROOM_ID = CMLib.map().getExtendedRoomID(mob.location());
+			if(mob.location().getArea() != null)
+				TEST_AREA = mob.location().getArea().Name();
+		}
 		final List<Object> fixtures = new ArrayList<Object>();
 		try
 		{
@@ -1212,6 +1313,8 @@ public class Validparms extends StdTest
 				String val = row[v];
 				if(TEST_ROOM_ID != null)
 					val = CMStrings.replaceAll(val, "*ROOMID*", TEST_ROOM_ID);
+				if(TEST_AREA != null)
+					val = CMStrings.replaceAll(val, "*AREA*", TEST_AREA);
 				final boolean shouldPass = !val.startsWith("!");
 				if(!shouldPass)
 					val = val.substring(1);

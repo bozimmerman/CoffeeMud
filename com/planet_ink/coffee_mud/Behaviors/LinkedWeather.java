@@ -58,6 +58,13 @@ public class LinkedWeather extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "([AREA_NAME(prompt=Linked area/colh=Area)..;])"
+			+ "(;[CHECK(name=ROLLING/prompt=Rolling weather/colh=Roll)])";
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);

@@ -50,6 +50,12 @@ public class CombatAssister extends StdBehavior
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "([ZAPPERMASK(prompt=Assist mask/colh=Mask).. ])";
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

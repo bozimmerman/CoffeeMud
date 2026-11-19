@@ -80,6 +80,26 @@ public class RandomTraps extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		final String trapKeys = super.activeParmsFormat() + "/"
+			+ "(MINTRAPS=[NUMBER(prompt=Min traps/colh=MinT)])/"
+			+ "(MAXTRAPS=[NUMBER(prompt=Max traps/colh=MaxT)])";
+		return "("
+			+ "((" + trapKeys + "/"
+			+ "(ROOMS=(\")[CHOICES_PREFIX(choices=YES,NO/prompt=Trap rooms/colh=Rooms)](\"))/"
+			+ "(ITEMS=(\")[CHOICES_PREFIX(choices=YES,CONT,LID,LOCK,NO/prompt=Trap items/colh=Items)](\"))/"
+			+ "(EXITS=(\")[CHOICES_PREFIX(choices=YES,DOORS,LOCKED,NO/prompt=Trap exits/colh=Exits)](\"))/"
+			+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+			+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+			+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])"
+			+ ")...;([STRING(prompt=Text after the semicolon is ignored/colh=Ignored)])...)"
+			+ "/"
+			+ "((" + trapKeys + ")...)"
+			+ ")";
+	}
+
+	@Override
 	public void setParms(final String newParms)
 	{
 		maintained=new Vector<Physical>();
