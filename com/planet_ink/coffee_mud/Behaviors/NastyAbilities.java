@@ -43,6 +43,15 @@ public class NastyAbilities extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "([CHOICES(choices=FIGHTOK,CHECKLEVEL/prompt=Ability flag/colh=Flag)])"
+				+ ")..."
+				+ "(;([ZAPPERMASK(prompt=Ability mask/colh=Mask).. ]))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

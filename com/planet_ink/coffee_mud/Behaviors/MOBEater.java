@@ -44,6 +44,14 @@ public class MOBEater extends ActiveTicker implements MOBPossessor, ItemCollecti
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(ACIDPCT=[NUMBER(prompt=Acid percent/colh=AcidPct)])"
+				+ ")...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

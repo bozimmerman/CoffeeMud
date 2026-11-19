@@ -42,6 +42,14 @@ public class MOBReSave extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "([CHAR_STAT_ABBR(prompt=Stat/colh=Stat)]=[NUMBER(prompt=Stat value/colh=Value)])"
+				+ ")...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

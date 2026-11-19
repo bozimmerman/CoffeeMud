@@ -43,6 +43,14 @@ public class NiceAbilities extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + ")"
+				+ "..."
+				+ "(;([ZAPPERMASK(prompt=Ability mask/colh=Mask).. ]))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

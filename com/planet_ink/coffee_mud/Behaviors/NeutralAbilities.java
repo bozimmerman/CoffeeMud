@@ -43,6 +43,15 @@ public class NeutralAbilities extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(SKILLS=(\")([ABILITY_ID(prompt=Restrict to ability/colh=Ability)]..,)(\"))"
+				+ ")..."
+				+ "(;([ZAPPERMASK(prompt=Ability mask/colh=Mask).. ]))";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

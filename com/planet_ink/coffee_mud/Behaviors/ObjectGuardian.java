@@ -41,6 +41,17 @@ public class ObjectGuardian extends StdBehavior
 		return "ObjectGuardian";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ "([CHOICES(choices=SENTINAL,SENTINEL/prompt=Guardian flag/colh=Flag)])/"
+				+ "([CHECK(name=DROPOK/prompt=Allow dropping/colh=DropOk)])/"
+				+ "(ITEMMASK=(\")[ZAPPERMASK(prompt=Item mask/colh=ItemMask)...](\"))/"
+				+ "(MOBMASK=(\")[ZAPPERMASK(prompt=Mob mask/colh=MobMask)...](\"))"
+				+ ")...";
+	}
+
 	protected boolean sentinal=false;
 	protected boolean dropok=false;
 	protected CompiledZMask itemMask = null;

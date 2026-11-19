@@ -42,6 +42,19 @@ public class RandomTeleporter extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "([CHECK(name=NOWANDER/prompt=No wander/colh=NoWander)])/"
+				+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])/"
+				+ "(POOFIN=(\")[STRINGORNULL(prompt=Poof in message/colh=PoofIn)...](\"))/"
+				+ "(POOFOUT=(\")[STRINGORNULL(prompt=Poof out message/colh=PoofOut)...](\"))"
+				+ ")...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;
