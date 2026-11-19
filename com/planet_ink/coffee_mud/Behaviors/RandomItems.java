@@ -56,6 +56,23 @@ public class RandomItems extends ActiveTicker
 	protected boolean		alreadyTriedLoad	= false;
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(MINITEMS=[NUMBER(prompt=Min items/colh=MinItems)])/"
+				+ "(MAXITEMS=[NUMBER(prompt=Max items/colh=MaxItems)])/"
+				+ "([CHECK(name=MOBS/prompt=Favor mobs/colh=FavorMobs)])/"
+				+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])"
+				+ ")..."
+				+ "(;(([STRING(prompt=Item file or XML/colh=File)..;]))"
+				+ "(;([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)]))...)";
+	}
+
+	@Override
 	public String accountForYourself()
 	{
 		return "random item generating";

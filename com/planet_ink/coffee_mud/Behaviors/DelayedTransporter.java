@@ -41,6 +41,13 @@ public class DelayedTransporter extends ActiveTicker
 		return "DelayedTransporter";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + ")..."
+				+ "(;(([ROOM_ID(prompt=Destination room/colh=Room)..;]..;)))";
+	}
+
 	protected Map<String, Integer>	transportees	= new Hashtable<String, Integer>();
 	protected List<String>			destRoomNames	= new Vector<String>();
 

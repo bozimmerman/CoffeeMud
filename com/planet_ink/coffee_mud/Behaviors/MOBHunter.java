@@ -47,6 +47,15 @@ public class MOBHunter extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(RADIUS=[NUMBER(prompt=Hunt radius/colh=Radius)])"
+				+ ")..."
+				+ "([ZAPPERMASK(prompt=Hunt mask/colh=Mask).. ])";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS;

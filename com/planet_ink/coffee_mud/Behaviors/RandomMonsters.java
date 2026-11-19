@@ -42,6 +42,22 @@ public class RandomMonsters extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(MINMONSTERS=[NUMBER(prompt=Min monsters/colh=MinMonsters)])/"
+				+ "(MAXMONSTERS=[NUMBER(prompt=Max monsters/colh=MaxMonsters)])/"
+				+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])"
+				+ ")..."
+				+ "(;(([STRING(prompt=Monster file or XML/colh=File)..;]))"
+				+ "(;([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)]))...)";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;

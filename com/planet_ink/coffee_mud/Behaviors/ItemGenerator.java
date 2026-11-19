@@ -45,6 +45,23 @@ public class ItemGenerator extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "([CHECK(name=MOBS/prompt=Favor mobs/colh=FavorMobs)])/"
+				+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
+				+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
+				+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])/"
+				+ "(MINITEMS=[NUMBER(prompt=Min items/colh=MinItems)])/"
+				+ "(MAXITEMS=[NUMBER(prompt=Max items/colh=MaxItems)])/"
+				+ "(MAXDUPS=[NUMBER(prompt=Max duplicates/colh=MaxDups)])/"
+				+ "(ENCHANTED=[NUMBER(prompt=Percent enchanted/colh=Enchanted)])"
+				+ ")..."
+				+ "(;([ZAPPERMASK(prompt=Item mask/colh=Mask).. ]))";
+	}
+
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;

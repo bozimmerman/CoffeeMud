@@ -44,8 +44,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	protected String mobileParmsFormat()
 	{
 		return "(LEASH=[NUMBER(prompt=Leash rooms/colh=Leash)])/"
-			+ "(WANDER)/"
-			+ "(OPENDOORS)/"
+			+ "([CHOICES(choices=WANDER,OPENDOORS/prompt=Movement flag/colh=Flag)])/"
 			+ "([CHOICES(choices=+ALL,-ALL/prompt=All locales/colh=All)])/"
 			+ "(+[LOCALE_DOMAIN_PREFIX(prompt=Allow locale/colh=Locale)])/"
 			+ "(-[LOCALE_DOMAIN_PREFIX(prompt=Restrict locale/colh=Locale)])";

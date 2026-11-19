@@ -45,6 +45,19 @@ public class WaterCurrents extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "([CHECK(name=BOATS/prompt=Allow boats/colh=Boats)])/"
+				+ "(INMSG=(\")[STRING(prompt=Incoming message/colh=InMsg)...](\"))/"
+				+ "(OUTMSG=(\")[STRING(prompt=Outgoing message/colh=OutMsg)...](\"))/"
+				+ "(GO=(\")[DIRECTIONS_PREFIX(prompt=Current direction/colh=Dir)]("
+				+ " [DIRECTIONS_PREFIX(prompt=Current direction/colh=Dir)])...(\"))/"
+				+ "([DIRECTIONS_PREFIX(prompt=Direction/colh=Dir)](=(\")[STRING(prompt=Ignored value/colh=Value)...](\")))"
+				+ ")...";
+	}
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;

@@ -49,6 +49,22 @@ public class RandomQuests extends ActiveTicker
 	}
 
 	@Override
+	public String parmsFormat()
+	{
+		return "(" + super.activeParmsFormat() + "/"
+				+ "(PATH=(\")[STRING(prompt=Quest XML path/colh=Path)...](\"))/"
+				+ "(MINQUESTS=[NUMBER(prompt=Min quests/colh=MinQuests)])/"
+				+ "(MAXQUESTS=[NUMBER(prompt=Max quests/colh=MaxQuests)])/"
+				+ "(MAXATTEMPTS=[NUMBER(prompt=Max attempts/colh=MaxAttempts)])/"
+				+ "(EXPIRE=(\")[STRING(prompt=Expire time/colh=Expire)...](\"))/"
+				+ "(TAGID=(\")[STRING(prompt=Quest tag id/colh=TagId)...](\"))/"
+				+ "(INLINE=[CONFIRM(prompt=Inline/colh=Inline)])/"
+				+ "([ONEWORD(prompt=Quest variable/colh=Var)]=(\")[STRING(prompt=Variable value/colh=Value)...](\"))"
+				+ ")...";
+	}
+
+
+	@Override
 	protected int canImproveCode()
 	{
 		return Behavior.CAN_MOBS|Behavior.CAN_AREAS;

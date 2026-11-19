@@ -27,6 +27,27 @@ public class Sailor extends StdBehavior
 		return "Sailor";
 	}
 
+	@Override
+	public String parmsFormat()
+	{
+		return "("
+				+ "(TICKDELAY=[NUMBER(prompt=Tick delay/colh=TickDelay)])/"
+				+ "(TICKBONUS=[NUMBER(prompt=Tick bonus/colh=TickBonus)])/"
+				+ "(PEACEMOVER=[CONFIRM(prompt=Peace mover/colh=PeaceMover)])/"
+				+ "(AREAONLY=[CONFIRM(prompt=Area only/colh=AreaOnly)])/"
+				+ "(FIGHTMOVER=[CONFIRM(prompt=Fight mover/colh=FightMover)])/"
+				+ "(FIGHTTECH=[CONFIRM(prompt=Fight tech/colh=FightTech)])/"
+				+ "(BOARDER=[CONFIRM(prompt=Boarder/colh=Boarder)])/"
+				+ "(DEFENDER=[CONFIRM(prompt=Defender/colh=Defender)])/"
+				+ "(AGGRO=[CONFIRM(prompt=Aggro/colh=Aggro)])/"
+				+ "(AGGROMOBS=[CONFIRM(prompt=Aggro mobs/colh=AggroMobs)])/"
+				+ "(AGGROLEVELCHECK=[CONFIRM(prompt=Aggro level check/colh=AggroLvl)])/"
+				+ "(AGGROMASK=(\")[ZAPPERMASK(prompt=Aggro mask/colh=Mask)...](\"))/"
+				+ "(WIMPY=[CONFIRM(prompt=Wimpy/colh=Wimpy)])"
+				+ ")...";
+	}
+
+
 	public Sailor()
 	{
 	}
