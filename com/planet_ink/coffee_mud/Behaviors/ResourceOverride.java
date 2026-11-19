@@ -47,6 +47,22 @@ public class ResourceOverride extends ActiveTicker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS | CAN_MOBS;
 	}
 
+	private static String RESOURCE_CHOICES = null;
+
+	protected static String resourceChoices()
+	{
+		if(RESOURCE_CHOICES == null)
+		{
+			final StringBuilder str = new StringBuilder("");
+			for(final String name : RawMaterial.CODES.NAMES())
+				str.append(name).append(',').append(name).append("S,");
+			for(final String name : RawMaterial.Material.names())
+				str.append(name).append(',').append(name).append("S,");
+			RESOURCE_CHOICES = str.toString();
+		}
+		return RESOURCE_CHOICES;
+	}
+
 	@Override
 	public String parmsFormat()
 	{
@@ -54,10 +70,12 @@ public class ResourceOverride extends ActiveTicker
 				+ "/(MAX=[NUMBER(prompt=Max Ticks/colh=Max)])"
 				+ "/(CHANCE=[NUMBER(prompt=Chance Percent/colh=Chance)])"
 				+ "/(MOBMASK=(\")[ZAPPERMASK(prompt=Mob mask/colh=Mask)..\"](\"))"
-				+ "/([RESOURCE_OR_MATERIAL(prompt=Resource or material/colh=Resource)])"
+				+ "/([CHOICES_PREFIX(choices=" + resourceChoices() + "/prompt=Resource or material/colh=Resource)])"
+				+ "/([CHECK(name=none/prompt=No resource/colh=None)])"
 				+ "/([LOCALE_DOMAIN(prompt=Room type/colh=RoomType)])"
 				+ "/([NUMBER(prompt=Resource code/colh=Code)])"
 				+ "/((\")[STRING(prompt=Name/colh=Name)..\\(]\\([RESOURCE_NAME(prompt=Resource/colh=Resource)][RES_SUBTYPE(prompt=Sub-type/colh=SubType)]\\)(\"))"
+				+ "/((\")[RESOURCE_OR_MATERIAL(prompt=Resource or material/colh=Resource)][RES_SUBTYPE(prompt=Sub-type/colh=SubType)](\"))"
 				+ ")...";
 	}
 
