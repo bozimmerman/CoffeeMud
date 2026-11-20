@@ -41,8 +41,6 @@ public class EditorCMathFormula extends AbilityParmEditorImpl
 	{
 		if((oldVal == null)||(oldVal.trim().length()==0))
 			return false;
-		if(oldVal.indexOf("@x1")<0)
-			return false;
 		try
 		{
 			CMath.compileMathExpression(oldVal);

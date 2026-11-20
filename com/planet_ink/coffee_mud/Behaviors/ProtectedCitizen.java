@@ -49,8 +49,8 @@ public class ProtectedCitizen extends ActiveTicker
 				+ "(MAXASSISTS=[NUMBER(prompt=Max assists/colh=MaxAssists)])/"
 				+ "([CHECK(name=WANDER/prompt=Wander/colh=Wander)])"
 				+ ")..."
-				+ "(;(([ZAPPERMASK(prompt=Guardian mask/colh=Guardian)..\\;])/([ONEWORD(prompt=Guardian name/colh=Guardian)..\\;]))"
-				+ "(;([STRING(prompt=Distress yells/colh=Claims).. ]))"
+				+ "(;((([ZAPPERMASK(prompt=Guardian mask/colh=Guardian)..\\;])/([ONEWORD(prompt=Guardian name/colh=Guardian)..\\;]))(;))"
+				+ "([STRING(prompt=Distress yells/colh=Claims).. ])"
 				+ ")";
 	}
 

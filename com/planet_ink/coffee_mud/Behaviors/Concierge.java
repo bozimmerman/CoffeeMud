@@ -51,7 +51,7 @@ public class Concierge extends StdBehavior
 				+ "(MAXRANGE=[NUMBER(prompt=Max range/colh=MaxRange)])/"
 				+ "(PERROOM=[DECIMAL(prompt=Price per room/colh=PerRoom)])/"
 				+ "(CLAN=(\")[CLAN(prompt=Clan name/colh=Clan)...](\"))/"
-				+ "(GREETING=(\")[STRING(prompt=Greeting/colh=Greeting)...](\"))/"
+				+ "(GREETING=(\")[STRINGORNULL(prompt=Greeting/colh=Greeting)..(\"/;)](\"))/"
 				+ "(ENTERMSG=(\")[STRING(prompt=Enter message/colh=EnterMsg)...](\"))/"
 				+ "(TALKERNAME=(\")[STRING(prompt=Talker name/colh=TalkerName)...](\"))/"
 				+ "((\")[ROOM_ID(prompt=Destination room/colh=Destination)..=](\")=[DECIMAL(prompt=Price/colh=Price)])/"

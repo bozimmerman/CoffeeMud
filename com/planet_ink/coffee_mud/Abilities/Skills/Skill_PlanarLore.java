@@ -43,6 +43,12 @@ public class Skill_PlanarLore extends StdSkill
 		return "Skill_PlanarLore";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Planar lore text/colh=Text).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Planar Lore");
 
 	@Override

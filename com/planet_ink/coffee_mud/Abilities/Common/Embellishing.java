@@ -41,6 +41,12 @@ public class Embellishing extends CommonSkill implements RecipeDriven
 		return "Embellishing";
 	}
 
+	@Override
+	public String miscTextFormat()
+	{
+		return "([STRING(prompt=Embellishment text/colh=Text).. ])";
+	}
+
 	private final static String	localizedName	= CMLib.lang().L("Embellishing");
 
 	@Override

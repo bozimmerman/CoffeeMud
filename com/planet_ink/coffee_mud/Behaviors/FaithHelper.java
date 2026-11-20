@@ -114,10 +114,11 @@ public class FaithHelper extends StdBehavior
 		@Override
 	public String parmsFormat()
 	{
-		return "((" 
-				+"(((\")[DEITY(prompt=Deity name/colh=Deity)..\\\"](\")))/([DEITY(prompt=Deity name/colh=Deity)]))/"
+		return "(("
+				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))/"
 				+"([NUMBER(prompt=Num/colh=Num)])/"
-				+"(MSG=(\")[STRING(prompt=Message/colh=Msg)...](\"))"
+				+"([DEITY(prompt=Deity name/colh=Deity)])/"
+				+"([DEITY(prompt=Deity name/colh=Deity).. ])"
 				+")...)";
 	}
 

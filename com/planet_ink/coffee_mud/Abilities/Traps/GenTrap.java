@@ -206,7 +206,8 @@ public class GenTrap extends StdTrap
 	@Override
 	public String miscTextFormat()
 	{
-		return "((:[NUMBER(prompt=Trap level/colh=Level)]\\/[NUMBER(prompt=Ability code/colh=Code)]:))"
+		return "((`)[STRINGORNULL(prompt=Invoker name/colh=Invoker)..\\`]` )"
+			+ "((:[NUMBER(prompt=Trap level/colh=Level)]\\/[NUMBER(prompt=Ability code/colh=Code)]:))"
 			+ "([ABILITY_ID(prompt=Ability Effect ID/colh=Effect).. ])";
 	}
 

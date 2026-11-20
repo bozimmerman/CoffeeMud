@@ -60,7 +60,8 @@ public class PokerDealer extends StdBehavior
 			games.append(i).append(',').append(GAME_DESCS[i]);
 		}
 		return "("
-				+ "(GAME=(\")[CHOICES(choices=" + games.toString() + "/prompt=Poker game/colh=Game)..\"](\"))/"
+				+ "((GAME=(\")[CHOICES(choices=" + games.toString() + "/prompt=Poker game/colh=Game)..\"](\"))/"
+				+ "(GAME=[CHOICES(choices=" + games.toString() + "/prompt=Poker game/colh=Game)]))/"
 				+ "(MINPLAYERS=[NUMBER(prompt=Min players/colh=MinPlayers)])/"
 				+ "(ANTI=[DECIMAL(prompt=Ante amount/colh=Anti)])"
 				+ ")...";

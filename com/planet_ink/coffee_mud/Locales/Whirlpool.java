@@ -111,7 +111,7 @@ public class Whirlpool extends StdGrid
 				final Behavior currents=CMClass.getBehavior("WaterCurrents");
 				if(currents != null)
 				{
-					currents.setParms("minticks=1 maxticks=2 chance=75 "+CMLib.directions().getDirectionName(dir));
+					currents.setParms("min=1 max=2 chance=75 "+CMLib.directions().getDirectionName(dir));
 					currents.setSavable(true);
 					fromRoom.addBehavior(currents);
 					fromRoom.setDescription(fromRoom.description() +
@@ -161,7 +161,7 @@ public class Whirlpool extends StdGrid
 				final Behavior currents=CMClass.getBehavior("WaterCurrents");
 				if(currents != null)
 				{
-					currents.setParms("minticks=1 maxticks=2 chance=75 BOATS "+CMLib.directions().getDirectionName(dir));
+					currents.setParms("min=1 max=2 chance=75 BOATS "+CMLib.directions().getDirectionName(dir));
 					currents.setSavable(true);
 					lastRoom.addBehavior(currents);
 					lastRoom.setDescription(lastRoom.description() +
