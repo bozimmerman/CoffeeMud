@@ -141,6 +141,11 @@
         	EditAffectData(field,'AFFECT');
         }
 
+        function EditBdata(field)
+        {
+        	EditAffectData(field,'BEHAV');
+        }
+
         function EditRSPdata(field)
         {
         	EditAffectData(field,'RSPELL');

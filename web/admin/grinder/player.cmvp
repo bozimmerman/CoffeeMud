@@ -254,6 +254,11 @@
 			EditAffectData(field,'AFFECT');
 		}
 
+		function EditBdata(field)
+		{
+			EditAffectData(field,'BEHAV');
+		}
+
 		function EditABTdata(field)
 		{
 			EditAffectData(field,'ABLES');

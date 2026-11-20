@@ -411,7 +411,7 @@ public class HolidayData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=70%>");
-				str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=30%>");
@@ -433,7 +433,7 @@ public class HolidayData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=70%>");
-			str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+			str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

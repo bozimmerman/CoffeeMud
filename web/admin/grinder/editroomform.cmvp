@@ -157,6 +157,12 @@
 		{
 			EditAffectData(field,'AFFECT');
 		}
+
+		function EditBdata(field)
+		{
+			EditAffectData(field,'BEHAV');
+		}
+
 	//-->
 	</SCRIPT>
 </head>

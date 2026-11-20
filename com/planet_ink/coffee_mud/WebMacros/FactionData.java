@@ -720,7 +720,7 @@ public class FactionData extends StdWebMacro
 								str.append("</SELECT>");
 								str.append("</TD><TD VALIGN=TOP>");
 								val=""+httpReq.getUrlParameter("AFFBEHAVPARM"+num);
-								str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+								str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 								str.append("</TD><TD VALIGN=TOP>");
 								val=""+httpReq.getUrlParameter("AFFBEHAVMASK"+num);
 								str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
@@ -745,7 +745,7 @@ public class FactionData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
-					str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\"\">");
 					str.append("</TD></TR>");

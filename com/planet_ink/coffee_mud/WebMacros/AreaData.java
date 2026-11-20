@@ -93,7 +93,7 @@ public class AreaData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 				str.append("</TD></TR>");
 				alreadyHave.add(theclass.toLowerCase());
 			}
@@ -120,7 +120,7 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

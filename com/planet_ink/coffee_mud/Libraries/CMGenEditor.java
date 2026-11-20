@@ -4837,8 +4837,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return "";
 		if(defaultText == null)
 			defaultText = B.getParms();
-		//TODO: when B.parmsFormat() is implemented in all behaviors, replace the below with B.parmsFormat()
-		return this.genABParms(S,B.name(),B.ID(),"([STRING.. ])",defaultText);
+		return this.genABParms(S,B.name(),B.ID(),B.parmsFormat(),defaultText);
 	}
 	
 	@Override
