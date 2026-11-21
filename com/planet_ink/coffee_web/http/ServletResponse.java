@@ -102,13 +102,11 @@ public class ServletResponse extends HTTPReqResponse implements SimpleServletRes
 		// since the servlet could have overwridden ANY of our default headers, we make
 		// sure to check a normalizsed set of servlet generated headers BEFORE writing
 		// our own.
-		if(bout.size()>0)
-		{
-			if(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()))
-				str.append(HTTPHeader.Common.CONTENT_TYPE.makeLine(MIMEType.All.html.getType()));
-			if(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()))
-				str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(bout.size()));
-		}
+		if(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()))
+			str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(bout.size()));
+		if((bout.size()>0)
+		&&(!normalizedHeaders.contains(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName())))
+			str.append(HTTPHeader.Common.CONTENT_TYPE.makeLine(MIMEType.All.html.getType()));
 		if((Thread.currentThread() instanceof CWThread) && ((CWThread)Thread.currentThread()).getConfig().isDebugging())
 			((CWThread)Thread.currentThread()).getConfig().getLogger().finer("Response Servlet: "+str.toString().replace('\r', ' ').replace('\n', ' '));
 		if(!normalizedHeaders.contains(HTTPHeader.Common.SERVER.lowerCaseName()))
