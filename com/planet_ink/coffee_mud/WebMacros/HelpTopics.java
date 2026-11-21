@@ -86,7 +86,7 @@ public class HelpTopics extends StdWebMacro
 					{
 						final String format=getParmFormat(last);
 						if(format.length()>0)
-							return clearWebMacros("Format: "+CMStrings.replaceAll(format,"<","&lt;")+"\n\r\n\r"+help);
+							return clearWebMacros(AbilityParmsCheck.wrapFormat("Format: "+format,limit)+"\n\r\n\r"+help);
 					}
 					return clearWebMacros(help);
 				}

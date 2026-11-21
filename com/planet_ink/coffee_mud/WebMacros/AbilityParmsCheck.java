@@ -97,6 +97,56 @@ public class AbilityParmsCheck extends StdWebMacro
 			return "parms could not be checked: " + e.getMessage();
 		}
 	}
+	/**
+	 * Wraps a parms format string for display, preferring to break between
+	 * the groups of a format (at the slashes) rather than at the spaces, so
+	 * that the arguments of a single placeholder are never split apart.
+	 *
+	 * @param s the format string to wrap
+	 * @param limit the maximum line length
+	 * @return the wrapped and html-escaped format string
+	 */
+	public static String wrapFormat(final String s, final int limit)
+	{
+		if(s == null)
+			return "";
+		final StringBuilder str = new StringBuilder(CMStrings.replaceAll(CMStrings.replaceAll(s, "&", "&amp;"), "<", "&lt;"));
+		int slashAt = -1;
+		int spaceAt = -1;
+		int lineStart = 0;
+		int x = 0;
+		while(x < str.length())
+		{
+			final char c = str.charAt(x);
+			if(x > lineStart)
+			{
+				if(c == '/')
+					slashAt = x;
+				else
+				if(c == ' ')
+					spaceAt = x;
+			}
+			x++;
+			if((x - lineStart >= limit)&&((slashAt > lineStart)||(spaceAt > lineStart)))
+			{
+				if(slashAt > lineStart)
+				{
+					str.insert(slashAt, "<BR>");
+					lineStart = slashAt + 4;
+				}
+				else
+				{
+					str.replace(spaceAt, spaceAt+1, "<BR>");
+					lineStart = spaceAt + 4;
+				}
+				x = lineStart;
+				slashAt = -1;
+				spaceAt = -1;
+			}
+		}
+		return str.toString();
+	}
+
 	protected String helpEntry(final String id, final String name, final String format)
 	{
 		final StringBuilder str = new StringBuilder("");
@@ -105,7 +155,7 @@ public class AbilityParmsCheck extends StdWebMacro
 		if(format.length() == 0)
 			str.append("none declared - there is nothing to check against");
 		else
-			str.append(CMStrings.replaceAll(CMStrings.replaceAll(format, "&", "&amp;"), "<", "&lt;"));
+			str.append(wrapFormat(format, 60)); // allow for the prefix above
 		str.append("<BR><BR>");
 		final String help = CMLib.help().getHelpText(id, null, true);
 		if((help == null) || (help.length() == 0))
