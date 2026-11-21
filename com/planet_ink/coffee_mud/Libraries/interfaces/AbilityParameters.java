@@ -424,12 +424,12 @@ public interface AbilityParameters extends CMLibrary
 
 	/**
 	 * Given a grammar from {@link Ability#miscTextFormat()}, this will
-	 * return whether the given proposition is formatted in a conforming way.
+	 * test whether the given proposition is formatted in a conforming way.
 	 * @param format the misc text format
 	 * @param proposition the potential misc text
-	 * @return true if they are a match
+	 * @return null if they are a match, or guidance explaining the first mismatch
 	 */
-	public boolean isValidMiscText(final String format, final String proposition);
+	public String testParmsFormat(final String format, final String proposition);
 
 	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility

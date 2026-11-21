@@ -75,8 +75,9 @@ public class AbilityFormats extends StdTest
 			final String text = A.text();
 			if((text == null) || (text.trim().length() == 0))
 				continue;
-			if(!CMLib.ableParms().isValidMiscText(A.miscTextFormat(), text))
-				return ("Ability ID: '"+A.ID()+"' on `"+host.Name()+"` in `"+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(host))+"` has non-conforming misc text: "+text);
+			final String isInvalid = CMLib.ableParms().testParmsFormat(A.miscTextFormat(), text);
+			if(isInvalid != null)
+				return ("Ability ID: '"+A.ID()+"' on `"+host.Name()+"` in `"+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(host))+"` has non-conforming misc text: "+text+" ("+isInvalid+")");
 		}
 		return null;
 	}

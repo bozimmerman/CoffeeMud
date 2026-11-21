@@ -4809,13 +4809,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(s.length()>0)
 			{
 				parms=s;
-				if(!CMLib.ableParms().isValidMiscText(format, s))
+				final String isInvalid = CMLib.ableParms().testParmsFormat(format, s);
+				if(isInvalid != null)
 				{
 					if(lastErr.equals(s))
 						break;
 					lastErr = s; // only loop on same text once
 					s = "?"; // force re-loop
-					S.println("^RInvalid parameters format.^?  ^NUse ^H?^? for more information, or enter again to force.^N");
+					S.println("^R" + L("Invalid parameters: @x1",isInvalid) + "^?  ^N" + L("Use @x1 for more information, or enter again to force.","^H?^?") + "^N");
 				}
 			}
 		}

@@ -1785,30 +1785,170 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	}
 
 	@Override
-	public boolean isValidMiscText(final String format, final String proposition)
+	public String testParmsFormat(final String format, final String proposition)
 	{
+		final String text = (proposition == null) ? "" : proposition;
+		final MTFail fail = new MTFail();
 		try
 		{
-			if(format.trim().length()==0)
-				return true; // empty format doesn't care
+			if((format == null)||(format.trim().length()==0))
+				return null; // empty format doesn't care
 			final MTToken root = parseMiscTextFormat(format);
 			final int[] endIndex = new int[1];
 			final boolean[] quoteMode = new boolean[1];
-			if(!matchMiscTextToken(root, proposition, 0, endIndex, quoteMode, null))
-				return false;
-			return proposition.substring(endIndex[0]).trim().length() == 0;
+			if(!matchMiscTextToken(root, text, 0, endIndex, quoteMode, null, fail))
+				return fail.describe(text);
+			if(endIndex[0] < text.length())
+			{
+				int restIndex = endIndex[0];
+				while((restIndex < text.length())&&(Character.isWhitespace(text.charAt(restIndex))))
+					restIndex++;
+				if(restIndex < text.length())
+				{
+					// if the matcher got further into the value than the parse did, its
+					// complaint is the more useful one, since it knows what was expected
+					if(fail.getBestIndex() > restIndex)
+						return fail.describe(text);
+					return L("unexpected text '@x1' at position @x2",snippetValue(text.substring(restIndex)),""+(restIndex+1));
+				}
+			}
+			return null;
 		}
 		catch(final CMException e)
 		{
-			return false;
+			return L("malformed format: @x1",e.getMessage());
 		}
 	}
 
-	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
+	/**
+	 * Remembers the furthest point at which a proposition failed to match its
+	 * format, and what was expected there.
+	 */
+	class MTFail
+	{
+		private static final int	MAX_EXPECTATIONS	= 4;
+
+		private int					bestIndex			= -1;
+		private final List<String>	whats				= new ArrayList<String>();
+
+		public void record(final int index, final String what)
+		{
+			if(index < bestIndex)
+				return;
+			if(index > bestIndex)
+			{
+				bestIndex = index;
+				whats.clear();
+			}
+			if((whats.size() < MAX_EXPECTATIONS)&&(!whats.contains(what)))
+				whats.add(what);
+		}
+
+		public int getBestIndex()
+		{
+			return bestIndex;
+		}
+
+		public String describe(final String proposition)
+		{
+			if(bestIndex < 0)
+				return L("invalid parameters at position 1");
+			if(bestIndex >= proposition.length())
+			{
+				if(whats.size() == 0)
+					return L("invalid parameters at end of input");
+				return L("expected @x1 at end of input",describeExpectations());
+			}
+			if(whats.size() == 0)
+				return L("invalid parameters at position @x1",""+(bestIndex + 1));
+			return L("expected @x1 at position @x2",describeExpectations(),""+(bestIndex + 1));
+		}
+
+		private String describeExpectations()
+		{
+			if(whats.size() == 1)
+				return whats.get(0);
+			final StringBuilder str = new StringBuilder();
+			for(int i = 0; i < whats.size(); i++)
+			{
+				if(i > 0)
+					str.append(((i == whats.size()-1) ? L(" or ") : ", "));
+				str.append(whats.get(i));
+			}
+			return L("one of @x1",str.toString());
+		}
+	}
+
+	private static String snippetValue(final String value)
+	{
+		final String trimmed = (value == null) ? "" : value.trim();
+		final StringBuilder str = new StringBuilder();
+		int i = 0;
+		while((i < trimmed.length()) && (str.length() < 20))
+		{
+			final char c = trimmed.charAt(i);
+			str.append(Character.isWhitespace(c) ? ' ' : c);
+			i++;
+		}
+		if(i < trimmed.length())
+			str.append("...");
+		return str.toString();
+	}
+
+	private String describePlaceholderToken(final MTToken token)
+	{
+		final String name = ((String)token.token).toUpperCase(Locale.ROOT).trim();
+		final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class, name);
+		if(parmType != null)
+		{
+			switch(parmType)
+			{
+			case NUMBER:
+			case DECIMAL:
+				return L("a number");
+			case NUMBER_PAIR:
+				return L("two comma-separated numbers");
+			case ONEWORD:
+				return L("a single word");
+			case CHOICES:
+				return L("a valid choice");
+			case MULTICHOICES:
+				return L("a choice or a count");
+			case CONFIRM:
+			case CHECK:
+				return L("a true/false value");
+			default:
+				return L("a value");
+			}
+		}
+		if(getEditors().containsKey(name))
+			return L("a valid @x1 value",name);
+		return L("a value for @x1",name);
+	}
+
+	private String describeTokenExpectation(final MTToken token)
+	{
+		if((token.token instanceof String) && (token.placeholderArgs != null))
+			return describePlaceholderToken(token);
+		if(token.token instanceof String)
+			return L("'@x1'",(String)token.token);
+		return L("valid parameters");
+	}
+
+	private String describeRejectedValue(final MTToken token, final String value)
+	{
+		final String noun = describePlaceholderToken(token);
+		final String snippet = snippetValue(value);
+		if(snippet.length() == 0)
+			return noun;
+		return L("@x1, got '@x2'",noun,snippet);
+	}
+
+	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
 	{
 		final int saveIndex = index;
 		final boolean saveQuoteMode = quoteMode[0];
-		if(matchMiscTextTokenInternal(token, proposition, index, outIndex, quoteMode, terminators))
+		if(matchMiscTextTokenInternal(token, proposition, index, outIndex, quoteMode, terminators, fail))
 			return true;
 		if(token.optional)
 		{
@@ -1819,20 +1959,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
-	private boolean matchMiscTextTokenInternal(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
+	private boolean matchMiscTextTokenInternal(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
 	{
 		outIndex[0] = index;
 
 		if(token.token instanceof String)
 		{
-			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode, terminators))&&(!token.optional))
+			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode, terminators, fail))&&(!token.optional))
 				return false;
 			if(token.repeats)
 			{
 				while(true)
 				{
 					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode, terminators))
+					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode, terminators, fail))
 					{
 						outIndex[0] = saveIndex;
 						break;
@@ -1852,7 +1992,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final int saveIndex = index;
 					final boolean saveQuoteMode = quoteMode[0];
-					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode, terminators))
+					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode, terminators, fail))
 					{
 						if(outIndex[0] > index)
 						{
@@ -1865,7 +2005,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									boolean matched = false;
 									for(final MTToken alt2 : children)
 									{
-										if(matchMiscTextToken(alt2, proposition, saveRepeatIndex, outIndex, quoteMode, terminators))
+										if(matchMiscTextToken(alt2, proposition, saveRepeatIndex, outIndex, quoteMode, terminators, fail))
 										{
 											if(outIndex[0] > saveRepeatIndex)
 											{
@@ -1902,7 +2042,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final MTToken child = children[c];
 					final Set<Character> childTerminators = terminatorsAfter(children, c, token.repeats, terminators);
-					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode, childTerminators))
+					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode, childTerminators, fail))
 					{
 						if(token.optional)
 						{
@@ -1926,19 +2066,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						for(int c = 0; c < children.length; c++)
 						{
 							final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
-							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, repTers))
+							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, repTers, fail))
 							{
 								matched = false;
 								break;
 							}
 							tempIndex = outIndex[0];
 						}
-					if((!matched)||(outIndex[0] == saveIndex))
-					{
-						quoteMode[0] = saveRepeatQuoteMode;
-						outIndex[0] = saveIndex;
-						break;
-					}
+						if((!matched)||(outIndex[0] == saveIndex))
+						{
+							quoteMode[0] = saveRepeatQuoteMode;
+							outIndex[0] = saveIndex;
+							break;
+						}
 					}
 				}
 				return true;
@@ -2107,14 +2247,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return first;
 	}
 
-	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators)
+	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
 	{
 		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
 			index++;
 		if(index >= proposition.length())
 		{
 			outIndex[0] = index;
-			return (token.greedyRest)&&(token.placeholderArgs != null);
+			if((token.greedyRest)&&(token.placeholderArgs != null))
+				return true;
+			fail.record(index, describeTokenExpectation(token));
+			return false;
 		}
 		final String literal = (String)token.token;
 		final String lowerProposition = proposition.toLowerCase();
@@ -2138,7 +2281,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(c == '\\')
 				{
 					if(i + 1 >= end)
+					{
+						fail.record(i, "'\"'");
 						return false;
+					}
 					i += 2;
 				}
 				else
@@ -2148,9 +2294,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					i++;
 			}
 			if(i >= end)
+			{
+				fail.record(i, "'\"'");
 				return false;
+			}
 			if(!confirmParmValue(literal, CMStrings.deEscape(proposition.substring(index, i)), token.parameterArgs))
+			{
+				fail.record(index, describeRejectedValue(token, CMStrings.deEscape(proposition.substring(index, i))));
 				return false;
+			}
 			quoteMode[0] = false;
 			outIndex[0] = i + 1;
 			return true;
@@ -2175,7 +2327,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				i++;
 			}
 			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
+			{
+				fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
 				return false;
+			}
 			outIndex[0] = i;
 			return true;
 		}
@@ -2201,7 +2356,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				i++;
 			}
 			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
+			{
+				fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
 				return false;
+			}
 			outIndex[0] = i;
 			return true;
 		}
@@ -2216,19 +2374,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(lowerProposition.startsWith(token.greedyLiteral.toLowerCase(), i))
 				{
 					if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
+					{
+						fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
 						return false;
+					}
 					outIndex[0] = i;
 					return true;
 				}
 				i++;
 			}
+			fail.record(index, "'" + token.greedyLiteral + "'");
 			return false;
 		}
 		else
 		if(token.greedy) // greedy placeholder at end of format, matches to end
 		{
 			if(!confirmParmValue(literal, proposition.substring(index).trim(), token.parameterArgs))
+			{
+				fail.record(index, describeRejectedValue(token, proposition.substring(index)));
 				return false;
+			}
 			outIndex[0] = proposition.length();
 			return true;
 		}
@@ -2241,7 +2406,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return true;
 			}
 			if(!confirmParmValue(literal, val, token.parameterArgs))
+			{
+				fail.record(index, describeRejectedValue(token, val));
 				return false;
+			}
 			outIndex[0] = proposition.length();
 			return true;
 		}
@@ -2253,9 +2421,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			&&((terminators == null) || (!terminators.contains(Character.valueOf(Character.toLowerCase(proposition.charAt(index)))))))
 				index++;
 			if(index == start)
+			{
+				fail.record(index, describeTokenExpectation(token));
 				return false; // a placeholder must capture at least one character
+			}
 			if(!confirmParmValue(literal, proposition.substring(start,index), token.parameterArgs))
+			{
+				fail.record(start, describeRejectedValue(token, proposition.substring(start,index)));
 				return false;
+			}
 			outIndex[0] = index;
 			return true;
 		}
@@ -2267,6 +2441,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				outIndex[0] = index + literal.length();
 				return true;
 			}
+			fail.record(index, "'" + literal + "'");
 			return false;
 		}
 	}
@@ -2390,13 +2565,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if((c == '/') && (depth == 0))
 			{
 				if(i == branchStart)
-					throw new CMException("Empty alternative in [...] at " + i);
+					throw new CMException(L("Empty alternative in [...] at @x1",""+i));
 				alternatives.add(parseMTSequence(format, branchStart, i));
 				branchStart = i + 1;
 			}
 		}
 		if(branchStart >= end)
-			throw new CMException("Empty alternative in [...] at " + end);
+			throw new CMException(L("Empty alternative in [...] at @x1",""+end));
 		alternatives.add(parseMTSequence(format, branchStart, end));
 		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
 		altToken.alternation = MTAlt.REQUIRED;
@@ -2511,7 +2686,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					closeIndex++;
 				}
 				if(depth != 0)
-					throw new CMException("Unclosed ( at " + index);
+					throw new CMException(L("Unclosed ( at @x1",""+index));
 
 				final MTToken inner = parseMTSequence(format, index + 1, closeIndex - 1);
 				inner.optional = true;
@@ -2523,7 +2698,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					while((la < end) && Character.isWhitespace(format.charAt(la)))
 						la++;
 					if(la < end)
-						throw new CMException("Greedy placeholder at end of group requires end-of-string at " + index);
+						throw new CMException(L("Greedy placeholder at end of group requires end-of-string at @x1",""+index));
 				}
 			}
 			else
@@ -2551,7 +2726,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					closeIndex++;
 				}
 				if(closeIndex >= end)
-					throw new CMException("Unclosed [ at " + index);
+					throw new CMException(L("Unclosed [ at @x1",""+index));
 				String placeholder = format.substring(index + 1, closeIndex);
 				if(hasTopLevelSlash(placeholder))
 				{
@@ -2613,7 +2788,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 				}
 				if(placeholderToken.length() == 0)
-					throw new CMException("Empty placeholder name at " + index);
+					throw new CMException(L("Empty placeholder name at @x1",""+index));
 				String[] placeholderArgs = new String[0];
 				final Map<String,String> parameterArgs = new HashMap<String,String>();
 				final int x = placeholderToken.indexOf('(');
@@ -2621,7 +2796,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if((x >= 0)||(firstCloseParen >= 0))
 				{
 					if((x <= 0)||(firstCloseParen >= 0 && firstCloseParen < x))
-						throw new CMException("Malformed placeholder arguments at " + index);
+						throw new CMException(L("Malformed placeholder arguments at @x1",""+index));
 					int depth = 0;
 					int closeParen = -1;
 					for(int i=x;i<placeholderToken.length();i++)
@@ -2645,21 +2820,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 					}
 					if((depth != 0)||(closeParen != placeholderToken.length()-1))
-						throw new CMException("Malformed placeholder arguments at " + index);
+						throw new CMException(L("Malformed placeholder arguments at @x1",""+index));
 					final String argGroup = placeholderToken.substring(x+1,closeParen);
 					placeholderArgs = CMParms.parseAny(argGroup, '/', false, true).toArray(new String[0]);
 					for(final String arg : placeholderArgs)
 					{
 						final int equals = arg.indexOf('=');
 						if(equals <= 0)
-							throw new CMException("Malformed placeholder argument at " + index);
+							throw new CMException(L("Malformed placeholder argument at @x1",""+index));
 						final String argName = arg.substring(0,equals).trim();
 						final String argValue = arg.substring(equals+1).trim();
 						if((argName.length() == 0)||(argValue.length() == 0))
-							throw new CMException("Malformed placeholder argument at " + index);
+							throw new CMException(L("Malformed placeholder argument at @x1",""+index));
 						final String argKey = argName.toUpperCase(Locale.ROOT);
 						if(parameterArgs.containsKey(argKey))
-							throw new CMException("Duplicate placeholder argument " + argName + " at " + index);
+							throw new CMException(L("Duplicate placeholder argument @x1 at @x2",argName,""+index));
 						parameterArgs.put(argKey,argValue);
 					}
 					placeholderToken = placeholderToken.substring(0,x).trim();
@@ -2673,7 +2848,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					// ';' alone and [;/-] matches ';' or '-'.
 					if((placeholderArgs.length > 0)
 					||greedy||(greedyTo != '\0')||greedyRest||(greedyToTokens != null))
-						throw new CMException("Unknown placeholder '" + placeholderToken + "' at " + index);
+						throw new CMException(L("Unknown placeholder '@x1' at @x2",placeholderToken,""+index));
 					tokens.add(parseMTAlternationBlock(format, index + 1, closeIndex));
 					index = closeIndex + 1;
 					continue;
@@ -2715,7 +2890,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						final char nc = format.charAt(index);
 						if((nc == '[') || (nc == '(') || (nc == '/') || (nc == ']') || (nc == '.'))
-							throw new CMException("Greedy placeholder requires an immediately following literal or end-of-string at " + index);
+							throw new CMException(L("Greedy placeholder requires an immediately following literal or end-of-string at @x1",""+index));
 						final StringBuilder lb = new StringBuilder();
 						int la = index;
 						while(la < end)
@@ -2727,7 +2902,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							if(lc == '\\')
 							{
 								if(la + 1 >= end)
-									throw new CMException("Trailing backslash at " + la);
+									throw new CMException(L("Trailing backslash at @x1",""+la));
 								lb.append(format.charAt(la + 1));
 								la += 2;
 							}
@@ -2738,7 +2913,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							}
 						}
 						if(lb.length() == 0)
-							throw new CMException("Greedy placeholder requires an immediately following literal or end-of-string at " + index);
+							throw new CMException(L("Greedy placeholder requires an immediately following literal or end-of-string at @x1",""+index));
 						token.greedy = true;
 						token.greedyLiteral = lb.toString();
 					}
@@ -2750,7 +2925,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if((index + 2 < end) && (format.charAt(index + 1) == '.'))
 				{
 					if(tokens.isEmpty() || tokens.get(tokens.size() - 1).token.equals("/"))
-						throw new CMException("Nothing to repeat at " + index);
+						throw new CMException(L("Nothing to repeat at @x1",""+index));
 					final char d = format.charAt(index + 2);
 					if(d == '.')
 					{
@@ -2762,7 +2937,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						final MTToken x = tokens.get(tokens.size() - 1);
 						if(x.placeholderArgs == null)
-							throw new CMException("'.. ' requires a preceding placeholder at " + index);
+							throw new CMException(L("'.. ' requires a preceding placeholder at @x1",""+index));
 						if(x.quoteNext)
 						{
 							x.greedy=true;
@@ -2787,7 +2962,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						index += 3;
 					}
 					else
-						throw new CMException("Invalid delimiter after '..' at " + index);
+						throw new CMException(L("Invalid delimiter after '..' at @x1",""+index));
 				}
 				else
 				{
@@ -2806,7 +2981,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(c == '\\')
 				{
 					if(index + 1 >= end)
-						throw new CMException("Trailing backslash at " + index);
+						throw new CMException(L("Trailing backslash at @x1",""+index));
 					literal.append(format.charAt(index + 1));
 					hadEscape = true;
 					index += 2;
@@ -2837,7 +3012,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	private MTToken collapseMTAlternatives(final List<MTToken> tokens) throws CMException
 	{
 		if(tokens.isEmpty())
-			throw new CMException("Empty sequence");
+			throw new CMException(L("Empty sequence"));
 
 		if((tokens.size() > 1) 
 		&&("/".equals(tokens.get(1).token))
@@ -2883,7 +3058,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return seq;
 	}
 
-	private static MTToken collapseFullAlternation(final List<MTToken> tokens) throws CMException
+	private MTToken collapseFullAlternation(final List<MTToken> tokens) throws CMException
 	{
 		final List<MTToken> alternatives = new ArrayList<>();
 		final List<MTToken> current = new ArrayList<>();
@@ -2892,7 +3067,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if("/".equals(t.token) && !t.escapedSlash)
 			{
 				if(current.isEmpty())
-					throw new CMException("Empty alternative in alternation");
+					throw new CMException(L("Empty alternative in alternation"));
 				alternatives.add(asSequence(current));
 				current.clear();
 			}
@@ -2900,7 +3075,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				current.add(t);
 		}
 		if(current.isEmpty())
-			throw new CMException("Empty alternative in alternation");
+			throw new CMException(L("Empty alternative in alternation"));
 		alternatives.add(asSequence(current));
 
 		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);

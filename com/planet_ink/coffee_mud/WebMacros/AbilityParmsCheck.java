@@ -26,8 +26,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 /**
  * A web-path macro for validating misc-text parameters for an ability.
  * Post (or get) two fields: ABILITY (the ability ID) and PARMS (the
- * parameter text to be validated).  The response body is either "Failed"
- * or an empty string.
+ * parameter text to be validated).  The response body is empty when the
+ * parameters are valid, and otherwise contains guidance explaining the
+ * first mismatch.
  *
  * @author Bo Zimmerman
  */
@@ -52,7 +53,7 @@ public class AbilityParmsCheck extends StdWebMacro
 		httpResp.setMimeType((helpMode ? MIMEType.All.html : MIMEType.All.txt).getType());
 		final String abilityID = httpReq.getUrlParameter("ABILITY");
 		if((abilityID == null) || (abilityID.trim().length() == 0))
-			return "Failed";
+			return "no ability or behavior was named";
 		String text = httpReq.getUrlParameter("PARMS");
 		if(text == null)
 			text = "";
@@ -71,7 +72,7 @@ public class AbilityParmsCheck extends StdWebMacro
 			{
 				final Behavior B = CMClass.getBehavior(id);
 				if(B == null)
-					return "Failed";
+					return "no ability or behavior named '" + id + "'";
 				name = B.name();
 				format = B.parmsFormat();
 			}
@@ -85,14 +86,15 @@ public class AbilityParmsCheck extends StdWebMacro
 			// nothing was declared to check against, so anything passes
 			if(format.length() == 0)
 				return "";
-			if(!CMLib.ableParms().isValidMiscText(format, text.trim()))
-				return "Failed";
+			final String isInvalid = CMLib.ableParms().testParmsFormat(format, text.trim());
+			if(isInvalid != null)
+				return isInvalid;
 			return "";
 		}
 		catch(final Exception e)
 		{
 			Log.errOut("AbilityParmsCheck", "Error checking parms for '"+id+"': "+e.getMessage());
-			return "Failed";
+			return "parms could not be checked: " + e.getMessage();
 		}
 	}
 	protected String helpEntry(final String id, final String name, final String format)

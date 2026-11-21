@@ -1260,16 +1260,10 @@ public class Validparms extends StdTest
 
 	private static String checkParses(final String format)
 	{
-		try
-		{
-			if(!CMLib.ableParms().isValidMiscText(format, ""))
-				return "it does not parse";
-			return null;
-		}
-		catch(final Exception e)
-		{
-			return (e.getMessage() == null) ? e.getClass().getName() : e.getMessage();
-		}
+		final String err = CMLib.ableParms().testParmsFormat(format, "");
+		if((err != null) && (err.startsWith("malformed format: ")))
+			return err;
+		return null;
 	}
 
 	@Override
@@ -1318,17 +1312,18 @@ public class Validparms extends StdTest
 				final boolean shouldPass = !val.startsWith("!");
 				if(!shouldPass)
 					val = val.substring(1);
-				final boolean isValid = CMLib.ableParms().isValidMiscText(format, val);
-				if(isValid != shouldPass)
+				final String isInvalid = CMLib.ableParms().testParmsFormat(format, val);
+				if((isInvalid == null) != shouldPass)
 				{
 					int lastGood = 0;
 					for(int pfx = 1; pfx <= val.length(); pfx++)
 					{
-						if(CMLib.ableParms().isValidMiscText(format, val.substring(0, pfx)))
+						if(CMLib.ableParms().testParmsFormat(format, val.substring(0, pfx)) == null)
 							lastGood = pfx;
 					}
 					fails.append("Error#" + testNum + ": behavior '" + row[0] + "' with value '" + val
 						+ "' should " + (shouldPass ? "match" : "not match")
+						+ ((isInvalid == null) ? "" : " (" + isInvalid + ")")
 						+ " (matches up to [" + val.substring(0, lastGood) + "])").append("\n");
 				}
 			}
@@ -1363,7 +1358,7 @@ public class Validparms extends StdTest
 		final String unformattedFmt = fmt(unformatted);
 		if((unformattedFmt != null) && (!unformattedFmt.equals(CMParms.FORMAT_UNDEFINED)))
 			return "Error#" + testNum + ": behavior '" + UNFORMATTED_BEHAVIOR + "' now declares a format";
-		if(CMLib.ableParms().isValidMiscText(CMParms.FORMAT_UNDEFINED, "min=10"))
+		if(CMLib.ableParms().testParmsFormat(CMParms.FORMAT_UNDEFINED, "min=10") != null)
 			return "Error#" + testNum + ": the undefined format accepted a parms value";
 		// the base behavior class must keep the undefined default
 		testNum++;

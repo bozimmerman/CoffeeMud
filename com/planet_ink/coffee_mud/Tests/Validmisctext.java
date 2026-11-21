@@ -1042,10 +1042,11 @@ public class Validmisctext extends StdTest
 				if(!shouldPass)
 					val = val.substring(1);
 				val = val.replace("*ROOMID*", testRoomID).replace("*AREAID*", testAreaID);
-				final boolean isValid = CMLib.ableParms().isValidMiscText(format, val);
-				if(isValid != shouldPass)
+				final String isInvalid = CMLib.ableParms().testParmsFormat(format, val);
+				if((isInvalid == null) != shouldPass)
 					miscFails.append("Error#" + testNum + ": " + (miscAbility != null ? "ability '" + row[0] + "' " : "")
-						+ "with value '" + val + "' should " + (shouldPass ? "match" : "not match")).append("\n");
+						+ "with value '" + val + "' should " + (shouldPass ? "match" : "not match")
+						+ ((isInvalid == null) ? "" : " (" + isInvalid + ")")).append("\n");
 			}
 		}
 		if(miscFails.length() > 0)
@@ -1166,11 +1167,11 @@ public class Validmisctext extends StdTest
 		}
 		// Test 178: the Prayer_MassGrave format accepts a room ID or empty.
 		final String graveFmt = CMClass.getAbility("Prayer_MassGrave").miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(graveFmt, CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom())))
+		if((CMLib.ableParms().testParmsFormat(graveFmt, CMLib.map().getExtendedRoomID(CMLib.map().getRandomRoom()))) != null)
 			return ("Error#178a");
-		if(!CMLib.ableParms().isValidMiscText(graveFmt, ""))
+		if((CMLib.ableParms().testParmsFormat(graveFmt, "")) != null)
 			return ("Error#178b");
-		if(CMLib.ableParms().isValidMiscText(graveFmt, "No Such Area#9999"))
+		if((CMLib.ableParms().testParmsFormat(graveFmt, "No Such Area#9999")) == null)
 			return ("Error#178c: the Prayer_MassGrave format should reject unresolvable room IDs");
 		// Test 179: a JSON editor validates JSON documents.
 		final AbilityParmEditor jsonEditor = CMLib.ableParms().getEditors().get("JSON");
@@ -1182,11 +1183,11 @@ public class Validmisctext extends StdTest
 			return ("Error#179c: the JSON editor rejected a valid array");
 		if(jsonEditor.confirmValue("{\"a\":", null))
 			return ("Error#179d: the JSON editor accepted malformed JSON");
-		if(!CMLib.ableParms().isValidMiscText("[JSON]", "{\"a\":1}"))
+		if((CMLib.ableParms().testParmsFormat("[JSON]", "{\"a\":1}")) != null)
 			return ("Error#179e: '[JSON]' should accept compact JSON");
-		if(!CMLib.ableParms().isValidMiscText("[JSON...]", "{\"a\": 1, \"b\": [true, null]}"))
+		if((CMLib.ableParms().testParmsFormat("[JSON...]", "{\"a\": 1, \"b\": [true, null]}")) != null)
 			return ("Error#179f: '[JSON...]' should accept spaced JSON");
-		if(CMLib.ableParms().isValidMiscText("[JSON...]", "{\"a\": 1"))
+		if((CMLib.ableParms().testParmsFormat("[JSON...]", "{\"a\": 1")) == null)
 			return ("Error#179g: '[JSON...]' should reject malformed JSON");
 		// Test 180: an XML editor validates XML documents.
 		final AbilityParmEditor xmlEditor = CMLib.ableParms().getEditors().get("XML");
@@ -1198,11 +1199,11 @@ public class Validmisctext extends StdTest
 			return ("Error#180c: the XML editor rejected a self-closed tag");
 		if(xmlEditor.confirmValue("<FOO>", null))
 			return ("Error#180d: the XML editor accepted malformed XML");
-		if(!CMLib.ableParms().isValidMiscText("[XML]", "<FOO/>"))
+		if((CMLib.ableParms().testParmsFormat("[XML]", "<FOO/>")) != null)
 			return ("Error#180e: '[XML]' should accept compact XML");
-		if(!CMLib.ableParms().isValidMiscText("[XML...]", "<FOO bar=\"1\">some text</FOO>"))
+		if((CMLib.ableParms().testParmsFormat("[XML...]", "<FOO bar=\"1\">some text</FOO>")) != null)
 			return ("Error#180f: '[XML...]' should accept spaced XML");
-		if(CMLib.ableParms().isValidMiscText("[XML...]", "<FOO>"))
+		if((CMLib.ableParms().testParmsFormat("[XML...]", "<FOO>")) == null)
 			return ("Error#180g: '[XML...]' should reject malformed XML");
 		// Test 181: Prayer_SacredImbuingQuest stores its state as JSON.
 		final Ability sacredA = CMClass.getAbility("Prayer_SacredImbuingQuest");
@@ -1211,9 +1212,9 @@ public class Validmisctext extends StdTest
 		final String sacredFmt = sacredA.miscTextFormat();
 		if(!sacredFmt.equals("[JSON(prompt=Quest data/colh=Quest data)...]"))
 			return ("Error#181b: Prayer_SacredImbuingQuest should use '[JSON(prompt=Quest data/colh=Quest data)...]', got '"+sacredFmt+"'");
-		if(!CMLib.ableParms().isValidMiscText(sacredFmt, "{\"ability\": \"Spell_Foo\", \"quest1\": \"Q1\", \"itemname\": \"sword\", \"itemid\": \"item1\"}"))
+		if((CMLib.ableParms().testParmsFormat(sacredFmt, "{\"ability\": \"Spell_Foo\", \"quest1\": \"Q1\", \"itemname\": \"sword\", \"itemid\": \"item1\"}")) != null)
 			return ("Error#181c: Prayer_SacredImbuingQuest should accept a spaced JSON state object");
-		if(CMLib.ableParms().isValidMiscText(sacredFmt, "{\"ability\": \"Spell_Foo\""))
+		if((CMLib.ableParms().testParmsFormat(sacredFmt, "{\"ability\": \"Spell_Foo\"")) == null)
 			return ("Error#181d: Prayer_SacredImbuingQuest should reject malformed JSON");
 		// Test 185: the CAN_DESCS editor validates comma lists of Ability.CAN_DESCS codes.
 		final AbilityParmEditor canDescsEditor = CMLib.ableParms().getEditors().get("CAN_DESCS");
@@ -1236,19 +1237,19 @@ public class Validmisctext extends StdTest
 		if(canDescsEditor.confirmValue("OWNER", null))
 			return ("Error#185i: CAN_DESCS should reject OWNER unless it is added");
 		final String canDescsFmt = "[CAN_DESCS(prompt=Scan types/colh=Scan)]";
-		if(!CMLib.ableParms().isValidMiscText(canDescsFmt, "MOBS,ITEMS"))
+		if((CMLib.ableParms().testParmsFormat(canDescsFmt, "MOBS,ITEMS")) != null)
 			return ("Error#185j: '[CAN_DESCS]' should accept MOBS,ITEMS");
-		if(CMLib.ableParms().isValidMiscText(canDescsFmt, "MOB"))
+		if((CMLib.ableParms().testParmsFormat(canDescsFmt, "MOB")) == null)
 			return ("Error#185k: '[CAN_DESCS]' should reject a singular code without PLURAL");
 		final String canDescsPlusFmt = "[CAN_DESCS(plural=true/prompt=Scan types/colh=Scan)]";
-		if(!CMLib.ableParms().isValidMiscText(canDescsPlusFmt, "MOB,ITEM"))
+		if((CMLib.ableParms().testParmsFormat(canDescsPlusFmt, "MOB,ITEM")) != null)
 			return ("Error#185l: '[CAN_DESCS(plural=true)]' should accept singular codes");
-		if(CMLib.ableParms().isValidMiscText(canDescsPlusFmt, "ROOMZ"))
+		if((CMLib.ableParms().testParmsFormat(canDescsPlusFmt, "ROOMZ")) == null)
 			return ("Error#185m: '[CAN_DESCS(plural=true)]' should reject unknown codes");
 		final String canDescsAddFmt = "[CAN_DESCS(add=OWNER,OWNERS/prompt=Scan types/colh=Scan)]";
-		if(!CMLib.ableParms().isValidMiscText(canDescsAddFmt, "MOBS,OWNER,OWNERS"))
+		if((CMLib.ableParms().testParmsFormat(canDescsAddFmt, "MOBS,OWNER,OWNERS")) != null)
 			return ("Error#185n: '[CAN_DESCS(add=OWNER,OWNERS)]' should accept the added codes");
-		if(CMLib.ableParms().isValidMiscText(canDescsAddFmt, "OWNERZ"))
+		if((CMLib.ableParms().testParmsFormat(canDescsAddFmt, "OWNERZ")) == null)
 			return ("Error#185o: '[CAN_DESCS(add=OWNER,OWNERS)]' should reject unknown codes");
 		// Test 186: the CMATH_FORMULA editor validates CMath formulas over @x1.
 		final AbilityParmEditor formulaEditor = CMLib.ableParms().getEditors().get("CMATH_FORMULA");
@@ -1273,18 +1274,18 @@ public class Validmisctext extends StdTest
 		if(formulaEditor.confirmValue("@x12", null))
 			return ("Error#186j: CMATH_FORMULA should reject an illegal variable reference");
 		final String formulaFmt = "[CMATH_FORMULA(prompt=Tick formula/colh=Formula)]";
-		if(!CMLib.ableParms().isValidMiscText(formulaFmt, "@x1*2"))
+		if((CMLib.ableParms().testParmsFormat(formulaFmt, "@x1*2")) != null)
 			return ("Error#186k: '[CMATH_FORMULA]' should accept @x1*2");
-		if(CMLib.ableParms().isValidMiscText(formulaFmt, "@x2*2"))
+		if((CMLib.ableParms().testParmsFormat(formulaFmt, "@x2*2")) == null)
 			return ("Error#186l: '[CMATH_FORMULA]' should reject formulas that do not use @x1");
 		// Test 204: Paladin_PlanarDefiance accepts the optional plane name editor.
 		final Ability planarA = CMClass.getAbility("Paladin_PlanarDefiance");
 		if(planarA == null)
 			return ("Error#204a: Paladin_PlanarDefiance ability not loaded");
 		final String planarFmt = planarA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(planarFmt, ""))
+		if((CMLib.ableParms().testParmsFormat(planarFmt, "")) != null)
 			return ("Error#204b: the Paladin_PlanarDefiance format should accept a blank plane");
-		if(CMLib.ableParms().isValidMiscText(planarFmt, "NOTAPLANE"))
+		if((CMLib.ableParms().testParmsFormat(planarFmt, "NOTAPLANE")) == null)
 			return ("Error#204c: the Paladin_PlanarDefiance format should reject an unknown plane");
 		final Ability planeProto = CMClass.getAbilityPrototype("StdPlanarAbility");
 		if(planeProto instanceof PlanarAbility)
@@ -1292,7 +1293,7 @@ public class Validmisctext extends StdTest
 			final List<String> planeKeys = ((PlanarAbility)planeProto).getAllPlaneKeys();
 			if(planeKeys.size() > 0)
 			{
-				if(!CMLib.ableParms().isValidMiscText(planarFmt, planeKeys.get(0)))
+				if((CMLib.ableParms().testParmsFormat(planarFmt, planeKeys.get(0))) != null)
 					return ("Error#204d: the Paladin_PlanarDefiance format should accept a known plane");
 			}
 		}
@@ -1301,11 +1302,11 @@ public class Validmisctext extends StdTest
 		if(raptureA == null)
 			return ("Error#205a: Prayer_JoyousRapture ability not loaded");
 		final String raptureFmt = raptureA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(raptureFmt, "NORMAL"))
+		if((CMLib.ableParms().testParmsFormat(raptureFmt, "NORMAL")) != null)
 			return ("Error#205b: the Prayer_JoyousRapture format should accept NORMAL");
-		if(!CMLib.ableParms().isValidMiscText(raptureFmt, "HAPPY"))
+		if((CMLib.ableParms().testParmsFormat(raptureFmt, "HAPPY")) != null)
 			return ("Error#205d: the Prayer_JoyousRapture format should accept a generated mood choice");
-		if(CMLib.ableParms().isValidMiscText(raptureFmt, "NOTAMOOD"))
+		if((CMLib.ableParms().testParmsFormat(raptureFmt, "NOTAMOOD")) == null)
 			return ("Error#205e: the Prayer_JoyousRapture format should reject an unknown mood");
 		// Test 206: the Infuse prayers accept an empty or real deity name and reject unknown ones.
 		final String deityFormat = "([DEITY(prompt=Deity Name/colh=Deity).. ])";
@@ -1331,11 +1332,11 @@ public class Validmisctext extends StdTest
 			final String infuseFmt = infuseA.miscTextFormat();
 			if(!deityFormat.equals(infuseFmt))
 				return ("Error#206b: ability '"+infuseID+"' should use '"+deityFormat+"', got '"+infuseFmt+"'");
-			if(!CMLib.ableParms().isValidMiscText(infuseFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(infuseFmt, "")) != null)
 				return ("Error#206c: ability '"+infuseID+"' should accept an empty deity");
-			if(CMLib.ableParms().isValidMiscText(infuseFmt, "NotARealDeity"))
+			if((CMLib.ableParms().testParmsFormat(infuseFmt, "NotARealDeity")) == null)
 				return ("Error#206d: ability '"+infuseID+"' should reject an unknown deity");
-			if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(infuseFmt, realDeityName)))
+			if((realDeityName != null)&&((CMLib.ableParms().testParmsFormat(infuseFmt, realDeityName))) == null)
 				return ("Error#206e: ability '"+infuseID+"' should accept the deity '"+realDeityName+"'");
 		}
 		// Test 207: room-ID properties accept a real room, empty, and reject unknown IDs.
@@ -1347,11 +1348,11 @@ public class Validmisctext extends StdTest
 			if(ridA == null)
 				return ("Error#207a: ability '"+roomID+"' is not loaded");
 			final String ridFmt = ridA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "")) != null)
 				return ("Error#207b: ability '"+roomID+"' should accept an empty room");
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, realRoomID)) != null)
 				return ("Error#207c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
-			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "No Such Area#9999")) == null)
 				return ("Error#207d: ability '"+roomID+"' should reject an unknown room");
 		}
 		// Test 208: Ranger_PlanarEnemy accepts an empty or known plane and rejects unknown ones.
@@ -1359,9 +1360,9 @@ public class Validmisctext extends StdTest
 		if(planarEnemyA == null)
 			return ("Error#208a: Ranger_PlanarEnemy ability not loaded");
 		final String planarEnemyFmt = planarEnemyA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(planarEnemyFmt, ""))
+		if((CMLib.ableParms().testParmsFormat(planarEnemyFmt, "")) != null)
 			return ("Error#208b: the Ranger_PlanarEnemy format should accept a blank plane");
-		if(CMLib.ableParms().isValidMiscText(planarEnemyFmt, "NOTAPLANE"))
+		if((CMLib.ableParms().testParmsFormat(planarEnemyFmt, "NOTAPLANE")) == null)
 			return ("Error#208c: the Ranger_PlanarEnemy format should reject an unknown plane");
 		final Ability planarProto2 = CMClass.getAbilityPrototype("StdPlanarAbility");
 		if(planarProto2 instanceof PlanarAbility)
@@ -1369,7 +1370,7 @@ public class Validmisctext extends StdTest
 			final List<String> planeKeys = ((PlanarAbility)planarProto2).getAllPlaneKeys();
 			if(planeKeys.size() > 0)
 			{
-				if(!CMLib.ableParms().isValidMiscText(planarEnemyFmt, planeKeys.get(0)))
+				if((CMLib.ableParms().testParmsFormat(planarEnemyFmt, planeKeys.get(0))) != null)
 					return ("Error#208d: the Ranger_PlanarEnemy format should accept a known plane");
 			}
 		}
@@ -1378,11 +1379,11 @@ public class Validmisctext extends StdTest
 		if(convertA == null)
 			return ("Error#209a: Skill_Convert ability not loaded");
 		final String convertFmt = convertA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(convertFmt, ""))
+		if((CMLib.ableParms().testParmsFormat(convertFmt, "")) != null)
 			return ("Error#209b: the Skill_Convert format should accept an empty deity");
-		if(CMLib.ableParms().isValidMiscText(convertFmt, "NotARealDeity"))
+		if((CMLib.ableParms().testParmsFormat(convertFmt, "NotARealDeity")) == null)
 			return ("Error#209c: the Skill_Convert format should reject an unknown deity");
-		if((realDeityName != null)&&(!CMLib.ableParms().isValidMiscText(convertFmt, realDeityName)))
+		if((realDeityName != null)&&((CMLib.ableParms().testParmsFormat(convertFmt, realDeityName))) == null)
 			return ("Error#209d: the Skill_Convert format should accept the deity '"+realDeityName+"'");
 		// Test 210: more room-ID abilities accept a real room, empty, and reject unknown IDs.
 		final String[] roomIDAbilities2 = {"Skill_PrisonAssignment", "Spell_Cogniportive"};
@@ -1392,11 +1393,11 @@ public class Validmisctext extends StdTest
 			if(ridA == null)
 				return ("Error#210a: ability '"+roomID+"' is not loaded");
 			final String ridFmt = ridA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "")) != null)
 				return ("Error#210b: ability '"+roomID+"' should accept an empty room");
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, realRoomID)) != null)
 				return ("Error#210c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
-			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "No Such Area#9999")) == null)
 				return ("Error#210d: ability '"+roomID+"' should reject an unknown room");
 		}
 		// Test 211: more room-ID abilities accept a real room, empty, and reject unknown IDs.
@@ -1407,11 +1408,11 @@ public class Validmisctext extends StdTest
 			if(ridA == null)
 				return ("Error#211a: ability '"+roomID+"' is not loaded");
 			final String ridFmt = ridA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "")) != null)
 				return ("Error#211b: ability '"+roomID+"' should accept an empty room");
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, realRoomID)) != null)
 				return ("Error#211c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
-			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "No Such Area#9999")) == null)
 				return ("Error#211d: ability '"+roomID+"' should reject an unknown room");
 		}
 		// Test 212: plane-name abilities accept an empty or known plane and reject unknown ones.
@@ -1422,9 +1423,9 @@ public class Validmisctext extends StdTest
 			if(planeA == null)
 				return ("Error#212a: ability '"+planeID+"' is not loaded");
 			final String planeFmt = planeA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(planeFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(planeFmt, "")) != null)
 				return ("Error#212b: ability '"+planeID+"' should accept a blank plane");
-			if(CMLib.ableParms().isValidMiscText(planeFmt, "NOTAPLANE"))
+			if((CMLib.ableParms().testParmsFormat(planeFmt, "NOTAPLANE")) == null)
 				return ("Error#212c: ability '"+planeID+"' should reject an unknown plane");
 			final Ability planarProto3 = CMClass.getAbilityPrototype("StdPlanarAbility");
 			if(planarProto3 instanceof PlanarAbility)
@@ -1432,7 +1433,7 @@ public class Validmisctext extends StdTest
 				final List<String> planeKeys3 = ((PlanarAbility)planarProto3).getAllPlaneKeys();
 				if(planeKeys3.size() > 0)
 				{
-					if(!CMLib.ableParms().isValidMiscText(planeFmt, planeKeys3.get(0)))
+					if((CMLib.ableParms().testParmsFormat(planeFmt, planeKeys3.get(0))) != null)
 						return ("Error#212d: ability '"+planeID+"' should accept a known plane");
 				}
 			}
@@ -1445,11 +1446,11 @@ public class Validmisctext extends StdTest
 			if(ridA == null)
 				return ("Error#213a: ability '"+roomID+"' is not loaded");
 			final String ridFmt = ridA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "")) != null)
 				return ("Error#213b: ability '"+roomID+"' should accept an empty room");
-			if(!CMLib.ableParms().isValidMiscText(ridFmt, realRoomID))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, realRoomID)) != null)
 				return ("Error#213c: ability '"+roomID+"' should accept the room '"+realRoomID+"'");
-			if(CMLib.ableParms().isValidMiscText(ridFmt, "No Such Area#9999"))
+			if((CMLib.ableParms().testParmsFormat(ridFmt, "No Such Area#9999")) == null)
 				return ("Error#213d: ability '"+roomID+"' should reject an unknown room");
 		}
 		// Test 214: deity-name abilities accept a real deity and reject unknown ones.
@@ -1460,14 +1461,14 @@ public class Validmisctext extends StdTest
 			if(deityA == null)
 				return ("Error#214a: ability '"+deityID+"' is not loaded");
 			final String deityFmt = deityA.miscTextFormat();
-			if(!CMLib.ableParms().isValidMiscText(deityFmt, ""))
+			if((CMLib.ableParms().testParmsFormat(deityFmt, "")) != null)
 				return ("Error#214b: ability '"+deityID+"' should accept an empty deity");
-			if(CMLib.ableParms().isValidMiscText(deityFmt, "NotADeity"))
+			if((CMLib.ableParms().testParmsFormat(deityFmt, "NotADeity")) == null)
 				return ("Error#214c: ability '"+deityID+"' should reject an unknown deity");
 			for(final Enumeration<Deity> e=CMLib.map().deities();e.hasMoreElements();)
 			{
 				final Deity D=e.nextElement();
-				if(!CMLib.ableParms().isValidMiscText(deityFmt, D.Name()))
+				if((CMLib.ableParms().testParmsFormat(deityFmt, D.Name())) != null)
 					return ("Error#214d: ability '"+deityID+"' should accept the deity '"+D.Name()+"'");
 				break;
 			}
@@ -1477,30 +1478,83 @@ public class Validmisctext extends StdTest
 		if(ledgeA == null)
 			return ("Error#215a: ability 'Prop_NarrowLedge' is not loaded");
 		final String ledgeFmt = ledgeA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\""+realRoomID+"\""))
+		if((CMLib.ableParms().testParmsFormat(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\""+realRoomID+"\"")) != null)
 			return ("Error#215b: Prop_NarrowLedge should accept the room '"+realRoomID+"'");
-		if(CMLib.ableParms().isValidMiscText(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\"No Such Area#9999\""))
+		if((CMLib.ableParms().testParmsFormat(ledgeFmt, "CHECK=16 NAME=\"the narrow ledge\" ROOM=\"No Such Area#9999\"")) == null)
 			return ("Error#215c: Prop_NarrowLedge should reject an unknown room");
 		final Ability boundA = CMClass.getAbility("Prop_LocationBound");
 		if(boundA == null)
 			return ("Error#215d: ability 'Prop_LocationBound' is not loaded");
 		final String boundFmt = boundA.miscTextFormat();
 		final String realAreaName = CMLib.map().getRandomRoom().getArea().Name();
-		if(!CMLib.ableParms().isValidMiscText(boundFmt, realRoomID))
+		if((CMLib.ableParms().testParmsFormat(boundFmt, realRoomID)) != null)
 			return ("Error#215e: Prop_LocationBound should accept the room '"+realRoomID+"'");
-		if(!CMLib.ableParms().isValidMiscText(boundFmt, realAreaName+" ;PLAYEROK"))
+		if((CMLib.ableParms().testParmsFormat(boundFmt, realAreaName+" ;PLAYEROK")) != null)
 			return ("Error#215f: Prop_LocationBound should accept the area '"+realAreaName+"'");
-		if(CMLib.ableParms().isValidMiscText(boundFmt, "No Such Area#9999"))
+		if((CMLib.ableParms().testParmsFormat(boundFmt, "No Such Area#9999")) == null)
 			return ("Error#215g: Prop_LocationBound should reject an unknown area");
 		// Test 216: NoTeleport redirection accepts a real room and rejects an unknown one.
 		final Ability noTeleA = CMClass.getAbility("Prop_NoTeleport");
 		if(noTeleA == null)
 			return ("Error#216a: ability 'Prop_NoTeleport' is not loaded");
 		final String noTeleFmt = noTeleA.miscTextFormat();
-		if(!CMLib.ableParms().isValidMiscText(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\""+realRoomID+"\""))
+		if((CMLib.ableParms().testParmsFormat(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\""+realRoomID+"\"")) != null)
 			return ("Error#216b: Prop_NoTeleport should accept the room '"+realRoomID+"'");
-		if(CMLib.ableParms().isValidMiscText(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\"No Such Area#9999\""))
+		if((CMLib.ableParms().testParmsFormat(noTeleFmt, "NOSUMMON=TRUE REDIRECT=\"No Such Area#9999\"")) == null)
 			return ("Error#216c: Prop_NoTeleport should reject an unknown room");
+		return checkParmsFormatDiagnostics();
+	}
+
+	/**
+	 * Tests the diagnostics of the parms format checker.
+	 *
+	 * @return null if the diagnostics are all correct, or a failure message
+	 */
+	private String checkParmsFormatDiagnostics()
+	{
+		// Test 217: testParmsFormat explains the first mismatch.
+		final String[][] diagnosticTests =
+		{
+			{ "[NUMBER];[STRING]", "5 bob", "expected ';' at position 3" },
+			{ "[NUMBER];[STRING]", ";bob", "expected a number at position 1" },
+			{ "[NUMBER];[STRING]", "5;", "expected a value at end of input" },
+			{ "[NUMBER]", "x", "expected a number, got 'x' at position 1" },
+			{ "[NUMBER]", "5 extra", "unexpected text 'extra' at position 3" },
+			{ "[NUMBER];[STRING]", "5;bob extra", "unexpected text 'extra' at position 7" },
+			{ "((MIN=[NUMBER])/(MAX=[NUMBER]))...", "MIN=1 MAX=r", "expected a number, got 'r' at position 11" },
+			{ "((COST=(\")[CMATH_FORMULA](\")))...", "COST=abc", "expected a valid CMATH_FORMULA value, got 'abc' at position 6" },
+			{ "[NUMBER][STRING]", "5bob", "expected a number, got '5bob' at position 1" },
+			{ "[;/-]", "x", "expected one of ';' or '-' at position 1" },
+			{ "[STRING]", "", "expected a value at end of input" },
+			{ "[STRING", "abc", "malformed format: Unclosed [ at 0" },
+		};
+		for(final String[] row : diagnosticTests)
+		{
+			final String err = CMLib.ableParms().testParmsFormat(row[0], row[1]);
+			if(err == null)
+				return ("Error#217a: format '"+row[0]+"' accepted '"+row[1]+"'");
+			if(!err.equals(row[2]))
+				return ("Error#217b: format '"+row[0]+"' with '"+row[1]+"' reported '"+err+"' instead of '"+row[2]+"'");
+		}
+		// Test 217c: valid propositions return null, and checks are repeatable.
+		if(CMLib.ableParms().testParmsFormat("[NUMBER];[STRING]", "5;bob") != null)
+			return ("Error#217c: format should accept '5;bob'");
+		final String firstErr = CMLib.ableParms().testParmsFormat("[NUMBER];[STRING]", "5 bob");
+		final String secondErr = CMLib.ableParms().testParmsFormat("[NUMBER];[STRING]", "5 bob");
+		if((firstErr == null) || (!firstErr.equals(secondErr)))
+			return ("Error#217d: repeated checks reported different results");
+		// Test 217e: nulls are tolerated rather than thrown.
+		if(CMLib.ableParms().testParmsFormat(null, "abc") != null)
+			return ("Error#217e: a null format should accept anything");
+		if(CMLib.ableParms().testParmsFormat("[STRING]", null) == null)
+			return ("Error#217f: a null proposition should not satisfy [STRING]");
+		// Test 217g: malformed formats are reported with a recognizable prefix.
+		for(final String badFmt : new String[] { "[STRING", "[NUMBER](a", "[NUMBER](a)[STRING](b", "[NUMBER]\\" })
+		{
+			final String badErr = CMLib.ableParms().testParmsFormat(badFmt, "5");
+			if((badErr == null) || (!badErr.startsWith("malformed format: ")))
+				return ("Error#217g: format '" + badFmt + "' did not report a malformed format");
+		}
 		return null;
 	}
 }

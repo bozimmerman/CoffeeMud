@@ -65,8 +65,9 @@ public class BehaviorFormats extends StdTest
 			final String parms = B.getParms();
 			if((parms == null) || (parms.trim().length() == 0))
 				continue;
-			if(!CMLib.ableParms().isValidMiscText(format, parms))
-				return ("Behavior ID: '"+B.ID()+"' on `"+host.Name()+"` in `"+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(host))+"` has non-conforming parms: "+parms);
+			final String isInvalid = CMLib.ableParms().testParmsFormat(format, parms);
+			if(isInvalid != null)
+				return ("Behavior ID: '"+B.ID()+"' on `"+host.Name()+"` in `"+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom(host))+"` has non-conforming parms: "+parms+" ("+isInvalid+")");
 		}
 		return null;
 	}

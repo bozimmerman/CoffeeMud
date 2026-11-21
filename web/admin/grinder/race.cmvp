@@ -44,14 +44,18 @@
 							window.markers[txtfieldname].parentNode.removeChild(window.markers[txtfieldname]);
 							delete window.markers[txtfieldname];
 							txtfield.style.backgroundColor='#FFFFFF';
+							txtfield.title='';
 						}
-						if(req.responseText=="Failed")
+						var err = req.responseText;
+						if(err && (err.length>0))
 						{
 							txtfield.style.backgroundColor='#FFC0CB';
+							txtfield.title=err;
 							var link = document.createElement("a");
 							link.href = "javascript:OpenUp('ahelp.cmvp','"+ableid+"');";
 							link.style.color='RED';
 							link.textContent = "*";
+							link.title = err;
 							txtfield.parentNode.insertBefore(link, txtfield.nextSibling);
 							window.markers[txtfieldname]=link;
 						}
