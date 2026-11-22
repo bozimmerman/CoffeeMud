@@ -575,9 +575,9 @@ public class TriggeredAffects extends StdAbility implements TriggeredAffect
 	public String miscTextFormat()
 	{
 		return "((+)((-[ONEWORD(prompt=Removed name/colh=Remove)])"
-			+ "/(((\\(((ID=([CHECK(name=AMBIANCE/prompt=Affect ID/colh=Affect)])"
+			+ "/(((\\(((ID=([CHECK(name=AMBIANCE/prompt=Ambiance/colh=Ambiance)])"
 			+ "/([ABILITY_ID(prompt=Affect ID/colh=Affect)])"
-			+ "/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/[BEHAVIOR_ID(prompt=Behavior ID/colh=Behavior)])"
 			+ "/(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])"
 			+ "/(TRIGGER=(\")[STRING(prompt=Trigger/colh=Trigger)...](\"))"
 			+ "/(ONTRIGGER=[CHOICES(choices=ADD,REMOVE,prompt=On trigger/colh=OnTrigger)])"
@@ -585,9 +585,9 @@ public class TriggeredAffects extends StdAbility implements TriggeredAffect
 			+ "/(MESSAGE=(\")[STRING(prompt=Message/colh=Message)...](\"))"
 			+ "/(IMEANIT=[CONFIRM(prompt=I mean it/colh=ImeanIt)])"
 			+ "/(INVOKE=[CONFIRM(prompt=Invoke/colh=Invoke)]))...)\\))...)......"
-			+ "/((((ID=([CHECK(name=AMBIANCE/prompt=Affect ID/colh=Affect)])"
+			+ "/((((ID=([CHECK(name=AMBIANCE/prompt=Ambiance/colh=Ambiance)])"
 			+ "/([ABILITY_ID(prompt=Affect ID/colh=Affect)])"
-			+ "/[BEHAVIOR_ID(prompt=Affect ID/colh=Affect)])"
+			+ "/[BEHAVIOR_ID(prompt=Behavior ID/colh=Behavior)])"
 			+ "/(TICKS=[NUMBER(prompt=Ticks/colh=Ticks)])"
 			+ "/(TRIGGER=(\")[STRING(prompt=Trigger/colh=Trigger)...](\"))"
 			+ "/(ONTRIGGER=[CHOICES(choices=ADD,REMOVE,prompt=On trigger/colh=OnTrigger)])"
