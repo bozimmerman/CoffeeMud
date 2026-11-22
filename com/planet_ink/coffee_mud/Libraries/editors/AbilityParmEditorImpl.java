@@ -508,6 +508,9 @@ public abstract class AbilityParmEditorImpl implements AbilityParmEditor, Clonea
 			if(o instanceof Ability)
 				choices.add(((Ability)o).ID(),((Ability)o).name());
 			else
+			if(o instanceof Behavior)
+				choices.add(((Behavior)o).ID(),((Behavior)o).name());
+			else
 			if(o instanceof Race)
 				choices.add(((Race)o).ID(),((Race)o).name());
 			else
