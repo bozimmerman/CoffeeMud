@@ -46,7 +46,7 @@ public class Scavenger extends ActiveTicker
 	public String parmsFormat()
 	{
 		return "(" + super.activeParmsFormat() + "/"
-				+ "(TRASH=(\")(([CHECK(name=NO/prompt=Trash room id/colh=Trash)])/([ROOM_ID(prompt=Trash room id/colh=Trash)..\"]))(\"))/"
+				+ "(TRASH=(\")(([CHECK(name=NO/prompt=No Trash room/colh=NoTrash)])/([ROOM_ID(prompt=Trash room id/colh=Trash)..\"]))(\"))/"
 				+ "(ATNIGHT=[CONFIRM(prompt=Night only/colh=AtNight)])"
 				+ ")..."
 				+ "(;([ZAPPERMASK(prompt=Item mask/colh=Mask).. ]))";
