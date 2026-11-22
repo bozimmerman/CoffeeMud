@@ -66,7 +66,7 @@
 						}
 					}
 				};
-				req.send("ABILITY="+escape(ableid)+"&PARMS="+escape(abletxt));
+				req.send("ABILITY="+encodeURIComponent(ableid)+"&PARMS="+encodeURIComponent(abletxt));
 			},1000);
 		}
 		function openUp2(named)

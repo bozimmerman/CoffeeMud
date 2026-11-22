@@ -809,6 +809,8 @@ public class Validparms extends StdTest
 			"Cleric MIXEDDEFENSIVE",
 			"Cleric PROFICIENT NOSTATS NOCOMBATSTAT",
 			"Cleric -Spell_Sleep +Prayer_Bless",
+			"+Skill_CrowsNest",
+			"!+Skill_NoSuchSkill",
 			"Cleric MINTICKS=10 MAXTICKS=20 CHANCE=75",
 			"Cleric min=10 max=20 chance=75 mingrp=2",
 			"Cleric BSIZE=3",

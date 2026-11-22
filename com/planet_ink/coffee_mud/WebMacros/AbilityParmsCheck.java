@@ -60,6 +60,8 @@ public class AbilityParmsCheck extends StdWebMacro
 			return "no ability or behavior was named";
 		String text = httpReq.getUrlParameter("PARMS");
 		if(text == null)
+			text = httpReq.getUrlParameter("PEDITORTEXT");
+		if(text == null)
 			text = "";
 		final String id = abilityID.trim();
 		String name = null;
@@ -174,17 +176,16 @@ public class AbilityParmsCheck extends StdWebMacro
 			if(bodyOnly)
 				return "TEXT:" + escape(parms) + "\n" + escape(err);
 			final StringBuilder str = new StringBuilder("");
-			str.append("<INPUT TYPE=HIDDEN ID=PEDITORTEXT VALUE=\"").append(escape(parms)).append("\">");
+			str.append("<INPUT TYPE=HIDDEN ID=PEDITORTEXT NAME=PEDITORTEXT VALUE=\"").append(escape(parms)).append("\">");
 			str.append("<DIV ID=PARMSEDITORMSG>");
 			if(err == null)
 				str.append("<FONT COLOR=#B0FFB0>valid parameters</FONT>");
 			else
 				str.append("<FONT COLOR=#FFC0CB>").append(escape(err)).append("</FONT>");
 			str.append("</DIV>");
-			if(format.length() == 0)
-				str.append("<I>Nothing was declared for ").append(escape(name)).append(", so anything may be written here.</I>");
-			else
-				str.append(CMLib.ableParms().parmsEditorHtml(httpReq, format, text));
+			if((format.length() == 0)||(format.equals(CMParms.FORMAT_UNDEFINED)))
+				str.append("<I>Nothing was declared for ").append(escape(name)).append(", so anything may be written here.</I><BR>");
+			str.append(CMLib.ableParms().parmsEditorHtml(httpReq, format, text));
 			return this.clearWebMacros(str.toString());
 		}
 		catch(final CMException e)
