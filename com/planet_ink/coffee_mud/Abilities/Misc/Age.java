@@ -449,8 +449,8 @@ public class Age extends StdAbility
 		return "(([NUMBER(prompt=Years/colh=Age)]"
 			+"/[NUMBER(prompt=Birth timestamp/colh=Birth)]"
 			+"/+[NUMBER(prompt=Hours offset/colh=Hours)]"
-			+"/([AGE_DESC(prompt=Age description/colh=Age)...]"
-			+")))";
+			+"/[AGE_DESC(prompt=Age description/colh=Age).. ]"
+			+"))";
 	}
 
 	@Override
