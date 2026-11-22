@@ -59,7 +59,7 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 	@Override
 	public String miscTextFormat()
 	{
-		return "([ROOM_ID(prompt=Target ROom ID/colh=Target)..;](;(SENDENTER=[CONFIRM(prompt=Enter Notify/colh=Notify)])))";
+		return "([ROOM_ID(prompt=Target Room ID/colh=Target)..;](;(SENDENTER=[CONFIRM(prompt=Enter Notify/colh=Notify)])))";
 	}
 
 	@Override
