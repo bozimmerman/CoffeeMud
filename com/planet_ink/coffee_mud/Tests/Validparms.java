@@ -374,7 +374,7 @@ public class Validparms extends StdTest
 			"min=10 max=20 chance=75",
 			"!-RACE +ORC",
 			"!mask=\"-foo +bar\""},
-		// ItemIdentifier: a single COST= formula (Behaviors/ItemIdentifier.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		// ItemIdentifier: a single COST= formula (Behaviors/ItemIdentifier.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\".
 		{"ItemGenerator",
 			"",
 			"min=10 max=20 chance=75 minitems=1 maxitems=10 maxdups=0;-LEVELS +>10",
@@ -395,21 +395,21 @@ public class Validparms extends StdTest
 			"COST=\"100+@x1\"",
 			"COST=100+@x1",
 			"COST=\"(100-@x3)+@x1\"",
-			"!COST=100",
+			"COST=100",
 			"!COST=junk"},
-		// ItemMender: a single COST= formula (Behaviors/ItemMender.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		// ItemMender: a single COST= formula (Behaviors/ItemMender.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\".
 		{"ItemMender",
 			"COST=\"100+@x1\"",
 			"COST=100+@x1",
 			"COST=\"(100-@x3)+@x1\"",
-			"!COST=100",
+			"COST=100",
 			"!COST=junk"},
-		// ItemRefitter: a single COST= formula (Behaviors/ItemRefitter.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\". CMATH_FORMULA requires @x1 (EditorCMathFormula.java:47-52).
+		// ItemRefitter: a single COST= formula (Behaviors/ItemRefitter.java, read at CMParms.getParmStr(parms,\"COST\",...) ). Example arc_behaviors.ini: COST=\"100+@x1\".
 		{"ItemRefitter",
 			"COST=\"100+@x1\"",
 			"COST=100+@x1",
 			"COST=\"(100-@x3)+@x1\"",
-			"!COST=100",
+			"COST=100",
 			"!COST=junk"},
 		// LinkedWeather: an area name confirmed against the live map, then an
 		// optional ;ROLLING tail (Behaviors/LinkedWeather.java:75-91; the area

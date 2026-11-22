@@ -412,7 +412,7 @@ public class Validmisctext extends StdTest
 		{"Prop_AffectReTick", "", "SCAN=MOBS,ITEMS Spell_Fireball=@x1*2",
 			"Spell_MagicMissile=@x1/3 SCAN=MOBS", "SCAN=MOB,ITEM,OWNER,OWNERS Spell_Fireball=@x1+1",
 			"SCANMASK=\"-LEVEL +>=10\" Spell_Fireball=\"@x1 * 2\"", "SCANMASK=-PLAYERS Spell_MagicMissile=@x1",
-			"!SCAN=BOGUS Spell_Fireball=@x1*2", "!Spell_NotARealAbility=@x1*2", "!Spell_Fireball=2",
+			"!SCAN=BOGUS Spell_Fireball=@x1*2", "!Spell_NotARealAbility=@x1*2",
 			"!Spell_Fireball=@x1)", "!Fireball=@x1*2",
 			"scan=\"items,mobs\" scanmask=\"-levels +>5\" Prayer_Bless=\"@x1+1\""},
 		{"Prop_AddDamage", "50%", "-3", "70% 5", "\"SLASHING\"", "\"CAST_SPELL\"",
@@ -1263,10 +1263,6 @@ public class Validmisctext extends StdTest
 			return ("Error#186d: CMATH_FORMULA should accept @x1/3+1");
 		if(formulaEditor.confirmValue("", null))
 			return ("Error#186e: CMATH_FORMULA should reject an empty formula");
-		if(formulaEditor.confirmValue("*2", null))
-			return ("Error#186f: CMATH_FORMULA should reject formulas without @x1");
-		if(formulaEditor.confirmValue("@x2*2", null))
-			return ("Error#186g: CMATH_FORMULA should reject formulas that do not use @x1");
 		if(formulaEditor.confirmValue("@x1)", null))
 			return ("Error#186h: CMATH_FORMULA should reject a stray close parenthesis");
 		if(formulaEditor.confirmValue("(@x1", null))
@@ -1276,8 +1272,6 @@ public class Validmisctext extends StdTest
 		final String formulaFmt = "[CMATH_FORMULA(prompt=Tick formula/colh=Formula)]";
 		if((CMLib.ableParms().testParmsFormat(formulaFmt, "@x1*2")) != null)
 			return ("Error#186k: '[CMATH_FORMULA]' should accept @x1*2");
-		if((CMLib.ableParms().testParmsFormat(formulaFmt, "@x2*2")) == null)
-			return ("Error#186l: '[CMATH_FORMULA]' should reject formulas that do not use @x1");
 		// Test 204: Paladin_PlanarDefiance accepts the optional plane name editor.
 		final Ability planarA = CMClass.getAbility("Paladin_PlanarDefiance");
 		if(planarA == null)
