@@ -92,8 +92,10 @@ public class AreaData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append(AbilityParmsCheck.helpLink("BEHAV"+(i+1)));
 				str.append("</TD><TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\""
+						+AbilityParmsCheck.parmsEditorAttrs("BEHAV"+(i+1))+" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 				str.append("</TD></TR>");
 				alreadyHave.add(theclass.toLowerCase());
 			}
@@ -120,7 +122,8 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\""
+					+AbilityParmsCheck.parmsEditorAttrs("BEHAV"+(theclasses.size()+1))+" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}
@@ -177,8 +180,10 @@ public class AreaData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append(AbilityParmsCheck.helpLink("AFFECT"+(i+1)));
 				str.append("</TD><TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\""
+						+AbilityParmsCheck.parmsEditorAttrs("AFFECT"+(i+1))+" ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
@@ -194,7 +199,8 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\"  ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\""
+					+AbilityParmsCheck.parmsEditorAttrs("AFFECT"+(theclasses.size()+1))+" ONKEYUP=\"EditAdata(this);\" ONCHANGE=\"EditAdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

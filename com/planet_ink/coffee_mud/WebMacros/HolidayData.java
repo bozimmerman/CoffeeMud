@@ -410,8 +410,10 @@ public class HolidayData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append(AbilityParmsCheck.helpLink("BEHAV"+(i+1)));
 				str.append("</TD><TD WIDTH=70%>");
-				str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
+				str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\""
+						+AbilityParmsCheck.parmsEditorAttrs("BEHAV"+(i+1))+" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=30%>");
@@ -433,7 +435,8 @@ public class HolidayData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=70%>");
-			str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
+			str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\""
+					+AbilityParmsCheck.parmsEditorAttrs("BEHAV"+(theclasses.size()+1))+" ONKEYUP=\"EditBdata(this);\" ONCHANGE=\"EditBdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

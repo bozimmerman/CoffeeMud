@@ -1624,8 +1624,10 @@ public class ItemData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
+				str.append(AbilityParmsCheck.helpLink("RSPELL"+(i+1)));
 				str.append("</TD><TD WIDTH=50%>");
-				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(i+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditRSPdata(this);\" ONCHANGE=\"EditRSPdata(this);\">");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(i+1)+" VALUE=\""+theparm+"\""
+						+AbilityParmsCheck.parmsEditorAttrs("RSPELL"+(i+1))+" ONKEYUP=\"EditRSPdata(this);\" ONCHANGE=\"EditRSPdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
@@ -1645,7 +1647,8 @@ public class ItemData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(theclasses.size()+1)+" VALUE=\"\" ONKEYUP=\"EditRSPdata(this);\" ONCHANGE=\"EditRSPdata(this);\">");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(theclasses.size()+1)+" VALUE=\"\""
+					+AbilityParmsCheck.parmsEditorAttrs("RSPELL"+(theclasses.size()+1))+" ONKEYUP=\"EditRSPdata(this);\" ONCHANGE=\"EditRSPdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

@@ -1298,10 +1298,12 @@ public class AbilityData extends StdWebMacro
 							tabStr.append("<OPTION VALUE=\"\">Delete!");
 							tabStr.append("<OPTION VALUE=\""+oA.ID()+"\" SELECTED>"+oA.ID());
 							tabStr.append("</SELECT>");
+							tabStr.append(AbilityParmsCheck.helpLink("EFFECTS_AFFECT"+(i+1)));
 							tabStr.append("</TD><TD WIDTH=50%>");
 							final String parmstr=(oA instanceof Ability)?((Ability)oA).text():((Behavior)oA).getParms();
 							final String theparm=CMStrings.replaceAll(parmstr,"\"","&quot;");
-							tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(i+1)+"\" VALUE=\""+theparm+"\" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
+							tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(i+1)+"\" VALUE=\""+theparm+"\""
+									+AbilityParmsCheck.parmsEditorAttrs("EFFECTS_AFFECT"+(i+1))+" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
 							tabStr.append("</TD></TR>");
 						}
 						tabStr.append("<TR><TD WIDTH=50%>");
@@ -1325,7 +1327,8 @@ public class AbilityData extends StdWebMacro
 						*/
 						tabStr.append("</SELECT>");
 						tabStr.append("</TD><TD WIDTH=50%>");
-						tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(spells.size()+1)+"\" VALUE=\"\" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
+						tabStr.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=\"EFFECTS_ADATA"+(spells.size()+1)+"\" VALUE=\"\""
+								+AbilityParmsCheck.parmsEditorAttrs("EFFECTS_AFFECT"+(spells.size()+1))+" ONKEYUP=\"EditEAdata(this);\" ONCHANGE=\"EditEAdata(this);\">");
 						tabStr.append("</TD></TR>");
 						tabStr.append("</TABLE>");
 						return tabStr.toString();

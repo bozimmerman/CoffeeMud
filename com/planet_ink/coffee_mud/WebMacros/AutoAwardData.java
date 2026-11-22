@@ -200,10 +200,12 @@ public class AutoAwardData extends StdWebMacro
 				str.append("<OPTION VALUE=\"\">Delete!");
 				str.append("<OPTION VALUE=\""+SP.first+"\" SELECTED>"+SP.first);
 				str.append("</SELECT>");
+				str.append(AbilityParmsCheck.helpLink("AFFECTBEHAVS_AFFECT"+(i1+1)));
 				str.append("</TD><TD WIDTH=50%>");
 				final String parmstr=SP.second;
 				final String theparm=CMStrings.replaceAll(parmstr,"\"","&quot;");
-				str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=AFFECTBEHAVS_ADATA"+(i1+1)+" VALUE=\""+theparm+"\" ONKEYUP=\"EditABAdata(this);\" ONCHANGE=\"EditABAdata(this);\">");
+				str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=AFFECTBEHAVS_ADATA"+(i1+1)+" VALUE=\""+theparm+"\""
+						+AbilityParmsCheck.parmsEditorAttrs("AFFECTBEHAVS_AFFECT"+(i1+1))+" ONKEYUP=\"EditABAdata(this);\" ONCHANGE=\"EditABAdata(this);\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
@@ -225,7 +227,8 @@ public class AutoAwardData extends StdWebMacro
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
-			str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=AFFECTBEHAVS_ADATA"+(properties.size()+1)+" VALUE=\"\" ONKEYUP=\"EditABAdata(this);\" ONCHANGE=\"EditABAdata(this);\">");
+			str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME=AFFECTBEHAVS_ADATA"+(properties.size()+1)+" VALUE=\"\""
+					+AbilityParmsCheck.parmsEditorAttrs("AFFECTBEHAVS_AFFECT"+(properties.size()+1))+" ONKEYUP=\"EditABAdata(this);\" ONCHANGE=\"EditABAdata(this);\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}

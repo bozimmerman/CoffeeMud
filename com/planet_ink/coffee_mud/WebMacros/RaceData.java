@@ -470,6 +470,7 @@ public class RaceData extends StdWebMacro
 			str.append("<OPTION VALUE=\"\">Delete!");
 			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 			str.append("</SELECT>");
+			str.append(AbilityParmsCheck.helpLink("RABLES"+(i+1)));
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
 			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.get(i,4)+"\" SIZE=3 MAXLENGTH=3>");
@@ -482,7 +483,8 @@ public class RaceData extends StdWebMacro
 			str.append("</TD>");
 			str.append("</TR>");
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(i+1)+" VALUE=\""+theclasses.get(i,5)+"\" SIZE=40 MAXLENGTH=100"
+					+AbilityParmsCheck.parmsEditorAttrs("RABLES"+(i+1))+" ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
 			str.append("</TD></TR>");
 			if(supportsRoles)
 			{
@@ -516,7 +518,8 @@ public class RaceData extends StdWebMacro
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=RABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=40 MAXLENGTH=100"
+				+AbilityParmsCheck.parmsEditorAttrs("RABLES"+(theclasses.size()+1))+" ONKEYUP=\"EditRABdata(this);\" ONCHANGE=\"EditRABdata(this);\">");
 		str.append("</TD></TR>");
 		if(supportsRoles)
 		{
@@ -750,6 +753,7 @@ public class RaceData extends StdWebMacro
 			str.append("<OPTION VALUE=\"\">Delete!");
 			str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 			str.append("</SELECT>");
+			str.append(AbilityParmsCheck.helpLink("CABLES"+(i+1)));
 			str.append("</TD>");
 			str.append("<TD WIDTH=20%>");
 			str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
@@ -762,7 +766,8 @@ public class RaceData extends StdWebMacro
 			str.append("</TD>");
 			str.append("</TR>");
 			str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+(theclasses.elementAt(i).fifth)+"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
+			str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+(theclasses.elementAt(i).fifth)+"\" SIZE=40 MAXLENGTH=100"
+					+AbilityParmsCheck.parmsEditorAttrs("CABLES"+(i+1))+" ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
 			str.append("</TD></TR>");
 		}
 		str.append("<TR><TD WIDTH=35%>");
@@ -788,7 +793,8 @@ public class RaceData extends StdWebMacro
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("<TR><TD WIDTH=35%>&nbsp;</TD><TD COLSPAN=3>");
-		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+i+" VALUE=\"\" SIZE=40 MAXLENGTH=100 ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
+		str.append(font+"Parms:</B></FONT> <INPUT TYPE=TEXT NAME=CABPRM"+i+" VALUE=\"\" SIZE=40 MAXLENGTH=100"
+				+AbilityParmsCheck.parmsEditorAttrs("CABLES"+i)+" ONKEYUP=\"EditCABdata(this);\" ONCHANGE=\"EditCABdata(this);\">");
 		str.append("</TD></TR>");
 		str.append("</TABLE>");
 		return str;

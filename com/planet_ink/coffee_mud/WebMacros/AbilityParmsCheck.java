@@ -4,9 +4,12 @@ import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
+import java.util.*;
 
 /*
    Copyright 2026-2026 Bo Zimmerman
@@ -50,7 +53,8 @@ public class AbilityParmsCheck extends StdWebMacro
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final boolean helpMode = httpReq.getUrlParameter("HELP") != null;
-		httpResp.setMimeType((helpMode ? MIMEType.All.html : MIMEType.All.txt).getType());
+		final boolean editorMode = httpReq.getUrlParameter("EDITOR") != null;
+		httpResp.setMimeType(((helpMode || editorMode) ? MIMEType.All.html : MIMEType.All.txt).getType());
 		final String abilityID = httpReq.getUrlParameter("ABILITY");
 		if((abilityID == null) || (abilityID.trim().length() == 0))
 			return "no ability or behavior was named";
@@ -83,6 +87,8 @@ public class AbilityParmsCheck extends StdWebMacro
 				format = "";
 			if(helpMode)
 				return this.helpEntry(id, name, format);
+			if(editorMode)
+				return this.editorEntry(httpReq, id, name, format, text, httpReq.getUrlParameter("TEXTONLY") != null);
 			// nothing was declared to check against, so anything passes
 			if(format.length() == 0)
 				return "";
@@ -147,6 +153,62 @@ public class AbilityParmsCheck extends StdWebMacro
 		return str.toString();
 	}
 
+	/**
+	 * Renders the parms of an ability or behavior as editors, along with the parms
+	 * they currently spell out and what the validator says about them.
+	 *
+	 * @param httpReq the http request being answered
+	 * @param id the id of the ability or behavior
+	 * @param name the name of the ability or behavior
+	 * @param format the parms format of the ability or behavior
+	 * @param text the parms the box holds now
+	 * @param bodyOnly true to answer with the parms text and error alone
+	 * @return the html for the editor
+	 */
+	protected String editorEntry(final HTTPRequest httpReq, final String id, final String name, final String format, final String text, final boolean bodyOnly)
+	{
+		try
+		{
+			final String parms = CMLib.ableParms().parmsEditorText(httpReq, format, text);
+			final String err = (format.length() == 0) ? null : CMLib.ableParms().testParmsFormat(format, parms);
+			if(bodyOnly)
+				return "TEXT:" + escape(parms) + "\n" + escape(err);
+			final StringBuilder str = new StringBuilder("");
+			str.append("<INPUT TYPE=HIDDEN ID=PEDITORTEXT VALUE=\"").append(escape(parms)).append("\">");
+			str.append("<DIV ID=PARMSEDITORMSG>");
+			if(err == null)
+				str.append("<FONT COLOR=#B0FFB0>valid parameters</FONT>");
+			else
+				str.append("<FONT COLOR=#FFC0CB>").append(escape(err)).append("</FONT>");
+			str.append("</DIV>");
+			if(format.length() == 0)
+				str.append("<I>Nothing was declared for ").append(escape(name)).append(", so anything may be written here.</I>");
+			else
+				str.append(CMLib.ableParms().parmsEditorHtml(httpReq, format, text));
+			return this.clearWebMacros(str.toString());
+		}
+		catch(final CMException e)
+		{
+			return "<B>" + escape(id) + " has a malformed format: " + escape(e.getMessage()) + "</B>";
+		}
+	}
+
+	/**
+	 * Escapes a value for safe use in html text and attribute values.
+	 *
+	 * @param str the value to escape
+	 * @return the escaped value
+	 */
+	protected static String escape(final String str)
+	{
+		if(str == null)
+			return "";
+		String s = CMStrings.replaceAll(str, "&", "&amp;");
+		s = CMStrings.replaceAll(s, "\"", "&quot;");
+		s = CMStrings.replaceAll(s, "<", "&lt;");
+		return CMStrings.replaceAll(s, ">", "&gt;");
+	}
+
 	protected String helpEntry(final String id, final String name, final String format)
 	{
 		final StringBuilder str = new StringBuilder("");
@@ -163,5 +225,33 @@ public class AbilityParmsCheck extends StdWebMacro
 		else
 			str.append(this.helpHelp(help, 78));
 		return this.clearWebMacros(str.toString());
+	}
+	
+
+	/** The title given to the misctext/parms boxes that open an editor on double-click. */
+	public static final String PARMS_EDITOR_TITLE="double-click for editor";
+
+	/**
+	 * Builds the little '?' link that opens the help for whatever ability or behavior
+	 * is currently selected in the given form field.
+	 *
+	 * @param fieldName the name of the select field to get the help topic from
+	 * @return the html for the help link
+	 */
+	public static String helpLink(final String fieldName)
+	{
+		return "<A HREF=\"javascript:OpenHelpFor('"+fieldName+"')\" TITLE=\"help\"><FONT COLOR=YELLOW>?</FONT></A>";
+	}
+
+	/**
+	 * The extra attributes that make a misctext/parms box announce, and respond to,
+	 * a double-click request for an editor.
+	 *
+	 * @param fieldName the name of the select field holding the ability or behavior
+	 * @return the html attributes to add to the parms text field
+	 */
+	public static String parmsEditorAttrs(final String fieldName)
+	{
+		return " TITLE=\""+PARMS_EDITOR_TITLE+"\" ONDBLCLICK=\"OpenParmsEditor(this,'"+fieldName+"');\"";
 	}
 }
