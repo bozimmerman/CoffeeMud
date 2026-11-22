@@ -12,6 +12,22 @@
 	<title>@MudName@ MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+		function OpenHelpFor(fieldname)
+		{
+			var field=document.getElementsByName(fieldname)[0];
+			if((field)&&(field.value)&&(field.value.length>0))
+				OpenUp('ahelp.cmvp',field.value);
+		}
+		function OpenParmsEditor(txtfield, ablefieldname)
+		{
+            var able = "";
+            var sels = document.getElementsByName(ablefieldname);
+            if(sels.length > 0)
+                able = sels[0].value;
+            var strFeatures = "top=100,left=100,resizeable=yes,scrollbars=yes,height=500,width=700,alwaysRaised=yes,dependent=yes";
+            window.parmsEditorField = txtfield;
+            window.open("parmseditor.cmvp?ABILITY=" + encodeURIComponent(able) + "&FIELD=" + encodeURIComponent(txtfield.name), "ParmsEditor", strFeatures, false);
+		}
 		function EditAffectData(txtfield, ablefieldname)
 		{
 			if(!window.delays)
@@ -39,27 +55,16 @@
 				{
 					if(req.readyState==4)
 					{
-						if(!window.markers)
-							window.markers={};
-						if(window.markers[txtfieldname])
-						{
-							window.markers[txtfieldname].parentNode.removeChild(window.markers[txtfieldname]);
-							delete window.markers[txtfieldname];
-							txtfield.style.backgroundColor='#FFFFFF';
-							txtfield.title='';
-						}
 						var err = req.responseText;
 						if(err && (err.length>0))
 						{
 							txtfield.style.backgroundColor='#FFC0CB';
 							txtfield.title=err;
-							var link = document.createElement("a");
-							link.href = "javascript:OpenUp('ahelp.cmvp','"+ableid+"');";
-							link.style.color='RED';
-							link.textContent = "*";
-							link.title = err;
-							txtfield.parentNode.insertBefore(link, txtfield.nextSibling);
-							window.markers[txtfieldname]=link;
+						}
+						else
+						{
+							txtfield.style.backgroundColor='#FFFFFF';
+							txtfield.title='double-click for editor';
 						}
 					}
 				};

@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDFACTIONS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+	<META CHARSET="utf-8"/>
+<head>
+	<link rel="grinder icon" href="/images/grinder.ico">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<title>Parms Editor</title>
+	<script language=JavaScript>
+	<!--
+		var parmsEditorAbility = "";
+		var parmsEditorText = "";
+		var parmsEditorFieldName = "";
+		var parmsEditorTimer = null;
+		var parmsEditorAddPath = "";
+		var parmsEditorAddAsked = false;
+		var parmsEditorRemovePath = "";
+		var parmsEditorRemoveAsked = false;
+		var parmsEditorRemoveTurn = 0;
+
+		function ParmsEditorParam(named)
+		{
+			var search = window.location.search;
+			if(search.length < 2)
+				return "";
+			var fields = search.substring(1).split("&");
+			for(var i = 0; i < fields.length; i++)
+			{
+				var kv = fields[i].split("=");
+				if((kv.length > 1) && (kv[0] == named))
+					return decodeURIComponent(kv[1]);
+			}
+			return "";
+		}
+
+		function ParmsEditorAddOne(path)
+		{
+			parmsEditorAddPath = path;
+			parmsEditorAddAsked = true;
+			ParmsEditorRebuild();
+		}
+
+		function ParmsEditorRemoveTurn(path)
+		{
+			parmsEditorRemovePath = path;
+			parmsEditorRemoveTurn = 0;
+			parmsEditorRemoveAsked = true;
+			ParmsEditorRebuild();
+		}
+
+		function ParmsEditorForm()
+		{
+			var pane = document.getElementById("PARMSEDITORBODY");
+			var str = "ABILITY=" + encodeURIComponent(parmsEditorAbility) + "&EDITOR=1&PEDITORSTATE=1";
+			if(parmsEditorAddAsked)
+				str += "&PADD=1&PADDPATH=" + encodeURIComponent(parmsEditorAddPath);
+			if(parmsEditorRemoveAsked)
+				str += "&PREMOVE=1&PREMOVEPATH=" + encodeURIComponent(parmsEditorRemovePath);
+			var fields = pane.getElementsByTagName("INPUT");
+			var turns = "";
+			for(var i = 0; i < fields.length; i++)
+				if(fields[i].name && (fields[i].name.length > 0))
+				{
+					if((fields[i].type == "checkbox") && (!fields[i].checked))
+						continue;
+					if(fields[i].name.substring(0, 2) == "PT")
+					{
+						turns += ((turns.length > 0) ? "," : "") + fields[i].name.substring(2);
+						continue;
+					}
+					str += "&" + encodeURIComponent(fields[i].name) + "=" + encodeURIComponent(fields[i].value);
+				}
+			str += "&PTURNS=" + encodeURIComponent(turns);
+			parmsEditorAddPath = "";
+			parmsEditorAddAsked = false;
+			parmsEditorRemovePath = "";
+			parmsEditorRemoveTurn = 0;
+			parmsEditorRemoveAsked = false;
+			var selects = pane.getElementsByTagName("SELECT");
+			for(var i = 0; i < selects.length; i++)
+				if(selects[i].name && (selects[i].name.length > 0))
+					str += "&" + encodeURIComponent(selects[i].name) + "=" + encodeURIComponent(selects[i].value);			var areas = pane.getElementsByTagName("TEXTAREA");
+			for(var i = 0; i < areas.length; i++)
+				if(areas[i].name && (areas[i].name.length > 0))
+					str += "&" + encodeURIComponent(areas[i].name) + "=" + encodeURIComponent(areas[i].value);
+			return str;
+		}
+
+		function ParmsEditorSend(post, callback)
+		{
+			var req = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+			req.onreadystatechange = function()
+			{
+				if(req.readyState == 4)
+				{
+					if(req.status == 200)
+						callback(req.responseText);
+					else
+						document.getElementById("PARMSEDITORMSG").textContent = "the editor could not be reached";
+				}
+			};
+			req.open("POST", "/AbilityParmsCheck", true);
+			req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			req.send(post);
+		}
+
+		function ParmsEditorLoad()
+		{
+			ParmsEditorSend(ParmsEditorForm() + "&PARMS=" + encodeURIComponent(parmsEditorText), function(body)
+			{
+				parmsEditorAddPath = "";
+				parmsEditorAddAsked = false;
+				parmsEditorRemovePath = "";
+				parmsEditorRemoveAsked = false;
+				document.getElementById("PARMSEDITORBODY").innerHTML = body;
+				ParmsEditorRead();
+			});
+		}
+
+		function ParmsEditorRead()
+		{
+			var text = document.getElementById("PEDITORTEXT");
+			if(text)
+				parmsEditorText = text.value;
+		}
+
+		function ParmsEditorChanged()
+		{
+			if(parmsEditorTimer)
+				clearTimeout(parmsEditorTimer);
+			parmsEditorTimer = setTimeout(ParmsEditorValidate, 800);
+		}
+
+		function ParmsEditorValidate()
+		{
+			ParmsEditorSend(ParmsEditorForm() + "&TEXTONLY=1", function(resp)
+			{
+				var parts = resp.split("\n");
+				if(parts.length < 2)
+					return;
+				parmsEditorText = ParmsEditorDecoded(parts[0].substring(5));
+				var text = document.getElementById("PEDITORTEXT");
+				if(text)
+					text.value = parmsEditorText;
+				var msg = document.getElementById("PARMSEDITORMSG");
+				if(parts[1].length > 0)
+					msg.innerHTML = "<FONT COLOR=#FFC0CB>" + parts[1] + "</FONT>";
+				else
+					msg.innerHTML = "<FONT COLOR=#B0FFB0>valid parameters</FONT>";
+			});
+		}
+
+		function ParmsEditorRebuild()
+		{
+			ParmsEditorSend(ParmsEditorForm(), function(body)
+			{
+				var pane = document.getElementById("PARMSEDITORBODY");
+				var msg = pane.innerHTML;
+				pane.innerHTML = body;
+				ParmsEditorRead();
+			});
+		}
+
+		function ParmsEditorDecoded(escaped)
+		{
+			return escaped.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+		}
+
+		function ParmsEditorTarget()
+		{
+			if(!window.opener)
+				return null;
+			if(parmsEditorFieldName.length > 0)
+			{
+				var byname = window.opener.document.getElementsByName(parmsEditorFieldName);
+				if(byname.length > 0)
+					return byname[0];
+			}
+			return window.opener.parmsEditorField ? window.opener.parmsEditorField : null;
+		}
+
+		function ParmsEditorSave()
+		{
+			ParmsEditorSend(ParmsEditorForm() + "&TEXTONLY=1", function(resp)
+			{
+				var parts = resp.split("\n");
+				if(parts.length < 2)
+				{
+					document.getElementById("PARMSEDITORMSG").textContent = "the editor could not be reached";
+					return;
+				}
+				if(parts[1].length > 0)
+				{
+					document.getElementById("PARMSEDITORMSG").innerHTML = "<FONT COLOR=#FFC0CB>" + parts[1] + "</FONT>";
+					return;
+				}
+				var text = ParmsEditorDecoded(parts[0].substring(5));
+				var fld = ParmsEditorTarget();
+				if(fld)
+				{
+					fld.value = text;
+					if(fld.onchange)
+						fld.onchange();
+				}
+				window.close();
+			});
+		}
+
+		function ParmsEditorInit()
+		{
+			parmsEditorAbility = ParmsEditorParam("ABILITY");
+			parmsEditorFieldName = ParmsEditorParam("FIELD");
+			var idfield = document.getElementById("PARMSEDITORID");
+			if(idfield)
+				idfield.textContent = parmsEditorAbility;
+			var fld = ParmsEditorTarget();
+			if(!fld)
+			{
+				document.getElementById("PARMSEDITORBODY").innerHTML = "<B>This editor must be opened from the parms box of an ability or behavior.</B>";
+				document.getElementById("PARMSEDITORSAVE").disabled = true;
+				return;
+			}
+			parmsEditorText = fld.value;
+			document.getElementById("PARMSEDITORBODY").onkeyup = ParmsEditorChanged;
+			ParmsEditorLoad();
+		}
+
+	//-->
+	</script>
+</head>
+<body bgcolor="#000000" text="#FFFFFF" link="#FFFF00" vlink="#FFFF00" alink="#FFFF00" onload="ParmsEditorInit();">
+	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR>
+			<TD ALIGN=LEFT><B><FONT COLOR=YELLOW>Parms Editor: <SPAN ID=PARMSEDITORID></SPAN></FONT></B></TD>
+		</TR>
+	</TABLE>
+	<BR>
+	<DIV ID=PARMSEDITORBODY>loading...</DIV>
+	<BR>
+	<DIV ID=PARMSEDITORMSG></DIV>
+	<BR>
+	<TABLE WIDTH=100% BORDER=0>
+		<TR>
+			<TD ALIGN=CENTER><INPUT TYPE=BUTTON ID=PARMSEDITORSAVE VALUE="Save" ONCLICK="ParmsEditorSave();"></TD>
+			<TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=PARMSEDITORCANCEL VALUE="Cancel" ONCLICK="window.close();"></TD>
+		</TR>
+	</TABLE>
+</body>
+</html>
+@endif@
+@endif@
