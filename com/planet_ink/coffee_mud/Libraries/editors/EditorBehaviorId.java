@@ -57,7 +57,15 @@ public class EditorBehaviorId extends AbilityParmEditorImpl
 	@Override
 	public void createChoices()
 	{
-		createChoices(CMClass.behaviors());
+		// a behavior is not an environmental, so the shared filler would skip
+		// every one of them and leave the list empty
+		final PairList<String,String> list = new PairVector<String,String>();
+		for(final java.util.Enumeration<Behavior> e = CMClass.behaviors(); e.hasMoreElements();)
+		{
+			final Behavior B = e.nextElement();
+			list.add(B.ID(), B.name());
+		}
+		this.choices = list;
 	}
 
 	@Override
