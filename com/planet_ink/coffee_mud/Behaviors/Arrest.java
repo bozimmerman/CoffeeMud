@@ -643,8 +643,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	@Override
 	public String parmsFormat()
 	{
-		return "([STRING(prompt=Law File/colh=LawFil)]"
-				+"(;([STRING(prompt=Extra Parm Key/colh=Parm)]=(\")[STRING(prompt=Value/colh=Value)...](\"))..."
+		return "([STRING(prompt=Law File/colh=LawFil)..;]"
+				+"(;(([STRING(prompt=Extra Parm Key/colh=Parm)]=(\")[STRING(prompt=Value/colh=Value)...](\")))...)"
 				+"))";
 	}
 
