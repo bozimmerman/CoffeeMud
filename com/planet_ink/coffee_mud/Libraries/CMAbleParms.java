@@ -1722,6 +1722,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(o instanceof Ability)
 					choices.add(((Ability)o).ID(),((Ability)o).name());
 				else
+				if(o instanceof Behavior)
+					choices.add(((Behavior)o).ID(),((Behavior)o).name());
+				else
 				if(o instanceof Race)
 					choices.add(((Race)o).ID(),((Race)o).name());
 				else
@@ -1791,22 +1794,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final MTFail fail = new MTFail();
 		try
 		{
-			if((format == null)||(format.trim().length()==0))
+			if((format == null)||(format.trim().length()==0)||(format.trim().equals(CMParms.FORMAT_UNDEFINED)))
 				return null; // empty format doesn't care
-			final MTToken root = parseMiscTextFormat(format);
-			final int[] endIndex = new int[1];
-			final boolean[] quoteMode = new boolean[1];
-			if(!matchMiscTextToken(root, text, 0, endIndex, quoteMode, null, fail))
+			final MTToken root = parseMTSequence(format, 0, format.length());
+			final MTParse parse = new MTParse(text, fail, null);
+			if(!parse.match(root, 0, null, ""))
 				return fail.describe(text);
-			if(endIndex[0] < text.length())
+			if(parse.outIndex[0] < text.length())
 			{
-				int restIndex = endIndex[0];
+				int restIndex = parse.outIndex[0];
 				while((restIndex < text.length())&&(Character.isWhitespace(text.charAt(restIndex))))
 					restIndex++;
 				if(restIndex < text.length())
 				{
-					// if the matcher got further into the value than the parse did, its
-					// complaint is the more useful one, since it knows what was expected
 					if(fail.getBestIndex() > restIndex)
 						return fail.describe(text);
 					return L("unexpected text '@x1' at position @x2",snippetValue(text.substring(restIndex)),""+(restIndex+1));
@@ -1817,6 +1817,802 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		catch(final CMException e)
 		{
 			return L("malformed format: @x1",e.getMessage());
+		}
+	}
+
+	@Override
+	public String parmsEditorHtml(final HTTPRequest httpReq, final ParmEdit edit, final String format, final String parms) throws CMException
+	{
+		MTToken tree;
+		if((format == null)||(format.trim().length() == 0)||(format.trim().equals(CMParms.FORMAT_UNDEFINED)))
+			tree = null;
+		else
+			tree = this.parseMTSequence(format, 0, format.length());
+		if(tree == null)
+			return "<INPUT TYPE=TEXT SIZE=60 NAME=PEDITORFREE VALUE=\"" + escapeHtml(parms) + "\" ONKEYUP=\"ParmsEditorChanged();\" ONCHANGE=\"ParmsEditorChanged();\">";
+		final StringBuilder str = new StringBuilder("");
+		final Map<String, String> seeded = new HashMap<String, String>();
+		final String text = (parms == null) ? "" : parms;
+		final MTParse parse = new MTParse(text, new MTFail(), seeded);
+		parse.match(tree, 0, null, "");
+		final Map<String, String> values;
+		if(this.parmRemovingPath(edit) != null)
+			values = this.parmRemovedReps(edit, seeded);
+		else
+		{
+			this.parmValuesWithFields(tree, "", edit, seeded);
+			values = seeded;
+		}
+		this.parmsEditors(tree, "", 0, edit, httpReq, values, str, false);
+		return str.toString();
+	}
+
+	@Override
+	public String parmsEditorText(final ParmEdit edit, final String format, final String parms) throws CMException
+	{
+		final String text = (parms == null) ? "" : parms;
+		if(edit.field("PEDITORSTATE") == null)
+			return text;
+		final String free = edit.field("PEDITORFREE");
+		MTToken tree;
+		if((format == null)||(format.trim().length() == 0)||(format.trim().equals(CMParms.FORMAT_UNDEFINED)))
+			tree = null;
+		else
+			tree = this.parseMTSequence(format, 0, format.length());
+		if(tree == null)
+			return (free == null) ? text : free.trim();
+		final StringBuilder str = new StringBuilder("");
+		final Map<String, String> seeded = new HashMap<String, String>();
+		final MTParse parse = new MTParse(text, new MTFail(), seeded);
+		parse.match(tree, 0, null, "");
+		final Map<String, String> folded;
+		if(this.parmRemovingPath(edit) != null)
+			folded = this.parmRemovedReps(edit, seeded);
+		else
+		{
+			folded = new HashMap<String, String>(seeded);
+			this.parmValuesWithFields(tree, "", edit, folded);
+		}
+		final String adding = edit.field("PADD");
+		final boolean grew = (adding != null)&&(adding.length() > 0);
+		if((!grew)&&(edit.field("PREMOVE") == null)&&(folded.equals(seeded)))
+			return text;
+		final Map<String, String> values = folded;
+		this.parmsText(tree, "", edit, values, str);
+		return str.toString();
+	}
+
+	private void parmValuesWithFields(final MTToken node, final String path, final ParmEdit edit, final Map<String, String> values)
+	{
+		if(node.children == null)
+		{
+			if(!this.isParmPlaceholder(node))
+				return;
+			final String field = edit.field("PV" + path);
+			if((field != null)&&(field.length() > 0))
+				values.put(path, field);
+			return;
+		}
+		final MTToken[] children = node.children;
+		if(node.kind == MTKind.ALTERNATION)
+		{
+			final int occurrences = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+			for(int c = 0; c < occurrences; c++)
+			{
+				final String choicePath = path + ((c > 0) ? "~" + c : "");
+				final String field = edit.field("PA" + choicePath);
+				if(field != null)
+					values.put(choicePath, field);
+				final int chosen = Math.max(0, Math.min(children.length - 1, CMath.s_int(values.get(choicePath))));
+				this.parmValuesWithFields(children[chosen], choicePath + "_" + chosen, edit, values);
+			}
+			return;
+		}
+		final String on = edit.field("PG" + path);
+		if(on != null)
+			values.put(path, on);
+		final int count = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+		for(int c = 0; c < count; c++)
+		{
+			for(int i = 0; i < children.length; i++)
+				this.parmValuesWithFields(children[i], path + "_" + i + ((c > 0) ? "~" + c : ""), edit, values);
+		}
+	}
+
+	/**
+	 * The part whose rep the page asked to drop.
+	 *
+	 * @param edit what the page posted back
+	 * @return the part, or null when no rep is being removed
+	 */
+	private String parmRemovingPath(final ParmEdit edit)
+	{
+		if(edit.op != ParmOp.REMOVE)
+			return null;
+		final String removingPath = edit.opPath;
+		if((removingPath == null)||(removingPath.length() == 0))
+			return null;
+		// a rep's path ends in its own number, so a path without one names no rep
+		final int tilde = removingPath.lastIndexOf('~');
+		if((tilde < 0)||(tilde == (removingPath.length() - 1)))
+			return null;
+		for(int i = tilde + 1; i < removingPath.length(); i++)
+		{
+			if(!Character.isDigit(removingPath.charAt(i)))
+				return null;
+		}
+		return removingPath;
+	}
+	
+	/**
+	 * Drops the rep named by the request from the values, moving every rep after
+	 * it down one, so the fields on the page match the parms that are left.
+	 *
+	 * @param httpReq the request naming the rep to drop
+	 * @param values the values read from the parms
+	 * @return the values without that rep
+	 */
+	private Map<String, String> parmRemovedReps(final ParmEdit edit, final Map<String, String> values)
+	{
+		final String removingPath = this.parmRemovingPath(edit);
+		if((removingPath == null)||(values == null))
+			return values;
+		final int tildeAt = removingPath.lastIndexOf('~');
+		final int gone = CMath.s_int(removingPath.substring(tildeAt + 1));
+		final String base = (tildeAt < 0) ? null : removingPath.substring(0, tildeAt);
+		if((gone < 0)||(base == null))
+			return values;
+		final Map<String, String> moved = new HashMap<String, String>();
+		for(final String key : values.keySet())
+		{
+			if((!key.equals(base))
+			&&(!key.startsWith(base + "_"))
+			&&(!key.startsWith(base + "~")))
+			{
+				moved.put(key, values.get(key));
+				continue;
+			}
+			final String tail = key.substring(base.length());
+			final int tilde = tail.indexOf('~');
+			if(tilde < 0)
+			{
+				// a first rep carries no number of its own, so only a later one can be gone
+				if(gone > 0)
+					moved.put(key, values.get(key));
+				continue;
+			}
+			int digits = tilde + 1;
+			while((digits < tail.length())&&(Character.isDigit(tail.charAt(digits))))
+				digits++;
+			if(digits == (tilde + 1))
+			{
+				// the count the matcher recorded for this part includes the rep being dropped
+				if((tilde == 0)
+				&&(tail.substring(tilde + 1).equals("REPS"))
+				&&(CMath.s_int(values.get(key)) > 1))
+					moved.put(key, "" + (CMath.s_int(values.get(key)) - 1));
+				else
+					moved.put(key, values.get(key));
+				continue;
+			}
+			final int rep = CMath.s_int(tail.substring(tilde + 1, digits));
+			if(rep == gone)
+				continue;
+			final int now = (rep > gone) ? (rep - 1) : rep;
+			moved.put(base + tail.substring(0, tilde) + ((now > 0) ? "~" + now : "") + tail.substring(digits), values.get(key));
+		}
+		return moved;
+	}
+
+	private boolean isParmPlaceholder(final MTToken node)
+	{
+		if(!(node.children == null))
+			return false;
+		final String name = node.literal.toUpperCase(Locale.ROOT).trim();
+		if(name.length() == 0)
+			return false;
+		if(node.parameterArgs != null)
+			return true;
+		if(CMath.s_valueOf(ParmType.class,name) != null)
+			return true;
+		return getEditors().containsKey(name);
+	}
+
+	private int parmValueReps(final String path, final Map<String, String> values)
+	{
+		if(values != null)
+		{
+			// the matcher counted this part's reps while it read the parms
+			final String counted = values.get(path + "~REPS");
+			if((counted != null)&&(CMath.isInteger(counted)))
+				return Math.max(1, CMath.s_int(counted));
+		}
+		int reps = 1;
+		if(values == null)
+			return reps;
+		for(final String key : values.keySet())
+		{
+			if(!key.startsWith(path))
+				continue;
+			if((key.length() <= path.length())||(key.charAt(path.length()) != '~'))
+				continue;
+			final int tilde = path.length();
+			final int end = key.indexOf('_', tilde + 1);
+			final String num = (end < 0) ? key.substring(tilde + 1) : key.substring(tilde + 1, end);
+			if((end < 0)||(key.endsWith("~GAP"))||(key.indexOf("~WS") >= 0))
+				continue;
+			final String held = values.get(key);
+			if((CMath.isInteger(num))&&(held != null)&&(held.trim().length() > 0))
+				reps = Math.max(reps, CMath.s_int(num) + 1);
+		}
+		return reps;
+	}
+
+	private int parmRepCount(final ParmEdit edit, final String path, final Map<String, String> values)
+	{
+		final int held = Math.max(1, this.parmValueReps(path, values));
+		int reps = held;
+		final String adding = edit.field("PADD");
+		final boolean addingHere = (adding != null)&&(adding.length() > 0);
+		final String drawn = (this.parmRemovingPath(edit) == null) ? edit.field("PREPS") : null;
+		if((drawn != null)&&(drawn.trim().length() > 0))
+		{
+			for(final String rep : CMParms.parseCommas(drawn, true))
+			{
+				if(rep.startsWith(path + "~"))
+				{
+					final String num = rep.substring(path.length() + 1);
+					if(CMath.isInteger(num))
+						reps = Math.max(reps, CMath.s_int(num) + 1);
+				}
+			}
+		}
+		if(addingHere)
+		{
+			final String addingPath = edit.field("PADDPATH");
+			if(((addingPath == null) ? (path.length() == 0) : addingPath.equalsIgnoreCase(path)))
+				reps++;
+		}
+		return Math.max(1, reps);
+	}
+
+	private int parmChoice(final String repPath, final Map<String, String> values, final int branches)
+	{
+		if(branches <= 0)
+			return 0;
+		int chosen = 0;
+		final String stored = values.get(repPath);
+		if((stored != null)
+		&&(stored.length() > 0)
+		&&CMath.isInteger(stored))
+			chosen = CMath.s_int(stored);
+		if((chosen >= 0)&&(chosen < branches))
+			return chosen;
+		chosen = 0;
+		for(int b = 0; b < branches; b++)
+		{
+			final String prefix = repPath + "_" + b;
+			for(final String key : values.keySet())
+			{
+				if(!key.startsWith(prefix))
+					continue;
+				if(key.endsWith("~GAP"))
+					continue;
+				final String held = values.get(key);
+				if((held == null)||(held.trim().length() == 0))
+					continue;
+				return b;
+			}
+		}
+		return chosen;
+	}
+
+	private int parmChoiceAt(final ParmEdit edit, final String repPath, final Map<String, String> values, final int branches)
+	{
+		final String picked = (this.parmRemovingPath(edit) == null) ? edit.field("PA" + repPath) : null;
+		if((picked != null)&&CMath.isInteger(picked.trim()))
+		{
+			final int choice = CMath.s_int(picked.trim());
+			if((choice >= 0)&&(choice < branches))
+				return choice;
+		}
+		return this.parmChoice(repPath, values, branches);
+	}
+
+	private boolean parmPartWritten(final String path, final Map<String, String> values)
+	{
+		if(values == null)
+			return false;
+		for(final String key : values.keySet())
+		{
+			if((key.equals(path))
+			||(key.startsWith(path + "_"))
+			||(key.startsWith(path + "~")))
+				return true;
+		}
+		return false;
+	}
+
+	private boolean parmGroupOn(final String path, final Map<String, String> values)
+	{
+		if((values == null)||(values.size() == 0))
+			return true;
+		for(final String key : values.keySet())
+		{
+			if((key.equals(path))
+			||(key.startsWith(path + "_"))
+			||(key.startsWith(path + "~")))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Makes the markup for a piece of literal text safe to sit in a page.
+	 *
+	 * @param text the text to write
+	 * @return the text with the characters a page reads specially escaped
+	 */
+	private static String escapeHtml(final String text)
+	{
+		if((text == null)||(text.length() == 0))
+			return "";
+		final StringBuilder str = new StringBuilder();
+		for(int i = 0; i < text.length(); i++)
+		{
+			final char c = text.charAt(i);
+			switch(c)
+			{
+			case '&':
+				str.append("&amp;");
+				break;
+			case '<':
+				str.append("&lt;");
+				break;
+			case '>':
+				str.append("&gt;");
+				break;
+			case '"':
+				str.append("&quot;");
+				break;
+			default:
+				str.append(c);
+				break;
+			}
+		}
+		return str.toString();
+	}
+
+	private boolean parmIsQuoteMarker(final MTToken node)
+	{
+		if(node.kind == MTKind.QUOTE_MARKER)
+			return true;
+		if(node.children == null)
+			return node.literal.equals("\"");
+		final MTToken[] children = node.children;
+		return (children.length == 1)&&(children[0].children == null)&&(children[0].literal.equals("\""));
+	}
+
+	private boolean parmNeedsQuotes(final String value)
+	{
+		if(value == null)
+			return false;
+		for(int i = 0; i < value.length(); i++)
+		{
+			if(Character.isWhitespace(value.charAt(i)))
+				return true;
+		}
+		return false;
+	}
+
+	private String parmCheckValue(final MTToken node)
+	{
+		if((!this.isParmPlaceholder(node))||(node.parameterArgs == null))
+			return null;
+		final ParmType type = (ParmType)CMath.s_valueOf(ParmType.class, node.literal.toUpperCase(Locale.ROOT));
+		if(type != ParmType.CHECK)
+			return null;
+		return this.parmArg(node, "name");
+	}
+
+	private boolean parmQuoted(final MTToken node)
+	{
+		if(node.stop == MTStop.QUOTE)
+			return true;
+		if((node.stop == MTStop.CHAR) && (node.stopChar() == '"'))
+			return true;
+		if(node.stop == MTStop.TOKENS)
+		{
+			for(final String term : node.stopTokens())
+			{
+				if((term != null)&&(term.equals("\"")))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private String parmArg(final MTToken node, final String argName)
+	{
+		if(node.parameterArgs == null)
+			return null;
+		final String found = node.parameterArgs.get(argName.toUpperCase(Locale.ROOT));
+		if(found != null)
+			return found;
+		for(final String key : node.parameterArgs.keySet())
+		{
+			if(key.equalsIgnoreCase(argName))
+				return node.parameterArgs.get(key);
+		}
+		return null;
+	}
+
+	private String parmBranchText(final MTToken branch)
+	{
+		if((branch.children == null)&&(branch.parameterArgs != null))
+		{
+			final String prompt = this.parmArg(branch, "prompt");
+			if((prompt != null)&&(prompt.trim().length() > 0))
+				return prompt.trim();
+		}
+		final StringBuilder str = new StringBuilder();
+		this.parmLabelText(branch, str);
+		if(str.length() == 0)
+		{
+			if(branch.children == null)
+				return branch.literal;
+			return "?";
+		}
+		return str.toString();
+	}
+
+	private void parmLabelText(final MTToken node, final StringBuilder str)
+	{
+		if(node.children == null)
+		{
+			final String text = node.literal;
+			if((text.length() == 1)&&("\"()[]".indexOf(text.charAt(0)) >= 0))
+				return;
+			// a placeholder is named by what it asks for, when it says so
+			if((node.parameterArgs != null)&&(this.isParmPlaceholder(node)))
+			{
+				final String prompt = this.parmArg(node, "prompt");
+				if((prompt != null)&&(prompt.trim().length() > 0))
+				{
+					str.append(prompt.trim());
+					return;
+				}
+			}
+			str.append(text);
+			return;
+		}
+		final MTToken[] children = node.children;
+		for(int i = 0; i < children.length; i++)
+		{
+			if((i > 0)&&(node.kind == MTKind.ALTERNATION))
+				str.append("/");
+			this.parmLabelText(children[i], str);
+		}
+	}
+
+	private boolean parmHasField(final MTToken node)
+	{
+		if(node.children == null)
+			return this.isParmPlaceholder(node);
+		for(final MTToken child : node.children)
+		{
+			if(this.parmHasField(child))
+				return true;
+		}
+		return false;
+	}
+
+	private String parmPartPrompt(final MTToken node)
+	{
+		if(node.children == null)
+		{
+			if(!this.isParmPlaceholder(node))
+			{
+				// a part that is only punctuation is named by the punctuation itself
+				return node.literal.trim();
+			}
+			final String prompt = this.parmArg(node, "prompt");
+			return (prompt == null) ? "" : prompt.trim();
+		}
+		if(node.children != null)
+		{
+			final MTToken[] children = node.children;
+			if(children.length != 1)
+				return "";
+			return this.parmPartPrompt(children[0]);
+		}
+		return "";
+	}
+
+	private void parmPrompt(final MTToken node, final StringBuilder str)
+	{
+		if(node.parameterArgs == null)
+			return;
+		final String prompt = this.parmArg(node, "prompt");
+		if((prompt == null)||(prompt.trim().length() == 0))
+			return;
+		str.append("<FONT COLOR=#C0C0C0>").append(escapeHtml(prompt.trim())).append("&nbsp;</FONT>");
+	}
+
+	private String parmEditorField(final MTToken node, final String path, final ParmEdit edit, final HTTPRequest httpReq, final Map<String, String> values)
+	{
+		// a check the format names has nothing to type, since the name is the value
+		if(this.parmCheckValue(node) != null)
+			return "";
+		final String name = node.literal.toUpperCase(Locale.ROOT).trim();
+		final String fieldName = "PV" + path;
+		String value = values.get(path);
+		// a true/false value is a box to tick, and the box says which it is
+		if((httpReq != null)&&(edit.field("PC" + path) != null)&&(this.parmRemovingPath(edit) == null))
+			value = (edit.field("PV" + path) != null) ? "true" : "false";
+		if(value == null)
+			value = "";
+		// a true/false value is a box to tick, not something to type
+		final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class, name);
+		if((parmType == ParmType.CONFIRM)||(parmType == ParmType.CHECK))
+		{
+			final StringBuilder str = new StringBuilder();
+			str.append("<INPUT TYPE=CHECKBOX NAME=").append(escapeHtml(fieldName)).append(" VALUE=TRUE");
+			if(CMath.s_bool(value))
+				str.append(" CHECKED");
+			str.append(" ONCLICK=\"ParmsEditorChanged();\">");
+			str.append("<INPUT TYPE=HIDDEN NAME=PC").append(escapeHtml(path)).append(" VALUE=1>");
+			return str.toString();
+		}
+		final AbilityParmEditor editor = getEditors().get(name);
+		if(editor != null)
+		{
+			final String entry = editor.webField(httpReq, httpReq.getUrlParametersCopy(), value, fieldName);
+			if((entry != null)&&(entry.trim().length() > 0)
+				&&((entry.indexOf("<OPTION") >= 0)||(entry.indexOf("<SELECT") < 0)))
+				return entry;
+		}
+		final String choices = this.parmArg(node, "choices");
+		if((choices != null)&&(choices.length() > 0)&&(choices.indexOf(',') > 0))
+		{
+			final StringBuilder str = new StringBuilder();
+			str.append("<SELECT NAME=").append(escapeHtml(fieldName)).append(" ONCHANGE=\"ParmsEditorChanged();\">");
+			str.append("<OPTION VALUE=\"\"></OPTION>");
+			for(final String choice : CMParms.parseCommas(choices, true))
+			{
+				final String unquoted = choice.trim();
+				str.append("<OPTION VALUE=\"").append(escapeHtml(unquoted)).append("\"");
+				if(unquoted.equalsIgnoreCase(value))
+					str.append(" SELECTED");
+				final String shown = ((unquoted == null)||(unquoted.length() <= 60)) ? unquoted : unquoted.substring(0, 60).trim();
+				str.append(">").append(escapeHtml(shown)).append("</OPTION>");
+			}
+			str.append("</SELECT>");
+			return str.toString();
+		}
+		return "<INPUT TYPE=TEXT SIZE=20 NAME=" + escapeHtml(fieldName) + " VALUE=\"" + escapeHtml(value)
+			+ "\" ONKEYUP=\"ParmsEditorChanged();\" ONCHANGE=\"ParmsEditorChanged();\">";
+	}
+
+
+	private void parmsEditors(final MTToken node, final String path, final int depth, final ParmEdit edit, final HTTPRequest httpReq, final Map<String, String> values, final StringBuilder str, final boolean chosenBranch)
+	{
+		if(this.parmIsQuoteMarker(node))
+			return;
+		final String groupOn = edit.field("PG" + path);
+		final boolean present = ((!node.optional)||(path.length() == 0)||(chosenBranch)
+				||((groupOn != null)&&(groupOn.length() > 0))||(this.parmGroupOn(path, values)));
+		final boolean boxed = (node.optional)&&(path.length() > 0)&&(!chosenBranch);
+		if(boxed)
+		{
+			final String label = this.parmPartPrompt(node);
+			if(label.length() > 0)
+				str.append("<FONT COLOR=#C0C0C0>").append(escapeHtml(label)).append("&nbsp;</FONT>");
+			str.append("<INPUT TYPE=CHECKBOX NAME=PG").append(escapeHtml(path)).append(" VALUE=1");
+			if(present)
+				str.append(" CHECKED");
+			str.append(" ONCLICK=\"ParmsEditorRebuild();\">");
+			if(!present)
+				return;
+		}
+		if(node.children == null)
+		{
+			if(!this.isParmPlaceholder(node))
+			{
+				final String text = node.literal;
+				if((text.length() == 1)&&("\"".indexOf(text.charAt(0)) >= 0))
+					return;
+				str.append(escapeHtml(text));
+				return;
+			}
+			// the box next to this field already carries its name
+			if(!boxed)
+				this.parmPrompt(node, str);
+			str.append(this.parmEditorField(node, path, edit, httpReq, values));
+			return;
+		}
+		final MTToken[] children = node.children;
+		if(node.kind == MTKind.ALTERNATION)
+		{
+			final int reps = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+			for(int c = 0; c < reps; c++)
+			{
+				final String repPath = (c > 0) ? (path + "~" + c) : path;
+				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(escapeHtml(repPath)).append(" VALUE=1>");
+				str.append("<BR>");
+				for(int i = 0; i < depth; i++)
+					str.append("&nbsp;&nbsp;");
+				if(children.length == 1)
+					this.parmsEditors(children[0], repPath + "_0", depth, edit, httpReq, values, str, false);
+				else
+				{
+					final int chosen = this.parmChoiceAt(edit, repPath, values, children.length);
+					str.append("<SELECT NAME=PA").append(escapeHtml(repPath)).append(" ONCHANGE=\"ParmsEditorRebuild();\">");
+					for(int b = 0; b < children.length; b++)
+					{
+						str.append("<OPTION VALUE=").append(b);
+						if(b == chosen)
+							str.append(" SELECTED");
+						final String shown = this.parmBranchText(children[b]);
+						str.append(">").append(escapeHtml((shown == null)||(shown.length() <= 60) ? shown : shown.substring(0, 60).trim())).append("</OPTION>");
+					}
+					str.append("</SELECT>");
+					if(this.parmHasField(children[chosen]))
+					{
+						str.append("&nbsp;");
+						this.parmsEditors(children[chosen], repPath + "_" + chosen, depth, edit, httpReq, values, str, true);
+					}
+				}
+				if((node.repeats)&&(reps > 1))
+				{
+					str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(escapeHtml(path + "~" + c))
+						.append("')\" TITLE=\"remove this rep\">-</A>");
+				}
+			}
+			if(node.repeats)
+			{
+				str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(escapeHtml(path))
+					.append("')\" TITLE=\"add another\">+</A><BR>");
+			}
+			return;
+		}
+		final int count = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+		for(int c = 0; c < count; c++)
+		{
+			final String repPath = (c > 0) ? (path + "~" + c) : path;
+			if(c > 0)
+			{
+				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(escapeHtml(repPath)).append(" VALUE=1>");
+				str.append("<BR>");
+				for(int i = 0; i < depth; i++)
+					str.append("&nbsp;&nbsp;");
+			}
+			for(int i = 0; i < children.length; i++)
+				this.parmsEditors(children[i], path + "_" + i + ((c > 0) ? "~" + c : ""), node.repeats ? (depth + 1) : depth, edit, httpReq, values, str, false);
+			if((node.repeats)&&(count > 1))
+			{
+				str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(escapeHtml(path + "~" + c))
+					.append("')\" TITLE=\"remove this rep\">-</A>");
+			}
+		}
+		if(node.repeats)
+		{
+			str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(escapeHtml(path))
+				.append("')\" TITLE=\"add another\">+</A><BR>");
+		}
+	}
+
+	private boolean parmHoldsCheck(final MTToken node)
+	{
+		if(node == null)
+			return false;
+		if(this.parmCheckValue(node) != null)
+			return true;
+		if(node.children != null)
+		{
+			for(final MTToken child : node.children)
+			{
+				if(this.parmHoldsCheck(child))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean parmBranchFilled(final String branchPath, final Map<String, String> values)
+	{
+		for(final String key : values.keySet())
+		{
+			if(key.startsWith(branchPath))
+			{
+				final String held = values.get(key);
+				if((held != null)&&(held.length() > 0))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean parmNeedsGap(final StringBuilder parms, final String piece)
+	{
+		if((parms.length() == 0)||(piece.length() == 0))
+			return false;
+		final char before = parms.charAt(parms.length() - 1);
+		final char first = piece.charAt(0);
+		if(!Character.isLetterOrDigit(before))
+			return false;
+		if(Character.isLetterOrDigit(first))
+			return true;
+		if((first == '+')||(first == '-')||(first == '"'))
+			return true;
+		return false;
+	}
+
+	private void parmsText(final MTToken node, final String path, final ParmEdit edit, final Map<String, String> values, final StringBuilder parms)
+	{
+		if(this.parmIsQuoteMarker(node))
+			return;
+		if(node.children == null)
+		{
+			final String piece;
+			if(this.isParmPlaceholder(node))
+			{
+				final String checkValue = this.parmCheckValue(node);
+				final String held;
+				if(checkValue != null)
+					held = checkValue;
+				else
+				if((edit != null)
+				&&(edit.field("PC" + path) != null)
+				&&(this.parmRemovingPath(edit) == null))
+					held = (edit.field("PV" + path) != null) ? "true" : "false";
+				else
+					held = (values.get(path) == null) ? "" : values.get(path);
+				if((this.parmQuoted(node))&&(this.parmNeedsQuotes(held)))
+					piece = "\"" + held + "\"";
+				else
+					piece = held;
+			}
+			else
+			{
+				final String held = values.get(path);
+				piece = (held == null) ? node.literal : held;
+			}
+			final String gap = values.get(path + "~GAP");
+			if((gap != null)&&(gap.length() > 0)&&(parms.length() > 0)&&(piece.length() > 0))
+				parms.append(gap);
+			else
+			if(parmNeedsGap(parms, piece))
+				parms.append(' ');
+			parms.append(piece);
+			final String trailing = values.get(path + "~WS");
+			if(trailing != null)
+				parms.append(trailing);
+			return;
+		}
+		final MTToken[] children = node.children;
+		if(node.kind == MTKind.ALTERNATION)
+		{
+			final int reps = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+			for(int c = 0; c < reps; c++)
+			{
+				final String repPath = (c > 0) ? (path + "~" + c) : path;
+				final int chosen = this.parmChoiceAt(edit, repPath, values, children.length);
+				final String branchPath = repPath + "_" + chosen;
+				// a rep the user added but has not written into yet is not written
+				if((!this.parmBranchFilled(branchPath, values))&&(!this.parmHoldsCheck(children[chosen])))
+					continue;
+				this.parmsText(children[chosen], branchPath, edit, values, parms);
+			}
+			return;
+		}
+		if((node.optional)&&(path.length() > 0)&&(!this.parmPartWritten(path, values)))
+			return;
+		final int count = node.repeats ? this.parmRepCount(edit, path, values) : 1;
+		for(int c = 0; c < count; c++)
+		{
+			for(int i = 0; i < children.length; i++)
+				this.parmsText(children[i], path + "_" + i + ((c > 0) ? "~" + c : ""), edit, values, parms);
 		}
 	}
 
@@ -1895,204 +2691,502 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return str.toString();
 	}
 
-	private String describePlaceholderToken(final MTToken token)
+	/**
+	 * One pass of the parms matcher. Everything that stays the same for a whole
+	 * match lives here, so a call only carries the token, the position, the
+	 * terminators and the field name it is matching.
+	 */
+	class MTParse
 	{
-		final String name = ((String)token.token).toUpperCase(Locale.ROOT).trim();
-		final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class, name);
-		if(parmType != null)
+		final String proposition;
+		final MTFail fail;
+		final Map<String,String> sink;
+		final int[] outIndex = new int[1];
+		final boolean[] quoteMode = new boolean[1];
+
+		MTParse(final String proposition, final MTFail fail, final Map<String,String> sink)
 		{
-			switch(parmType)
-			{
-			case NUMBER:
-			case DECIMAL:
-				return L("a number");
-			case NUMBER_PAIR:
-				return L("two comma-separated numbers");
-			case ONEWORD:
-				return L("a single word");
-			case CHOICES:
-				return L("a valid choice");
-			case MULTICHOICES:
-				return L("a choice or a count");
-			case CONFIRM:
-			case CHECK:
-				return L("a true/false value");
-			default:
-				return L("a value");
-			}
+			this.proposition = proposition;
+			this.fail = fail;
+			this.sink = sink;
 		}
-		if(getEditors().containsKey(name))
-			return L("a valid @x1 value",name);
-		return L("a value for @x1",name);
-	}
 
-	private String describeTokenExpectation(final MTToken token)
-	{
-		if((token.token instanceof String) && (token.placeholderArgs != null))
-			return describePlaceholderToken(token);
-		if(token.token instanceof String)
-			return L("'@x1'",(String)token.token);
-		return L("valid parameters");
-	}
-
-	private String describeRejectedValue(final MTToken token, final String value)
-	{
-		final String noun = describePlaceholderToken(token);
-		final String snippet = snippetValue(value);
-		if(snippet.length() == 0)
-			return noun;
-		return L("@x1, got '@x2'",noun,snippet);
-	}
-
-	private boolean matchMiscTextToken(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
-	{
-		final int saveIndex = index;
-		final boolean saveQuoteMode = quoteMode[0];
-		if(matchMiscTextTokenInternal(token, proposition, index, outIndex, quoteMode, terminators, fail))
-			return true;
-		if(token.optional)
+		/**
+		 * Matches a token, recording what it found into this pass's sink.
+		 *
+		 * @param token the format token being matched
+		 * @param index where in the parms to start
+		 * @param terminators the characters that end a value here, or null for none
+		 * @param path the name of this token's fields in the sink
+		 * @return true if the token matched
+		 */
+		boolean match(final MTToken token, final int index, final Set<Character> terminators, final String path)
 		{
-			outIndex[0] = saveIndex;
-			quoteMode[0] = saveQuoteMode;
-			return true;
+			return this.match(token, index, terminators, path, this.sink);
 		}
-		return false;
-	}
 
-	private boolean matchMiscTextTokenInternal(final MTToken token, final String proposition, final int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
-	{
-		outIndex[0] = index;
-
-		if(token.token instanceof String)
+		/**
+		 * Matches a token, recording what it found into the given map, which is often
+		 * a local one so an attempt that fails leaves no trace.
+		 *
+		 * @param token the format token being matched
+		 * @param index where in the parms to start
+		 * @param terminators the characters that end a value here, or null for none
+		 * @param path the name of this token's fields in the sink
+		 * @param into where the matched values are recorded, or null to only match
+		 * @return true if the token matched
+		 */
+		boolean match(final MTToken token, final int index, final Set<Character> terminators, final String path, final Map<String,String> into)
 		{
-			if((!matchMTLiteral(token, proposition, index, outIndex, quoteMode, terminators, fail))&&(!token.optional))
-				return false;
-			if(token.repeats)
+			final int saveIndex = index;
+			final boolean saveQuoteMode = this.quoteMode[0];
+			if(this.matchInternal(token, index, terminators, path, into))
+				return true;
+			if(token.optional)
 			{
-				while(true)
-				{
-					final int saveIndex = outIndex[0];
-					if(!matchMTLiteral(token, proposition, outIndex[0], outIndex, quoteMode, terminators, fail))
-					{
-						outIndex[0] = saveIndex;
-						break;
-					}
-				}
+				this.outIndex[0] = saveIndex;
+				this.quoteMode[0] = saveQuoteMode;
+				return true;
 			}
-			return true;
+			return false;
 		}
-		else
-		if(token.token instanceof MTToken[])
-		{
-			final MTToken[] children = (MTToken[])token.token;
-			if(token.alternation != MTAlt.NONE)
-			{
-				boolean emptyMatch = false;
-				for(final MTToken alt : children)
-				{
-					final int saveIndex = index;
-					final boolean saveQuoteMode = quoteMode[0];
-					if(matchMiscTextToken(alt, proposition, saveIndex, outIndex, quoteMode, terminators, fail))
-					{
-						if(outIndex[0] > index)
-						{
-							if(token.repeats)
-							{
-								while(true)
-								{
-									final int saveRepeatIndex = outIndex[0];
-									final boolean saveRepeatQuoteMode = quoteMode[0];
-									boolean matched = false;
-									for(final MTToken alt2 : children)
-									{
-										if(matchMiscTextToken(alt2, proposition, saveRepeatIndex, outIndex, quoteMode, terminators, fail))
-										{
-											if(outIndex[0] > saveRepeatIndex)
-											{
-												matched = true;
-												break;
-											}
-										}
-										outIndex[0] = saveRepeatIndex;
-										quoteMode[0] = saveRepeatQuoteMode;
-									}
-									if(!matched)
-									{
-										quoteMode[0] = saveRepeatQuoteMode;
-										outIndex[0] = saveRepeatIndex;
-										break;
-									}
-								}
-							}
-							return true;
-						}
-						if(token.alternation == MTAlt.ANY)
-							emptyMatch = true;
-					}
-					quoteMode[0] = saveQuoteMode;
-					outIndex[0] = saveIndex;
-				}
-				return emptyMatch;
-			}
-			else
-			{
-				int currentIndex = index;
-				final boolean saveQuoteMode = quoteMode[0];
-				for(int c = 0; c < children.length; c++)
-				{
-					final MTToken child = children[c];
-					final Set<Character> childTerminators = terminatorsAfter(children, c, token.repeats, terminators);
-					if(!matchMiscTextToken(child, proposition, currentIndex, outIndex, quoteMode, childTerminators, fail))
-					{
-						if(token.optional)
-						{
-							outIndex[0] = index;
-							quoteMode[0] = saveQuoteMode;
-							return true;
-						}
-						return false;
-					}
-					currentIndex = outIndex[0];
-				}
 
+		/**
+		 * The part of a match that {@link #match} can still undo when the token is
+		 * optional.
+		 *
+		 * @param token the format token being matched
+		 * @param index where in the parms to start
+		 * @param terminators the characters that end a value here, or null for none
+		 * @param path the name of this token's fields in the sink
+		 * @param into where the matched values are recorded, or null to only match
+		 * @return true if the token matched
+		 */
+		private boolean matchInternal(final MTToken token, final int index, final Set<Character> terminators, final String path, final Map<String,String> into)
+		{
+			final Map<String,String> mine = (into == null) ? null : new HashMap<String,String>();
+			this.outIndex[0] = index;
+
+			if(token.children == null)
+			{
+				if((!this.matchLiteral(token, index, terminators))&&(!token.optional))
+					return false;
+				if((mine != null)&&(this.outIndex[0] > index))
+					this.record(token, mine, path, index, this.outIndex[0]);
 				if(token.repeats)
 				{
+					int rep = 0;
 					while(true)
 					{
-						final int saveIndex = outIndex[0];
-						final boolean saveRepeatQuoteMode = quoteMode[0];
-						boolean matched = true;
-						int tempIndex = saveIndex;
-						for(int c = 0; c < children.length; c++)
+						final int saveIndex = this.outIndex[0];
+						if(!this.matchLiteral(token, this.outIndex[0], terminators))
 						{
-							final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
-							if(!matchMiscTextToken(children[c], proposition, tempIndex, outIndex, quoteMode, repTers, fail))
-							{
-								matched = false;
-								break;
-							}
-							tempIndex = outIndex[0];
-						}
-						if((!matched)||(outIndex[0] == saveIndex))
-						{
-							quoteMode[0] = saveRepeatQuoteMode;
-							outIndex[0] = saveIndex;
+							this.outIndex[0] = saveIndex;
 							break;
 						}
+						if((mine != null)&&(this.outIndex[0] > saveIndex))
+							this.record(token, mine, path + "~" + (++rep), saveIndex, this.outIndex[0]);
 					}
+					if((mine != null)&&(rep > 0))
+						mine.put(path + "~REPS", Integer.toString(rep + 1));
+				}
+				if((into != null)&&(mine != null))
+					into.putAll(mine);
+				return true;
+			}
+			else
+			if(token.children != null)
+			{
+				final MTToken[] children = token.children;
+				if(token.kind == MTKind.ALTERNATION)
+				{
+					boolean emptyMatch = false;
+					int altIndex = 0;
+					int rep = 0;
+					for(final MTToken alt : children)
+					{
+						final String repPath = path + ((rep > 0) ? "~" + rep : "");
+						final int thisAlt = altIndex++;
+						final int saveIndex = index;
+						final boolean saveQuoteMode = this.quoteMode[0];
+						if(this.match(alt, saveIndex, terminators, repPath + "_" + thisAlt, mine))
+						{
+							if(this.outIndex[0] > index)
+							{
+								if(mine != null)
+									mine.put(repPath, Integer.toString(thisAlt));
+								if(token.repeats)
+								{
+									while(true)
+									{
+										final int saveRepeatIndex = this.outIndex[0];
+										final boolean saveRepeatQuoteMode = this.quoteMode[0];
+										boolean matched = false;
+										int innerIndex = 0;
+										for(final MTToken alt2 : children)
+										{
+											final int thisAlt2 = innerIndex++;
+											if(this.match(alt2, saveRepeatIndex, terminators, path + "~" + (rep + 1) + "_" + thisAlt2, mine))
+											{
+												if(this.outIndex[0] > saveRepeatIndex)
+												{
+													matched = true;
+													if(mine != null)
+														mine.put(path + "~" + (rep + 1), Integer.toString(thisAlt2));
+													break;
+												}
+											}
+											this.outIndex[0] = saveRepeatIndex;
+											this.quoteMode[0] = saveRepeatQuoteMode;
+										}
+										if(!matched)
+										{
+											this.quoteMode[0] = saveRepeatQuoteMode;
+											this.outIndex[0] = saveRepeatIndex;
+											break;
+										}
+										rep++;
+									}
+									if(mine != null)
+										mine.put(path + "~REPS", Integer.toString(rep + 1));
+								}
+								if((into != null)&&(mine != null))
+									into.putAll(mine);
+								return true;
+							}
+							if(!token.mustConsume)
+								emptyMatch = true;
+						}
+						this.quoteMode[0] = saveQuoteMode;
+						this.outIndex[0] = saveIndex;
+					}
+					return emptyMatch;
+				}
+				else
+				{
+					int currentIndex = index;
+					final boolean saveQuoteMode = this.quoteMode[0];
+					for(int c = 0; c < children.length; c++)
+					{
+						final MTToken child = children[c];
+						final Set<Character> childTerminators = terminatorsAfter(children, c, token.repeats, terminators);
+						if(!this.match(child, currentIndex, childTerminators, path + "_" + c, mine))
+						{
+							if(token.optional)
+							{
+								this.outIndex[0] = index;
+								this.quoteMode[0] = saveQuoteMode;
+								return true;
+							}
+							return false;
+						}
+						currentIndex = this.outIndex[0];
+					}
+
+					if(token.repeats)
+					{
+						int rep = 0;
+						while(true)
+						{
+							final int saveIndex = this.outIndex[0];
+							final boolean saveRepeatQuoteMode = this.quoteMode[0];
+							boolean matched = true;
+							int tempIndex = saveIndex;
+							for(int c = 0; c < children.length; c++)
+							{
+								final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
+								if(!this.match(children[c], tempIndex, repTers, path + "_" + c + "~" + (rep + 1), mine))
+								{
+									matched = false;
+									break;
+								}
+								tempIndex = this.outIndex[0];
+							}
+							if((!matched)||(this.outIndex[0] == saveIndex))
+							{
+								this.quoteMode[0] = saveRepeatQuoteMode;
+								this.outIndex[0] = saveIndex;
+								break;
+							}
+							rep++;
+						}
+						if((mine != null)&&(rep > 0))
+							mine.put(path + "~REPS", Integer.toString(rep + 1));
+					}
+					if((into != null)&&(mine != null))
+						into.putAll(mine);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * Matches one literal, placeholder or quote marker at the given position.
+		 *
+		 * @param token the format token being matched
+		 * @param index where in the parms to start
+		 * @param terminators the characters that end a value here, or null for none
+		 * @return true if the token matched
+		 */
+		boolean matchLiteral(final MTToken token, int index, final Set<Character> terminators)
+		{
+			while(index < this.proposition.length() && Character.isWhitespace(this.proposition.charAt(index)))
+				index++;
+			if(index >= this.proposition.length())
+			{
+				this.outIndex[0] = index;
+				if(token.stop == MTStop.REST)
+					return true;
+				this.fail.record(index, token.describeExpectation());
+				return false;
+			}
+			final String literal = token.text();
+			final String lowerProposition = this.proposition.toLowerCase();
+			if(token.kind == MTKind.QUOTE_MARKER)
+			{
+				if(this.proposition.charAt(index) == '\"')
+				{
+					this.quoteMode[0] = !this.quoteMode[0];
+					this.outIndex[0] = index + 1;
 				}
 				return true;
 			}
+			else
+			if((token.stop == MTStop.QUOTE) && this.quoteMode[0])
+			{
+				final int end = this.proposition.length();
+				int i = index;
+				while(i < end)
+				{
+					final char c = this.proposition.charAt(i);
+					if(c == '\\')
+					{
+						if(i + 1 >= end)
+						{
+							this.fail.record(i, "'\"'");
+							return false;
+						}
+						i += 2;
+					}
+					else
+					if(c == '\"')
+						break;
+					else
+						i++;
+				}
+				if(i >= end)
+				{
+					this.fail.record(i, "'\"'");
+					return false;
+				}
+				if(!confirmParmValue(literal, CMStrings.deEscape(this.proposition.substring(index, i)), token.parameterArgs))
+				{
+					this.fail.record(index, token.describeRejected(CMStrings.deEscape(this.proposition.substring(index, i))));
+					return false;
+				}
+				this.quoteMode[0] = false;
+				this.outIndex[0] = i + 1;
+				return true;
+			}
+			if((token.stop == MTStop.CHAR) || ((token.stop == MTStop.QUOTE) && (token.stopAt != null)))
+			{
+				// Greedy up to the delimiter character, without consuming it.
+				final int end = this.proposition.length();
+				int i = index;
+				int depth = 0;
+				while(i < end)
+				{
+					final char c = this.proposition.charAt(i);
+					if((token.stopChar() == ')') && (c == '('))
+						depth++;
+					else
+					if((token.stopChar() == ')') && (c == ')') && (depth > 0))
+						depth--;
+					else
+					if(c == token.stopChar())
+						break;
+					i++;
+				}
+				if(!confirmParmValue(literal, this.proposition.substring(index, i).trim(), token.parameterArgs))
+				{
+					this.fail.record(index, token.describeRejected(this.proposition.substring(index, i)));
+					return false;
+				}
+				this.outIndex[0] = i;
+				return true;
+			}
+			if(token.stop == MTStop.TOKENS)
+			{
+				// Greedy up to any of the delimiter strings, without consuming them.
+				final int end = this.proposition.length();
+				int i = index;
+				while(i < end)
+				{
+					boolean delimiterFound = false;
+					for(final String delimiter : token.stopTokens())
+					{
+						if((delimiter.length() > 0)
+						&&(this.proposition.regionMatches(true, i, delimiter, 0, delimiter.length())))
+						{
+							delimiterFound = true;
+							break;
+						}
+					}
+					if(delimiterFound)
+						break;
+					i++;
+				}
+				if(!confirmParmValue(literal, this.proposition.substring(index, i).trim(), token.parameterArgs))
+				{
+					this.fail.record(index, token.describeRejected(this.proposition.substring(index, i)));
+					return false;
+				}
+				this.outIndex[0] = i;
+				return true;
+			}
+			if(token.stop == MTStop.LITERAL)
+			{
+				final int end = this.proposition.length();
+				int i = index + 1;
+				while(i < end)
+				{
+					if(lowerProposition.startsWith(token.stopLiteral().toLowerCase(), i))
+					{
+						if(!confirmParmValue(literal, this.proposition.substring(index, i).trim(), token.parameterArgs))
+						{
+							this.fail.record(index, token.describeRejected(this.proposition.substring(index, i)));
+							return false;
+						}
+						this.outIndex[0] = i;
+						return true;
+					}
+					i++;
+				}
+				this.fail.record(index, "'" + token.stopLiteral() + "'");
+				return false;
+			}
+			else
+			if(token.stop == MTStop.END) // greedy placeholder at end of format, matches to end
+			{
+				if(!confirmParmValue(literal, this.proposition.substring(index).trim(), token.parameterArgs))
+				{
+					this.fail.record(index, token.describeRejected(this.proposition.substring(index)));
+					return false;
+				}
+				this.outIndex[0] = this.proposition.length();
+				return true;
+			}
+			if(token.stop == MTStop.REST) // [X].. rest-or-empty placeholder
+			{
+				final String val = this.proposition.substring(index).trim();
+				if(val.length()==0)
+				{
+					this.outIndex[0] = index;
+					return true;
+				}
+				if(!confirmParmValue(literal, val, token.parameterArgs))
+				{
+					this.fail.record(index, token.describeRejected(val));
+					return false;
+				}
+				this.outIndex[0] = this.proposition.length();
+				return true;
+			}
+			if(token.parameterArgs != null) // is a placeholder
+			{
+				final int start = index;
+				if(this.proposition.charAt(index) == '\"')
+				{
+					// a quoted value counts as one value, the way CMParms.parse sees it
+					int i = index + 1;
+					while((i < this.proposition.length())
+					&&(this.proposition.charAt(i) != '\"')
+					&&(this.proposition.charAt(i) != '\\'))
+						i++;
+					if(i < this.proposition.length())
+						i++;
+					index = i;
+				}
+				else
+				{
+					while((index < this.proposition.length())
+					&&(!Character.isWhitespace(this.proposition.charAt(index)))
+					&&((terminators == null)
+						|| (!terminators.contains(Character.valueOf(Character.toLowerCase(this.proposition.charAt(index)))))))
+							index++;
+				}
+				if(index == start)
+				{
+					this.fail.record(index, token.describeExpectation());
+					return false; // a placeholder must capture at least one character
+				}
+				if(!confirmParmValue(literal, this.proposition.substring(start,index), token.parameterArgs))
+				{
+					this.fail.record(start, token.describeRejected(this.proposition.substring(start,index)));
+					return false;
+				}
+				this.outIndex[0] = index;
+				return true;
+			}
+			else
+			{
+				// Match literal string, ignoring case
+				if(lowerProposition.startsWith(literal.toLowerCase(), index))
+				{
+					this.outIndex[0] = index + literal.length();
+					return true;
+				}
+				this.fail.record(index, "'" + literal + "'");
+				return false;
+			}
 		}
-		return false;
-	}
 
+		/**
+		 * Records what a token consumed, including the whitespace around it, so the
+		 * value and its gaps can be put back exactly as they were.
+		 *
+		 * @param token the format token that was matched
+		 * @param into where the values are recorded
+		 * @param path the name of this token's fields in the sink
+		 * @param start where the token began in the parms
+		 * @param end where the token ended in the parms
+		 */
+		private void record(final MTToken token, final Map<String,String> into, final String path, final int start, final int end)
+		{
+			int rawEnd = end;
+			// a quote-terminated value has its closing quote counted as part of the token
+			if((token.stop == MTStop.QUOTE)
+			&&(rawEnd > start)
+			&&(this.proposition.charAt(rawEnd - 1) == '"'))
+				rawEnd--;
+			final String raw = this.proposition.substring(start, rawEnd);
+			final String held = raw.trim();
+			into.put(path, held);
+			final int lead = (held.length() == 0) ? 0 : raw.indexOf(held);
+			if(lead > 0)
+				into.put(path + "~GAP", raw.substring(0, lead));
+			if(held.length() > 0)
+			{
+				final String trail = raw.substring(lead + held.length());
+				if(trail.length() > 0)
+					into.put(path + "~WS", trail);
+			}
+		}
+	}
 	private boolean confirmParmValue(final String parmName, final String value, final Map<String,String> parameterArgs)
 	{
+		final String confirmVal;
+		if((value.length() > 1)
+		&& (value.charAt(0) == '"')
+		&& (value.charAt(value.length() - 1) == '"'))
+			confirmVal = value.substring(1, value.length() - 1);
+		else
+			confirmVal = value;
 		final String key = parmName.toUpperCase().trim();
 		final Map<String, AbilityParmEditor> editors = getEditors();
 		if(editors.containsKey(key))
-			return editors.get(key).confirmValue(value, parameterArgs);
+			return editors.get(key).confirmValue(confirmVal, parameterArgs);
 		else
 		{
 			final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class,key);
@@ -2103,34 +3197,36 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				case STRINGORNULL:
 					return true;
 				case ONEWORD:
-					return (value.trim().length() > 0) && (value.indexOf(' ') < 0);
+					return (confirmVal.trim().length() > 0) && (confirmVal.indexOf(' ') < 0);
 				case STRING:
-					return value.trim().length() > 0;
+					return confirmVal.trim().length() > 0;
 				case NUMBERORNULL:
-					if(value.length() == 0)
+					if(confirmVal.length() == 0)
 						return true;
 					//$FALL-THROUGH$
 				case NUMBER:
-					return CMath.isInteger(value);
+					return CMath.isInteger(confirmVal);
 				case DECIMAL:
-					return CMath.isInteger(value)||CMath.isDouble(value);
+					return CMath.isInteger(confirmVal)||CMath.isDouble(confirmVal);
 				case NUMBER_PAIR:
 				{
-					final int x = value.indexOf(',');
-					return CMath.isInteger(value)
-						||((x > 0)&&(CMath.isInteger(value.substring(0,x).trim()))&&(CMath.isInteger(value.substring(x+1).trim())));
+					final int x = confirmVal.indexOf(',');
+					return CMath.isInteger(confirmVal)
+						||((x > 0)
+							&&(CMath.isInteger(confirmVal.substring(0,x).trim()))
+							&&(CMath.isInteger(confirmVal.substring(x+1).trim())));
 				}
 				case CHOICES:
 				case MULTICHOICES:
 				{
-					if((parmType == ParmType.MULTICHOICES)&&(CMath.isInteger(value)))
+					if((parmType == ParmType.MULTICHOICES)&&(CMath.isInteger(confirmVal)))
 						return true;
 					final String choicesValue = (parameterArgs == null)?null:parameterArgs.get("CHOICES");
 					if(choicesValue == null)
 						return false;
 					for(final String choice : CMParms.parseCommas(choicesValue,true))
 					{
-						if(choice.equalsIgnoreCase(value.trim()))
+						if(choice.equalsIgnoreCase(confirmVal.trim()))
 							return true;
 					}
 					return false;
@@ -2138,72 +3234,40 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				case SPECIAL:
 					return false;
 				case CONFIRM:
-					return CMath.isBool(value);
+					return CMath.isBool(confirmVal);
 				case CHECK:
 				{
-					if(value.trim().length()==0)
+					if(confirmVal.trim().length()==0)
 						return true;
 					final String checkName = (parameterArgs == null)?null:parameterArgs.get("NAME");
-					return (checkName != null) && checkName.equalsIgnoreCase(value.trim());
+					return (checkName != null) && checkName.equalsIgnoreCase(confirmVal.trim());
 				}
 				}
 			}
 			else
 			{
-				Log.debugOut("CMAbleParms", "Invalid/unknown miscText parm editor or type '"+parmName+"' for value '"+value+"'");
+				Log.debugOut("CMAbleParms", "Invalid/unknown miscText parm editor or type '"+parmName+"' for value '"+confirmVal+"'");
 			}
 		}
 		return true;
-	}
-
-	private static void collectFirstChars(final MTToken token, final Set<Character> out)
-	{
-		if(token == null)
-			return;
-		if(token.token instanceof String)
-		{
-			if(token.placeholderArgs == null)
-			{
-				final String lit = (String)token.token;
-				if((lit != null) && (lit.length() > 0))
-				{
-					final char ch = Character.toLowerCase(lit.charAt(0));
-					if(!Character.isLetterOrDigit(ch) && (ch != '_'))
-						out.add(Character.valueOf(ch));
-				}
-			}
-		}
-		else
-		if(token.token instanceof MTToken[])
-		{
-			final MTToken[] children = (MTToken[])token.token;
-			if(token.alternation != MTAlt.NONE)
-			{
-				for(final MTToken child : children)
-					collectFirstChars(child, out);
-			}
-			else
-			if(children.length > 0)
-				collectFirstChars(children[0], out);
-		}
 	}
 
 	private static boolean isNullable(final MTToken token)
 	{
 		if(token == null)
 			return true;
-		if(token.token instanceof String)
+		if(token.children == null)
 		{
-			if(token.isQuoteMarker || token.optional)
+			if(token.kind == MTKind.QUOTE_MARKER || token.optional)
 				return true; // (") matches empty with no quote; an optional literal may match empty
 			return false; // literals and placeholders otherwise require >=1 char
 		}
-		final MTToken[] children = (MTToken[])token.token;
+		final MTToken[] children = token.children;
 		if(token.optional)
 			return true; // groups are optional
-		if(token.alternation != MTAlt.NONE)
+		if(token.kind == MTKind.ALTERNATION)
 		{
-			if(token.alternation == MTAlt.REQUIRED)
+			if(token.mustConsume)
 				return false;
 			for(final MTToken child : children)
 			{
@@ -2218,6 +3282,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return true;
 	}
 
+	private static void collectFirstChars(final MTToken token, final Set<Character> out)
+	{
+		if(token == null)
+			return;
+		if(token.children == null)
+		{
+			if(token.parameterArgs == null)
+			{
+				final String lit = token.text();
+				if((lit != null) && (lit.length() > 0))
+				{
+					final char ch = Character.toLowerCase(lit.charAt(0));
+					if(!Character.isLetterOrDigit(ch) && (ch != '_'))
+						out.add(Character.valueOf(ch));
+				}
+			}
+		}
+		else
+		if(token.children != null)
+		{
+			final MTToken[] children = token.children;
+			if(token.kind == MTKind.ALTERNATION)
+			{
+				for(final MTToken child : children)
+					collectFirstChars(child, out);
+			}
+			else
+			if(children.length > 0)
+				collectFirstChars(children[0], out);
+		}
+	}
+
 	private static Set<Character> terminatorsAfter(final MTToken[] children, final int c, final boolean repeats, final Set<Character> inherited)
 	{
 		final Set<Character> first = new HashSet<Character>();
@@ -2229,8 +3325,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 		if(repeats)
 		{
-			// the last child is followed by the next iteration, which restarts
-			// at children[0] (e.g. the delimiter in a (delim X)* group).
 			for(int i = 0; i < children.length; i++)
 			{
 				collectFirstChars(children[i], first);
@@ -2247,266 +3341,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return first;
 	}
 
-	private boolean matchMTLiteral(final MTToken token, final String proposition, int index, final int[] outIndex, final boolean[] quoteMode, final Set<Character> terminators, final MTFail fail)
-	{
-		while(index < proposition.length() && Character.isWhitespace(proposition.charAt(index)))
-			index++;
-		if(index >= proposition.length())
-		{
-			outIndex[0] = index;
-			if((token.greedyRest)&&(token.placeholderArgs != null))
-				return true;
-			fail.record(index, describeTokenExpectation(token));
-			return false;
-		}
-		final String literal = (String)token.token;
-		final String lowerProposition = proposition.toLowerCase();
-		if(token.isQuoteMarker)
-		{
-			if(proposition.charAt(index) == '\"')
-			{
-				quoteMode[0] = !quoteMode[0];
-				outIndex[0] = index + 1;
-			}
-			return true;
-		}
-		else
-		if(token.quoteNext && quoteMode[0])
-		{
-			final int end = proposition.length();
-			int i = index;
-			while(i < end)
-			{
-				final char c = proposition.charAt(i);
-				if(c == '\\')
-				{
-					if(i + 1 >= end)
-					{
-						fail.record(i, "'\"'");
-						return false;
-					}
-					i += 2;
-				}
-				else
-				if(c == '\"')
-					break;
-				else
-					i++;
-			}
-			if(i >= end)
-			{
-				fail.record(i, "'\"'");
-				return false;
-			}
-			if(!confirmParmValue(literal, CMStrings.deEscape(proposition.substring(index, i)), token.parameterArgs))
-			{
-				fail.record(index, describeRejectedValue(token, CMStrings.deEscape(proposition.substring(index, i))));
-				return false;
-			}
-			quoteMode[0] = false;
-			outIndex[0] = i + 1;
-			return true;
-		}
-		if(token.greedyTo != '\0')
-		{
-			// Greedy up to the delimiter character, without consuming it.
-			final int end = proposition.length();
-			int i = index;
-			int depth = 0;
-			while(i < end)
-			{
-				final char c = proposition.charAt(i);
-				if((token.greedyTo == ')') && (c == '('))
-					depth++;
-				else
-				if((token.greedyTo == ')') && (c == ')') && (depth > 0))
-					depth--;
-				else
-				if(c == token.greedyTo)
-					break;
-				i++;
-			}
-			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
-			{
-				fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
-				return false;
-			}
-			outIndex[0] = i;
-			return true;
-		}
-		if(token.greedyToTokens != null)
-		{
-			// Greedy up to any of the delimiter strings, without consuming them.
-			final int end = proposition.length();
-			int i = index;
-			while(i < end)
-			{
-				boolean delimiterFound = false;
-				for(final String delimiter : token.greedyToTokens)
-				{
-					if((delimiter.length() > 0)
-					&&(proposition.regionMatches(true, i, delimiter, 0, delimiter.length())))
-					{
-						delimiterFound = true;
-						break;
-					}
-				}
-				if(delimiterFound)
-					break;
-				i++;
-			}
-			if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
-			{
-				fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
-				return false;
-			}
-			outIndex[0] = i;
-			return true;
-		}
-		if(token.greedyLiteral != null)
-		{
-			// Consume at least one character, then stop at the first occurrence
-			// of the literal immediately following the greedy placeholder.
-			final int end = proposition.length();
-			int i = index + 1;
-			while(i < end)
-			{
-				if(lowerProposition.startsWith(token.greedyLiteral.toLowerCase(), i))
-				{
-					if(!confirmParmValue(literal, proposition.substring(index, i).trim(), token.parameterArgs))
-					{
-						fail.record(index, describeRejectedValue(token, proposition.substring(index, i)));
-						return false;
-					}
-					outIndex[0] = i;
-					return true;
-				}
-				i++;
-			}
-			fail.record(index, "'" + token.greedyLiteral + "'");
-			return false;
-		}
-		else
-		if(token.greedy) // greedy placeholder at end of format, matches to end
-		{
-			if(!confirmParmValue(literal, proposition.substring(index).trim(), token.parameterArgs))
-			{
-				fail.record(index, describeRejectedValue(token, proposition.substring(index)));
-				return false;
-			}
-			outIndex[0] = proposition.length();
-			return true;
-		}
-		if((token.greedyRest)&&(token.placeholderArgs != null)) // [X].. rest-or-empty placeholder
-		{
-			final String val = proposition.substring(index).trim();
-			if(val.length()==0)
-			{
-				outIndex[0] = index;
-				return true;
-			}
-			if(!confirmParmValue(literal, val, token.parameterArgs))
-			{
-				fail.record(index, describeRejectedValue(token, val));
-				return false;
-			}
-			outIndex[0] = proposition.length();
-			return true;
-		}
-		if(token.placeholderArgs != null) // is a placeholder
-		{
-			final int start = index;
-			while((index < proposition.length())
-			&&(!Character.isWhitespace(proposition.charAt(index)))
-			&&((terminators == null) || (!terminators.contains(Character.valueOf(Character.toLowerCase(proposition.charAt(index)))))))
-				index++;
-			if(index == start)
-			{
-				fail.record(index, describeTokenExpectation(token));
-				return false; // a placeholder must capture at least one character
-			}
-			if(!confirmParmValue(literal, proposition.substring(start,index), token.parameterArgs))
-			{
-				fail.record(start, describeRejectedValue(token, proposition.substring(start,index)));
-				return false;
-			}
-			outIndex[0] = index;
-			return true;
-		}
-		else
-		{
-			// Match literal string, ignoring case
-			if(lowerProposition.startsWith(literal.toLowerCase(), index))
-			{
-				outIndex[0] = index + literal.length();
-				return true;
-			}
-			fail.record(index, "'" + literal + "'");
-			return false;
-		}
-	}
-
-	private static enum MTAlt
-	{
-		NONE,		// not an alternation: a plain sequence
-		ANY,		// alternation that may match an empty branch (existing behavior)
-		REQUIRED	// alternation that must match a branch consuming at least one character
-	}
-
-	private static class MTToken
-	{
-		public Object				token;						// String (for literals/placeholders) or MTToken[] (for sequences/alternatives)
-		public boolean				repeats			= false;
-		public boolean				optional		= false;
-		public MTAlt				alternation		= MTAlt.NONE;	// NONE: sequence, ANY: alternatives, REQUIRED: must match one
-		public boolean				isQuoteMarker	= false;	// TRUE if this is the optional quote marker group: (")
-		public boolean				quoteNext		= false;	// TRUE if this greedy placeholder is terminated by a (") marker
-		public String[]				placeholderArgs	= null;
-		public Map<String, String>	parameterArgs	= null;
-		public String				greedyLiteral	= null;
-		public boolean				greedy			= false;
-		public char					greedyTo		= '\0';		// non-zero: greedy up to this delimiter char, without consuming it
-		public List<String>			greedyToTokens	= null;		// non-null: greedy up to any of these delimiters, without consuming them
-		public boolean				greedyRest		= false;	// TRUE if this is an [X].. rest-or-empty placeholder
-		public boolean				escapedSlash	= false;	// TRUE if this "/" literal came from a \/ escape and must not split alternatives
-
-		public MTToken(final Object token, final boolean optional)
-		{
-			this.optional = optional;
-			this.token = token;
-		}
-
-		public MTToken(final MTToken other)
-		{
-			this.token = other.token;
-			this.repeats = other.repeats;
-			this.optional = other.optional;
-			this.alternation = other.alternation;
-			this.isQuoteMarker = other.isQuoteMarker;
-			this.quoteNext = other.quoteNext;
-			this.placeholderArgs = other.placeholderArgs;
-			this.parameterArgs = other.parameterArgs;
-			this.greedyLiteral = other.greedyLiteral;
-			this.greedy = other.greedy;
-			this.greedyTo = other.greedyTo;
-			this.greedyToTokens = other.greedyToTokens;
-			this.greedyRest = other.greedyRest;
-			this.escapedSlash = other.escapedSlash;
-		}
-	}
 
 	private boolean endsWithOpenGreedy(final MTToken token)
 	{
 		if(token == null)
 			return false;
-		if(token.token instanceof String)
-			return token.greedy && (token.greedyLiteral == null);
-		if(token.token instanceof MTToken[])
+		if(token.children == null)
+			return token.stop == MTStop.END;
+		if(token.children != null)
 		{
-			final MTToken[] children = (MTToken[])token.token;
+			final MTToken[] children = token.children;
 			if(children.length == 0)
 				return false;
-			if(token.alternation != MTAlt.NONE)
+			if(token.kind == MTKind.ALTERNATION)
 			{
 				for(final MTToken child : children)
 				{
@@ -2543,6 +3390,155 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return false;
 	}
 
+	private static final String ESCAPED_SLASH = "\\/";
+
+	enum MTKind
+	{
+		LITERAL,		// text the parms must contain
+		PLACEHOLDER,	// a declared parameter the parms must supply
+		QUOTE_MARKER,	// the optional ("), which surrounds a quoted value
+		SEQUENCE,		// children that must all appear, in order
+		ALTERNATION		// children of which one must appear
+	}
+
+	enum MTStop
+	{
+		NONE,			// not greedy: the value ends where its own type says
+		END,			// takes the rest of the parms
+		CHAR,			// up to a delimiter character, which it does not take
+		TOKENS,			// up to any of several delimiter strings, which it does not take
+		LITERAL,		// up to a following literal, which it does not take
+		QUOTE,			// up to the quote that ends the quoted value
+		REST			// an [X].. placeholder: what is left, or nothing
+	}
+
+	class MTToken
+	{
+		public MTKind				kind;
+		public String				literal			= null;		// LITERAL, PLACEHOLDER and QUOTE_MARKER text
+		public MTToken[]			children		= null;		// SEQUENCE and ALTERNATION contents
+		public boolean				optional		= false;
+		public boolean				repeats			= false;
+		public boolean				mustConsume		= false;	// ALTERNATION: some branch has to take at least one character
+		public MTStop				stop			= MTStop.NONE;
+		public Object				stopAt			= null;		// Character, List<String> or String, per stop
+		public Map<String, String>	parameterArgs	= null;		// declared prompt=/choices= arguments; null when this is not a placeholder
+
+		public MTToken(final String text, final boolean optional)
+		{
+			this.kind = MTKind.LITERAL;
+			this.literal = text;
+			this.optional = optional;
+		}
+
+		public MTToken(final MTKind kind, final String text, final boolean optional)
+		{
+			this.kind = kind;
+			this.literal = text;
+			this.optional = optional;
+		}
+
+		public MTToken(final MTToken[] children, final boolean optional)
+		{
+			this.kind = MTKind.SEQUENCE;
+			this.children = children;
+			this.optional = optional;
+		}
+
+		public MTToken(final MTToken other)
+		{
+			this.kind = other.kind;
+			this.literal = other.literal;
+			this.children = other.children;
+			this.optional = other.optional;
+			this.repeats = other.repeats;
+			this.mustConsume = other.mustConsume;
+			this.stop = other.stop;
+			this.stopAt = other.stopAt;
+			this.parameterArgs = other.parameterArgs;
+		}
+
+		public boolean isPlaceholder()
+		{
+			return this.kind == MTKind.PLACEHOLDER;
+		}
+
+		/**
+		 * The text of a literal, giving an escaped slash back as a slash.
+		 *
+		 * @return the text this token stands for
+		 */
+		public String text()
+		{
+			return ESCAPED_SLASH.equals(this.literal) ? "/" : this.literal;
+		}
+
+		public char stopChar()
+		{
+			if(this.stop == MTStop.QUOTE)
+				return '"';
+			return (this.stopAt instanceof Character) ? ((Character)this.stopAt).charValue() : '\0';
+		}
+
+		public String stopLiteral()
+		{
+			return (this.stopAt instanceof String) ? (String)this.stopAt : null;
+		}
+
+		@SuppressWarnings("unchecked")
+		public List<String> stopTokens()
+		{
+			return (this.stopAt instanceof List) ? (List<String>)this.stopAt : null;
+		}
+
+		public String describePlaceholder()
+		{
+			final String name = this.literal.toUpperCase(Locale.ROOT).trim();
+			final ParmType parmType = (ParmType)CMath.s_valueOf(ParmType.class, name);
+			if(parmType != null)
+			{
+				switch(parmType)
+				{
+				case NUMBER:
+				case DECIMAL:
+					return L("a number");
+				case NUMBER_PAIR:
+					return L("two comma-separated numbers");
+				case ONEWORD:
+					return L("a single word");
+				case CHOICES:
+					return L("a valid choice");
+				case MULTICHOICES:
+					return L("a choice or a count");
+				case CONFIRM:
+				case CHECK:
+					return L("a true/false value");
+				default:
+					return L("a value");
+				}
+			}
+			if(getEditors().containsKey(name))
+				return L("a valid @x1 value",name);
+			return L("a value for @x1",name);
+		}
+
+		public String describeExpectation()
+		{
+			if(this.kind == MTKind.PLACEHOLDER)
+				return this.describePlaceholder();
+			return L("'@x1'",this.text());
+		}
+
+		public String describeRejected(final String value)
+		{
+			final String noun = this.describePlaceholder();
+			final String snippet = snippetValue(value);
+			if(snippet.length() == 0)
+				return noun;
+			return L("@x1, got '@x2'",noun,snippet);
+		}
+	}
+
 	private MTToken parseMTAlternationBlock(final String format, final int start, final int end) throws CMException
 	{
 		final List<MTToken> alternatives = new ArrayList<MTToken>();
@@ -2574,7 +3570,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			throw new CMException(L("Empty alternative in [...] at @x1",""+end));
 		alternatives.add(parseMTSequence(format, branchStart, end));
 		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
-		altToken.alternation = MTAlt.REQUIRED;
+		altToken.kind = MTKind.ALTERNATION;
+		altToken.mustConsume = true;
 		return altToken;
 	}
 
@@ -2623,17 +3620,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	 * semicolon and nothing else, and [;/-] matches a semicolon or a dash.
 	 * Such a block may not carry arguments or a greedy marker, and an
 	 * unknown placeholder name with arguments is an error, not a catch-all.
-
-	 *
-	 * @param format the misc text format
-	 * @return the parsed token tree
-	 * @throws CMException if the format is malformed
 	 */
-	private MTToken parseMiscTextFormat(final String format) throws CMException
-	{
-		return parseMTSequence(format, 0, format.length());
-	}
-
 	private MTToken parseMTSequence(final String format, final int start, final int end) throws CMException
 	{
 		final List<MTToken> tokens = new ArrayList<>();
@@ -2663,7 +3650,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				&&(format.charAt(index + 2) == ')'))
 				{
 					final MTToken quoteToken = new MTToken("\"", false);
-					quoteToken.isQuoteMarker = true;
+					quoteToken.kind = MTKind.QUOTE_MARKER;
 					quoteToken.optional = true;
 					tokens.add(quoteToken);
 					index += 3;
@@ -2742,8 +3729,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					placeholder = placeholder.substring(0, setSuffix).trim();
 					greedyToTokens = new ArrayList<String>();
 					for(final String setTok : CMParms.parseAny(setStr, '/', false, false))
+					{
 						if(setTok.length() > 0)
 							greedyToTokens.add(setTok);
+					}
 				}
 				final boolean greedy = (greedyToTokens == null) && placeholder.endsWith("...");
 				char greedyTo = '\0';
@@ -2776,7 +3765,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(placeholder.charAt(placeholder.length() - 1)==' ')
 					{
 						if((tokens.size()>0) 
-						&&tokens.get(tokens.size()-1).token.equals("\"")
+						&&"\"".equals(tokens.get(tokens.size()-1).literal)
 						&&tokens.get(tokens.size()-1).optional)
 						{
 							greedyQuote = true;
@@ -2843,11 +3832,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if((!getEditors().containsKey(bareName))
 				&&(CMath.s_valueOf(ParmType.class,bareName)==null))
 				{
-					// A bracketed block that is not a known placeholder is never a
-					// catch-all: with no arguments it is a literal, so [;] matches
-					// ';' alone and [;/-] matches ';' or '-'.
 					if((placeholderArgs.length > 0)
-					||greedy||(greedyTo != '\0')||greedyRest||(greedyToTokens != null))
+					||greedy
+					||(greedyTo != '\0')
+					||greedyRest
+					||(greedyToTokens != null))
 						throw new CMException(L("Unknown placeholder '@x1' at @x2",placeholderToken,""+index));
 					tokens.add(parseMTAlternationBlock(format, index + 1, closeIndex));
 					index = closeIndex + 1;
@@ -2855,41 +3844,51 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				final MTToken token = new MTToken(placeholderToken, false);
 				tokens.add(token);
-				token.placeholderArgs=placeholderArgs;
+				token.kind = MTKind.PLACEHOLDER;
 				token.parameterArgs=parameterArgs;
-				token.greedyTo=greedyTo;
-				token.greedyToTokens=greedyToTokens;
+				if(greedyTo != '\0')
+				{
+					token.stop = MTStop.CHAR;
+					token.stopAt = Character.valueOf(greedyTo);
+				}
+				else
+				if(greedyToTokens != null)
+				{
+					token.stop = MTStop.TOKENS;
+					token.stopAt = greedyToTokens;
+				}
 				if(greedyRest)
-					token.greedyRest=true;
+					token.stop = MTStop.REST;
 				if(greedyQuote)
-					token.quoteNext=true;
+				{
+					token.stop = MTStop.QUOTE;
+					token.stopAt = Character.valueOf('"');
+				}
 				index = closeIndex + 1;
 				if(greedy)
 				{
 					if(index >= end)
-					{
-						// Greedy placeholder at the end of the format consumes the rest.
-						token.greedy = true;
-					}
+						token.stop = MTStop.END;
 					else
 					if(Character.isWhitespace(format.charAt(index)))
-					{
-						// A space immediately after the ] terminates the greedy
-						// part, so the placeholder behaves like a normal one.
-					}
+					{}
 					else
 					if((index + 2 < end)
 					&&(format.charAt(index) == '(')
 					&&(format.charAt(index + 1) == '\"')
 					&&(format.charAt(index + 2) == ')'))
 					{
-						token.quoteNext = true;
+						token.stop = MTStop.QUOTE;
 						index += 3;
 					}
 					else
 					{
 						final char nc = format.charAt(index);
-						if((nc == '[') || (nc == '(') || (nc == '/') || (nc == ']') || (nc == '.'))
+						if((nc == '[') 
+						|| (nc == '(') 
+						|| (nc == '/') 
+						|| (nc == ']') 
+						|| (nc == '.'))
 							throw new CMException(L("Greedy placeholder requires an immediately following literal or end-of-string at @x1",""+index));
 						final StringBuilder lb = new StringBuilder();
 						int la = index;
@@ -2897,7 +3896,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						{
 							final char lc = format.charAt(la);
 							if(Character.isWhitespace(lc)
-							|| (lc == '/') || (lc == '(') || (lc == '[') || (lc == '.') || (lc == ')'))
+							|| (lc == '/') 
+							|| (lc == '(') 
+							|| (lc == '[') 
+							|| (lc == '.') 
+							|| (lc == ')'))
 								break;
 							if(lc == '\\')
 							{
@@ -2914,8 +3917,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						if(lb.length() == 0)
 							throw new CMException(L("Greedy placeholder requires an immediately following literal or end-of-string at @x1",""+index));
-						token.greedy = true;
-						token.greedyLiteral = lb.toString();
+						token.stop = MTStop.END;
+						token.stop = MTStop.LITERAL;
+						token.stopAt = lb.toString();
 					}
 				}
 			}
@@ -2924,7 +3928,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				if((index + 2 < end) && (format.charAt(index + 1) == '.'))
 				{
-					if(tokens.isEmpty() || tokens.get(tokens.size() - 1).token.equals("/"))
+					if(tokens.isEmpty() || "/".equals(tokens.get(tokens.size() - 1).literal))
 						throw new CMException(L("Nothing to repeat at @x1",""+index));
 					final char d = format.charAt(index + 2);
 					if(d == '.')
@@ -2936,15 +3940,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(d == ' ')
 					{
 						final MTToken x = tokens.get(tokens.size() - 1);
-						if(x.placeholderArgs == null)
+						if(x.parameterArgs == null)
 							throw new CMException(L("'.. ' requires a preceding placeholder at @x1",""+index));
-						if(x.quoteNext)
+						if(x.stop == MTStop.QUOTE)
 						{
-							x.greedy=true;
-							x.greedyTo='\"';
+							x.stop = MTStop.CHAR;
+							x.stopAt = Character.valueOf('\"');
 						}
 						else
-							x.greedyRest = true;
+							x.stop = MTStop.REST;
 						index += 3;
 					}
 					else
@@ -2972,40 +3976,43 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			else
 			{
-			// Collect consecutive literal characters
-			final StringBuilder literal = new StringBuilder();
-			boolean hadEscape = false;
-			while(index < end)
-			{
-				c = format.charAt(index);
-				if(c == '\\')
+				// Collect consecutive literal characters
+				final StringBuilder literal = new StringBuilder();
+				boolean hadEscape = false;
+				while(index < end)
 				{
-					if(index + 1 >= end)
-						throw new CMException(L("Trailing backslash at @x1",""+index));
-					literal.append(format.charAt(index + 1));
-					hadEscape = true;
-					index += 2;
-				}
-					else
-					if(Character.isWhitespace(c) || c == '/' || c == '(' || c == '[' || c == '.' || c == ')')
+					c = format.charAt(index);
+					if(c == '\\')
 					{
-						break;
+						if(index + 1 >= end)
+							throw new CMException(L("Trailing backslash at @x1",""+index));
+						literal.append(format.charAt(index + 1));
+						hadEscape = true;
+						index += 2;
 					}
+					else
+					if(Character.isWhitespace(c) 
+					|| c == '/' 
+					|| c == '(' 
+					|| c == '[' 
+					|| c == '.' 
+					|| c == ')')
+						break;
 					else
 					{
 						literal.append(c);
 						index++;
 					}
 				}
-			if(literal.length() > 0)
-			{
-				final MTToken litToken = new MTToken(literal.toString(), false);
-				litToken.escapedSlash = hadEscape && "/".equals(literal.toString());
-				tokens.add(litToken);
-			}
+				if(literal.length() > 0)
+				{
+					final MTToken litToken = new MTToken(literal.toString(), false);
+					if(hadEscape && "/".equals(literal.toString()))
+						litToken.literal = ESCAPED_SLASH;
+					tokens.add(litToken);
+				}
 			}
 		}
-
 		return collapseMTAlternatives(tokens);
 	}
 
@@ -3015,8 +4022,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			throw new CMException(L("Empty sequence"));
 
 		if((tokens.size() > 1) 
-		&&("/".equals(tokens.get(1).token))
-		&&(!tokens.get(1).escapedSlash))
+		&&("/".equals(tokens.get(1).literal)))
 			return collapseFullAlternation(tokens);
 
 		final List<MTToken> result = new ArrayList<>();
@@ -3025,8 +4031,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		while(i < tokens.size())
 		{
 			if((i+2<tokens.size())
-			&&("/".equals(tokens.get(i+1).token))
-			&&(!tokens.get(i+1).escapedSlash))
+			&&("/".equals(tokens.get(i+1).literal)))
 			{
 				// Found a slash - collect all alternatives
 				final List<MTToken> alternatives = new ArrayList<>();
@@ -3034,15 +4039,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				i += 2; // skip the slash
 				alternatives.add(tokens.get(i));
 				while((i + 2 < tokens.size())
-				&&("/".equals(tokens.get(i+1).token))
-				&&(!tokens.get(i+1).escapedSlash))
+				&&("/".equals(tokens.get(i+1).literal)))
 				{
 					i += 2;
 					alternatives.add(tokens.get(i));
 				}
 
 				final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
-				altToken.alternation = MTAlt.ANY;
+				altToken.kind = MTKind.ALTERNATION;
 				result.add(altToken);
 			}
 			else
@@ -3054,7 +4058,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return result.get(0);
 
 		final MTToken seq = new MTToken(result.toArray(new MTToken[0]), false);
-		seq.alternation = MTAlt.NONE;
+		seq.kind = MTKind.SEQUENCE;
 		return seq;
 	}
 
@@ -3064,7 +4068,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final List<MTToken> current = new ArrayList<>();
 		for(final MTToken t : tokens)
 		{
-			if("/".equals(t.token) && !t.escapedSlash)
+			if("/".equals(t.literal))
 			{
 				if(current.isEmpty())
 					throw new CMException(L("Empty alternative in alternation"));
@@ -3079,16 +4083,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		alternatives.add(asSequence(current));
 
 		final MTToken altToken = new MTToken(alternatives.toArray(new MTToken[0]), false);
-		altToken.alternation = MTAlt.ANY;
+		altToken.kind = MTKind.ALTERNATION;
 		return altToken;
 	}
 
-	private static MTToken asSequence(final List<MTToken> tokens)
+	private MTToken asSequence(final List<MTToken> tokens)
 	{
 		if(tokens.size() == 1)
 			return tokens.get(0);
 		final MTToken seq = new MTToken(tokens.toArray(new MTToken[0]), false);
-		seq.alternation = MTAlt.NONE;
+		seq.kind = MTKind.SEQUENCE;
 		return seq;
 	}
 }

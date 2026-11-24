@@ -52,6 +52,60 @@ public interface AbilityParameters extends CMLibrary
 	 * @author Bo Zimmerman
 	 *
 	 */
+
+
+	/**
+	 * The one operation a parms editor page can ask for, since adding and
+	 * removing cannot both be true.
+	 */
+	public enum ParmOp
+	{
+		NONE,
+		ADD,
+		REMOVE
+	}
+
+	/**
+	 * What a parms editor page posted back: one operation and its argument,
+	 * plus every field the page sent.
+	 */
+	public static class ParmEdit
+	{
+		/** NONE when the user only typed; ADD or REMOVE when a button was pressed. */
+		public final ParmOp op;
+		/** The part the operation names; only meaningful when op is not NONE. */
+		public final String opPath;
+		/** Every field the page posted, by name. */
+		public final Map<String, String> fields;
+
+		/**
+		 * Builds a page edit.
+		 *
+		 * @param op the operation the page asked for
+		 * @param opPath the part the operation names
+		 * @param fields the fields the page posted, by name
+		 */
+		public ParmEdit(final ParmOp op, final String opPath, final Map<String, String> fields)
+		{
+			this.op = (op == null) ? ParmOp.NONE : op;
+			this.opPath = opPath;
+			this.fields = (fields == null) ? new HashMap<String, String>() : fields;
+		}
+
+		/**
+		 * The value of one posted field.
+		 *
+		 * @param name the field name
+		 * @return the posted value, or null if the page did not send it
+		 */
+		public String field(final String name)
+		{
+			if(name == null)
+				return null;
+			final String held = this.fields.get(name);
+			return (held != null) ? held : this.fields.get(name.toUpperCase(java.util.Locale.ROOT));
+		}
+	}
 	public enum ParmType
 	{
 		CHOICES,
@@ -128,7 +182,6 @@ public interface AbilityParameters extends CMLibrary
 		 * @return key/display pairs
 		 */
 		public PairList<String,String> choices();
-
 		/**
 		 * Returns how much this editor applies as the appropriate editor to the
 		 * given object.  A number less than 0 means it definitely doesn't apply.
@@ -430,6 +483,31 @@ public interface AbilityParameters extends CMLibrary
 	 * @return null if they are a match, or guidance explaining the first mismatch
 	 */
 	public String testParmsFormat(final String format, final String proposition);
+
+	/**
+	 * Renders the parms of an ability or behavior as editor markup, one piece per
+	 * thing the format asks for.
+	 *
+	 * @param httpReq the request, for editors that draw their own controls
+	 * @param edit what the page posted back, if anything
+	 * @param format the misc text format
+	 * @param parms the parms the box holds now
+	 * @return the html for the fields, or empty if the format declares nothing
+	 * @throws CMException a malformed format error, if the format does not parse
+	 */
+	public String parmsEditorHtml(final HTTPRequest httpReq, final ParmEdit edit, final String format, final String parms) throws CMException;
+
+	/**
+	 * Writes out the parms that the page's fields, as they were posted,
+	 * spell out.
+	 *
+	 * @param edit what the page posted back, if anything
+	 * @param format the misc text format
+	 * @param parms the parms the box holds now
+	 * @return the parms the editor's fields spell out
+	 * @throws CMException a malformed format error, if the format does not parse
+	 */
+	public String parmsEditorText(final ParmEdit edit, final String format, final String parms) throws CMException;
 
 	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility

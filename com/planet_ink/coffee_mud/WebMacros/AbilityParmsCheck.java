@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.ParmEdit;
 
 import java.util.*;
 
@@ -171,7 +172,8 @@ public class AbilityParmsCheck extends StdWebMacro
 	{
 		try
 		{
-			final String parms = CMLib.ableParms().parmsEditorText(httpReq, format, text);
+			final ParmEdit edit = AbilityParmsCheck.editOf(httpReq);
+			final String parms = CMLib.ableParms().parmsEditorText(edit, format, text);
 			final String err = (format.length() == 0) ? null : CMLib.ableParms().testParmsFormat(format, parms);
 			if(bodyOnly)
 				return "TEXT:" + escape(parms) + "\n" + escape(err);
@@ -185,13 +187,38 @@ public class AbilityParmsCheck extends StdWebMacro
 			str.append("</DIV>");
 			if((format.length() == 0)||(format.equals(CMParms.FORMAT_UNDEFINED)))
 				str.append("<I>Nothing was declared for ").append(escape(name)).append(", so anything may be written here.</I><BR>");
-			str.append(CMLib.ableParms().parmsEditorHtml(httpReq, format, text));
+			str.append(CMLib.ableParms().parmsEditorHtml(httpReq, edit, format, text));
 			return this.clearWebMacros(str.toString());
 		}
 		catch(final CMException e)
 		{
 			return "<B>" + escape(id) + " has a malformed format: " + escape(e.getMessage()) + "</B>";
 		}
+	}
+
+	/**
+	 * Reads what the parms editor page posted back.
+	 *
+	 * @param httpReq the request holding the editor's fields
+	 * @return the fields, and the one operation they ask for, if any
+	 */
+	public static ParmEdit editOf(final HTTPRequest httpReq)
+	{
+		final Map<String, String> fields = new HashMap<String, String>();
+		for(final String name : httpReq.getUrlParameters())
+		{
+			final String value = (name == null) ? null : httpReq.getUrlParameter(name);
+			// the request lower cases its parameter names; the fields are named in upper case
+			if((name != null)&&(value != null))
+				fields.put(name.toUpperCase(java.util.Locale.ROOT), value);
+		}
+		final String addedPath = fields.get("PADDPATH");
+		final String removedPath = fields.get("PREMOVEPATH");
+		if(fields.containsKey("PADD"))
+			return new ParmEdit(AbilityParameters.ParmOp.ADD, (addedPath == null) ? "" : addedPath, fields);
+		if(fields.containsKey("PREMOVE"))
+			return new ParmEdit(AbilityParameters.ParmOp.REMOVE, (removedPath == null) ? "" : removedPath, fields);
+		return new ParmEdit(AbilityParameters.ParmOp.NONE, null, fields);
 	}
 
 	/**

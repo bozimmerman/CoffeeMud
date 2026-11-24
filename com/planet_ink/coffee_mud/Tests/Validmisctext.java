@@ -1080,9 +1080,10 @@ public class Validmisctext extends StdTest
 		// Test 47: Parsed placeholder arguments retain both independent labels
 		try
 		{
-			final Method parseMethod = CMLib.ableParms().getClass().getDeclaredMethod("parseMiscTextFormat", String.class);
+			final Method parseMethod = CMLib.ableParms().getClass().getDeclaredMethod("parseMTSequence", String.class, int.class, int.class);
 			parseMethod.setAccessible(true);
-			final Object token = parseMethod.invoke(CMLib.ableParms(), "[FREQUENCY(prompt=Recharge time/colh=Recharge)]");
+			final String parseFormat = "[FREQUENCY(prompt=Recharge time/colh=Recharge)]";
+			final Object token = parseMethod.invoke(CMLib.ableParms(), parseFormat, Integer.valueOf(0), Integer.valueOf(parseFormat.length()));
 			final Field argsField = token.getClass().getDeclaredField("parameterArgs");
 			argsField.setAccessible(true);
 			final Map<?,?> args = (Map<?,?>)argsField.get(token);

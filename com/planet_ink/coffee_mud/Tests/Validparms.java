@@ -114,7 +114,7 @@ public class Validparms extends StdTest
 			"custom",
 			"laws_mycity.ini",
 			"custom;JUDGE=\"justice judge\" OFFICERS=\"cityguard police\"",
-			"!McElvy 5 msg=\"OMG ATTACK!\""},
+			"McElvy 5 msg=\"OMG ATTACK!\""},
 		// BribeGateGuard: PRICE=, GATES=, MASK= (Behaviors/BribeGateGuard.java:88)
 		{"BribeGateGuard",
 			"price=5",

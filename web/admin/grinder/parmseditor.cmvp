@@ -18,7 +18,7 @@
 		var parmsEditorAddAsked = false;
 		var parmsEditorRemovePath = "";
 		var parmsEditorRemoveAsked = false;
-		var parmsEditorRemoveTurn = 0;
+		var parmsEditorRemoveRep = 0;
 
 		function ParmsEditorParam(named)
 		{
@@ -42,12 +42,18 @@
 			ParmsEditorRebuild();
 		}
 
-		function ParmsEditorRemoveTurn(path)
+		function ParmsEditorRemoveRep(path)
 		{
-			parmsEditorRemovePath = path;
-			parmsEditorRemoveTurn = 0;
-			parmsEditorRemoveAsked = true;
-			ParmsEditorRebuild();
+			ParmsEditorSend(ParmsEditorQuery("&TEXTONLY=1"), function(resp)
+			{
+				var parts = resp.split("\n");
+				if(parts.length > 0)
+					parmsEditorText = ParmsEditorDecoded(parts[0].substring(5));
+				parmsEditorRemovePath = path;
+				parmsEditorRemoveRep = 0;
+				parmsEditorRemoveAsked = true;
+				ParmsEditorRebuild();
+			});
 		}
 
 		function ParmsEditorForm()
@@ -59,24 +65,24 @@
 			if(parmsEditorRemoveAsked)
 				str += "&PREMOVE=1&PREMOVEPATH=" + encodeURIComponent(parmsEditorRemovePath);
 			var fields = pane.getElementsByTagName("INPUT");
-			var turns = "";
+			var reps = "";
 			for(var i = 0; i < fields.length; i++)
 				if(fields[i].name && (fields[i].name.length > 0))
 				{
 					if((fields[i].type == "checkbox") && (!fields[i].checked))
 						continue;
-					if(fields[i].name.substring(0, 2) == "PT")
+					if(fields[i].name.substring(0, 2) == "PX")
 					{
-						turns += ((turns.length > 0) ? "," : "") + fields[i].name.substring(2);
+						reps += ((reps.length > 0) ? "," : "") + fields[i].name.substring(2);
 						continue;
 					}
 					str += "&" + encodeURIComponent(fields[i].name) + "=" + encodeURIComponent(fields[i].value);
 				}
-			str += "&PTURNS=" + encodeURIComponent(turns);
+			str += "&PREPS=" + encodeURIComponent(reps);
 			parmsEditorAddPath = "";
 			parmsEditorAddAsked = false;
 			parmsEditorRemovePath = "";
-			parmsEditorRemoveTurn = 0;
+			parmsEditorRemoveRep = 0;
 			parmsEditorRemoveAsked = false;
 			var selects = pane.getElementsByTagName("SELECT");
 			for(var i = 0; i < selects.length; i++)
@@ -85,6 +91,14 @@
 			for(var i = 0; i < areas.length; i++)
 				if(areas[i].name && (areas[i].name.length > 0))
 					str += "&" + encodeURIComponent(areas[i].name) + "=" + encodeURIComponent(areas[i].value);
+			return str;
+		}
+
+		function ParmsEditorQuery(extra)
+		{
+			var str = ParmsEditorForm() + "&PARMS=" + encodeURIComponent(parmsEditorText);
+			if(extra)
+				str += extra;
 			return str;
 		}
 
@@ -108,7 +122,7 @@
 
 		function ParmsEditorLoad()
 		{
-			ParmsEditorSend(ParmsEditorForm() + "&PARMS=" + encodeURIComponent(parmsEditorText), function(body)
+			ParmsEditorSend(ParmsEditorQuery(), function(body)
 			{
 				parmsEditorAddPath = "";
 				parmsEditorAddAsked = false;
@@ -124,6 +138,14 @@
 			var text = document.getElementById("PEDITORTEXT");
 			if(text)
 				parmsEditorText = text.value;
+			ParmsEditorPreview();
+		}
+
+		function ParmsEditorPreview()
+		{
+			var view = document.getElementById("PARMSEDITORPREVIEW");
+			if(view)
+				view.textContent = parmsEditorText;
 		}
 
 		function ParmsEditorChanged()
@@ -135,7 +157,7 @@
 
 		function ParmsEditorValidate()
 		{
-			ParmsEditorSend(ParmsEditorForm() + "&TEXTONLY=1", function(resp)
+			ParmsEditorSend(ParmsEditorQuery("&TEXTONLY=1"), function(resp)
 			{
 				var parts = resp.split("\n");
 				if(parts.length < 2)
@@ -144,6 +166,7 @@
 				var text = document.getElementById("PEDITORTEXT");
 				if(text)
 					text.value = parmsEditorText;
+				ParmsEditorPreview();
 				var msg = document.getElementById("PARMSEDITORMSG");
 				if(parts[1].length > 0)
 					msg.innerHTML = "<FONT COLOR=#FFC0CB>" + parts[1] + "</FONT>";
@@ -154,7 +177,7 @@
 
 		function ParmsEditorRebuild()
 		{
-			ParmsEditorSend(ParmsEditorForm(), function(body)
+			ParmsEditorSend(ParmsEditorQuery(), function(body)
 			{
 				var pane = document.getElementById("PARMSEDITORBODY");
 				var msg = pane.innerHTML;
@@ -183,7 +206,7 @@
 
 		function ParmsEditorSave()
 		{
-			ParmsEditorSend(ParmsEditorForm() + "&TEXTONLY=1", function(resp)
+			ParmsEditorSend(ParmsEditorQuery("&TEXTONLY=1"), function(resp)
 			{
 				var parts = resp.split("\n");
 				if(parts.length < 2)
@@ -208,6 +231,12 @@
 			});
 		}
 
+		function ParmsEditorHelp()
+		{
+			var strFeatures = "top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=600,alwaysRaised=yes,dependent=yes";
+			window.open("/ahelp.cmvp?HELPTOPIC=" + encodeURIComponent(parmsEditorAbility) + "&ADDFORMAT", "Help", strFeatures, false);
+		}
+
 		function ParmsEditorInit()
 		{
 			parmsEditorAbility = ParmsEditorParam("ABILITY");
@@ -223,6 +252,7 @@
 				return;
 			}
 			parmsEditorText = fld.value;
+			ParmsEditorPreview();
 			document.getElementById("PARMSEDITORBODY").onkeyup = ParmsEditorChanged;
 			ParmsEditorLoad();
 		}
@@ -233,10 +263,11 @@
 <body bgcolor="#000000" text="#FFFFFF" link="#FFFF00" vlink="#FFFF00" alink="#FFFF00" onload="ParmsEditorInit();">
 	<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 		<TR>
-			<TD ALIGN=LEFT><B><FONT COLOR=YELLOW>Parms Editor: <SPAN ID=PARMSEDITORID></SPAN></FONT></B></TD>
+			<TD ALIGN=LEFT><B><FONT COLOR=YELLOW>Parms Editor: <SPAN ID=PARMSEDITORID></SPAN></FONT></B>
+			<A HREF="javascript:ParmsEditorHelp()" TITLE="help"><FONT COLOR=YELLOW><I>?</I></FONT></A></TD>
 		</TR>
 	</TABLE>
-	<BR>
+	<PRE ID=PARMSEDITORPREVIEW></PRE>
 	<DIV ID=PARMSEDITORBODY>loading...</DIV>
 	<BR>
 	<DIV ID=PARMSEDITORMSG></DIV>
