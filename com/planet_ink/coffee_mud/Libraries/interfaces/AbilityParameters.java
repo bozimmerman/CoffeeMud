@@ -510,13 +510,22 @@ public interface AbilityParameters extends CMLibrary
 	public String parmsEditorText(final ParmEdit edit, final String format, final String parms) throws CMException;
 
 	/**
+	 * Prompts the given user, using the mud's standard menu interface, to edit
+	 * the parameters of an ability or behavior using its format.  A line is one
+	 * rep of the parms, and a letter names one part of a line.
+	 *
+	 * @param mob the player doing the editing
+	 * @param title the name of what is being edited
+	 * @param format the format the parms must follow
+	 * @param parms the parms as they stand
+	 * @return the parms as the user left them
+	 * @throws java.io.IOException any i/o errors that occur
+	 */
+	public String parmsEditor(final MOB mob, final String title, final String format, final String parms) throws java.io.IOException;
+
+	/**
 	 * An AbilityParameters interface for passing around a completely decoded CraftorAbility
 	 * (Common Skill) recipe list, ready for manipulation by users.
-	 *
-	 * DEV NOTES: Data rows are a DVector (editor ID, data).  However, it starts off as
-	 * (List of possible editor IDs, data), until the correct ID is determined.
-	 * For data rows, the offender is blankRow() below, which returns the confused set.
-	 * The columns are always either a string, or a list of strings, for multi-use columns.
 	 * @author Bo Zimmerman
 	 *
 	 */

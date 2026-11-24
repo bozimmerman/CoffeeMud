@@ -1820,6 +1820,185 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
+	/**
+	 * Prompts the given user, using the mud's standard menu interface, to edit
+	 * the parameters of an ability or behavior using its format.  A line is one
+	 * rep of the parms, and a letter names one part of a line.
+	 *
+	 * @param mob the player doing the editing
+	 * @param title the name of what is being edited
+	 * @param format the format the parms must follow
+	 * @param parms the parms as they stand
+	 * @return the parms as the user left them
+	 * @throws IOException any i/o errors that occur
+	 */
+	@Override
+	public String parmsEditor(final MOB mob, final String title, final String format, final String parms) throws IOException
+	{
+		if((mob == null)||(mob.session() == null))
+			return parms;
+		String text = (parms == null) ? "" : parms;
+		if((format == null)||(format.trim().length() == 0))
+			return text;
+		final Session sess = mob.session();
+		final MTToken tree;
+		try
+		{
+			tree = this.parseMTSequence(format, 0, format.length());
+		}
+		catch(final CMException e)
+		{
+			mob.tell(L("This parms format is malformed: @x1", e.getMessage()));
+			return text;
+		}
+		while(!sess.isStopped())
+		{
+			final Map<String, String> values = new HashMap<String, String>();
+			new MTParse(text, new MTFail(), values).match(tree, 0, null, "");
+			final ParmEdit view = new ParmEdit(ParmOp.NONE, "", new java.util.LinkedHashMap<String, String>());
+			final int reps = tree.repeats ? Math.max(1, this.parmValueReps("", values)) : 1;
+			for(int c = 0; c < reps; c++)
+				this.parmViewParts(tree, (c > 0) ? ("~" + c) : "", values, view.fields);
+			final List<String> parts = new ArrayList<String>();
+			for(final String key : view.fields.keySet())
+				if(key.startsWith("PV"))
+					parts.add(key.substring(2));
+			final String err = this.testParmsFormat(format, text);
+			mob.tell(L("@x1: '@x2' @x3", title, text, (err == null) ? L("(valid)") : ("(" + err + ")")));
+			for(int a = 0; a < parts.size(); a++)
+			{
+				final String part = parts.get(a);
+				final String choices = view.fields.get("PC" + part);
+				mob.tell(L("@x1) @x2: '@x3'", "" + (a + 1), view.fields.get("LB" + part),
+						((choices == null) ? view.fields.get("PV" + part) : choices.split("\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))])));
+			}
+			mob.tell(L("Enter a part number, +<number> to add a line to that part, -<number> to remove one, ? for the format, or ENTER when done."));
+			final String answer = sess.prompt(L("Edit which? "), "").trim();
+			if(answer.length() == 0)
+				break;
+			if(answer.equals("?"))
+			{
+				mob.tell(L("The format is: @x1", format));
+				continue;
+			}
+			final boolean removing = answer.startsWith("-");
+			final boolean adding = answer.startsWith("+");
+			final String named = (removing || adding) ? answer.substring(1).trim() : answer;
+			int digits = 0;
+			while((digits < named.length())&&(Character.isDigit(named.charAt(digits))))
+				digits++;
+			final int partNumber = (digits == 0) ? 0 : CMath.s_int(named.substring(0, digits));
+			if((partNumber < 1)||(partNumber > parts.size()))
+			{
+				mob.tell(L("There is no part @x1.", (digits == 0) ? answer : named.substring(0, digits)));
+				continue;
+			}
+			final String part = parts.get(partNumber - 1);
+			final int tilde = part.lastIndexOf('~');
+			if(adding)
+			{
+				text = this.parmEditorChanged(ParmOp.ADD, (tilde < 0) ? part : part.substring(0, tilde), format, text);
+				continue;
+			}
+			if(removing)
+			{
+				text = this.parmEditorChanged(ParmOp.REMOVE, part, format, text);
+				continue;
+			}
+			final Map<String, String> fields = new HashMap<String, String>();
+			fields.put("PEDITORSTATE", "1");
+			final String choices = view.fields.get("PC" + part);
+			if(choices != null)
+			{
+				final String[] each = choices.split("\n");
+				for(int c = 0; c < each.length; c++)
+					mob.tell(L("@x1) @x2", "" + (c + 1), each[c]));
+				final String pick = sess.prompt(L("Which @x1 [@x2]? ", view.fields.get("LB" + part), "" + (CMath.s_int(view.fields.get("PA" + part)) + 1)), "").trim();
+				if(pick.length() == 0)
+					continue;
+				final int chosen = CMath.s_int(pick) - 1;
+				if((chosen < 0)||(chosen >= each.length))
+				{
+					mob.tell(L("There is no choice @x1.", pick));
+					continue;
+				}
+				fields.put("PA" + part, "" + chosen);
+			}
+			else
+			{
+				final String hint = (view.fields.get("PG" + part) == null) ? "" : L(" (or off)");
+				final String value = sess.prompt(L("@x1 [@x2]@x3: ", view.fields.get("LB" + part), view.fields.get("PV" + part), hint), "").trim();
+				if(value.length() == 0)
+					continue;
+				fields.put("PV" + part, value.equalsIgnoreCase("off") ? "" : value);
+			}
+			try
+			{
+				text = this.parmsEditorText(new ParmEdit(ParmOp.NONE, null, fields), format, text);
+			}
+			catch(final CMException e)
+			{
+				mob.tell(e.getMessage());
+			}
+		}
+		mob.tell(L("Parameters: '@x1'", text));
+		return text;
+	}
+
+	private String parmEditorChanged(final ParmOp op, final String path, final String format, final String parms)
+	{
+		final Map<String, String> fields = new HashMap<String, String>();
+		fields.put("PEDITORSTATE", "1");
+		if(op == ParmOp.ADD)
+			fields.put("PADD", "1");
+		else
+		{
+			fields.put("PREMOVE", "1");
+			fields.put("PREMOVEPATH", path);
+		}
+		try
+		{
+			final String text = this.parmsEditorText(new ParmEdit(op, path, fields), format, parms);
+			// a part that is required and still empty must not turn valid parms into invalid
+			if((op != ParmOp.ADD)&&(this.testParmsFormat(format, text) != null)&&(this.testParmsFormat(format, parms) == null))
+				return parms;
+			return text;
+		}
+		catch(final CMException e)
+		{
+			return parms;
+		}
+	}
+
+	private void parmViewParts(final MTToken node, final String path, final Map<String, String> values, final Map<String, String> parts)
+	{
+		if((node.children == null)||(node.kind == MTKind.QUOTE_MARKER))
+		{
+			if(!this.isParmPlaceholder(node))
+				return;
+			final String held = values.get(path);
+			parts.put("LB" + path, this.parmPartPrompt(node));
+			parts.put("PV" + path, (held == null) ? "" : held);
+			if(node.optional)
+				parts.put("PG" + path, "1");
+			return;
+		}
+		if(node.kind == MTKind.ALTERNATION)
+		{
+			final StringBuilder str = new StringBuilder("");
+			for(int i = 0; i < node.children.length; i++)
+				str.append((i > 0) ? "\n" : "").append(this.parmBranchText(node.children[i]));
+			final int chosen = Math.max(0, Math.min(node.children.length - 1,
+					this.parmChoiceAt(new ParmEdit(ParmOp.NONE, "", new HashMap<String, String>()), path, values, node.children.length)));
+			parts.put("LB" + path, L("Which"));
+			parts.put("PC" + path, str.toString());
+			parts.put("PA" + path, "" + chosen);
+			return;
+		}
+		for(int i = 0; i < node.children.length; i++)
+			this.parmViewParts(node.children[i], path + "_" + i, values, parts);
+	}
+
 	@Override
 	public String parmsEditorHtml(final HTTPRequest httpReq, final ParmEdit edit, final String format, final String parms) throws CMException
 	{
@@ -1873,7 +2052,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			folded = new HashMap<String, String>(seeded);
 			this.parmValuesWithFields(tree, "", edit, folded);
 		}
-		final String adding = edit.field("PADD");
+		final String adding = ((edit.op == ParmOp.ADD) ? "1" : edit.field("PADD"));
 		final boolean grew = (adding != null)&&(adding.length() > 0);
 		if((!grew)&&(edit.field("PREMOVE") == null)&&(folded.equals(seeded)))
 			return text;
@@ -1889,8 +2068,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(!this.isParmPlaceholder(node))
 				return;
 			final String field = edit.field("PV" + path);
-			if((field != null)&&(field.length() > 0))
-				values.put(path, field);
+			if(field != null)
+			{
+				// a field left empty is how a page says the value was taken away
+				if(field.length() == 0)
+				{
+					for(final String key : new ArrayList<String>(values.keySet()))
+						if(key.equals(path)||key.startsWith(path + "_")||key.startsWith(path + "~"))
+							values.remove(key);
+				}
+				else
+					values.put(path, field);
+			}
 			return;
 		}
 		final MTToken[] children = node.children;
@@ -2740,7 +2929,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			final int saveIndex = index;
 			final boolean saveQuoteMode = this.quoteMode[0];
-			if(this.matchInternal(token, index, terminators, path, into))
+			final Map<String, String> partial = (into == null) ? null : new HashMap<String, String>();
+			final boolean matched = this.matchInternal(token, index, terminators, path, (partial == null) ? into : partial);
+			if(partial != null)
+				into.putAll(partial);
+			if(matched)
 				return true;
 			if(token.optional)
 			{
@@ -2876,8 +3069,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							{
 								this.outIndex[0] = index;
 								this.quoteMode[0] = saveQuoteMode;
+								if((into != null)&&(mine != null))
+									into.putAll(mine);
 								return true;
 							}
+							if((into != null)&&(mine != null))
+								into.putAll(mine);
 							return false;
 						}
 						currentIndex = this.outIndex[0];
@@ -2895,7 +3092,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							for(int c = 0; c < children.length; c++)
 							{
 								final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
-								if(!this.match(children[c], tempIndex, repTers, path + "_" + c + "~" + (rep + 1), mine))
+								if(!this.match(children[c], tempIndex, repTers, path + "_" + c + ((rep > 0) ? ("~" + rep) : ""), mine))
 								{
 									matched = false;
 									break;

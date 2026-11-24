@@ -71,6 +71,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	private final long maxLength=Long.MAX_VALUE;
+
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
 
@@ -4791,7 +4792,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String lastErr = "";
 		while(!S.isStopped() && s.equals("?") && (format.length()>0) && (format != CMParms.FORMAT_UNDEFINED))
 		{
-			s=S.prompt(L("@x1 parameters (?)\n\r:@x2",aname,parms));
+			s=S.prompt(L("@x1 parameters (?/?e)\n\r:@x2",aname,parms));
+			if(s.equalsIgnoreCase("?e"))
+			{
+				parms = CMLib.ableParms().parmsEditor(S.mob(), aname, format, parms);
+				s = "?";
+			}
+			else
 			if(s.equals("?"))
 			{
 				final String s2=CMLib.help().getHelpText(aid,S.mob(),true);
@@ -4801,6 +4808,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					S.println(L("No help entry"));
 				S.println(L("Format: @x1", format));
+				S.println(L("Enter ?e to use the editor."));
 			}
 			else
 			if(s.equalsIgnoreCase("null"))
