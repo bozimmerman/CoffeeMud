@@ -438,33 +438,27 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(s==null)
 			return "";
-		int x=s.indexOf('<');
-		if(x>=0)
+		if((s.indexOf('<')<0)
+		&&(s.indexOf('>')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s.length());
+		for(int i=0;i<s.length();i++)
 		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<s.length();i++)
+			final char c = s.charAt(i);
+			switch(c)
 			{
-				if(s.charAt(i)=='<')
-					str.append("&lt;");
-				else
-					str.append(s.charAt(i));
+			case '<':
+				str.append("&lt;");
+				break;
+			case '>':
+				str.append("&gt;");
+				break;
+			default:
+				str.append(c);
+				break;
 			}
-			s=str.toString();
 		}
-		x=s.indexOf('>');
-		if(x>=0)
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<s.length();i++)
-			{
-				if(s.charAt(i)=='>')
-					str.append("&gt;");
-				else
-					str.append(s.charAt(i));
-			}
-			s=str.toString();
-		}
-		return s;
+		return str.toString();
 	}
 
 	@Override
@@ -472,46 +466,31 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(s==null)
 			return "";
-		int x=s.indexOf('<');
-		if(x>=0)
+		if((s.indexOf('<')<0)
+		&&(s.indexOf('>')<0)
+		&&(s.indexOf('\"')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s.length());
+		for(int i=0;i<s.length();i++)
 		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<s.length();i++)
+			final char c = s.charAt(i);
+			switch(c)
 			{
-				if(s.charAt(i)=='<')
-					str.append("&lt;");
-				else
-					str.append(s.charAt(i));
+			case '<':
+				str.append("&lt;");
+				break;
+			case '>':
+				str.append("&gt;");
+				break;
+			case '\"':
+				str.append("&quot;");
+				break;
+			default:
+				str.append(c);
+				break;
 			}
-			s=str.toString();
 		}
-		x=s.indexOf('>');
-		if(x>=0)
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<s.length();i++)
-			{
-				if(s.charAt(i)=='>')
-					str.append("&gt;");
-				else
-					str.append(s.charAt(i));
-			}
-			s=str.toString();
-		}
-		x=s.indexOf('\"');
-		if(x>=0)
-		{
-			final StringBuilder str=new StringBuilder("");
-			for(int i=0;i<s.length();i++)
-			{
-				if(s.charAt(i)=='\"')
-					str.append("&quot;");
-				else
-					str.append(s.charAt(i));
-			}
-			s=str.toString();
-		}
-		return s;
+		return str.toString();
 	}
 
 	@Override
