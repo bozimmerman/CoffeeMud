@@ -2659,6 +2659,49 @@ public class CMStrings
 		return size;
 	}
 
+
+	/**
+	 * Makes the markup for a piece of literal text safe to sit in a page.
+	 * Converts common html chars, less than signs, ampersands, quotes, etc.
+	 * 
+	 * @param s string to convert
+	 * @return s, or a rebuilt one with entities
+	 */
+	public static String insertHtmlEntities(String s)
+	{
+		if(s==null)
+			return "";
+		if((s.indexOf('<')<0)
+		&&(s.indexOf('>')<0)
+		&&(s.indexOf('&')<0)
+		&&(s.indexOf('\"')<0))
+			return s;
+		final StringBuilder str=new StringBuilder(s.length());
+		for(int i=0;i<s.length();i++)
+		{
+			final char c = s.charAt(i);
+			switch(c)
+			{
+			case '<':
+				str.append("&lt;");
+				break;
+			case '>':
+				str.append("&gt;");
+				break;
+			case '&':
+				str.append("&amp;");
+				break;
+			case '\"':
+				str.append("&quot;");
+				break;
+			default:
+				str.append(c);
+				break;
+			}
+		}
+		return str.toString();
+	}
+
 	/**
 	 * This method returns the given string with any
 	 * &amp;..; entities converted to their original self

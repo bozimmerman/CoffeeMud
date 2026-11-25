@@ -1856,9 +1856,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final Map<String, String> values = new HashMap<String, String>();
 			new MTParse(text, new MTFail(), values).match(tree, 0, null, "");
 			final ParmEdit view = new ParmEdit(ParmOp.NONE, "", new java.util.LinkedHashMap<String, String>());
-			final int reps = tree.repeats ? Math.max(1, this.parmValueReps("", values)) : 1;
-			for(int c = 0; c < reps; c++)
-				this.parmViewParts(tree, (c > 0) ? ("~" + c) : "", values, view.fields);
+			this.parmViewParts(tree, "", values, view.fields, null);
 			final List<String> parts = new ArrayList<String>();
 			for(final String key : view.fields.keySet())
 				if(key.startsWith("PV"))
@@ -1870,7 +1868,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final String part = parts.get(a);
 				final String choices = view.fields.get("PC" + part);
 				mob.tell(L("@x1) @x2: '@x3'", "" + (a + 1), view.fields.get("LB" + part),
-						((choices == null) ? view.fields.get("PV" + part) : choices.split("\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))])));
+						((choices == null) ? view.fields.get("PV" + part) : choices.split("\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))]),
+						((choices == null) ? view.fields.get("PV" + part) : choices.split("\\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))])));
 			}
 			mob.tell(L("Enter a part number, +<number> to add a line to that part, -<number> to remove one, ? for the format, or ENTER when done."));
 			final String answer = sess.prompt(L("Edit which? "), "").trim();
@@ -1894,15 +1893,87 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				continue;
 			}
 			final String part = parts.get(partNumber - 1);
-			final int tilde = part.lastIndexOf('~');
 			if(adding)
 			{
-				text = this.parmEditorChanged(ParmOp.ADD, (tilde < 0) ? part : part.substring(0, tilde), format, text);
+				final String base = view.fields.get("PB" + part);
+				if(base == null)
+				{
+					mob.tell(L("Nothing on that line can be added to."));
+					continue;
+				}
+				// a line only exists once it says something, so ask for the new line first
+				int last = 0;
+				boolean any = false;
+				for(final String key : values.keySet())
+				{
+					if(values.get(key).trim().length() == 0)
+						continue;
+					if((!key.equals(base))&&(!key.startsWith(base + "_"))&&(!key.startsWith(base + "~")))
+						continue;
+					int rep = 0;
+					final int at = key.indexOf('~', base.length());
+					if(at >= 0)
+					{
+						int end = at + 1;
+						while((end < key.length())&&(Character.isDigit(key.charAt(end))))
+							end++;
+						if(end > (at + 1))
+							rep = CMath.s_int(key.substring(at + 1, end));
+					}
+					if(rep >= last)
+						last = rep;
+					any = true;
+				}
+				final int held = any ? (last + 1) : 0;
+				final Map<String, String> added = new HashMap<String, String>();
+				added.put("PEDITORSTATE", "1");
+				if(held > 0)
+					added.put("PADD", "1");
+				added.put("PADDPATH", base);
+				boolean filled = false;
+				for(final String key : view.fields.keySet())
+				{
+					if((!key.startsWith("PV"))||(!key.substring(2).startsWith(base)))
+						continue;
+					final String under = key.substring(2);
+					final String newPath = (held > 0) ? (under + "~" + held) : under;
+					final String value = sess.prompt(L("@x1 [@x2]: ", view.fields.get("LB" + under), ""), "").trim();
+					if(value.length() > 0)
+					{
+						added.put("PV" + newPath, value);
+						filled = true;
+					}
+				}
+				if(!filled)
+					continue;
+				try
+				{
+					text = this.parmsEditorText(new ParmEdit((held > 0) ? ParmOp.ADD : ParmOp.NONE, base, added), format, text);
+				}
+				catch(final CMException e)
+				{
+					mob.tell(e.getMessage());
+				}
 				continue;
 			}
 			if(removing)
 			{
-				text = this.parmEditorChanged(ParmOp.REMOVE, part, format, text);
+				// the part names one rep inside a line, so drop that whole line
+				final String base = (view.fields.get("PB" + part) == null) ? part : view.fields.get("PB" + part);
+				int rep = 0;
+				if(part.startsWith(base))
+				{
+					final int at = part.indexOf('~', base.length());
+					if(at >= 0)
+					{
+						int end = at + 1;
+						while((end < part.length())&&(Character.isDigit(part.charAt(end))))
+							end++;
+						if(end > (at + 1))
+							rep = CMath.s_int(part.substring(at + 1, end));
+					}
+				}
+				text = this.parmEditorChanged(ParmOp.REMOVE, base + "~" + rep, format, text);
 				continue;
 			}
 			final Map<String, String> fields = new HashMap<String, String>();
@@ -1950,7 +2021,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final Map<String, String> fields = new HashMap<String, String>();
 		fields.put("PEDITORSTATE", "1");
 		if(op == ParmOp.ADD)
+		{
 			fields.put("PADD", "1");
+			fields.put("PADDPATH", path);
+		}
 		else
 		{
 			fields.put("PREMOVE", "1");
@@ -1970,8 +2044,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private void parmViewParts(final MTToken node, final String path, final Map<String, String> values, final Map<String, String> parts)
+	private void parmViewParts(final MTToken node, final String path, final Map<String, String> values, final Map<String, String> parts, final String repBase)
 	{
+		final String repeats = (node.repeats) ? path : repBase;
 		if((node.children == null)||(node.kind == MTKind.QUOTE_MARKER))
 		{
 			if(!this.isParmPlaceholder(node))
@@ -1979,6 +2054,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final String held = values.get(path);
 			parts.put("LB" + path, this.parmPartPrompt(node));
 			parts.put("PV" + path, (held == null) ? "" : held);
+			if(repeats != null)
+				parts.put("PB" + path, repeats);
 			if(node.optional)
 				parts.put("PG" + path, "1");
 			return;
@@ -1995,8 +2072,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			parts.put("PA" + path, "" + chosen);
 			return;
 		}
-		for(int i = 0; i < node.children.length; i++)
-			this.parmViewParts(node.children[i], path + "_" + i, values, parts);
+		final int reps = (node.repeats) ? this.parmRepMax(path, values) : 1;
+		for(int r = 0; r < reps; r++)
+			for(int i = 0; i < node.children.length; i++)
+				this.parmViewParts(node.children[i], path + "_" + i + ((r > 0) ? ("~" + r) : ""), values, parts, repeats);
 	}
 
 	@Override
@@ -2008,7 +2087,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		else
 			tree = this.parseMTSequence(format, 0, format.length());
 		if(tree == null)
-			return "<INPUT TYPE=TEXT SIZE=60 NAME=PEDITORFREE VALUE=\"" + escapeHtml(parms) + "\" ONKEYUP=\"ParmsEditorChanged();\" ONCHANGE=\"ParmsEditorChanged();\">";
+		{
+			return "<INPUT TYPE=TEXT SIZE=60 NAME=PEDITORFREE VALUE=\"" 
+				+ CMStrings.insertHtmlEntities(parms) + "\" ONKEYUP=\"ParmsEditorChanged();\" ONCHANGE=\"ParmsEditorChanged();\">";
+		}
 		final StringBuilder str = new StringBuilder("");
 		final Map<String, String> seeded = new HashMap<String, String>();
 		final String text = (parms == null) ? "" : parms;
@@ -2108,12 +2190,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	/**
-	 * The part whose rep the page asked to drop.
-	 *
-	 * @param edit what the page posted back
-	 * @return the part, or null when no rep is being removed
-	 */
 	private String parmRemovingPath(final ParmEdit edit)
 	{
 		if(edit.op != ParmOp.REMOVE)
@@ -2133,14 +2209,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return removingPath;
 	}
 	
-	/**
-	 * Drops the rep named by the request from the values, moving every rep after
-	 * it down one, so the fields on the page match the parms that are left.
-	 *
-	 * @param httpReq the request naming the rep to drop
-	 * @param values the values read from the parms
-	 * @return the values without that rep
-	 */
 	private Map<String, String> parmRemovedReps(final ParmEdit edit, final Map<String, String> values)
 	{
 		final String removingPath = this.parmRemovingPath(edit);
@@ -2188,6 +2256,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(rep == gone)
 				continue;
 			final int now = (rep > gone) ? (rep - 1) : rep;
+			// the first rep of a line never carries the spacing that separated it
+			if((now == 0)&&((key.endsWith("~GAP"))||(key.endsWith("~WS"))))
+				continue;
 			moved.put(base + tail.substring(0, tilde) + ((now > 0) ? "~" + now : "") + tail.substring(digits), values.get(key));
 		}
 		return moved;
@@ -2233,6 +2304,27 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final String held = values.get(key);
 			if((CMath.isInteger(num))&&(held != null)&&(held.trim().length() > 0))
 				reps = Math.max(reps, CMath.s_int(num) + 1);
+		}
+		return reps;
+	}
+
+	private int parmRepMax(final String path, final Map<String, String> values)
+	{
+		int reps = 1;
+		for(final String key : values.keySet())
+		{
+			if(values.get(key).trim().length() == 0)
+				continue;
+			if((!key.startsWith(path + "_"))&&(!key.startsWith(path + "~")))
+				continue;
+			for(int at = key.indexOf('~'); at >= 0; at = key.indexOf('~', at + 1))
+			{
+				int stop = at + 1;
+				while((stop < key.length())&&(Character.isDigit(key.charAt(stop))))
+					stop++;
+				if(stop > (at + 1))
+					reps = Math.max(reps, CMath.s_int(key.substring(at + 1, stop)) + 1);
+			}
 		}
 		return reps;
 	}
@@ -2334,42 +2426,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Makes the markup for a piece of literal text safe to sit in a page.
-	 *
-	 * @param text the text to write
-	 * @return the text with the characters a page reads specially escaped
-	 */
-	private static String escapeHtml(final String text)
-	{
-		if((text == null)||(text.length() == 0))
-			return "";
-		final StringBuilder str = new StringBuilder();
-		for(int i = 0; i < text.length(); i++)
-		{
-			final char c = text.charAt(i);
-			switch(c)
-			{
-			case '&':
-				str.append("&amp;");
-				break;
-			case '<':
-				str.append("&lt;");
-				break;
-			case '>':
-				str.append("&gt;");
-				break;
-			case '"':
-				str.append("&quot;");
-				break;
-			default:
-				str.append(c);
-				break;
-			}
-		}
-		return str.toString();
 	}
 
 	private boolean parmIsQuoteMarker(final MTToken node)
@@ -2525,7 +2581,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final String prompt = this.parmArg(node, "prompt");
 		if((prompt == null)||(prompt.trim().length() == 0))
 			return;
-		str.append("<FONT COLOR=#C0C0C0>").append(escapeHtml(prompt.trim())).append("&nbsp;</FONT>");
+		str.append("<FONT COLOR=#C0C0C0>").append(CMStrings.insertHtmlEntities(prompt.trim())).append("&nbsp;</FONT>");
 	}
 
 	private String parmEditorField(final MTToken node, final String path, final ParmEdit edit, final HTTPRequest httpReq, final Map<String, String> values)
@@ -2546,11 +2602,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if((parmType == ParmType.CONFIRM)||(parmType == ParmType.CHECK))
 		{
 			final StringBuilder str = new StringBuilder();
-			str.append("<INPUT TYPE=CHECKBOX NAME=").append(escapeHtml(fieldName)).append(" VALUE=TRUE");
+			str.append("<INPUT TYPE=CHECKBOX NAME=").append(CMStrings.insertHtmlEntities(fieldName)).append(" VALUE=TRUE");
 			if(CMath.s_bool(value))
 				str.append(" CHECKED");
 			str.append(" ONCLICK=\"ParmsEditorChanged();\">");
-			str.append("<INPUT TYPE=HIDDEN NAME=PC").append(escapeHtml(path)).append(" VALUE=1>");
+			str.append("<INPUT TYPE=HIDDEN NAME=PC").append(CMStrings.insertHtmlEntities(path)).append(" VALUE=1>");
 			return str.toString();
 		}
 		final AbilityParmEditor editor = getEditors().get(name);
@@ -2565,21 +2621,22 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		if((choices != null)&&(choices.length() > 0)&&(choices.indexOf(',') > 0))
 		{
 			final StringBuilder str = new StringBuilder();
-			str.append("<SELECT NAME=").append(escapeHtml(fieldName)).append(" ONCHANGE=\"ParmsEditorChanged();\">");
+			str.append("<SELECT NAME=").append(CMStrings.insertHtmlEntities(fieldName)).append(" ONCHANGE=\"ParmsEditorChanged();\">");
 			str.append("<OPTION VALUE=\"\"></OPTION>");
 			for(final String choice : CMParms.parseCommas(choices, true))
 			{
 				final String unquoted = choice.trim();
-				str.append("<OPTION VALUE=\"").append(escapeHtml(unquoted)).append("\"");
+				str.append("<OPTION VALUE=\"").append(CMStrings.insertHtmlEntities(unquoted)).append("\"");
 				if(unquoted.equalsIgnoreCase(value))
 					str.append(" SELECTED");
 				final String shown = ((unquoted == null)||(unquoted.length() <= 60)) ? unquoted : unquoted.substring(0, 60).trim();
-				str.append(">").append(escapeHtml(shown)).append("</OPTION>");
+				str.append(">").append(CMStrings.insertHtmlEntities(shown)).append("</OPTION>");
 			}
 			str.append("</SELECT>");
 			return str.toString();
 		}
-		return "<INPUT TYPE=TEXT SIZE=20 NAME=" + escapeHtml(fieldName) + " VALUE=\"" + escapeHtml(value)
+		return "<INPUT TYPE=TEXT SIZE=20 NAME=" + CMStrings.insertHtmlEntities(fieldName) 
+			+ " VALUE=\"" + CMStrings.insertHtmlEntities(value)
 			+ "\" ONKEYUP=\"ParmsEditorChanged();\" ONCHANGE=\"ParmsEditorChanged();\">";
 	}
 
@@ -2596,8 +2653,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			final String label = this.parmPartPrompt(node);
 			if(label.length() > 0)
-				str.append("<FONT COLOR=#C0C0C0>").append(escapeHtml(label)).append("&nbsp;</FONT>");
-			str.append("<INPUT TYPE=CHECKBOX NAME=PG").append(escapeHtml(path)).append(" VALUE=1");
+				str.append("<FONT COLOR=#C0C0C0>").append(CMStrings.insertHtmlEntities(label)).append("&nbsp;</FONT>");
+			str.append("<INPUT TYPE=CHECKBOX NAME=PG").append(CMStrings.insertHtmlEntities(path)).append(" VALUE=1");
 			if(present)
 				str.append(" CHECKED");
 			str.append(" ONCLICK=\"ParmsEditorRebuild();\">");
@@ -2611,7 +2668,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final String text = node.literal;
 				if((text.length() == 1)&&("\"".indexOf(text.charAt(0)) >= 0))
 					return;
-				str.append(escapeHtml(text));
+				str.append(CMStrings.insertHtmlEntities(text));
 				return;
 			}
 			// the box next to this field already carries its name
@@ -2627,7 +2684,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			for(int c = 0; c < reps; c++)
 			{
 				final String repPath = (c > 0) ? (path + "~" + c) : path;
-				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(escapeHtml(repPath)).append(" VALUE=1>");
+				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(CMStrings.insertHtmlEntities(repPath)).append(" VALUE=1>");
 				str.append("<BR>");
 				for(int i = 0; i < depth; i++)
 					str.append("&nbsp;&nbsp;");
@@ -2636,14 +2693,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				else
 				{
 					final int chosen = this.parmChoiceAt(edit, repPath, values, children.length);
-					str.append("<SELECT NAME=PA").append(escapeHtml(repPath)).append(" ONCHANGE=\"ParmsEditorRebuild();\">");
+					str.append("<SELECT NAME=PA").append(CMStrings.insertHtmlEntities(repPath)).append(" ONCHANGE=\"ParmsEditorRebuild();\">");
 					for(int b = 0; b < children.length; b++)
 					{
 						str.append("<OPTION VALUE=").append(b);
 						if(b == chosen)
 							str.append(" SELECTED");
 						final String shown = this.parmBranchText(children[b]);
-						str.append(">").append(escapeHtml((shown == null)||(shown.length() <= 60) ? shown : shown.substring(0, 60).trim())).append("</OPTION>");
+						final String shownFinal = (shown == null)||(shown.length() <= 60) ? shown : shown.substring(0, 60).trim();
+						str.append(">").append(CMStrings.insertHtmlEntities(shownFinal)).append("</OPTION>");
 					}
 					str.append("</SELECT>");
 					if(this.parmHasField(children[chosen]))
@@ -2654,13 +2712,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 				if((node.repeats)&&(reps > 1))
 				{
-					str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(escapeHtml(path + "~" + c))
+					str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(CMStrings.insertHtmlEntities(path + "~" + c))
 						.append("')\" TITLE=\"remove this rep\">-</A>");
 				}
 			}
 			if(node.repeats)
 			{
-				str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(escapeHtml(path))
+				str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(CMStrings.insertHtmlEntities(path))
 					.append("')\" TITLE=\"add another\">+</A><BR>");
 			}
 			return;
@@ -2671,7 +2729,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final String repPath = (c > 0) ? (path + "~" + c) : path;
 			if(c > 0)
 			{
-				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(escapeHtml(repPath)).append(" VALUE=1>");
+				str.append("<INPUT TYPE=HIDDEN NAME=PX").append(CMStrings.insertHtmlEntities(repPath)).append(" VALUE=1>");
 				str.append("<BR>");
 				for(int i = 0; i < depth; i++)
 					str.append("&nbsp;&nbsp;");
@@ -2680,13 +2738,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				this.parmsEditors(children[i], path + "_" + i + ((c > 0) ? "~" + c : ""), node.repeats ? (depth + 1) : depth, edit, httpReq, values, str, false);
 			if((node.repeats)&&(count > 1))
 			{
-				str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(escapeHtml(path + "~" + c))
+				str.append("&nbsp;<A HREF=\"javascript:ParmsEditorRemoveRep('").append(CMStrings.insertHtmlEntities(path + "~" + c))
 					.append("')\" TITLE=\"remove this rep\">-</A>");
 			}
 		}
 		if(node.repeats)
 		{
-			str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(escapeHtml(path))
+			str.append("<BR><A HREF=\"javascript:ParmsEditorAddOne('").append(CMStrings.insertHtmlEntities(path))
 				.append("')\" TITLE=\"add another\">+</A><BR>");
 		}
 	}
@@ -3019,7 +3077,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 										for(final MTToken alt2 : children)
 										{
 											final int thisAlt2 = innerIndex++;
-											if(this.match(alt2, saveRepeatIndex, terminators, path + "~" + (rep + 1) + "_" + thisAlt2, mine))
+											if(this.match(alt2, saveRepeatIndex, terminators, path + "_" + thisAlt2 + "~" + (rep + 1), mine))
 											{
 												if(this.outIndex[0] > saveRepeatIndex)
 												{
@@ -3092,7 +3150,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							for(int c = 0; c < children.length; c++)
 							{
 								final Set<Character> repTers = terminatorsAfter(children, c, token.repeats, terminators);
-								if(!this.match(children[c], tempIndex, repTers, path + "_" + c + ((rep > 0) ? ("~" + rep) : ""), mine))
+								if(!this.match(children[c], tempIndex, repTers, path + "_" + c + "~" + (rep + 1), mine))
 								{
 									matched = false;
 									break;
