@@ -209,7 +209,7 @@ public class Prop_RoomRedirect extends Property
 	}
 
 	@SuppressWarnings("unchecked")
-	public Room getRedirectRoom(final MOB mob)
+	public Room getRedirectRoom(final MOB mob, boolean look)
 	{
 		final PairList<CompiledZMask, Object> redirects = this.getRedirects();
 		Area area=CMLib.map().areaLocation(mob);
@@ -225,6 +225,8 @@ public class Prop_RoomRedirect extends Property
 				else
 				if(o instanceof Triad)
 				{
+					if(look)
+						return null; 
 					// a remote destination has no local room; offer the player
 					// to the other mud and let the local transfer finish.
 					final Triad<String,Integer,String> tri = (Triad<String,Integer,String>)o;
@@ -297,7 +299,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_RECALL:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source());
+					final Room realRoom=this.getRedirectRoom(msg.source(),false);
 					if(realRoom != null)
 					{
 						if(msg.source().isPlayer())
@@ -315,7 +317,7 @@ public class Prop_RoomRedirect extends Property
 				if((!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				&&(isReallyHere(msg.source())))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source());
+					final Room realRoom=this.getRedirectRoom(msg.source(),true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -348,7 +350,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_RECALL:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source());
+					final Room realRoom=this.getRedirectRoom(msg.source(),false);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -359,7 +361,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_LOOK_EXITS:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source());
+					final Room realRoom=this.getRedirectRoom(msg.source(),true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -374,7 +376,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_EXAMINE:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source());
+					final Room realRoom=this.getRedirectRoom(msg.source(),true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -389,7 +391,7 @@ public class Prop_RoomRedirect extends Property
 		{
 			if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			{
-				final Room realRoom=this.getRedirectRoom(msg.source());
+				final Room realRoom=this.getRedirectRoom(msg.source(),false);
 				if(realRoom != null)
 				{
 					msg.setTarget(realRoom);
