@@ -80,6 +80,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Map<Integer, List<Reference<MsgListener>>>	globalHandlers	= new SHashtable<Integer, List<Reference<MsgListener>>>();
 	public Map<String, List<LocatedPair>>				scriptHostMap	= new STreeMap<String, List<LocatedPair>>();
 	public Map<String, List<Taggable>>					taggedMap		= new STreeMap<String, List<Taggable>>(String.CASE_INSENSITIVE_ORDER);
+	public Map<Triad<String,String,Integer>, Room>		arrivalRooms	= new SHashtable<Triad<String,String,Integer>, Room>();
 
 	private static class LocatedPairImpl implements LocatedPair, CMObject
 	{
@@ -359,7 +360,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		return new FilteredEnumeration<Area>(areas(),topLevelAreaFilter);
 	}
-
+	
 	@Override
 	public Enumeration<String> roomIDs()
 	{
@@ -941,14 +942,26 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public void registerArrivalRoom(final String originHost, final int originPort, final String originRoom, final Room R)
+	{
+		Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(), originHost.toLowerCase(), Integer.valueOf(originPort)); 
+		synchronized(this.arrivalRooms)
+		{
+			if(R == null)
+				arrivalRooms.remove(tri);
+			else
+				arrivalRooms.put(tri, R);
+		}
+	}
+
+	@Override
 	public Room getArrivalRoom(final String originHost, final int originPort, final String originRoom)
 	{
-		//TODO: eventually a Property (placeable on rooms, exits, or portals) will redirect a
-		//      player to another mud, and that destination mud will carry a matching property
-		//      pointing back at the origin mud. Cache those cross-mud mappings here, keyed by
-		//      the origin mud (originHost/originPort) plus the originRoom id, so arriving
-		//      foreign players land in the mapped room. Until then, ask for a random room.
-		return getRandomRoom();
+		Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(),originHost.toLowerCase(),Integer.valueOf(originPort));
+		synchronized(this.arrivalRooms)
+		{
+			return this.arrivalRooms.get(tri);
+		}
 	}
 
 	public int numDeities()

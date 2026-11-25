@@ -69,16 +69,53 @@ public class Prop_RoomRedirect extends Property
 				+"((#[NUMBER(prompt=Room #/colh=Rm#)])/"
 				+"([CHECK(name=BEACON/prompt=Beacon/colh=Beacon)])/"
 				+"([NUMBER(prompt=Room #/colh=Rm#)])/"
+				+"([STRING(prompt=Remote Room ID/colh=RRID)..@]@[STRING(prompt=hostname/colh=host)..:]:[NUMBER(prompt=port/colh=port)])"
 				+"([ROOM_ID(prompt=Room ID/colh=RID)..=]))"
 				+"="
 				+"[ZAPPERMASK(prompt=Mask/colh=Mask)..;]"
 				+")..;)";
 	}
 
+	protected Triad<String,Integer,String> makeRemoteTriad(final String roomIdStr)
+	{
+		if((roomIdStr.indexOf('@')>0)
+		&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
+		{
+			int hostDex = roomIdStr.lastIndexOf('@');
+			int portDex = roomIdStr.lastIndexOf(':',hostDex);
+			final String remoteRoomId = roomIdStr.substring(0,hostDex).trim();
+			final String remoteHost = roomIdStr.substring(hostDex+1,portDex).trim();
+			final int port = CMath.s_int(roomIdStr.substring(portDex+1).trim());
+			return new Triad<String,Integer,String>(remoteHost,Integer.valueOf(port),remoteRoomId);
+		}
+		return null;
+	}
+	
+	protected void registerRemotes()
+	{
+		if((affected!=null)
+		&&(this.rawRedirects.size()>0)
+		&&(CMLib.map().roomLocation(affected)!=null))
+		{
+			for(int p=rawRedirects.size()-1;p>=0;p--)
+			{
+				final Pair<String,String> pair=rawRedirects.get(p);
+				final String roomIdStr = pair.first;
+				if((roomIdStr.indexOf('@')>0)
+				&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
+				{
+					final Triad<String,Integer,String> tri = makeRemoteTriad(roomIdStr);
+					CMLib.map().registerArrivalRoom(tri.first, tri.second.intValue(), tri.third, CMLib.map().roomLocation(affected));
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText((newMiscText==null) ? "" : newMiscText.trim());
+		unregisterRemotes();
 		this.rawRedirects.clear();
 		this.redirects.clear();
 		final String[] pairs = this.miscText.split(";");
@@ -88,13 +125,38 @@ public class Prop_RoomRedirect extends Property
 			if(x>=0)
 				rawRedirects.add(new Pair<String,String>(pair.substring(0,x).trim(),pair.substring(x+1).trim()));
 		}
+		this.registerRemotes();
 	}
 
+	protected void unregisterRemotes()
+	{
+		if(this.rawRedirects.size()>0)
+		{
+			// when property is removed from its host, remove the room redirect registrations
+			for(int p=rawRedirects.size()-1;p>=0;p--)
+			{
+				final Pair<String,String> pair=rawRedirects.get(p);
+				Triad<String,Integer,String> triad = this.makeRemoteTriad(pair.first);
+				if(triad != null)
+					CMLib.map().registerArrivalRoom(triad.first,triad.second.intValue(),triad.third,null);
+			}
+		}
+	}
+
+	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		unregisterRemotes();
+		super.setAffectedOne(P);
+		if((affected != null)&&(this.rawRedirects.size()>0))
+			this.registerRemotes();
+	}
+	
 	protected synchronized final PairList<CompiledZMask, Object> getRedirects()
 	{
 		if(rawRedirects.size() != redirects.size())
 		{
-			redirects.clear();
+			this.redirects.clear();
 			final Set<String> foundMasks = new HashSet<String>();
 			final String roomID=(affected instanceof Environmental)?affected.Name():"";
 			for(int p=rawRedirects.size()-1;p>=0;p--)
@@ -123,6 +185,13 @@ public class Prop_RoomRedirect extends Property
 					else
 					if(CMath.isInteger(roomIdStr))
 						redirects.add(mask, "#"+roomIdStr);
+					else
+					if((roomIdStr.indexOf('@')>0)
+					&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
+					{
+						final Triad<String,Integer,String> tri = makeRemoteTriad(roomIdStr);
+						redirects.add(mask, tri);
+					}
 					else
 					if(roomIdStr.equalsIgnoreCase("beacon"))
 						redirects.add(mask, "BEACON");
