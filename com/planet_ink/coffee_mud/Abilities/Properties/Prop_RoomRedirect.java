@@ -208,6 +208,7 @@ public class Prop_RoomRedirect extends Property
 		return redirects;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Room getRedirectRoom(final MOB mob)
 	{
 		final PairList<CompiledZMask, Object> redirects = this.getRedirects();
@@ -221,6 +222,21 @@ public class Prop_RoomRedirect extends Property
 				final Object o = p.second;
 				if(o instanceof Room)
 					return CMLib.map().getRoom((Room)o);
+				else
+				if(o instanceof Triad)
+				{
+					// a remote destination has no local room; offer the player
+					// to the other mud and let the local transfer finish.
+					final Triad<String,Integer,String> tri = (Triad<String,Integer,String>)o;
+					final Session S = mob.session();
+					if((mob.isPlayer())
+					&&(S != null)
+					&&(S.getClientTelnetMode(Session.TELNET_MPCP))
+					&&(mob.playerStats() != null)
+					&&(mob.playerStats().getIMudTransferData() == null))
+						S.doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(tri.first, tri.second));
+					return null;
+				}
 				else
 				if(o instanceof String)
 				{
