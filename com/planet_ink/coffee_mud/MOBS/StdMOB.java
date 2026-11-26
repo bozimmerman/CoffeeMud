@@ -3542,6 +3542,9 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_NEEDRELOAD:
 					if(msg.tool() instanceof AmmunitionWeapon)
 						CMLib.combat().handleWeaponNeedsReload(msg.source(),(AmmunitionWeapon)msg.tool());
+					else
+					if(msg.target() instanceof AmmunitionWeapon)
+						CMLib.combat().handleWeaponNeedsReload(msg.source(),(AmmunitionWeapon)msg.target());
 					break;
 				case CMMsg.TYP_RETREAT:
 					{

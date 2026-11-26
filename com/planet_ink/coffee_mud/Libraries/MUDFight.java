@@ -3724,9 +3724,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if(mob==null)
 			return;
-		final String name = CMStrings.replaceAll(weapon.name(), "\"", "\\\"");
+		String ctxName=mob.getContextName(weapon);
+		if((ctxName==null)||(ctxName.trim().length()==0)||(ctxName.equalsIgnoreCase("nothing")))
+			ctxName=weapon.name();
+		final String name = CMStrings.replaceAll(ctxName, "\"", "\\\"");
 		if(!mob.isMonster())
-			mob.enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
+			mob.enqueCommand(CMParms.parse("LOAD ALL \""+name+"\""), 0, 0);
 		else
 		{
 			boolean hasAmmo = false;
@@ -3741,9 +3744,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			if(hasAmmo)
-				mob.enqueCommand(CMParms.parse("LOAD ALL \"$"+name+"$\""), 0, 0);
+				mob.enqueCommand(CMParms.parse("LOAD ALL \""+name+"\""), 0, 0);
 			else
-				mob.enqueCommand(CMParms.parse("REMOVE \"$"+name+"$\""), 0, 0);
+				mob.enqueCommand(CMParms.parse("REMOVE \""+name+"\""), 0, 0);
 		}
 	}
 

@@ -79,7 +79,7 @@ public class Prop_RoomRedirect extends Property
 				+"([CHECK(name=BEACON/prompt=Beacon/colh=Beacon)])/"
 				+"([CHECK(name=HOME/prompt=Home/colh=Home)])/"
 				+"([NUMBER(prompt=Room #/colh=Rm#)])/"
-				+"([STRING(prompt=Remote Room ID (FROM room@host:port for arrivals)/colh=RRID)..@]@[STRING(prompt=hostname/colh=host)..:]:[NUMBER(prompt=port/colh=port)])"
+				+"([CHOICES(choices=FROM:,TO:/prompt=Remote/colh=rem)][STRING(prompt=Remote Room ID/colh=RRID)..@]@[STRING(prompt=hostname/colh=host)..:]:[NUMBER(prompt=port/colh=port)])"
 				+"([ROOM_ID(prompt=Room ID/colh=RID)..=]))"
 				+"="
 				+"[ZAPPERMASK(prompt=Mask/colh=Mask)..;]"
