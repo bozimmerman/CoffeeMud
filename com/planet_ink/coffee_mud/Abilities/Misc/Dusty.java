@@ -107,6 +107,8 @@ public class Dusty extends StdAbility
 		dustTime = CMParms.getParmLong(newMiscText, "TIME", System.currentTimeMillis());
 		lastInterval = CMParms.getParmLong(newMiscText, "INTERVAL",  6 * 20);
 		lastInterval *= CMProps.getMillisPerMudHour();
+		if(lastInterval < CMProps.getMillisPerMudHour())
+			lastInterval = CMProps.getMillisPerMudHour();
 		nextChange = dustTime + lastInterval;
 	}
 
@@ -126,6 +128,8 @@ public class Dusty extends StdAbility
 			{
 				dustTime = System.currentTimeMillis();
 				lastInterval *= 2;
+				if((lastInterval < CMProps.getMillisPerMudHour())||(lastInterval >= (Long.MAX_VALUE/2)))
+					lastInterval = CMProps.getMillisPerMudHour();
 				dustLevel += 1;
 				nextChange = dustTime + lastInterval;
 			}
