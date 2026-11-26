@@ -31,6 +31,8 @@
 29. New common skill: Snake Oil Selling
 30. Ability/Property parameters/arguments validated in CL and the MUDGrinder + new editor.
 31. Proxy server and Prop_RoomRedirect now support temp player xfers to/from diff muds on proxy.
+... Prop_RoomRedirect supports the above proxy feature.
+
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
