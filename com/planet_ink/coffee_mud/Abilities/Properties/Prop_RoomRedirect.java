@@ -42,7 +42,16 @@ public class Prop_RoomRedirect extends Property
 	}
 
 	final PairSVector<String, String>			rawRedirects	= new PairSVector<String, String>();
+	final List<String>							rawArrivals		= new Vector<String>();
 	final PairSVector<CompiledZMask, Object>	redirects		= new PairSVector<CompiledZMask, Object>();
+
+	/**
+	 * How long after arriving from another mud a player is left alone, so that
+	 * a room which redirects back at the mud they came from doesn't bounce them
+	 * straight back out again.
+	 */
+	private static final long					MPCP_ARRIVAL_GRACE_MS	= 5000;
+	private static final Map<MOB, Room>			ENTER_ROOMS				= new ExpireHashMap<MOB, Room>(15000);
 
 	@Override
 	public String name()
@@ -59,7 +68,7 @@ public class Prop_RoomRedirect extends Property
 	@Override
 	public String accountForYourself()
 	{
-		return "Redirects you somewhere else..";
+		return "Sends you somewhere else, or receives you from somewhere else..";
 	}
 
 	@Override
@@ -68,8 +77,9 @@ public class Prop_RoomRedirect extends Property
 		return "(("
 				+"((#[NUMBER(prompt=Room #/colh=Rm#)])/"
 				+"([CHECK(name=BEACON/prompt=Beacon/colh=Beacon)])/"
+				+"([CHECK(name=HOME/prompt=Home/colh=Home)])/"
 				+"([NUMBER(prompt=Room #/colh=Rm#)])/"
-				+"([STRING(prompt=Remote Room ID/colh=RRID)..@]@[STRING(prompt=hostname/colh=host)..:]:[NUMBER(prompt=port/colh=port)])"
+				+"([STRING(prompt=Remote Room ID (FROM room@host:port for arrivals)/colh=RRID)..@]@[STRING(prompt=hostname/colh=host)..:]:[NUMBER(prompt=port/colh=port)])"
 				+"([ROOM_ID(prompt=Room ID/colh=RID)..=]))"
 				+"="
 				+"[ZAPPERMASK(prompt=Mask/colh=Mask)..;]"
@@ -82,11 +92,12 @@ public class Prop_RoomRedirect extends Property
 		&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
 		{
 			int hostDex = roomIdStr.lastIndexOf('@');
-			int portDex = roomIdStr.lastIndexOf(':',hostDex);
+			int portDex = roomIdStr.indexOf(':',hostDex);
 			final String remoteRoomId = roomIdStr.substring(0,hostDex).trim();
 			final String remoteHost = roomIdStr.substring(hostDex+1,portDex).trim();
 			final int port = CMath.s_int(roomIdStr.substring(portDex+1).trim());
-			return new Triad<String,Integer,String>(remoteHost,Integer.valueOf(port),remoteRoomId);
+			if((port>0)&&(port<=65535))
+				return new Triad<String,Integer,String>(remoteHost,Integer.valueOf(port),remoteRoomId);
 		}
 		return null;
 	}
@@ -94,19 +105,14 @@ public class Prop_RoomRedirect extends Property
 	protected void registerRemotes()
 	{
 		if((affected!=null)
-		&&(this.rawRedirects.size()>0)
+		&&(this.rawArrivals.size()>0)
 		&&(CMLib.map().roomLocation(affected)!=null))
 		{
-			for(int p=rawRedirects.size()-1;p>=0;p--)
+			for(int p=rawArrivals.size()-1;p>=0;p--)
 			{
-				final Pair<String,String> pair=rawRedirects.get(p);
-				final String roomIdStr = pair.first;
-				if((roomIdStr.indexOf('@')>0)
-				&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
-				{
-					final Triad<String,Integer,String> tri = makeRemoteTriad(roomIdStr);
+				final Triad<String,Integer,String> tri = makeRemoteTriad(rawArrivals.get(p));
+				if(tri != null)
 					CMLib.map().registerArrivalRoom(tri.first, tri.second.intValue(), tri.third, CMLib.map().roomLocation(affected));
-				}
 			}
 		}
 	}
@@ -117,26 +123,36 @@ public class Prop_RoomRedirect extends Property
 		super.setMiscText((newMiscText==null) ? "" : newMiscText.trim());
 		unregisterRemotes();
 		this.rawRedirects.clear();
+		this.rawArrivals.clear();
 		this.redirects.clear();
 		final String[] pairs = this.miscText.split(";");
 		for(final String pair : pairs)
 		{
 			final int x=pair.indexOf('=');
 			if(x>=0)
-				rawRedirects.add(new Pair<String,String>(pair.substring(0,x).trim(),pair.substring(x+1).trim()));
+			{
+				String spec=pair.substring(0,x).trim();
+				final String upper=spec.toUpperCase();
+				final boolean arrival=(upper.startsWith("FROM "))||(upper.startsWith("FROM:"));
+				if((arrival)||(upper.startsWith("TO "))||(upper.startsWith("TO:")))
+					spec=spec.substring(arrival?5:3).trim();
+				if(arrival)
+					rawArrivals.add(spec);
+				else
+					rawRedirects.add(new Pair<String,String>(spec,pair.substring(x+1).trim()));
+			}
 		}
 		this.registerRemotes();
 	}
 
 	protected void unregisterRemotes()
 	{
-		if(this.rawRedirects.size()>0)
+		if(this.rawArrivals.size()>0)
 		{
 			// when property is removed from its host, remove the room redirect registrations
-			for(int p=rawRedirects.size()-1;p>=0;p--)
+			for(int p=rawArrivals.size()-1;p>=0;p--)
 			{
-				final Pair<String,String> pair=rawRedirects.get(p);
-				Triad<String,Integer,String> triad = this.makeRemoteTriad(pair.first);
+				Triad<String,Integer,String> triad = this.makeRemoteTriad(rawArrivals.get(p));
 				if(triad != null)
 					CMLib.map().registerArrivalRoom(triad.first,triad.second.intValue(),triad.third,null);
 			}
@@ -148,7 +164,7 @@ public class Prop_RoomRedirect extends Property
 	{
 		unregisterRemotes();
 		super.setAffectedOne(P);
-		if((affected != null)&&(this.rawRedirects.size()>0))
+		if((affected != null)&&((this.rawRedirects.size()>0)||(this.rawArrivals.size()>0)))
 			this.registerRemotes();
 	}
 	
@@ -190,11 +206,15 @@ public class Prop_RoomRedirect extends Property
 					&&(roomIdStr.indexOf(':')>roomIdStr.lastIndexOf('@')))
 					{
 						final Triad<String,Integer,String> tri = makeRemoteTriad(roomIdStr);
-						redirects.add(mask, tri);
+						if(tri != null)
+							redirects.add(mask, tri);
 					}
 					else
 					if(roomIdStr.equalsIgnoreCase("beacon"))
 						redirects.add(mask, "BEACON");
+					else
+					if(roomIdStr.equalsIgnoreCase("home"))
+						redirects.add(mask, "HOME");
 					else
 					{
 						Log.errOut("Prop_RoomRedirect '"+roomID+"' has invalid room id '"+roomIdStr+"'.");
@@ -209,7 +229,7 @@ public class Prop_RoomRedirect extends Property
 	}
 
 	@SuppressWarnings("unchecked")
-	public Room getRedirectRoom(final MOB mob, boolean look)
+	public Room getRedirectRoom(final MOB mob, boolean look, boolean allowRemote)
 	{
 		final PairList<CompiledZMask, Object> redirects = this.getRedirects();
 		Area area=CMLib.map().areaLocation(mob);
@@ -226,17 +246,26 @@ public class Prop_RoomRedirect extends Property
 				if(o instanceof Triad)
 				{
 					if(look)
-						return null; 
+						return null;
 					// a remote destination has no local room; offer the player
 					// to the other mud and let the local transfer finish.
 					final Triad<String,Integer,String> tri = (Triad<String,Integer,String>)o;
-					final Session S = mob.session();
-					if((mob.isPlayer())
-					&&(S != null)
-					&&(S.getClientTelnetMode(Session.TELNET_MPCP))
-					&&(mob.playerStats() != null)
-					&&(mob.playerStats().getIMudTransferData() == null))
-						S.doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(tri.first, tri.second));
+					final PlayerStats.IMudTransferData fxfer = (mob.playerStats() != null)
+							? mob.playerStats().getIMudTransferData() : null;
+					if(allowRemote)
+					{
+						final Room lastRoom = ENTER_ROOMS.get(mob);
+						if((lastRoom != null) && (mob.location() != lastRoom))
+							lastRoom.bringMobHere(mob, false);
+						final Session S = mob.session();
+						if((mob.isPlayer())
+						&&(S != null)
+						&&(S.getClientTelnetMode(Session.TELNET_MPCP))
+						&&((fxfer == null)
+							||(fxfer.isLocal)
+							||((System.currentTimeMillis() - fxfer.timestamp) >= MPCP_ARRIVAL_GRACE_MS)))
+							S.doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(tri.first, tri.second));
+					}
 					return null;
 				}
 				else
@@ -261,6 +290,28 @@ public class Prop_RoomRedirect extends Property
 						}
 						else
 							return mob.getStartRoom();
+					}
+					else
+					if(s.equals("HOME"))
+					{
+						if(look)
+							return null;
+						final PlayerStats.IMudTransferData fxfer = (mob.playerStats() != null)
+								? mob.playerStats().getIMudTransferData() : null;
+						if((fxfer != null) && (!fxfer.isLocal) && (fxfer.host != null))
+						{
+							if(allowRemote)
+							{
+								final Session S = mob.session();
+								if((S != null)&&(S.getClientTelnetMode(Session.TELNET_MPCP)))
+									S.doPing(Session.SessionPing.PLAYERTRANSFER, new Pair<String,Integer>(fxfer.host, Integer.valueOf(fxfer.port)));
+							}
+							return null;
+						}
+						final Room R = mob.getStartRoom();
+						if((R == null) || (R == mob.location()))
+							return null;
+						return R;
 					}
 				}
 			}
@@ -297,9 +348,10 @@ public class Prop_RoomRedirect extends Property
 			{
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_RECALL:
+				ENTER_ROOMS.put(msg.source(), msg.source().location());
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source(),false);
+					final Room realRoom=this.getRedirectRoom(msg.source(),false,false);
 					if(realRoom != null)
 					{
 						if(msg.source().isPlayer())
@@ -317,7 +369,7 @@ public class Prop_RoomRedirect extends Property
 				if((!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				&&(isReallyHere(msg.source())))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source(),true);
+					final Room realRoom=this.getRedirectRoom(msg.source(),true,false);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -350,7 +402,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_RECALL:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source(),false);
+					final Room realRoom=this.getRedirectRoom(msg.source(),false,true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -361,7 +413,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_LOOK_EXITS:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source(),true);
+					final Room realRoom=this.getRedirectRoom(msg.source(),true,true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -376,7 +428,7 @@ public class Prop_RoomRedirect extends Property
 			case CMMsg.TYP_EXAMINE:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 				{
-					final Room realRoom=this.getRedirectRoom(msg.source(),true);
+					final Room realRoom=this.getRedirectRoom(msg.source(),true,true);
 					if(realRoom != null)
 					{
 						msg.setTarget(realRoom);
@@ -391,7 +443,7 @@ public class Prop_RoomRedirect extends Property
 		{
 			if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
 			{
-				final Room realRoom=this.getRedirectRoom(msg.source(),false);
+				final Room realRoom=this.getRedirectRoom(msg.source(),false,true);
 				if(realRoom != null)
 				{
 					msg.setTarget(realRoom);

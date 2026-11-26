@@ -82,7 +82,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 
 	private static final long	MPCP_SWAP_TIMEOUT_MS		= 15000;
 	private static final long	MPCP_OFFER_TIMEOUT_MS	= 30000;
-	
 	private final Map<Session, MiniJSON.JSONObject> mpcpSwapInfos = 
 			Collections.synchronizedMap(new WeakHashMap<Session, MiniJSON.JSONObject>());
 	private final Map<Session, Triad<String,MOB,Long>> mpcpSessionSwaps = 
@@ -168,6 +167,25 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return "";
 	}
 	
+	/**
+	 * Clears a transfer marker that can no longer lead anywhere.  The marker is
+	 * otherwise only cleared in memory on the mob object that happens to be
+	 * loaded, so a redirect that fails while the player is logged out leaves the
+	 * saved record pointing at a mud that no longer has them, and every later
+	 * login is dropped instead of loading locally.
+	 *
+	 * @param mob the player to clear the marker from
+	 */
+	private void clearTransferMarker(final MOB mob)
+	{
+		if((mob == null)||(mob.playerStats() == null))
+			return;
+		if(mob.playerStats().getIMudTransferData() == null)
+			return;
+		mob.playerStats().setIMudTransferData(null);
+		CMLib.players().savePlayer(mob);
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void doMPCPCommand(final Session session, final SessionPing ping, final Object obj)
@@ -197,7 +215,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					Log.errOut("MPCP/Swap","Swap for '"+mob.Name()+"' ("+redirectId+") timed out with no result from "
 							+ tgtP.first+":"+tgtP.second);
 					if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getIMudTransferData()!=null))
-						mob.playerStats().setIMudTransferData(null);
+						clearTransferMarker(mob);
 				}
 			}, MPCP_SWAP_TIMEOUT_MS);
 			swapDoc.put("redirect_id", redirectId);
@@ -212,10 +230,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			{
 				final IMudTransferData fxfer = (mob.playerStats() != null)
 						? mob.playerStats().getIMudTransferData() : null;
-				if((fxfer != null) && (!fxfer.isLocal))
-					sendMPCPTransfer(session, mob, (Pair<String,Integer>)obj, MPCPSessionTask.RETURN.name().toLowerCase());
+				final Pair<String,Integer> tgt=(Pair<String,Integer>)obj;
+				if((fxfer != null)
+				&&(!fxfer.isLocal)
+				&&(fxfer.host != null)
+				&&(tgt.first != null)
+				&&(tgt.second != null)
+				&&(fxfer.host.equalsIgnoreCase(tgt.first))
+				&&(fxfer.port == tgt.second.intValue()))
+					sendMPCPTransfer(session, mob, tgt, MPCPSessionTask.RETURN.name().toLowerCase());
 				else
-					sendMPCPOffer(session, mob, (Pair<String,Integer>)obj);
+					sendMPCPOffer(session, mob, tgt);
 			}
 		}
 		else
@@ -378,7 +403,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final MOB homeM = CMLib.players().getPlayer(name);
 				if((homeM != null) && (!CMLib.flags().isInTheGame(homeM, true)))
 				{
-					final Room R = CMLib.map().getRoom(originRoom);
+					Room R = CMLib.map().getArrivalRoom(srcHost, srcPort, originRoom);
+					if(R == null)
+						R = CMLib.map().getRoom(originRoom);
 					if(R != null)
 					{
 						homeM.setStartRoom(R);
@@ -841,14 +868,19 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 			}
 			if((tgtS == null)||(wait == null))
+			{
+				final MOB lostMob = (name.length()>0) ? CMLib.players().getPlayer(name) : null;
+				if(lostMob != null)
+					clearTransferMarker(lostMob);
 				return;
+			}
 			if(!ok)
 				Log.errOut("MPCP/Swap","Target reported failure for '"+name+((reason.length()>0)?(": "+reason):""));
 			if((System.currentTimeMillis()-wait.third.longValue())>MPCP_SWAP_TIMEOUT_MS)
 				Log.errOut("MPCP/Swap","Swap result for '"+name+"' arrived late; resolving as reported: "+ok);
 			final MOB mob = wait.second;
-			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getIMudTransferData()!=null))
-				mob.playerStats().setIMudTransferData(null);
+			if(mob != null)
+				clearTransferMarker(mob);
 			if(ok && (tgtS!=null) && (tgtS.mob()==null))
 				tgtS.stopSession(false, true, true, false);
 		}

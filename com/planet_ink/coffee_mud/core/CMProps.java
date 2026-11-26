@@ -748,7 +748,7 @@ public class CMProps extends Properties
 				final String ts = s.trim();
 				if(ts.startsWith("[")&&(ts.endsWith("]")))
 				{
-					section=ts.substring(1,ts.length()-2).trim().toUpperCase();
+					section=ts.substring(1,ts.length()-1).trim().toUpperCase();
 					if(sections.indexOfFirst(section)>=0)
 						bout=sections.getSecond(sections.indexOfFirst(section));
 					else

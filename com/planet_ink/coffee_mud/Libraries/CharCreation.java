@@ -4583,6 +4583,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(mob.playerStats().getIMudTransferData()==null)
 			return;
 		mob.playerStats().setIMudTransferData(null);
+		CMLib.players().savePlayer(mob);
 	}
 
 	public LoginResult completeCharacterLogin(final Session session, final String login, final boolean wiziFlag) throws IOException

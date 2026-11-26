@@ -944,7 +944,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public void registerArrivalRoom(final String originHost, final int originPort, final String originRoom, final Room R)
 	{
-		Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(), originHost.toLowerCase(), Integer.valueOf(originPort)); 
+		if((originHost == null)
+		||(originRoom == null))
+			return;
+		final Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(), originHost.toLowerCase(), Integer.valueOf(originPort));
 		synchronized(this.arrivalRooms)
 		{
 			if(R == null)
@@ -957,7 +960,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public Room getArrivalRoom(final String originHost, final int originPort, final String originRoom)
 	{
-		Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(),originHost.toLowerCase(),Integer.valueOf(originPort));
+		if((originHost == null)
+		||(originRoom == null))
+			return null;
+		final Triad<String,String,Integer> tri = new Triad<String,String,Integer>(originRoom.toLowerCase(),originHost.toLowerCase(),Integer.valueOf(originPort));
 		synchronized(this.arrivalRooms)
 		{
 			return this.arrivalRooms.get(tri);

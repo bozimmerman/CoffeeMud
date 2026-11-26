@@ -30,6 +30,7 @@
 28. FakeDB performance and safety improvements, and new optional V2 for large tables
 29. New common skill: Snake Oil Selling
 30. Ability/Property parameters/arguments validated in CL and the MUDGrinder + new editor.
+31. Proxy server and Prop_RoomRedirect now support temp player xfers to/from diff muds on proxy.
 
 # Build 5.11.0.1 Release 10/28/2025
   1. Proxy server reconnects now bypass conn-spam blocks
