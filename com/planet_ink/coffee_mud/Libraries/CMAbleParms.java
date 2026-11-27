@@ -2610,7 +2610,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return str.toString();
 		}
 		final AbilityParmEditor editor = getEditors().get(name);
-		if(editor != null)
+		if(editor != null && httpReq != null)
 		{
 			final String entry = editor.webField(httpReq, httpReq.getUrlParametersCopy(), value, fieldName);
 			if((entry != null)&&(entry.trim().length() > 0)
@@ -2989,7 +2989,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final boolean saveQuoteMode = this.quoteMode[0];
 			final Map<String, String> partial = (into == null) ? null : new HashMap<String, String>();
 			final boolean matched = this.matchInternal(token, index, terminators, path, (partial == null) ? into : partial);
-			if(partial != null)
+			if(partial != null && into != null)
 				into.putAll(partial);
 			if(matched)
 				return true;

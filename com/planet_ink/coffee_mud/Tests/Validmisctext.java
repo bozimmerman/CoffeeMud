@@ -99,9 +99,9 @@ public class Validmisctext extends StdTest
 				return Boolean.FALSE;
 			if(name.equals("blockingIn")||name.equals("readlineContinue"))
 				return "";
-			if(name.equals("prompt"))
+			if(name.equals("prompt") && args!=null)
 			{
-				if((args != null)&&(args.length == 1)&&(args[0] instanceof Session.InputCallback))
+				if((args.length == 1)&&(args[0] instanceof Session.InputCallback))
 				{
 					final Session.InputCallback cb = (Session.InputCallback)args[0];
 					cb.showPrompt();
@@ -110,14 +110,14 @@ public class Validmisctext extends StdTest
 					return null;
 				}
 				printArg(new Object[]{args[0]});
-				if((args != null)&&(args.length >= 2)&&(args[1] instanceof String))
+				if((args.length >= 2)&&(args[1] instanceof String))
 					return args[1];
 				return "";
 			}
-			if(name.equals("choose"))
+			if(name.equals("choose") && args != null)
 			{
 				printArg(new Object[]{args[0]});
-				if((args != null)&&(args.length >= 3)&&(args[2] instanceof String))
+				if((args.length >= 3)&&(args[2] instanceof String))
 					return args[2];
 				return "";
 			}
