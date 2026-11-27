@@ -78,7 +78,10 @@ public class DBConnection
 	private Boolean				isFakeDB			= null;
 
 	/** Track the thread that owns the connection */
-	private volatile Thread		lastThread			= null;
+	volatile Thread				lastThread			= null;
+
+	/** where this connection was fetched from */
+	volatile StackTraceElement[]	fetchStack			= null;
 
 	public static enum FetchType
 	{
@@ -230,6 +233,7 @@ public class DBConnection
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
 			this.lastThread = Thread.currentThread();
+			this.fetchStack = new Throwable().getStackTrace();
 			lastError=null;
 			try
 			{
@@ -286,6 +290,7 @@ public class DBConnection
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
 			this.lastThread = Thread.currentThread();
+			this.fetchStack = new Throwable().getStackTrace();
 			lastError=null;
 			myPreparedStatement=null;
 			sqlserver=true;
@@ -310,6 +315,7 @@ public class DBConnection
 		if((!inUse)&&(ready()))
 		{
 			this.lastThread = Thread.currentThread();
+			this.fetchStack = new Throwable().getStackTrace();
 			lastError=null;
 			try
 			{
@@ -446,6 +452,7 @@ public class DBConnection
 		if(!isReusable)
 			close();
 		this.lastThread = null;
+		this.fetchStack = null;
 		inUse=false;
 	}
 

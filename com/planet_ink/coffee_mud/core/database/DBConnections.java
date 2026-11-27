@@ -467,8 +467,24 @@ public class DBConnections
 					int inuse=0;
 					for(final DBConnection conn : connections)
 					{
+						if(((!conn.inUse())&&(!conn.ready()))
+						||((conn.lastThread!=null)&&(!conn.lastThread.isAlive())))
+						{
+							if(conn.fetchStack!=null)
+								for(final StackTraceElement e : conn.fetchStack)
+									Log.errOut("DBConnections","Evicting dead connection, fetched at: "+e);
+							conn.close();
+							connections.remove(conn);
+						}
+						else
 						if(conn.inUse())
 							inuse++;
+					}
+					if(connections.size()<maxConnections)
+					{
+						consecutiveFailures=0;
+						failureStart=0;
+						continue;
 					}
 					if(failureStart == 0)
 						failureStart = System.currentTimeMillis();
@@ -480,7 +496,12 @@ public class DBConnections
 							for(final DBConnection conn : connections)
 							{
 								if(conn.inUse())
+								{
 									Log.errOut("Last SQL was: "+conn.lastSQL);
+									if(conn.fetchStack!=null)
+										for(final StackTraceElement e : conn.fetchStack)
+											Log.errOut("DBConnections","   Fetched at: "+e);
+								}
 							}
 							if(inuse==0)
 								resetConnections();
