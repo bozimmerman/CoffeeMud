@@ -1856,10 +1856,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			final Map<String, String> values = new HashMap<String, String>();
 			new MTParse(text, new MTFail(), values).match(tree, 0, null, "");
 			final ParmEdit view = new ParmEdit(ParmOp.NONE, "", new java.util.LinkedHashMap<String, String>());
-			this.parmViewParts(tree, "", values, view.fields, null);
+			final Map<String, MTToken> nodes = new HashMap<String, MTToken>();
+			this.parmViewParts(tree, "", values, view.fields, null, nodes);
 			final List<String> parts = new ArrayList<String>();
+			// a part that is only a choice has no value of its own, but it is still a part
 			for(final String key : view.fields.keySet())
-				if(key.startsWith("PV"))
+				if((key.startsWith("PV"))||(key.startsWith("PS")))
 					parts.add(key.substring(2));
 			final String err = this.testParmsFormat(format, text);
 			mob.tell(L("@x1: '@x2' @x3", title, text, (err == null) ? L("(valid)") : ("(" + err + ")")));
@@ -1867,11 +1869,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			{
 				final String part = parts.get(a);
 				final String choices = view.fields.get("PC" + part);
-				mob.tell(L("@x1) @x2: '@x3'", "" + (a + 1), view.fields.get("LB" + part),
-						((choices == null) ? view.fields.get("PV" + part) : choices.split("\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))]),
-						((choices == null) ? view.fields.get("PV" + part) : choices.split("\\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))])));
+				final String value;
+				if(choices != null)
+					value = choices.split("\n")[Math.max(0, CMath.s_int(view.fields.get("PA" + part)))];
+				else
+				if(view.fields.get("PV" + part) != null)
+					value = view.fields.get("PV" + part);
+				else
+				{
+					// a part with nothing to type says what it is on its own
+					final MTToken check = nodes.get(part);
+					final String named = (check == null) ? null : this.parmCheckValue(check);
+					value = (named == null) ? "" : named;
+				}
+				mob.tell(L("@x1) @x2: '@x3'", "" + (a + 1), view.fields.get("LB" + part), value));
 			}
 			mob.tell(L("Enter a part number, +<number> to add a line to that part, -<number> to remove one, ? for the format, or ENTER when done."));
+			if((parts.size() > 0)&&(text.trim().length() == 0))
+				mob.tell(L("Enter @x1 to fill in the first line, or +@x1 to add another line.", "1"));
 			final String answer = sess.prompt(L("Edit which? "), "").trim();
 			if(answer.length() == 0)
 				break;
@@ -1896,59 +1911,96 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(adding)
 			{
 				final String base = view.fields.get("PB" + part);
-				if(base == null)
+				final MTToken node = (base == null) ? null : nodes.get(base);
+				if((base == null)||(node == null))
 				{
 					mob.tell(L("Nothing on that line can be added to."));
 					continue;
 				}
-				// a line only exists once it says something, so ask for the new line first
-				int last = 0;
-				boolean any = false;
-				for(final String key : values.keySet())
-				{
-					if(values.get(key).trim().length() == 0)
-						continue;
-					if((!key.equals(base))&&(!key.startsWith(base + "_"))&&(!key.startsWith(base + "~")))
-						continue;
-					int rep = 0;
-					final int at = key.indexOf('~', base.length());
-					if(at >= 0)
-					{
-						int end = at + 1;
-						while((end < key.length())&&(Character.isDigit(key.charAt(end))))
-							end++;
-						if(end > (at + 1))
-							rep = CMath.s_int(key.substring(at + 1, end));
-					}
-					if(rep >= last)
-						last = rep;
-					any = true;
-				}
-				final int held = any ? (last + 1) : 0;
 				final Map<String, String> added = new HashMap<String, String>();
 				added.put("PEDITORSTATE", "1");
-				if(held > 0)
-					added.put("PADD", "1");
 				added.put("PADDPATH", base);
 				boolean filled = false;
-				for(final String key : view.fields.keySet())
+				if(node.kind == MTKind.ALTERNATION)
 				{
-					if((!key.startsWith("PV"))||(!key.substring(2).startsWith(base)))
-						continue;
-					final String under = key.substring(2);
-					final String newPath = (held > 0) ? (under + "~" + held) : under;
-					final String value = sess.prompt(L("@x1 [@x2]: ", view.fields.get("LB" + under), ""), "").trim();
-					if(value.length() > 0)
+					// a line of an alternation is a clause, so the line starts with which one
+					final String choices = view.fields.get("PC" + base);
+					final String[] each = (choices == null) ? new String[0] : choices.split("\n");
+					if(each.length == 0)
 					{
-						added.put("PV" + newPath, value);
+						mob.tell(L("Nothing on that line can be added to."));
+						continue;
+					}
+					for(int c = 0; c < each.length; c++)
+						mob.tell(L("@x1) @x2", "" + (c + 1), each[c]));
+					final String pick = sess.prompt(L("Which? "), "").trim();
+					if(pick.length() == 0)
+						continue;
+					final int chosen = CMath.s_int(pick) - 1;
+					if((chosen < 0)||(chosen >= each.length))
+					{
+						mob.tell(L("There is no choice @x1.", pick));
+						continue;
+					}
+					final int count = Math.max(1, this.parmValueReps(base, values));
+					final int rep = this.parmFreeRep(base, values);
+					if(rep >= count)
+						added.put("PADD", "1");
+					final String repPath = (rep > 0) ? (base + "~" + rep) : base;
+					final String branchPath = repPath + "_" + chosen;
+					final Map<String, String> seed = new HashMap<String, String>(values);
+					seed.put(repPath, "" + chosen);
+					final Map<String, String> fresh = new java.util.LinkedHashMap<String, String>();
+					this.parmViewParts(tree, "", seed, fresh, null, new HashMap<String, MTToken>());
+					for(final String key : fresh.keySet())
+					{
+						if((!key.startsWith("PV"))||(!key.substring(2).startsWith(branchPath + "_")))
+							continue;
+						final String under = key.substring(2);
+						final String label = fresh.get("LB" + under);
+						final String value = sess.prompt(L("@x1 [@x2]: ", label, ""), "").trim();
+						if(value.length() > 0)
+						{
+							added.put("PV" + under, value);
+							filled = true;
+						}
+					}
+					if((filled)||(this.parmHoldsCheck(node.children[chosen])))
+					{
+						added.put("PA" + repPath, "" + chosen);
 						filled = true;
+					}
+				}
+				else
+				{
+					// a line only exists once it says something, so ask for the new line first
+					final int count = Math.max(1, this.parmValueReps(base, values));
+					final int rep = this.parmFreeRep(base, values);
+					if(rep >= count)
+						added.put("PADD", "1");
+					for(final String key : view.fields.keySet())
+					{
+						if(!key.startsWith("PV"))
+							continue;
+						final String under = key.substring(2);
+						if((!under.equals(base))&&(!under.startsWith(base + "_"))&&(!under.startsWith(base + "~")))
+							continue;
+						final String newPath = (rep > 0) ? (base + "~" + rep + under.substring(base.length()))
+								: under;
+						final String label = view.fields.get("LB" + under);
+						final String value = sess.prompt(L("@x1 [@x2]: ", label, ""), "").trim();
+						if(value.length() > 0)
+						{
+							added.put("PV" + newPath, value);
+							filled = true;
+						}
 					}
 				}
 				if(!filled)
 					continue;
 				try
 				{
-					text = this.parmsEditorText(new ParmEdit((held > 0) ? ParmOp.ADD : ParmOp.NONE, base, added), format, text);
+					text = this.parmsEditorText(new ParmEdit(ParmOp.ADD, base, added), format, text);
 				}
 				catch(final CMException e)
 				{
@@ -1984,7 +2036,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final String[] each = choices.split("\n");
 				for(int c = 0; c < each.length; c++)
 					mob.tell(L("@x1) @x2", "" + (c + 1), each[c]));
-				final String pick = sess.prompt(L("Which @x1 [@x2]? ", view.fields.get("LB" + part), "" + (CMath.s_int(view.fields.get("PA" + part)) + 1)), "").trim();
+				final int current = CMath.s_int(view.fields.get("PA" + part));
+				final String pick = sess.prompt(L("Which [@x1]? ", "" + (current + 1)), "").trim();
 				if(pick.length() == 0)
 					continue;
 				final int chosen = CMath.s_int(pick) - 1;
@@ -1993,10 +2046,35 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					mob.tell(L("There is no choice @x1.", pick));
 					continue;
 				}
+				if(chosen != CMath.s_int(view.fields.get("PA" + part)))
+				{
+					// a line that becomes another clause needs to be asked what the clause says
+					final Map<String, String> seed = new HashMap<String, String>(values);
+					seed.put(part, "" + chosen);
+					final Map<String, String> fresh = new java.util.LinkedHashMap<String, String>();
+					this.parmViewParts(tree, "", seed, fresh, null, new HashMap<String, MTToken>());
+					final String branchPath = part + "_" + chosen;
+					for(final String key : fresh.keySet())
+					{
+						if((!key.startsWith("PV"))||(!key.substring(2).startsWith(branchPath + "_")))
+							continue;
+						final String under = key.substring(2);
+						final String label = fresh.get("LB" + under);
+						final String value = sess.prompt(L("@x1 [@x2]: ", label, ""), "").trim();
+						if(value.length() > 0)
+							fields.put("PV" + under, value);
+					}
+				}
 				fields.put("PA" + part, "" + chosen);
 			}
 			else
 			{
+				if(view.fields.get("PV" + part) == null)
+				{
+					// nothing to type, so there is nothing to change but which line it is
+					mob.tell(L("Use -@x1 to take that line away.", "" + partNumber));
+					continue;
+				}
 				final String hint = (view.fields.get("PG" + part) == null) ? "" : L(" (or off)");
 				final String value = sess.prompt(L("@x1 [@x2]@x3: ", view.fields.get("LB" + part), view.fields.get("PV" + part), hint), "").trim();
 				if(value.length() == 0)
@@ -2044,38 +2122,58 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	private void parmViewParts(final MTToken node, final String path, final Map<String, String> values, final Map<String, String> parts, final String repBase)
+	private void parmViewParts(final MTToken node, final String path, final Map<String, String> values,
+			final Map<String, String> parts, final String repBase, final Map<String, MTToken> nodes)
 	{
 		final String repeats = (node.repeats) ? path : repBase;
 		if((node.children == null)||(node.kind == MTKind.QUOTE_MARKER))
 		{
 			if(!this.isParmPlaceholder(node))
 				return;
+			nodes.put(path, node);
 			final String held = values.get(path);
 			parts.put("LB" + path, this.parmPartPrompt(node));
-			parts.put("PV" + path, (held == null) ? "" : held);
+			// a check the format names has nothing to type, since the name is the value
+			if(this.parmCheckValue(node) == null)
+				parts.put("PV" + path, (held == null) ? "" : held);
+			else
+				parts.put("PS" + path, "1");
 			if(repeats != null)
 				parts.put("PB" + path, repeats);
 			if(node.optional)
 				parts.put("PG" + path, "1");
 			return;
 		}
+		nodes.put(path, node);
 		if(node.kind == MTKind.ALTERNATION)
 		{
 			final StringBuilder str = new StringBuilder("");
 			for(int i = 0; i < node.children.length; i++)
 				str.append((i > 0) ? "\n" : "").append(this.parmBranchText(node.children[i]));
-			final int chosen = Math.max(0, Math.min(node.children.length - 1,
-					this.parmChoiceAt(new ParmEdit(ParmOp.NONE, "", new HashMap<String, String>()), path, values, node.children.length)));
-			parts.put("LB" + path, L("Which"));
-			parts.put("PC" + path, str.toString());
-			parts.put("PA" + path, "" + chosen);
+			final int reps = (node.repeats) ? this.parmRepMax(path, values) : 1;
+			for(int r = 0; r < reps; r++)
+			{
+				// every rep of an alternation is a line, and the line says which clause it is
+				final String repPath = (r > 0) ? (path + "~" + r) : path;
+				final int chosen = Math.max(0, Math.min(node.children.length - 1,
+						this.parmChoiceAt(new ParmEdit(ParmOp.NONE, "", new HashMap<String, String>()), repPath,
+								values, node.children.length)));
+				parts.put("LB" + repPath, L("Which"));
+				parts.put("PC" + repPath, str.toString());
+				parts.put("PA" + repPath, "" + chosen);
+				parts.put("PS" + repPath, "1");
+				if(repeats != null)
+					parts.put("PB" + repPath, repeats);
+				this.parmViewParts(node.children[chosen], repPath + "_" + chosen, values, parts,
+						repeats, nodes);
+			}
 			return;
 		}
 		final int reps = (node.repeats) ? this.parmRepMax(path, values) : 1;
 		for(int r = 0; r < reps; r++)
 			for(int i = 0; i < node.children.length; i++)
-				this.parmViewParts(node.children[i], path + "_" + i + ((r > 0) ? ("~" + r) : ""), values, parts, repeats);
+				this.parmViewParts(node.children[i], path + "_" + i + ((r > 0) ? ("~" + r) : ""),
+						values, parts, repeats, nodes);
 	}
 
 	@Override
@@ -2329,6 +2427,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return reps;
 	}
 
+	private int parmFreeRep(final String path, final Map<String, String> values)
+	{
+		final int reps = Math.max(1, this.parmValueReps(path, values));
+		for(int r = 0; r < reps; r++)
+		{
+			final String repPath = (r > 0) ? (path + "~" + r) : path;
+			boolean filled = false;
+			final String repValue = values.get(repPath);
+			if((repValue != null)&&(repValue.trim().length() > 0))
+				continue;
+			for(final String key : values.keySet())
+			{
+				if((key.endsWith("~REPS"))||(!key.startsWith(repPath + "_")))
+					continue;
+				final String held = values.get(key);
+				if((held != null)&&(held.trim().length() > 0))
+				{
+					filled = true;
+					break;
+				}
+			}
+			if(!filled)
+				return r;
+		}
+		return reps;
+	}
+
 	private int parmRepCount(final ParmEdit edit, final String path, final Map<String, String> values)
 	{
 		final int held = Math.max(1, this.parmValueReps(path, values));
@@ -2536,7 +2661,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			if((i > 0)&&(node.kind == MTKind.ALTERNATION))
 				str.append("/");
-			this.parmLabelText(children[i], str);
+			final StringBuilder sub = new StringBuilder();
+			this.parmLabelText(children[i], sub);
+			// a clause that says the same thing twice only needs to say it once
+			final String piece = sub.toString().trim();
+			if((piece.length() > 0)&&(str.toString().endsWith(piece)))
+				continue;
+			str.append(sub);
 		}
 	}
 
@@ -3077,7 +3208,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 										for(final MTToken alt2 : children)
 										{
 											final int thisAlt2 = innerIndex++;
-											if(this.match(alt2, saveRepeatIndex, terminators, path + "_" + thisAlt2 + "~" + (rep + 1), mine))
+											if(this.match(alt2, saveRepeatIndex, terminators,
+													path + "~" + (rep + 1) + "_" + thisAlt2, mine))
 											{
 												if(this.outIndex[0] > saveRepeatIndex)
 												{

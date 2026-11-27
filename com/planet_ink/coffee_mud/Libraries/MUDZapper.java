@@ -1353,7 +1353,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(zapCodes.containsKey(str2))
 								break;
 							v=v2;
-							buf.append(levelHelp(str2,'+',skipFirstWord?L("Only highest class "):L("Allows only highest class ")));
+							buf.append(levelHelp(str2,'+',skipFirstWord?L("highest class "):L("Requires highest class ")));
 						}
 					}
 					break;
