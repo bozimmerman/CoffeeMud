@@ -55,6 +55,22 @@ public class GenTitle extends StdTitle
 	}
 
 	@Override
+	public void setOwner(final ItemPossessor owner)
+	{
+		super.setOwner(owner);
+		if((owner instanceof Room)&&(landPropertyID()!=null)&&(landPropertyID().length()>0))
+			for(final Enumeration<Item> i=((Room)owner).items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if((I!=this)&&(I instanceof LandTitle)&&(landPropertyID().equalsIgnoreCase(((LandTitle)I).landPropertyID())))
+				{
+					Log.errOut("GenTitle",new Exception("duplicate title"),"duplicate title in \""+((Room)owner).roomID()+"\": "+I.databaseID()+" and "+databaseID()+" both claim \""+landPropertyID()+"\"");
+					break;
+				}
+			}
+	}
+
+	@Override
 	public String genericName()
 	{
 		if(CMLib.english().startsWithAnIndefiniteArticle(name())&&(CMStrings.numWords(name())<4))

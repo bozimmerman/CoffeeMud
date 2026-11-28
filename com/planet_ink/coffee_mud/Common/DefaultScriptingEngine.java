@@ -10846,7 +10846,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					for(final Iterator<String> k = Resources.findResourceKeys(parmname);k.hasNext();)
 					{
 						final String key=k.next();
-						if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(parmname)))
+						if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().indexOf(parmname)>=0))
 						{
 							delThese.add(key);
 						}

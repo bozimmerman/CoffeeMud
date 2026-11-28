@@ -360,7 +360,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				for(final Iterator<String> k=Resources.findResourceKeys(filename);k.hasNext();)
 				{
 					final String key=k.next();
-					if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(filename)))
+					if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().indexOf(filename)>=0))
 					{
 						foundKey = true;
 						delThese.add(key);
