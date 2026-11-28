@@ -472,7 +472,7 @@ public class DBConnections
 						{
 							if(conn.fetchStack!=null)
 								for(final StackTraceElement e : conn.fetchStack)
-									Log.errOut("DBConnections","Evicting dead connection, fetched at: "+e);
+									Log.errOut("DBConnections","Evicting "+(conn.inUse()?"abandoned":"unusable")+" connection, fetched at: "+e);
 							conn.close();
 							connections.remove(conn);
 						}
